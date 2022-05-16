@@ -1,0 +1,45 @@
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - 'fix/**'
+      - 'feat/**'
+  pull_request:
+    branches:
+      - 'main'
+      - 'test'
+      - 'develop'
+      
+permissions:
+  contents: read
+
+jobs:
+  commitlint:
+    name: Commit Linter
+    runs-on: ubuntu-latest  
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+
+      - name: Install commitlint plugins
+        run: |
+              npm install --save-dev \
+                @commitlint/cli \
+                @commitlint/config-conventional
+      - name: Validate push commits
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          npx commitlint --from ${{ github.event.before }} --to ${{ github.event.after }} --verbose
+      
+      - name: Validate pr commits
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
