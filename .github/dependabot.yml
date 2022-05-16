@@ -1,0 +1,16 @@
+version: 2
+
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    commit-message:
+      prefix: "fix: "
+      prefix-development: "chore"
+      include: "scope"
+    labels:
+      - "github-actions"
+      - "dependabot"
+    schedule:
+      interval: "weekly"
+      time: "07:00"
+      timezone: Europe/Rome

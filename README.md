@@ -1,1 +1,1 @@
-"# monitoraggio.repubblicadigitale.gov.it"
+# monitoraggio.repubblicadigitale.gov.it
