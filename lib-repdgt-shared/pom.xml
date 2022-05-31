@@ -75,7 +75,7 @@
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk-location</artifactId>
-			<version>1.12.223</version>
+			<version>1.12.230</version>
 		</dependency>
 		<dependency>
 		    <groupId>io.jsonwebtoken</groupId>
