@@ -1,0 +1,18 @@
+{
+  "data": {
+    "list": [
+      {
+        "id": "role1",
+        "nome": "Role 1"
+      },
+      {
+        "id": "role2",
+        "nome": "Role 2"
+      },
+      {
+        "id": "role3",
+        "nome": "Role 3"
+      }
+    ]
+  }
+}

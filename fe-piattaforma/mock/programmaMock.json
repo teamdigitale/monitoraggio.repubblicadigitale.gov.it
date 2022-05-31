@@ -1,0 +1,71 @@
+{
+  "data": {
+    "dettaglioProgramma": {
+      "generalInfo": {
+        "codice": "codice",
+        "nome": "nome",
+        "policy": "rfd",
+        "nomeBreve": "nome breve",
+        "dataInizioProgramma": "2022-04-13",
+        "dataFineProgramma": "2022-05-30"
+      },
+      "facilitationNumber": {
+        "targetMesi1": "codice facilitazione",
+        "targetMesi1data": "2022-04-13",
+        "targetMesi18": "nome breve",
+        "targetMesi18data": "2022-04-13",
+        "targetMesi30": "2022-05-30",
+        "targetMesi30data": "2022-05-30",
+        "targetMesi42": "4000",
+        "targetMesi42data": "2022-05-30",
+        "targetGiugno2025": "valGiugno2025"
+      },
+      "uniqueUsers": {
+        "targetMesi1": "codice utenti",
+        "targetMesi1data": "2022-04-13",
+        "targetMesi18": "nome breve",
+        "targetMesi18data": "2022-04-13",
+        "targetMesi30": "2022-05-30",
+        "targetMesi30data": "2022-05-30",
+        "targetMesi42": "4000",
+        "targetMesi42data": "2022-05-30",
+        "targetGiugno2025": "valGiugno2025"
+      },
+      "services": {
+        "targetMesi1": "codice servizi",
+        "targetMesi1data": "2022-04-13",
+        "targetMesi18": "nome breve",
+        "targetMesi18data": "2022-04-13",
+        "targetMesi30": "2022-05-30",
+        "targetMesi30data": "2022-05-30",
+        "targetMesi42": "4000",
+        "targetMesi42data": "2022-05-30",
+        "targetGiugno2025": "valGiugno2025"
+      },
+      "facilitators": {
+        "targetMesi1": "codice facilitatori",
+        "targetMesi1data": "2022-04-13",
+        "targetMesi18": "nome breve",
+        "targetMesi18data": "2022-04-13",
+        "targetMesi30": "2022-05-30",
+        "targetMesi30data": "2022-05-30",
+        "targetMesi42": "4000",
+        "targetMesi42data": "2022-05-30",
+        "targetGiugno2025": "valGiugno2025"
+      }
+    },
+    "progetti": [
+      {
+        "id": "dsda",
+        "nome": "dsdsa",
+        "stato": "ATTIVO"
+      },
+      {
+        "id": "dsd1a",
+        "nome": "dsds1a",
+        "stato": "ATTIVO"
+      }
+    ],
+    "idEnteGestoreProgramma": "3213131"
+  }
+}

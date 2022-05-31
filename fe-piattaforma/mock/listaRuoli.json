@@ -1,0 +1,22 @@
+{
+  "data": {
+    "list": [
+      {
+        "id": 1,
+        "name": "DTD Amministratore"
+      },
+      {
+        "id": 2,
+        "name": "DSCU Referente"
+      },
+      {
+        "id": 3,
+        "name": "DSCU Delegato"
+      },
+      {
+        "id": 4,
+        "name": "Referente ente gestore di programma"
+      }
+    ]
+  }
+}

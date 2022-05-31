@@ -1,0 +1,11 @@
+.role-management-details-container {
+  &__input {
+    width: 50%;
+    .form-control:disabled {
+      background-color: none !important;
+    }
+  }
+  &__button-width {
+    width: 221px;
+  }
+}

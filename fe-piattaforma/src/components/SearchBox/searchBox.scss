@@ -1,0 +1,14 @@
+.searchbox {
+  .form-group {
+    border: 1px solid color('grey-200');
+    border-right: 0;
+    border-radius: 5px 0 0 5px;
+    margin-bottom: unset;
+  }
+  .btn {
+    border-radius: 0 4px 4px 0;
+    max-height: 42px;
+    max-width: 42px;
+    padding: 8px;
+  }
+}

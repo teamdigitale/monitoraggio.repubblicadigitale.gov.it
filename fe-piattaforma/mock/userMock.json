@@ -1,0 +1,16 @@
+{
+  "data": {
+    "info": {
+      "name": "321321",
+      "lastName": "Via roma 1",
+      "userId": "Sede 1",
+      "fiscalCode": "Facilitazione",
+      "email": "mail@mail.com",
+      "phone": "321321"
+    },
+    "roles": [
+      { "name": "Simone Viola", "status": "Active" },
+      { "name": "Simone Viola", "status": "Active" }
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "data": {
+    "info": {
+      "name": "Antonio",
+      "lastName": "Rossi",
+      "fiscalCode": "codfiscale",
+      "nDoc": "321321",
+      "nationality": "Italiana",
+      "age": "21",
+      "degree": "Diploma",
+      "occupation": "Operaio",
+      "email": "antoniorossi@mail.com",
+      "phone": "3211233232",
+      "consensoOTP": true,
+      "confModulo": false,
+      "dataConf": "2022-05-30"
+    },
+    "questionari": [
+      {
+        "id": 1,
+        "type": "Tipo 1",
+        "facilitatore": "Fac 1",
+        "lastChange": "10/03/2022",
+        "status": "ATTIVO"
+      },
+      {
+        "id": 2,
+        "type": "Tipo 2",
+        "facilitatore": "Fac 1",
+        "lastChange": "10/03/2022",
+        "status": "ATTIVO"
+      },
+      {
+        "id": 3,
+        "type": "Tipo 3",
+        "facilitatore": "Fac 1",
+        "lastChange": "10/03/2022",
+        "status": "ATTIVO"
+      }
+    ]
+  }
+}

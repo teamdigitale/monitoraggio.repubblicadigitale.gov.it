@@ -1,0 +1,30 @@
+{
+  "data": {
+    "list": [
+      {
+        "id": 1,
+        "name": "Questionario 1",
+        "type": "Tipo 1",
+        "status": "ATTIVO",
+        "default_SCD": true,
+        "default_RFD": false
+      },
+      {
+        "id": 2,
+        "name": "Questionario 2",
+        "type": "Tipo 2",
+        "status": "ATTIVO",
+        "default_SCD": false,
+        "default_RFD": true
+      },
+      {
+        "id": 3,
+        "name": "Questionario 1",
+        "type": "Tipo 3",
+        "status": "ATTIVO",
+        "default_SCD": false,
+        "default_RFD": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+.dropdown-filter-container {
+  width: 200px;
+
+  @media screen and (max-width:576px) {
+    width: 140px;
+  }
+
+  &__popover {
+    .popover {
+      width: 200px;
+      padding: 12px;
+    }
+    .popover.bs-popover-auto[x-placement^='bottom'] .arrow:after {
+      left: -400%;
+    }
+  }
+
+  &__search-tooltip {
+    max-height: 45px;
+  }
+
+  &__list {
+    list-style-type: none;
+  }
+
+  &__input {
+    z-index: 99;
+  }
+
+  button {
+    padding: rem(7px) rem(8px) rem(7px) rem(21px);
+  }
+}

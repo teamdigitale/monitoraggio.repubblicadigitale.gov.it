@@ -1,0 +1,13 @@
+.print-fields-container {
+  &__half-width {
+    width: 48%;
+  }
+  &__text-field {
+    border-bottom: 1px solid #797c80;
+  }
+  &__checkbox-field {
+    .form-group {
+      margin-bottom: 0;
+    }
+  }
+}
