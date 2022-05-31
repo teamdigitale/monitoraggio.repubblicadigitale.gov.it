@@ -1,0 +1,27 @@
+{
+  "data": {
+    "list": [
+      {
+        "id": 1,
+        "name": "Cittadino 1",
+        "submitted": "231",
+        "onDraft": "11",
+        "status": "COMPLETATO"
+      },
+      {
+        "id": 2,
+        "name": "Cittadino 2",
+        "submitted": "2",
+        "onDraft": "1",
+        "status": "COMPLETATO"
+      },
+      {
+        "id": 3,
+        "name": "Cittadino 3",
+        "submitted": "11",
+        "onDraft": "1",
+        "status": "IN BOZZA"
+      }
+    ]
+  }
+}

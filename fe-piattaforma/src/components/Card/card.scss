@@ -1,0 +1,15 @@
+.card.card-rounded {
+  border-radius: 10px;
+}
+.card-body.card-big {
+  padding: 50px 24px;
+}
+.card-body.card-small {
+  padding: 16px 24px 24px;
+}
+.card {
+  .card-inline-container {
+    padding: 0 24px;
+    min-width: 280px;
+  }
+}

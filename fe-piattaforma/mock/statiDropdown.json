@@ -1,0 +1,18 @@
+{
+  "data": {
+    "list": [
+      {
+        "id": "ATTIVO",
+        "nome": "ATTIVO"
+      },
+      {
+        "id": "BOZZA",
+        "nome": "BOZZA"
+      },
+      {
+        "id": "NON_ATTIVO",
+        "nome": "NON ATTIVO"
+      }
+    ]
+  }
+}

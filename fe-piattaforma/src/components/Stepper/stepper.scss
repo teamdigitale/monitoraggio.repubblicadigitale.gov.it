@@ -1,0 +1,24 @@
+.stepper-container {
+  width: 350px;
+
+  &__icon-container {
+    width: 32px;
+    height: 32px;
+    border: 5px solid white;
+    z-index: 99;
+  }
+  &__icon {
+    border-radius: 20px;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &__line {
+    width: 90%;
+    height: 2px;
+    position: absolute;
+    top: 50%;
+    left: 5%;
+  }
+}

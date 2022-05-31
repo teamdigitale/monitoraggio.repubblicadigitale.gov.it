@@ -1,0 +1,14 @@
+.progress-bar-container {
+  &__line-bar {
+    width: 100%;
+    height: rem(2px);
+    overflow: hidden;
+    background-color: color('progress-bar-grey');
+  }
+
+  &__percentage-line {
+    height: 100%;
+    content: '';
+    background-color: color('progress-bar-line');
+  }
+}

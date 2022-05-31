@@ -1,0 +1,23 @@
+.search-bar-options-custom {
+  .form-check {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    width: 100%;
+
+    &__items {
+      input {
+        height: 0;
+      }
+    }
+
+    div:first-child {
+      padding-right: rem(50px);
+    }
+
+    .form-control {
+      position: unset;
+    }
+  }
+}

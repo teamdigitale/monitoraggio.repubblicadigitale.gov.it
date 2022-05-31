@@ -1,0 +1,26 @@
+.document-card {
+  &__vertical {
+    vertical-align: middle;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  &__file-icon {
+    max-width: 32px;
+    max-height: 32px;
+  }
+
+  &__maxLinesTitle {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__maxLinesParagraph {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}

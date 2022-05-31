@@ -1,0 +1,9 @@
+{
+  "data": {
+    "nome": "Antonio",
+    "cognome": "Rossi",
+    "codiceFiscale": "codfiscale",
+    "email": "antoniorossi@mail.com",
+    "phone": "3211233232"
+  }
+}

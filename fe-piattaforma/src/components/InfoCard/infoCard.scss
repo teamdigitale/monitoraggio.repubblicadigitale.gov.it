@@ -1,0 +1,13 @@
+.info-card-custom {
+  border-left: rem(11px) solid #0066cc;
+  border-radius: rem(4px);
+  padding: rem(20px 17px);
+  margin-bottom: rem(37px);
+
+  &__picture {
+    margin-right: rem(15px);
+    svg {
+      padding: rem(6px);
+    }
+  }
+}

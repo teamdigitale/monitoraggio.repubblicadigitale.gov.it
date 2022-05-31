@@ -1,0 +1,292 @@
+import React, { ReactElement, useEffect, useState } from 'react';
+import { DropdownFilterI, FilterI } from '../DropdownFilter/dropdownFilter';
+import { DropdownFilter, SearchBar } from '../index';
+import { Button, Chip, ChipLabel, Icon } from 'design-react-kit';
+import { cleanEntityFilters } from '../../redux/features/administrativeArea/administrativeAreaSlice';
+import { useDispatch } from 'react-redux';
+//import Sidebar, { SidebarI } from './sidebar';
+import clsx from 'clsx';
+import { NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '../../redux/hooks';
+import { selectDevice } from '../../redux/features/app/appSlice';
+import ButtonsBar from '../ButtonsBar/buttonsBar';
+import Sticky from 'react-sticky-el';
+
+export interface SearchInformationI {
+  onHandleSearch?: (searchValue: string) => void;
+  placeholder: string;
+  title: string;
+  autocomplete: boolean;
+  isClearable: boolean;
+}
+
+interface GenericSearchI {
+  text: string;
+  icon: string;
+  onClick: () => void;
+}
+
+interface GenericSearchFilterTableLayoutI {
+  dropdowns?: DropdownFilterI[];
+  searchInformation: SearchInformationI;
+  Sidebar?: ReactElement;
+  showButtons?: boolean;
+  filtersList?: any;
+  genericSearch?: GenericSearchI;
+  cta?: () => void;
+  ctaHref?: string;
+  textCta?: string;
+  iconCta?: string;
+  ctaPrintText?: string;
+  ctaPrint?: () => void;
+}
+
+const GenericSearchFilterTableLayout: React.FC<
+  GenericSearchFilterTableLayoutI
+> = ({
+  dropdowns,
+  searchInformation,
+  Sidebar,
+  showButtons = true,
+  filtersList,
+  genericSearch,
+  children,
+  cta,
+  ctaHref,
+  textCta,
+  iconCta,
+  ctaPrintText,
+  ctaPrint,
+}) => {
+  const dispatch = useDispatch();
+  const [showChips, setShowChips] = useState<boolean>(false);
+
+  const getLabelsChips = (filter: any, i: number, filterKey: string) => {
+    if (filter?.value) {
+      return (
+        <Chip key={i} className='mr-2'>
+          <ChipLabel className='px-1'>{filter.label}</ChipLabel>
+          <Button
+            close
+            onClick={() => {
+              console.log('clean entity filters');
+              dispatch(cleanEntityFilters({ filterKey, value: filter.value }));
+            }}
+          >
+            <Icon icon='it-close' aria-label='Chiudi chip' />
+          </Button>
+        </Chip>
+      );
+    } else if (filter?.length > 0) {
+      return (
+        <>
+          {filter.map((f: FilterI, j: number) => (
+            <Chip key={i + '-' + j} className='mr-2'>
+              <ChipLabel className='mx-3 my-2'>{f.label}</ChipLabel>
+              <Button
+                close
+                onClick={() => {
+                  console.log('sono il clean entity filters');
+                  dispatch(cleanEntityFilters({ filterKey, value: f.value }));
+                }}
+              >
+                <Icon icon='it-close' aria-label='Chiudi chip' />
+              </Button>
+            </Chip>
+          ))}
+        </>
+      );
+    }
+  };
+  useEffect(() => {
+    if (dropdowns?.length && filtersList && Object.keys(filtersList).length) {
+      setShowChips(true);
+    } else {
+      setShowChips(false);
+    }
+  }, [dropdowns, filtersList]);
+
+  const { t } = useTranslation();
+
+  const device = useAppSelector(selectDevice);
+  return (
+    <>
+      <div className={genericSearch ? 'd-flex justify-content-end' : ''}>
+        {genericSearch && (
+          <Button
+            onClick={genericSearch.onClick}
+            className='primary-color-b1 d-flex flex-row justify-content-center align-items-center'
+          >
+            <span className='mr-4'>{genericSearch.text}</span>
+            <div className='header-container__icon-container primary-bg-b1'>
+              <Icon
+                icon={genericSearch.icon}
+                color='white'
+                size='sm'
+                aria-label='Cerca cittadino'
+              />
+            </div>
+          </Button>
+        )}
+      </div>
+      <div className='d-flex justify-content-between align-items-center mt-2 mb-3 flex-wrap flex-lg-nowrap'>
+        {searchInformation?.onHandleSearch && (
+          <div className='flex-grow-1 col-12 col-md-9'>
+            <div
+              className={clsx(genericSearch && !device.mediaIsPhone && 'w-75')}
+              data-testid='create-new-element'
+            >
+              <SearchBar
+                autocomplete={searchInformation.autocomplete}
+                onSubmit={searchInformation.onHandleSearch}
+                placeholder={searchInformation.placeholder}
+                isClearable={searchInformation.isClearable}
+                title={searchInformation.title}
+                id='search-filter-table-layout'
+              />
+            </div>
+          </div>
+        )}
+
+        <div className='cta-container ml-auto col-12 col-md-3 pb-4'>
+          {cta && !device.mediaIsPhone ? (
+            <Button
+              color='primary'
+              icon
+              className='page-title__cta'
+              onClick={cta}
+              data-testid='create-new-entity'
+            >
+              {iconCta ? (
+                <Icon
+                  color='white'
+                  icon={iconCta}
+                  className='mr-2'
+                  aria-label='Aggiungi'
+                />
+              ) : null}
+              <span className='text-nowrap'>{textCta}</span>
+            </Button>
+          ) : ctaHref ? (
+            <NavLink color='primary' className='page-title__cta' to={ctaHref}>
+              {iconCta ? (
+                <Icon
+                  color='white'
+                  icon={iconCta}
+                  className='mr-2'
+                  aria-label='Aggiungi'
+                />
+              ) : null}
+              {textCta}
+            </NavLink>
+          ) : null}
+          {ctaPrint && (
+            <Button
+              color='primary'
+              icon
+              outline
+              className='page-title__cta mt-3'
+              onClick={ctaPrint}
+            >
+              <Icon
+                color='primary'
+                icon='it-print'
+                className='mr-2'
+                aria-label='Stampa questionario'
+              />
+              <span className='text-nowrap'>{ctaPrintText}</span>
+            </Button>
+          )}
+        </div>
+      </div>
+
+      {dropdowns?.length && (
+        <div className='d-flex flex-row flex-wrap pt-lg-3 pt-0'>
+          {dropdowns.map((dropdown, index) => (
+            <DropdownFilter
+              key={index}
+              filterName={dropdown.filterName || ''}
+              {...dropdown}
+            />
+          ))}
+        </div>
+      )}
+      <div
+        className={
+          showChips && showButtons
+            ? 'd-flex justify-content-between align-items-baseline'
+            : showChips && !showButtons
+            ? 'd-flex justify-content-start align-items-baseline'
+            : 'd-flex justify-content-end align-items-baseline'
+        }
+      >
+        {showChips ? (
+          <div className='d-flex flex-row mt-4 mb-4 flex-wrap align-items-center'>
+            {Object.keys(filtersList).map((filterKey, index) => (
+              <div key={index} className={clsx(device.mediaIsPhone && 'pb-3')}>
+                {getLabelsChips(filtersList[filterKey], index, filterKey)}
+              </div>
+            ))}
+          </div>
+        ) : null}
+        {showButtons ? (
+          <div className='d-flex justify-content-end'>
+            <Button
+              onClick={() => {
+                console.log('download');
+              }}
+              className={clsx(
+                'primary-color-b1',
+                'd-flex',
+                'flex-row',
+                'justify-content-center',
+                'align-items-center',
+                'px-0',
+                'px-lg-4'
+              )}
+            >
+              <div>
+                <Icon
+                  icon='it-download'
+                  color='primary'
+                  size='sm'
+                  aria-label='Scarica lista'
+                />
+              </div>
+              {!device.mediaIsPhone && (
+                <span className='ml-4'>{t('download_list')}</span>
+              )}
+            </Button>
+          </div>
+        ) : null}
+      </div>
+      {Sidebar ? (
+        <div className='d-flex'>
+          {Sidebar}
+          <div className='w-75'>{children}</div>
+        </div>
+      ) : (
+        <div>{children}</div>
+      )}
+      {device.mediaIsPhone && cta && (
+        <Sticky mode='bottom'>
+          <ButtonsBar
+            buttons={[
+              {
+                size: 'xs',
+                color: 'primary',
+                iconForButton: iconCta || '',
+                text: textCta || '',
+                onClick: cta,
+                className: 'align-self-end',
+              },
+            ]}
+          />
+        </Sticky>
+      )}
+    </>
+  );
+};
+
+export default GenericSearchFilterTableLayout;

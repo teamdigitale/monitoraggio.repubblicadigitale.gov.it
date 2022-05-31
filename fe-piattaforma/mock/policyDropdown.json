@@ -1,0 +1,18 @@
+{
+  "data": {
+    "list": [
+      {
+        "id": "policy1",
+        "nome": "Policy 1"
+      },
+      {
+        "id": "policy2",
+        "nome": "policy 2"
+      },
+      {
+        "id": "policy3",
+        "nome": "Policy 3"
+      }
+    ]
+  }
+}

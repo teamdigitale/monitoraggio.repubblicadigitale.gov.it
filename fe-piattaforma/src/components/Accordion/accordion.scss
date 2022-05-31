@@ -1,0 +1,19 @@
+.accordion-container {
+  &__borders {
+    border-bottom: none;
+  }
+
+  &__form-checkbox {
+    bottom: 30%;
+    right: 2%;
+    &--collapsed {
+      bottom: 0;
+      right: 2%;
+      top: 5%;
+    }
+  }
+  &__input-checkbox {
+    height: 22px;
+    width: 22px;
+  }
+}

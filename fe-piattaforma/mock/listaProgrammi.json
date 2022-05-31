@@ -1,0 +1,22 @@
+{
+  "data": {
+    "programmiLight": [
+      {
+        "id": 1,
+        "nome": "Programma 1",
+        "stato": "ATTIVO"
+      },
+      {
+        "id": 2,
+        "nome": "Programma 2",
+        "stato": "BOZZA"
+      },
+      {
+        "id": 3,
+        "nome": "Programma 3",
+        "stato": "BOZZA"
+      }
+    ],
+    "numeroPagine": 10
+  }
+}

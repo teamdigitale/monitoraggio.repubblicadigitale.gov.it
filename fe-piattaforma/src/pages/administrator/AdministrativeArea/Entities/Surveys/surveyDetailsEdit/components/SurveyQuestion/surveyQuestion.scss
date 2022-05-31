@@ -1,0 +1,48 @@
+.survey-question-container {
+
+  &__box-right {
+    width: 40%;
+  }
+
+  &__list {
+    list-style-type: none;
+  }
+
+  &__buttons {
+    padding: 6px 12px;
+    min-width: auto !important;
+    right: 25px;
+  }
+
+  &__button-add {
+    width: 100%;
+    border-bottom: 1px solid #0073e5;
+    border-radius: 0px;
+    text-align: left;
+    padding: 0px 9px 6px;
+  }
+
+  &__closed-box {
+    padding: 24px;
+  }
+
+  &__shadow {
+    background-color: white !important;
+    box-shadow: 0px 0px 80px rgba(0, 43, 85, 0.1);
+  }
+
+  &__expanded-box {
+    background-color: white;
+    padding: 0px 24px 24px;
+    box-shadow: 0px 0px 80px rgba(0, 43, 85, 0.1);
+    -webkit-box-shadow: 0 10px 10px -6px rgb(0 43 85 / 10%);
+  }
+
+  &__default-bg {
+    background-color: rgba(230, 233, 242, 0.4);
+  }
+
+  &__error-question {
+    border: 1px solid red;
+  }
+}

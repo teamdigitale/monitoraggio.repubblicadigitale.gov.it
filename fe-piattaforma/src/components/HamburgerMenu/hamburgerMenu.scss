@@ -1,0 +1,83 @@
+.hamburger_nav {
+  left: 0;
+  max-width: 35px;
+  position: relative;
+
+  .hamburger_nav:hover {
+    border: 2px solid white;
+  }
+
+  li:hover:not(.manage-profile-container, .sublist-container) {
+    background-color: rgba(0, 102, 204, 0.06);
+    border-left: solid 5px #0066cc;
+  }
+
+  .btn {
+    padding: 5px;
+  }
+
+  .img {
+    width: 200px;
+    height: 100%;
+  }
+
+  .button-close-ham {
+    position: absolute;
+    right: -61px;
+  }
+
+  .close_nav {
+    cursor: pointer;
+    background-color: white;
+    transition: all 0.5s;
+  }
+
+  .nav-divider {
+    height: 0.5px;
+    width: 65px;
+    margin-left: 40px;
+    margin-top: 32px;
+  }
+
+  .manage-profile {
+    padding-left: 40px;
+  }
+
+  .menuNav {
+    list-style: none;
+    background: #ffffff;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 300px;
+    height: 100vh;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: all 0.75s;
+    position: fixed;
+  }
+
+  .menuNav.showMenu {
+    transform: translateX(0%);
+  }
+
+  a {
+    display: block;
+    padding: 10px 40px;
+    text-decoration: none;
+    color: #0066cc;
+    font-weight: bold;
+  }
+
+  .anchor-button {
+    padding-left: 40px;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+}
+
+.nav_button {
+  left: 40px;
+  top: 40px;
+  z-index: 8;
+}

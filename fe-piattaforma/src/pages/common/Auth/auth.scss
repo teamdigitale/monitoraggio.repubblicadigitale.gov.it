@@ -1,0 +1,27 @@
+.auth-container {
+  min-height: calc(100vh - $footer-height);
+  padding: 56px 0;
+
+  &__logo {
+    height: 88px;
+    width: auto;
+  }
+
+  &__top-icon-container {
+    height: 48px;
+    width: 48px;
+  }
+
+  &__box {
+    .card {
+      padding: 56px 56px 64px;
+    }
+
+    &__button-group {
+      button {
+        flex-grow: 1;
+        max-width: 275px;
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+.card-status-action {
+  border-radius: rem(10px);
+  box-shadow: 0 0 40px rgba(220, 233, 245, 1);
+  padding: rem(24px);
+
+  &__status-button {
+    border-radius: rem(5px);
+    max-width: rem(112px);
+    max-height: rem(24px);
+    margin-top: auto;
+    margin-bottom: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .section-chip {
+    min-width: rem(112px);
+  }
+  .weight-600 {
+    font-weight: 600;
+  }
+
+  &__title {
+    min-width: rem(100px);
+  }
+}
