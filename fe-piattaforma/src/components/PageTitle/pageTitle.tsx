@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { Container } from 'design-react-kit';
 import React, { memo } from 'react';
 import './pageTitle.scss';
@@ -16,7 +17,7 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
   const { hasBackground, title } = props;
 
   return (
-    <div {...(hasBackground ? 'lightgrey-bg-a1' : '')} className='page-title'>
+    <div className={clsx('page-title', hasBackground && 'lightgrey-bg-a1')}>
       <Container className='mt-3'>
         <div className='d-flex flex-row justify-content-between align-items-center'>
           {title && <h1 className='h2 py-2 mb-2 primary-color-a9'>{title}</h1>}
