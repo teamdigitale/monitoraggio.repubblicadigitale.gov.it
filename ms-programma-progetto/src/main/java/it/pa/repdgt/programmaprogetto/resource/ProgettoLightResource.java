@@ -25,4 +25,6 @@ public class ProgettoLightResource implements Serializable {
 	private String stato;
 	
 	private String nomeEnteGestore;
+	
+	private String policy;
 }

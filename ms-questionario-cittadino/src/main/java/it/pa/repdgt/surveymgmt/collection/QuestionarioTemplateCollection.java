@@ -16,6 +16,7 @@ import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -41,7 +42,7 @@ public class QuestionarioTemplateCollection implements Serializable {
 	@Field(name = "nome")
 	private String nomeQuestionarioTemplate;
 	
-	@NotNull
+	@NotBlank
 	@Field(name = "descrizione")
 	private String descrizioneQuestionarioTemplate;
 
@@ -69,6 +70,7 @@ public class QuestionarioTemplateCollection implements Serializable {
 
 	@Setter
 	@Getter
+	@NoArgsConstructor
 	public static class SezioneQuestionarioTemplate implements Serializable {
 		private static final long serialVersionUID = -3140025898522907630L;
 		

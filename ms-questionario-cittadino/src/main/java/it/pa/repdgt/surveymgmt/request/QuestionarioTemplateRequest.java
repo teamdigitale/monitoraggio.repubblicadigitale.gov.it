@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
 import it.pa.repdgt.surveymgmt.annotation.JsonString;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,7 +36,7 @@ public class QuestionarioTemplateRequest implements Serializable {
 	@JsonProperty(value = "default-SCD")
 	@NotNull
 	private Boolean defaultSCD;
-	
+
 	@JsonProperty(value = "sections")
 	@NotEmpty
 	@Valid
@@ -47,6 +46,10 @@ public class QuestionarioTemplateRequest implements Serializable {
 	@Getter
 	public static class SezioneQuestionarioTemplateRequest implements Serializable {
 		private static final long serialVersionUID = -5090611819310162542L;
+		
+		@JsonProperty(value = "id")
+		@NotBlank
+		private String id;
 
 		@JsonProperty(value = "title")
 		@NotBlank

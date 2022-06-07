@@ -33,6 +33,7 @@ public class CittadinoEntity implements Serializable {
 	
 	@Column(name = "ETA", nullable = false)
 	private Integer eta;
+
 	@Column(name = "NUM_DOCUMENTO", nullable = false, unique = true)
 	private String numeroDocumento;
 

@@ -8,10 +8,10 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import it.pa.repdgt.programmaprogetto.annotation.LogExecutionTime;
-import it.pa.repdgt.programmaprogetto.annotation.LogMethod;
 import it.pa.repdgt.programmaprogetto.exception.ResourceNotFoundException;
 import it.pa.repdgt.programmaprogetto.repository.EnteRepository;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.EntePartnerEntity;
 import it.pa.repdgt.shared.entity.ReferentiDelegatiEntePartnerDiProgettoEntity;

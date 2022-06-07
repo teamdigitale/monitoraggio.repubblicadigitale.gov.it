@@ -142,9 +142,10 @@ public class ProgettoRestApi {
 		String codiceRuolo = sceltaContesto.getCodiceRuolo();
 		String codiceFiscaleUtente = sceltaContesto.getCfUtente();
 		Long idProgramma = sceltaContesto.getIdProgramma();
+		Long idProgetto = sceltaContesto.getIdProgetto();
 		ProgettoFiltroRequest filtro = sceltaContesto.getFiltroRequest();
 		
-		List<ProgettoEntity> listaProgetti = this.progettoService.getProgettiByRuolo(codiceRuolo, codiceFiscaleUtente, idProgramma, filtro);
+		List<ProgettoEntity> listaProgetti = this.progettoService.getProgettiByRuolo(codiceRuolo, codiceFiscaleUtente, idProgramma, idProgetto, filtro);
 		ByteArrayInputStream byteArrayInputStream = CSVProgettoUtil.exportCSVProgetti(listaProgetti, CSVFormat.DEFAULT);
 		InputStreamResource fileCSV = new InputStreamResource(byteArrayInputStream);
 		

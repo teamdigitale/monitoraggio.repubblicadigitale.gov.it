@@ -149,7 +149,7 @@ public interface ContestoRepository extends JpaRepository<ProgrammaEntity, Long>
 			@Param(value = "ruolo")String ruolo);
 	
 	@Query(value = "SELECT distinct ep.ID_PROGETTO as idProgetto, ep.ID_ENTE as idEnte, ep.STATO_ENTE_PARTNER as stato "
-			+ "		FROM PROGETTO p "
+			+ "		FROM progetto p "
 			+ "		INNER JOIN ente_partner ep "
 			+ "		on p.ID = ep.ID_PROGETTO "
 			+ "		INNER JOIN referente_delegati_partner  rdp "

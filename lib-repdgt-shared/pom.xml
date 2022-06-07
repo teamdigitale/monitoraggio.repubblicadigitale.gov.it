@@ -17,10 +17,10 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<spring.boot.version>2.5.4</spring.boot.version>
+		<spring.boot.version>2.7.0</spring.boot.version>
 		<javax-persistence.version>2.2</javax-persistence.version>
-		<lombok.version>1.18.20</lombok.version>
-		<aws-java-sdk-bom.version>2.17.194</aws-java-sdk-bom.version>
+		<lombok.version>1.18.24</lombok.version>
+		<aws-java-sdk-bom.version>2.17.201</aws-java-sdk-bom.version>
 	</properties>
 
 	<dependencyManagement>
@@ -73,14 +73,14 @@
 			<artifactId>pinpoint</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-java-sdk-location</artifactId>
-			<version>1.12.223</version>
-		</dependency>
-		<dependency>
 		    <groupId>io.jsonwebtoken</groupId>
 		    <artifactId>jjwt</artifactId>
 		    <version>RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.29</version>
 		</dependency>
 	</dependencies>
 </project>

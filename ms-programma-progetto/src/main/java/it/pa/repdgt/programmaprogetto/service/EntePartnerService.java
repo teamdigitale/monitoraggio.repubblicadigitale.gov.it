@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import it.pa.repdgt.programmaprogetto.annotation.LogExecutionTime;
-import it.pa.repdgt.programmaprogetto.annotation.LogMethod;
 import it.pa.repdgt.programmaprogetto.repository.EntePartnerRepository;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.EntePartnerEntity;
 import it.pa.repdgt.shared.entity.ReferentiDelegatiEntePartnerDiProgettoEntity;
 

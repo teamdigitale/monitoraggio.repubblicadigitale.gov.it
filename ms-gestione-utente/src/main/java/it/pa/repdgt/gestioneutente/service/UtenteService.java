@@ -16,8 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import it.pa.repdgt.gestioneutente.annotation.LogExecutionTime;
-import it.pa.repdgt.gestioneutente.annotation.LogMethod;
 import it.pa.repdgt.gestioneutente.bean.DettaglioRuoliBean;
 import it.pa.repdgt.gestioneutente.bean.DettaglioUtenteBean;
 import it.pa.repdgt.gestioneutente.bean.SchedaUtenteBean;
@@ -29,6 +27,8 @@ import it.pa.repdgt.gestioneutente.repository.UtenteRepository;
 import it.pa.repdgt.gestioneutente.request.FiltroRequest;
 import it.pa.repdgt.gestioneutente.request.NuovoUtenteRequest;
 import it.pa.repdgt.gestioneutente.request.UtenteRequest;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;

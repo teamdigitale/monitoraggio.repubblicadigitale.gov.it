@@ -13,10 +13,10 @@ public interface RuoloRepository extends JpaRepository<RuoloEntity, String> {
 	@Query(value = " SELECT "
 				 + "	ruolo.* "
 				 + " FROM "
-				 + "	RUOLO ruolo "
-				 + "	INNER JOIN UTENTE_X_RUOLO uxr "
+				 + "	ruolo ruolo "
+				 + "	INNER JOIN utente_x_ruolo uxr "
 				 + "	ON uxr.RUOLO_CODICE = ruolo.CODICE "
-				 + " 	INNER JOIN UTENTE utente "
+				 + " 	INNER JOIN utente utente "
 				 + "	ON utente.CODICE_FISCALE = uxr.UTENTE_ID "
 				 + " WHERE 1=1 "
 				 + "   AND utente.CODICE_FISCALE = :codFiscale",

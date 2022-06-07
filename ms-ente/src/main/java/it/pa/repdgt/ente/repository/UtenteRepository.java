@@ -28,7 +28,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 	);
 	
 	@Query(value = "SELECT utente.NOME, utente.COGNOME "
-			+ "FROM UTENTE utente "
+			+ "FROM utente utente "
 			+ "	INNER JOIN referente_delegati_gestore_programma rdg "
 			+ "		ON utente.CODICE_FISCALE = rdg.CF_UTENTE "
 			+ "	INNER JOIN programma programma "
