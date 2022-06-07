@@ -3,7 +3,7 @@ import { initMock } from './mockHelper';
 import { errorHandler } from './notifictionHelper';
 
 const API = axios.create({
-  baseURL: `${process?.env?.REACT_APP_BE_API_URL}`,
+  baseURL: `${process?.env?.REACT_APP_BE_BASE_URL}/api/v1`,
   headers: {
     'Content-Type': 'application/json',
   },

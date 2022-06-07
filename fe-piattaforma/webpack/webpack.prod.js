@@ -7,6 +7,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 const paths = require('./paths');
 const { appBuild, appPublic, appHtml } = paths;
 
@@ -14,6 +15,11 @@ module.exports = merge(common, {
   mode: 'production',
   devtool: false,
   plugins: [
+    new Dotenv({
+      path: paths.dotenv,
+      expand: false,
+      systemvars: true,
+    }),
     new CopyWebpackPlugin({
       patterns: [
         {
