@@ -10,8 +10,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import it.pa.repdgt.gestioneutente.annotation.LogExecutionTime;
-import it.pa.repdgt.gestioneutente.annotation.LogMethod;
 import it.pa.repdgt.gestioneutente.bean.DettaglioGruppiBean;
 import it.pa.repdgt.gestioneutente.bean.DettaglioRuoloBean;
 import it.pa.repdgt.gestioneutente.bean.SchedaRuoloBean;
@@ -19,6 +17,8 @@ import it.pa.repdgt.gestioneutente.exception.ResourceNotFoundException;
 import it.pa.repdgt.gestioneutente.exception.RuoloException;
 import it.pa.repdgt.gestioneutente.repository.RuoloRepository;
 import it.pa.repdgt.gestioneutente.request.RuoloRequest;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.constants.TipologiaRuoloConstants;
 import it.pa.repdgt.shared.entity.GruppoEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;

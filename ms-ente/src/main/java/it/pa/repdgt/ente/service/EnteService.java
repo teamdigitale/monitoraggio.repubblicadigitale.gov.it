@@ -22,8 +22,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import it.pa.repdgt.ente.annotation.LogExecutionTime;
-import it.pa.repdgt.ente.annotation.LogMethod;
 import it.pa.repdgt.ente.bean.DettaglioEnteBean;
 import it.pa.repdgt.ente.bean.DettaglioProfiliBean;
 import it.pa.repdgt.ente.bean.SchedaEnteBean;
@@ -42,6 +40,8 @@ import it.pa.repdgt.ente.request.FiltroRequest;
 import it.pa.repdgt.ente.request.ReferenteDelegatoGestoreProgettoRequest;
 import it.pa.repdgt.ente.request.ReferenteDelegatoGestoreProgrammaRequest;
 import it.pa.repdgt.ente.restapi.param.EntiPaginatiParam;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.EntePartnerEntity;
 import it.pa.repdgt.shared.entity.EnteSedeProgetto;

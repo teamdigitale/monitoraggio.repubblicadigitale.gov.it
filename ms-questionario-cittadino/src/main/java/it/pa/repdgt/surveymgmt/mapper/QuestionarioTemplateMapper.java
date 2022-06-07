@@ -6,10 +6,9 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.bson.json.JsonObject;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
-
-import com.mongodb.util.JSON;
 
 import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
@@ -33,7 +32,6 @@ public class QuestionarioTemplateMapper {
 			@Valid final QuestionarioTemplateRequest questionarioTemplateRequest)  {
 		final QuestionarioTemplateCollection questionarioTemplateCollection = new QuestionarioTemplateCollection();
 		questionarioTemplateCollection.setNomeQuestionarioTemplate(questionarioTemplateRequest.getNomeQuestionarioTemplate());
-		questionarioTemplateCollection.setDescrizioneQuestionarioTemplate(questionarioTemplateRequest.getDescrizioneQuestionarioTemplate());
 		questionarioTemplateCollection.setDescrizioneQuestionarioTemplate(questionarioTemplateRequest.getDescrizioneQuestionarioTemplate());
 		questionarioTemplateCollection.setDefaultRFD(questionarioTemplateRequest.getDefaultRFD());
 		questionarioTemplateCollection.setDefaultSCD(questionarioTemplateRequest.getDefaultSCD());
@@ -63,10 +61,11 @@ public class QuestionarioTemplateMapper {
 			@NotNull(message = "SezioneQuestionarioTemplateRequest deve essere non null") 
 			@Valid final SezioneQuestionarioTemplateRequest sezioneQuestionarioTemplateRequest) {
 		final SezioneQuestionarioTemplate sezioneQuestionarioTemplate = new QuestionarioTemplateCollection.SezioneQuestionarioTemplate();
+		sezioneQuestionarioTemplate.setId(sezioneQuestionarioTemplateRequest.getId());
 		sezioneQuestionarioTemplate.setTitolo(sezioneQuestionarioTemplateRequest.getTitolo());
 		sezioneQuestionarioTemplate.setSezioneDiDefault(sezioneQuestionarioTemplateRequest.getSezioneDiDefault());
-		sezioneQuestionarioTemplate.setSchema(JSON.parse(sezioneQuestionarioTemplateRequest.getSchema()));
-		sezioneQuestionarioTemplate.setSchemaui(JSON.parse(sezioneQuestionarioTemplateRequest.getSchemaui()));
+		sezioneQuestionarioTemplate.setSchema(new JsonObject(sezioneQuestionarioTemplateRequest.getSchema()));
+		sezioneQuestionarioTemplate.setSchemaui(new JsonObject(sezioneQuestionarioTemplateRequest.getSchemaui()));
 		return sezioneQuestionarioTemplate;
 	}
 
@@ -80,6 +79,7 @@ public class QuestionarioTemplateMapper {
 		final QuestionarioTemplateEntity questionarioTemplateEntity = new QuestionarioTemplateEntity();
 		questionarioTemplateEntity.setId(questionarioTemplateCollection.getIdQuestionarioTemplate());
 		questionarioTemplateEntity.setNome(questionarioTemplateCollection.getNomeQuestionarioTemplate());
+		questionarioTemplateEntity.setDescrizione(questionarioTemplateCollection.getDescrizioneQuestionarioTemplate());
 		questionarioTemplateEntity.setStato(questionarioTemplateCollection.getStato());
 		questionarioTemplateEntity.setDefaultRFD(questionarioTemplateCollection.getDefaultRFD());
 		questionarioTemplateEntity.setDefaultSCD(questionarioTemplateCollection.getDefaultSCD());
@@ -140,8 +140,8 @@ public class QuestionarioTemplateMapper {
 	 * 
 	 * */
 	public List<QuestionarioTemplateLightResource> toLightResourceFrom(
-			@NotNull final List<QuestionarioTemplateCollection> questionarioTemplateCollection) {
-		return questionarioTemplateCollection
+			@NotNull final List<QuestionarioTemplateEntity> questionarioTemplateEntity) {
+		return questionarioTemplateEntity
 				.stream()
 				.map(this::toLightResourceFrom)
 				.collect(Collectors.toList());
@@ -152,14 +152,41 @@ public class QuestionarioTemplateMapper {
 	 * 
 	 * */
 	public QuestionarioTemplateLightResource toLightResourceFrom(
-			@NotNull final QuestionarioTemplateCollection questionarioTemplateCollection) {
+			@NotNull final QuestionarioTemplateEntity questionarioTemplateEntity) {
 		final QuestionarioTemplateLightResource questionarioTemplateLightResource = new QuestionarioTemplateLightResource();
-		questionarioTemplateLightResource.setIdQuestionarioTemplate(questionarioTemplateCollection.getIdQuestionarioTemplate());
-		questionarioTemplateLightResource.setNomeQuestionarioTemplate(questionarioTemplateCollection.getNomeQuestionarioTemplate());
-		questionarioTemplateLightResource.setStatoQuestionarioTemplate(questionarioTemplateCollection.getStato());
-		questionarioTemplateLightResource.setDataOraUltimoAggiornamento(questionarioTemplateCollection.getDataOraUltimoAggiornamento());
-		questionarioTemplateLightResource.setDefaultRFD(questionarioTemplateCollection.getDefaultRFD());
-		questionarioTemplateLightResource.setDefaultSCD(questionarioTemplateCollection.getDefaultSCD());
+		questionarioTemplateLightResource.setIdQuestionarioTemplate(questionarioTemplateEntity.getId());
+		questionarioTemplateLightResource.setNomeQuestionarioTemplate(questionarioTemplateEntity.getNome());
+		questionarioTemplateLightResource.setStatoQuestionarioTemplate(questionarioTemplateEntity.getStato());
+		questionarioTemplateLightResource.setDataOraUltimoAggiornamento(questionarioTemplateEntity.getDataOraAggiornamento());
+		questionarioTemplateLightResource.setDefaultRFD(questionarioTemplateEntity.getDefaultRFD());
+		questionarioTemplateLightResource.setDefaultSCD(questionarioTemplateEntity.getDefaultSCD());
 		return questionarioTemplateLightResource;
+	}
+
+	/**
+	 * Mappa List<QuestionarioTemplateEntity> in List<QuestionarioTemplateLightResource>
+	 * 
+	 * */
+	public List<QuestionarioTemplateLightResource> toQuestionarioTemplateLightResourceFrom(
+			@NotNull final List<QuestionarioTemplateEntity> questionariTemplate) {
+		return questionariTemplate.stream()
+								  .map(this::toQuestionarioTemplateLightResourceFrom)
+								  .collect(Collectors.toList());
+	}
+	
+	/**
+	 * Mappa QuestionarioTemplateEntity in QuestionarioTemplateLightResource
+	 * 
+	 * */
+	public QuestionarioTemplateLightResource toQuestionarioTemplateLightResourceFrom(
+			@NotNull final QuestionarioTemplateEntity questionarioEntity) {
+		final QuestionarioTemplateLightResource questionarioResource = new QuestionarioTemplateLightResource();
+		questionarioResource.setIdQuestionarioTemplate(questionarioEntity.getId());
+		questionarioResource.setNomeQuestionarioTemplate(questionarioEntity.getNome());
+		questionarioResource.setDescrizione(questionarioEntity.getDescrizione());
+		questionarioResource.setDefaultRFD(questionarioEntity.getDefaultRFD());
+		questionarioResource.setDefaultSCD(questionarioEntity.getDefaultSCD());
+		questionarioResource.setStatoQuestionarioTemplate(questionarioEntity.getStato());
+		return questionarioResource;
 	}
 }

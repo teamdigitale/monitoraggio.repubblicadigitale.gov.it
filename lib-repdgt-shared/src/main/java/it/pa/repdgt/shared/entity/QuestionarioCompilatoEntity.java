@@ -38,9 +38,8 @@ public class QuestionarioCompilatoEntity implements Serializable {
 	@JoinColumn(name = "CODICE_FISCALE_CITTADINO", referencedColumnName = "CODICE_FISCALE")
 	private CittadinoEntity cittadino;
 	
-	// codice fiscale facilitatore
 	@Column(name = "FACILITATORE_ID")
-	private String idFacilitatore;
+	private Long idFacilitatore;
 
 	@Column(name = "SEDE_ID")
 	private Long idSede;
@@ -50,6 +49,9 @@ public class QuestionarioCompilatoEntity implements Serializable {
 	
 	@Column(name = "PROGETTO_ID")
 	private Long idProgetto;
+	
+	@Column(name = "SERVIZIO_ID")
+	private Long idServizio;
 	
 	@Column(name = "STATO")
 	private String stato;

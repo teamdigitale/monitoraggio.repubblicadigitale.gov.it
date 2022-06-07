@@ -14,8 +14,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import it.pa.repdgt.ente.annotation.LogExecutionTime;
-import it.pa.repdgt.ente.annotation.LogMethod;
 import it.pa.repdgt.ente.bean.EntePartnerUploadBean;
 import it.pa.repdgt.ente.bean.SchedaEntePartnerBean;
 import it.pa.repdgt.ente.bean.SedeBean;
@@ -26,6 +24,8 @@ import it.pa.repdgt.ente.exception.ResourceNotFoundException;
 import it.pa.repdgt.ente.repository.EntePartnerRepository;
 import it.pa.repdgt.ente.request.ReferenteDelegatoPartnerRequest;
 import it.pa.repdgt.ente.util.CSVUtil;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.constants.ProfiliEntiConstants;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.EntePartnerEntity;

@@ -14,7 +14,7 @@ public interface RuoloXGruppoRepository extends JpaRepository<RuoloXGruppo, Ruol
 
 	@Query(value = " DELETE "
 				 + " FROM "
-				 + "	  RUOLO_X_GRUPPO rxg "
+				 + "	  ruolo_x_gruppo rxg "
 				 + " WHERE 1=1 "
 				 + "	AND rxg.RUOLO_CODICE = :codiceRuolo",
 				 nativeQuery = true)

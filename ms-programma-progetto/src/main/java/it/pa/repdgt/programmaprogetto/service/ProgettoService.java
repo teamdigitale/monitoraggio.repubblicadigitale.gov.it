@@ -1,7 +1,6 @@
 package it.pa.repdgt.programmaprogetto.service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,14 +10,13 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import it.pa.repdgt.programmaprogetto.annotation.LogExecutionTime;
-import it.pa.repdgt.programmaprogetto.annotation.LogMethod;
 import it.pa.repdgt.programmaprogetto.bean.DettaglioEntiPartnerBean;
 import it.pa.repdgt.programmaprogetto.bean.DettaglioProgettoBean;
 import it.pa.repdgt.programmaprogetto.bean.DettaglioSediBean;
@@ -32,6 +30,8 @@ import it.pa.repdgt.programmaprogetto.request.NuovoProgettoRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgettiParam;
 import it.pa.repdgt.programmaprogetto.request.ProgettoFiltroRequest;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
@@ -53,6 +53,7 @@ public class ProgettoService {
 	@Autowired
 	private UtenteService utenteService;
 	@Autowired
+	@Lazy
 	private ProgrammaService programmaService;
 	@Autowired
 	private RuoloService ruoloService;
@@ -135,7 +136,7 @@ public class ProgettoService {
 			String errorMessage = String.format("Impossibile cancellare Progetto con id=%s perchè non presente", idProgetto);
 			throw new ProgettoException(errorMessage);
 		}
-		ProgettoEntity progettoFetchDB = this.progettoRepository.getById(idProgetto);
+		ProgettoEntity progettoFetchDB = this.getProgettoById(idProgetto);
 		if (!isProgettoCancellabileByStatoProgetto(progettoFetchDB.getStato())) {
 			String errorMessage = String.format("Impossibile cancellare Progetto con id=%s perchè il suo stato è diverso da NON_ATTIVO", idProgetto);
 			throw new ProgettoException(errorMessage);
@@ -246,7 +247,7 @@ public class ProgettoService {
 			throw new ProgettoException("ERRORE: ruolo non definito per l'utente");
 		}
 		Pageable paginazione = PageRequest.of(currPage, pageSize);
-		List<ProgettoEntity> progettiUtente = this.getProgettiByRuolo(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), filtroRequest);
+		List<ProgettoEntity> progettiUtente = this.getProgettiByRuolo(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRequest);
 		progettiUtente.sort((progetto1, progetto2) -> progetto1.getId().compareTo(progetto2.getId()));
 		int start = (int) paginazione.getOffset();
 		int end = Math.min((start + paginazione.getPageSize()), progettiUtente.size());
@@ -264,7 +265,7 @@ public class ProgettoService {
 	 */
 	@LogMethod
 	@LogExecutionTime
-	public List<ProgettoEntity> getProgettiByRuolo(String codiceRuolo, String cfUtente, Long idProgramma, ProgettoFiltroRequest filtroRequest) {
+	public List<ProgettoEntity> getProgettiByRuolo(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto, ProgettoFiltroRequest filtroRequest) {
 		List<ProgettoEntity> progettiUtente = new ArrayList<>();
 		switch (codiceRuolo) {
 			case "DTD":
@@ -276,24 +277,15 @@ public class ProgettoService {
 				return this.getProgettiPerReferenteDelegatoGestoreProgramma(idProgramma, filtroRequest);
 			case "REGP":
 			case "DEGP":
-				progettiUtente.addAll(this.getProgettiPerReferenteDelegatoGestoreProgetti(idProgramma, cfUtente, codiceRuolo, filtroRequest));
+				progettiUtente.add(this.getProgettoById(idProgetto));
 				return progettiUtente;
 			case "REPP":
 			case "DEPP":
-				progettiUtente.addAll(this.getProgettiPerReferenteDelegatoEntePartnerProgetti(idProgramma, cfUtente, codiceRuolo, filtroRequest));
+				progettiUtente.add(this.getProgettoById(idProgetto));
 				return progettiUtente;
 			default:
 				return this.getAllProgetti(filtroRequest);
 		}
-	}
-
-	private List<ProgettoEntity> getProgettiPerReferenteDelegatoEntePartnerProgetti(Long idProgramma, String cfUtente, String codiceRuolo, ProgettoFiltroRequest filtroRequest) {
-		return this.progettoRepository.findProgettiPerReferenteDelegatoEntePartnerProgetti(idProgramma, cfUtente, codiceRuolo,
-																				  filtroRequest.getCriterioRicerca(),
-																				  "%" + filtroRequest.getCriterioRicerca() + "%",
-																				  filtroRequest.getPolicies(),
-																				  filtroRequest.getIdsProgrammi(),
-																				  filtroRequest.getStati());
 	}
 
 	private List<ProgettoEntity> getProgettiPerReferenteDelegatoGestoreProgramma(Long idProgramma, ProgettoFiltroRequest filtroRequest) {
@@ -304,20 +296,6 @@ public class ProgettoService {
 																	   filtroRequest.getPolicies(),
 																	   filtroRequest.getIdsProgrammi(),
 																	   filtroRequest.getStati());
-	}
-	
-	/**
-	 * @throws ResourceNotFoundException
-	 * */
-	@LogMethod
-	@LogExecutionTime
-	public List<ProgettoEntity> getProgettiPerReferenteDelegatoGestoreProgetti(Long idProgramma, String cfUtente, String codiceRuolo, ProgettoFiltroRequest filtroRequest) {
-		return this.progettoRepository.findProgettiPerReferenteDelegatoGestoreProgetti(idProgramma, cfUtente, codiceRuolo,
-																				  filtroRequest.getCriterioRicerca(),
-																				  "%" + filtroRequest.getCriterioRicerca() + "%",
-																				  filtroRequest.getPolicies(),
-																				  filtroRequest.getIdsProgrammi(),
-																				  filtroRequest.getStati());
 	}
 
 	private List<ProgettoEntity> getProgettiPerDSCU(ProgettoFiltroRequest filtroRequest) {
@@ -347,12 +325,12 @@ public class ProgettoService {
 		if(this.ruoloService.getCodiceRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
 			throw new ProgrammaException("ERRORE: ruolo non definito per l'utente");
 		}
-		return this.getAllStatiByRuoloAndIdProgetto(sceltaContesto.getCodiceRuolo(),sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), filtroRequest);
+		return this.getAllStatiByRuoloAndIdProgramma(sceltaContesto.getCodiceRuolo(),sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRequest);
 	}
 	
 	@LogMethod
 	@LogExecutionTime
-	public List<String> getAllStatiByRuoloAndIdProgetto(String codiceRuolo, String cfUtente, Long idProgramma, ProgettoFiltroRequest filtroRequest) {
+	public List<String> getAllStatiByRuoloAndIdProgramma(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto, ProgettoFiltroRequest filtroRequest) {
 		List<String> stati = new ArrayList<>();
 		switch (codiceRuolo) {
 			case "DTD":
@@ -366,33 +344,15 @@ public class ProgettoService {
 				return this.getStatiPerReferenteDelegatoGestoreProgramma(idProgramma, filtroRequest);
 			case "REGP":
 			case "DEGP":
-				stati.addAll(this.getStatiPerReferenteDelegatoGestoreProgetti(idProgramma, cfUtente, codiceRuolo, filtroRequest));
+				stati.add(this.getProgettoById(idProgetto).getStato());
 				return stati;
 			case "REPP":
 			case "DEPP":
-				stati.addAll(this.getStatiPerReferenteDelegatoEntePartnerProgetti(idProgramma, cfUtente, codiceRuolo, filtroRequest));
+				stati.add(this.getProgettoById(idProgetto).getStato());
 				return stati;
 			default:
 				return this.getAllStati(filtroRequest);
 		}
-	}
-	
-	private Collection<? extends String> getStatiPerReferenteDelegatoEntePartnerProgetti(Long idProgramma, String cfUtente, String codiceRuolo, ProgettoFiltroRequest filtroRequest) {
-		return this.progettoRepository.findStatiPerReferenteDelegatoEntePartnerProgetti(idProgramma, cfUtente, codiceRuolo,
-																				  filtroRequest.getCriterioRicerca(),
-																				  "%" + filtroRequest.getCriterioRicerca() + "%",
-																				  filtroRequest.getPolicies(),
-																				  filtroRequest.getIdsProgrammi(),
-																				  filtroRequest.getStati());
-	}
-
-	private List<String> getStatiPerReferenteDelegatoGestoreProgetti(Long idProgramma, String cfUtente, String codiceRuolo, ProgettoFiltroRequest filtroRequest) {
-		return this.progettoRepository.findStatiPerReferenteDelegatoGestoreProgetti(idProgramma, cfUtente, codiceRuolo,
-																				  filtroRequest.getCriterioRicerca(),
-																				  "%" + filtroRequest.getCriterioRicerca() + "%",
-																				  filtroRequest.getPolicies(),
-																				  filtroRequest.getIdsProgrammi(),
-																				  filtroRequest.getStati());
 	}
 
 	private List<String> getStatiPerReferenteDelegatoGestoreProgramma(Long idProgramma, ProgettoFiltroRequest filtroRequest) {
@@ -403,17 +363,6 @@ public class ProgettoService {
 																	   filtroRequest.getIdsProgrammi(),
 																	   filtroRequest.getStati());
 	}
-
-//	private String getStatoProgettoByProgettoId(Long idProgetto, ProgettoFiltroRequest filtroRequest) {
-//		return this.progettoRepository.findStatoById(
-//				idProgetto,
-//				filtroRequest.getNome(),
-//				filtroRequest.getIdsProgrammi(),
-//				filtroRequest.getPolicies(),
-//				filtroRequest.getStati())
-//				.orElseThrow(() -> new ResourceNotFoundException(KeyMessageConstants.RES_ID_NOT_FOUND,
-//						new Object[]{idProgetto}));
-//	}
 
 	public List<String> getAllStati(ProgettoFiltroRequest filtroRequest) {
 		return this.progettoRepository.findAllStati(
@@ -444,7 +393,7 @@ public class ProgettoService {
 	}
 
 	public SchedaProgettoBean getSchedaProgettoById(Long idProgetto) {
-		ProgettoEntity progettoFetchDB = this.progettoRepository.getById(idProgetto);
+		ProgettoEntity progettoFetchDB = this.getProgettoById(idProgetto);
 		
 		DettaglioProgettoBean dettaglioProgetto = this.progettoMapper.toDettaglioProgettoBeanFrom(progettoFetchDB);
 		dettaglioProgetto.setId(idProgetto);

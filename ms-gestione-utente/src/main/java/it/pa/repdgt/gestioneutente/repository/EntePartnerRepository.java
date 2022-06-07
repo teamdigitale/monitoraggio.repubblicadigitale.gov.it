@@ -13,7 +13,7 @@ import it.pa.repdgt.shared.entity.EntePartnerEntity;
 public interface EntePartnerRepository extends JpaRepository<EntePartnerEntity, Long> {
 
 	@Query(value = "SELECT rdp.ID_PROGETTO "
-			+ "FROM REFERENTE_DELEGATI_PARTNER rdp "
+			+ "FROM referente_delegati_partner rdp "
 			+ "WHERE rdp.CF_UTENTE = :cfUtente "
 			+ "		AND rdp.CODICE_RUOLO = :ruolo ", 
 			nativeQuery = true)

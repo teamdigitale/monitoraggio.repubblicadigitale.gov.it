@@ -7,10 +7,10 @@ import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import it.pa.repdgt.ente.annotation.LogExecutionTime;
-import it.pa.repdgt.ente.annotation.LogMethod;
 import it.pa.repdgt.ente.exception.ResourceNotFoundException;
 import it.pa.repdgt.ente.repository.UtenteRepository;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 
 @Service

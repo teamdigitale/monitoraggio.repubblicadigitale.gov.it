@@ -113,7 +113,7 @@ public class LoggingAspect {
 //		return joinPoint.proceed();
 //	}
 	
-	@Around("@annotation(it.pa.repdgt.gestioneutente.annotation.LogMethod)")
+	@Around("@annotation(it.pa.repdgt.shared.annotation.LogMethod)")
 	public Object logMethod(ProceedingJoinPoint joinPoint) throws Throwable {
 		final Object proced = joinPoint.proceed();
 		if (log.isDebugEnabled()) {
@@ -133,7 +133,7 @@ public class LoggingAspect {
 		return proced;
 	}
 
-	@Around("@annotation(it.pa.repdgt.gestioneutente.annotation.LogExecutionTime)")
+	@Around("@annotation(it.pa.repdgt.shared.annotation.LogExecutionTime)")
 	public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
 		MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
 

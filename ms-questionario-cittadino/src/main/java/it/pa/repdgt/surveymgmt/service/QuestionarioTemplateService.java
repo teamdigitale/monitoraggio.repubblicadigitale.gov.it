@@ -1,25 +1,25 @@
 package it.pa.repdgt.surveymgmt.service;
 
+import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
-
+import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
-import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
-import it.pa.repdgt.surveymgmt.annotation.JsonString;
-import it.pa.repdgt.surveymgmt.annotation.JsonStringNullable;
+import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioTemplateException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
@@ -36,15 +36,13 @@ public class QuestionarioTemplateService {
 	@Autowired
 	private QuestionarioTemplateMapper questionarioTemplateMapper;
 	@Autowired
-	private QuestionarioTemplateSqlService templateQuestionarioSqlService;
+	private QuestionarioTemplateSqlService questionarioTemplateSqlService;
 	@Autowired
 	private RuoloService ruoloService;
 	@Autowired
-	private ProgrammaXQuestionarioTemplateService programmaXQuestionarioTemplateService;
-	@Autowired
 	private QuestionarioTemplateRepository questionarioTemplateRepository;
-	
-	public Page<QuestionarioTemplateCollection> getAllQuestionariTemplateByProfilazioneAndFiltro(
+
+	public Page<QuestionarioTemplateEntity> getAllQuestionariTemplateByProfilazioneAndFiltro(
 			@NotNull @Valid final ProfilazioneParam profilazione,
 			@NotNull @Valid final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplate,
 			@NotNull final Pageable pagina ) {
@@ -63,40 +61,52 @@ public class QuestionarioTemplateService {
 			throw new QuestionarioTemplateException(messaggioErrore);
 		}
 		
-		final String criterioRicercaQuestionarioTemplate = filtroListaQuestionariTemplate.getCriterioRicerca();
 		// Recupero i questionari in base alla profilazione dell'utente loggatosi
+		// Se: utente loggato si è profilato con uno dei seguenti ruoli,
+		// Allora: non mostro nessun questionario
+		if( RuoliUtentiConstants.REGP.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+			|| RuoliUtentiConstants.DEGP.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+			|| RuoliUtentiConstants.REPP.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+			|| RuoliUtentiConstants.DEPP.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+			|| RuoliUtentiConstants.FACILITATORE.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+			|| RuoliUtentiConstants.VOLONTARIO.equalsIgnoreCase(codiceRuoloUtenteLoggato) ) {
+			return new PageImpl<QuestionarioTemplateEntity>(Collections.emptyList());
+		}
+
+		String criterioRicercaFiltro = null;
+		if(filtroListaQuestionariTemplate.getCriterioRicerca() != null) {
+			criterioRicercaFiltro = "%".concat(filtroListaQuestionariTemplate.getCriterioRicerca()).concat("%");
+		}
+		
+		String statoQuestionarioFiltro = null;
+		if(filtroListaQuestionariTemplate.getStatoQuestionario() != null) {
+			statoQuestionarioFiltro = filtroListaQuestionariTemplate.getStatoQuestionario().getValue();
+		}
+
 		switch (codiceRuoloUtenteLoggato) {
-			// Se: l'utente loggato si è profilato con ruolo di DTD/DSCU (ovvero dropdown scelta profilo ha scelto ruolo DTD/DSCU),
-			// Allora: Recupero tutti i questionari template da mostrare nella lista dei questionari template del FE
-			case "DTD":
-			case "DSCU":
-				if(filtroListaQuestionariTemplate.getCriterioRicerca() == null && filtroListaQuestionariTemplate.getStatoQuestionario() == null) {
-					return this.questionarioTemplateRepository.findAll(pagina);
-				}
-				if(filtroListaQuestionariTemplate.getCriterioRicerca() != null && filtroListaQuestionariTemplate.getStatoQuestionario() == null) {
-					return this.questionarioTemplateRepository.findAllPaginatiByCriterioRicerca(
-							criterioRicercaQuestionarioTemplate,
-							pagina
-						);
-				}
-				if(filtroListaQuestionariTemplate.getCriterioRicerca() == null && filtroListaQuestionariTemplate.getStatoQuestionario() != null) {
-					return this.questionarioTemplateRepository.findByStatoPaginati(
-							filtroListaQuestionariTemplate.getStatoQuestionario().getValue(),
-							pagina
-						);
-				}
-				return this.questionarioTemplateRepository.findAllPaginatiByCriterioRicercaAndStato(
-						criterioRicercaQuestionarioTemplate,
-						filtroListaQuestionariTemplate.getStatoQuestionario().getValue(),
+			case RuoliUtentiConstants.DSCU:
+				return this.questionarioTemplateSqlService.findQuestionariTemplatePaginatiByDefaultPolicySCDAndFiltro(
+						criterioRicercaFiltro, 
+						statoQuestionarioFiltro,
 						pagina
 					);
-			default:
+			case RuoliUtentiConstants.REG:
+			case RuoliUtentiConstants.DEG:
 				// Se: l'utente loggato si è profilato con ruolo che diverso da DTD/DSCU (ovvero dropdown scelta profilo ha scelto ruolo REG/DEG/REGP/DEGP/ ...),
 				// Allora: Recupero l'unico questionario associato al programma scelto 
 				// dall'utente durante la profilazione (ovvero dropdown scelta profilo)
-				final String nomeQuestionarioTemplate = this.programmaXQuestionarioTemplateService.getNomeQuestionarioTemplateByIdProgramma(profilazione.getIdProgramma());
-				return this.questionarioTemplateRepository.findByNomeQuestionarioPaginati(
-						nomeQuestionarioTemplate,
+				return this.questionarioTemplateSqlService.findQuestionariTemplatePaginatiByIdProgrammaAndFiltro(
+						profilazione.getIdProgramma(),
+						criterioRicercaFiltro, 
+						statoQuestionarioFiltro,
+						pagina
+					);
+			default:
+				// Se: l'utente loggato si è profilato con ruolo di DTD/ruolo custom
+				// Allora: Recupero tutti i questionari template da mostrare nella lista dei questionari template del FE
+				return this.questionarioTemplateSqlService.findAllQuestionariTemplatePaginatiByFiltro(
+						criterioRicercaFiltro,
+						statoQuestionarioFiltro,
 						pagina
 					);
 		}
@@ -104,89 +114,142 @@ public class QuestionarioTemplateService {
 
 	public QuestionarioTemplateCollection getQuestionarioTemplateById(@NotNull String idQuestionarioTemplate) {
 		log.info("getById - id={} START", idQuestionarioTemplate);
-		String messaggioErrore = String.format("templateQuestionario con id=%s non presente.", idQuestionarioTemplate);
+		final String messaggioErrore = String.format("templateQuestionario con id=%s non presente.", idQuestionarioTemplate);
 		return this.questionarioTemplateRepository.findTemplateQuestionarioById(idQuestionarioTemplate)
 				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore));
 	}
-	
-	public boolean esisteQuestionarioTemplateByNome(final String nomeQuestionario) {
-		return this.questionarioTemplateRepository.findTemplateQuestionarioByNome(nomeQuestionario)
-				.isPresent();
-	}
 
+	@Transactional(rollbackOn = Exception.class)
 	public QuestionarioTemplateCollection creaNuovoQuestionarioTemplate(
 			@NotNull(message = "Questionario da creare deve essere non null") 
-			@Valid final QuestionarioTemplateCollection questionarioTemplateCollection,
-			@NotNull(message = "Stato questionario da creare deve essere non null") final StatoQuestionarioEnum statoQuestionario) {
+			@Valid final QuestionarioTemplateCollection questionarioTemplateCollection) {
 		log.info("creaNuovoQuestionarioTemplate - START");
-		final String nomeQuestionario = questionarioTemplateCollection.getNomeQuestionarioTemplate();
-		// Verifico se esiste già esiste un questionario con il nome di quello che voglio creare
-		if(this.esisteQuestionarioTemplateByNome(nomeQuestionario)) {
-			final String messaggioErrore = String.format("Impossibile creare il questionario. Questionario con nome='%s' già presente.", nomeQuestionario);
-			throw new QuestionarioTemplateException(messaggioErrore);
-		}
-		questionarioTemplateCollection.setStato(statoQuestionario.getValue());
-		// salvo questionario template su MongoDb
-		final QuestionarioTemplateCollection questionarioTemplateCreato = this.salvaQuestionarioTemplate(questionarioTemplateCollection);
-		// trasformo questionarioTemplateCollection in questionarioTemplateEntity 
-		final QuestionarioTemplateEntity questionarioTemplateEntity = this.questionarioTemplateMapper.toEntityFrom(questionarioTemplateCollection);
-		// salvo questionario template su mySql
-		this.templateQuestionarioSqlService.salvaQuestionarioTemplate(questionarioTemplateEntity);
-
-		return questionarioTemplateCreato;
-	}
-
-	public QuestionarioTemplateCollection salvaQuestionarioTemplate(
-			@NotNull(message = "Deve essere non null") 
-			@Valid QuestionarioTemplateCollection questionarioTemplateCollection) {
-		// setto id random per il questionario
-		questionarioTemplateCollection.setIdQuestionarioTemplate(UUID.randomUUID().toString());
-		// setto la data di creazione del questionario con la data corrente
+		final String idQuestionarioTemplateDaCreare = UUID.randomUUID().toString();
+		questionarioTemplateCollection.setIdQuestionarioTemplate(idQuestionarioTemplateDaCreare);
+		questionarioTemplateCollection.setStato(StatoEnum.NON_ATTIVO.getValue());
 		questionarioTemplateCollection.setDataOraCreazione(new Date());	
-		// setto la data di ultimo aggiornamento del questionario uguale alla data di creazione del questionario
 		questionarioTemplateCollection.setDataOraUltimoAggiornamento(questionarioTemplateCollection.getDataOraCreazione());
 		
-		// Per ogni sezione del questioanrio setto id random per sezione i-esima
-		questionarioTemplateCollection
-			.getSezioniQuestionarioTemplate()
-			.forEach(sezioneQuestionarioTemplate -> sezioneQuestionarioTemplate.setId(UUID.randomUUID().toString()));
+		// Allineamento questionario template su mysql
+		final QuestionarioTemplateEntity questionarioTemplateEntity = this.questionarioTemplateMapper.toEntityFrom(questionarioTemplateCollection);
+		this.questionarioTemplateSqlService.salvaQuestionarioTemplate(questionarioTemplateEntity);
 		
+		// salvo questionario template su MongoDb
 		return this.questionarioTemplateRepository.save(questionarioTemplateCollection);
 	}
-	
-	public void duplicaQuestionarioTemplate(
-			@NotNull(message = "id Questionario template deve essere non null") String questionatioTemplateId) {
-		QuestionarioTemplateCollection questionarioFetch = null;
-		
-		// Verifico che il questionario da duplicare esista.
-		// Se: esiste, Allora: lo recupero e lo risalvo mettendo un id diverso
+
+	@Transactional(rollbackOn = Exception.class)
+	public QuestionarioTemplateCollection aggiornaQuestionarioTemplate(
+			@NotNull(message = "id questionario template deve essere non null") String idQuestionarioTemplate,
+			@NotNull @Valid final QuestionarioTemplateCollection questionarioTemplateDaAggiornare) {
+		log.info("aggiornaQuestionarioTemplate - START");
+		QuestionarioTemplateCollection questionarioTemplateFetchDB = null;
+
+		// Verifico se esiste questionarioTemplate da aggiornare
 		try {
-			questionarioFetch = this.getQuestionarioTemplateById(questionatioTemplateId);
+			questionarioTemplateFetchDB = this.getQuestionarioTemplateById(idQuestionarioTemplate);
 		} catch (ResourceNotFoundException ex) {
-			final String errorMessage = String.format("Impossibile duplicare questionario con id=%s perchè non presente.", questionatioTemplateId);
-			throw new QuestionarioTemplateException(errorMessage, ex);
+			final String messaggioErrore = String.format("Impossibile aggiornare il questionario. Questionario con id='%s' non esiste.", idQuestionarioTemplate);
+			throw new QuestionarioTemplateException(messaggioErrore, ex);
 		}
 		
-		questionarioFetch.setMongoId(null);
-		this.salvaQuestionarioTemplate(questionarioFetch);
+		// Verifico se è possibile aggiornare il questionario template in base al ciclo di vita
+		final String statoQuestionario = questionarioTemplateFetchDB.getStato();
+		if(!this.isQuestionarioTemplateModificabileByStato(statoQuestionario)) {
+			final String messaggioErrore = String.format("Impossibile aggiornare il questionario con id '%s'. Stato questionario = '%s'.",
+					idQuestionarioTemplate, statoQuestionario);
+			throw new QuestionarioTemplateException(messaggioErrore);
+		}
+
+		questionarioTemplateDaAggiornare.setMongoId(questionarioTemplateFetchDB.getMongoId());
+		questionarioTemplateDaAggiornare.setIdQuestionarioTemplate(questionarioTemplateFetchDB.getIdQuestionarioTemplate());
+		questionarioTemplateDaAggiornare.setStato(questionarioTemplateFetchDB.getStato());
+		questionarioTemplateDaAggiornare.setDataOraCreazione(questionarioTemplateFetchDB.getDataOraCreazione());
+		questionarioTemplateDaAggiornare.setDataOraUltimoAggiornamento(new Date());
+
+		// Allineamento questionario template su mysql
+		final QuestionarioTemplateEntity questionarioTemplateEntity = this.questionarioTemplateMapper.toEntityFrom(questionarioTemplateDaAggiornare);
+		this.questionarioTemplateSqlService.aggiornaQuestionarioTemplate(questionarioTemplateEntity);
+
+		// Aggiornamento questionario template su MongoDB:
+		// 	-> 1. Cancellazione questionario template su MongoDb 
+		//  -> 2. Inserimento stesso questionario template ma con i dati aggiornati
+		this.questionarioTemplateRepository.deleteByIdQuestionarioTemplate(idQuestionarioTemplate);
+		return this.questionarioTemplateRepository.save(questionarioTemplateDaAggiornare);
 	}
 
-	// TODO
-	public QuestionarioTemplateCollection aggiornaQuestionarioTemplate(
-			@NotNull String idQuestionarioTemplate, 
-			@NotBlank @JsonString String schemaQuestionarioTemplate, 
-			@JsonStringNullable String uiSchemaQuestionarioTemplate) {
-		log.info("updateTemplate - START");
-		log.debug("\nschema={}", schemaQuestionarioTemplate);
-		DBObject schemaObject = (DBObject) JSON.parse(schemaQuestionarioTemplate);
-//	    QuestionarioTemplateCollection templateQuestionarioDBFetch = this.getQuestionarioTemplateByIdQuestionarioTemplate(idQuestionarioTemplate);
-//	    templateQuestionarioDBFetch.setSchema(schemaObject);
-//		if(uiSchemaQuestionarioTemplate != null) {
-//			log.debug("\nuiSchema={}", uiSchemaQuestionarioTemplate);
-//			DBObject uiSchemaObject = (DBObject) JSON.parse(uiSchemaQuestionarioTemplate);
-//			templateQuestionarioDBFetch.setUIschema(uiSchemaObject);
-//		}
-//		return this.templateQuestionarioRepository.save(templateQuestionarioDBFetch);
-		return null;
+	public boolean isQuestionarioTemplateModificabileByStato(@NotNull final String statoQuestionario) {
+		return (
+					StatoEnum.ATTIVO.getValue().equalsIgnoreCase(statoQuestionario)
+				 ||	StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(statoQuestionario)
+			);
+	}
+
+	public void cancellaQuestionarioTemplate(
+			@NotNull(message = "id questionario template deve essere non null") final String idQuestioanarioTemplate) {
+		QuestionarioTemplateCollection questionarioTemplateDaCancellare = null;
+
+		// Verifico se esiste questionarioTemplate da cancellare
+		try {
+			questionarioTemplateDaCancellare = this.getQuestionarioTemplateById(idQuestioanarioTemplate);
+		} catch (ResourceNotFoundException ex) {
+			final String messaggioErrore = String.format("Impossibile aggiornare il questionario. Questionario con id='%s' non esiste.", idQuestioanarioTemplate);
+			throw new QuestionarioTemplateException(messaggioErrore, ex);
+		}
+
+		final String statoQuestionario = questionarioTemplateDaCancellare.getStato();
+		// Verifico se è possibile cancellare il questionario template in base al ciclo di vita
+		if(!this.isQuestionarioTemplateCancellabileByStato(statoQuestionario)) {
+			final String messaggioErrore = String.format("Impossibile cancellare il questionario con id '%s'. Stato questionario = '%s'.",
+					idQuestioanarioTemplate, statoQuestionario);
+			throw new QuestionarioTemplateException(messaggioErrore);
+		}
+		// Allineamento questionario template su mysql
+		final QuestionarioTemplateEntity questionarioTemplateEntity = this.questionarioTemplateMapper.toEntityFrom(questionarioTemplateDaCancellare);
+		this.questionarioTemplateSqlService.cancellaQuestionarioTemplate(questionarioTemplateEntity);
+
+		// Cancellazione questionario template su MongoDB
+		this.questionarioTemplateRepository.deleteByIdQuestionarioTemplate(idQuestioanarioTemplate);
+	}
+
+	public boolean isQuestionarioTemplateCancellabileByStato(@NotNull final String statoQuestionario) {
+		return StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(statoQuestionario);
+	}
+
+	public List<QuestionarioTemplateEntity> getQuestionariTemplateByUtente(ProfilazioneParam profilazioneParam) {
+		String codiceFiscaleUtente = profilazioneParam.getCodiceFiscaleUtenteLoggato();
+		String codiceRuolo = profilazioneParam.getCodiceRuoloUtenteLoggato().toString();
+		// Verifico se l'utente possiede il ruolo mandato nella richiesta
+		boolean hasRuoloUtente = this.ruoloService
+			.getRuoliByCodiceFiscale(codiceFiscaleUtente)
+			.stream()
+			.anyMatch(ruolo -> codiceRuolo.equalsIgnoreCase(ruolo.getCodice()));
+
+		if(!hasRuoloUtente) {
+			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'", codiceFiscaleUtente);
+			throw new QuestionarioTemplateException(messaggioErrore);
+		}
+		
+		// Recupero i questionari in base alla profilazione dell'utente loggatosi
+		// Se: utente loggato si è profilato con uno dei seguenti ruoli,
+		// Allora: non mostro nessun questionario
+		if( RuoliUtentiConstants.REGP.equalsIgnoreCase(codiceRuolo)
+			|| RuoliUtentiConstants.DEGP.equalsIgnoreCase(codiceRuolo)
+			|| RuoliUtentiConstants.REPP.equalsIgnoreCase(codiceRuolo)
+			|| RuoliUtentiConstants.DEPP.equalsIgnoreCase(codiceRuolo)
+			|| RuoliUtentiConstants.FACILITATORE.equalsIgnoreCase(codiceRuolo)
+			|| RuoliUtentiConstants.VOLONTARIO.equalsIgnoreCase(codiceRuolo) ) {
+			return new ArrayList<>();
+		}
+
+		switch(codiceRuolo) {
+			case "DSCU":
+				return this.questionarioTemplateSqlService.getQuestionariSCD();
+			case "REG":
+			case "DEG":
+				return this.questionarioTemplateSqlService.getQuestionariPerReferenteDelegatoGestoreProgramma(profilazioneParam.getIdProgramma());
+			default:
+				return this.questionarioTemplateSqlService.getAllQuestionari();
+		}
 	}
 }

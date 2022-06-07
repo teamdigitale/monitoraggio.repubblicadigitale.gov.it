@@ -13,7 +13,7 @@ import it.pa.repdgt.shared.entity.ProgrammaEntity;
 public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long> {
 
 	@Query(value = "SELECT rdg.ID_PROGRAMMA "
-			+ "FROM REFERENTE_DELEGATI_GESTORE_PROGRAMMA rdg "
+			+ "FROM referente_delegati_gestore_programma rdg "
 			+ "	WHERE rdg.CF_UTENTE = :cfUtente "
 			+ " 	AND rdg.CODICE_RUOLO = :ruolo ",
 			nativeQuery = true)

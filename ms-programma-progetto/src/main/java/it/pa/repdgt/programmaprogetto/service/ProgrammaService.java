@@ -11,14 +11,13 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import it.pa.repdgt.programmaprogetto.annotation.LogExecutionTime;
-import it.pa.repdgt.programmaprogetto.annotation.LogMethod;
 import it.pa.repdgt.programmaprogetto.bean.DettaglioProgrammaBean;
 import it.pa.repdgt.programmaprogetto.bean.SchedaProgrammaBean;
 import it.pa.repdgt.programmaprogetto.exception.ProgrammaException;
@@ -31,6 +30,8 @@ import it.pa.repdgt.programmaprogetto.request.ProgettoFiltroRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammaRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammiParam;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
@@ -48,6 +49,7 @@ public class ProgrammaService {
 	@Autowired
 	private ProgrammaRepository programmaRepository;
 	@Autowired
+	@Lazy
 	private ProgettoService progettoService;
 	@Autowired
 	private EnteService enteService;
@@ -93,8 +95,8 @@ public class ProgrammaService {
 			);
 	}
 
-	//@LogMethod
-	//@LogExecutionTime
+	@LogMethod
+	@LogExecutionTime
 	public Page<ProgrammaEntity> getAllProgrammiPaginati(ProgrammiParam sceltaContesto, Integer currPage, Integer pageSize, FiltroRequest filtroRequest) {
 		if(this.ruoloService.getCodiceRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
 			throw new ProgrammaException("ERRORE: ruolo non definito per l'utente");

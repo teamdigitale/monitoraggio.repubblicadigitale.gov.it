@@ -3,10 +3,10 @@ package it.pa.repdgt.gestioneutente.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import it.pa.repdgt.gestioneutente.annotation.LogExecutionTime;
-import it.pa.repdgt.gestioneutente.annotation.LogMethod;
 import it.pa.repdgt.gestioneutente.exception.ResourceNotFoundException;
 import it.pa.repdgt.gestioneutente.repository.PermessoRepository;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.PermessoEntity;
 
 @Service

@@ -21,4 +21,6 @@ public class SceltaProfiloParam {
 	private String cfUtente;
 	
 	private Long idProgramma;
+	
+	private Long idProgetto;
 }

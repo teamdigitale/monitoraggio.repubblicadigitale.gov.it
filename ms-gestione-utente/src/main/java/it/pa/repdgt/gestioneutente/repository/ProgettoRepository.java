@@ -13,7 +13,7 @@ import it.pa.repdgt.shared.entity.ProgettoEntity;
 public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long> {
 
 	@Query(value = "SELECT rdgp.ID_PROGETTO "
-			+ "FROM REFERENTE_DELEGATI_GESTORE_PROGETTO rdgp "
+			+ "FROM referente_delegati_gestore_progetto rdgp "
 			+ "WHERE rdgp.CF_UTENTE = :cfUtente "
 			+ "		AND rdgp.CODICE_RUOLO = :ruolo ",
 			nativeQuery = true)

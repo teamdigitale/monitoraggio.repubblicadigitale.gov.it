@@ -3,13 +3,16 @@ package it.pa.repdgt.surveymgmt.resource;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @JsonRootName(value = "questionarioTemplate")
+@JsonInclude(Include.NON_NULL)
 @Setter
 @Getter
 public class QuestionarioTemplateLightResource implements Serializable {
@@ -32,4 +35,7 @@ public class QuestionarioTemplateLightResource implements Serializable {
 
 	@JsonProperty(value = "defaultSCD")
 	private Boolean defaultSCD;
+	
+	@JsonProperty(value = "descrizione")
+	private String descrizione;
 }

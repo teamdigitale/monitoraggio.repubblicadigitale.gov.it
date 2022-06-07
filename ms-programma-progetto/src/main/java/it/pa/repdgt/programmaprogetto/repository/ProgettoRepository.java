@@ -141,53 +141,6 @@ public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long> 
 			@Param(value = "idsProgrammi") List<String> idsProgrammi,
 			@Param(value = "stati") List<String> stati
 		);
-	
-	@Query(value = "SELECT DISTINCT progetto.STATO"
-			+ " FROM progetto progetto INNER JOIN programma programma ON progetto.ID_PROGRAMMA = programma.ID "
-			+ " WHERE 1=1"
-			+ "		AND progetto.ID = :idProgetto"
-			+ " 	AND	 ( :nomeProgetto IS NULL  OR   progetto.NOME LIKE %:nomeProgetto% )"
-			+ " 	AND	 ( COALESCE(:idsProgrammi) IS NULL  OR   programma.ID IN (:idsProgrammi) )"
-			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) )"
-			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR progetto.STATO IN (:stati) )",
-			nativeQuery = true)
-	public Optional<String> findStatoById (
-			@Param(value = "idProgetto") Long idProgetto,
-			@Param(value = "nomeProgetto") String nomeProgettoLike,
-			@Param(value = "idsProgrammi") List<String> idsProgrammi,
-			@Param(value = "policies") List<String> policies,
-			@Param(value = "stati") List<String> stati
-		);
-
-	@Query(value = "SELECT progetto.*"
-			+ " FROM progetto progetto "
-			+ "	INNER JOIN programma programma "
-			+ "		ON progetto.ID_PROGRAMMA = programma.ID "
-			+ " INNER JOIN referente_delegati_gestore_progetto rdgp "
-			+ "		ON progetto.ID = rdgp.ID_PROGETTO "
-			+ "	INNER JOIN ente ente "
-			+ "		ON progetto.ID_ENTE_GESTORE_PROGETTO = ente.ID "
-			+ " WHERE  progetto.ID_PROGRAMMA = :idProgramma "
-			+ " 	AND  rdgp.CF_UTENTE = :cfUtente "
-			+ " 	AND  rdgp.CODICE_RUOLO = :codiceRuolo "
-		    + " 	AND	 ( :criterioRicerca IS NULL  "
-			+ "			OR CONVERT(progetto.ID, CHAR) = :criterioRicerca "
-			+ "			OR UPPER( progetto.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
-		    + "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
-			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) )"
-			+ " 	AND	 ( COALESCE(:idsProgrammi) IS NULL  OR   programma.ID IN (:idsProgrammi) )"
-			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR progetto.STATO IN (:stati) )",
-			nativeQuery = true)
-	public List<ProgettoEntity> findProgettiPerReferenteDelegatoGestoreProgetti(
-			@Param(value = "idProgramma") Long idProgramma, 
-			@Param(value = "cfUtente") String cfUtente, 
-			@Param(value = "codiceRuolo") String codiceRuolo,
-			@Param(value = "criterioRicerca") String criterioRicerca,
-			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
-			@Param(value = "policies") List<String> policies,
-			@Param(value = "idsProgrammi") List<String> idsProgrammi,
-			@Param(value = "stati") List<String> stati
-		);
 
 	@Query(value = "SELECT progetto.* "
 			+ "FROM progetto progetto "
@@ -206,38 +159,6 @@ public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long> 
 			nativeQuery = true)
 	public List<ProgettoEntity> findProgettiPerReferenteDelegatoGestoreProgramma(
 			@Param(value = "idProgramma") Long idProgramma, 
-			@Param(value = "criterioRicerca") String criterioRicerca,
-			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
-			@Param(value = "policies") List<String> policies,
-			@Param(value = "idsProgrammi") List<String> idsProgrammi,
-			@Param(value = "stati") List<String> stati
-		);
-
-	@Query(value = "SELECT DISTINCT progetto.*"
-			+ " FROM progetto progetto "
-			+ "	INNER JOIN programma programma "
-			+ "		ON progetto.ID_PROGRAMMA = programma.ID "
-			+ " INNER JOIN ente_partner ep "
-			+ "		ON progetto.ID = ep.ID_PROGETTO "
-			+ " INNER JOIN referente_delegati_partner  rdp "
-			+ "		ON ep.ID_ENTE = rdp.ID_ENTE "
-			+ "	INNER JOIN ente ente "
-			+ "		ON progetto.ID_ENTE_GESTORE_PROGETTO = ente.ID "
-			+ " WHERE  progetto.ID_PROGRAMMA = :idProgramma "
-			+ " 	AND  rdp.CF_UTENTE = :cfUtente "
-			+ " 	AND  rdp.CODICE_RUOLO = :codiceRuolo "
-			+ " 	AND	 ( :criterioRicerca IS NULL  "
-			+ "			OR CONVERT(progetto.ID, CHAR) = :criterioRicerca "
-			+ "			OR UPPER( progetto.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
-			+ "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
-			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) )"
-			+ " 	AND	 ( COALESCE(:idsProgrammi) IS NULL  OR   programma.ID IN (:idsProgrammi) )"
-			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR progetto.STATO IN (:stati) )",
-			nativeQuery = true)
-	public List<ProgettoEntity> findProgettiPerReferenteDelegatoEntePartnerProgetti(
-			@Param(value = "idProgramma") Long idProgramma, 
-			@Param(value = "cfUtente") String cfUtente, 
-			@Param(value = "codiceRuolo") String codiceRuolo,
 			@Param(value = "criterioRicerca") String criterioRicerca,
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
 			@Param(value = "policies") List<String> policies,
@@ -264,68 +185,6 @@ public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long> 
 			@Param(value = "idProgramma") Long idProgramma, 
 			@Param(value = "criterioRicerca") String criterioRicerca,
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
-			@Param(value = "policies") List<String> policies,
-			@Param(value = "idsProgrammi") List<String> idsProgrammi,
-			@Param(value = "stati") List<String> stati
-		);
-
-	@Query(value = "SELECT progetto.STATO"
-			+ " FROM progetto progetto "
-			+ "	INNER JOIN programma programma "
-			+ "		ON progetto.ID_PROGRAMMA = programma.ID "
-			+ " INNER JOIN referente_delegati_gestore_progetto rdgp "
-			+ "		ON progetto.ID = rdgp.ID_PROGETTO "
-			+ "	INNER JOIN ente ente "
-			+ "		ON progetto.ID_ENTE_GESTORE_PROGETTO = ente.ID "
-			+ " WHERE  progetto.ID_PROGRAMMA = :idProgramma "
-			+ " 	AND  rdgp.CF_UTENTE = :cfUtente "
-			+ " 	AND  rdgp.CODICE_RUOLO = :codiceRuolo "
-			+ " 	AND	 ( :criterioRicerca IS NULL  "
-			+ "			OR CONVERT(progetto.ID, CHAR) = :criterioRicerca "
-			+ "			OR UPPER( progetto.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
-			+ "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
-			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) )"
-			+ " 	AND	 ( COALESCE(:idsProgrammi) IS NULL  OR   programma.ID IN (:idsProgrammi) )"
-			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR progetto.STATO IN (:stati) )",
-			nativeQuery = true)
-	public List<String> findStatiPerReferenteDelegatoGestoreProgetti(
-			@Param(value = "idProgramma") Long idProgramma, 
-			@Param(value = "cfUtente") String cfUtente, 
-			@Param(value = "codiceRuolo") String codiceRuolo,
-			@Param(value = "criterioRicerca") String criterioRicerca,
-			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
-			@Param(value = "policies") List<String> policies,
-			@Param(value = "idsProgrammi") List<String> idsProgrammi,
-			@Param(value = "stati") List<String> stati
-		);
-
-	@Query(value = "SELECT progetto.STATO"
-			+ " FROM progetto progetto "
-			+ "	INNER JOIN programma programma "
-			+ "		ON progetto.ID_PROGRAMMA = programma.ID "
-			+ " INNER JOIN ente_partner ep "
-			+ "		ON progetto.ID = ep.ID_PROGETTO "
-			+ " INNER JOIN referente_delegati_partner  rdp "
-			+ "		ON ep.ID_ENTE = rdp.ID_ENTE "
-			+ "	INNER JOIN ente ente "
-			+ "		ON progetto.ID_ENTE_GESTORE_PROGETTO = ente.ID "
-			+ " WHERE  progetto.ID_PROGRAMMA = :idProgramma "
-			+ " 	AND  rdp.CF_UTENTE = :cfUtente "
-			+ " 	AND  rdp.CODICE_RUOLO = :codiceRuolo "
-			+ " 	AND	 ( :criterioRicerca IS NULL  "
-			+ "			OR CONVERT(progetto.ID, CHAR) = :criterioRicerca "
-			+ "			OR UPPER( progetto.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
-			+ "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
-			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) )"
-			+ " 	AND	 ( COALESCE(:idsProgrammi) IS NULL  OR   programma.ID IN (:idsProgrammi) )"
-			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR progetto.STATO IN (:stati) )",
-			nativeQuery = true)
-	public List<String> findStatiPerReferenteDelegatoEntePartnerProgetti(
-			@Param(value = "idProgramma") Long idProgramma, 
-			@Param(value = "cfUtente") String cfUtente, 
-			@Param(value = "codiceRuolo") String codiceRuolo,
-			@Param(value = "criterioRicerca") String criterioRicerca,
-			@Param(value = "criterioRicercaLike") String criterioRicercaLike,
 			@Param(value = "policies") List<String> policies,
 			@Param(value = "idsProgrammi") List<String> idsProgrammi,
 			@Param(value = "stati") List<String> stati
