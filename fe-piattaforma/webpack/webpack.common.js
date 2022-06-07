@@ -2,7 +2,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
-const Dotenv = require('dotenv-webpack');
 
 const paths = require('./paths');
 
@@ -63,11 +62,6 @@ const config = {
     new WebpackManifestPlugin({}),
     new InterpolateHtmlPlugin(HtmlWebpackPlugin, {}),
     new ESLintPlugin(),
-    new Dotenv({
-      path: paths.dotenv,
-      expand: true,
-      systemvars: true,
-    }),
   ],
   output: {
     path: paths.appBuild,

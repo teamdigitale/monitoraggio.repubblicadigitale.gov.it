@@ -4,6 +4,7 @@ const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 const openBrowser = require('react-dev-utils/openBrowser');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 const paths = require('./paths');
 
@@ -49,6 +50,11 @@ const devConfig = merge(common, {
     new HtmlWebpackPlugin({
       inject: true,
       template: appHtml,
+    }),
+    new Dotenv({
+      path: `${paths.dotenv}.local`,
+      expand: false,
+      systemvars: true,
     }),
   ],
   output: {
