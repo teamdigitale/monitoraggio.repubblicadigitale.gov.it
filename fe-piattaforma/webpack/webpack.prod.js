@@ -7,7 +7,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const ImageminWebpack = require('image-minimizer-webpack-plugin');
 const paths = require('./paths');
 const { appBuild, appPublic, appHtml } = paths;
 
@@ -97,21 +96,6 @@ module.exports = merge(common, {
         },
       }),
       new CssMinimizerPlugin(),
-      new ImageminWebpack({
-        severityError: 'warning', // Ignore errors on corrupted images
-        loader: false,
-        minimizer: {
-          implementation: ImageminWebpack.imageminMinify,
-          options: {
-            plugins: [
-              'imagemin-gifsicle',
-              'imagemin-mozjpeg',
-              'imagemin-pngquant',
-              'imagemin-svgo',
-            ],
-          },
-        },
-      }),
     ],
   },
   performance: {
