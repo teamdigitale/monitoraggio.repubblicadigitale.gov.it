@@ -20,7 +20,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.0",
     "axios": "^0.26.1",
-    "bootstrap-italia": "^1.6.2",
+    "bootstrap-italia": "^1.6.3",
     "cypress-axe": "^0.14.0",
     "design-react-kit": "^4.0.2",
     "focus-trap-react": "^8.11.1",
