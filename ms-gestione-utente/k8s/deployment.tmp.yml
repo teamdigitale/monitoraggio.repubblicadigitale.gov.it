@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-gestione-utente-deployment
+  labels:
+    app: ms-gestione-utente
+spec:
+  selector:
+    matchLabels:
+        app: ms-gestione-utente
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: ms-gestione-utente
+    spec:
+      containers:
+        - name: ms-gestione-utente
+          image: ${ECR_REPOSITORY}:${IMAGE_TAG}
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          imagePullPolicy: Always
