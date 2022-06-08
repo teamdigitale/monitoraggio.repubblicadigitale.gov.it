@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-programma-progetto-deployment
+  labels:
+    app: ms-programma-progetto
+spec:
+  selector:
+    matchLabels:
+        app: ms-programma-progetto
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: ms-programma-progetto
+    spec:
+      containers:
+        - name: ms-programma-progetto
+          image: ${ECR_REPOSITORY}:${IMAGE_TAG}
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          imagePullPolicy: Always

@@ -1,0 +1,547 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Existing Version to release (*Blank to create a new one)'
+        required: false
+
+permissions:
+  contents: write
+
+env:
+  BOT_USER: Actions Bot
+  BOT_MAIL: <>
+
+jobs:
+  DryRunRelease:
+    name: Dry-Run Release
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.VERSION }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+
+      - name: Install semantic-release extra plugins
+        run: |
+              npm install --save-dev \
+                semantic-release \
+                @semantic-release/commit-analyzer \
+                @semantic-release/changelog \
+                @semantic-release/git \
+                @semantic-release/release-notes-generator \
+                @semantic-release/exec \
+                conventional-changelog-conventionalcommits
+
+      - name: Create .VERSION file
+        run: echo "There are no relevant changes, so no new version is released" > .VERSION
+
+      - name: Dry-Run
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npx semantic-release --dry-run --no-ci
+
+      - name: Version
+        id: version
+        run: |
+          nextversion=$(cat .VERSION)
+          echo "::set-output name=VERSION::$nextversion"
+          echo "Next version: $nextversion"
+
+      - name: Check changes
+        run: |
+          if [ $(wc -c .VERSION) -gt 5]; then
+            echo "se non ci sono variazioni alla versione...non si deve andare avanti"
+            exit 1
+          fi
+
+  buildFE:
+    if: ${{ github.event.inputs.version == '' }}
+    needs: DryRunRelease
+    name: FE Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ github.workspace }}/fe-piattaforma
+    steps:
+      - uses: actions/checkout@v3.0.2
+        with:
+          ref: main
+          lfs: 'true'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Modify Env File
+        run: |
+          sed -i "s/{{_REACT_APP_BE_BASE_URL_}}/${{ secrets.REACT_APP_BE_BASE_URL }}/g" .env
+
+      - name: File Regex Replace
+        uses: mingjun97/file-regex-replace@v1
+        with:
+          # regex to apply(regex)
+          regex: '"version":[\s\S]"[0-9].[0-9].[0-9]"'
+          # flags of the regex
+          flags: "gmi"
+          # replacement string
+          replacement: '"version": "${{needs.DryRunRelease.outputs.version}}"'
+          # Files to be replaced(regex)
+          include: "package.json"
+
+      - name: Install FE dependencies
+        run: |
+          npm install
+
+      - name: Build & Push Image to Amazon ECR
+        id: build
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: fe-piattaforma
+          IMAGE_TAG: ${{needs.DryRunRelease.outputs.version}}
+        run: |
+          npm run build
+          docker build . \
+            --target builder \
+            --file Dockerfile \
+            --tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+  buildBE:
+    if: ${{ github.event.inputs.version == '' }}
+    needs: DryRunRelease
+    name: BE Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.0.2
+        with:
+          ref: main
+          lfs: 'true'
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt-openj9'
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Install Lib repdgt-shared
+        if: ${{ success() }}
+        run: |
+          cd ${{ github.workspace }}/lib-repdgt-shared
+          mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
+          mvn install
+
+      - name: ms-ente Build & Push Image to Amazon ECR
+        id: ms-ente
+        if: ${{ success() }}
+        working-directory: ${{ github.workspace }}/ms-ente
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ms-ente
+          IMAGE_TAG: ${{needs.DryRunRelease.outputs.version}}
+        run: |
+          # set version
+          mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
+          # build
+          mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }}
+          # docker build
+          docker build . \
+            --file Dockerfile \
+            --tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          # docker push
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: ms-gestione-utente Build & Push Image to Amazon ECR
+        id: ms-gestione-utente
+        if: ${{ success() }}
+        working-directory: ${{ github.workspace }}/ms-gestione-utente
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ms-gestione-utente
+          IMAGE_TAG: ${{needs.DryRunRelease.outputs.version}}
+        run: |
+          # set version
+          mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
+          # build
+          mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }}
+          # docker build
+          docker build . \
+            --file Dockerfile \
+            --tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          # docker push
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: ms-notifiche-integration Build & Push Image to Amazon ECR
+        id: ms-notifiche-integration
+        if: ${{ success() }}
+        working-directory: ${{ github.workspace }}/ms-notifiche-integration
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ms-notifiche-integration
+          IMAGE_TAG: ${{needs.DryRunRelease.outputs.version}}
+        run: |
+          # set version
+          mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
+          # build
+          mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }}
+          # docker build
+          docker build . \
+            --file Dockerfile \
+            --tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          # docker push
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: ms-open-data Build & Push Image to Amazon ECR
+        id: ms-open-data
+        if: ${{ success() }}
+        working-directory: ${{ github.workspace }}/ms-open-data
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ms-open-data
+          IMAGE_TAG: ${{needs.DryRunRelease.outputs.version}}
+        run: |
+          # set version
+          mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
+          # build
+          mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }}
+          # docker build
+          docker build . \
+            --file Dockerfile \
+            --tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          # docker push
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: ms-programma-progetto Build & Push Image to Amazon ECR
+        id: ms-programma-progetto
+        if: ${{ success() }}
+        working-directory: ${{ github.workspace }}/ms-programma-progetto
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ms-programma-progetto
+          IMAGE_TAG: ${{needs.DryRunRelease.outputs.version}}
+        run: |
+          # set version
+          mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
+          # build
+          mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }}
+          # docker build
+          docker build . \
+            --file Dockerfile \
+            --tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          # docker push
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: ms-questionario-cittadino Build & Push Image to Amazon ECR
+        id: ms-questionario-cittadino
+        if: ${{ success() }}
+        working-directory: ${{ github.workspace }}/ms-questionario-cittadino
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ms-questionario-cittadino
+          IMAGE_TAG: ${{needs.DryRunRelease.outputs.version}}
+        run: |
+          # set version
+          mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
+          # build
+          mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }} -DMONGODB_HOST=${{ secrets.MONGODB_HOST }} -DMONGODB_NAME=${{ secrets.MONGODB_NAME }} -DMONGODB_PORT=${{ secrets.MONGODB_PORT }} -DDB_MONGO_USERNAME=${{ secrets.DB_MONGO_USERNAME }} -DDB_MONGO_PASSWORD=${{ secrets.DB_MONGO_PASSWORD }} -DKEYSTORE_PATH=${{ secrets.KEYSTORE_PATH }} -DKEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}
+          # docker build
+          docker build . \
+            --file Dockerfile \
+            --tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          # docker push
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+  Deploy:
+    needs: [DryRunRelease, buildFE, buildBE]
+    if: |
+      always() &&
+      needs.DryRunRelease.result == 'success' &&
+      (needs.buildFE.result == 'success' || needs.buildFE.result == 'skipped') &&
+      (needs.buildBE.result == 'success' || needs.buildBE.result == 'skipped')
+    name: Deploy
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      IMAGETAG: ${{ steps.imagetag.outputs.IMAGETAG }}
+    steps:
+      - uses: actions/checkout@v3.0.2
+        with:
+          ref: main
+          fetch-depth: '0'
+
+      - name: Check Input Version
+        if: ${{ github.event.inputs.version != '' }}
+        id: checkver
+        run: |
+          set -x
+          version="${{ github.event.inputs.version }}"
+          echo "==> Version: $version"
+          if [ $(git tag -l "$version" | wc -l) -gt 0 ]; then
+            echo "Version $version exists. Input accepted."
+          else
+            echo "Version $version doesn't exist. INVALID INPUT."
+            exit 1
+          fi
+          set +x
+
+      - uses: azure/setup-kubectl@v2.1
+        with:
+          version: 'v1.23.6' # default is latest stable
+        id: install
+
+      - name: Configure AWS credentials for ECR
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Configure AWS credentials for K8S
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-session-name: Git
+          role-duration-seconds: 3600
+
+      - name: Setup Kubeconfig
+        run: |
+          aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{ secrets.AWS_CLUSTER }}
+
+      - name: Setup Image TAG
+        id: imagetag
+        run: |
+          if [ ${{ github.event.inputs.version }} = '' ]; then
+            echo "::set-output name=IMAGETAG::$(echo ${{needs.DryRunRelease.outputs.version}} )"
+          else
+            echo "::set-output name=IMAGETAG::$(echo ${{ github.event.inputs.version }} )"
+          fi
+
+      - name: Setup 'fe-piattaforma' deployment.tmp.yaml
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: fe-piattaforma
+          IMAGE_TAG: ${{ steps.imagetag.outputs.IMAGETAG }}
+        run: |
+          cd ${{ github.workspace }}/fe-piattaforma/k8s
+          export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
+          export IMAGE_TAG=$IMAGE_TAG
+          envsubst < deployment.tmp.yml
+          cat deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
+
+      - name: Setup 'ms-ente' deployment.tmp.yaml
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ms-ente
+          IMAGE_TAG: ${{ steps.imagetag.outputs.IMAGETAG }}
+        run: |
+          cd ${{ github.workspace }}/ms-ente/k8s
+          export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
+          export IMAGE_TAG=$IMAGE_TAG
+          envsubst < deployment.tmp.yml
+          cat deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
+
+      - name: Setup 'ms-gestione-utente' deployment.tmp.yaml
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ms-gestione-utente
+          IMAGE_TAG: ${{ steps.imagetag.outputs.IMAGETAG }}
+        run: |
+          cd ${{ github.workspace }}/ms-gestione-utente/k8s
+          export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
+          export IMAGE_TAG=$IMAGE_TAG
+          envsubst < deployment.tmp.yml
+          cat deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
+
+      - name: Setup 'ms-notifiche-integration' deployment.tmp.yaml
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ms-notifiche-integration
+          IMAGE_TAG: ${{ steps.imagetag.outputs.IMAGETAG }}
+        run: |
+          cd ${{ github.workspace }}/ms-notifiche-integration/k8s
+          export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
+          export IMAGE_TAG=$IMAGE_TAG
+          envsubst < deployment.tmp.yml
+          cat deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
+
+      - name: Setup 'ms-open-data' deployment.tmp.yaml
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ms-open-data
+          IMAGE_TAG: ${{ steps.imagetag.outputs.IMAGETAG }}
+        run: |
+          cd ${{ github.workspace }}/ms-open-data/k8s
+          export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
+          export IMAGE_TAG=$IMAGE_TAG
+          envsubst < deployment.tmp.yml
+          cat deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
+
+      - name: Setup 'ms-programma-progetto' deployment.tmp.yaml
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ms-programma-progetto
+          IMAGE_TAG: ${{ steps.imagetag.outputs.IMAGETAG }}
+        run: |
+          cd ${{ github.workspace }}/ms-programma-progetto/k8s
+          export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
+          export IMAGE_TAG=$IMAGE_TAG
+          envsubst < deployment.tmp.yml
+          cat deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
+
+      - name: Setup 'ms-questionario-cittadino' deployment.tmp.yaml
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ms-questionario-cittadino
+          IMAGE_TAG: ${{ steps.imagetag.outputs.IMAGETAG }}
+        run: |
+          cd ${{ github.workspace }}/ms-questionario-cittadino/k8s
+          export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
+          export IMAGE_TAG=$IMAGE_TAG
+          envsubst < deployment.tmp.yml
+          cat deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
+
+      - name: Deploy
+        run: |
+          cd ${{ github.workspace }}
+          echo "===DEPLOYMENT FILE==="
+          cat deployment.yml
+          echo "====================="
+          kubectl apply -f deployment.yml --namespace=${{ secrets.K8S_NAMESPACE }}
+
+  RepoUpdate:
+    if: ${{ github.event.inputs.version == '' }}
+    needs: [DryRunRelease, Deploy]
+    name: Repo Update
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ github.workspace }}/fe-piattaforma
+    steps:
+      - uses: actions/checkout@v3.0.2
+        with:
+          ref: main
+          lfs: 'true'
+
+      - name: File Package Update
+        uses: mingjun97/file-regex-replace@v1
+        with:
+          # regex to apply(regex)
+          regex: '"version":[\s\S]"[0-9].[0-9].[0-9]"'
+          # flags of the regex
+          flags: "gmi"
+          # replacement string
+          replacement: '"version": "${{needs.DryRunRelease.outputs.version}}"'
+          # Files to be replaced(regex)
+          include: "package.json"
+
+      - name: File POM Update
+        if: ${{ success() }}
+        run: |
+          cd ${{ github.workspace }}/lib-repdgt-shared
+          mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
+          cd ${{ github.workspace }}/ms-ente
+          mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
+          cd ${{ github.workspace }}/ms-gestione-utente
+          mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
+          cd ${{ github.workspace }}/ms-notifiche-integration
+          mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
+          cd ${{ github.workspace }}/ms-open-data
+          mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
+          cd ${{ github.workspace }}/ms-programma-progetto
+          mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
+          cd ${{ github.workspace }}/ms-questionario-cittadino
+          mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
+
+      - name: Push files updated
+        run: |
+          cd ${{ github.workspace }}
+          git diff
+          git config user.email "$BOT_MAIL"
+          git config user.name "$BOT_USER"
+          git add -A
+          git commit -m "chore: update version ${{needs.DryRunRelease.outputs.version}}" || exit 0
+          git push
+
+  Release:
+    if: ${{ github.event.inputs.version == '' }}
+    needs: [RepoUpdate]
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.0.2
+        with:
+          token: ${{ secrets.SEMANTICRELEASE }}
+          persist-credentials: 'true'
+          fetch-depth: '0'
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+      - name: Install semantic-release extra plugins
+        run: |
+              npm install --save-dev \
+                semantic-release \
+                @semantic-release/commit-analyzer \
+                @semantic-release/changelog \
+                @semantic-release/git \
+                @semantic-release/release-notes-generator \
+                @semantic-release/exec \
+                conventional-changelog-conventionalcommits
+      - name: Create .VERSION file
+        run: echo "There are no relevant changes, so no new version is released" > .VERSION
+      - name: Release
+        env:
+          # ad-hoc token (PAT) in order to permit the push on a protected branch
+          # without protected branches can be use secrets.GITHUB_TOKEN
+          GITHUB_TOKEN: ${{ secrets.SEMANTICRELEASE }}
+        run: |
+          npx semantic-release
+      - name: Version
+        id: version
+        run: |
+          nextversion=$(cat .VERSION)
+          echo "::set-output name=VERSION::$nextversion"
+          echo "### Release $nextversion created!" >> $GITHUB_STEP_SUMMARY
