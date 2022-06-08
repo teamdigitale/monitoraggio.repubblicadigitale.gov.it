@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-notifiche-integration-deployment
+  labels:
+    app: ms-notifiche-integration
+spec:
+  selector:
+    matchLabels:
+        app: ms-notifiche-integration
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: ms-notifiche-integration
+    spec:
+      containers:
+        - name: ms-notifiche-integration
+          image: ${ECR_REPOSITORY}:${IMAGE_TAG}
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          imagePullPolicy: Always
