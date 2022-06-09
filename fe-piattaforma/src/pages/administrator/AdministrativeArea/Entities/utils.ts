@@ -7,6 +7,16 @@ const statusTypes = {
   INACTIVE: 'NON_ATTIVO',
 };
 
+export const dayOfWeek = [
+  'Lunedì',
+  'Martedì',
+  'Mercoledì',
+  'Giovedì',
+  'Venerdì',
+  'Sabato',
+  'Domenica',
+];
+
 export const statusBgColor = (status: string) => {
   switch (status) {
     case statusTypes.ACTIVE:
@@ -137,6 +147,7 @@ export const formTypes = {
   DELEGATO: 'delegato',
   USER: 'user',
   FACILITATORE: 'facilitatore',
+  SERVICES: 'services',
 };
 
 export interface ItemListI {

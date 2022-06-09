@@ -25,13 +25,15 @@ import ProgramsDetails from './Entities/Programs/programsDetails';
 import ProjectsDetails from './Entities/Projects/projectsDetails';
 import AuthoritiesDetails from './Entities/Authorities/authoritiesDetails';
 import UsersDetails from './Entities/Users/usersDetails';
-import HeadquartersDetails from './Entities/Headquarters/headquartersDetails';
+import HeadquartersDetails from './Entities/Headquarters/HeadquartersDetail/headquartersDetails';
 import { useAppSelector } from '../../../redux/hooks';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import { LocationIndex } from '../../../components';
 import { menuRoutes } from '../../../utils/common';
 import clsx from 'clsx';
-import SurveyDetails from './Entities/Surveys/surveyDetailsEdit/surveyDetailsEdit';
+import Services from './Entities/Services/services';
+import ServicesDetails from './Entities/Services/servicesDetails';
+import SurveyDetailsEdit from './Entities/Surveys/surveyDetailsEdit/surveyDetailsEdit';
 
 interface PageTitleMockI {
   [key: string]: {
@@ -65,6 +67,11 @@ export const PageTitleMock: PageTitleMockI = {
   '/area-amministrativa/questionari': {
     title: 'Questionari',
     textCta: 'Crea nuovo questionario',
+    iconCta: 'it-plus',
+  },
+  '/area-amministrativa/servizi': {
+    title: 'Lista Servizi',
+    textCta: 'Crea servizio',
     iconCta: 'it-plus',
   },
 };
@@ -293,22 +300,37 @@ export const AreaAmministrativaRoutes = [
   <Route
     key='questionari-modifica'
     path='questionari/:idQuestionario/modifica'
-    element={<SurveyDetails editMode />}
+    element={<SurveyDetailsEdit editMode />}
   />,
   <Route key='questionari' path='questionari' element={<Surveys />} />,
   <Route
     key='questionari-clona'
     path='questionari/:idQuestionario/clona'
-    element={<SurveyDetails cloneMode />}
+    element={<SurveyDetailsEdit cloneMode />}
   />,
   <Route
     key='questionari-detail'
     path='questionari/:idQuestionario/info'
-    element={<SurveyDetails />}
+    element={<SurveyDetailsEdit />}
   />,
   <Route
     key='questionari-detail'
     path='questionari/:idQuestionario'
-    element={<SurveyDetails />}
+    element={<SurveyDetailsEdit />}
+  />,
+  <Route
+    key='area-amministrativa-services'
+    element={<Services />}
+    path='servizi'
+  />,
+  <Route
+    key='area-amministrativa-services-details'
+    element={<ServicesDetails />}
+    path='servizi/:serviceId/info'
+  />,
+  <Route
+    key='area-amministrativa-services-details-citizens'
+    element={<ServicesDetails />}
+    path='servizi/:serviceId/cittadini'
   />,
 ];

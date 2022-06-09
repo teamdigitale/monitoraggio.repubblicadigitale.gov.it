@@ -15,6 +15,7 @@ import Rating from './Rating/rating';
 import SearchBar from './SearchBar/searchBar';
 import SearchBox from './SearchBox/searchBox';
 import Select from './Form/select';
+import SelectMultiple from './Form/selectMultiple';
 import Stepper from './Stepper/stepper';
 import TabGroup from './TabGroup/tabGroup';
 import Table from './Table/table';
@@ -28,9 +29,12 @@ import ProgressBar from './ProgressBar/progressBar';
 import NavLink from './NavLink/navLink';
 import SearchBarOptions from './SearchBarOptions/searchBarOptions';
 import InfoCard from './InfoCard/infoCard';
+import EmptySection from './EmptySection/emptySection';
+import DetailsRow from './DetailsRow/detailsRow';
 
 export {
   Accordion,
+
   Card,
   CardCommunity,
   CardProfile,
@@ -47,6 +51,7 @@ export {
   SearchBar,
   SearchBox,
   Select,
+  SelectMultiple,
   Stepper,
   TabGroup,
   Table,
@@ -60,4 +65,6 @@ export {
   NavLink,
   SearchBarOptions,
   InfoCard,
+  EmptySection,
+  DetailsRow,
 };

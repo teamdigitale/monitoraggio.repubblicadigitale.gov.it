@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { formTypes } from '../utils';
+import { formTypes } from '../../utils';
 import {
   CRUDActionsI,
   CRUDActionTypes,
   ItemsListI,
-} from '../../../../../utils/common';
-import { TableRowI } from '../../../../../components/Table/table';
-import { ButtonInButtonsBar } from '../../../../../components/ButtonsBar/buttonsBar';
+} from '../../../../../../utils/common';
+import { TableRowI } from '../../../../../../components/Table/table';
+import { ButtonInButtonsBar } from '../../../../../../components/ButtonsBar/buttonsBar';
 import {
   closeModal,
   openModal,
-} from '../../../../../redux/features/modal/modalSlice';
+} from '../../../../../../redux/features/modal/modalSlice';
 import { useDispatch } from 'react-redux';
-import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
-import ConfirmDeleteModal from '../modals/confirmDeleteModal';
-import ManageUsers from '../modals/manageUsers';
-import { useAppSelector } from '../../../../../redux/hooks';
-import { selectDevice } from '../../../../../redux/features/app/appSlice';
+import DetailLayout from '../../../../../../components/DetailLayout/detailLayout';
+import ConfirmDeleteModal from '../../modals/confirmDeleteModal';
+import { useAppSelector } from '../../../../../../redux/hooks';
+import { selectDevice } from '../../../../../../redux/features/app/appSlice';
 import clsx from 'clsx';
-import FormHeadquarters from '../../../../forms/formHeadquarters';
+import FormHeadquarters from '../../../../../../components/AdministrativeArea/Entities/Headquarters/HeadquartersForm/formHeadquarters';
+import ManageHeadquarter from '../../../../../../components/AdministrativeArea/Entities/Headquarters/ManageHeadquarter/manageHeadquarter';
 
 const HeadquartersDetails = () => {
   const { mediaIsDesktop, mediaIsPhone } = useAppSelector(selectDevice);
@@ -49,7 +49,7 @@ const HeadquartersDetails = () => {
   useEffect(() => {
     setButtonsPosition('TOP');
     setCurrentForm(<FormHeadquarters formDisabled />);
-    setCorrectModal(<ManageUsers />);
+    setCorrectModal(<ManageHeadquarter />);
     setDeleteText('Confermi di voler eliminare questa sede?');
     setItemAccordionList([
       {
@@ -106,11 +106,12 @@ const HeadquartersDetails = () => {
               upperTitle: { icon: 'it-map-marker-plus', text: formTypes.SEDE },
               subTitle: 'Programma 1 nome breve',
             }}
-            Form={currentForm}
             formButtons={correctButtons}
             itemsAccordionList={itemAccordionList}
             buttonsPosition={buttonsPosition}
-          />
+          >
+            {currentForm}
+          </DetailLayout>
           {currentModal ? currentModal : null}
           <ConfirmDeleteModal
             onConfirm={() => {

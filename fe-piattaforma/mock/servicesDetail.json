@@ -1,0 +1,41 @@
+{
+  "data": {
+    "info": {
+      "nome": "nome servizio",
+      "tipologia": "tipologia servizio",
+      "ambito1": "ambito 1 servizio",
+      "ambito2": "ambito 2 servizio",
+      "ambito3": "ambito 3 servizio",
+      "dettagli": "dettagli servizio"
+    },
+    "cittadini": [
+      {
+        "id": "1",
+        "nome": "Gino Bianchi",
+        "stato": "INVIATO",
+        "innerInfo": {
+          "ID": "321312",
+          "Codice fiscale": "CODFISCALE"
+        }
+      },
+      {
+        "id": "2",
+        "nome": "Gino Neri",
+        "stato": "NON INVIATO",
+        "innerInfo": {
+          "ID": "321312",
+          "Codice fiscale": "CODFISCALE"
+        }
+      },
+      {
+        "id": "2",
+        "nome": "Gino Blu",
+        "stato": "COMPILATO",
+        "innerInfo": {
+          "ID": "321312",
+          "Codice fiscale": "CODFISCALE"
+        }
+      }
+    ]
+  }
+}

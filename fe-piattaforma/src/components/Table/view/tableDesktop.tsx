@@ -61,7 +61,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
               className='primary-color-a6 '
             >
               {heading.map((th, j) => (
-                // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions,jsx-a11y/click-events-have-key-events
+                // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions,jsx-a11y/click-services-have-key-services
                 <td
                   key={`td-${i}-${j}`}
                   onClick={() => onCellClick(th.field, td)}
@@ -72,7 +72,14 @@ const TableDesktop: React.FC<TableI> = (props) => {
               ))}
               {onActionClick ? (
                 <td>
-                  <div className='d-flex justify-content-end align-content-center mt-1'>
+                  <div
+                    className={clsx(
+                      'd-flex',
+                      'justify-content-end',
+                      'align-content-center',
+                      'mt-1'
+                    )}
+                  >
                     {onActionClick[CRUDActionTypes.INFO] ? (
                       <Button
                         onClick={() => onActionClick[CRUDActionTypes.INFO](td)}

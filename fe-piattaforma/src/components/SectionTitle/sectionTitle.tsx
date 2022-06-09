@@ -3,6 +3,7 @@ import { Chip, ChipLabel, Icon } from 'design-react-kit';
 import './sectionTitle.scss';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
+import clsx from 'clsx';
 
 interface SectionTitleI {
   title: string;
@@ -29,7 +30,14 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
             className='mr-1'
             aria-label='Sezione'
           />
-          <p className='h6 custom-section-title__upper-text primary-color-a9 text-uppercase'>
+          <p
+            className={clsx(
+              'h6',
+              'custom-section-title__upper-text',
+              'primary-color-a9',
+              'text-uppercase'
+            )}
+          >
             {upperTitle.text || 'utente'}
           </p>
         </div>
@@ -43,13 +51,13 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
           </span>
         </div>
         {(mediaIsDesktop || mediaIsTablet) && status ? (
-          <Chip className='table-container__status-label mx-3 primary-bg-a9 mt-3'>
+          <Chip className='table-container__status-label mx-3 primary-bg-a9 mt-3 no-border'>
             <ChipLabel className='text-white'>{status}</ChipLabel>
           </Chip>
         ) : null}
       </div>
       {!(mediaIsDesktop || mediaIsTablet) && (
-        <Chip className='table-container__status-label mx-3 primary-bg-a9 my-2'>
+        <Chip className='table-container__status-label mx-3 primary-bg-a9 my-2 no-border'>
           <ChipLabel className='text-white'>{status}</ChipLabel>
         </Chip>
       )}

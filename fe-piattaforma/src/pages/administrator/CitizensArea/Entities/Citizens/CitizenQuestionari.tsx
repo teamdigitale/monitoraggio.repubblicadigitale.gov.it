@@ -60,7 +60,8 @@ const CitizenQuestionari: React.FC<{
           <Chip
             className={clsx(
               'table-container__status-label',
-              statusBgColor(td.status)
+              statusBgColor(td.status),
+              'no-border'
             )}
           >
             <ChipLabel className={statusColor(td.status)}>

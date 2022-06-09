@@ -6,7 +6,7 @@ import {
   selectEntityFilters,
   selectEntityFiltersOptions,
   selectEntityPagination,
-  selectProgetti,
+  selectProjects,
   setEntityFilters,
   setEntityPagination,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
@@ -36,7 +36,7 @@ const programDropdownLabel = 'programmi';
 
 const Projects: React.FC = () => {
   const dispatch = useDispatch();
-  const progettiList = useAppSelector(selectProgetti);
+  const progettiList = useAppSelector(selectProjects);
   const filtersList = useAppSelector(selectEntityFilters);
   const pagination = useAppSelector(selectEntityPagination);
   const dropdownFilterOptions = useAppSelector(selectEntityFiltersOptions);
@@ -75,7 +75,8 @@ const Projects: React.FC = () => {
           <Chip
             className={clsx(
               'table-container__status-label',
-              statusBgColor(td.stato)
+              statusBgColor(td.stato),
+              'no-border'
             )}
           >
             <ChipLabel className={statusColor(td.stato)}>

@@ -174,6 +174,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
           break;
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStep]);
 
   useEffect(() => {
@@ -188,6 +189,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         return (
           <FormProjectGeneralInfo
             formDisabled={!!formDisabled}
+            intoModal
             sendNewValues={(newData?: {
               [key: string]: formFieldI['value'];
             }) => {
@@ -204,6 +206,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         return (
           <TargetDateFormProjects
             formForSection='facilitationNumber'
+            intoModal
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
               setNewFormValues({ ...newData })
@@ -219,6 +222,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         return (
           <TargetDateFormProjects
             formForSection='uniqueUsers'
+            intoModal
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
               setNewFormValues({ ...newData })
@@ -234,6 +238,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         return (
           <TargetDateFormProjects
             formForSection='services'
+            intoModal
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
               setNewFormValues({ ...newData })
@@ -249,6 +254,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         return (
           <TargetDateFormProjects
             formForSection='facilitators'
+            intoModal
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
               setNewFormValues({ ...newData })
@@ -265,6 +271,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
 
   useEffect(() => {
     dispatch(resetProjectDetails());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [creation]);
 
   return (

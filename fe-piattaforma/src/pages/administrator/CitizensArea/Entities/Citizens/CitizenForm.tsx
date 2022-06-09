@@ -21,48 +21,61 @@ interface CitizenFormFullI extends CitizenFormI, withFormHandlerProps {}
 const form = newForm([
   newFormField({
     field: 'name',
+    id: 'name',
   }),
   newFormField({
     field: 'lastName',
+    id: 'lastName',
   }),
   newFormField({
     field: 'fiscalCode',
+    id: 'fiscalCode',
   }),
   newFormField({
     field: 'nDoc',
+    id: 'nDoc',
   }),
   newFormField({
     field: 'nationality',
+    id: 'nationality',
   }),
   newFormField({
     field: 'age',
+    id: 'age',
   }),
   newFormField({
     field: 'degree',
+    id: 'degree',
   }),
   newFormField({
     field: 'occupation',
+    id: 'occupation',
   }),
   newFormField({
     field: 'phone',
+    id: 'phone',
   }),
   newFormField({
     field: 'consensoOTP',
     type: 'checkbox',
+    id: 'consensoOTP',
   }),
   newFormField({
     field: 'confModulo',
     type: 'checkbox',
+    id: 'confModulo',
   }),
   newFormField({
     field: 'email',
     regex: RegexpType.EMAIL,
+    id: 'email',
   }),
   newFormField({
     field: 'dataConf',
     regex: RegexpType.DATE,
     required: true,
     type: 'date',
+    id: 'dataConf',
   }),
 ]);
 

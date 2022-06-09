@@ -33,7 +33,7 @@ const SideSelection: React.FC<SideSelectionI> = (props) => {
       <div className='mt-4 side-selection__content'>
         {(filterOptions || []).map((option, i) => (
           <div key={'option-' + i}>
-            {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
+            {/* eslint-disable-next-line jsx-a11y/click-services-have-key-services */}
             <div
               className={clsx(
                 'py-2',

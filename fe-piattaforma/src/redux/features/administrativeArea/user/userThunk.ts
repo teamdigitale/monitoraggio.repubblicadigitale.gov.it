@@ -5,8 +5,8 @@ import isEmpty from 'lodash.isempty';
 import API from '../../../../utils/apiHelper';
 import {
   setEntityFilterOptions,
-  setUtenteDetail,
-  setUtentiList,
+  setUserDetails,
+  setUsersList,
 } from '../administrativeAreaSlice';
 import { mapOptions } from '../../../../utils/common';
 
@@ -59,7 +59,7 @@ export const GetAllUtenti =
         });
       }
       if (res?.data) {
-        dispatch(setUtentiList({ data: res.data.data.list }));
+        dispatch(setUsersList({ data: res.data.data.list }));
       }
     } finally {
       dispatch(hideLoader());
@@ -112,7 +112,7 @@ export const GetUserDetail =
       dispatch({ ...GetUserDetailAction, idUtente });
       const res = await API.get(`utente/idUtente`);
       if (res?.data) {
-        dispatch(setUtenteDetail(res.data));
+        dispatch(setUserDetails(res.data));
       }
     } catch (error) {
       console.log('GetHeadquartersDetail error', error);

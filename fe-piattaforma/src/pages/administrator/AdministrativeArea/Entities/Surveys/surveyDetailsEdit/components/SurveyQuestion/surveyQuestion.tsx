@@ -13,16 +13,13 @@ import {
 import { selectDevice } from '../../../../../../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../../../../../../redux/hooks';
 import { FormHelper } from '../../../../../../../../utils/formHelper';
-import { answerType } from '../../../questionariConstants';
+import { answerType } from '../../../surveyConstants';
 import MultiOptionForm from './multiOptionForm';
-import './surveyQuestion.scss';
 
 export interface SurveyQuestionComponentI extends SurveyQuestionI {
   className?: string;
-  isOpenFromSection?: boolean;
   position?: number;
   sectionID?: string | undefined;
-  handleEditQuestion: (questionIndex: number, sectionID: string) => void;
 }
 
 const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
@@ -66,7 +63,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
   useEffect(() => {
     if (surveyQuestion?.form) {
       const answer = surveyQuestion?.form['question-type']?.value;
-      const isRequired = answer === 'list' || answer === 'multiple';
+      const isRequired = answer === 'select' || answer === 'checkbox';
       const { value, field } = surveyQuestion?.form['question-values'] || {};
       handleOnInputChange(isRequired ? value : '', field, {
         ...surveyQuestion.form,
@@ -102,6 +99,53 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
 
   const device = useAppSelector(selectDevice);
 
+  const questionButton = () => (
+    <div>
+      {!open && (
+        <>
+          {!form['question-default'].value && (
+            <Button onClick={handleDeleteQuestion} className='px-2'>
+              <Icon
+                color='primary'
+                icon='it-delete'
+                size='sm'
+                aria-label='Elimina domanda'
+              />
+            </Button>
+          )}
+          <Button
+            onClick={() => {
+              setOpen(true);
+            }}
+            className={clsx(
+              'px-2',
+              form['question-type']?.value !== 'select' &&
+                form['question-type']?.value !== 'checkbox' &&
+                'invisible'
+            )}
+          >
+            <Icon
+              color='primary'
+              icon='it-expand'
+              size='sm'
+              aria-label='mostra'
+            />
+          </Button>
+        </>
+      )}
+      {open && (
+        <Button onClick={() => setOpen(false)} className='px-2'>
+          <Icon
+            color='primary'
+            icon='it-collapse'
+            size='sm'
+            aria-label='Chiudi domanda'
+          />
+        </Button>
+      )}
+    </div>
+  );
+
   return (
     <>
       <div
@@ -122,51 +166,57 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
             sectionID !== 'anagraphic-citizen-section' &&
             sectionID !== 'anagraphic-booking-section' &&
             'survey-question-container__shadow',
-          !FormHelper.isValidForm(form) &&
-            'survey-question-container__error-question'
         )}
       >
         <div
           className={clsx(
             'd-flex',
-            'flex-row',
-            'align-items-center',
-            'justify-content-between'
+            'align-items-lg-center',
+            'justify-content-between',
+            'survey-question-container__header'
           )}
         >
-          <div className='d-flex flex-row flex-grow-1 align-items-center'>
-            <span className='mr-4'>{position + 1}</span>
-            {(!editMode && !cloneMode) ||
-            ((editMode || cloneMode) &&
-              (sectionID === 'anagraphic-citizen-section' ||
-                sectionID === 'anagraphic-booking-section')) ? (
-              <span>
-                <strong>
-                  {surveyQuestion?.form['question-description'].value}
-                </strong>
-              </span>
-            ) : (
-              <Form
-                id={`form-input-${id}`}
-                key={id}
-                className={clsx(
-                  className,
-                  'flex-grow-1',
-                  'survey-question-container mb-3',
-                  device.mediaIsPhone && 'px-3'
-                )}
-              >
-                <Input
-                  {...form['question-description']}
-                  label='Testo della domanda'
-                  onInputBlur={handleOnInputChange}
-                  id={`section-${sectionID}-question-${position}-description`}
-                  placeholder='Inserisci testo domanda'
-                  withLabel={false}
-                  className='mb-0 w-100'
-                />
-              </Form>
-            )}
+          <div className='d-flex flex-row flex-grow-1 align-items-center justify-content-between w-100'>
+            <div className='d-flex align-items-center flex-grow-1'>
+              <span className='mr-4'>{position + 1}</span>
+              {(!editMode && !cloneMode) ||
+              ((editMode || cloneMode) &&
+                (sectionID === 'anagraphic-citizen-section' ||
+                  sectionID === 'anagraphic-booking-section')) ? (
+                <span className='survey-question-container__question-description'>
+                  <strong>
+                    {surveyQuestion?.form['question-description'].value}
+                  </strong>
+                </span>
+              ) : (
+                <Form
+                  id={`form-input-${id}`}
+                  key={id}
+                  className={clsx(
+                    className,
+                    'flex-grow-1',
+                    'survey-question-container mb-3'
+                    //device.mediaIsPhone && 'px-3'
+                  )}
+                >
+                  <div>
+                    <Input
+                      {...form['question-description']}
+                      label={`Testo della domanda ${position}`}
+                      onInputBlur={handleOnInputChange}
+                      id={`section-${sectionID}-question-${position}-description`}
+                      placeholder='Inserisci testo domanda'
+                      withLabel={false}
+                      className='mb-0 w-100'
+                      type={device.mediaIsPhone ? 'textarea' : undefined}
+                      aria-label={`Testo della domanda ${position}`}
+                    />
+                  </div>
+                </Form>
+              )}
+            </div>
+
+            {!device.mediaIsDesktop && questionButton()}
           </div>
           <div
             className={clsx(
@@ -174,7 +224,10 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
               'flex-row',
               'justify-content-between',
               'survey-question-container__box-right',
-              'ml-5'
+              'ml-lg-5',
+              'ml-0',
+              'pl-lg-0',
+              'pr-4'
             )}
           >
             <div className='d-flex flex-column'>
@@ -211,50 +264,8 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
                 </Form>
               )}
             </div>
-            <div>
-              {!open && (
-                <>
-                  {!form['question-default'].value && (
-                    <Button onClick={handleDeleteQuestion} className='px-2'>
-                      <Icon
-                        color='primary'
-                        icon='it-delete'
-                        size='sm'
-                        aria-label='Elimina domanda'
-                      />
-                    </Button>
-                  )}
-                  <Button
-                    onClick={() => {
-                      setOpen(true);
-                    }}
-                    className={clsx(
-                      'px-2',
-                      form['question-type']?.value !== 'select' &&
-                        form['question-type']?.value !== 'checkbox' &&
-                        'invisible'
-                    )}
-                  >
-                    <Icon
-                      color='primary'
-                      icon='it-expand'
-                      size='sm'
-                      aria-label='Modifica domanda'
-                    />
-                  </Button>
-                </>
-              )}
-              {open && (
-                <Button onClick={() => setOpen(false)} className='px-2'>
-                  <Icon
-                    color='primary'
-                    icon='it-collapse'
-                    size='sm'
-                    aria-label='Chiudi domanda'
-                  />
-                </Button>
-              )}
-            </div>
+
+            {device.mediaIsDesktop && questionButton()}
           </div>
         </div>
         {(editMode || cloneMode) && !form['question-default']?.value && (

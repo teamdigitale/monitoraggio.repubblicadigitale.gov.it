@@ -58,7 +58,16 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
 
   if (mediaIsDesktop) {
     return (
-      <div className='d-flex flex-row justify-content-between align-items-center my-3 card-status-action'>
+      <div
+        className={clsx(
+          'd-flex',
+          'flex-row',
+          'justify-content-between',
+          'align-items-center',
+          'my-3',
+          'card-status-action'
+        )}
+      >
         <div
           className={clsx(
             'd-flex align-items-center',
@@ -96,7 +105,8 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
                 'primary-bg-a9',
                 'mt-3',
                 'mr-4',
-                'section-chip'
+                'section-chip',
+                'no-border'
               )}
             >
               <ChipLabel className='text-white text-uppercase'>
@@ -160,7 +170,8 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
           <Chip
             className={clsx(
               'table-container__status-label',
-              statusBgColor(status ? status : '')
+              statusBgColor(status ? status : ''),
+              'no-border'
             )}
           >
             <ChipLabel className={statusColor(status ? status : '')}>

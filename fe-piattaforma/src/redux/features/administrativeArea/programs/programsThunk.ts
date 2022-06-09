@@ -5,12 +5,12 @@ import isEmpty from 'lodash.isempty';
 import API from '../../../../utils/apiHelper';
 import {
   setEntityFilterOptions,
-  setProgrammaDetail,
+  setProgramDetails,
   setProgramsList,
 } from '../administrativeAreaSlice';
 import { mapOptions } from '../../../../utils/common';
 import { formFieldI } from '../../../../utils/formHelper';
-import { setProgramDetails } from './programsSlice';
+import { setProgramDetails as setProgramDetailsSlice } from './programsSlice';
 
 export interface ProgramsLightI {
   id: number;
@@ -116,7 +116,7 @@ export const GetProgramDetail =
       dispatch({ ...GetProgramDetailAction, idProgramma });
       const res = await API.get(`programma/idProgramma`);
       if (res?.data) {
-        dispatch(setProgrammaDetail(res.data));
+        dispatch(setProgramDetails(res.data));
       }
     } catch (error) {
       console.log('GetProgramDetail error', error);
@@ -136,7 +136,7 @@ export const createProgramDetails =
         programma: { details },
       } = select((state: RootState) => state);
       const body = { ...details, facilitators: payload };
-      dispatch(setProgramDetails({ currentStep: 6, payload }));
+      dispatch(setProgramDetailsSlice({ currentStep: 6, payload }));
       if (body) {
         await API.put(`/programmi/setProgramDetail`, {
           ...body,

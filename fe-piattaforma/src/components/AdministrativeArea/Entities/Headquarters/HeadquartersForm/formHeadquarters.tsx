@@ -1,13 +1,17 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Form, Input } from '../../components';
+import { Form, Input, Select } from '../../../..';
 import withFormHandler, {
   withFormHandlerProps,
-} from '../../hoc/withFormHandler';
-import { selectSedi } from '../../redux/features/administrativeArea/administrativeAreaSlice';
-import { GetHeadquartersDetail } from '../../redux/features/administrativeArea/headquarters/headquartersThunk';
-import { useAppSelector } from '../../redux/hooks';
-import { formFieldI, newForm, newFormField } from '../../utils/formHelper';
+} from '../../../../../hoc/withFormHandler';
+import { selectHeadquarters } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { GetHeadquartersDetail } from '../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
+import { useAppSelector } from '../../../../../redux/hooks';
+import {
+  formFieldI,
+  newForm,
+  newFormField,
+} from '../../../../../utils/formHelper';
 
 interface ProgramInformationI {
   formDisabled?: boolean;
@@ -30,6 +34,7 @@ const form = newForm([
   }),
   newFormField({
     field: 'services',
+    type: 'select',
   }),
   newFormField({
     field: 'address',
@@ -53,7 +58,7 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
 
   const formDisabled = !!props.formDisabled;
   const formData: { [key: string]: string } | undefined =
-    useAppSelector(selectSedi)?.detail?.info;
+    useAppSelector(selectHeadquarters)?.detail?.info;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -85,53 +90,19 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
   };
 
   return (
-    <Form className='mt-5 mb-5' formDisabled={formDisabled}>
-      <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
-        <Input
-          {...form?.idSede}
-          label='ID Sede'
-          col='col-12 col-lg-6'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-          placeholder='Inserisci nome programma'
-        />
+    <Form className='my-5 mx-5' formDisabled={formDisabled}>
+      <Form.Row className='justify-content-between'>
         <Input
           {...form?.name}
           label='Nome'
           col='col-12 col-lg-6'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
+          onInputChange={onInputDataChange}
           placeholder='Inserisci nome programma'
         />
-      </Form.Row>
-      <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
-        <Input
-          {...form?.services}
+        <Select
+          label='Servizi Erogati'
           col='col-12 col-lg-6'
-          label='Servizi erogati'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-        />
-        <Input
-          {...form?.address}
-          label='Indirizzo'
-          col='col-12 col-lg-6'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-        />
-      </Form.Row>
-      <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
-        <Input
-          {...form?.ente}
-          col='col-12 col-lg-6'
-          label='Ente di riferimento'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
+          onInputChange={onInputDataChange}
         />
       </Form.Row>
     </Form>

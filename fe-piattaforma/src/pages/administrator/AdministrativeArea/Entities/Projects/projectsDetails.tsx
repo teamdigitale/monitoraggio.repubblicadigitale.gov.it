@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Nav, NavItem } from 'design-react-kit';
+import { Nav } from 'design-react-kit';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { formTypes } from '../utils';
 import {
@@ -17,13 +17,13 @@ import { useDispatch } from 'react-redux';
 import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
 import ConfirmDeleteModal from '../modals/confirmDeleteModal';
 import ManageProject from '../modals/manageProject';
-import ManageHeadquarter from '../modals/manageHeadquarter';
+import ManageHeadquarter from '../../../../../components/AdministrativeArea/Entities/Headquarters/ManageHeadquarter/manageHeadquarter';
 import ManageEntiPartner from '../modals/managePartnerAuthority';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import clsx from 'clsx';
 import ManageProgramManagerAuthority from '../modals/manageProgramManagerAuthority';
-import { selectProgetti } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { selectProjects } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 //import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 import { NavLink } from '../../../../../components';
 import ProjectAccordionForm from '../../../../forms/formProjects/ProjectAccordionForm/ProjectAccordionForm';
@@ -43,7 +43,7 @@ export const buttonsPositioning = {
 
 const ProjectsDetails = () => {
   const { mediaIsDesktop, mediaIsPhone } = useAppSelector(selectDevice);
-  const progetti = useAppSelector(selectProgetti);
+  const progetti = useAppSelector(selectProjects);
   const [deleteText, setDeleteText] = useState<string>('');
   const [activeTab, setActiveTab] = useState<string>(tabs.INFO);
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
@@ -62,10 +62,10 @@ const ProjectsDetails = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const gestoreRef = useRef<HTMLSpanElement>(null);
-  const partnerRef = useRef<HTMLSpanElement>(null);
-  const sediRef = useRef<HTMLSpanElement>(null);
-  const infoRef = useRef<HTMLSpanElement>(null);
+  const gestoreRef = useRef<HTMLLIElement>(null);
+  const partnerRef = useRef<HTMLLIElement>(null);
+  const sediRef = useRef<HTMLLIElement>(null);
+  const infoRef = useRef<HTMLLIElement>(null);
 
   /* useEffect(() => {
     dispatch(GetProjectDetail('project1'));
@@ -127,47 +127,39 @@ const ProjectsDetails = () => {
 
   const nav = (
     <Nav tabs className='mb-5 overflow-hidden'>
-      <NavItem>
-        <span ref={infoRef}>
-          <NavLink
-            to={replaceLastUrlSection(tabs.INFO)}
-            // onClick={() => replaceLastUrlSection(tabs.INFO)}
-            active={activeTab === tabs.INFO}
-          >
-            Informazioni generali
-          </NavLink>
-        </span>
-      </NavItem>
-      <NavItem>
-        <span ref={gestoreRef}>
-          <NavLink
-            to={replaceLastUrlSection(tabs.ENTE_GESTORE)}
-            active={activeTab === tabs.ENTE_GESTORE}
-          >
-            Ente gestore
-          </NavLink>
-        </span>
-      </NavItem>
-      <NavItem>
-        <span ref={partnerRef}>
-          <NavLink
-            to={replaceLastUrlSection(tabs.ENTI_PARTNER)}
-            active={activeTab === tabs.ENTI_PARTNER}
-          >
-            Enti partner
-          </NavLink>
-        </span>
-      </NavItem>
-      <NavItem>
-        <span ref={sediRef}>
-          <NavLink
-            to={replaceLastUrlSection(tabs.SEDI)}
-            active={activeTab === tabs.SEDI}
-          >
-            Sedi
-          </NavLink>
-        </span>
-      </NavItem>
+      <li ref={infoRef}>
+        <NavLink
+          to={replaceLastUrlSection(tabs.INFO)}
+          // onClick={() => replaceLastUrlSection(tabs.INFO)}
+          active={activeTab === tabs.INFO}
+        >
+          Informazioni generali
+        </NavLink>
+      </li>
+      <li ref={gestoreRef}>
+        <NavLink
+          to={replaceLastUrlSection(tabs.ENTE_GESTORE)}
+          active={activeTab === tabs.ENTE_GESTORE}
+        >
+          Ente gestore
+        </NavLink>
+      </li>
+      <li ref={partnerRef}>
+        <NavLink
+          to={replaceLastUrlSection(tabs.ENTI_PARTNER)}
+          active={activeTab === tabs.ENTI_PARTNER}
+        >
+          Enti partner
+        </NavLink>
+      </li>
+      <li ref={sediRef}>
+        <NavLink
+          to={replaceLastUrlSection(tabs.SEDI)}
+          active={activeTab === tabs.SEDI}
+        >
+          Sedi
+        </NavLink>
+      </li>
     </Nav>
   );
 
@@ -274,41 +266,6 @@ const ProjectsDetails = () => {
         );
         setCorrectModal(<ManageProgramManagerAuthority />);
         setItemList(null);
-        /*  setItemAccordionList([
-          {
-            title: 'Referenti',
-            items: [
-              {
-                nome: 'Referente 1',
-                stato: 'active',
-                actions: onActionClickReferenti,
-                id: 'ref1',
-              },
-            ],
-          },
-          {
-            title: 'Delegati',
-            items: [
-              {
-                nome: 'Delegato 1',
-                stato: 'active',
-                actions: onActionClickDelegati,
-                id: 'del1',
-              },
-            ],
-          },
-          {
-            title: 'Headquarters',
-            items: [
-              {
-                nome: 'Sede 1',
-                stato: 'active',
-                actions: onActionClickSede,
-                id: 'sede1',
-              },
-            ],
-          },
-        ]); */
         setCorrectButtons([
           {
             size: 'xs',
@@ -426,12 +383,13 @@ const ProjectsDetails = () => {
               upperTitle: { icon: 'it-user', text: 'Progetto' },
               subTitle: 'Programma 1 nome breve',
             }}
-            Form={currentForm}
             formButtons={correctButtons}
             itemsAccordionList={itemAccordionList}
             itemsList={itemList}
             buttonsPosition={buttonsPosition}
-          />
+          >
+            {currentForm}
+          </DetailLayout>
           {currentModal ? currentModal : null}
           <ConfirmDeleteModal
             onConfirm={() => {

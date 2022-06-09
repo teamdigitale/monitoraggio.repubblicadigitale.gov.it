@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Nav, NavItem } from 'design-react-kit';
+import { Nav } from 'design-react-kit';
 import {
   closeModal,
   openModal,
@@ -21,7 +21,10 @@ import ManageProgram from '../modals/manageProgram';
 import ManageProgramManagerAuthority from '../modals/manageProgramManagerAuthority';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
-import { selectProgrammi } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import {
+  selectAuthorities,
+  selectPrograms,
+} from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { NavLink } from '../../../../../components';
 import GeneralInfoAccordionForm from '../../../../forms/formPrograms/ProgramAccordionForm/generalInfoAccordionForm';
 import FormAuthorities from '../../../../forms/formAuthorities';
@@ -34,7 +37,8 @@ const tabs = {
 
 const ProgramsDetails: React.FC = () => {
   const { mediaIsDesktop } = useAppSelector(selectDevice);
-  const programma = useAppSelector(selectProgrammi);
+  const programma = useAppSelector(selectPrograms);
+  const authorityInfo = useAppSelector(selectAuthorities)?.detail || {};
   const dispatch = useDispatch();
   const [deleteText, setDeleteText] = useState<string>('');
   const [editItemModalTitle, setEditItemModalTitle] = useState<string>('');
@@ -104,10 +108,10 @@ const ProgramsDetails: React.FC = () => {
     },
   };
 
-  const gestoreRef = useRef<HTMLSpanElement>(null);
-  const questionariRef = useRef<HTMLSpanElement>(null);
-  const projectRef = useRef<HTMLSpanElement>(null);
-  const infoRef = useRef<HTMLSpanElement>(null);
+  const gestoreRef = useRef<HTMLLIElement>(null);
+  const questionariRef = useRef<HTMLLIElement>(null);
+  const projectRef = useRef<HTMLLIElement>(null);
+  const infoRef = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
     scrollTo(0, 0);
@@ -185,52 +189,31 @@ const ProgramsDetails: React.FC = () => {
         setItemAccordionList([
           {
             title: 'Referenti',
-            items: [
-              {
-                nome: 'Referente 1',
-                stato: 'active',
-                actions: onActionClickReferenti,
-                id: 'ref1',
-              },
-            ],
+            items:
+              authorityInfo?.referenti?.map(
+                (ref: { [key: string]: string }) => ({
+                  ...ref,
+                  actions: onActionClickReferenti,
+                })
+              ) || [],
           },
           {
             title: 'Delegati',
-            items: [
-              {
-                nome: 'Delegato 1',
-                stato: 'active',
-                actions: onActionClickDelegati,
-                id: 'del1',
-              },
-            ],
+            items:
+              authorityInfo?.delegati?.map(
+                (del: { [key: string]: string }) => ({
+                  ...del,
+                  actions: onActionClickDelegati,
+                })
+              ) || [],
           },
           {
             title: 'Headquarters',
-            items: [
-              {
-                nome: 'Sede 122',
-                stato: 'active',
+            items:
+              authorityInfo?.sedi?.map((sede: { [key: string]: string }) => ({
+                ...sede,
                 actions: onActionClickSedi,
-                id: 'sede1',
-                fullInfo: {
-                  ente_ref: 'Comune di Milano',
-                  nFacilitatori: '8',
-                  serviziErogati: 'Facilitazione',
-                },
-              },
-              {
-                nome: 'Sede 2',
-                stato: 'active',
-                actions: onActionClickSedi,
-                id: 'sede2',
-                fullInfo: {
-                  ente_ref: 'Comune di Como',
-                  nFacilitatori: '15',
-                  serviziErogati: 'Formazione',
-                },
-              },
-            ],
+              })) || [],
           },
         ]);
         break;
@@ -274,7 +257,7 @@ const ProgramsDetails: React.FC = () => {
         return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab, mediaIsDesktop, programma]);
+  }, [activeTab, mediaIsDesktop, programma, authorityInfo]);
 
   const formButtons: ButtonInButtonsBar[] = [
     {
@@ -300,46 +283,38 @@ const ProgramsDetails: React.FC = () => {
 
   const nav = (
     <Nav tabs className='mb-5 overflow-hidden'>
-      <span ref={infoRef}>
-        <NavItem>
-          <NavLink
-            to={`/area-amministrativa/programmi/${entityId}/${tabs.INFO}`}
-            active={activeTab === tabs.INFO}
-          >
-            Informazioni generali
-          </NavLink>
-        </NavItem>
-      </span>
-      <span ref={gestoreRef}>
-        <NavItem>
-          <NavLink
-            to={`/area-amministrativa/programmi/${entityId}/${tabs.ENTE}`}
-            active={activeTab === tabs.ENTE}
-          >
-            Ente gestore
-          </NavLink>
-        </NavItem>
-      </span>
-      <span ref={questionariRef}>
-        <NavItem>
-          <NavLink
-            to={`/area-amministrativa/programmi/${entityId}/${tabs.QUESTIONARI}`}
-            active={activeTab === tabs.QUESTIONARI}
-          >
-            Questionari
-          </NavLink>
-        </NavItem>
-      </span>
-      <span ref={projectRef}>
-        <NavItem>
-          <NavLink
-            active={activeTab === tabs.PROGETTI}
-            to={`/area-amministrativa/programmi/${entityId}/${tabs.PROGETTI}`}
-          >
-            Progetti
-          </NavLink>
-        </NavItem>
-      </span>
+      <li ref={infoRef}>
+        <NavLink
+          to={`/area-amministrativa/programmi/${entityId}/${tabs.INFO}`}
+          active={activeTab === tabs.INFO}
+        >
+          Informazioni generali
+        </NavLink>
+      </li>
+      <li ref={gestoreRef}>
+        <NavLink
+          to={`/area-amministrativa/programmi/${entityId}/${tabs.ENTE}`}
+          active={activeTab === tabs.ENTE}
+        >
+          Ente gestore
+        </NavLink>
+      </li>
+      <li ref={questionariRef}>
+        <NavLink
+          to={`/area-amministrativa/programmi/${entityId}/${tabs.QUESTIONARI}`}
+          active={activeTab === tabs.QUESTIONARI}
+        >
+          Questionari
+        </NavLink>
+      </li>
+      <li ref={projectRef}>
+        <NavLink
+          active={activeTab === tabs.PROGETTI}
+          to={`/area-amministrativa/programmi/${entityId}/${tabs.PROGETTI}`}
+        >
+          Progetti
+        </NavLink>
+      </li>
     </Nav>
   );
 
@@ -354,13 +329,14 @@ const ProgramsDetails: React.FC = () => {
           status: 'ATTIVO',
           upperTitle: { icon: 'it-user', text: 'Programma' },
         }}
-        Form={currentForm}
         formButtons={showButtons() ? formButtons : []}
         itemsAccordionList={itemAccordionList}
         itemsList={itemList}
         buttonsPosition='TOP'
         goBackTitle='Vai alla Lista programmi'
-      />
+      >
+        {currentForm}
+      </DetailLayout>
       {currentModal ? currentModal : null}
       <ConfirmDeleteModal
         onConfirm={() => {

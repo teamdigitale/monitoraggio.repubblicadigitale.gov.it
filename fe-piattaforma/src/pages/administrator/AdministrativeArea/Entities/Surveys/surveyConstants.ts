@@ -18,6 +18,13 @@ export const defaultQuestionsCitizenAnagraphic = [
     values: '',
   },
   {
+    id: 'flag-codicefiscale',
+    name: '',
+    type: 'checkbox',
+    isDefault: true,
+    values: '[{"label":"Codice fiscale non disponibile","value":"Codice fiscale non disponibile"}]',
+  },
+  {
     id: '4',
     name: 'Tipo documento',
     type: 'select',
@@ -55,21 +62,21 @@ export const defaultQuestionsCitizenAnagraphic = [
   },
   {
     id: '9',
-    name: 'Stato occupazioneale - livello I',
+    name: 'Stato occupazionale - livello I',
     type: 'text',
     isDefault: true,
     values: '',
   },
   {
     id: '10',
-    name: 'Stato occupazioneale - livello II',
+    name: 'Stato occupazionale - livello II',
     type: 'text',
     isDefault: true,
     values: '',
   },
   {
     id: '11',
-    name: 'Stato occupazioneale - livello III',
+    name: 'Stato occupazionale - livello III',
     type: 'text',
     isDefault: true,
     values: '',

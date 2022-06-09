@@ -79,7 +79,14 @@ const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({
       noSpaceAfterTitle
       centerButtons
     >
-      <div className='d-flex flex-column align-items-center justify-content-around'>
+      <div
+        className={clsx(
+          'd-flex',
+          'flex-column',
+          'align-items-center',
+          'justify-content-around'
+        )}
+      >
         <p className='px-5 text-align-center mb-5'>
           {t('select_profile_to_log_with')}
         </p>

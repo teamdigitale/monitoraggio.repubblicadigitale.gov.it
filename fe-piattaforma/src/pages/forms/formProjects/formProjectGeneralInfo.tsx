@@ -6,7 +6,7 @@ import { Form, Input } from '../../../components';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
-import { selectProgetti } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { selectProjects } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { GetProjectDetail } from '../../../redux/features/administrativeArea/projects/projectsThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
@@ -20,7 +20,9 @@ interface ProgramInformationI {
 
 interface FormEnteGestoreProgettoFullInterface
   extends withFormHandlerProps,
-    ProgramInformationI {}
+    ProgramInformationI {
+  intoModal?: boolean;
+}
 const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
   props
 ) => {
@@ -31,15 +33,17 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     sendNewValues,
     isValidForm,
     setIsFormValid = () => false,
-    getFormValues,
+    getFormValues = () => ({}),
     creation = false,
+    updateForm = () => ({}),
+    intoModal = false,
   } = props;
   const { firstParam } = useParams();
 
   const formDisabled = !!props.formDisabled;
 
   const formData: { [key: string]: string } | undefined =
-    useAppSelector(selectProgetti).detail?.dettaglioProgetto?.generalInfo;
+    useAppSelector(selectProjects).detail?.dettaglioProgetto?.generalInfo;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -73,7 +77,30 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
   useEffect(() => {
     sendNewValues?.(getFormValues?.());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
+
+  const updateRequiredFields = () => {
+    if (form) {
+      const newFormList: formFieldI[] = [];
+      const values = getFormValues();
+      Object.keys(values).forEach((field) => {
+        newFormList.push(
+          newFormField({
+            ...form[field],
+            field: field,
+            id: intoModal ? `modal-${field}` : field,
+          })
+        );
+      });
+      updateForm(newForm(newFormList));
+    }
+  };
+
+  useEffect(() => {
+    updateRequiredFields();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [intoModal]);
 
   return (
     <Form className='mt-5 mb-5' formDisabled={formDisabled}>
@@ -115,14 +142,17 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
 const form = newForm([
   newFormField({
     field: 'id',
+    id: 'project-id',
   }),
   newFormField({
     field: 'nomeProgetto',
     type: 'text',
+    id: 'project-name',
   }),
   newFormField({
     field: 'nomeBreve',
     type: 'text',
+    id: 'short-name',
   }),
 ]);
 

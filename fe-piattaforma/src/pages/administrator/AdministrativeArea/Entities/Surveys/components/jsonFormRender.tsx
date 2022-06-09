@@ -1,101 +1,219 @@
-import React, { useEffect } from 'react';
-import { Form, Input, Rating, Select } from '../../../../../../components';
-import withFormHandler, {
-  withFormHandlerProps,
-} from '../../../../../../hoc/withFormHandler';
-import { formFieldI, newForm } from '../../../../../../utils/formHelper';
-import CheckboxGroup from '../../../../../../components/Form/checkboxGroup';
+import React, { useState } from 'react';
 import {
-  generateForm,
-  SchemaI,
-  SchemaUiI,
-} from '../../../../../../utils/jsonFormHelper';
-
-interface JsonFormRenderI extends withFormHandlerProps {
-  schema?: SchemaI | undefined;
-  schemaUI?: SchemaUiI | undefined;
+  Form,
+  Input,
+  Rating,
+  Select,
+  SelectMultiple,
+} from '../../../../../../components';
+import { formFieldI, FormI } from '../../../../../../utils/formHelper';
+import CheckboxGroup from '../../../../../../components/Form/checkboxGroup';
+import clsx from 'clsx';
+import '../compileSurvey/compileSurvey.scss';
+import { useEffect } from 'react';
+import { setCompilingSurveyForm } from '../../../../../../redux/features/administrativeArea/surveys/surveysSlice';
+import { useDispatch } from 'react-redux';
+interface JsonFormRenderI {
+  form: FormI;
+  onInputChange: (
+    value: formFieldI['value'],
+    field?: formFieldI['field']
+  ) => void;
+  currentStep: number;
 }
 
-const renderInputByType = (
-  formField: formFieldI,
-  onInputChange: withFormHandlerProps['onInputChange'] = () => ({})
-) => {
-  switch (formField.type) {
-    case 'text':
-    default: {
-      return (
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        <Input {...formField} onInputBlur={onInputChange} />
-      );
+const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
+  const { form = {}, onInputChange = () => ({}), currentStep } = props;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (currentStep === 3) {
+      // last step
+      dispatch(setCompilingSurveyForm({ id: currentStep, form }));
     }
-    case 'select': {
-      if (formField.options?.length) {
+  }, [currentStep]);
+
+  const updateFormToOrder = () => {
+    return Object.keys(form).sort(
+      (a, b) => Number(form[a].order) - Number(form[b].order)
+    );
+  };
+  const [orderedForm, setOrderedForm] = useState(updateFormToOrder());
+
+  useEffect(() => {
+    setOrderedForm(updateFormToOrder());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form]);
+
+  const renderInputByType = (formField: formFieldI) => {
+    switch (formField?.type) {
+      case 'text':
+      default: {
         return (
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          <Select
+          <Input
             {...formField}
-            onInputChange={onInputChange}
-            placeholder='Seleziona'
+            className={clsx(
+              'd-inline-block',
+              formField.label?.toLowerCase() === 'prefisso' &&
+                'compile-survey-container__prefix-width',
+              formField.label?.toLowerCase().includes('cellulare') &&
+                'compile-survey-container__mobile-width',
+              formField.label?.toLowerCase() !== 'prefisso' &&
+                !(formField.label?.toLowerCase().includes('cellulare')) &&
+                'compile-survey-container__half-width',
+              'mr-3',
+              'mb-3'
+            )}
+            label={`${formField?.label} ${formField?.required ? '*' : ''}`}
+            onInputBlur={onInputChange}
           />
         );
       }
-      break;
-    }
-    case 'checkbox': {
-      if (formField.options?.length) {
+      case 'select': {
+        if (formField.options?.length) {
+          return (
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            <Select
+              {...formField}
+              wrapperClassName={clsx(
+                'd-inline-block',
+                'compile-survey-container__half-width',
+                'compile-survey-container__select-margin',
+                'mr-3',
+                'mb-3'
+              )}
+              onInputChange={onInputChange}
+              placeholder={`Seleziona ${
+                (formField?.label || '')?.length < 20
+                  ? formField?.label?.toLowerCase()
+                  : ''
+              }`}
+              label={`${formField?.label} ${formField?.required ? '*' : ''}`}
+            />
+          );
+        }
+        break;
+      }
+      case 'checkbox': {
+        if (
+          formField.format === 'multiple-select' &&
+          formField.relatedFrom !== ''
+        ) {
+          return null;
+        }
+        if (
+          formField.format === 'multiple-select' &&
+          formField.relatedTo !== ''
+        ) {
+          const multiSelectOptions: {
+            label: string;
+            options: { label: string; value: string; upperLevel: string }[];
+          }[] = [];
+          if (formField.enumLevel1) {
+            (formField.enumLevel1 || []).forEach((opt) => {
+              multiSelectOptions.push({
+                label: opt,
+                options: [],
+              });
+            });
+          }
+          if (
+            formField?.relatedTo &&
+            form[formField.relatedTo].enumLevel2 &&
+            multiSelectOptions?.length > 0
+          ) {
+            (form[formField.relatedTo].enumLevel2 || []).forEach(
+              ({ label, value, upperLevel }) => {
+                const index = multiSelectOptions.findIndex(
+                  (v) => v.label === upperLevel
+                );
+                multiSelectOptions[index].options.push({
+                  label: label,
+                  value: value,
+                  upperLevel: upperLevel,
+                });
+              }
+            );
+          }
+          return (
+            <SelectMultiple
+              field={formField.field}
+              secondLevelField={formField.relatedTo}
+              id={`multiple-select-${formField.id}`}
+              label={`${formField?.label}`}
+              aria-label={`${formField?.label}`}
+              options={multiSelectOptions}
+              required={formField.required || false}
+              onInputChange={onInputChange}
+              onSecondLevelInputChange={onInputChange}
+              placeholder='Seleziona'
+              wrapperClassName={clsx(
+                'd-inline-block',
+                'compile-survey-container__half-width',
+                'compile-survey-container__select-margin',
+                'mr-3',
+                'mb-3'
+              )}
+            />
+          );
+        }
+        if (formField.options?.length) {
+          return (
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            <CheckboxGroup
+              {...formField}
+              className={clsx(
+                'd-inline-block',
+                'compile-survey-container__half-width',
+                'compile-survey-container__select-margin',
+                'mr-3',
+                'mb-3'
+              )}
+              onInputChange={onInputChange}
+              label={`${formField?.label} ${formField?.required ? '*' : ''}`}
+              styleLabelForm
+            />
+          );
+        }
         return (
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          <CheckboxGroup {...formField} onInputChange={onInputChange} />
+          <Input
+            {...formField}
+            className={clsx(
+              'd-inline-block',
+              'compile-survey-container__half-width',
+              'mr-3',
+              'mb-3'
+            )}
+            onInputBlur={onInputChange}
+            label={`${formField?.label} ${formField?.required ? '*' : ''}`}
+          />
         );
       }
-      return (
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        <Input {...formField} onInputChange={onInputChange} />
-      );
+      case 'range':
+        return (
+          <>
+            <label>{formField.field}</label>
+            <Rating onChange={(val) => onInputChange(val, formField.field)} />
+          </>
+        );
     }
-    case 'range':
-      return (
-        <>
-          <label>{formField.field}</label>
-          <Rating onChange={(val) => onInputChange(val, formField.field)} />
-        </>
-      );
-  }
-};
-
-const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
-  const {
-    schema,
-    schemaUI,
-    form = {},
-    onInputChange = () => ({}),
-    updateForm = () => ({}),
-  } = props;
-  console.log(schema, schemaUI, form, onInputChange);
-
-  useEffect(() => {
-    if (schema) {
-      updateForm(generateForm(schema));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [schema]);
-
-  if (!schema && form) return null;
+  };
 
   return (
     <Form id='compile-survey-form'>
-      {Object.keys(form).map((field) => (
+      {orderedForm.map((field) => (
         <React.Fragment key={field}>
-          {renderInputByType(form[field], onInputChange)}
+          {renderInputByType(form[field])}
         </React.Fragment>
       ))}
     </Form>
   );
 };
 
-const form = newForm();
-export default withFormHandler({ form }, JsonFormRender);
+export default JsonFormRender;

@@ -70,7 +70,8 @@ const Surveys = () => {
           <Chip
             className={clsx(
               'table-container__status-label',
-              statusBgColor(td.status)
+              statusBgColor(td.status),
+              'no-border'
             )}
           >
             <ChipLabel className={statusColor(td.status)}>
@@ -146,7 +147,7 @@ const Surveys = () => {
   }
 
   const questionnaireOptionsMock: QuestionnaireFilter[] = [
-    { label: 'Surveys', key: 'questionnaire', value: 'questionnaire' },
+    { label: 'Questionari', key: 'questionnaire', value: 'questionnaire' },
     { label: 'Addendum', key: 'addendum', value: 'Addendum' },
   ];
 

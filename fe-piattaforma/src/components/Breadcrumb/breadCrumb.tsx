@@ -20,7 +20,7 @@ const Breadcrumb: React.FC = () => {
 
   const pathnames = location.pathname.split('/').filter((x) => x);
 
- // const { hash } = location;
+  // const { hash } = location;
 
   return (
     <Container className='mt-3'>
@@ -42,8 +42,7 @@ const Breadcrumb: React.FC = () => {
                 to={routeTo || ''}
                 className={clsx(
                   index === 0 && 'pl-3 font-weight-bold text-secondary',
-                  pathnames?.length > 2 &&
-                    index === 1 ||
+                  (pathnames?.length > 2 && index === 1) ||
                     mainSection.includes(item)
                     ? 'primary-color'
                     : 'text-secondary',
@@ -53,8 +52,7 @@ const Breadcrumb: React.FC = () => {
                   borderLeft: index === 0 ? '5px solid #06c' : 'none',
                   textDecoration:
                     index === 1 ||
-                    mainSection.includes(item) &&
-                    pathnames?.length > 2
+                    (mainSection.includes(item) && pathnames?.length > 2)
                       ? 'underline'
                       : 'none',
                 }}

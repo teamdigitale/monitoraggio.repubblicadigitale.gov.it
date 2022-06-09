@@ -44,7 +44,7 @@ export const GetEntityValues =
   };
 
 const GetFilterValuesAction = {
-  type: 'citizensArea/GetEntityFilterValues',
+  type: 'citizensArea/GetFilterValues',
 };
 export const GetEntityFilterValues =
   (cfUtente: string, entityFilter: any, payload?: any) =>

@@ -9,7 +9,7 @@ import {
   selectEntityFilters,
   selectEntityFiltersOptions,
   selectEntityPagination,
-  selectProgrammi,
+  selectPrograms,
   setEntityFilters,
   setEntityPagination,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
@@ -39,7 +39,7 @@ const policyDropdownLabel = 'policies';
 const Programs = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const programmiList = useAppSelector(selectProgrammi);
+  const programmiList = useAppSelector(selectPrograms);
   const filtersList = useAppSelector(selectEntityFilters);
   const pagination = useAppSelector(selectEntityPagination);
   const dropdownFilterOptions = useAppSelector(selectEntityFiltersOptions);
@@ -73,7 +73,8 @@ const Programs = () => {
             <Chip
               className={clsx(
                 'table-container__status-label',
-                statusBgColor(td.stato)
+                statusBgColor(td.stato),
+                'no-border'
               )}
             >
               <ChipLabel className={statusColor(td.stato)}>

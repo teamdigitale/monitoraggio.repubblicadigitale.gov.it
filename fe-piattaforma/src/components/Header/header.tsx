@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProp> = (props) => {
     isHeaderFull,
   };
 
-  if (device?.mediaIsPhone) {
+  if (!device?.mediaIsDesktop) {
     return <HeaderMobile {...componentProps} />;
   }
   return <HeaderDesktop {...componentProps} />;

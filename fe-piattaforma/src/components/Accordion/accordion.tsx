@@ -8,9 +8,8 @@ import {
   Label,
 } from 'design-react-kit';
 import { Form, Input } from '../../components';
-import React, { memo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './accordion.scss';
-import isEqual from 'lodash.isequal';
 
 interface AccordionI {
   title: string;
@@ -22,6 +21,7 @@ interface AccordionI {
   disabledCheckbox?: boolean;
   isChecked?: boolean;
   handleOnCheck?: () => void;
+  handleOnToggle?: (collapse: boolean) => void;
   lastBottom?: boolean;
 }
 
@@ -37,8 +37,13 @@ const Accordion: React.FC<AccordionI> = (props) => {
     disabledCheckbox,
     isChecked,
     handleOnCheck,
+    handleOnToggle,
   } = props;
   const [collapseOpen, setCollapseOpen] = useState(false);
+
+  useEffect(() => {
+    if (handleOnToggle) handleOnToggle(collapseOpen);
+  }, [collapseOpen]);
 
   return (
     <AccordionKit
@@ -100,6 +105,7 @@ const Accordion: React.FC<AccordionI> = (props) => {
             <Button
               onClick={() => console.log('cta')}
               className='d-flex justify-content-between'
+              type='button'
             >
               <Icon
                 color='primary'
@@ -117,6 +123,4 @@ const Accordion: React.FC<AccordionI> = (props) => {
   );
 };
 
-export default memo(Accordion, (prevProps, currentProps) => {
-  return !!isEqual(prevProps, currentProps);
-});
+export default Accordion;

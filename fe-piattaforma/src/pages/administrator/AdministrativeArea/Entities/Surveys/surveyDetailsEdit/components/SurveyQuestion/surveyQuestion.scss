@@ -1,4 +1,11 @@
 .survey-question-container {
+  &__header {
+    flex-direction: row;
+  }
+
+  &__question-description {
+    flex-grow: 1;
+  }
 
   &__box-right {
     width: 40%;
@@ -44,5 +51,29 @@
 
   &__error-question {
     border: 1px solid red;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .survey-question-container {
+    &__header {
+      flex-direction: column;
+    }
+
+    &__box-right {
+      width: 100%;
+    }
+    &__question-description {
+      flex-grow: 1;
+    }
+  }
+}
+@media screen and (max-width: 830px) {
+  .survey-question-container {
+    &__question-description {
+      padding: rem(2px) rem(9px) rem(20px) rem(9px);
+      background-color: color('grey-150');
+      flex-grow: 1;
+    }
   }
 }

@@ -61,7 +61,18 @@ const CardCommunity: React.FC<CardCommunityI> = (props) => {
           !fullCard && device.mediaIsDesktop && 'community-card__maxWidthCard'
         )}
       >
-        <div className='ml-2 bg-white px-4 py-4 h-100 d-flex flex-column community-card__white-card'>
+        <div
+          className={clsx(
+            'ml-2',
+            'bg-white',
+            'px-4',
+            'py-4',
+            'h-100',
+            'd-flex',
+            'flex-column',
+            'community-card__white-card'
+          )}
+        >
           <Col>
             {title ? (
               <CardTitle
@@ -124,12 +135,30 @@ const CardCommunity: React.FC<CardCommunityI> = (props) => {
           <div className='d-flex justify-content-center'>
             <hr className='community-card__line' />
           </div>
-          <div className='w-100 bg-white px-4 py-4 h-100 community-card__last-comment community-card__white-card'>
+          <div
+            className={clsx(
+              'w-100',
+              'bg-white',
+              'px-4',
+              'py-4',
+              'h-100',
+              'community-card__last-comment',
+              'community-card__white-card'
+            )}
+          >
             <a href='/' className='ml-2'>
               {t('visualize_previous_answers').toUpperCase()} (
               {(commentsTot || 1) - 1})
             </a>
-            <div className='mt-4 ml-2 d-flex flex-row justify-content-between'>
+            <div
+              className={clsx(
+                'mt-4',
+                'ml-2',
+                'd-flex',
+                'flex-row',
+                'justify-content-between'
+              )}
+            >
               <img
                 src={Avatar}
                 alt='avatar'

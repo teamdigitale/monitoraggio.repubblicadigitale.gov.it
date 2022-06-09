@@ -3,7 +3,7 @@ import { TableHeadingEntities } from '../utils';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
-  selectEnti,
+  selectAuthorities,
   selectEntityFilters,
   selectEntityFiltersOptions,
   selectEntityPagination,
@@ -37,7 +37,7 @@ const programDropdownLabel = 'programmi';
 
 const Progetti: React.FC = () => {
   const dispatch = useDispatch();
-  const entiList = useAppSelector(selectEnti);
+  const entiList = useAppSelector(selectAuthorities);
   const filtersList = useAppSelector(selectEntityFilters);
   const pagination = useAppSelector(selectEntityPagination);
   const dropdownFilterOptions = useAppSelector(selectEntityFiltersOptions);

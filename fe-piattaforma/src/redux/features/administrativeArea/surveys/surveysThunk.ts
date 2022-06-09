@@ -215,7 +215,7 @@ const SetSurveySectionAction = { type: 'surveys/SetSurveySection' };
 export const SetSurveySection =
   (payload?: any) => async (dispatch: Dispatch) => {
     try {
-      console.log({ payload });
+      // console.log({ payload });
       // TODO manage update section
       dispatch({ ...SetSurveySectionAction, payload });
       dispatch(showLoader());
@@ -292,7 +292,6 @@ export const SetSurveyCreation =
         survey,
       } = select((state: RootState) => state);
       if (survey) {
-        console.log('questionario', survey);
         let valid = true;
         valid = valid && FormHelper.isValidForm(survey.form);
         if (valid) {
@@ -300,7 +299,7 @@ export const SetSurveyCreation =
             ...FormHelper.getFormValues(survey.form),
             sections: [],
           };
-          survey.sections.forEach((section: SurveySectionI) => {
+          survey.sections.forEach((section: SurveySectionI, index: number) => {
             // valid = valid && FormHelper.isValidForm(section.form);
             if (valid) {
               const finalForm: any = [];
@@ -323,7 +322,7 @@ export const SetSurveyCreation =
               body.sections?.push({
                 id: section.id || `${new Date().getTime()}`,
                 title: section.sectionTitle,
-                ...generateJsonFormSchema(newForm(finalForm, true)),
+                ...generateJsonFormSchema(newForm(finalForm, true), index, survey.sectionsSchemaResponse),
               });
             }
           });
@@ -356,12 +355,31 @@ export const GetSurveyInfo =
     }
   };
 
+const PostFormCompletedByCitizenAction = { type: 'questionario/PostFormCompletedByCitizen' };
+export const PostFormCompletedByCitizen =
+  (payload?: any) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...PostFormCompletedByCitizenAction, payload });
+      const entityEndpoint = `/`;
+      const body = {
+        payload,
+      };
+      const res = await API.post(entityEndpoint, body);
+      if(res){ /* TODO: controllo se post andata a buon fine */}
+    } catch (e) {
+      console.error('post questionario compilato PostFormCompletedByCitizen', e);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
 // Thunk for updating exclusive field in Questionario entity
 
 export const UpdateSurveyExclusiveField =
   (payload?: any) => async (dispatch: any) => {
     dispatch(showLoader());
-    console.log(payload);
+    // console.log(payload);
 
     const { flagType, flagChecked, surveyId } = payload;
     try {

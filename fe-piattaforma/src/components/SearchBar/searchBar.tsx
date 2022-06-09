@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/click-services-have-key-services */
 import React, { useCallback, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Button, Icon, Tooltip } from 'design-react-kit';
@@ -160,65 +160,72 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
             }}
           />
         ) : (
-          <div className='input-group mb-3 flex-nowrap search-bar-custom__input-group'>
-            <div className='input-group-append input-button'>
-              <Button
-                onClick={clearSearch}
-                className={clsx(
-                  hasSearchValue && 'visible',
-                  !hasSearchValue && 'invisible',
-                  'border-0 px-0'
-                )}
-                id='button-addon1'
-              >
-                <Icon
-                  icon='it-close-big'
-                  aria-hidden
-                  size='xs'
-                  color='primary'
-                  aria-label='Chiudi'
-                ></Icon>
-              </Button>
-            </div>
-            <Input
-              addon
-              className={clsx(
-                'mb-0',
-                'input-border',
-                'input-search',
-                hasSearchValue && 'input-text-bold',
-                'position-relative',
-                'bg-transparent'
-              )}
-              col='col-9'
-              field={id}
-              onInputChange={(search) =>
-                setSearchValue((search || '').toString())
-              }
-              placeholder={device.mediaIsPhone ? '' : placeholder}
-              value={searchValue}
-              withLabel={false}
-              aria-label={id}
-            />
-
-            {!hasSearchValue && device.mediaIsPhone && (
-              <span id='placeholder-icon'>
-                <span
-                  className='placeholder-label font-weight-normal primary-color-a12'
-                  onClick={focusOfSearch}
-                >
-                  {title}
-                </span>
-                <span id='search-tooltip' className='ml-2'>
-                  <Icon
-                    icon='it-info-circle'
-                    size='xs'
-                    color='primary-color-a12'
-                  />
-                </span>
-              </span>
+          <div
+            className={clsx(
+              'input-group',
+              'mb-3',
+              'search-bar-custom__input-group'
             )}
+          >
+            <div className='search-bar-custom__left-section'>
+              {searchValue && (
+                <div className='input-group-append input-button'>
+                  <Button
+                    onClick={clearSearch}
+                    className='border-0 px-0'
+                    id='button-addon1'
+                  >
+                    <Icon
+                      icon='it-close-big'
+                      aria-hidden
+                      size='xs'
+                      color='primary'
+                      aria-label='Chiudi'
+                    />
+                  </Button>
+                </div>
+              )}
 
+              <Input
+                addon
+                className={clsx(
+                  'mb-0',
+                  'input-border',
+                  'input-search',
+                  hasSearchValue && 'input-text-bold',
+                  'position-relative',
+                  'bg-transparent',
+                  'mr-5'
+                )}
+                field={id}
+                onInputChange={(search) =>
+                  setSearchValue((search || '').toString())
+                }
+                placeholder={device.mediaIsPhone ? '' : placeholder}
+                value={searchValue}
+                withLabel={false}
+                aria-label={id}
+              />
+
+              {!hasSearchValue && device.mediaIsPhone && (
+                <span id='placeholder-icon'>
+                  <span
+                    className='placeholder-label font-weight-normal primary-color-a12'
+                    onClick={focusOfSearch}
+                  >
+                    {title}
+                  </span>
+                  <span id='search-tooltip' className='ml-2'>
+                    <Icon
+                      icon='it-info-circle'
+                      size='xs'
+                      color='primary-color-a12'
+                      aria-label='icona info'
+                    />
+                  </span>
+                </span>
+              )}
+            </div>
             <div className='input-group-append input-button'>
               {searchButton ? (
                 <Button
@@ -240,6 +247,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                     size=''
                     color='primary'
                     aria-label='Cerca'
+                    className='pl-1'
                   />
                 </Button>
               )}

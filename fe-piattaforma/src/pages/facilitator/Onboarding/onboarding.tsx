@@ -53,32 +53,40 @@ const formOnboarding = newForm([
   newFormField({
     field: 'name',
     required: true,
+    id: 'name',
   }),
   newFormField({
     field: 'surname',
     required: true,
+    id: 'surname',
   }),
   newFormField({
     field: 'email',
     required: true,
+    id: 'email',
   }),
   newFormField({
     field: 'birthdate',
     required: true,
+    id: 'birthday',
   }),
   newFormField({
     field: 'mobile',
     required: true,
+    id: 'mobile',
   }),
   newFormField({
     field: 'telephone',
+    id: 'telephone',
   }),
   newFormField({
     field: 'residency',
     required: true,
+    id: 'residency',
   }),
   newFormField({
     field: 'citizenship',
+    id: 'citizenship',
   }),
 ]);
 

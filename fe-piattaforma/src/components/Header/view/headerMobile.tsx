@@ -10,7 +10,7 @@ import {
   Icon,
 } from 'design-react-kit';
 import LogoMobile from '/public/assets/img/logo-mobile.png';
-import Bell from '/public/assets/img/Campanella.png';
+import Bell from '/public/assets/img/campanella.png';
 
 import { HeaderI } from '../header';
 import { logout } from '../../../redux/features/user/userSlice';

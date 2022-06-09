@@ -5,18 +5,18 @@ import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 
 import { formTypes } from '../utils';
 import { formFieldI } from '../../../../../utils/formHelper';
-import FormHeadquarters from '../../../../forms/formHeadquarters';
+import FormServices from '../../../../forms/formServices';
 
-const id = formTypes.SEDE;
+const id = formTypes.SERVICES;
 
-interface ManageSediFormI {
+interface ManageServicesFormI {
   formDisabled?: boolean;
   creation?: boolean;
 }
 
-interface ManageSediI extends withFormHandlerProps, ManageSediFormI {}
+interface ManageServicesI extends withFormHandlerProps, ManageServicesFormI {}
 
-const ManageHeadquarter: React.FC<ManageSediI> = ({
+const ManageServices: React.FC<ManageServicesI> = ({
   clearForm,
   formDisabled,
   creation = false,
@@ -26,7 +26,7 @@ const ManageHeadquarter: React.FC<ManageSediI> = ({
   }>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
 
-  const handleSaveSite = () => {
+  const handleCreateService = () => {
     if (isFormValid) {
       console.log(newFormValues);
       // TODO call to update the values
@@ -38,15 +38,15 @@ const ManageHeadquarter: React.FC<ManageSediI> = ({
       id={id}
       primaryCTA={{
         disabled: !isFormValid,
-        label: 'Conferma',
-        onClick: handleSaveSite,
+        label: 'Crea servizio',
+        onClick: handleCreateService,
       }}
       secondaryCTA={{
         label: 'Annulla',
         onClick: () => clearForm?.(),
       }}
     >
-      <FormHeadquarters
+      <FormServices
         creation={creation}
         formDisabled={!!formDisabled}
         sendNewValues={(newData) => setNewFormValues({ ...newData })}
@@ -56,4 +56,4 @@ const ManageHeadquarter: React.FC<ManageSediI> = ({
   );
 };
 
-export default ManageHeadquarter;
+export default ManageServices;

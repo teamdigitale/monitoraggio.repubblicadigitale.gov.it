@@ -13,8 +13,7 @@ import clsx from 'clsx';
 
 interface DetailLayoutI {
   nav?: ReactElement;
-  Form?: ReactElement | undefined;
-  formButtons: ButtonInButtonsBar[];
+  formButtons?: ButtonInButtonsBar[] | undefined;
   itemsAccordionList?: ItemsListI[] | null | undefined;
   titleInfo: {
     title: string;
@@ -30,9 +29,9 @@ interface DetailLayoutI {
   buttonsPosition: 'TOP' | 'BOTTOM';
   showGoBack?: boolean;
   goBackTitle?: string;
+  children?: ReactElement | undefined;
 }
 const DetailLayout: React.FC<DetailLayoutI> = ({
-  Form,
   formButtons,
   itemsAccordionList,
   titleInfo,
@@ -41,6 +40,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   buttonsPosition,
   showGoBack = true,
   goBackTitle = 'Torna indietro',
+  children,
 }) => {
   const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
@@ -66,7 +66,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
           {nav}
         </div>
       )}
-      {Form && <div>{Form}</div>}
+      <div>{children}</div>
       {buttonsPosition === 'TOP' && formButtons && formButtons.length !== 0 ? (
         <>
           <div aria-hidden='true'>

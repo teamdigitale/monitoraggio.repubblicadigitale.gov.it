@@ -1,7 +1,7 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import API from '../../../../utils/apiHelper';
 import { hideLoader, showLoader } from '../../app/appSlice';
-import { setSedeDetail } from '../administrativeAreaSlice';
+import { setHeadquartersDetails } from '../administrativeAreaSlice';
 
 const SetHeadquartersDetailsAction = {
   type: 'headquarters/SetHeadquartersDetails',
@@ -36,7 +36,7 @@ export const GetHeadquartersDetail =
       const res = await API.get(`sede/idSede`);
       console.log(res);
       if (res?.data) {
-        dispatch(setSedeDetail(res.data));
+        dispatch(setHeadquartersDetails(res.data));
       }
     } catch (error) {
       console.log('GetHeadquartersDetail error', error);

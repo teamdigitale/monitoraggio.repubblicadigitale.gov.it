@@ -109,11 +109,12 @@ const UsersDetails = () => {
               status: 'ATTIVO',
               upperTitle: { icon: 'it-user', text: userType || '' },
             }}
-            Form={currentForm}
             formButtons={correctButtons}
             itemsList={itemList}
             buttonsPosition={buttonsPosition}
-          />
+          >
+            {currentForm}
+          </DetailLayout>
           {currentModal ? currentModal : null}
           <ConfirmDeleteModal
             onConfirm={() => {

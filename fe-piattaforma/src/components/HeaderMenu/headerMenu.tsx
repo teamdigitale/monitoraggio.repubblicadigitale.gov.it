@@ -53,6 +53,10 @@ const MenuMock = [
         label: 'Questionari',
         path: '/area-amministrativa/questionari',
       },
+      {
+        label: 'Servizi',
+        path: '/area-amministrativa/servizi',
+      },
     ],
   },
   {
@@ -94,6 +98,7 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
   );
   const { t } = useTranslation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [dropdownEventsOpen, setDropdownEventsOpen] = useState(false);
   const navigate = useNavigate();
   // const currentRef = useRef();
 
@@ -101,7 +106,7 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
     switch (e.key) {
       case ' ': {
         e.preventDefault();
-        console.log(e, e.target);
+        //console.log(e, e.target);
 
         // onLinkClick();
         // navigate('area-cittadini');
@@ -121,20 +126,36 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
   }, []);
 
   const navDropDown: React.FC<MenuItem> = (li) => {
-    const toggle = () => setDropdownOpen((prevState) => !prevState);
+    const toggle = (dropdown: string) => {
+      dropdown.toLowerCase() !== 'area cittadini'
+        ? setDropdownOpen((prevState) => !prevState)
+        : setDropdownEventsOpen((prevState) => !prevState);
+    };
     const onLinkClick = () => {
       setActiveTab(li.id);
-      toggle();
+      toggle(li.label);
     };
 
     return (
       <>
-        <UncontrolledDropdown inNavbar isOpen={dropdownOpen} toggle={toggle}>
+        <UncontrolledDropdown
+          inNavbar
+          isOpen={
+            li.label.toLowerCase() === 'area cittadini'
+              ? dropdownEventsOpen
+              : dropdownOpen
+          }
+          toggle={() => toggle(li.label)}
+        >
           <DropdownToggle
             nav
             caret
             className='text-white font-weight-semibold pb-0 mb-1'
-            aria-expanded={dropdownOpen}
+            aria-expanded={
+              li.label.toLowerCase() === 'area cittadini'
+                ? dropdownEventsOpen
+                : dropdownOpen
+            }
           >
             {li.label}{' '}
             <Icon icon='it-expand' size='sm' color='white' aria-label='Apri' />

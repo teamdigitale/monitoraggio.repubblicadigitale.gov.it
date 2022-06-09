@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import LogoScrittaBlu from '/public/assets/img/LogoScrittaBlu.png';
+import LogoScrittaBlu from '/public/assets/img/logo-scritta-blu.png';
 import { Footer } from '../../../components';
 import clsx from 'clsx';
 import { Button, Card, Icon } from 'design-react-kit';

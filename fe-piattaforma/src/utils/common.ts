@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { FilterI } from '../components/DropdownFilter/dropdownFilter';
 import { TableRowI } from '../components/Table/table';
 
@@ -50,6 +52,9 @@ export const CRUDActionTypes = {
   DELETE: 'delete',
   CLONE: 'clone',
   INFO: 'info',
+  SEND: 'send',
+  PRINT: 'print',
+  COMPILE: 'compile',
 };
 
 export interface CRUDActionsI {
@@ -129,3 +134,29 @@ export const menuRoutes = [
     id: 'tab-documenti',
   },
 ];
+
+// Flattens all child elements into a single list
+// @ts-ignore
+const flatten = (children: React.ReactElement, flat = []) => {
+  // @ts-ignore
+  flat = [...flat, ...React.Children.toArray(children)];
+
+  if (children.props && children.props.children) {
+    return flatten(children.props.children, flat);
+  }
+
+  return flat;
+};
+
+// Strips all circular references and internal fields
+export const simplify = (children: React.ReactElement) => {
+  const flat = flatten(children);
+
+  // @ts-ignore
+  return flat.map(({ key, ref, type, props: { children, ...props } }) => ({
+    key,
+    ref,
+    type,
+    props,
+  }));
+};

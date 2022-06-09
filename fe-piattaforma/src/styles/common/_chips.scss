@@ -1,7 +1,23 @@
+.chip {
+  cursor: default;
+  .no-border {
+    border: none;
+  }
+}
+
+.chip-label {
+  transform: unset !important;
+  line-height: rem(15px);
+}
+
 .chip-disabled {
   border: 1px solid #e6e9f2;
 }
 
 .chip.chip-disabled button .icon {
   fill: #5c6f82;
+}
+
+.chip:hover:is(.no-border) {
+  border-color: transparent;
 }

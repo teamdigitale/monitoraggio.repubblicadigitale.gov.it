@@ -4,6 +4,7 @@ import { Button, ButtonProps, Icon } from 'design-react-kit';
 export interface ButtonInButtonsBar extends ButtonProps {
   text: string;
   iconForButton?: string;
+  iconColor?: string;
 }
 
 interface StickyButtonsI {
@@ -24,8 +25,9 @@ const ButtonsBar: React.FC<StickyButtonsI> = ({ buttons = [] }) => {
             <Icon
               icon={button.iconForButton}
               size='sm'
-              color='white'
+              color={button.iconColor || 'white'}
               className='mr-2'
+              aria-label={button.text}
             />
           )}
           <span>{button.text}</span>

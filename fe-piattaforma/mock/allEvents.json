@@ -1,0 +1,30 @@
+{
+  "data": {
+    "list": [
+      {
+        "id": 1,
+        "nome": "Evento 1",
+        "numeroCittadini": "11",
+        "questionari": "12",
+        "facilitatore": "Tizio",
+        "stato": "ATTIVO"
+      },
+      {
+        "id": 2,
+        "nome": "Evento 1",
+        "numeroCittadini": "11",
+        "questionari": "12",
+        "facilitatore": "Tizio",
+        "stato": "ATTIVO"
+      },
+      {
+        "id": 3,
+        "nome": "Evento 1",
+        "numeroCittadini": "11",
+        "questionari": "12",
+        "facilitatore": "Tizio",
+        "stato": "ATTIVO"
+      }
+    ]
+  }
+}

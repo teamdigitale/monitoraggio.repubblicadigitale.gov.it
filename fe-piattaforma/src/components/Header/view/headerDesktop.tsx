@@ -107,7 +107,14 @@ const HeaderDesktop: React.FC<HeaderI> = ({
           ))}
           <LinkListItem divider />
           <LinkListItem onClick={() => dispatch(logout())}>
-            <Button className='d-flex justify-content-between align-items-center w-100'>
+            <Button
+              className={clsx(
+                'd-flex',
+                'justify-content-between',
+                'align-items-center',
+                'w-100'
+              )}
+            >
               <span>Esci</span>
               <Icon
                 icon='it-external-link'
@@ -134,7 +141,15 @@ const HeaderDesktop: React.FC<HeaderI> = ({
           isLogged ? 'text.white primary-bg-b2' : ''
         )}
       >
-        <div className='container d-flex align-items-center justify-content-end my-0'>
+        <div
+          className={clsx(
+            'container',
+            'd-flex',
+            'align-items-center',
+            'justify-content-end',
+            'my-0'
+          )}
+        >
           {/* <div className='mr-auto'>
             {isHeaderFull ? (
               <p className='h6 m-0'>Repubblica Digitale</p>
@@ -168,7 +183,14 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                   color='white'
                   aria-label='Gestione profili'
                 />
-                <h6 className='m-0 ml-2 font-weight-light text-nowrap'>
+                <h6
+                  className={clsx(
+                    'm-0',
+                    'ml-2',
+                    'font-weight-light',
+                    'text-nowrap'
+                  )}
+                >
                   {' '}
                   {t('role_management')}{' '}
                 </h6>

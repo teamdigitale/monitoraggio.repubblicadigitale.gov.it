@@ -7,7 +7,7 @@ import { Form, Input } from '../../../components';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
-import { selectProgetti } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { selectProjects } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { GetProjectDetail } from '../../../redux/features/administrativeArea/projects/projectsThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
@@ -28,6 +28,7 @@ interface TargetDateFormProjectsI
     | 'uniqueUsers'
     | 'services'
     | 'facilitators';
+  intoModal?: boolean;
 }
 
 const TargetDateFormProjects: React.FC<TargetDateFormProjectsI> = (props) => {
@@ -43,18 +44,20 @@ const TargetDateFormProjects: React.FC<TargetDateFormProjectsI> = (props) => {
     creation = false,
     updateForm = () => ({}),
     clearForm = () => ({}),
+    intoModal = false,
   } = props;
   const { firstParam } = useParams();
 
   const formDisabled = !!props.formDisabled;
 
   const formData: { [key: string]: string } | undefined =
-    useAppSelector(selectProgetti).detail?.dettaglioProgetto?.[formForSection];
+    useAppSelector(selectProjects).detail?.dettaglioProgetto?.[formForSection];
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     clearForm();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formForSection]);
 
   useEffect(() => {
@@ -101,6 +104,7 @@ const TargetDateFormProjects: React.FC<TargetDateFormProjectsI> = (props) => {
             ...form[manageField],
             field: manageField,
             required: !!values[field],
+            id: `${intoModal && 'modal-'}${formForSection}-${field}`,
           })
         );
       });
@@ -112,7 +116,9 @@ const TargetDateFormProjects: React.FC<TargetDateFormProjectsI> = (props) => {
 
   useEffect(() => {
     updateRequiredFields();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   useEffect(() => {
     sendNewValues?.(getFormValues?.());
     updateRequiredFields();
