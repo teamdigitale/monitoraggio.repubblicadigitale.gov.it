@@ -1,0 +1,107 @@
+name: CodeQL
+
+on:
+  push:
+    branches:
+      - develop
+      - test
+      - main
+  pull_request:
+    branches:
+      - develop
+      - test
+      - main
+  schedule:
+    - cron: '0 8 * * 1'
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript','java' ]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      if: ${{ matrix.language == 'javascript' }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: 'lts/*'
+        
+    - name: Set up JDK 11
+      if: ${{ matrix.language == 'java' }}
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'adopt-openj9'
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: ${{ matrix.language }}
+        # queries: security-extended,security-and-quality
+
+    - name: FE-Build
+      if: ${{ matrix.language == 'javascript' }}
+      run: |
+        cd ${{ github.workspace }}/fe-piattaforma
+        npm install
+        npm run build
+        
+    - name: Lib-Build
+      if: ${{ matrix.language == 'java' }}
+      run: |
+        cd ${{ github.workspace }}/lib-repdgt-shared
+        mvn install
+        
+    - name: ms-ente Build
+      if: ${{ matrix.language == 'java' }}
+      run: |
+        cd ${{ github.workspace }}/ms-ente
+        mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }}
+        
+    - name: ms-gestione-utente Build
+      if: ${{ matrix.language == 'java' }}
+      run: |
+        cd ${{ github.workspace }}/ms-gestione-utente
+        mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }}
+        
+    - name: ms-notifiche-integration Build
+      if: ${{ matrix.language == 'java' }}
+      run: |
+        cd ${{ github.workspace }}/ms-notifiche-integration
+        mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }}
+        
+    - name: ms-open-data Build
+      if: ${{ matrix.language == 'java' }}
+      run: |
+        cd ${{ github.workspace }}/ms-open-data
+        mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }}
+        
+    - name: ms-programma-progetto Build
+      if: ${{ matrix.language == 'java' }}
+      run: |
+        cd ${{ github.workspace }}/ms-programma-progetto
+        mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }}
+        
+    - name: ms-questionario-cittadino Build
+      if: ${{ matrix.language == 'java' }}
+      run: |
+        cd ${{ github.workspace }}/ms-questionario-cittadino
+        mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }} -DMONGODB_HOST=${{ secrets.MONGODB_HOST }} -DMONGODB_NAME=${{ secrets.MONGODB_NAME }} -DMONGODB_PORT=${{ secrets.MONGODB_PORT }} -DDB_MONGO_USERNAME=${{ secrets.DB_MONGO_USERNAME }} -DDB_MONGO_PASSWORD=${{ secrets.DB_MONGO_PASSWORD }} -DKEYSTORE_PATH=${{ secrets.KEYSTORE_PATH }} -DKEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}
+        cd ${{ github.workspace }}
+        
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      
