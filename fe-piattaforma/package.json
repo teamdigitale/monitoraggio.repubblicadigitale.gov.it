@@ -24,7 +24,7 @@
     "cypress-axe": "^0.14.0",
     "design-react-kit": "^4.0.2",
     "focus-trap-react": "^8.11.1",
-    "i18next": "^21.6.16",
+    "i18next": "^21.8.9",
     "lodash.isempty": "^4.4.0",
     "lodash.isequal": "^4.5.0",
     "react": "^17.0.2",
