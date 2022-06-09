@@ -56,7 +56,7 @@ jobs:
       if: ${{ matrix.language == 'javascript' }}
       run: |
         cd ${{ github.workspace }}/fe-piattaforma
-        npm install
+        npm install --force
         npm run build
         
     - name: Lib-Build
