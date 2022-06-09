@@ -9,6 +9,8 @@ updates:
     labels:
       - "github-actions"
       - "dependabot"
+    assignees:
+      - "MattMod"
     schedule:
       interval: "weekly"
       day: "monday"
@@ -23,6 +25,8 @@ updates:
     labels:
       - "npm"
       - "dependabot"
+    assignees:
+      - "nicogheart1"
     schedule:
       interval: "weekly"
       day: "monday"
@@ -37,6 +41,8 @@ updates:
     labels:
       - "maven"
       - "dependabot"
+    assignees:
+      - "carloalbertosimoncini"
     schedule:
       interval: "weekly"
       day: "monday"
@@ -51,6 +57,8 @@ updates:
     labels:
       - "maven"
       - "dependabot"
+    assignees:
+      - "carloalbertosimoncini"
     schedule:
       interval: "weekly"
       day: "monday"
@@ -65,11 +73,13 @@ updates:
     labels:
       - "maven"
       - "dependabot"
+    assignees:
+      - "carloalbertosimoncini"
     schedule:
       interval: "weekly"
       day: "monday"
       time: "07:00"
-      timezone: Europe/Rome     
+      timezone: Europe/Rome
 
   - package-ecosystem: "maven"
     directory: "/ms-questionario-cittadino"
@@ -79,6 +89,8 @@ updates:
     labels:
       - "maven"
       - "dependabot"
+    assignees:
+      - "carloalbertosimoncini"
     schedule:
       interval: "weekly"
       day: "monday"
@@ -90,6 +102,8 @@ updates:
     commit-message:
       prefix: "chore"
       include: "scope"
+    assignees:
+      - "carloalbertosimoncini"
     labels:
       - "maven"
       - "dependabot"
@@ -104,6 +118,8 @@ updates:
     commit-message:
       prefix: "chore"
       include: "scope"
+    assignees:
+      - "carloalbertosimoncini"
     labels:
       - "maven"
       - "dependabot"
@@ -111,4 +127,4 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "07:00"
-      timezone: Europe/Rome   
+      timezone: Europe/Rome
