@@ -128,3 +128,19 @@ updates:
       day: "monday"
       time: "07:00"
       timezone: Europe/Rome
+
+  - package-ecosystem: "maven"
+    directory: "/ms-notifiche-integration"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    assignees:
+      - "carloalbertosimoncini"
+    labels:
+      - "maven"
+      - "dependabot"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "07:00"
+      timezone: Europe/Rome
