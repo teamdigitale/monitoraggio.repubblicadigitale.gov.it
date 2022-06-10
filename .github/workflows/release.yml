@@ -6,6 +6,10 @@ on:
       version:
         description: 'Existing Version to release (*Blank to create a new one)'
         required: false
+      environment:
+        description: 'The target environment for deployment'
+        type: environment
+        required: true
 
 permissions:
   contents: write
@@ -18,6 +22,7 @@ jobs:
   DryRunRelease:
     name: Dry-Run Release
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
     outputs:
       version: ${{ steps.version.outputs.VERSION }}
     steps:
@@ -58,9 +63,10 @@ jobs:
           echo "Next version: $nextversion"
 
       - name: Check changes
+        if: ${{ github.event.inputs.version == '' }}
         run: |
           if [ $(wc -c .VERSION) -gt 5]; then
-            echo "se non ci sono variazioni alla versione...non si deve andare avanti"
+            echo "===> No changes detected: Release stopped!"
             exit 1
           fi
 
@@ -69,6 +75,7 @@ jobs:
     needs: DryRunRelease
     name: FE Build
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
     defaults:
       run:
         shell: bash
@@ -134,6 +141,7 @@ jobs:
     needs: DryRunRelease
     name: BE Build
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
     steps:
       - uses: actions/checkout@v3.0.2
         with:
@@ -276,7 +284,7 @@ jobs:
           # set version
           mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
           # build
-          mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }} -DMONGODB_HOST=${{ secrets.MONGODB_HOST }} -DMONGODB_NAME=${{ secrets.MONGODB_NAME }} -DMONGODB_PORT=${{ secrets.MONGODB_PORT }} -DDB_MONGO_USERNAME=${{ secrets.DB_MONGO_USERNAME }} -DDB_MONGO_PASSWORD=${{ secrets.DB_MONGO_PASSWORD }} -DKEYSTORE_PATH=${{ secrets.KEYSTORE_PATH }} -DKEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}
+          mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }} -DMONGODB_HOST=${{ secrets.MONGODB_HOST }} -DMONGODB_NAME=${{ secrets.MONGODB_NAME }} -DMONGODB_PORT=${{ secrets.MONGODB_PORT }} -DDB_MONGO_USERNAME=${{ secrets.DB_MONGO_USERNAME }} -DDB_MONGO_PASSWORD=${{ secrets.DB_MONGO_PASSWORD }} -DKEYSTORE_PATH=${{ github.workspace }}/${{ secrets.KEYSTORE_PATH }} -DKEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}
           # docker build
           docker build . \
             --file Dockerfile \
@@ -293,6 +301,7 @@ jobs:
       (needs.buildBE.result == 'success' || needs.buildBE.result == 'skipped')
     name: Deploy
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
     defaults:
       run:
         shell: bash
@@ -455,6 +464,7 @@ jobs:
     needs: [DryRunRelease, Deploy]
     name: Repo Update
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
     defaults:
       run:
         shell: bash
@@ -510,6 +520,7 @@ jobs:
     needs: [RepoUpdate]
     name: Release
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
     steps:
       - uses: actions/checkout@v3.0.2
         with:
