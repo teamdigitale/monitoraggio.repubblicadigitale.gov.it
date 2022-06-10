@@ -361,7 +361,7 @@ jobs:
       - name: Setup Image TAG
         id: imagetag
         run: |
-          if [ ${{ github.event.inputs.version }} = '' ]; then
+          if [ "${{ github.event.inputs.version }}" = "" ]; then
             echo "::set-output name=IMAGETAG::$(echo ${{needs.DryRunRelease.outputs.version}} )"
           else
             echo "::set-output name=IMAGETAG::$(echo ${{ github.event.inputs.version }} )"
