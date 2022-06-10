@@ -2,4 +2,20 @@
   .input-group-append.input-button {
     border-color: #0073e5;
   }
+
+  .modal-body {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 60vh;
+  }
+
+  .icon-container {
+    background-color: #d1e7ff;
+    border-radius: 50%;
+
+    .icon {
+      min-height: rem(70px);
+      min-width: rem(50px);
+    }
+  }
 }

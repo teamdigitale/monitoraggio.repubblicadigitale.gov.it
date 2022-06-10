@@ -16,7 +16,7 @@ import { useDispatch } from 'react-redux';
 import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
 import ConfirmDeleteModal from '../modals/confirmDeleteModal';
 import ManageGenericAuthority from '../modals/manageGenericAuthority';
-import PeopleIcon from '../../../../../../public/assets/img/peopleIcon.png';
+import PeopleIcon from '/public/assets/img/people-icon.png';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import clsx from 'clsx';
@@ -89,6 +89,7 @@ const AuthoritiesDetails = () => {
           ),
       },
     ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const device = useAppSelector(selectDevice);
@@ -109,11 +110,12 @@ const AuthoritiesDetails = () => {
               status: 'ATTIVO',
               upperTitle: { icon: [PeopleIcon], text: 'Ente' },
             }}
-            Form={currentForm}
             formButtons={correctButtons}
             itemsList={itemList}
             buttonsPosition={buttonsPosition}
-          />
+          >
+            {currentForm}
+          </DetailLayout>
           {currentModal ? currentModal : null}
           <ConfirmDeleteModal
             onConfirm={() => {

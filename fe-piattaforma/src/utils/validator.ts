@@ -26,7 +26,7 @@ const RegexpRule = {
   [RegexpType.ADDRESS]:
     /^[a-zA-Z0-9_\/.,Ã¨Ã©Ã²Ã Ã¬Ã¹'](?:[a-zA-Z0-9_\/.,'\sÃ¨Ã©Ã²Ã Ã¬Ã¹\-]+)?$/gi,
   [RegexpType.ALPHA_NUMERIC]: /^[a-z A-Z 0-9_.-]*$/gi,
-  [RegexpType.ALPHA_NUMERIC_INPUT]: /^[a-z A-Z 0-9_.-{}:,"]*$/gi,
+  [RegexpType.ALPHA_NUMERIC_INPUT]: /^[a-z A-Z 0-9 àèìòù _.-{}:,"()]*$/gi,
   [RegexpType.FISCAL_CODE]:
     /^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$/i,
   [RegexpType.POSTAL_CODE]: /^[0-9]{5}$/gm,

@@ -5,13 +5,13 @@ import { Form, Input } from '../../components';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../hoc/withFormHandler';
-import { selectUtenti } from '../../redux/features/administrativeArea/administrativeAreaSlice';
+import { selectUsers } from '../../redux/features/administrativeArea/administrativeAreaSlice';
 import { GetUserDetail } from '../../redux/features/administrativeArea/user/userThunk';
 import { useAppSelector } from '../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../utils/formHelper';
 import { RegexpType } from '../../utils/validator';
 
-interface ProgramInformationI {
+interface UserInformationI {
   /*formData:
     | {
         name?: string;
@@ -29,10 +29,8 @@ interface ProgramInformationI {
   creation?: boolean;
 }
 
-interface FormEnteGestoreProgettoFullInterface
-  extends withFormHandlerProps,
-    ProgramInformationI {}
-const FormUser: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
+interface UserFormI extends withFormHandlerProps, UserInformationI {}
+const FormUser: React.FC<UserFormI> = (props) => {
   const {
     //    getFormValues = () => ({}),
     setFormValues = () => ({}),
@@ -48,7 +46,7 @@ const FormUser: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
   const formDisabled = !!props.formDisabled;
   const { userId } = useParams();
   const formData: { [key: string]: string } | undefined =
-    useAppSelector(selectUtenti)?.detail?.info;
+    useAppSelector(selectUsers)?.detail?.info;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -73,9 +71,11 @@ const FormUser: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     setIsFormValid?.(isValidForm);
   };
 
+  const bootClass = 'justify-content-between px-0 px-lg-5 mx-5';
+
   return (
     <Form className='mt-5 mb-5' formDisabled={formDisabled}>
-      <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
+      <Form.Row className={bootClass}>
         <Input
           {...form?.name}
           col='col-lg-6 col-12'
@@ -96,7 +96,7 @@ const FormUser: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           }}
         />
       </Form.Row>
-      <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
+      <Form.Row className={bootClass}>
         <Input
           {...form?.userId}
           col='col-12 col-lg-6'
@@ -116,7 +116,7 @@ const FormUser: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           }}
         />
       </Form.Row>
-      <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
+      <Form.Row className={bootClass}>
         <Input
           {...form?.email}
           label='Email'
@@ -143,25 +143,28 @@ const FormUser: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
 const form = newForm([
   newFormField({
     field: 'name',
+    id: 'name',
   }),
   newFormField({
     field: 'lastName',
+    id: 'lastName',
   }),
-  /*newFormField({
-    field: 'role',
-  }),*/
   newFormField({
     field: 'userId',
+    id: 'userId',
   }),
   newFormField({
     field: 'fiscalCode',
+    id: 'fiscalCode',
   }),
   newFormField({
     field: 'email',
     regex: RegexpType.EMAIL,
+    id: 'email',
   }),
   newFormField({
     field: 'phone',
+    id: 'phone',
   }),
 ]);
 export default withFormHandler({ form }, FormUser);

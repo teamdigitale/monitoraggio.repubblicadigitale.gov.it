@@ -9,7 +9,14 @@ import { ProjectLightI } from './projects/projectsThunk';
 import { UtentiLightI } from './user/userThunk';
 import { AuthoritiesLightI } from './authorities/authoritiesThunk';
 import { SurveyLightI } from './surveys/surveysThunk';
-
+export interface ServicesI {
+  id: string;
+  nome: string;
+  numeroCittadini: string;
+  questionari: string;
+  facilitatore: string;
+  stato: string;
+}
 export interface AreaAmministrativaStateI {
   list: any[];
   filters: {
@@ -34,11 +41,11 @@ export interface AreaAmministrativaStateI {
     list?: any[];
     idEnteGestore?: string;
   };
-  programmi: {
+  programs: {
     list: ProgramsLightI[];
     detail: any;
   };
-  progetti: {
+  projects: {
     list: ProjectLightI[];
     detail: any;
   };
@@ -46,16 +53,20 @@ export interface AreaAmministrativaStateI {
     list: SurveyLightI[];
     detail: any;
   };
-  utenti: {
+  users: {
     list: UtentiLightI[];
     detail: any;
   };
-  enti: {
+  authorities: {
     list: AuthoritiesLightI[];
     detail: any;
   };
-  sedi: {
+  headquarters: {
     detail: any;
+  };
+  services: {
+    list: ServicesI[];
+    detail: { info: { [key: string]: string }; cittadini: [] };
   };
 }
 
@@ -75,11 +86,11 @@ const initialState: AreaAmministrativaStateI = {
     pageNumber: 1,
   },
   detail: {},
-  programmi: {
+  programs: {
     list: [],
     detail: {},
   },
-  progetti: {
+  projects: {
     list: [],
     detail: {},
   },
@@ -87,16 +98,20 @@ const initialState: AreaAmministrativaStateI = {
     list: [],
     detail: {},
   },
-  utenti: {
+  users: {
     list: [],
     detail: {},
   },
-  enti: {
+  authorities: {
     list: [],
     detail: {},
   },
-  sedi: {
+  headquarters: {
     detail: {},
+  },
+  services: {
+    list: [],
+    detail: { info: {}, cittadini: [] },
   },
 };
 
@@ -105,6 +120,9 @@ export const administrativeAreaSlice = createSlice({
   initialState,
   reducers: {
     resetEntityState: () => initialState,
+    resetFiltersState: (state) => {
+      state.filters = initialState.filters;
+    },
     cleanEntityFilters: (state, action: PayloadAction<any>) => {
       if (action.payload) {
         let newFilterValue = null;
@@ -155,43 +173,50 @@ export const administrativeAreaSlice = createSlice({
       state.detail = {};
     },
     setProgramsList: (state, action: PayloadAction<any>) => {
-      state.programmi.list = [...action.payload.data];
+      state.programs.list = [...action.payload.data];
     },
-    setProgettiList: (state, action: PayloadAction<any>) => {
-      state.progetti.list = [...action.payload.data];
+    setProjectsList: (state, action: PayloadAction<any>) => {
+      state.projects.list = [...action.payload.data];
     },
     setSurveysList: (state, action: PayloadAction<any>) => {
       state.surveys.list = [...action.payload.data];
     },
-    setUtentiList: (state, action: PayloadAction<any>) => {
-      state.utenti.list = [...action.payload.data];
+    setUsersList: (state, action: PayloadAction<any>) => {
+      state.users.list = [...action.payload.data];
     },
-    setEntiList: (state, action: PayloadAction<any>) => {
-      state.enti.list = [...action.payload.data];
+    setAuthoritiesList: (state, action: PayloadAction<any>) => {
+      state.authorities.list = [...action.payload.data];
     },
-    setEntiDetail: (state, action: PayloadAction<any>) => {
-      state.enti.detail = { ...action.payload.data };
+    setAuthoritiesDetails: (state, action: PayloadAction<any>) => {
+      state.authorities.detail = { ...action.payload.data };
     },
-    setProgrammaDetail: (state, action) => {
-      state.programmi.detail = { ...action.payload.data };
+    setProgramDetails: (state, action) => {
+      state.programs.detail = { ...action.payload.data };
     },
-    setProgettoDetail: (state, action) => {
-      state.progetti.detail = { ...action.payload.data };
+    setProjectDetails: (state, action) => {
+      state.projects.detail = { ...action.payload.data };
     },
     setSurveyDetail: (state, action) => {
       state.surveys.detail = { ...action.payload.data };
     },
-    setSedeDetail: (state, action) => {
-      state.sedi.detail = { ...action.payload.data };
+    setHeadquartersDetails: (state, action) => {
+      state.headquarters.detail = { ...action.payload.data };
     },
-    setUtenteDetail: (state, action) => {
-      state.utenti.detail = { ...action.payload.data };
+    setUserDetails: (state, action) => {
+      state.users.detail = { ...action.payload.data };
+    },
+    setEventsList: (state, action: PayloadAction<any>) => {
+      state.services.list = action.payload.data;
+    },
+    setServicesDetail: (state, action: PayloadAction<any>) => {
+      state.services.detail = action.payload;
     },
   },
 });
 
 export const {
   resetEntityState,
+  resetFiltersState,
   cleanEntityFilters,
   setEntityFilters,
   setEntityFilterOptions,
@@ -200,16 +225,18 @@ export const {
   setEntityDetail,
   emptyDetail,
   setProgramsList,
-  setProgettiList,
+  setProjectsList,
   setSurveysList,
-  setUtentiList,
-  setEntiList,
-  setEntiDetail,
-  setProgrammaDetail,
-  setProgettoDetail,
+  setUsersList,
+  setAuthoritiesList,
+  setAuthoritiesDetails,
+  setProgramDetails,
+  setProjectDetails,
   setSurveyDetail,
-  setSedeDetail,
-  setUtenteDetail,
+  setHeadquartersDetails,
+  setUserDetails,
+  setEventsList,
+  setServicesDetail,
 } = administrativeAreaSlice.actions;
 
 export const selectEntityList = (state: RootState) =>
@@ -220,17 +247,18 @@ export const selectEntityFiltersOptions = (state: RootState) =>
   state.administrativeArea.filterOptions;
 export const selectEntityPagination = (state: RootState) =>
   state.administrativeArea.pagination;
-export const selectEntityDetail = (state: RootState) =>
-  state.administrativeArea.detail;
-export const selectProgrammi = (state: RootState) =>
-  state.administrativeArea.programmi;
-export const selectProgetti = (state: RootState) =>
-  state.administrativeArea.progetti;
+export const selectPrograms = (state: RootState) =>
+  state.administrativeArea.programs;
+export const selectProjects = (state: RootState) =>
+  state.administrativeArea.projects;
 export const selectSurveys = (state: RootState) =>
   state.administrativeArea.surveys;
-export const selectUtenti = (state: RootState) =>
-  state.administrativeArea.utenti;
-export const selectEnti = (state: RootState) => state.administrativeArea.enti;
-export const selectSedi = (state: RootState) => state.administrativeArea.sedi;
+export const selectUsers = (state: RootState) => state.administrativeArea.users;
+export const selectAuthorities = (state: RootState) =>
+  state.administrativeArea.authorities;
+export const selectHeadquarters = (state: RootState) =>
+  state.administrativeArea.headquarters;
+export const selectServices = (state: RootState) =>
+  state.administrativeArea.services;
 
 export default administrativeAreaSlice.reducer;

@@ -26,6 +26,15 @@ interface schemaFieldI {
   minimum?: string | number;
   maximum?: string | number;
   properties?: schemaFieldPropertiesI;
+  flag?: boolean;
+  dependencyFlag?: string;
+  dependencyNotFlag?: string;
+  order?: number;
+  relatedFrom?: string;
+  relatedTo?: string;
+  enumLevel1?: string[];
+  enumLevel2?: { label: string; value: string; upperLevel: string }[];
+  regex?: string;
 }
 export interface SchemaI {
   id?: schemaFieldI['id'];
@@ -110,54 +119,69 @@ const newSchemaUiCol: (formField: formFieldI) => SchemaUiColI = (
   label: formField.field,
 });
 
-export const generateJsonFormSchema: (form: FormI) => {
+export const generateJsonFormSchema: (
+  form: FormI,
+  sectionId: number,
+  sectionsSchemaResponse: {
+    id: string;
+    schema: string;
+    schemaUI: string;
+    title: string;
+  }[]
+) => {
   schema: string;
   schemaUI: string;
-} = (form) => {
-  const schema: SchemaI = {
-    // id: section.id,
-    // title: section.sectionTitle,
-    type: 'object',
-    properties: {},
-    required: [],
-    default: [],
-  };
-  const schemaUI: SchemaUiI = {
-    type: 'Group',
-    label: 'Sezione',
-    elements: [],
-  };
-
-  Object.keys(form).forEach((formField, index) => {
-    const idQuestion = form[formField].id || new Date().getTime().toString();
-
-    schema.properties[idQuestion] = {
-      id: idQuestion,
-      title: form[formField].field,
-      ...getType(form[formField]),
+} = (form, sectionId, sectionsSchemaResponse) => {
+  if (sectionId !== 0 && sectionId !== 1) {
+    const schema: SchemaI = {
+      // id: section.id,
+      // title: section.sectionTitle,
+      type: 'object',
+      properties: {},
+      required: [],
+      default: [],
+    };
+    const schemaUI: SchemaUiI = {
+      type: 'Group',
+      label: 'Sezione',
+      elements: [],
     };
 
-    if (form[formField].required) {
-      schema.required.push(idQuestion);
-    }
+    Object.keys(form).forEach((formField, index) => {
+      const idQuestion = form[formField].id || new Date().getTime().toString();
 
-    if (form[formField].required) {
-      schema.default.push(idQuestion);
-    }
+      schema.properties[idQuestion] = {
+        id: idQuestion,
+        title: form[formField].field,
+        ...getType(form[formField]),
+      };
 
-    if (index % 2 === 0) {
-      schemaUI.elements.push(newSchemaUiRow());
-    }
-    schemaUI.elements[schemaUI.elements.length - 1].elements.push(
-      newSchemaUiCol(form[formField])
-    );
-  });
+      if (form[formField].required) {
+        schema.required.push(idQuestion);
+      }
 
-  return {
-    schema: JSON.stringify(schema),
-    schemaUI: JSON.stringify(schemaUI),
-  };
-  //return { schema, schemaUI };
+      if (form[formField].required) {
+        schema.default.push(idQuestion);
+      }
+
+      if (index % 2 === 0) {
+        schemaUI.elements.push(newSchemaUiRow());
+      }
+      schemaUI.elements[schemaUI.elements.length - 1].elements.push(
+        newSchemaUiCol(form[formField])
+      );
+    });
+
+    return {
+      schema: JSON.stringify(schema),
+      schemaUI: JSON.stringify(schemaUI),
+    };
+  } else {
+    return {
+      schema: sectionsSchemaResponse[sectionId].schema,
+      schemaUI: sectionsSchemaResponse[sectionId].schemaUI,
+    };
+  }
 };
 
 type baseTypeObjectI = {
@@ -168,7 +192,7 @@ const getTypeReverse: (formField: schemaFieldI) => baseTypeObjectI = (
   formField: schemaFieldI
 ) => {
   const baseTypeObject: baseTypeObjectI = {
-    regex: RegexpType.ALPHA_NUMERIC_INPUT,
+    regex: formField.regex ? formField.regex : RegexpType.ALPHA_NUMERIC_INPUT,
     type: 'text',
   };
   switch (formField.type) {
@@ -218,20 +242,70 @@ const getTypeReverse: (formField: schemaFieldI) => baseTypeObjectI = (
           })),
         };
       }
+      if (formField.enumLevel1) {
+        return {
+          ...baseTypeObject,
+          type: 'checkbox',
+        };
+      }
+      if (formField.enumLevel2) {
+        return {
+          ...baseTypeObject,
+          type: 'checkbox',
+        };
+      }
       return baseTypeObject;
     }
   }
 };
 
-export const generateForm: (schema: SchemaI) => FormI = (schema) =>
+const getSchemaRequired = (
+  property: schemaFieldI,
+  schema: SchemaI,
+  field: string
+) => {
+  if (property.dependencyFlag) {
+    const flagId = property.dependencyFlag;
+    return schema.properties[flagId] === '' ? true : false;
+  } else if (property.dependencyNotFlag) {
+    const flagId = property.dependencyNotFlag;
+    return schema.properties[flagId] === '' ? false : true;
+  } else {
+    return schema.required.includes(field);
+  }
+};
+
+export const generateForm: (schema: SchemaI, compile?: boolean) => FormI = (
+  schema,
+  compile = false
+) =>
   newForm(
     Object.keys(schema.properties).map((field) =>
       newFormField({
         ...getTypeReverse(schema.properties[field]),
         field,
-        value: schema.properties[field].title || '',
-        required: schema.required.includes(field),
+        id: compile
+          ? `field-${(
+              schema.properties[field].title ||
+              schema.properties[field].id ||
+              ''
+            ).replace(/\s/g, '-')}`
+          : `${new Date().getTime()}`,
+        value: compile ? '' : schema.properties[field].title || '',
+        label: compile ? schema.properties[field].title || '' : '',
+        required: compile
+          ? getSchemaRequired(schema.properties[field], schema, field)
+          : schema.required.includes(field),
         preset: schema.default.includes(field),
+        flag: schema.properties[field].flag ? true : false,
+        format: schema.properties[field].format || '',
+        order: schema.properties[field].order || 1,
+        dependencyFlag: schema.properties[field].dependencyFlag || '',
+        dependencyNotFlag: schema.properties[field].dependencyNotFlag || '',
+        relatedFrom: schema.properties[field].relatedFrom || '',
+        relatedTo: schema.properties[field].relatedTo || '',
+        enumLevel1: schema.properties[field].enumLevel1 || undefined,
+        enumLevel2: schema.properties[field].enumLevel2 || undefined,
       })
     )
   );
@@ -279,35 +353,54 @@ const transformJsonQuestionToForm = (schema: SchemaI) => {
   const questionsFields = generateForm(schema);
   const questions: SurveyQuestionI[] = [];
   Object.keys(questionsFields).map((field) => {
-    questions.push({
-      id: `${field}`,
-      form: newForm([
-        newFormField({
-          field: 'question-description',
-          required: true,
-          value: questionsFields[field]?.value || '',
-        }),
-        newFormField({
-          field: 'question-type',
-          required: true,
-          value: questionsFields[field]?.type?.toString() || 'text',
-        }),
-        newFormField({
-          field: 'question-values',
-          value: JSON.stringify(questionsFields[field]?.options),
-        }),
-        newFormField({
-          field: 'question-required',
-          value: `${questionsFields[field]?.required}`,
-        }),
-        newFormField({
-          field: 'question-default',
-          required: true,
-          value: questionsFields[field]?.required || false,
-          regex: RegexpType.BOOLEAN,
-        }),
-      ]),
-    });
+    if (!questionsFields[field].flag) {
+      let valuesField = '';
+      if (questionsFields[field]?.options) {
+        valuesField = JSON.stringify(questionsFields[field]?.options);
+      } else if (questionsFields[field]?.enumLevel1) {
+        const arrayValues: { label: string; value: string }[] = [];
+        questionsFields[field].enumLevel1?.map((val) =>
+          arrayValues.push({ label: val, value: val })
+        );
+        valuesField = JSON.stringify(arrayValues);
+      } else if (questionsFields[field]?.enumLevel2) {
+        const arrayValues: { label: string; value: string }[] = [];
+        questionsFields[field].enumLevel2?.map((val) =>
+          arrayValues.push({ label: val.label, value: val.value })
+        );
+        valuesField = JSON.stringify(arrayValues);
+      }
+
+      questions.push({
+        id: `${field}`,
+        form: newForm([
+          newFormField({
+            field: 'question-description',
+            required: true,
+            value: questionsFields[field]?.value || '',
+          }),
+          newFormField({
+            field: 'question-type',
+            required: true,
+            value: questionsFields[field]?.type?.toString() || 'text',
+          }),
+          newFormField({
+            field: 'question-values',
+            value: valuesField,
+          }),
+          newFormField({
+            field: 'question-required',
+            value: `${questionsFields[field]?.required}`,
+          }),
+          newFormField({
+            field: 'question-default',
+            required: true,
+            value: questionsFields[field]?.required || false,
+            regex: RegexpType.BOOLEAN,
+          }),
+        ]),
+      });
+    }
   });
   return questions;
 };
@@ -323,6 +416,7 @@ export const transformJsonToForm = (
     lastUpdate: questionarioJson['last-update'] || '',
     form: {},
     sections: [],
+    compilingSurveyForms: [],
   };
   modelSurvey.form = newForm([
     newFormField({

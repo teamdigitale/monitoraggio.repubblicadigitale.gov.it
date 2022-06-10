@@ -6,13 +6,10 @@
   flex-wrap: wrap;
   gap: rem(15px);
 
-  
-  
   @media (max-width: 764px) {
     justify-content: space-between;
   }
   @media (min-width: 320px) {
     justify-content: flex-end;
   }
-  
 }

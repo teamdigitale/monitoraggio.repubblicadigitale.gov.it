@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import { DropdownFilterI, FilterI } from '../DropdownFilter/dropdownFilter';
 import { DropdownFilter, SearchBar } from '../index';
 import { Button, Chip, ChipLabel, Icon } from 'design-react-kit';
-import { cleanEntityFilters } from '../../redux/features/administrativeArea/administrativeAreaSlice';
+import { cleanEntityFilters, resetFiltersState } from '../../redux/features/administrativeArea/administrativeAreaSlice';
 import { useDispatch } from 'react-redux';
 //import Sidebar, { SidebarI } from './sidebar';
 import clsx from 'clsx';
@@ -10,7 +10,7 @@ import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
-import ButtonsBar from '../ButtonsBar/buttonsBar';
+import ButtonsBar, { ButtonInButtonsBar } from '../ButtonsBar/buttonsBar';
 import Sticky from 'react-sticky-el';
 
 export interface SearchInformationI {
@@ -21,25 +21,19 @@ export interface SearchInformationI {
   isClearable: boolean;
 }
 
-interface GenericSearchI {
-  text: string;
-  icon: string;
-  onClick: () => void;
-}
-
 interface GenericSearchFilterTableLayoutI {
   dropdowns?: DropdownFilterI[];
   searchInformation: SearchInformationI;
   Sidebar?: ReactElement;
   showButtons?: boolean;
   filtersList?: any;
-  genericSearch?: GenericSearchI;
   cta?: () => void;
   ctaHref?: string;
   textCta?: string;
   iconCta?: string;
   ctaPrintText?: string;
   ctaPrint?: () => void;
+  buttonsList?: ButtonInButtonsBar[];
 }
 
 const GenericSearchFilterTableLayout: React.FC<
@@ -50,7 +44,6 @@ const GenericSearchFilterTableLayout: React.FC<
   Sidebar,
   showButtons = true,
   filtersList,
-  genericSearch,
   children,
   cta,
   ctaHref,
@@ -58,9 +51,14 @@ const GenericSearchFilterTableLayout: React.FC<
   iconCta,
   ctaPrintText,
   ctaPrint,
+  buttonsList,
 }) => {
   const dispatch = useDispatch();
   const [showChips, setShowChips] = useState<boolean>(false);
+
+  useEffect(() => {
+    dispatch(resetFiltersState());
+  },[]);
 
   const getLabelsChips = (filter: any, i: number, filterKey: string) => {
     if (filter?.value) {
@@ -112,29 +110,11 @@ const GenericSearchFilterTableLayout: React.FC<
   const device = useAppSelector(selectDevice);
   return (
     <>
-      <div className={genericSearch ? 'd-flex justify-content-end' : ''}>
-        {genericSearch && (
-          <Button
-            onClick={genericSearch.onClick}
-            className='primary-color-b1 d-flex flex-row justify-content-center align-items-center'
-          >
-            <span className='mr-4'>{genericSearch.text}</span>
-            <div className='header-container__icon-container primary-bg-b1'>
-              <Icon
-                icon={genericSearch.icon}
-                color='white'
-                size='sm'
-                aria-label='Cerca cittadino'
-              />
-            </div>
-          </Button>
-        )}
-      </div>
       <div className='d-flex justify-content-between align-items-center mt-2 mb-3 flex-wrap flex-lg-nowrap'>
         {searchInformation?.onHandleSearch && (
-          <div className='flex-grow-1 col-12 col-md-9'>
+          <div className={clsx('flex-grow-1', 'col-12', cta && 'col-md-9')}>
             <div
-              className={clsx(genericSearch && !device.mediaIsPhone && 'w-75')}
+              className={clsx(!cta && 'w-100', 'col-9')}
               data-testid='create-new-element'
             >
               <SearchBar
@@ -149,7 +129,15 @@ const GenericSearchFilterTableLayout: React.FC<
           </div>
         )}
 
-        <div className='cta-container ml-auto col-12 col-md-3 pb-4'>
+        <div
+          className={clsx(
+            'cta-container',
+            'ml-auto',
+            'col-12',
+            'col-md-3',
+            'pb-4'
+          )}
+        >
           {cta && !device.mediaIsPhone ? (
             <Button
               color='primary'
@@ -200,18 +188,28 @@ const GenericSearchFilterTableLayout: React.FC<
           )}
         </div>
       </div>
-
-      {dropdowns?.length && (
-        <div className='d-flex flex-row flex-wrap pt-lg-3 pt-0'>
-          {dropdowns.map((dropdown, index) => (
-            <DropdownFilter
-              key={index}
-              filterName={dropdown.filterName || ''}
-              {...dropdown}
-            />
-          ))}
-        </div>
-      )}
+      <div className='d-flex justify-content-between w-100'>
+        {dropdowns?.length && (
+          <div
+            className={`d-flex flex-row flex-wrap pt-lg-3 pt-0 ${
+              buttonsList?.length && 'w-50'
+            }`}
+          >
+            {dropdowns.map((dropdown, index) => (
+              <DropdownFilter
+                key={index}
+                filterName={dropdown.filterName || ''}
+                {...dropdown}
+              />
+            ))}
+          </div>
+        )}
+        {buttonsList?.length && (
+          <div className={`d-flex flex-row flex-wrap pt-lg-3 pt-0 w-50}`}>
+            <ButtonsBar buttons={buttonsList} />
+          </div>
+        )}
+      </div>
       <div
         className={
           showChips && showButtons
@@ -222,7 +220,16 @@ const GenericSearchFilterTableLayout: React.FC<
         }
       >
         {showChips ? (
-          <div className='d-flex flex-row mt-4 mb-4 flex-wrap align-items-center'>
+          <div
+            className={clsx(
+              'd-flex',
+              'flex-row',
+              'mt-4',
+              'mb-4',
+              'flex-wrap',
+              'align-items-center'
+            )}
+          >
             {Object.keys(filtersList).map((filterKey, index) => (
               <div key={index} className={clsx(device.mediaIsPhone && 'pb-3')}>
                 {getLabelsChips(filtersList[filterKey], index, filterKey)}

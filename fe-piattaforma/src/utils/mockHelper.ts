@@ -286,6 +286,42 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });
 
+    mockInstance.onGet('/eventi/all').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/allEvents.json');
+      return [200, response];
+    });
+
+    mockInstance.onPost('/eventi/all').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/allEvents.json');
+      return [200, response];
+    });
+
+    mockInstance
+      .onPost('areaCittadini/eventi/stati/dropdown/')
+      .reply(async () => {
+        // @ts-ignore
+        const response = await import('/mock/statiDropdown.json');
+        return [200, response];
+      });
+
+    mockInstance
+      .onGet('areaAmministrativa/services/servizio1')
+      .reply(async () => {
+        // @ts-ignore
+        const response = await import('/mock/servicesDetail.json');
+        return [200, response];
+      });
+
+    mockInstance
+      .onPost('areaCittadini/servizi/dettaglio/stati/dropdown')
+      .reply(async () => {
+        // @ts-ignore
+        const response = await import('/mock/statiServiziDropdown.json');
+        return [200, response];
+      });
+
     mockInstance.onAny().reply(async () => {
       // @ts-ignore
       const response = await import('/mock/user.json');

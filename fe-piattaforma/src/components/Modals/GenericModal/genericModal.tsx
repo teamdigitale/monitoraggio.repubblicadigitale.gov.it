@@ -1,5 +1,5 @@
 import React, { ReactChild } from 'react';
-import { Button, ModalBody, ModalFooter } from 'design-react-kit';
+import { Button, Icon, ModalBody, ModalFooter } from 'design-react-kit';
 import Modal from '../modals';
 import withModalState from '../../../hoc/withModalState';
 import { ModalPayloadI } from '../../../redux/features/modal/modalSlice';
@@ -33,6 +33,8 @@ export interface GenericModalI {
   noSpaceAfterTitle?: boolean;
   noPaddingPrimary?: boolean;
   noPaddingSecondary?: boolean;
+  withIcon?: boolean;
+  icon?: string;
 }
 
 const GenericModal: React.FC<GenericModalI> = (props) => {
@@ -53,6 +55,8 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
     noSpaceAfterTitle = false,
     noPaddingPrimary = false,
     noPaddingSecondary = false,
+    withIcon = false,
+    icon = '',
   } = props;
 
   const handleAction = (action: 'primary' | 'secondary' | 'tertiary') => {
@@ -81,28 +85,50 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
 
   return (
     <Modal id={id} {...props}>
+      <div className='d-flex flex-column justify-content-around align-items-center mt-5'>
+        {withIcon && (
+          <div className='icon-container p-4 d-flex align-items-center'>
+            <Icon
+              icon={icon}
+              style={{ width: '50px', height: '80px' }}
+              className='my-0 mx-3 pl-1'
+            />
+          </div>
+        )}
+      </div>
       <div
         className={clsx(
           'modal-header-container',
           !noSpaceAfterTitle && 'mb-4',
           noSpaceAfterTitle && 'pb-0 mb-0',
-          'mt-4',
-          'pt-3'
+          withIcon ? 'mt-1 pt-1' : 'mt-4 pt-3'
         )}
       >
-        <p className='h5 font-weight-semibold primary-color my-auto'>
+        <p
+          className={clsx(
+            'h5',
+            'font-weight-semibold',
+            'primary-color',
+            'my-auto'
+          )}
+        >
           {title || payload?.title}
         </p>
       </div>
       <ModalBody className='h-50 p-0'>
         {hasSearch && (
-          <SearchBar
-            autocomplete={false}
-            onSubmit={() => console.log('ricerca modale')}
-            placeholder={searchPlaceholder}
-            isClearable
-            id='search-generic-modal'
-          />
+          //
+          <div className='row mx-5'>
+            <div className='col-12'>
+              <SearchBar
+                autocomplete={false}
+                onSubmit={() => console.log('ricerca modale')}
+                placeholder={searchPlaceholder}
+                isClearable
+                id='search-generic-modal'
+              />
+            </div>
+          </div>
         )}
         {description || payload?.description}
         {children}
@@ -151,7 +177,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
               <Button
                 {...primaryCTA}
                 className={clsx(
-                  device.mediaIsPhone ? 'cta-button' : 'ml-2 cta-button',
+                  device.mediaIsPhone ? 'cta-button' : 'cta-button',
                   device.mediaIsPhone && noPaddingPrimary && 'pt-0'
                 )}
                 color='primary'

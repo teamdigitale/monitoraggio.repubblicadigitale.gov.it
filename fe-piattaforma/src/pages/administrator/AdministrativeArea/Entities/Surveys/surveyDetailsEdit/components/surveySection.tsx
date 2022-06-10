@@ -1,5 +1,5 @@
 import { Col } from 'design-react-kit';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import SurveyQuestion from './SurveyQuestion/surveyQuestion';
 import {
   SurveyQuestionI,
@@ -11,20 +11,9 @@ const SurveySection: React.FC<SurveySectionI> = (props) => {
     id,
     sectionTitle,
     questions = [],
-    handleActiveSection = () => ({}),
-    isSectionActive = false,
     editMode = false,
     cloneMode = false,
   } = props;
-  const [activeQuestionIndex, setActiveQuestionIndex] = useState<
-    number | undefined
-  >(undefined);
-
-  useEffect(() => {
-    if (questions && questions.length - 1 !== activeQuestionIndex) {
-      setActiveQuestionIndex(questions.length - 1);
-    }
-  }, [questions.length]);
 
   return (
     <section aria-label={sectionTitle}>
@@ -38,11 +27,6 @@ const SurveySection: React.FC<SurveySectionI> = (props) => {
               {...question}
               sectionID={id}
               position={i}
-              isOpenFromSection={i === activeQuestionIndex && isSectionActive}
-              handleEditQuestion={(activeQuestion, activeSection) => {
-                setActiveQuestionIndex(activeQuestion);
-                handleActiveSection(activeSection);
-              }}
               editMode={editMode}
               cloneMode={cloneMode}
             />

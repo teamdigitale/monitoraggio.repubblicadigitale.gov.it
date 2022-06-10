@@ -13,7 +13,7 @@ export interface withFormHandlerProps {
     value: formFieldI['value'],
     field?: formFieldI['field']
   ) => FormI;
-  updateForm?: (newForm: FormI) => void;
+  updateForm?: (newForm: FormI, override?: boolean) => void;
   updateFormField?: (
     formField: formFieldI | string,
     action?: 'add' | 'remove'
@@ -64,8 +64,9 @@ const withFormHandler =
       setForm(FormHelper.updateFormField(form, formField, action) || form);
     };
 
-    const updateForm = (newForm: FormI = {}) => {
-      setForm({ ...form, ...newForm });
+    const updateForm = (newForm = {}, override = false) => {
+      const actualForm = override ? {} : form;
+      setForm({ ...actualForm, ...newForm });
     };
 
     return (

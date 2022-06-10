@@ -16,15 +16,40 @@ import CitizenTableResult from './citizenTableResult';
 import NoResultsFound from '../../../../../components/NoResultsFound/noResultsFound';
 import Infocard from '../../../../../components/InfoCard/infoCard';
 import SearchBarOptions from '../../../../../components/SearchBarOptions/searchBarOptions';
+import FormUser from '../../../../forms/formUser';
+import { formFieldI } from '../../../../../utils/formHelper';
 
 const id = 'search-citizen-modal';
 
 export const selectedSteps = {
   FISCAL_CODE: 'codiceFiscale',
   DOC_NUMBER: 'numeroDoc',
+  ADD_CITIZEN: 'addCitizen',
 };
 
-const SearchCitizenModal: React.FC = () => {
+interface SearchCitizenModalI {
+  onConfirmText?: string;
+  onConfirmFunction?: () => void;
+}
+
+/*
+ Casistiche in fase di ricerca nella sezione dei servizi:
+ 1. l'utente trovato è unico. In quel caso citizenData contiene un oggetto, si clicca aggiungi e fine.
+ 2. vengono trovati utenti multipli, quindi citizenData è un array di oggetti => si renderizza la tabella da cui l'utente seleziona una
+    riga e poi preme aggiungi
+ 3. non si trova l'utente cercato, attualmente impostato con la response che contiene la proprietà *message* => **il backend deve darci
+    modo di differenziare se abbiamo il citizenData vuoto perché
+    ancora non abbiamo cercato, o se abbiamo cercato ma non abbiamo risultati**:
+      a. se si preme aggiungi la prima volta, viene visualizzato il form di creazione di un utente che ritorna i dati inseriti che vengono
+         salvati in newUserValues
+      b. se si preme aggiungi la seconda volta, questo utente viene creato e conseguentemente aggiunto al servizio (azioni da fare dentro
+         allo stesso thunk per averle sincrone)
+  */
+
+const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
+  onConfirmText,
+  onConfirmFunction,
+}) => {
   const [currentStep, setCurrentStep] = useState<string>();
   const dispatch = useDispatch();
   const citizenData: CittadinoInfoI | CittadinoInfoI[] | undefined =
@@ -32,6 +57,8 @@ const SearchCitizenModal: React.FC = () => {
   const multipleCitizenData: CittadinoInfoI[] = useAppSelector(
     selectEntitySearchMultiResponse
   );
+  const [newUserValues, setNewUserValues] =
+    useState<{ [key: string]: string | number | boolean | Date | string[] | undefined }>();
 
   useEffect(() => {
     if (
@@ -52,6 +79,7 @@ const SearchCitizenModal: React.FC = () => {
   const loadCorrectStep = () => {
     if (
       (!isEmpty(citizenData) || !isEmpty(multipleCitizenData)) &&
+      !citizenData.message &&
       (currentStep === selectedSteps.FISCAL_CODE ||
         currentStep === selectedSteps.DOC_NUMBER)
     ) {
@@ -60,7 +88,7 @@ const SearchCitizenModal: React.FC = () => {
       ) : (
         <>
           <Infocard
-            text='Il cittadino inserito non è incluso nella tua lista ma è già presente in piattaforma'
+            text='Il cittadino inserito è già incluso nella tua lista I miei cittadini'
             icon={{
               icon: 'it-user',
               color: 'white',
@@ -73,9 +101,17 @@ const SearchCitizenModal: React.FC = () => {
         </>
       );
     }
-    if (isEmpty(citizenData)) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+    if (currentStep === selectedSteps.ADD_CITIZEN) {
+      return (
+        <FormUser
+          creation
+          sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+            setNewUserValues({ ...newData })
+          }
+        />
+      );
+    }
+    if (citizenData.message) {
       return <NoResultsFound />;
     }
   };
@@ -85,6 +121,18 @@ const SearchCitizenModal: React.FC = () => {
   };
 
   const onConfirm = () => {
+    if (onConfirmFunction) {
+      if (
+        citizenData.message &&
+        (currentStep === selectedSteps.FISCAL_CODE ||
+          currentStep === selectedSteps.DOC_NUMBER)
+      ) {
+        setCurrentStep(selectedSteps.ADD_CITIZEN);
+      } else if (currentStep === selectedSteps.ADD_CITIZEN) {
+        console.log(newUserValues);
+        return onConfirmFunction();
+      }
+    }
     console.log('on confirm');
   };
 
@@ -94,9 +142,9 @@ const SearchCitizenModal: React.FC = () => {
       title='Aggiungi cittadino'
       noPaddingPrimary
       primaryCTA={{
-        label: 'Compila questionario',
+        label: `${onConfirmText || 'Compila questionario'}`,
         onClick: onConfirm,
-        disabled: isEmpty(citizenData),
+        disabled: isEmpty(citizenData) && !citizenData?.message,
       }}
       secondaryCTA={{
         label: 'Annulla',
@@ -110,7 +158,10 @@ const SearchCitizenModal: React.FC = () => {
           <SearchBarOptions
             setCurrentStep={setCurrentStep}
             currentStep={currentStep}
-            steps={selectedSteps}
+            steps={(({ FISCAL_CODE, DOC_NUMBER }) => ({
+              FISCAL_CODE,
+              DOC_NUMBER,
+            }))(selectedSteps)}
           />
 
           <div className='d-block px-5 mt-5'>{loadCorrectStep()}</div>

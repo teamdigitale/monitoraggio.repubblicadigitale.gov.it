@@ -117,9 +117,9 @@ const OnboardingDesktop: React.FC<OnboardingI> = (props) => {
             />
             <Select
               {...form?.citizenship}
+              wrapperClassName='col-12 col-md-6'
               label='Cittadinanza'
               placeholder='Seleziona cittadinanza'
-              className='col-12 col-md-6'
               options={optionsSelect}
               onInputChange={onInputChange}
               value={form?.citizenship.value?.toString()}

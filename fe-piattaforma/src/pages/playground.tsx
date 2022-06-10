@@ -14,14 +14,16 @@ import {
   Stepper,
   DropdownFilter,
   ProgressBar,
+  // SelectMultiple,
 } from '../components';
 import withFormHandler, { withFormHandlerProps } from '../hoc/withFormHandler';
 import { formFieldI, newForm, newFormField } from '../utils/formHelper';
 import { i18nChangeLanguage } from '../utils/i18nHelper';
 import { guard } from '../utils/guardHelper';
 import SwitchProfileModal from '../components/Modals/SwitchProfileModal/switchProfileModal';
-import SectionTitle from '../components/SectionTitle/sectionTitle';
 import { FilterI } from '../components/DropdownFilter/dropdownFilter';
+// import { groupOptions } from '../components/Form/multipleSelectConstants';
+import ManageOTP from '../components/AdministrativeArea/Entities/Surveys/ManageOTP/ManageOTP';
 
 const Playground: React.FC<withFormHandlerProps> = (props) => {
   const { t } = useTranslation();
@@ -83,8 +85,6 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
 
   const [values, setValues] = useState<FilterI[]>([]);
 
-  console.log('--->VALUES', values);
-
   return (
     <div className='mt-4'>
       <h1>Playground {t('hello')}</h1>
@@ -103,6 +103,18 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
           values={values}
         />
       </div>
+      <Row className='mt-2'>
+        {/* <SelectMultiple 
+          id={`prova`}
+          label='Tipologia risposta'
+          aria-label='Tipologia risposta'
+          options={groupOptions}
+          //onInputChange={handleOnInputChange}
+          withLabel={false}
+          placeholder='Seleziona tipologia risposta'
+          wrapperClassName='mb-0 w-50'
+        /> */}
+      </Row>
       <Row className='mt-2'>
         <Col sm={6} md={4}>
           <Button color='primary' onClick={() => i18nChangeLanguage('it')}>
@@ -192,14 +204,21 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
         </Row>
       </section>
 
-      <div>
-        <SectionTitle
-          title='Dettaglio Programma'
-          status='ATTIVO'
-          upperTitle={{ icon: 'it-files', text: 'PROGRAMMA' }}
-          subTitle='Programma 1 Nome Breve'
-        />
-      </div>
+      <section>
+        <Row>
+          <Button
+            color='primary'
+            outline
+            size='lg'
+            onClick={() => {
+              dispatch(openModal({ id: 'OTPModal' }));
+            }}
+          >
+            Apri modale OTP
+          </Button>
+          <ManageOTP />
+        </Row>
+      </section>
     </div>
   );
 };

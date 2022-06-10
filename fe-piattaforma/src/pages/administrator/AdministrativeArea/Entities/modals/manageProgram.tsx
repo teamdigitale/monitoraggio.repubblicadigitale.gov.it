@@ -170,6 +170,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
           break;
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStep]);
 
   useEffect(() => {
@@ -183,6 +184,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       default: {
         return (
           <FormGeneralInfo
+            intoModal
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: {
               [key: string]: formFieldI['value'];
@@ -199,6 +201,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       case 2: {
         return (
           <TargetDateFormPrograms
+            intoModal
             formForSection='facilitationNumber'
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
@@ -214,6 +217,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       case 3: {
         return (
           <TargetDateFormPrograms
+            intoModal
             formForSection='uniqueUsers'
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
@@ -229,6 +233,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       case 4: {
         return (
           <TargetDateFormPrograms
+            intoModal
             formForSection='services'
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
@@ -244,6 +249,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       case 5: {
         return (
           <TargetDateFormPrograms
+            intoModal
             formForSection='facilitators'
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
@@ -261,6 +267,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
 
   useEffect(() => {
     dispatch(resetProgramDetails());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [creation]);
 
   return (

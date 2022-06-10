@@ -10,7 +10,7 @@ import { AreaAmministrativaRoutes } from '../pages/administrator/AdministrativeA
 import ProgramsDetails from '../pages/administrator/AdministrativeArea/Entities/Programs/programsDetails';
 import CitizensArea, {
   AreaCittadiniRoutes,
-} from '../pages/administrator/CitizensArea/citizensArea';
+} from '../pages/administrator/CitizensArea/Entities/citizensArea';
 import RoleManagement from '../pages/common/RoleManagement/roleManagement';
 import RoleManagementDetails from '../pages/common/RoleManagement/RoleManagementDetails/roleManagementDetails';
 import Onboarding from '../pages/facilitator/Onboarding/onboarding';

@@ -7,7 +7,7 @@ import { Form, Input } from '../../../components';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
-import { selectProgrammi } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { selectPrograms } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { GetProgramDetail } from '../../../redux/features/administrativeArea/programs/programsThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
@@ -35,6 +35,7 @@ interface TargetDateFormProgramsI
     | 'uniqueUsers'
     | 'services'
     | 'facilitators';
+  intoModal?: boolean;
 }
 
 const TargetDateFormPrograms: React.FC<TargetDateFormProgramsI> = (props) => {
@@ -50,20 +51,20 @@ const TargetDateFormPrograms: React.FC<TargetDateFormProgramsI> = (props) => {
     creation = false,
     updateForm = () => ({}),
     clearForm = () => ({}),
+    intoModal = false,
   } = props;
   const { firstParam } = useParams();
 
   const formDisabled = !!props.formDisabled;
 
   const formData: { [key: string]: string } | undefined =
-    useAppSelector(selectProgrammi).detail?.dettaglioProgramma?.[
-      formForSection
-    ];
+    useAppSelector(selectPrograms).detail?.dettaglioProgramma?.[formForSection];
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     clearForm();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formForSection]);
 
   useEffect(() => {
@@ -110,6 +111,7 @@ const TargetDateFormPrograms: React.FC<TargetDateFormProgramsI> = (props) => {
             ...form[manageField],
             field: manageField,
             required: !!values[field],
+            id: `${intoModal && 'modal-'}${formForSection}-${field}`,
           })
         );
       });
@@ -121,6 +123,7 @@ const TargetDateFormPrograms: React.FC<TargetDateFormProgramsI> = (props) => {
 
   useEffect(() => {
     updateRequiredFields();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     sendNewValues?.(getFormValues?.());
@@ -260,51 +263,61 @@ const form = newForm([
     field: 'targetMesi1',
     type: 'text',
     regex: RegexpType.STRING,
+    id: `targetMesi1`,
   }),
   newFormField({
     field: 'targetMesi1data',
     regex: RegexpType.DATE,
     type: 'date',
+    id: `targetMesi1data`,
   }),
   newFormField({
     field: 'targetMesi18',
     type: 'text',
     regex: RegexpType.STRING,
+    id: `targetMesi18`,
   }),
   newFormField({
     field: 'targetMesi18data',
     regex: RegexpType.DATE,
     type: 'date',
+    id: `targetMesi18data`,
   }),
   newFormField({
     field: 'targetMesi30',
     type: 'text',
     regex: RegexpType.STRING,
+    id: `targetMesi30`,
   }),
   newFormField({
     field: 'targetMesi30data',
     regex: RegexpType.DATE,
     type: 'date',
+    id: `targetMesi30data`,
   }),
   newFormField({
     field: 'targetMesi42',
     type: 'text',
     regex: RegexpType.STRING,
+    id: `targetMesi42`,
   }),
   newFormField({
     field: 'targetMesi42data',
     regex: RegexpType.DATE,
     type: 'date',
+    id: `targetMesi42data`,
   }),
   newFormField({
     field: 'targetGiugno2025',
     type: 'text',
     regex: RegexpType.STRING,
+    id: `targetGiugno2025`,
   }),
   newFormField({
     field: 'targetGiugno2025data',
     regex: RegexpType.DATE,
     type: 'date',
+    id: `targetGiugno2025data`,
   }),
 ]);
 

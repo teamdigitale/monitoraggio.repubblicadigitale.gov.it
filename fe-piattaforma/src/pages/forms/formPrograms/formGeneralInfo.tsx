@@ -5,22 +5,13 @@ import { Form, Input, Select } from '../../../components';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
-import { selectProgrammi } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { selectPrograms } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { GetProgramDetail } from '../../../redux/features/administrativeArea/programs/programsThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
 import { RegexpType } from '../../../utils/validator';
 
 interface ProgramInformationI {
-  /* formData?:
-    | {
-        programName?: string;
-        policy?: string;
-        startDate?: string;
-        endDate?: string;
-      }
-    | undefined
-    | { [key: string]: string }; */
   formDisabled?: boolean;
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   setIsFormValid?: (param?: boolean | undefined) => void;
@@ -29,27 +20,30 @@ interface ProgramInformationI {
 
 interface FormEnteGestoreProgettoFullInterface
   extends withFormHandlerProps,
-    ProgramInformationI {}
+    ProgramInformationI {
+  intoModal?: boolean;
+}
 const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
   props
 ) => {
   const {
     setFormValues = () => ({}),
     form,
-
+    updateForm = () => ({}),
     onInputChange,
     sendNewValues,
     isValidForm,
     setIsFormValid = () => false,
-    getFormValues,
+    getFormValues = () => ({}),
     creation = false,
+    intoModal = false,
   } = props;
   const { firstParam } = useParams();
 
   const formDisabled = !!props.formDisabled;
 
   const formData: { [key: string]: string } | undefined =
-    useAppSelector(selectProgrammi).detail?.dettaglioProgramma?.generalInfo;
+    useAppSelector(selectPrograms).detail?.dettaglioProgramma?.generalInfo;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -83,7 +77,30 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
   useEffect(() => {
     sendNewValues?.(getFormValues?.());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
+
+  const updateRequiredFields = () => {
+    if (form) {
+      const newFormList: formFieldI[] = [];
+      const values = getFormValues();
+      Object.keys(values).forEach((field) => {
+        newFormList.push(
+          newFormField({
+            ...form[field],
+            field: field,
+            id: intoModal ? `modal-${field}` : field,
+          })
+        );
+      });
+      updateForm(newForm(newFormList));
+    }
+  };
+
+  useEffect(() => {
+    updateRequiredFields();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [intoModal]);
 
   return (
     <Form className='mt-5' formDisabled={formDisabled}>
@@ -175,6 +192,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
 const form = newForm([
   newFormField({
     field: 'codice',
+    type: 'text',
   }),
   newFormField({
     field: 'nome',
@@ -186,10 +204,6 @@ const form = newForm([
   }),
   newFormField({
     field: 'nomeBreve',
-    type: 'text',
-  }),
-  newFormField({
-    field: 'policy',
     type: 'text',
   }),
   newFormField({

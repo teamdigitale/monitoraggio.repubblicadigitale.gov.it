@@ -4,7 +4,7 @@ import { Form, Input } from '../../components';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../hoc/withFormHandler';
-import { selectEnti } from '../../redux/features/administrativeArea/administrativeAreaSlice';
+import { selectAuthorities } from '../../redux/features/administrativeArea/administrativeAreaSlice';
 import { GetEnteDetail } from '../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import { useAppSelector } from '../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../utils/formHelper';
@@ -40,7 +40,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
   const formDisabled = !!props.formDisabled;
 
   const formData: { [key: string]: formFieldI['value'] } | undefined =
-    useAppSelector(selectEnti).detail?.info;
+    useAppSelector(selectAuthorities).detail?.info;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -82,10 +82,12 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
     setIsFormValid?.(isValidForm);
   };
 
+  const bootClass = 'justify-content-between px-0 px-lg-5 mx-5';
+
   return (
     <Form className='mt-5 mb-5' formDisabled={formDisabled}>
       <>
-        <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
+        <Form.Row className={bootClass}>
           <Input
             {...form?.id}
             col='col-12 col-lg-6'
@@ -104,7 +106,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
             }}
           />
         </Form.Row>
-        <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
+        <Form.Row className={bootClass}>
           <Input
             {...form?.shortName}
             col='col-12 col-lg-6'
@@ -124,7 +126,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
             }}
           />
         </Form.Row>
-        <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
+        <Form.Row className={bootClass}>
           <Input
             {...form?.profile}
             label='Profilo'
@@ -144,7 +146,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
             }}
           />
         </Form.Row>
-        <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
+        <Form.Row className={bootClass}>
           <Input
             col='col-12 col-lg-6'
             {...form?.address}
@@ -164,24 +166,31 @@ const form = newForm([
   newFormField({
     field: 'id',
     valid: true,
+    id: 'id',
   }),
   newFormField({
     field: 'name',
+    id: 'name',
   }),
   newFormField({
     field: 'shortName',
+    id: 'shortName',
   }),
   newFormField({
     field: 'type',
+    id: 'type',
   }),
   newFormField({
     field: 'profile',
+    id: 'profile',
   }),
   newFormField({
     field: 'fiscalCode',
+    id: 'fiscalCode',
   }),
   newFormField({
     field: 'address',
+    id: 'address',
   }),
 ]);
 export default withFormHandler({ form }, FormAuthorities);

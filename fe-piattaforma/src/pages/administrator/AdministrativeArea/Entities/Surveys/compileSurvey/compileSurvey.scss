@@ -1,0 +1,18 @@
+.compile-survey-container {
+  &__half-width {
+    width: 48%;
+  }
+  &__prefix-width {
+    width: 15%;
+  }
+  &__mobile-width {
+    width: 32%;
+  }
+  &__select-margin {
+    top: 8px;
+  }
+  &__label-checkbox {
+    font-size: 14px;
+    color: #435a70;
+  }
+}

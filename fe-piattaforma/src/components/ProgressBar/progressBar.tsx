@@ -17,7 +17,15 @@ const ProgressBar: React.FC<ProgressBarI> = (props) => {
         'progress-bar-container position-relative w-100'
       )}
     >
-      <p className='progress-bar-container__section-name primary-color pl-4 py-3 font-weight-semibold'>
+      <p
+        className={clsx(
+          'progress-bar-container__section-name',
+          'primary-color',
+          'pl-4',
+          'py-3',
+          'font-weight-semibold'
+        )}
+      >
         {steps[currentStep - 1]}
       </p>
       <div className='progress-bar-container__line-bar'>

@@ -1,14 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  defaultQuestionsCitizenAnagraphic,
-  defaultQuestionsBookingAnagraphic,
-  defaultQuestionsServiceAnagraphic,
-  defaultQuestionsServiceContent,
-} from '../../../../pages/administrator/AdministrativeArea/Entities/Surveys/questionariConstants';
-import { newForm, newFormField } from '../../../../utils/formHelper';
+import { FormI, newForm, newFormField } from '../../../../utils/formHelper';
 import { transformJsonToForm } from '../../../../utils/jsonFormHelper';
 import { RootState } from '../../../store';
-import { newQuestion, newSection } from './surveysThunk';
+import { newQuestion } from './surveysThunk';
 
 export interface SurveyQuestionI {
   id?: string;
@@ -41,62 +35,9 @@ export interface SurveyStateI {
   lastUpdate: string;
   form?: any;
   sections: SurveySectionI[];
+  compilingSurveyForms: FormI[];
+  sectionsSchemaResponse?: {id:string, schema:string, schemaUI:string, title:string}[];
 }
-
-const baseSections = [
-  newSection({
-    id: 'anagraphic-citizen-section',
-    sectionTitle: 'Anagrafica del cittadino',
-    questions: defaultQuestionsCitizenAnagraphic.map((elem) =>
-      newQuestion({
-        id: elem.id,
-        name: elem.name,
-        type: elem.type,
-        isDefault: elem.isDefault,
-        values: elem.values,
-      })
-    ),
-  }),
-  newSection({
-    id: 'anagraphic-booking-section',
-    sectionTitle: 'Anagrafica della prenotazione',
-    questions: defaultQuestionsBookingAnagraphic.map((elem) =>
-      newQuestion({
-        id: elem.id,
-        name: elem.name,
-        type: elem.type,
-        isDefault: elem.isDefault,
-        values: elem.values,
-      })
-    ),
-  }),
-  newSection({
-    id: 'anagraphic-service-section',
-    sectionTitle: 'Anagrafica del servizio',
-    questions: defaultQuestionsServiceAnagraphic.map((elem) =>
-      newQuestion({
-        id: elem.id,
-        name: elem.name,
-        type: elem.type,
-        isDefault: elem.isDefault,
-        values: elem.values,
-      })
-    ),
-  }),
-  newSection({
-    id: 'content-service-section',
-    sectionTitle: 'Contenuti del servizio',
-    questions: defaultQuestionsServiceContent.map((elem) =>
-      newQuestion({
-        id: elem.id,
-        name: elem.name,
-        type: elem.type,
-        isDefault: elem.isDefault,
-        values: elem.values,
-      })
-    ),
-  }),
-];
 
 const baseSurveyForm = newForm([
   newFormField({
@@ -118,7 +59,9 @@ const initialState: SurveyStateI = {
   defaultSCD: false,
   lastUpdate: '',
   form: baseSurveyForm,
-  sections: [...baseSections],
+  sections: [],
+  sectionsSchemaResponse: [],
+  compilingSurveyForms: [],
 };
 
 export const surveysSlice = createSlice({
@@ -295,6 +238,7 @@ export const surveysSlice = createSlice({
     },
     setSurveyInfoForm: (state, action: PayloadAction<any>) => {
       const surveyDetails = transformJsonToForm(action.payload);
+      state.sectionsSchemaResponse = action.payload.sections;
       if (surveyDetails) {
         state.surveyId = surveyDetails.surveyId;
         state.surveyStatus = surveyDetails.surveyStatus;
@@ -304,6 +248,14 @@ export const surveysSlice = createSlice({
         state.form = surveyDetails.form;
         state.sections = surveyDetails.sections;
       }
+    },
+    setCompilingSurveyForm: (
+      state,
+      action: PayloadAction<{ id: number; form: FormI }>
+    ) => {
+      state.compilingSurveyForms[action.payload.id] = {
+        ...action.payload.form,
+      };
     },
   },
 });
@@ -318,10 +270,11 @@ export const {
   cloneSurveyQuestion,
   setSurveyQuestionFieldValue,
   setSurveyInfoForm,
+  setCompilingSurveyForm,
 } = surveysSlice.actions;
 
+export const selectSurvey = (state: RootState) => state.survey;
 export const selectSurveyForm = (state: RootState) => state.survey.form;
-
 export const selectSurveySections = (state: RootState) => state.survey.sections;
 
 export const selectSurveyQuestion = (
@@ -334,5 +287,11 @@ export const selectSurveyQuestion = (
   );
   return state.survey.sections[idSection].questions?.[questionID];
 };
+
+export const selectCompilingSurveyForms = (state: RootState) =>
+  state.survey.compilingSurveyForms;
+
+export const selectResponseSectionsSchema = (state: RootState) =>
+  state.survey.sectionsSchemaResponse;
 
 export default surveysSlice.reducer;

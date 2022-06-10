@@ -82,7 +82,7 @@ const MultiOptionForm: React.FC<MultiOptionFormI> = (props) => {
 
   return (
     <Form.Row>
-      <Col md={6}>
+      <Col md={12} sm={12} lg={6}>
         <p className='mb-0'>Lista valori</p>
         <ul
           aria-label='Lista valori'
@@ -128,7 +128,9 @@ const MultiOptionForm: React.FC<MultiOptionFormI> = (props) => {
         {!areValuesDefault && (
           <Button
             onClick={() => addOption()}
-            className={clsx('survey-question-container__button-add')}
+            className={clsx(
+              'survey-question-container__button-add font-italic font-weight-normal'
+            )}
           >
             <Icon
               className='plus mr-3'

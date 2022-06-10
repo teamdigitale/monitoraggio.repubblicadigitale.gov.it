@@ -1,6 +1,5 @@
 /* TODO fix this file!! */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
 import clsx from 'clsx';
@@ -9,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ClickOutside from '../../hoc/ClickOutside';
 import './hamburgerMenu.scss';
-import LogoSmall from '../../../public/assets/img/logo-mobile.png';
+import LogoSmall from '/public/assets/img/logo-mobile.png';
 import { focusId, menuRoutes } from '../../utils/common';
 
 interface HBMenuProps {
@@ -46,7 +45,13 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
                 return link.subRoutes ? (
                   <React.Fragment key={index}>
                     <li
-                      className='right-icon d-flex justify-content-between pr-3 flex-column'
+                      className={clsx(
+                        'right-icon',
+                        'd-flex',
+                        'justify-content-between',
+                        'pr-3',
+                        'flex-column'
+                      )}
                       {...(collapseOpen ? expanded : {})}
                       id={link.id}
                     >

@@ -1,5 +1,5 @@
 import { Card, CardBody, Icon } from 'design-react-kit';
-import ColoredListBullets from '../../../public/assets/img/blueListBullets.png';
+import ColoredListBullets from '/public/assets/img/blue-list-bullets.png';
 import React from 'react';
 import clsx from 'clsx';
 import { useAppSelector } from '../../redux/hooks';

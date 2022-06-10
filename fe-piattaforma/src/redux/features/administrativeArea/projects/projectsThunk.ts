@@ -5,12 +5,12 @@ import isEmpty from 'lodash.isempty';
 import API from '../../../../utils/apiHelper';
 import {
   setEntityFilterOptions,
-  setProgettiList,
-  setProgettoDetail,
+  setProjectsList,
+  setProjectDetails,
 } from '../administrativeAreaSlice';
 import { mapOptions } from '../../../../utils/common';
 import { formFieldI } from '../../../../utils/formHelper';
-import { setProjectDetails } from './projectsSlice';
+import { setProjectDetails as setProjectDetailsSlice } from './projectsSlice';
 
 export interface ProjectLightI {
   id: number;
@@ -61,7 +61,7 @@ export const GetAllProjects =
         });
       }
       if (res?.data) {
-        dispatch(setProgettiList({ data: res.data.data.list }));
+        dispatch(setProjectsList({ data: res.data.data.list }));
       }
     } finally {
       dispatch(hideLoader());
@@ -114,7 +114,7 @@ export const GetProjectDetail =
       dispatch({ ...GetProjectDetailAction, idProgetto });
       const res = await API.get(`progetto/idProgetto`);
       if (res?.data) {
-        dispatch(setProgettoDetail(res.data));
+        dispatch(setProjectDetails(res.data));
       }
     } catch (error) {
       console.log('GetProgramDetail error', error);
@@ -134,7 +134,7 @@ export const createProjectDetails =
         progetto: { details },
       } = select((state: RootState) => state);
       const body = { ...details, facilitators: payload };
-      dispatch(setProjectDetails({ currentStep: 6, payload }));
+      dispatch(setProjectDetailsSlice({ currentStep: 6, payload }));
       if (body) {
         await API.put(`/progetti/setProjectDetail`, {
           ...body,

@@ -22,12 +22,12 @@ import {
   SetSurveyQuestion,
 } from '../../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 
-interface SurveyDetailsI {
+interface SurveyDetailsEditI {
   editMode?: boolean;
   cloneMode?: boolean;
 }
 
-const SurveyDetails: React.FC<SurveyDetailsI> = ({
+const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
   editMode = false,
   cloneMode = false,
 }) => {
@@ -36,7 +36,7 @@ const SurveyDetails: React.FC<SurveyDetailsI> = ({
   const navigate = useNavigate();
   const form = useAppSelector(selectSurveyForm);
   const sections = useAppSelector(selectSurveySections) || [];
-  const [activeSectionId, setActiveSectionId] = useState<string>(''); // sections[sections?.length - 1]?.id || ''
+  // const [activeSectionId, setActiveSectionId] = useState<string>('');
   const [editModeState, setEditModeState] = useState<boolean>(editMode);
   const [cloneModeState, setCloneModeState] = useState<boolean>(cloneMode);
   const [cloneSurveyTitle, setCloneSurveyTitle] = useState(
@@ -62,15 +62,8 @@ const SurveyDetails: React.FC<SurveyDetailsI> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // useEffect(() => {
-  //   // if (sections && sections[sections.length - 1].id !== activeSectionId) {
-  //   //   setActiveSectionId(sections[sections.length - 1].id || '');
-  //   // }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [sections.length]);
-
   const handleOnInputChange = (
-    value: string | number | boolean | Date | undefined,
+    value: string | number | boolean | Date | string[] | undefined,
     field: string | undefined,
     isTitle: boolean
   ) => {
@@ -83,10 +76,6 @@ const SurveyDetails: React.FC<SurveyDetailsI> = ({
       })
     );
   };
-
-  // const handleNewSection = () => {
-  //   dispatch(SetSurveySection());
-  // };
 
   const handleNewQuestion = (sectionId: string) => {
     dispatch(SetSurveyQuestion({ sectionId: sectionId }));
@@ -160,8 +149,9 @@ const SurveyDetails: React.FC<SurveyDetailsI> = ({
             value={
               cloneModeState ? cloneSurveyTitle : form['survey-name'].value
             }
-            col='col-6'
+            col='col-12 col-lg-6 '
             label='Nome'
+            id='survey-field-name'
             onInputChange={(value, field) =>
               handleOnInputChange(value, field, true)
             }
@@ -170,8 +160,9 @@ const SurveyDetails: React.FC<SurveyDetailsI> = ({
           />
           <Input
             {...form['survey-description']}
-            col='col-6'
+            col='col-12 col-lg-6'
             label='Descrizione'
+            id='survey-field-description'
             onInputBlur={handleOnInputChange}
             placeholder='Inserici una descrizione del questionario'
             disabled={!editModeState && !cloneModeState}
@@ -185,10 +176,10 @@ const SurveyDetails: React.FC<SurveyDetailsI> = ({
               {...section}
               positionSection={i}
               sectionTitle={`${i + 1}. ${section.sectionTitle}`}
-              handleActiveSection={(activeSection) =>
-                setActiveSectionId(activeSection)
-              }
-              isSectionActive={section.id === activeSectionId}
+              // handleActiveSection={(activeSection) =>
+              //   setActiveSectionId(activeSection)
+              // }
+              // isSectionActive={section.id === activeSectionId}
               editMode={editModeState}
               cloneMode={cloneModeState}
             />
@@ -292,4 +283,4 @@ const SurveyDetails: React.FC<SurveyDetailsI> = ({
   );
 };
 
-export default SurveyDetails;
+export default SurveyDetailsEdit;

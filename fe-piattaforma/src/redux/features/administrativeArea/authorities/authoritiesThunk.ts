@@ -4,8 +4,8 @@ import { RootState } from '../../../store';
 import isEmpty from 'lodash.isempty';
 import API from '../../../../utils/apiHelper';
 import {
-  setEntiDetail,
-  setEntiList,
+  setAuthoritiesDetails,
+  setAuthoritiesList,
   setEntityFilterOptions,
 } from '../administrativeAreaSlice';
 import { mapOptions } from '../../../../utils/common';
@@ -61,7 +61,7 @@ export const GetAllEnti =
         });
       }
       if (res?.data) {
-        dispatch(setEntiList({ data: res.data.data.list }));
+        dispatch(setAuthoritiesList({ data: res.data.data.list }));
       }
     } finally {
       dispatch(hideLoader());
@@ -123,7 +123,7 @@ export const GetEnteDetail = (type: string) => async (dispatch: Dispatch) => {
         return;
     }
     if (res?.data) {
-      dispatch(setEntiDetail(res.data));
+      dispatch(setAuthoritiesDetails(res.data));
     }
   } catch (e) {
     console.log({ e });

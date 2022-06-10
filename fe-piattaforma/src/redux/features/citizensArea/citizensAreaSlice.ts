@@ -20,6 +20,7 @@ export interface CittadinoInfoI {
   cognome?: string;
   codiceFiscale?: string;
   telefono?: string;
+  message?: string;
 }
 
 export interface CittadinoI {
@@ -96,6 +97,7 @@ export const citizensAreaSlice = createSlice({
       }
     },
     setEntityFilters: (state, action: PayloadAction<any>) => {
+      console.log(action.payload);
       state.filters = {
         ...state.filters,
         ...action.payload,

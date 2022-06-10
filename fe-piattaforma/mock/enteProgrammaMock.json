@@ -9,13 +9,17 @@
       "fiscalCode": "RSSMRA80B01F205W",
       "address": "Via Roma 1 Roma RO"
     },
-    "del": [
-      { "name": "Simone Viola", "status": "Active", "id": "1" },
-      { "name": "Simone Viola", "status": "Active", "id": "1" }
+    "delegati": [
+      { "nome": "Simone Viola", "stato": "Active", "id": "1" },
+      { "nome": "Simone Violaa", "stato": "Active", "id": "2" }
     ],
-    "ref": [
-      { "name": "Simone Blu", "status": "Active", "id": "1" },
-      { "name": "Simone Blu", "status": "Active", "id": "1" }
+    "referenti": [
+      { "nome": "Simone Blu", "stato": "Active", "id": "1" },
+      { "nome": "Simone Bluu", "stato": "Active", "id": "2" }
+    ],
+    "sedi": [
+      { "nome": "Sede Blu", "stato": "Active", "id": "1" },
+      { "nome": "Sede Bluu", "stato": "Active", "id": "2" }
     ]
   }
 }
