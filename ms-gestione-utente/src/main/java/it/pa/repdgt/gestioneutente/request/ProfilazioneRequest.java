@@ -24,4 +24,6 @@ public class ProfilazioneRequest implements Serializable {
 	private String codiceRuolo;
 	
 	private Long idProgramma;
+	
+	private Long idProgetto;
 }

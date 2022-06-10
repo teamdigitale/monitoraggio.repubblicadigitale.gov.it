@@ -23,7 +23,7 @@ public interface EntePartnerRepository extends JpaRepository<EntePartnerEntity, 
 			@Param(value = "idProgetto") Long idProgetto);
 
 	@Query(value = "SELECT utente.NOME, utente.COGNOME "
-			+ "FROM UTENTE utente "
+			+ "FROM utente utente "
 			+ "	INNER JOIN referente_delegati_partner  rdp "
 			+ "		ON utente.CODICE_FISCALE = rdp.CF_UTENTE "
 			+ "WHERE rdp.ID_PROGETTO = :idProgetto "

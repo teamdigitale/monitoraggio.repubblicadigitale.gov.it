@@ -26,5 +26,7 @@ public class EntiPaginatiParam implements Serializable {
 	
 	private Long idProgramma;
 	
+	private Long idProgetto;
+	
 	private FiltroRequest filtroRequest;
 }

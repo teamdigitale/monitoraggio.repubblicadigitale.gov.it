@@ -461,14 +461,7 @@ public class EnteService {
 	private List<Map<String, String>> getAllEntiGestoreProgetto(EntiPaginatiParam entiPaginatiParam) {
 		String criterioRicerca =  entiPaginatiParam.getFiltroRequest() != null? entiPaginatiParam.getFiltroRequest().getCriterioRicerca(): null;
 		List<String> idsProgrammi = Arrays.asList(String.valueOf(entiPaginatiParam.getIdProgramma()));
-		List<String> idsProgetti =  entiPaginatiParam.getFiltroRequest().getIdsProgetti();
-		
-		idsProgetti =  this.enteRepository.findIdProgettiByRuoloAndIdProgramma(
-			entiPaginatiParam.getCodiceRuolo().toString(),
-			entiPaginatiParam.getCfUtente(), 
-			String.valueOf(entiPaginatiParam.getIdProgramma()), 
-			idsProgetti
-		);
+		List<String> idsProgetti =  Arrays.asList(String.valueOf(entiPaginatiParam.getIdProgetto()));
 		
 		List<String> profiliEnteUpperCase = null;
 		if(entiPaginatiParam.getFiltroRequest() != null && entiPaginatiParam.getFiltroRequest().getProfili() != null){
@@ -484,14 +477,7 @@ public class EnteService {
 	private List<Map<String, String>> getAllProgettiGestoreProgetto(EntiPaginatiParam entiPaginatiParam) {
 		String criterioRicerca =  entiPaginatiParam.getFiltroRequest() != null? entiPaginatiParam.getFiltroRequest().getCriterioRicerca(): null;
 		List<String> idsProgrammi = Arrays.asList(String.valueOf(entiPaginatiParam.getIdProgramma()));
-		List<String> idsProgetti =  entiPaginatiParam.getFiltroRequest().getIdsProgetti();
-		
-		idsProgetti =  this.enteRepository.findIdProgettiByRuoloAndIdProgramma(
-			entiPaginatiParam.getCodiceRuolo().toString(),
-			entiPaginatiParam.getCfUtente(), 
-			String.valueOf(entiPaginatiParam.getIdProgramma()), 
-			idsProgetti
-		);
+		List<String> idsProgetti =  Arrays.asList(String.valueOf(entiPaginatiParam.getIdProgetto()));
 		
 		List<String> profiliEnteUpperCase = null;
 		if(entiPaginatiParam.getFiltroRequest() != null && entiPaginatiParam.getFiltroRequest().getProfili() != null){
@@ -507,14 +493,7 @@ public class EnteService {
 	private List<Map<String, String>> getAllEntiPartnerProgetto(EntiPaginatiParam entiPaginatiParam) {
 		String criterioRicerca =  entiPaginatiParam.getFiltroRequest() != null? entiPaginatiParam.getFiltroRequest().getCriterioRicerca(): null;
 		List<String> idsProgrammi = Arrays.asList(String.valueOf(entiPaginatiParam.getIdProgramma()));
-		List<String> idsProgetti =  entiPaginatiParam.getFiltroRequest().getIdsProgetti();
-		
-		idsProgetti =  this.enteRepository.findIdProgettiEntePartnerByRuoloAndIdProgramma(
-			entiPaginatiParam.getCodiceRuolo().toString(),
-			entiPaginatiParam.getCfUtente(), 
-			String.valueOf(entiPaginatiParam.getIdProgramma()), 
-			idsProgetti
-		);
+		List<String> idsProgetti =  Arrays.asList(String.valueOf(entiPaginatiParam.getIdProgetto()));
 		
 		List<String> profiliEnteUpperCase = null;
 		if(entiPaginatiParam.getFiltroRequest() != null && entiPaginatiParam.getFiltroRequest().getProfili() != null){
@@ -530,14 +509,9 @@ public class EnteService {
 	private List<Map<String, String>> getAllProgettiPartnerProgetto(EntiPaginatiParam entiPaginatiParam) {
 		String criterioRicerca =  entiPaginatiParam.getFiltroRequest() != null? entiPaginatiParam.getFiltroRequest().getCriterioRicerca(): null;
 		List<String> idsProgrammi = Arrays.asList(String.valueOf(entiPaginatiParam.getIdProgramma()));
-		List<String> idsProgetti =  entiPaginatiParam.getFiltroRequest().getIdsProgetti();
+		List<String> idsProgetti =  new ArrayList<>();
 		
-		idsProgetti =  this.enteRepository.findIdProgettiEntePartnerByRuoloAndIdProgramma(
-			entiPaginatiParam.getCodiceRuolo().toString(),
-			entiPaginatiParam.getCfUtente(), 
-			String.valueOf(entiPaginatiParam.getIdProgramma()), 
-			idsProgetti
-		);
+		idsProgetti.add(entiPaginatiParam.getIdProgetto().toString());
 		
 		List<String> profiliEnteUpperCase = null;
 		if(entiPaginatiParam.getFiltroRequest() != null && entiPaginatiParam.getFiltroRequest().getProfili() != null){

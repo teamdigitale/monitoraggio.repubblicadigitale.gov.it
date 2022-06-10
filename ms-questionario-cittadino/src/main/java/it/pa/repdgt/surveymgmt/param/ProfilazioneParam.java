@@ -2,6 +2,7 @@ package it.pa.repdgt.surveymgmt.param;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
@@ -16,8 +17,10 @@ public class ProfilazioneParam implements Serializable {
 	@NotNull
 	private RuoloUtenteEnum codiceRuoloUtenteLoggato;
 	
-	@NotNull
+	@NotBlank
 	private String codiceFiscaleUtenteLoggato;
 	
 	private Long idProgramma;
+	
+	private Long idProgetto;
 }

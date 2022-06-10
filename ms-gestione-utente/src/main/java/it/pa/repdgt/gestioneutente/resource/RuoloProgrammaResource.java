@@ -23,10 +23,22 @@ public class RuoloProgrammaResource {
 	
 	String nomeProgramma;
 	
+	String idProgetto;
+	
 	String nomeEnte;
 	
 	public RuoloProgrammaResource(String codiceRuolo, String descrizioneRuolo) {
 		this.codiceRuolo = codiceRuolo;
 		this.descrizioneRuolo = descrizioneRuolo;
+	}
+
+	public RuoloProgrammaResource(String codiceRuolo, String descrizioneRuolo, String idProgramma, String nomeProgramma,
+			String nomeEnte) {
+		super();
+		this.codiceRuolo = codiceRuolo;
+		this.descrizioneRuolo = descrizioneRuolo;
+		this.idProgramma = idProgramma;
+		this.nomeProgramma = nomeProgramma;
+		this.nomeEnte = nomeEnte;
 	}
 }

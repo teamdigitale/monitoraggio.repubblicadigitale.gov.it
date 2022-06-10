@@ -1,10 +1,12 @@
 package it.pa.repdgt.programmaprogetto.restapi;
 
 import java.io.ByteArrayInputStream;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 
 import org.apache.commons.csv.CSVFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -158,7 +160,7 @@ public class ProgettoRestApi {
 	@PutMapping(path = "/termina/{idProgetto}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void terminaProgetto(
-			@PathVariable(value = "idProgetto") Long idProgetto) {
-		this.progettoService.terminaProgetto(idProgetto);
+			@PathVariable(value = "idProgetto") Long idProgetto, @RequestParam @PastOrPresent Date dataTerminazione) {
+		this.progettoService.terminaProgetto(idProgetto, dataTerminazione);
 	}
 }

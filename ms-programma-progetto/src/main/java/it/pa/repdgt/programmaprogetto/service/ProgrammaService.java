@@ -272,20 +272,20 @@ public class ProgrammaService {
 		}
 	}
 
-	private String getStatoProgrammaByProgrammaId(Long idProgramma) {
+	public String getStatoProgrammaByProgrammaId(Long idProgramma) {
 		String errorMessage = String.format("Stato programma non presente");
 		return this.programmaRepository.findStatoById(idProgramma)
 				.orElseThrow(() -> new ResourceNotFoundException(errorMessage));
 	}
 
-	private String getPolicyProgrammaByProgrammaId(Long idProgramma) {
+	public String getPolicyProgrammaByProgrammaId(Long idProgramma) {
 		String errorMessage = String.format("Policy programma non presente");
 		return this.programmaRepository.findPolicyById(idProgramma)
 				.orElseThrow(() -> new ResourceNotFoundException(errorMessage));
 	}
 
 
-	private List<ProgrammaEntity> getProgrammiPerDSCU(FiltroRequest filtroRequest) {
+	public List<ProgrammaEntity> getProgrammiPerDSCU(FiltroRequest filtroRequest) {
 		return this.programmaRepository.findProgrammiByPolicy(
 				PolicyEnum.SCD.toString(),
 				filtroRequest.getCriterioRicerca(),
@@ -294,7 +294,7 @@ public class ProgrammaService {
 				);
 	}
 	
-	private List<ProgrammaEntity> getProgrammiPerDSCU(ProgettoFiltroRequest filtroRequest) {
+	public List<ProgrammaEntity> getProgrammiPerDSCU(ProgettoFiltroRequest filtroRequest) {
 		return this.programmaRepository.findByPolicy(
 				PolicyEnum.SCD.toString(),
 				filtroRequest.getCriterioRicerca(),
@@ -313,7 +313,7 @@ public class ProgrammaService {
 				);
 	}
 	
-	private Set<String> getStatiPerDSCU(FiltroRequest filtroRequest) {
+	public Set<String> getStatiPerDSCU(FiltroRequest filtroRequest) {
 		return this.programmaRepository.findStatiByPolicy(
 				PolicyEnum.SCD.toString(),
 				filtroRequest.getCriterioRicerca(),
@@ -340,7 +340,7 @@ public class ProgrammaService {
 				);
 	}
 
-	private Set<String> getPoliciesPerDSCU() {
+	public Set<String> getPoliciesPerDSCU() {
 		return this.programmaRepository.findPoliciesPerDSCU(PolicyEnum.SCD.toString());
 	}
 
@@ -541,7 +541,7 @@ public class ProgrammaService {
 	}
 
 	@Transactional(rollbackOn = Exception.class)
-	public void terminaProgramma(Long idProgramma) {
+	public void terminaProgramma(Long idProgramma, Date dataTerminazione) {
 		if (!this.programmaRepository.existsById(idProgramma)) {
 			final String errorMessage = String.format("Impossibile terminare il Programma con id=%s. Programma non presente", idProgramma);
 			throw new ProgrammaException(errorMessage);
@@ -554,7 +554,7 @@ public class ProgrammaService {
 		}
 		final List<ProgettoEntity> progettiAssociatiAlProgramma = this.progettoService.getProgettiByIdProgramma(idProgramma);
 		progettiAssociatiAlProgramma.forEach(progetto -> {
-			this.progettoService.terminaProgetto(progetto.getId());
+			this.progettoService.terminaProgetto(progetto.getId(), dataTerminazione);
 		});
 		//prendo la lista dei referenti e delegati dell'ente gestore di programma
 		List<ReferentiDelegatiEnteGestoreProgrammaEntity> referentiEDelegati = this.referentiDelegatiEnteGestoreProgrammaService.getReferentiEDelegatiProgramma(idProgramma);
@@ -563,7 +563,7 @@ public class ProgrammaService {
 		programmaFetch.setStato(StatoEnum.TERMINATO.getValue());
 		this.storicoService.storicizzaEnteGestoreProgramma(programmaFetch);
 		programmaFetch.setStatoGestoreProgramma(StatoEnum.TERMINATO.getValue());
-		programmaFetch.setDataOraTerminazioneProgramma(new Date());
+		programmaFetch.setDataOraTerminazioneProgramma(dataTerminazione);
 		this.salvaProgramma(programmaFetch);
 	}
 	

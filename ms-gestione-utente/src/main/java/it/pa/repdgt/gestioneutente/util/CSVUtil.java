@@ -47,6 +47,6 @@ public class CSVUtil {
 	}
 
 	private static List<String> getCSVRecord(UtenteDto utente) {
-		return Arrays.asList(utente.getId(), utente.getNome(), utente.getRuoli(), utente.getStato());
+		return Arrays.asList(utente.getId().toString(), utente.getNome(), utente.getRuoli(), utente.getStato());
 	}
 }
