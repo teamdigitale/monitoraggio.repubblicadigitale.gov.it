@@ -376,8 +376,7 @@ jobs:
           cd ${{ github.workspace }}/fe-piattaforma/k8s
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
-          envsubst < deployment.tmp.yml
-          cat deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
+          envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-ente' deployment.tmp.yaml
         env:
@@ -388,8 +387,7 @@ jobs:
           cd ${{ github.workspace }}/ms-ente/k8s
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
-          envsubst < deployment.tmp.yml
-          cat deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
+          envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-gestione-utente' deployment.tmp.yaml
         env:
@@ -400,8 +398,7 @@ jobs:
           cd ${{ github.workspace }}/ms-gestione-utente/k8s
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
-          envsubst < deployment.tmp.yml
-          cat deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
+          envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-notifiche-integration' deployment.tmp.yaml
         env:
@@ -412,8 +409,7 @@ jobs:
           cd ${{ github.workspace }}/ms-notifiche-integration/k8s
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
-          envsubst < deployment.tmp.yml
-          cat deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
+          envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-open-data' deployment.tmp.yaml
         env:
@@ -424,8 +420,7 @@ jobs:
           cd ${{ github.workspace }}/ms-open-data/k8s
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
-          envsubst < deployment.tmp.yml
-          cat deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
+          envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-programma-progetto' deployment.tmp.yaml
         env:
@@ -436,8 +431,7 @@ jobs:
           cd ${{ github.workspace }}/ms-programma-progetto/k8s
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
-          envsubst < deployment.tmp.yml
-          cat deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
+          envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-questionario-cittadino' deployment.tmp.yaml
         env:
@@ -448,8 +442,7 @@ jobs:
           cd ${{ github.workspace }}/ms-questionario-cittadino/k8s
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
-          envsubst < deployment.tmp.yml
-          cat deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
+          envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Deploy
         run: |
