@@ -58,6 +58,7 @@ public class ProgrammaMapper {
 		programma.setPolicy(nuovoProgrammaRequest.getPolicy());
 		programma.setDataInizioProgramma(nuovoProgrammaRequest.getDataInizioProgramma());
 		programma.setDataFineProgramma(nuovoProgrammaRequest.getDataFineProgramma());
+		programma.setBando(nuovoProgrammaRequest.getBando());
 		//Numero Target Punti di Facilitazione
 		programma.setNPuntiFacilitazioneTarget1(nuovoProgrammaRequest.getNPuntiFacilitazioneTarget1());
 		programma.setNPuntiFacilitazioneTarget2(nuovoProgrammaRequest.getNPuntiFacilitazioneTarget2());
@@ -145,6 +146,7 @@ public class ProgrammaMapper {
 		programmaFetch.setPolicy(programmaRequest.getPolicy());
 		programmaFetch.setDataInizioProgramma(programmaRequest.getDataInizioProgramma());
 		programmaFetch.setDataFineProgramma(programmaRequest.getDataFineProgramma());
+		programmaFetch.setBando(programmaRequest.getBando());
 		//Numero Target Punti di Facilitazione
 		programmaFetch.setNPuntiFacilitazioneTarget1(programmaRequest.getNPuntiFacilitazioneTarget1());
 		programmaFetch.setNPuntiFacilitazioneTarget2(programmaRequest.getNPuntiFacilitazioneTarget2());
@@ -204,6 +206,7 @@ public class ProgrammaMapper {
 		dettaglioProgramma.setNomeBreve(programmaFetchDB.getNomeBreve());
 		dettaglioProgramma.setDataInizioProgramma(programmaFetchDB.getDataInizioProgramma());
 		dettaglioProgramma.setDataFineProgramma(programmaFetchDB.getDataFineProgramma());
+		dettaglioProgramma.setBando(programmaFetchDB.getBando());
 		//Numero Target Punti di Facilitazione
 		dettaglioProgramma.setNPuntiFacilitazioneTarget1(programmaFetchDB.getNPuntiFacilitazioneTarget1());
 		dettaglioProgramma.setNPuntiFacilitazioneTarget2(programmaFetchDB.getNPuntiFacilitazioneTarget2());

@@ -52,6 +52,10 @@ public class ProgrammaRequest implements Serializable {
 	@NotNull(message = "{date.incorrect}")
 	private Date dataFineProgramma;
 	
+	// 'Bando' della scheda Informazioni Generali del Programma
+	@JsonProperty(value = "bando")
+	private String bando;
+	
 	//Numero Target Punti di Facilitazione
 	private Integer nPuntiFacilitazioneTarget1;
 	private Integer nPuntiFacilitazioneTarget2;

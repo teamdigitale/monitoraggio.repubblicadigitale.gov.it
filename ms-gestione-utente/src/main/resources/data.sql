@@ -19,6 +19,8 @@ insert into utente (codice_fiscale, nome, cognome, email, stato)
     values('SMTPAL67R31F111X', 'Gina',  'Foo', 'gina.foo@email.it', 'ATTIVO');
  insert into utente (codice_fiscale, nome, cognome, email, stato)
     values('ASDPDS17R65F313X', 'Alice', 'Bar', 'alice.smith@bar.it', 'ATTIVO');
+    insert into utente (codice_fiscale, nome, cognome, email, stato)
+    values('HJKPLW87R49F321I', 'Pippo', 'Kelly', 'pippo.kelly@email.it', 'ATTIVO');
     
 
 -- CREAZIONE ANAGRAFICA RUOLI

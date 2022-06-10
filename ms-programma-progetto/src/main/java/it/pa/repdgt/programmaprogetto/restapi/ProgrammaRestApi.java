@@ -1,10 +1,12 @@
 package it.pa.repdgt.programmaprogetto.restapi;
 
 import java.io.ByteArrayInputStream;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 
 import org.apache.commons.csv.CSVFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,8 +125,8 @@ public class ProgrammaRestApi {
 	// TOUCH POINT - 1.1.9 - termina Programma 
 	@PutMapping(path = "termina/{idProgramma}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public void terminaProgramma(@PathVariable(value = "idProgramma")   Long idProgramma) {
-		this.programmaService.terminaProgramma(idProgramma);
+	public void terminaProgramma(@PathVariable(value = "idProgramma")   Long idProgramma, @RequestParam @PastOrPresent Date dataTerminazione) {
+		this.programmaService.terminaProgramma(idProgramma, dataTerminazione);
 	}
 	
 	// TOUCH POINT - 1.1.4 - Cancellazione Programma

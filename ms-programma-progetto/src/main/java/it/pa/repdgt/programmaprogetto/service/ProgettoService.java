@@ -451,7 +451,7 @@ public class ProgettoService {
 	}
 
 	@Transactional(rollbackOn = Exception.class)
-	public void terminaProgetto(Long idProgetto) {
+	public void terminaProgetto(Long idProgetto, Date dataTerminazione) {
 		ProgettoEntity progettoDBFetch = this.getProgettoById(idProgetto);
 		if(!isProgettoTerminabileByStatoProgetto(progettoDBFetch.getStato())) {
 			String errorMessage = String.format("Impossibile terminare il progetto con id=%s perchè stato diverso da 'ATTIVABILE' o 'ATTIVO'", idProgetto);
@@ -466,7 +466,7 @@ public class ProgettoService {
 		this.enteService.terminaEntiPartner(idProgetto);
 		this.enteSedeProgettoService.cancellaOTerminaEnteSedeProgetto(idProgetto);
 		progettoDBFetch.setStatoGestoreProgetto(StatoEnum.TERMINATO.getValue());
-		progettoDBFetch.setDataOraTerminazione(new Date());
+		progettoDBFetch.setDataOraTerminazione(dataTerminazione);
 		this.salvaProgetto(progettoDBFetch);
 	}
 	

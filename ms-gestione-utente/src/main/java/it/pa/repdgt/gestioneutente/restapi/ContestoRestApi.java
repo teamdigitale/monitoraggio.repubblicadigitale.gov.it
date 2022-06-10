@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.pa.repdgt.gestioneutente.mapper.ContestoMapper;
-import it.pa.repdgt.gestioneutente.request.ProfilazioneRequest;
 import it.pa.repdgt.gestioneutente.request.CreaContestoRequest;
 import it.pa.repdgt.gestioneutente.request.IntegraContestoRequest;
+import it.pa.repdgt.gestioneutente.request.ProfilazioneRequest;
 import it.pa.repdgt.gestioneutente.resource.ContestoResource;
 import it.pa.repdgt.gestioneutente.service.ContestoService;
 import it.pa.repdgt.shared.entity.UtenteEntity;
@@ -46,8 +46,9 @@ public class ContestoRestApi {
 		final String codiceFiscaleUtente = utenteRequest.getCfUtente();
 		final String codiceRuoloUtente = utenteRequest.getCodiceRuolo();
 		final Long idProgramma = utenteRequest.getIdProgramma();
+		final Long idProgetto = utenteRequest.getIdProgetto();
 		
-		contestoService.verificaSceltaProfilo(codiceFiscaleUtente, codiceRuoloUtente, idProgramma);
+		contestoService.verificaSceltaProfilo(codiceFiscaleUtente, codiceRuoloUtente, idProgramma, idProgetto);
 	}
 	
 	// TOUCH POINT - 0.1.3 - CONFERMA INTEGRAZIONE 
