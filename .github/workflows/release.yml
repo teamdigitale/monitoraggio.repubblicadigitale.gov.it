@@ -465,8 +465,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3.0.2
         with:
-          ref: main
-          lfs: 'true'
+          token: ${{ secrets.SEMANTICRELEASE }}
+          persist-credentials: 'true'
+          fetch-depth: '0'
 
       - name: File Package Update
         uses: mingjun97/file-regex-replace@v1
@@ -520,10 +521,12 @@ jobs:
           token: ${{ secrets.SEMANTICRELEASE }}
           persist-credentials: 'true'
           fetch-depth: '0'
+          
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
           node-version: 'lts/*'
+          
       - name: Install semantic-release extra plugins
         run: |
               npm install --save-dev \
@@ -534,8 +537,10 @@ jobs:
                 @semantic-release/release-notes-generator \
                 @semantic-release/exec \
                 conventional-changelog-conventionalcommits
+                
       - name: Create .VERSION file
         run: echo "There are no relevant changes, so no new version is released" > .VERSION
+        
       - name: Release
         env:
           # ad-hoc token (PAT) in order to permit the push on a protected branch
@@ -543,6 +548,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.SEMANTICRELEASE }}
         run: |
           npx semantic-release
+          
       - name: Version
         id: version
         run: |
