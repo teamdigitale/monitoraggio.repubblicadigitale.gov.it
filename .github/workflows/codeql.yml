@@ -16,25 +16,59 @@ on:
   workflow_dispatch:
 
 jobs:
-  analyze:
-    name: Analyze
+  changes:
+    runs-on: ubuntu-latest
+    # Set job outputs to values from filter step
+    outputs:
+      fe-piattaforma: ${{ steps.filter.outputs.fe-piattaforma }}
+      lib-repdgt-shared: ${{ steps.filter.outputs.lib-repdgt-shared }}
+      ms-ente: ${{ steps.filter.outputs.ms-ente }}
+      ms-gestione-utente: ${{ steps.filter.outputs.ms-gestione-utente }}
+      ms-notifiche-integration: ${{ steps.filter.outputs.ms-notifiche-integration }}
+      ms-open-data: ${{ steps.filter.outputs.ms-open-data }}
+      ms-programma-progetto: ${{ steps.filter.outputs.ms-programma-progetto }}
+      ms-questionario-cittadino: ${{ steps.filter.outputs.ms-questionario-cittadino }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # For pull requests it's not necessary to checkout the code
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        filters: |
+          fe-piattaforma:
+            - 'fe-piattaforma/**'
+          lib-repdgt-shared:
+            - 'lib-repdgt-shared/**'
+          ms-ente:
+            - 'ms-ente/**'
+          ms-gestione-utente:  
+            - 'ms-gestione-utente/**'
+          ms-notifiche-integration:
+            - 'ms-notifiche-integration/**'
+          ms-open-data:
+            - 'ms-open-data/**'
+          ms-programma-progetto:
+            - 'ms-programma-progetto/**'
+          ms-questionario-cittadino:
+            - 'ms-questionario-cittadino/**'
+
+  fe-piattaforma-Analyze:
+    needs: changes
+    if: ${{ needs.changes.outputs.fe-piattaforma == 'true' }}
+    name: Analyze fe-piattaforma
     runs-on: ubuntu-latest
     permissions:
       actions: read
       contents: read
       security-events: write
 
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ 'javascript','java' ]
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
-      
+
     - name: Setup Node.js
-      if: ${{ matrix.language == 'javascript' }}
       uses: actions/setup-node@v3
       with:
         node-version: 'lts/*'
@@ -42,59 +76,241 @@ jobs:
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
       with:
-        languages: ${{ matrix.language }}
+        languages: 'javascript'
         # queries: security-extended,security-and-quality
 
-    - name: FE-Build
-      if: ${{ matrix.language == 'javascript' }}
+    - name: fe-piattaforma Build
       run: |
         cd ${{ github.workspace }}/fe-piattaforma
         npm install --force
         npm run build
-        
-    - name: Lib-Build
-      if: ${{ matrix.language == 'java' }}
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+
+  lib-repdgt-shared-Analyze:
+    needs: changes
+    if: ${{ needs.changes.outputs.lib-repdgt-shared == 'true' }}
+    name: Analyze lib-repdgt-shared
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: 'java'
+        # queries: security-extended,security-and-quality
+
+    - name: lib-repdgt-shared Compilation
       run: |
         cd ${{ github.workspace }}/lib-repdgt-shared
         mvn install
-        
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+
+  ms-ente-Analyze:
+    needs: changes
+    if: ${{ needs.changes.outputs.ms-ente == 'true' }}
+    name: Analyze ms-ente
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: 'java'
+        # queries: security-extended,security-and-quality
+
+    - name: lib-repdgt-shared Compilation
+      run: |
+        cd ${{ github.workspace }}/lib-repdgt-shared
+        mvn install
+
     - name: ms-ente Build
-      if: ${{ matrix.language == 'java' }}
       run: |
         cd ${{ github.workspace }}/ms-ente
         mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }}
-        
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+
+  ms-gestione-utente-Analyze:
+    needs: changes
+    if: ${{ needs.changes.outputs.ms-gestione-utente == 'true' }}
+    name: Analyze ms-gestione-utente
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: 'java'
+        # queries: security-extended,security-and-quality
+
+    - name: lib-repdgt-shared Compilation
+      run: |
+        cd ${{ github.workspace }}/lib-repdgt-shared
+        mvn install
+
     - name: ms-gestione-utente Build
-      if: ${{ matrix.language == 'java' }}
       run: |
         cd ${{ github.workspace }}/ms-gestione-utente
         mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }}
-        
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+
+  ms-notifiche-integration-Analyze:
+    needs: changes
+    if: ${{ needs.changes.outputs.ms-notifiche-integration == 'true' }}
+    name: Analyze ms-notifiche-integration
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: 'java'
+        # queries: security-extended,security-and-quality
+
+    - name: lib-repdgt-shared Compilation
+      run: |
+        cd ${{ github.workspace }}/lib-repdgt-shared
+        mvn install
+
     - name: ms-notifiche-integration Build
-      if: ${{ matrix.language == 'java' }}
       run: |
         cd ${{ github.workspace }}/ms-notifiche-integration
         mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }}
-        
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+
+  ms-open-data-Analyze:
+    needs: changes
+    if: ${{ needs.changes.outputs.ms-open-data == 'true' }}
+    name: Analyze ms-open-data
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: 'java'
+        # queries: security-extended,security-and-quality
+
+    - name: lib-repdgt-shared Compilation
+      run: |
+        cd ${{ github.workspace }}/lib-repdgt-shared
+        mvn install
+
     - name: ms-open-data Build
-      if: ${{ matrix.language == 'java' }}
       run: |
         cd ${{ github.workspace }}/ms-open-data
         mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }}
-        
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+
+  ms-programma-progetto-Analyze:
+    needs: changes
+    if: ${{ needs.changes.outputs.ms-programma-progetto == 'true' }}
+    name: Analyze ms-programma-progetto
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: 'java'
+        # queries: security-extended,security-and-quality
+
+    - name: lib-repdgt-shared Compilation
+      run: |
+        cd ${{ github.workspace }}/lib-repdgt-shared
+        mvn install
+
     - name: ms-programma-progetto Build
-      if: ${{ matrix.language == 'java' }}
       run: |
         cd ${{ github.workspace }}/ms-programma-progetto
         mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }}
-        
-    - name: ms-questionario-cittadino Build
-      if: ${{ matrix.language == 'java' }}
-      run: |
-        cd ${{ github.workspace }}/ms-questionario-cittadino
-        mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }} -DMONGODB_HOST=${{ secrets.MONGODB_HOST }} -DMONGODB_NAME=${{ secrets.MONGODB_NAME }} -DMONGODB_PORT=${{ secrets.MONGODB_PORT }} -DDB_MONGO_USERNAME=${{ secrets.DB_MONGO_USERNAME }} -DDB_MONGO_PASSWORD=${{ secrets.DB_MONGO_PASSWORD }} -DKEYSTORE_PATH=${{ github.workspace }}/${{ secrets.KEYSTORE_PATH }} -DKEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}
-        cd ${{ github.workspace }}
-        
+
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
-      
+
+  ms-questionario-cittadino-Analyze:
+    needs: changes
+    if: ${{ needs.changes.outputs.ms-questionario-cittadino == 'true' }}
+    name: Analyze ms-questionario-cittadino
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: 'java'
+        # queries: security-extended,security-and-quality
+
+    - name: lib-repdgt-shared Compilation
+      run: |
+        cd ${{ github.workspace }}/lib-repdgt-shared
+        mvn install
+
+    - name: ms-questionario-cittadino Build
+      run: |
+        cd ${{ github.workspace }}/ms-questionario-cittadino
+        mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }} -DMONGODB_HOST=${{ secrets.MONGODB_HOST }} -DMONGODB_NAME=${{ secrets.MONGODB_NAME }} -DMONGODB_PORT=${{ secrets.MONGODB_PORT }} -DDB_MONGO_USERNAME=${{ secrets.DB_MONGO_USERNAME }} -DDB_MONGO_PASSWORD=${{ secrets.DB_MONGO_PASSWORD }} -DKEYSTORE_PATH=${{ secrets.KEYSTORE_PATH }} -DKEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}
+        cd ${{ github.workspace }}
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2

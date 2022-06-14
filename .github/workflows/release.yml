@@ -83,7 +83,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3.0.2
         with:
-          ref: main
           lfs: 'true'
 
       - name: Setup Node.js
@@ -145,7 +144,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3.0.2
         with:
-          ref: main
           lfs: 'true'
 
       - name: Set up JDK 11
@@ -310,7 +308,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3.0.2
         with:
-          ref: main
           fetch-depth: '0'
 
       - name: Check Input Version
@@ -472,7 +469,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3.0.2
         with:
-          ref: main
           lfs: 'true'
 
       - name: File Package Update
