@@ -119,7 +119,7 @@ jobs:
 
       - name: Install FE dependencies
         run: |
-          npm install
+          npm install --force
 
       - name: Build & Push Image to Amazon ECR
         id: build
@@ -358,7 +358,7 @@ jobs:
       - name: Setup Image TAG
         id: imagetag
         run: |
-          if [ ${{ github.event.inputs.version }} = '' ]; then
+          if [ "${{ github.event.inputs.version }}" = "" ]; then
             echo "::set-output name=IMAGETAG::$(echo ${{needs.DryRunRelease.outputs.version}} )"
           else
             echo "::set-output name=IMAGETAG::$(echo ${{ github.event.inputs.version }} )"
@@ -373,8 +373,7 @@ jobs:
           cd ${{ github.workspace }}/fe-piattaforma/k8s
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
-          envsubst < deployment.tmp.yml
-          cat deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
+          envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-ente' deployment.tmp.yaml
         env:
@@ -385,8 +384,7 @@ jobs:
           cd ${{ github.workspace }}/ms-ente/k8s
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
-          envsubst < deployment.tmp.yml
-          cat deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
+          envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-gestione-utente' deployment.tmp.yaml
         env:
@@ -397,8 +395,7 @@ jobs:
           cd ${{ github.workspace }}/ms-gestione-utente/k8s
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
-          envsubst < deployment.tmp.yml
-          cat deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
+          envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-notifiche-integration' deployment.tmp.yaml
         env:
@@ -409,8 +406,7 @@ jobs:
           cd ${{ github.workspace }}/ms-notifiche-integration/k8s
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
-          envsubst < deployment.tmp.yml
-          cat deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
+          envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-open-data' deployment.tmp.yaml
         env:
@@ -421,8 +417,7 @@ jobs:
           cd ${{ github.workspace }}/ms-open-data/k8s
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
-          envsubst < deployment.tmp.yml
-          cat deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
+          envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-programma-progetto' deployment.tmp.yaml
         env:
@@ -433,8 +428,7 @@ jobs:
           cd ${{ github.workspace }}/ms-programma-progetto/k8s
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
-          envsubst < deployment.tmp.yml
-          cat deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
+          envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-questionario-cittadino' deployment.tmp.yaml
         env:
@@ -445,8 +439,7 @@ jobs:
           cd ${{ github.workspace }}/ms-questionario-cittadino/k8s
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
-          envsubst < deployment.tmp.yml
-          cat deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
+          envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Deploy
         run: |
@@ -469,7 +462,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3.0.2
         with:
-          lfs: 'true'
+          token: ${{ secrets.SEMANTICRELEASE }}
+          persist-credentials: 'true'
+          fetch-depth: '0'
 
       - name: File Package Update
         uses: mingjun97/file-regex-replace@v1
@@ -523,10 +518,12 @@ jobs:
           token: ${{ secrets.SEMANTICRELEASE }}
           persist-credentials: 'true'
           fetch-depth: '0'
+          
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
           node-version: 'lts/*'
+          
       - name: Install semantic-release extra plugins
         run: |
               npm install --save-dev \
@@ -537,8 +534,10 @@ jobs:
                 @semantic-release/release-notes-generator \
                 @semantic-release/exec \
                 conventional-changelog-conventionalcommits
+                
       - name: Create .VERSION file
         run: echo "There are no relevant changes, so no new version is released" > .VERSION
+        
       - name: Release
         env:
           # ad-hoc token (PAT) in order to permit the push on a protected branch
@@ -546,6 +545,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.SEMANTICRELEASE }}
         run: |
           npx semantic-release
+          
       - name: Version
         id: version
         run: |

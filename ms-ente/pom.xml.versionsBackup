@@ -13,8 +13,8 @@
 	</parent>
 
 	<groupId>it.pa.repdgt</groupId>
-	<artifactId>ms-integrazione</artifactId>
-	<version>1.0.0-develop.1</version>
+	<artifactId>ms-ente</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<properties>
@@ -23,7 +23,7 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 
 		<springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
-		<commons-csv.version>1.8</commons-csv.version>
+		<commons-csv.version>1.9.0</commons-csv.version>
 	</properties>
 
 	<dependencies>
@@ -58,6 +58,11 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>${commons-csv.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>it.pa.repdgt</groupId>

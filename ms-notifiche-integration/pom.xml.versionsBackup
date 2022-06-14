@@ -14,7 +14,7 @@
 
 	<groupId>it.pa.repdgt</groupId>
 	<artifactId>ms-integrazione</artifactId>
-	<version>1.0.0-develop.1</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<properties>
