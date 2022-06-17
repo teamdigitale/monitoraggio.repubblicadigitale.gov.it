@@ -88,6 +88,33 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 			</plugin>
+			<plugin>
+			    <artifactId>maven-resources-plugin</artifactId>
+			    <version>3.0.1</version>
+			    <executions>
+			         <execution>
+					 <!-- includo nel progetto compilato il truststore -->
+			            <id>copy-resources</id>
+			            <phase>validate</phase>
+			            <goals>
+			               <goal>copy-resources</goal>
+			            </goals>
+			            <configuration>
+			               <outputDirectory>${basedir}/target/output</outputDirectory>
+			               <resources>          
+			                    <resource>
+			                        <directory>resources</directory>
+			                        <includes>
+			                        	<include>
+			                        		rds-truststore.jks
+			                        	</include>
+			                        </includes>
+			                    </resource>
+			               </resources>              
+			            </configuration>            
+			        </execution>
+			     </executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>
