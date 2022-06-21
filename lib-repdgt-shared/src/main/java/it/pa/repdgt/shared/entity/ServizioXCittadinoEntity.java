@@ -29,6 +29,6 @@ public class ServizioXCittadinoEntity implements Serializable {
 	private Date dataOraCreazione;
 	
 	@Temporal(value = TemporalType.TIMESTAMP)
-	@Column(name = "DATA_ORA_AGGIORNAMETO")
+	@Column(name = "DATA_ORA_AGGIORNAMENTO")
 	private Date dataOraAggiornamento;
 }

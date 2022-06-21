@@ -16,7 +16,7 @@ public interface ReferentiDelegatiEnteGestoreProgettoRepository extends JpaRepos
 	@Query(value = ""
 			 + " SELECT * "
 			 + " FROM "
-			 + "	referente_delegati_gestiore_progetto "
+			 + "	referente_delegati_gestore_progetto "
 			 + " WHERE 1=1"
 			 + "	AND ID_PROGETTO = :idProgetto",
 	   nativeQuery = true)
@@ -25,7 +25,7 @@ public interface ReferentiDelegatiEnteGestoreProgettoRepository extends JpaRepos
 	@Query(value = " "
 			+ " SELECT * "
 			+ " FROM "
-			+ " referente_delegati_gestiore_progetto "
+			+ " referente_delegati_gestore_progetto "
 			+ " WHERE 1=1 "
 			+ " AND "
 			+ " ID_PROGETTO != :idProgetto "
@@ -38,7 +38,7 @@ public interface ReferentiDelegatiEnteGestoreProgettoRepository extends JpaRepos
 			String codiceFiscaleUtente, String codiceRuolo);
 
 	@Query(value = "SELECT * "
-			+ "FROM referente_delegati_gestiore_progetto rdgp "
+			+ "FROM referente_delegati_gestore_progetto rdgp "
 			+ "WHERE rdgp.ID_PROGETTO = :idProgetto "
 			+ "		AND rdgp.STATO_UTENTE != 'TERMINATO' ", 
 			nativeQuery = true)

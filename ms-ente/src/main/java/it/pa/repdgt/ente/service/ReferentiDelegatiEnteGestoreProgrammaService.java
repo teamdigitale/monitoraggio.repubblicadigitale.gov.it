@@ -28,12 +28,12 @@ public class ReferentiDelegatiEnteGestoreProgrammaService {
 		this.referentiDelegatiEnteGestoreProgrammaRepository.save(referentiDelegatiEnteGestoreProgramma);
 	}
 	
-	public List<UtenteProjection> getReferentiEnteGestoreByProgramma(Long idProgramma) {
-		return this.referentiDelegatiEnteGestoreProgrammaRepository.findNomeStatoReferentiEnteGestoreByProgramma(idProgramma);
+	public List<UtenteProjection> getReferentiEnteGestoreByIdProgrammaAndIdEnte(Long idProgramma, Long idEnte) {
+		return this.referentiDelegatiEnteGestoreProgrammaRepository.findNomeStatoReferentiEnteGestoreByIdProgrammaAndIdEnte(idProgramma, idEnte);
 	}
 	
-	public List<UtenteProjection> getDelegatiEnteGestoreByProgramma(Long idProgramma) {
-		return this.referentiDelegatiEnteGestoreProgrammaRepository.findNomeStatoDelegatiEnteGestoreByProgramma(idProgramma);
+	public List<UtenteProjection> getDelegatiEnteGestoreByIdProgrammaAndIdEnte(Long idProgramma, Long idEnte) {
+		return this.referentiDelegatiEnteGestoreProgrammaRepository.findNomeStatoDelegatiEnteGestoreByIdProgrammaAndIdEnte(idProgramma, idEnte);
 	}
 
 	public void cancellaAssociazioneReferenteDelegatoGestoreProgramma(
@@ -57,8 +57,8 @@ public class ReferentiDelegatiEnteGestoreProgrammaService {
 		return this.referentiDelegatiEnteGestoreProgrammaRepository.getById(id);
 	}
 
-	public List<ReferentiDelegatiEnteGestoreProgrammaEntity> getReferentiAndDelegatiPerProgramma(Long idProgramma) {
-		return this.referentiDelegatiEnteGestoreProgrammaRepository.findReferentiAndDelegatiPerProgramma(idProgramma);
+	public List<ReferentiDelegatiEnteGestoreProgrammaEntity> getReferentiAndDelegatiByIdProgrammaAndIdEnte(Long idProgramma, Long idEnte) {
+		return this.referentiDelegatiEnteGestoreProgrammaRepository.findReferentiAndDelegatiByIdProgrammaAndIdEnte(idProgramma, idEnte);
 	}
 
 	public void cancellaAssociazione(ReferentiDelegatiEnteGestoreProgrammaEntity utente) {

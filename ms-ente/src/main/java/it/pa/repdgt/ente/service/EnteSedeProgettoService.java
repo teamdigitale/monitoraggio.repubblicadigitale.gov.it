@@ -74,7 +74,6 @@ public class EnteSedeProgettoService {
 		enteSedeProgetto.setRuoloEnte(ruoloEnte);
 		enteSedeProgetto.setSede(sede);
 		enteSedeProgetto.setProgetto(progetto);
-		enteSedeProgetto.setTipologiaServizio(sede.getServiziErogati()); 
 		enteSedeProgetto.setDataOraCreazione(new Date());
  		enteSedeProgetto.setStatoSede(StatoEnum.ATTIVO.getValue());
 		this.enteSedeProgettoRepository.save(enteSedeProgetto);

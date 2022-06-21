@@ -16,6 +16,7 @@ import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioTemplateException;
+import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.repository.QuestionarioTemplateSqlRepository;
 
 @Service
@@ -25,6 +26,11 @@ public class QuestionarioTemplateSqlService {
 	private ProgrammaService programmaService;
 	@Autowired
 	private QuestionarioTemplateSqlRepository templateQuestionarioSqlRepository;
+	
+	public List<QuestionarioTemplateEntity> getQuestionariTemplateByIdProgetto(
+			@NotNull final Long idProgetto) {
+		return this.templateQuestionarioSqlRepository.findQuestionarioTemplateByIdProgetto(idProgetto);
+	}
 	
 	@Transactional(rollbackFor = Exception.class)
 	public QuestionarioTemplateEntity salvaQuestionarioTemplate(
@@ -52,20 +58,30 @@ public class QuestionarioTemplateSqlService {
 		return this.templateQuestionarioSqlRepository.save(questionarioTemplateEntity);
 	}
 
-	public Page<QuestionarioTemplateEntity> findAllQuestionariTemplatePaginatiByFiltro(
+	public List<QuestionarioTemplateEntity> findAllQuestionariTemplateByFiltro(
 			final String criterioRicerca,
-			final String statoQuestionario,
-			@NotNull final Pageable page ) {
-		return this.templateQuestionarioSqlRepository.findAllPaginatiByFiltro(criterioRicerca, statoQuestionario, page);
+			final String statoQuestionario) {
+		return this.templateQuestionarioSqlRepository.findAllByFiltro(criterioRicerca, statoQuestionario);
+	}
+	
+	public List<String> findAllStatiDropdownByFiltro(
+			final String criterioRicerca,
+			final String statoQuestionario) {
+		return this.templateQuestionarioSqlRepository.findAllStatiDropdownByFiltro(criterioRicerca, statoQuestionario);
 	}
 
-	public Page<QuestionarioTemplateEntity> findQuestionariTemplatePaginatiByIdProgrammaAndFiltro(
+	public List<QuestionarioTemplateEntity> findQuestionariTemplateByIdProgrammaAndFiltro(
 			@NotNull final Long idProgramma,
 			final String criterioRicerca, 
-			final String statoQuestionario,
-			@NotNull final Pageable page ) {
-		return this.templateQuestionarioSqlRepository.findQuestionariTemplatePaginatiByIdProgrammaAndFiltro(idProgramma, criterioRicerca, statoQuestionario, page);
-
+			final String statoQuestionario) {
+		return this.templateQuestionarioSqlRepository.findQuestionariTemplateByIdProgrammaAndFiltro(idProgramma, criterioRicerca, statoQuestionario);
+	}
+	
+	public List<String> findStatiDropdownByIdProgrammaAndFiltro(
+			@NotNull final Long idProgramma,
+			final String criterioRicerca, 
+			final String statoQuestionario) {
+		return this.templateQuestionarioSqlRepository.findStatiDropdownByIdProgrammaAndFiltro(idProgramma, criterioRicerca, statoQuestionario);
 	}
 
 	public List<QuestionarioTemplateEntity> getAllQuestionari() {
@@ -86,11 +102,16 @@ public class QuestionarioTemplateSqlService {
 		return this.templateQuestionarioSqlRepository.findQuestionariSCD();
 	}
 
-	public Page<QuestionarioTemplateEntity> findQuestionariTemplatePaginatiByDefaultPolicySCDAndFiltro(
+	public List<QuestionarioTemplateEntity> findQuestionariTemplateByDefaultPolicySCDAndFiltro(
 			String criterioRicerca,
-			String statoQuestionario,
-			@NotNull Pageable page) {
-		return this.templateQuestionarioSqlRepository.findQuestionariTemplatePaginatiByDefaultPolicySCDAndFiltro(criterioRicerca, statoQuestionario, page);
+			String statoQuestionario) {
+		return this.templateQuestionarioSqlRepository.findQuestionariTemplateByDefaultPolicySCDAndFiltro(criterioRicerca, statoQuestionario);
+	}
+	
+	public List<String> findStatiDropdownByDefaultPolicySCDAndFiltro(
+			String criterioRicerca,
+			String statoQuestionario) {
+		return this.templateQuestionarioSqlRepository.findStatiDropdownByDefaultPolicySCDAndFiltro(criterioRicerca, statoQuestionario);
 	}
 
 	@Transactional(rollbackFor = Exception.class)
@@ -105,5 +126,23 @@ public class QuestionarioTemplateSqlService {
 			throw new QuestionarioTemplateException(messaggioErrore);
 		}
 		this.templateQuestionarioSqlRepository.delete(questionarioTemplateEntity);
+	}
+
+	public Optional<QuestionarioTemplateEntity> getQuestionarioTemplateDefaultRFD() {
+		return this.templateQuestionarioSqlRepository.findQuestionarioTemplateDefaultRFD();
+	}
+
+	public Optional<QuestionarioTemplateEntity> getQuestionarioTemplateDefaultSCD() {
+		return this.templateQuestionarioSqlRepository.findQuestionarioTemplateDefaultSCD();
+	}
+
+	public void salvaQuestionario(QuestionarioTemplateEntity questionarioTemplateEntity) {
+		this.templateQuestionarioSqlRepository.save(questionarioTemplateEntity);
+	}
+
+	public QuestionarioTemplateEntity getQuestionarioTemplateById(String idQuestionarioTemplate) {
+		final String messaggioErrore = String.format("Questionario template con id='%s' non presente", idQuestionarioTemplate);
+		return this.templateQuestionarioSqlRepository.findById(idQuestionarioTemplate)
+					.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore));
 	}
 }

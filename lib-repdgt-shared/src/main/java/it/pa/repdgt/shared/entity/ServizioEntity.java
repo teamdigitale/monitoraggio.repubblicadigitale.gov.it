@@ -37,6 +37,13 @@ public class ServizioEntity implements Serializable {
 	@Column(name = "ID_QUESTIONARIO_TEMPLATE_SNAPSHOT")
 	private String idQuestionarioTemplateSnapshot;
 	
+	@Column(name = "TIPOLOGIA_SERVIZIO")
+	private String tipologiaServizio;
+
+	@Temporal(value = TemporalType.DATE)
+	@Column(name = "DATA_SERVIZIO")
+	private Date dataServizio;
+	
 	private EnteSedeProgettoFacilitatoreKey idEnteSedeProgettoFacilitatore;
 	
 	@Column(name = "STATO")
@@ -47,6 +54,6 @@ public class ServizioEntity implements Serializable {
 	private Date dataOraCreazione;
 	
 	@Temporal(value = TemporalType.TIMESTAMP)
-	@Column(name = "DATA_ORA_AGGIORNAMETO")
+	@Column(name = "DATA_ORA_AGGIORNAMENTO")
 	private Date dataOraAggiornamento;
 }

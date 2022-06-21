@@ -80,7 +80,7 @@ public class CSVUtil {
 		try (
 				BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
 				CSVParser csvParser = new CSVParser(fileReader,
-						CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());
+						CSVFormat.Builder.create().setHeader(HEADERs).setSkipHeaderRecord(true).setTrim(true).build());
 			) {
 			List<EntePartnerUploadBean> enti = new ArrayList<EntePartnerUploadBean>();
 			Iterable<CSVRecord> csvRecords = csvParser.getRecords();

@@ -1,9 +1,10 @@
 package it.pa.repdgt.surveymgmt.service;
 
-import java.util.Collections;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.transaction.Transactional;
@@ -19,6 +20,7 @@ import org.springframework.validation.annotation.Validated;
 
 import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
+import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioTemplateException;
@@ -42,11 +44,94 @@ public class QuestionarioTemplateService {
 	@Autowired
 	private QuestionarioTemplateRepository questionarioTemplateRepository;
 
-	public Page<QuestionarioTemplateEntity> getAllQuestionariTemplateByProfilazioneAndFiltro(
+	public Page<QuestionarioTemplateEntity> getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro(
 			@NotNull @Valid final ProfilazioneParam profilazione,
 			@NotNull @Valid final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplate,
 			@NotNull final Pageable pagina ) {
+		log.info("getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro - START");
+		final String codiceFiscaleUtenteLoggato = profilazione.getCodiceFiscaleUtenteLoggato();
+		final String codiceRuoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato().toString();
+		
+		// Verifico se l'utente possiede il ruolo mandato nella richiesta
+		boolean hasRuoloUtente = this.ruoloService
+			.getRuoliByCodiceFiscale(codiceFiscaleUtenteLoggato)
+			.stream()
+			.anyMatch(ruolo -> codiceRuoloUtenteLoggato.equalsIgnoreCase(ruolo.getCodice()));
+		
+		if(!hasRuoloUtente) {
+			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'",codiceFiscaleUtenteLoggato);
+			throw new QuestionarioTemplateException(messaggioErrore);
+		}
+		// Recupero tutti i QuestionariTemplate in base al ruolo profilato dell'utente loggato e in base ai filtri selezionati
+				final List<QuestionarioTemplateEntity> listaQuestionariTemplate = this.getAllQuestionariTemplateByProfilazioneAndFiltro(profilazione, filtroListaQuestionariTemplate);
+				
+				// Effettuo la paginazione della lista dei quetionariTemplate recuperati in precedenza
+				int start = (int) pagina.getOffset();
+				int end = Math.min((start + pagina.getPageSize()), listaQuestionariTemplate.size());
+				if(start > end) {
+					throw new QuestionarioTemplateException("ERRORE: pagina richiesta inesistente");
+				}
+				return new PageImpl<QuestionarioTemplateEntity>(listaQuestionariTemplate.subList(start, end), pagina, listaQuestionariTemplate.size());
+	}
+	
+	public List<QuestionarioTemplateEntity> getAllQuestionariTemplateByProfilazioneAndFiltro(
+			@NotNull @Valid final ProfilazioneParam profilazione,
+			@NotNull @Valid final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplate) {
 		log.info("getAllQuestionariTemplateByProfilazioneAndFiltro - START");
+		final String codiceRuoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato().toString();
+		
+		// Recupero i questionari in base alla profilazione dell'utente loggatosi
+				// Se: utente loggato si è profilato con uno dei seguenti ruoli,
+				// Allora: non mostro nessun questionario
+				if( RuoliUtentiConstants.REGP.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+					|| RuoliUtentiConstants.DEGP.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+					|| RuoliUtentiConstants.REPP.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+					|| RuoliUtentiConstants.DEPP.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+					|| RuoliUtentiConstants.FACILITATORE.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+					|| RuoliUtentiConstants.VOLONTARIO.equalsIgnoreCase(codiceRuoloUtenteLoggato) ) {
+					return new ArrayList<QuestionarioTemplateEntity>(Collections.emptyList());
+				}
+
+				String criterioRicercaFiltro = null;
+				if(filtroListaQuestionariTemplate.getCriterioRicerca() != null) {
+					criterioRicercaFiltro = "%".concat(filtroListaQuestionariTemplate.getCriterioRicerca()).concat("%");
+				}
+				
+				String statoQuestionarioFiltro = null;
+				if(filtroListaQuestionariTemplate.getStatoQuestionario() != null) {
+					statoQuestionarioFiltro = filtroListaQuestionariTemplate.getStatoQuestionario().getValue();
+				}
+
+				switch (codiceRuoloUtenteLoggato) {
+					case RuoliUtentiConstants.DSCU:
+						return this.questionarioTemplateSqlService.findQuestionariTemplateByDefaultPolicySCDAndFiltro(
+								criterioRicercaFiltro, 
+								statoQuestionarioFiltro
+							);
+					case RuoliUtentiConstants.REG:
+					case RuoliUtentiConstants.DEG:
+						// Se: l'utente loggato si è profilato con ruolo che diverso da DTD/DSCU (ovvero dropdown scelta profilo ha scelto ruolo REG/DEG/REGP/DEGP/ ...),
+						// Allora: Recupero l'unico questionario associato al programma scelto 
+						// dall'utente durante la profilazione (ovvero dropdown scelta profilo)
+						return this.questionarioTemplateSqlService.findQuestionariTemplateByIdProgrammaAndFiltro(
+								profilazione.getIdProgramma(),
+								criterioRicercaFiltro, 
+								statoQuestionarioFiltro
+							);
+					default:
+						// Se: l'utente loggato si è profilato con ruolo di DTD/ruolo custom
+						// Allora: Recupero tutti i questionari template da mostrare nella lista dei questionari template del FE
+						return this.questionarioTemplateSqlService.findAllQuestionariTemplateByFiltro(
+								criterioRicercaFiltro,
+								statoQuestionarioFiltro
+							);
+				}
+	}
+	
+	public List<String> getAllStatiDropdownByProfilazioneAndFiltro(
+			@NotNull @Valid final ProfilazioneParam profilazione,
+			@NotNull @Valid final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplate) {
+		log.info("getAllStatiDropdownByProfilazioneAndFiltro - START");
 		final String codiceFiscaleUtenteLoggato = profilazione.getCodiceFiscaleUtenteLoggato();
 		final String codiceRuoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato().toString();
 		
@@ -70,7 +155,7 @@ public class QuestionarioTemplateService {
 			|| RuoliUtentiConstants.DEPP.equalsIgnoreCase(codiceRuoloUtenteLoggato)
 			|| RuoliUtentiConstants.FACILITATORE.equalsIgnoreCase(codiceRuoloUtenteLoggato)
 			|| RuoliUtentiConstants.VOLONTARIO.equalsIgnoreCase(codiceRuoloUtenteLoggato) ) {
-			return new PageImpl<QuestionarioTemplateEntity>(Collections.emptyList());
+			return new ArrayList<String>(Collections.emptyList());
 		}
 
 		String criterioRicercaFiltro = null;
@@ -85,29 +170,26 @@ public class QuestionarioTemplateService {
 
 		switch (codiceRuoloUtenteLoggato) {
 			case RuoliUtentiConstants.DSCU:
-				return this.questionarioTemplateSqlService.findQuestionariTemplatePaginatiByDefaultPolicySCDAndFiltro(
+				return this.questionarioTemplateSqlService.findStatiDropdownByDefaultPolicySCDAndFiltro(
 						criterioRicercaFiltro, 
-						statoQuestionarioFiltro,
-						pagina
+						statoQuestionarioFiltro
 					);
 			case RuoliUtentiConstants.REG:
 			case RuoliUtentiConstants.DEG:
 				// Se: l'utente loggato si è profilato con ruolo che diverso da DTD/DSCU (ovvero dropdown scelta profilo ha scelto ruolo REG/DEG/REGP/DEGP/ ...),
 				// Allora: Recupero l'unico questionario associato al programma scelto 
 				// dall'utente durante la profilazione (ovvero dropdown scelta profilo)
-				return this.questionarioTemplateSqlService.findQuestionariTemplatePaginatiByIdProgrammaAndFiltro(
+				return this.questionarioTemplateSqlService.findStatiDropdownByIdProgrammaAndFiltro(
 						profilazione.getIdProgramma(),
 						criterioRicercaFiltro, 
-						statoQuestionarioFiltro,
-						pagina
+						statoQuestionarioFiltro
 					);
 			default:
 				// Se: l'utente loggato si è profilato con ruolo di DTD/ruolo custom
 				// Allora: Recupero tutti i questionari template da mostrare nella lista dei questionari template del FE
-				return this.questionarioTemplateSqlService.findAllQuestionariTemplatePaginatiByFiltro(
+				return this.questionarioTemplateSqlService.findAllStatiDropdownByFiltro(
 						criterioRicercaFiltro,
-						statoQuestionarioFiltro,
-						pagina
+						statoQuestionarioFiltro
 					);
 		}
 	}
@@ -129,6 +211,8 @@ public class QuestionarioTemplateService {
 		questionarioTemplateCollection.setStato(StatoEnum.NON_ATTIVO.getValue());
 		questionarioTemplateCollection.setDataOraCreazione(new Date());	
 		questionarioTemplateCollection.setDataOraUltimoAggiornamento(questionarioTemplateCollection.getDataOraCreazione());
+		questionarioTemplateCollection.setDefaultRFD(Boolean.FALSE);
+		questionarioTemplateCollection.setDefaultSCD(Boolean.FALSE);
 		
 		// Allineamento questionario template su mysql
 		final QuestionarioTemplateEntity questionarioTemplateEntity = this.questionarioTemplateMapper.toEntityFrom(questionarioTemplateCollection);
@@ -219,6 +303,7 @@ public class QuestionarioTemplateService {
 	public List<QuestionarioTemplateEntity> getQuestionariTemplateByUtente(ProfilazioneParam profilazioneParam) {
 		String codiceFiscaleUtente = profilazioneParam.getCodiceFiscaleUtenteLoggato();
 		String codiceRuolo = profilazioneParam.getCodiceRuoloUtenteLoggato().toString();
+		
 		// Verifico se l'utente possiede il ruolo mandato nella richiesta
 		boolean hasRuoloUtente = this.ruoloService
 			.getRuoliByCodiceFiscale(codiceFiscaleUtente)
@@ -243,13 +328,40 @@ public class QuestionarioTemplateService {
 		}
 
 		switch(codiceRuolo) {
-			case "DSCU":
+			case RuoliUtentiConstants.DSCU:
 				return this.questionarioTemplateSqlService.getQuestionariSCD();
-			case "REG":
-			case "DEG":
+			case RuoliUtentiConstants.REG:
+			case RuoliUtentiConstants.DEG:
 				return this.questionarioTemplateSqlService.getQuestionariPerReferenteDelegatoGestoreProgramma(profilazioneParam.getIdProgramma());
 			default:
+				//lista questionari per DTD e ruoli non predefiniti
 				return this.questionarioTemplateSqlService.getAllQuestionari();
+		}
+	}
+
+	@Transactional(rollbackOn = Exception.class)
+	public void aggiornaDefaultQuestionarioTemplate(String idQuestionario, String tipoDefault) {
+		QuestionarioTemplateEntity questionarioTemplate = this.questionarioTemplateSqlService.getQuestionarioTemplateById(idQuestionario);
+		Optional<QuestionarioTemplateEntity> questionarioDaAggiornare;
+		//se viene modificato il default_rfd del questionario
+		if(PolicyEnum.RFD.toString().equalsIgnoreCase(tipoDefault)) {
+			questionarioDaAggiornare = this.questionarioTemplateSqlService.getQuestionarioTemplateDefaultRFD();
+			if(questionarioDaAggiornare.isPresent()) {
+				questionarioDaAggiornare.get().setDefaultRFD(false);
+				this.questionarioTemplateSqlService.salvaQuestionario(questionarioDaAggiornare.get());
+			}
+			questionarioTemplate.setDefaultRFD(true);
+			this.questionarioTemplateSqlService.salvaQuestionario(questionarioTemplate);
+		}
+		//se viene modificato il default_scd del questionario
+		if(PolicyEnum.SCD.toString().equalsIgnoreCase(tipoDefault)) {
+			questionarioDaAggiornare = this.questionarioTemplateSqlService.getQuestionarioTemplateDefaultSCD();
+			if(questionarioDaAggiornare.isPresent()) {
+				questionarioDaAggiornare.get().setDefaultSCD(false);
+				this.questionarioTemplateSqlService.salvaQuestionario(questionarioDaAggiornare.get());
+			}
+			questionarioTemplate.setDefaultSCD(true);
+			this.questionarioTemplateSqlService.salvaQuestionario(questionarioTemplate);
 		}
 	}
 }

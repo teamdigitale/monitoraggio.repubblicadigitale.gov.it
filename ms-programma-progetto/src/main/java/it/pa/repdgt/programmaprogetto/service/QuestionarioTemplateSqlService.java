@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.programmaprogetto.repository.QuestionarioTemplateSqlRepository;
 import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
+import it.pa.repdgt.shared.entityenum.PolicyEnum;
 
 @Service
 public class QuestionarioTemplateSqlService {
@@ -23,10 +24,18 @@ public class QuestionarioTemplateSqlService {
 	}
 
 	public QuestionarioTemplateEntity getQuestionarioTemplateById(String idQuestionario) {
-		return this.questionarioTemplateSqlRepository.getById(idQuestionario);
+		return this.questionarioTemplateSqlRepository.getReferenceById(idQuestionario);
 	}
 
 	public void salvaQuestionarioTemplate(QuestionarioTemplateEntity questionarioTemplate) {
 		this.questionarioTemplateSqlRepository.save(questionarioTemplate);
+	}
+
+	public QuestionarioTemplateEntity getQuestionarioTemplateByPolicy(String policy) {
+		if(policy.equals(PolicyEnum.RFD.getValue())) {
+			return this.questionarioTemplateSqlRepository.findQuestionarioTemplateByPolicyRFD();
+		}
+		return this.questionarioTemplateSqlRepository.findQuestionarioTemplateByPolicySCD();
+
 	}
 }

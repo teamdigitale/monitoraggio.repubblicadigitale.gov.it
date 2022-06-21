@@ -73,4 +73,8 @@ public class ReferentiDelegatiEntePartnerDiProgettoService {
 			String codiceFiscaleUtente, Long idEnte) {
 		return this.referentiDelegatiEntePartnerDiProgettoRepository.findReferenteDelegatoEntePartner(idProgetto, codiceFiscaleUtente, idEnte);
 	}
+
+	public List<ReferentiDelegatiEntePartnerDiProgettoEntity> getReferentiAndDelegatiByIdProgettoAndIdEnte(Long idProgetto, Long idEnte) {
+		return this.referentiDelegatiEntePartnerDiProgettoRepository.findReferentiAndDelegatiByIdProgettoAndIdEnte(idProgetto, idEnte);
+	}
 }

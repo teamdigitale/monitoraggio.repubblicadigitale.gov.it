@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -22,6 +23,17 @@ public class NuovoProgettoRequest implements Serializable {
 	@NotBlank(message = "{nomebreve.notblank}")
 	@JsonProperty(value = "nome breve", required = true)
 	private String nomeBreve;
+	
+	@JsonProperty(value = "cup", required = false)
+	private Integer cup;
+	
+	@NotNull(message = "{date.incorrect}")
+	@JsonProperty(value = "data inizio", required = true)
+	private Date dataInizioProgetto;
+	
+	@NotNull(message = "{date.incorrect}")
+	@JsonProperty(value = "data fine", required = true)
+	private Date dataFineProgetto;
 	
 	//Numero Target Punti di Facilitazione
 	private Integer nPuntiFacilitazioneTarget1;

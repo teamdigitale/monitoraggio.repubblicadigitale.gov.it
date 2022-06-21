@@ -16,7 +16,7 @@ public interface ReferentiDelegatiEnteGestoreProgrammaRepository extends JpaRepo
 	@Query(value = ""
 			 + " SELECT * "
 			 + " FROM "
-			 + "	referente_delegati_gestiore_programma "
+			 + "	referente_delegati_gestore_programma "
 			 + " WHERE 1=1"
 			 + "	AND ID_PROGRAMMA = :idProgramma",
 	   nativeQuery = true)
@@ -25,7 +25,7 @@ public interface ReferentiDelegatiEnteGestoreProgrammaRepository extends JpaRepo
 	@Query(value = " "
 			+ " SELECT * "
 			+ " FROM "
-			+ " referente_delegati_gestiore_programma "
+			+ " referente_delegati_gestore_programma "
 			+ " WHERE 1=1 "
 			+ " AND "
 			+ " ID_PROGRAMMA != :idProgramma "
@@ -38,7 +38,7 @@ public interface ReferentiDelegatiEnteGestoreProgrammaRepository extends JpaRepo
 			String codiceFiscaleUtente, String codiceRuolo);
 
 	@Query(value ="SELECT * "
-			+ "FROM referente_delegati_gestiore_programma rdg "
+			+ "FROM referente_delegati_gestore_programma rdg "
 			+ "WHERE rdg.ID_PROGRAMMA = :idProgramma "
 			+ "		AND rdg.STATO_UTENTE != 'TERMINATO' ", 
 			nativeQuery = true)

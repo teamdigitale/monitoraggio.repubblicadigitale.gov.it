@@ -618,11 +618,10 @@ public class EnteService {
 	 * Cancella associazione Utente Referente o utente delegato all'ente gestore di programma
 	 * */
 	@Transactional(rollbackOn = Exception.class)
-    public void cancellaAssociazioneReferenteODelegatoGestoreProgramma(ReferenteDelegatoGestoreProgrammaRequest referenteDelegatoGestoreProgrammaRequest) {
-		Long idProgramma = referenteDelegatoGestoreProgrammaRequest.getIdProgramma();
-		String codiceFiscaleUtente = referenteDelegatoGestoreProgrammaRequest.getCodiceFiscaleUtente();
-		String codiceRuolo  = referenteDelegatoGestoreProgrammaRequest.getCodiceRuolo().toUpperCase();
-		Long idEnte = referenteDelegatoGestoreProgrammaRequest.getIdEnte();
+    public void cancellaAssociazioneReferenteODelegatoGestoreProgramma(ReferentiDelegatiEnteGestoreProgrammaEntity referentiDelegatiEnteGestoreProgrammaEntity, String codiceRuolo) {
+		Long idProgramma = referentiDelegatiEnteGestoreProgrammaEntity.getId().getIdProgramma();
+		String codiceFiscaleUtente = referentiDelegatiEnteGestoreProgrammaEntity.getId().getCodFiscaleUtente();
+		Long idEnte = referentiDelegatiEnteGestoreProgrammaEntity.getId().getIdEnte();
 		ReferentiDelegatiEnteGestoreProgrammaKey id =  new ReferentiDelegatiEnteGestoreProgrammaKey(idProgramma, codiceFiscaleUtente, idEnte);
 		
 		this.referentiDelegatiEnteGestoreProgrammaService.cancellaAssociazioneReferenteDelegatoGestoreProgramma(id);
@@ -693,11 +692,10 @@ public class EnteService {
 	 * Cancella associazione Utente Referente o utente delegato all'ente gestore di progetto
 	 * */
 	@Transactional(rollbackOn = Exception.class)
-    public void cancellaAssociazioneReferenteODelegatoGestoreProgetto(ReferenteDelegatoGestoreProgettoRequest referenteDelegatoGestoreProgettoRequest) {
-		Long idProgetto = referenteDelegatoGestoreProgettoRequest.getIdProgetto();
-		String codiceFiscaleUtente = referenteDelegatoGestoreProgettoRequest.getCodiceFiscaleUtente();
-		String codiceRuolo  = referenteDelegatoGestoreProgettoRequest.getCodiceRuolo().toUpperCase();
-		Long idEnte = referenteDelegatoGestoreProgettoRequest.getIdEnte();
+    public void cancellaAssociazioneReferenteODelegatoGestoreProgetto(ReferentiDelegatiEnteGestoreProgettoEntity referentiDelegatiEnteGestoreProgettoEntity, String codiceRuolo) {
+		Long idProgetto = referentiDelegatiEnteGestoreProgettoEntity.getId().getIdProgetto();
+		String codiceFiscaleUtente = referentiDelegatiEnteGestoreProgettoEntity.getId().getCodFiscaleUtente();
+		Long idEnte = referentiDelegatiEnteGestoreProgettoEntity.getId().getIdEnte();
 		ReferentiDelegatiEnteGestoreProgettoKey id =  new ReferentiDelegatiEnteGestoreProgettoKey(idProgetto, codiceFiscaleUtente, idEnte);
 		
 		this.referentiDelegatiEnteGestoreProgettoService.cancellaAssociazioneReferenteDelegatoGestoreProgetto(id);
@@ -719,8 +717,8 @@ public class EnteService {
 		EnteProjection ente = this.enteRepository.findEnteGestoreProgrammaByIdProgramma(idProgramma)
 				.orElseThrow(() -> new EnteException(errorMessage));
 		
-		List<UtenteProjection> referenti = this.referentiDelegatiEnteGestoreProgrammaService.getReferentiEnteGestoreByProgramma(idProgramma);
-		List<UtenteProjection> delegati = this.referentiDelegatiEnteGestoreProgrammaService.getDelegatiEnteGestoreByProgramma(idProgramma);
+		List<UtenteProjection> referenti = this.referentiDelegatiEnteGestoreProgrammaService.getReferentiEnteGestoreByIdProgrammaAndIdEnte(idProgramma, ente.getId());
+		List<UtenteProjection> delegati = this.referentiDelegatiEnteGestoreProgrammaService.getDelegatiEnteGestoreByIdProgrammaAndIdEnte(idProgramma, ente.getId());
 		
 		schedaEnteGestoreProgramma.setEnte(ente);
 		schedaEnteGestoreProgramma.setReferentiEnteGestore(referenti);
@@ -734,8 +732,8 @@ public class EnteService {
 		EnteProjection ente = this.enteRepository.findEnteGestoreProgettoByIdProgetto(idProgetto)
 				.orElseThrow(() -> new EnteException(errorMessage));
 		
-		List<UtenteProjection> referenti = this.referentiDelegatiEnteGestoreProgettoService.getReferentiEnteGestoreByProgetto(idProgetto);
-		List<UtenteProjection> delegati = this.referentiDelegatiEnteGestoreProgettoService.getDelegatiEnteGestoreByProgetto(idProgetto);
+		List<UtenteProjection> referenti = this.referentiDelegatiEnteGestoreProgettoService.getReferentiEnteGestoreByIdProgettoAndIdEnte(idProgetto, ente.getId());
+		List<UtenteProjection> delegati = this.referentiDelegatiEnteGestoreProgettoService.getDelegatiEnteGestoreByIdProgettoAndIdEnte(idProgetto, ente.getId());
 		List<SedeEntity> sedi = this.sedeService.getSediEnteByIdProgettoAndIdEnte(idProgetto, ente.getId());
 		List<SedeBean> sediGestoreProgetto = sedi
 									.stream()
@@ -955,13 +953,13 @@ public class EnteService {
 		programmaFetchDB.setStatoGestoreProgramma(null);
 		this.programmaService.salvaProgramma(programmaFetchDB);
 		//prendo la lista dei referenti e delegati  su quel programma
-		List<ReferentiDelegatiEnteGestoreProgrammaEntity> listaReferentiDelegatiPerProgramma = this.referentiDelegatiEnteGestoreProgrammaService.getReferentiAndDelegatiPerProgramma(idProgramma);
+		List<ReferentiDelegatiEnteGestoreProgrammaEntity> listaReferentiDelegatiProgramma = this.referentiDelegatiEnteGestoreProgrammaService.getReferentiAndDelegatiByIdProgrammaAndIdEnte(idProgramma, idEnte);
 		//elimino i referenti e delegati dalla tabella REFERENTE_DELEGATI_GESTORE_PROGRAMMA 
-		listaReferentiDelegatiPerProgramma.stream()
+		listaReferentiDelegatiProgramma.stream()
 										  .forEach(utente -> {
 											  this.referentiDelegatiEnteGestoreProgrammaService.cancellaAssociazione(utente);
 										  });
-		listaReferentiDelegatiPerProgramma.stream()
+		listaReferentiDelegatiProgramma.stream()
 					  .forEach(utente -> {  //controllo se i referenti e i delegati siano referenti e delegati in altri programmi, così non fosse elimino i ruoli di REG/DEG da tali utenti
 						  if(this.referentiDelegatiEnteGestoreProgrammaService.countAssociazioniReferenteDelegato(utente.getId().getCodFiscaleUtente(), utente.getCodiceRuolo()) == 0 ) {
 							  UtenteXRuolo utenteRuolo = this.utenteXRuoloService.getUtenteXRuoloByCfUtenteAndCodiceRuolo(utente.getId().getCodFiscaleUtente(), utente.getCodiceRuolo());
@@ -1029,6 +1027,16 @@ public class EnteService {
 			throw new EnteException(errorMessage);
 		}
 		ProgrammaEntity programmaFetchDB = this.programmaService.getProgrammaById(idProgramma);
+		List<ReferentiDelegatiEnteGestoreProgrammaEntity> referentiEDelegatiEnte = this.referentiDelegatiEnteGestoreProgrammaService.getReferentiAndDelegatiByIdProgrammaAndIdEnte(idProgramma, idEnte);
+		referentiEDelegatiEnte.stream()
+							  .forEach(referenteODelegato -> {
+								  if(referenteODelegato.getStatoUtente().equals("ATTIVO")) {
+										this.terminaAssociazioneReferenteDelegatoGestoreProgramma(referenteODelegato, referenteODelegato.getCodiceRuolo());
+								  }
+								  if(referenteODelegato.getStatoUtente().equals("NON ATTIVO")) {
+										this.cancellaAssociazioneReferenteODelegatoGestoreProgramma(referenteODelegato, referenteODelegato.getCodiceRuolo());
+								  }
+		});
 		this.storicoService.storicizzaEnteGestoreProgramma(programmaFetchDB);
 		programmaFetchDB.setEnteGestoreProgramma(null);
 		programmaFetchDB.setStatoGestoreProgramma(null);
@@ -1047,6 +1055,16 @@ public class EnteService {
 			throw new EnteException(errorMessage);
 		}
 		ProgettoEntity progettoFetchDB = this.progettoService.getProgettoById(idProgetto);
+		List<ReferentiDelegatiEnteGestoreProgettoEntity> referentiEDelegatiEnte = this.referentiDelegatiEnteGestoreProgettoService.getReferentiAndDelegatiByIdProgettoAndIdEnte(idProgetto, idEnte);
+		referentiEDelegatiEnte.stream()
+							  .forEach(referenteODelegato -> {
+								  if(referenteODelegato.getStatoUtente().equals("ATTIVO")) {
+										this.terminaAssociazioneReferenteDelegatoGestoreProgetto(referenteODelegato, referenteODelegato.getCodiceRuolo());
+								  }
+								  if(referenteODelegato.getStatoUtente().equals("NON ATTIVO")) {
+										this.cancellaAssociazioneReferenteODelegatoGestoreProgetto(referenteODelegato, referenteODelegato.getCodiceRuolo());
+								  }
+		});
 		this.storicoService.storicizzaEnteGestoreProgetto(progettoFetchDB);
 		progettoFetchDB.setEnteGestoreProgetto(null);
 		progettoFetchDB.setStatoGestoreProgetto(null);
@@ -1093,12 +1111,23 @@ public class EnteService {
 										   this.enteSedeProgettoService.cancellazioneAssociazioneEnteSedeProgetto(idEnte, sede.getId().getIdSede(), idProgetto);
 									   }
 								   });
+		List<ReferentiDelegatiEntePartnerDiProgettoEntity> referentiEDelegatiEnte = this.referentiDelegatiEntePartnerDiProgettoService.getReferentiAndDelegatiByIdProgettoAndIdEnte(idProgetto, idEnte);
+		referentiEDelegatiEnte.stream()
+							  .forEach(referenteODelegato -> {
+								  if(referenteODelegato.getStatoUtente().equals(StatoEnum.ATTIVO.getValue())) {
+										this.entePartnerService.terminaAssociazioneReferenteDelegatoEntePartner(referenteODelegato, referenteODelegato.getCodiceRuolo());
+									}
+									if(referenteODelegato.getStatoUtente().equals(StatoEnum.NON_ATTIVO.getValue())) {
+										this.entePartnerService.cancellaAssociazioneReferenteODelegatoPartner(referenteODelegato, referenteODelegato.getCodiceRuolo());
+									}
+		});
 		this.storicoService.storicizzaEntePartner(entePartnerProgetto);
 		entePartnerProgetto.setStatoEntePartner(StatoEnum.TERMINATO.getValue());
 		entePartnerProgetto.setTerminatoSingolarmente(Boolean.TRUE);
 		this.entePartnerService.salvaEntePartner(entePartnerProgetto);
 	}
 
+	@Transactional(rollbackOn = Exception.class)
 	public void cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgramma(
 			@Valid ReferenteDelegatoGestoreProgrammaRequest referenteDelegatoGestoreProgrammaRequest) {
 		Long idProgramma = referenteDelegatoGestoreProgrammaRequest.getIdProgramma();
@@ -1110,7 +1139,7 @@ public class EnteService {
 			this.terminaAssociazioneReferenteDelegatoGestoreProgramma(referentiDelegatiEnteGestoreProgrammaEntity, codiceRuolo);
 		}
 		if(referentiDelegatiEnteGestoreProgrammaEntity.getStatoUtente().equals("NON ATTIVO")) {
-			this.cancellaAssociazioneReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest);
+			this.cancellaAssociazioneReferenteODelegatoGestoreProgramma(referentiDelegatiEnteGestoreProgrammaEntity, codiceRuolo);
 		}
 	}
 
@@ -1144,7 +1173,7 @@ public class EnteService {
 			this.terminaAssociazioneReferenteDelegatoGestoreProgetto(referentiDelegatiEnteGestoreProgettoEntity, codiceRuolo);
 		}
 		if(referentiDelegatiEnteGestoreProgettoEntity.getStatoUtente().equals("NON ATTIVO")) {
-			this.cancellaAssociazioneReferenteODelegatoGestoreProgetto(referenteDelegatoGestoreProgettoRequest);
+			this.cancellaAssociazioneReferenteODelegatoGestoreProgetto(referentiDelegatiEnteGestoreProgettoEntity, codiceRuolo);
 		}
 	}
 

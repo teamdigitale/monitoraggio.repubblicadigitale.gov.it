@@ -48,4 +48,9 @@ public class ProgrammaXQuestionarioTemplateService {
 	public Optional<ProgrammaXQuestionarioTemplateEntity> getAssociazioneQuestionarioTemplateAttivaByIdProgramma(Long idProgramma) {
 		return this.programmaXQuestionarioTemplateRepository.getAssociazioneQuestionarioTemplateAttivaByIdProgramma(idProgramma);
 	}
+
+	public void cancellaAssociazioneQuestionarioTemplateAProgramma(Long idProgramma) {
+		ProgrammaXQuestionarioTemplateEntity programmaXQuestionario = this.getAssociazioneQuestionarioTemplateAttivaByIdProgramma(idProgramma).get();
+		this.programmaXQuestionarioTemplateRepository.delete(programmaXQuestionario);
+	}
 }

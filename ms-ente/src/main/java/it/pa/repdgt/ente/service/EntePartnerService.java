@@ -170,12 +170,10 @@ public class EntePartnerService {
 	/**
 	 * Cancella associazione Utente Referente o utente delegato all'ente partner
 	 * */
-	public void cancellaAssociazioneReferenteODelegatoPartner(
-			@Valid ReferenteDelegatoPartnerRequest referenteDelegatoPartnerRequest) {
-		Long idProgetto = referenteDelegatoPartnerRequest.getIdProgetto();
-		Long idEntePartner = referenteDelegatoPartnerRequest.getIdEntePartner();
-		String codiceFiscaleUtente = referenteDelegatoPartnerRequest.getCodiceFiscaleUtente();
-		String codiceRuolo  = referenteDelegatoPartnerRequest.getCodiceRuolo().toUpperCase();
+	public void cancellaAssociazioneReferenteODelegatoPartner(ReferentiDelegatiEntePartnerDiProgettoEntity referenteDelegatoEntePartnerDiProgettoEntity, String codiceRuolo) {
+		Long idProgetto = referenteDelegatoEntePartnerDiProgettoEntity.getId().getIdProgetto();
+		String codiceFiscaleUtente = referenteDelegatoEntePartnerDiProgettoEntity.getId().getCodFiscaleUtente();
+		Long idEntePartner = referenteDelegatoEntePartnerDiProgettoEntity.getId().getIdEnte();
 		ReferentiDelegatiEntePartnerDiProgettoKey id =  new ReferentiDelegatiEntePartnerDiProgettoKey(idProgetto ,idEntePartner, codiceFiscaleUtente);
 		
 		this.referentiDelegatiEntePartnerDiProgettoService.cancellaAssociazioneReferenteDelegatoGestoreProgetto(id);
@@ -246,17 +244,17 @@ public class EntePartnerService {
 		Long idProgetto = referenteDelegatoPartnerRequest.getIdProgetto();
 		String codiceFiscaleUtente = referenteDelegatoPartnerRequest.getCodiceFiscaleUtente();
 		Long idEnte = referenteDelegatoPartnerRequest.getIdEntePartner();
-		String codiceRuolo = referenteDelegatoPartnerRequest.getCodiceRuolo();
+		String codiceRuolo = referenteDelegatoPartnerRequest.getCodiceRuolo().toUpperCase();
 		ReferentiDelegatiEntePartnerDiProgettoEntity referenteDelegatoEntePartnerDiProgettoEntity = this.referentiDelegatiEntePartnerDiProgettoService.getReferenteDelegatoEntePartner(idProgetto, codiceFiscaleUtente, idEnte);
 		if(referenteDelegatoEntePartnerDiProgettoEntity.getStatoUtente().equals(StatoEnum.ATTIVO.getValue())) {
 			this.terminaAssociazioneReferenteDelegatoEntePartner(referenteDelegatoEntePartnerDiProgettoEntity, codiceRuolo);
 		}
 		if(referenteDelegatoEntePartnerDiProgettoEntity.getStatoUtente().equals(StatoEnum.NON_ATTIVO.getValue())) {
-			this.cancellaAssociazioneReferenteODelegatoPartner(referenteDelegatoPartnerRequest);
+			this.cancellaAssociazioneReferenteODelegatoPartner(referenteDelegatoEntePartnerDiProgettoEntity, codiceRuolo);
 		}
 	}
 
-	private void terminaAssociazioneReferenteDelegatoEntePartner(
+	public void terminaAssociazioneReferenteDelegatoEntePartner(
 			ReferentiDelegatiEntePartnerDiProgettoEntity referenteDelegatoEntePartnerDiProgettoEntity, String codiceRuolo) {
 		Long idProgetto = referenteDelegatoEntePartnerDiProgettoEntity.getId().getIdProgetto();
 		String codiceFiscaleUtente = referenteDelegatoEntePartnerDiProgettoEntity.getId().getCodFiscaleUtente();

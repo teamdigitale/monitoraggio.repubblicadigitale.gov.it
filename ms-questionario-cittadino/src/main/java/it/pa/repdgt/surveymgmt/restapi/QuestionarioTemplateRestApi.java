@@ -1,17 +1,22 @@
 package it.pa.repdgt.surveymgmt.restapi;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import org.apache.commons.csv.CSVFormat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,15 +41,12 @@ import it.pa.repdgt.surveymgmt.resource.QuestionariTemplatePaginatiResource;
 import it.pa.repdgt.surveymgmt.resource.QuestionarioTemplateLightResource;
 import it.pa.repdgt.surveymgmt.resource.QuestionarioTemplateResource;
 import it.pa.repdgt.surveymgmt.service.QuestionarioTemplateService;
-import lombok.extern.slf4j.Slf4j;
+import it.pa.repdgt.surveymgmt.util.CSVQuestionarioTemplateUtil;
 
 @RestController
 @RequestMapping(path = "questionarioTemplate")
 @Validated
-@Slf4j
 public class QuestionarioTemplateRestApi {
-	private static final String BASE_PATH = "questionarioTemplate";
-
 	@Autowired
 	private QuestionarioTemplateMapper questionarioTemplateMapper;
 	@Autowired
@@ -58,28 +60,47 @@ public class QuestionarioTemplateRestApi {
 	@PostMapping(path = "/all")
 	@ResponseStatus(value = HttpStatus.OK)
 	public QuestionariTemplatePaginatiResource getAllQuestionariTemplatate(
-			@RequestBody @Valid final ProfilazioneParam profilazioneParam,
 			@RequestParam(name = "criterioRicerca", required = false) final String criterioRicerca,
-			@RequestParam(name = "stato", required = false) final StatoQuestionarioEnum statoQuestionario,
+			@RequestParam(name = "stato",           required = false) final StatoQuestionarioEnum statoQuestionario,
 			@RequestParam(name = "currPage", defaultValue = "0")  @Pattern(regexp = "[0-9]+") final String currPage,
-			@RequestParam(name = "pageSize", defaultValue = "10") @Pattern(regexp = "[0-9]+") final String pageSize) {
-		log.info("===> POST {} - START", BASE_PATH);
+			@RequestParam(name = "pageSize", defaultValue = "10") @Pattern(regexp = "[0-9]+") final String pageSize,
+			@RequestBody @Valid final ProfilazioneParam profilazioneParam) {
 		final Pageable pagina = PageRequest.of(Integer.parseInt(currPage), Integer.parseInt(pageSize));
 		final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplateParam = new FiltroListaQuestionariTemplateParam();
 		filtroListaQuestionariTemplateParam.setCriterioRicerca(criterioRicerca);
 		filtroListaQuestionariTemplateParam.setStatoQuestionario(statoQuestionario);
-		
-		final Page<QuestionarioTemplateEntity> paginaQuestionariTemplate = this.questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltro(
+		final Page<QuestionarioTemplateEntity> paginaQuestionariTemplate = this.questionarioTemplateService.getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro(
 				profilazioneParam,
 				filtroListaQuestionariTemplateParam,
 				pagina
 			);
-		
 		final List<QuestionarioTemplateLightResource> questionariTemplateLightResource = this.questionarioTemplateMapper.toLightResourceFrom(paginaQuestionariTemplate.getContent());
-		final QuestionariTemplatePaginatiResource questionariTemplatePaginatiResource = new QuestionariTemplatePaginatiResource();
-		questionariTemplatePaginatiResource.setQuestionariTemplate(questionariTemplateLightResource);
-		questionariTemplatePaginatiResource.setNumeroPagine(paginaQuestionariTemplate.getTotalPages());
-		return questionariTemplatePaginatiResource;
+		return new QuestionariTemplatePaginatiResource(
+				questionariTemplateLightResource,
+				paginaQuestionariTemplate.getTotalPages()
+				
+			);
+	}
+	
+	/***
+	 * Restituisce tutti gli stati dei TemplateQuestionario persistiti su database MongoDb 
+	 * 
+	 * */
+	// TOUCH POINT - 1.5.5 - Lista stati questionari
+	@PostMapping(path = "/stati/dropdown")
+	@ResponseStatus(value = HttpStatus.OK)
+	public List<String> getAllStatiDropdown(
+			@RequestParam(name = "criterioRicerca", required = false) final String criterioRicerca,
+			@RequestParam(name = "stato",           required = false) final StatoQuestionarioEnum statoQuestionario,
+			@RequestBody @Valid final ProfilazioneParam profilazioneParam) {
+		final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplateParam = new FiltroListaQuestionariTemplateParam();
+		filtroListaQuestionariTemplateParam.setCriterioRicerca(criterioRicerca);
+		filtroListaQuestionariTemplateParam.setStatoQuestionario(statoQuestionario);
+		List<String> listaStati = this.questionarioTemplateService.getAllStatiDropdownByProfilazioneAndFiltro(
+				profilazioneParam,
+				filtroListaQuestionariTemplateParam
+			);
+		return listaStati;
 	}
 	
 	// TOUCH POINT 2.2.4 - 	lista questionari da aggiungere al programma
@@ -87,10 +108,9 @@ public class QuestionarioTemplateRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<QuestionarioTemplateLightResource> getQuestionariTemplateLightByUtente(
 			@RequestBody @Valid final ProfilazioneParam profilazioneParam) {
-		List<QuestionarioTemplateEntity> questionariTemplate = this.questionarioTemplateService.getQuestionariTemplateByUtente(profilazioneParam);
+		final List<QuestionarioTemplateEntity> questionariTemplate = this.questionarioTemplateService.getQuestionariTemplateByUtente(profilazioneParam);
 		return this.questionarioTemplateMapper.toQuestionarioTemplateLightResourceFrom(questionariTemplate);
 	}
-	
 	
 	/***
 	 * Restituisce il TemplateQuestionario con specifico id persistito su mongoDB
@@ -102,7 +122,6 @@ public class QuestionarioTemplateRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public QuestionarioTemplateResource getQuestioanarioTemplateById(
 			@PathVariable(value = "templateQuestionarioId") final String templateQuestionarioId) {
-		log.info("===> GET {}/{}", BASE_PATH, templateQuestionarioId);
 		final QuestionarioTemplateCollection questionarioTemplate = this.questionarioTemplateService.getQuestionarioTemplateById(templateQuestionarioId.trim());
 		return questionarioTemplateMapper.toResourceFrom(questionarioTemplate);
 	}
@@ -112,13 +131,11 @@ public class QuestionarioTemplateRestApi {
 	 * 
 	 * */
 	// TOUCH POINT - 1.5.4 - Crea Questionario template (duplica)
-	// TOUCH POINT - 6.2 -   Crea Questionario template (duplica)
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public QuestionarioTemplateCollection creaQuestionarioTemplate(
 			@ApiParam(name = "Crea Questionario", value = "Json contenente i dati del questionario", required = true)
 			@RequestBody @Valid final QuestionarioTemplateRequest nuovoTemplateQuestionarioRequest) {
-		log.info("===> POST {}", BASE_PATH);
 		final QuestionarioTemplateCollection questionarioTemplate = this.questionarioTemplateMapper.toCollectionFrom(nuovoTemplateQuestionarioRequest);
 		return this.questionarioTemplateService.creaNuovoQuestionarioTemplate(questionarioTemplate);
 	}
@@ -128,17 +145,29 @@ public class QuestionarioTemplateRestApi {
 	 * 
 	 * */
 	// TOUCH POINT - 1.5.2 - Modifica questionario template
+	// TOUCH POINT - 6.2 -   Crea Questionario template (duplica)
 	@PutMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void aggiornaQuestioarioTemplate(
 			@PathVariable(value = "id")  final String questionarioTemplateId,
 			@NotNull @RequestBody @Valid final QuestionarioTemplateRequest questionarioTemplateDaAggiornareRequest) {
-		log.info("===> PUT {}/{}", BASE_PATH, questionarioTemplateId);
 		final QuestionarioTemplateCollection questionarioTemplate = this.questionarioTemplateMapper.toCollectionFrom(questionarioTemplateDaAggiornareRequest);
 		this.questionarioTemplateService.aggiornaQuestionarioTemplate(
 				questionarioTemplateId, 
 				questionarioTemplate
 		);
+	}
+	
+	/**
+	 * Modifica i default di un TemplateQuestionario
+	 * 
+	 * */
+	@PutMapping(path = "/aggiornadefault/{idQuestionario}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public void aggiornaDefaultQuestionarioTemplate(
+			@PathVariable(value = "idQuestionario") final String idQuestionario,
+			@RequestParam final String tipoDefault) {
+		this.questionarioTemplateService.aggiornaDefaultQuestionarioTemplate(idQuestionario, tipoDefault);
 	}
 	
 	/**
@@ -148,10 +177,36 @@ public class QuestionarioTemplateRestApi {
 	// TOUCH POINT - 1.5.3 - Cancella questionario template
 	// TOUCH POINT - 6.3   - Cancella questionario template
 	@DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseStatus(value = HttpStatus.OK)
-	public void cancellaQuestioarioTemplate(
-			@PathVariable(value = "id") final String questionarioTemplateId) {
-		log.info("===> DELETE {}/{}", BASE_PATH, questionarioTemplateId);
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	public void cancellaQuestioarioTemplate(@PathVariable(value = "id") final String questionarioTemplateId) {
 		this.questionarioTemplateService.cancellaQuestionarioTemplate(questionarioTemplateId);
+	}
+	
+	/**
+	 * Scarica lista elenco questionaritemplate,
+	 * in base ai filtri richiesti e alla profilazione dell'utente loggatosi
+	 * 
+	 * */
+	// TOUCH POINT - 1.5.6
+	@PostMapping(path = "/download")
+	@ResponseStatus(value = HttpStatus.OK)
+	public ResponseEntity<InputStreamResource> downloadCSVSElencoQuestionariTemplate(
+			@RequestParam(name = "criterioRicerca", required = false) final String criterioRicerca,
+			@RequestParam(name = "stato",           required = false) final StatoQuestionarioEnum statoQuestionario,
+			@RequestBody @Valid final ProfilazioneParam profilazioneParam) {
+		final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplateParam = new FiltroListaQuestionariTemplateParam();
+		filtroListaQuestionariTemplateParam.setCriterioRicerca(criterioRicerca);
+		filtroListaQuestionariTemplateParam.setStatoQuestionario(statoQuestionario);
+		final List<QuestionarioTemplateEntity> questionariTemplateEntity = this.questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltro(
+				profilazioneParam,
+				filtroListaQuestionariTemplateParam
+			);
+		final List<QuestionarioTemplateLightResource> questionariResource = this.questionarioTemplateMapper.toLightResourceFrom(questionariTemplateEntity);
+		final ByteArrayInputStream byteArrayInputStream = CSVQuestionarioTemplateUtil.exportCSVQuestionariTemplate(questionariResource, CSVFormat.DEFAULT);
+		final InputStreamResource fileCSVCreato = new InputStreamResource(byteArrayInputStream);
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=elenco-questionari-template.csv")
+				.contentType(MediaType.parseMediaType("application/csv"))
+				.body(fileCSVCreato);
 	}
 }

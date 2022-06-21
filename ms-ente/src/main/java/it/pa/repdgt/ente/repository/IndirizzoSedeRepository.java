@@ -20,6 +20,7 @@ public interface IndirizzoSedeRepository extends JpaRepository<IndirizzoSedeEnti
 				 + "	,ind_sede.CIVICO 	as civico "
 				 + "	,ind_sede.COMUNE 	as comune "
 				 + "	,ind_sede.PROVINCIA as provincia "
+				 + "	,ind_sede.REGIONE   as regione "
 				 + "	,ind_sede.CAP 		as cap "
 				 + "	,ind_sede.NAZIONE 	as nazione"
 				 + " FROM "

@@ -38,6 +38,9 @@ public class IndirizzoSedeEntity implements Serializable {
 	@Column(name = "COMUNE")
 	private String comune;
 	
+	@Column(name = "REGIONE")
+	private String regione;
+	
 	@Column(name = "VIA")
 	private String via;
 	

@@ -16,6 +16,7 @@ public class IndirizzoSedeMapper {
 		indirizzoSedeEntity.setCivico(indirizzoSedeRequest.getCivico());
 		indirizzoSedeEntity.setComune(indirizzoSedeRequest.getComune());
 		indirizzoSedeEntity.setProvincia(indirizzoSedeRequest.getProvincia());
+		indirizzoSedeEntity.setRegione(indirizzoSedeRequest.getRegione());
 		indirizzoSedeEntity.setCap(indirizzoSedeRequest.getCap());
 		indirizzoSedeEntity.setNazione(indirizzoSedeRequest.getNazione());
 		return indirizzoSedeEntity;

@@ -23,6 +23,7 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 
 		<springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
+		<commons-csv.version>1.9.0</commons-csv.version>
 	</properties>
 
 	<dependencies>
@@ -67,6 +68,11 @@
 			<version>20220320</version>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>${commons-csv.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
@@ -75,6 +81,11 @@
 			<groupId>it.pa.repdgt</groupId>
 			<artifactId>repdgt-shared</artifactId>
 			<version>LATEST</version>
+		</dependency>
+		<dependency>
+		    <groupId>de.flapdoodle.embed</groupId>
+		    <artifactId>de.flapdoodle.embed.mongo</artifactId>
+		    <scope>test</scope>
 		</dependency>
 	</dependencies>
 

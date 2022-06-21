@@ -11,6 +11,9 @@ public class DettaglioProgettoBean {
 	private Long id;
 	private String nome;
 	private String nomeBreve;
+	private Integer cup;
+	private Date dataInizio;
+	private Date dataFine;
 	
 	//Numero Target Punti di Facilitazione
 	private Integer nPuntiFacilitazioneTarget1;

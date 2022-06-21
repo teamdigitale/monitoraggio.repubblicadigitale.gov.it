@@ -26,9 +26,12 @@ public interface ReferentiDelegatiEnteGestoreProgettoRepository extends JpaRepos
 			 + "	ON u.CODICE_FISCALE = rdgp.CF_UTENTE"
 			 + " WHERE 1=1 "
 			 + "	AND ID_PROGETTO = :idProgetto "
+			 + "	AND ID_ENTE = :idEnte "
 			 + "	AND CODICE_RUOLO = 'REGP'", 
 	   nativeQuery = true)
-	List<UtenteProjection> findNomeStatoReferentiEnteGestoreByProgetto(Long idProgetto);
+	List<UtenteProjection> findNomeStatoReferentiEnteGestoreByIdProgettoAndIdEnte(
+			@Param(value = "idProgetto") Long idProgetto,
+			@Param(value = "idEnte") Long idEnte);
 
 	@Query(value = " "
 			+ " SELECT "
@@ -42,9 +45,12 @@ public interface ReferentiDelegatiEnteGestoreProgettoRepository extends JpaRepos
 			 + "	ON u.CODICE_FISCALE = rdgp.CF_UTENTE"
 			 + " WHERE 1=1 " 
 			 + "	AND ID_PROGETTO = :idProgetto "
+			 + "	AND ID_ENTE = :idEnte "
 			 + "	AND CODICE_RUOLO = 'DEGP'", 
 	   nativeQuery = true)
-	List<UtenteProjection> findNomeStatoDelegatiEnteGestoreByProgetto(Long idProgetto);
+	List<UtenteProjection> findNomeStatoDelegatiEnteGestoreByIdProgettoAndIdEnte(
+			@Param(value = "idProgetto") Long idProgetto,
+			@Param(value = "idEnte") Long idEnte);
 
 	@Query(value = " "
 			+ " SELECT * "
@@ -80,8 +86,10 @@ public interface ReferentiDelegatiEnteGestoreProgettoRepository extends JpaRepos
 			+ " AND "
 			+ " CF_UTENTE = :codiceFiscaleUtente",
 			nativeQuery = true)
-	List<ReferentiDelegatiEnteGestoreProgettoEntity> findAltreAssociazioni(Long idProgetto,
-			String codiceFiscaleUtente, String codiceRuolo);
+	List<ReferentiDelegatiEnteGestoreProgettoEntity> findAltreAssociazioni(
+			@Param(value = "idProgetto") Long idProgetto, 
+			@Param(value = "codiceFiscaleUtente") String codiceFiscaleUtente, 
+			@Param(value = "codiceRuolo") String codiceRuolo);
 
 	@Query(value = "SELECT * "
 			+ "FROM referente_delegati_gestore_progetto rdgp "
@@ -91,10 +99,12 @@ public interface ReferentiDelegatiEnteGestoreProgettoRepository extends JpaRepos
 
 	@Query(value = "SELECT COUNT(*) "
 			+ "FROM referente_delegati_gestore_progetto rdgp "
-			+ "WHERE rdgp.CF_UTENTE = :codFiscaleUtente "
+			+ "WHERE rdgp.CF_UTENTE = :codiceFiscaleUtente "
 			+ "		AND rdgp.CODICE_RUOLO = :codiceRuolo ", 
 			nativeQuery = true)
-	int countAssociazioniReferenteDelegato(String codFiscaleUtente, String codiceRuolo);
+	int countAssociazioniReferenteDelegato(
+			@Param(value = "codiceFiscaleUtente") String codiceFiscaleUtente, 
+			@Param(value = "codiceRuolo") String codiceRuolo);
 
 	@Query(value = "SELECT * "
 			+ "FROM referente_delegati_gestore_progetto rdgp "
@@ -105,5 +115,14 @@ public interface ReferentiDelegatiEnteGestoreProgettoRepository extends JpaRepos
 	ReferentiDelegatiEnteGestoreProgettoEntity findReferenteDelegatiEnteGestoreProgetto(
 			@Param(value = "idProgetto") Long idProgetto,
 			@Param(value = "codiceFiscaleUtente") String codiceFiscaleUtente,
+			@Param(value = "idEnte") Long idEnte);
+
+	@Query(value = "SELECT * "
+			+ "FROM referente_delegati_gestore_progetto rdgp "
+			+ "WHERE rdgp.ID_PROGETTO = :idProgetto "
+			+ "AND   rdgp.ID_ENTE = :idEnte", 
+			nativeQuery = true)
+	List<ReferentiDelegatiEnteGestoreProgettoEntity> findReferentiAndDelegatiByIdProgettoAndIdEnte(
+			@Param(value = "idProgetto") Long idProgetto,
 			@Param(value = "idEnte") Long idEnte);
 }

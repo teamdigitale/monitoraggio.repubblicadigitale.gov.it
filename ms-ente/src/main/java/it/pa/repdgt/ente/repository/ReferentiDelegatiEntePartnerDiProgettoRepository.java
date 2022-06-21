@@ -117,4 +117,13 @@ public interface ReferentiDelegatiEntePartnerDiProgettoRepository extends JpaRep
 			@Param(value = "idProgetto") Long idProgetto,
 			@Param(value = "codiceFiscaleUtente") String codiceFiscaleUtente, 
 			@Param(value = "idEnte") Long idEnte);
+
+	@Query(value = "SELECT * "
+			+ "FROM referente_delegati_partner rdp "
+			+ "WHERE rdp.ID_PROGETTO = :idProgetto "
+			+ "AND   rdp.ID_ENTE = :idEnte", 
+			nativeQuery = true)
+	List<ReferentiDelegatiEntePartnerDiProgettoEntity> findReferentiAndDelegatiByIdProgettoAndIdEnte(
+			@Param(value = "idProgetto") Long idProgetto,
+			@Param(value = "idEnte") Long idEnte);
 }

@@ -28,12 +28,12 @@ public class ReferentiDelegatiEnteGestoreProgettoService {
 		this.referentiDelegatiEnteGestoreProgettoRepository.save(referentiDelegatiEnteGestoreProgetto);
 	}
 	
-	public List<UtenteProjection> getReferentiEnteGestoreByProgetto(Long idProgetto) {
-		return this.referentiDelegatiEnteGestoreProgettoRepository.findNomeStatoReferentiEnteGestoreByProgetto(idProgetto);
+	public List<UtenteProjection> getReferentiEnteGestoreByIdProgettoAndIdEnte(Long idProgetto, Long idEnte) {
+		return this.referentiDelegatiEnteGestoreProgettoRepository.findNomeStatoReferentiEnteGestoreByIdProgettoAndIdEnte(idProgetto, idEnte);
 	}
 	
-	public List<UtenteProjection> getDelegatiEnteGestoreByProgetto(Long idProgetto) {
-		return this.referentiDelegatiEnteGestoreProgettoRepository.findNomeStatoDelegatiEnteGestoreByProgetto(idProgetto);
+	public List<UtenteProjection> getDelegatiEnteGestoreByIdProgettoAndIdEnte(Long idProgetto, Long idEnte) {
+		return this.referentiDelegatiEnteGestoreProgettoRepository.findNomeStatoDelegatiEnteGestoreByIdProgettoAndIdEnte(idProgetto, idEnte);
 	}
 
 	public boolean esisteById(ReferentiDelegatiEnteGestoreProgettoKey id) {
@@ -72,5 +72,9 @@ public class ReferentiDelegatiEnteGestoreProgettoService {
 	public ReferentiDelegatiEnteGestoreProgettoEntity getReferenteDelegatiEnteGestoreProgetto(Long idProgetto,
 			String codiceFiscaleUtente, Long idEnte) {
 		return this.referentiDelegatiEnteGestoreProgettoRepository.findReferenteDelegatiEnteGestoreProgetto(idProgetto, codiceFiscaleUtente, idEnte);
+	}
+
+	public List<ReferentiDelegatiEnteGestoreProgettoEntity> getReferentiAndDelegatiByIdProgettoAndIdEnte(Long idProgetto, Long idEnte) {
+		return this.referentiDelegatiEnteGestoreProgettoRepository.findReferentiAndDelegatiByIdProgettoAndIdEnte(idProgetto, idEnte);
 	}
 }

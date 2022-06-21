@@ -10,16 +10,16 @@ import it.pa.repdgt.shared.entity.RuoloEntity;
 
 public interface RuoloRepository extends JpaRepository<RuoloEntity, String> {
 
-	@Query(value = " SELECT "
-				 + "	ruolo.* "
-				 + " FROM "
+	@Query(value = " SELECT         "
+				 + "	ruolo.*     "
+				 + " FROM           "
 				 + "	ruolo ruolo "
-				 + "	INNER JOIN utente_x_ruolo uxr "
-				 + "	ON uxr.RUOLO_CODICE = ruolo.CODICE "
-				 + " 	INNER JOIN utente utente "
+				 + "	INNER JOIN utente_x_ruolo uxr            "
+				 + "	ON uxr.RUOLO_CODICE = ruolo.CODICE       "
+				 + " 	INNER JOIN utente utente                 "
 				 + "	ON utente.CODICE_FISCALE = uxr.UTENTE_ID "
-				 + " WHERE 1=1 "
-				 + "   AND utente.CODICE_FISCALE = :codFiscale",
+				 + " WHERE 1=1                                   "
+				 + "   AND utente.CODICE_FISCALE = :codFiscale   ",
 		  nativeQuery = true)
 	List<RuoloEntity> findRuoliByCodiceFiscale(@Param(value = "codFiscale") String codiceFiscale);
 }

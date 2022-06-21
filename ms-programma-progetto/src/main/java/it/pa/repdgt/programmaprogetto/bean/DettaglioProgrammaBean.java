@@ -14,6 +14,7 @@ public class DettaglioProgrammaBean {
 	private Date dataInizioProgramma;
 	private Date dataFineProgramma;
 	private String bando;
+	private Integer cup;
 	
 	//Numero Target Punti di Facilitazione
 	private Integer nPuntiFacilitazioneTarget1;

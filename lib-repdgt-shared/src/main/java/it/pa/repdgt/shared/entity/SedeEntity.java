@@ -42,6 +42,9 @@ public class SedeEntity implements Serializable {
 	@Column(name = "PROVINCIA")
 	private String provincia;
 	
+	@Column(name = "REGIONE")
+	private String regione;
+	
 	@Column(name = "COMUNE")
 	private String comune;
 	
