@@ -19,4 +19,16 @@ public interface QuestionarioTemplateSqlRepository extends JpaRepository<Questio
 			nativeQuery = true)
 	List<QuestionarioTemplateEntity> findQuestionariByIdProgramma(Long idProgramma);
 
+	@Query(value = "SELECT * "
+			+ "FROM questionario_template "
+			+ "WHERE default_rfd = true", 
+			nativeQuery = true)
+	QuestionarioTemplateEntity findQuestionarioTemplateByPolicyRFD();
+	
+	@Query(value = "SELECT * "
+			+ "FROM questionario_template "
+			+ "WHERE default_scd = true", 
+			nativeQuery = true)
+	QuestionarioTemplateEntity findQuestionarioTemplateByPolicySCD();
+
 }

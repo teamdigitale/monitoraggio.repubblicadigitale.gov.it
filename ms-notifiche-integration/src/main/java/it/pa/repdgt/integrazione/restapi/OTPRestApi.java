@@ -1,5 +1,7 @@
 package it.pa.repdgt.integrazione.restapi;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,15 +22,14 @@ public class OTPRestApi {
 	
 	@PostMapping(path = "/invia")
 	@ResponseStatus(value = HttpStatus.OK)
-	public void inviaOTP(
-		 @RequestBody final InviaOTPRequest inviaOTPRequest) {
+	public void inviaOTP(@RequestBody final InviaOTPRequest inviaOTPRequest) {
 		 this.otpService.inviaOTP(inviaOTPRequest.getNumeroTelefonoDestinatarioOTP());
 	}
 	
 	@PostMapping(path = "/valida")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void verificaValidazioneOTP(
-			@RequestBody final VerificaValidazioneOTPRequest verificaValidazioneOTPRequest) {
+			@RequestBody @Valid final VerificaValidazioneOTPRequest verificaValidazioneOTPRequest) {
 		this.otpService.verificaOTP(
 				verificaValidazioneOTPRequest.getNumeroTelefonoDestinatarioOTP(),
 				verificaValidazioneOTPRequest.getCodiceOTP()

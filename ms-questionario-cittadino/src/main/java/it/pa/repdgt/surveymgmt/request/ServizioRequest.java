@@ -1,6 +1,7 @@
 package it.pa.repdgt.surveymgmt.request;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -16,7 +17,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@JsonRootName(value = "servizio")
+@JsonRootName(value = "servizioRequest")
 public class ServizioRequest implements Serializable {
 	private static final long serialVersionUID = 443289012578169806L;
 
@@ -28,16 +29,28 @@ public class ServizioRequest implements Serializable {
 	@NotBlank
 	private String nomeServizio;
 	
-	@JsonProperty(value = "durataServizio")
-	private Long durataServizio;
-	
-	@JsonProperty(value = "questioanatioCompilatoQ3")
-	@JsonString
-	private String questionarioCompilatoQ3;
-	
 	@JsonProperty(value = "idEnte")
+	@NotNull
 	private Long idEnte;
 	
 	@JsonProperty(value = "idSede")
+	@NotNull
 	private Long idSede;
+	
+	@JsonProperty(value = "data")
+	@NotNull
+	private Date dataServizio;
+
+	@JsonProperty(value = "durataServizio")
+	@NotNull
+	private Long durataServizio;
+	
+	@JsonProperty(value = "tipoDiServizioPrenotato")
+	@NotBlank
+	private String tipologiaServizio;
+	
+	@JsonProperty(value = "questioanatioCompilatoQ3")
+	@NotBlank
+	@JsonString
+	private String sezioneQuestionarioCompilatoQ3;
 }

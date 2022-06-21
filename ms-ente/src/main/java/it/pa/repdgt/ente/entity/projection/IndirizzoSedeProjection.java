@@ -7,6 +7,7 @@ public interface IndirizzoSedeProjection {
 	public String getCivico();
 	public String getComune();
 	public String getProvincia();
+	public String getRegione();
 	public String getCap();
 	public String getNazione();
 }

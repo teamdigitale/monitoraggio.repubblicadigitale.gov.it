@@ -26,9 +26,12 @@ public interface ReferentiDelegatiEnteGestoreProgrammaRepository extends JpaRepo
 			 + "	ON u.CODICE_FISCALE = rdgp.CF_UTENTE"
 			 + " WHERE 1=1 "
 			 + "	AND ID_PROGRAMMA = :idProgramma "
+			 + "	AND ID_ENTE = :idEnte "
 			 + "	AND CODICE_RUOLO = 'REG'", 
 	   nativeQuery = true)
-	List<UtenteProjection> findNomeStatoReferentiEnteGestoreByProgramma(@Param(value = "idProgramma") Long idProgramma);
+	List<UtenteProjection> findNomeStatoReferentiEnteGestoreByIdProgrammaAndIdEnte(
+			@Param(value = "idProgramma") Long idProgramma,
+			@Param(value = "idEnte") Long idEnte);
 
 	@Query(value = " "
 			+ " SELECT "
@@ -42,9 +45,12 @@ public interface ReferentiDelegatiEnteGestoreProgrammaRepository extends JpaRepo
 			 + "	ON u.CODICE_FISCALE = rdgp.CF_UTENTE"
 			 + " WHERE 1=1 " 
 			 + "	AND ID_PROGRAMMA = :idProgramma "
+			 + "    AND ID_ENTE = :idEnte "
 			 + "	AND CODICE_RUOLO = 'DEG'", 
 	   nativeQuery = true)
-	List<UtenteProjection> findNomeStatoDelegatiEnteGestoreByProgramma(@Param(value = "idProgramma") Long idProgramma);
+	List<UtenteProjection> findNomeStatoDelegatiEnteGestoreByIdProgrammaAndIdEnte(
+			@Param(value = "idProgramma") Long idProgramma,
+			@Param(value = "idEnte") Long idEnte);
 
 	@Query(value = " "
 			+ " SELECT * "
@@ -80,14 +86,19 @@ public interface ReferentiDelegatiEnteGestoreProgrammaRepository extends JpaRepo
 			+ " AND "
 			+ " CF_UTENTE = :codiceFiscaleUtente",
 			nativeQuery = true)
-	List<ReferentiDelegatiEnteGestoreProgrammaEntity> findAltreAssociazioni(Long idProgramma,
-			String codiceFiscaleUtente, String codiceRuolo);
+	List<ReferentiDelegatiEnteGestoreProgrammaEntity> findAltreAssociazioni(
+			@Param(value = "idProgramma") Long idProgramma,
+			@Param(value = "codiceFiscaleUtente") String codiceFiscaleUtente, 
+			@Param(value = "codiceRuolo") String codiceRuolo);
 
 	@Query(value = "SELECT * "
 			+ "FROM referente_delegati_gestore_programma rdg "
-			+ "WHERE rdg.ID_PROGRAMMA = :idProgramma ", 
+			+ "WHERE rdg.ID_PROGRAMMA = :idProgramma "
+			+ "AND   rdg.ID_ENTE = :idEnte", 
 			nativeQuery = true)
-	List<ReferentiDelegatiEnteGestoreProgrammaEntity> findReferentiAndDelegatiPerProgramma(Long idProgramma);
+	List<ReferentiDelegatiEnteGestoreProgrammaEntity> findReferentiAndDelegatiByIdProgrammaAndIdEnte(
+			@Param(value = "idProgramma") Long idProgramma,
+			@Param(value = "idEnte") Long idEnte);
 
 	@Query(value = "SELECT COUNT(*) "
 			+ "FROM referente_delegati_gestore_programma rdg "

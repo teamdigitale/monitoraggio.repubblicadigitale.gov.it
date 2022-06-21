@@ -22,7 +22,6 @@ import it.pa.repdgt.programmaprogetto.bean.DettaglioProgettoBean;
 import it.pa.repdgt.programmaprogetto.bean.DettaglioSediBean;
 import it.pa.repdgt.programmaprogetto.bean.SchedaProgettoBean;
 import it.pa.repdgt.programmaprogetto.exception.ProgettoException;
-import it.pa.repdgt.programmaprogetto.exception.ProgrammaException;
 import it.pa.repdgt.programmaprogetto.exception.ResourceNotFoundException;
 import it.pa.repdgt.programmaprogetto.mapper.ProgettoMapper;
 import it.pa.repdgt.programmaprogetto.repository.ProgettoRepository;
@@ -114,6 +113,10 @@ public class ProgettoService {
 	@LogMethod
 	@LogExecutionTime
 	public ProgettoEntity creaNuovoProgetto(ProgettoEntity progettoEntity) {
+		if(progettoEntity.getDataInizioProgetto().after(progettoEntity.getDataFineProgetto())) {
+			String errorMessage = String.format("La data di fine non può essere antecedente alla data di inizio");
+			throw new ProgettoException(errorMessage);
+		}
 		progettoEntity.setStato(StatoEnum.NON_ATTIVO.getValue());
 		progettoEntity.setDataOraCreazione(new Date());
 		return this.salvaProgetto(progettoEntity);
@@ -323,7 +326,7 @@ public class ProgettoService {
 	public List<String> getAllStatiDropdown(ProgettiParam sceltaContesto,
 			ProgettoFiltroRequest filtroRequest) {
 		if(this.ruoloService.getCodiceRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
-			throw new ProgrammaException("ERRORE: ruolo non definito per l'utente");
+			throw new ProgettoException("ERRORE: ruolo non definito per l'utente");
 		}
 		return this.getAllStatiByRuoloAndIdProgramma(sceltaContesto.getCodiceRuolo(),sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRequest);
 	}
@@ -355,7 +358,7 @@ public class ProgettoService {
 		}
 	}
 
-	private List<String> getStatiPerReferenteDelegatoGestoreProgramma(Long idProgramma, ProgettoFiltroRequest filtroRequest) {
+	public List<String> getStatiPerReferenteDelegatoGestoreProgramma(Long idProgramma, ProgettoFiltroRequest filtroRequest) {
 		return this.progettoRepository.findStatiPerReferenteDelegatoGestoreProgramma(idProgramma,
 																	   filtroRequest.getCriterioRicerca(),
 																	   "%" + filtroRequest.getCriterioRicerca() + "%",
@@ -446,7 +449,7 @@ public class ProgettoService {
 		schedaProgetto.setDettaglioProgetto(dettaglioProgetto);
 		schedaProgetto.setEntiPartner(listaEntiPartner);
 		schedaProgetto.setSedi(listaDettaglioSedi);
-		schedaProgetto.setIdEnteGestoreProgetto(progettoFetchDB.getEnteGestoreProgetto().getId());
+		schedaProgetto.setIdEnteGestoreProgetto(progettoFetchDB.getEnteGestoreProgetto() != null ? progettoFetchDB.getEnteGestoreProgetto().getId() : null );
 		return schedaProgetto;
 	}
 
@@ -472,7 +475,7 @@ public class ProgettoService {
 	
 	/**
 	 * Verifica se il progetto può essere terminato a partire dallo stato del progetto.
-	 * Restituisce true se il progetto può essere cancellato e false altrimenti.
+	 * Restituisce true se il progetto può essere terminato e false altrimenti.
 	 * 
 	 **/
 	private boolean isProgettoTerminabileByStatoProgetto(String statoProgetto) {
@@ -480,5 +483,14 @@ public class ProgettoService {
 				StatoEnum.ATTIVABILE.getValue().equalsIgnoreCase(statoProgetto)
 			 || StatoEnum.ATTIVO.getValue().equalsIgnoreCase(statoProgetto)  
 		);
+	}
+	
+	public void cancellaOTerminaProgetto (ProgettoEntity progetto, Date dataTerminazione) {
+		if(StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(progetto.getStato())) {
+			this.cancellazioneProgetto(progetto.getId());
+		}
+		if(StatoEnum.ATTIVABILE.getValue().equalsIgnoreCase(progetto.getStato()) || StatoEnum.ATTIVO.getValue().equalsIgnoreCase(progetto.getStato())) {
+			this.terminaProgetto(progetto.getId(), dataTerminazione);
+		}
 	}
 }

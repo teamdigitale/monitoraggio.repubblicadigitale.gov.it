@@ -31,11 +31,11 @@ public class AWSPinpointService {
 	private static final String REFERENCE_ID_REQ_RESP = "RepDGDevOTP";
 	private static final String CHARSET_EMAIL = "UTF-8";
 	
-	@Value(value = "${aws.app-id}")
+	@Value(value = "${aws.app-id:}")
 	private String appId;
-	@Value(value = "${aws.pinpoint.access-key}")
+	@Value(value = "${aws.pinpoint.access-key:}")
 	private String accessKey;
-	@Value(value = "${aws.pinpoint.secret-key}")
+	@Value(value = "${aws.pinpoint.secret-key:}")
 	private String secretKey;
 
 	public PinpointClient getClient() {

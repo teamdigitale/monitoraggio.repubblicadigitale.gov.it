@@ -28,7 +28,7 @@ public class CittadinoEntity implements Serializable {
 	@Column(name = "ID")
 	private Long id;
 	
-	@Column(name = "CODICE_FISCALE", nullable = false, unique = true)
+	@Column(name = "CODICE_FISCALE", nullable = true)
 	private String codiceFiscale;
 	
 	@Column(name = "NOME", nullable = false)
@@ -37,23 +37,32 @@ public class CittadinoEntity implements Serializable {
 	@Column(name = "COGNOME", nullable = false)
 	private String cognome;
 	
-	@Column(name = "ETA", nullable = true)
-	private Integer eta;
-	
 	@Column(name = "TIPO_DOCUMENTO", nullable = false)
 	private String tipoDocumento;
 
 	@Column(name = "NUM_DOCUMENTO", nullable = false, unique = true)
 	private String numeroDocumento;
 
-	@Column(name = "NAZIONALITA", nullable = true)
-	private String nazionalita;
+	@Column(name = "GENERE", nullable = true)
+	private String genere;
+	
+	@Column(name = "ANNO_DI_NASCITA", nullable = true)
+	private Integer annoDiNascita;
 	
 	@Column(name = "TITOLO_DI_STUDIO", nullable = true)
 	private String titoloDiStudio;
 	
 	@Column(name = "OCCUPAZIONE", nullable = true)
 	private String occupazione;
+	
+	@Column(name = "CITTADINANZA", nullable = true)
+	private String cittadinanza;
+	
+	@Column(name = "COMUNE_DI_DOMICILIO", nullable = true)
+	private String comuneDiDomicilio;
+	
+	@Column(name = "CATEGORIA_FRAGILI", nullable = true)
+	private String categoriaFragili;
 	
 	@Column(name = "EMAIL", nullable = false, unique = true)
 	@Email
@@ -62,15 +71,18 @@ public class CittadinoEntity implements Serializable {
 	@Column(name = "PREFISSO", nullable = true)
 	private String prefissoTelefono;
 	
+	@Column(name = "NUMERO_DI_CELLULARE", nullable = true)
+	private String numeroDiCellulare;
+	
 	@Column(name = "TELEFONO", nullable = true)
 	private String telefono;
+	
+	@Column(name = "TIPO_CONFERIMENTO_CONSENSO", nullable = true)
+	private String tipoConferimentoConsenso;
 	
 	@Column(name = "DATA_CONFERIMENTO_CONSENSO", nullable = true)
 	@Temporal(TemporalType.DATE)
 	private Date dataConferimentoConsenso;
-	
-	@Column(name = "TIPO_CONFERIMENTO_CONSENSO", nullable = true)
-	private String tipoConferimentoConsenso;
 	
 	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column(name = "DATA_ORA_CREAZIONE")

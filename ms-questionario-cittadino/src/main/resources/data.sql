@@ -312,16 +312,16 @@ insert into referente_delegati_partner(cf_utente, id_ente, id_progetto, codice_r
 	values('MWEDSQ99E20K123A', 1006, 256, 'REPP', CURRENT_TIME( ));
 	
 -- ASSEGNAMENTO ENTE_SEDE_PROGETTO
-insert into ENTE_SEDE_PROGETTO(id_ente, id_progetto, id_sede, ruolo_ente, stato_sede, tipologia_servizio)
-	values(1005, 256, 1, 'EGP', 'ATTIVO', 'Facilitazione');
-insert into ente_sede_progetto(id_ente, id_progetto, id_sede, ruolo_ente, stato_sede, tipologia_servizio)
-	values(1005, 251, 2, 'EGP', 'ATTIVO', 'Facilitazione');
-insert into ente_sede_progetto(id_ente, id_progetto, id_sede, ruolo_ente, stato_sede, tipologia_servizio)
-	values(1005, 254, 1, 'EGP', 'NON ATTIVO', 'Facilitazione');
-insert into ente_sede_progetto(id_ente, id_progetto, id_sede, ruolo_ente, stato_sede, tipologia_servizio)
-	values(1000, 251, 1, 'EGP', 'ATTIVO', 'Facilitazione');
+insert into ente_sede_progetto(id_ente, id_progetto, id_sede, ruolo_ente, stato_sede)
+	values(1005, 256, 1, 'EGP', 'ATTIVO');
+insert into ente_sede_progetto(id_ente, id_progetto, id_sede, ruolo_ente, stato_sede)
+	values(1005, 251, 2, 'EGP', 'ATTIVO');
+insert into ente_sede_progetto(id_ente, id_progetto, id_sede, ruolo_ente, stato_sede)
+	values(1005, 254, 1, 'EGP', 'NON ATTIVO');
+insert into ente_sede_progetto(id_ente, id_progetto, id_sede, ruolo_ente, stato_sede)
+	values(1000, 251, 1, 'EGP', 'ATTIVO');
 insert into ente_sede_progetto(id_ente, id_progetto, id_sede) 
-	values (1000, 250, 1);
+	values(1000, 250, 1);
 	
 -- ASSEGNAMENTO ENTE_SEDE_PROGETTO_FACILITATORE
 insert into ente_sede_progetto_facilitatore(id_ente, id_facilitatore, id_progetto, id_sede, ruolo_utente)

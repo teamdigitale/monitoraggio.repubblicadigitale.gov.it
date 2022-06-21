@@ -127,6 +127,57 @@ public class ProgettoMapper {
 		ProgettoEntity progetto = new ProgettoEntity();
 		progetto.setNome(nuovoProgettoRequest.getNome());		
 		progetto.setNomeBreve(nuovoProgettoRequest.getNomeBreve());
+		progetto.setCup(nuovoProgettoRequest.getCup());
+		progetto.setDataInizioProgetto(nuovoProgettoRequest.getDataInizioProgetto());
+		progetto.setDataFineProgetto(nuovoProgettoRequest.getDataFineProgetto());
+		//Numero Target Punti di Facilitazione
+		progetto.setNPuntiFacilitazioneTarget1(nuovoProgettoRequest.getNPuntiFacilitazioneTarget1());
+		progetto.setNPuntiFacilitazioneTarget2(nuovoProgettoRequest.getNPuntiFacilitazioneTarget2());
+		progetto.setNPuntiFacilitazioneTarget3(nuovoProgettoRequest.getNPuntiFacilitazioneTarget3());
+		progetto.setNPuntiFacilitazioneTarget4(nuovoProgettoRequest.getNPuntiFacilitazioneTarget4());
+		progetto.setNPuntiFacilitazioneTarget5(nuovoProgettoRequest.getNPuntiFacilitazioneTarget5());
+		//Date Target Punti di Facilitazione
+		progetto.setNPuntiFacilitazioneDataTarget1(nuovoProgettoRequest.getNPuntiFacilitazioneDataTarget1());
+		progetto.setNPuntiFacilitazioneDataTarget2(nuovoProgettoRequest.getNPuntiFacilitazioneDataTarget2());
+		progetto.setNPuntiFacilitazioneDataTarget3(nuovoProgettoRequest.getNPuntiFacilitazioneDataTarget3());
+		progetto.setNPuntiFacilitazioneDataTarget4(nuovoProgettoRequest.getNPuntiFacilitazioneDataTarget4());
+		progetto.setNPuntiFacilitazioneDataTarget5(nuovoProgettoRequest.getNPuntiFacilitazioneDataTarget5());
+		//Numero Target Utenti Unici
+		progetto.setNUtentiUniciTarget1(nuovoProgettoRequest.getNUtentiUniciTarget1());
+		progetto.setNUtentiUniciTarget2(nuovoProgettoRequest.getNUtentiUniciTarget2());
+		progetto.setNUtentiUniciTarget3(nuovoProgettoRequest.getNUtentiUniciTarget3());
+		progetto.setNUtentiUniciTarget4(nuovoProgettoRequest.getNUtentiUniciTarget4());
+		progetto.setNUtentiUniciTarget5(nuovoProgettoRequest.getNUtentiUniciTarget5());
+		//Date Target Utenti Unici
+		progetto.setNUtentiUniciDataTarget1(nuovoProgettoRequest.getNUtentiUniciDataTarget1());
+		progetto.setNUtentiUniciDataTarget2(nuovoProgettoRequest.getNUtentiUniciDataTarget2());
+		progetto.setNUtentiUniciDataTarget3(nuovoProgettoRequest.getNUtentiUniciDataTarget3());
+		progetto.setNUtentiUniciDataTarget4(nuovoProgettoRequest.getNUtentiUniciDataTarget4());
+		progetto.setNUtentiUniciDataTarget5(nuovoProgettoRequest.getNUtentiUniciDataTarget5());
+		//Numero Target Servizi
+		progetto.setNServiziTarget1(nuovoProgettoRequest.getNServiziTarget1());
+		progetto.setNServiziTarget2(nuovoProgettoRequest.getNServiziTarget2());
+		progetto.setNServiziTarget3(nuovoProgettoRequest.getNServiziTarget3());
+		progetto.setNServiziTarget4(nuovoProgettoRequest.getNServiziTarget4());
+		progetto.setNServiziTarget5(nuovoProgettoRequest.getNServiziTarget5());
+		//Date Target Servizi
+		progetto.setNServiziDataTarget1(nuovoProgettoRequest.getNServiziDataTarget1());
+		progetto.setNServiziDataTarget2(nuovoProgettoRequest.getNServiziDataTarget2());
+		progetto.setNServiziDataTarget3(nuovoProgettoRequest.getNServiziDataTarget3());
+		progetto.setNServiziDataTarget4(nuovoProgettoRequest.getNServiziDataTarget4());
+		progetto.setNServiziDataTarget5(nuovoProgettoRequest.getNServiziDataTarget5());
+		//Numero Target Facilitatori
+		progetto.setNFacilitatoriTarget1(nuovoProgettoRequest.getNFacilitatoriTarget1());
+		progetto.setNFacilitatoriTarget2(nuovoProgettoRequest.getNFacilitatoriTarget2());
+		progetto.setNFacilitatoriTarget3(nuovoProgettoRequest.getNFacilitatoriTarget3());
+		progetto.setNFacilitatoriTarget4(nuovoProgettoRequest.getNFacilitatoriTarget4());
+		progetto.setNFacilitatoriTarget5(nuovoProgettoRequest.getNFacilitatoriTarget5());
+		//Date Target Facilitatori
+		progetto.setNFacilitatoriDataTarget1(nuovoProgettoRequest.getNFacilitatoriDataTarget1());
+		progetto.setNFacilitatoriDataTarget2(nuovoProgettoRequest.getNFacilitatoriDataTarget2());
+		progetto.setNFacilitatoriDataTarget3(nuovoProgettoRequest.getNFacilitatoriDataTarget3());
+		progetto.setNFacilitatoriDataTarget4(nuovoProgettoRequest.getNFacilitatoriDataTarget4());
+		progetto.setNFacilitatoriDataTarget5(nuovoProgettoRequest.getNFacilitatoriDataTarget5());
 		ProgrammaEntity programma = this.programmaService.getProgrammaById(idProgramma);
 		progetto.setProgramma(programma);
 		return progetto;
@@ -135,6 +186,9 @@ public class ProgettoMapper {
 	public ProgettoEntity toEntityFrom(NuovoProgettoRequest progettoRequest, ProgettoEntity progettoFetch) {
 		progettoFetch.setNome(progettoRequest.getNome());
 		progettoFetch.setNomeBreve(progettoRequest.getNomeBreve());
+		progettoFetch.setCup(progettoRequest.getCup());
+		progettoFetch.setDataInizioProgetto(progettoRequest.getDataInizioProgetto());
+		progettoFetch.setDataFineProgetto(progettoRequest.getDataFineProgetto());
 		//Numero Target Punti di Facilitazione
 		progettoFetch.setNPuntiFacilitazioneTarget1(progettoRequest.getNPuntiFacilitazioneTarget1());
 		progettoFetch.setNPuntiFacilitazioneTarget2(progettoRequest.getNPuntiFacilitazioneTarget2());
@@ -192,6 +246,9 @@ public class ProgettoMapper {
 		
 		dettaglioProgetto.setNome(progettoFetchDB.getNome());
 		dettaglioProgetto.setNomeBreve(progettoFetchDB.getNomeBreve());
+		dettaglioProgetto.setCup(progettoFetchDB.getCup());
+		dettaglioProgetto.setDataInizio(progettoFetchDB.getDataInizioProgetto());
+		dettaglioProgetto.setDataFine(progettoFetchDB.getDataFineProgetto());
 		//Numero Target Punti di Facilitazione
 		dettaglioProgetto.setNPuntiFacilitazioneTarget1(progettoFetchDB.getNPuntiFacilitazioneTarget1());
 		dettaglioProgetto.setNPuntiFacilitazioneTarget2(progettoFetchDB.getNPuntiFacilitazioneTarget2());

@@ -251,7 +251,7 @@ public class ProgrammaService {
 	
 	@LogMethod
 	@LogExecutionTime
-	private List<ProgrammaEntity> getAllProgrammiDropdownByRuoloAndIdProgramma(String codiceRuolo, Long idProgramma,
+	public List<ProgrammaEntity> getAllProgrammiDropdownByRuoloAndIdProgramma(String codiceRuolo, Long idProgramma,
 			ProgettoFiltroRequest filtroRequest) {
 		switch (codiceRuolo) {
 			case "DTD":
@@ -344,12 +344,6 @@ public class ProgrammaService {
 		return this.programmaRepository.findPoliciesPerDSCU(PolicyEnum.SCD.toString());
 	}
 
-	@LogMethod
-	@LogExecutionTime
-	public List<ProgrammaEntity> getAllProgrammiEager() {
-		return this.programmaRepository.findAllEager();
-	}
-
 	/**
 	 * @throws ResourceNotFoundException
 	 */
@@ -371,17 +365,6 @@ public class ProgrammaService {
 		return this.programmaRepository.findById(idProgramma)
 				.orElseThrow(() -> new ResourceNotFoundException(errorMessage));
 	}
-
-	/**
-	 * @throws ResourceNotFoundException
-	 */
-	@LogMethod
-	@LogExecutionTime
-	public ProgrammaEntity getProgrammaByNome(String nomeProgramma) {
-		String errorMessage = String.format("Programma con nome=%s non presente", nomeProgramma);
-		return this.programmaRepository.findByNome(nomeProgramma)
-				.orElseThrow(() -> new ResourceNotFoundException(errorMessage));
-	}
 	
 	public boolean existsProgrammaByNome(String nomeProgramma) {
 		return this.programmaRepository.findByNome(nomeProgramma).isPresent();
@@ -401,7 +384,10 @@ public class ProgrammaService {
 		}
 		programma.setStato(StatoEnum.NON_ATTIVO.getValue());
 		programma.setDataOraCreazione(new Date());
-		return this.salvaProgramma(programma);
+		QuestionarioTemplateEntity questionarioTemplate = this.questionarioTemplateSqlService.getQuestionarioTemplateByPolicy(programma.getPolicy().getValue());
+		this.salvaProgramma(programma);
+		this.associaQuestionarioTemplateAProgramma(programma.getId(), questionarioTemplate.getId());
+		return programma;
 	}
 
 	@LogMethod
@@ -433,7 +419,7 @@ public class ProgrammaService {
 		});
 		this.referentiDelegatiEnteGestoreProgrammaService.cancellaReferentiDelegatiProgramma(idProgramma);
 		// TODO da cancellare record nella tabella molti a molti tra le tabelle: TEMPLATE_QUESTIONARIO_PROGRAMMA e ADDENDUM (la TEMPLATE_QUESTIONARIO_PROGRAMMA_ADDENDUM)
-		// TODO da cancellare record nella tabella molti a molti tra le tabelle: PROGRAMMA e TEMPLATE_QUESTIONARIO (la TEMPLATE_QUESTIONARIO_PROGRAMMA)
+		this.programmaXQuestionarioTemplateService.cancellaAssociazioneQuestionarioTemplateAProgramma(idProgramma);
 		this.programmaRepository.delete(programmaFetch);
 	}
 	
@@ -498,7 +484,7 @@ public class ProgrammaService {
 	 * Restituisce true se il programma può essere aggiornato e false altrimenti.
 	 * 
 	 **/
-	private boolean isProgrammmaAggiornabileByStatoProgramma(final String statoProgramma) {
+	public boolean isProgrammmaAggiornabileByStatoProgramma(final String statoProgramma) {
 		return (    
 					StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(statoProgramma)
 				 || StatoEnum.ATTIVO.getValue().equalsIgnoreCase(statoProgramma)  
@@ -554,7 +540,7 @@ public class ProgrammaService {
 		}
 		final List<ProgettoEntity> progettiAssociatiAlProgramma = this.progettoService.getProgettiByIdProgramma(idProgramma);
 		progettiAssociatiAlProgramma.forEach(progetto -> {
-			this.progettoService.terminaProgetto(progetto.getId(), dataTerminazione);
+			this.progettoService.cancellaOTerminaProgetto(progetto, dataTerminazione);
 		});
 		//prendo la lista dei referenti e delegati dell'ente gestore di programma
 		List<ReferentiDelegatiEnteGestoreProgrammaEntity> referentiEDelegati = this.referentiDelegatiEnteGestoreProgrammaService.getReferentiEDelegatiProgramma(idProgramma);

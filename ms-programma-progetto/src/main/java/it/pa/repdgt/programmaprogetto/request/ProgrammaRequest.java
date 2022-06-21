@@ -56,6 +56,10 @@ public class ProgrammaRequest implements Serializable {
 	@JsonProperty(value = "bando")
 	private String bando;
 	
+	// 'CUP' della scheda Informazioni Generali del Programma
+	@JsonProperty(value = "cup")
+	private Integer cup;
+	
 	//Numero Target Punti di Facilitazione
 	private Integer nPuntiFacilitazioneTarget1;
 	private Integer nPuntiFacilitazioneTarget2;

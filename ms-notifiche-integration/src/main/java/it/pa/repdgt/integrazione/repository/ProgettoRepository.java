@@ -8,18 +8,18 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import it.pa.repdgt.shared.entity.ProgettoEntity;
-import it.pa.repdgt.shared.entity.ProgrammaEntity;
 
 @Repository
 public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long>{
 	
-	@Query(value = ""
+	@Query(value = " "
 				 + " SELECT "
 				 + "	p.* "
-				 + " FROM "
+				 + " FROM   "
 				 + "	progetto p "
-				 + " WHERE 1=1 "
-				 + "	AND p.STATO = :statoProgetto",
+				 + " WHERE 1=1     "
+				 + "	AND p.STATO = :statoProgetto "
+				 + " ",
 		   nativeQuery = true)
 	List<ProgettoEntity> findProgettiByStato(@Param(value = "statoProgetto") String statoProgetto);
 } 

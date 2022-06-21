@@ -29,14 +29,6 @@ public class QuestionarioTemplateRequest implements Serializable {
 	@NotBlank
 	private String descrizioneQuestionarioTemplate;
 
-	@JsonProperty(value = "default-RFD")
-	@NotNull
-	private Boolean defaultRFD;
-	
-	@JsonProperty(value = "default-SCD")
-	@NotNull
-	private Boolean defaultSCD;
-
 	@JsonProperty(value = "sections")
 	@NotEmpty
 	@Valid

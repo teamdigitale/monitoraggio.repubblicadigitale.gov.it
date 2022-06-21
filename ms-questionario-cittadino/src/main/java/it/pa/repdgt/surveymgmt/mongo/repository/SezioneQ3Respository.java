@@ -21,4 +21,9 @@ public interface SezioneQ3Respository extends MongoRepository<SezioneQ3Collectio
 	void deleteById(
 		@Param(value = "id") String idSezioneQ3
 	);
+	
+	@Query(value="{'id' : ?0}", delete = true)
+	void deleteByIdSezioneQ3(
+		@Param(value = "id") String idSezioneQ3
+	);
 }

@@ -30,6 +30,7 @@ public class SedeMapper {
 		sedeEntity.setComune(primoIndirizzoSede.getComune());
 		sedeEntity.setProvincia(primoIndirizzoSede.getProvincia());
 		sedeEntity.setCap(primoIndirizzoSede.getCap());
+		sedeEntity.setRegione(primoIndirizzoSede.getRegione());
 		sedeEntity.setNazione(primoIndirizzoSede.getNazione());
 		return sedeEntity;
 	}

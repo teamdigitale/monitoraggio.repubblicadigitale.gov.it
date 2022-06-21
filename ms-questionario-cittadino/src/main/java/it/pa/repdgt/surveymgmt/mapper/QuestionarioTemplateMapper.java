@@ -29,12 +29,10 @@ public class QuestionarioTemplateMapper {
 	 * */
 	public QuestionarioTemplateCollection toCollectionFrom(
 			@NotNull(message = "QuestionarioTemplateRequest deve essere non null") 
-			@Valid final QuestionarioTemplateRequest questionarioTemplateRequest)  {
+			@Valid final QuestionarioTemplateRequest questionarioTemplateRequest ) {
 		final QuestionarioTemplateCollection questionarioTemplateCollection = new QuestionarioTemplateCollection();
 		questionarioTemplateCollection.setNomeQuestionarioTemplate(questionarioTemplateRequest.getNomeQuestionarioTemplate());
 		questionarioTemplateCollection.setDescrizioneQuestionarioTemplate(questionarioTemplateRequest.getDescrizioneQuestionarioTemplate());
-		questionarioTemplateCollection.setDefaultRFD(questionarioTemplateRequest.getDefaultRFD());
-		questionarioTemplateCollection.setDefaultSCD(questionarioTemplateRequest.getDefaultSCD());
 		final List<SezioneQuestionarioTemplate> sezioniQuestionario = this.toCollectionFrom(questionarioTemplateRequest.getSezioniQuestionarioTemplate());
 		questionarioTemplateCollection.setSezioniQuestionarioTemplate(sezioniQuestionario);
 		return questionarioTemplateCollection;
@@ -156,6 +154,7 @@ public class QuestionarioTemplateMapper {
 		final QuestionarioTemplateLightResource questionarioTemplateLightResource = new QuestionarioTemplateLightResource();
 		questionarioTemplateLightResource.setIdQuestionarioTemplate(questionarioTemplateEntity.getId());
 		questionarioTemplateLightResource.setNomeQuestionarioTemplate(questionarioTemplateEntity.getNome());
+		questionarioTemplateLightResource.setDescrizione(questionarioTemplateEntity.getDescrizione());
 		questionarioTemplateLightResource.setStatoQuestionarioTemplate(questionarioTemplateEntity.getStato());
 		questionarioTemplateLightResource.setDataOraUltimoAggiornamento(questionarioTemplateEntity.getDataOraAggiornamento());
 		questionarioTemplateLightResource.setDefaultRFD(questionarioTemplateEntity.getDefaultRFD());

@@ -4,8 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum StatoQuestionarioEnum {
-	 IN_BOZZA("IN BOZZA")
-	,COMPLETATO("COMPLETATO")
+	NON_INVIATO("NON INVIATO")
+	,INVIATO("INVIATO")
+	,COMPILATO("COMPILATO")
 	;
 	
 	private String value;

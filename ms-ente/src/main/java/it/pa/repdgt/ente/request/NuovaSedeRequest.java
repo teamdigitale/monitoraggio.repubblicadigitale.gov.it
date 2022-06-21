@@ -57,6 +57,10 @@ public class NuovaSedeRequest implements Serializable {
 		@NotBlank
 		@JsonProperty(value = "cap")
 		private String cap;
+		
+		@NotBlank
+		@JsonProperty(value = "regione")
+		private String regione;
 
 		@NotBlank
 		@JsonProperty(value = "nazione")
