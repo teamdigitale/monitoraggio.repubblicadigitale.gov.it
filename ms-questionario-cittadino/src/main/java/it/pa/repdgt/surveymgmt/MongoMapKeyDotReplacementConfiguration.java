@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 public class MongoMapKeyDotReplacementConfiguration {
     @Autowired
     public void setMapKeyDotReplacement(MappingMongoConverter mongoConverter) {
+    	//metodo per andare a fare il replace del '.' in '_' sull'id del singolo record
         mongoConverter.setMapKeyDotReplacement("_");
     }
 }
