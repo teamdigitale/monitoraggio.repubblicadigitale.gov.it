@@ -14,8 +14,11 @@ import org.springframework.validation.annotation.Validated;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Service
@@ -58,5 +61,24 @@ public class S3Service {
 		} catch (Exception ex) {
 			log.error("Errore upload del file su AmazonS3 per il file con nome '{}'. ex={}", fileToUploadName, ex);
 		}
+	}
+	
+	
+	public ResponseBytes<GetObjectResponse> downloadFile(@NotBlank final String nomeBucket, String fileNameToDownload) throws FileNotFoundException {
+		final GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+			.bucket(nomeBucket)
+			.key(fileNameToDownload)
+			.build();
+		
+		ResponseBytes<GetObjectResponse> response = null;
+		try {
+			log.info("Downloading file con nome '{}' su AmazonS3...", fileNameToDownload);
+			response  = this.getClient().getObjectAsBytes(getObjectRequest);
+			log.info("Downloading file Amazon S3 avvenuto con successo");
+		} catch (Exception ex) {
+			log.error("Errore upload del file su AmazonS3 per il file con nome '{}'. ex={}", fileNameToDownload, ex);
+		}
+		
+		return response;
 	}
 }
