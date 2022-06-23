@@ -516,7 +516,7 @@ public class ProgrammaServiceTest {
 	public void creaNuovoProgrammaTest() {
 		programma1.setDataInizioProgramma(new Date());
 		programma1.setDataFineProgramma(new Date());
-		when(programmaRepository.findByNome(programma1.getNome())).thenReturn(Optional.empty());
+		when(programmaRepository.findProgrammaByCup(programma1.getCup())).thenReturn(Optional.empty());
 		when(questionarioTemplateSqlService.getQuestionarioTemplateByPolicy(programma1.getPolicy().getValue())).thenReturn(questionario1);
 		when(programmaService.salvaProgramma(programma1)).thenReturn(programma1);
 		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
@@ -531,7 +531,7 @@ public class ProgrammaServiceTest {
 	@Test
 	public void creaNuovoProgrammaKOTest() {
 		//test KO per programma inesistente
-		when(programmaRepository.findByNome(programma1.getNome())).thenReturn(programmaOptional);
+		when(programmaRepository.findProgrammaByCup(programma1.getCup())).thenReturn(programmaOptional);
 		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.creaNuovoProgramma(programma1));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).save(programma1);
@@ -543,7 +543,7 @@ public class ProgrammaServiceTest {
 		dataFine.setDate(10);
 		programma1.setDataInizioProgramma(dataInizio);
 		programma1.setDataFineProgramma(dataFine);
-		when(programmaRepository.findByNome(programma1.getNome())).thenReturn(Optional.empty());
+		when(programmaRepository.findProgrammaByCup(programma1.getCup())).thenReturn(Optional.empty());
 		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.creaNuovoProgramma(programma1));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).save(programma1);
