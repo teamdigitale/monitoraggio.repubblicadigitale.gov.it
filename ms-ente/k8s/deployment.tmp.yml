@@ -2,25 +2,108 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: ${K8S_NAMESPACE}
   name: ms-ente-deployment
-  labels:
-    app: ms-ente
 spec:
   selector:
     matchLabels:
-        app: ms-ente
-  replicas: 1
+        app.kubernetes.io/name: ms-ente
+  replicas: 2
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: ms-ente
+        app.kubernetes.io/name: ms-ente
     spec:
       containers:
         - name: ms-ente
           image: ${ECR_REPOSITORY}:${IMAGE_TAG}
           ports:
-            - containerPort: 80
-              protocol: TCP
+            - containerPort: 8080
           imagePullPolicy: Always
+          env:
+            - name: urlDB
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: urlDB
+            - name: usernameDB
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: usernameDB
+            - name: passwordDB
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: passwordDB
+            - name: awsAppId
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsAppId
+            - name: awsPinpointAccessKey
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsPinpointAccessKey
+            - name: awsPinpointSecretKey
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsPinpointSecretKey
+            - name: MONGODB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: MONGODB_HOST
+            - name: MONGODB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: MONGODB_NAME
+            - name: MONGODB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: MONGODB_PORT
+            - name: DB_MONGO_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: DB_MONGO_USERNAME
+            - name: DB_MONGO_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: DB_MONGO_PASSWORD
+            - name: KEYSTORE_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: KEYSTORE_PATH
+            - name: KEYSTORE_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: KEYSTORE_PASSWORD
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: ${K8S_NAMESPACE}
+  name: service-ingress-ms-ente-${K8S_NAMESPACE}
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internal
+    external-dns.alpha.kubernetes.io/hostname: ente.backend-${K8S_NAMESPACE}.mitd.technology
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+    name: http
+    targetPort: 8080
+  selector:
+    app.kubernetes.io/name: ms-ente

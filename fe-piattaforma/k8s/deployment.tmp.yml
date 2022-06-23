@@ -2,25 +2,61 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: ${K8S_NAMESPACE}
   name: fe-piattaforma-deployment
-  labels:
-    app: fe-piattaforma
 spec:
   selector:
     matchLabels:
-        app: fe-piattaforma
-  replicas: 1
+      app.kubernetes.io/name: fe-piattaforma
+  replicas: 2
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: fe-piattaforma
+        app.kubernetes.io/name: fe-piattaforma
     spec:
       containers:
         - name: fe-piattaforma
           image: ${ECR_REPOSITORY}:${IMAGE_TAG}
           ports:
             - containerPort: 80
-              protocol: TCP
           imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: ${K8S_NAMESPACE}
+  name: service-ingress-fe-${K8S_NAMESPACE}
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: fe-piattaforma
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: ${K8S_NAMESPACE}
+  name: ingress-fe-${K8S_NAMESPACE}
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    external-dns.alpha.kubernetes.io/hostname: frontend.facilitazione-${K8S_NAMESPACE}.mitd.technology
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/certificate-arn: ${K8S_INGRESS_CERTIFICATE}
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: service-ingress-fe-${K8S_NAMESPACE}
+              port:
+                number: 443
