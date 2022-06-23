@@ -182,7 +182,10 @@ jobs:
           # set version
           mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
           # build
-          mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }}
+          mvn package
+          echo "======DOCKERFILE======"
+          cat Dockerfile
+          echo "====================="
           # docker build
           docker build . \
             --file Dockerfile \
@@ -202,7 +205,10 @@ jobs:
           # set version
           mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
           # build
-          mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }}
+          mvn package
+          echo "======DOCKERFILE======"
+          cat Dockerfile
+          echo "====================="
           # docker build
           docker build . \
             --file Dockerfile \
@@ -222,7 +228,10 @@ jobs:
           # set version
           mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
           # build
-          mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }}
+          mvn package
+          echo "======DOCKERFILE======"
+          cat Dockerfile
+          echo "====================="
           # docker build
           docker build . \
             --file Dockerfile \
@@ -242,7 +251,10 @@ jobs:
           # set version
           mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
           # build
-          mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }}
+          mvn package
+          echo "======DOCKERFILE======"
+          cat Dockerfile
+          echo "====================="
           # docker build
           docker build . \
             --file Dockerfile \
@@ -262,7 +274,10 @@ jobs:
           # set version
           mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
           # build
-          mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }}
+          mvn package
+          echo "======DOCKERFILE======"
+          cat Dockerfile
+          echo "====================="
           # docker build
           docker build . \
             --file Dockerfile \
@@ -282,7 +297,10 @@ jobs:
           # set version
           mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
           # build
-          mvn package -DDB_URL=${{ secrets.DDB_URL }} -DDB_USERNAME=${{ secrets.DDB_USERNAME }} -DDB_PASSWORD=${{ secrets.DDB_PASSWORD }} -DAWS.APP-ID=${{ secrets.AWS_APP_ID }} -DAWS.PINPOINT.ACCESS-KEY=${{ secrets.AWS_PINPOINT_ACCESS_KEY }} -DAWS.PINPOINT.SECRET-KEY=${{ secrets.AWS_PINPOINT_SECRET_KEY }} -DMONGODB_HOST=${{ secrets.MONGODB_HOST }} -DMONGODB_NAME=${{ secrets.MONGODB_NAME }} -DMONGODB_PORT=${{ secrets.MONGODB_PORT }} -DDB_MONGO_USERNAME=${{ secrets.DB_MONGO_USERNAME }} -DDB_MONGO_PASSWORD=${{ secrets.DB_MONGO_PASSWORD }} -DKEYSTORE_PATH=${{ github.workspace }}/${{ secrets.KEYSTORE_PATH }} -DKEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}
+          mvn package
+          echo "======DOCKERFILE======"
+          cat Dockerfile
+          echo "====================="
           # docker build
           docker build . \
             --file Dockerfile \
@@ -373,6 +391,8 @@ jobs:
           cd ${{ github.workspace }}/fe-piattaforma/k8s
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
+          export K8S_NAMESPACE=${{ secrets.K8S_NAMESPACE }}
+          export K8S_INGRESS_CERTIFICATE=${{ secrets.K8S_INGRESS_CERTIFICATE }}
           envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-ente' deployment.tmp.yaml
@@ -384,6 +404,7 @@ jobs:
           cd ${{ github.workspace }}/ms-ente/k8s
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
+          export K8S_NAMESPACE=${{ secrets.K8S_NAMESPACE }}
           envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-gestione-utente' deployment.tmp.yaml
@@ -395,6 +416,7 @@ jobs:
           cd ${{ github.workspace }}/ms-gestione-utente/k8s
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
+          export K8S_NAMESPACE=${{ secrets.K8S_NAMESPACE }}
           envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-notifiche-integration' deployment.tmp.yaml
@@ -406,6 +428,7 @@ jobs:
           cd ${{ github.workspace }}/ms-notifiche-integration/k8s
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
+          export K8S_NAMESPACE=${{ secrets.K8S_NAMESPACE }}
           envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-open-data' deployment.tmp.yaml
@@ -417,6 +440,7 @@ jobs:
           cd ${{ github.workspace }}/ms-open-data/k8s
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
+          export K8S_NAMESPACE=${{ secrets.K8S_NAMESPACE }}
           envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-programma-progetto' deployment.tmp.yaml
@@ -428,6 +452,7 @@ jobs:
           cd ${{ github.workspace }}/ms-programma-progetto/k8s
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
+          export K8S_NAMESPACE=${{ secrets.K8S_NAMESPACE }}
           envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-questionario-cittadino' deployment.tmp.yaml
@@ -439,6 +464,7 @@ jobs:
           cd ${{ github.workspace }}/ms-questionario-cittadino/k8s
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
+          export K8S_NAMESPACE=${{ secrets.K8S_NAMESPACE }}
           envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Deploy
@@ -447,7 +473,7 @@ jobs:
           echo "===DEPLOYMENT FILE==="
           cat deployment.yml
           echo "====================="
-          kubectl apply -f deployment.yml --namespace=${{ secrets.K8S_NAMESPACE }}
+          kubectl apply -f deployment.yml
 
   RepoUpdate:
     if: ${{ github.event.inputs.version == '' }}
