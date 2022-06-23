@@ -29,11 +29,11 @@ public class ProgettoRequest implements Serializable {
 	private String cup;
 	
 	@NotNull(message = "Deve essere non null")
-	@JsonProperty(value = "dataInizio", required = true)
+	@JsonProperty(value = "dataInizioProgetto", required = true)
 	private Date dataInizioProgetto;
 	
 	@NotNull(message = "Deve essere non null")
-	@JsonProperty(value = "dataFine", required = true)
+	@JsonProperty(value = "dataFineProgetto", required = true)
 	private Date dataFineProgetto;
 	
 	//Numero Target Punti di Facilitazione

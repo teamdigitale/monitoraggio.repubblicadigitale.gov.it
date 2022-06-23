@@ -25,11 +25,11 @@ public class ProgrammaRequest implements Serializable {
 	
 	// 'Nome Programma' della scheda Informazioni Generali del programma
 	@NotBlank(message = "Deve essere non null e non blank")
-	@JsonProperty(value = "nomeProgramma", required = true)
+	@JsonProperty(value = "nome", required = true)
 	private String nome;
 	
 	// 'Nome breve' della scheda Informazioni Generali del programma
-	@NotBlank(message = "Deve essere non null e non blank")
+	@NotBlank(message = "DEVE ESSERE NON NULL E NON BLANK")
 	@JsonProperty(value = "nomeBreve", required = true)
 	private String nomeBreve;
 	
@@ -39,12 +39,12 @@ public class ProgrammaRequest implements Serializable {
 	private PolicyEnum policy;
 	
 	// 'Data Inizio' della scheda Informazioni Generali del Programma
-	@JsonProperty(value = "dataInizio", required = true)
+	@JsonProperty(value = "dataInizioProgramma", required = true)
 	@NotNull(message = "Deve essere non null")
 	private Date dataInizioProgramma;
 	
 	// 'Data Fine' della scheda Informazioni Generali del Programma
-	@JsonProperty(value = "dataFine", required = true)
+	@JsonProperty(value = "dataFineProgramma", required = true)
 	@NotNull(message = "Deve essere non null")
 	private Date dataFineProgramma;
 	

@@ -68,40 +68,40 @@
   		
 
  -- CREAZIONE ANAGRAFICA PROGRAMMI
- insert into programma(id, nome, codice, nome_breve, policy, stato, data_ora_creazione)
+ insert into programma(id, nome, cup, nome_breve, policy, stato, data_ora_creazione)
 	values(100, 'Programma Alfa', 'A100', 'Programma Alfa', 'SCD', 'ATTIVO', CURRENT_TIME( ));
- insert into programma(id, nome, codice, nome_breve, policy, stato, data_ora_creazione)
+ insert into programma(id, nome, cup, nome_breve, policy, stato, data_ora_creazione)
 	values(101, 'Programma Beta', 'B101', 'Programma Beta', 'SCD', 'ATTIVO', CURRENT_TIME( ));
- insert into programma(id, nome, codice, nome_breve, policy, stato, data_ora_creazione)
+ insert into programma(id, nome, cup, nome_breve, policy, stato, data_ora_creazione)
 	values(102, 'Programma Gamma','G102', 'Programma Gamma', 'SCD', 'ATTIVO', CURRENT_TIME( ));
- insert into programma(id, nome, codice, nome_breve, policy, stato, data_ora_creazione)
+ insert into programma(id, nome, cup, nome_breve, policy, stato, data_ora_creazione)
 	values(103, 'Programma Sigma','D103', 'Programma Sigma', 'SCD', 'ATTIVO', CURRENT_TIME( ));
- insert into programma(id, nome, codice, nome_breve, policy, stato, data_ora_creazione)
+ insert into programma(id, nome, cup, nome_breve, policy, stato, data_ora_creazione)
 	values(104, 'Programma Rho', 'R104', 'Programma Rho', 'SCD', 'ATTIVO', CURRENT_TIME( ));
- insert into programma(id, nome, codice, nome_breve, policy, stato, data_ora_creazione)
+ insert into programma(id, nome, cup, nome_breve, policy, stato, data_ora_creazione)
 	values(105, 'Programma Tau', 'T105', 'Programma Tau', 'SCD', 'ATTIVO', CURRENT_TIME( ));
 	
 -- CREAZIONE ANAGRAFICA PROGETTI
- insert into progetto(id, nome, nome_breve, stato, data_ora_creazione)
-	values(250, 'Progetto Sviluppo Web', 'Programma Sviluppo Web', 'ATTIVO', CURRENT_TIME( ));
- insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione)
-	values(251, 'Progetto Sicurezza Lavoro', 'Progetto Sicurezza Lavoro', 'ATTIVO', CURRENT_TIME( ));
- insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione)
-	values(252, 'Progetto Sicurezza Informatica', 'Programma Sicurezza Informatica',  'ATTIVO', CURRENT_TIME( ));
- insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione)
-	values(253, 'Progetto Alfabetizzazione Informatica', 'Programma Alfabetizzazione Informatica', 'ATTIVO', CURRENT_TIME( ));
- insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione)
-	values(254, 'Progetto Social Network', 'Programma Social Network', 'ATTIVO', CURRENT_TIME( ));
- insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione)
-	values(255, 'Progetto SEO Specialist', 'Programma SEO Specialist', 'ATTIVO', CURRENT_TIME( ));
- insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione)
-	values(256, 'Progetto Data Science', 'Progetto Data Science', 'ATTIVO', CURRENT_TIME( ));
- insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione)
-	values(257, 'Progetto Block Chain', 'Progetto Block Chain', 'ATTIVO', CURRENT_TIME( ));
- insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione)
-	values(258, 'Progetto Sviluppo Mobile', 'Progetto Sviluppo Mobile', 'ATTIVO', CURRENT_TIME( ));
- insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione)
-	values(259, 'Progetto Sviluppo Videogame', 'Progetto Sviluppo Videogame', 'ATTIVO', CURRENT_TIME( ));
+ insert into progetto(id, nome, nome_breve, stato, data_ora_creazione, cup)
+	values(250, 'Progetto Sviluppo Web', 'Programma Sviluppo Web', 'ATTIVO', CURRENT_TIME( ), 'AQWQQ1FD2244');
+ insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione, cup)
+	values(251, 'Progetto Sicurezza Lavoro', 'Progetto Sicurezza Lavoro', 'ATTIVO', CURRENT_TIME( ), 'DF77QWQWQWQQ1441');
+ insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione, cup)
+	values(252, 'Progetto Sicurezza Informatica', 'Programma Sicurezza Informatica',  'ATTIVO', CURRENT_TIME( ), 'DFFE677FFWQWQQ1441');
+ insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione, cup)
+	values(253, 'Progetto Alfabetizzazione Informatica', 'Programma Alfabetizzazione Informatica', 'ATTIVO', CURRENT_TIME( ), 'DFFPPP0000WQWQQ1441');
+ insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione, cup)
+	values(254, 'Progetto Social Network', 'Programma Social Network', 'ATTIVO', CURRENT_TIME( ), 'DFFWQWQQ14QRQF33QWPJL41');
+ insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione, cup)
+	values(255, 'Progetto SEO Specialist', 'Programma SEO Specialist', 'ATTIVO', CURRENT_TIME( ), 'DFFWQFAA54WQQ14WQ41');
+ insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione, cup)
+	values(256, 'Progetto Data Science', 'Progetto Data Science', 'ATTIVO', CURRENT_TIME( ), 'DFFWQ3423FPOWQQ1441WQ');
+ insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione, cup)
+	values(257, 'Progetto Block Chain', 'Progetto Block Chain', 'ATTIVO', CURRENT_TIME( ), 'DFFEQQ3WQWQQ14QW41');
+ insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione, cup)
+	values(258, 'Progetto Sviluppo Mobile', 'Progetto Sviluppo Mobile', 'ATTIVO', CURRENT_TIME( ), 'DFFWQWQASZQ14FAFAFA41');
+ insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione, cup)
+	values(259, 'Progetto Sviluppo Videogame', 'Progetto Sviluppo Videogame', 'ATTIVO', CURRENT_TIME( ), 'FFDFGVCXWQFAQQ1441');
 	
 -- ASSOCIAZIONE DEI PROGETTI AI PROGRAMMI
  update progetto
