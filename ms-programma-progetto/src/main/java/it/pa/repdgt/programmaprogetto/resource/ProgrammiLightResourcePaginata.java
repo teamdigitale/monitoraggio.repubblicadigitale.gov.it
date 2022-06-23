@@ -13,11 +13,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@JsonRootName(value = "programmiLightResourcePaginati")
+@JsonRootName(value = "programmiPaginati")
 public class ProgrammiLightResourcePaginata implements Serializable {
 	private static final long serialVersionUID = 5215469059499421394L;
 
-	@JsonProperty(value = "programmiLight")
+	@JsonProperty(value = "programmi")
 	private List<ProgrammaLightResource> listaProgrammiLight;
 	
 	@JsonProperty(value = "numeroPagine")

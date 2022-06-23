@@ -2,7 +2,9 @@ package it.pa.repdgt.gestioneutente.request;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -24,15 +26,23 @@ public class IntegraContestoRequest implements Serializable {
 	@NotBlank
 	private String cognome;
 	
-	@JsonProperty(value = "email")
-	@NotBlank
-	private String email;
-
-	@JsonProperty(value = "numero cellulare")
-	@NotBlank
-	private String numeroCellulare;
-	
 	@JsonProperty(value = "codiceFiscale")
 	@NotBlank
 	private String codiceFiscale;
+	
+	@JsonProperty(value = "email")
+	@Email
+	private String email;
+
+	@JsonProperty(value = "telefono")
+	@NotBlank
+	private String telefono;
+	
+	@JsonProperty(value = "bio")
+	@NotBlank
+	private String bio;
+
+	@JsonProperty(value = "abilitazioneConsensoTrattamentoDatiPersonali")
+	@NotNull
+	private Boolean abilitazioneConsensoTrattamentoDatiPersonali;
 }

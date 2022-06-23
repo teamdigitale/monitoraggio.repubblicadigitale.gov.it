@@ -14,15 +14,20 @@ import org.springframework.validation.annotation.Validated;
 import it.pa.repdgt.ente.exception.EnteSedeProgettoFacilitatoreException;
 import it.pa.repdgt.ente.repository.EnteSedeProgettoFacilitatoreRepository;
 import it.pa.repdgt.ente.request.EnteSedeProgettoFacilitatoreRequest;
+import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
+import it.pa.repdgt.shared.entity.EnteSedeProgetto;
 import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
+import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Validated
+@Slf4j
 public class EnteSedeProgettoFacilitatoreService {
 	@Autowired
 	private UtenteService utenteService;
@@ -37,6 +42,13 @@ public class EnteSedeProgettoFacilitatoreService {
 	private RuoloService ruoloService;
 	@Autowired
 	private EnteSedeProgettoFacilitatoreRepository enteSedeProgettoFacilitatoreRepository;
+	@Autowired
+	private ReferentiDelegatiEnteGestoreProgettoService referentiDelegatiEnteGestoreProgettoService;
+	@Autowired
+	@Lazy
+	private EnteSedeProgettoService enteSedeProgettoService;
+	@Autowired
+	private EmailService emailService;
 
 	public List<EnteSedeProgettoFacilitatoreEntity> getAllFacilitatoriByEnteAndSedeAndProgetto(Long idEnte, Long idSede, Long idProgetto) {
 		return this.enteSedeProgettoFacilitatoreRepository.findAllFacilitatoriByEnteAndSedeAndProgetto(idEnte, idSede, idProgetto);
@@ -79,6 +91,35 @@ public class EnteSedeProgettoFacilitatoreService {
 		enteSedeProgettoFacilitatore.setDataOraCreazione(new Date());
 		this.enteSedeProgettoFacilitatoreRepository.save(enteSedeProgettoFacilitatore);
 		
+		EnteSedeProgetto enteSedeProgetto = enteSedeProgettoService.getAssociazioneEnteSedeProgetto(idSede, idEnte, idProgetto);
+		if(StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(enteSedeProgetto.getStatoSede())) {
+			enteSedeProgetto.setStatoSede(StatoEnum.ATTIVO.getValue());
+			enteSedeProgetto.setDataAttivazioneSede(new Date());
+			enteSedeProgetto.setDataOraAggiornamento(new Date());
+			enteSedeProgettoService.salvaEnteSedeProgetto(enteSedeProgetto);
+		}
+		
+		// controllo se progetto con id progetto è NON ATTIVO --> passa ad attivabile 
+		// perchè e' stato associato il primo facilitatore a quel progetto per qull'ente su quella sede
+		final ProgettoEntity progettoDBFEtch = this.progettoService.getProgettoById(idProgetto);
+		if(progettoDBFEtch.getStato().equalsIgnoreCase(StatoEnum.NON_ATTIVO.getValue())) {
+			// aggiornare lo stato del progetto da NON ATTIVO a ATTIVABILE
+			progettoDBFEtch.setStato(StatoEnum.ATTIVABILE.getValue());
+			progettoDBFEtch.setDataOraAggiornamento(new Date());
+			progettoDBFEtch.setDataOraProgettoAttivabile(new Date());
+			this.progettoService.salvaOAggiornaProgetto(progettoDBFEtch);
+		}
+		// poi prendo ref/del dell'ente gestore di progetto e mandare la mail
+		List<String> emailReferentiEDelegatiEnteGestoreProgetto = this.referentiDelegatiEnteGestoreProgettoService.getEmailReferentiAndDelegatiPerProgetto(idProgetto);
+		emailReferentiEDelegatiEnteGestoreProgetto.forEach(emailReferenteODelegato -> {
+			try {
+				this.emailService.inviaEmail("oggetto_email", emailReferenteODelegato, "Test_template");
+			} catch (Exception ex) {
+				log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore progetto per progetto con id={}.", idProgetto);
+				log.error("{}", ex);
+			}
+		});
+		
 		RuoloEntity ruolo = this.ruoloService.getRuoloByCodiceRuolo(codiceRuolo);
 		UtenteEntity utenteFetch = this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleUtente);
 		if(utenteFetch.getTipoContratto() == null) {
@@ -87,6 +128,16 @@ public class EnteSedeProgettoFacilitatoreService {
 		}
 		if(!utenteFetch.getRuoli().contains(ruolo)) {
 			this.ruoloService.aggiungiRuoloAUtente(codiceFiscaleUtente, codiceRuolo);
+		}
+		
+		if(StatoEnum.ATTIVO.getValue().equalsIgnoreCase(progettoDBFEtch.getStato())) {
+			//INVIO EMAIL WELCOME KIT AL FACILITATORE SSE IL PROGETTO E' ATTIVO
+			try {
+				this.emailService.inviaEmail("oggetto_email", utenteFetch.getEmail(), "Test_template");
+			} catch (Exception ex) {
+				log.error("Impossibile inviare la mail al facilitatore del progetto con id={}.", idProgetto);
+				log.error("{}", ex);
+			}
 		}
 	}
 	

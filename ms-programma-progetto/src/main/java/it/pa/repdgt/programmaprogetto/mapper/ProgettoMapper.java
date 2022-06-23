@@ -11,7 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import it.pa.repdgt.programmaprogetto.bean.DettaglioProgettoBean;
-import it.pa.repdgt.programmaprogetto.request.NuovoProgettoRequest;
+import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
 import it.pa.repdgt.programmaprogetto.resource.ProgettiLightResourcePaginati;
 import it.pa.repdgt.programmaprogetto.resource.ProgettoLightResource;
 import it.pa.repdgt.programmaprogetto.service.ProgrammaService;
@@ -51,7 +51,7 @@ public class ProgettoMapper {
 		return progettiResource;
 	}
 	
-	public ProgettoEntity toEntityFrom(NuovoProgettoRequest nuovoProgettoRequest) {
+	public ProgettoEntity toEntityFrom(ProgettoRequest nuovoProgettoRequest) {
 		if(nuovoProgettoRequest == null) {
 			return null;
 		}
@@ -120,7 +120,7 @@ public class ProgettoMapper {
 		return progettiLightResourcePaginata;
 	}
 	
-	public ProgettoEntity toEntityFrom(@Valid NuovoProgettoRequest nuovoProgettoRequest, Long idProgramma) {
+	public ProgettoEntity toEntityFrom(@Valid ProgettoRequest nuovoProgettoRequest, Long idProgramma) {
 		if(nuovoProgettoRequest == null) {
 			return null;
 		}
@@ -183,7 +183,7 @@ public class ProgettoMapper {
 		return progetto;
 	}
 
-	public ProgettoEntity toEntityFrom(NuovoProgettoRequest progettoRequest, ProgettoEntity progettoFetch) {
+	public ProgettoEntity toEntityFrom(ProgettoRequest progettoRequest, ProgettoEntity progettoFetch) {
 		progettoFetch.setNome(progettoRequest.getNome());
 		progettoFetch.setNomeBreve(progettoRequest.getNomeBreve());
 		progettoFetch.setCup(progettoRequest.getCup());

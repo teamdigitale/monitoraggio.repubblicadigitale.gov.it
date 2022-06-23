@@ -28,6 +28,7 @@ import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
 import it.pa.repdgt.shared.entity.ServizioEntity;
 import it.pa.repdgt.shared.entity.ServizioXCittadinoEntity;
 import it.pa.repdgt.shared.entity.key.ServizioCittadinoKey;
+import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
 import it.pa.repdgt.surveymgmt.bean.CittadinoServizioBean;
 import it.pa.repdgt.surveymgmt.bean.CittadinoUploadBean;
@@ -227,8 +228,14 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		//associo il cittadino al servizio
 		this.associaCittadinoAServizio(idServizio, cittadino);
 		
+		//recupero il servizio 
+		ServizioEntity servizioDBFetch = servizioSqlService.getServizioById(idServizio);
+		
+		if(StatoEnum.NON_ATTIVO.getValue().equals(servizioDBFetch.getStato()))
+			servizioDBFetch.setStato(StatoEnum.ATTIVO.getValue());
+		
 		//creo il questionario in stato NON_INVIATO
-		this.creaQuestionarioNonInviato(idServizio, cittadino);
+		this.creaQuestionarioNonInviato(servizioDBFetch, cittadino);
 	}
 
 	private boolean esisteCittadinoByIdServizioAndIdCittadino(@NotNull final Long idServizio, @NotNull final Long idCittadino) {
@@ -247,9 +254,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	}
 
 	@Transactional(rollbackOn = Exception.class)
-	public void creaQuestionarioNonInviato(@NotNull final Long idServizio, @NotNull final CittadinoEntity cittadino){
-		//recupero il servizio 
-		ServizioEntity servizioDBFetch = servizioSqlService.getServizioById(idServizio);
+	public void creaQuestionarioNonInviato(@NotNull final ServizioEntity servizioDBFetch, @NotNull final CittadinoEntity cittadino){
 		
 		//creo il template questionario compilato per Mongo
 		QuestionarioCompilatoCollection questionarioCompilatoCreato = creoQuestionarioCompilatoCollection(
@@ -426,8 +431,14 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 				//associo il cittadino al servizio
 				this.associaCittadinoAServizio(idServizio, cittadino);
 				
+				//recupero il servizio 
+				ServizioEntity servizioDBFetch = servizioSqlService.getServizioById(idServizio);
+				
+				if(StatoEnum.NON_ATTIVO.getValue().equals(servizioDBFetch.getStato()))
+					servizioDBFetch.setStato(StatoEnum.ATTIVO.getValue());
+				
 				//creo il questionario in stato NON_INVIATO
-				this.creaQuestionarioNonInviato(idServizio, cittadino);
+				this.creaQuestionarioNonInviato(servizioDBFetch, cittadino);
 				
 				cittadinoUpload.setEsitoUpload("UPLOAD - OK");
 				

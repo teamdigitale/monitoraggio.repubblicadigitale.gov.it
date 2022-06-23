@@ -42,6 +42,7 @@ import it.pa.repdgt.ente.request.ReferenteDelegatoGestoreProgrammaRequest;
 import it.pa.repdgt.ente.restapi.param.EntiPaginatiParam;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
+import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.EntePartnerEntity;
 import it.pa.repdgt.shared.entity.EnteSedeProgetto;
@@ -60,7 +61,9 @@ import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEnteGestoreProgrammaKey;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.service.storico.StoricoService;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @Validated
 public class EnteService {
@@ -101,8 +104,9 @@ public class EnteService {
 	private ReferentiDelegatiEntePartnerDiProgettoService referentiDelegatiEntePartnerDiProgettoService;
 	@Autowired 
 	private EnteRepository enteRepository;
+	@Autowired
+	private EmailService emailService;
 	
-	// MI SERVE
 	/**
 	 * @throws ResourceNotFoundException
 	 * */
@@ -612,6 +616,14 @@ public class EnteService {
 		if(!utenteFetch.getRuoli().contains(ruolo)) {
 			this.ruoloService.aggiungiRuoloAUtente(codiceFiscaleUtente, codiceRuolo);
 		}
+		
+		//invio email welcome al referente/delegato
+		try {
+			this.emailService.inviaEmail("oggetto_email", utenteFetch.getEmail(), "Test_template");
+		} catch (Exception ex) {
+			log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore programma per programma con id={}.", idProgramma);
+			log.error("{}", ex);
+		}
 	}
 	
 	/**
@@ -685,6 +697,14 @@ public class EnteService {
 		RuoloEntity ruolo = this.ruoloService.getRuoloByCodiceRuolo(codiceRuolo);
 		if(!utenteFetch.getRuoli().contains(ruolo)) {
 			this.ruoloService.aggiungiRuoloAUtente(codiceFiscaleUtente, codiceRuolo);	
+		}
+		
+		//invio email welcome al referente/delegato
+		try {
+			this.emailService.inviaEmail("oggetto_email", utenteFetch.getEmail(), "Test_template");
+		} catch (Exception ex) {
+			log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore progetto per progetto con id={}.", idProgetto);
+			log.error("{}", ex);
 		}
 	}
 	
@@ -985,7 +1005,7 @@ public class EnteService {
 		progettoFetchDB.setStatoGestoreProgetto(null);
 		this.progettoService.salvaProgetto(progettoFetchDB);
 		//prendo la lista dei referenti e delegati su quel progetto 
-		List<ReferentiDelegatiEnteGestoreProgettoEntity> listaReferentiDelegatiPerProgetto = this.referentiDelegatiEnteGestoreProgettoService.getReferentieDelegatiPerProgetto(idProgetto);
+		List<ReferentiDelegatiEnteGestoreProgettoEntity> listaReferentiDelegatiPerProgetto = this.referentiDelegatiEnteGestoreProgettoService.getReferentiAndDelegatiPerProgetto(idProgetto);
 		//elimino i referenti e delegati dalla tabella REFERENTE_DELEGATI_GESTORE_PROGETTO 
 		listaReferentiDelegatiPerProgetto.stream()
 										 .forEach(utente -> {

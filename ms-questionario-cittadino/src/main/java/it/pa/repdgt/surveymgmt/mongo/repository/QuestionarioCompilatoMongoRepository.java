@@ -11,13 +11,14 @@ import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 @Repository
 public interface QuestionarioCompilatoMongoRepository extends MongoRepository<QuestionarioCompilatoCollection, String> {
 
-	@Query(value="{'idQuestionarioCompilato' : ?0}")
+	@Query(value="{'id' : ?0}")
 	Optional<QuestionarioCompilatoCollection> findQuestionarioCompilatoById(
 			 String idQuestionario
 		);
 	
-	@Query(value="{'idQuestionarioCompilato' : ?0}", delete = true)
+	@Query(value="{'id' : ?0}", delete = true)
 	void deleteByIdQuestionarioTemplate(
 			String idQuestionarioTemplate
 		);
+
 }

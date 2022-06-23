@@ -202,6 +202,10 @@ public class ServizioSqlService {
 			final String messaggioErrore = String.format("Impossibile creare servizio. Nessun questionario template associato al programma con id '%s'", idProgramma);
 			throw new ServizioException(messaggioErrore);
 		}
+		if(listaProgrammaXQuestionario.isEmpty()) {
+			final String messaggioErrore = String.format("Impossibile creare servizio. Non esiste nessun questionario template associato al programma con id=%s", idProgramma);
+			throw new ServizioException(messaggioErrore);
+		}
 		final String idQuestinarioTemplate = listaProgrammaXQuestionario
 																	.get(0)
 																	.getProgrammaXQuestionarioTemplateKey()

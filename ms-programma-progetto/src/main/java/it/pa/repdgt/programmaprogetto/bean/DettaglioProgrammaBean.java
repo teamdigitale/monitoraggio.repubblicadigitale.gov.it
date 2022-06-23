@@ -2,19 +2,21 @@ package it.pa.repdgt.programmaprogetto.bean;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
+@JsonRootName(value = "DettaglioProgramma")
 public class DettaglioProgrammaBean {
-	private String codice;
 	private String nome;
 	private String nomeBreve;
 	private Date dataInizioProgramma;
 	private Date dataFineProgramma;
 	private String bando;
-	private Integer cup;
+	private String cup;
 	
 	//Numero Target Punti di Facilitazione
 	private Integer nPuntiFacilitazioneTarget1;

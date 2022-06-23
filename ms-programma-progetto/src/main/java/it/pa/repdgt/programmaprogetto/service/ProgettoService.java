@@ -25,22 +25,25 @@ import it.pa.repdgt.programmaprogetto.exception.ProgettoException;
 import it.pa.repdgt.programmaprogetto.exception.ResourceNotFoundException;
 import it.pa.repdgt.programmaprogetto.mapper.ProgettoMapper;
 import it.pa.repdgt.programmaprogetto.repository.ProgettoRepository;
-import it.pa.repdgt.programmaprogetto.request.NuovoProgettoRequest;
+import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgettiParam;
 import it.pa.repdgt.programmaprogetto.request.ProgettoFiltroRequest;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
+import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.entity.EnteEntity;
+import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.ReferentiDelegatiEnteGestoreProgettoEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
-import it.pa.repdgt.shared.entity.light.ProgettoLightEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.service.storico.StoricoService;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class ProgettoService {
 	@Autowired
@@ -65,25 +68,13 @@ public class ProgettoService {
 	@Autowired
 	private EnteSedeProgettoService enteSedeProgettoService;
 	@Autowired
+	private EnteSedeProgettoFacilitatoreService enteSedeProgettoFacilitatoreService;
+	@Autowired
+	private EmailService emailService;
+	@Autowired
 	private ProgettoRepository progettoRepository;
 	@Autowired
 	private ProgettoMapper progettoMapper;
-	
-	@LogMethod
-	@LogExecutionTime
-	public List<ProgettoEntity> getAllProgetti() {
-		return this.progettoRepository.findAll();
-	}
-
-	@LogMethod
-	@LogExecutionTime
-	public Page<ProgettoEntity> getAllProgettiPaginati(Integer currPage, Integer pageSize) {
-		Pageable paginazione = PageRequest.of(currPage, pageSize);
-		List<ProgettoEntity> progetti = this.progettoRepository.findAll();
-		final int start = (int)paginazione.getOffset();
-		final int end = Math.min((start + paginazione.getPageSize()), progetti.size());
-		return new PageImpl<ProgettoEntity>(progetti.subList(start, end), paginazione, progetti.size());
-	}
 	
 	/**
 	 * @throws ResourceNotFoundException
@@ -96,29 +87,24 @@ public class ProgettoService {
 				.orElseThrow(() -> new ResourceNotFoundException(errorMessage));
 	}
 	
-	public ProgettoLightEntity getProgettoLightById(Long idProgetto) {
-		String errorMessage = String.format("Progetto con id=%s non presente", idProgetto);
-		return this.progettoRepository.findProgettoLightById(idProgetto)
-				.orElseThrow(() -> new ResourceNotFoundException(errorMessage));
-	}
-	
 	public List<ProgettoEntity> getProgettiByIdProgramma(Long idProgramma) {
 		return this.progettoRepository.findProgettiByIdProgramma(idProgramma);
-	}
-	
-	public boolean esisteProgettoById(Long idProgetto) {
-		return this.progettoRepository.findById(idProgetto).isPresent();
 	}
 	
 	@LogMethod
 	@LogExecutionTime
 	public ProgettoEntity creaNuovoProgetto(ProgettoEntity progettoEntity) {
+		if(this.progettoRepository.findProgettoByCup(progettoEntity.getCup()).isPresent()) {
+			String errorMessage = String.format("Impossibile creare il progetto. Progetto con cup='%s' già esistente", progettoEntity.getCup());
+			throw new ProgettoException(errorMessage);
+		}
 		if(progettoEntity.getDataInizioProgetto().after(progettoEntity.getDataFineProgetto())) {
-			String errorMessage = String.format("La data di fine non può essere antecedente alla data di inizio");
+			String errorMessage = String.format("Impossibile creare il progetto. La data di fine non può essere antecedente alla data di inizio");
 			throw new ProgettoException(errorMessage);
 		}
 		progettoEntity.setStato(StatoEnum.NON_ATTIVO.getValue());
 		progettoEntity.setDataOraCreazione(new Date());
+		progettoEntity.setDataOraAggiornamento(progettoEntity.getDataOraCreazione());
 		return this.salvaProgetto(progettoEntity);
 	}
 	
@@ -215,7 +201,7 @@ public class ProgettoService {
 	 * */
 	@LogMethod
 	@LogExecutionTime
-	public ProgettoEntity aggiornaProgetto(NuovoProgettoRequest progettoRequest, Long idProgetto) {
+	public ProgettoEntity aggiornaProgetto(ProgettoRequest progettoRequest, Long idProgetto) {
 		if(!this.progettoRepository.existsById(idProgetto)) {
 			String errorMessage = String.format("Impossibile aggiornare il progetto. Progetto con id=%s non presente", idProgetto);
 			throw new ProgettoException(errorMessage);
@@ -236,7 +222,7 @@ public class ProgettoService {
 	 * Restituisce true se il progetto può essere cancellato e false altrimenti.
 	 * 
 	 **/
-	private boolean isProgettoAggiornabileByStatoProgetto(String statoProgetto) {
+	public boolean isProgettoAggiornabileByStatoProgetto(String statoProgetto) {
 		return (
 				StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(statoProgetto)
 			 ||	StatoEnum.ATTIVABILE.getValue().equalsIgnoreCase(statoProgetto)
@@ -492,5 +478,27 @@ public class ProgettoService {
 		if(StatoEnum.ATTIVABILE.getValue().equalsIgnoreCase(progetto.getStato()) || StatoEnum.ATTIVO.getValue().equalsIgnoreCase(progetto.getStato())) {
 			this.terminaProgetto(progetto.getId(), dataTerminazione);
 		}
+	}
+
+	@Transactional(rollbackOn = Exception.class)
+	public void attivaProgetto(Long idProgetto) {
+		ProgettoEntity progetto = this.getProgettoById(idProgetto);
+		if(!StatoEnum.ATTIVABILE.getValue().equalsIgnoreCase(progetto.getStato())) {
+			String errorMessage = String.format("Impossibile attivare il progetto con id %s --> stato progetto = %s", progetto.getId(), progetto.getStato());
+			throw new ProgettoException(errorMessage); 
+		}
+		progetto.setStato(StatoEnum.ATTIVO.getValue());
+		progetto.setDataOraAttivazione(new Date());
+		progetto.setDataOraAggiornamento(new Date());
+		progettoRepository.save(progetto);
+		
+		enteSedeProgettoFacilitatoreService.getAllEmailFacilitatoriEVolontariByProgetto(idProgetto).forEach(email -> {
+			try {
+				this.emailService.inviaEmail("oggetto_email", email, "Test_template");
+			} catch (Exception ex) {
+				log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore progetto per progetto con id={}.", idProgetto);
+				log.error("{}", ex);
+			}
+		});
 	}
 }

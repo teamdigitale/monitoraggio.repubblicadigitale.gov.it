@@ -21,6 +21,9 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 	
 	public Optional<ProgrammaEntity> findByNome(String nomeProgramma);
 	
+	@Query(value = "SELECT p FROM ProgrammaEntity p WHERE p.cup = :theCup")
+	public Optional<ProgrammaEntity> findProgrammaByCup(@Param(value = "theCup") String cup);
+	
 	@Query(value = "SELECT * FROM programma p", nativeQuery = true)
 	public List<ProgrammaEntity> findAll();
 	

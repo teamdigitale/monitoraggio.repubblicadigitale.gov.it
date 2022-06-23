@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.pa.repdgt.surveymgmt.bean.SchedaCittadinoBean;
+import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.dto.CittadinoDto;
 import it.pa.repdgt.surveymgmt.dto.SedeDto;
 import it.pa.repdgt.surveymgmt.param.CittadiniPaginatiParam;
@@ -75,6 +76,17 @@ public class CittadinoRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaCittadinoBean getSchedaCittadino(@PathVariable(value = "idCittadino") final Long idCittadino) {
 		return this.cittadinoService.getSchedaCittadinoById(idCittadino);
+	}
+	
+	/**
+	 * Recupero del questionario compilato
+	 * 
+	 * */
+	@GetMapping(path = "/questionarioCompilato/{idQuestionario}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public QuestionarioCompilatoCollection getQuestionarioCompilato(
+			@PathVariable(value = "idQuestionario") String idQuestionario) {
+		return this.questionarioCompilatoService.getQuestionarioCompilatoById(idQuestionario);
 	}
 	
 	/**

@@ -125,6 +125,7 @@ public interface ContestoRepository extends JpaRepository<ProgrammaEntity, Long>
 	@Query(value = "UPDATE progetto "
 			+ "SET STATO = 'ATTIVABILE' ,"
 			+ "DATA_ORA_AGGIORNAMENTO = CURRENT_TIMESTAMP "
+			+ "DATA_ORA_PROGETTO_ATTIVABILE = CURRENT_TIMESTAMP "
 			+ "WHERE ID in (:idsProgetti)", nativeQuery = true)
 	void rendiProgettiAttivabili(@Param(value = "idsProgetti")List<Long> idsProgetti);	
 	

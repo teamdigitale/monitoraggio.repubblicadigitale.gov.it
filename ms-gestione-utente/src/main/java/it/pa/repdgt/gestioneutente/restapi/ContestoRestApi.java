@@ -52,10 +52,9 @@ public class ContestoRestApi {
 	}
 	
 	// TOUCH POINT - 0.1.3 - CONFERMA INTEGRAZIONE 
-		@ResponseStatus(value = HttpStatus.OK)
-		@PostMapping(path = "/confermaIntegrazione")
-		public void confermaIntegrazione(@RequestBody @Valid IntegraContestoRequest integraContestoRequestRequest) {
-				
-			contestoService.integraContesto(integraContestoRequestRequest);
-		}
+	@ResponseStatus(value = HttpStatus.OK)
+	@PostMapping(path = "/confermaIntegrazione")
+	public void confermaIntegrazione(@RequestBody @Valid IntegraContestoRequest integraContestoRequestRequest) {
+		contestoService.integraContesto(integraContestoRequestRequest);
+	}
 }

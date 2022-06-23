@@ -13,14 +13,14 @@ insert into utente (codice_fiscale, nome, cognome, email, stato, integrazione) v
 insert into utente (codice_fiscale, nome, cognome, email, stato, integrazione) values('FACILITATORE2','F2', 'F2', 'f2@a.com', 'ATTIVO', false);
 
 
-insert into utente (codice_fiscale, nome, cognome, email, stato)
-    values('UIHPLW87R49F205X', 'Polly', 'Smith', 'polly.smith@email.it', 'ATTIVO');
- insert into utente (codice_fiscale, nome, cognome, email, stato)
-    values('SMTPAL67R31F111X', 'Gina',  'Foo', 'gina.foo@email.it', 'ATTIVO');
- insert into utente (codice_fiscale, nome, cognome, email, stato)
-    values('ASDPDS17R65F313X', 'Alice', 'Bar', 'alice.smith@bar.it', 'ATTIVO');
-    insert into utente (codice_fiscale, nome, cognome, email, stato)
-    values('HJKPLW87R49F321I', 'Pippo', 'Kelly', 'pippo.kelly@email.it', 'ATTIVO');
+insert into utente (codice_fiscale, nome, cognome, email, stato, integrazione)
+    values('UIHPLW87R49F205X', 'Polly', 'Smith', 'polly.smith@email.it', 'ATTIVO', true);
+ insert into utente (codice_fiscale, nome, cognome, email, stato, integrazione)
+    values('SMTPAL67R31F111X', 'Gina',  'Foo', 'gina.foo@email.it', 'ATTIVO', false);
+ insert into utente (codice_fiscale, nome, cognome, email, stato, integrazione)
+    values('ASDPDS17R65F313X', 'Alice', 'Bar', 'alice.smith@bar.it', 'ATTIVO', true);
+    insert into utente (codice_fiscale, nome, cognome, email, stato, integrazione)
+    values('HJKPLW87R49F321I', 'Pippo', 'Kelly', 'pippo.kelly@email.it', 'ATTIVO', true);
     
 
 -- CREAZIONE ANAGRAFICA RUOLI
@@ -308,12 +308,14 @@ insert into SEDE(NOME, ITINERE)
 	values('SEDE200', FALSE);
 
 -- ASSOCIAZIONE ENTE-SEDE-PROGETTO
-insert into ENTE_SEDE_PROGETTO(ID_ENTE, ID_PROGETTO, ID_SEDE, RUOLO_ENTE, STATO_SEDE, TIPOLOGIA_SERVIZIO)
-	values(1005, 257, 1, 'EGP', 'NON ATTIVO', '');
-insert into ENTE_SEDE_PROGETTO(ID_ENTE, ID_PROGETTO, ID_SEDE, RUOLO_ENTE, STATO_SEDE, TIPOLOGIA_SERVIZIO)
-	values(1005, 254, 1, 'EGP', 'NON ATTIVO', '');
-insert into ente_sede_progetto (id_ente, ID_progetto, ID_SEDE) values (1000, 250, 1); 
-insert into ente_sede_progetto (id_ente, ID_progetto, ID_SEDE) values (1000, 251, 1); 
+insert into ENTE_SEDE_PROGETTO(ID_ENTE, ID_PROGETTO, ID_SEDE, RUOLO_ENTE, STATO_SEDE)
+	values(1005, 257, 1, 'EGP', 'NON ATTIVO');
+insert into ENTE_SEDE_PROGETTO(ID_ENTE, ID_PROGETTO, ID_SEDE, RUOLO_ENTE, STATO_SEDE)
+	values(1005, 254, 1, 'EGP', 'NON ATTIVO');
+insert into ente_sede_progetto (id_ente, ID_progetto, ID_SEDE) 
+	values (1000, 250, 1); 
+insert into ente_sede_progetto (id_ente, ID_progetto, ID_SEDE) 
+	values (1000, 251, 1); 
 
 
 

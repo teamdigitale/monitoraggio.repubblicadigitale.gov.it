@@ -14,23 +14,26 @@ import org.springframework.transaction.annotation.Transactional;
 import it.pa.repdgt.gestioneutente.entity.projection.ProfiloProjection;
 import it.pa.repdgt.gestioneutente.entity.projection.ProgettoEnteProjection;
 import it.pa.repdgt.gestioneutente.entity.projection.ProgettoEnteSedeProjection;
+import it.pa.repdgt.gestioneutente.entity.projection.ReferenteDelegatoEnteGestoreProgettoProjection;
 import it.pa.repdgt.gestioneutente.exception.ContestoException;
 import it.pa.repdgt.gestioneutente.exception.ResourceNotFoundException;
 import it.pa.repdgt.gestioneutente.repository.ContestoRepository;
-import it.pa.repdgt.gestioneutente.repository.EnteSedeProgettoFacilitatoreRepository;
 import it.pa.repdgt.gestioneutente.repository.GruppoRepository;
 import it.pa.repdgt.gestioneutente.repository.PermessoRepository;
 import it.pa.repdgt.gestioneutente.request.IntegraContestoRequest;
 import it.pa.repdgt.gestioneutente.resource.GruppoPermessiResource;
 import it.pa.repdgt.gestioneutente.resource.RuoloProgrammaResource;
 import it.pa.repdgt.gestioneutente.resource.RuoloResource;
+import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.GruppoEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class ContestoService implements RuoliUtentiConstants{
 	@Autowired
@@ -38,13 +41,15 @@ public class ContestoService implements RuoliUtentiConstants{
 	@Autowired
 	private ContestoRepository contestoRepository;
 	@Autowired
-	private EnteSedeProgettoFacilitatoreRepository espfRepository;
-	@Autowired
 	private GruppoRepository gruppoRepository;
 	@Autowired
 	private PermessoRepository permessoRepository;
 	@Autowired
 	private RuoloService ruoloService;
+	@Autowired 
+	private ReferentiDelegatiEnteGestoreProgettoService referentiDelegatiEnteGestoreProgettoService;
+	@Autowired 
+	private EmailService emailService;
 
 	public UtenteEntity creaContesto(final String codiceFiscale) {
 		return this.utenteService.getUtenteEagerByCodiceFiscale(codiceFiscale);
@@ -87,7 +92,6 @@ public class ContestoService implements RuoliUtentiConstants{
 			default:
 				//PROFILI PER DTD/DSCU/RUOLI CUSTOM
 				profili.add(new RuoloProgrammaResource(ruolo.getCodice(), ruolo.getNome()));
-				break;
 			}
 		}
 		
@@ -159,10 +163,21 @@ public class ContestoService implements RuoliUtentiConstants{
 				}
 						
 				List<Long> idsProgetti = contestoRepository.getIdsProgettiAttivabili(idProgramma);
-				if(!idsProgetti.isEmpty())
+				if(!idsProgetti.isEmpty()) {
 					contestoRepository.rendiProgettiAttivabili(idsProgetti);
-				//TODO: aggiungere logica creazione notifica se progetto passa ad ATTIVABILE
-				
+				}
+				// Recupero referenti/delegati ente gestore progetti resi attivabili in prcedenza 
+				final List<ReferenteDelegatoEnteGestoreProgettoProjection> referentiODelegatiEnteGestoreProgetti = this.referentiDelegatiEnteGestoreProgettoService
+						.getEmailReferentiDelegatiEnteGestoreByIdProgetto(idsProgetti);
+				// Invio email a referenti/delegati ente gestore progetti
+				referentiODelegatiEnteGestoreProgetti.forEach(referenteDelegatoEnteGestoreProgetto -> {
+					try {
+						this.emailService.inviaEmail("oggetto_email", referenteDelegatoEnteGestoreProgetto.getEmail(), "Test_template");
+					}catch(Exception ex) {
+						log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore progetto per progetto con id={}.", referenteDelegatoEnteGestoreProgetto.getIdProgetto());
+						log.error("{}", ex);
+					}
+				});
 				break;
 			case REGP:
 			case DEGP:
@@ -202,17 +217,12 @@ public class ContestoService implements RuoliUtentiConstants{
 			case FACILITATORE:
 			case VOLONTARIO:
 				getProgettoProgramma(idProgetto, idProgramma);
-				//se sono FACILITATORE/VOL e la sede/i a cui sono associato per quel programma ha stato "NON ATTIVA" --> aggiorno stato = ATTIVO
-				//trovo tutte le sedi per programma - progetto - ente - facilitatore
 				List<ProgettoEnteSedeProjection> listaProgettoEnteSede = contestoRepository.findSediPerProgrammaECodiceFiscaleFacilitatoreVolontario(idProgetto, codiceFiscaleUtente, codiceRuoloUtente);
-				//aggiorno le sedi in attivo
 				listaProgettoEnteSede.forEach(progettoEnteSede -> {
-					if(StatoEnum.NON_ATTIVO.getValue().equals(progettoEnteSede.getStato()))
-						contestoRepository.updateStatoSedeProgettoToAttivo(progettoEnteSede.getIdProgetto(), progettoEnteSede.getIdEnte(), progettoEnteSede.getIdSede());
+					//ATTIVO FACILITATORE per ente sede progetto su cui è associato
 					contestoRepository.attivaFACVOL(progettoEnteSede.getIdProgetto(), progettoEnteSede.getIdEnte(), progettoEnteSede.getIdSede(), codiceFiscaleUtente, codiceRuoloUtente);
 				});
 				break;
-	
 			//se sono DTD/DSCU o ruolo custom non faccio niente
 			default:
 				break;
@@ -221,29 +231,31 @@ public class ContestoService implements RuoliUtentiConstants{
 	
 	private void getProgettoProgramma(Long idProgetto, Long idProgramma) {
 		if(contestoRepository.getProgettoProgramma(idProgetto, idProgramma) == 0){
-			throw new ContestoException("ERRORE: non esiste la compinazione progetto-programma a sistema");
+			throw new ContestoException("ERRORE: non esiste la combinazione progetto-programma a sistema");
 		}
 	}
-	
-	
-
-
-	private void orElseThrow(Object object) {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 	public void integraContesto(@Valid IntegraContestoRequest integraContestoRequestRequest) {
-		UtenteEntity utente = this.utenteService.getUtenteByCodiceFiscale(integraContestoRequestRequest.getCodiceFiscale());
-		utente.setIntegrazione(true);
-		utente.setNome(integraContestoRequestRequest.getNome());
-		utente.setCognome(integraContestoRequestRequest.getCognome());
-		utente.setEmail(integraContestoRequestRequest.getEmail());
-		utente.setTelefono(integraContestoRequestRequest.getNumeroCellulare());
-		utente.setDataOraAggiornamento(new Date());
+		UtenteEntity utenteDBFtech = this.utenteService.getUtenteByCodiceFiscale(integraContestoRequestRequest.getCodiceFiscale());
+		utenteDBFtech.setIntegrazione(Boolean.TRUE);
+		utenteDBFtech.setNome(integraContestoRequestRequest.getNome());
+		utenteDBFtech.setCognome(integraContestoRequestRequest.getCognome());
+		utenteDBFtech.setCodiceFiscale(integraContestoRequestRequest.getCodiceFiscale());
+		utenteDBFtech.setEmail(integraContestoRequestRequest.getEmail());
+		utenteDBFtech.setTelefono(integraContestoRequestRequest.getTelefono());
+		utenteDBFtech.setMansione(integraContestoRequestRequest.getBio());
+		
+		if(integraContestoRequestRequest.getAbilitazioneConsensoTrattamentoDatiPersonali() != Boolean.TRUE) {
+			final String messaggioErrore = "Impossibile richiedere integrazione dati senza"
+					+ " prima abilitare il consenso al trattamento dati personale.";
+			throw new ContestoException(messaggioErrore);
+		}
+		
+		utenteDBFtech.setAbilitazioneConsensoTrammentoDati(Boolean.TRUE);
+		utenteDBFtech.setDataOraAbilitazioneConsensoDati(new Date());
+		utenteDBFtech.setDataOraAggiornamento(new Date());
 		try {
-			this.utenteService.salvaUtente(utente);
+			this.utenteService.salvaUtente(utenteDBFtech);
 		}catch(Exception e) {
 			throw new ContestoException("ERRORE - integrazione: " + e.getMessage(), e);
 		}

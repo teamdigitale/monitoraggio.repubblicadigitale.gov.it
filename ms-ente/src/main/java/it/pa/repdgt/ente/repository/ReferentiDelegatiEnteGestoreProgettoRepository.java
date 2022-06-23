@@ -97,6 +97,18 @@ public interface ReferentiDelegatiEnteGestoreProgettoRepository extends JpaRepos
 			nativeQuery = true)
 	List<ReferentiDelegatiEnteGestoreProgettoEntity> findReferentieDelegatiPerProgetto(Long idProgetto);
 
+	@Query(value = ""
+			+ " SELECT      "
+			+ "		ut.email "
+			+ " FROM        "
+			+ "		referente_delegati_gestore_progetto rdgp   "
+			+ " 	INNER JOIN utente ut "
+			+ "		ON ut.codice_fiscale = rdgp.cf_utente      "
+			+ " WHERE rdgp.ID_PROGETTO = :idProgetto           ", 
+			nativeQuery = true)
+	List<String> findEmailReferentieDelegatiPerProgetto(Long idProgetto);
+
+	
 	@Query(value = "SELECT COUNT(*) "
 			+ "FROM referente_delegati_gestore_progetto rdgp "
 			+ "WHERE rdgp.CF_UTENTE = :codiceFiscaleUtente "

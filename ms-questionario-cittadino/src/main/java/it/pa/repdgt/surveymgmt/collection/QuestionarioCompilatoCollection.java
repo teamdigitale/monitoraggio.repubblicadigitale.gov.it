@@ -9,9 +9,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -26,10 +27,11 @@ import lombok.Setter;
 public class QuestionarioCompilatoCollection implements Serializable {
 	private static final long serialVersionUID = -5135985858663895848L;
 	
-	// corrisponde all'id della collection 'questionario-template'
-	@Id
+	@MongoId(value = FieldType.STRING)
+	private String mongoId;
+
 	@NotNull
-	@Field(name = "survey-instance-id")
+	@Field(name = "id")
 	private String idQuestionarioCompilato;
 	
 	@Field(name = "sections")

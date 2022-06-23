@@ -53,6 +53,13 @@ public class UtenteEntity implements Serializable {
 	@Column(name = "MANSIONE", nullable = true)
 	private String mansione;
 	
+	@Column(name = "CONSENSO_DATI", nullable = true)
+	private Boolean abilitazioneConsensoTrammentoDati;
+	
+	@Temporal(value = TemporalType.TIMESTAMP)
+	@Column(name = "DATA_ORA_CONSENSO_DATI")
+	private Date dataOraAbilitazioneConsensoDati;
+
 	@Column(name = "TIPO_CONTRATTO", nullable = true)
 	private String tipoContratto;
 	

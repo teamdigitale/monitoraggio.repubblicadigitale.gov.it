@@ -13,6 +13,6 @@ import lombok.Setter;
 public class ProgettoFiltroRequest extends FiltroRequest implements Serializable {
 	private static final long serialVersionUID = -7482749406950994870L;
 
-	@JsonProperty(value = "idsProgrammi")
+	@JsonProperty(value = "filtroIdsProgrammi")
 	private List<String> idsProgrammi;
 }

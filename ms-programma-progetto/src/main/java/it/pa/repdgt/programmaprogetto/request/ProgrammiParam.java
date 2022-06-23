@@ -1,19 +1,24 @@
 package it.pa.repdgt.programmaprogetto.request;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
 @JsonRootName(value="sceltaContesto")
-public class ProgrammiParam extends SceltaProfiloParam {
-	
-	@NotNull
+public class ProgrammiParam extends SceltaProfiloParam implements Serializable {
+	private static final long serialVersionUID = -1681717957321564055L;
+
+	@NotNull(message = "Deve essere non null")
+	@JsonProperty(value = "filtroProgrammi", required = true)
 	private FiltroRequest filtroRequest;
 }

@@ -13,26 +13,27 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class NuovoProgettoRequest implements Serializable {
+public class ProgettoRequest implements Serializable {
 	private static final long serialVersionUID = 3778729425460145918L;
 
-	@NotBlank(message = "{nome.notblank}")
+	@NotBlank(message = "Deve essere non null e non blank")
 	@JsonProperty(value = "nome", required = true)
 	private String nome;
 
-	@NotBlank(message = "{nomebreve.notblank}")
-	@JsonProperty(value = "nome breve", required = true)
+	@NotBlank(message = "Deve essere non null e non blank")
+	@JsonProperty(value = "nomeBreve", required = true)
 	private String nomeBreve;
 	
-	@JsonProperty(value = "cup", required = false)
-	private Integer cup;
+	@JsonProperty(value = "cup", required = true)
+	@NotBlank(message = "Deve essere non null e non blank")
+	private String cup;
 	
-	@NotNull(message = "{date.incorrect}")
-	@JsonProperty(value = "data inizio", required = true)
+	@NotNull(message = "Deve essere non null")
+	@JsonProperty(value = "dataInizio", required = true)
 	private Date dataInizioProgetto;
 	
-	@NotNull(message = "{date.incorrect}")
-	@JsonProperty(value = "data fine", required = true)
+	@NotNull(message = "Deve essere non null")
+	@JsonProperty(value = "dataFine", required = true)
 	private Date dataFineProgetto;
 	
 	//Numero Target Punti di Facilitazione
