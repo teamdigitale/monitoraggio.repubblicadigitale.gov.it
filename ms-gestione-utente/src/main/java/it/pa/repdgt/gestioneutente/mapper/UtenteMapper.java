@@ -36,6 +36,8 @@ public class UtenteMapper {
 		utente.setCognome(nuovoUtenteRequest.getCognome());
 		utente.setEmail(nuovoUtenteRequest.getEmail());
 		utente.setTelefono(nuovoUtenteRequest.getTelefono());
+		utente.setTipoContratto(nuovoUtenteRequest.getTipoContratto());
+		utente.setIntegrazione(Boolean.FALSE);
 		
 		return utente;
 	}

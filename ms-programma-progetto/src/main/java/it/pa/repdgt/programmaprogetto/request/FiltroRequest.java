@@ -13,12 +13,12 @@ import lombok.Setter;
 public class FiltroRequest implements Serializable {
 	private static final long serialVersionUID = -7482749406950994870L;
 
-	@JsonProperty(value = "criterioRicerca")
+	@JsonProperty(value = "filtroCriterioRicerca")
 	private String criterioRicerca;
 	
-	@JsonProperty(value = "policies")
+	@JsonProperty(value = "filtroPolicies")
 	private List<String> policies;
 	
-	@JsonProperty(value = "stati")
+	@JsonProperty(value = "filtroStati")
 	private List<String> stati;
 }

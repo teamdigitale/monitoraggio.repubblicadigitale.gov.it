@@ -375,8 +375,9 @@ public class ProgrammaService {
 	 */
 	@Transactional(rollbackOn = Exception.class)
 	public ProgrammaEntity creaNuovoProgramma(ProgrammaEntity programma) {
-		if(this.existsProgrammaByNome(programma.getNome())){
-			throw new ProgrammaException(String.format("Programma con nome=%s già presente", programma.getNome()));
+		if(this.programmaRepository.findProgrammaByCup(programma.getCup()).isPresent()) {
+			String errorMessage = String.format("Errore creazione programma. Programma con cup='%s' già presente.", programma.getCup());
+			throw new ProgrammaException(errorMessage);
 		}
 		if (programma.getDataInizioProgramma().after(programma.getDataFineProgramma())) {
 			String errorMessage = String.format("Errore creazione programma. Data inizio programma deve essere antecedenta alla data fine programma");
@@ -384,7 +385,11 @@ public class ProgrammaService {
 		}
 		programma.setStato(StatoEnum.NON_ATTIVO.getValue());
 		programma.setDataOraCreazione(new Date());
+		programma.setDataOraAggiornamento(programma.getDataOraCreazione());
 		QuestionarioTemplateEntity questionarioTemplate = this.questionarioTemplateSqlService.getQuestionarioTemplateByPolicy(programma.getPolicy().getValue());
+		if(questionarioTemplate == null) {
+			throw new ProgrammaException("Impossibile creare programma. Questionario template di default inesistente");
+		}
 		this.salvaProgramma(programma);
 		this.associaQuestionarioTemplateAProgramma(programma.getId(), questionarioTemplate.getId());
 		return programma;

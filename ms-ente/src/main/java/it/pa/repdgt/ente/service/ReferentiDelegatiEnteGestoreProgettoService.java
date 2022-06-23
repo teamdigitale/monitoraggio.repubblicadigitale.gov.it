@@ -41,7 +41,7 @@ public class ReferentiDelegatiEnteGestoreProgettoService {
 	}
 
 	public ReferentiDelegatiEnteGestoreProgettoEntity getById(ReferentiDelegatiEnteGestoreProgettoKey id) {
-		return this.referentiDelegatiEnteGestoreProgettoRepository.getById(id);
+		return this.referentiDelegatiEnteGestoreProgettoRepository.findById(id).get();
 	}
 
 	public List<ReferentiDelegatiEnteGestoreProgettoEntity> findAltriReferentiODelegatiAttivi(Long idProgetto, String codiceFiscaleUtente, Long idEnte, String codiceRuolo) {
@@ -57,8 +57,12 @@ public class ReferentiDelegatiEnteGestoreProgettoService {
 		this.referentiDelegatiEnteGestoreProgettoRepository.deleteById(id);
 	}
 
-	public List<ReferentiDelegatiEnteGestoreProgettoEntity> getReferentieDelegatiPerProgetto(Long idProgetto) {
+	public List<ReferentiDelegatiEnteGestoreProgettoEntity> getReferentiAndDelegatiPerProgetto(Long idProgetto) {
 		return this.referentiDelegatiEnteGestoreProgettoRepository.findReferentieDelegatiPerProgetto(idProgetto);
+	}
+	
+	public List<String> getEmailReferentiAndDelegatiPerProgetto(Long idProgetto) {
+		return this.referentiDelegatiEnteGestoreProgettoRepository.findEmailReferentieDelegatiPerProgetto(idProgetto);
 	}
 
 	public void cancellaAssociazione(ReferentiDelegatiEnteGestoreProgettoEntity utente) {

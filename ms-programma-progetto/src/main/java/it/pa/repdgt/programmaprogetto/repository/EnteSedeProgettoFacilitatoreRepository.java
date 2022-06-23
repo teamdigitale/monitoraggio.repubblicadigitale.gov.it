@@ -36,4 +36,15 @@ public interface EnteSedeProgettoFacilitatoreRepository extends JpaRepository<En
 			@Param("idEnte") Long idEnte, 
 			@Param("idProgetto") Long idProgetto
 		);
+	
+	@Query(value = " SELECT u.email FROM "
+			+ "	ente_sede_progetto_facilitatore espf "
+			+ " INNER JOIN utente u "
+			+ " ON u.CODICE_FISCALE = espf.id_facilitatore"
+			+ " WHERE 1=1 "
+			+ "	AND espf.ID_PROGETTO = :idProgetto "
+			, nativeQuery = true)
+	List<String> findAllEmailFacilitatoriEVolontariByProgetto(
+			@Param("idProgetto") Long idProgetto
+			);
 }

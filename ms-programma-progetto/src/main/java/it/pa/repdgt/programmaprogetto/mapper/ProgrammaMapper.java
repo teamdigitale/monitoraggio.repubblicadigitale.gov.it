@@ -53,7 +53,6 @@ public class ProgrammaMapper {
 			@Valid ProgrammaRequest nuovoProgrammaRequest) {
 		ProgrammaEntity programma = new ProgrammaEntity();
 		programma.setNome(nuovoProgrammaRequest.getNome());
-		programma.setCodice(nuovoProgrammaRequest.getCodice());
 		programma.setNomeBreve(nuovoProgrammaRequest.getNomeBreve());
 		programma.setPolicy(nuovoProgrammaRequest.getPolicy());
 		programma.setDataInizioProgramma(nuovoProgrammaRequest.getDataInizioProgramma());
@@ -143,7 +142,6 @@ public class ProgrammaMapper {
 	public ProgrammaEntity toEntityFrom(ProgrammaRequest programmaRequest, ProgrammaEntity programmaFetch) {
 		programmaFetch.setNome(programmaRequest.getNome());
 		programmaFetch.setNomeBreve(programmaRequest.getNomeBreve());
-		programmaFetch.setCodice(programmaRequest.getCodice());
 		programmaFetch.setPolicy(programmaRequest.getPolicy());
 		programmaFetch.setDataInizioProgramma(programmaRequest.getDataInizioProgramma());
 		programmaFetch.setDataFineProgramma(programmaRequest.getDataFineProgramma());
@@ -203,7 +201,6 @@ public class ProgrammaMapper {
 	public DettaglioProgrammaBean toDettaglioProgrammaBeanFrom(ProgrammaEntity programmaFetchDB) {
 		DettaglioProgrammaBean dettaglioProgramma = new DettaglioProgrammaBean();
 		
-		dettaglioProgramma.setCodice(programmaFetchDB.getCodice());
 		dettaglioProgramma.setNome(programmaFetchDB.getNome());
 		dettaglioProgramma.setNomeBreve(programmaFetchDB.getNomeBreve());
 		dettaglioProgramma.setDataInizioProgramma(programmaFetchDB.getDataInizioProgramma());

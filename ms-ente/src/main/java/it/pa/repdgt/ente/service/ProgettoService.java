@@ -69,4 +69,8 @@ public class ProgettoService {
 	public void salvaProgetto(ProgettoEntity progettoFetchDB) {
 		this.progettoRepository.save(progettoFetchDB);
 	}
+
+	public void salvaOAggiornaProgetto(ProgettoEntity progettoDBFEtch) {
+		this.progettoRepository.save(progettoDBFEtch);
+	}
 }

@@ -35,7 +35,7 @@ public class EnteSedeProgettoService {
 	private EnteSedeProgettoFacilitatoreService enteSedeProgettoFacilitatoreService;
 	
 	
-	private EnteSedeProgetto getAssociazioneEnteSedeProgetto(Long idSede, Long idEnte, Long idProgetto) {
+	public EnteSedeProgetto getAssociazioneEnteSedeProgetto(Long idSede, Long idEnte, Long idProgetto) {
 		EnteSedeProgettoKey id = new EnteSedeProgettoKey(idEnte, idSede, idProgetto);
 		String errorMessage = String.format("Associazione sede-ente-progetto non presente per sede con id=%s, ente con id=%s, progetto con id=%s",
 				idSede, idEnte, idProgetto);

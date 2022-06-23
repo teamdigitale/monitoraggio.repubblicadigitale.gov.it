@@ -75,6 +75,7 @@ public class ApplicationExceptionHandler {
 		log.error("{}", exc);
 		Map<String, String> errori = new HashMap<>();
 		errori.put("message", exc.getMessage());
+		errori.put("causa", exc.getCause().getMessage());
 		return errori;
 	}
 }

@@ -24,41 +24,38 @@ public class ProgrammaRequest implements Serializable {
 	private static final long serialVersionUID = 3778729425460145918L;
 	
 	// 'Nome Programma' della scheda Informazioni Generali del programma
-	@NotBlank(message = "{nome.notblank}")
-	@JsonProperty(value = "nomeProgramma")
+	@NotBlank(message = "Deve essere non null e non blank")
+	@JsonProperty(value = "nome", required = true)
 	private String nome;
 	
 	// 'Nome breve' della scheda Informazioni Generali del programma
-	@NotBlank(message = "{nomeBreve.notblank}")
-	@JsonProperty(value = "nomeBreve")
+	@NotBlank(message = "DEVE ESSERE NON NULL E NON BLANK")
+	@JsonProperty(value = "nomeBreve", required = true)
 	private String nomeBreve;
 	
-	// 'ID' della scheda Informazioni Generali del Programma
-	@JsonProperty(value = "id")
-	private String codice;
-	
 	// 'Policy' della scheda Informazioni Generali del Programma
-	@JsonProperty(value = "policy")
-	@NotNull(message = "{policy.notnull}")
+	@JsonProperty(value = "policy", required = true)
+	@NotNull(message = "Deve essere non null e uno tra i seguenti valori: {RFD, SCD}")
 	private PolicyEnum policy;
 	
 	// 'Data Inizio' della scheda Informazioni Generali del Programma
-	@JsonProperty(value = "dataInizio")
-	@NotNull(message = "{date.incorrect}")
+	@JsonProperty(value = "dataInizioProgramma", required = true)
+	@NotNull(message = "Deve essere non null")
 	private Date dataInizioProgramma;
 	
 	// 'Data Fine' della scheda Informazioni Generali del Programma
-	@JsonProperty(value = "dataFine")
-	@NotNull(message = "{date.incorrect}")
+	@JsonProperty(value = "dataFineProgramma", required = true)
+	@NotNull(message = "Deve essere non null")
 	private Date dataFineProgramma;
 	
 	// 'Bando' della scheda Informazioni Generali del Programma
-	@JsonProperty(value = "bando")
+	@JsonProperty(value = "bando", required = false)
 	private String bando;
 	
 	// 'CUP' della scheda Informazioni Generali del Programma
 	@JsonProperty(value = "cup")
-	private Integer cup;
+	@NotBlank(message = "Deve essere non null e non blank")
+	private String cup;
 	
 	//Numero Target Punti di Facilitazione
 	private Integer nPuntiFacilitazioneTarget1;

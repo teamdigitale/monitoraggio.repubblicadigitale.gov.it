@@ -2,16 +2,19 @@ package it.pa.repdgt.programmaprogetto.bean;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
+@JsonRootName(value = "DettaglioProgetto")
 public class DettaglioProgettoBean {
 	private Long id;
 	private String nome;
 	private String nomeBreve;
-	private Integer cup;
+	private String cup;
 	private Date dataInizio;
 	private Date dataFine;
 	

@@ -35,7 +35,7 @@ public class ProgettoEntity implements Serializable {
 	@Column(name = "NOME", nullable = false)
 	private String nome;
 	
-	@Column(name = "NOME_BREVE", nullable = false)
+	@Column(name = "NOME_BREVE", nullable = false, unique = true)
 	private String nomeBreve;
 
 	/**
@@ -62,8 +62,8 @@ public class ProgettoEntity implements Serializable {
 	@Column(name = "STATO")
 	private String stato;
 	
-	@Column(name = "CUP")
-	private Integer cup;
+	@Column(name = "CUP", nullable = false, unique = true)
+	private String cup;
 
 	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column(name = "DATA_ORA_PROGETTO_ATTIVABILE")

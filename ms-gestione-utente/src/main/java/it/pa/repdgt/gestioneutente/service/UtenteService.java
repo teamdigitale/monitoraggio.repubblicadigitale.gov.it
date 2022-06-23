@@ -1,10 +1,12 @@
 package it.pa.repdgt.gestioneutente.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,13 +32,16 @@ import it.pa.repdgt.gestioneutente.request.NuovoUtenteRequest;
 import it.pa.repdgt.gestioneutente.request.UtenteRequest;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
+import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.UtenteXRuolo;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class UtenteService {
 	@Autowired
@@ -51,6 +56,8 @@ public class UtenteService {
 	private EntePartnerService entePartnerService;
 	@Autowired
 	private UtenteRepository utenteRepository;
+	@Autowired 
+	private EmailService emailService;
 
 	@LogExecutionTime
 	@LogMethod
@@ -197,7 +204,8 @@ public class UtenteService {
 
 	public UtenteEntity getUtenteByCodiceFiscale(String  codiceFiscaleUtente) {
 		String messaggioErrore = String.format("risorsa con codice Fiscale=%s non trovata", codiceFiscaleUtente);
-		return this.utenteRepository.findByCodiceFiscale(codiceFiscaleUtente).orElseThrow(() -> new ResourceNotFoundException(messaggioErrore) );
+		return this.utenteRepository.findByCodiceFiscale(codiceFiscaleUtente)
+				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore) );
 	}
 	
 	public UtenteEntity getUtenteEagerByCodiceFiscale(String codiceFiscale) {
@@ -207,10 +215,24 @@ public class UtenteService {
 	@LogExecutionTime
 	@LogMethod
 	public void creaNuovoUtente(UtenteEntity utente, String codiceRuolo) {
+		Optional<UtenteEntity> oldUtente = this.utenteRepository.findByCodiceFiscale(utente.getCodiceFiscale());
+		if(oldUtente.isPresent()) {
+			utente.setId(oldUtente.get().getId());
+		}
 		utente.setStato(StatoEnum.ATTIVO.getValue());
 		RuoloEntity ruolo = this.ruoloService.getRuoloByCodiceRuolo(codiceRuolo);
 		utente.getRuoli().add(ruolo);
+		utente.setDataOraCreazione(new Date());
+		utente.setDataOraAggiornamento(utente.getDataOraCreazione());
 		this.salvaUtente(utente);
+		if(!ruolo.getPredefinito()) {
+			try {
+				this.emailService.inviaEmail("oggetto_email", utente.getEmail(), "Test_template");
+			}catch(Exception ex) {
+				log.error("Impossibile inviare la mail al nuovo utente censito con codice fiscale {}", utente.getCodiceFiscale());
+				log.error("{}", ex);
+			}
+		}
 	}
 	
 	@LogExecutionTime
@@ -230,6 +252,7 @@ public class UtenteService {
 		utenteFetchDB.setTelefono(nuovoUtenteRequest.getTelefono());
 		utenteFetchDB.setMansione(nuovoUtenteRequest.getMansione());
 		utenteFetchDB.setTipoContratto(nuovoUtenteRequest.getTipoContratto());
+		utenteFetchDB.setDataOraAggiornamento(new Date());
 		this.utenteRepository.save(utenteFetchDB);
 	}
 	

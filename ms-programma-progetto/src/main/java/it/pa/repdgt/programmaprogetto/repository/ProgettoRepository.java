@@ -9,15 +9,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import it.pa.repdgt.shared.entity.ProgettoEntity;
-import it.pa.repdgt.shared.entity.light.ProgettoLightEntity;
 
 @Repository
 public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long> {
-	
-	@Query(value = "SELECT p "
-				 + "FROM ProgettoLightEntity p "
-				 + "WHERE p.id = :theId")
-	public Optional<ProgettoLightEntity> findProgettoLightById(@Param(value="theId") Long id);
 	
 	
 	@Query(value = "SELECT *"
@@ -189,4 +183,13 @@ public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long> 
 			@Param(value = "idsProgrammi") List<String> idsProgrammi,
 			@Param(value = "stati") List<String> stati
 		);
+
+	@Query(value = " "
+				 + " SELECT "
+				 + "	p "
+				 + " FROM "
+				 + "	ProgettoEntity p "
+				 + " WHERE p.cup = :theCup "
+		  ,nativeQuery = false)
+	public Optional<ProgettoEntity> findProgettoByCup(@Param(value = "theCup") String cup);
 }

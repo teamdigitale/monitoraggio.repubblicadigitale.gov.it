@@ -53,6 +53,10 @@ public class EnteSedeProgettoFacilitatoreService {
 		public List<EnteSedeProgettoFacilitatoreEntity> getAllFacilitatoriEVolontariBySedeAndEnteAndProgetto(Long idSede, Long idEnte, Long idProgetto) {
 			return this.enteSedeProgettoFacilitatoreRepository.findAllFacilitatoriEVolontariBySedeAndEnteAndProgetto(idSede, idEnte, idProgetto);
 		}
+		
+		public List<String> getAllEmailFacilitatoriEVolontariByProgetto(Long idProgetto) {
+			return this.enteSedeProgettoFacilitatoreRepository.findAllEmailFacilitatoriEVolontariByProgetto(idProgetto);
+		}
 
 		@Transactional(rollbackOn = Exception.class)
 		public void cancellaAssociazioneFacilitatoreOVolontario(Long idEnte, Long idSede, Long idProgetto, String codiceFiscaleUtente, String codiceRuolo) {

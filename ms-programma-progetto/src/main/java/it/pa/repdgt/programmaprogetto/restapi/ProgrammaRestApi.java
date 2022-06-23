@@ -53,8 +53,8 @@ public class ProgrammaRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public ProgrammiLightResourcePaginata getAllProgrammiPaginatiByRuolo(
 			@RequestBody @Valid @NotNull ProgrammiParam sceltaContesto,
-			@RequestParam(name = "currPage", defaultValue = "0") Integer currPage,
-			@RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+			@RequestParam(name = "currPage", required = false, defaultValue = "0")  Integer currPage,
+			@RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
 		Page<ProgrammaEntity> paginaProgrammi = this.programmaService.getAllProgrammiPaginati(sceltaContesto, currPage, pageSize, sceltaContesto.getFiltroRequest());
 		ProgrammiLightResourcePaginata listaPaginataProgrammiResource = this.programmaMapper.toProgrammiLightResourcePaginataFrom(paginaProgrammi);
 		return listaPaginataProgrammiResource;
@@ -65,7 +65,7 @@ public class ProgrammaRestApi {
 	@PostMapping(path = "/policies/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<String> getAllPoliciesDropdownByRuolo(
-			@RequestBody @Valid @NotNull ProgrammiParam sceltaContesto) {
+			@RequestBody @Valid @NotNull(message = "Deve essere non null") ProgrammiParam sceltaContesto) {
 		List<String> policiesDropdown = this.programmaService.getAllPoliciesDropdown(sceltaContesto, sceltaContesto.getFiltroRequest());
 		return policiesDropdown;
 	}
@@ -74,7 +74,7 @@ public class ProgrammaRestApi {
 	@PostMapping(path = "/stati/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<String> getAllStatiDropdownByRuolo(
-			@RequestBody @Valid @NotNull ProgrammiParam sceltaContesto) {
+			@RequestBody @Valid @NotNull(message = "Deve essere non null") ProgrammiParam sceltaContesto) {
 		List<String> statiDropdown = this.programmaService.getAllStatiDropdown(sceltaContesto, sceltaContesto.getFiltroRequest());
 		return statiDropdown;
 	}
@@ -117,7 +117,7 @@ public class ProgrammaRestApi {
 	@PutMapping(path = "/{idProgramma}/aggiungi/{idQuestionario}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void associaQuestionarioTemplateAProgramma(
-			@PathVariable(value = "idProgramma")   Long idProgramma, 
+			@PathVariable(value = "idProgramma")    Long idProgramma, 
 			@PathVariable(value = "idQuestionario") String idQuestionario) {
 		this.programmaService.associaQuestionarioTemplateAProgramma(idProgramma, idQuestionario);
 	}
@@ -125,7 +125,8 @@ public class ProgrammaRestApi {
 	// TOUCH POINT - 1.1.9 - termina Programma 
 	@PutMapping(path = "termina/{idProgramma}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public void terminaProgramma(@PathVariable(value = "idProgramma")   Long idProgramma, @RequestParam @PastOrPresent Date dataTerminazione) {
+	public void terminaProgramma(@PathVariable(value = "idProgramma") Long idProgramma, 
+			@RequestParam @PastOrPresent(message = "Deve essere una data nel passato o corrente") Date dataTerminazione) {
 		this.programmaService.terminaProgramma(idProgramma, dataTerminazione);
 	}
 	

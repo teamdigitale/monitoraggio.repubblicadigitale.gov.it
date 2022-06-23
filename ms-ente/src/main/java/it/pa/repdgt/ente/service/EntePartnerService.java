@@ -26,6 +26,7 @@ import it.pa.repdgt.ente.request.ReferenteDelegatoPartnerRequest;
 import it.pa.repdgt.ente.util.CSVUtil;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
+import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.constants.ProfiliEntiConstants;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.EntePartnerEntity;
@@ -36,7 +37,9 @@ import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.key.EntePartnerKey;
 import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEntePartnerDiProgettoKey;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class EntePartnerService {
 	
@@ -55,6 +58,8 @@ public class EntePartnerService {
 	private ReferentiDelegatiEntePartnerDiProgettoService referentiDelegatiEntePartnerDiProgettoService;
 	@Autowired
 	private RuoloService ruoloService;
+	@Autowired
+	private EmailService emailService;
 
 	// MI SERVE
 	@LogMethod
@@ -164,6 +169,14 @@ public class EntePartnerService {
 		RuoloEntity ruolo = this.ruoloService.getRuoloByCodiceRuolo(codiceRuolo);
 		if(!utenteFetch.getRuoli().contains(ruolo)) {
 			this.ruoloService.aggiungiRuoloAUtente(codiceFiscaleUtente, codiceRuolo);	
+		}
+		
+		//invio email welcome al referente/delegato
+		try {
+			this.emailService.inviaEmail("oggetto_email", utenteFetch.getEmail(), "Test_template");
+		} catch (Exception ex) {
+			log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente partner con id {} per progetto con id={}.", idEntePartner, idProgetto);
+			log.error("{}", ex);
 		}
 	}
 

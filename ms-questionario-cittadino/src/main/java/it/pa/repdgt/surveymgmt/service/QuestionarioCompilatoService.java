@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.bson.json.JsonObject;
@@ -20,6 +21,7 @@ import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection.DatiIstanza;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioCompilatoException;
+import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioCompilatoMongoRepository;
 import it.pa.repdgt.surveymgmt.repository.QuestionarioCompilatoSqlRepository;
 import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoRequest;
@@ -33,6 +35,12 @@ public class QuestionarioCompilatoService {
 	private QuestionarioCompilatoSqlRepository questionarioCompilatoSQLRepository;
 	@Autowired
 	private QuestionarioCompilatoMongoRepository questionarioCompilatoMongoRepository;
+	
+	public QuestionarioCompilatoCollection getQuestionarioCompilatoById(@NotBlank final String idQuestionarioCompilato) {
+		final String messaggioErrore = String.format("Questionario compilato con id=%s non trovato", idQuestionarioCompilato);
+		return questionarioCompilatoMongoRepository.findQuestionarioCompilatoById(idQuestionarioCompilato)
+				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore));
+	}
 	
 	@Transactional(rollbackOn = Exception.class)
 	public void compilaQuestionario(
@@ -100,4 +108,5 @@ public class QuestionarioCompilatoService {
 		cittadino.setDataOraAggiornamento(new Date());
 		cittadinoService.salvaCittadino(cittadino);
 	}
+
 } 

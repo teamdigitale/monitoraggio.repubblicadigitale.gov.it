@@ -35,9 +35,6 @@ public class ProgrammaEntity implements Serializable {
 	@Column(name = "ID")
 	private Long id;
 	
-	@Column(name = "CODICE", unique = true)
-	private String codice;
-
 	@Column(name = "NOME", nullable = false)
 	private String nome;
 	
@@ -63,8 +60,8 @@ public class ProgrammaEntity implements Serializable {
 	@Column(name = "BANDO")
 	private String bando;
 	
-	@Column(name = "CUP")
-	private Integer cup;
+	@Column(name = "CUP", nullable = false, unique = true)
+	private String cup;
 	
 	@Column(name = "DATA_INIZIO_PROGRAMMA")
 	private Date dataInizioProgramma;

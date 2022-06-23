@@ -2,11 +2,13 @@ package it.pa.repdgt.programmaprogetto.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -35,21 +37,32 @@ import it.pa.repdgt.programmaprogetto.exception.ResourceNotFoundException;
 import it.pa.repdgt.programmaprogetto.mapper.ProgettoMapper;
 import it.pa.repdgt.programmaprogetto.mapper.ProgrammaMapper;
 import it.pa.repdgt.programmaprogetto.repository.EnteRepository;
+import it.pa.repdgt.programmaprogetto.repository.EnteSedeProgettoRepository;
 import it.pa.repdgt.programmaprogetto.repository.ProgettoRepository;
 import it.pa.repdgt.programmaprogetto.repository.ProgrammaRepository;
 import it.pa.repdgt.programmaprogetto.repository.QuestionarioTemplateSqlRepository;
+import it.pa.repdgt.programmaprogetto.repository.ReferentiDelegatiEnteGestoreProgettoRepository;
+import it.pa.repdgt.programmaprogetto.repository.ReferentiDelegatiEntePartnerRepository;
 import it.pa.repdgt.programmaprogetto.repository.RuoloRepository;
 import it.pa.repdgt.programmaprogetto.request.FiltroRequest;
+import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgettiParam;
 import it.pa.repdgt.programmaprogetto.request.ProgettoFiltroRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammiParam;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
 import it.pa.repdgt.shared.entity.EnteEntity;
+import it.pa.repdgt.shared.entity.EntePartnerEntity;
+import it.pa.repdgt.shared.entity.EnteSedeProgetto;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
+import it.pa.repdgt.shared.entity.ReferentiDelegatiEnteGestoreProgettoEntity;
+import it.pa.repdgt.shared.entity.ReferentiDelegatiEntePartnerDiProgettoEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
+import it.pa.repdgt.shared.entity.storico.StoricoEnteGestoreProgettoEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
+import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.repository.storico.StoricoEnteGestoreProgettoRepository;
 import it.pa.repdgt.shared.repository.storico.StoricoEnteGestoreProgrammaRepository;
 import it.pa.repdgt.shared.service.storico.StoricoService;
 
@@ -67,6 +80,16 @@ public class ProgettoServiceTest {
 	private RuoloRepository ruoloRepository;
 	@Mock
 	private StoricoEnteGestoreProgrammaRepository storicoEnteGestoreProgrammaRepository;
+	@Mock
+	private ReferentiDelegatiEnteGestoreProgettoRepository referentiDelegatiEnteGestoreProgettoRepository;
+	@Mock
+	private ReferentiDelegatiEntePartnerRepository referentiDelegatiEntePartnerRepository;
+	@Mock
+	private EnteSedeProgettoRepository enteSedeProgettoRepository;
+	@Mock
+	private StoricoEnteGestoreProgettoRepository storicoEnteGestoreProgettoRepository;
+	@Mock
+	private EnteSedeProgettoService enteSedeProgettoService;
 	@Mock
 	private RuoloService ruoloService;
 	@Mock
@@ -87,6 +110,10 @@ public class ProgettoServiceTest {
 	private SedeService sedeService;
 	@Mock
 	private UtenteService utenteService;
+	@Mock
+	private ReferentiDelegatiEnteGestoreProgettoService referentiDelegatiEnteGestoreProgettoService;
+	@Mock
+	private ReferentiDelegatiEntePartnerService referentiDelegatiEntePartnerService;
 	@Mock
 	private ProgrammaMapper programmaMapper;
 	@Mock
@@ -559,5 +586,206 @@ public class ProgettoServiceTest {
 		SchedaProgettoBean schedaProgettoMock = progettoService.getSchedaProgettoById(progettiParam.getIdProgetto());
 		assertThat(schedaProgettoMock.getEntiPartner().size()).isEqualTo(schedaProgetto.getEntiPartner().size());
 		assertThat(schedaProgettoMock.getSedi().size()).isEqualTo(schedaProgetto.getSedi().size());
+	}
+	
+	@Test
+	public void creaNuovoProgettoTest() {
+		progetto1.setDataInizioProgetto(new Date());
+		progetto1.setDataFineProgetto(new Date());
+		when(progettoService.salvaProgetto(progetto1)).thenReturn(progetto1);
+		ProgettoEntity progettocreato = progettoService.creaNuovoProgetto(progetto1);
+		assertThat(progettocreato.getId()).isEqualTo(progetto1.getId());
+		verify(progettoRepository, times(1)).save(progetto1);
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void creaNuovoProgettoKOTest() {
+	Date dataInizio = new Date();
+	dataInizio.setDate(13);
+	Date dataFine = new Date();
+	dataFine.setDate(10);
+	progetto1.setDataInizioProgetto(dataInizio);
+	progetto1.setDataFineProgetto(dataFine);
+	Assertions.assertThrows(ProgettoException.class, () -> progettoService.creaNuovoProgetto(progetto1));
+	assertThatExceptionOfType(ProgettoException.class);
+	verify(progettoRepository, times(0)).save(progetto1);
+	}
+	
+	@Test
+	public void aggiornaProgettoTest() {
+		ProgettoRequest progettoRequest = new ProgettoRequest();
+		when(progettoRepository.existsById(progetto1.getId())).thenReturn(true);
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
+		when(progettoMapper.toEntityFrom(progettoRequest, progetto1)).thenReturn(progetto1);
+		progettoService.aggiornaProgetto(progettoRequest, progetto1.getId());
+		verify(progettoRepository, times(1)).save(progetto1);
+	}
+	
+	@Test
+	public void aggiornaProgettoKOTest() {
+		//test KO per progetto non presente
+		when(progettoRepository.existsById(progetto1.getId())).thenReturn(false);
+		Assertions.assertThrows(ProgettoException.class, () -> progettoService.aggiornaProgetto(new ProgettoRequest(), progetto1.getId()));
+		assertThatExceptionOfType(ProgettoException.class);
+		verify(progettoRepository, times(0)).save(progetto1);
+		
+		//test KO per stato progetto = TERMINATO (progetto non modificabile)
+		progetto1.setStato("TERMINATO");
+		when(progettoRepository.existsById(progetto1.getId())).thenReturn(true);
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
+		Assertions.assertThrows(ProgettoException.class, () -> progettoService.aggiornaProgetto(new ProgettoRequest(), progetto1.getId()));
+		assertThatExceptionOfType(ProgettoException.class);
+		verify(progettoRepository, times(0)).save(progetto1);
+	}
+	
+	@Test
+	public void assegnaEnteGestoreProgettoTest() {
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
+		when(enteService.getEnteById(ente1.getId())).thenReturn(ente1);
+		progettoService.assegnaEnteGestoreProgetto(progetto1.getId(), ente1.getId());
+		assertThat(progetto1.getEnteGestoreProgetto().getNome()).isEqualTo(ente1.getNome());
+		assertThat(progetto1.getStatoGestoreProgetto()).isEqualTo("NON ATTIVO");
+		verify(progettoRepository, times(1)).save(progetto1);
+	}
+	
+	@Test
+	public void assegnaEnteGestoreProgettoKOTest() {
+		//test KO per progetto non presente
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(Optional.empty());
+		Assertions.assertThrows(ProgettoException.class, () -> progettoService.assegnaEnteGestoreProgetto(progetto1.getId(), ente1.getId()));
+		assertThatExceptionOfType(ProgettoException.class);
+		verify(progettoRepository, times(0)).save(progetto1);
+		
+		//test KO per ente non trovato
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
+		when(enteService.getEnteById(ente1.getId())).thenThrow(ResourceNotFoundException.class);
+		Assertions.assertThrows(ProgettoException.class, () -> progettoService.assegnaEnteGestoreProgetto(progetto1.getId(), ente1.getId()));
+		assertThatExceptionOfType(ProgettoException.class);
+		verify(progettoRepository, times(0)).save(progetto1);
+	}
+	
+	@Test
+	public void assegnaProgrammaAlProgettoTest() {
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
+		when(programmaService.getProgrammaById(programma1.getId())).thenReturn(programma1);
+		progettoService.assegnaProgrammaAlProgetto(progetto1.getId(), programma1.getId());
+		assertThat(progetto1.getProgramma().getNome()).isEqualTo(programma1.getNome());
+		verify(progettoRepository, times(1)).save(progetto1);
+	}
+	
+	@Test
+	public void assegnaProgrammaAlProgettoKOTest() {
+		//test KO per progetto non presente
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(Optional.empty());
+		Assertions.assertThrows(ProgettoException.class, () -> progettoService.assegnaProgrammaAlProgetto(progetto1.getId(), programma1.getId()));
+		assertThatExceptionOfType(ProgettoException.class);
+		verify(progettoRepository, times(0)).save(progetto1);
+		
+		//test KO per programma non presente
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
+		when(programmaService.getProgrammaById(programma1.getId())).thenThrow(ResourceNotFoundException.class);
+		Assertions.assertThrows(ProgettoException.class, () -> progettoService.assegnaProgrammaAlProgetto(progetto1.getId(), programma1.getId()));
+		assertThatExceptionOfType(ProgettoException.class);
+		verify(progettoRepository, times(0)).save(progetto1);
+	}
+	
+	@Test
+	public void cancellazioneProgettoTest() {
+		progetto1.setStato("NON ATTIVO");
+		List<ReferentiDelegatiEnteGestoreProgettoEntity> referentiDelegatiGestoreTest = new ArrayList<>();
+		List<ReferentiDelegatiEntePartnerDiProgettoEntity> referentiDelegatiPartnerTest = new ArrayList<>();
+		List<EnteSedeProgetto> enteSedeProgettoTest =  new ArrayList<>();
+		when(progettoRepository.existsById(progetto1.getId())).thenReturn(true);
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
+		when(referentiDelegatiEnteGestoreProgettoRepository.getReferentiDelegatiEnteGestoreProgettoByIdProgetto(progetto1.getId())).thenReturn(referentiDelegatiGestoreTest);
+		when(referentiDelegatiEntePartnerRepository.getReferentiDelegatiEnteGestoreProgettoByIdProgetto(progetto1.getId())).thenReturn(referentiDelegatiPartnerTest);
+		when(enteSedeProgettoRepository.getEnteSedeProgettoByIdProgetto(progetto1.getId())).thenReturn(enteSedeProgettoTest);
+		doAnswer(invocation -> {
+			List<ReferentiDelegatiEnteGestoreProgettoEntity> referentiDelegati = this.referentiDelegatiEnteGestoreProgettoRepository.getReferentiDelegatiEnteGestoreProgettoByIdProgetto(progetto1.getId());
+			return referentiDelegati;
+		}).when(referentiDelegatiEnteGestoreProgettoService).cancellaReferentiDelegatiProgetto(progetto1.getId());
+		doAnswer(invocation -> {
+			List<ReferentiDelegatiEntePartnerDiProgettoEntity> referentiDelegati = this.referentiDelegatiEntePartnerRepository.getReferentiDelegatiEnteGestoreProgettoByIdProgetto(progetto1.getId());
+			return referentiDelegati;
+		}).when(referentiDelegatiEntePartnerService).cancellaReferentiDelegatiPartner(progetto1.getId());
+		doAnswer(invocation -> {
+			List<EnteSedeProgetto> enteSedeProgetto = this.enteSedeProgettoRepository.getEnteSedeProgettoByIdProgetto(progetto1.getId());
+			return enteSedeProgetto;
+		}).when(enteSedeProgettoService).cancellaEnteSedeProgetto(progetto1.getId());
+		progettoService.cancellazioneProgetto(progetto1.getId());
+		verify(progettoRepository,times(1)).delete(progetto1);
+	}
+	
+	@Test
+	public void cancellazioneProgettoKOTest() {
+		//test KO per progetto non presente
+		when(progettoRepository.existsById(progetto1.getId())).thenReturn(false);
+		Assertions.assertThrows(ProgettoException.class, () -> progettoService.cancellazioneProgetto(progetto1.getId()));
+		assertThatExceptionOfType(ProgettoException.class);
+		verify(progettoRepository, times(0)).delete(progetto1);
+		
+		//test KO per progetto non cancellabile
+		when(progettoRepository.existsById(progetto1.getId())).thenReturn(true);
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
+		Assertions.assertThrows(ProgettoException.class, () -> progettoService.cancellazioneProgetto(progetto1.getId()));
+		assertThatExceptionOfType(ProgettoException.class);
+		verify(progettoRepository, times(0)).delete(progetto1);
+	}
+	
+	@Test
+	public void terminaProgettoTest() {
+		progetto1.setEnteGestoreProgetto(ente1);
+		List<ReferentiDelegatiEnteGestoreProgettoEntity> referentiDelegati = new ArrayList<>();
+		StoricoEnteGestoreProgettoEntity storicoEnteGestoreProgetto = new StoricoEnteGestoreProgettoEntity();
+		List<EntePartnerEntity> entiPartner = new ArrayList<>();
+		List<EnteSedeProgetto> entisediprogetto = new ArrayList<>();
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
+		when(referentiDelegatiEnteGestoreProgettoService.getReferentiEDelegatiProgetto(progetto1.getId())).thenReturn(referentiDelegati);
+		when(storicoEnteGestoreProgettoRepository.save(storicoEnteGestoreProgetto)).thenReturn(storicoEnteGestoreProgetto);
+		when(entePartnerService.getEntiPartnerByProgetto(progetto1.getId())).thenReturn(entiPartner);
+		when(enteSedeProgettoRepository.getEnteSedeProgettoByIdProgetto(progetto1.getId())).thenReturn(entisediprogetto);
+		doAnswer(invocation -> {
+			storicoEnteGestoreProgetto.setIdProgetto(progetto1.getId());
+			storicoEnteGestoreProgetto.setIdEnte(progetto1.getEnteGestoreProgetto().getId());
+			storicoEnteGestoreProgetto.setStato(StatoEnum.TERMINATO.getValue());
+			storicoEnteGestoreProgetto.setDataOraCreazione(new Date());
+			this.storicoEnteGestoreProgettoRepository.save(storicoEnteGestoreProgetto);
+			return storicoEnteGestoreProgetto;
+		}).when(storicoService).storicizzaEnteGestoreProgetto(progetto1);
+		doAnswer(invocation -> {
+			this.entePartnerService.getEntiPartnerByProgetto(progetto1.getId());
+			return entiPartner;
+		}).when(enteService).terminaEntiPartner(progetto1.getId());
+		doAnswer(invocation -> {
+			List<EnteSedeProgetto> enteSedeProgetto = this.enteSedeProgettoRepository.getEnteSedeProgettoByIdProgetto(progetto1.getId());
+			return enteSedeProgetto;
+			}).when(enteSedeProgettoService).cancellaOTerminaEnteSedeProgetto(progetto1.getId());
+		progettoService.terminaProgetto(progetto1.getId(), new Date());
+		assertThat(progetto1.getStatoGestoreProgetto()).isEqualTo("TERMINATO");
+		verify(progettoRepository, times(1)).save(progetto1);
+	}
+	
+	@Test
+	public void terminaProgettoKOTest() {
+		//test KO per progetto non presente
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(Optional.empty());
+		Assertions.assertThrows(ResourceNotFoundException.class, () -> progettoService.terminaProgetto(progetto1.getId(), new Date()));
+		assertThatExceptionOfType(ResourceNotFoundException.class);
+		verify(progettoRepository, times(0)).save(progetto1);
+		
+		//test KO per progetto non terminabile
+		progetto1.setStato("NON ATTIVO");
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
+		Assertions.assertThrows(ProgettoException.class, () -> progettoService.terminaProgetto(progetto1.getId(), new Date()));
+		assertThatExceptionOfType(ProgettoException.class);
+		verify(progettoRepository, times(0)).save(progetto1);
+	}
+	
+	@Test
+	public void getProgettiByIdProgramma() {
+		when(progettoRepository.findProgettiByIdProgramma(programma1.getId())).thenReturn(listaProgetti);
+		progettoService.getProgettiByIdProgramma(programma1.getId());
+		verify(progettoRepository, times(1)).findProgettiByIdProgramma(programma1.getId());
 	}
 }
