@@ -441,6 +441,7 @@ jobs:
           export ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY
           export IMAGE_TAG=$IMAGE_TAG
           export K8S_NAMESPACE=${{ secrets.K8S_NAMESPACE }}
+          export K8S_SERVICEACCOUNT=${{ secrets.K8S_SERVICEACCOUNT }}
           envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-programma-progetto' deployment.tmp.yaml
