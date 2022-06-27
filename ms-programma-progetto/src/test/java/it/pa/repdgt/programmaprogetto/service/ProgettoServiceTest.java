@@ -734,7 +734,7 @@ public class ProgettoServiceTest {
 	}
 	
 	@Test
-	public void terminaProgettoTest() {
+	public void terminaProgettoTest() throws Exception {
 		progetto1.setEnteGestoreProgetto(ente1);
 		List<ReferentiDelegatiEnteGestoreProgettoEntity> referentiDelegati = new ArrayList<>();
 		StoricoEnteGestoreProgettoEntity storicoEnteGestoreProgetto = new StoricoEnteGestoreProgettoEntity();
@@ -752,7 +752,7 @@ public class ProgettoServiceTest {
 			storicoEnteGestoreProgetto.setDataOraCreazione(new Date());
 			this.storicoEnteGestoreProgettoRepository.save(storicoEnteGestoreProgetto);
 			return storicoEnteGestoreProgetto;
-		}).when(storicoService).storicizzaEnteGestoreProgetto(progetto1);
+		}).when(storicoService).storicizzaEnteGestoreProgetto(progetto1, StatoEnum.TERMINATO.getValue());
 		doAnswer(invocation -> {
 			this.entePartnerService.getEntiPartnerByProgetto(progetto1.getId());
 			return entiPartner;

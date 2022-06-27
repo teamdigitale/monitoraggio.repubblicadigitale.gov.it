@@ -33,6 +33,9 @@ public class StoricoEnteGestoreProgettoEntity implements Serializable {
 	@Column(name = "ENTE_ID", nullable = false)
 	private Long idEnte;
 
+	@Column(name = "PROGRAMMA_ID", nullable = false)
+	private Long idProgramma;
+	
 
 	@Column(name = "PROGETTO_ID", nullable = false)
 	private Long idProgetto;
@@ -44,4 +47,8 @@ public class StoricoEnteGestoreProgettoEntity implements Serializable {
 	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column(name = "DATA_ORA_CREAZIONE", nullable = false)
 	private Date dataOraCreazione;
+	
+	@Temporal(value = TemporalType.TIMESTAMP)
+	@Column(name = "DATA_ATTIVAZIONE_ENTE", nullable = false)
+	private Date dataAttivazioneEnte;
 }

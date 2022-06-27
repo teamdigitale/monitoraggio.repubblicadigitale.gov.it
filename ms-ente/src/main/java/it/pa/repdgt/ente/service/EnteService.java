@@ -1036,7 +1036,7 @@ public class EnteService {
 	}
 	
 	@Transactional(rollbackOn = Exception.class)
-	public void terminaGestoreProgramma(Long idEnte, Long idProgramma) {
+	public void terminaGestoreProgramma(Long idEnte, Long idProgramma){
 		if(!this.esisteEnteById(idEnte)) {
 			String errorMessage = String.format("L'ente con id=%s non esiste", idEnte);
 			throw new EnteException(errorMessage);
@@ -1051,13 +1051,17 @@ public class EnteService {
 		referentiEDelegatiEnte.stream()
 							  .forEach(referenteODelegato -> {
 								  if(referenteODelegato.getStatoUtente().equals("ATTIVO")) {
-										this.terminaAssociazioneReferenteDelegatoGestoreProgramma(referenteODelegato, referenteODelegato.getCodiceRuolo());
+										this.terminaACascataAssociazioneReferenteDelegatoGestoreProgramma(referenteODelegato, referenteODelegato.getCodiceRuolo());
 								  }
 								  if(referenteODelegato.getStatoUtente().equals("NON ATTIVO")) {
 										this.cancellaAssociazioneReferenteODelegatoGestoreProgramma(referenteODelegato, referenteODelegato.getCodiceRuolo());
 								  }
 		});
-		this.storicoService.storicizzaEnteGestoreProgramma(programmaFetchDB);
+		try {
+			this.storicoService.storicizzaEnteGestoreProgramma(programmaFetchDB, StatoEnum.TERMINATO.getValue());
+		} catch (Exception e) {
+			throw new EnteException("Impossibile Storicizzare Ente");
+		}
 		programmaFetchDB.setEnteGestoreProgramma(null);
 		programmaFetchDB.setStatoGestoreProgramma(null);
 		this.programmaService.salvaProgramma(programmaFetchDB);
@@ -1079,13 +1083,17 @@ public class EnteService {
 		referentiEDelegatiEnte.stream()
 							  .forEach(referenteODelegato -> {
 								  if(referenteODelegato.getStatoUtente().equals("ATTIVO")) {
-										this.terminaAssociazioneReferenteDelegatoGestoreProgetto(referenteODelegato, referenteODelegato.getCodiceRuolo());
+										this.terminaACascataAssociazioneReferenteDelegatoGestoreProgetto(referenteODelegato, referenteODelegato.getCodiceRuolo());
 								  }
 								  if(referenteODelegato.getStatoUtente().equals("NON ATTIVO")) {
 										this.cancellaAssociazioneReferenteODelegatoGestoreProgetto(referenteODelegato, referenteODelegato.getCodiceRuolo());
 								  }
 		});
-		this.storicoService.storicizzaEnteGestoreProgetto(progettoFetchDB);
+		try {
+			this.storicoService.storicizzaEnteGestoreProgetto(progettoFetchDB, StatoEnum.TERMINATO.getValue());
+		} catch (Exception e) {
+			throw new EnteException("Impossibile Storicizzare Ente");
+		}
 		progettoFetchDB.setEnteGestoreProgetto(null);
 		progettoFetchDB.setStatoGestoreProgetto(null);
 		this.progettoService.salvaProgetto(progettoFetchDB);
@@ -1135,13 +1143,17 @@ public class EnteService {
 		referentiEDelegatiEnte.stream()
 							  .forEach(referenteODelegato -> {
 								  if(referenteODelegato.getStatoUtente().equals(StatoEnum.ATTIVO.getValue())) {
-										this.entePartnerService.terminaAssociazioneReferenteDelegatoEntePartner(referenteODelegato, referenteODelegato.getCodiceRuolo());
+										this.entePartnerService.terminaACascataAssociazioneReferenteDelegatoEntePartner(referenteODelegato, referenteODelegato.getCodiceRuolo());
 									}
 									if(referenteODelegato.getStatoUtente().equals(StatoEnum.NON_ATTIVO.getValue())) {
 										this.entePartnerService.cancellaAssociazioneReferenteODelegatoPartner(referenteODelegato, referenteODelegato.getCodiceRuolo());
 									}
 		});
-		this.storicoService.storicizzaEntePartner(entePartnerProgetto);
+		try {
+			this.storicoService.storicizzaEntePartner(entePartnerProgetto, StatoEnum.TERMINATO.getValue());
+		} catch (Exception e) {
+			throw new EnteException("Impossibile Storicizzare Ente");
+		}
 		entePartnerProgetto.setStatoEntePartner(StatoEnum.TERMINATO.getValue());
 		entePartnerProgetto.setTerminatoSingolarmente(Boolean.TRUE);
 		this.entePartnerService.salvaEntePartner(entePartnerProgetto);
@@ -1181,6 +1193,15 @@ public class EnteService {
 		referentiDelegatiEnteGestoreProgrammaEntity.setDataOraAggiornamento(new Date());
 		this.referentiDelegatiEnteGestoreProgrammaService.save(referentiDelegatiEnteGestoreProgrammaEntity);
 	}
+	
+	private void terminaACascataAssociazioneReferenteDelegatoGestoreProgramma(
+			ReferentiDelegatiEnteGestoreProgrammaEntity referentiDelegatiEnteGestoreProgrammaEntity,
+			String codiceRuolo) {
+		
+		referentiDelegatiEnteGestoreProgrammaEntity.setStatoUtente(StatoEnum.TERMINATO.getValue());
+		referentiDelegatiEnteGestoreProgrammaEntity.setDataOraAggiornamento(new Date());
+		this.referentiDelegatiEnteGestoreProgrammaService.save(referentiDelegatiEnteGestoreProgrammaEntity);
+	}
 
 	public void cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgetto(
 			@Valid ReferenteDelegatoGestoreProgettoRequest referenteDelegatoGestoreProgettoRequest) {
@@ -1210,6 +1231,13 @@ public class EnteService {
 		if (codiceRuolo.equalsIgnoreCase("REGP") && unicoReferenteODelegato) {
 			throw new EnteException("Impossibile cancellare associazione referente. E' l'unico referente ATTIVO del gestore progetto. Per eliminarlo procedere prima con l'associazione di un altro referente al gestore progetto.");
 		 }
+		referentiDelegatiEnteGestoreProgettoEntity.setStatoUtente(StatoEnum.TERMINATO.getValue());
+		referentiDelegatiEnteGestoreProgettoEntity.setDataOraAggiornamento(new Date());
+		this.referentiDelegatiEnteGestoreProgettoService.save(referentiDelegatiEnteGestoreProgettoEntity);
+	}
+	
+	private void terminaACascataAssociazioneReferenteDelegatoGestoreProgetto(
+			ReferentiDelegatiEnteGestoreProgettoEntity referentiDelegatiEnteGestoreProgettoEntity, String codiceRuolo) {
 		referentiDelegatiEnteGestoreProgettoEntity.setStatoUtente(StatoEnum.TERMINATO.getValue());
 		referentiDelegatiEnteGestoreProgettoEntity.setDataOraAggiornamento(new Date());
 		this.referentiDelegatiEnteGestoreProgettoService.save(referentiDelegatiEnteGestoreProgettoEntity);
