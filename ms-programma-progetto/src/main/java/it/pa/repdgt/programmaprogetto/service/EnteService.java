@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import it.pa.repdgt.programmaprogetto.exception.ProgrammaException;
 import it.pa.repdgt.programmaprogetto.exception.ResourceNotFoundException;
 import it.pa.repdgt.programmaprogetto.repository.EnteRepository;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
@@ -60,7 +61,11 @@ public class EnteService {
 		entiPartner.stream()
 				   .forEach(ente -> {
 					   if(ente.getStatoEntePartner().equals(StatoEnum.ATTIVO.getValue())) {
-						   this.storicoService.storicizzaEntePartner(ente);
+						   try {
+							this.storicoService.storicizzaEntePartner(ente, StatoEnum.TERMINATO.getValue());
+						} catch (Exception e) {
+							throw new ProgrammaException("Impossibile Storicizzare Ente");
+						}
 						   this.terminaEntePartner(ente);
 					   }
 					   if(ente.getStatoEntePartner().equals(StatoEnum.NON_ATTIVO.getValue())) {

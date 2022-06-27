@@ -51,6 +51,8 @@ public class ContestoServiceTest {
 	
 	UtenteEntity utente;
 	String codiceFiscale = "codiceFiscaleTest";
+	Long idProgramma = 1L;
+	Long idProgetto = 2L;
 	
 	@BeforeEach
 	public void setUp() {
@@ -61,8 +63,7 @@ public class ContestoServiceTest {
 		utente.setNome("");
 		utente.setTelefono("4554535");
 		utente.setStato("ATTIVO");
-		utente.setIntegrazione(true);
-		
+		utente.setIntegrazione(true);		
 	}
 	
 	@Setter
@@ -198,7 +199,10 @@ public class ContestoServiceTest {
 	}
 	@Test
 	public void verificaSceltaProfiloTest() {
-		
+//		List<String> listaRuoli = new ArrayList<>();
+//		listaRuoli.add("DTD");
+//		when(this.ruoloService.getRuoliByCodiceFiscaleUtente(codiceFiscale)).thenReturn(null);
+//		service.verificaSceltaProfilo(codiceFiscale, "DTD", idProgramma, idProgetto);
 	}
 	@Test
 	public void getProgettoProgrammaTest() {
