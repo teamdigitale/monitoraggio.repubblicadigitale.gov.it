@@ -247,7 +247,7 @@ public class EnteRestApi {
 	@ResponseStatus(code = HttpStatus.OK)
 	public void terminaGestoreProgetto(
 			@PathVariable(value = "idEnte") Long idEnte,
-			@PathVariable(value = "idProgetto") Long idProgetto) {
+			@PathVariable(value = "idProgetto") Long idProgetto) throws Exception {
 		this.enteService.terminaGestoreProgetto(idEnte, idProgetto);
 	}
 

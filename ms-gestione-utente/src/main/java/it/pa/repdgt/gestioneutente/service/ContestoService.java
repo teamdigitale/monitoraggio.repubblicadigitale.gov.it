@@ -31,6 +31,7 @@ import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.service.storico.StoricoService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -50,6 +51,12 @@ public class ContestoService implements RuoliUtentiConstants{
 	private ReferentiDelegatiEnteGestoreProgettoService referentiDelegatiEnteGestoreProgettoService;
 	@Autowired 
 	private EmailService emailService;
+	@Autowired
+	private StoricoService storicoService;
+	@Autowired
+	private ProgettoService progettoService;
+	@Autowired
+	private EntePartnerService entePartnerService;
 
 	public UtenteEntity creaContesto(final String codiceFiscale) {
 		return this.utenteService.getUtenteEagerByCodiceFiscale(codiceFiscale);
@@ -157,6 +164,11 @@ public class ContestoService implements RuoliUtentiConstants{
 				}
 				if(StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(programma.getStatoGestoreProgramma())) {
 					contestoRepository.updateStatoGestoreProgrammaToAttivo(idProgramma);
+					try {
+						storicoService.storicizzaEnteGestoreProgramma(programma, StatoEnum.ATTIVO.getValue());
+					} catch (Exception e) {
+						throw new ContestoException("ERRORE: Impossibile storicizzare ente");
+					}
 				}
 				if(!StatoEnum.TERMINATO.getValue().equalsIgnoreCase(programma.getStato())) {
 					contestoRepository.attivaREGDEG(idProgramma, codiceFiscaleUtente, codiceRuoloUtente);
@@ -191,8 +203,14 @@ public class ContestoService implements RuoliUtentiConstants{
 				//aggiorno lo stato dell'ente gestore progetto ad ATTIVO
 				ProgettoEnteProjection progetto = contestoRepository.getProgettoEnteGestoreProgetto(idProgetto, idProgramma);
 				
-				if(StatoEnum.NON_ATTIVO.getValue().equals(progetto.getStato()))
+				if(StatoEnum.NON_ATTIVO.getValue().equals(progetto.getStato())) {
 					contestoRepository.updateStatoGestoreProgettoInAttivo(idProgetto);
+					try {
+						storicoService.storicizzaEnteGestoreProgetto(progettoService.getProgettoById(idProgetto), StatoEnum.ATTIVO.getValue());
+					} catch (Exception e) {
+						throw new ContestoException("ERRORE: Impossibile storicizzare ente");
+					}
+				}
 				contestoRepository.attivaREGPDEGP(idProgetto, codiceFiscaleUtente, codiceRuoloUtente);
 				break;
 			case REPP:
@@ -208,8 +226,14 @@ public class ContestoService implements RuoliUtentiConstants{
 				//aggiorno lo stato dell'ente PARTNER ad ATTIVO
 				listaProgettoEnte.forEach(progettoEnte -> {
 					//solo per le coppie progetto - ente partner in stato non attivo le porto in attivo
-					if(StatoEnum.NON_ATTIVO.getValue().equals(progettoEnte.getStato()))
+					if(StatoEnum.NON_ATTIVO.getValue().equals(progettoEnte.getStato())) {
 						contestoRepository.updateStatoEntePartnerProgettoToAttivo(progettoEnte.getIdProgetto(), progettoEnte.getIdEnte());
+						try {
+							storicoService.storicizzaEntePartner(entePartnerService.findEntePartnerByIdProgettoAndIdEnte(progettoEnte.getIdEnte(), progettoEnte.getIdProgetto()), StatoEnum.ATTIVO.getValue());
+						} catch (Exception e) {
+							throw new ContestoException("ERRORE: Impossibile storicizzare ente");
+						}
+					}
 					//a prescindere porto ad ATTIVO lo stato dell'utente come REPP/DEPP per quel progetto ente partner all'interno del programma che ho scelto
 					contestoRepository.attivaREPPDEPP(progettoEnte.getIdProgetto(), progettoEnte.getIdEnte(), codiceFiscaleUtente, codiceRuoloUtente);
 					});

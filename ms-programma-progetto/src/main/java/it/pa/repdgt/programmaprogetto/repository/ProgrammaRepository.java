@@ -33,7 +33,7 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 			+ "		ON programma.ID_ENTE_GESTORE_PROGRAMMA = ente.ID "
 			+ " WHERE  1=1 "
 		    + " 	AND	 ( :criterioRicerca IS NULL  "
-		    + "			OR programma.CODICE = :criterioRicerca "
+		    + "			OR programma.CUP = :criterioRicerca "
 		    + "			OR UPPER( programma.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
 	        + "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
 			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) ) "

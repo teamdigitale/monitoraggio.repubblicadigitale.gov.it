@@ -552,7 +552,11 @@ public class ProgrammaService {
 		referentiEDelegati.stream()
 						  .forEach(this.referentiDelegatiEnteGestoreProgrammaService::cancellaOTerminaAssociazioneReferenteDelegatoProgramma);
 		programmaFetch.setStato(StatoEnum.TERMINATO.getValue());
-		this.storicoService.storicizzaEnteGestoreProgramma(programmaFetch);
+		try {
+			this.storicoService.storicizzaEnteGestoreProgramma(programmaFetch, StatoEnum.TERMINATO.getValue());
+		} catch (Exception e) {
+			throw new ProgrammaException("Impossibile Storicizzare Ente");
+		}
 		programmaFetch.setStatoGestoreProgramma(StatoEnum.TERMINATO.getValue());
 		programmaFetch.setDataOraTerminazioneProgramma(dataTerminazione);
 		this.salvaProgramma(programmaFetch);

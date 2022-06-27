@@ -657,7 +657,7 @@ public class ProgrammaServiceTest {
 	}
 	
 	@Test
-	public void terminaProgrammaTest() {
+	public void terminaProgrammaTest() throws Exception {
 		ReferentiDelegatiEnteGestoreProgrammaKey referentiDelegatiKey = new ReferentiDelegatiEnteGestoreProgrammaKey(programma1.getId(), "DSARTN89D21N303N", ente1.getId());
 		ReferentiDelegatiEnteGestoreProgrammaEntity referentiDelegati = new ReferentiDelegatiEnteGestoreProgrammaEntity();
 		referentiDelegati.setId(referentiDelegatiKey);
@@ -674,7 +674,7 @@ public class ProgrammaServiceTest {
 			storico.setStato(StatoEnum.TERMINATO.getValue());
 			storico.setDataOraCreazione(new Date());
 			return this.storicoEnteGestoreProgrammaRepository.save(storico);
-		}).when(storicoService).storicizzaEnteGestoreProgramma(programma1);
+		}).when(storicoService).storicizzaEnteGestoreProgramma(programma1, StatoEnum.TERMINATO.getValue());
 		this.programmaService.terminaProgramma(programma1.getId(), new Date());
 		assertThat(programma1.getStato()).isEqualTo("TERMINATO");
 		verify(programmaRepository, atLeastOnce()).save(programma1);
