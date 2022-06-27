@@ -283,4 +283,11 @@ public class EntePartnerService {
 		referenteDelegatoEntePartnerDiProgettoEntity.setDataOraAggiornamento(new Date());
 		this.referentiDelegatiEntePartnerDiProgettoService.save(referenteDelegatoEntePartnerDiProgettoEntity);
 	}
+	
+	public void terminaACascataAssociazioneReferenteDelegatoEntePartner(
+			ReferentiDelegatiEntePartnerDiProgettoEntity referenteDelegatoEntePartnerDiProgettoEntity, String codiceRuolo) {
+		referenteDelegatoEntePartnerDiProgettoEntity.setStatoUtente(StatoEnum.TERMINATO.getValue());
+		referenteDelegatoEntePartnerDiProgettoEntity.setDataOraAggiornamento(new Date());
+		this.referentiDelegatiEntePartnerDiProgettoService.save(referenteDelegatoEntePartnerDiProgettoEntity);
+	}
 }

@@ -16,11 +16,11 @@ import lombok.Setter;
 public class SceltaProfiloParam {
 
 	@NotBlank(message = "Deve essere non null e non blank")
-	@JsonProperty(value = "codiceRuoloUtente", required = true)
+	@JsonProperty(value = "codiceRuolo", required = true)
 	private String codiceRuolo;
 	
 	@NotBlank(message = "Deve essere non null e non blank")
-	@JsonProperty(value = "codiceFiscaleUtente", required = true)
+	@JsonProperty(value = "cfUtente", required = true)
 	private String cfUtente;
 
 	// NB: idProgramma=null SSE ruolo utenteLoggato = {DTD, DSCU, ruolo_custom}

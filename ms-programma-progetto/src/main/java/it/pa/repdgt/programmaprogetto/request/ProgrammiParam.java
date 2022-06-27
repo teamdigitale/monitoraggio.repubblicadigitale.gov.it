@@ -19,6 +19,6 @@ public class ProgrammiParam extends SceltaProfiloParam implements Serializable {
 	private static final long serialVersionUID = -1681717957321564055L;
 
 	@NotNull(message = "Deve essere non null")
-	@JsonProperty(value = "filtroProgrammi", required = true)
+	@JsonProperty(value = "filtroRequest", required = true)
 	private FiltroRequest filtroRequest;
 }

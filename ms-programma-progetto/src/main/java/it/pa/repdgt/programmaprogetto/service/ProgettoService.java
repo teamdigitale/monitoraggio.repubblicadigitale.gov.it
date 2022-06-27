@@ -450,7 +450,11 @@ public class ProgettoService {
 		//se sono ATTIVI li termino, se sono NON ATTIVI li cancello
 		referentiEDelegatiProgetto.forEach(this.referentiDelegatiEnteGestoreProgettoService::cancellaOTerminaAssociazioneReferenteDelegatoProgetto);
 		progettoDBFetch.setStato(StatoEnum.TERMINATO.getValue());
-		this.storicoService.storicizzaEnteGestoreProgetto(progettoDBFetch);
+		try {
+			this.storicoService.storicizzaEnteGestoreProgetto(progettoDBFetch, StatoEnum.TERMINATO.getValue());
+		} catch (Exception e) {
+			throw new ProgettoException("Impossibile Storicizzare Ente");
+		}
 		this.enteService.terminaEntiPartner(idProgetto);
 		this.enteSedeProgettoService.cancellaOTerminaEnteSedeProgetto(idProgetto);
 		progettoDBFetch.setStatoGestoreProgetto(StatoEnum.TERMINATO.getValue());
