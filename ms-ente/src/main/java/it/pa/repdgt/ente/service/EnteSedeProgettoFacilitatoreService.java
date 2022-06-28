@@ -22,6 +22,7 @@ import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
+import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import lombok.extern.slf4j.Slf4j;
 
@@ -61,7 +62,7 @@ public class EnteSedeProgettoFacilitatoreService {
 		Long idSede = enteSedeProgettoFacilitatoreRequest.getIdSede();
 		Long idEnte = enteSedeProgettoFacilitatoreRequest.getIdEnte();
 		Long idProgetto = enteSedeProgettoFacilitatoreRequest.getIdProgetto();
-		String codiceRuolo = enteSedeProgettoFacilitatoreRequest.getCodiceRuolo();
+		String codiceRuolo;
 		
 		// verifico se utente esiste
 		boolean esisteUtente = this.utenteService.esisteUtenteByCodiceFiscale(codiceFiscaleUtente);
@@ -80,9 +81,18 @@ public class EnteSedeProgettoFacilitatoreService {
 			throw new EnteSedeProgettoFacilitatoreException(errorMessage);
 		}
 		
+		final ProgettoEntity progettoDBFEtch = this.progettoService.getProgettoById(idProgetto);
+		
+		if(PolicyEnum.RFD.getValue().equals(progettoDBFEtch.getProgramma().getPolicy().getValue())) {
+			codiceRuolo = "FAC";
+		} else {
+			codiceRuolo = "VOL";
+		}
+		
 		EnteSedeProgettoFacilitatoreKey id = new EnteSedeProgettoFacilitatoreKey(idEnte, idSede, idProgetto, codiceFiscaleUtente);
 		EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatore = new EnteSedeProgettoFacilitatoreEntity();
 		enteSedeProgettoFacilitatore.setId(id);
+		enteSedeProgettoFacilitatore.setStatoUtente(StatoEnum.NON_ATTIVO.getValue());
 		enteSedeProgettoFacilitatore.setRuoloUtente(codiceRuolo);
 		if(this.enteSedeProgettoFacilitatoreRepository.existsById(id)) {
 			String messaggioErrore = String.format("Impossibile assegnare facilitatore/volontario a ente, sede, progetto perchè l'utente con codice fiscale =%s è già facilitatore/volontario", codiceFiscaleUtente);
@@ -101,7 +111,6 @@ public class EnteSedeProgettoFacilitatoreService {
 		
 		// controllo se progetto con id progetto è NON ATTIVO --> passa ad attivabile 
 		// perchè e' stato associato il primo facilitatore a quel progetto per qull'ente su quella sede
-		final ProgettoEntity progettoDBFEtch = this.progettoService.getProgettoById(idProgetto);
 		if(progettoDBFEtch.getStato().equalsIgnoreCase(StatoEnum.NON_ATTIVO.getValue())) {
 			// aggiornare lo stato del progetto da NON ATTIVO a ATTIVABILE
 			progettoDBFEtch.setStato(StatoEnum.ATTIVABILE.getValue());
@@ -148,7 +157,15 @@ public class EnteSedeProgettoFacilitatoreService {
 		Long idSede = enteSedeProgettoFacilitatoreRequest.getIdSede();
 		Long idEnte = enteSedeProgettoFacilitatoreRequest.getIdEnte();
 		Long idProgetto = enteSedeProgettoFacilitatoreRequest.getIdProgetto();
-		String codiceRuolo = enteSedeProgettoFacilitatoreRequest.getCodiceRuolo();
+		String codiceRuolo;
+		
+		final ProgettoEntity progettoDBFEtch = this.progettoService.getProgettoById(idProgetto);
+		
+		if(PolicyEnum.RFD.getValue().equals(progettoDBFEtch.getProgramma().getPolicy().getValue())) {
+			codiceRuolo = "FAC";
+		} else {
+			codiceRuolo = "VOL";
+		}
 		
 		EnteSedeProgettoFacilitatoreKey id = new EnteSedeProgettoFacilitatoreKey(idEnte, idSede, idProgetto, codiceFiscaleUtente);
 		if(this.enteSedeProgettoFacilitatoreRepository.findById(id).get().getStatoUtente().equals(StatoEnum.NON_ATTIVO.getValue())) {

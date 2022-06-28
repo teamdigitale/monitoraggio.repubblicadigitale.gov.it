@@ -128,7 +128,7 @@ public class ProgettoMapper {
 		progetto.setNome(nuovoProgettoRequest.getNome());		
 		progetto.setNomeBreve(nuovoProgettoRequest.getNomeBreve());
 		progetto.setCup(nuovoProgettoRequest.getCup());
-		progetto.setDataInizioProgetto(nuovoProgettoRequest.getDataInizioProgetto());
+		progetto.setDataInizioProgetto(nuovoProgettoRequest.getDataInizio());
 		progetto.setDataFineProgetto(nuovoProgettoRequest.getDataFineProgetto());
 		//Numero Target Punti di Facilitazione
 		progetto.setNPuntiFacilitazioneTarget1(nuovoProgettoRequest.getNPuntiFacilitazioneTarget1());
@@ -187,7 +187,7 @@ public class ProgettoMapper {
 		progettoFetch.setNome(progettoRequest.getNome());
 		progettoFetch.setNomeBreve(progettoRequest.getNomeBreve());
 		progettoFetch.setCup(progettoRequest.getCup());
-		progettoFetch.setDataInizioProgetto(progettoRequest.getDataInizioProgetto());
+		progettoFetch.setDataInizioProgetto(progettoRequest.getDataInizio());
 		progettoFetch.setDataFineProgetto(progettoRequest.getDataFineProgetto());
 		//Numero Target Punti di Facilitazione
 		progettoFetch.setNPuntiFacilitazioneTarget1(progettoRequest.getNPuntiFacilitazioneTarget1());

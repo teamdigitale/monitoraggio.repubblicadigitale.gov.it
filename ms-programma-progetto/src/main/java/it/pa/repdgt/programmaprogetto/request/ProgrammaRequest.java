@@ -39,14 +39,14 @@ public class ProgrammaRequest implements Serializable {
 	private PolicyEnum policy;
 	
 	// 'Data Inizio' della scheda Informazioni Generali del Programma
-	@JsonProperty(value = "dataInizioProgramma", required = true)
+	@JsonProperty(value = "dataInizio", required = true)
 	@NotNull(message = "Deve essere non null")
-	private Date dataInizioProgramma;
+	private Date dataInizio;
 	
 	// 'Data Fine' della scheda Informazioni Generali del Programma
-	@JsonProperty(value = "dataFineProgramma", required = true)
+	@JsonProperty(value = "dataFine", required = true)
 	@NotNull(message = "Deve essere non null")
-	private Date dataFineProgramma;
+	private Date dataFine;
 	
 	// 'Bando' della scheda Informazioni Generali del Programma
 	@JsonProperty(value = "bando", required = false)

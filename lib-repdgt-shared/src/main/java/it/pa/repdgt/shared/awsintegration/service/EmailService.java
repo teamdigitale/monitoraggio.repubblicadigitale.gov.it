@@ -26,7 +26,7 @@ public class EmailService {
 			@NotNull final String nomeTemplateHtml) {
 		try {
 			GetEmailTemplateResponse response= this.pinpoint.getClient().getEmailTemplate(GetEmailTemplateRequest.builder().templateName(nomeTemplateHtml).build());
-			String html = response.emailTemplateResponse().htmlPart();
+			String html = String.format(response.emailTemplateResponse().htmlPart(), "NomeUtente");
 			final SendMessagesRequest richiestaInvioEmail = this.pinpoint.creaRichiestaInvioEmail(oggetto, indirizzoEmailDestinatario, html);
 			final SendMessagesResponse  rispostaDaRichiestaInvioEmail = this.pinpoint.getClient().sendMessages(richiestaInvioEmail);
 			log.info("sendMessagesResponse = {}", rispostaDaRichiestaInvioEmail);

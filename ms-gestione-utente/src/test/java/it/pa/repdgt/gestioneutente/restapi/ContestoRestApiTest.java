@@ -49,52 +49,6 @@ public class ContestoRestApiTest{
 	ObjectMapper objectMapper;
 	
 	@Test
-	public void creaContestoTest() throws Exception {
-		
-		CreaContestoRequest creaContestoRequest = new CreaContestoRequest();
-		creaContestoRequest.setCodiceFiscale("provaCodiceFiscale");
-		
-		UtenteEntity utente = new UtenteEntity();
-		utente.setCodiceFiscale("provaCodiceFiscale");
-		utente.setCognome("");
-		utente.setEmail("a@a.com");
-		utente.setNome("");
-		utente.setTelefono("4554535");
-		utente.setStato("ATTIVO");
-		utente.setIntegrazione(true);
-		
-		List<RuoloEntity> ruoli = new ArrayList<>();
-		RuoloEntity ruolo = new RuoloEntity();
-		ruolo.setCodice("DTD");
-		ruolo.setNome("");
-		
-		ruoli.add(ruolo);
-		
-		utente.setRuoli(ruoli);
-		
-		
-	    when(this.contestoService.creaContesto("provaCodiceFiscale")).thenReturn(utente);
-
-		this.mockMvc
-		.perform(
-				post("/contesto")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(creaContestoRequest))
-				)
-		.andDo(print())
-		.andExpect(status()
-				.isOk());
-		
-		this.mockMvc
-		.perform(
-				post("/contesto")
-				)
-		.andDo(print())
-		.andExpect(status()
-				.is5xxServerError());
-	}
-	
-	@Test
 	public void sceltaProfiloTest() throws Exception {
 		
 		ProfilazioneRequest utenteRequest = new ProfilazioneRequest();

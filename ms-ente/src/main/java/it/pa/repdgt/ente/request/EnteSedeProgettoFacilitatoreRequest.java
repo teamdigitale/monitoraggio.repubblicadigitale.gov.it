@@ -20,11 +20,6 @@ public class EnteSedeProgettoFacilitatoreRequest{
 	@JsonProperty(value = "idProgetto", required = true)
 	private Long idProgetto;
 	
-	//Facilitatore o Volontario (FAC o VOL)
-	@NotNull
-	@JsonProperty(value = "codiceRuolo", required = true)
-	private String codiceRuolo;	
-	
 	@JsonProperty(value = "tipoContratto", required = true)
 	private String tipoContratto;
 	
