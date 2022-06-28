@@ -39,7 +39,7 @@ public class EnteSedeProgettoService {
 		this.enteSedeProgettoRepository.delete(enteSedeProgettoDBFetch);
 	}
 	
-	private EnteSedeProgetto getAssociazioneEnteSedeProgetto(Long idSede, Long idEnte, Long idProgetto) {
+	public EnteSedeProgetto getAssociazioneEnteSedeProgetto(Long idSede, Long idEnte, Long idProgetto) {
 		EnteSedeProgettoKey id = new EnteSedeProgettoKey(idEnte, idSede, idProgetto);
 		return this.enteSedeProgettoRepository.findById(id).get();
 	}

@@ -21,6 +21,14 @@ public class GruppoService {
 				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore));
 	}
 	
+	public GruppoEntity getGruppoByCodiceImpl(String codiceGruppo) {
+		try {
+			return getGruppoByCodice(codiceGruppo);
+		}catch(Exception e) {
+			return null;
+		}	
+	}
+	
 	public List<GruppoEntity> getGruppiByCodiciGruppi(List<String> codiciGruppi) {
 		return this.gruppoRepository.findAllById(codiciGruppi);
 	}
@@ -42,7 +50,7 @@ public class GruppoService {
 		return codiciGruppi
 				.stream()
 				.map(codiceGruppo -> {
-					boolean existGruppo = this.getGruppoByCodice(codiceGruppo) != null;
+					boolean existGruppo = this.getGruppoByCodiceImpl(codiceGruppo) != null;
 					return existGruppo;
 				 })
 				.filter(Boolean.TRUE::equals)

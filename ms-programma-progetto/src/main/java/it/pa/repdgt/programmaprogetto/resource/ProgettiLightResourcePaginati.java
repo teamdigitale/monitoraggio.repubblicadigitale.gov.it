@@ -17,7 +17,7 @@ import lombok.Setter;
 public class ProgettiLightResourcePaginati implements Serializable {
 	private static final long serialVersionUID = 2008287271858904552L;
 
-	@JsonProperty(value = "progettiLight")
+	@JsonProperty(value = "progetti")
 	private List<ProgettoLightResource> listaProgettiLight;
 	
 	@JsonProperty(value = "numeroPagine")

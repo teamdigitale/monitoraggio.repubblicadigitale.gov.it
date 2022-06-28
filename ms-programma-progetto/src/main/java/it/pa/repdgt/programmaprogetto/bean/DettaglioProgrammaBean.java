@@ -13,8 +13,8 @@ import lombok.Setter;
 public class DettaglioProgrammaBean {
 	private String nome;
 	private String nomeBreve;
-	private Date dataInizioProgramma;
-	private Date dataFineProgramma;
+	private Date dataInizio;
+	private Date dataFine;
 	private String bando;
 	private String cup;
 	

@@ -16,6 +16,6 @@ import lombok.Setter;
 public class ProgettiParam extends SceltaProfiloParam {
 	
 	@NotNull(message = "Deve essere non null")
-	@JsonProperty(value = "filtroProgetti")
+	@JsonProperty(value = "filtroRequest")
 	private ProgettoFiltroRequest filtroRequest;
 }

@@ -55,8 +55,8 @@ public class ProgrammaMapper {
 		programma.setNome(nuovoProgrammaRequest.getNome());
 		programma.setNomeBreve(nuovoProgrammaRequest.getNomeBreve());
 		programma.setPolicy(nuovoProgrammaRequest.getPolicy());
-		programma.setDataInizioProgramma(nuovoProgrammaRequest.getDataInizioProgramma());
-		programma.setDataFineProgramma(nuovoProgrammaRequest.getDataFineProgramma());
+		programma.setDataInizioProgramma(nuovoProgrammaRequest.getDataInizio());
+		programma.setDataFineProgramma(nuovoProgrammaRequest.getDataFine());
 		programma.setBando(nuovoProgrammaRequest.getBando());
 		programma.setCup(nuovoProgrammaRequest.getCup());
 		//Numero Target Punti di Facilitazione
@@ -143,8 +143,8 @@ public class ProgrammaMapper {
 		programmaFetch.setNome(programmaRequest.getNome());
 		programmaFetch.setNomeBreve(programmaRequest.getNomeBreve());
 		programmaFetch.setPolicy(programmaRequest.getPolicy());
-		programmaFetch.setDataInizioProgramma(programmaRequest.getDataInizioProgramma());
-		programmaFetch.setDataFineProgramma(programmaRequest.getDataFineProgramma());
+		programmaFetch.setDataInizioProgramma(programmaRequest.getDataInizio());
+		programmaFetch.setDataFineProgramma(programmaRequest.getDataFine());
 		programmaFetch.setBando(programmaRequest.getBando());
 		programmaFetch.setCup(programmaRequest.getCup());
 		//Numero Target Punti di Facilitazione
@@ -203,8 +203,8 @@ public class ProgrammaMapper {
 		
 		dettaglioProgramma.setNome(programmaFetchDB.getNome());
 		dettaglioProgramma.setNomeBreve(programmaFetchDB.getNomeBreve());
-		dettaglioProgramma.setDataInizioProgramma(programmaFetchDB.getDataInizioProgramma());
-		dettaglioProgramma.setDataFineProgramma(programmaFetchDB.getDataFineProgramma());
+		dettaglioProgramma.setDataInizio(programmaFetchDB.getDataInizioProgramma());
+		dettaglioProgramma.setDataFine(programmaFetchDB.getDataFineProgramma());
 		dettaglioProgramma.setBando(programmaFetchDB.getBando());
 		dettaglioProgramma.setCup(programmaFetchDB.getCup());
 		//Numero Target Punti di Facilitazione

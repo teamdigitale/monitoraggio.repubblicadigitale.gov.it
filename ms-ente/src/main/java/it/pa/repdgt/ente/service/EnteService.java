@@ -774,28 +774,6 @@ public class EnteService {
 		return schedaEnteGestoreProgetto;
 	}
 
-	// MI SERVE
-	@LogMethod
-	@LogExecutionTime
-	public static boolean esisteAlmenoUnProgettoAttivo (EnteEntity ente) {
-		return true;
-//		return ente.getProgettiCheGestisco()
-//				   .stream()
-//				   .filter(progetto -> ATTIVO.equals(progetto.getStato()) || progetto.getStato() == null)
-//				   .count() > 0;
-	}
-	
-	// MI SERVE
-	@LogMethod
-	@LogExecutionTime
-	public static boolean esisteAlmenoUnProgrammaAttivo (EnteEntity ente) {
-//		return ente.getProgrammiCheGestisco()
-//				   .stream()
-//				   .filter(programma -> ATTIVO.equals(programma.getStato()) || programma.getStato() == null)
-//				   .count() > 0;
-		return true;
-	}
-
 	public SchedaEnteBean getSchedaEnteById(Long idEnte) {
 		String errorMessage = String.format("Non esiste nessun ente con id = %s ", idEnte);
 		EnteEntity ente = this.enteRepository.findById(idEnte).orElseThrow(() -> new EnteException(errorMessage));

@@ -43,8 +43,8 @@ public class ProgrammaRestApiMockMvcTest{
 		
 		ProgrammaRequest nuovoProgrammaRequest = new ProgrammaRequest();
 		nuovoProgrammaRequest.setCup("3453454");
-		nuovoProgrammaRequest.setDataFineProgramma(new Date());
-		nuovoProgrammaRequest.setDataInizioProgramma(new Date());
+		nuovoProgrammaRequest.setDataFine(new Date());
+		nuovoProgrammaRequest.setDataInizio(new Date());
 		nuovoProgrammaRequest.setNome("programmaTestcrea");
 		nuovoProgrammaRequest.setNomeBreve("programmaTestcrea");
 		nuovoProgrammaRequest.setPolicy(PolicyEnum.RFD);
