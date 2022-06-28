@@ -1,6 +1,7 @@
 package it.pa.repdgt.ente.service;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,7 +30,9 @@ import it.pa.repdgt.ente.repository.EntePartnerRepository;
 import it.pa.repdgt.ente.repository.EnteRepository;
 import it.pa.repdgt.ente.repository.ProgrammaRepository;
 import it.pa.repdgt.ente.request.FiltroRequest;
+import it.pa.repdgt.ente.request.ReferenteDelegatoGestoreProgrammaRequest;
 import it.pa.repdgt.ente.restapi.param.EntiPaginatiParam;
+import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.EntePartnerEntity;
 import it.pa.repdgt.shared.entity.EnteSedeProgetto;
@@ -48,9 +52,14 @@ import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEnteGestoreProgettoKey;
 import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEnteGestoreProgrammaKey;
 import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEntePartnerDiProgettoKey;
 import it.pa.repdgt.shared.entity.key.UtenteXRuoloKey;
+import it.pa.repdgt.shared.entity.storico.StoricoEnteGestoreProgettoEntity;
+import it.pa.repdgt.shared.entity.storico.StoricoEnteGestoreProgrammaEntity;
+import it.pa.repdgt.shared.entity.storico.StoricoEntePartnerEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.exception.StoricoEnteException;
+import it.pa.repdgt.shared.repository.storico.StoricoEnteGestoreProgettoRepository;
 import it.pa.repdgt.shared.service.storico.StoricoService;
 
 @ExtendWith(MockitoExtension.class)
@@ -58,6 +67,8 @@ public class EnteServiceTest {
 	
 	@Mock
 	private RuoloService ruoloService;
+	@Mock
+	private UtenteService utenteService;
 	@Mock
 	private UtenteXRuoloService utenteXRuoloService;
 	@Mock
@@ -79,11 +90,15 @@ public class EnteServiceTest {
 	@Mock
 	private StoricoService storicoService;
 	@Mock
+	private EmailService emailService;
+	@Mock
 	private EnteRepository enteRepository;
 	@Mock
 	private EntePartnerRepository entePartnerRepository;
 	@Mock
 	private ProgrammaRepository programmaRepository;
+	@Mock
+	private StoricoEnteGestoreProgettoRepository storicoEnteGestoreProgettoRepository;
 	
 	@Autowired
 	@InjectMocks
@@ -106,6 +121,7 @@ public class EnteServiceTest {
 	UtenteXRuolo utenteRuolo1;
 	UtenteXRuoloKey utenteRuolo2Key;
 	UtenteXRuolo utenteRuolo2;
+	ReferenteDelegatoGestoreProgrammaRequest referenteDelegatoGestoreProgrammaRequest;
 	ReferentiDelegatiEnteGestoreProgrammaKey referentiDelegatiEnteGestoreProgrammaKey;
 	ReferentiDelegatiEnteGestoreProgrammaKey referentiDelegatiEnteGestoreProgrammaKey2;
 	ReferentiDelegatiEnteGestoreProgrammaEntity referentiDelegatiEnteGestoreProgrammaEntity;
@@ -117,7 +133,9 @@ public class EnteServiceTest {
 	ReferentiDelegatiEnteGestoreProgettoEntity referentiDelegatiEnteGestoreProgettoEntity2;
 	List<ReferentiDelegatiEnteGestoreProgettoEntity> listaReferentiDelegatiEnteGestoreProgetto;
 	ReferentiDelegatiEntePartnerDiProgettoKey referentiDelegatiEntePartnerDiProgettoKey;
+	ReferentiDelegatiEntePartnerDiProgettoKey referentiDelegatiEntePartnerDiProgettoKey2;
 	ReferentiDelegatiEntePartnerDiProgettoEntity referentiDelegatiEntePartnerDiProgettoEntity;
+	ReferentiDelegatiEntePartnerDiProgettoEntity referentiDelegatiEntePartnerDiProgettoEntity2;
 	List<ReferentiDelegatiEntePartnerDiProgettoEntity> listaReferentiDelegatiEntePartnerDiProgetto;
 	EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey;
 	EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatoreEntity;
@@ -136,6 +154,9 @@ public class EnteServiceTest {
 	List<EnteDto> entiDto;
 	Integer currPage;
 	Integer pageSize;
+	Optional<StoricoEnteGestoreProgrammaEntity> storicoEnteGestoreProgrammaOptional;
+	Optional<StoricoEnteGestoreProgettoEntity> storicoEnteGestoreProgettoOptional;
+	Optional<StoricoEntePartnerEntity> storicoEntePartnerDiProgettoOptional;
 
 	@BeforeEach
 	public void setup() {
@@ -169,6 +190,7 @@ public class EnteServiceTest {
 		utente1 = new UtenteEntity();
 		utente1.setId(1L);
 		utente1.setCodiceFiscale("ABCABC12A12A123A");
+		utente1.setEmail("abcabc@abc.abc");
 		utente1.setRuoli(listaRuoli);
 		utenteRuolo1Key = new UtenteXRuoloKey(utente1.getCodiceFiscale(), ruolo1.getCodice());
 		utenteRuolo1 = new UtenteXRuolo();
@@ -202,8 +224,13 @@ public class EnteServiceTest {
 		referentiDelegatiEntePartnerDiProgettoEntity = new ReferentiDelegatiEntePartnerDiProgettoEntity();
 		referentiDelegatiEntePartnerDiProgettoEntity.setId(referentiDelegatiEntePartnerDiProgettoKey);
 		referentiDelegatiEntePartnerDiProgettoEntity.setCodiceRuolo(RuoloUtenteEnum.REPP.toString());
+		referentiDelegatiEntePartnerDiProgettoKey2 = new ReferentiDelegatiEntePartnerDiProgettoKey(progetto1.getId(), ente1.getId(), utente1.getCodiceFiscale());
+		referentiDelegatiEntePartnerDiProgettoEntity2 = new ReferentiDelegatiEntePartnerDiProgettoEntity();
+		referentiDelegatiEntePartnerDiProgettoEntity2.setId(referentiDelegatiEntePartnerDiProgettoKey2);
+		referentiDelegatiEntePartnerDiProgettoEntity2.setCodiceRuolo(RuoloUtenteEnum.REPP.toString());
 		listaReferentiDelegatiEntePartnerDiProgetto = new ArrayList<>();
 		listaReferentiDelegatiEntePartnerDiProgetto.add(referentiDelegatiEntePartnerDiProgettoEntity);
+		listaReferentiDelegatiEntePartnerDiProgetto.add(referentiDelegatiEntePartnerDiProgettoEntity2);
 		enteSedeProgettoFacilitatoreKey = new EnteSedeProgettoFacilitatoreKey(ente1.getId(), 1L, progetto1.getId(), utente1.getCodiceFiscale());
 		enteSedeProgettoFacilitatoreEntity = new EnteSedeProgettoFacilitatoreEntity();
 		enteSedeProgettoFacilitatoreEntity.setId(enteSedeProgettoFacilitatoreKey);
@@ -466,7 +493,7 @@ public class EnteServiceTest {
 	}
 	
 	@Test
-	public void terminaGestoreProgrammaKOTest() {
+	public void terminaGestoreProgrammaKOTest() throws Exception {
 		//test KO per ente non esistente
 				enteOptional = Optional.empty();
 				programma1.setStatoGestoreProgramma(StatoEnum.ATTIVO.getValue());
@@ -483,6 +510,19 @@ public class EnteServiceTest {
 				Assertions.assertThrows(EnteException.class, () -> enteService.terminaGestoreProgramma(ente1.getId(), programma1.getId()));
 				assertThatExceptionOfType(EnteException.class);
 				verify(programmaService, times(0)).salvaProgramma(programma1);
+				
+				//test errore storicizzazione ente
+				programma1.setStatoGestoreProgramma(StatoEnum.ATTIVO.getValue());
+				referentiDelegatiEnteGestoreProgrammaEntity.setStatoUtente(StatoEnum.ATTIVO.getValue());
+				referentiDelegatiEnteGestoreProgrammaEntity2.setStatoUtente(StatoEnum.NON_ATTIVO.getValue());
+				storicoEnteGestoreProgrammaOptional = Optional.empty();
+				when(enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+				when(programmaService.getProgrammaById(programma1.getId())).thenReturn(programma1);
+				when(referentiDelegatiEnteGestoreProgrammaService.getReferentiAndDelegatiByIdProgrammaAndIdEnte(programma1.getId(), ente1.getId())).thenReturn(listaReferentiDelegatiEnteGestoreProgramma);
+				Mockito.doThrow(StoricoEnteException.class).when(storicoService).storicizzaEnteGestoreProgramma(programma1, StatoEnum.TERMINATO.getValue());
+				Assertions.assertThrows(EnteException.class, () -> enteService.terminaGestoreProgramma(ente1.getId(), programma1.getId()));
+				assertThatExceptionOfType(EnteException.class);
+				verify(programmaService, times(0)).salvaProgramma(programma1);			
 	}
 	
 	@Test
@@ -501,7 +541,7 @@ public class EnteServiceTest {
 	}
 	
 	@Test
-	public void TerminaGestoreProgettoKOTest() {
+	public void TerminaGestoreProgettoKOTest() throws Exception {
 		//test KO per ente non esistente
 		enteOptional = Optional.empty();
 		when(enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
@@ -517,5 +557,128 @@ public class EnteServiceTest {
 		Assertions.assertThrows(EnteException.class, () -> enteService.terminaGestoreProgetto(ente1.getId(), progetto1.getId()));
 		assertThatExceptionOfType(EnteException.class);
 		verify(progettoService, times(0)).salvaProgetto(progetto1);
+		
+		//Test errore Storicizzazione ente
+		progetto1.setStatoGestoreProgetto(StatoEnum.ATTIVO.getValue());
+		progetto1.setProgramma(programma1);
+		referentiDelegatiEnteGestoreProgettoEntity.setStatoUtente(StatoEnum.ATTIVO.getValue());
+		referentiDelegatiEnteGestoreProgettoEntity2.setStatoUtente(StatoEnum.NON_ATTIVO.getValue());
+		storicoEnteGestoreProgettoOptional = Optional.empty();
+		when(enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+		when(progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
+		when(referentiDelegatiEnteGestoreProgettoService.getReferentiAndDelegatiByIdProgettoAndIdEnte(progetto1.getId(), ente1.getId())).thenReturn(listaReferentiDelegatiEnteGestoreProgetto);
+		Mockito.doThrow(StoricoEnteException.class).when(storicoService).storicizzaEnteGestoreProgetto(progetto1, StatoEnum.TERMINATO.getValue());
+		Assertions.assertThrows(EnteException.class, () -> enteService.terminaGestoreProgetto(ente1.getId(), progetto1.getId()));
+		assertThatExceptionOfType(EnteException.class);
+		verify(progettoService, times(0)).salvaProgetto(progetto1);
+	}
+	
+	@Test
+	public void terminaEntePartnerPerProgettoTest() {
+		entePartner1.setStatoEntePartner(StatoEnum.ATTIVO.getValue());
+		referentiDelegatiEntePartnerDiProgettoEntity.setStatoUtente(StatoEnum.ATTIVO.getValue());
+		referentiDelegatiEntePartnerDiProgettoEntity2.setStatoUtente(StatoEnum.NON_ATTIVO.getValue());
+		enteSedeProgetto.setStatoSede(StatoEnum.ATTIVO.getValue());
+		enteSedeProgetto2.setStatoSede(StatoEnum.NON_ATTIVO.getValue());
+		when(enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+		when(entePartnerService.getEntePartnerByIdEnteAndIdProgetto(ente1.getId(), progetto1.getId())).thenReturn(entePartner1);
+		when(enteSedeProgettoService.getSediPerProgettoAndEnte(ente1.getId(), progetto1.getId())).thenReturn(listaEnteSedeProgetto);
+		when(referentiDelegatiEntePartnerDiProgettoService.getReferentiAndDelegatiByIdProgettoAndIdEnte(progetto1.getId(), ente1.getId())).thenReturn(listaReferentiDelegatiEntePartnerDiProgetto);
+		enteService.terminaEntePartnerPerProgetto(ente1.getId(), progetto1.getId());
+		verify(entePartnerService, times(1)).salvaEntePartner(entePartner1);
+	}
+	
+	@Test
+	public void terminaEntePartnerPerProgettoKOTest() throws Exception {
+		//test KO per ente non esistente
+				enteOptional = Optional.empty();
+				when(enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+				Assertions.assertThrows(EnteException.class, () -> enteService.terminaEntePartnerPerProgetto(ente1.getId(), progetto1.getId()));
+				assertThatExceptionOfType(EnteException.class);
+				verify(entePartnerService, times(0)).salvaEntePartner(entePartner1);
+				
+				//test KO per ente non partner
+				enteOptional = Optional.of(ente1);
+				when(enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+				when(entePartnerService.getEntePartnerByIdEnteAndIdProgetto(ente1.getId(), progetto1.getId())).thenReturn(null);
+				Assertions.assertThrows(EnteException.class, () -> enteService.terminaEntePartnerPerProgetto(ente1.getId(), progetto1.getId()));
+				assertThatExceptionOfType(EnteException.class);
+				verify(entePartnerService, times(0)).salvaEntePartner(entePartner1);
+				
+				//test KO per stato ente diverso da "ATTIVO"
+				entePartner1.setStatoEntePartner(StatoEnum.NON_ATTIVO.getValue());
+				when(enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+				when(entePartnerService.getEntePartnerByIdEnteAndIdProgetto(ente1.getId(), progetto1.getId())).thenReturn(entePartner1);
+				Assertions.assertThrows(EnteException.class, () -> enteService.terminaEntePartnerPerProgetto(ente1.getId(), progetto1.getId()));
+				assertThatExceptionOfType(EnteException.class);
+				verify(entePartnerService, times(0)).salvaEntePartner(entePartner1);
+				
+				//test errore storicizzazione ente
+				entePartner1.setStatoEntePartner(StatoEnum.ATTIVO.getValue());
+				referentiDelegatiEntePartnerDiProgettoEntity.setStatoUtente(StatoEnum.ATTIVO.getValue());
+				referentiDelegatiEntePartnerDiProgettoEntity2.setStatoUtente(StatoEnum.NON_ATTIVO.getValue());
+				enteSedeProgetto.setStatoSede(StatoEnum.ATTIVO.getValue());
+				enteSedeProgetto2.setStatoSede(StatoEnum.NON_ATTIVO.getValue());
+				storicoEntePartnerDiProgettoOptional = Optional.empty();
+				when(enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+				when(entePartnerService.getEntePartnerByIdEnteAndIdProgetto(ente1.getId(), progetto1.getId())).thenReturn(entePartner1);
+				when(enteSedeProgettoService.getSediPerProgettoAndEnte(ente1.getId(), progetto1.getId())).thenReturn(listaEnteSedeProgetto);
+				when(referentiDelegatiEntePartnerDiProgettoService.getReferentiAndDelegatiByIdProgettoAndIdEnte(progetto1.getId(), ente1.getId())).thenReturn(listaReferentiDelegatiEntePartnerDiProgetto);
+				Mockito.doThrow(StoricoEnteException.class).when(storicoService).storicizzaEntePartner(entePartner1, StatoEnum.TERMINATO.getValue());
+				Assertions.assertThrows(EnteException.class, () -> enteService.terminaEntePartnerPerProgetto(ente1.getId(), progetto1.getId()));
+				assertThatExceptionOfType(EnteException.class);
+				verify(entePartnerService, times(0)).salvaEntePartner(entePartner1);
+	}
+	
+	@Test
+	public void associaReferenteODelegatoGestoreProgrammaTest() {
+		enteOptional = Optional.of(ente1);
+		referenteDelegatoGestoreProgrammaRequest = new ReferenteDelegatoGestoreProgrammaRequest();
+		referenteDelegatoGestoreProgrammaRequest.setIdProgramma(programma1.getId());
+		referenteDelegatoGestoreProgrammaRequest.setIdEnte(ente1.getId());
+		referenteDelegatoGestoreProgrammaRequest.setCodiceRuolo(ruolo1.getCodice());
+		referenteDelegatoGestoreProgrammaRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
+		when(programmaService.esisteProgrammaById(programma1.getId())).thenReturn(true);
+		when(utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
+		when(enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+		lenient().when(referentiDelegatiEnteGestoreProgrammaService.esisteById(referentiDelegatiEnteGestoreProgrammaKey)).thenReturn(false);
+		when(ruoloService.getRuoloByCodiceRuolo(ruolo1.getCodice())).thenReturn(ruolo1);
+		enteService.associaReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest);
+	}
+	
+	@Test
+	public void associaReferenteODelegatoGestoreProgrammaKOTest() {
+		//test KO per programma inesistente
+		referenteDelegatoGestoreProgrammaRequest = new ReferenteDelegatoGestoreProgrammaRequest();
+		referenteDelegatoGestoreProgrammaRequest.setIdProgramma(programma1.getId());
+		referenteDelegatoGestoreProgrammaRequest.setIdEnte(ente1.getId());
+		referenteDelegatoGestoreProgrammaRequest.setCodiceRuolo(ruolo1.getCodice());
+		referenteDelegatoGestoreProgrammaRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
+		when(programmaService.esisteProgrammaById(programma1.getId())).thenReturn(false);
+		Assertions.assertThrows(EnteException.class, () -> enteService.associaReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest));
+		assertThatExceptionOfType(EnteException.class);
+		
+		//test KO per ente inesistente
+		enteOptional = Optional.empty();
+		when(programmaService.esisteProgrammaById(programma1.getId())).thenReturn(true);
+		when(utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
+		when(enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+		Assertions.assertThrows(EnteException.class, () -> enteService.associaReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest));
+		assertThatExceptionOfType(EnteException.class);
+		
+		//test KO per associazione già esistente
+		enteOptional = Optional.of(ente1);
+		when(programmaService.esisteProgrammaById(programma1.getId())).thenReturn(true);
+		when(utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
+		when(enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+		when(referentiDelegatiEnteGestoreProgrammaService.esisteById(Mockito.any(ReferentiDelegatiEnteGestoreProgrammaKey.class))).thenReturn(true);
+		Assertions.assertThrows(EnteException.class, () -> enteService.associaReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest));
+		assertThatExceptionOfType(EnteException.class);
+		
+		//test KO per utente inesistente
+		when(programmaService.esisteProgrammaById(programma1.getId())).thenReturn(true);
+		Mockito.doThrow(ResourceNotFoundException.class).when(utenteService).getUtenteByCodiceFiscale(utente1.getCodiceFiscale());
+		Assertions.assertThrows(EnteException.class, () -> enteService.associaReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest));
+		assertThatExceptionOfType(EnteException.class);
 	}
 }
