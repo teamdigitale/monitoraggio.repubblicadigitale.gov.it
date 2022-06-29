@@ -2,10 +2,13 @@
   "data": {
     "info": {
       "idSede": "321321",
-      "address": "Via roma 1",
       "name": "Sede 1",
       "services": "Facilitazione",
-      "ente": "Ente 1"
+      "ente": "Ente 1",
+      "address": "Via roma 1",
+      "cap": "20019",
+      "prov": "MI",
+      "country": "Milano"
     },
     "del": [
       { "name": "Simone Viola", "status": "Active", "id": "1" },

@@ -28,9 +28,10 @@ export interface SelectMultipleI {
   ) => void;
   placeholder?: string;
   required?: boolean;
-  value?: string | number | undefined;
+  value?: OptionTypeMulti[];
   wrapperClassName?: string;
   withLabel?: boolean;
+  isDisabled?: boolean;
 }
 
 const SelectMultiple: React.FC<SelectMultipleI> = (props) => {
@@ -44,9 +45,10 @@ const SelectMultiple: React.FC<SelectMultipleI> = (props) => {
     label = props.field,
     options = [],
     required = false,
-    //value = '',
+    value = [],
     wrapperClassName,
     withLabel = true,
+    isDisabled = false,
   } = props;
 
   const [selectedOptions, setSelectedOptions] = useState<
@@ -66,14 +68,30 @@ const SelectMultiple: React.FC<SelectMultipleI> = (props) => {
 
   useEffect(() => {
     const upperLevelArray: string[] = [];
-    selectedOptions.map((opt) =>{
-      upperLevelArray.includes(opt.upperLevel.toString()) ? null:upperLevelArray.push(opt.upperLevel.toString());
+    selectedOptions.map((opt) => {
+      upperLevelArray.includes(opt.upperLevel.toString())
+        ? null
+        : upperLevelArray.push(opt.upperLevel.toString());
     });
-    onSecondLevelInputChange(upperLevelArray,field);
-  },[arrayVal]);
+    onSecondLevelInputChange(upperLevelArray, field);
+  }, [arrayVal]);
 
   const handleChange = (selectedOption: MultiValue<OptionTypeMulti>) => {
     setSelectedOptions(selectedOption);
+  };
+
+  const removeDuplicates = (
+    firstArray: MultiValue<OptionTypeMulti>,
+    secondArray: OptionTypeMulti[]
+  ) => {
+    const newArray = [...firstArray, ...secondArray];
+    const newValues = newArray.map((obj) => {
+      return JSON.stringify(obj);
+    });
+    const unique = [...new Set(newValues)];
+    return unique.map((str) => {
+      return JSON.parse(str);
+    });
   };
 
   return (
@@ -97,11 +115,12 @@ const SelectMultiple: React.FC<SelectMultipleI> = (props) => {
       <SelectKit
         id={id}
         isMulti={true}
-        value={selectedOptions}
+        value={removeDuplicates(selectedOptions, value)}
         onChange={handleChange}
         options={options}
-        placeholder='Scegli una opzione'
+        placeholder='Scegli opzioni'
         aria-label={`${(label || 'label-select').replace(/\s/g, '-')}`}
+        isDisabled={isDisabled}
       />
     </div>
   );

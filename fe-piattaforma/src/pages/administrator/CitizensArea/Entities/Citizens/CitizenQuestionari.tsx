@@ -4,13 +4,9 @@ import {
   TableHeadingI,
   TableRowI,
 } from '../../../../../components/Table/table';
-import {
-  statusBgColor,
-  statusColor,
-} from '../../../AdministrativeArea/Entities/utils';
-import { Button, Chip, ChipLabel, Icon } from 'design-react-kit';
+import { Button, Icon } from 'design-react-kit';
 import clsx from 'clsx';
-import { Table } from '../../../../../components';
+import { StatusChip, Table } from '../../../../../components';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
@@ -56,19 +52,7 @@ const CitizenQuestionari: React.FC<{
         type: td.type,
         facilitatore: td.facilitatore,
         lastChange: td.lastChange,
-        status: (
-          <Chip
-            className={clsx(
-              'table-container__status-label',
-              statusBgColor(td.status),
-              'no-border'
-            )}
-          >
-            <ChipLabel className={statusColor(td.status)}>
-              {td.status.toUpperCase()}
-            </ChipLabel>
-          </Chip>
-        ),
+        status: <StatusChip status={td.status} rowTableId={td.id} />,
       }))
     );
     return {
@@ -105,7 +89,13 @@ const CitizenQuestionari: React.FC<{
         </div>
         <div>
           <Button
-            className='d-flex flex-row justify-content-center align-items-center text-nowrap'
+            className={clsx(
+              'd-flex',
+              'flex-row',
+              'justify-content-center',
+              'align-items-center',
+              'text-nowrap'
+            )}
             onClick={() => {
               console.log('compila nuovo surveys');
             }}

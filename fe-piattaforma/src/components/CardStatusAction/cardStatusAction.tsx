@@ -1,16 +1,20 @@
 import clsx from 'clsx';
-import { Button, CardReadMore, Chip, ChipLabel, Icon } from 'design-react-kit';
-import React, { memo } from 'react';
+import {
+  Button,
+  CardReadMore,
+  Chip,
+  ChipLabel,
+  FormGroup,
+  Icon,
+  Label,
+} from 'design-react-kit';
+import React, { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CRUDActionsI, CRUDActionTypes } from '../../utils/common';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
-import AccordionRow from '../AccordionRow/accordionRow';
-import {
-  statusBgColor,
-  statusColor,
-} from '../../pages/administrator/AdministrativeArea/Entities/utils';
 import isEqual from 'lodash.isequal';
+import Input from '../Form/input';
 
 const fieldMappedForTranslations: { [key: string]: string } = {
   serviziErogati: 'provided_services',
@@ -33,12 +37,20 @@ interface CardStatusActionI {
     | undefined;
   onActionClick?: CRUDActionsI;
   id?: string | undefined;
+  moreThanOneSurvey?: boolean;
 }
 
 const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
-  const { mediaIsDesktop } = useAppSelector(selectDevice);
-  const { title, subtitle, status, actionView, fullInfo, onActionClick, id } =
-    props;
+  const {
+    title,
+    subtitle,
+    status,
+    actionView,
+    fullInfo,
+    onActionClick,
+    id,
+    moreThanOneSurvey,
+  } = props;
 
   const getStatusLabel = (status: string) => {
     switch (status.toUpperCase()) {
@@ -53,38 +65,71 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
         return status.toUpperCase;
     }
   };
+  const device = useAppSelector(selectDevice);
+  const [isChecked, setIsChecked] = useState<string>('');
 
   const { t } = useTranslation();
 
-  if (mediaIsDesktop) {
-    return (
+  return (
+    <div
+      className={clsx(
+        'd-flex',
+        'flex-row',
+        'card-status-action',
+        'mx-3',
+        'mb-3',
+        device.mediaIsPhone && 'py-0'
+      )}
+    >
       <div
         className={clsx(
           'd-flex',
-          'flex-row',
-          'justify-content-between',
           'align-items-center',
-          'my-3',
-          'card-status-action'
+          'justify-content-start'
         )}
       >
-        <div
-          className={clsx(
-            'd-flex align-items-center',
-            subtitle && 'flex-column'
-          )}
-        >
-          <span className='neutral-1-color-a8 card-status-action__title'>
+        {moreThanOneSurvey ? (
+          <FormGroup check>
+            <Input
+              aria-label='Radio button'
+              name='gruppo1'
+              type='radio'
+              id={`radio${id}`}
+              onClick={() => setIsChecked(`radio${id}`)}
+              checked={isChecked === `radio${id}`}
+            />
+            <Label className='sr-only'>Radio button</Label>
+          </FormGroup>
+        ) : null}
+      </div>
+      <div
+        className={clsx(
+          device.mediaIsDesktop || device.mediaIsTablet
+            ? 'd-flex flex-row justify-content-between align-items-center mt-4 mb-3 w-100'
+            : 'd-flex flex-row flex-wrap justify-content-start align-items-center mt-4 mb-3'
+        )}
+      >
+        <div>
+          <span className='neutral-1-color-a8 card-status-action__title pl-2'>
             <strong>{title}</strong>
             {subtitle && <span className='neutral-1-color-a8'>{subtitle}</span>}
           </span>
         </div>
+
         {fullInfo && Object.keys(fullInfo).length ? (
-          <div className='d-flex flex-grow-1 justify-content-around'>
+          <div
+            className={clsx(
+              'd-flex',
+              'flex-grow-1',
+              'justify-content-start',
+              'ml-5',
+              'pl-5'
+            )}
+          >
             {Object.keys(fullInfo).map((key, index) => {
               return (
                 <div className='d-flex flex-column' key={index}>
-                  <span className='primary-color-a12'>
+                  <span className='primary-color-a12 mr-2'>
                     {t(fieldMappedForTranslations[key])}
                   </span>
                   <span className='neutral-1-color-a8 weight-600'>
@@ -95,33 +140,42 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
             })}
           </div>
         ) : null}
-
-        <div className='d-flex flex-row'>
-          {status && (
-            <Chip
-              className={clsx(
-                'table-container__status-label',
-                'mx-3',
-                'primary-bg-a9',
-                'mt-3',
-                'mr-4',
-                'section-chip',
-                'no-border'
-              )}
-            >
-              <ChipLabel className='text-white text-uppercase'>
-                {getStatusLabel(status)}
-              </ChipLabel>
-            </Chip>
+        <div
+          className={clsx(
+            'd-flex',
+            'flex-row',
+            device.mediaIsPhone
+              ? 'align-items-start justify-content-start'
+              : 'd-flex flex-row align-items-center justify-content-end'
           )}
-          {actionView && (
+        >
+          <div className='d-flex flex-row align-items-center'>
+            {status && (
+              <Chip
+                className={clsx(
+                  'table-container__status-label',
+                  'primary-bg-a9',
+                  'mr-4',
+                  'section-chip',
+                  'no-border',
+                  device.mediaIsPhone ? 'mx-0 ml-2 my-3' : 'mx-3'
+                )}
+              >
+                <ChipLabel className='text-white text-uppercase'>
+                  {getStatusLabel(status)}
+                </ChipLabel>
+              </Chip>
+            )}
+          </div>
+          {!device.mediaIsPhone && actionView && (
             <CardReadMore
               text={t('visualize')}
               iconName='it-arrow-right'
               href=''
             />
           )}
-          {onActionClick && id ? (
+
+          {device.mediaIsDesktop && onActionClick && id ? (
             <span className='d-flex align-items-center'>
               {onActionClick[CRUDActionTypes.DELETE] ? (
                 <Button
@@ -157,31 +211,8 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
           ) : null}
         </div>
       </div>
-    );
-  } else {
-    return (
-      <AccordionRow
-        title={title}
-        clickViewAction={() =>
-          onActionClick?.[CRUDActionTypes.VIEW](id as string)
-        }
-        innerInfo={{ ...fullInfo, id: id ? id : '' }}
-        StatusElement={
-          <Chip
-            className={clsx(
-              'table-container__status-label',
-              statusBgColor(status ? status : ''),
-              'no-border'
-            )}
-          >
-            <ChipLabel className={statusColor(status ? status : '')}>
-              {status?.toUpperCase()}
-            </ChipLabel>
-          </Chip>
-        }
-      />
-    );
-  }
+    </div>
+  );
 };
 
 export default memo(CardStatusAction, (prevProps, currentProps) => {

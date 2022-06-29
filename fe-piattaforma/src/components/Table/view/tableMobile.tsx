@@ -16,8 +16,8 @@ const TableMobile: React.FC<MobileTableI> = ({
 
   useEffect(() => {
     if (values && values.length) {
-      const temp = values.map(({ name, label, status, ...rest }) => ({
-        title: name || label,
+      const temp = values.map(({ nome, label, status, ...rest }) => ({
+        title: nome || label,
         status,
         clickViewAction: onActionClick?.[CRUDActionTypes.VIEW],
         innerInfo: { ...rest },

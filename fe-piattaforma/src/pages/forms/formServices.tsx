@@ -1,13 +1,26 @@
-import React, { useEffect } from 'react';
+import clsx from 'clsx';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Form, Input } from '../../components';
+import { Form, Input, Select, SelectMultiple } from '../../components';
+import CheckboxGroup from '../../components/Form/checkboxGroup';
+import { OptionTypeMulti } from '../../components/Form/selectMultiple';
+// import { serviceScopeOptions } from '../../components/Form/multipleSelectConstants';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../hoc/withFormHandler';
 import { selectServices } from '../../redux/features/administrativeArea/administrativeAreaSlice';
 import { GetServicesDetail } from '../../redux/features/administrativeArea/services/servicesThunk';
+import { SurveySectionI } from '../../redux/features/administrativeArea/surveys/surveysSlice';
+import { selectDevice } from '../../redux/features/app/appSlice';
 import { useAppSelector } from '../../redux/hooks';
-import { formFieldI, newForm, newFormField } from '../../utils/formHelper';
+import {
+  formFieldI,
+  FormHelper,
+  newForm,
+  newFormField,
+} from '../../utils/formHelper';
+import { generateForm } from '../../utils/jsonFormHelper';
+import { RegexpType } from '../../utils/validator';
 
 interface FormServicesI {
   formDisabled?: boolean;
@@ -23,22 +36,29 @@ interface FormEnteGestoreProgettoFullInterface
 const form = newForm([
   newFormField({
     field: 'nome',
-  }),
-
-  newFormField({
-    field: 'tipologia',
-  }),
-  newFormField({
-    field: 'ambito1',
+    label: 'Nome',
+    required: true,
+    order: 1,
   }),
   newFormField({
-    field: 'ambito2',
+    field: 'ente',
+    label: 'Ente',
+    required: true,
+    order: 2,
   }),
   newFormField({
-    field: 'ambito3',
+    field: 'sede',
+    label: 'Sede',
+    required: true,
+    order: 3,
   }),
   newFormField({
-    field: 'dettagli',
+    field: 'durataServizio',
+    label: 'Durata servizio',
+    type: 'time',
+    regex: RegexpType.TIME,
+    required: true,
+    order: 4,
   }),
 ]);
 
@@ -48,16 +68,48 @@ const Services: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     form,
     onInputChange,
     sendNewValues,
-    isValidForm,
+    // isValidForm,
     setIsFormValid,
     getFormValues,
     creation = false,
+    updateForm = () => ({}),
   } = props;
+  const [loadingCompleted, setLoadingCompleted] = useState<boolean>(false);
 
+  const device = useAppSelector(selectDevice);
   const formDisabled = !!props.formDisabled;
-  // @ts-ignore
   const formData = useAppSelector(selectServices)?.detail?.info;
   const dispatch = useDispatch();
+
+  const loadMock = async () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const response = await import('/mock/responseQuestionario.json');
+    if (response.default) {
+      const schema = response.default.sections.filter(
+        (section: SurveySectionI) => section.id === 'anagraphic-service-section'
+      )[0]?.schema;
+      const formFromSchema = generateForm(JSON.parse(schema));
+      Object.keys(formFromSchema).forEach((key: string) => {
+        // rinomino chiavi
+        const tmpKey = key;
+        const tmpObj = formFromSchema[key];
+        delete formFromSchema[key];
+        formFromSchema[tmpObj.keyService || tmpKey] = tmpObj;
+      });
+      Object.keys(formFromSchema).forEach((key: string, index: number) => {
+        formFromSchema[key].label = formFromSchema[key].value?.toString() || '';
+        formFromSchema[key].value = '';
+        formFromSchema[key].order = 5 + index; // todo: 4 è il numero dei field del form
+      });
+      updateForm({ ...form, ...formFromSchema }, true);
+      setLoadingCompleted(true);
+    }
+  };
+
+  useEffect(() => {
+    loadMock();
+  }, []);
 
   useEffect(() => {
     if (!creation) {
@@ -67,16 +119,21 @@ const Services: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
   }, [creation]);
 
   useEffect(() => {
-    if (formData) {
+    if (formData && loadingCompleted && !creation) {
       setFormValues(formData);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData]);
+  }, [formData, loadingCompleted]);
 
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    () => {};
-  }, []);
+  const updateFormToOrder = () => {
+    if (form) {
+      return Object.keys(form).sort(
+        (a, b) => Number(form[a].order) - Number(form[b].order)
+      );
+    }
+  };
+
+  const orderQuestions = updateFormToOrder();
 
   const onInputDataChange = (
     value: formFieldI['value'],
@@ -84,79 +141,188 @@ const Services: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
   ) => {
     onInputChange?.(value, field);
     sendNewValues?.(getFormValues?.());
-    setIsFormValid?.(isValidForm);
+    setIsFormValid?.(FormHelper.isValidForm(form));
+  };
+
+  const isMobile = device.mediaIsPhone;
+
+  const getAnswerType = (field: formFieldI) => {
+    switch (field.type) {
+      case 'date':
+      case 'time':
+      case 'text': {
+        return (
+          <Input
+            {...field}
+            id={`input-${field.field}`}
+            label={field.label}
+            type={field.type}
+            required
+            wrapperClassName={clsx(
+              field.label && field.label?.length > 20
+                ? 'd-inline-block w-100'
+                : 'd-inline-block  mr-2',
+              isMobile ? 'w-100' : 'compile-survey-container__half-width'
+            )}
+            onInputChange={(value, field) => {
+              onInputDataChange(value, field);
+            }}
+            placeholder={`Inserisci ${field.label?.toLowerCase()}`}
+          />
+        );
+      }
+      case 'select': {
+        return (
+          <Select
+            id={`input-${field}`}
+            label={field.label || ''}
+            col='col-12 col-lg-6'
+            required
+            onInputChange={onInputChange}
+            placeholder={`Inserisci ${field.label?.toLowerCase()}`}
+            wrapperClassName={clsx(
+              'd-inline-block',
+              'compile-survey-container__select-margin',
+              'mr-2',
+              isMobile ? 'w-100' : 'compile-survey-container__half-width'
+            )}
+            options={[
+              { label: 'Tipo 1', value: '1' },
+              { label: 'Tipo 2', value: '2' },
+            ]}
+            isDisabled={formDisabled}
+            value={field.value}
+          />
+        );
+      }
+      case 'checkbox': {
+        //nascondi field level2
+        if (field.format === 'multiple-select' && field.relatedFrom !== '') {
+          return null;
+        }
+        // visualizza field level1 e mappa opzioni
+        if (
+          form &&
+          field.format === 'multiple-select' &&
+          field.relatedTo !== ''
+        ) {
+          let relatedTo = '';
+          const multiSelectOptions: {
+            label: string;
+            options: { label: string; value: string; upperLevel: string }[];
+          }[] = [];
+          if (field.enumLevel1) {
+            (field.enumLevel1 || []).forEach((opt) => {
+              multiSelectOptions.push({
+                label: opt,
+                options: [],
+              });
+            });
+          }
+          Object.keys(form).forEach((key: string) => {
+            if (form[key].field === field.relatedTo)
+              relatedTo = form[key].keyService || '';
+          });
+          if (
+            form &&
+            field?.relatedTo &&
+            form[relatedTo].enumLevel2 &&
+            multiSelectOptions?.length > 0
+          ) {
+            (form[relatedTo].enumLevel2 || []).forEach(
+              ({ label, value, upperLevel }) => {
+                const index = multiSelectOptions.findIndex(
+                  (v) => v.label === upperLevel
+                );
+                multiSelectOptions[index].options.push({
+                  label: label,
+                  value: value,
+                  upperLevel: upperLevel,
+                });
+              }
+            );
+          }
+          // mappa valori
+          const valuesSecondLevel = form[relatedTo].value;
+          const values: OptionTypeMulti[] = [];
+          Array.isArray(valuesSecondLevel) &&
+            (valuesSecondLevel || []).map((val: string) => {
+              let upperLevel = '';
+              Object.keys(multiSelectOptions).forEach((key: string) => {
+                if (
+                  multiSelectOptions[Number(key)].options.filter((x: { label: string; value: string; upperLevel: string }) => x.label === val)
+                    ?.length > 0
+                ) {
+                  upperLevel = multiSelectOptions[Number(key)].label;
+                }
+              });
+              values.push({
+                label: val,
+                value: val,
+                upperLevel: upperLevel,
+              });
+            });
+          return (
+            <SelectMultiple
+              field={field.keyService || field.field}
+              secondLevelField={relatedTo}
+              id={`multiple-select-${field.id}`}
+              label={`${field?.label}`}
+              aria-label={`${field?.label}`}
+              options={multiSelectOptions}
+              required={field.required || false}
+              onInputChange={onInputDataChange}
+              onSecondLevelInputChange={onInputDataChange}
+              placeholder='Seleziona'
+              wrapperClassName={clsx('d-inline-block', 'w-100', 'mb-5')}
+              isDisabled={formDisabled}
+              value={values}
+            />
+          );
+        }
+        if (field.options?.length) {
+          return (
+            <CheckboxGroup
+              {...field}
+              className={clsx(
+                'd-inline-block',
+                'compile-survey-container__half-width',
+                'compile-survey-container__select-margin',
+                'mr-3',
+                'mb-3'
+              )}
+              onInputChange={onInputChange}
+              label={`${field?.label}`}
+              styleLabelForm
+              noLabel={field.flag === true ? true : false}
+            />
+          );
+        }
+        return (
+          <Input
+            {...field}
+            className={clsx(
+              'd-inline-block',
+              'compile-survey-container__half-width',
+              'mr-3',
+              'mb-3'
+            )}
+            onInputBlur={onInputChange}
+            label={`${field?.label}`}
+          />
+        );
+      }
+      default:
+        return '';
+    }
   };
 
   return (
-    <Form className='mt-5 mb-5' formDisabled={formDisabled}>
-      <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
-        <Input
-          {...form?.nome}
-          id={`input-${form?.nome.field}`}
-          label='Nome servizio'
-          col='col-12'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-          placeholder='Nome servizio'
-        />
-      </Form.Row>
-      <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
-        <Input
-          {...form?.tipologia}
-          id={`input-${form?.tipologia.field}`}
-          label='Tipo di servizio prenotato'
-          col='col-12 col-lg-6'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-          placeholder='Tipo di servizio prenotato'
-        />
-        <Input
-          {...form?.ambito1}
-          id={`input-${form?.ambito1.field}`}
-          col='col-12 col-lg-6'
-          label='Specificare ambito facilitazione / formazione I *'
-          placeholder='Specificare ambito facilitazione / formazione I *'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-        />
-      </Form.Row>
-      <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
-        <Input
-          {...form?.ambito2}
-          id={`input-${form?.ambito2.field}`}
-          label='Specificare ambito facilitazione / formazione II *'
-          placeholder='Specificare ambito facilitazione / formazione II *'
-          col='col-12 col-lg-6'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-        />
-        <Input
-          {...form?.ambito3}
-          id={`input-${form?.ambito3.field}`}
-          col='col-12 col-lg-6'
-          label='Specificare ambito facilitazione / formazione III *'
-          placeholder='Specificare ambito facilitazione / formazione III *'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-        />
-      </Form.Row>
-      <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
-        <Input
-          {...form?.dettagli}
-          id={`input-${form?.dettagli.field}`}
-          col='col-12'
-          label='Dettagli del servizio (es. argomento ed esigenza specifici) *'
-          placeholder='Dettagli del servizio (es. argomento ed esigenza specifici) *'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-        />
-      </Form.Row>
+    <Form className='my-5' formDisabled={formDisabled}>
+      <div className={clsx(isMobile && 'mx-3', !isMobile && 'mx-5')}>
+        {form &&
+          (orderQuestions || []).map((key) => <>{getAnswerType(form[key])}</>)}
+      </div>
     </Form>
   );
 };

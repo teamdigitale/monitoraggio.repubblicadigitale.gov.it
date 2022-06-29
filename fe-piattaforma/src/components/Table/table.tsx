@@ -25,6 +25,7 @@ export interface TableI {
   values?: TableRowI[];
   withActions?: boolean;
   rolesTable?: boolean;
+  onActionRadio?: CRUDActionsI;
 }
 
 const Table: React.FC<TableI> = (props) => {

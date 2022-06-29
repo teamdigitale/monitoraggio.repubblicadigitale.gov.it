@@ -3,19 +3,19 @@
     "list": [
       {
         "id": 1,
-        "nome": "Ente 1",
+        "nome": "Regione Lombardia",
         "tipologia": "Tipologia 1",
         "profilo": "3 profili assegnati"
       },
       {
         "id": 2,
-        "nome": "Ente 2",
+        "nome": "Regione Lazio",
         "tipologia": "Tipologia 2",
         "profilo": "Ente gestore di progetto"
       },
       {
         "id": 3,
-        "nome": "Ente 3",
+        "nome": "Regione Puglia",
         "tipologia": "Tipologia 3",
         "profilo": "3 profili assegnati"
       }

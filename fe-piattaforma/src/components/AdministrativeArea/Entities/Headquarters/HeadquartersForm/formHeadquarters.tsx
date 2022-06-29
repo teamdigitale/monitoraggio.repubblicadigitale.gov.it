@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Form, Input, Select } from '../../../..';
+import { Form, Input } from '../../../..';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../../../hoc/withFormHandler';
@@ -28,19 +28,26 @@ const form = newForm([
   newFormField({
     field: 'idSede',
   }),
-
   newFormField({
     field: 'name',
   }),
   newFormField({
     field: 'services',
-    type: 'select',
   }),
   newFormField({
     field: 'address',
   }),
   newFormField({
     field: 'ente',
+  }),
+  newFormField({
+    field: 'cap',
+  }),
+  newFormField({
+    field: 'country',
+  }),
+  newFormField({
+    field: 'prov',
   }),
 ]);
 
@@ -54,9 +61,9 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     setIsFormValid,
     getFormValues,
     creation = false,
+    formDisabled,
   } = props;
 
-  const formDisabled = !!props.formDisabled;
   const formData: { [key: string]: string } | undefined =
     useAppSelector(selectHeadquarters)?.detail?.info;
   const dispatch = useDispatch();
@@ -90,8 +97,18 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
   };
 
   return (
-    <Form className='my-5 mx-5' formDisabled={formDisabled}>
+    <Form
+      className='my-5 mx-5'
+      formDisabled={formDisabled ? formDisabled : false}
+    >
       <Form.Row className='justify-content-between'>
+        <Input
+          {...form?.idSede}
+          label='ID'
+          col='col-12 col-lg-6'
+          onInputChange={onInputDataChange}
+          placeholder='Inserisci nome programma'
+        />
         <Input
           {...form?.name}
           label='Nome'
@@ -99,10 +116,18 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           onInputChange={onInputDataChange}
           placeholder='Inserisci nome programma'
         />
-        <Select
+        <Input
+          {...form?.services}
           label='Servizi Erogati'
           col='col-12 col-lg-6'
           onInputChange={onInputDataChange}
+        />
+        <Input
+          {...form?.ente}
+          label='Ente di riferimento'
+          col='col-12 col-lg-6'
+          onInputChange={onInputDataChange}
+          placeholder='Inserisci ente di riferimento'
         />
       </Form.Row>
     </Form>

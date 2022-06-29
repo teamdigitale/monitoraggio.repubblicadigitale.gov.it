@@ -36,7 +36,12 @@ export interface SurveyStateI {
   form?: any;
   sections: SurveySectionI[];
   compilingSurveyForms: FormI[];
-  sectionsSchemaResponse?: {id:string, schema:string, schemaUI:string, title:string}[];
+  sectionsSchemaResponse?: {
+    id: string;
+    schema: string;
+    schemaUI: string;
+    title: string;
+  }[];
 }
 
 const baseSurveyForm = newForm([

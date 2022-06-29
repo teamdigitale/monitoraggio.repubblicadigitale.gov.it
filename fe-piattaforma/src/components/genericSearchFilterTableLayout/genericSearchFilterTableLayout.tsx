@@ -2,7 +2,10 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import { DropdownFilterI, FilterI } from '../DropdownFilter/dropdownFilter';
 import { DropdownFilter, SearchBar } from '../index';
 import { Button, Chip, ChipLabel, Icon } from 'design-react-kit';
-import { cleanEntityFilters, resetFiltersState } from '../../redux/features/administrativeArea/administrativeAreaSlice';
+import {
+  cleanEntityFilters,
+  resetFiltersState,
+} from '../../redux/features/administrativeArea/administrativeAreaSlice';
 import { useDispatch } from 'react-redux';
 //import Sidebar, { SidebarI } from './sidebar';
 import clsx from 'clsx';
@@ -12,6 +15,7 @@ import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import ButtonsBar, { ButtonInButtonsBar } from '../ButtonsBar/buttonsBar';
 import Sticky from 'react-sticky-el';
+import CardCounter, { CardCounterI } from '../CardCounter/cardCounter';
 
 export interface SearchInformationI {
   onHandleSearch?: (searchValue: string) => void;
@@ -34,6 +38,7 @@ interface GenericSearchFilterTableLayoutI {
   ctaPrintText?: string;
   ctaPrint?: () => void;
   buttonsList?: ButtonInButtonsBar[];
+  cardsCounter?: CardCounterI[];
 }
 
 const GenericSearchFilterTableLayout: React.FC<
@@ -52,19 +57,43 @@ const GenericSearchFilterTableLayout: React.FC<
   ctaPrintText,
   ctaPrint,
   buttonsList,
+  cardsCounter,
 }) => {
   const dispatch = useDispatch();
   const [showChips, setShowChips] = useState<boolean>(false);
 
   useEffect(() => {
     dispatch(resetFiltersState());
-  },[]);
+  }, []);
 
-  const getLabelsChips = (filter: any, i: number, filterKey: string) => {
-    if (filter?.value) {
+  const getFilterLabel = (key: string) => {
+    switch (key) {
+      case 'criterioRicerca':
+        return 'Ricerca';
+      case 'policies':
+        return 'Policy';
+      case 'stati':
+        return 'Stato';
+      case 'programmi':
+        return 'Programma';
+      case 'progetti':
+        return 'Progetto';
+      case 'profili':
+        return 'Profilo';
+      case 'ruoli':
+        return 'Ruolo';
+      default:
+        key;
+    }
+  };
+
+  const getLabelsChips = (filter: { label: string, value: string | number} | { label: string, value: string | number}[], i: number, filterKey: string) => { console.log(filter)
+    if (!Array.isArray(filter) && filter?.value) {
       return (
         <Chip key={i} className='mr-2'>
-          <ChipLabel className='px-1'>{filter.label}</ChipLabel>
+          <ChipLabel className='px-1'>
+            {getFilterLabel(filterKey)}: {filter.label}
+          </ChipLabel>
           <Button
             close
             onClick={() => {
@@ -76,12 +105,14 @@ const GenericSearchFilterTableLayout: React.FC<
           </Button>
         </Chip>
       );
-    } else if (filter?.length > 0) {
+    } else if (Array.isArray(filter) && filter?.length > 0) {
       return (
         <>
           {filter.map((f: FilterI, j: number) => (
             <Chip key={i + '-' + j} className='mr-2'>
-              <ChipLabel className='mx-3 my-2'>{f.label}</ChipLabel>
+              <ChipLabel className='mx-1 my-2'>
+                {getFilterLabel(filterKey)}: {f.label}
+              </ChipLabel>
               <Button
                 close
                 onClick={() => {
@@ -110,11 +141,38 @@ const GenericSearchFilterTableLayout: React.FC<
   const device = useAppSelector(selectDevice);
   return (
     <>
-      <div className='d-flex justify-content-between align-items-center mt-2 mb-3 flex-wrap flex-lg-nowrap'>
+      {cardsCounter && (
+        <div className='d-flex justify-content-center mb-5'>
+          <div className='d-flex flex-row'>
+            {(cardsCounter || []).map((card: CardCounterI, i: number) => (
+              <CardCounter
+                key={i}
+                title={card.title}
+                counter={card.counter}
+                icon={card.icon}
+                className={card.className || ''}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+      <div
+        className={clsx(
+          'd-flex',
+          'justify-content-between',
+          'align-items-center',
+          'mt-2',
+          'mb-3',
+          'flex-wrap',
+          'flex-lg-nowrap'
+        )}
+      >
         {searchInformation?.onHandleSearch && (
-          <div className={clsx('flex-grow-1', 'col-12', cta && 'col-md-9')}>
+          <div
+            className={clsx('flex-grow-1', 'col-12', cta && 'col-md-9', 'pl-0')}
+          >
             <div
-              className={clsx(!cta && 'w-100', 'col-9')}
+              className={clsx(!cta && 'w-100', 'col-9', 'pl-0')}
               data-testid='create-new-element'
             >
               <SearchBar
@@ -191,9 +249,15 @@ const GenericSearchFilterTableLayout: React.FC<
       <div className='d-flex justify-content-between w-100'>
         {dropdowns?.length && (
           <div
-            className={`d-flex flex-row flex-wrap pt-lg-3 pt-0 ${
+            className={clsx(
+              'd-flex',
+              'flex-row',
+              'flex-wra',
+              'p',
+              'pt-lg-3',
+              'pt-0',
               buttonsList?.length && 'w-50'
-            }`}
+            )}
           >
             {dropdowns.map((dropdown, index) => (
               <DropdownFilter
@@ -205,19 +269,28 @@ const GenericSearchFilterTableLayout: React.FC<
           </div>
         )}
         {buttonsList?.length && (
-          <div className={`d-flex flex-row flex-wrap pt-lg-3 pt-0 w-50}`}>
+          <div
+            className={clsx(
+              'd-flex',
+              'flex-row',
+              'flex-wrap',
+              'pt-lg-3',
+              'pt-0',
+              'w-50'
+            )}
+          >
             <ButtonsBar buttons={buttonsList} />
           </div>
         )}
       </div>
       <div
-        className={
+        className={clsx(
           showChips && showButtons
             ? 'd-flex justify-content-between align-items-baseline'
             : showChips && !showButtons
             ? 'd-flex justify-content-start align-items-baseline'
             : 'd-flex justify-content-end align-items-baseline'
-        }
+        )}
       >
         {showChips ? (
           <div
@@ -258,7 +331,7 @@ const GenericSearchFilterTableLayout: React.FC<
                   icon='it-download'
                   color='primary'
                   size='sm'
-                  aria-label='Scarica lista'
+                  aria-label='Scarica elenco'
                 />
               </div>
               {!device.mediaIsPhone && (

@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -104,7 +105,18 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
   return (
     <Form className='mt-5' formDisabled={formDisabled}>
-      <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
+      <Form.Row
+        className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
+      >
+        <Input
+          {...form?.codice}
+          col='col-12 col-lg-6'
+          label='ID'
+          onInputChange={(value, field) => {
+            onInputDataChange(value, field);
+          }}
+          className='pr-lg-3'
+        />
         <Input
           {...form?.nome}
           col='col-12 col-lg-6'
@@ -112,23 +124,16 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pr-lg-3'
+          className='pl-lg-3'
         />
+      </Form.Row>
+      <Form.Row
+        className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
+      >
         <Input
           {...form?.nomeBreve}
           col='col-12 col-lg-6'
           label='Nome breve'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-          className='pl-lg-3'
-        />
-      </Form.Row>
-      <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
-        <Input
-          {...form?.codice}
-          col='col-12 col-lg-6'
-          label='ID'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
@@ -164,10 +169,34 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           />
         )}
       </Form.Row>
-      <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
+      <Form.Row
+        className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
+      >
+        <Input
+          {...form?.CUP}
+          label='CUP - Codice Unico Progetto'
+          col='col-12 col-lg-6'
+          onInputChange={(value, field) => {
+            onInputDataChange(value, field);
+          }}
+          className='pr-lg-3'
+        />
+        <Input
+          {...form?.Bando}
+          label='Bando'
+          col='col-12 col-lg-6'
+          onInputChange={(value, field) => {
+            onInputDataChange(value, field);
+          }}
+          className='pl-lg-3'
+        />
+      </Form.Row>
+      <Form.Row
+        className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
+      >
         <Input
           {...form?.dataInizioProgramma}
-          label='Data inizio *'
+          label='Data inizio'
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
@@ -177,7 +206,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
         <Input
           {...form?.dataFineProgramma}
-          label='Data fine *'
+          label='Data fine'
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
@@ -196,6 +225,14 @@ const form = newForm([
   }),
   newFormField({
     field: 'nome',
+    type: 'text',
+  }),
+  newFormField({
+    field: 'CUP',
+    type: 'text',
+  }),
+  newFormField({
+    field: 'Bando',
     type: 'text',
   }),
   newFormField({

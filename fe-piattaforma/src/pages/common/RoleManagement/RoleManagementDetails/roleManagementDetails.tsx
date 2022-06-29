@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { Button, Container } from 'design-react-kit';
 import React, { memo, useState } from 'react';
 import { Form, Input, Accordion, InfoPanel } from '../../../../components';
@@ -127,7 +128,9 @@ const RolesManagementDetails: React.FC<RoleDetailsI> = (props) => {
             {/* TODO: carica lista dettaglio funzionalità */}
           </Accordion>
         ))}
-        <div className='d-flex flex-row justify-content-end my-4'>
+        <div
+          className={clsx('d-flex', 'flex-row', 'justify-content-end', 'my-4')}
+        >
           {formEnabled ? (
             <>
               <Button

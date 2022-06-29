@@ -27,10 +27,24 @@ const ManageOTP = () => {
       label = 'Invia SMS';
       content = (
         <>
-          <p className='h6 font-weight-semibold mx-5 text-lg-nowrap'>
+          <p
+            className={clsx(
+              'h6',
+              'font-weight-semibold',
+              'mx-5',
+              'text-lg-nowrap'
+            )}
+          >
             Completa la procedura di consenso al trattamento dei dati personali.
           </p>
-          <p className='h6 font-weight-semibold mx-5 text-lg-nowrap'>
+          <p
+            className={clsx(
+              'h6',
+              'font-weight-semibold',
+              'mx-5',
+              'text-lg-nowrap'
+            )}
+          >
             Il codice OTP sarà inviato al numero che hai indicato
           </p>
           <p className='my-3 h6'>+39 123456789</p>
@@ -41,14 +55,14 @@ const ManageOTP = () => {
       label = 'Conferma';
       content = (
         <>
-          <p className='h6 font-weight-semibold mx-5 mb-5'>
+          <p className={clsx('h6', 'font-weight-semibold', 'mx-5', 'mb-5')}>
             {' '}
             Inserisci il codice OTP pr verifica{' '}
           </p>
 
           <InputOTP />
 
-          <p className='h6 font-weight-light mx-5 mt-5'>
+          <p className={clsx('h6', 'font-weight-light', 'mx-5', 'mt-5')}>
             {' '}
             Non hai ricevuto l SMS?{' '}
             <u className='font-weight-semibold'> Invia di nuovo </u>{' '}

@@ -2,6 +2,7 @@ import React from 'react';
 import { ButtonInButtonsBar } from '../ButtonsBar/buttonsBar';
 import { Icon } from 'design-react-kit';
 import { ButtonsBar } from '../index';
+import clsx from 'clsx';
 
 interface EmptySectionI {
   title: string;
@@ -17,7 +18,16 @@ const EmptySection: React.FC<EmptySectionI> = ({
   buttons,
 }) => {
   return (
-    <div className='d-flex justify-content-center align-items-center empty-section flex-column w-100'>
+    <div
+      className={clsx(
+        'd-flex',
+        'justify-content-center',
+        'align-items-center',
+        'empty-section',
+        'flex-column',
+        'w-100'
+      )}
+    >
       <Icon icon={icon || 'it-note'} className='empty-section__icon' />
       <h3>{title || 'Questa sezione è ancora vuota'}</h3>
       {subtitle && <h4>{subtitle}</h4>}
