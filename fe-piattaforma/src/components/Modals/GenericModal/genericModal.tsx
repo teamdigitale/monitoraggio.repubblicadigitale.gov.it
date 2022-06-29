@@ -35,6 +35,7 @@ export interface GenericModalI {
   noPaddingSecondary?: boolean;
   withIcon?: boolean;
   icon?: string;
+  isRoleManaging?: boolean;
 }
 
 const GenericModal: React.FC<GenericModalI> = (props) => {
@@ -57,6 +58,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
     noPaddingSecondary = false,
     withIcon = false,
     icon = '',
+    isRoleManaging = false,
   } = props;
 
   const handleAction = (action: 'primary' | 'secondary' | 'tertiary') => {
@@ -84,10 +86,25 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
   const device = useAppSelector(selectDevice);
 
   return (
-    <Modal id={id} {...props}>
-      <div className='d-flex flex-column justify-content-around align-items-center mt-5'>
+    <Modal id={id} {...props} isRoleManaging={isRoleManaging}>
+      <div
+        className={clsx(
+          'd-flex',
+          'flex-column',
+          'justify-content-around',
+          'align-items-center',
+          isRoleManaging && device.mediaIsPhone ? 'px-2' : 'px-5'
+        )}
+      >
         {withIcon && (
-          <div className='icon-container p-4 d-flex align-items-center'>
+          <div
+            className={clsx(
+              'icon-container',
+              'p-4',
+              'd-flex',
+              'align-items-center'
+            )}
+          >
             <Icon
               icon={icon}
               style={{ width: '50px', height: '80px' }}
@@ -134,13 +151,13 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
         {children}
       </ModalBody>
       <ModalFooter
-        className={
+        className={clsx(
           centerButtons
             ? 'd-flex justify-content-center'
             : device.mediaIsPhone
             ? 'd-flex flex-row justify-content-center'
             : ''
-        }
+        )}
       >
         {footer || primaryCTA || secondaryCTA ? (
           <>

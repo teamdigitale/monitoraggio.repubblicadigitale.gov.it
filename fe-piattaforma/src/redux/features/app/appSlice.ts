@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { BreadcrumbI } from '../../../components/Breadcrumb/breadCrumb';
 import type { RootState } from '../../store';
 
 interface AppStateI {
@@ -12,6 +13,7 @@ interface AppStateI {
     isLoading: boolean;
     count: number;
   };
+  breadCrumb: BreadcrumbI[];
 }
 
 const initialState: AppStateI = {
@@ -20,6 +22,7 @@ const initialState: AppStateI = {
     isLoading: false,
     count: 0,
   },
+  breadCrumb: [],
 };
 
 export const appSlice = createSlice({
@@ -43,12 +46,17 @@ export const appSlice = createSlice({
     updateDevice: (state, action: PayloadAction<any>) => {
       state.device = action.payload;
     },
+    updateBreadcrumb: (state, action: PayloadAction<any>) => {
+      state.breadCrumb = [...action.payload];
+    },
   },
 });
 
-export const { showLoader, hideLoader, updateDevice } = appSlice.actions;
+export const { showLoader, hideLoader, updateDevice, updateBreadcrumb } =
+  appSlice.actions;
 
 export const selectLoader = (state: RootState) => state.app.loader;
 export const selectDevice = (state: RootState) => state.app.device;
+export const selectBreadcrumb = (state: RootState) => state.app.breadCrumb;
 
 export default appSlice.reducer;

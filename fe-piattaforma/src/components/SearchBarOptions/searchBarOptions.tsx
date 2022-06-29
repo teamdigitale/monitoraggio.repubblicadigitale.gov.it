@@ -1,11 +1,12 @@
 import React from 'react';
 import SearchBar from '../SearchBar/searchBar';
 import { Form } from '../../components';
-import { FormGroup, Label, Input } from 'design-react-kit';
+import { FormGroup, Label } from 'design-react-kit';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
 import { GetEntitySearchResult } from '../../redux/features/citizensArea/citizensAreaThunk';
+import Input from '../Form/input';
 
 interface SearchBarOptionsI {
   setCurrentStep: (value: string) => void;
@@ -32,34 +33,24 @@ const SearchBarOptions: React.FC<SearchBarOptionsI> = ({
     >
       <div>
         <Form className='m-3'>
-          <fieldset>
-            <FormGroup check>
-              {Object.keys(steps).map((item, index) => (
-                <div
-                  role='button'
-                  tabIndex={0}
-                  key={index}
-                  onKeyPress={() => {
-                    setCurrentStep(steps[item]);
-                  }}
+          <FormGroup check className='justify-content-around'>
+            {Object.keys(steps).map((item, index) => (
+              <div key={index} className='d-flex align-items-center'>
+                <Input
+                  name='docType'
+                  type='radio'
+                  id={`current-step-${index}`}
+                  checked={currentStep === steps[item]}
                   onClick={() => {
                     setCurrentStep(steps[item]);
                   }}
-                  className='search-bar-options-custom__items'
-                >
-                  <Input
-                    name='docType'
-                    type='radio'
-                    id={`current-step-${index}`}
-                    checked={currentStep === steps[item]}
-                  />
-                  <Label check htmlFor={`current-step-${index}`}>
-                    {t(steps[item])}
-                  </Label>
-                </div>
-              ))}
-            </FormGroup>
-          </fieldset>
+                />
+                <Label check htmlFor={`current-step-${index}`}>
+                  {t(steps[item])}
+                </Label>
+              </div>
+            ))}
+          </FormGroup>
         </Form>
       </div>
       <SearchBar

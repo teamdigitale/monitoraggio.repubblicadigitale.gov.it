@@ -1,0 +1,8904 @@
+[
+    {
+      "nome": "Acquaformosa",
+      "codice": "078001",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "A033",
+      "cap": [
+        "87010"
+      ],
+      "popolazione": 1161
+    },
+    {
+      "nome": "Acquappesa",
+      "codice": "078002",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "A041",
+      "cap": [
+        "87020"
+      ],
+      "popolazione": 1910
+    },
+    {
+      "nome": "Acquaro",
+      "codice": "102001",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "A043",
+      "cap": [
+        "89832"
+      ],
+      "popolazione": 2448
+    },
+    {
+      "nome": "Acri",
+      "codice": "078003",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "A053",
+      "cap": [
+        "87041"
+      ],
+      "popolazione": 21458
+    },
+    {
+      "nome": "Africo",
+      "codice": "080001",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "A065",
+      "cap": [
+        "89030"
+      ],
+      "popolazione": 3210
+    },
+    {
+      "nome": "Agnana Calabra",
+      "codice": "080002",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "A077",
+      "cap": [
+        "89040"
+      ],
+      "popolazione": 569
+    },
+    {
+      "nome": "Aiello Calabro",
+      "codice": "078004",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "A102",
+      "cap": [
+        "87031"
+      ],
+      "popolazione": 1907
+    },
+    {
+      "nome": "Aieta",
+      "codice": "078005",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "A105",
+      "cap": [
+        "87020"
+      ],
+      "popolazione": 839
+    },
+    {
+      "nome": "Albi",
+      "codice": "079002",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "A155",
+      "cap": [
+        "88055"
+      ],
+      "popolazione": 1010
+    },
+    {
+      "nome": "Albidona",
+      "codice": "078006",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "A160",
+      "cap": [
+        "87070"
+      ],
+      "popolazione": 1463
+    },
+    {
+      "nome": "Alessandria del Carretto",
+      "codice": "078007",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "A183",
+      "cap": [
+        "87070"
+      ],
+      "popolazione": 530
+    },
+    {
+      "nome": "Altilia",
+      "codice": "078008",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "A234",
+      "cap": [
+        "87040"
+      ],
+      "popolazione": 737
+    },
+    {
+      "nome": "Altomonte",
+      "codice": "078009",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "A240",
+      "cap": [
+        "87042"
+      ],
+      "popolazione": 4341
+    },
+    {
+      "nome": "Amantea",
+      "codice": "078010",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "A253",
+      "cap": [
+        "87032"
+      ],
+      "popolazione": 13754
+    },
+    {
+      "nome": "Amaroni",
+      "codice": "079003",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "A255",
+      "cap": [
+        "88050"
+      ],
+      "popolazione": 1885
+    },
+    {
+      "nome": "Amato",
+      "codice": "079004",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "A257",
+      "cap": [
+        "88040"
+      ],
+      "popolazione": 837
+    },
+    {
+      "nome": "Amendolara",
+      "codice": "078011",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "A263",
+      "cap": [
+        "87071"
+      ],
+      "popolazione": 3001
+    },
+    {
+      "nome": "Andali",
+      "codice": "079005",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "A272",
+      "cap": [
+        "88050"
+      ],
+      "popolazione": 795
+    },
+    {
+      "nome": "Anoia",
+      "codice": "080003",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "A303",
+      "cap": [
+        "89020"
+      ],
+      "popolazione": 2246
+    },
+    {
+      "nome": "Antonimina",
+      "codice": "080004",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "A314",
+      "cap": [
+        "89040"
+      ],
+      "popolazione": 1361
+    },
+    {
+      "nome": "Aprigliano",
+      "codice": "078012",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "A340",
+      "cap": [
+        "87051"
+      ],
+      "popolazione": 2968
+    },
+    {
+      "nome": "Ardore",
+      "codice": "080005",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "A385",
+      "cap": [
+        "89031"
+      ],
+      "popolazione": 4760
+    },
+    {
+      "nome": "Arena",
+      "codice": "102002",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "A386",
+      "cap": [
+        "89832"
+      ],
+      "popolazione": 1532
+    },
+    {
+      "nome": "Argusto",
+      "codice": "079007",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "A397",
+      "cap": [
+        "88060"
+      ],
+      "popolazione": 529
+    },
+    {
+      "nome": "Badolato",
+      "codice": "079008",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "A542",
+      "cap": [
+        "88060"
+      ],
+      "popolazione": 3183
+    },
+    {
+      "nome": "Bagaladi",
+      "codice": "080006",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "A544",
+      "cap": [
+        "89060"
+      ],
+      "popolazione": 1082
+    },
+    {
+      "nome": "Bagnara Calabra",
+      "codice": "080007",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "A552",
+      "cap": [
+        "89011"
+      ],
+      "popolazione": 10622
+    },
+    {
+      "nome": "Belcastro",
+      "codice": "079009",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "A736",
+      "cap": [
+        "88050"
+      ],
+      "popolazione": 1400
+    },
+    {
+      "nome": "Belmonte Calabro",
+      "codice": "078013",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "A762",
+      "cap": [
+        "87033"
+      ],
+      "popolazione": 2007
+    },
+    {
+      "nome": "Belsito",
+      "codice": "078014",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "A768",
+      "cap": [
+        "87030"
+      ],
+      "popolazione": 958
+    },
+    {
+      "nome": "Belvedere Marittimo",
+      "codice": "078015",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "A773",
+      "cap": [
+        "87021"
+      ],
+      "popolazione": 9120
+    },
+    {
+      "nome": "Belvedere di Spinello",
+      "codice": "101001",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "A772",
+      "cap": [
+        "88824"
+      ],
+      "popolazione": 2327
+    },
+    {
+      "nome": "Benestare",
+      "codice": "080008",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "A780",
+      "cap": [
+        "89030"
+      ],
+      "popolazione": 2442
+    },
+    {
+      "nome": "Bianchi",
+      "codice": "078016",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "A842",
+      "cap": [
+        "87050"
+      ],
+      "popolazione": 1367
+    },
+    {
+      "nome": "Bianco",
+      "codice": "080009",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "A843",
+      "cap": [
+        "89032"
+      ],
+      "popolazione": 4125
+    },
+    {
+      "nome": "Bisignano",
+      "codice": "078017",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "A887",
+      "cap": [
+        "87043"
+      ],
+      "popolazione": 10335
+    },
+    {
+      "nome": "Bivongi",
+      "codice": "080010",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "A897",
+      "cap": [
+        "89040"
+      ],
+      "popolazione": 1398
+    },
+    {
+      "nome": "Bocchigliero",
+      "codice": "078018",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "A912",
+      "cap": [
+        "87060"
+      ],
+      "popolazione": 1479
+    },
+    {
+      "nome": "Bonifati",
+      "codice": "078019",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "A973",
+      "cap": [
+        "87020"
+      ],
+      "popolazione": 2912
+    },
+    {
+      "nome": "Borgia",
+      "codice": "079011",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "B002",
+      "cap": [
+        "88021"
+      ],
+      "popolazione": 7418
+    },
+    {
+      "nome": "Botricello",
+      "codice": "079012",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "B085",
+      "cap": [
+        "88070"
+      ],
+      "popolazione": 4906
+    },
+    {
+      "nome": "Bova",
+      "codice": "080011",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "B097",
+      "cap": [
+        "89033"
+      ],
+      "popolazione": 461
+    },
+    {
+      "nome": "Bova Marina",
+      "codice": "080013",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "B099",
+      "cap": [
+        "89035"
+      ],
+      "popolazione": 4142
+    },
+    {
+      "nome": "Bovalino",
+      "codice": "080012",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "B098",
+      "cap": [
+        "89034"
+      ],
+      "popolazione": 8814
+    },
+    {
+      "nome": "Brancaleone",
+      "codice": "080014",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "B118",
+      "cap": [
+        "89036"
+      ],
+      "popolazione": 3624
+    },
+    {
+      "nome": "Briatico",
+      "codice": "102003",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "B169",
+      "cap": [
+        "89817"
+      ],
+      "popolazione": 3983
+    },
+    {
+      "nome": "Brognaturo",
+      "codice": "102004",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "B197",
+      "cap": [
+        "89822"
+      ],
+      "popolazione": 670
+    },
+    {
+      "nome": "Bruzzano Zeffirio",
+      "codice": "080015",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "B234",
+      "cap": [
+        "89030"
+      ],
+      "popolazione": 1211
+    },
+    {
+      "nome": "Buonvicino",
+      "codice": "078020",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "B270",
+      "cap": [
+        "87020"
+      ],
+      "popolazione": 2354
+    },
+    {
+      "nome": "Caccuri",
+      "codice": "101002",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "B319",
+      "cap": [
+        "88833"
+      ],
+      "popolazione": 1695
+    },
+    {
+      "nome": "Calanna",
+      "codice": "080016",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "B379",
+      "cap": [
+        "89050"
+      ],
+      "popolazione": 979
+    },
+    {
+      "nome": "Calopezzati",
+      "codice": "078021",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "B424",
+      "cap": [
+        "87060"
+      ],
+      "popolazione": 1293
+    },
+    {
+      "nome": "Caloveto",
+      "codice": "078022",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "B426",
+      "cap": [
+        "87060"
+      ],
+      "popolazione": 1283
+    },
+    {
+      "nome": "Camini",
+      "codice": "080017",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "B481",
+      "cap": [
+        "89040"
+      ],
+      "popolazione": 715
+    },
+    {
+      "nome": "Campana",
+      "codice": "078023",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "B500",
+      "cap": [
+        "87061"
+      ],
+      "popolazione": 1962
+    },
+    {
+      "nome": "Campo Calabro",
+      "codice": "080018",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "B516",
+      "cap": [
+        "89052"
+      ],
+      "popolazione": 4410
+    },
+    {
+      "nome": "Candidoni",
+      "codice": "080019",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "B591",
+      "cap": [
+        "89020"
+      ],
+      "popolazione": 389
+    },
+    {
+      "nome": "Canna",
+      "codice": "078024",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "B607",
+      "cap": [
+        "87070"
+      ],
+      "popolazione": 785
+    },
+    {
+      "nome": "Canolo",
+      "codice": "080020",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "B617",
+      "cap": [
+        "89040"
+      ],
+      "popolazione": 801
+    },
+    {
+      "nome": "Capistrano",
+      "codice": "102005",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "B655",
+      "cap": [
+        "89818"
+      ],
+      "popolazione": 1097
+    },
+    {
+      "nome": "Caraffa del Bianco",
+      "codice": "080021",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "B718",
+      "cap": [
+        "89030"
+      ],
+      "popolazione": 532
+    },
+    {
+      "nome": "Caraffa di Catanzaro",
+      "codice": "079017",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "B717",
+      "cap": [
+        "88050"
+      ],
+      "popolazione": 1960
+    },
+    {
+      "nome": "Cardeto",
+      "codice": "080022",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "B756",
+      "cap": [
+        "89060"
+      ],
+      "popolazione": 1822
+    },
+    {
+      "nome": "Cardinale",
+      "codice": "079018",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "B758",
+      "cap": [
+        "88062"
+      ],
+      "popolazione": 2334
+    },
+    {
+      "nome": "Careri",
+      "codice": "080023",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "B766",
+      "cap": [
+        "89030"
+      ],
+      "popolazione": 2410
+    },
+    {
+      "nome": "Carfizzi",
+      "codice": "101003",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "B771",
+      "cap": [
+        "88817"
+      ],
+      "popolazione": 745
+    },
+    {
+      "nome": "Cariati",
+      "codice": "078025",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "B774",
+      "cap": [
+        "87062"
+      ],
+      "popolazione": 8644
+    },
+    {
+      "nome": "Carlopoli",
+      "codice": "079020",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "B790",
+      "cap": [
+        "88040"
+      ],
+      "popolazione": 1622
+    },
+    {
+      "nome": "Carolei",
+      "codice": "078026",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "B802",
+      "cap": [
+        "87030"
+      ],
+      "popolazione": 3462
+    },
+    {
+      "nome": "Carpanzano",
+      "codice": "078027",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "B813",
+      "cap": [
+        "87050"
+      ],
+      "popolazione": 300
+    },
+    {
+      "nome": "Casabona",
+      "codice": "101004",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "B857",
+      "cap": [
+        "88822"
+      ],
+      "popolazione": 2856
+    },
+    {
+      "nome": "Casali del Manco",
+      "codice": "078156",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "M385",
+      "cap": [
+        "87059"
+      ],
+      "popolazione": 10381
+    },
+    {
+      "nome": "Casignana",
+      "codice": "080024",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "B966",
+      "cap": [
+        "89030"
+      ],
+      "popolazione": 773
+    },
+    {
+      "nome": "Cassano all'Ionio",
+      "codice": "078029",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "C002",
+      "cap": [
+        "87011"
+      ],
+      "popolazione": 17281
+    },
+    {
+      "nome": "Castelsilano",
+      "codice": "101005",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "B968",
+      "cap": [
+        "88834"
+      ],
+      "popolazione": 1034
+    },
+    {
+      "nome": "Castiglione Cosentino",
+      "codice": "078030",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "C301",
+      "cap": [
+        "87040"
+      ],
+      "popolazione": 2978
+    },
+    {
+      "nome": "Castrolibero",
+      "codice": "078031",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "C108",
+      "cap": [
+        "87040"
+      ],
+      "popolazione": 9967
+    },
+    {
+      "nome": "Castroregio",
+      "codice": "078032",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "C348",
+      "cap": [
+        "87070"
+      ],
+      "popolazione": 345
+    },
+    {
+      "nome": "Castrovillari",
+      "codice": "078033",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "C349",
+      "cap": [
+        "87012"
+      ],
+      "popolazione": 22515
+    },
+    {
+      "nome": "Catanzaro",
+      "codice": "079023",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "C352",
+      "cap": [
+        "88100"
+      ],
+      "popolazione": 89364
+    },
+    {
+      "nome": "Caulonia",
+      "codice": "080025",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "C285",
+      "cap": [
+        "89041"
+      ],
+      "popolazione": 7060
+    },
+    {
+      "nome": "Celico",
+      "codice": "078034",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "C430",
+      "cap": [
+        "87053"
+      ],
+      "popolazione": 2883
+    },
+    {
+      "nome": "Cellara",
+      "codice": "078035",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "C437",
+      "cap": [
+        "87050"
+      ],
+      "popolazione": 511
+    },
+    {
+      "nome": "Cenadi",
+      "codice": "079024",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "C453",
+      "cap": [
+        "88067"
+      ],
+      "popolazione": 598
+    },
+    {
+      "nome": "Centrache",
+      "codice": "079025",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "C472",
+      "cap": [
+        "88067"
+      ],
+      "popolazione": 415
+    },
+    {
+      "nome": "Cerchiara di Calabria",
+      "codice": "078036",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "C489",
+      "cap": [
+        "87070"
+      ],
+      "popolazione": 2467
+    },
+    {
+      "nome": "Cerenzia",
+      "codice": "101006",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "C501",
+      "cap": [
+        "88833"
+      ],
+      "popolazione": 1215
+    },
+    {
+      "nome": "Cerisano",
+      "codice": "078037",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "C515",
+      "cap": [
+        "87044"
+      ],
+      "popolazione": 3271
+    },
+    {
+      "nome": "Cerva",
+      "codice": "079027",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "C542",
+      "cap": [
+        "88050"
+      ],
+      "popolazione": 1269
+    },
+    {
+      "nome": "Cervicati",
+      "codice": "078038",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "C554",
+      "cap": [
+        "87010"
+      ],
+      "popolazione": 888
+    },
+    {
+      "nome": "Cerzeto",
+      "codice": "078039",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "C560",
+      "cap": [
+        "87040"
+      ],
+      "popolazione": 1328
+    },
+    {
+      "nome": "Cessaniti",
+      "codice": "102006",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "C581",
+      "cap": [
+        "89816"
+      ],
+      "popolazione": 3405
+    },
+    {
+      "nome": "Cetraro",
+      "codice": "078040",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "C588",
+      "cap": [
+        "87022"
+      ],
+      "popolazione": 10260
+    },
+    {
+      "nome": "Chiaravalle Centrale",
+      "codice": "079029",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "C616",
+      "cap": [
+        "88064"
+      ],
+      "popolazione": 5883
+    },
+    {
+      "nome": "Cicala",
+      "codice": "079030",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "C674",
+      "cap": [
+        "88040"
+      ],
+      "popolazione": 1008
+    },
+    {
+      "nome": "Ciminà",
+      "codice": "080026",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "C695",
+      "cap": [
+        "89040"
+      ],
+      "popolazione": 595
+    },
+    {
+      "nome": "Cinquefrondi",
+      "codice": "080027",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "C710",
+      "cap": [
+        "89021"
+      ],
+      "popolazione": 6492
+    },
+    {
+      "nome": "Cirò",
+      "codice": "101007",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "C725",
+      "cap": [
+        "88813"
+      ],
+      "popolazione": 3125
+    },
+    {
+      "nome": "Cirò Marina",
+      "codice": "101008",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "C726",
+      "cap": [
+        "88811"
+      ],
+      "popolazione": 15051
+    },
+    {
+      "nome": "Cittanova",
+      "codice": "080028",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "C747",
+      "cap": [
+        "89022"
+      ],
+      "popolazione": 10344
+    },
+    {
+      "nome": "Civita",
+      "codice": "078041",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "C763",
+      "cap": [
+        "87010"
+      ],
+      "popolazione": 956
+    },
+    {
+      "nome": "Cleto",
+      "codice": "078042",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "C795",
+      "cap": [
+        "87030"
+      ],
+      "popolazione": 1320
+    },
+    {
+      "nome": "Colosimi",
+      "codice": "078043",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "C905",
+      "cap": [
+        "87050"
+      ],
+      "popolazione": 1313
+    },
+    {
+      "nome": "Condofuri",
+      "codice": "080029",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "C954",
+      "cap": [
+        "89030"
+      ],
+      "popolazione": 5074
+    },
+    {
+      "nome": "Conflenti",
+      "codice": "079033",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "C960",
+      "cap": [
+        "88040"
+      ],
+      "popolazione": 1437
+    },
+    {
+      "nome": "Corigliano-Rossano",
+      "codice": "078157",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "M403",
+      "cap": [
+        "87064"
+      ],
+      "popolazione": 74848
+    },
+    {
+      "nome": "Cortale",
+      "codice": "079034",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "D049",
+      "cap": [
+        "88020"
+      ],
+      "popolazione": 2217
+    },
+    {
+      "nome": "Cosenza",
+      "codice": "078045",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "D086",
+      "cap": [
+        "87100"
+      ],
+      "popolazione": 69484
+    },
+    {
+      "nome": "Cosoleto",
+      "codice": "080030",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "D089",
+      "cap": [
+        "89050"
+      ],
+      "popolazione": 916
+    },
+    {
+      "nome": "Cotronei",
+      "codice": "101009",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "D123",
+      "cap": [
+        "88836"
+      ],
+      "popolazione": 5434
+    },
+    {
+      "nome": "Cropalati",
+      "codice": "078046",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "D180",
+      "cap": [
+        "87060"
+      ],
+      "popolazione": 1097
+    },
+    {
+      "nome": "Cropani",
+      "codice": "079036",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "D181",
+      "cap": [
+        "88051"
+      ],
+      "popolazione": 4306
+    },
+    {
+      "nome": "Crosia",
+      "codice": "078047",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "D184",
+      "cap": [
+        "87060"
+      ],
+      "popolazione": 9481
+    },
+    {
+      "nome": "Crotone",
+      "codice": "101010",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "D122",
+      "cap": [
+        "88900"
+      ],
+      "popolazione": 58881
+    },
+    {
+      "nome": "Crucoli",
+      "codice": "101011",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "D189",
+      "cap": [
+        "88812"
+      ],
+      "popolazione": 3243
+    },
+    {
+      "nome": "Curinga",
+      "codice": "079039",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "D218",
+      "cap": [
+        "88022"
+      ],
+      "popolazione": 6708
+    },
+    {
+      "nome": "Cutro",
+      "codice": "101012",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "D236",
+      "cap": [
+        "88842"
+      ],
+      "popolazione": 10065
+    },
+    {
+      "nome": "Dasà",
+      "codice": "102007",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "D253",
+      "cap": [
+        "89832"
+      ],
+      "popolazione": 1272
+    },
+    {
+      "nome": "Davoli",
+      "codice": "079042",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "D257",
+      "cap": [
+        "88060"
+      ],
+      "popolazione": 5407
+    },
+    {
+      "nome": "Decollatura",
+      "codice": "079043",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "D261",
+      "cap": [
+        "88041"
+      ],
+      "popolazione": 3252
+    },
+    {
+      "nome": "Delianuova",
+      "codice": "080031",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "D268",
+      "cap": [
+        "89012"
+      ],
+      "popolazione": 3436
+    },
+    {
+      "nome": "Diamante",
+      "codice": "078048",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "D289",
+      "cap": [
+        "87023"
+      ],
+      "popolazione": 5055
+    },
+    {
+      "nome": "Dinami",
+      "codice": "102008",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "D303",
+      "cap": [
+        "89833"
+      ],
+      "popolazione": 2433
+    },
+    {
+      "nome": "Dipignano",
+      "codice": "078049",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "D304",
+      "cap": [
+        "87045"
+      ],
+      "popolazione": 4440
+    },
+    {
+      "nome": "Domanico",
+      "codice": "078050",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "D328",
+      "cap": [
+        "87030"
+      ],
+      "popolazione": 943
+    },
+    {
+      "nome": "Drapia",
+      "codice": "102009",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "D364",
+      "cap": [
+        "89862"
+      ],
+      "popolazione": 2102
+    },
+    {
+      "nome": "Fabrizia",
+      "codice": "102010",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "D453",
+      "cap": [
+        "89823"
+      ],
+      "popolazione": 2373
+    },
+    {
+      "nome": "Fagnano Castello",
+      "codice": "078051",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "D464",
+      "cap": [
+        "87013"
+      ],
+      "popolazione": 3949
+    },
+    {
+      "nome": "Falconara Albanese",
+      "codice": "078052",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "D473",
+      "cap": [
+        "87030"
+      ],
+      "popolazione": 1405
+    },
+    {
+      "nome": "Falerna",
+      "codice": "079047",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "D476",
+      "cap": [
+        "88042"
+      ],
+      "popolazione": 3801
+    },
+    {
+      "nome": "Feroleto Antico",
+      "codice": "079048",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "D544",
+      "cap": [
+        "88040"
+      ],
+      "popolazione": 2087
+    },
+    {
+      "nome": "Feroleto della Chiesa",
+      "codice": "080032",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "D545",
+      "cap": [
+        "89050"
+      ],
+      "popolazione": 1772
+    },
+    {
+      "nome": "Ferruzzano",
+      "codice": "080033",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "D557",
+      "cap": [
+        "89030"
+      ],
+      "popolazione": 745
+    },
+    {
+      "nome": "Figline Vegliaturo",
+      "codice": "078053",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "D582",
+      "cap": [
+        "87050"
+      ],
+      "popolazione": 1097
+    },
+    {
+      "nome": "Filadelfia",
+      "codice": "102011",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "D587",
+      "cap": [
+        "89814"
+      ],
+      "popolazione": 5638
+    },
+    {
+      "nome": "Filandari",
+      "codice": "102012",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "D589",
+      "cap": [
+        "89841"
+      ],
+      "popolazione": 1844
+    },
+    {
+      "nome": "Filogaso",
+      "codice": "102013",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "D596",
+      "cap": [
+        "89843"
+      ],
+      "popolazione": 1439
+    },
+    {
+      "nome": "Firmo",
+      "codice": "078054",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "D614",
+      "cap": [
+        "87010"
+      ],
+      "popolazione": 2184
+    },
+    {
+      "nome": "Fiumara",
+      "codice": "080034",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "D619",
+      "cap": [
+        "89050"
+      ],
+      "popolazione": 1021
+    },
+    {
+      "nome": "Fiumefreddo Bruzio",
+      "codice": "078055",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "D624",
+      "cap": [
+        "87030"
+      ],
+      "popolazione": 3078
+    },
+    {
+      "nome": "Fossato Serralta",
+      "codice": "079052",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "D744",
+      "cap": [
+        "88050"
+      ],
+      "popolazione": 614
+    },
+    {
+      "nome": "Francavilla Angitola",
+      "codice": "102014",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "D762",
+      "cap": [
+        "89815"
+      ],
+      "popolazione": 1976
+    },
+    {
+      "nome": "Francavilla Marittima",
+      "codice": "078056",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "D764",
+      "cap": [
+        "87072"
+      ],
+      "popolazione": 3025
+    },
+    {
+      "nome": "Francica",
+      "codice": "102015",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "D767",
+      "cap": [
+        "89851"
+      ],
+      "popolazione": 1663
+    },
+    {
+      "nome": "Frascineto",
+      "codice": "078057",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "D774",
+      "cap": [
+        "87010"
+      ],
+      "popolazione": 2239
+    },
+    {
+      "nome": "Fuscaldo",
+      "codice": "078058",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "D828",
+      "cap": [
+        "87024"
+      ],
+      "popolazione": 8072
+    },
+    {
+      "nome": "Gagliato",
+      "codice": "079055",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "D852",
+      "cap": [
+        "88060"
+      ],
+      "popolazione": 524
+    },
+    {
+      "nome": "Galatro",
+      "codice": "080035",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "D864",
+      "cap": [
+        "89054"
+      ],
+      "popolazione": 1778
+    },
+    {
+      "nome": "Gasperina",
+      "codice": "079056",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "D932",
+      "cap": [
+        "88060"
+      ],
+      "popolazione": 2160
+    },
+    {
+      "nome": "Gerace",
+      "codice": "080036",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "D975",
+      "cap": [
+        "89040"
+      ],
+      "popolazione": 2772
+    },
+    {
+      "nome": "Gerocarne",
+      "codice": "102016",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "D988",
+      "cap": [
+        "89831"
+      ],
+      "popolazione": 2380
+    },
+    {
+      "nome": "Giffone",
+      "codice": "080037",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "E025",
+      "cap": [
+        "89020"
+      ],
+      "popolazione": 1946
+    },
+    {
+      "nome": "Gimigliano",
+      "codice": "079058",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "E031",
+      "cap": [
+        "88045"
+      ],
+      "popolazione": 3421
+    },
+    {
+      "nome": "Gioia Tauro",
+      "codice": "080038",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "E041",
+      "cap": [
+        "89013"
+      ],
+      "popolazione": 19063
+    },
+    {
+      "nome": "Gioiosa Ionica",
+      "codice": "080039",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "E044",
+      "cap": [
+        "89042"
+      ],
+      "popolazione": 7014
+    },
+    {
+      "nome": "Girifalco",
+      "codice": "079059",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "E050",
+      "cap": [
+        "88024"
+      ],
+      "popolazione": 6120
+    },
+    {
+      "nome": "Gizzeria",
+      "codice": "079060",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "E068",
+      "cap": [
+        "88040"
+      ],
+      "popolazione": 4522
+    },
+    {
+      "nome": "Grimaldi",
+      "codice": "078059",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "E180",
+      "cap": [
+        "87034"
+      ],
+      "popolazione": 1739
+    },
+    {
+      "nome": "Grisolia",
+      "codice": "078060",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "E185",
+      "cap": [
+        "87020"
+      ],
+      "popolazione": 2310
+    },
+    {
+      "nome": "Grotteria",
+      "codice": "080040",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "E212",
+      "cap": [
+        "89043"
+      ],
+      "popolazione": 3274
+    },
+    {
+      "nome": "Guardavalle",
+      "codice": "079061",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "E239",
+      "cap": [
+        "88065"
+      ],
+      "popolazione": 4752
+    },
+    {
+      "nome": "Guardia Piemontese",
+      "codice": "078061",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "E242",
+      "cap": [
+        "87020"
+      ],
+      "popolazione": 1895
+    },
+    {
+      "nome": "Ionadi",
+      "codice": "102017",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "E321",
+      "cap": [
+        "89851"
+      ],
+      "popolazione": 3822
+    },
+    {
+      "nome": "Isca sullo Ionio",
+      "codice": "079063",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "E328",
+      "cap": [
+        "88060"
+      ],
+      "popolazione": 1614
+    },
+    {
+      "nome": "Isola di Capo Rizzuto",
+      "codice": "101013",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "E339",
+      "cap": [
+        "88841"
+      ],
+      "popolazione": 15827
+    },
+    {
+      "nome": "Jacurso",
+      "codice": "079065",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "E274",
+      "cap": [
+        "88020"
+      ],
+      "popolazione": 623
+    },
+    {
+      "nome": "Joppolo",
+      "codice": "102018",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "E389",
+      "cap": [
+        "89863"
+      ],
+      "popolazione": 2090
+    },
+    {
+      "nome": "Laganadi",
+      "codice": "080041",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "E402",
+      "cap": [
+        "89050"
+      ],
+      "popolazione": 412
+    },
+    {
+      "nome": "Lago",
+      "codice": "078062",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "E407",
+      "cap": [
+        "87035"
+      ],
+      "popolazione": 2689
+    },
+    {
+      "nome": "Laino Borgo",
+      "codice": "078063",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "E417",
+      "cap": [
+        "87014"
+      ],
+      "popolazione": 2027
+    },
+    {
+      "nome": "Laino Castello",
+      "codice": "078064",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "E419",
+      "cap": [
+        "87015"
+      ],
+      "popolazione": 879
+    },
+    {
+      "nome": "Lamezia Terme",
+      "codice": "079160",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "M208",
+      "cap": [
+        "88046"
+      ],
+      "popolazione": 70336
+    },
+    {
+      "nome": "Lappano",
+      "codice": "078065",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "E450",
+      "cap": [
+        "87050"
+      ],
+      "popolazione": 986
+    },
+    {
+      "nome": "Lattarico",
+      "codice": "078066",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "E475",
+      "cap": [
+        "87010"
+      ],
+      "popolazione": 4058
+    },
+    {
+      "nome": "Laureana di Borrello",
+      "codice": "080042",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "E479",
+      "cap": [
+        "89023"
+      ],
+      "popolazione": 5289
+    },
+    {
+      "nome": "Limbadi",
+      "codice": "102019",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "E590",
+      "cap": [
+        "89844"
+      ],
+      "popolazione": 3498
+    },
+    {
+      "nome": "Locri",
+      "codice": "080043",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "D976",
+      "cap": [
+        "89044"
+      ],
+      "popolazione": 12459
+    },
+    {
+      "nome": "Longobardi",
+      "codice": "078067",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "E677",
+      "cap": [
+        "87030"
+      ],
+      "popolazione": 2256
+    },
+    {
+      "nome": "Longobucco",
+      "codice": "078068",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "E678",
+      "cap": [
+        "87066"
+      ],
+      "popolazione": 3479
+    },
+    {
+      "nome": "Lungro",
+      "codice": "078069",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "E745",
+      "cap": [
+        "87010"
+      ],
+      "popolazione": 2517
+    },
+    {
+      "nome": "Luzzi",
+      "codice": "078070",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "E773",
+      "cap": [
+        "87040"
+      ],
+      "popolazione": 9568
+    },
+    {
+      "nome": "Magisano",
+      "codice": "079068",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "E806",
+      "cap": [
+        "88050"
+      ],
+      "popolazione": 1272
+    },
+    {
+      "nome": "Maida",
+      "codice": "079069",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "E834",
+      "cap": [
+        "88025"
+      ],
+      "popolazione": 4457
+    },
+    {
+      "nome": "Maierato",
+      "codice": "102020",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "E836",
+      "cap": [
+        "89843"
+      ],
+      "popolazione": 2198
+    },
+    {
+      "nome": "Maierà",
+      "codice": "078071",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "E835",
+      "cap": [
+        "87020"
+      ],
+      "popolazione": 1231
+    },
+    {
+      "nome": "Malito",
+      "codice": "078072",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "E859",
+      "cap": [
+        "87030"
+      ],
+      "popolazione": 812
+    },
+    {
+      "nome": "Malvito",
+      "codice": "078073",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "E872",
+      "cap": [
+        "87010"
+      ],
+      "popolazione": 1867
+    },
+    {
+      "nome": "Mammola",
+      "codice": "080044",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "E873",
+      "cap": [
+        "89045"
+      ],
+      "popolazione": 2971
+    },
+    {
+      "nome": "Mandatoriccio",
+      "codice": "078074",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "E878",
+      "cap": [
+        "87060"
+      ],
+      "popolazione": 2900
+    },
+    {
+      "nome": "Mangone",
+      "codice": "078075",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "E888",
+      "cap": [
+        "87050"
+      ],
+      "popolazione": 1823
+    },
+    {
+      "nome": "Marano Marchesato",
+      "codice": "078076",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "E914",
+      "cap": [
+        "87040"
+      ],
+      "popolazione": 3474
+    },
+    {
+      "nome": "Marano Principato",
+      "codice": "078077",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "E915",
+      "cap": [
+        "87040"
+      ],
+      "popolazione": 3119
+    },
+    {
+      "nome": "Marcedusa",
+      "codice": "079071",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "E923",
+      "cap": [
+        "88050"
+      ],
+      "popolazione": 425
+    },
+    {
+      "nome": "Marcellinara",
+      "codice": "079072",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "E925",
+      "cap": [
+        "88044"
+      ],
+      "popolazione": 2253
+    },
+    {
+      "nome": "Marina di Gioiosa Ionica",
+      "codice": "080045",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "E956",
+      "cap": [
+        "89046"
+      ],
+      "popolazione": 6515
+    },
+    {
+      "nome": "Maropati",
+      "codice": "080046",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "E968",
+      "cap": [
+        "89020"
+      ],
+      "popolazione": 1583
+    },
+    {
+      "nome": "Martirano",
+      "codice": "079073",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "E990",
+      "cap": [
+        "88040"
+      ],
+      "popolazione": 937
+    },
+    {
+      "nome": "Martirano Lombardo",
+      "codice": "079074",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "E991",
+      "cap": [
+        "88040"
+      ],
+      "popolazione": 1167
+    },
+    {
+      "nome": "Martone",
+      "codice": "080047",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "E993",
+      "cap": [
+        "89040"
+      ],
+      "popolazione": 554
+    },
+    {
+      "nome": "Marzi",
+      "codice": "078078",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "F001",
+      "cap": [
+        "87050"
+      ],
+      "popolazione": 996
+    },
+    {
+      "nome": "Melicucco",
+      "codice": "080049",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "F106",
+      "cap": [
+        "89020"
+      ],
+      "popolazione": 5045
+    },
+    {
+      "nome": "Melicuccà",
+      "codice": "080048",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "F105",
+      "cap": [
+        "89020"
+      ],
+      "popolazione": 1001
+    },
+    {
+      "nome": "Melissa",
+      "codice": "101014",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "F108",
+      "cap": [
+        "88814"
+      ],
+      "popolazione": 3529
+    },
+    {
+      "nome": "Melito di Porto Salvo",
+      "codice": "080050",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "F112",
+      "cap": [
+        "89063"
+      ],
+      "popolazione": 11115
+    },
+    {
+      "nome": "Mendicino",
+      "codice": "078079",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "F125",
+      "cap": [
+        "87040"
+      ],
+      "popolazione": 9238
+    },
+    {
+      "nome": "Mesoraca",
+      "codice": "101015",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "F157",
+      "cap": [
+        "88838"
+      ],
+      "popolazione": 6718
+    },
+    {
+      "nome": "Miglierina",
+      "codice": "079077",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "F200",
+      "cap": [
+        "88040"
+      ],
+      "popolazione": 799
+    },
+    {
+      "nome": "Mileto",
+      "codice": "102021",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "F207",
+      "cap": [
+        "89852"
+      ],
+      "popolazione": 6894
+    },
+    {
+      "nome": "Molochio",
+      "codice": "080051",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "F301",
+      "cap": [
+        "89010"
+      ],
+      "popolazione": 2643
+    },
+    {
+      "nome": "Monasterace",
+      "codice": "080052",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "F324",
+      "cap": [
+        "89040"
+      ],
+      "popolazione": 3369
+    },
+    {
+      "nome": "Mongiana",
+      "codice": "102022",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "F364",
+      "cap": [
+        "89823"
+      ],
+      "popolazione": 796
+    },
+    {
+      "nome": "Mongrassano",
+      "codice": "078080",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "F370",
+      "cap": [
+        "87040"
+      ],
+      "popolazione": 1661
+    },
+    {
+      "nome": "Montalto Uffugo",
+      "codice": "078081",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "F416",
+      "cap": [
+        "87046"
+      ],
+      "popolazione": 18168
+    },
+    {
+      "nome": "Montauro",
+      "codice": "079080",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "F432",
+      "cap": [
+        "88060"
+      ],
+      "popolazione": 1583
+    },
+    {
+      "nome": "Montebello Jonico",
+      "codice": "080053",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "D746",
+      "cap": [
+        "89064"
+      ],
+      "popolazione": 6242
+    },
+    {
+      "nome": "Montegiordano",
+      "codice": "078082",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "F519",
+      "cap": [
+        "87070"
+      ],
+      "popolazione": 1988
+    },
+    {
+      "nome": "Montepaone",
+      "codice": "079081",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "F586",
+      "cap": [
+        "88060"
+      ],
+      "popolazione": 4681
+    },
+    {
+      "nome": "Monterosso Calabro",
+      "codice": "102023",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "F607",
+      "cap": [
+        "89819"
+      ],
+      "popolazione": 1796
+    },
+    {
+      "nome": "Morano Calabro",
+      "codice": "078083",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "F708",
+      "cap": [
+        "87016"
+      ],
+      "popolazione": 4615
+    },
+    {
+      "nome": "Mormanno",
+      "codice": "078084",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "F735",
+      "cap": [
+        "87026"
+      ],
+      "popolazione": 3264
+    },
+    {
+      "nome": "Motta San Giovanni",
+      "codice": "080054",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "F779",
+      "cap": [
+        "89065"
+      ],
+      "popolazione": 6122
+    },
+    {
+      "nome": "Motta Santa Lucia",
+      "codice": "079083",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "F780",
+      "cap": [
+        "88040"
+      ],
+      "popolazione": 871
+    },
+    {
+      "nome": "Mottafollone",
+      "codice": "078085",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "F775",
+      "cap": [
+        "87010"
+      ],
+      "popolazione": 1274
+    },
+    {
+      "nome": "Nardodipace",
+      "codice": "102024",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "F843",
+      "cap": [
+        "89824"
+      ],
+      "popolazione": 1384
+    },
+    {
+      "nome": "Nicotera",
+      "codice": "102025",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "F893",
+      "cap": [
+        "89844"
+      ],
+      "popolazione": 6490
+    },
+    {
+      "nome": "Nocara",
+      "codice": "078086",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "F907",
+      "cap": [
+        "87070"
+      ],
+      "popolazione": 422
+    },
+    {
+      "nome": "Nocera Terinese",
+      "codice": "079087",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "F910",
+      "cap": [
+        "88047"
+      ],
+      "popolazione": 4725
+    },
+    {
+      "nome": "Olivadi",
+      "codice": "079088",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "G034",
+      "cap": [
+        "88067"
+      ],
+      "popolazione": 587
+    },
+    {
+      "nome": "Oppido Mamertina",
+      "codice": "080055",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "G082",
+      "cap": [
+        "89014"
+      ],
+      "popolazione": 5406
+    },
+    {
+      "nome": "Oriolo",
+      "codice": "078087",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "G110",
+      "cap": [
+        "87073"
+      ],
+      "popolazione": 2386
+    },
+    {
+      "nome": "Orsomarso",
+      "codice": "078088",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "G129",
+      "cap": [
+        "87020"
+      ],
+      "popolazione": 1338
+    },
+    {
+      "nome": "Palermiti",
+      "codice": "079089",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "G272",
+      "cap": [
+        "88050"
+      ],
+      "popolazione": 1275
+    },
+    {
+      "nome": "Palizzi",
+      "codice": "080056",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "G277",
+      "cap": [
+        "89038"
+      ],
+      "popolazione": 2297
+    },
+    {
+      "nome": "Pallagorio",
+      "codice": "101016",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "G278",
+      "cap": [
+        "88818"
+      ],
+      "popolazione": 1337
+    },
+    {
+      "nome": "Palmi",
+      "codice": "080057",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "G288",
+      "cap": [
+        "89015"
+      ],
+      "popolazione": 18721
+    },
+    {
+      "nome": "Paludi",
+      "codice": "078089",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "G298",
+      "cap": [
+        "87060"
+      ],
+      "popolazione": 1134
+    },
+    {
+      "nome": "Panettieri",
+      "codice": "078090",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "G307",
+      "cap": [
+        "87050"
+      ],
+      "popolazione": 345
+    },
+    {
+      "nome": "Paola",
+      "codice": "078091",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "G317",
+      "cap": [
+        "87027"
+      ],
+      "popolazione": 16416
+    },
+    {
+      "nome": "Papasidero",
+      "codice": "078092",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "G320",
+      "cap": [
+        "87020"
+      ],
+      "popolazione": 808
+    },
+    {
+      "nome": "Parenti",
+      "codice": "078093",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "G331",
+      "cap": [
+        "87040"
+      ],
+      "popolazione": 2249
+    },
+    {
+      "nome": "Parghelia",
+      "codice": "102026",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "G335",
+      "cap": [
+        "89861"
+      ],
+      "popolazione": 1303
+    },
+    {
+      "nome": "Paterno Calabro",
+      "codice": "078094",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "G372",
+      "cap": [
+        "87040"
+      ],
+      "popolazione": 1366
+    },
+    {
+      "nome": "Pazzano",
+      "codice": "080058",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "G394",
+      "cap": [
+        "89040"
+      ],
+      "popolazione": 640
+    },
+    {
+      "nome": "Pedivigliano",
+      "codice": "078096",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "G411",
+      "cap": [
+        "87050"
+      ],
+      "popolazione": 878
+    },
+    {
+      "nome": "Pentone",
+      "codice": "079092",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "G439",
+      "cap": [
+        "88050"
+      ],
+      "popolazione": 2215
+    },
+    {
+      "nome": "Petilia Policastro",
+      "codice": "101017",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "G508",
+      "cap": [
+        "88837"
+      ],
+      "popolazione": 9267
+    },
+    {
+      "nome": "Petrizzi",
+      "codice": "079094",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "G517",
+      "cap": [
+        "88060"
+      ],
+      "popolazione": 1167
+    },
+    {
+      "nome": "Petronà",
+      "codice": "079095",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "G518",
+      "cap": [
+        "88050"
+      ],
+      "popolazione": 2685
+    },
+    {
+      "nome": "Piane Crati",
+      "codice": "078097",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "G553",
+      "cap": [
+        "87050"
+      ],
+      "popolazione": 1414
+    },
+    {
+      "nome": "Pianopoli",
+      "codice": "079096",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "D546",
+      "cap": [
+        "88040"
+      ],
+      "popolazione": 2559
+    },
+    {
+      "nome": "Pietrafitta",
+      "codice": "078098",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "G615",
+      "cap": [
+        "87050"
+      ],
+      "popolazione": 1377
+    },
+    {
+      "nome": "Pietrapaola",
+      "codice": "078099",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "G622",
+      "cap": [
+        "87060"
+      ],
+      "popolazione": 1173
+    },
+    {
+      "nome": "Pizzo",
+      "codice": "102027",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "G722",
+      "cap": [
+        "89812"
+      ],
+      "popolazione": 8885
+    },
+    {
+      "nome": "Pizzoni",
+      "codice": "102028",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "G728",
+      "cap": [
+        "89834"
+      ],
+      "popolazione": 1233
+    },
+    {
+      "nome": "Placanica",
+      "codice": "080059",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "G729",
+      "cap": [
+        "89040"
+      ],
+      "popolazione": 1250
+    },
+    {
+      "nome": "Plataci",
+      "codice": "078100",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "G733",
+      "cap": [
+        "87070"
+      ],
+      "popolazione": 830
+    },
+    {
+      "nome": "Platania",
+      "codice": "079099",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "G734",
+      "cap": [
+        "88040"
+      ],
+      "popolazione": 2232
+    },
+    {
+      "nome": "Platì",
+      "codice": "080060",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "G735",
+      "cap": [
+        "89039"
+      ],
+      "popolazione": 3711
+    },
+    {
+      "nome": "Polia",
+      "codice": "102029",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "G785",
+      "cap": [
+        "89813"
+      ],
+      "popolazione": 1048
+    },
+    {
+      "nome": "Polistena",
+      "codice": "080061",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "G791",
+      "cap": [
+        "89024"
+      ],
+      "popolazione": 10742
+    },
+    {
+      "nome": "Portigliola",
+      "codice": "080062",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "G905",
+      "cap": [
+        "89040"
+      ],
+      "popolazione": 1205
+    },
+    {
+      "nome": "Praia a Mare",
+      "codice": "078101",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "G975",
+      "cap": [
+        "87028"
+      ],
+      "popolazione": 6496
+    },
+    {
+      "nome": "Reggio di Calabria",
+      "codice": "080063",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "H224",
+      "cap": [
+        "89121",
+        "89122",
+        "89123",
+        "89124",
+        "89125",
+        "89126",
+        "89127",
+        "89128",
+        "89129",
+        "89130",
+        "89131",
+        "89132",
+        "89133",
+        "89134",
+        "89135"
+      ],
+      "popolazione": 180817
+    },
+    {
+      "nome": "Rende",
+      "codice": "078102",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H235",
+      "cap": [
+        "87036"
+      ],
+      "popolazione": 33555
+    },
+    {
+      "nome": "Riace",
+      "codice": "080064",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "H265",
+      "cap": [
+        "89040"
+      ],
+      "popolazione": 1793
+    },
+    {
+      "nome": "Ricadi",
+      "codice": "102030",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "H271",
+      "cap": [
+        "89866"
+      ],
+      "popolazione": 4750
+    },
+    {
+      "nome": "Rizziconi",
+      "codice": "080065",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "H359",
+      "cap": [
+        "89016"
+      ],
+      "popolazione": 7806
+    },
+    {
+      "nome": "Rocca Imperiale",
+      "codice": "078103",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H416",
+      "cap": [
+        "87074"
+      ],
+      "popolazione": 3292
+    },
+    {
+      "nome": "Rocca di Neto",
+      "codice": "101019",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "H403",
+      "cap": [
+        "88821"
+      ],
+      "popolazione": 5594
+    },
+    {
+      "nome": "Roccabernarda",
+      "codice": "101018",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "H383",
+      "cap": [
+        "88835"
+      ],
+      "popolazione": 3467
+    },
+    {
+      "nome": "Roccaforte del Greco",
+      "codice": "080066",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "H408",
+      "cap": [
+        "89060"
+      ],
+      "popolazione": 550
+    },
+    {
+      "nome": "Roccella Ionica",
+      "codice": "080067",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "H456",
+      "cap": [
+        "89047"
+      ],
+      "popolazione": 6434
+    },
+    {
+      "nome": "Roggiano Gravina",
+      "codice": "078104",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H488",
+      "cap": [
+        "87017"
+      ],
+      "popolazione": 7228
+    },
+    {
+      "nome": "Roghudi",
+      "codice": "080068",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "H489",
+      "cap": [
+        "89060"
+      ],
+      "popolazione": 1172
+    },
+    {
+      "nome": "Rogliano",
+      "codice": "078105",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H490",
+      "cap": [
+        "87054"
+      ],
+      "popolazione": 5697
+    },
+    {
+      "nome": "Rombiolo",
+      "codice": "102031",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "H516",
+      "cap": [
+        "89841"
+      ],
+      "popolazione": 4649
+    },
+    {
+      "nome": "Rosarno",
+      "codice": "080069",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "H558",
+      "cap": [
+        "89025"
+      ],
+      "popolazione": 14380
+    },
+    {
+      "nome": "Rose",
+      "codice": "078106",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H565",
+      "cap": [
+        "87040"
+      ],
+      "popolazione": 4316
+    },
+    {
+      "nome": "Roseto Capo Spulico",
+      "codice": "078107",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H572",
+      "cap": [
+        "87070"
+      ],
+      "popolazione": 1873
+    },
+    {
+      "nome": "Rota Greca",
+      "codice": "078109",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H585",
+      "cap": [
+        "87010"
+      ],
+      "popolazione": 1178
+    },
+    {
+      "nome": "Rovito",
+      "codice": "078110",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H621",
+      "cap": [
+        "87050"
+      ],
+      "popolazione": 3078
+    },
+    {
+      "nome": "Samo",
+      "codice": "080070",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "H013",
+      "cap": [
+        "89030"
+      ],
+      "popolazione": 871
+    },
+    {
+      "nome": "San Basile",
+      "codice": "078111",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H765",
+      "cap": [
+        "87010"
+      ],
+      "popolazione": 1065
+    },
+    {
+      "nome": "San Benedetto Ullano",
+      "codice": "078112",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H774",
+      "cap": [
+        "87040"
+      ],
+      "popolazione": 1598
+    },
+    {
+      "nome": "San Calogero",
+      "codice": "102032",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "H785",
+      "cap": [
+        "89842"
+      ],
+      "popolazione": 4460
+    },
+    {
+      "nome": "San Cosmo Albanese",
+      "codice": "078113",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H806",
+      "cap": [
+        "87060"
+      ],
+      "popolazione": 629
+    },
+    {
+      "nome": "San Costantino Calabro",
+      "codice": "102033",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "H807",
+      "cap": [
+        "89851"
+      ],
+      "popolazione": 2238
+    },
+    {
+      "nome": "San Demetrio Corone",
+      "codice": "078114",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H818",
+      "cap": [
+        "87069"
+      ],
+      "popolazione": 3665
+    },
+    {
+      "nome": "San Donato di Ninea",
+      "codice": "078115",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H825",
+      "cap": [
+        "87010"
+      ],
+      "popolazione": 1491
+    },
+    {
+      "nome": "San Ferdinando",
+      "codice": "080097",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "M277",
+      "cap": [
+        "89026"
+      ],
+      "popolazione": 4299
+    },
+    {
+      "nome": "San Fili",
+      "codice": "078116",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H841",
+      "cap": [
+        "87037"
+      ],
+      "popolazione": 2715
+    },
+    {
+      "nome": "San Floro",
+      "codice": "079108",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "H846",
+      "cap": [
+        "88021"
+      ],
+      "popolazione": 700
+    },
+    {
+      "nome": "San Giorgio Albanese",
+      "codice": "078118",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H881",
+      "cap": [
+        "87060"
+      ],
+      "popolazione": 1555
+    },
+    {
+      "nome": "San Giorgio Morgeto",
+      "codice": "080071",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "H889",
+      "cap": [
+        "89017"
+      ],
+      "popolazione": 3158
+    },
+    {
+      "nome": "San Giovanni di Gerace",
+      "codice": "080072",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "H903",
+      "cap": [
+        "89040"
+      ],
+      "popolazione": 537
+    },
+    {
+      "nome": "San Giovanni in Fiore",
+      "codice": "078119",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H919",
+      "cap": [
+        "87055"
+      ],
+      "popolazione": 17912
+    },
+    {
+      "nome": "San Gregorio d'Ippona",
+      "codice": "102034",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "H941",
+      "cap": [
+        "89853"
+      ],
+      "popolazione": 2422
+    },
+    {
+      "nome": "San Lorenzo",
+      "codice": "080073",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "H959",
+      "cap": [
+        "89069"
+      ],
+      "popolazione": 2685
+    },
+    {
+      "nome": "San Lorenzo Bellizzi",
+      "codice": "078120",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H961",
+      "cap": [
+        "87070"
+      ],
+      "popolazione": 746
+    },
+    {
+      "nome": "San Lorenzo del Vallo",
+      "codice": "078121",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H962",
+      "cap": [
+        "87040"
+      ],
+      "popolazione": 3465
+    },
+    {
+      "nome": "San Luca",
+      "codice": "080074",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "H970",
+      "cap": [
+        "89030"
+      ],
+      "popolazione": 4044
+    },
+    {
+      "nome": "San Lucido",
+      "codice": "078122",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H971",
+      "cap": [
+        "87038"
+      ],
+      "popolazione": 5940
+    },
+    {
+      "nome": "San Mango d'Aquino",
+      "codice": "079110",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "H976",
+      "cap": [
+        "88040"
+      ],
+      "popolazione": 1639
+    },
+    {
+      "nome": "San Marco Argentano",
+      "codice": "078123",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H981",
+      "cap": [
+        "87018"
+      ],
+      "popolazione": 7282
+    },
+    {
+      "nome": "San Martino di Finita",
+      "codice": "078124",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H992",
+      "cap": [
+        "87010"
+      ],
+      "popolazione": 1207
+    },
+    {
+      "nome": "San Mauro Marchesato",
+      "codice": "101020",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "I026",
+      "cap": [
+        "88831"
+      ],
+      "popolazione": 2192
+    },
+    {
+      "nome": "San Nicola Arcella",
+      "codice": "078125",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "I060",
+      "cap": [
+        "87020"
+      ],
+      "popolazione": 1751
+    },
+    {
+      "nome": "San Nicola da Crissa",
+      "codice": "102035",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "I058",
+      "cap": [
+        "89821"
+      ],
+      "popolazione": 1416
+    },
+    {
+      "nome": "San Nicola dell'Alto",
+      "codice": "101021",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "I057",
+      "cap": [
+        "88817"
+      ],
+      "popolazione": 898
+    },
+    {
+      "nome": "San Pietro Apostolo",
+      "codice": "079115",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "I095",
+      "cap": [
+        "88040"
+      ],
+      "popolazione": 1778
+    },
+    {
+      "nome": "San Pietro a Maida",
+      "codice": "079114",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "I093",
+      "cap": [
+        "88025"
+      ],
+      "popolazione": 4298
+    },
+    {
+      "nome": "San Pietro di Caridà",
+      "codice": "080075",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "I102",
+      "cap": [
+        "89020"
+      ],
+      "popolazione": 1265
+    },
+    {
+      "nome": "San Pietro in Amantea",
+      "codice": "078126",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "I108",
+      "cap": [
+        "87030"
+      ],
+      "popolazione": 534
+    },
+    {
+      "nome": "San Pietro in Guarano",
+      "codice": "078127",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "I114",
+      "cap": [
+        "87047"
+      ],
+      "popolazione": 3649
+    },
+    {
+      "nome": "San Procopio",
+      "codice": "080076",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "I132",
+      "cap": [
+        "89020"
+      ],
+      "popolazione": 539
+    },
+    {
+      "nome": "San Roberto",
+      "codice": "080077",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "I139",
+      "cap": [
+        "89050"
+      ],
+      "popolazione": 1833
+    },
+    {
+      "nome": "San Sostene",
+      "codice": "079116",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "I164",
+      "cap": [
+        "88060"
+      ],
+      "popolazione": 1311
+    },
+    {
+      "nome": "San Sosti",
+      "codice": "078128",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "I165",
+      "cap": [
+        "87010"
+      ],
+      "popolazione": 2200
+    },
+    {
+      "nome": "San Vincenzo La Costa",
+      "codice": "078135",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "I388",
+      "cap": [
+        "87030"
+      ],
+      "popolazione": 2158
+    },
+    {
+      "nome": "San Vito sullo Ionio",
+      "codice": "079122",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "I393",
+      "cap": [
+        "88067"
+      ],
+      "popolazione": 1830
+    },
+    {
+      "nome": "Sangineto",
+      "codice": "078117",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "H877",
+      "cap": [
+        "87020"
+      ],
+      "popolazione": 1337
+    },
+    {
+      "nome": "Sant'Agata del Bianco",
+      "codice": "080079",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "I198",
+      "cap": [
+        "89030"
+      ],
+      "popolazione": 679
+    },
+    {
+      "nome": "Sant'Agata di Esaro",
+      "codice": "078131",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "I192",
+      "cap": [
+        "87010"
+      ],
+      "popolazione": 1990
+    },
+    {
+      "nome": "Sant'Alessio in Aspromonte",
+      "codice": "080080",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "I214",
+      "cap": [
+        "89050"
+      ],
+      "popolazione": 323
+    },
+    {
+      "nome": "Sant'Andrea Apostolo dello Ionio",
+      "codice": "079118",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "I266",
+      "cap": [
+        "88060"
+      ],
+      "popolazione": 2072
+    },
+    {
+      "nome": "Sant'Eufemia d'Aspromonte",
+      "codice": "080081",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "I333",
+      "cap": [
+        "89027"
+      ],
+      "popolazione": 4053
+    },
+    {
+      "nome": "Sant'Ilario dello Ionio",
+      "codice": "080082",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "I341",
+      "cap": [
+        "89040"
+      ],
+      "popolazione": 1332
+    },
+    {
+      "nome": "Sant'Onofrio",
+      "codice": "102036",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "I350",
+      "cap": [
+        "89843"
+      ],
+      "popolazione": 3148
+    },
+    {
+      "nome": "Santa Caterina Albanese",
+      "codice": "078129",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "I171",
+      "cap": [
+        "87010"
+      ],
+      "popolazione": 1244
+    },
+    {
+      "nome": "Santa Caterina dello Ionio",
+      "codice": "079117",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "I170",
+      "cap": [
+        "88060"
+      ],
+      "popolazione": 2142
+    },
+    {
+      "nome": "Santa Cristina d'Aspromonte",
+      "codice": "080078",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "I176",
+      "cap": [
+        "89056"
+      ],
+      "popolazione": 1017
+    },
+    {
+      "nome": "Santa Domenica Talao",
+      "codice": "078130",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "I183",
+      "cap": [
+        "87020"
+      ],
+      "popolazione": 1272
+    },
+    {
+      "nome": "Santa Maria del Cedro",
+      "codice": "078132",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "C717",
+      "cap": [
+        "87020"
+      ],
+      "popolazione": 4897
+    },
+    {
+      "nome": "Santa Severina",
+      "codice": "101022",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "I308",
+      "cap": [
+        "88832"
+      ],
+      "popolazione": 2262
+    },
+    {
+      "nome": "Santa Sofia d'Epiro",
+      "codice": "078133",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "I309",
+      "cap": [
+        "87048"
+      ],
+      "popolazione": 2748
+    },
+    {
+      "nome": "Santo Stefano di Rogliano",
+      "codice": "078134",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "I359",
+      "cap": [
+        "87056"
+      ],
+      "popolazione": 1640
+    },
+    {
+      "nome": "Santo Stefano in Aspromonte",
+      "codice": "080083",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "I371",
+      "cap": [
+        "89057"
+      ],
+      "popolazione": 1247
+    },
+    {
+      "nome": "Saracena",
+      "codice": "078136",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "I423",
+      "cap": [
+        "87010"
+      ],
+      "popolazione": 3964
+    },
+    {
+      "nome": "Satriano",
+      "codice": "079123",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "I463",
+      "cap": [
+        "88060"
+      ],
+      "popolazione": 3314
+    },
+    {
+      "nome": "Savelli",
+      "codice": "101023",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "I468",
+      "cap": [
+        "88825"
+      ],
+      "popolazione": 1321
+    },
+    {
+      "nome": "Scala Coeli",
+      "codice": "078137",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "I485",
+      "cap": [
+        "87060"
+      ],
+      "popolazione": 1141
+    },
+    {
+      "nome": "Scalea",
+      "codice": "078138",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "I489",
+      "cap": [
+        "87029"
+      ],
+      "popolazione": 10152
+    },
+    {
+      "nome": "Scandale",
+      "codice": "101024",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "I494",
+      "cap": [
+        "88831"
+      ],
+      "popolazione": 3326
+    },
+    {
+      "nome": "Scido",
+      "codice": "080084",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "I536",
+      "cap": [
+        "89010"
+      ],
+      "popolazione": 976
+    },
+    {
+      "nome": "Scigliano",
+      "codice": "078139",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "D290",
+      "cap": [
+        "87057"
+      ],
+      "popolazione": 1308
+    },
+    {
+      "nome": "Scilla",
+      "codice": "080085",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "I537",
+      "cap": [
+        "89058"
+      ],
+      "popolazione": 5115
+    },
+    {
+      "nome": "Sellia",
+      "codice": "079126",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "I589",
+      "cap": [
+        "88050"
+      ],
+      "popolazione": 511
+    },
+    {
+      "nome": "Sellia Marina",
+      "codice": "079127",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "I590",
+      "cap": [
+        "88050"
+      ],
+      "popolazione": 6987
+    },
+    {
+      "nome": "Seminara",
+      "codice": "080086",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "I600",
+      "cap": [
+        "89028"
+      ],
+      "popolazione": 2820
+    },
+    {
+      "nome": "Serra San Bruno",
+      "codice": "102037",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "I639",
+      "cap": [
+        "89822"
+      ],
+      "popolazione": 6850
+    },
+    {
+      "nome": "Serra d'Aiello",
+      "codice": "078140",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "I642",
+      "cap": [
+        "87030"
+      ],
+      "popolazione": 549
+    },
+    {
+      "nome": "Serrastretta",
+      "codice": "079129",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "I655",
+      "cap": [
+        "88040"
+      ],
+      "popolazione": 3249
+    },
+    {
+      "nome": "Serrata",
+      "codice": "080087",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "I656",
+      "cap": [
+        "89020"
+      ],
+      "popolazione": 914
+    },
+    {
+      "nome": "Sersale",
+      "codice": "079130",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "I671",
+      "cap": [
+        "88054"
+      ],
+      "popolazione": 4767
+    },
+    {
+      "nome": "Settingiano",
+      "codice": "079131",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "I704",
+      "cap": [
+        "88040"
+      ],
+      "popolazione": 2955
+    },
+    {
+      "nome": "Siderno",
+      "codice": "080088",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "I725",
+      "cap": [
+        "89048"
+      ],
+      "popolazione": 16879
+    },
+    {
+      "nome": "Simbario",
+      "codice": "102038",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "I744",
+      "cap": [
+        "89822"
+      ],
+      "popolazione": 956
+    },
+    {
+      "nome": "Simeri Crichi",
+      "codice": "079133",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "I745",
+      "cap": [
+        "88050"
+      ],
+      "popolazione": 4475
+    },
+    {
+      "nome": "Sinopoli",
+      "codice": "080089",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "I753",
+      "cap": [
+        "89020"
+      ],
+      "popolazione": 2154
+    },
+    {
+      "nome": "Sorbo San Basile",
+      "codice": "079134",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "I844",
+      "cap": [
+        "88050"
+      ],
+      "popolazione": 827
+    },
+    {
+      "nome": "Sorianello",
+      "codice": "102039",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "I853",
+      "cap": [
+        "89831"
+      ],
+      "popolazione": 1210
+    },
+    {
+      "nome": "Soriano Calabro",
+      "codice": "102040",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "I854",
+      "cap": [
+        "89831"
+      ],
+      "popolazione": 2472
+    },
+    {
+      "nome": "Soverato",
+      "codice": "079137",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "I872",
+      "cap": [
+        "88068"
+      ],
+      "popolazione": 8841
+    },
+    {
+      "nome": "Soveria Mannelli",
+      "codice": "079138",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "I874",
+      "cap": [
+        "88049"
+      ],
+      "popolazione": 3137
+    },
+    {
+      "nome": "Soveria Simeri",
+      "codice": "079139",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "I875",
+      "cap": [
+        "88050"
+      ],
+      "popolazione": 1643
+    },
+    {
+      "nome": "Spadola",
+      "codice": "102041",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "I884",
+      "cap": [
+        "89822"
+      ],
+      "popolazione": 858
+    },
+    {
+      "nome": "Spezzano Albanese",
+      "codice": "078142",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "I895",
+      "cap": [
+        "87019"
+      ],
+      "popolazione": 7157
+    },
+    {
+      "nome": "Spezzano della Sila",
+      "codice": "078143",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "I896",
+      "cap": [
+        "87058"
+      ],
+      "popolazione": 4490
+    },
+    {
+      "nome": "Spilinga",
+      "codice": "102042",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "I905",
+      "cap": [
+        "89864"
+      ],
+      "popolazione": 1470
+    },
+    {
+      "nome": "Squillace",
+      "codice": "079142",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "I929",
+      "cap": [
+        "88069"
+      ],
+      "popolazione": 3400
+    },
+    {
+      "nome": "Staiti",
+      "codice": "080090",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "I936",
+      "cap": [
+        "89030"
+      ],
+      "popolazione": 279
+    },
+    {
+      "nome": "Stalettì",
+      "codice": "079143",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "I937",
+      "cap": [
+        "88069"
+      ],
+      "popolazione": 2443
+    },
+    {
+      "nome": "Stefanaconi",
+      "codice": "102043",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "I945",
+      "cap": [
+        "89843"
+      ],
+      "popolazione": 2526
+    },
+    {
+      "nome": "Stignano",
+      "codice": "080091",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "I955",
+      "cap": [
+        "89040"
+      ],
+      "popolazione": 1340
+    },
+    {
+      "nome": "Stilo",
+      "codice": "080092",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "I956",
+      "cap": [
+        "89049"
+      ],
+      "popolazione": 2687
+    },
+    {
+      "nome": "Strongoli",
+      "codice": "101025",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "I982",
+      "cap": [
+        "88816"
+      ],
+      "popolazione": 6486
+    },
+    {
+      "nome": "Tarsia",
+      "codice": "078145",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "L055",
+      "cap": [
+        "87040"
+      ],
+      "popolazione": 2139
+    },
+    {
+      "nome": "Taurianova",
+      "codice": "080093",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "L063",
+      "cap": [
+        "89029"
+      ],
+      "popolazione": 15310
+    },
+    {
+      "nome": "Taverna",
+      "codice": "079146",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "L070",
+      "cap": [
+        "88055"
+      ],
+      "popolazione": 2705
+    },
+    {
+      "nome": "Terranova Sappo Minulio",
+      "codice": "080094",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "L127",
+      "cap": [
+        "89010"
+      ],
+      "popolazione": 549
+    },
+    {
+      "nome": "Terranova da Sibari",
+      "codice": "078146",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "L124",
+      "cap": [
+        "87010"
+      ],
+      "popolazione": 4999
+    },
+    {
+      "nome": "Terravecchia",
+      "codice": "078147",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "L134",
+      "cap": [
+        "87060"
+      ],
+      "popolazione": 1019
+    },
+    {
+      "nome": "Tiriolo",
+      "codice": "079147",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "L177",
+      "cap": [
+        "88056"
+      ],
+      "popolazione": 3897
+    },
+    {
+      "nome": "Torano Castello",
+      "codice": "078148",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "L206",
+      "cap": [
+        "87010"
+      ],
+      "popolazione": 4573
+    },
+    {
+      "nome": "Torre di Ruggiero",
+      "codice": "079148",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "L240",
+      "cap": [
+        "88060"
+      ],
+      "popolazione": 1131
+    },
+    {
+      "nome": "Tortora",
+      "codice": "078149",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "L305",
+      "cap": [
+        "87020"
+      ],
+      "popolazione": 5997
+    },
+    {
+      "nome": "Trebisacce",
+      "codice": "078150",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "L353",
+      "cap": [
+        "87075"
+      ],
+      "popolazione": 8734
+    },
+    {
+      "nome": "Tropea",
+      "codice": "102044",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "L452",
+      "cap": [
+        "89861"
+      ],
+      "popolazione": 6555
+    },
+    {
+      "nome": "Umbriatico",
+      "codice": "101026",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "L492",
+      "cap": [
+        "88823"
+      ],
+      "popolazione": 929
+    },
+    {
+      "nome": "Vaccarizzo Albanese",
+      "codice": "078152",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "L524",
+      "cap": [
+        "87060"
+      ],
+      "popolazione": 1184
+    },
+    {
+      "nome": "Vallefiorita",
+      "codice": "079151",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "I322",
+      "cap": [
+        "88050"
+      ],
+      "popolazione": 1849
+    },
+    {
+      "nome": "Vallelonga",
+      "codice": "102045",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "L607",
+      "cap": [
+        "89821"
+      ],
+      "popolazione": 682
+    },
+    {
+      "nome": "Varapodio",
+      "codice": "080095",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "L673",
+      "cap": [
+        "89010"
+      ],
+      "popolazione": 2223
+    },
+    {
+      "nome": "Vazzano",
+      "codice": "102046",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "L699",
+      "cap": [
+        "89834"
+      ],
+      "popolazione": 1106
+    },
+    {
+      "nome": "Verbicaro",
+      "codice": "078153",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "L747",
+      "cap": [
+        "87020"
+      ],
+      "popolazione": 3212
+    },
+    {
+      "nome": "Verzino",
+      "codice": "101027",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "101",
+        "nome": "Crotone"
+      },
+      "sigla": "KR",
+      "codiceCatastale": "L802",
+      "cap": [
+        "88819"
+      ],
+      "popolazione": 1979
+    },
+    {
+      "nome": "Vibo Valentia",
+      "codice": "102047",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "F537",
+      "cap": [
+        "89900"
+      ],
+      "popolazione": 33357
+    },
+    {
+      "nome": "Villa San Giovanni",
+      "codice": "080096",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "080",
+        "nome": "Reggio Calabria"
+      },
+      "sigla": "RC",
+      "codiceCatastale": "M018",
+      "cap": [
+        "89018"
+      ],
+      "popolazione": 13395
+    },
+    {
+      "nome": "Villapiana",
+      "codice": "078154",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "B903",
+      "cap": [
+        "87076"
+      ],
+      "popolazione": 5181
+    },
+    {
+      "nome": "Zaccanopoli",
+      "codice": "102048",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "M138",
+      "cap": [
+        "89867"
+      ],
+      "popolazione": 802
+    },
+    {
+      "nome": "Zagarise",
+      "codice": "079157",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "079",
+        "nome": "Catanzaro"
+      },
+      "sigla": "CZ",
+      "codiceCatastale": "M140",
+      "cap": [
+        "88050"
+      ],
+      "popolazione": 1733
+    },
+    {
+      "nome": "Zambrone",
+      "codice": "102049",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "M143",
+      "cap": [
+        "89868"
+      ],
+      "popolazione": 1805
+    },
+    {
+      "nome": "Zumpano",
+      "codice": "078155",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "078",
+        "nome": "Cosenza"
+      },
+      "sigla": "CS",
+      "codiceCatastale": "M202",
+      "cap": [
+        "87040"
+      ],
+      "popolazione": 2468
+    },
+    {
+      "nome": "Zungri",
+      "codice": "102050",
+      "zona": {
+        "codice": "4",
+        "nome": "Sud"
+      },
+      "regione": {
+        "codice": "18",
+        "nome": "Calabria"
+      },
+      "provincia": {
+        "codice": "102",
+        "nome": "Vibo Valentia"
+      },
+      "sigla": "VV",
+      "codiceCatastale": "M204",
+      "cap": [
+        "89867"
+      ],
+      "popolazione": 1985
+    }
+  ]

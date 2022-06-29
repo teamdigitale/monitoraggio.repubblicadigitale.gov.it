@@ -23,6 +23,7 @@ interface AccordionI {
   handleOnCheck?: () => void;
   handleOnToggle?: (collapse: boolean) => void;
   lastBottom?: boolean;
+  onClickCta?: () => void;
 }
 
 const Accordion: React.FC<AccordionI> = (props) => {
@@ -38,6 +39,7 @@ const Accordion: React.FC<AccordionI> = (props) => {
     isChecked,
     handleOnCheck,
     handleOnToggle,
+    onClickCta,
   } = props;
   const [collapseOpen, setCollapseOpen] = useState(false);
 
@@ -103,7 +105,7 @@ const Accordion: React.FC<AccordionI> = (props) => {
         {cta && (
           <div className='d-flex justify-content-end'>
             <Button
-              onClick={() => console.log('cta')}
+              onClick={onClickCta}
               className='d-flex justify-content-between'
               type='button'
             >

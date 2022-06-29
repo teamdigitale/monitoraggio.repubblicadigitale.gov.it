@@ -1,9 +1,25 @@
 {
-  "data": {
-    "nome": "Antonio",
-    "cognome": "Rossi",
-    "codiceFiscale": "codfiscale",
-    "email": "antoniorossi@mail.com",
-    "phone": "3211233232"
-  }
+  "data": [
+    {
+      "nome": "Antonio",
+      "cognome": "Rossi",
+      "codiceFiscale": "codfiscale1",
+      "email": "antoniorossi@mail.com",
+      "phone": "3211233232"
+    },
+    {
+      "nome": "Gino",
+      "cognome": "Rossi",
+      "codiceFiscale": "codfiscale2",
+      "email": "antoniorossi@mail.com",
+      "phone": "3211233232"
+    },
+    {
+      "nome": "Lino",
+      "cognome": "Rossi",
+      "codiceFiscale": "codfiscale3",
+      "email": "antoniorossi@mail.com",
+      "phone": "3211233232"
+    }
+  ]
 }

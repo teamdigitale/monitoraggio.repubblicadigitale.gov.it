@@ -17,6 +17,14 @@
     background-color: color('grey-400');
     height: $header-top-height;
     transition: all 250ms ease;
+    
+    .border-left{
+      border-left: 0.5px solid #4c8ed1 !important;
+    }
+
+    .border-right{
+      border-right: 0.5px solid #4c8ed1 !important;
+    }
 
     .header-panel-btn {
       height: $header-top-height;
@@ -65,7 +73,7 @@
 
     &__logo {
       img {
-        height: 88px;
+        height: 74px;
         width: auto;
       }
     }

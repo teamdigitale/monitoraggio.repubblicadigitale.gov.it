@@ -61,7 +61,7 @@
 }
 
 .cta-button {
-  width: calc(50% - 1.25rem);
+  width: rem(197px);
 
   @media screen and (max-width: 576px) {
     width: rem(150px);

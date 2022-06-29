@@ -1,14 +1,18 @@
 import clsx from 'clsx';
+import { Button, Icon } from 'design-react-kit';
 import isEqual from 'lodash.isequal';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Form, Input } from '../../../components';
+import { EmptySection, Form, Input } from '../../../components';
+import { ButtonInButtonsBar } from '../../../components/ButtonsBar/buttonsBar';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
 import { selectProjects } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { GetProjectDetail } from '../../../redux/features/administrativeArea/projects/projectsThunk';
+import { selectDevice } from '../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
 import { RegexpType } from '../../../utils/validator';
@@ -57,18 +61,44 @@ const TargetDateFormProjects: React.FC<TargetDateFormProjectsI> = (props) => {
 
   useEffect(() => {
     clearForm();
+    setCount(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formForSection]);
+
+  const { t } = useTranslation();
+
+  const device = useAppSelector(selectDevice);
 
   useEffect(() => {
     if (!creation) {
       dispatch(GetProjectDetail(firstParam || ''));
+      const newFormList: formFieldI[] = [];
+      newFormList.push(
+        newFormField({
+          field: `valoreObiettivo${count + 1}`,
+          required: true,
+          id: `${intoModal && 'modal-'}${formForSection}-valoreObiettivo${
+            count + 1
+          }`,
+        }),
+        newFormField({
+          field: `valoreObiettivo${count + 1}data`,
+          regex: RegexpType.DATE,
+          required: true,
+          type: 'date',
+          id: `valoreObiettivo${count + 1}data`,
+        })
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [creation]);
 
   useEffect(() => {
-    setIsFormValid?.(isValidForm);
+    if (form && Object.keys(form)?.length === 0) {
+      setIsFormValid?.(!isValidForm);
+    } else {
+      setIsFormValid?.(isValidForm);
+    }
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -89,220 +119,179 @@ const TargetDateFormProjects: React.FC<TargetDateFormProjectsI> = (props) => {
     setIsFormValid?.(isValidForm);
   };
 
-  const updateRequiredFields = () => {
+  useEffect(() => {
+    sendNewValues?.(getFormValues?.());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form]);
+
+  const [count, setCount] = useState(0);
+
+  const disabledFormClass = 'px-0 mr-lg-5 pr-lg-5 pl-lg-4 mr-3';
+  const activeFormClass = 'justify-content-between px-0 px-lg-5 mx-5';
+
+  const addMilestone = () => {
+    setCount(count + 1);
     if (form) {
       const newFormList: formFieldI[] = [];
-      const values = getFormValues();
-      Object.keys(values).forEach((field) => {
-        const manageField = `${
-          field.includes('data')
-            ? `${field.replace('data', '')}`
-            : `${field}data`
-        }`;
-        newFormList.push(
-          newFormField({
-            ...form[manageField],
-            field: manageField,
-            required: !!values[field],
-            id: `${intoModal && 'modal-'}${formForSection}-${field}`,
-          })
-        );
-      });
+      newFormList.push(
+        newFormField({
+          field: `valoreObiettivo${count + 1}`,
+          required: true,
+          id: `${intoModal && 'modal-'}${formForSection}-valoreObiettivo${
+            count + 1
+          }`,
+          label: `valore Obiettivo`,
+          order: count + 1,
+        }),
+        newFormField({
+          field: `valoreObiettivo${count + 1}data`,
+          regex: RegexpType.DATE,
+          required: true,
+          type: 'date',
+          id: `valoreObiettivo${count + 1}data`,
+          label: `Data Obiettivo`,
+          order: count + 1,
+        })
+      );
       if (!isEqual(form, newForm(newFormList))) {
         updateForm(newForm(newFormList));
       }
     }
   };
 
-  useEffect(() => {
-    updateRequiredFields();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const removeMilestone = (row: string) => {
+    if (form) {
+      const fieldToDelete = [row, row.replace('data', '')];
+      const newFormList = { ...form };
+      fieldToDelete.forEach((field) => {
+        delete newFormList[field];
+      });
+      updateForm(newFormList, true);
+      setCount(count - 1);
+    }
+  };
+
+  const emptyButton: ButtonInButtonsBar[] = [
+    {
+      size: 'xs',
+      color: 'primary',
+      text: t('add_milestone'),
+      onClick: () => {
+        addMilestone();
+      },
+    },
+  ];
 
   useEffect(() => {
-    sendNewValues?.(getFormValues?.());
-    updateRequiredFields();
+    if (formData) {
+      setFormValues(formData);
+      let tmp: formFieldI[] = [];
+      for (const [key, value] of Object.entries(formData)) {
+        tmp = [...tmp, { field: key, value, required: false }];
+      }
+      let arr: formFieldI[] = [];
+      for (const [key, value] of Object.entries(formData)) {
+        const obj = newFormField({
+          field: key,
+          value,
+          required: false,
+        });
+        arr = [...arr, obj];
+      }
+      updateForm(newForm([...arr]));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form]);
+  }, [formData]);
 
-  const disabledFormClass = 'px-0 mr-lg-5 pr-lg-5 pl-lg-4 mr-3';
-  const activeFormClass = 'justify-content-between px-0 px-lg-5 mx-5';
-
-  return (
+  return count === 0 && creation ? (
+    <EmptySection
+      title='Questa sezione è ancora vuota'
+      subtitle='Crea un target di valori degli obiettivi'
+      buttons={emptyButton}
+    />
+  ) : (
     <div>
       <Form
         className={clsx(formDisabled ? 'mt-3 pb-1' : 'mt-4 pb-1')}
         formDisabled={formDisabled}
       >
-        <Form.Row
-          className={clsx(formDisabled ? disabledFormClass : activeFormClass)}
-        >
-          <Input
-            {...form?.targetMesi1}
-            col='col-12 col-lg-6'
-            label='Valore Target a 1 mese'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
-            className='pr-lg-4'
-          />
-          <Input
-            {...form?.targetMesi1data}
-            col='col-12 col-lg-6'
-            label='Seleziona data'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
-            className='pl-lg-4'
-          />
-        </Form.Row>
-        <Form.Row
-          className={clsx(formDisabled ? disabledFormClass : activeFormClass)}
-        >
-          <Input
-            {...form?.targetMesi18}
-            col='col-12 col-lg-6'
-            label='Valore Target a 18 mesi'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
-            className='pr-lg-4'
-          />
-          <Input
-            {...form?.targetMesi18data}
-            label='Seleziona data'
-            col='col-12 col-lg-6'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
-            className='pl-lg-4'
-          />
-        </Form.Row>
-        <Form.Row
-          className={clsx(formDisabled ? disabledFormClass : activeFormClass)}
-        >
-          <Input
-            {...form?.targetMesi30}
-            label='Valore Target a 30 mesi'
-            col='col-12 col-lg-6'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
-            className='pr-lg-4'
-          />
-
-          <Input
-            {...form?.targetMesi30data}
-            label='Seleziona data'
-            col='col-12 col-lg-6'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
-            className='pl-lg-4'
-          />
-        </Form.Row>
-        <Form.Row
-          className={clsx(formDisabled ? disabledFormClass : activeFormClass)}
-        >
-          <Input
-            {...form?.targetMesi42}
-            label='Valore Target a 42 mesi'
-            col='col-12 col-lg-6'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
-            className='pr-lg-4'
-          />
-
-          <Input
-            {...form?.targetMesi42data}
-            label='Seleziona data'
-            col='col-12 col-lg-6'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
-            className='pl-lg-4'
-          />
-        </Form.Row>
-        <Form.Row
-          className={clsx(formDisabled ? disabledFormClass : activeFormClass)}
-        >
-          <Input
-            {...form?.targetGiugno2025}
-            label='Valore Target a giugno 2025'
-            col='col-12 col-lg-6'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
-            className='pr-lg-4'
-          />
-
-          <Input
-            {...form?.targetGiugno2025data}
-            label='Seleziona data'
-            col='col-12 col-lg-6'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
-            className='pl-lg-4'
-          />
-        </Form.Row>
+        {form && (
+          <>
+            <Form.Row
+              className={clsx(
+                formDisabled ? disabledFormClass : activeFormClass,
+                'mb-4'
+              )}
+            >
+              {form &&
+                Object.keys(form).map((row, index) => (
+                  <>
+                    <Input
+                      {...form?.[row]}
+                      id={`${form?.[row].field}-${new Date().getTime()}`}
+                      col='col-12 col-lg-5'
+                      onInputChange={(value, field) => {
+                        onInputDataChange(value, field);
+                      }}
+                      className='pr-lg-4 mb-4'
+                      key={index}
+                      aria-label={`${form?.[row].field}`}
+                    />
+                    {creation && row.includes('data') && (
+                      <Button
+                        className='p-0'
+                        icon
+                        style={{ minWidth: 'unset', height: '45px' }}
+                        onClick={() => removeMilestone(row)}
+                      >
+                        <Icon
+                          className='mr-3'
+                          icon='it-delete'
+                          color='primary'
+                          size='sm'
+                          aria-label='delete'
+                        ></Icon>
+                        {!device.mediaIsDesktop && 'Elimina'}
+                      </Button>
+                    )}
+                  </>
+                ))}
+            </Form.Row>
+            {count < 5 && creation && (
+              <Form.Row
+                className={clsx(
+                  formDisabled ? disabledFormClass : activeFormClass,
+                  'mb-4'
+                )}
+              >
+                <Button className='pl-0' icon onClick={() => addMilestone()}>
+                  <Icon
+                    size='sm'
+                    color='primary'
+                    icon='it-plus-circle'
+                    aria-label={t('add_goal')}
+                  />
+                  <span
+                    className={clsx(
+                      'h6',
+                      'ml-2',
+                      'mb-0',
+                      'font-weight-normal',
+                      'font-italic'
+                    )}
+                  >
+                    {t('add_goal')}
+                  </span>
+                </Button>
+              </Form.Row>
+            )}
+          </>
+        )}
       </Form>
     </div>
   );
 };
 
-const form = newForm([
-  newFormField({
-    field: 'targetMesi1',
-    type: 'text',
-    regex: RegexpType.STRING,
-  }),
-  newFormField({
-    field: 'targetMesi1data',
-    regex: RegexpType.DATE,
-    type: 'date',
-  }),
-  newFormField({
-    field: 'targetMesi18',
-    type: 'text',
-    regex: RegexpType.STRING,
-  }),
-  newFormField({
-    field: 'targetMesi18data',
-    regex: RegexpType.DATE,
-    type: 'date',
-  }),
-  newFormField({
-    field: 'targetMesi30',
-    type: 'text',
-    regex: RegexpType.STRING,
-  }),
-  newFormField({
-    field: 'targetMesi30data',
-    regex: RegexpType.DATE,
-    type: 'date',
-  }),
-  newFormField({
-    field: 'targetMesi42',
-    type: 'text',
-    regex: RegexpType.STRING,
-  }),
-  newFormField({
-    field: 'targetMesi42data',
-    regex: RegexpType.DATE,
-    type: 'date',
-  }),
-  newFormField({
-    field: 'targetGiugno2025',
-    type: 'text',
-    regex: RegexpType.STRING,
-  }),
-  newFormField({
-    field: 'targetGiugno2025data',
-    regex: RegexpType.DATE,
-    type: 'date',
-  }),
-]);
+const form = newForm([]);
 
 export default withFormHandler({ form }, TargetDateFormProjects);

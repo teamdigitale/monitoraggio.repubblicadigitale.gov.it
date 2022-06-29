@@ -20,7 +20,10 @@ import { GetRolesListValues } from '../../../redux/features/roles/rolesThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import { CRUDActionsI, CRUDActionTypes } from '../../../utils/common';
 import { useNavigate } from 'react-router-dom';
-import { selectDevice } from '../../../redux/features/app/appSlice';
+import {
+  selectDevice,
+  updateBreadcrumb,
+} from '../../../redux/features/app/appSlice';
 
 const arrayBreadcrumb = [
   {
@@ -42,6 +45,18 @@ const RoleManagement = () => {
       setEntityFilters({ nomeLike: { label: searchValue, value: searchValue } })
     );
   };
+
+  useEffect(() => {
+    dispatch(
+      updateBreadcrumb([
+        {
+          label: 'Gestione ruoli',
+          url: '/gestione-ruoli',
+          link: false,
+        },
+      ])
+    );
+  }, []);
 
   const searchInformation: SearchInformationI = {
     autocomplete: false,
@@ -112,7 +127,7 @@ const RoleManagement = () => {
 
   return (
     <>
-      <PageTitle title='Gestione Ruoli' breadcrumb={arrayBreadcrumb} />
+      <PageTitle title='Elenco Ruoli' breadcrumb={arrayBreadcrumb} />
       <Container className={device.mediaIsPhone ? 'px-4' : ''}>
         <GenericSearchFilterTableLayout
           searchInformation={searchInformation}

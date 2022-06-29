@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Chip, ChipLabel } from 'design-react-kit';
-import clsx from 'clsx';
-import { Paginator, Table } from '../../../../../components';
+import { Paginator, StatusChip, Table } from '../../../../../components';
 import { newTable, TableRowI } from '../../../../../components/Table/table';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
   DropdownFilterI,
   FilterI,
 } from '../../../../../components/DropdownFilter/dropdownFilter';
-import {
-  statusBgColor,
-  statusColor,
-  TableHeadingEventsList,
-} from '../../../CitizensArea/utils';
+import { TableHeadingEventsList } from '../../../CitizensArea/utils';
 
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
@@ -36,6 +30,7 @@ import {
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import ManageServices from '../modals/manageService';
 import { formTypes } from '../utils';
+import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 
 const statusDropdownLabel = 'stati';
 
@@ -61,6 +56,20 @@ const Services = () => {
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 1 }));
     getAllFilters();
+    dispatch(
+      updateBreadcrumb([
+        {
+          label: 'Area Amministrativa',
+          url: '/area-amministrativa',
+          link: false,
+        },
+        {
+          label: 'Servizi',
+          url: '/area-amministrativa/servizi',
+          link: true,
+        },
+      ])
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -70,19 +79,8 @@ const Services = () => {
       eventsList.map((td) => {
         return {
           ...td,
-          status: (
-            <Chip
-              className={clsx(
-                'table-container__status-label',
-                'no-border',
-                statusBgColor(td.stato)
-              )}
-            >
-              <ChipLabel className={statusColor(td.stato)}>
-                {td.stato.toUpperCase()}
-              </ChipLabel>
-            </Chip>
-          ),
+          nome: td.name,
+          status: <StatusChip status={td.status} rowTableId={td.id} />,
         };
       })
     );
@@ -125,14 +123,14 @@ const Services = () => {
 
   const handleDropdownFilters = (
     values: FilterI[],
-    filterKey: 'policies' | 'stati'
+    filterKey: 'policies' | 'stati' | 'programmi' | 'progetti'
   ) => {
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
   };
 
   const handleOnSearchDropdownOptions = (
     searchValue: formFieldI['value'],
-    filterId: 'policies' | 'stati'
+    filterId: 'policies' | 'stati' | 'programmi' | 'progetti'
   ) => {
     const searchDropdownValues = [...searchDropdown];
     if (
@@ -150,7 +148,7 @@ const Services = () => {
 
   const dropdowns: DropdownFilterI[] = [
     {
-      filterName: 'Stati',
+      filterName: 'Stato',
       options: dropdownFilterOptions[statusDropdownLabel],
       id: statusDropdownLabel,
       onOptionsChecked: (options) =>
@@ -167,8 +165,7 @@ const Services = () => {
   const searchInformation: SearchInformationI = {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
-    placeholder:
-      "Inserisci il nome, l'identificativo o il nome dell'ente gestore del programma che stai cercando",
+    placeholder: "Inserisci l'identificativo o il nome del servizio",
     isClearable: true,
     title: 'Cerca programma',
   };

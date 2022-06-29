@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { Collapse, FormGroup, Label } from 'design-react-kit';
 import React from 'react';
 import { dayOfWeek } from '../../../../../pages/administrator/AdministrativeArea/Entities/utils';
@@ -12,11 +13,13 @@ interface OpenDaysSelectI {
   openDays: OpenDay[];
   onAddOpenDay: (i: number) => void;
   onRemoveOpenDay: (i: number) => void;
-  onTimeChange: (i: number, timeSpan: string[]) => void;
+  onTimeChange: (i: number, timeSpan: string[][]) => void;
+  isReadOnly?: boolean | undefined;
 }
 
 const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
   openDays,
+  isReadOnly = false,
   onAddOpenDay,
   onRemoveOpenDay,
   onTimeChange,
@@ -25,62 +28,30 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
   const isMobile = device.mediaIsPhone;
 
   return (
-    <>
-      <div className='row mb-3'>
-        <div className={`${isMobile ? 'col-12' : 'col-6'}`}>
-          <p className='h5 font-weight-medium text-secondary'>
-            Giorni di Apertura
-          </p>
-        </div>
-        {!isMobile && (
-          <div className={`${isMobile ? 'd-none' : ''} col-6`}>
-            <p className='h5 font-weight-medium text-secondary'>
-              Fascia Oraria
-            </p>
-          </div>
-        )}
-      </div>
-      <>
-        {dayOfWeek.map((v, i) =>
-          isMobile ? (
-            <div className='mb-2'>
-              <Form className='border-bottom pb-3'>
-                <FormGroup className='mt-0' check>
-                  <Input
-                    id={`input-checkbox-day-${i}`}
-                    type='checkbox'
-                    checked={openDays.some((day) => day.index === i)}
-                    onInputChange={(value) => {
-                      if (value) {
-                        onAddOpenDay(i);
-                      } else {
-                        onRemoveOpenDay(i);
-                      }
-                    }}
-                    withLabel={false}
-                  />
-                  <Label for={`input-checkbox-day-${i}`} check>
-                    {v}
-                  </Label>
-                </FormGroup>
-              </Form>
-              <Collapse
-                className='pt-5'
-                isOpen={openDays.some((day) => day.index === i)}
-              >
-                <TimeSelectSection
-                  disabled={!openDays.some((day) => day.index === i)}
-                  timeSpan={openDays.find((day) => day.index === i)?.hourSpan}
-                  onTimeChange={(timeSpan: string[]) =>
-                    onTimeChange(i, timeSpan)
-                  }
-                />
-              </Collapse>
-            </div>
-          ) : (
-            <div className='row mb-3' key={i}>
-              <div className='col-12 col-sm-6'>
-                <Form>
+    <div>
+      {dayOfWeek
+
+        .map((v, i) => (
+          <div className={clsx(!isMobile && 'row')} key={i}>
+            <div className={clsx(!isMobile && 'col col-sm-6')}>
+              <div className='row'>
+                <div className={`${isMobile ? 'col-12' : 'col-6'}`}>
+                  <p
+                    className={clsx(
+                      'h6',
+                      'font-weight-medium',
+                      'text-secondary',
+                      i !== 0 && 'text-white'
+                    )}
+                  >
+                    Giorni di Apertura
+                  </p>
+                </div>
+              </div>
+              <Form formDisabled={isReadOnly}>
+                {isReadOnly ? (
+                  <Input value={v} withLabel={false} />
+                ) : (
                   <FormGroup check>
                     <Input
                       id={`input-checkbox-day-${i}`}
@@ -99,22 +70,32 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
                       {v}
                     </Label>
                   </FormGroup>
-                </Form>
-              </div>
-              <div className='col'>
+                )}
+              </Form>
+            </div>
+            <div className={clsx(!isMobile && 'col')}>
+              <Collapse
+                className={clsx(isMobile && 'pt-5')}
+                isOpen={!isMobile || openDays.some((day) => day.index === i)}
+              >
                 <TimeSelectSection
+                  isReadOnly={isReadOnly}
                   disabled={!openDays.some((day) => day.index === i)}
                   timeSpan={openDays.find((day) => day.index === i)?.hourSpan}
-                  onTimeChange={(timeSpan: string[]) =>
+                  onTimeChange={(timeSpan: string[][]) =>
                     onTimeChange(i, timeSpan)
                   }
                 />
-              </div>
+              </Collapse>
             </div>
-          )
+          </div>
+        ))
+        .filter(
+          (_d, idx) =>
+            (isReadOnly && openDays.find((day) => day.index === idx)) ||
+            !isReadOnly
         )}
-      </>
-    </>
+    </div>
   );
 };
 

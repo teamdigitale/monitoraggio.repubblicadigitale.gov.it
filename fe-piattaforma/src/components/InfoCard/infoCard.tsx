@@ -18,7 +18,7 @@ const Infocard: React.FC<InfoCardI> = ({ text, image, icon }) => (
   <div className='info-card-custom'>
     <div className='d-flex justify-content-start align-items-center'>
       <div className='info-card-custom__picture'>
-        {image ? <img src={image} /> : null}
+        {image ? <img src={image} alt='info-card' /> : null}
         {icon ? (
           <Icon
             {...icon}

@@ -5,11 +5,14 @@ import OpenDaysSelect from '../../OpenDaysSelect/OpenDaysSelect';
 
 export interface OpenDay {
   index: number;
-  hourSpan: string[];
+  hourSpan: string[][];
 }
 
 export interface AddressInfoI {
   address: string;
+  CAP: string;
+  city: string;
+  province: string;
   openDays: OpenDay[];
 }
 
@@ -18,10 +21,12 @@ interface AccordionAddressI {
   index: number;
   onAddressInfoChange: (addressInfo: AddressInfoI) => void;
   handleOnToggle?: (isOpen: boolean) => void;
+  isReadOnly?: boolean | undefined;
 }
 
 const AccordionAddress: React.FC<AccordionAddressI> = ({
   addressInfo,
+  isReadOnly = false,
   index,
   onAddressInfoChange,
   handleOnToggle,
@@ -30,10 +35,18 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
     if (handleOnToggle) handleOnToggle(isOpen);
   };
 
-  const addressChangeHandler = (address: string) => {
+  const addressChangeHandler = (
+    address: string,
+    province: string,
+    city: string,
+    CAP: string
+  ) => {
     onAddressInfoChange({
       ...addressInfo,
       address: address,
+      province: province,
+      city: city,
+      CAP: CAP,
     });
   };
 
@@ -42,7 +55,13 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
       ...addressInfo,
       openDays: [
         ...addressInfo.openDays,
-        { index: dayIndex, hourSpan: ['08:00', '18:00'] },
+        {
+          index: dayIndex,
+          hourSpan: [
+            ['09:00', '13:00'],
+            ['14:00', '18:00'],
+          ],
+        },
       ],
     });
   };
@@ -54,11 +73,11 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
     });
   };
 
-  const timeChangeHandler = (dayIndex: number, timeSpan: string[]) => {
+  const timeChangeHandler = (dayIndex: number, timeSpan: string[][]) => {
     onAddressInfoChange({
       ...addressInfo,
       openDays: addressInfo.openDays.map((day) =>
-        day.index === dayIndex ? { ...day, hourSpan: [...timeSpan] } : day
+        day.index === dayIndex ? { ...day, hourSpan: timeSpan } : day
       ),
     });
   };
@@ -66,18 +85,26 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
   return (
     <Accordion
       title={`Indirizzo ${index}`}
-      className='mt-5 mb-5 px-5'
+      className='my-5 px-5'
       handleOnToggle={(isOpen: boolean) => accordionToggleHandler(isOpen)}
     >
       <AddressForm
         address={addressInfo.address}
-        onAddressChange={(address: string) => addressChangeHandler(address)}
+        province={addressInfo.province}
+        city={addressInfo.city}
+        CAP={addressInfo.CAP}
+        onAddressChange={(address, province, city, CAP) =>
+          addressChangeHandler(address, province, city, CAP)
+        }
+        formDisabled={isReadOnly}
       />
+
       <OpenDaysSelect
         openDays={addressInfo.openDays}
         onAddOpenDay={openDayAddHandler}
         onRemoveOpenDay={openDayRemoveHandler}
         onTimeChange={timeChangeHandler}
+        isReadOnly={isReadOnly}
       />
     </Accordion>
   );

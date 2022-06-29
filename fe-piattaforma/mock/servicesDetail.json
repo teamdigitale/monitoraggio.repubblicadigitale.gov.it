@@ -2,10 +2,16 @@
   "data": {
     "info": {
       "nome": "nome servizio",
-      "tipologia": "tipologia servizio",
-      "ambito1": "ambito 1 servizio",
-      "ambito2": "ambito 2 servizio",
-      "ambito3": "ambito 3 servizio",
+      "ente": "ente X",
+      "sede": "sede Y",
+      "data": "2022-06-08",
+      "durataServizio": "02:20",
+      "oraInizio": "09:00",
+      "oraFine": "18:00",
+      "tipologia": "1",
+      "ambito1": ["Sicurezza"],
+      "ambito2": ["Proteggere i dispositivi"],
+      "ambito3": "ambito",
       "dettagli": "dettagli servizio"
     },
     "cittadini": [
@@ -15,7 +21,7 @@
         "stato": "INVIATO",
         "innerInfo": {
           "ID": "321312",
-          "Codice fiscale": "CODFISCALE"
+          "codiceFiscale": "CODFISCALE1"
         }
       },
       {
@@ -24,16 +30,16 @@
         "stato": "NON INVIATO",
         "innerInfo": {
           "ID": "321312",
-          "Codice fiscale": "CODFISCALE"
+          "codiceFiscale": "CODFISCALE2"
         }
       },
       {
-        "id": "2",
+        "id": "3",
         "nome": "Gino Blu",
         "stato": "COMPILATO",
         "innerInfo": {
           "ID": "321312",
-          "Codice fiscale": "CODFISCALE"
+          "codiceFiscale": "CODFISCALE3"
         }
       }
     ]

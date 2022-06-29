@@ -104,7 +104,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
       {!open && (
         <>
           {!form['question-default'].value && (
-            <Button onClick={handleDeleteQuestion} className='px-2'>
+            <Button onClick={handleDeleteQuestion} className='px-1 pt-0'>
               <Icon
                 color='primary'
                 icon='it-delete'
@@ -118,7 +118,8 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
               setOpen(true);
             }}
             className={clsx(
-              'px-2',
+              'px-1',
+              'pt-0',
               form['question-type']?.value !== 'select' &&
                 form['question-type']?.value !== 'checkbox' &&
                 'invisible'
@@ -165,25 +166,40 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
           (editMode || cloneMode) &&
             sectionID !== 'anagraphic-citizen-section' &&
             sectionID !== 'anagraphic-booking-section' &&
-            'survey-question-container__shadow',
+            'survey-question-container__shadow'
         )}
       >
         <div
           className={clsx(
             'd-flex',
+            'flex-row',
+            'flex-wrap',
             'align-items-lg-center',
             'justify-content-between',
-            'survey-question-container__header'
+            'survey-question-container__header',
+            device.mediaIsPhone && 'flex-column'
           )}
         >
-          <div className='d-flex flex-row flex-grow-1 align-items-center justify-content-between w-100'>
+          <div
+            className={clsx(
+              'd-flex',
+              'flex-row',
+              'flex-grow-1',
+              'align-items-center',
+              'justify-content-between',
+              'w-50'
+            )}
+          >
             <div className='d-flex align-items-center flex-grow-1'>
-              <span className='mr-4'>{position + 1}</span>
+              <span className={clsx(device.mediaIsPhone ? 'mr-1' : 'mr-4')}>
+                {' '}
+                <strong> {position + 1} </strong>{' '}
+              </span>
               {(!editMode && !cloneMode) ||
               ((editMode || cloneMode) &&
                 (sectionID === 'anagraphic-citizen-section' ||
                   sectionID === 'anagraphic-booking-section')) ? (
-                <span className='survey-question-container__question-description'>
+                <span className='survey-question-container__question-description text-start text-wrap'>
                   <strong>
                     {surveyQuestion?.form['question-description'].value}
                   </strong>
@@ -195,7 +211,8 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
                   className={clsx(
                     className,
                     'flex-grow-1',
-                    'survey-question-container mb-3'
+                    'survey-question-container',
+                    'mb-3'
                     //device.mediaIsPhone && 'px-3'
                   )}
                 >
@@ -216,30 +233,31 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
               )}
             </div>
 
-            {!device.mediaIsDesktop && questionButton()}
+            <div className='d-flex justify-content-end'>
+              {device.mediaIsPhone && questionButton()}
+            </div>
           </div>
           <div
             className={clsx(
               'd-flex',
-              'flex-row',
               'justify-content-between',
               'survey-question-container__box-right',
               'ml-lg-5',
               'ml-0',
               'pl-lg-0',
-              'pr-4'
+              device.mediaIsPhone || device.mediaIsTablet ? 'pl-4' : 'pr-4'
             )}
           >
             <div className='d-flex flex-column'>
               <span>Predefinita</span>
-              <span>
+              <span className='ml-2'>
                 <strong>{form['question-default'].value ? 'Sì' : 'No'}</strong>
               </span>
             </div>
             <div className='d-flex flex-column'>
               <span>Tipologia risposta</span>
               {(!editMode || !cloneMode) && form['question-default']?.value ? (
-                <span>
+                <span className='ml-2'>
                   <strong>
                     {
                       answerType.filter(
@@ -265,7 +283,8 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
               )}
             </div>
 
-            {device.mediaIsDesktop && questionButton()}
+            {(device.mediaIsDesktop || device.mediaIsTablet) &&
+              questionButton()}
           </div>
         </div>
         {(editMode || cloneMode) && !form['question-default']?.value && (
@@ -293,7 +312,8 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
         form['question-type']?.value === 'checkbox') ? (
         <div
           className={clsx(
-            'px-4 pb-4',
+            'px-4',
+            'pb-4',
             'mb-3',
             form['question-default'].value &&
               'survey-question-container__default-bg',

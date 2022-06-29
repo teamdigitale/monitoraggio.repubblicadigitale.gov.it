@@ -3,27 +3,27 @@
     "list": [
       {
         "id": 1,
-        "nome": "Evento 1",
-        "numeroCittadini": "11",
-        "questionari": "12",
-        "facilitatore": "Tizio",
-        "stato": "ATTIVO"
+        "name": "Nome Servizio 1",
+        "date":"22/06/2022",
+        "serviceType":"Facilitazione",
+        "facilitatore": "Simone Viola",
+        "status": "ATTIVO"
       },
       {
         "id": 2,
-        "nome": "Evento 1",
-        "numeroCittadini": "11",
-        "questionari": "12",
-        "facilitatore": "Tizio",
-        "stato": "ATTIVO"
+        "name": "Nome Servizio 2",
+        "date":"22/06/2022",
+        "serviceType":"Formazione in presenza",
+        "facilitatore": "Paola Neri",
+        "status": "ATTIVO"
       },
       {
         "id": 3,
-        "nome": "Evento 1",
-        "numeroCittadini": "11",
-        "questionari": "12",
-        "facilitatore": "Tizio",
-        "stato": "ATTIVO"
+        "name": "Nome Servizio 3",
+        "date":"22/06/2022",
+        "serviceType":"Formazione Online",
+        "facilitatore": "Sofia Bianchi",
+        "status": "ATTIVO"
       }
     ]
   }

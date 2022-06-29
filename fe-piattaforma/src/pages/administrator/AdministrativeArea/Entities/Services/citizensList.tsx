@@ -24,9 +24,20 @@ import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { TableRowI } from '../../../../../components/Table/table';
 import { ButtonInButtonsBar } from '../../../../../components/ButtonsBar/buttonsBar';
 import { openModal } from '../../../../../redux/features/modal/modalSlice';
+import { CardCounterI } from '../../../../../components/CardCounter/cardCounter';
+
+export interface CitizenI {
+  id?: string;
+  nome?: string;
+  stato?: string;
+  innerInfo?: {
+    ID: string;
+    codiceFiscale: string;
+  };
+}
 
 interface CitizensListI {
-  citizens: [];
+  citizens: CitizenI[];
 }
 
 const statusDropdownLabel = 'stati';
@@ -65,10 +76,6 @@ const CitizensList: React.FC<CitizensListI> = ({ citizens }) => {
     isClearable: true,
   };
 
-  useEffect(() => {
-    console.log(citizens);
-  }, [citizens]);
-
   const handleDropdownFilters = (
     values: FilterI[],
     filterKey: 'policies' | 'stati'
@@ -96,7 +103,7 @@ const CitizensList: React.FC<CitizensListI> = ({ citizens }) => {
 
   const dropdowns: DropdownFilterI[] = [
     {
-      filterName: 'Stati',
+      filterName: 'Stato',
       options: dropdownFilterOptions[statusDropdownLabel],
       id: statusDropdownLabel,
       onOptionsChecked: (options) =>
@@ -154,6 +161,20 @@ const CitizensList: React.FC<CitizensListI> = ({ citizens }) => {
     },
   ];
 
+  const cardsCounter: CardCounterI[] = [
+    {
+      title: 'Cittadini partecipanti',
+      counter: citizens.length,
+      icon: 'it-user',
+      className: 'mr-4',
+    },
+    {
+      title: 'Questionari compilati',
+      counter: 0, // TODO: update with actual number
+      icon: 'it-file',
+    },
+  ];
+
   return (
     <GenericSearchFilterTableLayout
       searchInformation={serachInformation}
@@ -161,14 +182,16 @@ const CitizensList: React.FC<CitizensListI> = ({ citizens }) => {
       buttonsList={buttons}
       showButtons={false}
       filtersList={filtersList}
+      cardsCounter={cardsCounter}
     >
-      {citizens.map((citizen: any) => (
+      {citizens.map((citizen: CitizenI, i: number) => (
         <DetailsRow
-          nome={citizen.nome}
-          stato={citizen.stato}
+          key={i}
+          nome={citizen.nome || ''}
+          stato={citizen.stato || ''}
           onActionClick={onActionClick}
-          id={citizen.name}
-          innerInfo={citizen.innerInfo}
+          id={citizen.nome || ''}
+          innerInfo={citizen.innerInfo || { ID: '', codiceFiscale: '' }}
           rowInfoType='questionario'
         />
       ))}

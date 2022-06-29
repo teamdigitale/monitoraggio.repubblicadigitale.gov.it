@@ -16,7 +16,7 @@ interface ManageEnteGestoreProgettoI
   extends withFormHandlerProps,
     ManageEntePartnerFormI {}
 
-const ManageEntePartner: React.FC<ManageEnteGestoreProgettoI> = ({
+const ManagePartnerAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
   clearForm,
   formDisabled,
   creation = false,
@@ -58,4 +58,4 @@ const ManageEntePartner: React.FC<ManageEnteGestoreProgettoI> = ({
   );
 };
 
-export default ManageEntePartner;
+export default ManagePartnerAuthority;

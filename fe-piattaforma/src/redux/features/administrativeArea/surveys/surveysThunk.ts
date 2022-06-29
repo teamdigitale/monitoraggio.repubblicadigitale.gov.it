@@ -27,7 +27,7 @@ import {
 export interface SurveyLightI {
   id: string;
   name: string;
-  type: string;
+  lastChangeDate: string;
   status: string;
   default_SCD: boolean;
   default_RFD: boolean;
@@ -322,7 +322,11 @@ export const SetSurveyCreation =
               body.sections?.push({
                 id: section.id || `${new Date().getTime()}`,
                 title: section.sectionTitle,
-                ...generateJsonFormSchema(newForm(finalForm, true), index, survey.sectionsSchemaResponse),
+                ...generateJsonFormSchema(
+                  newForm(finalForm, true),
+                  index,
+                  survey.sectionsSchemaResponse
+                ),
               });
             }
           });
@@ -355,7 +359,9 @@ export const GetSurveyInfo =
     }
   };
 
-const PostFormCompletedByCitizenAction = { type: 'questionario/PostFormCompletedByCitizen' };
+const PostFormCompletedByCitizenAction = {
+  type: 'questionario/PostFormCompletedByCitizen',
+};
 export const PostFormCompletedByCitizen =
   (payload?: any) => async (dispatch: Dispatch) => {
     try {
@@ -366,9 +372,14 @@ export const PostFormCompletedByCitizen =
         payload,
       };
       const res = await API.post(entityEndpoint, body);
-      if(res){ /* TODO: controllo se post andata a buon fine */}
+      if (res) {
+        /* TODO: controllo se post andata a buon fine */
+      }
     } catch (e) {
-      console.error('post questionario compilato PostFormCompletedByCitizen', e);
+      console.error(
+        'post questionario compilato PostFormCompletedByCitizen',
+        e
+      );
     } finally {
       dispatch(hideLoader());
     }

@@ -18,22 +18,16 @@ import ConfirmDeleteModal from '../../modals/confirmDeleteModal';
 import { useAppSelector } from '../../../../../../redux/hooks';
 import { selectDevice } from '../../../../../../redux/features/app/appSlice';
 import clsx from 'clsx';
-import FormHeadquarters from '../../../../../../components/AdministrativeArea/Entities/Headquarters/HeadquartersForm/formHeadquarters';
 import ManageHeadquarter from '../../../../../../components/AdministrativeArea/Entities/Headquarters/ManageHeadquarter/manageHeadquarter';
+import HeadquarterDetailsContent from '../../../../../../components/AdministrativeArea/Entities/Headquarters/HeadquarterDetailsContent/HeadquarterDetailsContent';
 
 const HeadquartersDetails = () => {
   const { mediaIsDesktop, mediaIsPhone } = useAppSelector(selectDevice);
-  const [deleteText, setDeleteText] = useState<string>('');
-  const [currentForm, setCurrentForm] = useState<React.ReactElement>();
-  const [currentModal, setCorrectModal] = useState<React.ReactElement>();
   const [itemAccordionList, setItemAccordionList] = useState<
     ItemsListI[] | null
   >();
   const [correctButtons, setCorrectButtons] = useState<ButtonInButtonsBar[]>(
     []
-  );
-  const [buttonsPosition, setButtonsPosition] = useState<'TOP' | 'BOTTOM'>(
-    'TOP'
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -47,10 +41,6 @@ const HeadquartersDetails = () => {
   };
 
   useEffect(() => {
-    setButtonsPosition('TOP');
-    setCurrentForm(<FormHeadquarters formDisabled />);
-    setCorrectModal(<ManageHeadquarter />);
-    setDeleteText('Confermi di voler eliminare questa sede?');
     setItemAccordionList([
       {
         title: 'Facilitatori',
@@ -81,8 +71,8 @@ const HeadquartersDetails = () => {
         onClick: () =>
           dispatch(
             openModal({
-              id: formTypes.USER,
-              payload: { title: 'Modifica utente' },
+              id: formTypes.SEDE,
+              payload: { title: 'Modifica sede' },
             })
           ),
       },
@@ -108,11 +98,11 @@ const HeadquartersDetails = () => {
             }}
             formButtons={correctButtons}
             itemsAccordionList={itemAccordionList}
-            buttonsPosition={buttonsPosition}
+            buttonsPosition='TOP'
           >
-            {currentForm}
+            <HeadquarterDetailsContent />
           </DetailLayout>
-          {currentModal ? currentModal : null}
+          <ManageHeadquarter />
           <ConfirmDeleteModal
             onConfirm={() => {
               console.log('confirm delete');
@@ -121,7 +111,7 @@ const HeadquartersDetails = () => {
             onClose={() => {
               dispatch(closeModal());
             }}
-            text={deleteText}
+            text='Confermi di voler eliminare questa sede?'
           />
         </div>
       </div>

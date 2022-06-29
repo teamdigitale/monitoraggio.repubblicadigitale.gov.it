@@ -7,7 +7,8 @@
       "type": "Ente pubblico",
       "profile": "Gestore di programma",
       "fiscalCode": "RSSMRA80B01F205W",
-      "address": "Via Roma 1 Roma RO"
+      "address": "Via Roma 1 Roma RO",
+      "pec": "mail@pec.it"
     },
     "delegati": [
       { "nome": "Simone Viola", "stato": "Active", "id": "1" },
@@ -15,7 +16,7 @@
     ],
     "referenti": [
       { "nome": "Simone Blu", "stato": "Active", "id": "1" },
-      { "nome": "Simone Bluu", "stato": "Active", "id": "2" }
+      { "nome": "Simone Viola", "stato": "Active", "id": "2" }
     ],
     "sedi": [
       { "nome": "Sede Blu", "stato": "Active", "id": "1" },

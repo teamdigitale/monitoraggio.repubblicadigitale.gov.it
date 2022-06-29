@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { formTypes } from '../utils';
 import {
   CRUDActionsI,
@@ -18,11 +18,18 @@ import ConfirmDeleteModal from '../modals/confirmDeleteModal';
 import ManageGenericAuthority from '../modals/manageGenericAuthority';
 import PeopleIcon from '/public/assets/img/people-icon.png';
 import { useAppSelector } from '../../../../../redux/hooks';
-import { selectDevice } from '../../../../../redux/features/app/appSlice';
+import {
+  selectDevice,
+  updateBreadcrumb,
+} from '../../../../../redux/features/app/appSlice';
 import clsx from 'clsx';
 import FormAuthorities from '../../../../forms/formAuthorities';
+import { selectAuthorities } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 
 const AuthoritiesDetails = () => {
+  const entiDetails: {
+    info: { [key: string]: string };
+  } = useAppSelector(selectAuthorities)?.detail;
   const [deleteText, setDeleteText] = useState<string>('');
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
   const [currentModal, setCorrectModal] = useState<React.ReactElement>();
@@ -35,6 +42,32 @@ const AuthoritiesDetails = () => {
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { idEnte } = useParams();
+
+  useEffect(() => {
+    if (entiDetails?.info?.shortName && idEnte) {
+      dispatch(
+        updateBreadcrumb([
+          {
+            label: 'Area Amministrativa',
+            url: '/area-amministrativa',
+            link: false,
+          },
+          {
+            label: 'Enti',
+            url: '/area-amministrativa/enti',
+            link: true,
+          },
+          {
+            label: entiDetails?.info?.shortName,
+            url: `/area-amministrativa/programmi/${idEnte}`,
+            link: false,
+          },
+        ])
+      );
+    }
+  }, [idEnte]);
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
@@ -98,8 +131,8 @@ const AuthoritiesDetails = () => {
     <div
       className={clsx(
         device.mediaIsPhone
-          ? 'd-flex flex-row container'
-          : 'd-flex flex-row mt-5 container'
+          ? 'd-flex flex-row mt-5container'
+          : 'd-flex flex-row container'
       )}
     >
       <div className='d-flex flex-column w-100'>

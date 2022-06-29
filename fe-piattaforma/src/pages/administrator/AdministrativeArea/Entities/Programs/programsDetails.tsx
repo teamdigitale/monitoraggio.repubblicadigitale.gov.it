@@ -20,14 +20,20 @@ import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
 import ManageProgram from '../modals/manageProgram';
 import ManageProgramManagerAuthority from '../modals/manageProgramManagerAuthority';
 import { useAppSelector } from '../../../../../redux/hooks';
-import { selectDevice } from '../../../../../redux/features/app/appSlice';
+import {
+  selectDevice,
+  updateBreadcrumb,
+} from '../../../../../redux/features/app/appSlice';
 import {
   selectAuthorities,
   selectPrograms,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { NavLink } from '../../../../../components';
-import GeneralInfoAccordionForm from '../../../../forms/formPrograms/ProgramAccordionForm/generalInfoAccordionForm';
+import ProgramlInfoAccordionForm from '../../../../forms/formPrograms/ProgramAccordionForm/ProgramInfoAccordionForm';
 import FormAuthorities from '../../../../forms/formAuthorities';
+import ManageDelegate from '../modals/manageDelegate';
+import ManageReferal from '../modals/manageReferal';
+
 const tabs = {
   INFO: 'info',
   ENTE: 'ente',
@@ -52,9 +58,44 @@ const ProgramsDetails: React.FC = () => {
   const [modalIdToOpen, setModalIdToOpen] = useState<string>(
     formTypes.PROGRAMMA
   );
+  const [correctButtons, setCorrectButtons] = useState<ButtonInButtonsBar[]>(
+    []
+  );
   const navigate = useNavigate();
   const location = useLocation();
+
+  /**
+   * The entity id is passed to the breadcrumb but it maybe the case to
+   * pass the entity short name, we can access it to the store even if the
+   * thunk action to get details is performed in the form component
+   */
   const { entityId } = useParams();
+  const entityShortName =
+    programma.detail?.dettaglioProgramma?.generalInfo.nomeBreve;
+
+  useEffect(() => {
+    if (entityId && entityShortName) {
+      dispatch(
+        updateBreadcrumb([
+          {
+            label: 'Area Amministrativa',
+            url: '/area-amministrativa',
+            link: false,
+          },
+          {
+            label: 'Programmi',
+            url: '/area-amministrativa/programmi',
+            link: true,
+          },
+          {
+            label: entityShortName,
+            url: `/area-amministrativa/programmi/${entityId}`,
+            link: false,
+          },
+        ])
+      );
+    }
+  }, [entityId]);
 
   const onActionClickReferenti: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
@@ -69,7 +110,9 @@ const ProgramsDetails: React.FC = () => {
 
   const onActionClickDelegati: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(`/area-amministrativa/${typeof td === 'string' ? td : td?.id}`);
+      navigate(
+        `/area-amministrativa/utenti/${typeof td === 'string' ? td : td?.id}`
+      );
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       console.log(td);
@@ -81,17 +124,6 @@ const ProgramsDetails: React.FC = () => {
         `/area-amministrativa/questionari/${
           typeof td === 'string' ? td : td?.id
         }`
-      );
-    },
-    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      console.log(td);
-    },
-  };
-
-  const onActionClickSedi: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        `/area-amministrativa/utenti/${typeof td === 'string' ? td : td?.id}`
       );
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
@@ -165,7 +197,7 @@ const ProgramsDetails: React.FC = () => {
     switch (activeTab) {
       case tabs.INFO:
         setModalIdToOpen(formTypes.PROGRAMMA);
-        setCurrentForm(<GeneralInfoAccordionForm />);
+        setCurrentForm(<ProgramlInfoAccordionForm />);
         setCorrectModal(<ManageProgram />);
         setDeleteText('Confermi di voler eliminare questo programma?');
         setEditItemModalTitle('Modifica programma');
@@ -186,6 +218,27 @@ const ProgramsDetails: React.FC = () => {
         );
         setCorrectModal(<ManageProgramManagerAuthority />);
         setItemList(null);
+        setCorrectButtons([
+          {
+            size: 'xs',
+            color: 'primary',
+            text: 'Elimina',
+            onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+          },
+          {
+            size: 'xs',
+            outline: true,
+            color: 'primary',
+            text: ' Modifica',
+            onClick: () =>
+              dispatch(
+                openModal({
+                  id: formTypes.ENTE_GESTORE_PROGRAMMA,
+                  payload: { title: 'Modifica ente gestore programma' },
+                })
+              ),
+          },
+        ]);
         setItemAccordionList([
           {
             title: 'Referenti',
@@ -207,14 +260,6 @@ const ProgramsDetails: React.FC = () => {
                 })
               ) || [],
           },
-          {
-            title: 'Headquarters',
-            items:
-              authorityInfo?.sedi?.map((sede: { [key: string]: string }) => ({
-                ...sede,
-                actions: onActionClickSedi,
-              })) || [],
-          },
         ]);
         break;
       case tabs.QUESTIONARI:
@@ -223,13 +268,13 @@ const ProgramsDetails: React.FC = () => {
         setItemList({
           items: [
             {
-              nome: 'questionario',
+              nome: 'Questionario 1',
               stato: 'active',
               actions: onActionClickQuestionari,
               id: 'questionario',
             },
             {
-              nome: 'questionario2',
+              nome: 'Questionario 2',
               stato: 'active',
               actions: onActionClickQuestionari,
               id: 'questionario2',
@@ -243,6 +288,7 @@ const ProgramsDetails: React.FC = () => {
         const progettiList = programma.detail?.progetti?.map(
           (progetto: { id: string; nome: string; stato: string }) => ({
             ...progetto,
+            fullInfo: { id: progetto.id },
             actions: onActionClickProgetti,
           })
         );
@@ -262,13 +308,20 @@ const ProgramsDetails: React.FC = () => {
   const formButtons: ButtonInButtonsBar[] = [
     {
       size: 'xs',
+      color: 'danger',
+      outline: true,
+      text: 'Termina programma',
+      onClick: () => console.log('termina progetto'),
+    },
+    {
+      size: 'xs',
+      outline: true,
       color: 'primary',
       text: 'Elimina',
       onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
     },
     {
       size: 'xs',
-      outline: true,
       color: 'primary',
       text: ' Modifica',
       onClick: () =>
@@ -318,7 +371,8 @@ const ProgramsDetails: React.FC = () => {
     </Nav>
   );
 
-  const showButtons = () => activeTab === tabs.INFO || activeTab === tabs.ENTE;
+  const showINFOButtons = () => activeTab === tabs.INFO;
+  const showENTEButtons = () => activeTab === tabs.ENTE;
 
   return (
     <div className='container pb-3'>
@@ -329,11 +383,18 @@ const ProgramsDetails: React.FC = () => {
           status: 'ATTIVO',
           upperTitle: { icon: 'it-user', text: 'Programma' },
         }}
-        formButtons={showButtons() ? formButtons : []}
+        formButtons={
+          showINFOButtons()
+            ? formButtons
+            : showENTEButtons()
+            ? correctButtons
+            : []
+        }
+        currentTab={activeTab}
         itemsAccordionList={itemAccordionList}
         itemsList={itemList}
         buttonsPosition='TOP'
-        goBackTitle='Vai alla Lista programmi'
+        goBackTitle='Elenco programmi'
       >
         {currentForm}
       </DetailLayout>
@@ -348,6 +409,8 @@ const ProgramsDetails: React.FC = () => {
         }}
         text={deleteText}
       />
+      <ManageDelegate />
+      <ManageReferal />
     </div>
   );
 };
