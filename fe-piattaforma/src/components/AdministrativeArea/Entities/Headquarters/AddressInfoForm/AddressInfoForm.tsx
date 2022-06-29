@@ -12,10 +12,18 @@ const AddressInfoForm: React.FC<AddressInfoFormI> = ({
   addressInfo,
   onAddressInfoChange,
 }) => {
-  const addressChangeHandler = (address: string) => {
+  const addressChangeHandler = (
+    address: string,
+    province: string,
+    city: string,
+    CAP: string
+  ) => {
     onAddressInfoChange({
       ...addressInfo,
       address: address,
+      province: province,
+      city: city,
+      CAP: CAP,
     });
   };
 
@@ -24,7 +32,13 @@ const AddressInfoForm: React.FC<AddressInfoFormI> = ({
       ...addressInfo,
       openDays: [
         ...addressInfo.openDays,
-        { index: dayIndex, hourSpan: ['08:00', '18:00'] },
+        {
+          index: dayIndex,
+          hourSpan: [
+            ['09:00', '13:00'],
+            ['14:00', '18:00'],
+          ],
+        },
       ],
     });
   };
@@ -36,11 +50,11 @@ const AddressInfoForm: React.FC<AddressInfoFormI> = ({
     });
   };
 
-  const timeChangeHandler = (dayIndex: number, timeSpan: string[]) => {
+  const timeChangeHandler = (dayIndex: number, timeSpan: string[][]) => {
     onAddressInfoChange({
       ...addressInfo,
       openDays: addressInfo.openDays.map((day) =>
-        day.index === dayIndex ? { ...day, hourSpan: [...timeSpan] } : day
+        day.index === dayIndex ? { ...day, hourSpan: [timeSpan.flat()] } : day
       ),
     });
   };
@@ -50,7 +64,12 @@ const AddressInfoForm: React.FC<AddressInfoFormI> = ({
       <div className='col'>
         <AddressForm
           address={addressInfo.address}
-          onAddressChange={(address: string) => addressChangeHandler(address)}
+          province={addressInfo.province}
+          city={addressInfo.city}
+          CAP={addressInfo.CAP}
+          onAddressChange={(address, province, city, CAP) =>
+            addressChangeHandler(address, province, city, CAP)
+          }
         />
         <OpenDaysSelect
           openDays={addressInfo.openDays}

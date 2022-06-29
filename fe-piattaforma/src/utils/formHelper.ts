@@ -53,6 +53,8 @@ export interface formFieldI {
   enumLevel2?:
     | { label: string; value: string; upperLevel: string }[]
     | undefined;
+  keyService?: string | undefined;
+  privacy?: boolean;
 }
 export interface FormI {
   [key: string]: formFieldI;
@@ -81,6 +83,8 @@ export const newFormField = ({
   relatedTo = '',
   enumLevel1,
   enumLevel2,
+  keyService,
+  privacy = false,
 }: formFieldI) => ({
   field,
   value,
@@ -104,6 +108,8 @@ export const newFormField = ({
   relatedTo,
   enumLevel1,
   enumLevel2,
+  keyService,
+  privacy,
 });
 
 export const newForm = (fields: formFieldI[] = [], keepPosition = false) => {
@@ -133,6 +139,8 @@ export const newForm = (fields: formFieldI[] = [], keepPosition = false) => {
         relatedTo,
         enumLevel1,
         enumLevel2,
+        keyService,
+        privacy,
       },
       i: number
     ) => {
@@ -161,6 +169,8 @@ export const newForm = (fields: formFieldI[] = [], keepPosition = false) => {
           relatedTo,
           enumLevel1,
           enumLevel2,
+          keyService,
+          privacy,
         },
       };
     }

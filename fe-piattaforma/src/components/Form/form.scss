@@ -51,6 +51,18 @@
   }
 }
 
+.radio-btn-container {
+  min-height: 22px;
+  min-width: 22px;
+}
+
+.form-check [type='radio'] {
+  left: unset;
+  top: unset;
+  height: 100%;
+  width: 100%;
+}
+
 .form-check [type='checkbox']:checked + label::after {
   border-color: #0073e5;
   background-color: #0073e5;

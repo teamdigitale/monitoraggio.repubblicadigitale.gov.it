@@ -22,7 +22,7 @@ export interface SelectI
   options?: OptionType[] | undefined;
   placeholder?: string;
   required?: boolean;
-  value?: string | number | undefined;
+  value?: string | number | boolean | Date | string[] | undefined;
   wrapperClassName?: string;
   withLabel?: boolean;
 }
@@ -33,6 +33,7 @@ const Select: React.FC<SelectI> = (props) => {
     field,
     label = props.field,
     onInputChange,
+    required,
     options = [],
     value = '',
     wrapperClassName,
@@ -55,6 +56,7 @@ const Select: React.FC<SelectI> = (props) => {
       const newSelectedOption = options.find(
         (opt) => opt.value.toString() === value?.toString()
       );
+
       if (
         newSelectedOption?.value !== selectedOption?.value &&
         newSelectedOption
@@ -91,6 +93,7 @@ const Select: React.FC<SelectI> = (props) => {
           className='text-decoration-none'
         >
           {label}
+          {required ? ' *' : ''}
         </label>
       ) : null}
       <SelectKit

@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -22,7 +23,7 @@ const Curtain: React.FC<CurtainI> = (props) => {
   return ReactDOM.createPortal(
     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
     <div
-      className='curtain-wrapper fixed-top w-100 h-100'
+      className={clsx('curtain-wrapper', 'fixed-top', 'w-100', 'h-100')}
       role='dialog'
       onMouseDown={onClick}
       aria-label='Curtain modale'

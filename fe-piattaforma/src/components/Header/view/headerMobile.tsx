@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import clsx from 'clsx';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   Badge,
   Button,
@@ -16,6 +16,14 @@ import { HeaderI } from '../header';
 import { logout } from '../../../redux/features/user/userSlice';
 
 import HamburgerMenu from '../../HamburgerMenu/hamburgerMenu';
+import SwitchProfileModal from '../../Modals/SwitchProfileModal/switchProfileModal';
+import { openModal } from '../../../redux/features/modal/modalSlice';
+
+import AvatarInitials, {
+  AvatarSizes,
+  AvatarTextSizes,
+} from '../../AvatarInitials/avatarInitials';
+import { getRoleLabel } from '../../../utils/roleHelper';
 
 const HeaderMobile: React.FC<HeaderI> = ({
   dispatch,
@@ -24,20 +32,16 @@ const HeaderMobile: React.FC<HeaderI> = ({
   notification,
 }) => {
   const [openUser, setOpenUser] = useState<boolean>(false);
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const userDropdownOptions = [
-    { optionName: 'Cambia ruolo', action: () => navigate('/gestione-ruoli') },
-    { optionName: 'I tuoi dati', action: () => console.log('i tuoi dati') },
-    { optionName: 'Logout', action: () => dispatch(logout()) },
+    { optionName: 'Il mio profilo', action: () => console.log('i tuoi dati') },
+    {
+      optionName: 'Cambia ruolo',
+      action: () => dispatch(openModal({ id: 'switchProfileModal' })),
+    },
+    { optionName: 'Esci', action: () => dispatch(logout()) },
   ];
-
-  const getInitials = (name: string, surname: string) => {
-    const userName = name.charAt(0).toUpperCase();
-    const userSurname = surname.charAt(0).toUpperCase();
-
-    return userName + userSurname;
-  };
 
   const userDropDown = () => (
     <Dropdown
@@ -56,24 +60,16 @@ const HeaderMobile: React.FC<HeaderI> = ({
             'primary-bg-b2'
           )}
         >
-          <div
-            className={clsx(
-              'rounded-circle',
-              'bg-white',
-              'd-flex',
-              'align-items-center',
-              'justify-content-center',
-              'mr-3',
-              'primary-color',
-              'font-weight-light'
-            )}
-            style={{ height: '38px', width: '38px' }}
-          >
-            <span> {user && getInitials(user.name, user.surname)} </span>
+          <div>
+            <AvatarInitials
+              user={{ uName: user?.name, uSurname: user?.surname }}
+              size={AvatarSizes.Small}
+              font={AvatarTextSizes.Small}
+            />
           </div>
           <div className='d-inline-flex flex-column align-items-start'>
             <p className='h6 text-wrap font-weight-light'>
-              <em>{user?.role}</em>
+              <em>{getRoleLabel(user?.role)}</em>
             </p>
           </div>
         </div>
@@ -86,7 +82,8 @@ const HeaderMobile: React.FC<HeaderI> = ({
                 'primary-color-b1',
                 'py-2',
                 'w-100',
-                'd-flex justify-content-between'
+                'd-flex',
+                'justify-content-between'
               )}
               role='menuitem'
               onClick={item.action}
@@ -210,6 +207,16 @@ const HeaderMobile: React.FC<HeaderI> = ({
           ) : null}
         </div>
       </div>
+      <SwitchProfileModal
+        profiles={[
+          { name: ' "ente partner"', programName: 'Programma 1' },
+          {
+            name: ' "ente gestore di progetto"',
+            programName: 'Programma 2',
+          },
+        ]}
+        currentProfile=' "ente partner"'
+      />
     </header>
   );
 };

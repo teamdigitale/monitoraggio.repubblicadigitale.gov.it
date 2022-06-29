@@ -11,10 +11,11 @@ interface ModalI {
   id: string;
   children: ReactElement[];
   onClose?: () => void;
+  isRoleManaging?: boolean;
 }
 
 const Modal: React.FC<ModalI> = (props) => {
-  const { id, children, onClose } = props;
+  const { id, children, onClose, isRoleManaging } = props;
   const currentId = useAppSelector(selectModalId);
 
   const handleCloseModal = () => {
@@ -43,16 +44,24 @@ const Modal: React.FC<ModalI> = (props) => {
               'm-auto',
               'align-items-center',
               'justify-content-center',
-              !isMobile && 'h-75',
-              isMobile && 'h-100',
-              isMobile && 'w-100',
               'position-fixed',
+              isRoleManaging && isMobile
+                ? 'h-100 w-100 py-5 px-4 rounded'
+                : isMobile && 'h-100 w-100',
+              !isMobile && 'h-75',
               !isMobile && 'modal-dialog-centered',
               !isMobile && 'mt-4'
             )}
           >
             <div
-              className={clsx('modal-content', isMobile ? 'h-100' : 'h-auto')}
+              className={clsx(
+                'modal-content',
+                isRoleManaging && isMobile
+                  ? 'h-100'
+                  : isMobile
+                  ? 'h-100 pt-5'
+                  : 'h-auto'
+              )}
             >
               {children}
             </div>

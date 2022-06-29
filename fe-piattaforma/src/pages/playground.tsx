@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Button, Col, Row } from 'design-react-kit';
+import { Button, Col, FormGroup, Row } from 'design-react-kit';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '../redux/hooks';
 import { login, logout } from '../redux/features/user/userSlice';
@@ -24,11 +24,25 @@ import SwitchProfileModal from '../components/Modals/SwitchProfileModal/switchPr
 import { FilterI } from '../components/DropdownFilter/dropdownFilter';
 // import { groupOptions } from '../components/Form/multipleSelectConstants';
 import ManageOTP from '../components/AdministrativeArea/Entities/Surveys/ManageOTP/ManageOTP';
+import ProtectedComponent from '../hoc/AuthGuard/ProtectedComponent/ProtectedComponent';
+import { updateBreadcrumb } from '../redux/features/app/appSlice';
 
 const Playground: React.FC<withFormHandlerProps> = (props) => {
   const { t } = useTranslation();
   const isLogged = useAppSelector((state) => state.user.isLogged);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(
+      updateBreadcrumb([
+        {
+          label: 'Playground',
+          url: '/playground',
+          link: false,
+        },
+      ])
+    );
+  }, []);
 
   const handleUserLogged = () => {
     if (isLogged) {
@@ -86,34 +100,40 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
   const [values, setValues] = useState<FilterI[]>([]);
 
   return (
-    <div className='mt-4'>
+    <div className='container mt-4'>
       <h1>Playground {t('hello')}</h1>
       <div className='my-5'>
-        <DropdownFilter
-          filterName='test'
-          id='test'
-          options={[
-            { label: 'a', value: 'a' },
-            { label: 'b', value: 'b' },
-          ]}
-          onOptionsChecked={(newOptions) => {
-            console.log(newOptions);
-            setValues(newOptions);
-          }}
-          values={values}
-        />
+        {/* Testing Protected Component */}
+        <ProtectedComponent visibleTo={['permission-1']}>
+          <DropdownFilter
+            filterName='test'
+            id='test'
+            options={[
+              { label: 'a', value: 'a' },
+              { label: 'b', value: 'b' },
+            ]}
+            onOptionsChecked={(newOptions) => {
+              console.log(newOptions);
+              setValues(newOptions);
+            }}
+            values={values}
+          />
+        </ProtectedComponent>
       </div>
       <Row className='mt-2'>
-        {/* <SelectMultiple 
-          id={`prova`}
-          label='Tipologia risposta'
-          aria-label='Tipologia risposta'
-          options={groupOptions}
-          //onInputChange={handleOnInputChange}
-          withLabel={false}
-          placeholder='Seleziona tipologia risposta'
-          wrapperClassName='mb-0 w-50'
-        /> */}
+        <Form>
+          <FormGroup check>
+            <div className='my-3'>
+              <Input name='pippo' type='radio' id={`1`} label='1' withLabel />
+            </div>
+            <div className='my-3'>
+              <Input name='pippo' type='radio' id={`2`} label='2' withLabel />
+            </div>
+            <div className='my-3'>
+              <Input name='pippo' type='radio' id={`3`} label='3' withLabel />
+            </div>
+          </FormGroup>
+        </Form>
       </Row>
       <Row className='mt-2'>
         <Col sm={6} md={4}>

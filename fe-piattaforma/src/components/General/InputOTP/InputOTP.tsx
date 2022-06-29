@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import InputBox from './InputBox/InputBox';
 
@@ -33,7 +34,7 @@ const InputOTP = () => {
   };
 
   return (
-    <div className='w-100 d-flex flex-column px-3'>
+    <div className={clsx('w-100', 'd-flex', 'flex-column', 'px-3')}>
       <div className='d-flex justify-content-between mb-3'>
         {value.map((el, i) => (
           <InputBox

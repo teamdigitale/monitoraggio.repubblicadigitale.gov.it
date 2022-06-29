@@ -12,10 +12,16 @@
     width: 33%;
   }
   .th-actions {
-    width: 15%;
+    width: 5%;
   }
   .th-actions-roles {
     width: 1%;
+  }
+  tbody {
+    td:first-child {
+      color: #0066CC;
+      font-weight: 600;
+    }
   }
   &__intestazione {
     padding: 0px 16px !important;
@@ -33,5 +39,8 @@
         float: left;
       }
     }
+  }
+  &__width-radio {
+    max-width: 50px;
   }
 }

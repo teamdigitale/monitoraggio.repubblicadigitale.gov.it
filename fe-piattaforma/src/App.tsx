@@ -10,7 +10,6 @@ import ModalsPortal from './components/Modals/modalsPortal';
 import SkipContent from './components/SkipContent/skipContent';
 import MediaQueriesProvider from './components/MediaQueriesProvider/mediaQueriesProvider';
 import { i18nInit } from './utils/i18nHelper';
-import routes from './routes/routes';
 
 i18nInit();
 
@@ -23,7 +22,7 @@ const MyApp: React.FC = () => {
       <NotificationHandler />
       <ModalsPortal.Target />
       <Router>
-        <AppRoutes routes={routes} />
+        <AppRoutes />
       </Router>
     </Provider>
   );

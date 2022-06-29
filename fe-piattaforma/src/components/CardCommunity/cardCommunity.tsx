@@ -96,7 +96,9 @@ const CardCommunity: React.FC<CardCommunityI> = (props) => {
           </Col>
           <div
             className={clsx(
-              'd-flex flex-row mt-4',
+              'd-flex',
+              'flex-row',
+              'mt-4',
               !fullCard && 'justify-content-between'
             )}
           >
@@ -172,7 +174,14 @@ const CardCommunity: React.FC<CardCommunityI> = (props) => {
               </div>
               <p>{comments && comments[0].commentDate}</p>
             </div>
-            <div className='ml-2 d-flex flex-row justify-content-end'>
+            <div
+              className={clsx(
+                'ml-2',
+                'd-flex',
+                'flex-row',
+                'justify-content-end'
+              )}
+            >
               <Button className='px-2' onClick={() => console.log('send like')}>
                 <Icon
                   color='primary'

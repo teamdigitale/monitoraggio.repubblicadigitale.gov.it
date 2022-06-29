@@ -17,19 +17,19 @@ import {
   GetEntityValues,
 } from '../../../../../redux/features/citizensArea/citizensAreaThunk';
 import { useAppSelector } from '../../../../../redux/hooks';
-import { Paginator, Table } from '../../../../../components';
+import { Paginator, StatusChip, Table } from '../../../../../components';
 import {
   DropdownFilterI,
   FilterI,
 } from '../../../../../components/DropdownFilter/dropdownFilter';
 import { newTable, TableRowI } from '../../../../../components/Table/table';
-import { statusBgColor, statusColor, TableHeading } from '../../utils';
-import { Chip, ChipLabel } from 'design-react-kit';
-import clsx from 'clsx';
+import { TableHeading } from '../../utils';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import SearchCitizenModal from '../SearchCitizenModal/searchCitizenModal';
 import { openModal } from '../../../../../redux/features/modal/modalSlice';
+import PageTitle from '../../../../../components/PageTitle/pageTitle';
+import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 //import { openModal } from '../../../../../redux/features/modal/modalSlice';
 
 const entity = 'citizensArea';
@@ -58,6 +58,20 @@ const Citizens = () => {
 
   useEffect(() => {
     getListaCittadini();
+    dispatch(
+      updateBreadcrumb([
+        {
+          label: 'Area Cittadini',
+          url: '/area-cittadini',
+          link: false,
+        },
+        {
+          label: 'I miei cittadini',
+          url: '/area-cittadini',
+          link: true,
+        },
+      ])
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filtersList, pagination]);
 
@@ -183,19 +197,7 @@ const Citizens = () => {
         name: td.name,
         submitted: td.submitted,
         onDraft: td.onDraft,
-        status: (
-          <Chip
-            className={clsx(
-              'table-container__status-label',
-              statusBgColor(td.status),
-              'no-border'
-            )}
-          >
-            <ChipLabel className={statusColor(td.status)}>
-              {td.status.toUpperCase()}
-            </ChipLabel>
-          </Chip>
-        ),
+        status: <StatusChip status={td.status} rowTableId={td.id} />,
       }))
     );
     return {
@@ -246,6 +248,10 @@ const Citizens = () => {
   };
 
   return (
+    <>
+    <PageTitle 
+      title={'I miei cittadini'}
+    />
     <GenericSearchFilterTableLayout
       searchInformation={searchInformation}
       dropdowns={dropdowns}
@@ -277,6 +283,7 @@ const Citizens = () => {
       </div>
       <SearchCitizenModal />
     </GenericSearchFilterTableLayout>
+    </>
   );
 };
 

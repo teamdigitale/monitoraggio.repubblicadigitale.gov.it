@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import HeaderMobile from './view/headerMobile';
 import HeaderDesktop from './view/headerDesktop';
+import { isEmpty } from 'lodash';
 
 export interface HeaderI {
   isHeaderFull?: boolean | undefined;
@@ -31,6 +32,7 @@ const Header: React.FC<HeaderProp> = (props) => {
   const notification = useAppSelector(selectUserNotification);
 
   const device = useAppSelector(selectDevice);
+  console.log(device);
 
   const componentProps = {
     notification,
@@ -40,9 +42,10 @@ const Header: React.FC<HeaderProp> = (props) => {
     isHeaderFull,
   };
 
-  if (!device?.mediaIsDesktop) {
-    return <HeaderMobile {...componentProps} />;
-  }
-  return <HeaderDesktop {...componentProps} />;
+  return isEmpty(device) ? null : device.mediaIsDesktop ? (
+    <HeaderDesktop {...componentProps} />
+  ) : (
+    <HeaderMobile {...componentProps} />
+  );
 };
 export default memo(Header);

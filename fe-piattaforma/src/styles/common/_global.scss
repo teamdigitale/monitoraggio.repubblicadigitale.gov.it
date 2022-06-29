@@ -1,10 +1,10 @@
-@import 'rem';
-@import 'colors';
-@import 'helpers';
-@import 'variables';
-@import 'typography';
-@import 'buttons';
-@import 'chips';
+@import "rem";
+@import "colors";
+@import "helpers";
+@import "variables";
+@import "typography";
+@import "buttons";
+@import "chips";
 
 * {
   margin: 0;
@@ -18,11 +18,18 @@ body {
   width: 100%;
   //font-family: sans-serif !important;
   scroll-behavior: smooth;
-  background-color: color('white');
-  color: color('black');
+  background-color: color("white");
+  color: color("black");
   //font-size: $font-size-base;
 }
 
 a {
   transition: all 250ms ease;
+}
+
+.sticky-body {
+  margin-left: -10%;
+  margin-right: -10%;
+  padding-left: 10%;
+  padding-right: 10%;
 }

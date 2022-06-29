@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { statusColor, statusBgColor, TableHeading } from '../utils';
+import { TableHeading } from '../utils';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
@@ -11,8 +11,6 @@ import {
   setEntityPagination,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { newTable, TableRowI } from '../../../../../components/Table/table';
-import { Chip, ChipLabel } from 'design-react-kit';
-import clsx from 'clsx';
 import {
   DropdownFilterI,
   FilterI,
@@ -20,7 +18,7 @@ import {
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
 } from '../../../../../components/genericSearchFilterTableLayout/genericSearchFilterTableLayout';
-import { Paginator, Table } from '../../../../../components';
+import { Paginator, StatusChip, Table } from '../../../../../components';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import ManageProject from '../modals/manageProject';
@@ -29,6 +27,7 @@ import {
   GetAllProjects,
   GetFilterValuesProjects,
 } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
+import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 
 const statusDropdownLabel = 'stati';
 const policyDropdownLabel = 'policies';
@@ -56,6 +55,20 @@ const Projects: React.FC = () => {
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 2 }));
     getAllFilters();
+    dispatch(
+      updateBreadcrumb([
+        {
+          label: 'Area Amministrativa',
+          url: '/area-amministrativa',
+          link: false,
+        },
+        {
+          label: 'Progetti',
+          url: '/area-amministrativa/progetti',
+          link: true,
+        },
+      ])
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -70,20 +83,10 @@ const Projects: React.FC = () => {
       TableHeading,
       progettiList.list.map((td) => ({
         id: td.id,
-        label: td.nome,
-        status: (
-          <Chip
-            className={clsx(
-              'table-container__status-label',
-              statusBgColor(td.stato),
-              'no-border'
-            )}
-          >
-            <ChipLabel className={statusColor(td.stato)}>
-              {td.stato.toUpperCase()}
-            </ChipLabel>
-          </Chip>
-        ),
+        label: td.nomeBreve,
+        policy: td.policy,
+        enteGestore: td.enteGestore,
+        status: <StatusChip status={td.stato} rowTableId={td.id} />,
       }))
     );
     return {
@@ -176,7 +179,7 @@ const Projects: React.FC = () => {
       )[0]?.value,
     },
     {
-      filterName: 'Stati',
+      filterName: 'Stato',
       options: dropdownFilterOptions[statusDropdownLabel],
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, statusDropdownLabel),
@@ -196,7 +199,7 @@ const Projects: React.FC = () => {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
     placeholder:
-      "Inserisci il nome, l'identificativo o il nome dell'ente gestore del progetto che stai cercando",
+      "Inserisci il nome del progetto, l'identificativo o il nome dell'ente gestore",
     isClearable: true,
     title: 'Cerca progetto',
   };

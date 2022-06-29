@@ -3,17 +3,22 @@ import AccordionAddress, {
   AddressInfoI,
 } from './AccordionAddress/AccordionAddress';
 
-interface AccordionAddressListI {
+export interface AccordionAddressListI {
   addressList: AddressInfoI[];
-  onSetAddressList: (addressList: AddressInfoI[]) => void;
+  onSetAddressList?: (addressList: AddressInfoI[]) => void;
+  isReadOnly?: boolean;
 }
 
 const AccordionAddressList: React.FC<AccordionAddressListI> = ({
   addressList,
   onSetAddressList,
+  isReadOnly = false,
 }) => {
   const [newAddressInfo, setNewAddressInfo] = useState<AddressInfoI>({
     address: '',
+    CAP: '',
+    city: '',
+    province: '',
     openDays: [],
   });
 
@@ -21,18 +26,22 @@ const AccordionAddressList: React.FC<AccordionAddressListI> = ({
     changedAddressInfo: AddressInfoI,
     index: number
   ) => {
-    onSetAddressList(
-      addressList.map((addressInfo: AddressInfoI, i: number) =>
-        i === index ? { ...changedAddressInfo } : addressInfo
-      )
-    );
+    onSetAddressList &&
+      onSetAddressList(
+        addressList.map((addressInfo: AddressInfoI, i: number) =>
+          i === index ? { ...changedAddressInfo } : addressInfo
+        )
+      );
   };
 
   const newAddressHandler = (isOpen: boolean) => {
     if (!isOpen && newAddressInfo.address.trim() !== '') {
-      onSetAddressList([...addressList, newAddressInfo]);
+      onSetAddressList && onSetAddressList([...addressList, newAddressInfo]);
       setNewAddressInfo({
         address: '',
+        CAP: '',
+        city: '',
+        province: '',
         openDays: [],
       });
     }
@@ -42,6 +51,7 @@ const AccordionAddressList: React.FC<AccordionAddressListI> = ({
     <>
       {addressList.map((address, index) => (
         <AccordionAddress
+          isReadOnly={isReadOnly}
           key={index}
           index={index + 1}
           addressInfo={address}
@@ -51,12 +61,14 @@ const AccordionAddressList: React.FC<AccordionAddressListI> = ({
         />
       ))}
 
-      <AccordionAddress
-        index={addressList.length + 1}
-        addressInfo={newAddressInfo}
-        onAddressInfoChange={setNewAddressInfo}
-        handleOnToggle={(isOpen: boolean) => newAddressHandler(isOpen)}
-      />
+      {!isReadOnly && (
+        <AccordionAddress
+          index={addressList.length + 1}
+          addressInfo={newAddressInfo}
+          onAddressInfoChange={setNewAddressInfo}
+          handleOnToggle={(isOpen: boolean) => newAddressHandler(isOpen)}
+        />
+      )}
     </>
   );
 };

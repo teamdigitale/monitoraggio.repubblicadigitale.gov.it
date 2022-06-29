@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
-import {} from '../../../../../components';
 import CitizenFormResult from './citizenFormResult';
-//import NoResultsFound from '../../../../../components/NoResultsFound/noResultsFound';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
@@ -16,8 +14,10 @@ import CitizenTableResult from './citizenTableResult';
 import NoResultsFound from '../../../../../components/NoResultsFound/noResultsFound';
 import Infocard from '../../../../../components/InfoCard/infoCard';
 import SearchBarOptions from '../../../../../components/SearchBarOptions/searchBarOptions';
-import FormUser from '../../../../forms/formUser';
 import { formFieldI } from '../../../../../utils/formHelper';
+import { TableRowI } from '../../../../../components/Table/table';
+import { addCitizenToList } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import FormCitizen from '../../../../forms/formCitizen';
 
 const id = 'search-citizen-modal';
 
@@ -29,7 +29,9 @@ export const selectedSteps = {
 
 interface SearchCitizenModalI {
   onConfirmText?: string;
-  onConfirmFunction?: () => void;
+  onConfirmFunction?: (newCitizen: {
+    [key: string]: string | number | boolean | Date | string[] | undefined;
+  } | undefined) => void;
 }
 
 /*
@@ -57,8 +59,13 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
   const multipleCitizenData: CittadinoInfoI[] = useAppSelector(
     selectEntitySearchMultiResponse
   );
-  const [newUserValues, setNewUserValues] =
-    useState<{ [key: string]: string | number | boolean | Date | string[] | undefined }>();
+  const [newUserValues, setNewUserValues] = useState<{
+    [key: string]: string | number | boolean | Date | string[] | undefined;
+  }>();
+  const [selectedCitizen, setSelectedCitizen] = useState<TableRowI | string>(
+    ''
+  );
+  const [validForm, setFormValid] = useState<boolean>(false);
 
   useEffect(() => {
     if (
@@ -84,7 +91,10 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
         currentStep === selectedSteps.DOC_NUMBER)
     ) {
       return isEmpty(citizenData) ? (
-        <CitizenTableResult data={multipleCitizenData} />
+        <CitizenTableResult
+          data={multipleCitizenData}
+          onCitizenSelected={(citizen) => setSelectedCitizen(citizen)}
+        />
       ) : (
         <>
           <Infocard
@@ -103,11 +113,12 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
     }
     if (currentStep === selectedSteps.ADD_CITIZEN) {
       return (
-        <FormUser
-          creation
+        <FormCitizen 
           sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
-            setNewUserValues({ ...newData })
+            {setNewUserValues({ ...newData });}
           }
+          isFormValid={(isValid: boolean) => setFormValid(isValid)}
+          creation
         />
       );
     }
@@ -129,11 +140,28 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
       ) {
         setCurrentStep(selectedSteps.ADD_CITIZEN);
       } else if (currentStep === selectedSteps.ADD_CITIZEN) {
-        console.log(newUserValues);
-        return onConfirmFunction();
+        return onConfirmFunction(newUserValues);
       }
     }
-    console.log('on confirm');
+    if (typeof selectedCitizen === 'object') {
+      // TODO: manca POST per aggiungere cittadino?
+      dispatch(
+        addCitizenToList({
+          id: `${new Date().getTime()}`,
+          nome: selectedCitizen?.nome + ' ' + selectedCitizen?.cognome,
+          stato: 'NON INVIATO', // TODO: rendere campo dinamico
+          innerInfo: {
+            ID: '', // TODO: rendere campo dinamico
+            codiceFiscale: selectedCitizen?.codiceFiscale.toString(),
+          },
+        })
+      );
+    }
+    onClose();
+  };
+
+  const addCitizen = () => {
+    setCurrentStep(selectedSteps.ADD_CITIZEN);
   };
 
   return (
@@ -143,8 +171,16 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
       noPaddingPrimary
       primaryCTA={{
         label: `${onConfirmText || 'Compila questionario'}`,
-        onClick: onConfirm,
-        disabled: isEmpty(citizenData) && !citizenData?.message,
+        onClick:
+          citizenData.message &&
+          (currentStep === selectedSteps.FISCAL_CODE ||
+            currentStep === selectedSteps.DOC_NUMBER)
+            ? addCitizen
+            : onConfirm,
+        disabled:
+          (isEmpty(citizenData) &&
+          !citizenData?.message &&
+          (isEmpty(multipleCitizenData) || selectedCitizen === '')) || (currentStep === selectedSteps.ADD_CITIZEN && !validForm),
       }}
       secondaryCTA={{
         label: 'Annulla',
@@ -155,15 +191,16 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
     >
       <div className='d-flex flex-column search-citizen-modal'>
         <div className='mb-5'>
-          <SearchBarOptions
-            setCurrentStep={setCurrentStep}
-            currentStep={currentStep}
-            steps={(({ FISCAL_CODE, DOC_NUMBER }) => ({
-              FISCAL_CODE,
-              DOC_NUMBER,
-            }))(selectedSteps)}
-          />
-
+          {currentStep !== selectedSteps.ADD_CITIZEN && (
+            <SearchBarOptions
+              setCurrentStep={setCurrentStep}
+              currentStep={currentStep}
+              steps={(({ FISCAL_CODE, DOC_NUMBER }) => ({
+                FISCAL_CODE,
+                DOC_NUMBER,
+              }))(selectedSteps)}
+            />
+          )}
           <div className='d-block px-5 mt-5'>{loadCorrectStep()}</div>
         </div>
       </div>
