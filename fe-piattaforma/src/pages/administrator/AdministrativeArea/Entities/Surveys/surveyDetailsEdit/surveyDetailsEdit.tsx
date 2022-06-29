@@ -6,11 +6,8 @@ import { Form, Input } from '../../../../../../components';
 import SurveySection from './components/surveySection';
 import { useAppSelector } from '../../../../../../redux/hooks';
 import { FormHelper, FormI } from '../../../../../../utils/formHelper';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import {
-  selectDevice,
-  updateBreadcrumb,
-} from '../../../../../../redux/features/app/appSlice';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { selectDevice } from '../../../../../../redux/features/app/appSlice';
 import DetailLayout from '../../../../../../components/DetailLayout/detailLayout';
 import {
   SurveySectionI,
@@ -45,32 +42,6 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
   const [cloneSurveyTitle, setCloneSurveyTitle] = useState(
     form['survey-name'].value + ' clone'
   );
-
-  const { idQuestionario } = useParams();
-
-  useEffect(() => {
-    if (form['survey-name'].value && idQuestionario) {
-      dispatch(
-        updateBreadcrumb([
-          {
-            label: 'Area Amministrativa',
-            url: '/area-amministrativa',
-            link: false,
-          },
-          {
-            label: 'Questionari',
-            url: '/area-amministrativa/questionari',
-            link: true,
-          },
-          {
-            label: form['survey-name'].value,
-            url: `/area-amministrativa/questionari/${idQuestionario}`,
-            link: false,
-          },
-        ])
-      );
-    }
-  }, [idQuestionario]);
 
   useEffect(() => {
     const locationSplit = location.pathname.split('/');
@@ -163,20 +134,16 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
     <div className='mb-5'>
       <DetailLayout
         titleInfo={{
-          title: 'Nome questionario',
+          title: 'Configurazione questionario',
           status: '',
           upperTitle: { icon: 'it-file', text: 'Questionario' },
         }}
         formButtons={[]} // TODO?
         buttonsPosition='TOP'
-        goBackTitle='Torna indietro'
+        goBackTitle='Vai alla Lista questionari'
       />
       <Form className='pt-5'>
-        <Form.Row
-          className={clsx(
-            device.mediaIsPhone ? '' : 'd-flex justify-content-start'
-          )}
-        >
+        <Form.Row>
           <Input
             {...form['survey-name']}
             value={
@@ -190,9 +157,6 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
             }
             placeholder='Inserici nome questionario'
             disabled={!cloneModeState}
-            className={clsx(
-              device.mediaIsPhone || device.mediaIsTablet ? 'w-100' : 'w-75'
-            )}
           />
           <Input
             {...form['survey-description']}
@@ -202,9 +166,6 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
             onInputBlur={handleOnInputChange}
             placeholder='Inserici una descrizione del questionario'
             disabled={!editModeState && !cloneModeState}
-            className={clsx(
-              device.mediaIsPhone || device.mediaIsTablet ? 'w-100' : 'w-75'
-            )}
           />
         </Form.Row>
       </Form>

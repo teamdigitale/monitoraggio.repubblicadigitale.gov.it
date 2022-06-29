@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Paginator, StatusChip, Table } from '../../../../../components';
+import { Chip, ChipLabel } from 'design-react-kit';
+import clsx from 'clsx';
+import { Paginator, Table } from '../../../../../components';
 import { newTable, TableRowI } from '../../../../../components/Table/table';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
-  resetProgramDetails,
   selectEntityFilters,
   selectEntityFiltersOptions,
   selectEntityPagination,
@@ -16,7 +17,8 @@ import {
   DropdownFilterI,
   FilterI,
 } from '../../../../../components/DropdownFilter/dropdownFilter';
-import { formTypes, TableHeading } from '../utils';
+import { formTypes, statusBgColor, statusColor, TableHeading } from '../utils';
+
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
 } from '../../../../../components/genericSearchFilterTableLayout/genericSearchFilterTableLayout';
@@ -29,7 +31,7 @@ import {
   GetAllPrograms,
   GetFilterValues,
 } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
-import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
+import { resetProgramDetails } from '../../../../../redux/features/administrativeArea/programs/programsSlice';
 
 const statusDropdownLabel = 'stati';
 const policyDropdownLabel = 'policies';
@@ -57,25 +59,6 @@ const Programs = () => {
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 1 }));
     getAllFilters();
-    /**
-     * When the component is rendered the breadcrumb is initialized with
-     * the rigth path. This operation is performed in every component that
-     * needs breadcrumb
-     */
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area Amministrativa',
-          url: '/area-amministrativa',
-          link: false,
-        },
-        {
-          label: 'Programmi',
-          url: '/area-amministrativa/programmi',
-          link: true,
-        },
-      ])
-    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -84,11 +67,21 @@ const Programs = () => {
       TableHeading,
       programmiList.list.map((td) => {
         return {
-          label: td.nomeBreve,
           id: td.id,
-          policy: td.policy,
-          enteGestore: td.enteGestore,
-          status: <StatusChip status={td.stato} rowTableId={td.id} />,
+          label: td.nome,
+          status: (
+            <Chip
+              className={clsx(
+                'table-container__status-label',
+                statusBgColor(td.stato),
+                'no-border'
+              )}
+            >
+              <ChipLabel className={statusColor(td.stato)}>
+                {td.stato.toUpperCase()}
+              </ChipLabel>
+            </Chip>
+          ),
         };
       })
     );
@@ -171,7 +164,7 @@ const Programs = () => {
       )[0]?.value,
     },
     {
-      filterName: 'Stato',
+      filterName: 'Stati',
       options: dropdownFilterOptions[statusDropdownLabel],
       id: statusDropdownLabel,
       onOptionsChecked: (options) =>
@@ -189,7 +182,7 @@ const Programs = () => {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
     placeholder:
-      "Inserisci il nome, l'identificativo o il nome dell'ente gestore",
+      "Inserisci il nome, l'identificativo o il nome dell'ente gestore del programma che stai cercando",
     isClearable: true,
     title: 'Cerca programma',
   };
@@ -218,7 +211,7 @@ const Programs = () => {
     title: 'Area Amministrativa',
     subtitle:
       'Qui potrai gestire utenti, enti, programmi e progetti e creare i questionari',
-    textCta: 'Crea programma',
+    textCta: 'Crea nuovo programma',
     iconCta: 'it-plus',
   };
 

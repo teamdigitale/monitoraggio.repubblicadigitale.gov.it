@@ -18,7 +18,7 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
 
   return (
     <div className={clsx('page-title', hasBackground && 'lightgrey-bg-a1')}>
-      <Container className={clsx('mt-3 pl-0')}>
+      <Container className='mt-3'>
         <div
           className={clsx(
             'd-flex',
@@ -27,11 +27,7 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
             'align-items-center'
           )}
         >
-          {title && (
-            <h1 className={clsx('h2', 'py-2', 'mb-2', 'primary-color-a9')}>
-              {title}
-            </h1>
-          )}
+          {title && <h1 className='h2 py-2 mb-2 primary-color-a9'>{title}</h1>}
         </div>
       </Container>
     </div>

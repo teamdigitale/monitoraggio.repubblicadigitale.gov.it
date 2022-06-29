@@ -19,13 +19,11 @@ interface ProfileI {
 interface SwitchProfileModalI {
   profiles?: ProfileI[];
   currentProfile: string;
-  isRoleManaging?: boolean;
 }
 
 const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({
   profiles,
   currentProfile,
-  //isRoleManaging
 }) => {
   const [profileSelected, setProfileSelected] = useState(currentProfile);
   const [elementToFocus, setElementToFocus] = useState('utente-0');
@@ -77,10 +75,9 @@ const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({
         label: 'Annulla',
         //onClick: () => clearForm?.(),
       }}
-      title={'Scegli il ruolo'}
+      title={'Scegli il profilo'}
       noSpaceAfterTitle
       centerButtons
-      isRoleManaging={true}
     >
       <div
         className={clsx(
@@ -90,7 +87,7 @@ const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({
           'justify-content-around'
         )}
       >
-        <p className={clsx('text-center', 'mb-5', 'px-3')}>
+        <p className='px-5 text-align-center mb-5'>
           {t('select_profile_to_log_with')}
         </p>
         <ul

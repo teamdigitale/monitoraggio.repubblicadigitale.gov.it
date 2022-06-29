@@ -11,7 +11,6 @@ interface CheckboxGroupI extends InputI {
   label?: string;
   styleLabelForm?: boolean;
   className?: string;
-  noLabel?: boolean;
 }
 
 const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
@@ -24,7 +23,6 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
     label,
     styleLabelForm = false,
     className = '',
-    noLabel = false,
   } = props;
   const [values, setValues] = useState<string[]>(
     value.toString().split(separator)
@@ -36,8 +34,7 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
   }, [value]);
 
   useEffect(() => {
-    if (onInputChange)
-      onInputChange(values.filter((val) => val !== '').join(separator), field);
+    if (onInputChange) onInputChange((values.filter(val => val !== '')).join(separator), field);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values]);
 
@@ -53,25 +50,8 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
   };
 
   return (
-    <div
-      className={clsx(className, 'checkbox-group', 'form-group', 'col-auto')}
-    >
-      {!noLabel && (
-        <div>
-          {label ? (
-            <p
-              className={clsx(
-                'h6',
-                styleLabelForm && 'compile-survey-container__label-checkbox'
-              )}
-            >
-              {label}
-            </p>
-          ) : (
-            <p className='h6'>{field}</p>
-          )}
-        </div>
-      )}
+    <div className={clsx(className, 'checkbox-group', 'form-group', 'col-auto')}>
+      {label ? <p className={clsx('h6', styleLabelForm && 'compile-survey-container__label-checkbox')}>{label}</p>: <p className='h6'>{field}</p>}
       <Form.Row>
         {options.map((check) => (
           <FormGroup check inline key={check.value}>
@@ -79,10 +59,8 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
               {...check}
               field={`${field} ${check.label}`}
               checked={values.includes(check.value.toString())}
-              onKeyDown={(e) =>
-                e.key == ' ' ? handleOnChange(check.value) : ''
-              }
               onInputChange={() => handleOnChange(check.value)}
+              onKeyDown={(e) => (e.key == ' ' ? handleOnChange(check.value) : '')}
               col='col-4'
               type='checkbox'
               withLabel={false}

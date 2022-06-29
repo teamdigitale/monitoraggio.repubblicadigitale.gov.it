@@ -1,54 +1,39 @@
-import React, { lazy, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Container } from 'design-react-kit';
 import {
+  Outlet,
   Route,
-  Routes,
   useLocation,
   useNavigate,
   useParams,
 } from 'react-router-dom';
+import Programs from './Entities/Programs/programs';
 import PageTitle from '../../../components/PageTitle/pageTitle';
 //import { TabGroup } from '../../../components';
+import Projects from './Entities/Projects/projects';
+import Utenti from './Entities/Users/users';
+import Surveys from './Entities/Surveys/surveys';
+import Enti from './Entities/Authorities/authorities';
 /*import ManageProgram from './Entities/Programs/manageProgram/manageProgram';
 import ManageProgramManagerAuthority from './Entities/Programs/manageEnteGestoreProgramma/manageEnteGestoreProgramma';
 import ManageEntiPartner from './Entities/Programs/manageEntiPartner/manageEntiPartner';
 import ManageHeadquarter from './Entities/Programs/manageSedi/manageSedi';
 import ManageProjectManagerAuthority from './Entities/Programs/manageEnteGestoreProgetto/manageEnteGestoreProgetto';*/
 import ManageUsers from './Entities/modals/manageUsers';
+import CompileSurvey from './Entities/Surveys/compileSurvey/compileSurvey';
+import ProgramsDetails from './Entities/Programs/programsDetails';
+import ProjectsDetails from './Entities/Projects/projectsDetails';
+import AuthoritiesDetails from './Entities/Authorities/authoritiesDetails';
+import UsersDetails from './Entities/Users/usersDetails';
+import HeadquartersDetails from './Entities/Headquarters/HeadquartersDetail/headquartersDetails';
 import { useAppSelector } from '../../../redux/hooks';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import { LocationIndex } from '../../../components';
 import { menuRoutes } from '../../../utils/common';
 import clsx from 'clsx';
-const Programs = lazy(() => import('./Entities/Programs/programs'));
-const Projects = lazy(() => import('./Entities/Projects/projects'));
-const Utenti = lazy(() => import('./Entities/Users/users'));
-const Surveys = lazy(() => import('./Entities/Surveys/surveys'));
-const Authorities = lazy(() => import('./Entities/Authorities/authorities'));
-const CompileSurvey = lazy(
-  () => import('./Entities/Surveys/compileSurvey/compileSurvey')
-);
-const ProgramsDetails = lazy(
-  () => import('./Entities/Programs/programsDetails')
-);
-const ProjectsDetails = lazy(
-  () => import('./Entities/Projects/projectsDetails')
-);
-const AuthoritiesDetails = lazy(
-  () => import('./Entities/Authorities/authoritiesDetails')
-);
-const UsersDetails = lazy(() => import('./Entities/Users/usersDetails'));
-const HeadquartersDetails = lazy(
-  () => import('./Entities/Headquarters/HeadquartersDetail/headquartersDetails')
-);
-const Services = lazy(() => import('./Entities/Services/services'));
-const ServicesDetails = lazy(
-  () => import('./Entities/Services/servicesDetails')
-);
-const SurveyDetailsEdit = lazy(
-  () => import('./Entities/Surveys/surveyDetailsEdit/surveyDetailsEdit')
-);
-import ProtectedComponent from '../../../hoc/AuthGuard/ProtectedComponent/ProtectedComponent';
+import Services from './Entities/Services/services';
+import ServicesDetails from './Entities/Services/servicesDetails';
+import SurveyDetailsEdit from './Entities/Surveys/surveyDetailsEdit/surveyDetailsEdit';
 
 interface PageTitleMockI {
   [key: string]: {
@@ -60,32 +45,32 @@ interface PageTitleMockI {
 
 export const PageTitleMock: PageTitleMockI = {
   '/area-amministrativa/programmi': {
-    title: 'Elenco Programmi',
+    title: 'Programmi',
     textCta: 'Crea nuovo programma',
     iconCta: 'it-plus',
   },
   '/area-amministrativa/progetti': {
-    title: 'Elenco Progetti',
+    title: 'Progetti',
     textCta: 'Crea nuovo progetto',
     iconCta: 'it-plus',
   },
   '/area-amministrativa/utenti': {
-    title: 'Elenco Utenti',
+    title: 'Utenti',
     textCta: 'Crea nuovo utente',
     iconCta: 'it-plus',
   },
   '/area-amministrativa/enti': {
-    title: 'Elenco Enti',
+    title: 'Enti',
     textCta: 'Crea nuovo ente',
     iconCta: 'it-plus',
   },
   '/area-amministrativa/questionari': {
-    title: 'Elenco Questionari',
+    title: 'Questionari',
     textCta: 'Crea nuovo questionario',
     iconCta: 'it-plus',
   },
   '/area-amministrativa/servizi': {
-    title: 'Elenco Servizi',
+    title: 'Lista Servizi',
     textCta: 'Crea servizio',
     iconCta: 'it-plus',
   },
@@ -172,7 +157,7 @@ const AdministrativeArea = () => {
       ) : null}
 
       <Container className={clsx(device.mediaIsPhone ? 'px-4' : 'px-0')}>
-        <Routes>{AreaAmministrativaRoutes}</Routes>
+        <Outlet />
       </Container>
       <ManageUsers />
     </>
@@ -181,7 +166,7 @@ const AdministrativeArea = () => {
 
 export default AdministrativeArea;
 
-const AreaAmministrativaRoutes = [
+export const AreaAmministrativaRoutes = [
   <Route key='programmi' path='programmi' element={<Programs />} />,
   <Route
     key='programmi-dettaglio'
@@ -189,114 +174,110 @@ const AreaAmministrativaRoutes = [
     element={<ProgramsDetails />}
   />,
   <Route
-    key='programmi-dettaglio-info'
+    key='programmi-dettaglio'
     path='programmi/:entityId/info'
-    element={
-      <ProtectedComponent visibleTo={['permission-1']}>
-        <ProgramsDetails />
-      </ProtectedComponent>
-    }
+    element={<ProgramsDetails />}
   />,
   <Route
-    key='programmi-dettaglio-ente'
+    key='programmi-dettaglio'
     path='programmi/:entityId/ente'
     element={<ProgramsDetails />}
   />,
   <Route
-    key='programmi-dettaglio-questionari'
+    key='programmi-dettaglio'
     path='programmi/:entityId/questionari'
     element={<ProgramsDetails />}
   />,
   <Route
-    key='programmi-dettaglio-progetti'
+    key='programmi-dettaglio'
     path='programmi/:entityId/progetti'
     element={<ProgramsDetails />}
   />,
   <Route
-    key='programmi-dettaglio-progetti-dettaglio'
+    key='programmi-dettaglio'
     path='programmi/:entityId/progetti/:projectId'
     element={<ProjectsDetails />}
   />,
   <Route
-    key='programmi-dettaglio-progetti-dettaglio-info'
+    key='programmi-dettaglio-progetti-detail-info'
     path='programmi/:entityId/progetti/:projectId/info'
     element={<ProjectsDetails />}
   />,
   <Route
-    key='programmi-dettaglio-progetti-dettaglio-ente-gestore'
+    key='programmi-dettaglio-progetti-detail-ente-gestore'
     path='programmi/:entityId/progetti/:projectId/ente-gestore-progetto'
     element={<ProjectsDetails />}
   />,
   <Route
-    key='programmi-dettaglio-progetti-dettaglio-enti-partner'
+    key='programmi-dettaglio-progetti-detail-enti-partner'
     path='programmi/:entityId/progetti/:projectId/enti-partner-progetto'
     element={<ProjectsDetails />}
   />,
   <Route
-    key='programmi-dettaglio-progetti-dettaglio-sedi'
+    key='programmi-dettaglio-progetti-detail-sedi'
     path='programmi/:entityId/progetti/:projectId/sedi'
     element={<ProjectsDetails />}
   />,
   <Route
-    key='programmi-dettaglio-utenti-dettaglio'
+    key='utenti-detail'
     path='programmi/:entityId/utenti/:userId'
     element={<UsersDetails />}
   />,
   <Route
-    key='programmi-dettaglio-progetti-dettaglio-utenti-dettaglio'
+    key='utenti-detail'
     path='programmi/:entityId/progetti/:projectId/utenti/:userId'
     element={<UsersDetails />}
   />,
   <Route
-    key='programmi-dettaglio-progetti-dettaglio-enti-dettaglio'
+    key='enti-detail'
     path='programmi/:entityId/progetti/:projectId/enti/:enteId'
     element={<AuthoritiesDetails />}
   />,
 
   <Route key='progetti' path='progetti' element={<Projects />} />,
   <Route
-    key='progetti-dettaglio'
+    key='progetti-detail'
     path='progetti/:entityId'
     element={<ProjectsDetails />}
   />,
   <Route
-    key='progetti-dettaglio-info'
+    key='progetti-detail-info'
     path='progetti/:projectId/info'
     element={<ProjectsDetails />}
   />,
   <Route
-    key='progetti-dettaglio-ente-gestore'
+    key='progetti-detail-ente-gestore'
     path='progetti/:projectId/ente-gestore-progetto'
     element={<ProjectsDetails />}
   />,
   <Route
-    key='progetti-dettaglio-enti-partner'
+    key='progetti-detail-enti-partner'
     path='progetti/:projectId/enti-partner-progetto'
     element={<ProjectsDetails />}
   />,
   <Route
-    key='progetti-dettaglio-sedi'
+    key='progetti-detail-sedi'
     path='progetti/:projectId/sedi'
     element={<ProjectsDetails />}
   />,
   <Route
-    key='progetti-dettaglio-enti-dettaglio'
+    key='progetti-detail'
     path='progetti/:entityId/enti/:enteId'
     element={<AuthoritiesDetails />}
   />,
   <Route
-    key='progetti-dettaglio-sedi-dettaglio'
+    key='progetti-detail'
     path='progetti/:entityId/sedi/:sedeId'
     element={<HeadquartersDetails />}
   />,
   <Route
-    key='progetti-dettaglio-utenti-dettaglio'
+    key='progetti-detail'
     path='progetti/:entityId/utenti/:userId'
     element={<UsersDetails />}
   />,
-  <Route key='enti' path='enti' element={<Authorities />} />,
+  <Route key='enti' path='enti' element={<Enti />} />,
   <Route
-    key='enti-dettaglio'
+    key='enti-detail'
     path='enti/:idEnte'
     element={<AuthoritiesDetails />}
   />,
@@ -307,12 +288,12 @@ const AreaAmministrativaRoutes = [
     element={<UsersDetails />}
   />,
   <Route
-    key='sedi-dettaglio'
+    key='sede-detail'
     path='sedi/:entityId'
     element={<HeadquartersDetails />}
   />,
   <Route
-    key='questionari-compila'
+    key='questionari'
     path='questionari/compila'
     element={<CompileSurvey />}
   />,
@@ -328,27 +309,27 @@ const AreaAmministrativaRoutes = [
     element={<SurveyDetailsEdit cloneMode />}
   />,
   <Route
-    key='questionari-dettaglio-info'
+    key='questionari-detail'
     path='questionari/:idQuestionario/info'
     element={<SurveyDetailsEdit />}
   />,
   <Route
-    key='questionari-dettaglio'
+    key='questionari-detail'
     path='questionari/:idQuestionario'
     element={<SurveyDetailsEdit />}
   />,
   <Route
-    key='area-amministrativa-servizi'
+    key='area-amministrativa-services'
     element={<Services />}
     path='servizi'
   />,
   <Route
-    key='area-amministrativa-servizi-dettaglio'
+    key='area-amministrativa-services-details'
     element={<ServicesDetails />}
     path='servizi/:serviceId/info'
   />,
   <Route
-    key='area-amministrativa-servizi-dettaglio-cittadini'
+    key='area-amministrativa-services-details-citizens'
     element={<ServicesDetails />}
     path='servizi/:serviceId/cittadini'
   />,

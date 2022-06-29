@@ -74,20 +74,6 @@ const AccordionRow: React.FC<AccordionRowI> = ({
           </div>
         </Button>
       </div>
-      <div>
-        {innerInfo?.['default_SCD'] && innerInfo?.['default_RFD'] ? (
-          <div className='d-flex flex-row justify-content-center'>
-            <div className='d-flex flex-row mr-2'>
-              {innerInfo['default_SCD']}{' '}
-              <span className='ml-2'>Default SCD</span>
-            </div>
-            <div className='d-flex flex-row ml-2'>
-              {innerInfo['default_RFD']}{' '}
-              <span className='ml-2'>Default RFD</span>
-            </div>
-          </div>
-        ) : null}
-      </div>
       {isOpen && innerInfo && (
         <div
           className={clsx(
@@ -100,30 +86,17 @@ const AccordionRow: React.FC<AccordionRowI> = ({
           )}
         >
           <div className='d-flex flex-column pl-4'>
-            {Object.keys(innerInfo)
-              .filter((el) => el !== 'default_SCD' && el !== 'default_RFD')
-              .map((x, index) => (
-                <div className='info-row' key={index}>
-                  <span className='text-uppercase font-weight-semibold info-title'>
-                    {t(x)}:{' '}
-                  </span>
-                  <span>{innerInfo[x]}</span>
-                </div>
-              ))}
+            {Object.keys(innerInfo).map((x, index) => (
+              <div className='info-row' key={index}>
+                <span className='text-uppercase font-weight-semibold info-title'>
+                  {t(x)}:{' '}
+                </span>
+                <span>{innerInfo[x]}</span>
+              </div>
+            ))}
           </div>
-          <div
-            className={clsx(
-              'd-flex',
-              'flex-column',
-              'justify-content-start',
-              'mb-3',
-              'pb-5',
-              'pt-1'
-            )}
-          >
-            {StatusElement && <div className='mr-4'>{StatusElement}</div>}
-            {status && <div>{status}</div>}
-          </div>
+          {StatusElement && <div className='mr-4'>{StatusElement}</div>}
+          {status && <div className='mr-4'>{status}</div>}
         </div>
       )}
     </div>

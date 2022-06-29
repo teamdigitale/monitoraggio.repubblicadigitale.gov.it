@@ -13,6 +13,8 @@ import modalReducer from './features/modal/modalSlice';
 import notificationReducer from './features/notification/notificationSlice';
 import userReducer from './features/user/userSlice';
 import rolesReducer from './features/roles/rolesSlice';
+import programReducer from './features/administrativeArea/programs/programsSlice';
+import projectReducer from './features/administrativeArea/projects/projectsSlice';
 
 const store = createStore(
   combineReducers({
@@ -22,8 +24,10 @@ const store = createStore(
     modal: modalReducer,
     notification: notificationReducer,
     survey: surveyReducer,
+    program: programReducer,
     roles: rolesReducer,
     user: userReducer,
+    project: projectReducer,
   }),
   composeWithDevTools(applyMiddleware(thunk))
 );

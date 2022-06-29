@@ -1,16 +1,8 @@
-import React, { useState } from 'react';
-import {
-  Icon,
-  Table as TableKit,
-  Button,
-  FormGroup,
-  Label,
-} from 'design-react-kit';
+import React from 'react';
+import { Icon, Table as TableKit, Button } from 'design-react-kit';
 import clsx from 'clsx';
 import { TableI } from '../table';
 import { CRUDActionTypes } from '../../../utils/common';
-import Form from '../../Form/form';
-import Input from '../../Form/input';
 
 const TableDesktop: React.FC<TableI> = (props) => {
   const {
@@ -18,13 +10,12 @@ const TableDesktop: React.FC<TableI> = (props) => {
     heading = [],
     id = 'table',
     onActionClick,
+    onCellClick = () => ({}),
     onRowClick = () => ({}),
     values = [],
     withActions = false,
     rolesTable = false,
-    onActionRadio,
   } = props;
-  const [rowChecked, setRowChecked] = useState<string>('');
 
   return (
     <TableKit
@@ -34,13 +25,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
     >
       {heading?.length ? (
         <thead>
-          <tr className='lightgrey-bg-a1 neutral-2-color-b4'>
-            {onActionRadio && (
-              <th
-                scope='col'
-                className={rolesTable ? 'th-actions-roles' : 'th-actions'}
-              />
-            )}
+          <tr className='lightgrey-bg-c1 neutral-2-color-b4'>
             {heading.map((th) => (
               <th
                 key={th.label}
@@ -70,35 +55,18 @@ const TableDesktop: React.FC<TableI> = (props) => {
       {values?.length ? (
         <tbody>
           {values.map((td, i) => (
-            <tr key={`tr-${i}`} onClick={() => onRowClick(td)}>
-              {onActionRadio && (
-                <td>
-                  <Form>
-                    <FormGroup check>
-                      <Input
-                        name='group'
-                        type='radio'
-                        id={`radio-${td.codiceFiscale}`}
-                        checked={rowChecked === td.codiceFiscale}
-                        withLabel={false}
-                        onInputChange={() => {
-                          setRowChecked(td.codiceFiscale.toString());
-                          onActionRadio[CRUDActionTypes.SELECT](td);
-                        }}
-                      />
-                      <Label
-                        className='sr-only'
-                        check
-                        htmlFor={`radio-${td.codiceFiscale}`}
-                      >
-                        <span>{`${td.nome} ${td.cognome}`}</span>
-                      </Label>
-                    </FormGroup>
-                  </Form>
-                </td>
-              )}
+            <tr
+              key={`tr-${i}`}
+              onClick={() => onRowClick(td)}
+              className='primary-color-a6 '
+            >
               {heading.map((th, j) => (
-                <td key={`td-${i}-${j}`} className='py-4'>
+                // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions,jsx-a11y/click-services-have-key-services
+                <td
+                  key={`td-${i}-${j}`}
+                  onClick={() => onCellClick(th.field, td)}
+                  className='py-4'
+                >
                   {td[th.field]}
                 </td>
               ))}

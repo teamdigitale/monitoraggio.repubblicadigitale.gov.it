@@ -8,14 +8,13 @@ import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 import { createProgramDetails } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
+import {
+  resetProgramDetails,
+  setProgramDetails,
+} from '../../../../../redux/features/administrativeArea/programs/programsSlice';
 import { ProgressBar, Stepper } from '../../../../../components';
 import FormGeneralInfo from '../../../../forms/formPrograms/formGeneralInfo';
 import TargetDateFormPrograms from '../../../../forms/formPrograms/targetDateFormPrograms';
-import {
-  resetProgramDetails,
-  setProgramGeneralInfo,
-} from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
-import clsx from 'clsx';
 interface ProgramInformationI {
   formDisabled?: boolean;
   creation?: boolean;
@@ -153,21 +152,21 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       switch (currentStep) {
         case 1:
         default:
-          dispatch(setProgramGeneralInfo({ currentStep, newFormValues }));
+          dispatch(setProgramDetails({ currentStep, newFormValues }));
           break;
 
         case 2:
-          dispatch(setProgramGeneralInfo({ currentStep, newFormValues }));
+          dispatch(setProgramDetails({ currentStep, newFormValues }));
           break;
 
         case 3:
-          dispatch(setProgramGeneralInfo({ currentStep, newFormValues }));
+          dispatch(setProgramDetails({ currentStep, newFormValues }));
           break;
         case 4:
-          dispatch(setProgramGeneralInfo({ currentStep, newFormValues }));
+          dispatch(setProgramDetails({ currentStep, newFormValues }));
           break;
         case 5:
-          dispatch(setProgramGeneralInfo({ currentStep, newFormValues }));
+          dispatch(setProgramDetails({ currentStep, newFormValues }));
           break;
       }
     }
@@ -278,15 +277,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       secondaryCTA={propstoGenericModal.secondaryCTA}
       tertiaryCTA={propstoGenericModal.tertiatyCTA || null}
     >
-      <div
-        className={clsx(
-          'd-flex',
-          'justify-content-center',
-          'flex-column',
-          'align-items-center',
-          'mb-4'
-        )}
-      >
+      <div className='d-flex justify-content-center flex-column align-items-center mb-4'>
         {device.mediaIsPhone ? (
           <ProgressBar currentStep={currentStep} steps={stepsArray()} />
         ) : (
@@ -294,27 +285,12 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         )}
       </div>
       {device.mediaIsPhone ? null : (
-        <p
-          className={clsx(
-            'mt-1',
-            'mb-5',
-            'h-5',
-            'primary-color',
-            'mx-5',
-            'px-5',
-            'font-weight-semibold'
-          )}
-        >
+        <p className='mt-1 mb-5 h-5 primary-color mx-5 px-5 font-weight-semibold'>
           {steps[currentStep - 1].title}
         </p>
       )}
 
-      <div
-        style={{
-          maxHeight: device.mediaIsPhone ? '100%' : '340px',
-          overflowY: 'auto',
-        }}
-      >
+      <div style={{ maxHeight: '345px', overflowY: 'auto' }}>
         {renderingForm()}
       </div>
     </GenericModal>

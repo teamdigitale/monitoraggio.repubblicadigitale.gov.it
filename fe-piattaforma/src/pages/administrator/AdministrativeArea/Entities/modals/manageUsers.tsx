@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
+
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormUser from '../../../../forms/formUser';

@@ -22,15 +22,7 @@ const TabGroup: React.FC<TabGroupI> = (props) => {
   return (
     <div className='tab-group-container container'>
       <ul
-        className={clsx(
-          'd-flex',
-          'align-items-center',
-          'justify-content-around',
-          'm-0',
-          'mb-3',
-          'border-bottom',
-          'border-primary'
-        )}
+        className='d-flex align-items-center justify-content-around m-0 mb-3 border-bottom border-primary'
         role='menu'
       >
         {arrayTabs?.length &&

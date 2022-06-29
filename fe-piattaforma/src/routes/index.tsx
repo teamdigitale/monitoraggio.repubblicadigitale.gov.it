@@ -1,139 +1,103 @@
-import React, { lazy, Suspense } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import MainLayout from '../components/PageLayout/mainLayout';
+import FullLayout from '../components/PageLayout/fullLayout';
+import { Auth } from '../pages';
 import { useAppSelector } from '../redux/hooks';
-import { selectLogged } from '../redux/features/user/userSlice';
-import ProtectedComponent from '../hoc/AuthGuard/ProtectedComponent/ProtectedComponent';
-import FullLayout from '../components/PageLayout/FullLayout/fullLayout';
+import { selectLogged, selectUser } from '../redux/features/user/userSlice';
+import { BreadcrumbI } from '../components/Breadcrumb/breadCrumb';
+import PrintSurvey from '../pages/administrator/AdministrativeArea/Entities/Surveys/printSurvey/printSurvey';
 
-const HomeFacilitator = lazy(() => import('../pages/facilitator/Home/home'));
-const AdministrativeArea = lazy(
-  () => import('../pages/administrator/AdministrativeArea/administrativeArea')
-);
-const CitizenArea = lazy(
-  () => import('../pages/administrator/CitizensArea/citizensArea')
-);
-const Documents = lazy(
-  () => import('../pages/facilitator/Documents/documents')
-);
-const RoleManagement = lazy(
-  () => import('../pages/common/RoleManagement/roleManagement')
-);
-const RoleManagementDetails = lazy(
-  () =>
-    import(
-      '../pages/common/RoleManagement/RoleManagementDetails/roleManagementDetails'
-    )
-);
-const Onboarding = lazy(
-  () => import('../pages/facilitator/Onboarding/onboarding')
-);
-const PrintSurvey = lazy(
-  () =>
-    import(
-      '../pages/administrator/AdministrativeArea/Entities/Surveys/printSurvey/printSurvey'
-    )
-);
-const Playground = lazy(() => import('../pages/playground'));
-const Auth = lazy(() => import('../pages/common/Auth/auth'));
-const Dashboard = lazy(
-  () => import('../pages/administrator/Dashboard/dashboard')
-);
+export enum layoutEnum {
+  fullLayout = 'FULL_LAYOUT',
+  mainLayout = 'MAIN_LAYOUT',
+  none = 'NONE',
+}
 
-/**
- The "routes.tsx" file is now useless, lazy loading is implemented for every 
- routes and this file is the top of the routes tree.
- In the way to implement lazy loading and to semplify further changes, routes are expandend
- in this component
- */
+export interface AppRoutesI {
+  path: string;
+  title?: string;
+  element: JSX.Element;
+  visibleTo?: string[];
+  subRoutes?: JSX.Element[] | undefined;
+  layout?: layoutEnum;
+  isHeaderFull?: boolean | undefined;
+  authenticated?: boolean | undefined;
+  route_paths?: BreadcrumbI[] | undefined;
+}
 
-const AppRoutes: React.FC = () => {
+interface AppRouteProps {
+  routes: AppRoutesI[];
+}
+
+const AppRoutes: React.FC<AppRouteProps> = (props) => {
+  const { routes } = props;
   const isLogged = useAppSelector(selectLogged);
+  const user = useAppSelector(selectUser);
 
   return (
-    // This fix is need cause Loader will cause a wdyr error if used here
-    <Suspense fallback={<div>Loading...</div>}>
-      <Routes>
-        <Route path='/' element={<FullLayout />}>
-          <Route
-            path='/'
-            element={
-              <ProtectedComponent visibleTo={[]} redirect='/auth'>
-                <HomeFacilitator />
-              </ProtectedComponent>
-            }
-          />
-          <Route
-            path='area-amministrativa/*'
-            element={
-              <ProtectedComponent visibleTo={['permission-1']} redirect='/'>
-                <AdministrativeArea />
-              </ProtectedComponent>
-            }
-          />
-          <Route
-            path='area-cittadini/*'
-            element={
-              <ProtectedComponent visibleTo={['permission-1']} redirect='/'>
-                <CitizenArea />
-              </ProtectedComponent>
-            }
-          />
-          <Route
-            path='/documents'
-            element={
-              <ProtectedComponent visibleTo={['permission-1']} redirect='/'>
-                <Documents />
-              </ProtectedComponent>
-            }
-          />
-          <Route
-            path='/gestione-ruoli'
-            element={
-              <ProtectedComponent visibleTo={['permission-1']} redirect='/'>
-                <RoleManagement />
-              </ProtectedComponent>
-            }
-          />
-          <Route
-            path='/gestione-ruoli/:idRuoloUtente'
-            element={
-              <ProtectedComponent visibleTo={['permission-1']} redirect='/'>
-                <RoleManagementDetails />
-              </ProtectedComponent>
-            }
-          />
-          <Route
-            path='/onboarding'
-            element={
-              <ProtectedComponent visibleTo={[]} redirect='/'>
-                <Onboarding />
-              </ProtectedComponent>
-            }
-          />
-          <Route
-            path='/dashboard'
-            element={
-              <ProtectedComponent visibleTo={[]} redirect='/'>
-                <Dashboard />
-              </ProtectedComponent>
-            }
-          />
-          <Route
-            path='*'
-            element={
-              <ProtectedComponent visibleTo={[]} redirect='/'>
-                <Playground />
-              </ProtectedComponent>
-            }
-          />
-        </Route>
-        <Route path='/stampa-questionario' element={<PrintSurvey />} />
-        <Route
-          path='/auth'
-          element={isLogged ? <Navigate to='/' /> : <Auth />}
-        />
-      </Routes>
-    </Suspense>
+    <Routes>
+      {isLogged && user ? (
+        <>
+          {routes
+            .filter((item) => item.authenticated)
+            .map((route, index) =>
+              route.layout === layoutEnum.fullLayout ? (
+                <Route
+                  key={index}
+                  path='/'
+                  element={<FullLayout isHeaderFull={route.isHeaderFull} />}
+                >
+                  <Route path={route.path} element={route.element}>
+                    {route.subRoutes?.map((r: JSX.Element) => r)}
+                  </Route>
+                </Route>
+              ) : (
+                <Route
+                  key={index}
+                  path='/'
+                  element={<MainLayout isHeaderFull={route.isHeaderFull} />}
+                >
+                  <Route path={route.path} element={route.element}>
+                    {route.subRoutes?.map((r: JSX.Element) => r)}
+                  </Route>
+                </Route>
+              )
+            )}
+          <Route path='/stampa-questionario' element={<PrintSurvey />} />
+        </>
+      ) : (
+        <>
+          {routes
+            .filter((item) => !item.authenticated)
+            .map((route, index) =>
+              route.layout === layoutEnum.fullLayout ? (
+                <Route
+                  key={index}
+                  path='/'
+                  element={<FullLayout isHeaderFull={route.isHeaderFull} />}
+                >
+                  <Route path={route.path} element={route.element}>
+                    {route.subRoutes?.map((r: JSX.Element) => r)}
+                  </Route>
+                </Route>
+              ) : (
+                <Route
+                  key={index}
+                  path='/'
+                  element={<MainLayout isHeaderFull={route.isHeaderFull} />}
+                >
+                  <Route path={route.path} element={route.element}>
+                    {route.subRoutes?.map((r: JSX.Element) => r)}
+                  </Route>
+                </Route>
+              )
+            )}
+          <Route path='/auth' element={<Auth />} />
+          <Route path='*' element={<Auth />} />
+        </>
+      )}
+    </Routes>
   );
 };
 

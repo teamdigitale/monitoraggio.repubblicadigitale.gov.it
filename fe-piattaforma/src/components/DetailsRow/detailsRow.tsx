@@ -1,7 +1,11 @@
 import React from 'react';
-import { Button, Icon } from 'design-react-kit';
+import { Button, Chip, ChipLabel, Icon } from 'design-react-kit';
+import clsx from 'clsx';
+import {
+  statusBgColor,
+  statusColor,
+} from '../../pages/administrator/CitizensArea/utils';
 import { CRUDActionsI, CRUDActionTypes } from '../../utils/common';
-import StatusChip from '../StatusChip/statusChip';
 
 interface DetailsRowI {
   id: string;
@@ -134,7 +138,17 @@ const DetailsRow: React.FC<DetailsRowI> = ({
       <div className='details-row__right-section primary-color-b1'>
         <span className='text-uppercase'>{rowInfoType}</span>
         <div>
-          <StatusChip status={stato} noTooltip />
+          <Chip
+            className={clsx(
+              'table-container__status-label',
+              statusBgColor(stato),
+              'no-border'
+            )}
+          >
+            <ChipLabel className={statusColor(stato)}>
+              {stato.toUpperCase()}
+            </ChipLabel>
+          </Chip>
           {loadIcons()}
         </div>
       </div>

@@ -34,9 +34,7 @@ interface schemaFieldI {
   relatedTo?: string;
   enumLevel1?: string[];
   enumLevel2?: { label: string; value: string; upperLevel: string }[];
-  keyService?: string;
   regex?: string;
-  privacy?: boolean;
 }
 export interface SchemaI {
   id?: schemaFieldI['id'];
@@ -218,13 +216,6 @@ const getTypeReverse: (formField: schemaFieldI) => baseTypeObjectI = (
       }
       return baseTypeObject;
     }
-    case 'time': {
-      return {
-        ...baseTypeObject,
-        type: 'time',
-        regex: RegexpType.TIME,
-      };
-    }
     case 'number':
     case 'integer': {
       if (formField.minimum && formField.maximum) {
@@ -307,7 +298,6 @@ export const generateForm: (schema: SchemaI, compile?: boolean) => FormI = (
           : schema.required.includes(field),
         preset: schema.default.includes(field),
         flag: schema.properties[field].flag ? true : false,
-        privacy: schema.properties[field].privacy ? true : false,
         format: schema.properties[field].format || '',
         order: schema.properties[field].order || 1,
         dependencyFlag: schema.properties[field].dependencyFlag || '',
@@ -316,7 +306,6 @@ export const generateForm: (schema: SchemaI, compile?: boolean) => FormI = (
         relatedTo: schema.properties[field].relatedTo || '',
         enumLevel1: schema.properties[field].enumLevel1 || undefined,
         enumLevel2: schema.properties[field].enumLevel2 || undefined,
-        keyService: schema.properties[field].keyService || undefined,
       })
     )
   );
@@ -406,7 +395,7 @@ const transformJsonQuestionToForm = (schema: SchemaI) => {
           newFormField({
             field: 'question-default',
             required: true,
-            value: questionsFields[field]?.preset || false,
+            value: questionsFields[field]?.required || false,
             regex: RegexpType.BOOLEAN,
           }),
         ]),

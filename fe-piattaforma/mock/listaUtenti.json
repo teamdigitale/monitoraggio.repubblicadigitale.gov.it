@@ -3,19 +3,19 @@
     "list": [
       {
         "id": 1,
-        "nome": "Mario Rossi",
+        "nome": "Utente 1",
         "ruoli": "Ruolo 1",
         "stato": "ATTIVO"
       },
       {
         "id": 2,
-        "nome": "Luigi Bianchi",
+        "name": "Utente 2",
         "ruoli": "Ruolo 2",
         "stato": "ATTIVO"
       },
       {
         "id": 1,
-        "nome": "Giuseppe Verdi",
+        "name": "Utente 3",
         "ruoli": "Ruolo 3",
         "stato": "ATTIVO"
       }

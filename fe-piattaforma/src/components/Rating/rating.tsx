@@ -23,7 +23,7 @@ const Rating: React.FC<RatingI> = (props) => {
   };
 
   return (
-    <div className={clsx(className, 'd-flex', 'flex-row')}>
+    <div className={clsx(className, 'd-flex flex-row')}>
       {Array.from(Array(maxRating).keys()).map((index) => (
         <div
           className='mr-2 rate-star'

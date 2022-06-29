@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Sticky from 'react-sticky-el';
-import { ButtonsBar, ProgressBar, Stepper } from '../../../../../../components';
+import { ButtonsBar, Stepper } from '../../../../../../components';
 import { ButtonInButtonsBar } from '../../../../../../components/ButtonsBar/buttonsBar';
 import withFormHandler, {
   withFormHandlerProps,
@@ -22,7 +22,6 @@ import { generateForm } from '../../../../../../utils/jsonFormHelper';
 import JsonFormRender from '../components/jsonFormRender';
 import isEqual from 'lodash.isequal';
 import clsx from 'clsx';
-import { selectDevice } from '../../../../../../redux/features/app/appSlice';
 
 interface CompileSurveyI extends withFormHandlerProps {
   publicLink?: boolean;
@@ -55,34 +54,25 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeSection, sections]);
 
-  const device = useAppSelector(selectDevice);
-
-  const progressSteps = () => {
-    const allSteps: string[] = [];
-    sections?.map((section) => allSteps.push(section.title));
-
-    return allSteps;
-  };
-
   const changeRequiredFlag = (form: FormI, flag: string) => {
     const tmpForm = form;
     if (form[flag].value === '') {
       Object.keys(tmpForm).forEach((field) => {
-        if (tmpForm[field]?.dependencyNotFlag === flag)
+        if (tmpForm[field].dependencyNotFlag === flag)
           tmpForm[field].required = true;
         if (
-          tmpForm[field]?.dependencyFlag !== '' &&
-          tmpForm[field]?.dependencyFlag === flag
+          tmpForm[field].dependencyFlag !== '' &&
+          tmpForm[field].dependencyFlag === flag
         )
           tmpForm[field].required = false;
       });
     } else {
       Object.keys(tmpForm).forEach((field) => {
-        if (tmpForm[field]?.dependencyNotFlag === flag)
+        if (tmpForm[field].dependencyNotFlag === flag)
           tmpForm[field].required = false;
         if (
-          tmpForm[field]?.dependencyFlag !== '' &&
-          tmpForm[field]?.dependencyFlag === flag
+          tmpForm[field].dependencyFlag !== '' &&
+          tmpForm[field].dependencyFlag === flag
         )
           tmpForm[field].required = true;
       });
@@ -93,18 +83,16 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
   useEffect(() => {
     if (activeSection === 0) {
       setFlag(Object.keys(form)?.filter((f) => f.includes('flag'))[0]);
+      if (flag) {
+        const newForm = changeRequiredFlag(form, flag);
+
+        if (!isEqual(form, newForm)) {
+          updateForm(newForm);
+        }
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
-
-  useEffect(() => {
-    if (flag) {
-      const newForm = changeRequiredFlag(form, flag);
-      if (!isEqual(form, newForm)) {
-        updateForm(newForm);
-      }
-    }
-  }, [flag, form]);
 
   const generateFormCompleted = (surveyStore: FormI[]) => {
     const body = surveyStore.map((section) =>
@@ -112,21 +100,14 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
     );
     body.forEach(
       (section: {
-        [key: string]:
-          | string
-          | number
-          | boolean
-          | Date
-          | string[]
-          | undefined
-          | { [key: string]: boolean };
+        [key: string]: string | number | boolean | Date | string[] | undefined | { [key: string]: boolean };
       }) => {
         Object.keys(section).forEach((answerId: string) => {
           if (Array.isArray(section[answerId])) {
             const newAnswer: { [key: string]: boolean } = {};
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore // Keep the ignore here because there's already a check before.
-            section[answerId].map((val: string) => {
+            (section[answerId]).map((val: string) => {
               newAnswer[val] = true;
             });
             section[answerId] = newAnswer;
@@ -184,80 +165,6 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
     return newButtonsForBar;
   };
 
-  const mobileButtons = () => {
-    return (
-      <div className='bg-white'>
-        <div className='d-flex justify-content-between align-items-center'>
-          <div
-            className={clsx(
-              'd-flex',
-              'flex-row',
-              'justify-content-start',
-              'align-items-center'
-            )}
-          >
-            <Icon
-              icon='it-chevron-left'
-              color='primary'
-              aria-label='Icona step precedente'
-            />
-            <Button
-              onClick={() => {
-                setActiveSection(activeSection - 1);
-              }}
-              size='xs'
-              disabled={activeSection === 0}
-              className='pl-0 pr-5'
-              aria-label='Step Precedente'
-            >
-              <span className='mr-2'> Precedente </span>
-            </Button>
-          </div>
-          <div
-            className={clsx(
-              'd-flex',
-              'flex-row',
-              'justify-content-around',
-              'align-items-center'
-            )}
-          >
-            <Button
-              onClick={() => {
-                setActiveSection(activeSection + 1);
-              }}
-              size='xs'
-              disabled={activeSection === 3}
-              className='mb-1'
-              aria-label='Step successivo'
-            >
-              <span className='primary-color'> Successivo </span>
-            </Button>
-            <Icon
-              icon='it-chevron-right'
-              color='primary'
-              className='ml-2'
-              aria-label='Icona step Successivo'
-            />
-          </div>
-        </div>
-        <div className='d-flex justify-content-around'>
-          <Button
-            size='xs'
-            color='primary'
-            className='mx-3 mt-2 mb-3'
-            onClick={() => {
-              generateFormCompleted(surveyStore);
-            }}
-            disabled={!FormHelper.isValidForm(form)}
-            aria-label='Invio Questionario'
-          >
-            Invia Questionario
-          </Button>
-        </div>
-      </div>
-    );
-  };
-
   const loadMock = async () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -292,51 +199,24 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
     <div>
       {!publicLink && (
         <>
-          <Button
-            onClick={() => navigate(-1)}
-            className={clsx(device.mediaIsPhone && 'mb-5', 'px-0')}
-          >
+          <Button onClick={() => navigate(-1)} className='px-0'>
             <Icon
               icon='it-chevron-left'
               color='primary'
               aria-label='Torna indietro'
             />
-            <span className='primary-color'> Vai alla lista cittadini </span>
+            <span className='primary-color'> Torna Indietro </span>
           </Button>
           <SectionTitle
             title='Compilazione Questionario'
             upperTitle={{ icon: 'it-file', text: 'QUESTIONARIO' }}
           />
-          <div
-            className={clsx(
-              device.mediaIsPhone ? 'mb-0 mt-5' : 'my-5',
-              'd-flex',
-              'justify-content-center'
-            )}
-          >
-            {device.mediaIsPhone ? (
-              <ProgressBar
-                currentStep={activeSection + 1}
-                steps={progressSteps()}
-              />
-            ) : (
-              <Stepper nSteps={4} currentStep={activeSection + 1} />
-            )}
+          <div className='my-5 d-flex justify-content-center'>
+            <Stepper nSteps={4} currentStep={activeSection + 1} />
           </div>
-          {device.mediaIsPhone ? null : (
-            <p
-              className={clsx(
-                'h5',
-                'primary-color',
-                'lightgrey-bg-c2',
-                'mb-4',
-                'p-3',
-                'font-weight-bold'
-              )}
-            >
-              {sections[activeSection].title}
-            </p>
-          )}
+          <p className='h5 primary-color lightgrey-bg-c2 mb-4 p-3 font-weight-bold'>
+            {sections[activeSection].title}
+          </p>
         </>
       )}
       <div className='pt-3'>
@@ -354,7 +234,7 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
             </p>
           </>
         )}
-        <div className={clsx(device.mediaIsPhone && 'pt-0', 'pt-3')}>
+        <div className='pt-3'>
           <JsonFormRender
             form={form}
             onInputChange={onInputChange}
@@ -362,11 +242,7 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
           />
         </div>
         <Sticky mode='bottom'>
-          {device.mediaIsPhone ? (
-            mobileButtons()
-          ) : (
-            <ButtonsBar buttons={buttonsToRender(activeSection)} />
-          )}
+          <ButtonsBar buttons={buttonsToRender(activeSection)} />
         </Sticky>
       </div>
     </div>

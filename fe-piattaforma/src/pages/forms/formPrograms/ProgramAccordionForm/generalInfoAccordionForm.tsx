@@ -5,7 +5,7 @@ import TargetDateFormPrograms, {
   formForSectionEnum,
 } from '../targetDateFormPrograms';
 
-const ProgramInfoAccordionForm = () => {
+const GeneralInfoAccordionForm = () => {
   const accordions = [
     {
       title: 'Numero punti di facilitazione',
@@ -27,7 +27,6 @@ const ProgramInfoAccordionForm = () => {
           <TargetDateFormPrograms
             formForSection={accordion.section}
             formDisabled
-            creation={false}
           />
         </Accordion>
       ))}
@@ -35,4 +34,4 @@ const ProgramInfoAccordionForm = () => {
   );
 };
 
-export default memo(ProgramInfoAccordionForm);
+export default memo(GeneralInfoAccordionForm);

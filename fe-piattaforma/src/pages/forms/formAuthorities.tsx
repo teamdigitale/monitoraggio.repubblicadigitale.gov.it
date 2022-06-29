@@ -91,7 +91,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
           <Input
             {...form?.id}
             col='col-12 col-lg-6'
-            label='ID'
+            label='ID ente'
             onInputChange={(value, field) => {
               onInputDataChange(value, field);
             }}
@@ -156,15 +156,6 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
               onInputDataChange(value, field);
             }}
           />
-          <Input
-            {...form?.pec}
-            label='PEC'
-            col='col-12 col-lg-6'
-            placeholder='Inserisci PEC'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
-          />
         </Form.Row>
       </>
     </Form>
@@ -200,10 +191,6 @@ const form = newForm([
   newFormField({
     field: 'address',
     id: 'address',
-  }),
-  newFormField({
-    field: 'pec',
-    id: 'pec',
   }),
 ]);
 export default withFormHandler({ form }, FormAuthorities);

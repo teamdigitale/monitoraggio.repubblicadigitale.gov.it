@@ -4,7 +4,7 @@
       {
         "id": 1,
         "name": "Questionario 1",
-        "lastChangeDate": "22/06/2022",
+        "type": "Tipo 1",
         "status": "ATTIVO",
         "default_SCD": true,
         "default_RFD": false
@@ -12,7 +12,7 @@
       {
         "id": 2,
         "name": "Questionario 2",
-        "lastChangeDate": "22/06/2022",
+        "type": "Tipo 2",
         "status": "ATTIVO",
         "default_SCD": false,
         "default_RFD": true
@@ -20,7 +20,7 @@
       {
         "id": 3,
         "name": "Questionario 1",
-        "lastChangeDate": "22/06/2022",
+        "type": "Tipo 3",
         "status": "ATTIVO",
         "default_SCD": false,
         "default_RFD": false

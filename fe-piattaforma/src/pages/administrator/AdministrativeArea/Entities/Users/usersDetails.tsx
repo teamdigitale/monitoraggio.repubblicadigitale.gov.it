@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { formTypes } from '../utils';
 import {
   CRUDActionsI,
@@ -17,10 +17,8 @@ import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
 import ConfirmDeleteModal from '../modals/confirmDeleteModal';
 import ManageUsers from '../modals/manageUsers';
 import { useAppSelector } from '../../../../../redux/hooks';
-import {
-  selectDevice,
-  updateBreadcrumb,
-} from '../../../../../redux/features/app/appSlice';
+import { selectDevice } from '../../../../../redux/features/app/appSlice';
+import clsx from 'clsx';
 import FormUser from '../../../../forms/formUser';
 
 const UsersDetails = () => {
@@ -36,33 +34,9 @@ const UsersDetails = () => {
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { mediaIsDesktop /* mediaIsPhone */ } = useAppSelector(selectDevice);
+  const { mediaIsDesktop, mediaIsPhone } = useAppSelector(selectDevice);
 
   const userType = '';
-
-  const { entityId } = useParams();
-
-  useEffect(() => {
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area Amministrativa',
-          url: '/area-amministrativa',
-          link: false,
-        },
-        {
-          label: 'Utenti',
-          url: '/area-amministrativa/utenti',
-          link: true,
-        },
-        {
-          label: entityId,
-          url: `/area-amministrativa/utenti/${entityId}`,
-          link: false,
-        },
-      ])
-    );
-  }, [entityId]);
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
@@ -120,7 +94,13 @@ const UsersDetails = () => {
   }, [mediaIsDesktop]);
 
   return (
-    <div className='d-flex flex-row container'>
+    <div
+      className={clsx(
+        mediaIsPhone
+          ? 'd-flex flex-row container'
+          : 'd-flex flex-row mt-5 container'
+      )}
+    >
       <div className='d-flex flex-column w-100'>
         <div className='container'>
           <DetailLayout

@@ -6,24 +6,23 @@ import API from '../../../../utils/apiHelper';
 import {
   setEntityFilterOptions,
   setProgramDetails,
-  setProgramGeneralInfo,
   setProgramsList,
 } from '../administrativeAreaSlice';
 import { mapOptions } from '../../../../utils/common';
 import { formFieldI } from '../../../../utils/formHelper';
+import { setProgramDetails as setProgramDetailsSlice } from './programsSlice';
 
 export interface ProgramsLightI {
   id: number;
   nome: string;
   nomeBreve: string;
-  enteGestore: string;
   policy: string;
   stato: string;
 }
 
-export interface ProgramListResponseI {
-  pageNumber: number;
-  programsSLight: ProgramsLightI[];
+export interface ProgrammaListResponseI {
+  numeroPagine: number;
+  programmiLight: ProgramsLightI[];
 }
 
 const GetAllProgramsAction = {
@@ -137,7 +136,7 @@ export const createProgramDetails =
         programma: { details },
       } = select((state: RootState) => state);
       const body = { ...details, facilitators: payload };
-      dispatch(setProgramGeneralInfo({ currentStep: 6, payload }));
+      dispatch(setProgramDetailsSlice({ currentStep: 6, payload }));
       if (body) {
         await API.put(`/programmi/setProgramDetail`, {
           ...body,

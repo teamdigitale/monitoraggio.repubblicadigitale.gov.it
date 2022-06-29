@@ -10,7 +10,7 @@ const ProjectAccordionForm = () => {
       title: 'Numero punti di facilitazione',
       section: formForSectionEnum.facilitationNumber,
     },
-    { title: 'Numero utenti unici', section: formForSectionEnum.uniqueUsers },
+    { title: 'Utenti unici', section: formForSectionEnum.uniqueUsers },
     { title: 'Numero servizi', section: formForSectionEnum.services },
     { title: 'Numero facilitatori', section: formForSectionEnum.facilitators },
   ];
@@ -21,7 +21,7 @@ const ProjectAccordionForm = () => {
         <Accordion
           title={accordion.title}
           key={index}
-          className='general-info-accordion-container-project'
+          className='general-info-accordion-container'
         >
           <TargetDateFormProjects
             formForSection={accordion.section}

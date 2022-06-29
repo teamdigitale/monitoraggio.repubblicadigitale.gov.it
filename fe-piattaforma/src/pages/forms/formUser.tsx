@@ -77,19 +77,20 @@ const FormUser: React.FC<UserFormI> = (props) => {
     <Form className='mt-5 mb-5' formDisabled={formDisabled}>
       <Form.Row className={bootClass}>
         <Input
-          {...form?.userId}
-          col='col-12 col-lg-6'
-          label='User id'
-          placeholder='Inserisci user id'
+          {...form?.name}
+          col='col-lg-6 col-12'
+          label='Nome'
+          placeholder='Inserisci nome programma'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
         />
+
         <Input
-          {...form?.name}
-          col='col-lg-6 col-12'
-          label='Nome'
-          placeholder='Inserisci nome utente'
+          {...form?.lastName}
+          col='col-12 col-lg-6'
+          label='Cognome'
+          placeholder='Inserisci cognome'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
@@ -97,10 +98,10 @@ const FormUser: React.FC<UserFormI> = (props) => {
       </Form.Row>
       <Form.Row className={bootClass}>
         <Input
-          {...form?.lastName}
+          {...form?.userId}
           col='col-12 col-lg-6'
-          label='Cognome'
-          placeholder='Inserisci cognome utente'
+          label='User id'
+          placeholder='Inserisci user id'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
@@ -117,15 +118,6 @@ const FormUser: React.FC<UserFormI> = (props) => {
       </Form.Row>
       <Form.Row className={bootClass}>
         <Input
-          {...form?.phone}
-          col='col-12 col-lg-6'
-          label='Telefono'
-          placeholder='Inserisci telefono'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-        />
-        <Input
           {...form?.email}
           label='Email'
           col='col-12 col-lg-6'
@@ -134,22 +126,11 @@ const FormUser: React.FC<UserFormI> = (props) => {
             onInputDataChange(value, field);
           }}
         />
-      </Form.Row>
-      <Form.Row className={bootClass}>
         <Input
-          {...form?.authorityRef}
+          {...form?.phone}
           col='col-12 col-lg-6'
-          label='Ente di riferimento'
-          placeholder='Inserisci ente di riferimento'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-        />
-        <Input
-          {...form?.bio}
-          label='Bio'
-          col='col-12 col-lg-6'
-          placeholder='Inserisci bio'
+          label='Telefono'
+          placeholder='Inserisci telefono'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
@@ -184,14 +165,6 @@ const form = newForm([
   newFormField({
     field: 'phone',
     id: 'phone',
-  }),
-  newFormField({
-    field: 'authorityRef',
-    id: 'authorityRef',
-  }),
-  newFormField({
-    field: 'bio',
-    id: 'bio',
   }),
 ]);
 export default withFormHandler({ form }, FormUser);

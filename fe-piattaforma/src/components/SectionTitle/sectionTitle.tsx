@@ -17,8 +17,7 @@ interface SectionTitleI {
 
 const SectionTitle: React.FC<SectionTitleI> = (props) => {
   const { title, status, upperTitle, subTitle } = props;
-  const { mediaIsDesktop, mediaIsTablet, mediaIsPhone } =
-    useAppSelector(selectDevice);
+  const { mediaIsDesktop, mediaIsTablet } = useAppSelector(selectDevice);
 
   return (
     <div className='custom-section-title'>
@@ -51,20 +50,17 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
             {title}{' '}
           </span>
         </div>
-        {(mediaIsDesktop || mediaIsTablet || mediaIsPhone) && status ? (
-          <Chip
-            className={clsx(
-              'table-container__status-label',
-              'mx-3',
-              'primary-bg-a9',
-              'mt-3',
-              'no-border'
-            )}
-          >
+        {(mediaIsDesktop || mediaIsTablet) && status ? (
+          <Chip className='table-container__status-label mx-3 primary-bg-a9 mt-3 no-border'>
             <ChipLabel className='text-white'>{status}</ChipLabel>
           </Chip>
         ) : null}
       </div>
+      {!(mediaIsDesktop || mediaIsTablet) && (
+        <Chip className='table-container__status-label mx-3 primary-bg-a9 my-2 no-border'>
+          <ChipLabel className='text-white'>{status}</ChipLabel>
+        </Chip>
+      )}
       {subTitle ? (
         <div className='ml-3'>
           <p className='primary-color-a9 mb-0'> {subTitle} </p>

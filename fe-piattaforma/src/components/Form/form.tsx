@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 interface FormI {
   className?: string;
-  children: JSX.Element | JSX.Element[] | undefined;
+  children: JSX.Element | JSX.Element[];
   formDisabled?: boolean;
   id?: string;
   legend?: string;

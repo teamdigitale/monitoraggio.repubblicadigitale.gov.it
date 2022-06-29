@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import React, { useEffect } from 'react';
 
 import { useDispatch } from 'react-redux';
@@ -11,7 +10,6 @@ import { selectProjects } from '../../../redux/features/administrativeArea/admin
 import { GetProjectDetail } from '../../../redux/features/administrativeArea/projects/projectsThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
-import { RegexpType } from '../../../utils/validator';
 
 interface ProgramInformationI {
   formDisabled?: boolean;
@@ -105,12 +103,10 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
   }, [intoModal]);
 
   return (
-    <Form className='mt-5' formDisabled={formDisabled}>
-      <Form.Row
-        className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
-      >
+    <Form className='mt-5 mb-5' formDisabled={formDisabled}>
+      <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
         <Input
-          {...form?.codice}
+          {...form?.id}
           col='col-12 col-lg-6'
           label='ID'
           onInputChange={(value, field) => {
@@ -121,51 +117,18 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
         <Input
           {...form?.nomeProgetto}
           col='col-12 col-lg-6'
-          label='Nome progetto'
+          label='Nome Progetto'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pr-lg-3'
+          className='pl-lg-3'
         />
       </Form.Row>
-      <Form.Row
-        className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
-      >
+      <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
         <Input
           {...form?.nomeBreve}
           col='col-12 col-lg-6'
           label='Nome breve'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-          className='pr-lg-3'
-        />
-        <Input
-          {...form?.CUP}
-          label='CUP - Codice Unico Progetto'
-          col='col-12 col-lg-6'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-          className='pr-lg-3'
-        />
-      </Form.Row>
-      <Form.Row
-        className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
-      >
-        <Input
-          {...form?.dataInizioProgetto}
-          label='Data inizio'
-          col='col-12 col-lg-6'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-          className='pr-lg-3'
-        />
-        <Input
-          {...form?.dataFineProgetto}
-          label='Data fine'
-          col='col-12 col-lg-6'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
@@ -178,32 +141,18 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
 const form = newForm([
   newFormField({
+    field: 'id',
+    id: 'project-id',
+  }),
+  newFormField({
     field: 'nomeProgetto',
     type: 'text',
     id: 'project-name',
   }),
   newFormField({
-    field: 'codice',
-    id: 'project-id',
-  }),
-  newFormField({
     field: 'nomeBreve',
     type: 'text',
     id: 'short-name',
-  }),
-  newFormField({
-    field: 'CUP',
-    type: 'text',
-  }),
-  newFormField({
-    field: 'dataInizioProgetto',
-    regex: RegexpType.DATE,
-    type: 'date',
-  }),
-  newFormField({
-    field: 'dataFineProgetto',
-    regex: RegexpType.DATE,
-    type: 'date',
   }),
 ]);
 

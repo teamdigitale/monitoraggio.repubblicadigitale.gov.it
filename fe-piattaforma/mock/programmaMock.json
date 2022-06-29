@@ -5,45 +5,63 @@
         "codice": "codice",
         "nome": "nome",
         "policy": "rfd",
-        "CUP": "12345",
-        "Bando": "Nome del Bando del Programma",
         "nomeBreve": "nome breve",
         "dataInizioProgramma": "2022-04-13",
         "dataFineProgramma": "2022-05-30"
       },
       "facilitationNumber": {
-        "valoreObiettivo1": "codice facilitazione",
-        "valoreObiettivo1data": "2022-04-13",
-        "valoreObiettivo2": "codice facilitazione",
-        "valoreObiettivo2data": "2022-04-13"
+        "targetMesi1": "codice facilitazione",
+        "targetMesi1data": "2022-04-13",
+        "targetMesi18": "nome breve",
+        "targetMesi18data": "2022-04-13",
+        "targetMesi30": "2022-05-30",
+        "targetMesi30data": "2022-05-30",
+        "targetMesi42": "4000",
+        "targetMesi42data": "2022-05-30",
+        "targetGiugno2025": "valGiugno2025"
       },
       "uniqueUsers": {
-        "valoreObiettivo1": "codice utenti unici",
-        "valoreObiettivo1data": "2022-04-13",
-        "valoreObiettivo2": "codice facilitazione",
-        "valoreObiettivo2data": "2022-04-13"
+        "targetMesi1": "codice utenti",
+        "targetMesi1data": "2022-04-13",
+        "targetMesi18": "nome breve",
+        "targetMesi18data": "2022-04-13",
+        "targetMesi30": "2022-05-30",
+        "targetMesi30data": "2022-05-30",
+        "targetMesi42": "4000",
+        "targetMesi42data": "2022-05-30",
+        "targetGiugno2025": "valGiugno2025"
       },
       "services": {
-        "valoreObiettivo1": "codice servizi",
-        "valoreObiettivo1data": "2022-04-13",
-        "valoreObiettivo2": "codice facilitazione",
-        "valoreObiettivo2data": "2022-04-13"
+        "targetMesi1": "codice servizi",
+        "targetMesi1data": "2022-04-13",
+        "targetMesi18": "nome breve",
+        "targetMesi18data": "2022-04-13",
+        "targetMesi30": "2022-05-30",
+        "targetMesi30data": "2022-05-30",
+        "targetMesi42": "4000",
+        "targetMesi42data": "2022-05-30",
+        "targetGiugno2025": "valGiugno2025"
       },
       "facilitators": {
-        "valoreObiettivo1": "codice facilitatori",
-        "valoreObiettivo1data": "2022-04-13",
-        "valoreObiettivo2": "codice facilitazione",
-        "valoreObiettivo2data": "2022-04-13"
+        "targetMesi1": "codice facilitatori",
+        "targetMesi1data": "2022-04-13",
+        "targetMesi18": "nome breve",
+        "targetMesi18data": "2022-04-13",
+        "targetMesi30": "2022-05-30",
+        "targetMesi30data": "2022-05-30",
+        "targetMesi42": "4000",
+        "targetMesi42data": "2022-05-30",
+        "targetGiugno2025": "valGiugno2025"
       }
     },
     "progetti": [
       {
-        "id": "345435",
+        "id": "dsda",
         "nome": "dsdsa",
         "stato": "ATTIVO"
       },
       {
-        "id": "768462",
+        "id": "dsd1a",
         "nome": "dsds1a",
         "stato": "ATTIVO"
       }

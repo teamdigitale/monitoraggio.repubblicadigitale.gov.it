@@ -39,10 +39,7 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
     <ClickOutside callback={() => setOpen(false)}>
       <div className={clsx('hamburger_nav', 'mr-2', !open && 'invisible')}>
         <div className={`menuNav ${open ? 'showMenu' : ''}`}>
-          <div
-            className={clsx('px-0', 'py-0', 'd-flex', 'flex-column-reverse')}
-            id='hamburger'
-          >
+          <div className='px-0 py-0 d-flex flex-column-reverse' id='hamburger'>
             <ul>
               {menuRoutes.map((link, index: number) => {
                 return link.subRoutes ? (

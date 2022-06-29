@@ -7,16 +7,13 @@ import {
   setEntityFilterOptions,
   setProjectsList,
   setProjectDetails,
-  setProjectGeneralInfo,
 } from '../administrativeAreaSlice';
 import { mapOptions } from '../../../../utils/common';
 import { formFieldI } from '../../../../utils/formHelper';
+import { setProjectDetails as setProjectDetailsSlice } from './projectsSlice';
 
 export interface ProjectLightI {
   id: number;
-  nomeBreve: string;
-  enteGestore: string;
-  policy: string;
   nome: string;
   stato: string;
 }
@@ -137,7 +134,7 @@ export const createProjectDetails =
         progetto: { details },
       } = select((state: RootState) => state);
       const body = { ...details, facilitators: payload };
-      dispatch(setProjectGeneralInfo({ currentStep: 6, payload }));
+      dispatch(setProjectDetailsSlice({ currentStep: 6, payload }));
       if (body) {
         await API.put(`/progetti/setProjectDetail`, {
           ...body,

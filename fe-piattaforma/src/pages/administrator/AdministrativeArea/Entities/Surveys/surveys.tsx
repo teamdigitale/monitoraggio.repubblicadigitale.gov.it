@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { FormGroup, Toggle } from 'design-react-kit';
-//import clsx from 'clsx';
-import { Paginator, StatusChip, Table } from '../../../../../components';
+import { Chip, ChipLabel, FormGroup, Toggle } from 'design-react-kit';
+import clsx from 'clsx';
+import { Paginator, Table } from '../../../../../components';
 import { newTable, TableRowI } from '../../../../../components/Table/table';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
@@ -14,7 +14,11 @@ import {
   setEntityFilters,
   setEntityPagination,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
-import { TableHeadingQuestionnaires } from '../utils';
+import {
+  statusBgColor,
+  statusColor,
+  TableHeadingQuestionnaires,
+} from '../utils';
 
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
@@ -27,18 +31,16 @@ import {
 } from '../../../../../components/DropdownFilter/dropdownFilter';
 
 import { formFieldI } from '../../../../../utils/formHelper';
-//import SideSelection from '../../../../../components/SideSelection/sideSelection';
+import SideSelection from '../../../../../components/SideSelection/sideSelection';
 import PageTitle from '../../../../../components/PageTitle/pageTitle';
-import {
-  //selectDevice,
-  updateBreadcrumb,
-} from '../../../../../redux/features/app/appSlice';
+import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import {
   GetAllSurveys,
   GetFilterValuesSurvey,
   UpdateSurveyExclusiveField,
 } from '../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 
+const typeDropdownLabel = 'tipo';
 const statusDropdownLabel = 'stato';
 
 const Surveys = () => {
@@ -54,20 +56,6 @@ const Surveys = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 3 }));
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area Amministrativa',
-          url: '/area-amministrativa',
-          link: false,
-        },
-        {
-          label: 'Questionari',
-          url: '/area-amministrativa/questionari',
-          link: true,
-        },
-      ])
-    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -77,8 +65,20 @@ const Surveys = () => {
       questionariList?.list.map((td) => ({
         id: td.id,
         label: td.name,
-        lastChangeDate: td.lastChangeDate,
-        status: <StatusChip status={td.status} rowTableId={td.id} />,
+        type: td.type,
+        status: (
+          <Chip
+            className={clsx(
+              'table-container__status-label',
+              statusBgColor(td.status),
+              'no-border'
+            )}
+          >
+            <ChipLabel className={statusColor(td.status)}>
+              {td.status.toUpperCase()}
+            </ChipLabel>
+          </Chip>
+        ),
         default_SCD: (
           <FormGroup check className='table-container__toggle-button'>
             <Toggle
@@ -151,7 +151,7 @@ const Surveys = () => {
     { label: 'Addendum', key: 'addendum', value: 'Addendum' },
   ];
 
-  const [filter /* setFilter */] = useState<QuestionnaireFilter>(
+  const [filter, setFilter] = useState<QuestionnaireFilter>(
     questionnaireOptionsMock[0]
   );
 
@@ -215,9 +215,7 @@ const Surveys = () => {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
     placeholder:
-      filter.value === 'questionnaire'
-        ? "Inserisci il nome o l'identificativo del questionario"
-        : 'Cerca addendum',
+      filter.value === 'questionnaire' ? 'Cerca questionari' : 'Cerca addendum',
     isClearable: true,
     title:
       filter.value === 'questionnaire'
@@ -226,6 +224,20 @@ const Surveys = () => {
   };
 
   const dropdowns: DropdownFilterI[] = [
+    {
+      filterName: 'Tipo',
+      options: dropdownFilterOptions[typeDropdownLabel],
+      onOptionsChecked: (options) =>
+        handleDropdownFilters(options, typeDropdownLabel),
+      id: typeDropdownLabel,
+      values: filtersList[typeDropdownLabel],
+      handleOnSearch: (searchKey) =>
+        handleOnSearchDropdownOptions(searchKey, typeDropdownLabel),
+      valueSearch: searchDropdown
+        ?.filter((f) => f.filterId === typeDropdownLabel)[0]
+        ?.value?.toString(),
+      className: 'mr-3',
+    },
     {
       filterName: 'Stato',
       options: dropdownFilterOptions[statusDropdownLabel],
@@ -264,11 +276,11 @@ const Surveys = () => {
       ? { ...questionaraireCta }
       : { ...addendumCta };
 
-  //const device = useAppSelector(selectDevice);
+  const device = useAppSelector(selectDevice);
 
   return (
-    /*  <div className={clsx(device.mediaIsDesktop && 'row')}>
-     {device.mediaIsDesktop && (
+    <div className={clsx(device.mediaIsDesktop && 'row')}>
+      {device.mediaIsDesktop && (
         <div className='col-2 mr-2'>
           <SideSelection
             filterOptions={questionnaireOptionsMock}
@@ -276,44 +288,40 @@ const Surveys = () => {
             defaultOption={questionnaireOptionsMock[0]}
           />
         </div>
-      )}  */
+      )}
 
-    <div>
-      <PageTitle
-        title={
-          filter.value === 'questionnaire'
-            ? 'Elenco Questionari'
-            : 'Elenco Addendum'
-        }
-      />
-      <GenericSearchFilterTableLayout
-        searchInformation={searchInformation}
-        showButtons={false}
-        filtersList={filtersList}
-        dropdowns={dropdowns}
-        {...objectToPass}
-      >
-        <div>
-          <Table
-            {...tableValues}
-            id='table'
-            onActionClick={onActionClick}
-            onCellClick={(field, row) => console.log(field, row)}
-            //onRowClick={row => console.log(row)}
-            withActions
-          />
-          <Paginator
-            activePage={pagination?.pageNumber}
-            center
-            refID='#table'
-            pageSize={pagination?.pageSize}
-            total={questionariList.list.length}
-            onChange={handleOnChangePage}
-          />
-        </div>
-      </GenericSearchFilterTableLayout>
+      <div className={clsx(device.mediaIsDesktop && 'col-9 ml-3')}>
+        <PageTitle
+          title={filter.value === 'questionnaire' ? 'Questionari' : 'Addendum'}
+        />
+        <GenericSearchFilterTableLayout
+          searchInformation={searchInformation}
+          showButtons={false}
+          filtersList={filtersList}
+          dropdowns={dropdowns}
+          {...objectToPass}
+        >
+          <div>
+            <Table
+              {...tableValues}
+              id='table'
+              onActionClick={onActionClick}
+              onCellClick={(field, row) => console.log(field, row)}
+              //onRowClick={row => console.log(row)}
+              withActions
+            />
+            <Paginator
+              activePage={pagination?.pageNumber}
+              center
+              refID='#table'
+              pageSize={pagination?.pageSize}
+              total={questionariList.list.length}
+              onChange={handleOnChangePage}
+            />
+          </div>
+        </GenericSearchFilterTableLayout>
+      </div>
     </div>
-    /* </div> */
   );
 };
 

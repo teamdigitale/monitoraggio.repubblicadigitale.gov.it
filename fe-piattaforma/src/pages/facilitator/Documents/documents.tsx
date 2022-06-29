@@ -1,10 +1,8 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import { Col, Container, Row } from 'design-react-kit';
 import PageTitle from '../../../components/PageTitle/pageTitle';
 import FiltersAside from '../../../components/FiltersAside/filtersAside';
 import CardDocument from '../../../components/CardDocument/cardDocument';
-import { useDispatch } from 'react-redux';
-import { updateBreadcrumb } from '../../../redux/features/app/appSlice';
 
 const PageTitleMock = {
   title: 'Documenti',
@@ -53,19 +51,6 @@ const arrayBreadcrumb = [
 ];
 
 const Documents = () => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Documenti',
-          url: '/documents',
-          link: false,
-        },
-      ])
-    );
-  }, []);
   return (
     <div>
       <PageTitle

@@ -2,28 +2,53 @@
   "data": {
     "dettaglioProgetto": {
       "generalInfo": {
-        "codice": "24",
-        "nomeProgetto": "Progetto 1 nome lungo sample",
-        "nomeBreve": "Progetto 1 nome reve",
-        "CUP": "12345",
-        "dataInizioProgetto": "2022-04-13",
-        "dataFineProgetto": "2022-05-30"
+        "id": "24",
+        "nomeProgetto": "Blasone",
+        "nomeBreve": "Blasi"
       },
       "facilitationNumber": {
-        "valoreObiettivo1": "codice facilitazione",
-        "valoreObiettivo1data": "2022-04-13"
+        "targetMesi1": "codice facilitazione",
+        "targetMesi1data": "2022-04-13",
+        "targetMesi18": "nome breve",
+        "targetMesi18data": "2022-04-13",
+        "targetMesi30": "2022-05-30",
+        "targetMesi30data": "2022-05-30",
+        "targetMesi42": "4000",
+        "targetMesi42data": "2022-05-30",
+        "targetGiugno2025": "valGiugno2025"
       },
       "uniqueUsers": {
-        "valoreObiettivo1": "codice utenti",
-        "valoreObiettivo1data": "2022-04-13"
+        "targetMesi1": "codice utenti",
+        "targetMesi1data": "2022-04-13",
+        "targetMesi18": "nome breve",
+        "targetMesi18data": "2022-04-13",
+        "targetMesi30": "2022-05-30",
+        "targetMesi30data": "2022-05-30",
+        "targetMesi42": "4000",
+        "targetMesi42data": "2022-05-30",
+        "targetGiugno2025": "valGiugno2025"
       },
       "services": {
-        "valoreObiettivo1": "codice servizi",
-        "valoreObiettivo1data": "2022-04-13"
+        "targetMesi1": "codice servizi",
+        "targetMesi1data": "2022-04-13",
+        "targetMesi18": "nome breve",
+        "targetMesi18data": "2022-04-13",
+        "targetMesi30": "2022-05-30",
+        "targetMesi30data": "2022-05-30",
+        "targetMesi42": "4000",
+        "targetMesi42data": "2022-05-30",
+        "targetGiugno2025": "valGiugno2025"
       },
       "facilitators": {
-        "valoreObiettivo1": "codice facilitatori",
-        "valoreObiettivo1data": "2022-04-13"
+        "targetMesi1": "codice facilitatori",
+        "targetMesi1data": "2022-04-13",
+        "targetMesi18": "nome breve",
+        "targetMesi18data": "2022-04-13",
+        "targetMesi30": "2022-05-30",
+        "targetMesi30data": "2022-05-30",
+        "targetMesi42": "4000",
+        "targetMesi42data": "2022-05-30",
+        "targetGiugno2025": "valGiugno2025"
       }
     },
     "idEnteGestoreProgetto": "3213131",
@@ -31,13 +56,11 @@
       {
         "id": "ente-dsda",
         "nome": "ente dsdsa",
-        "ref": "Referente  Anna Neri",
         "stato": "ATTIVO"
       },
       {
         "id": "ente-dsd1a",
         "nome": "ente dsds1a",
-        "ref": "Referente  Anna Neri",
         "stato": "ATTIVO"
       }
     ],
