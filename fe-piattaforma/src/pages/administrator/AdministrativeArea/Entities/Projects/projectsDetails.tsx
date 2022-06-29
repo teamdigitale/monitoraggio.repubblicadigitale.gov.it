@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Nav } from 'design-react-kit';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { formTypes } from '../utils';
 import {
   CRUDActionsI,
@@ -20,17 +20,14 @@ import ManageProject from '../modals/manageProject';
 import ManageHeadquarter from '../../../../../components/AdministrativeArea/Entities/Headquarters/ManageHeadquarter/manageHeadquarter';
 import ManageEntiPartner from '../modals/managePartnerAuthority';
 import { useAppSelector } from '../../../../../redux/hooks';
-import {
-  selectDevice,
-  updateBreadcrumb,
-} from '../../../../../redux/features/app/appSlice';
+import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import clsx from 'clsx';
+import ManageProgramManagerAuthority from '../modals/manageProgramManagerAuthority';
 import { selectProjects } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 //import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 import { NavLink } from '../../../../../components';
 import ProjectAccordionForm from '../../../../forms/formProjects/ProjectAccordionForm/ProjectAccordionForm';
 import FormAuthorities from '../../../../forms/formAuthorities';
-import ManagePartnerAuthority from '../modals/managePartnerAuthority';
 
 const tabs = {
   INFO: 'info',
@@ -69,33 +66,10 @@ const ProjectsDetails = () => {
   const partnerRef = useRef<HTMLLIElement>(null);
   const sediRef = useRef<HTMLLIElement>(null);
   const infoRef = useRef<HTMLLIElement>(null);
-  const { projectId } = useParams();
-  const projectshortName =
-    progetti.detail?.dettaglioProgetto?.generalInfo?.nomeBreve;
 
-  useEffect(() => {
-    if (projectId && projectshortName) {
-      dispatch(
-        updateBreadcrumb([
-          {
-            label: 'Area Amministrativa',
-            url: '/area-amministrativa',
-            link: false,
-          },
-          {
-            label: 'Progetti',
-            url: '/area-amministrativa/progetti',
-            link: true,
-          },
-          {
-            label: projectshortName,
-            url: `/area-amministrativa/progetti/${projectId}`,
-            link: false,
-          },
-        ])
-      );
-    }
-  }, [projectId]);
+  /* useEffect(() => {
+    dispatch(GetProjectDetail('project1'));
+  }, []); */
 
   useEffect(() => {
     scrollTo(0, 0);
@@ -251,27 +225,29 @@ const ProjectsDetails = () => {
         setCorrectButtons([
           {
             size: 'xs',
-            color: 'danger',
-            outline: true,
-            text: 'Termina progetto',
-            onClick: () => console.log('termina progetto'),
-          },
-          {
-            size: 'xs',
             color: 'primary',
+
             text: 'Elimina',
             onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
           },
           {
             size: 'xs',
+            color: 'primary',
+
+            text: 'Termina progetto',
+            onClick: () => console.log('termina progetto'),
+          },
+          {
+            size: 'xs',
             outline: true,
             color: 'primary',
+
             text: ' Modifica',
             onClick: () =>
               dispatch(
                 openModal({
                   id: formTypes.PROGETTO,
-                  payload: { title: 'Modifica progetto' },
+                  payload: { title: 'Modifica programma' },
                 })
               ),
           },
@@ -280,7 +256,7 @@ const ProjectsDetails = () => {
       case tabs.ENTE_GESTORE:
         setButtonsPosition('TOP');
         setDeleteText(
-          'Confermi di voler eliminare questo gestore di progetto?'
+          'Confermi di voler eliminare questo gestore di programs?'
         );
         setCurrentForm(
           <FormAuthorities
@@ -288,7 +264,7 @@ const ProjectsDetails = () => {
             enteType={formTypes.ENTE_GESTORE_PROGETTO}
           />
         );
-        setCorrectModal(<ManagePartnerAuthority />);
+        setCorrectModal(<ManageProgramManagerAuthority />);
         setItemList(null);
         setCorrectButtons([
           {
@@ -306,7 +282,7 @@ const ProjectsDetails = () => {
               dispatch(
                 openModal({
                   id: formTypes.ENTE_GESTORE_PROGETTO,
-                  payload: { title: 'Modifica ente gestore progetto' },
+                  payload: { title: 'Modifica ente gestore programs' },
                 })
               ),
           },
@@ -316,14 +292,8 @@ const ProjectsDetails = () => {
         // eslint-disable-next-line no-case-declarations
         const entiPartnerList =
           progetti.detail?.entiPartner?.map(
-            (ente: {
-              id: string;
-              nome: string;
-              ref: string;
-              stato: string;
-            }) => ({
+            (ente: { id: string; nome: string; stato: string }) => ({
               ...ente,
-              fullInfo: { ref: ente.ref },
               actions: onActionClickEntiPartner,
             })
           ) || [];
@@ -399,8 +369,8 @@ const ProjectsDetails = () => {
     <div
       className={clsx(
         mediaIsPhone
-          ? 'd-flex flex-row mt-5container'
-          : 'd-flex flex-row container'
+          ? 'd-flex flex-row container'
+          : 'd-flex flex-row mt-5 container'
       )}
     >
       <div className='d-flex flex-column w-100'>
@@ -417,7 +387,6 @@ const ProjectsDetails = () => {
             itemsAccordionList={itemAccordionList}
             itemsList={itemList}
             buttonsPosition={buttonsPosition}
-            goBackTitle='Elenco progetti'
           >
             {currentForm}
           </DetailLayout>

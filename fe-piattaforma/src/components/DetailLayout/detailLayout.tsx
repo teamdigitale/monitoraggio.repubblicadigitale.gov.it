@@ -10,10 +10,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import clsx from 'clsx';
-import { openModal } from '../../redux/features/modal/modalSlice';
-import { useDispatch } from 'react-redux';
-import { formTypes } from '../../pages/administrator/AdministrativeArea/Entities/utils';
-//import { formTypes } from '../../pages/administrator/AdministrativeArea/Entities/utils';
 
 interface DetailLayoutI {
   nav?: ReactElement;
@@ -30,12 +26,10 @@ interface DetailLayoutI {
     headingRole?: boolean;
   };
   itemsList?: ItemsListI | null | undefined;
-  showItemsList?: boolean;
   buttonsPosition: 'TOP' | 'BOTTOM';
   showGoBack?: boolean;
   goBackTitle?: string;
   children?: ReactElement | undefined;
-  currentTab?: string;
 }
 const DetailLayout: React.FC<DetailLayoutI> = ({
   formButtons,
@@ -43,16 +37,13 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   titleInfo,
   nav,
   itemsList,
-  showItemsList = true,
   buttonsPosition,
   showGoBack = true,
   goBackTitle = 'Torna indietro',
   children,
-  currentTab,
 }) => {
   const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
-  const dispatch = useDispatch();
 
   return (
     <>
@@ -71,15 +62,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
       )}
       <SectionTitle {...titleInfo} />
       {nav && (
-        <div
-          className={clsx(
-            'd-flex',
-            'justify-content-center',
-            'w-100',
-            'mt-5',
-            'mb-5'
-          )}
-        >
+        <div className='d-flex justify-content-center w-100 mt-5 mb-5'>
           {nav}
         </div>
       )}
@@ -88,37 +71,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
         <>
           <div aria-hidden='true'>
             <Sticky mode='bottom'>
-              {formButtons.length === 3 ? (
-                device.mediaIsPhone ? (
-                  <div
-                    className={clsx(
-                      'd-flex',
-                      'flex-row',
-                      'justify-content-between',
-                      'bg-white',
-                      'flex-wrap'
-                    )}
-                  >
-                    <ButtonsBar buttons={formButtons.slice(1)} />
-                    <ButtonsBar buttons={formButtons.slice(0, 1)} />
-                  </div>
-                ) : (
-                  <div
-                    className={clsx(
-                      'd-flex',
-                      'flex-row',
-                      'justify-content-between',
-                      'bg-white',
-                      'sticky-body'
-                    )}
-                  >
-                    <ButtonsBar buttons={formButtons.slice(0, 1)} />
-                    <ButtonsBar buttons={formButtons.slice(1)} />
-                  </div>
-                )
-              ) : (
-                <ButtonsBar buttons={formButtons} />
-              )}
+              <ButtonsBar buttons={formButtons} />
             </Sticky>
           </div>
           <div className='sr-only'>
@@ -131,18 +84,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
             <Accordion
               title={singleItem.title ? singleItem.title : ''}
               totElem={singleItem.items.length}
-              cta={`Aggiungi ${singleItem.title}`}
-              onClickCta={() =>
-                dispatch(
-                  openModal({
-                    id:
-                      singleItem.title === 'Referenti'
-                        ? formTypes.REFERENTE
-                        : formTypes.DELEGATO,
-                    payload: { title: `Aggiungi ${singleItem.title}` },
-                  })
-                )
-              }
+              cta='Aggiungi referente'
               key={index}
               lastBottom={index === itemsAccordionList.length - 1}
             >
@@ -159,43 +101,19 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
             </Accordion>
           ))
         : null}
-      {showItemsList && itemsList && itemsList.items?.length ? (
+      {itemsList && itemsList.items?.length ? (
         <>
-          {itemsList.title && (
-            <h2 className='h4 neutral-1-color-a7'>{itemsList.title}</h2>
-          )}{' '}
-          {itemsList.items.map((item, index) => {
-            if (index === 0) {
-              return (
-                <div>
-                  <CardStatusAction
-                    moreThanOneSurvey={currentTab === 'questionari'}
-                    title={item.nome}
-                    status={item.stato}
-                    key={item.id}
-                    id={item.id}
-                    fullInfo={item.fullInfo}
-                    onActionClick={item.actions}
-                  />
-                  {device.mediaIsDesktop && currentTab === 'questionari' && (
-                    <h3 className='h4 text-muted'> Altri questionari </h3>
-                  )}
-                </div>
-              );
-            } else {
-              return (
-                <CardStatusAction
-                  moreThanOneSurvey={currentTab === 'questionari'}
-                  title={item.nome}
-                  status={item.stato}
-                  key={item.id}
-                  id={item.id}
-                  fullInfo={item.fullInfo}
-                  onActionClick={item.actions}
-                />
-              );
-            }
-          })}{' '}
+          {itemsList.title && <h2 className='h4'>{itemsList.title}</h2>}{' '}
+          {itemsList.items.map((item) => (
+            <CardStatusAction
+              title={item.nome}
+              status={item.stato}
+              key={item.id}
+              id={item.id}
+              fullInfo={item.fullInfo}
+              onActionClick={item.actions}
+            />
+          ))}{' '}
         </>
       ) : null}
       {buttonsPosition === 'BOTTOM' &&

@@ -4,25 +4,16 @@
       {
         "id": "project1",
         "nome": "Progetto 1",
-        "nomeBreve":"Progetto 1 Nome Breve",
-        "policy": "RFD",
-        "enteGestore":"Comune di Como",
         "stato": "ATTIVO"
       },
       {
         "id": "project2",
         "nome": "Progetto 2",
-        "nomeBreve":"Progetto 2 Nome Breve",
-        "policy": "RFD",
-        "enteGestore":"Comune di Como",
         "stato": "BOZZA"
       },
       {
         "id": "project3",
         "nome": "Progetto 3",
-        "nomeBreve":"Progetto 3 Nome Breve",
-        "policy": "RFD",
-        "enteGestore":"Comune di Como",
         "stato": "NON_ATTIVO"
       }
     ]

@@ -12,15 +12,6 @@ import {
 
 const GetAllEventsAction = { type: 'citizensArea/GetAllEvents' };
 
-export interface ServicesI {
-  id: string;
-  name: string;
-  serviceType: string;
-  date: string;
-  facilitatore: string;
-  status: string;
-}
-
 export const GetAllEvents =
   (payload?: any) => async (dispatch: Dispatch, select: Selector) => {
     try {

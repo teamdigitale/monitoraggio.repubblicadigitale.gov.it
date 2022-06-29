@@ -21,12 +21,7 @@ const LocationIndex: React.FC<LocationIndexProps> = ({ routes, title }) => {
   };
   return (
     <div
-      className={clsx(
-        'right-icon',
-        'd-flex',
-        'justify-content-between',
-        'flex-column'
-      )}
+      className='right-icon d-flex justify-content-between  flex-column'
       {...(collapseOpen ? expanded : {})}
     >
       <Button

@@ -117,8 +117,7 @@ const CitizenForm: React.FC<CitizenFormFullI> = (props) => {
         <div
           className={clsx(
             mobileCol,
-            'd-flex',
-            'flex-column',
+            'd-flex flex-column',
             device.mediaIsPhone && 'mb-5'
           )}
         >

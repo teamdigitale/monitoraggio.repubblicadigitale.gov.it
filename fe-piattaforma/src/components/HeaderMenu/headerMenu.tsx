@@ -6,7 +6,7 @@ import {
   Icon,
   UncontrolledDropdown,
 } from 'design-react-kit';
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -46,7 +46,7 @@ const MenuMock = [
         path: '/area-amministrativa/enti',
       },
       {
-        label: 'Utenti',
+        label: 'Users',
         path: '/area-amministrativa/utenti',
       },
       {
@@ -93,14 +93,37 @@ interface HeaderMenuI {
 const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
   const { isHeaderFull } = props;
   const [activeTab, setActiveTab] = useState(
-    MenuMock.filter(({ path }) =>
-      window.location.pathname.includes(path)
-    ).reduce((a, b) => (a.path.length > b.path.length ? a : b)).id
+    MenuMock.find(({ path }) => window.location.pathname.includes(path))?.id ||
+      MenuMock[0].id
   );
   const { t } = useTranslation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [dropdownEventsOpen, setDropdownEventsOpen] = useState(false);
   const navigate = useNavigate();
+  // const currentRef = useRef();
+
+  const manageKeyEvent = (e: KeyboardEvent) => {
+    switch (e.key) {
+      case ' ': {
+        e.preventDefault();
+        //console.log(e, e.target);
+
+        // onLinkClick();
+        // navigate('area-cittadini');
+        break;
+      }
+      default:
+        break;
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', manageKeyEvent);
+    return () => {
+      document.removeEventListener('keydown', manageKeyEvent);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const navDropDown: React.FC<MenuItem> = (li) => {
     const toggle = (dropdown: string) => {
@@ -127,12 +150,7 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
           <DropdownToggle
             nav
             caret
-            className={clsx(
-              'text-white',
-              'font-weight-semibold',
-              'pb-0',
-              'mb-1'
-            )}
+            className='text-white font-weight-semibold pb-0 mb-1'
             aria-expanded={
               li.label.toLowerCase() === 'area cittadini'
                 ? dropdownEventsOpen
@@ -207,12 +225,7 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
                     id={li.id}
                     to={li.path}
                     onClick={() => setActiveTab(li.id)}
-                    onKeyDown={(e) => {
-                      if (e.key === ' ') {
-                        setActiveTab(li.id);
-                        navigate(li.path);
-                      }
-                    }}
+                    onKeyDown={(e) => (e.key == ' ' ? navigate(li.path) : '')}
                     className='h6 text-white mb-2'
                     role='menuitem'
                   >

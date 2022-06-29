@@ -5,10 +5,9 @@
       "name": "progetto Regione Lombardia Lorem Ipsum",
       "shortName": "Regione Lombardia",
       "type": "Ente pubblico",
-      "profile": "Gestore di progetto",
+      "profile": "Gestore di programma",
       "fiscalCode": "RSSMRA80B01F205W",
-      "address": "Via Roma 1 Roma RO",
-      "pec": "mail@pec.it"
+      "address": "Via Roma 1 Roma RO"
     },
     "del": [
       { "name": "Simone Viola", "status": "Active", "id": "1" },

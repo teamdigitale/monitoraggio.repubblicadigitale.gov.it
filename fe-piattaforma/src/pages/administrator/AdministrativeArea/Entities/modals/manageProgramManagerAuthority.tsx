@@ -5,7 +5,7 @@ import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormAuthorities from '../../../../forms/formAuthorities';
 
-const id = 'ente-gestore-programma';
+const id = 'ente-gestore-programs';
 
 interface ManageEnteGestoreProgettoFormI {
   formDisabled?: boolean;

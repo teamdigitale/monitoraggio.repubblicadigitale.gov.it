@@ -17,8 +17,7 @@ const FooterMobile: React.FC = () => {
         'w-100',
         'flex-column',
         'overflow-hidden',
-        'pt-2',
-        'primary-bg-a10'
+        'pt-2'
       )}
     >
       <div className='p-4 mt-5'>
@@ -46,22 +45,9 @@ const FooterMobile: React.FC = () => {
         </div>
 
         <div
-          className={clsx(
-            'footer-container__assistance',
-            'border-top',
-            'pt-4',
-            'mt-5'
-          )}
+          className={clsx('footer-container__assistance border-top pt-4 mt-5')}
         >
-          <p
-            className={clsx(
-              'h6',
-              'text-uppercase',
-              'mb-md-0',
-              'mb-lg-3',
-              'mt-2'
-            )}
-          >
+          <p className='h6 text-uppercase mb-md-0 mb-lg-3 mt-2'>
             {t('assistance_contacts')}
           </p>
           <p className='footer-container__assistance__text'>

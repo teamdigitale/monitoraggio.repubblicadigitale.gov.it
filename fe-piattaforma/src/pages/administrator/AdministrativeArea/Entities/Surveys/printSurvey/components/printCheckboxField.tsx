@@ -18,14 +18,14 @@ const PrintCheckboxField: React.FC<PrintFieldI> = (props) => {
     >
       <Form className={clsx('d-flex', 'align-items-end')}>
         <p className='invisible'>
-          <strong>{info.label}</strong> {'(scelta multipla)'}
+          <strong>{info.form['question-description'].value}</strong>
         </p>
         <FormGroup check>
           <Input
-            id={`checkbox-${info.value}`}
+            id={`checkbox-${info.form['question-description'].value}`}
             type='checkbox'
-            label={info.value?.toString()}
-            aria-label={info.value?.toString()}
+            label={info.form['question-description'].value}
+            aria-label={info.form['question-description'].value}
             disabled
           />
         </FormGroup>

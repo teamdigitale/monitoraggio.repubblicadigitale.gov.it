@@ -16,13 +16,12 @@ const FooterDesktop: React.FC = () => {
         'align-items-between',
         'w-100',
         'flex-column',
-        'overflow-hidden',
-        'primary-bg-a10'
+        'overflow-hidden'
       )}
     >
       <div className={clsx('row', 'px-5', 'mb-auto', 'mt-5')}>
-        <div className='col-7'>
-          <div className='row justify-content-around'>
+        <div className='mr-5'>
+          <div className='row'>
             <div className=''>
               <p className='h6'>{t('designed_by')}</p>
               <div className='mr-auto mt-3'>
@@ -42,7 +41,7 @@ const FooterDesktop: React.FC = () => {
           className={clsx(
             'footer-container__assistance',
             'position-relative',
-            'col-5',
+            'col',
             'd-lg-block',
             'd-md-flex',
             'align-items-md-center',
@@ -51,7 +50,7 @@ const FooterDesktop: React.FC = () => {
             'py-2'
           )}
         >
-          <p className={clsx('h6', 'text-uppercase', 'mb-md-0', 'mb-lg-3')}>
+          <p className='h6 text-uppercase mb-md-0 mb-lg-3'>
             {t('assistance_contacts')}
           </p>
           <p className='footer-container__assistance__text'>
@@ -59,10 +58,7 @@ const FooterDesktop: React.FC = () => {
           </p>
           <span
             className={clsx(
-              'd-inline-flex',
-              'align-items-center',
-              'mt-lg-3',
-              'mt-md-0'
+              'd-inline-flex, align-items-center, mt-lg-3, mt-md-0'
             )}
           >
             <Icon

@@ -129,9 +129,7 @@ const MultiOptionForm: React.FC<MultiOptionFormI> = (props) => {
           <Button
             onClick={() => addOption()}
             className={clsx(
-              'survey-question-container__button-add',
-              'font-italic',
-              'font-weight-normal'
+              'survey-question-container__button-add font-italic font-weight-normal'
             )}
           >
             <Icon

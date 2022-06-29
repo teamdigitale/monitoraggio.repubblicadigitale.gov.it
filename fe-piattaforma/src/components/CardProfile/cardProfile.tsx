@@ -1,13 +1,8 @@
 import clsx from 'clsx';
 import { CardProps, CardText, CardTitle, Icon } from 'design-react-kit';
 import React, { memo } from 'react';
-
-import { selectDevice } from '../../redux/features/app/appSlice';
-import { useAppSelector } from '../../redux/hooks';
-import AvatarInitials, {
-  AvatarSizes,
-  AvatarTextSizes,
-} from '../AvatarInitials/avatarInitials';
+//import { selectDevice } from '../../redux/features/app/appSlice';
+//import { useAppSelector } from '../../redux/hooks';
 import './cardProfile.scss';
 
 interface CardProfileI extends CardProps {
@@ -15,13 +10,20 @@ interface CardProfileI extends CardProps {
   program?: string;
   className?: string;
   activeProfile?: boolean;
-  user: { name: string; surname: string; role?: string };
+  user?: { name: string; surname: string; role: string } | undefined;
 }
 
-const CardProfile: React.FC<CardProfileI> = (props) => {
-  const { program, className, activeProfile, user } = props;
+const getInitials = (name: string, surname: string) => {
+  const userName = name.charAt(0).toUpperCase();
+  const userSurname = surname.charAt(0).toUpperCase();
 
-  const device = useAppSelector(selectDevice);
+  return userName + userSurname;
+};
+
+//const device = useAppSelector(selectDevice);
+
+const CardProfile: React.FC<CardProfileI> = (props) => {
+  const { name, program, className, activeProfile, user } = props;
 
   return (
     <div
@@ -39,7 +41,7 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
           'ml-2',
           'bg-white',
           'px-2',
-          'py-3',
+          'py-4',
           'h-100',
           'd-flex',
           'flex-row',
@@ -48,45 +50,41 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
           'card-profile-container__white-card'
         )}
       >
-        <div
-          className={clsx('d-flex', 'flex-row', 'align-items-center', 'pl-2')}
-        >
+        <div className='d-flex flex-row align-items-center pl-2'>
           {activeProfile ? (
             <div
               className={clsx(
-                'card-profile-container__icon',
-                'mr-2',
-                !activeProfile && 'card-profile-container__opacity'
+                'card-profile-container__icon mr-2',
+                !activeProfile && 'card-profile-container__opacity '
               )}
             >
-              <AvatarInitials
-                user={{ uName: user?.name, uSurname: user?.surname }}
-                size={device.mediaIsPhone ? AvatarSizes.Big : AvatarSizes.Small}
-                font={
-                  device.mediaIsPhone
-                    ? AvatarTextSizes.Big
-                    : AvatarTextSizes.Small
-                }
-                lightColor={device.mediaIsPhone}
-              />
+              <div
+                className={clsx(
+                  'rounded-circle',
+                  'neutral-2-bg',
+                  'd-flex',
+                  'align-items-center',
+                  'justify-content-center',
+                  'primary-color',
+                  'font-weight-light',
+                  'initials'
+                )}
+                style={{ height: '53px', width: '53px' }}
+              >
+                <span> {user && getInitials(user.name, user.surname)} </span>
+              </div>
             </div>
           ) : null}
           <div>
             <CardTitle className='mb-1 primary-color-a12'>
               {activeProfile ? (
-                <span>
-                  <strong>Delegato </strong>
-                  <em>
-                    <strong>{user.name}</strong>
-                  </em>
-                </span>
+                <em>
+                  <strong>{name}</strong>
+                </em>
               ) : (
-                <span>
-                  <strong>Referente </strong>
-                  <em>
-                    <strong>{user.name}</strong>
-                  </em>
-                </span>
+                <em>
+                  <span>{name}</span>
+                </em>
               )}
             </CardTitle>
             <CardText

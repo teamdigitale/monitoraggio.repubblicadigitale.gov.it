@@ -167,12 +167,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
         color='primary'
         outline
         onClick={() => setOpen(!open)}
-        className={clsx(
-          'd-flex',
-          'flex-row',
-          'justify-content-between',
-          'w-100'
-        )}
+        className='d-flex flex-row justify-content-between w-100'
         id={`filter-${id}`}
         innerRef={popoverRef}
       >

@@ -1,6 +1,12 @@
 import { TableHeadingI, TableRowI } from '../../../../components/Table/table';
 import { CRUDActionsI } from '../../../../utils/common';
 
+const statusTypes = {
+  ACTIVE: 'ATTIVO',
+  DRAFT: 'BOZZA',
+  INACTIVE: 'NON_ATTIVO',
+};
+
 export const dayOfWeek = [
   'Lunedì',
   'Martedì',
@@ -11,70 +17,87 @@ export const dayOfWeek = [
   'Domenica',
 ];
 
+export const statusBgColor = (status: string) => {
+  switch (status) {
+    case statusTypes.ACTIVE:
+    case 'active':
+      return 'primary-bg-a9';
+    case statusTypes.DRAFT:
+    case 'draft':
+      return 'analogue-2-bg-a2';
+    case statusTypes.INACTIVE:
+    case 'inactive':
+      return 'neutral-1-bg-b4';
+    default:
+      return 'complementary-1-bg-a2';
+  }
+};
+
+export const statusColor = (status: string) => {
+  switch (status) {
+    case statusTypes.ACTIVE:
+    case 'active':
+      return 'text-white';
+    case statusTypes.DRAFT:
+    case 'draft':
+      return 'primary-color-a9';
+    case statusTypes.INACTIVE:
+    case 'inactive':
+      return 'neutral-1-color-b6';
+    default:
+      return 'complementary-1-bg-a2';
+  }
+};
+
 export const TableHeading: TableHeadingI[] = [
-  {
-    label: 'Nome',
-    field: 'label',
-    size: 'medium',
-  },
   {
     label: 'ID',
     field: 'id',
-    size: 'medium',
+    size: 'small',
   },
   {
-    field: 'policy',
-    label: 'Policy',
-    size: 'medium',
-  },
-  {
-    field: 'enteGestore',
-    label: 'Ente gestore',
-    size: 'medium',
+    label: 'Nome',
+    field: 'label',
   },
   {
     label: 'Stato',
     field: 'status',
-    size: 'small',
   },
 ];
 
 export const TableHeadingUsers: TableHeadingI[] = [
   {
-    label: 'Nome',
-    field: 'label',
-    size: 'medium',
-  },
-  {
     label: 'ID',
     field: 'id',
-    size: 'medium',
+    size: 'small',
+  },
+  {
+    label: 'Nome',
+    field: 'label',
   },
   {
     label: 'Ruolo',
     field: 'role',
-    size: 'medium',
   },
   {
     label: 'Stato',
     field: 'status',
-    size: 'medium',
   },
 ];
 
 export const TableHeadingQuestionnaires: TableHeadingI[] = [
-  {
-    label: 'Nome questionario',
-    field: 'label',
-  },
   {
     label: 'ID',
     field: 'id',
     size: 'small',
   },
   {
-    label: 'Data ultima modifica',
-    field: 'lastChangeDate',
+    label: 'Nome questionario',
+    field: 'label',
+  },
+  {
+    label: 'Tipo questionario',
+    field: 'type',
   },
   {
     label: 'Stato',
@@ -94,22 +117,18 @@ export const TableHeadingEntities: TableHeadingI[] = [
   {
     label: 'Nome',
     field: 'nome',
-    size: 'medium',
   },
   {
     label: 'ID',
     field: 'id',
-    size: 'medium',
   },
   {
     label: 'Tipologia ente',
     field: 'tipologia',
-    size: 'medium',
   },
   {
     label: 'Profili',
     field: 'profilo',
-    size: 'medium',
   },
 ];
 
@@ -129,7 +148,6 @@ export const formTypes = {
   USER: 'user',
   FACILITATORE: 'facilitatore',
   SERVICES: 'services',
-  CITIZENS: 'cittadino',
 };
 
 export interface ItemListI {

@@ -1,13 +1,7 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { Input as InputKit, InputProps, Label } from 'design-react-kit';
+import { Input as InputKit, InputProps } from 'design-react-kit';
 import { formFieldI } from '../../utils/formHelper';
-import { dayOfWeek } from '../../pages/administrator/AdministrativeArea/Entities/utils';
-import clsx from 'clsx';
 
-/**
- * A fix for input warning has been made, maybe it could be the case to improve input component
- * design in a second time
- */
 export interface InputI extends Omit<InputProps, 'value'> {
   col?: string | undefined;
   field?: string;
@@ -37,7 +31,7 @@ const Input: React.FC<InputI> = (props) => {
     type = 'text',
     valid,
     value = '',
-    withLabel = props.type === 'radio' ? false : true,
+    withLabel = true,
   } = props;
 
   const [val, setVal] = useState<formFieldI['value']>(value);
@@ -61,9 +55,20 @@ const Input: React.FC<InputI> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [check]);
 
-  const handleCheckChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const isChecked = e?.currentTarget.checked;
-    setChecked(isChecked);
+  const BaseProps = {
+    ...props,
+    checked: undefined,
+    col: undefined,
+    field: undefined,
+    onInputBlur: undefined,
+    onInputChange: undefined,
+    placeholder: type === 'date' ? 'dd/mm/aaaa' : placeholder,
+    withLabel: undefined,
+  };
+
+  const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const element = e?.currentTarget.checked;
+    setChecked(element);
   };
 
   const handleInputOnChange = (e?: ChangeEvent<HTMLInputElement>) => {
@@ -74,8 +79,7 @@ const Input: React.FC<InputI> = (props) => {
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     switch (type) {
       case 'checkbox':
-      case 'radio':
-        handleCheckChange(e);
+        handleCheckboxChange(e);
         break;
       default:
         handleInputOnChange(e);
@@ -84,10 +88,7 @@ const Input: React.FC<InputI> = (props) => {
   };
 
   const InputProps: InputProps = {
-    checked:
-      type === 'checkbox' || (type === 'radio' && onInputChange)
-        ? check
-        : undefined,
+    checked: type === 'checkbox' ? check : undefined,
     id: id || field || `input-${new Date().getTime()}`,
     onBlur: (e) => {
       if (onInputBlur) onInputBlur(val, field);
@@ -104,67 +105,21 @@ const Input: React.FC<InputI> = (props) => {
   }
 
   InputProps.name = name ?? InputProps.id;
-  InputProps.label = withLabel
-    ? label && required
-      ? label + ' *'
-      : label
-    : '';
+  InputProps.label = withLabel ? label ?? InputProps.name : '';
 
   const inputRef = useRef<HTMLInputElement>(null);
   const inputLabel = inputRef.current?.nextElementSibling;
 
   useEffect(() => {
-    if (!withLabel && inputRef && !dayOfWeek) {
-      inputLabel?.classList.add('sr-only');
-    }
     if (!withLabel && inputRef) {
       inputLabel?.classList.add('visibility-hidden');
     }
   }, [withLabel, inputLabel]);
 
-  const blackList = [
-    'checked',
-    'col',
-    'field',
-    'onInputBlur',
-    'onInputChange',
-    'placeholder',
-    'withLabel',
-  ];
-
-  const BaseProps = Object.fromEntries(
-    Object.entries(props).filter(([key]) => !blackList.includes(key))
-  );
-
-  if (type === 'radio') {
-    return (
-      <div
-        className={clsx(
-          'radio-btn-container',
-          'd-inline-flex',
-          'position-relative'
-        )}
-      >
-        <InputKit
-          {...BaseProps}
-          {...InputProps}
-          label={withLabel ? undefined : label}
-          onChange={handleOnChange}
-          value={typeof val === 'number' ? val : val?.toString() || ''}
-          innerRef={inputRef}
-        />
-        <Label check htmlFor={id}>
-          {withLabel ? <span>{label}</span> : null}
-        </Label>
-      </div>
-    );
-  }
-
   return (
     <InputKit
       {...BaseProps}
       {...InputProps}
-      placeholder={type === 'date' ? 'dd/mm/yy' : placeholder}
       onChange={handleOnChange}
       value={typeof val === 'number' ? val : val?.toString() || ''}
       innerRef={inputRef}

@@ -55,7 +55,6 @@ export const CRUDActionTypes = {
   SEND: 'send',
   PRINT: 'print',
   COMPILE: 'compile',
-  SELECT: 'select',
 };
 
 export interface CRUDActionsI {
@@ -107,10 +106,6 @@ export const menuRoutes = [
         label: 'Questionari',
         path: '/area-amministrativa/questionari',
       },
-      {
-        label: 'Servizi',
-        path: '/area-amministrativa/servizi',
-      },
     ],
   },
   {
@@ -141,10 +136,8 @@ export const menuRoutes = [
 ];
 
 // Flattens all child elements into a single list
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const flatten = (children: React.ReactElement, flat = []) => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   flat = [...flat, ...React.Children.toArray(children)];
 
@@ -159,9 +152,8 @@ const flatten = (children: React.ReactElement, flat = []) => {
 export const simplify = (children: React.ReactElement) => {
   const flat = flatten(children);
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  return flat.map(({ key, ref, type, props: { ...props } }) => ({
+  return flat.map(({ key, ref, type, props: { children, ...props } }) => ({
     key,
     ref,
     type,

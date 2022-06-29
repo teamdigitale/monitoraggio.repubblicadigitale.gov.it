@@ -4,23 +4,17 @@ import { Footer } from '../../../components';
 import clsx from 'clsx';
 import { Button, Card, Icon } from 'design-react-kit';
 import Authicon from '/public/assets/img/auth-box-icon.png';
-import { useAppSelector } from '../../../redux/hooks';
-import { selectDevice } from '../../../redux/features/app/appSlice';
 
 const Auth = () => {
   const handleClick = () => {
     console.log('clicked');
   };
 
-  const device = useAppSelector(selectDevice);
-
   return (
     <>
       <div className='mt-0 py-3 primary-bg '>
         <div className='mr-auto'>
-          <p className={clsx('h6', 'm-0', 'pl-5', 'text-white')}>
-            Repubblica Digitale
-          </p>
+          <p className='h6 m-0 pl-5 text-white'>Repubblica Digitale</p>
         </div>
       </div>
 
@@ -35,11 +29,7 @@ const Auth = () => {
       >
         <div className={clsx('auth-container')}>
           <div className={clsx('w-100', 'text-center', 'mb-5')}>
-            <img
-              src={LogoScrittaBlu}
-              alt='logo'
-              className='auth-container__logo'
-            />
+            <img src={LogoScrittaBlu} alt='' className='auth-container__logo' />
           </div>
           <div
             className={clsx(
@@ -55,9 +45,7 @@ const Auth = () => {
                 spacing
                 className={clsx(
                   'card-bg',
-                  'text-center',
-                  'd-flex',
-                  'align-items-center'
+                  'text-center, d-flex, align-items-center'
                 )}
               >
                 <div
@@ -78,57 +66,20 @@ const Auth = () => {
                     aria-label='Autenticazione'
                   />
                 </div>
-                {device.mediaIsPhone || device.mediaIsTablet ? (
-                  <h1
-                    className={clsx(
-                      'h3',
-                      'font-weight-semibold',
-                      'text-secondary',
-                      'text-center',
-                      'text-nowrap'
-                    )}
-                  >
-                    Accedi con la tua <br /> identità digitale
-                  </h1>
-                ) : (
-                  <h1
-                    className={clsx(
-                      'h3',
-                      'font-weight-semibold',
-                      'text-secondary'
-                    )}
-                  >
-                    Accedi con la tua identità digitale
-                  </h1>
-                )}
-                {device.mediaIsPhone || device.mediaIsTablet ? (
-                  <p
-                    className={clsx(
-                      'font-weight-semibold',
-                      'text-secondary',
-                      'mb-0',
-                      'mt-3',
-                      'text-center',
-                      'text-nowrap'
-                    )}
-                  >
-                    Utilizza una delle seguenti modalità <br /> per accedere al
-                    sito e ai suoi servizi
-                  </p>
-                ) : (
-                  <p className='font-weight-semibold text-secondary mb-0'>
-                    Utilizza una delle seguenti modalità per accedere al sito e
-                    ai suoi servizi
-                  </p>
-                )}
+                <h1 className='h3 font-weight-semibold text-secondary'>
+                  Accedi con la tua identità digitale
+                </h1>
+                <p className='font-weight-semibold text-secondary mb-0'>
+                  Utilizza una delle seguenti modalità per accedere al sito e ai
+                  suoi servizi
+                </p>
                 <div
                   className={clsx(
                     'auth-container__box__button-group',
                     'd-flex',
                     'flex-column',
                     'mt-5',
-                    'w-100',
-                    'mx-3'
+                    'w-100'
                   )}
                 >
                   <Button
@@ -137,20 +88,12 @@ const Auth = () => {
                       'mb-3',
                       'w-100',
                       'd-flex, align-items-center',
-                      device.mediaIsPhone ? 'btn-xs px-4' : 'btn-sm'
+                      'btn-sm'
                     )}
                     color='primary'
                     onClick={handleClick}
-                    size='xs'
                   >
-                    <div
-                      className={clsx(
-                        'd-flex',
-                        'align-items-center',
-                        'justify-content-center',
-                        'mx-auto'
-                      )}
-                    >
+                    <div className='d-flex align-items-center justify-content-center mx-auto'>
                       <div
                         className={clsx(
                           'rounded-circle',
@@ -169,22 +112,11 @@ const Auth = () => {
                           aria-label='Utente'
                         />
                       </div>
-                      <span
-                        className={clsx(
-                          'ml-2',
-                          device.mediaIsPhone && 'text-nowrap'
-                        )}
-                      >
-                        Entra con SPID
-                      </span>
+                      <span className='ml-2'>Entra con SPID</span>
                     </div>
                   </Button>
                   <Button
-                    className={clsx(
-                      'mx-auto',
-                      'w-100',
-                      device.mediaIsPhone ? 'btn-xs px-4' : 'btn-sm'
-                    )}
+                    className='mx-auto w-100 btn-sm'
                     color='primary'
                     onClick={handleClick}
                   >

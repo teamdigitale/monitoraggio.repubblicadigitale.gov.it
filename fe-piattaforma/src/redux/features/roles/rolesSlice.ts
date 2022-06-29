@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 
-export type RolePermissionI = 'permission-1' | 'permission-2';
-
 interface RoleI {
   name: string;
   id: string;

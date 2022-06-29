@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Paginator, StatusChip, Table } from '../../../../../components';
+import { Chip, ChipLabel } from 'design-react-kit';
+import clsx from 'clsx';
+import { Paginator, Table } from '../../../../../components';
 import { newTable, TableRowI } from '../../../../../components/Table/table';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
@@ -15,7 +17,12 @@ import {
   DropdownFilterI,
   FilterI,
 } from '../../../../../components/DropdownFilter/dropdownFilter';
-import { formTypes, TableHeadingUsers } from '../utils';
+import {
+  formTypes,
+  statusBgColor,
+  statusColor,
+  TableHeadingUsers,
+} from '../utils';
 
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
@@ -30,7 +37,6 @@ import {
   GetAllUtenti,
   GetFilterValuesUtenti,
 } from '../../../../../redux/features/administrativeArea/user/userThunk';
-import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 
 const statusDropdownLabel = 'stati';
 const ruoliDropdownLabel = 'ruoli';
@@ -58,20 +64,6 @@ const Programmi = () => {
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 1 }));
     getAllFilters();
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area Amministrativa',
-          url: '/area-amministrativa',
-          link: false,
-        },
-        {
-          label: 'Utenti',
-          url: '/area-amministrativa/utenti',
-          link: true,
-        },
-      ])
-    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -83,7 +75,19 @@ const Programmi = () => {
           id: td.id,
           label: td.nome,
           role: td.ruoli,
-          status: <StatusChip status={td.stato} rowTableId={td.id} />,
+          status: (
+            <Chip
+              className={clsx(
+                'table-container__status-label',
+                statusBgColor(td.stato),
+                'no-border'
+              )}
+            >
+              <ChipLabel className={statusColor(td.stato)}>
+                {td.stato.toUpperCase()}
+              </ChipLabel>
+            </Chip>
+          ),
         };
       })
     );
@@ -165,7 +169,7 @@ const Programmi = () => {
       )[0]?.value,
     },
     {
-      filterName: 'Stato',
+      filterName: 'Stati',
       options: dropdownFilterOptions[statusDropdownLabel],
       id: statusDropdownLabel,
       onOptionsChecked: (options) =>
@@ -183,7 +187,7 @@ const Programmi = () => {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
     placeholder:
-      "Inserisci il nome, il cognome, l'identificativo o il codice fiscale dell'utente",
+      "Inserisci il nome, l'identificativo o il nome dell'ente gestore del programma che stai cercando",
     isClearable: true,
     title: 'Cerca programma',
   };

@@ -5,7 +5,6 @@ interface ProgressBarI {
   currentStep?: number;
   className?: string;
   steps: string[];
-  step?: string | string[];
 }
 
 const ProgressBar: React.FC<ProgressBarI> = (props) => {
@@ -15,14 +14,12 @@ const ProgressBar: React.FC<ProgressBarI> = (props) => {
     <div
       className={clsx(
         className,
-        'progress-bar-container',
-        'position-relative',
-        'w-100'
+        'progress-bar-container position-relative w-100'
       )}
     >
       <p
         className={clsx(
-          'progress-bar-container',
+          'progress-bar-container__section-name',
           'primary-color',
           'pl-4',
           'py-3',

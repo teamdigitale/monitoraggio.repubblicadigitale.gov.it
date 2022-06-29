@@ -29,13 +29,13 @@ import {
   GetAllEnti,
   GetFilterValuesEnti,
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
-import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 
+const statusDropdownLabel = 'stati';
 const profileDropdownLabel = 'profili';
 const projectDropdownLabel = 'progetti';
 const programDropdownLabel = 'programmi';
 
-const Authorities: React.FC = () => {
+const Progetti: React.FC = () => {
   const dispatch = useDispatch();
   const entiList = useAppSelector(selectAuthorities);
   const filtersList = useAppSelector(selectEntityFilters);
@@ -49,6 +49,7 @@ const Authorities: React.FC = () => {
   const { pageNumber } = pagination;
 
   const getAllFilters = () => {
+    dispatch(GetFilterValuesEnti(statusDropdownLabel));
     dispatch(GetFilterValuesEnti(profileDropdownLabel));
     dispatch(GetFilterValuesEnti(projectDropdownLabel));
     dispatch(GetFilterValuesEnti(programDropdownLabel));
@@ -57,20 +58,6 @@ const Authorities: React.FC = () => {
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 2 }));
     getAllFilters();
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area Amministrativa',
-          url: '/area-amministrativa',
-          link: false,
-        },
-        {
-          label: 'Enti',
-          url: '/area-amministrativa/enti',
-          link: true,
-        },
-      ])
-    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -191,13 +178,27 @@ const Authorities: React.FC = () => {
         (f) => f.filterId === projectDropdownLabel
       )[0]?.value,
     },
+    {
+      filterName: 'Stati',
+      options: dropdownFilterOptions[statusDropdownLabel],
+      onOptionsChecked: (options) =>
+        handleDropdownFilters(options, statusDropdownLabel),
+      id: statusDropdownLabel,
+      values: filtersList[statusDropdownLabel] || [],
+      handleOnSearch: (searchKey) => {
+        handleOnSearchDropdownOptions(searchKey, statusDropdownLabel);
+      },
+      valueSearch: searchDropdown?.filter(
+        (f) => f.filterId === statusDropdownLabel
+      )[0]?.value,
+    },
   ];
 
   const searchInformation: SearchInformationI = {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
     placeholder:
-      "Inserisci il nome, l'identificativo o il codice fiscale dell'ente",
+      "Inserisci il nome, l'identificativo o il nome dell'ente gestore del progetto che stai cercando",
     isClearable: true,
     title: 'Cerca progetto',
   };
@@ -258,4 +259,4 @@ const Authorities: React.FC = () => {
   );
 };
 
-export default Authorities;
+export default Progetti;

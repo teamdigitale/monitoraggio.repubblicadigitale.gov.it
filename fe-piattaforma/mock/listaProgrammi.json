@@ -4,25 +4,16 @@
       {
         "id": 1,
         "nome": "Programma 1",
-        "nomeBreve":"Programma 1 Nome Breve",
-        "policy": "RFD",
-        "enteGestore":"Comune di Como",
         "stato": "ATTIVO"
       },
       {
         "id": 2,
         "nome": "Programma 2",
-        "nomeBreve":"Programma 2 Nome Breve",
-        "policy": "RFD",
-        "enteGestore":"Comune di Como",
         "stato": "BOZZA"
       },
       {
         "id": 3,
         "nome": "Programma 3",
-        "nomeBreve":"Programma 3 Nome Breve",
-        "policy": "RFD",
-        "enteGestore":"Comune di Como",
         "stato": "BOZZA"
       }
     ],

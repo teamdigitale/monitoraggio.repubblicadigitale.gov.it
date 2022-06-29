@@ -31,14 +31,9 @@ const ManageHeadquarter: React.FC<ManageSediI> = ({
   }>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
 
-  // This has to be populated with data from the store as soon we have a
-  // well defined mock
   const [addressList, setAddressList] = useState<AddressInfoI[]>([
     {
       address: '',
-      CAP: '',
-      city: '',
-      province: '',
       openDays: [],
     },
   ]);
@@ -82,7 +77,7 @@ const ManageHeadquarter: React.FC<ManageSediI> = ({
         sendNewValues={(newData) => setNewFormValues({ ...newData })}
         setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
       />
-      <Form className='px-5 mb-3'>
+      <Form className='px-5 mb-5'>
         <Form.Row>
           <div className='col-10 col-md-6'>
             <Toggle

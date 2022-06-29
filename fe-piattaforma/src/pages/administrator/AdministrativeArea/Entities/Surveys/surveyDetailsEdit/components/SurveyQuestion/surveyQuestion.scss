@@ -31,10 +31,6 @@
 
   &__closed-box {
     padding: 24px;
-
-    @media screen and (max-width: 576px) {
-      padding: 13px 24px 24px 15px;
-    }
   }
 
   &__shadow {
@@ -78,8 +74,6 @@
       padding: rem(2px) rem(9px) rem(20px) rem(9px);
       background-color: color('grey-150');
       flex-grow: 1;
-      width: rem(245px);
-      margin-right: rem(10px);
     }
   }
 }

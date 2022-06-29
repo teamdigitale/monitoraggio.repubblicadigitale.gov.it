@@ -12,6 +12,10 @@
       }
     }
 
+    div:first-child {
+      padding-right: rem(50px);
+    }
+
     .form-control {
       display: none;
       position: unset;

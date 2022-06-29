@@ -5,46 +5,75 @@ import {
   Container,
 } from 'design-react-kit';
 import clsx from 'clsx';
-import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { selectBreadcrumb } from '../../redux/features/app/appSlice';
+import { NavLink, useLocation } from 'react-router-dom';
 
 export interface BreadcrumbI {
   label?: string;
   url?: string;
-  link: boolean;
+}
+export interface BreadcrumbProps {
+  breadcrumbArray: BreadcrumbI[];
 }
 
-const Breadcrumb = () => {
-  const breadcrumbList = useSelector(selectBreadcrumb);
+const Breadcrumb: React.FC = () => {
+  const location = useLocation();
+
+  const pathnames = location.pathname.split('/').filter((x) => x);
+
+  // const { hash } = location;
 
   return (
-    <Container className='mt-3 pl-0'>
-      <BreadcrumbKit className='mt-4 pt-4'>
-        {breadcrumbList.map((item, index) => (
-          <BreadcrumbItem key={index} className='mb-2'>
-            {item.link && item.url ? (
+    <Container className='mt-3'>
+      <BreadcrumbKit className='mt-0 pt-3'>
+        {pathnames.map((item, index) => {
+          const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`;
+
+          const mainSection = [
+            'programmi',
+            'progetti',
+            'enti',
+            'utenti',
+            'questionari',
+          ];
+
+          return (
+            <BreadcrumbItem key={index}>
               <NavLink
-                to={item.url}
-                className='primary-color font-weight-semibold text-decoration-underline'
-              >
-                {item.label}
-              </NavLink>
-            ) : (
-              <span
-                className={clsx(index === 0 && 'font-weight-semibold pl-2')}
+                to={routeTo || ''}
+                className={clsx(
+                  index === 0 && 'pl-3 font-weight-bold text-secondary',
+                  (pathnames?.length > 2 && index === 1) ||
+                    mainSection.includes(item)
+                    ? 'primary-color'
+                    : 'text-secondary',
+                  'text-capitalize'
+                )}
                 style={{
-                  borderLeft: index === 0 ? '4px solid #0073E5' : 'none',
+                  borderLeft: index === 0 ? '5px solid #06c' : 'none',
+                  textDecoration:
+                    index === 1 ||
+                    (mainSection.includes(item) && pathnames?.length > 2)
+                      ? 'underline'
+                      : 'none',
                 }}
               >
-                {item.label}
-              </span>
-            )}
-            {index < breadcrumbList.length - 1 && (
-              <span className='separator'>/</span>
-            )}
-          </BreadcrumbItem>
-        ))}
+                {item.replace(/-/g, ' ')}
+              </NavLink>
+              {index < pathnames?.length - 1 ? (
+                <span className='separator'>/</span>
+              ) : null}
+            </BreadcrumbItem>
+          );
+        })}
+        {/*hash && hash.split('#')?.[1] ? (
+          <>
+            {' '}
+            <span className='separator'>/</span>{' '}
+            <NavLink to={`#${hash.split('#')?.[1]}`} className='pl-2 font-weight-bold text-secondary primary-color'>
+              {hash.split('#')?.[1]}
+            </NavLink>
+          </>
+        ) : null*/}
       </BreadcrumbKit>
     </Container>
   );

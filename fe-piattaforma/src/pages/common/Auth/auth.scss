@@ -5,11 +5,6 @@
   &__logo {
     height: 88px;
     width: auto;
-
-    @media screen and (max-width: 576px) {
-      max-width: rem(240px);
-      max-height: rem(77px);
-    }
   }
 
   &__top-icon-container {

@@ -97,6 +97,7 @@ export const citizensAreaSlice = createSlice({
       }
     },
     setEntityFilters: (state, action: PayloadAction<any>) => {
+      console.log(action.payload);
       state.filters = {
         ...state.filters,
         ...action.payload,
@@ -129,10 +130,6 @@ export const citizensAreaSlice = createSlice({
     clearInfoForm: (state) => {
       state.detail.info = {};
     },
-    clearCitizenSearch: (state) => {
-      state.searchResult = {};
-      state.multipleSearchResult = [];
-    },
   },
 });
 
@@ -147,7 +144,6 @@ export const {
   getEntitySearch,
   clearInfoForm,
   getEntitySearchMultiple,
-  clearCitizenSearch,
 } = citizensAreaSlice.actions;
 
 export const selectEntityList = (state: RootState) => state.citizensArea.list;

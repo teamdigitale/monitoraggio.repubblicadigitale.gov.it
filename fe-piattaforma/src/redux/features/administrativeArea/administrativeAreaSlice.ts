@@ -1,14 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { PaginatorI } from '../../../components/Paginator/paginator';
-import { ProgramsLightI } from './programs/programsThunk';
+import {
+  ProgramsLightI,
+  //ProgrammaListResponseI,
+} from './programs/programsThunk';
 import { ProjectLightI } from './projects/projectsThunk';
 import { UtentiLightI } from './user/userThunk';
 import { AuthoritiesLightI } from './authorities/authoritiesThunk';
 import { SurveyLightI } from './surveys/surveysThunk';
-import { CitizenI } from '../../../pages/administrator/AdministrativeArea/Entities/Services/citizensList';
-import { ServicesI } from './services/servicesThunk';
-
+export interface ServicesI {
+  id: string;
+  nome: string;
+  numeroCittadini: string;
+  questionari: string;
+  facilitatore: string;
+  stato: string;
+}
 export interface AreaAmministrativaStateI {
   list: any[];
   filters: {
@@ -58,14 +66,14 @@ export interface AreaAmministrativaStateI {
   };
   services: {
     list: ServicesI[];
-    detail: { info: { [key: string]: string }; cittadini: CitizenI[] };
+    detail: { info: { [key: string]: string }; cittadini: [] };
   };
 }
 
 const initialState: AreaAmministrativaStateI = {
   list: [],
   filters: {
-    criterioRicerca: [{ label: 'policy', value: 'mario_1' }],
+    criterioRicerca: [{ label: 'mario', value: 'mario_1' }],
   },
   filterOptions: {
     policy: [
@@ -185,70 +193,8 @@ export const administrativeAreaSlice = createSlice({
     setProgramDetails: (state, action) => {
       state.programs.detail = { ...action.payload.data };
     },
-    setProgramGeneralInfo: (state, action: PayloadAction<any>) => {
-      if (action.payload.currentStep === 2) {
-        state.programs.detail = {
-          ...state.programs.detail,
-          generalInfo: action.payload.newFormValues,
-        };
-      } else if (action.payload.currentStep === 3) {
-        state.programs.detail = {
-          ...state.programs.detail,
-          facilitationNumber: action.payload.newFormValues,
-        };
-      } else if (action.payload.currentStep === 4) {
-        state.programs.detail = {
-          ...state.programs.detail,
-          uniqueUsers: action.payload.newFormValues,
-        };
-      } else if (action.payload.currentStep === 5) {
-        state.programs.detail = {
-          ...state.programs.detail,
-          services: action.payload.newFormValues,
-        };
-      } else {
-        state.programs.detail = {
-          ...state.programs.detail,
-          facilitators: action.payload.newFormValues,
-        };
-      }
-    },
-    resetProgramDetails: (state) => {
-      state.programs.detail = {};
-    },
     setProjectDetails: (state, action) => {
       state.projects.detail = { ...action.payload.data };
-    },
-    setProjectGeneralInfo: (state, action: PayloadAction<any>) => {
-      if (action.payload.currentStep === 2) {
-        state.projects.detail = {
-          ...state.projects.detail,
-          generalInfo: action.payload.newFormValues,
-        };
-      } else if (action.payload.currentStep === 3) {
-        state.projects.detail = {
-          ...state.projects.detail,
-          facilitationNumber: action.payload.newFormValues,
-        };
-      } else if (action.payload.currentStep === 4) {
-        state.projects.detail = {
-          ...state.projects.detail,
-          uniqueUsers: action.payload.newFormValues,
-        };
-      } else if (action.payload.currentStep === 5) {
-        state.projects.detail = {
-          ...state.projects.detail,
-          services: action.payload.newFormValues,
-        };
-      } else {
-        state.projects.detail = {
-          ...state.projects.detail,
-          facilitators: action.payload.newFormValues,
-        };
-      }
-    },
-    resetProjectDetails: (state) => {
-      state.projects.detail = {};
     },
     setSurveyDetail: (state, action) => {
       state.surveys.detail = { ...action.payload.data };
@@ -264,9 +210,6 @@ export const administrativeAreaSlice = createSlice({
     },
     setServicesDetail: (state, action: PayloadAction<any>) => {
       state.services.detail = action.payload;
-    },
-    addCitizenToList: (state, action: PayloadAction<CitizenI>) => {
-      state.services.detail.cittadini.push({ ...action.payload });
     },
   },
 });
@@ -294,11 +237,6 @@ export const {
   setUserDetails,
   setEventsList,
   setServicesDetail,
-  setProgramGeneralInfo,
-  resetProgramDetails,
-  setProjectGeneralInfo,
-  resetProjectDetails,
-  addCitizenToList,
 } = administrativeAreaSlice.actions;
 
 export const selectEntityList = (state: RootState) =>

@@ -13,8 +13,6 @@ import '../compileSurvey/compileSurvey.scss';
 import { useEffect } from 'react';
 import { setCompilingSurveyForm } from '../../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 import { useDispatch } from 'react-redux';
-import { useAppSelector } from '../../../../../../redux/hooks';
-import { selectDevice } from '../../../../../../redux/features/app/appSlice';
 interface JsonFormRenderI {
   form: FormI;
   onInputChange: (
@@ -27,14 +25,13 @@ interface JsonFormRenderI {
 const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
   const { form = {}, onInputChange = () => ({}), currentStep } = props;
   const dispatch = useDispatch();
-  const device = useAppSelector(selectDevice);
 
   useEffect(() => {
     if (currentStep === 3) {
       // last step
       dispatch(setCompilingSurveyForm({ id: currentStep, form }));
     }
-  }, [currentStep, form]);
+  }, [currentStep]);
 
   const updateFormToOrder = () => {
     return Object.keys(form).sort(
@@ -58,20 +55,18 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
           <Input
             {...formField}
             className={clsx(
-              device.mediaIsPhone || device.mediaIsTablet
-                ? 'd-flex w-100 flex-column mt-1'
-                : 'd-inline-block',
-              formField?.label?.toLowerCase() === 'prefisso' &&
+              'd-inline-block',
+              formField.label?.toLowerCase() === 'prefisso' &&
                 'compile-survey-container__prefix-width',
-              formField?.label?.toLowerCase().includes('cellulare') &&
+              formField.label?.toLowerCase().includes('cellulare') &&
                 'compile-survey-container__mobile-width',
-              formField?.label?.toLowerCase() !== 'prefisso' &&
-                !formField?.label?.toLowerCase().includes('cellulare') &&
+              formField.label?.toLowerCase() !== 'prefisso' &&
+                !(formField.label?.toLowerCase().includes('cellulare')) &&
                 'compile-survey-container__half-width',
               'mr-3',
               'mb-3'
             )}
-            label={`${formField?.label}`}
+            label={`${formField?.label} ${formField?.required ? '*' : ''}`}
             onInputBlur={onInputChange}
           />
         );
@@ -84,9 +79,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
             <Select
               {...formField}
               wrapperClassName={clsx(
-                device.mediaIsPhone || device.mediaIsTablet
-                  ? 'd-flex w-100 flex-column mt-1 py-3'
-                  : 'd-inline-block',
+                'd-inline-block',
                 'compile-survey-container__half-width',
                 'compile-survey-container__select-margin',
                 'mr-3',
@@ -98,7 +91,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
                   ? formField?.label?.toLowerCase()
                   : ''
               }`}
-              label={`${formField?.label}`}
+              label={`${formField?.label} ${formField?.required ? '*' : ''}`}
             />
           );
         }
@@ -158,9 +151,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
               onSecondLevelInputChange={onInputChange}
               placeholder='Seleziona'
               wrapperClassName={clsx(
-                device.mediaIsPhone || device.mediaIsTablet
-                  ? 'd-flex w-100 flex-column mt-1 py-2'
-                  : 'd-inline-block',
+                'd-inline-block',
                 'compile-survey-container__half-width',
                 'compile-survey-container__select-margin',
                 'mr-3',
@@ -176,18 +167,15 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
             <CheckboxGroup
               {...formField}
               className={clsx(
-                device.mediaIsPhone || device.mediaIsTablet
-                  ? 'd-flex w-100 flex-column pb-3'
-                  : 'd-inline-block',
+                'd-inline-block',
                 'compile-survey-container__half-width',
                 'compile-survey-container__select-margin',
                 'mr-3',
                 'mb-3'
               )}
               onInputChange={onInputChange}
-              label={`${formField?.label}`}
+              label={`${formField?.label} ${formField?.required ? '*' : ''}`}
               styleLabelForm
-              noLabel={formField.flag === true ? true : false}
             />
           );
         }
@@ -203,7 +191,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
               'mb-3'
             )}
             onInputBlur={onInputChange}
-            label={`${formField?.label}`}
+            label={`${formField?.label} ${formField?.required ? '*' : ''}`}
           />
         );
       }
