@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { Icon } from 'design-react-kit';
 import React from 'react';
-import './AvatarInitials.scss';
+import './avatarInitials.scss';
 
 export enum AvatarSizes {
   Big = '__big',
