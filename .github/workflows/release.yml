@@ -32,7 +32,7 @@ jobs:
       ms-gestione-utente: ${{ steps.modules.outputs.ms-gestione-utente }}
       ms-notifiche-integration: ${{ steps.modules.outputs.ms-notifiche-integration }}
       ms-open-data: ${{ steps.modules.outputs.ms-open-data }}
-      ms-propgramma-progetto: ${{ steps.modules.outputs.ms-propgramma-progetto }}
+      ms-programma-progetto: ${{ steps.modules.outputs.ms-programma-progetto }}
       ms-questionario-cittadino: ${{ steps.modules.outputs.ms-questionario-cittadino }}
     steps:
       - uses: actions/checkout@v3
@@ -51,7 +51,7 @@ jobs:
             echo "::set-output name=ms-gestione-utente::false"
             echo "::set-output name=ms-notifiche-integration::false"
             echo "::set-output name=ms-open-data::false"
-            echo "::set-output name=ms-propgramma-progetto::false"
+            echo "::set-output name=ms-programma-progetto::false"
             echo "::set-output name=ms-questionario-cittadino::false"
             arrIN=(${in//,/ })
             for i in "${arrIN[@]}"; do
@@ -77,8 +77,8 @@ jobs:
             			echo "::set-output name=ms-open-data::true"
             			;;
                   
-                ms-propgramma-progetto)
-            			echo "::set-output name=ms-propgramma-progetto::true"
+                ms-programma-progetto)
+            			echo "::set-output name=ms-programma-progetto::true"
             			;;
                   
                 ms-questionario-cittadino)
@@ -97,7 +97,7 @@ jobs:
             echo "::set-output name=ms-gestione-utente::true"
             echo "::set-output name=ms-notifiche-integration::true"
             echo "::set-output name=ms-open-data::true"
-            echo "::set-output name=ms-propgramma-progetto::true"
+            echo "::set-output name=ms-programma-progetto::true"
             echo "::set-output name=ms-questionario-cittadino::true"
           fi
           
