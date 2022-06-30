@@ -32,7 +32,7 @@ public class ProgettoMapper {
 		progettoLightResource.setId(progettoEntity.getId());
 		progettoLightResource.setNome(progettoEntity.getNomeBreve());
 		progettoLightResource.setStato(progettoEntity.getStato());
-		progettoLightResource.setNomeEnteGestore(progettoEntity.getEnteGestoreProgetto().getNome());
+		progettoLightResource.setNomeEnteGestore(progettoEntity.getEnteGestoreProgetto() != null ? progettoEntity.getEnteGestoreProgetto().getNome() : "");
 		progettoLightResource.setPolicy(progettoEntity.getProgramma().getPolicy().toString());
 		
 		return progettoLightResource;

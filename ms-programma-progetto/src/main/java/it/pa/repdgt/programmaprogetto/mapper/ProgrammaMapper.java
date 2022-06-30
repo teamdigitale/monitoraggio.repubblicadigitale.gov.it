@@ -30,6 +30,7 @@ public class ProgrammaMapper {
 		ProgrammaLightResource programmaLightResource  = new ProgrammaLightResource();
 		programmaLightResource.setId(programmaEntity.getId());
 		programmaLightResource.setNome(programmaEntity.getNomeBreve());
+		programmaLightResource.setNomeBreve(programmaEntity.getNomeBreve());
 		programmaLightResource.setStato(programmaEntity.getStato());
 		programmaLightResource.setPolicy(programmaEntity.getPolicy());
 		programmaLightResource.setNomeEnteGestore(programmaEntity.getEnteGestoreProgramma() != null ? programmaEntity.getEnteGestoreProgramma().getNome() : "");
