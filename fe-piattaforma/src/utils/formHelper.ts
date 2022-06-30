@@ -224,13 +224,15 @@ export const FormHelper = {
       Object.keys(newForm).length !== 0 &&
       Object.getPrototypeOf(newForm) === Object.prototype
     ) {
-      Object.keys(newFormValues).forEach((field) => {
-        newForm[field] = {
-          ...newForm[field],
-          valid: validator(newForm[field], (newFormValues as any)[field]),
-          value: newFormValues[field],
-        };
-      });
+      Object.keys(newFormValues)
+        .filter((field) => (newFormValues as any)[field])
+        .forEach((field) => {
+          newForm[field] = {
+            ...newForm[field],
+            valid: validator(newForm[field], (newFormValues as any)[field]),
+            value: newFormValues[field],
+          };
+        });
       return newForm;
     }
   },

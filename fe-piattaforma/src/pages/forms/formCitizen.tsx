@@ -37,6 +37,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     getFormValues,
     updateForm = () => ({}),
     creation = false,
+    // info,
   } = props;
 
   const device = useAppSelector(selectDevice);

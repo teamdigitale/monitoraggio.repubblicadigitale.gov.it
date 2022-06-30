@@ -8,9 +8,12 @@ interface UserStateI {
     name: string;
     surname: string;
     role: string;
+    codiceFiscale: string;
   };
   notification?: [];
   permissions: RolePermissionI[];
+  idProgramma: string;
+  idProgetto: string[];
 }
 
 const initialState: UserStateI = {
@@ -18,9 +21,12 @@ const initialState: UserStateI = {
   user: {
     name: 'Mario',
     surname: 'Rossi',
-    role: 'Referente Ente gestore di progetto',
+    role: 'DTD',
+    codiceFiscale: 'UTENTE1',
   },
   permissions: ['permission-1'],
+  idProgramma: '0',
+  idProgetto: ['0'],
 };
 
 export const userSlice = createSlice({
@@ -32,7 +38,8 @@ export const userSlice = createSlice({
       state.user = {
         name: 'Luigi',
         surname: 'Bianchi',
-        role: 'Referente Ente gestore di progetto',
+        role: 'DTD',
+        codiceFiscale: 'UTENTE1',
       };
       state.permissions = ['permission-1'];
     },

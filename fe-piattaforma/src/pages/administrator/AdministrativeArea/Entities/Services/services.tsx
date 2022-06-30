@@ -116,9 +116,7 @@ const Services = () => {
   };
 
   const handleOnSearch = (searchValue: string) => {
-    dispatch(
-      setEntityFilters({ nomeLike: { label: searchValue, value: searchValue } })
-    );
+    dispatch(setEntityFilters({ criterioRicerca: searchValue }));
   };
 
   const handleDropdownFilters = (

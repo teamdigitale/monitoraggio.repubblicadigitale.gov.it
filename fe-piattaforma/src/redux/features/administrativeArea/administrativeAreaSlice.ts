@@ -10,7 +10,7 @@ import { CitizenI } from '../../../pages/administrator/AdministrativeArea/Entiti
 import { ServicesI } from './services/servicesThunk';
 
 export interface AreaAmministrativaStateI {
-  list: any[];
+  list: any;
   filters: {
     [key: string]:
       | { label: string; value: string | number | any[] }[]
@@ -24,6 +24,7 @@ export interface AreaAmministrativaStateI {
   pagination: {
     pageSize: number;
     pageNumber: number;
+    totalPages: number;
   };
   detail: {
     info?: { [key: string]: string };
@@ -63,19 +64,13 @@ export interface AreaAmministrativaStateI {
 }
 
 const initialState: AreaAmministrativaStateI = {
-  list: [],
-  filters: {
-    criterioRicerca: [{ label: 'policy', value: 'mario_1' }],
-  },
-  filterOptions: {
-    policy: [
-      { label: 'RFD', value: 1 },
-      { label: 'SCD', value: 2 },
-    ],
-  },
+  list: {},
+  filters: {},
+  filterOptions: {},
   pagination: {
     pageSize: 8,
     pageNumber: 1,
+    totalPages: 1,
   },
   detail: {},
   programs: {
@@ -156,7 +151,7 @@ export const administrativeAreaSlice = createSlice({
       };
     },
     setEntityValues: (state, action: PayloadAction<any>) => {
-      state.list = action.payload.data.data.list;
+      state.list = action.payload.data;
     },
     setEntityDetail: (state, action: PayloadAction<any>) => {
       state.detail = action.payload;
@@ -183,15 +178,24 @@ export const administrativeAreaSlice = createSlice({
       state.authorities.detail = { ...action.payload.data };
     },
     setProgramDetails: (state, action) => {
-      state.programs.detail = { ...action.payload.data };
+      state.programs.detail = { ...action.payload };
     },
     setProgramGeneralInfo: (state, action: PayloadAction<any>) => {
+      state.programs.detail = {
+        ...state.programs.detail,
+        dettagliInfoProgramma: {
+          ...state.programs.detail.dettagliInfoProgramma,
+          ...action.payload.newFormValues,
+        },
+      };
+      /*
       if (action.payload.currentStep === 2) {
         state.programs.detail = {
           ...state.programs.detail,
-          generalInfo: action.payload.newFormValues,
+          dettaglioProgramma: action.payload.newFormValues,
         };
-      } else if (action.payload.currentStep === 3) {
+      }
+       else if (action.payload.currentStep === 3) {
         state.programs.detail = {
           ...state.programs.detail,
           facilitationNumber: action.payload.newFormValues,
@@ -212,12 +216,13 @@ export const administrativeAreaSlice = createSlice({
           facilitators: action.payload.newFormValues,
         };
       }
+      */
     },
     resetProgramDetails: (state) => {
       state.programs.detail = {};
     },
     setProjectDetails: (state, action) => {
-      state.projects.detail = { ...action.payload.data };
+      state.projects.detail = { ...action.payload };
     },
     setProjectGeneralInfo: (state, action: PayloadAction<any>) => {
       if (action.payload.currentStep === 2) {

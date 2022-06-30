@@ -7,6 +7,7 @@ import {
   getEntitySearchMultiple,
   setEntityFilterOptions,
   setEntityValues,
+  setEntityPagination,
 } from './citizensAreaSlice';
 import { RootState } from '../../store';
 import { mapOptions } from '../../../utils/common';
@@ -23,18 +24,29 @@ export const GetEntityValues =
         // @ts-ignore
         citizensArea: { filters, pagination },
       } = select((state: RootState) => state);
-      const entityEndpoint = `/${payload.entity}/all`;
+      const entityEndpoint = `/cittadino/all`;
       const body = {
-        ...filters,
+        filtro: {
+          ...filters,
+          criterioRicerca: null,
+          idsSedi: [],
+        },
+        idProgetto: 0,
+        idProgramma: 0,
+        codiceFiscaleUtenteLoggato: 'UTENTE1', //MOCK
+        codiceRuoloUtenteLoggato: 'DTD', //MOCK DA MANTENERE SOLO NELL'HEADER
       };
-      let res;
-      if (body) {
-        res = await API.post(entityEndpoint, body, { params: pagination });
-      } else {
-        res = await API.get(entityEndpoint, { params: pagination });
-      }
+      const res = await API.post(entityEndpoint, body, {
+        params: {
+          currPage: Math.max(0, pagination.pageNumber - 1),
+          pageSize: pagination.pageSize,
+        },
+      });
       if (res?.data) {
-        dispatch(setEntityValues({ entity: payload.entity, data: res.data }));
+        dispatch(
+          setEntityValues({ entity: payload.entity, data: res.data.cittadini })
+        );
+        dispatch(setEntityPagination({ totalPages: res.data.numeroPagine }));
       }
     } catch (error) {
       console.log('GetEntityValues citizensArea error', error);
@@ -47,18 +59,30 @@ const GetFilterValuesAction = {
   type: 'citizensArea/GetFilterValues',
 };
 export const GetEntityFilterValues =
-  (cfUtente: string, entityFilter: any, payload?: any) =>
+  (entityFilter: any, payload?: any) =>
   async (dispatch: Dispatch, select: Selector) => {
     try {
-      dispatch({ ...GetFilterValuesAction, cfUtente, payload });
+      dispatch({ ...GetFilterValuesAction, payload });
       dispatch(showLoader());
       const {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        citizensArea: { pagination },
+        citizensArea: { filters },
       } = select((state: RootState) => state);
-      const entityFilterEndpoint = `areaCittadini/${entityFilter}/dropdown/${cfUtente}`;
-      const res = await API.get(entityFilterEndpoint, { params: pagination });
+      // } = select((state: RootState) => state);
+      const entityFilterEndpoint = `cittadino/${entityFilter}/dropdown`;
+      const body = {
+        filtro: {
+          ...filters,
+          criterioRicerca: null,
+          idsSedi: [],
+        },
+        idProgetto: 0,
+        idProgramma: 0,
+        codiceFiscaleUtenteLoggato: 'UTENTE1', //MOCK
+        codiceRuoloUtenteLoggato: 'DTD', //MOCK DA MANTENERE SOLO NELL'HEADER
+      };
+      const res = await API.post(entityFilterEndpoint, body);
       if (res?.data) {
         dispatch(
           setEntityFilterOptions({
@@ -77,12 +101,12 @@ const GetEntityDetailAction = {
   type: 'citizensArea/GetEntityDetail',
 };
 export const GetEntityDetail =
-  (cfUtente: string | undefined, payload?: any) =>
+  (idCittadino: string | undefined, payload?: any) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
-      dispatch({ ...GetEntityDetailAction, cfUtente, payload });
-      const res = await API.get('citizensArea/detail', { params: cfUtente });
+      dispatch({ ...GetEntityDetailAction, idCittadino, payload });
+      const res = await API.get(`cittadino/${idCittadino}`);
       if (res?.data) {
         dispatch(getEntityDetail(res.data.data));
       }

@@ -1,27 +1,32 @@
 {
-  "data": {
-    "list": [
-      {
-        "id": 1,
-        "name": "Cittadino 1",
-        "submitted": "231",
-        "onDraft": "11",
-        "status": "COMPLETATO"
-      },
-      {
-        "id": 2,
-        "name": "Cittadino 2",
-        "submitted": "2",
-        "onDraft": "1",
-        "status": "COMPLETATO"
-      },
-      {
-        "id": 3,
-        "name": "Cittadino 3",
-        "submitted": "11",
-        "onDraft": "1",
-        "status": "IN BOZZA"
-      }
-    ]
-  }
+  "cittadini": [
+    {
+      "id": 1,
+      "nome": "Cittadino 1",
+      "cognome": "Cognome 1",
+      "numeroQuestionariCompilati": 0,
+      "numeroServizi": 0
+    },
+    {
+      "id": 2,
+      "nome": "Cittadino 2",
+      "cognome": "Cognome 2",
+      "numeroQuestionariCompilati": 0,
+      "numeroServizi": 0,
+      "submitted": "2",
+      "onDraft": "1",
+      "status": "COMPLETATO"
+    },
+    {
+      "id": 3,
+      "nome": "Cittadino 3",
+      "cognome": "Cognome 3",
+      "numeroQuestionariCompilati": 0,
+      "numeroServizi": 0,
+      "submitted": "11",
+      "onDraft": "1",
+      "status": "IN BOZZA"
+    }
+  ],
+  "numeroPagine": 0
 }

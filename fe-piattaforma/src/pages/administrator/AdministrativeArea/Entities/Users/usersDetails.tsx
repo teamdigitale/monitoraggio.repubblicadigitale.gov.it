@@ -22,6 +22,8 @@ import {
   updateBreadcrumb,
 } from '../../../../../redux/features/app/appSlice';
 import FormUser from '../../../../forms/formUser';
+import { GetUserDetail } from '../../../../../redux/features/administrativeArea/user/userThunk';
+import { selectUsers } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 
 const UsersDetails = () => {
   const [deleteText, setDeleteText] = useState<string>('');
@@ -36,11 +38,16 @@ const UsersDetails = () => {
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const userInfo = useAppSelector(selectUsers)?.detail?.info;
   const { mediaIsDesktop /* mediaIsPhone */ } = useAppSelector(selectDevice);
 
-  const userType = '';
+  useEffect(() => {
+    dispatch(GetUserDetail('1'));
+  }, []);
 
-  const { entityId } = useParams();
+  const headquarterInfo = userInfo?.authorityRef || undefined;
+
+  const { entityId, userType } = useParams();
 
   useEffect(() => {
     dispatch(
@@ -119,6 +126,20 @@ const UsersDetails = () => {
     ]);
   }, [mediaIsDesktop]);
 
+  const getUpperTitle = () => {
+    if (userType) {
+      switch (userType) {
+        case formTypes.DELEGATI:
+          return formTypes.DELEGATO;
+        case formTypes.REFERENTI:
+          return formTypes.REFERENTE;
+        default:
+          'utente';
+      }
+    }
+    return 'utente';
+  };
+
   return (
     <div className='d-flex flex-row container'>
       <div className='d-flex flex-column w-100'>
@@ -127,7 +148,11 @@ const UsersDetails = () => {
             titleInfo={{
               title: 'Antonio Rossi',
               status: 'ATTIVO',
-              upperTitle: { icon: 'it-user', text: userType || '' },
+              upperTitle: { icon: 'it-user', text: getUpperTitle() },
+              subTitle: headquarterInfo,
+              iconAvatar: true,
+              name: userInfo?.name,
+              surname: userInfo?.lastName,
             }}
             formButtons={correctButtons}
             itemsList={itemList}

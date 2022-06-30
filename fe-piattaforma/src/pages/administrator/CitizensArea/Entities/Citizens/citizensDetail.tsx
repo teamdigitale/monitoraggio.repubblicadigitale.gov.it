@@ -19,7 +19,7 @@ import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 
 const CitizensDetail: React.FC = () => {
   const dispatch = useDispatch();
-  const { codFiscale } = useParams();
+  const { idCittadino } = useParams();
   const citizen = useAppSelector(selectEntityDetail);
 
   useEffect(() => {
@@ -36,8 +36,8 @@ const CitizensDetail: React.FC = () => {
           link: true,
         },
         {
-          label: `${citizen.info.name}`,
-          url: `/area-amministrativa/${citizen.info.codiceFiscale}`,
+          label: `${citizen?.dettaglioCittadino.name}`,
+          url: `/area-amministrativa/${citizen?.dettaglioCittadino.idCittadino}`,
           link: false,
         },
       ])
@@ -46,7 +46,7 @@ const CitizensDetail: React.FC = () => {
 
   useEffect(() => {
     // dispatch(clearInfoForm());
-    dispatch(GetEntityDetail(codFiscale));
+    dispatch(GetEntityDetail(idCittadino));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -56,14 +56,15 @@ const CitizensDetail: React.FC = () => {
       color: 'primary',
       text: 'Modifica',
       className: 'align-self-end mr-2',
-      onClick: () => dispatch(
-        openModal({
-          id: formTypes.CITIZENS,
-          payload: {
-            title: 'Modifica cittadino',
-          },
-        })
-      ),
+      onClick: () =>
+        dispatch(
+          openModal({
+            id: formTypes.CITIZENS,
+            payload: {
+              title: 'Modifica cittadino',
+            },
+          })
+        ),
     },
 
     {
@@ -79,17 +80,21 @@ const CitizensDetail: React.FC = () => {
   return (
     <div className='container pb-3'>
       <DetailLayout
-        titleInfo={{ // TODO: update
-          title: 'Mario Rossi', 
-          status: 'ATTIVO',
+        titleInfo={{
+          title:
+            citizen?.dettaglioCittadino?.nome +
+            ' ' +
+            citizen?.dettaglioCittadino?.cognome,
+          status: 'ATTIVO', // TODO: update
           upperTitle: { icon: 'it-user', text: 'Cittadino' },
         }}
         buttonsPosition='TOP'
         goBackTitle='I miei cittadini'
       >
-        <FormCitizen  info={citizen?.info} formDisabled/>
+        <FormCitizen info={citizen?.dettaglioCittadino} formDisabled />
       </DetailLayout>
-      <CitizenQuestionari questionari={citizen?.questionari} />
+      <CitizenQuestionari questionari={[]} />{' '}
+      {/* questionari={citizen?.serviziCittadino */}
       <Sticky mode='bottom'>
         <ButtonsBar buttons={citizenButtons} />
       </Sticky>

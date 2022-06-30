@@ -26,11 +26,13 @@ import {
 
 export interface SurveyLightI {
   id: string;
-  name: string;
-  lastChangeDate: string;
-  status: string;
-  default_SCD: boolean;
-  default_RFD: boolean;
+  nome: string;
+  tipo: string;
+  stato: string;
+  defaultSCD: boolean;
+  defaultRFD: boolean;
+  descrizione: string;
+  dataUltimaModifica: string;
 }
 
 // Changes in endpoints request and response may require changes in the actions below
@@ -49,16 +51,20 @@ export const GetAllSurveys =
         // @ts-ignore
         administrativeArea: { filters, pagination },
       } = select((state: RootState) => state);
-      const endpoint = '/questionari/all';
+      const endpoint = '/questionarioTemplate/all';
       const body = {
-        ...filters,
+        codiceFiscaleUtenteLoggato: 'UTENTE1', // MOCK
+        codiceRuoloUtenteLoggato: 'DTD', // MOCK
+        idProgetto: 0, // MOCK
+        idProgramma: 0, // MOCK
       };
       let res;
       if (body) {
         res = await API.post(endpoint, body, {
           params: {
-            currPage: pagination.pageNumber,
+            currPage: Math.max(0, pagination.pageNumber - 1),
             pageSize: pagination.pageSize,
+            ...filters,
           },
         });
       } else {
@@ -66,11 +72,12 @@ export const GetAllSurveys =
           params: {
             currPage: pagination.pageNumber,
             pageSize: pagination.pageSize,
+            ...filters,
           },
         });
       }
-
-      if (res.data) dispatch(setSurveysList({ data: res.data.data.list }));
+      if (res.data)
+        dispatch(setSurveysList({ data: res.data.questionariTemplate }));
     } finally {
       dispatch(hideLoader());
     }
@@ -277,14 +284,15 @@ export interface SurveyCreationBodyI {
     title: string;
     schema: string;
     schemaUI?: string | undefined;
+    'default-section': boolean;
   }[];
 }
 
 const SetSurveyCreationAction = { type: 'surveys/SetSurveyCreation' };
 export const SetSurveyCreation =
-  (payload?: any) => async (dispatch: Dispatch, select: Selector) => {
+  (isClone: boolean) => async (dispatch: Dispatch, select: Selector) => {
     try {
-      dispatch({ ...SetSurveyCreationAction, payload });
+      dispatch({ ...SetSurveyCreationAction, isClone });
       dispatch(showLoader());
       const {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -314,11 +322,17 @@ export const SetSurveyCreation =
                   );
                 }
               });
-              body['survey-id'] = survey.surveyId;
-              body['survey-status'] = survey.surveyStatus;
-              body['default-RFD'] = survey.defaultRFD;
-              body['default-SCD'] = survey.defaultSCD;
-              body['last-update'] = survey.lastUpdate;
+              // if (!isClone) {    // non presenti nel payload delle POST/PUT
+              //   body['survey-id'] = survey.surveyId;
+              //   body['survey-status'] = survey.surveyStatus;
+              //   body['default-RFD'] = survey.defaultRFD;
+              //   body['default-SCD'] = survey.defaultSCD;
+              //   body['last-update'] = survey.lastUpdate;
+              // }
+              if (isClone) {
+                body['survey-name'] =
+                  survey.form['survey-name']?.value + ' clone';
+              }
               body.sections?.push({
                 id: section.id || `${new Date().getTime()}`,
                 title: section.sectionTitle,
@@ -327,12 +341,23 @@ export const SetSurveyCreation =
                   index,
                   survey.sectionsSchemaResponse
                 ),
+                'default-section': true,
               });
             }
           });
           if (valid) {
-            // TODO create jsonForm and submit to API
-            console.log('body', body);
+            let res;
+            if (isClone) {
+              res = await API.post(`questionarioTemplate`, body);
+            } else {
+              res = await API.put(
+                `questionarioTemplate/${survey.surveyId}`,
+                body
+              );
+            }
+            if (res) {
+              /* TODO: controllo se post andata a buon fine */
+            }
           }
         }
       }
@@ -347,8 +372,7 @@ export const GetSurveyInfo =
     try {
       dispatch(showLoader());
       dispatch({ ...GetSurveyInfoAction, questionarioId });
-      // const res = await API.get(`questionario/${questionarioId}`); // TODO: decommenta quando integrano chiamata
-      const res = await API.get(`questionario/1`);
+      const res = await API.get(`questionario/${questionarioId}`);
       if (res?.data) {
         dispatch(setSurveyInfoForm(res.data));
       }

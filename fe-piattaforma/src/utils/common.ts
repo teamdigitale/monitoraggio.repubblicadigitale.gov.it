@@ -77,6 +77,7 @@ export interface ItemsListI {
     fullInfo?: {
       [key: string]: string;
     };
+    default?: boolean;
   }[];
 }
 
@@ -167,4 +168,40 @@ export const simplify = (children: React.ReactElement) => {
     type,
     props,
   }));
+};
+
+export const downloadFile = (file: string, fileName: string) => {
+  const link = document.createElement('a');
+  link.setAttribute('href', file);
+  link.setAttribute('download', fileName);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+export const downloadBlob = (
+  content: string,
+  filename: string,
+  contentType: string
+) => {
+  const blob = new Blob([content], { type: contentType });
+  const url = URL.createObjectURL(blob);
+  downloadFile(url, filename);
+};
+
+const transformToCSV = (data: string) => {
+  const rows = data.split('\r\n').map((r) => r.split(','));
+  return rows.map((r) => r.join(';')).join('\r\n');
+};
+
+export const downloadCSV = (
+  data: string,
+  filename = 'my_data.csv',
+  toTransform = false
+) => {
+  let csvData = data;
+  if (toTransform) {
+    csvData = transformToCSV(data);
+  }
+  downloadBlob(csvData, filename, 'text/csv;charset=utf-8;');
 };

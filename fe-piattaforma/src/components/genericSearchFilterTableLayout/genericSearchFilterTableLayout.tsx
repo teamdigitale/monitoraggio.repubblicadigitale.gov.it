@@ -39,6 +39,7 @@ interface GenericSearchFilterTableLayoutI {
   ctaPrint?: () => void;
   buttonsList?: ButtonInButtonsBar[];
   cardsCounter?: CardCounterI[];
+  ctaDownload?: () => void;
 }
 
 const GenericSearchFilterTableLayout: React.FC<
@@ -58,6 +59,7 @@ const GenericSearchFilterTableLayout: React.FC<
   ctaPrint,
   buttonsList,
   cardsCounter,
+  ctaDownload,
 }) => {
   const dispatch = useDispatch();
   const [showChips, setShowChips] = useState<boolean>(false);
@@ -67,11 +69,15 @@ const GenericSearchFilterTableLayout: React.FC<
   }, []);
 
   const getFilterLabel = (key: string) => {
+    // TODO update keys when API integration is done
     switch (key) {
+      case 'filtroCriterioRicerca':
       case 'criterioRicerca':
         return 'Ricerca';
+      case 'filtroPolicies':
       case 'policies':
         return 'Policy';
+      case 'filtroStati':
       case 'stati':
         return 'Stato';
       case 'programmi':
@@ -82,12 +88,20 @@ const GenericSearchFilterTableLayout: React.FC<
         return 'Profilo';
       case 'ruoli':
         return 'Ruolo';
+      case 'sedi':
+        return 'Sede';
       default:
         key;
     }
   };
 
-  const getLabelsChips = (filter: { label: string, value: string | number} | { label: string, value: string | number}[], i: number, filterKey: string) => { console.log(filter)
+  const getLabelsChips = (
+    filter:
+      | { label: string; value: string | number }
+      | { label: string; value: string | number }[],
+    i: number,
+    filterKey: string
+  ) => {
     if (!Array.isArray(filter) && filter?.value) {
       return (
         <Chip key={i} className='mr-2'>
@@ -310,12 +324,10 @@ const GenericSearchFilterTableLayout: React.FC<
             ))}
           </div>
         ) : null}
-        {showButtons ? (
+        {ctaDownload ? (
           <div className='d-flex justify-content-end'>
             <Button
-              onClick={() => {
-                console.log('download');
-              }}
+              onClick={ctaDownload}
               className={clsx(
                 'primary-color-b1',
                 'd-flex',

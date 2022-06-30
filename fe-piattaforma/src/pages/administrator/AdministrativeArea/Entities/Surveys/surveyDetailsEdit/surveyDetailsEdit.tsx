@@ -111,7 +111,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
   };
 
   const handleOnSubmit = () => {
-    dispatch(SetSurveyCreation());
+    dispatch(SetSurveyCreation(false));
   };
 
   const checkValidityQuestions = (questions: SurveyQuestionI[]) => {
@@ -299,6 +299,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
               onClick={() => {
                 setCloneModeState(true);
                 setEditModeState(false);
+                dispatch(SetSurveyCreation(true));
                 navigate(`/area-amministrativa/questionari/${1}/clona`);
               }}
             >

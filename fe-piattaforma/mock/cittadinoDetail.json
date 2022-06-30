@@ -1,41 +1,46 @@
 {
   "data": {
-    "info": {
-      "name": "Antonio",
-      "lastName": "Rossi",
-      "fiscalCode": "codfiscale",
-      "nDoc": "321321",
-      "nationality": "Italiana",
-      "age": "21",
-      "degree": "Diploma",
-      "occupation": "Operaio",
+    "dettaglioCittadino": {
+      "annoDiNascita": 1982,
+      "categoriaFragili": "",
+      "cittadinanza": "Italiana",
+      "codiceFiscale": "RSSNTN82D14A783S",
+      "cognome": "Rossi",
+      "comuneDiDomicilio": "Milano",
+      "dataConferimentoConsenso": "2022-06-29T14:18:23.645Z",
       "email": "antoniorossi@mail.com",
-      "phone": "3211233232",
-      "consensoOTP": true,
-      "confModulo": false,
-      "dataConf": "2022-05-30"
+      "genere": "M",
+      "nome": "Antonio",
+      "numeroDiCellulare": "3211233232",
+      "numeroDocumento": "321321",
+      "occupazione": "Dipendente",
+      "prefissoTelefono": "+39",
+      "telefono": "3211233232",
+      "tipoConferimentoConsenso": "Online",
+      "tipoDocumento": "Patente",
+      "titoloDiStudio": "Laurea di I livello (triennale)"
     },
-    "questionari": [
+    "serviziCittadino": [
       {
-        "id": 1,
-        "type": "Tipo 1",
-        "facilitatore": "Fac 1",
-        "lastChange": "10/03/2022",
-        "status": "ATTIVO"
+        "idQuestionarioCompilato": "questionario1",
+        "idServizio": 0,
+        "nomeCompletoFacilitatore": "nome facilitatore",
+        "nomeServizio": "Servizio 1",
+        "statoQuestionario": "ATTIVO"
       },
       {
-        "id": 2,
-        "type": "Tipo 2",
-        "facilitatore": "Fac 1",
-        "lastChange": "10/03/2022",
-        "status": "ATTIVO"
+        "idQuestionarioCompilato": "questionario2",
+        "idServizio": 1,
+        "nomeCompletoFacilitatore": "nome facilitatore",
+        "nomeServizio": "Servizio 2",
+        "statoQuestionario": "ATTIVO"
       },
       {
-        "id": 3,
-        "type": "Tipo 3",
-        "facilitatore": "Fac 1",
-        "lastChange": "10/03/2022",
-        "status": "ATTIVO"
+        "idQuestionarioCompilato": "questionario2",
+        "idServizio": 2,
+        "nomeCompletoFacilitatore": "nome facilitatore",
+        "nomeServizio": "Servizio 3",
+        "statoQuestionario": "ATTIVO"
       }
     ]
   }

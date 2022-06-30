@@ -16,6 +16,7 @@ import { selectDevice } from '../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
 import { RegexpType } from '../../../utils/validator';
+import { formForSectionT } from '../formPrograms/targetDateFormPrograms';
 
 interface ProgramInformationI {
   formDisabled?: boolean;
@@ -27,11 +28,7 @@ interface ProgramInformationI {
 interface TargetDateFormProjectsI
   extends withFormHandlerProps,
     ProgramInformationI {
-  formForSection:
-    | 'facilitationNumber'
-    | 'uniqueUsers'
-    | 'services'
-    | 'facilitators';
+  formForSection: formForSectionT;
   intoModal?: boolean;
 }
 
@@ -54,8 +51,12 @@ const TargetDateFormProjects: React.FC<TargetDateFormProjectsI> = (props) => {
 
   const formDisabled = !!props.formDisabled;
 
-  const formData: { [key: string]: string } | undefined =
-    useAppSelector(selectProjects).detail?.dettaglioProgetto?.[formForSection];
+  const projectDetail =
+    useAppSelector(selectProjects).detail?.dettagliInfoProgetto;
+
+  const [formData, setFormData] = useState<
+    { [key: string]: string } | undefined
+  >();
 
   const dispatch = useDispatch();
 
@@ -75,14 +76,14 @@ const TargetDateFormProjects: React.FC<TargetDateFormProjectsI> = (props) => {
       const newFormList: formFieldI[] = [];
       newFormList.push(
         newFormField({
-          field: `valoreObiettivo${count + 1}`,
+          field: `n${formForSection}Target${count + 1}`,
           required: true,
           id: `${intoModal && 'modal-'}${formForSection}-valoreObiettivo${
             count + 1
           }`,
         }),
         newFormField({
-          field: `valoreObiettivo${count + 1}data`,
+          field: `n${formForSection}DataTarget${count + 1}`,
           regex: RegexpType.DATE,
           required: true,
           type: 'date',
@@ -111,6 +112,18 @@ const TargetDateFormProjects: React.FC<TargetDateFormProjectsI> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
 
+  useEffect(() => {
+    if (projectDetail && formForSection) {
+      setFormData(
+        Object.fromEntries(
+          Object.keys(projectDetail)
+            .filter((key) => key.includes(formForSection) && projectDetail[key])
+            .map((key) => [key, projectDetail[key] as string])
+        )
+      );
+    }
+  }, [projectDetail, formForSection]);
+
   const onInputDataChange = (
     value: formFieldI['value'],
     field?: formFieldI['field']
@@ -135,7 +148,7 @@ const TargetDateFormProjects: React.FC<TargetDateFormProjectsI> = (props) => {
       const newFormList: formFieldI[] = [];
       newFormList.push(
         newFormField({
-          field: `valoreObiettivo${count + 1}`,
+          field: `n${formForSection}Target${count + 1}`,
           required: true,
           id: `${intoModal && 'modal-'}${formForSection}-valoreObiettivo${
             count + 1
@@ -144,7 +157,7 @@ const TargetDateFormProjects: React.FC<TargetDateFormProjectsI> = (props) => {
           order: count + 1,
         }),
         newFormField({
-          field: `valoreObiettivo${count + 1}data`,
+          field: `n${formForSection}DataTarget${count + 1}`,
           regex: RegexpType.DATE,
           required: true,
           type: 'date',

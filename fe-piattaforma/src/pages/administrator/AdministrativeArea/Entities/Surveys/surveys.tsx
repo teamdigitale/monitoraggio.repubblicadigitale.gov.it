@@ -14,6 +14,12 @@ import {
   setEntityFilters,
   setEntityPagination,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import {
+  DownloadEntityValues,
+  // GetEntityValues,
+  GetEntityFilterValues,
+  // DownloadEntityValues,
+} from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import { TableHeadingQuestionnaires } from '../utils';
 
 import GenericSearchFilterTableLayout, {
@@ -39,7 +45,8 @@ import {
   UpdateSurveyExclusiveField,
 } from '../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 
-const statusDropdownLabel = 'stato';
+const entity = 'questionarioTemplate';
+const statusDropdownLabel = 'stati';
 
 const Surveys = () => {
   const dispatch = useDispatch();
@@ -51,6 +58,10 @@ const Surveys = () => {
   const [searchDropdown, setSearchDropdown] = useState<
     { filterId: string; value: formFieldI['value'] }[]
   >([]);
+
+  const { criterioRicerca, stati } = filtersList;
+
+  const { pageNumber } = pagination;
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 3 }));
@@ -76,16 +87,17 @@ const Surveys = () => {
       TableHeadingQuestionnaires,
       questionariList?.list.map((td) => ({
         id: td.id,
-        label: td.name,
-        lastChangeDate: td.lastChangeDate,
-        status: <StatusChip status={td.status} rowTableId={td.id} />,
+        label: td.nome,
+        type: td.tipo,
+        status: <StatusChip status={td.stato} rowTableId={td.id} />,
+        lastChangeDate: td.dataUltimaModifica,
         default_SCD: (
           <FormGroup check className='table-container__toggle-button'>
             <Toggle
               label=''
               aria-labelledby={`toggle-SCD-${td.id}`}
               disabled={false}
-              checked={td.default_SCD}
+              checked={td.defaultSCD}
               onChange={(e) =>
                 handleToggleChange('scd', e.target.checked, td.id)
               }
@@ -101,7 +113,7 @@ const Surveys = () => {
               label=''
               aria-labelledby={`toggle-RFD-${td.id}`}
               disabled={false}
-              checked={td.default_RFD}
+              checked={td.defaultRFD}
               onChange={(e) =>
                 handleToggleChange('rfd', e.target.checked, td.id)
               }
@@ -160,23 +172,28 @@ const Surveys = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [questionariList]);
 
-  const getListaQuestionari = () => {
+  const getSurveysList = () => {
     dispatch(GetAllSurveys());
   };
 
+  const getAllFilters = () => {
+    dispatch(
+      GetEntityFilterValues({ entity, dropdownType: statusDropdownLabel })
+    );
+  };
+
   useEffect(() => {
-    getListaQuestionari();
+    getAllFilters();
+    getSurveysList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filtersList, pagination]);
+  }, [criterioRicerca, stati, pageNumber]);
 
   const handleOnChangePage = (pageNumber: number = pagination?.pageNumber) => {
     dispatch(setEntityPagination({ pageNumber }));
   };
 
   const handleOnSearch = (searchValue: string) => {
-    dispatch(
-      setEntityFilters({ nomeLike: { label: searchValue, value: searchValue } })
-    );
+    dispatch(setEntityFilters({ criterioRicerca: searchValue }));
   };
 
   // HANDLE TOGGLE CHANGE for SCD and RFD
@@ -209,6 +226,10 @@ const Surveys = () => {
     }
     setSearchDropdown(searchDropdownValues);
     dispatch(GetFilterValuesSurvey(filterId as 'tipo' | 'stato')); // esempio di parametro con cui filtrare le opzioni tramite api
+  };
+
+  const handleDownloadList = () => {
+    dispatch(DownloadEntityValues({ entity }));
   };
 
   const searchInformation: SearchInformationI = {
@@ -288,10 +309,10 @@ const Surveys = () => {
       />
       <GenericSearchFilterTableLayout
         searchInformation={searchInformation}
-        showButtons={false}
         filtersList={filtersList}
         dropdowns={dropdowns}
         {...objectToPass}
+        ctaDownload={handleDownloadList}
       >
         <div>
           <Table

@@ -8,39 +8,29 @@ const shouldUseMock = true;
 
 export const initMock = (apiInstance: AxiosInstance) => {
   if (apiInstance && shouldUseMock) {
-    const mockInstance = new MockAdapter(apiInstance);
+    const mockInstance = new MockAdapter(apiInstance, {
+      onNoMatch: 'passthrough',
+    });
 
-    mockInstance.onPut('/programma').reply(() => {
+    /*mockInstance.onPut('/programma').reply(() => {
       return [500];
-    });
+    });*/
 
-    mockInstance.onPost('/programma').reply(() => {
+    /*mockInstance.onPost('/programma').reply(() => {
       return [201];
-    });
+    });*/
 
-    mockInstance.onGet('/programma/all').reply(async () => {
+    /*mockInstance.onPost('/programma/all').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/listaProgrammi.json');
       return [200, response];
-    });
+    });*/
 
-    mockInstance.onPost('/programma/all').reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/listaProgrammi.json');
-      return [200, response];
-    });
-
-    mockInstance.onGet('/progetto/all').reply(async () => {
+    /*mockInstance.onPost('/progetto/all').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/listaProgetti.json');
       return [200, response];
-    });
-
-    mockInstance.onPost('/progetto/all').reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/listaProgetti.json');
-      return [200, response];
-    });
+    });*/
 
     mockInstance.onGet('/ente/all').reply(async () => {
       // @ts-ignore
@@ -90,35 +80,35 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });
 
-    mockInstance.onPost('/programma/policies/dropdown').reply(async () => {
+    /*mockInstance.onPost('/programma/policies/dropdown').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/policyDropdown.json');
-      return [200, response];
-    });
+      return [200, response.data];
+    });*/
 
-    mockInstance.onPost('/programma/stati/dropdown').reply(async () => {
+    /*mockInstance.onPost('/programma/stati/dropdown').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/statiDropdown.json');
-      return [200, response];
-    });
+      return [200, response.data];
+    });*/
 
-    mockInstance.onPost('/progetto/policies/dropdown').reply(async () => {
+    /*mockInstance.onPost('/progetto/policies/dropdown').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/policyDropdown.json');
-      return [200, response];
-    });
+      return [200, response.data];
+    });*/
 
-    mockInstance.onPost('/progetto/programmi/dropdown').reply(async () => {
+    /*mockInstance.onPost('/progetto/programmi/dropdown').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/programmiDropdown.json');
-      return [200, response];
-    });
+      return [200, response.data];
+    });*/
 
-    mockInstance.onPost('/progetto/stati/dropdown').reply(async () => {
+    /*mockInstance.onPost('/progetto/stati/dropdown').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/statiDropdown.json');
-      return [200, response];
-    });
+      return [200, response.data];
+    });*/
 
     mockInstance.onPost('/ente/profili/dropdown').reply(async () => {
       // @ts-ignore
@@ -156,13 +146,13 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });
 
-    mockInstance.onGet('/citizensArea/all').reply(async () => {
+    mockInstance.onGet('/cittadino/all').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/listaCittadini.json');
       return [200, response];
     });
 
-    mockInstance.onPost('/citizensArea/all').reply(async () => {
+    mockInstance.onPost('/cittadino/all').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/listaCittadini.json');
       return [200, response];
@@ -214,11 +204,11 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });
 
-    mockInstance.onGet('/programma/idProgramma').reply(async () => {
+    /*mockInstance.onGet('/programma/idProgramma').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/programmaMock.json');
       return [200, response];
-    });
+    });*/
 
     mockInstance
       .onGet('/ente/321321/gestoreProgramma/prova')
@@ -245,11 +235,11 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });
 
-    mockInstance.onGet('/progetto/idProgetto').reply(async () => {
+    /*mockInstance.onGet('/progetto/idProgetto').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/progettoMock.json');
       return [200, response];
-    });
+    });*/
 
     mockInstance.onGet('/ente/project1/partner/all').reply(async () => {
       // @ts-ignore
@@ -280,7 +270,7 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });
 
-    mockInstance.onGet('/questionario/1').reply(async () => {
+    mockInstance.onGet('/questionario/tewbebe').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/responseQuestionario.json');
       return [200, response];
@@ -321,16 +311,5 @@ export const initMock = (apiInstance: AxiosInstance) => {
         const response = await import('/mock/statiServiziDropdown.json');
         return [200, response];
       });
-
-    mockInstance.onAny().reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/user.json');
-      return [200, response];
-    });
-
-    // sample
-    mockInstance.onAny().reply(500, {
-      data: [{ id: 1, name: 'John Smith' }],
-    });
   }
 };

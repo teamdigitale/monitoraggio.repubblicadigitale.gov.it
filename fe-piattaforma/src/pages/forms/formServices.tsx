@@ -250,8 +250,10 @@ const Services: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
               let upperLevel = '';
               Object.keys(multiSelectOptions).forEach((key: string) => {
                 if (
-                  multiSelectOptions[Number(key)].options.filter((x: { label: string; value: string; upperLevel: string }) => x.label === val)
-                    ?.length > 0
+                  multiSelectOptions[Number(key)].options.filter(
+                    (x: { label: string; value: string; upperLevel: string }) =>
+                      x.label === val
+                  )?.length > 0
                 ) {
                   upperLevel = multiSelectOptions[Number(key)].label;
                 }

@@ -4,6 +4,10 @@ import './sectionTitle.scss';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import clsx from 'clsx';
+import AvatarInitials, {
+  AvatarSizes,
+  AvatarTextSizes,
+} from '../AvatarInitials/avatarInitials';
 
 interface SectionTitleI {
   title: string;
@@ -13,10 +17,14 @@ interface SectionTitleI {
     text: string;
   };
   subTitle?: string;
+  iconAvatar?: boolean;
+  name?: string;
+  surname?: string;
 }
 
 const SectionTitle: React.FC<SectionTitleI> = (props) => {
-  const { title, status, upperTitle, subTitle } = props;
+  const { title, status, upperTitle, subTitle, iconAvatar, name, surname } =
+    props;
   const { mediaIsDesktop, mediaIsTablet, mediaIsPhone } =
     useAppSelector(selectDevice);
 
@@ -27,8 +35,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
           <Icon
             icon={upperTitle.icon}
             size='sm'
-            color='primary'
-            className='mr-1'
+            className='mr-1 icon-color'
             aria-label='Sezione'
           />
           <p
@@ -39,12 +46,19 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
               'text-uppercase'
             )}
           >
-            {upperTitle.text || 'utente'}
+            {upperTitle.text}
           </p>
         </div>
       ) : null}
 
       <div className='d-flex flex-row'>
+        {iconAvatar && (
+          <AvatarInitials
+            user={{ uName: name || '', uSurname: surname || '' }}
+            size={AvatarSizes.Big}
+            font={AvatarTextSizes.Big}
+          />
+        )}
         <div className='custom-section-title__section-title primary-color-a9 text-center'>
           <span role='heading' aria-level={1}>
             {' '}

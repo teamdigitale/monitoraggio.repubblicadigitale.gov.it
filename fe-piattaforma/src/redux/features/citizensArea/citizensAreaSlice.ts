@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 
 export interface CittadinoInfoI {
+  idCittadino?: string;
   name?: string;
   lastName?: string;
   fiscalCode?: string;
@@ -21,11 +22,21 @@ export interface CittadinoInfoI {
   codiceFiscale?: string;
   telefono?: string;
   message?: string;
+  numeroQuestionariCompilati?: string;
+  numeroServizi?: string;
+}
+
+export interface ServizioCittadinoI {
+  idQuestionarioCompilato?: string;
+  idServizio?: string;
+  nomeCompletoFacilitatore?: string;
+  nomeServizio?: string;
+  statoQuestionario?: string;
 }
 
 export interface CittadinoI {
-  info: CittadinoInfoI;
-  questionari: any[];
+  dettaglioCittadino: CittadinoInfoI;
+  serviziCittadino: ServizioCittadinoI[];
 }
 
 interface AreaCittadiniStateI {
@@ -52,7 +63,7 @@ interface AreaCittadiniStateI {
 const initialState: AreaCittadiniStateI = {
   list: [],
   filters: {
-    nameLike: [{ label: 'mario', value: 'mario_1' }],
+    // nameLike: [{ label: 'mario', value: 'mario_1' }],
   },
   filterOptions: {
     policy: [
@@ -64,7 +75,7 @@ const initialState: AreaCittadiniStateI = {
     pageSize: 8,
     pageNumber: 1,
   },
-  detail: { info: {}, questionari: [] },
+  detail: { dettaglioCittadino: {}, serviziCittadino: [] },
   searchResult: {},
   multipleSearchResult: [],
 };
@@ -115,7 +126,7 @@ export const citizensAreaSlice = createSlice({
       };
     },
     setEntityValues: (state, action: PayloadAction<any>) => {
-      state.list = action.payload.data.data.list;
+      state.list = action.payload.data;
     },
     getEntityDetail: (state, action: PayloadAction<any>) => {
       state.detail = action.payload;
@@ -127,7 +138,7 @@ export const citizensAreaSlice = createSlice({
       state.multipleSearchResult = action.payload;
     },
     clearInfoForm: (state) => {
-      state.detail.info = {};
+      state.detail.dettaglioCittadino = {};
     },
     clearCitizenSearch: (state) => {
       state.searchResult = {};
