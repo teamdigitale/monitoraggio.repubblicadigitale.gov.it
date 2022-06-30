@@ -207,7 +207,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       case 2: {
         return (
           <TargetDateFormProjects
-            formForSection='facilitationNumber'
+            formForSection='puntiFacilitazione'
             intoModal
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
@@ -223,7 +223,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       case 3: {
         return (
           <TargetDateFormProjects
-            formForSection='uniqueUsers'
+            formForSection='utentiUnici'
             intoModal
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
@@ -239,7 +239,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       case 4: {
         return (
           <TargetDateFormProjects
-            formForSection='services'
+            formForSection='servizi'
             intoModal
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
@@ -255,7 +255,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       case 5: {
         return (
           <TargetDateFormProjects
-            formForSection='facilitators'
+            formForSection='facilitatori'
             intoModal
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>

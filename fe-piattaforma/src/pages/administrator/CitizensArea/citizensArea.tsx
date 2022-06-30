@@ -71,6 +71,6 @@ export const AreaCittadiniRoutes = [
   <Route
     key='area-cittadini-dettaglio'
     element={<CitizensDetail />}
-    path='/:codFiscale'
+    path='/:idCittadino'
   />,
 ];

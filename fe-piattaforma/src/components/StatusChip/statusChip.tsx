@@ -64,6 +64,8 @@ export const statusColor = (status: string) => {
 const StatusChip: React.FC<StatusChipI> = (props) => {
   const { status, noTooltip = false, rowTableId } = props;
 
+  if (!status) return null;
+
   return (
     <>
       <Button
@@ -79,7 +81,7 @@ const StatusChip: React.FC<StatusChipI> = (props) => {
           )}
         >
           <ChipLabel className={statusColor(status)}>
-            {status.toUpperCase()}
+            {status?.toUpperCase()}
           </ChipLabel>
         </Chip>{' '}
       </Button>

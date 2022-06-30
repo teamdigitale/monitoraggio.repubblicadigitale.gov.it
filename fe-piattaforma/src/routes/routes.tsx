@@ -309,7 +309,7 @@ const routes = [
   }),
   newRoute({
     scope: 'administrative-area',
-    path: 'programmi/:entityId/utenti/:userId',
+    path: 'programmi/:entityId/:userType/:userId',
     title: 'Programmi Dettaglio',
     element: <UsersDetails />,
     visibleTo: [],
@@ -318,7 +318,7 @@ const routes = [
   }),
   newRoute({
     scope: 'administrative-area',
-    path: 'programmi/:entityId/progetti/:projectId/utenti/:userId',
+    path: 'programmi/:entityId/progetti/:projectId/:userType/:userId',
     title: 'Programmi Dettaglio',
     element: <UsersDetails />,
     visibleTo: [],
@@ -409,7 +409,7 @@ const routes = [
   }),
   newRoute({
     scope: 'administrative-area',
-    path: 'progetti/:entityId/utenti/:userId',
+    path: 'progetti/:entityId/:userType/:userId',
     title: 'Progetti',
     element: <UsersDetails />,
     visibleTo: [],
@@ -447,7 +447,7 @@ const routes = [
   }),
   newRoute({
     scope: 'administrative-area',
-    path: 'utenti/:entityId',
+    path: ':userType/:entityId',
     title: 'Utenti',
     element: <UsersDetails />,
     visibleTo: [],
@@ -571,7 +571,7 @@ const routes = [
   }),
   newRoute({
     scope: 'citizens-area',
-    path: '/area-cittadini/:codFiscale',
+    path: '/area-cittadini/:idCittadino',
     title: 'Cittadini',
     element: <CitizensDetail />,
     visibleTo: [],

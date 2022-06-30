@@ -1,41 +1,60 @@
 {
   "data": {
-    "dettaglioProgramma": {
-      "generalInfo": {
-        "codice": "codice",
-        "nome": "nome",
-        "policy": "rfd",
-        "CUP": "12345",
-        "Bando": "Nome del Bando del Programma",
-        "nomeBreve": "nome breve",
-        "dataInizioProgramma": "2022-04-13",
-        "dataFineProgramma": "2022-05-30"
-      },
-      "facilitationNumber": {
-        "valoreObiettivo1": "codice facilitazione",
-        "valoreObiettivo1data": "2022-04-13",
-        "valoreObiettivo2": "codice facilitazione",
-        "valoreObiettivo2data": "2022-04-13"
-      },
-      "uniqueUsers": {
-        "valoreObiettivo1": "codice utenti unici",
-        "valoreObiettivo1data": "2022-04-13",
-        "valoreObiettivo2": "codice facilitazione",
-        "valoreObiettivo2data": "2022-04-13"
-      },
-      "services": {
-        "valoreObiettivo1": "codice servizi",
-        "valoreObiettivo1data": "2022-04-13",
-        "valoreObiettivo2": "codice facilitazione",
-        "valoreObiettivo2data": "2022-04-13"
-      },
-      "facilitators": {
-        "valoreObiettivo1": "codice facilitatori",
-        "valoreObiettivo1data": "2022-04-13",
-        "valoreObiettivo2": "codice facilitazione",
-        "valoreObiettivo2data": "2022-04-13"
+    "dettagliInfoProgramma": {
+      "nome": "Programma Theta",
+      "nomeBreve": "Programma Theta",
+      "dataInizio": 1656460800000,
+      "dataFine": 1657238400000,
+      "bando": "bando",
+      "cup": "theta",
+      "npuntiFacilitazioneTarget1": 4,
+      "npuntiFacilitazioneTarget2": 5,
+      "npuntiFacilitazioneTarget3": null,
+      "npuntiFacilitazioneTarget4": null,
+      "npuntiFacilitazioneTarget5": null,
+      "npuntiFacilitazioneDataTarget1": 1657152000000,
+      "npuntiFacilitazioneDataTarget2": 1656547200000,
+      "npuntiFacilitazioneDataTarget3": null,
+      "npuntiFacilitazioneDataTarget4": null,
+      "npuntiFacilitazioneDataTarget5": null,
+      "nutentiUniciTarget1": 8,
+      "nutentiUniciTarget2": null,
+      "nutentiUniciTarget3": null,
+      "nutentiUniciTarget4": null,
+      "nutentiUniciTarget5": null,
+      "nutentiUniciDataTarget1": 1656547200000,
+      "nutentiUniciDataTarget2": null,
+      "nutentiUniciDataTarget3": null,
+      "nutentiUniciDataTarget4": null,
+      "nutentiUniciDataTarget5": null,
+      "nserviziTarget1": 6,
+      "nserviziTarget2": null,
+      "nserviziTarget3": null,
+      "nserviziTarget4": null,
+      "nserviziTarget5": null,
+      "nserviziDataTarget1": 1657324800000,
+      "nserviziDataTarget2": null,
+      "nserviziDataTarget3": null,
+      "nserviziDataTarget4": null,
+      "nserviziDataTarget5": null,
+      "nfacilitatoriTarget1": 3,
+      "nfacilitatoriTarget2": null,
+      "nfacilitatoriTarget3": null,
+      "nfacilitatoriTarget4": null,
+      "nfacilitatoriTarget5": null,
+      "nfacilitatoriDataTarget1": 1657324800000,
+      "nfacilitatoriDataTarget2": null,
+      "nfacilitatoriDataTarget3": null,
+      "nfacilitatoriDataTarget4": null,
+      "nfacilitatoriDataTarget5": null
+  },
+  "questionari": [
+      {
+          "id": "tewbebe",
+          "nome": "dsgrg",
+          "stato": "ATTIVO"
       }
-    },
+  ],
     "progetti": [
       {
         "id": "345435",

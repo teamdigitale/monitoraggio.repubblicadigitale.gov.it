@@ -1,31 +1,75 @@
 {
-  "data": {
-    "programmiLight": [
+  "programmi": [
       {
-        "id": 1,
-        "nome": "Programma 1",
-        "nomeBreve":"Programma 1 Nome Breve",
-        "policy": "RFD",
-        "enteGestore":"Comune di Como",
-        "stato": "ATTIVO"
+          "id": 100,
+          "nome": "Programma Alfa",
+          "stato": "ATTIVO",
+          "policy": "SCD",
+          "nomeEnteGestore": ""
       },
       {
-        "id": 2,
-        "nome": "Programma 2",
-        "nomeBreve":"Programma 2 Nome Breve",
-        "policy": "RFD",
-        "enteGestore":"Comune di Como",
-        "stato": "BOZZA"
+          "id": 101,
+          "nome": "prova1",
+          "stato": "ATTIVO",
+          "policy": "RFD",
+          "nomeEnteGestore": "Regione Lazio"
       },
       {
-        "id": 3,
-        "nome": "Programma 3",
-        "nomeBreve":"Programma 3 Nome Breve",
-        "policy": "RFD",
-        "enteGestore":"Comune di Como",
-        "stato": "BOZZA"
+          "id": 102,
+          "nome": "string",
+          "stato": "ATTIVO",
+          "policy": "RFD",
+          "nomeEnteGestore": "Regione Lazio"
+      },
+      {
+          "id": 103,
+          "nome": "Programma Sigma",
+          "stato": "ATTIVO",
+          "policy": "SCD",
+          "nomeEnteGestore": "Regione Siclia"
+      },
+      {
+          "id": 104,
+          "nome": "Programma Rho",
+          "stato": "ATTIVO",
+          "policy": "SCD",
+          "nomeEnteGestore": "Regione Piemonte"
+      },
+      {
+          "id": 105,
+          "nome": "Programma Tau",
+          "stato": "ATTIVO",
+          "policy": "SCD",
+          "nomeEnteGestore": ""
+      },
+      {
+          "id": 107,
+          "nome": "Programma Alfa",
+          "stato": "ATTIVO",
+          "policy": "SCD",
+          "nomeEnteGestore": ""
+      },
+      {
+          "id": 115,
+          "nome": "3534",
+          "stato": "NON ATTIVO",
+          "policy": "RFD",
+          "nomeEnteGestore": ""
+      },
+      {
+          "id": 116,
+          "nome": "3534",
+          "stato": "NON ATTIVO",
+          "policy": "RFD",
+          "nomeEnteGestore": ""
+      },
+      {
+          "id": 122,
+          "nome": "Programma di Prova",
+          "stato": "NON ATTIVO",
+          "policy": "RFD",
+          "nomeEnteGestore": ""
       }
-    ],
-    "numeroPagine": 10
-  }
+  ],
+  "numeroPagine": 2
 }

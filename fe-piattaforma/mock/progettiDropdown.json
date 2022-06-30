@@ -1,18 +1,3 @@
 {
-  "data": {
-    "list": [
-      {
-        "id": "project1",
-        "nome": "Project 1"
-      },
-      {
-        "id": "project2",
-        "nome": "Project 2"
-      },
-      {
-        "id": "project3",
-        "nome": "Project 3"
-      }
-    ]
-  }
+  "data": ["Project 1", "Project 2", "Project 3"]
 }

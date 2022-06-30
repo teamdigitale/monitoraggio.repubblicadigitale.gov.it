@@ -40,20 +40,20 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     updateForm = () => ({}),
     intoModal = false,
   } = props;
-  const { firstParam } = useParams();
+  const { projectId } = useParams();
 
   const formDisabled = !!props.formDisabled;
 
   const formData: { [key: string]: string } | undefined =
-    useAppSelector(selectProjects).detail?.dettaglioProgetto?.generalInfo;
+    useAppSelector(selectProjects).detail?.dettagliInfoProgetto;
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!creation) {
-      dispatch(GetProjectDetail(firstParam || ''));
+    if (!creation && projectId) {
+      dispatch(GetProjectDetail(projectId));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [creation]);
+  }, [creation, projectId]);
 
   useEffect(() => {
     setIsFormValid?.(isValidForm);
@@ -64,7 +64,13 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
   useEffect(() => {
     if (formData && !creation) {
-      setFormValues(formData);
+      setFormValues(
+        Object.fromEntries(
+          Object.entries(formData).filter(
+            ([key, _val]) => !key.includes('Target')
+          )
+        )
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
@@ -109,7 +115,7 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
       <Form.Row
         className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
       >
-        <Input
+        {/* <Input
           {...form?.codice}
           col='col-12 col-lg-6'
           label='ID'
@@ -117,15 +123,14 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
             onInputDataChange(value, field);
           }}
           className='pr-lg-3'
-        />
+        /> */}
         <Input
-          {...form?.nomeProgetto}
-          col='col-12 col-lg-6'
+          {...form?.nome}
+          col='col-12'
           label='Nome progetto'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pr-lg-3'
         />
       </Form.Row>
       <Form.Row
@@ -141,7 +146,7 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           className='pr-lg-3'
         />
         <Input
-          {...form?.CUP}
+          {...form?.cup}
           label='CUP - Codice Unico Progetto'
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {
@@ -154,7 +159,7 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
         className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
       >
         <Input
-          {...form?.dataInizioProgetto}
+          {...form?.dataInizio}
           label='Data inizio'
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {
@@ -163,7 +168,7 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           className='pr-lg-3'
         />
         <Input
-          {...form?.dataFineProgetto}
+          {...form?.dataFine}
           label='Data fine'
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {
@@ -178,12 +183,12 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
 const form = newForm([
   newFormField({
-    field: 'nomeProgetto',
+    field: 'nome',
     type: 'text',
     id: 'project-name',
   }),
   newFormField({
-    field: 'codice',
+    field: 'id',
     id: 'project-id',
   }),
   newFormField({
@@ -192,16 +197,16 @@ const form = newForm([
     id: 'short-name',
   }),
   newFormField({
-    field: 'CUP',
+    field: 'cup',
     type: 'text',
   }),
   newFormField({
-    field: 'dataInizioProgetto',
+    field: 'dataInizio',
     regex: RegexpType.DATE,
     type: 'date',
   }),
   newFormField({
-    field: 'dataFineProgetto',
+    field: 'dataFine',
     regex: RegexpType.DATE,
     type: 'date',
   }),

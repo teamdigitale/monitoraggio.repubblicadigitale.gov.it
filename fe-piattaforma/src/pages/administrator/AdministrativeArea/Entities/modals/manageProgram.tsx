@@ -5,7 +5,10 @@ import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import { formTypes } from '../utils';
 import { formFieldI } from '../../../../../utils/formHelper';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
-import { createProgramDetails } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
+import {
+  createProgram,
+  updateProgram,
+} from '../../../../../redux/features/administrativeArea/programs/programsThunk';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { ProgressBar, Stepper } from '../../../../../components';
@@ -16,6 +19,7 @@ import {
   setProgramGeneralInfo,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import clsx from 'clsx';
+import { useParams } from 'react-router-dom';
 interface ProgramInformationI {
   formDisabled?: boolean;
   creation?: boolean;
@@ -33,15 +37,16 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
   creation = false,
 }) => {
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  const { entityId } = useParams();
 
   const handleSaveProgram = () => {
     if (isFormValid) {
       if (creation) {
-        dispatch(createProgramDetails(newFormValues));
+        dispatch(createProgram(newFormValues));
         setCurrentStep(1);
-        // here dispatch create new program
       } else {
         // TODO here dispatch update program
+        entityId && dispatch(updateProgram(entityId, newFormValues));
       }
       dispatch(closeModal());
     }
@@ -203,7 +208,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         return (
           <TargetDateFormPrograms
             intoModal
-            formForSection='facilitationNumber'
+            formForSection='puntiFacilitazione'
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
               setNewFormValues({ ...newData })
@@ -219,7 +224,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         return (
           <TargetDateFormPrograms
             intoModal
-            formForSection='uniqueUsers'
+            formForSection='utentiUnici'
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
               setNewFormValues({ ...newData })
@@ -235,7 +240,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         return (
           <TargetDateFormPrograms
             intoModal
-            formForSection='services'
+            formForSection='servizi'
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
               setNewFormValues({ ...newData })
@@ -251,7 +256,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         return (
           <TargetDateFormPrograms
             intoModal
-            formForSection='facilitators'
+            formForSection='facilitatori'
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
               setNewFormValues({ ...newData })

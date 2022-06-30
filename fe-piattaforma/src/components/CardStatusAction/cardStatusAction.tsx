@@ -8,7 +8,7 @@ import {
   Icon,
   Label,
 } from 'design-react-kit';
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CRUDActionsI, CRUDActionTypes } from '../../utils/common';
 import { useAppSelector } from '../../redux/hooks';
@@ -38,6 +38,7 @@ interface CardStatusActionI {
   onActionClick?: CRUDActionsI;
   id?: string | undefined;
   moreThanOneSurvey?: boolean;
+  onCheckedChange?: (checked: string) => void;
 }
 
 const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
@@ -49,7 +50,8 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
     fullInfo,
     onActionClick,
     id,
-    moreThanOneSurvey,
+    moreThanOneSurvey = false,
+    onCheckedChange,
   } = props;
 
   const getStatusLabel = (status: string) => {
@@ -67,6 +69,12 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
   };
   const device = useAppSelector(selectDevice);
   const [isChecked, setIsChecked] = useState<string>('');
+
+  useEffect(() => {
+    if (onCheckedChange) {
+      onCheckedChange(isChecked);
+    }
+  }, [isChecked]);
 
   const { t } = useTranslation();
 
@@ -88,19 +96,19 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
           'justify-content-start'
         )}
       >
-        {moreThanOneSurvey ? (
+        {moreThanOneSurvey && (
           <FormGroup check>
             <Input
               aria-label='Radio button'
               name='gruppo1'
               type='radio'
               id={`radio${id}`}
-              onClick={() => setIsChecked(`radio${id}`)}
+              onClick={() => setIsChecked(`${id}`)}
               checked={isChecked === `radio${id}`}
             />
             <Label className='sr-only'>Radio button</Label>
           </FormGroup>
-        ) : null}
+        )}
       </div>
       <div
         className={clsx(
@@ -216,5 +224,6 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
 };
 
 export default memo(CardStatusAction, (prevProps, currentProps) => {
+  // TODO: check
   return !isEqual(prevProps, currentProps);
 });

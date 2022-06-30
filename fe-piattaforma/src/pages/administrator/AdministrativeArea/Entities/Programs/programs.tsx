@@ -7,8 +7,8 @@ import {
   resetProgramDetails,
   selectEntityFilters,
   selectEntityFiltersOptions,
+  selectEntityList,
   selectEntityPagination,
-  selectPrograms,
   setEntityFilters,
   setEntityPagination,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
@@ -26,18 +26,20 @@ import { openModal } from '../../../../../redux/features/modal/modalSlice';
 import { useNavigate } from 'react-router-dom';
 import ManageProgram from '../modals/manageProgram';
 import {
-  GetAllPrograms,
-  GetFilterValues,
-} from '../../../../../redux/features/administrativeArea/programs/programsThunk';
+  GetEntityValues,
+  GetEntityFilterValues,
+  DownloadEntityValues,
+} from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 
-const statusDropdownLabel = 'stati';
-const policyDropdownLabel = 'policies';
+const entity = 'programma';
+const statusDropdownLabel = 'filtroStati';
+const policyDropdownLabel = 'filtroPolicies';
 
 const Programs = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const programmiList = useAppSelector(selectPrograms);
+  const { programmi: programmiList = [] } = useAppSelector(selectEntityList);
   const filtersList = useAppSelector(selectEntityFilters);
   const pagination = useAppSelector(selectEntityPagination);
   const dropdownFilterOptions = useAppSelector(selectEntityFiltersOptions);
@@ -45,18 +47,21 @@ const Programs = () => {
     { filterId: string; value: formFieldI['value'] }[]
   >([]);
 
-  const { criterioRicerca, policies, stati } = filtersList;
+  const { filtroCriterioRicerca, filtroPolicies, filtroStati } = filtersList;
 
   const { pageNumber } = pagination;
 
   const getAllFilters = () => {
-    dispatch(GetFilterValues('stati'));
-    dispatch(GetFilterValues('policies'));
+    dispatch(
+      GetEntityFilterValues({ entity, dropdownType: 'stati' })
+    );
+    dispatch(
+      GetEntityFilterValues({ entity, dropdownType: 'policies' })
+    );
   };
 
   useEffect(() => {
-    dispatch(setEntityPagination({ pageSize: 1 }));
-    getAllFilters();
+    dispatch(setEntityPagination({ pageSize: 8 }));
     /**
      * When the component is rendered the breadcrumb is initialized with
      * the rigth path. This operation is performed in every component that
@@ -80,65 +85,65 @@ const Programs = () => {
   }, []);
 
   const updateTableValues = () => {
+    //TODO align keys when API Integation is done
     const table = newTable(
       TableHeading,
-      programmiList.list.map((td) => {
+      programmiList.map((td: any) => {
         return {
-          label: td.nomeBreve,
+          label: td.nomeBreve || td.nome,
           id: td.id,
           policy: td.policy,
-          enteGestore: td.enteGestore,
+          enteGestore: td.enteGestore || td.nomeEnteGestore,
           status: <StatusChip status={td.stato} rowTableId={td.id} />,
         };
       })
     );
-    return {
-      ...table,
-      // TODO remove slice after BE integration
-      values: table.values.slice(
-        pagination?.pageNumber * pagination?.pageSize - pagination?.pageSize,
-        pagination?.pageNumber * pagination?.pageSize
-      ),
-    };
+    return table;
   };
 
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    setTableValues(updateTableValues());
+    if (Array.isArray(programmiList)) setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [programmiList]);
 
   const getProgramsList = () => {
-    dispatch(GetAllPrograms());
+    dispatch(GetEntityValues({ entity }));
   };
 
   useEffect(() => {
     getAllFilters();
     getProgramsList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [criterioRicerca, policies, stati, pageNumber]);
+  }, [filtroCriterioRicerca, filtroPolicies, filtroStati, pageNumber]);
 
   const handleOnChangePage = (pageNumber: number = pagination?.pageNumber) => {
     dispatch(setEntityPagination({ pageNumber }));
   };
 
+  const handleDownloadList = () => {
+    dispatch(DownloadEntityValues({ entity }));
+  };
+
   const handleOnSearch = (searchValue: string) => {
     dispatch(
-      setEntityFilters({ nomeLike: { label: searchValue, value: searchValue } })
+      setEntityFilters({
+        filtroCriterioRicerca: searchValue,
+      })
     );
   };
 
   const handleDropdownFilters = (
     values: FilterI[],
-    filterKey: 'policies' | 'stati'
+    filterKey: string,
   ) => {
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
   };
 
   const handleOnSearchDropdownOptions = (
     searchValue: formFieldI['value'],
-    filterId: 'policies' | 'stati'
+    filterId: string,
   ) => {
     const searchDropdownValues = [...searchDropdown];
     if (
@@ -157,7 +162,7 @@ const Programs = () => {
   const dropdowns: DropdownFilterI[] = [
     {
       filterName: 'Policy',
-      options: dropdownFilterOptions[policyDropdownLabel],
+      options: dropdownFilterOptions['policies'],
       id: policyDropdownLabel,
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, policyDropdownLabel),
@@ -172,7 +177,7 @@ const Programs = () => {
     },
     {
       filterName: 'Stato',
-      options: dropdownFilterOptions[statusDropdownLabel],
+      options: dropdownFilterOptions['stati'],
       id: statusDropdownLabel,
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, statusDropdownLabel),
@@ -196,9 +201,7 @@ const Programs = () => {
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      console.log(td);
-      //TODO REPLACE WITH DYNAMIC ID WHEN WE HAVE THE APIS
-      navigate('321321/info');
+      if (typeof td !== 'string') navigate(`${td.id}/info`);
     },
   };
 
@@ -229,6 +232,7 @@ const Programs = () => {
       filtersList={filtersList}
       {...programCta}
       cta={newProgram}
+      ctaDownload={handleDownloadList}
     >
       <div>
         <Table
@@ -244,7 +248,7 @@ const Programs = () => {
           center
           refID='#table'
           pageSize={pagination?.pageSize}
-          total={programmiList.list.length}
+          total={pagination?.totalPages}
           onChange={handleOnChangePage}
         />
       </div>

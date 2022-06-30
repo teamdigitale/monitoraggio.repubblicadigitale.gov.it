@@ -32,7 +32,6 @@ const Header: React.FC<HeaderProp> = (props) => {
   const notification = useAppSelector(selectUserNotification);
 
   const device = useAppSelector(selectDevice);
-  console.log(device);
 
   const componentProps = {
     notification,

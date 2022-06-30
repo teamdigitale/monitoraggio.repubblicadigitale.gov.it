@@ -23,7 +23,7 @@ import { guard } from '../utils/guardHelper';
 import SwitchProfileModal from '../components/Modals/SwitchProfileModal/switchProfileModal';
 import { FilterI } from '../components/DropdownFilter/dropdownFilter';
 // import { groupOptions } from '../components/Form/multipleSelectConstants';
-import ManageOTP from '../components/AdministrativeArea/Entities/Surveys/ManageOTP/ManageOTP';
+// import ManageOTP from '../components/AdministrativeArea/Entities/Surveys/ManageOTP/ManageOTP';
 import ProtectedComponent from '../hoc/AuthGuard/ProtectedComponent/ProtectedComponent';
 import { updateBreadcrumb } from '../redux/features/app/appSlice';
 
@@ -224,7 +224,7 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
         </Row>
       </section>
 
-      <section>
+      {/* <section>
         <Row>
           <Button
             color='primary'
@@ -237,6 +237,15 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
             Apri modale OTP
           </Button>
           <ManageOTP />
+        </Row>
+      </section> */}
+      <section>
+        <Row>
+          <Form>
+            <fieldset>
+              <Input type='text' onInputChange={(e) => console.log(e)} />
+            </fieldset>
+          </Form>
         </Row>
       </section>
     </div>

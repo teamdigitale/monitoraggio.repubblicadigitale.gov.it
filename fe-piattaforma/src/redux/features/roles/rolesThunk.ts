@@ -17,7 +17,7 @@ export const GetRolesListValues =
         // @ts-ignore
         roles: { pagination },
       } = select((state: RootState) => state);
-      const rolesListEndpoint = `/roles/all/${idUtente}`;
+      const rolesListEndpoint = `/roles/${idUtente}/all`;
       const res = await API.get(rolesListEndpoint, { params: pagination });
 
       if (res?.data) {
@@ -27,5 +27,21 @@ export const GetRolesListValues =
       console.log('GetRolesListAction error', error);
     } finally {
       dispatch(hideLoader());
+    }
+  };
+
+const GetUserRolesListAction = { type: 'roles/GetUserRolesListValues' };
+
+export const GetUserRolesList =
+  (cfUtente: string, payload?: any) => async (dispatch: Dispatch) => {
+    try {
+      dispatch({ ...GetUserRolesListAction, payload });
+      dispatch(showLoader());
+      const rolesListEndpoint = `/roles/${cfUtente}/ruoli`;
+      const res = await API.get(rolesListEndpoint);
+
+      if (res.data) console.log(res.data);
+    } catch (error) {
+      console.log(error);
     }
   };

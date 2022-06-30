@@ -332,6 +332,7 @@ export const questionarioJsonMock: SurveyCreationBodyI = {
         '{"type":"object","properties":{"1.1":{"id":"1.1","title":"Nome","type":"string"},"1.2":{"id":"1.2","title":"Cognome","type":"string"},"1.3":{"id":"1.3","title":"Codice fiscale","type":"string"},"1.4":{"id":"1.4","title":"Codice fiscale non disponibile","type":"object","properties":{"val 1":{"type":"boolean"}}}},"required":["1.1","1.2","1.3","1.4"]}',
       schemaUI:
         '{"type":"Group","label":"Sezione","elements":[{"type":"HorizontalLayout","elements":[{"type":"Control","scope":"#/properties/Nome","label":"Nome"},{"type":"Control","scope":"#/properties/Cognome","label":"Cognome"}]},{"type":"HorizontalLayout","elements":[{"type":"Control","scope":"#/properties/Codice fiscale","label":"Codice fiscale"},{"type":"Control","scope":"#/properties/Codice fiscale non disponibile","label":"Codice fiscale non disponibile"}]}]}',
+      'default-section': true,
     },
     {
       id: 'anagraphic-booking-section',
@@ -340,6 +341,7 @@ export const questionarioJsonMock: SurveyCreationBodyI = {
         '{"type":"object","properties":{"2.1":{"id":"2.1","title":"Prima volta usufruisce del servizio di facilitazione/formazione","type":"string","enum":["val 1","val 2"]},"2.2":{"id":"2.2","title":"Se non è la prima volta, indicare il servizio di cui si è fruito in passato","type":"string","enum":["val 1","val 2"]}},"required":["2.1","2.2"]}',
       schemaUI:
         '{"type":"Group","label":"Sezione","elements":[{"type":"HorizontalLayout","elements":[{"type":"Control","scope":"#/properties/Prima volta usufruisce del servizio di facilitazione/formazione","label":"Prima volta usufruisce del servizio di facilitazione/formazione"},{"type":"Control","scope":"#/properties/Se non è la prima volta, indicare il servizio di cui si è fruito in passato","label":"Se non è la prima volta, indicare il servizio di cui si è fruito in passato"}]}]}',
+      'default-section': true,
     },
     {
       id: 'anagraphic-service-section',
@@ -348,6 +350,7 @@ export const questionarioJsonMock: SurveyCreationBodyI = {
         '{"type":"object","properties":{"3.1":{"id":"3.1","title":"Tipo di servizio prenotato","type":"string","enum":["val 1","val 2"]},"3.2":{"id":"3.2","title":"Specificare ambito facilitazione / formazione","type":"string"}},"required":["3.1","3.2"]}',
       schemaUI:
         '{"type":"Group","label":"Sezione","elements":[{"type":"HorizontalLayout","elements":[{"type":"Control","scope":"#/properties/Tipo di servizio prenotato","label":"Tipo di servizio prenotato"},{"type":"Control","scope":"#/properties/Specificare ambito facilitazione / formazione","label":"Specificare ambito facilitazione / formazione"}]}]}',
+      'default-section': true,
     },
     {
       id: 'content-service-section',
@@ -356,6 +359,7 @@ export const questionarioJsonMock: SurveyCreationBodyI = {
         '{"type":"object","properties":{"4.1":{"id":"4.1","title":"Come hai saputo di questo servizio specifico?","type":"string","enum":["val 1","val 2"]},"4.2":{"id":"4.2","title":"Quale motivo ti ha spinto a prenotare?","type":"string"},"4.3":{"id":"4.3","title":"Hai intenzione di tornare?","type":"string"},"4.4":{"id":"4.4","title":"Cosa ti è più utile per risolvere i problemi legati al digitale?","type":"string"}},"required":["4.1","4.2","4.3","4.4"]}',
       schemaUI:
         '{"type":"Group","label":"Sezione","elements":[{"type":"HorizontalLayout","elements":[{"type":"Control","scope":"#/properties/Come hai saputo di questo servizio specifico?","label":"Come hai saputo di questo servizio specifico?"},{"type":"Control","scope":"#/properties/Quale motivo ti ha spinto a prenotare?","label":"Quale motivo ti ha spinto a prenotare?"}]},{"type":"HorizontalLayout","elements":[{"type":"Control","scope":"#/properties/Hai intenzione di tornare?","label":"Hai intenzione di tornare?"},{"type":"Control","scope":"#/properties/Cosa ti è più utile per risolvere i problemi legati al digitale?","label":"Cosa ti è più utile per risolvere i problemi legati al digitale?"}]}]}',
+      'default-section': true,
     },
   ],
 };

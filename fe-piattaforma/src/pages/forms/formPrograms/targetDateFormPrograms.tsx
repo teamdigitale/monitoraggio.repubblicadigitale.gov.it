@@ -23,22 +23,16 @@ interface ProgramInformationI {
   setIsFormValid?: (param: boolean | undefined) => void;
   creation?: boolean;
 }
-
-export enum formForSectionEnum {
-  facilitationNumber = 'facilitationNumber',
-  uniqueUsers = 'uniqueUsers',
-  services = 'services',
-  facilitators = 'facilitators',
-}
+export type formForSectionT =
+  | 'puntiFacilitazione'
+  | 'utentiUnici'
+  | 'servizi'
+  | 'facilitatori';
 
 interface TargetDateFormProgramsI
   extends withFormHandlerProps,
     ProgramInformationI {
-  formForSection:
-    | 'facilitationNumber'
-    | 'uniqueUsers'
-    | 'services'
-    | 'facilitators';
+  formForSection: formForSectionT;
   intoModal?: boolean;
 }
 const form = newForm([]);
@@ -64,8 +58,12 @@ const TargetDateFormPrograms: React.FC<TargetDateFormProgramsI> = (props) => {
 
   const formDisabled = !!props.formDisabled;
 
-  const formData: { [key: string]: string } | undefined =
-    useAppSelector(selectPrograms).detail?.dettaglioProgramma?.[formForSection];
+  const programDetail =
+    useAppSelector(selectPrograms).detail?.dettagliInfoProgramma;
+
+  const [formData, setFormData] = useState<
+    { [key: string]: string } | undefined
+  >();
 
   const dispatch = useDispatch();
 
@@ -83,14 +81,15 @@ const TargetDateFormPrograms: React.FC<TargetDateFormProgramsI> = (props) => {
       const newFormList: formFieldI[] = [];
       newFormList.push(
         newFormField({
-          field: `valoreObiettivo${count + 1}`,
+          field: `n${formForSection}Target${count + 1}`,
           required: true,
+          type: 'number',
           id: `${intoModal && 'modal-'}${formForSection}-valoreObiettivo${
             count + 1
           }`,
         }),
         newFormField({
-          field: `valoreObiettivo${count + 1}data`,
+          field: `n${formForSection}DataTarget${count + 1}`,
           regex: RegexpType.DATE,
           required: true,
           type: 'date',
@@ -119,6 +118,18 @@ const TargetDateFormPrograms: React.FC<TargetDateFormProgramsI> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
 
+  useEffect(() => {
+    if (programDetail && formForSection) {
+      setFormData(
+        Object.fromEntries(
+          Object.keys(programDetail)
+            .filter((key) => key.includes(formForSection) && programDetail[key])
+            .map((key) => [key, programDetail[key] as string])
+        )
+      );
+    }
+  }, [programDetail, formForSection]);
+
   const onInputDataChange = (
     value: formFieldI['value'],
     field?: formFieldI['field']
@@ -134,7 +145,7 @@ const TargetDateFormPrograms: React.FC<TargetDateFormProgramsI> = (props) => {
 
   const [count, setCount] = useState(0);
 
-  const disabledFormClass = 'px-0 mr-lg-5 pr-lg-5 pl-lg-4 mr-3';
+  const disabledFormClass = 'justify-content-between  px-0 px-lg-5 mx-5';
   const activeFormClass = 'justify-content-between px-0 px-lg-5 mx-5';
 
   const addMilestone = () => {
@@ -143,8 +154,9 @@ const TargetDateFormPrograms: React.FC<TargetDateFormProgramsI> = (props) => {
       const newFormList: formFieldI[] = [];
       newFormList.push(
         newFormField({
-          field: `valoreObiettivo${count + 1}`,
+          field: `n${formForSection}Target${count + 1}`,
           required: true,
+          type: 'number',
           id: `${intoModal && 'modal-'}${formForSection}-valoreObiettivo${
             count + 1
           }`,
@@ -152,7 +164,7 @@ const TargetDateFormPrograms: React.FC<TargetDateFormProgramsI> = (props) => {
           order: count + 1,
         }),
         newFormField({
-          field: `valoreObiettivo${count + 1}data`,
+          field: `n${formForSection}DataTarget${count + 1}`,
           regex: RegexpType.DATE,
           required: true,
           type: 'date',
@@ -167,11 +179,10 @@ const TargetDateFormPrograms: React.FC<TargetDateFormProgramsI> = (props) => {
     }
   };
 
-  const removeMilestone = (row: string) => {
+  const removeMilestone = (row: string[]) => {
     if (form) {
-      const fieldToDelete = [row, row.replace('data', '')];
       const newFormList = { ...form };
-      fieldToDelete.forEach((field) => {
+      row.forEach((field) => {
         delete newFormList[field];
       });
       updateForm(newFormList, true);
@@ -211,6 +222,19 @@ const TargetDateFormPrograms: React.FC<TargetDateFormProgramsI> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
 
+  let rows: string[][] = [];
+
+  if (form) {
+    const targets: string[] = [];
+    const dates: string[] = [];
+
+    Object.keys(form).forEach((key) =>
+      key.includes('Data') ? dates.push(key) : targets.push(key)
+    );
+
+    rows = targets.map((target, index) => [target, dates[index]]);
+  }
+
   return count === 0 && creation ? (
     <EmptySection
       title='Questa sezione è ancora vuota'
@@ -225,46 +249,58 @@ const TargetDateFormPrograms: React.FC<TargetDateFormProgramsI> = (props) => {
       >
         {form && (
           <>
-            <Form.Row
-              className={clsx(
-                formDisabled ? disabledFormClass : activeFormClass,
-                'mb-4'
-              )}
-            >
-              {form &&
-                Object.keys(form).map((row, index) => (
-                  <>
-                    <Input
-                      {...form?.[row]}
-                      id={`${form?.[row].field}-${new Date().getTime()}`}
-                      col='col-12 col-lg-5'
-                      onInputChange={(value, field) => {
-                        onInputDataChange(value, field);
-                      }}
-                      className='pr-lg-4 mb-4'
-                      key={index}
-                      aria-label={`${form?.[row].field}`}
-                    />
-                    {creation && row.includes('data') && (
-                      <Button
-                        className='p-0'
-                        icon
-                        style={{ minWidth: 'unset', height: '45px' }}
-                        onClick={() => removeMilestone(row)}
-                      >
-                        <Icon
-                          className='mr-3'
-                          icon='it-delete'
-                          color='primary'
-                          size='sm'
-                          aria-label='delete'
-                        ></Icon>
-                        {!device.mediaIsDesktop && 'Elimina'}
-                      </Button>
-                    )}
-                  </>
-                ))}
-            </Form.Row>
+            {rows.map((row, index) => (
+              <Form.Row
+                key={index}
+                className={clsx(
+                  formDisabled ? disabledFormClass : activeFormClass,
+                  'mb-4'
+                )}
+              >
+                <Input
+                  {...form?.[row[0]]}
+                  id={`${form?.[row[0]].field}-${new Date().getTime()}`}
+                  onInputChange={(value, field) => {
+                    onInputDataChange(value, field);
+                  }}
+                  col='col-12 col-lg-5'
+                  className='pr-lg-3'
+                  key={index}
+                  aria-label={`${form?.[row[0]].field}`}
+                />
+                <Input
+                  {...form?.[row[1]]}
+                  id={`${form?.[row[1]].field}-${new Date().getTime()}`}
+                  onInputChange={(value, field) => {
+                    onInputDataChange(value, field);
+                  }}
+                  col='col-12 col-lg-5'
+                  className='pl-lg-3'
+                  key={index}
+                  aria-label={`${form?.[row[1]].field}`}
+                />
+
+                {creation ? (
+                  <Button
+                    className='p-0'
+                    icon
+                    style={{ minWidth: 'unset', height: '45px' }}
+                    onClick={() => removeMilestone(row)}
+                  >
+                    <Icon
+                      className='mr-3'
+                      icon='it-delete'
+                      color='primary'
+                      size='sm'
+                      aria-label='delete'
+                    ></Icon>
+                    {!device.mediaIsDesktop && 'Elimina'}
+                  </Button>
+                ) : (
+                  <span></span>
+                )}
+              </Form.Row>
+            ))}
             {count < 5 && creation && (
               <Form.Row
                 className={clsx(

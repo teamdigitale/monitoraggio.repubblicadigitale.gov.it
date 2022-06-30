@@ -31,6 +31,7 @@ import { NavLink } from '../../../../../components';
 import ProjectAccordionForm from '../../../../forms/formProjects/ProjectAccordionForm/ProjectAccordionForm';
 import FormAuthorities from '../../../../forms/formAuthorities';
 import ManagePartnerAuthority from '../modals/managePartnerAuthority';
+import { DeleteEntity } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 
 const tabs = {
   INFO: 'info',
@@ -95,7 +96,7 @@ const ProjectsDetails = () => {
         ])
       );
     }
-  }, [projectId]);
+  }, [projectId, projectshortName]);
 
   useEffect(() => {
     scrollTo(0, 0);
@@ -425,6 +426,7 @@ const ProjectsDetails = () => {
           <ConfirmDeleteModal
             onConfirm={() => {
               console.log('confirm delete');
+              projectId && dispatch(DeleteEntity(projectId, 'progetto'));
               dispatch(closeModal());
             }}
             onClose={() => {

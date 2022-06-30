@@ -33,6 +33,7 @@ import ProgramlInfoAccordionForm from '../../../../forms/formPrograms/ProgramAcc
 import FormAuthorities from '../../../../forms/formAuthorities';
 import ManageDelegate from '../modals/manageDelegate';
 import ManageReferal from '../modals/manageReferal';
+import { DeleteEntity } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 
 const tabs = {
   INFO: 'info',
@@ -63,6 +64,11 @@ const ProgramsDetails: React.FC = () => {
   );
   const navigate = useNavigate();
   const location = useLocation();
+  const [surveyDefault, setSurveyDefault] = useState<ItemsListI | null>();
+  const [radioButtonsSurveys, setRadioButtonsSurveys] =
+    useState<boolean>(false);
+  const [changeSurveyButtonVisible, setChangeSurveyButtonVisible] =
+    useState<boolean>(true);
 
   /**
    * The entity id is passed to the breadcrumb but it maybe the case to
@@ -70,11 +76,12 @@ const ProgramsDetails: React.FC = () => {
    * thunk action to get details is performed in the form component
    */
   const { entityId } = useParams();
-  const entityShortName =
-    programma.detail?.dettaglioProgramma?.generalInfo.nomeBreve;
+  // TODO remove mock
+  const { nomeBreve, stato = 'ATTIVO' } =
+    programma?.detail?.dettagliInfoProgramma || {};
 
   useEffect(() => {
-    if (entityId && entityShortName) {
+    if (entityId && nomeBreve) {
       dispatch(
         updateBreadcrumb([
           {
@@ -88,19 +95,21 @@ const ProgramsDetails: React.FC = () => {
             link: true,
           },
           {
-            label: entityShortName,
+            label: nomeBreve,
             url: `/area-amministrativa/programmi/${entityId}`,
             link: false,
           },
         ])
       );
     }
-  }, [entityId]);
+  }, [entityId, nomeBreve]);
 
   const onActionClickReferenti: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
       navigate(
-        `/area-amministrativa/utenti/${typeof td === 'string' ? td : td?.id}`
+        `/area-amministrativa/${formTypes.REFERENTI}/${
+          typeof td === 'string' ? td : td?.id
+        }`
       );
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
@@ -111,7 +120,9 @@ const ProgramsDetails: React.FC = () => {
   const onActionClickDelegati: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
       navigate(
-        `/area-amministrativa/utenti/${typeof td === 'string' ? td : td?.id}`
+        `/area-amministrativa/${formTypes.DELEGATI}/${
+          typeof td === 'string' ? td : td?.id
+        }`
       );
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
@@ -151,6 +162,18 @@ const ProgramsDetails: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
 
+  useEffect(() => {
+    if (changeSurveyButtonVisible) {
+      setCorrectButtons(
+        buttonSurvey.filter((button) => button.text === 'Cambia questionario')
+      );
+    } else {
+      setCorrectButtons(
+        buttonSurvey.filter((button) => button.text !== 'Cambia questionario')
+      );
+    }
+  }, [changeSurveyButtonVisible]);
+
   const centerActiveItem = () => {
     switch (activeTab) {
       case tabs.INFO:
@@ -170,6 +193,68 @@ const ProgramsDetails: React.FC = () => {
         break;
     }
   };
+
+  const itemMock = [
+    {
+      nome: 'Questionario 1',
+      stato: 'active',
+      actions: onActionClickQuestionari,
+      id: 'questionario',
+      default: true,
+    },
+    {
+      nome: 'Questionario 2',
+      stato: 'active',
+      actions: onActionClickQuestionari,
+      id: 'questionario2',
+      default: false,
+    },
+    {
+      nome: 'Questionario 3',
+      stato: 'active',
+      actions: onActionClickQuestionari,
+      id: 'questionario3',
+      default: false,
+    },
+    {
+      nome: 'Questionario 4',
+      stato: 'active',
+      actions: onActionClickQuestionari,
+      id: 'questionario4',
+      default: false,
+    },
+  ];
+
+  const buttonSurvey: ButtonInButtonsBar[] = [
+    {
+      size: 'xs',
+      color: 'primary',
+      outline: true,
+      text: 'Annulla',
+      onClick: () => {
+        setChangeSurveyButtonVisible(true);
+        // console.log('Annulla');
+      },
+    },
+    {
+      size: 'xs',
+      color: 'primary',
+      text: 'Conferma',
+      onClick: () => {
+        setChangeSurveyButtonVisible(true);
+        // console.log('Conferma', surveyDefault?.items[0].id);  TODO: richiama api PUT new default survey
+      },
+    },
+    {
+      size: 'xs',
+      color: 'primary',
+      text: 'Cambia questionario',
+      onClick: () => {
+        setRadioButtonsSurveys(true);
+        setChangeSurveyButtonVisible(false);
+      },
+    },
+  ];
 
   useEffect(() => {
     const locationSplit = location.pathname.split('/');
@@ -221,6 +306,7 @@ const ProgramsDetails: React.FC = () => {
         setCorrectButtons([
           {
             size: 'xs',
+            outline: true,
             color: 'primary',
             text: 'Elimina',
             onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
@@ -263,24 +349,18 @@ const ProgramsDetails: React.FC = () => {
         ]);
         break;
       case tabs.QUESTIONARI:
+        // eslint-disable-next-line no-case-declarations
         setCurrentForm(undefined);
         setCorrectModal(undefined);
-        setItemList({
-          items: [
-            {
-              nome: 'Questionario 1',
-              stato: 'active',
-              actions: onActionClickQuestionari,
-              id: 'questionario',
-            },
-            {
-              nome: 'Questionario 2',
-              stato: 'active',
-              actions: onActionClickQuestionari,
-              id: 'questionario2',
-            },
-          ],
-        });
+        if (!radioButtonsSurveys) {
+          setSurveyDefault({
+            items: itemMock.filter((item) => item.default === true),
+          });
+          setItemList({
+            items: itemMock.filter((item) => item.default === false),
+          });
+        }
+
         setItemAccordionList(null);
         break;
       case tabs.PROGETTI:
@@ -303,7 +383,13 @@ const ProgramsDetails: React.FC = () => {
         return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab, mediaIsDesktop, programma, authorityInfo]);
+  }, [
+    activeTab,
+    mediaIsDesktop,
+    programma,
+    authorityInfo,
+    surveyDefault?.items[0].id,
+  ]);
 
   const formButtons: ButtonInButtonsBar[] = [
     {
@@ -373,14 +459,34 @@ const ProgramsDetails: React.FC = () => {
 
   const showINFOButtons = () => activeTab === tabs.INFO;
   const showENTEButtons = () => activeTab === tabs.ENTE;
+  const showQUESTIONARIButtons = () => activeTab === tabs.QUESTIONARI;
+
+  const onChangeSurveyDefault = (surveyCheckedId: string) => {
+    if (surveyCheckedId !== '') {
+      const newItems = [...itemMock];
+      newItems[
+        newItems.findIndex((item) => item.id === surveyDefault?.items[0].id)
+      ].default = false;
+      newItems[
+        newItems.findIndex((item) => item.id === surveyCheckedId)
+      ].default = true;
+      setSurveyDefault({
+        items: newItems.filter((item) => item.id === surveyCheckedId),
+      });
+      // non serve in teoria, itemList dovrebbe aggiornarsi con la get dopo la put del questionario di default
+      // setItemList({
+      //   items: newItems.filter((item) => item.default === false),
+      // });
+    }
+  };
 
   return (
     <div className='container pb-3'>
       <DetailLayout
         nav={nav}
         titleInfo={{
-          title: 'Nome programs 1 breve',
-          status: 'ATTIVO',
+          title: nomeBreve,
+          status: stato,
           upperTitle: { icon: 'it-user', text: 'Programma' },
         }}
         formButtons={
@@ -388,13 +494,20 @@ const ProgramsDetails: React.FC = () => {
             ? formButtons
             : showENTEButtons()
             ? correctButtons
+            : showQUESTIONARIButtons()
+            ? correctButtons
             : []
         }
         currentTab={activeTab}
         itemsAccordionList={itemAccordionList}
         itemsList={itemList}
-        buttonsPosition='TOP'
+        buttonsPosition={showQUESTIONARIButtons() ? 'BOTTOM' : 'TOP'}
         goBackTitle='Elenco programmi'
+        surveyDefault={surveyDefault}
+        isRadioButtonItem={radioButtonsSurveys}
+        onRadioChange={(surveyCheckedId: string) =>
+          onChangeSurveyDefault(surveyCheckedId)
+        }
       >
         {currentForm}
       </DetailLayout>
@@ -402,7 +515,9 @@ const ProgramsDetails: React.FC = () => {
       <ConfirmDeleteModal
         onConfirm={() => {
           console.log('confirm delete');
+          entityId && dispatch(DeleteEntity('programma', entityId));
           dispatch(closeModal());
+          navigate(-1);
         }}
         onClose={() => {
           dispatch(closeModal());

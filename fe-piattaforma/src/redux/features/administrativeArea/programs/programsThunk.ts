@@ -1,15 +1,12 @@
 import { Dispatch, Selector } from '@reduxjs/toolkit';
 import { hideLoader, showLoader } from '../../app/appSlice';
 import { RootState } from '../../../store';
-import isEmpty from 'lodash.isempty';
+//import isEmpty from 'lodash.isempty';
 import API from '../../../../utils/apiHelper';
 import {
-  setEntityFilterOptions,
   setProgramDetails,
   setProgramGeneralInfo,
-  setProgramsList,
 } from '../administrativeAreaSlice';
-import { mapOptions } from '../../../../utils/common';
 import { formFieldI } from '../../../../utils/formHelper';
 
 export interface ProgramsLightI {
@@ -26,98 +23,40 @@ export interface ProgramListResponseI {
   programsSLight: ProgramsLightI[];
 }
 
-const GetAllProgramsAction = {
-  type: 'administrativeArea/GetAllPrograms',
-};
-
-export const GetAllPrograms =
-  () => async (dispatch: Dispatch, select: Selector) => {
-    try {
-      dispatch(showLoader());
-      dispatch({ ...GetAllProgramsAction });
-      const {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        administrativeArea: { filters, pagination },
-      } = select((state: RootState) => state);
-      const endpoint = `programma/all`;
-      let res;
-      if (!isEmpty(filters)) {
-        const body = {
-          filtroRequest: { ...filters },
-          idProgramma: 0,
-          cfUtente: '',
-          codiceRuolo: '',
-        };
-        res = await API.post(endpoint, body, {
-          params: {
-            currPage: pagination.pageNumber,
-            pageSize: pagination.pageSize,
-          },
-        });
-      } else {
-        res = await API.get(endpoint, {
-          params: {
-            currPage: pagination.pageNumber,
-            pageSize: pagination.pageSize,
-          },
-        });
-      }
-      if (res?.data) {
-        dispatch(setProgramsList({ data: res.data.data.programmiLight }));
-      }
-    } finally {
-      dispatch(hideLoader());
-    }
-  };
-
-const GetFilterValuesAction = {
-  type: 'administrativeArea/GetFilterValues',
-};
-export const GetFilterValues =
-  (dropdownType: 'policies' | 'stati') =>
-  async (dispatch: Dispatch, select: Selector) => {
-    try {
-      // dispatch(showLoader());
-      dispatch({ ...GetFilterValuesAction, dropdownType });
-      const {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        administrativeArea: { filters },
-      } = select((state: RootState) => state);
-      const body = {
-        cfUtente: '',
-        codiceRuolo: '',
-        filtroRequest: { ...filters },
-        idProgramma: 0,
-      };
-      const entityFilterEndpoint = `/programma/${dropdownType}/dropdown`;
-      const res = await API.post(entityFilterEndpoint, body);
-      if (res?.data) {
-        dispatch(
-          setEntityFilterOptions({
-            [dropdownType]: mapOptions(res.data.data.list),
-          })
-        );
-      }
-    } catch (error) {
-      console.log('GetFilterValuesAction error', error);
-    } finally {
-      //   dispatch(hideLoader());
-    }
-  };
+export const parseResult = (res: any) => ({
+  ...Object.fromEntries(
+    Object.entries(res)
+      .filter(([_key, value]) => value !== null)
+      .map(([key, value]) =>
+        key.toLowerCase().includes('data') && value
+          ? [key, new Date(value as number).toISOString().split('T')[0]]
+          : [key, typeof value === 'number' ? value.toString() : value]
+      )
+  ),
+});
 
 const GetProgramDetailAction = {
   type: 'administrativeArea/GetProgramDetail',
 };
 export const GetProgramDetail =
-  (idProgramma: string) => async (dispatch: Dispatch) => {
+  (programId: string) => async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
-      dispatch({ ...GetProgramDetailAction, idProgramma });
-      const res = await API.get(`programma/idProgramma`);
-      if (res?.data) {
-        dispatch(setProgramDetails(res.data));
+
+      dispatch({ ...GetProgramDetailAction, programId });
+      if (programId) {
+        const res = await API.get(`/programma/${programId}`);
+        if (res?.data) {
+          dispatch(
+            setProgramDetails({
+              ...res.data,
+              dettagliInfoProgramma: parseResult(
+                res.data.dettagliInfoProgramma
+              ),
+            })
+          );
+          // TODO call get authority details
+        }
       }
     } catch (error) {
       console.log('GetProgramDetail error', error);
@@ -126,23 +65,37 @@ export const GetProgramDetail =
     }
   };
 
-export const createProgramDetails =
+const CreateProgramAction = {
+  type: 'administrativeArea/CreateProgram',
+};
+
+export const createProgram =
   (payload?: { [key: string]: formFieldI['value'] }) =>
   async (dispatch: Dispatch, select: Selector) => {
     try {
       dispatch(showLoader());
+      dispatch({ ...CreateProgramAction });
       const {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        programma: { details },
-      } = select((state: RootState) => state);
-      const body = { ...details, facilitators: payload };
+        administrativeArea: {
+          programs: { detail },
+        },
+      }: any = select((state: RootState) => state);
+
+      const body = Object.fromEntries(
+        Object.entries({ ...detail.dettagliInfoProgramma, ...payload }).map(
+          ([key, value]) =>
+            key.includes('Target') && !key.includes('Data')
+              ? [key, parseInt(value as string)]
+              : [key, value]
+        )
+      );
+
       dispatch(setProgramGeneralInfo({ currentStep: 6, payload }));
       if (body) {
-        await API.put(`/programmi/setProgramDetail`, {
+        const res = await API.post(`/programma`, {
           ...body,
         });
-        console.log('createProgramDetails body', body);
+        console.log('createProgramDetails res', res);
       }
     } catch (error) {
       console.log(error);
@@ -150,3 +103,92 @@ export const createProgramDetails =
       dispatch(hideLoader());
     }
   };
+
+const UpdateProgramAction = {
+  type: 'administrativeArea/CreateProgram',
+};
+
+export const updateProgram =
+  (programId: string, payload?: { [key: string]: formFieldI['value'] }) =>
+  async (dispatch: Dispatch, select: Selector) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...UpdateProgramAction });
+      const {
+        administrativeArea: {
+          programs: { detail },
+        },
+      }: any = select((state: RootState) => state);
+
+      const body = Object.fromEntries(
+        Object.entries({ ...detail.dettagliInfoProgramma, ...payload }).map(
+          ([key, value]) =>
+            key.includes('Target') && !key.includes('Data')
+              ? [key, parseInt(value as string)]
+              : [key, value]
+        )
+      );
+
+      dispatch(setProgramGeneralInfo({ currentStep: 6, payload }));
+      if (body) {
+        console.log(body);
+        const res = await API.put(`/programma/${programId}`, {
+          ...body,
+        });
+        console.log('updateProgramDetails res', res);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+//   export interface ProgramDetailsI extends ProgramsLightI {
+//     bando?: string;
+//     cup?: string;
+//     dataFine: string;
+//     dataInizio: string;
+//     nomeProgramma: string;
+//     nomeBreve: string;
+//     nfacilitatoriDataTarget1: string;
+//     nfacilitatoriDataTarget2: string;
+//     nfacilitatoriDataTarget3: string;
+//     nfacilitatoriDataTarget4: string;
+//     nfacilitatoriDataTarget5: string;
+//     nfacilitatoriTarget1: number;
+//     nfacilitatoriTarget2: number;
+//     nfacilitatoriTarget3: number;
+//     nfacilitatoriTarget4: number;
+//     nfacilitatoriTarget5: number;
+//     npuntiFacilitazioneDataTarget1: string;
+//     npuntiFacilitazioneDataTarget2: string;
+//     npuntiFacilitazioneDataTarget3: string;
+//     npuntiFacilitazioneDataTarget4: string;
+//     npuntiFacilitazioneDataTarget5: string;
+//     npuntiFacilitazioneTarget1: number;
+//     npuntiFacilitazioneTarget2: number;
+//     npuntiFacilitazioneTarget3: number;
+//     npuntiFacilitazioneTarget4: number;
+//     npuntiFacilitazioneTarget5: number;
+//     nserviziDataTarget1: string;
+//     nserviziDataTarget2: string;
+//     nserviziDataTarget3: string;
+//     nserviziDataTarget4: string;
+//     nserviziDataTarget5: string;
+//     nserviziTarget1: number;
+//     nserviziTarget2: number;
+//     nserviziTarget3: number;
+//     nserviziTarget4: number;
+//     nserviziTarget5: number;
+//     nutentiUniciDataTarget1: string;
+//     nutentiUniciDataTarget2: string;
+//     nutentiUniciDataTarget3: string;
+//     nutentiUniciDataTarget4: string;
+//     nutentiUniciDataTarget5: string;
+//     nutentiUniciTarget1: number;
+//     nutentiUniciTarget2: number;
+//     nutentiUniciTarget3: number;
+//     nutentiUniciTarget4: number;
+//     nutentiUniciTarget5: number;
+// }

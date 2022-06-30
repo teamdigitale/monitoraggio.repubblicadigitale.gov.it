@@ -28,8 +28,14 @@ a {
 }
 
 .sticky-body {
-  margin-left: -10%;
-  margin-right: -10%;
-  padding-left: 10%;
-  padding-right: 10%;
+  margin-left: -10% !important;
+  margin-right: -10% !important;
+  padding-left: 10% !important;
+  padding-right: 10% !important;
+}
+
+.cta-buttons{
+  position: absolute !important;
+  right: 0 !important;
+  top: rem(4px) !important;
 }

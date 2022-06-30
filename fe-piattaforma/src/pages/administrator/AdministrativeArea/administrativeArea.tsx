@@ -239,12 +239,12 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='programmi-dettaglio-utenti-dettaglio'
-    path='programmi/:entityId/utenti/:userId'
+    path='programmi/:entityId/:userType/:userId'
     element={<UsersDetails />}
   />,
   <Route
     key='programmi-dettaglio-progetti-dettaglio-utenti-dettaglio'
-    path='programmi/:entityId/progetti/:projectId/utenti/:userId'
+    path='programmi/:entityId/progetti/:projectId/:userType/:userId'
     element={<UsersDetails />}
   />,
   <Route
@@ -291,7 +291,7 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='progetti-dettaglio-utenti-dettaglio'
-    path='progetti/:entityId/utenti/:userId'
+    path='progetti/:entityId/:userType/:userId'
     element={<UsersDetails />}
   />,
   <Route key='enti' path='enti' element={<Authorities />} />,
@@ -303,7 +303,7 @@ const AreaAmministrativaRoutes = [
   <Route key='utenti' path='utenti' element={<Utenti />} />,
   <Route
     key='utenti-detail'
-    path='utenti/:entityId'
+    path=':userType/:entityId'
     element={<UsersDetails />}
   />,
   <Route

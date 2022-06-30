@@ -41,6 +41,7 @@ export interface SurveyStateI {
     schema: string;
     schemaUI: string;
     title: string;
+    'default-section': boolean;
   }[];
 }
 
