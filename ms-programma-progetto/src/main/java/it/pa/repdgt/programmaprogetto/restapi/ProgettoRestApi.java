@@ -93,10 +93,10 @@ public class ProgettoRestApi {
 	}
 	
 	// TOUCH POINT - 2.2.6 -  CRUD Crea Progetto + Assegnazione progetto a programma
-	@PostMapping(path = "/{idProgramma}")
+	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public void creaNuovoProgetto(@RequestBody @Valid ProgettoRequest nuovoProgettoRequest,
-								  @PathVariable(value = "idProgramma") Long idProgramma) {
+			@RequestParam(value = "idProgramma") Long idProgramma) {
 		ProgettoEntity progettoEntity = this.progettoMapper.toEntityFrom(nuovoProgettoRequest, idProgramma);
 		this.progettoService.creaNuovoProgetto(progettoEntity);
 	}
