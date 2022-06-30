@@ -10,6 +10,9 @@ on:
         description: 'The target environment for deployment'
         type: environment
         required: true
+      modules:
+        description: 'Modules you want to deploy (*Names separated by comma, *Blank to deploy every modules)'
+        required: false
 
 permissions:
   contents: write
@@ -19,7 +22,87 @@ env:
   BOT_MAIL: <>
 
 jobs:
+  CheckInputModules:
+    name: Check Input Modules
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    outputs:
+      fe-piattaforma: ${{ steps.modules.outputs.fe-piattaforma }}
+      ms-ente: ${{ steps.modules.outputs.ms-ente }}
+      ms-gestione-utente: ${{ steps.modules.outputs.ms-gestione-utente }}
+      ms-notifiche-integration: ${{ steps.modules.outputs.ms-notifiche-integration }}
+      ms-open-data: ${{ steps.modules.outputs.ms-open-data }}
+      ms-propgramma-progetto: ${{ steps.modules.outputs.ms-propgramma-progetto }}
+      ms-questionario-cittadino: ${{ steps.modules.outputs.ms-questionario-cittadino }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          
+      - name: Set modules required
+        id: modules
+        run: |
+          environment="${{ github.event.inputs.environment }}"
+          in="${{ github.event.inputs.modules }}"
+          in=${in// /}
+          if [ "$in" != "" && "$environment" == "Development" ]; then
+            echo "::set-output name=fe-piattaforma::false"
+            echo "::set-output name=ms-ente::false"
+            echo "::set-output name=ms-gestione-utente::false"
+            echo "::set-output name=ms-notifiche-integration::false"
+            echo "::set-output name=ms-open-data::false"
+            echo "::set-output name=ms-propgramma-progetto::false"
+            echo "::set-output name=ms-questionario-cittadino::false"
+            arrIN=(${in//,/ })
+            for i in "${arrIN[@]}"; do
+            	case $i in
+            
+            		fe-piattaforma)
+            			echo "::set-output name=fe-piattaforma::true"
+            			;;
+            		
+            		ms-ente)
+            			echo "::set-output name=ms-ente::true"
+            			;;
+                  
+                ms-gestione-utente)
+            			echo "::set-output name=ms-gestione-utente::true"
+            			;;
+                  
+                ms-notifiche-integration)
+            			echo "::set-output name=ms-notifiche-integration::true"
+            			;;
+                  
+                ms-open-data)
+            			echo "::set-output name=ms-open-data::true"
+            			;;
+                  
+                ms-propgramma-progetto)
+            			echo "::set-output name=ms-propgramma-progetto::true"
+            			;;
+                  
+                ms-questionario-cittadino)
+            			echo "::set-output name=ms-questionario-cittadino::true"
+            			;;
+            		
+            		*)
+            			echo "Unknown $i"
+                  exit 1
+            			;;
+            	esac
+            done
+          else
+            echo "::set-output name=fe-piattaforma::true"
+            echo "::set-output name=ms-ente::true"
+            echo "::set-output name=ms-gestione-utente::true"
+            echo "::set-output name=ms-notifiche-integration::true"
+            echo "::set-output name=ms-open-data::true"
+            echo "::set-output name=ms-propgramma-progetto::true"
+            echo "::set-output name=ms-questionario-cittadino::true"
+          fi
+          
   DryRunRelease:
+    needs: CheckInputModules
     name: Dry-Run Release
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
@@ -71,8 +154,8 @@ jobs:
           fi
 
   buildFE:
-    if: ${{ github.event.inputs.version == '' }}
-    needs: DryRunRelease
+    if: ${{ github.event.inputs.version == '' && needs.CheckInputModules.outputs.fe-piattaforma == 'true' }}
+    needs: [CheckInputModules, DryRunRelease]
     name: FE Build
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
@@ -137,7 +220,7 @@ jobs:
 
   buildBE:
     if: ${{ github.event.inputs.version == '' }}
-    needs: DryRunRelease
+    needs: [CheckInputModules, DryRunRelease]
     name: BE Build
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
@@ -172,7 +255,7 @@ jobs:
 
       - name: ms-ente Build & Push Image to Amazon ECR
         id: ms-ente
-        if: ${{ success() }}
+        if: ${{ success() && needs.CheckInputModules.outputs.ms-ente == 'true' }}
         working-directory: ${{ github.workspace }}/ms-ente
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -195,7 +278,7 @@ jobs:
 
       - name: ms-gestione-utente Build & Push Image to Amazon ECR
         id: ms-gestione-utente
-        if: ${{ success() }}
+        if: ${{ success() && needs.CheckInputModules.outputs.ms-gestione-utente == 'true' }}
         working-directory: ${{ github.workspace }}/ms-gestione-utente
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -218,7 +301,7 @@ jobs:
 
       - name: ms-notifiche-integration Build & Push Image to Amazon ECR
         id: ms-notifiche-integration
-        if: ${{ success() }}
+        if: ${{ success() && needs.CheckInputModules.outputs.ms-notifiche-integration == 'true' }}
         working-directory: ${{ github.workspace }}/ms-notifiche-integration
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -241,7 +324,7 @@ jobs:
 
       - name: ms-open-data Build & Push Image to Amazon ECR
         id: ms-open-data
-        if: ${{ success() }}
+        if: ${{ success() && needs.CheckInputModules.outputs.ms-open-data == 'true' }}
         working-directory: ${{ github.workspace }}/ms-open-data
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -264,7 +347,7 @@ jobs:
 
       - name: ms-programma-progetto Build & Push Image to Amazon ECR
         id: ms-programma-progetto
-        if: ${{ success() }}
+        if: ${{ success() && needs.CheckInputModules.outputs.ms-programma-progetto == 'true' }}
         working-directory: ${{ github.workspace }}/ms-programma-progetto
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -287,7 +370,7 @@ jobs:
 
       - name: ms-questionario-cittadino Build & Push Image to Amazon ECR
         id: ms-questionario-cittadino
-        if: ${{ success() }}
+        if: ${{ success() && needs.CheckInputModules.outputs.ms-questionario-cittadino == 'true' }}
         working-directory: ${{ github.workspace }}/ms-questionario-cittadino
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -309,7 +392,7 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
   Deploy:
-    needs: [DryRunRelease, buildFE, buildBE]
+    needs: [CheckInputModules, DryRunRelease, buildFE, buildBE]
     if: |
       always() &&
       needs.DryRunRelease.result == 'success' &&
@@ -383,6 +466,7 @@ jobs:
           fi
 
       - name: Setup 'fe-piattaforma' deployment.tmp.yaml
+        if: ${{ success() && needs.CheckInputModules.outputs.fe-piattaforma == 'true' }}
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: fe-piattaforma
@@ -396,6 +480,7 @@ jobs:
           envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-ente' deployment.tmp.yaml
+        if: ${{ success() && needs.CheckInputModules.outputs.ms-ente == 'true' }}
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ms-ente
@@ -408,6 +493,7 @@ jobs:
           envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-gestione-utente' deployment.tmp.yaml
+        if: ${{ success() && needs.CheckInputModules.outputs.ms-gestione-utente == 'true' }}
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ms-gestione-utente
@@ -420,6 +506,7 @@ jobs:
           envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-notifiche-integration' deployment.tmp.yaml
+        if: ${{ success() && needs.CheckInputModules.outputs.ms-notifiche-integration == 'true' }}
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ms-notifiche-integration
@@ -432,6 +519,7 @@ jobs:
           envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-open-data' deployment.tmp.yaml
+        if: ${{ success() && needs.CheckInputModules.outputs.ms-open-data == 'true' }}
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ms-open-data
@@ -445,6 +533,7 @@ jobs:
           envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-programma-progetto' deployment.tmp.yaml
+        if: ${{ success() && needs.CheckInputModules.outputs.ms-programma-progetto == 'true' }}
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ms-programma-progetto
@@ -457,6 +546,7 @@ jobs:
           envsubst < deployment.tmp.yml >> ${{ github.workspace }}/deployment.yml
 
       - name: Setup 'ms-questionario-cittadino' deployment.tmp.yaml
+        if: ${{ success() && needs.CheckInputModules.outputs.ms-questionario-cittadino == 'true' }}
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ms-questionario-cittadino
@@ -478,7 +568,7 @@ jobs:
 
   RepoUpdate:
     if: ${{ github.event.inputs.version == '' }}
-    needs: [DryRunRelease, Deploy]
+    needs: [CheckInputModules, DryRunRelease, Deploy]
     name: Repo Update
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
@@ -494,6 +584,7 @@ jobs:
           fetch-depth: '0'
 
       - name: File Package Update
+        if: ${{ needs.CheckInputModules.outputs.fe-piattaforma == 'true' }}
         uses: mingjun97/file-regex-replace@v1
         with:
           # regex to apply(regex)
@@ -510,18 +601,36 @@ jobs:
         run: |
           cd ${{ github.workspace }}/lib-repdgt-shared
           mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
-          cd ${{ github.workspace }}/ms-ente
-          mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
-          cd ${{ github.workspace }}/ms-gestione-utente
-          mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
-          cd ${{ github.workspace }}/ms-notifiche-integration
-          mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
-          cd ${{ github.workspace }}/ms-open-data
-          mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
-          cd ${{ github.workspace }}/ms-programma-progetto
-          mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
-          cd ${{ github.workspace }}/ms-questionario-cittadino
-          mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
+          in="${{ needs.CheckInputModules.outputs.ms-ente }}"
+          if [ "$in" == "true" ]; then
+            cd ${{ github.workspace }}/ms-ente
+            mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
+          fi
+          in="${{ needs.CheckInputModules.outputs.ms-gestione-utente }}"
+          if [ "$in" == "true" ]; then
+            cd ${{ github.workspace }}/ms-gestione-utente
+            mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
+          fi
+          in="${{ needs.CheckInputModules.outputs.ms-notifiche-integration }}"
+          if [ "$in" == "true" ]; then
+            cd ${{ github.workspace }}/ms-notifiche-integration
+            mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
+          fi
+          in="${{ needs.CheckInputModules.outputs.ms-open-data }}"
+          if [ "$in" == "true" ]; then
+            cd ${{ github.workspace }}/ms-open-data
+            mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
+          fi
+          in="${{ needs.CheckInputModules.outputs.ms-programma-progetto }}"
+          if [ "$in" == "true" ]; then
+            cd ${{ github.workspace }}/ms-programma-progetto
+            mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
+          fi
+          in="${{ needs.CheckInputModules.outputs.ms-questionario-cittadino }}"
+          if [ "$in" == "true" ]; then
+            cd ${{ github.workspace }}/ms-questionario-cittadino
+            mvn versions:set -DnewVersion=${{needs.DryRunRelease.outputs.version}}
+          fi
 
       - name: Push files updated
         run: |
