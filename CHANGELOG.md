@@ -1,5 +1,15 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.5...1.0.0-develop.6) (2022-07-01)
+
+
+### Bug Fixes
+
+* check if release job ([dde9dde](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/dde9dde26afd452fa4baab3d9880203dec503bfb))
+* check if release job ([8f5eff0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8f5eff0b5b556a2c93b548787a2e3941251fc1fd))
+* check if build BE job ([a029e7c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a029e7c2c5173661a060ff99c916f83dcf4bc885))
+* check if build BE job ([0333ba1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0333ba188fc2ee23f85ea93e99ecdf92f26fad04))
+
 ## [1.0.0-develop.5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.4...1.0.0-develop.5) (2022-07-01)
 
 
