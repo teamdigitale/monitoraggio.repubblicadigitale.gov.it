@@ -49,10 +49,10 @@ public class EnteSedeProgettoService {
 		List<EnteSedeProgetto> enteSedeProgetto = this.enteSedeProgettoRepository.getEnteSedeProgettoByIdProgetto(idProgetto);
 		
 		enteSedeProgetto.stream().forEach(sede -> {
-						if(sede.getStatoSede().equals(StatoEnum.ATTIVO.getValue())) {
+						if(StatoEnum.ATTIVO.getValue().equals(sede.getStatoSede())) {
 							this.terminazioneAssociazioneEnteSedeProgetto(sede);
 						}
-						if(sede.getStatoSede().equals(StatoEnum.NON_ATTIVO.getValue())) {
+						if(StatoEnum.NON_ATTIVO.getValue().equals(sede.getStatoSede())) {
 							this.cancellazioneAssociazioneEnteSedeProgetto(sede);
 						}
 					});
@@ -67,12 +67,12 @@ public class EnteSedeProgettoService {
 		List<EnteSedeProgettoFacilitatoreEntity> facilitatori = this.enteSedeProgettoFacilitatoreService.getAllFacilitatoriEVolontariBySedeAndEnteAndProgetto(idSede, idEnte, idProgetto);
 		facilitatori.stream()
 					.forEach(utente -> {
-						if(utente.getStatoUtente().equals(StatoEnum.ATTIVO.getValue())) {
+						if(StatoEnum.ATTIVO.getValue().equals(utente.getStatoUtente())) {
 							utente.setStatoUtente(StatoEnum.TERMINATO.getValue());
 							utente.setDataOraTerminazione(new Date());
 							this.enteSedeProgettoFacilitatoreService.salvaEnteSedeProgettoFacilitatore(utente);
 						}
-						if(utente.getStatoUtente().equals(StatoEnum.NON_ATTIVO.getValue())) {
+						if(StatoEnum.NON_ATTIVO.getValue().equals(utente.getStatoUtente())) {
 							this.enteSedeProgettoFacilitatoreService.cancellaAssociazioneFacilitatoreOVolontario(idEnte, idSede, idProgetto, utente.getId().getIdFacilitatore(), utente.getRuoloUtente());
 						}
 					});
