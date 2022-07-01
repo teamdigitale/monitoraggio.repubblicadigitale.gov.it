@@ -276,7 +276,7 @@ const TargetDateFormPrograms: React.FC<TargetDateFormProgramsI> = (props) => {
                   }}
                   col='col-12 col-lg-5'
                   className='pl-lg-3'
-                  key={index}
+                  key={`Data-${index}`}
                   aria-label={`${form?.[row[1]].field}`}
                 />
 

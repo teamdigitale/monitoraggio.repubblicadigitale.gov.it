@@ -223,7 +223,7 @@ const Programmi = () => {
       {...programCta}
       cta={newProgram}
     >
-      <div>
+      <div className='mt-5'>
         <Table
           {...tableValues}
           id='table'

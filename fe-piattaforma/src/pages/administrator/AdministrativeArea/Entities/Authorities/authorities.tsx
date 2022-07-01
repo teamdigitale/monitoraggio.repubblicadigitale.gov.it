@@ -235,7 +235,7 @@ const Authorities: React.FC = () => {
       /*  {...ctaProgetti}
       cta={newGestoreProgetto} */
     >
-      <div>
+      <div className='mt-5'>
         <Table
           {...tableValues}
           id='table'

@@ -25,7 +25,7 @@ export const TableHeading: TableHeadingI[] = [
   {
     field: 'policy',
     label: 'Policy',
-    size: 'medium',
+    size: 'small',
   },
   {
     field: 'enteGestore',
@@ -35,7 +35,7 @@ export const TableHeading: TableHeadingI[] = [
   {
     label: 'Stato',
     field: 'status',
-    size: 'small',
+    size: 'medium',
   },
 ];
 
@@ -66,6 +66,7 @@ export const TableHeadingQuestionnaires: TableHeadingI[] = [
   {
     label: 'Nome questionario',
     field: 'label',
+    size: 'auto',
   },
   {
     label: 'ID',
@@ -75,18 +76,22 @@ export const TableHeadingQuestionnaires: TableHeadingI[] = [
   {
     label: 'Data ultima modifica',
     field: 'lastChangeDate',
+    size: 'auto',
   },
   {
     label: 'Stato',
     field: 'status',
+    size: 'auto',
   },
   {
     label: 'Default SCD',
     field: 'default_SCD',
+    size: 'auto',
   },
   {
     label: 'Default RFD',
     field: 'default_RFD',
+    size: 'auto',
   },
 ];
 

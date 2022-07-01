@@ -1,13 +1,10 @@
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import { Form, Input, Select } from '../../../components';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
 import { selectPrograms } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
-import { GetProgramDetail } from '../../../redux/features/administrativeArea/programs/programsThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
 import { RegexpType } from '../../../utils/validator';
@@ -39,20 +36,17 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     creation = false,
     intoModal = false,
   } = props;
-  const { entityId } = useParams();
+  const programDetails: { [key: string]: string } | undefined =
+    useAppSelector(selectPrograms).detail.dettagliInfoProgramma;
 
   const formDisabled = !!props.formDisabled;
 
-  const formData: { [key: string]: string } | undefined =
-    useAppSelector(selectPrograms).detail?.dettagliInfoProgramma;
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (!creation) {
-      dispatch(GetProgramDetail(entityId || ''));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [creation]);
+  // useEffect(() => {
+  //   if (!creation) {
+  //     dispatch(GetProgramDetail(entityId || ''));
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [creation]);
 
   /*
 
@@ -70,19 +64,17 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
   }, [form]);
 
   useEffect(() => {
-    if (formData && !creation) {
-      console.log(formData);
-
+    if (programDetails && !creation) {
       setFormValues(
         Object.fromEntries(
-          Object.entries(formData).filter(
-            ([key, _val]) => !key.includes('Target')
+          Object.entries(programDetails).filter(
+            ([key, _val]) => !key.includes('Target') && !key.includes('stato')
           )
         )
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData]);
+  }, [programDetails]);
 
   const onInputDataChange = (
     value: formFieldI['value'],

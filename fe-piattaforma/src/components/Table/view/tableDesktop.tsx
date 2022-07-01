@@ -103,7 +103,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                 </td>
               ))}
               {onActionClick ? (
-                <td>
+                <td className='px-0'>
                   <div
                     className={clsx(
                       'd-flex',
