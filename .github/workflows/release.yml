@@ -404,11 +404,10 @@ jobs:
 
   Deploy:
     needs: [CheckInputModules, DryRunRelease, buildFE, buildBE]
-    if: |
-      always() &&
+    if: ${{ always() &&
       needs.DryRunRelease.result == 'success' &&
       (needs.buildFE.result == 'success' || needs.buildFE.result == 'skipped') &&
-      (needs.buildBE.result == 'success' || needs.buildBE.result == 'skipped')
+      (needs.buildBE.result == 'success' || needs.buildBE.result == 'skipped') }}
     name: Deploy
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
@@ -659,8 +658,8 @@ jobs:
           git push
 
   Release:
-    if: ${{ github.event.inputs.version == '' }}
     needs: [RepoUpdate]
+    if: ${{ github.event.inputs.version == '' && always() && needs.RepoUpdate.result == 'success' }}
     name: Release
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
