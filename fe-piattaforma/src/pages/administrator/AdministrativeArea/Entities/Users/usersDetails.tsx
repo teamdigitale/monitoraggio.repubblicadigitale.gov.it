@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { formTypes } from '../utils';
 import {
   CRUDActionsI,
@@ -17,9 +17,13 @@ import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
 import ConfirmDeleteModal from '../modals/confirmDeleteModal';
 import ManageUsers from '../modals/manageUsers';
 import { useAppSelector } from '../../../../../redux/hooks';
-import { selectDevice } from '../../../../../redux/features/app/appSlice';
-import clsx from 'clsx';
+import {
+  selectDevice,
+  updateBreadcrumb,
+} from '../../../../../redux/features/app/appSlice';
 import FormUser from '../../../../forms/formUser';
+import { GetUserDetail } from '../../../../../redux/features/administrativeArea/user/userThunk';
+import { selectUsers } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 
 const UsersDetails = () => {
   const [deleteText, setDeleteText] = useState<string>('');
@@ -34,9 +38,38 @@ const UsersDetails = () => {
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { mediaIsDesktop, mediaIsPhone } = useAppSelector(selectDevice);
+  const userInfo = useAppSelector(selectUsers)?.detail?.info;
+  const { mediaIsDesktop /* mediaIsPhone */ } = useAppSelector(selectDevice);
 
-  const userType = '';
+  useEffect(() => {
+    dispatch(GetUserDetail('1'));
+  }, []);
+
+  const headquarterInfo = userInfo?.authorityRef || undefined;
+
+  const { entityId, userType } = useParams();
+
+  useEffect(() => {
+    dispatch(
+      updateBreadcrumb([
+        {
+          label: 'Area Amministrativa',
+          url: '/area-amministrativa',
+          link: false,
+        },
+        {
+          label: 'Utenti',
+          url: '/area-amministrativa/utenti',
+          link: true,
+        },
+        {
+          label: entityId,
+          url: `/area-amministrativa/utenti/${entityId}`,
+          link: false,
+        },
+      ])
+    );
+  }, [entityId]);
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
@@ -93,21 +126,33 @@ const UsersDetails = () => {
     ]);
   }, [mediaIsDesktop]);
 
+  const getUpperTitle = () => {
+    if (userType) {
+      switch (userType) {
+        case formTypes.DELEGATI:
+          return formTypes.DELEGATO;
+        case formTypes.REFERENTI:
+          return formTypes.REFERENTE;
+        default:
+          'utente';
+      }
+    }
+    return 'utente';
+  };
+
   return (
-    <div
-      className={clsx(
-        mediaIsPhone
-          ? 'd-flex flex-row container'
-          : 'd-flex flex-row mt-5 container'
-      )}
-    >
+    <div className='d-flex flex-row container'>
       <div className='d-flex flex-column w-100'>
         <div className='container'>
           <DetailLayout
             titleInfo={{
               title: 'Antonio Rossi',
               status: 'ATTIVO',
-              upperTitle: { icon: 'it-user', text: userType || '' },
+              upperTitle: { icon: 'it-user', text: getUpperTitle() },
+              subTitle: headquarterInfo,
+              iconAvatar: true,
+              name: userInfo?.name,
+              surname: userInfo?.lastName,
             }}
             formButtons={correctButtons}
             itemsList={itemList}

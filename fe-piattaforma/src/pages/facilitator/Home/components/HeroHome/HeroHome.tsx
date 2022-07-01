@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import clsx from 'clsx';
 import {
   CardReadMore,
   Container,
@@ -41,7 +42,15 @@ const HeroHome = () => {
           <HeroButton color='secondary'>Scopri di più</HeroButton>
         </HeroBody>
       </Hero>
-      <Container className='heroHome container-responsive px-lg-5 px-sm-0 text-wrap'>
+      <Container
+        className={clsx(
+          'heroHome',
+          'container-responsive',
+          'px-lg-5',
+          'px-sm-0',
+          'text-wrap'
+        )}
+      >
         <Card className='card-bg heroHome__hero-card'>
           <CardBody>
             <CardTitle tag='h2' className='h3 big-heading text-primary'>

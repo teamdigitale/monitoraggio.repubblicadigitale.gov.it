@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { statusColor, statusBgColor, TableHeading } from '../utils';
+import { TableHeading } from '../utils';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
   selectEntityFilters,
   selectEntityFiltersOptions,
+  selectEntityList,
   selectEntityPagination,
-  selectProjects,
   setEntityFilters,
   setEntityPagination,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { newTable, TableRowI } from '../../../../../components/Table/table';
-import { Chip, ChipLabel } from 'design-react-kit';
-import clsx from 'clsx';
 import {
   DropdownFilterI,
   FilterI,
@@ -20,23 +18,25 @@ import {
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
 } from '../../../../../components/genericSearchFilterTableLayout/genericSearchFilterTableLayout';
-import { Paginator, Table } from '../../../../../components';
+import { Paginator, StatusChip, Table } from '../../../../../components';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import ManageProject from '../modals/manageProject';
 import { useNavigate } from 'react-router-dom';
 import {
-  GetAllProjects,
-  GetFilterValuesProjects,
-} from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
+  GetEntityFilterValues,
+  GetEntityValues,
+} from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
+import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 
-const statusDropdownLabel = 'stati';
-const policyDropdownLabel = 'policies';
-const programDropdownLabel = 'programmi';
+const entity = 'progetto';
+const statusDropdownLabel = 'filtroStati';
+const policyDropdownLabel = 'filtroPolicies';
+const programDropdownLabel = 'filtroIdsProgrammi';
 
 const Projects: React.FC = () => {
   const dispatch = useDispatch();
-  const progettiList = useAppSelector(selectProjects);
+  const { progetti: progettiList = [] } = useAppSelector(selectEntityList);
   const filtersList = useAppSelector(selectEntityFilters);
   const pagination = useAppSelector(selectEntityPagination);
   const dropdownFilterOptions = useAppSelector(selectEntityFiltersOptions);
@@ -44,18 +44,36 @@ const Projects: React.FC = () => {
     { filterId: string; value: formFieldI['value'] }[]
   >([]);
   const navigate = useNavigate();
-  const { criterioRicerca, policies, stati, programmi } = filtersList;
+  const {
+    filtroCriterioRicerca,
+    filtroPolicies,
+    filtroStati,
+    filtroIdsProgrammi,
+  } = filtersList;
   const { pageNumber } = pagination;
 
   const getAllFilters = () => {
-    dispatch(GetFilterValuesProjects(statusDropdownLabel));
-    dispatch(GetFilterValuesProjects(policyDropdownLabel));
-    dispatch(GetFilterValuesProjects(programDropdownLabel));
+    dispatch(GetEntityFilterValues({ entity, dropdownType: 'stati' }));
+    dispatch(GetEntityFilterValues({ entity, dropdownType: 'policies' }));
+    dispatch(GetEntityFilterValues({ entity, dropdownType: 'programmi' }));
   };
 
   useEffect(() => {
-    dispatch(setEntityPagination({ pageSize: 2 }));
-    getAllFilters();
+    dispatch(setEntityPagination({ pageSize: 8 }));
+    dispatch(
+      updateBreadcrumb([
+        {
+          label: 'Area Amministrativa',
+          url: '/area-amministrativa',
+          link: false,
+        },
+        {
+          label: 'Progetti',
+          url: '/area-amministrativa/progetti',
+          link: true,
+        },
+      ])
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -63,27 +81,24 @@ const Projects: React.FC = () => {
     getAllFilters();
     getProjectsList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [criterioRicerca, policies, stati, pageNumber, programmi]);
+  }, [
+    filtroCriterioRicerca,
+    filtroPolicies,
+    filtroStati,
+    filtroIdsProgrammi,
+    pageNumber,
+  ]);
 
   const updateTableValues = () => {
+    //TODO align keys when API Integation is done
     const table = newTable(
       TableHeading,
-      progettiList.list.map((td) => ({
+      progettiList.map((td: any) => ({
         id: td.id,
-        label: td.nome,
-        status: (
-          <Chip
-            className={clsx(
-              'table-container__status-label',
-              statusBgColor(td.stato),
-              'no-border'
-            )}
-          >
-            <ChipLabel className={statusColor(td.stato)}>
-              {td.stato.toUpperCase()}
-            </ChipLabel>
-          </Chip>
-        ),
+        label: td.nomeBreve || td.nome,
+        policy: td.policy,
+        enteGestore: td.enteGestore || td.nomeEnteGestore,
+        status: <StatusChip status={td.stato} rowTableId={td.id} />,
       }))
     );
     return {
@@ -99,18 +114,13 @@ const Projects: React.FC = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    setTableValues(updateTableValues());
+    if (Array.isArray(progettiList)) setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progettiList]);
 
   const getProjectsList = () => {
-    dispatch(GetAllProjects());
+    dispatch(GetEntityValues({ entity: 'progetto' }));
   };
-
-  useEffect(() => {
-    getProjectsList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filtersList, pagination]);
 
   const handleOnChangePage = (pageNumber: number = pagination?.pageNumber) => {
     dispatch(setEntityPagination({ pageNumber }));
@@ -122,7 +132,9 @@ const Projects: React.FC = () => {
 
   const handleOnSearch = (searchValue: string) => {
     dispatch(
-      setEntityFilters({ nomeLike: { label: searchValue, value: searchValue } })
+      setEntityFilters({
+        filtroCriterioRicerca: searchValue,
+      })
     );
   };
 
@@ -147,7 +159,7 @@ const Projects: React.FC = () => {
   const dropdowns: DropdownFilterI[] = [
     {
       filterName: 'Policy',
-      options: dropdownFilterOptions[policyDropdownLabel],
+      options: dropdownFilterOptions['policies'],
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, policyDropdownLabel),
       id: policyDropdownLabel,
@@ -162,7 +174,7 @@ const Projects: React.FC = () => {
     },
     {
       filterName: 'Programma',
-      options: dropdownFilterOptions[programDropdownLabel],
+      options: dropdownFilterOptions['programmi'],
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, programDropdownLabel),
       id: programDropdownLabel,
@@ -176,8 +188,8 @@ const Projects: React.FC = () => {
       )[0]?.value,
     },
     {
-      filterName: 'Stati',
-      options: dropdownFilterOptions[statusDropdownLabel],
+      filterName: 'Stato',
+      options: dropdownFilterOptions['stati'],
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, statusDropdownLabel),
       id: statusDropdownLabel,
@@ -196,7 +208,7 @@ const Projects: React.FC = () => {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
     placeholder:
-      "Inserisci il nome, l'identificativo o il nome dell'ente gestore del progetto che stai cercando",
+      "Inserisci il nome del progetto, l'identificativo o il nome dell'ente gestore",
     isClearable: true,
     title: 'Cerca progetto',
   };
@@ -207,34 +219,13 @@ const Projects: React.FC = () => {
     },
   };
 
-  /* const newGestoreProgetto = () => {
-    dispatch(
-      openModal({
-        id: formTypes.PROGETTO,
-        payload: {
-          title: 'Crea un nuovo progetto',
-        },
-      })
-    );
-  }; */
-
-  /* const ctaProgetti = {
-    title: 'Area Amministrativa',
-    subtitle:
-      'Qui potrai gestire utenti, enti, programmi e progetti e creare i questionari',
-    textCta: 'Crea nuovo progetto',
-    iconCta: 'it-plus',
-  }; */
-
   return (
     <GenericSearchFilterTableLayout
       searchInformation={searchInformation}
       dropdowns={dropdowns}
       filtersList={filtersList}
-      /* {...ctaProgetti}
-      cta={newGestoreProgetto} */
     >
-      <div>
+      <div className='mt-5'>
         <Table
           {...tableValues}
           id='table'
@@ -248,7 +239,7 @@ const Projects: React.FC = () => {
           center
           refID='#table'
           pageSize={pagination?.pageSize}
-          total={progettiList.list.length}
+          total={pagination?.totalPages}
           onChange={handleOnChangePage}
         />
       </div>

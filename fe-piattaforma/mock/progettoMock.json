@@ -1,78 +1,94 @@
 {
   "data": {
-    "dettaglioProgetto": {
-      "generalInfo": {
-        "id": "24",
-        "nomeProgetto": "Blasone",
-        "nomeBreve": "Blasi"
+    "dettagliInfoProgetto": {
+      "id": 251,
+      "nome": "Progetto Sicurezza Lavoro",
+      "nomeBreve": "Progetto Sicurezza Lavoro",
+      "cup": "provacup",
+      "dataInizio": 1656409695000,
+      "dataFine": 1656409695000,
+      "nfacilitatoriDataTarget3": 1656409695000,
+      "nfacilitatoriDataTarget4": 1656409695000,
+      "nfacilitatoriDataTarget5": 1656409695000,
+      "npuntiFacilitazioneTarget1": 0,
+      "npuntiFacilitazioneTarget2": 0,
+      "npuntiFacilitazioneTarget3": 0,
+      "npuntiFacilitazioneTarget4": 0,
+      "npuntiFacilitazioneTarget5": 0,
+      "npuntiFacilitazioneDataTarget1": 1656409695000,
+      "npuntiFacilitazioneDataTarget2": 1656409695000,
+      "npuntiFacilitazioneDataTarget3": 1656409695000,
+      "npuntiFacilitazioneDataTarget4": 1656409695000,
+      "npuntiFacilitazioneDataTarget5": 1656409695000,
+      "nutentiUniciTarget1": 0,
+      "nutentiUniciTarget2": 0,
+      "nutentiUniciTarget3": 0,
+      "nutentiUniciTarget4": 0,
+      "nutentiUniciTarget5": 0,
+      "nutentiUniciDataTarget1": 1656409695000,
+      "nutentiUniciDataTarget2": 1656409695000,
+      "nutentiUniciDataTarget3": 1656409695000,
+      "nutentiUniciDataTarget4": 1656409695000,
+      "nutentiUniciDataTarget5": 1656409695000,
+      "nserviziTarget1": 0,
+      "nserviziTarget2": 0,
+      "nserviziTarget3": 0,
+      "nserviziTarget4": 0,
+      "nserviziTarget5": 0,
+      "nserviziDataTarget1": 1656409695000,
+      "nserviziDataTarget2": 1656409695000,
+      "nserviziDataTarget3": 1656409695000,
+      "nserviziDataTarget4": 1656409695000,
+      "nserviziDataTarget5": 1656409695000,
+      "nfacilitatoriTarget1": 0,
+      "nfacilitatoriTarget2": 0,
+      "nfacilitatoriTarget3": 0,
+      "nfacilitatoriTarget4": 0,
+      "nfacilitatoriTarget5": 0,
+      "nfacilitatoriDataTarget1": 1656409695000,
+      "nfacilitatoriDataTarget2": 1656409695000
+  },
+  "sedi": [
+      {
+          "id": 1,
+          "nome": "Sede x",
+          "ruoloEnte": "EGP",
+          "serviziErogati": null,
+          "enteDiRiferimento": "Regione Lombardia",
+          "nrFacilitatori": 0,
+          "stato": "ATTIVO"
       },
-      "facilitationNumber": {
-        "targetMesi1": "codice facilitazione",
-        "targetMesi1data": "2022-04-13",
-        "targetMesi18": "nome breve",
-        "targetMesi18data": "2022-04-13",
-        "targetMesi30": "2022-05-30",
-        "targetMesi30data": "2022-05-30",
-        "targetMesi42": "4000",
-        "targetMesi42data": "2022-05-30",
-        "targetGiugno2025": "valGiugno2025"
+      {
+          "id": 1,
+          "nome": "Sede x",
+          "ruoloEnte": "EGP",
+          "serviziErogati": null,
+          "enteDiRiferimento": "Regione Molise",
+          "nrFacilitatori": 2,
+          "stato": "ATTIVO"
       },
-      "uniqueUsers": {
-        "targetMesi1": "codice utenti",
-        "targetMesi1data": "2022-04-13",
-        "targetMesi18": "nome breve",
-        "targetMesi18data": "2022-04-13",
-        "targetMesi30": "2022-05-30",
-        "targetMesi30data": "2022-05-30",
-        "targetMesi42": "4000",
-        "targetMesi42data": "2022-05-30",
-        "targetGiugno2025": "valGiugno2025"
-      },
-      "services": {
-        "targetMesi1": "codice servizi",
-        "targetMesi1data": "2022-04-13",
-        "targetMesi18": "nome breve",
-        "targetMesi18data": "2022-04-13",
-        "targetMesi30": "2022-05-30",
-        "targetMesi30data": "2022-05-30",
-        "targetMesi42": "4000",
-        "targetMesi42data": "2022-05-30",
-        "targetGiugno2025": "valGiugno2025"
-      },
-      "facilitators": {
-        "targetMesi1": "codice facilitatori",
-        "targetMesi1data": "2022-04-13",
-        "targetMesi18": "nome breve",
-        "targetMesi18data": "2022-04-13",
-        "targetMesi30": "2022-05-30",
-        "targetMesi30data": "2022-05-30",
-        "targetMesi42": "4000",
-        "targetMesi42data": "2022-05-30",
-        "targetGiugno2025": "valGiugno2025"
+      {
+          "id": 2,
+          "nome": "Sede y",
+          "ruoloEnte": "EGP",
+          "serviziErogati": null,
+          "enteDiRiferimento": "Regione Molise",
+          "nrFacilitatori": 0,
+          "stato": "ATTIVO"
       }
-    },
-    "idEnteGestoreProgetto": "3213131",
+  ],
+  "idEnteGestoreProgetto": 1000,
     "entiPartner": [
       {
         "id": "ente-dsda",
         "nome": "ente dsdsa",
+        "ref": "Referente  Anna Neri",
         "stato": "ATTIVO"
       },
       {
         "id": "ente-dsd1a",
         "nome": "ente dsds1a",
-        "stato": "ATTIVO"
-      }
-    ],
-    "sedi": [
-      {
-        "id": "sede-dsda",
-        "nome": "sede dsdsa",
-        "stato": "ATTIVO"
-      },
-      {
-        "id": "sede-dsd1a",
-        "nome": "sede dsds1a",
+        "ref": "Referente  Anna Neri",
         "stato": "ATTIVO"
       }
     ]

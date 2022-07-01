@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Nav } from 'design-react-kit';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Icon, Nav } from 'design-react-kit';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { formTypes } from '../utils';
 import {
   CRUDActionsI,
@@ -20,14 +20,18 @@ import ManageProject from '../modals/manageProject';
 import ManageHeadquarter from '../../../../../components/AdministrativeArea/Entities/Headquarters/ManageHeadquarter/manageHeadquarter';
 import ManageEntiPartner from '../modals/managePartnerAuthority';
 import { useAppSelector } from '../../../../../redux/hooks';
-import { selectDevice } from '../../../../../redux/features/app/appSlice';
+import {
+  selectDevice,
+  updateBreadcrumb,
+} from '../../../../../redux/features/app/appSlice';
 import clsx from 'clsx';
-import ManageProgramManagerAuthority from '../modals/manageProgramManagerAuthority';
 import { selectProjects } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 //import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
-import { NavLink } from '../../../../../components';
+import { EmptySection, NavLink } from '../../../../../components';
 import ProjectAccordionForm from '../../../../forms/formProjects/ProjectAccordionForm/ProjectAccordionForm';
 import FormAuthorities from '../../../../forms/formAuthorities';
+import ManagePartnerAuthority from '../modals/managePartnerAuthority';
+import { DeleteEntity } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 
 const tabs = {
   INFO: 'info',
@@ -44,10 +48,14 @@ export const buttonsPositioning = {
 const ProjectsDetails = () => {
   const { mediaIsDesktop, mediaIsPhone } = useAppSelector(selectDevice);
   const progetti = useAppSelector(selectProjects);
+  const managingAuthorityID = progetti.detail?.idEnteGestoreProgetto;
+  const PartnerAuthorityList = progetti.detail?.entiPartner;
+  const headquarterList = progetti.detail?.sedi;
   const [deleteText, setDeleteText] = useState<string>('');
   const [activeTab, setActiveTab] = useState<string>(tabs.INFO);
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
   const [currentModal, setCorrectModal] = useState<React.ReactElement>();
+  const [emptySection, setEmptySection] = useState<React.ReactElement>();
   const [itemList, setItemList] = useState<ItemsListI | null>();
   const [itemAccordionList, setItemAccordionList] = useState<
     ItemsListI[] | null
@@ -66,10 +74,33 @@ const ProjectsDetails = () => {
   const partnerRef = useRef<HTMLLIElement>(null);
   const sediRef = useRef<HTMLLIElement>(null);
   const infoRef = useRef<HTMLLIElement>(null);
+  const { projectId } = useParams();
+  const projectshortName =
+    progetti.detail?.dettaglioProgetto?.generalInfo?.nomeBreve;
 
-  /* useEffect(() => {
-    dispatch(GetProjectDetail('project1'));
-  }, []); */
+  useEffect(() => {
+    if (projectId && projectshortName) {
+      dispatch(
+        updateBreadcrumb([
+          {
+            label: 'Area Amministrativa',
+            url: '/area-amministrativa',
+            link: false,
+          },
+          {
+            label: 'Progetti',
+            url: '/area-amministrativa/progetti',
+            link: true,
+          },
+          {
+            label: projectshortName,
+            url: `/area-amministrativa/progetti/${projectId}`,
+            link: false,
+          },
+        ])
+      );
+    }
+  }, [projectId, projectshortName]);
 
   useEffect(() => {
     scrollTo(0, 0);
@@ -118,6 +149,196 @@ const ProjectsDetails = () => {
     }
   }, [location]);
 
+  const EmptySectionButtons: ButtonInButtonsBar[] = [
+    {
+      size: 'xs',
+      color: 'primary',
+      text: 'Aggiungi un nuovo Ente gestore Progetto',
+      onClick: () =>
+        dispatch(
+          openModal({
+            id: 'ente-gestore-progetto',
+            payload: { title: 'Aggiungi Ente gestore Progetto' },
+          })
+        ),
+    },
+    {
+      size: 'xs',
+      color: 'primary',
+      text: 'Aggiungi un nuovo Ente Partner',
+      onClick: () =>
+        dispatch(
+          openModal({
+            id: 'ente-gestore-progetto',
+            payload: { title: 'Aggiungi Ente partner' },
+          })
+        ),
+    },
+    {
+      size: 'xs',
+      color: 'primary',
+      text: 'Aggiungi una nuova Sede',
+      onClick: () =>
+        dispatch(
+          openModal({
+            id: formTypes.SEDE,
+            payload: { title: 'Aggiungi Sede' },
+          })
+        ),
+    },
+  ];
+
+  const AuthoritySection = () => {
+    if (managingAuthorityID) {
+      setButtonsPosition('TOP');
+      setDeleteText('Confermi di voler eliminare questo gestore di progetto?');
+      setCurrentForm(
+        <FormAuthorities
+          formDisabled
+          enteType={formTypes.ENTE_GESTORE_PROGETTO}
+        />
+      );
+      setCorrectModal(<ManagePartnerAuthority />);
+      setItemList(null);
+      setCorrectButtons([
+        {
+          size: 'xs',
+          color: 'primary',
+          text: 'Elimina',
+          onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+        },
+        {
+          size: 'xs',
+          outline: true,
+          color: 'primary',
+          text: ' Modifica',
+          onClick: () =>
+            dispatch(
+              openModal({
+                id: formTypes.ENTE_GESTORE_PROGETTO,
+                payload: { title: 'Modifica ente gestore progetto' },
+              })
+            ),
+        },
+      ]);
+      setEmptySection(undefined);
+    } else {
+      setItemList(null);
+      setCorrectButtons([]);
+      setCurrentForm(undefined);
+      setEmptySection(
+        <EmptySection
+          title={'Questa sezione è ancora vuota'}
+          subtitle={
+            'Per attivare il progetto aggiungi un Ente gestore e una Sede'
+          }
+          buttons={EmptySectionButtons.slice(0, 1)}
+        />
+      );
+    }
+  };
+
+  const PartnerAuthoritySection = () => {
+    if (PartnerAuthorityList?.length) {
+      PartnerAuthorityList?.map(
+        (ente: { id: string; nome: string; ref: string; stato: string }) => ({
+          ...ente,
+          fullInfo: { ref: ente.ref },
+          actions: onActionClickEntiPartner,
+        })
+      ),
+        setButtonsPosition('BOTTOM');
+      setCurrentForm(undefined);
+      setCorrectModal(<ManageEntiPartner creation />);
+      setItemList({
+        items: [...PartnerAuthorityList],
+      });
+      setItemAccordionList(null);
+      setCorrectButtons([
+        {
+          size: 'xs',
+          color: 'primary',
+          text: 'Carica lista enti partner',
+          onClick: () => console.log('carica lista enti partner'),
+        },
+        {
+          size: 'xs',
+          outline: true,
+          color: 'primary',
+
+          text: ' Aggiungi Ente partner',
+          onClick: () =>
+            dispatch(
+              openModal({
+                id: formTypes.ENTE_PARTNER,
+                payload: { title: 'Aggiungi ente partner' },
+              })
+            ),
+        },
+      ]);
+      setEmptySection(undefined);
+    } else {
+      setItemAccordionList(null);
+      setCurrentForm(undefined);
+      setItemList(null);
+      setCorrectButtons([]);
+      setEmptySection(
+        <EmptySection
+          title={'Questa sezione è ancora vuota'}
+          subtitle={'Per attivare il progetto aggiungi un Ente partner'}
+          buttons={EmptySectionButtons.slice(1, 2)}
+        />
+      );
+    }
+  };
+
+  const HeadquartersSection = () => {
+    if (headquarterList?.length) {
+      headquarterList?.map(
+        (sede: { id: string; nome: string; stato: string }) => ({
+          ...sede,
+          actions: onActionClickSede,
+        })
+      );
+      setButtonsPosition('BOTTOM');
+      setCurrentForm(undefined);
+      setCorrectModal(<ManageHeadquarter creation />);
+      setItemList({
+        items: [...headquarterList],
+      });
+      setItemAccordionList(null);
+      setCorrectButtons([
+        {
+          size: 'xs',
+          outline: true,
+          color: 'primary',
+
+          text: ' Aggiungi sede',
+          onClick: () =>
+            dispatch(
+              openModal({
+                id: formTypes.SEDE,
+                payload: { title: 'Sede' },
+              })
+            ),
+        },
+      ]);
+      setEmptySection(undefined);
+    } else {
+      setItemAccordionList(null);
+      setCurrentForm(undefined);
+      setItemList(null);
+      setCorrectButtons([]);
+      setEmptySection(
+        <EmptySection
+          title={'Questa sezione è ancora vuota'}
+          subtitle={'Per attivare il progetto aggiungi una Sede'}
+          buttons={EmptySectionButtons.slice(2)}
+        />
+      );
+    }
+  };
+
   const replaceLastUrlSection = (tab: string): string => {
     const { pathname } = location;
     const splitLocation = pathname.split('/');
@@ -141,7 +362,14 @@ const ProjectsDetails = () => {
           to={replaceLastUrlSection(tabs.ENTE_GESTORE)}
           active={activeTab === tabs.ENTE_GESTORE}
         >
-          Ente gestore
+          {!managingAuthorityID ? (
+            <div>
+              <span className='mr-1'> * Ente gestore </span>
+              <Icon icon='it-warning-circle' size='sm' />
+            </div>
+          ) : (
+            'Ente gestore'
+          )}
         </NavLink>
       </li>
       <li ref={partnerRef}>
@@ -149,7 +377,14 @@ const ProjectsDetails = () => {
           to={replaceLastUrlSection(tabs.ENTI_PARTNER)}
           active={activeTab === tabs.ENTI_PARTNER}
         >
-          Enti partner
+          {!PartnerAuthorityList?.length ? (
+            <div>
+              <span className='mr-1'> * Enti Partner </span>
+              <Icon icon='it-warning-circle' size='sm' />
+            </div>
+          ) : (
+            'Enti Partner'
+          )}
         </NavLink>
       </li>
       <li ref={sediRef}>
@@ -157,7 +392,14 @@ const ProjectsDetails = () => {
           to={replaceLastUrlSection(tabs.SEDI)}
           active={activeTab === tabs.SEDI}
         >
-          Sedi
+          {!headquarterList?.length ? (
+            <div>
+              <span className='mr-1'> * Sedi </span>
+              <Icon icon='it-warning-circle' size='sm' />
+            </div>
+          ) : (
+            'Sedi'
+          )}
         </NavLink>
       </li>
     </Nav>
@@ -225,140 +467,40 @@ const ProjectsDetails = () => {
         setCorrectButtons([
           {
             size: 'xs',
-            color: 'primary',
-
-            text: 'Elimina',
-            onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
-          },
-          {
-            size: 'xs',
-            color: 'primary',
-
+            color: 'danger',
+            outline: true,
             text: 'Termina progetto',
             onClick: () => console.log('termina progetto'),
           },
           {
             size: 'xs',
+            color: 'primary',
+            text: 'Elimina',
+            onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+          },
+          {
+            size: 'xs',
             outline: true,
             color: 'primary',
-
             text: ' Modifica',
             onClick: () =>
               dispatch(
                 openModal({
                   id: formTypes.PROGETTO,
-                  payload: { title: 'Modifica programma' },
+                  payload: { title: 'Modifica progetto' },
                 })
               ),
           },
         ]);
         break;
       case tabs.ENTE_GESTORE:
-        setButtonsPosition('TOP');
-        setDeleteText(
-          'Confermi di voler eliminare questo gestore di programs?'
-        );
-        setCurrentForm(
-          <FormAuthorities
-            formDisabled
-            enteType={formTypes.ENTE_GESTORE_PROGETTO}
-          />
-        );
-        setCorrectModal(<ManageProgramManagerAuthority />);
-        setItemList(null);
-        setCorrectButtons([
-          {
-            size: 'xs',
-            color: 'primary',
-            text: 'Elimina',
-            onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
-          },
-          {
-            size: 'xs',
-            outline: true,
-            color: 'primary',
-            text: ' Modifica',
-            onClick: () =>
-              dispatch(
-                openModal({
-                  id: formTypes.ENTE_GESTORE_PROGETTO,
-                  payload: { title: 'Modifica ente gestore programs' },
-                })
-              ),
-          },
-        ]);
+        AuthoritySection();
         break;
       case tabs.ENTI_PARTNER:
-        // eslint-disable-next-line no-case-declarations
-        const entiPartnerList =
-          progetti.detail?.entiPartner?.map(
-            (ente: { id: string; nome: string; stato: string }) => ({
-              ...ente,
-              actions: onActionClickEntiPartner,
-            })
-          ) || [];
-        setButtonsPosition('BOTTOM');
-        setCurrentForm(undefined);
-        setCorrectModal(<ManageEntiPartner creation />);
-        setItemList({
-          items: [...entiPartnerList] || [],
-        });
-        setItemAccordionList(null);
-        setCorrectButtons([
-          {
-            size: 'xs',
-            color: 'primary',
-            text: 'Carica lista enti partner',
-            onClick: () => console.log('carica lista enti partner'),
-          },
-          {
-            size: 'xs',
-            outline: true,
-            color: 'primary',
-
-            text: ' Aggiungi Ente partner',
-            onClick: () =>
-              dispatch(
-                openModal({
-                  id: formTypes.ENTE_PARTNER,
-                  payload: { title: 'Aggiungi ente partner' },
-                })
-              ),
-          },
-        ]);
+        PartnerAuthoritySection();
         break;
       case tabs.SEDI:
-        // eslint-disable-next-line no-case-declarations
-        const sediList =
-          progetti.detail?.sedi?.map(
-            (sede: { id: string; nome: string; stato: string }) => ({
-              ...sede,
-              actions: onActionClickSede,
-            })
-          ) || [];
-        setButtonsPosition('BOTTOM');
-        setCurrentForm(undefined);
-        setCorrectModal(<ManageHeadquarter creation />);
-        setItemList({
-          items: [...sediList],
-        });
-        setItemAccordionList(null);
-        setCorrectButtons([
-          {
-            size: 'xs',
-            outline: true,
-            color: 'primary',
-
-            text: ' Aggiungi sede',
-            onClick: () =>
-              dispatch(
-                openModal({
-                  id: formTypes.SEDE,
-                  payload: { title: 'Sede' },
-                })
-              ),
-          },
-        ]);
+        HeadquartersSection();
         break;
       default:
         return;
@@ -369,8 +511,8 @@ const ProjectsDetails = () => {
     <div
       className={clsx(
         mediaIsPhone
-          ? 'd-flex flex-row container'
-          : 'd-flex flex-row mt-5 container'
+          ? 'd-flex flex-row mt-5container'
+          : 'd-flex flex-row container'
       )}
     >
       <div className='d-flex flex-column w-100'>
@@ -387,13 +529,18 @@ const ProjectsDetails = () => {
             itemsAccordionList={itemAccordionList}
             itemsList={itemList}
             buttonsPosition={buttonsPosition}
+            goBackTitle='Elenco progetti'
           >
-            {currentForm}
+            <>
+              {currentForm}
+              {emptySection}
+            </>
           </DetailLayout>
           {currentModal ? currentModal : null}
           <ConfirmDeleteModal
             onConfirm={() => {
               console.log('confirm delete');
+              projectId && dispatch(DeleteEntity(projectId, 'progetto'));
               dispatch(closeModal());
             }}
             onClose={() => {

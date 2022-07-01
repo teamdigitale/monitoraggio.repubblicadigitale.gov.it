@@ -15,13 +15,21 @@ const Stepper: React.FC<StepperI> = (props) => {
   const arraySteps = Array.from(Array(nSteps).keys());
 
   return (
-    <div className={clsx(className, 'stepper-container position-relative')}>
-      <div className='d-flex flex-row justify-content-between w-100'>
+    <div className={clsx(className, 'stepper-container', 'position-relative')}>
+      <div
+        className={clsx(
+          'd-flex',
+          'flex-row',
+          'justify-content-between',
+          'w-100'
+        )}
+      >
         {arraySteps.map((index) => (
           <div
             className={clsx(
               index < currentStep ? 'primary-bg-a9' : 'bg-white',
-              'stepper-container__icon-container stepper-container__icon'
+              'stepper-container__icon-container',
+              'stepper-container__icon'
             )}
             key={index}
           >

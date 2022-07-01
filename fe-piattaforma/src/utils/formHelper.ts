@@ -53,6 +53,8 @@ export interface formFieldI {
   enumLevel2?:
     | { label: string; value: string; upperLevel: string }[]
     | undefined;
+  keyService?: string | undefined;
+  privacy?: boolean;
 }
 export interface FormI {
   [key: string]: formFieldI;
@@ -81,6 +83,8 @@ export const newFormField = ({
   relatedTo = '',
   enumLevel1,
   enumLevel2,
+  keyService,
+  privacy = false,
 }: formFieldI) => ({
   field,
   value,
@@ -104,6 +108,8 @@ export const newFormField = ({
   relatedTo,
   enumLevel1,
   enumLevel2,
+  keyService,
+  privacy,
 });
 
 export const newForm = (fields: formFieldI[] = [], keepPosition = false) => {
@@ -133,6 +139,8 @@ export const newForm = (fields: formFieldI[] = [], keepPosition = false) => {
         relatedTo,
         enumLevel1,
         enumLevel2,
+        keyService,
+        privacy,
       },
       i: number
     ) => {
@@ -161,6 +169,8 @@ export const newForm = (fields: formFieldI[] = [], keepPosition = false) => {
           relatedTo,
           enumLevel1,
           enumLevel2,
+          keyService,
+          privacy,
         },
       };
     }
@@ -214,13 +224,15 @@ export const FormHelper = {
       Object.keys(newForm).length !== 0 &&
       Object.getPrototypeOf(newForm) === Object.prototype
     ) {
-      Object.keys(newFormValues).forEach((field) => {
-        newForm[field] = {
-          ...newForm[field],
-          valid: validator(newForm[field], (newFormValues as any)[field]),
-          value: newFormValues[field],
-        };
-      });
+      Object.keys(newFormValues)
+        .filter((field) => (newFormValues as any)[field])
+        .forEach((field) => {
+          newForm[field] = {
+            ...newForm[field],
+            valid: validator(newForm[field], (newFormValues as any)[field]),
+            value: newFormValues[field],
+          };
+        });
       return newForm;
     }
   },

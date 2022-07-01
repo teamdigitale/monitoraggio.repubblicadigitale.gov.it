@@ -10,4 +10,23 @@
       margin-bottom: 0;
     }
   }
+  &__box-field {
+    border: 1px solid #001a33;
+    border-radius: 5px;
+    &__box-title {
+      padding: 16px 20px;
+      border-bottom: 0.5px solid #001a33;
+    }
+    &__box-content {
+      padding: 16px 14px;
+      .form-group {
+        margin-bottom: 0;
+        label {
+          overflow: visible;
+          text-overflow: wrap;
+          white-space: break-spaces;
+        }
+      }
+    }
+  }
 }

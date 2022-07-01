@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Nav } from 'design-react-kit';
+import { Icon, Nav } from 'design-react-kit';
 import {
   closeModal,
   openModal,
@@ -20,14 +20,25 @@ import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
 import ManageProgram from '../modals/manageProgram';
 import ManageProgramManagerAuthority from '../modals/manageProgramManagerAuthority';
 import { useAppSelector } from '../../../../../redux/hooks';
-import { selectDevice } from '../../../../../redux/features/app/appSlice';
+import {
+  selectDevice,
+  updateBreadcrumb,
+} from '../../../../../redux/features/app/appSlice';
 import {
   selectAuthorities,
   selectPrograms,
+  selectSurveys,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
-import { NavLink } from '../../../../../components';
-import GeneralInfoAccordionForm from '../../../../forms/formPrograms/ProgramAccordionForm/generalInfoAccordionForm';
+import { EmptySection, NavLink } from '../../../../../components';
+import ProgramlInfoAccordionForm from '../../../../forms/formPrograms/ProgramAccordionForm/ProgramInfoAccordionForm';
 import FormAuthorities from '../../../../forms/formAuthorities';
+import ManageDelegate from '../modals/manageDelegate';
+import ManageReferal from '../modals/manageReferal';
+import { GetAllSurveys } from '../../../../../redux/features/administrativeArea/surveys/surveysThunk';
+import ManageProject from '../modals/manageProject';
+import { DeleteEntity } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
+import { GetProgramDetail } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
+
 const tabs = {
   INFO: 'info',
   ENTE: 'ente',
@@ -38,12 +49,15 @@ const tabs = {
 const ProgramsDetails: React.FC = () => {
   const { mediaIsDesktop } = useAppSelector(selectDevice);
   const programma = useAppSelector(selectPrograms);
+  const surveyList = useAppSelector(selectSurveys).list;
+  const progettiList = programma.detail?.progetti;
   const authorityInfo = useAppSelector(selectAuthorities)?.detail || {};
   const dispatch = useDispatch();
   const [deleteText, setDeleteText] = useState<string>('');
   const [editItemModalTitle, setEditItemModalTitle] = useState<string>('');
   const [activeTab, setActiveTab] = useState<string>(tabs.INFO);
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
+  const [emptySection, setEmptySection] = useState<React.ReactElement>();
   const [currentModal, setCorrectModal] = useState<React.ReactElement>();
   const [itemList, setItemList] = useState<ItemsListI | null>();
   const [itemAccordionList, setItemAccordionList] = useState<
@@ -52,14 +66,61 @@ const ProgramsDetails: React.FC = () => {
   const [modalIdToOpen, setModalIdToOpen] = useState<string>(
     formTypes.PROGRAMMA
   );
+  const [correctButtons, setCorrectButtons] = useState<ButtonInButtonsBar[]>(
+    []
+  );
   const navigate = useNavigate();
   const location = useLocation();
+  const [surveyDefault, setSurveyDefault] = useState<ItemsListI | null>();
+  const [radioButtonsSurveys, setRadioButtonsSurveys] =
+    useState<boolean>(false);
+  const [changeSurveyButtonVisible, setChangeSurveyButtonVisible] =
+    useState<boolean>(true);
+
+  /**
+   * The entity id is passed to the breadcrumb but it maybe the case to
+   * pass the entity short name, we can access it to the store even if the
+   * thunk action to get details is performed in the form component
+   */
   const { entityId } = useParams();
+  // TODO remove mock
+  const programDetails =
+    useAppSelector(selectPrograms).detail?.dettagliInfoProgramma || {};
+
+  useEffect(() => {
+    if (entityId) dispatch(GetProgramDetail(entityId));
+  }, [entityId]);
+
+  useEffect(() => {
+    if (entityId && programDetails) {
+      dispatch(
+        updateBreadcrumb([
+          {
+            label: 'Area Amministrativa',
+            url: '/area-amministrativa',
+            link: false,
+          },
+          {
+            label: 'Programmi',
+            url: '/area-amministrativa/programmi',
+            link: true,
+          },
+          {
+            label: programDetails.nomeBreve,
+            url: `/area-amministrativa/programmi/${entityId}`,
+            link: false,
+          },
+        ])
+      );
+    }
+  }, [entityId, programDetails]);
 
   const onActionClickReferenti: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
       navigate(
-        `/area-amministrativa/utenti/${typeof td === 'string' ? td : td?.id}`
+        `/area-amministrativa/${formTypes.REFERENTI}/${
+          typeof td === 'string' ? td : td?.id
+        }`
       );
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
@@ -69,7 +130,11 @@ const ProgramsDetails: React.FC = () => {
 
   const onActionClickDelegati: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(`/area-amministrativa/${typeof td === 'string' ? td : td?.id}`);
+      navigate(
+        `/area-amministrativa/${formTypes.DELEGATI}/${
+          typeof td === 'string' ? td : td?.id
+        }`
+      );
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       console.log(td);
@@ -81,17 +146,6 @@ const ProgramsDetails: React.FC = () => {
         `/area-amministrativa/questionari/${
           typeof td === 'string' ? td : td?.id
         }`
-      );
-    },
-    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      console.log(td);
-    },
-  };
-
-  const onActionClickSedi: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        `/area-amministrativa/utenti/${typeof td === 'string' ? td : td?.id}`
       );
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
@@ -113,11 +167,195 @@ const ProgramsDetails: React.FC = () => {
   const projectRef = useRef<HTMLLIElement>(null);
   const infoRef = useRef<HTMLLIElement>(null);
 
+  const AuthoritySection = () => {
+    if (entityId) {
+      setModalIdToOpen(formTypes.ENTE_GESTORE_PROGRAMMA),
+        setDeleteText(
+          'Confermi di voler eliminare questo gestore di programs?'
+        ),
+        setEditItemModalTitle('Modifica ente gestore programs'),
+        setCurrentForm(
+          <FormAuthorities
+            formDisabled
+            enteType={formTypes.ENTE_GESTORE_PROGRAMMA}
+          />
+        ),
+        setCorrectModal(<ManageProgramManagerAuthority />),
+        setItemList(null),
+        setCorrectButtons([
+          {
+            size: 'xs',
+            color: 'primary',
+            text: 'Elimina',
+            onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+          },
+          {
+            size: 'xs',
+            outline: true,
+            color: 'primary',
+            text: ' Modifica',
+            onClick: () =>
+              dispatch(
+                openModal({
+                  id: formTypes.ENTE_GESTORE_PROGRAMMA,
+                  payload: { title: 'Modifica ente gestore programma' },
+                })
+              ),
+          },
+        ]),
+        setItemAccordionList([
+          {
+            title: 'Referenti',
+            items:
+              authorityInfo?.referenti?.map(
+                (ref: { [key: string]: string }) => ({
+                  ...ref,
+                  actions: onActionClickReferenti,
+                })
+              ) || [],
+          },
+          {
+            title: 'Delegati',
+            items:
+              authorityInfo?.delegati?.map(
+                (del: { [key: string]: string }) => ({
+                  ...del,
+                  actions: onActionClickDelegati,
+                })
+              ) || [],
+          },
+        ]);
+      setEmptySection(undefined);
+    } else {
+      return (
+        setCurrentForm(undefined),
+        setCorrectButtons([]),
+        setItemAccordionList([]),
+        setEmptySection(
+          <EmptySection
+            title={'Questa sezione è ancora vuota'}
+            subtitle={
+              'Per attivare il progetto aggiungi un Ente gestore di Programma'
+            }
+            buttons={EmptySectionButtons.slice(1, 2)}
+          />
+        )
+      );
+    }
+  };
+
+  const getListaQuestionari = () => {
+    dispatch(GetAllSurveys());
+  };
+
+  useEffect(() => {
+    getListaQuestionari();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab === tabs.QUESTIONARI]);
+
+  const SurveyListSection = () => {
+    setCorrectModal(undefined);
+    setItemAccordionList(null);
+    setCurrentForm(undefined);
+    if (surveyList?.length) {
+      setItemList({
+        items: [
+          {
+            nome: 'Questionario 1',
+            stato: 'active',
+            actions: onActionClickQuestionari,
+            id: 'questionario',
+          },
+          {
+            nome: 'Questionario 2',
+            stato: 'active',
+            actions: onActionClickQuestionari,
+            id: 'questionario2',
+          },
+        ],
+      }),
+        setCorrectButtons([
+          {
+            size: 'xs',
+            color: 'primary',
+            text: 'Elimina',
+            onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+          },
+          {
+            size: 'xs',
+            outline: true,
+            color: 'primary',
+            text: ' Modifica',
+            onClick: () =>
+              dispatch(
+                openModal({
+                  id: formTypes.ENTE_GESTORE_PROGRAMMA,
+                  payload: { title: 'Modifica ente gestore programma' },
+                })
+              ),
+          },
+        ]);
+      setEmptySection(undefined);
+    } else {
+      setItemList(undefined),
+        setCorrectButtons([]),
+        setEmptySection(
+          <EmptySection
+            title={'Questa sezione è ancora vuota'}
+            subtitle={'Per attivare il programma aggiungi un Questionario'}
+            buttons={EmptySectionButtons.slice(0, 1)}
+          />
+        );
+    }
+  };
+
+  const ProjectsSection = () => {
+    setCorrectModal(undefined);
+    setItemAccordionList(null);
+    setCurrentForm(undefined);
+    if (progettiList?.length) {
+      progettiList?.map(
+        (progetto: { id: string; nome: string; stato: string }) => ({
+          ...progetto,
+          fullInfo: { id: progetto.id },
+          actions: onActionClickProgetti,
+        }),
+        setItemList({
+          items: [...progettiList],
+        })
+      );
+      setEmptySection(undefined);
+    } else {
+      setEmptySection(
+        <EmptySection
+          title={'Questa sezione è ancora vuota'}
+          subtitle={'Per attivare il programma aggiungi un Progetto'}
+          buttons={EmptySectionButtons.slice(2)}
+        />
+      ),
+        setItemList({
+          items: [],
+        });
+    }
+  };
+
   useEffect(() => {
     scrollTo(0, 0);
     centerActiveItem();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
+
+  useEffect(() => {
+    if (changeSurveyButtonVisible) {
+      setCorrectButtons(
+        buttonSurvey.filter((button) => button.text === 'Cambia questionario')
+      );
+    } else {
+      setCorrectButtons(
+        buttonSurvey.filter((button) => button.text !== 'Cambia questionario')
+      );
+    }
+  }, [changeSurveyButtonVisible]);
 
   const centerActiveItem = () => {
     switch (activeTab) {
@@ -138,6 +376,68 @@ const ProgramsDetails: React.FC = () => {
         break;
     }
   };
+
+  const itemMock = [
+    {
+      nome: 'Questionario 1',
+      stato: 'active',
+      actions: onActionClickQuestionari,
+      id: 'questionario',
+      default: true,
+    },
+    {
+      nome: 'Questionario 2',
+      stato: 'active',
+      actions: onActionClickQuestionari,
+      id: 'questionario2',
+      default: false,
+    },
+    {
+      nome: 'Questionario 3',
+      stato: 'active',
+      actions: onActionClickQuestionari,
+      id: 'questionario3',
+      default: false,
+    },
+    {
+      nome: 'Questionario 4',
+      stato: 'active',
+      actions: onActionClickQuestionari,
+      id: 'questionario4',
+      default: false,
+    },
+  ];
+
+  const buttonSurvey: ButtonInButtonsBar[] = [
+    {
+      size: 'xs',
+      color: 'primary',
+      outline: true,
+      text: 'Annulla',
+      onClick: () => {
+        setChangeSurveyButtonVisible(true);
+        // console.log('Annulla');
+      },
+    },
+    {
+      size: 'xs',
+      color: 'primary',
+      text: 'Conferma',
+      onClick: () => {
+        setChangeSurveyButtonVisible(true);
+        // console.log('Conferma', surveyDefault?.items[0].id);  TODO: richiama api PUT new default survey
+      },
+    },
+    {
+      size: 'xs',
+      color: 'primary',
+      text: 'Cambia questionario',
+      onClick: () => {
+        setRadioButtonsSurveys(true);
+        setChangeSurveyButtonVisible(false);
+      },
+    },
+  ];
 
   useEffect(() => {
     const locationSplit = location.pathname.split('/');
@@ -161,11 +461,44 @@ const ProgramsDetails: React.FC = () => {
     }
   }, [location]);
 
+  const EmptySectionButtons: ButtonInButtonsBar[] = [
+    {
+      size: 'xs',
+      color: 'primary',
+      text: 'Aggiungi un nuovo Questionario',
+      onClick: () => console.log('crea questionario'),
+    },
+    {
+      size: 'xs',
+      color: 'primary',
+      text: 'Aggiungi Ente gestore di Programma',
+      onClick: () =>
+        dispatch(
+          openModal({
+            id: 'ente-gestore-programma',
+            payload: { title: 'Aggiungi Ente gestore Programma' },
+          })
+        ),
+    },
+    {
+      size: 'xs',
+      color: 'primary',
+      text: 'Aggiungi un nuovo Progetto',
+      onClick: () =>
+        dispatch(
+          openModal({
+            id: formTypes.PROGETTO,
+            payload: { title: 'Aggiungi Progetto' },
+          })
+        ),
+    },
+  ];
+
   useEffect(() => {
     switch (activeTab) {
       case tabs.INFO:
         setModalIdToOpen(formTypes.PROGRAMMA);
-        setCurrentForm(<GeneralInfoAccordionForm />);
+        setCurrentForm(<ProgramlInfoAccordionForm />);
         setCorrectModal(<ManageProgram />);
         setDeleteText('Confermi di voler eliminare questo programma?');
         setEditItemModalTitle('Modifica programma');
@@ -173,102 +506,44 @@ const ProgramsDetails: React.FC = () => {
         setItemList(null);
         break;
       case tabs.ENTE:
-        setModalIdToOpen(formTypes.ENTE_GESTORE_PROGRAMMA);
-        setDeleteText(
-          'Confermi di voler eliminare questo gestore di programs?'
-        );
-        setEditItemModalTitle('Modifica ente gestore programs');
-        setCurrentForm(
-          <FormAuthorities
-            formDisabled
-            enteType={formTypes.ENTE_GESTORE_PROGRAMMA}
-          />
-        );
-        setCorrectModal(<ManageProgramManagerAuthority />);
-        setItemList(null);
-        setItemAccordionList([
-          {
-            title: 'Referenti',
-            items:
-              authorityInfo?.referenti?.map(
-                (ref: { [key: string]: string }) => ({
-                  ...ref,
-                  actions: onActionClickReferenti,
-                })
-              ) || [],
-          },
-          {
-            title: 'Delegati',
-            items:
-              authorityInfo?.delegati?.map(
-                (del: { [key: string]: string }) => ({
-                  ...del,
-                  actions: onActionClickDelegati,
-                })
-              ) || [],
-          },
-          {
-            title: 'Headquarters',
-            items:
-              authorityInfo?.sedi?.map((sede: { [key: string]: string }) => ({
-                ...sede,
-                actions: onActionClickSedi,
-              })) || [],
-          },
-        ]);
+        AuthoritySection();
         break;
       case tabs.QUESTIONARI:
-        setCurrentForm(undefined);
-        setCorrectModal(undefined);
-        setItemList({
-          items: [
-            {
-              nome: 'questionario',
-              stato: 'active',
-              actions: onActionClickQuestionari,
-              id: 'questionario',
-            },
-            {
-              nome: 'questionario2',
-              stato: 'active',
-              actions: onActionClickQuestionari,
-              id: 'questionario2',
-            },
-          ],
-        });
-        setItemAccordionList(null);
+        SurveyListSection();
         break;
       case tabs.PROGETTI:
         // eslint-disable-next-line no-case-declarations
-        const progettiList = programma.detail?.progetti?.map(
-          (progetto: { id: string; nome: string; stato: string }) => ({
-            ...progetto,
-            actions: onActionClickProgetti,
-          })
-        );
-        setCurrentForm(undefined);
-        setCorrectModal(undefined);
-        setItemList({
-          items: [...(progettiList || [])],
-        });
-        setItemAccordionList(null);
+        ProjectsSection();
         break;
       default:
         return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab, mediaIsDesktop, programma, authorityInfo]);
+  }, [
+    activeTab,
+    mediaIsDesktop,
+    programDetails,
+    authorityInfo,
+    surveyDefault?.items[0].id,
+  ]);
 
   const formButtons: ButtonInButtonsBar[] = [
     {
       size: 'xs',
+      color: 'danger',
+      outline: true,
+      text: 'Termina programma',
+      onClick: () => console.log('termina progetto'),
+    },
+    {
+      size: 'xs',
+      outline: true,
       color: 'primary',
       text: 'Elimina',
       onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
     },
     {
       size: 'xs',
-      outline: true,
       color: 'primary',
       text: ' Modifica',
       onClick: () =>
@@ -296,7 +571,14 @@ const ProgramsDetails: React.FC = () => {
           to={`/area-amministrativa/programmi/${entityId}/${tabs.ENTE}`}
           active={activeTab === tabs.ENTE}
         >
-          Ente gestore
+          {!entityId ? (
+            <div>
+              <span className='mr-1'> * Ente gestore </span>
+              <Icon icon='it-warning-circle' size='sm' />
+            </div>
+          ) : (
+            'Ente gestore'
+          )}
         </NavLink>
       </li>
       <li ref={questionariRef}>
@@ -304,7 +586,14 @@ const ProgramsDetails: React.FC = () => {
           to={`/area-amministrativa/programmi/${entityId}/${tabs.QUESTIONARI}`}
           active={activeTab === tabs.QUESTIONARI}
         >
-          Questionari
+          {!surveyList?.length ? (
+            <div>
+              <span className='mr-1'> * Questionari </span>
+              <Icon icon='it-warning-circle' size='sm' />
+            </div>
+          ) : (
+            'Questionari'
+          )}
         </NavLink>
       </li>
       <li ref={projectRef}>
@@ -312,42 +601,94 @@ const ProgramsDetails: React.FC = () => {
           active={activeTab === tabs.PROGETTI}
           to={`/area-amministrativa/programmi/${entityId}/${tabs.PROGETTI}`}
         >
-          Progetti
+          {!progettiList?.length ? (
+            <div>
+              <span className='mr-1'> * Progetti </span>
+              <Icon icon='it-warning-circle' size='sm' />
+            </div>
+          ) : (
+            'Progetti'
+          )}
         </NavLink>
       </li>
     </Nav>
   );
 
-  const showButtons = () => activeTab === tabs.INFO || activeTab === tabs.ENTE;
+  const showINFOButtons = () => activeTab === tabs.INFO;
+  const showENTEButtons = () => activeTab === tabs.ENTE;
+  const showQUESTIONARIButtons = () => activeTab === tabs.QUESTIONARI;
+
+  const onChangeSurveyDefault = (surveyCheckedId: string) => {
+    if (surveyCheckedId !== '') {
+      const newItems = [...itemMock];
+      newItems[
+        newItems.findIndex((item) => item.id === surveyDefault?.items[0].id)
+      ].default = false;
+      newItems[
+        newItems.findIndex((item) => item.id === surveyCheckedId)
+      ].default = true;
+      setSurveyDefault({
+        items: newItems.filter((item) => item.id === surveyCheckedId),
+      });
+      // non serve in teoria, itemList dovrebbe aggiornarsi con la get dopo la put del questionario di default
+      // setItemList({
+      //   items: newItems.filter((item) => item.default === false),
+      // });
+    }
+  };
 
   return (
     <div className='container pb-3'>
       <DetailLayout
         nav={nav}
         titleInfo={{
-          title: 'Nome programs 1 breve',
-          status: 'ATTIVO',
+          title: programDetails.nomeBreve,
+          status: programDetails.stato,
           upperTitle: { icon: 'it-user', text: 'Programma' },
         }}
-        formButtons={showButtons() ? formButtons : []}
+        formButtons={
+          showINFOButtons()
+            ? formButtons
+            : showENTEButtons()
+            ? correctButtons
+            : showQUESTIONARIButtons()
+            ? correctButtons
+            : []
+        }
+        currentTab={activeTab}
         itemsAccordionList={itemAccordionList}
         itemsList={itemList}
-        buttonsPosition='TOP'
-        goBackTitle='Vai alla Lista programmi'
+        buttonsPosition={showQUESTIONARIButtons() ? 'BOTTOM' : 'TOP'}
+        goBackTitle='Elenco programmi'
+        surveyDefault={surveyDefault}
+        isRadioButtonItem={radioButtonsSurveys}
+        onRadioChange={(surveyCheckedId: string) =>
+          onChangeSurveyDefault(surveyCheckedId)
+        }
       >
-        {currentForm}
+        <>
+          {currentForm}
+          {emptySection}
+        </>
       </DetailLayout>
       {currentModal ? currentModal : null}
       <ConfirmDeleteModal
         onConfirm={() => {
           console.log('confirm delete');
+          entityId && dispatch(DeleteEntity('programma', entityId));
           dispatch(closeModal());
+          navigate(-1);
         }}
         onClose={() => {
           dispatch(closeModal());
         }}
         text={deleteText}
       />
+
+      <ManageDelegate />
+      <ManageReferal />
+      <ManageProgramManagerAuthority />
+      <ManageProject creation />
     </div>
   );
 };

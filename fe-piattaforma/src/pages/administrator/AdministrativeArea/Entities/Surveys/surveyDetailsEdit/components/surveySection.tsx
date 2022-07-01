@@ -17,7 +17,7 @@ const SurveySection: React.FC<SurveySectionI> = (props) => {
 
   return (
     <section aria-label={sectionTitle}>
-      <h2 className='h4 primary-color-a6 mb-3'>
+      <h2 className='h4 primary-color-a6 mb-4'>
         {sectionTitle} ({questions.length})
       </h2>
       <Col>

@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Chip, ChipLabel } from 'design-react-kit';
-import clsx from 'clsx';
-import { Paginator, Table } from '../../../../../components';
+import { Paginator, StatusChip, Table } from '../../../../../components';
 import { newTable, TableRowI } from '../../../../../components/Table/table';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
+  resetProgramDetails,
   selectEntityFilters,
   selectEntityFiltersOptions,
+  selectEntityList,
   selectEntityPagination,
-  selectPrograms,
   setEntityFilters,
   setEntityPagination,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
@@ -17,8 +16,7 @@ import {
   DropdownFilterI,
   FilterI,
 } from '../../../../../components/DropdownFilter/dropdownFilter';
-import { formTypes, statusBgColor, statusColor, TableHeading } from '../utils';
-
+import { formTypes, TableHeading } from '../utils';
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
 } from '../../../../../components/genericSearchFilterTableLayout/genericSearchFilterTableLayout';
@@ -28,18 +26,20 @@ import { openModal } from '../../../../../redux/features/modal/modalSlice';
 import { useNavigate } from 'react-router-dom';
 import ManageProgram from '../modals/manageProgram';
 import {
-  GetAllPrograms,
-  GetFilterValues,
-} from '../../../../../redux/features/administrativeArea/programs/programsThunk';
-import { resetProgramDetails } from '../../../../../redux/features/administrativeArea/programs/programsSlice';
+  GetEntityValues,
+  GetEntityFilterValues,
+  DownloadEntityValues,
+} from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
+import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 
-const statusDropdownLabel = 'stati';
-const policyDropdownLabel = 'policies';
+const entity = 'programma';
+const statusDropdownLabel = 'filtroStati';
+const policyDropdownLabel = 'filtroPolicies';
 
 const Programs = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const programmiList = useAppSelector(selectPrograms);
+  const { programmi: programmiList = [] } = useAppSelector(selectEntityList);
   const filtersList = useAppSelector(selectEntityFilters);
   const pagination = useAppSelector(selectEntityPagination);
   const dropdownFilterOptions = useAppSelector(selectEntityFiltersOptions);
@@ -47,91 +47,96 @@ const Programs = () => {
     { filterId: string; value: formFieldI['value'] }[]
   >([]);
 
-  const { criterioRicerca, policies, stati } = filtersList;
+  const { filtroCriterioRicerca, filtroPolicies, filtroStati } = filtersList;
 
   const { pageNumber } = pagination;
 
   const getAllFilters = () => {
-    dispatch(GetFilterValues('stati'));
-    dispatch(GetFilterValues('policies'));
+    dispatch(GetEntityFilterValues({ entity, dropdownType: 'stati' }));
+    dispatch(GetEntityFilterValues({ entity, dropdownType: 'policies' }));
   };
 
   useEffect(() => {
-    dispatch(setEntityPagination({ pageSize: 1 }));
-    getAllFilters();
+    dispatch(setEntityPagination({ pageSize: 8 }));
+    /**
+     * When the component is rendered the breadcrumb is initialized with
+     * the rigth path. This operation is performed in every component that
+     * needs breadcrumb
+     */
+    dispatch(
+      updateBreadcrumb([
+        {
+          label: 'Area Amministrativa',
+          url: '/area-amministrativa',
+          link: false,
+        },
+        {
+          label: 'Programmi',
+          url: '/area-amministrativa/programmi',
+          link: true,
+        },
+      ])
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateTableValues = () => {
+    //TODO align keys when API Integation is done
     const table = newTable(
       TableHeading,
-      programmiList.list.map((td) => {
+      programmiList.map((td: any) => {
         return {
+          label: td.nomeBreve || td.nome,
           id: td.id,
-          label: td.nome,
-          status: (
-            <Chip
-              className={clsx(
-                'table-container__status-label',
-                statusBgColor(td.stato),
-                'no-border'
-              )}
-            >
-              <ChipLabel className={statusColor(td.stato)}>
-                {td.stato.toUpperCase()}
-              </ChipLabel>
-            </Chip>
-          ),
+          policy: td.policy,
+          enteGestore: td.enteGestore || td.nomeEnteGestore,
+          status: <StatusChip status={td.stato} rowTableId={td.id} />,
         };
       })
     );
-    return {
-      ...table,
-      // TODO remove slice after BE integration
-      values: table.values.slice(
-        pagination?.pageNumber * pagination?.pageSize - pagination?.pageSize,
-        pagination?.pageNumber * pagination?.pageSize
-      ),
-    };
+    return table;
   };
 
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    setTableValues(updateTableValues());
+    if (Array.isArray(programmiList)) setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [programmiList]);
 
   const getProgramsList = () => {
-    dispatch(GetAllPrograms());
+    dispatch(GetEntityValues({ entity }));
   };
 
   useEffect(() => {
     getAllFilters();
     getProgramsList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [criterioRicerca, policies, stati, pageNumber]);
+  }, [filtroCriterioRicerca, filtroPolicies, filtroStati, pageNumber]);
 
   const handleOnChangePage = (pageNumber: number = pagination?.pageNumber) => {
     dispatch(setEntityPagination({ pageNumber }));
   };
 
+  const handleDownloadList = () => {
+    dispatch(DownloadEntityValues({ entity }));
+  };
+
   const handleOnSearch = (searchValue: string) => {
     dispatch(
-      setEntityFilters({ nomeLike: { label: searchValue, value: searchValue } })
+      setEntityFilters({
+        filtroCriterioRicerca: searchValue,
+      })
     );
   };
 
-  const handleDropdownFilters = (
-    values: FilterI[],
-    filterKey: 'policies' | 'stati'
-  ) => {
+  const handleDropdownFilters = (values: FilterI[], filterKey: string) => {
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
   };
 
   const handleOnSearchDropdownOptions = (
     searchValue: formFieldI['value'],
-    filterId: 'policies' | 'stati'
+    filterId: string
   ) => {
     const searchDropdownValues = [...searchDropdown];
     if (
@@ -150,7 +155,7 @@ const Programs = () => {
   const dropdowns: DropdownFilterI[] = [
     {
       filterName: 'Policy',
-      options: dropdownFilterOptions[policyDropdownLabel],
+      options: dropdownFilterOptions['policies'],
       id: policyDropdownLabel,
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, policyDropdownLabel),
@@ -164,8 +169,8 @@ const Programs = () => {
       )[0]?.value,
     },
     {
-      filterName: 'Stati',
-      options: dropdownFilterOptions[statusDropdownLabel],
+      filterName: 'Stato',
+      options: dropdownFilterOptions['stati'],
       id: statusDropdownLabel,
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, statusDropdownLabel),
@@ -182,16 +187,14 @@ const Programs = () => {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
     placeholder:
-      "Inserisci il nome, l'identificativo o il nome dell'ente gestore del programma che stai cercando",
+      "Inserisci il nome, l'identificativo o il nome dell'ente gestore",
     isClearable: true,
     title: 'Cerca programma',
   };
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      console.log(td);
-      //TODO REPLACE WITH DYNAMIC ID WHEN WE HAVE THE APIS
-      navigate('321321/info');
+      if (typeof td !== 'string') navigate(`${td.id}/info`);
     },
   };
 
@@ -211,7 +214,7 @@ const Programs = () => {
     title: 'Area Amministrativa',
     subtitle:
       'Qui potrai gestire utenti, enti, programmi e progetti e creare i questionari',
-    textCta: 'Crea nuovo programma',
+    textCta: 'Crea programma',
     iconCta: 'it-plus',
   };
 
@@ -222,6 +225,7 @@ const Programs = () => {
       filtersList={filtersList}
       {...programCta}
       cta={newProgram}
+      ctaDownload={handleDownloadList}
     >
       <div>
         <Table
@@ -237,7 +241,7 @@ const Programs = () => {
           center
           refID='#table'
           pageSize={pagination?.pageSize}
-          total={programmiList.list.length}
+          total={pagination?.totalPages}
           onChange={handleOnChangePage}
         />
       </div>

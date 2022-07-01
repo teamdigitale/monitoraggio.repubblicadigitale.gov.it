@@ -1,67 +1,68 @@
 {
   "data": {
-    "dettaglioProgramma": {
-      "generalInfo": {
-        "codice": "codice",
-        "nome": "nome",
-        "policy": "rfd",
-        "nomeBreve": "nome breve",
-        "dataInizioProgramma": "2022-04-13",
-        "dataFineProgramma": "2022-05-30"
-      },
-      "facilitationNumber": {
-        "targetMesi1": "codice facilitazione",
-        "targetMesi1data": "2022-04-13",
-        "targetMesi18": "nome breve",
-        "targetMesi18data": "2022-04-13",
-        "targetMesi30": "2022-05-30",
-        "targetMesi30data": "2022-05-30",
-        "targetMesi42": "4000",
-        "targetMesi42data": "2022-05-30",
-        "targetGiugno2025": "valGiugno2025"
-      },
-      "uniqueUsers": {
-        "targetMesi1": "codice utenti",
-        "targetMesi1data": "2022-04-13",
-        "targetMesi18": "nome breve",
-        "targetMesi18data": "2022-04-13",
-        "targetMesi30": "2022-05-30",
-        "targetMesi30data": "2022-05-30",
-        "targetMesi42": "4000",
-        "targetMesi42data": "2022-05-30",
-        "targetGiugno2025": "valGiugno2025"
-      },
-      "services": {
-        "targetMesi1": "codice servizi",
-        "targetMesi1data": "2022-04-13",
-        "targetMesi18": "nome breve",
-        "targetMesi18data": "2022-04-13",
-        "targetMesi30": "2022-05-30",
-        "targetMesi30data": "2022-05-30",
-        "targetMesi42": "4000",
-        "targetMesi42data": "2022-05-30",
-        "targetGiugno2025": "valGiugno2025"
-      },
-      "facilitators": {
-        "targetMesi1": "codice facilitatori",
-        "targetMesi1data": "2022-04-13",
-        "targetMesi18": "nome breve",
-        "targetMesi18data": "2022-04-13",
-        "targetMesi30": "2022-05-30",
-        "targetMesi30data": "2022-05-30",
-        "targetMesi42": "4000",
-        "targetMesi42data": "2022-05-30",
-        "targetGiugno2025": "valGiugno2025"
+    "dettagliInfoProgramma": {
+      "nome": "Programma Theta",
+      "nomeBreve": "Programma Theta",
+      "dataInizio": 1656460800000,
+      "dataFine": 1657238400000,
+      "bando": "bando",
+      "cup": "theta",
+      "npuntiFacilitazioneTarget1": 4,
+      "npuntiFacilitazioneTarget2": 5,
+      "npuntiFacilitazioneTarget3": null,
+      "npuntiFacilitazioneTarget4": null,
+      "npuntiFacilitazioneTarget5": null,
+      "npuntiFacilitazioneDataTarget1": 1657152000000,
+      "npuntiFacilitazioneDataTarget2": 1656547200000,
+      "npuntiFacilitazioneDataTarget3": null,
+      "npuntiFacilitazioneDataTarget4": null,
+      "npuntiFacilitazioneDataTarget5": null,
+      "nutentiUniciTarget1": 8,
+      "nutentiUniciTarget2": null,
+      "nutentiUniciTarget3": null,
+      "nutentiUniciTarget4": null,
+      "nutentiUniciTarget5": null,
+      "nutentiUniciDataTarget1": 1656547200000,
+      "nutentiUniciDataTarget2": null,
+      "nutentiUniciDataTarget3": null,
+      "nutentiUniciDataTarget4": null,
+      "nutentiUniciDataTarget5": null,
+      "nserviziTarget1": 6,
+      "nserviziTarget2": null,
+      "nserviziTarget3": null,
+      "nserviziTarget4": null,
+      "nserviziTarget5": null,
+      "nserviziDataTarget1": 1657324800000,
+      "nserviziDataTarget2": null,
+      "nserviziDataTarget3": null,
+      "nserviziDataTarget4": null,
+      "nserviziDataTarget5": null,
+      "nfacilitatoriTarget1": 3,
+      "nfacilitatoriTarget2": null,
+      "nfacilitatoriTarget3": null,
+      "nfacilitatoriTarget4": null,
+      "nfacilitatoriTarget5": null,
+      "nfacilitatoriDataTarget1": 1657324800000,
+      "nfacilitatoriDataTarget2": null,
+      "nfacilitatoriDataTarget3": null,
+      "nfacilitatoriDataTarget4": null,
+      "nfacilitatoriDataTarget5": null
+  },
+  "questionari": [
+      {
+          "id": "tewbebe",
+          "nome": "dsgrg",
+          "stato": "ATTIVO"
       }
-    },
+  ],
     "progetti": [
       {
-        "id": "dsda",
+        "id": "345435",
         "nome": "dsdsa",
         "stato": "ATTIVO"
       },
       {
-        "id": "dsd1a",
+        "id": "768462",
         "nome": "dsds1a",
         "stato": "ATTIVO"
       }

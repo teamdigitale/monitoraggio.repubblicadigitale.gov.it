@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { useEffect } from 'react';
 
 import { useDispatch } from 'react-redux';
@@ -10,6 +11,7 @@ import { selectProjects } from '../../../redux/features/administrativeArea/admin
 import { GetProjectDetail } from '../../../redux/features/administrativeArea/projects/projectsThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
+import { RegexpType } from '../../../utils/validator';
 
 interface ProgramInformationI {
   formDisabled?: boolean;
@@ -38,20 +40,20 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     updateForm = () => ({}),
     intoModal = false,
   } = props;
-  const { firstParam } = useParams();
+  const { projectId } = useParams();
 
   const formDisabled = !!props.formDisabled;
 
   const formData: { [key: string]: string } | undefined =
-    useAppSelector(selectProjects).detail?.dettaglioProgetto?.generalInfo;
+    useAppSelector(selectProjects).detail?.dettagliInfoProgetto;
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!creation) {
-      dispatch(GetProjectDetail(firstParam || ''));
+    if (!creation && projectId) {
+      dispatch(GetProjectDetail(projectId));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [creation]);
+  }, [creation, projectId]);
 
   useEffect(() => {
     setIsFormValid?.(isValidForm);
@@ -62,7 +64,13 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
   useEffect(() => {
     if (formData && !creation) {
-      setFormValues(formData);
+      setFormValues(
+        Object.fromEntries(
+          Object.entries(formData).filter(
+            ([key, _val]) => !key.includes('Target')
+          )
+        )
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
@@ -103,32 +111,66 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
   }, [intoModal]);
 
   return (
-    <Form className='mt-5 mb-5' formDisabled={formDisabled}>
-      <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
-        <Input
-          {...form?.id}
+    <Form className='mt-5' formDisabled={formDisabled}>
+      <Form.Row
+        className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
+      >
+        {/* <Input
+          {...form?.codice}
           col='col-12 col-lg-6'
           label='ID'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
           className='pr-lg-3'
-        />
+        /> */}
         <Input
-          {...form?.nomeProgetto}
-          col='col-12 col-lg-6'
-          label='Nome Progetto'
+          {...form?.nome}
+          col='col-12'
+          label='Nome progetto'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pl-lg-3'
         />
       </Form.Row>
-      <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
+      <Form.Row
+        className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
+      >
         <Input
           {...form?.nomeBreve}
           col='col-12 col-lg-6'
           label='Nome breve'
+          onInputChange={(value, field) => {
+            onInputDataChange(value, field);
+          }}
+          className='pr-lg-3'
+        />
+        <Input
+          {...form?.cup}
+          label='CUP - Codice Unico Progetto'
+          col='col-12 col-lg-6'
+          onInputChange={(value, field) => {
+            onInputDataChange(value, field);
+          }}
+          className='pr-lg-3'
+        />
+      </Form.Row>
+      <Form.Row
+        className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
+      >
+        <Input
+          {...form?.dataInizio}
+          label='Data inizio'
+          col='col-12 col-lg-6'
+          onInputChange={(value, field) => {
+            onInputDataChange(value, field);
+          }}
+          className='pr-lg-3'
+        />
+        <Input
+          {...form?.dataFine}
+          label='Data fine'
+          col='col-12 col-lg-6'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
@@ -141,18 +183,32 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
 const form = newForm([
   newFormField({
-    field: 'id',
-    id: 'project-id',
-  }),
-  newFormField({
-    field: 'nomeProgetto',
+    field: 'nome',
     type: 'text',
     id: 'project-name',
+  }),
+  newFormField({
+    field: 'id',
+    id: 'project-id',
   }),
   newFormField({
     field: 'nomeBreve',
     type: 'text',
     id: 'short-name',
+  }),
+  newFormField({
+    field: 'cup',
+    type: 'text',
+  }),
+  newFormField({
+    field: 'dataInizio',
+    regex: RegexpType.DATE,
+    type: 'date',
+  }),
+  newFormField({
+    field: 'dataFine',
+    regex: RegexpType.DATE,
+    type: 'date',
   }),
 ]);
 

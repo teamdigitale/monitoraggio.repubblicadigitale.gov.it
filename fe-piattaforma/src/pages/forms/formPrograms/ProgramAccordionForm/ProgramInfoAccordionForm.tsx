@@ -1,19 +1,20 @@
 import React, { memo } from 'react';
 import { Accordion } from '../../../../components/index';
 import FormGeneralInfo from '../formGeneralInfo';
+
 import TargetDateFormPrograms, {
-  formForSectionEnum,
+  formForSectionT,
 } from '../targetDateFormPrograms';
 
-const GeneralInfoAccordionForm = () => {
+const ProgramInfoAccordionForm = () => {
   const accordions = [
     {
       title: 'Numero punti di facilitazione',
-      section: formForSectionEnum.facilitationNumber,
+      section: 'puntiFacilitazione',
     },
-    { title: 'Utenti unici', section: formForSectionEnum.uniqueUsers },
-    { title: 'Numero servizi', section: formForSectionEnum.services },
-    { title: 'Numero facilitatori', section: formForSectionEnum.facilitators },
+    { title: 'Utenti unici', section: 'utentiUnici' },
+    { title: 'Numero servizi', section: 'servizi' },
+    { title: 'Numero facilitatori', section: 'facilitatori' },
   ];
   return (
     <>
@@ -25,8 +26,9 @@ const GeneralInfoAccordionForm = () => {
           className='general-info-accordion-container'
         >
           <TargetDateFormPrograms
-            formForSection={accordion.section}
+            formForSection={accordion.section as formForSectionT}
             formDisabled
+            creation={false}
           />
         </Accordion>
       ))}
@@ -34,4 +36,4 @@ const GeneralInfoAccordionForm = () => {
   );
 };
 
-export default memo(GeneralInfoAccordionForm);
+export default memo(ProgramInfoAccordionForm);

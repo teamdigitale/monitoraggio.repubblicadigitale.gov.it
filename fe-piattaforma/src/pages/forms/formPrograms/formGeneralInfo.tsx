@@ -1,12 +1,10 @@
+import clsx from 'clsx';
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import { Form, Input, Select } from '../../../components';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
 import { selectPrograms } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
-import { GetProgramDetail } from '../../../redux/features/administrativeArea/programs/programsThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
 import { RegexpType } from '../../../utils/validator';
@@ -38,20 +36,25 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     creation = false,
     intoModal = false,
   } = props;
-  const { firstParam } = useParams();
+  const programDetails: { [key: string]: string } | undefined =
+    useAppSelector(selectPrograms).detail.dettagliInfoProgramma;
 
   const formDisabled = !!props.formDisabled;
 
-  const formData: { [key: string]: string } | undefined =
-    useAppSelector(selectPrograms).detail?.dettaglioProgramma?.generalInfo;
-  const dispatch = useDispatch();
+  // useEffect(() => {
+  //   if (!creation) {
+  //     dispatch(GetProgramDetail(entityId || ''));
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [creation]);
+
+  /*
 
   useEffect(() => {
-    if (!creation) {
-      dispatch(GetProgramDetail(firstParam || ''));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [creation]);
+    if (formData) console.log(formData);
+  }, [formData]);
+
+  */
 
   useEffect(() => {
     setIsFormValid?.(isValidForm);
@@ -61,11 +64,17 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
   }, [form]);
 
   useEffect(() => {
-    if (formData && !creation) {
-      setFormValues(formData);
+    if (programDetails && !creation) {
+      setFormValues(
+        Object.fromEntries(
+          Object.entries(programDetails).filter(
+            ([key, _val]) => !key.includes('Target') && !key.includes('stato')
+          )
+        )
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData]);
+  }, [programDetails]);
 
   const onInputDataChange = (
     value: formFieldI['value'],
@@ -104,16 +113,31 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
   return (
     <Form className='mt-5' formDisabled={formDisabled}>
-      <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
-        <Input
-          {...form?.nome}
+      <Form.Row
+        className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
+      >
+        {/* <Input
+          {...form?.codice}
           col='col-12 col-lg-6'
-          label='Nome programma'
+          label='ID'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
           className='pr-lg-3'
+        /> */}
+
+        <Input
+          {...form?.nome}
+          col='col-12'
+          label='Nome programma'
+          onInputChange={(value, field) => {
+            onInputDataChange(value, field);
+          }}
         />
+      </Form.Row>
+      <Form.Row
+        className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
+      >
         <Input
           {...form?.nomeBreve}
           col='col-12 col-lg-6'
@@ -121,14 +145,25 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
+          className='pr-lg-3'
+        />
+        <Input
+          {...form?.cup}
+          label='CUP - Codice Unico Progetto'
+          col='col-12 col-lg-6'
+          onInputChange={(value, field) => {
+            onInputDataChange(value, field);
+          }}
           className='pl-lg-3'
         />
       </Form.Row>
-      <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
+      <Form.Row
+        className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
+      >
         <Input
-          {...form?.codice}
+          {...form?.bando}
+          label='Bando'
           col='col-12 col-lg-6'
-          label='ID'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
@@ -152,8 +187,8 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
             label='Policy *'
             placeholder='Inserisci policy'
             options={[
-              { label: 'RFD', value: 'rfd' },
-              { label: 'SMC', value: 'smc' },
+              { label: 'RFD', value: 'RFD' },
+              { label: 'SCD', value: 'SCD' },
             ]}
             onInputChange={(value, field) => {
               onInputDataChange(value, field);
@@ -164,10 +199,13 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           />
         )}
       </Form.Row>
-      <Form.Row className='justify-content-between px-0 px-lg-5 mx-5'>
+      <Form.Row
+        className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
+      >
         <Input
-          {...form?.dataInizioProgramma}
-          label='Data inizio *'
+          {...form?.dataInizio}
+          label='Data inizio'
+          type={'date'}
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
@@ -176,8 +214,9 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
         />
 
         <Input
-          {...form?.dataFineProgramma}
-          label='Data fine *'
+          {...form?.dataFine}
+          label='Data fine'
+          type={'date'}
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
@@ -191,11 +230,15 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
 const form = newForm([
   newFormField({
-    field: 'codice',
+    field: 'cup',
     type: 'text',
   }),
   newFormField({
     field: 'nome',
+    type: 'text',
+  }),
+  newFormField({
+    field: 'bando',
     type: 'text',
   }),
   newFormField({
@@ -207,13 +250,13 @@ const form = newForm([
     type: 'text',
   }),
   newFormField({
-    field: 'dataInizioProgramma',
+    field: 'dataInizio',
     regex: RegexpType.DATE,
     required: true,
     type: 'date',
   }),
   newFormField({
-    field: 'dataFineProgramma',
+    field: 'dataFine',
     regex: RegexpType.DATE,
     required: true,
     type: 'date',

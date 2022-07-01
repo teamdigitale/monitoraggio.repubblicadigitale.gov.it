@@ -5,16 +5,21 @@ import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import { formTypes } from '../utils';
 import { formFieldI } from '../../../../../utils/formHelper';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
-import { createProgramDetails } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
+import {
+  createProgram,
+  updateProgram,
+} from '../../../../../redux/features/administrativeArea/programs/programsThunk';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
-import {
-  resetProgramDetails,
-  setProgramDetails,
-} from '../../../../../redux/features/administrativeArea/programs/programsSlice';
 import { ProgressBar, Stepper } from '../../../../../components';
 import FormGeneralInfo from '../../../../forms/formPrograms/formGeneralInfo';
 import TargetDateFormPrograms from '../../../../forms/formPrograms/targetDateFormPrograms';
+import {
+  resetProgramDetails,
+  setProgramGeneralInfo,
+} from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import clsx from 'clsx';
+import { useParams } from 'react-router-dom';
 interface ProgramInformationI {
   formDisabled?: boolean;
   creation?: boolean;
@@ -32,15 +37,16 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
   creation = false,
 }) => {
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  const { entityId } = useParams();
 
   const handleSaveProgram = () => {
     if (isFormValid) {
       if (creation) {
-        dispatch(createProgramDetails(newFormValues));
+        dispatch(createProgram(newFormValues));
         setCurrentStep(1);
-        // here dispatch create new program
       } else {
         // TODO here dispatch update program
+        entityId && dispatch(updateProgram(entityId, newFormValues));
       }
       dispatch(closeModal());
     }
@@ -152,21 +158,21 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       switch (currentStep) {
         case 1:
         default:
-          dispatch(setProgramDetails({ currentStep, newFormValues }));
+          dispatch(setProgramGeneralInfo({ currentStep, newFormValues }));
           break;
 
         case 2:
-          dispatch(setProgramDetails({ currentStep, newFormValues }));
+          dispatch(setProgramGeneralInfo({ currentStep, newFormValues }));
           break;
 
         case 3:
-          dispatch(setProgramDetails({ currentStep, newFormValues }));
+          dispatch(setProgramGeneralInfo({ currentStep, newFormValues }));
           break;
         case 4:
-          dispatch(setProgramDetails({ currentStep, newFormValues }));
+          dispatch(setProgramGeneralInfo({ currentStep, newFormValues }));
           break;
         case 5:
-          dispatch(setProgramDetails({ currentStep, newFormValues }));
+          dispatch(setProgramGeneralInfo({ currentStep, newFormValues }));
           break;
       }
     }
@@ -202,7 +208,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         return (
           <TargetDateFormPrograms
             intoModal
-            formForSection='facilitationNumber'
+            formForSection='puntiFacilitazione'
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
               setNewFormValues({ ...newData })
@@ -218,7 +224,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         return (
           <TargetDateFormPrograms
             intoModal
-            formForSection='uniqueUsers'
+            formForSection='utentiUnici'
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
               setNewFormValues({ ...newData })
@@ -234,7 +240,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         return (
           <TargetDateFormPrograms
             intoModal
-            formForSection='services'
+            formForSection='servizi'
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
               setNewFormValues({ ...newData })
@@ -250,7 +256,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         return (
           <TargetDateFormPrograms
             intoModal
-            formForSection='facilitators'
+            formForSection='facilitatori'
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
               setNewFormValues({ ...newData })
@@ -277,7 +283,15 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       secondaryCTA={propstoGenericModal.secondaryCTA}
       tertiaryCTA={propstoGenericModal.tertiatyCTA || null}
     >
-      <div className='d-flex justify-content-center flex-column align-items-center mb-4'>
+      <div
+        className={clsx(
+          'd-flex',
+          'justify-content-center',
+          'flex-column',
+          'align-items-center',
+          'mb-4'
+        )}
+      >
         {device.mediaIsPhone ? (
           <ProgressBar currentStep={currentStep} steps={stepsArray()} />
         ) : (
@@ -285,12 +299,27 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         )}
       </div>
       {device.mediaIsPhone ? null : (
-        <p className='mt-1 mb-5 h-5 primary-color mx-5 px-5 font-weight-semibold'>
+        <p
+          className={clsx(
+            'mt-1',
+            'mb-5',
+            'h-5',
+            'primary-color',
+            'mx-5',
+            'px-5',
+            'font-weight-semibold'
+          )}
+        >
           {steps[currentStep - 1].title}
         </p>
       )}
 
-      <div style={{ maxHeight: '345px', overflowY: 'auto' }}>
+      <div
+        style={{
+          maxHeight: device.mediaIsPhone ? '100%' : '340px',
+          overflowY: 'auto',
+        }}
+      >
         {renderingForm()}
       </div>
     </GenericModal>

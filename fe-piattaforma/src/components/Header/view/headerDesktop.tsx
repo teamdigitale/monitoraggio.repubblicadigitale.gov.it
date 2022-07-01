@@ -13,13 +13,18 @@ import {
 } from 'design-react-kit';
 import Logo from '/public/assets/img/logo.png';
 //import LogoSmall from '/public/assets/img/logo-small.png';
-
+import campanella from '/public/assets/img/campanella.png';
 import { useTranslation } from 'react-i18next';
 import { HeaderI } from '../header';
 import { logout } from '../../../redux/features/user/userSlice';
 import HeaderMenu from '../../HeaderMenu/headerMenu';
 import { openModal } from '../../../redux/features/modal/modalSlice';
 import SwitchProfileModal from '../../Modals/SwitchProfileModal/switchProfileModal';
+import AvatarInitials, {
+  AvatarSizes,
+  AvatarTextSizes,
+} from '../../AvatarInitials/avatarInitials';
+import { getRoleLabel } from '../../../utils/roleHelper';
 
 const HeaderDesktop: React.FC<HeaderI> = ({
   isHeaderFull = true,
@@ -37,10 +42,13 @@ const HeaderDesktop: React.FC<HeaderI> = ({
 
   const userDropdownOptions = [
     {
+      optionName: 'Il mio profilo',
+      action: () => console.log('il mio profilo'),
+    },
+    {
       optionName: 'Cambia ruolo',
       action: () => dispatch(openModal({ id: 'switchProfileModal' })),
     },
-    { optionName: 'I tuoi dati', action: () => console.log('i tuoi dati') },
   ];
 
   const userDropDown = () => (
@@ -59,22 +67,11 @@ const HeaderDesktop: React.FC<HeaderI> = ({
             'primary-bg-b2'
           )}
         >
-          <div
-            className={clsx(
-              'rounded-circle',
-              'bg-white',
-              'd-flex',
-              'align-items-center',
-              'justify-content-center',
-              'mx-3'
-            )}
-            style={{ height: '38px', width: '38px' }}
-          >
-            <Icon
-              className='m-0'
-              icon='it-user'
-              size='sm'
-              aria-label='Utente'
+          <div>
+            <AvatarInitials
+              user={{ uName: user?.name, uSurname: user?.surname }}
+              size={AvatarSizes.Small}
+              font={AvatarTextSizes.Small}
             />
           </div>
           <div className='d-flex flex-column align-items-start'>
@@ -82,13 +79,13 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               {user?.name}&nbsp;{user?.surname}
             </h6>
             <h6 className='font-weight-light text-nowrap'>
-              <em>{user?.role}</em>
+              <em>{getRoleLabel(user?.role)}</em>
             </h6>
           </div>
         </div>
       </DropdownToggle>
       <DropdownMenu role='menu' tag='ul'>
-        <LinkList>
+        <LinkList role='none'>
           {userDropdownOptions.map((item, index) => (
             <li key={index} role='none' className='px-4'>
               <Button
@@ -96,7 +93,8 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                   'primary-color-b1',
                   'py-2',
                   'w-100',
-                  'd-flex justify-content-between'
+                  'd-flex',
+                  'justify-content-between'
                 )}
                 role='menuitem'
                 onClick={item.action}
@@ -105,17 +103,20 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               </Button>
             </li>
           ))}
-          <LinkListItem divider />
-          <LinkListItem onClick={() => dispatch(logout())}>
+          <LinkListItem divider role='menuitem' aria-hidden={true} />
+          <li role='none' className='px-4'>
             <Button
               className={clsx(
+                'primary-color-b1',
                 'd-flex',
                 'justify-content-between',
                 'align-items-center',
                 'w-100'
               )}
+              role='menuitem'
+              onClick={() => dispatch(logout())}
             >
-              <span>Esci</span>
+              <strong>Esci</strong>
               <Icon
                 icon='it-external-link'
                 color='primary'
@@ -123,7 +124,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 aria-label='esci'
               />
             </Button>
-          </LinkListItem>
+          </li>
         </LinkList>
       </DropdownMenu>
     </Dropdown>
@@ -256,12 +257,17 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 {userDropDown()}
 
                 <div className='mx-4'>
-                  <Icon
+                  {/* <Icon
                     color='white'
-                    icon='it-inbox'
+                    icon='campanella'
                     size='sm'
                     aria-label='Menu utente'
                     focusable={false}
+                  /> */}
+                  <img
+                    src={campanella}
+                    alt='notification'
+                    aria-label='Menu utente'
                   />
                   {notification?.length ? (
                     <Badge>{notification.length}</Badge>
@@ -296,8 +302,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               className={clsx(
                 'header-container__main__logo',
                 'mr-auto',
-                'pt-3',
-                'pb-3'
+                'pt-3'
               )}
             >
               <Link to='/'>
@@ -363,13 +368,13 @@ const HeaderDesktop: React.FC<HeaderI> = ({
       ) : null}
       <SwitchProfileModal
         profiles={[
-          { name: 'Delegato ente partner', programName: 'Programma 1' },
+          { name: ' "ente partner"', programName: 'Programma 1' },
           {
-            name: 'Referente ente gestore di progetto',
+            name: ' "ente gestore di progetto"',
             programName: 'Programma 2',
           },
         ]}
-        currentProfile='Delegato ente partner'
+        currentProfile=' "ente partner"'
       />
     </header>
   );

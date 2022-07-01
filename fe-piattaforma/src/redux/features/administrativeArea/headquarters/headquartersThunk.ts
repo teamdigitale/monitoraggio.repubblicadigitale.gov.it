@@ -34,7 +34,7 @@ export const GetHeadquartersDetail =
       dispatch(showLoader());
       dispatch({ ...GetHeadquartersDetailAction, idSede });
       const res = await API.get(`sede/idSede`);
-      console.log(res);
+      // console.log(res);
       if (res?.data) {
         dispatch(setHeadquartersDetails(res.data));
       }

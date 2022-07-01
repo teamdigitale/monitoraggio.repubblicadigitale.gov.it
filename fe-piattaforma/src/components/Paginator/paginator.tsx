@@ -14,8 +14,8 @@ export interface PaginatorI {
   withArrows?: boolean;
 }
 
-const calcPages = (total: number, pageSize: number) =>
-  Math.ceil(Math.max(1, total) / pageSize);
+const calcPages = (total: number) => total;
+//Math.ceil(Math.max(1, total) / pageSize);
 
 const Paginator: React.FC<PaginatorI> = (props) => {
   const {
@@ -30,15 +30,16 @@ const Paginator: React.FC<PaginatorI> = (props) => {
     withArrows = true,
   } = props;
 
-  const [pages, setPages] = useState(calcPages(total, pageSize));
+  const [pages, setPages] = useState(calcPages(total));
   const [active, setActive] = useState(activePage);
 
   useEffect(() => {
-    setPages(calcPages(total, pageSize));
+    setPages(calcPages(total));
   }, [total, pageSize]);
 
   useEffect(() => {
     if (onChange) onChange(active);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active]);
 
   const handleOnChange = (newActive: number) => {

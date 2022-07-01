@@ -1,30 +1,32 @@
 {
-  "data": {
-    "list": [
-      {
-        "id": 1,
-        "name": "Questionario 1",
-        "type": "Tipo 1",
-        "status": "ATTIVO",
-        "default_SCD": true,
-        "default_RFD": false
-      },
-      {
-        "id": 2,
-        "name": "Questionario 2",
-        "type": "Tipo 2",
-        "status": "ATTIVO",
-        "default_SCD": false,
-        "default_RFD": true
-      },
-      {
-        "id": 3,
-        "name": "Questionario 1",
-        "type": "Tipo 3",
-        "status": "ATTIVO",
-        "default_SCD": false,
-        "default_RFD": false
-      }
-    ]
-  }
+  "numeroPagine": 0,
+  "questionariTemplate": [
+    {
+      "dataUltimaModifica": "2022-06-27T12:49:26.762Z",
+      "defaultRFD": true,
+      "defaultSCD": true,
+      "descrizione": "Descrizione 1",
+      "id": "1",
+      "nome": "Questionario 1",
+      "stato": "NON ATTIVO"
+    },
+    {
+      "dataUltimaModifica": "2022-06-27T12:49:26.762Z",
+      "defaultRFD": true,
+      "defaultSCD": true,
+      "descrizione": "Descrizione 2",
+      "id": "2",
+      "nome": "Questionario 2",
+      "stato": "ATTIVO"
+    },
+    {
+      "dataUltimaModifica": "2022-06-27T12:49:26.762Z",
+      "defaultRFD": true,
+      "defaultSCD": true,
+      "descrizione": "Descrizione 3",
+      "id": "3",
+      "nome": "Questionario 3",
+      "stato": "ATTIVO"
+    }
+  ]
 }

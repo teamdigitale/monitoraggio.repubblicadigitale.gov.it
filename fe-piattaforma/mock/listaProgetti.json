@@ -1,21 +1,19 @@
 {
-  "data": {
-    "list": [
+  "progetti": [
       {
-        "id": "project1",
-        "nome": "Progetto 1",
-        "stato": "ATTIVO"
+          "nomeEnteGestore": "Regione Molise",
+          "policy": "SCD",
+          "id": 250,
+          "nome": "Programma Sviluppo Web",
+          "stato": "ATTIVO"
       },
       {
-        "id": "project2",
-        "nome": "Progetto 2",
-        "stato": "BOZZA"
-      },
-      {
-        "id": "project3",
-        "nome": "Progetto 3",
-        "stato": "NON_ATTIVO"
+          "nomeEnteGestore": "Regione Lombardia",
+          "policy": "RFD",
+          "id": 251,
+          "nome": "Progetto Sicurezza Lavoro",
+          "stato": "ATTIVABILE"
       }
-    ]
-  }
+  ],
+  "numeroPagine": 1
 }

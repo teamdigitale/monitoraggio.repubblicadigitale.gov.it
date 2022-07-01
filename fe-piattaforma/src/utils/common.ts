@@ -55,6 +55,7 @@ export const CRUDActionTypes = {
   SEND: 'send',
   PRINT: 'print',
   COMPILE: 'compile',
+  SELECT: 'select',
 };
 
 export interface CRUDActionsI {
@@ -76,6 +77,7 @@ export interface ItemsListI {
     fullInfo?: {
       [key: string]: string;
     };
+    default?: boolean;
   }[];
 }
 
@@ -105,6 +107,10 @@ export const menuRoutes = [
       {
         label: 'Questionari',
         path: '/area-amministrativa/questionari',
+      },
+      {
+        label: 'Servizi',
+        path: '/area-amministrativa/servizi',
       },
     ],
   },
@@ -136,8 +142,10 @@ export const menuRoutes = [
 ];
 
 // Flattens all child elements into a single list
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const flatten = (children: React.ReactElement, flat = []) => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   flat = [...flat, ...React.Children.toArray(children)];
 
@@ -152,11 +160,48 @@ const flatten = (children: React.ReactElement, flat = []) => {
 export const simplify = (children: React.ReactElement) => {
   const flat = flatten(children);
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  return flat.map(({ key, ref, type, props: { children, ...props } }) => ({
+  return flat.map(({ key, ref, type, props: { ...props } }) => ({
     key,
     ref,
     type,
     props,
   }));
+};
+
+export const downloadFile = (file: string, fileName: string) => {
+  const link = document.createElement('a');
+  link.setAttribute('href', file);
+  link.setAttribute('download', fileName);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+export const downloadBlob = (
+  content: string,
+  filename: string,
+  contentType: string
+) => {
+  const blob = new Blob([content], { type: contentType });
+  const url = URL.createObjectURL(blob);
+  downloadFile(url, filename);
+};
+
+const transformToCSV = (data: string) => {
+  const rows = data.split('\r\n').map((r) => r.split(','));
+  return rows.map((r) => r.join(';')).join('\r\n');
+};
+
+export const downloadCSV = (
+  data: string,
+  filename = 'my_data.csv',
+  toTransform = false
+) => {
+  let csvData = data;
+  if (toTransform) {
+    csvData = transformToCSV(data);
+  }
+  downloadBlob(csvData, filename, 'text/csv;charset=utf-8;');
 };

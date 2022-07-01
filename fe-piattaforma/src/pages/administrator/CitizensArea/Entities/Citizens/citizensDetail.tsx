@@ -7,18 +7,46 @@ import {
   //clearInfoForm,
   selectEntityDetail,
 } from '../../../../../redux/features/citizensArea/citizensAreaSlice';
-import CitizenForm from './CitizenForm';
 import CitizenQuestionari from './CitizenQuestionari';
 import Sticky from 'react-sticky-el';
 import { ButtonsBar } from '../../../../../components';
+import FormCitizen from '../../../../forms/formCitizen';
+import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
+import { openModal } from '../../../../../redux/features/modal/modalSlice';
+import ManageCitizens from '../../../AdministrativeArea/Entities/modals/manageCitizens';
+import { formTypes } from '../../../AdministrativeArea/Entities/utils';
+import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 
 const CitizensDetail: React.FC = () => {
   const dispatch = useDispatch();
-  const { codFiscale } = useParams();
+  const { idCittadino } = useParams();
   const citizen = useAppSelector(selectEntityDetail);
+
+  useEffect(() => {
+    dispatch(
+      updateBreadcrumb([
+        {
+          label: 'Area Cittadini',
+          url: '/area-cittadini',
+          link: false,
+        },
+        {
+          label: 'I miei cittadini',
+          url: '/area-cittadini/',
+          link: true,
+        },
+        {
+          label: `${citizen?.dettaglioCittadino.name}`,
+          url: `/area-amministrativa/${citizen?.dettaglioCittadino.idCittadino}`,
+          link: false,
+        },
+      ])
+    );
+  }, [citizen]);
+
   useEffect(() => {
     // dispatch(clearInfoForm());
-    dispatch(GetEntityDetail(codFiscale));
+    dispatch(GetEntityDetail(idCittadino));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -28,6 +56,15 @@ const CitizensDetail: React.FC = () => {
       color: 'primary',
       text: 'Modifica',
       className: 'align-self-end mr-2',
+      onClick: () =>
+        dispatch(
+          openModal({
+            id: formTypes.CITIZENS,
+            payload: {
+              title: 'Modifica cittadino',
+            },
+          })
+        ),
     },
 
     {
@@ -36,17 +73,33 @@ const CitizensDetail: React.FC = () => {
       text: 'Compila questionario',
       className: 'align-self-end',
       outline: false,
+      onClick: () => console.log('compila questionario'),
     },
   ];
 
   return (
-    <>
-      <CitizenForm info={citizen?.info} />
-      <CitizenQuestionari questionari={citizen?.questionari} />
+    <div className='container pb-3'>
+      <DetailLayout
+        titleInfo={{
+          title:
+            citizen?.dettaglioCittadino?.nome +
+            ' ' +
+            citizen?.dettaglioCittadino?.cognome,
+          status: 'ATTIVO', // TODO: update
+          upperTitle: { icon: 'it-user', text: 'Cittadino' },
+        }}
+        buttonsPosition='TOP'
+        goBackTitle='I miei cittadini'
+      >
+        <FormCitizen info={citizen?.dettaglioCittadino} formDisabled />
+      </DetailLayout>
+      <CitizenQuestionari questionari={[]} />{' '}
+      {/* questionari={citizen?.serviziCittadino */}
       <Sticky mode='bottom'>
         <ButtonsBar buttons={citizenButtons} />
       </Sticky>
-    </>
+      <ManageCitizens />
+    </div>
   );
 };
 

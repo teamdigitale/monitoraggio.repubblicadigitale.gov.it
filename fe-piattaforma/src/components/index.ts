@@ -1,6 +1,7 @@
 import Accordion from './Accordion/accordion';
 import Card from './Card/card';
 import CardCommunity from './CardCommunity/cardCommunity';
+import CardCounter from './CardCounter/cardCounter';
 import CardProfile from './CardProfile/cardProfile';
 import CardStatusAction from './CardStatusAction/cardStatusAction';
 import DropdownFilter from './DropdownFilter/dropdownFilter';
@@ -31,12 +32,14 @@ import SearchBarOptions from './SearchBarOptions/searchBarOptions';
 import InfoCard from './InfoCard/infoCard';
 import EmptySection from './EmptySection/emptySection';
 import DetailsRow from './DetailsRow/detailsRow';
+import StatusChip from './StatusChip/statusChip';
+import AvatarInitials from './AvatarInitials/avatarInitials';
 
 export {
   Accordion,
-
   Card,
   CardCommunity,
+  CardCounter,
   CardProfile,
   CardStatusAction,
   DropdownFilter,
@@ -67,4 +70,6 @@ export {
   InfoCard,
   EmptySection,
   DetailsRow,
+  StatusChip,
+  AvatarInitials,
 };

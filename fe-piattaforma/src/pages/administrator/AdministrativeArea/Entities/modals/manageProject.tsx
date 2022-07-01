@@ -11,11 +11,13 @@ import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import { ProgressBar, Stepper } from '../../../../../components';
 import { useAppSelector } from '../../../../../redux/hooks';
 import FormProjectGeneralInfo from '../../../../forms/formProjects/formProjectGeneralInfo';
+
+import TargetDateFormProjects from '../../../../forms/formProjects/targetDateFormProjects';
 import {
   resetProjectDetails,
-  setProjectDetails,
-} from '../../../../../redux/features/administrativeArea/projects/projectsSlice';
-import TargetDateFormProjects from '../../../../forms/formProjects/targetDateFormProjects';
+  setProjectGeneralInfo,
+} from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import clsx from 'clsx';
 
 interface ProgramInformationI {
   formDisabled?: boolean;
@@ -156,21 +158,21 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       switch (currentStep) {
         case 1:
         default:
-          dispatch(setProjectDetails({ currentStep, newFormValues }));
+          dispatch(setProjectGeneralInfo({ currentStep, newFormValues }));
           break;
 
         case 2:
-          dispatch(setProjectDetails({ currentStep, newFormValues }));
+          dispatch(setProjectGeneralInfo({ currentStep, newFormValues }));
           break;
 
         case 3:
-          dispatch(setProjectDetails({ currentStep, newFormValues }));
+          dispatch(setProjectGeneralInfo({ currentStep, newFormValues }));
           break;
         case 4:
-          dispatch(setProjectDetails({ currentStep, newFormValues }));
+          dispatch(setProjectGeneralInfo({ currentStep, newFormValues }));
           break;
         case 5:
-          dispatch(setProjectDetails({ currentStep, newFormValues }));
+          dispatch(setProjectGeneralInfo({ currentStep, newFormValues }));
           break;
       }
     }
@@ -205,7 +207,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       case 2: {
         return (
           <TargetDateFormProjects
-            formForSection='facilitationNumber'
+            formForSection='puntiFacilitazione'
             intoModal
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
@@ -221,7 +223,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       case 3: {
         return (
           <TargetDateFormProjects
-            formForSection='uniqueUsers'
+            formForSection='utentiUnici'
             intoModal
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
@@ -237,7 +239,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       case 4: {
         return (
           <TargetDateFormProjects
-            formForSection='services'
+            formForSection='servizi'
             intoModal
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
@@ -253,7 +255,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       case 5: {
         return (
           <TargetDateFormProjects
-            formForSection='facilitators'
+            formForSection='facilitatori'
             intoModal
             formDisabled={!!formDisabled}
             sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
@@ -281,7 +283,15 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       secondaryCTA={propstoGenericModal.secondaryCTA}
       tertiaryCTA={propstoGenericModal.tertiatyCTA || null}
     >
-      <div className='d-flex justify-content-center flex-column align-items-center mb-5'>
+      <div
+        className={clsx(
+          'd-flex',
+          'justify-content-center',
+          'flex-column',
+          'align-items-center',
+          'mb-5'
+        )}
+      >
         {device.mediaIsPhone ? (
           <ProgressBar currentStep={currentStep} steps={stepsArray()} />
         ) : (
@@ -289,11 +299,25 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         )}
       </div>
       {device.mediaIsPhone ? null : (
-        <p className='mt-1 h-5 primary-color mx-5 px-5 font-weight-semibold'>
+        <p
+          className={clsx(
+            'mt-1',
+            'h-5',
+            'primary-color',
+            'mx-5',
+            'px-5',
+            'font-weight-semibold'
+          )}
+        >
           {steps[currentStep - 1].title}
         </p>
       )}
-      <div style={{ maxHeight: '345px', overflowY: 'auto' }}>
+      <div
+        style={{
+          maxHeight: device.mediaIsPhone ? '100%' : '340px',
+          overflowY: 'auto',
+        }}
+      >
         {renderingForm()}
       </div>
     </GenericModal>

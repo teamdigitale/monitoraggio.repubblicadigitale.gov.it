@@ -4,6 +4,10 @@ import './sectionTitle.scss';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import clsx from 'clsx';
+import AvatarInitials, {
+  AvatarSizes,
+  AvatarTextSizes,
+} from '../AvatarInitials/avatarInitials';
 
 interface SectionTitleI {
   title: string;
@@ -13,11 +17,16 @@ interface SectionTitleI {
     text: string;
   };
   subTitle?: string;
+  iconAvatar?: boolean;
+  name?: string;
+  surname?: string;
 }
 
 const SectionTitle: React.FC<SectionTitleI> = (props) => {
-  const { title, status, upperTitle, subTitle } = props;
-  const { mediaIsDesktop, mediaIsTablet } = useAppSelector(selectDevice);
+  const { title, status, upperTitle, subTitle, iconAvatar, name, surname } =
+    props;
+  const { mediaIsDesktop, mediaIsTablet, mediaIsPhone } =
+    useAppSelector(selectDevice);
 
   return (
     <div className='custom-section-title'>
@@ -26,8 +35,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
           <Icon
             icon={upperTitle.icon}
             size='sm'
-            color='primary'
-            className='mr-1'
+            className='mr-1 icon-color'
             aria-label='Sezione'
           />
           <p
@@ -38,29 +46,39 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
               'text-uppercase'
             )}
           >
-            {upperTitle.text || 'utente'}
+            {upperTitle.text}
           </p>
         </div>
       ) : null}
 
       <div className='d-flex flex-row'>
+        {iconAvatar && (
+          <AvatarInitials
+            user={{ uName: name || '', uSurname: surname || '' }}
+            size={AvatarSizes.Big}
+            font={AvatarTextSizes.Big}
+          />
+        )}
         <div className='custom-section-title__section-title primary-color-a9 text-center'>
           <span role='heading' aria-level={1}>
             {' '}
             {title}{' '}
           </span>
         </div>
-        {(mediaIsDesktop || mediaIsTablet) && status ? (
-          <Chip className='table-container__status-label mx-3 primary-bg-a9 mt-3 no-border'>
+        {(mediaIsDesktop || mediaIsTablet || mediaIsPhone) && status ? (
+          <Chip
+            className={clsx(
+              'table-container__status-label',
+              'mx-3',
+              'primary-bg-a9',
+              'mt-3',
+              'no-border'
+            )}
+          >
             <ChipLabel className='text-white'>{status}</ChipLabel>
           </Chip>
         ) : null}
       </div>
-      {!(mediaIsDesktop || mediaIsTablet) && (
-        <Chip className='table-container__status-label mx-3 primary-bg-a9 my-2 no-border'>
-          <ChipLabel className='text-white'>{status}</ChipLabel>
-        </Chip>
-      )}
       {subTitle ? (
         <div className='ml-3'>
           <p className='primary-color-a9 mb-0'> {subTitle} </p>

@@ -7,9 +7,13 @@ import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 
 interface CitizenTableResultI {
   data: CittadinoInfoI[];
+  onCitizenSelected?: (citizen: TableRowI | string) => void;
 }
 
-const CitizenTableResult: React.FC<CitizenTableResultI> = ({ data }) => {
+const CitizenTableResult: React.FC<CitizenTableResultI> = ({
+  data,
+  onCitizenSelected,
+}) => {
   const updateTableValues = () => {
     const table = newTable(
       TableHeadingSearchResults,
@@ -36,12 +40,19 @@ const CitizenTableResult: React.FC<CitizenTableResultI> = ({ data }) => {
     },
   };
 
+  const onActionCheck: CRUDActionsI = {
+    [CRUDActionTypes.SELECT]: (td: TableRowI | string) => {
+      if (onCitizenSelected) onCitizenSelected(td);
+    },
+  };
+
   return (
     <Table
       {...tableValues}
       id='table'
       onActionClick={onActionClick}
       withActions
+      onActionRadio={onActionCheck}
     />
   );
 };

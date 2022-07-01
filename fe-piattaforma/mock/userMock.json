@@ -1,12 +1,14 @@
 {
   "data": {
     "info": {
-      "name": "321321",
-      "lastName": "Via roma 1",
-      "userId": "Sede 1",
-      "fiscalCode": "Facilitazione",
+      "name": "Antonio",
+      "lastName": "Rossi",
+      "userId": "321321",
+      "fiscalCode": "DFVFRE32F32ED43",
       "email": "mail@mail.com",
-      "phone": "321321"
+      "phone": "338390458305",
+      "authorityRef": "Comune di Milano",
+      "bio": "Descrizione Bio"
     },
     "roles": [
       { "name": "Simone Viola", "status": "Active" },

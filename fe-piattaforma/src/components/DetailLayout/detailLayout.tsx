@@ -10,6 +10,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import clsx from 'clsx';
+import { openModal } from '../../redux/features/modal/modalSlice';
+import { useDispatch } from 'react-redux';
+import { formTypes } from '../../pages/administrator/AdministrativeArea/Entities/utils';
 
 interface DetailLayoutI {
   nav?: ReactElement;
@@ -24,12 +27,20 @@ interface DetailLayoutI {
     };
     subTitle?: string;
     headingRole?: boolean;
+    iconAvatar?: boolean;
+    name?: string;
+    surname?: string;
   };
   itemsList?: ItemsListI | null | undefined;
+  showItemsList?: boolean;
   buttonsPosition: 'TOP' | 'BOTTOM';
   showGoBack?: boolean;
   goBackTitle?: string;
   children?: ReactElement | undefined;
+  currentTab?: string;
+  surveyDefault?: ItemsListI | null | undefined;
+  isRadioButtonItem?: boolean;
+  onRadioChange?: (surveyDefault: string) => void;
 }
 const DetailLayout: React.FC<DetailLayoutI> = ({
   formButtons,
@@ -37,13 +48,19 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   titleInfo,
   nav,
   itemsList,
+  showItemsList = true,
   buttonsPosition,
   showGoBack = true,
   goBackTitle = 'Torna indietro',
   children,
+  currentTab,
+  surveyDefault,
+  isRadioButtonItem = false,
+  onRadioChange,
 }) => {
   const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -62,16 +79,54 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
       )}
       <SectionTitle {...titleInfo} />
       {nav && (
-        <div className='d-flex justify-content-center w-100 mt-5 mb-5'>
+        <div
+          className={clsx(
+            'd-flex',
+            'justify-content-center',
+            'w-100',
+            'mt-5',
+            'mb-5'
+          )}
+        >
           {nav}
         </div>
       )}
       <div>{children}</div>
       {buttonsPosition === 'TOP' && formButtons && formButtons.length !== 0 ? (
         <>
-          <div aria-hidden='true'>
+          <div aria-hidden='true' className='mt-5'>
             <Sticky mode='bottom'>
-              <ButtonsBar buttons={formButtons} />
+              {formButtons.length === 3 ? (
+                device.mediaIsPhone ? (
+                  <div
+                    className={clsx(
+                      'd-flex',
+                      'flex-row',
+                      'justify-content-between',
+                      'bg-white',
+                      'flex-wrap'
+                    )}
+                  >
+                    <ButtonsBar buttons={formButtons.slice(1)} />
+                    <ButtonsBar buttons={formButtons.slice(0, 1)} />
+                  </div>
+                ) : (
+                  <div
+                    className={clsx(
+                      'd-flex',
+                      'flex-row',
+                      'justify-content-between',
+                      'bg-white',
+                      'sticky-body'
+                    )}
+                  >
+                    <ButtonsBar buttons={formButtons.slice(0, 1)} />
+                    <ButtonsBar buttons={formButtons.slice(1)} />
+                  </div>
+                )
+              ) : (
+                <ButtonsBar buttons={formButtons} />
+              )}
             </Sticky>
           </div>
           <div className='sr-only'>
@@ -84,7 +139,18 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
             <Accordion
               title={singleItem.title ? singleItem.title : ''}
               totElem={singleItem.items.length}
-              cta='Aggiungi referente'
+              cta={`Aggiungi ${singleItem.title}`}
+              onClickCta={() =>
+                dispatch(
+                  openModal({
+                    id:
+                      singleItem.title === 'Referenti'
+                        ? formTypes.REFERENTE
+                        : formTypes.DELEGATO,
+                    payload: { title: `Aggiungi ${singleItem.title}` },
+                  })
+                )
+              }
               key={index}
               lastBottom={index === itemsAccordionList.length - 1}
             >
@@ -101,19 +167,49 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
             </Accordion>
           ))
         : null}
-      {itemsList && itemsList.items?.length ? (
+      {currentTab === 'questionari' && surveyDefault && (
+        <div>
+          <CardStatusAction
+            moreThanOneSurvey={isRadioButtonItem}
+            title={surveyDefault?.items[0].nome}
+            status={surveyDefault?.items[0].stato}
+            id={surveyDefault?.items[0].id}
+            fullInfo={surveyDefault?.items[0].fullInfo}
+            onActionClick={surveyDefault?.items[0].actions}
+          />
+          {isRadioButtonItem &&
+            device.mediaIsDesktop &&
+            currentTab === 'questionari' &&
+            itemsList?.items.length && (
+              <h3 className='h4 text-muted'> Altri questionari </h3>
+            )}
+        </div>
+      )}
+      {showItemsList && itemsList?.items?.length ? (
         <>
-          {itemsList.title && <h2 className='h4'>{itemsList.title}</h2>}{' '}
-          {itemsList.items.map((item) => (
-            <CardStatusAction
-              title={item.nome}
-              status={item.stato}
-              key={item.id}
-              id={item.id}
-              fullInfo={item.fullInfo}
-              onActionClick={item.actions}
-            />
-          ))}{' '}
+          {itemsList.title && (
+            <h2 className='h4 neutral-1-color-a7'>{itemsList.title}</h2>
+          )}{' '}
+          {((currentTab === 'questionari' && isRadioButtonItem) ||
+            currentTab !== 'questionari') &&
+            itemsList.items.map((item) => {
+              return (
+                <CardStatusAction
+                  moreThanOneSurvey={
+                    currentTab === 'questionari' && isRadioButtonItem
+                  }
+                  title={item.nome}
+                  status={item.stato}
+                  key={item.id}
+                  id={item.id}
+                  fullInfo={item.fullInfo}
+                  onActionClick={item.actions}
+                  onCheckedChange={(surveyChecked: string) =>
+                    onRadioChange ? onRadioChange(surveyChecked) : null
+                  }
+                />
+              );
+            })}{' '}
         </>
       ) : null}
       {buttonsPosition === 'BOTTOM' &&

@@ -17,26 +17,26 @@ import {
   GetEntityValues,
 } from '../../../../../redux/features/citizensArea/citizensAreaThunk';
 import { useAppSelector } from '../../../../../redux/hooks';
-import { Paginator, Table } from '../../../../../components';
+import { Paginator, StatusChip, Table } from '../../../../../components';
 import {
   DropdownFilterI,
   FilterI,
 } from '../../../../../components/DropdownFilter/dropdownFilter';
 import { newTable, TableRowI } from '../../../../../components/Table/table';
-import { statusBgColor, statusColor, TableHeading } from '../../utils';
-import { Chip, ChipLabel } from 'design-react-kit';
-import clsx from 'clsx';
+import { TableHeading } from '../../utils';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import SearchCitizenModal from '../SearchCitizenModal/searchCitizenModal';
 import { openModal } from '../../../../../redux/features/modal/modalSlice';
+import PageTitle from '../../../../../components/PageTitle/pageTitle';
+import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 //import { openModal } from '../../../../../redux/features/modal/modalSlice';
 
 const entity = 'citizensArea';
-const policyDropdownLabel = 'policy';
-const programDropdownLabel = 'program';
-const projectDropdownLabel = 'project';
-const siteDropdownLabel = 'site';
+const policyDropdownLabel = 'policies';
+const programDropdownLabel = 'programmi';
+const projectDropdownLabel = 'progetti';
+const siteDropdownLabel = 'sedi';
 
 const Citizens = () => {
   const dispatch = useDispatch();
@@ -50,23 +50,39 @@ const Citizens = () => {
   const citizensList = useAppSelector(selectEntityList);
   const dropdownFilterOptions = useAppSelector(selectEntityFiltersOptions);
 
+  const { criterioRicerca, policies, stati } = filtersList;
+
+  const { pageNumber } = pagination;
+
   const handleOnSearch = (searchValue: string) => {
-    dispatch(
-      setEntityFilters({ nomeLike: { label: searchValue, value: searchValue } })
-    );
+    dispatch(setEntityFilters({ criterioRicerca: searchValue }));
   };
 
   useEffect(() => {
     getListaCittadini();
+    dispatch(
+      updateBreadcrumb([
+        {
+          label: 'Area Cittadini',
+          url: '/area-cittadini',
+          link: false,
+        },
+        {
+          label: 'I miei cittadini',
+          url: '/area-cittadini',
+          link: true,
+        },
+      ])
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filtersList, pagination]);
+  }, [criterioRicerca, policies, stati, pageNumber]);
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 3 }));
-    dispatch(GetEntityFilterValues('test', policyDropdownLabel));
-    dispatch(GetEntityFilterValues('test', programDropdownLabel));
-    dispatch(GetEntityFilterValues('test', projectDropdownLabel));
-    dispatch(GetEntityFilterValues('test', siteDropdownLabel));
+    dispatch(GetEntityFilterValues(policyDropdownLabel));
+    dispatch(GetEntityFilterValues(programDropdownLabel));
+    dispatch(GetEntityFilterValues(projectDropdownLabel));
+    dispatch(GetEntityFilterValues(siteDropdownLabel));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -91,7 +107,7 @@ const Citizens = () => {
     }
     setSearchDropdown(searchDropdownValues);
     dispatch(
-      GetEntityFilterValues('test', filterId, {
+      GetEntityFilterValues(filterId, {
         filterName: searchValue,
       })
     ); // esempio di parametro con cui filtrare le opzioni tramite api
@@ -178,24 +194,12 @@ const Citizens = () => {
   const updateTableValues = () => {
     const table = newTable(
       TableHeading,
-      citizensList.map((td) => ({
+      (citizensList || []).map((td) => ({
         id: td.id,
-        name: td.name,
+        name: td.nome,
         submitted: td.submitted,
         onDraft: td.onDraft,
-        status: (
-          <Chip
-            className={clsx(
-              'table-container__status-label',
-              statusBgColor(td.status),
-              'no-border'
-            )}
-          >
-            <ChipLabel className={statusColor(td.status)}>
-              {td.status.toUpperCase()}
-            </ChipLabel>
-          </Chip>
-        ),
+        status: <StatusChip status={td.status} rowTableId={td.id} />,
       }))
     );
     return {
@@ -246,37 +250,40 @@ const Citizens = () => {
   };
 
   return (
-    <GenericSearchFilterTableLayout
-      searchInformation={searchInformation}
-      dropdowns={dropdowns}
-      filtersList={filtersList}
-      cta={() => {
-        dispatch(openModal({ id: 'search-citizen-modal' }));
-      }}
-      ctaPrint={() => window.open('/stampa-questionario', '_blank')}
-      {...PageTitleMock}
-    >
-      <div>
-        <Table
-          {...tableValues}
-          id='table'
-          //onActionClick={(action, row) => console.log(action, row)}
-          onCellClick={(field, row) => console.log(field, row)}
-          //onRowClick={row => console.log(row)}
-          withActions
-          onActionClick={onActionClick}
-        />
-        <Paginator
-          activePage={pagination?.pageNumber}
-          center
-          refID='#table'
-          pageSize={pagination?.pageSize}
-          total={citizensList.length}
-          onChange={handleOnChangePage}
-        />
-      </div>
-      <SearchCitizenModal />
-    </GenericSearchFilterTableLayout>
+    <>
+      <PageTitle title={'I miei cittadini'} />
+      <GenericSearchFilterTableLayout
+        searchInformation={searchInformation}
+        dropdowns={dropdowns}
+        filtersList={filtersList}
+        cta={() => {
+          dispatch(openModal({ id: 'search-citizen-modal' }));
+        }}
+        ctaPrint={() => window.open('/stampa-questionario', '_blank')}
+        {...PageTitleMock}
+      >
+        <div>
+          <Table
+            {...tableValues}
+            id='table'
+            //onActionClick={(action, row) => console.log(action, row)}
+            onCellClick={(field, row) => console.log(field, row)}
+            //onRowClick={row => console.log(row)}
+            withActions
+            onActionClick={onActionClick}
+          />
+          <Paginator
+            activePage={pagination?.pageNumber}
+            center
+            refID='#table'
+            pageSize={pagination?.pageSize}
+            total={citizensList?.length}
+            onChange={handleOnChangePage}
+          />
+        </div>
+        <SearchCitizenModal />
+      </GenericSearchFilterTableLayout>
+    </>
   );
 };
 

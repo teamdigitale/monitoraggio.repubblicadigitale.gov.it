@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import { Accordion } from '../../../../components/index';
-import { formForSectionEnum } from '../../formPrograms/targetDateFormPrograms';
+import { formForSectionT } from '../../formPrograms/targetDateFormPrograms';
+// import { formForSectionEnum } from '../../formPrograms/targetDateFormPrograms';
 import FormProjectGeneralInfo from '../formProjectGeneralInfo';
 import TargetDateFormProjects from '../targetDateFormProjects';
 
@@ -8,11 +9,11 @@ const ProjectAccordionForm = () => {
   const accordions = [
     {
       title: 'Numero punti di facilitazione',
-      section: formForSectionEnum.facilitationNumber,
+      section: 'puntiFacilitazione',
     },
-    { title: 'Utenti unici', section: formForSectionEnum.uniqueUsers },
-    { title: 'Numero servizi', section: formForSectionEnum.services },
-    { title: 'Numero facilitatori', section: formForSectionEnum.facilitators },
+    { title: 'Numero utenti unici', section: 'utentiUnici' },
+    { title: 'Numero servizi', section: 'servizi' },
+    { title: 'Numero facilitatori', section: 'facilitatori' },
   ];
   return (
     <>
@@ -21,10 +22,10 @@ const ProjectAccordionForm = () => {
         <Accordion
           title={accordion.title}
           key={index}
-          className='general-info-accordion-container'
+          className='general-info-accordion-container-project'
         >
           <TargetDateFormProjects
-            formForSection={accordion.section}
+            formForSection={accordion.section as formForSectionT}
             formDisabled
           />
         </Accordion>

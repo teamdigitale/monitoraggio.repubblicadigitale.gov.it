@@ -23,6 +23,7 @@ interface AccordionI {
   handleOnCheck?: () => void;
   handleOnToggle?: (collapse: boolean) => void;
   lastBottom?: boolean;
+  onClickCta?: () => void;
 }
 
 const Accordion: React.FC<AccordionI> = (props) => {
@@ -38,6 +39,7 @@ const Accordion: React.FC<AccordionI> = (props) => {
     isChecked,
     handleOnCheck,
     handleOnToggle,
+    onClickCta,
   } = props;
   const [collapseOpen, setCollapseOpen] = useState(false);
 
@@ -64,6 +66,24 @@ const Accordion: React.FC<AccordionI> = (props) => {
           </span>
         </div>
       </AccordionHeader>
+      {cta && (
+        <div className='d-flex cta-buttons'>
+          <Button
+            onClick={onClickCta}
+            className='d-flex justify-content-between'
+            type='button'
+          >
+            <Icon
+              color='primary'
+              icon='it-plus-circle'
+              size='sm'
+              className='mr-2'
+              aria-label='Aggiungi'
+            />
+            {cta}
+          </Button>
+        </div>
+      )}
       {checkbox && (
         <div
           className={clsx(
@@ -98,27 +118,7 @@ const Accordion: React.FC<AccordionI> = (props) => {
           </Form>
         </div>
       )}
-      <AccordionBody active={collapseOpen}>
-        {children}
-        {cta && (
-          <div className='d-flex justify-content-end'>
-            <Button
-              onClick={() => console.log('cta')}
-              className='d-flex justify-content-between'
-              type='button'
-            >
-              <Icon
-                color='primary'
-                icon='it-plus-circle'
-                size='sm'
-                className='mr-2'
-                aria-label='Aggiungi'
-              />
-              {cta}
-            </Button>
-          </div>
-        )}
-      </AccordionBody>
+      <AccordionBody active={collapseOpen}>{children}</AccordionBody>
     </AccordionKit>
   );
 };
