@@ -201,7 +201,7 @@ const Services = () => {
       {...servicesCta}
       cta={newService}
     >
-      <div>
+      <div className='mt-5'>
         <Table
           {...tableValues}
           id='table'

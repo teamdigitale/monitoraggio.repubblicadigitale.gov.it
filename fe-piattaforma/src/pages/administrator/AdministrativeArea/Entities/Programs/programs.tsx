@@ -52,12 +52,8 @@ const Programs = () => {
   const { pageNumber } = pagination;
 
   const getAllFilters = () => {
-    dispatch(
-      GetEntityFilterValues({ entity, dropdownType: 'stati' })
-    );
-    dispatch(
-      GetEntityFilterValues({ entity, dropdownType: 'policies' })
-    );
+    dispatch(GetEntityFilterValues({ entity, dropdownType: 'stati' }));
+    dispatch(GetEntityFilterValues({ entity, dropdownType: 'policies' }));
   };
 
   useEffect(() => {
@@ -134,16 +130,13 @@ const Programs = () => {
     );
   };
 
-  const handleDropdownFilters = (
-    values: FilterI[],
-    filterKey: string,
-  ) => {
+  const handleDropdownFilters = (values: FilterI[], filterKey: string) => {
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
   };
 
   const handleOnSearchDropdownOptions = (
     searchValue: formFieldI['value'],
-    filterId: string,
+    filterId: string
   ) => {
     const searchDropdownValues = [...searchDropdown];
     if (

@@ -47,10 +47,12 @@ export const TableHeadingEventsList: TableHeadingI[] = [
   {
     field: 'serviceType',
     label: 'Tipo di servizio prenotato',
+    size: 'medium',
   },
   {
     field: 'date',
     label: 'data',
+    size: 'small',
   },
   {
     field: 'facilitatore',

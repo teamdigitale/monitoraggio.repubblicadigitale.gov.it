@@ -28,9 +28,12 @@ const EmptySection: React.FC<EmptySectionI> = ({
         'w-100'
       )}
     >
-      <Icon icon={icon || 'it-note'} className='empty-section__icon' />
-      <h3>{title || 'Questa sezione è ancora vuota'}</h3>
-      {subtitle && <h4>{subtitle}</h4>}
+      <Icon
+        icon={icon || 'it-warning-circle'}
+        className='empty-section__icon'
+      />
+      <h1 className='h5'>{title || 'Questa sezione è ancora vuota'}</h1>
+      {subtitle && <h2 className='h6'>{subtitle}</h2>}
       {buttons && <ButtonsBar buttons={buttons} />}
     </div>
   );

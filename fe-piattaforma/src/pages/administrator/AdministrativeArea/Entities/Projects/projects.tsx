@@ -225,7 +225,7 @@ const Projects: React.FC = () => {
       dropdowns={dropdowns}
       filtersList={filtersList}
     >
-      <div>
+      <div className='mt-5'>
         <Table
           {...tableValues}
           id='table'

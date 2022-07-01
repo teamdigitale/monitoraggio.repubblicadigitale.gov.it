@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Form, Input } from '../../components';
+import { EmptySection, Form, Input } from '../../components';
+import { ButtonInButtonsBar } from '../../components/ButtonsBar/buttonsBar';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../hoc/withFormHandler';
 import { selectAuthorities } from '../../redux/features/administrativeArea/administrativeAreaSlice';
 import { GetEnteDetail } from '../../redux/features/administrativeArea/authorities/authoritiesThunk';
+import { openModal } from '../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../utils/formHelper';
 import { formTypes } from '../administrator/AdministrativeArea/Entities/utils';
@@ -39,9 +41,37 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
   const formDisabled = !!props.formDisabled;
 
+  const newGestoreProgetto = () => {
+    dispatch(
+      openModal({
+        id: formTypes.ENTE_GESTORE_PROGRAMMA,
+        payload: {
+          title: 'Aggiungi Ente gestore di Programma',
+        },
+      })
+    );
+  };
+
+  const EmptySectionButton: ButtonInButtonsBar[] = [
+    {
+      size: 'xs',
+      color: 'primary',
+      text: 'Aggiungi Ente gestore di Programma',
+      onClick: () => newGestoreProgetto(),
+    },
+  ];
+
   const formData: { [key: string]: formFieldI['value'] } | undefined =
     useAppSelector(selectAuthorities).detail?.info;
   const dispatch = useDispatch();
+
+  if (formData && !creation) {
+    <EmptySection
+      title={'Questa sezione è ancora vuota'}
+      subtitle={'Per attivare il progetto aggiungi un ente gestore e una sede'}
+      buttons={EmptySectionButton}
+    />;
+  }
 
   useEffect(() => {
     if (!creation) {

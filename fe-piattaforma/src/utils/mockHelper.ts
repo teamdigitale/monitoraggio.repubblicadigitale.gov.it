@@ -26,11 +26,11 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });*/
 
-    /*mockInstance.onPost('/progetto/all').reply(async () => {
+    /*  mockInstance.onPost('/progetto/all').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/listaProgetti.json');
       return [200, response];
-    });*/
+    }); */
 
     mockInstance.onGet('/ente/all').reply(async () => {
       // @ts-ignore
@@ -56,13 +56,7 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });
 
-    mockInstance.onGet('/questionari/all').reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/listaQuestionari.json');
-      return [200, response];
-    });
-
-    mockInstance.onPost('/questionari/all').reply(async () => {
+    mockInstance.onPost('/questionarioTemplate/all').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/listaQuestionari.json');
       return [200, response];
