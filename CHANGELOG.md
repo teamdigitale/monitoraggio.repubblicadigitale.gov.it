@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.3...1.0.0-develop.4) (2022-07-01)
+
+
+### Bug Fixes
+
+* **be:** fix servizio scheda programma ([b450855](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b450855db7d52889619849fc51cc8a0dea98644e))
+
 ## [1.0.0-develop.3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.2...1.0.0-develop.3) (2022-06-30)
 
 
