@@ -319,19 +319,19 @@ insert into ente_sede_progetto(id_ente, id_progetto, id_sede, ruolo_ente, stato_
 insert into ente_sede_progetto(id_ente, id_progetto, id_sede, ruolo_ente, stato_sede)
 	values(1005, 254, 1, 'EGP', 'NON ATTIVO');
 insert into ente_sede_progetto(id_ente, id_progetto, id_sede, ruolo_ente, stato_sede)
-	values(1000, 251, 1, 'EGP', 'ATTIVO');
+	values(1000, 251, 1, 'EGP', 'NON ATTIVO');
 insert into ente_sede_progetto(id_ente, id_progetto, id_sede) 
 	values (1000, 250, 1);
 	
 -- ASSEGNAMENTO ENTE_SEDE_PROGETTO_FACILITATORE
-insert into ente_sede_progetto_facilitatore(id_ente, id_facilitatore, id_progetto, id_sede, ruolo_utente)
-	values(1005, 'UTENTE2',  256, 1, 'FAC');
-insert into ente_sede_progetto_facilitatore(id_ente, id_facilitatore, id_progetto, id_sede, ruolo_utente) 
-	values(1005, 'UTENTE2',  254, 1, 'VOL');
-insert into ente_sede_progetto_facilitatore (id_ente, id_progetto, id_sede, id_facilitatore, ruolo_utente) 
-	values (1005, 256, 1, 'FACILITATORE1', 'VOL'); 
-insert into ente_sede_progetto_facilitatore (id_ente, ID_progetto, id_sede, id_facilitatore, ruolo_utente) 
-	values (1005, 251, 1, 'FACILITATORE2', 'VOL'); 
+insert into ente_sede_progetto_facilitatore(id_ente, id_facilitatore, id_progetto, id_sede, ruolo_utente, stato_utente)
+	values(1005, 'UTENTE2',  256, 1, 'FAC', 'ATTIVO');
+insert into ente_sede_progetto_facilitatore(id_ente, id_facilitatore, id_progetto, id_sede, ruolo_utente, stato_utente) 
+	values(1005, 'UTENTE2',  254, 1, 'VOL', 'ATTIVO');
+insert into ente_sede_progetto_facilitatore (id_ente, id_progetto, id_sede, id_facilitatore, ruolo_utente, stato_utente) 
+	values (1005, 254, 1, 'FACILITATORE1', 'VOL', 'NON ATTIVO'); 
+insert into ente_sede_progetto_facilitatore (id_ente, ID_progetto, id_sede, id_facilitatore, ruolo_utente, stato_utente) 
+	values (1005, 251, 1, 'FACILITATORE2', 'VOL', 'NON ATTIVO'); 
 
 --ASSEGNAMENTO REFERENTI / DELEGATI ENTE GESTORE PROGETTO
  insert into referente_delegati_gestore_progetto(cf_utente, id_progetto, id_ente, codice_ruolo, data_ora_aggiornamento, data_ora_creazione, stato_utente)
@@ -341,3 +341,5 @@ insert into ente_sede_progetto_facilitatore (id_ente, ID_progetto, id_sede, id_f
 
 --insert questionario template
 INSERT INTO questionario_template (id, nome, stato, descrizione, default_rfd, default_scd) VALUES ('1', 'prova', 'ATTIVO', 'provaTest', '1', '1');
+--insert programma_x_questionario template
+INSERT INTO programma_x_questionario_template (programma_id, questionario_template_id, stato) VALUES (2, '563847ffhgs', 'TERMINATO');
