@@ -578,8 +578,11 @@ jobs:
           kubectl apply -f deployment.yml
 
   RepoUpdate:
-    if: ${{ github.event.inputs.version == '' }}
     needs: [CheckInputModules, DryRunRelease, Deploy]
+    if: ${{ github.event.inputs.version == '' && always() &&
+      needs.CheckInputModules.result == 'success' && needs.DryRunRelease.result == 'success' && needs.Deploy.result == 'success' &&
+      (needs.buildFE.result == 'success' || needs.buildFE.result == 'skipped') &&
+      (needs.buildBE.result == 'success' || needs.buildBE.result == 'skipped') }}
     name: Repo Update
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
