@@ -225,7 +225,10 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
   buildBE:
-    if: ${{ github.event.inputs.version == '' }}
+    if: ${{ github.event.inputs.version == '' && (needs.CheckInputModules.outputs.ms-ente == 'true' ||
+      needs.CheckInputModules.outputs.ms-gestione-utente == 'true' || needs.CheckInputModules.outputs.ms-notifiche-integration == 'true' ||
+      needs.CheckInputModules.outputs.ms-open-data == 'true' || needs.CheckInputModules.outputs.ms-programma-progetto == 'true' ||
+      needs.CheckInputModules.outputs.ms-questionario-cittadino == 'true' ) }}
     needs: [CheckInputModules, DryRunRelease]
     name: BE Build
     runs-on: ubuntu-latest
