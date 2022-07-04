@@ -62,6 +62,7 @@ const ManageCitizens: React.FC<ManageCitizensI> = ({
           setNewFormValues({ ...newData });
         }}
         isFormValid={(isValid: boolean) => setIsFormValid(isValid)}
+        creation
       />
       </div>
     </GenericModal>

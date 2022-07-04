@@ -108,7 +108,7 @@ export const GetEntityDetail =
       dispatch({ ...GetEntityDetailAction, idCittadino, payload });
       const res = await API.get(`cittadino/${idCittadino}`);
       if (res?.data) {
-        dispatch(getEntityDetail(res.data.data));
+        dispatch(getEntityDetail(res.data));
       }
     } catch (error) {
       console.log('GetEntityDetail citizensArea error', error);

@@ -90,7 +90,9 @@ export const createProgram =
         )
       );
 
-      dispatch(setProgramGeneralInfo({ currentStep: 6, payload }));
+      dispatch(
+        setProgramGeneralInfo({ currentStep: 4, newFormValues: payload })
+      );
       if (body) {
         const res = await API.post(`/programma`, {
           ...body,
@@ -105,7 +107,7 @@ export const createProgram =
   };
 
 const UpdateProgramAction = {
-  type: 'administrativeArea/CreateProgram',
+  type: 'administrativeArea/UpdateProgram',
 };
 
 export const updateProgram =
@@ -129,9 +131,10 @@ export const updateProgram =
         )
       );
 
-      dispatch(setProgramGeneralInfo({ currentStep: 6, payload }));
+      dispatch(
+        setProgramGeneralInfo({ currentStep: 4, newFormValues: payload })
+      );
       if (body) {
-        console.log(body);
         const res = await API.put(`/programma/${programId}`, {
           ...body,
         });

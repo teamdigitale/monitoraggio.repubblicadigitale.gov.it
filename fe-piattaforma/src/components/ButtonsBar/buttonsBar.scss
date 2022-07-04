@@ -1,12 +1,9 @@
 .buttons-bar {
   display: flex;
   justify-content: flex-end;
-  padding: rem(22px 0);
-  background: white;
+  padding: rem(15px 0);
   flex-wrap: wrap;
-  gap: rem(15px);
-
-
+  gap: rem(5px);
 
   @media (max-width: 764px) {
     justify-content: space-between;

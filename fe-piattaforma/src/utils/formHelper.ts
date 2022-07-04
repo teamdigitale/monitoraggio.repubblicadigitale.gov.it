@@ -219,6 +219,7 @@ export const FormHelper = {
     } = {}
   ) => {
     const newForm = { ...form };
+
     if (
       newForm &&
       Object.keys(newForm).length !== 0 &&

@@ -43,7 +43,7 @@ export const GetEntityValues =
           filtroRequest[filter] =
             filters[filter]?.value || filters[filter] || null;
         } else {
-          filtroRequest[filter] = filters[filter].map(
+          filtroRequest[filter] = filters[filter]?.map(
             (value: OptionType) => value.value
           );
         }
@@ -100,7 +100,7 @@ export const GetEntityFilterValues =
           filtroRequest[filter] =
             filters[filter]?.value || filters[filter] || null;
         } else {
-          filtroRequest[filter] = filters[filter].map(
+          filtroRequest[filter] = filters[filter]?.map(
             (value: OptionType) => value.value
           );
         }

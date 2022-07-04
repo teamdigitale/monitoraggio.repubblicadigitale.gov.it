@@ -17,6 +17,7 @@ export const RegexpType = {
   DATE: 'date',
   BOOLEAN: 'booleanInput',
   TIME: 'time',
+  TIMESTAMP: 'timestamp',
 };
 
 const RegexpRule = {
@@ -39,6 +40,7 @@ const RegexpRule = {
     /^\+((?:9[679]|8[035789]|6[789]|5[90]|42|3[578]|2[1-689])|9[0-58]|8[1246]|6[0-6]|5[1-8]|4[013-9]|3[0-469]|2[70]|7|1)(?:\W*\d){0,13}/g,
   [RegexpType.TELEPHONE]: /^([0-9]*\-?\ ?\/?[0-9]*)$/,
   [RegexpType.TIME]: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/g,
+  [RegexpType.TIMESTAMP]: /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(Z?)$/gm,
 };
 
 export const validator = (

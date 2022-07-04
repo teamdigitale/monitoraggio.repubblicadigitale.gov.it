@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
-import CitizenFormResult from './citizenFormResult';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
@@ -107,7 +106,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
               size: 'lg',
             }}
           />
-          <CitizenFormResult data={citizenData} />
+          <FormCitizen info={citizenData} />
         </>
       );
     }

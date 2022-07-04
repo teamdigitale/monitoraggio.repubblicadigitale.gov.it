@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+// import clsx from 'clsx';
 import React, { useEffect } from 'react';
 
 import { useDispatch } from 'react-redux';
@@ -112,9 +112,7 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
   return (
     <Form className='mt-5' formDisabled={formDisabled}>
-      <Form.Row
-        className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
-      >
+      <Form.Row>
         {/* <Input
           {...form?.codice}
           col='col-12 col-lg-6'
@@ -133,9 +131,7 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           }}
         />
       </Form.Row>
-      <Form.Row
-        className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
-      >
+      <Form.Row>
         <Input
           {...form?.nomeBreve}
           col='col-12 col-lg-6'
@@ -152,12 +148,10 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pr-lg-3'
+          className='pl-lg-3'
         />
       </Form.Row>
-      <Form.Row
-        className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
-      >
+      <Form.Row>
         <Input
           {...form?.dataInizio}
           label='Data inizio'
@@ -174,7 +168,7 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pr-lg-3'
+          className='pl-lg-3'
         />
       </Form.Row>
     </Form>
