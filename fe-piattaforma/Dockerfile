@@ -4,7 +4,7 @@ RUN apk --update add nginx
 
 RUN rm -rf /usr/share/nginx/html/*
 
-COPY fe-piattaforma.nginx.conf /etc/nginx/conf.d/
+COPY fe-piattaforma.nginx.conf /etc/nginx/conf.d/default.conf
 
 COPY build /usr/share/nginx/html
 
