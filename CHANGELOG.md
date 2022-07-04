@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.6...1.0.0-develop.7) (2022-07-04)
+
+
+### Bug Fixes
+
+* nginx conf ([#140](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/issues/140)) ([8f9b659](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8f9b659f81b9cd05ba4c579fb78fe7d25fcb6817))
+* location try_files ([ab32bca](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ab32bca4792a81ea139d73f28f58ba1e16759dd1))
+* location try_files ([afc1846](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/afc1846e529ace8750c3e595425580171e383429))
+
 ## [1.0.0-develop.6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.5...1.0.0-develop.6) (2022-07-01)
 
 
