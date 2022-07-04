@@ -45,6 +45,15 @@ export const mapOptions = (
   return arrayMapped;
 };
 
+export const filterObjectByKey = (obj: any, filteringKey: string) =>
+  obj
+    ? Object.fromEntries(
+        Object.keys(obj)
+          .filter((key) => key.includes(filteringKey) && obj[key])
+          .map((key) => [key, obj[key] as string])
+      )
+    : {};
+
 export const CRUDActionTypes = {
   VIEW: 'view',
   CREATE: 'create',

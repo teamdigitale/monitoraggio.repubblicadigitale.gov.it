@@ -1,21 +1,16 @@
 import React, { memo } from 'react';
+import TargetsForm, {
+  SectionT,
+} from '../../../../components/AdministrativeArea/Entities/General/TargetForm/TargetsForm';
 import { Accordion } from '../../../../components/index';
+import { selectPrograms } from '../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { useAppSelector } from '../../../../redux/hooks';
 import FormGeneralInfo from '../formGeneralInfo';
 
-import TargetDateFormPrograms, {
-  formForSectionT,
-} from '../targetDateFormPrograms';
-
 const ProgramInfoAccordionForm = () => {
-  const accordions = [
-    {
-      title: 'Numero punti di facilitazione',
-      section: 'puntiFacilitazione',
-    },
-    { title: 'Utenti unici', section: 'utentiUnici' },
-    { title: 'Numero servizi', section: 'servizi' },
-    { title: 'Numero facilitatori', section: 'facilitatori' },
-  ];
+  const programDetails =
+    useAppSelector(selectPrograms).detail.dettagliInfoProgramma;
+
   return (
     <>
       <FormGeneralInfo formDisabled />
@@ -25,15 +20,25 @@ const ProgramInfoAccordionForm = () => {
           key={index}
           className='general-info-accordion-container'
         >
-          <TargetDateFormPrograms
-            formForSection={accordion.section as formForSectionT}
-            formDisabled
-            creation={false}
+          <TargetsForm
+            entityDetail={programDetails}
+            section={accordion.section as SectionT}
+            disabled
           />
         </Accordion>
       ))}
     </>
   );
 };
+
+const accordions = [
+  {
+    title: 'Numero punti di facilitazione',
+    section: 'puntiFacilitazione',
+  },
+  { title: 'Utenti unici', section: 'utentiUnici' },
+  { title: 'Numero servizi', section: 'servizi' },
+  { title: 'Numero facilitatori', section: 'facilitatori' },
+];
 
 export default memo(ProgramInfoAccordionForm);

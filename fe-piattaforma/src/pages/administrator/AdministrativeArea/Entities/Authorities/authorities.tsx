@@ -47,11 +47,12 @@ const Authorities: React.FC = () => {
   const navigate = useNavigate();
   const { criterioRicerca, progetti, profili, stati, programmi } = filtersList;
   const { pageNumber } = pagination;
+  const [filterDropdownSelected, setFilterDropdownSelected] = useState<string>('');
 
-  const getAllFilters = () => {
-    dispatch(GetFilterValuesEnti(profileDropdownLabel));
-    dispatch(GetFilterValuesEnti(projectDropdownLabel));
-    dispatch(GetFilterValuesEnti(programDropdownLabel));
+  const getAllFilters = () => { // TODO: check chiavi filtri
+    if(filterDropdownSelected !== 'profili') dispatch(GetFilterValuesEnti(profileDropdownLabel));
+    if(filterDropdownSelected !== 'progetti') dispatch(GetFilterValuesEnti(projectDropdownLabel));
+    if(filterDropdownSelected !== 'filtroIdsProgrammi') dispatch(GetFilterValuesEnti(programDropdownLabel));
   };
 
   useEffect(() => {
@@ -121,6 +122,7 @@ const Authorities: React.FC = () => {
   };
 
   const handleDropdownFilters = (values: FilterI[], filterKey: string) => {
+    setFilterDropdownSelected(filterKey);
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
   };
 
@@ -234,25 +236,24 @@ const Authorities: React.FC = () => {
       filtersList={filtersList}
       /*  {...ctaProgetti}
       cta={newGestoreProgetto} */
+      resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
     >
-      <div className='mt-5'>
-        <Table
-          {...tableValues}
-          id='table'
-          onActionClick={onActionClick}
-          onCellClick={(field, row) => console.log(field, row)}
-          //onRowClick={row => console.log(row)}
-          withActions
-        />
-        <Paginator
-          activePage={pagination?.pageNumber}
-          center
-          refID='#table'
-          pageSize={pagination?.pageSize}
-          total={entiList.list.length}
-          onChange={handleOnChangePage}
-        />
-      </div>
+      <Table
+        {...tableValues}
+        id='table'
+        onActionClick={onActionClick}
+        onCellClick={(field, row) => console.log(field, row)}
+        //onRowClick={row => console.log(row)}
+        withActions
+      />
+      <Paginator
+        activePage={pagination?.pageNumber}
+        center
+        refID='#table'
+        pageSize={pagination?.pageSize}
+        total={entiList.list.length}
+        onChange={handleOnChangePage}
+      />
       <ManageGenericAuthority creation />
     </GenericSearchFilterTableLayout>
   );

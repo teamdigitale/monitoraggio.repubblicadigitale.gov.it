@@ -180,7 +180,7 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });
 
-    mockInstance.onGet('/citizensArea/detail').reply(async () => {
+    mockInstance.onGet('/cittadino/1').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/cittadinoDetail.json');
       return [200, response];

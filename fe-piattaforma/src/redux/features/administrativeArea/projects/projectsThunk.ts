@@ -51,7 +51,7 @@ export const GetProjectDetail =
     }
   };
 
-export const createProjectDetails =
+export const createProject =
   (payload?: { [key: string]: formFieldI['value'] }) =>
   async (dispatch: Dispatch, select: Selector) => {
     try {
@@ -68,6 +68,49 @@ export const createProjectDetails =
           ...body,
         });
         console.log('createProjectDetails body', body);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const UpdateProjectAction = {
+  type: 'administrativeArea/UpdateProject',
+};
+
+export const updateProject =
+  (projectId: string, payload?: { [key: string]: formFieldI['value'] }) =>
+  async (dispatch: Dispatch, select: Selector) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...UpdateProjectAction });
+      const {
+        administrativeArea: {
+          projects: { detail },
+        },
+      }: any = select((state: RootState) => state);
+
+      const body = Object.fromEntries(
+        Object.entries({ ...detail.dettagliInfoProgetto, ...payload }).map(
+          ([key, value]) =>
+            key.includes('Target') && !key.includes('Data')
+              ? [key, parseInt(value as string)]
+              : [key, value]
+        )
+      );
+
+      dispatch(
+        setProjectGeneralInfo({ currentStep: 4, newFormValues: payload })
+      );
+      if (body) {
+        console.log(body);
+
+        const res = await API.put(`/progetto/${projectId}`, {
+          ...body,
+        });
+        console.log('updateProjectDetails res', res);
       }
     } catch (error) {
       console.log(error);

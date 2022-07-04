@@ -36,8 +36,8 @@ const CitizensDetail: React.FC = () => {
           link: true,
         },
         {
-          label: `${citizen?.dettaglioCittadino.name}`,
-          url: `/area-amministrativa/${citizen?.dettaglioCittadino.idCittadino}`,
+          label: `${citizen?.dettaglioCittadino?.name}`,
+          url: `/area-amministrativa/${citizen?.dettaglioCittadino?.idCittadino}`,
           link: false,
         },
       ])
@@ -78,6 +78,7 @@ const CitizensDetail: React.FC = () => {
   ];
 
   return (
+    <>
     <div className='container pb-3'>
       <DetailLayout
         titleInfo={{
@@ -91,15 +92,15 @@ const CitizensDetail: React.FC = () => {
         buttonsPosition='TOP'
         goBackTitle='I miei cittadini'
       >
-        <FormCitizen info={citizen?.dettaglioCittadino} formDisabled />
+        <FormCitizen formDisabled />
       </DetailLayout>
-      <CitizenQuestionari questionari={[]} />{' '}
-      {/* questionari={citizen?.serviziCittadino */}
-      <Sticky mode='bottom'>
+      <CitizenQuestionari questionari={[]} />{' '}{/* questionari={citizen?.serviziCittadino */}
+      <ManageCitizens />
+      </div>
+      <Sticky mode='bottom' stickyClassName='sticky bg-white'>
         <ButtonsBar buttons={citizenButtons} />
       </Sticky>
-      <ManageCitizens />
-    </div>
+    </>
   );
 };
 

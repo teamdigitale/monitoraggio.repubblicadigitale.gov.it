@@ -11,6 +11,8 @@ import { components, ControlProps } from 'react-select';
 import { focusId } from '../../utils/common';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
+import { useDispatch } from 'react-redux';
+import { deleteFiltroCriterioRicerca } from '../../redux/features/administrativeArea/administrativeAreaSlice';
 
 interface SearchBarI extends Omit<SelectI, 'onInputChange'> {
   autocomplete?: boolean;
@@ -30,6 +32,7 @@ interface SearchBarI extends Omit<SelectI, 'onInputChange'> {
   searchButton?: boolean;
   description?: string;
   id?: string;
+  entityToRefresh?: string | undefined;
 }
 
 const SearchBar: React.FC<SearchBarI> = (props) => {
@@ -46,6 +49,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
     id = 'search',
     title = 'Cerca',
   } = props;
+  const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState<
     SingleValue<OptionType | undefined> | MultiValue<OptionType | undefined>
   >();
@@ -81,10 +85,13 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
       setHasSearchValue(true);
     }
   };
-
+  
   const clearSearch = () => {
     setSearchValue('');
-    setHasSearchValue(false);
+    setHasSearchValue(false); 
+    dispatch(
+      deleteFiltroCriterioRicerca()
+    );
   };
 
   const AutocompleteDropdownIndicator = useCallback(

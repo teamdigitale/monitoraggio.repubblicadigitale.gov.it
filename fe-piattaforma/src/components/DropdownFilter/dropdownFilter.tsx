@@ -10,7 +10,7 @@ import isEqual from 'lodash.isequal';
 
 export interface FilterI {
   label: string;
-  value: string | number | any[];
+  value: string | number | string[];
 }
 
 export interface DropdownFilterI {
@@ -275,7 +275,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
                       <Label
                         id={`input-checkbox-${id}-${index}Description`}
                         check
-                        className='primary-color-b1'
+                        className='primary-color-b1 text-break'
                       >
                         {opt.label}
                       </Label>

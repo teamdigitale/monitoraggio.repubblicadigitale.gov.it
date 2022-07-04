@@ -11,7 +11,7 @@ interface StepperI {
 }
 
 const Stepper: React.FC<StepperI> = (props) => {
-  const { nSteps, currentStep = 1, className } = props;
+  const { nSteps, currentStep = 0, className } = props;
   const arraySteps = Array.from(Array(nSteps).keys());
 
   return (
@@ -27,13 +27,13 @@ const Stepper: React.FC<StepperI> = (props) => {
         {arraySteps.map((index) => (
           <div
             className={clsx(
-              index < currentStep ? 'primary-bg-a9' : 'bg-white',
+              index <= currentStep ? 'primary-bg-a9' : 'bg-white',
               'stepper-container__icon-container',
               'stepper-container__icon'
             )}
             key={index}
           >
-            {index < currentStep ? (
+            {index <= currentStep ? (
               <Icon
                 color='white'
                 icon={CheckNoCircle}

@@ -46,14 +46,15 @@ const Programs = () => {
   const [searchDropdown, setSearchDropdown] = useState<
     { filterId: string; value: formFieldI['value'] }[]
   >([]);
+  const [filterDropdownSelected, setFilterDropdownSelected] = useState<string>('');
 
   const { filtroCriterioRicerca, filtroPolicies, filtroStati } = filtersList;
 
   const { pageNumber } = pagination;
 
   const getAllFilters = () => {
-    dispatch(GetEntityFilterValues({ entity, dropdownType: 'stati' }));
-    dispatch(GetEntityFilterValues({ entity, dropdownType: 'policies' }));
+    if(filterDropdownSelected !== 'filtroStati') dispatch(GetEntityFilterValues({ entity, dropdownType: 'stati' }));
+    if(filterDropdownSelected !== 'filtroPolicies') dispatch(GetEntityFilterValues({ entity, dropdownType: 'policies' }));
   };
 
   useEffect(() => {
@@ -109,10 +110,14 @@ const Programs = () => {
   };
 
   useEffect(() => {
-    getAllFilters();
     getProgramsList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filtroCriterioRicerca, filtroPolicies, filtroStati, pageNumber]);
+
+  useEffect(() => {
+    getAllFilters();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filtroCriterioRicerca, filtroPolicies, filtroStati]);
 
   const handleOnChangePage = (pageNumber: number = pagination?.pageNumber) => {
     dispatch(setEntityPagination({ pageNumber }));
@@ -131,6 +136,7 @@ const Programs = () => {
   };
 
   const handleDropdownFilters = (values: FilterI[], filterKey: string) => {
+    setFilterDropdownSelected(filterKey);
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
   };
 
@@ -226,6 +232,7 @@ const Programs = () => {
       {...programCta}
       cta={newProgram}
       ctaDownload={handleDownloadList}
+      resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
     >
       <div>
         <Table
@@ -236,14 +243,16 @@ const Programs = () => {
           //onRowClick={row => console.log(row)}
           withActions
         />
-        <Paginator
-          activePage={pagination?.pageNumber}
-          center
-          refID='#table'
-          pageSize={pagination?.pageSize}
-          total={pagination?.totalPages}
-          onChange={handleOnChangePage}
-        />
+        {pagination?.pageNumber ? (
+          <Paginator
+            activePage={pagination?.pageNumber}
+            center
+            refID='#table'
+            pageSize={pagination?.pageSize}
+            total={pagination?.totalPages}
+            onChange={handleOnChangePage}
+          />
+        ) : null}
       </div>
       <ManageProgram creation />
     </GenericSearchFilterTableLayout>

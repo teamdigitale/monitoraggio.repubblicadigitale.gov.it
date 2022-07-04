@@ -64,38 +64,133 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
 
   return (
     <>
-      {showGoBack && (
-        <Button
-          onClick={() => navigate(-1)}
-          className={clsx(device.mediaIsPhone ? 'px-0 mb-5 mr-5' : 'px-0')}
-        >
-          <Icon
-            icon='it-chevron-left'
-            color='primary'
-            aria-label='Torna indietro'
-          />
-          <span className='primary-color'>{goBackTitle}</span>
-        </Button>
-      )}
-      <SectionTitle {...titleInfo} />
-      {nav && (
-        <div
-          className={clsx(
-            'd-flex',
-            'justify-content-center',
-            'w-100',
-            'mt-5',
-            'mb-5'
-          )}
-        >
-          {nav}
-        </div>
-      )}
-      <div>{children}</div>
+      <div className='container'>
+        {showGoBack && (
+          <Button
+            onClick={() => navigate(-1)}
+            className={clsx(device.mediaIsPhone ? 'px-0 mb-5 mr-5' : 'px-0')}
+          >
+            <Icon
+              icon='it-chevron-left'
+              color='primary'
+              aria-label='Torna indietro'
+            />
+            <span className='primary-color'>{goBackTitle}</span>
+          </Button>
+        )}
+        <SectionTitle {...titleInfo} />
+        {nav && (
+          <div
+            className={clsx(
+              'd-flex',
+              'justify-content-center',
+              'w-100',
+              'mt-5',
+              'mb-5'
+            )}
+          >
+            {nav}
+          </div>
+        )}
+        <div>{children}</div>
+
+        {itemsAccordionList && itemsAccordionList.length
+          ? itemsAccordionList.map((singleItem, index) => (
+              <Accordion
+                title={singleItem.title ? singleItem.title : ''}
+                totElem={singleItem.items.length}
+                cta={`Aggiungi ${singleItem.title}`}
+                onClickCta={() =>
+                  dispatch(
+                    openModal({
+                      id:
+                        singleItem.title === 'Referenti'
+                          ? formTypes.REFERENTE
+                          : formTypes.DELEGATO,
+                      payload: { title: `Aggiungi ${singleItem.title}` },
+                    })
+                  )
+                }
+                key={index}
+                lastBottom={index === itemsAccordionList.length - 1}
+              >
+                {singleItem.items.map((item, index: number) => (
+                  <CardStatusAction
+                    key={index}
+                    title={item.nome}
+                    status={item.stato}
+                    onActionClick={item.actions}
+                    id={item.id}
+                    fullInfo={item.fullInfo}
+                  />
+                ))}
+              </Accordion>
+            ))
+          : null}
+        {currentTab === 'questionari' && surveyDefault && (
+          <div>
+            <CardStatusAction
+              moreThanOneSurvey={isRadioButtonItem}
+              title={surveyDefault?.items[0].nome}
+              status={surveyDefault?.items[0].stato}
+              id={surveyDefault?.items[0].id}
+              fullInfo={surveyDefault?.items[0].fullInfo}
+              onActionClick={surveyDefault?.items[0].actions}
+            />
+            {isRadioButtonItem &&
+              device.mediaIsDesktop &&
+              currentTab === 'questionari' &&
+              itemsList?.items.length && (
+                <h3 className='h4 text-muted'> Altri questionari </h3>
+              )}
+          </div>
+        )}
+        {showItemsList && itemsList?.items?.length ? (
+          <>
+            {itemsList.title && (
+              <h2 className='h4 neutral-1-color-a7'>{itemsList.title}</h2>
+            )}{' '}
+            {((currentTab === 'questionari' && isRadioButtonItem) ||
+              currentTab !== 'questionari') &&
+              itemsList.items.map((item) => {
+                return (
+                  <CardStatusAction
+                    moreThanOneSurvey={
+                      currentTab === 'questionari' && isRadioButtonItem
+                    }
+                    title={item.nome}
+                    status={item.stato}
+                    key={item.id}
+                    id={item.id}
+                    fullInfo={item.fullInfo}
+                    onActionClick={item.actions}
+                    onCheckedChange={(surveyChecked: string) =>
+                      onRadioChange ? onRadioChange(surveyChecked) : null
+                    }
+                  />
+                );
+              })}{' '}
+          </>
+        ) : null}
+        {buttonsPosition === 'BOTTOM' &&
+        formButtons &&
+        formButtons.length !== 0 ? (
+          <>
+            <div aria-hidden='true'>
+              <Sticky mode='bottom'>
+                <ButtonsBar buttons={formButtons} />
+              </Sticky>
+            </div>
+            <div className='sr-only'>
+              <ButtonsBar buttons={formButtons} />
+            </div>
+          </>
+        ) : null}
+      </div>
       {buttonsPosition === 'TOP' && formButtons && formButtons.length !== 0 ? (
         <>
-          <div aria-hidden='true' className='mt-5'>
-            <Sticky mode='bottom'>
+          <div aria-hidden='true' className='mt-5 w-100'>
+            <Sticky mode='bottom' stickyClassName='sticky bg-white'>
               {formButtons.length === 3 ? (
                 device.mediaIsPhone ? (
                   <div
@@ -103,8 +198,9 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                       'd-flex',
                       'flex-row',
                       'justify-content-between',
-                      'bg-white',
-                      'flex-wrap'
+                      'flex-wrap',
+                      'container',
+                      'w-100'
                     )}
                   >
                     <ButtonsBar buttons={formButtons.slice(1)} />
@@ -116,8 +212,8 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                       'd-flex',
                       'flex-row',
                       'justify-content-between',
-                      'bg-white',
-                      'sticky-body'
+                      'container',
+                      'w-100'
                     )}
                   >
                     <ButtonsBar buttons={formButtons.slice(0, 1)} />
@@ -125,100 +221,10 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                   </div>
                 )
               ) : (
-                <ButtonsBar buttons={formButtons} />
+                <div className='container text-center'>
+                  <ButtonsBar buttons={formButtons} />
+                </div>
               )}
-            </Sticky>
-          </div>
-          <div className='sr-only'>
-            <ButtonsBar buttons={formButtons} />
-          </div>
-        </>
-      ) : null}
-      {itemsAccordionList && itemsAccordionList.length
-        ? itemsAccordionList.map((singleItem, index) => (
-            <Accordion
-              title={singleItem.title ? singleItem.title : ''}
-              totElem={singleItem.items.length}
-              cta={`Aggiungi ${singleItem.title}`}
-              onClickCta={() =>
-                dispatch(
-                  openModal({
-                    id:
-                      singleItem.title === 'Referenti'
-                        ? formTypes.REFERENTE
-                        : formTypes.DELEGATO,
-                    payload: { title: `Aggiungi ${singleItem.title}` },
-                  })
-                )
-              }
-              key={index}
-              lastBottom={index === itemsAccordionList.length - 1}
-            >
-              {singleItem.items.map((item, index: number) => (
-                <CardStatusAction
-                  key={index}
-                  title={item.nome}
-                  status={item.stato}
-                  onActionClick={item.actions}
-                  id={item.id}
-                  fullInfo={item.fullInfo}
-                />
-              ))}
-            </Accordion>
-          ))
-        : null}
-      {currentTab === 'questionari' && surveyDefault && (
-        <div>
-          <CardStatusAction
-            moreThanOneSurvey={isRadioButtonItem}
-            title={surveyDefault?.items[0].nome}
-            status={surveyDefault?.items[0].stato}
-            id={surveyDefault?.items[0].id}
-            fullInfo={surveyDefault?.items[0].fullInfo}
-            onActionClick={surveyDefault?.items[0].actions}
-          />
-          {isRadioButtonItem &&
-            device.mediaIsDesktop &&
-            currentTab === 'questionari' &&
-            itemsList?.items.length && (
-              <h3 className='h4 text-muted'> Altri questionari </h3>
-            )}
-        </div>
-      )}
-      {showItemsList && itemsList?.items?.length ? (
-        <>
-          {itemsList.title && (
-            <h2 className='h4 neutral-1-color-a7'>{itemsList.title}</h2>
-          )}{' '}
-          {((currentTab === 'questionari' && isRadioButtonItem) ||
-            currentTab !== 'questionari') &&
-            itemsList.items.map((item) => {
-              return (
-                <CardStatusAction
-                  moreThanOneSurvey={
-                    currentTab === 'questionari' && isRadioButtonItem
-                  }
-                  title={item.nome}
-                  status={item.stato}
-                  key={item.id}
-                  id={item.id}
-                  fullInfo={item.fullInfo}
-                  onActionClick={item.actions}
-                  onCheckedChange={(surveyChecked: string) =>
-                    onRadioChange ? onRadioChange(surveyChecked) : null
-                  }
-                />
-              );
-            })}{' '}
-        </>
-      ) : null}
-      {buttonsPosition === 'BOTTOM' &&
-      formButtons &&
-      formButtons.length !== 0 ? (
-        <>
-          <div aria-hidden='true'>
-            <Sticky mode='bottom'>
-              <ButtonsBar buttons={formButtons} />
             </Sticky>
           </div>
           <div className='sr-only'>
