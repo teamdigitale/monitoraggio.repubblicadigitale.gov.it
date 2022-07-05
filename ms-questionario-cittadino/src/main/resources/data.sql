@@ -344,7 +344,7 @@ insert into ente_sede_progetto_facilitatore (id_ente, ID_progetto, id_sede, id_f
 INSERT INTO cittadino ("ID","ANNO_DI_NASCITA","CODICE_FISCALE","COGNOME","EMAIL","NOME","NUMERO_DI_CELLULARE")VALUES(1,1986,'SMNCLL86P12H501A','COGNOME_PROVA','eeee@ee.com','NOME_PROVA',45353);
 
 --QUESTIONARIO_TEMPLATE
-insert into questionario_template values(1, current_timestamp, current_timestamp, true, true, 'descrizione', 'prova_templtate','ATTIVO');
+insert into questionario_template(id, DATA_ORA_CREAZIONE, DATA_ORA_AGGIORNAMENTO, DEFAULT_RFD, DEFAULT_SCD, DESCRIZIONE, NOME, STATO) values(1, current_timestamp, current_timestamp, true, true, 'descrizione', 'prova_templtate','ATTIVO');
 
 --SERVIZIO
 insert into servizio values(1,current_timestamp,current_timestamp,current_date, 1005,'UTENTE2', 256,1,1,'','nome_servizio','ATTIVO','');
