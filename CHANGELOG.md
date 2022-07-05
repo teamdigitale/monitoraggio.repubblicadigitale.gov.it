@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.8...1.0.0-develop.9) (2022-07-05)
+
+
+### Features
+
+* **be:** aggiunta logica template email ([82b7fd0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/82b7fd01c1bdd6e5d6b124a024d796d4199acb83)), closes [#142](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/issues/142)
+
 ## [1.0.0-develop.8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.7...1.0.0-develop.8) (2022-07-04)
 
 
