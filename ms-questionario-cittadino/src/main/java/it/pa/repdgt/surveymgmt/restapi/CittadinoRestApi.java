@@ -88,16 +88,4 @@ public class CittadinoRestApi {
 			@PathVariable(value = "idQuestionario") String idQuestionario) {
 		return this.questionarioCompilatoService.getQuestionarioCompilatoById(idQuestionario);
 	}
-	
-	/**
-	 * Compilazione del questionario 
-	 * 
-	 * */
-	@PostMapping(path = "/questionarioCompilato/{idQuestionario}/compila")
-	@ResponseStatus(value = HttpStatus.OK)
-	public void compilaQuestionario(
-			@PathVariable(value = "idQuestionario") String idQuestionario,
-			@Valid @RequestBody QuestionarioCompilatoRequest questionarioCompilatoRequest) {
-		this.questionarioCompilatoService.compilaQuestionario(idQuestionario, questionarioCompilatoRequest);
-	}
 }

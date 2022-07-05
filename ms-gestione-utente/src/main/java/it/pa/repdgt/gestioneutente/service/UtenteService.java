@@ -38,6 +38,8 @@ import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.UtenteXRuolo;
+import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
+import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import lombok.extern.slf4j.Slf4j;
 
@@ -46,6 +48,8 @@ import lombok.extern.slf4j.Slf4j;
 public class UtenteService {
 	@Autowired
 	private UtenteXRuoloService utenteXRuoloService;
+	@Autowired
+	private  EnteSedeProgettoFacilitatoreService enteSedeProgettoFacilitatoreService;
 	@Autowired
 	private RuoloService ruoloService;
 	@Autowired
@@ -227,7 +231,9 @@ public class UtenteService {
 		this.salvaUtente(utente);
 		if(!ruolo.getPredefinito()) {
 			try {
-				this.emailService.inviaEmail("oggetto_email", utente.getEmail(), "Test_template");
+				this.emailService.inviaEmail(utente.getEmail(), 
+						EmailTemplateEnum.GEST_PROGE_PARTNER, 
+						new String[] { utente.getNome(), codiceRuolo});
 			}catch(Exception ex) {
 				log.error("Impossibile inviare la mail al nuovo utente censito con codice fiscale {}", utente.getCodiceFiscale());
 				log.error("{}", ex);
@@ -559,6 +565,10 @@ public class UtenteService {
 							case "DEPP":
 								mappaProgrammiProgettiUtente.put(ruolo, this.entePartnerService.getIdProgettiEntePartnerByRuoloUtente(cfUtente, ruolo.getCodice()));
 								break;
+							case "FAC":
+							case "VOL":
+								mappaProgrammiProgettiUtente.put(ruolo, this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontario(cfUtente, ruolo.getCodice()));
+								break;
 							default:
 								mappaProgrammiProgettiUtente.put(ruolo, new ArrayList<Long>());
 								break;
@@ -593,6 +603,8 @@ public class UtenteService {
 												case "DEGP":
 												case "REPP":
 												case "DEPP":
+												case "FAC":
+												case "VOL":
 													ProgettoEntity progettoFetchDB = this.progettoService.getProgettoById(id);
 													dettaglioRuolo.setId(id);
 													dettaglioRuolo.setNome(progettoFetchDB.getNome());
@@ -600,6 +612,13 @@ public class UtenteService {
 													dettaglioRuolo.setStato(progettoFetchDB.getStato());
 													listaDettaglioRuoli.add(dettaglioRuolo);
 													break;
+//													ProgettoEntity progettoFetchDBFacilitatoreVolontario = this.progettoService.getProgettoById(id);
+//													dettaglioRuolo.setId(id);
+//													dettaglioRuolo.setNome(progettoFetchDBFacilitatoreVolontario.getNome());
+//													dettaglioRuolo.setRuolo(ruolo.getNome());
+//													dettaglioRuolo.setStato(this.enteSedeProgettoFacilitatoreService.getStatoUtenteBy);
+//													listaDettaglioRuoli.add(dettaglioRuolo);
+//													break;
 												default:
 													dettaglioRuolo.setNome(ruolo.getNome());
 													listaDettaglioRuoli.add(dettaglioRuolo);

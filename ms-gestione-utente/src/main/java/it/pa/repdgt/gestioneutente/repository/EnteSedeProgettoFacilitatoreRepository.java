@@ -20,4 +20,13 @@ public interface EnteSedeProgettoFacilitatoreRepository extends JpaRepository<En
 			+ "		AND STATO_UTENTE <> 'TERMINATO'", nativeQuery = true)
 	List<Long> findDistinctProgettiByIdFacilitatoreNonTerminato(@Param(value = "codiceFiscale")String codiceFiscale, 
 			@Param(value = "ruolo")String ruolo);
+
+	@Query(value = "SELECT DISTINCT espf.ID_PROGETTO "
+			+ "		FROM ente_sede_progetto_facilitatore espf "
+			+ "		WHERE espf.ID_FACILITATORE = :cfUtente"
+			+ "		AND RUOLO_UTENTE = :codiceRuolo", 
+			nativeQuery = true)
+	List<Long> findIdProgettiFacilitatoreVolontario(
+			@Param(value = "cfUtente")String cfUtente,
+			@Param(value = "codiceRuolo")String codiceRuolo);
 }

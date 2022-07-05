@@ -91,7 +91,7 @@ public class SedeRestApi {
 	}
 	
 	// TOUCH POINT - 2.2.14EX - Cancellazione o terminazione Associazione facilitatore a ente, sede, progetto a seconda dello stato del facilitatore
-	@DeleteMapping(path = "cancellaOTerminaAssociazione/facilitatore")
+	@PostMapping(path = "cancellaOTerminaAssociazione/facilitatore")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void cancellaOTerminaAssociazioneFacilitatoreAEnteSedeProgetto (
 			@RequestBody @Valid EnteSedeProgettoFacilitatoreRequest enteSedeProgettoFacilitatoreRequest) {

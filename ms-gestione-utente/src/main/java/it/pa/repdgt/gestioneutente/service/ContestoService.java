@@ -30,6 +30,8 @@ import it.pa.repdgt.shared.entity.GruppoEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
+import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
+import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.service.storico.StoricoService;
 import lombok.extern.slf4j.Slf4j;
@@ -178,18 +180,21 @@ public class ContestoService implements RuoliUtentiConstants{
 				if(!idsProgetti.isEmpty()) {
 					contestoRepository.rendiProgettiAttivabili(idsProgetti);
 				}
-				// Recupero referenti/delegati ente gestore progetti resi attivabili in prcedenza 
-				final List<ReferenteDelegatoEnteGestoreProgettoProjection> referentiODelegatiEnteGestoreProgetti = this.referentiDelegatiEnteGestoreProgettoService
-						.getEmailReferentiDelegatiEnteGestoreByIdProgetto(idsProgetti);
-				// Invio email a referenti/delegati ente gestore progetti
-				referentiODelegatiEnteGestoreProgetti.forEach(referenteDelegatoEnteGestoreProgetto -> {
-					try {
-						this.emailService.inviaEmail("oggetto_email", referenteDelegatoEnteGestoreProgetto.getEmail(), "Test_template");
-					}catch(Exception ex) {
-						log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore progetto per progetto con id={}.", referenteDelegatoEnteGestoreProgetto.getIdProgetto());
-						log.error("{}", ex);
-					}
-				});
+				/************ ELIMINATA FUNZIONALITA DI INVIO EMAIL PER PROGETTO ATTIVABILE *********/
+//				// Recupero referenti/delegati ente gestore progetti resi attivabili in precedenza 
+//				final List<ReferenteDelegatoEnteGestoreProgettoProjection> referentiODelegatiEnteGestoreProgetti = this.referentiDelegatiEnteGestoreProgettoService
+//						.getEmailReferentiDelegatiEnteGestoreByIdProgetto(idsProgetti);
+//				// Invio email a referenti/delegati ente gestore progetti
+//				referentiODelegatiEnteGestoreProgetti.forEach(referenteDelegatoEnteGestoreProgetto -> {
+//					try {
+//						this.emailService.inviaEmail(referenteDelegatoEnteGestoreProgetto.getEmail(), 
+//								EmailTemplateEnum.GEST_PROGE_PARTNER, 
+//								new String[] { referenteDelegatoEnteGestoreProgetto.getNome(), RuoloUtenteEnum.valueOf(referenteDelegatoEnteGestoreProgetto.getCodiceRuolo()).getValue() });
+//					}catch(Exception ex) {
+//						log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore progetto per progetto con id={}.", referenteDelegatoEnteGestoreProgetto.getIdProgetto());
+//						log.error("{}", ex);
+//					}
+//				});
 				break;
 			case REGP:
 			case DEGP:

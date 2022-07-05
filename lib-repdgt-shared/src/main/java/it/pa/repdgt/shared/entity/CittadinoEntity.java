@@ -28,7 +28,7 @@ public class CittadinoEntity implements Serializable {
 	@Column(name = "ID")
 	private Long id;
 	
-	@Column(name = "CODICE_FISCALE", nullable = true)
+	@Column(name = "CODICE_FISCALE")
 	private String codiceFiscale;
 	
 	@Column(name = "NOME", nullable = false)
@@ -37,10 +37,10 @@ public class CittadinoEntity implements Serializable {
 	@Column(name = "COGNOME", nullable = false)
 	private String cognome;
 	
-	@Column(name = "TIPO_DOCUMENTO", nullable = false)
+	@Column(name = "TIPO_DOCUMENTO")
 	private String tipoDocumento;
 
-	@Column(name = "NUM_DOCUMENTO", nullable = false, unique = true)
+	@Column(name = "NUM_DOCUMENTO", unique = true)
 	private String numeroDocumento;
 
 	@Column(name = "GENERE", nullable = true)

@@ -1,5 +1,6 @@
 package it.pa.repdgt.surveymgmt.restapi;
 
+import java.text.ParseException;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import io.swagger.annotations.ApiParam;
 import it.pa.repdgt.surveymgmt.bean.CittadinoServizioBean;
 import it.pa.repdgt.surveymgmt.bean.CittadinoUploadBean;
+import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.mapper.CittadinoServizioMapper;
 import it.pa.repdgt.surveymgmt.mapper.GetCittadinoServizioMapper;
@@ -32,10 +34,12 @@ import it.pa.repdgt.surveymgmt.param.FiltroListaCittadiniServizioParam;
 import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import it.pa.repdgt.surveymgmt.projection.GetCittadinoProjection;
 import it.pa.repdgt.surveymgmt.request.NuovoCittadinoServizioRequest;
+import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoRequest;
 import it.pa.repdgt.surveymgmt.resource.CittadiniServizioPaginatiResource;
 import it.pa.repdgt.surveymgmt.resource.CittadinoServizioResource;
 import it.pa.repdgt.surveymgmt.resource.GetCittadinoResource;
 import it.pa.repdgt.surveymgmt.service.CittadiniServizioService;
+import it.pa.repdgt.surveymgmt.service.QuestionarioCompilatoService;
 import it.pa.repdgt.surveymgmt.util.CSVServizioUtil;
 
 @RestController
@@ -47,6 +51,8 @@ public class ServizioCittadinoRestApi {
 	private CittadiniServizioService cittadiniServizioService;
 	@Autowired
 	private GetCittadinoServizioMapper getCittadinoServizioMapper;
+	@Autowired
+	private QuestionarioCompilatoService questionarioCompilatoService;
 
 	@PostMapping(path = "/all/{idServizio}")	
 	@ResponseStatus(value = HttpStatus.OK)
@@ -130,5 +136,62 @@ public class ServizioCittadinoRestApi {
 			throw new ServizioException("il file non è valido"); 
 		}
 		return this.cittadiniServizioService.caricaCittadiniSuServizio(file, idServizio);
+	}
+	
+	/**
+	 * invio questionario al cittadino per compilazione anonima
+	 * 
+	 * */
+	// TOUCH POINT 9.2.9
+	@PostMapping(path = "/questionarioCompilato/invia")
+	@ResponseStatus(value = HttpStatus.OK)
+	public void inviaQuestionario(
+			@RequestParam(value = "idQuestionario") String idQuestionario,
+			@RequestParam(value = "idCittadino") Long idCittadino
+			) {
+		this.cittadiniServizioService.inviaQuestionario(idQuestionario, idCittadino);
+	}
+	
+	/**
+	 * Recupero del questionario compilato per compilazione anonima
+	 * @throws ParseException 
+	 * 
+	 * */
+	// TOUCH POINT 9.2.6
+	@GetMapping(path = "/questionarioCompilato/{idQuestionario}/anonimo")
+	@ResponseStatus(value = HttpStatus.OK)
+	public QuestionarioCompilatoCollection getQuestionarioCompilatoAnonimo(
+		@PathVariable(value = "idQuestionario") String idQuestionario,
+		@RequestParam(value = "token") String token) throws ParseException {
+		//TODO: aggiungere verifica del token
+		return this.questionarioCompilatoService.getQuestionarioCompilatoByIdAnonimo(idQuestionario, token);
+	}
+	
+	/**
+	 * Compilazione del questionario 
+	 * 
+	 * */
+	// TOUCH POINT 9.2.7 
+	@PostMapping(path = "/questionarioCompilato/{idQuestionario}/compila")
+	@ResponseStatus(value = HttpStatus.OK)
+	public void compilaQuestionario(
+			@PathVariable(value = "idQuestionario") String idQuestionario,
+			@Valid @RequestBody QuestionarioCompilatoRequest questionarioCompilatoRequest) {
+		this.questionarioCompilatoService.compilaQuestionario(idQuestionario, questionarioCompilatoRequest);
+	}
+	
+	/**
+	 * 
+	 * compilazione questionario in forma anonima da parte del cittadino
+	 * @throws ParseException 
+	 */
+	// TOUCH POINT 9.2.8
+	@PostMapping(path = "/questionarioCompilato/{idQuestionario}/compila/anonimo")
+	@ResponseStatus(value = HttpStatus.OK)
+	public void compilaQuestionarioAnonimo(
+			@PathVariable(value = "idQuestionario") String idQuestionario,
+			@Valid @RequestBody QuestionarioCompilatoRequest questionarioCompilatoRequest,
+			@RequestParam(value = "token") String token) throws ParseException {
+		this.questionarioCompilatoService.compilaQuestionarioAnonimo(idQuestionario, questionarioCompilatoRequest, token);
 	}
 }

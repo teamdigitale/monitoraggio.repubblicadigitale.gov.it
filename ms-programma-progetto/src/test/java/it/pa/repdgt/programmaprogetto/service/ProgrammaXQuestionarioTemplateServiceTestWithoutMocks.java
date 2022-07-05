@@ -17,7 +17,7 @@ import it.pa.repdgt.shared.entity.key.ProgrammaXQuestionarioTemplateKey;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-class ProgrammaXQuestionarioTemplateServiceTest {
+class ProgrammaXQuestionarioTemplateServiceTestWithoutMocks {
 
 	@Mock
 	private ProgrammaXQuestionarioTemplateRepository programmaXQuestionarioTemplateRepository;
@@ -53,11 +53,4 @@ class ProgrammaXQuestionarioTemplateServiceTest {
 		programmaXQuestionarioTemplateService.associaQuestionarioTemplateAProgramma(programma1.getId(), questionario1.getId());
 		programmaXQuestionarioTemplateService.associaQuestionarioTemplateAProgramma(2L, "563847ffhgs");
 	}
-	
-//	@Test
-//	public void terminaAssociazioneQuestionarioTemplateAProgrammaTest() {
-//		when(programmaXQuestionarioTemplateRepository.save(programmaXQuestionarioTemplateEntity)).thenReturn(programmaXQuestionarioTemplateEntity);
-//		programmaXQuestionarioTemplateService.terminaAssociazioneQuestionarioTemplateAProgramma(programmaXQuestionarioTemplateEntity);
-//		verify(programmaXQuestionarioTemplateRepository, times(1)).save(programmaXQuestionarioTemplateEntity);
-//	}
 }

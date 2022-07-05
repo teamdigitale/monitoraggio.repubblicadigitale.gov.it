@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -58,7 +59,9 @@ import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.UtenteXRuolo;
 import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEnteGestoreProgettoKey;
 import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEnteGestoreProgrammaKey;
+import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
+import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.service.storico.StoricoService;
 import lombok.extern.slf4j.Slf4j;
@@ -619,7 +622,9 @@ public class EnteService {
 		
 		//invio email welcome al referente/delegato
 		try {
-			this.emailService.inviaEmail("oggetto_email", utenteFetch.getEmail(), "Test_template");
+			this.emailService.inviaEmail(utenteFetch.getEmail(), 
+					EmailTemplateEnum.GEST_PROG, 
+					new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(codiceRuolo).getValue() });
 		} catch (Exception ex) {
 			log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore programma per programma con id={}.", idProgramma);
 			log.error("{}", ex);
@@ -701,7 +706,9 @@ public class EnteService {
 		
 		//invio email welcome al referente/delegato
 		try {
-			this.emailService.inviaEmail("oggetto_email", utenteFetch.getEmail(), "Test_template");
+			this.emailService.inviaEmail(utenteFetch.getEmail(), 
+					EmailTemplateEnum.GEST_PROGE_PARTNER, 
+					new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(codiceRuolo).getValue() });
 		} catch (Exception ex) {
 			log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore progetto per progetto con id={}.", idProgetto);
 			log.error("{}", ex);
@@ -878,10 +885,79 @@ public class EnteService {
 			throw new EnteException(errorMessage);
 		}
 		EnteEntity enteFetchDB = this.getEnteById(idEnte);
-		enteEntity.setId(idEnte);
 		enteEntity.setDataOraCreazione(enteFetchDB.getDataOraCreazione());
 		enteEntity.setDataOraAggiornamento(new Date());
 		this.enteRepository.save(enteEntity);
+	}
+	
+	@Transactional(rollbackOn = Exception.class)
+	public void modificaEnteGestoreProgramma(EnteEntity enteModificato, Long idEnte, Long idProgramma) {
+		EnteEntity enteFetchDB = this.getEnteById(idEnte);
+		Optional<EnteEntity> optionalEnte = this.enteRepository.findByPartitaIva(enteModificato.getPiva());
+		ProgrammaEntity programmaFetchDB = this.programmaService.getProgrammaById(idProgramma);
+		if(enteModificato.getId().equals(idEnte)) {
+			enteModificato.setDataOraCreazione(enteFetchDB.getDataOraCreazione());
+			enteModificato.setDataOraAggiornamento(new Date());
+			if(!optionalEnte.isPresent()) {
+				this.enteRepository.save(enteModificato);
+			} else if (optionalEnte.get().getPiva().equals(enteFetchDB.getPiva())) {
+				this.enteRepository.save(enteModificato);
+			} else {
+				String errorMessage = "E' già presente un ente con questa Partita IVA, usare la funzione di ricerca";
+				throw new EnteException(errorMessage);
+			}
+		} else {
+			if(!optionalEnte.isPresent() || optionalEnte.get().getId().equals(enteModificato.getId())) {
+				EnteEntity enteModificatoFetchDB = this.getEnteById(enteModificato.getId());
+				enteModificato.setDataOraCreazione(enteModificatoFetchDB.getDataOraCreazione());
+				enteModificato.setDataOraAggiornamento(new Date());
+				this.enteRepository.save(enteModificato);
+				if(StatoEnum.NON_ATTIVO.getValue().equals(programmaFetchDB.getStatoGestoreProgramma())) {
+					this.cancellaGestoreProgramma(idEnte, idProgramma);
+				} else {
+					this.terminaGestoreProgramma(idEnte, idProgramma);
+				}
+				this.programmaService.assegnaEnteGestoreProgramma(idProgramma, enteModificato.getId());
+			} else {
+				String errorMessage = "E' già presente un ente con questa Partita IVA, usare la funzione di ricerca";
+				throw new EnteException(errorMessage);
+			}
+		}
+	}
+	
+	@Transactional(rollbackOn = Exception.class)
+	public void modificaEnteGestoreProgetto(EnteEntity enteModificato, Long idEnte, Long idProgetto) {
+		EnteEntity enteFetchDB = this.getEnteById(idEnte);
+		Optional<EnteEntity> optionalEnte = this.enteRepository.findByPartitaIva(enteModificato.getPiva());
+		ProgettoEntity progettoFetchDB = this.progettoService.getProgettoById(idProgetto);
+		if(enteModificato.getId().equals(idEnte)) {
+			enteModificato.setDataOraCreazione(enteFetchDB.getDataOraCreazione());
+			enteModificato.setDataOraAggiornamento(new Date());
+			if(!optionalEnte.isPresent()) {
+				this.enteRepository.save(enteModificato);
+			} else if (optionalEnte.get().getPiva().equals(enteFetchDB.getPiva())) {
+				this.enteRepository.save(enteModificato);
+			} else {
+				String errorMessage = "E' già presente un ente con questa Partita IVA, usare la funzione di ricerca";
+				throw new EnteException(errorMessage);
+			}
+		} else {
+			if(!optionalEnte.isPresent() || optionalEnte.get().getId().equals(enteModificato.getId())) {
+				EnteEntity enteModificatoFetchDB = this.getEnteById(enteModificato.getId());
+				enteModificato.setDataOraCreazione(enteModificatoFetchDB.getDataOraCreazione());
+				enteModificato.setDataOraAggiornamento(new Date());
+				this.enteRepository.save(enteModificato);
+				if(StatoEnum.NON_ATTIVO.getValue().equals(progettoFetchDB.getStatoGestoreProgetto())) {
+					this.cancellaGestoreProgetto(idEnte, idProgetto);
+				} else {
+					this.terminaGestoreProgetto(idEnte, idProgetto);
+				}
+				this.progettoService.assegnaEnteGestoreProgetto(idProgetto, enteModificato.getId());
+			} else {
+				String errorMessage = "E' già presente un ente con questa Partita IVA, usare la funzione di ricerca";
+				throw new EnteException(errorMessage);
+			}
+		}
 	}
 
 	@Transactional(rollbackOn = Exception.class)
@@ -1153,7 +1229,7 @@ public class EnteService {
 		}
 	}
 
-	private void terminaAssociazioneReferenteDelegatoGestoreProgramma(
+	public void terminaAssociazioneReferenteDelegatoGestoreProgramma(
 			ReferentiDelegatiEnteGestoreProgrammaEntity referentiDelegatiEnteGestoreProgrammaEntity,
 			String codiceRuolo) {
 		Long idProgramma = referentiDelegatiEnteGestoreProgrammaEntity.getId().getIdProgramma();
@@ -1196,7 +1272,7 @@ public class EnteService {
 		}
 	}
 
-	private void terminaAssociazioneReferenteDelegatoGestoreProgetto(
+	public void terminaAssociazioneReferenteDelegatoGestoreProgetto(
 			ReferentiDelegatiEnteGestoreProgettoEntity referentiDelegatiEnteGestoreProgettoEntity, String codiceRuolo) {
 		Long idProgetto = referentiDelegatiEnteGestoreProgettoEntity.getId().getIdProgetto();
 		String codiceFiscaleUtente = referentiDelegatiEnteGestoreProgettoEntity.getId().getCodFiscaleUtente();
@@ -1219,7 +1295,5 @@ public class EnteService {
 		referentiDelegatiEnteGestoreProgettoEntity.setStatoUtente(StatoEnum.TERMINATO.getValue());
 		referentiDelegatiEnteGestoreProgettoEntity.setDataOraAggiornamento(new Date());
 		this.referentiDelegatiEnteGestoreProgettoService.save(referentiDelegatiEnteGestoreProgettoEntity);
-	}
-	
-	
+	}	
 }

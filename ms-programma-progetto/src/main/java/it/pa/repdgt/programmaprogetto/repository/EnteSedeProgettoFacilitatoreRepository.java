@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import it.pa.repdgt.programmaprogetto.projection.UtenteFacilitatoreProjection;
 import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 
@@ -37,14 +38,17 @@ public interface EnteSedeProgettoFacilitatoreRepository extends JpaRepository<En
 			@Param("idProgetto") Long idProgetto
 		);
 	
-	@Query(value = " SELECT u.email FROM "
+	@Query(value = " SELECT u.nome as nome, "
+			+ "u.email as email, "
+			+ "espf.RUOLO_UTENTE as codiceRuolo "
+			+ "FROM "
 			+ "	ente_sede_progetto_facilitatore espf "
 			+ " INNER JOIN utente u "
 			+ " ON u.CODICE_FISCALE = espf.id_facilitatore"
 			+ " WHERE 1=1 "
 			+ "	AND espf.ID_PROGETTO = :idProgetto "
 			, nativeQuery = true)
-	List<String> findAllEmailFacilitatoriEVolontariByProgetto(
+	List<UtenteFacilitatoreProjection> findAllEmailFacilitatoriEVolontariByProgetto(
 			@Param("idProgetto") Long idProgetto
 			);
 }

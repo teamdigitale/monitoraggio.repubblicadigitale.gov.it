@@ -36,6 +36,8 @@ import it.pa.repdgt.shared.entity.SedeEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.key.EntePartnerKey;
 import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEntePartnerDiProgettoKey;
+import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
+import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import lombok.extern.slf4j.Slf4j;
 
@@ -173,7 +175,9 @@ public class EntePartnerService {
 		
 		//invio email welcome al referente/delegato
 		try {
-			this.emailService.inviaEmail("oggetto_email", utenteFetch.getEmail(), "Test_template");
+			this.emailService.inviaEmail(utenteFetch.getEmail(), 
+					EmailTemplateEnum.GEST_PROGE_PARTNER, 
+					new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(codiceRuolo).getValue() });
 		} catch (Exception ex) {
 			log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente partner con id {} per progetto con id={}.", idEntePartner, idProgetto);
 			log.error("{}", ex);
