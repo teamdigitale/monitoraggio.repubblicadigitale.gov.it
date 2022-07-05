@@ -18,6 +18,7 @@ public class DettaglioProgrammaBean {
 	private String bando;
 	private String cup;
 	private String stato;
+	private String policy;
 	
 	//Numero Target Punti di Facilitazione
 	private Integer nPuntiFacilitazioneTarget1;

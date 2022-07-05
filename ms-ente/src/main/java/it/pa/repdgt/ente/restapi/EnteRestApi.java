@@ -36,6 +36,7 @@ import it.pa.repdgt.ente.dto.ProgettoDto;
 import it.pa.repdgt.ente.dto.ProgrammaDto;
 import it.pa.repdgt.ente.exception.EnteException;
 import it.pa.repdgt.ente.mapper.EnteMapper;
+import it.pa.repdgt.ente.request.AggiornaEnteRequest;
 import it.pa.repdgt.ente.request.NuovoEnteRequest;
 import it.pa.repdgt.ente.request.ReferenteDelegatoGestoreProgettoRequest;
 import it.pa.repdgt.ente.request.ReferenteDelegatoGestoreProgrammaRequest;
@@ -209,10 +210,32 @@ public class EnteRestApi {
 	@PutMapping(path = "/{idEnte}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public void aggiornaEnte(
-			@RequestBody @Valid NuovoEnteRequest nuovoEnteRequest,
+			@RequestBody @Valid AggiornaEnteRequest aggiornaEnteRequest,
 			@PathVariable(value = "idEnte") Long idEnte) {
-		EnteEntity enteEntity = this.enteMapper.toEntityFrom(nuovoEnteRequest);
+		EnteEntity enteEntity = this.enteMapper.toEntityFrom(aggiornaEnteRequest);
 		this.enteService.aggiornaEnte(enteEntity, idEnte);
+	}
+	
+	//TOUCH-POINT 2.1.5 B - Modifica Ente Gestore Programma
+		@PutMapping(path = "/{idEnte}/gestore/{idProgramma}")
+		@ResponseStatus(code = HttpStatus.OK)
+	public void modificaEnteGestoreProgramma(
+			@RequestBody @Valid AggiornaEnteRequest aggiornaEnteRequest,
+			@PathVariable(value = "idEnte") Long idEnte,
+			@PathVariable(value = "idProgramma")   Long idProgramma) {
+		EnteEntity enteEntity = this.enteMapper.toEntityFrom(aggiornaEnteRequest);
+		this.enteService.modificaEnteGestoreProgramma(enteEntity, idEnte, idProgramma);
+	}
+		
+	//TOUCH-POINT 3.4 B - Modifica Ente Gestore Progetto
+		@PutMapping(path = "/{idEnte}/gestore/{idProgetto}")
+		@ResponseStatus(code = HttpStatus.OK)
+	public void modificaEnteGestoreProgetto(
+			@RequestBody @Valid AggiornaEnteRequest aggiornaEnteRequest,
+			@PathVariable(value = "idEnte") Long idEnte,
+			@PathVariable(value = "idProgetto")   Long idProgetto) {
+		EnteEntity enteEntity = this.enteMapper.toEntityFrom(aggiornaEnteRequest);
+		this.enteService.modificaEnteGestoreProgetto(enteEntity, idEnte, idProgetto);
 	}
 	
 	//TOUCH-POINT 5.2A - Elimina gestore programma 

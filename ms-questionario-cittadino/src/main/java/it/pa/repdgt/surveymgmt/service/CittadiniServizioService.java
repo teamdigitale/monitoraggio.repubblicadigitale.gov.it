@@ -1,12 +1,10 @@
 package it.pa.repdgt.surveymgmt.service;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -22,12 +20,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
+import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.constants.DomandeStrutturaQ1AndQ2Constants;
 import it.pa.repdgt.shared.entity.CittadinoEntity;
 import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
+import it.pa.repdgt.shared.entity.QuestionarioInviatoOnlineEntity;
 import it.pa.repdgt.shared.entity.ServizioEntity;
 import it.pa.repdgt.shared.entity.ServizioXCittadinoEntity;
 import it.pa.repdgt.shared.entity.key.ServizioCittadinoKey;
+import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
 import it.pa.repdgt.surveymgmt.bean.CittadinoServizioBean;
@@ -46,10 +47,13 @@ import it.pa.repdgt.surveymgmt.projection.GetCittadinoProjection;
 import it.pa.repdgt.surveymgmt.repository.CittadinoRepository;
 import it.pa.repdgt.surveymgmt.repository.CittadinoServizioRepository;
 import it.pa.repdgt.surveymgmt.repository.QuestionarioCompilatoRepository;
+import it.pa.repdgt.surveymgmt.repository.QuestionarioInviatoOnlineRepository;
 import it.pa.repdgt.surveymgmt.repository.ServizioXCittadinoRepository;
 import it.pa.repdgt.surveymgmt.request.NuovoCittadinoServizioRequest;
 import it.pa.repdgt.surveymgmt.util.CSVServizioUtil;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @Validated
 public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constants{
@@ -75,6 +79,10 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	private QuestionarioCompilatoMongoRepository questionarioCompilatoMongoService;
 	@Autowired
 	private QuestionarioCompilatoRepository questionarioCompilatoSqlRepository;
+	@Autowired 
+	private EmailService emailService;
+	@Autowired
+	private QuestionarioInviatoOnlineRepository questionarioInviatoOnlineRepository;
 
 	public CittadinoServizioBean getAllCittadiniServizioByProfilazioneAndFiltroPaginati(
 			Long idServizio,
@@ -449,5 +457,46 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		} catch (IOException e) {
 			throw new ServizioException("Impossibile effettuare upload lista cittadini", e);
 		}
+	}
+
+	@Transactional(rollbackOn = Exception.class)
+	public void inviaQuestionario(@NotNull final String idQuestionario, @NotNull final Long idCittadino) {
+		QuestionarioCompilatoEntity questionarioCompilato = questionarioCompilatoSqlRepository.findById(idQuestionario)
+				.orElseThrow(() -> new ServizioException("id questionario inesistente") );
+		CittadinoEntity cittadino = questionarioCompilato.getCittadino();
+		if(cittadino == null || !idCittadino.equals(cittadino.getId())) {
+			throw new ServizioException("coppia cittadino - id questionario inesistente");
+		}
+		inviaLinkAnonimo(cittadino,idQuestionario);
+		questionarioCompilato.setStato(StatoQuestionarioEnum.INVIATO.getValue());
+		questionarioCompilatoSqlRepository.save(questionarioCompilato);
+	}
+
+	@Transactional(rollbackOn = Exception.class)
+	private void inviaLinkAnonimo(CittadinoEntity cittadino,String idQuestionario) {
+		generaToken(cittadino, idQuestionario);
+		try {
+			this.emailService.inviaEmail(cittadino.getEmail(), 
+					EmailTemplateEnum.QUESTIONARIO_ONLINE, 
+					new String[] { cittadino.getNome() } );
+		}catch(Exception ex) {
+			log.error("Impossibile inviare la mail al cittadino con id={}.", cittadino.getId());
+			log.error("{}", ex);
+		}
+	}
+
+	@Transactional(rollbackOn = Exception.class)
+	private String generaToken(CittadinoEntity cittadino, String idQuestionarioCompilato) {
+		String token = UUID.randomUUID().toString();
+		QuestionarioInviatoOnlineEntity invioQuestionario = questionarioInviatoOnlineRepository.
+				findByIdQuestionarioCompilatoAndCodiceFiscale(idQuestionarioCompilato, cittadino.getCodiceFiscale())
+				.orElse(new QuestionarioInviatoOnlineEntity());
+		invioQuestionario.setCodiceFiscale(cittadino.getCodiceFiscale());
+		invioQuestionario.setEmail(cittadino.getEmail());
+		invioQuestionario.setDataOraCreazione(new Date());
+		invioQuestionario.setIdQuestionarioCompilato(idQuestionarioCompilato);
+		invioQuestionario.setToken(token);
+		questionarioInviatoOnlineRepository.save(invioQuestionario);
+		return token;
 	}
 }

@@ -1,5 +1,6 @@
 package it.pa.repdgt.ente.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.times;
@@ -30,6 +31,7 @@ import it.pa.repdgt.ente.repository.EntePartnerRepository;
 import it.pa.repdgt.ente.repository.EnteRepository;
 import it.pa.repdgt.ente.repository.ProgrammaRepository;
 import it.pa.repdgt.ente.request.FiltroRequest;
+import it.pa.repdgt.ente.request.ReferenteDelegatoGestoreProgettoRequest;
 import it.pa.repdgt.ente.request.ReferenteDelegatoGestoreProgrammaRequest;
 import it.pa.repdgt.ente.restapi.param.EntiPaginatiParam;
 import it.pa.repdgt.shared.awsintegration.service.EmailService;
@@ -115,6 +117,9 @@ public class EnteServiceTest {
 	EntePartnerEntity entePartner1;
 	RuoloEntity ruolo1;
 	RuoloEntity ruolo2;
+	RuoloEntity ruolo3;
+	RuoloEntity ruolo4;
+	RuoloEntity ruolo5;
 	List<RuoloEntity> listaRuoli;
 	UtenteEntity utente1;
 	UtenteXRuoloKey utenteRuolo1Key;
@@ -127,6 +132,7 @@ public class EnteServiceTest {
 	ReferentiDelegatiEnteGestoreProgrammaEntity referentiDelegatiEnteGestoreProgrammaEntity;
 	ReferentiDelegatiEnteGestoreProgrammaEntity referentiDelegatiEnteGestoreProgrammaEntity2;
 	List<ReferentiDelegatiEnteGestoreProgrammaEntity> listaReferentiDelegatiEnteGestoreProgramma;
+	ReferenteDelegatoGestoreProgettoRequest referenteDelegatoGestoreProgettoRequest;
 	ReferentiDelegatiEnteGestoreProgettoKey referentiDelegatiEnteGestoreProgettoKey;
 	ReferentiDelegatiEnteGestoreProgettoKey referentiDelegatiEnteGestoreProgettoKey2;
 	ReferentiDelegatiEnteGestoreProgettoEntity referentiDelegatiEnteGestoreProgettoEntity;
@@ -165,6 +171,12 @@ public class EnteServiceTest {
 		ruolo1.setCodice("DTD");
 		ruolo2 = new RuoloEntity();
 		ruolo2.setCodice("FAC");
+		ruolo3 = new RuoloEntity();
+		ruolo3.setCodice("REG");
+		ruolo4 = new RuoloEntity();
+		ruolo4.setCodice("REGP");
+		ruolo5 = new RuoloEntity();
+		ruolo5.setCodice("DSCU");
 		ente1 = new EnteEntity();
 		ente1.setId(1L);
 		ente1.setNome("ente1");
@@ -187,6 +199,10 @@ public class EnteServiceTest {
 		entePartner1.setId(entePartnerKey1);
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add(ruolo1);
+		listaRuoli.add(ruolo2);
+		listaRuoli.add(ruolo3);
+		listaRuoli.add(ruolo4);
+		listaRuoli.add(ruolo5);
 		utente1 = new UtenteEntity();
 		utente1.setId(1L);
 		utente1.setCodiceFiscale("ABCABC12A12A123A");
@@ -252,36 +268,45 @@ public class EnteServiceTest {
 		idsProgetti = new ArrayList<>();
 		idsProgetti.add("256");
 		profili = new ArrayList<>();
-		profili.add("Ente Gestore di Programma");
+		profili.add("ENTE GESTORE DI PROGRAMMA");
 		filtro = new FiltroRequest();
 		filtro.setCriterioRicerca("Ente");
 		filtro.setIdsProgrammi(idsProgrammi);
 		filtro.setIdsProgetti(idsProgetti);
 		filtro.setProfili(profili);
 		entiPaginatiParam = new EntiPaginatiParam();
-		entiPaginatiParam.setCfUtente("UIHPLW87R49F205X");
+		entiPaginatiParam.setCfUtente("ABCABC12A12A123A");
 		entiPaginatiParam.setCodiceRuolo(RuoloUtenteEnum.DTD);
 		entiPaginatiParam.setFiltroRequest(filtro);
 		currPage = 0;
 		pageSize = 10;
 		resultSet = new ArrayList<>();
-		entiDto = new ArrayList<>();
 	}
 	
-//	@Test
-//	public void getAllEntiPaginatiDTDTest() {
-//		when(ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
-//		when(enteService.getAllEntiByCodiceRuoloAndIdProgramma(entiPaginatiParam)).thenReturn(listaEntiDto);
-//		Page<EnteDto> paginaEntiDto = this.enteService.getAllEntiPaginati(entiPaginatiParam, currPage, pageSize);
-//		assertThat(listaEntiDto.size()).isEqualTo(1);
-//		assertThat(paginaEntiDto.getTotalElements()).isEqualTo(pagina.getTotalElements());
-//		verify(enteRepository, times(1)).findAllEntiFiltrati(filtro.getCriterioRicerca(),
-//				"%"+filtro.getCriterioRicerca()+"%",
-//				filtro.getIdsProgrammi(),
-//				filtro.getIdsProgetti(),
-//				filtro.getProfili(),
-//				null);
-//	}
+	@Test
+	public void getAllEntiPaginatiDTDTest() {
+		when(ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
+		enteService.getAllEntiPaginati(entiPaginatiParam, currPage, pageSize);
+		verify(enteRepository, times(1)).findAllEntiFiltrati(filtro.getCriterioRicerca(),
+				"%"+filtro.getCriterioRicerca()+"%",
+				filtro.getIdsProgrammi(),
+				filtro.getIdsProgetti(),
+				filtro.getProfili(),
+				null);
+	}
+	
+	@Test
+	public void getAllEntiPaginatiDSCUTest() {
+		entiPaginatiParam.setCodiceRuolo(RuoloUtenteEnum.DSCU);
+		when(ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
+		enteService.getAllEntiPaginati(entiPaginatiParam, currPage, pageSize);
+		verify(enteRepository, times(1)).findAllEntiFiltrati(filtro.getCriterioRicerca(),
+				"%"+filtro.getCriterioRicerca()+"%",
+				filtro.getIdsProgrammi(),
+				filtro.getIdsProgetti(),
+				filtro.getProfili(),
+				PolicyEnum.SCD.toString());
+	}
 	
 	@Test
 	public void getEnteByPartitaIvaTest() {
@@ -636,14 +661,15 @@ public class EnteServiceTest {
 		referenteDelegatoGestoreProgrammaRequest = new ReferenteDelegatoGestoreProgrammaRequest();
 		referenteDelegatoGestoreProgrammaRequest.setIdProgramma(programma1.getId());
 		referenteDelegatoGestoreProgrammaRequest.setIdEnte(ente1.getId());
-		referenteDelegatoGestoreProgrammaRequest.setCodiceRuolo(ruolo1.getCodice());
+		referenteDelegatoGestoreProgrammaRequest.setCodiceRuolo(ruolo3.getCodice());
 		referenteDelegatoGestoreProgrammaRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
 		when(programmaService.esisteProgrammaById(programma1.getId())).thenReturn(true);
 		when(utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
 		when(enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
 		lenient().when(referentiDelegatiEnteGestoreProgrammaService.esisteById(referentiDelegatiEnteGestoreProgrammaKey)).thenReturn(false);
-		when(ruoloService.getRuoloByCodiceRuolo(ruolo1.getCodice())).thenReturn(ruolo1);
+		when(ruoloService.getRuoloByCodiceRuolo(ruolo3.getCodice())).thenReturn(ruolo3);
 		enteService.associaReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest);
+		verify(referentiDelegatiEnteGestoreProgrammaService, times (1)).save(Mockito.any(ReferentiDelegatiEnteGestoreProgrammaEntity.class));
 	}
 	
 	@Test
@@ -652,7 +678,7 @@ public class EnteServiceTest {
 		referenteDelegatoGestoreProgrammaRequest = new ReferenteDelegatoGestoreProgrammaRequest();
 		referenteDelegatoGestoreProgrammaRequest.setIdProgramma(programma1.getId());
 		referenteDelegatoGestoreProgrammaRequest.setIdEnte(ente1.getId());
-		referenteDelegatoGestoreProgrammaRequest.setCodiceRuolo(ruolo1.getCodice());
+		referenteDelegatoGestoreProgrammaRequest.setCodiceRuolo(ruolo4.getCodice());
 		referenteDelegatoGestoreProgrammaRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
 		when(programmaService.esisteProgrammaById(programma1.getId())).thenReturn(false);
 		Assertions.assertThrows(EnteException.class, () -> enteService.associaReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest));
@@ -679,6 +705,97 @@ public class EnteServiceTest {
 		when(programmaService.esisteProgrammaById(programma1.getId())).thenReturn(true);
 		Mockito.doThrow(ResourceNotFoundException.class).when(utenteService).getUtenteByCodiceFiscale(utente1.getCodiceFiscale());
 		Assertions.assertThrows(EnteException.class, () -> enteService.associaReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest));
+		assertThatExceptionOfType(EnteException.class);
+	}
+	
+	@Test
+	public void associaReferenteODelegatoGestoreProgettoTest() {
+		referenteDelegatoGestoreProgettoRequest = new ReferenteDelegatoGestoreProgettoRequest();
+		referenteDelegatoGestoreProgettoRequest.setIdProgetto(progetto1.getId());
+		referenteDelegatoGestoreProgettoRequest.setIdEnte(ente1.getId());
+		referenteDelegatoGestoreProgettoRequest.setCodiceRuolo(ruolo4.getCodice());
+		referenteDelegatoGestoreProgettoRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
+		when(progettoService.esisteProgettoById(progetto1.getId())).thenReturn(true);
+		when(utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
+		lenient().when(referentiDelegatiEnteGestoreProgettoService.esisteById(referentiDelegatiEnteGestoreProgettoKey)).thenReturn(false);
+		when(ruoloService.getRuoloByCodiceRuolo(ruolo4.getCodice())).thenReturn(ruolo4);
+		enteService.associaReferenteODelegatoGestoreProgetto(referenteDelegatoGestoreProgettoRequest);
+		verify(referentiDelegatiEnteGestoreProgettoService, times (1)).save(Mockito.any(ReferentiDelegatiEnteGestoreProgettoEntity.class));
+	}
+	
+	@Test
+	public void associaReferenteODelegatoGestoreProgettoKOTest() {
+		//test KO per progetto inesistente
+		referenteDelegatoGestoreProgettoRequest = new ReferenteDelegatoGestoreProgettoRequest();
+		referenteDelegatoGestoreProgettoRequest.setIdProgetto(progetto1.getId());
+		referenteDelegatoGestoreProgettoRequest.setIdEnte(ente1.getId());
+		referenteDelegatoGestoreProgettoRequest.setCodiceRuolo(ruolo3.getCodice());
+		referenteDelegatoGestoreProgettoRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
+		when(progettoService.esisteProgettoById(progetto1.getId())).thenReturn(false);
+		Assertions.assertThrows(EnteException.class, () -> enteService.associaReferenteODelegatoGestoreProgetto(referenteDelegatoGestoreProgettoRequest));
+		assertThatExceptionOfType(EnteException.class);
+				
+		//test KO per associazione già esistente
+		when(progettoService.esisteProgettoById(progetto1.getId())).thenReturn(true);
+		when(utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
+		when(referentiDelegatiEnteGestoreProgettoService.esisteById(Mockito.any(ReferentiDelegatiEnteGestoreProgettoKey.class))).thenReturn(true);
+		Assertions.assertThrows(EnteException.class, () -> enteService.associaReferenteODelegatoGestoreProgetto(referenteDelegatoGestoreProgettoRequest));
+		assertThatExceptionOfType(EnteException.class);
+		
+		//test KO per utente inesistente
+		when(progettoService.esisteProgettoById(progetto1.getId())).thenReturn(true);
+		Mockito.doThrow(ResourceNotFoundException.class).when(utenteService).getUtenteByCodiceFiscale(utente1.getCodiceFiscale());
+		Assertions.assertThrows(EnteException.class, () -> enteService.associaReferenteODelegatoGestoreProgetto(referenteDelegatoGestoreProgettoRequest));
+		assertThatExceptionOfType(EnteException.class);
+	}
+	
+	@Test
+	public void cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgrammaTest() {
+		referenteDelegatoGestoreProgrammaRequest = new ReferenteDelegatoGestoreProgrammaRequest();
+		referenteDelegatoGestoreProgrammaRequest.setIdProgramma(programma1.getId());
+		referenteDelegatoGestoreProgrammaRequest.setIdEnte(ente1.getId());
+		referenteDelegatoGestoreProgrammaRequest.setCodiceRuolo(ruolo4.getCodice());
+		referenteDelegatoGestoreProgrammaRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
+		referentiDelegatiEnteGestoreProgrammaEntity.setStatoUtente(StatoEnum.ATTIVO.getValue());
+		when(referentiDelegatiEnteGestoreProgrammaService.getReferenteDelegatiEnteGestoreProgramma(programma1.getId(), utente1.getCodiceFiscale(), ente1.getId())).thenReturn(referentiDelegatiEnteGestoreProgrammaEntity);
+		enteService.cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest);
+		verify(referentiDelegatiEnteGestoreProgrammaService, times(1)).save(Mockito.any(ReferentiDelegatiEnteGestoreProgrammaEntity.class));
+		
+		referentiDelegatiEnteGestoreProgrammaEntity.setStatoUtente(StatoEnum.NON_ATTIVO.getValue());
+		when(referentiDelegatiEnteGestoreProgrammaService.getReferenteDelegatiEnteGestoreProgramma(programma1.getId(), utente1.getCodiceFiscale(), ente1.getId())).thenReturn(referentiDelegatiEnteGestoreProgrammaEntity);
+		enteService.cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest);
+		verify(referentiDelegatiEnteGestoreProgrammaService, times(1)).cancellaAssociazioneReferenteDelegatoGestoreProgramma(Mockito.any(ReferentiDelegatiEnteGestoreProgrammaKey.class));
+	}
+	
+	@Test
+	public void terminaAssociazioneReferenteDelegatoGestoreProgrammaKOTest() {
+		when(referentiDelegatiEnteGestoreProgrammaService.findAltriReferentiODelegatiAttivi(programma1.getId(), utente1.getCodiceFiscale(), ente1.getId(), referentiDelegatiEnteGestoreProgrammaEntity.getCodiceRuolo())).thenReturn(new ArrayList<>());
+		Assertions.assertThrows(EnteException.class, () -> enteService.terminaAssociazioneReferenteDelegatoGestoreProgramma(referentiDelegatiEnteGestoreProgrammaEntity, referentiDelegatiEnteGestoreProgrammaEntity.getCodiceRuolo()));
+		assertThatExceptionOfType(EnteException.class);
+	}
+	
+	@Test
+	public void cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgettoTest() {
+		referenteDelegatoGestoreProgettoRequest = new ReferenteDelegatoGestoreProgettoRequest();
+		referenteDelegatoGestoreProgettoRequest.setIdProgetto(progetto1.getId());
+		referenteDelegatoGestoreProgettoRequest.setIdEnte(ente1.getId());
+		referenteDelegatoGestoreProgettoRequest.setCodiceRuolo(ruolo3.getCodice());
+		referenteDelegatoGestoreProgettoRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
+		referentiDelegatiEnteGestoreProgettoEntity.setStatoUtente(StatoEnum.ATTIVO.getValue());
+		when(referentiDelegatiEnteGestoreProgettoService.getReferenteDelegatiEnteGestoreProgetto(progetto1.getId(), utente1.getCodiceFiscale(), ente1.getId())).thenReturn(referentiDelegatiEnteGestoreProgettoEntity);
+		enteService.cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgetto(referenteDelegatoGestoreProgettoRequest);
+		verify(referentiDelegatiEnteGestoreProgettoService, times(1)).save(Mockito.any(ReferentiDelegatiEnteGestoreProgettoEntity.class));
+	
+		referentiDelegatiEnteGestoreProgettoEntity.setStatoUtente(StatoEnum.NON_ATTIVO.getValue());
+		when(referentiDelegatiEnteGestoreProgettoService.getReferenteDelegatiEnteGestoreProgetto(programma1.getId(), utente1.getCodiceFiscale(), ente1.getId())).thenReturn(referentiDelegatiEnteGestoreProgettoEntity);
+		enteService.cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgetto(referenteDelegatoGestoreProgettoRequest);
+		verify(referentiDelegatiEnteGestoreProgettoService, times(1)).cancellaAssociazioneReferenteDelegatoGestoreProgetto(Mockito.any(ReferentiDelegatiEnteGestoreProgettoKey.class));
+	}
+	
+	@Test
+	public void terminaAssociazioneReferenteDelegatoGestoreProgettoKOTest() {
+		when(referentiDelegatiEnteGestoreProgettoService.findAltriReferentiODelegatiAttivi(progetto1.getId(), utente1.getCodiceFiscale(), ente1.getId(), referentiDelegatiEnteGestoreProgettoEntity.getCodiceRuolo())).thenReturn(new ArrayList<>());
+		Assertions.assertThrows(EnteException.class, () -> enteService.terminaAssociazioneReferenteDelegatoGestoreProgetto(referentiDelegatiEnteGestoreProgettoEntity, referentiDelegatiEnteGestoreProgettoEntity.getCodiceRuolo()));
 		assertThatExceptionOfType(EnteException.class);
 	}
 }

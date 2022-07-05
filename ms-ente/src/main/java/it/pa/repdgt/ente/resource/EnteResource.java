@@ -32,4 +32,7 @@ public class EnteResource implements Serializable {
 	
 	@JsonProperty(value = "sedeLegale")
 	private String sedeLegale;
+	
+	@JsonProperty(value = "indirizzoPec")
+	private String indirizzoPec;
 }

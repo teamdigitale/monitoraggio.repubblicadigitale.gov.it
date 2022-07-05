@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import it.pa.repdgt.ente.dto.EnteDto;
+import it.pa.repdgt.ente.request.AggiornaEnteRequest;
 import it.pa.repdgt.ente.request.NuovoEnteRequest;
 import it.pa.repdgt.ente.resource.EnteResource;
 import it.pa.repdgt.ente.resource.ListaEntiPaginatiResource;
@@ -22,6 +23,7 @@ public class EnteMapper {
 		enteResource.setTipologia(enteEntity.getTipologia());
 		enteResource.setPartitaIva(enteEntity.getPiva());
 		enteResource.setSedeLegale(enteEntity.getSedeLegale());
+		enteResource.setIndirizzoPec(enteEntity.getIndirizzoPec());
 		return enteResource;
 	}
 
@@ -36,6 +38,21 @@ public class EnteMapper {
 		ente.setTipologia(nuovoEnteRequest.getTipologia());
 		ente.setSedeLegale(nuovoEnteRequest.getSedeLegale());
 		ente.setIndirizzoPec(nuovoEnteRequest.getIndirizzoPec());
+		return ente;
+	}
+	
+	public EnteEntity toEntityFrom(AggiornaEnteRequest aggiornaEnteRequest) {
+		if(aggiornaEnteRequest == null) {
+			return null;
+		}
+		EnteEntity ente = new EnteEntity();
+		ente.setId(aggiornaEnteRequest.getId());
+		ente.setNome(aggiornaEnteRequest.getNome());
+		ente.setNomeBreve(aggiornaEnteRequest.getNomeBreve());
+		ente.setPiva(aggiornaEnteRequest.getPartitaIva());
+		ente.setTipologia(aggiornaEnteRequest.getTipologia());
+		ente.setSedeLegale(aggiornaEnteRequest.getSedeLegale());
+		ente.setIndirizzoPec(aggiornaEnteRequest.getIndirizzoPec());
 		return ente;
 	}
 	

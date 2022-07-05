@@ -13,9 +13,13 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class NuovoEnteRequest implements Serializable {
+public class AggiornaEnteRequest implements Serializable {
 	private static final long serialVersionUID = 3778729425460145918L;
 
+	@NotNull
+	@JsonProperty(value = "id", required = true)
+	private Long id;
+	
 	@NotBlank
 	@JsonProperty(value = "nome", required = true)
 	private String nome;

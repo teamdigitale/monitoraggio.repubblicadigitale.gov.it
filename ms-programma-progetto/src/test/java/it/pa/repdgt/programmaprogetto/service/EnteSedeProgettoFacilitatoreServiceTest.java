@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import it.pa.repdgt.programmaprogetto.projection.UtenteFacilitatoreProjection;
 import it.pa.repdgt.programmaprogetto.repository.EnteSedeProgettoFacilitatoreRepository;
 import it.pa.repdgt.programmaprogetto.repository.RuoloRepository;
 import it.pa.repdgt.shared.entity.EnteEntity;
@@ -161,7 +162,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 	
 	@Test
 	public void getAllEmailFacilitatoriEVolontariByProgetto() {
-		List<String> listaEmail = new ArrayList<>();
+		List<UtenteFacilitatoreProjection> listaEmail = new ArrayList<>();
 		when(enteSedeProgettoFacilitatoreRepository.findAllEmailFacilitatoriEVolontariByProgetto(progetto1.getId())).thenReturn(listaEmail);
 		enteSedeProgettoFacilitatoreService.getAllEmailFacilitatoriEVolontariByProgetto(progetto1.getId());
 		verify(enteSedeProgettoFacilitatoreRepository, times(1)).findAllEmailFacilitatoriEVolontariByProgetto(progetto1.getId());

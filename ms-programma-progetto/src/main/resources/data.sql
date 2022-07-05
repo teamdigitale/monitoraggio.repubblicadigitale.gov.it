@@ -65,6 +65,8 @@
 	values('FACILITATORE1', 'VOL');
  insert into utente_x_ruolo(utente_id, ruolo_codice) 
 	values('UTENTE2', 'FAC');
+	 insert into utente_x_ruolo(utente_id, ruolo_codice) 
+	values('UTENTE2', 'REGP');
   		
 
  -- CREAZIONE ANAGRAFICA PROGRAMMI
@@ -338,6 +340,10 @@ insert into ente_sede_progetto_facilitatore (id_ente, ID_progetto, id_sede, id_f
 	values('XTAAAA54E91E123Z', 256, 1004, 'DEGP', null, CURRENT_TIME(), 'ATTIVO');
  insert into referente_delegati_gestore_progetto(cf_utente, id_progetto, id_ente, codice_ruolo, data_ora_aggiornamento, data_ora_creazione, stato_utente)
 	values('MZADDD89E21E123S', 256, 1004, 'REGP', null, CURRENT_TIME(), 'ATTIVO');
+ insert into referente_delegati_gestore_progetto(cf_utente, id_progetto, id_ente, codice_ruolo, data_ora_aggiornamento, data_ora_creazione, stato_utente)
+	values('MZADDD89E21E123S', 254, 1004, 'REGP', null, CURRENT_TIME(), 'ATTIVO');
+ insert into referente_delegati_gestore_progetto(cf_utente, id_progetto, id_ente, codice_ruolo, data_ora_aggiornamento, data_ora_creazione, stato_utente)
+	values('UTENTE2', 254, 1004, 'REGP', null, CURRENT_TIME(), 'ATTIVO');
 
 --insert questionario template
 INSERT INTO questionario_template (id, nome, stato, descrizione, default_rfd, default_scd) VALUES ('1', 'prova', 'ATTIVO', 'provaTest', '1', '1');

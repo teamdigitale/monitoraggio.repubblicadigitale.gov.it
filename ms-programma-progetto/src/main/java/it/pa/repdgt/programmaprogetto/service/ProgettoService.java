@@ -37,7 +37,9 @@ import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.ReferentiDelegatiEnteGestoreProgettoEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
+import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
+import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.service.storico.StoricoService;
 import lombok.extern.slf4j.Slf4j;
@@ -495,9 +497,11 @@ public class ProgettoService {
 		progetto.setDataOraAggiornamento(new Date());
 		progettoRepository.save(progetto);
 		
-		enteSedeProgettoFacilitatoreService.getAllEmailFacilitatoriEVolontariByProgetto(idProgetto).forEach(email -> {
+		enteSedeProgettoFacilitatoreService.getAllEmailFacilitatoriEVolontariByProgetto(idProgetto).forEach(utenteFetch -> {
 			try {
-				this.emailService.inviaEmail("oggetto_email", email, "Test_template");
+				this.emailService.inviaEmail(utenteFetch.getEmail(), 
+						EmailTemplateEnum.GEST_PROGE_PARTNER, 
+						new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(utenteFetch.getCodiceRuolo()).getValue() });
 			} catch (Exception ex) {
 				log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore progetto per progetto con id={}.", idProgetto);
 				log.error("{}", ex);
