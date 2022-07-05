@@ -28,7 +28,6 @@
 //   }
 // }
 
-
 .general-info-accordion-container-project {
   .collapse-body {
     box-shadow: rem(0px) rem(4px) rem(20px) rgba(0, 0, 0, 0.25);
@@ -37,9 +36,9 @@
     margin-bottom: 30px;
   }
 
-   @media screen and (max-width: 576px) {
-     .collapse-body {
-       margin: 0 20px 20px;
-     }
-   }
+  @media screen and (max-width: 576px) {
+    .collapse-body {
+      margin: 0 20px 20px;
+    }
+  }
 }

@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-services-have-key-services */
 import React, { useCallback, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Button, Icon, Tooltip } from 'design-react-kit';
@@ -85,13 +84,11 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
       setHasSearchValue(true);
     }
   };
-  
+
   const clearSearch = () => {
     setSearchValue('');
-    setHasSearchValue(false); 
-    dispatch(
-      deleteFiltroCriterioRicerca()
-    );
+    setHasSearchValue(false);
+    dispatch(deleteFiltroCriterioRicerca());
   };
 
   const AutocompleteDropdownIndicator = useCallback(
@@ -219,6 +216,11 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                   <span
                     className='placeholder-label font-weight-normal primary-color-a12'
                     onClick={focusOfSearch}
+                    onKeyDown={(e) => {
+                      if (e.key === ' ') {
+                        focusOfSearch();
+                      }
+                    }}
                   >
                     {title}
                   </span>

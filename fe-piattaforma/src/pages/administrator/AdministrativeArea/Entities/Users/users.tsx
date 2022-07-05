@@ -45,15 +45,19 @@ const Programmi = () => {
   const [searchDropdown, setSearchDropdown] = useState<
     { filterId: string; value: formFieldI['value'] }[]
   >([]);
-  const [filterDropdownSelected, setFilterDropdownSelected] = useState<string>('');
+  const [filterDropdownSelected, setFilterDropdownSelected] =
+    useState<string>('');
 
   const { criterioRicerca, ruoli, stati } = filtersList;
 
   const { pageNumber } = pagination;
 
-  const getAllFilters = () => { // TODO: check chiavi filtri
-    if(filterDropdownSelected !== 'filtroStati') dispatch(GetFilterValuesUtenti(statusDropdownLabel));
-    if(filterDropdownSelected !== 'ruoli') dispatch(GetFilterValuesUtenti(ruoliDropdownLabel));
+  const getAllFilters = () => {
+    // TODO: check chiavi filtri
+    if (filterDropdownSelected !== 'filtroStati')
+      dispatch(GetFilterValuesUtenti(statusDropdownLabel));
+    if (filterDropdownSelected !== 'ruoli')
+      dispatch(GetFilterValuesUtenti(ruoliDropdownLabel));
   };
 
   useEffect(() => {

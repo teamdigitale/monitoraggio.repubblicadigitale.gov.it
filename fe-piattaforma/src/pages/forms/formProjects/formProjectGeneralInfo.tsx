@@ -67,7 +67,7 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
       setFormValues(
         Object.fromEntries(
           Object.entries(formData).filter(
-            ([key, _val]) => !key.includes('Target')
+            ([key, _val]) => !key.includes('Target') && !key.includes('id')
           )
         )
       );
@@ -180,10 +180,6 @@ const form = newForm([
     field: 'nome',
     type: 'text',
     id: 'project-name',
-  }),
-  newFormField({
-    field: 'id',
-    id: 'project-id',
   }),
   newFormField({
     field: 'nomeBreve',

@@ -28,9 +28,19 @@ export const selectedSteps = {
 
 interface SearchCitizenModalI {
   onConfirmText?: string;
-  onConfirmFunction?: (newCitizen: {
-    [key: string]: string | number | boolean | Date | string[] | undefined;
-  } | undefined) => void;
+  onConfirmFunction?: (
+    newCitizen:
+      | {
+          [key: string]:
+            | string
+            | number
+            | boolean
+            | Date
+            | string[]
+            | undefined;
+        }
+      | undefined
+  ) => void;
 }
 
 /*
@@ -112,10 +122,10 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
     }
     if (currentStep === selectedSteps.ADD_CITIZEN) {
       return (
-        <FormCitizen 
-          sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
-            {setNewUserValues({ ...newData });}
-          }
+        <FormCitizen
+          sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {
+            setNewUserValues({ ...newData });
+          }}
           isFormValid={(isValid: boolean) => setFormValid(isValid)}
           creation
         />
@@ -178,8 +188,9 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
             : onConfirm,
         disabled:
           (isEmpty(citizenData) &&
-          !citizenData?.message &&
-          (isEmpty(multipleCitizenData) || selectedCitizen === '')) || (currentStep === selectedSteps.ADD_CITIZEN && !validForm),
+            !citizenData?.message &&
+            (isEmpty(multipleCitizenData) || selectedCitizen === '')) ||
+          (currentStep === selectedSteps.ADD_CITIZEN && !validForm),
       }}
       secondaryCTA={{
         label: 'Annulla',

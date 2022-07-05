@@ -126,7 +126,10 @@ export const GetEntityFilterValues =
           })),
         };
 
-        if (payload.dropdownType === 'programmi') {
+        if (
+          payload.dropdownType === 'programmi' ||
+          payload.dropdownType === 'progetti'
+        ) {
           filterResponse[payload.dropdownType] = res.data.map(
             (option: { nome: string; id: string | number }) => ({
               label: option.nome,

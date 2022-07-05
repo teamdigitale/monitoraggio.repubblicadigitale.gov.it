@@ -1,9 +1,20 @@
 import React from 'react';
-import { Icon } from 'design-react-kit';
+import { Spinner } from 'design-react-kit';
+import clsx from 'clsx';
 
 const Loader: React.FC = () => (
-  <div className='custom-loader'>
-    <Icon icon='it-refresh' className='custom-loader--rotate' />
+  <div
+    className={clsx(
+      'spinner-container',
+      'position-fixed',
+      'w-100',
+      'h-100',
+      'd-flex',
+      'justify-content-center',
+      'align-items-center'
+    )}
+  >
+    <Spinner active />
   </div>
 );
 

@@ -79,23 +79,24 @@ const CitizensDetail: React.FC = () => {
 
   return (
     <>
-    <div className='container pb-3'>
-      <DetailLayout
-        titleInfo={{
-          title:
-            citizen?.dettaglioCittadino?.nome +
-            ' ' +
-            citizen?.dettaglioCittadino?.cognome,
-          status: 'ATTIVO', // TODO: update
-          upperTitle: { icon: 'it-user', text: 'Cittadino' },
-        }}
-        buttonsPosition='TOP'
-        goBackTitle='I miei cittadini'
-      >
-        <FormCitizen formDisabled />
-      </DetailLayout>
-      <CitizenQuestionari questionari={[]} />{' '}{/* questionari={citizen?.serviziCittadino */}
-      <ManageCitizens />
+      <div className='container pb-3'>
+        <DetailLayout
+          titleInfo={{
+            title:
+              citizen?.dettaglioCittadino?.nome +
+              ' ' +
+              citizen?.dettaglioCittadino?.cognome,
+            status: 'ATTIVO', // TODO: update
+            upperTitle: { icon: 'it-user', text: 'Cittadino' },
+          }}
+          buttonsPosition='TOP'
+          goBackTitle='I miei cittadini'
+        >
+          <FormCitizen formDisabled />
+        </DetailLayout>
+        <CitizenQuestionari questionari={[]} />{' '}
+        {/* questionari={citizen?.serviziCittadino */}
+        <ManageCitizens />
       </div>
       <Sticky mode='bottom' stickyClassName='sticky bg-white'>
         <ButtonsBar buttons={citizenButtons} />

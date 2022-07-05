@@ -47,14 +47,14 @@
       "nfacilitatoriDataTarget3": null,
       "nfacilitatoriDataTarget4": null,
       "nfacilitatoriDataTarget5": null
-  },
-  "questionari": [
+    },
+    "questionari": [
       {
-          "id": "tewbebe",
-          "nome": "dsgrg",
-          "stato": "ATTIVO"
+        "id": "tewbebe",
+        "nome": "dsgrg",
+        "stato": "ATTIVO"
       }
-  ],
+    ],
     "progetti": [
       {
         "id": "345435",

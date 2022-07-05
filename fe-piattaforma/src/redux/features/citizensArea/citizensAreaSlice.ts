@@ -36,7 +36,7 @@ export interface ServizioCittadinoI {
 }
 
 export interface CittadinoI {
-  dettaglioCittadino: { [key: string]: formFieldI['value'] | undefined; };
+  dettaglioCittadino: { [key: string]: formFieldI['value'] | undefined };
   serviziCittadino: ServizioCittadinoI[];
 }
 
@@ -130,9 +130,9 @@ export const citizensAreaSlice = createSlice({
       state.list = action.payload.data;
     },
     getEntityDetail: (state, action: PayloadAction<any>) => {
-      if(action.payload.data){
+      if (action.payload.data) {
         state.detail = action.payload.data;
-      }else{
+      } else {
         state.detail = action.payload;
       }
     },

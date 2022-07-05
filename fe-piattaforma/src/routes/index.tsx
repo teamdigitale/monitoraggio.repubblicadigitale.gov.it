@@ -4,6 +4,7 @@ import { useAppSelector } from '../redux/hooks';
 import { selectLogged } from '../redux/features/user/userSlice';
 import ProtectedComponent from '../hoc/AuthGuard/ProtectedComponent/ProtectedComponent';
 import FullLayout from '../components/PageLayout/FullLayout/fullLayout';
+import { Loader } from '../components';
 
 const HomeFacilitator = lazy(() => import('../pages/facilitator/Home/home'));
 const AdministrativeArea = lazy(
@@ -51,7 +52,7 @@ const AppRoutes: React.FC = () => {
 
   return (
     // This fix is need cause Loader will cause a wdyr error if used here
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loader />}>
       <Routes>
         <Route path='/' element={<FullLayout />}>
           <Route

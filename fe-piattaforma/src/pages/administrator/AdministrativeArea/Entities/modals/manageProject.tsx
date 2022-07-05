@@ -41,12 +41,12 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
   creation = false,
 }) => {
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
-  const { projectId } = useParams();
+  const { projectId, entityId } = useParams();
 
   const handleSaveProgram = () => {
     if (isFormValid) {
       if (creation) {
-        dispatch(createProject(newFormValues));
+        entityId && dispatch(createProject(entityId, newFormValues));
         setCurrentStep(0);
         // here dispatch create new program
       } else {
@@ -277,7 +277,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
           'justify-content-center',
           'flex-column',
           'align-items-center',
-          'mb-5'
+          'mb-4'
         )}
       >
         {device.mediaIsPhone ? (
@@ -303,8 +303,8 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       <div
         style={{
           maxHeight: device.mediaIsPhone ? '100%' : '340px',
-          overflowY: 'auto',
         }}
+        className='px-5'
       >
         {currentForm}
       </div>

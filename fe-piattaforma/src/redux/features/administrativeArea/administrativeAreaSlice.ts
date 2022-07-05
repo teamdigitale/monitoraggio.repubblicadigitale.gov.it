@@ -339,9 +339,9 @@ export const administrativeAreaSlice = createSlice({
       state.services.detail.cittadini.push({ ...action.payload });
     },
     deleteFiltroCriterioRicerca: (state) => {
-      const newFilters = {...state.filters};
+      const newFilters = { ...state.filters };
       delete newFilters.filtroCriterioRicerca;
-      state.filters = {...newFilters};
+      state.filters = { ...newFilters };
     },
   },
 });

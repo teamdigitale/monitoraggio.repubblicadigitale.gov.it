@@ -32,17 +32,11 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     }); */
 
-    mockInstance.onGet('/ente/all').reply(async () => {
+    /*mockInstance.onPost('/ente/all').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/listaEnti.json');
       return [200, response];
-    });
-
-    mockInstance.onPost('/ente/all').reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/listaEnti.json');
-      return [200, response];
-    });
+    });*/
 
     mockInstance.onGet('/utente/all').reply(async () => {
       // @ts-ignore
@@ -104,11 +98,11 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response.data];
     });*/
 
-    mockInstance.onPost('/ente/profili/dropdown').reply(async () => {
+    /*mockInstance.onPost('/ente/profili/dropdown').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/profiloDropdown.json');
       return [200, response];
-    });
+    });*/
 
     mockInstance.onPost('/ente/stati/dropdown').reply(async () => {
       // @ts-ignore
@@ -116,17 +110,17 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });
 
-    mockInstance.onPost('/ente/projects/dropdown').reply(async () => {
+    /*mockInstance.onPost('/ente/progetti/dropdown').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/progettiDropdown.json');
       return [200, response];
-    });
+    });*/
 
-    mockInstance.onPost('/ente/programmi/dropdown').reply(async () => {
+    /*mockInstance.onPost('/ente/programmi/dropdown').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/programmiDropdown.json');
       return [200, response];
-    });
+    });*/
 
     mockInstance.onPost('/utente/ruoli/dropdown').reply(async () => {
       // @ts-ignore
@@ -251,13 +245,13 @@ export const initMock = (apiInstance: AxiosInstance) => {
       const response = await import('/mock/listaGestoriProgetto.json');
       return [200, response];
     });
-
+    /*
     mockInstance.onGet('/programmi/321321/projects').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/listaProgetti.json');
       return [200, response];
     });
-
+*/
     mockInstance.onGet('/utente/idUtente').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/userMock.json');

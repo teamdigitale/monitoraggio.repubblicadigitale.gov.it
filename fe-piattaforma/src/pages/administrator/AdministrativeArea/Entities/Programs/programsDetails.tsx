@@ -50,7 +50,7 @@ const ProgramsDetails: React.FC = () => {
   const { mediaIsDesktop } = useAppSelector(selectDevice);
   const programma = useAppSelector(selectPrograms);
   const surveyList = useAppSelector(selectSurveys).list;
-  const progettiList = programma.detail?.progetti;
+  const projectsList = programma.detail?.progetti;
   const authorityInfo = useAppSelector(selectAuthorities)?.detail || {};
   const dispatch = useDispatch();
   const [deleteText, setDeleteText] = useState<string>('');
@@ -155,7 +155,9 @@ const ProgramsDetails: React.FC = () => {
 
   const onActionClickProgetti: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(`${typeof td === 'string' ? td : td?.id}/info`);
+      console.log(td);
+
+      navigate(`${td}/info`);
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       console.log(td);
@@ -313,17 +315,31 @@ const ProgramsDetails: React.FC = () => {
     setCorrectModal(undefined);
     setItemAccordionList(null);
     setCurrentForm(undefined);
-    if (progettiList?.length) {
-      progettiList?.map(
-        (progetto: { id: string; nome: string; stato: string }) => ({
-          ...progetto,
-          fullInfo: { id: progetto.id },
-          actions: onActionClickProgetti,
-        }),
+    setCorrectModal(<ManageProject creation />);
+    if (projectsList?.length) {
+      setCorrectButtons([
+        {
+          size: 'xs',
+          color: 'primary',
+          text: 'Aggiungi Progetto',
+          onClick: () =>
+            dispatch(
+              openModal({
+                id: formTypes.PROGETTO,
+                payload: { title: 'Aggiungi Progetto' },
+              })
+            ),
+        },
+      ]),
         setItemList({
-          items: [...progettiList],
-        })
-      );
+          items: projectsList?.map(
+            (progetto: { id: string; nome: string; stato: string }) => ({
+              ...progetto,
+              fullInfo: { id: progetto.id },
+              actions: onActionClickProgetti,
+            })
+          ),
+        });
       setEmptySection(undefined);
     } else {
       setEmptySection(
@@ -533,7 +549,7 @@ const ProgramsDetails: React.FC = () => {
       color: 'danger',
       outline: true,
       text: 'Termina programma',
-      onClick: () => console.log('termina progetto'),
+      onClick: () => console.log('termina programma'),
     },
     {
       size: 'xs',
@@ -601,7 +617,7 @@ const ProgramsDetails: React.FC = () => {
           active={activeTab === tabs.PROGETTI}
           to={`/area-amministrativa/programmi/${entityId}/${tabs.PROGETTI}`}
         >
-          {!progettiList?.length ? (
+          {!projectsList?.length ? (
             <div>
               <span className='mr-1'> * Progetti </span>
               <Icon icon='it-warning-circle' size='sm' />
@@ -616,6 +632,7 @@ const ProgramsDetails: React.FC = () => {
 
   const showINFOButtons = () => activeTab === tabs.INFO;
   const showENTEButtons = () => activeTab === tabs.ENTE;
+  const showPROGETTIButtons = () => activeTab === tabs.PROGETTI;
   const showQUESTIONARIButtons = () => activeTab === tabs.QUESTIONARI;
 
   const onChangeSurveyDefault = (surveyCheckedId: string) => {
@@ -652,6 +669,8 @@ const ProgramsDetails: React.FC = () => {
             : showENTEButtons()
             ? correctButtons
             : showQUESTIONARIButtons()
+            ? correctButtons
+            : showPROGETTIButtons()
             ? correctButtons
             : []
         }

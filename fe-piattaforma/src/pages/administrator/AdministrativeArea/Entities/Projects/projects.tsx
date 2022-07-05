@@ -51,12 +51,16 @@ const Projects: React.FC = () => {
     filtroIdsProgrammi,
   } = filtersList;
   const { pageNumber } = pagination;
-  const [filterDropdownSelected, setFilterDropdownSelected] = useState<string>('');
+  const [filterDropdownSelected, setFilterDropdownSelected] =
+    useState<string>('');
 
   const getAllFilters = () => {
-    if(filterDropdownSelected !== 'filtroStati') dispatch(GetEntityFilterValues({ entity, dropdownType: 'stati' }));
-    if(filterDropdownSelected !== 'filtroPolicies') dispatch(GetEntityFilterValues({ entity, dropdownType: 'policies' }));
-    if(filterDropdownSelected !== 'filtroIdsProgrammi') dispatch(GetEntityFilterValues({ entity, dropdownType: 'programmi' }));
+    if (filterDropdownSelected !== 'filtroStati')
+      dispatch(GetEntityFilterValues({ entity, dropdownType: 'stati' }));
+    if (filterDropdownSelected !== 'filtroPolicies')
+      dispatch(GetEntityFilterValues({ entity, dropdownType: 'policies' }));
+    if (filterDropdownSelected !== 'filtroIdsProgrammi')
+      dispatch(GetEntityFilterValues({ entity, dropdownType: 'programmi' }));
   };
 
   useEffect(() => {
@@ -234,15 +238,15 @@ const Projects: React.FC = () => {
         withActions
       />
       {pagination?.pageNumber ? (
-          <Paginator
-            activePage={pagination?.pageNumber}
-            center
-            refID='#table'
-            pageSize={pagination?.pageSize}
-            total={pagination?.totalPages}
-            onChange={handleOnChangePage}
-          />
-        ) : null}
+        <Paginator
+          activePage={pagination?.pageNumber}
+          center
+          refID='#table'
+          pageSize={pagination?.pageSize}
+          total={pagination?.totalPages}
+          onChange={handleOnChangePage}
+        />
+      ) : null}
       <ManageProject creation />
     </GenericSearchFilterTableLayout>
   );
