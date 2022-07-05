@@ -45,14 +45,17 @@ const Services = () => {
   const [searchDropdown, setSearchDropdown] = useState<
     { filterId: string; value: formFieldI['value'] }[]
   >([]);
-  const [filterDropdownSelected, setFilterDropdownSelected] = useState<string>('');
+  const [filterDropdownSelected, setFilterDropdownSelected] =
+    useState<string>('');
 
   const { criterioRicerca, policies, stati } = filtersList;
 
   const { pageNumber } = pagination;
 
-  const getAllFilters = () => { // TODO: check chiavi filtri
-    if(filterDropdownSelected !== 'filtroStati') dispatch(GetEntityFilterValues({ entity, dropdownType: 'stati' }));
+  const getAllFilters = () => {
+    // TODO: check chiavi filtri
+    if (filterDropdownSelected !== 'filtroStati')
+      dispatch(GetEntityFilterValues({ entity, dropdownType: 'stati' }));
   };
 
   useEffect(() => {

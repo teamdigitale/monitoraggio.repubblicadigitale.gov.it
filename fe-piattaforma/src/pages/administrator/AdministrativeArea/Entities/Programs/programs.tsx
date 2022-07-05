@@ -46,15 +46,18 @@ const Programs = () => {
   const [searchDropdown, setSearchDropdown] = useState<
     { filterId: string; value: formFieldI['value'] }[]
   >([]);
-  const [filterDropdownSelected, setFilterDropdownSelected] = useState<string>('');
+  const [filterDropdownSelected, setFilterDropdownSelected] =
+    useState<string>('');
 
   const { filtroCriterioRicerca, filtroPolicies, filtroStati } = filtersList;
 
   const { pageNumber } = pagination;
 
   const getAllFilters = () => {
-    if(filterDropdownSelected !== 'filtroStati') dispatch(GetEntityFilterValues({ entity, dropdownType: 'stati' }));
-    if(filterDropdownSelected !== 'filtroPolicies') dispatch(GetEntityFilterValues({ entity, dropdownType: 'policies' }));
+    if (filterDropdownSelected !== 'filtroStati')
+      dispatch(GetEntityFilterValues({ entity, dropdownType: 'stati' }));
+    if (filterDropdownSelected !== 'filtroPolicies')
+      dispatch(GetEntityFilterValues({ entity, dropdownType: 'policies' }));
   };
 
   useEffect(() => {

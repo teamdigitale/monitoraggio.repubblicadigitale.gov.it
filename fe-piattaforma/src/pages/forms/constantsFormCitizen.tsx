@@ -66,7 +66,7 @@ export const citizenFromDropdownOptions = {
     { label: 'Email', value: 'Email' },
     { label: 'Online', value: 'Online' },
   ],
-  statoOccupazionale: ['Occupato','Inoccupato','Disoccupato','Altro'],
+  statoOccupazionale: ['Occupato', 'Inoccupato', 'Disoccupato', 'Altro'],
   occupazione: [
     { label: 'Dipendente', value: 'Dipendente', upperLevel: 'Occupato' },
     {

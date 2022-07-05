@@ -87,8 +87,11 @@ const GenericSearchFilterTableLayout: React.FC<
       case 'stati':
         return 'Stato';
       case 'filtroIdsProgrammi':
+      case 'idsProgrammi':
       case 'programmi':
         return 'Programma';
+      case 'filtroIdsProgetti':
+      case 'idsProgetti':
       case 'progetti':
         return 'Progetto';
       case 'profili':
@@ -102,10 +105,14 @@ const GenericSearchFilterTableLayout: React.FC<
     }
   };
 
-  const cleanFilters = (filterKey: string, value: string | number | string[]) => {
+  const cleanFilters = (
+    filterKey: string,
+    value: string | number | string[]
+  ) => {
     dispatch(cleanEntityFilters({ filterKey, value: value }));
-    if(filterKey === 'filtroCriterioRicerca') dispatch(deleteFiltroCriterioRicerca());
-    if(resetFilterDropdownSelected) resetFilterDropdownSelected();
+    if (filterKey === 'filtroCriterioRicerca')
+      dispatch(deleteFiltroCriterioRicerca());
+    if (resetFilterDropdownSelected) resetFilterDropdownSelected();
   };
 
   const getLabelsChips = (
@@ -121,10 +128,7 @@ const GenericSearchFilterTableLayout: React.FC<
           <ChipLabel className='mx-1 my-1'>
             {getFilterLabel(filterKey)}: {filter}
           </ChipLabel>
-          <Button
-            close
-            onClick={() => cleanFilters(filterKey, filter.value)}
-          >
+          <Button close onClick={() => cleanFilters(filterKey, filter.value)}>
             <Icon icon='it-close' aria-label='Chiudi chip' />
           </Button>
         </Chip>
@@ -137,10 +141,7 @@ const GenericSearchFilterTableLayout: React.FC<
               <ChipLabel className='mx-1 my-1'>
                 {getFilterLabel(filterKey)}: {f.label}
               </ChipLabel>
-              <Button
-                close
-                onClick={() => cleanFilters(filterKey, f.value)}
-              >
+              <Button close onClick={() => cleanFilters(filterKey, f.value)}>
                 <Icon icon='it-close' aria-label='Chiudi chip' />
               </Button>
             </Chip>
@@ -359,7 +360,9 @@ const GenericSearchFilterTableLayout: React.FC<
               )}
             </Button>
           </div>
-        ) : <div className='mt-5'></div>}
+        ) : (
+          <div className='mt-5'></div>
+        )}
       </div>
       {Sidebar ? (
         <div className='d-flex'>

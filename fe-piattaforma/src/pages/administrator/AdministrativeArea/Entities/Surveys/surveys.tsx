@@ -58,7 +58,8 @@ const Surveys = () => {
   const [searchDropdown, setSearchDropdown] = useState<
     { filterId: string; value: formFieldI['value'] }[]
   >([]);
-  const [filterDropdownSelected, setFilterDropdownSelected] = useState<string>('');
+  const [filterDropdownSelected, setFilterDropdownSelected] =
+    useState<string>('');
 
   const { criterioRicerca, stati } = filtersList;
 
@@ -177,8 +178,12 @@ const Surveys = () => {
     dispatch(GetAllSurveys());
   };
 
-  const getAllFilters = () => { // TODO: check chiavi filtri
-    if(filterDropdownSelected !== 'filtroStati') dispatch(GetEntityFilterValues({ entity, dropdownType: statusDropdownLabel }));
+  const getAllFilters = () => {
+    // TODO: check chiavi filtri
+    if (filterDropdownSelected !== 'filtroStati')
+      dispatch(
+        GetEntityFilterValues({ entity, dropdownType: statusDropdownLabel })
+      );
   };
 
   useEffect(() => {
