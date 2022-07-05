@@ -1,6 +1,9 @@
 package it.pa.repdgt.surveymgmt.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +20,7 @@ import org.springframework.validation.annotation.Validated;
 
 import it.pa.repdgt.shared.entity.CittadinoEntity;
 import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
+import it.pa.repdgt.shared.entity.QuestionarioInviatoOnlineEntity;
 import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection.DatiIstanza;
@@ -24,6 +28,7 @@ import it.pa.repdgt.surveymgmt.exception.QuestionarioCompilatoException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioCompilatoMongoRepository;
 import it.pa.repdgt.surveymgmt.repository.QuestionarioCompilatoSqlRepository;
+import it.pa.repdgt.surveymgmt.repository.QuestionarioInviatoOnlineRepository;
 import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoRequest;
 
 @Service
@@ -35,6 +40,8 @@ public class QuestionarioCompilatoService {
 	private QuestionarioCompilatoSqlRepository questionarioCompilatoSQLRepository;
 	@Autowired
 	private QuestionarioCompilatoMongoRepository questionarioCompilatoMongoRepository;
+	@Autowired
+	private QuestionarioInviatoOnlineRepository questionarioInviatoOnlineRepository;
 	
 	public QuestionarioCompilatoCollection getQuestionarioCompilatoById(@NotBlank final String idQuestionarioCompilato) {
 		final String messaggioErrore = String.format("Questionario compilato con id=%s non trovato", idQuestionarioCompilato);
@@ -87,6 +94,15 @@ public class QuestionarioCompilatoService {
 		questionarioCompilatoDBMongoFetch.setDataOraUltimoAggiornamento(questionarioCompilatoDBMySqlFetch.getDataOraAggiornamento());
 		this.questionarioCompilatoMongoRepository.save(questionarioCompilatoDBMongoFetch);
 	}
+	
+	@Transactional(rollbackOn = Exception.class)
+	public void compilaQuestionarioAnonimo(
+			@NotNull String idQuestionarioCompilato,
+			@NotNull @Valid QuestionarioCompilatoRequest questionarioCompilatoRequest,
+			@NotNull String token) throws ParseException {
+		verificaTokenQuestionario(idQuestionarioCompilato, token);
+		compilaQuestionario(idQuestionarioCompilato, questionarioCompilatoRequest);
+	}
 
 	@Transactional(rollbackOn = Exception.class)
 	private void aggiornaConsensoDatiCittadino(
@@ -107,6 +123,35 @@ public class QuestionarioCompilatoService {
 		}
 		cittadino.setDataOraAggiornamento(new Date());
 		cittadinoService.salvaCittadino(cittadino);
+	}
+
+	public QuestionarioCompilatoCollection getQuestionarioCompilatoByIdAnonimo(String idQuestionario, String token) throws ParseException {
+		verificaTokenQuestionario(idQuestionario, token);
+		
+		return getQuestionarioCompilatoById(idQuestionario);		
+	}
+
+	public void verificaTokenQuestionario(String idQuestionario, String token) throws ParseException {
+		QuestionarioInviatoOnlineEntity tokenQuestionario = questionarioInviatoOnlineRepository.
+				findByIdQuestionarioCompilatoAndToken(idQuestionario, token)
+				.orElseThrow(() -> new ResourceNotFoundException(String.format("token non valido per idQuestionario %s", idQuestionario)) );
+
+		if(isTokenExpired(tokenQuestionario)) {
+			throw new QuestionarioCompilatoException(String.format("token scaduto per idQuestionario %s", idQuestionario)); 
+		}
+	}
+	
+	/*
+	 * verifica se sono passati più di 3 giorni dalla creazione del token passato in input
+	 */
+	public boolean isTokenExpired(QuestionarioInviatoOnlineEntity tokenQuestionario) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar c = Calendar.getInstance();
+		c.setTime(sdf.parse(sdf.format(new Date())));
+        Date currentDate = c.getTime();
+        c.setTime(tokenQuestionario.getDataOraCreazione());
+        c.add(Calendar.DAY_OF_MONTH, 3);
+		return currentDate.after(c.getTime());
 	}
 
 } 

@@ -22,7 +22,9 @@ import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
+import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
+import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import lombok.extern.slf4j.Slf4j;
 
@@ -118,16 +120,17 @@ public class EnteSedeProgettoFacilitatoreService {
 			progettoDBFEtch.setDataOraProgettoAttivabile(new Date());
 			this.progettoService.salvaOAggiornaProgetto(progettoDBFEtch);
 		}
-		// poi prendo ref/del dell'ente gestore di progetto e mandare la mail
-		List<String> emailReferentiEDelegatiEnteGestoreProgetto = this.referentiDelegatiEnteGestoreProgettoService.getEmailReferentiAndDelegatiPerProgetto(idProgetto);
-		emailReferentiEDelegatiEnteGestoreProgetto.forEach(emailReferenteODelegato -> {
-			try {
-				this.emailService.inviaEmail("oggetto_email", emailReferenteODelegato, "Test_template");
-			} catch (Exception ex) {
-				log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore progetto per progetto con id={}.", idProgetto);
-				log.error("{}", ex);
-			}
-		});
+//		// poi prendo ref/del dell'ente gestore di progetto e mandare la mail
+		/**************ELIMINATA la parte di notifica progetto ATTIVABILE**************/
+//		List<String> emailReferentiEDelegatiEnteGestoreProgetto = this.referentiDelegatiEnteGestoreProgettoService.getEmailReferentiAndDelegatiPerProgetto(idProgetto);
+//		emailReferentiEDelegatiEnteGestoreProgetto.forEach(emailReferenteODelegato -> {
+//			try {
+//				this.emailService.inviaEmail("oggetto_email", emailReferenteODelegato, "Test_template");
+//			} catch (Exception ex) {
+//				log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore progetto per progetto con id={}.", idProgetto);
+//				log.error("{}", ex);
+//			}
+//		});
 		
 		RuoloEntity ruolo = this.ruoloService.getRuoloByCodiceRuolo(codiceRuolo);
 		UtenteEntity utenteFetch = this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleUtente);
@@ -142,7 +145,9 @@ public class EnteSedeProgettoFacilitatoreService {
 		if(StatoEnum.ATTIVO.getValue().equalsIgnoreCase(progettoDBFEtch.getStato())) {
 			//INVIO EMAIL WELCOME KIT AL FACILITATORE SSE IL PROGETTO E' ATTIVO
 			try {
-				this.emailService.inviaEmail("oggetto_email", utenteFetch.getEmail(), "Test_template");
+				this.emailService.inviaEmail(utenteFetch.getEmail(), 
+						EmailTemplateEnum.FACILITATORE, 
+						new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(codiceRuolo).getValue() });
 			} catch (Exception ex) {
 				log.error("Impossibile inviare la mail al facilitatore del progetto con id={}.", idProgetto);
 				log.error("{}", ex);

@@ -43,6 +43,8 @@ import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.key.EntePartnerKey;
+import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
+import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.InvioEmailException;
 import it.pa.repdgt.shared.exception.StoricoEnteException;
@@ -246,16 +248,25 @@ public class ContestoServiceTest {
 		List<Long> idsProgetti = Arrays.asList(1L,2L);
 		when(contestoRepository.getIdsProgettiAttivabili(idProgramma)).thenReturn(idsProgetti);
 		doNothing().when(contestoRepository).rendiProgettiAttivabili(idsProgetti);
-		ReferenteGestoreProgetto referente1 = new ReferenteGestoreProgetto("a@a.gmail.com", 1L);
-		ReferenteGestoreProgetto referente2 = new ReferenteGestoreProgetto("b@b.gmail.com", 2L);
-		List<ReferenteDelegatoEnteGestoreProgettoProjection> referenti = Arrays.asList(referente1, referente2);
-		when(this.referentiDelegatiEnteGestoreProgettoService.getEmailReferentiDelegatiEnteGestoreByIdProgetto(idsProgetti)).thenReturn(referenti);
-		when(this.emailService.inviaEmail("oggetto_email", referente1.getEmail(), "Test_template")).thenReturn(SendMessagesResponse.builder().build());
-		when(this.emailService.inviaEmail("oggetto_email", referente2.getEmail(), "Test_template")).thenReturn(SendMessagesResponse.builder().build());
-		service.verificaSceltaProfilo(codiceFiscale, "DEG", idProgramma, idProgetto);
+//		ReferenteGestoreProgetto referente1 = new ReferenteGestoreProgetto("a@a.gmail.com", 1L, "nome1", "REGP");
+//		ReferenteGestoreProgetto referente2 = new ReferenteGestoreProgetto("b@b.gmail.com", 2L, "nome2", "REGP");
+//		List<ReferenteDelegatoEnteGestoreProgettoProjection> referenti = Arrays.asList(referente1, referente2);
+//		when(this.referentiDelegatiEnteGestoreProgettoService.getEmailReferentiDelegatiEnteGestoreByIdProgetto(idsProgetti)).thenReturn(referenti);
+//		when(this.emailService.inviaEmail(referente1.getEmail(), 
+//				EmailTemplateEnum.GEST_PROGE_PARTNER, 
+//				new String[] { referente1.getNome(), RuoloUtenteEnum.valueOf(referente1.getCodiceRuolo()).getValue() })).thenReturn(SendMessagesResponse.builder().build());
+//		when(this.emailService.inviaEmail(referente1.getEmail(), 
+//				EmailTemplateEnum.GEST_PROGE_PARTNER, 
+//				new String[] { referente1.getNome(), RuoloUtenteEnum.valueOf(referente1.getCodiceRuolo()).getValue() })).thenReturn(SendMessagesResponse.builder().build());
+//		when(this.emailService.inviaEmail(referente2.getEmail(), 
+//				EmailTemplateEnum.GEST_PROGE_PARTNER, 
+//				new String[] { referente2.getNome(), RuoloUtenteEnum.valueOf(referente2.getCodiceRuolo()).getValue() })).thenReturn(SendMessagesResponse.builder().build());
+//		service.verificaSceltaProfilo(codiceFiscale, "DEG", idProgramma, idProgetto);
 		
 		programma.setStato(StatoEnum.TERMINATO.getValue());
-		doThrow(new InvioEmailException("messaggio eccezione")).when(emailService).inviaEmail("oggetto_email", referente1.getEmail(), "Test_template");
+//		doThrow(new InvioEmailException("messaggio eccezione")).when(emailService).inviaEmail(referente1.getEmail(), 
+//				EmailTemplateEnum.GEST_PROGE_PARTNER, 
+//				new String[] { referente1.getNome(), RuoloUtenteEnum.valueOf(referente1.getCodiceRuolo()).getValue() });
 		service.verificaSceltaProfilo(codiceFiscale, "DEG", idProgramma, idProgetto);
 		
 		/** TEST REGP/DEGP **/
@@ -384,6 +395,8 @@ public class ContestoServiceTest {
 
 		private String email;
 		private Long idProgetto;
+		private String nome;
+		private String codiceRuolo;
 		
 		@Override
 		public String getEmail() {
@@ -393,6 +406,16 @@ public class ContestoServiceTest {
 		@Override
 		public Long getIdProgetto() {
 			return idProgetto;
+		}
+
+		@Override
+		public String getNome() {
+			return nome;
+		}
+
+		@Override
+		public String getCodiceRuolo() {
+			return codiceRuolo;
 		}
 		
 	}

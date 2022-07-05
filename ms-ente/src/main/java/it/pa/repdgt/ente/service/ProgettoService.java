@@ -3,17 +3,24 @@ package it.pa.repdgt.ente.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import it.pa.repdgt.ente.exception.EnteException;
 import it.pa.repdgt.ente.exception.ResourceNotFoundException;
 import it.pa.repdgt.ente.repository.ProgettoRepository;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
+import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.light.ProgettoLightEntity;
+import it.pa.repdgt.shared.entityenum.StatoEnum;
 
 @Service
 public class ProgettoService {
+	@Autowired
+	@Lazy
+	private EnteService enteService;
 	@Autowired
 	private ProgettoRepository progettoRepository;
 	
@@ -72,5 +79,30 @@ public class ProgettoService {
 
 	public void salvaOAggiornaProgetto(ProgettoEntity progettoDBFEtch) {
 		this.progettoRepository.save(progettoDBFEtch);
+	}
+	
+	/**
+	 * @throws ProgettoException
+	 * */
+	@LogMethod
+	@LogExecutionTime
+	public void assegnaEnteGestoreProgetto(Long idProgetto, Long idEnteGestore) {
+		ProgettoEntity progettoFetchDB = null;
+		try {
+			progettoFetchDB = this.getProgettoById(idProgetto);
+		} catch (ResourceNotFoundException ex) {
+			String errorMessage = String.format("Impossibile Assegnare gestore a progetto perchè progetto con id=%s non presente", idProgetto);
+			throw new EnteException(errorMessage);		
+		}
+		EnteEntity enteFetchDB = null;
+		try {
+			enteFetchDB = this.enteService.getEnteById(idEnteGestore);
+		} catch (ResourceNotFoundException ex) {
+			String errorMessage = String.format("Impossibile Assegnare gestore a progetto perchè ente gestore con id=%s non presente", idEnteGestore);
+			throw new EnteException(errorMessage);
+		}
+		progettoFetchDB.setEnteGestoreProgetto(enteFetchDB);
+		progettoFetchDB.setStatoGestoreProgetto(StatoEnum.NON_ATTIVO.getValue());
+		this.salvaProgetto(progettoFetchDB);
 	}
 }

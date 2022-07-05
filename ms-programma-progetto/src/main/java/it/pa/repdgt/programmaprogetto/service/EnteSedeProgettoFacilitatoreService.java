@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import it.pa.repdgt.programmaprogetto.projection.UtenteFacilitatoreProjection;
 import it.pa.repdgt.programmaprogetto.repository.EnteSedeProgettoFacilitatoreRepository;
 import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
@@ -54,7 +55,7 @@ public class EnteSedeProgettoFacilitatoreService {
 			return this.enteSedeProgettoFacilitatoreRepository.findAllFacilitatoriEVolontariBySedeAndEnteAndProgetto(idSede, idEnte, idProgetto);
 		}
 		
-		public List<String> getAllEmailFacilitatoriEVolontariByProgetto(Long idProgetto) {
+		public List<UtenteFacilitatoreProjection> getAllEmailFacilitatoriEVolontariByProgetto(Long idProgetto) {
 			return this.enteSedeProgettoFacilitatoreRepository.findAllEmailFacilitatoriEVolontariByProgetto(idProgetto);
 		}
 

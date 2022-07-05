@@ -339,3 +339,18 @@ insert into ente_sede_progetto_facilitatore (id_ente, ID_progetto, id_sede, id_f
 	values('XTAAAA54E91E123Z', 256, 1004, 'DEGP', null, CURRENT_TIME(), 'ATTIVO');
  insert into referente_delegati_gestore_progetto(cf_utente, id_progetto, id_ente, codice_ruolo, data_ora_aggiornamento, data_ora_creazione, stato_utente)
 	values('MZADDD89E21E123S', 256, 1004, 'REGP', null, CURRENT_TIME(), 'ATTIVO');
+
+--CITTADINI
+INSERT INTO cittadino ("ID","ANNO_DI_NASCITA","CODICE_FISCALE","COGNOME","EMAIL","NOME","NUMERO_DI_CELLULARE")VALUES(1,1986,'SMNCLL86P12H501A','COGNOME_PROVA','eeee@ee.com','NOME_PROVA',45353);
+
+--QUESTIONARIO_TEMPLATE
+insert into questionario_template values(1, current_timestamp, current_timestamp, true, true, 'descrizione', 'prova_templtate','ATTIVO');
+
+--SERVIZIO
+insert into servizio values(1,current_timestamp,current_timestamp,current_date, 1005,'UTENTE2', 256,1,1,'','nome_servizio','ATTIVO','');
+
+--QUESTIONARIO_COMPILATO
+insert into QUESTIONARIO_COMPILATO values(1,current_timestamp,current_timestamp, 1005,'UTENTE2',256,1,1,1,'ATTIVO',1);
+
+--SERVIZIO_X_CITTADINO
+insert into servizio_x_cittadino values(1,1,current_timestamp,current_timestamp);

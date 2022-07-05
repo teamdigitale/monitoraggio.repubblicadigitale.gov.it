@@ -16,7 +16,9 @@ public interface ReferentiDelegatiEnteGestoreProgettoRepository extends JpaRepos
 	
 	@Query(value = " "
 			+ " SELECT         				       "
-			+ "		u.email as email,              "
+			+ "		u.email as email,"
+			+ "     u.nome as nome,"
+			+ "     rdgp.CODICE_RUOLO as codiceRuolo              "
 			+ "		rdgp.id_progetto as idProgetto "
 			+ "  FROM                              "
 			+ "		referente_delegati_gestore_progetto rdgp "
