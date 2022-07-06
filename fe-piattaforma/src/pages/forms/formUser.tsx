@@ -71,7 +71,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
     setIsFormValid?.(isValidForm);
   };
 
-  const bootClass = 'justify-content-between px-0 px-lg-5 mx-5';
+  const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 
   return (
     <Form className='mt-5 mb-5' formDisabled={formDisabled}>

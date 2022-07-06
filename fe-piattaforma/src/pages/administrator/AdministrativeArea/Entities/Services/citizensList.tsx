@@ -176,26 +176,28 @@ const CitizensList: React.FC<CitizensListI> = ({ citizens }) => {
   ];
 
   return (
-    <GenericSearchFilterTableLayout
-      searchInformation={serachInformation}
-      dropdowns={dropdowns}
-      buttonsList={buttons}
-      showButtons={false}
-      filtersList={filtersList}
-      cardsCounter={cardsCounter}
-    >
-      {citizens.map((citizen: CitizenI, i: number) => (
-        <DetailsRow
-          key={i}
-          nome={citizen.nome || ''}
-          stato={citizen.stato || ''}
-          onActionClick={onActionClick}
-          id={citizen.nome || ''}
-          innerInfo={citizen.innerInfo || { ID: '', codiceFiscale: '' }}
-          rowInfoType='questionario'
-        />
-      ))}
-    </GenericSearchFilterTableLayout>
+    <div className='container'>
+      <GenericSearchFilterTableLayout
+        searchInformation={serachInformation}
+        dropdowns={dropdowns}
+        buttonsList={buttons}
+        showButtons={false}
+        filtersList={filtersList}
+        cardsCounter={cardsCounter}
+      >
+        {citizens.map((citizen: CitizenI, i: number) => (
+          <DetailsRow
+            key={i}
+            nome={citizen.nome || ''}
+            stato={citizen.stato || ''}
+            onActionClick={onActionClick}
+            id={citizen.nome || ''}
+            innerInfo={citizen.innerInfo || { ID: '', codiceFiscale: '' }}
+            rowInfoType='questionario'
+          />
+        ))}
+      </GenericSearchFilterTableLayout>
+    </div>
   );
 };
 

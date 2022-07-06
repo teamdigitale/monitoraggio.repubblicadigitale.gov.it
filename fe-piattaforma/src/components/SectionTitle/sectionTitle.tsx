@@ -25,8 +25,7 @@ interface SectionTitleI {
 const SectionTitle: React.FC<SectionTitleI> = (props) => {
   const { title, status, upperTitle, subTitle, iconAvatar, name, surname } =
     props;
-  const { mediaIsDesktop, mediaIsTablet, mediaIsPhone } =
-    useAppSelector(selectDevice);
+  const device = useAppSelector(selectDevice);
 
   return (
     <div className='custom-section-title'>
@@ -51,7 +50,12 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
         </div>
       ) : null}
 
-      <div className='d-flex flex-row'>
+      <div
+        className={clsx(
+          'd-flex',
+          device.mediaIsPhone ? 'flex-column align-items-center' : 'flex-row'
+        )}
+      >
         {iconAvatar && (
           <AvatarInitials
             user={{ uName: name || '', uSurname: surname || '' }}
@@ -59,20 +63,22 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
             font={AvatarTextSizes.Big}
           />
         )}
-        <div className='custom-section-title__section-title primary-color-a9 text-center'>
+        <div className='custom-section-title__section-title primary-color-a9 text-nowrap'>
           <span role='heading' aria-level={1}>
             {' '}
             {title}{' '}
           </span>
         </div>
-        {(mediaIsDesktop || mediaIsTablet || mediaIsPhone) && status ? (
+        {status ? (
           <Chip
             className={clsx(
-              'table-container__status-label',
-              'mx-3',
-              'primary-bg-a9',
+              'mb-2',
               'mt-3',
-              'no-border'
+              'mx-3',
+              'w-25',
+              'no-border',
+              'primary-bg-a9',
+              'table-container__status-label'
             )}
           >
             <ChipLabel className='text-white'>{status}</ChipLabel>

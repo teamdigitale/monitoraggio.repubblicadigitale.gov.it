@@ -64,7 +64,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
 
   return (
     <>
-      <div className='container'>
+      <div>
         {showGoBack && (
           <Button
             onClick={() => navigate(-1)}
@@ -127,21 +127,21 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
               </Accordion>
             ))
           : null}
-        {currentTab === 'questionari' && surveyDefault && (
+        {currentTab === 'questionari' && surveyDefault?.items?.length && (
           <div>
             <CardStatusAction
-              moreThanOneSurvey={isRadioButtonItem}
+              //moreThanOneSurvey={isRadioButtonItem}
               title={surveyDefault?.items[0].nome}
               status={surveyDefault?.items[0].stato}
               id={surveyDefault?.items[0].id}
-              fullInfo={surveyDefault?.items[0].fullInfo}
-              onActionClick={surveyDefault?.items[0].actions}
+              fullInfo={surveyDefault?.items[0]?.fullInfo}
+              onActionClick={surveyDefault?.items[0]?.actions}
             />
             {isRadioButtonItem &&
               device.mediaIsDesktop &&
               currentTab === 'questionari' &&
-              itemsList?.items.length && (
-                <h3 className='h4 text-muted'> Altri questionari </h3>
+              itemsList?.items?.length && (
+                <h3 className='h4 text-muted mx-3'> Altri questionari </h3>
               )}
           </div>
         )}
@@ -177,7 +177,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
         formButtons.length !== 0 ? (
           <>
             <div aria-hidden='true'>
-              <Sticky mode='bottom'>
+              <Sticky mode='bottom' stickyClassName='sticky bg-white'>
                 <ButtonsBar buttons={formButtons} />
               </Sticky>
             </div>
@@ -190,7 +190,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
       {buttonsPosition === 'TOP' && formButtons && formButtons.length !== 0 ? (
         <>
           <div aria-hidden='true' className='mt-5 w-100'>
-            <Sticky mode='bottom' stickyClassName='sticky bg-white'>
+            <Sticky mode='bottom' stickyClassName='sticky bg-white container'>
               {formButtons.length === 3 ? (
                 device.mediaIsPhone ? (
                   <div

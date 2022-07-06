@@ -275,7 +275,7 @@ const GenericSearchFilterTableLayout: React.FC<
             className={clsx(
               'd-flex',
               'flex-row',
-              'flex-wra',
+              'flex-wrap',
               'p',
               'pt-lg-3',
               'pt-0',
@@ -373,22 +373,24 @@ const GenericSearchFilterTableLayout: React.FC<
         <div>{children}</div>
       )}
       {device.mediaIsPhone && cta && (
-        <Sticky mode='bottom' stickyClassName='sticky bg-white'>
-          <div className='container'>
-            <ButtonsBar
-              buttons={[
-                {
-                  size: 'xs',
-                  color: 'primary',
-                  iconForButton: iconCta || '',
-                  text: textCta || '',
-                  onClick: cta,
-                  className: 'align-self-end',
-                },
-              ]}
-            />
-          </div>
-        </Sticky>
+        <div>
+          <Sticky mode='bottom' stickyClassName='sticky bg-white'>
+            <div className='container'>
+              <ButtonsBar
+                buttons={[
+                  {
+                    size: 'xs',
+                    color: 'primary',
+                    iconForButton: iconCta || '',
+                    text: textCta || '',
+                    onClick: cta,
+                    className: 'align-self-end',
+                  },
+                ]}
+              />
+            </div>
+          </Sticky>
+        </div>
       )}
     </>
   );

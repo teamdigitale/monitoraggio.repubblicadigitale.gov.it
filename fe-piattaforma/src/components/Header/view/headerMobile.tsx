@@ -53,9 +53,10 @@ const HeaderMobile: React.FC<HeaderI> = ({
       <DropdownToggle caret className='complementary-1-color-a1 shadow-none'>
         <div
           className={clsx(
-            'header-container__top__user',
-            'd-inline-flex',
+            'd-flex',
+            'flex-row',
             'align-items-center',
+            'justify-content-start',
             'text.white',
             'primary-bg-b2'
           )}
@@ -67,7 +68,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
               font={AvatarTextSizes.Small}
             />
           </div>
-          <div className='d-inline-flex flex-column align-items-start'>
+          <div className='d-flex flex-row justify-content-start'>
             <p className='h6 text-wrap font-weight-light'>
               <em>{getRoleLabel(user?.role)}</em>
             </p>
@@ -110,11 +111,13 @@ const HeaderMobile: React.FC<HeaderI> = ({
     >
       <div
         className={clsx(
+          'container',
           'header-container__top',
           'd-flex',
           'justify-content-between',
           'align-items-center',
-          isLogged ? 'text.white primary-bg-b2' : ''
+          isLogged ? 'text.white primary-bg-b2' : '',
+          'w-100'
         )}
       >
         {isLogged && <HamburgerMenu open={isOpen} setOpen={setIsOpen} />}
@@ -132,7 +135,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
           {isLogged ? (
             <>
               {userDropDown()}
-              <div className='mx-auto'>
+              <div className='ml-auto pr-3'>
                 <Icon
                   color='white'
                   icon={Bell}
@@ -191,7 +194,8 @@ const HeaderMobile: React.FC<HeaderI> = ({
                   'd-flex',
                   'flex-row',
                   'justify-content-center',
-                  'align-items-center'
+                  'align-items-center',
+                  'p-0'
                 )}
               >
                 <div className='header-container__icon-container ml-2'>
