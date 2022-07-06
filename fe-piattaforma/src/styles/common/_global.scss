@@ -29,7 +29,10 @@ a {
 
 .sticky {
   width: 100vw !important;
-  left: 0;
+  padding-right: rem(25px);
+  @media screen and (max-width: 576px) {
+    left: 0;
+  }
 }
 
 .cta-buttons {

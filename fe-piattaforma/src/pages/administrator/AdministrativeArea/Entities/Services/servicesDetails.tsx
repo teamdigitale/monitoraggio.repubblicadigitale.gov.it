@@ -236,49 +236,47 @@ const ServicesDetails = () => {
     </Nav>
   );
   return (
-    <div className='d-flex flex-row container'>
-      <div className='d-flex flex-column w-100'>
-        <div className='container'>
-          <DetailLayout
-            formButtons={
-              activeTab === tabs.CITIZENS && serviceDetails.cittadini.length
-                ? buttonsCitizen
-                : buttons
-            }
-            titleInfo={{
-              title: serviceDetails.info.nome,
-              status: serviceDetails.info.stato,
-              upperTitle: { icon: 'it-calendar', text: 'Servizio' },
-            }}
-            buttonsPosition='BOTTOM'
-            itemsList={itemList}
-            showItemsList={activeTab === tabs.INFO}
-            nav={nav}
-            goBackTitle='Elenco servizi'
-          >
-            {content}
-          </DetailLayout>
-          <ManageServices />
-          <SearchCitizenModal
-            onConfirmText='Aggiungi'
-            onConfirmFunction={(
-              newCitizen:
-                | {
-                    [key: string]:
-                      | string
-                      | number
-                      | boolean
-                      | Date
-                      | string[]
-                      | undefined;
-                  }
-                | undefined
-            ) => {
-              console.log('aggiungi cittadino', newCitizen);
-              dispatch(closeModal());
-            }}
-          />
-        </div>
+    <div className='d-flex flex-column'>
+      <div>
+        <DetailLayout
+          formButtons={
+            activeTab === tabs.CITIZENS && serviceDetails.cittadini.length
+              ? buttonsCitizen
+              : buttons
+          }
+          titleInfo={{
+            title: serviceDetails.info.nome,
+            status: serviceDetails.info.stato,
+            upperTitle: { icon: 'it-calendar', text: 'Servizio' },
+          }}
+          buttonsPosition='TOP'
+          itemsList={itemList}
+          showItemsList={activeTab === tabs.INFO}
+          nav={nav}
+          goBackTitle='Elenco servizi'
+        >
+          {content}
+        </DetailLayout>
+        <ManageServices />
+        <SearchCitizenModal
+          onConfirmText='Aggiungi'
+          onConfirmFunction={(
+            newCitizen:
+              | {
+                  [key: string]:
+                    | string
+                    | number
+                    | boolean
+                    | Date
+                    | string[]
+                    | undefined;
+                }
+              | undefined
+          ) => {
+            console.log('aggiungi cittadino', newCitizen);
+            dispatch(closeModal());
+          }}
+        />
       </div>
     </div>
   );

@@ -1,6 +1,4 @@
-// import clsx from 'clsx';
 import React, { useEffect } from 'react';
-
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Form, Input } from '../../../components';
@@ -110,9 +108,11 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [intoModal]);
 
+  const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
+
   return (
     <Form className='mt-5' formDisabled={formDisabled}>
-      <Form.Row>
+      <Form.Row className={bootClass}>
         {/* <Input
           {...form?.codice}
           col='col-12 col-lg-6'
@@ -131,7 +131,7 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           }}
         />
       </Form.Row>
-      <Form.Row>
+      <Form.Row className={bootClass}>
         <Input
           {...form?.nomeBreve}
           col='col-12 col-lg-6'
@@ -151,7 +151,7 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           className='pl-lg-3'
         />
       </Form.Row>
-      <Form.Row>
+      <Form.Row className={bootClass}>
         <Input
           {...form?.dataInizio}
           label='Data inizio'

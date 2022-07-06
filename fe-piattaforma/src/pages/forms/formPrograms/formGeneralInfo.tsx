@@ -129,9 +129,11 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
   //  className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
 
+  const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
+
   return (
     <Form className='mt-5' formDisabled={formDisabled}>
-      <Form.Row>
+      <Form.Row className={bootClass}>
         {/* <Input
           {...form?.codice}
           col='col-12 col-lg-6'
@@ -151,7 +153,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           }}
         />
       </Form.Row>
-      <Form.Row>
+      <Form.Row className={bootClass}>
         <Input
           {...form?.nomeBreve}
           col='col-12 col-lg-6'
@@ -171,7 +173,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           className='pl-lg-3'
         />
       </Form.Row>
-      <Form.Row>
+      <Form.Row className={bootClass}>
         <Input
           {...form?.bando}
           label='Bando'
@@ -211,7 +213,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           />
         )}
       </Form.Row>
-      <Form.Row>
+      <Form.Row className={bootClass}>
         <Input
           {...form?.dataInizio}
           label='Data inizio'

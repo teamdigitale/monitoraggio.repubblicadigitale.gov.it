@@ -8,8 +8,6 @@ import {
   selectEntityDetail,
 } from '../../../../../redux/features/citizensArea/citizensAreaSlice';
 import CitizenQuestionari from './CitizenQuestionari';
-import Sticky from 'react-sticky-el';
-import { ButtonsBar } from '../../../../../components';
 import FormCitizen from '../../../../forms/formCitizen';
 import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
 import { openModal } from '../../../../../redux/features/modal/modalSlice';
@@ -78,30 +76,26 @@ const CitizensDetail: React.FC = () => {
   ];
 
   return (
-    <>
-      <div className='container pb-3'>
-        <DetailLayout
-          titleInfo={{
-            title:
-              citizen?.dettaglioCittadino?.nome +
-              ' ' +
-              citizen?.dettaglioCittadino?.cognome,
-            status: 'ATTIVO', // TODO: update
-            upperTitle: { icon: 'it-user', text: 'Cittadino' },
-          }}
-          buttonsPosition='TOP'
-          goBackTitle='I miei cittadini'
-        >
-          <FormCitizen formDisabled />
-        </DetailLayout>
-        <CitizenQuestionari questionari={[]} />{' '}
-        {/* questionari={citizen?.serviziCittadino */}
-        <ManageCitizens />
-      </div>
-      <Sticky mode='bottom' stickyClassName='sticky bg-white'>
-        <ButtonsBar buttons={citizenButtons} />
-      </Sticky>
-    </>
+    <div className='container pb-3'>
+      <DetailLayout
+        titleInfo={{
+          title:
+            citizen?.dettaglioCittadino?.nome +
+            ' ' +
+            citizen?.dettaglioCittadino?.cognome,
+          status: 'ATTIVO', // TODO: update
+          upperTitle: { icon: 'it-user', text: 'Cittadino' },
+        }}
+        buttonsPosition='TOP'
+        goBackTitle='I miei cittadini'
+        formButtons={citizenButtons}
+      >
+        <FormCitizen formDisabled />
+      </DetailLayout>
+      <CitizenQuestionari questionari={[]} />{' '}
+      {/* questionari={citizen?.serviziCittadino */}
+      <ManageCitizens />
+    </div>
   );
 };
 

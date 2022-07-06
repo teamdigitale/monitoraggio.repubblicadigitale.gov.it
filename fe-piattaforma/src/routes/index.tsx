@@ -54,7 +54,7 @@ const AppRoutes: React.FC = () => {
     // This fix is need cause Loader will cause a wdyr error if used here
     <Suspense fallback={<Loader />}>
       <Routes>
-        <Route path='/' element={<FullLayout />}>
+        <Route path='/' element={<FullLayout isFull />}>
           <Route
             path='/'
             element={
@@ -63,6 +63,8 @@ const AppRoutes: React.FC = () => {
               </ProtectedComponent>
             }
           />
+        </Route>
+        <Route path='/' element={<FullLayout />}>
           <Route
             path='area-amministrativa/*'
             element={

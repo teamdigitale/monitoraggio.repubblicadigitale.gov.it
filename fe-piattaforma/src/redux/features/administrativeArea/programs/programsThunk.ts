@@ -42,7 +42,6 @@ export const GetProgramDetail =
   (programId: string) => async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
-
       dispatch({ ...GetProgramDetailAction, programId });
       if (programId) {
         const res = await API.get(`/programma/${programId}`);
@@ -142,6 +141,26 @@ export const updateProgram =
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const UpdateProgramSurveyDefaultAction = {
+  type: 'surveys/UpdateProgramSurveyDefault',
+};
+
+export const UpdateProgramSurveyDefault =
+  (payload: { idProgramma: string; idQuestionario: string }) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...UpdateProgramSurveyDefaultAction, payload });
+      const { idProgramma, idQuestionario } = payload;
+      await API.put(`/programma/${idProgramma}/aggiungi/${idQuestionario}`);
+      // GetProgramDetail(idProgramma); // TODO: far dispatchare azioni anche qui!
+    } catch (e) {
+      console.error('UpdateSurveyDefault error', e);
     } finally {
       dispatch(hideLoader());
     }
