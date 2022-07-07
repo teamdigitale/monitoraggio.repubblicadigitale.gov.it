@@ -134,7 +134,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
   return (
     <Form className='mt-5' formDisabled={formDisabled}>
       <Form.Row className={bootClass}>
-        {/* <Input
+        <Input
           {...form?.codice}
           col='col-12 col-lg-6'
           label='ID'
@@ -142,15 +142,16 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
             onInputDataChange(value, field);
           }}
           className='pr-lg-3'
-        /> */}
+        />
 
         <Input
           {...form?.nome}
-          col='col-12'
+          col='col-12 col-lg-6'
           label='Nome programma'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
+          className='pl-lg-3'
         />
       </Form.Row>
       <Form.Row className={bootClass}>
@@ -224,7 +225,6 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           }}
           className='pr-lg-3'
         />
-
         <Input
           {...form?.dataFine}
           label='Data fine'
@@ -242,40 +242,53 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
 const form = newForm([
   newFormField({
+    field: 'codice',
+    type: 'text',
+    id: 'codice',
+  }),
+  newFormField({
     field: 'stato',
     type: 'text',
+    id: 'stato',
   }),
   newFormField({
     field: 'cup',
     type: 'text',
+    id: 'cup',
   }),
   newFormField({
     field: 'nome',
     type: 'text',
+    id: 'nome',
   }),
   newFormField({
     field: 'bando',
     type: 'text',
+    id: 'bando',
   }),
   newFormField({
     field: 'policy',
     type: 'text',
+    id: 'policy',
   }),
   newFormField({
     field: 'nomeBreve',
     type: 'text',
+    id: 'nomeBreve',
   }),
   newFormField({
     field: 'dataInizio',
     regex: RegexpType.DATE,
     required: true,
     type: 'date',
+    id: 'dataInizio',
   }),
   newFormField({
     field: 'dataFine',
     regex: RegexpType.DATE,
     required: true,
     type: 'date',
+    id: 'dataFine',
   }),
 ]);
 

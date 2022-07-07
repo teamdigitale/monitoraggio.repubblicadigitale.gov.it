@@ -98,6 +98,9 @@ const ProgramsDetails: React.FC = () => {
   const programDetails =
     useAppSelector(selectPrograms).detail?.dettagliInfoProgramma || {};
 
+  const managerAuthorityId =
+    useAppSelector(selectPrograms).detail.idEnteGestoreProgramma;
+
   useEffect(() => {
     if (entityId) dispatch(GetProgramDetail(entityId));
   }, [entityId]);
@@ -194,7 +197,7 @@ const ProgramsDetails: React.FC = () => {
   const infoRef = useRef<HTMLLIElement>(null);
 
   const AuthoritySection = () => {
-    if (entityId) {
+    if (managerAuthorityId) {
       setModalIdToOpen(formTypes.ENTE_GESTORE_PROGRAMMA),
         setDeleteText(
           'Confermi di voler eliminare questo gestore di programs?'
@@ -255,6 +258,7 @@ const ProgramsDetails: React.FC = () => {
     } else {
       return (
         setCurrentForm(undefined),
+        setCorrectModal(<ManageProgramManagerAuthority creation />),
         setCorrectButtons([]),
         setItemAccordionList([]),
         setEmptySection(
@@ -329,7 +333,11 @@ const ProgramsDetails: React.FC = () => {
         },
       ]);
     }
-  }, [changeSurveyButtonVisible, newSurveyDefaultId, otherSurveyList?.list?.length]);
+  }, [
+    changeSurveyButtonVisible,
+    newSurveyDefaultId,
+    otherSurveyList?.list?.length,
+  ]);
 
   const SurveyListSection = () => {
     setCorrectModal(undefined);
@@ -691,7 +699,7 @@ const ProgramsDetails: React.FC = () => {
 
       <ManageDelegate />
       <ManageReferal />
-      <ManageProgramManagerAuthority />
+      {/* /<ManageProgramManagerAuthority /> */}
       <ManageProject creation />
       <PreviewSurvey
         surveyId={surveyPreviewId}

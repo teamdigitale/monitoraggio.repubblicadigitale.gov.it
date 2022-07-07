@@ -177,11 +177,23 @@ export const administrativeAreaSlice = createSlice({
     setAuthoritiesList: (state, action: PayloadAction<any>) => {
       state.authorities.list = [...action.payload.data];
     },
-    setAuthoritiesDetails: (state, action: PayloadAction<any>) => {
-      state.authorities.detail = { ...action.payload.data };
+    resetAuthorityDetails: (state) => {
+      state.authorities.detail = {};
+    },
+    setAuthorityDetails: (state, action: PayloadAction<any>) => {
+      state.authorities.detail = { ...action.payload };
     },
     setProgramDetails: (state, action) => {
       state.programs.detail = { ...action.payload };
+    },
+    setAuthorityGeneralInfo: (state, action: PayloadAction<any>) => {
+      state.authorities.detail = {
+        ...state.authorities.detail,
+        dettagliInfoEnte: {
+          ...state.authorities.detail.dettagliInfoEnte,
+          ...action.payload,
+        },
+      };
     },
     setProgramGeneralInfo: (state, action: PayloadAction<any>) => {
       let filteredDetails = { ...state.programs.detail.dettagliInfoProgramma };
@@ -362,7 +374,9 @@ export const {
   setSurveysList,
   setUsersList,
   setAuthoritiesList,
-  setAuthoritiesDetails,
+  setAuthorityGeneralInfo,
+  resetAuthorityDetails,
+  setAuthorityDetails,
   setProgramDetails,
   setProjectDetails,
   setSurveyDetail,

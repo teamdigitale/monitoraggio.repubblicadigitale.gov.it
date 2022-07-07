@@ -228,11 +228,13 @@ export const FormHelper = {
       Object.keys(newFormValues)
         .filter((field) => (newFormValues as any)[field])
         .forEach((field) => {
-          newForm[field] = {
-            ...newForm[field],
-            valid: validator(newForm[field], (newFormValues as any)[field]),
-            value: newFormValues[field],
-          };
+          if (newFormValues[field] && newForm[field]) {
+            newForm[field] = {
+              ...newForm[field],
+              valid: validator(newForm[field], (newFormValues as any)[field]),
+              value: newFormValues[field],
+            };
+          }
         });
       return newForm;
     }

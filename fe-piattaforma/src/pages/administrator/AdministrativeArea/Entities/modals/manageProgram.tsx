@@ -333,7 +333,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
           'justify-content-center',
           'flex-column',
           'align-items-center',
-          'mb-4'
+          'my-4'
         )}
       >
         {device.mediaIsPhone ? (

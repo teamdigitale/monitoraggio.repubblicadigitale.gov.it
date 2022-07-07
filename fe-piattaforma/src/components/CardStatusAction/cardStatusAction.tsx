@@ -1,13 +1,5 @@
 import clsx from 'clsx';
-import {
-  Button,
-  CardReadMore,
-  Chip,
-  ChipLabel,
-  FormGroup,
-  Icon,
-  Label,
-} from 'design-react-kit';
+import { Button, CardReadMore, FormGroup, Icon, Label } from 'design-react-kit';
 import React, { memo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CRUDActionsI, CRUDActionTypes } from '../../utils/common';
@@ -15,6 +7,7 @@ import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
 // import isEqual from 'lodash.isequal';
 import Input from '../Form/input';
+import StatusChip from '../StatusChip/statusChip';
 
 const fieldMappedForTranslations: { [key: string]: string } = {
   serviziErogati: 'provided_services',
@@ -53,20 +46,6 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
     moreThanOneSurvey = false,
     onCheckedChange,
   } = props;
-
-  const getStatusLabel = (status: string) => {
-    switch (status.toUpperCase()) {
-      case 'COMPLETED':
-        return 'COMPLETATO';
-      case 'ACTIVE':
-      case 'ATTIVO':
-        return 'ATTIVO';
-      case 'NOT_COMPLETED':
-        return 'DA COMPLETARE';
-      default:
-        return status.toUpperCase;
-    }
-  };
   const device = useAppSelector(selectDevice);
   const [isChecked, setIsChecked] = useState<string>('');
 
@@ -129,7 +108,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
             className={clsx(
               'd-flex',
               'flex-grow-1',
-              'justify-content-start',
+              'justify-content-around',
               'ml-5',
               'pl-5'
             )}
@@ -159,7 +138,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
         >
           <div className='d-flex flex-row align-items-center'>
             {status && (
-              <Chip
+              <StatusChip
                 className={clsx(
                   'table-container__status-label',
                   'primary-bg-a9',
@@ -168,11 +147,8 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
                   'no-border',
                   device.mediaIsPhone ? 'mx-0 ml-2 my-3' : 'mx-3'
                 )}
-              >
-                <ChipLabel className='text-white text-uppercase my-1'>
-                  {getStatusLabel(status)}
-                </ChipLabel>
-              </Chip>
+                status={status}
+              />
             )}
           </div>
           {!device.mediaIsPhone && actionView && (
