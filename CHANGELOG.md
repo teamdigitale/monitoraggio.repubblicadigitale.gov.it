@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.12](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.11...1.0.0-develop.12) (2022-07-07)
+
+
+### Bug Fixes
+
+* **be:** fix per endpoint ente utente ([c53c825](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c53c825138ec7fbf53e52f3ea52a9bf35017c2a4)), closes [#142](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/issues/142)
+
 ## [1.0.0-develop.11](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.10...1.0.0-develop.11) (2022-07-06)
 
 
