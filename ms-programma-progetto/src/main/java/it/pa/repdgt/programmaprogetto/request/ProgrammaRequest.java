@@ -53,9 +53,13 @@ public class ProgrammaRequest implements Serializable {
 	private String bando;
 	
 	// 'CUP' della scheda Informazioni Generali del Programma
-	@JsonProperty(value = "cup")
-	@NotBlank(message = "Deve essere non null e non blank")
+	@JsonProperty(value = "cup", required = false)
 	private String cup;
+	
+	// 'CODICE' della scheda Informazioni Generali del Programma
+	@JsonProperty(value = "codice", required = true)
+	@NotBlank(message = "Deve essere non null e non blank")
+	private String codice;
 	
 	//Numero Target Punti di Facilitazione
 	private Integer nPuntiFacilitazioneTarget1;

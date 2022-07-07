@@ -15,7 +15,8 @@ public interface QuestionarioTemplateSqlRepository extends JpaRepository<Questio
 			+ "FROM questionario_template qt "
 			+ "	INNER JOIN programma_x_questionario_template pxqt "
 			+ "		ON pxqt.QUESTIONARIO_TEMPLATE_ID  = qt.ID "
-			+ "WHERE pxqt.PROGRAMMA_ID = :idProgramma ", 
+			+ "WHERE pxqt.PROGRAMMA_ID = :idProgramma "
+			+ "AND pxqt.STATO = 'ATTIVO' ", 
 			nativeQuery = true)
 	List<QuestionarioTemplateEntity> findQuestionariByIdProgramma(Long idProgramma);
 

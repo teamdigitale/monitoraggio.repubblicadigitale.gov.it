@@ -36,6 +36,7 @@ import it.pa.repdgt.programmaprogetto.exception.ProgettoException;
 import it.pa.repdgt.programmaprogetto.exception.ResourceNotFoundException;
 import it.pa.repdgt.programmaprogetto.mapper.ProgettoMapper;
 import it.pa.repdgt.programmaprogetto.mapper.ProgrammaMapper;
+import it.pa.repdgt.programmaprogetto.projection.UtenteFacilitatoreProjection;
 import it.pa.repdgt.programmaprogetto.repository.EnteRepository;
 import it.pa.repdgt.programmaprogetto.repository.EnteSedeProgettoRepository;
 import it.pa.repdgt.programmaprogetto.repository.ProgettoRepository;
@@ -45,11 +46,12 @@ import it.pa.repdgt.programmaprogetto.repository.ReferentiDelegatiEnteGestorePro
 import it.pa.repdgt.programmaprogetto.repository.ReferentiDelegatiEntePartnerRepository;
 import it.pa.repdgt.programmaprogetto.repository.RuoloRepository;
 import it.pa.repdgt.programmaprogetto.request.FiltroRequest;
-import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgettiParam;
 import it.pa.repdgt.programmaprogetto.request.ProgettoFiltroRequest;
+import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammiParam;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
+import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.EntePartnerEntity;
 import it.pa.repdgt.shared.entity.EnteSedeProgetto;
@@ -94,6 +96,10 @@ public class ProgettoServiceTest {
 	private RuoloService ruoloService;
 	@Mock
 	private ProgrammaService programmaService;
+	@Mock
+	private EmailService emailService;
+	@Mock
+	private EnteSedeProgettoFacilitatoreService enteSedeProgettoFacilitatoreService;
 	@Mock
 	private EnteService enteService;
 	@Mock
@@ -205,6 +211,7 @@ public class ProgettoServiceTest {
 		progetto1.setNome("progetto 1");
 		progetto1.setStato("ATTIVO");
 		progetto1.setProgramma(programma1);
+		progetto1.setCup("432789122");
 		listaProgetti = new ArrayList<>();
 		listaProgetti.add(progetto1);
 		pagina = new PageImpl<>(listaProgetti);
@@ -601,15 +608,16 @@ public class ProgettoServiceTest {
 	@SuppressWarnings("deprecation")
 	@Test
 	public void creaNuovoProgettoKOTest() {
-	Date dataInizio = new Date();
-	dataInizio.setDate(13);
-	Date dataFine = new Date();
-	dataFine.setDate(10);
-	progetto1.setDataInizioProgetto(dataInizio);
-	progetto1.setDataFineProgetto(dataFine);
-	Assertions.assertThrows(ProgettoException.class, () -> progettoService.creaNuovoProgetto(progetto1));
-	assertThatExceptionOfType(ProgettoException.class);
-	verify(progettoRepository, times(0)).save(progetto1);
+		//test KO per data fine antecedente quella di inizio
+		Date dataInizio = new Date();
+		dataInizio.setDate(13);
+		Date dataFine = new Date();
+		dataFine.setDate(10);
+		progetto1.setDataInizioProgetto(dataInizio);
+		progetto1.setDataFineProgetto(dataFine);
+		Assertions.assertThrows(ProgettoException.class, () -> progettoService.creaNuovoProgetto(progetto1));
+		assertThatExceptionOfType(ProgettoException.class);
+		verify(progettoRepository, times(0)).save(progetto1);
 	}
 	
 	@Test
@@ -787,5 +795,42 @@ public class ProgettoServiceTest {
 		when(progettoRepository.findProgettiByIdProgramma(programma1.getId())).thenReturn(listaProgetti);
 		progettoService.getProgettiByIdProgramma(programma1.getId());
 		verify(progettoRepository, times(1)).findProgettiByIdProgramma(programma1.getId());
+	}
+	
+	@Test
+	public void attivaProgettoTest() {
+		progetto1.setStato("ATTIVABILE");
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
+		when(enteSedeProgettoFacilitatoreService.getAllEmailFacilitatoriEVolontariByProgetto(progetto1.getId())).thenReturn(new ArrayList<UtenteFacilitatoreProjection>());
+		progettoService.attivaProgetto(progetto1.getId());
+		assertThat(progetto1.getStato()).isEqualTo("ATTIVO");
+		verify(progettoRepository, times(1)).save(progetto1);
+	}
+	
+	@Test
+	public void cancellaOTerminaProgettoTest() {
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
+		progettoService.cancellaOTerminaProgetto(progetto1, new Date());
+		
+		//test con progetto a NON ATTIVO
+		progetto1.setStato("NON ATTIVO");
+		when(progettoRepository.existsById(progetto1.getId())).thenReturn(true);
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
+		progettoService.cancellaOTerminaProgetto(progetto1, new Date());
+	}
+	
+	@Test
+	public void attivaProgettoKOTest() {
+		//test KO per progetto non presente
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(Optional.empty());
+		Assertions.assertThrows(ResourceNotFoundException.class, () -> progettoService.attivaProgetto(progetto1.getId()));
+		assertThatExceptionOfType(ResourceNotFoundException.class);
+		verify(progettoRepository, times(0)).save(progetto1);
+		
+		//test KO per progetto con stato diverso da ATTIVABILE
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
+		Assertions.assertThrows(ProgettoException.class, () -> progettoService.attivaProgetto(progetto1.getId()));
+		assertThatExceptionOfType(ProgettoException.class);
+		verify(progettoRepository, times(0)).save(progetto1);
 	}
 }

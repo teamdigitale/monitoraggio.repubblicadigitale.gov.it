@@ -24,8 +24,7 @@ public class ProgettoRequest implements Serializable {
 	@JsonProperty(value = "nomeBreve", required = true)
 	private String nomeBreve;
 	
-	@JsonProperty(value = "cup", required = true)
-	@NotBlank(message = "Deve essere non null e non blank")
+	@JsonProperty(value = "cup")
 	private String cup;
 	
 	@NotNull(message = "Deve essere non null")

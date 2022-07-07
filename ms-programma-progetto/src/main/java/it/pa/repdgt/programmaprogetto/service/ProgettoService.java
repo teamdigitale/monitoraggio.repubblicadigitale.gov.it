@@ -95,10 +95,6 @@ public class ProgettoService {
 	@LogMethod
 	@LogExecutionTime
 	public ProgettoEntity creaNuovoProgetto(ProgettoEntity progettoEntity) {
-		if(this.progettoRepository.findProgettoByCup(progettoEntity.getCup()).isPresent()) {
-			String errorMessage = String.format("Impossibile creare il progetto. Progetto con cup='%s' già esistente", progettoEntity.getCup());
-			throw new ProgettoException(errorMessage);
-		}
 		if(progettoEntity.getDataInizioProgetto().after(progettoEntity.getDataFineProgetto())) {
 			String errorMessage = String.format("Impossibile creare il progetto. La data di fine non può essere antecedente alla data di inizio");
 			throw new ProgettoException(errorMessage);

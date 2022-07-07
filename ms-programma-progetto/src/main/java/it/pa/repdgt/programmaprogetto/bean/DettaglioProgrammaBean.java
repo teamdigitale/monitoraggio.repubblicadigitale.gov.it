@@ -17,6 +17,7 @@ public class DettaglioProgrammaBean {
 	private Date dataFine;
 	private String bando;
 	private String cup;
+	private String codice;
 	private String stato;
 	private String policy;
 	

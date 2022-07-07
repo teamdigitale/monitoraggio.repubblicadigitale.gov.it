@@ -17,6 +17,7 @@ public class DettaglioProgettoBean {
 	private String cup;
 	private Date dataInizio;
 	private Date dataFine;
+	private String stato;
 	
 	//Numero Target Punti di Facilitazione
 	private Integer nPuntiFacilitazioneTarget1;

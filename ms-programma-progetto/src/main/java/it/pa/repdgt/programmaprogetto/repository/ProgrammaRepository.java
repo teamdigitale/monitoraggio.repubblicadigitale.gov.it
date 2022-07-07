@@ -21,8 +21,8 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 	
 	public Optional<ProgrammaEntity> findByNome(String nomeProgramma);
 	
-	@Query(value = "SELECT p FROM ProgrammaEntity p WHERE p.cup = :theCup")
-	public Optional<ProgrammaEntity> findProgrammaByCup(@Param(value = "theCup") String cup);
+	@Query(value = "SELECT p FROM ProgrammaEntity p WHERE p.codice = :theCodice")
+	public Optional<ProgrammaEntity> findProgrammaByCodice(@Param(value = "theCodice") String codice);
 	
 	@Query(value = "SELECT * FROM programma p", nativeQuery = true)
 	public List<ProgrammaEntity> findAll();
@@ -33,7 +33,7 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 			+ "		ON programma.ID_ENTE_GESTORE_PROGRAMMA = ente.ID "
 			+ " WHERE  1=1 "
 		    + " 	AND	 ( :criterioRicerca IS NULL  "
-		    + "			OR programma.CUP = :criterioRicerca "
+		    + "			OR programma.CODICE = :criterioRicerca "
 		    + "			OR UPPER( programma.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
 	        + "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
 			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) ) "
@@ -82,7 +82,7 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 			+ " WHERE 	1=1"
 			+ "		AND programma.POLICY = :policy "
 			+ " 	AND	 ( :criterioRicerca IS NULL  "
-		    + "			OR CONVERT(programma.ID, CHAR) = :criterioRicerca "
+		    + "			OR UPPER( programma.CODICE ) = UPPER( :criterioRicerca ) "
 		    + "			OR UPPER( programma.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
 	        + "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
 			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR programma.STATO IN (:stati) )",
@@ -128,7 +128,7 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 			+ "		ON programma.ID_ENTE_GESTORE_PROGRAMMA = ente.ID "
 			+ " WHERE  1=1 "
 		    + " 	AND	 ( :criterioRicerca IS NULL  "
-		    + "			OR CONVERT(programma.ID, CHAR) = :criterioRicerca "
+		    + "			OR UPPER( programma.CODICE ) = UPPER( :criterioRicerca ) "
 		    + "			OR UPPER( programma.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
 	        + "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
 			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) )"
@@ -147,7 +147,7 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 			+ "		ON programma.ID_ENTE_GESTORE_PROGRAMMA = ente.ID "
 			+ " WHERE  1=1 "
 		    + " 	AND	 ( :criterioRicerca IS NULL  "
-		    + "			OR CONVERT(programma.ID, CHAR) = :criterioRicerca "
+		    + "			OR UPPER( programma.CODICE ) = UPPER( :criterioRicerca )  "
 		    + "			OR UPPER( programma.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
 	        + "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
 			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) )"
@@ -307,7 +307,7 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 			+ " WHERE  1=1 "
 			+ "		AND programma.POLICY = :policy "
 		    + " 	AND	 ( :criterioRicerca IS NULL  "
-		    + "			OR CONVERT(programma.ID, CHAR) = :criterioRicerca "
+		    + "			OR UPPER( programma.CODICE ) = UPPER( :criterioRicerca ) "
 		    + "			OR UPPER( programma.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
 	        + "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
 			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR programma.STATO IN (:stati) )",
@@ -371,4 +371,13 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 			+ " WHERE programma.POLICY = :policy",
 		   nativeQuery = true)
 	public Set<String> findPoliciesPerDSCU(String policy);
+
+	@Query(value = "SELECT COUNT(*) "
+			+ "FROM programma programma "
+			+ "WHERE programma.CODICE = :codice "
+			+ "		AND programma.ID != :idProgramma", 
+			nativeQuery = true)
+	public int countProgrammiByCodice(
+			@Param(value = "codice") String codice,
+			@Param(value = "idProgramma") Long idProgramma);
 }

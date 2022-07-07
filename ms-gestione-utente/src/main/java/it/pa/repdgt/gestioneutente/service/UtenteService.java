@@ -39,7 +39,6 @@ import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.UtenteXRuolo;
 import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
-import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import lombok.extern.slf4j.Slf4j;
 
@@ -243,12 +242,12 @@ public class UtenteService {
 	
 	@LogExecutionTime
 	@LogMethod
-	public void aggiornaUtente(NuovoUtenteRequest nuovoUtenteRequest, Long idUtente) {
+	public void aggiornaUtente(NuovoUtenteRequest nuovoUtenteRequest, String cfUtente) {
 		UtenteEntity utenteFetchDB = null;
 		try {
-			utenteFetchDB = this.getUtenteById(idUtente);
+			utenteFetchDB = this.getUtenteByCodiceFiscale(cfUtente);
 		} catch (ResourceNotFoundException ex) {
-			String messaggioErrore = String.format("utente con codice fiscale=%s non trovato", idUtente);
+			String messaggioErrore = String.format("utente con codice fiscale=%s non trovato", cfUtente);
 			throw new UtenteException(messaggioErrore, ex);
 		}
 		utenteFetchDB.setCodiceFiscale(nuovoUtenteRequest.getCodiceFiscale());
@@ -260,11 +259,6 @@ public class UtenteService {
 		utenteFetchDB.setTipoContratto(nuovoUtenteRequest.getTipoContratto());
 		utenteFetchDB.setDataOraAggiornamento(new Date());
 		this.utenteRepository.save(utenteFetchDB);
-	}
-	
-	private UtenteEntity getUtenteById(Long idUtente) {
-		String messaggioErrore = String.format("risorsa con id=%s non trovata", idUtente);
-		return this.utenteRepository.findById(idUtente).orElseThrow(() -> new ResourceNotFoundException(messaggioErrore));
 	}
 
 	@LogExecutionTime
