@@ -68,19 +68,19 @@
   		
 
  -- CREAZIONE ANAGRAFICA PROGRAMMI
- insert into programma(id, nome, cup, nome_breve, policy, stato, data_ora_creazione)
-	values(100, 'Programma Alfa', 'A100', 'Programma Alfa', 'SCD', 'ATTIVO', CURRENT_TIME( ));
- insert into programma(id, nome, cup, nome_breve, policy, stato, data_ora_creazione)
-	values(101, 'Programma Beta', 'B101', 'Programma Beta', 'SCD', 'ATTIVO', CURRENT_TIME( ));
- insert into programma(id, nome, cup, nome_breve, policy, stato, data_ora_creazione)
-	values(102, 'Programma Gamma','G102', 'Programma Gamma', 'SCD', 'ATTIVO', CURRENT_TIME( ));
- insert into programma(id, nome, cup, nome_breve, policy, stato, data_ora_creazione)
-	values(103, 'Programma Sigma','D103', 'Programma Sigma', 'SCD', 'ATTIVO', CURRENT_TIME( ));
- insert into programma(id, nome, cup, nome_breve, policy, stato, data_ora_creazione)
-	values(104, 'Programma Rho', 'R104', 'Programma Rho', 'SCD', 'ATTIVO', CURRENT_TIME( ));
- insert into programma(id, nome, cup, nome_breve, policy, stato, data_ora_creazione)
-	values(105, 'Programma Tau', 'T105', 'Programma Tau', 'SCD', 'ATTIVO', CURRENT_TIME( ));
-	
+insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora_creazione)
+	values(100, 'Programma Alfa', 'A100', 'codice1', 'Programma Alfa', 'SCD', 'ATTIVO', CURRENT_TIME( ));
+ insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora_creazione)
+	values(101, 'Programma Beta', 'B101', 'codice2', 'Programma Beta', 'SCD', 'ATTIVO', CURRENT_TIME( ));
+ insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora_creazione)
+	values(102, 'Programma Gamma','G102', 'codice3', 'Programma Gamma', 'SCD', 'ATTIVO', CURRENT_TIME( ));
+ insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora_creazione)
+	values(103, 'Programma Sigma','D103', 'codice4', 'Programma Sigma', 'SCD', 'ATTIVO', CURRENT_TIME( ));
+ insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora_creazione)
+	values(104, 'Programma Rho', 'R104', 'codice5', 'Programma Rho', 'SCD', 'ATTIVO', CURRENT_TIME( ));
+ insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora_creazione)
+	values(105, 'Programma Tau', 'T105', 'codice6', 'Programma Tau', 'SCD', 'ATTIVO', CURRENT_TIME( ));
+
 -- CREAZIONE ANAGRAFICA PROGETTI
  insert into progetto(id, nome, nome_breve, stato, data_ora_creazione, cup)
 	values(250, 'Progetto Sviluppo Web', 'Programma Sviluppo Web', 'ATTIVO', CURRENT_TIME( ), 'AQWQQ1FD2244');

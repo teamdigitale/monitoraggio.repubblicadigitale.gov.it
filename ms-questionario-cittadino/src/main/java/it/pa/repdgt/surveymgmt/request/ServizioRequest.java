@@ -49,7 +49,7 @@ public class ServizioRequest implements Serializable {
 	@NotBlank
 	private String tipologiaServizio;
 	
-	@JsonProperty(value = "questioanatioCompilatoQ3")
+	@JsonProperty(value = "sezioneQuestionarioCompilatoQ3")
 	@NotBlank
 	@JsonString
 	private String sezioneQuestionarioCompilatoQ3;

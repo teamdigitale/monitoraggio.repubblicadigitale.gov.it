@@ -47,8 +47,12 @@
   -- ASSEGNAMENTO RUOLO A UTENTE
   insert into utente_x_ruolo(utente_id, ruolo_codice)
   	values('UIHPLW87R49F205X', 'DTD');
+  	  insert into utente_x_ruolo(utente_id, ruolo_codice)
+  	values('UIHPLW87R49F205X', 'DEG');
   insert into utente_x_ruolo(utente_id, ruolo_codice)
   	values('SMTPAL67R31F111X', 'DTD');
+  	 insert into utente_x_ruolo(utente_id, ruolo_codice)
+  	values('SMTPAL67R31F111X', 'REG');
   insert into utente_x_ruolo(utente_id, ruolo_codice)
   	values('ASDPDS17R65F313X', 'DSCU');
   insert into utente_x_ruolo(utente_id, ruolo_codice)
@@ -65,24 +69,26 @@
 	values('FACILITATORE1', 'VOL');
  insert into utente_x_ruolo(utente_id, ruolo_codice) 
 	values('UTENTE2', 'FAC');
-	 insert into utente_x_ruolo(utente_id, ruolo_codice) 
+ insert into utente_x_ruolo(utente_id, ruolo_codice) 
 	values('UTENTE2', 'REGP');
+	 insert into utente_x_ruolo(utente_id, ruolo_codice) 
+	values('UTENTE2', 'REG');
   		
 
  -- CREAZIONE ANAGRAFICA PROGRAMMI
- insert into programma(id, nome, cup, nome_breve, policy, stato, data_ora_creazione)
-	values(100, 'Programma Alfa', 'A100', 'Programma Alfa', 'SCD', 'ATTIVO', CURRENT_TIME( ));
- insert into programma(id, nome, cup, nome_breve, policy, stato, data_ora_creazione)
-	values(101, 'Programma Beta', 'B101', 'Programma Beta', 'SCD', 'ATTIVO', CURRENT_TIME( ));
- insert into programma(id, nome, cup, nome_breve, policy, stato, data_ora_creazione)
-	values(102, 'Programma Gamma','G102', 'Programma Gamma', 'SCD', 'ATTIVO', CURRENT_TIME( ));
- insert into programma(id, nome, cup, nome_breve, policy, stato, data_ora_creazione)
-	values(103, 'Programma Sigma','D103', 'Programma Sigma', 'SCD', 'ATTIVO', CURRENT_TIME( ));
- insert into programma(id, nome, cup, nome_breve, policy, stato, data_ora_creazione)
-	values(104, 'Programma Rho', 'R104', 'Programma Rho', 'SCD', 'ATTIVO', CURRENT_TIME( ));
- insert into programma(id, nome, cup, nome_breve, policy, stato, data_ora_creazione)
-	values(105, 'Programma Tau', 'T105', 'Programma Tau', 'SCD', 'ATTIVO', CURRENT_TIME( ));
-	
+insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora_creazione)
+	values(100, 'Programma Alfa', 'A100', 'codice1', 'Programma Alfa', 'SCD', 'ATTIVO', CURRENT_TIME( ));
+ insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora_creazione)
+	values(101, 'Programma Beta', 'B101', 'codice2', 'Programma Beta', 'SCD', 'ATTIVO', CURRENT_TIME( ));
+ insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora_creazione)
+	values(102, 'Programma Gamma','G102', 'codice3', 'Programma Gamma', 'SCD', 'ATTIVO', CURRENT_TIME( ));
+ insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora_creazione)
+	values(103, 'Programma Sigma','D103', 'codice4', 'Programma Sigma', 'SCD', 'ATTIVO', CURRENT_TIME( ));
+ insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora_creazione)
+	values(104, 'Programma Rho', 'R104', 'codice5', 'Programma Rho', 'SCD', 'ATTIVO', CURRENT_TIME( ));
+ insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora_creazione)
+	values(105, 'Programma Tau', 'T105', 'codice6', 'Programma Tau', 'SCD', 'ATTIVO', CURRENT_TIME( ));
+
 -- CREAZIONE ANAGRAFICA PROGETTI
  insert into progetto(id, nome, nome_breve, stato, data_ora_creazione, cup)
 	values(250, 'Progetto Sviluppo Web', 'Programma Sviluppo Web', 'ATTIVO', CURRENT_TIME( ), 'A11QWEQ98');
@@ -309,9 +315,9 @@ insert into referente_delegati_partner(cf_utente, id_ente, id_progetto, codice_r
 insert into referente_delegati_partner(cf_utente, id_ente, id_progetto, codice_ruolo, data_ora_creazione)   
 	values('XTAAAA54E91E123Z', 1005, 256, 'REPP', CURRENT_TIME( ));
 insert into referente_delegati_partner(cf_utente, id_ente, id_progetto, codice_ruolo, data_ora_creazione)   
-	values('MWEDSQ99E20K123A', 1005, 256, 'REPP', CURRENT_TIME( ));
+	values('MWEDSQ99E20K123A', 1005, 253, 'REPP', CURRENT_TIME( ));
 insert into referente_delegati_partner(cf_utente, id_ente, id_progetto, codice_ruolo, data_ora_creazione)  
-	values('MWEDSQ99E20K123A', 1006, 256, 'REPP', CURRENT_TIME( ));
+	values('MWEDSQ99E20K123A', 1006, 254, 'REPP', CURRENT_TIME( ));
 	
 -- ASSEGNAMENTO ENTE_SEDE_PROGETTO
 insert into ENTE_SEDE_PROGETTO(id_ente, id_progetto, id_sede, ruolo_ente, stato_sede)
@@ -344,6 +350,16 @@ insert into ente_sede_progetto_facilitatore (id_ente, ID_progetto, id_sede, id_f
 	values('MZADDD89E21E123S', 254, 1004, 'REGP', null, CURRENT_TIME(), 'ATTIVO');
  insert into referente_delegati_gestore_progetto(cf_utente, id_progetto, id_ente, codice_ruolo, data_ora_aggiornamento, data_ora_creazione, stato_utente)
 	values('UTENTE2', 254, 1004, 'REGP', null, CURRENT_TIME(), 'ATTIVO');
+	
+	--ASSEGNAMENTO REFERENTI / DELEGATI ENTE GESTORE PROGRAMMA
+ insert into referente_delegati_gestore_programma(cf_utente, id_programma, id_ente, codice_ruolo, data_ora_aggiornamento, data_ora_creazione, stato_utente)
+	values('UTENTE2', 103, 1004, 'REG', null, CURRENT_TIME(), 'ATTIVO');
+ insert into referente_delegati_gestore_programma(cf_utente, id_programma, id_ente, codice_ruolo, data_ora_aggiornamento, data_ora_creazione, stato_utente)
+	values('UIHPLW87R49F205X', 103, 1004, 'DEG', null, CURRENT_TIME(), 'ATTIVO');
+ insert into referente_delegati_gestore_programma(cf_utente, id_programma, id_ente, codice_ruolo, data_ora_aggiornamento, data_ora_creazione, stato_utente)
+	values('SMTPAL67R31F111X', 101, 1004, 'REG', null, CURRENT_TIME(), 'ATTIVO');
+ insert into referente_delegati_gestore_programma(cf_utente, id_programma, id_ente, codice_ruolo, data_ora_aggiornamento, data_ora_creazione, stato_utente)
+	values('UTENTE2', 102, 1004, 'REG', null, CURRENT_TIME(), 'ATTIVO');
 
 --insert questionario template
 INSERT INTO questionario_template (id, nome, stato, descrizione, default_rfd, default_scd) VALUES ('1', 'prova', 'ATTIVO', 'provaTest', '1', '1');

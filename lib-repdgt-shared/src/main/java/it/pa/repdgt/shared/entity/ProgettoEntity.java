@@ -35,7 +35,7 @@ public class ProgettoEntity implements Serializable {
 	@Column(name = "NOME", nullable = false)
 	private String nome;
 	
-	@Column(name = "NOME_BREVE", nullable = false, unique = true)
+	@Column(name = "NOME_BREVE", nullable = false)
 	private String nomeBreve;
 
 	/**
@@ -62,7 +62,7 @@ public class ProgettoEntity implements Serializable {
 	@Column(name = "STATO")
 	private String stato;
 	
-	@Column(name = "CUP", nullable = false, unique = true)
+	@Column(name = "CUP")
 	private String cup;
 
 	@Temporal(value = TemporalType.TIMESTAMP)
