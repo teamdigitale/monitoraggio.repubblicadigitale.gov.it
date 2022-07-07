@@ -38,25 +38,25 @@ public class ProgrammaRestApiMockMvcTest{
 	@Autowired
 	ObjectMapper objectMapper;
 	
-	@Test
-	public void creaNuovoProgrammaTest() throws Exception {
-		
-		ProgrammaRequest nuovoProgrammaRequest = new ProgrammaRequest();
-		nuovoProgrammaRequest.setCup("3453454");
-		nuovoProgrammaRequest.setDataFine(new Date());
-		nuovoProgrammaRequest.setDataInizio(new Date());
-		nuovoProgrammaRequest.setNome("programmaTestcrea");
-		nuovoProgrammaRequest.setNomeBreve("programmaTestcrea");
-		nuovoProgrammaRequest.setPolicy(PolicyEnum.RFD);
-		
-		this.mockMvc
-			.perform(
-					post("/programma")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(objectMapper.writeValueAsBytes(nuovoProgrammaRequest))
-					)
-			.andDo(print())
-			.andExpect(status()
-					.is2xxSuccessful());
-	}
+//	@Test
+//	public void creaNuovoProgrammaTest() throws Exception {
+//		
+//		ProgrammaRequest nuovoProgrammaRequest = new ProgrammaRequest();
+//		nuovoProgrammaRequest.setCup("3453454");
+//		nuovoProgrammaRequest.setDataFine(new Date());
+//		nuovoProgrammaRequest.setDataInizio(new Date());
+//		nuovoProgrammaRequest.setNome("programmaTestcrea");
+//		nuovoProgrammaRequest.setNomeBreve("programmaTestcrea");
+//		nuovoProgrammaRequest.setPolicy(PolicyEnum.RFD);
+//		
+//		this.mockMvc
+//			.perform(
+//					post("/programma")
+//					.contentType(MediaType.APPLICATION_JSON)
+//					.content(objectMapper.writeValueAsBytes(nuovoProgrammaRequest))
+//					)
+//			.andDo(print())
+//			.andExpect(status()
+//					.is2xxSuccessful());
+//	}
 }

@@ -114,7 +114,7 @@ public class EnteRestApi {
 	}
 
 	// TOUCH POINT - 2.1.5 - dettaglio ente gestore di un determinato programma
-	@GetMapping(path = "/{idProgramma}/gestoreProgramma")
+	@GetMapping(path = "/gestoreProgramma/{idProgramma}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaEnteGestoreBean getSchedaEnteGestoreProgramma(
 			@PathVariable(value = "idProgramma") Long idProgramma) {
@@ -122,14 +122,15 @@ public class EnteRestApi {
 	}
 
 	// TOUCH POINT - 3.4 - dettaglio ente gestore di un determinato progetto
-	@GetMapping(path = "/{idProgetto}/gestoreProgetto")
+	@GetMapping(path = "/gestoreProgetto/{idProgetto}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaEnteGestoreProgettoBean getSchedaEnteGestoreProgetto(
 			@PathVariable(value = "idProgetto") Long idProgetto) {
 		return this.enteService.getSchedaEnteGestoreProgettoByIdProgetto(idProgetto);
 	}
 
-	@GetMapping (path = "/{idProgetto}/partner/{idEnte}")
+	// TOUCH POINT - 3.5 - dettaglio ente partner di un determinato progetto
+	@GetMapping (path = "/partner/{idProgetto}/{idEnte}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaEntePartnerBean getSchedaEntePartner(
 			@PathVariable(value = "idProgetto") Long idProgetto,
@@ -140,9 +141,9 @@ public class EnteRestApi {
 	// TOUCH-POINT 2.2.1 - Creazione ente 
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public void creaNuovoEnte(@RequestBody @Valid NuovoEnteRequest nuovoEnteRequest) {
+	public EnteEntity creaNuovoEnte(@RequestBody @Valid NuovoEnteRequest nuovoEnteRequest) {
 		EnteEntity enteEntity = this.enteMapper.toEntityFrom(nuovoEnteRequest);
-		this.enteService.creaNuovoEnte(enteEntity);
+		return this.enteService.creaNuovoEnte(enteEntity);
 	}
 
 	// TOUCH-POINT 2.2.14B - Associa referente/delegato gestore programma
@@ -217,7 +218,7 @@ public class EnteRestApi {
 	}
 	
 	//TOUCH-POINT 2.1.5 B - Modifica Ente Gestore Programma
-		@PutMapping(path = "/{idEnte}/gestore/{idProgramma}")
+		@PutMapping(path = "/{idEnte}/gestoreProgramma/{idProgramma}")
 		@ResponseStatus(code = HttpStatus.OK)
 	public void modificaEnteGestoreProgramma(
 			@RequestBody @Valid AggiornaEnteRequest aggiornaEnteRequest,
@@ -228,7 +229,7 @@ public class EnteRestApi {
 	}
 		
 	//TOUCH-POINT 3.4 B - Modifica Ente Gestore Progetto
-		@PutMapping(path = "/{idEnte}/gestore/{idProgetto}")
+		@PutMapping(path = "/{idEnte}/gestoreProgetto/{idProgetto}")
 		@ResponseStatus(code = HttpStatus.OK)
 	public void modificaEnteGestoreProgetto(
 			@RequestBody @Valid AggiornaEnteRequest aggiornaEnteRequest,

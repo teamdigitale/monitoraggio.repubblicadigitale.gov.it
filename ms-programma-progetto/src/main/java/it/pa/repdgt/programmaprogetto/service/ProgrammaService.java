@@ -375,8 +375,8 @@ public class ProgrammaService {
 	 */
 	@Transactional(rollbackOn = Exception.class)
 	public ProgrammaEntity creaNuovoProgramma(ProgrammaEntity programma) {
-		if(this.programmaRepository.findProgrammaByCup(programma.getCup()).isPresent()) {
-			String errorMessage = String.format("Errore creazione programma. Programma con cup='%s' già presente.", programma.getCup());
+		if(this.programmaRepository.findProgrammaByCodice(programma.getCodice()).isPresent()) {
+			String errorMessage = String.format("Errore creazione programma. Programma con codice='%s' già presente.", programma.getCodice());
 			throw new ProgrammaException(errorMessage);
 		}
 		if (programma.getDataInizioProgramma().after(programma.getDataFineProgramma())) {
@@ -473,6 +473,10 @@ public class ProgrammaService {
 			throw new ProgrammaException(errorMessage);
 		}
 		final ProgrammaEntity programmaFetch = this.getProgrammaById(idProgramma);
+		if(this.programmaRepository.countProgrammiByCodice(programmaRequest.getCodice(), programmaFetch.getId()) > 0) {
+			final String errorMessage = String.format("Impossibile aggiornare il Programma con id=%s. Codice già in uso", idProgramma);
+			throw new ProgrammaException(errorMessage);
+		}
 		final String statoProgramma = programmaFetch.getStato();
 		if(!isProgrammmaAggiornabileByStatoProgramma(statoProgramma)) {
 			final String errorMessage = String.format("Impossibile aggiornare Programma con id=%s perchè stato=%s.", idProgramma, statoProgramma);

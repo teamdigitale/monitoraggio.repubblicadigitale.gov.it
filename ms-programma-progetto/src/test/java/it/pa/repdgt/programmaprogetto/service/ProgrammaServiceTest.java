@@ -516,7 +516,7 @@ public class ProgrammaServiceTest {
 	public void creaNuovoProgrammaTest() {
 		programma1.setDataInizioProgramma(new Date());
 		programma1.setDataFineProgramma(new Date());
-		when(programmaRepository.findProgrammaByCup(programma1.getCup())).thenReturn(Optional.empty());
+		when(programmaRepository.findProgrammaByCodice(programma1.getCup())).thenReturn(Optional.empty());
 		when(questionarioTemplateSqlService.getQuestionarioTemplateByPolicy(programma1.getPolicy().getValue())).thenReturn(questionario1);
 		when(programmaService.salvaProgramma(programma1)).thenReturn(programma1);
 		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
@@ -530,8 +530,8 @@ public class ProgrammaServiceTest {
 	@SuppressWarnings("deprecation")
 	@Test
 	public void creaNuovoProgrammaKOTest() {
-		//test KO per programma inesistente
-		when(programmaRepository.findProgrammaByCup(programma1.getCup())).thenReturn(programmaOptional);
+		//test KO per programma già esistente
+		when(programmaRepository.findProgrammaByCodice(programma1.getCup())).thenReturn(programmaOptional);
 		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.creaNuovoProgramma(programma1));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).save(programma1);
@@ -543,7 +543,16 @@ public class ProgrammaServiceTest {
 		dataFine.setDate(10);
 		programma1.setDataInizioProgramma(dataInizio);
 		programma1.setDataFineProgramma(dataFine);
-		when(programmaRepository.findProgrammaByCup(programma1.getCup())).thenReturn(Optional.empty());
+		when(programmaRepository.findProgrammaByCodice(programma1.getCup())).thenReturn(Optional.empty());
+		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.creaNuovoProgramma(programma1));
+		assertThatExceptionOfType(ProgrammaException.class);
+		verify(programmaRepository, times(0)).save(programma1);
+		
+		//test KO per questionario inesistente
+		programma1.setDataInizioProgramma(new Date());
+		programma1.setDataFineProgramma(new Date());
+		when(programmaRepository.findProgrammaByCodice(programma1.getCup())).thenReturn(Optional.empty());
+		when(questionarioTemplateSqlService.getQuestionarioTemplateByPolicy(programma1.getPolicy().getValue())).thenReturn(null);
 		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.creaNuovoProgramma(programma1));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).save(programma1);
@@ -590,13 +599,13 @@ public class ProgrammaServiceTest {
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).save(programma1);
 		
-		//test KO per programma non aggiornabile
-		programma1.setStato("TERMINATO");
-		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
-		when(programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.aggiornaProgramma(null, programma1.getId()));
-		assertThatExceptionOfType(ProgrammaException.class);
-		verify(programmaRepository, times(0)).save(programma1);
+//		//test KO per programma non aggiornabile
+//		programma1.setStato("TERMINATO");
+//		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
+//		when(programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
+//		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.aggiornaProgramma(null, programma1.getId()));
+//		assertThatExceptionOfType(ProgrammaException.class);
+//		verify(programmaRepository, times(0)).save(programma1);
 	}
 	
 	@Test
@@ -859,5 +868,12 @@ public class ProgrammaServiceTest {
 		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.getAllProgrammiDropdownPerProgetti(progettiParam, progettoFiltro));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).findAllByProgettoFiltro(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(), progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
+	}
+	
+	@Test
+	public void existsProgrammaByNomeTest() {
+		when(programmaRepository.findByNome(programma1.getNome())).thenReturn(programmaOptional);
+		programmaService.existsProgrammaByNome(programma1.getNome());
+		verify(programmaRepository, times(1)).findByNome(programma1.getNome());
 	}
 }

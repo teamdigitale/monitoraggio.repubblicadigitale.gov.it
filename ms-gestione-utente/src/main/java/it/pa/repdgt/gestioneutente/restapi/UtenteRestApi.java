@@ -74,12 +74,12 @@ public class UtenteRestApi {
 	}
 	
 	// TOUCH POINT - 1.3.3 - Update Utente
-	@PutMapping(path = "/{idUtente}")
+	@PutMapping(path = "/{codiceFiscale}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void aggiornaUtente(
-			@PathVariable(value = "idUtente") Long idUtente,
+			@PathVariable(value = "codiceFiscale") String cfUtente,
 			@RequestBody @Valid NuovoUtenteRequest nuovoUtenteRequest) {
-		this.utenteService.aggiornaUtente(nuovoUtenteRequest, idUtente);
+		this.utenteService.aggiornaUtente(nuovoUtenteRequest, cfUtente);
 	}
 	
 	// TOUCH POINT - 1.3.6 -  Lista Stati Utenti Dropdown
@@ -101,9 +101,9 @@ public class UtenteRestApi {
 	}
 	
 	// TOUCH POINT - 4.1 - Scheda Utente
-	@GetMapping(path = "/{cfUtente}")
+	@GetMapping(path = "/{codiceFiscale}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public SchedaUtenteBean getSchedaUtenteByCodiceFiscale(@PathVariable(value = "cfUtente") String cfUtente) {
+	public SchedaUtenteBean getSchedaUtenteByCodiceFiscale(@PathVariable(value = "codiceFiscale") String cfUtente) {
 		return this.utenteService.getSchedaUtenteByCodiceFiscale(cfUtente);
 	}
 	
@@ -126,9 +126,9 @@ public class UtenteRestApi {
 	}
 
 	// TOUCH POINT - 1.3.4 -  Delete Utente
-	@DeleteMapping(path = "/{cfUtente}")
+	@DeleteMapping(path = "/{codiceFiscale}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void cancellaUtente(@PathVariable String cfUtente) {
+	public void cancellaUtente(@PathVariable(value = "codiceFiscale") String cfUtente) {
 		this.utenteService.cancellaUtente(cfUtente);
 	}
 	
