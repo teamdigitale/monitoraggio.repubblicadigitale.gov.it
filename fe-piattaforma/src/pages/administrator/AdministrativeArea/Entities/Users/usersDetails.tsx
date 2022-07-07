@@ -141,9 +141,9 @@ const UsersDetails = () => {
   };
 
   return (
-    <div className='d-flex flex-row container'>
+    <div className='d-flex flex-row'>
       <div className='d-flex flex-column w-100'>
-        <div className='container'>
+        <div>
           <DetailLayout
             titleInfo={{
               title: 'Antonio Rossi',

@@ -13,13 +13,15 @@ import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { ProgressBar, Stepper } from '../../../../../components';
 import FormGeneralInfo from '../../../../forms/formPrograms/formGeneralInfo';
-import TargetDateFormPrograms from '../../../../forms/formPrograms/targetDateFormPrograms';
+// import TargetDateFormPrograms from '../../../../forms/formPrograms/targetDateFormPrograms';
 import {
   resetProgramDetails,
+  selectPrograms,
   setProgramGeneralInfo,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import clsx from 'clsx';
 import { useParams } from 'react-router-dom';
+import TargetsForm from '../../../../../components/AdministrativeArea/Entities/General/TargetForm/TargetsForm';
 interface ProgramInformationI {
   formDisabled?: boolean;
   creation?: boolean;
@@ -32,7 +34,7 @@ interface FormEnteGestoreProgettoFullInterface
     ProgramInformationI {}
 
 const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
-  clearForm = () => ({}),
+  // clearForm = () => ({}),
   formDisabled,
   creation = false,
 }) => {
@@ -43,10 +45,11 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
     if (isFormValid) {
       if (creation) {
         dispatch(createProgram(newFormValues));
-        setCurrentStep(1);
+        setCurrentStep(0);
       } else {
         // TODO here dispatch update program
         entityId && dispatch(updateProgram(entityId, newFormValues));
+        setCurrentStep(0);
       }
       dispatch(closeModal());
     }
@@ -58,16 +61,11 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       primaryCTA: {
         disabled: !isFormValid,
         label: 'Step Successivo',
-        onClick: () => {
-          setCurrentStep(currentStep + 1);
-          clearForm();
-        },
+        onClick: () => updateDetailInfoHandler(),
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => {
-          clearForm?.();
-        },
+        onClick: () => ({}),
       },
       tertiatyCTA: null,
     },
@@ -76,15 +74,15 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       primaryCTA: {
         disabled: !isFormValid,
         label: 'Step Successivo',
-        onClick: () => setCurrentStep(currentStep + 1),
+        onClick: () => updateDetailInfoHandler(),
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => clearForm?.(),
+        onClick: () => ({}),
       },
       tertiatyCTA: {
         label: 'Step precedente',
-        onClick: () => setCurrentStep(currentStep - 1),
+        onClick: () => setCurrentStep((prev) => prev - 1),
       },
     },
     {
@@ -92,15 +90,15 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       primaryCTA: {
         disabled: !isFormValid,
         label: 'Step Successivo',
-        onClick: () => setCurrentStep(currentStep + 1),
+        onClick: () => updateDetailInfoHandler(),
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => clearForm?.(),
+        onClick: () => ({}),
       },
       tertiatyCTA: {
         label: 'Step precedente',
-        onClick: () => setCurrentStep(currentStep - 1),
+        onClick: () => setCurrentStep((prev) => prev - 1),
       },
     },
     {
@@ -108,15 +106,15 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       primaryCTA: {
         disabled: !isFormValid,
         label: 'Step Successivo',
-        onClick: () => setCurrentStep(currentStep + 1),
+        onClick: () => updateDetailInfoHandler(),
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => clearForm?.(),
+        onClick: () => ({}),
       },
       tertiatyCTA: {
         label: 'Step precedente',
-        onClick: () => setCurrentStep(currentStep - 1),
+        onClick: () => setCurrentStep((prev) => prev - 1),
       },
     },
     {
@@ -128,21 +126,22 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => clearForm?.(),
+        onClick: () => () => ({}),
       },
       tertiatyCTA: {
         label: 'Step precedente',
-        onClick: () => setCurrentStep(currentStep - 1),
+        onClick: () => setCurrentStep((prev) => prev - 1),
       },
     },
   ];
 
-  const [currentStep, setCurrentStep] = useState<number>(1);
-  const [propstoGenericModal, setPropstoGenericModal] = useState(steps[0]);
+  const [currentStep, setCurrentStep] = useState<number>(0);
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
   }>({});
   const device = useAppSelector(selectDevice);
+  const programDetails =
+    useAppSelector(selectPrograms).detail.dettagliInfoProgramma;
 
   const stepsArray = () => {
     const allSteps: string[] = [];
@@ -153,6 +152,12 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
 
   const dispatch = useDispatch();
 
+  const updateDetailInfoHandler = () => {
+    dispatch(setProgramGeneralInfo({ currentStep, newFormValues }));
+    setCurrentStep((prev) => prev + 1);
+  };
+
+  /*
   useEffect(() => {
     if (currentStep) {
       switch (currentStep) {
@@ -178,34 +183,46 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStep]);
+  */
 
+  /*
   useEffect(() => {
     setPropstoGenericModal(steps[currentStep - 1]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStep, isFormValid]);
 
-  const renderingForm = () => {
-    switch (currentStep) {
-      case 1:
-      default: {
-        return (
-          <FormGeneralInfo
-            intoModal
-            formDisabled={!!formDisabled}
-            sendNewValues={(newData?: {
-              [key: string]: formFieldI['value'];
-            }) => {
-              setNewFormValues({ ...newData });
-            }}
-            setIsFormValid={(value: boolean | undefined) =>
-              setIsFormValid(!!value)
-            }
-            creation={creation}
-          />
-        );
-      }
-      case 2: {
-        return (
+  */
+
+  let currentForm = <span></span>;
+
+  switch (currentStep) {
+    case 0:
+      currentForm = (
+        <FormGeneralInfo
+          intoModal
+          formDisabled={!!formDisabled}
+          sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {
+            setNewFormValues({ ...newData });
+          }}
+          setIsFormValid={(value: boolean | undefined) =>
+            setIsFormValid(!!value)
+          }
+          creation={creation}
+        />
+      );
+
+      break;
+    case 1:
+      currentForm = (
+        <TargetsForm
+          section='puntiFacilitazione'
+          sendValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+            setNewFormValues({ ...newData })
+          }
+          entityDetail={programDetails}
+        />
+      );
+      /*(
           <TargetDateFormPrograms
             intoModal
             formForSection='puntiFacilitazione'
@@ -218,10 +235,19 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             }
             creation={creation}
           />
-        );
-      }
-      case 3: {
-        return (
+        ); */
+      break;
+    case 2:
+      currentForm = (
+        <TargetsForm
+          section='utentiUnici'
+          sendValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+            setNewFormValues({ ...newData })
+          }
+          entityDetail={programDetails}
+        />
+      );
+      /*(
           <TargetDateFormPrograms
             intoModal
             formForSection='utentiUnici'
@@ -234,10 +260,19 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             }
             creation={creation}
           />
-        );
-      }
-      case 4: {
-        return (
+        );*/
+      break;
+    case 3:
+      currentForm = (
+        <TargetsForm
+          section='servizi'
+          sendValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+            setNewFormValues({ ...newData })
+          }
+          entityDetail={programDetails}
+        />
+      );
+      /*(
           <TargetDateFormPrograms
             intoModal
             formForSection='servizi'
@@ -250,10 +285,19 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             }
             creation={creation}
           />
-        );
-      }
-      case 5: {
-        return (
+        ); */
+      break;
+    case 4:
+      currentForm = (
+        <TargetsForm
+          section='facilitatori'
+          sendValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+            setNewFormValues({ ...newData })
+          }
+          entityDetail={programDetails}
+        />
+      );
+      /*(
           <TargetDateFormPrograms
             intoModal
             formForSection='facilitatori'
@@ -266,10 +310,10 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             }
             creation={creation}
           />
-        );
-      }
-    }
-  };
+        ); */
+
+      break;
+  }
 
   useEffect(() => {
     dispatch(resetProgramDetails());
@@ -279,9 +323,9 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
   return (
     <GenericModal
       id={id}
-      primaryCTA={propstoGenericModal.primaryCTA}
-      secondaryCTA={propstoGenericModal.secondaryCTA}
-      tertiaryCTA={propstoGenericModal.tertiatyCTA || null}
+      primaryCTA={steps[currentStep].primaryCTA}
+      secondaryCTA={steps[currentStep].secondaryCTA}
+      tertiaryCTA={steps[currentStep].tertiatyCTA || null}
     >
       <div
         className={clsx(
@@ -310,17 +354,17 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             'font-weight-semibold'
           )}
         >
-          {steps[currentStep - 1].title}
+          {steps[currentStep].title}
         </p>
       )}
 
       <div
         style={{
           maxHeight: device.mediaIsPhone ? '100%' : '340px',
-          overflowY: 'auto',
         }}
+        className='px-5'
       >
-        {renderingForm()}
+        {currentForm}
       </div>
     </GenericModal>
   );

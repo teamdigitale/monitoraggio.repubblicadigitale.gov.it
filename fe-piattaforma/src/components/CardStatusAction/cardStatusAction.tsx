@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { CRUDActionsI, CRUDActionTypes } from '../../utils/common';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
-import isEqual from 'lodash.isequal';
+// import isEqual from 'lodash.isequal';
 import Input from '../Form/input';
 
 const fieldMappedForTranslations: { [key: string]: string } = {
@@ -169,7 +169,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
                   device.mediaIsPhone ? 'mx-0 ml-2 my-3' : 'mx-3'
                 )}
               >
-                <ChipLabel className='text-white text-uppercase'>
+                <ChipLabel className='text-white text-uppercase my-1'>
                   {getStatusLabel(status)}
                 </ChipLabel>
               </Chip>
@@ -215,6 +215,21 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
                   />
                 </Button>
               ) : null}
+              {onActionClick[CRUDActionTypes.PREVIEW] ? (
+                <Button
+                  onClick={() => {
+                    onActionClick[CRUDActionTypes.PREVIEW](id);
+                  }}
+                  className='px-4'
+                >
+                  <Icon
+                    color='primary'
+                    icon='it-file'
+                    size='sm'
+                    aria-label='Preview'
+                  />
+                </Button>
+              ) : null}
             </span>
           ) : null}
         </div>
@@ -223,7 +238,8 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
   );
 };
 
-export default memo(CardStatusAction, (prevProps, currentProps) => {
-  // TODO: check
-  return !isEqual(prevProps, currentProps);
-});
+// export default memo(CardStatusAction, (prevProps, currentProps) => {
+//   // TODO: check
+//   return !isEqual(prevProps, currentProps);
+// });
+export default memo(CardStatusAction);

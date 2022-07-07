@@ -39,6 +39,7 @@ import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.UtenteXRuolo;
 import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
+import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import lombok.extern.slf4j.Slf4j;
 

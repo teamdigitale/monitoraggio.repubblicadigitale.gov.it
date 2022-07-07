@@ -45,6 +45,15 @@ export const mapOptions = (
   return arrayMapped;
 };
 
+export const filterObjectByKey = (obj: any, filteringKey: string) =>
+  obj
+    ? Object.fromEntries(
+        Object.keys(obj)
+          .filter((key) => key.includes(filteringKey) && obj[key])
+          .map((key) => [key, obj[key] as string])
+      )
+    : {};
+
 export const CRUDActionTypes = {
   VIEW: 'view',
   CREATE: 'create',
@@ -56,6 +65,7 @@ export const CRUDActionTypes = {
   PRINT: 'print',
   COMPILE: 'compile',
   SELECT: 'select',
+  PREVIEW: 'preview',
 };
 
 export interface CRUDActionsI {
@@ -66,10 +76,8 @@ export interface FormActionsI {
   [action: string]: () => void;
 }
 
-export interface ItemsListI {
-  title?: string;
-  items: {
-    nome: string;
+export interface ItemListElemI {
+  nome: string;
     actions: CRUDActionsI;
     status?: string;
     stato?: string;
@@ -78,7 +86,11 @@ export interface ItemsListI {
       [key: string]: string;
     };
     default?: boolean;
-  }[];
+}
+
+export interface ItemsListI {
+  title?: string;
+  items: ItemListElemI[];
 }
 
 export const menuRoutes = [

@@ -13,6 +13,7 @@ import { formTypes } from '../utils';
 import {
   CRUDActionsI,
   CRUDActionTypes,
+  ItemListElemI,
   ItemsListI,
 } from '../../../../../utils/common';
 import { TableRowI } from '../../../../../components/Table/table';
@@ -37,7 +38,11 @@ import ManageReferal from '../modals/manageReferal';
 import { GetAllSurveys } from '../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 import ManageProject from '../modals/manageProject';
 import { DeleteEntity } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
-import { GetProgramDetail } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
+import {
+  GetProgramDetail,
+  UpdateProgramSurveyDefault,
+} from '../../../../../redux/features/administrativeArea/programs/programsThunk';
+import PreviewSurvey from '../modals/previewSurvey';
 
 const tabs = {
   INFO: 'info',
@@ -49,8 +54,9 @@ const tabs = {
 const ProgramsDetails: React.FC = () => {
   const { mediaIsDesktop } = useAppSelector(selectDevice);
   const programma = useAppSelector(selectPrograms);
-  const surveyList = useAppSelector(selectSurveys).list;
-  const progettiList = programma.detail?.progetti;
+  const surveyList = programma.detail?.questionari;
+  const otherSurveyList = useAppSelector(selectSurveys);
+  const projectsList = programma.detail?.progetti;
   const authorityInfo = useAppSelector(selectAuthorities)?.detail || {};
   const dispatch = useDispatch();
   const [deleteText, setDeleteText] = useState<string>('');
@@ -71,11 +77,16 @@ const ProgramsDetails: React.FC = () => {
   );
   const navigate = useNavigate();
   const location = useLocation();
-  const [surveyDefault, setSurveyDefault] = useState<ItemsListI | null>();
+  const [surveyDefault, setSurveyDefault] = useState<ItemsListI | undefined>(
+    undefined
+  );
   const [radioButtonsSurveys, setRadioButtonsSurveys] =
     useState<boolean>(false);
-  const [changeSurveyButtonVisible, setChangeSurveyButtonVisible] =
-    useState<boolean>(true);
+  const [changeSurveyButtonVisible, setChangeSurveyButtonVisible] = useState<
+    boolean | undefined
+  >(true);
+  const [surveyPreviewId, setSurveyPreviewId] = useState<string>('');
+  const [newSurveyDefaultId, setNewSurveyDefaultId] = useState<string>('');
 
   /**
    * The entity id is passed to the breadcrumb but it maybe the case to
@@ -83,7 +94,7 @@ const ProgramsDetails: React.FC = () => {
    * thunk action to get details is performed in the form component
    */
   const { entityId } = useParams();
-  // TODO remove mock
+
   const programDetails =
     useAppSelector(selectPrograms).detail?.dettagliInfoProgramma || {};
 
@@ -140,7 +151,7 @@ const ProgramsDetails: React.FC = () => {
       console.log(td);
     },
   };
-  const onActionClickQuestionari: CRUDActionsI = {
+  const onActionClickQuestionariView: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
       navigate(
         `/area-amministrativa/questionari/${
@@ -148,17 +159,32 @@ const ProgramsDetails: React.FC = () => {
         }`
       );
     },
-    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      console.log(td);
+  };
+  const onActionClickQuestionariPreview: CRUDActionsI = {
+    [CRUDActionTypes.PREVIEW]: (td: TableRowI | string) => {
+      if (typeof td === 'string') {
+        setSurveyPreviewId(td);
+        setNewSurveyDefaultId(td);
+      }
+      dispatch(
+        openModal({
+          id: 'previewSurveyModal',
+          payload: {
+            title: `Visualizza questionario`,
+          },
+        })
+      );
     },
   };
 
   const onActionClickProgetti: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(`${typeof td === 'string' ? td : td?.id}/info`);
+      console.log(td);
+
+      navigate(`${td}/info`);
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      console.log(td);
+      console.log('delete', td);
     },
   };
 
@@ -245,56 +271,111 @@ const ProgramsDetails: React.FC = () => {
   };
 
   const getListaQuestionari = () => {
-    dispatch(GetAllSurveys());
+    dispatch(GetAllSurveys(true));
   };
 
   useEffect(() => {
     getListaQuestionari();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab === tabs.QUESTIONARI]);
+  }, []);
+
+  const cancelSurvey = () => {
+    setChangeSurveyButtonVisible(true);
+    setRadioButtonsSurveys(false);
+  };
+
+  const confirmSurvey = () => {
+    setChangeSurveyButtonVisible(true);
+    setRadioButtonsSurveys(false);
+    dispatch(
+      UpdateProgramSurveyDefault({
+        idProgramma: entityId?.toString() || '',
+        idQuestionario: newSurveyDefaultId,
+      })
+    );
+  };
+
+  useEffect(() => {
+    if (changeSurveyButtonVisible) {
+      setCorrectButtons([
+        {
+          size: 'xs',
+          color: 'primary',
+          text: 'Cambia questionario',
+          disabled: otherSurveyList?.list?.length < 2,
+          onClick: () => {
+            setChangeSurveyButtonVisible(false);
+            setRadioButtonsSurveys(true);
+          },
+        },
+      ]);
+    } else if (changeSurveyButtonVisible === false) {
+      setSurveyDefault({
+        items: [{ ...surveyList[0], actions: onActionClickQuestionariPreview }],
+      });
+      setCorrectButtons([
+        {
+          size: 'xs',
+          color: 'primary',
+          outline: true,
+          text: 'Annulla',
+          onClick: () => cancelSurvey(),
+        },
+        {
+          size: 'xs',
+          color: 'primary',
+          text: 'Conferma',
+          onClick: () => confirmSurvey(),
+        },
+      ]);
+    }
+  }, [changeSurveyButtonVisible, newSurveyDefaultId, otherSurveyList?.list?.length]);
 
   const SurveyListSection = () => {
     setCorrectModal(undefined);
     setItemAccordionList(null);
     setCurrentForm(undefined);
     if (surveyList?.length) {
-      setItemList({
+      setSurveyDefault({
         items: [
           {
-            nome: 'Questionario 1',
-            stato: 'active',
-            actions: onActionClickQuestionari,
-            id: 'questionario',
-          },
-          {
-            nome: 'Questionario 2',
-            stato: 'active',
-            actions: onActionClickQuestionari,
-            id: 'questionario2',
+            ...surveyList[0],
+            actions: changeSurveyButtonVisible
+              ? onActionClickQuestionariView
+              : onActionClickQuestionariPreview,
           },
         ],
-      }),
-        setCorrectButtons([
-          {
-            size: 'xs',
-            color: 'primary',
-            text: 'Elimina',
-            onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
-          },
-          {
-            size: 'xs',
-            outline: true,
-            color: 'primary',
-            text: ' Modifica',
-            onClick: () =>
-              dispatch(
-                openModal({
-                  id: formTypes.ENTE_GESTORE_PROGRAMMA,
-                  payload: { title: 'Modifica ente gestore programma' },
-                })
+      });
+      if (otherSurveyList?.list?.length) {
+        const otherSurveys: ItemListElemI[] = [];
+        otherSurveyList?.list?.map((elem) =>
+          otherSurveys.push({
+            ...elem,
+            actions: onActionClickQuestionariPreview,
+          })
+        );
+        if (surveyDefault?.items[0]?.id) {
+          setItemList({
+            items: [
+              ...(otherSurveys || []).filter(
+                (elem) => elem.id !== surveyDefault?.items[0]?.id
               ),
+            ],
+          });
+        }
+      }
+      setCorrectButtons([
+        {
+          size: 'xs',
+          color: 'primary',
+          text: 'Cambia questionario',
+          disabled: otherSurveyList?.list?.length < 2,
+          onClick: () => {
+            setChangeSurveyButtonVisible(false);
+            setRadioButtonsSurveys(true);
           },
-        ]);
+        },
+      ]);
       setEmptySection(undefined);
     } else {
       setItemList(undefined),
@@ -313,17 +394,31 @@ const ProgramsDetails: React.FC = () => {
     setCorrectModal(undefined);
     setItemAccordionList(null);
     setCurrentForm(undefined);
-    if (progettiList?.length) {
-      progettiList?.map(
-        (progetto: { id: string; nome: string; stato: string }) => ({
-          ...progetto,
-          fullInfo: { id: progetto.id },
-          actions: onActionClickProgetti,
-        }),
+    setCorrectModal(<ManageProject creation />);
+    if (projectsList?.length) {
+      setCorrectButtons([
+        {
+          size: 'xs',
+          color: 'primary',
+          text: 'Aggiungi Progetto',
+          onClick: () =>
+            dispatch(
+              openModal({
+                id: formTypes.PROGETTO,
+                payload: { title: 'Aggiungi Progetto' },
+              })
+            ),
+        },
+      ]),
         setItemList({
-          items: [...progettiList],
-        })
-      );
+          items: projectsList?.map(
+            (progetto: { id: string; nome: string; stato: string }) => ({
+              ...progetto,
+              fullInfo: { id: progetto.id },
+              actions: onActionClickProgetti,
+            })
+          ),
+        });
       setEmptySection(undefined);
     } else {
       setEmptySection(
@@ -345,18 +440,6 @@ const ProgramsDetails: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
 
-  useEffect(() => {
-    if (changeSurveyButtonVisible) {
-      setCorrectButtons(
-        buttonSurvey.filter((button) => button.text === 'Cambia questionario')
-      );
-    } else {
-      setCorrectButtons(
-        buttonSurvey.filter((button) => button.text !== 'Cambia questionario')
-      );
-    }
-  }, [changeSurveyButtonVisible]);
-
   const centerActiveItem = () => {
     switch (activeTab) {
       case tabs.INFO:
@@ -376,68 +459,6 @@ const ProgramsDetails: React.FC = () => {
         break;
     }
   };
-
-  const itemMock = [
-    {
-      nome: 'Questionario 1',
-      stato: 'active',
-      actions: onActionClickQuestionari,
-      id: 'questionario',
-      default: true,
-    },
-    {
-      nome: 'Questionario 2',
-      stato: 'active',
-      actions: onActionClickQuestionari,
-      id: 'questionario2',
-      default: false,
-    },
-    {
-      nome: 'Questionario 3',
-      stato: 'active',
-      actions: onActionClickQuestionari,
-      id: 'questionario3',
-      default: false,
-    },
-    {
-      nome: 'Questionario 4',
-      stato: 'active',
-      actions: onActionClickQuestionari,
-      id: 'questionario4',
-      default: false,
-    },
-  ];
-
-  const buttonSurvey: ButtonInButtonsBar[] = [
-    {
-      size: 'xs',
-      color: 'primary',
-      outline: true,
-      text: 'Annulla',
-      onClick: () => {
-        setChangeSurveyButtonVisible(true);
-        // console.log('Annulla');
-      },
-    },
-    {
-      size: 'xs',
-      color: 'primary',
-      text: 'Conferma',
-      onClick: () => {
-        setChangeSurveyButtonVisible(true);
-        // console.log('Conferma', surveyDefault?.items[0].id);  TODO: richiama api PUT new default survey
-      },
-    },
-    {
-      size: 'xs',
-      color: 'primary',
-      text: 'Cambia questionario',
-      onClick: () => {
-        setRadioButtonsSurveys(true);
-        setChangeSurveyButtonVisible(false);
-      },
-    },
-  ];
 
   useEffect(() => {
     const locationSplit = location.pathname.split('/');
@@ -524,7 +545,7 @@ const ProgramsDetails: React.FC = () => {
     mediaIsDesktop,
     programDetails,
     authorityInfo,
-    surveyDefault?.items[0].id,
+    surveyDefault?.items[0]?.id,
   ]);
 
   const formButtons: ButtonInButtonsBar[] = [
@@ -533,7 +554,7 @@ const ProgramsDetails: React.FC = () => {
       color: 'danger',
       outline: true,
       text: 'Termina programma',
-      onClick: () => console.log('termina progetto'),
+      onClick: () => console.log('termina programma'),
     },
     {
       size: 'xs',
@@ -601,7 +622,7 @@ const ProgramsDetails: React.FC = () => {
           active={activeTab === tabs.PROGETTI}
           to={`/area-amministrativa/programmi/${entityId}/${tabs.PROGETTI}`}
         >
-          {!progettiList?.length ? (
+          {!projectsList?.length ? (
             <div>
               <span className='mr-1'> * Progetti </span>
               <Icon icon='it-warning-circle' size='sm' />
@@ -616,29 +637,11 @@ const ProgramsDetails: React.FC = () => {
 
   const showINFOButtons = () => activeTab === tabs.INFO;
   const showENTEButtons = () => activeTab === tabs.ENTE;
+  const showPROGETTIButtons = () => activeTab === tabs.PROGETTI;
   const showQUESTIONARIButtons = () => activeTab === tabs.QUESTIONARI;
 
-  const onChangeSurveyDefault = (surveyCheckedId: string) => {
-    if (surveyCheckedId !== '') {
-      const newItems = [...itemMock];
-      newItems[
-        newItems.findIndex((item) => item.id === surveyDefault?.items[0].id)
-      ].default = false;
-      newItems[
-        newItems.findIndex((item) => item.id === surveyCheckedId)
-      ].default = true;
-      setSurveyDefault({
-        items: newItems.filter((item) => item.id === surveyCheckedId),
-      });
-      // non serve in teoria, itemList dovrebbe aggiornarsi con la get dopo la put del questionario di default
-      // setItemList({
-      //   items: newItems.filter((item) => item.default === false),
-      // });
-    }
-  };
-
   return (
-    <div className='container pb-3'>
+    <div className='pb-3'>
       <DetailLayout
         nav={nav}
         titleInfo={{
@@ -653,6 +656,8 @@ const ProgramsDetails: React.FC = () => {
             ? correctButtons
             : showQUESTIONARIButtons()
             ? correctButtons
+            : showPROGETTIButtons()
+            ? correctButtons
             : []
         }
         currentTab={activeTab}
@@ -663,7 +668,7 @@ const ProgramsDetails: React.FC = () => {
         surveyDefault={surveyDefault}
         isRadioButtonItem={radioButtonsSurveys}
         onRadioChange={(surveyCheckedId: string) =>
-          onChangeSurveyDefault(surveyCheckedId)
+          setNewSurveyDefaultId(surveyCheckedId)
         }
       >
         <>
@@ -674,7 +679,6 @@ const ProgramsDetails: React.FC = () => {
       {currentModal ? currentModal : null}
       <ConfirmDeleteModal
         onConfirm={() => {
-          console.log('confirm delete');
           entityId && dispatch(DeleteEntity('programma', entityId));
           dispatch(closeModal());
           navigate(-1);
@@ -689,6 +693,15 @@ const ProgramsDetails: React.FC = () => {
       <ManageReferal />
       <ManageProgramManagerAuthority />
       <ManageProject creation />
+      <PreviewSurvey
+        surveyId={surveyPreviewId}
+        onClose={() => dispatch(closeModal())}
+        primaryCtaAction={() => {
+          confirmSurvey();
+          dispatch(closeModal());
+        }}
+        secondaryCtaAction={() => cancelSurvey()}
+      />
     </div>
   );
 };

@@ -1,5 +1,6 @@
 package it.pa.repdgt.ente.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.times;

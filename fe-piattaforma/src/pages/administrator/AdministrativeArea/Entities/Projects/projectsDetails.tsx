@@ -508,15 +508,9 @@ const ProjectsDetails = () => {
   }, [activeTab, mediaIsDesktop, progetti]);
 
   return (
-    <div
-      className={clsx(
-        mediaIsPhone
-          ? 'd-flex flex-row mt-5container'
-          : 'd-flex flex-row container'
-      )}
-    >
+    <div className={clsx(mediaIsPhone && 'mt-5', 'd-flex', 'flex-row')}>
       <div className='d-flex flex-column w-100'>
-        <div className='container'>
+        <div>
           <DetailLayout
             nav={nav}
             titleInfo={{

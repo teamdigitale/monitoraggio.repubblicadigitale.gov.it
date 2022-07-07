@@ -12,6 +12,7 @@ interface CheckboxGroupI extends InputI {
   styleLabelForm?: boolean;
   className?: string;
   noLabel?: boolean;
+  classNameLabelOption?: string;
 }
 
 const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
@@ -25,21 +26,24 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
     styleLabelForm = false,
     className = '',
     noLabel = false,
+    classNameLabelOption = '',
   } = props;
-  const [values, setValues] = useState<string[]>(
-    value.toString().split(separator)
-  );
+  const parseExternalValue = () => value.toString().split(separator);
+  const [values, setValues] = useState<string[]>(parseExternalValue());
 
   useEffect(() => {
-    setValues(value.toString().split(separator));
+    setValues(parseExternalValue());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   useEffect(() => {
-    if (onInputChange)
-      onInputChange(values.filter((val) => val !== '').join(separator), field);
+    if (onInputChange) {
+      const newValues = values.filter((val) => val !== '').join(separator);
+      const areEquals = value === newValues;
+      if (!areEquals) onInputChange(newValues, field);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values]);
+  }, [values.join(',')]);
 
   const handleOnChange = (value: string | number) => {
     const valueIndex = values.findIndex((v) => v === value.toString());
@@ -89,7 +93,11 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
               key={check.value}
               label={label}
             />
-            <Label for={`${field} ${check.label}`} check>
+            <Label
+              for={`${field} ${check.label}`}
+              check
+              className={classNameLabelOption}
+            >
               {check.label}
             </Label>
           </FormGroup>

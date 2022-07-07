@@ -128,15 +128,9 @@ const AuthoritiesDetails = () => {
   const device = useAppSelector(selectDevice);
 
   return (
-    <div
-      className={clsx(
-        device.mediaIsPhone
-          ? 'd-flex flex-row mt-5container'
-          : 'd-flex flex-row container'
-      )}
-    >
+    <div className={clsx('d-flex', 'flex-row', device.mediaIsPhone && 'mt-5')}>
       <div className='d-flex flex-column w-100'>
-        <div className='container'>
+        <div>
           <DetailLayout
             titleInfo={{
               title: 'Comune di Como',

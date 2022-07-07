@@ -8,8 +8,6 @@ import {
   selectEntityDetail,
 } from '../../../../../redux/features/citizensArea/citizensAreaSlice';
 import CitizenQuestionari from './CitizenQuestionari';
-import Sticky from 'react-sticky-el';
-import { ButtonsBar } from '../../../../../components';
 import FormCitizen from '../../../../forms/formCitizen';
 import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
 import { openModal } from '../../../../../redux/features/modal/modalSlice';
@@ -36,8 +34,8 @@ const CitizensDetail: React.FC = () => {
           link: true,
         },
         {
-          label: `${citizen?.dettaglioCittadino.name}`,
-          url: `/area-amministrativa/${citizen?.dettaglioCittadino.idCittadino}`,
+          label: `${citizen?.dettaglioCittadino?.name}`,
+          url: `/area-amministrativa/${citizen?.dettaglioCittadino?.idCittadino}`,
           link: false,
         },
       ])
@@ -90,14 +88,12 @@ const CitizensDetail: React.FC = () => {
         }}
         buttonsPosition='TOP'
         goBackTitle='I miei cittadini'
+        formButtons={citizenButtons}
       >
-        <FormCitizen info={citizen?.dettaglioCittadino} formDisabled />
+        <FormCitizen formDisabled />
       </DetailLayout>
       <CitizenQuestionari questionari={[]} />{' '}
       {/* questionari={citizen?.serviziCittadino */}
-      <Sticky mode='bottom'>
-        <ButtonsBar buttons={citizenButtons} />
-      </Sticky>
       <ManageCitizens />
     </div>
   );

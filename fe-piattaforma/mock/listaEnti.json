@@ -1,24 +1,41 @@
 {
-  "data": {
-    "list": [
-      {
-        "id": 1,
-        "nome": "Regione Lombardia",
-        "tipologia": "Tipologia 1",
-        "profilo": "3 profili assegnati"
-      },
-      {
-        "id": 2,
-        "nome": "Regione Lazio",
-        "tipologia": "Tipologia 2",
-        "profilo": "Ente gestore di progetto"
-      },
-      {
-        "id": 3,
-        "nome": "Regione Puglia",
-        "tipologia": "Tipologia 3",
-        "profilo": "3 profili assegnati"
-      }
-    ]
-  }
+  "enti": [
+    {
+      "id": "1000",
+      "nome": "Regione Lombardia",
+      "tipologia": "pubblico",
+      "profilo": "ENTE GESTORE DI PROGETTO"
+    },
+    {
+      "id": "1001",
+      "nome": "Regione Lazio",
+      "tipologia": "pubblico",
+      "profilo": "ENTE GESTORE DI PROGRAMMA"
+    },
+    {
+      "id": "1002",
+      "nome": "Regione Siclia",
+      "tipologia": "pubblico",
+      "profilo": "ENTE GESTORE DI PROGRAMMA"
+    },
+    {
+      "id": "1003",
+      "nome": "Regione Piemonte",
+      "tipologia": "pubblico",
+      "profilo": "ENTE GESTORE DI PROGRAMMA"
+    },
+    {
+      "id": "1005",
+      "nome": "Regione Molise",
+      "tipologia": "pubblico",
+      "profilo": "ENTE GESTORE DI PROGETTO, ENTE PARTNER"
+    },
+    {
+      "id": "1006",
+      "nome": "Regione Campania",
+      "tipologia": "pubblico",
+      "profilo": "ENTE PARTNER"
+    }
+  ],
+  "numeroPagine": 1
 }

@@ -47,37 +47,37 @@
       "nfacilitatoriTarget5": 0,
       "nfacilitatoriDataTarget1": 1656409695000,
       "nfacilitatoriDataTarget2": 1656409695000
-  },
-  "sedi": [
+    },
+    "sedi": [
       {
-          "id": 1,
-          "nome": "Sede x",
-          "ruoloEnte": "EGP",
-          "serviziErogati": null,
-          "enteDiRiferimento": "Regione Lombardia",
-          "nrFacilitatori": 0,
-          "stato": "ATTIVO"
+        "id": 1,
+        "nome": "Sede x",
+        "ruoloEnte": "EGP",
+        "serviziErogati": null,
+        "enteDiRiferimento": "Regione Lombardia",
+        "nrFacilitatori": 0,
+        "stato": "ATTIVO"
       },
       {
-          "id": 1,
-          "nome": "Sede x",
-          "ruoloEnte": "EGP",
-          "serviziErogati": null,
-          "enteDiRiferimento": "Regione Molise",
-          "nrFacilitatori": 2,
-          "stato": "ATTIVO"
+        "id": 1,
+        "nome": "Sede x",
+        "ruoloEnte": "EGP",
+        "serviziErogati": null,
+        "enteDiRiferimento": "Regione Molise",
+        "nrFacilitatori": 2,
+        "stato": "ATTIVO"
       },
       {
-          "id": 2,
-          "nome": "Sede y",
-          "ruoloEnte": "EGP",
-          "serviziErogati": null,
-          "enteDiRiferimento": "Regione Molise",
-          "nrFacilitatori": 0,
-          "stato": "ATTIVO"
+        "id": 2,
+        "nome": "Sede y",
+        "ruoloEnte": "EGP",
+        "serviziErogati": null,
+        "enteDiRiferimento": "Regione Molise",
+        "nrFacilitatori": 0,
+        "stato": "ATTIVO"
       }
-  ],
-  "idEnteGestoreProgetto": 1000,
+    ],
+    "idEnteGestoreProgetto": 1000,
     "entiPartner": [
       {
         "id": "ente-dsda",
