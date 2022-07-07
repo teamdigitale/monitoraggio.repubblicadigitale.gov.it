@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
+import { CreateProgramManagerAuthority } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
+import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormAuthorities from '../../../../forms/formAuthorities';
 
@@ -9,6 +13,7 @@ const id = 'ente-gestore-programma';
 
 interface ManageEnteGestoreProgettoFormI {
   formDisabled?: boolean;
+  creation?: boolean;
 }
 
 interface ManageEnteGestoreProgettoI
@@ -18,18 +23,24 @@ interface ManageEnteGestoreProgettoI
 const ManageProgramManagerAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
   clearForm,
   formDisabled,
+  creation = false,
 }) => {
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
   }>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  const dispatch = useDispatch();
+  const { entityId } = useParams();
 
   const handleSaveEnte = () => {
     if (isFormValid) {
       console.log(newFormValues);
-      // TODO call to update the values
+      entityId &&
+        dispatch(CreateProgramManagerAuthority({ ...newFormValues }, entityId));
+      dispatch(closeModal());
     }
   };
+
   return (
     <GenericModal
       id={id}
@@ -44,10 +55,13 @@ const ManageProgramManagerAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
       }}
     >
       <FormAuthorities
+        creation={creation}
         formDisabled={!!formDisabled}
-        sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
-          setNewFormValues({ ...newData })
-        }
+        sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {
+          console.log(newData);
+
+          setNewFormValues({ ...newData });
+        }}
         setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
       />
     </GenericModal>

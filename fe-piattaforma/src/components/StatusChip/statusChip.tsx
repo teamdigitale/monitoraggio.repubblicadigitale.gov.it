@@ -6,6 +6,7 @@ interface StatusChipI {
   status: string;
   noTooltip?: boolean;
   rowTableId?: string | number;
+  className?: string;
 }
 
 const statusTypes = {

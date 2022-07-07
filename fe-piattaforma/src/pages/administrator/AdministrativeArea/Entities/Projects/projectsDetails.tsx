@@ -49,8 +49,8 @@ const ProjectsDetails = () => {
   const { mediaIsDesktop, mediaIsPhone } = useAppSelector(selectDevice);
   const progetti = useAppSelector(selectProjects);
   const managingAuthorityID = progetti.detail?.idEnteGestoreProgetto;
-  const PartnerAuthorityList = progetti.detail?.entiPartner;
-  const headquarterList = progetti.detail?.sedi;
+  const PartnerAuthoritiesList = progetti.detail?.entiPartner;
+  const headquarterList = progetti?.detail?.sedi;
   const [deleteText, setDeleteText] = useState<string>('');
   const [activeTab, setActiveTab] = useState<string>(tabs.INFO);
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
@@ -239,19 +239,18 @@ const ProjectsDetails = () => {
   };
 
   const PartnerAuthoritySection = () => {
-    if (PartnerAuthorityList?.length) {
-      PartnerAuthorityList?.map(
-        (ente: { id: string; nome: string; ref: string; stato: string }) => ({
-          ...ente,
-          fullInfo: { ref: ente.ref },
-          actions: onActionClickEntiPartner,
-        })
-      ),
-        setButtonsPosition('BOTTOM');
+    if (PartnerAuthoritiesList?.length) {
+      setButtonsPosition('BOTTOM');
       setCurrentForm(undefined);
       setCorrectModal(<ManageEntiPartner creation />);
       setItemList({
-        items: [...PartnerAuthorityList],
+        items: PartnerAuthoritiesList?.map(
+          (ente: { id: string; nome: string; ref: string; stato: string }) => ({
+            ...ente,
+            fullInfo: { ref: ente.ref },
+            actions: onActionClickEntiPartner,
+          })
+        ),
       });
       setItemAccordionList(null);
       setCorrectButtons([
@@ -294,17 +293,26 @@ const ProjectsDetails = () => {
 
   const HeadquartersSection = () => {
     if (headquarterList?.length) {
-      headquarterList?.map(
-        (sede: { id: string; nome: string; stato: string }) => ({
-          ...sede,
-          actions: onActionClickSede,
-        })
-      );
       setButtonsPosition('BOTTOM');
       setCurrentForm(undefined);
       setCorrectModal(<ManageHeadquarter creation />);
       setItemList({
-        items: [...headquarterList],
+        items: headquarterList?.map(
+          (sede: {
+            id: string;
+            nome: string;
+            stato: string;
+            enteDiRiferimento: string;
+            nrFacilitatori: number;
+          }) => ({
+            ...sede,
+            fullInfo: {
+              ente_ref: sede.enteDiRiferimento,
+              nFacilitatori: sede.nrFacilitatori,
+            },
+            actions: onActionClickSede,
+          })
+        ),
       });
       setItemAccordionList(null);
       setCorrectButtons([
@@ -377,7 +385,7 @@ const ProjectsDetails = () => {
           to={replaceLastUrlSection(tabs.ENTI_PARTNER)}
           active={activeTab === tabs.ENTI_PARTNER}
         >
-          {!PartnerAuthorityList?.length ? (
+          {!PartnerAuthoritiesList?.length ? (
             <div>
               <span className='mr-1'> * Enti Partner </span>
               <Icon icon='it-warning-circle' size='sm' />
@@ -407,9 +415,7 @@ const ProjectsDetails = () => {
 
   const onActionClickEntiPartner: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        `/area-amministrativa/enti/${typeof td === 'string' ? td : td?.id}`
-      );
+      navigate(`/area-amministrativa/enti/${td}`);
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       console.log(td);

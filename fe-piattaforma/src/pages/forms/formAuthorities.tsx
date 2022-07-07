@@ -1,12 +1,20 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { EmptySection, Form, Input } from '../../components';
 import { ButtonInButtonsBar } from '../../components/ButtonsBar/buttonsBar';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../hoc/withFormHandler';
-import { selectAuthorities } from '../../redux/features/administrativeArea/administrativeAreaSlice';
-import { GetEnteDetail } from '../../redux/features/administrativeArea/authorities/authoritiesThunk';
+import {
+  resetAuthorityDetails,
+  selectAuthorities,
+} from '../../redux/features/administrativeArea/administrativeAreaSlice';
+import {
+  GetAuthorityDetail,
+  GetAuthorityProgramManagerDetail,
+  GetAuthorityProjectManagerDetail,
+} from '../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import { openModal } from '../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../utils/formHelper';
@@ -40,6 +48,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
   } = props;
 
   const formDisabled = !!props.formDisabled;
+  const { projectId, entityId, idEnte } = useParams();
 
   const newGestoreProgetto = () => {
     dispatch(
@@ -62,7 +71,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
   ];
 
   const formData: { [key: string]: formFieldI['value'] } | undefined =
-    useAppSelector(selectAuthorities).detail?.info;
+    useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
   const dispatch = useDispatch();
 
   if (formData && !creation) {
@@ -78,19 +87,20 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
       switch (enteType) {
         case formTypes.ENTE_GESTORE_PROGETTO:
         case formTypes.ENTI_GESTORE_PROGETTO:
-          dispatch(GetEnteDetail(enteType));
+          projectId && dispatch(GetAuthorityProjectManagerDetail(projectId));
           break;
         case formTypes.ENTE_PARTNER:
         case formTypes.ENTI_PARTNER:
           //dispatch(GetEntePartnerDetail(secondParam || '', 'prova'));
-          dispatch(GetEnteDetail(enteType));
+          dispatch(GetAuthorityDetail(enteType));
           break;
         case formTypes.ENTE_GESTORE_PROGRAMMA:
-          //dispatch(GetEnteGestoreProgrammaDetail(firstParam || '', 'prova'));
-          dispatch(GetEnteDetail(enteType));
+          entityId && dispatch(GetAuthorityProgramManagerDetail(entityId));
+          // dispatch(GetAuthorityDetail(enteType));
           break;
         default:
           //dispatch(GetEnteGestoreProgrammaDetail(firstParam || '', 'prova'));
+          idEnte && dispatch(GetAuthorityDetail(idEnte));
           break;
       }
     }
@@ -100,65 +110,72 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
     if (formData) {
       setFormValues(formData);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
+
+  useEffect(() => {
+    if (creation) dispatch(resetAuthorityDetails());
+  }, [creation]);
 
   const onInputDataChange = (
     value: formFieldI['value'],
     field?: formFieldI['field']
   ) => {
     onInputChange?.(value, field);
-    sendNewValues?.(getFormValues?.());
     setIsFormValid?.(isValidForm);
   };
+
+  useEffect(() => {
+    sendNewValues?.(getFormValues?.());
+  }, [form]);
 
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 
   return (
     <Form className='mt-5 mb-5' formDisabled={formDisabled}>
-      <>
-        <Form.Row className={bootClass}>
+      {form && (
+        <>
+          <Form.Row className={bootClass}>
+            <Input
+              {...form?.id}
+              col='col-12 col-lg-6'
+              label='ID'
+              onInputChange={(value, field) => {
+                onInputDataChange(value, field);
+              }}
+            />
+            <Input
+              {...form?.nome}
+              label='Nome ente'
+              col='col-12 col-lg-6'
+              placeholder='Inserisci nome programma'
+              onInputChange={(value, field) => {
+                onInputDataChange(value, field);
+              }}
+            />
+          </Form.Row>
+          <Form.Row className={bootClass}>
+            <Input
+              {...form?.nomeBreve}
+              col='col-12 col-lg-6'
+              label='Nome breve'
+              placeholder='Inserisci il nome breve'
+              onInputChange={(value, field) => {
+                onInputDataChange(value, field);
+              }}
+            />
+            <Input
+              {...form?.tipologia}
+              label='Tipologia'
+              col='col-12 col-lg-6'
+              placeholder='Inserisci la tipologia'
+              onInputChange={(value, field) => {
+                onInputDataChange(value, field);
+              }}
+            />
+          </Form.Row>
+          {/* <Form.Row className={bootClass}>
           <Input
-            {...form?.id}
-            col='col-12 col-lg-6'
-            label='ID'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
-          />
-          <Input
-            {...form?.name}
-            label='Nome ente'
-            col='col-12 col-lg-6'
-            placeholder='Inserisci nome programma'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
-          />
-        </Form.Row>
-        <Form.Row className={bootClass}>
-          <Input
-            {...form?.shortName}
-            col='col-12 col-lg-6'
-            label='Nome breve'
-            placeholder='Inserisci il nome breve'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
-          />
-          <Input
-            {...form?.type}
-            label='Tipologia'
-            col='col-12 col-lg-6'
-            placeholder='Inserisci la tipologia'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
-          />
-        </Form.Row>
-        <Form.Row className={bootClass}>
-          <Input
-            {...form?.profile}
+            {...form?.profilo}
             label='Profilo'
             col='col-12 col-lg-6'
             placeholder='Inserisci il profilo'
@@ -175,28 +192,40 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
               onInputDataChange(value, field);
             }}
           />
-        </Form.Row>
-        <Form.Row className={bootClass}>
-          <Input
-            col='col-12 col-lg-6'
-            {...form?.address}
-            label='Sede legale'
-            placeholder='Inserisci la sede legale'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
-          />
-          <Input
-            {...form?.pec}
-            label='PEC'
-            col='col-12 col-lg-6'
-            placeholder='Inserisci PEC'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
-          />
-        </Form.Row>
-      </>
+        </Form.Row> */}
+          <Form.Row className={bootClass}>
+            <Input
+              col='col-12 col-lg-6'
+              {...form?.sedeLegale}
+              label='Sede legale'
+              placeholder='Inserisci la sede legale'
+              onInputChange={(value, field) => {
+                onInputDataChange(value, field);
+              }}
+            />
+            <Input
+              {...form?.piva}
+              label='Partita Iva'
+              col='col-12 col-lg-6'
+              placeholder='Inserisci la partita iva'
+              onInputChange={(value, field) => {
+                onInputDataChange(value, field);
+              }}
+            />
+          </Form.Row>
+          <Form.Row className={bootClass}>
+            <Input
+              {...form?.indirizzoPec}
+              label='PEC'
+              col='col-12 col-lg-6'
+              placeholder='Inserisci PEC'
+              onInputChange={(value, field) => {
+                onInputDataChange(value, field);
+              }}
+            />
+          </Form.Row>
+        </>
+      )}
     </Form>
   );
 };
@@ -208,32 +237,40 @@ const form = newForm([
     id: 'id',
   }),
   newFormField({
-    field: 'name',
-    id: 'name',
+    field: 'nome',
+    id: 'nome',
   }),
   newFormField({
-    field: 'shortName',
-    id: 'shortName',
+    field: 'nomeBreve',
+    id: 'nomeBreve',
   }),
   newFormField({
-    field: 'type',
-    id: 'type',
+    field: 'tipologia',
+    id: 'tipologia',
   }),
+  /*
   newFormField({
-    field: 'profile',
-    id: 'profile',
+    field: 'profilo',
+    id: 'profilo',
   }),
+  */
+  newFormField({
+    field: 'piva',
+    id: 'piva',
+  }),
+  /*
   newFormField({
     field: 'fiscalCode',
     id: 'fiscalCode',
   }),
+  */
   newFormField({
-    field: 'address',
-    id: 'address',
+    field: 'sedeLegale',
+    id: 'sedeLegale',
   }),
   newFormField({
-    field: 'pec',
-    id: 'pec',
+    field: 'indirizzoPec',
+    id: 'indirizzoPec',
   }),
 ]);
 export default withFormHandler({ form }, FormAuthorities);

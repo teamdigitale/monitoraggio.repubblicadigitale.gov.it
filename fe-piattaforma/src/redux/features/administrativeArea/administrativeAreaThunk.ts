@@ -121,7 +121,10 @@ export const GetEntityFilterValues =
       if (res?.data?.length) {
         const filterResponse = {
           [payload.dropdownType]: res.data.map((option: string) => ({
-            label: option,
+            label:
+              payload.dropdownType === 'stati'
+                ? option[0] + option.slice(1).toLowerCase()
+                : option,
             value: option,
           })),
         };

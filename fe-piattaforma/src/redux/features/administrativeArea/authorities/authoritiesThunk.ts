@@ -4,12 +4,14 @@ import { RootState } from '../../../store';
 import isEmpty from 'lodash.isempty';
 import API from '../../../../utils/apiHelper';
 import {
-  setAuthoritiesDetails,
+  // setAuthorityGeneralInfo,
   setAuthoritiesList,
   setEntityFilterOptions,
+  setAuthorityDetails,
+  resetAuthorityDetails,
 } from '../administrativeAreaSlice';
 import { mapOptions } from '../../../../utils/common';
-import { formTypes } from '../../../../pages/administrator/AdministrativeArea/Entities/utils';
+// import { formTypes } from '../../../../pages/administrator/AdministrativeArea/Entities/utils';
 
 export interface AuthoritiesLightI {
   id: number;
@@ -22,7 +24,16 @@ export interface AuthoritiesListResponseI {
   numeroPagine: number;
   programmiLight: AuthoritiesLightI[];
 }
-
+/*
+export const sanitizeResult = (data: any) => Object.fromEntries(
+  Object.entries(data).map(([key, value]) => {
+    switch (key) {
+      // case 'indirizzoPec': return ([key, 'pec@mail.com'])
+      default: return ([key, value])
+    }
+  })
+);
+*/
 const GetAllEntiAction = {
   type: 'administrativeArea/GetAllEnti',
 };
@@ -101,14 +112,14 @@ export const GetFilterValuesEnti =
     }
   };
 
-const SetEnteDetailAction = {
-  type: 'administrativeArea/GetEnteDetail',
+const SetAuthorityDetailAction = {
+  type: 'administrativeArea/GetAuthorityDetail',
 };
-
-export const GetEnteDetail = (type: string) => async (dispatch: Dispatch) => {
+/*
+export const GetAuthorityDetail = (type: string) => async (dispatch: Dispatch) => {
   try {
     let res;
-    dispatch({ ...SetEnteDetailAction, type });
+    dispatch({ ...SetAuthorityDetailAction, type });
     switch (type) {
       case formTypes.ENTE_GESTORE_PROGETTO:
         res = await API.get('/ente/project1/gestoreProgetto/prova');
@@ -123,9 +134,115 @@ export const GetEnteDetail = (type: string) => async (dispatch: Dispatch) => {
         return;
     }
     if (res?.data) {
-      dispatch(setAuthoritiesDetails(res.data));
+      dispatch(setAuthorityDetails(res.data.data));
     }
   } catch (e) {
     console.log({ e });
   }
 };
+*/
+
+export const GetAuthorityDetail =
+  (authorityId: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...SetAuthorityDetailAction });
+
+      const res = await API.get(`/ente/${authorityId}`);
+
+      if (res?.data) {
+        dispatch(
+          setAuthorityDetails({
+            profili: res.data.dettagliProfili,
+            dettagliInfoEnte: res.data.dettagliEnte,
+          })
+        );
+      }
+    } catch (e) {
+      console.log({ e });
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+export const GetAuthorityProgramManagerDetail =
+  (programId: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...SetAuthorityDetailAction });
+      dispatch(resetAuthorityDetails());
+
+      const res = await API.get(`/ente/gestoreProgramma/${programId}`);
+
+      if (res.data) {
+        dispatch(
+          setAuthorityDetails({
+            delegatiEnteGestore: res.data.delegatiEnteGestore,
+            referentiEnteGestore: res.data.referentiEnteGestore,
+            dettagliInfoEnte: res.data.ente,
+          })
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+export const GetAuthorityProjectManagerDetail =
+  (projectId: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...SetAuthorityDetailAction });
+      dispatch(resetAuthorityDetails());
+
+      const res = await API.get(`/ente/gestoreProgetto/${projectId}`);
+
+      if (res.data) {
+        dispatch(
+          setAuthorityDetails({
+            delegatiEnteGestore: res.data.delegatiEnteGestore,
+            referentiEnteGestore: res.data.referentiEnteGestore,
+            dettagliInfoEnte: res.data.ente,
+          })
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const CreateAuthorityAction = {
+  type: 'administrativeArea/CreateAuthority',
+};
+
+export const CreateProgramManagerAuthority =
+  (authorityDetail: any, programId: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...CreateAuthorityAction });
+
+      const body = Object.fromEntries(
+        Object.entries(authorityDetail).filter(([key, _value]) => key !== 'id')
+      );
+
+      if (body) {
+        let res = await API.post(`/ente/`, {
+          ...body,
+        });
+        console.log(res, programId);
+        if (res) {
+          res = await API.put(
+            `/programma/${programId}/assegna/entegestore/${res.data.id}`
+          );
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
