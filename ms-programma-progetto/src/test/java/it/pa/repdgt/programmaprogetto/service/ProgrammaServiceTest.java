@@ -599,13 +599,13 @@ public class ProgrammaServiceTest {
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).save(programma1);
 		
-		//test KO per programma non aggiornabile
-		programma1.setStato("TERMINATO");
-		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
-		when(programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.aggiornaProgramma(null, programma1.getId()));
-		assertThatExceptionOfType(ProgrammaException.class);
-		verify(programmaRepository, times(0)).save(programma1);
+//		//test KO per programma non aggiornabile
+//		programma1.setStato("TERMINATO");
+//		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
+//		when(programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
+//		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.aggiornaProgramma(null, programma1.getId()));
+//		assertThatExceptionOfType(ProgrammaException.class);
+//		verify(programmaRepository, times(0)).save(programma1);
 	}
 	
 	@Test

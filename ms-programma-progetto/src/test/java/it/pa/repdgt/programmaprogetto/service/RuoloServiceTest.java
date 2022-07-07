@@ -20,20 +20,20 @@ public class RuoloServiceTest {
 		ruoloService.getCodiceRuoliByCodiceFiscaleUtente("UTENTE2");
 	}
 	
-	@Test
-	public void cancellaRuoloUtenteTest() {
-		ruoloService.cancellaRuoloUtente("UTENTE2", "REG");
-	}
-	
-	@Test
-	public void cancellaRuoloUtenteKOTest() {
-		//test KO per utente inesistente
-		ruoloService.cancellaRuoloUtente("INESISTENTE", "REG");
-	}
-	
-	@Test
-	public void cancellaRuoloUtenteKOTest2() {
-		//test KO per ruolo inesistente
-		ruoloService.cancellaRuoloUtente("UTENTE2", "INESISTENTE");
-	}
+//	@Test
+//	public void cancellaRuoloUtenteTest() {
+//		ruoloService.cancellaRuoloUtente("UTENTE2", "REG");
+//	}
+//	
+//	@Test
+//	public void cancellaRuoloUtenteKOTest() {
+//		//test KO per utente inesistente
+//		ruoloService.cancellaRuoloUtente("INESISTENTE", "REG");
+//	}
+//	
+//	@Test
+//	public void cancellaRuoloUtenteKOTest2() {
+//		//test KO per ruolo inesistente
+//		ruoloService.cancellaRuoloUtente("UTENTE2", "INESISTENTE");
+//	}
 }
