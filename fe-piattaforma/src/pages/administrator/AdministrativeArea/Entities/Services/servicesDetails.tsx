@@ -174,13 +174,13 @@ const ServicesDetails = () => {
   const buttons: ButtonInButtonsBar[] = [
     {
       size: 'xs',
+      outline: true,
       color: 'primary',
       text: 'Elimina',
       onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
     },
     {
       size: 'xs',
-      outline: true,
       color: 'primary',
       text: 'Modifica',
       onClick: () =>
@@ -254,6 +254,7 @@ const ServicesDetails = () => {
           showItemsList={activeTab === tabs.INFO}
           nav={nav}
           goBackTitle='Elenco servizi'
+          goBackPath='/area-amministrativa/servizi'
         >
           {content}
         </DetailLayout>

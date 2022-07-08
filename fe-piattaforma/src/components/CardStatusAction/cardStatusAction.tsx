@@ -41,6 +41,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
     status,
     actionView,
     fullInfo,
+
     onActionClick,
     id,
     moreThanOneSurvey = false,
@@ -61,7 +62,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
     <div
       className={clsx(
         'd-flex',
-        'flex-row',
+        'flex-column',
         'card-status-action',
         'mx-3',
         'mb-3',
@@ -91,49 +92,31 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
       </div>
       <div
         className={clsx(
-          device.mediaIsDesktop || device.mediaIsTablet
-            ? 'd-flex flex-row justify-content-between align-items-center mt-4 mb-3 w-100'
-            : 'd-flex flex-row flex-wrap justify-content-start align-items-center mt-4 mb-3'
+          'd-flex',
+          'justify-content-between',
+          'align-items-center',
+          'mt-4',
+          'mb-3',
+          'w-100',
+          'flex-row',
+          device.mediaIsPhone && 'flex-wrap'
         )}
       >
-        <div>
-          <span className='neutral-1-color-a8 card-status-action__title pl-2'>
+        <div className={clsx(device.mediaIsPhone && 'title')}>
+          <span className='neutral-1-color-a8 card-status-action__title'>
             <strong>{title}</strong>
             {subtitle && <span className='neutral-1-color-a8'>{subtitle}</span>}
           </span>
         </div>
 
-        {fullInfo && Object.keys(fullInfo).length ? (
-          <div
-            className={clsx(
-              'd-flex',
-              'flex-grow-1',
-              'justify-content-around',
-              'ml-5',
-              'pl-5'
-            )}
-          >
-            {Object.keys(fullInfo).map((key, index) => {
-              return (
-                <div className='d-flex flex-column' key={index}>
-                  <span className='primary-color-a12 mr-2'>
-                    {t(fieldMappedForTranslations[key])}
-                  </span>
-                  <span className='neutral-1-color-a8 weight-600'>
-                    {fullInfo[key]}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        ) : null}
         <div
           className={clsx(
             'd-flex',
             'flex-row',
+            'align-items-center',
             device.mediaIsPhone
               ? 'align-items-start justify-content-start'
-              : 'd-flex flex-row align-items-center justify-content-end'
+              : 'd-flex flex-row  justify-content-end'
           )}
         >
           <div className='d-flex flex-row align-items-center'>
@@ -145,9 +128,10 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
                   'mr-4',
                   'section-chip',
                   'no-border',
-                  device.mediaIsPhone ? 'mx-0 ml-2 my-3' : 'mx-3'
+                  device.mediaIsPhone ? 'mx-0 ml-2' : 'mx-3'
                 )}
                 status={status}
+                chipWidth
               />
             )}
           </div>
@@ -159,29 +143,31 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
             />
           )}
 
-          {device.mediaIsDesktop && onActionClick && id ? (
+          {onActionClick && id ? (
             <span className='d-flex align-items-center'>
               {onActionClick[CRUDActionTypes.DELETE] ? (
-                <Button
-                  onClick={() => {
-                    onActionClick[CRUDActionTypes.DELETE](id);
-                  }}
-                  className='pl-3 pr-0'
-                >
-                  <Icon
-                    color='primary'
-                    icon='it-delete'
-                    size='sm'
-                    aria-label='Elimina'
-                  />
-                </Button>
+                device.mediaIsPhone ? null : (
+                  <Button
+                    onClick={() => {
+                      onActionClick[CRUDActionTypes.DELETE](id);
+                    }}
+                    className='pl-3 pr-0'
+                  >
+                    <Icon
+                      color='primary'
+                      icon='it-delete'
+                      size='sm'
+                      aria-label='Elimina'
+                    />
+                  </Button>
+                )
               ) : null}
               {onActionClick[CRUDActionTypes.VIEW] ? (
                 <Button
                   onClick={() => {
                     onActionClick[CRUDActionTypes.VIEW](id);
                   }}
-                  className='px-4'
+                  className={clsx(device.mediaIsPhone ? 'px-0' : 'px-4')}
                 >
                   <Icon
                     color='primary'
@@ -209,6 +195,33 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
             </span>
           ) : null}
         </div>
+      </div>
+      <div>
+        {fullInfo && Object.keys(fullInfo).length ? (
+          <div className={clsx('d-flex', 'flex-row', 'flex-wrap')}>
+            {Object.keys(fullInfo).map((key, index) => {
+              return (
+                <div
+                  className={clsx(
+                    'd-flex',
+                    'flex-column',
+                    'py-3',
+                    device.mediaIsPhone ? 'px-1' : 'pr-5'
+                  )}
+                  key={index}
+                  style={{ minWidth: '120px' }}
+                >
+                  <span className='primary-color-a12 mr-2 text-wrap'>
+                    {t(fieldMappedForTranslations[key])}
+                  </span>
+                  <span className='neutral-1-color-a8 weight-600 text-wrap'>
+                    {fullInfo[key] === null ? '---' : fullInfo[key]}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        ) : null}
       </div>
     </div>
   );

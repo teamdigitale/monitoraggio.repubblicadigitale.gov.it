@@ -19,7 +19,7 @@ import {
 import { TableRowI } from '../../../../../components/Table/table';
 import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
 import ManageProgram from '../modals/manageProgram';
-import ManageProgramManagerAuthority from '../modals/manageProgramManagerAuthority';
+import ManageManagerAuthority from '../modals/manageManagerAuthority';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
   selectDevice,
@@ -209,7 +209,7 @@ const ProgramsDetails: React.FC = () => {
             enteType={formTypes.ENTE_GESTORE_PROGRAMMA}
           />
         ),
-        setCorrectModal(<ManageProgramManagerAuthority />),
+        setCorrectModal(<ManageManagerAuthority />),
         setItemList(null),
         setCorrectButtons([
           {
@@ -226,7 +226,7 @@ const ProgramsDetails: React.FC = () => {
             onClick: () =>
               dispatch(
                 openModal({
-                  id: formTypes.ENTE_GESTORE_PROGRAMMA,
+                  id: 'ente-gestore',
                   payload: { title: 'Modifica ente gestore programma' },
                 })
               ),
@@ -258,7 +258,7 @@ const ProgramsDetails: React.FC = () => {
     } else {
       return (
         setCurrentForm(undefined),
-        setCorrectModal(<ManageProgramManagerAuthority creation />),
+        setCorrectModal(<ManageManagerAuthority creation />),
         setCorrectButtons([]),
         setItemAccordionList([]),
         setEmptySection(
@@ -504,7 +504,7 @@ const ProgramsDetails: React.FC = () => {
       onClick: () =>
         dispatch(
           openModal({
-            id: 'ente-gestore-programma',
+            id: 'ente-gestore',
             payload: { title: 'Aggiungi Ente gestore Programma' },
           })
         ),
@@ -673,6 +673,7 @@ const ProgramsDetails: React.FC = () => {
         itemsList={itemList}
         buttonsPosition={showQUESTIONARIButtons() ? 'BOTTOM' : 'TOP'}
         goBackTitle='Elenco programmi'
+        goBackPath='/area-amministrativa/programmi'
         surveyDefault={surveyDefault}
         isRadioButtonItem={radioButtonsSurveys}
         onRadioChange={(surveyCheckedId: string) =>

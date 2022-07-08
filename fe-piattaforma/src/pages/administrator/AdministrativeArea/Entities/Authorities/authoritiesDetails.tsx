@@ -97,16 +97,14 @@ const AuthoritiesDetails = () => {
       {
         size: 'xs',
         color: 'primary',
-
+        outline: true,
         text: 'Elimina',
         onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
       },
       {
         size: 'xs',
-        outline: true,
         color: 'primary',
-
-        text: ' Modifica',
+        text: 'Modifica',
         onClick: () =>
           dispatch(
             openModal({
@@ -134,6 +132,7 @@ const AuthoritiesDetails = () => {
             formButtons={correctButtons}
             itemsList={itemList}
             buttonsPosition={buttonsPosition}
+            goBackPath='/area-amministrativa/enti'
           >
             {currentForm}
           </DetailLayout>

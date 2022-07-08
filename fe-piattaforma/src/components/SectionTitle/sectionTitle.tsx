@@ -1,5 +1,4 @@
 import React from 'react';
-import { Chip, ChipLabel, Icon } from 'design-react-kit';
 import './sectionTitle.scss';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
@@ -8,6 +7,8 @@ import AvatarInitials, {
   AvatarSizes,
   AvatarTextSizes,
 } from '../AvatarInitials/avatarInitials';
+import StatusChip from '../StatusChip/statusChip';
+import { Icon } from 'design-react-kit';
 
 interface SectionTitleI {
   title: string;
@@ -70,19 +71,17 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
           </span>
         </div>
         {status ? (
-          <Chip
+          <StatusChip
             className={clsx(
-              'mb-2',
-              'mt-3',
-              'mx-3',
-              'w-25',
-              'no-border',
+              'table-container__status-label',
               'primary-bg-a9',
-              'table-container__status-label'
+              'mr-4',
+              'section-chip',
+              'no-border',
+              device.mediaIsPhone ? 'mx-0 ml-2 my-3' : 'mx-3'
             )}
-          >
-            <ChipLabel className='text-white'>{status}</ChipLabel>
-          </Chip>
+            status={status}
+          />
         ) : null}
       </div>
       {subTitle ? (
