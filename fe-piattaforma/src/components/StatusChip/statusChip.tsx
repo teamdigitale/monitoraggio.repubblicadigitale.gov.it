@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 import { Button, Chip, ChipLabel, UncontrolledTooltip } from 'design-react-kit';
 import React, { memo } from 'react';
-
 interface StatusChipI {
   status: string;
   noTooltip?: boolean;
   rowTableId?: string | number;
   className?: string;
+  chipWidth?: boolean;
 }
 
 const statusTypes = {
@@ -63,7 +63,7 @@ export const statusColor = (status: string) => {
 };
 
 const StatusChip: React.FC<StatusChipI> = (props) => {
-  const { status, noTooltip = false, rowTableId } = props;
+  const { status, noTooltip = false, rowTableId, chipWidth } = props;
 
   if (!status) return null;
 
@@ -78,10 +78,11 @@ const StatusChip: React.FC<StatusChipI> = (props) => {
           className={clsx(
             'table-container__status-label',
             statusBgColor(status),
-            'no-border'
+            'no-border',
+            chipWidth && 'px-2'
           )}
         >
-          <ChipLabel className={statusColor(status)}>
+          <ChipLabel className={clsx(statusColor(status), chipWidth && 'px-3')}>
             {status?.toUpperCase()}
           </ChipLabel>
         </Chip>{' '}

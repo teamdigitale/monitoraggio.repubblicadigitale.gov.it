@@ -79,20 +79,20 @@ const TableDesktop: React.FC<TableI> = (props) => {
                       <Input
                         name='group'
                         type='radio'
-                        id={`radio-${td.codiceFiscale}`}
-                        checked={rowChecked === td.codiceFiscale}
+                        id={`radio-${td.id}`}
+                        checked={rowChecked === td.id}
                         withLabel={false}
                         onInputChange={() => {
-                          setRowChecked(td.codiceFiscale.toString());
+                          setRowChecked(td.id.toString());
                           onActionRadio[CRUDActionTypes.SELECT](td);
                         }}
                       />
                       <Label
                         className='sr-only'
                         check
-                        htmlFor={`radio-${td.codiceFiscale}`}
+                        htmlFor={`radio-${td.id}`}
                       >
-                        <span>{`${td.nome} ${td.cognome}`}</span>
+                        <span>{`Select Row`}</span>
                       </Label>
                     </FormGroup>
                   </Form>

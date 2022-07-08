@@ -88,6 +88,7 @@ const CitizensDetail: React.FC = () => {
         }}
         buttonsPosition='TOP'
         goBackTitle='I miei cittadini'
+        goBackPath='/area-cittadini'
         formButtons={citizenButtons}
       >
         <FormCitizen formDisabled />

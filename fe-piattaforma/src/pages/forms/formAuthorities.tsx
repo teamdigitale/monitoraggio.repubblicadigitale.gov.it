@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { EmptySection, Form, Input } from '../../components';
+import { EmptySection, Form, Input, Select } from '../../components';
 import { ButtonInButtonsBar } from '../../components/ButtonsBar/buttonsBar';
 import withFormHandler, {
   withFormHandlerProps,
@@ -12,8 +12,7 @@ import {
 } from '../../redux/features/administrativeArea/administrativeAreaSlice';
 import {
   GetAuthorityDetail,
-  GetAuthorityProgramManagerDetail,
-  GetAuthorityProjectManagerDetail,
+  GetAuthorityManagerDetail,
 } from '../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import { openModal } from '../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../redux/hooks';
@@ -87,7 +86,8 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
       switch (enteType) {
         case formTypes.ENTE_GESTORE_PROGETTO:
         case formTypes.ENTI_GESTORE_PROGETTO:
-          projectId && dispatch(GetAuthorityProjectManagerDetail(projectId));
+          projectId &&
+            dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
           break;
         case formTypes.ENTE_PARTNER:
         case formTypes.ENTI_PARTNER:
@@ -95,7 +95,8 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
           dispatch(GetAuthorityDetail(enteType));
           break;
         case formTypes.ENTE_GESTORE_PROGRAMMA:
-          entityId && dispatch(GetAuthorityProgramManagerDetail(entityId));
+          entityId &&
+            dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
           // dispatch(GetAuthorityDetail(enteType));
           break;
         default:
@@ -128,21 +129,21 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
     sendNewValues?.(getFormValues?.());
   }, [form]);
 
-  const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
+  // const bootClass = '' // 'justify-content-between px-0 px-lg-5 mx-2';
 
   return (
     <Form className='mt-5 mb-5' formDisabled={formDisabled}>
       {form && (
         <>
-          <Form.Row className={bootClass}>
-            <Input
+          <Form.Row>
+            {/* <Input
               {...form?.id}
               col='col-12 col-lg-6'
               label='ID'
               onInputChange={(value, field) => {
                 onInputDataChange(value, field);
               }}
-            />
+            /> */}
             <Input
               {...form?.nome}
               label='Nome ente'
@@ -152,8 +153,6 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
                 onInputDataChange(value, field);
               }}
             />
-          </Form.Row>
-          <Form.Row className={bootClass}>
             <Input
               {...form?.nomeBreve}
               col='col-12 col-lg-6'
@@ -163,11 +162,61 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
                 onInputDataChange(value, field);
               }}
             />
-            <Input
+          </Form.Row>
+          <Form.Row>
+            {/* <Input
+              {...form?.nomeBreve}
+              col='col-12 col-lg-6'
+              label='Nome breve'
+              placeholder='Inserisci il nome breve'
+              onInputChange={(value, field) => {
+                onInputDataChange(value, field);
+              }}
+            /> */}
+            {/* <Input
               {...form?.tipologia}
               label='Tipologia'
               col='col-12 col-lg-6'
               placeholder='Inserisci la tipologia'
+              onInputChange={(value, field) => {
+                onInputDataChange(value, field);
+              }}
+            /> */}
+            {formDisabled ? (
+              <Input
+                {...form?.tipologia}
+                label='Tipologia'
+                col='col-12 col-lg-6'
+                onInputChange={(value, field) => {
+                  onInputDataChange(value, field);
+                }}
+              />
+            ) : (
+              <Select
+                {...form?.tipologia}
+                value={form?.tipologia.value as string}
+                col='col-12 col-lg-6'
+                label='Tipologia'
+                placeholder='Inserisci la tipologia'
+                options={[
+                  { label: 'Ente pubblico', value: 'Ente pubblico' },
+                  {
+                    label: 'Ente del terzo settore',
+                    value: 'Ente del terzo settore',
+                  },
+                ]}
+                onInputChange={(value, field) => {
+                  onInputDataChange(value, field);
+                }}
+                wrapperClassName='mb-5'
+                aria-label='tipologia'
+              />
+            )}
+            <Input
+              {...form?.indirizzoPec}
+              label='PEC'
+              col='col-12 col-lg-6'
+              placeholder='Inserisci PEC'
               onInputChange={(value, field) => {
                 onInputDataChange(value, field);
               }}
@@ -193,7 +242,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
             }}
           />
         </Form.Row> */}
-          <Form.Row className={bootClass}>
+          <Form.Row>
             <Input
               col='col-12 col-lg-6'
               {...form?.sedeLegale}
@@ -213,7 +262,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
               }}
             />
           </Form.Row>
-          <Form.Row className={bootClass}>
+          {/* <Form.Row className={bootClass}>
             <Input
               {...form?.indirizzoPec}
               label='PEC'
@@ -223,7 +272,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
                 onInputDataChange(value, field);
               }}
             />
-          </Form.Row>
+          </Form.Row> */}
         </>
       )}
     </Form>

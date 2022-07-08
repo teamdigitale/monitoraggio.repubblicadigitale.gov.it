@@ -58,16 +58,14 @@ const HeadquartersDetails = () => {
       {
         size: 'xs',
         color: 'primary',
-
+        outline: true,
         text: 'Elimina',
         onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
       },
       {
         size: 'xs',
-        outline: true,
         color: 'primary',
-
-        text: ' Modifica',
+        text: 'Modifica',
         onClick: () =>
           dispatch(
             openModal({

@@ -190,6 +190,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
         formButtons={[]} // TODO?
         buttonsPosition='TOP'
         goBackTitle='Torna indietro'
+        goBackPath='/area-amministrativa/questionari'
       />
 
       <SurveyTemplate editMode={editModeState} cloneMode={cloneModeState} />

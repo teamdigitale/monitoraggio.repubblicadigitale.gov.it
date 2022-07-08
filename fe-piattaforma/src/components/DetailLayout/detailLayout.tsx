@@ -36,6 +36,7 @@ interface DetailLayoutI {
   buttonsPosition: 'TOP' | 'BOTTOM';
   showGoBack?: boolean;
   goBackTitle?: string;
+  goBackPath?: string;
   children?: ReactElement | undefined;
   currentTab?: string;
   surveyDefault?: ItemsListI | null | undefined;
@@ -52,6 +53,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   buttonsPosition,
   showGoBack = true,
   goBackTitle = 'Torna indietro',
+  goBackPath = '/',
   children,
   currentTab,
   surveyDefault,
@@ -67,7 +69,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
       <div>
         {showGoBack && (
           <Button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate(goBackPath)}
             className={clsx(device.mediaIsPhone ? 'px-0 mb-5 mr-5' : 'px-0')}
           >
             <Icon

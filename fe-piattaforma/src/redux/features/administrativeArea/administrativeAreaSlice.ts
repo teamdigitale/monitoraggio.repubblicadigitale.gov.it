@@ -51,7 +51,7 @@ export interface AreaAmministrativaStateI {
     detail: any;
   };
   authorities: {
-    list: AuthoritiesLightI[];
+    list: AuthoritiesLightI[] | null;
     detail: any;
   };
   headquarters: {
@@ -90,7 +90,7 @@ const initialState: AreaAmministrativaStateI = {
     detail: {},
   },
   authorities: {
-    list: [],
+    list: null,
     detail: {},
   },
   headquarters: {
@@ -175,7 +175,7 @@ export const administrativeAreaSlice = createSlice({
       state.users.list = [...action.payload.data];
     },
     setAuthoritiesList: (state, action: PayloadAction<any>) => {
-      state.authorities.list = [...action.payload.data];
+      state.authorities.list = action.payload ? [...action.payload] : null;
     },
     resetAuthorityDetails: (state) => {
       state.authorities.detail = {};
