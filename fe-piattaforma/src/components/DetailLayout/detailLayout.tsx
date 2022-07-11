@@ -13,6 +13,7 @@ import clsx from 'clsx';
 import { openModal } from '../../redux/features/modal/modalSlice';
 import { useDispatch } from 'react-redux';
 import { formTypes } from '../../pages/administrator/AdministrativeArea/Entities/utils';
+import EmptySection from '../EmptySection/emptySection';
 
 interface DetailLayoutI {
   nav?: ReactElement;
@@ -95,7 +96,6 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
           </div>
         )}
         <div>{children}</div>
-
         {itemsAccordionList && itemsAccordionList.length
           ? itemsAccordionList.map((singleItem, index) => (
               <Accordion
@@ -116,16 +116,23 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                 key={index}
                 lastBottom={index === itemsAccordionList.length - 1}
               >
-                {singleItem.items.map((item, index: number) => (
-                  <CardStatusAction
-                    key={index}
-                    title={item.nome}
-                    status={item.stato}
-                    onActionClick={item.actions}
-                    id={item.id}
-                    fullInfo={item.fullInfo}
+                {singleItem.items?.length ? (
+                  singleItem.items.map((item, index: number) => (
+                    <CardStatusAction
+                      key={index}
+                      title={item.nome}
+                      status={item.stato}
+                      onActionClick={item.actions}
+                      id={item.id}
+                      fullInfo={item.fullInfo}
+                    />
+                  ))
+                ) : (
+                  <EmptySection
+                    title={`Non esistono ${singleItem.title?.toLowerCase()} associati`}
+                    aside
                   />
-                ))}
+                )}
               </Accordion>
             ))
           : null}

@@ -1,17 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input } from '../../../components';
 import { Button } from 'design-react-kit';
+import API from '../../../utils/apiHelper';
 
 const baseFrameURL =
-  'https://hnmhsi4ogf.execute-api.eu-central-1.amazonaws.com/test/anonymous-embed-sample';
+  'https://oceddloir7.execute-api.eu-central-1.amazonaws.com/test/anonymous-embed-sample?mode=getUrl';
+// OLD'https://hnmhsi4ogf.execute-api.eu-central-1.amazonaws.com/test/anonymous-embed-sample';
 
 const Dashboard = () => {
   const [inputValue, setInputValue] = useState(baseFrameURL);
-  const [frameUrl, setFrameUrl] = useState(baseFrameURL);
+  const [frameUrl, setFrameUrl] = useState('');
 
   const handleUpdateFrame = () => {
-    setFrameUrl(inputValue);
+    getDashboardURL();
   };
+
+  const getDashboardURL = async () => {
+    const res = await API.get(inputValue);
+    console.log('Dashboard getUrl', res);
+    if (res?.data?.EmbedUrl) {
+      setFrameUrl(`${res.data.EmbedUrl}&locale=it-IT&programma=<id_programma>`);
+    }
+  };
+
+  useEffect(() => {
+    getDashboardURL();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className='container dashboard-container my-5'>

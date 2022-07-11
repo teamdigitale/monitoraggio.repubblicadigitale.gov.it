@@ -311,6 +311,7 @@ const Surveys = () => {
             ? 'Elenco Questionari'
             : 'Elenco Addendum'
         }
+        sectionInfo
       />
       <GenericSearchFilterTableLayout
         searchInformation={searchInformation}

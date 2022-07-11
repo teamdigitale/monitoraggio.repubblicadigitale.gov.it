@@ -78,14 +78,14 @@ export interface FormActionsI {
 
 export interface ItemListElemI {
   nome: string;
-    actions: CRUDActionsI;
-    status?: string;
-    stato?: string;
-    id?: string;
-    fullInfo?: {
-      [key: string]: string;
-    };
-    default?: boolean;
+  actions: CRUDActionsI;
+  status?: string;
+  stato?: string;
+  id?: string;
+  fullInfo?: {
+    [key: string]: string;
+  };
+  default?: boolean;
 }
 
 export interface ItemsListI {

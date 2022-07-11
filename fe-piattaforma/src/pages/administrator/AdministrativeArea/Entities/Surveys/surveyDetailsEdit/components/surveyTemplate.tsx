@@ -14,9 +14,7 @@ import {
   selectSurveyForm,
   setSurveyFormFieldValue,
 } from '../../../../../../../redux/features/administrativeArea/surveys/surveysSlice';
-import {
-  SetSurveyQuestion,
-} from '../../../../../../../redux/features/administrativeArea/surveys/surveysThunk';
+import { SetSurveyQuestion } from '../../../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 
 interface SurveyTemplateI {
   editMode?: boolean;
@@ -87,9 +85,7 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
         >
           <Input
             {...form['survey-name']}
-            value={
-              cloneMode ? cloneSurveyTitle : form['survey-name'].value
-            }
+            value={cloneMode ? cloneSurveyTitle : form['survey-name'].value}
             col='col-12 col-lg-6 '
             label='Nome'
             id='survey-field-name'
@@ -135,7 +131,8 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
               'w-100'
             )}
           >
-            {!modal && section.id !== 'anagraphic-citizen-section' &&
+            {!modal &&
+              section.id !== 'anagraphic-citizen-section' &&
               section.id !== 'anagraphic-booking-section' && (
                 <Button
                   onClick={() => handleNewQuestion(section?.id || '')}
