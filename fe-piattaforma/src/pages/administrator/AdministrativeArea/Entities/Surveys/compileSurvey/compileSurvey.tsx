@@ -289,7 +289,7 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
   };
 
   return (
-    <div>
+    <div className='container'>
       {!publicLink && (
         <>
           <Button
@@ -361,14 +361,16 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
             currentStep={activeSection}
           />
         </div>
-        <Sticky mode='bottom'>
-          {device.mediaIsPhone ? (
-            mobileButtons()
-          ) : (
-            <ButtonsBar buttons={buttonsToRender(activeSection)} />
-          )}
-        </Sticky>
       </div>
+      <Sticky mode='bottom' stickyClassName='sticky bg-white'>
+        {device.mediaIsPhone ? (
+          <div className='container'>{mobileButtons()}</div>
+        ) : (
+          <div className='container'>
+            <ButtonsBar buttons={buttonsToRender(activeSection)} />
+          </div>
+        )}
+      </Sticky>
     </div>
   );
 };

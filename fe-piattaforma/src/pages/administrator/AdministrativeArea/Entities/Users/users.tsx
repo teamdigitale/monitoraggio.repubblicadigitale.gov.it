@@ -45,14 +45,19 @@ const Programmi = () => {
   const [searchDropdown, setSearchDropdown] = useState<
     { filterId: string; value: formFieldI['value'] }[]
   >([]);
+  const [filterDropdownSelected, setFilterDropdownSelected] =
+    useState<string>('');
 
   const { criterioRicerca, ruoli, stati } = filtersList;
 
   const { pageNumber } = pagination;
 
   const getAllFilters = () => {
-    dispatch(GetFilterValuesUtenti(statusDropdownLabel));
-    dispatch(GetFilterValuesUtenti(ruoliDropdownLabel));
+    // TODO: check chiavi filtri
+    if (filterDropdownSelected !== 'filtroStati')
+      dispatch(GetFilterValuesUtenti(statusDropdownLabel));
+    if (filterDropdownSelected !== 'ruoli')
+      dispatch(GetFilterValuesUtenti(ruoliDropdownLabel));
   };
 
   useEffect(() => {
@@ -128,6 +133,7 @@ const Programmi = () => {
     values: FilterI[],
     filterKey: 'ruoli' | 'stati'
   ) => {
+    setFilterDropdownSelected(filterKey);
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
   };
 
@@ -222,25 +228,24 @@ const Programmi = () => {
       filtersList={filtersList}
       {...programCta}
       cta={newProgram}
+      resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
     >
-      <div className='mt-5'>
-        <Table
-          {...tableValues}
-          id='table'
-          onActionClick={onActionClick}
-          onCellClick={(field, row) => console.log(field, row)}
-          //onRowClick={row => console.log(row)}
-          withActions
-        />
-        <Paginator
-          activePage={pagination?.pageNumber}
-          center
-          refID='#table'
-          pageSize={pagination?.pageSize}
-          total={usersList.list.length}
-          onChange={handleOnChangePage}
-        />
-      </div>
+      <Table
+        {...tableValues}
+        id='table'
+        onActionClick={onActionClick}
+        onCellClick={(field, row) => console.log(field, row)}
+        //onRowClick={row => console.log(row)}
+        withActions
+      />
+      <Paginator
+        activePage={pagination?.pageNumber}
+        center
+        refID='#table'
+        pageSize={pagination?.pageSize}
+        total={usersList.list.length}
+        onChange={handleOnChangePage}
+      />
       <ManageUsers creation />
     </GenericSearchFilterTableLayout>
   );

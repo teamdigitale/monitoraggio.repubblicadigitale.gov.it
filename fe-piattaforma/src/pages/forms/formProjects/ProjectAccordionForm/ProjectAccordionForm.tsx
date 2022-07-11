@@ -1,20 +1,16 @@
 import React, { memo } from 'react';
+import TargetsForm, {
+  SectionT,
+} from '../../../../components/AdministrativeArea/Entities/General/TargetForm/TargetsForm';
 import { Accordion } from '../../../../components/index';
-import { formForSectionT } from '../../formPrograms/targetDateFormPrograms';
-// import { formForSectionEnum } from '../../formPrograms/targetDateFormPrograms';
+import { selectProjects } from '../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { useAppSelector } from '../../../../redux/hooks';
 import FormProjectGeneralInfo from '../formProjectGeneralInfo';
-import TargetDateFormProjects from '../targetDateFormProjects';
 
 const ProjectAccordionForm = () => {
-  const accordions = [
-    {
-      title: 'Numero punti di facilitazione',
-      section: 'puntiFacilitazione',
-    },
-    { title: 'Numero utenti unici', section: 'utentiUnici' },
-    { title: 'Numero servizi', section: 'servizi' },
-    { title: 'Numero facilitatori', section: 'facilitatori' },
-  ];
+  const projectDetails =
+    useAppSelector(selectProjects).detail.dettagliInfoProgetto;
+
   return (
     <>
       <FormProjectGeneralInfo formDisabled />
@@ -24,14 +20,25 @@ const ProjectAccordionForm = () => {
           key={index}
           className='general-info-accordion-container-project'
         >
-          <TargetDateFormProjects
-            formForSection={accordion.section as formForSectionT}
-            formDisabled
+          <TargetsForm
+            section={accordion.section as SectionT}
+            disabled
+            entityDetail={projectDetails}
           />
         </Accordion>
       ))}
     </>
   );
 };
+
+const accordions = [
+  {
+    title: 'Numero punti di facilitazione',
+    section: 'puntiFacilitazione',
+  },
+  { title: 'Numero utenti unici', section: 'utentiUnici' },
+  { title: 'Numero servizi', section: 'servizi' },
+  { title: 'Numero facilitatori', section: 'facilitatori' },
+];
 
 export default memo(ProjectAccordionForm);

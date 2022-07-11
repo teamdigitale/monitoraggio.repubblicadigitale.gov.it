@@ -56,13 +56,14 @@ const ManageCitizens: React.FC<ManageCitizensI> = ({
         onClick: () => clearForm?.(),
       }}
     >
-        <div className='px-3'>
-      <FormCitizen
-        sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {
-          setNewFormValues({ ...newData });
-        }}
-        isFormValid={(isValid: boolean) => setIsFormValid(isValid)}
-      />
+      <div className='px-3'>
+        <FormCitizen
+          sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {
+            setNewFormValues({ ...newData });
+          }}
+          isFormValid={(isValid: boolean) => setIsFormValid(isValid)}
+          creation
+        />
       </div>
     </GenericModal>
   );

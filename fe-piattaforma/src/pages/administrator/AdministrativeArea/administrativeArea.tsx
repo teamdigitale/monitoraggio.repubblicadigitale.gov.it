@@ -19,7 +19,6 @@ import { useAppSelector } from '../../../redux/hooks';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import { LocationIndex } from '../../../components';
 import { menuRoutes } from '../../../utils/common';
-import clsx from 'clsx';
 const Programs = lazy(() => import('./Entities/Programs/programs'));
 const Projects = lazy(() => import('./Entities/Projects/projects'));
 const Utenti = lazy(() => import('./Entities/Users/users'));
@@ -171,7 +170,7 @@ const AdministrativeArea = () => {
         <PageTitle {...PageTitleMock[location?.pathname]} />
       ) : null}
 
-      <Container className={clsx(device.mediaIsPhone ? 'px-4' : 'px-0')}>
+      <Container>
         <Routes>{AreaAmministrativaRoutes}</Routes>
       </Container>
       <ManageUsers />

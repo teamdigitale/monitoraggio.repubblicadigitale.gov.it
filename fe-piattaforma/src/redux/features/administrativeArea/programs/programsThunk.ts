@@ -42,7 +42,6 @@ export const GetProgramDetail =
   (programId: string) => async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
-
       dispatch({ ...GetProgramDetailAction, programId });
       if (programId) {
         const res = await API.get(`/programma/${programId}`);
@@ -90,7 +89,9 @@ export const createProgram =
         )
       );
 
-      dispatch(setProgramGeneralInfo({ currentStep: 6, payload }));
+      dispatch(
+        setProgramGeneralInfo({ currentStep: 4, newFormValues: payload })
+      );
       if (body) {
         const res = await API.post(`/programma`, {
           ...body,
@@ -105,7 +106,7 @@ export const createProgram =
   };
 
 const UpdateProgramAction = {
-  type: 'administrativeArea/CreateProgram',
+  type: 'administrativeArea/UpdateProgram',
 };
 
 export const updateProgram =
@@ -129,9 +130,10 @@ export const updateProgram =
         )
       );
 
-      dispatch(setProgramGeneralInfo({ currentStep: 6, payload }));
+      dispatch(
+        setProgramGeneralInfo({ currentStep: 4, newFormValues: payload })
+      );
       if (body) {
-        console.log(body);
         const res = await API.put(`/programma/${programId}`, {
           ...body,
         });
@@ -139,6 +141,26 @@ export const updateProgram =
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const UpdateProgramSurveyDefaultAction = {
+  type: 'surveys/UpdateProgramSurveyDefault',
+};
+
+export const UpdateProgramSurveyDefault =
+  (payload: { idProgramma: string; idQuestionario: string }) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...UpdateProgramSurveyDefaultAction, payload });
+      const { idProgramma, idQuestionario } = payload;
+      await API.put(`/programma/${idProgramma}/aggiungi/${idQuestionario}`);
+      // GetProgramDetail(idProgramma); // TODO: far dispatchare azioni anche qui!
+    } catch (e) {
+      console.error('UpdateSurveyDefault error', e);
     } finally {
       dispatch(hideLoader());
     }

@@ -32,6 +32,7 @@ import ManageServices from '../modals/manageService';
 import { formTypes } from '../utils';
 import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 
+const entity = 'servizi';
 const statusDropdownLabel = 'stati';
 
 const Services = () => {
@@ -44,13 +45,17 @@ const Services = () => {
   const [searchDropdown, setSearchDropdown] = useState<
     { filterId: string; value: formFieldI['value'] }[]
   >([]);
+  const [filterDropdownSelected, setFilterDropdownSelected] =
+    useState<string>('');
 
   const { criterioRicerca, policies, stati } = filtersList;
 
   const { pageNumber } = pagination;
 
   const getAllFilters = () => {
-    dispatch(GetEntityFilterValues());
+    // TODO: check chiavi filtri
+    if (filterDropdownSelected !== 'filtroStati')
+      dispatch(GetEntityFilterValues({ entity, dropdownType: 'stati' }));
   };
 
   useEffect(() => {
@@ -123,6 +128,7 @@ const Services = () => {
     values: FilterI[],
     filterKey: 'policies' | 'stati' | 'programmi' | 'progetti'
   ) => {
+    setFilterDropdownSelected(filterKey);
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
   };
 
@@ -200,25 +206,24 @@ const Services = () => {
       filtersList={filtersList}
       {...servicesCta}
       cta={newService}
+      resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
     >
-      <div className='mt-5'>
-        <Table
-          {...tableValues}
-          id='table'
-          onActionClick={onActionClick}
-          onCellClick={(field, row) => console.log(field, row)}
-          //onRowClick={row => console.log(row)}
-          withActions
-        />
-        <Paginator
-          activePage={pagination?.pageNumber}
-          center
-          refID='#table'
-          pageSize={pagination?.pageSize}
-          total={eventsList.length}
-          onChange={handleOnChangePage}
-        />
-      </div>
+      <Table
+        {...tableValues}
+        id='table'
+        onActionClick={onActionClick}
+        onCellClick={(field, row) => console.log(field, row)}
+        //onRowClick={row => console.log(row)}
+        withActions
+      />
+      <Paginator
+        activePage={pagination?.pageNumber}
+        center
+        refID='#table'
+        pageSize={pagination?.pageSize}
+        total={eventsList.length}
+        onChange={handleOnChangePage}
+      />
       <ManageServices creation />
     </GenericSearchFilterTableLayout>
   );

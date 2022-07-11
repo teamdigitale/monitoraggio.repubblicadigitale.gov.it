@@ -1,2994 +1,2722 @@
 [
-    {
-      "nome": "Acquaviva Collecroce",
-      "codice": "070001",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "A050",
-      "cap": [
-        "86030"
-      ],
-      "popolazione": 674
-    },
-    {
-      "nome": "Acquaviva d'Isernia",
-      "codice": "094001",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "A051",
-      "cap": [
-        "86080"
-      ],
-      "popolazione": 455
-    },
-    {
-      "nome": "Agnone",
-      "codice": "094002",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "A080",
-      "cap": [
-        "86081"
-      ],
-      "popolazione": 5240
-    },
-    {
-      "nome": "Bagnoli del Trigno",
-      "codice": "094003",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "A567",
-      "cap": [
-        "86091"
-      ],
-      "popolazione": 772
-    },
-    {
-      "nome": "Baranello",
-      "codice": "070002",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "A616",
-      "cap": [
-        "86011"
-      ],
-      "popolazione": 2732
-    },
-    {
-      "nome": "Belmonte del Sannio",
-      "codice": "094004",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "A761",
-      "cap": [
-        "86080"
-      ],
-      "popolazione": 810
-    },
-    {
-      "nome": "Bojano",
-      "codice": "070003",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "A930",
-      "cap": [
-        "86021"
-      ],
-      "popolazione": 7946
-    },
-    {
-      "nome": "Bonefro",
-      "codice": "070004",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "A971",
-      "cap": [
-        "86041"
-      ],
-      "popolazione": 1528
-    },
-    {
-      "nome": "Busso",
-      "codice": "070005",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "B295",
-      "cap": [
-        "86010"
-      ],
-      "popolazione": 1367
-    },
-    {
-      "nome": "Campobasso",
-      "codice": "070006",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "B519",
-      "cap": [
-        "86100"
-      ],
-      "popolazione": 48747
-    },
-    {
-      "nome": "Campochiaro",
-      "codice": "070007",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "B522",
-      "cap": [
-        "86020"
-      ],
-      "popolazione": 637
-    },
-    {
-      "nome": "Campodipietra",
-      "codice": "070008",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "B528",
-      "cap": [
-        "86010"
-      ],
-      "popolazione": 2567
-    },
-    {
-      "nome": "Campolieto",
-      "codice": "070009",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "B544",
-      "cap": [
-        "86040"
-      ],
-      "popolazione": 938
-    },
-    {
-      "nome": "Campomarino",
-      "codice": "070010",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "B550",
-      "cap": [
-        "86042"
-      ],
-      "popolazione": 7068
-    },
-    {
-      "nome": "Cantalupo nel Sannio",
-      "codice": "094005",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "B630",
-      "cap": [
-        "86092"
-      ],
-      "popolazione": 729
-    },
-    {
-      "nome": "Capracotta",
-      "codice": "094006",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "B682",
-      "cap": [
-        "86082"
-      ],
-      "popolazione": 950
-    },
-    {
-      "nome": "Carovilli",
-      "codice": "094007",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "B810",
-      "cap": [
-        "86083"
-      ],
-      "popolazione": 1428
-    },
-    {
-      "nome": "Carpinone",
-      "codice": "094008",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "B830",
-      "cap": [
-        "86093"
-      ],
-      "popolazione": 1226
-    },
-    {
-      "nome": "Casacalenda",
-      "codice": "070011",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "B858",
-      "cap": [
-        "86043"
-      ],
-      "popolazione": 2207
-    },
-    {
-      "nome": "Casalciprano",
-      "codice": "070012",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "B871",
-      "cap": [
-        "86010"
-      ],
-      "popolazione": 571
-    },
-    {
-      "nome": "Castel San Vincenzo",
-      "codice": "094012",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "C270",
-      "cap": [
-        "86071"
-      ],
-      "popolazione": 545
-    },
-    {
-      "nome": "Castel del Giudice",
-      "codice": "094009",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "C082",
-      "cap": [
-        "86080"
-      ],
-      "popolazione": 355
-    },
-    {
-      "nome": "Castelbottaccio",
-      "codice": "070013",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "C066",
-      "cap": [
-        "86030"
-      ],
-      "popolazione": 349
-    },
-    {
-      "nome": "Castellino del Biferno",
-      "codice": "070014",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "C175",
-      "cap": [
-        "86020"
-      ],
-      "popolazione": 589
-    },
-    {
-      "nome": "Castelmauro",
-      "codice": "070015",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "C197",
-      "cap": [
-        "86031"
-      ],
-      "popolazione": 1638
-    },
-    {
-      "nome": "Castelpetroso",
-      "codice": "094010",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "C246",
-      "cap": [
-        "86090"
-      ],
-      "popolazione": 1662
-    },
-    {
-      "nome": "Castelpizzuto",
-      "codice": "094011",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "C247",
-      "cap": [
-        "86090"
-      ],
-      "popolazione": 159
-    },
-    {
-      "nome": "Castelverrino",
-      "codice": "094013",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "C200",
-      "cap": [
-        "86080"
-      ],
-      "popolazione": 124
-    },
-    {
-      "nome": "Castropignano",
-      "codice": "070016",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "C346",
-      "cap": [
-        "86010"
-      ],
-      "popolazione": 1029
-    },
-    {
-      "nome": "Cercemaggiore",
-      "codice": "070017",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "C486",
-      "cap": [
-        "86012"
-      ],
-      "popolazione": 3927
-    },
-    {
-      "nome": "Cercepiccola",
-      "codice": "070018",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "C488",
-      "cap": [
-        "86010"
-      ],
-      "popolazione": 685
-    },
-    {
-      "nome": "Cerro al Volturno",
-      "codice": "094014",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "C534",
-      "cap": [
-        "86072"
-      ],
-      "popolazione": 1341
-    },
-    {
-      "nome": "Chiauci",
-      "codice": "094015",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "C620",
-      "cap": [
-        "86097"
-      ],
-      "popolazione": 268
-    },
-    {
-      "nome": "Civitacampomarano",
-      "codice": "070019",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "C764",
-      "cap": [
-        "86030"
-      ],
-      "popolazione": 451
-    },
-    {
-      "nome": "Civitanova del Sannio",
-      "codice": "094016",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "C769",
-      "cap": [
-        "86094"
-      ],
-      "popolazione": 955
-    },
-    {
-      "nome": "Colle d'Anchise",
-      "codice": "070020",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "C854",
-      "cap": [
-        "86020"
-      ],
-      "popolazione": 802
-    },
-    {
-      "nome": "Colletorto",
-      "codice": "070021",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "C875",
-      "cap": [
-        "86044"
-      ],
-      "popolazione": 2087
-    },
-    {
-      "nome": "Colli a Volturno",
-      "codice": "094017",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "C878",
-      "cap": [
-        "86073"
-      ],
-      "popolazione": 1382
-    },
-    {
-      "nome": "Conca Casale",
-      "codice": "094018",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "C941",
-      "cap": [
-        "86070"
-      ],
-      "popolazione": 214
-    },
-    {
-      "nome": "Duronia",
-      "codice": "070022",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "C772",
-      "cap": [
-        "86020"
-      ],
-      "popolazione": 431
-    },
-    {
-      "nome": "Ferrazzano",
-      "codice": "070023",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "D550",
-      "cap": [
-        "86010"
-      ],
-      "popolazione": 3287
-    },
-    {
-      "nome": "Filignano",
-      "codice": "094019",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "D595",
-      "cap": [
-        "86074"
-      ],
-      "popolazione": 689
-    },
-    {
-      "nome": "Forlì del Sannio",
-      "codice": "094020",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "D703",
-      "cap": [
-        "86084"
-      ],
-      "popolazione": 735
-    },
-    {
-      "nome": "Fornelli",
-      "codice": "094021",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "D715",
-      "cap": [
-        "86070"
-      ],
-      "popolazione": 1925
-    },
-    {
-      "nome": "Fossalto",
-      "codice": "070024",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "D737",
-      "cap": [
-        "86020"
-      ],
-      "popolazione": 1480
-    },
-    {
-      "nome": "Frosolone",
-      "codice": "094022",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "D811",
-      "cap": [
-        "86095"
-      ],
-      "popolazione": 3255
-    },
-    {
-      "nome": "Gambatesa",
-      "codice": "070025",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "D896",
-      "cap": [
-        "86013"
-      ],
-      "popolazione": 1487
-    },
-    {
-      "nome": "Gildone",
-      "codice": "070026",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "E030",
-      "cap": [
-        "86010"
-      ],
-      "popolazione": 850
-    },
-    {
-      "nome": "Guardialfiera",
-      "codice": "070027",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "E244",
-      "cap": [
-        "86030"
-      ],
-      "popolazione": 1120
-    },
-    {
-      "nome": "Guardiaregia",
-      "codice": "070028",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "E248",
-      "cap": [
-        "86014"
-      ],
-      "popolazione": 787
-    },
-    {
-      "nome": "Guglionesi",
-      "codice": "070029",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "E259",
-      "cap": [
-        "86034"
-      ],
-      "popolazione": 5449
-    },
-    {
-      "nome": "Isernia",
-      "codice": "094023",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "E335",
-      "cap": [
-        "86170"
-      ],
-      "popolazione": 22025
-    },
-    {
-      "nome": "Jelsi",
-      "codice": "070030",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "E381",
-      "cap": [
-        "86015"
-      ],
-      "popolazione": 1797
-    },
-    {
-      "nome": "Larino",
-      "codice": "070031",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "E456",
-      "cap": [
-        "86035"
-      ],
-      "popolazione": 7142
-    },
-    {
-      "nome": "Limosano",
-      "codice": "070032",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "E599",
-      "cap": [
-        "86022"
-      ],
-      "popolazione": 826
-    },
-    {
-      "nome": "Longano",
-      "codice": "094024",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "E669",
-      "cap": [
-        "86090"
-      ],
-      "popolazione": 697
-    },
-    {
-      "nome": "Lucito",
-      "codice": "070033",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "E722",
-      "cap": [
-        "86030"
-      ],
-      "popolazione": 734
-    },
-    {
-      "nome": "Lupara",
-      "codice": "070034",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "E748",
-      "cap": [
-        "86030"
-      ],
-      "popolazione": 538
-    },
-    {
-      "nome": "Macchia Valfortore",
-      "codice": "070035",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "E780",
-      "cap": [
-        "86040"
-      ],
-      "popolazione": 621
-    },
-    {
-      "nome": "Macchia d'Isernia",
-      "codice": "094025",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "E778",
-      "cap": [
-        "86070"
-      ],
-      "popolazione": 979
-    },
-    {
-      "nome": "Macchiagodena",
-      "codice": "094026",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "E779",
-      "cap": [
-        "86096"
-      ],
-      "popolazione": 1844
-    },
-    {
-      "nome": "Mafalda",
-      "codice": "070036",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "E799",
-      "cap": [
-        "86030"
-      ],
-      "popolazione": 1231
-    },
-    {
-      "nome": "Matrice",
-      "codice": "070037",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "F055",
-      "cap": [
-        "86030"
-      ],
-      "popolazione": 1110
-    },
-    {
-      "nome": "Mirabello Sannitico",
-      "codice": "070038",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "F233",
-      "cap": [
-        "86010"
-      ],
-      "popolazione": 2157
-    },
-    {
-      "nome": "Miranda",
-      "codice": "094027",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "F239",
-      "cap": [
-        "86080"
-      ],
-      "popolazione": 1064
-    },
-    {
-      "nome": "Molise",
-      "codice": "070039",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "F294",
-      "cap": [
-        "86020"
-      ],
-      "popolazione": 162
-    },
-    {
-      "nome": "Monacilioni",
-      "codice": "070040",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "F322",
-      "cap": [
-        "86040"
-      ],
-      "popolazione": 553
-    },
-    {
-      "nome": "Montagano",
-      "codice": "070041",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "F391",
-      "cap": [
-        "86023"
-      ],
-      "popolazione": 1150
-    },
-    {
-      "nome": "Montaquila",
-      "codice": "094028",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "F429",
-      "cap": [
-        "86070"
-      ],
-      "popolazione": 2451
-    },
-    {
-      "nome": "Montecilfone",
-      "codice": "070042",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "F475",
-      "cap": [
-        "86032"
-      ],
-      "popolazione": 1423
-    },
-    {
-      "nome": "Montefalcone nel Sannio",
-      "codice": "070043",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "F495",
-      "cap": [
-        "86033"
-      ],
-      "popolazione": 1650
-    },
-    {
-      "nome": "Montelongo",
-      "codice": "070044",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "F548",
-      "cap": [
-        "86040"
-      ],
-      "popolazione": 384
-    },
-    {
-      "nome": "Montemitro",
-      "codice": "070045",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "F569",
-      "cap": [
-        "86030"
-      ],
-      "popolazione": 454
-    },
-    {
-      "nome": "Montenero Val Cocchiara",
-      "codice": "094029",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "F580",
-      "cap": [
-        "86080"
-      ],
-      "popolazione": 558
-    },
-    {
-      "nome": "Montenero di Bisaccia",
-      "codice": "070046",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "F576",
-      "cap": [
-        "86036"
-      ],
-      "popolazione": 6649
-    },
-    {
-      "nome": "Monteroduni",
-      "codice": "094030",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "F601",
-      "cap": [
-        "86075"
-      ],
-      "popolazione": 2267
-    },
-    {
-      "nome": "Montorio nei Frentani",
-      "codice": "070047",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "F689",
-      "cap": [
-        "86040"
-      ],
-      "popolazione": 466
-    },
-    {
-      "nome": "Morrone del Sannio",
-      "codice": "070048",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "F748",
-      "cap": [
-        "86040"
-      ],
-      "popolazione": 648
-    },
-    {
-      "nome": "Oratino",
-      "codice": "070049",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "G086",
-      "cap": [
-        "86010"
-      ],
-      "popolazione": 1560
-    },
-    {
-      "nome": "Palata",
-      "codice": "070050",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "G257",
-      "cap": [
-        "86037"
-      ],
-      "popolazione": 1769
-    },
-    {
-      "nome": "Pesche",
-      "codice": "094031",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "G486",
-      "cap": [
-        "86090"
-      ],
-      "popolazione": 1577
-    },
-    {
-      "nome": "Pescolanciano",
-      "codice": "094032",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "G495",
-      "cap": [
-        "86097"
-      ],
-      "popolazione": 878
-    },
-    {
-      "nome": "Pescopennataro",
-      "codice": "094033",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "G497",
-      "cap": [
-        "86080"
-      ],
-      "popolazione": 300
-    },
-    {
-      "nome": "Petacciato",
-      "codice": "070051",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "G506",
-      "cap": [
-        "86038"
-      ],
-      "popolazione": 3638
-    },
-    {
-      "nome": "Petrella Tifernina",
-      "codice": "070052",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "G512",
-      "cap": [
-        "86024"
-      ],
-      "popolazione": 1206
-    },
-    {
-      "nome": "Pettoranello del Molise",
-      "codice": "094034",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "G523",
-      "cap": [
-        "86090"
-      ],
-      "popolazione": 459
-    },
-    {
-      "nome": "Pietrabbondante",
-      "codice": "094035",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "G606",
-      "cap": [
-        "86085"
-      ],
-      "popolazione": 826
-    },
-    {
-      "nome": "Pietracatella",
-      "codice": "070053",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "G609",
-      "cap": [
-        "86040"
-      ],
-      "popolazione": 1433
-    },
-    {
-      "nome": "Pietracupa",
-      "codice": "070054",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "G610",
-      "cap": [
-        "86020"
-      ],
-      "popolazione": 228
-    },
-    {
-      "nome": "Pizzone",
-      "codice": "094036",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "G727",
-      "cap": [
-        "86071"
-      ],
-      "popolazione": 335
-    },
-    {
-      "nome": "Poggio Sannita",
-      "codice": "094037",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "B317",
-      "cap": [
-        "86086"
-      ],
-      "popolazione": 764
-    },
-    {
-      "nome": "Portocannone",
-      "codice": "070055",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "G910",
-      "cap": [
-        "86045"
-      ],
-      "popolazione": 2549
-    },
-    {
-      "nome": "Pozzilli",
-      "codice": "094038",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "G954",
-      "cap": [
-        "86077"
-      ],
-      "popolazione": 2275
-    },
-    {
-      "nome": "Provvidenti",
-      "codice": "070056",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "H083",
-      "cap": [
-        "86040"
-      ],
-      "popolazione": 122
-    },
-    {
-      "nome": "Riccia",
-      "codice": "070057",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "H273",
-      "cap": [
-        "86016"
-      ],
-      "popolazione": 5403
-    },
-    {
-      "nome": "Rionero Sannitico",
-      "codice": "094039",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "H308",
-      "cap": [
-        "86087"
-      ],
-      "popolazione": 1129
-    },
-    {
-      "nome": "Ripabottoni",
-      "codice": "070058",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "H311",
-      "cap": [
-        "86040"
-      ],
-      "popolazione": 544
-    },
-    {
-      "nome": "Ripalimosani",
-      "codice": "070059",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "H313",
-      "cap": [
-        "86025"
-      ],
-      "popolazione": 2972
-    },
-    {
-      "nome": "Roccamandolfi",
-      "codice": "094040",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "H420",
-      "cap": [
-        "86092"
-      ],
-      "popolazione": 987
-    },
-    {
-      "nome": "Roccasicura",
-      "codice": "094041",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "H445",
-      "cap": [
-        "86080"
-      ],
-      "popolazione": 559
-    },
-    {
-      "nome": "Roccavivara",
-      "codice": "070060",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "H454",
-      "cap": [
-        "86020"
-      ],
-      "popolazione": 840
-    },
-    {
-      "nome": "Rocchetta a Volturno",
-      "codice": "094042",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "H458",
-      "cap": [
-        "86070"
-      ],
-      "popolazione": 1064
-    },
-    {
-      "nome": "Rotello",
-      "codice": "070061",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "H589",
-      "cap": [
-        "86040"
-      ],
-      "popolazione": 1219
-    },
-    {
-      "nome": "Salcito",
-      "codice": "070062",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "H693",
-      "cap": [
-        "86026"
-      ],
-      "popolazione": 695
-    },
-    {
-      "nome": "San Biase",
-      "codice": "070063",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "H782",
-      "cap": [
-        "86020"
-      ],
-      "popolazione": 209
-    },
-    {
-      "nome": "San Felice del Molise",
-      "codice": "070064",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "H833",
-      "cap": [
-        "86030"
-      ],
-      "popolazione": 694
-    },
-    {
-      "nome": "San Giacomo degli Schiavoni",
-      "codice": "070065",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "H867",
-      "cap": [
-        "86030"
-      ],
-      "popolazione": 1410
-    },
-    {
-      "nome": "San Giovanni in Galdo",
-      "codice": "070066",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "H920",
-      "cap": [
-        "86010"
-      ],
-      "popolazione": 624
-    },
-    {
-      "nome": "San Giuliano del Sannio",
-      "codice": "070067",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "H928",
-      "cap": [
-        "86010"
-      ],
-      "popolazione": 1050
-    },
-    {
-      "nome": "San Giuliano di Puglia",
-      "codice": "070068",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "H929",
-      "cap": [
-        "86040"
-      ],
-      "popolazione": 1057
-    },
-    {
-      "nome": "San Martino in Pensilis",
-      "codice": "070069",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "H990",
-      "cap": [
-        "86046"
-      ],
-      "popolazione": 4797
-    },
-    {
-      "nome": "San Massimo",
-      "codice": "070070",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "I023",
-      "cap": [
-        "86027"
-      ],
-      "popolazione": 836
-    },
-    {
-      "nome": "San Pietro Avellana",
-      "codice": "094043",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "I096",
-      "cap": [
-        "86088"
-      ],
-      "popolazione": 537
-    },
-    {
-      "nome": "San Polo Matese",
-      "codice": "070071",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "I122",
-      "cap": [
-        "86020"
-      ],
-      "popolazione": 458
-    },
-    {
-      "nome": "Sant'Agapito",
-      "codice": "094044",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "I189",
-      "cap": [
-        "86070"
-      ],
-      "popolazione": 1387
-    },
-    {
-      "nome": "Sant'Angelo Limosano",
-      "codice": "070073",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "I289",
-      "cap": [
-        "86020"
-      ],
-      "popolazione": 348
-    },
-    {
-      "nome": "Sant'Angelo del Pesco",
-      "codice": "094046",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "I282",
-      "cap": [
-        "86080"
-      ],
-      "popolazione": 368
-    },
-    {
-      "nome": "Sant'Elena Sannita",
-      "codice": "094047",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "B466",
-      "cap": [
-        "86095"
-      ],
-      "popolazione": 260
-    },
-    {
-      "nome": "Sant'Elia a Pianisi",
-      "codice": "070074",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "I320",
-      "cap": [
-        "86048"
-      ],
-      "popolazione": 1910
-    },
-    {
-      "nome": "Santa Croce di Magliano",
-      "codice": "070072",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "I181",
-      "cap": [
-        "86047"
-      ],
-      "popolazione": 4692
-    },
-    {
-      "nome": "Santa Maria del Molise",
-      "codice": "094045",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "I238",
-      "cap": [
-        "86096"
-      ],
-      "popolazione": 635
-    },
-    {
-      "nome": "Scapoli",
-      "codice": "094048",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "I507",
-      "cap": [
-        "86070"
-      ],
-      "popolazione": 758
-    },
-    {
-      "nome": "Sepino",
-      "codice": "070075",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "I618",
-      "cap": [
-        "86017"
-      ],
-      "popolazione": 1985
-    },
-    {
-      "nome": "Sessano del Molise",
-      "codice": "094049",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "I679",
-      "cap": [
-        "86097"
-      ],
-      "popolazione": 744
-    },
-    {
-      "nome": "Sesto Campano",
-      "codice": "094050",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "I682",
-      "cap": [
-        "86078"
-      ],
-      "popolazione": 2331
-    },
-    {
-      "nome": "Spinete",
-      "codice": "070076",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "I910",
-      "cap": [
-        "86020"
-      ],
-      "popolazione": 1373
-    },
-    {
-      "nome": "Tavenna",
-      "codice": "070077",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "L069",
-      "cap": [
-        "86030"
-      ],
-      "popolazione": 815
-    },
-    {
-      "nome": "Termoli",
-      "codice": "070078",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "L113",
-      "cap": [
-        "86039"
-      ],
-      "popolazione": 32793
-    },
-    {
-      "nome": "Torella del Sannio",
-      "codice": "070079",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "L215",
-      "cap": [
-        "86028"
-      ],
-      "popolazione": 794
-    },
-    {
-      "nome": "Toro",
-      "codice": "070080",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "L230",
-      "cap": [
-        "86018"
-      ],
-      "popolazione": 1450
-    },
-    {
-      "nome": "Trivento",
-      "codice": "070081",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "L435",
-      "cap": [
-        "86029"
-      ],
-      "popolazione": 4812
-    },
-    {
-      "nome": "Tufara",
-      "codice": "070082",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "L458",
-      "cap": [
-        "86010"
-      ],
-      "popolazione": 978
-    },
-    {
-      "nome": "Ururi",
-      "codice": "070083",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "L505",
-      "cap": [
-        "86049"
-      ],
-      "popolazione": 2793
-    },
-    {
-      "nome": "Vastogirardi",
-      "codice": "094051",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "L696",
-      "cap": [
-        "86089"
-      ],
-      "popolazione": 728
-    },
-    {
-      "nome": "Venafro",
-      "codice": "094052",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "094",
-        "nome": "Isernia"
-      },
-      "sigla": "IS",
-      "codiceCatastale": "L725",
-      "cap": [
-        "86079"
-      ],
-      "popolazione": 11236
-    },
-    {
-      "nome": "Vinchiaturo",
-      "codice": "070084",
-      "zona": {
-        "codice": "4",
-        "nome": "Sud"
-      },
-      "regione": {
-        "codice": "14",
-        "nome": "Molise"
-      },
-      "provincia": {
-        "codice": "070",
-        "nome": "Campobasso"
-      },
-      "sigla": "CB",
-      "codiceCatastale": "M057",
-      "cap": [
-        "86019"
-      ],
-      "popolazione": 3238
-    }
-  ]
+  {
+    "nome": "Acquaviva Collecroce",
+    "codice": "070001",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "A050",
+    "cap": ["86030"],
+    "popolazione": 674
+  },
+  {
+    "nome": "Acquaviva d'Isernia",
+    "codice": "094001",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "A051",
+    "cap": ["86080"],
+    "popolazione": 455
+  },
+  {
+    "nome": "Agnone",
+    "codice": "094002",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "A080",
+    "cap": ["86081"],
+    "popolazione": 5240
+  },
+  {
+    "nome": "Bagnoli del Trigno",
+    "codice": "094003",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "A567",
+    "cap": ["86091"],
+    "popolazione": 772
+  },
+  {
+    "nome": "Baranello",
+    "codice": "070002",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "A616",
+    "cap": ["86011"],
+    "popolazione": 2732
+  },
+  {
+    "nome": "Belmonte del Sannio",
+    "codice": "094004",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "A761",
+    "cap": ["86080"],
+    "popolazione": 810
+  },
+  {
+    "nome": "Bojano",
+    "codice": "070003",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "A930",
+    "cap": ["86021"],
+    "popolazione": 7946
+  },
+  {
+    "nome": "Bonefro",
+    "codice": "070004",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "A971",
+    "cap": ["86041"],
+    "popolazione": 1528
+  },
+  {
+    "nome": "Busso",
+    "codice": "070005",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "B295",
+    "cap": ["86010"],
+    "popolazione": 1367
+  },
+  {
+    "nome": "Campobasso",
+    "codice": "070006",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "B519",
+    "cap": ["86100"],
+    "popolazione": 48747
+  },
+  {
+    "nome": "Campochiaro",
+    "codice": "070007",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "B522",
+    "cap": ["86020"],
+    "popolazione": 637
+  },
+  {
+    "nome": "Campodipietra",
+    "codice": "070008",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "B528",
+    "cap": ["86010"],
+    "popolazione": 2567
+  },
+  {
+    "nome": "Campolieto",
+    "codice": "070009",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "B544",
+    "cap": ["86040"],
+    "popolazione": 938
+  },
+  {
+    "nome": "Campomarino",
+    "codice": "070010",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "B550",
+    "cap": ["86042"],
+    "popolazione": 7068
+  },
+  {
+    "nome": "Cantalupo nel Sannio",
+    "codice": "094005",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "B630",
+    "cap": ["86092"],
+    "popolazione": 729
+  },
+  {
+    "nome": "Capracotta",
+    "codice": "094006",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "B682",
+    "cap": ["86082"],
+    "popolazione": 950
+  },
+  {
+    "nome": "Carovilli",
+    "codice": "094007",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "B810",
+    "cap": ["86083"],
+    "popolazione": 1428
+  },
+  {
+    "nome": "Carpinone",
+    "codice": "094008",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "B830",
+    "cap": ["86093"],
+    "popolazione": 1226
+  },
+  {
+    "nome": "Casacalenda",
+    "codice": "070011",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "B858",
+    "cap": ["86043"],
+    "popolazione": 2207
+  },
+  {
+    "nome": "Casalciprano",
+    "codice": "070012",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "B871",
+    "cap": ["86010"],
+    "popolazione": 571
+  },
+  {
+    "nome": "Castel San Vincenzo",
+    "codice": "094012",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "C270",
+    "cap": ["86071"],
+    "popolazione": 545
+  },
+  {
+    "nome": "Castel del Giudice",
+    "codice": "094009",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "C082",
+    "cap": ["86080"],
+    "popolazione": 355
+  },
+  {
+    "nome": "Castelbottaccio",
+    "codice": "070013",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "C066",
+    "cap": ["86030"],
+    "popolazione": 349
+  },
+  {
+    "nome": "Castellino del Biferno",
+    "codice": "070014",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "C175",
+    "cap": ["86020"],
+    "popolazione": 589
+  },
+  {
+    "nome": "Castelmauro",
+    "codice": "070015",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "C197",
+    "cap": ["86031"],
+    "popolazione": 1638
+  },
+  {
+    "nome": "Castelpetroso",
+    "codice": "094010",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "C246",
+    "cap": ["86090"],
+    "popolazione": 1662
+  },
+  {
+    "nome": "Castelpizzuto",
+    "codice": "094011",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "C247",
+    "cap": ["86090"],
+    "popolazione": 159
+  },
+  {
+    "nome": "Castelverrino",
+    "codice": "094013",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "C200",
+    "cap": ["86080"],
+    "popolazione": 124
+  },
+  {
+    "nome": "Castropignano",
+    "codice": "070016",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "C346",
+    "cap": ["86010"],
+    "popolazione": 1029
+  },
+  {
+    "nome": "Cercemaggiore",
+    "codice": "070017",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "C486",
+    "cap": ["86012"],
+    "popolazione": 3927
+  },
+  {
+    "nome": "Cercepiccola",
+    "codice": "070018",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "C488",
+    "cap": ["86010"],
+    "popolazione": 685
+  },
+  {
+    "nome": "Cerro al Volturno",
+    "codice": "094014",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "C534",
+    "cap": ["86072"],
+    "popolazione": 1341
+  },
+  {
+    "nome": "Chiauci",
+    "codice": "094015",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "C620",
+    "cap": ["86097"],
+    "popolazione": 268
+  },
+  {
+    "nome": "Civitacampomarano",
+    "codice": "070019",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "C764",
+    "cap": ["86030"],
+    "popolazione": 451
+  },
+  {
+    "nome": "Civitanova del Sannio",
+    "codice": "094016",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "C769",
+    "cap": ["86094"],
+    "popolazione": 955
+  },
+  {
+    "nome": "Colle d'Anchise",
+    "codice": "070020",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "C854",
+    "cap": ["86020"],
+    "popolazione": 802
+  },
+  {
+    "nome": "Colletorto",
+    "codice": "070021",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "C875",
+    "cap": ["86044"],
+    "popolazione": 2087
+  },
+  {
+    "nome": "Colli a Volturno",
+    "codice": "094017",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "C878",
+    "cap": ["86073"],
+    "popolazione": 1382
+  },
+  {
+    "nome": "Conca Casale",
+    "codice": "094018",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "C941",
+    "cap": ["86070"],
+    "popolazione": 214
+  },
+  {
+    "nome": "Duronia",
+    "codice": "070022",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "C772",
+    "cap": ["86020"],
+    "popolazione": 431
+  },
+  {
+    "nome": "Ferrazzano",
+    "codice": "070023",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "D550",
+    "cap": ["86010"],
+    "popolazione": 3287
+  },
+  {
+    "nome": "Filignano",
+    "codice": "094019",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "D595",
+    "cap": ["86074"],
+    "popolazione": 689
+  },
+  {
+    "nome": "Forlì del Sannio",
+    "codice": "094020",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "D703",
+    "cap": ["86084"],
+    "popolazione": 735
+  },
+  {
+    "nome": "Fornelli",
+    "codice": "094021",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "D715",
+    "cap": ["86070"],
+    "popolazione": 1925
+  },
+  {
+    "nome": "Fossalto",
+    "codice": "070024",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "D737",
+    "cap": ["86020"],
+    "popolazione": 1480
+  },
+  {
+    "nome": "Frosolone",
+    "codice": "094022",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "D811",
+    "cap": ["86095"],
+    "popolazione": 3255
+  },
+  {
+    "nome": "Gambatesa",
+    "codice": "070025",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "D896",
+    "cap": ["86013"],
+    "popolazione": 1487
+  },
+  {
+    "nome": "Gildone",
+    "codice": "070026",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "E030",
+    "cap": ["86010"],
+    "popolazione": 850
+  },
+  {
+    "nome": "Guardialfiera",
+    "codice": "070027",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "E244",
+    "cap": ["86030"],
+    "popolazione": 1120
+  },
+  {
+    "nome": "Guardiaregia",
+    "codice": "070028",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "E248",
+    "cap": ["86014"],
+    "popolazione": 787
+  },
+  {
+    "nome": "Guglionesi",
+    "codice": "070029",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "E259",
+    "cap": ["86034"],
+    "popolazione": 5449
+  },
+  {
+    "nome": "Isernia",
+    "codice": "094023",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "E335",
+    "cap": ["86170"],
+    "popolazione": 22025
+  },
+  {
+    "nome": "Jelsi",
+    "codice": "070030",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "E381",
+    "cap": ["86015"],
+    "popolazione": 1797
+  },
+  {
+    "nome": "Larino",
+    "codice": "070031",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "E456",
+    "cap": ["86035"],
+    "popolazione": 7142
+  },
+  {
+    "nome": "Limosano",
+    "codice": "070032",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "E599",
+    "cap": ["86022"],
+    "popolazione": 826
+  },
+  {
+    "nome": "Longano",
+    "codice": "094024",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "E669",
+    "cap": ["86090"],
+    "popolazione": 697
+  },
+  {
+    "nome": "Lucito",
+    "codice": "070033",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "E722",
+    "cap": ["86030"],
+    "popolazione": 734
+  },
+  {
+    "nome": "Lupara",
+    "codice": "070034",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "E748",
+    "cap": ["86030"],
+    "popolazione": 538
+  },
+  {
+    "nome": "Macchia Valfortore",
+    "codice": "070035",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "E780",
+    "cap": ["86040"],
+    "popolazione": 621
+  },
+  {
+    "nome": "Macchia d'Isernia",
+    "codice": "094025",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "E778",
+    "cap": ["86070"],
+    "popolazione": 979
+  },
+  {
+    "nome": "Macchiagodena",
+    "codice": "094026",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "E779",
+    "cap": ["86096"],
+    "popolazione": 1844
+  },
+  {
+    "nome": "Mafalda",
+    "codice": "070036",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "E799",
+    "cap": ["86030"],
+    "popolazione": 1231
+  },
+  {
+    "nome": "Matrice",
+    "codice": "070037",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "F055",
+    "cap": ["86030"],
+    "popolazione": 1110
+  },
+  {
+    "nome": "Mirabello Sannitico",
+    "codice": "070038",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "F233",
+    "cap": ["86010"],
+    "popolazione": 2157
+  },
+  {
+    "nome": "Miranda",
+    "codice": "094027",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "F239",
+    "cap": ["86080"],
+    "popolazione": 1064
+  },
+  {
+    "nome": "Molise",
+    "codice": "070039",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "F294",
+    "cap": ["86020"],
+    "popolazione": 162
+  },
+  {
+    "nome": "Monacilioni",
+    "codice": "070040",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "F322",
+    "cap": ["86040"],
+    "popolazione": 553
+  },
+  {
+    "nome": "Montagano",
+    "codice": "070041",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "F391",
+    "cap": ["86023"],
+    "popolazione": 1150
+  },
+  {
+    "nome": "Montaquila",
+    "codice": "094028",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "F429",
+    "cap": ["86070"],
+    "popolazione": 2451
+  },
+  {
+    "nome": "Montecilfone",
+    "codice": "070042",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "F475",
+    "cap": ["86032"],
+    "popolazione": 1423
+  },
+  {
+    "nome": "Montefalcone nel Sannio",
+    "codice": "070043",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "F495",
+    "cap": ["86033"],
+    "popolazione": 1650
+  },
+  {
+    "nome": "Montelongo",
+    "codice": "070044",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "F548",
+    "cap": ["86040"],
+    "popolazione": 384
+  },
+  {
+    "nome": "Montemitro",
+    "codice": "070045",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "F569",
+    "cap": ["86030"],
+    "popolazione": 454
+  },
+  {
+    "nome": "Montenero Val Cocchiara",
+    "codice": "094029",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "F580",
+    "cap": ["86080"],
+    "popolazione": 558
+  },
+  {
+    "nome": "Montenero di Bisaccia",
+    "codice": "070046",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "F576",
+    "cap": ["86036"],
+    "popolazione": 6649
+  },
+  {
+    "nome": "Monteroduni",
+    "codice": "094030",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "F601",
+    "cap": ["86075"],
+    "popolazione": 2267
+  },
+  {
+    "nome": "Montorio nei Frentani",
+    "codice": "070047",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "F689",
+    "cap": ["86040"],
+    "popolazione": 466
+  },
+  {
+    "nome": "Morrone del Sannio",
+    "codice": "070048",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "F748",
+    "cap": ["86040"],
+    "popolazione": 648
+  },
+  {
+    "nome": "Oratino",
+    "codice": "070049",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "G086",
+    "cap": ["86010"],
+    "popolazione": 1560
+  },
+  {
+    "nome": "Palata",
+    "codice": "070050",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "G257",
+    "cap": ["86037"],
+    "popolazione": 1769
+  },
+  {
+    "nome": "Pesche",
+    "codice": "094031",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "G486",
+    "cap": ["86090"],
+    "popolazione": 1577
+  },
+  {
+    "nome": "Pescolanciano",
+    "codice": "094032",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "G495",
+    "cap": ["86097"],
+    "popolazione": 878
+  },
+  {
+    "nome": "Pescopennataro",
+    "codice": "094033",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "G497",
+    "cap": ["86080"],
+    "popolazione": 300
+  },
+  {
+    "nome": "Petacciato",
+    "codice": "070051",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "G506",
+    "cap": ["86038"],
+    "popolazione": 3638
+  },
+  {
+    "nome": "Petrella Tifernina",
+    "codice": "070052",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "G512",
+    "cap": ["86024"],
+    "popolazione": 1206
+  },
+  {
+    "nome": "Pettoranello del Molise",
+    "codice": "094034",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "G523",
+    "cap": ["86090"],
+    "popolazione": 459
+  },
+  {
+    "nome": "Pietrabbondante",
+    "codice": "094035",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "G606",
+    "cap": ["86085"],
+    "popolazione": 826
+  },
+  {
+    "nome": "Pietracatella",
+    "codice": "070053",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "G609",
+    "cap": ["86040"],
+    "popolazione": 1433
+  },
+  {
+    "nome": "Pietracupa",
+    "codice": "070054",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "G610",
+    "cap": ["86020"],
+    "popolazione": 228
+  },
+  {
+    "nome": "Pizzone",
+    "codice": "094036",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "G727",
+    "cap": ["86071"],
+    "popolazione": 335
+  },
+  {
+    "nome": "Poggio Sannita",
+    "codice": "094037",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "B317",
+    "cap": ["86086"],
+    "popolazione": 764
+  },
+  {
+    "nome": "Portocannone",
+    "codice": "070055",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "G910",
+    "cap": ["86045"],
+    "popolazione": 2549
+  },
+  {
+    "nome": "Pozzilli",
+    "codice": "094038",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "G954",
+    "cap": ["86077"],
+    "popolazione": 2275
+  },
+  {
+    "nome": "Provvidenti",
+    "codice": "070056",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "H083",
+    "cap": ["86040"],
+    "popolazione": 122
+  },
+  {
+    "nome": "Riccia",
+    "codice": "070057",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "H273",
+    "cap": ["86016"],
+    "popolazione": 5403
+  },
+  {
+    "nome": "Rionero Sannitico",
+    "codice": "094039",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "H308",
+    "cap": ["86087"],
+    "popolazione": 1129
+  },
+  {
+    "nome": "Ripabottoni",
+    "codice": "070058",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "H311",
+    "cap": ["86040"],
+    "popolazione": 544
+  },
+  {
+    "nome": "Ripalimosani",
+    "codice": "070059",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "H313",
+    "cap": ["86025"],
+    "popolazione": 2972
+  },
+  {
+    "nome": "Roccamandolfi",
+    "codice": "094040",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "H420",
+    "cap": ["86092"],
+    "popolazione": 987
+  },
+  {
+    "nome": "Roccasicura",
+    "codice": "094041",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "H445",
+    "cap": ["86080"],
+    "popolazione": 559
+  },
+  {
+    "nome": "Roccavivara",
+    "codice": "070060",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "H454",
+    "cap": ["86020"],
+    "popolazione": 840
+  },
+  {
+    "nome": "Rocchetta a Volturno",
+    "codice": "094042",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "H458",
+    "cap": ["86070"],
+    "popolazione": 1064
+  },
+  {
+    "nome": "Rotello",
+    "codice": "070061",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "H589",
+    "cap": ["86040"],
+    "popolazione": 1219
+  },
+  {
+    "nome": "Salcito",
+    "codice": "070062",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "H693",
+    "cap": ["86026"],
+    "popolazione": 695
+  },
+  {
+    "nome": "San Biase",
+    "codice": "070063",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "H782",
+    "cap": ["86020"],
+    "popolazione": 209
+  },
+  {
+    "nome": "San Felice del Molise",
+    "codice": "070064",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "H833",
+    "cap": ["86030"],
+    "popolazione": 694
+  },
+  {
+    "nome": "San Giacomo degli Schiavoni",
+    "codice": "070065",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "H867",
+    "cap": ["86030"],
+    "popolazione": 1410
+  },
+  {
+    "nome": "San Giovanni in Galdo",
+    "codice": "070066",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "H920",
+    "cap": ["86010"],
+    "popolazione": 624
+  },
+  {
+    "nome": "San Giuliano del Sannio",
+    "codice": "070067",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "H928",
+    "cap": ["86010"],
+    "popolazione": 1050
+  },
+  {
+    "nome": "San Giuliano di Puglia",
+    "codice": "070068",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "H929",
+    "cap": ["86040"],
+    "popolazione": 1057
+  },
+  {
+    "nome": "San Martino in Pensilis",
+    "codice": "070069",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "H990",
+    "cap": ["86046"],
+    "popolazione": 4797
+  },
+  {
+    "nome": "San Massimo",
+    "codice": "070070",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "I023",
+    "cap": ["86027"],
+    "popolazione": 836
+  },
+  {
+    "nome": "San Pietro Avellana",
+    "codice": "094043",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "I096",
+    "cap": ["86088"],
+    "popolazione": 537
+  },
+  {
+    "nome": "San Polo Matese",
+    "codice": "070071",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "I122",
+    "cap": ["86020"],
+    "popolazione": 458
+  },
+  {
+    "nome": "Sant'Agapito",
+    "codice": "094044",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "I189",
+    "cap": ["86070"],
+    "popolazione": 1387
+  },
+  {
+    "nome": "Sant'Angelo Limosano",
+    "codice": "070073",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "I289",
+    "cap": ["86020"],
+    "popolazione": 348
+  },
+  {
+    "nome": "Sant'Angelo del Pesco",
+    "codice": "094046",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "I282",
+    "cap": ["86080"],
+    "popolazione": 368
+  },
+  {
+    "nome": "Sant'Elena Sannita",
+    "codice": "094047",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "B466",
+    "cap": ["86095"],
+    "popolazione": 260
+  },
+  {
+    "nome": "Sant'Elia a Pianisi",
+    "codice": "070074",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "I320",
+    "cap": ["86048"],
+    "popolazione": 1910
+  },
+  {
+    "nome": "Santa Croce di Magliano",
+    "codice": "070072",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "I181",
+    "cap": ["86047"],
+    "popolazione": 4692
+  },
+  {
+    "nome": "Santa Maria del Molise",
+    "codice": "094045",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "I238",
+    "cap": ["86096"],
+    "popolazione": 635
+  },
+  {
+    "nome": "Scapoli",
+    "codice": "094048",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "I507",
+    "cap": ["86070"],
+    "popolazione": 758
+  },
+  {
+    "nome": "Sepino",
+    "codice": "070075",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "I618",
+    "cap": ["86017"],
+    "popolazione": 1985
+  },
+  {
+    "nome": "Sessano del Molise",
+    "codice": "094049",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "I679",
+    "cap": ["86097"],
+    "popolazione": 744
+  },
+  {
+    "nome": "Sesto Campano",
+    "codice": "094050",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "I682",
+    "cap": ["86078"],
+    "popolazione": 2331
+  },
+  {
+    "nome": "Spinete",
+    "codice": "070076",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "I910",
+    "cap": ["86020"],
+    "popolazione": 1373
+  },
+  {
+    "nome": "Tavenna",
+    "codice": "070077",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "L069",
+    "cap": ["86030"],
+    "popolazione": 815
+  },
+  {
+    "nome": "Termoli",
+    "codice": "070078",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "L113",
+    "cap": ["86039"],
+    "popolazione": 32793
+  },
+  {
+    "nome": "Torella del Sannio",
+    "codice": "070079",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "L215",
+    "cap": ["86028"],
+    "popolazione": 794
+  },
+  {
+    "nome": "Toro",
+    "codice": "070080",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "L230",
+    "cap": ["86018"],
+    "popolazione": 1450
+  },
+  {
+    "nome": "Trivento",
+    "codice": "070081",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "L435",
+    "cap": ["86029"],
+    "popolazione": 4812
+  },
+  {
+    "nome": "Tufara",
+    "codice": "070082",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "L458",
+    "cap": ["86010"],
+    "popolazione": 978
+  },
+  {
+    "nome": "Ururi",
+    "codice": "070083",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "L505",
+    "cap": ["86049"],
+    "popolazione": 2793
+  },
+  {
+    "nome": "Vastogirardi",
+    "codice": "094051",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "L696",
+    "cap": ["86089"],
+    "popolazione": 728
+  },
+  {
+    "nome": "Venafro",
+    "codice": "094052",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "094",
+      "nome": "Isernia"
+    },
+    "sigla": "IS",
+    "codiceCatastale": "L725",
+    "cap": ["86079"],
+    "popolazione": 11236
+  },
+  {
+    "nome": "Vinchiaturo",
+    "codice": "070084",
+    "zona": {
+      "codice": "4",
+      "nome": "Sud"
+    },
+    "regione": {
+      "codice": "14",
+      "nome": "Molise"
+    },
+    "provincia": {
+      "codice": "070",
+      "nome": "Campobasso"
+    },
+    "sigla": "CB",
+    "codiceCatastale": "M057",
+    "cap": ["86019"],
+    "popolazione": 3238
+  }
+]

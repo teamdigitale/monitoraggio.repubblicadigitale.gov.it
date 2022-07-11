@@ -1,1630 +1,1482 @@
 [
-    {
-      "nome": "Allein",
-      "codice": "007001",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "A205",
-      "cap": [
-        "11010"
-      ],
-      "popolazione": 248
-    },
-    {
-      "nome": "Antey-Saint-André",
-      "codice": "007002",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "A305",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 626
-    },
-    {
-      "nome": "Aosta",
-      "codice": "007003",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "A326",
-      "cap": [
-        "11100"
-      ],
-      "popolazione": 34102
-    },
-    {
-      "nome": "Arnad",
-      "codice": "007004",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "A424",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 1294
-    },
-    {
-      "nome": "Arvier",
-      "codice": "007005",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "A452",
-      "cap": [
-        "11011"
-      ],
-      "popolazione": 892
-    },
-    {
-      "nome": "Avise",
-      "codice": "007006",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "A521",
-      "cap": [
-        "11010"
-      ],
-      "popolazione": 348
-    },
-    {
-      "nome": "Ayas",
-      "codice": "007007",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "A094",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 1359
-    },
-    {
-      "nome": "Aymavilles",
-      "codice": "007008",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "A108",
-      "cap": [
-        "11010"
-      ],
-      "popolazione": 2072
-    },
-    {
-      "nome": "Bard",
-      "codice": "007009",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "A643",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 125
-    },
-    {
-      "nome": "Bionaz",
-      "codice": "007010",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "A877",
-      "cap": [
-        "11010"
-      ],
-      "popolazione": 234
-    },
-    {
-      "nome": "Brissogne",
-      "codice": "007011",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "B192",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 983
-    },
-    {
-      "nome": "Brusson",
-      "codice": "007012",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "B230",
-      "cap": [
-        "11022"
-      ],
-      "popolazione": 852
-    },
-    {
-      "nome": "Challand-Saint-Anselme",
-      "codice": "007013",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "C593",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 756
-    },
-    {
-      "nome": "Challand-Saint-Victor",
-      "codice": "007014",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "C594",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 611
-    },
-    {
-      "nome": "Chambave",
-      "codice": "007015",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "C595",
-      "cap": [
-        "11023"
-      ],
-      "popolazione": 939
-    },
-    {
-      "nome": "Chamois",
-      "codice": "007016",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "B491",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 94
-    },
-    {
-      "nome": "Champdepraz",
-      "codice": "007017",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "C596",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 702
-    },
-    {
-      "nome": "Champorcher",
-      "codice": "007018",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "B540",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 398
-    },
-    {
-      "nome": "Charvensod",
-      "codice": "007019",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "C598",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 2507
-    },
-    {
-      "nome": "Châtillon",
-      "codice": "007020",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "C294",
-      "cap": [
-        "11024"
-      ],
-      "popolazione": 4946
-    },
-    {
-      "nome": "Cogne",
-      "codice": "007021",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "C821",
-      "cap": [
-        "11012"
-      ],
-      "popolazione": 1453
-    },
-    {
-      "nome": "Courmayeur",
-      "codice": "007022",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "D012",
-      "cap": [
-        "11013"
-      ],
-      "popolazione": 2815
-    },
-    {
-      "nome": "Donnas",
-      "codice": "007023",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "D338",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 2624
-    },
-    {
-      "nome": "Doues",
-      "codice": "007024",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "D356",
-      "cap": [
-        "11010"
-      ],
-      "popolazione": 477
-    },
-    {
-      "nome": "Emarèse",
-      "codice": "007025",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "D402",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 228
-    },
-    {
-      "nome": "Etroubles",
-      "codice": "007026",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "D444",
-      "cap": [
-        "11014"
-      ],
-      "popolazione": 496
-    },
-    {
-      "nome": "Fontainemore",
-      "codice": "007028",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "D666",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 449
-    },
-    {
-      "nome": "Fénis",
-      "codice": "007027",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "D537",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 1766
-    },
-    {
-      "nome": "Gaby",
-      "codice": "007029",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "D839",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 487
-    },
-    {
-      "nome": "Gignod",
-      "codice": "007030",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "E029",
-      "cap": [
-        "11010"
-      ],
-      "popolazione": 1692
-    },
-    {
-      "nome": "Gressan",
-      "codice": "007031",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "E165",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 3306
-    },
-    {
-      "nome": "Gressoney-La-Trinité",
-      "codice": "007032",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "E167",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 311
-    },
-    {
-      "nome": "Gressoney-Saint-Jean",
-      "codice": "007033",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "E168",
-      "cap": [
-        "11025"
-      ],
-      "popolazione": 814
-    },
-    {
-      "nome": "Hône",
-      "codice": "007034",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "E273",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 1175
-    },
-    {
-      "nome": "Introd",
-      "codice": "007035",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "E306",
-      "cap": [
-        "11010"
-      ],
-      "popolazione": 632
-    },
-    {
-      "nome": "Issime",
-      "codice": "007036",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "E369",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 422
-    },
-    {
-      "nome": "Issogne",
-      "codice": "007037",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "E371",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 1396
-    },
-    {
-      "nome": "Jovençan",
-      "codice": "007038",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "E391",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 758
-    },
-    {
-      "nome": "La Magdeleine",
-      "codice": "007039",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "A308",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 111
-    },
-    {
-      "nome": "La Salle",
-      "codice": "007040",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "E458",
-      "cap": [
-        "11015"
-      ],
-      "popolazione": 2071
-    },
-    {
-      "nome": "La Thuile",
-      "codice": "007041",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "E470",
-      "cap": [
-        "11016"
-      ],
-      "popolazione": 776
-    },
-    {
-      "nome": "Lillianes",
-      "codice": "007042",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "E587",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 465
-    },
-    {
-      "nome": "Montjovet",
-      "codice": "007043",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "F367",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 1831
-    },
-    {
-      "nome": "Morgex",
-      "codice": "007044",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "F726",
-      "cap": [
-        "11017"
-      ],
-      "popolazione": 2069
-    },
-    {
-      "nome": "Nus",
-      "codice": "007045",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "F987",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 2943
-    },
-    {
-      "nome": "Ollomont",
-      "codice": "007046",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "G045",
-      "cap": [
-        "11010"
-      ],
-      "popolazione": 158
-    },
-    {
-      "nome": "Oyace",
-      "codice": "007047",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "G012",
-      "cap": [
-        "11010"
-      ],
-      "popolazione": 225
-    },
-    {
-      "nome": "Perloz",
-      "codice": "007048",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "G459",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 453
-    },
-    {
-      "nome": "Pollein",
-      "codice": "007049",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "G794",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 1531
-    },
-    {
-      "nome": "Pont-Saint-Martin",
-      "codice": "007052",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "G854",
-      "cap": [
-        "11026"
-      ],
-      "popolazione": 4005
-    },
-    {
-      "nome": "Pontboset",
-      "codice": "007050",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "G545",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 195
-    },
-    {
-      "nome": "Pontey",
-      "codice": "007051",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "G860",
-      "cap": [
-        "11024"
-      ],
-      "popolazione": 818
-    },
-    {
-      "nome": "Pré-Saint-Didier",
-      "codice": "007053",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "H042",
-      "cap": [
-        "11010"
-      ],
-      "popolazione": 1012
-    },
-    {
-      "nome": "Quart",
-      "codice": "007054",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "H110",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 3872
-    },
-    {
-      "nome": "Rhêmes-Notre-Dame",
-      "codice": "007055",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "H262",
-      "cap": [
-        "11010"
-      ],
-      "popolazione": 114
-    },
-    {
-      "nome": "Rhêmes-Saint-Georges",
-      "codice": "007056",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "H263",
-      "cap": [
-        "11010"
-      ],
-      "popolazione": 196
-    },
-    {
-      "nome": "Roisan",
-      "codice": "007057",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "H497",
-      "cap": [
-        "11010"
-      ],
-      "popolazione": 1042
-    },
-    {
-      "nome": "Saint-Christophe",
-      "codice": "007058",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "H669",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 3356
-    },
-    {
-      "nome": "Saint-Denis",
-      "codice": "007059",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "H670",
-      "cap": [
-        "11023"
-      ],
-      "popolazione": 382
-    },
-    {
-      "nome": "Saint-Marcel",
-      "codice": "007060",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "H671",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 1275
-    },
-    {
-      "nome": "Saint-Nicolas",
-      "codice": "007061",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "H672",
-      "cap": [
-        "11010"
-      ],
-      "popolazione": 315
-    },
-    {
-      "nome": "Saint-Oyen",
-      "codice": "007062",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "H673",
-      "cap": [
-        "11014"
-      ],
-      "popolazione": 217
-    },
-    {
-      "nome": "Saint-Pierre",
-      "codice": "007063",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "H674",
-      "cap": [
-        "11010"
-      ],
-      "popolazione": 3112
-    },
-    {
-      "nome": "Saint-Rhémy-en-Bosses",
-      "codice": "007064",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "H675",
-      "cap": [
-        "11010"
-      ],
-      "popolazione": 367
-    },
-    {
-      "nome": "Saint-Vincent",
-      "codice": "007065",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "H676",
-      "cap": [
-        "11027"
-      ],
-      "popolazione": 4654
-    },
-    {
-      "nome": "Sarre",
-      "codice": "007066",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "I442",
-      "cap": [
-        "11010"
-      ],
-      "popolazione": 4857
-    },
-    {
-      "nome": "Torgnon",
-      "codice": "007067",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "L217",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 517
-    },
-    {
-      "nome": "Valgrisenche",
-      "codice": "007068",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "L582",
-      "cap": [
-        "11010"
-      ],
-      "popolazione": 198
-    },
-    {
-      "nome": "Valpelline",
-      "codice": "007069",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "L643",
-      "cap": [
-        "11010"
-      ],
-      "popolazione": 655
-    },
-    {
-      "nome": "Valsavarenche",
-      "codice": "007070",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "L647",
-      "cap": [
-        "11010"
-      ],
-      "popolazione": 187
-    },
-    {
-      "nome": "Valtournenche",
-      "codice": "007071",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "L654",
-      "cap": [
-        "11028"
-      ],
-      "popolazione": 2147
-    },
-    {
-      "nome": "Verrayes",
-      "codice": "007072",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "L783",
-      "cap": [
-        "11020"
-      ],
-      "popolazione": 1344
-    },
-    {
-      "nome": "Verrès",
-      "codice": "007073",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "C282",
-      "cap": [
-        "11029"
-      ],
-      "popolazione": 2711
-    },
-    {
-      "nome": "Villeneuve",
-      "codice": "007074",
-      "zona": {
-        "codice": "1",
-        "nome": "Nord-ovest"
-      },
-      "regione": {
-        "codice": "02",
-        "nome": "Valle d'Aosta"
-      },
-      "provincia": {
-        "codice": "007",
-        "nome": "Valle d'Aosta"
-      },
-      "sigla": "AO",
-      "codiceCatastale": "L981",
-      "cap": [
-        "11018"
-      ],
-      "popolazione": 1236
-    }
-  ]
+  {
+    "nome": "Allein",
+    "codice": "007001",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "A205",
+    "cap": ["11010"],
+    "popolazione": 248
+  },
+  {
+    "nome": "Antey-Saint-André",
+    "codice": "007002",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "A305",
+    "cap": ["11020"],
+    "popolazione": 626
+  },
+  {
+    "nome": "Aosta",
+    "codice": "007003",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "A326",
+    "cap": ["11100"],
+    "popolazione": 34102
+  },
+  {
+    "nome": "Arnad",
+    "codice": "007004",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "A424",
+    "cap": ["11020"],
+    "popolazione": 1294
+  },
+  {
+    "nome": "Arvier",
+    "codice": "007005",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "A452",
+    "cap": ["11011"],
+    "popolazione": 892
+  },
+  {
+    "nome": "Avise",
+    "codice": "007006",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "A521",
+    "cap": ["11010"],
+    "popolazione": 348
+  },
+  {
+    "nome": "Ayas",
+    "codice": "007007",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "A094",
+    "cap": ["11020"],
+    "popolazione": 1359
+  },
+  {
+    "nome": "Aymavilles",
+    "codice": "007008",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "A108",
+    "cap": ["11010"],
+    "popolazione": 2072
+  },
+  {
+    "nome": "Bard",
+    "codice": "007009",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "A643",
+    "cap": ["11020"],
+    "popolazione": 125
+  },
+  {
+    "nome": "Bionaz",
+    "codice": "007010",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "A877",
+    "cap": ["11010"],
+    "popolazione": 234
+  },
+  {
+    "nome": "Brissogne",
+    "codice": "007011",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "B192",
+    "cap": ["11020"],
+    "popolazione": 983
+  },
+  {
+    "nome": "Brusson",
+    "codice": "007012",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "B230",
+    "cap": ["11022"],
+    "popolazione": 852
+  },
+  {
+    "nome": "Challand-Saint-Anselme",
+    "codice": "007013",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "C593",
+    "cap": ["11020"],
+    "popolazione": 756
+  },
+  {
+    "nome": "Challand-Saint-Victor",
+    "codice": "007014",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "C594",
+    "cap": ["11020"],
+    "popolazione": 611
+  },
+  {
+    "nome": "Chambave",
+    "codice": "007015",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "C595",
+    "cap": ["11023"],
+    "popolazione": 939
+  },
+  {
+    "nome": "Chamois",
+    "codice": "007016",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "B491",
+    "cap": ["11020"],
+    "popolazione": 94
+  },
+  {
+    "nome": "Champdepraz",
+    "codice": "007017",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "C596",
+    "cap": ["11020"],
+    "popolazione": 702
+  },
+  {
+    "nome": "Champorcher",
+    "codice": "007018",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "B540",
+    "cap": ["11020"],
+    "popolazione": 398
+  },
+  {
+    "nome": "Charvensod",
+    "codice": "007019",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "C598",
+    "cap": ["11020"],
+    "popolazione": 2507
+  },
+  {
+    "nome": "Châtillon",
+    "codice": "007020",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "C294",
+    "cap": ["11024"],
+    "popolazione": 4946
+  },
+  {
+    "nome": "Cogne",
+    "codice": "007021",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "C821",
+    "cap": ["11012"],
+    "popolazione": 1453
+  },
+  {
+    "nome": "Courmayeur",
+    "codice": "007022",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "D012",
+    "cap": ["11013"],
+    "popolazione": 2815
+  },
+  {
+    "nome": "Donnas",
+    "codice": "007023",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "D338",
+    "cap": ["11020"],
+    "popolazione": 2624
+  },
+  {
+    "nome": "Doues",
+    "codice": "007024",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "D356",
+    "cap": ["11010"],
+    "popolazione": 477
+  },
+  {
+    "nome": "Emarèse",
+    "codice": "007025",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "D402",
+    "cap": ["11020"],
+    "popolazione": 228
+  },
+  {
+    "nome": "Etroubles",
+    "codice": "007026",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "D444",
+    "cap": ["11014"],
+    "popolazione": 496
+  },
+  {
+    "nome": "Fontainemore",
+    "codice": "007028",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "D666",
+    "cap": ["11020"],
+    "popolazione": 449
+  },
+  {
+    "nome": "Fénis",
+    "codice": "007027",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "D537",
+    "cap": ["11020"],
+    "popolazione": 1766
+  },
+  {
+    "nome": "Gaby",
+    "codice": "007029",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "D839",
+    "cap": ["11020"],
+    "popolazione": 487
+  },
+  {
+    "nome": "Gignod",
+    "codice": "007030",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "E029",
+    "cap": ["11010"],
+    "popolazione": 1692
+  },
+  {
+    "nome": "Gressan",
+    "codice": "007031",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "E165",
+    "cap": ["11020"],
+    "popolazione": 3306
+  },
+  {
+    "nome": "Gressoney-La-Trinité",
+    "codice": "007032",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "E167",
+    "cap": ["11020"],
+    "popolazione": 311
+  },
+  {
+    "nome": "Gressoney-Saint-Jean",
+    "codice": "007033",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "E168",
+    "cap": ["11025"],
+    "popolazione": 814
+  },
+  {
+    "nome": "Hône",
+    "codice": "007034",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "E273",
+    "cap": ["11020"],
+    "popolazione": 1175
+  },
+  {
+    "nome": "Introd",
+    "codice": "007035",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "E306",
+    "cap": ["11010"],
+    "popolazione": 632
+  },
+  {
+    "nome": "Issime",
+    "codice": "007036",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "E369",
+    "cap": ["11020"],
+    "popolazione": 422
+  },
+  {
+    "nome": "Issogne",
+    "codice": "007037",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "E371",
+    "cap": ["11020"],
+    "popolazione": 1396
+  },
+  {
+    "nome": "Jovençan",
+    "codice": "007038",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "E391",
+    "cap": ["11020"],
+    "popolazione": 758
+  },
+  {
+    "nome": "La Magdeleine",
+    "codice": "007039",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "A308",
+    "cap": ["11020"],
+    "popolazione": 111
+  },
+  {
+    "nome": "La Salle",
+    "codice": "007040",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "E458",
+    "cap": ["11015"],
+    "popolazione": 2071
+  },
+  {
+    "nome": "La Thuile",
+    "codice": "007041",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "E470",
+    "cap": ["11016"],
+    "popolazione": 776
+  },
+  {
+    "nome": "Lillianes",
+    "codice": "007042",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "E587",
+    "cap": ["11020"],
+    "popolazione": 465
+  },
+  {
+    "nome": "Montjovet",
+    "codice": "007043",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "F367",
+    "cap": ["11020"],
+    "popolazione": 1831
+  },
+  {
+    "nome": "Morgex",
+    "codice": "007044",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "F726",
+    "cap": ["11017"],
+    "popolazione": 2069
+  },
+  {
+    "nome": "Nus",
+    "codice": "007045",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "F987",
+    "cap": ["11020"],
+    "popolazione": 2943
+  },
+  {
+    "nome": "Ollomont",
+    "codice": "007046",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "G045",
+    "cap": ["11010"],
+    "popolazione": 158
+  },
+  {
+    "nome": "Oyace",
+    "codice": "007047",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "G012",
+    "cap": ["11010"],
+    "popolazione": 225
+  },
+  {
+    "nome": "Perloz",
+    "codice": "007048",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "G459",
+    "cap": ["11020"],
+    "popolazione": 453
+  },
+  {
+    "nome": "Pollein",
+    "codice": "007049",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "G794",
+    "cap": ["11020"],
+    "popolazione": 1531
+  },
+  {
+    "nome": "Pont-Saint-Martin",
+    "codice": "007052",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "G854",
+    "cap": ["11026"],
+    "popolazione": 4005
+  },
+  {
+    "nome": "Pontboset",
+    "codice": "007050",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "G545",
+    "cap": ["11020"],
+    "popolazione": 195
+  },
+  {
+    "nome": "Pontey",
+    "codice": "007051",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "G860",
+    "cap": ["11024"],
+    "popolazione": 818
+  },
+  {
+    "nome": "Pré-Saint-Didier",
+    "codice": "007053",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "H042",
+    "cap": ["11010"],
+    "popolazione": 1012
+  },
+  {
+    "nome": "Quart",
+    "codice": "007054",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "H110",
+    "cap": ["11020"],
+    "popolazione": 3872
+  },
+  {
+    "nome": "Rhêmes-Notre-Dame",
+    "codice": "007055",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "H262",
+    "cap": ["11010"],
+    "popolazione": 114
+  },
+  {
+    "nome": "Rhêmes-Saint-Georges",
+    "codice": "007056",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "H263",
+    "cap": ["11010"],
+    "popolazione": 196
+  },
+  {
+    "nome": "Roisan",
+    "codice": "007057",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "H497",
+    "cap": ["11010"],
+    "popolazione": 1042
+  },
+  {
+    "nome": "Saint-Christophe",
+    "codice": "007058",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "H669",
+    "cap": ["11020"],
+    "popolazione": 3356
+  },
+  {
+    "nome": "Saint-Denis",
+    "codice": "007059",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "H670",
+    "cap": ["11023"],
+    "popolazione": 382
+  },
+  {
+    "nome": "Saint-Marcel",
+    "codice": "007060",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "H671",
+    "cap": ["11020"],
+    "popolazione": 1275
+  },
+  {
+    "nome": "Saint-Nicolas",
+    "codice": "007061",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "H672",
+    "cap": ["11010"],
+    "popolazione": 315
+  },
+  {
+    "nome": "Saint-Oyen",
+    "codice": "007062",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "H673",
+    "cap": ["11014"],
+    "popolazione": 217
+  },
+  {
+    "nome": "Saint-Pierre",
+    "codice": "007063",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "H674",
+    "cap": ["11010"],
+    "popolazione": 3112
+  },
+  {
+    "nome": "Saint-Rhémy-en-Bosses",
+    "codice": "007064",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "H675",
+    "cap": ["11010"],
+    "popolazione": 367
+  },
+  {
+    "nome": "Saint-Vincent",
+    "codice": "007065",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "H676",
+    "cap": ["11027"],
+    "popolazione": 4654
+  },
+  {
+    "nome": "Sarre",
+    "codice": "007066",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "I442",
+    "cap": ["11010"],
+    "popolazione": 4857
+  },
+  {
+    "nome": "Torgnon",
+    "codice": "007067",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "L217",
+    "cap": ["11020"],
+    "popolazione": 517
+  },
+  {
+    "nome": "Valgrisenche",
+    "codice": "007068",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "L582",
+    "cap": ["11010"],
+    "popolazione": 198
+  },
+  {
+    "nome": "Valpelline",
+    "codice": "007069",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "L643",
+    "cap": ["11010"],
+    "popolazione": 655
+  },
+  {
+    "nome": "Valsavarenche",
+    "codice": "007070",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "L647",
+    "cap": ["11010"],
+    "popolazione": 187
+  },
+  {
+    "nome": "Valtournenche",
+    "codice": "007071",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "L654",
+    "cap": ["11028"],
+    "popolazione": 2147
+  },
+  {
+    "nome": "Verrayes",
+    "codice": "007072",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "L783",
+    "cap": ["11020"],
+    "popolazione": 1344
+  },
+  {
+    "nome": "Verrès",
+    "codice": "007073",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "C282",
+    "cap": ["11029"],
+    "popolazione": 2711
+  },
+  {
+    "nome": "Villeneuve",
+    "codice": "007074",
+    "zona": {
+      "codice": "1",
+      "nome": "Nord-ovest"
+    },
+    "regione": {
+      "codice": "02",
+      "nome": "Valle d'Aosta"
+    },
+    "provincia": {
+      "codice": "007",
+      "nome": "Valle d'Aosta"
+    },
+    "sigla": "AO",
+    "codiceCatastale": "L981",
+    "cap": ["11018"],
+    "popolazione": 1236
+  }
+]

@@ -51,7 +51,7 @@ export interface AreaAmministrativaStateI {
     detail: any;
   };
   authorities: {
-    list: AuthoritiesLightI[];
+    list: AuthoritiesLightI[] | null;
     detail: any;
   };
   headquarters: {
@@ -90,7 +90,7 @@ const initialState: AreaAmministrativaStateI = {
     detail: {},
   },
   authorities: {
-    list: [],
+    list: null,
     detail: {},
   },
   headquarters: {
@@ -109,6 +109,9 @@ export const administrativeAreaSlice = createSlice({
     resetEntityState: () => initialState,
     resetFiltersState: (state) => {
       state.filters = initialState.filters;
+    },
+    resetPaginationState: (state) => {
+      state.pagination = initialState.pagination;
     },
     cleanEntityFilters: (state, action: PayloadAction<any>) => {
       if (action.payload) {
@@ -172,51 +175,89 @@ export const administrativeAreaSlice = createSlice({
       state.users.list = [...action.payload.data];
     },
     setAuthoritiesList: (state, action: PayloadAction<any>) => {
-      state.authorities.list = [...action.payload.data];
+      state.authorities.list = action.payload ? [...action.payload] : null;
     },
-    setAuthoritiesDetails: (state, action: PayloadAction<any>) => {
-      state.authorities.detail = { ...action.payload.data };
+    resetAuthorityDetails: (state) => {
+      state.authorities.detail = {};
+    },
+    setAuthorityDetails: (state, action: PayloadAction<any>) => {
+      state.authorities.detail = { ...action.payload };
     },
     setProgramDetails: (state, action) => {
       state.programs.detail = { ...action.payload };
     },
-    setProgramGeneralInfo: (state, action: PayloadAction<any>) => {
-      state.programs.detail = {
-        ...state.programs.detail,
-        dettagliInfoProgramma: {
-          ...state.programs.detail.dettagliInfoProgramma,
-          ...action.payload.newFormValues,
+    setAuthorityGeneralInfo: (state, action: PayloadAction<any>) => {
+      state.authorities.detail = {
+        ...state.authorities.detail,
+        dettagliInfoEnte: {
+          ...state.authorities.detail.dettagliInfoEnte,
+          ...action.payload,
         },
       };
-      /*
-      if (action.payload.currentStep === 2) {
+    },
+    setProgramGeneralInfo: (state, action: PayloadAction<any>) => {
+      let filteredDetails = { ...state.programs.detail.dettagliInfoProgramma };
+      if (action.payload.currentStep === 0) {
         state.programs.detail = {
           ...state.programs.detail,
-          dettaglioProgramma: action.payload.newFormValues,
+          dettagliInfoProgramma: {
+            ...filteredDetails,
+            ...action.payload.newFormValues,
+          },
         };
-      }
-       else if (action.payload.currentStep === 3) {
+      } else if (action.payload.currentStep === 1) {
+        filteredDetails = Object.fromEntries(
+          Object.entries(filteredDetails).filter(
+            ([key]) => !key.includes('puntiFacilitazione')
+          )
+        );
         state.programs.detail = {
           ...state.programs.detail,
-          facilitationNumber: action.payload.newFormValues,
+          dettagliInfoProgramma: {
+            ...filteredDetails,
+            ...action.payload.newFormValues,
+          },
+        };
+      } else if (action.payload.currentStep === 2) {
+        filteredDetails = Object.fromEntries(
+          Object.entries(filteredDetails).filter(
+            ([key]) => !key.includes('utentiUnici')
+          )
+        );
+        state.programs.detail = {
+          ...state.programs.detail,
+          dettagliInfoProgramma: {
+            ...filteredDetails,
+            ...action.payload.newFormValues,
+          },
+        };
+      } else if (action.payload.currentStep === 3) {
+        filteredDetails = Object.fromEntries(
+          Object.entries(filteredDetails).filter(
+            ([key]) => !key.includes('servizi')
+          )
+        );
+        state.programs.detail = {
+          ...state.programs.detail,
+          dettagliInfoProgramma: {
+            ...filteredDetails,
+            ...action.payload.newFormValues,
+          },
         };
       } else if (action.payload.currentStep === 4) {
+        filteredDetails = Object.fromEntries(
+          Object.entries(filteredDetails).filter(
+            ([key]) => !key.includes('facilitatori')
+          )
+        );
         state.programs.detail = {
           ...state.programs.detail,
-          uniqueUsers: action.payload.newFormValues,
-        };
-      } else if (action.payload.currentStep === 5) {
-        state.programs.detail = {
-          ...state.programs.detail,
-          services: action.payload.newFormValues,
-        };
-      } else {
-        state.programs.detail = {
-          ...state.programs.detail,
-          facilitators: action.payload.newFormValues,
+          dettagliInfoProgramma: {
+            ...filteredDetails,
+            ...action.payload.newFormValues,
+          },
         };
       }
-      */
     },
     resetProgramDetails: (state) => {
       state.programs.detail = {};
@@ -225,30 +266,66 @@ export const administrativeAreaSlice = createSlice({
       state.projects.detail = { ...action.payload };
     },
     setProjectGeneralInfo: (state, action: PayloadAction<any>) => {
-      if (action.payload.currentStep === 2) {
+      let filteredDetails = { ...state.projects.detail.dettagliInfoProgetto };
+      if (action.payload.currentStep === 0) {
         state.projects.detail = {
           ...state.projects.detail,
-          generalInfo: action.payload.newFormValues,
+          dettagliInfoProgetto: {
+            ...filteredDetails,
+            ...action.payload.newFormValues,
+          },
+        };
+      } else if (action.payload.currentStep === 1) {
+        filteredDetails = Object.fromEntries(
+          Object.entries(filteredDetails).filter(
+            ([key]) => !key.includes('puntiFacilitazione')
+          )
+        );
+        state.projects.detail = {
+          ...state.projects.detail,
+          dettagliInfoProgetto: {
+            ...filteredDetails,
+            ...action.payload.newFormValues,
+          },
+        };
+      } else if (action.payload.currentStep === 2) {
+        filteredDetails = Object.fromEntries(
+          Object.entries(filteredDetails).filter(
+            ([key]) => !key.includes('utentiUnici')
+          )
+        );
+        state.projects.detail = {
+          ...state.projects.detail,
+          dettagliInfoProgetto: {
+            ...filteredDetails,
+            ...action.payload.newFormValues,
+          },
         };
       } else if (action.payload.currentStep === 3) {
+        filteredDetails = Object.fromEntries(
+          Object.entries(filteredDetails).filter(
+            ([key]) => !key.includes('servizi')
+          )
+        );
         state.projects.detail = {
           ...state.projects.detail,
-          facilitationNumber: action.payload.newFormValues,
+          dettagliInfoProgetto: {
+            ...filteredDetails,
+            ...action.payload.newFormValues,
+          },
         };
       } else if (action.payload.currentStep === 4) {
+        filteredDetails = Object.fromEntries(
+          Object.entries(filteredDetails).filter(
+            ([key]) => !key.includes('facilitatori')
+          )
+        );
         state.projects.detail = {
           ...state.projects.detail,
-          uniqueUsers: action.payload.newFormValues,
-        };
-      } else if (action.payload.currentStep === 5) {
-        state.projects.detail = {
-          ...state.projects.detail,
-          services: action.payload.newFormValues,
-        };
-      } else {
-        state.projects.detail = {
-          ...state.projects.detail,
-          facilitators: action.payload.newFormValues,
+          dettagliInfoProgetto: {
+            ...filteredDetails,
+            ...action.payload.newFormValues,
+          },
         };
       }
     },
@@ -273,12 +350,18 @@ export const administrativeAreaSlice = createSlice({
     addCitizenToList: (state, action: PayloadAction<CitizenI>) => {
       state.services.detail.cittadini.push({ ...action.payload });
     },
+    deleteFiltroCriterioRicerca: (state) => {
+      const newFilters = { ...state.filters };
+      delete newFilters.filtroCriterioRicerca;
+      state.filters = { ...newFilters };
+    },
   },
 });
 
 export const {
   resetEntityState,
   resetFiltersState,
+  resetPaginationState,
   cleanEntityFilters,
   setEntityFilters,
   setEntityFilterOptions,
@@ -291,7 +374,9 @@ export const {
   setSurveysList,
   setUsersList,
   setAuthoritiesList,
-  setAuthoritiesDetails,
+  setAuthorityGeneralInfo,
+  resetAuthorityDetails,
+  setAuthorityDetails,
   setProgramDetails,
   setProjectDetails,
   setSurveyDetail,
@@ -304,6 +389,7 @@ export const {
   setProjectGeneralInfo,
   resetProjectDetails,
   addCitizenToList,
+  deleteFiltroCriterioRicerca,
 } = administrativeAreaSlice.actions;
 
 export const selectEntityList = (state: RootState) =>

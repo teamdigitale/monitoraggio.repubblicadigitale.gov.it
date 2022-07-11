@@ -2,6 +2,7 @@ package it.pa.repdgt.programmaprogetto.service;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,9 +24,8 @@ public class RuoloServiceTest {
 	public void getCodiceRuoliByCodiceFiscaleUtente() {
 		ruoloService.getCodiceRuoliByCodiceFiscaleUtente("UTENTE2");
 	}
-	
 
-	
+
 	@Test
 	public void cancellaRuoloUtenteKOTest() {
 		//test KO per utente inesistente
@@ -37,4 +37,5 @@ public class RuoloServiceTest {
 		//test KO per ruolo inesistente
 		assertThrows(RuoloException.class, () -> ruoloService.cancellaRuoloUtente("UTENTE2", "INESISTENTE"));
 	}
+
 }

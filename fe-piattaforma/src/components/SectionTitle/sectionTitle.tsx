@@ -1,5 +1,4 @@
 import React from 'react';
-import { Chip, ChipLabel, Icon } from 'design-react-kit';
 import './sectionTitle.scss';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
@@ -8,6 +7,8 @@ import AvatarInitials, {
   AvatarSizes,
   AvatarTextSizes,
 } from '../AvatarInitials/avatarInitials';
+import StatusChip from '../StatusChip/statusChip';
+import { Icon } from 'design-react-kit';
 
 interface SectionTitleI {
   title: string;
@@ -25,8 +26,7 @@ interface SectionTitleI {
 const SectionTitle: React.FC<SectionTitleI> = (props) => {
   const { title, status, upperTitle, subTitle, iconAvatar, name, surname } =
     props;
-  const { mediaIsDesktop, mediaIsTablet, mediaIsPhone } =
-    useAppSelector(selectDevice);
+  const device = useAppSelector(selectDevice);
 
   return (
     <div className='custom-section-title'>
@@ -51,7 +51,12 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
         </div>
       ) : null}
 
-      <div className='d-flex flex-row'>
+      <div
+        className={clsx(
+          'd-flex',
+          device.mediaIsPhone ? 'flex-column align-items-center' : 'flex-row'
+        )}
+      >
         {iconAvatar && (
           <AvatarInitials
             user={{ uName: name || '', uSurname: surname || '' }}
@@ -59,24 +64,24 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
             font={AvatarTextSizes.Big}
           />
         )}
-        <div className='custom-section-title__section-title primary-color-a9 text-center'>
+        <div className='custom-section-title__section-title primary-color-a9 text-nowrap'>
           <span role='heading' aria-level={1}>
             {' '}
             {title}{' '}
           </span>
         </div>
-        {(mediaIsDesktop || mediaIsTablet || mediaIsPhone) && status ? (
-          <Chip
+        {status ? (
+          <StatusChip
             className={clsx(
               'table-container__status-label',
-              'mx-3',
               'primary-bg-a9',
-              'mt-3',
-              'no-border'
+              'mr-4',
+              'section-chip',
+              'no-border',
+              device.mediaIsPhone ? 'mx-0 ml-2 my-3' : 'mx-3'
             )}
-          >
-            <ChipLabel className='text-white'>{status}</ChipLabel>
-          </Chip>
+            status={status}
+          />
         ) : null}
       </div>
       {subTitle ? (

@@ -4,24 +4,24 @@
       {
         "id": 1,
         "name": "Nome Servizio 1",
-        "date":"22/06/2022",
-        "serviceType":"Facilitazione",
+        "date": "22/06/2022",
+        "serviceType": "Facilitazione",
         "facilitatore": "Simone Viola",
         "status": "ATTIVO"
       },
       {
         "id": 2,
         "name": "Nome Servizio 2",
-        "date":"22/06/2022",
-        "serviceType":"Formazione in presenza",
+        "date": "22/06/2022",
+        "serviceType": "Formazione in presenza",
         "facilitatore": "Paola Neri",
         "status": "ATTIVO"
       },
       {
         "id": 3,
         "name": "Nome Servizio 3",
-        "date":"22/06/2022",
-        "serviceType":"Formazione Online",
+        "date": "22/06/2022",
+        "serviceType": "Formazione Online",
         "facilitatore": "Sofia Bianchi",
         "status": "ATTIVO"
       }

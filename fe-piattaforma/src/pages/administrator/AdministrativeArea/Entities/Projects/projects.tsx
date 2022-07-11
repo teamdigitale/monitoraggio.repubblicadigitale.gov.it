@@ -51,11 +51,16 @@ const Projects: React.FC = () => {
     filtroIdsProgrammi,
   } = filtersList;
   const { pageNumber } = pagination;
+  const [filterDropdownSelected, setFilterDropdownSelected] =
+    useState<string>('');
 
   const getAllFilters = () => {
-    dispatch(GetEntityFilterValues({ entity, dropdownType: 'stati' }));
-    dispatch(GetEntityFilterValues({ entity, dropdownType: 'policies' }));
-    dispatch(GetEntityFilterValues({ entity, dropdownType: 'programmi' }));
+    if (filterDropdownSelected !== 'filtroStati')
+      dispatch(GetEntityFilterValues({ entity, dropdownType: 'stati' }));
+    if (filterDropdownSelected !== 'filtroPolicies')
+      dispatch(GetEntityFilterValues({ entity, dropdownType: 'policies' }));
+    if (filterDropdownSelected !== 'filtroIdsProgrammi')
+      dispatch(GetEntityFilterValues({ entity, dropdownType: 'programmi' }));
   };
 
   useEffect(() => {
@@ -79,6 +84,10 @@ const Projects: React.FC = () => {
 
   useEffect(() => {
     getAllFilters();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filtroCriterioRicerca, filtroPolicies, filtroStati, filtroIdsProgrammi]);
+
+  useEffect(() => {
     getProjectsList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
@@ -101,14 +110,7 @@ const Projects: React.FC = () => {
         status: <StatusChip status={td.stato} rowTableId={td.id} />,
       }))
     );
-    return {
-      ...table,
-      // TODO remove slice after BE integration
-      values: table.values.slice(
-        pagination?.pageNumber * pagination?.pageSize - pagination?.pageSize,
-        pagination?.pageNumber * pagination?.pageSize
-      ),
-    };
+    return table;
   };
 
   const [tableValues, setTableValues] = useState(updateTableValues());
@@ -127,6 +129,7 @@ const Projects: React.FC = () => {
   };
 
   const handleDropdownFilters = (values: FilterI[], filterKey: string) => {
+    setFilterDropdownSelected(filterKey);
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
   };
 
@@ -224,16 +227,17 @@ const Projects: React.FC = () => {
       searchInformation={searchInformation}
       dropdowns={dropdowns}
       filtersList={filtersList}
+      resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
     >
-      <div className='mt-5'>
-        <Table
-          {...tableValues}
-          id='table'
-          onActionClick={onActionClick}
-          onCellClick={(field, row) => console.log(field, row)}
-          //onRowClick={row => console.log(row)}
-          withActions
-        />
+      <Table
+        {...tableValues}
+        id='table'
+        onActionClick={onActionClick}
+        onCellClick={(field, row) => console.log(field, row)}
+        //onRowClick={row => console.log(row)}
+        withActions
+      />
+      {pagination?.pageNumber ? (
         <Paginator
           activePage={pagination?.pageNumber}
           center
@@ -242,7 +246,7 @@ const Projects: React.FC = () => {
           total={pagination?.totalPages}
           onChange={handleOnChangePage}
         />
-      </div>
+      ) : null}
       <ManageProject creation />
     </GenericSearchFilterTableLayout>
   );

@@ -1,6 +1,4 @@
-import clsx from 'clsx';
 import React, { useEffect } from 'react';
-
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Form, Input } from '../../../components';
@@ -67,7 +65,7 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
       setFormValues(
         Object.fromEntries(
           Object.entries(formData).filter(
-            ([key, _val]) => !key.includes('Target')
+            ([key, _val]) => !key.includes('Target') && !key.includes('id')
           )
         )
       );
@@ -110,11 +108,11 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [intoModal]);
 
+  const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
+
   return (
     <Form className='mt-5' formDisabled={formDisabled}>
-      <Form.Row
-        className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
-      >
+      <Form.Row className={bootClass}>
         {/* <Input
           {...form?.codice}
           col='col-12 col-lg-6'
@@ -133,9 +131,7 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           }}
         />
       </Form.Row>
-      <Form.Row
-        className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
-      >
+      <Form.Row className={bootClass}>
         <Input
           {...form?.nomeBreve}
           col='col-12 col-lg-6'
@@ -152,12 +148,10 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pr-lg-3'
+          className='pl-lg-3'
         />
       </Form.Row>
-      <Form.Row
-        className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
-      >
+      <Form.Row className={bootClass}>
         <Input
           {...form?.dataInizio}
           label='Data inizio'
@@ -174,7 +168,7 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pr-lg-3'
+          className='pl-lg-3'
         />
       </Form.Row>
     </Form>
@@ -186,10 +180,6 @@ const form = newForm([
     field: 'nome',
     type: 'text',
     id: 'project-name',
-  }),
-  newFormField({
-    field: 'id',
-    id: 'project-id',
   }),
   newFormField({
     field: 'nomeBreve',

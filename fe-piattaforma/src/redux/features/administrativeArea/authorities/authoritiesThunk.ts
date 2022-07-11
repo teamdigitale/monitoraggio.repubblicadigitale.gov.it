@@ -4,12 +4,14 @@ import { RootState } from '../../../store';
 import isEmpty from 'lodash.isempty';
 import API from '../../../../utils/apiHelper';
 import {
-  setAuthoritiesDetails,
+  // setAuthorityGeneralInfo,
   setAuthoritiesList,
   setEntityFilterOptions,
+  setAuthorityDetails,
+  resetAuthorityDetails,
 } from '../administrativeAreaSlice';
 import { mapOptions } from '../../../../utils/common';
-import { formTypes } from '../../../../pages/administrator/AdministrativeArea/Entities/utils';
+// import { formTypes } from '../../../../pages/administrator/AdministrativeArea/Entities/utils';
 
 export interface AuthoritiesLightI {
   id: number;
@@ -22,7 +24,16 @@ export interface AuthoritiesListResponseI {
   numeroPagine: number;
   programmiLight: AuthoritiesLightI[];
 }
-
+/*
+export const sanitizeResult = (data: any) => Object.fromEntries(
+  Object.entries(data).map(([key, value]) => {
+    switch (key) {
+      // case 'indirizzoPec': return ([key, 'pec@mail.com'])
+      default: return ([key, value])
+    }
+  })
+);
+*/
 const GetAllEntiAction = {
   type: 'administrativeArea/GetAllEnti',
 };
@@ -101,14 +112,14 @@ export const GetFilterValuesEnti =
     }
   };
 
-const SetEnteDetailAction = {
-  type: 'administrativeArea/GetEnteDetail',
+const SetAuthorityDetailAction = {
+  type: 'administrativeArea/GetAuthorityDetail',
 };
-
-export const GetEnteDetail = (type: string) => async (dispatch: Dispatch) => {
+/*
+export const GetAuthorityDetail = (type: string) => async (dispatch: Dispatch) => {
   try {
     let res;
-    dispatch({ ...SetEnteDetailAction, type });
+    dispatch({ ...SetAuthorityDetailAction, type });
     switch (type) {
       case formTypes.ENTE_GESTORE_PROGETTO:
         res = await API.get('/ente/project1/gestoreProgetto/prova');
@@ -123,9 +134,169 @@ export const GetEnteDetail = (type: string) => async (dispatch: Dispatch) => {
         return;
     }
     if (res?.data) {
-      dispatch(setAuthoritiesDetails(res.data));
+      dispatch(setAuthorityDetails(res.data.data));
     }
   } catch (e) {
     console.log({ e });
   }
 };
+*/
+
+export const GetAuthorityDetail =
+  (authorityId: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...SetAuthorityDetailAction });
+
+      const res = await API.get(`/ente/${authorityId}`);
+
+      if (res?.data) {
+        dispatch(
+          setAuthorityDetails({
+            profili: res.data.dettagliProfili,
+            dettagliInfoEnte: res.data.dettagliEnte,
+          })
+        );
+      }
+    } catch (e) {
+      console.log({ e });
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+export const GetAuthorityManagerDetail =
+  (entityId: string, entity: 'programma' | 'progetto') =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...SetAuthorityDetailAction });
+      dispatch(resetAuthorityDetails());
+
+      const res = await API.get(
+        `/ente/${
+          entity === 'programma' ? 'gestoreProgramma' : 'gestoreProgetto'
+        }/${entityId}`
+      );
+
+      if (res.data) {
+        dispatch(
+          setAuthorityDetails({
+            delegatiEnteGestore: res.data.delegatiEnteGestore,
+            referentiEnteGestore: res.data.referentiEnteGestore,
+            dettagliInfoEnte: Object.fromEntries(
+              Object.entries(res.data.ente).map(([key, value]) =>
+                key === 'partitaIva' ? ['piva', value] : [key, value]
+              )
+            ),
+          })
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const GetAuthoritiesBySearchAction = {
+  type: 'administrativeArea/GetAuthoritiesBySearch',
+};
+
+export const GetAuthoritiesBySearch =
+  (search: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...GetAuthoritiesBySearchAction });
+      console.log(search);
+
+      const body = {
+        filtroRequest: {},
+        idProgramma: 0,
+        idProgetto: 0,
+        cfUtente: 'UTENTE1',
+        codiceRuolo: 'DTD',
+      };
+
+      const res = await API.post(`/ente/all`, body);
+
+      if (res.data) {
+        dispatch(setAuthoritiesList(res.data.enti));
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const CreateAuthorityAction = {
+  type: 'administrativeArea/CreateAuthority',
+};
+
+export const CreateManagerAuthority =
+  (authorityDetail: any, entityId: string, entity: 'programma' | 'progetto') =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...CreateAuthorityAction });
+
+      const body = Object.fromEntries(
+        Object.entries(authorityDetail).filter(([key, _value]) => key !== 'id')
+      );
+
+      if (body) {
+        let res = await API.post(`/ente/`, {
+          ...body,
+        });
+        if (res) {
+          res = await API.put(
+            `/${entity}/${entityId}/assegna/${
+              entity === 'programma' ? 'entegestore' : 'enteGestore'
+            }/${res.data.id}`
+          );
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+      // window.location.reload();
+    }
+  };
+
+const UpdateAuthorityAction = {
+  type: 'administrativeArea/UpdateAuthority',
+};
+
+export const UpdateManagerAuthority =
+  (authorityDetail: any, entityId: string, entity: 'programma' | 'progetto') =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...UpdateAuthorityAction });
+
+      if (authorityDetail) {
+        let res = await API.put(
+          `/ente/${authorityDetail.id}/${
+            entity === 'programma' ? 'gestoreProgramma' : 'gestoreProgetto'
+          }/${entityId}`,
+          {
+            ...authorityDetail,
+          }
+        );
+        console.log(res);
+
+        res = await API.put(
+          `/${entity}/${entityId}/assegna/${
+            entity === 'programma' ? 'entegestore' : 'enteGestore'
+          }/${authorityDetail.id}`
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+      // window.location.reload();
+    }
+  };

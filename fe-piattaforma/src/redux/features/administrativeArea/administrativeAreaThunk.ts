@@ -43,7 +43,7 @@ export const GetEntityValues =
           filtroRequest[filter] =
             filters[filter]?.value || filters[filter] || null;
         } else {
-          filtroRequest[filter] = filters[filter].map(
+          filtroRequest[filter] = filters[filter]?.map(
             (value: OptionType) => value.value
           );
         }
@@ -100,7 +100,7 @@ export const GetEntityFilterValues =
           filtroRequest[filter] =
             filters[filter]?.value || filters[filter] || null;
         } else {
-          filtroRequest[filter] = filters[filter].map(
+          filtroRequest[filter] = filters[filter]?.map(
             (value: OptionType) => value.value
           );
         }
@@ -121,12 +121,18 @@ export const GetEntityFilterValues =
       if (res?.data?.length) {
         const filterResponse = {
           [payload.dropdownType]: res.data.map((option: string) => ({
-            label: option,
+            label:
+              payload.dropdownType === 'stati'
+                ? option[0] + option.slice(1).toLowerCase()
+                : option,
             value: option,
           })),
         };
 
-        if (payload.dropdownType === 'programmi') {
+        if (
+          payload.dropdownType === 'programmi' ||
+          payload.dropdownType === 'progetti'
+        ) {
           filterResponse[payload.dropdownType] = res.data.map(
             (option: { nome: string; id: string | number }) => ({
               label: option.nome,

@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Icon } from 'design-react-kit';
 import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
-import { Form, Input } from '../../../../../../components';
-import SurveySection from './components/surveySection';
 import { useAppSelector } from '../../../../../../redux/hooks';
 import { FormHelper, FormI } from '../../../../../../utils/formHelper';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -17,13 +14,16 @@ import {
   selectSurveySections,
   SurveyQuestionI,
   selectSurveyForm,
-  setSurveyFormFieldValue,
 } from '../../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 import {
   SetSurveyCreation,
   GetSurveyInfo,
-  SetSurveyQuestion,
 } from '../../../../../../redux/features/administrativeArea/surveys/surveysThunk';
+import SurveyTemplate from './components/surveyTemplate';
+import ButtonsBar, {
+  ButtonInButtonsBar,
+} from '../../../../../../components/ButtonsBar/buttonsBar';
+import Sticky from 'react-sticky-el';
 
 interface SurveyDetailsEditI {
   editMode?: boolean;
@@ -39,12 +39,8 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
   const navigate = useNavigate();
   const form = useAppSelector(selectSurveyForm);
   const sections = useAppSelector(selectSurveySections) || [];
-  // const [activeSectionId, setActiveSectionId] = useState<string>('');
   const [editModeState, setEditModeState] = useState<boolean>(editMode);
   const [cloneModeState, setCloneModeState] = useState<boolean>(cloneMode);
-  const [cloneSurveyTitle, setCloneSurveyTitle] = useState(
-    form['survey-name'].value + ' clone'
-  );
 
   const { idQuestionario } = useParams();
 
@@ -90,25 +86,6 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
     dispatch(GetSurveyInfo(surveyId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const handleOnInputChange = (
-    value: string | number | boolean | Date | string[] | undefined,
-    field: string | undefined,
-    isTitle: boolean
-  ) => {
-    if (isTitle && typeof value === 'string') {
-      setCloneSurveyTitle(value);
-    }
-    dispatch(
-      setSurveyFormFieldValue({
-        form: FormHelper.onInputChange(form, value, field),
-      })
-    );
-  };
-
-  const handleNewQuestion = (sectionId: string) => {
-    dispatch(SetSurveyQuestion({ sectionId: sectionId }));
-  };
 
   const handleOnSubmit = () => {
     dispatch(SetSurveyCreation(false));
@@ -159,6 +136,49 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
 
   const device = useAppSelector(selectDevice);
 
+  const cancelSaveButtons: ButtonInButtonsBar[] = [
+    {
+      text: 'Annulla',
+      color: 'primary',
+      outline: true,
+      onClick: () => {
+        setEditModeState(false);
+        setCloneModeState(false);
+      },
+    },
+    {
+      text: 'Salva Questionario',
+      color: 'primary',
+      disabled: !checkValidityForm(form),
+      onClick: () => {
+        handleOnSubmit;
+      },
+    },
+  ];
+
+  const cloneEditButtons: ButtonInButtonsBar[] = [
+    {
+      text: 'Duplica',
+      color: 'primary',
+      outline: true,
+      onClick: () => {
+        setCloneModeState(true);
+        setEditModeState(false);
+        dispatch(SetSurveyCreation(true));
+        navigate(`/area-amministrativa/questionari/${1}/clona`);
+      },
+    },
+    {
+      text: 'Modifica',
+      color: 'primary',
+      onClick: () => {
+        setEditModeState(true);
+        setCloneModeState(false);
+        navigate(`/area-amministrativa/questionari/${1}/modifica`);
+      },
+    },
+  ];
+
   return (
     <div className='mb-5'>
       <DetailLayout
@@ -170,95 +190,11 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
         formButtons={[]} // TODO?
         buttonsPosition='TOP'
         goBackTitle='Torna indietro'
+        goBackPath='/area-amministrativa/questionari'
       />
-      <Form className='pt-5'>
-        <Form.Row
-          className={clsx(
-            device.mediaIsPhone ? '' : 'd-flex justify-content-start'
-          )}
-        >
-          <Input
-            {...form['survey-name']}
-            value={
-              cloneModeState ? cloneSurveyTitle : form['survey-name'].value
-            }
-            col='col-12 col-lg-6 '
-            label='Nome'
-            id='survey-field-name'
-            onInputChange={(value, field) =>
-              handleOnInputChange(value, field, true)
-            }
-            placeholder='Inserici nome questionario'
-            disabled={!cloneModeState}
-            className={clsx(
-              device.mediaIsPhone || device.mediaIsTablet ? 'w-100' : 'w-75'
-            )}
-          />
-          <Input
-            {...form['survey-description']}
-            col='col-12 col-lg-6'
-            label='Descrizione'
-            id='survey-field-description'
-            onInputBlur={handleOnInputChange}
-            placeholder='Inserici una descrizione del questionario'
-            disabled={!editModeState && !cloneModeState}
-            className={clsx(
-              device.mediaIsPhone || device.mediaIsTablet ? 'w-100' : 'w-75'
-            )}
-          />
-        </Form.Row>
-      </Form>
-      {sections.map((section: SurveySectionI, i: number) => (
-        <>
-          <React.Fragment key={section.id}>
-            <SurveySection
-              {...section}
-              positionSection={i}
-              sectionTitle={`${i + 1}. ${section.sectionTitle}`}
-              // handleActiveSection={(activeSection) =>
-              //   setActiveSectionId(activeSection)
-              // }
-              // isSectionActive={section.id === activeSectionId}
-              editMode={editModeState}
-              cloneMode={cloneModeState}
-            />
-          </React.Fragment>
-          <div
-            className={clsx(
-              device.mediaIsPhone
-                ? 'flex-column d-flex'
-                : 'd-flex justify-content-end',
-              'w-100'
-            )}
-          >
-            {section.id !== 'anagraphic-citizen-section' &&
-              section.id !== 'anagraphic-booking-section' && (
-                <Button
-                  onClick={() => handleNewQuestion(section?.id || '')}
-                  className={clsx(
-                    device.mediaIsPhone
-                      ? 'd-flex text-nowrap'
-                      : 'd-flex justify-content-between ml-3 text-nowrap'
-                  )}
-                  disabled={
-                    !checkValidityQuestions(section.questions || []) ||
-                    !(editModeState || cloneModeState)
-                  }
-                >
-                  <Icon
-                    color='primary'
-                    icon='it-plus-circle'
-                    size='sm'
-                    className='mr-2'
-                    aria-label='Aggiungi domanda'
-                  />
-                  Aggiungi domanda
-                </Button>
-              )}
-          </div>
-          {i !== sections?.length - 1 && <hr />}
-        </>
-      ))}
+
+      <SurveyTemplate editMode={editModeState} cloneMode={cloneModeState} />
+
       <div
         className={clsx(
           'd-flex',
@@ -271,52 +207,17 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
         )}
       >
         {editModeState || cloneModeState ? (
-          <>
-            <Button
-              className='mr-3 text-nowrap'
-              color='secondary'
-              onClick={() => {
-                setEditModeState(false);
-                setCloneModeState(false);
-              }}
-            >
-              Annulla
-            </Button>
-            <Button
-              color='primary'
-              onClick={handleOnSubmit}
-              disabled={!checkValidityForm(form)}
-              className='text-nowrap'
-            >
-              Salva questionario
-            </Button>
-          </>
+          <div aria-hidden='true' className='mt-5 w-100'>
+            <Sticky mode='bottom' stickyClassName='sticky bg-white container'>
+              <ButtonsBar buttons={cancelSaveButtons} />
+            </Sticky>
+          </div>
         ) : (
-          <>
-            <Button
-              className='mr-3 text-nowrap'
-              color='secondary'
-              onClick={() => {
-                setCloneModeState(true);
-                setEditModeState(false);
-                dispatch(SetSurveyCreation(true));
-                navigate(`/area-amministrativa/questionari/${1}/clona`);
-              }}
-            >
-              Clona questionario
-            </Button>
-            <Button
-              color='primary'
-              onClick={() => {
-                setEditModeState(true);
-                setCloneModeState(false);
-                navigate(`/area-amministrativa/questionari/${1}/modifica`);
-              }}
-              className='text-nowrap'
-            >
-              Modifica questionario
-            </Button>
-          </>
+          <div aria-hidden='true' className='mt-5 w-100'>
+            <Sticky mode='bottom' stickyClassName='sticky bg-white container'>
+              <ButtonsBar buttons={cloneEditButtons} />
+            </Sticky>
+          </div>
         )}
       </div>
     </div>

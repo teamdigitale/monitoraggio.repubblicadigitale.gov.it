@@ -132,7 +132,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
           {title || payload?.title}
         </p>
       </div>
-      <ModalBody className='h-50 p-0'>
+      <ModalBody className='p-0'>
         {hasSearch && (
           //
           <div className='row mx-5'>

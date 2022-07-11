@@ -18,7 +18,6 @@ import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
 import ConfirmDeleteModal from '../modals/confirmDeleteModal';
 import ManageProject from '../modals/manageProject';
 import ManageHeadquarter from '../../../../../components/AdministrativeArea/Entities/Headquarters/ManageHeadquarter/manageHeadquarter';
-import ManageEntiPartner from '../modals/managePartnerAuthority';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
   selectDevice,
@@ -32,9 +31,10 @@ import ProjectAccordionForm from '../../../../forms/formProjects/ProjectAccordio
 import FormAuthorities from '../../../../forms/formAuthorities';
 import ManagePartnerAuthority from '../modals/managePartnerAuthority';
 import { DeleteEntity } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
+import ManageManagerAuthority from '../modals/manageManagerAuthority';
 
 const tabs = {
-  INFO: 'info',
+  INFO: 'info-progetto',
   ENTE_GESTORE: 'ente-gestore-progetto',
   ENTI_PARTNER: 'enti-partner-progetto',
   SEDI: 'sedi',
@@ -49,8 +49,8 @@ const ProjectsDetails = () => {
   const { mediaIsDesktop, mediaIsPhone } = useAppSelector(selectDevice);
   const progetti = useAppSelector(selectProjects);
   const managingAuthorityID = progetti.detail?.idEnteGestoreProgetto;
-  const PartnerAuthorityList = progetti.detail?.entiPartner;
-  const headquarterList = progetti.detail?.sedi;
+  const PartnerAuthoritiesList = progetti.detail?.entiPartner;
+  const headquarterList = progetti?.detail?.sedi;
   const [deleteText, setDeleteText] = useState<string>('');
   const [activeTab, setActiveTab] = useState<string>(tabs.INFO);
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
@@ -157,7 +157,7 @@ const ProjectsDetails = () => {
       onClick: () =>
         dispatch(
           openModal({
-            id: 'ente-gestore-progetto',
+            id: 'ente-gestore',
             payload: { title: 'Aggiungi Ente gestore Progetto' },
           })
         ),
@@ -198,24 +198,24 @@ const ProjectsDetails = () => {
           enteType={formTypes.ENTE_GESTORE_PROGETTO}
         />
       );
-      setCorrectModal(<ManagePartnerAuthority />);
+      setCorrectModal(<ManageManagerAuthority />);
       setItemList(null);
       setCorrectButtons([
         {
           size: 'xs',
+          outline: true,
           color: 'primary',
           text: 'Elimina',
           onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
         },
         {
           size: 'xs',
-          outline: true,
           color: 'primary',
-          text: ' Modifica',
+          text: 'Modifica',
           onClick: () =>
             dispatch(
               openModal({
-                id: formTypes.ENTE_GESTORE_PROGETTO,
+                id: 'ente-gestore',
                 payload: { title: 'Modifica ente gestore progetto' },
               })
             ),
@@ -226,6 +226,7 @@ const ProjectsDetails = () => {
       setItemList(null);
       setCorrectButtons([]);
       setCurrentForm(undefined);
+      setCorrectModal(<ManageManagerAuthority creation />);
       setEmptySection(
         <EmptySection
           title={'Questa sezione è ancora vuota'}
@@ -239,19 +240,18 @@ const ProjectsDetails = () => {
   };
 
   const PartnerAuthoritySection = () => {
-    if (PartnerAuthorityList?.length) {
-      PartnerAuthorityList?.map(
-        (ente: { id: string; nome: string; ref: string; stato: string }) => ({
-          ...ente,
-          fullInfo: { ref: ente.ref },
-          actions: onActionClickEntiPartner,
-        })
-      ),
-        setButtonsPosition('BOTTOM');
+    if (PartnerAuthoritiesList?.length) {
+      setButtonsPosition('BOTTOM');
       setCurrentForm(undefined);
-      setCorrectModal(<ManageEntiPartner creation />);
+      setCorrectModal(<ManagePartnerAuthority creation />);
       setItemList({
-        items: [...PartnerAuthorityList],
+        items: PartnerAuthoritiesList?.map(
+          (ente: { id: string; nome: string; ref: string; stato: string }) => ({
+            ...ente,
+            fullInfo: { ref: ente.ref },
+            actions: onActionClickEntiPartner,
+          })
+        ),
       });
       setItemAccordionList(null);
       setCorrectButtons([
@@ -265,7 +265,6 @@ const ProjectsDetails = () => {
           size: 'xs',
           outline: true,
           color: 'primary',
-
           text: ' Aggiungi Ente partner',
           onClick: () =>
             dispatch(
@@ -294,17 +293,28 @@ const ProjectsDetails = () => {
 
   const HeadquartersSection = () => {
     if (headquarterList?.length) {
-      headquarterList?.map(
-        (sede: { id: string; nome: string; stato: string }) => ({
-          ...sede,
-          actions: onActionClickSede,
-        })
-      );
       setButtonsPosition('BOTTOM');
       setCurrentForm(undefined);
       setCorrectModal(<ManageHeadquarter creation />);
       setItemList({
-        items: [...headquarterList],
+        items: headquarterList?.map(
+          (sede: {
+            id: string;
+            nome: string;
+            stato: string;
+            enteDiRiferimento: string;
+            nrFacilitatori: number;
+            serviziErogati: string;
+          }) => ({
+            ...sede,
+            fullInfo: {
+              ente_ref: sede.enteDiRiferimento,
+              nFacilitatori: sede.nrFacilitatori,
+              serviziErogati: sede.serviziErogati,
+            },
+            actions: onActionClickSede,
+          })
+        ),
       });
       setItemAccordionList(null);
       setCorrectButtons([
@@ -377,7 +387,7 @@ const ProjectsDetails = () => {
           to={replaceLastUrlSection(tabs.ENTI_PARTNER)}
           active={activeTab === tabs.ENTI_PARTNER}
         >
-          {!PartnerAuthorityList?.length ? (
+          {!PartnerAuthoritiesList?.length ? (
             <div>
               <span className='mr-1'> * Enti Partner </span>
               <Icon icon='it-warning-circle' size='sm' />
@@ -407,9 +417,7 @@ const ProjectsDetails = () => {
 
   const onActionClickEntiPartner: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        `/area-amministrativa/enti/${typeof td === 'string' ? td : td?.id}`
-      );
+      navigate(`/area-amministrativa/enti/${td}`);
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       console.log(td);
@@ -474,15 +482,15 @@ const ProjectsDetails = () => {
           },
           {
             size: 'xs',
+            outline: true,
             color: 'primary',
             text: 'Elimina',
             onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
           },
           {
             size: 'xs',
-            outline: true,
             color: 'primary',
-            text: ' Modifica',
+            text: 'Modifica',
             onClick: () =>
               dispatch(
                 openModal({
@@ -508,15 +516,9 @@ const ProjectsDetails = () => {
   }, [activeTab, mediaIsDesktop, progetti]);
 
   return (
-    <div
-      className={clsx(
-        mediaIsPhone
-          ? 'd-flex flex-row mt-5container'
-          : 'd-flex flex-row container'
-      )}
-    >
+    <div className={clsx(mediaIsPhone && 'mt-5', 'd-flex', 'flex-row')}>
       <div className='d-flex flex-column w-100'>
-        <div className='container'>
+        <div>
           <DetailLayout
             nav={nav}
             titleInfo={{
@@ -530,6 +532,7 @@ const ProjectsDetails = () => {
             itemsList={itemList}
             buttonsPosition={buttonsPosition}
             goBackTitle='Elenco progetti'
+            goBackPath='/area-amministrativa/progetti'
           >
             <>
               {currentForm}

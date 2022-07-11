@@ -58,6 +58,8 @@ const Surveys = () => {
   const [searchDropdown, setSearchDropdown] = useState<
     { filterId: string; value: formFieldI['value'] }[]
   >([]);
+  const [filterDropdownSelected, setFilterDropdownSelected] =
+    useState<string>('');
 
   const { criterioRicerca, stati } = filtersList;
 
@@ -177,9 +179,11 @@ const Surveys = () => {
   };
 
   const getAllFilters = () => {
-    dispatch(
-      GetEntityFilterValues({ entity, dropdownType: statusDropdownLabel })
-    );
+    // TODO: check chiavi filtri
+    if (filterDropdownSelected !== 'filtroStati')
+      dispatch(
+        GetEntityFilterValues({ entity, dropdownType: statusDropdownLabel })
+      );
   };
 
   useEffect(() => {
@@ -206,6 +210,7 @@ const Surveys = () => {
   };
 
   const handleDropdownFilters = (values: FilterI[], filterKey: string) => {
+    setFilterDropdownSelected(filterKey);
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
   };
 
@@ -313,6 +318,7 @@ const Surveys = () => {
         dropdowns={dropdowns}
         {...objectToPass}
         ctaDownload={handleDownloadList}
+        resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
       >
         <div>
           <Table

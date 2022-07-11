@@ -8,6 +8,7 @@ import {
 } from '../../../redux/features/app/appSlice';
 import LocationInterceptor from '../../locationInterceptor';
 import { Outlet, useLocation } from 'react-router-dom';
+import clsx from 'clsx';
 
 /**
  * The component has been modified to pass routes guard.
@@ -18,11 +19,12 @@ import { Outlet, useLocation } from 'react-router-dom';
 
 export interface LayoutProp {
   isHeaderFull?: boolean;
+  isFull?: boolean;
   children?: JSX.Element;
 }
 
 const FullLayout: React.FC<LayoutProp> = (props) => {
-  const { isHeaderFull = true, children } = props;
+  const { isHeaderFull = true, children, isFull = false } = props;
   const loader = useAppSelector(selectLoader);
   const device = useAppSelector(selectDevice);
   const location = useLocation();
@@ -34,7 +36,11 @@ const FullLayout: React.FC<LayoutProp> = (props) => {
       {location.pathname !== '/' && !device.mediaIsPhone && <Breadcrumb />}
       {loader.isLoading && <Loader />}
       <main
-        className='main-container main-container__content-container'
+        className={clsx(
+          'main-container',
+          'main-container__content-container',
+          !device.mediaIsDesktop || isFull ? null : 'container'
+        )}
         id='main'
         tabIndex={-1}
       >
