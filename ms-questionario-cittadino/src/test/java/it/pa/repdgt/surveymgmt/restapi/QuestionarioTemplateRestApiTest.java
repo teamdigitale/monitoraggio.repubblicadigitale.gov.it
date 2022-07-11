@@ -381,7 +381,6 @@ public class QuestionarioTemplateRestApiTest {
 			);
 		
 		assertThat(questionarioTemplateCollection).isNotNull();
-		assertThat(questionarioTemplateCollection.getIdQuestionarioTemplate()).isNotNull();
 	}
 	
 	@Test
