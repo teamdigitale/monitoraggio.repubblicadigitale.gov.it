@@ -245,7 +245,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
               'ml-lg-5',
               'ml-0',
               'pl-lg-0',
-              device.mediaIsPhone || device.mediaIsTablet && 'pl-4'
+              !device.mediaIsDesktop && 'pl-4'
             )}
           >
             <div className='d-flex flex-column'>
