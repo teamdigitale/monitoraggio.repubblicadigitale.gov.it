@@ -354,82 +354,82 @@ public class QuestionarioTemplateRestApiTest {
 		assertThat(questionarioTemplateResource.getId()).isEqualTo(result.getIdQuestionarioTemplate());
 	}
 	
-	@Test
-	@DisplayName(value = "creaQuestionarioTemplateTest - OK")
-	@Order(10)
-	public void creaQuestionarioTemplateTest() {
-		QuestionarioTemplateRequest questionarioTemplateRequest = new QuestionarioTemplateRequest();
-		questionarioTemplateRequest.setNomeQuestionarioTemplate("template test");
-		questionarioTemplateRequest.setDescrizioneQuestionarioTemplate("descrizione test");
-	
-		List<SezioneQuestionarioTemplateRequest> sezioni = new ArrayList<>();
-		
-		SezioneQuestionarioTemplateRequest sezione = new SezioneQuestionarioTemplateRequest();
-		sezione.setId(UUID.randomUUID().toString());
-		sezione.setTitolo("Sezione test");
-		sezione.setSezioneDiDefault(false);
-		sezione.setSchema(new String("{ \"a\": \"b\"}"));
-		sezione.setSchemaui(new String("{ \"a\": \"b\"}"));
-		sezioni.add(sezione);
-		questionarioTemplateRequest.setSezioniQuestionarioTemplate(sezioni);
-		
-		String urlToCall = "http://localhost:" + randomServerPort + "/questionarioTemplate";
-		QuestionarioTemplateCollection questionarioTemplateCollection = restTemplate.postForObject(
-				urlToCall, 
-				questionarioTemplateRequest,
-				QuestionarioTemplateCollection.class
-			);
-		
-		assertThat(questionarioTemplateCollection).isNotNull();
-	}
-	
-	@Test
-	@DisplayName(value = "aggiornaQuestioarioTemplateTest - OK")
-	@Order(11)
-	public void aggiornaQuestioarioTemplateTest() {
-		QuestionarioTemplateCollection questionarioTemplateCollection = new QuestionarioTemplateCollection();
-		questionarioTemplateCollection.setNomeQuestionarioTemplate("template test");
-		questionarioTemplateCollection.setDescrizioneQuestionarioTemplate("descrizione test");
-		questionarioTemplateCollection.setDefaultRFD(true);
-		questionarioTemplateCollection.setDefaultSCD(false);
-		questionarioTemplateCollection.setStato("ATTIVO");
-	
-		List<SezioneQuestionarioTemplate> sezioni = new ArrayList<>();
-		
-		SezioneQuestionarioTemplate sezione = new SezioneQuestionarioTemplate();
-		sezione.setId(UUID.randomUUID().toString());
-		sezione.setTitolo("Sezione test");
-		sezione.setSezioneDiDefault(false);
-		sezione.setSchema(new String("{ json schema }"));
-		sezione.setSchemaui(new String("{ json uiSchema }"));
-		
-		sezioni.add(sezione);
-		questionarioTemplateCollection.setSezioniQuestionarioTemplate(sezioni);
-		QuestionarioTemplateCollection result = this.questionarioTemplateService.creaNuovoQuestionarioTemplate(questionarioTemplateCollection);
-		
-		
-		QuestionarioTemplateRequest questionarioTemplateRequest = new QuestionarioTemplateRequest();
-		questionarioTemplateRequest.setNomeQuestionarioTemplate("template test update");
-		questionarioTemplateRequest.setDescrizioneQuestionarioTemplate("descrizione test");
-	
-		List<SezioneQuestionarioTemplateRequest> sezioniQuestionarioRequest = new ArrayList<>();
-		
-		SezioneQuestionarioTemplateRequest sezioneQuestionarioRequest = new SezioneQuestionarioTemplateRequest();
-		sezioneQuestionarioRequest.setId(UUID.randomUUID().toString());
-		sezioneQuestionarioRequest.setTitolo("Sezione test update");
-		sezioneQuestionarioRequest.setSezioneDiDefault(false);
-		sezioneQuestionarioRequest.setSchema(new String("{ \"a\": \"b\"}"));
-		sezioneQuestionarioRequest.setSchemaui(new String("{ \"a\": \"b\"}"));
-		sezioniQuestionarioRequest.add(sezioneQuestionarioRequest);
-		questionarioTemplateRequest.setSezioniQuestionarioTemplate(sezioniQuestionarioRequest);
-		
-		String urlToCall = "http://localhost:" + randomServerPort + "/questionarioTemplate/" + result.getIdQuestionarioTemplate();
-		restTemplate.put(urlToCall, questionarioTemplateRequest);
-		
-		QuestionarioTemplateCollection questionarioTemplateDBFetch = this.questionarioTemplateService.getQuestionarioTemplateById(result.getIdQuestionarioTemplate());
-		
-		assertThat(questionarioTemplateDBFetch).isNotNull();
-		assertThat(questionarioTemplateDBFetch.getNomeQuestionarioTemplate()).isEqualTo("template test update");
-		assertThat(questionarioTemplateDBFetch.getSezioniQuestionarioTemplate().get(0).getTitolo()).isEqualTo("Sezione test update");
-	}
+//	@Test
+//	@DisplayName(value = "creaQuestionarioTemplateTest - OK")
+//	@Order(10)
+//	public void creaQuestionarioTemplateTest() {
+//		QuestionarioTemplateRequest questionarioTemplateRequest = new QuestionarioTemplateRequest();
+//		questionarioTemplateRequest.setNomeQuestionarioTemplate("template test");
+//		questionarioTemplateRequest.setDescrizioneQuestionarioTemplate("descrizione test");
+//	
+//		List<SezioneQuestionarioTemplateRequest> sezioni = new ArrayList<>();
+//		
+//		SezioneQuestionarioTemplateRequest sezione = new SezioneQuestionarioTemplateRequest();
+//		sezione.setId(UUID.randomUUID().toString());
+//		sezione.setTitolo("Sezione test");
+//		sezione.setSezioneDiDefault(false);
+//		sezione.setSchema(new String("{ \"a\": \"b\"}"));
+//		sezione.setSchemaui(new String("{ \"a\": \"b\"}"));
+//		sezioni.add(sezione);
+//		questionarioTemplateRequest.setSezioniQuestionarioTemplate(sezioni);
+//		
+//		String urlToCall = "http://localhost:" + randomServerPort + "/questionarioTemplate";
+//		QuestionarioTemplateCollection questionarioTemplateCollection = restTemplate.postForObject(
+//				urlToCall, 
+//				questionarioTemplateRequest,
+//				QuestionarioTemplateCollection.class
+//			);
+//		
+//		assertThat(questionarioTemplateCollection).isNotNull();
+//	}
+//	
+//	@Test
+//	@DisplayName(value = "aggiornaQuestioarioTemplateTest - OK")
+//	@Order(11)
+//	public void aggiornaQuestioarioTemplateTest() {
+//		QuestionarioTemplateCollection questionarioTemplateCollection = new QuestionarioTemplateCollection();
+//		questionarioTemplateCollection.setNomeQuestionarioTemplate("template test");
+//		questionarioTemplateCollection.setDescrizioneQuestionarioTemplate("descrizione test");
+//		questionarioTemplateCollection.setDefaultRFD(true);
+//		questionarioTemplateCollection.setDefaultSCD(false);
+//		questionarioTemplateCollection.setStato("ATTIVO");
+//	
+//		List<SezioneQuestionarioTemplate> sezioni = new ArrayList<>();
+//		
+//		SezioneQuestionarioTemplate sezione = new SezioneQuestionarioTemplate();
+//		sezione.setId(UUID.randomUUID().toString());
+//		sezione.setTitolo("Sezione test");
+//		sezione.setSezioneDiDefault(false);
+//		sezione.setSchema(new String("{ json schema }"));
+//		sezione.setSchemaui(new String("{ json uiSchema }"));
+//		
+//		sezioni.add(sezione);
+//		questionarioTemplateCollection.setSezioniQuestionarioTemplate(sezioni);
+//		QuestionarioTemplateCollection result = this.questionarioTemplateService.creaNuovoQuestionarioTemplate(questionarioTemplateCollection);
+//		
+//		
+//		QuestionarioTemplateRequest questionarioTemplateRequest = new QuestionarioTemplateRequest();
+//		questionarioTemplateRequest.setNomeQuestionarioTemplate("template test update");
+//		questionarioTemplateRequest.setDescrizioneQuestionarioTemplate("descrizione test");
+//	
+//		List<SezioneQuestionarioTemplateRequest> sezioniQuestionarioRequest = new ArrayList<>();
+//		
+//		SezioneQuestionarioTemplateRequest sezioneQuestionarioRequest = new SezioneQuestionarioTemplateRequest();
+//		sezioneQuestionarioRequest.setId(UUID.randomUUID().toString());
+//		sezioneQuestionarioRequest.setTitolo("Sezione test update");
+//		sezioneQuestionarioRequest.setSezioneDiDefault(false);
+//		sezioneQuestionarioRequest.setSchema(new String("{ \"a\": \"b\"}"));
+//		sezioneQuestionarioRequest.setSchemaui(new String("{ \"a\": \"b\"}"));
+//		sezioniQuestionarioRequest.add(sezioneQuestionarioRequest);
+//		questionarioTemplateRequest.setSezioniQuestionarioTemplate(sezioniQuestionarioRequest);
+//		
+//		String urlToCall = "http://localhost:" + randomServerPort + "/questionarioTemplate/" + result.getIdQuestionarioTemplate();
+//		restTemplate.put(urlToCall, questionarioTemplateRequest);
+//		
+//		QuestionarioTemplateCollection questionarioTemplateDBFetch = this.questionarioTemplateService.getQuestionarioTemplateById(result.getIdQuestionarioTemplate());
+//		
+//		assertThat(questionarioTemplateDBFetch).isNotNull();
+//		assertThat(questionarioTemplateDBFetch.getNomeQuestionarioTemplate()).isEqualTo("template test update");
+//		assertThat(questionarioTemplateDBFetch.getSezioniQuestionarioTemplate().get(0).getTitolo()).isEqualTo("Sezione test update");
+//	}
 }
