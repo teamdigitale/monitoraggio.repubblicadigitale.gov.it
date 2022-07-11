@@ -18,7 +18,7 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
 
   return (
     <div className={clsx('page-title', hasBackground && 'lightgrey-bg-a1')}>
-      <Container className={clsx('mt-3 pl-0')}>
+      <Container className='mt-3'>
         <div
           className={clsx(
             'd-flex',

@@ -1,30 +1,38 @@
 import clsx from 'clsx';
-import isEqual from 'lodash.isequal';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Form, Input, Select, SelectMultiple } from '../../components';
 import CheckboxGroup from '../../components/Form/checkboxGroup';
+import { OptionTypeMulti } from '../../components/Form/selectMultiple';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../hoc/withFormHandler';
-import { SurveySectionI } from '../../redux/features/administrativeArea/surveys/surveysSlice';
-import { selectDevice } from '../../redux/features/app/appSlice';
+import {
+  CittadinoInfoI,
+  selectEntityDetail,
+} from '../../redux/features/citizensArea/citizensAreaSlice';
+// import { selectDevice } from '../../redux/features/app/appSlice';
 import { useAppSelector } from '../../redux/hooks';
-import { formFieldI, FormHelper, FormI, newForm } from '../../utils/formHelper';
-import { generateForm } from '../../utils/jsonFormHelper';
+import { formatDate } from '../../utils/datesHelper';
+import {
+  formFieldI,
+  FormHelper,
+  newForm,
+  newFormField,
+} from '../../utils/formHelper';
+import { RegexpType } from '../../utils/validator';
+import { citizenFromDropdownOptions } from './constantsFormCitizen';
 
 interface FormCitizenI {
   formDisabled?: boolean;
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   isFormValid?: (param: boolean) => void;
   creation?: boolean;
-  info?: any;
+  info?: CittadinoInfoI;
 }
 
 interface FormEnteGestoreProgettoFullInterface
   extends withFormHandlerProps,
     FormCitizenI {}
-
-const form = newForm([]);
 
 const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
   const {
@@ -35,262 +43,421 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     // isValidForm,
     isFormValid = () => ({}),
     getFormValues,
+    setFormValues = () => ({}),
     updateForm = () => ({}),
-    creation = false,
-    // info,
+    //creation = false,
   } = props;
 
-  const device = useAppSelector(selectDevice);
+  // const device = useAppSelector(selectDevice);
   const formDisabled = !!props.formDisabled;
-  const [flag, setFlag] = useState<string>('');
-
-  const loadMock = async () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const response = await import('/mock/responseQuestionario.json');
-    if (response.default) {
-      const schema = response.default.sections.filter(
-        (section: SurveySectionI) => section.id === 'anagraphic-citizen-section'
-      )[0]?.schema;
-      const formFromSchema = generateForm(JSON.parse(schema));
-      Object.keys(formFromSchema).forEach((key: string) => {
-        formFromSchema[key].label = formFromSchema[key].value?.toString() || '';
-        formFromSchema[key].value = '';
-      });
-      if (creation) {
-        const privacyFields = Object.keys(formFromSchema)?.filter(
-          (f) => formFromSchema[f].privacy === true
-        );
-        (privacyFields || []).map(
-          (field) => (formFromSchema[field].required = false)
-        );
-      }
-      updateForm({ ...formFromSchema }, true);
-    }
-  };
+  const formData: {
+    [key: string]: formFieldI['value'] | undefined;
+  } = useAppSelector(selectEntityDetail)?.dettaglioCittadino;
 
   useEffect(() => {
-    loadMock();
-  }, []);
-
-  useEffect(() => {
-    if (form && Object.keys(form).length > 0 && FormHelper.isValidForm(form)) {
-      if (isFormValid) {
-        isFormValid(true);
-        sendNewValues?.(getFormValues?.());
-      }
-    }
-  }, [form]);
-
-  const updateFormToOrder = () => {
-    if (form) {
-      return Object.keys(form).sort(
-        (a, b) => Number(form[a].order) - Number(form[b].order)
+    if (formData) {
+      const values = { ...formData };
+      const formattedDate = formatDate(
+        formData?.dataConferimentoConsenso?.toString(),
+        'snakeDate'
       );
-    }
-  };
-
-  const orderQuestions = updateFormToOrder();
-
-  const changeRequiredFlag = (form: FormI, flag: string) => {
-    const tmpForm = form;
-    if (form[flag].value === '') {
-      Object.keys(tmpForm).forEach((field) => {
-        if (tmpForm[field]?.dependencyNotFlag === flag)
-          tmpForm[field].required = true;
-        if (
-          tmpForm[field]?.dependencyFlag !== '' &&
-          tmpForm[field]?.dependencyFlag === flag
-        )
-          tmpForm[field].required = false;
-      });
-    } else {
-      Object.keys(tmpForm).forEach((field) => {
-        if (tmpForm[field]?.dependencyNotFlag === flag)
-          tmpForm[field].required = false;
-        if (
-          tmpForm[field]?.dependencyFlag !== '' &&
-          tmpForm[field]?.dependencyFlag === flag
-        )
-          tmpForm[field].required = true;
-      });
-    }
-    return tmpForm;
-  };
-
-  useEffect(() => {
-    if (form) {
-      setFlag(Object.keys(form)?.filter((f) => f.includes('flag'))[0]);
+      if (formattedDate) values.dataConferimentoConsenso = formattedDate;
+      setFormValues(values);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form]);
+  }, [formData]);
+
+  const handleCheckboxChange = (
+    value?: formFieldI['value'],
+    field?: formFieldI['field']
+  ) => {
+    if (field === 'flag-codice-fiscale') {
+      const tmpForm = FormHelper.onInputChange(form, value, field);
+      const referenceBoolean = !tmpForm?.['flag-codice-fiscale']?.value;
+      tmpForm.codiceFiscale.required = referenceBoolean;
+      tmpForm.tipoDocumento.required = !referenceBoolean;
+      tmpForm.numeroDocumento.required = !referenceBoolean;
+      updateForm(tmpForm);
+    }
+  };
+
+  const onInputDataChange = (
+    value: formFieldI['value'],
+    field?: formFieldI['field']
+  ) => {
+    onInputChange?.(value, field);
+    sendNewValues?.(getFormValues?.());
+  };
 
   useEffect(() => {
-    if (flag && form) {
-      const newForm = changeRequiredFlag(form, flag);
-      if (!isEqual(form, newForm)) {
-        updateForm(newForm);
-      }
-    }
-  }, [flag, form]);
+    isFormValid?.(FormHelper.isValidForm(form));
+  }, [form]);
 
-  const isMobile = device.mediaIsPhone;
+  const optionsOccupazione:
+    | { label: string; options: OptionTypeMulti[] }[]
+    | undefined = [];
 
-  const getAnswerType = (field: formFieldI) => {
-    if (creation && field?.privacy) {
-      return null;
+  (citizenFromDropdownOptions['statoOccupazionale'] || []).forEach((opt) => {
+    optionsOccupazione.push({
+      label: opt,
+      options: [],
+    });
+  });
+
+  if (optionsOccupazione?.length) {
+    (citizenFromDropdownOptions['occupazione'] || []).forEach(
+      ({ label, value, upperLevel }) => {
+        const index = optionsOccupazione.findIndex(
+          (v) => v.label === upperLevel
+        );
+        optionsOccupazione[index].options.push({
+          label: label,
+          value: value,
+          upperLevel: upperLevel,
+        });
+      }
+    );
+  }
+
+  const getMultiSelectValue = () => {
+    const multiVal: OptionTypeMulti[] = [];
+    if (Array.isArray(form?.occupazione.value)) {
+      (form?.occupazione.value || []).map((val: string) =>
+        multiVal.push(
+          citizenFromDropdownOptions['occupazione']?.filter(
+            (v) => v.label === val
+          )[0]
+        )
+      );
     }
-    switch (field.type) {
-      case 'date':
-      case 'number':
-      case 'time':
-      case 'text': {
-        return (
-          <Input
-            {...field}
-            id={`input-${field.field}`}
-            label={field.label}
-            type={field.type}
-            required={field.required || false}
-            wrapperClassName={clsx(
-              field.label && field.label?.length > 30
-                ? 'd-inline-block w-100'
-                : 'd-inline-block  mr-2',
-              isMobile ? 'w-100' : 'compile-survey-container__half-width'
-            )}
-            onInputChange={onInputChange}
-            placeholder={`Inserisci ${field.label?.toLowerCase()}`}
-          />
-        );
-      }
-      case 'select': {
-        return (
-          <Select
-            id={`input-${field.field}`}
-            label={field.label || ''}
-            field={field.field}
-            col='col-12 col-lg-6'
-            required={field.required || false}
-            onInputChange={onInputChange}
-            placeholder={`Inserisci ${field.label?.toLowerCase()}`}
-            wrapperClassName={clsx(
-              'd-inline-block',
-              'compile-survey-container__select-margin',
-              'mr-2',
-              isMobile ? 'w-100' : 'compile-survey-container__half-width'
-            )}
-            options={field.options}
-            isDisabled={formDisabled}
-            value={field.value}
-          />
-        );
-      }
-      case 'checkbox': {
-        if (field.format === 'multiple-select' && field.relatedFrom !== '') {
-          return null;
-        }
-        if (field.format === 'multiple-select' && field.relatedTo !== '') {
-          const multiSelectOptions: {
-            label: string;
-            options: { label: string; value: string; upperLevel: string }[];
-          }[] = [];
-          if (field.enumLevel1) {
-            (field.enumLevel1 || []).forEach((opt) => {
-              multiSelectOptions.push({
-                label: opt,
-                options: [],
-              });
-            });
-          }
-          if (
-            form &&
-            field?.relatedTo &&
-            form[field.relatedTo].enumLevel2 &&
-            multiSelectOptions?.length > 0
-          ) {
-            (form[field.relatedTo].enumLevel2 || []).forEach(
-              ({ label, value, upperLevel }) => {
-                const index = multiSelectOptions.findIndex(
-                  (v) => v.label === upperLevel
-                );
-                multiSelectOptions[index].options.push({
-                  label: label,
-                  value: value,
-                  upperLevel: upperLevel,
-                });
-              }
-            );
-          }
-          return (
-            <SelectMultiple
-              field={field.field}
-              secondLevelField={field.relatedTo}
-              id={`multiple-select-${field.id}`}
-              label={`${field?.label}`}
-              aria-label={`${field?.label}`}
-              options={multiSelectOptions}
-              required={field.required || false}
-              onInputChange={onInputChange}
-              onSecondLevelInputChange={onInputChange}
-              placeholder='Seleziona'
-              wrapperClassName={clsx(
-                device.mediaIsPhone || device.mediaIsTablet
-                  ? 'd-flex w-100 flex-column mt-1 py-2'
-                  : 'd-inline-block',
-                'compile-survey-container__half-width',
-                'compile-survey-container__select-margin',
-                'mr-3',
-                'mb-3'
-              )}
-            />
-          );
-        }
-        if (field.options?.length) {
-          return (
-            <CheckboxGroup
-              {...field}
-              className={clsx(
-                'd-inline-block',
-                'compile-survey-container__half-width',
-                'compile-survey-container__select-margin',
-                'mr-3',
-                'mb-3'
-              )}
-              onInputChange={onInputChange}
-              label={`${field?.label}`}
-              styleLabelForm
-              noLabel={field.flag === true ? true : false}
-            />
-          );
-        }
-        return (
-          <Input
-            {...field}
-            className={clsx(
-              'd-inline-block',
-              'compile-survey-container__half-width',
-              'mr-3',
-              'mb-3'
-            )}
-            onInputChange={onInputChange}
-            label={`${field?.label}`}
-            required={field.required || false}
-          />
-        );
-      }
-      default:
-        return '';
-    }
+    return multiVal;
   };
 
   return (
     <Form className='mt-5' formDisabled={formDisabled}>
-      <div>
-        {form &&
-          (orderQuestions || []).map((key) => <>{getAnswerType(form[key])}</>)}
-      </div>
+      <Form.Row>
+        <Input
+          {...form?.nome}
+          col='col-12 col-lg-6'
+          placeholder={`Inserisci ${form?.nome?.label?.toLowerCase()}`}
+          onInputChange={onInputDataChange}
+        />
+        <Input
+          {...form?.cognome}
+          col='col-12 col-lg-6'
+          placeholder={`Inserisci ${form?.cognome?.label?.toLowerCase()}`}
+          onInputChange={onInputDataChange}
+        />
+      </Form.Row>
+      <Form.Row>
+        <Input
+          {...form?.codiceFiscale}
+          col='col-12 col-lg-6'
+          label='Codice fiscale'
+          placeholder='Inserisci codice fiscale'
+          onInputChange={onInputDataChange}
+        />
+        <CheckboxGroup
+          {...form?.['flag-codice-fiscale']}
+          className='col-12 col-lg-6'
+          options={citizenFromDropdownOptions['flag-codice-fiscale']}
+          onInputChange={handleCheckboxChange}
+          noLabel
+          classNameLabelOption='pl-5'
+        />
+      </Form.Row>
+      <Form.Row>
+        <Select
+          {...form?.tipoDocumento}
+          placeholder={`Inserisci ${form?.tipoDocumento?.label?.toLowerCase()}`}
+          onInputChange={onInputDataChange}
+          wrapperClassName='col-12 col-lg-6'
+          options={citizenFromDropdownOptions['tipoDocumento']}
+          isDisabled={formDisabled}
+        />
+        <Input
+          {...form?.numeroDocumento}
+          col='col-12 col-lg-6'
+          placeholder={`Inserisci ${form?.numeroDocumento?.label?.toLowerCase()}`}
+          onInputChange={onInputDataChange}
+        />
+      </Form.Row>
+      <Form.Row>
+        <Select
+          {...form?.genere}
+          placeholder={`Inserisci ${form?.genere?.label?.toLowerCase()}`}
+          onInputChange={onInputDataChange}
+          wrapperClassName='col-12 col-lg-6'
+          options={citizenFromDropdownOptions['genere']}
+          isDisabled={formDisabled}
+        />
+        <Input
+          {...form?.annoDiNascita}
+          col='col-12 col-lg-6'
+          placeholder={`Inserisci ${form?.annoDiNascita?.label?.toLowerCase()}`}
+          onInputChange={onInputDataChange}
+        />
+      </Form.Row>
+      <Form.Row>
+        <Select
+          {...form?.titoloDiStudio}
+          placeholder={`Inserisci ${form?.titoloDiStudio?.label?.toLowerCase()}`}
+          onInputChange={onInputDataChange}
+          wrapperClassName='col-12 col-lg-6'
+          options={citizenFromDropdownOptions['titoloDiStudio']}
+          isDisabled={formDisabled}
+        />
+        <SelectMultiple
+          {...form?.statoOccupazionale}
+          aria-label={`${form?.statoOccupazionale.label}`}
+          secondLevelField={form?.occupazione.field}
+          options={optionsOccupazione}
+          onInputChange={(value: formFieldI['value'], field) => {
+            // format value for form StatoOccupazionale
+            const values: string[] = [];
+            if (Array.isArray(value))
+              value.map((val: string) => values.push(val));
+            onInputDataChange(value, field);
+          }}
+          onSecondLevelInputChange={(
+            value: string | number | boolean | Date | string[] | undefined,
+            field
+          ) => {
+            const values: string[] = [];
+            if (Array.isArray(value))
+              value.map((val: string) => values.push(val));
+            onInputDataChange(value, field);
+          }}
+          placeholder='Seleziona'
+          wrapperClassName={'col-12 col-lg-6'}
+          value={getMultiSelectValue()}
+        />
+      </Form.Row>
+      <Form.Row>
+        <Select
+          {...form?.cittadinanza}
+          placeholder={`Inserisci ${form?.cittadinanza?.label?.toLowerCase()}`}
+          onInputChange={onInputDataChange}
+          wrapperClassName='col-12 col-lg-6'
+          options={citizenFromDropdownOptions['cittadinanza']}
+          isDisabled={formDisabled}
+        />
+        <Input
+          {...form?.comuneDiDomicilio}
+          col='col-12 col-lg-6'
+          placeholder={`Inserisci ${form?.comuneDiDomicilio?.label?.toLowerCase()}`}
+          onInputChange={onInputDataChange}
+        />
+      </Form.Row>
+
+      <Form.Row>
+        <Select
+          {...form?.categoriaFragili}
+          placeholder={`Inserisci ${form?.categoriaFragili?.label?.toLowerCase()}`}
+          onInputChange={onInputDataChange}
+          wrapperClassName='col-12 col-lg-6'
+          options={citizenFromDropdownOptions['categoriaFragili']}
+          isDisabled={formDisabled}
+        />
+        <Input
+          {...form?.email}
+          col='col-12 col-lg-6'
+          placeholder={`Inserisci ${form?.email?.label?.toLowerCase()}`}
+          onInputChange={onInputDataChange}
+        />
+      </Form.Row>
+      <Form.Row>
+        <Input
+          {...form?.prefissoTelefono}
+          col='col-12 col-lg-2'
+          placeholder={`Inserisci ${form?.prefissoTelefono?.label?.toLowerCase()}`}
+          onInputChange={onInputDataChange}
+        />
+        <Input
+          {...form?.numeroDiCellulare}
+          col='col-12 col-lg-4'
+          placeholder={`Inserisci ${form?.numeroDiCellulare?.label?.toLowerCase()}`}
+          onInputChange={onInputDataChange}
+        />
+        <Input
+          {...form?.telefono}
+          col='col-12 col-lg-6'
+          placeholder={`Inserisci ${form?.telefono?.label?.toLowerCase()}`}
+          onInputChange={onInputDataChange}
+        />
+      </Form.Row>
+      <Form.Row>
+        <CheckboxGroup
+          {...form?.tipoConferimentoConsenso}
+          className={clsx(
+            'col-12 col-lg-6',
+            'compile-survey-container__checkbox-margin'
+          )}
+          options={citizenFromDropdownOptions['tipoConferimentoConsenso']}
+          onInputChange={onInputDataChange}
+          styleLabelForm
+          classNameLabelOption='pl-5'
+        />
+        <Input
+          {...form?.dataConferimentoConsenso}
+          col='col-12 col-lg-6'
+          placeholder={`Inserisci ${form?.dataConferimentoConsenso?.label?.toLowerCase()}`}
+          onInputChange={onInputDataChange}
+        />
+      </Form.Row>
     </Form>
   );
 };
+
+const form = newForm([
+  newFormField({
+    field: 'nome',
+    id: 'nome',
+    label: 'Nome',
+    type: 'text',
+    required: true,
+  }),
+  newFormField({
+    field: 'cognome',
+    id: 'cognome',
+    label: 'Cognome',
+    type: 'text',
+    required: true,
+  }),
+  newFormField({
+    field: 'codiceFiscale',
+    id: 'codiceFiscale',
+    regex: RegexpType.FISCAL_CODE,
+    label: 'Codice fiscale',
+    type: 'text',
+    required: true,
+  }),
+  newFormField({
+    field: 'flag-codice-fiscale',
+    id: 'flag-codice-fiscale',
+    type: 'checkbox',
+    required: false,
+  }),
+  newFormField({
+    field: 'tipoDocumento',
+    id: 'tipoDocumento',
+    label: 'Tipo documento',
+    type: 'select',
+    required: false,
+  }),
+  newFormField({
+    field: 'numeroDocumento',
+    id: 'numeroDocumento',
+    label: 'Numero documento',
+    type: 'text',
+    required: false,
+  }),
+  newFormField({
+    field: 'genere',
+    id: 'genere',
+    label: 'Genere',
+    type: 'select',
+    required: true,
+  }),
+  newFormField({
+    field: 'annoDiNascita',
+    id: 'annoDiNascita',
+    regex: RegexpType.NUMBER,
+    label: 'Anno di nascita',
+    type: 'number',
+    required: true,
+  }),
+  newFormField({
+    field: 'titoloDiStudio',
+    id: 'titoloDiStudio',
+    label: 'Titolo di studio (livello più alto raggiunto)',
+    type: 'select',
+    required: true,
+  }),
+  newFormField({
+    // Level2: non visualizzare
+    field: 'occupazione',
+    id: 'occupazione',
+    label: 'Occupazione',
+    type: 'select',
+    required: true,
+  }),
+  newFormField({
+    // Level1: visualizzare
+    field: 'statoOccupazionale',
+    id: 'statoOccupazionale',
+    label: 'Stato occupazionale',
+    type: 'select',
+    required: true,
+  }),
+  newFormField({
+    field: 'cittadinanza',
+    id: 'cittadinanza',
+    label: 'Cittadinanza',
+    type: 'select',
+    required: true,
+  }),
+  newFormField({
+    field: 'comuneDiDomicilio',
+    id: 'comuneDiDomicilio',
+    label: 'Comune di domicilio',
+    type: 'text',
+    required: true,
+  }),
+  newFormField({
+    field: 'categoriaFragili',
+    id: 'categoriaFragili',
+    label: 'Categorie fragili',
+    type: 'select',
+    required: false,
+  }),
+  newFormField({
+    field: 'email',
+    id: 'email',
+    regex: RegexpType.EMAIL,
+    label: 'Email',
+    type: 'text',
+    required: true,
+  }),
+  newFormField({
+    field: 'prefissoTelefono',
+    id: 'prefissoTelefono',
+    regex: RegexpType.MOBILE_PHONE_PREFIX,
+    label: 'Prefisso telefono',
+    type: 'text',
+    required: true,
+  }),
+  newFormField({
+    field: 'numeroDiCellulare',
+    id: 'numeroDiCellulare',
+    regex: RegexpType.TELEPHONE,
+    label: 'Cellulare',
+    type: 'text',
+    required: true,
+  }),
+  newFormField({
+    field: 'telefono',
+    id: 'telefono',
+    regex: RegexpType.TELEPHONE,
+    label: 'Telefono',
+    type: 'text',
+    required: true,
+  }),
+  newFormField({
+    field: 'tipoConferimentoConsenso',
+    id: 'tipoConferimentoConsenso',
+    label: 'Tipo conferimento consenso',
+    type: 'checkbox',
+    required: true,
+  }),
+  newFormField({
+    field: 'dataConferimentoConsenso',
+    id: 'dataConferimentoConsenso',
+    regex: RegexpType.DATE,
+    label: 'Data conferimento consenso',
+    type: 'date',
+    required: true,
+  }),
+]);
 
 export default withFormHandler({ form }, FormCitizen);

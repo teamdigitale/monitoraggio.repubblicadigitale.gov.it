@@ -1,5 +1,86 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.14](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.13...1.0.0-develop.14) (2022-07-08)
+
+
+### Features
+
+* **fe-piattaforma:** fe-updates-07082022 ([8f88342](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8f88342170deae1353b5982cdd951c2ce049cbcf))
+* **fe-piattaforma:** fe-updates-07082022 ([f97cec7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f97cec780470974f33922079afe9410055dac219))
+
+## [1.0.0-develop.13](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.12...1.0.0-develop.13) (2022-07-07)
+
+
+### Features
+
+* **fe-piattaforma:** fe-updates-07072022 ([2bb28f2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2bb28f21167564646b2e11e0ea17b0b4e6269590))
+* **fe-piattaforma:** fe-updates-07072022 ([c60bee6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c60bee6fbc2f77b9d1733ce8b1365cd66896df9d))
+
+## [1.0.0-develop.12](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.11...1.0.0-develop.12) (2022-07-07)
+
+
+### Bug Fixes
+
+* **be:** fix per endpoint ente utente ([c53c825](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c53c825138ec7fbf53e52f3ea52a9bf35017c2a4)), closes [#142](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/issues/142)
+
+## [1.0.0-develop.11](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.10...1.0.0-develop.11) (2022-07-06)
+
+
+### Features
+
+* **fe-piattaforma:** fe updates 07062022 ([42ad6c2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/42ad6c29229781d7ea3e811124571417178473af))
+* **fe-piattaforma:** fe updates 07062022 ([626b698](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/626b698959217df18d17f8d15a997c7404d72fdc))
+
+## [1.0.0-develop.10](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.9...1.0.0-develop.10) (2022-07-05)
+
+
+### Features
+
+* **fe-piattaforma:** fe updates 07052022 ([1756389](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/175638926d6adc1cf63baaac1b6f26208a820618))
+* **fe-piattaforma:** fe updates 07052022 ([706023c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/706023cb658c2e5f1d1bbef05e84fc22f6b017fc))
+
+## [1.0.0-develop.9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.8...1.0.0-develop.9) (2022-07-05)
+
+
+### Features
+
+* **be:** aggiunta logica template email ([82b7fd0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/82b7fd01c1bdd6e5d6b124a024d796d4199acb83)), closes [#142](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/issues/142)
+
+## [1.0.0-develop.8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.7...1.0.0-develop.8) (2022-07-04)
+
+
+### Features
+
+* **fe-piattaforma:** fe updates 07042022 ([8ebcba0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8ebcba0c5ceb4eebdcc568faeffa48eb7e0d5f65))
+* **fe-piattaforma:** fe updates 07042022 ([2537053](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2537053e6b9259e69f4117f8d510eec7d8a50314))
+
+## [1.0.0-develop.7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.6...1.0.0-develop.7) (2022-07-04)
+
+
+### Bug Fixes
+
+* nginx conf ([#140](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/issues/140)) ([8f9b659](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8f9b659f81b9cd05ba4c579fb78fe7d25fcb6817))
+* location try_files ([ab32bca](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ab32bca4792a81ea139d73f28f58ba1e16759dd1))
+* location try_files ([afc1846](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/afc1846e529ace8750c3e595425580171e383429))
+
+## [1.0.0-develop.6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.5...1.0.0-develop.6) (2022-07-01)
+
+
+### Bug Fixes
+
+* check if release job ([dde9dde](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/dde9dde26afd452fa4baab3d9880203dec503bfb))
+* check if release job ([8f5eff0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8f5eff0b5b556a2c93b548787a2e3941251fc1fd))
+* check if build BE job ([a029e7c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a029e7c2c5173661a060ff99c916f83dcf4bc885))
+* check if build BE job ([0333ba1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0333ba188fc2ee23f85ea93e99ecdf92f26fad04))
+
+## [1.0.0-develop.5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.4...1.0.0-develop.5) (2022-07-01)
+
+
+### Features
+
+* **fe-piattaforma:** fix and improvements programs projects sections ([bee2af1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bee2af1c2cca18ce92fec4c3cec707eb5dc0ec79))
+* **fe-piattaforma:** fix and improvements on programs and projects sections ([e090047](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e090047a6f075a3eec22f21c2aa58885ae2d6557))
+
 ## [1.0.0-develop.4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.3...1.0.0-develop.4) (2022-07-01)
 
 

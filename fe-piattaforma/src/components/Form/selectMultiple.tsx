@@ -12,7 +12,7 @@ export type OptionTypeMulti = {
 };
 
 export interface SelectMultipleI {
-  id: string;
+  id?: string;
   col?: string | undefined;
   field?: formFieldI['field'];
   secondLevelField?: formFieldI['field'] | undefined;
@@ -36,7 +36,7 @@ export interface SelectMultipleI {
 
 const SelectMultiple: React.FC<SelectMultipleI> = (props) => {
   const {
-    id,
+    id = `${new Date().getTime()}`,
     col = props.wrapperClassName ?? 'col-auto',
     onInputChange,
     onSecondLevelInputChange,

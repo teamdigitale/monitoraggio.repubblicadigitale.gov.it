@@ -40,7 +40,7 @@ export interface SurveyLightI {
 const GetAllSurveysAction = { type: 'administrativeArea/getAllSurveys' };
 
 export const GetAllSurveys =
-  () => async (dispatch: Dispatch, select: Selector) => {
+  (isDetail?: boolean) => async (dispatch: Dispatch, select: Selector) => {
     try {
       dispatch(showLoader());
       // I dispatch this action because it has been done in other file
@@ -61,11 +61,13 @@ export const GetAllSurveys =
       let res;
       if (body) {
         res = await API.post(endpoint, body, {
-          params: {
-            currPage: Math.max(0, pagination.pageNumber - 1),
-            pageSize: pagination.pageSize,
-            ...filters,
-          },
+          params: isDetail
+            ? {}
+            : {
+                currPage: Math.max(0, pagination.pageNumber - 1),
+                pageSize: pagination.pageSize,
+                ...filters,
+              },
         });
       } else {
         res = await API.get(endpoint, {
@@ -366,13 +368,13 @@ export const SetSurveyCreation =
     }
   };
 
-const GetSurveyInfoAction = { type: 'questionario/GetSurveyInfo' };
+const GetSurveyInfoAction = { type: 'surveys/GetSurveyInfo' };
 export const GetSurveyInfo =
   (questionarioId: string) => async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...GetSurveyInfoAction, questionarioId });
-      const res = await API.get(`questionario/${questionarioId}`);
+      const res = await API.get(`questionarioTemplate/${questionarioId}`);
       if (res?.data) {
         dispatch(setSurveyInfoForm(res.data));
       }
@@ -384,7 +386,7 @@ export const GetSurveyInfo =
   };
 
 const PostFormCompletedByCitizenAction = {
-  type: 'questionario/PostFormCompletedByCitizen',
+  type: 'surveys/PostFormCompletedByCitizen',
 };
 export const PostFormCompletedByCitizen =
   (payload?: any) => async (dispatch: Dispatch) => {
@@ -428,6 +430,28 @@ export const UpdateSurveyExclusiveField =
       dispatch(hideLoader());
       dispatch(GetEntityValues({ entity: 'questionari' }));
     } catch (error) {
+      dispatch(hideLoader());
+    }
+  };
+
+const UpdateSurveyDefaultAction = {
+  type: 'surveys/UpdateSurveyDefault',
+};
+
+export const UpdateSurveyDefault =
+  (idQuestionario: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...UpdateSurveyDefaultAction, idQuestionario });
+      const res = await API.put(
+        `/questionarioTemplate/aggiornadefault/${idQuestionario}`
+      );
+      if (res) {
+        /* TODO: controllo se post andata a buon fine */
+      }
+    } catch (e) {
+      console.error('UpdateSurveyDefault error', e);
+    } finally {
       dispatch(hideLoader());
     }
   };

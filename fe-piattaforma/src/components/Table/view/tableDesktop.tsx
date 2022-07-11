@@ -11,6 +11,7 @@ import { TableI } from '../table';
 import { CRUDActionTypes } from '../../../utils/common';
 import Form from '../../Form/form';
 import Input from '../../Form/input';
+import EmptySection from '../../EmptySection/emptySection';
 
 const TableDesktop: React.FC<TableI> = (props) => {
   const {
@@ -26,7 +27,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
   } = props;
   const [rowChecked, setRowChecked] = useState<string>('');
 
-  return (
+  return values?.length ? (
     <TableKit
       className={clsx('table-container', className)}
       id={id}
@@ -78,20 +79,20 @@ const TableDesktop: React.FC<TableI> = (props) => {
                       <Input
                         name='group'
                         type='radio'
-                        id={`radio-${td.codiceFiscale}`}
-                        checked={rowChecked === td.codiceFiscale}
+                        id={`radio-${td.id}`}
+                        checked={rowChecked === td.id}
                         withLabel={false}
                         onInputChange={() => {
-                          setRowChecked(td.codiceFiscale.toString());
+                          setRowChecked(td.id.toString());
                           onActionRadio[CRUDActionTypes.SELECT](td);
                         }}
                       />
                       <Label
                         className='sr-only'
                         check
-                        htmlFor={`radio-${td.codiceFiscale}`}
+                        htmlFor={`radio-${td.id}`}
                       >
-                        <span>{`${td.nome} ${td.cognome}`}</span>
+                        <span>{`Select Row`}</span>
                       </Label>
                     </FormGroup>
                   </Form>
@@ -208,6 +209,49 @@ const TableDesktop: React.FC<TableI> = (props) => {
         </tbody>
       ) : null}
     </TableKit>
+  ) : (
+    <div className='d-flex flex-column align-items-center'>
+      <div className='w-100 d-flex flex-row'>
+        <TableKit
+          className={clsx('table-container', className)}
+          id={id}
+          tabIndex={-1}
+        >
+          {heading?.length ? (
+            <thead>
+              <tr className='lightgrey-bg-a1 neutral-2-color-b4'>
+                {onActionRadio && (
+                  <th
+                    scope='col'
+                    className={rolesTable ? 'th-actions-roles' : 'th-actions'}
+                  />
+                )}
+                {heading.map((th) => (
+                  <th
+                    key={th.label}
+                    scope='col'
+                    className={clsx(
+                      `th-${th.size || 'auto'}`,
+                      'table-container__intestazione'
+                    )}
+                  >
+                    <span>{th.label.toUpperCase()}</span>
+                    {/* <Icon           // TODO: decommentare quando aggiungono il sort
+                  icon='it-arrow-down-triangle'
+                  color='secondary'
+                  className='mb-2'
+                /> */}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+          ) : null}
+        </TableKit>
+      </div>
+      <div className='mt-3 mb-5'>
+        <EmptySection title='Questa sezione è vuota' subtitle='' />
+      </div>
+    </div>
   );
 };
 

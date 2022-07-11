@@ -4,7 +4,9 @@ import { DropdownFilter, SearchBar } from '../index';
 import { Button, Chip, ChipLabel, Icon } from 'design-react-kit';
 import {
   cleanEntityFilters,
+  deleteFiltroCriterioRicerca,
   resetFiltersState,
+  resetPaginationState,
 } from '../../redux/features/administrativeArea/administrativeAreaSlice';
 import { useDispatch } from 'react-redux';
 //import Sidebar, { SidebarI } from './sidebar';
@@ -40,6 +42,7 @@ interface GenericSearchFilterTableLayoutI {
   buttonsList?: ButtonInButtonsBar[];
   cardsCounter?: CardCounterI[];
   ctaDownload?: () => void;
+  resetFilterDropdownSelected?: () => void;
 }
 
 const GenericSearchFilterTableLayout: React.FC<
@@ -60,12 +63,15 @@ const GenericSearchFilterTableLayout: React.FC<
   buttonsList,
   cardsCounter,
   ctaDownload,
+  resetFilterDropdownSelected,
 }) => {
   const dispatch = useDispatch();
   const [showChips, setShowChips] = useState<boolean>(false);
 
   useEffect(() => {
     dispatch(resetFiltersState());
+    dispatch(resetPaginationState());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getFilterLabel = (key: string) => {
@@ -80,8 +86,12 @@ const GenericSearchFilterTableLayout: React.FC<
       case 'filtroStati':
       case 'stati':
         return 'Stato';
+      case 'filtroIdsProgrammi':
+      case 'idsProgrammi':
       case 'programmi':
         return 'Programma';
+      case 'filtroIdsProgetti':
+      case 'idsProgetti':
       case 'progetti':
         return 'Progetto';
       case 'profili':
@@ -95,6 +105,16 @@ const GenericSearchFilterTableLayout: React.FC<
     }
   };
 
+  const cleanFilters = (
+    filterKey: string,
+    value: string | number | string[]
+  ) => {
+    dispatch(cleanEntityFilters({ filterKey, value: value }));
+    if (filterKey === 'filtroCriterioRicerca')
+      dispatch(deleteFiltroCriterioRicerca());
+    if (resetFilterDropdownSelected) resetFilterDropdownSelected();
+  };
+
   const getLabelsChips = (
     filter:
       | { label: string; value: string | number }
@@ -102,19 +122,13 @@ const GenericSearchFilterTableLayout: React.FC<
     i: number,
     filterKey: string
   ) => {
-    if (!Array.isArray(filter) && filter?.value) {
+    if (!Array.isArray(filter) && filter) {
       return (
-        <Chip key={i} className='mr-2'>
-          <ChipLabel className='px-1'>
-            {getFilterLabel(filterKey)}: {filter.label}
+        <Chip key={i} className='mr-2 rounded-pill'>
+          <ChipLabel className='mx-1 my-1'>
+            {getFilterLabel(filterKey)}: {filter}
           </ChipLabel>
-          <Button
-            close
-            onClick={() => {
-              console.log('clean entity filters');
-              dispatch(cleanEntityFilters({ filterKey, value: filter.value }));
-            }}
-          >
+          <Button close onClick={() => cleanFilters(filterKey, filter.value)}>
             <Icon icon='it-close' aria-label='Chiudi chip' />
           </Button>
         </Chip>
@@ -123,17 +137,11 @@ const GenericSearchFilterTableLayout: React.FC<
       return (
         <>
           {filter.map((f: FilterI, j: number) => (
-            <Chip key={i + '-' + j} className='mr-2'>
-              <ChipLabel className='mx-1 my-2'>
+            <Chip key={i + '-' + j} className='mr-2 rounded-pill'>
+              <ChipLabel className='mx-1 my-1'>
                 {getFilterLabel(filterKey)}: {f.label}
               </ChipLabel>
-              <Button
-                close
-                onClick={() => {
-                  console.log('sono il clean entity filters');
-                  dispatch(cleanEntityFilters({ filterKey, value: f.value }));
-                }}
-              >
+              <Button close onClick={() => cleanFilters(filterKey, f.value)}>
                 <Icon icon='it-close' aria-label='Chiudi chip' />
               </Button>
             </Chip>
@@ -142,6 +150,7 @@ const GenericSearchFilterTableLayout: React.FC<
       );
     }
   };
+
   useEffect(() => {
     if (dropdowns?.length && filtersList && Object.keys(filtersList).length) {
       setShowChips(true);
@@ -266,7 +275,7 @@ const GenericSearchFilterTableLayout: React.FC<
             className={clsx(
               'd-flex',
               'flex-row',
-              'flex-wra',
+              'flex-wrap',
               'p',
               'pt-lg-3',
               'pt-0',
@@ -351,7 +360,9 @@ const GenericSearchFilterTableLayout: React.FC<
               )}
             </Button>
           </div>
-        ) : null}
+        ) : (
+          <div className='mt-5'></div>
+        )}
       </div>
       {Sidebar ? (
         <div className='d-flex'>
@@ -362,20 +373,24 @@ const GenericSearchFilterTableLayout: React.FC<
         <div>{children}</div>
       )}
       {device.mediaIsPhone && cta && (
-        <Sticky mode='bottom'>
-          <ButtonsBar
-            buttons={[
-              {
-                size: 'xs',
-                color: 'primary',
-                iconForButton: iconCta || '',
-                text: textCta || '',
-                onClick: cta,
-                className: 'align-self-end',
-              },
-            ]}
-          />
-        </Sticky>
+        <div>
+          <Sticky mode='bottom' stickyClassName='sticky bg-white'>
+            <div className='container'>
+              <ButtonsBar
+                buttons={[
+                  {
+                    size: 'xs',
+                    color: 'primary',
+                    iconForButton: iconCta || '',
+                    text: textCta || '',
+                    onClick: cta,
+                    className: 'align-self-end',
+                  },
+                ]}
+              />
+            </div>
+          </Sticky>
+        </div>
       )}
     </>
   );

@@ -5,19 +5,24 @@ import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import { formTypes } from '../utils';
 import { formFieldI } from '../../../../../utils/formHelper';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
-import { createProjectDetails } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
+import {
+  createProject,
+  updateProject,
+} from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
 
 import { ProgressBar, Stepper } from '../../../../../components';
 import { useAppSelector } from '../../../../../redux/hooks';
 import FormProjectGeneralInfo from '../../../../forms/formProjects/formProjectGeneralInfo';
 
-import TargetDateFormProjects from '../../../../forms/formProjects/targetDateFormProjects';
 import {
   resetProjectDetails,
+  selectProjects,
   setProjectGeneralInfo,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import clsx from 'clsx';
+import TargetsForm from '../../../../../components/AdministrativeArea/Entities/General/TargetForm/TargetsForm';
+import { useParams } from 'react-router-dom';
 
 interface ProgramInformationI {
   formDisabled?: boolean;
@@ -31,21 +36,23 @@ interface FormEnteGestoreProgettoFullInterface
     ProgramInformationI {}
 
 const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
-  clearForm = () => ({}),
+  // clearForm = () => ({}),
   formDisabled,
   creation = false,
 }) => {
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  const { projectId, entityId } = useParams();
 
   const handleSaveProgram = () => {
     if (isFormValid) {
       if (creation) {
-        dispatch(createProjectDetails(newFormValues));
-        setCurrentStep(1);
+        entityId && dispatch(createProject(entityId, newFormValues));
+        setCurrentStep(0);
         // here dispatch create new program
       } else {
-        dispatch(createProjectDetails(newFormValues));
-        setCurrentStep(1);
+        // dispatch(createProjectDetails(newFormValues));
+        projectId && dispatch(updateProject(projectId, newFormValues));
+        setCurrentStep(0);
         // TODO here dispatch update program
       }
       dispatch(closeModal());
@@ -58,16 +65,11 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       primaryCTA: {
         disabled: !isFormValid,
         label: 'Step Successivo',
-        onClick: () => {
-          setCurrentStep(currentStep + 1);
-          clearForm();
-        },
+        onClick: () => updateDetailInfoHandler(),
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => {
-          clearForm?.();
-        },
+        onClick: () => ({}),
       },
       tertiatyCTA: null,
     },
@@ -76,15 +78,15 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       primaryCTA: {
         disabled: !isFormValid,
         label: 'Step Successivo',
-        onClick: () => setCurrentStep(currentStep + 1),
+        onClick: () => updateDetailInfoHandler(),
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => clearForm?.(),
+        onClick: () => ({}),
       },
       tertiatyCTA: {
         label: 'Step precedente',
-        onClick: () => setCurrentStep(currentStep - 1),
+        onClick: () => setCurrentStep((prev) => prev - 1),
       },
     },
     {
@@ -92,15 +94,15 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       primaryCTA: {
         disabled: !isFormValid,
         label: 'Step Successivo',
-        onClick: () => setCurrentStep(currentStep + 1),
+        onClick: () => updateDetailInfoHandler(),
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => clearForm?.(),
+        onClick: () => ({}),
       },
       tertiatyCTA: {
         label: 'Step precedente',
-        onClick: () => setCurrentStep(currentStep - 1),
+        onClick: () => setCurrentStep((prev) => prev - 1),
       },
     },
     {
@@ -108,15 +110,15 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       primaryCTA: {
         disabled: !isFormValid,
         label: 'Step Successivo',
-        onClick: () => setCurrentStep(currentStep + 1),
+        onClick: () => updateDetailInfoHandler(),
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => clearForm?.(),
+        onClick: () => ({}),
       },
       tertiatyCTA: {
         label: 'Step precedente',
-        onClick: () => setCurrentStep(currentStep - 1),
+        onClick: () => setCurrentStep((prev) => prev - 1),
       },
     },
     {
@@ -128,21 +130,22 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => clearForm?.(),
+        onClick: () => ({}),
       },
       tertiatyCTA: {
         label: 'Step precedente',
-        onClick: () => setCurrentStep(currentStep - 1),
+        onClick: () => setCurrentStep((prev) => prev - 1),
       },
     },
   ];
 
-  const [currentStep, setCurrentStep] = useState<number>(1);
-  const [propstoGenericModal, setPropstoGenericModal] = useState(steps[0]);
+  const [currentStep, setCurrentStep] = useState<number>(0);
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
   }>({});
   const device = useAppSelector(selectDevice);
+  const projectDetails =
+    useAppSelector(selectProjects).detail.dettagliInfoProgetto;
 
   const stepsArray = () => {
     const allSteps: string[] = [];
@@ -153,6 +156,12 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
 
   const dispatch = useDispatch();
 
+  const updateDetailInfoHandler = () => {
+    dispatch(setProjectGeneralInfo({ currentStep, newFormValues }));
+    setCurrentStep((prev) => prev + 1);
+  };
+
+  /*
   useEffect(() => {
     if (currentStep) {
       switch (currentStep) {
@@ -184,92 +193,71 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStep, isFormValid]);
 
-  const renderingForm = () => {
-    switch (currentStep) {
-      case 1:
-      default: {
-        return (
-          <FormProjectGeneralInfo
-            formDisabled={!!formDisabled}
-            intoModal
-            sendNewValues={(newData?: {
-              [key: string]: formFieldI['value'];
-            }) => {
-              setNewFormValues({ ...newData });
-            }}
-            setIsFormValid={(value: boolean | undefined) =>
-              setIsFormValid(!!value)
-            }
-            creation={creation}
-          />
-        );
-      }
-      case 2: {
-        return (
-          <TargetDateFormProjects
-            formForSection='puntiFacilitazione'
-            intoModal
-            formDisabled={!!formDisabled}
-            sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
-              setNewFormValues({ ...newData })
-            }
-            setIsFormValid={(value: boolean | undefined) =>
-              setIsFormValid(!!value)
-            }
-            creation={creation}
-          />
-        );
-      }
-      case 3: {
-        return (
-          <TargetDateFormProjects
-            formForSection='utentiUnici'
-            intoModal
-            formDisabled={!!formDisabled}
-            sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
-              setNewFormValues({ ...newData })
-            }
-            setIsFormValid={(value: boolean | undefined) =>
-              setIsFormValid(!!value)
-            }
-            creation={creation}
-          />
-        );
-      }
-      case 4: {
-        return (
-          <TargetDateFormProjects
-            formForSection='servizi'
-            intoModal
-            formDisabled={!!formDisabled}
-            sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
-              setNewFormValues({ ...newData })
-            }
-            setIsFormValid={(value: boolean | undefined) =>
-              setIsFormValid(!!value)
-            }
-            creation={creation}
-          />
-        );
-      }
-      case 5: {
-        return (
-          <TargetDateFormProjects
-            formForSection='facilitatori'
-            intoModal
-            formDisabled={!!formDisabled}
-            sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
-              setNewFormValues({ ...newData })
-            }
-            setIsFormValid={(value: boolean | undefined) =>
-              setIsFormValid(!!value)
-            }
-            creation={creation}
-          />
-        );
-      }
-    }
-  };
+  */
+
+  let currentForm = <span></span>;
+
+  switch (currentStep) {
+    case 0:
+      currentForm = (
+        <FormProjectGeneralInfo
+          formDisabled={!!formDisabled}
+          intoModal
+          sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {
+            setNewFormValues({ ...newData });
+          }}
+          setIsFormValid={(value: boolean | undefined) =>
+            setIsFormValid(!!value)
+          }
+          creation={creation}
+        />
+      );
+      break;
+    case 1:
+      currentForm = (
+        <TargetsForm
+          section='puntiFacilitazione'
+          sendValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+            setNewFormValues({ ...newData })
+          }
+          entityDetail={projectDetails}
+        />
+      );
+      break;
+    case 2:
+      currentForm = (
+        <TargetsForm
+          section='utentiUnici'
+          sendValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+            setNewFormValues({ ...newData })
+          }
+          entityDetail={projectDetails}
+        />
+      );
+      break;
+    case 3:
+      currentForm = (
+        <TargetsForm
+          section='servizi'
+          sendValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+            setNewFormValues({ ...newData })
+          }
+          entityDetail={projectDetails}
+        />
+      );
+      break;
+    case 4:
+      currentForm = (
+        <TargetsForm
+          section='facilitatori'
+          sendValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+            setNewFormValues({ ...newData })
+          }
+          entityDetail={projectDetails}
+        />
+      );
+      break;
+  }
 
   useEffect(() => {
     dispatch(resetProjectDetails());
@@ -279,9 +267,9 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
   return (
     <GenericModal
       id={id}
-      primaryCTA={propstoGenericModal.primaryCTA}
-      secondaryCTA={propstoGenericModal.secondaryCTA}
-      tertiaryCTA={propstoGenericModal.tertiatyCTA || null}
+      primaryCTA={steps[currentStep].primaryCTA}
+      secondaryCTA={steps[currentStep].secondaryCTA}
+      tertiaryCTA={steps[currentStep].tertiatyCTA || null}
     >
       <div
         className={clsx(
@@ -289,7 +277,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
           'justify-content-center',
           'flex-column',
           'align-items-center',
-          'mb-5'
+          'my-4'
         )}
       >
         {device.mediaIsPhone ? (
@@ -309,16 +297,16 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             'font-weight-semibold'
           )}
         >
-          {steps[currentStep - 1].title}
+          {steps[currentStep].title}
         </p>
       )}
       <div
         style={{
           maxHeight: device.mediaIsPhone ? '100%' : '340px',
-          overflowY: 'auto',
         }}
+        className='px-5'
       >
-        {renderingForm()}
+        {currentForm}
       </div>
     </GenericModal>
   );

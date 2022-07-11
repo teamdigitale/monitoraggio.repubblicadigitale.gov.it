@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AccordionRow, { AccordionRowI } from '../../AccordionRow/accordionRow';
 import { TableRowI } from '../table';
 import { CRUDActionsI, CRUDActionTypes } from '../../../utils/common';
+import EmptySection from '../../EmptySection/emptySection';
 
 interface MobileTableI {
   onActionClick?: CRUDActionsI;
@@ -30,9 +31,15 @@ const TableMobile: React.FC<MobileTableI> = ({
 
   return (
     <div>
-      {valuesForMobile?.map((item, index: number) => (
-        <AccordionRow {...item} key={index} />
-      ))}
+      {valuesForMobile ? (
+        valuesForMobile.map((item, index: number) => (
+          <AccordionRow {...item} key={index} />
+        ))
+      ) : (
+        <div className='my-3'>
+          <EmptySection title='Questa sezione è vuota' subtitle='' />
+        </div>
+      )}
     </div>
   );
 };

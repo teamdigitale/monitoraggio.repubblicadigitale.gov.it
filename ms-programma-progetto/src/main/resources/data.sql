@@ -71,7 +71,7 @@
 	values('FACILITATORE2', 'VOL');
  insert into utente_x_ruolo(utente_id, ruolo_codice) 
 	values('UTENTE2', 'FAC');
-	 insert into utente_x_ruolo(utente_id, ruolo_codice) 
+	 insert into utente_x_ruolo(utente_id, ruolo_codice)
 	values('UTENTE2', 'VOL');
  insert into utente_x_ruolo(utente_id, ruolo_codice) 
 	values('UTENTE2', 'REGP');

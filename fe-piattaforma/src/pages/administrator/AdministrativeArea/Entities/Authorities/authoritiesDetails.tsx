@@ -27,9 +27,8 @@ import FormAuthorities from '../../../../forms/formAuthorities';
 import { selectAuthorities } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 
 const AuthoritiesDetails = () => {
-  const entiDetails: {
-    info: { [key: string]: string };
-  } = useAppSelector(selectAuthorities)?.detail;
+  const authorityDetails =
+    useAppSelector(selectAuthorities)?.detail.dettagliInfoEnte;
   const [deleteText, setDeleteText] = useState<string>('');
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
   const [currentModal, setCorrectModal] = useState<React.ReactElement>();
@@ -44,9 +43,10 @@ const AuthoritiesDetails = () => {
   const dispatch = useDispatch();
 
   const { idEnte } = useParams();
+  const profiles = useAppSelector(selectAuthorities).detail.profili;
 
   useEffect(() => {
-    if (entiDetails?.info?.shortName && idEnte) {
+    if (authorityDetails?.nomeBreve && idEnte) {
       dispatch(
         updateBreadcrumb([
           {
@@ -60,7 +60,7 @@ const AuthoritiesDetails = () => {
             link: true,
           },
           {
-            label: entiDetails?.info?.shortName,
+            label: authorityDetails?.nomeBreve,
             url: `/area-amministrativa/programmi/${idEnte}`,
             link: false,
           },
@@ -84,35 +84,27 @@ const AuthoritiesDetails = () => {
     setDeleteText('Confermi di voler eliminare questo programma?');
     setItemList({
       title: 'Profili',
-      items: [
-        {
-          nome: 'progetto',
-          stato: 'active',
-          actions: onActionClick,
-          id: 'progetto',
-        },
-        {
-          nome: 'progetto2',
-          stato: 'active',
-          actions: onActionClick,
-          id: 'progetto2',
-        },
-      ],
+      items: profiles
+        ? profiles.map((profile: any) => ({
+            nome: profile.nome,
+            stato: profiles.stato,
+            actions: onActionClick,
+            id: profiles.id,
+          }))
+        : [],
     });
     setCorrectButtons([
       {
         size: 'xs',
         color: 'primary',
-
+        outline: true,
         text: 'Elimina',
         onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
       },
       {
         size: 'xs',
-        outline: true,
         color: 'primary',
-
-        text: ' Modifica',
+        text: 'Modifica',
         onClick: () =>
           dispatch(
             openModal({
@@ -123,29 +115,24 @@ const AuthoritiesDetails = () => {
       },
     ]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [profiles]);
 
   const device = useAppSelector(selectDevice);
 
   return (
-    <div
-      className={clsx(
-        device.mediaIsPhone
-          ? 'd-flex flex-row mt-5container'
-          : 'd-flex flex-row container'
-      )}
-    >
+    <div className={clsx('d-flex', 'flex-row', device.mediaIsPhone && 'mt-5')}>
       <div className='d-flex flex-column w-100'>
-        <div className='container'>
+        <div>
           <DetailLayout
             titleInfo={{
-              title: 'Comune di Como',
-              status: 'ATTIVO',
+              title: authorityDetails?.nome,
+              status: authorityDetails?.stato,
               upperTitle: { icon: [PeopleIcon], text: 'Ente' },
             }}
             formButtons={correctButtons}
             itemsList={itemList}
             buttonsPosition={buttonsPosition}
+            goBackPath='/area-amministrativa/enti'
           >
             {currentForm}
           </DetailLayout>

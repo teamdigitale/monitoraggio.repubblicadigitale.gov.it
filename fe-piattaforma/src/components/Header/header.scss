@@ -1,5 +1,5 @@
 .header-container {
-  background-color: color('white');
+  background-color: #1262b3;
   color: color('white');
   max-height: $header-height;
   width: 100%;
@@ -13,16 +13,16 @@
 
   &__top {
     display: flex;
-    align-items: center;
+    align-items: start;
     background-color: color('grey-400');
     height: $header-top-height;
     transition: all 250ms ease;
-    
-    .border-left{
+
+    .border-left {
       border-left: 0.5px solid #4c8ed1 !important;
     }
 
-    .border-right{
+    .border-right {
       border-right: 0.5px solid #4c8ed1 !important;
     }
 
