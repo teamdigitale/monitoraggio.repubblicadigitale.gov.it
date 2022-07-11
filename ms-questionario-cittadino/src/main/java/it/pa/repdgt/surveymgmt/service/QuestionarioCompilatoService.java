@@ -92,6 +92,7 @@ public class QuestionarioCompilatoService {
 		);
 		questionarioCompilatoDBMongoFetch.setSezioniQuestionarioTemplateIstanze(sezioniQuestionarioCompilato);
 		questionarioCompilatoDBMongoFetch.setDataOraUltimoAggiornamento(questionarioCompilatoDBMySqlFetch.getDataOraAggiornamento());
+		questionarioCompilatoDBMongoFetch.setMongoId(null);
 		this.questionarioCompilatoMongoRepository.save(questionarioCompilatoDBMongoFetch);
 	}
 	

@@ -26,6 +26,7 @@ public class UtenteMapper {
 		UtentiLightResourcePaginata utentiLightResourcePaginata = new UtentiLightResourcePaginata();
 		utentiLightResourcePaginata.setListaUtenti(utenti);
 		utentiLightResourcePaginata.setNumeroPagine(paginaUtenti.getTotalPages());
+		utentiLightResourcePaginata.setNumeroTotaleElementi(paginaUtenti.getTotalElements());
 		return utentiLightResourcePaginata;
 	}
 	

@@ -3,11 +3,14 @@ package it.pa.repdgt.programmaprogetto.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -64,6 +67,7 @@ import it.pa.repdgt.shared.entity.SedeEntity;
 import it.pa.repdgt.shared.entity.storico.StoricoEnteGestoreProgettoEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.exception.StoricoEnteException;
 import it.pa.repdgt.shared.repository.storico.StoricoEnteGestoreProgettoRepository;
 import it.pa.repdgt.shared.repository.storico.StoricoEnteGestoreProgrammaRepository;
 import it.pa.repdgt.shared.service.storico.StoricoService;
@@ -743,6 +747,10 @@ public class ProgettoServiceTest {
 	
 	@Test
 	public void terminaProgettoTest() throws Exception {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		Calendar c = Calendar.getInstance();
+		c.setTime(sdf.parse(sdf.format(new Date())));
+        Date currentDate = c.getTime();
 		progetto1.setEnteGestoreProgetto(ente1);
 		List<ReferentiDelegatiEnteGestoreProgettoEntity> referentiDelegati = new ArrayList<>();
 		StoricoEnteGestoreProgettoEntity storicoEnteGestoreProgetto = new StoricoEnteGestoreProgettoEntity();
@@ -769,23 +777,46 @@ public class ProgettoServiceTest {
 			List<EnteSedeProgetto> enteSedeProgetto = this.enteSedeProgettoRepository.getEnteSedeProgettoByIdProgetto(progetto1.getId());
 			return enteSedeProgetto;
 			}).when(enteSedeProgettoService).cancellaOTerminaEnteSedeProgetto(progetto1.getId());
-		progettoService.terminaProgetto(progetto1.getId(), new Date());
+		progettoService.terminaProgetto(progetto1.getId(), currentDate);
 		assertThat(progetto1.getStatoGestoreProgetto()).isEqualTo("TERMINATO");
 		verify(progettoRepository, times(1)).save(progetto1);
 	}
 	
 	@Test
-	public void terminaProgettoKOTest() {
+	public void terminaProgettoKOTest() throws Exception {
+		//test KO per data terminazione nel futuro
+		Assertions.assertThrows(ProgettoException.class, () -> progettoService.terminaProgetto(progetto1.getId(), new Date()));
+		assertThatExceptionOfType(ProgettoException.class);
+		verify(progettoRepository, times(0)).save(progetto1);
+		
 		//test KO per progetto non presente
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		Calendar c = Calendar.getInstance();
+		c.setTime(sdf.parse(sdf.format(new Date())));
+        Date currentDate = c.getTime();
 		when(progettoRepository.findById(progetto1.getId())).thenReturn(Optional.empty());
-		Assertions.assertThrows(ResourceNotFoundException.class, () -> progettoService.terminaProgetto(progetto1.getId(), new Date()));
+		Assertions.assertThrows(ResourceNotFoundException.class, () -> progettoService.terminaProgetto(progetto1.getId(), currentDate));
 		assertThatExceptionOfType(ResourceNotFoundException.class);
 		verify(progettoRepository, times(0)).save(progetto1);
 		
 		//test KO per progetto non terminabile
 		progetto1.setStato("NON ATTIVO");
 		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
-		Assertions.assertThrows(ProgettoException.class, () -> progettoService.terminaProgetto(progetto1.getId(), new Date()));
+		Assertions.assertThrows(ProgettoException.class, () -> progettoService.terminaProgetto(progetto1.getId(), currentDate));
+		assertThatExceptionOfType(ProgettoException.class);
+		verify(progettoRepository, times(0)).save(progetto1);
+	}
+	
+	@Test
+	public void terminaProgettoKOTest2() throws Exception {
+		//test KO impossibile storicizzare ente
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		Calendar c = Calendar.getInstance();
+		c.setTime(sdf.parse(sdf.format(new Date())));
+        Date currentDate = c.getTime();
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
+		doThrow(StoricoEnteException.class).when(storicoService).storicizzaEnteGestoreProgetto(progetto1, StatoEnum.TERMINATO.getValue());
+		Assertions.assertThrows(ProgettoException.class, () -> progettoService.terminaProgetto(progetto1.getId(), currentDate));
 		assertThatExceptionOfType(ProgettoException.class);
 		verify(progettoRepository, times(0)).save(progetto1);
 	}
@@ -808,15 +839,67 @@ public class ProgettoServiceTest {
 	}
 	
 	@Test
-	public void cancellaOTerminaProgettoTest() {
-		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
-		progettoService.cancellaOTerminaProgetto(progetto1, new Date());
-		
+	public void cancellaOTerminaProgettoTest() throws Exception {
 		//test con progetto a NON ATTIVO
 		progetto1.setStato("NON ATTIVO");
+		List<ReferentiDelegatiEnteGestoreProgettoEntity> referentiDelegatiGestoreTest = new ArrayList<>();
+		List<ReferentiDelegatiEntePartnerDiProgettoEntity> referentiDelegatiPartnerTest = new ArrayList<>();
+		List<EnteSedeProgetto> enteSedeProgettoTest =  new ArrayList<>();
 		when(progettoRepository.existsById(progetto1.getId())).thenReturn(true);
 		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
+		when(referentiDelegatiEnteGestoreProgettoRepository.getReferentiDelegatiEnteGestoreProgettoByIdProgetto(progetto1.getId())).thenReturn(referentiDelegatiGestoreTest);
+		when(referentiDelegatiEntePartnerRepository.getReferentiDelegatiEnteGestoreProgettoByIdProgetto(progetto1.getId())).thenReturn(referentiDelegatiPartnerTest);
+		when(enteSedeProgettoRepository.getEnteSedeProgettoByIdProgetto(progetto1.getId())).thenReturn(enteSedeProgettoTest);
+		doAnswer(invocation -> {
+			List<ReferentiDelegatiEnteGestoreProgettoEntity> referentiDelegati = this.referentiDelegatiEnteGestoreProgettoRepository.getReferentiDelegatiEnteGestoreProgettoByIdProgetto(progetto1.getId());
+			return referentiDelegati;
+		}).when(referentiDelegatiEnteGestoreProgettoService).cancellaReferentiDelegatiProgetto(progetto1.getId());
+		doAnswer(invocation -> {
+			List<ReferentiDelegatiEntePartnerDiProgettoEntity> referentiDelegati = this.referentiDelegatiEntePartnerRepository.getReferentiDelegatiEnteGestoreProgettoByIdProgetto(progetto1.getId());
+			return referentiDelegati;
+		}).when(referentiDelegatiEntePartnerService).cancellaReferentiDelegatiPartner(progetto1.getId());
+		doAnswer(invocation -> {
+			List<EnteSedeProgetto> enteSedeProgetto = this.enteSedeProgettoRepository.getEnteSedeProgettoByIdProgetto(progetto1.getId());
+			return enteSedeProgetto;
+		}).when(enteSedeProgettoService).cancellaEnteSedeProgetto(progetto1.getId());
 		progettoService.cancellaOTerminaProgetto(progetto1, new Date());
+		verify(progettoRepository,times(1)).delete(progetto1);
+		
+		//test con progetto ATTIVABILE o ATTIVO
+		progetto1.setStato("ATTIVO");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		Calendar c = Calendar.getInstance();
+		c.setTime(sdf.parse(sdf.format(new Date())));
+        Date currentDate = c.getTime();
+		progetto1.setEnteGestoreProgetto(ente1);
+		List<ReferentiDelegatiEnteGestoreProgettoEntity> referentiDelegati = new ArrayList<>();
+		StoricoEnteGestoreProgettoEntity storicoEnteGestoreProgetto = new StoricoEnteGestoreProgettoEntity();
+		List<EntePartnerEntity> entiPartner = new ArrayList<>();
+		List<EnteSedeProgetto> entisediprogetto = new ArrayList<>();
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
+		when(referentiDelegatiEnteGestoreProgettoService.getReferentiEDelegatiProgetto(progetto1.getId())).thenReturn(referentiDelegati);
+		when(storicoEnteGestoreProgettoRepository.save(storicoEnteGestoreProgetto)).thenReturn(storicoEnteGestoreProgetto);
+		when(entePartnerService.getEntiPartnerByProgetto(progetto1.getId())).thenReturn(entiPartner);
+		when(enteSedeProgettoRepository.getEnteSedeProgettoByIdProgetto(progetto1.getId())).thenReturn(entisediprogetto);
+		doAnswer(invocation -> {
+			storicoEnteGestoreProgetto.setIdProgetto(progetto1.getId());
+			storicoEnteGestoreProgetto.setIdEnte(progetto1.getEnteGestoreProgetto().getId());
+			storicoEnteGestoreProgetto.setStato(StatoEnum.TERMINATO.getValue());
+			storicoEnteGestoreProgetto.setDataOraCreazione(new Date());
+			this.storicoEnteGestoreProgettoRepository.save(storicoEnteGestoreProgetto);
+			return storicoEnteGestoreProgetto;
+		}).when(storicoService).storicizzaEnteGestoreProgetto(progetto1, StatoEnum.TERMINATO.getValue());
+		doAnswer(invocation -> {
+			this.entePartnerService.getEntiPartnerByProgetto(progetto1.getId());
+			return entiPartner;
+		}).when(enteService).terminaEntiPartner(progetto1.getId());
+		doAnswer(invocation -> {
+			List<EnteSedeProgetto> enteSedeProgetto = this.enteSedeProgettoRepository.getEnteSedeProgettoByIdProgetto(progetto1.getId());
+			return enteSedeProgetto;
+			}).when(enteSedeProgettoService).cancellaOTerminaEnteSedeProgetto(progetto1.getId());
+		progettoService.cancellaOTerminaProgetto(progetto1, currentDate);
+		assertThat(progetto1.getStatoGestoreProgetto()).isEqualTo("TERMINATO");
+		verify(progettoRepository, times(1)).save(progetto1);
 	}
 	
 	@Test

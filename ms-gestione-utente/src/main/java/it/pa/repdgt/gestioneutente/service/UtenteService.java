@@ -91,6 +91,7 @@ public class UtenteService {
 					UtenteDto utenteDto = new UtenteDto();
 					utenteDto.setId(utente.getId());
 					utenteDto.setNome(utente.getNome() + " " + utente.getCognome());
+					utenteDto.setCodiceFiscale(utente.getCodiceFiscale());
 					utenteDto.setStato(utente.getRuoli().size() > 0 ? StatoEnum.ATTIVO.getValue(): StatoEnum.NON_ATTIVO.getValue());
 					
 					StringBuilder ruoliAggregati = new StringBuilder();

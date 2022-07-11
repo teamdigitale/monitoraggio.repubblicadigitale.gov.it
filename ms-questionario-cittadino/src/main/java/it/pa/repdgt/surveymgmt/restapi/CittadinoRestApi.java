@@ -21,7 +21,6 @@ import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.dto.CittadinoDto;
 import it.pa.repdgt.surveymgmt.dto.SedeDto;
 import it.pa.repdgt.surveymgmt.param.CittadiniPaginatiParam;
-import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoRequest;
 import it.pa.repdgt.surveymgmt.resource.CittadiniPaginatiResource;
 import it.pa.repdgt.surveymgmt.service.CittadinoService;
 import it.pa.repdgt.surveymgmt.service.QuestionarioCompilatoService;
@@ -52,7 +51,8 @@ public class CittadinoRestApi {
 			);
 		return new CittadiniPaginatiResource(
 				paginaCittadini.getContent(), 
-				paginaCittadini.getTotalPages()
+				paginaCittadini.getTotalPages(),
+				paginaCittadini.getTotalElements()
 			);
 	}
 	

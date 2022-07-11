@@ -24,4 +24,7 @@ public class ListaEntiPaginatiResource implements Serializable {
 	
 	@JsonProperty(value = "numeroPagine")
 	private Integer numeroPagine;
+	
+	@JsonProperty(value = "numeroTotaleElementi")
+	private Long numeroTotaleElementi;
 }

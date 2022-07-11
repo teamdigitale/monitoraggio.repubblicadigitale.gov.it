@@ -35,7 +35,7 @@ public interface QuestionarioTemplateSqlRepository extends JpaRepository<Questio
 	
 	@Query(value = ""
 			+ " SELECT "
-			+ "		qt.stato "
+			+ "		DISTINCT qt.stato "
 			+ " FROM "
 			+ "		questionario_template qt "
 			+ " WHERE 1=1 "

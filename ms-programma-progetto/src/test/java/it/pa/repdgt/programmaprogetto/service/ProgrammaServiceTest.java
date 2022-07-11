@@ -4,11 +4,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -56,6 +60,7 @@ import it.pa.repdgt.shared.entity.light.QuestionarioTemplateLightEntity;
 import it.pa.repdgt.shared.entity.storico.StoricoEnteGestoreProgrammaEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.exception.StoricoEnteException;
 import it.pa.repdgt.shared.repository.storico.StoricoEnteGestoreProgrammaRepository;
 import it.pa.repdgt.shared.service.storico.StoricoService;
 
@@ -599,13 +604,26 @@ public class ProgrammaServiceTest {
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).save(programma1);
 		
-//		//test KO per programma non aggiornabile
-//		programma1.setStato("TERMINATO");
-//		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
-//		when(programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
-//		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.aggiornaProgramma(null, programma1.getId()));
-//		assertThatExceptionOfType(ProgrammaException.class);
-//		verify(programmaRepository, times(0)).save(programma1);
+		//test KO per programmaRequest con codice già esistente
+		ProgrammaRequest programmaRequest = new ProgrammaRequest();
+		programmaRequest.setCodice("3213");;
+		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
+		when(programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
+		when(programmaRepository.countProgrammiByCodice(programmaRequest.getCodice(), programma1.getId())).thenReturn(1);
+		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.aggiornaProgramma(programmaRequest, programma1.getId()));
+		assertThatExceptionOfType(ProgrammaException.class);
+		verify(programmaRepository, times(0)).save(programma1);
+		
+		//test KO per programma non aggiornabile
+		programma1.setStato("TERMINATO");
+		ProgrammaRequest programmaRequest2 = new ProgrammaRequest();
+		programmaRequest2.setCodice("3213");
+		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
+		when(programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
+		when(programmaRepository.countProgrammiByCodice(programmaRequest2.getCodice(), programma1.getId())).thenReturn(0);
+		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.aggiornaProgramma(programmaRequest, programma1.getId()));
+		assertThatExceptionOfType(ProgrammaException.class);
+		verify(programmaRepository, times(0)).save(programma1);
 	}
 	
 	@Test
@@ -667,6 +685,10 @@ public class ProgrammaServiceTest {
 	
 	@Test
 	public void terminaProgrammaTest() throws Exception {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		Calendar c = Calendar.getInstance();
+		c.setTime(sdf.parse(sdf.format(new Date())));
+        Date currentDate = c.getTime();
 		ReferentiDelegatiEnteGestoreProgrammaKey referentiDelegatiKey = new ReferentiDelegatiEnteGestoreProgrammaKey(programma1.getId(), "DSARTN89D21N303N", ente1.getId());
 		ReferentiDelegatiEnteGestoreProgrammaEntity referentiDelegati = new ReferentiDelegatiEnteGestoreProgrammaEntity();
 		referentiDelegati.setId(referentiDelegatiKey);
@@ -684,24 +706,52 @@ public class ProgrammaServiceTest {
 			storico.setDataOraCreazione(new Date());
 			return this.storicoEnteGestoreProgrammaRepository.save(storico);
 		}).when(storicoService).storicizzaEnteGestoreProgramma(programma1, StatoEnum.TERMINATO.getValue());
-		this.programmaService.terminaProgramma(programma1.getId(), new Date());
+		this.programmaService.terminaProgramma(programma1.getId(), currentDate);
 		assertThat(programma1.getStato()).isEqualTo("TERMINATO");
 		verify(programmaRepository, atLeastOnce()).save(programma1);
 	}
 	
 	@Test
-	public void terminaProgrammaKOTest() {
-		//test KO per programma non presente
-		when(programmaRepository.existsById(programma1.getId())).thenReturn(false);
+	public void terminaProgrammaKOTest() throws ParseException {
+		//test per data terminazione nel futuro
 		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.terminaProgramma(programma1.getId(), new Date()));
+		assertThatExceptionOfType(ProgrammaException.class);
+		verify(programmaRepository, times(0)).save(programma1);
+
+		//test KO per programma non presente
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		Calendar c = Calendar.getInstance();
+		c.setTime(sdf.parse(sdf.format(new Date())));
+      Date currentDate = c.getTime();
+		when(programmaRepository.existsById(programma1.getId())).thenReturn(false);
+		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.terminaProgramma(programma1.getId(), currentDate));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).save(programma1);
 		
 		//test KO per programma non terminabile
+		SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy");
+		Calendar c2 = Calendar.getInstance();
+		c2.setTime(sdf2.parse(sdf2.format(new Date())));
+		Date currentDate2 = c2.getTime();
 		programma1.setStato("NON ATTIVO");
 		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
 		when(programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.terminaProgramma(programma1.getId(), new Date()));
+		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.terminaProgramma(programma1.getId(), currentDate2));
+		assertThatExceptionOfType(ProgrammaException.class);
+		verify(programmaRepository, times(0)).save(programma1);
+	}
+	
+	@Test
+	public void terminaProgrammaKOTest2() throws Exception {
+		//test KO impossibile storicizzare l'ente
+		SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy");
+		Calendar c2 = Calendar.getInstance();
+		c2.setTime(sdf2.parse(sdf2.format(new Date())));
+		Date currentDate2 = c2.getTime();
+		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
+		when(programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
+		doThrow(StoricoEnteException.class).when(storicoService).storicizzaEnteGestoreProgramma(programma1, StatoEnum.TERMINATO.getValue());
+		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.terminaProgramma(programma1.getId(), currentDate2));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).save(programma1);
 	}

@@ -68,12 +68,6 @@ public class RuoloRestApi {
 		this.ruoloService.creaNuovoRuolo(nuovoRuoloRequest);
 	}
 	
-	@GetMapping(path = "/{codiceFiscale}/ruoli")
-	public List<RuoloLightResource> getRuoliByCodiceFiscaleUtente(@PathVariable("codiceFiscale") String codiceFiscale) {
-		UtenteEntity utente = this.utenteService.getUtenteByCodiceFiscale(codiceFiscale);
-		return this.ruoloMapper.toLightResourceFrom(utente.getRuoli());
-	}
-	
 	// TOUCH POINT - 8.1.4 - Scheda ruolo
 	// TOUCH POINT - 8.2.1 - Scheda ruolo
 	@GetMapping(path = "/{codiceRuolo}")

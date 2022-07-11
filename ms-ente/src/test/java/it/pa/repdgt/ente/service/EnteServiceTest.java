@@ -524,6 +524,16 @@ public class EnteServiceTest {
 	}
 	
 	@Test
+	public void getEntiByCriterioRicercaTest() {
+		String criterioRicerca = "AAAAAAA11";
+		List<EnteEntity> enti = new ArrayList<>();
+		enti.add(ente1);
+		when(enteRepository.findByCriterioRicerca(criterioRicerca, "%"+criterioRicerca+"%")).thenReturn(enti);
+		enteService.getEntiByCriterioRicerca(criterioRicerca);
+		verify(enteRepository, times(1)).findByCriterioRicerca(criterioRicerca, "%"+criterioRicerca+"%");
+	}
+	
+	@Test
 	public void getEnteByPartitaIvaTest() {
 		String partitaIva = "AAAAAAA11";
 		when(enteRepository.findByPartitaIva(partitaIva)).thenReturn(enteOptional);

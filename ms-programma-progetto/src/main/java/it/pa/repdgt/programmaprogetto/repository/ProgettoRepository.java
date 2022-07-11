@@ -92,7 +92,7 @@ public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long> 
 			+ " FROM progetto progetto "
 			+ "	INNER JOIN programma programma "
 			+ "		ON progetto.ID_PROGRAMMA = programma.ID "
-			+ "	INNER JOIN ente ente "
+			+ "	LEFT JOIN ente ente "
 			+ "		ON progetto.ID_ENTE_GESTORE_PROGETTO = ente.ID "
 			+ " WHERE  1=1"
 		    + " 	AND	 ( :criterioRicerca IS NULL  "
