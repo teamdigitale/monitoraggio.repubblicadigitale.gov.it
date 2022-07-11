@@ -67,8 +67,12 @@
 	values('MWEDSQ99E20K123A', 'REPP');
  insert into utente_x_ruolo(utente_id, ruolo_codice) 
 	values('FACILITATORE1', 'VOL');
+	 insert into utente_x_ruolo(utente_id, ruolo_codice) 
+	values('FACILITATORE2', 'VOL');
  insert into utente_x_ruolo(utente_id, ruolo_codice) 
 	values('UTENTE2', 'FAC');
+	 insert into utente_x_ruolo(utente_id, ruolo_codice) 
+	values('UTENTE2', 'VOL');
  insert into utente_x_ruolo(utente_id, ruolo_codice) 
 	values('UTENTE2', 'REGP');
 	 insert into utente_x_ruolo(utente_id, ruolo_codice) 
@@ -328,8 +332,8 @@ insert into ente_sede_progetto(id_ente, id_progetto, id_sede, ruolo_ente, stato_
 	values(1005, 254, 1, 'EGP', 'NON ATTIVO');
 insert into ente_sede_progetto(id_ente, id_progetto, id_sede, ruolo_ente, stato_sede)
 	values(1000, 251, 1, 'EGP', 'NON ATTIVO');
-insert into ente_sede_progetto(id_ente, id_progetto, id_sede) 
-	values (1000, 250, 1);
+insert into ente_sede_progetto(id_ente, id_progetto, id_sede, ruolo_ente, stato_sede)
+	values(1000, 250, 1, 'EGP', 'NON ATTIVO');
 	
 -- ASSEGNAMENTO ENTE_SEDE_PROGETTO_FACILITATORE
 insert into ente_sede_progetto_facilitatore(id_ente, id_facilitatore, id_progetto, id_sede, ruolo_utente, stato_utente)
@@ -340,6 +344,10 @@ insert into ente_sede_progetto_facilitatore (id_ente, id_progetto, id_sede, id_f
 	values (1005, 254, 1, 'FACILITATORE1', 'VOL', 'NON ATTIVO'); 
 insert into ente_sede_progetto_facilitatore (id_ente, ID_progetto, id_sede, id_facilitatore, ruolo_utente, stato_utente) 
 	values (1005, 251, 1, 'FACILITATORE2', 'VOL', 'NON ATTIVO'); 
+insert into ente_sede_progetto_facilitatore(id_ente, id_facilitatore, id_progetto, id_sede, ruolo_utente, stato_utente) 
+	values(1000, 'UTENTE2',  250, 1, 'FAC', 'ATTIVO');
+insert into ente_sede_progetto_facilitatore (id_ente, ID_progetto, id_sede, id_facilitatore, ruolo_utente, stato_utente) 
+	values (1000, 250, 1, 'FACILITATORE2', 'VOL', 'NON ATTIVO'); 
 
 --ASSEGNAMENTO REFERENTI / DELEGATI ENTE GESTORE PROGETTO
  insert into referente_delegati_gestore_progetto(cf_utente, id_progetto, id_ente, codice_ruolo, data_ora_aggiornamento, data_ora_creazione, stato_utente)

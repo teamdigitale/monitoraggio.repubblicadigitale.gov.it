@@ -232,7 +232,6 @@ public class ServizioService {
 		
 		// Salvo SezioneQ3Compilato con i dati da aggiornare su MongoDB
 		final SezioneQ3Collection sezioneQ3DaAggiornare = this.servizioMapper.toCollectionFrom(servizioDaAggiornareRequest);
-		sezioneQ3DaAggiornare.setMongoId(sezioneQ3Compilato.getMongoId());
 		sezioneQ3DaAggiornare.setId(sezioneQ3Compilato.getId());
 		sezioneQ3DaAggiornare.setDataOraCreazione(sezioneQ3Compilato.getDataOraCreazione());
 		sezioneQ3DaAggiornare.setDataOraUltimoAggiornamento(new Date());

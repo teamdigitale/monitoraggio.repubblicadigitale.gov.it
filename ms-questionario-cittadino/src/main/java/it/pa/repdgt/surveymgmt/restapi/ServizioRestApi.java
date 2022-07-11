@@ -66,8 +66,8 @@ public class ServizioRestApi {
 			@RequestParam(name = "criterioRicerca", required = false) final String criterioRicercaFiltro,
 			@RequestParam(name = "tipologiaServizio", required = false) final List<String> tipologieServiziFiltro,
 			@RequestParam(name = "stato",       required = false)  final List<String> statiFiltro,
-			@RequestParam(name = "currPage", defaultValue = "0")  @Pattern(regexp = "[0-9]+") final String currPage,
-			@RequestParam(name = "pageSize", defaultValue = "10") @Pattern(regexp = "[0-9]+") final String pageSize) {
+			@RequestParam(name = "currPage", defaultValue = "0")  final String currPage,
+			@RequestParam(name = "pageSize", defaultValue = "10") final String pageSize) {
 		final FiltroListaServiziParam filtroListaServiziParam = new FiltroListaServiziParam(
 				criterioRicercaFiltro,
 				tipologieServiziFiltro, 
@@ -80,7 +80,7 @@ public class ServizioRestApi {
 				pagina
 			);
 		final List<ServizioResource> serviziResource = this.servizioMapper.toResourceFrom(paginaServizio.getContent());
-		return new ServiziPaginatiResource(serviziResource, paginaServizio.getTotalPages());
+		return new ServiziPaginatiResource(serviziResource, paginaServizio.getTotalPages(), paginaServizio.getTotalElements());
 	}
 	
 	/***

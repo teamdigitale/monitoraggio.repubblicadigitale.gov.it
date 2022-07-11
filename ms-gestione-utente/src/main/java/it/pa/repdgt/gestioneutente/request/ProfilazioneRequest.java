@@ -16,7 +16,7 @@ import lombok.Setter;
 public class ProfilazioneRequest implements Serializable {
 	private static final long serialVersionUID = -6654227879250469320L;
 
-	@JsonProperty(value = "codiceFiscale")
+	@JsonProperty(value = "cfUtente")
 	@NotBlank
 	private String cfUtente;
 	

@@ -1,12 +1,12 @@
 package it.pa.repdgt.programmaprogetto.restapi;
 
 import java.io.ByteArrayInputStream;
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
 
 import org.apache.commons.csv.CSVFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,8 +126,9 @@ public class ProgrammaRestApi {
 	@PutMapping(path = "termina/{idProgramma}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void terminaProgramma(@PathVariable(value = "idProgramma") Long idProgramma, 
-			@RequestParam @PastOrPresent(message = "Deve essere una data nel passato o corrente") Date dataTerminazione) {
-		this.programmaService.terminaProgramma(idProgramma, dataTerminazione);
+			@RequestParam String dataTerminazione) throws ParseException {
+		SimpleDateFormat sdf= new SimpleDateFormat("dd-MM-yyyy");
+		this.programmaService.terminaProgramma(idProgramma, sdf.parse(dataTerminazione));
 	}
 	
 	// TOUCH POINT - 1.1.4 - Cancellazione Programma

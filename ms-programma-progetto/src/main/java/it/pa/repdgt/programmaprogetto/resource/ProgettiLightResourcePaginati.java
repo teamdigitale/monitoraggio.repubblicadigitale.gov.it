@@ -22,4 +22,7 @@ public class ProgettiLightResourcePaginati implements Serializable {
 	
 	@JsonProperty(value = "numeroPagine")
 	private int numeroPagine;
+	
+	@JsonProperty(value = "numeroTotaleElementi")
+	private Long numeroTotaleElementi;
 }

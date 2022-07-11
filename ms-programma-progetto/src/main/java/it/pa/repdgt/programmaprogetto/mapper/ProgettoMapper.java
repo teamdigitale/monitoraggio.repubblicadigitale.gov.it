@@ -117,6 +117,7 @@ public class ProgettoMapper {
 		ProgettiLightResourcePaginati progettiLightResourcePaginata = new ProgettiLightResourcePaginati();
 		progettiLightResourcePaginata.setListaProgettiLight(this.toLightResourceFrom(progetti));
 		progettiLightResourcePaginata.setNumeroPagine(paginaProgetti.getTotalPages());
+		progettiLightResourcePaginata.setNumeroTotaleElementi(paginaProgetti.getTotalElements());
 		return progettiLightResourcePaginata;
 	}
 	

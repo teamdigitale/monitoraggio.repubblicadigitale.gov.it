@@ -63,15 +63,15 @@ public class QuestionarioTemplateService {
 			throw new QuestionarioTemplateException(messaggioErrore);
 		}
 		// Recupero tutti i QuestionariTemplate in base al ruolo profilato dell'utente loggato e in base ai filtri selezionati
-				final List<QuestionarioTemplateEntity> listaQuestionariTemplate = this.getAllQuestionariTemplateByProfilazioneAndFiltro(profilazione, filtroListaQuestionariTemplate);
-				
-				// Effettuo la paginazione della lista dei quetionariTemplate recuperati in precedenza
-				int start = (int) pagina.getOffset();
-				int end = Math.min((start + pagina.getPageSize()), listaQuestionariTemplate.size());
-				if(start > end) {
-					throw new QuestionarioTemplateException("ERRORE: pagina richiesta inesistente");
-				}
-				return new PageImpl<QuestionarioTemplateEntity>(listaQuestionariTemplate.subList(start, end), pagina, listaQuestionariTemplate.size());
+		final List<QuestionarioTemplateEntity> listaQuestionariTemplate = this.getAllQuestionariTemplateByProfilazioneAndFiltro(profilazione, filtroListaQuestionariTemplate);
+		
+		// Effettuo la paginazione della lista dei quetionariTemplate recuperati in precedenza
+		int start = (int) pagina.getOffset();
+		int end = Math.min((start + pagina.getPageSize()), listaQuestionariTemplate.size());
+		if(start > end) {
+			throw new QuestionarioTemplateException("ERRORE: pagina richiesta inesistente");
+		}
+		return new PageImpl<QuestionarioTemplateEntity>(listaQuestionariTemplate.subList(start, end), pagina, listaQuestionariTemplate.size());
 	}
 	
 	public List<QuestionarioTemplateEntity> getAllQuestionariTemplateByProfilazioneAndFiltro(
@@ -249,6 +249,9 @@ public class QuestionarioTemplateService {
 		questionarioTemplateDaAggiornare.setIdQuestionarioTemplate(questionarioTemplateFetchDB.getIdQuestionarioTemplate());
 		questionarioTemplateDaAggiornare.setStato(questionarioTemplateFetchDB.getStato());
 		questionarioTemplateDaAggiornare.setDataOraCreazione(questionarioTemplateFetchDB.getDataOraCreazione());
+		questionarioTemplateDaAggiornare.setDataOraUltimoAggiornamento(new Date());
+		questionarioTemplateDaAggiornare.setDefaultRFD(questionarioTemplateFetchDB.getDefaultRFD());
+		questionarioTemplateDaAggiornare.setDefaultSCD(questionarioTemplateFetchDB.getDefaultSCD());
 		questionarioTemplateDaAggiornare.setDataOraUltimoAggiornamento(new Date());
 
 		// Allineamento questionario template su mysql
