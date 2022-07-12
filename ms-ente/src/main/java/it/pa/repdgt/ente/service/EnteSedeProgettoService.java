@@ -92,13 +92,12 @@ public class EnteSedeProgettoService {
 	 * */
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellaOTerminaAssociazioneEnteSedeProgetto(Long idEnte, Long idSede, Long idProgetto) {
-//		 Possibile eseguire la disassociazione Se: almeno una delle condizioni seguenti è verificata:
-//		 		1. Lo stato del progetto non è: ATTIVO e non è ATTIVABILE e non è CANCELLATO e non è TERMINATO 
-//					 ==> ovvero devo quinidi veirificare se lo stato progetto é: NON_ATTIVO 
+//		 Possibile eseguire la disassociazione se almeno una delle condizioni seguenti è verificata:
+//		 		1. Lo stato del progetto é NON_ATTIVO 
 //		 		2. Lo stato del progetto è ATTIVO oppure ATTIVABILE
 //					&& esiste almeno un'altra sede ATTIVA con almeno un facilitatore associato
 		EnteSedeProgettoKey id = new EnteSedeProgettoKey(idEnte, idSede, idProgetto);
-		EnteSedeProgetto enteSedeProgettoFetch = this.enteSedeProgettoRepository.getById(id);
+		EnteSedeProgetto enteSedeProgettoFetch = this.enteSedeProgettoRepository.findById(id).get();
 		
 		if(enteSedeProgettoFetch.getStatoSede().equals(StatoEnum.NON_ATTIVO.getValue())) {
 			this.cancellazioneAssociazioneEnteSedeProgetto(idEnte, idSede, idProgetto);
