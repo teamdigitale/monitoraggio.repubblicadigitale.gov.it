@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.17](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.16...1.0.0-develop.17) (2022-07-12)
+
+
+### Bug Fixes
+
+* **be:** ente-pec progetto-policy ([274853f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/274853ff3d186116d3170f7a12339155595a9c26))
+
 ## [1.0.0-develop.16](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.15...1.0.0-develop.16) (2022-07-12)
 
 
