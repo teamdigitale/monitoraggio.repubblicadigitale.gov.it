@@ -46,11 +46,9 @@ public class QuestionarioTemplateCollection implements Serializable {
 	@Field(name = "descrizione")
 	private String descrizioneQuestionarioTemplate;
 
-	@NotNull
 	@Field(name = "default-RFD")
 	private Boolean defaultRFD;
 	
-	@NotNull
 	@Field(name = "default-SCD")
 	private Boolean defaultSCD;
 	

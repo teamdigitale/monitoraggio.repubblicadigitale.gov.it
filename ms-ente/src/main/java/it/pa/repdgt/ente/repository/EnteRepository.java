@@ -125,7 +125,7 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 			+" 			ente e "
 			+" 			INNER JOIN programma prgm "
 			+" 			ON e.ID = prgm.ID_ENTE_GESTORE_PROGRAMMA "
-			+"      	LEFT JOIN progetti prgt "
+			+"      	LEFT JOIN progetto prgt "
 			+"          ON prgt.ID_PROGRAMMA = prgm.ID "
 			+"      WHERE 1=1 "
 			+" 		  AND ( COALESCE(:idsProgrammi) IS NULL  OR prgm.ID IN (:idsProgrammi) ) "
@@ -364,4 +364,13 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 			 +" WHERE progetto.ID = :idProgetto", 
 	  nativeQuery = true)
 	public Optional<EnteProjection> findEnteGestoreProgettoByIdProgetto(@Param("idProgetto") Long idProgetto);
+
+	@Query(value = "SELECT * "
+			+ "			FROM ente e "
+			+ "		WHERE   "
+			+ "			CONVERT( e.ID, CHAR ) = :criterioRicerca "
+			+ "			OR UPPER( e.NOME ) LIKE UPPER( :criterioRicercaLike ) "
+			+ "			OR UPPER( e.PARTITA_IVA ) = UPPER( :criterioRicerca ) ",
+			nativeQuery = true)
+	public List<EnteEntity> findByCriterioRicerca(String criterioRicerca, String criterioRicercaLike);
 }

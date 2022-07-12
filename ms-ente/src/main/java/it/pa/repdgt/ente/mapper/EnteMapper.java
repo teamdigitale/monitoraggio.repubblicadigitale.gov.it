@@ -1,5 +1,8 @@
 package it.pa.repdgt.ente.mapper;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +15,18 @@ import it.pa.repdgt.shared.entity.EnteEntity;
 
 @Component
 public class EnteMapper {
-	public EnteResource  toResourcefrom(EnteEntity enteEntity) {
+	
+	public List<EnteResource> toResourceFrom(List<EnteEntity> enti) {
+		if(enti == null ) {
+			return null;
+		}
+		
+		return enti.stream()
+					.map(this::toResourceFrom)
+					.collect(Collectors.toList());
+	}
+	
+	public EnteResource  toResourceFrom(EnteEntity enteEntity) {
 		if(enteEntity == null) {
 			return null;
 		}
@@ -64,6 +78,7 @@ public class EnteMapper {
 		ListaEntiPaginatiResource listaEntiPaginatiResource = new ListaEntiPaginatiResource();
 		listaEntiPaginatiResource.setEnti(paginaEnte.getContent());
 		listaEntiPaginatiResource.setNumeroPagine(paginaEnte.getTotalPages());
+		listaEntiPaginatiResource.setNumeroTotaleElementi(paginaEnte.getTotalElements());
 		return listaEntiPaginatiResource;
 	}
 }

@@ -1,6 +1,8 @@
 package it.pa.repdgt.programmaprogetto.restapi;
 
 import java.io.ByteArrayInputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -117,20 +119,6 @@ public class ProgettoRestApi {
 		this.progettoService.assegnaEnteGestoreProgetto(idProg, idEnteGest);
 	}
 	
-	/**
-	 * Api di Assegnazione del programma al progetto
-	 * 
-	 * @param String idProgetto  - id del progetto su cui assegnare il programma
-	 * @param String idProgarmma - id del programma da assegnare al progetto
-	 * */
-	@PutMapping(path = "/{idProgetto}/assegna/programma/{idProgramma}")
-	@ResponseStatus(code = HttpStatus.OK)
-	public void assegnaProgrammaAlProgetto(
-			@PathVariable(value = "idProgetto")  Long idProgetto,
-			@PathVariable(value = "idProgramma") Long idProgramma) {
-		this.progettoService.assegnaProgrammaAlProgetto(idProgetto, idProgramma);
-	}
-	
 	// TOUCH-POINT 1.2.4 - Delete Progetto
 	@DeleteMapping("/{idProgetto}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
@@ -142,8 +130,9 @@ public class ProgettoRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void terminaProgetto(
 			@PathVariable(value = "idProgetto") Long idProgetto, 
-			@RequestParam @PastOrPresent(message = "Deve essere una data nel passato o corrente") Date dataTerminazione) {
-		this.progettoService.terminaProgetto(idProgetto, dataTerminazione);
+			@RequestParam String dataTerminazione) throws ParseException {
+		SimpleDateFormat sdf= new SimpleDateFormat("dd-MM-yyyy");
+		this.progettoService.terminaProgetto(idProgetto, sdf.parse(dataTerminazione));
 	}
 	
 	@PutMapping(path = "/attiva/{idProgetto}")

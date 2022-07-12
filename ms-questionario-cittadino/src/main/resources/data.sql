@@ -65,6 +65,20 @@
 	values('FACILITATORE1', 'VOL');
  insert into utente_x_ruolo(utente_id, ruolo_codice) 
 	values('UTENTE2', 'FAC');
+ insert into utente_x_ruolo(utente_id, ruolo_codice) 
+	values('UTENTE2', 'VOL');
+ insert into utente_x_ruolo(utente_id, ruolo_codice) 
+	values('UTENTE2', 'REGP');
+ insert into utente_x_ruolo(utente_id, ruolo_codice) 
+	values('UTENTE2', 'DEGP');
+ insert into utente_x_ruolo(utente_id, ruolo_codice) 
+	values('UTENTE2', 'REPP');
+ insert into utente_x_ruolo(utente_id, ruolo_codice) 
+	values('UTENTE2', 'DEPP');
+ insert into utente_x_ruolo(utente_id, ruolo_codice) 
+	values('XTAAAA54E91E123Z', 'REG');
+ insert into utente_x_ruolo(utente_id, ruolo_codice) 
+	values('MWEDSQ99E20K123A', 'DEG');
   		
 
 
@@ -343,9 +357,25 @@ insert into ente_sede_progetto_facilitatore (id_ente, ID_progetto, id_sede, id_f
 --CITTADINI
 INSERT INTO cittadino ("ID","ANNO_DI_NASCITA","CODICE_FISCALE","COGNOME","EMAIL","NOME","NUMERO_DI_CELLULARE")VALUES(1,1986,'SMNCLL86P12H501A','COGNOME_PROVA','eeee@ee.com','NOME_PROVA',45353);
 
---QUESTIONARIO_TEMPLATE
-insert into questionario_template(id, DATA_ORA_CREAZIONE, DATA_ORA_AGGIORNAMENTO, DEFAULT_RFD, DEFAULT_SCD, DESCRIZIONE, NOME, STATO) values(1, current_timestamp, current_timestamp, true, true, 'descrizione', 'prova_templtate','ATTIVO');
 
+--QUESTIONARIO_TEMPLATE
+insert into questionario_template(id, DATA_ORA_CREAZIONE, DATA_ORA_AGGIORNAMENTO, DEFAULT_RFD, DEFAULT_SCD, DESCRIZIONE, NOME, STATO) 
+	values('aeseur2hf', current_timestamp, current_timestamp, true, true, 'descrizione', 'prova_templtate','ATTIVO');
+insert into questionario_template(id, DATA_ORA_CREAZIONE, DATA_ORA_AGGIORNAMENTO, DEFAULT_RFD, DEFAULT_SCD, DESCRIZIONE, NOME, STATO) 
+	values('hgirwekg', current_timestamp, current_timestamp, false, false, 'descrizione2', 'prova_templtate2','ATTIVO');
+insert into questionario_template(id, DATA_ORA_CREAZIONE, DATA_ORA_AGGIORNAMENTO, DEFAULT_RFD, DEFAULT_SCD, DESCRIZIONE, NOME, STATO) 
+	values('jfkbfadlda', current_timestamp, current_timestamp, true, false, 'descrizione3', 'prova_templtate3','ATTIVO');
+
+	
+-- PROGRAMMA_X_QUESTIONARIO_TEMPLATE
+insert into programma_x_questionario_template(programma_id, questionario_template_id, DATA_ORA_CREAZIONE, DATA_ORA_AGGIORNAMENTO, STATO)
+	values(100, 'aeseur2hf', current_timestamp, current_timestamp, 'ATTIVO');	
+insert into programma_x_questionario_template(programma_id, questionario_template_id, DATA_ORA_CREAZIONE, DATA_ORA_AGGIORNAMENTO, STATO)
+	values(101, 'hgirwekg', current_timestamp, current_timestamp, 'ATTIVO');	
+insert into programma_x_questionario_template(programma_id, questionario_template_id, DATA_ORA_CREAZIONE, DATA_ORA_AGGIORNAMENTO, STATO)
+	values(104, 'jfkbfadlda', current_timestamp, current_timestamp, 'ATTIVO');	
+	
+	
 --SERVIZIO
 insert into servizio values(1,current_timestamp,current_timestamp,current_date, 1005,'UTENTE2', 256,1,1,'','nome_servizio','ATTIVO','');
 

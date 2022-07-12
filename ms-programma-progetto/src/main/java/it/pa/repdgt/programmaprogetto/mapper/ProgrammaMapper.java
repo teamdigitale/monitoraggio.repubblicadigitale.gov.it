@@ -120,6 +120,7 @@ public class ProgrammaMapper {
 		ProgrammiLightResourcePaginata programmiLightResourcePaginata = new ProgrammiLightResourcePaginata();
 		programmiLightResourcePaginata.setListaProgrammiLight(this.toLightResourceFrom(programmi));
 		programmiLightResourcePaginata.setNumeroPagine(paginaProgrammi.getTotalPages());
+		programmiLightResourcePaginata.setNumeroTotaleElementi(paginaProgrammi.getTotalElements());
 		return programmiLightResourcePaginata;
 	}
 

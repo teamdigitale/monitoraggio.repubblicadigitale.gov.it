@@ -29,7 +29,7 @@ public class QuestionarioTemplateRequest implements Serializable {
 	@NotBlank
 	private String descrizioneQuestionarioTemplate;
 
-	@JsonProperty(value = "sections")
+	@JsonProperty(value = "survey-sections")
 	@NotEmpty
 	@Valid
 	private List<SezioneQuestionarioTemplateRequest> sezioniQuestionarioTemplate;

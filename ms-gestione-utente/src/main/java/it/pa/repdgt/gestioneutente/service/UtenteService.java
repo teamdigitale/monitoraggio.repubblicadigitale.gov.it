@@ -39,7 +39,6 @@ import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.UtenteXRuolo;
 import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
-import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import lombok.extern.slf4j.Slf4j;
 
@@ -92,6 +91,7 @@ public class UtenteService {
 					UtenteDto utenteDto = new UtenteDto();
 					utenteDto.setId(utente.getId());
 					utenteDto.setNome(utente.getNome() + " " + utente.getCognome());
+					utenteDto.setCodiceFiscale(utente.getCodiceFiscale());
 					utenteDto.setStato(utente.getRuoli().size() > 0 ? StatoEnum.ATTIVO.getValue(): StatoEnum.NON_ATTIVO.getValue());
 					
 					StringBuilder ruoliAggregati = new StringBuilder();

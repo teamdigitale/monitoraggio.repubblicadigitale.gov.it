@@ -132,6 +132,12 @@ public class EnteService {
 				.orElseThrow( () -> new ResourceNotFoundException(messaggioErrore) );
 	}
 	
+	@LogMethod
+	@LogExecutionTime
+	public List<EnteEntity> getEntiByCriterioRicerca(String criterioRicerca) {
+		return this.enteRepository.findByCriterioRicerca(criterioRicerca,"%"+criterioRicerca+"%");
+	}
+	
 	public Page<EnteDto> getAllEntiPaginati(
 			EntiPaginatiParam entiPaginatiParam,
 			Integer currPage, 

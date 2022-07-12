@@ -44,6 +44,7 @@ public class EnteSedeProgettoServiceTest {
 	@Test
 	public void cancellaOTerminaEnteSedeProgettoTest() {
 		enteSedeProgettoService.cancellaOTerminaEnteSedeProgetto(251L);
+		enteSedeProgettoService.cancellaOTerminaEnteSedeProgetto(250L);
 	}
 	
 	@Test
