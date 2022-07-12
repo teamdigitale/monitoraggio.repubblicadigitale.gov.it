@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { FormGroup, Toggle } from 'design-react-kit';
-//import clsx from 'clsx';
 import { Paginator, StatusChip, Table } from '../../../../../components';
 import { newTable, TableRowI } from '../../../../../components/Table/table';
 import { useAppSelector } from '../../../../../redux/hooks';
@@ -15,10 +14,8 @@ import {
   setEntityPagination,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import {
-  DownloadEntityValues,
-  // GetEntityValues,
-  GetEntityFilterValues,
-  // DownloadEntityValues,
+  DownloadEntityValuesQueryParams,
+  GetEntityFilterQueryParamsValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import { TableHeadingQuestionnaires } from '../utils';
 
@@ -41,7 +38,6 @@ import {
 } from '../../../../../redux/features/app/appSlice';
 import {
   GetAllSurveys,
-  GetFilterValuesSurvey,
   UpdateSurveyExclusiveField,
 } from '../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 
@@ -180,9 +176,9 @@ const Surveys = () => {
 
   const getAllFilters = () => {
     // TODO: check chiavi filtri
-    if (filterDropdownSelected !== 'filtroStati')
+    if (filterDropdownSelected !== 'stati')
       dispatch(
-        GetEntityFilterValues({ entity, dropdownType: statusDropdownLabel })
+        GetEntityFilterQueryParamsValues({ entity, dropdownType: statusDropdownLabel })
       );
   };
 
@@ -201,12 +197,14 @@ const Surveys = () => {
   };
 
   // HANDLE TOGGLE CHANGE for SCD and RFD
-  const handleToggleChange = (
+  const handleToggleChange = async (
     flagType: 'scd' | 'rfd',
     flagChecked: boolean,
     surveyId: string
   ) => {
-    dispatch(UpdateSurveyExclusiveField({ flagType, flagChecked, surveyId }));
+    await dispatch(UpdateSurveyExclusiveField({ flagType, flagChecked, surveyId }));
+    // update the table
+    await dispatch(GetAllSurveys());
   };
 
   const handleDropdownFilters = (values: FilterI[], filterKey: string) => {
@@ -230,11 +228,10 @@ const Surveys = () => {
       searchDropdownValues.push({ filterId: filterId, value: searchValue });
     }
     setSearchDropdown(searchDropdownValues);
-    dispatch(GetFilterValuesSurvey(filterId as 'tipo' | 'stato')); // esempio di parametro con cui filtrare le opzioni tramite api
   };
 
   const handleDownloadList = () => {
-    dispatch(DownloadEntityValues({ entity }));
+    dispatch(DownloadEntityValuesQueryParams({ entity }));
   };
 
   const searchInformation: SearchInformationI = {

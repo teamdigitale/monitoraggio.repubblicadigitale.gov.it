@@ -37,12 +37,17 @@ import ManageDelegate from '../modals/manageDelegate';
 import ManageReferal from '../modals/manageReferal';
 import { GetAllSurveys } from '../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 import ManageProject from '../modals/manageProject';
-import { DeleteEntity } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
+import {
+  DeleteEntity,
+  TerminateEntity,
+} from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import {
   GetProgramDetail,
   UpdateProgramSurveyDefault,
 } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
 import PreviewSurvey from '../modals/previewSurvey';
+import { RemoveManagerAuthority } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
+import TerminateEntityModal from '../../../../../components/AdministrativeArea/Entities/General/TerminateEntityModal/TerminateEntityModal';
 
 const tabs = {
   INFO: 'info',
@@ -99,7 +104,10 @@ const ProgramsDetails: React.FC = () => {
     useAppSelector(selectPrograms).detail?.dettagliInfoProgramma || {};
 
   const managerAuthorityId =
-    useAppSelector(selectPrograms).detail.idEnteGestoreProgramma;
+    useAppSelector(selectPrograms).detail?.idEnteGestoreProgramma;
+
+  const managerAuthority =
+    useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
 
   useEffect(() => {
     if (entityId) dispatch(GetProgramDetail(entityId));
@@ -288,15 +296,17 @@ const ProgramsDetails: React.FC = () => {
     setRadioButtonsSurveys(false);
   };
 
-  const confirmSurvey = () => {
+  const confirmSurvey = async () => {
     setChangeSurveyButtonVisible(true);
     setRadioButtonsSurveys(false);
-    dispatch(
+    await dispatch(
       UpdateProgramSurveyDefault({
         idProgramma: entityId?.toString() || '',
         idQuestionario: newSurveyDefaultId,
       })
     );
+    // update program detail
+    if(entityId) await dispatch(GetProgramDetail(entityId));
   };
 
   useEffect(() => {
@@ -486,6 +496,7 @@ const ProgramsDetails: React.FC = () => {
           break;
         default:
           setActiveTab(tabs.INFO);
+          break;
       }
     }
   }, [location]);
@@ -556,14 +567,7 @@ const ProgramsDetails: React.FC = () => {
     surveyDefault?.items[0]?.id,
   ]);
 
-  const formButtons: ButtonInButtonsBar[] = [
-    {
-      size: 'xs',
-      color: 'danger',
-      outline: true,
-      text: 'Termina programma',
-      onClick: () => console.log('termina programma'),
-    },
+  let formButtons: ButtonInButtonsBar[] = [
     {
       size: 'xs',
       outline: true,
@@ -584,6 +588,37 @@ const ProgramsDetails: React.FC = () => {
         ),
     },
   ];
+
+  if (programDetails && programDetails.stato === 'ATTIVO') {
+    formButtons = [
+      {
+        size: 'xs',
+        color: 'danger',
+        outline: true,
+        text: 'Termina programma',
+        onClick: () => dispatch(openModal({ id: 'terminate-entity' })),
+      },
+      {
+        size: 'xs',
+        outline: true,
+        color: 'primary',
+        text: 'Elimina',
+        onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+      },
+      {
+        size: 'xs',
+        color: 'primary',
+        text: ' Modifica',
+        onClick: () =>
+          dispatch(
+            openModal({
+              id: modalIdToOpen,
+              payload: { title: editItemModalTitle },
+            })
+          ),
+      },
+    ];
+  }
 
   const nav = (
     <Nav tabs className='mb-5 overflow-hidden'>
@@ -648,6 +683,15 @@ const ProgramsDetails: React.FC = () => {
   const showPROGETTIButtons = () => activeTab === tabs.PROGETTI;
   const showQUESTIONARIButtons = () => activeTab === tabs.QUESTIONARI;
 
+  const terminateProgram = async (
+    programId: string,
+    terminationDate: string
+  ) => {
+    await dispatch(TerminateEntity(programId, 'programma', terminationDate));
+    dispatch(closeModal());
+    window.location.reload();
+  };
+
   return (
     <div className='pb-3'>
       <DetailLayout
@@ -688,16 +732,42 @@ const ProgramsDetails: React.FC = () => {
       {currentModal ? currentModal : null}
       <ConfirmDeleteModal
         onConfirm={() => {
-          entityId && dispatch(DeleteEntity('programma', entityId));
+          switch (activeTab) {
+            case tabs.INFO:
+              entityId && dispatch(DeleteEntity('programma', entityId));
+              navigate(-1);
+              break;
+            case tabs.ENTE:
+              entityId &&
+                managerAuthority &&
+                managerAuthority?.id &&
+                dispatch(
+                  RemoveManagerAuthority(
+                    managerAuthority.id,
+                    entityId,
+                    'programma'
+                  )
+                );
+              break;
+            default:
+              break;
+          }
           dispatch(closeModal());
-          navigate(-1);
         }}
         onClose={() => {
           dispatch(closeModal());
         }}
         text={deleteText}
       />
-
+      <TerminateEntityModal
+        text='Confermi di voler terminare il Programma?'
+        onClose={() => dispatch(closeModal())}
+        onConfirm={(terminationDate: string) =>
+          terminationDate &&
+          entityId &&
+          terminateProgram(entityId, terminationDate)
+        }
+      />
       <ManageDelegate />
       <ManageReferal />
       {/* /<ManageProgramManagerAuthority /> */}

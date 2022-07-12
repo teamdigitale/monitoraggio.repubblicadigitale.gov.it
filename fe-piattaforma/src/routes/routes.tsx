@@ -282,7 +282,7 @@ const routes = [
   }),
   newRoute({
     scope: 'administrative-area',
-    path: 'programmi/:entityId/progetti/:projectId/ente-gestore-progetto',
+    path: 'programmi/:entityId/progetti/:projectId/ente-gestore',
     title: 'Programmi Dettaglio',
     element: <ProjectsDetails />,
     visibleTo: [],
@@ -291,7 +291,7 @@ const routes = [
   }),
   newRoute({
     scope: 'administrative-area',
-    path: 'programmi/:entityId/progetti/:projectId/enti-partner-progetto',
+    path: 'programmi/:entityId/progetti/:projectId/enti-partner',
     title: 'Programmi Dettaglio',
     element: <ProjectsDetails />,
     visibleTo: [],

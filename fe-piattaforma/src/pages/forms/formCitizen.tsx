@@ -297,6 +297,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           onInputChange={onInputDataChange}
           styleLabelForm
           classNameLabelOption='pl-5'
+          disabled
         />
         <Input
           {...form?.dataConferimentoConsenso}

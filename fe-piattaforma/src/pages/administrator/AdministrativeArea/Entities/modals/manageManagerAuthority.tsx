@@ -66,40 +66,40 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
   const dispatch = useDispatch();
   const { entityId, projectId } = useParams();
   const authoritiesList = useAppSelector(selectAuthorities).list;
-  // const authorityDetail = useAppSelector(selectAuthorities).detail.dettagliinfoEnte
+
   useEffect(() => {
     if (creation) dispatch(setAuthorityDetails({}));
   }, [creation]);
 
-  const handleSaveEnte = () => {
+  const handleSaveEnte = async () => {
     if (isFormValid) {
       // Update
       if (newFormValues.id) {
         // Program
         entityId &&
-          dispatch(
+          (await dispatch(
             UpdateManagerAuthority({ ...newFormValues }, entityId, 'programma')
-          );
+          ));
         // Project
         projectId &&
-          dispatch(
+          (await dispatch(
             UpdateManagerAuthority({ ...newFormValues }, projectId, 'progetto')
-          );
+          ));
       }
       // Creation
       else {
         // Program
         entityId &&
-          dispatch(
+          (await dispatch(
             CreateManagerAuthority({ ...newFormValues }, entityId, 'programma')
-          );
+          ));
         // Project
         projectId &&
-          dispatch(
+          (await dispatch(
             CreateManagerAuthority({ ...newFormValues }, projectId, 'progetto')
-          );
+          ));
       }
-
+      window.location.reload();
       dispatch(closeModal());
     }
   };

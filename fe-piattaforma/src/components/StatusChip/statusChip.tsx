@@ -1,10 +1,12 @@
 import clsx from 'clsx';
 import { Button, Chip, ChipLabel, UncontrolledTooltip } from 'design-react-kit';
 import React, { memo } from 'react';
+import { selectDevice } from '../../redux/features/app/appSlice';
+import { useAppSelector } from '../../redux/hooks';
 interface StatusChipI {
-  status: string;
+  status?: string | undefined;
   noTooltip?: boolean;
-  rowTableId?: string | number;
+  rowTableId?: string | number | undefined;
   className?: string;
   chipWidth?: boolean;
 }
@@ -17,12 +19,13 @@ const statusTypes = {
   NOT_SENT: 'NON INVIATO',
   SENT: 'INVIATO',
   FILLED_OUT: 'COMPILATO',
+  NOT_FILLED_OUT: 'NON COMPILATO'
 };
 
 export const statusBgColor = (status: string) => {
   switch (status) {
-    case statusTypes.ACTIVE:
     case 'active':
+    case statusTypes.ACTIVE:
     case statusTypes.COMPLETE:
     case statusTypes.SENT:
       return 'primary-bg-a9';
@@ -31,6 +34,7 @@ export const statusBgColor = (status: string) => {
     case statusTypes.DRAFT:
     case 'draft':
       return 'analogue-2-bg-a2';
+    case statusTypes.NOT_FILLED_OUT:
     case statusTypes.INACTIVE:
     case 'inactive':
       return 'neutral-1-bg-b4';
@@ -43,9 +47,9 @@ export const statusBgColor = (status: string) => {
 
 export const statusColor = (status: string) => {
   switch (status) {
+    case 'active':
     case statusTypes.COMPLETE:
     case statusTypes.ACTIVE:
-    case 'active':
     case statusTypes.SENT:
       return 'text-white';
     case statusTypes.FILLED_OUT:
@@ -53,6 +57,7 @@ export const statusColor = (status: string) => {
     case statusTypes.DRAFT:
     case 'draft':
       return 'primary-color-a9';
+    case statusTypes.NOT_FILLED_OUT:
     case statusTypes.INACTIVE:
     case 'inactive':
     case statusTypes.NOT_SENT:
@@ -64,6 +69,7 @@ export const statusColor = (status: string) => {
 
 const StatusChip: React.FC<StatusChipI> = (props) => {
   const { status, noTooltip = false, rowTableId, chipWidth } = props;
+  const device = useAppSelector(selectDevice);
 
   if (!status) return null;
 
@@ -79,7 +85,8 @@ const StatusChip: React.FC<StatusChipI> = (props) => {
             'table-container__status-label',
             statusBgColor(status),
             'no-border',
-            chipWidth && 'px-2'
+            chipWidth && 'px-2',
+            device.mediaIsPhone && 'my-2'
           )}
         >
           <ChipLabel className={clsx(statusColor(status), chipWidth && 'px-3')}>

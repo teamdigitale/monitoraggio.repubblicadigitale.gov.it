@@ -87,9 +87,6 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleOnSubmit = () => {
-    dispatch(SetSurveyCreation(false));
-  };
 
   const checkValidityQuestions = (questions: SurveyQuestionI[]) => {
     let isValid = true;
@@ -150,9 +147,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
       text: 'Salva Questionario',
       color: 'primary',
       disabled: !checkValidityForm(form),
-      onClick: () => {
-        handleOnSubmit;
-      },
+      onClick: () => dispatch(SetSurveyCreation(false)),
     },
   ];
 

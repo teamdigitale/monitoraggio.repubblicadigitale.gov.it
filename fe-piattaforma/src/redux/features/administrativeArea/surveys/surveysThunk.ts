@@ -15,7 +15,6 @@ import {
   setSurveysList,
   setSurveyDetail,
 } from '../administrativeAreaSlice';
-import { GetEntityValues } from '../administrativeAreaThunk';
 import {
   setSurveyInfoForm,
   setSurveyQuestion,
@@ -416,19 +415,12 @@ export const PostFormCompletedByCitizen =
 export const UpdateSurveyExclusiveField =
   (payload?: any) => async (dispatch: any) => {
     dispatch(showLoader());
-    // console.log(payload);
-
-    const { flagType, flagChecked, surveyId } = payload;
+    const { flagType, /*flagChecked,*/ surveyId } = payload;
     try {
-      const endpoint = `questionari/${
-        flagType === 'scd' ? 'default-scd' : 'default-rfd'
-      }`;
-      await API.patch(endpoint, {
-        surveyId,
-        flagChecked,
-      });
+      const endpoint = `/questionarioTemplate/aggiornadefault/${surveyId}?tipoDefault=${flagType === 'scd' ? 'defaultSCD' : 'defaultRFD'}`;
+
+      await API.patch(endpoint);
       dispatch(hideLoader());
-      dispatch(GetEntityValues({ entity: 'questionari' }));
     } catch (error) {
       dispatch(hideLoader());
     }
