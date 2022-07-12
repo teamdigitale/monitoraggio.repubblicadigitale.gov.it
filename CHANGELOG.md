@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.18](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.17...1.0.0-develop.18) (2022-07-12)
+
+
+### Features
+
+* add S3 variables ([0cf464a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0cf464abfdd0d787222fa2960b5f1e6f2f56138d))
+* add S3 variables ([291d8b9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/291d8b966bbffbb45996da5ea60ecb551dc8e0d8))
+
 ## [1.0.0-develop.17](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.16...1.0.0-develop.17) (2022-07-12)
 
 
