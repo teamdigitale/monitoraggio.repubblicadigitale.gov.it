@@ -1,22 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { SearchBar } from '../../../../../components';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
+import Table, { TableRowI } from '../../../../../components/Table/table';
 
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
+import {
+  selectAuthorities,
+  setAuthoritiesList,
+  setAuthorityDetails,
+} from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import {
+  CreatePartnerAuthority,
+  GetAuthoritiesBySearch,
+  GetAuthorityDetail,
+  UpdatePartnerAuthority,
+} from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
+import { closeModal } from '../../../../../redux/features/modal/modalSlice';
+import { useAppSelector } from '../../../../../redux/hooks';
+import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormAuthorities from '../../../../forms/formAuthorities';
+import { headings } from './manageManagerAuthority';
 
-const id = 'ente-gestore-progetto';
+const id = 'ente-partner';
 
-interface ManageEntePartnerFormI {
+interface ManagePartnerAuthorityFormI {
   formDisabled?: boolean;
   creation?: boolean;
 }
 
-interface ManageEnteGestoreProgettoI
+interface ManageProjectPartnerAuthorityI
   extends withFormHandlerProps,
-    ManageEntePartnerFormI {}
+    ManagePartnerAuthorityFormI {}
 
-const ManagePartnerAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
+const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
   clearForm,
   formDisabled,
   creation = false,
@@ -25,13 +44,72 @@ const ManagePartnerAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
     [key: string]: formFieldI['value'];
   }>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  const dispatch = useDispatch();
+  const { projectId } = useParams();
+  const authoritiesList = useAppSelector(selectAuthorities).list;
 
-  const handleSaveEnte = () => {
+  useEffect(() => {
+    if (creation) dispatch(setAuthorityDetails({}));
+  }, [creation]);
+
+  const handleSaveEnte = async () => {
     if (isFormValid) {
-      console.log(newFormValues);
-      // TODO call to update the values
+      if (newFormValues.id) {
+        // Update
+        projectId &&
+          (await dispatch(
+            UpdatePartnerAuthority({ ...newFormValues }, projectId)
+          ));
+      } else {
+        // Create
+        projectId &&
+          (await dispatch(
+            CreatePartnerAuthority({ ...newFormValues }, projectId)
+          ));
+      }
+      window.location.reload();
+      dispatch(closeModal());
     }
   };
+
+  const handleSearchAuthority = (search: string) => {
+    dispatch(GetAuthoritiesBySearch(search));
+  };
+
+  // The table makes me work with function defined this way
+  const handleSelectAuthority: CRUDActionsI = {
+    [CRUDActionTypes.SELECT]: (td: TableRowI | string) => {
+      if (typeof td !== 'string') {
+        dispatch(GetAuthorityDetail(td.id as string));
+        dispatch(setAuthoritiesList(null));
+      }
+    },
+  };
+
+  let content = (
+    <FormAuthorities
+      creation={creation}
+      formDisabled={!!formDisabled}
+      sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {
+        setNewFormValues({ ...newData });
+      }}
+      setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+    />
+  );
+
+  if (authoritiesList && authoritiesList.length > 0)
+    content = (
+      <Table
+        heading={headings}
+        values={authoritiesList.map((item) => ({
+          label: item.nome,
+          id: item.id,
+          tipologia: item.tipologia,
+        }))}
+        onActionRadio={handleSelectAuthority}
+        id='table'
+      ></Table>
+    );
 
   return (
     <GenericModal
@@ -46,14 +124,15 @@ const ManagePartnerAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
         onClick: () => clearForm?.(),
       }}
     >
-      <FormAuthorities
-        creation={creation}
-        formDisabled={!!formDisabled}
-        sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
-          setNewFormValues({ ...newData })
-        }
-        setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
-      />
+      <div className='mx-5'>
+        <SearchBar
+          className='w-75 py-5'
+          placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’ente'
+          onSubmit={handleSearchAuthority}
+        />
+
+        {content}
+      </div>
     </GenericModal>
   );
 };

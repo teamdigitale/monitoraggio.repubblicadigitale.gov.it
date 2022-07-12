@@ -4,55 +4,43 @@ import {
   TableHeadingI,
   TableRowI,
 } from '../../../../../components/Table/table';
-import { Button, Icon } from 'design-react-kit';
 import clsx from 'clsx';
 import { StatusChip, Table } from '../../../../../components';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
+import { ServizioCittadinoI } from '../../../../../redux/features/citizensArea/citizensAreaSlice';
+import { useNavigate } from 'react-router-dom';
 
 const TableHeadingEntities: TableHeadingI[] = [
   {
-    label: 'ID',
-    field: 'id',
-    size: 'small',
-  },
-  {
-    label: 'Tipologia',
-    field: 'type',
+    label: 'Nome',
+    field: 'nomeServizio',
   },
   {
     label: 'Facilitatore',
-    field: 'facilitatore',
+    field: 'nomeCompletoFacilitatore',
   },
   {
-    label: 'Data ultima modifica',
-    field: 'lastChange',
-  },
-  {
-    label: 'Stato',
-    field: 'status',
+    label: 'Stato questionario',
+    field: 'statoQuestionario',
   },
 ];
 
-const CitizenQuestionari: React.FC<{
-  questionari: {
-    id: number;
-    type: string;
-    facilitatore: string;
-    lastChange: string;
-    status: string;
-  }[];
-}> = ({ questionari }) => {
+const CitizenServices: React.FC<{
+  servizi: ServizioCittadinoI[];
+}> = ({ servizi }) => {
+  const navigate = useNavigate();
+
   const updateTableValues = () => {
     const table = newTable(
       TableHeadingEntities,
-      questionari.map((td) => ({
-        id: td.id,
-        type: td.type,
-        facilitatore: td.facilitatore,
-        lastChange: td.lastChange,
-        status: <StatusChip status={td.status} rowTableId={td.id} />,
+      (servizi || []).map((td) => ({
+        idServizio: td.idServizio || '',
+        nomeServizio: td.nomeServizio || '',
+        nomeCompletoFacilitatore: td.nomeCompletoFacilitatore || '',
+        statoQuestionario: <StatusChip status={td.statoQuestionario} rowTableId={td.idServizio} />,
+        idQuestionarioCompilato: td.idQuestionarioCompilato || '',
       }))
     );
     return {
@@ -64,11 +52,13 @@ const CitizenQuestionari: React.FC<{
   useEffect(() => {
     setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [questionari]);
+  }, [servizi]);
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      console.log('go to surveys', td);
+      navigate(
+        `/area-amministrativa/servizi/${typeof td !== 'string' ? td.idServizio : td}/info`
+      );
     },
   };
 
@@ -85,29 +75,7 @@ const CitizenQuestionari: React.FC<{
         )}
       >
         <div>
-          <h1 className='h4 primary-color-b1'>Questionari</h1>
-        </div>
-        <div>
-          <Button
-            className={clsx(
-              'd-flex',
-              'flex-row',
-              'justify-content-center',
-              'align-items-center',
-              'text-nowrap'
-            )}
-            onClick={() => {
-              console.log('compila nuovo surveys');
-            }}
-          >
-            <Icon
-              icon='it-plus-circle'
-              size='sm'
-              className='primary-color-b1 mr-2'
-              aria-label='Nuovo questionario'
-            />
-            <span>Compila nuovo questionario</span>
-          </Button>
+          <h1 className='h4 primary-color-b1'>Servizi</h1>
         </div>
       </div>
       <Table
@@ -121,4 +89,4 @@ const CitizenQuestionari: React.FC<{
   );
 };
 
-export default CitizenQuestionari;
+export default CitizenServices;

@@ -14,8 +14,11 @@
     justify-content: center;
   }
 
-  .title {
-    max-width: 100px;
+  .card-crud {
+    @media screen and (max-width: 1200px) {
+      right: 0;
+      top: 0;
+    }
   }
 
   .section-chip {
@@ -26,6 +29,6 @@
   }
 
   &__title {
-    min-width: rem(100px);
+    min-width: rem(200px);
   }
 }

@@ -13,6 +13,10 @@ import clsx from 'clsx';
 import { openModal } from '../../redux/features/modal/modalSlice';
 import { useDispatch } from 'react-redux';
 import { formTypes } from '../../pages/administrator/AdministrativeArea/Entities/utils';
+import CardStatusActionProject from '../CardStatusAction/cardStatusActionProject';
+import CardStatusActionHeadquarters from '../CardStatusAction/cardStatusActionHeadquarters';
+import CardStatusActionSurveys from '../CardStatusAction/cardStatusActionSurveys';
+import CardStatusActionPartnerAuthority from '../CardStatusAction/cardStatusActionPartnerAuthority';
 import EmptySection from '../EmptySection/emptySection';
 
 interface DetailLayoutI {
@@ -136,24 +140,26 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
               </Accordion>
             ))
           : null}
-        {currentTab === 'questionari' && surveyDefault?.items?.length && (
-          <div>
-            <CardStatusAction
-              //moreThanOneSurvey={isRadioButtonItem}
-              title={surveyDefault?.items[0].nome}
-              status={surveyDefault?.items[0].stato}
-              id={surveyDefault?.items[0].id}
-              fullInfo={surveyDefault?.items[0]?.fullInfo}
-              onActionClick={surveyDefault?.items[0]?.actions}
-            />
-            {isRadioButtonItem &&
-              device.mediaIsDesktop &&
-              currentTab === 'questionari' &&
-              itemsList?.items?.length && (
-                <h3 className='h4 text-muted mx-3'> Altri questionari </h3>
-              )}
-          </div>
-        )}
+        {currentTab === 'questionari' &&
+          surveyDefault?.items?.length &&
+          showItemsList &&
+          itemsList?.items?.length && (
+            <div>
+              <CardStatusActionSurveys
+                title={surveyDefault?.items[0].nome}
+                status={surveyDefault?.items[0].stato}
+                id={surveyDefault?.items[0].id}
+                fullInfo={surveyDefault?.items[0]?.fullInfo}
+                onActionClick={surveyDefault?.items[0]?.actions}
+              />
+              {isRadioButtonItem &&
+                !device.mediaIsPhone &&
+                currentTab === 'questionari' &&
+                itemsList?.items?.length && (
+                  <h3 className='h4 text-muted mx-3'> Altri questionari </h3>
+                )}
+            </div>
+          )}
         {showItemsList && itemsList?.items?.length ? (
           <>
             {itemsList.title && (
@@ -163,7 +169,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
               currentTab !== 'questionari') &&
               itemsList.items.map((item) => {
                 return (
-                  <CardStatusAction
+                  <CardStatusActionSurveys
                     moreThanOneSurvey={
                       currentTab === 'questionari' && isRadioButtonItem
                     }
@@ -181,6 +187,51 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
               })}{' '}
           </>
         ) : null}
+        {currentTab === 'progetti' && showItemsList && itemsList?.items?.length
+          ? itemsList.items.map((item) => {
+              return (
+                <CardStatusActionProject
+                  title={item.nome}
+                  status={item.stato}
+                  key={item.id}
+                  id={item.id}
+                  fullInfo={item.fullInfo}
+                  onActionClick={item.actions}
+                />
+              );
+            })
+          : null}
+        {currentTab === 'enti-partner' &&
+        showItemsList &&
+        itemsList?.items?.length
+          ? itemsList.items.map((item) => {
+              return (
+                <CardStatusActionPartnerAuthority
+                  title={item.nome}
+                  status={item.stato}
+                  key={item.id}
+                  id={item.id}
+                  fullInfo={item.fullInfo}
+                  onActionClick={item.actions}
+                />
+              );
+            })
+          : null}
+        {currentTab === 'sedi' && showItemsList && itemsList?.items?.length
+          ? itemsList.items.map((item) => {
+              return (
+                <CardStatusActionHeadquarters
+                  title={item.nome}
+                  status={item.stato}
+                  key={item.id}
+                  id={item.id}
+                  fullInfo={item.fullInfo}
+                  onActionClick={item.actions}
+                />
+              );
+            })
+          : null}
+
         {buttonsPosition === 'BOTTOM' &&
         formButtons &&
         formButtons.length !== 0 ? (

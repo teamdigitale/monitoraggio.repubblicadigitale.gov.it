@@ -10,7 +10,8 @@ import {
   setEntityPagination,
 } from './citizensAreaSlice';
 import { RootState } from '../../store';
-import { mapOptions } from '../../../utils/common';
+// import { mapOptions } from '../../../utils/common';
+import { OptionType } from '../../../components/Form/select';
 
 const GetValuesAction = { type: 'citizensArea/GetEntityValues' };
 
@@ -25,16 +26,25 @@ export const GetEntityValues =
         citizensArea: { filters, pagination },
       } = select((state: RootState) => state);
       const entityEndpoint = `/cittadino/all`;
+      const filtroRequest: {
+        [key: string]: string[] | undefined;
+      } = {};
+      Object.keys(filters).forEach((filter: string) => {
+        if (filter === 'criterioRicerca') {
+          filtroRequest[filter] =
+            filters[filter]?.value || filters[filter] || null;
+        } else {
+          filtroRequest[filter] = filters[filter]?.map(
+            (value: OptionType) => value.value
+          );
+        }
+      });
       const body = {
-        filtro: {
-          ...filters,
-          criterioRicerca: null,
-          idsSedi: [],
-        },
+        filtro: filtroRequest,
         idProgetto: 0,
         idProgramma: 0,
-        codiceFiscaleUtenteLoggato: 'UTENTE1', //MOCK
-        codiceRuoloUtenteLoggato: 'DTD', //MOCK DA MANTENERE SOLO NELL'HEADER
+        codiceFiscaleUtenteLoggato: 'SMNRRR56F12G500Q', //MOCK
+        codiceRuoloUtenteLoggato: 'FAC', //MOCK DA MANTENERE SOLO NELL'HEADER
       };
       const res = await API.post(entityEndpoint, body, {
         params: {
@@ -59,10 +69,9 @@ const GetFilterValuesAction = {
   type: 'citizensArea/GetFilterValues',
 };
 export const GetEntityFilterValues =
-  (entityFilter: any, payload?: any) =>
-  async (dispatch: Dispatch, select: Selector) => {
+  (entityFilter: any) => async (dispatch: Dispatch, select: Selector) => {
     try {
-      dispatch({ ...GetFilterValuesAction, payload });
+      dispatch({ ...GetFilterValuesAction });
       dispatch(showLoader());
       const {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -71,22 +80,31 @@ export const GetEntityFilterValues =
       } = select((state: RootState) => state);
       // } = select((state: RootState) => state);
       const entityFilterEndpoint = `cittadino/${entityFilter}/dropdown`;
+      const filtroRequest: {
+        [key: string]: string[] | undefined;
+      } = {};
+      Object.keys(filters).forEach((filter: string) => {
+        if (filter === 'criterioRicerca') {
+          filtroRequest[filter] =
+            filters[filter]?.value || filters[filter] || null;
+        } else {
+          filtroRequest[filter] = filters[filter]?.map(
+            (value: OptionType) => value.value
+          );
+        }
+      });
       const body = {
-        filtro: {
-          ...filters,
-          criterioRicerca: null,
-          idsSedi: [],
-        },
+        filtro: filtroRequest,
         idProgetto: 0,
         idProgramma: 0,
-        codiceFiscaleUtenteLoggato: 'UTENTE1', //MOCK
-        codiceRuoloUtenteLoggato: 'DTD', //MOCK DA MANTENERE SOLO NELL'HEADER
+        codiceFiscaleUtenteLoggato: 'SMNRRR56F12G500Q', //MOCK
+        codiceRuoloUtenteLoggato: 'FAC', //MOCK DA MANTENERE SOLO NELL'HEADER
       };
       const res = await API.post(entityFilterEndpoint, body);
       if (res?.data) {
         dispatch(
           setEntityFilterOptions({
-            [entityFilter]: mapOptions(res.data.data.list),
+            [entityFilter]: [],//mapOptions(res.data), // TODO: fixa bug cittadini lista
           })
         );
       }
@@ -138,6 +156,26 @@ export const GetEntitySearchResult =
       }
     } catch (error) {
       console.log('GetEntitySearchResult citizensArea error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const UpdateCitizenDetailAction = {
+  type: 'citizensArea/UpdateCitizenDetail',
+};
+export const UpdateCitizenDetail =
+  (idCittadino: string | undefined, payload?: any) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...UpdateCitizenDetailAction, idCittadino, payload });
+      const res = await API.put(`cittadino/${idCittadino}`);
+      if (res?.data) {
+        // TODO: richiama api dettaglio
+      }
+    } catch (error) {
+      console.log('UpdateCitizenDetail citizensArea error', error);
     } finally {
       dispatch(hideLoader());
     }

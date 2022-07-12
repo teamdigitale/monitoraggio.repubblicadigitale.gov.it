@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { FilterI } from '../components/DropdownFilter/dropdownFilter';
+import { OptionType } from '../components/Form/select';
 import { TableRowI } from '../components/Table/table';
 
 export const scrollTo = (y: number) => {
@@ -216,4 +217,22 @@ export const downloadCSV = (
     csvData = transformToCSV(data);
   }
   downloadBlob(csvData, filename, 'text/csv;charset=utf-8;');
+};
+
+export const transformFiltersToQueryParams = (filters: {
+  [key: string]:
+  | { label: string; value: string }[]
+  | undefined
+}) => {
+  let filterString = '';
+  Object.keys(filters)?.forEach((filter: string) => {
+    if (filter === 'criterioRicerca' || filter === 'filtroCriterioRicerca') {
+      if(filters[filter]) filterString = filterString + (filterString !== '' ? '&':'') +  filter + '=' + filters[filter];
+    } else {
+      filters[filter]?.map(
+        (value: OptionType) => filterString = filterString + (filterString !== '' ? '&':'') + filter + '=' + value?.value
+      );
+    }
+  });
+  return filterString === '' ? filterString : '?' + filterString;
 };

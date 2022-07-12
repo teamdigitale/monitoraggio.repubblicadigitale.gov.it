@@ -292,11 +292,98 @@ export const UpdateManagerAuthority =
             entity === 'programma' ? 'entegestore' : 'enteGestore'
           }/${authorityDetail.id}`
         );
+
+        return res;
       }
     } catch (error) {
       console.log(error);
     } finally {
       dispatch(hideLoader());
       // window.location.reload();
+    }
+  };
+
+const RemoveAuthorityAction = {
+  type: 'administrativeArea/RemoveAuthority',
+};
+
+export const RemoveManagerAuthority =
+  (authorityId: string, entityId: string, entity: 'programma' | 'progetto') =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...RemoveAuthorityAction });
+
+      if (authorityId && entityId) {
+        await API.delete(
+          `/ente/${authorityId}/cancellagestore${entity}/${entityId}`
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+export const CreatePartnerAuthority =
+  (authorityDetail: any, entityId: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...CreateAuthorityAction });
+
+      const body = Object.fromEntries(
+        Object.entries(authorityDetail).filter(([key, _value]) => key !== 'id')
+      );
+
+      if (body) {
+        let res = await API.post(`/ente/`, {
+          ...body,
+        });
+        if (res) {
+          res = await API.put(
+            `/ente/partner/associa/${res.data.id}/progetto/${entityId}`
+          );
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+export const UpdatePartnerAuthority =
+  (authorityDetail: any, entityId: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...UpdateAuthorityAction });
+      if (authorityDetail) {
+        await API.put(
+          `/ente/partner/associa/${authorityDetail.id}/progetto/${entityId}`
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+export const RemovePartnerAuthority =
+  (authorityId: string, entityId: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...RemoveAuthorityAction });
+
+      if (authorityId && entityId) {
+        await API.delete(
+          `/ente/${authorityId}/cancellaentepartner/${entityId}`
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
     }
   };

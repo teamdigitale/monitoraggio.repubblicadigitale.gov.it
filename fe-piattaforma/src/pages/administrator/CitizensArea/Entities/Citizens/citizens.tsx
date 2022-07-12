@@ -17,7 +17,7 @@ import {
   GetEntityValues,
 } from '../../../../../redux/features/citizensArea/citizensAreaThunk';
 import { useAppSelector } from '../../../../../redux/hooks';
-import { Paginator, StatusChip, Table } from '../../../../../components';
+import { Paginator, Table } from '../../../../../components';
 import {
   DropdownFilterI,
   FilterI,
@@ -27,16 +27,11 @@ import { TableHeading } from '../../utils';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import SearchCitizenModal from '../SearchCitizenModal/searchCitizenModal';
-import { openModal } from '../../../../../redux/features/modal/modalSlice';
 import PageTitle from '../../../../../components/PageTitle/pageTitle';
 import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
-//import { openModal } from '../../../../../redux/features/modal/modalSlice';
 
 const entity = 'citizensArea';
-const policyDropdownLabel = 'policies';
-const programDropdownLabel = 'programmi';
-const projectDropdownLabel = 'progetti';
-const siteDropdownLabel = 'sedi';
+const siteDropdownLabel = 'idsSedi';
 
 const Citizens = () => {
   const dispatch = useDispatch();
@@ -44,13 +39,15 @@ const Citizens = () => {
   const [searchDropdown, setSearchDropdown] = useState<
     { filterId: string; value: formFieldI['value'] }[]
   >([]);
+  const [filterDropdownSelected, setFilterDropdownSelected] =
+    useState<string>('');
 
   const filtersList = useAppSelector(selectEntityFilters);
   const pagination = useAppSelector(selectEntityPagination);
   const citizensList = useAppSelector(selectEntityList);
   const dropdownFilterOptions = useAppSelector(selectEntityFiltersOptions);
 
-  const { criterioRicerca, policies, stati } = filtersList;
+  const { criterioRicerca, idsSedi } = filtersList;
 
   const { pageNumber } = pagination;
 
@@ -59,7 +56,7 @@ const Citizens = () => {
   };
 
   useEffect(() => {
-    getListaCittadini();
+    dispatch(setEntityPagination({ pageSize: 8 }));
     dispatch(
       updateBreadcrumb([
         {
@@ -75,20 +72,23 @@ const Citizens = () => {
       ])
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [criterioRicerca, policies, stati, pageNumber]);
-
-  useEffect(() => {
-    dispatch(setEntityPagination({ pageSize: 3 }));
-    dispatch(GetEntityFilterValues(policyDropdownLabel));
-    dispatch(GetEntityFilterValues(programDropdownLabel));
-    dispatch(GetEntityFilterValues(projectDropdownLabel));
-    dispatch(GetEntityFilterValues(siteDropdownLabel));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getListaCittadini = () => {
     dispatch(GetEntityValues({ entity }));
   };
+
+  useEffect(() => {
+    getListaCittadini();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [criterioRicerca, idsSedi, pageNumber]);
+
+  useEffect(() => {
+    if (filterDropdownSelected !== siteDropdownLabel) {
+      dispatch(GetEntityFilterValues('sedi'));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [criterioRicerca, idsSedi]);
 
   const handleOnSearchDropdownOptions = (
     searchValue: formFieldI['value'],
@@ -106,11 +106,6 @@ const Citizens = () => {
       searchDropdownValues.push({ filterId: filterId, value: searchValue });
     }
     setSearchDropdown(searchDropdownValues);
-    dispatch(
-      GetEntityFilterValues(filterId, {
-        filterName: searchValue,
-      })
-    ); // esempio di parametro con cui filtrare le opzioni tramite api
   };
 
   const handleOnChangePage = (pageNumber: number = pagination?.pageNumber) => {
@@ -125,55 +120,15 @@ const Citizens = () => {
     title: 'Cerca cittadino',
   };
 
+  const handleDropdownFilters = (values: FilterI[], filterKey: string) => {
+    setFilterDropdownSelected(filterKey);
+    dispatch(setEntityFilters({ [filterKey]: [...values] }));
+  };
+
   const dropdowns: DropdownFilterI[] = [
     {
-      filterName: 'Policy',
-      options: dropdownFilterOptions[policyDropdownLabel],
-      onOptionsChecked: (options) =>
-        handleDropdownFilters(options, policyDropdownLabel),
-      id: policyDropdownLabel,
-      className: 'mr-3',
-      values: filtersList[policyDropdownLabel],
-      handleOnSearch: (searchKey) => {
-        handleOnSearchDropdownOptions(searchKey, policyDropdownLabel);
-      },
-      valueSearch: searchDropdown?.filter(
-        (f) => f.filterId === policyDropdownLabel
-      )[0]?.value,
-    },
-    {
-      filterName: 'Programma',
-      options: dropdownFilterOptions[programDropdownLabel],
-      onOptionsChecked: (options) =>
-        handleDropdownFilters(options, programDropdownLabel),
-      id: programDropdownLabel,
-      className: 'mr-3',
-      values: filtersList[programDropdownLabel],
-      handleOnSearch: (searchKey) => {
-        handleOnSearchDropdownOptions(searchKey, programDropdownLabel);
-      },
-      valueSearch: searchDropdown?.filter(
-        (f) => f.filterId === programDropdownLabel
-      )[0]?.value,
-    },
-    {
-      filterName: 'Progetto',
-      options: dropdownFilterOptions[projectDropdownLabel],
-      onOptionsChecked: (options) =>
-        handleDropdownFilters(options, projectDropdownLabel),
-      id: projectDropdownLabel,
-      className: 'mr-3',
-      values: filtersList[projectDropdownLabel],
-      handleOnSearch: (searchKey) => {
-        handleOnSearchDropdownOptions(searchKey, projectDropdownLabel);
-      },
-      valueSearch: searchDropdown?.filter(
-        (f) => f.filterId === projectDropdownLabel
-      )[0]?.value,
-    },
-    {
       filterName: 'Sede',
-      options: dropdownFilterOptions[siteDropdownLabel],
+      options: dropdownFilterOptions['sedi'],
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, siteDropdownLabel),
       id: siteDropdownLabel,
@@ -187,19 +142,14 @@ const Citizens = () => {
     },
   ];
 
-  const handleDropdownFilters = (values: FilterI[], filterKey: string) => {
-    dispatch(setEntityFilters({ [filterKey]: [...values] }));
-  };
-
   const updateTableValues = () => {
     const table = newTable(
       TableHeading,
       (citizensList || []).map((td) => ({
         id: td.id,
-        name: td.nome,
-        submitted: td.submitted,
-        onDraft: td.onDraft,
-        status: <StatusChip status={td.status} rowTableId={td.id} />,
+        name: td.nome + ' ' + td.cognome,
+        numeroServizi: td.numeroServizi,
+        numeroQuestionariCompilati: td.numeroQuestionariCompilati,
       }))
     );
     return {
@@ -234,7 +184,7 @@ const Citizens = () => {
     },
   };
 
-  const PageTitleMock: {
+  const PageTitleCitizen: {
     title: string;
     subtitle: string;
     textCta: string;
@@ -244,9 +194,9 @@ const Citizens = () => {
     title: 'Area Cittadini',
     subtitle:
       'Qui puoi consultare la lista dei cittadini e i questionari da compilare e già completati',
-    textCta: 'Compila questionario',
-    iconCta: 'it-plus',
-    ctaPrintText: 'Stampa questionario',
+    textCta: '',
+    iconCta: '',
+    ctaPrintText: '',
   };
 
   return (
@@ -256,11 +206,12 @@ const Citizens = () => {
         searchInformation={searchInformation}
         dropdowns={dropdowns}
         filtersList={filtersList}
-        cta={() => {
-          dispatch(openModal({ id: 'search-citizen-modal' }));
-        }}
-        ctaPrint={() => window.open('/stampa-questionario', '_blank')}
-        {...PageTitleMock}
+        // cta={() => {
+        //   dispatch(openModal({ id: 'search-citizen-modal' }));
+        // }}
+        // ctaPrint={() => window.open('/stampa-questionario', '_blank')}
+        {...PageTitleCitizen}
+        resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
       >
         <div>
           <Table

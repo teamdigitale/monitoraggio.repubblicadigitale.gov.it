@@ -66,12 +66,7 @@ const initialState: AreaCittadiniStateI = {
   filters: {
     // nameLike: [{ label: 'mario', value: 'mario_1' }],
   },
-  filterOptions: {
-    policy: [
-      { label: 'RFD', value: 1 },
-      { label: 'SCD', value: 2 },
-    ],
-  },
+  filterOptions: {},
   pagination: {
     pageSize: 8,
     pageNumber: 1,
@@ -149,6 +144,11 @@ export const citizensAreaSlice = createSlice({
       state.searchResult = {};
       state.multipleSearchResult = [];
     },
+    deleteFiltroCriterioRicercaCitizen: (state) => {
+      const newFilters = { ...state.filters };
+      delete newFilters.criterioRicerca;
+      state.filters = { ...newFilters };
+    },
   },
 });
 
@@ -164,6 +164,7 @@ export const {
   clearInfoForm,
   getEntitySearchMultiple,
   clearCitizenSearch,
+  deleteFiltroCriterioRicercaCitizen,
 } = citizensAreaSlice.actions;
 
 export const selectEntityList = (state: RootState) => state.citizensArea.list;

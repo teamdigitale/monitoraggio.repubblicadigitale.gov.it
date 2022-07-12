@@ -12,6 +12,7 @@ import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import { useDispatch } from 'react-redux';
 import { deleteFiltroCriterioRicerca } from '../../redux/features/administrativeArea/administrativeAreaSlice';
+import { deleteFiltroCriterioRicercaCitizen } from '../../redux/features/citizensArea/citizensAreaSlice';
 
 interface SearchBarI extends Omit<SelectI, 'onInputChange'> {
   autocomplete?: boolean;
@@ -89,6 +90,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
     setSearchValue('');
     setHasSearchValue(false);
     dispatch(deleteFiltroCriterioRicerca());
+    dispatch(deleteFiltroCriterioRicercaCitizen())
   };
 
   const AutocompleteDropdownIndicator = useCallback(

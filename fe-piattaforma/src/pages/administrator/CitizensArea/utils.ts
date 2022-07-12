@@ -11,16 +11,12 @@ export const TableHeading: TableHeadingI[] = [
     size: 'small',
   },
   {
-    label: 'Questionari sottomessi',
-    field: 'submitted',
+    label: 'N. servizi utilizzati',
+    field: 'numeroServizi',
   },
   {
-    label: 'Questionari in bozza',
-    field: 'onDraft',
-  },
-  {
-    label: 'Stato questionari',
-    field: 'status',
+    label: 'N. questionari compilati',
+    field: 'numeroQuestionariCompilati',
   },
 ];
 

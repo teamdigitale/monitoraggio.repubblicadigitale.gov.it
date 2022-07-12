@@ -24,19 +24,28 @@ import {
   updateBreadcrumb,
 } from '../../../../../redux/features/app/appSlice';
 import clsx from 'clsx';
-import { selectProjects } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import {
+  selectAuthorities,
+  selectProjects,
+} from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 //import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 import { EmptySection, NavLink } from '../../../../../components';
 import ProjectAccordionForm from '../../../../forms/formProjects/ProjectAccordionForm/ProjectAccordionForm';
 import FormAuthorities from '../../../../forms/formAuthorities';
 import ManagePartnerAuthority from '../modals/managePartnerAuthority';
-import { DeleteEntity } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
+import {
+  DeleteEntity,
+  TerminateEntity,
+} from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import ManageManagerAuthority from '../modals/manageManagerAuthority';
+import { GetAuthorityManagerDetail } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
+import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
+import TerminateEntityModal from '../../../../../components/AdministrativeArea/Entities/General/TerminateEntityModal/TerminateEntityModal';
 
 const tabs = {
-  INFO: 'info-progetto',
-  ENTE_GESTORE: 'ente-gestore-progetto',
-  ENTI_PARTNER: 'enti-partner-progetto',
+  INFO: 'info',
+  ENTE_GESTORE: 'ente-gestore',
+  ENTI_PARTNER: 'enti-partner',
   SEDI: 'sedi',
 };
 
@@ -48,6 +57,7 @@ export const buttonsPositioning = {
 const ProjectsDetails = () => {
   const { mediaIsDesktop, mediaIsPhone } = useAppSelector(selectDevice);
   const progetti = useAppSelector(selectProjects);
+  const projectDetails = progetti.detail?.dettagliInfoProgetto;
   const managingAuthorityID = progetti.detail?.idEnteGestoreProgetto;
   const PartnerAuthoritiesList = progetti.detail?.entiPartner;
   const headquarterList = progetti?.detail?.sedi;
@@ -75,11 +85,12 @@ const ProjectsDetails = () => {
   const sediRef = useRef<HTMLLIElement>(null);
   const infoRef = useRef<HTMLLIElement>(null);
   const { projectId } = useParams();
-  const projectshortName =
-    progetti.detail?.dettaglioProgetto?.generalInfo?.nomeBreve;
+  const shortName = progetti.detail?.dettaglioProgetto?.nomeBreve;
+  const managerAuthority =
+    useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
 
   useEffect(() => {
-    if (projectId && projectshortName) {
+    if (projectId && shortName) {
       dispatch(
         updateBreadcrumb([
           {
@@ -93,14 +104,14 @@ const ProjectsDetails = () => {
             link: true,
           },
           {
-            label: projectshortName,
+            label: shortName,
             url: `/area-amministrativa/progetti/${projectId}`,
             link: false,
           },
         ])
       );
     }
-  }, [projectId, projectshortName]);
+  }, [projectId, shortName]);
 
   useEffect(() => {
     scrollTo(0, 0);
@@ -129,8 +140,8 @@ const ProjectsDetails = () => {
 
   useEffect(() => {
     const locationSplit = location.pathname.split('/');
-    if (locationSplit.length > 0) {
-      switch (locationSplit[locationSplit.length - 1]) {
+    if (locationSplit?.length > 0) {
+      switch (locationSplit[locationSplit?.length - 1]) {
         case tabs.INFO:
           setActiveTab(tabs.INFO);
           break;
@@ -145,6 +156,7 @@ const ProjectsDetails = () => {
           break;
         default:
           setActiveTab(tabs.INFO);
+          break;
       }
     }
   }, [location]);
@@ -169,7 +181,7 @@ const ProjectsDetails = () => {
       onClick: () =>
         dispatch(
           openModal({
-            id: 'ente-gestore-progetto',
+            id: 'ente-partner',
             payload: { title: 'Aggiungi Ente partner' },
           })
         ),
@@ -240,15 +252,20 @@ const ProjectsDetails = () => {
   };
 
   const PartnerAuthoritySection = () => {
+    setCorrectModal(<ManagePartnerAuthority creation />);
     if (PartnerAuthoritiesList?.length) {
       setButtonsPosition('BOTTOM');
       setCurrentForm(undefined);
-      setCorrectModal(<ManagePartnerAuthority creation />);
       setItemList({
         items: PartnerAuthoritiesList?.map(
-          (ente: { id: string; nome: string; ref: string; stato: string }) => ({
-            ...ente,
-            fullInfo: { ref: ente.ref },
+          (entePartner: {
+            id: string;
+            nome: string;
+            referenti: string;
+            stato: string;
+          }) => ({
+            ...entePartner,
+            fullInfo: { ref: entePartner.referenti },
             actions: onActionClickEntiPartner,
           })
         ),
@@ -352,7 +369,7 @@ const ProjectsDetails = () => {
   const replaceLastUrlSection = (tab: string): string => {
     const { pathname } = location;
     const splitLocation = pathname.split('/');
-    splitLocation[splitLocation.length - 1] = tab;
+    splitLocation[splitLocation?.length - 1] = tab;
     return splitLocation.join('/');
   };
 
@@ -415,12 +432,31 @@ const ProjectsDetails = () => {
     </Nav>
   );
 
+  const removePartnerAuthority = async (
+    authorityId: string,
+    projectId: string
+  ) => {
+    await dispatch(removePartnerAuthority(authorityId, projectId));
+    dispatch(GetProjectDetail(projectId));
+  };
+
+  const removeManagerAuthority = async (
+    authorityId: string,
+    projectId: string
+  ) => {
+    await dispatch(
+      removeManagerAuthority(authorityId, projectId /* , 'progetto' */)
+    );
+    await dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+    window.location.reload();
+  };
+
   const onActionClickEntiPartner: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
       navigate(`/area-amministrativa/enti/${td}`);
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      console.log(td);
+      projectId && removePartnerAuthority(td as string, projectId);
     },
   };
 
@@ -442,43 +478,15 @@ const ProjectsDetails = () => {
   }, [activeTab]);
 
   useEffect(() => {
-    const locationSplit = location.pathname.split('/');
-    if (locationSplit.length === 5) {
-      switch (locationSplit[4]) {
-        case tabs.INFO:
-          setActiveTab(tabs.INFO);
-          break;
-        case tabs.ENTE_GESTORE:
-          setActiveTab(tabs.ENTE_GESTORE);
-          break;
-        case tabs.ENTI_PARTNER:
-          setActiveTab(tabs.ENTI_PARTNER);
-          break;
-        case tabs.SEDI:
-          setActiveTab(tabs.SEDI);
-          break;
-        default:
-          setActiveTab(tabs.INFO);
-      }
-    }
-  }, [location]);
-
-  useEffect(() => {
-    switch (activeTab) {
-      case tabs.INFO:
-        setButtonsPosition('TOP');
-        setCurrentForm(<ProjectAccordionForm />);
-        setCorrectModal(<ManageProject />);
-        setDeleteText('Confermi di voler eliminare questo programma?');
-        setItemAccordionList([]);
-        setItemList(null);
+    if (activeTab === tabs.INFO) {
+      if (projectDetails && projectDetails.stato === 'ATTIVO') {
         setCorrectButtons([
           {
             size: 'xs',
             color: 'danger',
             outline: true,
             text: 'Termina progetto',
-            onClick: () => console.log('termina progetto'),
+            onClick: () => dispatch(openModal({ id: 'terminate-entity' })),
           },
           {
             size: 'xs',
@@ -500,6 +508,42 @@ const ProjectsDetails = () => {
               ),
           },
         ]);
+      } else {
+        setCorrectButtons([
+          {
+            size: 'xs',
+            outline: true,
+            color: 'primary',
+            text: 'Elimina',
+            onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+          },
+          {
+            size: 'xs',
+            color: 'primary',
+            text: 'Modifica',
+            onClick: () =>
+              dispatch(
+                openModal({
+                  id: formTypes.PROGETTO,
+                  payload: { title: 'Modifica progetto' },
+                })
+              ),
+          },
+        ]);
+      }
+    }
+  }, [activeTab, projectDetails]);
+
+  useEffect(() => {
+    switch (activeTab) {
+      case tabs.INFO:
+        setButtonsPosition('TOP');
+        setCurrentForm(<ProjectAccordionForm />);
+        setCorrectModal(<ManageProject />);
+        setDeleteText('Confermi di voler eliminare questo programma?');
+        setItemAccordionList([]);
+        setItemList(null);
+
         break;
       case tabs.ENTE_GESTORE:
         AuthoritySection();
@@ -515,6 +559,15 @@ const ProjectsDetails = () => {
     }
   }, [activeTab, mediaIsDesktop, progetti]);
 
+  const terminateProject = async (
+    projectId: string,
+    terminationDate: string
+  ) => {
+    await dispatch(TerminateEntity(projectId, 'progetto', terminationDate));
+    dispatch(closeModal());
+    window.location.reload();
+  };
+
   return (
     <div className={clsx(mediaIsPhone && 'mt-5', 'd-flex', 'flex-row')}>
       <div className='d-flex flex-column w-100'>
@@ -522,11 +575,12 @@ const ProjectsDetails = () => {
           <DetailLayout
             nav={nav}
             titleInfo={{
-              title: 'Nome Progetto 1 breve',
-              status: 'ATTIVO',
+              title: projectDetails?.nome,
+              status: projectDetails?.stato,
               upperTitle: { icon: 'it-user', text: 'Progetto' },
-              subTitle: 'Programma 1 nome breve',
+              subTitle: projectDetails?.nomeBreve,
             }}
+            currentTab={activeTab}
             formButtons={correctButtons}
             itemsAccordionList={itemAccordionList}
             itemsList={itemList}
@@ -542,14 +596,35 @@ const ProjectsDetails = () => {
           {currentModal ? currentModal : null}
           <ConfirmDeleteModal
             onConfirm={() => {
-              console.log('confirm delete');
-              projectId && dispatch(DeleteEntity(projectId, 'progetto'));
+              switch (activeTab) {
+                case tabs.INFO:
+                  projectId && dispatch(DeleteEntity('progetto', projectId));
+                  break;
+                case tabs.ENTE_GESTORE:
+                  projectId &&
+                    managerAuthority &&
+                    managerAuthority?.id &&
+                    removeManagerAuthority(managerAuthority.id, projectId);
+                  break;
+                default:
+                  break;
+              }
+
               dispatch(closeModal());
             }}
             onClose={() => {
               dispatch(closeModal());
             }}
             text={deleteText}
+          />
+          <TerminateEntityModal
+            text='Confermi di voler terminare il Progetto?'
+            onClose={() => dispatch(closeModal())}
+            onConfirm={(terminationDate: string) =>
+              terminationDate &&
+              projectId &&
+              terminateProject(projectId, terminationDate)
+            }
           />
         </div>
       </div>

@@ -223,12 +223,12 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='programmi-dettaglio-progetti-dettaglio-ente-gestore'
-    path='programmi/:entityId/progetti/:projectId/ente-gestore-progetto'
+    path='programmi/:entityId/progetti/:projectId/ente-gestore'
     element={<ProjectsDetails />}
   />,
   <Route
     key='programmi-dettaglio-progetti-dettaglio-enti-partner'
-    path='programmi/:entityId/progetti/:projectId/enti-partner-progetto'
+    path='programmi/:entityId/progetti/:projectId/enti-partner'
     element={<ProjectsDetails />}
   />,
   <Route
@@ -265,12 +265,12 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='progetti-dettaglio-ente-gestore'
-    path='progetti/:projectId/ente-gestore-progetto'
+    path='progetti/:projectId/ente-gestore'
     element={<ProjectsDetails />}
   />,
   <Route
     key='progetti-dettaglio-enti-partner'
-    path='progetti/:projectId/enti-partner-progetto'
+    path='progetti/:projectId/enti-partner'
     element={<ProjectsDetails />}
   />,
   <Route
