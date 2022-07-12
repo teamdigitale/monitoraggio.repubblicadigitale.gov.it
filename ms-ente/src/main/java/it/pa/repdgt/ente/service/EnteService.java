@@ -798,7 +798,7 @@ public class EnteService {
 		dettaglioEnte.setPiva(ente.getPiva());
 		dettaglioEnte.setSedeLegale(ente.getSedeLegale());
 		dettaglioEnte.setTipologia(ente.getTipologia());
-		dettaglioEnte.setPiva(ente.getPiva());
+		dettaglioEnte.setIndirizzoPec(ente.getIndirizzoPec());
 		
 		Map<String,List<Long>> mappaRuoliProgrammiProgettiEnte = new HashMap<>();
 		
@@ -1142,10 +1142,10 @@ public class EnteService {
 		List<ReferentiDelegatiEnteGestoreProgettoEntity> referentiEDelegatiEnte = this.referentiDelegatiEnteGestoreProgettoService.getReferentiAndDelegatiByIdProgettoAndIdEnte(idProgetto, idEnte);
 		referentiEDelegatiEnte.stream()
 							  .forEach(referenteODelegato -> {
-								  if(referenteODelegato.getStatoUtente().equals("ATTIVO")) {
-										this.terminaACascataAssociazioneReferenteDelegatoGestoreProgetto(referenteODelegato, referenteODelegato.getCodiceRuolo());
+								  if(StatoEnum.ATTIVO.getValue().equalsIgnoreCase(referenteODelegato.getStatoUtente())) {
+										this.terminaACascataAssociazioneReferenteDelegatoGestoreProgetto(referenteODelegato);
 								  }
-								  if(referenteODelegato.getStatoUtente().equals("NON ATTIVO")) {
+								  if(StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(referenteODelegato.getStatoUtente())) {
 										this.cancellaAssociazioneReferenteODelegatoGestoreProgetto(referenteODelegato, referenteODelegato.getCodiceRuolo());
 								  }
 		});
@@ -1297,7 +1297,7 @@ public class EnteService {
 	}
 	
 	private void terminaACascataAssociazioneReferenteDelegatoGestoreProgetto(
-			ReferentiDelegatiEnteGestoreProgettoEntity referentiDelegatiEnteGestoreProgettoEntity, String codiceRuolo) {
+			ReferentiDelegatiEnteGestoreProgettoEntity referentiDelegatiEnteGestoreProgettoEntity) {
 		referentiDelegatiEnteGestoreProgettoEntity.setStatoUtente(StatoEnum.TERMINATO.getValue());
 		referentiDelegatiEnteGestoreProgettoEntity.setDataOraAggiornamento(new Date());
 		this.referentiDelegatiEnteGestoreProgettoService.save(referentiDelegatiEnteGestoreProgettoEntity);

@@ -186,6 +186,9 @@ public class EnteSedeProgettoFacilitatoreService {
 		if(RuoliUtentiConstants.FACILITATORE.equals(codiceRuolo) && isUnicoFacilitatore) {
 			throw new EnteSedeProgettoFacilitatoreException("Impossibile cancellare associazione facilitatore. E' l'unico facilitatore ATTIVO del progetto. Per eliminarlo procedere prima con l'associazione di un altro facilitatore al progetto.");
 		}
+		if(RuoliUtentiConstants.VOLONTARIO.equals(codiceRuolo) && isUnicoFacilitatore) {
+			throw new EnteSedeProgettoFacilitatoreException("Impossibile cancellare associazione volontario. E' l'unico volontario ATTIVO del progetto. Per eliminarlo procedere prima con l'associazione di un altro volontario al progetto.");
+		}
 		//quando lo stato del facilitatore è attivo dobbiamo terminarlo
 		this.terminaAssociazioneFacilitatoreOVolontario(id);
 	}
