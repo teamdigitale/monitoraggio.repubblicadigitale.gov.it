@@ -62,8 +62,8 @@ public class QuestionarioTemplateRestApi {
 	public QuestionariTemplatePaginatiResource getAllQuestionariTemplatate(
 			@RequestParam(name = "criterioRicerca", required = false) final String criterioRicerca,
 			@RequestParam(name = "stato",           required = false) final StatoQuestionarioEnum statoQuestionario,
-			@RequestParam(name = "currPage", defaultValue = "0")  @Pattern(regexp = "[0-9]+") final String currPage,
-			@RequestParam(name = "pageSize", defaultValue = "10") @Pattern(regexp = "[0-9]+") final String pageSize,
+			@RequestParam(name = "currPage", defaultValue = "0")  final String currPage,
+			@RequestParam(name = "pageSize", defaultValue = "10") final String pageSize,
 			@RequestBody @Valid final ProfilazioneParam profilazioneParam) {
 		final Pageable pagina = PageRequest.of(Integer.parseInt(currPage), Integer.parseInt(pageSize));
 		final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplateParam = new FiltroListaQuestionariTemplateParam();
@@ -77,8 +77,8 @@ public class QuestionarioTemplateRestApi {
 		final List<QuestionarioTemplateLightResource> questionariTemplateLightResource = this.questionarioTemplateMapper.toLightResourceFrom(paginaQuestionariTemplate.getContent());
 		return new QuestionariTemplatePaginatiResource(
 				questionariTemplateLightResource,
-				paginaQuestionariTemplate.getTotalPages()
-				
+				paginaQuestionariTemplate.getTotalPages(),
+				paginaQuestionariTemplate.getTotalElements()
 			);
 	}
 	
@@ -104,7 +104,7 @@ public class QuestionarioTemplateRestApi {
 	}
 	
 	// TOUCH POINT 2.2.4 - 	lista questionari da aggiungere al programma
-	@PostMapping(path = "/light")
+	@PostMapping(path = "/all/light")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<QuestionarioTemplateLightResource> getQuestionariTemplateLightByUtente(
 			@RequestBody @Valid final ProfilazioneParam profilazioneParam) {
@@ -118,10 +118,10 @@ public class QuestionarioTemplateRestApi {
 	 * */
 	// TOUCH POINT - 2.1.4 - Visualizza scheda questionario 
 	// TOUCH POINT - 6.1 -   Visualizza scheda questionario
-	@GetMapping(path = "/{templateQuestionarioId}",  produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/{idQuestionario}",  produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public QuestionarioTemplateResource getQuestioanarioTemplateById(
-			@PathVariable(value = "templateQuestionarioId") final String templateQuestionarioId) {
+			@PathVariable(value = "idQuestionario") final String templateQuestionarioId) {
 		final QuestionarioTemplateCollection questionarioTemplate = this.questionarioTemplateService.getQuestionarioTemplateById(templateQuestionarioId.trim());
 		return questionarioTemplateMapper.toResourceFrom(questionarioTemplate);
 	}
@@ -133,11 +133,12 @@ public class QuestionarioTemplateRestApi {
 	// TOUCH POINT - 1.5.4 - Crea Questionario template (duplica)
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public QuestionarioTemplateCollection creaQuestionarioTemplate(
+	public QuestionarioTemplateResource creaQuestionarioTemplate(
 			@ApiParam(name = "Crea Questionario", value = "Json contenente i dati del questionario", required = true)
 			@RequestBody @Valid final QuestionarioTemplateRequest nuovoTemplateQuestionarioRequest) {
 		final QuestionarioTemplateCollection questionarioTemplate = this.questionarioTemplateMapper.toCollectionFrom(nuovoTemplateQuestionarioRequest);
-		return this.questionarioTemplateService.creaNuovoQuestionarioTemplate(questionarioTemplate);
+		QuestionarioTemplateCollection questionarioCreato = this.questionarioTemplateService.creaNuovoQuestionarioTemplate(questionarioTemplate);
+		return questionarioTemplateMapper.toResourceFrom(questionarioCreato);
 	}
 	
 	/**
@@ -146,10 +147,10 @@ public class QuestionarioTemplateRestApi {
 	 * */
 	// TOUCH POINT - 1.5.2 - Modifica questionario template
 	// TOUCH POINT - 6.2 -   Crea Questionario template (duplica)
-	@PutMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(path = "/{idQuestionario}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void aggiornaQuestioarioTemplate(
-			@PathVariable(value = "id")  final String questionarioTemplateId,
+			@PathVariable(value = "idQuestionario")  final String questionarioTemplateId,
 			@NotNull @RequestBody @Valid final QuestionarioTemplateRequest questionarioTemplateDaAggiornareRequest) {
 		final QuestionarioTemplateCollection questionarioTemplate = this.questionarioTemplateMapper.toCollectionFrom(questionarioTemplateDaAggiornareRequest);
 		this.questionarioTemplateService.aggiornaQuestionarioTemplate(
@@ -176,9 +177,9 @@ public class QuestionarioTemplateRestApi {
 	 * */
 	// TOUCH POINT - 1.5.3 - Cancella questionario template
 	// TOUCH POINT - 6.3   - Cancella questionario template
-	@DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping(path = "/{idQuestionario}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void cancellaQuestioarioTemplate(@PathVariable(value = "id") final String questionarioTemplateId) {
+	public void cancellaQuestioarioTemplate(@PathVariable(value = "idQuestionario") final String questionarioTemplateId) {
 		this.questionarioTemplateService.cancellaQuestionarioTemplate(questionarioTemplateId);
 	}
 	

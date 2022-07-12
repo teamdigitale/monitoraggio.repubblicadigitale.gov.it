@@ -1,6 +1,9 @@
 package it.pa.repdgt.programmaprogetto.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -437,7 +440,15 @@ public class ProgettoService {
 	}
 
 	@Transactional(rollbackOn = Exception.class)
-	public void terminaProgetto(Long idProgetto, Date dataTerminazione) {
+	public void terminaProgetto(Long idProgetto, Date dataTerminazione) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		Calendar c = Calendar.getInstance();
+		c.setTime(sdf.parse(sdf.format(new Date())));
+        Date currentDate = c.getTime();
+		if(dataTerminazione.after(currentDate)) {
+			final String errorMessage = String.format("la data terminazione non può essere nel futuro");
+			throw new ProgettoException(errorMessage);
+		}
 		ProgettoEntity progettoDBFetch = this.getProgettoById(idProgetto);
 		if(!isProgettoTerminabileByStatoProgetto(progettoDBFetch.getStato())) {
 			String errorMessage = String.format("Impossibile terminare il progetto con id=%s perchè stato diverso da 'ATTIVABILE' o 'ATTIVO'", idProgetto);
@@ -472,7 +483,7 @@ public class ProgettoService {
 		);
 	}
 	
-	public void cancellaOTerminaProgetto (ProgettoEntity progetto, Date dataTerminazione) {
+	public void cancellaOTerminaProgetto (ProgettoEntity progetto, Date dataTerminazione) throws ParseException {
 		if(StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(progetto.getStato())) {
 			this.cancellazioneProgetto(progetto.getId());
 		}

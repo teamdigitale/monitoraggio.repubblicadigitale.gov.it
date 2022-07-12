@@ -108,7 +108,7 @@ public class UtenteRestApi {
 	}
 	
 	// TOUCH POINT - 4.4 - Associa Ruolo ad Utente
-	@GetMapping(path = "/{codiceFiscale}/assegnaRuolo/{codiceRuolo}")
+	@PutMapping(path = "/{codiceFiscale}/assegnaRuolo/{codiceRuolo}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void assegnaRuoloAUtente(
 			@PathVariable(value = "codiceFiscale") String codiceFiscale, 
@@ -117,7 +117,7 @@ public class UtenteRestApi {
 	}
 	
 	// TOUCH POINT - 4.5 - Cancella Ruolo da Utente
-	@DeleteMapping(path = "/{codiceFiscale}/cancellaruolo/{codiceRuolo}")
+	@DeleteMapping(path = "/{codiceFiscale}/cancellaRuolo/{codiceRuolo}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void cancellaRuoloDaUtente(
 			@PathVariable(value = "codiceFiscale") String codiceFiscale, 

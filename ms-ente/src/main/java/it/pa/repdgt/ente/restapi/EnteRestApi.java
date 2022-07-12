@@ -71,14 +71,14 @@ public class EnteRestApi {
 		return this.enteMapper.toResourcefrom(paginaEnti);
 	}
 
-	// TOUCH POINT - 2.2.3  - dettaglio anagrafica ente (ricerca per PIVA)
-	// TOUCH POINT - 2.2.9  - dettaglio anagrafica ente (ricerca per PIVA)
-	// TOUCH POINT - 2.2.12 - dettaglio anagrafica ente (ricerca per PIVA)
-	@GetMapping(path =  "/cerca/piva/{partitaIva}")
+	// TOUCH POINT - 2.2.3  - dettaglio anagrafica ente (ricerca per criterioRicerca)
+	// TOUCH POINT - 2.2.9  - dettaglio anagrafica ente (ricerca per criterioRicerca)
+	// TOUCH POINT - 2.2.12 - dettaglio anagrafica ente (ricerca per criterioRicerca)
+	@GetMapping(path =  "/cerca")
 	@ResponseStatus(value = HttpStatus.OK)
-	public EnteResource cercaEnteByPartitaIva(@PathVariable(value = "partitaIva") String partitaIva) {
-		EnteEntity ente = this.enteService.getEnteByPartitaIva(partitaIva);
-		return this.enteMapper.toResourcefrom(ente);
+	public List<EnteResource> cercaEntiByCriterioRicerca(@RequestParam(name = "criterioRicerca") String criterioRicerca) {
+		List<EnteEntity> enti = this.enteService.getEntiByCriterioRicerca(criterioRicerca);
+		return this.enteMapper.toResourceFrom(enti);
 	}
 
 	// TOUCH POINT - 1.4.3 -  Lista profili per dropdown ente 

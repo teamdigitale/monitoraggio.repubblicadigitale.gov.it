@@ -43,15 +43,11 @@ import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.key.EntePartnerKey;
-import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
-import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
-import it.pa.repdgt.shared.exception.InvioEmailException;
 import it.pa.repdgt.shared.exception.StoricoEnteException;
 import it.pa.repdgt.shared.service.storico.StoricoService;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
-import software.amazon.awssdk.services.pinpoint.model.SendMessagesResponse;
 
 @ExtendWith(MockitoExtension.class)
 public class ContestoServiceTest {

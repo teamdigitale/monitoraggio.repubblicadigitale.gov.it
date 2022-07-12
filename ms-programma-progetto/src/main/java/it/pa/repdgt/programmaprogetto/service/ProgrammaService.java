@@ -1,7 +1,10 @@
 package it.pa.repdgt.programmaprogetto.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -43,7 +46,9 @@ import it.pa.repdgt.shared.entity.light.QuestionarioTemplateLightEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.service.storico.StoricoService;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class ProgrammaService {
 	@Autowired
@@ -536,7 +541,15 @@ public class ProgrammaService {
 	}
 
 	@Transactional(rollbackOn = Exception.class)
-	public void terminaProgramma(Long idProgramma, Date dataTerminazione) {
+	public void terminaProgramma(Long idProgramma, Date dataTerminazione) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		Calendar c = Calendar.getInstance();
+		c.setTime(sdf.parse(sdf.format(new Date())));
+        Date currentDate = c.getTime();
+		if(dataTerminazione.after(currentDate)) {
+			final String errorMessage = String.format("la data terminazione non può essere nel futuro");
+			throw new ProgrammaException(errorMessage);
+		}
 		if (!this.programmaRepository.existsById(idProgramma)) {
 			final String errorMessage = String.format("Impossibile terminare il Programma con id=%s. Programma non presente", idProgramma);
 			throw new ProgrammaException(errorMessage);
@@ -549,7 +562,11 @@ public class ProgrammaService {
 		}
 		final List<ProgettoEntity> progettiAssociatiAlProgramma = this.progettoService.getProgettiByIdProgramma(idProgramma);
 		progettiAssociatiAlProgramma.forEach(progetto -> {
-			this.progettoService.cancellaOTerminaProgetto(progetto, dataTerminazione);
+			try {
+				this.progettoService.cancellaOTerminaProgetto(progetto, dataTerminazione);
+			} catch (ParseException e) {
+				log.error("{}", e);
+			}
 		});
 		//prendo la lista dei referenti e delegati dell'ente gestore di programma
 		List<ReferentiDelegatiEnteGestoreProgrammaEntity> referentiEDelegati = this.referentiDelegatiEnteGestoreProgrammaService.getReferentiEDelegatiProgramma(idProgramma);

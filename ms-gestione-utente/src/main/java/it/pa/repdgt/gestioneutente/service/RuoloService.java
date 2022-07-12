@@ -151,11 +151,11 @@ public class RuoloService {
 
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellazioneRuolo(String codiceRuolo) {
-		RuoloEntity ruoloFetch = this.getRuoloByCodiceRuolo(codiceRuolo);
 		if(codiceRuolo.equals("DTD") || codiceRuolo.equals("DSCU")) {
 			String errorMessage = String.format("Impossibile cancellare i ruoli di DTD e DSCU");
 			throw new RuoloException(errorMessage);
 		}
+		RuoloEntity ruoloFetch = this.getRuoloByCodiceRuolo(codiceRuolo);
 		if(ruoloFetch.getPredefinito() == true) {
 			String errorMessage = String.format("Impossibile cancellare i ruoli predefiniti");
 			throw new RuoloException(errorMessage);

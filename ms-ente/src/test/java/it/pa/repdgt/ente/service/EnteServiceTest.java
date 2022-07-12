@@ -1,6 +1,5 @@
 package it.pa.repdgt.ente.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.times;
@@ -522,6 +521,16 @@ public class EnteServiceTest {
 				filtro.getIdsProgetti(),
 				filtro.getProfili(),
 				null);
+	}
+	
+	@Test
+	public void getEntiByCriterioRicercaTest() {
+		String criterioRicerca = "AAAAAAA11";
+		List<EnteEntity> enti = new ArrayList<>();
+		enti.add(ente1);
+		when(enteRepository.findByCriterioRicerca(criterioRicerca, "%"+criterioRicerca+"%")).thenReturn(enti);
+		enteService.getEntiByCriterioRicerca(criterioRicerca);
+		verify(enteRepository, times(1)).findByCriterioRicerca(criterioRicerca, "%"+criterioRicerca+"%");
 	}
 	
 	@Test
