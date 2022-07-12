@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.16](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.15...1.0.0-develop.16) (2022-07-12)
+
+
+### Bug Fixes
+
+* **be:** query per programma progetto ([1ce36f6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1ce36f6de88d67fad4ffabab81ea6e523b05e06f))
+
 ## [1.0.0-develop.15](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.14...1.0.0-develop.15) (2022-07-11)
 
 
