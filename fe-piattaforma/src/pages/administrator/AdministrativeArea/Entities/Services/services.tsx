@@ -206,7 +206,7 @@ const Services = () => {
       filtersList={filtersList}
       {...servicesCta}
       cta={newService}
-      resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
+      resetFilterDropdownSelected={(filterKey: string) => setFilterDropdownSelected(filterKey)}
     >
       <Table
         {...tableValues}

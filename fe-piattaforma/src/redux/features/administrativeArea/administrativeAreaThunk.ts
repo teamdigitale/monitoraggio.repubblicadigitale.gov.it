@@ -126,7 +126,7 @@ export const GetEntityFilterValues =
               payload.dropdownType === 'stati'
                 ? option[0] + option.slice(1).toLowerCase()
                 : option,
-            value: option.replace(/\s/g, '_'),
+            value: option,
           })),
         };
 
@@ -176,15 +176,13 @@ export const GetEntityFilterQueryParamsValues =
       const res = await API.post(entityFilterEndpoint, body);
       if (res?.data) {
         const filterResponse = {
-          [payload.dropdownType]: res.data.data?.map((option: string) => ({ // TODO: togliere un data quando BE fixa chiamata
+          [payload.dropdownType]: res.data.data?.map((option: string) => ({
+            // TODO: togliere un data quando BE fixa chiamata
             label:
               payload.dropdownType === 'stati'
                 ? option[0] + option.slice(1).toLowerCase()
                 : option,
-            value:
-              payload.dropdownType === 'stati'
-                ? option.replace(/\s/g, '_')
-                : option,
+            value: option,
           })),
         };
         dispatch(setEntityFilterOptions(filterResponse));
@@ -309,9 +307,9 @@ export const TerminateEntity =
       dispatch(showLoader());
       dispatch({ type: 'admistrativeArea/TerminateEntity' });
       if (entityId && terminationDate) {
-        await API.put(
-          `/${entity}/termina/${entityId}?dataTerminazione=${terminationDate}`
-        );
+        await API.put(`/${entity}/termina/${entityId}`, {
+          dataTerminazione: terminationDate,
+        });
       }
     } catch (error) {
       console.log(error);

@@ -81,7 +81,7 @@ export const citizensAreaSlice = createSlice({
   initialState,
   reducers: {
     resetAreaCittadiniState: () => initialState,
-    cleanEntityFilters: (state, action: PayloadAction<any>) => {
+    cleanEntityFiltersCitizen: (state, action: PayloadAction<any>) => {
       if (action.payload) {
         let newFilterValue = null;
         if (Array.isArray(state.filters[action.payload.filterKey])) {
@@ -154,7 +154,7 @@ export const citizensAreaSlice = createSlice({
 
 export const {
   resetAreaCittadiniState,
-  cleanEntityFilters,
+  cleanEntityFiltersCitizen,
   setEntityFilters,
   setEntityFilterOptions,
   setEntityPagination,

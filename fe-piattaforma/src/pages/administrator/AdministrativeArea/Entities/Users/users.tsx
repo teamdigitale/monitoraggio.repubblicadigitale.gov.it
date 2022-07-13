@@ -228,7 +228,7 @@ const Programmi = () => {
       filtersList={filtersList}
       {...programCta}
       cta={newProgram}
-      resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
+      resetFilterDropdownSelected={(filterKey: string) => setFilterDropdownSelected(filterKey)}
     >
       <Table
         {...tableValues}

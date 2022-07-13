@@ -43,8 +43,22 @@ const TerminateEntityModal = ({
   useEffect(() => {
     const newDate = getFormValues()['date'] as string;
 
-    newDate && setTerminationDate(formatDate(newDate));
+    newDate && isDateValid(newDate) && setTerminationDate(formatDate(newDate));
   }, [form]);
+
+  const isDateValid = (date: string) => {
+    const newDate = new Date(date);
+
+    if (newDate.getFullYear() > new Date().getFullYear()) return false;
+    if (newDate.getFullYear() === new Date().getFullYear()) {
+      if (newDate.getMonth() > new Date().getMonth()) return false;
+      if (newDate.getMonth() === new Date().getMonth()) {
+        if (newDate.getDate() > new Date().getDate()) return false;
+      }
+    }
+
+    return true;
+  };
 
   const formatDate = (date: string) => {
     const newDate = new Date(date);
@@ -85,6 +99,7 @@ const TerminateEntityModal = ({
             <Input
               {...form?.date}
               col='col-6'
+              max={new Date().toISOString().split('T')[0]}
               placeholder='Seleziona Data'
               onInputChange={(value, field) => {
                 onInputChange(value, field);
