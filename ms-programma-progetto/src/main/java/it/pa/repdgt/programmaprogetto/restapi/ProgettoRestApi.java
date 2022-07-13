@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 import it.pa.repdgt.programmaprogetto.bean.SchedaProgettoBean;
 import it.pa.repdgt.programmaprogetto.mapper.ProgettoMapper;
 import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
+import it.pa.repdgt.programmaprogetto.request.TerminaRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgettiParam;
 import it.pa.repdgt.programmaprogetto.request.ProgettoFiltroRequest;
 import it.pa.repdgt.programmaprogetto.resource.ProgettiLightResourcePaginati;
@@ -129,10 +130,10 @@ public class ProgettoRestApi {
 	@PutMapping(path = "/termina/{idProgetto}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void terminaProgetto(
-			@RequestParam(name="dataTerminazione") String dataTerminazione,
-			@PathVariable(value = "idProgetto") Long idProgetto) throws ParseException {
+			@PathVariable(value = "idProgetto") Long idProgetto, 
+			@RequestBody TerminaRequest terminaRequest) throws ParseException {
 		SimpleDateFormat sdf= new SimpleDateFormat("dd-MM-yyyy");
-		this.progettoService.terminaProgetto(idProgetto, sdf.parse(dataTerminazione));
+		this.progettoService.terminaProgetto(idProgetto, sdf.parse(terminaRequest.getDataTerminazione()));
 	}
 	
 	@PutMapping(path = "/attiva/{idProgetto}")
