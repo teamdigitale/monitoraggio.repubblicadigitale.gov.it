@@ -1,11 +1,15 @@
 package it.pa.repdgt.surveymgmt.service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.bson.json.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -14,21 +18,28 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.shared.entity.CittadinoEntity;
+import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.surveymgmt.bean.DettaglioCittadinoBean;
 import it.pa.repdgt.surveymgmt.bean.DettaglioServizioSchedaCittadinoBean;
 import it.pa.repdgt.surveymgmt.bean.SchedaCittadinoBean;
+import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
+import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection.DatiIstanza;
 import it.pa.repdgt.surveymgmt.dto.CittadinoDto;
 import it.pa.repdgt.surveymgmt.dto.SedeDto;
 import it.pa.repdgt.surveymgmt.exception.CittadinoException;
+import it.pa.repdgt.surveymgmt.exception.QuestionarioCompilatoException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.mapper.CittadinoMapper;
+import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioCompilatoMongoRepository;
 import it.pa.repdgt.surveymgmt.param.CittadiniPaginatiParam;
 import it.pa.repdgt.surveymgmt.param.FiltroListaCittadiniParam;
 import it.pa.repdgt.surveymgmt.projection.CittadinoProjection;
 import it.pa.repdgt.surveymgmt.projection.DettaglioServizioSchedaCittadinoProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
 import it.pa.repdgt.surveymgmt.repository.CittadinoRepository;
+import it.pa.repdgt.surveymgmt.repository.QuestionarioCompilatoRepository;
+import it.pa.repdgt.surveymgmt.request.CittadinoRequest;
 
 @Service
 public class CittadinoService {
@@ -43,6 +54,10 @@ public class CittadinoService {
 	private EnteSedeProgettoFacilitatoreService enteSedeProgettoFacilitatoreService;
 	@Autowired
 	private CittadinoMapper cittadinoMapper;
+	@Autowired
+	private QuestionarioCompilatoRepository questionarioCompilatoRepository;
+	@Autowired
+	private QuestionarioCompilatoMongoRepository questionarioCompilatoMongoRepository;
 	
 	public CittadinoEntity getCittadinoById(Long idCittadino) {
 		String errorMessage = String.format("Cittadino con id=%s non presente", String.valueOf(idCittadino));
@@ -183,5 +198,61 @@ public class CittadinoService {
 
 	public void salvaCittadino(CittadinoEntity cittadino) {
 		this.cittadinoRepository.save(cittadino);
+	}
+
+	@Transactional(rollbackOn = Exception.class)
+	public void aggiornaCittadino(Long id, CittadinoRequest cittadinoRequest) {
+		if(!this.cittadinoRepository.findById(id).isPresent()) {
+			String messaggioErrore = String.format("Impossibile aggiornare il cittadino. Cittadino con id=%s non presente", id);
+			throw new CittadinoException(messaggioErrore);
+		}
+		
+		CittadinoEntity cittadinoEntity = this.cittadinoMapper.toEntityFrom(cittadinoRequest);
+		cittadinoEntity.setId(id);
+		cittadinoEntity.setDataOraAggiornamento(new Date());
+		
+		// aggiorno cittadino su mysql
+		this.cittadinoRepository.save(cittadinoEntity);
+		
+		// recupero tutte le collection 'questionariCompilato' per quel cittadino con stato!=COMPILATO
+		List<QuestionarioCompilatoEntity> questionariCompilatiCittadinoNonAncoraCompilati = this.questionarioCompilatoRepository.findQuestionariCompilatiByCittadinoAndStatoNonCompilato(id);
+		questionariCompilatiCittadinoNonAncoraCompilati.forEach(questionarioNonAncoraCompilato -> {
+			String idQuestionarioCompilato = questionarioNonAncoraCompilato.getId();
+			Optional<QuestionarioCompilatoCollection> optionalQuestionarioCompilatoCollection = this.questionarioCompilatoMongoRepository.findQuestionarioCompilatoById(idQuestionarioCompilato);
+	        if(!optionalQuestionarioCompilatoCollection.isPresent()) {
+	            final String messaggioErrore = String.format("Questionario compilato con id=%s non presente in MongoDB", idQuestionarioCompilato);
+	            throw new QuestionarioCompilatoException(messaggioErrore);
+	        }
+	        
+	        final QuestionarioCompilatoCollection questionarioCompilatoDBMongoFetch = optionalQuestionarioCompilatoCollection.get();
+
+	        // recupero tutte le sezioni del questioanario tranne la sezione Q1
+	        List<DatiIstanza> datiIstanzeSenzaQ1 = questionarioCompilatoDBMongoFetch
+	        		.getSezioniQuestionarioTemplateIstanze()
+	        		.stream()
+	        		.filter(datiIstanza -> { 
+	        			JsonObject jsonDatiIstanza = (JsonObject) datiIstanza.getDomandaRisposta();
+	        			return !jsonDatiIstanza.getJson().contains("Q1");
+	        		})
+	        		.collect(Collectors.toList());
+
+	        // costruisco la sezione del questionario Q1
+	        DatiIstanza datiIstanzaQ1 = new DatiIstanza();
+	        datiIstanzaQ1.setDomandaRisposta(new JsonObject(cittadinoRequest.getQuestionarioQ1()));
+	        
+	        List<DatiIstanza> nuoviDatiIstanzaQuestionarioCompilato = new ArrayList<>();
+	        nuoviDatiIstanzaQuestionarioCompilato.add(datiIstanzaQ1);
+	        nuoviDatiIstanzaQuestionarioCompilato.addAll(datiIstanzeSenzaQ1);
+	        
+	        questionarioCompilatoDBMongoFetch.setSezioniQuestionarioTemplateIstanze(nuoviDatiIstanzaQuestionarioCompilato);
+	        
+	        // cancello il questionarioCompilato corrente e successivamento lo risalvo con i nuovi dati del q1
+	        this.questionarioCompilatoMongoRepository.deleteByIdQuestionarioTemplate(idQuestionarioCompilato);
+	        
+	        questionarioCompilatoDBMongoFetch.setMongoId(null);
+	        questionarioCompilatoDBMongoFetch.setDataOraUltimoAggiornamento(new Date());
+	        // salvo nuovamente il questionarioCompilato cancellato precedentemente ma con la sezione Q1 aggiornata
+	        this.questionarioCompilatoMongoRepository.save(questionarioCompilatoDBMongoFetch);
+		});
 	}
 }

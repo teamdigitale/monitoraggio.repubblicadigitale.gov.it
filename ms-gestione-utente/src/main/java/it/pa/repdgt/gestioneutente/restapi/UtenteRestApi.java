@@ -50,8 +50,8 @@ public class UtenteRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public UtentiLightResourcePaginata getAllUtentiPaginati(
 			@RequestBody @Valid UtenteRequest sceltaContesto,
-			@RequestParam(name = "currPage", defaultValue = "0") Integer currPage,
-			@RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+			@RequestParam(name = "currPage", required = false, defaultValue = "0")  Integer currPage,
+			@RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
 		Page<UtenteDto> utenti = this.utenteService.getAllUtentiPaginati(sceltaContesto,currPage, pageSize);
 		UtentiLightResourcePaginata listaPaginataUtentiResource = this.utenteMapper.toUtentiLightResourcePaginataFrom(utenti);
 		return listaPaginataUtentiResource;

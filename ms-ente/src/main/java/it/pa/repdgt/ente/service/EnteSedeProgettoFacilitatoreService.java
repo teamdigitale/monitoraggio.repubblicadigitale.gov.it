@@ -78,17 +78,31 @@ public class EnteSedeProgettoFacilitatoreService {
 		boolean esisteProgetto = this.progettoService.esisteProgettoById(idProgetto);
 		
 		if(!(esisteEnte && esisteSede && esisteProgetto)) {
-			String errorMessage = String.format("Impossibile associare facilitatore/volontario codiceFiscale=%s alla sede con id=% per l'ente con id=%s sul progetto con id=%s, sede e/o ente e/o progetto non esistente/i", 
+			String errorMessage = String.format("Impossibile associare facilitatore/volontario codiceFiscale=%s alla sede con id=%s per l'ente con id=%s sul progetto con id=%s, sede e/o ente e/o progetto non esistente/i", 
 					codiceFiscaleUtente, idSede, idEnte, idProgetto);
 			throw new EnteSedeProgettoFacilitatoreException(errorMessage);
 		}
 		
 		final ProgettoEntity progettoDBFEtch = this.progettoService.getProgettoById(idProgetto);
 		
+		final UtenteEntity utenteDBFetch = this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleUtente);
+		final RuoloEntity ruoloFacilitatore = this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.FAC.toString());
+		final RuoloEntity ruoloVolontario = this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.VOL.toString());
+		
 		if(PolicyEnum.RFD.getValue().equals(progettoDBFEtch.getProgramma().getPolicy().getValue())) {
-			codiceRuolo = "FAC";
+			if(utenteDBFetch.getRuoli().contains(ruoloVolontario)) {
+				String errorMessage = String.format("Impossibile associare facilitatore con codiceFiscale=%s alla sede con id=%s per l'ente con id=%s sul progetto con id=%s, l'utente è già un volontario",
+						codiceFiscaleUtente, idSede, idEnte, idProgetto);
+				throw new EnteSedeProgettoFacilitatoreException(errorMessage);
+			}
+			codiceRuolo = RuoloUtenteEnum.FAC.toString();
 		} else {
-			codiceRuolo = "VOL";
+			if(utenteDBFetch.getRuoli().contains(ruoloFacilitatore)) {
+				String errorMessage = String.format("Impossibile associare volontario con codiceFiscale=%s alla sede con id=%s per l'ente con id=%s sul progetto con id=%s, l'utente è già un facilitatore",
+						codiceFiscaleUtente, idSede, idEnte, idProgetto);
+				throw new EnteSedeProgettoFacilitatoreException(errorMessage);
+			}
+			codiceRuolo = RuoloUtenteEnum.VOL.toString();
 		}
 		
 		EnteSedeProgettoFacilitatoreKey id = new EnteSedeProgettoFacilitatoreKey(idEnte, idSede, idProgetto, codiceFiscaleUtente);
@@ -112,7 +126,7 @@ public class EnteSedeProgettoFacilitatoreService {
 		}
 		
 		// controllo se progetto con id progetto è NON ATTIVO --> passa ad attivabile 
-		// perchè e' stato associato il primo facilitatore a quel progetto per qull'ente su quella sede
+		// perchè e' stato associato il primo facilitatore a quel progetto per quell'ente su quella sede
 		if(progettoDBFEtch.getStato().equalsIgnoreCase(StatoEnum.NON_ATTIVO.getValue())) {
 			// aggiornare lo stato del progetto da NON ATTIVO a ATTIVABILE
 			progettoDBFEtch.setStato(StatoEnum.ATTIVABILE.getValue());
