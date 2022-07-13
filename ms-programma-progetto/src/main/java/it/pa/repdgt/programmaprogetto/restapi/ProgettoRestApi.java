@@ -129,8 +129,8 @@ public class ProgettoRestApi {
 	@PutMapping(path = "/termina/{idProgetto}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void terminaProgetto(
-			@PathVariable(value = "idProgetto") Long idProgetto, 
-			@RequestParam String dataTerminazione) throws ParseException {
+			@RequestParam(name="dataTerminazione") String dataTerminazione,
+			@PathVariable(value = "idProgetto") Long idProgetto) throws ParseException {
 		SimpleDateFormat sdf= new SimpleDateFormat("dd-MM-yyyy");
 		this.progettoService.terminaProgetto(idProgetto, sdf.parse(dataTerminazione));
 	}

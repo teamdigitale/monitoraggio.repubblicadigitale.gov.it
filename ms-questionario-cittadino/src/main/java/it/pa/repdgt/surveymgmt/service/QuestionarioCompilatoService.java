@@ -74,7 +74,7 @@ public class QuestionarioCompilatoService {
 			throw new QuestionarioCompilatoException(messaggioErrore);
 		}
 		final QuestionarioCompilatoCollection questionarioCompilatoDBMongoFetch = optionalQuestionarioCompilatoCollection.get();
-		this.questionarioCompilatoMongoRepository.deleteById(idQuestionarioCompilato);
+		this.questionarioCompilatoMongoRepository.deleteByIdQuestionarioTemplate(idQuestionarioCompilato);
 		
 		final DatiIstanza sezioneQ1 = new DatiIstanza();
 		sezioneQ1.setDomandaRisposta(new JsonObject(questionarioCompilatoRequest.getSezioneQ1Questionario()));

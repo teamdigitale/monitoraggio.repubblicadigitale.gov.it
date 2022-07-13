@@ -125,8 +125,10 @@ public class ProgrammaRestApi {
 	// TOUCH POINT - 1.1.9 - termina Programma 
 	@PutMapping(path = "termina/{idProgramma}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public void terminaProgramma(@PathVariable(value = "idProgramma") Long idProgramma, 
-			@RequestParam String dataTerminazione) throws ParseException {
+	public void terminaProgramma(
+			@RequestParam(name="dataTerminazione") String dataTerminazione,
+			@PathVariable(value = "idProgramma") Long idProgramma 
+			) throws ParseException {
 		SimpleDateFormat sdf= new SimpleDateFormat("dd-MM-yyyy");
 		this.programmaService.terminaProgramma(idProgramma, sdf.parse(dataTerminazione));
 	}

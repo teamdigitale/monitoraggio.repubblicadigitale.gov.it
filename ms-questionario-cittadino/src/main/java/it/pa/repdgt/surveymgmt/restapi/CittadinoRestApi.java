@@ -10,17 +10,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.pa.repdgt.shared.entity.CittadinoEntity;
 import it.pa.repdgt.surveymgmt.bean.SchedaCittadinoBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.dto.CittadinoDto;
 import it.pa.repdgt.surveymgmt.dto.SedeDto;
+import it.pa.repdgt.surveymgmt.mapper.CittadinoMapper;
 import it.pa.repdgt.surveymgmt.param.CittadiniPaginatiParam;
+import it.pa.repdgt.surveymgmt.request.CittadinoRequest;
+import it.pa.repdgt.surveymgmt.request.NuovoCittadinoServizioRequest;
 import it.pa.repdgt.surveymgmt.resource.CittadiniPaginatiResource;
 import it.pa.repdgt.surveymgmt.service.CittadinoService;
 import it.pa.repdgt.surveymgmt.service.QuestionarioCompilatoService;
@@ -32,6 +37,8 @@ public class CittadinoRestApi {
 	private CittadinoService cittadinoService;
 	@Autowired
 	private QuestionarioCompilatoService questionarioCompilatoService;
+	@Autowired
+	private CittadinoMapper cittadinoMapper;
 	
 	/***
 	 * Restituisce tutti i cittadini paginati 
@@ -66,6 +73,19 @@ public class CittadinoRestApi {
 	public List<SedeDto> getAllSediDropdown(@RequestBody @Valid final CittadiniPaginatiParam cittadiniPaginatiParam) {
 		return this.cittadinoService.getAllSediDropdown(cittadiniPaginatiParam);
 	}
+	
+	/***
+	 * Aggiorna i dati del cittadino
+	 * 
+	 * */
+	@PutMapping(path = "/{id}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public void aggiornaCittadino(
+			@PathVariable(value = "id") Long id,
+			@RequestBody @Valid final CittadinoRequest cittadinoRequest) {
+		this.cittadinoService.aggiornaCittadino(id, cittadinoRequest);
+	}
+	
 	
 	/***
 	 * Restituisce la scheda del cittadino 
