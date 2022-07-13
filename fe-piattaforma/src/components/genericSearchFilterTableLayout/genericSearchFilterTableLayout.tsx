@@ -18,6 +18,7 @@ import { selectDevice } from '../../redux/features/app/appSlice';
 import ButtonsBar, { ButtonInButtonsBar } from '../ButtonsBar/buttonsBar';
 import Sticky from 'react-sticky-el';
 import CardCounter, { CardCounterI } from '../CardCounter/cardCounter';
+import { cleanEntityFiltersCitizen } from '../../redux/features/citizensArea/citizensAreaSlice';
 
 export interface SearchInformationI {
   onHandleSearch?: (searchValue: string) => void;
@@ -42,7 +43,8 @@ interface GenericSearchFilterTableLayoutI {
   buttonsList?: ButtonInButtonsBar[];
   cardsCounter?: CardCounterI[];
   ctaDownload?: () => void;
-  resetFilterDropdownSelected?: () => void;
+  resetFilterDropdownSelected?: (filterKey: string) => void;
+  citizen?: boolean;
 }
 
 const GenericSearchFilterTableLayout: React.FC<
@@ -64,6 +66,7 @@ const GenericSearchFilterTableLayout: React.FC<
   cardsCounter,
   ctaDownload,
   resetFilterDropdownSelected,
+  citizen,
 }) => {
   const dispatch = useDispatch();
   const [showChips, setShowChips] = useState<boolean>(false);
@@ -98,6 +101,7 @@ const GenericSearchFilterTableLayout: React.FC<
         return 'Profilo';
       case 'ruoli':
         return 'Ruolo';
+      case 'idsSedi':
       case 'sedi':
         return 'Sede';
       default:
@@ -109,10 +113,10 @@ const GenericSearchFilterTableLayout: React.FC<
     filterKey: string,
     value: string | number | string[]
   ) => {
-    dispatch(cleanEntityFilters({ filterKey, value: value }));
+    citizen ? dispatch(cleanEntityFiltersCitizen({ filterKey, value: value })) : dispatch(cleanEntityFilters({ filterKey, value: value }));
     if (filterKey === 'filtroCriterioRicerca')
       dispatch(deleteFiltroCriterioRicerca());
-    if (resetFilterDropdownSelected) resetFilterDropdownSelected();
+    if (resetFilterDropdownSelected) resetFilterDropdownSelected(filterKey);
   };
 
   const getLabelsChips = (

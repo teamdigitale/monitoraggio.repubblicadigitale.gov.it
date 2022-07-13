@@ -12,6 +12,7 @@ import {
 import { RootState } from '../../store';
 // import { mapOptions } from '../../../utils/common';
 import { OptionType } from '../../../components/Form/select';
+import { mapOptions } from '../../../utils/common';
 
 const GetValuesAction = { type: 'citizensArea/GetEntityValues' };
 
@@ -104,7 +105,7 @@ export const GetEntityFilterValues =
       if (res?.data) {
         dispatch(
           setEntityFilterOptions({
-            [entityFilter]: [],//mapOptions(res.data), // TODO: fixa bug cittadini lista
+            [entityFilter]: mapOptions(res.data),
           })
         );
       }

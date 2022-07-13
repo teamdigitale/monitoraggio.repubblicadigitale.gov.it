@@ -316,7 +316,7 @@ const Surveys = () => {
         dropdowns={dropdowns}
         {...objectToPass}
         ctaDownload={handleDownloadList}
-        resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
+        resetFilterDropdownSelected={(filterKey: string) => setFilterDropdownSelected(filterKey)}
       >
         <div>
           <Table

@@ -132,7 +132,7 @@ const Citizens = () => {
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, siteDropdownLabel),
       id: siteDropdownLabel,
-      values: filtersList[siteDropdownLabel],
+      values: filtersList[siteDropdownLabel] || [],
       handleOnSearch: (searchKey) => {
         handleOnSearchDropdownOptions(searchKey, siteDropdownLabel);
       },
@@ -211,7 +211,8 @@ const Citizens = () => {
         // }}
         // ctaPrint={() => window.open('/stampa-questionario', '_blank')}
         {...PageTitleCitizen}
-        resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
+        resetFilterDropdownSelected={(filterKey: string) => setFilterDropdownSelected(filterKey)}
+        citizen
       >
         <div>
           <Table

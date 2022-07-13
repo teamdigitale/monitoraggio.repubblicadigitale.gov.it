@@ -227,7 +227,7 @@ const Projects: React.FC = () => {
       searchInformation={searchInformation}
       dropdowns={dropdowns}
       filtersList={filtersList}
-      resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
+      resetFilterDropdownSelected={(filterKey: string) => setFilterDropdownSelected(filterKey)}
     >
       <Table
         {...tableValues}
