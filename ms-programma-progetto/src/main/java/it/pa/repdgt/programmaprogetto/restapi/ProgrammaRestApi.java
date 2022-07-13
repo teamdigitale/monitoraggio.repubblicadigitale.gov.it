@@ -33,6 +33,7 @@ import it.pa.repdgt.programmaprogetto.mapper.ProgrammaMapper;
 import it.pa.repdgt.programmaprogetto.request.FiltroRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammaRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammiParam;
+import it.pa.repdgt.programmaprogetto.request.TerminaRequest;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammiLightResourcePaginata;
 import it.pa.repdgt.programmaprogetto.service.ProgrammaService;
 import it.pa.repdgt.programmaprogetto.util.CSVProgrammaUtil;
@@ -126,11 +127,10 @@ public class ProgrammaRestApi {
 	@PutMapping(path = "termina/{idProgramma}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void terminaProgramma(
-			@RequestParam(name="dataTerminazione") String dataTerminazione,
-			@PathVariable(value = "idProgramma") Long idProgramma 
-			) throws ParseException {
+			@PathVariable(value = "idProgramma") Long idProgramma, 
+			@RequestBody TerminaRequest terminaRequest) throws ParseException {
 		SimpleDateFormat sdf= new SimpleDateFormat("dd-MM-yyyy");
-		this.programmaService.terminaProgramma(idProgramma, sdf.parse(dataTerminazione));
+		this.programmaService.terminaProgramma(idProgramma, sdf.parse(terminaRequest.getDataTerminazione()));
 	}
 	
 	// TOUCH POINT - 1.1.4 - Cancellazione Programma
