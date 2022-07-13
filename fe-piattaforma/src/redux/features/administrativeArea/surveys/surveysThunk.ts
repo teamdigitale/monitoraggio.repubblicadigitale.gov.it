@@ -22,6 +22,7 @@ import {
   SurveyQuestionI,
   SurveySectionI,
 } from './surveysSlice';
+import { getUserHeaders } from '../../user/userThunk';
 
 export interface SurveyLightI {
   id: string;
@@ -51,11 +52,13 @@ export const GetAllSurveys =
         administrativeArea: { filters, pagination },
       } = select((state: RootState) => state);
       const endpoint = '/questionarioTemplate/all';
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
       const body = {
-        codiceFiscaleUtenteLoggato: 'UTENTE1', // MOCK
-        codiceRuoloUtenteLoggato: 'DTD', // MOCK
-        idProgetto: 0, // MOCK
-        idProgramma: 0, // MOCK
+        codiceFiscaleUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
+        idProgetto,
+        idProgramma,
       };
       let res;
       if (body) {
@@ -99,11 +102,12 @@ export const GetFilterValuesSurvey =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
+      const { codiceFiscale, codiceRuolo, idProgramma } = getUserHeaders();
       const body = {
-        cfUtente: '',
-        codiceRuolo: '',
+        cfUtente: codiceFiscale,
+        codiceRuolo,
         filtroRequest: { ...filters },
-        idProgramma: 0,
+        idProgramma,
       };
       const endpoint = `/questionario/${dropdownType}/dropdown`;
       const res = await API.post(endpoint, body);
@@ -128,7 +132,6 @@ export const GetSurveyDetail =
       dispatch(showLoader());
       dispatch({ ...GetSurveyDetailAction });
       const res = await API.get(`questionari/${idSurvey}`);
-
       if (res.data) dispatch(setSurveyDetail(res.data));
     } catch (error) {
       console.log('GetSurveyDetail error', error);
@@ -417,7 +420,9 @@ export const UpdateSurveyExclusiveField =
     dispatch(showLoader());
     const { flagType, /*flagChecked,*/ surveyId } = payload;
     try {
-      const endpoint = `/questionarioTemplate/aggiornadefault/${surveyId}?tipoDefault=${flagType === 'scd' ? 'defaultSCD' : 'defaultRFD'}`;
+      const endpoint = `/questionarioTemplate/aggiornadefault/${surveyId}?tipoDefault=${
+        flagType === 'scd' ? 'defaultSCD' : 'defaultRFD'
+      }`;
 
       await API.patch(endpoint);
       dispatch(hideLoader());

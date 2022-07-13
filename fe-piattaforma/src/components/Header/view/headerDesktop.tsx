@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import clsx from 'clsx';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Badge,
   Button,
@@ -39,15 +39,12 @@ const HeaderDesktop: React.FC<HeaderI> = ({
   //const [language, setLanguage] = useState(languages[0]);
   const { t } = useTranslation();
   const [openUser, setOpenUser] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const userDropdownOptions = [
     {
       optionName: 'Il mio profilo',
-      action: () => console.log('il mio profilo'),
-    },
-    {
-      optionName: 'Cambia ruolo',
-      action: () => dispatch(openModal({ id: 'switchProfileModal' })),
+      action: () => navigate('/area-personale'),
     },
   ];
 
@@ -69,14 +66,14 @@ const HeaderDesktop: React.FC<HeaderI> = ({
         >
           <div>
             <AvatarInitials
-              user={{ uName: user?.name, uSurname: user?.surname }}
+              user={{ uName: user?.nome, uSurname: user?.cognome }}
               size={AvatarSizes.Small}
               font={AvatarTextSizes.Small}
             />
           </div>
           <div className='d-flex flex-column align-items-start'>
             <h6 className='m-0 text-sans-serif'>
-              {user?.name}&nbsp;{user?.surname}
+              {user?.nome}&nbsp;{user?.cognome}
             </h6>
             <h6 className='font-weight-light text-nowrap'>
               <em>{getRoleLabel(user?.role)}</em>
@@ -87,7 +84,12 @@ const HeaderDesktop: React.FC<HeaderI> = ({
       <DropdownMenu role='menu' tag='ul'>
         <LinkList role='none'>
           {userDropdownOptions.map((item, index) => (
-            <li key={index} role='none' className='px-4'>
+            <li
+              key={index}
+              role='none'
+              className='px-4'
+              onClick={() => setOpenUser(!openUser)}
+            >
               <Button
                 className={clsx(
                   'primary-color-b1',
@@ -103,6 +105,23 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               </Button>
             </li>
           ))}
+          {user?.profiliUtente?.length > 1 ? (
+            <li role='none' className='px-4'>
+              <Button
+                className={clsx(
+                  'primary-color-b1',
+                  'py-2',
+                  'w-100',
+                  'd-flex',
+                  'justify-content-between'
+                )}
+                role='menuitem'
+                onClick={() => dispatch(openModal({ id: 'switchProfileModal' }))}
+              >
+                Cambia ruolo
+              </Button>
+            </li>
+          ) : null}
           <LinkListItem divider role='menuitem' aria-hidden={true} />
           <li role='none' className='px-4'>
             <Button
@@ -366,16 +385,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
           <HeaderMenu isHeaderFull={isHeaderFull} />
         </div>
       ) : null}
-      <SwitchProfileModal
-        profiles={[
-          { name: ' "ente partner"', programName: 'Programma 1' },
-          {
-            name: ' "ente gestore di progetto"',
-            programName: 'Programma 2',
-          },
-        ]}
-        currentProfile=' "ente partner"'
-      />
+      <SwitchProfileModal />
     </header>
   );
 };

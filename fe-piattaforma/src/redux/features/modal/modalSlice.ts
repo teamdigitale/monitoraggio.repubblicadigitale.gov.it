@@ -4,6 +4,7 @@ import type { RootState } from '../../store';
 export interface ModalPayloadI {
   description?: string;
   title?: string;
+  [key: string]: any;
 }
 
 export interface ModalStateI {

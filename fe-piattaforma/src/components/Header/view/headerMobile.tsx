@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import clsx from 'clsx';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Badge,
   Button,
@@ -32,15 +32,10 @@ const HeaderMobile: React.FC<HeaderI> = ({
   notification,
 }) => {
   const [openUser, setOpenUser] = useState<boolean>(false);
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const userDropdownOptions = [
-    { optionName: 'Il mio profilo', action: () => console.log('i tuoi dati') },
-    {
-      optionName: 'Cambia ruolo',
-      action: () => dispatch(openModal({ id: 'switchProfileModal' })),
-    },
-    { optionName: 'Esci', action: () => dispatch(logout()) },
+    { optionName: 'Il mio profilo', action: () => navigate('/area-personale') },
   ];
 
   const userDropDown = () => (
@@ -63,7 +58,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
         >
           <div>
             <AvatarInitials
-              user={{ uName: user?.name, uSurname: user?.surname }}
+              user={{ uName: user?.nome, uSurname: user?.cognome }}
               size={AvatarSizes.Small}
               font={AvatarTextSizes.Small}
             />
@@ -77,7 +72,12 @@ const HeaderMobile: React.FC<HeaderI> = ({
       </DropdownToggle>
       <DropdownMenu role='menu' tag='ul'>
         {userDropdownOptions.map((item, index) => (
-          <li key={index} role='none' className='px-4'>
+          <li
+            key={index}
+            role='none'
+            className='px-4'
+            onClick={() => setOpenUser(!openUser)}
+          >
             <Button
               className={clsx(
                 'primary-color-b1',
@@ -99,6 +99,52 @@ const HeaderMobile: React.FC<HeaderI> = ({
             </Button>
           </li>
         ))}
+        {user?.profiliUtente?.length > 1 ? (
+          <li role='none' className='px-4'>
+            <Button
+              className={clsx(
+                'primary-color-b1',
+                'py-2',
+                'w-100',
+                'd-flex',
+                'justify-content-between'
+              )}
+              role='menuitem'
+              onClick={() => dispatch(openModal({ id: 'switchProfileModal' }))}
+            >
+              <span>Cambia ruolo</span>
+              <Icon
+                icon='it-chevron-right'
+                color='primary'
+                size='sm'
+                aria-label='Apri'
+              />
+            </Button>
+          </li>
+        ) : null}
+        {isLogged ? (
+          <li role='none' className='px-4'>
+            <Button
+              className={clsx(
+                'primary-color-b1',
+                'py-2',
+                'w-100',
+                'd-flex',
+                'justify-content-between'
+              )}
+              role='menuitem'
+              onClick={() => dispatch(logout())}
+            >
+              <span>Esci</span>
+              <Icon
+                icon='it-chevron-right'
+                color='primary'
+                size='sm'
+                aria-label='Apri'
+              />
+            </Button>
+          </li>
+        ) : null}
       </DropdownMenu>
     </Dropdown>
   );
@@ -211,16 +257,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
           ) : null}
         </div>
       </div>
-      <SwitchProfileModal
-        profiles={[
-          { name: ' "ente partner"', programName: 'Programma 1' },
-          {
-            name: ' "ente gestore di progetto"',
-            programName: 'Programma 2',
-          },
-        ]}
-        currentProfile=' "ente partner"'
-      />
+      <SwitchProfileModal />
     </header>
   );
 };

@@ -107,7 +107,7 @@ const Authorities: React.FC = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(entiList)) setTableValues(updateTableValues());
+    if (Array.isArray(entiList) && entiList.length) setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entiList]);
 

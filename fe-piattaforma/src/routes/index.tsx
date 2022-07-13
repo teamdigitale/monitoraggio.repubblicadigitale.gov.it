@@ -1,12 +1,15 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { useDispatch } from "react-redux";
 import { useAppSelector } from '../redux/hooks';
 import { selectLogged } from '../redux/features/user/userSlice';
 import ProtectedComponent from '../hoc/AuthGuard/ProtectedComponent/ProtectedComponent';
 import FullLayout from '../components/PageLayout/FullLayout/fullLayout';
 import { Loader } from '../components';
+import { SessionCheck } from "../redux/features/user/userThunk";
+import UserProfile from '../pages/common/UserProfile/userProfile';
 
-const HomeFacilitator = lazy(() => import('../pages/facilitator/Home/home'));
+//const HomeFacilitator = lazy(() => import('../pages/facilitator/Home/home'));
 const AdministrativeArea = lazy(
   () => import('../pages/administrator/AdministrativeArea/administrativeArea')
 );
@@ -48,13 +51,18 @@ const Dashboard = lazy(
  */
 
 const AppRoutes: React.FC = () => {
+  const dispatch = useDispatch();
   const isLogged = useAppSelector(selectLogged);
+
+  useEffect(() => {
+    dispatch(SessionCheck());
+  }, []);
 
   return (
     // This fix is need cause Loader will cause a wdyr error if used here
     <Suspense fallback={<Loader />}>
       <Routes>
-        <Route path='/' element={<FullLayout isFull />}>
+        {/*<Route path='/' element={<FullLayout isFull />}>
           <Route
             path='/'
             element={
@@ -63,10 +71,10 @@ const AppRoutes: React.FC = () => {
               </ProtectedComponent>
             }
           />
-        </Route>
+        </Route>*/}
         <Route path='/' element={<FullLayout />}>
           <Route
-            path='area-amministrativa/*'
+            path='/area-amministrativa/*'
             element={
               <ProtectedComponent visibleTo={['permission-1']} redirect='/'>
                 <AdministrativeArea />
@@ -74,7 +82,7 @@ const AppRoutes: React.FC = () => {
             }
           />
           <Route
-            path='area-cittadini/*'
+            path='/area-cittadini/*'
             element={
               <ProtectedComponent visibleTo={['permission-1']} redirect='/'>
                 <CitizenArea />
@@ -107,11 +115,7 @@ const AppRoutes: React.FC = () => {
           />
           <Route
             path='/onboarding'
-            element={
-              <ProtectedComponent visibleTo={[]} redirect='/'>
-                <Onboarding />
-              </ProtectedComponent>
-            }
+            element={<Onboarding />}
           />
           <Route
             path='/dashboard'
@@ -121,19 +125,18 @@ const AppRoutes: React.FC = () => {
               </ProtectedComponent>
             }
           />
+          <Route path='/area-personale' element={<UserProfile />} />
+          <Route path='/playground' element={<Playground />} />
+          <Route path='/' element={<Navigate to={isLogged ? '/area-amministrativa' : '/auth'} />} />
           <Route
             path='*'
-            element={
-              <ProtectedComponent visibleTo={[]} redirect='/'>
-                <Playground />
-              </ProtectedComponent>
-            }
+            element={<Navigate to={isLogged ? '/area-amministrativa' : '/auth'} />}
           />
         </Route>
         <Route path='/stampa-questionario' element={<PrintSurvey />} />
         <Route
           path='/auth'
-          element={isLogged ? <Navigate to='/' /> : <Auth />}
+          element={isLogged ? <Navigate to='/area-amministrativa' /> : <Auth />}
         />
       </Routes>
     </Suspense>

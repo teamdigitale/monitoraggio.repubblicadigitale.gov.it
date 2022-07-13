@@ -311,5 +311,13 @@ export const initMock = (apiInstance: AxiosInstance) => {
         const response = await import('/mock/statiServiziDropdown.json');
         return [200, response];
       });
+
+    /*mockInstance
+      .onPost('/contesto')
+      .reply(async () => {
+        // @ts-ignore
+        const response = await import('/mock/userContext.json');
+        return [200, response];
+      });*/
   }
 };

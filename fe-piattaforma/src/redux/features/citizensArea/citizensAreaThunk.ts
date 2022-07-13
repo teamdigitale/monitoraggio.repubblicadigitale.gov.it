@@ -13,6 +13,7 @@ import { RootState } from '../../store';
 // import { mapOptions } from '../../../utils/common';
 import { OptionType } from '../../../components/Form/select';
 import { mapOptions } from '../../../utils/common';
+import {getUserHeaders} from "../user/userThunk";
 
 const GetValuesAction = { type: 'citizensArea/GetEntityValues' };
 
@@ -40,12 +41,14 @@ export const GetEntityValues =
           );
         }
       });
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } = getUserHeaders();
+
       const body = {
         filtro: filtroRequest,
-        idProgetto: 0,
-        idProgramma: 0,
-        codiceFiscaleUtenteLoggato: 'SMNRRR56F12G500Q', //MOCK
-        codiceRuoloUtenteLoggato: 'FAC', //MOCK DA MANTENERE SOLO NELL'HEADER
+        idProgetto,
+        idProgramma,
+        codiceFiscaleUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
       };
       const res = await API.post(entityEndpoint, body, {
         params: {
@@ -94,12 +97,13 @@ export const GetEntityFilterValues =
           );
         }
       });
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } = getUserHeaders();
       const body = {
         filtro: filtroRequest,
-        idProgetto: 0,
-        idProgramma: 0,
-        codiceFiscaleUtenteLoggato: 'SMNRRR56F12G500Q', //MOCK
-        codiceRuoloUtenteLoggato: 'FAC', //MOCK DA MANTENERE SOLO NELL'HEADER
+        idProgetto,
+        idProgramma,
+        codiceFiscaleUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
       };
       const res = await API.post(entityFilterEndpoint, body);
       if (res?.data) {

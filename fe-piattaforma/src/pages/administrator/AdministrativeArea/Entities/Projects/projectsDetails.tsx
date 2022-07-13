@@ -39,7 +39,7 @@ import {
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import ManageManagerAuthority from '../modals/manageManagerAuthority';
 import { GetAuthorityManagerDetail } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
-import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
+import { ActivateProject, GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 import TerminateEntityModal from '../../../../../components/AdministrativeArea/Entities/General/TerminateEntityModal/TerminateEntityModal';
 
 const tabs = {
@@ -310,7 +310,7 @@ const ProjectsDetails = () => {
 
   const HeadquartersSection = () => {
     if (headquarterList?.length) {
-      setButtonsPosition('BOTTOM');
+      setButtonsPosition('TOP');
       setCurrentForm(undefined);
       setCorrectModal(<ManageHeadquarter creation />);
       setItemList({
@@ -339,7 +339,6 @@ const ProjectsDetails = () => {
           size: 'xs',
           outline: true,
           color: 'primary',
-
           text: ' Aggiungi sede',
           onClick: () =>
             dispatch(
@@ -451,6 +450,11 @@ const ProjectsDetails = () => {
     window.location.reload();
   };
 
+  const projectActivation = async () => {
+    await dispatch(ActivateProject(projectDetails?.id));
+    dispatch(GetProjectDetail(projectDetails?.id)); 
+  };
+
   const onActionClickEntiPartner: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
       navigate(`/area-amministrativa/enti/${td}`);
@@ -477,10 +481,11 @@ const ProjectsDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
 
-  useEffect(() => {
-    if (activeTab === tabs.INFO) {
-      if (projectDetails && projectDetails.stato === 'ATTIVO') {
-        setCorrectButtons([
+  const projectInfoButtons = () => {
+    let formButtons: ButtonInButtonsBar[] = [];
+    switch (projectDetails?.stato) {
+      case 'ATTIVO':
+        formButtons = [
           {
             size: 'xs',
             color: 'danger',
@@ -490,6 +495,22 @@ const ProjectsDetails = () => {
           },
           {
             size: 'xs',
+            color: 'primary',
+            text: 'Modifica',
+            onClick: () =>
+              dispatch(
+                openModal({
+                  id: formTypes.PROGETTO,
+                  payload: { title: 'Modifica progetto' },
+                })
+              ),
+          },
+        ];
+        break;
+      case 'NON ATTIVO':
+        formButtons = [
+          {
+            size: 'xs',
             outline: true,
             color: 'primary',
             text: 'Elimina',
@@ -507,15 +528,16 @@ const ProjectsDetails = () => {
                 })
               ),
           },
-        ]);
-      } else {
-        setCorrectButtons([
+        ];
+        break;
+      case 'ATTIVABILE':
+        formButtons = [
           {
             size: 'xs',
             outline: true,
             color: 'primary',
-            text: 'Elimina',
-            onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+            text: 'Attiva',
+            onClick: () => projectActivation(),
           },
           {
             size: 'xs',
@@ -529,10 +551,14 @@ const ProjectsDetails = () => {
                 })
               ),
           },
-        ]);
-      }
+        ];
+        break;
+      case 'TERMINATO':
+      default:
+        break;
     }
-  }, [activeTab, projectDetails]);
+    return formButtons;
+  };
 
   useEffect(() => {
     switch (activeTab) {
@@ -543,7 +569,7 @@ const ProjectsDetails = () => {
         setDeleteText('Confermi di voler eliminare questo programma?');
         setItemAccordionList([]);
         setItemList(null);
-
+        setCorrectButtons(projectInfoButtons());
         break;
       case tabs.ENTE_GESTORE:
         AuthoritySection();
@@ -557,7 +583,7 @@ const ProjectsDetails = () => {
       default:
         return;
     }
-  }, [activeTab, mediaIsDesktop, progetti]);
+  }, [activeTab, mediaIsDesktop, progetti, projectDetails]);
 
   const terminateProject = async (
     projectId: string,
@@ -569,8 +595,15 @@ const ProjectsDetails = () => {
   };
 
   return (
-    <div className={clsx(mediaIsPhone && 'mt-5', 'd-flex', 'flex-row')}>
-      <div className='d-flex flex-column w-100'>
+    <div
+      className={clsx(
+        mediaIsPhone && 'mt-5',
+        'd-flex',
+        'flex-row',
+        'container'
+      )}
+    >
+      <div className='d-flex flex-column w-100 container'>
         <div>
           <DetailLayout
             nav={nav}

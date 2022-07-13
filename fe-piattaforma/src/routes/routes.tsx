@@ -16,7 +16,7 @@ import {
 import CitizensArea from '../pages/administrator/CitizensArea/citizensArea';
 import RoleManagement from '../pages/common/RoleManagement/roleManagement';
 import RoleManagementDetails from '../pages/common/RoleManagement/RoleManagementDetails/roleManagementDetails';
-import Onboarding from '../pages/facilitator/Onboarding/onboarding';
+import Onboarding from '../pages/facilitator/Onboarding/formOnboarding';
 import { RolePermissionI } from '../redux/features/roles/rolesSlice';
 import PrintSurvey from '../pages/administrator/AdministrativeArea/Entities/Surveys/printSurvey/printSurvey';
 import Programs from '../pages/administrator/AdministrativeArea/Entities/Programs/programs';
@@ -35,6 +35,7 @@ import Services from '../pages/administrator/AdministrativeArea/Entities/Service
 import ServicesDetails from '../pages/administrator/AdministrativeArea/Entities/Services/servicesDetails';
 import Citizens from '../pages/administrator/CitizensArea/Entities/Citizens/citizens';
 import CitizensDetail from '../pages/administrator/CitizensArea/Entities/Citizens/citizensDetail';
+import UserProfile from '../pages/common/UserProfile/userProfile';
 
 export enum layoutEnum {
   fullLayout = 'FULL_LAYOUT',
@@ -576,6 +577,15 @@ const routes = [
     element: <CitizensDetail />,
     visibleTo: [],
     layout: layoutEnum.none,
+    isHeaderFull: false,
+  }),
+  /* PROFILE ROUTE */
+  newRoute({
+    scope: 'personal-area',
+    path: '/area-personale',
+    title: 'Area Personale',
+    element: <UserProfile />,
+    layout: layoutEnum.mainLayout,
     isHeaderFull: false,
   }),
 ];
