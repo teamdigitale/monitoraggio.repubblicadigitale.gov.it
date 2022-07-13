@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.21](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.20...1.0.0-develop.21) (2022-07-13)
+
+
+### Bug Fixes
+
+* **be:** refactor termina programma progetto ([cd33243](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/cd3324352fe03ad10919d0f1b2671b222a4e4008))
+
 ## [1.0.0-develop.20](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.19...1.0.0-develop.20) (2022-07-13)
 
 
