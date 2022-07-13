@@ -11,6 +11,7 @@ import {
   resetAuthorityDetails,
 } from '../administrativeAreaSlice';
 import { mapOptions } from '../../../../utils/common';
+import {getUserHeaders} from "../../user/userThunk";
 // import { formTypes } from '../../../../pages/administrator/AdministrativeArea/Entities/utils';
 
 export interface AuthoritiesLightI {
@@ -51,11 +52,12 @@ export const GetAllEnti =
       const endpoint = `ente/all`;
       let res;
       if (!isEmpty(filters)) {
+        const { codiceFiscale, codiceRuolo, idProgramma } = getUserHeaders();
         const body = {
           filtroRequest: { ...filters },
-          idProgramma: 0,
-          cfUtente: '',
-          codiceRuolo: '',
+          idProgramma,
+          cfUtente: codiceFiscale,
+          codiceRuolo,
         };
         res = await API.post(endpoint, body, {
           params: {
@@ -92,11 +94,12 @@ export const GetFilterValuesEnti =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
+      const { codiceFiscale, codiceRuolo, idProgramma } = getUserHeaders();
       const body = {
-        cfUtente: '',
-        codiceRuolo: '',
+        cfUtente: codiceFiscale,
+        codiceRuolo,
         filtroRequest: { ...filters },
-        idProgramma: 0,
+        idProgramma,
       };
       const entityFilterEndpoint = `/ente/${dropdownType}/dropdown`;
       const res = await API.post(entityFilterEndpoint, body);
@@ -209,13 +212,14 @@ export const GetAuthoritiesBySearch =
       dispatch(showLoader());
       dispatch({ ...GetAuthoritiesBySearchAction });
       console.log(search);
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } = getUserHeaders();
 
       const body = {
         filtroRequest: {},
-        idProgramma: 0,
-        idProgetto: 0,
-        cfUtente: 'UTENTE1',
-        codiceRuolo: 'DTD',
+        idProgramma,
+        idProgetto,
+        cfUtente: codiceFiscale,
+        codiceRuolo,
       };
 
       const res = await API.post(`/ente/all`, body);

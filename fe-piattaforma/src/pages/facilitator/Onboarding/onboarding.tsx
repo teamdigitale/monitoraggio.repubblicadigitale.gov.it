@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import clsx from 'clsx';
+import { useDispatch } from "react-redux";
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../../redux/hooks';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import Profile from '/public/assets/img/change-profile.png';
@@ -6,22 +9,33 @@ import { FormI, newForm, newFormField } from '../../../utils/formHelper';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
-import { OptionType } from '../../../components/Form/select';
 import { Form, Input } from '../../../components';
 import { Button, FormGroup, Icon, Label } from 'design-react-kit';
-import clsx from 'clsx';
+import { login, selectUser } from '../../../redux/features/user/userSlice';
+import {SelectUserRole} from "../../../redux/features/user/userThunk";
+import {openModal} from "../../../redux/features/modal/modalSlice";
 
-export interface OnboardingI {
-  addProfilePicture?: () => void;
-  onInputChange?: withFormHandlerProps['onInputChange'];
-  onSubmitForm?: () => void;
-  optionsSelect?: OptionType[];
-  form: withFormHandlerProps['form'];
-}
 
 const FormOnboarding: React.FC<withFormHandlerProps> = (props) => {
-  const { onInputChange = () => ({}) } = props;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
+  const user = useAppSelector(selectUser);
+  const {
+    form,
+    isValidForm,
+    onInputChange = () => ({}),
+    setFormValues = () => ({}),
+  } = props;
+
+  useEffect(() => {
+    if (user?.codiceFiscale) {
+      setFormValues(user);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.codiceFiscale]);
+
+  if (!user?.codiceFiscale) return <Navigate to='/auth' replace />;
 
   const addProfilePicture = () => {
     console.log('add picture');
@@ -29,6 +43,23 @@ const FormOnboarding: React.FC<withFormHandlerProps> = (props) => {
 
   const onSubmitForm = () => {
     console.log('onSubmit', props.getFormValues && props.getFormValues());
+    if (isValidForm) {
+      if (user.profiliUtente?.length > 1) {
+        dispatch(openModal({
+          id: 'switchProfileModal',
+          payload: {
+            onSubmit: () => {
+              dispatch(login());
+              navigate('/');
+            }
+          }
+        }));
+      } else {
+        dispatch(SelectUserRole(user.profiliUtente[0]))
+        dispatch(login());
+        navigate('/');
+      }
+    }
   };
 
   return (
@@ -101,7 +132,8 @@ const FormOnboarding: React.FC<withFormHandlerProps> = (props) => {
         >
           <Form.Row>
             <Input
-              {...form?.name}
+              {...form?.nome}
+              disabled
               label='Nome'
               required
               placeholder='Inserisci nome'
@@ -109,7 +141,8 @@ const FormOnboarding: React.FC<withFormHandlerProps> = (props) => {
               onInputChange={onInputChange}
             />
             <Input
-              {...form?.surname}
+              {...form?.cognome}
+              disabled
               required
               label='Cognome'
               placeholder='Inserisci cognome'
@@ -119,7 +152,8 @@ const FormOnboarding: React.FC<withFormHandlerProps> = (props) => {
           </Form.Row>
           <Form.Row>
             <Input
-              {...form?.ID}
+              {...form?.codiceFiscale}
+              disabled
               required
               label='Codice Fiscale'
               placeholder='Inserisci Codice Fiscale'
@@ -138,15 +172,15 @@ const FormOnboarding: React.FC<withFormHandlerProps> = (props) => {
           </Form.Row>
           <Form.Row>
             <Input
-              {...form?.mobile}
+              {...form?.telefono}
               required
-              label='Mobile'
-              placeholder='Inserisci mobile'
+              label='Telefono'
+              placeholder='Inserisci telefono'
               col='col-12 col-md-6'
               onInputChange={onInputChange}
             />
             <Input
-              {...form?.BIO}
+              {...form?.bio}
               required
               label='Bio'
               placeholder='Nome Mansione'
@@ -163,9 +197,17 @@ const FormOnboarding: React.FC<withFormHandlerProps> = (props) => {
             )}
           >
             <FormGroup check>
-              <Input type='checkbox' checked={false} withLabel={false} />
-              <Label>
-                Consenso al <a href='/'> Trattamento dei dati personali </a>
+              <Input
+                aria-label='checkbox-consenso'
+                id='checkbox-consenso'
+                field='consenso'
+                type='checkbox'
+                checked={Boolean(form?.consenso?.value)}
+                onInputChange={(v) => onInputChange(v, form?.consenso?.field)}
+                withLabel={false}
+              />
+              <Label check for='checkbox-consenso'>
+                Consenso al&nbsp;<a href='/'>Trattamento dei dati personali</a>
               </Label>
             </FormGroup>
           </div>
@@ -176,7 +218,11 @@ const FormOnboarding: React.FC<withFormHandlerProps> = (props) => {
               'justify-content-end'
             )}
           >
-            <Button color='primary' onClick={onSubmitForm}>
+            <Button
+              disabled={!isValidForm}
+              color='primary'
+              onClick={onSubmitForm}
+            >
               Completa Regitrazione
             </Button>
           </div>
@@ -191,12 +237,12 @@ const FormOnboarding: React.FC<withFormHandlerProps> = (props) => {
 
 const form: FormI = newForm([
   newFormField({
-    field: 'name',
+    field: 'nome',
     required: true,
     id: 'name',
   }),
   newFormField({
-    field: 'surname',
+    field: 'cognome',
     required: true,
     id: 'surname',
   }),
@@ -206,18 +252,25 @@ const form: FormI = newForm([
     id: 'email',
   }),
   newFormField({
-    field: 'ID',
+    field: 'codiceFiscale',
     required: true,
-    id: 'fiscal code',
+    id: 'fiscalcode',
   }),
   newFormField({
-    field: 'mobile',
+    field: 'telefono',
     required: true,
-    id: 'mobile',
+    id: 'telefono',
   }),
   newFormField({
-    field: 'BIO',
+    field: 'bio',
     id: 'bio',
+    required: true,
+  }),
+  newFormField({
+    field: 'consenso',
+    required: true,
+    type: 'checkbox',
+    value: false,
   }),
 ]);
 

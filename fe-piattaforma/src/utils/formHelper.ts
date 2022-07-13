@@ -185,7 +185,7 @@ export const FormHelper = {
     field?: formFieldI['field']
   ) => {
     const newForm = { ...form };
-    if (newForm && (value || value === '') && field) {
+    if (newForm && value !== undefined && field) {
       newForm[field] = {
         ...newForm[field],
         touched: true,

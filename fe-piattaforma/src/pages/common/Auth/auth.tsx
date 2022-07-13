@@ -1,13 +1,28 @@
 import React, { memo } from 'react';
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import LogoScrittaBlu from '/public/assets/img/logo-scritta-blu.png';
-import { Footer } from '../../../components';
+import {Footer, Input} from '../../../components';
 import clsx from 'clsx';
 import { Button, Card, Icon } from 'design-react-kit';
 import Authicon from '/public/assets/img/auth-box-icon.png';
 import { useAppSelector } from '../../../redux/hooks';
 import { selectDevice } from '../../../redux/features/app/appSlice';
+import { CreateUserContext } from "../../../redux/features/user/userThunk";
+import withFormHandler, {withFormHandlerProps} from "../../../hoc/withFormHandler";
+import { newForm, newFormField } from "../../../utils/formHelper";
 
-const Auth = () => {
+const Auth: React.FC<withFormHandlerProps> = ({ form = {}, onInputChange = () => ({}) }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleFakeLogin = async () => {
+    const validUser = await dispatch(CreateUserContext(form.mockUser?.value?.toString()));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (validUser) navigate('/onboarding');
+  };
+
   const handleClick = () => {
     console.log('clicked');
   };
@@ -183,12 +198,34 @@ const Auth = () => {
                     className={clsx(
                       'mx-auto',
                       'w-100',
-                      device.mediaIsPhone ? 'btn-xs px-4' : 'btn-sm'
+                      device.mediaIsPhone ? 'btn-xs px-4' : 'btn-sm',
+                      'mb-3',
                     )}
                     color='primary'
                     onClick={handleClick}
                   >
                     Entra con CIE
+                  </Button>
+                </div>
+                <div className="my-5">
+                  <hr />
+                  <h4 className="py-2">Login DEV</h4>
+                  {/* TODO Remove next block, it's for dev purpose only*/}
+                  <Input
+                    {...form.mockUser}
+                    label='Codice fiscale'
+                    onInputChange={onInputChange}
+                  />
+                  <Button
+                    className={clsx(
+                      'mx-auto',
+                      'w-100',
+                      device.mediaIsPhone ? 'btn-xs px-4' : 'btn-sm'
+                    )}
+                    color='secondary'
+                    onClick={handleFakeLogin}
+                  >
+                    Login DEV
                   </Button>
                 </div>
               </Card>
@@ -201,4 +238,11 @@ const Auth = () => {
   );
 };
 
-export default memo(Auth);
+// TODO for DEV purpose only, to remove!
+const form = newForm([
+  newFormField({
+    field: 'mockUser',
+    value: 'UTENTE2',
+  }),
+]);
+export default memo(withFormHandler({ form }, Auth));

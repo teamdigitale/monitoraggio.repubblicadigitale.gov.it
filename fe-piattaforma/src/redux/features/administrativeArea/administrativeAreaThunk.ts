@@ -13,6 +13,7 @@ import {
   downloadCSV,
   transformFiltersToQueryParams,
 } from '../../../utils/common';
+import { getUserHeaders } from '../user/userThunk';
 
 interface EntityFilterValuesPayloadI {
   entity: string;
@@ -51,12 +52,12 @@ export const GetEntityValues =
           );
         }
       });
-
+      const { codiceFiscale, codiceRuolo, idProgramma } = getUserHeaders();
       const body = {
         filtroRequest,
-        idProgramma: 0, //MOCK
-        cfUtente: 'UTENTE1', //MOCK
-        codiceRuolo: 'DTD', //MOCK DA MANTENERE SOLO NELL'HEADER
+        idProgramma: idProgramma,
+        cfUtente: codiceFiscale,
+        codiceRuolo: codiceRuolo,
       };
 
       const res = await API.post(entityEndpoint, body, {
@@ -107,11 +108,12 @@ export const GetEntityFilterValues =
           );
         }
       });
+      const { codiceFiscale, codiceRuolo, idProgramma } = getUserHeaders();
       const body = {
         filtroRequest,
-        idProgramma: 0,
-        cfUtente: 'UTENTE1', //MOCK
-        codiceRuolo: 'DTD', //MOCK DA MANTENERE SOLO NELL'HEADER
+        idProgramma,
+        cfUtente: codiceFiscale,
+        codiceRuolo: codiceRuolo,
       };
       const entityFilterEndpoint = `/${payload.entity}/${payload.dropdownType}${
         payload.entity === 'progetto' && payload.dropdownType === 'policies'
@@ -166,11 +168,13 @@ export const GetEntityFilterQueryParamsValues =
         administrativeArea: { filters },
       } = select((state: RootState) => state);
       const queryParamFilters = transformFiltersToQueryParams(filters);
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
       const body = {
-        codiceFiscaleUtenteLoggato: 'UTENTE1', //MOCK
-        codiceRuoloUtenteLoggato: 'DTD', //MOCK
-        idProgetto: 0,
-        idProgramma: 0,
+        codiceFiscaleUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
+        idProgetto,
+        idProgramma,
       };
       const entityFilterEndpoint = `/${payload.entity}/${payload.dropdownType}/dropdown${queryParamFilters}`;
       const res = await API.post(entityFilterEndpoint, body);
@@ -207,13 +211,14 @@ export const DownloadEntityValues =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
+      const { codiceFiscale, codiceRuolo, idProgramma } = getUserHeaders();
       const body = {
         filtroRequest: {
           ...filters,
         },
-        idProgramma: 0,
-        cfUtente: 'UTENTE1', //MOCK
-        codiceRuolo: 'DTD', //MOCK DA MANTENERE SOLO NELL'HEADER
+        idProgramma,
+        cfUtente: codiceFiscale,
+        codiceRuolo,
       };
       const entityEndpoint = `/${payload.entity}/download`;
       const res = await API.post(entityEndpoint, body);
@@ -240,11 +245,13 @@ export const DownloadEntityValuesQueryParams =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
       const body = {
-        codiceFiscaleUtenteLoggato: 'UTENTE1', //MOCK
-        codiceRuoloUtenteLoggato: 'DTD', //MOCK
-        idProgetto: 0,
-        idProgramma: 0,
+        codiceFiscaleUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
+        idProgetto,
+        idProgramma,
       };
       const queryParamFilters = transformFiltersToQueryParams(filters);
       const entityEndpoint = `/${payload.entity}/download${queryParamFilters}`;

@@ -122,3 +122,22 @@ export const updateProject =
       dispatch(hideLoader());
     }
   };
+
+const ActivateProjectAction = {
+  type: 'administrativeArea/ActivateProject',
+};
+export const ActivateProject =
+  (idProgetto: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...ActivateProjectAction, idProgetto });
+      if (idProgetto) {
+        const res = await API.get(`progetto/attiva/${idProgetto}`);
+        console.log('ActivateProject res', res);
+      }
+    } catch (error) {
+      console.log('ActivateProject error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };

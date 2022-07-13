@@ -150,6 +150,7 @@ const CardStatusActionSurveys: React.FC<CardStatusActionI> = (props) => {
                 device.mediaIsPhone ? 'mx-0 ml-2 my-4' : 'mx-3'
               )}
               status={status}
+              rowTableId={id}
               chipWidth
             />
           )}

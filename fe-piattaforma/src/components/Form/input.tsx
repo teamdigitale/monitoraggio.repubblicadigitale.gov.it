@@ -37,7 +37,7 @@ const Input: React.FC<InputI> = (props) => {
     type = 'text',
     valid,
     value = '',
-    withLabel = props.type === 'radio' ? false : true,
+    withLabel = props.type !== 'radio',
   } = props;
 
   const [val, setVal] = useState<formFieldI['value']>(value);

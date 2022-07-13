@@ -137,6 +137,7 @@ export const formTypes = {
   FACILITATORE: 'facilitatore',
   SERVICES: 'services',
   CITIZENS: 'cittadino',
+  PROFILE: 'profilo',
 };
 
 export interface ItemListI {

@@ -222,15 +222,15 @@ const ProgramsDetails: React.FC = () => {
         setCorrectButtons([
           {
             size: 'xs',
+            outline: true,
             color: 'primary',
             text: 'Elimina',
             onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
           },
           {
             size: 'xs',
-            outline: true,
             color: 'primary',
-            text: ' Modifica',
+            text: 'Modifica',
             onClick: () =>
               dispatch(
                 openModal({
@@ -306,7 +306,7 @@ const ProgramsDetails: React.FC = () => {
       })
     );
     // update program detail
-    if(entityId) await dispatch(GetProgramDetail(entityId));
+    if (entityId) await dispatch(GetProgramDetail(entityId));
   };
 
   useEffect(() => {
@@ -439,6 +439,7 @@ const ProgramsDetails: React.FC = () => {
         });
       setEmptySection(undefined);
     } else {
+      setCorrectButtons([]);
       setEmptySection(
         <EmptySection
           title={'Questa sezione è ancora vuota'}
@@ -534,6 +535,62 @@ const ProgramsDetails: React.FC = () => {
     },
   ];
 
+  const programInfoButtons = () => {
+    let formButtons: ButtonInButtonsBar[] = [];
+    switch (programDetails?.stato) {
+      case 'ATTIVO':
+        formButtons = [
+          {
+            size: 'xs',
+            color: 'danger',
+            outline: true,
+            text: 'Termina programma',
+            onClick: () => dispatch(openModal({ id: 'terminate-entity' })),
+          },
+          {
+            size: 'xs',
+            color: 'primary',
+            text: 'Modifica',
+            onClick: () =>
+              dispatch(
+                openModal({
+                  id: modalIdToOpen,
+                  payload: { title: editItemModalTitle },
+                })
+              ),
+          },
+        ];
+        break;
+      case 'NON ATTIVO':
+        formButtons = [
+          {
+            size: 'xs',
+            outline: true,
+            color: 'primary',
+            text: 'Elimina',
+            onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+          },
+          {
+            size: 'xs',
+            color: 'primary',
+            text: 'Modifica',
+            onClick: () =>
+              dispatch(
+                openModal({
+                  id: modalIdToOpen,
+                  payload: { title: editItemModalTitle },
+                })
+              ),
+          },
+        ];
+        break;
+      case 'TERMINATO':
+      default:
+        break;
+    }
+    return formButtons;
+  };
+
   useEffect(() => {
     switch (activeTab) {
       case tabs.INFO:
@@ -544,6 +601,7 @@ const ProgramsDetails: React.FC = () => {
         setEditItemModalTitle('Modifica programma');
         setItemAccordionList([]);
         setItemList(null);
+        setCorrectButtons(programInfoButtons());
         break;
       case tabs.ENTE:
         AuthoritySection();
@@ -566,59 +624,6 @@ const ProgramsDetails: React.FC = () => {
     authorityInfo,
     surveyDefault?.items[0]?.id,
   ]);
-
-  let formButtons: ButtonInButtonsBar[] = [
-    {
-      size: 'xs',
-      outline: true,
-      color: 'primary',
-      text: 'Elimina',
-      onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
-    },
-    {
-      size: 'xs',
-      color: 'primary',
-      text: ' Modifica',
-      onClick: () =>
-        dispatch(
-          openModal({
-            id: modalIdToOpen,
-            payload: { title: editItemModalTitle },
-          })
-        ),
-    },
-  ];
-
-  if (programDetails && programDetails.stato === 'ATTIVO') {
-    formButtons = [
-      {
-        size: 'xs',
-        color: 'danger',
-        outline: true,
-        text: 'Termina programma',
-        onClick: () => dispatch(openModal({ id: 'terminate-entity' })),
-      },
-      {
-        size: 'xs',
-        outline: true,
-        color: 'primary',
-        text: 'Elimina',
-        onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
-      },
-      {
-        size: 'xs',
-        color: 'primary',
-        text: ' Modifica',
-        onClick: () =>
-          dispatch(
-            openModal({
-              id: modalIdToOpen,
-              payload: { title: editItemModalTitle },
-            })
-          ),
-      },
-    ];
-  }
 
   const nav = (
     <Nav tabs className='mb-5 overflow-hidden'>
@@ -678,9 +683,9 @@ const ProgramsDetails: React.FC = () => {
     </Nav>
   );
 
-  const showINFOButtons = () => activeTab === tabs.INFO;
-  const showENTEButtons = () => activeTab === tabs.ENTE;
-  const showPROGETTIButtons = () => activeTab === tabs.PROGETTI;
+  // const showINFOButtons = () => activeTab === tabs.INFO;
+  // const showENTEButtons = () => activeTab === tabs.ENTE;
+  // const showPROGETTIButtons = () => activeTab === tabs.PROGETTI;
   const showQUESTIONARIButtons = () => activeTab === tabs.QUESTIONARI;
 
   const terminateProgram = async (
@@ -701,17 +706,7 @@ const ProgramsDetails: React.FC = () => {
           status: programDetails.stato,
           upperTitle: { icon: 'it-user', text: 'Programma' },
         }}
-        formButtons={
-          showINFOButtons()
-            ? formButtons
-            : showENTEButtons()
-            ? correctButtons
-            : showQUESTIONARIButtons()
-            ? correctButtons
-            : showPROGETTIButtons()
-            ? correctButtons
-            : []
-        }
+        formButtons={correctButtons}
         currentTab={activeTab}
         itemsAccordionList={itemAccordionList}
         itemsList={itemList}

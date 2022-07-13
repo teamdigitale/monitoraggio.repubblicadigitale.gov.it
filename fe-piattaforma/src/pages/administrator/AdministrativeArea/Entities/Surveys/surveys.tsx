@@ -166,7 +166,7 @@ const Surveys = () => {
   );
 
   useEffect(() => {
-    setTableValues(updateTableValues());
+    if (Array.isArray(questionariList) && questionariList.length) setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [questionariList]);
 

@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { useAppSelector } from '../../redux/hooks';
 import {
   selectUserNotification,
-  selectUser,
+  selectUser, UserStateI,
 } from '../../redux/features/user/userSlice';
 import { useDispatch } from 'react-redux';
 import { selectDevice } from '../../redux/features/app/appSlice';
@@ -13,7 +13,7 @@ import { isEmpty } from 'lodash';
 export interface HeaderI {
   isHeaderFull?: boolean | undefined;
   dispatch: (payload: unknown) => void;
-  user: { name: string; surname: string; role: string } | undefined;
+  user: UserStateI['user'];
   isLogged: boolean;
   notification?: [] | undefined;
 }

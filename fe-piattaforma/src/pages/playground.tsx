@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, Col, FormGroup, Row } from 'design-react-kit';
 import { useTranslation } from 'react-i18next';
-import { useAppSelector } from '../redux/hooks';
-import { login, logout } from '../redux/features/user/userSlice';
 import { dispatchNotify } from '../utils/notifictionHelper';
 import { openModal } from '../redux/features/modal/modalSlice';
 import {
@@ -29,7 +27,6 @@ import { updateBreadcrumb } from '../redux/features/app/appSlice';
 
 const Playground: React.FC<withFormHandlerProps> = (props) => {
   const { t } = useTranslation();
-  const isLogged = useAppSelector((state) => state.user.isLogged);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -43,14 +40,6 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
       ])
     );
   }, []);
-
-  const handleUserLogged = () => {
-    if (isLogged) {
-      dispatch(logout());
-    } else {
-      dispatch(login());
-    }
-  };
 
   const createNotify = () => {
     dispatchNotify({
@@ -154,11 +143,6 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
       </Row>
       <Row className='mt-2'>
         <Col sm={6} md={4}>
-          <Button color='primary' onClick={handleUserLogged} size='sm'>
-            {isLogged ? 'Logout' : 'Login'}
-          </Button>
-        </Col>
-        <Col sm={6} md={4}>
           <Button color='primary' onClick={createNotify} size='sm'>
             Dispatch Notify
           </Button>
@@ -211,16 +195,7 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
           >
             Apri modale switch profile
           </Button>
-          <SwitchProfileModal
-            profiles={[
-              { name: 'Delegato ente partner', programName: 'Programma 1' },
-              {
-                name: 'Referente ente gestore di progetto',
-                programName: 'Programma 2',
-              },
-            ]}
-            currentProfile='Delegato ente partner'
-          />
+          <SwitchProfileModal />
         </Row>
       </section>
 

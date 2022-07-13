@@ -113,6 +113,7 @@ const CardStatusActionPartnerAuthority: React.FC<CardStatusActionI> = (
                 device.mediaIsPhone ? 'mx-0 ml-2' : 'mx-3'
               )}
               status={status}
+              rowTableId={id}
               chipWidth
             />
           )}

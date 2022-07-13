@@ -1,22 +1,34 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../../store';
 import { RolePermissionI } from '../roles/rolesSlice';
+import {
+  clearSessionValues,
+  setSessionValues,
+} from '../../../utils/sessionHelper';
 
-interface UserStateI {
+export interface UserStateI {
   isLogged: boolean;
-  user?: {
-    name: string;
-    surname: string;
-    role: string;
-    codiceFiscale: string;
-  };
+  user?:
+    | {
+        name: string;
+        nome?: string;
+        surname: string;
+        cognome?: string;
+        role: string;
+        codiceFiscale: string;
+        profiliUtente?: any;
+      }
+    | Record<string, never>;
   notification?: [];
   permissions: RolePermissionI[];
-  idProgramma: string;
-  idProgetto: string[];
+  idProgramma: string | null;
+  idProgetto: string[] | null;
 }
 
-const initialState: UserStateI = {
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const initialStateLogged: UserStateI = {
   isLogged: true,
   user: {
     name: 'Mario',
@@ -28,28 +40,43 @@ const initialState: UserStateI = {
   idProgramma: '0',
   idProgetto: ['0'],
 };
+const initialStateNotLogged: UserStateI = {
+  isLogged: false,
+  user: {},
+  permissions: ['permission-1'],
+  idProgramma: null,
+  idProgetto: null,
+};
+
+const initialState: UserStateI = initialStateNotLogged;
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    setUserContext: (state, action: PayloadAction<any>) => {
+      state.user = {
+        ...action.payload,
+        role: action.payload?.profiliUtente[0]?.codiceRuolo,
+      };
+    },
+    setUserProfile: (state, action: PayloadAction<any>) => {
+      state.idProgramma = action.payload.idProgramma;
+      state.idProgetto = [action.payload.idProgetto];
+      setSessionValues('profile', action.payload);
+    },
     login: (state) => {
       state.isLogged = true;
-      state.user = {
-        name: 'Luigi',
-        surname: 'Bianchi',
-        role: 'DTD',
-        codiceFiscale: 'UTENTE1',
-      };
-      state.permissions = ['permission-1'];
+      setSessionValues('user', state.user);
     },
     logout: (state) => {
       state.isLogged = false;
+      clearSessionValues('user');
     },
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, setUserContext, setUserProfile } = userSlice.actions;
 
 export const selectLogged = (state: RootState) => state.user.isLogged;
 export const selectUser = (state: RootState) => state.user.user;

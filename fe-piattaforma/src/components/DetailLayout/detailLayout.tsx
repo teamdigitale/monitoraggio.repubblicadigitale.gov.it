@@ -160,7 +160,9 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                 )}
             </div>
           )}
-        {showItemsList && itemsList?.items?.length ? (
+        {showItemsList &&
+        itemsList?.items?.length &&
+        currentTab === 'questionari' ? (
           <>
             {itemsList.title && (
               <h2 className='h4 neutral-1-color-a7'>{itemsList.title}</h2>
@@ -247,6 +249,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
           </>
         ) : null}
       </div>
+
       {buttonsPosition === 'TOP' && formButtons && formButtons.length !== 0 ? (
         <>
           <div aria-hidden='true' className='mt-5 w-100'>

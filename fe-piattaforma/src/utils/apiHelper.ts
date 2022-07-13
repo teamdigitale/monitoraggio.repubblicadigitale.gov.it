@@ -1,14 +1,16 @@
 import axios from 'axios';
 import { initMock } from './mockHelper';
 import { errorHandler } from './notifictionHelper';
+import { getSessionValues } from './sessionHelper';
 
 const API = axios.create({
   baseURL: `${process?.env?.REACT_APP_BE_BASE_URL}`,
   headers: {
     'Content-Type': 'application/json',
     authToken: 'fguhbjinokj8765d578t9yvghugyftr646tg', // MOCK
-    userRole: 'TBD', // MOCK
+    userRole: JSON.parse(getSessionValues('user'))?.role,
   },
+  timeout: 10000,
 });
 
 API.interceptors.request.use((req) => {

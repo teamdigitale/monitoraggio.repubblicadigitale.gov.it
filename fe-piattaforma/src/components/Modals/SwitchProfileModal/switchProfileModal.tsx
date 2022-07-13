@@ -1,6 +1,8 @@
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import isEqual from 'lodash.isequal';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../redux/hooks';
 import { focusId } from '../../../utils/common';
@@ -8,29 +10,50 @@ import { focusId } from '../../../utils/common';
 import CardProfile from '../../CardProfile/cardProfile';
 import GenericModal from '../GenericModal/genericModal';
 import './switchProfileModal.scss';
+import { selectUser } from '../../../redux/features/user/userSlice';
+import { SelectUserRole } from '../../../redux/features/user/userThunk';
+import {
+  closeModal,
+  selectModalPayload,
+} from '../../../redux/features/modal/modalSlice';
+import { getSessionValues } from '../../../utils/sessionHelper';
+import { useNavigate } from 'react-router-dom';
 
 const id = 'switchProfileModal';
 
-interface ProfileI {
+/*interface ProfileI {
   name: string;
   programName: string;
-}
+}*/
 
 interface SwitchProfileModalI {
-  profiles?: ProfileI[];
-  currentProfile: string;
+  //profiles?: ProfileI[];
   isRoleManaging?: boolean;
 }
 
-const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({
-  profiles,
-  currentProfile,
-  //isRoleManaging
-}) => {
-  const [profileSelected, setProfileSelected] = useState(currentProfile);
+const SwitchProfileModal: React.FC<SwitchProfileModalI> = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useAppSelector(selectUser) || {};
+  const modal = useAppSelector(selectModalPayload);
+  const { profiliUtente: profiles } = user;
+  const [profileSelected, setProfileSelected] = useState(
+    JSON.parse(getSessionValues('profile'))
+  );
   const [elementToFocus, setElementToFocus] = useState('utente-0');
-  const handleSwitchProfile = () => {
-    console.log('switch profile');
+
+  const handleSwitchProfile = async () => {
+    const res = await dispatch(SelectUserRole(profileSelected));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (res) {
+      if (modal?.onSubmit) {
+        modal.onSubmit();
+      } else {
+        dispatch(closeModal());
+        navigate('/');
+      }
+    }
   };
 
   const { t } = useTranslation();
@@ -104,22 +127,21 @@ const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({
           )}
           tabIndex={-1}
         >
-          {profiles?.map((profile, index) => (
+          {profiles?.map((profile: any, index: number) => (
             <li
               key={index}
               role='option'
-              aria-selected={profile.name === profileSelected ? true : false}
-              onClick={() => setProfileSelected(profile.name)}
+              aria-selected={profile.name === profileSelected}
+              onClick={() => setProfileSelected(profile)}
               onKeyDown={(event) => manageKeyEvent(event, profile.name, index)}
               tabIndex={profile.name === profileSelected ? 0 : -1}
               id={`utente-${index}`}
             >
               <CardProfile
-                name={profile.name}
-                program={profile.programName}
-                activeProfile={profile.name === profileSelected}
+                profile={profile}
+                activeProfile={isEqual(profile, profileSelected)}
                 className='mb-2'
-                user={{ name: 'Mario', surname: 'Rossi', role: '' }}
+                user={user}
               />
             </li>
           ))}

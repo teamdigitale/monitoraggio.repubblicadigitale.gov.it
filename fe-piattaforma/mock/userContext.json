@@ -1,0 +1,41 @@
+{
+  "nome": "Mario",
+  "cognome": "Rossi",
+  "email": "mario.rossi@prova.com",
+  "telefono": "333444555",
+  "codiceFiscale": "UTENTE2",
+  "ruoli": [
+    {
+      "codiceRuolo": "DEG",
+      "nomeRuolo": "DELEGATO ENTE GESTORE PROGRAMMA",
+      "gruppiPermessi": []
+    },
+    {
+      "codiceRuolo": "DEPP",
+      "nomeRuolo": "DELEGATO ENTE PARTNER GESTORE PROGETTO",
+      "gruppiPermessi": []
+    },
+    {
+      "codiceRuolo": "REG",
+      "nomeRuolo": "REFERENTE ENTE GESTORE PROGRAMMA",
+      "gruppiPermessi": []
+    },
+    {
+      "codiceRuolo": "VOL",
+      "nomeRuolo": "VOLONTARIO",
+      "gruppiPermessi": []
+    }
+  ],
+  "stato": "ATTIVO",
+  "profiliUtente": [
+    {
+      "codiceRuolo": "VOL",
+      "descrizioneRuolo": "VOLONTARIO",
+      "idProgramma": "104",
+      "nomeProgramma": "Programma Rho",
+      "idProgetto": "254",
+      "nomeEnte": "Regione Molise SSC"
+    }
+  ],
+  "integrazione": true
+}
