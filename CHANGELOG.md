@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.20](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.19...1.0.0-develop.20) (2022-07-13)
+
+
+### Bug Fixes
+
+* **be:** facilitatore - dataTerminazione ([815612b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/815612be008f54fe0e60952ad806e055e368e8f6))
+
 ## [1.0.0-develop.19](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.18...1.0.0-develop.19) (2022-07-12)
 
 
