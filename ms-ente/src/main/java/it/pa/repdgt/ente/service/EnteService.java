@@ -569,6 +569,7 @@ public class EnteService {
 			throw new EnteException(messaggioErrore);
 		}
 		enteEntity.setDataOraCreazione(new Date());
+		enteEntity.setDataOraAggiornamento(new Date());
 		return this.enteRepository.save(enteEntity);
 	}
 	
@@ -596,6 +597,11 @@ public class EnteService {
 		}
 		if(!this.esisteEnteById(idEnte)) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente gestore di programma all'ente con id=%s poiché non esistente", idEnte);
+			throw new EnteException(messaggioErrore);
+		}
+		
+		if(RuoloUtenteEnum.REG.toString().equals(codiceRuolo) && RuoloUtenteEnum.DEG.toString().equals(codiceRuolo)) {
+			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente gestore di programma all'ente con id=%s, codice ruolo errato: usare 'REG' o 'DEG'", idEnte);
 			throw new EnteException(messaggioErrore);
 		}
 		
@@ -681,6 +687,11 @@ public class EnteService {
 		} catch (ResourceNotFoundException ex) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente gestore di progetto perche l'utente con codice fiscale=%s non esiste", codiceFiscaleUtente);
 			throw new EnteException(messaggioErrore, ex);
+		}
+		
+		if(RuoloUtenteEnum.REGP.toString().equals(codiceRuolo) && RuoloUtenteEnum.DEGP.toString().equals(codiceRuolo)) {
+			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente gestore di progetto all'ente con id=%s, codice ruolo errato: usare 'REGP' o 'DEGP'", idEnte);
+			throw new EnteException(messaggioErrore);
 		}
 		
 		if(utenteFetch.getMansione() == null) {
@@ -1226,11 +1237,11 @@ public class EnteService {
 		String codiceFiscaleUtente = referenteDelegatoGestoreProgrammaRequest.getCodiceFiscaleUtente();
 		Long idEnte = referenteDelegatoGestoreProgrammaRequest.getIdEnte();
 		String codiceRuolo = referenteDelegatoGestoreProgrammaRequest.getCodiceRuolo();
-		ReferentiDelegatiEnteGestoreProgrammaEntity referentiDelegatiEnteGestoreProgrammaEntity = this.referentiDelegatiEnteGestoreProgrammaService.getReferenteDelegatiEnteGestoreProgramma(idProgramma, codiceFiscaleUtente, idEnte);
-		if(referentiDelegatiEnteGestoreProgrammaEntity.getStatoUtente().equals("ATTIVO")) {
+		ReferentiDelegatiEnteGestoreProgrammaEntity referentiDelegatiEnteGestoreProgrammaEntity = this.referentiDelegatiEnteGestoreProgrammaService.getReferenteDelegatiEnteGestoreProgramma(idProgramma, codiceFiscaleUtente, idEnte, codiceRuolo);
+		if(StatoEnum.ATTIVO.getValue().equals(referentiDelegatiEnteGestoreProgrammaEntity.getStatoUtente())) {
 			this.terminaAssociazioneReferenteDelegatoGestoreProgramma(referentiDelegatiEnteGestoreProgrammaEntity, codiceRuolo);
 		}
-		if(referentiDelegatiEnteGestoreProgrammaEntity.getStatoUtente().equals("NON ATTIVO")) {
+		if(StatoEnum.NON_ATTIVO.getValue().equals(referentiDelegatiEnteGestoreProgrammaEntity.getStatoUtente())) {
 			this.cancellaAssociazioneReferenteODelegatoGestoreProgramma(referentiDelegatiEnteGestoreProgrammaEntity, codiceRuolo);
 		}
 	}
@@ -1246,7 +1257,7 @@ public class EnteService {
 		boolean unicoReferenteODelegato = this.referentiDelegatiEnteGestoreProgrammaService.findAltriReferentiODelegatiAttivi(idProgramma, codiceFiscaleUtente, idEnte, codiceRuolo).isEmpty();
 		
 		//Se l'utente è REG(referente) e non ci sono altri REG(referenti) oltre a lui lancio eccezione.
-		if (codiceRuolo.equalsIgnoreCase("REG") && unicoReferenteODelegato) {
+		if (codiceRuolo.equalsIgnoreCase(RuoloUtenteEnum.REG.toString()) && unicoReferenteODelegato) {
 			throw new EnteException("Impossibile terminare associazione referente. E' l'unico referente ATTIVO del gestore programma. Per terminarlo procedere prima con l'associazione di un altro referente al gestore programma.");
 		}
 		referentiDelegatiEnteGestoreProgrammaEntity.setStatoUtente(StatoEnum.TERMINATO.getValue());
@@ -1263,17 +1274,18 @@ public class EnteService {
 		this.referentiDelegatiEnteGestoreProgrammaService.save(referentiDelegatiEnteGestoreProgrammaEntity);
 	}
 
+	@Transactional(rollbackOn = Exception.class)
 	public void cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgetto(
 			@Valid ReferenteDelegatoGestoreProgettoRequest referenteDelegatoGestoreProgettoRequest) {
 		Long idProgetto = referenteDelegatoGestoreProgettoRequest.getIdProgetto();
 		String codiceFiscaleUtente = referenteDelegatoGestoreProgettoRequest.getCodiceFiscaleUtente();
 		Long idEnte = referenteDelegatoGestoreProgettoRequest.getIdEnte();
 		String codiceRuolo = referenteDelegatoGestoreProgettoRequest.getCodiceRuolo();
-		ReferentiDelegatiEnteGestoreProgettoEntity referentiDelegatiEnteGestoreProgettoEntity = this.referentiDelegatiEnteGestoreProgettoService.getReferenteDelegatiEnteGestoreProgetto(idProgetto, codiceFiscaleUtente, idEnte);
-		if(referentiDelegatiEnteGestoreProgettoEntity.getStatoUtente().equals("ATTIVO")) {
+		ReferentiDelegatiEnteGestoreProgettoEntity referentiDelegatiEnteGestoreProgettoEntity = this.referentiDelegatiEnteGestoreProgettoService.getReferenteDelegatiEnteGestoreProgetto(idProgetto, codiceFiscaleUtente, idEnte, codiceRuolo);
+		if(StatoEnum.ATTIVO.getValue().equals(referentiDelegatiEnteGestoreProgettoEntity.getStatoUtente())) {
 			this.terminaAssociazioneReferenteDelegatoGestoreProgetto(referentiDelegatiEnteGestoreProgettoEntity, codiceRuolo);
 		}
-		if(referentiDelegatiEnteGestoreProgettoEntity.getStatoUtente().equals("NON ATTIVO")) {
+		if(StatoEnum.NON_ATTIVO.getValue().equals(referentiDelegatiEnteGestoreProgettoEntity.getStatoUtente())) {
 			this.cancellaAssociazioneReferenteODelegatoGestoreProgetto(referentiDelegatiEnteGestoreProgettoEntity, codiceRuolo);
 		}
 	}

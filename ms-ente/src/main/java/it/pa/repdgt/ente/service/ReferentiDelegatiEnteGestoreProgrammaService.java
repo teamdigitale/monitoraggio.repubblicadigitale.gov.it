@@ -70,7 +70,9 @@ public class ReferentiDelegatiEnteGestoreProgrammaService {
 	}
 
 	public ReferentiDelegatiEnteGestoreProgrammaEntity getReferenteDelegatiEnteGestoreProgramma(Long idProgramma,
-			String codiceFiscaleUtente, Long idEnte) {
-		return this.referentiDelegatiEnteGestoreProgrammaRepository.findReferenteDelegatiEnteGestoreProgramma(idProgramma, codiceFiscaleUtente, idEnte);
+			String codiceFiscaleUtente, Long idEnte, String codiceRuolo) {
+		String errorMessage = String.format("Associazione di utente con codiceFiscale =%s a ente gestore di programma con id=%s per programma con id=%s con codice ruolo =%s non trovata", codiceFiscaleUtente, idEnte, idProgramma, codiceRuolo);
+		return this.referentiDelegatiEnteGestoreProgrammaRepository.findReferenteDelegatiEnteGestoreProgramma(idProgramma, codiceFiscaleUtente, idEnte, codiceRuolo)
+																	.orElseThrow( () -> new ResourceNotFoundException(errorMessage));
 	}
 }

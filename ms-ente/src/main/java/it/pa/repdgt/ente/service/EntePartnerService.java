@@ -146,6 +146,11 @@ public class EntePartnerService {
 			throw new EnteException(messaggioErrore, ex);
 		}
 		
+		if(RuoloUtenteEnum.REPP.toString().equals(codiceRuolo) && RuoloUtenteEnum.DEPP.toString().equals(codiceRuolo)) {
+			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente partner di progetto all'ente con id=%s, codice ruolo errato: usare 'REPP' o 'DEPP'", idEntePartner);
+			throw new EnteException(messaggioErrore);
+		}
+		
 		if(utenteFetch.getMansione() == null) {
 			utenteFetch.setMansione(referenteDelegatoPartnerRequest.getMansione());
 			this.utenteService.updateUtente(utenteFetch);
@@ -262,11 +267,11 @@ public class EntePartnerService {
 		String codiceFiscaleUtente = referenteDelegatoPartnerRequest.getCodiceFiscaleUtente();
 		Long idEnte = referenteDelegatoPartnerRequest.getIdEntePartner();
 		String codiceRuolo = referenteDelegatoPartnerRequest.getCodiceRuolo().toUpperCase();
-		ReferentiDelegatiEntePartnerDiProgettoEntity referenteDelegatoEntePartnerDiProgettoEntity = this.referentiDelegatiEntePartnerDiProgettoService.getReferenteDelegatoEntePartner(idProgetto, codiceFiscaleUtente, idEnte);
-		if(referenteDelegatoEntePartnerDiProgettoEntity.getStatoUtente().equals(StatoEnum.ATTIVO.getValue())) {
+		ReferentiDelegatiEntePartnerDiProgettoEntity referenteDelegatoEntePartnerDiProgettoEntity = this.referentiDelegatiEntePartnerDiProgettoService.getReferenteDelegatoEntePartner(idProgetto, codiceFiscaleUtente, idEnte, codiceRuolo);
+		if(StatoEnum.ATTIVO.getValue().equals(referenteDelegatoEntePartnerDiProgettoEntity.getStatoUtente())) {
 			this.terminaAssociazioneReferenteDelegatoEntePartner(referenteDelegatoEntePartnerDiProgettoEntity, codiceRuolo);
 		}
-		if(referenteDelegatoEntePartnerDiProgettoEntity.getStatoUtente().equals(StatoEnum.NON_ATTIVO.getValue())) {
+		if(StatoEnum.NON_ATTIVO.getValue().equals(referenteDelegatoEntePartnerDiProgettoEntity.getStatoUtente())) {
 			this.cancellaAssociazioneReferenteODelegatoPartner(referenteDelegatoEntePartnerDiProgettoEntity, codiceRuolo);
 		}
 	}

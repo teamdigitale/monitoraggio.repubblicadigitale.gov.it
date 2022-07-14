@@ -75,6 +75,7 @@ public class EnteSedeProgettoService {
 		enteSedeProgetto.setSede(sede);
 		enteSedeProgetto.setProgetto(progetto);
 		enteSedeProgetto.setDataOraCreazione(new Date());
+		enteSedeProgetto.setDataOraAggiornamento(enteSedeProgetto.getDataOraCreazione());
  		enteSedeProgetto.setStatoSede(StatoEnum.ATTIVO.getValue());
 		this.enteSedeProgettoRepository.save(enteSedeProgetto);
 	}

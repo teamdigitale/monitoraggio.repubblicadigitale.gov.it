@@ -74,8 +74,10 @@ public class ReferentiDelegatiEnteGestoreProgettoService {
 	}
 
 	public ReferentiDelegatiEnteGestoreProgettoEntity getReferenteDelegatiEnteGestoreProgetto(Long idProgetto,
-			String codiceFiscaleUtente, Long idEnte) {
-		return this.referentiDelegatiEnteGestoreProgettoRepository.findReferenteDelegatiEnteGestoreProgetto(idProgetto, codiceFiscaleUtente, idEnte);
+			String codiceFiscaleUtente, Long idEnte, String codiceRuolo) {
+		String errorMessage = String.format("Associazione di utente con codiceFiscale =%s a ente gestore di progetto con id=%s per progetto con id=%s con codice ruolo =%s non trovata", codiceFiscaleUtente, idEnte, idProgetto, codiceRuolo);
+		return this.referentiDelegatiEnteGestoreProgettoRepository.findReferenteDelegatiEnteGestoreProgetto(idProgetto, codiceFiscaleUtente, idEnte, codiceRuolo)
+																   .orElseThrow( () -> new ResourceNotFoundException(errorMessage));
 	}
 
 	public List<ReferentiDelegatiEnteGestoreProgettoEntity> getReferentiAndDelegatiByIdProgettoAndIdEnte(Long idProgetto, Long idEnte) {

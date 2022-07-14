@@ -335,14 +335,10 @@ public class ContestoServiceTest {
 		integraContestoRequestRequest.setAbilitazioneConsensoTrattamentoDatiPersonali(Boolean.TRUE);
 		integraContestoRequestRequest.setBio("bio");
 		integraContestoRequestRequest.setCodiceFiscale("codiceFiscale");
-		integraContestoRequestRequest.setCognome("cognome");
-		integraContestoRequestRequest.setNome("nome");
 		integraContestoRequestRequest.setEmail("email");
 		integraContestoRequestRequest.setTelefono("43734987");
 		UtenteEntity utenteDBFtech = new UtenteEntity();
 		utenteDBFtech.setIntegrazione(Boolean.TRUE);
-		utenteDBFtech.setNome(integraContestoRequestRequest.getNome());
-		utenteDBFtech.setCognome(integraContestoRequestRequest.getCognome());
 		utenteDBFtech.setCodiceFiscale(integraContestoRequestRequest.getCodiceFiscale());
 		utenteDBFtech.setEmail(integraContestoRequestRequest.getEmail());
 		utenteDBFtech.setTelefono(integraContestoRequestRequest.getTelefono());

@@ -25,7 +25,7 @@ public class ContestoResource implements Serializable {
 	@JsonProperty(value = "email")
 	private String email;
 
-	@JsonProperty(value = "numero cellulare")
+	@JsonProperty(value = "telefono")
 	private String numeroCellulare;
 	
 	@JsonProperty(value = "codiceFiscale")

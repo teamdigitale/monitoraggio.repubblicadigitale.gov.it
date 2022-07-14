@@ -42,11 +42,9 @@ public class ContestoRestApiIntegrationTest extends AppTests{
 		IntegraContestoRequest integraContestoRequest = new IntegraContestoRequest();
 		integraContestoRequest.setBio("integraBio");
 		integraContestoRequest.setCodiceFiscale(response.getCodiceFiscale());
-		integraContestoRequest.setCognome(response.getCognome());
 		integraContestoRequest.setEmail(response.getEmail());
 		integraContestoRequest.setTelefono("45352352");
 		integraContestoRequest.setAbilitazioneConsensoTrattamentoDatiPersonali(true);
-		integraContestoRequest.setNome("integraNome");
 		restTemplate.postForObject("http://localhost:" + randomServerPort + "/contesto/confermaIntegrazione", integraContestoRequest,  void.class);
 	}
 }

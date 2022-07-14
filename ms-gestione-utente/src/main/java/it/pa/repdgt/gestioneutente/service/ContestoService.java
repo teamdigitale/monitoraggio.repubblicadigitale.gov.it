@@ -267,9 +267,6 @@ public class ContestoService implements RuoliUtentiConstants{
 	public void integraContesto(@Valid IntegraContestoRequest integraContestoRequestRequest) {
 		UtenteEntity utenteDBFtech = this.utenteService.getUtenteByCodiceFiscale(integraContestoRequestRequest.getCodiceFiscale());
 		utenteDBFtech.setIntegrazione(Boolean.TRUE);
-		utenteDBFtech.setNome(integraContestoRequestRequest.getNome());
-		utenteDBFtech.setCognome(integraContestoRequestRequest.getCognome());
-		utenteDBFtech.setCodiceFiscale(integraContestoRequestRequest.getCodiceFiscale());
 		utenteDBFtech.setEmail(integraContestoRequestRequest.getEmail());
 		utenteDBFtech.setTelefono(integraContestoRequestRequest.getTelefono());
 		utenteDBFtech.setMansione(integraContestoRequestRequest.getBio());
