@@ -77,6 +77,7 @@ public class SedeService {
 
 		// salvo la sede
 		sede.setDataOraCreazione(new Date());
+		sede.setDataOraAggiornamento(new Date());
 		final SedeEntity sedeSalvata = this.sedeRepository.save(sede);
 		
 		// salvo indirizzi_sede associati alla sede salvata in precedenza
@@ -86,6 +87,7 @@ public class SedeService {
 				final IndirizzoSedeEntity indirizzoSede = this.indirizzoSedeMapper.toEntityFrom(indirizzoSedeRequest);
 				indirizzoSede.setIdSede(sedeSalvata.getId());
 				indirizzoSede.setDataOraCreazione(new Date());
+				indirizzoSede.setDataOraAggiornamento(new Date());
 				final IndirizzoSedeEntity indirizzoSedeSalvato = this.indirizzoSedeService.salvaIndirizzoSede(indirizzoSede);
 				
 				final List<IndirizzoSedeFasciaOrariaEntity> indirizziSedeFasceOrarie = this.indirizzoSedeFasciaOrariaMapper.toEntityFrom(indirizzoSedeRequest.getFasceOrarie());
@@ -94,6 +96,7 @@ public class SedeService {
 				indirizziSedeFasceOrarie.forEach(indirizzoSedeFasciaOraria -> {
 					indirizzoSedeFasciaOraria.setIdIndirizzoSede(indirizzoSedeSalvato.getId());
 					indirizzoSedeFasciaOraria.setDataOraCreazione(new Date());
+					indirizzoSedeFasciaOraria.setDataOraAggiornamento(new Date());
 					this.indirizzoSedeFasciaOrariaService.salvaIndirizzoSedeFasciaOraria(indirizzoSedeFasciaOraria);
 				});
 		});

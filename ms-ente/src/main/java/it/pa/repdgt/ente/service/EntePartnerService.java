@@ -79,6 +79,7 @@ public class EntePartnerService {
 		entePartnerEntity.setId(entePartnerKey);
 		entePartnerEntity.setStatoEntePartner(StatoEnum.NON_ATTIVO.getValue());
 		entePartnerEntity.setDataOraCreazione(new Date());
+		entePartnerEntity.setDataOraAggiornamento(new Date());
 		this.salvaEntePartner(entePartnerEntity);
 	}
 	
@@ -146,7 +147,7 @@ public class EntePartnerService {
 			throw new EnteException(messaggioErrore, ex);
 		}
 		
-		if(RuoloUtenteEnum.REPP.toString().equals(codiceRuolo) && RuoloUtenteEnum.DEPP.toString().equals(codiceRuolo)) {
+		if(!(RuoloUtenteEnum.REPP.toString().equals(codiceRuolo) || RuoloUtenteEnum.DEPP.toString().equals(codiceRuolo))) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente partner di progetto all'ente con id=%s, codice ruolo errato: usare 'REPP' o 'DEPP'", idEntePartner);
 			throw new EnteException(messaggioErrore);
 		}
@@ -162,6 +163,7 @@ public class EntePartnerService {
 		referentiDelegatiEntePartnerDiProgetto.setCodiceRuolo(codiceRuolo);
 		referentiDelegatiEntePartnerDiProgetto.setStatoUtente(StatoEnum.NON_ATTIVO.getValue());
 		referentiDelegatiEntePartnerDiProgetto.setDataOraCreazione(new Date());
+		referentiDelegatiEntePartnerDiProgetto.setDataOraAggiornamento(new Date());
 		
 		//Controllo se l'associazione già esiste
 		if(this.referentiDelegatiEntePartnerDiProgettoService.esisteById(id)) {

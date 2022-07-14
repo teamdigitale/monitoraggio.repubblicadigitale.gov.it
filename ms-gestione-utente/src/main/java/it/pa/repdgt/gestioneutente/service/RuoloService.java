@@ -122,7 +122,9 @@ public class RuoloService {
 		RuoloEntity nuovoRuolo = new RuoloEntity();
 		nuovoRuolo.setCodice(nomeRuolo);
 		nuovoRuolo.setNome(nomeRuolo);
+		nuovoRuolo.setPredefinito(false);
 		nuovoRuolo.setDataOraCreazione(new Date());
+		nuovoRuolo.setDataOraAggiornamento(nuovoRuolo.getDataOraCreazione());
 		this.aggiungiGruppiAlRuolo(nuovoRuoloRequest.getCodiciGruppi(), nuovoRuolo);
 		this.ruoloRepository.save(nuovoRuolo);
 	}

@@ -600,7 +600,7 @@ public class EnteService {
 			throw new EnteException(messaggioErrore);
 		}
 		
-		if(RuoloUtenteEnum.REG.toString().equals(codiceRuolo) && RuoloUtenteEnum.DEG.toString().equals(codiceRuolo)) {
+		if(!(RuoloUtenteEnum.REG.toString().equals(codiceRuolo) || RuoloUtenteEnum.DEG.toString().equals(codiceRuolo))) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente gestore di programma all'ente con id=%s, codice ruolo errato: usare 'REG' o 'DEG'", idEnte);
 			throw new EnteException(messaggioErrore);
 		}
@@ -616,6 +616,7 @@ public class EnteService {
 		referentiDelegatiEnteGestoreProgramma.setCodiceRuolo(codiceRuolo);
 		referentiDelegatiEnteGestoreProgramma.setStatoUtente(StatoEnum.NON_ATTIVO.getValue());
 		referentiDelegatiEnteGestoreProgramma.setDataOraCreazione(new Date());
+		referentiDelegatiEnteGestoreProgramma.setDataOraAggiornamento(new Date());
 		
 		//Controllo se l'associazione già esiste
 		if(this.referentiDelegatiEnteGestoreProgrammaService.esisteById(id)) {
@@ -689,7 +690,7 @@ public class EnteService {
 			throw new EnteException(messaggioErrore, ex);
 		}
 		
-		if(RuoloUtenteEnum.REGP.toString().equals(codiceRuolo) && RuoloUtenteEnum.DEGP.toString().equals(codiceRuolo)) {
+		if(!(RuoloUtenteEnum.REGP.toString().equals(codiceRuolo) || RuoloUtenteEnum.DEGP.toString().equals(codiceRuolo))) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente gestore di progetto all'ente con id=%s, codice ruolo errato: usare 'REGP' o 'DEGP'", idEnte);
 			throw new EnteException(messaggioErrore);
 		}
@@ -705,6 +706,7 @@ public class EnteService {
 		referentiDelegatiEnteGestoreProgetto.setCodiceRuolo(codiceRuolo);
 		referentiDelegatiEnteGestoreProgetto.setStatoUtente(StatoEnum.NON_ATTIVO.getValue());
 		referentiDelegatiEnteGestoreProgetto.setDataOraCreazione(new Date());
+		referentiDelegatiEnteGestoreProgetto.setDataOraAggiornamento(new Date());
 		
 		//Controllo se l'associazione già esiste
 		if(this.referentiDelegatiEnteGestoreProgettoService.esisteById(id)) {

@@ -26,22 +26,23 @@ public class EmailService {
 			EmailTemplateEnum emailTemplate,
 			String[] args) {
 		try {
-			GetEmailTemplateResponse response= this.pinpoint.getClient().getEmailTemplate(GetEmailTemplateRequest.builder().templateName(emailTemplate.getValueTemplate()).build());
+			GetEmailTemplateResponse response= this.pinpoint.getClient()
+					.getEmailTemplate(GetEmailTemplateRequest.builder().templateName(emailTemplate.getValueTemplate()).build());
+			
 			String html = "";
 			switch(emailTemplate){
-				case CONSENSO:
-					html = response.emailTemplateResponse().htmlPart();
-					break;
 				case GEST_PROG:
 				case GEST_PROGE_PARTNER:
 				case FACILITATORE:
 				case RUOLO_CUSTOM:
 					html = String.format(response.emailTemplateResponse().htmlPart(), args[0], args[1]);
 					break;
+				case CONSENSO:
 				case QUESTIONARIO_ONLINE:
 					html = String.format(response.emailTemplateResponse().htmlPart(), args[0]);
 					break;				
 			}
+			
 			final SendMessagesRequest richiestaInvioEmail = this.pinpoint.creaRichiestaInvioEmail(emailTemplate.getValueTemplateSubject(), indirizzoEmailDestinatario, html);
 			final SendMessagesResponse  rispostaDaRichiestaInvioEmail = this.pinpoint.getClient().sendMessages(richiestaInvioEmail);
 			log.info("sendMessagesResponse = {}", rispostaDaRichiestaInvioEmail);

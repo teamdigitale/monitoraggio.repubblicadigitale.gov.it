@@ -22,16 +22,12 @@ import it.pa.repdgt.gestioneutente.mapper.RuoloMapper;
 import it.pa.repdgt.gestioneutente.request.RuoloRequest;
 import it.pa.repdgt.gestioneutente.resource.RuoloLightResource;
 import it.pa.repdgt.gestioneutente.service.RuoloService;
-import it.pa.repdgt.gestioneutente.service.UtenteService;
 import it.pa.repdgt.shared.constants.TipologiaRuoloConstants;
 import it.pa.repdgt.shared.entity.RuoloEntity;
-import it.pa.repdgt.shared.entity.UtenteEntity;
 
 @RestController
 @RequestMapping(path = "/ruolo")
 public class RuoloRestApi {
-	@Autowired
-	private UtenteService utenteService;
 	@Autowired
 	private RuoloService ruoloService;
 	@Autowired
