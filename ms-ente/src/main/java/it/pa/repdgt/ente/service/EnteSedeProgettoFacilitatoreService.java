@@ -46,8 +46,6 @@ public class EnteSedeProgettoFacilitatoreService {
 	@Autowired
 	private EnteSedeProgettoFacilitatoreRepository enteSedeProgettoFacilitatoreRepository;
 	@Autowired
-	private ReferentiDelegatiEnteGestoreProgettoService referentiDelegatiEnteGestoreProgettoService;
-	@Autowired
 	@Lazy
 	private EnteSedeProgettoService enteSedeProgettoService;
 	@Autowired
@@ -115,6 +113,7 @@ public class EnteSedeProgettoFacilitatoreService {
 			throw new EnteSedeProgettoFacilitatoreException(messaggioErrore);
 		}
 		enteSedeProgettoFacilitatore.setDataOraCreazione(new Date());
+		enteSedeProgettoFacilitatore.setDataOraAggiornamento(new Date());
 		this.enteSedeProgettoFacilitatoreRepository.save(enteSedeProgettoFacilitatore);
 		
 		EnteSedeProgetto enteSedeProgetto = enteSedeProgettoService.getAssociazioneEnteSedeProgetto(idSede, idEnte, idProgetto);

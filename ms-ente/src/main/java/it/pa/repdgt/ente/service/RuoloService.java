@@ -46,6 +46,7 @@ public class RuoloService {
 		UtenteXRuolo utenteXRuolo = new UtenteXRuolo();
 		utenteXRuolo.setId(id);
 		utenteXRuolo.setDataOraCreazione(new Date());
+		utenteXRuolo.setDataOraAggiornamento(new Date());
 		this.utenteXRuoloService.save(utenteXRuolo);
 	}
 

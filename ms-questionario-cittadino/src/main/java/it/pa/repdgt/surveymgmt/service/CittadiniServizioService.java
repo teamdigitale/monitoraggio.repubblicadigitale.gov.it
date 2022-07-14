@@ -469,6 +469,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		}
 		inviaLinkAnonimo(cittadino,idQuestionario);
 		questionarioCompilato.setStato(StatoQuestionarioEnum.INVIATO.getValue());
+		questionarioCompilato.setDataOraInvio(new Date());
 		questionarioCompilatoSqlRepository.save(questionarioCompilato);
 	}
 
