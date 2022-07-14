@@ -47,7 +47,7 @@ export interface AreaAmministrativaStateI {
     detail: any;
   };
   users: {
-    list: UtentiLightI[];
+    list: UtentiLightI[] | null;
     detail: any;
   };
   authorities: {
@@ -172,7 +172,7 @@ export const administrativeAreaSlice = createSlice({
       state.surveys.list = [...action.payload.data];
     },
     setUsersList: (state, action: PayloadAction<any>) => {
-      state.users.list = [...action.payload.data];
+      state.users.list = action.payload ? [...action.payload] : null;
     },
     setAuthoritiesList: (state, action: PayloadAction<any>) => {
       state.authorities.list = action.payload ? [...action.payload] : null;
@@ -339,7 +339,7 @@ export const administrativeAreaSlice = createSlice({
       state.headquarters.detail = { ...action.payload.data };
     },
     setUserDetails: (state, action) => {
-      state.users.detail = { ...action.payload.data };
+      state.users.detail = { ...action.payload };
     },
     setEventsList: (state, action: PayloadAction<any>) => {
       state.services.list = action.payload.data;

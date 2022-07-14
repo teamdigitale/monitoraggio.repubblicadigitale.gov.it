@@ -40,6 +40,7 @@ import {
   GetAllSurveys,
   UpdateSurveyExclusiveField,
 } from '../../../../../redux/features/administrativeArea/surveys/surveysThunk';
+import { formatDate } from '../../../../../utils/datesHelper';
 
 const entity = 'questionarioTemplate';
 const statusDropdownLabel = 'stati';
@@ -62,7 +63,7 @@ const Surveys = () => {
   const { pageNumber } = pagination;
 
   useEffect(() => {
-    dispatch(setEntityPagination({ pageSize: 3 }));
+    dispatch(setEntityPagination({ pageSize: 8 }));
     dispatch(
       updateBreadcrumb([
         {
@@ -85,11 +86,11 @@ const Surveys = () => {
       TableHeadingQuestionnaires,
       questionariList?.list.map((td) => ({
         id: td.id,
-        label: td.nome,
-        type: td.tipo,
-        status: <StatusChip status={td.stato} rowTableId={td.id} />,
-        lastChangeDate: td.dataUltimaModifica,
-        default_SCD: (
+        nome: td.nome,
+        stato: <StatusChip status={td.stato} rowTableId={td.id} />,
+        dataUltimaModifica:
+          formatDate(td.dataUltimaModifica, 'shortDate') || '-',
+        defaultSCD: (
           <FormGroup check className='table-container__toggle-button'>
             <Toggle
               label=''
@@ -105,7 +106,7 @@ const Surveys = () => {
             </span>
           </FormGroup>
         ),
-        default_RFD: (
+        defaultRFD: (
           <FormGroup check className='table-container__toggle-button'>
             <Toggle
               label=''
@@ -123,14 +124,7 @@ const Surveys = () => {
         ),
       }))
     );
-    return {
-      ...table,
-      // TODO remove slice after BE integration
-      values: table.values.slice(
-        pagination?.pageNumber * pagination?.pageSize - pagination?.pageSize,
-        pagination?.pageNumber * pagination?.pageSize
-      ),
-    };
+    return table;
   };
 
   const [tableValues, setTableValues] = useState(updateTableValues());
@@ -166,7 +160,8 @@ const Surveys = () => {
   );
 
   useEffect(() => {
-    if (Array.isArray(questionariList) && questionariList.length) setTableValues(updateTableValues());
+    if (Array.isArray(questionariList?.list) && questionariList?.list.length)
+      setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [questionariList]);
 
@@ -178,7 +173,10 @@ const Surveys = () => {
     // TODO: check chiavi filtri
     if (filterDropdownSelected !== 'stati')
       dispatch(
-        GetEntityFilterQueryParamsValues({ entity, dropdownType: statusDropdownLabel })
+        GetEntityFilterQueryParamsValues({
+          entity,
+          dropdownType: statusDropdownLabel,
+        })
       );
   };
 
@@ -202,7 +200,9 @@ const Surveys = () => {
     flagChecked: boolean,
     surveyId: string
   ) => {
-    await dispatch(UpdateSurveyExclusiveField({ flagType, flagChecked, surveyId }));
+    await dispatch(
+      UpdateSurveyExclusiveField({ flagType, flagChecked, surveyId })
+    );
     // update the table
     await dispatch(GetAllSurveys());
   };
@@ -316,7 +316,9 @@ const Surveys = () => {
         dropdowns={dropdowns}
         {...objectToPass}
         ctaDownload={handleDownloadList}
-        resetFilterDropdownSelected={(filterKey: string) => setFilterDropdownSelected(filterKey)}
+        resetFilterDropdownSelected={(filterKey: string) =>
+          setFilterDropdownSelected(filterKey)
+        }
       >
         <div>
           <Table

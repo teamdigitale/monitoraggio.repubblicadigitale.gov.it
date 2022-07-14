@@ -27,14 +27,14 @@ interface DetailLayoutI {
     title: string;
     status: string;
     upperTitle: {
-      icon: string | any;
+      icon: string;
       text: string;
     };
     subTitle?: string;
     headingRole?: boolean;
     iconAvatar?: boolean;
-    name?: string;
-    surname?: string;
+    name?: string | undefined;
+    surname?: string | undefined;
   };
   itemsList?: ItemsListI | null | undefined;
   showItemsList?: boolean;

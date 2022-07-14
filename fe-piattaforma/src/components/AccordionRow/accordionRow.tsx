@@ -75,14 +75,14 @@ const AccordionRow: React.FC<AccordionRowI> = ({
         </Button>
       </div>
       <div>
-        {innerInfo?.['default_SCD'] && innerInfo?.['default_RFD'] ? (
+        {innerInfo?.['defaultSCD'] && innerInfo?.['defaultRFD'] ? (
           <div className='d-flex flex-row justify-content-center'>
             <div className='d-flex flex-row mr-2'>
-              {innerInfo['default_SCD']}{' '}
+              {innerInfo['defaultSCD']}{' '}
               <span className='ml-2'>Default SCD</span>
             </div>
             <div className='d-flex flex-row ml-2'>
-              {innerInfo['default_RFD']}{' '}
+              {innerInfo['defaultRFD']}{' '}
               <span className='ml-2'>Default RFD</span>
             </div>
           </div>
@@ -101,7 +101,7 @@ const AccordionRow: React.FC<AccordionRowI> = ({
         >
           <div className='d-flex flex-column pl-4'>
             {Object.keys(innerInfo)
-              .filter((el) => el !== 'default_SCD' && el !== 'default_RFD')
+              .filter((el) => el !== 'defaultSCD' && el !== 'defaultRFD')
               .map((x, index) => (
                 <div className='info-row' key={index}>
                   <span className='text-uppercase font-weight-semibold info-title'>

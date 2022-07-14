@@ -14,13 +14,13 @@ interface SectionTitleI {
   title: string;
   status?: string;
   upperTitle?: {
-    icon: string;
+    icon: string | any;
     text: string;
   };
   subTitle?: string;
   iconAvatar?: boolean;
-  name?: string;
-  surname?: string;
+  name?: string | undefined;
+  surname?: string | undefined;
 }
 
 const SectionTitle: React.FC<SectionTitleI> = (props) => {

@@ -1,7 +1,6 @@
 import { Dispatch, Selector } from '@reduxjs/toolkit';
 import { hideLoader, showLoader } from '../../app/appSlice';
 import { RootState } from '../../../store';
-import isEmpty from 'lodash.isempty';
 import API from '../../../../utils/apiHelper';
 import {
   setEntityFilterOptions,
@@ -13,7 +12,10 @@ import { mapOptions } from '../../../../utils/common';
 export interface UtentiLightI {
   id: string;
   nome: string;
+  cognome: string;
+  email: string;
   ruoli: string;
+  codiceFiscale: string;
   stato: string;
 }
 
@@ -22,42 +24,34 @@ export interface ProgettoListResponseI {
   utentiLight: UtentiLightI[];
 }
 
-const GetAllUtentiAction = {
-  type: 'administrativeArea/GetAllUtenti',
+const GetAllUsersAction = {
+  type: 'administrativeArea/GetAllUsers',
 };
 
-export const GetAllUtenti =
+export const GetAllUsers =
   () => async (dispatch: Dispatch, select: Selector) => {
     try {
       dispatch(showLoader());
-      dispatch({ ...GetAllUtentiAction });
+      dispatch({ ...GetAllUsersAction });
       const {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         administrativeArea: { filters, pagination },
       } = select((state: RootState) => state);
       const endpoint = `utente/all`;
-      let res;
-      if (!isEmpty(filters)) {
-        const body = {
-          filtroRequest: { ...filters },
-          codiceFiscale: '',
-          codiceRuolo: '',
-        };
-        res = await API.post(endpoint, body, {
-          params: {
-            currPage: pagination.pageNumber,
-            pageSize: pagination.pageSize,
-          },
-        });
-      } else {
-        res = await API.get(endpoint, {
-          params: {
-            currPage: pagination.pageNumber,
-            pageSize: pagination.pageSize,
-          },
-        });
-      }
+      const body = {
+        filtroRequest: { ...filters },
+        codiceFiscale: 'UTENTE1',
+        codiceRuolo: 'DTD',
+        idProgetto: 0,
+        idProgramma: 0,
+      };
+      const res = await API.post(endpoint, body, {
+        params: {
+          currPage: pagination.pageNumber,
+          pageSize: pagination.pageSize,
+        },
+      });
       if (res?.data) {
         dispatch(setUsersList({ data: res.data.data.list }));
       }
@@ -105,17 +99,37 @@ export const GetFilterValuesUtenti =
 const GetUserDetailAction = {
   type: 'administrativeArea/GetUserDetail',
 };
-export const GetUserDetail =
-  (idUtente: string) => async (dispatch: Dispatch) => {
+export const GetUserDetails =
+  (userId: string) => async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
-      dispatch({ ...GetUserDetailAction, idUtente });
-      const res = await API.get(`utente/idUtente`);
+      dispatch({ ...GetUserDetailAction, userId });
+      const res = await API.get(`utente/${userId}`);
       if (res?.data) {
         dispatch(setUserDetails(res.data));
       }
     } catch (error) {
       console.log('GetHeadquartersDetail error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+export const GetUsersBySearch =
+  (search: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...GetAllUsersAction });
+
+      const res = await API.get(`/utente/cerca/${search}`);
+
+      if (Array.isArray(res.data)) {
+        dispatch(setUsersList(res.data));
+      } else {
+        dispatch(setUsersList(null));
+      }
+    } catch (error) {
+      console.log(error);
     } finally {
       dispatch(hideLoader());
     }

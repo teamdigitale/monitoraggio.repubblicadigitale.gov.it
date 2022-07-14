@@ -20,7 +20,7 @@ import {
   setProgramGeneralInfo,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import clsx from 'clsx';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import TargetsForm from '../../../../../components/AdministrativeArea/Entities/General/TargetForm/TargetsForm';
 interface ProgramInformationI {
   formDisabled?: boolean;
@@ -40,17 +40,23 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
 }) => {
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
   const { entityId } = useParams();
+  const navigate = useNavigate();
 
-  const handleSaveProgram = () => {
+  const handleSaveProgram = async () => {
     if (isFormValid) {
       if (creation) {
-        dispatch(createProgram(newFormValues));
-        setCurrentStep(0);
+        const res = await dispatch(createProgram(newFormValues));
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (res?.idProgramma) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          navigate(`/area-amministrativa/programmi/${res.idProgramma}/info`);
+        }
       } else {
-        // TODO here dispatch update program
         entityId && dispatch(updateProgram(entityId, newFormValues));
-        setCurrentStep(0);
       }
+      setCurrentStep(0);
       dispatch(closeModal());
     }
   };

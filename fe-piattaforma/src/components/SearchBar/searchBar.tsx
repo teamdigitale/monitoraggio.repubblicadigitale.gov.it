@@ -90,7 +90,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
     setSearchValue('');
     setHasSearchValue(false);
     dispatch(deleteFiltroCriterioRicerca());
-    dispatch(deleteFiltroCriterioRicercaCitizen())
+    dispatch(deleteFiltroCriterioRicercaCitizen());
   };
 
   const AutocompleteDropdownIndicator = useCallback(

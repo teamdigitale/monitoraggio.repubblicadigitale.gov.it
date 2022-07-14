@@ -11,7 +11,7 @@ import {
   resetAuthorityDetails,
 } from '../administrativeAreaSlice';
 import { mapOptions } from '../../../../utils/common';
-import {getUserHeaders} from "../../user/userThunk";
+import { getUserHeaders } from '../../user/userThunk';
 // import { formTypes } from '../../../../pages/administrator/AdministrativeArea/Entities/utils';
 
 export interface AuthoritiesLightI {
@@ -25,6 +25,15 @@ export interface AuthoritiesListResponseI {
   numeroPagine: number;
   programmiLight: AuthoritiesLightI[];
 }
+
+export type UserAuthorityRole =
+  | 'REG'
+  | 'DEG'
+  | 'REGP'
+  | 'DEGP'
+  | 'REPP'
+  | 'DEPP';
+
 /*
 export const sanitizeResult = (data: any) => Object.fromEntries(
   Object.entries(data).map(([key, value]) => {
@@ -185,8 +194,14 @@ export const GetAuthorityManagerDetail =
       if (res.data) {
         dispatch(
           setAuthorityDetails({
-            delegatiEnteGestore: res.data.delegatiEnteGestore,
-            referentiEnteGestore: res.data.referentiEnteGestore,
+            delegatiEnteGestore:
+              entity === 'programma'
+                ? res.data.delegatiEnteGestore
+                : res.data.delegatiEnteGestoreProgetto,
+            referentiEnteGestore:
+              entity === 'programma'
+                ? res.data.referentiEnteGestore
+                : res.data.referentiEnteGestoreProgetto,
             dettagliInfoEnte: Object.fromEntries(
               Object.entries(res.data.ente).map(([key, value]) =>
                 key === 'partitaIva' ? ['piva', value] : [key, value]
@@ -212,7 +227,8 @@ export const GetAuthoritiesBySearch =
       dispatch(showLoader());
       dispatch({ ...GetAuthoritiesBySearchAction });
       console.log(search);
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } = getUserHeaders();
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
 
       const body = {
         filtroRequest: {},
@@ -384,6 +400,104 @@ export const RemovePartnerAuthority =
         await API.delete(
           `/ente/${authorityId}/cancellaentepartner/${entityId}`
         );
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const AssignReferentDelegateAction = {
+  type: 'administrativeArea/AssignReferentDelegate',
+};
+
+export const AssignReferentDelegate =
+  (
+    authorityId: string,
+    entityId: string,
+    userDetail: any,
+    entity: 'programma' | 'progetto',
+    role: UserAuthorityRole
+  ) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...AssignReferentDelegateAction });
+
+      switch (entity) {
+        case 'programma':
+          await API.post('/ente/associa/referenteDelegato/gestoreProgramma', {
+            cfReferenteDelegato: userDetail.codiceFiscale,
+            codiceRuolo: role,
+            idEnte: authorityId,
+            idProgramma: entityId,
+            mansione: 'string',
+          });
+          break;
+        case 'progetto':
+          await API.post('/ente/associa/referenteDelegato/gestoreProgetto', {
+            cfUtente: userDetail.codiceFiscale,
+            codiceRuolo: role,
+            idEnte: authorityId,
+            idProgetto: entityId,
+            mansione: 'string',
+          });
+          break;
+        default:
+          break;
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const RemoveReferentDelegateAction = {
+  type: 'administrativeArea/RemoveReferentDelegate',
+};
+
+export const RemoveReferentDelegate =
+  (
+    authorityId: string,
+    entityId: string,
+    userCF: any,
+    entity: 'programma' | 'progetto',
+    role: UserAuthorityRole
+  ) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...RemoveReferentDelegateAction });
+
+      switch (entity) {
+        case 'programma':
+          await API.post(
+            '/ente/cancellaOTerminaAssociazione/referenteDelegato/gestoreProgramma',
+            {
+              cfReferenteDelegato: userCF,
+              codiceRuolo: role,
+              idEnte: authorityId,
+              idProgramma: entityId,
+              mansione: 'string',
+            }
+          );
+          break;
+        case 'progetto':
+          await API.post(
+            '/ente/cancellaOTerminaAssociazione/referenteDelegato/gestoreProgetto',
+            {
+              cfUtente: userCF,
+              codiceRuolo: role,
+              idEnte: authorityId,
+              idProgetto: entityId,
+              mansione: 'string',
+            }
+          );
+          break;
+        default:
+          break;
       }
     } catch (error) {
       console.log(error);

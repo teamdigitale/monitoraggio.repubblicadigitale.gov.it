@@ -116,7 +116,9 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                   'justify-content-between'
                 )}
                 role='menuitem'
-                onClick={() => dispatch(openModal({ id: 'switchProfileModal' }))}
+                onClick={() =>
+                  dispatch(openModal({ id: 'switchProfileModal' }))
+                }
               >
                 Cambia ruolo
               </Button>

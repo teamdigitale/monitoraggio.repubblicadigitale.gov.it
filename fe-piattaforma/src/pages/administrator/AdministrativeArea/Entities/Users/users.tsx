@@ -27,7 +27,7 @@ import { useNavigate } from 'react-router-dom';
 import ManageUsers from '../modals/manageUsers';
 
 import {
-  GetAllUtenti,
+  GetAllUsers,
   GetFilterValuesUtenti,
 } from '../../../../../redux/features/administrativeArea/user/userThunk';
 import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
@@ -38,7 +38,7 @@ const ruoliDropdownLabel = 'ruoli';
 const Programmi = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const usersList = useAppSelector(selectUsers);
+  const usersList = useAppSelector(selectUsers).list;
   const filtersList = useAppSelector(selectEntityFilters);
   const pagination = useAppSelector(selectEntityPagination);
   const dropdownFilterOptions = useAppSelector(selectEntityFiltersOptions);
@@ -83,34 +83,30 @@ const Programmi = () => {
   const updateTableValues = () => {
     const table = newTable(
       TableHeadingUsers,
-      usersList.list.map((td) => {
-        return {
-          id: td.id,
-          label: td.nome,
-          role: td.ruoli,
-          status: <StatusChip status={td.stato} rowTableId={td.id} />,
-        };
-      })
+      usersList
+        ? usersList.map((td) => {
+            return {
+              id: td.id,
+              label: td.nome,
+              role: td.ruoli,
+              status: <StatusChip status={td.stato} rowTableId={td.id} />,
+            };
+          })
+        : []
     );
-    return {
-      ...table,
-      // TODO remove slice after BE integration
-      values: table.values.slice(
-        pagination?.pageNumber * pagination?.pageSize - pagination?.pageSize,
-        pagination?.pageNumber * pagination?.pageSize
-      ),
-    };
+    return table;
   };
 
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(usersList) && usersList.length) setTableValues(updateTableValues());
+    if (Array.isArray(usersList) && usersList.length)
+      setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usersList]);
 
   const getUsersList = () => {
-    dispatch(GetAllUtenti());
+    dispatch(GetAllUsers());
   };
 
   useEffect(() => {
@@ -228,7 +224,9 @@ const Programmi = () => {
       filtersList={filtersList}
       {...programCta}
       cta={newProgram}
-      resetFilterDropdownSelected={(filterKey: string) => setFilterDropdownSelected(filterKey)}
+      resetFilterDropdownSelected={(filterKey: string) =>
+        setFilterDropdownSelected(filterKey)
+      }
     >
       <Table
         {...tableValues}
@@ -243,7 +241,7 @@ const Programmi = () => {
         center
         refID='#table'
         pageSize={pagination?.pageSize}
-        total={usersList.list.length}
+        total={usersList ? usersList.length : 0}
         onChange={handleOnChangePage}
       />
       <ManageUsers creation />

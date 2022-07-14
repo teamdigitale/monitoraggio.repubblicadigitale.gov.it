@@ -113,7 +113,9 @@ const GenericSearchFilterTableLayout: React.FC<
     filterKey: string,
     value: string | number | string[]
   ) => {
-    citizen ? dispatch(cleanEntityFiltersCitizen({ filterKey, value: value })) : dispatch(cleanEntityFilters({ filterKey, value: value }));
+    citizen
+      ? dispatch(cleanEntityFiltersCitizen({ filterKey, value: value }))
+      : dispatch(cleanEntityFilters({ filterKey, value: value }));
     if (filterKey === 'filtroCriterioRicerca')
       dispatch(deleteFiltroCriterioRicerca());
     if (resetFilterDropdownSelected) resetFilterDropdownSelected(filterKey);

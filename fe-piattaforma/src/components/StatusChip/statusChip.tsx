@@ -19,7 +19,7 @@ const statusTypes = {
   NOT_SENT: 'NON INVIATO',
   SENT: 'INVIATO',
   FILLED_OUT: 'COMPILATO',
-  NOT_FILLED_OUT: 'NON COMPILATO'
+  NOT_FILLED_OUT: 'NON COMPILATO',
 };
 
 export const statusBgColor = (status: string) => {

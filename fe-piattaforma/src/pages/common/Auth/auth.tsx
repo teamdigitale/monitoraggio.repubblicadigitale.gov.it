@@ -1,36 +1,49 @@
 import React, { memo } from 'react';
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import LogoScrittaBlu from '/public/assets/img/logo-scritta-blu.png';
-import {Footer, Input} from '../../../components';
+import { Footer, Input, Loader } from '../../../components';
 import clsx from 'clsx';
 import { Button, Card, Icon } from 'design-react-kit';
 import Authicon from '/public/assets/img/auth-box-icon.png';
 import { useAppSelector } from '../../../redux/hooks';
-import { selectDevice } from '../../../redux/features/app/appSlice';
-import { CreateUserContext } from "../../../redux/features/user/userThunk";
-import withFormHandler, {withFormHandlerProps} from "../../../hoc/withFormHandler";
-import { newForm, newFormField } from "../../../utils/formHelper";
+import {
+  selectDevice,
+  selectLoader,
+} from '../../../redux/features/app/appSlice';
+import { CreateUserContext } from '../../../redux/features/user/userThunk';
+import withFormHandler, {
+  withFormHandlerProps,
+} from '../../../hoc/withFormHandler';
+import { newForm, newFormField } from '../../../utils/formHelper';
 
-const Auth: React.FC<withFormHandlerProps> = ({ form = {}, onInputChange = () => ({}) }) => {
+const Auth: React.FC<withFormHandlerProps> = ({
+  form = {},
+  onInputChange = () => ({}),
+}) => {
+  const device = useAppSelector(selectDevice);
+  const loader = useAppSelector(selectLoader);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleFakeLogin = async () => {
-    const validUser = await dispatch(CreateUserContext(form.mockUser?.value?.toString()));
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    if (validUser) navigate('/onboarding');
+    if (form.mockUser?.value) {
+      const validUser = await dispatch(
+        CreateUserContext(form.mockUser?.value?.toString())
+      );
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (validUser) navigate('/onboarding');
+    }
   };
 
   const handleClick = () => {
     console.log('clicked');
   };
 
-  const device = useAppSelector(selectDevice);
-
   return (
     <>
+      {loader.isLoading && <Loader />}
       <div className='mt-0 py-3 primary-bg '>
         <div className='mr-auto'>
           <p className={clsx('h6', 'm-0', 'pl-5', 'text-white')}>
@@ -199,7 +212,7 @@ const Auth: React.FC<withFormHandlerProps> = ({ form = {}, onInputChange = () =>
                       'mx-auto',
                       'w-100',
                       device.mediaIsPhone ? 'btn-xs px-4' : 'btn-sm',
-                      'mb-3',
+                      'mb-3'
                     )}
                     color='primary'
                     onClick={handleClick}
@@ -207,9 +220,9 @@ const Auth: React.FC<withFormHandlerProps> = ({ form = {}, onInputChange = () =>
                     Entra con CIE
                   </Button>
                 </div>
-                <div className="my-5">
+                <div className='my-5'>
                   <hr />
-                  <h4 className="py-2">Login DEV</h4>
+                  <h4 className='py-2'>Login DEV</h4>
                   {/* TODO Remove next block, it's for dev purpose only*/}
                   <Input
                     {...form.mockUser}

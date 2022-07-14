@@ -71,16 +71,8 @@ export const GetAllSurveys =
                 ...filters,
               },
         });
-      } else {
-        res = await API.get(endpoint, {
-          params: {
-            currPage: pagination.pageNumber,
-            pageSize: pagination.pageSize,
-            ...filters,
-          },
-        });
       }
-      if (res.data)
+      if (res?.data)
         dispatch(setSurveysList({ data: res.data.questionariTemplate }));
     } finally {
       dispatch(hideLoader());

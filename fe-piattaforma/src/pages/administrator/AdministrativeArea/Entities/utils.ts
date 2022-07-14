@@ -65,7 +65,7 @@ export const TableHeadingUsers: TableHeadingI[] = [
 export const TableHeadingQuestionnaires: TableHeadingI[] = [
   {
     label: 'Nome questionario',
-    field: 'label',
+    field: 'nome',
     size: 'auto',
   },
   {
@@ -75,22 +75,22 @@ export const TableHeadingQuestionnaires: TableHeadingI[] = [
   },
   {
     label: 'Data ultima modifica',
-    field: 'lastChangeDate',
+    field: 'dataUltimaModifica',
     size: 'auto',
   },
   {
     label: 'Stato',
-    field: 'status',
+    field: 'stato',
     size: 'auto',
   },
   {
     label: 'Default SCD',
-    field: 'default_SCD',
+    field: 'defaultSCD',
     size: 'auto',
   },
   {
     label: 'Default RFD',
-    field: 'default_RFD',
+    field: 'defaultRFD',
     size: 'auto',
   },
 ];

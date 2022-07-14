@@ -211,7 +211,9 @@ const Citizens = () => {
         // }}
         // ctaPrint={() => window.open('/stampa-questionario', '_blank')}
         {...PageTitleCitizen}
-        resetFilterDropdownSelected={(filterKey: string) => setFilterDropdownSelected(filterKey)}
+        resetFilterDropdownSelected={(filterKey: string) =>
+          setFilterDropdownSelected(filterKey)
+        }
         citizen
       >
         <div>

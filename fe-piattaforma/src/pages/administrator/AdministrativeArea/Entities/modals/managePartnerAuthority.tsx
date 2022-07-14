@@ -108,7 +108,7 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
         }))}
         onActionRadio={handleSelectAuthority}
         id='table'
-      ></Table>
+      />
     );
 
   return (

@@ -87,7 +87,6 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
   const checkValidityQuestions = (questions: SurveyQuestionI[]) => {
     let isValid = true;
     if (questions?.length > 0) {

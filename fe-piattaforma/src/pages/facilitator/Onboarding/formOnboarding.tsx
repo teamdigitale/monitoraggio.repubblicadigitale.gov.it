@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useAppSelector } from '../../../redux/hooks';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import {
-  formFieldI,
   FormI,
   newForm,
   newFormField,
@@ -12,12 +11,8 @@ import withFormHandler, {
 } from '../../../hoc/withFormHandler';
 import { OptionType } from '../../../components/Form/select';
 import { Form, Input } from '../../../components';
-import { Button, FormGroup, Label } from 'design-react-kit';
 import clsx from 'clsx';
-import { selectUsers } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
-import { useDispatch } from 'react-redux';
-import { GetUserDetail } from '../../../redux/features/administrativeArea/user/userThunk';
-import { useParams } from 'react-router-dom';
+import { selectUser } from '../../../redux/features/user/userSlice';
 
 export interface FormOnboardingI {
   onInputChange?: withFormHandlerProps['onInputChange'];
@@ -25,39 +20,33 @@ export interface FormOnboardingI {
   optionsSelect?: OptionType[];
   formDisabled?: boolean;
   creation?: boolean;
-  sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
-  setIsFormValid?: (param: boolean | undefined) => void;
+  sendNewForm?: (newForm: FormI) => void;
+  setIsFormValid?: (param: boolean) => void;
 }
 
 interface FormProfileI extends withFormHandlerProps, FormOnboardingI {}
 const FormOnboarding: React.FC<FormProfileI> = (props) => {
   const {
-    getFormValues = () => ({}),
     setFormValues = () => ({}),
+    setIsFormValid = () => ({}),
     form,
     isValidForm,
-    setIsFormValid,
     onInputChange,
-    creation = false,
-    sendNewValues,
+    sendNewForm = () => ({}),
   } = props;
 
   const device = useAppSelector(selectDevice);
-  const { userId } = useParams();
+  const user = useAppSelector(selectUser);
   const formDisabled = !!props.formDisabled;
   const formData: { [key: string]: string } | undefined =
-    useAppSelector(selectUsers)?.detail?.info;
-  const dispatch = useDispatch();
-
-  const onSubmitForm = () => {
-    console.log('onSubmit', props.getFormValues && props.getFormValues());
-  };
+    useAppSelector(selectUser);
 
   useEffect(() => {
-    if (!creation) {
-      dispatch(GetUserDetail(userId || ''));
+    if (user?.codiceFiscale) {
+      setFormValues(user);
     }
-  }, [creation]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.codiceFiscale]);
 
   useEffect(() => {
     if (formData) {
@@ -65,14 +54,10 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
     }
   }, [formData]);
 
-  const onInputDataChange = (
-    value: formFieldI['value'],
-    field?: formFieldI['field']
-  ) => {
-    onInputChange?.(value, field);
-    sendNewValues?.(getFormValues?.());
-    setIsFormValid?.(isValidForm);
-  };
+  useEffect(() => {
+    if (form) sendNewForm(form);
+    setIsFormValid(Boolean(isValidForm));
+  }, [form, isValidForm]);
 
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 
@@ -84,37 +69,34 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
       >
         <Form.Row className={bootClass}>
           <Input
-            {...form?.name}
+            {...form?.nome}
+            disabled
             label='Nome'
             required
             placeholder='Inserisci nome'
             col='col-12 col-md-6'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
+            onInputChange={onInputChange}
           />
           <Input
-            {...form?.lastName}
+            {...form?.cognome}
+            disabled
             required
             label='Cognome'
             placeholder='Inserisci cognome'
             col='col-12 col-md-6'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
+            onInputChange={onInputChange}
           />
         </Form.Row>
         <Form.Row className={bootClass}>
           <Input
-            {...form?.fiscalCode}
+            {...form?.codiceFiscale}
+            disabled
             required
             label='Codice Fiscale'
             placeholder='Inserisci Codice Fiscale'
             col='col-12 col-md-6'
             type='text'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
+            onInputChange={onInputChange}
           />
           <Input
             {...form?.email}
@@ -122,21 +104,17 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
             label='Email'
             placeholder='Inserisci email'
             col='col-12 col-md-6'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
+            onInputChange={onInputChange}
           />
         </Form.Row>
         <Form.Row className={bootClass}>
           <Input
-            {...form?.phone}
+            {...form?.telefono}
             required
-            label='Mobile'
-            placeholder='Inserisci mobile'
+            label='Telefono'
+            placeholder='Inserisci telefono'
             col='col-12 col-md-6'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
+            onInputChange={onInputChange}
           />
           <Input
             {...form?.bio}
@@ -144,57 +122,23 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
             label='Bio'
             placeholder='Nome Mansione'
             col='col-12 col-md-6'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
+            onInputChange={onInputChange}
             className={clsx(device.mediaIsPhone && 'mb-0')}
           />
         </Form.Row>
       </Form>
-      {!(formDisabled || !creation) ? (
-        <>
-          <div
-            className={clsx(
-              'd-flex flex-row justify-content-start',
-              device.mediaIsPhone && 'mt-5',
-              'mt-3'
-            )}
-          >
-            <FormGroup check>
-              <Input type='checkbox' checked={false} withLabel={false} />
-              <Label>
-                Consenso al <a href='/'> Trattamento dei dati personali </a>
-              </Label>
-            </FormGroup>
-          </div>
-          <div
-            className={clsx(
-              'd-flex mb-3 mt-5',
-              device.mediaIsPhone && 'justify-content-center',
-              'justify-content-end'
-            )}
-          >
-            <Button color='primary' onClick={onSubmitForm}>
-              Completa Regitrazione
-            </Button>
-          </div>
-          <p className={clsx('primary-color-a12', 'mt-5', 'mb-1', 'pb-2')}>
-            *Campo obbligatorio
-          </p>
-        </>
-      ) : null}
     </div>
   );
 };
 
 const form: FormI = newForm([
   newFormField({
-    field: 'name',
+    field: 'nome',
     required: true,
     id: 'name',
   }),
   newFormField({
-    field: 'lastName',
+    field: 'cognome',
     required: true,
     id: 'surname',
   }),
@@ -204,18 +148,19 @@ const form: FormI = newForm([
     id: 'email',
   }),
   newFormField({
-    field: 'fiscalCode',
+    field: 'codiceFiscale',
     required: true,
-    id: 'fiscalCode',
+    id: 'fiscalcode',
   }),
   newFormField({
-    field: 'phone',
+    field: 'telefono',
     required: true,
-    id: 'phone',
+    id: 'telefono',
   }),
   newFormField({
     field: 'bio',
     id: 'bio',
+    required: true,
   }),
 ]);
 
