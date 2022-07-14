@@ -158,6 +158,7 @@ jobs:
             echo "===> Changes detected: Release started!"
           else
             echo "===> No changes detected: Release stopped!"
+            echo "### No relevant changes detected: no new version is released!" >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
 
