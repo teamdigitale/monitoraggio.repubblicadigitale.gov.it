@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.25](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.24...1.0.0-develop.25) (2022-07-14)
+
+
+### Bug Fixes
+
+* ente referente delegati ([2adeca0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2adeca012279d6c71fc2f851ab384c2e80889d60))
+
 ## [1.0.0-develop.24](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.23...1.0.0-develop.24) (2022-07-14)
 
 
