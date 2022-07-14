@@ -59,8 +59,4 @@ public class QuestionarioCompilatoEntity implements Serializable {
 	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column(name = "DATA_ORA_AGGIORNAMENTO")
 	private Date dataOraAggiornamento;
-	
-	@Temporal(value = TemporalType.TIMESTAMP)
-	@Column(name = "DATA_ORA_INVIO")
-	private Date dataOraInvio;
 }
