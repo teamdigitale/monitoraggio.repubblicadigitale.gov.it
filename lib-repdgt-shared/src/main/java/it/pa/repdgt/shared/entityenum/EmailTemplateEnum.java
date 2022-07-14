@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum EmailTemplateEnum {
-	 CONSENSO("templ_consenso","")
+	 CONSENSO("templ_consenso","Presa visione dell’informativa privacy – Repubblica digitale")
 	,GEST_PROG("templ_gestore_programma","Ti diamo il benvenuto su Repubblica Digitale")
 	,GEST_PROGE_PARTNER("templ_gest_prog_and_partner","Ti diamo il benvenuto su Repubblica Digitale")
 	,FACILITATORE("templ_facilitatore","Ti diamo il benvenuto su Repubblica Digitale")
