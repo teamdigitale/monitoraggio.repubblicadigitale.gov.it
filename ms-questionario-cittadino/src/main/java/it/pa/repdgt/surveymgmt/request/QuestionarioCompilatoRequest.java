@@ -13,6 +13,7 @@ import lombok.Setter;
 public class QuestionarioCompilatoRequest implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	@NotNull
 	private ConsensoTrattamentoDatiRequest ConsensoTrattamentoDatiRequest;
 	
 	@NotNull

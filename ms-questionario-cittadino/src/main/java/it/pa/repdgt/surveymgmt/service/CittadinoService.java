@@ -257,4 +257,12 @@ public class CittadinoService {
 	        this.questionarioCompilatoMongoRepository.save(questionarioCompilatoDBMongoFetch);
 		});
 	}
+
+	/**
+	 * Restituisce la stringa contenente la tipologia di consenso 
+	 * data per il cittadino che ha quel dato codice fiscale
+	 * */
+	public String getConsensoByCodiceFiscaleCittadino(String codiceFiscaleCittadino) {
+		return this.cittadinoRepository.findConsensoByCodiceFiscale(codiceFiscaleCittadino);
+	}
 }

@@ -903,7 +903,7 @@ public class EnteServiceTest {
 		referenteDelegatoGestoreProgrammaRequest = new ReferenteDelegatoGestoreProgrammaRequest();
 		referenteDelegatoGestoreProgrammaRequest.setIdProgramma(programma1.getId());
 		referenteDelegatoGestoreProgrammaRequest.setIdEnte(ente1.getId());
-		referenteDelegatoGestoreProgrammaRequest.setCodiceRuolo(ruolo4.getCodice());
+		referenteDelegatoGestoreProgrammaRequest.setCodiceRuolo(ruolo3.getCodice());
 		referenteDelegatoGestoreProgrammaRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
 		when(programmaService.esisteProgrammaById(programma1.getId())).thenReturn(false);
 		Assertions.assertThrows(EnteException.class, () -> enteService.associaReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest));
@@ -954,7 +954,7 @@ public class EnteServiceTest {
 		referenteDelegatoGestoreProgettoRequest = new ReferenteDelegatoGestoreProgettoRequest();
 		referenteDelegatoGestoreProgettoRequest.setIdProgetto(progetto1.getId());
 		referenteDelegatoGestoreProgettoRequest.setIdEnte(ente1.getId());
-		referenteDelegatoGestoreProgettoRequest.setCodiceRuolo(ruolo3.getCodice());
+		referenteDelegatoGestoreProgettoRequest.setCodiceRuolo(ruolo4.getCodice());
 		referenteDelegatoGestoreProgettoRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
 		when(progettoService.esisteProgettoById(progetto1.getId())).thenReturn(false);
 		Assertions.assertThrows(EnteException.class, () -> enteService.associaReferenteODelegatoGestoreProgetto(referenteDelegatoGestoreProgettoRequest));

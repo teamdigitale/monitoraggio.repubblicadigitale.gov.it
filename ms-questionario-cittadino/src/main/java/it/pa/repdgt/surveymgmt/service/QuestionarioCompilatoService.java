@@ -18,9 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.entity.CittadinoEntity;
 import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
 import it.pa.repdgt.shared.entity.QuestionarioInviatoOnlineEntity;
+import it.pa.repdgt.shared.entityenum.ConsensoTrattamentoDatiEnum;
+import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection.DatiIstanza;
@@ -42,6 +45,8 @@ public class QuestionarioCompilatoService {
 	private QuestionarioCompilatoMongoRepository questionarioCompilatoMongoRepository;
 	@Autowired
 	private QuestionarioInviatoOnlineRepository questionarioInviatoOnlineRepository;
+	@Autowired
+	private EmailService emailService;
 	
 	public QuestionarioCompilatoCollection getQuestionarioCompilatoById(@NotBlank final String idQuestionarioCompilato) {
 		final String messaggioErrore = String.format("Questionario compilato con id=%s non trovato", idQuestionarioCompilato);
@@ -53,29 +58,53 @@ public class QuestionarioCompilatoService {
 	public void compilaQuestionario(
 			@NotNull String idQuestionarioCompilato,
 			@NotNull @Valid QuestionarioCompilatoRequest questionarioCompilatoRequest) {
-		final Optional<QuestionarioCompilatoEntity> optionalQuestionarioCompilato = this.questionarioCompilatoSQLRepository.findById(idQuestionarioCompilato);
-		if(!optionalQuestionarioCompilato.isPresent()) {
+		// Check record allineamento questionarioCompilato per (MySql, Mongo): 
+		//	- questionarioCompilato su MySql (tabella questionario_compilato) 
+		//	- collection questionarioTemplateIstanza su MOngoDB
+		final Optional<QuestionarioCompilatoEntity> questionarioCompilatoEntity = this.questionarioCompilatoSQLRepository.findById(idQuestionarioCompilato);
+		final Optional<QuestionarioCompilatoCollection> questionarioCompilatoCollection = this.questionarioCompilatoMongoRepository.findQuestionarioCompilatoById(idQuestionarioCompilato);
+		if(!questionarioCompilatoEntity.isPresent()) {
 			final String messaggioErrore = String.format("Questionario compilato con id=%s non presente in MySql", idQuestionarioCompilato);
 			throw new QuestionarioCompilatoException(messaggioErrore);
 		}
+		if(!questionarioCompilatoCollection.isPresent()) {
+			final String messaggioErrore = String.format("Questionario compilato con id=%s non presente in MongoDB", idQuestionarioCompilato);
+			throw new QuestionarioCompilatoException(messaggioErrore);
+		}
 		
-		final QuestionarioCompilatoEntity questionarioCompilatoDBMySqlFetch = optionalQuestionarioCompilato.get();
-		final CittadinoEntity cittadino = questionarioCompilatoDBMySqlFetch.getCittadino();
-		this.aggiornaConsensoDatiCittadino(idQuestionarioCompilato, questionarioCompilatoRequest, cittadino);
-		// aggiorna questionarioCompilato MySQl
+		// Recupero dalla request:
+		// 	- dati consenso trattamento dati 
+		//	- codice fiscale del cittadino che sta compilando il questionario
+		String codiceFiscaleCittadino = questionarioCompilatoRequest.getConsensoTrattamentoDatiRequest().getCodiceFiscaleCittadino();
+		ConsensoTrattamentoDatiEnum consensoTrattamentoDati = questionarioCompilatoRequest.getConsensoTrattamentoDatiRequest().getConsensoTrattamentoDatiEnum();
+		
+		// Verifico il consenso trattamento dati per il cittadino e in caso non lo abbia già dato, lo registro per la prima volta
+		this.verificaEdEseguiConsensoTrattamentoDati(codiceFiscaleCittadino, consensoTrattamentoDati);
+
+		// Aggiorno questionarioCompilato MySQl
+		final QuestionarioCompilatoEntity questionarioCompilatoDBMySqlFetch = questionarioCompilatoEntity.get();
 		questionarioCompilatoDBMySqlFetch.setStato(StatoQuestionarioEnum.COMPILATO.getValue());
 		questionarioCompilatoDBMySqlFetch.setDataOraAggiornamento(new Date());		
 		this.questionarioCompilatoSQLRepository.save(questionarioCompilatoDBMySqlFetch);
 		
-		// cancello documento questionarioCompilatoCollection e lo reinserisco con in nuovi dati
-		Optional<QuestionarioCompilatoCollection> optionalQuestionarioCompilatoCollection = this.questionarioCompilatoMongoRepository.findQuestionarioCompilatoById(idQuestionarioCompilato);
-		if(!optionalQuestionarioCompilatoCollection.isPresent()) {
-			final String messaggioErrore = String.format("Questionario compilato con id=%s non presente in MongoDB", idQuestionarioCompilato);
-			throw new QuestionarioCompilatoException(messaggioErrore);
-		}
-		final QuestionarioCompilatoCollection questionarioCompilatoDBMongoFetch = optionalQuestionarioCompilatoCollection.get();
+		// Aggiorno  questionarioCompilatoCollection: 
+		//	-> cancello document questionarioCompilatoCollection 
+		//	-> risalvo nuovamento lo stesso cancellato ma con in nuovi dati del questionario compilato
+		final QuestionarioCompilatoCollection questionarioCompilatoDBMongoFetch = questionarioCompilatoCollection.get();
+		// cancello questionarioCompilato presente su mongo
 		this.questionarioCompilatoMongoRepository.deleteByIdQuestionarioTemplate(idQuestionarioCompilato);
 		
+		// Costruisco le sezioni del questionario compilato (Q1, Q2, Q3, Q4) che provengono dalla request per la compilazione del questionario
+		final List<DatiIstanza> sezioniQuestionarioCompilato = this.creaSezioniQuestionarioFromRequest(questionarioCompilatoRequest);
+		questionarioCompilatoDBMongoFetch.setSezioniQuestionarioTemplateIstanze(sezioniQuestionarioCompilato);
+		questionarioCompilatoDBMongoFetch.setDataOraUltimoAggiornamento(questionarioCompilatoDBMySqlFetch.getDataOraAggiornamento());
+		questionarioCompilatoDBMongoFetch.setMongoId(null);
+		
+		// salvo lo stesso questionarioCompilato che ho precedentemente cancellato ma con i nuovi dati all'interno delle sezioni questionario
+		this.questionarioCompilatoMongoRepository.save(questionarioCompilatoDBMongoFetch);
+	}
+
+	private List<DatiIstanza> creaSezioniQuestionarioFromRequest(QuestionarioCompilatoRequest questionarioCompilatoRequest) {
 		final DatiIstanza sezioneQ1 = new DatiIstanza();
 		sezioneQ1.setDomandaRisposta(new JsonObject(questionarioCompilatoRequest.getSezioneQ1Questionario()));
 		final DatiIstanza sezioneQ2 = new DatiIstanza();
@@ -90,12 +119,46 @@ public class QuestionarioCompilatoService {
 			sezioneQ3,
 			sezioneQ4
 		);
-		questionarioCompilatoDBMongoFetch.setSezioniQuestionarioTemplateIstanze(sezioniQuestionarioCompilato);
-		questionarioCompilatoDBMongoFetch.setDataOraUltimoAggiornamento(questionarioCompilatoDBMySqlFetch.getDataOraAggiornamento());
-		questionarioCompilatoDBMongoFetch.setMongoId(null);
-		this.questionarioCompilatoMongoRepository.save(questionarioCompilatoDBMongoFetch);
+		return sezioniQuestionarioCompilato;
 	}
-	
+
+	@Transactional(rollbackOn = Exception.class)
+	private void verificaEdEseguiConsensoTrattamentoDati(String codiceFiscaleCittadino, ConsensoTrattamentoDatiEnum consensoTrattamentoDatiEnum) {
+		// Se cittadino non ha mai dato il consenso, allora devo eseguire operazioni per la registrazione del consenso dati
+		if(!this.consensoCittadinoGiàDatoByCodiceFiscaleCittadino(codiceFiscaleCittadino)) {
+			CittadinoEntity cittadinoDBFetch = this.cittadinoService.getByCodiceFiscaleOrNumeroDocumento(codiceFiscaleCittadino, null).get();
+			Date dateNow = new Date();
+			switch(consensoTrattamentoDatiEnum) {
+				case CARTACEO:
+					cittadinoDBFetch.setTipoConferimentoConsenso(ConsensoTrattamentoDatiEnum.CARTACEO.toString());
+					break;
+				case ONLINE:
+					cittadinoDBFetch.setTipoConferimentoConsenso(ConsensoTrattamentoDatiEnum.ONLINE.toString());
+					break;
+				case EMAIL:
+					// solo in caso di consenso email,
+					// oltre a salvare il consenso sulla tabella cittadino, 
+					// occorre inviare email al cittadino
+					String[] argsTemplate = {  cittadinoDBFetch.getNome() };
+					this.emailService.inviaEmail(cittadinoDBFetch.getEmail(), EmailTemplateEnum.CONSENSO, argsTemplate);
+					cittadinoDBFetch.setTipoConferimentoConsenso(ConsensoTrattamentoDatiEnum.EMAIL.toString());
+					break;
+				default:
+					throw new UnsupportedOperationException("Consenso Trattamento specificato non valido");
+				}
+			
+			cittadinoDBFetch.setDataOraAggiornamento(dateNow);
+			cittadinoDBFetch.setDataConferimentoConsenso(dateNow);
+			
+			// Aggiorno cittadino con il tipo consenso dato in fase di compilazione del questioanario
+			this.cittadinoService.salvaCittadino(cittadinoDBFetch);
+		}
+	}
+
+	private boolean consensoCittadinoGiàDatoByCodiceFiscaleCittadino(String codiceFiscaleCittadino) {
+		return this.cittadinoService.getConsensoByCodiceFiscaleCittadino(codiceFiscaleCittadino) != null;
+	}
+
 	@Transactional(rollbackOn = Exception.class)
 	public void compilaQuestionarioAnonimo(
 			@NotNull String idQuestionarioCompilato,
@@ -105,30 +168,8 @@ public class QuestionarioCompilatoService {
 		compilaQuestionario(idQuestionarioCompilato, questionarioCompilatoRequest);
 	}
 
-	@Transactional(rollbackOn = Exception.class)
-	private void aggiornaConsensoDatiCittadino(
-			@NotNull final String idQuestionarioCompilato,
-			@NotNull final QuestionarioCompilatoRequest questionarioCompilatoRequest, 
-			final CittadinoEntity cittadino) {
-		if(questionarioCompilatoRequest.getConsensoTrattamentoDatiRequest() == null) {
-			return ;
-		}
-		
-		cittadino.setDataConferimentoConsenso(new Date());
-		if(questionarioCompilatoRequest.getConsensoTrattamentoDatiRequest().isConsensoCartaceo()) {
-			cittadino.setTipoConferimentoConsenso("CARTACEO");
-		} else if(questionarioCompilatoRequest.getConsensoTrattamentoDatiRequest().isConsensoOTP()) {
-			cittadino.setTipoConferimentoConsenso("OTP");
-		} else if(questionarioCompilatoRequest.getConsensoTrattamentoDatiRequest().isConsensoOnline()) {
-			cittadino.setTipoConferimentoConsenso("ONLINE");
-		}
-		cittadino.setDataOraAggiornamento(new Date());
-		cittadinoService.salvaCittadino(cittadino);
-	}
-
 	public QuestionarioCompilatoCollection getQuestionarioCompilatoByIdAnonimo(String idQuestionario, String token) throws ParseException {
 		verificaTokenQuestionario(idQuestionario, token);
-		
 		return getQuestionarioCompilatoById(idQuestionario);		
 	}
 
