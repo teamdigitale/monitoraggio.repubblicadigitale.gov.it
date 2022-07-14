@@ -18,6 +18,7 @@ import {
   CreateManagerAuthority,
   GetAuthoritiesBySearch,
   GetAuthorityDetail,
+  GetAuthorityManagerDetail,
   UpdateManagerAuthority,
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
@@ -99,7 +100,10 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
             CreateManagerAuthority({ ...newFormValues }, projectId, 'progetto')
           ));
       }
-      window.location.reload();
+
+      entityId && dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+
+      projectId && dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
       dispatch(closeModal());
     }
   };

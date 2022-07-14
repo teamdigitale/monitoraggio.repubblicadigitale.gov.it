@@ -1,13 +1,12 @@
-import React, { lazy, Suspense, useEffect } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../redux/hooks';
 import { selectLogged } from '../redux/features/user/userSlice';
 import ProtectedComponent from '../hoc/AuthGuard/ProtectedComponent/ProtectedComponent';
 import FullLayout from '../components/PageLayout/FullLayout/fullLayout';
 import { Loader } from '../components';
-import { SessionCheck } from "../redux/features/user/userThunk";
-import UserProfile from '../pages/common/UserProfile/userProfile';
+import { SessionCheck } from '../redux/features/user/userThunk';
 
 //const HomeFacilitator = lazy(() => import('../pages/facilitator/Home/home'));
 const AdministrativeArea = lazy(
@@ -42,6 +41,9 @@ const Auth = lazy(() => import('../pages/common/Auth/auth'));
 const Dashboard = lazy(
   () => import('../pages/administrator/Dashboard/dashboard')
 );
+const UserProfile = lazy(
+  () => import('../pages/common/UserProfile/userProfile')
+);
 
 /**
  The "routes.tsx" file is now useless, lazy loading is implemented for every 
@@ -53,10 +55,19 @@ const Dashboard = lazy(
 const AppRoutes: React.FC = () => {
   const dispatch = useDispatch();
   const isLogged = useAppSelector(selectLogged);
+  const [validSession, setValidSession] = useState(false);
+
+  const checkSession = async () => {
+    const checkSession = await SessionCheck(dispatch);
+    setValidSession(Boolean(checkSession));
+  };
 
   useEffect(() => {
-    dispatch(SessionCheck());
+    checkSession();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (!validSession) return <Loader />;
 
   return (
     // This fix is need cause Loader will cause a wdyr error if used here
@@ -113,10 +124,7 @@ const AppRoutes: React.FC = () => {
               </ProtectedComponent>
             }
           />
-          <Route
-            path='/onboarding'
-            element={<Onboarding />}
-          />
+          <Route path='/onboarding' element={<Onboarding />} />
           <Route
             path='/dashboard'
             element={
@@ -125,12 +133,23 @@ const AppRoutes: React.FC = () => {
               </ProtectedComponent>
             }
           />
-          <Route path='/area-personale' element={<UserProfile />} />
+          <Route path='/area-personale' element={
+            <ProtectedComponent visibleTo={[]} redirect='/'>
+              <UserProfile />
+            </ProtectedComponent>
+          } />
           <Route path='/playground' element={<Playground />} />
-          <Route path='/' element={<Navigate to={isLogged ? '/area-amministrativa' : '/auth'} />} />
+          <Route
+            path='/'
+            element={
+              <Navigate to={isLogged ? '/area-amministrativa' : '/auth'} />
+            }
+          />
           <Route
             path='*'
-            element={<Navigate to={isLogged ? '/area-amministrativa' : '/auth'} />}
+            element={
+              <Navigate to={isLogged ? '/area-amministrativa' : '/auth'} />
+            }
           />
         </Route>
         <Route path='/stampa-questionario' element={<PrintSurvey />} />

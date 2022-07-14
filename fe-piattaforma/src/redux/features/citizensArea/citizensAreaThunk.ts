@@ -13,7 +13,7 @@ import { RootState } from '../../store';
 // import { mapOptions } from '../../../utils/common';
 import { OptionType } from '../../../components/Form/select';
 import { mapOptions } from '../../../utils/common';
-import {getUserHeaders} from "../user/userThunk";
+import { getUserHeaders } from '../user/userThunk';
 
 const GetValuesAction = { type: 'citizensArea/GetEntityValues' };
 
@@ -41,7 +41,8 @@ export const GetEntityValues =
           );
         }
       });
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } = getUserHeaders();
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
 
       const body = {
         filtro: filtroRequest,
@@ -97,7 +98,8 @@ export const GetEntityFilterValues =
           );
         }
       });
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } = getUserHeaders();
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
       const body = {
         filtro: filtroRequest,
         idProgetto,

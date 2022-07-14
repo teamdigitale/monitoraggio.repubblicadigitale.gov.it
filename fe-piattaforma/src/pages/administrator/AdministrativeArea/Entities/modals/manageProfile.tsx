@@ -1,33 +1,32 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
-import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
-import { formFieldI } from '../../../../../utils/formHelper';
+import { closeModal } from '../../../../../redux/features/modal/modalSlice';
+import {CreateUserContext, EditUser} from '../../../../../redux/features/user/userThunk';
+import {formFieldI, FormHelper, FormI} from '../../../../../utils/formHelper';
 import FormOnboarding from '../../../../facilitator/Onboarding/formOnboarding';
 import { formTypes } from '../utils';
 
 const id = formTypes.PROFILE;
 
-interface ManageProfileFormI {
-  formDisabled?: boolean;
-  creation?: boolean;
-}
-
-interface ManageProfileI extends withFormHandlerProps, ManageProfileFormI {}
-
-const ManageProfile: React.FC<ManageProfileI> = ({
-  clearForm,
-  formDisabled,
-  /*   creation = false, */
-}) => {
+const ManageProfile: React.FC = () => {
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
   }>({});
-  const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  //const user = useAppSelector(selectUser);
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
-  const handleSaveProfile = () => {
+  const onSubmit = async () => {
+    console.log('onEdit', newFormValues);
     if (isFormValid) {
-      console.log(newFormValues);
-      // TODO update with real api
+      const res = await dispatch(EditUser(newFormValues));
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (res) {
+        if (newFormValues?.codiceFiscale) dispatch(CreateUserContext(newFormValues.codiceFiscale.toString()))
+        dispatch(closeModal());
+      }
     }
   };
 
@@ -37,19 +36,18 @@ const ManageProfile: React.FC<ManageProfileI> = ({
       primaryCTA={{
         disabled: !isFormValid,
         label: 'Conferma',
-        onClick: () => handleSaveProfile,
+        onClick: () => onSubmit?.(),
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: () => clearForm?.(),
+        onClick: () => dispatch(closeModal()),
       }}
     >
       <FormOnboarding
-        formDisabled={!!formDisabled}
-        sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
-          setNewFormValues({ ...newData })
+        sendNewForm={(newForm: FormI) =>
+          setNewFormValues(FormHelper.getFormValues(newForm))
         }
-        setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+        setIsFormValid={(value: boolean) => setIsFormValid(value)}
       />
     </GenericModal>
   );

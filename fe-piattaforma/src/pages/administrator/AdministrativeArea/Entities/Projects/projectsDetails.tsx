@@ -39,8 +39,13 @@ import {
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import ManageManagerAuthority from '../modals/manageManagerAuthority';
 import { GetAuthorityManagerDetail } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
-import { ActivateProject, GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
+import {
+  ActivateProject,
+  GetProjectDetail,
+} from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 import TerminateEntityModal from '../../../../../components/AdministrativeArea/Entities/General/TerminateEntityModal/TerminateEntityModal';
+import ManageDelegate from '../modals/manageDelegate';
+import ManageReferal from '../modals/manageReferal';
 
 const tabs = {
   INFO: 'info',
@@ -56,11 +61,12 @@ export const buttonsPositioning = {
 
 const ProjectsDetails = () => {
   const { mediaIsDesktop, mediaIsPhone } = useAppSelector(selectDevice);
-  const progetti = useAppSelector(selectProjects);
-  const projectDetails = progetti.detail?.dettagliInfoProgetto;
-  const managingAuthorityID = progetti.detail?.idEnteGestoreProgetto;
-  const PartnerAuthoritiesList = progetti.detail?.entiPartner;
-  const headquarterList = progetti?.detail?.sedi;
+  const project = useAppSelector(selectProjects).detail;
+  const projectDetails = project.dettagliInfoProgetto;
+  const managingAuthorityID = project.idEnteGestoreProgetto;
+  const PartnerAuthoritiesList = project.entiPartner;
+  const headquarterList = project?.sedi;
+  const authorityInfo = useAppSelector(selectAuthorities).detail;
   const [deleteText, setDeleteText] = useState<string>('');
   const [activeTab, setActiveTab] = useState<string>(tabs.INFO);
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
@@ -85,7 +91,7 @@ const ProjectsDetails = () => {
   const sediRef = useRef<HTMLLIElement>(null);
   const infoRef = useRef<HTMLLIElement>(null);
   const { projectId } = useParams();
-  const shortName = progetti.detail?.dettaglioProgetto?.nomeBreve;
+  const shortName = project.detail?.dettaglioProgetto?.nomeBreve;
   const managerAuthority =
     useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
 
@@ -117,6 +123,33 @@ const ProjectsDetails = () => {
     scrollTo(0, 0);
     centerActiveItem();
   }, [activeTab]);
+
+  const onActionClickReferenti: CRUDActionsI = {
+    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+      navigate(
+        `/area-amministrativa/${formTypes.REFERENTI}/${
+          typeof td === 'string' ? td : td?.id
+        }`
+      );
+    },
+    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+      // dispatch(RemoveReferentDelegate())
+      console.log(td);
+    },
+  };
+
+  const onActionClickDelegati: CRUDActionsI = {
+    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+      navigate(
+        `/area-amministrativa/${formTypes.DELEGATI}/${
+          typeof td === 'string' ? td : td?.id
+        }`
+      );
+    },
+    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+      console.log(td);
+    },
+  };
 
   const centerActiveItem = () => {
     switch (activeTab) {
@@ -231,6 +264,28 @@ const ProjectsDetails = () => {
                 payload: { title: 'Modifica ente gestore progetto' },
               })
             ),
+        },
+      ]);
+      setItemAccordionList([
+        {
+          title: 'Referenti',
+          items:
+            authorityInfo?.referentiEnteGestore?.map(
+              (ref: { [key: string]: string }) => ({
+                ...ref,
+                actions: onActionClickReferenti,
+              })
+            ) || [],
+        },
+        {
+          title: 'Delegati',
+          items:
+            authorityInfo?.delegatiEnteGestore?.map(
+              (del: { [key: string]: string }) => ({
+                ...del,
+                actions: onActionClickDelegati,
+              })
+            ) || [],
         },
       ]);
       setEmptySection(undefined);
@@ -452,7 +507,7 @@ const ProjectsDetails = () => {
 
   const projectActivation = async () => {
     await dispatch(ActivateProject(projectDetails?.id));
-    dispatch(GetProjectDetail(projectDetails?.id)); 
+    dispatch(GetProjectDetail(projectDetails?.id));
   };
 
   const onActionClickEntiPartner: CRUDActionsI = {
@@ -583,7 +638,7 @@ const ProjectsDetails = () => {
       default:
         return;
     }
-  }, [activeTab, mediaIsDesktop, progetti, projectDetails]);
+  }, [activeTab, mediaIsDesktop, projectDetails, authorityInfo]);
 
   const terminateProject = async (
     projectId: string,
@@ -659,6 +714,8 @@ const ProjectsDetails = () => {
               terminateProject(projectId, terminationDate)
             }
           />
+          <ManageDelegate />
+          <ManageReferal />
         </div>
       </div>
     </div>

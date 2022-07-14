@@ -2,7 +2,8 @@ import React, { memo } from 'react';
 import { useAppSelector } from '../../redux/hooks';
 import {
   selectUserNotification,
-  selectUser, UserStateI,
+  selectUser,
+  UserStateI,
 } from '../../redux/features/user/userSlice';
 import { useDispatch } from 'react-redux';
 import { selectDevice } from '../../redux/features/app/appSlice';

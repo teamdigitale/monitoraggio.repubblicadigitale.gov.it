@@ -9,14 +9,14 @@ import { openModal } from '../../../redux/features/modal/modalSlice';
 import { formTypes } from '../../administrator/AdministrativeArea/Entities/utils';
 import { updateBreadcrumb } from '../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../redux/hooks';
-import { selectUsers } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import ManageProfile from '../../administrator/AdministrativeArea/Entities/modals/manageProfile';
+import { selectUser } from '../../../redux/features/user/userSlice';
 
 const UserProfile = () => {
   /* const userInfo = useAppSelector(selectUsers)?.detail?.info; */
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
   const dispatch = useDispatch();
-  const userData = useAppSelector(selectUsers)?.detail?.info;
+  const user = useAppSelector(selectUser);
 
   useEffect(() => {
     dispatch(
@@ -50,15 +50,16 @@ const UserProfile = () => {
   ];
 
   return (
-    <>
+    <div className='container'>
       <DetailLayout
         titleInfo={{
-          title: `${userData?.name}${userData?.lastName}`,
-          status: userData?.status,
+          title: `${user?.nome}${user?.cognome}`,
+          status: 'ATTIVO',
           upperTitle: { icon: 'it-user', text: 'UTENTE' },
           iconAvatar: true,
-          name: userData?.name,
-          surname: userData?.lastName,
+          name: user?.nome,
+          surname: user?.cognome,
+          headingRole: false,
         }}
         goBackPath='/'
         buttonsPosition='TOP'
@@ -67,7 +68,7 @@ const UserProfile = () => {
         {currentForm}
       </DetailLayout>
       <ManageProfile />
-    </>
+    </div>
   );
 };
 

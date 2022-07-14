@@ -34,7 +34,7 @@ const ManageCitizens: React.FC<ManageCitizensI> = ({
       // console.log(newFormValues);
       dispatch(UpdateCitizenDetail(idCitizen, newFormValues));
     }
-    if(onClose) onClose();
+    if (onClose) onClose();
   };
 
   return (

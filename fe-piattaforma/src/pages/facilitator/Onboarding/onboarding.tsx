@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import clsx from 'clsx';
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../../redux/hooks';
 import { selectDevice } from '../../../redux/features/app/appSlice';
@@ -12,11 +12,11 @@ import withFormHandler, {
 import { Form, Input } from '../../../components';
 import { Button, FormGroup, Icon, Label } from 'design-react-kit';
 import { login, selectUser } from '../../../redux/features/user/userSlice';
-import {SelectUserRole} from "../../../redux/features/user/userThunk";
-import {openModal} from "../../../redux/features/modal/modalSlice";
+import { SelectUserRole } from '../../../redux/features/user/userThunk';
+import { openModal } from '../../../redux/features/modal/modalSlice';
+import FormOnboarding from './formOnboarding';
 
-
-const FormOnboarding: React.FC<withFormHandlerProps> = (props) => {
+const Onboarding: React.FC<withFormHandlerProps> = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
@@ -25,15 +25,8 @@ const FormOnboarding: React.FC<withFormHandlerProps> = (props) => {
     form,
     isValidForm,
     onInputChange = () => ({}),
-    setFormValues = () => ({}),
+    updateForm = () => ({}),
   } = props;
-
-  useEffect(() => {
-    if (user?.codiceFiscale) {
-      setFormValues(user);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.codiceFiscale]);
 
   if (!user?.codiceFiscale) return <Navigate to='/auth' replace />;
 
@@ -45,17 +38,19 @@ const FormOnboarding: React.FC<withFormHandlerProps> = (props) => {
     console.log('onSubmit', props.getFormValues && props.getFormValues());
     if (isValidForm) {
       if (user.profiliUtente?.length > 1) {
-        dispatch(openModal({
-          id: 'switchProfileModal',
-          payload: {
-            onSubmit: () => {
-              dispatch(login());
-              navigate('/');
-            }
-          }
-        }));
+        dispatch(
+          openModal({
+            id: 'switchProfileModal',
+            payload: {
+              onSubmit: () => {
+                dispatch(login());
+                navigate('/');
+              },
+            },
+          })
+        );
       } else {
-        dispatch(SelectUserRole(user.profiliUtente[0]))
+        dispatch(SelectUserRole(user.profiliUtente[0]));
         dispatch(login());
         navigate('/');
       }
@@ -107,6 +102,7 @@ const FormOnboarding: React.FC<withFormHandlerProps> = (props) => {
                   'position-absolute',
                   'rounded-circle'
                 )}
+                style={{ bottom: '40px', right: '50px' }}
               >
                 <Icon
                   size='lg'
@@ -127,68 +123,10 @@ const FormOnboarding: React.FC<withFormHandlerProps> = (props) => {
             </div>
           </div>
         ) : null}
+        <FormOnboarding sendNewForm={(newForm) => updateForm(newForm)} />
         <Form
           className={clsx('mt-5', 'mb-5', 'pt-5', 'onboarding__form-container')}
         >
-          <Form.Row>
-            <Input
-              {...form?.nome}
-              disabled
-              label='Nome'
-              required
-              placeholder='Inserisci nome'
-              col='col-12 col-md-6'
-              onInputChange={onInputChange}
-            />
-            <Input
-              {...form?.cognome}
-              disabled
-              required
-              label='Cognome'
-              placeholder='Inserisci cognome'
-              col='col-12 col-md-6'
-              onInputChange={onInputChange}
-            />
-          </Form.Row>
-          <Form.Row>
-            <Input
-              {...form?.codiceFiscale}
-              disabled
-              required
-              label='Codice Fiscale'
-              placeholder='Inserisci Codice Fiscale'
-              col='col-12 col-md-6'
-              type='text'
-              onInputChange={onInputChange}
-            />
-            <Input
-              {...form?.email}
-              required
-              label='Email'
-              placeholder='Inserisci email'
-              col='col-12 col-md-6'
-              onInputChange={onInputChange}
-            />
-          </Form.Row>
-          <Form.Row>
-            <Input
-              {...form?.telefono}
-              required
-              label='Telefono'
-              placeholder='Inserisci telefono'
-              col='col-12 col-md-6'
-              onInputChange={onInputChange}
-            />
-            <Input
-              {...form?.bio}
-              required
-              label='Bio'
-              placeholder='Nome Mansione'
-              col='col-12 col-md-6'
-              onInputChange={onInputChange}
-              className={clsx(device.mediaIsPhone && 'mb-0')}
-            />
-          </Form.Row>
           <div
             className={clsx(
               'd-flex flex-row justify-content-start',
@@ -274,4 +212,4 @@ const form: FormI = newForm([
   }),
 ]);
 
-export default withFormHandler({ form }, FormOnboarding);
+export default withFormHandler({ form }, Onboarding);

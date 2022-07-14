@@ -13,77 +13,92 @@ import { Link, useNavigate } from 'react-router-dom';
 interface MenuItem {
   label: string;
   path: string;
-  id: string;
-  subRoutes: SubRoutes[];
+  id?: string;
+  subRoutes?: MenuItem[];
+  visible?: boolean;
 }
 
-interface SubRoutes {
-  label: string;
-  path: string;
-}
-
-const MenuMock = [
-  {
+const newMenuItem = ({
+  label,
+  path,
+  id = label,
+  visible = true,
+  subRoutes = [],
+}: MenuItem) => ({
+  label,
+  path,
+  id,
+  visible,
+  subRoutes,
+});
+const MenuList = [
+  newMenuItem({
     label: 'Home',
     path: '/',
     id: 'tab-home',
-  },
-  {
+  }),
+  newMenuItem({
     label: 'Area amministrativa',
     path: '/area-amministrativa',
     id: 'tab-admin',
+    //visible: // TODO implement condition based on role permission
     subRoutes: [
-      {
+      newMenuItem({
         label: 'Programmi',
         path: '/area-amministrativa/programmi',
-      },
-      {
+      }),
+      newMenuItem({
         label: 'Progetti',
         path: '/area-amministrativa/progetti',
-      },
-      {
+      }),
+      newMenuItem({
         label: 'Enti',
         path: '/area-amministrativa/enti',
-      },
-      {
+      }),
+      newMenuItem({
         label: 'Utenti',
         path: '/area-amministrativa/utenti',
-      },
-      {
+      }),
+      newMenuItem({
         label: 'Questionari',
         path: '/area-amministrativa/questionari',
-      },
-      {
+      }),
+      newMenuItem({
         label: 'Servizi',
         path: '/area-amministrativa/servizi',
-      },
+      }),
     ],
-  },
-  {
+  }),
+  newMenuItem({
     label: 'Area cittadini',
     path: '/area-cittadini',
     id: 'tab-citizen',
-  },
-  {
+    //visible: // TODO implement condition based on role permission
+  }),
+  newMenuItem({
     label: 'Dashboard',
     path: '/dashboard',
     id: 'tab-dashboard',
-  },
-  {
+    visible: process.env.NODE_ENV === 'development',
+  }),
+  newMenuItem({
     label: 'Community',
     path: '/community',
     id: 'tab-community',
-  },
-  {
+    visible: process.env.NODE_ENV === 'development',
+  }),
+  newMenuItem({
     label: 'Bacheca digitale',
     path: '/bacheca-digitale',
     id: 'tab-bacheca-digitale',
-  },
-  {
+    visible: process.env.NODE_ENV === 'development',
+  }),
+  newMenuItem({
     label: 'Documenti',
     path: '/documents',
     id: 'tab-documenti',
-  },
+    visible: process.env.NODE_ENV === 'development',
+  }),
 ];
 
 interface HeaderMenuI {
@@ -93,7 +108,7 @@ interface HeaderMenuI {
 const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
   const { isHeaderFull } = props;
   const [activeTab, setActiveTab] = useState(
-    MenuMock.filter(({ path }) =>
+    MenuList.filter(({ path }) =>
       window.location.pathname.includes(path)
     ).reduce((a, b) => (a.path.length > b.path.length ? a : b)).id
   );
@@ -109,7 +124,7 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
         : setDropdownEventsOpen((prevState) => !prevState);
     };
     const onLinkClick = () => {
-      setActiveTab(li.id);
+      setActiveTab(li.id || li.label);
       toggle(li.label);
     };
 
@@ -143,25 +158,27 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
             <Icon icon='it-expand' size='sm' color='white' aria-label='Apri' />
           </DropdownToggle>
           <DropdownMenu role='menu' tag='ul'>
-            {li.subRoutes.map((link: SubRoutes, index) => (
-              <li
-                key={index}
-                role='none'
-                className={clsx(
-                  index === 0 ? 'px-4 mb-4 mt-2' : 'px-4 mb-4',
-                  'pb-0'
-                )}
-              >
-                <Link
-                  to={link.path}
-                  className='primary-color-b1 py-2'
-                  role='menuitem'
-                  onClick={() => onLinkClick()}
+            {(li.subRoutes || [])
+              .filter(({ visible }) => visible)
+              .map((link: MenuItem, index) => (
+                <li
+                  key={index}
+                  role='none'
+                  className={clsx(
+                    index === 0 ? 'px-4 mb-4 mt-2' : 'px-4 mb-4',
+                    'pb-0'
+                  )}
                 >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
+                  <Link
+                    to={link.path}
+                    className='primary-color-b1 py-2'
+                    role='menuitem'
+                    onClick={() => onLinkClick()}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
           </DropdownMenu>
         </UncontrolledDropdown>
         <div
@@ -188,18 +205,18 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
       tabIndex={-1}
     >
       <ul className='d-flex align-items-end mb-0' role='menu'>
-        {MenuMock?.length &&
-          MenuMock.map((li) => (
+        {MenuList?.length &&
+          MenuList.filter(({ visible }) => visible).map((li) => (
             <li
               key={li.path}
               className={clsx(
                 'position-relative',
-                li.subRoutes && 'mr-2',
+                li.subRoutes?.length && 'mr-2',
                 'text-nowrap'
               )}
               role='none'
             >
-              {li.subRoutes ? (
+              {li.subRoutes?.length ? (
                 navDropDown(li)
               ) : (
                 <>

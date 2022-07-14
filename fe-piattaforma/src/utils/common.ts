@@ -220,17 +220,27 @@ export const downloadCSV = (
 };
 
 export const transformFiltersToQueryParams = (filters: {
-  [key: string]:
-  | { label: string; value: string }[]
-  | undefined
+  [key: string]: { label: string; value: string }[] | undefined;
 }) => {
   let filterString = '';
   Object.keys(filters)?.forEach((filter: string) => {
     if (filter === 'criterioRicerca' || filter === 'filtroCriterioRicerca') {
-      if(filters[filter]) filterString = filterString + (filterString !== '' ? '&':'') +  filter + '=' + filters[filter];
+      if (filters[filter])
+        filterString =
+          filterString +
+          (filterString !== '' ? '&' : '') +
+          filter +
+          '=' +
+          filters[filter];
     } else {
       filters[filter]?.map(
-        (value: OptionType) => filterString = filterString + (filterString !== '' ? '&':'') + filter + '=' + value?.value
+        (value: OptionType) =>
+          (filterString =
+            filterString +
+            (filterString !== '' ? '&' : '') +
+            filter +
+            '=' +
+            value?.value)
       );
     }
   });

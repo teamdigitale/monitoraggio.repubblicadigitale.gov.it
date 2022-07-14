@@ -22,7 +22,7 @@ import {
   updateBreadcrumb,
 } from '../../../../../redux/features/app/appSlice';
 import FormUser from '../../../../forms/formUser';
-import { GetUserDetail } from '../../../../../redux/features/administrativeArea/user/userThunk';
+import { GetUserDetails } from '../../../../../redux/features/administrativeArea/user/userThunk';
 import { selectUsers } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 
 const UsersDetails = () => {
@@ -42,7 +42,7 @@ const UsersDetails = () => {
   const { mediaIsDesktop /* mediaIsPhone */ } = useAppSelector(selectDevice);
 
   useEffect(() => {
-    dispatch(GetUserDetail('1'));
+    dispatch(GetUserDetails('1'));
   }, []);
 
   const headquarterInfo = userInfo?.authorityRef || undefined;

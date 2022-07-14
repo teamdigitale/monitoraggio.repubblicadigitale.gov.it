@@ -116,7 +116,8 @@ const Projects: React.FC = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(progettiList) && progettiList.length) setTableValues(updateTableValues());
+    if (Array.isArray(progettiList) && progettiList.length)
+      setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progettiList]);
 
@@ -227,7 +228,9 @@ const Projects: React.FC = () => {
       searchInformation={searchInformation}
       dropdowns={dropdowns}
       filtersList={filtersList}
-      resetFilterDropdownSelected={(filterKey: string) => setFilterDropdownSelected(filterKey)}
+      resetFilterDropdownSelected={(filterKey: string) =>
+        setFilterDropdownSelected(filterKey)
+      }
     >
       <Table
         {...tableValues}

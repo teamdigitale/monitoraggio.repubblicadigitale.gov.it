@@ -585,7 +585,7 @@ const routes = [
     path: '/area-personale',
     title: 'Area Personale',
     element: <UserProfile />,
-    layout: layoutEnum.mainLayout,
+    layout: layoutEnum.fullLayout,
     isHeaderFull: false,
   }),
 ];

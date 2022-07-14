@@ -15,6 +15,12 @@
     }
   }
 
+  &__larger {
+    .popover.show {
+      width: 250px;
+    }
+  }
+
   &__search-tooltip {
     max-height: 45px;
   }

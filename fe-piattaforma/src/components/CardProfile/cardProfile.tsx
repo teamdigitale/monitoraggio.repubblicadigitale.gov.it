@@ -19,9 +19,7 @@ interface CardProfileI extends CardProps {
 }
 
 const CardProfile: React.FC<CardProfileI> = (props) => {
-  const {
-    className, activeProfile, user = {}, profile = {}
-  } = props;
+  const { className, activeProfile, user = {}, profile = {} } = props;
 
   const device = useAppSelector(selectDevice);
 

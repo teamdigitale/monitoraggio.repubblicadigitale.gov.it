@@ -127,7 +127,7 @@ const AuthoritiesDetails = () => {
             titleInfo={{
               title: authorityDetails?.nome,
               status: authorityDetails?.stato,
-              upperTitle: { icon: [PeopleIcon], text: 'Ente' },
+              upperTitle: { icon: PeopleIcon, text: 'Ente' },
             }}
             formButtons={correctButtons}
             itemsList={itemList}

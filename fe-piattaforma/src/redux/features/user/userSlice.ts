@@ -25,6 +25,15 @@ export interface UserStateI {
   idProgetto: string[] | null;
 }
 
+export interface UserProfileI {
+  codiceRuolo: string;
+  descrizioneRuolo: string;
+  idProgetto: string;
+  idProgramma: string;
+  nomeEnte: string;
+  nomeProgramma: string;
+}
+
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -59,6 +68,7 @@ export const userSlice = createSlice({
         ...action.payload,
         role: action.payload?.profiliUtente[0]?.codiceRuolo,
       };
+      setSessionValues('user', state.user);
     },
     setUserProfile: (state, action: PayloadAction<any>) => {
       state.idProgramma = action.payload.idProgramma;
@@ -67,7 +77,6 @@ export const userSlice = createSlice({
     },
     login: (state) => {
       state.isLogged = true;
-      setSessionValues('user', state.user);
     },
     logout: (state) => {
       state.isLogged = false;
@@ -76,7 +85,8 @@ export const userSlice = createSlice({
   },
 });
 
-export const { login, logout, setUserContext, setUserProfile } = userSlice.actions;
+export const { login, logout, setUserContext, setUserProfile } =
+  userSlice.actions;
 
 export const selectLogged = (state: RootState) => state.user.isLogged;
 export const selectUser = (state: RootState) => state.user.user;

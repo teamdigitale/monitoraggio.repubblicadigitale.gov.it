@@ -58,11 +58,11 @@ const tabs = {
 
 const ProgramsDetails: React.FC = () => {
   const { mediaIsDesktop } = useAppSelector(selectDevice);
-  const programma = useAppSelector(selectPrograms);
-  const surveyList = programma.detail?.questionari;
+  const program = useAppSelector(selectPrograms).detail;
+  const surveyList = program?.questionari;
   const otherSurveyList = useAppSelector(selectSurveys);
-  const projectsList = programma.detail?.progetti;
-  const authorityInfo = useAppSelector(selectAuthorities)?.detail || {};
+  const projectsList = program?.progetti;
+  const authorityInfo = useAppSelector(selectAuthorities)?.detail;
   const dispatch = useDispatch();
   const [deleteText, setDeleteText] = useState<string>('');
   const [editItemModalTitle, setEditItemModalTitle] = useState<string>('');
@@ -146,6 +146,7 @@ const ProgramsDetails: React.FC = () => {
       );
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+      // dispatch(RemoveReferentDelegate())
       console.log(td);
     },
   };
@@ -244,7 +245,7 @@ const ProgramsDetails: React.FC = () => {
           {
             title: 'Referenti',
             items:
-              authorityInfo?.referenti?.map(
+              authorityInfo?.referentiEnteGestore?.map(
                 (ref: { [key: string]: string }) => ({
                   ...ref,
                   actions: onActionClickReferenti,
@@ -254,7 +255,7 @@ const ProgramsDetails: React.FC = () => {
           {
             title: 'Delegati',
             items:
-              authorityInfo?.delegati?.map(
+              authorityInfo?.delegatiEnteGestore?.map(
                 (del: { [key: string]: string }) => ({
                   ...del,
                   actions: onActionClickDelegati,

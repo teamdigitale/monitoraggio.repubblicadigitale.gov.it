@@ -102,7 +102,8 @@ const Services = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(eventsList) && eventsList.length) setTableValues(updateTableValues());
+    if (Array.isArray(eventsList) && eventsList.length)
+      setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventsList]);
 
@@ -206,7 +207,9 @@ const Services = () => {
       filtersList={filtersList}
       {...servicesCta}
       cta={newService}
-      resetFilterDropdownSelected={(filterKey: string) => setFilterDropdownSelected(filterKey)}
+      resetFilterDropdownSelected={(filterKey: string) =>
+        setFilterDropdownSelected(filterKey)
+      }
     >
       <Table
         {...tableValues}

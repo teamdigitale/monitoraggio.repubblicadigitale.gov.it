@@ -96,7 +96,9 @@ export const createProgram =
         const res = await API.post(`/programma`, {
           ...body,
         });
-        console.log('createProgramDetails res', res);
+        if (res) {
+          return res;
+        }
       }
     } catch (error) {
       console.log(error);

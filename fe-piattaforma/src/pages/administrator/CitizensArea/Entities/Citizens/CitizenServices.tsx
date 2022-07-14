@@ -39,7 +39,12 @@ const CitizenServices: React.FC<{
         idServizio: td.idServizio || '',
         nomeServizio: td.nomeServizio || '',
         nomeCompletoFacilitatore: td.nomeCompletoFacilitatore || '',
-        statoQuestionario: <StatusChip status={td.statoQuestionario} rowTableId={td.idServizio} />,
+        statoQuestionario: (
+          <StatusChip
+            status={td.statoQuestionario}
+            rowTableId={td.idServizio}
+          />
+        ),
         idQuestionarioCompilato: td.idQuestionarioCompilato || '',
       }))
     );
@@ -57,7 +62,9 @@ const CitizenServices: React.FC<{
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
       navigate(
-        `/area-amministrativa/servizi/${typeof td !== 'string' ? td.idServizio : td}/info`
+        `/area-amministrativa/servizi/${
+          typeof td !== 'string' ? td.idServizio : td
+        }/info`
       );
     },
   };

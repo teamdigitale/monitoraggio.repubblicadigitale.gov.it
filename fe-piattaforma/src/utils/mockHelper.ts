@@ -38,12 +38,6 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });*/
 
-    mockInstance.onGet('/utente/all').reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/listaUtenti.json');
-      return [200, response];
-    });
-
     mockInstance.onPost('/utente/all').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/listaUtenti.json');
@@ -252,11 +246,13 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });
 
-    mockInstance.onPost('/questionarioTemplate/stati/dropdown').reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/statiDropdown.json');
-      return [200, response];
-    });
+    mockInstance
+      .onPost('/questionarioTemplate/stati/dropdown')
+      .reply(async () => {
+        // @ts-ignore
+        const response = await import('/mock/statiDropdown.json');
+        return [200, response];
+      });
 
     mockInstance.onGet('/questionarioTemplate/1').reply(async () => {
       // @ts-ignore

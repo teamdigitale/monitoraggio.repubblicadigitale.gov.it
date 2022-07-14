@@ -104,7 +104,8 @@ const Programs = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(programmiList) && programmiList.length) setTableValues(updateTableValues());
+    if (Array.isArray(programmiList) && programmiList.length)
+      setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [programmiList]);
 
@@ -235,7 +236,9 @@ const Programs = () => {
       {...programCta}
       cta={newProgram}
       ctaDownload={handleDownloadList}
-      resetFilterDropdownSelected={(filterKey: string) => setFilterDropdownSelected(filterKey)}
+      resetFilterDropdownSelected={(filterKey: string) =>
+        setFilterDropdownSelected(filterKey)
+      }
     >
       <div>
         <Table
