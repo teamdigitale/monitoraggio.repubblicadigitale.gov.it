@@ -17,14 +17,6 @@ import lombok.Setter;
 @JsonRootName(value = "integraContesto")
 public class IntegraContestoRequest implements Serializable {
 	private static final long serialVersionUID = -6654227879250469320L;
-
-	@JsonProperty(value = "nome")
-	@NotBlank
-	private String nome;
-	
-	@JsonProperty(value = "cognome")
-	@NotBlank
-	private String cognome;
 	
 	@JsonProperty(value = "codiceFiscale")
 	@NotBlank

@@ -71,8 +71,6 @@ public class ContestoRestApiTest{
 		
 		IntegraContestoRequest integraContestoRequestRequest = new IntegraContestoRequest();
 		integraContestoRequestRequest.setCodiceFiscale("codiceFiscale");
-		integraContestoRequestRequest.setCognome("cognome");
-		integraContestoRequestRequest.setNome("nome");
 		integraContestoRequestRequest.setTelefono("45234234");
 		integraContestoRequestRequest.setBio("bio");
 		integraContestoRequestRequest.setEmail("a@a.it");

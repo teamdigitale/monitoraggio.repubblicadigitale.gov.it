@@ -185,6 +185,8 @@ public class CittadinoService {
 			final String codiceFiscale, 
 			final String numeroDocumento) {
 		if(isCodiceFiscaleNonDisponibile == null || isCodiceFiscaleNonDisponibile) {
+			if(numeroDocumento == null || numeroDocumento.equals(""))
+				throw new CittadinoException("ERRORE: occorre definire il CF o il numero documento");
 			return cittadinoRepository.findByNumeroDocumento(numeroDocumento);
 		}
 		return cittadinoRepository.findByCodiceFiscale(codiceFiscale);

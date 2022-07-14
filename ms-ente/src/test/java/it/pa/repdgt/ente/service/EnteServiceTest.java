@@ -982,12 +982,12 @@ public class EnteServiceTest {
 		referenteDelegatoGestoreProgrammaRequest.setCodiceRuolo(ruolo4.getCodice());
 		referenteDelegatoGestoreProgrammaRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
 		referentiDelegatiEnteGestoreProgrammaEntity.setStatoUtente(StatoEnum.ATTIVO.getValue());
-		when(referentiDelegatiEnteGestoreProgrammaService.getReferenteDelegatiEnteGestoreProgramma(programma1.getId(), utente1.getCodiceFiscale(), ente1.getId())).thenReturn(referentiDelegatiEnteGestoreProgrammaEntity);
+		when(referentiDelegatiEnteGestoreProgrammaService.getReferenteDelegatiEnteGestoreProgramma(programma1.getId(), utente1.getCodiceFiscale(), ente1.getId(), ruolo4.getCodice())).thenReturn(referentiDelegatiEnteGestoreProgrammaEntity);
 		enteService.cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest);
 		verify(referentiDelegatiEnteGestoreProgrammaService, times(1)).save(Mockito.any(ReferentiDelegatiEnteGestoreProgrammaEntity.class));
 		
 		referentiDelegatiEnteGestoreProgrammaEntity.setStatoUtente(StatoEnum.NON_ATTIVO.getValue());
-		when(referentiDelegatiEnteGestoreProgrammaService.getReferenteDelegatiEnteGestoreProgramma(programma1.getId(), utente1.getCodiceFiscale(), ente1.getId())).thenReturn(referentiDelegatiEnteGestoreProgrammaEntity);
+		when(referentiDelegatiEnteGestoreProgrammaService.getReferenteDelegatiEnteGestoreProgramma(programma1.getId(), utente1.getCodiceFiscale(), ente1.getId(), ruolo4.getCodice())).thenReturn(referentiDelegatiEnteGestoreProgrammaEntity);
 		enteService.cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest);
 		verify(referentiDelegatiEnteGestoreProgrammaService, times(1)).cancellaAssociazioneReferenteDelegatoGestoreProgramma(Mockito.any(ReferentiDelegatiEnteGestoreProgrammaKey.class));
 	}
@@ -1007,12 +1007,12 @@ public class EnteServiceTest {
 		referenteDelegatoGestoreProgettoRequest.setCodiceRuolo(ruolo3.getCodice());
 		referenteDelegatoGestoreProgettoRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
 		referentiDelegatiEnteGestoreProgettoEntity.setStatoUtente(StatoEnum.ATTIVO.getValue());
-		when(referentiDelegatiEnteGestoreProgettoService.getReferenteDelegatiEnteGestoreProgetto(progetto1.getId(), utente1.getCodiceFiscale(), ente1.getId())).thenReturn(referentiDelegatiEnteGestoreProgettoEntity);
+		when(referentiDelegatiEnteGestoreProgettoService.getReferenteDelegatiEnteGestoreProgetto(progetto1.getId(), utente1.getCodiceFiscale(), ente1.getId(), ruolo3.getCodice())).thenReturn(referentiDelegatiEnteGestoreProgettoEntity);
 		enteService.cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgetto(referenteDelegatoGestoreProgettoRequest);
 		verify(referentiDelegatiEnteGestoreProgettoService, times(1)).save(Mockito.any(ReferentiDelegatiEnteGestoreProgettoEntity.class));
 	
 		referentiDelegatiEnteGestoreProgettoEntity.setStatoUtente(StatoEnum.NON_ATTIVO.getValue());
-		when(referentiDelegatiEnteGestoreProgettoService.getReferenteDelegatiEnteGestoreProgetto(programma1.getId(), utente1.getCodiceFiscale(), ente1.getId())).thenReturn(referentiDelegatiEnteGestoreProgettoEntity);
+		when(referentiDelegatiEnteGestoreProgettoService.getReferenteDelegatiEnteGestoreProgetto(progetto1.getId(), utente1.getCodiceFiscale(), ente1.getId(), ruolo3.getCodice())).thenReturn(referentiDelegatiEnteGestoreProgettoEntity);
 		enteService.cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgetto(referenteDelegatoGestoreProgettoRequest);
 		verify(referentiDelegatiEnteGestoreProgettoService, times(1)).cancellaAssociazioneReferenteDelegatoGestoreProgetto(Mockito.any(ReferentiDelegatiEnteGestoreProgettoKey.class));
 	}

@@ -1,6 +1,7 @@
 package it.pa.repdgt.ente.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -122,12 +123,14 @@ public interface ReferentiDelegatiEnteGestoreProgettoRepository extends JpaRepos
 			+ "FROM referente_delegati_gestore_progetto rdgp "
 			+ "WHERE rdgp.ID_PROGETTO = :idProgetto "
 			+ "		AND rdgp.CF_UTENTE = :codiceFiscaleUtente "
-			+ "		AND rdgp.ID_ENTE = :idEnte", 
+			+ "		AND rdgp.ID_ENTE = :idEnte"
+			+ "		AND rdgp.CODICE_RUOLO = :codiceRuolo", 
 			nativeQuery = true)
-	ReferentiDelegatiEnteGestoreProgettoEntity findReferenteDelegatiEnteGestoreProgetto(
+	Optional<ReferentiDelegatiEnteGestoreProgettoEntity> findReferenteDelegatiEnteGestoreProgetto(
 			@Param(value = "idProgetto") Long idProgetto,
 			@Param(value = "codiceFiscaleUtente") String codiceFiscaleUtente,
-			@Param(value = "idEnte") Long idEnte);
+			@Param(value = "idEnte") Long idEnte,
+			@Param(value = "codiceRuolo") String codiceRuolo);
 
 	@Query(value = "SELECT * "
 			+ "FROM referente_delegati_gestore_progetto rdgp "
