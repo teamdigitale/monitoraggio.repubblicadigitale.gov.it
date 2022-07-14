@@ -89,6 +89,21 @@ spec:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: KEYSTORE_PASSWORD
+            - name: awsS3AccessKey
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsS3AccessKey
+            - name: awsS3BucketName
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsS3BucketName
+            - name: awsS3SecretKey
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsS3SecretKey
 ---
 apiVersion: v1
 kind: Service
