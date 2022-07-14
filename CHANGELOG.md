@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.24](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.23...1.0.0-develop.24) (2022-07-14)
+
+
+### Bug Fixes
+
+* **be:** ente referenti - integra contesto ([8f9f800](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8f9f800012a584803041dd96b801adef939b89bb))
+
 ## [1.0.0-develop.23](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.22...1.0.0-develop.23) (2022-07-13)
 
 
