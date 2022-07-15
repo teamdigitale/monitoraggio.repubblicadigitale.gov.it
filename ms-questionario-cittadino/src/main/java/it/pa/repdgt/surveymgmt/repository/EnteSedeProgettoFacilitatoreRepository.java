@@ -53,16 +53,21 @@ public interface EnteSedeProgettoFacilitatoreRepository extends JpaRepository<En
 
 	@Query(value = ""
 			+ " SELECT DISTINCT "
-			+ "	 s.ID as id "
-			+ "	,s.NOME as nome "
+			+ "	 	s.ID as id "
+			+ "	    ,s.NOME as nome "
 			+ " FROM"
-			+ "	sede s "
-			+ "	INNER JOIN ente_sede_progetto_facilitatore espf "
-			+ "	ON espf.id_sede = s.ID "
+			+ "		sede s "
+			+ "		INNER JOIN ente_sede_progetto_facilitatore espf "
+			+ "		ON espf.id_sede = s.ID "
 			+ " WHERE 1=1 "
-			+ " 	AND espf.id_facilitatore = :codiceFiscaleFacilitatore ",
+			+ " 	AND espf.id_facilitatore = :codiceFiscaleFacilitatore "
+			+ " 	AND espf.id_ente = :idEnte "
+			+ " 	AND espf.id_progetto = :idProgetto ",
 			nativeQuery = true)
 	List<SedeProjection> findSediByFacilitatore(
-			@Param("codiceFiscaleFacilitatore") String codiceFiscaleFacilitatore);
+			@Param("codiceFiscaleFacilitatore") String codiceFiscaleFacilitatore,
+			@Param("idEnte") Long idEnte,
+			@Param("idProgetto") Long idProgetto
+		);
 	
 }
