@@ -6,11 +6,11 @@ import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
 import Form from '../../../../Form/form';
 import Input from '../../../../Form/input';
-import { OpenDay } from '../AccordionAddressList/AccordionAddress/AccordionAddress';
+import { OpenDayHours } from '../AccordionAddressList/AccordionAddress/AccordionAddress';
 import TimeSelectSection from '../TimeSelectSection/TimeSelectSection';
 
 interface OpenDaysSelectI {
-  openDays: OpenDay[];
+  openDays: OpenDayHours[];
   onAddOpenDay: (i: number) => void;
   onRemoveOpenDay: (i: number) => void;
   onTimeChange: (i: number, timeSpan: string[][]) => void;
@@ -56,7 +56,11 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
                     <Input
                       id={`input-checkbox-day-${i}`}
                       type='checkbox'
-                      checked={openDays.some((day) => day.index === i)}
+                      checked={openDays.some((day) =>
+                        dayOfWeek[i]
+                          .toUpperCase()
+                          .includes(day.giornoAperturaSede.toUpperCase())
+                      )}
                       onInputChange={(value) => {
                         if (value) {
                           onAddOpenDay(i);
@@ -76,12 +80,34 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
             <div className={clsx(!isMobile && 'col')}>
               <Collapse
                 className={clsx(isMobile && 'pt-5')}
-                isOpen={!isMobile || openDays.some((day) => day.index === i)}
+                isOpen={
+                  !isMobile ||
+                  openDays.some((day) =>
+                    dayOfWeek[i]
+                      .toUpperCase()
+                      .includes(day.giornoAperturaSede.toUpperCase())
+                  )
+                }
               >
                 <TimeSelectSection
                   isReadOnly={isReadOnly}
-                  disabled={!openDays.some((day) => day.index === i)}
-                  timeSpan={openDays.find((day) => day.index === i)?.hourSpan}
+                  disabled={
+                    !openDays.some((day) =>
+                      dayOfWeek[i]
+                        .toUpperCase()
+                        .includes(day.giornoAperturaSede.toUpperCase())
+                    )
+                  }
+                  timeSpan={openDays
+                    .filter((day) =>
+                      dayOfWeek[i]
+                        .toUpperCase()
+                        .includes(day.giornoAperturaSede.toUpperCase())
+                    )
+                    .map((day) => [
+                      day.orarioAperturaSede,
+                      day.orarioChiusuraSede,
+                    ])}
                   onTimeChange={(timeSpan: string[][]) =>
                     onTimeChange(i, timeSpan)
                   }
@@ -92,7 +118,12 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
         ))
         .filter(
           (_d, idx) =>
-            (isReadOnly && openDays.find((day) => day.index === idx)) ||
+            (isReadOnly &&
+              openDays.find((day) =>
+                dayOfWeek[idx]
+                  .toUpperCase()
+                  .includes(day.giornoAperturaSede.toUpperCase())
+              )) ||
             !isReadOnly
         )}
     </div>

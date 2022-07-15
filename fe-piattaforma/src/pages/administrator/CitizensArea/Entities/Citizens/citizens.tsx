@@ -152,20 +152,13 @@ const Citizens = () => {
         numeroQuestionariCompilati: td.numeroQuestionariCompilati,
       }))
     );
-    return {
-      ...table,
-      // TODO remove slice after BE integration
-      values: table.values.slice(
-        pagination?.pageNumber * pagination?.pageSize - pagination?.pageSize,
-        pagination?.pageNumber * pagination?.pageSize
-      ),
-    };
+    return table;
   };
 
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    setTableValues(updateTableValues());
+    if (Array.isArray(citizensList) && citizensList.length) setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [citizensList]);
 
@@ -220,20 +213,21 @@ const Citizens = () => {
           <Table
             {...tableValues}
             id='table'
-            //onActionClick={(action, row) => console.log(action, row)}
             onCellClick={(field, row) => console.log(field, row)}
             //onRowClick={row => console.log(row)}
             withActions
             onActionClick={onActionClick}
           />
-          <Paginator
-            activePage={pagination?.pageNumber}
-            center
-            refID='#table'
-            pageSize={pagination?.pageSize}
-            total={citizensList?.length}
-            onChange={handleOnChangePage}
-          />
+          {pagination?.pageNumber ? (
+            <Paginator
+              activePage={pagination?.pageNumber}
+              center
+              refID='#table'
+              pageSize={pagination?.pageSize}
+              total={pagination?.totalPages}
+              onChange={handleOnChangePage}
+            />
+          ) : null}
         </div>
         <SearchCitizenModal />
       </GenericSearchFilterTableLayout>

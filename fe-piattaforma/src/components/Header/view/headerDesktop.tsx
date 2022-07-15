@@ -155,71 +155,74 @@ const HeaderDesktop: React.FC<HeaderI> = ({
     <header
       className={clsx('header-container', isLogged && 'user-logged', 'w-100')}
     >
-      <div
-        className={clsx(
-          'header-container__top',
-          'd-flex',
-          'justify-content-end',
-          isLogged ? 'text.white primary-bg-b2' : ''
-        )}
-      >
+      {isLogged && (
         <div
           className={clsx(
-            'container',
+            'header-container__top',
             'd-flex',
-            'align-items-center',
             'justify-content-end',
-            'my-0'
+            'text.white primary-bg-b2'
           )}
         >
-          {/* <div className='mr-auto'>
-            {isHeaderFull ? (
-              <p className='h6 m-0'>Repubblica Digitale</p>
-            ) : (
-              <a href='/'>
-                <img src={LogoSmall} alt='logo' />
-              </a>
-            )}
-          </div> */}
           <div
             className={clsx(
-              'mr-2',
-              'px-3',
-              'border-left',
-              'border-right',
-              'd-inline-flex',
-              'flex-row',
+              'container',
+              'd-flex',
               'align-items-center',
-              'primary-bg-b2',
-              'header-panel-btn'
+              'justify-content-end',
+              'my-0'
             )}
           >
-            <a
-              href='/gestione-ruoli'
-              className='text-decoration-none text-white'
-            >
-              <div className='d-flex flew-row'>
-                <Icon
-                  icon='it-settings'
-                  size='sm'
-                  color='white'
-                  aria-label='Gestione profili'
-                />
-                <h6
-                  className={clsx(
-                    'm-0',
-                    'ml-2',
-                    'font-weight-light',
-                    'text-nowrap'
-                  )}
-                >
-                  {' '}
-                  {t('role_management')}{' '}
-                </h6>
-              </div>
+            {/* <div className='mr-auto'>
+          {isHeaderFull ? (
+            <p className='h6 m-0'>Repubblica Digitale</p>
+          ) : (
+            <a href='/'>
+              <img src={LogoSmall} alt='logo' />
             </a>
-          </div>
-          {/* <div>
+          )}
+        </div> */}
+
+            <div
+              className={clsx(
+                'mr-2',
+                'px-3',
+                'border-left',
+                'border-right',
+                'd-inline-flex',
+                'flex-row',
+                'align-items-center',
+                'primary-bg-b2',
+                'header-panel-btn'
+              )}
+            >
+              <a
+                href='/gestione-ruoli'
+                className='text-decoration-none text-white'
+              >
+                <div className='d-flex flew-row'>
+                  <Icon
+                    icon='it-settings'
+                    size='sm'
+                    color='white'
+                    aria-label='Gestione profili'
+                  />
+                  <h6
+                    className={clsx(
+                      'm-0',
+                      'ml-2',
+                      'font-weight-light',
+                      'text-nowrap'
+                    )}
+                  >
+                    {' '}
+                    {t('role_management')}{' '}
+                  </h6>
+                </div>
+              </a>
+            </div>
+
+            {/* <div>
             <Dropdown
               className={clsx(
                 'mr-3',
@@ -272,42 +275,43 @@ const HeaderDesktop: React.FC<HeaderI> = ({
             </Dropdown>
           </div> */}
 
-          {
-            isLogged ? (
-              <>
-                {userDropDown()}
+            {
+              isLogged ? (
+                <>
+                  {userDropDown()}
 
-                <div className='mx-4'>
-                  {/* <Icon
+                  <div className='mx-4'>
+                    {/* <Icon
                     color='white'
                     icon='campanella'
                     size='sm'
                     aria-label='Menu utente'
                     focusable={false}
                   /> */}
-                  <img
-                    src={campanella}
-                    alt='notification'
-                    aria-label='Menu utente'
-                  />
-                  {notification?.length ? (
-                    <Badge>{notification.length}</Badge>
-                  ) : null}
-                </div>
-              </>
-            ) : null
-            // <div className='d-inline-flex align-items-center px-4'>
-            //   <h6 className='m-0'>ITA</h6>
-            //   <Icon
-            //     color='white'
-            //     icon='it-expand'
-            //     size='sm'
-            //     aria-label='Selezione lingua'
-            //   />
-            // </div>
-          }
+                    <img
+                      src={campanella}
+                      alt='notification'
+                      aria-label='Menu utente'
+                    />
+                    {notification?.length ? (
+                      <Badge>{notification.length}</Badge>
+                    ) : null}
+                  </div>
+                </>
+              ) : null
+              // <div className='d-inline-flex align-items-center px-4'>
+              //   <h6 className='m-0'>ITA</h6>
+              //   <Icon
+              //     color='white'
+              //     icon='it-expand'
+              //     size='sm'
+              //     aria-label='Selezione lingua'
+              //   />
+              // </div>
+            }
+          </div>
         </div>
-      </div>
+      )}
       {isHeaderFull && (
         <div
           className={clsx(

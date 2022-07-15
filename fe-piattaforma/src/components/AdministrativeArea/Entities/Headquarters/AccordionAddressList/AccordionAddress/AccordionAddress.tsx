@@ -1,19 +1,28 @@
 import React from 'react';
+import { dayOfWeek } from '../../../../../../pages/administrator/AdministrativeArea/Entities/utils';
 import Accordion from '../../../../../Accordion/accordion';
 import AddressForm from '../../../../../General/AddressForm/AddressForm';
 import OpenDaysSelect from '../../OpenDaysSelect/OpenDaysSelect';
 
-export interface OpenDay {
-  index: number;
-  hourSpan: string[][];
+export interface OpenDayHours {
+  giornoAperturaSede: string;
+  orarioAperturaSede: string;
+  orarioChiusuraSede: string;
+}
+
+export interface Address {
+  via: string;
+  civico: string;
+  comune: string;
+  provincia: string;
+  cap: string;
+  regione: string;
+  nazione: string;
 }
 
 export interface AddressInfoI {
-  address: string;
-  CAP: string;
-  city: string;
-  province: string;
-  openDays: OpenDay[];
+  indirizzoSede: Address;
+  fasceOrarieAperturaIndirizzoSede: OpenDayHours[];
 }
 
 interface AccordionAddressI {
@@ -43,24 +52,30 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
   ) => {
     onAddressInfoChange({
       ...addressInfo,
-      address: address,
-      province: province,
-      city: city,
-      CAP: CAP,
+      indirizzoSede: {
+        ...addressInfo.indirizzoSede,
+        via: address,
+        provincia: province,
+        comune: city,
+        cap: CAP,
+      },
     });
   };
 
   const openDayAddHandler = (dayIndex: number) => {
     onAddressInfoChange({
       ...addressInfo,
-      openDays: [
-        ...addressInfo.openDays,
+      fasceOrarieAperturaIndirizzoSede: [
+        ...addressInfo.fasceOrarieAperturaIndirizzoSede,
         {
-          index: dayIndex,
-          hourSpan: [
-            ['09:00', '13:00'],
-            ['14:00', '18:00'],
-          ],
+          giornoAperturaSede: dayOfWeek[dayIndex].slice(0, 3).toUpperCase(),
+          orarioAperturaSede: '09:00',
+          orarioChiusuraSede: '12:00',
+        },
+        {
+          giornoAperturaSede: dayOfWeek[dayIndex].slice(0, 3).toUpperCase(),
+          orarioAperturaSede: '14:00',
+          orarioChiusuraSede: '18:00',
         },
       ],
     });
@@ -69,16 +84,38 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
   const openDayRemoveHandler = (dayIndex: number) => {
     onAddressInfoChange({
       ...addressInfo,
-      openDays: addressInfo.openDays.filter((day) => day.index !== dayIndex),
+      fasceOrarieAperturaIndirizzoSede:
+        addressInfo.fasceOrarieAperturaIndirizzoSede.filter(
+          (day) =>
+            !dayOfWeek[dayIndex]
+              .toUpperCase()
+              .includes(day.giornoAperturaSede.toUpperCase())
+        ),
     });
   };
 
   const timeChangeHandler = (dayIndex: number, timeSpan: string[][]) => {
     onAddressInfoChange({
       ...addressInfo,
-      openDays: addressInfo.openDays.map((day) =>
-        day.index === dayIndex ? { ...day, hourSpan: timeSpan } : day
-      ),
+      fasceOrarieAperturaIndirizzoSede: [
+        ...addressInfo.fasceOrarieAperturaIndirizzoSede.filter(
+          (day) =>
+            !dayOfWeek[dayIndex]
+              .toUpperCase()
+              .includes(day.giornoAperturaSede.toUpperCase())
+        ),
+        ...addressInfo.fasceOrarieAperturaIndirizzoSede
+          .filter((day) =>
+            dayOfWeek[dayIndex]
+              .toUpperCase()
+              .includes(day.giornoAperturaSede.toUpperCase())
+          )
+          .map((day, i) => ({
+            ...day,
+            orarioAperturaSede: timeSpan[i][0],
+            orarioChiusuraSede: timeSpan[i][1],
+          })),
+      ],
     });
   };
 
@@ -89,10 +126,10 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
       handleOnToggle={(isOpen: boolean) => accordionToggleHandler(isOpen)}
     >
       <AddressForm
-        address={addressInfo.address}
-        province={addressInfo.province}
-        city={addressInfo.city}
-        CAP={addressInfo.CAP}
+        address={addressInfo.indirizzoSede.via}
+        province={addressInfo.indirizzoSede.provincia}
+        city={addressInfo.indirizzoSede.comune}
+        CAP={addressInfo.indirizzoSede.cap}
         onAddressChange={(address, province, city, CAP) =>
           addressChangeHandler(address, province, city, CAP)
         }
@@ -100,7 +137,7 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
       />
 
       <OpenDaysSelect
-        openDays={addressInfo.openDays}
+        openDays={addressInfo.fasceOrarieAperturaIndirizzoSede}
         onAddOpenDay={openDayAddHandler}
         onRemoveOpenDay={openDayRemoveHandler}
         onTimeChange={timeChangeHandler}

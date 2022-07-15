@@ -207,6 +207,8 @@ export const GetAuthorityManagerDetail =
                 key === 'partitaIva' ? ['piva', value] : [key, value]
               )
             ),
+            sediGestoreProgetto:
+              entity === 'progetto' ? res.data.sediEnteGestoreProgetto : null,
           })
         );
       }
@@ -226,7 +228,7 @@ export const GetAuthoritiesBySearch =
     try {
       dispatch(showLoader());
       dispatch({ ...GetAuthoritiesBySearchAction });
-      console.log(search);
+
       const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
         getUserHeaders();
 
@@ -240,8 +242,10 @@ export const GetAuthoritiesBySearch =
 
       const res = await API.post(`/ente/all`, body);
 
-      if (res.data) {
+      if (search && res.data) {
         dispatch(setAuthoritiesList(res.data.enti));
+      } else {
+        dispatch(setAuthoritiesList([]));
       }
     } catch (error) {
       console.log(error);
@@ -266,15 +270,16 @@ export const CreateManagerAuthority =
       );
 
       if (body) {
-        let res = await API.post(`/ente/`, {
+        const res = await API.post(`/ente/`, {
           ...body,
         });
         if (res) {
-          res = await API.put(
+          await API.put(
             `/${entity}/${entityId}/assegna/${
               entity === 'programma' ? 'entegestore' : 'enteGestore'
             }/${res.data.id}`
           );
+          return res.data.id;
         }
       }
     } catch (error) {

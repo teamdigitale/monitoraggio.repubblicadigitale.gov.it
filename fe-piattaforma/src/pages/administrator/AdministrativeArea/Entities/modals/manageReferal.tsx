@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { SearchBar } from '../../../../../components';
+import { EmptySection, SearchBar } from '../../../../../components';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import Table, {
   TableHeadingI,
@@ -9,6 +9,7 @@ import Table, {
 } from '../../../../../components/Table/table';
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import {
+  resetUserDetails,
   selectAuthorities,
   selectUsers,
   setUsersList,
@@ -64,11 +65,21 @@ const ManageReferal: React.FC<ManageReferalI> = ({
     [key: string]: formFieldI['value'];
   }>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  const [showForm, setShowForm] = useState<boolean>(true);
+  const [alreadySearched, setAlreadySearched] = useState<boolean>(false);
   const dispatch = useDispatch();
   const usersList = useAppSelector(selectUsers).list;
   const { entityId, projectId } = useParams();
   const authorityId =
     useAppSelector(selectAuthorities).detail.dettagliInfoEnte?.id;
+
+  const resetModal = () => {
+    clearForm();
+    setShowForm(true);
+    setAlreadySearched(false);
+    dispatch(setUsersList(null));
+    dispatch(resetUserDetails());
+  };
 
   const handleSaveReferal = async () => {
     if (isFormValid && authorityId) {
@@ -97,36 +108,40 @@ const ManageReferal: React.FC<ManageReferalI> = ({
         );
         await dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
       }
-
+      resetModal();
       dispatch(closeModal());
     }
   };
 
   const handleSearchUser = (search: string) => {
     if (search) dispatch(GetUsersBySearch(search));
+    setShowForm(false);
+    setAlreadySearched(true);
   };
 
   const handleSelectUser: CRUDActionsI = {
     [CRUDActionTypes.SELECT]: (td: TableRowI | string) => {
       if (typeof td !== 'string') {
         dispatch(GetUserDetails(td.id as string));
-        dispatch(setUsersList(null));
       }
+      setShowForm(true);
     },
   };
 
-  let content = (
-    <FormUser
-      creation={creation}
-      formDisabled={!!formDisabled}
-      sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
-        setNewFormValues({ ...newData })
-      }
-      setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
-    />
-  );
+  let content;
 
-  if (usersList && usersList.length > 0)
+  if (showForm) {
+    content = (
+      <FormUser
+        creation={creation}
+        formDisabled={!!formDisabled}
+        sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+          setNewFormValues({ ...newData })
+        }
+        setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+      />
+    );
+  } else if (usersList && usersList.length > 0) {
     content = (
       <Table
         heading={headings}
@@ -139,6 +154,9 @@ const ManageReferal: React.FC<ManageReferalI> = ({
         id='table'
       />
     );
+  } else if (alreadySearched && (usersList?.length === 0 || !usersList)) {
+    content = <EmptySection title={'Nessun risultato'} />;
+  }
 
   return (
     <GenericModal
@@ -150,7 +168,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: () => clearForm(),
+        onClick: () => resetModal(),
       }}
     >
       <div className='mx-5'>
@@ -159,7 +177,6 @@ const ManageReferal: React.FC<ManageReferalI> = ({
           placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’utente'
           onSubmit={handleSearchUser}
         />
-
         {content}
       </div>
     </GenericModal>

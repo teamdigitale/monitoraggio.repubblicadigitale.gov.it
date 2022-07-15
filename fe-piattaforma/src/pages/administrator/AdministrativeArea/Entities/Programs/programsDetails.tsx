@@ -209,9 +209,9 @@ const ProgramsDetails: React.FC = () => {
     if (managerAuthorityId) {
       setModalIdToOpen(formTypes.ENTE_GESTORE_PROGRAMMA),
         setDeleteText(
-          'Confermi di voler eliminare questo gestore di programs?'
+          'Confermi di voler eliminare questo gestore di programma?'
         ),
-        setEditItemModalTitle('Modifica ente gestore programs'),
+        setEditItemModalTitle('Modifica ente gestore programma'),
         setCurrentForm(
           <FormAuthorities
             formDisabled

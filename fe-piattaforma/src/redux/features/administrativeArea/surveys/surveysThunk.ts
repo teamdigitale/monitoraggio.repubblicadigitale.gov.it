@@ -52,13 +52,13 @@ export const GetAllSurveys =
         administrativeArea: { filters, pagination },
       } = select((state: RootState) => state);
       const endpoint = '/questionarioTemplate/all';
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
-        getUserHeaders();
+      // const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+      //   getUserHeaders();
       const body = {
-        codiceFiscaleUtenteLoggato: codiceFiscale,
-        codiceRuoloUtenteLoggato: codiceRuolo,
-        idProgetto,
-        idProgramma,
+        codiceFiscaleUtenteLoggato: 'UTENTE1', // TODO: aggiorna con variabile
+        codiceRuoloUtenteLoggato: 'DTD', // TODO: aggiorna con variabile
+        idProgetto: 0, // TODO: aggiorna con variabile
+        idProgramma: 0, // TODO: aggiorna con variabile
       };
       let res;
       if (body) {

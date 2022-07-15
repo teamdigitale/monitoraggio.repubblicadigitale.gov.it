@@ -18,7 +18,7 @@ import ManageUsers from './Entities/modals/manageUsers';
 import { useAppSelector } from '../../../redux/hooks';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import { LocationIndex } from '../../../components';
-import { menuRoutes } from '../../../utils/common';
+import { MenuRoutes } from '../../../utils/common';
 const Programs = lazy(() => import('./Entities/Programs/programs'));
 const Projects = lazy(() => import('./Entities/Projects/projects'));
 const Utenti = lazy(() => import('./Entities/Users/users'));
@@ -142,7 +142,7 @@ const AdministrativeArea = () => {
 
   const device = useAppSelector(selectDevice);
 
-  const noDetailRoute = menuRoutes
+  const noDetailRoute = MenuRoutes
     .find((x) => x.id === 'tab-admin')
     ?.subRoutes?.some((y) => y.path === location.pathname);
 
@@ -158,7 +158,7 @@ const AdministrativeArea = () => {
           <LocationIndex
             title='Area amministrativa'
             routes={
-              menuRoutes.find((x) => x.id === 'tab-admin')?.subRoutes || []
+              MenuRoutes.find((x) => x.id === 'tab-admin')?.subRoutes || []
             }
           />
         </div>

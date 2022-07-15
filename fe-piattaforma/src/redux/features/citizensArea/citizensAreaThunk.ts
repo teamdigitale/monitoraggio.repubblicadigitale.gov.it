@@ -41,15 +41,15 @@ export const GetEntityValues =
           );
         }
       });
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
-        getUserHeaders();
+      // const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+      //   getUserHeaders();
 
       const body = {
         filtro: filtroRequest,
-        idProgetto,
-        idProgramma,
-        codiceFiscaleUtenteLoggato: codiceFiscale,
-        codiceRuoloUtenteLoggato: codiceRuolo,
+        idProgetto: 0, // TODO: update con variabile
+        idProgramma: 0, // TODO: update con variabile
+        codiceFiscaleUtenteLoggato: 'SMNRRR56F12G500Q', // TODO: update con variabile
+        codiceRuoloUtenteLoggato: 'FAC', // TODO: update con variabile
       };
       const res = await API.post(entityEndpoint, body, {
         params: {

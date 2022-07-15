@@ -18,7 +18,7 @@ import {
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
 } from '../../../../../components/genericSearchFilterTableLayout/genericSearchFilterTableLayout';
-import { Paginator, StatusChip, Table } from '../../../../../components';
+import {EmptySection, Paginator, StatusChip, Table} from '../../../../../components';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import ManageProject from '../modals/manageProject';
@@ -232,24 +232,32 @@ const Projects: React.FC = () => {
         setFilterDropdownSelected(filterKey)
       }
     >
-      <Table
-        {...tableValues}
-        id='table'
-        onActionClick={onActionClick}
-        onCellClick={(field, row) => console.log(field, row)}
-        //onRowClick={row => console.log(row)}
-        withActions
-      />
-      {pagination?.pageNumber ? (
-        <Paginator
-          activePage={pagination?.pageNumber}
-          center
-          refID='#table'
-          pageSize={pagination?.pageSize}
-          total={pagination?.totalPages}
-          onChange={handleOnChangePage}
-        />
-      ) : null}
+      <div>
+        {progettiList?.length && tableValues?.values?.length ? (
+          <>
+            <Table
+              {...tableValues}
+              id='table'
+              onActionClick={onActionClick}
+              onCellClick={(field, row) => console.log(field, row)}
+              //onRowClick={row => console.log(row)}
+              withActions
+            />
+            {pagination?.pageNumber ? (
+              <Paginator
+                activePage={pagination?.pageNumber}
+                center
+                refID='#table'
+                pageSize={pagination?.pageSize}
+                total={pagination?.totalPages}
+                onChange={handleOnChangePage}
+              />
+            ) : null}
+          </>
+        ) : (
+          <EmptySection title='Non ci sono progetti' />
+        )}
+      </div>
       <ManageProject creation />
     </GenericSearchFilterTableLayout>
   );

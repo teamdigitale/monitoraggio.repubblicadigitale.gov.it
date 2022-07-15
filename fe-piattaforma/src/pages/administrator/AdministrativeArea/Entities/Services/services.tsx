@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Paginator, StatusChip, Table } from '../../../../../components';
+import {EmptySection, Paginator, StatusChip, Table} from '../../../../../components';
 import { newTable, TableRowI } from '../../../../../components/Table/table';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
@@ -211,22 +211,30 @@ const Services = () => {
         setFilterDropdownSelected(filterKey)
       }
     >
-      <Table
-        {...tableValues}
-        id='table'
-        onActionClick={onActionClick}
-        onCellClick={(field, row) => console.log(field, row)}
-        //onRowClick={row => console.log(row)}
-        withActions
-      />
-      <Paginator
-        activePage={pagination?.pageNumber}
-        center
-        refID='#table'
-        pageSize={pagination?.pageSize}
-        total={eventsList.length}
-        onChange={handleOnChangePage}
-      />
+      <div>
+        {eventsList?.length && tableValues?.values?.length ? (
+          <>
+            <Table
+              {...tableValues}
+              id='table'
+              onActionClick={onActionClick}
+              onCellClick={(field, row) => console.log(field, row)}
+              //onRowClick={row => console.log(row)}
+              withActions
+            />
+            <Paginator
+              activePage={pagination?.pageNumber}
+              center
+              refID='#table'
+              pageSize={pagination?.pageSize}
+              total={eventsList.length}
+              onChange={handleOnChangePage}
+            />
+          </>
+        ) : (
+          <EmptySection title='Non ci sono servizi' />
+        )}
+      </div>
       <ManageServices creation />
     </GenericSearchFilterTableLayout>
   );

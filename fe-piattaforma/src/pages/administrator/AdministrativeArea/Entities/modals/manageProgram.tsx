@@ -48,10 +48,10 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         const res = await dispatch(createProgram(newFormValues));
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        if (res?.idProgramma) {
+        if (res?.data?.idProgrammaCreato) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          navigate(`/area-amministrativa/programmi/${res.idProgramma}/info`);
+          navigate(`/area-amministrativa/programmi/${res.data.idProgrammaCreato}/info`);
         }
       } else {
         entityId && dispatch(updateProgram(entityId, newFormValues));

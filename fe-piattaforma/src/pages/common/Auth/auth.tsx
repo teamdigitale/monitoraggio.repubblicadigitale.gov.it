@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import LogoScrittaBlu from '/public/assets/img/logo-scritta-blu.png';
+import LogoScrittaBlu from '/public/assets/img/logo-scritta-blu-x2.png';
 import { Footer, Input, Loader } from '../../../components';
 import clsx from 'clsx';
 import { Button, Card, Icon } from 'design-react-kit';

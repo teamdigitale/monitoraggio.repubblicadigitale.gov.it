@@ -94,64 +94,95 @@ export interface ItemsListI {
   items: ItemListElemI[];
 }
 
-export const menuRoutes = [
-  { label: 'Home', path: '/', id: 'tab-home' },
-  {
+export interface MenuItem {
+  label: string;
+  path: string;
+  id?: string;
+  subRoutes?: MenuItem[];
+  visible?: boolean;
+}
+
+const newMenuItem = ({
+  label,
+  path,
+  id = label,
+  visible = true,
+  subRoutes = [],
+}: MenuItem) => ({
+  label,
+  path,
+  id,
+  visible,
+  subRoutes,
+});
+export const MenuRoutes = [
+  newMenuItem({
+    label: 'Home',
+    path: '/',
+    id: 'tab-home',
+  }),
+  newMenuItem({
     label: 'Area amministrativa',
     path: '/area-amministrativa',
     id: 'tab-admin',
+    //visible: // TODO implement condition based on role permission
     subRoutes: [
-      {
+      newMenuItem({
         label: 'Programmi',
         path: '/area-amministrativa/programmi',
-      },
-      {
+      }),
+      newMenuItem({
         label: 'Progetti',
         path: '/area-amministrativa/progetti',
-      },
-      {
+      }),
+      newMenuItem({
         label: 'Enti',
         path: '/area-amministrativa/enti',
-      },
-      {
+      }),
+      newMenuItem({
         label: 'Utenti',
         path: '/area-amministrativa/utenti',
-      },
-      {
+      }),
+      newMenuItem({
         label: 'Questionari',
         path: '/area-amministrativa/questionari',
-      },
-      {
+      }),
+      newMenuItem({
         label: 'Servizi',
         path: '/area-amministrativa/servizi',
-      },
+      }),
     ],
-  },
-  {
+  }),
+  newMenuItem({
     label: 'Area cittadini',
     path: '/area-cittadini',
     id: 'tab-citizen',
-  },
-  {
+    //visible: // TODO implement condition based on role permission
+  }),
+  newMenuItem({
     label: 'Dashboard',
     path: '/dashboard',
     id: 'tab-dashboard',
-  },
-  {
+    //visible: // TODO implement condition based on role permission
+  }),
+  newMenuItem({
     label: 'Community',
     path: '/community',
     id: 'tab-community',
-  },
-  {
+    visible: process.env.NODE_ENV === 'development',
+  }),
+  newMenuItem({
     label: 'Bacheca digitale',
     path: '/bacheca-digitale',
     id: 'tab-bacheca-digitale',
-  },
-  {
+    visible: process.env.NODE_ENV === 'development',
+  }),
+  newMenuItem({
     label: 'Documenti',
     path: '/documents',
     id: 'tab-documenti',
-  },
+    visible: process.env.NODE_ENV === 'development',
+  }),
 ];
 
 // Flattens all child elements into a single list

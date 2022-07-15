@@ -55,6 +55,7 @@ interface AreaCittadiniStateI {
   pagination: {
     pageSize: number;
     pageNumber: number;
+    totalPages: number;
   };
   detail: CittadinoI;
   searchResult: CittadinoInfoI;
@@ -70,6 +71,7 @@ const initialState: AreaCittadiniStateI = {
   pagination: {
     pageSize: 8,
     pageNumber: 1,
+    totalPages: 1,
   },
   detail: { dettaglioCittadino: {}, serviziCittadino: [] },
   searchResult: {},

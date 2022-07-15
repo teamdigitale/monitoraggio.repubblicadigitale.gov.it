@@ -38,7 +38,10 @@ import {
   TerminateEntity,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import ManageManagerAuthority from '../modals/manageManagerAuthority';
-import { GetAuthorityManagerDetail } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
+import {
+  GetAuthorityManagerDetail,
+  RemovePartnerAuthority,
+} from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import {
   ActivateProject,
   GetProjectDetail,
@@ -287,6 +290,15 @@ const ProjectsDetails = () => {
               })
             ) || [],
         },
+        {
+          title: 'Sedi',
+          items:
+            authorityInfo?.sediGestoreProgetto?.map(
+              (sedi: { [key: string]: string }) => ({
+                ...sedi,
+              })
+            ) || [],
+        },
       ]);
       setEmptySection(undefined);
     } else {
@@ -486,11 +498,11 @@ const ProjectsDetails = () => {
     </Nav>
   );
 
-  const removePartnerAuthority = async (
+  const removeAuthorityPartner = async (
     authorityId: string,
     projectId: string
   ) => {
-    await dispatch(removePartnerAuthority(authorityId, projectId));
+    await dispatch(RemovePartnerAuthority(authorityId, projectId));
     dispatch(GetProjectDetail(projectId));
   };
 
@@ -515,7 +527,7 @@ const ProjectsDetails = () => {
       navigate(`/area-amministrativa/enti/${td}`);
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      projectId && removePartnerAuthority(td as string, projectId);
+      projectId && removeAuthorityPartner(td as string, projectId);
     },
   };
 
@@ -716,6 +728,7 @@ const ProjectsDetails = () => {
           />
           <ManageDelegate />
           <ManageReferal />
+          <ManageHeadquarter />
         </div>
       </div>
     </div>
