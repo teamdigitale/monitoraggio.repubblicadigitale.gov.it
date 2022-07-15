@@ -12,6 +12,7 @@ import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
+import it.pa.repdgt.surveymgmt.param.ProfilazioneSedeParam;
 import it.pa.repdgt.surveymgmt.projection.EnteProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
 import it.pa.repdgt.surveymgmt.repository.EnteSedeProgettoFacilitatoreRepository;
@@ -45,7 +46,11 @@ public class EnteSedeProgettoFacilitatoreService {
 		return this.enteSedeProgettoFacilitatoreRepository.findEntiByFacilitatore(profilazioneParam.getCodiceFiscaleUtenteLoggato());
 	}
 
-	public List<SedeProjection> getSediByFacilitatore(ProfilazioneParam profilazioneParam) {
-		return this.enteSedeProgettoFacilitatoreRepository.findSediByFacilitatore(profilazioneParam.getCodiceFiscaleUtenteLoggato());
+	public List<SedeProjection> getSediByFacilitatore(ProfilazioneSedeParam profilazioneParam) {
+		return this.enteSedeProgettoFacilitatoreRepository.findSediByFacilitatore(
+				profilazioneParam.getCodiceFiscaleUtenteLoggato(),
+				profilazioneParam.getIdEnte(),
+				profilazioneParam.getIdProgetto()
+			);
 	}
 }

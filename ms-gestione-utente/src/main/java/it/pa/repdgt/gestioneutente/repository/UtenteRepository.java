@@ -615,4 +615,6 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike
 	);
 
+	public Optional<UtenteEntity> findByEmailAndCodiceFiscaleNot(String email, String codiceFiscale);
+
 }

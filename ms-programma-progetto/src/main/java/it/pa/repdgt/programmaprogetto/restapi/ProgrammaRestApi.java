@@ -34,6 +34,7 @@ import it.pa.repdgt.programmaprogetto.request.FiltroRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammaRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammiParam;
 import it.pa.repdgt.programmaprogetto.request.TerminaRequest;
+import it.pa.repdgt.programmaprogetto.resource.CreaProgrammaResource;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammiLightResourcePaginata;
 import it.pa.repdgt.programmaprogetto.service.ProgrammaService;
 import it.pa.repdgt.programmaprogetto.util.CSVProgrammaUtil;
@@ -91,9 +92,9 @@ public class ProgrammaRestApi {
 	// TOUCH POINT - 1.1.7 - Creazione nuovo proramma
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public void creaNuovoProgramma(@RequestBody @Valid ProgrammaRequest nuovoProgrammaRequest) {
+	public CreaProgrammaResource creaNuovoProgramma(@RequestBody @Valid ProgrammaRequest nuovoProgrammaRequest) {
 		ProgrammaEntity programmaEntity = this.programmaMapper.toEntityFrom(nuovoProgrammaRequest);
-		this.programmaService.creaNuovoProgramma(programmaEntity);
+		return new CreaProgrammaResource(this.programmaService.creaNuovoProgramma(programmaEntity).getId());
 	}
 	
 	// TOUCH POINT - 1.1.3 - Aggiornamento programma esistente

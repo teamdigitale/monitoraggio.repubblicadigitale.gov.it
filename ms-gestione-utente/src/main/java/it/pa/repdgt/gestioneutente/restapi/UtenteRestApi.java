@@ -28,8 +28,10 @@ import org.springframework.web.bind.annotation.RestController;
 import it.pa.repdgt.gestioneutente.bean.SchedaUtenteBean;
 import it.pa.repdgt.gestioneutente.dto.UtenteDto;
 import it.pa.repdgt.gestioneutente.mapper.UtenteMapper;
+import it.pa.repdgt.gestioneutente.request.AggiornaUtenteRequest;
 import it.pa.repdgt.gestioneutente.request.NuovoUtenteRequest;
 import it.pa.repdgt.gestioneutente.request.UtenteRequest;
+import it.pa.repdgt.gestioneutente.resource.UtenteResource;
 import it.pa.repdgt.gestioneutente.resource.UtentiLightResourcePaginata;
 import it.pa.repdgt.gestioneutente.service.UtenteService;
 import it.pa.repdgt.gestioneutente.util.CSVUtil;
@@ -68,9 +70,9 @@ public class UtenteRestApi {
 	// TOUCH POINT - 1.3.7 -  CRUD Crea Utente
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public void creaNuovoUtente(@RequestBody @Valid NuovoUtenteRequest nuovoUtenteRequest) {
+	public UtenteResource creaNuovoUtente(@RequestBody @Valid NuovoUtenteRequest nuovoUtenteRequest) {
 		UtenteEntity utenteEntity = this.utenteMapper.toUtenteEntityFrom(nuovoUtenteRequest);
-		this.utenteService.creaNuovoUtente(utenteEntity, nuovoUtenteRequest.getRuolo());
+		return new UtenteResource(this.utenteService.creaNuovoUtente(utenteEntity, nuovoUtenteRequest.getRuolo()).getId());
 	}
 	
 	// TOUCH POINT - 1.3.3 - Update Utente
@@ -78,8 +80,8 @@ public class UtenteRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void aggiornaUtente(
 			@PathVariable(value = "codiceFiscale") String cfUtente,
-			@RequestBody @Valid NuovoUtenteRequest nuovoUtenteRequest) {
-		this.utenteService.aggiornaUtente(nuovoUtenteRequest, cfUtente);
+			@RequestBody @Valid AggiornaUtenteRequest aggiornaUtenteRequest) {
+		this.utenteService.aggiornaUtente(aggiornaUtenteRequest, cfUtente);
 	}
 	
 	// TOUCH POINT - 1.3.6 -  Lista Stati Utenti Dropdown
