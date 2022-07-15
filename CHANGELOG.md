@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.28](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.27...1.0.0-develop.28) (2022-07-15)
+
+
+### Bug Fixes
+
+* **be:** fix per replace questionario mongo ([962137f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/962137f5a9f50b8f1f9677a0ef0d76e5de36cc3b))
+
 ## [1.0.0-develop.27](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.26...1.0.0-develop.27) (2022-07-15)
 
 
