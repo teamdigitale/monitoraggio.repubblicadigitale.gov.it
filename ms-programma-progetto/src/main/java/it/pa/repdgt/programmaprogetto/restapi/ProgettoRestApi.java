@@ -3,12 +3,10 @@ package it.pa.repdgt.programmaprogetto.restapi;
 import java.io.ByteArrayInputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
 
 import org.apache.commons.csv.CSVFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +29,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.pa.repdgt.programmaprogetto.bean.SchedaProgettoBean;
 import it.pa.repdgt.programmaprogetto.mapper.ProgettoMapper;
-import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
-import it.pa.repdgt.programmaprogetto.request.TerminaRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgettiParam;
 import it.pa.repdgt.programmaprogetto.request.ProgettoFiltroRequest;
+import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
+import it.pa.repdgt.programmaprogetto.request.TerminaRequest;
+import it.pa.repdgt.programmaprogetto.resource.CreaProgettoResource;
 import it.pa.repdgt.programmaprogetto.resource.ProgettiLightResourcePaginati;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
 import it.pa.repdgt.programmaprogetto.service.ProgettoService;
@@ -98,10 +97,10 @@ public class ProgettoRestApi {
 	// TOUCH POINT - 2.2.6 -  CRUD Crea Progetto + Assegnazione progetto a programma
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public void creaNuovoProgetto(@RequestBody @Valid ProgettoRequest nuovoProgettoRequest,
+	public CreaProgettoResource creaNuovoProgetto(@RequestBody @Valid ProgettoRequest nuovoProgettoRequest,
 			@RequestParam(value = "idProgramma") Long idProgramma) {
 		ProgettoEntity progettoEntity = this.progettoMapper.toEntityFrom(nuovoProgettoRequest, idProgramma);
-		this.progettoService.creaNuovoProgetto(progettoEntity);
+		return new CreaProgettoResource(this.progettoService.creaNuovoProgetto(progettoEntity).getId());
 	}
 	
 	// TOUCH-POINT 1.2.3 - 3.3 - Update Progetto

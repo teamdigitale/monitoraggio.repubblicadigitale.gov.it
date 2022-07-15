@@ -7,10 +7,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.FieldType;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +20,7 @@ import lombok.Setter;
 public class SezioneQ3Collection implements Serializable {
 	private static final long serialVersionUID = -7705276665716179896L;
 	
-	@MongoId(value = FieldType.STRING)
+	@Id
 	private String mongoId;
 	
 	@Field(name = "id")

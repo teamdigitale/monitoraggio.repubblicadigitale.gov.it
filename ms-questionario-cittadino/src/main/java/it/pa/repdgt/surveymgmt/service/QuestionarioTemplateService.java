@@ -244,25 +244,17 @@ public class QuestionarioTemplateService {
 					idQuestionarioTemplate, statoQuestionario);
 			throw new QuestionarioTemplateException(messaggioErrore);
 		}
-
-		questionarioTemplateDaAggiornare.setMongoId(questionarioTemplateFetchDB.getMongoId());
-		questionarioTemplateDaAggiornare.setIdQuestionarioTemplate(questionarioTemplateFetchDB.getIdQuestionarioTemplate());
-		questionarioTemplateDaAggiornare.setStato(questionarioTemplateFetchDB.getStato());
-		questionarioTemplateDaAggiornare.setDataOraCreazione(questionarioTemplateFetchDB.getDataOraCreazione());
-		questionarioTemplateDaAggiornare.setDataOraUltimoAggiornamento(new Date());
-		questionarioTemplateDaAggiornare.setDefaultRFD(questionarioTemplateFetchDB.getDefaultRFD());
-		questionarioTemplateDaAggiornare.setDefaultSCD(questionarioTemplateFetchDB.getDefaultSCD());
-		questionarioTemplateDaAggiornare.setDataOraUltimoAggiornamento(new Date());
+		
+		questionarioTemplateFetchDB.setNomeQuestionarioTemplate(questionarioTemplateDaAggiornare.getNomeQuestionarioTemplate());
+		questionarioTemplateFetchDB.setDescrizioneQuestionarioTemplate(questionarioTemplateDaAggiornare.getDescrizioneQuestionarioTemplate());
+		questionarioTemplateFetchDB.setSezioniQuestionarioTemplate(questionarioTemplateDaAggiornare.getSezioniQuestionarioTemplate());
+		questionarioTemplateFetchDB.setDataOraUltimoAggiornamento(new Date());
 
 		// Allineamento questionario template su mysql
-		final QuestionarioTemplateEntity questionarioTemplateEntity = this.questionarioTemplateMapper.toEntityFrom(questionarioTemplateDaAggiornare);
+		final QuestionarioTemplateEntity questionarioTemplateEntity = this.questionarioTemplateMapper.toEntityFrom(questionarioTemplateFetchDB);
 		this.questionarioTemplateSqlService.aggiornaQuestionarioTemplate(questionarioTemplateEntity);
 
-		// Aggiornamento questionario template su MongoDB:
-		// 	-> 1. Cancellazione questionario template su MongoDb 
-		//  -> 2. Inserimento stesso questionario template ma con i dati aggiornati
-		this.questionarioTemplateRepository.deleteByIdQuestionarioTemplate(idQuestionarioTemplate);
-		return this.questionarioTemplateRepository.save(questionarioTemplateDaAggiornare);
+		return this.questionarioTemplateRepository.save(questionarioTemplateFetchDB);
 	}
 
 	public boolean isQuestionarioTemplateModificabileByStato(@NotNull final String statoQuestionario) {
