@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.27](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.26...1.0.0-develop.27) (2022-07-15)
+
+
+### Bug Fixes
+
+* **be:** fix api questionario utente ([2350249](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2350249533fe4b2f2829b54cb3d5392c3f37b5c5))
+
 ## [1.0.0-develop.26](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.25...1.0.0-develop.26) (2022-07-14)
 
 
