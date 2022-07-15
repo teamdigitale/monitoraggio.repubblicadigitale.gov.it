@@ -1,7 +1,22 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import API from '../../../../utils/apiHelper';
 import { hideLoader, showLoader } from '../../app/appSlice';
-import { setHeadquartersDetails } from '../administrativeAreaSlice';
+import {
+  setHeadquarterDetails,
+  setHeadquartersList,
+} from '../administrativeAreaSlice';
+
+export interface HeadquarterLight {
+  id: string;
+  nome: string;
+}
+
+export interface HeadquarterFacilitator {
+  nome: string;
+  cognome: string;
+  id: string;
+  stato: string;
+}
 
 const SetHeadquartersDetailsAction = {
   type: 'headquarters/SetHeadquartersDetails',
@@ -28,18 +43,46 @@ export const SetHeadquartersDetails =
 const GetHeadquartersDetailAction = {
   type: 'administrativeArea/GetHeadquartersDetail',
 };
-export const GetHeadquartersDetail =
+export const GetHeadquarterDetails =
   (idSede: string) => async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...GetHeadquartersDetailAction, idSede });
-      const res = await API.get(`sede/idSede`);
-      // console.log(res);
+      const res = await API.get(`sede/light/${idSede}`);
       if (res?.data) {
-        dispatch(setHeadquartersDetails(res.data));
+        dispatch(
+          setHeadquarterDetails({
+            dettagliInfoSede: res.data.dettaglioSede,
+          })
+        );
       }
     } catch (error) {
       console.log('GetHeadquartersDetail error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const GetHeadquartersListAction = {
+  type: 'administrativeArea/GetHeadquartersList',
+};
+
+export const GetHeadquartersBySearch =
+  (search: string) => async (dispatch: Dispatch) => {
+    dispatch(showLoader());
+    dispatch({ ...GetHeadquartersListAction });
+    try {
+      if (search) {
+        const res = await API.get(`/sede/cerca/${search}`);
+
+        if (res.data) {
+          dispatch(setHeadquartersList(res.data));
+        }
+      } else {
+        dispatch(setHeadquartersList([]));
+      }
+    } catch (error) {
+      console.log(error);
     } finally {
       dispatch(hideLoader());
     }

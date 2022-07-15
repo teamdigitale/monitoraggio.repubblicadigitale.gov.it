@@ -15,11 +15,16 @@ const AccordionAddressList: React.FC<AccordionAddressListI> = ({
   isReadOnly = false,
 }) => {
   const [newAddressInfo, setNewAddressInfo] = useState<AddressInfoI>({
-    address: '',
-    CAP: '',
-    city: '',
-    province: '',
-    openDays: [],
+    indirizzoSede: {
+      via: '',
+      civico: '',
+      comune: '',
+      provincia: '',
+      cap: '',
+      regione: '',
+      nazione: '',
+    },
+    fasceOrarieAperturaIndirizzoSede: [],
   });
 
   const addressListChangeHandler = (
@@ -35,14 +40,19 @@ const AccordionAddressList: React.FC<AccordionAddressListI> = ({
   };
 
   const newAddressHandler = (isOpen: boolean) => {
-    if (!isOpen && newAddressInfo.address.trim() !== '') {
+    if (!isOpen && newAddressInfo.indirizzoSede.via.trim() !== '') {
       onSetAddressList && onSetAddressList([...addressList, newAddressInfo]);
       setNewAddressInfo({
-        address: '',
-        CAP: '',
-        city: '',
-        province: '',
-        openDays: [],
+        indirizzoSede: {
+          via: '',
+          civico: '',
+          comune: '',
+          provincia: '',
+          cap: '',
+          regione: '',
+          nazione: '',
+        },
+        fasceOrarieAperturaIndirizzoSede: [],
       });
     }
   };

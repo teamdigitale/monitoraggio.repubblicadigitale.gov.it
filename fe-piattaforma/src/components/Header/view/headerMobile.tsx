@@ -155,47 +155,49 @@ const HeaderMobile: React.FC<HeaderI> = ({
     <header
       className={clsx('header-container', isLogged && 'user-logged', 'w-100')}
     >
-      <div
-        className={clsx(
-          'container',
-          'header-container__top',
-          'd-flex',
-          'justify-content-between',
-          'align-items-center',
-          isLogged ? 'text.white primary-bg-b2' : '',
-          'w-100'
-        )}
-      >
-        {isLogged && <HamburgerMenu open={isOpen} setOpen={setIsOpen} />}
-
+      {isLogged && (
         <div
           className={clsx(
+            'container',
+            'header-container__top',
             'd-flex',
-            'align-items-center',
             'justify-content-between',
-            'my-0',
-            'mobile-top-container',
+            'align-items-center',
+            isLogged ? 'text.white primary-bg-b2' : '',
             'w-100'
           )}
         >
-          {isLogged ? (
-            <>
-              {userDropDown()}
-              <div className='ml-auto pr-3'>
-                <Icon
-                  color='white'
-                  icon={Bell}
-                  size='sm'
-                  aria-label='Menu utente'
-                />
-                {notification?.length ? (
-                  <Badge>{notification.length}</Badge>
-                ) : null}
-              </div>
-            </>
-          ) : null}
+          <HamburgerMenu open={isOpen} setOpen={setIsOpen} />
+
+          <div
+            className={clsx(
+              'd-flex',
+              'align-items-center',
+              'justify-content-between',
+              'my-0',
+              'mobile-top-container',
+              'w-100'
+            )}
+          >
+            {isLogged ? (
+              <>
+                {userDropDown()}
+                <div className='ml-auto pr-3'>
+                  <Icon
+                    color='white'
+                    icon={Bell}
+                    size='sm'
+                    aria-label='Menu utente'
+                  />
+                  {notification?.length ? (
+                    <Badge>{notification.length}</Badge>
+                  ) : null}
+                </div>
+              </>
+            ) : null}
+          </div>
         </div>
-      </div>
+      )}
       <div
         className={clsx(
           'header-container__main',
@@ -207,17 +209,19 @@ const HeaderMobile: React.FC<HeaderI> = ({
         )}
       >
         <div className='container d-flex align-items-center'>
-          <Button
-            onClick={() => setIsOpen(true)}
-            className='primary-bg-a6 px-2'
-          >
-            <Icon
-              icon='it-burger'
-              size='sm'
-              color='white'
-              aria-label='hamburger menu'
-            />
-          </Button>
+          {isLogged && (
+            <Button
+              onClick={() => setIsOpen(true)}
+              className='primary-bg-a6 px-2'
+            >
+              <Icon
+                icon='it-burger'
+                size='sm'
+                color='white'
+                aria-label='hamburger menu'
+              />
+            </Button>
+          )}
 
           <div
             className={clsx(

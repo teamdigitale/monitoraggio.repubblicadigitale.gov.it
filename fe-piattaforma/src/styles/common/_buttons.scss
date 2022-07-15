@@ -60,6 +60,14 @@
   font-size: rem(18px);
 }
 
+.profile-picture-btn {
+  width: unset;
+  min-width: rem(50px);
+  max-width: rem(50px);
+  max-height: rem(50px);
+  padding: 0;
+}
+
 .cta-button {
   width: rem(197px);
 

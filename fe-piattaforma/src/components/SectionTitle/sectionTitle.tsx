@@ -81,7 +81,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
               device.mediaIsPhone ? 'mx-0 ml-2 my-3' : 'mx-3'
             )}
             status={status}
-            rowTableId={name?.replace(/\s/g, '')}
+            rowTableId={name?.replace(/\s/g, '') || new Date().getTime()}
           />
         ) : null}
       </div>

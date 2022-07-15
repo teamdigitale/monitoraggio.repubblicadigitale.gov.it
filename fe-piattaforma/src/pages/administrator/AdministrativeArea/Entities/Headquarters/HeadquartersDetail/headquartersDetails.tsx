@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { formTypes } from '../../utils';
 import {
   CRUDActionsI,
@@ -20,6 +20,12 @@ import { selectDevice } from '../../../../../../redux/features/app/appSlice';
 import clsx from 'clsx';
 import ManageHeadquarter from '../../../../../../components/AdministrativeArea/Entities/Headquarters/ManageHeadquarter/manageHeadquarter';
 import HeadquarterDetailsContent from '../../../../../../components/AdministrativeArea/Entities/Headquarters/HeadquarterDetailsContent/HeadquarterDetailsContent';
+import {
+  GetHeadquarterDetails,
+  HeadquarterFacilitator,
+} from '../../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
+import { selectHeadquarters } from '../../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import ManageFacilitator from '../../../../../../components/AdministrativeArea/Entities/Headquarters/ManageFacilitator/ManageFacilitator';
 
 const HeadquartersDetails = () => {
   const { mediaIsDesktop, mediaIsPhone } = useAppSelector(selectDevice);
@@ -31,6 +37,9 @@ const HeadquartersDetails = () => {
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { entityId } = useParams();
+  const headquarterfacilitators =
+    useAppSelector(selectHeadquarters).detail?.facilitatoriSede;
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
@@ -41,17 +50,22 @@ const HeadquartersDetails = () => {
   };
 
   useEffect(() => {
+    if (entityId) dispatch(GetHeadquarterDetails(entityId));
+  }, [entityId]);
+
+  useEffect(() => {
     setItemAccordionList([
       {
         title: 'Facilitatori',
-        items: [
-          {
-            nome: 'Facilitatore 1',
-            stato: 'active',
-            actions: onActionClick,
-            id: 'fac1',
-          },
-        ],
+        items:
+          headquarterfacilitators?.map(
+            (facilitator: HeadquarterFacilitator) => ({
+              nome: `${facilitator.nome} ${facilitator.cognome}`,
+              stato: facilitator.stato,
+              actions: onActionClick,
+              id: facilitator.id,
+            })
+          ) || [],
       },
     ]);
     setCorrectButtons([
@@ -75,7 +89,7 @@ const HeadquartersDetails = () => {
           ),
       },
     ]);
-  }, [mediaIsDesktop]);
+  }, [mediaIsDesktop, headquarterfacilitators]);
 
   return (
     <div
@@ -101,6 +115,7 @@ const HeadquartersDetails = () => {
             <HeadquarterDetailsContent />
           </DetailLayout>
           <ManageHeadquarter />
+          <ManageFacilitator />
           <ConfirmDeleteModal
             onConfirm={() => {
               console.log('confirm delete');

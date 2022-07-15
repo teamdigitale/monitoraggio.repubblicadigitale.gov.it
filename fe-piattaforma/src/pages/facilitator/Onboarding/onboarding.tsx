@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
 import { Navigate, useNavigate } from 'react-router-dom';
@@ -16,11 +16,19 @@ import { SelectUserRole } from '../../../redux/features/user/userThunk';
 import { openModal } from '../../../redux/features/modal/modalSlice';
 import FormOnboarding from './formOnboarding';
 
-const Onboarding: React.FC<withFormHandlerProps> = (props) => {
+interface ProfilePicI {
+  image?: boolean;
+}
+
+interface OnboardingI extends ProfilePicI, withFormHandlerProps {}
+
+const Onboarding: React.FC<OnboardingI> = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
   const user = useAppSelector(selectUser);
+  const [image, setImage] = useState<string>(Profile);
+  const inputRef = useRef<HTMLInputElement>(null);
   const {
     form,
     isValidForm,
@@ -31,7 +39,24 @@ const Onboarding: React.FC<withFormHandlerProps> = (props) => {
   if (!user?.codiceFiscale) return <Navigate to='/auth' replace />;
 
   const addProfilePicture = () => {
-    console.log('add picture');
+    if (inputRef.current !== null) {
+      inputRef.current.click();
+    }
+  };
+
+  const updateImage = () => {
+    const input: HTMLInputElement = document.getElementById(
+      'profile_pic'
+    ) as HTMLInputElement;
+
+    if (input.files?.length) {
+      const selectedImage = input.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(selectedImage);
+      reader.onloadend = () => {
+        setImage(reader.result as string);
+      };
+    }
   };
 
   const onSubmitForm = () => {
@@ -84,17 +109,30 @@ const Onboarding: React.FC<withFormHandlerProps> = (props) => {
               'pt-3'
             )}
           >
-            <div
-              onMouseDown={addProfilePicture}
-              role='button'
-              tabIndex={0}
-              className=' position-relative'
-            >
-              <img
-                src={Profile}
-                alt=''
-                className='onboarding__img-profile mr-2'
+            <div role='button' tabIndex={0} className=' position-relative'>
+              <input
+                type='file'
+                id='profile_pic'
+                onChange={updateImage}
+                accept='image/*, .png, .jpeg, .jpg'
+                capture
+                ref={inputRef}
+                className='sr-only'
               />
+
+              <div className='rounded-circle'>
+                <img
+                  src={image}
+                  alt='profile'
+                  className='mr-2 rounded-circle onboarding__img-profile'
+                  style={{
+                    maxWidth: '174px',
+                    maxHeight: '174px',
+                    minHeight: '174px',
+                  }}
+                />
+              </div>
+
               <div
                 className={clsx(
                   'onboarding__icon-container',
@@ -102,15 +140,21 @@ const Onboarding: React.FC<withFormHandlerProps> = (props) => {
                   'position-absolute',
                   'rounded-circle'
                 )}
-                style={{ bottom: '40px', right: '50px' }}
+                style={{ bottom: '0px', right: '10px' }}
               >
-                <Icon
-                  size='lg'
-                  icon='it-camera'
-                  padding
-                  color='white'
-                  aria-label='Foto'
-                />
+                <Button
+                  onClick={addProfilePicture}
+                  size='xs'
+                  className='profile-picture-btn'
+                >
+                  <Icon
+                    size='lg'
+                    icon='it-camera'
+                    padding
+                    color='white'
+                    aria-label='Foto'
+                  />
+                </Button>
               </div>
             </div>
             <div>

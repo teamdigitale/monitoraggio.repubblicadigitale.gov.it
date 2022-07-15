@@ -18,7 +18,6 @@ import {
   CreateManagerAuthority,
   GetAuthoritiesBySearch,
   GetAuthorityDetail,
-  GetAuthorityManagerDetail,
   UpdateManagerAuthority,
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
@@ -26,6 +25,8 @@ import { useAppSelector } from '../../../../../redux/hooks';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormAuthorities from '../../../../forms/formAuthorities';
+import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
+import { GetProgramDetail } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
 
 const id = 'ente-gestore';
 
@@ -76,34 +77,35 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
     if (isFormValid) {
       // Update
       if (newFormValues.id) {
-        // Program
-        entityId &&
-          (await dispatch(
-            UpdateManagerAuthority({ ...newFormValues }, entityId, 'programma')
-          ));
-        // Project
-        projectId &&
-          (await dispatch(
+        if (projectId) {
+          // Project
+          await dispatch(
             UpdateManagerAuthority({ ...newFormValues }, projectId, 'progetto')
-          ));
+          );
+        } else if (entityId) {
+          // Program
+          await dispatch(
+            UpdateManagerAuthority({ ...newFormValues }, entityId, 'programma')
+          );
+        }
       }
       // Creation
       else {
-        // Program
-        entityId &&
-          (await dispatch(
-            CreateManagerAuthority({ ...newFormValues }, entityId, 'programma')
-          ));
-        // Project
-        projectId &&
-          (await dispatch(
+        if (projectId) {
+          // Project
+          await dispatch(
             CreateManagerAuthority({ ...newFormValues }, projectId, 'progetto')
-          ));
+          );
+          dispatch(GetProjectDetail(projectId));
+        } else if (entityId) {
+          // Program
+          await dispatch(
+            CreateManagerAuthority({ ...newFormValues }, entityId, 'programma')
+          );
+          dispatch(GetProgramDetail(entityId));
+        }
       }
 
-      entityId && dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
-
-      projectId && dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
       dispatch(closeModal());
     }
   };

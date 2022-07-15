@@ -112,7 +112,11 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                       id:
                         singleItem.title === 'Referenti'
                           ? formTypes.REFERENTE
-                          : formTypes.DELEGATO,
+                          : singleItem.title === 'Delegati'
+                          ? formTypes.DELEGATO
+                          : singleItem.title === 'Facilitatori'
+                          ? formTypes.FACILITATORE
+                          : formTypes.SEDE,
                       payload: { title: `Aggiungi ${singleItem.title}` },
                     })
                   )

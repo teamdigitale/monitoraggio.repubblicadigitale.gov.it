@@ -8,6 +8,7 @@ import { AuthoritiesLightI } from './authorities/authoritiesThunk';
 import { SurveyLightI } from './surveys/surveysThunk';
 import { CitizenI } from '../../../pages/administrator/AdministrativeArea/Entities/Services/citizensList';
 import { ServicesI } from './services/servicesThunk';
+import { HeadquarterLight } from './headquarters/headquartersThunk';
 
 export interface AreaAmministrativaStateI {
   list: any;
@@ -56,6 +57,7 @@ export interface AreaAmministrativaStateI {
   };
   headquarters: {
     detail: any;
+    list: HeadquarterLight[] | null;
   };
   services: {
     list: ServicesI[];
@@ -95,6 +97,7 @@ const initialState: AreaAmministrativaStateI = {
   },
   headquarters: {
     detail: {},
+    list: null,
   },
   services: {
     list: [],
@@ -335,11 +338,17 @@ export const administrativeAreaSlice = createSlice({
     setSurveyDetail: (state, action) => {
       state.surveys.detail = { ...action.payload.data };
     },
-    setHeadquartersDetails: (state, action) => {
-      state.headquarters.detail = { ...action.payload.data };
+    setHeadquartersList: (state, action) => {
+      state.headquarters.list = [...action.payload];
+    },
+    setHeadquarterDetails: (state, action) => {
+      state.headquarters.detail = { ...action.payload };
     },
     setUserDetails: (state, action) => {
       state.users.detail = { ...action.payload };
+    },
+    resetUserDetails: (state) => {
+      state.users.detail = {};
     },
     setEventsList: (state, action: PayloadAction<any>) => {
       state.services.list = action.payload.data;
@@ -380,8 +389,10 @@ export const {
   setProgramDetails,
   setProjectDetails,
   setSurveyDetail,
-  setHeadquartersDetails,
+  setHeadquartersList,
+  setHeadquarterDetails,
   setUserDetails,
+  resetUserDetails,
   setEventsList,
   setServicesDetail,
   setProgramGeneralInfo,

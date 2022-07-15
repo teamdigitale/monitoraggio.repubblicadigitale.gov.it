@@ -18,7 +18,7 @@ import {
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
 } from '../../../../../components/genericSearchFilterTableLayout/genericSearchFilterTableLayout';
-import { Paginator, Table } from '../../../../../components';
+import {EmptySection, Paginator, Table} from '../../../../../components';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import { useNavigate } from 'react-router-dom';
@@ -220,23 +220,31 @@ const Authorities: React.FC = () => {
         setFilterDropdownSelected(filterKey)
       }
     >
-      <Table
-        {...tableValues}
-        id='table'
-        onActionClick={onActionClick}
-        onCellClick={(field, row) => console.log(field, row)}
-        withActions
-      />
-      {pagination?.pageNumber ? (
-        <Paginator
-          activePage={pagination?.pageNumber}
-          center
-          refID='#table'
-          pageSize={pagination?.pageSize}
-          total={pagination?.totalPages}
-          onChange={handleOnChangePage}
-        />
-      ) : null}
+      <div>
+        {entiList?.length && tableValues?.values?.length ? (
+          <>
+            <Table
+              {...tableValues}
+              id='table'
+              onActionClick={onActionClick}
+              onCellClick={(field, row) => console.log(field, row)}
+              withActions
+            />
+            {pagination?.pageNumber ? (
+              <Paginator
+                activePage={pagination?.pageNumber}
+                center
+                refID='#table'
+                pageSize={pagination?.pageSize}
+                total={pagination?.totalPages}
+                onChange={handleOnChangePage}
+              />
+            ) : null}
+          </>
+        ) : (
+          <EmptySection title='Non ci sono enti' />
+        )}
+      </div>
       <ManageGenericAuthority creation />
     </GenericSearchFilterTableLayout>
   );

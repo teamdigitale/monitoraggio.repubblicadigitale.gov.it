@@ -6,8 +6,8 @@ import { useAppSelector } from '../../../../../redux/hooks';
 import {
   selectEntityFilters,
   selectEntityFiltersOptions,
+  selectEntityList,
   selectEntityPagination,
-  selectUsers,
   setEntityFilters,
   setEntityPagination,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
@@ -38,7 +38,7 @@ const ruoliDropdownLabel = 'ruoli';
 const Programmi = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const usersList = useAppSelector(selectUsers).list;
+  const usersList = useAppSelector(selectEntityList)?.utenti;
   const filtersList = useAppSelector(selectEntityFilters);
   const pagination = useAppSelector(selectEntityPagination);
   const dropdownFilterOptions = useAppSelector(selectEntityFiltersOptions);
@@ -61,7 +61,7 @@ const Programmi = () => {
   };
 
   useEffect(() => {
-    dispatch(setEntityPagination({ pageSize: 1 }));
+    dispatch(setEntityPagination({ pageSize: 8 }));
     getAllFilters();
     dispatch(
       updateBreadcrumb([
@@ -84,7 +84,7 @@ const Programmi = () => {
     const table = newTable(
       TableHeadingUsers,
       usersList
-        ? usersList.map((td) => {
+        ? usersList?.map((td: any) => {
             return {
               id: td.id,
               label: td.nome,
@@ -241,7 +241,7 @@ const Programmi = () => {
         center
         refID='#table'
         pageSize={pagination?.pageSize}
-        total={usersList ? usersList.length : 0}
+        total={pagination?.totalPages}
         onChange={handleOnChangePage}
       />
       <ManageUsers creation />

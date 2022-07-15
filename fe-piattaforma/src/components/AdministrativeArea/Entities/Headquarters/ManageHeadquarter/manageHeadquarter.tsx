@@ -35,11 +35,16 @@ const ManageHeadquarter: React.FC<ManageSediI> = ({
   // well defined mock
   const [addressList, setAddressList] = useState<AddressInfoI[]>([
     {
-      address: '',
-      CAP: '',
-      city: '',
-      province: '',
-      openDays: [],
+      indirizzoSede: {
+        via: '',
+        civico: '',
+        comune: '',
+        provincia: '',
+        cap: '',
+        regione: '',
+        nazione: '',
+      },
+      fasceOrarieAperturaIndirizzoSede: [],
     },
   ]);
 

@@ -4,6 +4,8 @@ import { RootState } from '../../../store';
 import API from '../../../../utils/apiHelper';
 import {
   setEntityFilterOptions,
+  setEntityPagination,
+  setEntityValues,
   setUserDetails,
   setUsersList,
 } from '../administrativeAreaSlice';
@@ -41,19 +43,20 @@ export const GetAllUsers =
       const endpoint = `utente/all`;
       const body = {
         filtroRequest: { ...filters },
-        codiceFiscale: 'UTENTE1',
+        cfUtente: 'UTENTE1',
         codiceRuolo: 'DTD',
         idProgetto: 0,
         idProgramma: 0,
       };
       const res = await API.post(endpoint, body, {
         params: {
-          currPage: pagination.pageNumber,
+          currPage: Math.max(0, pagination.pageNumber - 1),
           pageSize: pagination.pageSize,
         },
       });
       if (res?.data) {
-        dispatch(setUsersList({ data: res.data.data.list }));
+        dispatch(setEntityValues({ entity: 'utenti', data: res.data }));
+        dispatch(setEntityPagination({ totalPages: res.data.numeroPagine }));
       }
     } finally {
       dispatch(hideLoader());

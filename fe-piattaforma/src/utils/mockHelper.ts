@@ -38,17 +38,17 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });*/
 
-    mockInstance.onPost('/utente/all').reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/listaUtenti.json');
-      return [200, response];
-    });
+    // mockInstance.onPost('/utente/all').reply(async () => {
+    //   // @ts-ignore
+    //   const response = await import('/mock/listaUtenti.json');
+    //   return [200, response];
+    // });
 
-    mockInstance.onPost('/questionarioTemplate/all').reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/listaQuestionari.json');
-      return [200, response];
-    });
+    // mockInstance.onPost('/questionarioTemplate/all').reply(async () => {
+    //   // @ts-ignore
+    //   const response = await import('/mock/listaQuestionari.json');
+    //   return [200, response];
+    // });
 
     mockInstance.onPatch('/questionari/default-scd').reply(async () => {
       // @ts-ignore
@@ -260,7 +260,7 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });
 
-    mockInstance.onGet('/questionarioTemplate/tewbebe').reply(async () => {
+    mockInstance.onGet('/questionarioTemplate/6c00da35-c6ee-4be1-bf2b-e28e7bcaeea8').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/responseQuestionario.json');
       return [200, response];

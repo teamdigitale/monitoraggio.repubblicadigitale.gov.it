@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import { Form, Input } from '../../../..';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../../../hoc/withFormHandler';
 import { selectHeadquarters } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
-import { GetHeadquartersDetail } from '../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
+// import { GetHeadquarterDetails } from '../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
   formFieldI,
@@ -26,28 +26,16 @@ interface FormEnteGestoreProgettoFullInterface
 
 const form = newForm([
   newFormField({
-    field: 'idSede',
+    field: 'id',
   }),
   newFormField({
-    field: 'name',
+    field: 'nome',
   }),
   newFormField({
-    field: 'services',
+    field: 'serviziErogati',
   }),
   newFormField({
-    field: 'address',
-  }),
-  newFormField({
-    field: 'ente',
-  }),
-  newFormField({
-    field: 'cap',
-  }),
-  newFormField({
-    field: 'country',
-  }),
-  newFormField({
-    field: 'prov',
+    field: 'enteDiRiferimento',
   }),
 ]);
 
@@ -60,20 +48,20 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     isValidForm,
     setIsFormValid,
     getFormValues,
-    creation = false,
+    // creation = false,
     formDisabled,
   } = props;
 
   const formData: { [key: string]: string } | undefined =
-    useAppSelector(selectHeadquarters)?.detail?.info;
-  const dispatch = useDispatch();
+    useAppSelector(selectHeadquarters)?.detail?.dettagliInfoSede;
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!creation) {
-      dispatch(GetHeadquartersDetail('idSede'));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [creation]);
+  // useEffect(() => {
+  //   if (!creation) {
+  //     dispatch(GetHeadquarterDetails('idSede'));
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [creation]);
 
   useEffect(() => {
     if (formData) {
@@ -103,27 +91,27 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     >
       <Form.Row className='justify-content-between'>
         <Input
-          {...form?.idSede}
+          {...form?.id}
           label='ID'
           col='col-12 col-lg-6'
           onInputChange={onInputDataChange}
           placeholder='Inserisci nome programma'
         />
         <Input
-          {...form?.name}
+          {...form?.nome}
           label='Nome'
           col='col-12 col-lg-6'
           onInputChange={onInputDataChange}
           placeholder='Inserisci nome programma'
         />
         <Input
-          {...form?.services}
+          {...form?.serviziErogati}
           label='Servizi Erogati'
           col='col-12 col-lg-6'
           onInputChange={onInputDataChange}
         />
         <Input
-          {...form?.ente}
+          {...form?.enteDiRiferimento}
           label='Ente di riferimento'
           col='col-12 col-lg-6'
           onInputChange={onInputDataChange}

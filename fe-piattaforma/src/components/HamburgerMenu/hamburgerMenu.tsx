@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import ClickOutside from '../../hoc/ClickOutside';
 import './hamburgerMenu.scss';
 import LogoSmall from '/public/assets/img/logo-mobile.png';
-import { focusId, menuRoutes } from '../../utils/common';
+import { focusId, MenuRoutes } from '../../utils/common';
 
 interface HBMenuProps {
   open: boolean;
@@ -44,79 +44,83 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
             id='hamburger'
           >
             <ul>
-              {menuRoutes.map((link, index: number) => {
-                return link.subRoutes ? (
-                  <React.Fragment key={index}>
-                    <li
-                      className={clsx(
-                        'right-icon',
-                        'd-flex',
-                        'justify-content-between',
-                        'pr-3',
-                        'flex-column'
-                      )}
-                      {...(collapseOpen ? expanded : {})}
-                      id={link.id}
-                    >
-                      <Button
+              {(MenuRoutes || [])
+                .filter(({ visible }) => visible)
+                .map((link, index: number) => {
+                  return link.subRoutes?.length ? (
+                    <React.Fragment key={index}>
+                      <li
                         className={clsx(
-                          'primary-color d-flex',
+                          'right-icon',
                           'd-flex',
                           'justify-content-between',
-                          'anchor-button'
+                          'pr-3',
+                          'flex-column'
                         )}
-                        onClick={() => setCollapseOpen(!collapseOpen)}
+                        {...(collapseOpen ? expanded : {})}
+                        id={link.id}
+                      >
+                        <Button
+                          className={clsx(
+                            'primary-color d-flex',
+                            'd-flex',
+                            'justify-content-between',
+                            'anchor-button'
+                          )}
+                          onClick={() => setCollapseOpen(!collapseOpen)}
+                        >
+                          {link.label}
+                          <Icon
+                            className='right'
+                            icon='it-expand'
+                            color='primary'
+                            aria-hidden
+                            aria-label='freccia destra'
+                          />
+                        </Button>
+                      </li>
+                      <li
+                        className={clsx(
+                          !collapseOpen && 'd-none',
+                          'sublist-container'
+                        )}
+                      >
+                        <Collapse isOpen={collapseOpen}>
+                          <LinkList sublist>
+                            {link.subRoutes
+                              .filter(({ visible }) => visible)
+                              .map((sub, index) => (
+                                <li key={`sub-${index}`}>
+                                  <Link
+                                    className='ml-2 font-weight-normal'
+                                    to={sub.path}
+                                    onClick={() => {
+                                      setOpen(false);
+                                      setCollapseOpen(false);
+                                    }}
+                                  >
+                                    {sub.label}
+                                  </Link>
+                                </li>
+                              ))}
+                          </LinkList>
+                        </Collapse>
+                      </li>
+                    </React.Fragment>
+                  ) : (
+                    <li key={index} id={link.id}>
+                      <Link
+                        to={link.path}
+                        onClick={() => {
+                          setOpen(false);
+                          setCollapseOpen(false);
+                        }}
                       >
                         {link.label}
-                        <Icon
-                          className='right'
-                          icon='it-expand'
-                          color='primary'
-                          aria-hidden
-                          aria-label='freccia destra'
-                        />
-                      </Button>
+                      </Link>
                     </li>
-                    <li
-                      className={clsx(
-                        !collapseOpen && 'd-none',
-                        'sublist-container'
-                      )}
-                    >
-                      <Collapse isOpen={collapseOpen}>
-                        <LinkList sublist>
-                          {link.subRoutes.map((sub, index) => (
-                            <li key={`sub-${index}`}>
-                              <Link
-                                className='ml-2 font-weight-normal'
-                                to={sub.path}
-                                onClick={() => {
-                                  setOpen(false);
-                                  setCollapseOpen(false);
-                                }}
-                              >
-                                {sub.label}
-                              </Link>
-                            </li>
-                          ))}
-                        </LinkList>
-                      </Collapse>
-                    </li>
-                  </React.Fragment>
-                ) : (
-                  <li key={index} id={link.id}>
-                    <Link
-                      to={link.path}
-                      onClick={() => {
-                        setOpen(false);
-                        setCollapseOpen(false);
-                      }}
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                );
-              })}
+                  );
+                })}
               <li className='manage-profile-container'>
                 <div>
                   <div className='nav-divider primary-bg-a6'></div>
