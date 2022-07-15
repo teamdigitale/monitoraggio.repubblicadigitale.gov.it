@@ -10,6 +10,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
@@ -32,7 +33,7 @@ import lombok.Setter;
 public class QuestionarioTemplateCollection implements Serializable {
 	private static final long serialVersionUID = -5135985858663895848L;
 	
-	@MongoId(value = FieldType.STRING)
+	@Id
 	private String mongoId;
 	
 	@Field(name = "id")

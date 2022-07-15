@@ -1,13 +1,12 @@
 package it.pa.repdgt.surveymgmt.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -41,6 +40,7 @@ public class QuestionarioTemplateSqlService {
 			final String messaggioErrore = String.format("Impossibile salvare il questionario. Questionario con id='%s' già presente", idQuestionarioTemplate);
 			throw new QuestionarioTemplateException(messaggioErrore);
 		}
+		questionarioTemplateEntity.setDataOraCreazione(new Date());
 		return this.templateQuestionarioSqlRepository.save(questionarioTemplateEntity);
 	}
 
@@ -55,6 +55,8 @@ public class QuestionarioTemplateSqlService {
 			final String messaggioErrore = String.format("Impossibile aggiornare il questionario. Questionario con id='%s' non presente", idQuestionarioTemplate);
 			throw new QuestionarioTemplateException(messaggioErrore);
 		}
+		
+		questionarioTemplateEntity.setDataOraAggiornamento(new Date());
 		return this.templateQuestionarioSqlRepository.save(questionarioTemplateEntity);
 	}
 

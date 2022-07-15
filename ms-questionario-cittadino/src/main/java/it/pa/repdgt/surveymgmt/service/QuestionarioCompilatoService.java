@@ -87,20 +87,14 @@ public class QuestionarioCompilatoService {
 		questionarioCompilatoDBMySqlFetch.setDataOraAggiornamento(new Date());		
 		this.questionarioCompilatoSQLRepository.save(questionarioCompilatoDBMySqlFetch);
 		
-		// Aggiorno  questionarioCompilatoCollection: 
-		//	-> cancello document questionarioCompilatoCollection 
-		//	-> risalvo nuovamento lo stesso cancellato ma con in nuovi dati del questionario compilato
 		final QuestionarioCompilatoCollection questionarioCompilatoDBMongoFetch = questionarioCompilatoCollection.get();
-		// cancello questionarioCompilato presente su mongo
-		this.questionarioCompilatoMongoRepository.deleteByIdQuestionarioTemplate(idQuestionarioCompilato);
 		
 		// Costruisco le sezioni del questionario compilato (Q1, Q2, Q3, Q4) che provengono dalla request per la compilazione del questionario
 		final List<DatiIstanza> sezioniQuestionarioCompilato = this.creaSezioniQuestionarioFromRequest(questionarioCompilatoRequest);
 		questionarioCompilatoDBMongoFetch.setSezioniQuestionarioTemplateIstanze(sezioniQuestionarioCompilato);
 		questionarioCompilatoDBMongoFetch.setDataOraUltimoAggiornamento(questionarioCompilatoDBMySqlFetch.getDataOraAggiornamento());
-		questionarioCompilatoDBMongoFetch.setMongoId(null);
 		
-		// salvo lo stesso questionarioCompilato che ho precedentemente cancellato ma con i nuovi dati all'interno delle sezioni questionario
+		// Aggiorno  questionarioCompilatoCollection
 		this.questionarioCompilatoMongoRepository.save(questionarioCompilatoDBMongoFetch);
 	}
 

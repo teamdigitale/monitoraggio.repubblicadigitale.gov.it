@@ -223,19 +223,16 @@ public class ServizioService {
 
 		// Recupero SezioneQ3Compilato
 		final String idSezioneQ3Compilato = servizioAggiornato.getIdTemplateCompilatoQ3();
-		final SezioneQ3Collection sezioneQ3Compilato = this.sezioneQ3Repository
+		final SezioneQ3Collection sezioneQ3CompilatoDBFetch = this.sezioneQ3Repository
 				.findById(idSezioneQ3Compilato)
 				.orElseThrow(() -> new ResourceNotFoundException(String.format("SezioneQ3Compilato con id=%s non presente", idSezioneQ3Compilato)));
 
-		// Cancello SezioneQ3Mongo su MongoDB e lo risalvo con i valori aggiornati
-		this.sezioneQ3Repository.deleteByIdSezioneQ3(sezioneQ3Compilato.getId());
 		
 		// Salvo SezioneQ3Compilato con i dati da aggiornare su MongoDB
 		final SezioneQ3Collection sezioneQ3DaAggiornare = this.servizioMapper.toCollectionFrom(servizioDaAggiornareRequest);
-		sezioneQ3DaAggiornare.setId(sezioneQ3Compilato.getId());
-		sezioneQ3DaAggiornare.setDataOraCreazione(sezioneQ3Compilato.getDataOraCreazione());
-		sezioneQ3DaAggiornare.setDataOraUltimoAggiornamento(new Date());
-		this.sezioneQ3Repository.save(sezioneQ3DaAggiornare);
+		sezioneQ3CompilatoDBFetch.setDataOraUltimoAggiornamento(new Date());
+		sezioneQ3CompilatoDBFetch.setSezioneQ3Compilato(sezioneQ3DaAggiornare.getSezioneQ3Compilato());
+		this.sezioneQ3Repository.save(sezioneQ3CompilatoDBFetch);
 	}
 
 	/**
