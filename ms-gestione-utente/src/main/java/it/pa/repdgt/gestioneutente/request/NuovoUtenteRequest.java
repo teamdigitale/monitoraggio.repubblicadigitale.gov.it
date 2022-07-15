@@ -39,7 +39,7 @@ public class NuovoUtenteRequest implements Serializable {
 	@JsonProperty(value = "email")
 	private String email;
 	
-	@JsonProperty(value = "Telefono")
+	@JsonProperty(value = "telefono")
 	private String telefono;
 	
 	@JsonProperty(value = "mansione")

@@ -48,6 +48,7 @@ import it.pa.repdgt.surveymgmt.repository.CittadinoRepository;
 import it.pa.repdgt.surveymgmt.repository.CittadinoServizioRepository;
 import it.pa.repdgt.surveymgmt.repository.QuestionarioCompilatoRepository;
 import it.pa.repdgt.surveymgmt.repository.QuestionarioInviatoOnlineRepository;
+import it.pa.repdgt.surveymgmt.repository.ServizioSqlRepository;
 import it.pa.repdgt.surveymgmt.repository.ServizioXCittadinoRepository;
 import it.pa.repdgt.surveymgmt.request.NuovoCittadinoServizioRequest;
 import it.pa.repdgt.surveymgmt.util.CSVServizioUtil;
@@ -83,6 +84,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	private EmailService emailService;
 	@Autowired
 	private QuestionarioInviatoOnlineRepository questionarioInviatoOnlineRepository;
+	@Autowired
+	private ServizioSqlRepository servizioSqlRepository;
 
 	public CittadinoServizioBean getAllCittadiniServizioByProfilazioneAndFiltroPaginati(
 			Long idServizio,
@@ -381,11 +384,25 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 				Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService.getByCodiceFiscaleOrNumeroDocumento(cittadinoUpload.getCodiceFiscale(), cittadinoUpload.getNumeroDocumento());				
 				
 				CittadinoEntity cittadino = new CittadinoEntity();
-				if(optionalCittadinoDBFetch.isPresent()) {
+				//se il cittadino non esiste già a sistema
+				if(!optionalCittadinoDBFetch.isPresent()) {
+					//verifico se nel csv è stato passato almeno uno tra codice fiscale e num documento
+					if(esisteCodFiscaleODocumento(cittadinoUpload)) {
+						try{
+							popolaCittadino(cittadino, cittadinoUpload);
+							inserisciCittadino(cittadino, idServizio);
+							cittadinoUpload.setEsitoUpload("UPLOAD - OK");
+						}catch(NumberFormatException e){
+							cittadinoUpload.setEsitoUpload("UPLOAD - KO - ANNO DI NASCITA IN FORMATO NON VALIDO");
+						}
+					}else {
+						cittadinoUpload.setEsitoUpload("UPLOAD - KO - CF O NUM DOCUMENTO OBBLIGATORI");
+					}
+				}else {
 					CittadinoEntity cittadinoDBFetch = optionalCittadinoDBFetch.get();
 					// verifico se già esiste il cittadino per quel determinato servizio 
-					// e in caso affermativo sollevo eccezione
-					if(this.esisteCittadinoByIdServizioAndIdCittadino(idServizio, cittadino.getId())) {
+					// e in caso affermativo aggiungo KO
+					if(this.esisteCittadinoByIdServizioAndIdCittadino(idServizio, cittadinoDBFetch.getId())) {
 						cittadinoUpload.setEsitoUpload(String.format(
 								"UPLOAD - KO - CITTADINO CON CODICE FISCALE=%s NUMERO DOCUMENTO=%s GIA' ESISTENTE SUL SERVIZIO CON ID %s",
 								cittadinoDBFetch.getCodiceFiscale(),
@@ -393,63 +410,17 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 								idServizio
 							)
 						);
+					}else {
+						cittadino.setId(cittadinoDBFetch.getId());
+						try{
+							popolaCittadino(cittadino, cittadinoUpload);
+							inserisciCittadino(cittadino, idServizio);
+							cittadinoUpload.setEsitoUpload("UPLOAD - OK");
+						}catch(NumberFormatException e){
+							cittadinoUpload.setEsitoUpload("UPLOAD - KO - ANNO DI NASCITA IN FORMATO NON VALIDO");
+						}
 					}
-					
-					if(cittadinoUpload.getCodiceFiscale() == null || cittadinoUpload.getCodiceFiscale().equals("") &&
-							cittadinoUpload.getNumeroDocumento() != null &&
-							!cittadinoUpload.getNumeroDocumento().isEmpty() ) {
-						cittadino.setNumeroDocumento(cittadinoUpload.getNumeroDocumento());
-						cittadino.setTipoDocumento(cittadino.getTipoDocumento());
-					}
-				} else { 
-					cittadino.setCodiceFiscale(cittadinoUpload.getCodiceFiscale());
-					cittadino.setTipoDocumento(cittadinoUpload.getTipoDocumento());
-					cittadino.setNumeroDocumento(cittadinoUpload.getNumeroDocumento());
-				}
-				
-				cittadino.setCognome(cittadinoUpload.getCognome());
-				cittadino.setNome(cittadinoUpload.getNome());
-				cittadino.setEmail(cittadinoUpload.getEmail());
-				cittadino.setDataOraCreazione(new Date());
-				cittadino.setDataOraAggiornamento(new Date());
-				try {
-					Integer annoDiNascita = Integer.parseInt(cittadinoUpload.getAnnoNascita());
-					cittadino.setAnnoDiNascita(annoDiNascita);
-				}catch(NumberFormatException e) {
-					cittadinoUpload.setEsitoUpload(String.format(
-							"UPLOAD - KO - ANNO DI NASCITA NON VALIDO",
-							cittadino.getCodiceFiscale(),
-							cittadino.getNumeroDocumento(),
-							idServizio
-						)
-					);
-				}
-				cittadino.setCategoriaFragili(cittadinoUpload.getCategoriaFragili());
-				cittadino.setCittadinanza(cittadinoUpload.getCittadinanza());
-				cittadino.setComuneDiDomicilio(cittadinoUpload.getComuneDomicilio());
-				cittadino.setGenere(cittadinoUpload.getGenere());
-				cittadino.setNumeroDiCellulare(cittadinoUpload.getNumeroCellulare());
-				cittadino.setOccupazione(cittadinoUpload.getStatoOccupazionale());
-				cittadino.setPrefissoTelefono(cittadinoUpload.getPrefisso());
-				cittadino.setTelefono(cittadinoUpload.getTelefono());
-				cittadino.setTitoloDiStudio(cittadinoUpload.getTitoloStudio());
-				
-				cittadino = cittadinoRepository.save(cittadino);
-				
-				//associo il cittadino al servizio
-				this.associaCittadinoAServizio(idServizio, cittadino);
-				
-				//recupero il servizio 
-				ServizioEntity servizioDBFetch = servizioSqlService.getServizioById(idServizio);
-				
-				if(StatoEnum.NON_ATTIVO.getValue().equals(servizioDBFetch.getStato()))
-					servizioDBFetch.setStato(StatoEnum.ATTIVO.getValue());
-				
-				//creo il questionario in stato NON_INVIATO
-				this.creaQuestionarioNonInviato(servizioDBFetch, cittadino);
-				
-				cittadinoUpload.setEsitoUpload("UPLOAD - OK");
-				
+				}	
 				esiti.add(cittadinoUpload);
 			}
 			
@@ -457,6 +428,55 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		} catch (IOException e) {
 			throw new ServizioException("Impossibile effettuare upload lista cittadini", e);
 		}
+	}
+
+	private void inserisciCittadino(CittadinoEntity cittadino, Long idServizio) {
+		cittadino = cittadinoRepository.save(cittadino);
+		
+		//associo il cittadino al servizio
+		this.associaCittadinoAServizio(idServizio, cittadino);
+		
+		//recupero il servizio 
+		ServizioEntity servizioDBFetch = servizioSqlService.getServizioById(idServizio);
+		
+		if(StatoEnum.NON_ATTIVO.getValue().equals(servizioDBFetch.getStato())) {
+			servizioDBFetch.setStato(StatoEnum.ATTIVO.getValue());
+			servizioSqlRepository.save(servizioDBFetch);
+		}
+		
+		//creo il questionario in stato NON_INVIATO
+		this.creaQuestionarioNonInviato(servizioDBFetch, cittadino);
+		
+	}
+
+	private void popolaCittadino(CittadinoEntity cittadino, CittadinoUploadBean cittadinoUpload) {
+		cittadino.setCodiceFiscale(cittadinoUpload.getCodiceFiscale());
+		cittadino.setTipoDocumento(cittadinoUpload.getTipoDocumento());
+		cittadino.setNumeroDocumento(cittadinoUpload.getNumeroDocumento());
+		
+		cittadino.setCognome(cittadinoUpload.getCognome());
+		cittadino.setNome(cittadinoUpload.getNome());
+		cittadino.setEmail(cittadinoUpload.getEmail());
+		cittadino.setDataOraCreazione(new Date());
+		cittadino.setDataOraAggiornamento(new Date());
+		
+		Integer annoDiNascita = Integer.parseInt(cittadinoUpload.getAnnoNascita());
+		cittadino.setAnnoDiNascita(annoDiNascita);
+		cittadino.setCategoriaFragili(cittadinoUpload.getCategoriaFragili());
+		cittadino.setCittadinanza(cittadinoUpload.getCittadinanza());
+		cittadino.setComuneDiDomicilio(cittadinoUpload.getComuneDomicilio());
+		cittadino.setGenere(cittadinoUpload.getGenere());
+		cittadino.setNumeroDiCellulare(cittadinoUpload.getNumeroCellulare());
+		cittadino.setOccupazione(cittadinoUpload.getStatoOccupazionale());
+		cittadino.setPrefissoTelefono(cittadinoUpload.getPrefisso());
+		cittadino.setTelefono(cittadinoUpload.getTelefono());
+		cittadino.setTitoloDiStudio(cittadinoUpload.getTitoloStudio());
+		
+	}
+
+	private boolean esisteCodFiscaleODocumento(CittadinoUploadBean cittadinoUpload) {
+		return cittadinoUpload.getCodiceFiscale() != null && !cittadinoUpload.getCodiceFiscale().isEmpty() ||
+				cittadinoUpload.getNumeroDocumento() != null && !cittadinoUpload.getNumeroDocumento().isEmpty();
 	}
 
 	@Transactional(rollbackOn = Exception.class)

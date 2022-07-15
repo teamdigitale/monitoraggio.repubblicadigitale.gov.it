@@ -14,14 +14,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
 import it.pa.repdgt.shared.entity.ProgrammaXQuestionarioTemplateEntity;
 import it.pa.repdgt.shared.entity.ServizioEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.surveymgmt.exception.QuestionarioTemplateException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
+import it.pa.repdgt.surveymgmt.param.ProfilazioneSedeParam;
 import it.pa.repdgt.surveymgmt.projection.EnteProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
 import it.pa.repdgt.surveymgmt.repository.ServizioSqlRepository;
@@ -36,6 +39,8 @@ public class ServizioSqlService {
 	private ProgrammaXQuestionarioTemplateService programmaXQuestionarioTemplateService;
 	@Autowired
 	private ServizioSqlRepository servizioSqlRepository;
+	@Autowired
+	private RuoloService ruoloService;
 	
 
 	public ServizioEntity getServizioById(@NotNull Long idServizio) {
@@ -255,10 +260,44 @@ public class ServizioSqlService {
 	}
 	
 	public List<EnteProjection> getEntiByFacilitatore(ProfilazioneParam profilazioneParam) {
+		final String codiceFiscaleUtenteLoggato = profilazioneParam.getCodiceFiscaleUtenteLoggato();
+		final String codiceRuoloUtenteLoggato = profilazioneParam.getCodiceRuoloUtenteLoggato().toString();
+		
+		// Verifico se l'utente possiede il ruolo mandato nella richiesta
+		boolean hasRuoloUtente = this.ruoloService
+			.getRuoliByCodiceFiscale(codiceFiscaleUtenteLoggato)
+			.stream()
+			.anyMatch(ruolo -> codiceRuoloUtenteLoggato.equalsIgnoreCase(ruolo.getCodice()));
+		
+		if(!hasRuoloUtente 
+				|| (!codiceRuoloUtenteLoggato.equalsIgnoreCase(RuoliUtentiConstants.FACILITATORE) &&
+					!codiceRuoloUtenteLoggato.equalsIgnoreCase(RuoliUtentiConstants.VOLONTARIO) )) {
+			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'.\nOppure l'utente non è un FACILITATORE/VOLONTARIO",
+					codiceFiscaleUtenteLoggato);
+			throw new QuestionarioTemplateException(messaggioErrore);
+		}
+		
 		return this.enteSedeProgettoFacilitatoreService.getEntiByFacilitatore(profilazioneParam);
 	}
 
-	public List<SedeProjection> getSediByFacilitatore(ProfilazioneParam profilazioneParam) {
+	public List<SedeProjection> getSediByFacilitatore(ProfilazioneSedeParam profilazioneParam) {
+		final String codiceFiscaleUtenteLoggato = profilazioneParam.getCodiceFiscaleUtenteLoggato();
+		final String codiceRuoloUtenteLoggato = profilazioneParam.getCodiceRuoloUtenteLoggato().toString();
+		
+		// Verifico se l'utente possiede il ruolo mandato nella richiesta
+		boolean hasRuoloUtente = this.ruoloService
+			.getRuoliByCodiceFiscale(codiceFiscaleUtenteLoggato)
+			.stream()
+			.anyMatch(ruolo -> codiceRuoloUtenteLoggato.equalsIgnoreCase(ruolo.getCodice()));
+
+		if(!hasRuoloUtente 
+				|| (!codiceRuoloUtenteLoggato.equalsIgnoreCase(RuoliUtentiConstants.FACILITATORE) &&
+					!codiceRuoloUtenteLoggato.equalsIgnoreCase(RuoliUtentiConstants.VOLONTARIO) )) {
+			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'.\nOppure l'utente non è un FACILITATORE/VOLONTARIO",
+					codiceFiscaleUtenteLoggato);
+			throw new QuestionarioTemplateException(messaggioErrore);
+		}
+		
 		return this.enteSedeProgettoFacilitatoreService.getSediByFacilitatore(profilazioneParam);
 	}
 

@@ -13,4 +13,7 @@ public class DettaglioUtenteBean {
 	private String email;
 	private String telefono;
 	private String Stato;
+	private String tipoContratto;
+	private String mansione;
+	
 }

@@ -27,8 +27,8 @@ import it.pa.repdgt.gestioneutente.exception.ResourceNotFoundException;
 import it.pa.repdgt.gestioneutente.exception.RuoloException;
 import it.pa.repdgt.gestioneutente.exception.UtenteException;
 import it.pa.repdgt.gestioneutente.repository.UtenteRepository;
+import it.pa.repdgt.gestioneutente.request.AggiornaUtenteRequest;
 import it.pa.repdgt.gestioneutente.request.FiltroRequest;
-import it.pa.repdgt.gestioneutente.request.NuovoUtenteRequest;
 import it.pa.repdgt.gestioneutente.request.UtenteRequest;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
@@ -218,7 +218,10 @@ public class UtenteService {
 	
 	@LogExecutionTime
 	@LogMethod
-	public void creaNuovoUtente(UtenteEntity utente, String codiceRuolo) {
+	public UtenteEntity creaNuovoUtente(UtenteEntity utente, String codiceRuolo) {
+		if(isEmailDuplicata(utente.getEmail(), utente.getCodiceFiscale())) {
+			throw new UtenteException("ERRORE: non possono esistere a sistema due email per due utenti diversi");
+		}
 		Optional<UtenteEntity> oldUtente = this.utenteRepository.findByCodiceFiscale(utente.getCodiceFiscale());
 		if(oldUtente.isPresent()) {
 			utente.setId(oldUtente.get().getId());
@@ -228,22 +231,27 @@ public class UtenteService {
 		utente.getRuoli().add(ruolo);
 		utente.setDataOraCreazione(new Date());
 		utente.setDataOraAggiornamento(utente.getDataOraCreazione());
-		this.salvaUtente(utente);
+		utente = this.salvaUtente(utente);
 		if(!ruolo.getPredefinito()) {
 			try {
 				this.emailService.inviaEmail(utente.getEmail(), 
-						EmailTemplateEnum.GEST_PROGE_PARTNER, 
+						EmailTemplateEnum.RUOLO_CUSTOM, 
 						new String[] { utente.getNome(), codiceRuolo});
 			}catch(Exception ex) {
 				log.error("Impossibile inviare la mail al nuovo utente censito con codice fiscale {}", utente.getCodiceFiscale());
 				log.error("{}", ex);
 			}
 		}
+		return utente;
 	}
 	
+	private boolean isEmailDuplicata(String email, String codiceFiscale) {
+		return this.utenteRepository.findByEmailAndCodiceFiscaleNot(email, codiceFiscale).isPresent();
+	}
+
 	@LogExecutionTime
 	@LogMethod
-	public void aggiornaUtente(NuovoUtenteRequest nuovoUtenteRequest, String cfUtente) {
+	public void aggiornaUtente(AggiornaUtenteRequest aggiornaUtenteRequest, String cfUtente) {
 		UtenteEntity utenteFetchDB = null;
 		try {
 			utenteFetchDB = this.getUtenteByCodiceFiscale(cfUtente);
@@ -251,13 +259,10 @@ public class UtenteService {
 			String messaggioErrore = String.format("utente con codice fiscale=%s non trovato", cfUtente);
 			throw new UtenteException(messaggioErrore, ex);
 		}
-		utenteFetchDB.setCodiceFiscale(nuovoUtenteRequest.getCodiceFiscale());
-		utenteFetchDB.setNome(nuovoUtenteRequest.getNome());
-		utenteFetchDB.setCognome(nuovoUtenteRequest.getCognome());
-		utenteFetchDB.setEmail(nuovoUtenteRequest.getEmail());
-		utenteFetchDB.setTelefono(nuovoUtenteRequest.getTelefono());
-		utenteFetchDB.setMansione(nuovoUtenteRequest.getMansione());
-		utenteFetchDB.setTipoContratto(nuovoUtenteRequest.getTipoContratto());
+		utenteFetchDB.setEmail(aggiornaUtenteRequest.getEmail());
+		utenteFetchDB.setTelefono(aggiornaUtenteRequest.getTelefono());
+		utenteFetchDB.setMansione(aggiornaUtenteRequest.getMansione());
+		utenteFetchDB.setTipoContratto(aggiornaUtenteRequest.getTipoContratto());
 		utenteFetchDB.setDataOraAggiornamento(new Date());
 		this.utenteRepository.save(utenteFetchDB);
 	}
@@ -539,6 +544,8 @@ public class UtenteService {
 		dettaglioUtente.setEmail(utenteFetchDB.getEmail());
 		dettaglioUtente.setTelefono(utenteFetchDB.getTelefono());
 		dettaglioUtente.setStato(utenteFetchDB.getStato());
+		dettaglioUtente.setTipoContratto(utenteFetchDB.getTipoContratto());
+		dettaglioUtente.setMansione(utenteFetchDB.getMansione());
 		
 		
 		List<RuoloEntity> listaRuoliUtente = this.ruoloService.getRuoliCompletiByCodiceFiscaleUtente(cfUtente);
