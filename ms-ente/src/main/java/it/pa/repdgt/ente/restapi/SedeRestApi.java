@@ -19,6 +19,7 @@ import it.pa.repdgt.ente.bean.SchedaSedeBean;
 import it.pa.repdgt.ente.mapper.SedeMapper;
 import it.pa.repdgt.ente.request.EnteSedeProgettoFacilitatoreRequest;
 import it.pa.repdgt.ente.request.NuovaSedeRequest;
+import it.pa.repdgt.ente.resource.CreaSedeResource;
 import it.pa.repdgt.ente.resource.SedeResource;
 import it.pa.repdgt.ente.service.EnteSedeProgettoFacilitatoreService;
 import it.pa.repdgt.ente.service.EnteSedeProgettoService;
@@ -57,8 +58,8 @@ public class SedeRestApi {
 	// TOUCH POINT - 2.2.13A - Crea sede
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public void creaNuovaSede(@RequestBody @Valid NuovaSedeRequest nuovaSedeRequest) {
-		this.sedeService.creaNuovaSede(nuovaSedeRequest);
+	public CreaSedeResource creaNuovaSede(@RequestBody @Valid NuovaSedeRequest nuovaSedeRequest) {
+		return new CreaSedeResource(this.sedeService.creaNuovaSede(nuovaSedeRequest).getId());
 	}
 	
 	// TOUCH POINT - 2.2.13 C - Associazione sede, ente, progetto

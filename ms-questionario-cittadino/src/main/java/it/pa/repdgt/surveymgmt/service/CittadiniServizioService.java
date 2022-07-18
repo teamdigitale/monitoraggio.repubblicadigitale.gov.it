@@ -365,7 +365,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		questCompilatoMySql.setIdProgetto(servizio.getIdEnteSedeProgettoFacilitatore().getIdProgetto());
 		questCompilatoMySql.setIdSede(servizio.getIdEnteSedeProgettoFacilitatore().getIdSede());
 		questCompilatoMySql.setIdServizio(servizio.getId());
-		questCompilatoMySql.setStato(StatoQuestionarioEnum.NON_INVIATO.getValue());
+		questCompilatoMySql.setStato(StatoQuestionarioEnum.NON_INVIATO.toString());
 		questCompilatoMySql.setIdQuestionarioTemplate(servizio.getIdQuestionarioTemplateSnapshot());
 		
 		this.questionarioCompilatoSqlRepository.save(questCompilatoMySql);

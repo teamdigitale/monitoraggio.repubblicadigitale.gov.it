@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import it.pa.repdgt.programmaprogetto.bean.DettaglioProgettoBean;
+import it.pa.repdgt.programmaprogetto.bean.DettaglioProgrammaLightBean;
 import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
 import it.pa.repdgt.programmaprogetto.resource.ProgettiLightResourcePaginati;
 import it.pa.repdgt.programmaprogetto.resource.ProgettoLightResource;
@@ -302,5 +303,13 @@ public class ProgettoMapper {
 		dettaglioProgetto.setNFacilitatoriDataTarget5(progettoFetchDB.getNFacilitatoriDataTarget5());
 		
 		return dettaglioProgetto;
+	}
+
+	public DettaglioProgrammaLightBean toDettaglioProgrammaLightBeanFrom(ProgrammaEntity programmaFetchDB) {
+		DettaglioProgrammaLightBean dettaglioProgramma = new DettaglioProgrammaLightBean();
+		dettaglioProgramma.setId(programmaFetchDB.getId());
+		dettaglioProgramma.setCodice(programmaFetchDB.getCodice());
+		dettaglioProgramma.setNomeBreve(programmaFetchDB.getNomeBreve());
+		return dettaglioProgramma;
 	}
 }

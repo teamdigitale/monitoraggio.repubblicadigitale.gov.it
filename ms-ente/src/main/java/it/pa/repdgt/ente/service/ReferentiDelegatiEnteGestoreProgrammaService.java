@@ -54,7 +54,7 @@ public class ReferentiDelegatiEnteGestoreProgrammaService {
 	}
 
 	public ReferentiDelegatiEnteGestoreProgrammaEntity getById(ReferentiDelegatiEnteGestoreProgrammaKey id) {
-		return this.referentiDelegatiEnteGestoreProgrammaRepository.getById(id);
+		return this.referentiDelegatiEnteGestoreProgrammaRepository.findById(id).get();
 	}
 
 	public List<ReferentiDelegatiEnteGestoreProgrammaEntity> getReferentiAndDelegatiByIdProgrammaAndIdEnte(Long idProgramma, Long idEnte) {

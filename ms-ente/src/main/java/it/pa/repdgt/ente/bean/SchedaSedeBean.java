@@ -13,6 +13,7 @@ import lombok.Setter;
 @Setter
 @JsonInclude(value = Include.NON_NULL)
 public class SchedaSedeBean {
+	private DettaglioProgettoLightBean dettaglioProgetto;
 	private DettaglioSedeBean dettaglioSede;
 	private List<UtenteProjection> facilitatoriSede;
 }

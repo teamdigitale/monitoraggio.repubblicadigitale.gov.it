@@ -66,24 +66,24 @@ public class RuoloRestApi {
 	
 	// TOUCH POINT - 8.1.4 - Scheda ruolo
 	// TOUCH POINT - 8.2.1 - Scheda ruolo
-	@GetMapping(path = "/{codiceRuolo}")
+	@GetMapping(path = "/{idRuolo}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public SchedaRuoloBean getSchedaRuolo(@PathVariable(value = "codiceRuolo") String codiceRuolo) {
+	public SchedaRuoloBean getSchedaRuolo(@PathVariable(value = "idRuolo") String codiceRuolo) {
 		return this.ruoloService.getSchedaRuoloByCodiceRuolo(codiceRuolo);
 	}
 	
 	// TOUCH POINT - 8.1.2 - update ruolo
 	// TOUCH POINT - 8.2.2 - update ruolo
-	@PutMapping(path = "/{codiceRuolo}")
+	@PutMapping(path = "/{idRuolo}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public void aggiornaRuolo(@PathVariable(value = "codiceRuolo") String codiceRuolo,
+	public void aggiornaRuolo(@PathVariable(value = "idRuolo") String codiceRuolo,
 			@RequestBody @Valid RuoloRequest aggiornaRuoloRequest) {
 		this.ruoloService.aggiornaRuoloNonPredefinito(codiceRuolo, aggiornaRuoloRequest);
 	}
 	
-	@DeleteMapping(path = "/{codiceRuolo}")
+	@DeleteMapping(path = "/{idRuolo}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void cancellazioneRuolo(@PathVariable(value = "codiceRuolo") String codiceRuolo) {
+	public void cancellazioneRuolo(@PathVariable(value = "idRuolo") String codiceRuolo) {
 		this.ruoloService.cancellazioneRuolo(codiceRuolo);
 	}
 }

@@ -5,10 +5,12 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+import it.pa.repdgt.ente.bean.DettaglioProgettoLightBean;
 import it.pa.repdgt.ente.bean.DettaglioSedeBean;
 import it.pa.repdgt.ente.request.NuovaSedeRequest;
 import it.pa.repdgt.ente.request.NuovaSedeRequest.IndirizzoSedeRequest;
 import it.pa.repdgt.ente.resource.SedeResource;
+import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
 
 @Component
@@ -64,5 +66,12 @@ public class SedeMapper {
 					.stream()
 					.map(this::toResourceFrom)
 					.collect(Collectors.toList());
+	}
+
+	public DettaglioProgettoLightBean toDettaglioProgettoLightBeanFrom(ProgettoEntity progettoFetchDB) {
+		DettaglioProgettoLightBean dettaglioProgetto = new DettaglioProgettoLightBean();
+		dettaglioProgetto.setId(progettoFetchDB.getId());
+		dettaglioProgetto.setNomeBreve(progettoFetchDB.getNomeBreve());
+		return dettaglioProgetto;
 	}
 }

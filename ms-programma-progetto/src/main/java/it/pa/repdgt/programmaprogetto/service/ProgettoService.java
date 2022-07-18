@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.programmaprogetto.bean.DettaglioEntiPartnerBean;
 import it.pa.repdgt.programmaprogetto.bean.DettaglioProgettoBean;
+import it.pa.repdgt.programmaprogetto.bean.DettaglioProgrammaLightBean;
 import it.pa.repdgt.programmaprogetto.bean.DettaglioSediBean;
 import it.pa.repdgt.programmaprogetto.bean.SchedaProgettoBean;
 import it.pa.repdgt.programmaprogetto.exception.ProgettoException;
@@ -383,6 +384,9 @@ public class ProgettoService {
 
 	public SchedaProgettoBean getSchedaProgettoById(Long idProgetto) {
 		ProgettoEntity progettoFetchDB = this.getProgettoById(idProgetto);
+		ProgrammaEntity programmaFetchDB = progettoFetchDB.getProgramma();
+		
+		DettaglioProgrammaLightBean dettaglioProgramma = this.progettoMapper.toDettaglioProgrammaLightBeanFrom(programmaFetchDB);
 		
 		DettaglioProgettoBean dettaglioProgetto = this.progettoMapper.toDettaglioProgettoBeanFrom(progettoFetchDB);
 		dettaglioProgetto.setId(idProgetto);
@@ -432,6 +436,7 @@ public class ProgettoService {
 			});
 		
 		SchedaProgettoBean schedaProgetto = new SchedaProgettoBean();
+		schedaProgetto.setDettaglioProgramma(dettaglioProgramma);
 		schedaProgetto.setDettaglioProgetto(dettaglioProgetto);
 		schedaProgetto.setEntiPartner(listaEntiPartner);
 		schedaProgetto.setSedi(listaDettaglioSedi);

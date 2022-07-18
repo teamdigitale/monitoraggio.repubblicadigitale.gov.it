@@ -33,6 +33,7 @@ import org.springframework.data.domain.PageImpl;
 
 import it.pa.repdgt.programmaprogetto.bean.DettaglioEntiPartnerBean;
 import it.pa.repdgt.programmaprogetto.bean.DettaglioProgettoBean;
+import it.pa.repdgt.programmaprogetto.bean.DettaglioProgrammaLightBean;
 import it.pa.repdgt.programmaprogetto.bean.DettaglioSediBean;
 import it.pa.repdgt.programmaprogetto.bean.SchedaProgettoBean;
 import it.pa.repdgt.programmaprogetto.exception.ProgettoException;
@@ -476,10 +477,12 @@ public class ProgettoServiceTest {
 	
 	@Test
 	public void getSchedaProgettoByIdTest() {
+		DettaglioProgrammaLightBean dettaglioProgramma = new DettaglioProgrammaLightBean();
 		DettaglioProgettoBean dettaglioProgetto = new DettaglioProgettoBean();
 		List<Long> idsEntiPartner = new ArrayList<>();
 		idsEntiPartner.add(ente1.getId());
 		when(progettoRepository.findById(progettiParam.getIdProgramma())).thenReturn(progettoOptional);
+		when(progettoMapper.toDettaglioProgrammaLightBeanFrom(programma1)).thenReturn(dettaglioProgramma);
 		when(progettoMapper.toDettaglioProgettoBeanFrom(progetto1)).thenReturn(dettaglioProgetto);
 		when(entePartnerService.getIdEntiPartnerByProgetto(progettiParam.getIdProgetto())).thenReturn(idsEntiPartner);
 		when(enteService.getEnteById(ente1.getId())).thenReturn(ente1);
@@ -539,10 +542,12 @@ public class ProgettoServiceTest {
 	//test con ente gestore programma del programma1 a null
 	@Test
 	public void getSchedaProgettoByIdTest2() {
+		DettaglioProgrammaLightBean dettaglioProgramma = new DettaglioProgrammaLightBean();
 		DettaglioProgettoBean dettaglioProgetto = new DettaglioProgettoBean();
 		List<Long> idsEntiPartner = new ArrayList<>();
 		idsEntiPartner.add(ente1.getId());
 		when(progettoRepository.findById(progettiParam.getIdProgramma())).thenReturn(progettoOptional);
+		when(progettoMapper.toDettaglioProgrammaLightBeanFrom(programma1)).thenReturn(dettaglioProgramma);
 		when(progettoMapper.toDettaglioProgettoBeanFrom(progetto1)).thenReturn(dettaglioProgetto);
 		when(entePartnerService.getIdEntiPartnerByProgetto(progettiParam.getIdProgetto())).thenReturn(idsEntiPartner);
 		when(enteService.getEnteById(ente1.getId())).thenReturn(ente1);
