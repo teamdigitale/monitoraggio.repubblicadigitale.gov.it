@@ -38,8 +38,6 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
   const device = useAppSelector(selectDevice);
   const user = useAppSelector(selectUser);
   const formDisabled = !!props.formDisabled;
-  const formData: { [key: string]: string } | undefined =
-    useAppSelector(selectUser);
 
   useEffect(() => {
     if (user?.codiceFiscale) {
@@ -47,12 +45,6 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.codiceFiscale]);
-
-  useEffect(() => {
-    if (formData) {
-      setFormValues(formData);
-    }
-  }, [formData]);
 
   useEffect(() => {
     if (form) sendNewForm(form);

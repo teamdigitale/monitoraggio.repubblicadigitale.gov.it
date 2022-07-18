@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
-import {CreateUserContext, EditUser} from '../../../../../redux/features/user/userThunk';
-import {formFieldI, FormHelper, FormI} from '../../../../../utils/formHelper';
+import {
+  CreateUserContext,
+  EditUser,
+} from '../../../../../redux/features/user/userThunk';
+import { formFieldI, FormHelper, FormI } from '../../../../../utils/formHelper';
 import FormOnboarding from '../../../../facilitator/Onboarding/formOnboarding';
 import { formTypes } from '../utils';
 
@@ -24,7 +27,8 @@ const ManageProfile: React.FC = () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       if (res) {
-        if (newFormValues?.codiceFiscale) dispatch(CreateUserContext(newFormValues.codiceFiscale.toString()))
+        if (newFormValues?.codiceFiscale)
+          dispatch(CreateUserContext(newFormValues.codiceFiscale.toString()));
         dispatch(closeModal());
       }
     }

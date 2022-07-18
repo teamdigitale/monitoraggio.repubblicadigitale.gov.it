@@ -94,9 +94,12 @@ export const SelectUserRole =
         },
       } = select((state: RootState) => state);
       if (codiceFiscale && profile?.codiceRuolo) {
+        const { codiceRuolo, idProgramma, idProgetto } = profile;
         const res = await API.post('/contesto/sceltaProfilo', {
           cfUtente: codiceFiscale,
-          codiceRuolo: profile.codiceRuolo,
+          codiceRuolo,
+          idProgramma,
+          idProgetto,
         });
 
         if (res) {

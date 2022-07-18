@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../redux/hooks';
 import { selectLogged } from '../redux/features/user/userSlice';
@@ -54,6 +54,7 @@ const UserProfile = lazy(
 
 const AppRoutes: React.FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const isLogged = useAppSelector(selectLogged);
   const [validSession, setValidSession] = useState(false);
 
@@ -66,6 +67,11 @@ const AppRoutes: React.FC = () => {
     checkSession();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (validSession && isLogged) navigate('/');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLogged]);
 
   if (!validSession) return <Loader />;
 
@@ -133,11 +139,14 @@ const AppRoutes: React.FC = () => {
               </ProtectedComponent>
             }
           />
-          <Route path='/area-personale' element={
-            <ProtectedComponent visibleTo={[]} redirect='/'>
-              <UserProfile />
-            </ProtectedComponent>
-          } />
+          <Route
+            path='/area-personale'
+            element={
+              <ProtectedComponent visibleTo={[]} redirect='/'>
+                <UserProfile />
+              </ProtectedComponent>
+            }
+          />
           <Route path='/playground' element={<Playground />} />
           <Route
             path='/'

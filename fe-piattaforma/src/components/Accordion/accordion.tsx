@@ -62,7 +62,7 @@ const Accordion: React.FC<AccordionI> = (props) => {
       >
         <div className='d-flex justify-content-between'>
           <span>
-            {title} {totElem && '(' + totElem + ')'}
+            {title} {totElem?.toString() && '(' + totElem + ')'}
           </span>
         </div>
       </AccordionHeader>

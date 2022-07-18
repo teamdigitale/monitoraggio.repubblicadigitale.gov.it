@@ -138,10 +138,10 @@ const ProgramsDetails: React.FC = () => {
   }, [entityId, programDetails]);
 
   const onActionClickReferenti: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => { console.log(td)
       navigate(
         `/area-amministrativa/${formTypes.REFERENTI}/${
-          typeof td === 'string' ? td : td?.id
+          typeof td === 'string' ? td : td?.codiceFiscale
         }`
       );
     },
@@ -155,11 +155,12 @@ const ProgramsDetails: React.FC = () => {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
       navigate(
         `/area-amministrativa/${formTypes.DELEGATI}/${
-          typeof td === 'string' ? td : td?.id
+          typeof td === 'string' ? td : td?.codiceFiscale
         }`
       );
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+      // dispatch(RemoveReferentDelegate())
       console.log(td);
     },
   };
@@ -247,6 +248,7 @@ const ProgramsDetails: React.FC = () => {
             items:
               authorityInfo?.referentiEnteGestore?.map(
                 (ref: { [key: string]: string }) => ({
+                  // TODO: check when BE add codiceFiscale
                   ...ref,
                   actions: onActionClickReferenti,
                 })
@@ -257,6 +259,7 @@ const ProgramsDetails: React.FC = () => {
             items:
               authorityInfo?.delegatiEnteGestore?.map(
                 (del: { [key: string]: string }) => ({
+                  // TODO: check when BE add codiceFiscale
                   ...del,
                   actions: onActionClickDelegati,
                 })

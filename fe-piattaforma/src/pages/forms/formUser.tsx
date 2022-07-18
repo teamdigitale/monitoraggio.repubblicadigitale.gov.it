@@ -116,7 +116,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
           }}
         />
         <Input
-          {...form?.phone}
+          {...form?.telefono}
           col='col-12 col-lg-6'
           label='Telefono'
           placeholder='Inserisci telefono'
@@ -136,7 +136,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
           }}
         />
         <Input
-          {...form?.bio}
+          {...form?.mansione}
           label='Bio'
           col='col-12 col-lg-6'
           placeholder='Inserisci bio'
@@ -176,6 +176,7 @@ const form = newForm([
   newFormField({
     field: 'codiceFiscale',
     id: 'codiceFiscale',
+    regex: RegexpType.FISCAL_CODE,
   }),
   newFormField({
     field: 'email',
@@ -183,8 +184,9 @@ const form = newForm([
     id: 'email',
   }),
   newFormField({
-    field: 'phone',
-    id: 'phone',
+    field: 'telefono',
+    id: 'telefono',
+    regex: RegexpType.MOBILE_PHONE,
   }),
   /*
   newFormField({
@@ -192,8 +194,8 @@ const form = newForm([
     id: 'authorityRef',
   }),
   */
-  newFormField({
-    field: 'bio',
+  newFormField({ // TODO: update when return field bio
+    field: 'mansione',
     id: 'bio',
   }),
 ]);

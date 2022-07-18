@@ -55,14 +55,18 @@ const ManageUsers: React.FC<ManageUsersI> = ({
         onClick: () => clearForm?.(),
       }}
     >
-      <FormUser
-        creation={creation}
-        formDisabled={!!formDisabled}
-        sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
-          setNewFormValues({ ...newData })
-        }
-        setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
-      />
+      <div className='px-5'>
+        <FormUser
+          creation={creation}
+          formDisabled={!!formDisabled}
+          sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+            setNewFormValues({ ...newData })
+          }
+          setIsFormValid={(value: boolean | undefined) =>
+            setIsFormValid(!!value)
+          }
+        />
+      </div>
     </GenericModal>
   );
 };

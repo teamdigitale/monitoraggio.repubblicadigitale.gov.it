@@ -79,6 +79,7 @@ export interface FormActionsI {
 
 export interface ItemListElemI {
   nome: string;
+  cognome?: string;
   actions: CRUDActionsI;
   status?: string;
   stato?: string;
@@ -87,6 +88,7 @@ export interface ItemListElemI {
     [key: string]: string;
   };
   default?: boolean;
+  codiceFiscale?: string;
 }
 
 export interface ItemsListI {

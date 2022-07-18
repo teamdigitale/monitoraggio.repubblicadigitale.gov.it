@@ -100,10 +100,10 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
           </div>
         )}
         <div>{children}</div>
-        {itemsAccordionList && itemsAccordionList.length
+        {itemsAccordionList?.length
           ? itemsAccordionList.map((singleItem, index) => (
               <Accordion
-                title={singleItem.title ? singleItem.title : ''}
+                title={singleItem.title || ''}
                 totElem={singleItem.items.length}
                 cta={`Aggiungi ${singleItem.title}`}
                 onClickCta={() =>
@@ -125,14 +125,15 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                 lastBottom={index === itemsAccordionList.length - 1}
               >
                 {singleItem.items?.length ? (
-                  singleItem.items.map((item, index: number) => (
+                  singleItem.items.map((item) => (
                     <CardStatusAction
-                      key={index}
-                      title={item.nome}
+                      key={item.id}
+                      title={`${item.nome} ${item.cognome}`.trim()}
                       status={item.stato}
                       onActionClick={item.actions}
                       id={item.id}
                       fullInfo={item.fullInfo}
+                      cf={item.codiceFiscale}
                     />
                   ))
                 ) : (

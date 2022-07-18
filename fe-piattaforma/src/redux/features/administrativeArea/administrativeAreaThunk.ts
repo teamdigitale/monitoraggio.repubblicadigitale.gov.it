@@ -33,7 +33,6 @@ export const GetEntityValues =
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         administrativeArea: { filters, pagination },
-        // TODO get user cf, role, idProgramma, idProgetto
       } = select((state: RootState) => state);
       const entityEndpoint = `/${payload.entity}/all`;
       const filtroRequest: {
