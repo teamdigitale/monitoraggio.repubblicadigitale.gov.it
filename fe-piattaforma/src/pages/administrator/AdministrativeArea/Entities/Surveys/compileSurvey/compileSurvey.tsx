@@ -66,7 +66,7 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
 
   const changeRequiredFlag = (form: FormI, flag: string) => {
     const tmpForm = form;
-    if (form[flag].value === '') {
+    if (form[flag]?.value === '') {
       Object.keys(tmpForm).forEach((field) => {
         if (tmpForm[field]?.dependencyNotFlag === flag)
           tmpForm[field].required = true;

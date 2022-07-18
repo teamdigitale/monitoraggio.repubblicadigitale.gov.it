@@ -38,18 +38,13 @@ const UsersDetails = () => {
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const userInfo = useAppSelector(selectUsers)?.detail?.info;
+  const userInfo = useAppSelector(selectUsers)?.detail?.dettaglioUtente;
   const { mediaIsDesktop /* mediaIsPhone */ } = useAppSelector(selectDevice);
-
-  useEffect(() => {
-    dispatch(GetUserDetails('1'));
-  }, []);
-
   const headquarterInfo = userInfo?.authorityRef || undefined;
-
   const { entityId, userType } = useParams();
-
+ 
   useEffect(() => {
+    if(entityId) dispatch(GetUserDetails(entityId));
     dispatch(
       updateBreadcrumb([
         {
@@ -144,13 +139,13 @@ const UsersDetails = () => {
         <div>
           <DetailLayout
             titleInfo={{
-              title: 'Antonio Rossi',
-              status: 'ATTIVO',
+              title: userInfo?.nome + ' ' + userInfo?.cognome,
+              status: userInfo?.stato,
               upperTitle: { icon: 'it-user', text: getUpperTitle() },
               subTitle: headquarterInfo,
               iconAvatar: true,
-              name: userInfo?.name,
-              surname: userInfo?.lastName,
+              name: userInfo?.nome,
+              surname: userInfo?.cognome,
             }}
             formButtons={correctButtons}
             itemsList={itemList}

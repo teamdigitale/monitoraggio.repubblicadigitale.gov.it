@@ -1,7 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useAppSelector } from '../../../redux/hooks';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import Profile from '/public/assets/img/change-profile.png';
@@ -12,7 +12,7 @@ import withFormHandler, {
 import { Form, Input } from '../../../components';
 import { Button, FormGroup, Icon, Label } from 'design-react-kit';
 import { login, selectUser } from '../../../redux/features/user/userSlice';
-import { SelectUserRole } from '../../../redux/features/user/userThunk';
+import {EditUser, SelectUserRole} from '../../../redux/features/user/userThunk';
 import { openModal } from '../../../redux/features/modal/modalSlice';
 import FormOnboarding from './formOnboarding';
 
@@ -24,7 +24,7 @@ interface OnboardingI extends ProfilePicI, withFormHandlerProps {}
 
 const Onboarding: React.FC<OnboardingI> = (props) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
   const user = useAppSelector(selectUser);
   const [image, setImage] = useState<string>(Profile);
@@ -32,9 +32,17 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
   const {
     form,
     isValidForm,
+    getFormValues = () => ({}),
     onInputChange = () => ({}),
     updateForm = () => ({}),
   } = props;
+
+  useEffect(() => {
+    if (user?.integrazione) {
+      selectUserRole();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   if (!user?.codiceFiscale) return <Navigate to='/auth' replace />;
 
@@ -59,25 +67,36 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
     }
   };
 
-  const onSubmitForm = () => {
-    console.log('onSubmit', props.getFormValues && props.getFormValues());
+  const loginUser = () => {
+    dispatch(login());
+  };
+
+  const selectUserRole = async () => {
+    if (user.profiliUtente?.length > 1) {
+      dispatch(
+        openModal({
+          id: 'switchProfileModal',
+          payload: {
+            onSubmit: loginUser,
+          },
+        })
+      );
+    } else {
+      const res = await dispatch(SelectUserRole(user.profiliUtente[0]));
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (res) loginUser();
+    }
+  };
+
+  const onSubmitForm = async () => {
+    console.log('onSubmit', getFormValues());
     if (isValidForm) {
-      if (user.profiliUtente?.length > 1) {
-        dispatch(
-          openModal({
-            id: 'switchProfileModal',
-            payload: {
-              onSubmit: () => {
-                dispatch(login());
-                navigate('/');
-              },
-            },
-          })
-        );
-      } else {
-        dispatch(SelectUserRole(user.profiliUtente[0]));
-        dispatch(login());
-        navigate('/');
+      const res = await dispatch(EditUser(getFormValues()));
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (res) {
+        selectUserRole();
       }
     }
   };

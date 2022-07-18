@@ -96,7 +96,7 @@ const Programs = () => {
       programmiList.map((td: any) => {
         return {
           label: td.nomeBreve || td.nome,
-          id: td.id,
+          id: td.codice || td.id,
           policy: td.policy,
           enteGestore: td.enteGestore || td.nomeEnteGestore,
           status: <StatusChip status={td.stato} rowTableId={td.id} />,
@@ -209,7 +209,10 @@ const Programs = () => {
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      if (typeof td !== 'string') navigate(`${td.id}/info`);
+      if (typeof td !== 'string') {
+        const programId = programmiList.filter((program: any) => program?.codice?.toString().toLowerCase() === td.id.toString().toLowerCase())[0].id;
+        navigate(`${programId}/info`);
+      }
     },
   };
 

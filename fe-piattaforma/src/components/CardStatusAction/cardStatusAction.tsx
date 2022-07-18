@@ -30,6 +30,7 @@ interface CardStatusActionI {
     | undefined;
   onActionClick?: CRUDActionsI;
   id?: string | undefined;
+  cf?: string | undefined;
   moreThanOneSurvey?: boolean;
   onCheckedChange?: (checked: string) => void;
 }
@@ -43,6 +44,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
     fullInfo,
     onActionClick,
     id,
+    cf,
     moreThanOneSurvey = false,
     onCheckedChange,
   } = props;
@@ -165,7 +167,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
               {onActionClick[CRUDActionTypes.VIEW] ? (
                 <Button
                   onClick={() => {
-                    onActionClick[CRUDActionTypes.VIEW](id);
+                    onActionClick[CRUDActionTypes.VIEW](cf ? cf:id);
                   }}
                   className={clsx(device.mediaIsPhone ? 'px-0' : 'px-4')}
                 >

@@ -260,11 +260,13 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });
 
-    mockInstance.onGet('/questionarioTemplate/6c00da35-c6ee-4be1-bf2b-e28e7bcaeea8').reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/responseQuestionario.json');
-      return [200, response];
-    });
+    mockInstance
+      .onGet('/questionarioTemplate/6c00da35-c6ee-4be1-bf2b-e28e7bcaeea8')
+      .reply(async () => {
+        // @ts-ignore
+        const response = await import('/mock/responseQuestionario.json');
+        return [200, response];
+      });
 
     mockInstance.onGet('/questionarioTemplate/prova2').reply(async () => {
       // @ts-ignore
@@ -315,5 +317,13 @@ export const initMock = (apiInstance: AxiosInstance) => {
         const response = await import('/mock/userContext.json');
         return [200, response];
       });*/
+
+    /*mockInstance.onPost('/contesto/confermaIntegrazione').reply(async () => {
+      return [200];
+    });*/
+
+    /*mockInstance.onPost('/contesto/sceltaProfilo').reply(async () => {
+      return [200];
+    });*/
   }
 };

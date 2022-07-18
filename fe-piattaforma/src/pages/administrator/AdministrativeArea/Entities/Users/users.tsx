@@ -90,6 +90,7 @@ const Programmi = () => {
               label: td.nome,
               role: td.ruoli,
               status: <StatusChip status={td.stato} rowTableId={td.id} />,
+              codiceFiscale: td.codiceFiscale,
             };
           })
         : []
@@ -192,9 +193,7 @@ const Programmi = () => {
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      console.log(td);
-      //TODO REPLACE WITH DYNAMIC ID WHEN WE HAVE THE APIS
-      navigate('321321');
+      navigate(`/area-amministrativa/utenti/${typeof td === 'string' ? td : td?.codiceFiscale}`);
     },
   };
 

@@ -17,6 +17,7 @@ export interface UserStateI {
         role: string;
         codiceFiscale: string;
         profiliUtente?: any;
+        integrazione: boolean;
       }
     | Record<string, never>;
   notification?: [];
@@ -44,6 +45,7 @@ const initialStateLogged: UserStateI = {
     surname: 'Rossi',
     role: 'DTD',
     codiceFiscale: 'UTENTE1',
+    integrazione: true,
   },
   permissions: ['permission-1'],
   idProgramma: '0',
@@ -68,7 +70,7 @@ export const userSlice = createSlice({
         ...action.payload,
         role: action.payload?.profiliUtente[0]?.codiceRuolo,
       };
-      setSessionValues('user', state.user);
+      //setSessionValues('user', state.user);
     },
     setUserProfile: (state, action: PayloadAction<any>) => {
       state.idProgramma = action.payload.idProgramma;
@@ -76,11 +78,12 @@ export const userSlice = createSlice({
       setSessionValues('profile', action.payload);
     },
     login: (state) => {
+      setSessionValues('user', state.user);
       state.isLogged = true;
     },
     logout: (state) => {
       state.isLogged = false;
-      clearSessionValues('user');
+      clearSessionValues();
     },
   },
 });
