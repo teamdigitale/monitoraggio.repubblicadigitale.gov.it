@@ -137,3 +137,24 @@ export const GetUsersBySearch =
       dispatch(hideLoader());
     }
   };
+
+const CreateUserAction = {
+  type: 'administrativeArea/CreateUser',
+};
+export const CreateUser =
+  (payload: { [key: string]: string }) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...CreateUserAction, payload });
+
+      const res = await API.post(`/utente`, payload);
+
+      if (res.data) {
+        console.log(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };

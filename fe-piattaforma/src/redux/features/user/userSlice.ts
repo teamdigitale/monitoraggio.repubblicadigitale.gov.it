@@ -68,7 +68,7 @@ export const userSlice = createSlice({
     setUserContext: (state, action: PayloadAction<any>) => {
       state.user = {
         ...action.payload,
-        role: action.payload?.profiliUtente[0]?.codiceRuolo,
+        role: action.payload?.profiliUtente?.[0]?.codiceRuolo,
       };
       //setSessionValues('user', state.user);
     },

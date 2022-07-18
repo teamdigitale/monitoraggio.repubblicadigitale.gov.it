@@ -138,6 +138,7 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
 
       <OpenDaysSelect
         openDays={addressInfo.fasceOrarieAperturaIndirizzoSede}
+        index={index}
         onAddOpenDay={openDayAddHandler}
         onRemoveOpenDay={openDayRemoveHandler}
         onTimeChange={timeChangeHandler}

@@ -58,7 +58,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   buttonsPosition,
   showGoBack = true,
   goBackTitle = 'Torna indietro',
-  goBackPath = '/',
+  //goBackPath = '/',
   children,
   currentTab,
   surveyDefault,
@@ -74,7 +74,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
       <div>
         {showGoBack && (
           <Button
-            onClick={() => navigate(goBackPath)}
+            onClick={() => navigate(-1)}
             className={clsx(device.mediaIsPhone ? 'px-0 mb-5 mr-5' : 'px-0')}
           >
             <Icon
@@ -145,10 +145,10 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
               </Accordion>
             ))
           : null}
-        {currentTab === 'questionari' &&
-          surveyDefault?.items?.length &&
-          showItemsList &&
-          itemsList?.items?.length && (
+        {(currentTab === 'questionari'
+          && surveyDefault?.items?.length
+          && showItemsList
+        ) ? (
             <div>
               <CardStatusActionSurveys
                 title={surveyDefault?.items[0].nome}
@@ -164,7 +164,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                   <h3 className='h4 text-muted mx-3'> Altri questionari </h3>
                 )}
             </div>
-          )}
+          ) : <EmptySection title='Non ci sono questionari' />}
         {showItemsList &&
         itemsList?.items?.length &&
         currentTab === 'questionari' ? (

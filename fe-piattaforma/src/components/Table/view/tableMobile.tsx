@@ -17,12 +17,16 @@ const TableMobile: React.FC<MobileTableI> = ({
 
   useEffect(() => {
     if (values && values.length) {
-      const temp = values.map(({ nome, label, status, ...rest }) => ({
-        title: nome || label,
-        status,
-        clickViewAction: onActionClick?.[CRUDActionTypes.VIEW],
-        innerInfo: { ...rest },
-      }));
+      const temp = values.map((item) => {
+        const { nome, label, status, ...rest } = item;
+        return {
+          title: nome || label,
+          status,
+          clickViewAction: () => onActionClick?.[CRUDActionTypes.VIEW](item),
+          innerInfo: { ...rest },
+        };
+      });
+
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //@ts-ignore
       setValuesForMobile([...temp]);

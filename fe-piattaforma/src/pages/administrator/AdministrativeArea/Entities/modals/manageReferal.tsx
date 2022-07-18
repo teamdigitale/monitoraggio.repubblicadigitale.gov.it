@@ -15,8 +15,10 @@ import {
   setUsersList,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import {
-  AssignReferentDelegate,
+  AssignManagerAuthorityReferentDelegate,
+  AssignPartnerAuthorityReferentDelegate,
   GetAuthorityManagerDetail,
+  GetPartnerAuthorityDetail,
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import {
   GetUserDetails,
@@ -64,14 +66,13 @@ const ManageReferal: React.FC<ManageReferalI> = ({
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
   }>({});
-  const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const [showForm, setShowForm] = useState<boolean>(true);
   const [alreadySearched, setAlreadySearched] = useState<boolean>(false);
   const dispatch = useDispatch();
   const usersList = useAppSelector(selectUsers).list;
-  const { entityId, projectId } = useParams();
-  const authorityId =
-    useAppSelector(selectAuthorities).detail.dettagliInfoEnte?.id;
+  const { entityId, projectId, authorityId } = useParams();
+  const authority = useAppSelector(selectAuthorities).detail.dettagliInfoEnte;
 
   const resetModal = () => {
     clearForm();
@@ -82,11 +83,11 @@ const ManageReferal: React.FC<ManageReferalI> = ({
   };
 
   const handleSaveReferal = async () => {
-    if (isFormValid && authorityId) {
+    if (isFormValid && authority?.id) {
       if (entityId) {
         await dispatch(
-          AssignReferentDelegate(
-            authorityId,
+          AssignManagerAuthorityReferentDelegate(
+            authority.id,
             entityId,
             newFormValues,
             'programma',
@@ -95,18 +96,31 @@ const ManageReferal: React.FC<ManageReferalI> = ({
         );
         await dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
       }
-
+      // Project details
       if (projectId) {
-        await dispatch(
-          AssignReferentDelegate(
-            authorityId,
-            projectId,
-            newFormValues,
-            'progetto',
-            'REGP'
-          )
-        );
-        await dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+        if (authorityId) {
+          await dispatch(
+            AssignPartnerAuthorityReferentDelegate(
+              authorityId,
+              projectId,
+              newFormValues,
+              'REPP'
+            )
+          );
+
+          dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
+        } else {
+          await dispatch(
+            AssignManagerAuthorityReferentDelegate(
+              authority.id,
+              projectId,
+              newFormValues,
+              'progetto',
+              'REGP'
+            )
+          );
+          await dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+        }
       }
       resetModal();
       dispatch(closeModal());
@@ -154,7 +168,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
         id='table'
       />
     );
-  } else if (alreadySearched && (usersList?.length === 0 || !usersList)) {
+  } else if (alreadySearched && (usersList?.length === 0 || !usersList) && !showForm) {
     content = <EmptySection title={'Nessun risultato'} />;
   }
 
@@ -176,6 +190,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
           className='w-75 py-5'
           placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’utente'
           onSubmit={handleSearchUser}
+          onReset={() => setShowForm(true)}
         />
         {content}
       </div>

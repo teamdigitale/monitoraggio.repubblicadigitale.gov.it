@@ -15,11 +15,13 @@ interface OpenDaysSelectI {
   onRemoveOpenDay: (i: number) => void;
   onTimeChange: (i: number, timeSpan: string[][]) => void;
   isReadOnly?: boolean | undefined;
+  index?: number;
 }
 
 const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
   openDays,
   isReadOnly = false,
+  index = 0,
   onAddOpenDay,
   onRemoveOpenDay,
   onTimeChange,
@@ -54,7 +56,7 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
                 ) : (
                   <FormGroup check>
                     <Input
-                      id={`input-checkbox-day-${i}`}
+                      id={`input-checkbox-day-${index}-${i}`}
                       type='checkbox'
                       checked={openDays.some((day) =>
                         dayOfWeek[i]
@@ -70,7 +72,7 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
                       }}
                       withLabel={false}
                     />
-                    <Label for={`input-checkbox-day-${i}`} check>
+                    <Label for={`input-checkbox-day-${index}-${i}`} check>
                       {v}
                     </Label>
                   </FormGroup>

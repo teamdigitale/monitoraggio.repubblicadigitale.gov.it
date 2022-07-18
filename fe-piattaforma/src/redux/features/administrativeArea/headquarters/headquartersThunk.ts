@@ -87,3 +87,45 @@ export const GetHeadquartersBySearch =
       dispatch(hideLoader());
     }
   };
+
+const AssignHeadquarterAction = {
+  type: 'administrativeArea/AssignHeadquarter',
+};
+
+export const AssignAuthorityHeadquarter =
+  (authorityId: string, headquarterDetails: any, projectId: string) =>
+  async (dispatch: Dispatch) => {
+    dispatch(showLoader());
+    dispatch({ ...AssignHeadquarterAction });
+    try {
+      const headquarterId = headquarterDetails?.id;
+
+      await API.get(
+        `/sede/associa/ente/${authorityId}/sede/${headquarterId}/progetto/${projectId}/ruoloEnte/ruolo`
+      );
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const RemoveHeadquarterAction = {
+  type: 'administrativeArea/RemoveHeadquarter',
+};
+
+export const RemoveAuthorityHeadquarter =
+  (authorityId: string, headquarterId: string, projectId: string) =>
+  async (dispatch: Dispatch) => {
+    dispatch(showLoader());
+    dispatch({ ...RemoveHeadquarterAction });
+    try {
+      await API.delete(
+        `/sede/cancellaOTerminaAssociazione/ente/${authorityId}/sede/${headquarterId}/progetto/${projectId}`
+      );
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };

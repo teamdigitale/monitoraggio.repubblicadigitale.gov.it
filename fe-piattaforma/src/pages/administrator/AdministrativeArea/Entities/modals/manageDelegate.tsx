@@ -12,8 +12,10 @@ import {
   setUsersList,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import {
-  AssignReferentDelegate,
+  AssignManagerAuthorityReferentDelegate,
+  AssignPartnerAuthorityReferentDelegate,
   GetAuthorityManagerDetail,
+  GetPartnerAuthorityDetail,
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import {
   GetUserDetails,
@@ -44,14 +46,13 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
   }>({});
-  const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const [showForm, setShowForm] = useState<boolean>(true);
   const [alreadySearched, setAlreadySearched] = useState<boolean>(false);
   const dispatch = useDispatch();
   const usersList = useAppSelector(selectUsers).list;
-  const { entityId, projectId } = useParams();
-  const authorityId =
-    useAppSelector(selectAuthorities).detail.dettagliInfoEnte?.id;
+  const { entityId, projectId, authorityId } = useParams();
+  const authority = useAppSelector(selectAuthorities).detail.dettagliInfoEnte;
 
   const resetModal = () => {
     clearForm();
@@ -62,11 +63,11 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
   };
 
   const handleSaveDelegate = async () => {
-    if (isFormValid && authorityId) {
+    if (isFormValid && authority?.id) {
       if (entityId) {
         await dispatch(
-          AssignReferentDelegate(
-            authorityId,
+          AssignManagerAuthorityReferentDelegate(
+            authority.id,
             entityId,
             newFormValues,
             'programma',
@@ -77,17 +78,30 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
       }
 
       if (projectId) {
-        await dispatch(
-          AssignReferentDelegate(
-            authorityId,
-            projectId,
-            newFormValues,
-            'progetto',
-            'DEGP'
-          )
-        );
+        if (authorityId) {
+          await dispatch(
+            AssignPartnerAuthorityReferentDelegate(
+              authorityId,
+              projectId,
+              newFormValues,
+              'DEPP'
+            )
+          );
 
-        dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+          dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
+        } else {
+          await dispatch(
+            AssignManagerAuthorityReferentDelegate(
+              authority.id,
+              projectId,
+              newFormValues,
+              'progetto',
+              'DEGP'
+            )
+          );
+
+          dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+        }
       }
       resetModal();
       dispatch(closeModal());
@@ -135,7 +149,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
         id='table'
       />
     );
-  } else if (alreadySearched && (usersList?.length === 0 || !usersList)) {
+  } else if (alreadySearched && (usersList?.length === 0 || !usersList) && !showForm) {
     content = <EmptySection title={'Nessun risultato'} />;
   }
 
@@ -157,6 +171,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
           className='w-75 py-5'
           placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’utente'
           onSubmit={handleSearchUser}
+          onReset={() => setShowForm(true)}
         />
 
         {content}

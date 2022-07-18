@@ -138,7 +138,7 @@ const ProgramsDetails: React.FC = () => {
   }, [entityId, programDetails]);
 
   const onActionClickReferenti: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => { console.log(td)
+    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
       navigate(
         `/area-amministrativa/${formTypes.REFERENTI}/${
           typeof td === 'string' ? td : td?.codiceFiscale

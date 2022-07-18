@@ -13,6 +13,7 @@ import {
 import {
   GetAuthorityDetail,
   GetAuthorityManagerDetail,
+  GetPartnerAuthorityDetail,
 } from '../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import { openModal } from '../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../redux/hooks';
@@ -47,7 +48,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
   } = props;
 
   const formDisabled = !!props.formDisabled;
-  const { projectId, entityId, idEnte } = useParams();
+  const { projectId, entityId, authorityId } = useParams();
 
   const newGestoreProgetto = () => {
     dispatch(
@@ -92,7 +93,9 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
         case formTypes.ENTE_PARTNER:
         case formTypes.ENTI_PARTNER:
           //dispatch(GetEntePartnerDetail(secondParam || '', 'prova'));
-          dispatch(GetAuthorityDetail(enteType));
+          projectId &&
+            authorityId &&
+            dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
           break;
         case formTypes.ENTE_GESTORE_PROGRAMMA:
           entityId &&
@@ -101,7 +104,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
           break;
         default:
           //dispatch(GetEnteGestoreProgrammaDetail(firstParam || '', 'prova'));
-          idEnte && dispatch(GetAuthorityDetail(idEnte));
+          authorityId && dispatch(GetAuthorityDetail(authorityId));
           break;
       }
     }
@@ -254,25 +257,25 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
             />
             <Input
               {...form?.piva}
-              label='Partita Iva'
+              label='Codice Fiscale'
               col='col-12 col-lg-6'
-              placeholder='Inserisci la partita iva'
+              placeholder='Inserisci il Codice Fiscale'
               onInputChange={(value, field) => {
                 onInputDataChange(value, field);
               }}
             />
           </Form.Row>
-          {/* <Form.Row className={bootClass}>
+          <Form.Row>
             <Input
-              {...form?.indirizzoPec}
-              label='PEC'
+              {...form?.profilo}
+              label='Profilo'
               col='col-12 col-lg-6'
-              placeholder='Inserisci PEC'
+              placeholder='Inserisci profilo'
               onInputChange={(value, field) => {
                 onInputDataChange(value, field);
               }}
             />
-          </Form.Row> */}
+          </Form.Row>
         </>
       )}
     </Form>
@@ -297,12 +300,10 @@ const form = newForm([
     field: 'tipologia',
     id: 'tipologia',
   }),
-  /*
   newFormField({
     field: 'profilo',
     id: 'profilo',
   }),
-  */
   newFormField({
     field: 'piva',
     id: 'piva',

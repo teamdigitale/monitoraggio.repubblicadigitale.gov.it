@@ -49,6 +49,7 @@ import {
 import TerminateEntityModal from '../../../../../components/AdministrativeArea/Entities/General/TerminateEntityModal/TerminateEntityModal';
 import ManageDelegate from '../modals/manageDelegate';
 import ManageReferal from '../modals/manageReferal';
+import DeleteAuthorityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteAuthorityModal/DeleteAuthorityModal';
 
 const tabs = {
   INFO: 'info',
@@ -222,18 +223,6 @@ const ProjectsDetails = () => {
           })
         ),
     },
-    {
-      size: 'xs',
-      color: 'primary',
-      text: 'Aggiungi una nuova Sede',
-      onClick: () =>
-        dispatch(
-          openModal({
-            id: formTypes.SEDE,
-            payload: { title: 'Aggiungi Sede' },
-          })
-        ),
-    },
   ];
 
   const AuthoritySection = () => {
@@ -311,9 +300,7 @@ const ProjectsDetails = () => {
       setEmptySection(
         <EmptySection
           title={'Questa sezione è ancora vuota'}
-          subtitle={
-            'Per attivare il progetto aggiungi un Ente gestore e una Sede'
-          }
+          subtitle={'Per attivare il progetto aggiungi un Ente gestore'}
           buttons={EmptySectionButtons.slice(0, 1)}
         />
       );
@@ -428,7 +415,6 @@ const ProjectsDetails = () => {
         <EmptySection
           title={'Questa sezione è ancora vuota'}
           subtitle={'Per attivare il progetto aggiungi una Sede'}
-          buttons={EmptySectionButtons.slice(2)}
         />
       );
     }
@@ -505,6 +491,7 @@ const ProjectsDetails = () => {
     projectId: string
   ) => {
     await dispatch(RemovePartnerAuthority(authorityId, projectId));
+    dispatch(closeModal());
     dispatch(GetProjectDetail(projectId));
   };
 
@@ -526,18 +513,25 @@ const ProjectsDetails = () => {
 
   const onActionClickEntiPartner: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(`/area-amministrativa/enti/${td}`);
+      projectId &&
+        navigate(`/area-amministrativa/progetti/${projectId}/enti/${td}`);
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      projectId && removeAuthorityPartner(td as string, projectId);
+      dispatch(
+        openModal({
+          id: 'delete-authority',
+          payload: {
+            authorityId: td,
+          },
+        })
+      );
+      // projectId && removeAuthorityPartner(td as string, projectId);
     },
   };
 
   const onActionClickSede: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        `/area-amministrativa/sedi/${typeof td === 'string' ? td : td?.id}`
-      );
+      navigate(`/area-amministrativa/sedi/${td}`);
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       console.log(td);
@@ -726,6 +720,13 @@ const ProjectsDetails = () => {
               terminationDate &&
               projectId &&
               terminateProject(projectId, terminationDate)
+            }
+          />
+          <DeleteAuthorityModal
+            text="Confermi di voler eliminare l'ente partner"
+            onClose={() => dispatch(closeModal())}
+            onConfirm={(id: string) =>
+              projectId && removeAuthorityPartner(id, projectId)
             }
           />
           <ManageDelegate />

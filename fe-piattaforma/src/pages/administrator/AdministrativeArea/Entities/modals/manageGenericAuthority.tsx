@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 //import { useDispatch } from 'react-redux';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
+import { UpdateAuthorityDetails } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
+import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormAuthorities from '../../../../forms/formAuthorities';
+import { formTypes } from '../utils';
 
-const id = 'ENTE';
+const id = formTypes.ENTE_PARTNER;
 
 interface ManageEntePartnerFormI {
   formDisabled?: boolean;
@@ -27,12 +31,13 @@ const ManageGenericAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
   }>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
 
-  //  const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const handleSaveEnte = () => {
     if (isFormValid) {
-      console.log(newFormValues);
+      dispatch(UpdateAuthorityDetails(newFormValues['id']?.toString(), newFormValues));
     }
+    dispatch(closeModal());
   };
 
   return (
@@ -48,14 +53,18 @@ const ManageGenericAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
         onClick: () => clearForm?.(),
       }}
     >
-      <FormAuthorities
-        creation={creation}
-        formDisabled={!!formDisabled}
-        sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
-          setNewFormValues({ ...newData })
-        }
-        setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
-      />
+      <div className='px-5'>
+        <FormAuthorities
+          creation={creation}
+          formDisabled={!!formDisabled}
+          sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+            setNewFormValues({ ...newData })
+          }
+          setIsFormValid={(value: boolean | undefined) =>
+            setIsFormValid(!!value)
+          }
+        />
+      </div>
     </GenericModal>
   );
 };
