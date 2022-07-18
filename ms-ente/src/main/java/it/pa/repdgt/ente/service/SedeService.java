@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import it.pa.repdgt.ente.bean.DettaglioProgettoLightBean;
 import it.pa.repdgt.ente.bean.DettaglioSedeBean;
 import it.pa.repdgt.ente.bean.IndirizzoSedeFasceOrarieBean;
 import it.pa.repdgt.ente.bean.SchedaSedeBean;
@@ -26,6 +27,7 @@ import it.pa.repdgt.ente.repository.SedeRepository;
 import it.pa.repdgt.ente.request.NuovaSedeRequest;
 import it.pa.repdgt.shared.entity.IndirizzoSedeEntity;
 import it.pa.repdgt.shared.entity.IndirizzoSedeFasciaOrariaEntity;
+import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
 
 @Service
@@ -40,6 +42,8 @@ public class SedeService {
 	@Autowired
 	@Lazy
 	private EnteService enteService;
+	@Autowired
+	private ProgettoService progettoService;
 	@Autowired
 	private IndirizzoSedeService indirizzoSedeService;
 	@Autowired
@@ -137,11 +141,14 @@ public class SedeService {
 	}
 	
 	public SchedaSedeBean getSchedaSedeByIdProgettoAndIdEnteAndIdSede(final Long idProgetto, final Long idEnte, final Long idSede) {
+		ProgettoEntity progettoFetchDB = this.progettoService.getProgettoById(idProgetto);
+		final DettaglioProgettoLightBean dettaglioProgetto = this.sedeMapper.toDettaglioProgettoLightBeanFrom(progettoFetchDB);
 		final SchedaSedeBean schedaSede = this.getSchedaSedeByIdSede(idSede);
 		final DettaglioSedeBean dettaglioSede = schedaSede.getDettaglioSede();
 		dettaglioSede.setEnteDiRiferimento(this.enteService.getEnteById(idEnte).getNome());
 		
 		final List<UtenteProjection> facilitatori = this.sedeRepository.findFacilitatoriSedeByIdProgettoAndIdEnteAndIdSede(idProgetto, idEnte, idSede);
+		schedaSede.setDettaglioProgetto(dettaglioProgetto);
 		schedaSede.setDettaglioSede(dettaglioSede);
 		schedaSede.setFacilitatoriSede(facilitatori);
 		return schedaSede;

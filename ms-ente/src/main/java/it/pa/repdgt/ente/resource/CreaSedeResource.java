@@ -1,4 +1,4 @@
-package it.pa.repdgt.programmaprogetto.resource;
+package it.pa.repdgt.ente.resource;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class CreaProgrammaResource {
-	private Long idProgrammaCreato;
+public class CreaSedeResource {
+	private Long idSedeCreata;
 }

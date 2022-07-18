@@ -57,9 +57,12 @@ public class S3Service {
 		try {
 			log.info("Uploading file con nome '{}' su AmazonS3...", fileToUploadName);
 			this.getClient().putObject(putObjectRequest, fileToUpload.toPath());
-			log.info("Uploading file su AmazonS3 riuscito.");
+			log.info("Upload file: '{}' su AmazonS3 avvenuto con successo.", fileToUploadName);
 		} catch (Exception ex) {
-			log.error("Errore upload del file su AmazonS3 per il file con nome '{}'. ex={}", fileToUploadName, ex);
+			String messaggioErrore = String.format("Errore upload del file su AmazonS3 per il file con nome '%s'.", fileToUploadName);
+			log.error(messaggioErrore);
+			log.error("ex={}", ex);
+			throw new RuntimeException(messaggioErrore);
 		}
 	}
 	
@@ -74,9 +77,13 @@ public class S3Service {
 		try {
 			log.info("Downloading file con nome '{}' su AmazonS3...", fileNameToDownload);
 			response  = this.getClient().getObjectAsBytes(getObjectRequest);
-			log.info("Downloading file Amazon S3 avvenuto con successo");
+			log.info("Download file: '{}' da Amazon S3 avvenuto con successo.", fileNameToDownload);
 		} catch (Exception ex) {
-			log.error("Errore upload del file su AmazonS3 per il file con nome '{}'. ex={}", fileNameToDownload, ex);
+			String messaggioErrore = String.format("Errore download del file su AmazonS3 per il file con nome '%s'."
+					+ " Verifica che il nome del file da scaricare sia correto e riprova.", fileNameToDownload);
+			log.error(messaggioErrore);
+			log.error("ex={}", ex);
+			throw new RuntimeException(messaggioErrore);
 		}
 		
 		return response;

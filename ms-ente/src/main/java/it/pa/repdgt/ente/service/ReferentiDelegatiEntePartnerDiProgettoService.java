@@ -41,7 +41,7 @@ public class ReferentiDelegatiEntePartnerDiProgettoService {
 	}
 
 	public ReferentiDelegatiEntePartnerDiProgettoEntity getById(ReferentiDelegatiEntePartnerDiProgettoKey id) {
-		return this.referentiDelegatiEntePartnerDiProgettoRepository.getById(id);
+		return this.referentiDelegatiEntePartnerDiProgettoRepository.findById(id).get();
 	}
 	
 	public List<ReferentiDelegatiEntePartnerDiProgettoEntity> findAltriReferentiODelegatiAttivi(Long idProgetto, Long idEntePartner, String codiceFiscaleUtente, String codiceRuolo) {

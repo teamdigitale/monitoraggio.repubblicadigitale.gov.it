@@ -14,7 +14,9 @@ import lombok.Setter;
 @JsonRootName(value = "SchedaProgetto")
 public class SchedaProgettoBean implements Serializable {
 	private static final long serialVersionUID = -4884780725372877896L;
-
+	
+	@JsonProperty(value = "dettagliInfoProgramma")
+	private DettaglioProgrammaLightBean dettaglioProgramma;
 	@JsonProperty(value = "dettagliInfoProgetto")
 	private DettaglioProgettoBean dettaglioProgetto;
 	@JsonProperty(value = "entiPartner")
