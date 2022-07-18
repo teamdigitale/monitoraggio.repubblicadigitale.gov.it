@@ -33,6 +33,7 @@ interface SearchBarI extends Omit<SelectI, 'onInputChange'> {
   description?: string;
   id?: string;
   entityToRefresh?: string | undefined;
+  onReset?: () => void;
 }
 
 const SearchBar: React.FC<SearchBarI> = (props) => {
@@ -48,6 +49,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
     searchButton = false,
     id = 'search',
     title = 'Cerca',
+    onReset,
   } = props;
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState<
@@ -91,6 +93,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
     setHasSearchValue(false);
     dispatch(deleteFiltroCriterioRicerca());
     dispatch(deleteFiltroCriterioRicercaCitizen());
+    if(onReset) onReset();
   };
 
   const AutocompleteDropdownIndicator = useCallback(

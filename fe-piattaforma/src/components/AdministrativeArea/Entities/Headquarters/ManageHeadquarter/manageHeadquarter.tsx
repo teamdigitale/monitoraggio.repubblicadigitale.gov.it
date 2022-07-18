@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import GenericModal from '../../../../Modals/GenericModal/genericModal';
 
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
@@ -11,6 +11,11 @@ import { Form } from '../../../..';
 import { Toggle } from 'design-react-kit';
 import AccordionAddressList from '../AccordionAddressList/AccordionAddressList';
 import AddressInfoForm from '../AddressInfoForm/AddressInfoForm';
+import { useParams } from 'react-router-dom';
+import { useAppSelector } from '../../../../../redux/hooks';
+import { selectProjects } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { useDispatch } from 'react-redux';
+import { AssignAuthorityHeadquarter } from '../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
 
 const id = formTypes.SEDE;
 
@@ -50,20 +55,27 @@ const ManageHeadquarter: React.FC<ManageSediI> = ({
 
   // flag for conditionally render multiple address selection
   const [movingHeadquarter, setMovingHeadquarter] = useState<boolean>(false);
+  const { projectId } = useParams();
+  const authorityId =
+    useAppSelector(selectProjects).detail?.idEnteGestoreProgetto;
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (movingHeadquarter) setAddressList((prevList) => [prevList[0]]);
-  }, [movingHeadquarter]);
+  // useEffect(() => {
+  //   if (movingHeadquarter) setAddressList((prevList) => [prevList[0]]);
+  // }, [movingHeadquarter]);
 
-  const handleSaveSite = () => {
+  const handleSaveSite = async () => {
     // addressList need in future probably will have some validators but now
     // there is no clue about the headquarter model structure and requirements
 
     if (isFormValid) {
-      console.log(addressList);
-
-      console.log(newFormValues);
-      // TODO call to update the values
+      if (newFormValues && addressList.length > 0) {
+        if (projectId && authorityId) {
+          await dispatch(
+            AssignAuthorityHeadquarter(authorityId, newFormValues, projectId)
+          );
+        }
+      }
     }
   };
 

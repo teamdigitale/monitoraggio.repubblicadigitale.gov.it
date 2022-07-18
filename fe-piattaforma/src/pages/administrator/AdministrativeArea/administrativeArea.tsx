@@ -142,9 +142,9 @@ const AdministrativeArea = () => {
 
   const device = useAppSelector(selectDevice);
 
-  const noDetailRoute = MenuRoutes
-    .find((x) => x.id === 'tab-admin')
-    ?.subRoutes?.some((y) => y.path === location.pathname);
+  const noDetailRoute = MenuRoutes.find(
+    (x) => x.id === 'tab-admin'
+  )?.subRoutes?.some((y) => y.path === location.pathname);
 
   return (
     <>
@@ -280,7 +280,7 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='progetti-dettaglio-enti-dettaglio'
-    path='progetti/:entityId/enti/:enteId'
+    path='progetti/:projectId/enti/:authorityId'
     element={<AuthoritiesDetails />}
   />,
   <Route
@@ -296,7 +296,7 @@ const AreaAmministrativaRoutes = [
   <Route key='enti' path='enti' element={<Authorities />} />,
   <Route
     key='enti-dettaglio'
-    path='enti/:idEnte'
+    path='enti/:authorityId'
     element={<AuthoritiesDetails />}
   />,
   <Route key='utenti' path='utenti' element={<Utenti />} />,

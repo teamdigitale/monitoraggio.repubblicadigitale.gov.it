@@ -310,7 +310,6 @@ export const UpdateManagerAuthority =
             ...authorityDetail,
           }
         );
-        console.log(res);
 
         res = await API.put(
           `/${entity}/${entityId}/assegna/${
@@ -342,6 +341,34 @@ export const RemoveManagerAuthority =
       if (authorityId && entityId) {
         await API.delete(
           `/ente/${authorityId}/cancellagestore${entity}/${entityId}`
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+export const GetPartnerAuthorityDetail =
+  (projectId: string, authorityId: string) => async (dispatch: Dispatch) => {
+    dispatch(showLoader());
+    dispatch({ ...SetAuthorityDetailAction });
+    try {
+      const res = await API.get(`/ente/partner/${projectId}/${authorityId}`);
+
+      if (res.data) {
+        dispatch(
+          setAuthorityDetails({
+            delegatiEntePartner: res.data.delegatiEntePartner,
+            referentiEntePartner: res.data.referenteEntePartner,
+            dettagliInfoEnte: Object.fromEntries(
+              Object.entries(res.data.ente).map(([key, value]) =>
+                key === 'partitaIva' ? ['piva', value] : [key, value]
+              )
+            ),
+            sediEntePartner: res.data.sediEntePartner,
+          })
         );
       }
     } catch (error) {
@@ -417,11 +444,13 @@ const AssignReferentDelegateAction = {
   type: 'administrativeArea/AssignReferentDelegate',
 };
 
-export const AssignReferentDelegate =
+export const AssignManagerAuthorityReferentDelegate =
   (
     authorityId: string,
     entityId: string,
-    userDetail: any,
+    userDetail: {
+      [key: string]: string | number | boolean | Date | string[] | undefined;
+    },
     entity: 'programma' | 'progetto',
     role: UserAuthorityRole
   ) =>
@@ -429,28 +458,101 @@ export const AssignReferentDelegate =
     try {
       dispatch(showLoader());
       dispatch({ ...AssignReferentDelegateAction });
+      const endpoint =
+        entity === 'programma'
+          ? '/ente/associa/referenteDelegato/gestoreProgramma'
+          : entity === 'progetto'
+          ? '/ente/associa/referenteDelegato/gestoreProgetto'
+          : '';
+      let body = {};
+      if (entity === 'programma') {
+        body = {
+          cfReferenteDelegato: userDetail.codiceFiscale,
+          codiceRuolo: role,
+          idEnte: authorityId,
+          idProgramma: entityId,
+          mansione: 'string',
+        };
+      } else {
+        body = {
+          cfUtente: userDetail.codiceFiscale,
+          codiceRuolo: role,
+          idEnte: authorityId,
+          idProgetto: entityId,
+          mansione: 'string',
+        };
+      }
+      if (userDetail?.id) {
+        await API.post(endpoint, body);
+      } else {
+        const payload = {
+          telefono: userDetail?.telefono,
+          codiceFiscale: userDetail?.codiceFiscale,
+          cognome: userDetail?.cognome,
+          email: userDetail?.email,
+          mansione: userDetail?.mansione,
+          nome: userDetail?.nome,
+          ruolo: role,
+          tipoContratto: '', // TODO: valore?
+        };
+        // eslint-disable-next-line no-case-declarations
+        const res = await API.post(`/utente`, payload);
+        if (res) {
+          await API.post(endpoint, body);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
 
-      switch (entity) {
-        case 'programma':
-          await API.post('/ente/associa/referenteDelegato/gestoreProgramma', {
-            cfReferenteDelegato: userDetail.codiceFiscale,
-            codiceRuolo: role,
-            idEnte: authorityId,
-            idProgramma: entityId,
-            mansione: 'string',
-          });
-          break;
-        case 'progetto':
-          await API.post('/ente/associa/referenteDelegato/gestoreProgetto', {
+export const AssignPartnerAuthorityReferentDelegate =
+  (
+    authorityId: string,
+    entityId: string,
+    userDetail: {
+      [key: string]: string | number | boolean | Date | string[] | undefined;
+    },
+    role: UserAuthorityRole
+  ) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...AssignReferentDelegateAction });
+      const endpoint = '/ente/associa/referenteDelegato/partner';
+
+      if (userDetail?.id) {
+        await API.post(endpoint, {
+          cfUtente: userDetail.codiceFiscale,
+          codiceRuolo: role,
+          idEnte: authorityId,
+          idProgramma: entityId,
+          mansione: 'string',
+        });
+      } else {
+        const payload = {
+          telefono: userDetail?.telefono,
+          codiceFiscale: userDetail?.codiceFiscale,
+          cognome: userDetail?.cognome,
+          email: userDetail?.email,
+          mansione: userDetail?.mansione,
+          nome: userDetail?.nome,
+          ruolo: role,
+          tipoContratto: '', // TODO: valore?
+        };
+        // eslint-disable-next-line no-case-declarations
+        const res = await API.post(`/utente`, payload);
+        if (res) {
+          await API.post(endpoint, {
             cfUtente: userDetail.codiceFiscale,
             codiceRuolo: role,
-            idEnte: authorityId,
+            idEntePartner: authorityId,
             idProgetto: entityId,
             mansione: 'string',
           });
-          break;
-        default:
-          break;
+        }
       }
     } catch (error) {
       console.log(error);
@@ -504,6 +606,26 @@ export const RemoveReferentDelegate =
         default:
           break;
       }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const UpdateAuthorityDetailsAction = {
+  type: 'administrativeArea/UpdateAuthorityDetails',
+};
+
+export const UpdateAuthorityDetails =
+  (idEnte: string | undefined, payload: any) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...UpdateAuthorityDetailsAction });
+
+      await API.put(`/ente/${idEnte}`, payload);
+
+      await API.get(`/ente/${idEnte}`);
     } catch (error) {
       console.log(error);
     } finally {

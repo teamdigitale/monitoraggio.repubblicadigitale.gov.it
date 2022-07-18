@@ -163,11 +163,13 @@ const FormUser: React.FC<UserFormI> = (props) => {
 const form = newForm([
   newFormField({
     field: 'nome',
-    id: 'name',
+    id: 'nome',
+    required: true,
   }),
   newFormField({
     field: 'cognome',
     id: 'cognome',
+    required: true,
   }),
   newFormField({
     field: 'id',
@@ -177,16 +179,19 @@ const form = newForm([
     field: 'codiceFiscale',
     id: 'codiceFiscale',
     regex: RegexpType.FISCAL_CODE,
+    required: true,
   }),
   newFormField({
     field: 'email',
     regex: RegexpType.EMAIL,
     id: 'email',
+    required: true,
   }),
   newFormField({
     field: 'telefono',
     id: 'telefono',
     regex: RegexpType.MOBILE_PHONE,
+    required: true,
   }),
   /*
   newFormField({
@@ -194,9 +199,11 @@ const form = newForm([
     id: 'authorityRef',
   }),
   */
-  newFormField({ // TODO: update when return field bio
+  newFormField({
+    // TODO: update when return field bio
     field: 'mansione',
     id: 'bio',
+    required: true,
   }),
 ]);
 export default withFormHandler({ form }, FormUser);
