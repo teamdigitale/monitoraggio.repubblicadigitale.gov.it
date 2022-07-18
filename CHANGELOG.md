@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.31](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.30...1.0.0-develop.31) (2022-07-18)
+
+
+### Features
+
+* **fe-piattaforma:** fe updates 07182022 2 ([de0b130](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/de0b13089419425a0736439c2a76fe7e61bf49ae))
+* **be:** aggiunte api immagine profilo ([2691a09](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2691a0957f9d0e0307cbcb093ed2233f26ed96a7))
+* **fe-piattaforma:** fe updates 07182022 2 ([5f64a10](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5f64a104c8a4ea9fadb15cac7c3eb0771b6dc2a4))
+
 ## [1.0.0-develop.30](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.29...1.0.0-develop.30) (2022-07-18)
 
 
