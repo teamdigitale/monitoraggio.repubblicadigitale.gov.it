@@ -28,6 +28,11 @@
   }
 }
 
+.search-bar-borders {
+  border-top: 1px solid rgb(152,152,152, .5);
+  border-bottom: 1px solid rgb(152,152,152, .5);
+}
+
 .search-bar__input-container {
   margin-left: rem(12px);
 }

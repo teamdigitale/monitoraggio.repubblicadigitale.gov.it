@@ -28,7 +28,6 @@ import {
   selectAuthorities,
   selectProjects,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
-//import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 import { EmptySection, NavLink } from '../../../../../components';
 import ProjectAccordionForm from '../../../../forms/formProjects/ProjectAccordionForm/ProjectAccordionForm';
 import FormAuthorities from '../../../../forms/formAuthorities';
@@ -37,7 +36,6 @@ import {
   DeleteEntity,
   TerminateEntity,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
-import ManageManagerAuthority from '../modals/manageManagerAuthority';
 import {
   GetAuthorityManagerDetail,
   RemovePartnerAuthority,
@@ -50,6 +48,7 @@ import TerminateEntityModal from '../../../../../components/AdministrativeArea/E
 import ManageDelegate from '../modals/manageDelegate';
 import ManageReferal from '../modals/manageReferal';
 import DeleteAuthorityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteAuthorityModal/DeleteAuthorityModal';
+import ManageProjectManagerAuthority from '../modals/manageProjectManagerAuthority';
 
 const tabs = {
   INFO: 'info',
@@ -68,7 +67,7 @@ const ProjectsDetails = () => {
   const project = useAppSelector(selectProjects).detail;
   const projectDetails = project.dettagliInfoProgetto;
   const managingAuthorityID = project.idEnteGestoreProgetto;
-  const PartnerAuthoritiesList = project.entiPartner;
+  const partnerAuthoritiesList = project.entiPartner;
   const headquarterList = project?.sedi;
   const authorityInfo = useAppSelector(selectAuthorities).detail;
   const [deleteText, setDeleteText] = useState<string>('');
@@ -94,7 +93,7 @@ const ProjectsDetails = () => {
   const partnerRef = useRef<HTMLLIElement>(null);
   const sediRef = useRef<HTMLLIElement>(null);
   const infoRef = useRef<HTMLLIElement>(null);
-  const { projectId } = useParams();
+  const { entityId, projectId } = useParams();
   const shortName = project.detail?.dettaglioProgetto?.nomeBreve;
   const managerAuthority =
     useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
@@ -128,13 +127,20 @@ const ProjectsDetails = () => {
     centerActiveItem();
   }, [activeTab]);
 
+  const getActionRedirectURL = (userType: string, userId: string) => {
+    if (entityId) {
+      return `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${userType}/${userId}`;
+    }
+    return `/area-amministrativa/progetti/${projectId}/${userType}/${userId}`;
+  };
+
   const onActionClickReferenti: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        `/area-amministrativa/${formTypes.REFERENTI}/${
+      navigate(getActionRedirectURL(formTypes.REFERENTI, (typeof td === 'string' ? td : td.codiceFiscale).toString()));
+        /*`/area-amministrativa/${formTypes.REFERENTI}/${
           typeof td === 'string' ? td : td?.codiceFiscale
         }`
-      );
+      );*/
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       // dispatch(RemoveReferentDelegate())
@@ -144,11 +150,11 @@ const ProjectsDetails = () => {
 
   const onActionClickDelegati: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        `/area-amministrativa/${formTypes.DELEGATI}/${
+      navigate(getActionRedirectURL(formTypes.DELEGATI, (typeof td === 'string' ? td : td.codiceFiscale).toString()));
+        /*`/area-amministrativa/${formTypes.DELEGATI}/${
           typeof td === 'string' ? td : td?.codiceFiscale
         }`
-      );
+      );*/
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       console.log(td);
@@ -235,7 +241,7 @@ const ProjectsDetails = () => {
           enteType={formTypes.ENTE_GESTORE_PROGETTO}
         />
       );
-      setCorrectModal(<ManageManagerAuthority />);
+      setCorrectModal(<ManageProjectManagerAuthority />);
       setItemList(null);
       setCorrectButtons([
         {
@@ -252,7 +258,7 @@ const ProjectsDetails = () => {
           onClick: () =>
             dispatch(
               openModal({
-                id: 'ente-gestore',
+                id: 'ente-gestore-progetto',
                 payload: { title: 'Modifica ente gestore progetto' },
               })
             ),
@@ -296,7 +302,7 @@ const ProjectsDetails = () => {
       setItemList(null);
       setCorrectButtons([]);
       setCurrentForm(undefined);
-      setCorrectModal(<ManageManagerAuthority creation />);
+      setCorrectModal(<ManageProjectManagerAuthority creation />);
       setEmptySection(
         <EmptySection
           title={'Questa sezione è ancora vuota'}
@@ -309,11 +315,11 @@ const ProjectsDetails = () => {
 
   const PartnerAuthoritySection = () => {
     setCorrectModal(<ManagePartnerAuthority creation />);
-    if (PartnerAuthoritiesList?.length) {
+    if (partnerAuthoritiesList?.length) {
       setButtonsPosition('BOTTOM');
       setCurrentForm(undefined);
       setItemList({
-        items: PartnerAuthoritiesList?.map(
+        items: partnerAuthoritiesList?.map(
           (entePartner: {
             id: string;
             nome: string;
@@ -458,7 +464,7 @@ const ProjectsDetails = () => {
           to={replaceLastUrlSection(tabs.ENTI_PARTNER)}
           active={activeTab === tabs.ENTI_PARTNER}
         >
-          {!PartnerAuthoritiesList?.length ? (
+          {!partnerAuthoritiesList?.length ? (
             <div>
               <span className='mr-1'> * Enti Partner </span>
               <Icon icon='it-warning-circle' size='sm' />
@@ -503,7 +509,6 @@ const ProjectsDetails = () => {
       removeManagerAuthority(authorityId, projectId /* , 'progetto' */)
     );
     await dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
-    window.location.reload();
   };
 
   const projectActivation = async () => {
@@ -633,6 +638,7 @@ const ProjectsDetails = () => {
         setItemAccordionList([]);
         setItemList(null);
         setCorrectButtons(projectInfoButtons());
+        setEmptySection(undefined);
         break;
       case tabs.ENTE_GESTORE:
         AuthoritySection();
@@ -646,7 +652,7 @@ const ProjectsDetails = () => {
       default:
         return;
     }
-  }, [activeTab, mediaIsDesktop, projectDetails, authorityInfo]);
+  }, [activeTab, mediaIsDesktop, projectDetails, authorityInfo, partnerAuthoritiesList]);
 
   const terminateProject = async (
     projectId: string,
@@ -654,7 +660,6 @@ const ProjectsDetails = () => {
   ) => {
     await dispatch(TerminateEntity(projectId, 'progetto', terminationDate));
     dispatch(closeModal());
-    window.location.reload();
   };
 
   return (

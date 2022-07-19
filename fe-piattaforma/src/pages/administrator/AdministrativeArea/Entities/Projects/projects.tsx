@@ -18,12 +18,18 @@ import {
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
 } from '../../../../../components/genericSearchFilterTableLayout/genericSearchFilterTableLayout';
-import {EmptySection, Paginator, StatusChip, Table} from '../../../../../components';
+import {
+  EmptySection,
+  Paginator,
+  StatusChip,
+  Table,
+} from '../../../../../components';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import ManageProject from '../modals/manageProject';
 import { useNavigate } from 'react-router-dom';
 import {
+  DownloadEntityValues,
   GetEntityFilterValues,
   GetEntityValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
@@ -207,6 +213,9 @@ const Projects: React.FC = () => {
       )[0]?.value,
     },
   ];
+  const handleDownloadList = () => {
+    dispatch(DownloadEntityValues({ entity }));
+  };
 
   const searchInformation: SearchInformationI = {
     autocomplete: false,
@@ -231,6 +240,7 @@ const Projects: React.FC = () => {
       resetFilterDropdownSelected={(filterKey: string) =>
         setFilterDropdownSelected(filterKey)
       }
+      ctaDownload={handleDownloadList}
     >
       <div>
         {progettiList?.length && tableValues?.values?.length ? (

@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -30,6 +31,7 @@ import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormUser from '../../../../forms/formUser';
 import { formTypes } from '../utils';
+import '../../../../../components/SearchBar/searchBar.scss';
 
 const id = formTypes.REFERENTE;
 
@@ -84,18 +86,6 @@ const ManageReferal: React.FC<ManageReferalI> = ({
 
   const handleSaveReferal = async () => {
     if (isFormValid && authority?.id) {
-      if (entityId) {
-        await dispatch(
-          AssignManagerAuthorityReferentDelegate(
-            authority.id,
-            entityId,
-            newFormValues,
-            'programma',
-            'REG'
-          )
-        );
-        await dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
-      }
       // Project details
       if (projectId) {
         if (authorityId) {
@@ -121,6 +111,17 @@ const ManageReferal: React.FC<ManageReferalI> = ({
           );
           await dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
         }
+      } else if (entityId) {
+        await dispatch(
+          AssignManagerAuthorityReferentDelegate(
+            authority.id,
+            entityId,
+            newFormValues,
+            'programma',
+            'REG'
+          )
+        );
+        await dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
       }
       resetModal();
       dispatch(closeModal());
@@ -168,8 +169,19 @@ const ManageReferal: React.FC<ManageReferalI> = ({
         id='table'
       />
     );
-  } else if (alreadySearched && (usersList?.length === 0 || !usersList) && !showForm) {
-    content = <EmptySection title={'Nessun risultato'} />;
+  } else if (
+    alreadySearched &&
+    (usersList?.length === 0 || !usersList) &&
+    !showForm
+  ) {
+    content = (
+      <EmptySection
+        title={'Nessun risultato'}
+        subtitle={'Inserisci nuovamente i dati richiesti'}
+        withIcon
+        horizontal
+      />
+    );
   }
 
   return (
@@ -177,20 +189,22 @@ const ManageReferal: React.FC<ManageReferalI> = ({
       id={id}
       primaryCTA={{
         disabled: !isFormValid,
-        label: 'Conferma',
+        label: 'Salva',
         onClick: handleSaveReferal,
       }}
       secondaryCTA={{
         label: 'Annulla',
         onClick: () => resetModal(),
       }}
+      centerButtons
     >
       <div className='mx-5'>
         <SearchBar
-          className='w-75 py-5'
+          className={clsx('w-100', 'py-4', 'px-5', 'search-bar-borders')}
           placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’utente'
           onSubmit={handleSearchUser}
-          onReset={() => setShowForm(true)}
+          title='Cerca'
+          search
         />
         {content}
       </div>

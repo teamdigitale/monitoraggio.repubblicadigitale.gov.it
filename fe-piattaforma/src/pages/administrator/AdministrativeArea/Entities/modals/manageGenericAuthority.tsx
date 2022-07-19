@@ -35,7 +35,9 @@ const ManageGenericAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
 
   const handleSaveEnte = () => {
     if (isFormValid) {
-      dispatch(UpdateAuthorityDetails(newFormValues['id']?.toString(), newFormValues));
+      dispatch(
+        UpdateAuthorityDetails(newFormValues['id']?.toString(), newFormValues)
+      );
     }
     dispatch(closeModal());
   };

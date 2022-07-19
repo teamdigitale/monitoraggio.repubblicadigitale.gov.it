@@ -286,7 +286,6 @@ export const CreateManagerAuthority =
       console.log(error);
     } finally {
       dispatch(hideLoader());
-      // window.location.reload();
     }
   };
 
@@ -323,7 +322,6 @@ export const UpdateManagerAuthority =
       console.log(error);
     } finally {
       dispatch(hideLoader());
-      // window.location.reload();
     }
   };
 
@@ -467,19 +465,21 @@ export const AssignManagerAuthorityReferentDelegate =
       let body = {};
       if (entity === 'programma') {
         body = {
-          cfReferenteDelegato: userDetail.codiceFiscale,
+          cfReferenteDelegato: userDetail?.codiceFiscale
+            ?.toString()
+            .toUpperCase(),
           codiceRuolo: role,
           idEnte: authorityId,
           idProgramma: entityId,
-          mansione: 'string',
+          mansione: userDetail.mansione,
         };
       } else {
         body = {
-          cfUtente: userDetail.codiceFiscale,
+          cfUtente: userDetail?.codiceFiscale?.toString().toUpperCase(),
           codiceRuolo: role,
           idEnte: authorityId,
           idProgetto: entityId,
-          mansione: 'string',
+          mansione: userDetail.mansione,
         };
       }
       if (userDetail?.id) {
@@ -487,7 +487,7 @@ export const AssignManagerAuthorityReferentDelegate =
       } else {
         const payload = {
           telefono: userDetail?.telefono,
-          codiceFiscale: userDetail?.codiceFiscale,
+          codiceFiscale: userDetail?.codiceFiscale?.toString().toUpperCase(),
           cognome: userDetail?.cognome,
           email: userDetail?.email,
           mansione: userDetail?.mansione,
@@ -522,19 +522,18 @@ export const AssignPartnerAuthorityReferentDelegate =
       dispatch(showLoader());
       dispatch({ ...AssignReferentDelegateAction });
       const endpoint = '/ente/associa/referenteDelegato/partner';
-
       if (userDetail?.id) {
         await API.post(endpoint, {
-          cfUtente: userDetail.codiceFiscale,
+          cfUtente: userDetail.codiceFiscale?.toString().toUpperCase(),
           codiceRuolo: role,
           idEnte: authorityId,
           idProgramma: entityId,
-          mansione: 'string',
+          mansione: userDetail.mansione,
         });
       } else {
         const payload = {
           telefono: userDetail?.telefono,
-          codiceFiscale: userDetail?.codiceFiscale,
+          codiceFiscale: userDetail.codiceFiscale?.toString().toUpperCase(),
           cognome: userDetail?.cognome,
           email: userDetail?.email,
           mansione: userDetail?.mansione,
@@ -546,11 +545,11 @@ export const AssignPartnerAuthorityReferentDelegate =
         const res = await API.post(`/utente`, payload);
         if (res) {
           await API.post(endpoint, {
-            cfUtente: userDetail.codiceFiscale,
+            cfUtente: userDetail.codiceFiscale?.toString().toUpperCase(),
             codiceRuolo: role,
             idEntePartner: authorityId,
             idProgetto: entityId,
-            mansione: 'string',
+            mansione: userDetail.mansione,
           });
         }
       }
@@ -569,7 +568,7 @@ export const RemoveReferentDelegate =
   (
     authorityId: string,
     entityId: string,
-    userCF: any,
+    userCF: string,
     entity: 'programma' | 'progetto',
     role: UserAuthorityRole
   ) =>
@@ -583,11 +582,11 @@ export const RemoveReferentDelegate =
           await API.post(
             '/ente/cancellaOTerminaAssociazione/referenteDelegato/gestoreProgramma',
             {
-              cfReferenteDelegato: userCF,
+              cfReferenteDelegato: userCF.toUpperCase(),
               codiceRuolo: role,
               idEnte: authorityId,
               idProgramma: entityId,
-              mansione: 'string',
+              //mansione: 'string',
             }
           );
           break;
@@ -595,11 +594,11 @@ export const RemoveReferentDelegate =
           await API.post(
             '/ente/cancellaOTerminaAssociazione/referenteDelegato/gestoreProgetto',
             {
-              cfUtente: userCF,
+              cfUtente: userCF.toUpperCase(),
               codiceRuolo: role,
               idEnte: authorityId,
               idProgetto: entityId,
-              mansione: 'string',
+              //mansione: 'string',
             }
           );
           break;

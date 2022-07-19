@@ -31,7 +31,9 @@ import {
   GetFilterValuesUtenti,
 } from '../../../../../redux/features/administrativeArea/user/userThunk';
 import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
+import { DownloadEntityValues } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 
+const entity = 'utente';
 const statusDropdownLabel = 'stati';
 const ruoliDropdownLabel = 'ruoli';
 
@@ -121,9 +123,7 @@ const Programmi = () => {
   };
 
   const handleOnSearch = (searchValue: string) => {
-    dispatch(
-      setEntityFilters({ nomeLike: { label: searchValue, value: searchValue } })
-    );
+    dispatch(setEntityFilters({ criterioRicerca: searchValue }));
   };
 
   const handleDropdownFilters = (
@@ -182,6 +182,10 @@ const Programmi = () => {
     },
   ];
 
+  const handleDownloadList = () => {
+    dispatch(DownloadEntityValues({ entity }));
+  };
+
   const searchInformation: SearchInformationI = {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
@@ -193,22 +197,26 @@ const Programmi = () => {
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(`/area-amministrativa/utenti/${typeof td === 'string' ? td : td?.codiceFiscale}`);
+      navigate(
+        `/area-amministrativa/utenti/${
+          typeof td === 'string' ? td : td?.codiceFiscale
+        }`
+      );
     },
   };
 
-  const newProgram = () => {
+  const newUser = () => {
     dispatch(
       openModal({
-        id: formTypes.PROGRAMMA,
+        id: formTypes.USER,
         payload: {
-          title: 'Crea un nuovo programma',
+          title: 'Crea un nuovo utente',
         },
       })
     );
   };
 
-  const programCta = {
+  const userCta = {
     title: 'Area Amministrativa',
     subtitle:
       'Qui potrai gestire utenti, enti, programmi e progetti e creare i questionari',
@@ -221,8 +229,9 @@ const Programmi = () => {
       searchInformation={searchInformation}
       dropdowns={dropdowns}
       filtersList={filtersList}
-      {...programCta}
-      cta={newProgram}
+      {...userCta}
+      cta={newUser}
+      ctaDownload={handleDownloadList}
       resetFilterDropdownSelected={(filterKey: string) =>
         setFilterDropdownSelected(filterKey)
       }

@@ -11,6 +11,7 @@ interface EmptySectionI {
   buttons?: ButtonInButtonsBar[];
   withIcon?: boolean;
   aside?: boolean;
+  horizontal?: boolean;
 }
 
 const EmptySection: React.FC<EmptySectionI> = ({
@@ -20,14 +21,17 @@ const EmptySection: React.FC<EmptySectionI> = ({
   buttons,
   withIcon,
   aside,
+  horizontal,
 }) => {
   return (
     <div
       className={clsx(
         'd-flex',
-        aside
-          ? 'flex-row justify-content-start'
+        'mt-5',
+        horizontal
+          ? 'flex-row justify-content-center'
           : 'justify-content-center align-items-center flex-column',
+        aside && 'justify-content-start',
         'empty-section',
         'w-100'
       )}
@@ -35,11 +39,13 @@ const EmptySection: React.FC<EmptySectionI> = ({
       {withIcon && (
         <Icon
           icon={icon || 'it-warning-circle'}
-          className='empty-section__icon'
+          className={clsx('empty-section__icon ', horizontal && 'mr-3')}
         />
       )}
-      <h1 className='h5'>{title || 'Questa sezione è ancora vuota'}</h1>
-      {subtitle && <h2 className='h6'>{subtitle}</h2>}
+      <div className='d-flex flex-column align-items-center'>
+        <h1 className='h5'>{title || 'Questa sezione è ancora vuota'}</h1>
+        {subtitle && <h2 className='h6'>{subtitle}</h2>}
+      </div>
       {buttons && <ButtonsBar buttons={buttons} />}
     </div>
   );

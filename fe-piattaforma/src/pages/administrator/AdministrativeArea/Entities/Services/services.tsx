@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {EmptySection, Paginator, StatusChip, Table} from '../../../../../components';
+import {
+  EmptySection,
+  Paginator,
+  StatusChip,
+  Table,
+} from '../../../../../components';
 import { newTable, TableRowI } from '../../../../../components/Table/table';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
@@ -31,6 +36,7 @@ import {
 import ManageServices from '../modals/manageService';
 import { formTypes } from '../utils';
 import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
+import { DownloadEntityValues } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 
 const entity = 'servizi';
 const statusDropdownLabel = 'stati';
@@ -167,6 +173,10 @@ const Services = () => {
     },
   ];
 
+  const handleDownloadList = () => {
+    dispatch(DownloadEntityValues({ entity }));
+  };
+
   const searchInformation: SearchInformationI = {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
@@ -207,6 +217,7 @@ const Services = () => {
       filtersList={filtersList}
       {...servicesCta}
       cta={newService}
+      ctaDownload={handleDownloadList}
       resetFilterDropdownSelected={(filterKey: string) =>
         setFilterDropdownSelected(filterKey)
       }

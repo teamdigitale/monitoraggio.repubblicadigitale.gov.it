@@ -49,9 +49,11 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (res?.data?.idProgrammaCreato) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          navigate(`/area-amministrativa/programmi/${res.data.idProgrammaCreato}/info`);
+          navigate(
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            `/area-amministrativa/programmi/${res.data.idProgrammaCreato}/info`
+          );
         }
       } else {
         entityId && dispatch(updateProgram(entityId, newFormValues));
@@ -66,7 +68,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       title: 'Informazioni generali',
       primaryCTA: {
         disabled: !isFormValid,
-        label: 'Step Successivo',
+        label: 'Avanti',
         onClick: () => updateDetailInfoHandler(),
       },
       secondaryCTA: {
@@ -79,7 +81,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       title: 'Numero punti di facilitazione',
       primaryCTA: {
         disabled: !isFormValid,
-        label: 'Step Successivo',
+        label: 'Avanti',
         onClick: () => updateDetailInfoHandler(),
       },
       secondaryCTA: {
@@ -87,7 +89,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         onClick: () => ({}),
       },
       tertiatyCTA: {
-        label: 'Step precedente',
+        label: 'Indietro',
         onClick: () => setCurrentStep((prev) => prev - 1),
       },
     },
@@ -95,7 +97,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       title: 'Numero utenti unici',
       primaryCTA: {
         disabled: !isFormValid,
-        label: 'Step Successivo',
+        label: 'Avanti',
         onClick: () => updateDetailInfoHandler(),
       },
       secondaryCTA: {
@@ -103,7 +105,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         onClick: () => ({}),
       },
       tertiatyCTA: {
-        label: 'Step precedente',
+        label: 'Indietro',
         onClick: () => setCurrentStep((prev) => prev - 1),
       },
     },
@@ -111,7 +113,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       title: 'Numero servizi',
       primaryCTA: {
         disabled: !isFormValid,
-        label: 'Step Successivo',
+        label: 'Avanti',
         onClick: () => updateDetailInfoHandler(),
       },
       secondaryCTA: {
@@ -119,7 +121,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         onClick: () => ({}),
       },
       tertiatyCTA: {
-        label: 'Step precedente',
+        label: 'Indietro',
         onClick: () => setCurrentStep((prev) => prev - 1),
       },
     },
@@ -135,7 +137,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         onClick: () => () => ({}),
       },
       tertiatyCTA: {
-        label: 'Step precedente',
+        label: 'Indietro',
         onClick: () => setCurrentStep((prev) => prev - 1),
       },
     },

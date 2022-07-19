@@ -92,6 +92,7 @@ const ManageHeadquarter: React.FC<ManageSediI> = ({
         label: 'Annulla',
         onClick: () => clearForm?.(),
       }}
+      centerButtons
     >
       <FormHeadquarters
         creation={creation}

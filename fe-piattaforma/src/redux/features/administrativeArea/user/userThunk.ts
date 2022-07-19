@@ -10,6 +10,7 @@ import {
   setUsersList,
 } from '../administrativeAreaSlice';
 import { mapOptions } from '../../../../utils/common';
+import { formFieldI } from '../../../../utils/formHelper';
 
 export interface UtentiLightI {
   id: string;
@@ -142,12 +143,23 @@ const CreateUserAction = {
   type: 'administrativeArea/CreateUser',
 };
 export const CreateUser =
-  (payload: { [key: string]: string }) => async (dispatch: Dispatch) => {
+  (payload: { [key: string]: formFieldI['value'] }) => async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...CreateUserAction, payload });
 
-      const res = await API.post(`/utente`, payload);
+      const body = {
+        telefono: payload?.telefono,
+        codiceFiscale: payload?.codiceFiscale?.toString().toUpperCase(),
+        cognome: payload?.cognome,
+        email: payload?.email,
+        mansione: payload?.mansione,
+        nome: payload?.nome,
+        ruolo: 'REG', // TODO: valore?
+        tipoContratto: '', // TODO: valore?
+      }
+
+      const res = await API.post(`/utente`, body);
 
       if (res.data) {
         console.log(res.data);

@@ -301,8 +301,18 @@ const AreaAmministrativaRoutes = [
   />,
   <Route key='utenti' path='utenti' element={<Utenti />} />,
   <Route
+    key='programmi-dettaglio-referenti-delegati-dettaglio'
+    path='programmi/:entityId/:userType/:userId'
+    element={<UsersDetails />}
+  />,
+  <Route
+    key='programmi-dettaglio-progetti-dettaglio-referenti-delegati-dettaglio'
+    path='programmi/:entityId/progetti/:projectId/:userType/:userId'
+    element={<UsersDetails />}
+  />,
+  <Route
     key='utenti-detail'
-    path=':userType/:entityId'
+    path=':userType/:userId'
     element={<UsersDetails />}
   />,
   <Route

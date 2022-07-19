@@ -18,7 +18,7 @@ import {
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
 } from '../../../../../components/genericSearchFilterTableLayout/genericSearchFilterTableLayout';
-import {EmptySection, Paginator, Table} from '../../../../../components';
+import { EmptySection, Paginator, Table } from '../../../../../components';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import { useNavigate } from 'react-router-dom';
@@ -27,6 +27,7 @@ import ManageGenericAuthority from '../modals/manageGenericAuthority';
 import { AuthoritiesLightI } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 import {
+  DownloadEntityValues,
   GetEntityFilterValues,
   GetEntityValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
@@ -196,6 +197,10 @@ const Authorities: React.FC = () => {
     },
   ];
 
+  const handleDownloadList = () => {
+    dispatch(DownloadEntityValues({ entity }));
+  };
+
   const searchInformation: SearchInformationI = {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
@@ -216,6 +221,7 @@ const Authorities: React.FC = () => {
       searchInformation={searchInformation}
       dropdowns={dropdowns}
       filtersList={filtersList}
+      ctaDownload={handleDownloadList}
       resetFilterDropdownSelected={(filterKey: string) =>
         setFilterDropdownSelected(filterKey)
       }

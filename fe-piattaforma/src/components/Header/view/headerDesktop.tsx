@@ -330,7 +330,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 'pt-3'
               )}
             >
-              <Link to='/'>
+              <Link to='/' replace>
                 <img src={Logo} alt='logo' />
               </Link>
             </div>

@@ -48,6 +48,7 @@ import {
 import PreviewSurvey from '../modals/previewSurvey';
 import { RemoveManagerAuthority } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import TerminateEntityModal from '../../../../../components/AdministrativeArea/Entities/General/TerminateEntityModal/TerminateEntityModal';
+import DeleteProjectModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteProjectModal/DeleteProjectModal';
 
 const tabs = {
   INFO: 'info',
@@ -137,13 +138,13 @@ const ProgramsDetails: React.FC = () => {
     }
   }, [entityId, programDetails]);
 
+  const getActionRedirectURL = (userType: string, userId: string) => {
+    return `/area-amministrativa/progetti/${entityId}/${userType}/${userId}`;
+  };
+
   const onActionClickReferenti: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        `/area-amministrativa/${formTypes.REFERENTI}/${
-          typeof td === 'string' ? td : td?.codiceFiscale
-        }`
-      );
+      navigate(getActionRedirectURL(formTypes.REFERENTI, (typeof td === 'string' ? td : td.codiceFiscale).toString()))
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       // dispatch(RemoveReferentDelegate())
@@ -153,11 +154,7 @@ const ProgramsDetails: React.FC = () => {
 
   const onActionClickDelegati: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        `/area-amministrativa/${formTypes.DELEGATI}/${
-          typeof td === 'string' ? td : td?.codiceFiscale
-        }`
-      );
+      navigate(getActionRedirectURL(formTypes.DELEGATI, (typeof td === 'string' ? td : td.codiceFiscale).toString()))
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       // dispatch(RemoveReferentDelegate())
@@ -197,7 +194,14 @@ const ProgramsDetails: React.FC = () => {
       navigate(`${td}/info`);
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      console.log('delete', td);
+      dispatch(
+        openModal({
+          id: 'delete-project',
+          payload: {
+            projectId: td,
+          },
+        })
+      );
     },
   };
 
@@ -698,8 +702,13 @@ const ProgramsDetails: React.FC = () => {
   ) => {
     await dispatch(TerminateEntity(programId, 'programma', terminationDate));
     dispatch(closeModal());
-    window.location.reload();
   };
+
+  const deleteProject = async (projectId: string) => {
+    await dispatch(DeleteEntity('progetto', projectId));
+    dispatch(closeModal());
+    if (entityId) dispatch(GetProgramDetail(entityId));
+  }
 
   return (
     <div className='pb-3'>
@@ -771,6 +780,11 @@ const ProgramsDetails: React.FC = () => {
       <ManageReferal />
       {/* /<ManageProgramManagerAuthority /> */}
       <ManageProject creation />
+      <DeleteProjectModal
+        text='Confermi di voler eliminare il progetto'
+        onClose={() => dispatch(closeModal())}
+        onConfirm={(id: string) => deleteProject(id)}
+      />
       <PreviewSurvey
         surveyId={surveyPreviewId}
         onClose={() => dispatch(closeModal())}

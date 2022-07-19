@@ -232,7 +232,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
               'ml-2'
             )}
           >
-            <Link to='/'>
+            <Link to='/' replace>
               <img src={LogoMobile} alt='logo' />
             </Link>
           </div>

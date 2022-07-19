@@ -17,6 +17,7 @@ import {
   GetAuthorityDetail,
   UpdatePartnerAuthority,
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
+import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
@@ -43,7 +44,7 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
   }>({});
-  const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const dispatch = useDispatch();
   const { projectId } = useParams();
   const authoritiesList = useAppSelector(selectAuthorities).list;
@@ -67,8 +68,8 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
             CreatePartnerAuthority({ ...newFormValues }, projectId)
           ));
       }
-      window.location.reload();
       dispatch(closeModal());
+      if(projectId) dispatch(GetProjectDetail(projectId));
     }
   };
 
@@ -121,7 +122,7 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: () => clearForm?.(),
+        onClick: () => clearForm?.() && dispatch(closeModal()),
       }}
     >
       <div className='mx-5'>
@@ -130,7 +131,6 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
           placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’ente'
           onSubmit={handleSearchAuthority}
         />
-
         {content}
       </div>
     </GenericModal>

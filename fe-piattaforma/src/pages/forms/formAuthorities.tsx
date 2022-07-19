@@ -24,7 +24,7 @@ interface EnteInformationI {
   formDisabled?: boolean;
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   setIsFormValid?: (param: boolean | undefined) => void;
-  creation?: boolean;
+  creation?: boolean | undefined;
   enteType?: string;
 }
 
@@ -125,20 +125,20 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
     field?: formFieldI['field']
   ) => {
     onInputChange?.(value, field);
-    setIsFormValid?.(isValidForm);
+    sendNewValues?.(getFormValues?.());
   };
 
   useEffect(() => {
-    sendNewValues?.(getFormValues?.());
+    setIsFormValid?.(isValidForm);
   }, [form]);
 
-  // const bootClass = '' // 'justify-content-between px-0 px-lg-5 mx-2';
+  const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 
   return (
     <Form className='mt-5 mb-5' formDisabled={formDisabled}>
       {form && (
         <>
-          <Form.Row>
+          <Form.Row className={bootClass}>
             {/* <Input
               {...form?.id}
               col='col-12 col-lg-6'
@@ -149,24 +149,25 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
             /> */}
             <Input
               {...form?.nome}
-              label='Nome ente'
+              label='Nome Ente'
               col='col-12 col-lg-6'
-              placeholder='Inserisci nome programma'
+              // placeholder='Inserisci nome programma'
               onInputChange={(value, field) => {
                 onInputDataChange(value, field);
               }}
             />
             <Input
               {...form?.nomeBreve}
+              required
               col='col-12 col-lg-6'
               label='Nome breve'
-              placeholder='Inserisci il nome breve'
+              // placeholder='Inserisci il nome breve'
               onInputChange={(value, field) => {
                 onInputDataChange(value, field);
               }}
             />
           </Form.Row>
-          <Form.Row>
+          <Form.Row className={bootClass}>
             {/* <Input
               {...form?.nomeBreve}
               col='col-12 col-lg-6'
@@ -188,6 +189,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
             {formDisabled ? (
               <Input
                 {...form?.tipologia}
+                required
                 label='Tipologia'
                 col='col-12 col-lg-6'
                 onInputChange={(value, field) => {
@@ -197,10 +199,11 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
             ) : (
               <Select
                 {...form?.tipologia}
+                required
                 value={form?.tipologia.value as string}
                 col='col-12 col-lg-6'
                 label='Tipologia'
-                placeholder='Inserisci la tipologia'
+                // placeholder='Inserisci la tipologia'
                 options={[
                   { label: 'Ente pubblico', value: 'Ente pubblico' },
                   {
@@ -216,10 +219,10 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
               />
             )}
             <Input
-              {...form?.indirizzoPec}
-              label='PEC'
+              {...form?.piva}
+              label='Codice Fiscale'
               col='col-12 col-lg-6'
-              placeholder='Inserisci PEC'
+              // placeholder='Inserisci il Codice Fiscale'
               onInputChange={(value, field) => {
                 onInputDataChange(value, field);
               }}
@@ -245,32 +248,34 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
             }}
           />
         </Form.Row> */}
-          <Form.Row>
+          <Form.Row className={bootClass}>
             <Input
               col='col-12 col-lg-6'
               {...form?.sedeLegale}
+              required
               label='Sede legale'
-              placeholder='Inserisci la sede legale'
+              // placeholder='Inserisci la sede legale'
               onInputChange={(value, field) => {
                 onInputDataChange(value, field);
               }}
             />
             <Input
-              {...form?.piva}
-              label='Codice Fiscale'
+              {...form?.indirizzoPec}
+              label='PEC'
               col='col-12 col-lg-6'
-              placeholder='Inserisci il Codice Fiscale'
+              // placeholder='Inserisci PEC'
               onInputChange={(value, field) => {
                 onInputDataChange(value, field);
               }}
             />
           </Form.Row>
-          <Form.Row>
+          <Form.Row className={bootClass}>
             <Input
               {...form?.profilo}
+              required
               label='Profilo'
               col='col-12 col-lg-6'
-              placeholder='Inserisci profilo'
+              // placeholder='Inserisci profilo'
               onInputChange={(value, field) => {
                 onInputDataChange(value, field);
               }}
@@ -291,22 +296,27 @@ const form = newForm([
   newFormField({
     field: 'nome',
     id: 'nome',
+    required: true,
   }),
   newFormField({
     field: 'nomeBreve',
     id: 'nomeBreve',
+    required: true,
   }),
   newFormField({
     field: 'tipologia',
     id: 'tipologia',
+    required: true,
   }),
   newFormField({
     field: 'profilo',
     id: 'profilo',
+    required: true,
   }),
   newFormField({
     field: 'piva',
     id: 'piva',
+    required: true,
   }),
   /*
   newFormField({
@@ -321,6 +331,7 @@ const form = newForm([
   newFormField({
     field: 'indirizzoPec',
     id: 'indirizzoPec',
+    required: true,
   }),
 ]);
 export default withFormHandler({ form }, FormAuthorities);
