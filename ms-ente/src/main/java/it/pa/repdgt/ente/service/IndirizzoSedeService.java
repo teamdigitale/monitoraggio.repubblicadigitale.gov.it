@@ -27,4 +27,13 @@ public class IndirizzoSedeService {
 	public IndirizzoSedeEntity salvaIndirizzoSede(@NotNull final IndirizzoSedeEntity indirizzoSede) {
 		return this.indirizzoSedeRepository.save(indirizzoSede);
 	}
+
+	public IndirizzoSedeEntity getIndirizzoSedeById(@NotNull Long id) {
+		return this.indirizzoSedeRepository.findById(id).get();
+	}
+
+	@Transactional(rollbackOn = Exception.class)
+	public void cancellaIndirizzoSedeById(@NotNull Long id) {
+		this.indirizzoSedeRepository.deleteById(id);
+	}
 }

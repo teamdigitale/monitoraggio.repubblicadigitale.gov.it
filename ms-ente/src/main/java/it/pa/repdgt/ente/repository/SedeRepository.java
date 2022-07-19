@@ -30,6 +30,18 @@ public interface SedeRepository extends JpaRepository<SedeEntity, Long> {
 		   ,nativeQuery = false)
 	Optional<SedeEntity> findSedeByNomeSede(@Param(value ="nomeSede") String nomeSede);
 	
+	@Query(value = ""
+			+ " SELECT "
+			+ "	s "
+			+ " FROM "
+			+ "	SedeEntity s "
+			+ " WHERE id <> :idSede "
+			+ " AND s.nome = :nomeSede "
+			,nativeQuery = false)
+	Optional<SedeEntity> findSedeByNomeSedeAndNotIdSede(
+			@Param(value ="nomeSede") String nomeSede,
+			@Param(value ="idSede") Long idSede);
+	
 	@Query(value = " SELECT "
 				 + "		esp.STATO_SEDE "
 			 	 + " FROM "

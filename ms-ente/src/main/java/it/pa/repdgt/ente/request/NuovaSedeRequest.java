@@ -10,6 +10,7 @@ import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import it.pa.repdgt.shared.entity.IndirizzoSedeFasciaOrariaEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,12 +32,15 @@ public class NuovaSedeRequest implements Serializable {
 	private Boolean isItinere;
 
 	@NotEmpty
-	private List<IndirizzoSedeRequest> indirizziSede;
+	private List<IndirizzoSedeRequest> indirizziSedeFasceOrarie;
 	
 	@Setter
 	@Getter
 	public static class IndirizzoSedeRequest implements Serializable {
 		private static final long serialVersionUID = 7726108288229913713L;
+		
+		@JsonProperty(value = "id")
+		private Long id;
 		
 		@NotBlank
 		@JsonProperty(value = "via")
@@ -66,26 +70,10 @@ public class NuovaSedeRequest implements Serializable {
 		@JsonProperty(value = "nazione")
 		private String nazione;
 		
-		private List<IndirizzoSedeFasciaOrariaRequest> fasceOrarie;
+		private IndirizzoSedeFasciaOrariaEntity fasceOrarieAperturaIndirizzoSede;
 		
-		@Setter
-		@Getter
-		public static class IndirizzoSedeFasciaOrariaRequest implements Serializable {
-			private static final long serialVersionUID = 6241754202776108632L;
-			
-			@NotBlank
-			@JsonProperty(value = "giornoApertura")
-			private String giornoApertura;
-			
-			@NotNull
-			@JsonProperty(value = "orarioApertura")
-			@Pattern(regexp = "[0-9]{2}:[0-9]{2}")
-			private String orarioApertura;
-			
-			@NotNull
-			@JsonProperty(value = "orarioChisura")
-			@Pattern(regexp = "[0-9]{2}:[0-9]{2}")
-			private String orarioChiusura;
-		}
+		@JsonProperty(value = "cancellato", defaultValue = "false")
+		private Boolean cancellato = false;
+
 	}
 }

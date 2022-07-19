@@ -91,7 +91,7 @@ insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora
  insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora_creazione)
 	values(104, 'Programma Rho', 'R104', 'codice5', 'Programma Rho', 'SCD', 'ATTIVO', CURRENT_TIME( ));
  insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora_creazione)
-	values(105, 'Programma Tau', 'T105', 'codice6', 'Programma Tau', 'SCD', 'ATTIVO', CURRENT_TIME( ));
+	values(105, 'Programma Tau', 'T105', 'codice6', 'Programma Tau', 'RFD', 'NON ATTIVO', CURRENT_TIME( ));
 
 -- CREAZIONE ANAGRAFICA PROGETTI
  insert into progetto(id, nome, nome_breve, stato, data_ora_creazione, cup)
@@ -111,9 +111,13 @@ insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora
  insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione, cup)
 	values(257, 'Progetto Block Chain', 'Progetto Block Chain', 'ATTIVO', CURRENT_TIME( ), 'W11DG45');
  insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione, cup)
-	values(258, 'Progetto Sviluppo Mobile', 'Progetto Sviluppo Mobile', 'ATTIVO', CURRENT_TIME( ), 'YFSFD11');
+	values(258, 'Progetto Sviluppo Mobile', 'Progetto Sviluppo Mobile', 'NON ATTIVO', CURRENT_TIME( ), 'YFSFD11');
  insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione, cup)
-	values(259, 'Progetto Sviluppo Videogame', 'Progetto Sviluppo Videogame', 'ATTIVO', CURRENT_TIME( ), 'X1NFD1');
+	values(259, 'Progetto Sviluppo Videogame', 'Progetto Sviluppo Videogame', 'NON ATTIVO', CURRENT_TIME( ), 'X1NFD1');
+ insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione, cup)
+	values(260, 'Progetto RPA', 'Progetto RPA', 'ATTIVABILE', CURRENT_TIME( ), 'E24RR2T');
+	 insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione, cup)
+	values(261, 'Progetto E-Commerce', 'Progetto E-Commerce', 'NON ATTIVO', CURRENT_TIME( ), 'R4IS8O');
 	
 -- ASSOCIAZIONE DEI PROGETTI AI PROGRAMMI
  update progetto
@@ -131,8 +135,8 @@ insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora
   update progetto
     set id_programma = 101 
  where id = 254;
- update progetto
-    set id_programma = 102 
+  update progetto
+    set id_programma = 103 
  where id = 255;
  update progetto
     set id_programma = 103 
@@ -243,7 +247,7 @@ INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_cr
  update programma
     set 
     	  id_ente_gestore_programma = 1001
-    	 ,stato_gestore_programma = 'NON ATTIVO'
+    	 ,stato_gestore_programma = 'ATTIVO'
  where id = 102;
  update programma
     set 
@@ -284,7 +288,7 @@ INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_cr
   update progetto
 	set 
 		 id_ente_gestore_progetto = 1003
-		,stato_gestore_progetto = 'NON ATTIVO'
+		,stato_gestore_progetto = 'ATTIVO'
   where id = 255;
   update progetto
 	set 
@@ -373,3 +377,10 @@ insert into ente_sede_progetto_facilitatore (id_ente, ID_progetto, id_sede, id_f
 INSERT INTO questionario_template (id, nome, stato, descrizione, default_rfd, default_scd) VALUES ('1', 'prova', 'ATTIVO', 'provaTest', '1', '1');
 --insert programma_x_questionario template
 INSERT INTO programma_x_questionario_template (programma_id, questionario_template_id, stato) VALUES (2, '563847ffhgs', 'TERMINATO');
+INSERT INTO programma_x_questionario_template (programma_id, questionario_template_id, stato) VALUES (105, 1, 'ATTIVO');
+--insert storico_ente_gestore_progetto
+INSERT INTO storico_ente_gestore_progetto (id, data_ora_creazione, ente_id, progetto_id, programma_id, data_attivazione_ente, stato) 
+	VALUES (3, '2022-07-13 11:12:37', 1003, 255, 103, '2022-07-13 11:12:37', 'ATTIVO');
+--insert storico_ente_gestore_programma
+INSERT INTO storico_ente_gestore_programma (id, data_ora_creazione, ente_id, programma_id, data_attivazione_ente, stato) 
+	VALUES (3, '2022-07-13 11:12:37', 1001, 102, '2022-07-13 11:12:37', 'ATTIVO');
