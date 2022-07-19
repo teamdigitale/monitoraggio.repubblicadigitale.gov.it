@@ -22,7 +22,6 @@ import {
   updateBreadcrumb,
 } from '../../../../../redux/features/app/appSlice';
 import FormUser from '../../../../forms/formUser';
-import { GetUserDetails } from '../../../../../redux/features/administrativeArea/user/userThunk';
 import { selectUsers } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 
 const UsersDetails = () => {
@@ -38,13 +37,14 @@ const UsersDetails = () => {
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const userInfo = useAppSelector(selectUsers)?.detail?.dettaglioUtente;
+  const userDetails = useAppSelector(selectUsers)?.detail;
+  const { dettaglioUtente: userInfo = {}, dettaglioRuolo: userRole = [] } = userDetails;
   const { mediaIsDesktop /* mediaIsPhone */ } = useAppSelector(selectDevice);
   const headquarterInfo = userInfo?.authorityRef || undefined;
-  const { entityId, userType } = useParams();
- 
+  const { entityId, userType, userId, projectId } = useParams();
+
   useEffect(() => {
-    if(entityId) dispatch(GetUserDetails(entityId));
+    //if (userId) dispatch(GetUserDetails(userId));
     dispatch(
       updateBreadcrumb([
         {
@@ -58,13 +58,14 @@ const UsersDetails = () => {
           link: true,
         },
         {
-          label: entityId,
-          url: `/area-amministrativa/utenti/${entityId}`,
+          label: userId,
+          url: `/area-amministrativa/utenti/${userId}`,
           link: false,
         },
       ])
     );
-  }, [entityId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId]);
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
@@ -111,8 +112,8 @@ const UsersDetails = () => {
         onClick: () =>
           dispatch(
             openModal({
-              id: formTypes.USER,
-              payload: { title: 'Modifica utente' },
+              id: getModalID(),
+              payload: { title: getModalPayload() },
             })
           ),
       },
@@ -133,6 +134,41 @@ const UsersDetails = () => {
     return 'utente';
   };
 
+  const getModalID = () => {
+    if (userType) {
+      switch (userType) {
+        case formTypes.DELEGATO:
+          return formTypes.DELEGATO;
+        case formTypes.REFERENTE:
+          return formTypes.REFERENTE;
+        default:
+          return formTypes.USER;
+      }
+    }
+  };
+
+  const getModalPayload = () => {
+    if (userType) {
+      switch (userType) {
+        case formTypes.DELEGATI:
+          return 'Modifica Delegato';
+        case formTypes.REFERENTI:
+          return 'Modifica Referente';
+        default:
+          return 'Modifica Utente';
+      }
+    }
+  };
+
+  const getUserStatus = () => {
+    if (userType === formTypes.DELEGATI || userType === formTypes.REFERENTI && userRole?.length) {
+      const id = projectId || entityId;
+      const entityRole = userRole.filter((role: { id: string | number }) => role.id?.toString().toLowerCase() === id?.toString().toLowerCase())[0];
+      return entityRole?.stato;
+    }
+    return userInfo?.stato;
+  };
+
   return (
     <div className='d-flex flex-row'>
       <div className='d-flex flex-column w-100'>
@@ -140,7 +176,7 @@ const UsersDetails = () => {
           <DetailLayout
             titleInfo={{
               title: userInfo?.nome + ' ' + userInfo?.cognome,
-              status: userInfo?.stato,
+              status: getUserStatus(),
               upperTitle: { icon: 'it-user', text: getUpperTitle() },
               subTitle: headquarterInfo,
               iconAvatar: true,

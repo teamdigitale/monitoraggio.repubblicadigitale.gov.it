@@ -69,7 +69,8 @@
 }
 
 .cta-button {
-  width: rem(197px);
+  max-width: rem(186px);
+  min-width: rem(186px);
 
   @media screen and (max-width: 576px) {
     width: rem(150px);

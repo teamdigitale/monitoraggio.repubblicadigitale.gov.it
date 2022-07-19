@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { SearchBar, Table } from '../../../../../components';
+import { EmptySection, SearchBar, Table } from '../../../../../components';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import {
   TableHeadingI,
@@ -27,6 +27,7 @@ import { formFieldI } from '../../../../../utils/formHelper';
 import FormAuthorities from '../../../../forms/formAuthorities';
 import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 import { GetProgramDetail } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
+import clsx from 'clsx';
 
 const id = 'ente-gestore';
 
@@ -65,6 +66,8 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
     [key: string]: formFieldI['value'];
   }>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  const [showForm, setShowForm] = useState<boolean>(true);
+  const [alreadySearched, setAlreadySearched] = useState<boolean>(false);
   const dispatch = useDispatch();
   const { entityId, projectId } = useParams();
   const authoritiesList = useAppSelector(selectAuthorities).list;
@@ -110,10 +113,10 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
     }
   };
 
-  const handleSearchAuthority = (search: string) => {
+  /*  const handleSearchAuthority = (search: string) => {
     dispatch(GetAuthoritiesBySearch(search));
   };
-
+ */
   // The table makes me work with function defined this way
   const handleSelectAuthority: CRUDActionsI = {
     [CRUDActionTypes.SELECT]: (td: TableRowI | string) => {
@@ -124,16 +127,42 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
     },
   };
 
-  let content = (
-    <FormAuthorities
-      creation={creation}
-      formDisabled={!!formDisabled}
-      sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {
-        setNewFormValues({ ...newData });
-      }}
-      setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
-    />
-  );
+  const handleSearchAuthority = (search: string) => {
+    if (search) dispatch(GetAuthoritiesBySearch(search));
+    setShowForm(false);
+    setAlreadySearched(true);
+  };
+
+  let content;
+
+  if (showForm) {
+    content = (
+      <FormAuthorities
+        creation={creation}
+        formDisabled={!!formDisabled}
+        sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+          setNewFormValues({ ...newData })
+        }
+        setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+      />
+    );
+  } else if (authoritiesList && authoritiesList.length > 0) {
+    content = (
+      <Table
+        heading={headings}
+        values={authoritiesList.map((item) => ({
+          nome: item.nome,
+        }))}
+        onActionRadio={handleSelectAuthority}
+        id='table'
+      />
+    );
+  } else if (
+    alreadySearched &&
+    (authoritiesList?.length === 0 || !authoritiesList)
+  ) {
+    content = <EmptySection title={'Nessun risultato'} />;
+  }
 
   /***
    * CASES
@@ -153,19 +182,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
    *
    */
 
-  if (authoritiesList && authoritiesList.length > 0)
-    content = (
-      <Table
-        heading={headings}
-        values={authoritiesList.map((item) => ({
-          label: item.nome,
-          id: item.id,
-          tipologia: item.tipologia,
-        }))}
-        onActionRadio={handleSelectAuthority}
-        id='table'
-      ></Table>
-    );
+  /*   */
 
   return (
     <GenericModal
@@ -179,12 +196,15 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
         label: 'Annulla',
         onClick: () => window.location.reload(),
       }}
+      centerButtons
     >
       <div className='mx-5'>
         <SearchBar
-          className='w-75 py-5'
-          placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’ente'
+          className={clsx('w-100', 'py-4', 'px-5', 'search-bar-borders')}
+          placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’utente'
           onSubmit={handleSearchAuthority}
+          title='Cerca'
+          search
         />
 
         {content}

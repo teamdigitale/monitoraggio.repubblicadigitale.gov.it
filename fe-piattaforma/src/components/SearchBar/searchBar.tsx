@@ -33,6 +33,7 @@ interface SearchBarI extends Omit<SelectI, 'onInputChange'> {
   description?: string;
   id?: string;
   entityToRefresh?: string | undefined;
+  search?: boolean;
   onReset?: () => void;
 }
 
@@ -49,6 +50,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
     searchButton = false,
     id = 'search',
     title = 'Cerca',
+    search = false,
     onReset,
   } = props;
   const dispatch = useDispatch();
@@ -93,7 +95,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
     setHasSearchValue(false);
     dispatch(deleteFiltroCriterioRicerca());
     dispatch(deleteFiltroCriterioRicercaCitizen());
-    if(onReset) onReset();
+    if (onReset) onReset();
   };
 
   const AutocompleteDropdownIndicator = useCallback(
@@ -151,7 +153,10 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
   const device = useAppSelector(selectDevice);
 
   return (
-    <div className={`${className} search-bar-custom`}>
+    <div className={clsx(className, 'search-bar-custom')}>
+      {!device.mediaIsPhone && search ? (
+        <h1 className='h4 primary-color mb-3'> {title} </h1>
+      ) : null}
       <div className={clsx('d-inline-flex', 'w-100', 'mb-1')}>
         {autocomplete ? (
           <AsyncSelect

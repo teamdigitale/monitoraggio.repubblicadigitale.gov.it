@@ -139,16 +139,15 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                 ) : (
                   <EmptySection
                     title={`Non esistono ${singleItem.title?.toLowerCase()} associati`}
+                    horizontal
                     aside
                   />
                 )}
               </Accordion>
             ))
           : null}
-        {(currentTab === 'questionari'
-          && surveyDefault?.items?.length
-          && showItemsList
-        ) ? (
+        {currentTab === 'questionari' ? (
+          surveyDefault?.items?.length && showItemsList ? (
             <div>
               <CardStatusActionSurveys
                 title={surveyDefault?.items[0].nome}
@@ -164,7 +163,10 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                   <h3 className='h4 text-muted mx-3'> Altri questionari </h3>
                 )}
             </div>
-          ) : <EmptySection title='Non ci sono questionari' />}
+          ) : (
+            <EmptySection title='Non ci sono questionari' />
+          )
+        ) : null}
         {showItemsList &&
         itemsList?.items?.length &&
         currentTab === 'questionari' ? (

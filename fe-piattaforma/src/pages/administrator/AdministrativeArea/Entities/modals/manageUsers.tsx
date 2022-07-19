@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
+import { CreateUser } from '../../../../../redux/features/administrativeArea/user/userThunk';
+import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormUser from '../../../../forms/formUser';
 import { formTypes } from '../utils';
@@ -30,6 +33,7 @@ const ManageUsers: React.FC<ManageUsersI> = ({
   formDisabled,
   creation = false,
 }) => {
+  const dispatch = useDispatch();
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
   }>({});
@@ -37,9 +41,9 @@ const ManageUsers: React.FC<ManageUsersI> = ({
 
   const handleSaveEnte = () => {
     if (isFormValid) {
-      console.log(newFormValues);
-      // TODO update with real api
+      dispatch(CreateUser(newFormValues));
     }
+    dispatch(closeModal());
   };
 
   return (
@@ -55,18 +59,14 @@ const ManageUsers: React.FC<ManageUsersI> = ({
         onClick: () => clearForm?.(),
       }}
     >
-      <div className='px-5'>
-        <FormUser
-          creation={creation}
-          formDisabled={!!formDisabled}
-          sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
-            setNewFormValues({ ...newData })
-          }
-          setIsFormValid={(value: boolean | undefined) =>
-            setIsFormValid(!!value)
-          }
-        />
-      </div>
+      <FormUser
+        creation={creation}
+        formDisabled={!!formDisabled}
+        sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+          setNewFormValues({ ...newData })
+        }
+        setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+      />
     </GenericModal>
   );
 };

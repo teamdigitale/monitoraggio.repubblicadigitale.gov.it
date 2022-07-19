@@ -3,14 +3,14 @@ import type { RootState } from '../../store';
 
 export interface ModalPayloadI {
   description?: string;
-  title?: string;
+  title?: string | undefined;
   [key: string]: any;
 }
 
 export interface ModalStateI {
-  id: string;
+  id: string | undefined;
   open?: boolean | undefined;
-  payload?: ModalPayloadI;
+  payload?: ModalPayloadI | undefined;
 }
 
 const initialState: ModalStateI = {

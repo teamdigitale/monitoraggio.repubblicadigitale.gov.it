@@ -448,7 +448,7 @@ const routes = [
   }),
   newRoute({
     scope: 'administrative-area',
-    path: ':userType/:entityId',
+    path: ':userType/:userId',
     title: 'Utenti',
     element: <UsersDetails />,
     visibleTo: [],

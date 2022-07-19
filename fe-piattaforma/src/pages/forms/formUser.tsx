@@ -34,9 +34,9 @@ const FormUser: React.FC<UserFormI> = (props) => {
   const {
     setFormValues = () => ({}),
     form,
+    isValidForm,
     onInputChange = () => ({}),
     sendNewValues = () => ({}),
-    isValidForm,
     setIsFormValid = () => ({}),
     getFormValues = () => ({}),
     creation = false,
@@ -44,7 +44,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
 
   const formDisabled = !!props.formDisabled;
   const { userId } = useParams();
-  const formData: { [key: string]: string } | undefined =
+  const formData: { [key: string]: string } =
     useAppSelector(selectUsers)?.detail?.dettaglioUtente;
   const dispatch = useDispatch();
 
@@ -65,18 +65,19 @@ const FormUser: React.FC<UserFormI> = (props) => {
     value: formFieldI['value'],
     field?: formFieldI['field']
   ) => {
-    onInputChange(value, field);
-    sendNewValues(getFormValues());
-    setIsFormValid(isValidForm);
+    onInputChange?.(value, field);
+    sendNewValues?.(getFormValues?.());
   };
 
   useEffect(() => {
-    sendNewValues(getFormValues());
+    setIsFormValid?.(isValidForm);
   }, [form]);
+
+  const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 
   return (
     <Form className='mt-5 mb-5' formDisabled={formDisabled}>
-      <Form.Row>
+      <Form.Row className={bootClass}>
         {/* <Input
           {...form?.userId}
           col='col-12 col-lg-6'
@@ -88,58 +89,62 @@ const FormUser: React.FC<UserFormI> = (props) => {
         /> */}
         <Input
           {...form?.nome}
+          required
           col='col-lg-6 col-12'
           label='Nome'
-          placeholder='Inserisci nome utente'
+          // placeholder='Inserisci nome utente'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
         />
         <Input
           {...form?.cognome}
+          required
           col='col-12 col-lg-6'
           label='Cognome'
-          placeholder='Inserisci cognome utente'
+          // placeholder='Inserisci cognome utente'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
         />
       </Form.Row>
-      <Form.Row>
+      <Form.Row className={bootClass}>
         <Input
           {...form?.codiceFiscale}
+          required
           label='Codice fiscale'
           col='col-12 col-lg-6'
-          placeholder='Inserisci codice fiscale'
+          // placeholder='Inserisci codice fiscale'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
         />
         <Input
           {...form?.telefono}
+          required
           col='col-12 col-lg-6'
           label='Telefono'
-          placeholder='Inserisci telefono'
+          // placeholder='Inserisci telefono'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
         />
       </Form.Row>
-      <Form.Row>
+      <Form.Row className={bootClass}>
         <Input
           {...form?.email}
-          label='Email'
+          label='Indirizzo email'
           col='col-12 col-lg-6'
-          placeholder='Inserisci email'
+          // placeholder='Inserisci email'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
         />
         <Input
           {...form?.mansione}
-          label='Bio'
+          label='Mansione'
           col='col-12 col-lg-6'
-          placeholder='Inserisci bio'
+          // placeholder='Inserisci bio'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
@@ -190,7 +195,7 @@ const form = newForm([
   newFormField({
     field: 'telefono',
     id: 'telefono',
-    regex: RegexpType.MOBILE_PHONE,
+    regex: RegexpType.TELEPHONE,
     required: true,
   }),
   /*
@@ -200,9 +205,8 @@ const form = newForm([
   }),
   */
   newFormField({
-    // TODO: update when return field bio
     field: 'mansione',
-    id: 'bio',
+    id: 'mansione',
     required: true,
   }),
 ]);

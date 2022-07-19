@@ -18,7 +18,7 @@ export const getUserHeaders = () => {
   );
 
   return {
-    codiceFiscale,
+    codiceFiscale: codiceFiscale.toUpperCase(),
     codiceRuolo,
     idProgramma,
     idProgetto,

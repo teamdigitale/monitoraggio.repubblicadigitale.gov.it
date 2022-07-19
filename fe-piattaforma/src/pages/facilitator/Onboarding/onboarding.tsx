@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
@@ -11,8 +11,16 @@ import withFormHandler, {
 } from '../../../hoc/withFormHandler';
 import { Form, Input } from '../../../components';
 import { Button, FormGroup, Icon, Label } from 'design-react-kit';
-import { login, selectUser } from '../../../redux/features/user/userSlice';
-import {EditUser, SelectUserRole} from '../../../redux/features/user/userThunk';
+import {
+  login,
+  logout,
+  selectUser,
+} from '../../../redux/features/user/userSlice';
+import {
+  CreateUserContext,
+  EditUser,
+  SelectUserRole,
+} from '../../../redux/features/user/userThunk';
 import { openModal } from '../../../redux/features/modal/modalSlice';
 import FormOnboarding from './formOnboarding';
 
@@ -90,14 +98,22 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
   };
 
   const onSubmitForm = async () => {
-    console.log('onSubmit', getFormValues());
-    if (isValidForm) {
-      const res = await dispatch(EditUser(getFormValues()));
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      if (res) {
-        selectUserRole();
+    try {
+      if (isValidForm) {
+        const res = await dispatch(EditUser(getFormValues()));
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (res) {
+          const res2 = await dispatch(CreateUserContext(user.codiceFiscale));
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          if (res2) {
+            selectUserRole();
+          }
+        }
       }
+    } catch {
+      dispatch(logout());
     }
   };
 

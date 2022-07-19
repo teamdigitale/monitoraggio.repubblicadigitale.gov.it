@@ -28,6 +28,8 @@ import { formFieldI } from '../../../../../utils/formHelper';
 import FormUser from '../../../../forms/formUser';
 import { formTypes } from '../utils';
 import { headings } from './manageReferal';
+import '../../../../../components/SearchBar/searchBar.scss';
+import clsx from 'clsx';
 
 const id = formTypes.DELEGATO;
 
@@ -64,19 +66,6 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
 
   const handleSaveDelegate = async () => {
     if (isFormValid && authority?.id) {
-      if (entityId) {
-        await dispatch(
-          AssignManagerAuthorityReferentDelegate(
-            authority.id,
-            entityId,
-            newFormValues,
-            'programma',
-            'DEG'
-          )
-        );
-        dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
-      }
-
       if (projectId) {
         if (authorityId) {
           await dispatch(
@@ -102,6 +91,17 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
 
           dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
         }
+      } else if (entityId) {
+        await dispatch(
+          AssignManagerAuthorityReferentDelegate(
+            authority.id,
+            entityId,
+            newFormValues,
+            'programma',
+            'DEG'
+          )
+        );
+        dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
       }
       resetModal();
       dispatch(closeModal());
@@ -149,8 +149,19 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
         id='table'
       />
     );
-  } else if (alreadySearched && (usersList?.length === 0 || !usersList) && !showForm) {
-    content = <EmptySection title={'Nessun risultato'} />;
+  } else if (
+    alreadySearched &&
+    (usersList?.length === 0 || !usersList) &&
+    !showForm
+  ) {
+    content = (
+      <EmptySection
+        title={'Nessun risultato'}
+        subtitle={'Inserisci nuovamente i dati richiesti'}
+        withIcon
+        horizontal
+      />
+    );
   }
 
   return (
@@ -158,20 +169,22 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
       id={id}
       primaryCTA={{
         disabled: !isFormValid,
-        label: 'Conferma',
+        label: 'Salva',
         onClick: handleSaveDelegate,
       }}
       secondaryCTA={{
         label: 'Annulla',
         onClick: () => resetModal(),
       }}
+      centerButtons
     >
       <div className='mx-5'>
         <SearchBar
-          className='w-75 py-5'
+          className={clsx('w-100', 'py-4', 'px-5', 'search-bar-borders')}
           placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’utente'
           onSubmit={handleSearchUser}
-          onReset={() => setShowForm(true)}
+          title='Cerca'
+          search
         />
 
         {content}
