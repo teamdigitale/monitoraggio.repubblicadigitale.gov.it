@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.33](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.32...1.0.0-develop.33) (2022-07-19)
+
+
+### Bug Fixes
+
+* **be:** fix data.sql per indirizzi fasce orarie sede ([2c5943e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2c5943ebe9d2f17dc3063705222380589c8e58b7))
+* **be:** crea-get-aggiorna-sede ([a8602eb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a8602eb519d350181b056c0d7559dcf543913930))
+
 ## [1.0.0-develop.32](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.31...1.0.0-develop.32) (2022-07-19)
 
 
