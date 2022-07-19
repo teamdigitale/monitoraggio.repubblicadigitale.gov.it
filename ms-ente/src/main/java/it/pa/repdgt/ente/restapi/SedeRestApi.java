@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -60,6 +61,14 @@ public class SedeRestApi {
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public CreaSedeResource creaNuovaSede(@RequestBody @Valid NuovaSedeRequest nuovaSedeRequest) {
 		return new CreaSedeResource(this.sedeService.creaNuovaSede(nuovaSedeRequest).getId());
+	}
+	
+	//Aggiorna sede
+	@PutMapping(path = "/aggiorna/{idSede}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public void aggiornaSede(@PathVariable(value = "idSede") Long idSede,
+			@RequestBody @Valid NuovaSedeRequest nuovaSedeRequest) {
+		this.sedeService.aggiornaSede(idSede, nuovaSedeRequest);
 	}
 	
 	// TOUCH POINT - 2.2.13 C - Associazione sede, ente, progetto

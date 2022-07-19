@@ -16,7 +16,7 @@ import it.pa.repdgt.shared.entity.ProgrammaEntity;
 public class CSVProgrammaUtil {
 
 	private static final List<String> HEADERS = Arrays.asList(
-				"ID",
+				"CODICE",
 				"NOME",
 				"POLICY",
 				"STATO"
@@ -48,7 +48,7 @@ public class CSVProgrammaUtil {
 
 	private static List<String> getCSVRecord(ProgrammaEntity programma) {
 		return  Arrays.asList(
-							programma.getId().toString(),
+							programma.getCodice(),
 							programma.getNome(),
 							programma.getPolicy().toString(),
 							programma.getStato()

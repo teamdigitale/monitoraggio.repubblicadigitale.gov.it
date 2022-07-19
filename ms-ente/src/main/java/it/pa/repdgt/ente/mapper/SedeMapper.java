@@ -3,6 +3,8 @@ package it.pa.repdgt.ente.mapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Component;
 
 import it.pa.repdgt.ente.bean.DettaglioProgettoLightBean;
@@ -22,11 +24,11 @@ public class SedeMapper {
 		sedeEntity.setServiziErogati(nuovaSedeRequest.getServiziErogati());
 		sedeEntity.setItinere(nuovaSedeRequest.getIsItinere());
 		
-		if(nuovaSedeRequest.getIndirizziSede() == null || nuovaSedeRequest.getIndirizziSede().isEmpty() ) {
+		if(nuovaSedeRequest.getIndirizziSedeFasceOrarie() == null || nuovaSedeRequest.getIndirizziSedeFasceOrarie().isEmpty() ) {
 			return sedeEntity;
 		}
 		
-		final IndirizzoSedeRequest primoIndirizzoSede = nuovaSedeRequest.getIndirizziSede().get(0);
+		final IndirizzoSedeRequest primoIndirizzoSede = nuovaSedeRequest.getIndirizziSedeFasceOrarie().get(0);
 		sedeEntity.setVia(primoIndirizzoSede.getVia());
 		sedeEntity.setCivico(primoIndirizzoSede.getCivico());
 		sedeEntity.setComune(primoIndirizzoSede.getComune());
@@ -73,5 +75,12 @@ public class SedeMapper {
 		dettaglioProgetto.setId(progettoFetchDB.getId());
 		dettaglioProgetto.setNomeBreve(progettoFetchDB.getNomeBreve());
 		return dettaglioProgetto;
+	}
+
+	public SedeEntity toEntityFrom(@Valid NuovaSedeRequest nuovaSedeRequest, SedeEntity sedeFetchDB) {
+		sedeFetchDB.setNome(nuovaSedeRequest.getNome());
+		sedeFetchDB.setServiziErogati(nuovaSedeRequest.getServiziErogati());
+		sedeFetchDB.setItinere(nuovaSedeRequest.getIsItinere());
+		return sedeFetchDB;
 	}
 }

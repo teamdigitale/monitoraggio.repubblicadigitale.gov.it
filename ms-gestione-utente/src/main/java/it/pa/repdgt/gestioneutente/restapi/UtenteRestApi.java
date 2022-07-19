@@ -88,7 +88,7 @@ public class UtenteRestApi {
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public UtenteResource creaNuovoUtente(@RequestBody @Valid NuovoUtenteRequest nuovoUtenteRequest) {
 		UtenteEntity utenteEntity = this.utenteMapper.toUtenteEntityFrom(nuovoUtenteRequest);
-		return new UtenteResource(this.utenteService.creaNuovoUtente(utenteEntity, nuovoUtenteRequest.getRuolo()).getId());
+		return new UtenteResource(this.utenteService.creaNuovoUtente(utenteEntity, nuovoUtenteRequest.getRuolo()).getCodiceFiscale());
 	}
 	
 	// TOUCH POINT - 1.3.3 - Update Utente
