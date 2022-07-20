@@ -48,7 +48,7 @@ import {
 import { formatDate } from '../../../../../utils/datesHelper';
 
 const entity = 'questionarioTemplate';
-const statusDropdownLabel = 'stati';
+const statusDropdownLabel = 'stato';
 
 const Surveys = () => {
   const dispatch = useDispatch();
@@ -63,7 +63,7 @@ const Surveys = () => {
   const [filterDropdownSelected, setFilterDropdownSelected] =
     useState<string>('');
 
-  const { criterioRicerca, stati } = filtersList;
+  const { criterioRicerca, stato } = filtersList;
 
   const { pageNumber } = pagination;
 
@@ -165,10 +165,10 @@ const Surveys = () => {
   );
 
   useEffect(() => {
-    if (Array.isArray(questionariList?.list) && questionariList?.list.length)
+    if (Array.isArray(questionariList?.list))
       setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [questionariList]);
+  }, [questionariList?.list?.length]);
 
   const getSurveysList = () => {
     dispatch(GetAllSurveys());
@@ -176,11 +176,11 @@ const Surveys = () => {
 
   const getAllFilters = () => {
     // TODO: check chiavi filtri
-    if (filterDropdownSelected !== 'stati')
+    if (filterDropdownSelected !== 'stato')
       dispatch(
         GetEntityFilterQueryParamsValues({
           entity,
-          dropdownType: statusDropdownLabel,
+          dropdownType: 'stati',
         })
       );
   };
@@ -189,7 +189,7 @@ const Surveys = () => {
     getAllFilters();
     getSurveysList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [criterioRicerca, stati, pageNumber]);
+  }, [criterioRicerca, stato, pageNumber]);
 
   const handleOnChangePage = (pageNumber: number = pagination?.pageNumber) => {
     dispatch(setEntityPagination({ pageNumber }));
@@ -256,11 +256,11 @@ const Surveys = () => {
   const dropdowns: DropdownFilterI[] = [
     {
       filterName: 'Stato',
-      options: dropdownFilterOptions[statusDropdownLabel],
+      options: dropdownFilterOptions['stati'],
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, statusDropdownLabel),
       id: statusDropdownLabel,
-      values: filtersList[statusDropdownLabel],
+      values: filtersList[statusDropdownLabel] || [],
       handleOnSearch: (searchKey) =>
         handleOnSearchDropdownOptions(searchKey, statusDropdownLabel),
       valueSearch: searchDropdown
@@ -335,6 +335,7 @@ const Surveys = () => {
                 onCellClick={(field, row) => console.log(field, row)}
                 //onRowClick={row => console.log(row)}
                 withActions
+                totalCounter={pagination?.totalElements}
               />
               <Paginator
                 activePage={pagination?.pageNumber}

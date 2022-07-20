@@ -20,7 +20,7 @@ import {
   newFormField,
 } from '../../utils/formHelper';
 import { RegexpType } from '../../utils/validator';
-import { citizenFromDropdownOptions } from './constantsFormCitizen';
+import { citizenFormDropdownOptions } from './constantsFormCitizen';
 
 interface FormCitizenI {
   formDisabled?: boolean;
@@ -97,7 +97,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     | { label: string; options: OptionTypeMulti[] }[]
     | undefined = [];
 
-  (citizenFromDropdownOptions['statoOccupazionale'] || []).forEach((opt) => {
+  (citizenFormDropdownOptions['statoOccupazionale'] || []).forEach((opt) => {
     optionsOccupazione.push({
       label: opt,
       options: [],
@@ -105,7 +105,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
   });
 
   if (optionsOccupazione?.length) {
-    (citizenFromDropdownOptions['occupazione'] || []).forEach(
+    (citizenFormDropdownOptions['occupazione'] || []).forEach(
       ({ label, value, upperLevel }) => {
         const index = optionsOccupazione.findIndex(
           (v) => v.label === upperLevel
@@ -124,7 +124,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     if (Array.isArray(form?.occupazione.value)) {
       (form?.occupazione.value || []).map((val: string) =>
         multiVal.push(
-          citizenFromDropdownOptions['occupazione']?.filter(
+          citizenFormDropdownOptions['occupazione']?.filter(
             (v) => v.label === val
           )[0]
         )
@@ -160,7 +160,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
         <CheckboxGroup
           {...form?.['flag-codice-fiscale']}
           className='col-12 col-lg-6'
-          options={citizenFromDropdownOptions['flag-codice-fiscale']}
+          options={citizenFormDropdownOptions['flag-codice-fiscale']}
           onInputChange={handleCheckboxChange}
           noLabel
           classNameLabelOption='pl-5'
@@ -172,7 +172,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           placeholder={`Inserisci ${form?.tipoDocumento?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           wrapperClassName='col-12 col-lg-6'
-          options={citizenFromDropdownOptions['tipoDocumento']}
+          options={citizenFormDropdownOptions['tipoDocumento']}
           isDisabled={formDisabled}
         />
         <Input
@@ -188,7 +188,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           placeholder={`Inserisci ${form?.genere?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           wrapperClassName='col-12 col-lg-6'
-          options={citizenFromDropdownOptions['genere']}
+          options={citizenFormDropdownOptions['genere']}
           isDisabled={formDisabled}
         />
         <Input
@@ -204,7 +204,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           placeholder={`Inserisci ${form?.titoloDiStudio?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           wrapperClassName='col-12 col-lg-6'
-          options={citizenFromDropdownOptions['titoloDiStudio']}
+          options={citizenFormDropdownOptions['titoloDiStudio']}
           isDisabled={formDisabled}
         />
         <SelectMultiple
@@ -239,7 +239,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           placeholder={`Inserisci ${form?.cittadinanza?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           wrapperClassName='col-12 col-lg-6'
-          options={citizenFromDropdownOptions['cittadinanza']}
+          options={citizenFormDropdownOptions['cittadinanza']}
           isDisabled={formDisabled}
         />
         <Input
@@ -256,7 +256,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           placeholder={`Inserisci ${form?.categoriaFragili?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           wrapperClassName='col-12 col-lg-6'
-          options={citizenFromDropdownOptions['categoriaFragili']}
+          options={citizenFormDropdownOptions['categoriaFragili']}
           isDisabled={formDisabled}
         />
         <Input
@@ -293,7 +293,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
             'col-12 col-lg-6',
             'compile-survey-container__checkbox-margin'
           )}
-          options={citizenFromDropdownOptions['tipoConferimentoConsenso']}
+          options={citizenFormDropdownOptions['tipoConferimentoConsenso']}
           onInputChange={onInputDataChange}
           styleLabelForm
           classNameLabelOption='pl-5'
@@ -313,25 +313,29 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
 const form = newForm([
   newFormField({
     field: 'nome',
-    id: 'nome',
-    label: 'Nome',
-    type: 'text',
     required: true,
+    id: 'name',
+    minimum: 3,
+    maximum: 30,
+    regex: RegexpType.REGISTRY,
   }),
   newFormField({
     field: 'cognome',
-    id: 'cognome',
-    label: 'Cognome',
-    type: 'text',
     required: true,
+    id: 'surname',
+    minimum: 2,
+    maximum: 30,
+    regex: RegexpType.REGISTRY,
   }),
   newFormField({
     field: 'codiceFiscale',
     id: 'codiceFiscale',
-    regex: RegexpType.FISCAL_CODE,
     label: 'Codice fiscale',
     type: 'text',
     required: true,
+    regex: RegexpType.FISCAL_CODE,
+    maximum: 16,
+    minimum: 16,
   }),
   newFormField({
     field: 'flag-codice-fiscale',
@@ -417,8 +421,9 @@ const form = newForm([
     id: 'email',
     regex: RegexpType.EMAIL,
     label: 'Email',
-    type: 'text',
     required: true,
+    minimum: 5,
+    maximum: 50,
   }),
   newFormField({
     field: 'prefissoTelefono',

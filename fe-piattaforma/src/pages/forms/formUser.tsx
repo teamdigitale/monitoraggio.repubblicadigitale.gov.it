@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -61,22 +62,15 @@ const FormUser: React.FC<UserFormI> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
 
-  const onInputDataChange = (
-    value: formFieldI['value'],
-    field?: formFieldI['field']
-  ) => {
-    onInputChange?.(value, field);
-    sendNewValues?.(getFormValues?.());
-  };
-
   useEffect(() => {
     setIsFormValid?.(isValidForm);
+    sendNewValues?.(getFormValues?.());
   }, [form]);
 
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 
   return (
-    <Form className='mt-5 mb-5' formDisabled={formDisabled}>
+    <Form className='mt-5 mb-0' formDisabled={formDisabled}>
       <Form.Row className={bootClass}>
         {/* <Input
           {...form?.userId}
@@ -93,9 +87,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
           col='col-lg-6 col-12'
           label='Nome'
           // placeholder='Inserisci nome utente'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
+          onInputChange={onInputChange}
         />
         <Input
           {...form?.cognome}
@@ -103,9 +95,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
           col='col-12 col-lg-6'
           label='Cognome'
           // placeholder='Inserisci cognome utente'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
+          onInputChange={onInputChange}
         />
       </Form.Row>
       <Form.Row className={bootClass}>
@@ -115,9 +105,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
           label='Codice fiscale'
           col='col-12 col-lg-6'
           // placeholder='Inserisci codice fiscale'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
+          onInputChange={onInputChange}
         />
         <Input
           {...form?.telefono}
@@ -125,29 +113,23 @@ const FormUser: React.FC<UserFormI> = (props) => {
           col='col-12 col-lg-6'
           label='Telefono'
           // placeholder='Inserisci telefono'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
+          onInputChange={onInputChange}
         />
       </Form.Row>
-      <Form.Row className={bootClass}>
+      <Form.Row className={clsx(bootClass, 'mb-0')}>
         <Input
           {...form?.email}
           label='Indirizzo email'
           col='col-12 col-lg-6'
           // placeholder='Inserisci email'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
+          onInputChange={onInputChange}
         />
         <Input
           {...form?.mansione}
           label='Mansione'
           col='col-12 col-lg-6'
           // placeholder='Inserisci bio'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
+          onInputChange={onInputChange}
         />
       </Form.Row>
       {/* <Form.Row>
@@ -156,9 +138,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
           col='col-12 col-lg-6'
           label='Ente di riferimento'
           placeholder='Inserisci ente di riferimento'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
+           onInputChange={onInputChange}
         />
       </Form.Row> */}
     </Form>
@@ -170,11 +150,17 @@ const form = newForm([
     field: 'nome',
     id: 'nome',
     required: true,
+    minimum: 3,
+    maximum: 30,
+    regex: RegexpType.REGISTRY,
   }),
   newFormField({
     field: 'cognome',
     id: 'cognome',
     required: true,
+    minimum: 2,
+    maximum: 30,
+    regex: RegexpType.REGISTRY,
   }),
   newFormField({
     field: 'id',
@@ -183,20 +169,26 @@ const form = newForm([
   newFormField({
     field: 'codiceFiscale',
     id: 'codiceFiscale',
-    regex: RegexpType.FISCAL_CODE,
     required: true,
+    regex: RegexpType.FISCAL_CODE,
+    maximum: 16,
+    minimum: 16,
   }),
   newFormField({
     field: 'email',
     regex: RegexpType.EMAIL,
     id: 'email',
     required: true,
+    minimum: 5,
+    maximum: 50,
   }),
   newFormField({
     field: 'telefono',
     id: 'telefono',
     regex: RegexpType.TELEPHONE,
     required: true,
+    minimum: 9,
+    maximum: 20,
   }),
   /*
   newFormField({
@@ -208,6 +200,7 @@ const form = newForm([
     field: 'mansione',
     id: 'mansione',
     required: true,
+    maximum: 160,
   }),
 ]);
 export default withFormHandler({ form }, FormUser);

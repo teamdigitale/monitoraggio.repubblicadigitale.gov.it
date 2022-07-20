@@ -6,6 +6,7 @@ export const RegexpType = {
   NUMBER: 'number',
   STRING: 'string',
   ADDRESS: 'address',
+  REGISTRY: 'registry',
   ALPHA_NUMERIC: 'alphaNumeric',
   ALPHA_NUMERIC_INPUT: 'alphaNumericInput',
   FISCAL_CODE: 'fiscalCode',
@@ -18,6 +19,7 @@ export const RegexpType = {
   BOOLEAN: 'booleanInput',
   TIME: 'time',
   TIMESTAMP: 'timestamp',
+  PIVA: 'piva',
 };
 
 const RegexpRule = {
@@ -30,6 +32,7 @@ const RegexpRule = {
     /^[a-zA-Z0-9_\/.,Ã¨Ã©Ã²Ã Ã¬Ã¹'](?:[a-zA-Z0-9_\/.,'\sÃ¨Ã©Ã²Ã Ã¬Ã¹\-]+)?$/gi,
   [RegexpType.ALPHA_NUMERIC]: /^[a-z A-Z 0-9_.-]*$/gi,
   [RegexpType.ALPHA_NUMERIC_INPUT]: /^[a-z A-Z 0-9 àèìòù \'\S _.-{}:,"()]*$/gi,
+  [RegexpType.REGISTRY]: /^[a-z A-Z àèìòù \']{2,30}/gi,
   [RegexpType.FISCAL_CODE]:
     /^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$/i,
   [RegexpType.POSTAL_CODE]: /^[0-9]{5}$/gm,
@@ -38,10 +41,11 @@ const RegexpRule = {
     /^(\((00|\+)39\)|(00|\+)39)?(38[890]|34[7-90]|36[680]|33[3-90]|32[89])\d{7}$/,
   MOBILE_PHONE_PREFIX:
     /^\+((?:9[679]|8[035789]|6[789]|5[90]|42|3[578]|2[1-689])|9[0-58]|8[1246]|6[0-6]|5[1-8]|4[013-9]|3[0-469]|2[70]|7|1)(?:\W*\d){0,13}/g,
-  [RegexpType.TELEPHONE]: /^([0-9]*\-?\ ?\/?[0-9]*)$/,
+  [RegexpType.TELEPHONE]: /^([0-9]*\-?\ ?\/?[0-9]*){9,20}/gi,
   [RegexpType.TIME]: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/g,
   [RegexpType.TIMESTAMP]:
     /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(Z?)$/gm,
+  [RegexpType.PIVA]: /^[0-9]{11}$/gm,
 };
 
 export const validator = (

@@ -41,7 +41,7 @@ export const statusBgColor = (status: string) => {
     case statusTypes.NOT_SENT:
       return 'light-grey-bg';
     default:
-      return 'complementary-1-bg-a2';
+      return 'neutral-1-bg-a1';
   }
 };
 
@@ -63,7 +63,7 @@ export const statusColor = (status: string) => {
     case statusTypes.NOT_SENT:
       return 'neutral-1-color-b6';
     default:
-      return 'complementary-1-bg-a2';
+      return 'neutral-1-bg-a1';
   }
 };
 

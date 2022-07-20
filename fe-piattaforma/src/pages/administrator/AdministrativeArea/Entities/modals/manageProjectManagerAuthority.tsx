@@ -99,7 +99,14 @@ const ManageProjectManagerAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
     alreadySearched &&
     (authoritiesList?.length === 0 || !authoritiesList)
   ) {
-    content = <EmptySection title={'Nessun risultato'} />;
+    content = (
+      <EmptySection
+        title={'Nessun risultato'}
+        subtitle={'Inserisci nuovamente i dati richiesti'}
+        withIcon
+        horizontal
+      />
+    );
   }
 
   return (
@@ -116,10 +123,16 @@ const ManageProjectManagerAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
       }}
       centerButtons
     >
-      <div className='mx-5'>
+      <div>
         <SearchBar
-          className={clsx('w-100', 'py-4', 'px-5', 'search-bar-borders')}
-          placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’utente'
+          className={clsx(
+            'w-100',
+            'py-4',
+            'px-5',
+            'search-bar-borders',
+            'search-bar-bg'
+          )}
+          placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’ente'
           onSubmit={handleSearchAuthority}
           title='Cerca'
           search

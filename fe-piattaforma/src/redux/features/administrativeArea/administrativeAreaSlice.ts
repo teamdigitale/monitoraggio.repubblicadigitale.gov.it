@@ -7,8 +7,16 @@ import { UtentiLightI } from './user/userThunk';
 import { AuthoritiesLightI } from './authorities/authoritiesThunk';
 import { SurveyLightI } from './surveys/surveysThunk';
 import { CitizenI } from '../../../pages/administrator/AdministrativeArea/Entities/Services/citizensList';
-import { ServicesI } from './services/servicesThunk';
+import { CitizenListI, ServicesI } from './services/servicesThunk';
 import { HeadquarterLight } from './headquarters/headquartersThunk';
+
+
+export interface PaginationI {
+  pageSize: number;
+  pageNumber: number;
+  totalPages: number;
+  totalElements: number;
+}
 
 export interface AreaAmministrativaStateI {
   list: any;
@@ -22,11 +30,7 @@ export interface AreaAmministrativaStateI {
       | { label: string; value: string | number | any[] }[]
       | undefined;
   };
-  pagination: {
-    pageSize: number;
-    pageNumber: number;
-    totalPages: number;
-  };
+  pagination: PaginationI;
   detail: {
     info?: { [key: string]: string };
     ref?: { name: string; status: string; id: string }[];
@@ -61,7 +65,15 @@ export interface AreaAmministrativaStateI {
   };
   services: {
     list: ServicesI[];
-    detail: { info: { [key: string]: string }; cittadini: CitizenI[] };
+    detail: {
+      dettaglioServizio: { [key: string]: string };
+      progettiAssociatiAlServizio: {
+        id: string;
+        nomeBreve: string;
+        stato: string;
+      }[];
+      cittadini: CitizenListI;
+    };
   };
 }
 
@@ -73,6 +85,7 @@ const initialState: AreaAmministrativaStateI = {
     pageSize: 8,
     pageNumber: 1,
     totalPages: 1,
+    totalElements: 0,
   },
   detail: {},
   programs: {
@@ -101,7 +114,7 @@ const initialState: AreaAmministrativaStateI = {
   },
   services: {
     list: [],
-    detail: { info: {}, cittadini: [] },
+    detail: { dettaglioServizio: {}, progettiAssociatiAlServizio: [], cittadini: { servizi: []} },
   },
 };
 
@@ -350,14 +363,18 @@ export const administrativeAreaSlice = createSlice({
     resetUserDetails: (state) => {
       state.users.detail = {};
     },
-    setEventsList: (state, action: PayloadAction<any>) => {
+    setServicesList: (state, action: PayloadAction<any>) => {
       state.services.list = action.payload.data;
     },
     setServicesDetail: (state, action: PayloadAction<any>) => {
-      state.services.detail = action.payload;
+      state.services.detail.dettaglioServizio = action.payload.dettaglioServizio;
+      state.services.detail.progettiAssociatiAlServizio = action.payload.progettiAssociatiAlServizio;
+    },
+    setServicesDetailCitizenList: (state, action: PayloadAction<any>) => {
+      state.services.detail.cittadini = action.payload;
     },
     addCitizenToList: (state, action: PayloadAction<CitizenI>) => {
-      state.services.detail.cittadini.push({ ...action.payload });
+      state.services.detail.cittadini.servizi.push({ ...action.payload });
     },
     deleteFiltroCriterioRicerca: (state) => {
       const newFilters = { ...state.filters };
@@ -393,8 +410,9 @@ export const {
   setHeadquarterDetails,
   setUserDetails,
   resetUserDetails,
-  setEventsList,
+  setServicesList,
   setServicesDetail,
+  setServicesDetailCitizenList,
   setProgramGeneralInfo,
   resetProgramDetails,
   setProjectGeneralInfo,

@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { formFieldI } from '../../../utils/formHelper';
 import { RootState } from '../../store';
+import { PaginationI } from "../administrativeArea/administrativeAreaSlice";
 
 export interface CittadinoInfoI {
   idCittadino?: string;
@@ -52,11 +53,7 @@ interface AreaCittadiniStateI {
       | { label: string; value: string | number | any[] }[]
       | undefined;
   };
-  pagination: {
-    pageSize: number;
-    pageNumber: number;
-    totalPages: number;
-  };
+  pagination: PaginationI;
   detail: CittadinoI;
   searchResult: CittadinoInfoI;
   multipleSearchResult: CittadinoInfoI[];
@@ -72,6 +69,7 @@ const initialState: AreaCittadiniStateI = {
     pageSize: 8,
     pageNumber: 1,
     totalPages: 1,
+    totalElements: 0,
   },
   detail: { dettaglioCittadino: {}, serviziCittadino: [] },
   searchResult: {},

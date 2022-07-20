@@ -24,51 +24,52 @@ const TableDesktop: React.FC<TableI> = (props) => {
     withActions = false,
     rolesTable = false,
     onActionRadio,
+    totalCounter,
   } = props;
   const [rowChecked, setRowChecked] = useState<string>('');
 
   return values?.length ? (
-    <TableKit
-      className={clsx('table-container', className)}
-      id={id}
-      tabIndex={-1}
-    >
-      {heading?.length ? (
-        <thead>
-          <tr className='lightgrey-bg-a1 neutral-2-color-b4'>
-            {onActionRadio && (
-              <th
-                scope='col'
-                className={rolesTable ? 'th-actions-roles' : 'th-actions'}
-              />
-            )}
-            {heading.map((th) => (
-              <th
-                key={th.label}
-                scope='col'
-                className={clsx(
-                  `th-${th.size || 'auto'}`,
-                  'table-container__intestazione'
-                )}
-              >
-                <span>{th.label.toUpperCase()}</span>
-                {/* <Icon           // TODO: decommentare quando aggiungono il sort
+    <>
+      <TableKit
+        className={clsx('table-container', className)}
+        id={id}
+        tabIndex={-1}
+      >
+        {heading?.length ? (
+          <thead>
+            <tr className='lightgrey-bg-a1 neutral-2-color-b4'>
+              {onActionRadio && (
+                <th
+                  scope='col'
+                  className={rolesTable ? 'th-actions-roles' : 'th-actions'}
+                />
+              )}
+              {heading.map((th) => (
+                <th
+                  key={th.label}
+                  scope='col'
+                  className={clsx(
+                    `th-${th.size || 'auto'}`,
+                    'table-container__intestazione'
+                  )}
+                >
+                  <span>{th.label.toUpperCase()}</span>
+                  {/* <Icon           // TODO: decommentare quando aggiungono il sort
                   icon='it-arrow-down-triangle'
                   color='secondary'
                   className='mb-2'
                 /> */}
-              </th>
-            ))}
-            {withActions && (
-              <th
-                scope='col'
-                className={rolesTable ? 'th-actions-roles' : 'th-actions'}
-              />
-            )}
-          </tr>
-        </thead>
-      ) : null}
-      {values?.length ? (
+                </th>
+              ))}
+              {withActions && (
+                <th
+                  scope='col'
+                  className={rolesTable ? 'th-actions-roles' : 'th-actions'}
+                />
+              )}
+            </tr>
+          </thead>
+        ) : null}
         <tbody>
           {values.map((td, i) => (
             <tr key={`tr-${i}`} onClick={() => onRowClick(td)}>
@@ -207,8 +208,9 @@ const TableDesktop: React.FC<TableI> = (props) => {
             </tr>
           ))}
         </tbody>
-      ) : null}
-    </TableKit>
+      </TableKit>
+      {totalCounter ? <div className={clsx('text-right', 'neutral-2-color-b4')}>{`${values.length} di ${totalCounter}`}</div> : null}
+    </>
   ) : (
     <div className='d-flex flex-column align-items-center'>
       <div className='w-100 d-flex flex-row'>

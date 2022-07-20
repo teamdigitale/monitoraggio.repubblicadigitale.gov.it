@@ -51,7 +51,7 @@ const ManageUsers: React.FC<ManageUsersI> = ({
       id={id}
       primaryCTA={{
         disabled: !isFormValid,
-        label: 'Conferma',
+        label: creation ? 'Conferma' : 'Salva',
         onClick: handleSaveEnte,
       }}
       secondaryCTA={{

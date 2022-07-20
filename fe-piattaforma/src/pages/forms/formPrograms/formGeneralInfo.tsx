@@ -136,6 +136,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
       <Form.Row className={bootClass}>
         <Input
           {...form?.codice}
+          required
           col='col-12 col-lg-6'
           label='ID'
           onInputChange={(value, field) => {
@@ -146,6 +147,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
         <Input
           {...form?.nome}
+          required
           col='col-12 col-lg-6'
           label='Nome programma'
           onInputChange={(value, field) => {
@@ -157,28 +159,9 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
       <Form.Row className={bootClass}>
         <Input
           {...form?.nomeBreve}
+          required
           col='col-12 col-lg-6'
           label='Nome breve'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-          className='pr-lg-3'
-        />
-        <Input
-          {...form?.cup}
-          label='CUP - Codice Unico Progetto'
-          col='col-12 col-lg-6'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-          className='pl-lg-3'
-        />
-      </Form.Row>
-      <Form.Row className={bootClass}>
-        <Input
-          {...form?.bando}
-          label='Bando'
-          col='col-12 col-lg-6'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
@@ -197,9 +180,10 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
         ) : (
           <Select
             {...form?.policy}
+            required
             value={form?.policy.value as string}
             col='col-12 col-lg-6'
-            label='Policy *'
+            label='Policy'
             placeholder='Inserisci policy'
             options={[
               { label: 'RFD', value: 'RFD' },
@@ -216,7 +200,28 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
       </Form.Row>
       <Form.Row className={bootClass}>
         <Input
+          {...form?.bando}
+          label='Bando'
+          col='col-12 col-lg-6'
+          onInputChange={(value, field) => {
+            onInputDataChange(value, field);
+          }}
+          className='pr-lg-3'
+        />
+        <Input
+          {...form?.cup}
+          label='CUP - Codice Unico Progetto'
+          col='col-12 col-lg-6'
+          onInputChange={(value, field) => {
+            onInputDataChange(value, field);
+          }}
+          className='pl-lg-3'
+        />
+      </Form.Row>
+      <Form.Row className={bootClass}>
+        <Input
           {...form?.dataInizio}
+          required
           label='Data inizio'
           type={'date'}
           col='col-12 col-lg-6'
@@ -227,6 +232,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
         />
         <Input
           {...form?.dataFine}
+          required
           label='Data fine'
           type={'date'}
           col='col-12 col-lg-6'

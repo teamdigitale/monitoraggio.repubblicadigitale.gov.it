@@ -13,7 +13,8 @@ import {
   setEntityFilters,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import {
-  GetServicesDetail,
+  CitizenListI,
+  GetCitizenListServiceDetail,
   GetServicesDetailFilters,
 } from '../../../../../redux/features/administrativeArea/services/servicesThunk';
 import { useParams } from 'react-router-dom';
@@ -37,39 +38,43 @@ export interface CitizenI {
 }
 
 interface CitizensListI {
-  citizens: CitizenI[];
+  citizens: CitizenListI;
 }
 
-const statusDropdownLabel = 'stati';
+const statusDropdownLabel = 'statiQuestionario';
 
 const CitizensList: React.FC<CitizensListI> = ({ citizens }) => {
   const { serviceId } = useParams();
   const dispatch = useDispatch();
   const dropdownFilterOptions = useAppSelector(selectEntityFiltersOptions);
   const filtersList = useAppSelector(selectEntityFilters);
-  const { criterioRicerca, stati } = filtersList;
+  const { criterioRicerca, statiQuestionario } = filtersList;
   const [searchDropdown, setSearchDropdown] = useState<
     { filterId: string; value: formFieldI['value'] }[]
   >([]);
 
-  const getServiceDetails = () => {
-    dispatch(GetServicesDetail(serviceId));
+  const getServiceDetailsCitizens = () => {
+    dispatch(GetCitizenListServiceDetail(serviceId));
   };
 
   const getAllFilters = () => {
-    dispatch(GetServicesDetailFilters());
+    dispatch(GetServicesDetailFilters(serviceId));
   };
 
   useEffect(() => {
     getAllFilters();
-    getServiceDetails();
+    getServiceDetailsCitizens();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [criterioRicerca, stati]);
+  }, [criterioRicerca, statiQuestionario]);
 
-  const serachInformation: SearchInformationI = {
+  const handleOnSearch = (searchValue: string) => {
+    dispatch(setEntityFilters({ criterioRicerca: searchValue }));
+  };
+
+  const searchInformation: SearchInformationI = {
     title:
       'Cerca cittadino per nome, cognome, codice fiscale o  numero  documento',
-    onHandleSearch: (searchValue: string) => console.log(searchValue),
+    onHandleSearch: handleOnSearch,
     placeholder:
       'Cerca cittadino per nome, cognome, codice fiscale o  numero  documento',
     autocomplete: false,
@@ -78,14 +83,14 @@ const CitizensList: React.FC<CitizensListI> = ({ citizens }) => {
 
   const handleDropdownFilters = (
     values: FilterI[],
-    filterKey: 'policies' | 'stati'
+    filterKey: 'statiQuestionario'
   ) => {
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
   };
 
   const handleOnSearchDropdownOptions = (
     searchValue: formFieldI['value'],
-    filterId: 'policies' | 'stati'
+    filterId: 'statiQuestionario'
   ) => {
     const searchDropdownValues = [...searchDropdown];
     if (
@@ -104,7 +109,7 @@ const CitizensList: React.FC<CitizensListI> = ({ citizens }) => {
   const dropdowns: DropdownFilterI[] = [
     {
       filterName: 'Stato',
-      options: dropdownFilterOptions[statusDropdownLabel],
+      options: dropdownFilterOptions['stati'],
       id: statusDropdownLabel,
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, statusDropdownLabel),
@@ -164,13 +169,13 @@ const CitizensList: React.FC<CitizensListI> = ({ citizens }) => {
   const cardsCounter: CardCounterI[] = [
     {
       title: 'Cittadini partecipanti',
-      counter: citizens.length,
+      counter: citizens?.numeroCittadini || 0,
       icon: 'it-user',
       className: 'mr-4',
     },
     {
       title: 'Questionari compilati',
-      counter: 0, // TODO: update with actual number
+      counter: citizens?.numeroQuestionariCompilati || 0,
       icon: 'it-file',
     },
   ];
@@ -178,14 +183,14 @@ const CitizensList: React.FC<CitizensListI> = ({ citizens }) => {
   return (
     <div className='container'>
       <GenericSearchFilterTableLayout
-        searchInformation={serachInformation}
+        searchInformation={searchInformation}
         dropdowns={dropdowns}
         buttonsList={buttons}
-        showButtons={false}
+        //showButtons={false}
         filtersList={filtersList}
         cardsCounter={cardsCounter}
       >
-        {citizens.map((citizen: CitizenI, i: number) => (
+        {(citizens?.servizi || []).map((citizen: CitizenI, i: number) => (
           <DetailsRow
             key={i}
             nome={citizen.nome || ''}

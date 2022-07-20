@@ -270,7 +270,7 @@ export const CreateManagerAuthority =
       );
 
       if (body) {
-        const res = await API.post(`/ente/`, {
+        const res = await API.post(`/ente`, {
           ...body,
         });
         if (res) {
@@ -569,16 +569,28 @@ export const RemoveReferentDelegate =
     authorityId: string,
     entityId: string,
     userCF: string,
-    entity: 'programma' | 'progetto',
     role: UserAuthorityRole
   ) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...RemoveReferentDelegateAction });
-
-      switch (entity) {
-        case 'programma':
+      switch (role) {
+        case 'DEPP':
+        case 'REPP':
+          await API.post(
+            '/ente/cancellaOTerminaAssociazione/referenteDelegato/partner',
+            {
+              cfUtente: userCF.toUpperCase(),
+              codiceRuolo: role,
+              idEntePartner: authorityId,
+              idProgetto: entityId,
+              mansione: 'string',
+            }
+          );
+          break;
+        case 'DEG':
+        case 'REG':
           await API.post(
             '/ente/cancellaOTerminaAssociazione/referenteDelegato/gestoreProgramma',
             {
@@ -586,11 +598,12 @@ export const RemoveReferentDelegate =
               codiceRuolo: role,
               idEnte: authorityId,
               idProgramma: entityId,
-              //mansione: 'string',
+              mansione: 'string',
             }
           );
           break;
-        case 'progetto':
+        case 'DEGP':
+        case 'REGP':
           await API.post(
             '/ente/cancellaOTerminaAssociazione/referenteDelegato/gestoreProgetto',
             {
@@ -598,7 +611,7 @@ export const RemoveReferentDelegate =
               codiceRuolo: role,
               idEnte: authorityId,
               idProgetto: entityId,
-              //mansione: 'string',
+              mansione: 'string',
             }
           );
           break;

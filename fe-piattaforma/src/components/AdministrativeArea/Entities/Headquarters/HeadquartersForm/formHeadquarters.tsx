@@ -92,6 +92,7 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
       <Form.Row className='justify-content-between'>
         <Input
           {...form?.id}
+          required
           label='ID'
           col='col-12 col-lg-6'
           onInputChange={onInputDataChange}
@@ -99,6 +100,7 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
         />
         <Input
           {...form?.nome}
+          required
           label='Nome'
           col='col-12 col-lg-6'
           onInputChange={onInputDataChange}
@@ -106,12 +108,14 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
         />
         <Input
           {...form?.serviziErogati}
+          required
           label='Servizi Erogati'
           col='col-12 col-lg-6'
           onInputChange={onInputDataChange}
         />
         <Input
           {...form?.enteDiRiferimento}
+          required
           label='Ente di riferimento'
           col='col-12 col-lg-6'
           onInputChange={onInputDataChange}

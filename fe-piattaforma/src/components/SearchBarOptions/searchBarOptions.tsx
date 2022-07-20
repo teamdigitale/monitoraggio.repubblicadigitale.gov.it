@@ -44,6 +44,9 @@ const SearchBarOptions: React.FC<SearchBarOptionsI> = ({
                   onClick={() => {
                     setCurrentStep(steps[item]);
                   }}
+                  onInputChange={() => {
+                    setCurrentStep(steps[item]);
+                  }}
                 />
                 <Label check htmlFor={`current-step-${index}`}>
                   {t(steps[item])}

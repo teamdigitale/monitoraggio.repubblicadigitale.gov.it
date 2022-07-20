@@ -35,18 +35,18 @@ export const TableHeadingSearchResults: TableHeadingI[] = [
   },
 ];
 
-export const TableHeadingEventsList: TableHeadingI[] = [
+export const TableHeadingServicesList: TableHeadingI[] = [
   {
     field: 'nome',
     label: 'Nome',
   },
   {
-    field: 'serviceType',
+    field: 'tipologiaServizio',
     label: 'Tipo di servizio prenotato',
     size: 'medium',
   },
   {
-    field: 'date',
+    field: 'data',
     label: 'data',
     size: 'small',
   },
@@ -55,7 +55,7 @@ export const TableHeadingEventsList: TableHeadingI[] = [
     label: 'Facilitatore',
   },
   {
-    field: 'status',
+    field: 'stato',
     label: 'Stato',
   },
 ];

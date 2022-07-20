@@ -28,6 +28,12 @@ import { selectAuthorities } from '../../../../../redux/features/administrativeA
 import ManageDelegate from '../modals/manageDelegate';
 import ManageReferal from '../modals/manageReferal';
 import ManageHeadquarter from '../../../../../components/AdministrativeArea/Entities/Headquarters/ManageHeadquarter/manageHeadquarter';
+import {
+  GetPartnerAuthorityDetail,
+  RemoveReferentDelegate,
+  UserAuthorityRole,
+} from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
+import DeleteReferentDelegateModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteReferentDelegateModal/DeleteReferentDelegateModal';
 
 const AuthoritiesDetails = () => {
   const authorityDetails =
@@ -96,6 +102,16 @@ const AuthoritiesDetails = () => {
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       // dispatch(RemoveReferentDelegate())
       console.log(td);
+      dispatch(
+        openModal({
+          id: 'delete-referent-delegate',
+          payload: {
+            cf: '',
+            role: 'REPP',
+            text: 'Confermi di voler eliminare questo referente?',
+          },
+        })
+      );
     },
   };
 
@@ -110,6 +126,16 @@ const AuthoritiesDetails = () => {
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       console.log(td);
+      dispatch(
+        openModal({
+          id: 'delete-referent-delegate',
+          payload: {
+            cf: '',
+            role: 'DEPP',
+            text: 'Confermi di voler eliminare questo delegato?',
+          },
+        })
+      );
     },
   };
 
@@ -171,6 +197,17 @@ const AuthoritiesDetails = () => {
     },
   ];
 
+  const removeReferentDelegate = async (
+    cf: string,
+    role: UserAuthorityRole
+  ) => {
+    if (projectId && authorityId) {
+      await dispatch(RemoveReferentDelegate(authorityId, projectId, cf, role));
+      dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
+    }
+    dispatch(closeModal());
+  };
+
   return (
     <div className={clsx('d-flex', 'flex-row', device.mediaIsPhone && 'mt-5')}>
       <div className='d-flex flex-column w-100'>
@@ -200,6 +237,12 @@ const AuthoritiesDetails = () => {
           <ManageDelegate />
           <ManageReferal />
           <ManageHeadquarter />
+          <DeleteReferentDelegateModal
+            onClose={() => dispatch(closeModal())}
+            onConfirm={(cf: string, role: UserAuthorityRole) =>
+              removeReferentDelegate(cf, role)
+            }
+          />
           <ConfirmDeleteModal
             onConfirm={() => {
               console.log('confirm delete');

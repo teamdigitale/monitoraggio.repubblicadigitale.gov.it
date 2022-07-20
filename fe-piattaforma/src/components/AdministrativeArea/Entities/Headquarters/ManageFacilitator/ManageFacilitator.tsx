@@ -1,9 +1,10 @@
+import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
+import FormFacilitator from '../../../../../pages/administrator/AdministrativeArea/Entities/Headquarters/formFacilitator';
 import { formTypes } from '../../../../../pages/administrator/AdministrativeArea/Entities/utils';
-import FormUser from '../../../../../pages/forms/formUser';
 import { GetUsersBySearch } from '../../../../../redux/features/administrativeArea/user/userThunk';
 import { formFieldI } from '../../../../../utils/formHelper';
 import SearchBar from '../../../../SearchBar/searchBar';
@@ -53,14 +54,23 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         label: 'Annulla',
         onClick: () => clearForm?.(),
       }}
+      centerButtons
     >
-      <div className='mx-5'>
+      <div>
         <SearchBar
-          className='w-75 py-5'
+          className={clsx(
+            'w-100',
+            'py-4',
+            'px-5',
+            'search-bar-borders',
+            'search-bar-bg'
+          )}
           placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’utente'
           onSubmit={handleSearchUser}
+          title='Cerca'
+          search
         />
-        <FormUser
+        <FormFacilitator
           creation={creation}
           formDisabled={!!formDisabled}
           sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>

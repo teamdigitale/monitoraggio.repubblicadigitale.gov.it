@@ -1,12 +1,14 @@
+import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { SearchBar } from '../../../../../components';
+import { EmptySection, SearchBar } from '../../../../../components';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import Table, { TableRowI } from '../../../../../components/Table/table';
 
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import {
+  resetAuthorityDetails,
   selectAuthorities,
   setAuthoritiesList,
   setAuthorityDetails,
@@ -37,7 +39,7 @@ interface ManageProjectPartnerAuthorityI
     ManagePartnerAuthorityFormI {}
 
 const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
-  clearForm,
+  clearForm = () => ({}),
   formDisabled,
   creation = false,
 }) => {
@@ -45,6 +47,8 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
     [key: string]: formFieldI['value'];
   }>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
+  const [showForm, setShowForm] = useState<boolean>(true);
+  const [alreadySearched, setAlreadySearched] = useState<boolean>(false);
   const dispatch = useDispatch();
   const { projectId } = useParams();
   const authoritiesList = useAppSelector(selectAuthorities).list;
@@ -52,6 +56,19 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
   useEffect(() => {
     if (creation) dispatch(setAuthorityDetails({}));
   }, [creation]);
+
+  const resetModal = () => {
+    clearForm();
+    setShowForm(true);
+    setAlreadySearched(false);
+    dispatch(resetAuthorityDetails());
+  };
+
+  const handleSearchAuthority = (search: string) => {
+    if (search) dispatch(GetAuthoritiesBySearch(search));
+    setShowForm(false);
+    setAlreadySearched(true);
+  };
 
   const handleSaveEnte = async () => {
     if (isFormValid) {
@@ -69,12 +86,10 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
           ));
       }
       dispatch(closeModal());
-      if(projectId) dispatch(GetProjectDetail(projectId));
+      if (projectId) dispatch(GetProjectDetail(projectId));
     }
-  };
-
-  const handleSearchAuthority = (search: string) => {
-    dispatch(GetAuthoritiesBySearch(search));
+    resetModal();
+    dispatch(closeModal());
   };
 
   // The table makes me work with function defined this way
@@ -84,21 +99,24 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
         dispatch(GetAuthorityDetail(td.id as string));
         dispatch(setAuthoritiesList(null));
       }
+      setShowForm(true);
     },
   };
 
-  let content = (
-    <FormAuthorities
-      creation={creation}
-      formDisabled={!!formDisabled}
-      sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {
-        setNewFormValues({ ...newData });
-      }}
-      setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
-    />
-  );
+  let content;
 
-  if (authoritiesList && authoritiesList.length > 0)
+  if (showForm) {
+    content = (
+      <FormAuthorities
+        creation={creation}
+        formDisabled={!!formDisabled}
+        sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {
+          setNewFormValues({ ...newData });
+        }}
+        setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+      />
+    );
+  } else if (authoritiesList && authoritiesList.length > 0) {
     content = (
       <Table
         heading={headings}
@@ -111,6 +129,19 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
         id='table'
       />
     );
+  } else if (
+    alreadySearched &&
+    (authoritiesList?.length === 0 || !authoritiesList) &&
+    !showForm
+  ) {
+    content = (
+      <EmptySection
+        title={'Nessun risultato'}
+        withIcon
+        horizontal
+      />
+    );
+  }
 
   return (
     <GenericModal
@@ -122,14 +153,23 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: () => clearForm?.() && dispatch(closeModal()),
+        onClick: () => resetModal(),
       }}
     >
-      <div className='mx-5'>
+      <div>
         <SearchBar
-          className='w-75 py-5'
+          className={clsx(
+            'w-100',
+            'py-4',
+            'px-5',
+            'search-bar-borders',
+            'search-bar-bg'
+          )}
           placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’ente'
           onSubmit={handleSearchAuthority}
+          onReset={() => setShowForm(true)}
+          title='Cerca'
+          search
         />
         {content}
       </div>

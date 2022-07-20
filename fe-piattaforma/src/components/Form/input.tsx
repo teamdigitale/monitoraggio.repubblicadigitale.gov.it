@@ -12,6 +12,8 @@ export interface InputI extends Omit<InputProps, 'value'> {
   col?: string | undefined;
   field?: string;
   id?: string | undefined;
+  maximum?: string | number | undefined;
+  minimum?: string | number | undefined;
   onInputBlur?:
     | ((value: formFieldI['value'], field?: string) => void)
     | undefined;
@@ -29,6 +31,8 @@ const Input: React.FC<InputI> = (props) => {
     field,
     id,
     label = props.field,
+    maximum,
+    minimum,
     name,
     onInputChange,
     onInputBlur,
@@ -89,6 +93,10 @@ const Input: React.FC<InputI> = (props) => {
         ? check
         : undefined,
     id: id || field || `input-${new Date().getTime()}`,
+    max: type === 'number' && maximum ? maximum : undefined,
+    maxLength: type === 'text' && maximum ? Number(maximum) : undefined,
+    min: type === 'number' && minimum ? minimum : undefined,
+    minLength: type === 'text' && minimum ? Number(minimum) : undefined,
     onBlur: (e) => {
       if (onInputBlur) onInputBlur(val, field);
       handleOnChange(e);
@@ -125,10 +133,23 @@ const Input: React.FC<InputI> = (props) => {
   const blackList = [
     'checked',
     'col',
+    'dependencyFlag',
+    'dependencyNotFlag',
+    'enumLevel1',
+    'enumLevel2',
     'field',
+    'flag',
+    'keyService',
+    'maximum',
+    'minimum',
     'onInputBlur',
     'onInputChange',
     'placeholder',
+    'preset',
+    'privacy',
+    'relatedFrom',
+    'relatedTo',
+    'touched',
     'withLabel',
   ];
 

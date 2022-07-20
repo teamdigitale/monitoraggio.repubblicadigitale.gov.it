@@ -46,8 +46,14 @@ import {
   UpdateProgramSurveyDefault,
 } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
 import PreviewSurvey from '../modals/previewSurvey';
-import { RemoveManagerAuthority } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
+import {
+  GetAuthorityManagerDetail,
+  RemoveManagerAuthority,
+  RemoveReferentDelegate,
+  UserAuthorityRole,
+} from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import TerminateEntityModal from '../../../../../components/AdministrativeArea/Entities/General/TerminateEntityModal/TerminateEntityModal';
+import DeleteReferentDelegateModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteReferentDelegateModal/DeleteReferentDelegateModal';
 import DeleteProjectModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteProjectModal/DeleteProjectModal';
 
 const tabs = {
@@ -80,6 +86,9 @@ const ProgramsDetails: React.FC = () => {
   );
   const [correctButtons, setCorrectButtons] = useState<ButtonInButtonsBar[]>(
     []
+  );
+  const [buttonsPosition, setButtonsPosition] = useState<'TOP' | 'BOTTOM'>(
+    'TOP'
   );
   const navigate = useNavigate();
   const location = useLocation();
@@ -144,21 +153,51 @@ const ProgramsDetails: React.FC = () => {
 
   const onActionClickReferenti: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(getActionRedirectURL(formTypes.REFERENTI, (typeof td === 'string' ? td : td.codiceFiscale).toString()))
+      navigate(
+        getActionRedirectURL(
+          formTypes.REFERENTI,
+          (typeof td === 'string' ? td : td.codiceFiscale).toString()
+        )
+      );
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       // dispatch(RemoveReferentDelegate())
       console.log(td);
+      dispatch(
+        openModal({
+          id: 'delete-referent-delegate',
+          payload: {
+            cf: '',
+            role: 'REG',
+            text: 'Confermi di voler eliminare questo referente?',
+          },
+        })
+      );
     },
   };
 
   const onActionClickDelegati: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(getActionRedirectURL(formTypes.DELEGATI, (typeof td === 'string' ? td : td.codiceFiscale).toString()))
+      navigate(
+        getActionRedirectURL(
+          formTypes.DELEGATI,
+          (typeof td === 'string' ? td : td.codiceFiscale).toString()
+        )
+      );
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       // dispatch(RemoveReferentDelegate())
       console.log(td);
+      dispatch(
+        openModal({
+          id: 'delete-referent-delegate',
+          payload: {
+            cf: '',
+            role: 'DEG',
+            text: 'Confermi di voler eliminare questo delegato?',
+          },
+        })
+      );
     },
   };
   const onActionClickQuestionariView: CRUDActionsI = {
@@ -280,6 +319,8 @@ const ProgramsDetails: React.FC = () => {
         setEmptySection(
           <EmptySection
             title={'Questa sezione è ancora vuota'}
+            withIcon
+            icon='it-note'
             subtitle={
               'Per attivare il progetto aggiungi un Ente gestore di Programma'
             }
@@ -313,8 +354,7 @@ const ProgramsDetails: React.FC = () => {
         idQuestionario: newSurveyDefaultId,
       })
     );
-    // update program detail
-    if (entityId) await dispatch(GetProgramDetail(entityId));
+    if (entityId) dispatch(GetProgramDetail(entityId));
   };
 
   useEffect(() => {
@@ -361,6 +401,7 @@ const ProgramsDetails: React.FC = () => {
     setCorrectModal(undefined);
     setItemAccordionList(null);
     setCurrentForm(undefined);
+    setButtonsPosition('TOP');
     if (surveyList?.length) {
       setSurveyDefault({
         items: [
@@ -411,6 +452,8 @@ const ProgramsDetails: React.FC = () => {
             title={'Questa sezione è ancora vuota'}
             subtitle={'Per attivare il programma aggiungi un Questionario'}
             buttons={EmptySectionButtons.slice(0, 1)}
+            withIcon
+            icon='it-note'
           />
         );
     }
@@ -453,6 +496,8 @@ const ProgramsDetails: React.FC = () => {
           title={'Questa sezione è ancora vuota'}
           subtitle={'Per attivare il programma aggiungi un Progetto'}
           buttons={EmptySectionButtons.slice(2)}
+          withIcon
+          icon='it-note'
         />
       ),
         setItemList({
@@ -694,7 +739,7 @@ const ProgramsDetails: React.FC = () => {
   // const showINFOButtons = () => activeTab === tabs.INFO;
   // const showENTEButtons = () => activeTab === tabs.ENTE;
   // const showPROGETTIButtons = () => activeTab === tabs.PROGETTI;
-  const showQUESTIONARIButtons = () => activeTab === tabs.QUESTIONARI;
+  //const showQUESTIONARIButtons = () => activeTab === tabs.QUESTIONARI;
 
   const terminateProgram = async (
     programId: string,
@@ -704,11 +749,23 @@ const ProgramsDetails: React.FC = () => {
     dispatch(closeModal());
   };
 
+  const removeReferentDelegate = async (
+    cf: string,
+    role: UserAuthorityRole
+  ) => {
+    if (entityId && managerAuthorityId) {
+      await dispatch(
+        RemoveReferentDelegate(managerAuthorityId, entityId, cf, role)
+      );
+      dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+    }
+    dispatch(closeModal());
+  };
   const deleteProject = async (projectId: string) => {
     await dispatch(DeleteEntity('progetto', projectId));
     dispatch(closeModal());
     if (entityId) dispatch(GetProgramDetail(entityId));
-  }
+  };
 
   return (
     <div className='pb-3'>
@@ -723,7 +780,7 @@ const ProgramsDetails: React.FC = () => {
         currentTab={activeTab}
         itemsAccordionList={itemAccordionList}
         itemsList={itemList}
-        buttonsPosition={showQUESTIONARIButtons() ? 'BOTTOM' : 'TOP'}
+        buttonsPosition={buttonsPosition}
         goBackTitle='Elenco programmi'
         goBackPath='/area-amministrativa/programmi'
         surveyDefault={surveyDefault}
@@ -774,6 +831,12 @@ const ProgramsDetails: React.FC = () => {
           terminationDate &&
           entityId &&
           terminateProgram(entityId, terminationDate)
+        }
+      />
+      <DeleteReferentDelegateModal
+        onClose={() => dispatch(closeModal())}
+        onConfirm={(cf: string, role: UserAuthorityRole) =>
+          removeReferentDelegate(cf, role)
         }
       />
       <ManageDelegate />

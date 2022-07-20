@@ -61,7 +61,12 @@ export const GetEntityValues =
         dispatch(
           setEntityValues({ entity: payload.entity, data: res.data.cittadini })
         );
-        dispatch(setEntityPagination({ totalPages: res.data.numeroPagine }));
+        dispatch(
+          setEntityPagination({
+            totalPages: res.data.numeroPagine,
+            totalElements: res.data.numeroTotaleElementi,
+          })
+        );
       }
     } catch (error) {
       console.log('GetEntityValues citizensArea error', error);
@@ -147,13 +152,16 @@ const GetEntitySearchResultAction = {
 };
 
 export const GetEntitySearchResult =
-  (cfUtente: string, searchType: string) => async (dispatch: Dispatch) => {
+  (searchValue: string, searchType: string) => async (dispatch: Dispatch) => {
     try {
+      dispatch({ ...GetEntitySearchResultAction, searchValue, searchType });
       dispatch(showLoader());
-      dispatch({ ...GetEntitySearchResultAction, cfUtente, searchType });
-      const res = await API.get('cittadino/light/idCittadino', {
-        params: { cfUtente, searchType },
-      });
+      const res = await API.get(
+        `/servizio/cittadino?criterioRicerca=${searchValue}&tipoDocumento=${
+          searchType === 'codiceFiscale' ? 'CF' : 'NUM_DOC'
+        }`
+      );
+      console.log(res, 'AAAAA');
       if (res?.data) {
         if (Array.isArray(res.data.data)) {
           dispatch(getEntitySearchMultiple(res.data.data));

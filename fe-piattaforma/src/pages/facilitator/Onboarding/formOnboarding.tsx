@@ -13,6 +13,7 @@ import { OptionType } from '../../../components/Form/select';
 import { Form, Input } from '../../../components';
 import clsx from 'clsx';
 import { selectUser } from '../../../redux/features/user/userSlice';
+import {RegexpType} from "../../../utils/validator";
 
 export interface FormOnboardingI {
   onInputChange?: withFormHandlerProps['onInputChange'];
@@ -128,31 +129,47 @@ const form: FormI = newForm([
     field: 'nome',
     required: true,
     id: 'name',
+    minimum: 3,
+    maximum: 30,
+    regex: RegexpType.REGISTRY,
   }),
   newFormField({
     field: 'cognome',
     required: true,
     id: 'surname',
+    minimum: 2,
+    maximum: 30,
+    regex: RegexpType.REGISTRY,
   }),
   newFormField({
     field: 'email',
     required: true,
     id: 'email',
+    minimum: 5,
+    maximum: 50,
+    regex: RegexpType.EMAIL,
   }),
   newFormField({
     field: 'codiceFiscale',
     required: true,
     id: 'fiscalcode',
+    regex: RegexpType.FISCAL_CODE,
+    maximum: 16,
+    minimum: 16,
   }),
   newFormField({
     field: 'telefono',
     required: true,
     id: 'telefono',
+    minimum: 9,
+    maximum: 20,
+    regex: RegexpType.TELEPHONE,
   }),
   newFormField({
     field: 'bio',
     id: 'bio',
     required: true,
+    maximum: 160,
   }),
 ]);
 

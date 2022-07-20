@@ -109,10 +109,10 @@ const Programs = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(programmiList) && programmiList.length)
+    if (Array.isArray(programmiList))
       setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [programmiList]);
+  }, [programmiList?.length]);
 
   const getProgramsList = () => {
     dispatch(GetEntityValues({ entity }));
@@ -210,7 +210,11 @@ const Programs = () => {
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
       if (typeof td !== 'string') {
-        const programId = programmiList.filter((program: any) => program?.codice?.toString().toLowerCase() === td.id.toString().toLowerCase())[0].id;
+        const programId = programmiList.filter(
+          (program: any) =>
+            program?.codice?.toString().toLowerCase() ===
+            td.id.toString().toLowerCase()
+        )[0].id;
         navigate(`${programId}/info`);
       }
     },
@@ -258,6 +262,7 @@ const Programs = () => {
               onCellClick={(field, row) => console.log(field, row)}
               //onRowClick={row => console.log(row)}
               withActions
+              totalCounter={pagination?.totalElements}
             />
             {pagination?.pageNumber ? (
               <Paginator
@@ -271,7 +276,12 @@ const Programs = () => {
             ) : null}
           </>
         ) : (
-          <EmptySection title='Non ci sono programmi' />
+          <EmptySection
+            title='Non sono presenti programmi'
+            subtitle='associati al tuo ruolo'
+            icon='it-note'
+            withIcon
+          />
         )}
       </div>
       <ManageProgram creation />

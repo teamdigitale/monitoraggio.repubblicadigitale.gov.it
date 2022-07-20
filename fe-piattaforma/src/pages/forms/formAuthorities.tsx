@@ -19,6 +19,7 @@ import { openModal } from '../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../utils/formHelper';
 import { formTypes } from '../administrator/AdministrativeArea/Entities/utils';
+import {RegexpType} from "../../utils/validator";
 
 interface EnteInformationI {
   formDisabled?: boolean;
@@ -317,6 +318,9 @@ const form = newForm([
     field: 'piva',
     id: 'piva',
     required: true,
+    regex: RegexpType.PIVA,
+    maximum: 11,
+    minimum: 11,
   }),
   /*
   newFormField({

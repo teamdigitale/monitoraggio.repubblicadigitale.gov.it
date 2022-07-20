@@ -122,10 +122,10 @@ const Projects: React.FC = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(progettiList) && progettiList.length)
+    if (Array.isArray(progettiList))
       setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [progettiList]);
+  }, [progettiList?.length]);
 
   const getProjectsList = () => {
     dispatch(GetEntityValues({ entity: 'progetto' }));
@@ -252,6 +252,7 @@ const Projects: React.FC = () => {
               onCellClick={(field, row) => console.log(field, row)}
               //onRowClick={row => console.log(row)}
               withActions
+              totalCounter={pagination?.totalElements}
             />
             {pagination?.pageNumber ? (
               <Paginator
@@ -265,7 +266,12 @@ const Projects: React.FC = () => {
             ) : null}
           </>
         ) : (
-          <EmptySection title='Non ci sono progetti' />
+          <EmptySection
+            title='Non sono presenti progetti'
+            subtitle='associati al tuo ruolo'
+            icon='it-note'
+            withIcon
+          />
         )}
       </div>
       <ManageProject creation />
