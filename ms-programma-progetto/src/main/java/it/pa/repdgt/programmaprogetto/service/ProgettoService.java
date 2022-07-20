@@ -223,6 +223,8 @@ public class ProgettoService {
 	 * Restituisce true se il progetto può essere cancellato e false altrimenti.
 	 * 
 	 **/
+	@LogMethod
+	@LogExecutionTime
 	public boolean isProgettoAggiornabileByStatoProgetto(String statoProgetto) {
 		return (
 				StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(statoProgetto)
@@ -231,6 +233,8 @@ public class ProgettoService {
 		);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public Page<ProgettoEntity> getAllProgettiPaginati(ProgettiParam sceltaContesto,
 			Integer currPage, Integer pageSize, ProgettoFiltroRequest filtroRequest) {
 		if(this.ruoloService.getCodiceRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
@@ -345,6 +349,8 @@ public class ProgettoService {
 		}
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<String> getStatiPerReferenteDelegatoGestoreProgramma(Long idProgramma, ProgettoFiltroRequest filtroRequest) {
 		return this.progettoRepository.findStatiPerReferenteDelegatoGestoreProgramma(idProgramma,
 																	   filtroRequest.getCriterioRicerca(),
@@ -354,6 +360,8 @@ public class ProgettoService {
 																	   filtroRequest.getStati());
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<String> getAllStati(ProgettoFiltroRequest filtroRequest) {
 		return this.progettoRepository.findAllStati(
 			    filtroRequest.getCriterioRicerca(),
@@ -374,14 +382,20 @@ public class ProgettoService {
 				);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<ProgrammaDropdownResource> getAllProgrammiDropdownPerProgetti(ProgettiParam sceltaContesto) {
 		return this.programmaService.getAllProgrammiDropdownPerProgetti(sceltaContesto, sceltaContesto.getFiltroRequest());
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<String> getAllPoliciesDropdownPerProgetti(ProgettiParam sceltaContesto) {
 		return this.programmaService.getAllPoliciesDropdownPerProgetti(sceltaContesto, sceltaContesto.getFiltroRequest());
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public SchedaProgettoBean getSchedaProgettoById(Long idProgetto) {
 		ProgettoEntity progettoFetchDB = this.getProgettoById(idProgetto);
 		ProgrammaEntity programmaFetchDB = progettoFetchDB.getProgramma();
@@ -444,6 +458,8 @@ public class ProgettoService {
 		return schedaProgetto;
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void terminaProgetto(Long idProgetto, Date dataTerminazione) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -488,6 +504,8 @@ public class ProgettoService {
 		);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaOTerminaProgetto (ProgettoEntity progetto, Date dataTerminazione) throws ParseException {
 		if(StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(progetto.getStato())) {
 			this.cancellazioneProgetto(progetto.getId());
@@ -497,6 +515,8 @@ public class ProgettoService {
 		}
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void attivaProgetto(Long idProgetto) {
 		ProgettoEntity progetto = this.getProgettoById(idProgetto);

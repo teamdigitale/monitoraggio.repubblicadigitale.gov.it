@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import it.pa.repdgt.ente.exception.EnteSedeProgettoException;
 import it.pa.repdgt.ente.exception.ResourceNotFoundException;
 import it.pa.repdgt.ente.repository.EnteSedeProgettoRepository;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.EnteSedeProgetto;
 import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
@@ -34,7 +36,8 @@ public class EnteSedeProgettoService {
 	@Autowired
 	private EnteSedeProgettoFacilitatoreService enteSedeProgettoFacilitatoreService;
 	
-	
+	@LogMethod
+	@LogExecutionTime
 	public EnteSedeProgetto getAssociazioneEnteSedeProgetto(Long idSede, Long idEnte, Long idProgetto) {
 		EnteSedeProgettoKey id = new EnteSedeProgettoKey(idEnte, idSede, idProgetto);
 		String errorMessage = String.format("Associazione sede-ente-progetto non presente per sede con id=%s, ente con id=%s, progetto con id=%s",
@@ -55,6 +58,8 @@ public class EnteSedeProgettoService {
 	 * @throws EnteSedeProgettoException - Se almeno uno dei 3 domini non esiste nella base dati
 	 * 
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public void associaEnteSedeProgetto(Long idSede, Long idEnte, String ruoloEnte, Long idProgetto) {
 		SedeEntity sede = null;
 		EnteEntity ente = null;
@@ -91,6 +96,8 @@ public class EnteSedeProgettoService {
 	 * @throws EnteSedeProgettoException - Se almeno uno dei 3 domini non esiste nella base dati
 	 * 
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellaOTerminaAssociazioneEnteSedeProgetto(Long idEnte, Long idSede, Long idProgetto) {
 //		 Possibile eseguire la disassociazione se almeno una delle condizioni seguenti è verificata:
@@ -110,6 +117,8 @@ public class EnteSedeProgettoService {
 		this.terminaAssociazioneEnteSedeProgetto(idEnte, idSede, idProgetto);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void terminaAssociazioneEnteSedeProgetto(Long idEnte, Long idSede, Long idProgetto) {
 		EnteSedeProgettoKey enteSedeProgettoId = new EnteSedeProgettoKey(idEnte, idSede, idProgetto);
@@ -152,6 +161,8 @@ public class EnteSedeProgettoService {
 		return this.enteSedeProgettoRepository.findAltreSediAttiveConFacilitatore(idProgetto, associazioneEnteSedeProgetto);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellazioneAssociazioneEnteSedeProgetto(Long idEnte, Long idSede, Long idProgetto) {
 		EnteSedeProgettoKey enteSedeProgettoId = new EnteSedeProgettoKey(idEnte, idSede, idProgetto);
@@ -165,14 +176,20 @@ public class EnteSedeProgettoService {
 		this.enteSedeProgettoRepository.delete(enteSedeProgettoDBFetch);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void cancellazioneAssociazioniEnteSedeProgettoByIdEnteAndIdProgetto(Long idEnte, Long idProgetto) {
 		this.enteSedeProgettoRepository.cancellazioneAssociazioniEnteSedeProgettoByIdEnteAndIdProgetto(idEnte, idProgetto);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<EnteSedeProgetto> getSediPerProgettoAndEnte(Long idEnte, Long idProgetto) {
 		return this.enteSedeProgettoRepository.findSediPerProgettoAndEnte(idEnte, idProgetto);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void salvaEnteSedeProgetto(EnteSedeProgetto sede) {
 		this.enteSedeProgettoRepository.save(sede);
 	}

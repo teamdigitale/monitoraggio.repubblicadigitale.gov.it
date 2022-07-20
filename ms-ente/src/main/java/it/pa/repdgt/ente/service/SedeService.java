@@ -27,6 +27,8 @@ import it.pa.repdgt.ente.mapper.SedeMapper;
 import it.pa.repdgt.ente.repository.SedeRepository;
 import it.pa.repdgt.ente.request.NuovaSedeRequest;
 import it.pa.repdgt.ente.request.NuovaSedeRequest.IndirizzoSedeRequest;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.IndirizzoSedeEntity;
 import it.pa.repdgt.shared.entity.IndirizzoSedeFasciaOrariaEntity;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
@@ -51,24 +53,34 @@ public class SedeService {
 	@Autowired
 	private SedeRepository sedeRepository;
 	
+	@LogMethod
+	@LogExecutionTime
 	public SedeEntity getSedeById(@NotNull Long idSede) {
 		String errorMessage = String.format("Sede con id=%s non presente", String.valueOf(idSede));
 		return this.sedeRepository.findById(idSede)
 					.orElseThrow(() -> new ResourceNotFoundException(errorMessage));
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public boolean esisteSedeById(@NotNull Long sedeId) {
 		return this.sedeRepository.findById(sedeId).isPresent();
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<SedeEntity> getSedeByNomeSedeLike(@NotNull String nomeSede) {
 		return this.sedeRepository.findSedeByNomeSedeLike(nomeSede);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<SedeEntity> cercaSedeByNomeSedeLike(@NotNull String nomeSede) {
 		return this.getSedeByNomeSedeLike(nomeSede);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public SedeEntity creaNuovaSede(@NotNull final NuovaSedeRequest nuovaSedeRequest) {
 		final String nomeSede = nuovaSedeRequest.getNome();
@@ -100,22 +112,32 @@ public class SedeService {
 		return sedeSalvata;
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public boolean esisteSedeByNome(@NotNull final String nomeSede) {
 		return this.sedeRepository.findSedeByNomeSede(nomeSede).isPresent();
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public boolean esisteSedeByNomeAndNotIdSede(@NotNull final String nomeSede, @NotNull final Long idSede) {
 		return this.sedeRepository.findSedeByNomeSedeAndNotIdSede(nomeSede, idSede).isPresent();
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<SedeEntity> getSediEnteByIdProgettoAndIdEnte(Long idProgetto, Long idEnte) {
 		return this.sedeRepository.findSediEnteByIdProgettoAndIdEnte(idProgetto, idEnte);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public String getStatoSedeByIdProgettoAndIdSedeAndIdEnte(Long idProgetto, Long idSede, Long idEnte) {
 		return this.sedeRepository.findStatoSedeByIdProgettoAndIdSedeAndIdEnte(idProgetto, idSede, idEnte);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public SchedaSedeBean getSchedaSedeByIdSede(final Long idSede) {
 		final SedeEntity sede = this.getSedeById(idSede);
 		final List<IndirizzoSedeProjection> indirizziSede = this.indirizzoSedeService.getIndirizzoSedeByIdSede(idSede);
@@ -139,6 +161,8 @@ public class SedeService {
 		return schedaSede;
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public SchedaSedeBean getSchedaSedeByIdProgettoAndIdEnteAndIdSede(final Long idProgetto, final Long idEnte, final Long idSede) {
 		ProgettoEntity progettoFetchDB = this.progettoService.getProgettoById(idProgetto);
 		final DettaglioProgettoLightBean dettaglioProgetto = this.sedeMapper.toDettaglioProgettoLightBeanFrom(progettoFetchDB);
@@ -173,7 +197,7 @@ public class SedeService {
 		List<IndirizzoSedeRequest> listaIndirizzi = nuovaSedeRequest.getIndirizziSedeFasceOrarie();
 		listaIndirizzi.stream()
 					  .forEach(indirizzoRequest -> {
-						  //se lo stato dell'indirizzo è "cancellato", cancelliamo l'indirizzo dalla sede
+						  //se il campo "cancellato" è a TRUE, cancelliamo l'indirizzo dalla sede
 						  if(indirizzoRequest.getCancellato() == true) {
 							  this.cancellaFasceOrarieByIdIndirizzo(indirizzoRequest.getId());
 							  this.indirizzoSedeService.cancellaIndirizzoSedeById(indirizzoRequest.getId());
@@ -203,7 +227,7 @@ public class SedeService {
 		fasciaOraria.setIdIndirizzoSede(indirizzoSedeEntity.getId());
 		this.indirizzoSedeFasciaOrariaService.salvaIndirizzoSedeFasciaOraria(fasciaOraria);
 	}
-	
+
 	private void aggiornaFasceOrarie(IndirizzoSedeRequest indirizzoRequest, IndirizzoSedeEntity indirizzoSedeEntity) {
 		IndirizzoSedeFasciaOrariaEntity fasciaOraria = indirizzoRequest.getFasceOrarieAperturaIndirizzoSede();
 		Optional<IndirizzoSedeFasciaOrariaEntity> fasceOrarieDaAggiornare = this.indirizzoSedeFasciaOrariaService.getFasceOrarieByIdIndirizzoSede(indirizzoSedeEntity.getId());

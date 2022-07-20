@@ -12,12 +12,12 @@ import it.pa.repdgt.shared.entity.ProgrammaEntity;
 @Repository
 public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long> {
 
-	@Query(value = "SELECT rdg.ID_PROGRAMMA "
+	@Query(value = "SELECT distinct rdg.ID_PROGRAMMA "
 			+ "FROM referente_delegati_gestore_programma rdg "
 			+ "	WHERE rdg.CF_UTENTE = :cfUtente "
 			+ " 	AND rdg.CODICE_RUOLO = :ruolo ",
 			nativeQuery = true)
-	public List<Long> findIdProgrammiByRuoloUtente(
+	public List<Long> findDistinctIdProgrammiByRuoloUtente(
 			@Param(value = "cfUtente") String cfUtente,
 			@Param(value = "ruolo") String ruolo
 	);

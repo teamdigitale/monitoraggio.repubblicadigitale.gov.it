@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.programmaprogetto.repository.ReferentiDelegatiEnteGestoreProgrammaRepository;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.ReferentiDelegatiEnteGestoreProgrammaEntity;
 import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEnteGestoreProgrammaKey;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
@@ -34,6 +36,8 @@ public class ReferentiDelegatiEnteGestoreProgrammaService {
 	/**
 	 * Cancella associazione Utente Referente o utente delegato all'ente gestore di programma
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
     public void cancellaAssociazioneReferenteODelegatoGestoreProgramma(ReferentiDelegatiEnteGestoreProgrammaEntity referentiDelegatiEnteGestoreProgramma) {
 		Long idProgramma = referentiDelegatiEnteGestoreProgramma.getId().getIdProgramma();
@@ -55,10 +59,14 @@ public class ReferentiDelegatiEnteGestoreProgrammaService {
 		}
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<ReferentiDelegatiEnteGestoreProgrammaEntity> getReferentiEDelegatiProgramma(Long idProgramma) {
 		return this.referentiDelegatiEnteGestoreProgrammaRepository.findReferentiEDelegatiProgramma(idProgramma);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaOTerminaAssociazioneReferenteDelegatoProgramma(ReferentiDelegatiEnteGestoreProgrammaEntity utente) {
 		if(utente.getStatoUtente().equals(StatoEnum.ATTIVO.getValue())) {
 			utente.setStatoUtente(StatoEnum.TERMINATO.getValue());

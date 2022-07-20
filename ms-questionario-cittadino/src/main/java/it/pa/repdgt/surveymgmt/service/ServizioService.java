@@ -18,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
@@ -59,6 +61,8 @@ public class ServizioService {
 	 * - FiltroListaServiziParam - contiene tutti i filtri da applicare all'elenco dei servizi
 	 * 
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public Page<ServizioEntity> getAllServiziPaginatiByProfilazioneAndFiltri(
 			@NotNull @Valid final ProfilazioneParam profilazione,
 			@NotNull @Valid final FiltroListaServiziParam filtroListaServizi,
@@ -91,6 +95,8 @@ public class ServizioService {
 	 * - FiltroListaServiziParam - contiene tutti i filtri da applicare all'elenco dei servizi
 	 * 
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public List<ServizioEntity> getAllServiziByProfilazioneUtenteLoggatoAndFiltri(
 			@NotNull @Valid ProfilazioneParam profilazione,
 			@NotNull @Valid FiltroListaServiziParam filtroListaServizi) {
@@ -175,6 +181,8 @@ public class ServizioService {
 		}
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public ServizioEntity creaServizio(
 			@NotNull final ServizioRequest servizioRequest) {
@@ -198,6 +206,8 @@ public class ServizioService {
 		return servizioCreato;
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public SezioneQ3Collection creaSezioneQ3(@NotNull final ServizioRequest servizioRequest) {
 		final SezioneQ3Collection sezioneQ3Collection = this.servizioMapper.toCollectionFrom(servizioRequest);
 		sezioneQ3Collection.setId(UUID.randomUUID().toString());
@@ -206,6 +216,8 @@ public class ServizioService {
 		return sezioneQ3Collection;
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void aggiornaServizio(
 			@NotNull Long idServizioDaAggiornare, 
@@ -240,6 +252,8 @@ public class ServizioService {
 	 * con un determinato profilo
 	 * 
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public List<String> getAllTipologiaServizioFiltroDropdown(
 			@NotNull @Valid final ProfilazioneParam profilazione, 
 			@NotNull @Valid final FiltroListaServiziParam filtroListaServizi) {
@@ -255,6 +269,8 @@ public class ServizioService {
 	 * con un determinato profilo
 	 * 
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public List<String> getAllStatiServizioFiltroDropdown(
 			@NotNull @Valid final ProfilazioneParam profilazione, 
 			@NotNull @Valid final FiltroListaServiziParam filtroListaServizi) {
@@ -272,6 +288,8 @@ public class ServizioService {
 	 * dall'id del servizio
 	 * 
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public SchedaDettaglioServizioBean getSchedaDettaglioServizio(@NotNull final Long idServizio) {
 		final ServizioEntity servizioEntity = this.servizioSQLService.getServizioById(idServizio);
 		final EnteEntity enteEntity = this.enteService.getById(servizioEntity.getIdEnteSedeProgettoFacilitatore().getIdEnte());
@@ -294,6 +312,8 @@ public class ServizioService {
 		return schedaDettaglioServizioBean;
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void eliminaServizio(@NotNull final Long idServizio) {
 		final ServizioEntity servizioEntity = this.servizioSQLService.getServizioById(idServizio);
@@ -312,6 +332,8 @@ public class ServizioService {
 		this.sezioneQ3Repository.deleteByIdSezioneQ3(servizioEntity.getIdTemplateCompilatoQ3());
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public boolean isServizioEliminabile(@NotNull final String statoServizio) {
 		return StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(statoServizio);
 	}

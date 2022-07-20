@@ -13,5 +13,6 @@ public class DettaglioRuoliBean {
 	private String nome;
 	private String ruolo;
 	private String stato;
+	private String statoP;
 	private Long id;
 }

@@ -14,6 +14,8 @@ import org.springframework.validation.annotation.Validated;
 import it.pa.repdgt.ente.exception.EnteSedeProgettoFacilitatoreException;
 import it.pa.repdgt.ente.repository.EnteSedeProgettoFacilitatoreRepository;
 import it.pa.repdgt.ente.request.EnteSedeProgettoFacilitatoreRequest;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.EnteSedeProgetto;
@@ -51,10 +53,14 @@ public class EnteSedeProgettoFacilitatoreService {
 	@Autowired
 	private EmailService emailService;
 
+	@LogMethod
+	@LogExecutionTime
 	public List<EnteSedeProgettoFacilitatoreEntity> getAllFacilitatoriByEnteAndSedeAndProgetto(Long idEnte, Long idSede, Long idProgetto) {
 		return this.enteSedeProgettoFacilitatoreRepository.findAllFacilitatoriByEnteAndSedeAndProgetto(idEnte, idSede, idProgetto);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void associaFacilitatoreAEnteSedeProgetto(EnteSedeProgettoFacilitatoreRequest enteSedeProgettoFacilitatoreRequest) {
 		String codiceFiscaleUtente = enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleUtente();
@@ -169,6 +175,8 @@ public class EnteSedeProgettoFacilitatoreService {
 	}
 	
 	@Transactional(rollbackOn = Exception.class)
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaOTerminaAssociazioneFacilitatoreAEnteSedeProgetto(
 			EnteSedeProgettoFacilitatoreRequest enteSedeProgettoFacilitatoreRequest) {
 		String codiceFiscaleUtente = enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleUtente();
@@ -207,6 +215,8 @@ public class EnteSedeProgettoFacilitatoreService {
 	}
 	
 	@Transactional(rollbackOn = Exception.class)
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaOTerminaAssociazioneFacilitatoreOVolontarioAEnteSedeProgetto(
 			EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatore) {
 		
@@ -233,6 +243,8 @@ public class EnteSedeProgettoFacilitatoreService {
 		this.enteSedeProgettoFacilitatoreRepository.save(enteSedeProgettoFacilitatoreFetch);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellaAssociazioniFacilitatoriOVolontariAEnteSedeProgetto(
 			@NotNull Long idSede, 
@@ -251,6 +263,8 @@ public class EnteSedeProgettoFacilitatoreService {
 		});
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellaAssociazioneFacilitatore(Long idEnte, Long idSede, Long idProgetto, String codiceFiscaleUtente, String codiceRuolo) {
 		EnteSedeProgettoFacilitatoreKey id = new EnteSedeProgettoFacilitatoreKey(idEnte, idSede, idProgetto, codiceFiscaleUtente);
@@ -267,14 +281,20 @@ public class EnteSedeProgettoFacilitatoreService {
 		}
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public void cancellazioneAssociazioniEnteSedeProgettoFacilitatoreByIdEnteAndIdProgetto(Long idEnte, Long idProgetto) {
 		this.enteSedeProgettoFacilitatoreRepository.cancellazioneAssociazioniEnteSedeProgettoFacilitatoreByIdEnteAndIdProgetto(idEnte, idProgetto);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<EnteSedeProgettoFacilitatoreEntity> getFacilitatoriByIdEnteAndIdProgetto(Long idEnte, Long idProgetto) {
 		return this.enteSedeProgettoFacilitatoreRepository.getFacilitatoriByIdEnteAndIdProgetto(idEnte, idProgetto);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public int countAssociazioniFacilitatoreAndVolontario(String facilitatore, String codiceRuolo) {
 		return this.enteSedeProgettoFacilitatoreRepository.countAssociazioniFacilitatoreAndVolontario(facilitatore, codiceRuolo);
 	}

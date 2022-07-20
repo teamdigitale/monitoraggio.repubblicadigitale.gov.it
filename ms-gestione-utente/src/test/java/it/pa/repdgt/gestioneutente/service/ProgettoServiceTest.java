@@ -28,8 +28,8 @@ public class ProgettoServiceTest {
 	
 	@Test
 	public void getIdProgettiByRuoloUtenteTest() {
-		when(this.progettoRepository.findIdProgettiByRuoloUtente("cfUtente", "ruolo")).thenReturn(new ArrayList<Long>());
-		assertThat(service.getIdProgettiByRuoloUtente("cfUtente", "ruolo")).isNotNull();
+		when(this.progettoRepository.findDistinctIdProgettiByRuoloUtente("cfUtente", "ruolo")).thenReturn(new ArrayList<Long>());
+		assertThat(service.getDistinctIdProgettiByRuoloUtente("cfUtente", "ruolo")).isNotNull();
 	}
 	
 	@Test

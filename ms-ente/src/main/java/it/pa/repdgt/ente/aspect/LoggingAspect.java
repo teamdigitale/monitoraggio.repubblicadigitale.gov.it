@@ -1,4 +1,4 @@
-package it.pa.repdgt.programmaprogetto.aspect;
+package it.pa.repdgt.ente.aspect;
 
 import java.util.Arrays;
 
@@ -39,7 +39,7 @@ public class LoggingAspect {
 		// Method is empty as this is just a Pointcut, the implementations are in the
 		// advices.
 	}
-	
+
 	@Around("@annotation(it.pa.repdgt.shared.annotation.LogMethod)")
 	public Object logMethod(ProceedingJoinPoint joinPoint) throws Throwable {
 		final Object proced = joinPoint.proceed();

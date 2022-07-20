@@ -18,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
@@ -44,6 +46,8 @@ public class QuestionarioTemplateService {
 	@Autowired
 	private QuestionarioTemplateRepository questionarioTemplateRepository;
 
+	@LogMethod
+	@LogExecutionTime
 	public Page<QuestionarioTemplateEntity> getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro(
 			@NotNull @Valid final ProfilazioneParam profilazione,
 			@NotNull @Valid final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplate,
@@ -74,6 +78,8 @@ public class QuestionarioTemplateService {
 		return new PageImpl<QuestionarioTemplateEntity>(listaQuestionariTemplate.subList(start, end), pagina, listaQuestionariTemplate.size());
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<QuestionarioTemplateEntity> getAllQuestionariTemplateByProfilazioneAndFiltro(
 			@NotNull @Valid final ProfilazioneParam profilazione,
 			@NotNull @Valid final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplate) {
@@ -128,6 +134,8 @@ public class QuestionarioTemplateService {
 				}
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<String> getAllStatiDropdownByProfilazioneAndFiltro(
 			@NotNull @Valid final ProfilazioneParam profilazione,
 			@NotNull @Valid final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplate) {
@@ -194,6 +202,8 @@ public class QuestionarioTemplateService {
 		}
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public QuestionarioTemplateCollection getQuestionarioTemplateById(@NotNull String idQuestionarioTemplate) {
 		log.info("getById - id={} START", idQuestionarioTemplate);
 		final String messaggioErrore = String.format("templateQuestionario con id=%s non presente.", idQuestionarioTemplate);
@@ -201,6 +211,8 @@ public class QuestionarioTemplateService {
 				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore));
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public QuestionarioTemplateCollection creaNuovoQuestionarioTemplate(
 			@NotNull(message = "Questionario da creare deve essere non null") 
@@ -222,6 +234,8 @@ public class QuestionarioTemplateService {
 		return this.questionarioTemplateRepository.save(questionarioTemplateCollection);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public QuestionarioTemplateCollection aggiornaQuestionarioTemplate(
 			@NotNull(message = "id questionario template deve essere non null") String idQuestionarioTemplate,
@@ -257,6 +271,8 @@ public class QuestionarioTemplateService {
 		return this.questionarioTemplateRepository.save(questionarioTemplateFetchDB);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public boolean isQuestionarioTemplateModificabileByStato(@NotNull final String statoQuestionario) {
 		return (
 					StatoEnum.ATTIVO.getValue().equalsIgnoreCase(statoQuestionario)
@@ -264,6 +280,8 @@ public class QuestionarioTemplateService {
 			);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaQuestionarioTemplate(
 			@NotNull(message = "id questionario template deve essere non null") final String idQuestioanarioTemplate) {
 		QuestionarioTemplateCollection questionarioTemplateDaCancellare = null;
@@ -291,10 +309,14 @@ public class QuestionarioTemplateService {
 		this.questionarioTemplateRepository.deleteByIdQuestionarioTemplate(idQuestioanarioTemplate);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public boolean isQuestionarioTemplateCancellabileByStato(@NotNull final String statoQuestionario) {
 		return StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(statoQuestionario);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<QuestionarioTemplateEntity> getQuestionariTemplateByUtente(ProfilazioneParam profilazioneParam) {
 		String codiceFiscaleUtente = profilazioneParam.getCodiceFiscaleUtenteLoggato();
 		String codiceRuolo = profilazioneParam.getCodiceRuoloUtenteLoggato().toString();
@@ -333,7 +355,9 @@ public class QuestionarioTemplateService {
 				return this.questionarioTemplateSqlService.getAllQuestionari();
 		}
 	}
-
+	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void aggiornaDefaultQuestionarioTemplate(String idQuestionario, String tipoDefault) {
 		QuestionarioTemplateEntity questionarioTemplate = this.questionarioTemplateSqlService.getQuestionarioTemplateById(idQuestionario);

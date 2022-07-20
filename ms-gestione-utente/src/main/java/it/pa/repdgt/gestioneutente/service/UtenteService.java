@@ -26,6 +26,9 @@ import it.pa.repdgt.gestioneutente.dto.UtenteDto;
 import it.pa.repdgt.gestioneutente.exception.ResourceNotFoundException;
 import it.pa.repdgt.gestioneutente.exception.RuoloException;
 import it.pa.repdgt.gestioneutente.exception.UtenteException;
+import it.pa.repdgt.gestioneutente.repository.ReferentiDelegatiEnteGestoreProgettoRepository;
+import it.pa.repdgt.gestioneutente.repository.ReferentiDelegatiEnteGestoreProgrammaRepository;
+import it.pa.repdgt.gestioneutente.repository.ReferentiDelegatiEntePartnerDiProgettoRepository;
 import it.pa.repdgt.gestioneutente.repository.UtenteRepository;
 import it.pa.repdgt.gestioneutente.request.AggiornaUtenteRequest;
 import it.pa.repdgt.gestioneutente.request.FiltroRequest;
@@ -61,6 +64,12 @@ public class UtenteService {
 	private UtenteRepository utenteRepository;
 	@Autowired 
 	private EmailService emailService;
+	@Autowired
+	private ReferentiDelegatiEnteGestoreProgrammaRepository referentiDelegatiEnteGestoreProgrammaRepository;
+	@Autowired
+	private ReferentiDelegatiEnteGestoreProgettoRepository referentiDelegatiEnteGestoreProgettoRepository;
+	@Autowired
+	private ReferentiDelegatiEntePartnerDiProgettoRepository referentiDelegatiEntePartnerDiProgettoRepository;
 
 	@LogExecutionTime
 	@LogMethod
@@ -85,6 +94,8 @@ public class UtenteService {
 		return new PageImpl<UtenteDto>(utenti.subList(start, end), paginazione, utenti.size());
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<UtenteDto> getUtentiConRuoliAggregati(List<UtenteEntity> utenti){
 		return utenti.stream()
 				.map(utente -> {
@@ -112,6 +123,8 @@ public class UtenteService {
 				.collect(Collectors.toList());
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<UtenteDto> getUtentiByRuolo(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto, FiltroRequest filtroRequest) {
 		List<UtenteEntity> listaUtenti = new ArrayList<>();
 		Set<UtenteEntity> utenti = new HashSet<>();
@@ -206,12 +219,16 @@ public class UtenteService {
 				);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public UtenteEntity getUtenteByCodiceFiscale(String  codiceFiscaleUtente) {
 		String messaggioErrore = String.format("risorsa con codice Fiscale=%s non trovata", codiceFiscaleUtente);
 		return this.utenteRepository.findByCodiceFiscale(codiceFiscaleUtente)
 				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore) );
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public UtenteEntity getUtenteEagerByCodiceFiscale(String codiceFiscale) {
 		return this.utenteRepository.findUtenteEagerByCodiceFiscale(codiceFiscale);
 	}
@@ -298,6 +315,8 @@ public class UtenteService {
 		);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void assegnaRuoloAUtente(String codiceFiscaleUtente, String codiceRuolo) {
 		RuoloEntity ruolo = null;
@@ -333,7 +352,9 @@ public class UtenteService {
 		String errorMessage = String.format("Impossibile assegnare un ruolo predefinito all'infuori di DTD e DSCU");
 		throw new UtenteException(errorMessage);
 	}
-
+	
+	@LogMethod
+	@LogExecutionTime
 	public List<String> getAllStatiDropdown(UtenteRequest sceltaContesto) {
 		if(this.ruoloService.getRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
 			throw new UtenteException("ERRORE: ruolo non definito per l'utente");
@@ -443,6 +464,8 @@ public class UtenteService {
 				);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<String> getAllRuoliDropdown(UtenteRequest sceltaContesto) {
 		if(this.ruoloService.getRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
 			throw new UtenteException("ERRORE: ruolo non definito per l'utente");
@@ -533,6 +556,8 @@ public class UtenteService {
 				);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public SchedaUtenteBean getSchedaUtenteByCodiceFiscale(String cfUtente) {
 		UtenteEntity utenteFetchDB = this.getUtenteByCodiceFiscale(cfUtente);
 		
@@ -557,11 +582,11 @@ public class UtenteService {
 							switch (ruolo.getCodice()) {
 							case "REG":
 							case "DEG":
-								mappaProgrammiProgettiUtente.put(ruolo, this.programmaService.getIdProgrammiByRuoloUtente(cfUtente, ruolo.getCodice()));
+								mappaProgrammiProgettiUtente.put(ruolo, this.programmaService.getDistinctIdProgrammiByRuoloUtente(cfUtente, ruolo.getCodice()));
 								break;
 							case "REGP":
 							case "DEGP":
-								mappaProgrammiProgettiUtente.put(ruolo, this.progettoService.getIdProgettiByRuoloUtente(cfUtente, ruolo.getCodice()));
+								mappaProgrammiProgettiUtente.put(ruolo, this.progettoService.getDistinctIdProgettiByRuoloUtente(cfUtente, ruolo.getCodice()));
 								break;
 							case "REPP":
 							case "DEPP":
@@ -598,29 +623,72 @@ public class UtenteService {
 													dettaglioRuolo.setId(id);
 													dettaglioRuolo.setNome(programmaFetchDB.getNome());
 													dettaglioRuolo.setRuolo(ruolo.getNome());
-													dettaglioRuolo.setStato(programmaFetchDB.getStato());
+													dettaglioRuolo.setStatoP(programmaFetchDB.getStato());
+													List<String> listaRecRefProg = referentiDelegatiEnteGestoreProgrammaRepository
+															.findStatoByCfUtente(cfUtente, programmaFetchDB.getId(), ruolo.getCodice());
+													dettaglioRuolo.setStato(listaRecRefProg.size() > 1 
+															? listaRecRefProg
+																	.stream()
+																	.filter(el -> !"TERMINATO".equalsIgnoreCase(el))
+																	.findFirst()
+																	.orElse("TERMINATO")
+															: listaRecRefProg.get(0));
 													listaDettaglioRuoli.add(dettaglioRuolo);
 													break;
 												case "REGP":
 												case "DEGP":
-												case "REPP":
-												case "DEPP":
-												case "FAC":
-												case "VOL":
-													ProgettoEntity progettoFetchDB = this.progettoService.getProgettoById(id);
+													ProgettoEntity progettoXEgpFetchDB = this.progettoService.getProgettoById(id);
 													dettaglioRuolo.setId(id);
-													dettaglioRuolo.setNome(progettoFetchDB.getNome());
+													dettaglioRuolo.setNome(progettoXEgpFetchDB.getNome());
 													dettaglioRuolo.setRuolo(ruolo.getNome());
-													dettaglioRuolo.setStato(progettoFetchDB.getStato());
+													dettaglioRuolo.setStatoP(progettoXEgpFetchDB.getStato());
+													List<String> listaRecRefProgt = referentiDelegatiEnteGestoreProgettoRepository
+															.findStatoByCfUtente(cfUtente, progettoXEgpFetchDB.getId(), ruolo.getCodice());
+													dettaglioRuolo.setStato(listaRecRefProgt.size() > 1 
+															? listaRecRefProgt
+																	.stream()
+																	.filter(el -> !"TERMINATO".equalsIgnoreCase(el))
+																	.findFirst()
+																	.orElse("TERMINATO")
+															: listaRecRefProgt.get(0));
 													listaDettaglioRuoli.add(dettaglioRuolo);
 													break;
-//													ProgettoEntity progettoFetchDBFacilitatoreVolontario = this.progettoService.getProgettoById(id);
-//													dettaglioRuolo.setId(id);
-//													dettaglioRuolo.setNome(progettoFetchDBFacilitatoreVolontario.getNome());
-//													dettaglioRuolo.setRuolo(ruolo.getNome());
-//													dettaglioRuolo.setStato(this.enteSedeProgettoFacilitatoreService.getStatoUtenteBy);
-//													listaDettaglioRuoli.add(dettaglioRuolo);
-//													break;
+												case "REPP":
+												case "DEPP":
+													ProgettoEntity progettoXEppFetchDB = this.progettoService.getProgettoById(id);
+													dettaglioRuolo.setId(id);
+													dettaglioRuolo.setNome(progettoXEppFetchDB.getNome());
+													dettaglioRuolo.setRuolo(ruolo.getNome());
+													dettaglioRuolo.setStatoP(progettoXEppFetchDB.getStato());
+													List<String> listaRecRefPart = referentiDelegatiEntePartnerDiProgettoRepository
+															.findStatoByCfUtente(cfUtente, progettoXEppFetchDB.getId(), ruolo.getCodice());
+													dettaglioRuolo.setStato(listaRecRefPart.size() > 1 
+															? listaRecRefPart
+																	.stream()
+																	.filter(el -> !"TERMINATO".equalsIgnoreCase(el))
+																	.findFirst()
+																	.orElse("TERMINATO")
+															: listaRecRefPart.get(0));
+													listaDettaglioRuoli.add(dettaglioRuolo);
+													break;
+												case "FAC":
+												case "VOL":
+													ProgettoEntity progettoXFacFetchDB = this.progettoService.getProgettoById(id);
+													dettaglioRuolo.setId(id);
+													dettaglioRuolo.setNome(progettoXFacFetchDB.getNome());
+													dettaglioRuolo.setRuolo(ruolo.getNome());
+													dettaglioRuolo.setStatoP(progettoXFacFetchDB.getStato());
+													List<String> listaRecRefFacVol = this.enteSedeProgettoFacilitatoreService
+															.getDistinctStatoByIdProgettoIdFacilitatoreVolontario(cfUtente, ruolo.getCodice(), progettoXFacFetchDB.getId());
+													dettaglioRuolo.setStato(listaRecRefFacVol.size() > 1 
+															? listaRecRefFacVol
+																	.stream()
+																	.filter(el -> !"TERMINATO".equalsIgnoreCase(el))
+																	.findFirst()
+																	.orElse("TERMINATO")
+															: listaRecRefFacVol.get(0));
+													listaDettaglioRuoli.add(dettaglioRuolo);
+													break;
 												default:
 													dettaglioRuolo.setNome(ruolo.getNome());
 													listaDettaglioRuoli.add(dettaglioRuolo);
@@ -635,6 +703,8 @@ public class UtenteService {
 		return schedaUtente;
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<UtenteEntity> getUtenteByCriterioRicerca(String criterioRicerca) {
 		return this.utenteRepository.findUtenteByCriterioRicerca(
 				criterioRicerca,
@@ -642,6 +712,8 @@ public class UtenteService {
 		);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaRuoloDaUtente(String codiceFiscale, String codiceRuolo) {
 		if(this.ruoloService.getRuoloByCodiceRuolo(codiceRuolo) == null) {
 			String errorMessage = String.format("Il codice ruolo %s inserito non corrisponde a nessun ruolo esistente", codiceRuolo);

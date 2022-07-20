@@ -35,6 +35,8 @@ public class ProgettoService {
 				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore));
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public ProgettoLightEntity getProgettoLightById(Long id) {
 		String messaggioErrore = String.format("Progetto con id=%s non presente", String.valueOf(id));
 		return this.progettoRepository.findProgettoLightById(id)
@@ -53,30 +55,44 @@ public class ProgettoService {
 		return this.getProgettoById(id).getStato();
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<Long> getIdProgettiByIdEnte(Long idEnte) {
 		return this.progettoRepository.findIdProgettiByIdEnte(idEnte);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<Long> getIdProgettiEntePartnerByIdEnte(Long idEnte) {
 		return this.progettoRepository.findIdProgettiEntePartnerByIdEnte(idEnte);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public int countProgettiEnte(Long idEnte) {
 		return this.progettoRepository.countProgettiEnte(idEnte);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public int countProgettiEntePartner(Long idEnte) {
 		return this.progettoRepository.countProgettiEntePartner(idEnte);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<ProgettoEntity> getProgettiByIdEnte(Long idEnte) {
 		return this.progettoRepository.getProgettiByIdEnte(idEnte);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void salvaProgetto(ProgettoEntity progettoFetchDB) {
 		this.progettoRepository.save(progettoFetchDB);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void salvaOAggiornaProgetto(ProgettoEntity progettoDBFEtch) {
 		this.progettoRepository.save(progettoDBFEtch);
 	}

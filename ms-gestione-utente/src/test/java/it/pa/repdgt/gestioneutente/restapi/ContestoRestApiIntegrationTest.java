@@ -44,6 +44,7 @@ public class ContestoRestApiIntegrationTest extends AppTests{
 		integraContestoRequest.setCodiceFiscale(response.getCodiceFiscale());
 		integraContestoRequest.setEmail(response.getEmail());
 		integraContestoRequest.setTelefono("45352352");
+		integraContestoRequest.setTipoContratto("contratto di test");
 		integraContestoRequest.setAbilitazioneConsensoTrattamentoDatiPersonali(true);
 		restTemplate.postForObject("http://localhost:" + randomServerPort + "/contesto/confermaIntegrazione", integraContestoRequest,  void.class);
 	}

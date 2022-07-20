@@ -38,14 +38,20 @@ public class EntePartnerService {
 		return this.entePartnerRepository.findStatoEntePartner(idProgetto, idEnte);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaEntiPartner(Long idProgetto) {
 		this.entePartnerRepository.cancellaEntiPartner(idProgetto);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<EntePartnerEntity> getEntiPartnerByProgetto(Long idProgetto) {
 		return this.entePartnerRepository.findEntiPartnerByProgetto(idProgetto);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaEntePartner(EntePartnerEntity entePartner) {
 		List<ReferentiDelegatiEntePartnerDiProgettoEntity> referentiEDelegati = this.getReferentiEDelegatiEntePartner(entePartner.getId().getIdEnte(), entePartner.getId().getIdProgetto());
 		referentiEDelegati.stream()
@@ -53,10 +59,14 @@ public class EntePartnerService {
 		this.entePartnerRepository.delete(entePartner);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void salvaEntePartner(EntePartnerEntity entePartnerEntity) {
 		this.entePartnerRepository.save(entePartnerEntity);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<ReferentiDelegatiEntePartnerDiProgettoEntity> getReferentiEDelegatiEntePartner(Long idEnte,
 			Long idProgetto) {
 		return this.referentiDelegatiEntePartnerService.getReferentiEDelegatiEntePartner(idEnte, idProgetto);

@@ -63,14 +63,12 @@ public class EntePartnerService {
 	@Autowired
 	private EmailService emailService;
 
-	// MI SERVE
 	@LogMethod
 	@LogExecutionTime
 	public EntePartnerEntity salvaEntePartner(EntePartnerEntity entePartner) {
 		return this.entePartnerRepository.save(entePartner);
 	}
 	
-	// MI SERVE
 	@LogMethod
 	@LogExecutionTime
 	public void associaEntePartnerPerProgetto(Long idEntePartner, Long idProgetto) {
@@ -118,6 +116,8 @@ public class EntePartnerService {
 	/**
 	 * Assegna Utente Referente o utente delegato all'ente partner
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
     public void associaReferenteODelegatoPartner(ReferenteDelegatoPartnerRequest referenteDelegatoPartnerRequest) {
 		Long idProgetto = referenteDelegatoPartnerRequest.getIdProgetto();
@@ -194,6 +194,8 @@ public class EntePartnerService {
 	/**
 	 * Cancella associazione Utente Referente o utente delegato all'ente partner
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaAssociazioneReferenteODelegatoPartner(ReferentiDelegatiEntePartnerDiProgettoEntity referenteDelegatoEntePartnerDiProgettoEntity, String codiceRuolo) {
 		Long idProgetto = referenteDelegatoEntePartnerDiProgettoEntity.getId().getIdProgetto();
 		String codiceFiscaleUtente = referenteDelegatoEntePartnerDiProgettoEntity.getId().getCodFiscaleUtente();
@@ -213,14 +215,20 @@ public class EntePartnerService {
 		}	
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaAssociazioneEntePartnerPerProgetto(EntePartnerEntity entePartnerProgetto) {
 		this.entePartnerRepository.delete(entePartnerProgetto);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public EntePartnerEntity getEntePartnerByIdEnteAndIdProgetto(Long idEnte, Long idProgetto) {
 		return this.entePartnerRepository.findEntePartnerByIdEnteAndIdProgetto(idEnte, idProgetto);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public List<EntePartnerUploadBean> caricaEntiPartner(MultipartFile fileEntiPartner, Long idProgetto) {
 		List<EntePartnerUploadBean> esiti = new ArrayList<>();
@@ -263,6 +271,8 @@ public class EntePartnerService {
 		return esiti;
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaOTerminaAssociazioneReferenteODelegatoPartner(
 			@Valid ReferenteDelegatoPartnerRequest referenteDelegatoPartnerRequest) {
 		Long idProgetto = referenteDelegatoPartnerRequest.getIdProgetto();
@@ -277,7 +287,9 @@ public class EntePartnerService {
 			this.cancellaAssociazioneReferenteODelegatoPartner(referenteDelegatoEntePartnerDiProgettoEntity, codiceRuolo);
 		}
 	}
-
+	
+	@LogMethod
+	@LogExecutionTime
 	public void terminaAssociazioneReferenteDelegatoEntePartner(
 			ReferentiDelegatiEntePartnerDiProgettoEntity referenteDelegatoEntePartnerDiProgettoEntity, String codiceRuolo) {
 		Long idProgetto = referenteDelegatoEntePartnerDiProgettoEntity.getId().getIdProgetto();
@@ -295,6 +307,8 @@ public class EntePartnerService {
 		this.referentiDelegatiEntePartnerDiProgettoService.save(referenteDelegatoEntePartnerDiProgettoEntity);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public void terminaACascataAssociazioneReferenteDelegatoEntePartner(
 			ReferentiDelegatiEntePartnerDiProgettoEntity referenteDelegatoEntePartnerDiProgettoEntity, String codiceRuolo) {
 		referenteDelegatoEntePartnerDiProgettoEntity.setStatoUtente(StatoEnum.TERMINATO.getValue());

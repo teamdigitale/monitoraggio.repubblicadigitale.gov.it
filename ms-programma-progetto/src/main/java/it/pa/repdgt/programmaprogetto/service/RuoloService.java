@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.programmaprogetto.exception.RuoloException;
 import it.pa.repdgt.programmaprogetto.repository.RuoloRepository;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.key.UtenteXRuoloKey;
 
 @Service
@@ -20,10 +22,14 @@ public class RuoloService {
 	@Autowired
 	private RuoloRepository ruoloRepository;
 
+	@LogMethod
+	@LogExecutionTime
 	public List<String> getCodiceRuoliByCodiceFiscaleUtente(String codiceFiscale) {
 		return this.ruoloRepository.findRuoloByCodiceFiscaleUtente(codiceFiscale);
     }
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellaRuoloUtente(String codiceFiscaleUtente, String codiceRuolo) {
 		boolean esisteUtente = this.utenteService.esisteUtenteByCodiceFiscale(codiceFiscaleUtente);

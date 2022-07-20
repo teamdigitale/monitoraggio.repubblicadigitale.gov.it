@@ -31,28 +31,40 @@ public class ProgrammaService {
 		return this.programmaRepository.existsById(id);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<Long> getIdProgrammiByIdEnte(Long idEnte) {
 		return this.programmaRepository.findIdProgrammiByIdEnte(idEnte);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public ProgrammaEntity getProgrammaById(Long id) {
 		String messaggioErrore = String.format("Programma con id=%s non presente", String.valueOf(id));
 		return this.programmaRepository.findById(id)
 									   .orElseThrow( () -> new ResourceNotFoundException(messaggioErrore));
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public int countProgrammiEnte(Long idEnte) {
 		return this.programmaRepository.countProgrammiEnte(idEnte);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public Long getIdEnteGestoreProgramma(Long idProgramma) {
 		return this.programmaRepository.findIdEnteGestoreProgramma(idProgramma);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<ProgrammaEntity> getProgrammiByIdEnte(Long idEnte) {
 		return this.programmaRepository.findProgrammiByIdEnte(idEnte);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void salvaProgramma(ProgrammaEntity programmaFetchDB) {
 		this.programmaRepository.save(programmaFetchDB);
 	}
