@@ -356,7 +356,7 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 			 +"	,ente.TIPOLOGIA as tipologia "
 			 +"	,ente.SEDE_LEGALE as sedeLegale "
 			 +"	,ente.INDIRIZZO_PEC as indirizzoPec "
-			 +"	,'Gestore di Programma' as profilo "
+			 +"	,'Gestore di Progetto' as profilo "
 			 +" FROM "
 			 +"	ente ente "
 			 +"	INNER JOIN progetto progetto "
