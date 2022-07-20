@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.36](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.35...1.0.0-develop.36) (2022-07-20)
+
+
+### Bug Fixes
+
+* **be:** fix fdti-53 ([00da1be](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/00da1be542d3400a7178fb8050db9834cf06be88))
+
 ## [1.0.0-develop.35](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.34...1.0.0-develop.35) (2022-07-20)
 
 
