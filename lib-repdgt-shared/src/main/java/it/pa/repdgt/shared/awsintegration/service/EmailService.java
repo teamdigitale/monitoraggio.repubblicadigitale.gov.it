@@ -35,11 +35,11 @@ public class EmailService {
 				case GEST_PROGE_PARTNER:
 				case FACILITATORE:
 				case RUOLO_CUSTOM:
-					html = String.format(response.emailTemplateResponse().htmlPart(), args[0], args[1]);
+					html = response.emailTemplateResponse().htmlPart().replaceFirst("%S", args[0]).replaceFirst("%S", args[1] );
 					break;
 				case CONSENSO:
 				case QUESTIONARIO_ONLINE:
-					html = String.format(response.emailTemplateResponse().htmlPart(), args[0]);
+					html = response.emailTemplateResponse().htmlPart().replace("%S", args[0]);
 					break;				
 			}
 			
