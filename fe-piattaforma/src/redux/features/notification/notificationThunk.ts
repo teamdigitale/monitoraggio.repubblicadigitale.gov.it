@@ -1,9 +1,12 @@
 import { Dispatch } from '@reduxjs/toolkit';
+import API from '../../../utils/apiHelper';
+import { hideLoader, showLoader } from '../app/appSlice';
 import {
   defaultNotify,
   emitNotify,
   NotifyI,
   removeNotify,
+  setNotificationsList,
 } from './notificationSlice';
 
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -33,5 +36,34 @@ export const NewNotify = (payload?: NotifyI) => async (dispatch: Dispatch) => {
       await delay(getDelayByDuration(notify.duration));
       dispatch(removeNotify({ id: notify.id }));
     }
+  }
+};
+
+const GetNotificationsListAction = {
+  type: 'notification/GetNotificationsList',
+};
+export const GetNotificationsList = () => async (dispatch: Dispatch) => {
+  try {
+    dispatch(showLoader());
+    dispatch({ ...GetNotificationsListAction });
+
+    const entityEndpoint = `/Notifications/all`;
+
+    const body = {
+      idProgramma: 0, //MOCK
+      cfUtente: 'UTENTE1', //MOCK
+      codiceRuolo: 'DTD', //MOCK DA MANTENERE SOLO NELL'HEADER
+    };
+
+    const res = await API.post(entityEndpoint, body);
+
+    if (res?.data) {
+      dispatch(setNotificationsList(res.data));
+      console.log(res.data);
+    }
+  } catch (error) {
+    console.log('GetNotificationsList error', error);
+  } finally {
+    dispatch(hideLoader());
   }
 };

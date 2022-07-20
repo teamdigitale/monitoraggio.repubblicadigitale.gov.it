@@ -21,7 +21,6 @@ const ManageProfile: React.FC = () => {
   const dispatch = useDispatch();
 
   const onSubmit = async () => {
-    console.log('onEdit', newFormValues);
     if (isFormValid) {
       const res = await dispatch(EditUser(newFormValues));
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment

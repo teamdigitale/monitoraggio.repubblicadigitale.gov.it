@@ -38,7 +38,7 @@ import {
 import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 import {
   DownloadEntityValues,
-  GetEntityValues
+  GetEntityValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 
 const entity = 'utente';
@@ -98,7 +98,16 @@ const Users = () => {
             return {
               id: td.id,
               label: td.nome,
-              role: td.ruoli,
+              role:
+                td.ruoli.split(',').length === 1 ? (
+                  td.ruoli
+                ) : (
+                  <p>
+                    {' '}
+                    Ruoli assegnati:{' '}
+                    <strong> {td.ruoli.split(',').length} </strong>{' '}
+                  </p>
+                ),
               status: <StatusChip status={td.stato} rowTableId={td.id} />,
               codiceFiscale: td.codiceFiscale,
             };

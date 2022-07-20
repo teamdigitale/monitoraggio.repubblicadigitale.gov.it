@@ -9,7 +9,12 @@ import { selectServices } from '../../../redux/features/administrativeArea/admin
 // import { selectDevice } from '../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../redux/hooks';
 import { formatDate } from '../../../utils/datesHelper';
-import { formFieldI, FormHelper, FormI, newForm } from '../../../utils/formHelper';
+import {
+  formFieldI,
+  FormHelper,
+  FormI,
+  newForm,
+} from '../../../utils/formHelper';
 
 interface FormServicesI {
   formDisabled?: boolean;
@@ -78,7 +83,11 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
           <Input
             {...field}
             id={`input-${field.field}`}
-            col={field.label && field.label?.length > 20 ? 'col-12':'col-12 col-lg-6'}
+            col={
+              field.label && field.label?.length > 20
+                ? 'col-12'
+                : 'col-12 col-lg-6'
+            }
             label={field.label}
             type={field.type}
             required
@@ -195,10 +204,7 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
         return (
           <Input
             {...field}
-            className={clsx(
-              'mr-3',
-              'mb-3'
-            )}
+            className={clsx('mr-3', 'mb-3')}
             col='col-12 col-lg-6'
             onInputBlur={onInputChange}
             label={`${field?.label}`}

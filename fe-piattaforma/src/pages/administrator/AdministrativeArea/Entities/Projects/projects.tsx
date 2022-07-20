@@ -34,6 +34,7 @@ import {
   GetEntityValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
+import useGuard from '../../../../../hooks/guard';
 
 const entity = 'progetto';
 const statusDropdownLabel = 'filtroStati';
@@ -42,6 +43,8 @@ const programDropdownLabel = 'filtroIdsProgrammi';
 
 const Projects: React.FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { hasUserPermission } = useGuard();
   const { progetti: progettiList = [] } = useAppSelector(selectEntityList);
   const filtersList = useAppSelector(selectEntityFilters);
   const pagination = useAppSelector(selectEntityPagination);
@@ -49,7 +52,6 @@ const Projects: React.FC = () => {
   const [searchDropdown, setSearchDropdown] = useState<
     { filterId: string; value: formFieldI['value'] }[]
   >([]);
-  const navigate = useNavigate();
   const {
     filtroCriterioRicerca,
     filtroPolicies,
@@ -122,8 +124,7 @@ const Projects: React.FC = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(progettiList))
-      setTableValues(updateTableValues());
+    if (Array.isArray(progettiList)) setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progettiList?.length]);
 
@@ -240,7 +241,13 @@ const Projects: React.FC = () => {
       resetFilterDropdownSelected={(filterKey: string) =>
         setFilterDropdownSelected(filterKey)
       }
-      ctaDownload={handleDownloadList}
+      ctaDownload={
+        progettiList?.length &&
+        tableValues?.values?.length &&
+        hasUserPermission(['list.dwnl.prgt'])
+          ? handleDownloadList
+          : undefined
+      }
     >
       <div>
         {progettiList?.length && tableValues?.values?.length ? (

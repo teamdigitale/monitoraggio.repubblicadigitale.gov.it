@@ -1,3 +1,5 @@
+import isEmpty from 'lodash.isempty';
+import { AddressInfoI } from '../components/AdministrativeArea/Entities/Headquarters/AccordionAddressList/AccordionAddress/AccordionAddress';
 import { formFieldI } from './formHelper';
 
 /* eslint-disable */
@@ -76,4 +78,23 @@ export const validator = (
     return new RegExp(RegexpRule[regex]).test(data.toString());
   }
   return true;
+};
+
+export const validateAddressList = (addressList: AddressInfoI[]) => {
+  return addressList
+    .filter((addressList) => !addressList.indirizzoSede?.cancellato)
+    .every((addressInfo) => {
+      let isValid = true;
+      isValid =
+        !isEmpty(addressInfo.fasceOrarieAperturaIndirizzoSede) &&
+        Object.entries(addressInfo.fasceOrarieAperturaIndirizzoSede).some(
+          ([_key, value]) => value !== null
+        ) &&
+        isValid;
+      isValid = Object.entries(addressInfo.indirizzoSede).every(
+        ([key, value]) =>
+          ['via', 'provincia', 'comune', 'cap'].includes(key) ? value : true
+      );
+      return isValid;
+    });
 };

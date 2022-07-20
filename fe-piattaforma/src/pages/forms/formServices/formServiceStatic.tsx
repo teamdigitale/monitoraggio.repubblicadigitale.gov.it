@@ -25,7 +25,9 @@ interface FormEnteGestoreProgettoFullInterface
   extends withFormHandlerProps,
     FormServicesI {}
 
-const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
+const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
+  props
+) => {
   const {
     setFormValues = () => ({}),
     form,
@@ -41,10 +43,7 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (props
   useEffect(() => {
     if (formData && !creation) {
       const values = { ...formData };
-      const formattedDate = formatDate(
-        formData?.data?.toString(),
-        'snakeDate'
-      );
+      const formattedDate = formatDate(formData?.data?.toString(), 'snakeDate');
       if (formattedDate) values.dataConferimentoConsenso = formattedDate;
       setFormValues(values);
     }

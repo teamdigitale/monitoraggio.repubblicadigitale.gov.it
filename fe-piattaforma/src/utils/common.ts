@@ -3,6 +3,7 @@ import React from 'react';
 import { FilterI } from '../components/DropdownFilter/dropdownFilter';
 import { OptionType } from '../components/Form/select';
 import { TableRowI } from '../components/Table/table';
+import { RolePermissionI } from '../redux/features/roles/rolesSlice';
 
 export const scrollTo = (y: number) => {
   window.scrollTo({
@@ -101,14 +102,14 @@ export interface MenuItem {
   path: string;
   id?: string;
   subRoutes?: MenuItem[];
-  visible?: boolean;
+  visible?: RolePermissionI[];
 }
 
 const newMenuItem = ({
   label,
   path,
   id = label,
-  visible = true,
+  visible = [],
   subRoutes = [],
 }: MenuItem) => ({
   label,
@@ -127,31 +128,37 @@ export const MenuRoutes = [
     label: 'Area amministrativa',
     path: '/area-amministrativa',
     id: 'tab-admin',
-    //visible: // TODO implement condition based on role permission
+    visible: ['tab.am'],
     subRoutes: [
       newMenuItem({
         label: 'Programmi',
         path: '/area-amministrativa/programmi',
+        visible: ['tab.am', 'subtab.prgm'],
       }),
       newMenuItem({
         label: 'Progetti',
         path: '/area-amministrativa/progetti',
+        visible: ['tab.am', 'subtab.prgt'],
       }),
       newMenuItem({
         label: 'Enti',
         path: '/area-amministrativa/enti',
+        visible: ['tab.am'],
       }),
       newMenuItem({
         label: 'Utenti',
         path: '/area-amministrativa/utenti',
+        visible: ['tab.am'],
       }),
       newMenuItem({
         label: 'Questionari',
         path: '/area-amministrativa/questionari',
+        visible: ['tab.am'],
       }),
       newMenuItem({
         label: 'Servizi',
         path: '/area-amministrativa/servizi',
+        visible: ['tab.am'],
       }),
     ],
   }),
@@ -171,19 +178,25 @@ export const MenuRoutes = [
     label: 'Community',
     path: '/community',
     id: 'tab-community',
-    visible: process.env.NODE_ENV === 'development',
+    visible: [
+      process.env.NODE_ENV === 'development' ? 'visible' : 'hidden',
+    ],
   }),
   newMenuItem({
     label: 'Bacheca digitale',
     path: '/bacheca-digitale',
     id: 'tab-bacheca-digitale',
-    visible: process.env.NODE_ENV === 'development',
+    visible: [
+      process.env.NODE_ENV === 'development' ? 'visible' : 'hidden',
+    ],
   }),
   newMenuItem({
     label: 'Documenti',
     path: '/documents',
     id: 'tab-documenti',
-    visible: process.env.NODE_ENV === 'development',
+    visible: [
+      process.env.NODE_ENV === 'development' ? 'visible' : 'hidden',
+    ],
   }),
 ];
 

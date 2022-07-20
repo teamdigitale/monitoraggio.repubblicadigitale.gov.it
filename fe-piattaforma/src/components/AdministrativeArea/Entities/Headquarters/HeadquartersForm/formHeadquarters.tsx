@@ -27,15 +27,19 @@ interface FormEnteGestoreProgettoFullInterface
 const form = newForm([
   newFormField({
     field: 'id',
+    id: 'id',
   }),
   newFormField({
     field: 'nome',
+    id: 'nome',
   }),
   newFormField({
     field: 'serviziErogati',
+    id: 'servizi-erogati',
   }),
   newFormField({
     field: 'enteDiRiferimento',
+    id: 'ente-di-riferimento',
   }),
 ]);
 
@@ -43,11 +47,12 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
   const {
     setFormValues = () => ({}),
     form,
-    onInputChange,
-    sendNewValues,
+    onInputChange = () => ({}),
+    sendNewValues = () => ({}),
     isValidForm,
-    setIsFormValid,
-    getFormValues,
+    setIsFormValid = () => ({}),
+    getFormValues = () => ({}),
+    clearForm = () => ({}),
     // creation = false,
     formDisabled,
   } = props;
@@ -66,45 +71,49 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
   useEffect(() => {
     if (formData) {
       setFormValues(formData);
+    } else {
+      clearForm();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    () => {};
-  }, []);
+    sendNewValues(getFormValues());
+  }, [form]);
 
   const onInputDataChange = (
     value: formFieldI['value'],
     field?: formFieldI['field']
   ) => {
-    onInputChange?.(value, field);
-    sendNewValues?.(getFormValues?.());
-    setIsFormValid?.(isValidForm);
+    onInputChange(value, field);
+    setIsFormValid(isValidForm);
   };
 
   return (
     <Form
-      className='my-5 mx-5'
+      className='mt-5 mx-5'
       formDisabled={formDisabled ? formDisabled : false}
     >
       <Form.Row className='justify-content-between'>
-        <Input
-          {...form?.id}
-          required
-          label='ID'
-          col='col-12 col-lg-6'
-          onInputChange={onInputDataChange}
-          placeholder='Inserisci nome programma'
-        />
+        {formDisabled ? (
+          <Input
+            {...form?.id}
+            required
+            label='ID'
+            col='col-12 col-lg-6'
+            onInputChange={onInputDataChange}
+            // placeholder='Inserisci nome programma'
+          />
+        ) : (
+          <span></span>
+        )}
         <Input
           {...form?.nome}
           required
           label='Nome'
           col='col-12 col-lg-6'
           onInputChange={onInputDataChange}
-          placeholder='Inserisci nome programma'
+          // placeholder='Inserisci nome programma'
         />
         <Input
           {...form?.serviziErogati}
@@ -113,14 +122,18 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           col='col-12 col-lg-6'
           onInputChange={onInputDataChange}
         />
-        <Input
-          {...form?.enteDiRiferimento}
-          required
-          label='Ente di riferimento'
-          col='col-12 col-lg-6'
-          onInputChange={onInputDataChange}
-          placeholder='Inserisci ente di riferimento'
-        />
+        {formDisabled ? (
+          <Input
+            {...form?.enteDiRiferimento}
+            required
+            label='Ente di riferimento'
+            col='col-12 col-lg-6'
+            onInputChange={onInputDataChange}
+            placeholder='Inserisci ente di riferimento'
+          />
+        ) : (
+          <span></span>
+        )}
       </Form.Row>
     </Form>
   );

@@ -11,33 +11,28 @@ import {
 } from 'design-react-kit';
 import LogoMobile from '/public/assets/img/logo-mobile.png';
 import Bell from '/public/assets/img/campanella.png';
-
 import { HeaderI } from '../header';
 import { logout } from '../../../redux/features/user/userSlice';
-
 import HamburgerMenu from '../../HamburgerMenu/hamburgerMenu';
 import SwitchProfileModal from '../../Modals/SwitchProfileModal/switchProfileModal';
 import { openModal } from '../../../redux/features/modal/modalSlice';
-
 import AvatarInitials, {
   AvatarSizes,
   AvatarTextSizes,
 } from '../../AvatarInitials/avatarInitials';
 import { getRoleLabel } from '../../../utils/roleHelper';
-
 const HeaderMobile: React.FC<HeaderI> = ({
   dispatch,
   user,
+  userProfile,
   isLogged,
   notification,
 }) => {
   const [openUser, setOpenUser] = useState<boolean>(false);
   const navigate = useNavigate();
-
   const userDropdownOptions = [
     { optionName: 'Il mio profilo', action: () => navigate('/area-personale') },
   ];
-
   const userDropDown = () => (
     <Dropdown
       className='p-0 header-container__top__user-dropdown mr-4'
@@ -65,7 +60,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
           </div>
           <div className='d-flex flex-row justify-content-start'>
             <p className='h6 text-wrap font-weight-light'>
-              <em>{getRoleLabel(user?.role)}</em>
+              <em>{getRoleLabel(userProfile?.codiceRuolo)}</em>
             </p>
           </div>
         </div>
@@ -148,9 +143,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
       </DropdownMenu>
     </Dropdown>
   );
-
   const [isOpen, setIsOpen] = useState(false);
-
   return (
     <header
       className={clsx('header-container', isLogged && 'user-logged', 'w-100')}
@@ -168,7 +161,6 @@ const HeaderMobile: React.FC<HeaderI> = ({
           )}
         >
           <HamburgerMenu open={isOpen} setOpen={setIsOpen} />
-
           <div
             className={clsx(
               'd-flex',
@@ -183,15 +175,17 @@ const HeaderMobile: React.FC<HeaderI> = ({
               <>
                 {userDropDown()}
                 <div className='ml-auto pr-3'>
-                  <Icon
-                    color='white'
-                    icon={Bell}
-                    size='sm'
-                    aria-label='Menu utente'
-                  />
-                  {notification?.length ? (
-                    <Badge>{notification.length}</Badge>
-                  ) : null}
+                  <a href='/notifiche'>
+                    <Icon
+                      color='white'
+                      icon={Bell}
+                      size='sm'
+                      aria-label='Menu utente'
+                    />
+                    {notification?.length ? (
+                      <Badge>{notification.length}</Badge>
+                    ) : null}
+                  </a>
                 </div>
               </>
             ) : null}
@@ -222,7 +216,6 @@ const HeaderMobile: React.FC<HeaderI> = ({
               />
             </Button>
           )}
-
           <div
             className={clsx(
               'flex-direction-row',
@@ -265,5 +258,4 @@ const HeaderMobile: React.FC<HeaderI> = ({
     </header>
   );
 };
-
 export default memo(HeaderMobile);

@@ -23,7 +23,7 @@ const useGuard = () => {
   const hasUserPermission = useMemo(
     () => (requiredPermissions: RolePermissionI[]) => {
       if (!isLogged || !user) return false;
-      return requiredPermissions.every((p) => permissions.includes(p));
+      return requiredPermissions.every((p) => p === 'visible' || permissions.includes(p));
     },
     [user, isLogged, permissions]
   );

@@ -245,7 +245,6 @@ const AuthoritiesDetails = () => {
           />
           <ConfirmDeleteModal
             onConfirm={() => {
-              console.log('confirm delete');
               dispatch(closeModal());
             }}
             onClose={() => {

@@ -134,13 +134,7 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
     (authoritiesList?.length === 0 || !authoritiesList) &&
     !showForm
   ) {
-    content = (
-      <EmptySection
-        title={'Nessun risultato'}
-        withIcon
-        horizontal
-      />
-    );
+    content = <EmptySection title={'Nessun risultato'} withIcon horizontal />;
   }
 
   return (
@@ -171,7 +165,7 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
           title='Cerca'
           search
         />
-        {content}
+        <div className='mx-5'>{content}</div>
       </div>
     </GenericModal>
   );

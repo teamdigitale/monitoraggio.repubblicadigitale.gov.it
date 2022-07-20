@@ -227,7 +227,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
           title='Cerca'
           search
         />
-        {content}
+        <div className='mx-5'>{content}</div>
       </div>
     </GenericModal>
   );

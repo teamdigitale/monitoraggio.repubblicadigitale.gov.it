@@ -181,17 +181,29 @@ const AdministrativeArea = () => {
 export default AdministrativeArea;
 
 const AreaAmministrativaRoutes = [
-  <Route key='programmi' path='programmi' element={<Programs />} />,
+  <Route
+    key='programmi'
+    path='programmi'
+    element={
+      <ProtectedComponent visibleTo={['tab.am', 'list.prgm']} redirect='/'>
+        <Programs />
+      </ProtectedComponent>
+    }
+  />,
   <Route
     key='programmi-dettaglio'
     path='programmi/:entityId'
-    element={<ProgramsDetails />}
+    element={
+      <ProtectedComponent visibleTo={['view.card.prgm.full']}>
+        <ProgramsDetails />
+      </ProtectedComponent>
+    }
   />,
   <Route
     key='programmi-dettaglio-info'
     path='programmi/:entityId/info'
     element={
-      <ProtectedComponent visibleTo={['permission-1']}>
+      <ProtectedComponent visibleTo={['view.card.prgm.full']}>
         <ProgramsDetails />
       </ProtectedComponent>
     }
@@ -199,17 +211,29 @@ const AreaAmministrativaRoutes = [
   <Route
     key='programmi-dettaglio-ente'
     path='programmi/:entityId/ente'
-    element={<ProgramsDetails />}
+    element={
+      <ProtectedComponent visibleTo={['view.card.prgm.full']}>
+        <ProgramsDetails />
+      </ProtectedComponent>
+    }
   />,
   <Route
     key='programmi-dettaglio-questionari'
     path='programmi/:entityId/questionari'
-    element={<ProgramsDetails />}
+    element={
+      <ProtectedComponent visibleTo={['view.card.prgm.full']}>
+        <ProgramsDetails />
+      </ProtectedComponent>
+    }
   />,
   <Route
     key='programmi-dettaglio-progetti'
     path='programmi/:entityId/progetti'
-    element={<ProgramsDetails />}
+    element={
+      <ProtectedComponent visibleTo={['view.card.prgm.full']}>
+        <ProgramsDetails />
+      </ProtectedComponent>
+    }
   />,
   <Route
     key='programmi-dettaglio-progetti-dettaglio'
@@ -252,7 +276,15 @@ const AreaAmministrativaRoutes = [
     element={<AuthoritiesDetails />}
   />,
 
-  <Route key='progetti' path='progetti' element={<Projects />} />,
+  <Route
+    key='progetti'
+    path='progetti'
+    element={
+      <ProtectedComponent visibleTo={['tab.am', 'list.prgt']} redirect='/'>
+        <Projects />
+      </ProtectedComponent>
+    }
+  />,
   <Route
     key='progetti-dettaglio'
     path='progetti/:entityId'

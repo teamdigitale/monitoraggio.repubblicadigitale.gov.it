@@ -137,7 +137,7 @@ const ManageProjectManagerAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
           title='Cerca'
           search
         />
-        {content}
+        <div className='mx-5'>{content}</div>
       </div>
     </GenericModal>
   );

@@ -7,8 +7,15 @@ import { formTypes } from '../utils';
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormService from '../../../../forms/formServices/formService';
 import { useDispatch } from 'react-redux';
-import { closeModal, selectModalPayload } from '../../../../../redux/features/modal/modalSlice';
-import { CreateService, GetAllServices, UpdateService } from '../../../../../redux/features/administrativeArea/services/servicesThunk';
+import {
+  closeModal,
+  selectModalPayload,
+} from '../../../../../redux/features/modal/modalSlice';
+import {
+  CreateService,
+  GetAllServices,
+  UpdateService,
+} from '../../../../../redux/features/administrativeArea/services/servicesThunk';
 import { useAppSelector } from '../../../../../redux/hooks';
 
 const id = formTypes.SERVICES;
@@ -40,7 +47,7 @@ const ManageServices: React.FC<ManageServicesI> = ({
     const answersQ3 =
       "{'id':'anagraphic-service-section','title':'Anagrafica del servizio','properties':[" +
       questionarioCompilatoQ3?.replaceAll('"', "'") +
-      "]}";
+      ']}';
 
     const payload = {
       data: answersForms['22'] || '',
@@ -64,15 +71,14 @@ const ManageServices: React.FC<ManageServicesI> = ({
   const handleCreateService = () => {
     if (areFormsValid) {
       if (creation) {
-        dispatch(CreateService(createPayload(newFormsValues)))
+        dispatch(CreateService(createPayload(newFormsValues)));
       } else {
-        dispatch(UpdateService(idServizio,createPayload(newFormsValues)))
+        dispatch(UpdateService(idServizio, createPayload(newFormsValues)));
       }
     }
     dispatch(closeModal());
     dispatch(GetAllServices());
   };
-
 
   return (
     <GenericModal

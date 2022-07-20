@@ -10,6 +10,7 @@ import React, { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { MenuItem, MenuRoutes } from '../../utils/common';
+import useGuard from '../../hooks/guard';
 
 interface HeaderMenuI {
   isHeaderFull: boolean;
@@ -17,6 +18,7 @@ interface HeaderMenuI {
 
 const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
   const { isHeaderFull } = props;
+  const { hasUserPermission } = useGuard();
   const [activeTab, setActiveTab] = useState(
     MenuRoutes.filter(({ path }) =>
       window.location.pathname.includes(path)
@@ -69,7 +71,7 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
           </DropdownToggle>
           <DropdownMenu role='menu' tag='ul'>
             {(li.subRoutes || [])
-              .filter(({ visible }) => visible)
+              .filter(({ visible = ['hidden'] }) => hasUserPermission(visible))
               .map((link: MenuItem, index) => (
                 <li
                   key={index}
@@ -116,7 +118,7 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
     >
       <ul className='d-flex align-items-end mb-0' role='menu'>
         {(MenuRoutes || [])
-          .filter(({ visible }) => visible)
+          .filter(({ visible }) => hasUserPermission(visible))
           .map((li) => (
             <li
               key={li.path}

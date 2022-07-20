@@ -10,6 +10,7 @@ import ClickOutside from '../../hoc/ClickOutside';
 import './hamburgerMenu.scss';
 import LogoSmall from '/public/assets/img/logo-mobile.png';
 import { focusId, MenuRoutes } from '../../utils/common';
+import useGuard from '../../hooks/guard';
 
 interface HBMenuProps {
   open: boolean;
@@ -18,6 +19,7 @@ interface HBMenuProps {
 
 const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
   const { open, setOpen } = props;
+  const { hasUserPermission } = useGuard();
 
   const [collapseOpen, setCollapseOpen] = useState(false);
 
@@ -45,7 +47,7 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
           >
             <ul>
               {(MenuRoutes || [])
-                .filter(({ visible }) => visible)
+                .filter(({ visible }) => hasUserPermission(visible))
                 .map((link, index: number) => {
                   return link.subRoutes?.length ? (
                     <React.Fragment key={index}>
@@ -88,7 +90,7 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
                         <Collapse isOpen={collapseOpen}>
                           <LinkList sublist>
                             {link.subRoutes
-                              .filter(({ visible }) => visible)
+                              .filter(({ visible = ['hidden'] }) => hasUserPermission(visible))
                               .map((sub, index) => (
                                 <li key={`sub-${index}`}>
                                   <Link

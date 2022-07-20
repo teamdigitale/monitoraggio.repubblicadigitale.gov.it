@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import clsx from 'clsx';
+import { Button, Icon } from 'design-react-kit';
+import React from 'react';
 import AccordionAddress, {
   AddressInfoI,
 } from './AccordionAddress/AccordionAddress';
@@ -14,19 +16,6 @@ const AccordionAddressList: React.FC<AccordionAddressListI> = ({
   onSetAddressList,
   isReadOnly = false,
 }) => {
-  const [newAddressInfo, setNewAddressInfo] = useState<AddressInfoI>({
-    indirizzoSede: {
-      via: '',
-      civico: '',
-      comune: '',
-      provincia: '',
-      cap: '',
-      regione: '',
-      nazione: '',
-    },
-    fasceOrarieAperturaIndirizzoSede: [],
-  });
-
   const addressListChangeHandler = (
     changedAddressInfo: AddressInfoI,
     index: number
@@ -39,47 +28,66 @@ const AccordionAddressList: React.FC<AccordionAddressListI> = ({
       );
   };
 
-  const newAddressHandler = (isOpen: boolean) => {
-    if (!isOpen && newAddressInfo.indirizzoSede.via.trim() !== '') {
-      onSetAddressList && onSetAddressList([...addressList, newAddressInfo]);
-      setNewAddressInfo({
-        indirizzoSede: {
-          via: '',
-          civico: '',
-          comune: '',
-          provincia: '',
-          cap: '',
-          regione: '',
-          nazione: '',
+  const newAddressHandler = () => {
+    onSetAddressList &&
+      onSetAddressList([
+        ...addressList,
+        {
+          indirizzoSede: {
+            via: '',
+            civico: '',
+            comune: '',
+            provincia: '',
+            cap: '',
+            regione: '',
+            nazione: '',
+          },
+          fasceOrarieAperturaIndirizzoSede: {},
         },
-        fasceOrarieAperturaIndirizzoSede: [],
-      });
-    }
+      ]);
   };
 
   return (
-    <>
-      {addressList.map((address, index) => (
-        <AccordionAddress
-          isReadOnly={isReadOnly}
-          key={index}
-          index={index + 1}
-          addressInfo={address}
-          onAddressInfoChange={(addressInfo: AddressInfoI) =>
-            addressListChangeHandler(addressInfo, index)
-          }
-        />
-      ))}
-
-      {!isReadOnly && (
-        <AccordionAddress
-          index={addressList.length + 1}
-          addressInfo={newAddressInfo}
-          onAddressInfoChange={setNewAddressInfo}
-          handleOnToggle={(isOpen: boolean) => newAddressHandler(isOpen)}
-        />
-      )}
-    </>
+    <div className='mx-5'>
+      {addressList
+        .filter((address) => !address.indirizzoSede?.cancellato)
+        .map((address, index, arr) => (
+          <AccordionAddress
+            isReadOnly={isReadOnly}
+            key={index}
+            index={index + 1}
+            addressInfo={address}
+            canBeDeleted={arr.length > 2}
+            onAddressInfoChange={(addressInfo: AddressInfoI) =>
+              addressListChangeHandler(addressInfo, index)
+            }
+          />
+        ))}
+      <div
+        className={clsx(
+          'w-100',
+          'mb-5',
+          'mt-3',
+          'd-flex',
+          'justify-content-end'
+        )}
+      >
+        <Button
+          onClick={newAddressHandler}
+          className='d-flex justify-content-between'
+          type='button'
+        >
+          <Icon
+            color='primary'
+            icon='it-plus-circle'
+            size='sm'
+            className='mr-2'
+            aria-label='Aggiungi'
+          />
+          Aggiungi Indirizzo
+        </Button>
+      </div>
+    </div>
   );
 };
 

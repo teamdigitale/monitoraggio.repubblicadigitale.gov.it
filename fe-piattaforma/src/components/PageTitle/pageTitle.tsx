@@ -16,17 +16,17 @@ export interface PageTitleI {
   title?: string;
   hasBackground?: boolean;
   sectionInfo?: boolean;
+  alignTitle?: boolean;
 }
 
 const PageTitle: React.FC<PageTitleI> = (props) => {
-  const { hasBackground, title, sectionInfo } = props;
+  const { hasBackground, title, sectionInfo, alignTitle } = props;
 
   const [sectionInfoOpened, setSectionInfoOpened] = useState<boolean>(false);
   /*  const [sectionBody, setSectionBody] = useState<string>(''); */
   const location = useLocation();
 
   const openSectionInfo = () => {
-    console.log('open section info');
     setSectionInfoOpened(true);
   };
 
@@ -42,7 +42,14 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
   return (
     <div className={clsx('page-title', hasBackground && 'lightgrey-bg-a1')}>
       <Container className={clsx('mt-3 pl-0')}>
-        <div className={clsx('d-flex', 'flex-row', 'align-items-center')}>
+        <div
+          className={clsx(
+            'd-flex',
+            'flex-row',
+            'align-items-center',
+            alignTitle ? 'justify-content-center' : null
+          )}
+        >
           {title && (
             <h1 className={clsx('h2', 'py-2', 'mb-2', 'primary-color-a9')}>
               {title}

@@ -64,7 +64,7 @@ const Select: React.FC<SelectI> = (props) => {
         setSelectedOption(newSelectedOption);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
+  }, [value, options]);
 
   const handleChange = (option: OptionType) => {
     setSelectedOption(option);

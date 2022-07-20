@@ -23,6 +23,8 @@ import {
 } from '../../../../../redux/features/app/appSlice';
 import FormUser from '../../../../forms/formUser';
 import { selectUsers } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import clsx from 'clsx';
+import { CardStatusAction } from '../../../../../components';
 
 const UsersDetails = () => {
   const [deleteText, setDeleteText] = useState<string>('');
@@ -38,7 +40,7 @@ const UsersDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userDetails = useAppSelector(selectUsers)?.detail;
-  const { dettaglioUtente: userInfo = {}, dettaglioRuolo: userRole = [] } =
+  const { dettaglioUtente: userInfo = {}, dettaglioRuolo: userRoles = [] } =
     userDetails;
   const { mediaIsDesktop /* mediaIsPhone */ } = useAppSelector(selectDevice);
   const headquarterInfo = userInfo?.authorityRef || undefined;
@@ -164,14 +166,14 @@ const UsersDetails = () => {
   const getUserStatus = () => {
     if (
       userType === formTypes.DELEGATI ||
-      (userType === formTypes.REFERENTI && userRole?.length)
+      (userType === formTypes.REFERENTI && userRoles?.length)
     ) {
       const id = projectId || entityId;
-      const entityRole = userRole.filter(
+      const entityRole = userRoles.filter(
         (role: { id: string | number }) =>
           role.id?.toString().toLowerCase() === id?.toString().toLowerCase()
       )[0];
-      return entityRole?.stato;
+      return entityRole?.statoP;
     }
     return userInfo?.stato;
   };
@@ -197,10 +199,31 @@ const UsersDetails = () => {
           >
             {currentForm}
           </DetailLayout>
+          {!(entityId || projectId) && userRoles?.length ? (
+            <div className={clsx('my-5')}>
+              <h5 className={clsx('primary-color', 'mb-4')}>
+                Ruoli
+              </h5>
+              {userRoles.map((role: any) => (
+                <CardStatusAction
+                  key={role.id}
+                  id={role.id}
+                  status={role.stato}
+                  title={role.nome}
+                  subtitle={role.ruolo}
+                  onActionClick={{
+                    [CRUDActionTypes.VIEW]: () =>
+                      navigate(`/area-amministrativa/programmi/${role?.id}`, {
+                        replace: true,
+                      }),
+                  }}
+                />
+              ))}
+            </div>
+          ) : null}
           {currentModal ? currentModal : null}
           <ConfirmDeleteModal
             onConfirm={() => {
-              console.log('confirm delete');
               dispatch(closeModal());
             }}
             onClose={() => {

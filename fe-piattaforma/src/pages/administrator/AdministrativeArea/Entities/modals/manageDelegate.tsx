@@ -154,13 +154,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
     (usersList?.length === 0 || !usersList) &&
     !showForm
   ) {
-    content = (
-      <EmptySection
-        title={'Nessun risultato'}
-        withIcon
-        horizontal
-      />
-    );
+    content = <EmptySection title={'Nessun risultato'} withIcon horizontal />;
   }
 
   return (
@@ -192,7 +186,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
           title='Cerca'
           search
         />
-        {content}
+        <div className='mx-5'>{content}</div>
       </div>
     </GenericModal>
   );

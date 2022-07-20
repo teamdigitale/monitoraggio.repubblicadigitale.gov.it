@@ -75,12 +75,12 @@ export const GetAllSurveys =
       });
       if (res.data)
         dispatch(setSurveysList({ data: res.data.questionariTemplate }));
-        dispatch(
-          setEntityPagination({
-            totalPages: res.data.numeroPagine,
-            totalElements: res.data.numeroTotaleElementi,
-          })
-        );
+      dispatch(
+        setEntityPagination({
+          totalPages: res.data.numeroPagine,
+          totalElements: res.data.numeroTotaleElementi,
+        })
+      );
     } finally {
       dispatch(hideLoader());
     }

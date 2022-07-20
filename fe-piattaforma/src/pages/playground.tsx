@@ -93,7 +93,7 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
       <h1>Playground {t('hello')}</h1>
       <div className='my-5'>
         {/* Testing Protected Component */}
-        <ProtectedComponent visibleTo={['permission-1']}>
+        <ProtectedComponent visibleTo={[]}>
           <DropdownFilter
             filterName='test'
             id='test'

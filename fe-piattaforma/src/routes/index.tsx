@@ -6,9 +6,10 @@ import { selectLogged } from '../redux/features/user/userSlice';
 import ProtectedComponent from '../hoc/AuthGuard/ProtectedComponent/ProtectedComponent';
 import FullLayout from '../components/PageLayout/FullLayout/fullLayout';
 import { Loader } from '../components';
+import Notifications from '../pages/common/NotificationsPage/notifications';
 import { SessionCheck } from '../redux/features/user/userThunk';
 
-//const HomeFacilitator = lazy(() => import('../pages/facilitator/Home/home'));
+const HomeFacilitator = lazy(() => import('../pages/facilitator/Home/home'));
 const AdministrativeArea = lazy(
   () => import('../pages/administrator/AdministrativeArea/administrativeArea')
 );
@@ -79,21 +80,23 @@ const AppRoutes: React.FC = () => {
     // This fix is need cause Loader will cause a wdyr error if used here
     <Suspense fallback={<Loader />}>
       <Routes>
-        {/*<Route path='/' element={<FullLayout isFull />}>
-          <Route
-            path='/'
-            element={
-              <ProtectedComponent visibleTo={[]} redirect='/auth'>
-                <HomeFacilitator />
-              </ProtectedComponent>
-            }
-          />
-        </Route>*/}
+        {process.env.NODE_ENV === 'development' ? (
+          <Route path='/' element={<FullLayout isFull />}>
+            <Route
+              path='/'
+              element={
+                <ProtectedComponent visibleTo={[]} redirect='/auth'>
+                  <HomeFacilitator />
+                </ProtectedComponent>
+              }
+            />
+          </Route>
+        ) : null}
         <Route path='/' element={<FullLayout />}>
           <Route
             path='/area-amministrativa/*'
             element={
-              <ProtectedComponent visibleTo={['permission-1']} redirect='/'>
+              <ProtectedComponent visibleTo={['tab.am']} redirect='/'>
                 <AdministrativeArea />
               </ProtectedComponent>
             }
@@ -101,7 +104,7 @@ const AppRoutes: React.FC = () => {
           <Route
             path='/area-cittadini/*'
             element={
-              <ProtectedComponent visibleTo={['permission-1']} redirect='/'>
+              <ProtectedComponent visibleTo={[]} redirect='/'>
                 <CitizenArea />
               </ProtectedComponent>
             }
@@ -109,7 +112,7 @@ const AppRoutes: React.FC = () => {
           <Route
             path='/documents'
             element={
-              <ProtectedComponent visibleTo={['permission-1']} redirect='/'>
+              <ProtectedComponent visibleTo={[]} redirect='/'>
                 <Documents />
               </ProtectedComponent>
             }
@@ -117,15 +120,25 @@ const AppRoutes: React.FC = () => {
           <Route
             path='/gestione-ruoli'
             element={
-              <ProtectedComponent visibleTo={['permission-1']} redirect='/'>
+              <ProtectedComponent visibleTo={[]} redirect='/'>
                 <RoleManagement />
               </ProtectedComponent>
             }
           />
+          {process.env.NODE_ENV === 'development' ? (
+            <Route
+              path='/notifiche'
+              element={
+                <ProtectedComponent visibleTo={[]} redirect='/'>
+                  <Notifications />
+                </ProtectedComponent>
+              }
+            />
+          ) : null}
           <Route
             path='/gestione-ruoli/:idRuoloUtente'
             element={
-              <ProtectedComponent visibleTo={['permission-1']} redirect='/'>
+              <ProtectedComponent visibleTo={[]} redirect='/'>
                 <RoleManagementDetails />
               </ProtectedComponent>
             }
@@ -147,7 +160,9 @@ const AppRoutes: React.FC = () => {
               </ProtectedComponent>
             }
           />
-          <Route path='/playground' element={<Playground />} />
+          {process.env.NODE_ENV === 'development' ? (
+            <Route path='/playground' element={<Playground />} />
+          ) : null}
           <Route
             path='/'
             element={
