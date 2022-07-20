@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.35](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.34...1.0.0-develop.35) (2022-07-20)
+
+
+### Bug Fixes
+
+* **be:** fix contesto stato-ruolo ([c582eff](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c582effc34ab3f50e9badf79d1f2d1f5a85177ee))
+
 ## [1.0.0-develop.34](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.33...1.0.0-develop.34) (2022-07-20)
 
 
