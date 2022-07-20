@@ -150,6 +150,8 @@ const TargetsForm = ({
     <EmptySection
       title='Questa sezione è ancora vuota'
       subtitle='Crea un target di valori degli obiettivi'
+      icon='it-note'
+      withIcon
       buttons={
         disabled
           ? []

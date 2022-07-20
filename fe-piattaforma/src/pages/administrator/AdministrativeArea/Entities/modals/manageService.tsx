@@ -5,7 +5,11 @@ import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 
 import { formTypes } from '../utils';
 import { formFieldI } from '../../../../../utils/formHelper';
-import FormServices from '../../../../forms/formServices';
+import FormService from '../../../../forms/formServices/formService';
+import { useDispatch } from 'react-redux';
+import { closeModal, selectModalPayload } from '../../../../../redux/features/modal/modalSlice';
+import { CreateService, GetAllServices, UpdateService } from '../../../../../redux/features/administrativeArea/services/servicesThunk';
+import { useAppSelector } from '../../../../../redux/hooks';
 
 const id = formTypes.SERVICES;
 
@@ -19,25 +23,62 @@ interface ManageServicesI extends withFormHandlerProps, ManageServicesFormI {}
 const ManageServices: React.FC<ManageServicesI> = ({
   clearForm,
   formDisabled,
-  creation = false,
+  creation,
 }) => {
-  const [newFormValues, setNewFormValues] = useState<{
+  const dispatch = useDispatch();
+  const idServizio = useAppSelector(selectModalPayload)?.idServizio;
+  const [newFormsValues, setNewFormsValues] = useState<{
     [key: string]: formFieldI['value'];
   }>({});
-  const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  const [areFormsValid, setAreFormsValid] = useState<boolean>(true);
+  const [questionarioCompilatoQ3, setQuestionarioCompilatoQ3] =
+    useState<string>('');
+
+  const createPayload = (answersForms: {
+    [key: string]: formFieldI['value'];
+  }) => {
+    const answersQ3 =
+      "{'id':'anagraphic-service-section','title':'Anagrafica del servizio','properties':[" +
+      questionarioCompilatoQ3?.replaceAll('"', "'") +
+      "]}";
+
+    const payload = {
+      data: answersForms['22'] || '',
+      durataServizio: answersForms?.durataServizio,
+      idEnte: answersForms?.nomeEnte,
+      idSede: answersForms?.nomeSede,
+      nomeServizio: answersForms?.nomeServizio,
+      profilazioneParam: {
+        // TODO: update profilazione MOCK
+        codiceFiscaleUtenteLoggato: 'UTENTE1',
+        codiceRuoloUtenteLoggato: 'DTD',
+        idProgetto: 0,
+        idProgramma: 0,
+      },
+      questionarioCompilatoQ3: answersQ3,
+      tipoDiServizioPrenotato: answersForms['25'] || '',
+    };
+    return payload;
+  };
 
   const handleCreateService = () => {
-    if (isFormValid) {
-      console.log(newFormValues);
-      // TODO call to update the values
+    if (areFormsValid) {
+      if (creation) {
+        dispatch(CreateService(createPayload(newFormsValues)))
+      } else {
+        dispatch(UpdateService(idServizio,createPayload(newFormsValues)))
+      }
     }
+    dispatch(closeModal());
+    dispatch(GetAllServices());
   };
+
 
   return (
     <GenericModal
       id={id}
       primaryCTA={{
-        disabled: !isFormValid,
+        disabled: !areFormsValid,
         label: 'Crea servizio',
         onClick: handleCreateService,
       }}
@@ -46,12 +87,21 @@ const ManageServices: React.FC<ManageServicesI> = ({
         onClick: () => clearForm?.(),
       }}
     >
-      <FormServices
-        creation={creation}
-        formDisabled={!!formDisabled}
-        sendNewValues={(newData) => setNewFormValues({ ...newData })}
-        setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
-      />
+      <div className='px-3'>
+        <FormService // TODO: fix validity
+          creation={creation || false}
+          formDisabled={!!formDisabled}
+          sendNewFormsValues={(newData?: {
+            [key: string]: formFieldI['value'];
+          }) => {
+            setNewFormsValues({ ...newData });
+          }}
+          areFormsValid={(isValid: boolean) => setAreFormsValid(isValid)}
+          getQuestioanarioCompilatoQ3={(answersQ3: string) =>
+            setQuestionarioCompilatoQ3(answersQ3)
+          }
+        />
+      </div>
     </GenericModal>
   );
 };

@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Paginator, StatusChip, Table } from '../../../../../components';
+import {
+  EmptySection,
+  Paginator,
+  StatusChip,
+  Table,
+} from '../../../../../components';
 import { newTable, TableRowI } from '../../../../../components/Table/table';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
@@ -27,17 +32,20 @@ import { useNavigate } from 'react-router-dom';
 import ManageUsers from '../modals/manageUsers';
 
 import {
-  GetAllUsers,
+  //GetAllUsers,
   GetFilterValuesUtenti,
 } from '../../../../../redux/features/administrativeArea/user/userThunk';
 import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
-import { DownloadEntityValues } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
+import {
+  DownloadEntityValues,
+  GetEntityValues
+} from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 
 const entity = 'utente';
 const statusDropdownLabel = 'stati';
 const ruoliDropdownLabel = 'ruoli';
 
-const Programmi = () => {
+const Users = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const usersList = useAppSelector(selectEntityList)?.utenti;
@@ -103,13 +111,13 @@ const Programmi = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(usersList) && usersList.length)
-      setTableValues(updateTableValues());
+    if (Array.isArray(usersList)) setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [usersList]);
+  }, [usersList?.length]);
 
   const getUsersList = () => {
-    dispatch(GetAllUsers());
+    //dispatch(GetAllUsers());
+    dispatch(GetEntityValues({ entity: 'utente' }));
   };
 
   useEffect(() => {
@@ -236,25 +244,37 @@ const Programmi = () => {
         setFilterDropdownSelected(filterKey)
       }
     >
-      <Table
-        {...tableValues}
-        id='table'
-        onActionClick={onActionClick}
-        onCellClick={(field, row) => console.log(field, row)}
-        //onRowClick={row => console.log(row)}
-        withActions
-      />
-      <Paginator
-        activePage={pagination?.pageNumber}
-        center
-        refID='#table'
-        pageSize={pagination?.pageSize}
-        total={pagination?.totalPages}
-        onChange={handleOnChangePage}
-      />
+      {usersList?.length && tableValues?.values?.length ? (
+        <>
+          <Table
+            {...tableValues}
+            id='table'
+            onActionClick={onActionClick}
+            onCellClick={(field, row) => console.log(field, row)}
+            //onRowClick={row => console.log(row)}
+            withActions
+            totalCounter={pagination?.totalElements}
+          />
+          <Paginator
+            activePage={pagination?.pageNumber}
+            center
+            refID='#table'
+            pageSize={pagination?.pageSize}
+            total={pagination?.totalPages}
+            onChange={handleOnChangePage}
+          />
+        </>
+      ) : (
+        <EmptySection
+          title='Non sono presenti utenti'
+          subtitle='associati al tuo ruolo'
+          icon='it-note'
+          withIcon
+        />
+      )}
       <ManageUsers creation />
     </GenericSearchFilterTableLayout>
   );
 };
 
-export default Programmi;
+export default Users;

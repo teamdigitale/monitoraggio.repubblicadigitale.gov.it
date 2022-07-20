@@ -88,6 +88,8 @@ const GenericSearchFilterTableLayout: React.FC<
         return 'Policy';
       case 'filtroStati':
       case 'stati':
+      case 'statiQuestionario':
+      case 'stato':
         return 'Stato';
       case 'filtroIdsProgrammi':
       case 'idsProgrammi':
@@ -104,6 +106,8 @@ const GenericSearchFilterTableLayout: React.FC<
       case 'idsSedi':
       case 'sedi':
         return 'Sede';
+      case 'tipologiaServizio':
+        return 'Tipo di servizio prenotato';
       default:
         key;
     }

@@ -1,6 +1,6 @@
 import clsx from 'clsx';
-import { Icon } from 'design-react-kit';
-import CheckNoCircle from '/public/assets/img/icon-check-no-circle.png';
+/* import { Icon } from 'design-react-kit';
+import CheckNoCircle from '/public/assets/img/icon-check-no-circle.png'; */
 import React, { memo } from 'react';
 import './stepper.scss';
 
@@ -34,19 +34,9 @@ const Stepper: React.FC<StepperI> = (props) => {
             key={index}
           >
             {index <= currentStep ? (
-              <Icon
-                color='white'
-                icon={CheckNoCircle}
-                size='xs'
-                aria-label='Bandiera bianca'
-              />
+              <p className='text-white font-weight-bold'> {index + 1} </p>
             ) : (
-              <Icon
-                color='primary'
-                icon='it-flag'
-                size='xs'
-                aria-label='Check blu'
-              />
+              <p className='primary-color-a9 font-weight-bold'> {index + 1} </p>
             )}
           </div>
         ))}

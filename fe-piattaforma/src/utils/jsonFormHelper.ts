@@ -293,13 +293,11 @@ export const generateForm: (schema: SchemaI, compile?: boolean) => FormI = (
       newFormField({
         ...getTypeReverse(schema.properties[field]),
         field,
-        id: compile
-          ? `field-${(
-              schema.properties[field].title ||
-              schema.properties[field].id ||
-              ''
-            ).replace(/\s/g, '-')}`
-          : `${new Date().getTime()}`,
+        id: `field-${(
+          schema.properties[field].id ||
+          schema.properties[field].title ||
+          `${new Date().getTime()}`
+        ).replace(/\s/g, '-')}`,
         value: compile ? '' : schema.properties[field].title || '',
         label: compile ? schema.properties[field].title || '' : '',
         required: compile

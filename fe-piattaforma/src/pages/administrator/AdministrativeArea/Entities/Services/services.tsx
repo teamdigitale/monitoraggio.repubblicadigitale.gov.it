@@ -12,7 +12,7 @@ import {
   DropdownFilterI,
   FilterI,
 } from '../../../../../components/DropdownFilter/dropdownFilter';
-import { TableHeadingEventsList } from '../../../CitizensArea/utils';
+import { TableHeadingServicesList } from '../../../CitizensArea/utils';
 
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
@@ -22,8 +22,7 @@ import { formFieldI } from '../../../../../utils/formHelper';
 import { openModal } from '../../../../../redux/features/modal/modalSlice';
 import { useNavigate } from 'react-router-dom';
 import {
-  GetAllEvents,
-  GetEntityFilterValues,
+  GetAllServices,
 } from '../../../../../redux/features/administrativeArea/services/servicesThunk';
 import {
   selectServices,
@@ -36,15 +35,17 @@ import {
 import ManageServices from '../modals/manageService';
 import { formTypes } from '../utils';
 import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
-import { DownloadEntityValues } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
+import { formatDate } from '../../../../../utils/datesHelper';
+import { DownloadEntityValuesQueryParams, GetEntityFilterQueryParamsValues } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 
-const entity = 'servizi';
-const statusDropdownLabel = 'stati';
+const entity = 'servizio';
+const statusDropdownLabel = 'stato';
+const serviceTypeDropdownLabel = 'tipologiaServizio';
 
 const Services = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const eventsList = useAppSelector(selectServices)?.list;
+  const servicesList = useAppSelector(selectServices)?.list;
   const filtersList = useAppSelector(selectEntityFilters);
   const pagination = useAppSelector(selectEntityPagination);
   const dropdownFilterOptions = useAppSelector(selectEntityFiltersOptions);
@@ -54,19 +55,21 @@ const Services = () => {
   const [filterDropdownSelected, setFilterDropdownSelected] =
     useState<string>('');
 
-  const { criterioRicerca, policies, stati } = filtersList;
+  const { criterioRicerca, policies, stato, tipologiaServizio } = filtersList;
 
   const { pageNumber } = pagination;
 
   const getAllFilters = () => {
-    // TODO: check chiavi filtri
-    if (filterDropdownSelected !== 'filtroStati')
-      dispatch(GetEntityFilterValues({ entity, dropdownType: 'stati' }));
+    if (filterDropdownSelected !== 'stato')
+      dispatch(GetEntityFilterQueryParamsValues({ entity, dropdownType: 'stati' }));
+    if (filterDropdownSelected !== 'tipologiaServizio')
+      dispatch(
+        GetEntityFilterQueryParamsValues({ entity, dropdownType: 'tipologiaServizio' })
+      );
   };
 
   useEffect(() => {
-    dispatch(setEntityPagination({ pageSize: 1 }));
-    getAllFilters();
+    dispatch(setEntityPagination({ pageSize: 8 }));
     dispatch(
       updateBreadcrumb([
         {
@@ -86,42 +89,40 @@ const Services = () => {
 
   const updateTableValues = () => {
     const table = newTable(
-      TableHeadingEventsList,
-      eventsList.map((td) => {
+      TableHeadingServicesList,
+      servicesList.map((td) => {
         return {
           ...td,
-          nome: td.name,
-          status: <StatusChip status={td.status} rowTableId={td.id} />,
+          nome: td.nome,
+          data: formatDate(td.data, 'shortDate') || '-',
+          status: <StatusChip status={td.stato} rowTableId={td.id} />,
         };
       })
     );
-    return {
-      ...table,
-      // TODO remove slice after BE integration
-      values: table.values.slice(
-        pagination?.pageNumber * pagination?.pageSize - pagination?.pageSize,
-        pagination?.pageNumber * pagination?.pageSize
-      ),
-    };
+    return table;
   };
 
   const [tableValues, setTableValues] = useState(updateTableValues());
-
+  
   useEffect(() => {
-    if (Array.isArray(eventsList) && eventsList.length)
+    if (Array.isArray(servicesList))
       setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eventsList]);
+  }, [servicesList?.length]);
 
-  const getProgramsList = () => {
-    dispatch(GetAllEvents());
+  const getServicesList = () => {
+    dispatch(GetAllServices());
   };
 
   useEffect(() => {
-    getAllFilters();
-    getProgramsList();
+    getServicesList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [criterioRicerca, policies, stati, pageNumber]);
+  }, [criterioRicerca, policies, stato, tipologiaServizio, pageNumber]);
+
+  useEffect(() => {
+    getAllFilters();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [criterioRicerca, policies, stato, tipologiaServizio]);
 
   const handleOnChangePage = (pageNumber: number = pagination?.pageNumber) => {
     dispatch(setEntityPagination({ pageNumber }));
@@ -133,7 +134,9 @@ const Services = () => {
 
   const handleDropdownFilters = (
     values: FilterI[],
-    filterKey: 'policies' | 'stati' | 'programmi' | 'progetti'
+    filterKey:
+      | 'stato'
+      | 'tipologiaServizio'
   ) => {
     setFilterDropdownSelected(filterKey);
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
@@ -141,7 +144,9 @@ const Services = () => {
 
   const handleOnSearchDropdownOptions = (
     searchValue: formFieldI['value'],
-    filterId: 'policies' | 'stati' | 'programmi' | 'progetti'
+    filterId:
+      | 'stato'
+      | 'tipologiaServizio'
   ) => {
     const searchDropdownValues = [...searchDropdown];
     if (
@@ -159,8 +164,21 @@ const Services = () => {
 
   const dropdowns: DropdownFilterI[] = [
     {
+      filterName: 'Tipo di servizio prenotato',
+      options: dropdownFilterOptions[serviceTypeDropdownLabel],
+      id: serviceTypeDropdownLabel,
+      onOptionsChecked: (options) =>
+        handleDropdownFilters(options, serviceTypeDropdownLabel),
+      values: filtersList[serviceTypeDropdownLabel] || [],
+      handleOnSearch: (searchKey) =>
+        handleOnSearchDropdownOptions(searchKey, serviceTypeDropdownLabel),
+      valueSearch: searchDropdown?.filter(
+        (f) => f.filterId === serviceTypeDropdownLabel
+      )[0]?.value,
+    },
+    {
       filterName: 'Stato',
-      options: dropdownFilterOptions[statusDropdownLabel],
+      options: dropdownFilterOptions['stati'],
       id: statusDropdownLabel,
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, statusDropdownLabel),
@@ -173,10 +191,6 @@ const Services = () => {
     },
   ];
 
-  const handleDownloadList = () => {
-    dispatch(DownloadEntityValues({ entity }));
-  };
-
   const searchInformation: SearchInformationI = {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
@@ -187,8 +201,7 @@ const Services = () => {
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      console.log(td);
-      navigate('event1/info');
+      navigate(`${typeof td === 'string' ? td : td?.id}/info`);
     },
   };
 
@@ -210,6 +223,10 @@ const Services = () => {
     iconCta: 'it-plus',
   };
 
+  const handleDownloadList = () => {
+    dispatch(DownloadEntityValuesQueryParams({ entity }));
+  };
+
   return (
     <GenericSearchFilterTableLayout
       searchInformation={searchInformation}
@@ -223,7 +240,7 @@ const Services = () => {
       }
     >
       <div>
-        {eventsList?.length && tableValues?.values?.length ? (
+        {servicesList?.length && tableValues?.values?.length ? (
           <>
             <Table
               {...tableValues}
@@ -232,13 +249,14 @@ const Services = () => {
               onCellClick={(field, row) => console.log(field, row)}
               //onRowClick={row => console.log(row)}
               withActions
+              totalCounter={pagination?.totalElements}
             />
             <Paginator
               activePage={pagination?.pageNumber}
               center
               refID='#table'
               pageSize={pagination?.pageSize}
-              total={eventsList.length}
+              total={servicesList.length}
               onChange={handleOnChangePage}
             />
           </>

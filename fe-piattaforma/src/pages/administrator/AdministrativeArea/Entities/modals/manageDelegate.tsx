@@ -157,7 +157,6 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
     content = (
       <EmptySection
         title={'Nessun risultato'}
-        subtitle={'Inserisci nuovamente i dati richiesti'}
         withIcon
         horizontal
       />
@@ -178,15 +177,21 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
       }}
       centerButtons
     >
-      <div className='mx-5'>
+      <div>
         <SearchBar
-          className={clsx('w-100', 'py-4', 'px-5', 'search-bar-borders')}
+          className={clsx(
+            'w-100',
+            'py-4',
+            'px-5',
+            'search-bar-borders',
+            'search-bar-bg'
+          )}
           placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’utente'
           onSubmit={handleSearchUser}
+          onReset={() => setShowForm(true)}
           title='Cerca'
           search
         />
-
         {content}
       </div>
     </GenericModal>

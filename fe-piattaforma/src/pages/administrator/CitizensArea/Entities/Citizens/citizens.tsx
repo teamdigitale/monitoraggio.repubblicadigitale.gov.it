@@ -17,7 +17,7 @@ import {
   GetEntityValues,
 } from '../../../../../redux/features/citizensArea/citizensAreaThunk';
 import { useAppSelector } from '../../../../../redux/hooks';
-import { Paginator, Table } from '../../../../../components';
+import { EmptySection, Paginator, Table } from '../../../../../components';
 import {
   DropdownFilterI,
   FilterI,
@@ -158,9 +158,9 @@ const Citizens = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(citizensList) && citizensList.length) setTableValues(updateTableValues());
+    if (Array.isArray(citizensList)) setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [citizensList]);
+  }, [citizensList?.length]);
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.CREATE]: (td: TableRowI | string) => {
@@ -209,6 +209,7 @@ const Citizens = () => {
         }
         citizen
       >
+        {citizensList?.length && tableValues?.values?.length ? (
         <div>
           <Table
             {...tableValues}
@@ -217,6 +218,7 @@ const Citizens = () => {
             //onRowClick={row => console.log(row)}
             withActions
             onActionClick={onActionClick}
+            totalCounter={pagination?.totalElements}
           />
           {pagination?.pageNumber ? (
             <Paginator
@@ -229,6 +231,9 @@ const Citizens = () => {
             />
           ) : null}
         </div>
+          ) : (
+          <EmptySection title='Non ci sono cittadini' />
+        )}
         <SearchCitizenModal />
       </GenericSearchFilterTableLayout>
     </>

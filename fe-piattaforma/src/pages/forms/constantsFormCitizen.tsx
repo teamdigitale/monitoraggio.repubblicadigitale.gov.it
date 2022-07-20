@@ -1,4 +1,4 @@
-export const citizenFromDropdownOptions = {
+export const citizenFormDropdownOptions = {
   'flag-codice-fiscale': [
     {
       label: 'Codice fiscale non disponibile',

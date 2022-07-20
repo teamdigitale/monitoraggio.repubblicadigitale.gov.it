@@ -15,7 +15,7 @@ import {
 } from '../../../utils/common';
 import { getUserHeaders } from '../user/userThunk';
 
-interface EntityFilterValuesPayloadI {
+export interface EntityFilterValuesPayloadI {
   entity: string;
   dropdownType: string;
 }
@@ -68,7 +68,12 @@ export const GetEntityValues =
 
       if (res?.data) {
         dispatch(setEntityValues({ entity: payload.entity, data: res.data }));
-        dispatch(setEntityPagination({ totalPages: res.data.numeroPagine }));
+        dispatch(
+          setEntityPagination({
+            totalPages: res.data.numeroPagine,
+            totalElements: res.data.numeroTotaleElementi,
+          })
+        );
       }
     } catch (error) {
       console.log('GetEntityValues error', error);
@@ -179,8 +184,7 @@ export const GetEntityFilterQueryParamsValues =
       const res = await API.post(entityFilterEndpoint, body);
       if (res?.data) {
         const filterResponse = {
-          [payload.dropdownType]: res.data.data?.map((option: string) => ({
-            // TODO: togliere un data quando BE fixa chiamata
+          [payload.dropdownType]: res.data.map((option: string) => ({
             label:
               payload.dropdownType === 'stati'
                 ? option[0] + option.slice(1).toLowerCase()

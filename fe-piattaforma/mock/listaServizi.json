@@ -1,0 +1,30 @@
+{
+  "numeroPagine": 1,
+  "numeroTotaleElementi": 3,
+  "servizi": [
+    {
+      "data": "2022-06-27T12:49:26.762Z",
+      "facilitatore": "Simone Viola",
+      "id": "1",
+      "nome": "Nome Servizio 1",
+      "stato": "ATTIVO",
+      "tipologiaServizio": "Facilitazione"
+    },
+    {
+      "data": "2022-06-27T12:49:26.762Z",
+      "facilitatore": "Paola Neri",
+      "id": "2",
+      "nome": "Nome Servizio 2",
+      "stato": "ATTIVO",
+      "tipologiaServizio": "Formazione in presenza"
+    },
+    {
+      "data": "2022-06-27T12:49:26.762Z",
+      "facilitatore": "Sofia Bianchi",
+      "id": "3",
+      "nome": "Nome Servizio 3",
+      "stato": "ATTIVO",
+      "tipologiaServizio": "Formazione online"
+    }
+  ]
+}

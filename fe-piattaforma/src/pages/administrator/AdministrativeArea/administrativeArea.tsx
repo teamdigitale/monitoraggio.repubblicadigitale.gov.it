@@ -21,7 +21,7 @@ import { LocationIndex } from '../../../components';
 import { MenuRoutes } from '../../../utils/common';
 const Programs = lazy(() => import('./Entities/Programs/programs'));
 const Projects = lazy(() => import('./Entities/Projects/projects'));
-const Utenti = lazy(() => import('./Entities/Users/users'));
+const Users = lazy(() => import('./Entities/Users/users'));
 const Surveys = lazy(() => import('./Entities/Surveys/surveys'));
 const Authorities = lazy(() => import('./Entities/Authorities/authorities'));
 const CompileSurvey = lazy(
@@ -299,7 +299,7 @@ const AreaAmministrativaRoutes = [
     path='enti/:authorityId'
     element={<AuthoritiesDetails />}
   />,
-  <Route key='utenti' path='utenti' element={<Utenti />} />,
+  <Route key='utenti' path='utenti' element={<Users />} />,
   <Route
     key='programmi-dettaglio-referenti-delegati-dettaglio'
     path='programmi/:entityId/:userType/:userId'

@@ -1,6 +1,9 @@
 import { Dispatch, Selector } from '@reduxjs/toolkit';
 import API from '../../../../utils/apiHelper';
-import { mapOptions } from '../../../../utils/common';
+import {
+  mapOptions,
+  transformFiltersToQueryParams,
+} from '../../../../utils/common';
 import {
   FormHelper,
   newForm,
@@ -10,10 +13,12 @@ import { generateJsonFormSchema } from '../../../../utils/jsonFormHelper';
 import { RegexpType } from '../../../../utils/validator';
 import { RootState } from '../../../store';
 import { hideLoader, showLoader } from '../../app/appSlice';
+import { getUserHeaders } from '../../user/userThunk';
 import {
   setEntityFilterOptions,
   setSurveysList,
   setSurveyDetail,
+  setEntityPagination,
 } from '../administrativeAreaSlice';
 import {
   setSurveyInfoForm,
@@ -22,7 +27,6 @@ import {
   SurveyQuestionI,
   SurveySectionI,
 } from './surveysSlice';
-import { getUserHeaders } from '../../user/userThunk';
 
 export interface SurveyLightI {
   id: string;
@@ -51,29 +55,32 @@ export const GetAllSurveys =
         // @ts-ignore
         administrativeArea: { filters, pagination },
       } = select((state: RootState) => state);
-      const endpoint = '/questionarioTemplate/all';
-      // const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
-      //   getUserHeaders();
+      const queryParamFilters = transformFiltersToQueryParams(filters);
+      const endpoint = `/questionarioTemplate/all${queryParamFilters}`;
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
       const body = {
-        codiceFiscaleUtenteLoggato: 'UTENTE1', // TODO: aggiorna con variabile
-        codiceRuoloUtenteLoggato: 'DTD', // TODO: aggiorna con variabile
-        idProgetto: 0, // TODO: aggiorna con variabile
-        idProgramma: 0, // TODO: aggiorna con variabile
+        codiceFiscaleUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
+        idProgetto: idProgetto,
+        idProgramma: idProgramma,
       };
-      let res;
-      if (body) {
-        res = await API.post(endpoint, body, {
-          params: isDetail
-            ? {}
-            : {
-                currPage: Math.max(0, pagination.pageNumber - 1),
-                pageSize: pagination.pageSize,
-                ...filters,
-              },
-        });
-      }
-      if (res?.data)
+      const res = await API.post(endpoint, body, {
+        params: isDetail
+          ? {}
+          : {
+              currPage: Math.max(0, pagination.pageNumber - 1),
+              pageSize: pagination.pageSize,
+            },
+      });
+      if (res.data)
         dispatch(setSurveysList({ data: res.data.questionariTemplate }));
+        dispatch(
+          setEntityPagination({
+            totalPages: res.data.numeroPagine,
+            totalElements: res.data.numeroTotaleElementi,
+          })
+        );
     } finally {
       dispatch(hideLoader());
     }

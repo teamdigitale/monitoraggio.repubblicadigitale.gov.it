@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
+import { resetAuthorityDetails } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { UpdateAuthorityDetails } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 import { formFieldI } from '../../../../../utils/formHelper';
@@ -22,7 +23,7 @@ interface ManageEnteGestoreProgettoI
     ManageEntePartnerFormI {}
 
 const ManageGenericAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
-  clearForm,
+  clearForm = () => ({}),
   formDisabled,
   creation = false,
 }) => {
@@ -39,6 +40,8 @@ const ManageGenericAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
         UpdateAuthorityDetails(newFormValues['id']?.toString(), newFormValues)
       );
     }
+    clearForm();
+    dispatch(resetAuthorityDetails());
     dispatch(closeModal());
   };
 

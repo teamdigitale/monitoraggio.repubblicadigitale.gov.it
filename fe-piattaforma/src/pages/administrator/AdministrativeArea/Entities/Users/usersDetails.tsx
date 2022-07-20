@@ -38,7 +38,8 @@ const UsersDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userDetails = useAppSelector(selectUsers)?.detail;
-  const { dettaglioUtente: userInfo = {}, dettaglioRuolo: userRole = [] } = userDetails;
+  const { dettaglioUtente: userInfo = {}, dettaglioRuolo: userRole = [] } =
+    userDetails;
   const { mediaIsDesktop /* mediaIsPhone */ } = useAppSelector(selectDevice);
   const headquarterInfo = userInfo?.authorityRef || undefined;
   const { entityId, userType, userId, projectId } = useParams();
@@ -161,9 +162,15 @@ const UsersDetails = () => {
   };
 
   const getUserStatus = () => {
-    if (userType === formTypes.DELEGATI || userType === formTypes.REFERENTI && userRole?.length) {
+    if (
+      userType === formTypes.DELEGATI ||
+      (userType === formTypes.REFERENTI && userRole?.length)
+    ) {
       const id = projectId || entityId;
-      const entityRole = userRole.filter((role: { id: string | number }) => role.id?.toString().toLowerCase() === id?.toString().toLowerCase())[0];
+      const entityRole = userRole.filter(
+        (role: { id: string | number }) =>
+          role.id?.toString().toLowerCase() === id?.toString().toLowerCase()
+      )[0];
       return entityRole?.stato;
     }
     return userInfo?.stato;

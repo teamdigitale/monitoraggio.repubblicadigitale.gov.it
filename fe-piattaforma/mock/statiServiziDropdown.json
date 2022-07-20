@@ -1,14 +1,3 @@
 {
-  "data": {
-    "list": [
-      {
-        "id": "INVIATO",
-        "nome": "INVIATO"
-      },
-      {
-        "id": "NON INVIATO",
-        "nome": "NON INVIATO"
-      }
-    ]
-  }
+  "data": ["INVIATO", "NON INVIATO"]
 }

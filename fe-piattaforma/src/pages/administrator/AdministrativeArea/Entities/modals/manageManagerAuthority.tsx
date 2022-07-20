@@ -10,6 +10,7 @@ import {
 
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import {
+  resetAuthorityDetails,
   selectAuthorities,
   setAuthoritiesList,
   setAuthorityDetails,
@@ -59,6 +60,7 @@ interface ManageManagerAuthorityI
     ManageManagerAuthorityFormI {}
 
 const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
+  clearForm = () => ({}),
   formDisabled,
   creation = false,
 }) => {
@@ -76,6 +78,13 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
     if (creation) dispatch(setAuthorityDetails({}));
   }, [creation]);
 
+  const resetModal = () => {
+    clearForm();
+    setShowForm(true);
+    setAlreadySearched(false);
+    dispatch(resetAuthorityDetails());
+  };
+
   const handleSaveEnte = async () => {
     if (isFormValid) {
       // Update
@@ -85,11 +94,13 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
           await dispatch(
             UpdateManagerAuthority({ ...newFormValues }, projectId, 'progetto')
           );
+          dispatch(GetProjectDetail(projectId));
         } else if (entityId) {
           // Program
           await dispatch(
             UpdateManagerAuthority({ ...newFormValues }, entityId, 'programma')
           );
+          dispatch(GetProgramDetail(entityId));
         }
       }
       // Creation
@@ -108,7 +119,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
           dispatch(GetProgramDetail(entityId));
         }
       }
-
+      resetModal();
       dispatch(closeModal());
     }
   };
@@ -124,6 +135,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
         dispatch(GetAuthorityDetail(td.id as string));
         dispatch(setAuthoritiesList(null));
       }
+      setShowForm(true);
     },
   };
 
@@ -151,7 +163,9 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
       <Table
         heading={headings}
         values={authoritiesList.map((item) => ({
-          nome: item.nome,
+          label: item.nome,
+          id: item.id,
+          tipologia: item.tipologia,
         }))}
         onActionRadio={handleSelectAuthority}
         id='table'
@@ -159,9 +173,10 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
     );
   } else if (
     alreadySearched &&
-    (authoritiesList?.length === 0 || !authoritiesList)
+    (authoritiesList?.length === 0 || !authoritiesList) &&
+    !showForm
   ) {
-    content = <EmptySection title={'Nessun risultato'} />;
+    content = <EmptySection title={'Nessun risultato'} withIcon horizontal />;
   }
 
   /***
@@ -194,19 +209,24 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: () => window.location.reload(),
+        onClick: () => resetModal(),
       }}
       centerButtons
     >
-      <div className='mx-5'>
+      <div>
         <SearchBar
-          className={clsx('w-100', 'py-4', 'px-5', 'search-bar-borders')}
-          placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’utente'
+          className={clsx(
+            'w-100',
+            'py-4',
+            'px-5',
+            'search-bar-borders',
+            'search-bar-bg'
+          )}
+          placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’ente'
           onSubmit={handleSearchAuthority}
           title='Cerca'
           search
         />
-
         {content}
       </div>
     </GenericModal>

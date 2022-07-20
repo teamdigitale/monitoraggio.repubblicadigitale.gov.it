@@ -39,6 +39,8 @@ import {
 import {
   GetAuthorityManagerDetail,
   RemovePartnerAuthority,
+  RemoveReferentDelegate,
+  UserAuthorityRole,
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import {
   ActivateProject,
@@ -49,6 +51,8 @@ import ManageDelegate from '../modals/manageDelegate';
 import ManageReferal from '../modals/manageReferal';
 import DeleteAuthorityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteAuthorityModal/DeleteAuthorityModal';
 import ManageProjectManagerAuthority from '../modals/manageProjectManagerAuthority';
+import DeleteReferentDelegateModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteReferentDelegateModal/DeleteReferentDelegateModal';
+import ManageManagerAuthority from '../modals/manageManagerAuthority';
 
 const tabs = {
   INFO: 'info',
@@ -136,8 +140,13 @@ const ProjectsDetails = () => {
 
   const onActionClickReferenti: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(getActionRedirectURL(formTypes.REFERENTI, (typeof td === 'string' ? td : td.codiceFiscale).toString()));
-        /*`/area-amministrativa/${formTypes.REFERENTI}/${
+      navigate(
+        getActionRedirectURL(
+          formTypes.REFERENTI,
+          (typeof td === 'string' ? td : td.codiceFiscale).toString()
+        )
+      );
+      /*`/area-amministrativa/${formTypes.REFERENTI}/${
           typeof td === 'string' ? td : td?.codiceFiscale
         }`
       );*/
@@ -145,19 +154,44 @@ const ProjectsDetails = () => {
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       // dispatch(RemoveReferentDelegate())
       console.log(td);
+      dispatch(
+        openModal({
+          id: 'delete-referent-delegate',
+          payload: {
+            cf: '',
+            role: 'REGP',
+            text: 'Confermi di voler eliminare questo referente?',
+          },
+        })
+      );
     },
   };
 
   const onActionClickDelegati: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(getActionRedirectURL(formTypes.DELEGATI, (typeof td === 'string' ? td : td.codiceFiscale).toString()));
-        /*`/area-amministrativa/${formTypes.DELEGATI}/${
+      navigate(
+        getActionRedirectURL(
+          formTypes.DELEGATI,
+          (typeof td === 'string' ? td : td.codiceFiscale).toString()
+        )
+      );
+      /*`/area-amministrativa/${formTypes.DELEGATI}/${
           typeof td === 'string' ? td : td?.codiceFiscale
         }`
       );*/
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       console.log(td);
+      dispatch(
+        openModal({
+          id: 'delete-referent-delegate',
+          payload: {
+            cf: '',
+            role: 'DEGP',
+            text: 'Confermi di voler eliminare questo delegato?',
+          },
+        })
+      );
     },
   };
 
@@ -204,6 +238,30 @@ const ProjectsDetails = () => {
     }
   }, [location]);
 
+  const partnerAuthorityButtons: ButtonInButtonsBar[] = [
+    {
+      size: 'xs',
+      color: 'primary',
+      iconForButton: 'it-download',
+      iconColor: 'primary',
+      outline: true,
+      text: 'Carica lista enti partner',
+      onClick: () => console.log('carica lista enti partner'),
+    },
+    {
+      size: 'xs',
+      color: 'primary',
+      text: ' Aggiungi Ente partner',
+      onClick: () =>
+        dispatch(
+          openModal({
+            id: formTypes.ENTE_PARTNER,
+            payload: { title: 'Aggiungi ente partner' },
+          })
+        ),
+    },
+  ];
+
   const EmptySectionButtons: ButtonInButtonsBar[] = [
     {
       size: 'xs',
@@ -226,6 +284,18 @@ const ProjectsDetails = () => {
           openModal({
             id: 'ente-partner',
             payload: { title: 'Aggiungi Ente partner' },
+          })
+        ),
+    },
+    {
+      size: 'xs',
+      color: 'primary',
+      text: 'Aggiungi una nuova Sede',
+      onClick: () =>
+        dispatch(
+          openModal({
+            id: 'sede',
+            payload: { title: 'Aggiungi Sede' },
           })
         ),
     },
@@ -333,27 +403,7 @@ const ProjectsDetails = () => {
         ),
       });
       setItemAccordionList(null);
-      setCorrectButtons([
-        {
-          size: 'xs',
-          color: 'primary',
-          text: 'Carica lista enti partner',
-          onClick: () => console.log('carica lista enti partner'),
-        },
-        {
-          size: 'xs',
-          outline: true,
-          color: 'primary',
-          text: ' Aggiungi Ente partner',
-          onClick: () =>
-            dispatch(
-              openModal({
-                id: formTypes.ENTE_PARTNER,
-                payload: { title: 'Aggiungi ente partner' },
-              })
-            ),
-        },
-      ]);
+      setCorrectButtons(partnerAuthorityButtons);
       setEmptySection(undefined);
     } else {
       setItemAccordionList(null);
@@ -363,8 +413,10 @@ const ProjectsDetails = () => {
       setEmptySection(
         <EmptySection
           title={'Questa sezione è ancora vuota'}
+          withIcon
+          icon='it-note'
           subtitle={'Per attivare il progetto aggiungi un Ente partner'}
-          buttons={EmptySectionButtons.slice(1, 2)}
+          buttons={partnerAuthorityButtons}
         />
       );
     }
@@ -420,7 +472,10 @@ const ProjectsDetails = () => {
       setEmptySection(
         <EmptySection
           title={'Questa sezione è ancora vuota'}
+          withIcon
+          icon='it-note'
           subtitle={'Per attivare il progetto aggiungi una Sede'}
+          buttons={EmptySectionButtons.slice(2)}
         />
       );
     }
@@ -652,7 +707,13 @@ const ProjectsDetails = () => {
       default:
         return;
     }
-  }, [activeTab, mediaIsDesktop, projectDetails, authorityInfo, partnerAuthoritiesList]);
+  }, [
+    activeTab,
+    mediaIsDesktop,
+    projectDetails,
+    authorityInfo,
+    partnerAuthoritiesList,
+  ]);
 
   const terminateProject = async (
     projectId: string,
@@ -662,16 +723,22 @@ const ProjectsDetails = () => {
     dispatch(closeModal());
   };
 
+  const removeReferentDelegate = async (
+    cf: string,
+    role: UserAuthorityRole
+  ) => {
+    if (projectId && managingAuthorityID) {
+      await dispatch(
+        RemoveReferentDelegate(managingAuthorityID, projectId, cf, role)
+      );
+      dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+    }
+    dispatch(closeModal());
+  };
+
   return (
-    <div
-      className={clsx(
-        mediaIsPhone && 'mt-5',
-        'd-flex',
-        'flex-row',
-        'container'
-      )}
-    >
-      <div className='d-flex flex-column w-100 container'>
+    <div className={clsx(mediaIsPhone && 'mt-5', 'd-flex', 'flex-row')}>
+      <div className='d-flex flex-column w-100'>
         <div>
           <DetailLayout
             nav={nav}
@@ -734,9 +801,16 @@ const ProjectsDetails = () => {
               projectId && removeAuthorityPartner(id, projectId)
             }
           />
+          <DeleteReferentDelegateModal
+            onClose={() => dispatch(closeModal())}
+            onConfirm={(cf: string, role: UserAuthorityRole) =>
+              removeReferentDelegate(cf, role)
+            }
+          />
           <ManageDelegate />
           <ManageReferal />
           <ManageHeadquarter />
+          <ManageManagerAuthority />
         </div>
       </div>
     </div>

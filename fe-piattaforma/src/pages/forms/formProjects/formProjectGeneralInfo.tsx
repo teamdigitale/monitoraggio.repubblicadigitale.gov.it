@@ -124,6 +124,7 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
         /> */}
         <Input
           {...form?.nome}
+          required
           col='col-12'
           label='Nome progetto'
           onInputChange={(value, field) => {
@@ -134,6 +135,7 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
       <Form.Row className={bootClass}>
         <Input
           {...form?.nomeBreve}
+          required
           col='col-12 col-lg-6'
           label='Nome breve'
           onInputChange={(value, field) => {
@@ -143,6 +145,7 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
         />
         <Input
           {...form?.cup}
+          required
           label='CUP - Codice Unico Progetto'
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {
@@ -154,6 +157,7 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
       <Form.Row className={bootClass}>
         <Input
           {...form?.dataInizio}
+          required
           label='Data inizio'
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {
@@ -163,6 +167,7 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
         />
         <Input
           {...form?.dataFine}
+          required
           label='Data fine'
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {

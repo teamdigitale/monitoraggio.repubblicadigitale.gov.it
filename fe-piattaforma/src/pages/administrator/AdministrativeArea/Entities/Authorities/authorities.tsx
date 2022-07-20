@@ -108,10 +108,10 @@ const Authorities: React.FC = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(entiList) && entiList.length)
+    if (Array.isArray(entiList))
       setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [entiList]);
+  }, [entiList?.length]);
 
   const getAuthoritiesList = () => {
     dispatch(GetEntityValues({ entity }));
@@ -235,6 +235,7 @@ const Authorities: React.FC = () => {
               onActionClick={onActionClick}
               onCellClick={(field, row) => console.log(field, row)}
               withActions
+              totalCounter={pagination?.totalElements}
             />
             {pagination?.pageNumber ? (
               <Paginator
@@ -248,7 +249,12 @@ const Authorities: React.FC = () => {
             ) : null}
           </>
         ) : (
-          <EmptySection title='Non ci sono enti' />
+          <EmptySection
+            title='Non sono presenti progetti'
+            subtitle='associati al tuo ruolo'
+            icon='it-note'
+            withIcon
+          />
         )}
       </div>
       <ManageGenericAuthority creation />
