@@ -21,9 +21,7 @@ import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import { openModal } from '../../../../../redux/features/modal/modalSlice';
 import { useNavigate } from 'react-router-dom';
-import {
-  GetAllServices,
-} from '../../../../../redux/features/administrativeArea/services/servicesThunk';
+import { GetAllServices } from '../../../../../redux/features/administrativeArea/services/servicesThunk';
 import {
   selectServices,
   selectEntityFilters,
@@ -36,7 +34,10 @@ import ManageServices from '../modals/manageService';
 import { formTypes } from '../utils';
 import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 import { formatDate } from '../../../../../utils/datesHelper';
-import { DownloadEntityValuesQueryParams, GetEntityFilterQueryParamsValues } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
+import {
+  DownloadEntityValuesQueryParams,
+  GetEntityFilterQueryParamsValues,
+} from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 
 const entity = 'servizio';
 const statusDropdownLabel = 'stato';
@@ -61,10 +62,15 @@ const Services = () => {
 
   const getAllFilters = () => {
     if (filterDropdownSelected !== 'stato')
-      dispatch(GetEntityFilterQueryParamsValues({ entity, dropdownType: 'stati' }));
+      dispatch(
+        GetEntityFilterQueryParamsValues({ entity, dropdownType: 'stati' })
+      );
     if (filterDropdownSelected !== 'tipologiaServizio')
       dispatch(
-        GetEntityFilterQueryParamsValues({ entity, dropdownType: 'tipologiaServizio' })
+        GetEntityFilterQueryParamsValues({
+          entity,
+          dropdownType: 'tipologiaServizio',
+        })
       );
   };
 
@@ -103,10 +109,9 @@ const Services = () => {
   };
 
   const [tableValues, setTableValues] = useState(updateTableValues());
-  
+
   useEffect(() => {
-    if (Array.isArray(servicesList))
-      setTableValues(updateTableValues());
+    if (Array.isArray(servicesList)) setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [servicesList?.length]);
 
@@ -134,9 +139,7 @@ const Services = () => {
 
   const handleDropdownFilters = (
     values: FilterI[],
-    filterKey:
-      | 'stato'
-      | 'tipologiaServizio'
+    filterKey: 'stato' | 'tipologiaServizio'
   ) => {
     setFilterDropdownSelected(filterKey);
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
@@ -144,9 +147,7 @@ const Services = () => {
 
   const handleOnSearchDropdownOptions = (
     searchValue: formFieldI['value'],
-    filterId:
-      | 'stato'
-      | 'tipologiaServizio'
+    filterId: 'stato' | 'tipologiaServizio'
   ) => {
     const searchDropdownValues = [...searchDropdown];
     if (

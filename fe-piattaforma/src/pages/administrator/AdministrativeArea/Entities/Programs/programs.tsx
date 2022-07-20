@@ -36,6 +36,7 @@ import {
   DownloadEntityValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
+import useGuard from '../../../../../hooks/guard';
 
 const entity = 'programma';
 const statusDropdownLabel = 'filtroStati';
@@ -44,6 +45,7 @@ const policyDropdownLabel = 'filtroPolicies';
 const Programs = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { hasUserPermission } = useGuard();
   const { programmi: programmiList = [] } = useAppSelector(selectEntityList);
   const filtersList = useAppSelector(selectEntityFilters);
   const pagination = useAppSelector(selectEntityPagination);
@@ -109,8 +111,7 @@ const Programs = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(programmiList))
-      setTableValues(updateTableValues());
+    if (Array.isArray(programmiList)) setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [programmiList?.length]);
 
@@ -246,8 +247,14 @@ const Programs = () => {
       dropdowns={dropdowns}
       filtersList={filtersList}
       {...programCta}
-      cta={newProgram}
-      ctaDownload={handleDownloadList}
+      cta={hasUserPermission(['new.prgm']) ? newProgram : undefined}
+      ctaDownload={
+        programmiList?.length &&
+        tableValues?.values?.length &&
+        hasUserPermission(['list.dwnl.prgm'])
+          ? handleDownloadList
+          : undefined
+      }
       resetFilterDropdownSelected={(filterKey: string) =>
         setFilterDropdownSelected(filterKey)
       }

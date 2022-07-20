@@ -209,7 +209,11 @@ const TableDesktop: React.FC<TableI> = (props) => {
           ))}
         </tbody>
       </TableKit>
-      {totalCounter ? <div className={clsx('text-right', 'neutral-2-color-b4')}>{`${values.length} di ${totalCounter}`}</div> : null}
+      {totalCounter ? (
+        <div
+          className={clsx('text-right', 'neutral-2-color-b4')}
+        >{`${values.length} di ${totalCounter}`}</div>
+      ) : null}
     </>
   ) : (
     <div className='d-flex flex-column align-items-center'>

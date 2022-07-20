@@ -143,7 +143,8 @@ const CreateUserAction = {
   type: 'administrativeArea/CreateUser',
 };
 export const CreateUser =
-  (payload: { [key: string]: formFieldI['value'] }) => async (dispatch: Dispatch) => {
+  (payload: { [key: string]: formFieldI['value'] }) =>
+  async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...CreateUserAction, payload });
@@ -157,7 +158,7 @@ export const CreateUser =
         nome: payload?.nome,
         ruolo: 'REG', // TODO: valore?
         tipoContratto: '', // TODO: valore?
-      }
+      };
 
       const res = await API.post(`/utente`, body);
 

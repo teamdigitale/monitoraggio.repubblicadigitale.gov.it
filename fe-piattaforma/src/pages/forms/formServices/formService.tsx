@@ -69,7 +69,9 @@ const FormService: React.FC<FormServiceI> = (props) => {
     Object.keys(formattedData).forEach((key: string) => {
       if (!Array.isArray(formattedData[key])) {
         const tmp =
-          typeof formattedData[key] === 'string' ? formattedData[key]?.toString() : '';
+          typeof formattedData[key] === 'string'
+            ? formattedData[key]?.toString()
+            : '';
         tmp ? (formattedData[key] = [tmp]) : null;
       }
     });

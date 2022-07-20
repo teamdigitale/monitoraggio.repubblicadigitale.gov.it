@@ -34,7 +34,7 @@ interface GenericSearchFilterTableLayoutI {
   Sidebar?: ReactElement;
   showButtons?: boolean;
   filtersList?: any;
-  cta?: () => void;
+  cta?: (() => void) | undefined;
   ctaHref?: string;
   textCta?: string;
   iconCta?: string;
@@ -42,7 +42,7 @@ interface GenericSearchFilterTableLayoutI {
   ctaPrint?: () => void;
   buttonsList?: ButtonInButtonsBar[];
   cardsCounter?: CardCounterI[];
-  ctaDownload?: () => void;
+  ctaDownload?:  (() => void) | undefined;
   resetFilterDropdownSelected?: (filterKey: string) => void;
   citizen?: boolean;
 }

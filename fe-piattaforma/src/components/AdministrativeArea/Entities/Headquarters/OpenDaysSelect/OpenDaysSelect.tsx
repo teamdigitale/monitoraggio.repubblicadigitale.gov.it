@@ -1,7 +1,10 @@
 import clsx from 'clsx';
 import { Collapse, FormGroup, Label } from 'design-react-kit';
 import React from 'react';
-import { dayOfWeek } from '../../../../../pages/administrator/AdministrativeArea/Entities/utils';
+import {
+  dayCode,
+  dayOfWeek,
+} from '../../../../../pages/administrator/AdministrativeArea/Entities/utils';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
 import Form from '../../../../Form/form';
@@ -10,7 +13,7 @@ import { OpenDayHours } from '../AccordionAddressList/AccordionAddress/Accordion
 import TimeSelectSection from '../TimeSelectSection/TimeSelectSection';
 
 interface OpenDaysSelectI {
-  openDays: OpenDayHours[];
+  openDays: OpenDayHours;
   onAddOpenDay: (i: number) => void;
   onRemoveOpenDay: (i: number) => void;
   onTimeChange: (i: number, timeSpan: string[][]) => void;
@@ -58,10 +61,8 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
                     <Input
                       id={`input-checkbox-day-${index}-${i}`}
                       type='checkbox'
-                      checked={openDays.some((day) =>
-                        dayOfWeek[i]
-                          .toUpperCase()
-                          .includes(day.giornoAperturaSede.toUpperCase())
+                      checked={Object.entries(openDays).some(
+                        ([key, value]) => key.includes(dayCode[i]) && value
                       )}
                       onInputChange={(value) => {
                         if (value) {
@@ -84,32 +85,28 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
                 className={clsx(isMobile && 'pt-5')}
                 isOpen={
                   !isMobile ||
-                  openDays.some((day) =>
-                    dayOfWeek[i]
-                      .toUpperCase()
-                      .includes(day.giornoAperturaSede.toUpperCase())
+                  Object.entries(openDays).some(
+                    ([key, value]) => key.includes(dayCode[i]) && value
                   )
                 }
               >
                 <TimeSelectSection
                   isReadOnly={isReadOnly}
                   disabled={
-                    !openDays.some((day) =>
-                      dayOfWeek[i]
-                        .toUpperCase()
-                        .includes(day.giornoAperturaSede.toUpperCase())
+                    !Object.entries(openDays).some(
+                      ([key, value]) => key.includes(dayCode[i]) && value
                     )
                   }
-                  timeSpan={openDays
-                    .filter((day) =>
-                      dayOfWeek[i]
-                        .toUpperCase()
-                        .includes(day.giornoAperturaSede.toUpperCase())
-                    )
-                    .map((day) => [
-                      day.orarioAperturaSede,
-                      day.orarioChiusuraSede,
-                    ])}
+                  timeSpan={[
+                    [
+                      openDays[`${dayCode[i]}OrarioApertura1`] || '09:00',
+                      openDays[`${dayCode[i]}OrarioChiusura1`] || '13:00',
+                    ],
+                    [
+                      openDays[`${dayCode[i]}OrarioApertura2`] || '14:00',
+                      openDays[`${dayCode[i]}OrarioChiusura2`] || '18:00',
+                    ],
+                  ]}
                   onTimeChange={(timeSpan: string[][]) =>
                     onTimeChange(i, timeSpan)
                   }
@@ -121,10 +118,8 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
         .filter(
           (_d, idx) =>
             (isReadOnly &&
-              openDays.find((day) =>
-                dayOfWeek[idx]
-                  .toUpperCase()
-                  .includes(day.giornoAperturaSede.toUpperCase())
+              Object.entries(openDays).some(
+                ([key, value]) => key.includes(dayCode[idx]) && value
               )) ||
             !isReadOnly
         )}

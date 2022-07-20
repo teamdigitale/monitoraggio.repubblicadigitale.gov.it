@@ -118,7 +118,6 @@ const HeadquartersDetails = () => {
           <ManageFacilitator />
           <ConfirmDeleteModal
             onConfirm={() => {
-              console.log('confirm delete');
               dispatch(closeModal());
             }}
             onClose={() => {

@@ -10,7 +10,6 @@ import { CitizenI } from '../../../pages/administrator/AdministrativeArea/Entiti
 import { CitizenListI, ServicesI } from './services/servicesThunk';
 import { HeadquarterLight } from './headquarters/headquartersThunk';
 
-
 export interface PaginationI {
   pageSize: number;
   pageNumber: number;
@@ -114,7 +113,11 @@ const initialState: AreaAmministrativaStateI = {
   },
   services: {
     list: [],
-    detail: { dettaglioServizio: {}, progettiAssociatiAlServizio: [], cittadini: { servizi: []} },
+    detail: {
+      dettaglioServizio: {},
+      progettiAssociatiAlServizio: [],
+      cittadini: { servizi: [] },
+    },
   },
 };
 
@@ -352,10 +355,10 @@ export const administrativeAreaSlice = createSlice({
       state.surveys.detail = { ...action.payload.data };
     },
     setHeadquartersList: (state, action) => {
-      state.headquarters.list = [...action.payload];
+      state.headquarters.list = action.payload ? [...action.payload] : null;
     },
     setHeadquarterDetails: (state, action) => {
-      state.headquarters.detail = { ...action.payload };
+      state.headquarters.detail = action.payload ? { ...action.payload } : null;
     },
     setUserDetails: (state, action) => {
       state.users.detail = { ...action.payload };
@@ -367,8 +370,10 @@ export const administrativeAreaSlice = createSlice({
       state.services.list = action.payload.data;
     },
     setServicesDetail: (state, action: PayloadAction<any>) => {
-      state.services.detail.dettaglioServizio = action.payload.dettaglioServizio;
-      state.services.detail.progettiAssociatiAlServizio = action.payload.progettiAssociatiAlServizio;
+      state.services.detail.dettaglioServizio =
+        action.payload.dettaglioServizio;
+      state.services.detail.progettiAssociatiAlServizio =
+        action.payload.progettiAssociatiAlServizio;
     },
     setServicesDetailCitizenList: (state, action: PayloadAction<any>) => {
       state.services.detail.cittadini = action.payload;

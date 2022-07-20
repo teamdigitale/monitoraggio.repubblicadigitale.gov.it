@@ -1,7 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 
-export type RolePermissionI = 'permission-1' | 'permission-2';
+export type RolePermissionI =
+  // technical permissions
+  | 'visible'
+  | 'hidden'
+
+  // BE permissions
+  | 'tab.am'
+  | 'subtab.prgm'
+  | 'subtab.prgt'
+  | 'list.prgm'
+  | 'list.prgt'
+  | 'list.dwnl.prgm'
+  | 'list.dwnl.prgt'
+  | 'view.card.prgm.full'
+  | 'new.prgm';
 
 interface RoleI {
   name: string;

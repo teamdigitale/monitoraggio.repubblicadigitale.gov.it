@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { formFieldI } from '../../../utils/formHelper';
 import { RootState } from '../../store';
-import { PaginationI } from "../administrativeArea/administrativeAreaSlice";
+import { PaginationI } from '../administrativeArea/administrativeAreaSlice';
 
 export interface CittadinoInfoI {
   idCittadino?: string;

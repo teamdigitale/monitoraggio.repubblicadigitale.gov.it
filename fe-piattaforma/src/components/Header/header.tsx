@@ -4,6 +4,7 @@ import {
   selectUserNotification,
   selectUser,
   UserStateI,
+  selectProfile,
 } from '../../redux/features/user/userSlice';
 import { useDispatch } from 'react-redux';
 import { selectDevice } from '../../redux/features/app/appSlice';
@@ -15,6 +16,7 @@ export interface HeaderI {
   isHeaderFull?: boolean | undefined;
   dispatch: (payload: unknown) => void;
   user: UserStateI['user'];
+  userProfile: UserStateI['profilo'];
   isLogged: boolean;
   notification?: [] | undefined;
 }
@@ -28,6 +30,7 @@ const Header: React.FC<HeaderProp> = (props) => {
 
   const isLogged = useAppSelector((state) => state.user.isLogged);
   const user = useAppSelector(selectUser);
+  const userProfile = useAppSelector(selectProfile);
   const dispatch = useDispatch();
 
   const notification = useAppSelector(selectUserNotification);
@@ -38,6 +41,7 @@ const Header: React.FC<HeaderProp> = (props) => {
     notification,
     isLogged,
     user,
+    userProfile,
     dispatch,
     isHeaderFull,
   };

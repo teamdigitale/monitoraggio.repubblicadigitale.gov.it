@@ -1,11 +1,7 @@
 import React, { useEffect } from 'react';
 import { useAppSelector } from '../../../redux/hooks';
 import { selectDevice } from '../../../redux/features/app/appSlice';
-import {
-  FormI,
-  newForm,
-  newFormField,
-} from '../../../utils/formHelper';
+import { FormI, newForm, newFormField } from '../../../utils/formHelper';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
@@ -13,7 +9,7 @@ import { OptionType } from '../../../components/Form/select';
 import { Form, Input } from '../../../components';
 import clsx from 'clsx';
 import { selectUser } from '../../../redux/features/user/userSlice';
-import {RegexpType} from "../../../utils/validator";
+import { RegexpType } from '../../../utils/validator';
 
 export interface FormOnboardingI {
   onInputChange?: withFormHandlerProps['onInputChange'];
@@ -42,6 +38,8 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
 
   useEffect(() => {
     if (user?.codiceFiscale) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       setFormValues(user);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

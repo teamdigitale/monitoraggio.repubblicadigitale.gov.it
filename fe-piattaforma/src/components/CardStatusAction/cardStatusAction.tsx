@@ -167,7 +167,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
               {onActionClick[CRUDActionTypes.VIEW] ? (
                 <Button
                   onClick={() => {
-                    onActionClick[CRUDActionTypes.VIEW](cf ? cf:id);
+                    onActionClick[CRUDActionTypes.VIEW](cf ? cf : id);
                   }}
                   className={clsx(device.mediaIsPhone ? 'px-0' : 'px-4')}
                 >

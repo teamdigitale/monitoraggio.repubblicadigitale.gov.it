@@ -13,7 +13,7 @@ import {
 } from 'design-react-kit';
 import Logo from '/public/assets/img/logo.png';
 //import LogoSmall from '/public/assets/img/logo-small.png';
-import campanella from '/public/assets/img/campanella.png';
+import Bell from '/public/assets/img/campanella.png';
 import { useTranslation } from 'react-i18next';
 import { HeaderI } from '../header';
 import { logout } from '../../../redux/features/user/userSlice';
@@ -30,6 +30,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
   isHeaderFull = true,
   dispatch,
   user,
+  userProfile,
   isLogged,
   notification,
 }) => {
@@ -76,7 +77,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               {user?.nome}&nbsp;{user?.cognome}
             </h6>
             <h6 className='font-weight-light text-nowrap'>
-              <em>{getRoleLabel(user?.role)}</em>
+              <em>{getRoleLabel(userProfile?.codiceRuolo)}</em>
             </h6>
           </div>
         </div>
@@ -279,7 +280,6 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               isLogged ? (
                 <>
                   {userDropDown()}
-
                   <div className='mx-4'>
                     {/* <Icon
                     color='white'
@@ -288,11 +288,14 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                     aria-label='Menu utente'
                     focusable={false}
                   /> */}
-                    <img
-                      src={campanella}
-                      alt='notification'
-                      aria-label='Menu utente'
-                    />
+                    <a href='/notifiche'>
+                      <Icon
+                        color='white'
+                        icon={Bell}
+                        size='sm'
+                        aria-label='Notifiche'
+                      />
+                    </a>
                     {notification?.length ? (
                       <Badge>{notification.length}</Badge>
                     ) : null}

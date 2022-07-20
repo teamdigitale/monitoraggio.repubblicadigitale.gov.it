@@ -16,7 +16,6 @@ const SectionInfo: React.FC<SectionInfoI> = (props) => {
   const [sectionInfoClose, setSectionInfoClose] = useState<boolean>(true);
 
   const closeSectionInfo = () => {
-    console.log('close section info');
     setSectionInfoClose(!sectionInfoClose);
   };
 

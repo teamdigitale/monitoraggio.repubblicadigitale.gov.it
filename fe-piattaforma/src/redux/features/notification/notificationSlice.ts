@@ -7,12 +7,23 @@ export interface NotifyI {
   id?: string | number;
   message?: string;
   status?: 'error' | 'message' | 'success' | 'warning';
+  name?: string;
+  description?: string;
+  object?: string;
+  date?: string;
+  icon?: string;
+  hours?: string;
+  iconColor?: string;
+  iconPadding?: boolean;
+  iconClass?: string;
+  unread?: boolean;
 }
 
 export const defaultNotify: NotifyI = {
   closable: false,
   duration: 'medium',
   status: 'message',
+  iconColor: 'white',
 };
 
 interface NotificationStateI {
@@ -42,10 +53,14 @@ export const notificationSlice = createSlice({
         );
       }
     },
+    setNotificationsList: (state, action: PayloadAction<any>) => {
+      state.list = action.payload.data;
+    },
   },
 });
 
-export const { emitNotify, removeNotify } = notificationSlice.actions;
+export const { emitNotify, removeNotify, setNotificationsList } =
+  notificationSlice.actions;
 
 export const selectNotification = (state: RootState) => state.notification.list;
 

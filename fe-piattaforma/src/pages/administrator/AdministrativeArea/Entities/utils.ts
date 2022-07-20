@@ -11,6 +11,8 @@ export const dayOfWeek = [
   'Domenica',
 ];
 
+export const dayCode = ['lun', 'mar', 'mer', 'gio', 'ven', 'sab', 'dom'];
+
 export const TableHeading: TableHeadingI[] = [
   {
     label: 'Nome',

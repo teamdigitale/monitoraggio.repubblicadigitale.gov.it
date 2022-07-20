@@ -1,4 +1,5 @@
 import { Dispatch } from '@reduxjs/toolkit';
+import { AddressInfoI } from '../../../../components/AdministrativeArea/Entities/Headquarters/AccordionAddressList/AccordionAddress/AccordionAddress';
 import API from '../../../../utils/apiHelper';
 import { hideLoader, showLoader } from '../../app/appSlice';
 import {
@@ -49,6 +50,8 @@ export const GetHeadquarterDetails =
       dispatch(showLoader());
       dispatch({ ...GetHeadquartersDetailAction, idSede });
       const res = await API.get(`sede/light/${idSede}`);
+      console.log(res);
+
       if (res?.data) {
         dispatch(
           setHeadquarterDetails({
@@ -98,11 +101,38 @@ export const AssignAuthorityHeadquarter =
     dispatch(showLoader());
     dispatch({ ...AssignHeadquarterAction });
     try {
-      const headquarterId = headquarterDetails?.id;
+      let headquarterId = headquarterDetails?.id;
 
-      await API.get(
-        `/sede/associa/ente/${authorityId}/sede/${headquarterId}/progetto/${projectId}/ruoloEnte/ruolo`
-      );
+      const body = {
+        ...headquarterDetails,
+        indirizziSedeFasceOrarie:
+          headquarterDetails.indirizziSedeFasceOrarie.map(
+            (addressInfo: AddressInfoI) => ({
+              ...addressInfo.indirizzoSede,
+              fasceOrarieAperturaIndirizzoSede: {
+                ...addressInfo.fasceOrarieAperturaIndirizzoSede,
+              },
+            })
+          ),
+      };
+
+      if (headquarterId) {
+        await API.put(`/sede/aggiorna/${headquarterId}`, { ...body });
+      } else {
+        const res = await API.post('/sede', {
+          ...body,
+        });
+
+        if (res?.data) {
+          headquarterId = res.data.idSedeCreata;
+        }
+      }
+
+      if (headquarterId) {
+        await API.get(
+          `/sede/associa/ente/${authorityId}/sede/${headquarterId}/progetto/${projectId}/ruoloEnte/ruolo`
+        );
+      }
     } catch (error) {
       console.log(error);
     } finally {

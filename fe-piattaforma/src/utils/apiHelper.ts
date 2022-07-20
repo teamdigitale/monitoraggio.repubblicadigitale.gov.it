@@ -8,7 +8,7 @@ const API = axios.create({
   headers: {
     'Content-Type': 'application/json',
     authToken: 'fguhbjinokj8765d578t9yvghugyftr646tg', // MOCK
-    userRole: JSON.parse(getSessionValues('user'))?.role,
+    userRole: JSON.parse(getSessionValues('profile'))?.codiceRuolo,
   },
   timeout: 10000,
 });

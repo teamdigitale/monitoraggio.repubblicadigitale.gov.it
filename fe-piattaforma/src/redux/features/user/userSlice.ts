@@ -8,13 +8,12 @@ import {
 
 export interface UserStateI {
   isLogged: boolean;
-  user?:
-    | {
-        name: string;
+  user?: {
+        name?: string;
         nome?: string;
-        surname: string;
+        surname?: string;
         cognome?: string;
-        role: string;
+        role?: string;
         codiceFiscale: string;
         profiliUtente?: any;
         integrazione: boolean;
@@ -24,6 +23,13 @@ export interface UserStateI {
   permissions: RolePermissionI[];
   idProgramma: string | null;
   idProgetto: string[] | null;
+  profilo?: {
+    codiceRuolo: string;
+  } | null;
+  ruoli: {
+    codiceRuolo: string;
+    permessi: [];
+  }[];
 }
 
 export interface UserProfileI {
@@ -41,22 +47,28 @@ export interface UserProfileI {
 const initialStateLogged: UserStateI = {
   isLogged: true,
   user: {
-    name: 'Mario',
-    surname: 'Rossi',
+    nome: 'Mario',
+    cognome: 'Rossi',
     role: 'DTD',
     codiceFiscale: 'UTENTE1',
     integrazione: true,
   },
-  permissions: ['permission-1'],
+  permissions: [],
   idProgramma: '0',
   idProgetto: ['0'],
+  profilo: {
+    codiceRuolo: 'REG',
+  },
+  ruoli: [],
 };
 const initialStateNotLogged: UserStateI = {
   isLogged: false,
   user: {},
-  permissions: ['permission-1'],
+  permissions: [],
   idProgramma: null,
   idProgetto: null,
+  profilo: null,
+  ruoli: [],
 };
 
 const initialState: UserStateI = initialStateNotLogged;
@@ -68,17 +80,23 @@ export const userSlice = createSlice({
     setUserContext: (state, action: PayloadAction<any>) => {
       state.user = {
         ...action.payload,
-        role: action.payload?.profiliUtente?.[0]?.codiceRuolo,
+        ruoli: undefined,
       };
-      //setSessionValues('user', state.user);
+      state.ruoli = action.payload.ruoli;
+      // setSessionValues('user', state.user);
     },
     setUserProfile: (state, action: PayloadAction<any>) => {
       state.idProgramma = action.payload.idProgramma;
       state.idProgetto = [action.payload.idProgetto];
-      setSessionValues('profile', action.payload);
+      state.profilo = action.payload;
+      if (state.ruoli?.length) {
+        state.permissions = state.ruoli.filter(({ codiceRuolo }) => codiceRuolo === action.payload.codiceRuolo)[0]?.permessi
+      }
+      // setSessionValues('profile', action.payload);
     },
     login: (state) => {
       setSessionValues('user', state.user);
+      setSessionValues('profile', state.profilo);
       state.isLogged = true;
     },
     logout: (state) => {
@@ -93,6 +111,7 @@ export const { login, logout, setUserContext, setUserProfile } =
 
 export const selectLogged = (state: RootState) => state.user.isLogged;
 export const selectUser = (state: RootState) => state.user.user;
+export const selectProfile = (state: RootState) => state.user.profilo;
 export const selectPermissions = (state: RootState) => state.user.permissions;
 export const selectUserNotification = (state: RootState) =>
   state.user.notification;

@@ -61,7 +61,9 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
   onConfirmText,
   onConfirmFunction,
 }) => {
-  const [currentStep, setCurrentStep] = useState<string>(selectedSteps.FISCAL_CODE);
+  const [currentStep, setCurrentStep] = useState<string>(
+    selectedSteps.FISCAL_CODE
+  );
   const dispatch = useDispatch();
   const citizenData: CittadinoInfoI | CittadinoInfoI[] | undefined =
     useAppSelector(selectEntitySearchResponse);

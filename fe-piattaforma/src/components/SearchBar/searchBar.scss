@@ -9,14 +9,6 @@
     font-size: rem(20px);
   }
 
-  .search-bar__placeholder {
-    font-size: rem(20px);
-  }
-
-  .search-bar-bg {
-    background-color: rgb(235,236,237,.2) ;
-  }
-
   .search-bar__value-container,
   .search-bar__input-container {
     margin-left: rem(12px);
@@ -30,6 +22,10 @@
   .close-action {
     border: none;
   }
+}
+
+.search-bar-bg {
+  background-color: rgba(235,236,237,0.2) ;
 }
 
 .search-bar-borders {

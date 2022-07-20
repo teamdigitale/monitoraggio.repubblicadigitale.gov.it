@@ -158,7 +158,8 @@ const Citizens = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(citizensList)) setTableValues(updateTableValues());
+    if (Array.isArray(citizensList) && citizensList.length)
+      setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [citizensList?.length]);
 
@@ -210,28 +211,28 @@ const Citizens = () => {
         citizen
       >
         {citizensList?.length && tableValues?.values?.length ? (
-        <div>
-          <Table
-            {...tableValues}
-            id='table'
-            onCellClick={(field, row) => console.log(field, row)}
-            //onRowClick={row => console.log(row)}
-            withActions
-            onActionClick={onActionClick}
-            totalCounter={pagination?.totalElements}
-          />
-          {pagination?.pageNumber ? (
-            <Paginator
-              activePage={pagination?.pageNumber}
-              center
-              refID='#table'
-              pageSize={pagination?.pageSize}
-              total={pagination?.totalPages}
-              onChange={handleOnChangePage}
+          <div>
+            <Table
+              {...tableValues}
+              id='table'
+              onCellClick={(field, row) => console.log(field, row)}
+              //onRowClick={row => console.log(row)}
+              withActions
+              onActionClick={onActionClick}
+              totalCounter={pagination?.totalElements}
             />
-          ) : null}
-        </div>
-          ) : (
+            {pagination?.pageNumber ? (
+              <Paginator
+                activePage={pagination?.pageNumber}
+                center
+                refID='#table'
+                pageSize={pagination?.pageSize}
+                total={pagination?.totalPages}
+                onChange={handleOnChangePage}
+              />
+            ) : null}
+          </div>
+        ) : (
           <EmptySection title='Non ci sono cittadini' />
         )}
         <SearchCitizenModal />

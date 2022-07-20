@@ -28,7 +28,7 @@ import {
   selectAuthorities,
   selectProjects,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
-import { EmptySection, NavLink } from '../../../../../components';
+import { CardStatusAction, EmptySection, NavLink } from '../../../../../components';
 import ProjectAccordionForm from '../../../../forms/formProjects/ProjectAccordionForm/ProjectAccordionForm';
 import FormAuthorities from '../../../../forms/formAuthorities';
 import ManagePartnerAuthority from '../modals/managePartnerAuthority';
@@ -70,6 +70,7 @@ const ProjectsDetails = () => {
   const { mediaIsDesktop, mediaIsPhone } = useAppSelector(selectDevice);
   const project = useAppSelector(selectProjects).detail;
   const projectDetails = project.dettagliInfoProgetto;
+  const programsDetails = project.dettagliInfoProgramma;
   const managingAuthorityID = project.idEnteGestoreProgetto;
   const partnerAuthoritiesList = project.entiPartner;
   const headquarterList = project?.sedi;
@@ -761,6 +762,19 @@ const ProjectsDetails = () => {
               {emptySection}
             </>
           </DetailLayout>
+          {(activeTab === tabs.INFO && !entityId && programsDetails?.id) ? (
+            <div className={clsx('my-5')}>
+              <h5 className={clsx('mb-4')} style={{ color: '#5C6F82'}}>Programma associato</h5>
+              <CardStatusAction
+                id={programsDetails?.id}
+                status={programsDetails?.stato}
+                title={programsDetails?.nomeBreve}
+                onActionClick={{
+                  [CRUDActionTypes.VIEW]: () => navigate(`/area-amministrativa/programmi/${programsDetails?.id}`, { replace: true })
+                }}
+              />
+            </div>
+          ) : null}
           {currentModal ? currentModal : null}
           <ConfirmDeleteModal
             onConfirm={() => {

@@ -9,6 +9,7 @@ import {
   setEntityFilterOptions,
   setAuthorityDetails,
   resetAuthorityDetails,
+  setHeadquarterDetails,
 } from '../administrativeAreaSlice';
 import { mapOptions } from '../../../../utils/common';
 import { getUserHeaders } from '../../user/userThunk';
@@ -211,6 +212,7 @@ export const GetAuthorityManagerDetail =
               entity === 'progetto' ? res.data.sediEnteGestoreProgetto : null,
           })
         );
+        dispatch(setHeadquarterDetails(null));
       }
     } catch (error) {
       console.log(error);
@@ -387,7 +389,7 @@ export const CreatePartnerAuthority =
       );
 
       if (body) {
-        let res = await API.post(`/ente/`, {
+        let res = await API.post(`/ente`, {
           ...body,
         });
         if (res) {
@@ -526,8 +528,8 @@ export const AssignPartnerAuthorityReferentDelegate =
         await API.post(endpoint, {
           cfUtente: userDetail.codiceFiscale?.toString().toUpperCase(),
           codiceRuolo: role,
-          idEnte: authorityId,
-          idProgramma: entityId,
+          idEntePartner: authorityId,
+          idProgetto: entityId,
           mansione: userDetail.mansione,
         });
       } else {
