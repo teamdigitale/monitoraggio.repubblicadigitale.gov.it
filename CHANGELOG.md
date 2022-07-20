@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.37](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.36...1.0.0-develop.37) (2022-07-20)
+
+
+### Bug Fixes
+
+* **be:** email service ([987f8fc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/987f8fc3bb3e1bfe8ace44ce32a2aa5ea1d953b4))
+
 ## [1.0.0-develop.36](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.35...1.0.0-develop.36) (2022-07-20)
 
 
