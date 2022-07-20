@@ -30,4 +30,15 @@ public interface ReferentiDelegatiEnteGestoreProgettoRepository extends JpaRepos
 	List<ReferenteDelegatoEnteGestoreProgettoProjection> findEmailReferentiDelegatiEnteGestoreByIdsProgetti(
 			@Param(value = "idsProgetto") List<Long> idsProgetto
 		);
+	
+	@Query(value = "SELECT stato_utente "
+			+ "FROM referente_delegati_gestore_progetto rdg "
+			+ "WHERE rdg.CF_UTENTE = :cfUtente "
+			+ "AND rdg.id_progetto = :idProgetto "
+			+ "AND rdg.codice_ruolo = :codiceRuolo", 
+			nativeQuery = true)
+	public List<String> findStatoByCfUtente(
+			String cfUtente, 
+			Long idProgetto, 
+			String codiceRuolo);
 }

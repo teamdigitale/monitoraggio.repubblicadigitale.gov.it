@@ -29,26 +29,38 @@ public class UtenteService {
 				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore));
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public void updateUtente(UtenteEntity utenteEntity) {
 		this.utenteRepository.save(utenteEntity);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public int countFacilitatoriPerSedeProgettoEnte(Long idProgetto, Long idSede, Long idEnte) {
 		return this.utenteRepository.countFacilitatoriPerSedeProgettoEnte(idProgetto, idSede, idEnte);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<String> getReferentiProgrammaById(Long id) {
 		return this.utenteRepository.findReferentiProgrammaById(id);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<String> getReferentiProgettoById(Long id) {
 		return this.utenteRepository.findReferentiProgettoById(id);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<String> getReferentiEntePartnerProgettoById(Long idProgetto, Long idEnte) {
 		return this.utenteRepository.findReferentiEntePartnerProgettoById(idProgetto, idEnte);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public boolean esisteUtenteByCodiceFiscale(@NotNull String codiceFiscale) {
 		return this.utenteRepository.findByCodiceFiscale(codiceFiscale).isPresent();
 	}

@@ -24,6 +24,8 @@ public class ContestoMapper {
 		contestoResource.setEmail(utente.getEmail());
 		contestoResource.setStato(utente.getStato());
 		contestoResource.setIntegrazione(utente.getIntegrazione());
+		contestoResource.setBio(utente.getMansione());
+		contestoResource.setTipoContratto(utente.getTipoContratto());
 		
 		List<RuoloResource> ruoliResource = utente.getRuoli()
 				.stream()
@@ -32,22 +34,11 @@ public class ContestoMapper {
 					ruoloResource.setCodiceRuolo(ruolo.getCodice());
 					ruoloResource.setNomeRuolo(ruolo.getNome());
 					
-//					List<PermessoResource> permessiResource = ruolo.getPermessi()
-//						.stream()
-//						.map(permesso -> {
-//							PermessoResource permessoResource = new PermessoResource();
-//							permessoResource.setDescrizionePermesso(permesso.getDescrizione());
-//							return permessoResource;
-//					    })
-//						.collect(Collectors.toList());
-//					
-//					ruoloResource.setPermessi(permessiResource);
 					return ruoloResource;
 				})
 				.collect(Collectors.toList());
 		
 		contestoResource.setRuoli(ruoliResource);
-		
 		return contestoResource;
 	}
 }

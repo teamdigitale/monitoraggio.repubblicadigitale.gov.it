@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.entity.CittadinoEntity;
 import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
@@ -48,12 +50,16 @@ public class QuestionarioCompilatoService {
 	@Autowired
 	private EmailService emailService;
 	
+	@LogMethod
+	@LogExecutionTime
 	public QuestionarioCompilatoCollection getQuestionarioCompilatoById(@NotBlank final String idQuestionarioCompilato) {
 		final String messaggioErrore = String.format("Questionario compilato con id=%s non trovato", idQuestionarioCompilato);
 		return questionarioCompilatoMongoRepository.findQuestionarioCompilatoById(idQuestionarioCompilato)
 				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore));
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void compilaQuestionario(
 			@NotNull String idQuestionarioCompilato,
@@ -116,6 +122,8 @@ public class QuestionarioCompilatoService {
 		return sezioniQuestionarioCompilato;
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	private void verificaEdEseguiConsensoTrattamentoDati(String codiceFiscaleCittadino, ConsensoTrattamentoDatiEnum consensoTrattamentoDatiEnum) {
 		// Se cittadino non ha mai dato il consenso, allora devo eseguire operazioni per la registrazione del consenso dati
@@ -153,6 +161,8 @@ public class QuestionarioCompilatoService {
 		return this.cittadinoService.getConsensoByCodiceFiscaleCittadino(codiceFiscaleCittadino) != null;
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void compilaQuestionarioAnonimo(
 			@NotNull String idQuestionarioCompilato,
@@ -162,6 +172,8 @@ public class QuestionarioCompilatoService {
 		compilaQuestionario(idQuestionarioCompilato, questionarioCompilatoRequest);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public QuestionarioCompilatoCollection getQuestionarioCompilatoByIdAnonimo(String idQuestionario, String token) throws ParseException {
 		verificaTokenQuestionario(idQuestionario, token);
 		return getQuestionarioCompilatoById(idQuestionario);		

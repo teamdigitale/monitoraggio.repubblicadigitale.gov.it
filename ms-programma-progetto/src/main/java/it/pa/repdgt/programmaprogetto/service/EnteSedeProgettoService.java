@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.programmaprogetto.repository.EnteSedeProgettoRepository;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.EnteSedeProgetto;
 import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoKey;
@@ -21,12 +23,16 @@ public class EnteSedeProgettoService {
 	@Autowired
 	private EnteSedeProgettoRepository enteSedeProgettoRepository;
 	
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaEnteSedeProgetto(Long idProgetto) {
 		List<EnteSedeProgetto> enteSedeProgetto = this.enteSedeProgettoRepository.getEnteSedeProgettoByIdProgetto(idProgetto);
 		
 		enteSedeProgetto.stream().forEach(this::cancellazioneAssociazioneEnteSedeProgetto);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellazioneAssociazioneEnteSedeProgetto(EnteSedeProgetto enteSedeProgetto) {
 		Long idSede = enteSedeProgetto.getId().getIdSede();
@@ -39,11 +45,15 @@ public class EnteSedeProgettoService {
 		this.enteSedeProgettoRepository.delete(enteSedeProgettoDBFetch);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public EnteSedeProgetto getAssociazioneEnteSedeProgetto(Long idSede, Long idEnte, Long idProgetto) {
 		EnteSedeProgettoKey id = new EnteSedeProgettoKey(idEnte, idSede, idProgetto);
 		return this.enteSedeProgettoRepository.findById(id).get();
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellaOTerminaEnteSedeProgetto(Long idProgetto) {
 		List<EnteSedeProgetto> enteSedeProgetto = this.enteSedeProgettoRepository.getEnteSedeProgettoByIdProgetto(idProgetto);
@@ -58,6 +68,8 @@ public class EnteSedeProgettoService {
 					});
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void terminazioneAssociazioneEnteSedeProgetto(EnteSedeProgetto enteSedeProgetto) {
 		Long idSede = enteSedeProgetto.getId().getIdSede();

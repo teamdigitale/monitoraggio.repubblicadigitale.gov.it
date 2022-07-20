@@ -192,7 +192,6 @@ public class ContestoServiceTest {
 		permessi.add(permesso);
 		gruppo.setPermessi(permessi);
 		gruppiPerRuolo.add(gruppo);
-		when(permessoRepository.findPermessiByGruppo("codiceGruppo")).thenReturn(permessi);
 		when(gruppoRepository.findGruppiByRuolo("DTD")).thenReturn(gruppiPerRuolo);
 		assertThat(service.getGruppiPermessi(ruoli).get(0).getCodiceRuolo()).isEqualTo("DTD");
 

@@ -33,6 +33,10 @@ public class IntegraContestoRequest implements Serializable {
 	@JsonProperty(value = "bio")
 	@NotBlank
 	private String bio;
+	
+	@JsonProperty(value = "tipoContratto")
+	@NotBlank
+	private String tipoContratto;
 
 	@JsonProperty(value = "abilitazioneConsensoTrattamentoDatiPersonali")
 	@NotNull

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
@@ -23,18 +25,24 @@ public class UtenteService {
 	@Autowired
 	private UtenteRepository utenteRepository;
 	
+	@LogMethod
+	@LogExecutionTime
 	public UtenteEntity getUtenteByCodiceFiscale(@NotNull final String codiceFiscaleUtente) {
 		final String messaggioErrore = String.format("Utente con codice fiscale '%s' non presente.", codiceFiscaleUtente);
 		return this.utenteRepository.findByCodiceFiscale(codiceFiscaleUtente)
 				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore) );
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public boolean isUtenteFacilitatore(@NotBlank final String codiceFiscaleUtente, @NotBlank final String codiceRuolo) {
 		return ( this.hasRuoloUtente(codiceFiscaleUtente, codiceRuolo)
 				&& 
 				RuoloUtenteEnum.FAC.toString().equalsIgnoreCase(codiceRuolo) );
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public boolean hasRuoloUtente(@NotBlank final String codiceFiscaleUtente, @NotBlank final String codiceRuolo) {
 		final List<RuoloEntity> ruoliUtente = this.ruoloService.getRuoliByCodiceFiscale(codiceFiscaleUtente);
 		return ruoliUtente

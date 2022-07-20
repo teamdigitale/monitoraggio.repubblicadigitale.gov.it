@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.ente.exception.RuoloException;
 import it.pa.repdgt.ente.repository.RuoloRepository;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteXRuolo;
 import it.pa.repdgt.shared.entity.key.UtenteXRuoloKey;
@@ -24,14 +26,20 @@ public class RuoloService {
 	@Autowired
 	private RuoloRepository ruoloRepository;
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<RuoloEntity> getRuoliByCodiceFiscale(String codiceFiscale) {
 		return this.ruoloRepository.findRuoliByCodiceFiscale(codiceFiscale);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public RuoloEntity getRuoloByCodiceRuolo(String codiceRuolo) {
 		return this.ruoloRepository.findByCodice(codiceRuolo);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void aggiungiRuoloAUtente(String codiceFiscaleUtente, String codiceRuolo) {
 		boolean esisteUtente = this.utenteService.esisteUtenteByCodiceFiscale(codiceFiscaleUtente);
@@ -50,6 +58,8 @@ public class RuoloService {
 		this.utenteXRuoloService.save(utenteXRuolo);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellaRuoloUtente(String codiceFiscaleUtente, String codiceRuolo) {
 		boolean esisteUtente = this.utenteService.esisteUtenteByCodiceFiscale(codiceFiscaleUtente);

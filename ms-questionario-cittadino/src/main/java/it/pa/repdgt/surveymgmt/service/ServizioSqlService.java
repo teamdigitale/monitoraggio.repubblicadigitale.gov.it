@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
 import it.pa.repdgt.shared.entity.ProgrammaXQuestionarioTemplateEntity;
@@ -42,7 +44,8 @@ public class ServizioSqlService {
 	@Autowired
 	private RuoloService ruoloService;
 	
-
+	@LogMethod
+	@LogExecutionTime
 	public ServizioEntity getServizioById(@NotNull Long idServizio) {
 		final String messaggioErrore = String.format("Servizio con id=%s non presente", idServizio);
 		return this.servizioSqlRepository.findById(idServizio)
@@ -56,6 +59,8 @@ public class ServizioSqlService {
 	 *  - statiServizioFiltro - stati serivizio da filtrare scelto nella dropdwon nella sezione Servizi
 	 *  
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public List<ServizioEntity> getAllServiziByFiltro(
 			final String criterioRicercaServizio, 
 			final List<String> tipologieServizi,
@@ -74,6 +79,8 @@ public class ServizioSqlService {
 	 *  - statiServizioFiltro - stati serivizio da filtrare scelto nella dropdwon nella sezione Servizi
 	 * 
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public List<ServizioEntity> getAllServiziByPolicySCDAndFiltro(
 			final String criterioRicercaServizio,
 			final List<String> tipologieServizi, 
@@ -95,6 +102,8 @@ public class ServizioSqlService {
 	 *  - idsProgettoFiltro  - conterrà l'unico progetto  con cui l'utente facilitatore si è profilato
 	 *  
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public List<ServizioEntity> getAllServiziByFacilitatoreOVolontarioAndFiltro(
 			final String criterioRicercaServizio,
 			@NotEmpty final List<String> idsProgrammaFiltro, 
@@ -122,6 +131,8 @@ public class ServizioSqlService {
 	 * 	- idsProgrammaFiltro - conterrà l'unico programma con cui l'utente referente/delegato dell'ente gestore di programma si è profilato
 	 *  
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public List<ServizioEntity> getAllServiziByReferenteODelegatoGestoreProgrammaAndFiltro(
 			final String criterioRicercaServizio,
 			@NotEmpty final List<String> idsProgrammaFiltro, 
@@ -146,6 +157,8 @@ public class ServizioSqlService {
 	 *  - idsProgettoFiltro  - conterrà l'unico progetto  con cui l'utente referente/delegato dell'ente gestore di progetto si è profilato
 	 *  
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public List<ServizioEntity> getAllServiziByReferenteODelegatoGestoreProgettoAndFiltro(
 			final String criterioRicercaServizio,
 			@NotEmpty final List<String> idsProgrammaFiltro, 
@@ -172,6 +185,8 @@ public class ServizioSqlService {
 	 *  - idsProgettoFiltro  - conterrà l'unico progetto  con cui l'utente referente/delegato dell'ente partner si è profilato
 	 *  
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public List<ServizioEntity> getAllServiziByReferenteODelegatoEntePartnerAndFiltro(
 			final String criterioRicercaServizio,
 			@NotEmpty final List<String> idsProgrammaFiltro, 
@@ -187,6 +202,8 @@ public class ServizioSqlService {
 			);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public ServizioEntity salvaServizio(
 			@NotNull final ServizioRequest servizioRequest,
@@ -195,6 +212,8 @@ public class ServizioSqlService {
 		return this.servizioSqlRepository.save(servizioEntity);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public ServizioEntity creaServizio(
 			@NotNull final ServizioRequest servizioRequest,
 			@NotNull final String idSezioneQ3Compilato) {
@@ -237,6 +256,8 @@ public class ServizioSqlService {
 		return servizioEntity;
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public ServizioEntity aggiornaServizio(
 			@NotNull final Long idServizio, 
@@ -259,6 +280,8 @@ public class ServizioSqlService {
 		return this.servizioSqlRepository.save(servizioFecthDB);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<EnteProjection> getEntiByFacilitatore(ProfilazioneParam profilazioneParam) {
 		final String codiceFiscaleUtenteLoggato = profilazioneParam.getCodiceFiscaleUtenteLoggato();
 		final String codiceRuoloUtenteLoggato = profilazioneParam.getCodiceRuoloUtenteLoggato().toString();
@@ -280,6 +303,8 @@ public class ServizioSqlService {
 		return this.enteSedeProgettoFacilitatoreService.getEntiByFacilitatore(profilazioneParam);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<SedeProjection> getSediByFacilitatore(ProfilazioneSedeParam profilazioneParam) {
 		final String codiceFiscaleUtenteLoggato = profilazioneParam.getCodiceFiscaleUtenteLoggato();
 		final String codiceRuoloUtenteLoggato = profilazioneParam.getCodiceRuoloUtenteLoggato().toString();
@@ -301,10 +326,14 @@ public class ServizioSqlService {
 		return this.enteSedeProgettoFacilitatoreService.getSediByFacilitatore(profilazioneParam);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaServivio(@NotNull final ServizioEntity servizioEntity) {
 		this.servizioSqlRepository.delete(servizioEntity);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public Optional<ServizioEntity> getPrimoServizioByIdCittadino(@NotNull Long idServizio, @NotNull Long idCittadino) {
 		return this.servizioSqlRepository.findServizioByCittadinoNotEqual(idServizio, idCittadino);
 	}

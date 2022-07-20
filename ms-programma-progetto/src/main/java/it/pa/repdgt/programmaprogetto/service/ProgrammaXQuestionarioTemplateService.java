@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.programmaprogetto.repository.ProgrammaXQuestionarioTemplateRepository;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.ProgrammaXQuestionarioTemplateEntity;
 import it.pa.repdgt.shared.entity.key.ProgrammaXQuestionarioTemplateKey;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
@@ -19,6 +21,8 @@ public class ProgrammaXQuestionarioTemplateService {
 	@Autowired
 	private ProgrammaXQuestionarioTemplateRepository programmaXQuestionarioTemplateRepository;
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(dontRollbackOn = Exception.class)
 	public void associaQuestionarioTemplateAProgramma(Long idProgramma, String idQuestionario) {
 		ProgrammaXQuestionarioTemplateKey id = new ProgrammaXQuestionarioTemplateKey(idProgramma, idQuestionario);
@@ -38,6 +42,8 @@ public class ProgrammaXQuestionarioTemplateService {
 		this.programmaXQuestionarioTemplateRepository.save(programmaXQuestionarioTemplate);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(dontRollbackOn = Exception.class)
 	public void terminaAssociazioneQuestionarioTemplateAProgramma(ProgrammaXQuestionarioTemplateEntity programmaXQuestionarioTemplate) {
 		programmaXQuestionarioTemplate.setStato(StatoEnum.TERMINATO.getValue());
@@ -45,10 +51,14 @@ public class ProgrammaXQuestionarioTemplateService {
 		this.programmaXQuestionarioTemplateRepository.save(programmaXQuestionarioTemplate);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public Optional<ProgrammaXQuestionarioTemplateEntity> getAssociazioneQuestionarioTemplateAttivaByIdProgramma(Long idProgramma) {
 		return this.programmaXQuestionarioTemplateRepository.getAssociazioneQuestionarioTemplateAttivaByIdProgramma(idProgramma);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaAssociazioneQuestionarioTemplateAProgramma(Long idProgramma) {
 		ProgrammaXQuestionarioTemplateEntity programmaXQuestionario = this.getAssociazioneQuestionarioTemplateAttivaByIdProgramma(idProgramma).get();
 		this.programmaXQuestionarioTemplateRepository.delete(programmaXQuestionario);

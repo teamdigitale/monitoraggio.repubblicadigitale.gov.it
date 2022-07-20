@@ -28,8 +28,8 @@ public class ProgrammaServiceTest {
 	
 	@Test
 	public void getIdProgettiByRuoloUtenteTest() {
-		when(this.programmaRepository.findIdProgrammiByRuoloUtente("cfUtente", "ruolo")).thenReturn(new ArrayList<Long>());
-		assertThat(service.getIdProgrammiByRuoloUtente("cfUtente", "ruolo")).isNotNull();
+		when(this.programmaRepository.findDistinctIdProgrammiByRuoloUtente("cfUtente", "ruolo")).thenReturn(new ArrayList<Long>());
+		assertThat(service.getDistinctIdProgrammiByRuoloUtente("cfUtente", "ruolo")).isNotNull();
 	}
 	
 	@Test

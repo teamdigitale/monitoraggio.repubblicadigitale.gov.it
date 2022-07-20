@@ -2,7 +2,9 @@ package it.pa.repdgt.gestioneutente.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -14,29 +16,23 @@ import org.springframework.transaction.annotation.Transactional;
 import it.pa.repdgt.gestioneutente.entity.projection.ProfiloProjection;
 import it.pa.repdgt.gestioneutente.entity.projection.ProgettoEnteProjection;
 import it.pa.repdgt.gestioneutente.entity.projection.ProgettoEnteSedeProjection;
-import it.pa.repdgt.gestioneutente.entity.projection.ReferenteDelegatoEnteGestoreProgettoProjection;
 import it.pa.repdgt.gestioneutente.exception.ContestoException;
 import it.pa.repdgt.gestioneutente.exception.ResourceNotFoundException;
 import it.pa.repdgt.gestioneutente.repository.ContestoRepository;
 import it.pa.repdgt.gestioneutente.repository.GruppoRepository;
-import it.pa.repdgt.gestioneutente.repository.PermessoRepository;
 import it.pa.repdgt.gestioneutente.request.IntegraContestoRequest;
-import it.pa.repdgt.gestioneutente.resource.GruppoPermessiResource;
 import it.pa.repdgt.gestioneutente.resource.RuoloProgrammaResource;
 import it.pa.repdgt.gestioneutente.resource.RuoloResource;
-import it.pa.repdgt.shared.awsintegration.service.EmailService;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.GruppoEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
-import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
-import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.service.storico.StoricoService;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class ContestoService implements RuoliUtentiConstants{
 	@Autowired
@@ -46,13 +42,7 @@ public class ContestoService implements RuoliUtentiConstants{
 	@Autowired
 	private GruppoRepository gruppoRepository;
 	@Autowired
-	private PermessoRepository permessoRepository;
-	@Autowired
 	private RuoloService ruoloService;
-	@Autowired 
-	private ReferentiDelegatiEnteGestoreProgettoService referentiDelegatiEnteGestoreProgettoService;
-	@Autowired 
-	private EmailService emailService;
 	@Autowired
 	private StoricoService storicoService;
 	@Autowired
@@ -60,11 +50,14 @@ public class ContestoService implements RuoliUtentiConstants{
 	@Autowired
 	private EntePartnerService entePartnerService;
 
+	@LogMethod
+	@LogExecutionTime
 	public UtenteEntity creaContesto(final String codiceFiscale) {
 		return this.utenteService.getUtenteEagerByCodiceFiscale(codiceFiscale);
 	}
 	
-	
+	@LogMethod
+	@LogExecutionTime
 	public List<RuoloProgrammaResource> getProfili(String codiceFiscale) {
 		// RUOLO - Programma X
 		UtenteEntity utenteFetch = this.utenteService.getUtenteEagerByCodiceFiscale(codiceFiscale);
@@ -108,26 +101,22 @@ public class ContestoService implements RuoliUtentiConstants{
 	}
 
 
+	@LogMethod
+	@LogExecutionTime
 	public List<RuoloResource> getGruppiPermessi(List<RuoloResource> ruoli) {
 		List<RuoloResource> ruoliResult = new ArrayList<>();
 		for(RuoloResource ruolo : ruoli) {
 			//per ogni ruolo recupero la lista dei gruppi associati
 			List<GruppoEntity> gruppiPerRuolo = gruppoRepository.findGruppiByRuolo(ruolo.getCodiceRuolo());
-			List<GruppoPermessiResource> gruppiPermessiList = new ArrayList<>();
+			Set<String> permessiList = new HashSet<>();
 			for(GruppoEntity gruppo : gruppiPerRuolo) {
-				//per ogni gruppo associato al ruolo in input creo la lista di elementi codiceGruppo - ListaCodicePermessi
-				GruppoPermessiResource gruppoPermessiresource = new GruppoPermessiResource();
-				gruppoPermessiresource.setCodiceGruppo(gruppo.getCodice());
-				gruppoPermessiresource.setCodicePermesso( permessoRepository.findPermessiByGruppo(gruppo.getCodice())
+				List<String> codiciPermessi = gruppo.getPermessi()
 						.stream()
-						.map(permesso -> { 
-							String codicePermesso = permesso.getCodice().toString();
-							return codicePermesso;
-						}).collect(Collectors.toList())
-				);
-				gruppiPermessiList.add(gruppoPermessiresource);
+						.map(permesso -> permesso.getCodice())
+						.collect(Collectors.toList());
+				permessiList.addAll(codiciPermessi);
 			}
-			ruolo.setGruppiPermessi(gruppiPermessiList);
+			ruolo.setPermessi(permessiList);
 			ruoliResult.add(ruolo);
 		}
 
@@ -135,6 +124,8 @@ public class ContestoService implements RuoliUtentiConstants{
 	}
 
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackFor = Exception.class)
 	public void verificaSceltaProfilo(String codiceFiscaleUtente, String codiceRuoloUtente, Long idProgramma, Long idProgetto){
 		//Verifico se il ruolo è valido per quell'utente avente quel codice fiscale
@@ -264,12 +255,15 @@ public class ContestoService implements RuoliUtentiConstants{
 		}
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void integraContesto(@Valid IntegraContestoRequest integraContestoRequestRequest) {
 		UtenteEntity utenteDBFtech = this.utenteService.getUtenteByCodiceFiscale(integraContestoRequestRequest.getCodiceFiscale());
 		utenteDBFtech.setIntegrazione(Boolean.TRUE);
 		utenteDBFtech.setEmail(integraContestoRequestRequest.getEmail());
 		utenteDBFtech.setTelefono(integraContestoRequestRequest.getTelefono());
 		utenteDBFtech.setMansione(integraContestoRequestRequest.getBio());
+		utenteDBFtech.setTipoContratto(integraContestoRequestRequest.getTipoContratto());
 		
 		if(integraContestoRequestRequest.getAbilitazioneConsensoTrattamentoDatiPersonali() != Boolean.TRUE) {
 			final String messaggioErrore = "Impossibile richiedere integrazione dati senza"

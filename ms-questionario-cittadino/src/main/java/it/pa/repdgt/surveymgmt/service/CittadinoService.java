@@ -17,6 +17,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.CittadinoEntity;
 import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
@@ -59,12 +61,16 @@ public class CittadinoService {
 	@Autowired
 	private QuestionarioCompilatoMongoRepository questionarioCompilatoMongoRepository;
 	
+	@LogMethod
+	@LogExecutionTime
 	public CittadinoEntity getCittadinoById(Long idCittadino) {
 		String errorMessage = String.format("Cittadino con id=%s non presente", String.valueOf(idCittadino));
 		return this.cittadinoRepository.findById(idCittadino)
 				.orElseThrow( () -> new ResourceNotFoundException(errorMessage));
 	}
-	
+
+	@LogMethod
+	@LogExecutionTime
 	public Page<CittadinoDto> getAllCittadiniPaginati(
 			CittadiniPaginatiParam cittadiniPaginatiParam,
 			Integer currPage, 
@@ -124,6 +130,8 @@ public class CittadinoService {
 		return this.cittadinoRepository.findAllCittadiniFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsSedi);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<SedeDto> getAllSediDropdown(@Valid CittadiniPaginatiParam cittadiniPaginatiParam) {
 		String codiceRuoloUtente = cittadiniPaginatiParam.getCodiceRuoloUtenteLoggato().toString();
 		
@@ -154,6 +162,8 @@ public class CittadinoService {
 			return listaSediDto;
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public SchedaCittadinoBean getSchedaCittadinoById(Long idCittadino) {
 		CittadinoEntity cittadinoFetchDB = this.getCittadinoById(idCittadino);
 		
@@ -180,6 +190,8 @@ public class CittadinoService {
 		return this.cittadinoRepository.findDettaglioServiziSchedaCittadino(idCittadino);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public Optional<CittadinoEntity> getCittadinoByCodiceFiscaleOrNumeroDocumento(
 			final Boolean isCodiceFiscaleNonDisponibile,
 			final String codiceFiscale, 
@@ -192,16 +204,22 @@ public class CittadinoService {
 		return cittadinoRepository.findByCodiceFiscale(codiceFiscale);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public Optional<CittadinoEntity> getByCodiceFiscaleOrNumeroDocumento(
 			final String codiceFiscale, 
 			final String numeroDocumento ) {
 		return this.cittadinoRepository.findByCodiceFiscaleOrNumeroDocumento(codiceFiscale, numeroDocumento);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void salvaCittadino(CittadinoEntity cittadino) {
 		this.cittadinoRepository.save(cittadino);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void aggiornaCittadino(Long id, CittadinoRequest cittadinoRequest) {
 		if(!this.cittadinoRepository.findById(id).isPresent()) {
@@ -262,6 +280,8 @@ public class CittadinoService {
 	 * Restituisce la stringa contenente la tipologia di consenso 
 	 * data per il cittadino che ha quel dato codice fiscale
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public String getConsensoByCodiceFiscaleCittadino(String codiceFiscaleCittadino) {
 		return this.cittadinoRepository.findConsensoByCodiceFiscale(codiceFiscaleCittadino);
 	}

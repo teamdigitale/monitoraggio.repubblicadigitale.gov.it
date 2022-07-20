@@ -138,6 +138,8 @@ public class EnteService {
 		return this.enteRepository.findByCriterioRicerca(criterioRicerca,"%"+criterioRicerca+"%");
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public Page<EnteDto> getAllEntiPaginati(
 			EntiPaginatiParam entiPaginatiParam,
 			Integer currPage, 
@@ -169,6 +171,8 @@ public class EnteService {
 		return new PageImpl<EnteDto>(entiUtenteAggregati.subList(start, end), paginazione, entiUtenteAggregati.size());
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<String> getAllProfiliEntiDropdown(EntiPaginatiParam entiPaginatiParam) {
 		String codiceRuoloUtente = entiPaginatiParam.getCodiceRuolo().toString();
 		boolean hasRuoloUtente = this.ruoloService
@@ -186,6 +190,8 @@ public class EnteService {
 		return profiliEnti;
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<ProgrammaDto> getAllProgrammiDropdown(EntiPaginatiParam entiPaginatiParam) {
 		String codiceRuoloUtente = entiPaginatiParam.getCodiceRuolo().toString();
 		boolean hasRuoloUtente = this.ruoloService
@@ -199,6 +205,8 @@ public class EnteService {
 		return programmiDropdown;
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<ProgettoDto> getAllProgettiDropdown(EntiPaginatiParam entiPaginatiParam) {
 		String codiceRuoloUtente = entiPaginatiParam.getCodiceRuolo().toString();
 		boolean hasRuoloUtente = this.ruoloService
@@ -212,6 +220,8 @@ public class EnteService {
 		return progettiDropdown;
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<EnteDto> getAllEntiByCodiceRuoloAndIdProgramma(EntiPaginatiParam entiPaginatiParam) {
 		List<Map<String, String>> resultSet;
 		
@@ -254,6 +264,8 @@ public class EnteService {
 		return listaEntiDto;
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<EnteDto> aggregaEntiUguali(List<EnteDto> enti) {
 		Set<EnteDto> setEntiAggregati = new HashSet<>();
 		
@@ -350,7 +362,9 @@ public class EnteService {
 		
 		return listaProgettiDto;
 	}
-
+	
+	@LogMethod
+	@LogExecutionTime
 	public List<Map<String, String>> getAllEntiFiltrati(FiltroRequest filtro) {
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsProgrammi = filtro.getIdsProgrammi();
@@ -366,6 +380,8 @@ public class EnteService {
 		return this.enteRepository.findAllEntiFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsProgrammi, idsProgetti, profiliEnteUpperCase, policy);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<Map<String, String>> getAllProgrammiFiltrati(FiltroRequest filtro) {
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsProgrammi = filtro.getIdsProgrammi();
@@ -381,6 +397,8 @@ public class EnteService {
 		return this.enteRepository.findAllProgrammiFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsProgrammi, idsProgetti, profiliEnteUpperCase, policy);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<Map<String, String>> getAllProgettiFiltrati(FiltroRequest filtro) {
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsProgrammi = filtro.getIdsProgrammi();
@@ -411,6 +429,8 @@ public class EnteService {
 		return this.enteRepository.findAllEntiFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsProgrammi, idsProgetti, profiliEnteUpperCase, policy);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<Map<String, String>> getAllProgrammiPerDSCUFiltrati(FiltroRequest filtro) {
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsProgrammi = filtro.getIdsProgrammi();
@@ -426,6 +446,8 @@ public class EnteService {
 		return this.enteRepository.findAllProgrammiFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsProgrammi, idsProgetti, profiliEnteUpperCase, policy);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<Map<String, String>> getAllProgettiPerDSCUFiltrati(FiltroRequest filtro) {
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsProgrammi = filtro.getIdsProgrammi();
@@ -441,6 +463,8 @@ public class EnteService {
 		return this.enteRepository.findAllProgettiFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsProgrammi, idsProgetti, profiliEnteUpperCase, policy);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	private List<Map<String, String>> getAllEntiGestoreProgrammaByIdProgrammaFiltrati(Long idProgramma, FiltroRequest filtro) {
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsProgrammi = Arrays.asList(String.valueOf(idProgramma));
@@ -456,6 +480,8 @@ public class EnteService {
 		return this.enteRepository.findAllEntiFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsProgrammi, idsProgetti, profiliEnteUpperCase, policy);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	private List<Map<String, String>> getAllProgettiGestoreProgrammaByIdProgrammaFiltrati(Long idProgramma, FiltroRequest filtro) {
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsProgrammi = Arrays.asList(String.valueOf(idProgramma));
@@ -541,21 +567,18 @@ public class EnteService {
 		return this.enteRepository.findProgrammaById(idProgramma);
 	}
 
-	// MI SERVE
 	@LogMethod
 	@LogExecutionTime
 	public boolean esisteEnteById(Long idEnte) {
 		return this.enteRepository.findById(idEnte).isPresent();
 	}
 	
-	// MI SERVE
 	@LogMethod
 	@LogExecutionTime
 	public boolean esisteEnteByPartitaIva(String partitaIva) {
 		return this.enteRepository.findByPartitaIva(partitaIva).isPresent();
 	}
 
-	// MI SERVE
 	/**
 	 * @throws Exception 
 	 * @throws EnteException
@@ -576,6 +599,8 @@ public class EnteService {
 	/**
 	 * Associa Utente Referente o utente delegato all'ente gestore di programma
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
     public void associaReferenteODelegatoGestoreProgramma(ReferenteDelegatoGestoreProgrammaRequest referenteDelegatoGestoreProgrammaRequest) {
 		Long idProgramma = referenteDelegatoGestoreProgrammaRequest.getIdProgramma();
@@ -647,6 +672,8 @@ public class EnteService {
 	/**
 	 * Cancella associazione Utente Referente o utente delegato all'ente gestore di programma
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
     public void cancellaAssociazioneReferenteODelegatoGestoreProgramma(ReferentiDelegatiEnteGestoreProgrammaEntity referentiDelegatiEnteGestoreProgrammaEntity, String codiceRuolo) {
 		Long idProgramma = referentiDelegatiEnteGestoreProgrammaEntity.getId().getIdProgramma();
@@ -670,6 +697,8 @@ public class EnteService {
 	/**
 	 * Assegna Utente Referente o utente delegato all'ente gestore di progetto
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
     public void associaReferenteODelegatoGestoreProgetto(ReferenteDelegatoGestoreProgettoRequest referenteDelegatoGestoreProgettoRequest) {
 		Long idProgetto = referenteDelegatoGestoreProgettoRequest.getIdProgetto();
@@ -737,6 +766,8 @@ public class EnteService {
 	/**
 	 * Cancella associazione Utente Referente o utente delegato all'ente gestore di progetto
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
     public void cancellaAssociazioneReferenteODelegatoGestoreProgetto(ReferentiDelegatiEnteGestoreProgettoEntity referentiDelegatiEnteGestoreProgettoEntity, String codiceRuolo) {
 		Long idProgetto = referentiDelegatiEnteGestoreProgettoEntity.getId().getIdProgetto();
@@ -757,6 +788,8 @@ public class EnteService {
 		}
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public SchedaEnteGestoreBean getSchedaEnteGestoreProgrammaByIdProgramma(Long idProgramma) {
 		String errorMessage = String.format("Non esiste nessun ente gestore per programma con id=%s", idProgramma);
 		SchedaEnteGestoreBean schedaEnteGestoreProgramma = new SchedaEnteGestoreBean();
@@ -772,6 +805,8 @@ public class EnteService {
 		return schedaEnteGestoreProgramma;
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public SchedaEnteGestoreProgettoBean getSchedaEnteGestoreProgettoByIdProgetto(Long idProgetto) {
 		String errorMessage = String.format("Non esiste nessun ente gestore per progetto con id=%s", idProgetto);
 		SchedaEnteGestoreProgettoBean schedaEnteGestoreProgetto = new SchedaEnteGestoreProgettoBean();
@@ -800,6 +835,8 @@ public class EnteService {
 		return schedaEnteGestoreProgetto;
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public SchedaEnteBean getSchedaEnteById(Long idEnte) {
 		String errorMessage = String.format("Non esiste nessun ente con id = %s ", idEnte);
 		EnteEntity ente = this.enteRepository.findById(idEnte).orElseThrow(() -> new EnteException(errorMessage));
@@ -898,6 +935,8 @@ public class EnteService {
 		return listaProfiliEnte;
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void aggiornaEnte(EnteEntity enteEntity, Long idEnte) {
 		if (!this.enteRepository.existsById(idEnte)) {
 			String errorMessage = String.format("Impossibile aggiornare l'ente con id=%s. Ente non presente", idEnte);
@@ -909,6 +948,8 @@ public class EnteService {
 		this.enteRepository.save(enteEntity);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void modificaEnteGestoreProgramma(EnteEntity enteModificato, Long idEnte, Long idProgramma) {
 		EnteEntity enteFetchDB = this.getEnteById(idEnte);
@@ -944,6 +985,8 @@ public class EnteService {
 		}
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void modificaEnteGestoreProgetto(EnteEntity enteModificato, Long idEnte, Long idProgetto) {
 		EnteEntity enteFetchDB = this.getEnteById(idEnte);
@@ -979,6 +1022,8 @@ public class EnteService {
 		}
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellaEntePartnerPerProgetto(Long idEnte, Long idProgetto) {
 		if(!this.esisteEnteById(idEnte)) {
@@ -1030,6 +1075,8 @@ public class EnteService {
 		this.enteSedeProgettoService.cancellazioneAssociazioniEnteSedeProgettoByIdEnteAndIdProgetto(idEnte, idProgetto);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaGestoreProgramma(Long idEnte, Long idProgramma) {
 		if(!this.esisteEnteById(idEnte)) {
 			String errorMessage = String.format("L'ente con id=%s non esiste", idEnte);
@@ -1061,6 +1108,8 @@ public class EnteService {
 					  });
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellaGestoreProgetto(Long idEnte, Long idProgetto) {
 		if(!this.esisteEnteById(idEnte)) {
@@ -1108,6 +1157,8 @@ public class EnteService {
 		this.enteSedeProgettoService.cancellazioneAssociazioniEnteSedeProgettoByIdEnteAndIdProgetto(idEnte, idProgetto);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void terminaGestoreProgramma(Long idEnte, Long idProgramma){
 		if(!this.esisteEnteById(idEnte)) {
@@ -1140,6 +1191,8 @@ public class EnteService {
 		this.programmaService.salvaProgramma(programmaFetchDB);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void terminaGestoreProgetto(Long idEnte, Long idProgetto) {
 		if(!this.esisteEnteById(idEnte)) {
@@ -1183,6 +1236,8 @@ public class EnteService {
 								   });
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void terminaEntePartnerPerProgetto(Long idEnte, Long idProgetto) {
 		if(!this.esisteEnteById(idEnte)) {
@@ -1232,6 +1287,8 @@ public class EnteService {
 		this.entePartnerService.salvaEntePartner(entePartnerProgetto);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgramma(
 			@Valid ReferenteDelegatoGestoreProgrammaRequest referenteDelegatoGestoreProgrammaRequest) {
@@ -1248,6 +1305,8 @@ public class EnteService {
 		}
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void terminaAssociazioneReferenteDelegatoGestoreProgramma(
 			ReferentiDelegatiEnteGestoreProgrammaEntity referentiDelegatiEnteGestoreProgrammaEntity,
 			String codiceRuolo) {
@@ -1276,6 +1335,8 @@ public class EnteService {
 		this.referentiDelegatiEnteGestoreProgrammaService.save(referentiDelegatiEnteGestoreProgrammaEntity);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgetto(
 			@Valid ReferenteDelegatoGestoreProgettoRequest referenteDelegatoGestoreProgettoRequest) {
@@ -1292,6 +1353,8 @@ public class EnteService {
 		}
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void terminaAssociazioneReferenteDelegatoGestoreProgetto(
 			ReferentiDelegatiEnteGestoreProgettoEntity referentiDelegatiEnteGestoreProgettoEntity, String codiceRuolo) {
 		Long idProgetto = referentiDelegatiEnteGestoreProgettoEntity.getId().getIdProgetto();

@@ -47,14 +47,20 @@ public class EnteService {
 		return this.enteRepository.findById(idEnte).isPresent();
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public String getRuoloEnteByIdProgettoAndIdSedeAndIdEnte(Long idProgetto, Long idSede, Long idEnte) {
 		return this.enteRepository.findRuoloEnteByIdProgettoAndIdSedeAndIdEnte(idProgetto, idSede, idEnte);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<Long> getIdEnteByIdProgettoAndIdSede(Long idProgetto, Long idSede) {
 		return this.enteRepository.findIdEnteByIdProgettoAndIdSede(idProgetto, idSede);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void terminaEntiPartner(Long idProgetto) {
 		List<EntePartnerEntity> entiPartner = this.entePartnerService.getEntiPartnerByProgetto(idProgetto);
@@ -74,6 +80,8 @@ public class EnteService {
 				   });
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void terminaEntePartner(EntePartnerEntity entePartner) {
 		List<ReferentiDelegatiEntePartnerDiProgettoEntity> referentiEDelegati = this.entePartnerService.getReferentiEDelegatiEntePartner(entePartner.getId().getIdEnte(), entePartner.getId().getIdProgetto());

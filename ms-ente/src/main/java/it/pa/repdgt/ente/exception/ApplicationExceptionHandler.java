@@ -43,11 +43,10 @@ public class ApplicationExceptionHandler {
 	@ExceptionHandler(value = ConstraintViolationException.class)
 	public List<String> constraintViolationException(ConstraintViolationException exc) throws IOException {
 		log.error("{}", exc);
-		List<String> erroriValidazione = exc.getConstraintViolations()
-											.stream()
-											.map(ConstraintViolation::getMessage)
-											.collect(Collectors.toList());
-		return erroriValidazione;
+		return exc.getConstraintViolations()
+						.stream()
+						.map(ConstraintViolation::getMessage)
+						.collect(Collectors.toList());
 	}
 	
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)

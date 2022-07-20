@@ -310,6 +310,7 @@ public class ProgettoMapper {
 		dettaglioProgramma.setId(programmaFetchDB.getId());
 		dettaglioProgramma.setCodice(programmaFetchDB.getCodice());
 		dettaglioProgramma.setNomeBreve(programmaFetchDB.getNomeBreve());
+		dettaglioProgramma.setStato(programmaFetchDB.getStato());
 		return dettaglioProgramma;
 	}
 }

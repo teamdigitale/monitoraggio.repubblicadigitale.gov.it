@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.constants.DomandeStrutturaQ1AndQ2Constants;
 import it.pa.repdgt.shared.entity.CittadinoEntity;
@@ -87,6 +89,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	@Autowired
 	private ServizioSqlRepository servizioSqlRepository;
 
+	@LogMethod
+	@LogExecutionTime
 	public CittadinoServizioBean getAllCittadiniServizioByProfilazioneAndFiltroPaginati(
 			Long idServizio,
 			@NotNull @Valid final ProfilazioneParam profilazione,
@@ -138,6 +142,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 				filtroListaCittadiniServizio.getStatiQuestionario());
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<String> getAllStatiQuestionarioCittadinoServizioDropdown(
 			Long idServizio,
 			@NotNull @Valid final ProfilazioneParam profilazione,
@@ -157,6 +163,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 						: filtroListaCittadiniServizio.getStatiQuestionario();
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<String> getAllStatiQuestionarioByProfilazioneAndFiltro(
 			Long idServizio,
 			@NotNull @Valid FiltroListaCittadiniServizioParam filtroListaCittadiniServizio) {
@@ -172,6 +180,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 				criterioRicercaCittadinoServizioLike);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<GetCittadinoProjection> getAllCittadiniByCodFiscOrNumDoc(String tipoDocumento,
 			@NotNull String criterioRicerca) {		
 		return cittadinoServizioRepository.getAllCittadiniByCodFiscOrNumDoc(tipoDocumento,
@@ -180,6 +190,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 						: "%".concat(criterioRicerca).concat("%"));
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void creaNuovoCittadino(
 			@NotNull final Long idServizio, 
@@ -254,6 +266,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	}
 	
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	private void associaCittadinoAServizio(@NotNull final Long idServizio, @NotNull final CittadinoEntity cittadino) {
 		ServizioXCittadinoEntity servizioXCittadino = new ServizioXCittadinoEntity();
@@ -264,6 +278,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		servizioXCittadinoRepository.save(servizioXCittadino);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void creaQuestionarioNonInviato(@NotNull final ServizioEntity servizioDBFetch, @NotNull final CittadinoEntity cittadino){
 		
@@ -280,7 +296,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		this.questionarioCompilatoMongoService.save(questionarioCompilatoCreato);
 	}
 
-
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public QuestionarioCompilatoCollection creoQuestionarioCompilatoCollection(
 			CittadinoEntity cittadino,
@@ -313,6 +330,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		return questionarioCompilato;
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public String creaSezioneQuestionarioQ1ByCittadino(@NotNull final CittadinoEntity cittadino) {
 		final String jsonStringSezioneQ1 = String.format(SEZIONE_Q1_TEMPLATE,
 				ID_DOMANDA_NOME, cittadino.getNome(),
@@ -339,6 +358,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		return jsonStringSezioneQ1;
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public String creaSezioneQuestionarioQ2ByCittadino(@NotNull final Long idCittadino, @NotNull final Long idServizio) {
 		Optional<ServizioEntity> primoServizio = servizioSqlService.getPrimoServizioByIdCittadino(idServizio, idCittadino);
 		Boolean esistePrimoServizio = primoServizio.isPresent();
@@ -349,6 +370,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		return jsonStringSezioneQ2;
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void salvaQuestionarioCompilatoSql(
 			@NotNull final CittadinoEntity cittadino, 
@@ -372,6 +395,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public List<CittadinoUploadBean> caricaCittadiniSuServizio(MultipartFile fileCittadiniCSV, Long idServizio) {
 		List<CittadinoUploadBean> esiti = new ArrayList<>();
@@ -479,6 +504,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 				cittadinoUpload.getNumeroDocumento() != null && !cittadinoUpload.getNumeroDocumento().isEmpty();
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void inviaQuestionario(@NotNull final String idQuestionario, @NotNull final Long idCittadino) {
 		QuestionarioCompilatoEntity questionarioCompilato = questionarioCompilatoSqlRepository.findById(idQuestionario)
@@ -502,6 +529,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		}catch(Exception ex) {
 			log.error("Impossibile inviare la mail al cittadino con id={}.", cittadino.getId());
 			log.error("{}", ex);
+			throw new ServizioException("Impossibile inviare la mail");
 		}
 	}
 

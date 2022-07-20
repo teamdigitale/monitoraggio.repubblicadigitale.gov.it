@@ -277,19 +277,24 @@ public class ProgrammaService {
 		}
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public String getStatoProgrammaByProgrammaId(Long idProgramma) {
 		String errorMessage = String.format("Stato programma non presente");
 		return this.programmaRepository.findStatoById(idProgramma)
 				.orElseThrow(() -> new ResourceNotFoundException(errorMessage));
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public String getPolicyProgrammaByProgrammaId(Long idProgramma) {
 		String errorMessage = String.format("Policy programma non presente");
 		return this.programmaRepository.findPolicyById(idProgramma)
 				.orElseThrow(() -> new ResourceNotFoundException(errorMessage));
 	}
 
-
+	@LogMethod
+	@LogExecutionTime
 	public List<ProgrammaEntity> getProgrammiPerDSCU(FiltroRequest filtroRequest) {
 		return this.programmaRepository.findProgrammiByPolicy(
 				PolicyEnum.SCD.toString(),
@@ -299,6 +304,8 @@ public class ProgrammaService {
 				);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<ProgrammaEntity> getProgrammiPerDSCU(ProgettoFiltroRequest filtroRequest) {
 		return this.programmaRepository.findByPolicy(
 				PolicyEnum.SCD.toString(),
@@ -309,6 +316,8 @@ public class ProgrammaService {
 				);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<String> getAllStati(FiltroRequest filtroRequest) {
 		return this.programmaRepository.findAllStati(
 				filtroRequest.getCriterioRicerca(),
@@ -318,6 +327,8 @@ public class ProgrammaService {
 				);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public Set<String> getStatiPerDSCU(FiltroRequest filtroRequest) {
 		return this.programmaRepository.findStatiByPolicy(
 				PolicyEnum.SCD.toString(),
@@ -327,6 +338,8 @@ public class ProgrammaService {
 				);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<String> getAllPolicies(FiltroRequest filtroRequest) {
 		return this.programmaRepository.findAllPolicies(
 				filtroRequest.getCriterioRicerca(),
@@ -335,6 +348,8 @@ public class ProgrammaService {
 				filtroRequest.getStati());
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<String> getAllPolicies(ProgettoFiltroRequest filtroRequest) {
 		return this.programmaRepository.findAllPoliciesByProgettoFiltro(
 				filtroRequest.getCriterioRicerca(),
@@ -345,6 +360,8 @@ public class ProgrammaService {
 				);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public Set<String> getPoliciesPerDSCU() {
 		return this.programmaRepository.findPoliciesPerDSCU(PolicyEnum.SCD.toString());
 	}
@@ -378,6 +395,8 @@ public class ProgrammaService {
 	/**
 	 * @throws ProgrammaException
 	 */
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public ProgrammaEntity creaNuovoProgramma(ProgrammaEntity programma) {
 		if(this.programmaRepository.findProgrammaByCodice(programma.getCodice()).isPresent()) {
@@ -471,6 +490,8 @@ public class ProgrammaService {
 	/**
 	 * @throws ProgrammaException
 	 */
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public ProgrammaEntity aggiornaProgramma(final ProgrammaRequest programmaRequest, final Long idProgramma) {
 		if (!this.programmaRepository.existsById(idProgramma)) {
@@ -498,6 +519,8 @@ public class ProgrammaService {
 	 * Restituisce true se il programma può essere aggiornato e false altrimenti.
 	 * 
 	 **/
+	@LogMethod
+	@LogExecutionTime
 	public boolean isProgrammmaAggiornabileByStatoProgramma(final String statoProgramma) {
 		return (    
 					StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(statoProgramma)
@@ -505,6 +528,8 @@ public class ProgrammaService {
 			);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public SchedaProgrammaBean getSchedaProgrammaById(Long idProgramma) {
 		ProgrammaEntity programmaFetchDB = this.getProgrammaById(idProgramma);
 		
@@ -540,6 +565,8 @@ public class ProgrammaService {
 		return schedaProgramma;
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void terminaProgramma(Long idProgramma, Date dataTerminazione) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -592,6 +619,8 @@ public class ProgrammaService {
 		return StatoEnum.ATTIVO.getValue().equalsIgnoreCase(statoProgramma);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void associaQuestionarioTemplateAProgramma(Long idProgramma, String idQuestionario) {
 		if (!this.programmaRepository.existsById(idProgramma)) {
