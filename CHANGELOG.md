@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.40](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.39...1.0.0-develop.40) (2022-07-21)
+
+
+### Features
+
+* **be:** sviluppo open data cittadino ([79c4cf1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/79c4cf1c504c3f42ab69f50d5da942bfc40d31b4))
+* **be:** sviluppo open data cittadino ([#200](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/issues/200)) ([0f8abb6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0f8abb628d3505198adf3265594493e39bbbd352))
+
 ## [1.0.0-develop.39](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.38...1.0.0-develop.39) (2022-07-21)
 
 
