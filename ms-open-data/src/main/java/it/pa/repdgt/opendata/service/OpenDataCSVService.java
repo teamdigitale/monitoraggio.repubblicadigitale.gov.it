@@ -28,7 +28,7 @@ public class OpenDataCSVService {
 	private SezioneQ3Repository sezioneQ3Repository;
 
 	public List<OpenDataCittadinoCSVBean> getAllOpenDataCittadino() {
-		List<OpenDataCittadinoCSVBean> openDataCittadinoList =  this.cittadinoRepository
+		List<OpenDataCittadinoCSVBean> openDataCittadini =  this.cittadinoRepository
 			.findAllCittadinoServizioSede()
 			.stream()
 			.map(openDataCittadino -> {
@@ -64,7 +64,7 @@ public class OpenDataCSVService {
 			})
 			.collect(Collectors.toList());
 			
-		return openDataCittadinoList;
+		return openDataCittadini;
 	}
 	
 	public class SezioneQ3Compilato{
