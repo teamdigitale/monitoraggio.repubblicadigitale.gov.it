@@ -14,7 +14,6 @@ import {
 } from '../../../../../redux/features/modal/modalSlice';
 import { useDispatch } from 'react-redux';
 import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
-import ConfirmDeleteModal from '../modals/confirmDeleteModal';
 import ManageGenericAuthority from '../modals/manageGenericAuthority';
 import PeopleIcon from '/public/assets/img/people-icon.png';
 import { useAppSelector } from '../../../../../redux/hooks';
@@ -33,11 +32,11 @@ import {
   RemoveReferentDelegate,
   UserAuthorityRole,
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
-import DeleteReferentDelegateModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteReferentDelegateModal/DeleteReferentDelegateModal';
+import { RemoveAuthorityHeadquarter } from '../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
+import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 
 const AuthoritiesDetails = () => {
-  const authorityDetails =
-    useAppSelector(selectAuthorities)?.detail.dettagliInfoEnte;
+  const authorityDetails = useAppSelector(selectAuthorities)?.detail;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -47,7 +46,7 @@ const AuthoritiesDetails = () => {
   const device = useAppSelector(selectDevice);
 
   useEffect(() => {
-    if (authorityDetails?.nomeBreve && authorityId) {
+    if (authorityDetails?.dettagliInfo?.nomeBreve && authorityId) {
       dispatch(
         updateBreadcrumb([
           {
@@ -61,7 +60,7 @@ const AuthoritiesDetails = () => {
             link: true,
           },
           {
-            label: authorityDetails?.nomeBreve,
+            label: authorityDetails?.dettagliInfo?.nomeBreve,
             url: `/area-amministrativa/enti/${authorityId}`,
             link: false,
           },
@@ -100,13 +99,12 @@ const AuthoritiesDetails = () => {
       );
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      // dispatch(RemoveReferentDelegate())
-      console.log(td);
       dispatch(
         openModal({
-          id: 'delete-referent-delegate',
+          id: 'delete-entity',
           payload: {
-            cf: '',
+            entity: 'referent-delegate',
+            cf: td,
             role: 'REPP',
             text: 'Confermi di voler eliminare questo referente?',
           },
@@ -125,14 +123,36 @@ const AuthoritiesDetails = () => {
       );
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      console.log(td);
       dispatch(
         openModal({
-          id: 'delete-referent-delegate',
+          id: 'delete-entity',
           payload: {
-            cf: '',
+            entity: 'referent-delegate',
+            cf: td,
             role: 'DEPP',
             text: 'Confermi di voler eliminare questo delegato?',
+          },
+        })
+      );
+    },
+  };
+
+  const onActionClickSede: CRUDActionsI = {
+    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+      projectId &&
+        authorityId &&
+        navigate(
+          `/area-amministrativa/progetti/${projectId}/enti/${authorityId}/sedi/${td}`
+        );
+    },
+    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+      dispatch(
+        openModal({
+          id: 'delete-entity',
+          payload: {
+            entity: 'headquarter',
+            headquarterId: td,
+            text: 'Confermi di voler eliminare questa sede?',
           },
         })
       );
@@ -144,10 +164,11 @@ const AuthoritiesDetails = () => {
       {
         title: 'Referenti',
         items:
-          authorityDetails?.referentiEnteGestore?.map(
+          authorityDetails?.referentiEntePartner?.map(
             (ref: { [key: string]: string }) => ({
               // TODO: check when BE add codiceFiscale
               ...ref,
+              id: ref.codiceFiscale,
               actions: onActionClickReferenti,
             })
           ) || [],
@@ -155,10 +176,10 @@ const AuthoritiesDetails = () => {
       {
         title: 'Delegati',
         items:
-          authorityDetails?.delegatiEnteGestore?.map(
+          authorityDetails?.delegatiEntePartner?.map(
             (del: { [key: string]: string }) => ({
-              // TODO: check when BE add codiceFiscale
               ...del,
+              id: del.codiceFiscale,
               actions: onActionClickDelegati,
             })
           ) || [],
@@ -166,9 +187,10 @@ const AuthoritiesDetails = () => {
       {
         title: 'Sedi',
         items:
-          authorityDetails?.sediGestoreProgetto?.map(
+          authorityDetails?.sediEntePartner?.map(
             (sedi: { [key: string]: string }) => ({
               ...sedi,
+              actions: onActionClickSede,
             })
           ) || [],
       },
@@ -181,7 +203,16 @@ const AuthoritiesDetails = () => {
       color: 'primary',
       outline: true,
       text: 'Elimina',
-      onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+      onClick: () =>
+        dispatch(
+          openModal({
+            id: 'delete-entity',
+            payload: {
+              entity: 'authority',
+              text: 'Confermi di voler eliminare questo ente?',
+            },
+          })
+        ),
     },
     {
       size: 'xs',
@@ -205,6 +236,18 @@ const AuthoritiesDetails = () => {
       await dispatch(RemoveReferentDelegate(authorityId, projectId, cf, role));
       dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
     }
+    dispatch(closeModal());
+  };
+
+  const removeHeadquarter = async (headquarterId: string) => {
+    if (projectId && authorityId) {
+      await dispatch(
+        RemoveAuthorityHeadquarter(authorityId, headquarterId, projectId)
+      );
+
+      dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
+    }
+
     dispatch(closeModal());
   };
 
@@ -236,21 +279,16 @@ const AuthoritiesDetails = () => {
           <ManageGenericAuthority />
           <ManageDelegate />
           <ManageReferal />
-          <ManageHeadquarter />
-          <DeleteReferentDelegateModal
+          <ManageHeadquarter enteType='partner' />
+          <DeleteEntityModal
             onClose={() => dispatch(closeModal())}
-            onConfirm={(cf: string, role: UserAuthorityRole) =>
-              removeReferentDelegate(cf, role)
-            }
-          />
-          <ConfirmDeleteModal
-            onConfirm={() => {
-              dispatch(closeModal());
+            onConfirm={(payload) => {
+              if (payload?.entity === 'referent-delegate')
+                removeReferentDelegate(payload?.cf, payload?.role);
+              if (payload?.entity === 'headquarter')
+                removeHeadquarter(payload?.headquarterId);
+              if (payload?.entity === 'authority') dispatch(closeModal());
             }}
-            onClose={() => {
-              dispatch(closeModal());
-            }}
-            text='Confermi di voler eliminare questo ente?'
           />
         </div>
       </div>

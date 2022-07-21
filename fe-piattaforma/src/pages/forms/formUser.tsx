@@ -9,7 +9,12 @@ import withFormHandler, {
 import { selectUsers } from '../../redux/features/administrativeArea/administrativeAreaSlice';
 import { GetUserDetails } from '../../redux/features/administrativeArea/user/userThunk';
 import { useAppSelector } from '../../redux/hooks';
-import { formFieldI, newForm, newFormField } from '../../utils/formHelper';
+import {
+  CommonFields,
+  formFieldI,
+  newForm,
+  newFormField,
+} from '../../utils/formHelper';
 import { RegexpType } from '../../utils/validator';
 
 interface UserInformationI {
@@ -126,7 +131,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
         />
         <Input
           {...form?.mansione}
-          label='Mansione'
+          label='Posizione Lavorativa'
           col='col-12 col-lg-6'
           // placeholder='Inserisci bio'
           onInputChange={onInputChange}
@@ -147,40 +152,32 @@ const FormUser: React.FC<UserFormI> = (props) => {
 
 const form = newForm([
   newFormField({
+    ...CommonFields.NOME,
     field: 'nome',
     id: 'nome',
     required: true,
-    minimum: 3,
-    maximum: 30,
-    regex: RegexpType.REGISTRY,
   }),
   newFormField({
+    ...CommonFields.COGNOME,
     field: 'cognome',
     id: 'cognome',
     required: true,
-    minimum: 2,
-    maximum: 30,
-    regex: RegexpType.REGISTRY,
   }),
   newFormField({
     field: 'id',
     id: 'id',
   }),
   newFormField({
+    ...CommonFields.CODICE_FISCALE,
     field: 'codiceFiscale',
     id: 'codiceFiscale',
     required: true,
-    regex: RegexpType.FISCAL_CODE,
-    maximum: 16,
-    minimum: 16,
   }),
   newFormField({
+    ...CommonFields.EMAIL,
     field: 'email',
-    regex: RegexpType.EMAIL,
     id: 'email',
     required: true,
-    minimum: 5,
-    maximum: 50,
   }),
   newFormField({
     field: 'telefono',

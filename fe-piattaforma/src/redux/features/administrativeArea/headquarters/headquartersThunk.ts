@@ -17,6 +17,7 @@ export interface HeadquarterFacilitator {
   cognome: string;
   id: string;
   stato: string;
+  codiceFiscale?: string;
 }
 
 const SetHeadquartersDetailsAction = {
@@ -44,18 +45,45 @@ export const SetHeadquartersDetails =
 const GetHeadquartersDetailAction = {
   type: 'administrativeArea/GetHeadquartersDetail',
 };
-export const GetHeadquarterDetails =
-  (idSede: string) => async (dispatch: Dispatch) => {
+export const GetHeadquarterLightDetails =
+  (headquarterId: string) => async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
-      dispatch({ ...GetHeadquartersDetailAction, idSede });
-      const res = await API.get(`sede/light/${idSede}`);
-      console.log(res);
+      dispatch({ ...GetHeadquartersDetailAction, headquarterId });
+      const res = await API.get(`sede/light/${headquarterId}`);
 
       if (res?.data) {
         dispatch(
           setHeadquarterDetails({
             dettagliInfoSede: res.data.dettaglioSede,
+            facilitatoriSede: res.data.facilitatoriSede,
+            dettaglioProgetto: res.data.dettaglioProgetto,
+          })
+        );
+      }
+    } catch (error) {
+      console.log('GetHeadquartersDetail error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+export const GetHeadquarterDetails =
+  (headquarterId: string, authorityId: string, projectId: string) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...GetHeadquartersDetailAction, headquarterId });
+      const res = await API.get(
+        `sede/${projectId}/${authorityId}/${headquarterId}`
+      );
+
+      if (res?.data) {
+        dispatch(
+          setHeadquarterDetails({
+            dettagliInfoSede: res.data.dettaglioSede,
+            facilitatoriSede: res.data.facilitatoriSede,
+            dettaglioProgetto: res.data.dettaglioProgetto,
           })
         );
       }
@@ -153,6 +181,93 @@ export const RemoveAuthorityHeadquarter =
       await API.delete(
         `/sede/cancellaOTerminaAssociazione/ente/${authorityId}/sede/${headquarterId}/progetto/${projectId}`
       );
+
+      dispatch(setHeadquarterDetails(null));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const AssignFacilitatorAction = {
+  type: 'administrativeArea/AssignFacilitator',
+};
+
+export const AssignHeadquarterFacilitator =
+  (
+    userDetail: any,
+    authorityId: string,
+    projectId: string,
+    headquarterId: string
+  ) =>
+  async (dispatch: Dispatch) => {
+    dispatch(showLoader());
+    dispatch({ ...AssignFacilitatorAction });
+    const endpoint = '/sede/associa/facilitatore';
+
+    const body = {
+      cfUtente: userDetail?.codiceFiscale?.toString().toUpperCase(),
+      idEnte: authorityId,
+      idProgetto: projectId,
+      idSede: headquarterId,
+      tipoContratto: userDetail?.tipoContratto,
+    };
+
+    try {
+      if (userDetail?.id) {
+        await API.post(endpoint, body);
+      } else {
+        const payload = {
+          telefono: userDetail?.telefono,
+          codiceFiscale: userDetail?.codiceFiscale?.toString().toUpperCase(),
+          cognome: userDetail?.cognome,
+          email: userDetail?.email,
+          mansione: userDetail?.mansione,
+          nome: userDetail?.nome,
+          ruolo: '',
+          tipoContratto: userDetail?.tipoContratto, // TODO: valore?
+        };
+
+        const res = await API.post(`/utente`, payload);
+        if (res) {
+          await API.post(endpoint, body);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const RemoveFacilitatorAction = {
+  type: 'administrativeArea/RemoveFacilitator',
+};
+
+export const RemoveHeadquarterFacilitator =
+  (
+    userCF: any,
+    authorityId: string,
+    projectId: string,
+    headquarterId: string
+  ) =>
+  async (dispatch: Dispatch) => {
+    dispatch(showLoader());
+    dispatch({ ...RemoveFacilitatorAction });
+    const endpoint = '/sede/associa/facilitatore';
+
+    const body = {
+      cfUtente: userCF,
+      idEnte: authorityId,
+      idProgetto: projectId,
+      idSede: headquarterId,
+    };
+
+    try {
+      await API.post(endpoint, {
+        ...body,
+      });
     } catch (error) {
       console.log(error);
     } finally {

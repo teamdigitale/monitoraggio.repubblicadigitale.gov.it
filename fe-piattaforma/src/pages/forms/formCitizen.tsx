@@ -14,6 +14,7 @@ import {
 import { useAppSelector } from '../../redux/hooks';
 import { formatDate } from '../../utils/datesHelper';
 import {
+  CommonFields,
   formFieldI,
   FormHelper,
   newForm,
@@ -312,30 +313,23 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
 
 const form = newForm([
   newFormField({
+    ...CommonFields.NOME,
     field: 'nome',
     required: true,
     id: 'name',
-    minimum: 3,
-    maximum: 30,
-    regex: RegexpType.REGISTRY,
   }),
   newFormField({
+    ...CommonFields.COGNOME,
     field: 'cognome',
     required: true,
     id: 'surname',
-    minimum: 2,
-    maximum: 30,
-    regex: RegexpType.REGISTRY,
   }),
   newFormField({
+    ...CommonFields.CODICE_FISCALE,
     field: 'codiceFiscale',
     id: 'codiceFiscale',
     label: 'Codice fiscale',
-    type: 'text',
     required: true,
-    regex: RegexpType.FISCAL_CODE,
-    maximum: 16,
-    minimum: 16,
   }),
   newFormField({
     field: 'flag-codice-fiscale',
@@ -417,13 +411,11 @@ const form = newForm([
     required: false,
   }),
   newFormField({
+    ...CommonFields.EMAIL,
     field: 'email',
     id: 'email',
-    regex: RegexpType.EMAIL,
     label: 'Email',
     required: true,
-    minimum: 5,
-    maximum: 50,
   }),
   newFormField({
     field: 'prefissoTelefono',

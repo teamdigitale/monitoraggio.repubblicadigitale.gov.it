@@ -48,7 +48,7 @@ const AccordionAddressList: React.FC<AccordionAddressListI> = ({
   };
 
   return (
-    <div className='mx-5'>
+    <div>
       {addressList
         .filter((address) => !address.indirizzoSede?.cancellato)
         .map((address, index, arr) => (
@@ -63,30 +63,32 @@ const AccordionAddressList: React.FC<AccordionAddressListI> = ({
             }
           />
         ))}
-      <div
-        className={clsx(
-          'w-100',
-          'mb-5',
-          'mt-3',
-          'd-flex',
-          'justify-content-end'
-        )}
-      >
-        <Button
-          onClick={newAddressHandler}
-          className='d-flex justify-content-between'
-          type='button'
+      {!isReadOnly && (
+        <div
+          className={clsx(
+            'w-100',
+            'mb-5',
+            'mt-3',
+            'd-flex',
+            'justify-content-end'
+          )}
         >
-          <Icon
-            color='primary'
-            icon='it-plus-circle'
-            size='sm'
-            className='mr-2'
-            aria-label='Aggiungi'
-          />
-          Aggiungi Indirizzo
-        </Button>
-      </div>
+          <Button
+            onClick={newAddressHandler}
+            className='d-flex justify-content-between'
+            type='button'
+          >
+            <Icon
+              color='primary'
+              icon='it-plus-circle'
+              size='sm'
+              className='mr-2'
+              aria-label='Aggiungi'
+            />
+            Aggiungi Indirizzo
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

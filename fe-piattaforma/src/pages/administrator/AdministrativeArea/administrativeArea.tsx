@@ -321,6 +321,11 @@ const AreaAmministrativaRoutes = [
     element={<HeadquartersDetails />}
   />,
   <Route
+    key='progetti-dettaglio-ente-dettaglio-sedi-dettaglio'
+    path='progetti/:projectId/enti/:authorityId/sedi/:headquarterId'
+    element={<HeadquartersDetails />}
+  />,
+  <Route
     key='progetti-dettaglio-utenti-dettaglio'
     path='progetti/:entityId/:userType/:userId'
     element={<UsersDetails />}

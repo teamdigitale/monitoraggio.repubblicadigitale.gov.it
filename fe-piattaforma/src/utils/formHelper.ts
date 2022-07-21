@@ -260,3 +260,31 @@ export const FormHelper = {
     }
   },
 };
+
+export const CommonFields = {
+  CODICE_FISCALE: {
+    minimum: 16,
+    maximum: 16,
+    regex: RegexpType.FISCAL_CODE,
+  },
+  COGNOME: {
+    minimum: 2,
+    maximum: 30,
+    regex: RegexpType.REGISTRY,
+  },
+  EMAIL: {
+    regex: RegexpType.EMAIL,
+    minimum: 5,
+    maximum: 50,
+  },
+  NOME: {
+    minimum: 3,
+    maximum: 30,
+    regex: RegexpType.REGISTRY,
+  },
+  PIVA: {
+    minimum: 11,
+    maximum: 11,
+    regex: RegexpType.PIVA,
+  },
+};

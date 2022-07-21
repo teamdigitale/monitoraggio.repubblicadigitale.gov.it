@@ -13,6 +13,7 @@ interface ProgramInformationI {
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   setIsFormValid?: (param?: boolean | undefined) => void;
   creation?: boolean;
+  edit?: boolean;
 }
 
 interface FormEnteGestoreProgettoFullInterface
@@ -34,6 +35,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     getFormValues = () => ({}),
     // creation = false,
     // intoModal = false,
+    edit = false,
   } = props;
   const programDetails: { [key: string]: string } | undefined =
     useAppSelector(selectPrograms).detail.dettagliInfoProgramma;
@@ -170,7 +172,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
         {formDisabled ? (
           <Input
             {...form?.policy}
-            label='Policy'
+            label='Intervento'
             col='col-12 col-lg-6'
             onInputChange={(value, field) => {
               onInputDataChange(value, field);
@@ -179,12 +181,13 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           />
         ) : (
           <Select
+            isDisabled={edit}
             {...form?.policy}
             required
             value={form?.policy.value as string}
             col='col-12 col-lg-6'
-            label='Policy'
-            placeholder='Inserisci policy'
+            label='Intervento'
+            placeholder='Inserisci intervento'
             options={[
               { label: 'RFD', value: 'RFD' },
               { label: 'SCD', value: 'SCD' },
@@ -193,7 +196,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
               onInputDataChange(value, field);
             }}
             wrapperClassName='mb-5'
-            aria-label='policy'
+            aria-label='intervento'
             className='pl-lg-3'
           />
         )}

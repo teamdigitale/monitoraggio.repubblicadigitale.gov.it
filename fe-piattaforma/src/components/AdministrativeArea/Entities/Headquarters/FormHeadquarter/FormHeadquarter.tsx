@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 // import { useDispatch } from 'react-redux';
-import { Form, Input } from '../../../..';
+import { Form, Input, Select } from '../../../..';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../../../hoc/withFormHandler';
@@ -90,10 +90,7 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
   };
 
   return (
-    <Form
-      className='mt-5 mx-5'
-      formDisabled={formDisabled ? formDisabled : false}
-    >
+    <Form className='mt-5' formDisabled={formDisabled ? formDisabled : false}>
       <Form.Row className='justify-content-between'>
         {formDisabled ? (
           <Input
@@ -115,13 +112,36 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           onInputChange={onInputDataChange}
           // placeholder='Inserisci nome programma'
         />
-        <Input
-          {...form?.serviziErogati}
-          required
-          label='Servizi Erogati'
-          col='col-12 col-lg-6'
-          onInputChange={onInputDataChange}
-        />
+        {/* Facilitazione, Formazione, Facilitazione e Formazione */}
+        {formDisabled ? (
+          <Input
+            {...form?.serviziErogati}
+            label='Servizi Erogati'
+            col='col-12 col-lg-6'
+            onInputChange={(value, field) => {
+              onInputDataChange(value, field);
+            }}
+          />
+        ) : (
+          <Select
+            {...form?.serviziErogati}
+            required
+            value={form?.serviziErogati.value as string}
+            col='col-12 col-lg-6'
+            label='Servizi Erogati'
+            options={[
+              { label: 'Facilitazione', value: 'Facilitazione' },
+              { label: 'Formazione', value: 'Formazione' },
+              {
+                label: 'Facilitazione e Formazione',
+                value: 'Facilitazione e Formazione',
+              },
+            ]}
+            onInputChange={onInputDataChange}
+            wrapperClassName='mb-5'
+            aria-label='servizi'
+          />
+        )}
         {formDisabled ? (
           <Input
             {...form?.enteDiRiferimento}

@@ -361,7 +361,7 @@ export const GetPartnerAuthorityDetail =
         dispatch(
           setAuthorityDetails({
             delegatiEntePartner: res.data.delegatiEntePartner,
-            referentiEntePartner: res.data.referenteEntePartner,
+            referentiEntePartner: res.data.referentiEntePartner,
             dettagliInfoEnte: Object.fromEntries(
               Object.entries(res.data.ente).map(([key, value]) =>
                 key === 'partitaIva' ? ['piva', value] : [key, value]

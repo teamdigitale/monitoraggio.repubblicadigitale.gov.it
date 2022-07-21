@@ -3,7 +3,7 @@ import GenericModal from '../../../../Modals/GenericModal/genericModal';
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import { formTypes } from '../../../../../pages/administrator/AdministrativeArea/Entities/utils';
 import { formFieldI } from '../../../../../utils/formHelper';
-import FormHeadquarters from '../HeadquartersForm/formHeadquarters';
+import FormHeadquarter from '../FormHeadquarter/FormHeadquarter';
 import { AddressInfoI } from '../AccordionAddressList/AccordionAddress/AccordionAddress';
 import { Form } from '../../../..';
 import { Toggle } from 'design-react-kit';
@@ -12,15 +12,15 @@ import AddressInfoForm from '../AddressInfoForm/AddressInfoForm';
 import { useParams } from 'react-router-dom';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
+  selectAuthorities,
   selectHeadquarters,
-  selectProjects,
   setHeadquarterDetails,
   setHeadquartersList,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { useDispatch } from 'react-redux';
 import {
   AssignAuthorityHeadquarter,
-  GetHeadquarterDetails,
+  GetHeadquarterLightDetails,
   GetHeadquartersBySearch,
 } from '../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
 import SearchBar from '../../../../SearchBar/searchBar';
@@ -29,7 +29,10 @@ import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import Table, { TableHeadingI, TableRowI } from '../../../../Table/table';
 import EmptySection from '../../../../EmptySection/emptySection';
 import { validateAddressList } from '../../../../../utils/validator';
-import { GetAuthorityManagerDetail } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
+import {
+  GetAuthorityManagerDetail,
+  GetPartnerAuthorityDetail,
+} from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 
 const id = formTypes.SEDE;
@@ -47,16 +50,20 @@ const headings: TableHeadingI[] = [
   },
 ];
 
-interface ManageSediFormI {
+interface ManageHeadquarterFormI {
   formDisabled?: boolean;
   creation?: boolean;
+  enteType?: 'partner' | 'manager';
 }
 
-interface ManageSediI extends withFormHandlerProps, ManageSediFormI {}
+interface ManageHeadquarterI
+  extends withFormHandlerProps,
+    ManageHeadquarterFormI {}
 
-const ManageHeadquarter: React.FC<ManageSediI> = ({
+const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
   formDisabled,
   creation = false,
+  enteType = 'manager',
 }) => {
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
@@ -85,7 +92,7 @@ const ManageHeadquarter: React.FC<ManageSediI> = ({
   const [movingHeadquarter, setMovingHeadquarter] = useState<boolean>(false);
   const { projectId } = useParams();
   const authorityId =
-    useAppSelector(selectProjects).detail?.idEnteGestoreProgetto;
+    useAppSelector(selectAuthorities).detail?.dettagliInfoEnte?.id;
   const headquartersList = useAppSelector(selectHeadquarters).list;
   const headquarterDetails =
     useAppSelector(selectHeadquarters).detail?.dettagliInfoSede;
@@ -163,7 +170,7 @@ const ManageHeadquarter: React.FC<ManageSediI> = ({
   const handleSelectHeadquarter: CRUDActionsI = {
     [CRUDActionTypes.SELECT]: (td: TableRowI | string) => {
       if (typeof td !== 'string') {
-        dispatch(GetHeadquarterDetails(td.id as string));
+        dispatch(GetHeadquarterLightDetails(td.id as string));
         dispatch(setHeadquartersList(null));
       }
     },
@@ -195,7 +202,10 @@ const ManageHeadquarter: React.FC<ManageSediI> = ({
             )
           );
 
-          await dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+          if (enteType === 'manager')
+            dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+          if (enteType === 'partner')
+            dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
           dispatch(closeModal());
         }
       }
@@ -228,7 +238,7 @@ const ManageHeadquarter: React.FC<ManageSediI> = ({
 
   let content = (
     <>
-      <FormHeadquarters
+      <FormHeadquarter
         creation={creation}
         formDisabled={!!formDisabled}
         sendNewValues={(newData) => setNewFormValues({ ...newData })}
@@ -264,7 +274,7 @@ const ManageHeadquarter: React.FC<ManageSediI> = ({
     </>
   );
 
-  if (headquartersList && headquartersList.length > 0) {
+  if (headquartersList && headquartersList.length) {
     content = (
       <Table
         heading={headings}

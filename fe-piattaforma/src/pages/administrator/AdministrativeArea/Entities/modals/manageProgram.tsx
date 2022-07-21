@@ -25,6 +25,7 @@ import TargetsForm from '../../../../../components/AdministrativeArea/Entities/G
 interface ProgramInformationI {
   formDisabled?: boolean;
   creation?: boolean;
+  edit?: boolean;
 }
 
 const id = formTypes.PROGRAMMA;
@@ -207,6 +208,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
     case 0:
       currentForm = (
         <FormGeneralInfo
+          edit
           intoModal
           formDisabled={!!formDisabled}
           sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {

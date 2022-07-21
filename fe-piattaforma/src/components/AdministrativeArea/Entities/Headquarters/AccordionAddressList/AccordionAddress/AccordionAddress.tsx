@@ -48,7 +48,7 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
   canBeDeleted = false,
   // handleOnToggle,
 }) => {
-  const [addressOpen, setAddressOpen] = useState(false);
+  const [addressOpen, setAddressOpen] = useState(index === 1);
   // const accordionToggleHandler = (isOpen: boolean) => {
   //   if (handleOnToggle) handleOnToggle(isOpen);
   // };
