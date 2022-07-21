@@ -26,7 +26,7 @@ export const TableHeading: TableHeadingI[] = [
   },
   {
     field: 'policy',
-    label: 'Policy',
+    label: 'Intervento',
     size: 'small',
   },
   {

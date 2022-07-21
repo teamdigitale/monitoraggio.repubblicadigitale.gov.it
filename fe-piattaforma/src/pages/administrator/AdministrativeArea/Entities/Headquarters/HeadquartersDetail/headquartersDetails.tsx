@@ -1,20 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { formTypes } from '../../utils';
-import {
-  CRUDActionsI,
-  CRUDActionTypes,
-  ItemsListI,
-} from '../../../../../../utils/common';
+import { CRUDActionsI, CRUDActionTypes } from '../../../../../../utils/common';
 import { TableRowI } from '../../../../../../components/Table/table';
-import { ButtonInButtonsBar } from '../../../../../../components/ButtonsBar/buttonsBar';
 import {
   closeModal,
   openModal,
 } from '../../../../../../redux/features/modal/modalSlice';
 import { useDispatch } from 'react-redux';
 import DetailLayout from '../../../../../../components/DetailLayout/detailLayout';
-import ConfirmDeleteModal from '../../modals/confirmDeleteModal';
 import { useAppSelector } from '../../../../../../redux/hooks';
 import { selectDevice } from '../../../../../../redux/features/app/appSlice';
 import clsx from 'clsx';
@@ -23,21 +17,17 @@ import HeadquarterDetailsContent from '../../../../../../components/Administrati
 import {
   GetHeadquarterDetails,
   HeadquarterFacilitator,
+  RemoveHeadquarterFacilitator,
 } from '../../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
 import { selectHeadquarters } from '../../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import ManageFacilitator from '../../../../../../components/AdministrativeArea/Entities/Headquarters/ManageFacilitator/ManageFacilitator';
+import DeleteEntityModal from '../../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 
 const HeadquartersDetails = () => {
-  const { mediaIsDesktop, mediaIsPhone } = useAppSelector(selectDevice);
-  const [itemAccordionList, setItemAccordionList] = useState<
-    ItemsListI[] | null
-  >();
-  const [correctButtons, setCorrectButtons] = useState<ButtonInButtonsBar[]>(
-    []
-  );
+  const { mediaIsPhone } = useAppSelector(selectDevice);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { entityId } = useParams();
+  const { headquarterId, projectId, authorityId } = useParams();
   const headquarterfacilitators =
     useAppSelector(selectHeadquarters).detail?.facilitatoriSede;
 
@@ -47,49 +37,52 @@ const HeadquartersDetails = () => {
         `/area-amministrativa/utenti/${typeof td === 'string' ? td : td?.id}`
       );
     },
+    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+      dispatch(
+        openModal({
+          id: 'delete-entity',
+          payload: {
+            userCF: td,
+            text: 'Confermi di voler eliminare questo facilitatore?',
+            entity: 'facilitator',
+          },
+        })
+      );
+    },
   };
 
   useEffect(() => {
-    if (entityId) dispatch(GetHeadquarterDetails(entityId));
-  }, [entityId]);
+    if (headquarterId && projectId && authorityId)
+      dispatch(GetHeadquarterDetails(headquarterId, authorityId, projectId));
+  }, [headquarterId, projectId, authorityId]);
 
-  useEffect(() => {
-    setItemAccordionList([
-      {
-        title: 'Facilitatori',
-        items:
-          headquarterfacilitators?.map(
-            (facilitator: HeadquarterFacilitator) => ({
-              nome: `${facilitator.nome} ${facilitator.cognome}`,
-              stato: facilitator.stato,
-              actions: onActionClick,
-              id: facilitator.id,
-            })
-          ) || [],
-      },
-    ]);
-    setCorrectButtons([
-      {
-        size: 'xs',
-        color: 'primary',
-        outline: true,
-        text: 'Elimina',
-        onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
-      },
-      {
-        size: 'xs',
-        color: 'primary',
-        text: 'Modifica',
-        onClick: () =>
-          dispatch(
-            openModal({
-              id: formTypes.SEDE,
-              payload: { title: 'Modifica sede' },
-            })
-          ),
-      },
-    ]);
-  }, [mediaIsDesktop, headquarterfacilitators]);
+  const itemAccordionList = [
+    {
+      title: 'Facilitatori',
+      items:
+        headquarterfacilitators?.map((facilitator: HeadquarterFacilitator) => ({
+          nome: `${facilitator.nome} ${facilitator.cognome}`,
+          stato: facilitator.stato,
+          actions: onActionClick,
+          id: facilitator?.codiceFiscale,
+        })) || [],
+    },
+  ];
+
+  const removeFacilitator = async (userCF: string) => {
+    if (userCF && headquarterId && projectId && authorityId) {
+      await dispatch(
+        RemoveHeadquarterFacilitator(
+          userCF,
+          authorityId,
+          projectId,
+          headquarterId
+        )
+      );
+
+      dispatch(GetHeadquarterDetails(headquarterId, authorityId, projectId));
+    }
+  };
 
   return (
     <div
@@ -108,7 +101,7 @@ const HeadquartersDetails = () => {
               upperTitle: { icon: 'it-map-marker-plus', text: formTypes.SEDE },
               subTitle: 'Programma 1 nome breve',
             }}
-            formButtons={correctButtons}
+            formButtons={[]}
             itemsAccordionList={itemAccordionList}
             buttonsPosition='TOP'
           >
@@ -116,14 +109,15 @@ const HeadquartersDetails = () => {
           </DetailLayout>
           <ManageHeadquarter />
           <ManageFacilitator />
-          <ConfirmDeleteModal
-            onConfirm={() => {
+          <DeleteEntityModal
+            onClose={() => dispatch(closeModal())}
+            onConfirm={(payload) => {
+              if (payload?.entity === 'facilitator') {
+                removeFacilitator(payload?.userCF);
+              }
+
               dispatch(closeModal());
             }}
-            onClose={() => {
-              dispatch(closeModal());
-            }}
-            text='Confermi di voler eliminare questa sede?'
           />
         </div>
       </div>

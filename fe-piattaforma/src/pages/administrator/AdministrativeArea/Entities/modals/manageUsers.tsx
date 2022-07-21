@@ -2,8 +2,15 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
-import { CreateUser } from '../../../../../redux/features/administrativeArea/user/userThunk';
-import { closeModal } from '../../../../../redux/features/modal/modalSlice';
+import {
+  CreateUser,
+  GetUserDetails,
+} from '../../../../../redux/features/administrativeArea/user/userThunk';
+import {
+  closeModal,
+  selectModalPayload,
+} from '../../../../../redux/features/modal/modalSlice';
+import { useAppSelector } from '../../../../../redux/hooks';
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormUser from '../../../../forms/formUser';
 import { formTypes } from '../utils';
@@ -38,12 +45,16 @@ const ManageUsers: React.FC<ManageUsersI> = ({
     [key: string]: formFieldI['value'];
   }>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  const codiceFiscale = useAppSelector(selectModalPayload)?.codiceFiscale;
 
-  const handleSaveEnte = () => {
+  const handleSaveEnte = async () => {
     if (isFormValid) {
-      dispatch(CreateUser(newFormValues));
+      await dispatch(CreateUser(newFormValues));
     }
     dispatch(closeModal());
+    dispatch(
+      GetUserDetails(newFormValues?.codiceFiscale?.toString() || codiceFiscale)
+    );
   };
 
   return (

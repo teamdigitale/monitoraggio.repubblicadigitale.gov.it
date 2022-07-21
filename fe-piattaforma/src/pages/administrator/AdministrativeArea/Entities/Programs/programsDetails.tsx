@@ -6,7 +6,6 @@ import {
   openModal,
 } from '../../../../../redux/features/modal/modalSlice';
 import { useDispatch } from 'react-redux';
-import ConfirmDeleteModal from '../modals/confirmDeleteModal';
 
 import { ButtonInButtonsBar } from '../../../../../components/ButtonsBar/buttonsBar';
 import { formTypes } from '../utils';
@@ -53,8 +52,7 @@ import {
   UserAuthorityRole,
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import TerminateEntityModal from '../../../../../components/AdministrativeArea/Entities/General/TerminateEntityModal/TerminateEntityModal';
-import DeleteReferentDelegateModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteReferentDelegateModal/DeleteReferentDelegateModal';
-import DeleteProjectModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteProjectModal/DeleteProjectModal';
+import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 
 const tabs = {
   INFO: 'info',
@@ -71,7 +69,6 @@ const ProgramsDetails: React.FC = () => {
   const projectsList = program?.progetti;
   const authorityInfo = useAppSelector(selectAuthorities)?.detail;
   const dispatch = useDispatch();
-  const [deleteText, setDeleteText] = useState<string>('');
   const [editItemModalTitle, setEditItemModalTitle] = useState<string>('');
   const [activeTab, setActiveTab] = useState<string>(tabs.INFO);
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
@@ -81,6 +78,7 @@ const ProgramsDetails: React.FC = () => {
   const [itemAccordionList, setItemAccordionList] = useState<
     ItemsListI[] | null
   >();
+  const [edit, setEdit] = useState<boolean>(false);
   const [modalIdToOpen, setModalIdToOpen] = useState<string>(
     formTypes.PROGRAMMA
   );
@@ -161,13 +159,12 @@ const ProgramsDetails: React.FC = () => {
       );
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      // dispatch(RemoveReferentDelegate())
-      console.log(td);
       dispatch(
         openModal({
-          id: 'delete-referent-delegate',
+          id: 'delete-entity',
           payload: {
-            cf: '',
+            entity: 'referent-delegate',
+            cf: td,
             role: 'REG',
             text: 'Confermi di voler eliminare questo referente?',
           },
@@ -186,13 +183,12 @@ const ProgramsDetails: React.FC = () => {
       );
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      // dispatch(RemoveReferentDelegate())
-      console.log(td);
       dispatch(
         openModal({
-          id: 'delete-referent-delegate',
+          id: 'delete-entity',
           payload: {
-            cf: '',
+            entity: 'referent-delegate',
+            cf: td,
             role: 'DEG',
             text: 'Confermi di voler eliminare questo delegato?',
           },
@@ -235,9 +231,11 @@ const ProgramsDetails: React.FC = () => {
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       dispatch(
         openModal({
-          id: 'delete-project',
+          id: 'delete-entity',
           payload: {
+            entity: 'project',
             projectId: td,
+            text: 'Confermi di volere eliminare questo progetto?',
           },
         })
       );
@@ -252,9 +250,6 @@ const ProgramsDetails: React.FC = () => {
   const AuthoritySection = () => {
     if (managerAuthorityId) {
       setModalIdToOpen(formTypes.ENTE_GESTORE_PROGRAMMA),
-        setDeleteText(
-          'Confermi di voler eliminare questo gestore di programma?'
-        ),
         setEditItemModalTitle('Modifica ente gestore programma'),
         setCurrentForm(
           <FormAuthorities
@@ -270,7 +265,16 @@ const ProgramsDetails: React.FC = () => {
             outline: true,
             color: 'primary',
             text: 'Elimina',
-            onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+            onClick: () =>
+              dispatch(
+                openModal({
+                  id: 'delete-entity',
+                  payload: {
+                    entity: 'authority',
+                    text: 'Confermi di volere eliminare questo gestore di programma?',
+                  },
+                })
+              ),
           },
           {
             size: 'xs',
@@ -293,6 +297,7 @@ const ProgramsDetails: React.FC = () => {
                 (ref: { [key: string]: string }) => ({
                   // TODO: check when BE add codiceFiscale
                   ...ref,
+                  id: ref?.codiceFiscale,
                   actions: onActionClickReferenti,
                 })
               ) || [],
@@ -304,6 +309,7 @@ const ProgramsDetails: React.FC = () => {
                 (del: { [key: string]: string }) => ({
                   // TODO: check when BE add codiceFiscale
                   ...del,
+                  id: del?.codiceFiscale,
                   actions: onActionClickDelegati,
                 })
               ) || [],
@@ -604,13 +610,15 @@ const ProgramsDetails: React.FC = () => {
             size: 'xs',
             color: 'primary',
             text: 'Modifica',
-            onClick: () =>
+            onClick: () => {
               dispatch(
                 openModal({
                   id: modalIdToOpen,
                   payload: { title: editItemModalTitle },
                 })
               ),
+                setEdit(true);
+            },
           },
         ];
         break;
@@ -621,7 +629,16 @@ const ProgramsDetails: React.FC = () => {
             outline: true,
             color: 'primary',
             text: 'Elimina',
-            onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+            onClick: () =>
+              dispatch(
+                openModal({
+                  id: 'delete-entity',
+                  payload: {
+                    entity: 'program',
+                    text: 'Confermi di volere eliminare questo programma?',
+                  },
+                })
+              ),
           },
           {
             size: 'xs',
@@ -649,8 +666,7 @@ const ProgramsDetails: React.FC = () => {
       case tabs.INFO:
         setModalIdToOpen(formTypes.PROGRAMMA);
         setCurrentForm(<ProgramlInfoAccordionForm />);
-        setCorrectModal(<ManageProgram />);
-        setDeleteText('Confermi di voler eliminare questo programma?');
+        setCorrectModal(<ManageProgram edit={edit} />);
         setEditItemModalTitle('Modifica programma');
         setItemAccordionList([]);
         setItemList(null);
@@ -795,35 +811,6 @@ const ProgramsDetails: React.FC = () => {
         </>
       </DetailLayout>
       {currentModal ? currentModal : null}
-      <ConfirmDeleteModal
-        onConfirm={() => {
-          switch (activeTab) {
-            case tabs.INFO:
-              entityId && dispatch(DeleteEntity('programma', entityId));
-              navigate(-1);
-              break;
-            case tabs.ENTE:
-              entityId &&
-                managerAuthority &&
-                managerAuthority?.id &&
-                dispatch(
-                  RemoveManagerAuthority(
-                    managerAuthority.id,
-                    entityId,
-                    'programma'
-                  )
-                );
-              break;
-            default:
-              break;
-          }
-          dispatch(closeModal());
-        }}
-        onClose={() => {
-          dispatch(closeModal());
-        }}
-        text={deleteText}
-      />
       <TerminateEntityModal
         text='Confermi di voler terminare il Programma?'
         onClose={() => dispatch(closeModal())}
@@ -833,20 +820,32 @@ const ProgramsDetails: React.FC = () => {
           terminateProgram(entityId, terminationDate)
         }
       />
-      <DeleteReferentDelegateModal
-        onClose={() => dispatch(closeModal())}
-        onConfirm={(cf: string, role: UserAuthorityRole) =>
-          removeReferentDelegate(cf, role)
-        }
-      />
       <ManageDelegate />
       <ManageReferal />
       {/* /<ManageProgramManagerAuthority /> */}
       <ManageProject creation />
-      <DeleteProjectModal
-        text='Confermi di voler eliminare il progetto'
+      <DeleteEntityModal
         onClose={() => dispatch(closeModal())}
-        onConfirm={(id: string) => deleteProject(id)}
+        onConfirm={(payload) => {
+          if (payload?.entity === 'referent-delegate')
+            removeReferentDelegate(payload?.cf, payload?.role);
+          if (payload?.entity === 'project') deleteProject(payload?.projectId);
+          if (payload?.entity === 'program') {
+            entityId && dispatch(DeleteEntity('programma', entityId));
+            navigate(-1);
+          }
+          if (payload?.entity === 'authority')
+            entityId &&
+              managerAuthority &&
+              managerAuthority?.id &&
+              dispatch(
+                RemoveManagerAuthority(
+                  managerAuthority.id,
+                  entityId,
+                  'programma'
+                )
+              );
+        }}
       />
       <PreviewSurvey
         surveyId={surveyPreviewId}

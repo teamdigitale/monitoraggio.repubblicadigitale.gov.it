@@ -3,19 +3,15 @@ import GenericModal from '../../../../../components/Modals/GenericModal/genericM
 import { Icon } from 'design-react-kit';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { selectModalPayload } from '../../../../../redux/features/modal/modalSlice';
-import { UserAuthorityRole } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 
-const id = 'delete-referent-delegate';
+const id = 'delete-entity';
 
-interface DeleteReferentDelegateModalI {
-  onConfirm: (cf: string, role: UserAuthorityRole) => void;
+interface DeleteEntityModalI {
+  onConfirm: (payload: any) => void;
   onClose: () => void;
 }
 
-const DeleteReferentDelegateModal = ({
-  onClose,
-  onConfirm,
-}: DeleteReferentDelegateModalI) => {
+const DeleteEntityModal = ({ onClose, onConfirm }: DeleteEntityModalI) => {
   const payload = useAppSelector(selectModalPayload);
 
   return (
@@ -23,7 +19,7 @@ const DeleteReferentDelegateModal = ({
       id={id}
       primaryCTA={{
         label: 'Conferma',
-        onClick: () => onConfirm(payload?.cf, payload?.role),
+        onClick: () => onConfirm(payload),
       }}
       secondaryCTA={{
         label: 'Annulla',
@@ -46,4 +42,4 @@ const DeleteReferentDelegateModal = ({
   );
 };
 
-export default DeleteReferentDelegateModal;
+export default DeleteEntityModal;

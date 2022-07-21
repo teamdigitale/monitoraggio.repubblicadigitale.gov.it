@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { selectHeadquarters } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
 import AccordionAddressList from '../AccordionAddressList/AccordionAddressList';
-import FormHeadquarters from '../HeadquartersForm/formHeadquarters';
+import FormHeadquarter from '../FormHeadquarter/FormHeadquarter';
 
 const HeadquarterDetailsContent = () => {
   const headquarterDetails =
@@ -46,7 +46,7 @@ const HeadquarterDetailsContent = () => {
 
   return (
     <>
-      <FormHeadquarters formDisabled />
+      <FormHeadquarter formDisabled />
       <AccordionAddressList
         addressList={headquarterDetails?.indirizziSedeFasceOrarie || []}
         isReadOnly

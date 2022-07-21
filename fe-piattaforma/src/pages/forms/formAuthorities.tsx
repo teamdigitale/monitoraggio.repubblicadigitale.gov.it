@@ -17,9 +17,13 @@ import {
 } from '../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import { openModal } from '../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../redux/hooks';
-import { formFieldI, newForm, newFormField } from '../../utils/formHelper';
+import {
+  CommonFields,
+  formFieldI,
+  newForm,
+  newFormField,
+} from '../../utils/formHelper';
 import { formTypes } from '../administrator/AdministrativeArea/Entities/utils';
-import {RegexpType} from "../../utils/validator";
 
 interface EnteInformationI {
   formDisabled?: boolean;
@@ -46,6 +50,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
     getFormValues,
     creation = false,
     enteType,
+    updateForm = () => ({}),
   } = props;
 
   const formDisabled = !!props.formDisabled;
@@ -74,6 +79,23 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
   const formData: { [key: string]: formFieldI['value'] } | undefined =
     useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (
+      !creation &&
+      form &&
+      (enteType === formTypes.ENTE_GESTORE_PROGRAMMA ||
+        enteType === formTypes.ENTE_GESTORE_PROGETTO ||
+        enteType === formTypes.ENTE_PARTNER)
+    ) {
+      const profilo = newFormField({
+        field: 'profilo',
+        id: 'profilo',
+        required: true,
+      });
+      updateForm({ ...form, profilo });
+    }
+  }, [creation, enteType, formData]);
 
   if (formData && !creation) {
     <EmptySection
@@ -270,18 +292,20 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
               }}
             />
           </Form.Row>
-          <Form.Row className={bootClass}>
-            <Input
-              {...form?.profilo}
-              required
-              label='Profilo'
-              col='col-12 col-lg-6'
-              // placeholder='Inserisci profilo'
-              onInputChange={(value, field) => {
-                onInputDataChange(value, field);
-              }}
-            />
-          </Form.Row>
+          {form?.profilo && (
+            <Form.Row className={bootClass}>
+              <Input
+                {...form?.profilo}
+                required
+                label='Profilo'
+                col='col-12 col-lg-6'
+                // placeholder='Inserisci profilo'
+                onInputChange={(value, field) => {
+                  onInputDataChange(value, field);
+                }}
+              />
+            </Form.Row>
+          )}
         </>
       )}
     </Form>
@@ -310,17 +334,10 @@ const form = newForm([
     required: true,
   }),
   newFormField({
-    field: 'profilo',
-    id: 'profilo',
-    required: true,
-  }),
-  newFormField({
+    ...CommonFields.PIVA,
     field: 'piva',
     id: 'piva',
     required: true,
-    regex: RegexpType.PIVA,
-    maximum: 11,
-    minimum: 11,
   }),
   /*
   newFormField({
@@ -333,6 +350,7 @@ const form = newForm([
     id: 'sedeLegale',
   }),
   newFormField({
+    ...CommonFields.EMAIL,
     field: 'indirizzoPec',
     id: 'indirizzoPec',
     required: true,

@@ -5,7 +5,12 @@ import { Navigate } from 'react-router-dom';
 import { useAppSelector } from '../../../redux/hooks';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import Profile from '/public/assets/img/change-profile.png';
-import { FormI, newForm, newFormField } from '../../../utils/formHelper';
+import {
+  CommonFields,
+  FormI,
+  newForm,
+  newFormField,
+} from '../../../utils/formHelper';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
@@ -23,7 +28,6 @@ import {
 } from '../../../redux/features/user/userThunk';
 import { openModal } from '../../../redux/features/modal/modalSlice';
 import FormOnboarding from './formOnboarding';
-import {RegexpType} from "../../../utils/validator";
 
 interface ProfilePicI {
   image?: boolean;
@@ -255,36 +259,28 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
 
 const form: FormI = newForm([
   newFormField({
+    ...CommonFields.NOME,
     field: 'nome',
     required: true,
     id: 'name',
-    minimum: 3,
-    maximum: 30,
-    regex: RegexpType.REGISTRY,
   }),
   newFormField({
+    ...CommonFields.COGNOME,
     field: 'cognome',
     required: true,
     id: 'surname',
-    minimum: 2,
-    maximum: 30,
-    regex: RegexpType.REGISTRY,
   }),
   newFormField({
+    ...CommonFields.EMAIL,
     field: 'email',
     required: true,
     id: 'email',
-    minimum: 5,
-    maximum: 50,
-    regex: RegexpType.EMAIL,
   }),
   newFormField({
+    ...CommonFields.CODICE_FISCALE,
     field: 'codiceFiscale',
     required: true,
     id: 'fiscalcode',
-    regex: RegexpType.FISCAL_CODE,
-    maximum: 16,
-    minimum: 16,
   }),
   newFormField({
     field: 'telefono',
@@ -293,7 +289,7 @@ const form: FormI = newForm([
   }),
   newFormField({
     field: 'bio',
-    id: 'bio',
+    id: 'mansione',
     required: true,
   }),
   newFormField({

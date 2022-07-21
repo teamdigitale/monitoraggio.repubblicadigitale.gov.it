@@ -15,7 +15,6 @@ import {
 } from '../../../../../redux/features/modal/modalSlice';
 import { useDispatch } from 'react-redux';
 import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
-import ConfirmDeleteModal from '../modals/confirmDeleteModal';
 import ManageProject from '../modals/manageProject';
 import ManageHeadquarter from '../../../../../components/AdministrativeArea/Entities/Headquarters/ManageHeadquarter/manageHeadquarter';
 import { useAppSelector } from '../../../../../redux/hooks';
@@ -26,9 +25,14 @@ import {
 import clsx from 'clsx';
 import {
   selectAuthorities,
+  selectPrograms,
   selectProjects,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
-import { CardStatusAction, EmptySection, NavLink } from '../../../../../components';
+import {
+  CardStatusAction,
+  EmptySection,
+  NavLink,
+} from '../../../../../components';
 import ProjectAccordionForm from '../../../../forms/formProjects/ProjectAccordionForm/ProjectAccordionForm';
 import FormAuthorities from '../../../../forms/formAuthorities';
 import ManagePartnerAuthority from '../modals/managePartnerAuthority';
@@ -49,10 +53,10 @@ import {
 import TerminateEntityModal from '../../../../../components/AdministrativeArea/Entities/General/TerminateEntityModal/TerminateEntityModal';
 import ManageDelegate from '../modals/manageDelegate';
 import ManageReferal from '../modals/manageReferal';
-import DeleteAuthorityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteAuthorityModal/DeleteAuthorityModal';
 import ManageProjectManagerAuthority from '../modals/manageProjectManagerAuthority';
-import DeleteReferentDelegateModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteReferentDelegateModal/DeleteReferentDelegateModal';
 import ManageManagerAuthority from '../modals/manageManagerAuthority';
+import { RemoveAuthorityHeadquarter } from '../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
+import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 
 const tabs = {
   INFO: 'info',
@@ -69,13 +73,13 @@ export const buttonsPositioning = {
 const ProjectsDetails = () => {
   const { mediaIsDesktop, mediaIsPhone } = useAppSelector(selectDevice);
   const project = useAppSelector(selectProjects).detail;
+  const program = useAppSelector(selectPrograms).detail;
   const projectDetails = project.dettagliInfoProgetto;
-  const programsDetails = project.dettagliInfoProgramma;
+  const programDetails = program.dettagliInfoProgramma;
   const managingAuthorityID = project.idEnteGestoreProgetto;
   const partnerAuthoritiesList = project.entiPartner;
   const headquarterList = project?.sedi;
   const authorityInfo = useAppSelector(selectAuthorities).detail;
-  const [deleteText, setDeleteText] = useState<string>('');
   const [activeTab, setActiveTab] = useState<string>(tabs.INFO);
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
   const [currentModal, setCorrectModal] = useState<React.ReactElement>();
@@ -153,13 +157,12 @@ const ProjectsDetails = () => {
       );*/
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      // dispatch(RemoveReferentDelegate())
-      console.log(td);
       dispatch(
         openModal({
-          id: 'delete-referent-delegate',
+          id: 'delete-entity',
           payload: {
-            cf: '',
+            entity: 'referent-delegate',
+            cf: td,
             role: 'REGP',
             text: 'Confermi di voler eliminare questo referente?',
           },
@@ -182,12 +185,12 @@ const ProjectsDetails = () => {
       );*/
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      console.log(td);
       dispatch(
         openModal({
-          id: 'delete-referent-delegate',
+          id: 'delete-entity',
           payload: {
-            cf: '',
+            entity: 'referent-delegate',
+            cf: td,
             role: 'DEGP',
             text: 'Confermi di voler eliminare questo delegato?',
           },
@@ -305,7 +308,6 @@ const ProjectsDetails = () => {
   const AuthoritySection = () => {
     if (managingAuthorityID) {
       setButtonsPosition('TOP');
-      setDeleteText('Confermi di voler eliminare questo gestore di progetto?');
       setCurrentForm(
         <FormAuthorities
           formDisabled
@@ -320,7 +322,16 @@ const ProjectsDetails = () => {
           outline: true,
           color: 'primary',
           text: 'Elimina',
-          onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+          onClick: () =>
+            dispatch(
+              openModal({
+                id: 'delete-entity',
+                payload: {
+                  entity: 'authority',
+                  text: 'Confermi di volere eliminare questo gestore di progetto?',
+                },
+              })
+            ),
         },
         {
           size: 'xs',
@@ -343,6 +354,7 @@ const ProjectsDetails = () => {
               (ref: { [key: string]: string }) => ({
                 // TODO: check when BE add codiceFiscale
                 ...ref,
+                id: ref.codiceFiscale,
                 actions: onActionClickReferenti,
               })
             ) || [],
@@ -354,6 +366,7 @@ const ProjectsDetails = () => {
               (del: { [key: string]: string }) => ({
                 // TODO: check when BE add codiceFiscale
                 ...del,
+                id: del.codiceFiscale,
                 actions: onActionClickDelegati,
               })
             ) || [],
@@ -364,6 +377,7 @@ const ProjectsDetails = () => {
             authorityInfo?.sediGestoreProgetto?.map(
               (sedi: { [key: string]: string }) => ({
                 ...sedi,
+                actions: onActionClickSede,
               })
             ) || [],
         },
@@ -444,25 +458,24 @@ const ProjectsDetails = () => {
               nFacilitatori: sede.nrFacilitatori,
               serviziErogati: sede.serviziErogati,
             },
-            actions: onActionClickSede,
           })
         ),
       });
       setItemAccordionList(null);
       setCorrectButtons([
-        {
-          size: 'xs',
-          outline: true,
-          color: 'primary',
-          text: ' Aggiungi sede',
-          onClick: () =>
-            dispatch(
-              openModal({
-                id: formTypes.SEDE,
-                payload: { title: 'Sede' },
-              })
-            ),
-        },
+        // {
+        //   size: 'xs',
+        //   outline: true,
+        //   color: 'primary',
+        //   text: ' Aggiungi sede',
+        //   onClick: () =>
+        //     dispatch(
+        //       openModal({
+        //         id: formTypes.SEDE,
+        //         payload: { title: 'Sede' },
+        //       })
+        //     ),
+        // },
       ]);
       setEmptySection(undefined);
     } else {
@@ -476,7 +489,7 @@ const ProjectsDetails = () => {
           withIcon
           icon='it-note'
           subtitle={'Per attivare il progetto aggiungi una Sede'}
-          buttons={EmptySectionButtons.slice(2)}
+          // buttons={EmptySectionButtons.slice(2)}
         />
       );
     }
@@ -580,9 +593,11 @@ const ProjectsDetails = () => {
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       dispatch(
         openModal({
-          id: 'delete-authority',
+          id: 'delete-entity',
           payload: {
+            entity: 'partner-authority',
             authorityId: td,
+            text: 'Confermi di volere eliminare questo Ente partner?',
           },
         })
       );
@@ -592,10 +607,23 @@ const ProjectsDetails = () => {
 
   const onActionClickSede: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(`/area-amministrativa/sedi/${td}`);
+      projectId &&
+        managingAuthorityID &&
+        navigate(
+          `/area-amministrativa/progetti/${projectId}/enti/${managingAuthorityID}/sedi/${td}`
+        );
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      console.log(td);
+      dispatch(
+        openModal({
+          id: 'delete-entity',
+          payload: {
+            entity: 'headquarter',
+            text: 'Confermi di volere eliminare questa sede?',
+            headquarterId: td,
+          },
+        })
+      );
     },
   };
 
@@ -638,7 +666,16 @@ const ProjectsDetails = () => {
             outline: true,
             color: 'primary',
             text: 'Elimina',
-            onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+            onClick: () =>
+              dispatch(
+                openModal({
+                  id: 'delete-entity',
+                  payload: {
+                    entity: 'project',
+                    text: 'Confermi di volere eliminare questo progetto?',
+                  },
+                })
+              ),
           },
           {
             size: 'xs',
@@ -690,7 +727,6 @@ const ProjectsDetails = () => {
         setButtonsPosition('TOP');
         setCurrentForm(<ProjectAccordionForm />);
         setCorrectModal(<ManageProject />);
-        setDeleteText('Confermi di voler eliminare questo programma?');
         setItemAccordionList([]);
         setItemList(null);
         setCorrectButtons(projectInfoButtons());
@@ -737,6 +773,22 @@ const ProjectsDetails = () => {
     dispatch(closeModal());
   };
 
+  const removeHeadquarter = async (headquarterId: string) => {
+    if (projectId && managingAuthorityID) {
+      await dispatch(
+        RemoveAuthorityHeadquarter(
+          managingAuthorityID,
+          headquarterId,
+          projectId
+        )
+      );
+
+      dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+    }
+
+    dispatch(closeModal());
+  };
+
   return (
     <div className={clsx(mediaIsPhone && 'mt-5', 'd-flex', 'flex-row')}>
       <div className='d-flex flex-column w-100'>
@@ -747,7 +799,7 @@ const ProjectsDetails = () => {
               title: projectDetails?.nome,
               status: projectDetails?.stato,
               upperTitle: { icon: 'it-user', text: 'Progetto' },
-              subTitle: projectDetails?.nomeBreve,
+              subTitle: programDetails?.nomeBreve,
             }}
             currentTab={activeTab}
             formButtons={correctButtons}
@@ -762,43 +814,26 @@ const ProjectsDetails = () => {
               {emptySection}
             </>
           </DetailLayout>
-          {(activeTab === tabs.INFO && !entityId && programsDetails?.id) ? (
+          {activeTab === tabs.INFO && !entityId && programDetails?.id ? (
             <div className={clsx('my-5')}>
-              <h5 className={clsx('mb-4')} style={{ color: '#5C6F82'}}>Programma associato</h5>
+              <h5 className={clsx('mb-4')} style={{ color: '#5C6F82' }}>
+                Programma associato
+              </h5>
               <CardStatusAction
-                id={programsDetails?.id}
-                status={programsDetails?.stato}
-                title={programsDetails?.nomeBreve}
+                id={programDetails?.id}
+                status={programDetails?.stato}
+                title={programDetails?.nomeBreve}
                 onActionClick={{
-                  [CRUDActionTypes.VIEW]: () => navigate(`/area-amministrativa/programmi/${programsDetails?.id}`, { replace: true })
+                  [CRUDActionTypes.VIEW]: () =>
+                    navigate(
+                      `/area-amministrativa/programmi/${programDetails?.id}`,
+                      { replace: true }
+                    ),
                 }}
               />
             </div>
           ) : null}
           {currentModal ? currentModal : null}
-          <ConfirmDeleteModal
-            onConfirm={() => {
-              switch (activeTab) {
-                case tabs.INFO:
-                  projectId && dispatch(DeleteEntity('progetto', projectId));
-                  break;
-                case tabs.ENTE_GESTORE:
-                  projectId &&
-                    managerAuthority &&
-                    managerAuthority?.id &&
-                    removeManagerAuthority(managerAuthority.id, projectId);
-                  break;
-                default:
-                  break;
-              }
-
-              dispatch(closeModal());
-            }}
-            onClose={() => {
-              dispatch(closeModal());
-            }}
-            text={deleteText}
-          />
           <TerminateEntityModal
             text='Confermi di voler terminare il Progetto?'
             onClose={() => dispatch(closeModal())}
@@ -808,18 +843,24 @@ const ProjectsDetails = () => {
               terminateProject(projectId, terminationDate)
             }
           />
-          <DeleteAuthorityModal
-            text="Confermi di voler eliminare l'ente partner"
+          <DeleteEntityModal
             onClose={() => dispatch(closeModal())}
-            onConfirm={(id: string) =>
-              projectId && removeAuthorityPartner(id, projectId)
-            }
-          />
-          <DeleteReferentDelegateModal
-            onClose={() => dispatch(closeModal())}
-            onConfirm={(cf: string, role: UserAuthorityRole) =>
-              removeReferentDelegate(cf, role)
-            }
+            onConfirm={(payload) => {
+              if (payload?.entity === 'referent-delegate')
+                removeReferentDelegate(payload?.cf, payload?.role);
+              if (payload?.entity === 'headquarter')
+                removeHeadquarter(payload?.headquarterId);
+              if (payload?.entity === 'partner-authority')
+                projectId &&
+                  removeAuthorityPartner(payload?.authorityId, projectId);
+              if (payload?.entity === 'authority')
+                projectId &&
+                  managerAuthority &&
+                  managerAuthority?.id &&
+                  removeManagerAuthority(managerAuthority.id, projectId);
+              if (payload?.entity === 'project')
+                projectId && dispatch(DeleteEntity('progetto', projectId));
+            }}
           />
           <ManageDelegate />
           <ManageReferal />

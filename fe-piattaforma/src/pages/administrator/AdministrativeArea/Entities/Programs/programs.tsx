@@ -170,7 +170,7 @@ const Programs = () => {
 
   const dropdowns: DropdownFilterI[] = [
     {
-      filterName: 'Policy',
+      filterName: 'Intervento',
       options: dropdownFilterOptions['policies'],
       id: policyDropdownLabel,
       onOptionsChecked: (options) =>

@@ -116,7 +116,7 @@ const UsersDetails = () => {
           dispatch(
             openModal({
               id: getModalID(),
-              payload: { title: getModalPayload() },
+              payload: { title: getModalPayload(), codiceFiscale: userId },
             })
           ),
       },
@@ -201,9 +201,7 @@ const UsersDetails = () => {
           </DetailLayout>
           {!(entityId || projectId) && userRoles?.length ? (
             <div className={clsx('my-5')}>
-              <h5 className={clsx('primary-color', 'mb-4')}>
-                Ruoli
-              </h5>
+              <h5 className={clsx('primary-color', 'mb-4')}>Ruoli</h5>
               {userRoles.map((role: any) => (
                 <CardStatusAction
                   key={role.id}

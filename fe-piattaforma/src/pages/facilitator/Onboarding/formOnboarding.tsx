@@ -1,7 +1,12 @@
 import React, { useEffect } from 'react';
 import { useAppSelector } from '../../../redux/hooks';
 import { selectDevice } from '../../../redux/features/app/appSlice';
-import { FormI, newForm, newFormField } from '../../../utils/formHelper';
+import {
+  CommonFields,
+  FormI,
+  newForm,
+  newFormField,
+} from '../../../utils/formHelper';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
@@ -43,7 +48,7 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
       setFormValues(user);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.codiceFiscale]);
+  }, [user]);
 
   useEffect(() => {
     if (form) sendNewForm(form);
@@ -64,7 +69,7 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
             disabled
             label='Nome'
             required
-            placeholder='Inserisci nome'
+            //placeholder='Inserisci nome'
             col='col-12 col-md-6'
             onInputChange={onInputChange}
           />
@@ -73,7 +78,7 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
             disabled
             required
             label='Cognome'
-            placeholder='Inserisci cognome'
+            //placeholder='Inserisci cognome'
             col='col-12 col-md-6'
             onInputChange={onInputChange}
           />
@@ -84,7 +89,7 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
             disabled
             required
             label='Codice Fiscale'
-            placeholder='Inserisci Codice Fiscale'
+            //placeholder='Inserisci Codice Fiscale'
             col='col-12 col-md-6'
             type='text'
             onInputChange={onInputChange}
@@ -93,7 +98,7 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
             {...form?.email}
             required
             label='Email'
-            placeholder='Inserisci email'
+            //placeholder='Inserisci email'
             col='col-12 col-md-6'
             onInputChange={onInputChange}
           />
@@ -103,15 +108,15 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
             {...form?.telefono}
             required
             label='Telefono'
-            placeholder='Inserisci telefono'
+            //placeholder='Inserisci telefono'
             col='col-12 col-md-6'
             onInputChange={onInputChange}
           />
           <Input
             {...form?.bio}
             required
-            label='Bio'
-            placeholder='Nome Mansione'
+            label='Posizione Lavorativa'
+            //placeholder='Posizione Lavorativa'
             col='col-12 col-md-6'
             onInputChange={onInputChange}
             className={clsx(device.mediaIsPhone && 'mb-0')}
@@ -124,36 +129,28 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
 
 const form: FormI = newForm([
   newFormField({
+    ...CommonFields.NOME,
     field: 'nome',
     required: true,
     id: 'name',
-    minimum: 3,
-    maximum: 30,
-    regex: RegexpType.REGISTRY,
   }),
   newFormField({
+    ...CommonFields.COGNOME,
     field: 'cognome',
     required: true,
     id: 'surname',
-    minimum: 2,
-    maximum: 30,
-    regex: RegexpType.REGISTRY,
   }),
   newFormField({
+    ...CommonFields.EMAIL,
     field: 'email',
     required: true,
     id: 'email',
-    minimum: 5,
-    maximum: 50,
-    regex: RegexpType.EMAIL,
   }),
   newFormField({
+    ...CommonFields.CODICE_FISCALE,
     field: 'codiceFiscale',
     required: true,
     id: 'fiscalcode',
-    regex: RegexpType.FISCAL_CODE,
-    maximum: 16,
-    minimum: 16,
   }),
   newFormField({
     field: 'telefono',
@@ -165,7 +162,7 @@ const form: FormI = newForm([
   }),
   newFormField({
     field: 'bio',
-    id: 'bio',
+    id: 'mansione',
     required: true,
     maximum: 160,
   }),

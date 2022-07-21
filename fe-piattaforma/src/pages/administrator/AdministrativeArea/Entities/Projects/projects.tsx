@@ -169,7 +169,7 @@ const Projects: React.FC = () => {
 
   const dropdowns: DropdownFilterI[] = [
     {
-      filterName: 'Policy',
+      filterName: 'Intervento',
       options: dropdownFilterOptions['policies'],
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, policyDropdownLabel),

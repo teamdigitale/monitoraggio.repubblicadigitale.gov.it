@@ -42,7 +42,7 @@ interface GenericSearchFilterTableLayoutI {
   ctaPrint?: () => void;
   buttonsList?: ButtonInButtonsBar[];
   cardsCounter?: CardCounterI[];
-  ctaDownload?:  (() => void) | undefined;
+  ctaDownload?: (() => void) | undefined;
   resetFilterDropdownSelected?: (filterKey: string) => void;
   citizen?: boolean;
 }
@@ -85,7 +85,7 @@ const GenericSearchFilterTableLayout: React.FC<
         return 'Ricerca';
       case 'filtroPolicies':
       case 'policies':
-        return 'Policy';
+        return 'Intervento';
       case 'filtroStati':
       case 'stati':
       case 'statiQuestionario':
