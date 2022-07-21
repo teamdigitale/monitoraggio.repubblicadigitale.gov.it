@@ -1,6 +1,6 @@
 package it.pa.repdgt.programmaprogetto.repository;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,8 +18,6 @@ public interface ProgrammaXQuestionarioTemplateRepository extends JpaRepository<
 			+ "	FROM "
 			+ " programma_x_questionario_template pxqt "
 			+ " WHERE "
-			+ " pxqt.PROGRAMMA_ID = :idProgramma "
-			+ " AND "
-			+ " pxqt.STATO = 'ATTIVO' ",
+			+ " pxqt.PROGRAMMA_ID = :idProgramma ",
 			nativeQuery = true)
-	Optional<ProgrammaXQuestionarioTemplateEntity> getAssociazioneQuestionarioTemplateAttivaByIdProgramma(@Param(value = "idProgramma") Long idProgramma); }
+	List<ProgrammaXQuestionarioTemplateEntity> getAssociazioneQuestionarioTemplateByIdProgramma(@Param(value = "idProgramma") Long idProgramma); }

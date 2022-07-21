@@ -1,6 +1,7 @@
 package it.pa.repdgt.programmaprogetto.service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -53,14 +54,14 @@ public class ProgrammaXQuestionarioTemplateService {
 
 	@LogMethod
 	@LogExecutionTime
-	public Optional<ProgrammaXQuestionarioTemplateEntity> getAssociazioneQuestionarioTemplateAttivaByIdProgramma(Long idProgramma) {
-		return this.programmaXQuestionarioTemplateRepository.getAssociazioneQuestionarioTemplateAttivaByIdProgramma(idProgramma);
+	public List<ProgrammaXQuestionarioTemplateEntity> getAssociazioneQuestionarioTemplateAttivaByIdProgramma(Long idProgramma) {
+		return this.programmaXQuestionarioTemplateRepository.getAssociazioneQuestionarioTemplateByIdProgramma(idProgramma);
 	}
 
 	@LogMethod
 	@LogExecutionTime
 	public void cancellaAssociazioneQuestionarioTemplateAProgramma(Long idProgramma) {
-		ProgrammaXQuestionarioTemplateEntity programmaXQuestionario = this.getAssociazioneQuestionarioTemplateAttivaByIdProgramma(idProgramma).get();
-		this.programmaXQuestionarioTemplateRepository.delete(programmaXQuestionario);
+		List<ProgrammaXQuestionarioTemplateEntity> programmaXQuestionarioList = this.getAssociazioneQuestionarioTemplateAttivaByIdProgramma(idProgramma);
+		programmaXQuestionarioList.forEach(this.programmaXQuestionarioTemplateRepository::delete);
 	}
 }

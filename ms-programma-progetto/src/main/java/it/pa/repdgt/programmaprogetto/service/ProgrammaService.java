@@ -631,12 +631,16 @@ public class ProgrammaService {
 			final String errorMessage = String.format("Impossibile associare il questionario con id=%s al Programma. Questionario non presente", idQuestionario);
 			throw new ProgrammaException(errorMessage);
 		}
-		QuestionarioTemplateEntity questionarioTemplate = this.questionarioTemplateSqlService.getQuestionarioTemplateById(idQuestionario);
-		Optional<ProgrammaXQuestionarioTemplateEntity> associazioneQuestionarioTemplateAttiva = this.programmaXQuestionarioTemplateService.getAssociazioneQuestionarioTemplateAttivaByIdProgramma(idProgramma);
 		
-		if(associazioneQuestionarioTemplateAttiva.isPresent()) {
-			this.programmaXQuestionarioTemplateService.terminaAssociazioneQuestionarioTemplateAProgramma(associazioneQuestionarioTemplateAttiva.get());
-		}
+		QuestionarioTemplateEntity questionarioTemplate = this.questionarioTemplateSqlService.getQuestionarioTemplateById(idQuestionario);
+		List<ProgrammaXQuestionarioTemplateEntity> associazioniQuestionarioTemplate = this.programmaXQuestionarioTemplateService.getAssociazioneQuestionarioTemplateAttivaByIdProgramma(idProgramma);
+		
+		associazioniQuestionarioTemplate.forEach(associazioneQuestionarioTemplate -> {
+			if(StatoEnum.ATTIVO.toString().equalsIgnoreCase(associazioneQuestionarioTemplate.getStato())){
+				this.programmaXQuestionarioTemplateService.terminaAssociazioneQuestionarioTemplateAProgramma(associazioneQuestionarioTemplate);
+			}
+		});
+		
 		this.programmaXQuestionarioTemplateService.associaQuestionarioTemplateAProgramma(idProgramma, idQuestionario);
 		
 		questionarioTemplate.setStato(StatoEnum.ATTIVO.getValue());
