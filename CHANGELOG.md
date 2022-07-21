@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.39](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.38...1.0.0-develop.39) (2022-07-21)
+
+
+### Bug Fixes
+
+* **be:** delete programma - confermaIntegrazione ([3a60a7e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3a60a7edd2aa1278a1be4656cede45806b368496))
+
 ## [1.0.0-develop.38](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.37...1.0.0-develop.38) (2022-07-20)
 
 
