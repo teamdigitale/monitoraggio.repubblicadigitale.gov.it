@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 
 import it.pa.repdgt.ente.bean.DettaglioProgettoLightBean;
 import it.pa.repdgt.ente.bean.DettaglioSedeBean;
+import it.pa.repdgt.ente.bean.FasciaOrariaBean;
 import it.pa.repdgt.ente.bean.IndirizzoSedeFasceOrarieBean;
 import it.pa.repdgt.ente.bean.SchedaSedeBean;
 import it.pa.repdgt.ente.entity.projection.IndirizzoSedeProjection;
@@ -151,9 +153,12 @@ public class SedeService {
 				.map(indirizzoSede -> {
 					final IndirizzoSedeFasceOrarieBean indirizzoSedeFasceOrarieBean = new IndirizzoSedeFasceOrarieBean();
 					indirizzoSedeFasceOrarieBean.setIndirizzoSede(indirizzoSede);
-					Optional<IndirizzoSedeFasciaOrariaEntity> fasceOrarie = this.indirizzoSedeFasciaOrariaService.getFasceOrarieByIdIndirizzoSede(indirizzoSede.getId());
-					if(fasceOrarie.isPresent())
-						indirizzoSedeFasceOrarieBean.setFasceOrarieAperturaIndirizzoSede(fasceOrarie.get());
+					Optional<IndirizzoSedeFasciaOrariaEntity> fasceOrarieEntity = this.indirizzoSedeFasciaOrariaService.getFasceOrarieByIdIndirizzoSede(indirizzoSede.getId());
+					if(fasceOrarieEntity.isPresent()) {
+						FasciaOrariaBean fasciaOraria = new FasciaOrariaBean();
+						BeanUtils.copyProperties(fasceOrarieEntity.get(), fasciaOraria);
+						indirizzoSedeFasceOrarieBean.setFasceOrarieAperturaIndirizzoSede(fasciaOraria);
+					}
 					return indirizzoSedeFasceOrarieBean;
 				})
 				.collect(Collectors.toList());
@@ -179,6 +184,7 @@ public class SedeService {
 		schedaSede.setDettaglioProgetto(dettaglioProgetto);
 		schedaSede.setDettaglioSede(dettaglioSede);
 		schedaSede.setFacilitatoriSede(facilitatori);
+		schedaSede.setProgrammaPolicy(progettoFetchDB.getProgramma().getPolicy());
 		return schedaSede;
 	}
 
