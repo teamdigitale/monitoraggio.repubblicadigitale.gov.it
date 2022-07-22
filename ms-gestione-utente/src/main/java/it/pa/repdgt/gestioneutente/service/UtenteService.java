@@ -236,9 +236,9 @@ public class UtenteService {
 	@LogExecutionTime
 	@LogMethod
 	public UtenteEntity creaNuovoUtente(UtenteEntity utente, String codiceRuolo) {
-		if(isEmailDuplicata(utente.getEmail(), utente.getCodiceFiscale())) {
-			throw new UtenteException("ERRORE: non possono esistere a sistema due email per due utenti diversi");
-		}
+//		if(isEmailDuplicata(utente.getEmail(), utente.getCodiceFiscale())) {
+//			throw new UtenteException("ERRORE: non possono esistere a sistema due email per due utenti diversi");
+//		}
 		Optional<UtenteEntity> oldUtente = this.utenteRepository.findByCodiceFiscale(utente.getCodiceFiscale());
 		if(oldUtente.isPresent()) {
 			utente.setId(oldUtente.get().getId());
