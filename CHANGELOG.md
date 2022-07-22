@@ -1,5 +1,18 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.48](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.47...1.0.0-develop.48) (2022-07-22)
+
+
+### Features
+
+* **fe-piattaforma:** fe updates 07222022 3 ([e09d247](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e09d247eb5cf5f7ff875aa4d08b0d6dbe7fd3c36))
+* **fe-piattaforma:** fe updates 07222022 3 ([9f4736b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9f4736bb93a1fab1484a95a7bf448635012cfc20))
+
+
+### Bug Fixes
+
+* **be:** corretto campo stato facilitatore ([ccaff36](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ccaff36748e6e16035b4b0dca7c619b17f19957b))
+
 ## [1.0.0-develop.47](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.46...1.0.0-develop.47) (2022-07-22)
 
 
