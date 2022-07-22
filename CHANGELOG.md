@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.42](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.41...1.0.0-develop.42) (2022-07-22)
+
+
+### Bug Fixes
+
+* **be:** fix sviluppo backend ([#204](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/issues/204)) ([a031453](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a031453a1a5e482629a21165890bfc2de952e869))
+
 ## [1.0.0-develop.41](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.40...1.0.0-develop.41) (2022-07-21)
 
 
