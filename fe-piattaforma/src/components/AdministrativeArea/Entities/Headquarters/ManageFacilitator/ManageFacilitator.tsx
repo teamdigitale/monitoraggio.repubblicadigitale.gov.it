@@ -7,6 +7,7 @@ import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import { headings } from '../../../../../pages/administrator/AdministrativeArea/Entities/modals/manageReferal';
 import { formTypes } from '../../../../../pages/administrator/AdministrativeArea/Entities/utils';
 import {
+  selectHeadquarters,
   selectUsers,
   setUsersList,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
@@ -51,6 +52,8 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   const [noResult, setNoResult] = useState(false);
   const dispatch = useDispatch();
   const { projectId, authorityId, headquarterId } = useParams();
+  const programPolicy =
+    useAppSelector(selectHeadquarters).detail?.programmaPolicy;
 
   useEffect(() => {
     dispatch(setUsersList(null));
@@ -66,18 +69,19 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
 
   const handleSaveEnte = async () => {
     if (isFormValid) {
-      if (projectId && authorityId && headquarterId) {
+      if (projectId && authorityId && headquarterId && programPolicy) {
         await dispatch(
           AssignHeadquarterFacilitator(
             newFormValues,
             authorityId,
             projectId,
-            headquarterId
+            headquarterId,
+            programPolicy
           )
         );
         dispatch(GetHeadquarterDetails(headquarterId, authorityId, projectId));
+        dispatch(closeModal());
       }
-      dispatch(closeModal());
     }
   };
 

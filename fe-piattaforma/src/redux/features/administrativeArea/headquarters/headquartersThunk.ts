@@ -84,6 +84,7 @@ export const GetHeadquarterDetails =
             dettagliInfoSede: res.data.dettaglioSede,
             facilitatoriSede: res.data.facilitatoriSede,
             dettaglioProgetto: res.data.dettaglioProgetto,
+            programmaPolicy: res.data.programmaPolicy,
           })
         );
       }
@@ -199,7 +200,8 @@ export const AssignHeadquarterFacilitator =
     userDetail: any,
     authorityId: string,
     projectId: string,
-    headquarterId: string
+    headquarterId: string,
+    programPolicy: 'RFD' | 'SCD'
   ) =>
   async (dispatch: Dispatch) => {
     dispatch(showLoader());
@@ -225,7 +227,7 @@ export const AssignHeadquarterFacilitator =
           email: userDetail?.email,
           mansione: userDetail?.mansione,
           nome: userDetail?.nome,
-          ruolo: 'FAC',
+          ruolo: programPolicy === 'RFD' ? 'FAC' : 'VOL',
           tipoContratto: userDetail?.tipoContratto, // TODO: valore?
         };
 
