@@ -24,6 +24,7 @@ import it.pa.repdgt.ente.exception.ResourceNotFoundException;
 import it.pa.repdgt.ente.exception.SedeException;
 import it.pa.repdgt.ente.mapper.IndirizzoSedeMapper;
 import it.pa.repdgt.ente.mapper.SedeMapper;
+import it.pa.repdgt.ente.repository.EnteSedeProgettoRepository;
 import it.pa.repdgt.ente.repository.SedeRepository;
 import it.pa.repdgt.ente.request.NuovaSedeRequest;
 import it.pa.repdgt.ente.request.NuovaSedeRequest.IndirizzoSedeRequest;
@@ -52,6 +53,9 @@ public class SedeService {
 	private IndirizzoSedeFasciaOrariaService indirizzoSedeFasciaOrariaService;
 	@Autowired
 	private SedeRepository sedeRepository;
+	@Autowired
+	@Lazy
+	private EnteSedeProgettoService enteSedeProgettoService;
 	
 	@LogMethod
 	@LogExecutionTime
@@ -167,6 +171,7 @@ public class SedeService {
 		ProgettoEntity progettoFetchDB = this.progettoService.getProgettoById(idProgetto);
 		final DettaglioProgettoLightBean dettaglioProgetto = this.sedeMapper.toDettaglioProgettoLightBeanFrom(progettoFetchDB);
 		final SchedaSedeBean schedaSede = this.getSchedaSedeByIdSede(idSede);
+		schedaSede.getDettaglioSede().setStato(enteSedeProgettoService.getAssociazioneEnteSedeProgetto(idSede, idEnte, idProgetto).getStatoSede());
 		final DettaglioSedeBean dettaglioSede = schedaSede.getDettaglioSede();
 		dettaglioSede.setEnteDiRiferimento(this.enteService.getEnteById(idEnte).getNome());
 		

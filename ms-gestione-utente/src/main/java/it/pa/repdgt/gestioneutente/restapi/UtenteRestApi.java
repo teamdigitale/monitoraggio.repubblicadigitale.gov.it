@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.csv.CSVFormat;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
@@ -181,14 +182,9 @@ public class UtenteRestApi {
 	}
 	
 	@GetMapping(path = "/download/immagineProfilo/{nomeFile}")
-	public ResponseEntity<InputStreamResource> downloadImmagineProfiloUtente(
+	public String downloadImmagineProfiloUtente(
 			@PathVariable(value = "nomeFile") final String nomeFile) throws IOException {
 		byte[] bytes = this.s3Service.downloadFile(this.nomeDelBucketS3, nomeFile).asByteArray();
-		InputStream is = new ByteArrayInputStream(bytes);
-		InputStreamResource immagineProfilo = new InputStreamResource(is);
-
-		return ResponseEntity.ok()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+nomeFile+".jpg")
-				.contentType(MediaType.IMAGE_JPEG).body(immagineProfilo);
+		return Base64.encodeBase64String(bytes);
 	}
 }

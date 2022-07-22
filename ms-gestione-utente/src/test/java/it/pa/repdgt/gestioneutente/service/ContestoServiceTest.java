@@ -353,11 +353,11 @@ public class ContestoServiceTest {
 	
 	@Setter
 	public class ProfiloProjectionImplementation implements ProfiloProjection{
-
 		private String idProgramma;
 		private String nomeProgramma;
 		private String idProgetto;
 		private String nomeEnte;
+		private String nomeBreveProgetto;
 		
 		@Override
 		public String getIdProgramma() {
@@ -377,6 +377,11 @@ public class ContestoServiceTest {
 		@Override
 		public String getNomeEnte() {
 			return nomeEnte;
+		}
+
+		@Override
+		public String getNomeBreveProgetto() {
+			return nomeBreveProgetto;
 		}
 	}
 	

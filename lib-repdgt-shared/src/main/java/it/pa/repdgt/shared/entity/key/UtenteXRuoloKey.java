@@ -19,7 +19,7 @@ public class UtenteXRuoloKey implements Serializable {
 	private static final long serialVersionUID = -2038226148572575312L;
 
 	@Column(name = "UTENTE_ID")
-	private String gruppoCodice;
+	private String utenteId;
 	@Column(name = "RUOLO_CODICE")
 	private String ruoloCodice;
 }
