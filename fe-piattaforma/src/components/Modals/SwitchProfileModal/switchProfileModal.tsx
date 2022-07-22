@@ -43,7 +43,7 @@ const SwitchProfileModal: React.FC<SwitchProfileModalI> = () => {
   const [elementToFocus, setElementToFocus] = useState('utente-0');
 
   const handleSwitchProfile = async () => {
-    const res = await dispatch(SelectUserRole(profileSelected));
+    const res = await dispatch(SelectUserRole(profileSelected, true));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     if (res) {

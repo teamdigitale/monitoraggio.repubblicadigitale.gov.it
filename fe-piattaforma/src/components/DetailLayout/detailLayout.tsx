@@ -165,9 +165,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                   <h3 className='h4 text-muted mx-3'> Altri questionari </h3>
                 )}
             </div>
-          ) : (
-            <EmptySection title='Non ci sono questionari' />
-          )
+          ) : null
         ) : null}
         {showItemsList &&
         itemsList?.items?.length &&

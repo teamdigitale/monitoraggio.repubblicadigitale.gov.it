@@ -9,6 +9,7 @@ import { formTypes } from '../../../../../pages/administrator/AdministrativeArea
 import {
   selectHeadquarters,
   selectUsers,
+  setUserDetails,
   setUsersList,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import {
@@ -80,6 +81,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
           )
         );
         dispatch(GetHeadquarterDetails(headquarterId, authorityId, projectId));
+        dispatch(setUserDetails(null));
         dispatch(closeModal());
       }
     }
@@ -162,7 +164,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
           title='Cerca'
           search
         />
-        {content}
+        <div className='mx-5'>{content}</div>
       </div>
     </GenericModal>
   );

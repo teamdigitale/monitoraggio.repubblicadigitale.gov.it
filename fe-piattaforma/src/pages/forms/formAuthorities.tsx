@@ -7,7 +7,7 @@ import withFormHandler, {
   withFormHandlerProps,
 } from '../../hoc/withFormHandler';
 import {
-  resetAuthorityDetails,
+  //resetAuthorityDetails,
   selectAuthorities,
 } from '../../redux/features/administrativeArea/administrativeAreaSlice';
 import {
@@ -51,6 +51,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
     creation = false,
     enteType,
     updateForm = () => ({}),
+    clearForm = () => ({}),
   } = props;
 
   const formDisabled = !!props.formDisabled;
@@ -140,7 +141,10 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
   }, [formData]);
 
   useEffect(() => {
-    if (creation) dispatch(resetAuthorityDetails());
+    if (creation) {
+      clearForm();
+      //dispatch(resetAuthorityDetails());
+    }
   }, [creation]);
 
   const onInputDataChange = (
@@ -278,7 +282,6 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
             <Input
               col='col-12 col-lg-6'
               {...form?.sedeLegale}
-              required
               label='Sede legale'
               // placeholder='Inserisci la sede legale'
               onInputChange={(value, field) => {
@@ -356,7 +359,6 @@ const form = newForm([
     ...CommonFields.EMAIL,
     field: 'indirizzoPec',
     id: 'indirizzoPec',
-    required: true,
   }),
 ]);
 export default withFormHandler({ form }, FormAuthorities);

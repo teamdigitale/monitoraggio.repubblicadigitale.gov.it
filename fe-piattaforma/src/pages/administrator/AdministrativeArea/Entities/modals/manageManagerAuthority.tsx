@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { EmptySection, SearchBar, Table } from '../../../../../components';
@@ -10,10 +10,9 @@ import {
 
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import {
-  resetAuthorityDetails,
+  //resetAuthorityDetails,
   selectAuthorities,
   setAuthoritiesList,
-  setAuthorityDetails,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import {
   CreateManagerAuthority,
@@ -74,16 +73,19 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
   const { entityId, projectId } = useParams();
   const authoritiesList = useAppSelector(selectAuthorities).list;
 
-  useEffect(() => {
-    if (creation) dispatch(setAuthorityDetails({}));
-  }, [creation]);
-
   const resetModal = () => {
     clearForm();
     setShowForm(true);
     setAlreadySearched(false);
-    dispatch(resetAuthorityDetails());
+    //dispatch(resetAuthorityDetails());
   };
+
+  /*useEffect(() => {
+    if (creation) {
+      //dispatch(resetAuthorityDetails());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [creation]);*/
 
   const handleSaveEnte = async () => {
     if (isFormValid) {
@@ -209,7 +211,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: () => resetModal(),
+        onClick: resetModal,
       }}
       centerButtons
     >
