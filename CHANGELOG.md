@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.47](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.46...1.0.0-develop.47) (2022-07-22)
+
+
+### Features
+
+* **be:** eliminata unique email ([d362c3e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d362c3eb27ee0f21346da53b7d48838d567704e2))
+
 ## [1.0.0-develop.46](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.45...1.0.0-develop.46) (2022-07-22)
 
 
