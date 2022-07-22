@@ -34,7 +34,11 @@ import {
   GetAuthorityManagerDetail,
   GetPartnerAuthorityDetail,
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
-import { closeModal } from '../../../../../redux/features/modal/modalSlice';
+import {
+  closeModal,
+  selectModalId,
+  selectModalState,
+} from '../../../../../redux/features/modal/modalSlice';
 
 const id = formTypes.SEDE;
 
@@ -98,29 +102,15 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
   const headquarterDetails =
     useAppSelector(selectHeadquarters).detail?.dettagliInfoSede;
   const dispatch = useDispatch();
+  const modalId = useAppSelector(selectModalId);
+  const open = useAppSelector(selectModalState);
 
   useEffect(() => {
-    if (headquarterDetails) {
+    if (headquarterDetails && open && modalId === id) {
       if (headquarterDetails?.indirizziSedeFasceOrarie)
         setAddressList([...headquarterDetails.indirizziSedeFasceOrarie]);
       if (headquarterDetails?.itinere)
         setMovingHeadquarter(headquarterDetails.itinere);
-    } else {
-      setAddressList([
-        {
-          indirizzoSede: {
-            via: '',
-            civico: '',
-            comune: '',
-            provincia: '',
-            cap: '',
-            regione: '',
-            nazione: '',
-          },
-          fasceOrarieAperturaIndirizzoSede: {},
-        },
-      ]);
-      setMovingHeadquarter(false);
     }
   }, [headquarterDetails]);
 
@@ -213,7 +203,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
             if (enteType === 'partner')
               dispatch(GetPartnerAuthorityDetail(projectId, authorityInfo?.id));
           }
-
+          handleSearchReset();
           dispatch(closeModal());
         }
       }
@@ -316,7 +306,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: () => dispatch(setHeadquarterDetails(null)),
+        onClick: () => handleSearchReset(),
       }}
       centerButtons
     >

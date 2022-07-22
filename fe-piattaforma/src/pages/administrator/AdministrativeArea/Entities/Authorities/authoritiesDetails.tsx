@@ -23,7 +23,10 @@ import {
 } from '../../../../../redux/features/app/appSlice';
 import clsx from 'clsx';
 import FormAuthorities from '../../../../forms/formAuthorities';
-import { selectAuthorities } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import {
+  selectAuthorities,
+  setHeadquarterDetails,
+} from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import ManageDelegate from '../modals/manageDelegate';
 import ManageReferal from '../modals/manageReferal';
 import ManageHeadquarter from '../../../../../components/AdministrativeArea/Entities/Headquarters/ManageHeadquarter/manageHeadquarter';
@@ -44,6 +47,10 @@ const AuthoritiesDetails = () => {
   const { projectId, authorityId } = useParams();
   const profiles = useAppSelector(selectAuthorities).detail.profili;
   const device = useAppSelector(selectDevice);
+
+  useEffect(() => {
+    dispatch(setHeadquarterDetails(null));
+  }, []);
 
   useEffect(() => {
     if (authorityDetails?.dettagliInfo?.nomeBreve && authorityId) {
@@ -222,7 +229,7 @@ const AuthoritiesDetails = () => {
         dispatch(
           openModal({
             id: formTypes.ENTE_PARTNER,
-            payload: { title: 'Modifica programma' },
+            payload: { title: 'Modifica ente' },
           })
         ),
     },

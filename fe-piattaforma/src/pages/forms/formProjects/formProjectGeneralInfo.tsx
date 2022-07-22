@@ -145,7 +145,6 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
         />
         <Input
           {...form?.cup}
-          required
           label='CUP - Codice Unico Progetto'
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {

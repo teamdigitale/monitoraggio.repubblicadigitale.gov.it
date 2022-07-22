@@ -82,7 +82,7 @@ export const CreateUserContext =
 
 const SelectUserRoleAction = { type: 'user/SelectUserRole' };
 export const SelectUserRole =
-  (profile: UserProfileI) => async (dispatch: Dispatch, select: Selector) => {
+  (profile: UserProfileI, saveSession = false) => async (dispatch: Dispatch, select: Selector) => {
     try {
       dispatch({ ...SelectUserRoleAction }); // TODO manage dispatch for dev env only
       dispatch(showLoader());
@@ -103,7 +103,7 @@ export const SelectUserRole =
         });
 
         if (res) {
-          dispatch(setUserProfile(profile));
+          dispatch(setUserProfile({ ...profile, saveSession }));
           return true;
         }
       }

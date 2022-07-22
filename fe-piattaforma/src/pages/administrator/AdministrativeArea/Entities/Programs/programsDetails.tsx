@@ -20,10 +20,7 @@ import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
 import ManageProgram from '../modals/manageProgram';
 import ManageManagerAuthority from '../modals/manageManagerAuthority';
 import { useAppSelector } from '../../../../../redux/hooks';
-import {
-  selectDevice,
-  updateBreadcrumb,
-} from '../../../../../redux/features/app/appSlice';
+import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 import {
   selectAuthorities,
   selectPrograms,
@@ -62,7 +59,6 @@ const tabs = {
 };
 
 const ProgramsDetails: React.FC = () => {
-  const { mediaIsDesktop } = useAppSelector(selectDevice);
   const program = useAppSelector(selectPrograms).detail;
   const surveyList = program?.questionari;
   const otherSurveyList = useAppSelector(selectSurveys);
@@ -543,6 +539,7 @@ const ProgramsDetails: React.FC = () => {
     if (locationSplit.length > 0) {
       switch (locationSplit[locationSplit.length - 1]) {
         case tabs.INFO:
+        default:
           setActiveTab(tabs.INFO);
           break;
         case tabs.ENTE:
@@ -553,9 +550,6 @@ const ProgramsDetails: React.FC = () => {
           break;
         case tabs.PROGETTI:
           setActiveTab(tabs.PROGETTI);
-          break;
-        default:
-          setActiveTab(tabs.INFO);
           break;
       }
     }
@@ -661,8 +655,8 @@ const ProgramsDetails: React.FC = () => {
     return formButtons;
   };
 
-  useEffect(() => {
-    switch (activeTab) {
+  const handleActiveTab = (tab: string) => {
+    switch (tab) {
       case tabs.INFO:
         setModalIdToOpen(formTypes.PROGRAMMA);
         setCurrentForm(<ProgramlInfoAccordionForm />);
@@ -671,6 +665,7 @@ const ProgramsDetails: React.FC = () => {
         setItemAccordionList([]);
         setItemList(null);
         setCorrectButtons(programInfoButtons());
+        setEmptySection(undefined);
         break;
       case tabs.ENTE:
         AuthoritySection();
@@ -685,14 +680,12 @@ const ProgramsDetails: React.FC = () => {
       default:
         return;
     }
+  };
+
+  useEffect(() => {
+    handleActiveTab(activeTab);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    activeTab,
-    mediaIsDesktop,
-    programDetails,
-    authorityInfo,
-    surveyDefault?.items[0]?.id,
-  ]);
+  }, [activeTab, programDetails, authorityInfo, surveyDefault?.items[0]?.id]);
 
   const nav = (
     <Nav tabs className='mb-5 overflow-hidden'>

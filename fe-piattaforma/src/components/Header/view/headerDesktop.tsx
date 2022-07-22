@@ -24,7 +24,6 @@ import AvatarInitials, {
   AvatarSizes,
   AvatarTextSizes,
 } from '../../AvatarInitials/avatarInitials';
-import { getRoleLabel } from '../../../utils/roleHelper';
 
 const HeaderDesktop: React.FC<HeaderI> = ({
   isHeaderFull = true,
@@ -77,7 +76,8 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               {user?.nome}&nbsp;{user?.cognome}
             </h6>
             <h6 className='font-weight-light text-nowrap'>
-              <em>{getRoleLabel(userProfile?.codiceRuolo)}</em>
+              {/*<em>{getRoleLabel(userProfile?.codiceRuolo)}</em>*/}
+              <em>{`${userProfile?.descrizioneRuolo}${userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}`: ''}`}</em>
             </h6>
           </div>
         </div>

@@ -20,7 +20,7 @@ import AvatarInitials, {
   AvatarSizes,
   AvatarTextSizes,
 } from '../../AvatarInitials/avatarInitials';
-import { getRoleLabel } from '../../../utils/roleHelper';
+
 const HeaderMobile: React.FC<HeaderI> = ({
   dispatch,
   user,
@@ -60,7 +60,8 @@ const HeaderMobile: React.FC<HeaderI> = ({
           </div>
           <div className='d-flex flex-row justify-content-start'>
             <p className='h6 text-wrap font-weight-light'>
-              <em>{getRoleLabel(userProfile?.codiceRuolo)}</em>
+              {/*<em>{getRoleLabel(userProfile?.codiceRuolo)}</em>*/}
+              <em>{`${userProfile?.descrizioneRuolo}${userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}`: ''}`}</em>
             </p>
           </div>
         </div>

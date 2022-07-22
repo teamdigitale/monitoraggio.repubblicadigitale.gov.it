@@ -20,7 +20,10 @@ import {
   RemoveAuthorityHeadquarter,
   RemoveHeadquarterFacilitator,
 } from '../../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
-import { selectHeadquarters } from '../../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import {
+  selectHeadquarters,
+  setUserDetails,
+} from '../../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import ManageFacilitator from '../../../../../../components/AdministrativeArea/Entities/Headquarters/ManageFacilitator/ManageFacilitator';
 import DeleteEntityModal from '../../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 import { ButtonInButtonsBar } from '../../../../../../components/ButtonsBar/buttonsBar';
@@ -59,8 +62,10 @@ const HeadquartersDetails = () => {
   };
 
   useEffect(() => {
-    if (headquarterId && projectId && authorityId)
+    if (headquarterId && projectId && authorityId) {
       dispatch(GetHeadquarterDetails(headquarterId, authorityId, projectId));
+      dispatch(setUserDetails(null));
+    }
   }, [headquarterId, projectId, authorityId]);
 
   const itemAccordionList = [
@@ -119,6 +124,7 @@ const HeadquartersDetails = () => {
       );
 
       dispatch(GetHeadquarterDetails(headquarterId, authorityId, projectId));
+      dispatch(setUserDetails(null));
     }
   };
 

@@ -327,7 +327,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
   }
 
   useEffect(() => {
-    dispatch(resetProgramDetails());
+    if (creation) dispatch(resetProgramDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [creation]);
 

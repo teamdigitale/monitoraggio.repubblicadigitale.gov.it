@@ -25,6 +25,11 @@ export interface UserStateI {
   idProgetto: string[] | null;
   profilo?: {
     codiceRuolo: string;
+    descrizioneRuolo: string;
+    descrizioneRuoloCompleta?: string | undefined;
+    idProgramma?: string | number | undefined;
+    nomeProgramma?: string | undefined;
+    nomeEnte?: string | undefined;
   } | null;
   ruoli: {
     codiceRuolo: string;
@@ -58,6 +63,7 @@ const initialStateLogged: UserStateI = {
   idProgetto: ['0'],
   profilo: {
     codiceRuolo: 'REG',
+    descrizioneRuolo: 'Referente',
   },
   ruoli: [],
 };
@@ -86,13 +92,16 @@ export const userSlice = createSlice({
       // setSessionValues('user', state.user);
     },
     setUserProfile: (state, action: PayloadAction<any>) => {
+      const payload = { ...action.payload, saveSession: undefined };
       state.idProgramma = action.payload.idProgramma;
       state.idProgetto = [action.payload.idProgetto];
-      state.profilo = action.payload;
+      state.profilo = payload;
       if (state.ruoli?.length) {
         state.permissions = state.ruoli.filter(({ codiceRuolo }) => codiceRuolo === action.payload.codiceRuolo)[0]?.permessi
       }
-      // setSessionValues('profile', action.payload);
+      if (action.payload.saveSession) {
+        setSessionValues('profile', payload);
+      }
     },
     login: (state) => {
       setSessionValues('user', state.user);
