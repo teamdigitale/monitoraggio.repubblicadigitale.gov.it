@@ -62,7 +62,7 @@ public interface SedeRepository extends JpaRepository<SedeEntity, Long> {
 			 + "	 u.ID "
 			 + "	,u.NOME "
 			 + "	,u.COGNOME "
-			 + "	,u.STATO "
+			 + "	,espf.STATO_UTENTE "
 			 + "	,u.CODICE_FISCALE as codiceFiscale "
 			 + " FROM "
 			 + "	ente_sede_progetto_facilitatore espf"
