@@ -165,10 +165,10 @@ const Surveys = () => {
   );
 
   useEffect(() => {
-    if (Array.isArray(questionariList?.list))
+    if (Array.isArray(questionariList?.list) && questionariList.list.length)
       setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [questionariList?.list?.length]);
+  }, [questionariList?.list]);
 
   const getSurveysList = () => {
     dispatch(GetAllSurveys());

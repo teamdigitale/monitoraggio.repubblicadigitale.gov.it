@@ -1,38 +1,14 @@
+import { Toggle } from 'design-react-kit';
 import React, { useEffect } from 'react';
 import { selectHeadquarters } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
+import Form from '../../../../Form/form';
 import AccordionAddressList from '../AccordionAddressList/AccordionAddressList';
 import FormHeadquarter from '../FormHeadquarter/FormHeadquarter';
 
 const HeadquarterDetailsContent = () => {
   const headquarterDetails =
     useAppSelector(selectHeadquarters).detail?.dettagliInfoSede;
-  // This addressList is used to fill the address detail section until mocks
-  // will be updated.
-  // const [addressList, _setAddressList] = useState<AddressInfoI[]>([
-  //   {
-  //     address: 'Corso Montenapoleone',
-  //     CAP: '00000',
-  //     province: 'Milano',
-  //     city: 'Milano',
-  //     openDays: [
-  //       {
-  //         index: 0,
-  //         hourSpan: [
-  //           ['08:00', '12:00'],
-  //           ['13:00', '18:00'],
-  //         ],
-  //       },
-  //       {
-  //         index: 2,
-  //         hourSpan: [
-  //           ['09:00', '12:00'],
-  //           ['14:00', '18:00'],
-  //         ],
-  //       },
-  //     ],
-  //   },
-  // ]);
 
   useEffect(() => {
     // console.log(headquarterDetails);
@@ -47,6 +23,18 @@ const HeadquarterDetailsContent = () => {
   return (
     <>
       <FormHeadquarter formDisabled />
+      <Form className='mb-5 pr-5'>
+        <Form.Row>
+          <div className='col-10 col-md-4'>
+            <Toggle
+              label='Sede Itinerante'
+              readOnly
+              disabled
+              checked={headquarterDetails?.itinere}
+            />
+          </div>
+        </Form.Row>
+      </Form>
       <AccordionAddressList
         addressList={headquarterDetails?.indirizziSedeFasceOrarie || []}
         isReadOnly

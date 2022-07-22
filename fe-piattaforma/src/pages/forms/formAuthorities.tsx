@@ -132,7 +132,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
       }
     }
   }, [enteType, creation]);
-
+  
   useEffect(() => {
     if (formData) {
       setFormValues(formData);
@@ -153,6 +153,9 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
   useEffect(() => {
     setIsFormValid?.(isValidForm);
+    if(getFormValues?.()?.id){
+      sendNewValues?.(getFormValues?.());
+    }
   }, [form]);
 
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';

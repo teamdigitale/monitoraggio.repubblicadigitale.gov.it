@@ -235,7 +235,7 @@ export const GetAuthoritiesBySearch =
         getUserHeaders();
 
       const body = {
-        filtroRequest: {},
+        filtroRequest: { criterioRicerca: search },
         idProgramma,
         idProgetto,
         cfUtente: codiceFiscale,

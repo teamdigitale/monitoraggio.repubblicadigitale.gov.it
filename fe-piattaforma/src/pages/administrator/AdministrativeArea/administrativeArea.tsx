@@ -14,7 +14,7 @@ import ManageProgramManagerAuthority from './Entities/Programs/manageEnteGestore
 import ManageEntiPartner from './Entities/Programs/manageEntiPartner/manageEntiPartner';
 import ManageHeadquarter from './Entities/Programs/manageSedi/manageSedi';
 import ManageProjectManagerAuthority from './Entities/Programs/manageEnteGestoreProgetto/manageEnteGestoreProgetto';*/
-import ManageUsers from './Entities/modals/manageUsers';
+// import ManageUsers from './Entities/modals/manageUsers';
 import { useAppSelector } from '../../../redux/hooks';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import { LocationIndex } from '../../../components';
@@ -173,7 +173,7 @@ const AdministrativeArea = () => {
       <Container>
         <Routes>{AreaAmministrativaRoutes}</Routes>
       </Container>
-      <ManageUsers />
+      {/* <ManageUsers /> */}
     </>
   );
 };

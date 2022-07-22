@@ -132,7 +132,7 @@ export const ActivateProject =
       dispatch(showLoader());
       dispatch({ ...ActivateProjectAction, idProgetto });
       if (idProgetto) {
-        const res = await API.get(`progetto/attiva/${idProgetto}`);
+        const res = await API.put(`progetto/attiva/${idProgetto}`);
         console.log('ActivateProject res', res);
       }
     } catch (error) {
