@@ -51,7 +51,7 @@ public class SedeRestApi {
 	// TOUCH POINT - 3.6A - Dati relativi alla sede (indirizzi e fasce orarie)
 	@GetMapping(path = "/light/{idSede}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public SchedaSedeBean getSchedaSede (
+	public SchedaSedeBean getSchedaAnagraficaSede (
 			@PathVariable(value = "idSede") final Long idSede) {
 		return this.sedeService.getSchedaSedeByIdSede(idSede);
 	}
