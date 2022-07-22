@@ -337,6 +337,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 				ID_DOMANDA_NOME, cittadino.getNome(),
 				ID_DOMANDA_COGNOME, cittadino.getCognome(), 
 				ID_DOMANDA_CODICE_FISCALE, cittadino.getCodiceFiscale(), 
+				ID_DOMANDA_CODICE_FISCALE_NON_DISPONIBILE, cittadino.getCodiceFiscale() == null 
+				|| cittadino.getCodiceFiscale().isEmpty(), 
 				ID_DOMANDA_TIPO_DOCUMENTO, cittadino.getTipoDocumento(), 
 				ID_DOMANDA_NUMERO_DOCUMENTO,cittadino.getNumeroDocumento(),
 				ID_DOMANDA_GENERE,cittadino.getGenere(),
