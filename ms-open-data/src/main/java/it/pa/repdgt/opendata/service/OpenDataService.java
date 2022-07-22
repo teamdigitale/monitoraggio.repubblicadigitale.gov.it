@@ -52,7 +52,7 @@ public class OpenDataService {
 //					   │ │ │ │  │ │              (or MON-SUN -- 0 or 7 is Sunday)
 //					   │ │ │ │  │ │
 //					   * * * *  * *
-	@Scheduled(cron = "0 0 6 * * *")
+	@Scheduled(cron = "0 30 15 * * *")
 	public void caricaFileListaCittadiniSuAmazonS3() throws IOException {
 		String nowDate = simpleDateFormat.format(new Date());
 //		final String fileNameToUpload = "./fileCittadiniToUploadOn".concat(nowDate.toString().concat(".csv"));
