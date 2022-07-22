@@ -9,6 +9,7 @@ import {
 import { newTable, TableRowI } from '../../../../../components/Table/table';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
+  resetUserDetails,
   selectEntityFilters,
   selectEntityFiltersOptions,
   selectEntityList,
@@ -120,9 +121,9 @@ const Users = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(usersList)) setTableValues(updateTableValues());
+    if (Array.isArray(usersList) && usersList.length) setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [usersList?.length]);
+  }, [usersList]);
 
   const getUsersList = () => {
     //dispatch(GetAllUsers());
@@ -223,6 +224,7 @@ const Users = () => {
   };
 
   const newUser = () => {
+    dispatch(resetUserDetails());
     dispatch(
       openModal({
         id: formTypes.USER,

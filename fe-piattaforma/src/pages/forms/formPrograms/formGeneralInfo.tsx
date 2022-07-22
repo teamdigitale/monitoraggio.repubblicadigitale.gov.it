@@ -33,7 +33,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     isValidForm,
     setIsFormValid = () => false,
     getFormValues = () => ({}),
-    // creation = false,
+    creation = true,
     // intoModal = false,
     edit = false,
   } = props;
@@ -181,7 +181,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           />
         ) : (
           <Select
-            isDisabled={edit}
+            isDisabled={!creation && !edit}
             {...form?.policy}
             required
             value={form?.policy.value as string}

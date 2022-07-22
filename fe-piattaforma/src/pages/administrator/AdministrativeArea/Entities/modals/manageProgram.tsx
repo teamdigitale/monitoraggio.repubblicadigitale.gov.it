@@ -38,6 +38,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
   // clearForm = () => ({}),
   formDisabled,
   creation = false,
+  edit = false,
 }) => {
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
   const { entityId } = useParams();
@@ -208,7 +209,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
     case 0:
       currentForm = (
         <FormGeneralInfo
-          edit
+          edit={edit}
           intoModal
           formDisabled={!!formDisabled}
           sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {

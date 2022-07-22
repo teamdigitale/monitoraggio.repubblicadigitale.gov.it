@@ -108,6 +108,7 @@ export const citizensAreaSlice = createSlice({
         ...state.filters,
         ...action.payload,
       };
+      state.pagination = initialState.pagination;
     },
     setEntityFilterOptions: (state, action: PayloadAction<any>) => {
       state.filterOptions = {

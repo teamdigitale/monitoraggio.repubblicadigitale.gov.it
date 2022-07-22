@@ -20,6 +20,7 @@ import {
 import { useDispatch } from 'react-redux';
 import {
   AssignAuthorityHeadquarter,
+  GetHeadquarterDetails,
   GetHeadquarterLightDetails,
   GetHeadquartersBySearch,
 } from '../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
@@ -90,9 +91,9 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
 
   // flag for conditionally render multiple address selection
   const [movingHeadquarter, setMovingHeadquarter] = useState<boolean>(false);
-  const { projectId } = useParams();
-  const authorityId =
-    useAppSelector(selectAuthorities).detail?.dettagliInfoEnte?.id;
+  const { projectId, authorityId, headquarterId } = useParams();
+  const authorityInfo =
+    useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
   const headquartersList = useAppSelector(selectHeadquarters).list;
   const headquarterDetails =
     useAppSelector(selectHeadquarters).detail?.dettagliInfoSede;
@@ -179,10 +180,10 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
   const handleSaveAssignHeadquarter = async () => {
     if (isFormValid && validateAddressList(addressList)) {
       if (newFormValues && addressList.length > 0) {
-        if (projectId && authorityId) {
+        if (projectId && ((authorityId && headquarterId) || authorityInfo)) {
           await dispatch(
             AssignAuthorityHeadquarter(
-              authorityId,
+              authorityId ? authorityId : authorityInfo?.id,
               {
                 itinere: movingHeadquarter,
                 ...newFormValues,
@@ -202,10 +203,17 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
             )
           );
 
-          if (enteType === 'manager')
-            dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
-          if (enteType === 'partner')
-            dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
+          if (authorityId && headquarterId) {
+            dispatch(
+              GetHeadquarterDetails(headquarterId, authorityId, projectId)
+            );
+          } else {
+            if (enteType === 'manager')
+              dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+            if (enteType === 'partner')
+              dispatch(GetPartnerAuthorityDetail(projectId, authorityInfo?.id));
+          }
+
           dispatch(closeModal());
         }
       }

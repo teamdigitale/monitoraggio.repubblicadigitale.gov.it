@@ -111,9 +111,9 @@ const Programs = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(programmiList)) setTableValues(updateTableValues());
+    if (Array.isArray(programmiList) && programmiList.length) setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [programmiList?.length]);
+  }, [programmiList]);
 
   const getProgramsList = () => {
     dispatch(GetEntityValues({ entity }));

@@ -20,6 +20,8 @@ const statusTypes = {
   SENT: 'INVIATO',
   FILLED_OUT: 'COMPILATO',
   NOT_FILLED_OUT: 'NON COMPILATO',
+  TERMINATED: 'TERMINATO',
+  ACTIVATABLE: 'ATTIVABILE',
 };
 
 export const statusBgColor = (status: string) => {
@@ -37,9 +39,13 @@ export const statusBgColor = (status: string) => {
     case statusTypes.NOT_FILLED_OUT:
     case statusTypes.INACTIVE:
     case 'inactive':
-      return 'neutral-1-bg-b4';
+      return 'neutral-1-bg-a1';
     case statusTypes.NOT_SENT:
       return 'light-grey-bg';
+    case statusTypes.TERMINATED:
+      return 'neutral-2-bg-b5';
+    case statusTypes.ACTIVATABLE:
+      return 'analogue-2-bg';
     default:
       return 'neutral-1-bg-a1';
   }
@@ -61,7 +67,11 @@ export const statusColor = (status: string) => {
     case statusTypes.INACTIVE:
     case 'inactive':
     case statusTypes.NOT_SENT:
-      return 'neutral-1-color-b6';
+      return 'text-white';
+    case statusTypes.TERMINATED:
+      return 'text-white';
+    case statusTypes.ACTIVATABLE:
+      return 'text-white';
     default:
       return 'neutral-1-bg-a1';
   }

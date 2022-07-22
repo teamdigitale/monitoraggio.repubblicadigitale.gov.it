@@ -225,7 +225,7 @@ export const AssignHeadquarterFacilitator =
           email: userDetail?.email,
           mansione: userDetail?.mansione,
           nome: userDetail?.nome,
-          ruolo: '',
+          ruolo: 'FAC',
           tipoContratto: userDetail?.tipoContratto, // TODO: valore?
         };
 
@@ -247,7 +247,7 @@ const RemoveFacilitatorAction = {
 
 export const RemoveHeadquarterFacilitator =
   (
-    userCF: any,
+    userCF: string,
     authorityId: string,
     projectId: string,
     headquarterId: string
@@ -255,7 +255,7 @@ export const RemoveHeadquarterFacilitator =
   async (dispatch: Dispatch) => {
     dispatch(showLoader());
     dispatch({ ...RemoveFacilitatorAction });
-    const endpoint = '/sede/associa/facilitatore';
+    const endpoint = '/sede/cancellaOTerminaAssociazione/facilitatore';
 
     const body = {
       cfUtente: userCF,

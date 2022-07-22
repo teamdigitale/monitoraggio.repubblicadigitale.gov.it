@@ -99,7 +99,16 @@ const Authorities: React.FC = () => {
         id: td.id,
         nome: td.nome,
         tipologia: td.tipologia,
-        profilo: td.profilo,
+        profilo:
+          td.profilo.split(',').length === 1 ? (
+            td.profilo
+          ) : (
+            <p>
+              {' '}
+              <strong> {td.profilo.split(',').length} </strong> profili
+              assegnati{' '}
+            </p>
+          ),
       }))
     );
     return table;
@@ -108,9 +117,10 @@ const Authorities: React.FC = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(entiList)) setTableValues(updateTableValues());
+    if (Array.isArray(entiList) && entiList.length)
+      setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [entiList?.length]);
+  }, [entiList]);
 
   const getAuthoritiesList = () => {
     dispatch(GetEntityValues({ entity }));

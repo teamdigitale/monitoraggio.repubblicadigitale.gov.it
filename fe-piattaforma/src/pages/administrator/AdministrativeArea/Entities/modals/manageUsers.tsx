@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import {
   CreateUser,
   GetUserDetails,
+  UpdateUser,
 } from '../../../../../redux/features/administrativeArea/user/userThunk';
 import {
   closeModal,
@@ -41,20 +43,33 @@ const ManageUsers: React.FC<ManageUsersI> = ({
   creation = false,
 }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
   }>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
   const codiceFiscale = useAppSelector(selectModalPayload)?.codiceFiscale;
+  const { userId } = useParams();
 
   const handleSaveEnte = async () => {
     if (isFormValid) {
-      await dispatch(CreateUser(newFormValues));
+      if (creation) {
+        const res = await dispatch(CreateUser(newFormValues));
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (res?.data?.codiceFiscale) {
+          navigate(
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            `/area-amministrativa/utenti/${res.data.codiceFiscale}`
+          );
+        }
+      } else {
+        await dispatch(UpdateUser(userId || codiceFiscale, newFormValues));
+        dispatch(GetUserDetails(userId || codiceFiscale));
+      }
     }
     dispatch(closeModal());
-    dispatch(
-      GetUserDetails(newFormValues?.codiceFiscale?.toString() || codiceFiscale)
-    );
   };
 
   return (

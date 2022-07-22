@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { EmptySection, SearchBar } from '../../../../../components';
@@ -83,6 +83,11 @@ const ManageReferal: React.FC<ManageReferalI> = ({
     dispatch(setUsersList(null));
     dispatch(resetUserDetails());
   };
+
+  useEffect(() => {
+    resetModal();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSaveReferal = async () => {
     if (isFormValid && authority?.id) {
@@ -187,9 +192,10 @@ const ManageReferal: React.FC<ManageReferalI> = ({
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: () => resetModal(),
+        onClick: resetModal,
       }}
       centerButtons
+      onClose={resetModal}
     >
       <div>
         <SearchBar

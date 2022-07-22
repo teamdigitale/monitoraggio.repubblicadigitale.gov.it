@@ -53,6 +53,10 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   const { projectId, authorityId, headquarterId } = useParams();
 
   useEffect(() => {
+    dispatch(setUsersList(null));
+  }, []);
+
+  useEffect(() => {
     if (usersList && usersList.length === 0) {
       setNoResult(true);
     } else {

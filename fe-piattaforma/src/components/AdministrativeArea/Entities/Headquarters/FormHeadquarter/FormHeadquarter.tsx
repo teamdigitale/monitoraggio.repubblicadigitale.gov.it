@@ -107,7 +107,7 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
         <Input
           {...form?.nome}
           required
-          label='Nome'
+          label='Nome Sede'
           col='col-12 col-lg-6'
           onInputChange={onInputDataChange}
           // placeholder='Inserisci nome programma'

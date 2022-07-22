@@ -138,7 +138,7 @@ const AddressForm: React.FC<AddressFormI> = ({
       <Form.Row>
         <Input
           className='mb-3'
-          label={`Indirizzo`}
+          label={`Via e numero civico`}
           required
           col='col-12 col-lg-6'
           value={address}
@@ -150,19 +150,19 @@ const AddressForm: React.FC<AddressFormI> = ({
         {formDisabled ? (
           <>
             <Input
-              className='mt-6'
+              // className='mt-6'
               label={`Provincia`}
               col='col-12 col-lg-6'
               value={province}
             />
             <Input
-              className='mt-3'
+              // className='mt-3'
               label={`CAP`}
               col='col-12 col-lg-6'
               value={CAP}
             />
             <Input
-              className='mt-3'
+              // className='mt-3'
               label={`Comune`}
               col='col-12 col-lg-6'
               value={city}

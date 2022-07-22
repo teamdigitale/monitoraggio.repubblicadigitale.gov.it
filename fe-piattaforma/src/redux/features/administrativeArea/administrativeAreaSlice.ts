@@ -159,6 +159,7 @@ export const administrativeAreaSlice = createSlice({
         ...state.filters,
         ...action.payload,
       };
+      state.pagination = initialState.pagination;
     },
     setEntityFilterOptions: (state, action: PayloadAction<any>) => {
       state.filterOptions = {

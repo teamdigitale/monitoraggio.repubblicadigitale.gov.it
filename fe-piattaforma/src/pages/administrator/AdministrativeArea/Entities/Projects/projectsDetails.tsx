@@ -25,7 +25,6 @@ import {
 import clsx from 'clsx';
 import {
   selectAuthorities,
-  selectPrograms,
   selectProjects,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import {
@@ -73,9 +72,8 @@ export const buttonsPositioning = {
 const ProjectsDetails = () => {
   const { mediaIsDesktop, mediaIsPhone } = useAppSelector(selectDevice);
   const project = useAppSelector(selectProjects).detail;
-  const program = useAppSelector(selectPrograms).detail;
   const projectDetails = project.dettagliInfoProgetto;
-  const programDetails = program.dettagliInfoProgramma;
+  const programDetails = project.dettagliInfoProgramma;
   const managingAuthorityID = project.idEnteGestoreProgetto;
   const partnerAuthoritiesList = project.entiPartner;
   const headquarterList = project?.sedi;

@@ -17,11 +17,13 @@ import HeadquarterDetailsContent from '../../../../../../components/Administrati
 import {
   GetHeadquarterDetails,
   HeadquarterFacilitator,
+  RemoveAuthorityHeadquarter,
   RemoveHeadquarterFacilitator,
 } from '../../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
 import { selectHeadquarters } from '../../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import ManageFacilitator from '../../../../../../components/AdministrativeArea/Entities/Headquarters/ManageFacilitator/ManageFacilitator';
 import DeleteEntityModal from '../../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
+import { ButtonInButtonsBar } from '../../../../../../components/ButtonsBar/buttonsBar';
 
 const HeadquartersDetails = () => {
   const { mediaIsPhone } = useAppSelector(selectDevice);
@@ -30,6 +32,11 @@ const HeadquartersDetails = () => {
   const { headquarterId, projectId, authorityId } = useParams();
   const headquarterfacilitators =
     useAppSelector(selectHeadquarters).detail?.facilitatoriSede;
+  const headquarterDetails =
+    useAppSelector(selectHeadquarters).detail?.dettagliInfoSede;
+
+  const programDetails =
+    useAppSelector(selectHeadquarters).detail?.dettaglioProgetto;
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
@@ -69,6 +76,37 @@ const HeadquartersDetails = () => {
     },
   ];
 
+  const buttons: ButtonInButtonsBar[] = [
+    {
+      size: 'xs',
+      outline: true,
+      color: 'primary',
+      text: 'Elimina',
+      onClick: () =>
+        dispatch(
+          openModal({
+            id: 'delete-entity',
+            payload: {
+              entity: 'headquarter',
+              text: 'Confermi di volere eliminare questa sede?',
+            },
+          })
+        ),
+    },
+    {
+      size: 'xs',
+      color: 'primary',
+      text: 'Modifica',
+      onClick: () =>
+        dispatch(
+          openModal({
+            id: formTypes.SEDE,
+            payload: { title: 'Modifica Sede' },
+          })
+        ),
+    },
+  ];
+
   const removeFacilitator = async (userCF: string) => {
     if (userCF && headquarterId && projectId && authorityId) {
       await dispatch(
@@ -84,6 +122,18 @@ const HeadquartersDetails = () => {
     }
   };
 
+  const removeHeadquarter = async () => {
+    if (projectId && authorityId && headquarterId) {
+      await dispatch(
+        RemoveAuthorityHeadquarter(authorityId, headquarterId, projectId)
+      );
+    }
+
+    navigate(-1);
+
+    dispatch(closeModal());
+  };
+
   return (
     <div
       className={clsx(
@@ -96,12 +146,12 @@ const HeadquartersDetails = () => {
         <div className='container'>
           <DetailLayout
             titleInfo={{
-              title: 'Sede 1',
-              status: 'ATTIVO',
+              title: headquarterDetails?.nome,
+              status: headquarterDetails?.stato,
               upperTitle: { icon: 'it-map-marker-plus', text: formTypes.SEDE },
-              subTitle: 'Programma 1 nome breve',
+              subTitle: programDetails?.nomeBreve,
             }}
-            formButtons={[]}
+            formButtons={buttons}
             itemsAccordionList={itemAccordionList}
             buttonsPosition='TOP'
           >
@@ -114,6 +164,10 @@ const HeadquartersDetails = () => {
             onConfirm={(payload) => {
               if (payload?.entity === 'facilitator') {
                 removeFacilitator(payload?.userCF);
+              }
+
+              if (payload?.entity === 'headquarter') {
+                removeHeadquarter();
               }
 
               dispatch(closeModal());

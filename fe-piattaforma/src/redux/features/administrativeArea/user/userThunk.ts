@@ -162,8 +162,8 @@ export const CreateUser =
 
       const res = await API.post(`/utente`, body);
 
-      if (res.data) {
-        console.log(res.data);
+      if (res) {
+        return res;
       }
     } catch (error) {
       console.log(error);
@@ -171,3 +171,36 @@ export const CreateUser =
       dispatch(hideLoader());
     }
   };
+
+  const UpdateUserAction = {
+    type: 'administrativeArea/UpdateUser',
+  };
+  export const UpdateUser =
+    (cfUtente: string, payload: { [key: string]: formFieldI['value'] }) =>
+    async (dispatch: Dispatch) => {
+      try {
+        dispatch(showLoader());
+        dispatch({ ...UpdateUserAction, cfUtente });
+  
+        const body = {
+          telefono: payload?.telefono,
+          codiceFiscale: payload?.codiceFiscale?.toString().toUpperCase(),
+          cognome: payload?.cognome,
+          email: payload?.email,
+          mansione: payload?.mansione,
+          nome: payload?.nome,
+          ruolo: 'REG', // TODO: valore?
+          tipoContratto: '', // TODO: valore?
+        };
+  
+        const res = await API.put(`/utente/${cfUtente}`, body);
+  
+        if (res) {
+         console.log(res)
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        dispatch(hideLoader());
+      }
+    };
