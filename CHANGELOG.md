@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.43](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.42...1.0.0-develop.43) (2022-07-22)
+
+
+### Bug Fixes
+
+* **be:** resituita programmaPolicy in getSchedaSede ([89a4801](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/89a4801e912c56cbbb2398f11124c49ac6b422c4))
+
 ## [1.0.0-develop.42](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.41...1.0.0-develop.42) (2022-07-22)
 
 
