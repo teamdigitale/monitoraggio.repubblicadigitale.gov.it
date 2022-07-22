@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.46](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.45...1.0.0-develop.46) (2022-07-22)
+
+
+### Features
+
+* **be:** cambio orario opendata ([ae83732](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ae837326488c3ceda31e2890670e7de9176914af))
+
 ## [1.0.0-develop.45](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.44...1.0.0-develop.45) (2022-07-22)
 
 
