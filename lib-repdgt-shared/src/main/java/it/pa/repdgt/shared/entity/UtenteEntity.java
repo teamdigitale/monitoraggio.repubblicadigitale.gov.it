@@ -43,7 +43,7 @@ public class UtenteEntity implements Serializable {
 	@Column(name = "COGNOME", nullable = true)
 	private String cognome;
 	
-	@Column(name = "EMAIL", nullable = false, unique = true)
+	@Column(name = "EMAIL", nullable = false)
 	@Email
 	private String email;
 	

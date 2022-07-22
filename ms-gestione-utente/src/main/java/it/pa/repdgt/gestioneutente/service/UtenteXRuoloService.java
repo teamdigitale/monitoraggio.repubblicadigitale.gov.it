@@ -27,7 +27,7 @@ public class UtenteXRuoloService {
 		if(this.utenteXRuoloRepository.findById(id).isPresent()) {
 			return this.utenteXRuoloRepository.findById(id).get();
 		}
-		throw new UtenteXRuoloException(String.format("Associazione tra utente con codice fiscale = %s e ruolo con codice = %s non trovata.", id.getGruppoCodice(), id.getRuoloCodice()));
+		throw new UtenteXRuoloException(String.format("Associazione tra utente con codice fiscale = %s e ruolo con codice = %s non trovata.", id.getUtenteId(), id.getRuoloCodice()));
 	}
 
 	@LogMethod

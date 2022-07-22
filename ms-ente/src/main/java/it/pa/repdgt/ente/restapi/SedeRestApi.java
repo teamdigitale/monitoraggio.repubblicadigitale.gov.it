@@ -63,7 +63,7 @@ public class SedeRestApi {
 		return new CreaSedeResource(this.sedeService.creaNuovaSede(nuovaSedeRequest).getId());
 	}
 	
-	//Aggiorna sede
+	//TOUCH POINT - 2.2.13AX - Aggiorna sede
 	@PutMapping(path = "/aggiorna/{idSede}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void aggiornaSede(@PathVariable(value = "idSede") Long idSede,

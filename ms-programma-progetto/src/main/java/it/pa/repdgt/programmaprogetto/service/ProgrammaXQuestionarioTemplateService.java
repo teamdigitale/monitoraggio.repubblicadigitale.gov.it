@@ -54,14 +54,14 @@ public class ProgrammaXQuestionarioTemplateService {
 
 	@LogMethod
 	@LogExecutionTime
-	public List<ProgrammaXQuestionarioTemplateEntity> getAssociazioneQuestionarioTemplateAttivaByIdProgramma(Long idProgramma) {
+	public List<ProgrammaXQuestionarioTemplateEntity> getAssociazioneQuestionarioTemplateByIdProgramma(Long idProgramma) {
 		return this.programmaXQuestionarioTemplateRepository.getAssociazioneQuestionarioTemplateByIdProgramma(idProgramma);
 	}
 
 	@LogMethod
 	@LogExecutionTime
 	public void cancellaAssociazioneQuestionarioTemplateAProgramma(Long idProgramma) {
-		List<ProgrammaXQuestionarioTemplateEntity> programmaXQuestionarioList = this.getAssociazioneQuestionarioTemplateAttivaByIdProgramma(idProgramma);
+		List<ProgrammaXQuestionarioTemplateEntity> programmaXQuestionarioList = this.getAssociazioneQuestionarioTemplateByIdProgramma(idProgramma);
 		programmaXQuestionarioList.forEach(this.programmaXQuestionarioTemplateRepository::delete);
 	}
 }

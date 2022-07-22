@@ -65,36 +65,40 @@ public class ContestoService implements RuoliUtentiConstants{
 		List<RuoloProgrammaResource> profili = new ArrayList<>();
 		for(RuoloEntity ruolo: ruoliUtente) {
 			String codiceRuolo = ruolo.getCodice();
+			String descrizioneRuolo = null;
 			switch (codiceRuolo) {
-			case REG:
-			case DEG:
-				for( ProfiloProjection profilo : this.contestoRepository.findProgrammiREGDEG(codiceFiscale, codiceRuolo)) {
-					profili.add(new RuoloProgrammaResource(ruolo.getCodice(), ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getNomeEnte()));
+				case REG:
+				case DEG:
+					descrizioneRuolo = codiceRuolo.equalsIgnoreCase(RuoliUtentiConstants.REG)? "Referente": "Delegato";
+					for( ProfiloProjection profilo : this.contestoRepository.findProgrammiREGDEG(codiceFiscale, codiceRuolo)) {
+						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getNomeEnte()));
+					}
+					break;
+				case REGP:
+				case DEGP:
+					descrizioneRuolo = codiceRuolo.equalsIgnoreCase(RuoliUtentiConstants.REGP)? "Referente": "Delegato";
+					for( ProfiloProjection profilo : this.contestoRepository.findProgrammiProgettiREGPDEGP(codiceFiscale, codiceRuolo)) {
+						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte()));
+					}
+					break;
+				case REPP:
+				case DEPP:
+					descrizioneRuolo = codiceRuolo.equalsIgnoreCase(RuoliUtentiConstants.REPP)? "Referente": "Delegato";
+					for( ProfiloProjection profilo : this.contestoRepository.findProgrammiProgettiREPPDEPP(codiceFiscale, codiceRuolo)) {
+						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte()));
+					}
+					break;
+				case FACILITATORE:
+				case VOLONTARIO:
+					//List<Long> listaProgettiPerFacilitatore = espfRepository.findDistinctProgettiByIdFacilitatoreNonTerminato(codiceFiscale, "FAC");
+					for( ProfiloProjection profilo : this.contestoRepository.findProgrammiProgettiFacVol(codiceFiscale, codiceRuolo)) {
+						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), ruolo.getNome(), ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte()));
+					}
+					break;
+				default:
+					//PROFILI PER DTD/DSCU/RUOLI CUSTOM
+					profili.add(new RuoloProgrammaResource(ruolo.getCodice(), ruolo.getNome()));
 				}
-				break;
-			case REGP:
-			case DEGP:
-				for( ProfiloProjection profilo : this.contestoRepository.findProgrammiProgettiREGPDEGP(codiceFiscale, codiceRuolo)) {
-					profili.add(new RuoloProgrammaResource(ruolo.getCodice(), ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeEnte()));
-				}
-				break;
-			case REPP:
-			case DEPP:
-				for( ProfiloProjection profilo : this.contestoRepository.findProgrammiProgettiREPPDEPP(codiceFiscale, codiceRuolo)) {
-					profili.add(new RuoloProgrammaResource(ruolo.getCodice(), ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeEnte()));
-				}
-				break;
-			case FACILITATORE:
-			case VOLONTARIO:
-				//List<Long> listaProgettiPerFacilitatore = espfRepository.findDistinctProgettiByIdFacilitatoreNonTerminato(codiceFiscale, "FAC");
-				for( ProfiloProjection profilo : this.contestoRepository.findProgrammiProgettiFacVol(codiceFiscale, codiceRuolo)) {
-					profili.add(new RuoloProgrammaResource(ruolo.getCodice(), ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeEnte()));
-				}
-				break;
-			default:
-				//PROFILI PER DTD/DSCU/RUOLI CUSTOM
-				profili.add(new RuoloProgrammaResource(ruolo.getCodice(), ruolo.getNome()));
-			}
 		}
 		
 		return profili;

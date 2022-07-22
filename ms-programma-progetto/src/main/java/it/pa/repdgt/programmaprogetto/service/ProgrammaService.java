@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -633,7 +632,7 @@ public class ProgrammaService {
 		}
 		
 		QuestionarioTemplateEntity questionarioTemplate = this.questionarioTemplateSqlService.getQuestionarioTemplateById(idQuestionario);
-		List<ProgrammaXQuestionarioTemplateEntity> associazioniQuestionarioTemplate = this.programmaXQuestionarioTemplateService.getAssociazioneQuestionarioTemplateAttivaByIdProgramma(idProgramma);
+		List<ProgrammaXQuestionarioTemplateEntity> associazioniQuestionarioTemplate = this.programmaXQuestionarioTemplateService.getAssociazioneQuestionarioTemplateByIdProgramma(idProgramma);
 		
 		associazioniQuestionarioTemplate.forEach(associazioneQuestionarioTemplate -> {
 			if(StatoEnum.ATTIVO.toString().equalsIgnoreCase(associazioneQuestionarioTemplate.getStato())){

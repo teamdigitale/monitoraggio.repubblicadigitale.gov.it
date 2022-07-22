@@ -185,6 +185,7 @@ public class EnteServiceTest {
 		ente1 = new EnteEntity();
 		ente1.setId(1L);
 		ente1.setNome("ente1");
+		ente1.setPiva("IIEKD978K");
 		enteDto1 = new EnteDto();
 		enteDto1.setNome("ente1");
 		enteOptional = Optional.of(ente1);
@@ -195,6 +196,8 @@ public class EnteServiceTest {
 		programma1.setId(1L);
 		programma1.setStato("ATTIVO");
 		programma1.setPolicy(PolicyEnum.RFD);
+		programma1.setEnteGestoreProgramma(ente1);
+		programma1.setStatoGestoreProgramma("ATTIVO");
 		progetto1 = new ProgettoEntity();
 		progetto1.setNome("progetto1");
 		progetto1.setId(1L);
@@ -482,6 +485,33 @@ public class EnteServiceTest {
 				filtro.getIdsProgetti(),
 				filtro.getProfili(),
 				null);
+	}
+	
+	@Test
+	public void getAllEntiPaginatiKOTest() {
+		//test KO per ruolo non associato all'utente
+		when(this.ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(new ArrayList<>());
+		Assertions.assertThrows(EnteException.class, () -> enteService.getAllEntiPaginati(entiPaginatiParam, currPage, pageSize));
+		assertThatExceptionOfType(EnteException.class);
+		
+		//test KO per pagina inesistente
+		when(this.ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
+		Assertions.assertThrows(EnteException.class, () -> enteService.getAllEntiPaginati(entiPaginatiParam, 11, pageSize));
+		assertThatExceptionOfType(EnteException.class);
+	}
+	
+	@Test
+	public void getAllProgettiDropdownKOTest() {
+		when(this.ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(new ArrayList<>());
+		Assertions.assertThrows(EnteException.class, () -> enteService.getAllProgettiDropdown(entiPaginatiParam));
+		assertThatExceptionOfType(EnteException.class);
+	}
+	
+	@Test
+	public void getAllProgrammiDropdownKOTest() {
+		when(this.ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(new ArrayList<>());
+		Assertions.assertThrows(EnteException.class, () -> enteService.getAllProgrammiDropdown(entiPaginatiParam));
+		assertThatExceptionOfType(EnteException.class);
 	}
 	
 	@Test
@@ -932,6 +962,22 @@ public class EnteServiceTest {
 		Assertions.assertThrows(EnteException.class, () -> enteService.associaReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest));
 		assertThatExceptionOfType(EnteException.class);
 	}
+		
+	@Test
+	public void associaReferenteODelegatoGestoreProgrammaKOTest2() {
+		//test KO per ruolo da assegnare errato
+		referenteDelegatoGestoreProgrammaRequest = new ReferenteDelegatoGestoreProgrammaRequest();
+		referenteDelegatoGestoreProgrammaRequest.setIdProgramma(programma1.getId());
+		referenteDelegatoGestoreProgrammaRequest.setIdEnte(ente1.getId());
+		referenteDelegatoGestoreProgrammaRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
+		referenteDelegatoGestoreProgrammaRequest.setCodiceRuolo("inesistente");
+		enteOptional = Optional.of(ente1);
+		when(programmaService.esisteProgrammaById(programma1.getId())).thenReturn(true);
+		when(utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
+		when(enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+		Assertions.assertThrows(EnteException.class, () -> enteService.associaReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest));
+		assertThatExceptionOfType(EnteException.class);
+	}
 	
 	@Test
 	public void associaReferenteODelegatoGestoreProgettoTest() {
@@ -970,6 +1016,21 @@ public class EnteServiceTest {
 		//test KO per utente inesistente
 		when(progettoService.esisteProgettoById(progetto1.getId())).thenReturn(true);
 		Mockito.doThrow(ResourceNotFoundException.class).when(utenteService).getUtenteByCodiceFiscale(utente1.getCodiceFiscale());
+		Assertions.assertThrows(EnteException.class, () -> enteService.associaReferenteODelegatoGestoreProgetto(referenteDelegatoGestoreProgettoRequest));
+		assertThatExceptionOfType(EnteException.class);
+	}
+	
+	@Test
+	public void associaReferenteODelegatoGestoreProgettoKOTest2() {
+		//test KO per ruolo da assegnare errato
+		referenteDelegatoGestoreProgettoRequest = new ReferenteDelegatoGestoreProgettoRequest();
+		referenteDelegatoGestoreProgettoRequest.setIdProgetto(progetto1.getId());
+		referenteDelegatoGestoreProgettoRequest.setIdEnte(ente1.getId());
+		referenteDelegatoGestoreProgettoRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
+		referenteDelegatoGestoreProgettoRequest.setCodiceRuolo("inesistente");
+		enteOptional = Optional.of(ente1);
+		when(progettoService.esisteProgettoById(progetto1.getId())).thenReturn(true);
+		when(utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
 		Assertions.assertThrows(EnteException.class, () -> enteService.associaReferenteODelegatoGestoreProgetto(referenteDelegatoGestoreProgettoRequest));
 		assertThatExceptionOfType(EnteException.class);
 	}
@@ -1039,7 +1100,189 @@ public class EnteServiceTest {
 	}
 	
 	@Test
-	public void getSchedaEnteGestoreProgrammaByIdProgrammaTest() {
-		
+	public void getAllProfiliEntiDropdownTest() {
+		when(this.ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
+		enteService.getAllProfiliEntiDropdown(entiPaginatiParam);
+	}
+	
+	@Test
+	public void getAllProfiliEntiDropdownKOTest() {
+		//test KO per ruolo non appartenente all'utente
+		when(this.ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(new ArrayList<RuoloEntity>());
+		Assertions.assertThrows(EnteException.class, () -> enteService.getAllProfiliEntiDropdown(entiPaginatiParam));
+		assertThatExceptionOfType(EnteException.class);
+	}
+	
+	@Test
+	public void modificaEnteGestoreProgrammaTest() {
+		//test con ID e P.IVA invariati, quindi si modifica l'ente assegnatogli in precedenza
+		EnteEntity enteModificato = new EnteEntity();
+		enteModificato.setId(ente1.getId());
+		enteModificato.setPiva(ente1.getPiva());
+		enteModificato.setNome("enteModificato");
+		when(this.enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+		when(this.enteRepository.findByPartitaIva(enteModificato.getPiva())).thenReturn(enteOptional);
+		when(this.programmaService.getProgrammaById(programma1.getId())).thenReturn(programma1);
+		enteService.modificaEnteGestoreProgramma(enteModificato, ente1.getId(), programma1.getId());
+	}
+	
+	@Test
+	public void modificaEnteGestoreProgrammaTest2() {
+		//test con ID invariato e la P.IVA (aggiornata) disponibile, quindi si modifica la P.IVA e gli altri campi dell'ente assegnatogli in precedenza
+		EnteEntity enteModificato = new EnteEntity();
+		enteModificato.setId(ente1.getId());
+		enteModificato.setPiva("UIRI23OO");
+		enteModificato.setNome("enteModificato");
+		when(this.enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+		when(this.enteRepository.findByPartitaIva(enteModificato.getPiva())).thenReturn(Optional.empty());
+		when(this.programmaService.getProgrammaById(programma1.getId())).thenReturn(programma1);
+		enteService.modificaEnteGestoreProgramma(enteModificato, ente1.getId(), programma1.getId());
+	}
+	
+	@Test
+	public void modificaEnteGestoreProgrammaTest3() {
+		//test con ID e P.IVA diversi, stato dell'ente gestore di programma ad ATTIVO
+		//enteModificato non presente a DB
+		EnteEntity enteModificato = new EnteEntity();
+		enteModificato.setId(3L);
+		enteModificato.setPiva("UIRI23OO");
+		enteModificato.setNome("enteModificato");
+		when(this.enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+		when(this.enteRepository.findByPartitaIva(enteModificato.getPiva())).thenReturn(Optional.empty());
+		when(this.programmaService.getProgrammaById(programma1.getId())).thenReturn(programma1);
+		when(this.enteRepository.findById(enteModificato.getId())).thenReturn(Optional.of(enteModificato));
+		enteService.modificaEnteGestoreProgramma(enteModificato, ente1.getId(), programma1.getId());
+	}
+	
+	@Test
+	public void modificaEnteGestoreProgrammaTest4() {
+		//test con ID e P.IVA diversi, stato dell'ente gestore di programma ad NON ATTIVO
+		//enteModificato presente a DB
+		programma1.setStatoGestoreProgramma("NON ATTIVO");
+		EnteEntity enteModificato = new EnteEntity();
+		enteModificato.setId(3L);
+		enteModificato.setPiva("UIRI23OO");
+		enteModificato.setNome("enteModificato");
+		when(this.enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+		when(this.enteRepository.findByPartitaIva(enteModificato.getPiva())).thenReturn(Optional.of(enteModificato));
+		when(this.programmaService.getProgrammaById(programma1.getId())).thenReturn(programma1);
+		when(this.enteRepository.findById(enteModificato.getId())).thenReturn(Optional.of(enteModificato));
+		enteService.modificaEnteGestoreProgramma(enteModificato, ente1.getId(), programma1.getId());
+	}
+	
+	@Test
+	public void modificaEnteGestoreProgrammaKOTest() {
+		//test KO per P.IVA occupata da un altro ente
+		EnteEntity enteModificato = new EnteEntity();
+		enteModificato.setId(ente1.getId());
+		enteModificato.setPiva("UIRI23OO");
+		enteModificato.setNome("enteModificato");
+		when(this.enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+		when(this.enteRepository.findByPartitaIva(enteModificato.getPiva())).thenReturn(Optional.of(enteModificato));
+		when(this.programmaService.getProgrammaById(programma1.getId())).thenReturn(programma1);
+		Assertions.assertThrows(EnteException.class, () -> enteService.modificaEnteGestoreProgramma(enteModificato, ente1.getId(), programma1.getId()));
+		assertThatExceptionOfType(EnteException.class);
+	}
+	
+	@Test
+	public void modificaEnteGestoreProgrammaKOTest2() {
+		//test KO per l'ID (di ente gestore) diverso dall'ID di enteModificato, con P.IVA non disponibile
+		programma1.setStatoGestoreProgramma("NON ATTIVO");
+		EnteEntity enteModificato = new EnteEntity();
+		enteModificato.setId(3L);
+		enteModificato.setPiva("UIRI23OO");
+		enteModificato.setNome("enteModificato");
+		when(this.enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+		when(this.enteRepository.findByPartitaIva(enteModificato.getPiva())).thenReturn(Optional.of(ente1));
+		when(this.programmaService.getProgrammaById(programma1.getId())).thenReturn(programma1);
+		Assertions.assertThrows(EnteException.class, () -> enteService.modificaEnteGestoreProgramma(enteModificato, ente1.getId(), programma1.getId()));
+		assertThatExceptionOfType(EnteException.class);
+	}
+	
+	@Test
+	public void modificaEnteGestoreProgettoTest() {
+		//test con ID e P.IVA invariati, quindi si modifica l'ente assegnatogli in precedenza
+		EnteEntity enteModificato = new EnteEntity();
+		enteModificato.setId(ente1.getId());
+		enteModificato.setPiva(ente1.getPiva());
+		enteModificato.setNome("enteModificato");
+		when(this.enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+		when(this.enteRepository.findByPartitaIva(enteModificato.getPiva())).thenReturn(enteOptional);
+		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
+		enteService.modificaEnteGestoreProgetto(enteModificato, ente1.getId(), progetto1.getId());
+	}
+	
+	@Test
+	public void modificaEnteGestoreProgettoTest2() {
+		//test con ID invariato e la P.IVA (aggiornata) disponibile, quindi si modifica la P.IVA e gli altri campi dell'ente assegnatogli in precedenza
+		EnteEntity enteModificato = new EnteEntity();
+		enteModificato.setId(ente1.getId());
+		enteModificato.setPiva("UIRI23OO");
+		enteModificato.setNome("enteModificato");
+		when(this.enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+		when(this.enteRepository.findByPartitaIva(enteModificato.getPiva())).thenReturn(Optional.empty());
+		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
+		enteService.modificaEnteGestoreProgetto(enteModificato, ente1.getId(), progetto1.getId());
+	}
+	
+	@Test
+	public void modificaEnteGestoreProgettoTest3() {
+		//test con ID e P.IVA diversi, stato dell'ente gestore di progetto ad ATTIVO
+		//enteModificato non presente a DB
+		progetto1.setStatoGestoreProgetto("ATTIVO");
+		EnteEntity enteModificato = new EnteEntity();
+		enteModificato.setId(3L);
+		enteModificato.setPiva("UIRI23OO");
+		enteModificato.setNome("enteModificato");
+		when(this.enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+		when(this.enteRepository.findByPartitaIva(enteModificato.getPiva())).thenReturn(Optional.empty());
+		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
+		when(this.enteRepository.findById(enteModificato.getId())).thenReturn(Optional.of(enteModificato));
+		enteService.modificaEnteGestoreProgetto(enteModificato, ente1.getId(), progetto1.getId());
+	}
+	
+	@Test
+	public void modificaEnteGestoreProgettoTest4() {
+		//test con ID e P.IVA diversi, stato dell'ente gestore di progetto ad NON ATTIVO
+		//enteModificato presente a DB
+		progetto1.setStatoGestoreProgetto("NON ATTIVO");
+		EnteEntity enteModificato = new EnteEntity();
+		enteModificato.setId(3L);
+		enteModificato.setPiva("UIRI23OO");
+		enteModificato.setNome("enteModificato");
+		when(this.enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+		when(this.enteRepository.findByPartitaIva(enteModificato.getPiva())).thenReturn(Optional.of(enteModificato));
+		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
+		when(this.enteRepository.findById(enteModificato.getId())).thenReturn(Optional.of(enteModificato));
+		enteService.modificaEnteGestoreProgetto(enteModificato, ente1.getId(), progetto1.getId());
+	}
+	
+	@Test
+	public void modificaEnteGestoreProgettoKOTest() {
+		//test KO per P.IVA occupata da un altro ente
+		EnteEntity enteModificato = new EnteEntity();
+		enteModificato.setId(ente1.getId());
+		enteModificato.setPiva("UIRI23OO");
+		enteModificato.setNome("enteModificato");
+		when(this.enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+		when(this.enteRepository.findByPartitaIva(enteModificato.getPiva())).thenReturn(Optional.of(enteModificato));
+		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
+		Assertions.assertThrows(EnteException.class, () -> enteService.modificaEnteGestoreProgetto(enteModificato, ente1.getId(), progetto1.getId()));
+		assertThatExceptionOfType(EnteException.class);
+	}
+	
+	@Test
+	public void modificaEnteGestoreProgettoKOTest2() {
+		//test KO per l'ID (di ente gestore) diverso dall'ID di enteModificato, con P.IVA non disponibile
+		programma1.setStatoGestoreProgramma("NON ATTIVO");
+		EnteEntity enteModificato = new EnteEntity();
+		enteModificato.setId(3L);
+		enteModificato.setPiva("UIRI23OO");
+		enteModificato.setNome("enteModificato");
+		when(this.enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+		when(this.enteRepository.findByPartitaIva(enteModificato.getPiva())).thenReturn(Optional.of(ente1));
+		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
+		Assertions.assertThrows(EnteException.class, () -> enteService.modificaEnteGestoreProgetto(enteModificato, ente1.getId(), progetto1.getId()));
+		assertThatExceptionOfType(EnteException.class);
 	}
 }
