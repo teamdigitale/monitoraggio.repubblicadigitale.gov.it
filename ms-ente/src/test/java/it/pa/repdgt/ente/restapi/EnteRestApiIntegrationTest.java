@@ -2,15 +2,17 @@ package it.pa.repdgt.ente.restapi;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Map;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 import it.pa.repdgt.ente.AppTests;
 import it.pa.repdgt.ente.bean.SchedaEnteBean;
+import it.pa.repdgt.ente.bean.SchedaEnteGestoreBean;
 import it.pa.repdgt.ente.request.FiltroRequest;
 import it.pa.repdgt.ente.request.NuovoEnteRequest;
-import it.pa.repdgt.ente.request.ReferenteDelegatoGestoreProgrammaRequest;
 import it.pa.repdgt.ente.resource.EnteResource;
 import it.pa.repdgt.ente.resource.ListaEntiPaginatiResource;
 import it.pa.repdgt.ente.restapi.param.EntiPaginatiParam;
@@ -57,18 +59,6 @@ public class EnteRestApiIntegrationTest extends AppTests {
 	}
 	
 	@Test
-	public void getSchedaEnteByIdTest() {
-		final String idEnte = "1000";
-		
-		String url = String.format("http://localhost:%s/ente/%s", randomServerPort, idEnte);
-		SchedaEnteBean response = restTemplate.getForObject(url, SchedaEnteBean.class);
-		
-		assertThat(response).isNotNull();
-		assertThat(response.getDettagliEnte()).isNotNull();
-		assertThat(response.getDettagliProfili()).isNotNull();
-	}
-	
-	@Test
 	public void creaNuovoEnteTest() {
 		NuovoEnteRequest nuovoEnteRequest = new NuovoEnteRequest();
 		nuovoEnteRequest.setNome("Test crea nuovo ente");
@@ -84,5 +74,44 @@ public class EnteRestApiIntegrationTest extends AppTests {
 		assertThat(response).isNotNull();
 		assertThat(response.getId()).isNotNull();
 		assertThat(response.getNome()).isEqualTo("Test crea nuovo ente");
+	}
+	
+	@Test
+	public void getSchedaEnteByIdTest() {
+		String idProgramma = "1000";
+		
+		String url = String.format("http://localhost:%s/ente/%s", randomServerPort, idProgramma);
+		SchedaEnteBean response = restTemplate.getForObject(url, SchedaEnteBean.class);
+		
+		assertThat(response).isNotNull();
+		assertThat(response.getDettagliEnte()).isNotNull();
+		assertThat(response.getDettagliProfili()).isNotNull();
+	}
+	
+	@Test
+	public void getSchedaEnteGestoreProgrammaTest() {
+		final String idProgramma = "100";
+		
+		String url = String.format("http://localhost:%s/ente/gestoreProgramma/%s", randomServerPort, idProgramma);
+		Map<Object, Object> response = restTemplate.getForObject(url, Map.class);
+		
+		assertThat(response).isNotNull();
+		assertThat(response.get("ente")).isNotNull();
+		assertThat(response.get("referentiEnteGestore")).isNotNull();
+		assertThat(response.get("delegatiEnteGestore")).isNotNull();
+	}
+	
+	@Test
+	public void getSchedaEnteGestoreProgetto() {
+		String idProgetto = "250";
+		
+		String url = String.format("http://localhost:%s/ente/gestoreProgetto/%s", randomServerPort, idProgetto);
+		Map<Object, Object> response = restTemplate.getForObject(url, Map.class);
+		
+		assertThat(response).isNotNull();
+		assertThat(response.get("ente")).isNotNull();
+		assertThat(response.get("referentiEnteGestoreProgetto")).isNotNull();
+		assertThat(response.get("delegatiEnteGestoreProgetto")).isNotNull();
+		assertThat(response.get("sediEnteGestoreProgetto")).isNotNull();
 	}
 }

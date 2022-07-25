@@ -26,7 +26,6 @@ import it.pa.repdgt.ente.exception.ResourceNotFoundException;
 import it.pa.repdgt.ente.exception.SedeException;
 import it.pa.repdgt.ente.mapper.IndirizzoSedeMapper;
 import it.pa.repdgt.ente.mapper.SedeMapper;
-import it.pa.repdgt.ente.repository.EnteSedeProgettoRepository;
 import it.pa.repdgt.ente.repository.SedeRepository;
 import it.pa.repdgt.ente.request.NuovaSedeRequest;
 import it.pa.repdgt.ente.request.NuovaSedeRequest.IndirizzoSedeRequest;
@@ -233,24 +232,24 @@ public class SedeService {
 					   });
 	}
 
-	private void assegnaFasceOrarie(IndirizzoSedeRequest indirizzoRequest, IndirizzoSedeEntity indirizzoSedeEntity) {
+	public void assegnaFasceOrarie(IndirizzoSedeRequest indirizzoRequest, IndirizzoSedeEntity indirizzoSedeEntity) {
 		IndirizzoSedeFasciaOrariaEntity fasciaOraria = indirizzoRequest.getFasceOrarieAperturaIndirizzoSede();
 		fasciaOraria.setIdIndirizzoSede(indirizzoSedeEntity.getId());
 		this.indirizzoSedeFasciaOrariaService.salvaIndirizzoSedeFasciaOraria(fasciaOraria);
 	}
 
-	private void aggiornaFasceOrarie(IndirizzoSedeRequest indirizzoRequest, IndirizzoSedeEntity indirizzoSedeEntity) {
+	public void aggiornaFasceOrarie(IndirizzoSedeRequest indirizzoRequest, IndirizzoSedeEntity indirizzoSedeEntity) {
 		IndirizzoSedeFasciaOrariaEntity fasciaOraria = indirizzoRequest.getFasceOrarieAperturaIndirizzoSede();
 		Optional<IndirizzoSedeFasciaOrariaEntity> fasceOrarieDaAggiornare = this.indirizzoSedeFasciaOrariaService.getFasceOrarieByIdIndirizzoSede(indirizzoSedeEntity.getId());
 		if(fasceOrarieDaAggiornare.isPresent()) {
 			fasciaOraria.setId(fasceOrarieDaAggiornare.get().getId());
 		}
-		fasciaOraria.setIdIndirizzoSede(indirizzoRequest.getId());		
+		fasciaOraria.setIdIndirizzoSede(indirizzoRequest.getId());
 		this.indirizzoSedeFasciaOrariaService.salvaIndirizzoSedeFasciaOraria(fasciaOraria);
 	}
 
 	@Transactional(rollbackOn = Exception.class)
-	private void cancellaFasceOrarieByIdIndirizzo(Long id) {
+	public void cancellaFasceOrarieByIdIndirizzo(Long id) {
 		Optional<IndirizzoSedeFasciaOrariaEntity> listaFasceOrarieEntity = this.indirizzoSedeFasciaOrariaService.getFasceOrarieEntityByIdIndirizzoSede(id);
 		if(listaFasceOrarieEntity.isPresent())
 			this.indirizzoSedeFasciaOrariaService.cancellaFasciaOraria(listaFasceOrarieEntity.get());

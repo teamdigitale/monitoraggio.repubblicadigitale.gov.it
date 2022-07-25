@@ -109,7 +109,31 @@ public class UtenteService {
 					utente.getRuoli()
 						.stream()
 						.forEach(ruolo -> {
-							ruoliAggregati.append(ruolo.getNome()).append(", ");
+							Integer countRuolo = 0;
+							String codiceRuolo = ruolo.getCodice();
+							switch (codiceRuolo) {
+							case "REG":
+							case "DEG":
+								countRuolo = referentiDelegatiEnteGestoreProgrammaRepository.countByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), ruolo.getCodice());
+								break;
+							case "REGP":
+							case "DEGP":
+								countRuolo = referentiDelegatiEnteGestoreProgettoRepository.countByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), ruolo.getCodice());
+								break;
+							case "REPP":
+							case "DEPP":
+								countRuolo = referentiDelegatiEntePartnerDiProgettoRepository.countByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), ruolo.getCodice());
+								break;
+							case "FAC":
+							case "VOL":
+								countRuolo = enteSedeProgettoFacilitatoreService.countByIdFacilitatore(utente.getCodiceFiscale(), ruolo.getCodice());
+								break;
+							default:
+								countRuolo = 1;
+								break;
+							}
+							for(int i = 0; i < countRuolo; i++)
+								ruoliAggregati.append(ruolo.getNome()).append(", ");
 						});
 					
 					if(ruoliAggregati.length() > 0) {

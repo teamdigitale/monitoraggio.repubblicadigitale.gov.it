@@ -22,4 +22,13 @@ public interface ReferentiDelegatiEnteGestoreProgrammaRepository extends JpaRepo
 			String cfUtente, 
 			Long idProgramma, 
 			String codiceRuolo);
+	
+	@Query(value = "select count(*) "
+			+ "FROM referente_delegati_gestore_programma rdg "
+			+ "WHERE rdg.CF_UTENTE = :cfUtente "
+			+ "AND rdg.codice_ruolo = :codiceRuolo", 
+			nativeQuery = true)
+	public Integer countByCfUtenteAndCodiceRuolo(
+			String cfUtente, 
+			String codiceRuolo);
 }

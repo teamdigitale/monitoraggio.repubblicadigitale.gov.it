@@ -40,4 +40,14 @@ public interface EnteSedeProgettoFacilitatoreRepository extends JpaRepository<En
 			@Param(value = "cfUtente")String cfUtente,
 			@Param(value = "codiceRuolo")String codiceRuolo,
 			@Param(value = "idProgetto")Long idProgetto);
+	
+	@Query(value = "SELECT COUNT(*) "
+			+ "		FROM ente_sede_progetto_facilitatore espf "
+			+ "		WHERE espf.ID_FACILITATORE = :cfUtente"
+			+ "		AND RUOLO_UTENTE = :codiceRuolo ", 
+			nativeQuery = true)
+	Integer countByIdFacilitatore(
+			@Param(value = "cfUtente")String cfUtente,
+			@Param(value = "codiceRuolo")String codiceRuolo);
+	
 }

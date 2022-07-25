@@ -358,7 +358,7 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 
 	@Query(value = "SELECT DISTINCT programma.POLICY"
 			+ " FROM "
-			+ "		ENTE_PARTNER ente_partner "
+			+ "		ente_partner ente_partner "
 			+ "     RIGHT JOIN progetto progetto   ON progetto.ID = ente_partner.ID_PROGETTO "
 			+ "		INNER JOIN programma programma ON programma.ID = progetto.ID_PROGRAMMA "
 			+ " WHERE ente_partner.CF_UTENTE_DELEGATO_ENTE_PARTNER = :codFiscale",
@@ -367,7 +367,7 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 
 	@Query(value = "SELECT DISTINCT programma.POLICY"
 			+ " FROM "
-			+ "		PROGRAMMA programma  "
+			+ "		programma programma  "
 			+ " WHERE programma.POLICY = :policy",
 		   nativeQuery = true)
 	public Set<String> findPoliciesPerDSCU(String policy);

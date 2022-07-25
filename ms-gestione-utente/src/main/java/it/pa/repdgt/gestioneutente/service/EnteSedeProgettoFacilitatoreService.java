@@ -27,6 +27,12 @@ public class EnteSedeProgettoFacilitatoreService {
 		return this.enteSedeProgettoFacilitatoreRepository.findDistinctStatoByIdProgettoIdFacilitatoreVolontario(cfUtente, codiceRuolo, idProgetto);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
+	public Integer countByIdFacilitatore(String cfUtente, String codiceRuolo) {
+		return this.enteSedeProgettoFacilitatoreRepository.countByIdFacilitatore(cfUtente, codiceRuolo);
+	}
+	
 	
 }
 

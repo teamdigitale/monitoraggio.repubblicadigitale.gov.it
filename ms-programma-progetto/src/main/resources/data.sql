@@ -289,6 +289,8 @@ insert into referente_delegati_partner(cf_utente, id_ente, id_progetto, codice_r
 	
 -- ASSEGNAMENTO ENTE_SEDE_PROGETTO
 insert into ENTE_SEDE_PROGETTO(id_ente, id_progetto, id_sede, ruolo_ente, stato_sede)
+	values(1004, 256, 1, 'EGP', 'ATTIVO');
+insert into ENTE_SEDE_PROGETTO(id_ente, id_progetto, id_sede, ruolo_ente, stato_sede)
 	values(1005, 256, 1, 'EGP', 'ATTIVO');
 insert into ente_sede_progetto(id_ente, id_progetto, id_sede, ruolo_ente, stato_sede)
 	values(1005, 251, 2, 'EGP', 'ATTIVO');
