@@ -51,7 +51,7 @@ public class MongoDBConnectionConfig {
 		
 		if(!Arrays.asList(this.environment.getActiveProfiles()).contains("locale")) {
 //			String uri = uriBuilder.append(dbUsername).append(":").append(dbPassword).append("@").append(host).append(":").append(port).append("/be?tls=true&retryWrites=false").toString();
-			String uri = uriBuilder.append(dbUsername).append(":").append(dbPassword).append("@").append(host).append(":").append(port).append("/be").toString();
+			String uri = uriBuilder.append(dbUsername).append(":").append(dbPassword).append("@").append(host).append(":").append(port).append("/be?retryWrites=false").toString();
 			properties.setUri(uri);
 		} else {
 			properties.setUri(uriBuilder.append("localhost:27017").toString());

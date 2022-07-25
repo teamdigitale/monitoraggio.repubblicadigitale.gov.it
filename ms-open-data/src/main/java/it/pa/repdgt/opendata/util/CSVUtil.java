@@ -33,7 +33,9 @@ public class CSVUtil {
 			"NOME_SERVIZIO",
 			"COMPETENZE_TRATTATE",
 			"AMBITO_SERVIZI_PUBBLICI_DIGITALI",
-			"POLICY"
+			"ID_PROGRAMMA",
+			"POLICY",
+			"ID_PROGETTO"
 		);
 
 	public static ByteArrayInputStream exportCSVOpenData(List<OpenDataCittadinoCSVBean> openDataCittadinoCSVBeanList, CSVFormat csvFormat) {
@@ -75,7 +77,9 @@ public class CSVUtil {
 				openDataCittadinoProjection.getNomeServizio(),
 				competenzeTrattate,
 				ambitoServizi,
-				openDataCittadinoProjection.getPolicy()
+				openDataCittadinoProjection.getIdProgramma(),
+				openDataCittadinoProjection.getPolicy(),
+				openDataCittadinoProjection.getIdProgetto()
 			);
 	}
 }

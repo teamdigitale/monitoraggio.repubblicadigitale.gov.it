@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -23,7 +24,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import it.pa.repdgt.opendata.bean.OpenDataCittadinoCSVBean;
+import it.pa.repdgt.opendata.repository.CittadinoRepository;
 import it.pa.repdgt.opendata.util.CSVUtil;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.awsintegration.service.S3Service;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,6 +40,9 @@ public class OpenDataService {
 	private S3Service s3Service;
 	@Value("${AWS.S3.BUCKET-NAME:}")
 	private String nomeDelBucketS3;
+	
+	@Autowired
+	private CittadinoRepository cittadinoRepository;
 	
 	private static final String patternDate = "dd_MM_yyyy";
 	private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(patternDate);
@@ -53,6 +60,8 @@ public class OpenDataService {
 //					   │ │ │ │  │ │
 //					   * * * *  * *
 	@Scheduled(cron = "0 30 15 * * *")
+	@LogMethod
+	@LogExecutionTime
 	public void caricaFileListaCittadiniSuAmazonS3() throws IOException {
 		String nowDate = simpleDateFormat.format(new Date());
 //		final String fileNameToUpload = "./fileCittadiniToUploadOn".concat(nowDate.toString().concat(".csv"));
@@ -106,7 +115,17 @@ public class OpenDataService {
 		return file.delete();
 	}
 	
+	@LogMethod
+	@LogExecutionTime
+	@Transactional(rollbackOn = Exception.class)
 	public byte[] scaricaFileListaCittadiniSuAmazonS3(final String fileToDownload) throws IOException{
+		cittadinoRepository.updateCountDownload(fileToDownload, new Date());
 		return this.s3Service.downloadFile(this.nomeDelBucketS3, fileToDownload).asByteArray();
+	}
+	
+	@LogMethod
+	@LogExecutionTime
+	public Long getCountFile(final String fileToDownload) throws IOException{
+		return cittadinoRepository.getCountDownload(fileToDownload);
 	}
 }

@@ -21,4 +21,13 @@ public interface ReferentiDelegatiEntePartnerDiProgettoRepository extends JpaRep
 			String cfUtente, 
 			Long idProgetto, 
 			String codiceRuolo);
+	
+	@Query(value = "select count(*) "
+			+ "FROM referente_delegati_partner rdg "
+			+ "WHERE rdg.CF_UTENTE = :cfUtente "
+			+ "AND rdg.codice_ruolo = :codiceRuolo", 
+			nativeQuery = true)
+	public Integer countByCfUtenteAndCodiceRuolo(
+			String cfUtente, 
+			String codiceRuolo);
 }

@@ -21,14 +21,20 @@ import it.pa.repdgt.opendata.service.OpenDataService;
 public class OpenDataRestApi {
 	@Autowired
 	private OpenDataService openDataService;
+	final static String NOME_FILE = "fileCittadini.csv";
 	
-	@PostMapping(path = "/download/{nomeFile}")
-	public ResponseEntity<InputStreamResource> downloadListaCSVEnti(@PathVariable(value = "nomeFile") final String nomeFile) throws IOException {
-		byte[] bytes = this.openDataService.scaricaFileListaCittadiniSuAmazonS3(nomeFile);
+	@PostMapping(path = "/download")
+	public ResponseEntity<InputStreamResource> downloadListaCSVCittadini() throws IOException {
+		byte[] bytes = this.openDataService.scaricaFileListaCittadiniSuAmazonS3(NOME_FILE);
 		InputStream is = new ByteArrayInputStream(bytes);
 		InputStreamResource fileCSV = new InputStreamResource(is);
 
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=lista-cittadini.csv")
 				.contentType(MediaType.parseMediaType("application/csv")).body(fileCSV);
+	}
+	
+	@PostMapping(path = "/count/download")
+	public Long getCountDownloadListaCSVCittadini() throws IOException {
+		return this.openDataService.getCountFile(NOME_FILE);
 	}
 }

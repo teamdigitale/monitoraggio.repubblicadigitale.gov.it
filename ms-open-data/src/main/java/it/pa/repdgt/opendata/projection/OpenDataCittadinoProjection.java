@@ -19,4 +19,7 @@ public interface OpenDataCittadinoProjection {
 	public String  getProvinciaSede();
 	public String  getRegioneSede();
 	public String  getCapSede();
+	
+	public String  getIdProgramma();
+	public String  getIdProgetto();
 }
