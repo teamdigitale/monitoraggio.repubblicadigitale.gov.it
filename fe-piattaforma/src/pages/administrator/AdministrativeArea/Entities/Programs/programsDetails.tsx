@@ -20,7 +20,9 @@ import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
 import ManageProgram from '../modals/manageProgram';
 import ManageManagerAuthority from '../modals/manageManagerAuthority';
 import { useAppSelector } from '../../../../../redux/hooks';
-import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
+import {
+  setInfoIdsBreadcrumb,
+} from '../../../../../redux/features/app/appSlice';
 import {
   selectAuthorities,
   selectPrograms,
@@ -118,31 +120,13 @@ const ProgramsDetails: React.FC = () => {
   }, [entityId]);
 
   useEffect(() => {
-    if (entityId && programDetails) {
-      dispatch(
-        updateBreadcrumb([
-          {
-            label: 'Area Amministrativa',
-            url: '/area-amministrativa',
-            link: false,
-          },
-          {
-            label: 'Programmi',
-            url: '/area-amministrativa/programmi',
-            link: true,
-          },
-          {
-            label: programDetails.nomeBreve,
-            url: `/area-amministrativa/programmi/${entityId}`,
-            link: false,
-          },
-        ])
-      );
+    if (entityId && programDetails?.nomeBreve) {
+      dispatch(setInfoIdsBreadcrumb({ id: entityId, nome: programDetails?.nomeBreve}))
     }
   }, [entityId, programDetails]);
 
   const getActionRedirectURL = (userType: string, userId: string) => {
-    return `/area-amministrativa/progetti/${entityId}/${userType}/${userId}`;
+    return `/area-amministrativa/programmi/${entityId}/${userType}/${userId}`;
   };
 
   const onActionClickReferenti: CRUDActionsI = {

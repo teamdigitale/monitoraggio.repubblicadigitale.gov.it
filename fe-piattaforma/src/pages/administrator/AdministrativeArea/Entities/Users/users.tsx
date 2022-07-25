@@ -31,20 +31,15 @@ import { formFieldI } from '../../../../../utils/formHelper';
 import { openModal } from '../../../../../redux/features/modal/modalSlice';
 import { useNavigate } from 'react-router-dom';
 import ManageUsers from '../modals/manageUsers';
-
-import {
-  //GetAllUsers,
-  GetFilterValuesUtenti,
-} from '../../../../../redux/features/administrativeArea/user/userThunk';
-import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 import {
   DownloadEntityValues,
+  GetEntityFilterValues,
   GetEntityValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 
 const entity = 'utente';
-const statusDropdownLabel = 'stati';
-const ruoliDropdownLabel = 'ruoli';
+const statusDropdownLabel = 'stato';
+const ruoliDropdownLabel = 'ruolo';
 
 const Users = () => {
   const navigate = useNavigate();
@@ -59,35 +54,19 @@ const Users = () => {
   const [filterDropdownSelected, setFilterDropdownSelected] =
     useState<string>('');
 
-  const { criterioRicerca, ruoli, stati } = filtersList;
+  const { criterioRicerca, ruolo, stato } = filtersList;
 
   const { pageNumber } = pagination;
 
   const getAllFilters = () => {
-    // TODO: check chiavi filtri
-    if (filterDropdownSelected !== 'filtroStati')
-      dispatch(GetFilterValuesUtenti(statusDropdownLabel));
-    if (filterDropdownSelected !== 'ruoli')
-      dispatch(GetFilterValuesUtenti(ruoliDropdownLabel));
+    if (filterDropdownSelected !== 'stato')
+      dispatch(GetEntityFilterValues({ entity, dropdownType: 'stati' }));
+    if (filterDropdownSelected !== 'ruolo')
+      dispatch(GetEntityFilterValues({ entity, dropdownType: 'ruoli' }));
   };
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
-    getAllFilters();
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area Amministrativa',
-          url: '/area-amministrativa',
-          link: false,
-        },
-        {
-          label: 'Utenti',
-          url: '/area-amministrativa/utenti',
-          link: true,
-        },
-      ])
-    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -134,7 +113,7 @@ const Users = () => {
     getUsersList();
     getAllFilters();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [criterioRicerca, ruoli, stati, pageNumber]);
+  }, [criterioRicerca, ruolo, stato, pageNumber]);
 
   const handleOnChangePage = (pageNumber: number = pagination?.pageNumber) => {
     dispatch(setEntityPagination({ pageNumber }));
@@ -146,7 +125,7 @@ const Users = () => {
 
   const handleDropdownFilters = (
     values: FilterI[],
-    filterKey: 'ruoli' | 'stati'
+    filterKey: 'ruolo' | 'stato'
   ) => {
     setFilterDropdownSelected(filterKey);
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
@@ -154,7 +133,7 @@ const Users = () => {
 
   const handleOnSearchDropdownOptions = (
     searchValue: formFieldI['value'],
-    filterId: 'ruoli' | 'stati'
+    filterId: 'ruolo' | 'stato'
   ) => {
     const searchDropdownValues = [...searchDropdown];
     if (
@@ -173,7 +152,7 @@ const Users = () => {
   const dropdowns: DropdownFilterI[] = [
     {
       filterName: 'Ruoli',
-      options: dropdownFilterOptions[ruoliDropdownLabel],
+      options: dropdownFilterOptions['ruoli'],
       id: ruoliDropdownLabel,
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, ruoliDropdownLabel),
@@ -187,7 +166,7 @@ const Users = () => {
     },
     {
       filterName: 'Stato',
-      options: dropdownFilterOptions[statusDropdownLabel],
+      options: dropdownFilterOptions['stati'],
       id: statusDropdownLabel,
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, statusDropdownLabel),

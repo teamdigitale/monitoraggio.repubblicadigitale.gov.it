@@ -11,6 +11,7 @@ import {
 } from '../administrativeAreaSlice';
 import { mapOptions } from '../../../../utils/common';
 import { formFieldI } from '../../../../utils/formHelper';
+import { getUserHeaders } from '../../user/userThunk';
 
 export interface UtentiLightI {
   id: string;
@@ -78,18 +79,19 @@ export const GetFilterValuesUtenti =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
+      const { codiceFiscale, codiceRuolo, idProgramma } = getUserHeaders();
       const body = {
-        cfUtente: '',
-        codiceRuolo: '',
+        cfUtente: codiceFiscale,
+        codiceRuolo: codiceRuolo,
         filtroRequest: { ...filters },
-        idProgramma: 0,
+        idProgramma: idProgramma,
       };
       const entityFilterEndpoint = `/utente/${dropdownType}/dropdown`;
       const res = await API.post(entityFilterEndpoint, body);
       if (res?.data) {
         dispatch(
           setEntityFilterOptions({
-            [dropdownType]: mapOptions(res.data.data.list),
+            [dropdownType]: mapOptions(res.data),
           })
         );
       }

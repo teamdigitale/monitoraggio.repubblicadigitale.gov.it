@@ -62,6 +62,24 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
   }, [formData]);
 
   useEffect(() => {
+    if (
+      form &&
+      formDisabled &&
+      Object.entries(form).some(([_key, value]) => !value.disabled)
+    ) {
+      updateForm(
+        Object.fromEntries(
+          Object.entries(form).map(([key, value]) => [
+            key,
+            { ...value, disabled: formDisabled },
+          ])
+        ),
+        true
+      );
+    }
+  }, [formDisabled, form]);
+
+  useEffect(() => {
     sendNewValues?.(getFormValues?.());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);

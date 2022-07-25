@@ -110,7 +110,7 @@ const AppRoutes: React.FC = () => {
             }
           />
           <Route
-            path='/documents'
+            path='/documenti'
             element={
               <ProtectedComponent visibleTo={[]} redirect='/'>
                 <Documents />

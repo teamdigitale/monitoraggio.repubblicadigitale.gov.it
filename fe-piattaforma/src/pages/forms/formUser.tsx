@@ -45,6 +45,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
     sendNewValues = () => ({}),
     setIsFormValid = () => ({}),
     getFormValues = () => ({}),
+    updateForm = () => ({}),
     creation = false,
   } = props;
 
@@ -53,6 +54,24 @@ const FormUser: React.FC<UserFormI> = (props) => {
   const formData: { [key: string]: string } =
     useAppSelector(selectUsers)?.detail?.dettaglioUtente;
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (
+      form &&
+      formDisabled &&
+      Object.entries(form).some(([_key, value]) => !value.disabled)
+    ) {
+      updateForm(
+        Object.fromEntries(
+          Object.entries(form).map(([key, value]) => [
+            key,
+            { ...value, disabled: formDisabled },
+          ])
+        ),
+        true
+      );
+    }
+  }, [formDisabled, form]);
 
   useEffect(() => {
     if (!creation) {

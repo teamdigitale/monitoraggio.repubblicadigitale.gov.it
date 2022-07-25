@@ -20,7 +20,7 @@ import ManageHeadquarter from '../../../../../components/AdministrativeArea/Enti
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
   selectDevice,
-  updateBreadcrumb,
+  setInfoIdsBreadcrumb,
 } from '../../../../../redux/features/app/appSlice';
 import clsx from 'clsx';
 import {
@@ -52,7 +52,6 @@ import {
 import TerminateEntityModal from '../../../../../components/AdministrativeArea/Entities/General/TerminateEntityModal/TerminateEntityModal';
 import ManageDelegate from '../modals/manageDelegate';
 import ManageReferal from '../modals/manageReferal';
-import ManageProjectManagerAuthority from '../modals/manageProjectManagerAuthority';
 import ManageManagerAuthority from '../modals/manageManagerAuthority';
 import { RemoveAuthorityHeadquarter } from '../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
 import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
@@ -101,33 +100,14 @@ const ProjectsDetails = () => {
   const sediRef = useRef<HTMLLIElement>(null);
   const infoRef = useRef<HTMLLIElement>(null);
   const { entityId, projectId } = useParams();
-  const shortName = project.detail?.dettaglioProgetto?.nomeBreve;
-  const managerAuthority =
-    useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
+  const managerAuthority = useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
 
   useEffect(() => {
-    if (projectId && shortName) {
-      dispatch(
-        updateBreadcrumb([
-          {
-            label: 'Area Amministrativa',
-            url: '/area-amministrativa',
-            link: false,
-          },
-          {
-            label: 'Progetti',
-            url: '/area-amministrativa/progetti',
-            link: true,
-          },
-          {
-            label: shortName,
-            url: `/area-amministrativa/progetti/${projectId}`,
-            link: false,
-          },
-        ])
-      );
+    if (projectId && projectDetails?.nome) {
+      dispatch(setInfoIdsBreadcrumb({ id: programDetails?.id, nome: programDetails?.nomeBreve}))
+      dispatch(setInfoIdsBreadcrumb({ id: projectId, nome: projectDetails?.nome}))
     }
-  }, [projectId, shortName]);
+  }, [projectId, projectDetails]);
 
   useEffect(() => {
     scrollTo(0, 0);
@@ -312,7 +292,7 @@ const ProjectsDetails = () => {
           enteType={formTypes.ENTE_GESTORE_PROGETTO}
         />
       );
-      setCorrectModal(<ManageProjectManagerAuthority />);
+      setCorrectModal(<ManageManagerAuthority />);
       setItemList(null);
       setCorrectButtons([
         {
@@ -338,7 +318,7 @@ const ProjectsDetails = () => {
           onClick: () =>
             dispatch(
               openModal({
-                id: 'ente-gestore-progetto',
+                id: 'ente-gestore',
                 payload: { title: 'Modifica ente gestore progetto' },
               })
             ),
@@ -385,7 +365,7 @@ const ProjectsDetails = () => {
       setItemList(null);
       setCorrectButtons([]);
       setCurrentForm(undefined);
-      setCorrectModal(<ManageProjectManagerAuthority creation />);
+      setCorrectModal(<ManageManagerAuthority creation />);
       setEmptySection(
         <EmptySection
           title={'Questa sezione è ancora vuota'}
@@ -824,7 +804,7 @@ const ProjectsDetails = () => {
                 onActionClick={{
                   [CRUDActionTypes.VIEW]: () =>
                     navigate(
-                      `/area-amministrativa/programmi/${programDetails?.id}`,
+                      `/area-amministrativa/programmi/${programDetails?.id}/info`,
                       { replace: true }
                     ),
                 }}
@@ -863,7 +843,6 @@ const ProjectsDetails = () => {
           <ManageDelegate />
           <ManageReferal />
           <ManageHeadquarter />
-          <ManageManagerAuthority />
         </div>
       </div>
     </div>

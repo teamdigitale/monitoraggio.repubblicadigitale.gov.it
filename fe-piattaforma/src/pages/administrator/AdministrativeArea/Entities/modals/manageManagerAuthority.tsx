@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { EmptySection, SearchBar, Table } from '../../../../../components';
@@ -13,6 +13,7 @@ import {
   //resetAuthorityDetails,
   selectAuthorities,
   setAuthoritiesList,
+  setAuthorityDetails,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import {
   CreateManagerAuthority,
@@ -67,16 +68,27 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
     [key: string]: formFieldI['value'];
   }>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
-  const [showForm, setShowForm] = useState<boolean>(true);
-  const [alreadySearched, setAlreadySearched] = useState<boolean>(false);
+  const [noResult, setNoResult] = useState(false);
   const dispatch = useDispatch();
   const { entityId, projectId } = useParams();
   const authoritiesList = useAppSelector(selectAuthorities).list;
 
+  useEffect(() => {
+    dispatch(setAuthoritiesList(null));
+  }, []);
+
+  useEffect(() => {
+    if (authoritiesList && authoritiesList.length === 0) {
+      setNoResult(true);
+    } else {
+      setNoResult(false);
+    }
+  }, [authoritiesList]);
+
   const resetModal = () => {
     clearForm();
-    setShowForm(true);
-    setAlreadySearched(false);
+    dispatch(setAuthorityDetails(null));
+    setNoResult(false);
     //dispatch(resetAuthorityDetails());
   };
 
@@ -137,30 +149,25 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
         dispatch(GetAuthorityDetail(td.id as string));
         dispatch(setAuthoritiesList(null));
       }
-      setShowForm(true);
     },
   };
 
   const handleSearchAuthority = (search: string) => {
     if (search) dispatch(GetAuthoritiesBySearch(search));
-    setShowForm(false);
-    setAlreadySearched(true);
   };
 
-  let content;
+  let content = (
+    <FormAuthorities
+      creation={creation}
+      formDisabled={!!formDisabled}
+      sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+        setNewFormValues({ ...newData })
+      }
+      setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+    />
+  );
 
-  if (showForm) {
-    content = (
-      <FormAuthorities
-        creation={creation}
-        formDisabled={!!formDisabled}
-        sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
-          setNewFormValues({ ...newData })
-        }
-        setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
-      />
-    );
-  } else if (authoritiesList && authoritiesList.length > 0) {
+  if (authoritiesList && authoritiesList.length > 0) {
     content = (
       <Table
         heading={headings}
@@ -173,11 +180,9 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
         id='table'
       />
     );
-  } else if (
-    alreadySearched &&
-    (authoritiesList?.length === 0 || !authoritiesList) &&
-    !showForm
-  ) {
+  }
+
+  if (noResult) {
     content = <EmptySection title={'Nessun risultato'} withIcon horizontal />;
   }
 
@@ -227,6 +232,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
           placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’ente'
           onSubmit={handleSearchAuthority}
           title='Cerca'
+          onReset={() => dispatch(setAuthoritiesList(null))}
           search
         />
         <div className='mx-5'>{content}</div>

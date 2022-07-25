@@ -136,7 +136,7 @@ const routes = [
   }),
   newRoute({
     scope: 'app',
-    path: '/documents',
+    path: '/documenti',
     title: 'Documenti',
     element: <Documents />,
     visibleTo: [],
@@ -532,7 +532,7 @@ const routes = [
   }),
   newRoute({
     scope: 'administrative-area',
-    path: 'questionari/:idQuestionario/info',
+    path: 'questionari/:idQuestionario',
     title: 'Questionari',
     element: <SurveyDetailsEdit />,
     visibleTo: [],

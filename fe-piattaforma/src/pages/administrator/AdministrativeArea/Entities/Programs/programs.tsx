@@ -35,7 +35,6 @@ import {
   GetEntityFilterValues,
   DownloadEntityValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
-import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 import useGuard from '../../../../../hooks/guard';
 
 const entity = 'programma';
@@ -69,25 +68,6 @@ const Programs = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
-    /**
-     * When the component is rendered the breadcrumb is initialized with
-     * the rigth path. This operation is performed in every component that
-     * needs breadcrumb
-     */
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area Amministrativa',
-          url: '/area-amministrativa',
-          link: false,
-        },
-        {
-          label: 'Programmi',
-          url: '/area-amministrativa/programmi',
-          link: true,
-        },
-      ])
-    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -33,7 +33,6 @@ import {
   GetEntityFilterValues,
   GetEntityValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
-import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 import useGuard from '../../../../../hooks/guard';
 
 const entity = 'progetto';
@@ -73,20 +72,6 @@ const Projects: React.FC = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area Amministrativa',
-          url: '/area-amministrativa',
-          link: false,
-        },
-        {
-          label: 'Progetti',
-          url: '/area-amministrativa/progetti',
-          link: true,
-        },
-      ])
-    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

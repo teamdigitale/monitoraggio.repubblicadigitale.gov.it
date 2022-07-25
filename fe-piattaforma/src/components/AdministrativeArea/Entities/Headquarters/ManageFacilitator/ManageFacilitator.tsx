@@ -161,6 +161,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
           )}
           placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’utente'
           onSubmit={handleSearchUser}
+          onReset={() => dispatch(setUsersList(null))}
           title='Cerca'
           search
         />

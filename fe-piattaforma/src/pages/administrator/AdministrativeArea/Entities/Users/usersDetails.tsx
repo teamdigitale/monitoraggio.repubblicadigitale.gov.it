@@ -19,7 +19,7 @@ import ManageUsers from '../modals/manageUsers';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
   selectDevice,
-  updateBreadcrumb,
+  setInfoIdsBreadcrumb,
 } from '../../../../../redux/features/app/appSlice';
 import FormUser from '../../../../forms/formUser';
 import { selectUsers } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
@@ -48,27 +48,11 @@ const UsersDetails = () => {
 
   useEffect(() => {
     //if (userId) dispatch(GetUserDetails(userId));
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area Amministrativa',
-          url: '/area-amministrativa',
-          link: false,
-        },
-        {
-          label: 'Utenti',
-          url: '/area-amministrativa/utenti',
-          link: true,
-        },
-        {
-          label: userId,
-          url: `/area-amministrativa/utenti/${userId}`,
-          link: false,
-        },
-      ])
-    );
+    if(userId && userInfo?.nome){
+      dispatch(setInfoIdsBreadcrumb({ id: userId, nome: userInfo?.nome + ' ' + userInfo?.cognome}))
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId]);
+  }, [userId,userInfo]);
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
@@ -130,6 +114,8 @@ const UsersDetails = () => {
           return formTypes.DELEGATO;
         case formTypes.REFERENTI:
           return formTypes.REFERENTE;
+        case formTypes.FACILITATORE:
+          return formTypes.FACILITATORE;
         default:
           'utente';
       }
@@ -144,6 +130,8 @@ const UsersDetails = () => {
           return formTypes.DELEGATO;
         case formTypes.REFERENTE:
           return formTypes.REFERENTE;
+        case formTypes.FACILITATORE:
+          return formTypes.FACILITATORE;
         default:
           return formTypes.USER;
       }
@@ -157,6 +145,8 @@ const UsersDetails = () => {
           return 'Modifica Delegato';
         case formTypes.REFERENTI:
           return 'Modifica Referente';
+        case formTypes.FACILITATORE:
+          return 'Modifica Facilitatore';
         default:
           return 'Modifica Utente';
       }
@@ -166,7 +156,8 @@ const UsersDetails = () => {
   const getUserStatus = () => {
     if (
       userType === formTypes.DELEGATI ||
-      (userType === formTypes.REFERENTI && userRoles?.length)
+      (userType === formTypes.REFERENTI && userRoles?.length) ||
+      userType === formTypes.FACILITATORE
     ) {
       const id = projectId || entityId;
       const entityRole = userRoles.filter(
@@ -208,7 +199,7 @@ const UsersDetails = () => {
                   id={role.id}
                   status={role.stato}
                   title={role.nome}
-                  subtitle={role.ruolo}
+                  fullInfo={role.stato && { ruoli: role.ruolo }}
                   onActionClick={{
                     [CRUDActionTypes.VIEW]: () =>
                       navigate(`/area-amministrativa/programmi/${role?.id}`, {
