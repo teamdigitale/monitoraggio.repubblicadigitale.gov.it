@@ -37,7 +37,7 @@
     "react-router-dom": "^6.3.0",
     "react-select": "^5.2.2",
     "react-sticky-el": "^2.0.9",
-    "react-teleporter": "^2.2.1",
+    "react-teleporter": "^3.0.2",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.1",
     "typeface-lora": "^1.1.13",
