@@ -15,7 +15,7 @@ import {
   openModal,
 } from '../../../../../redux/features/modal/modalSlice';
 import { formTypes } from '../utils';
-import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
+import { setInfoIdsBreadcrumb } from '../../../../../redux/features/app/appSlice';
 import { Nav, NavItem } from 'design-react-kit';
 import { EmptySection, NavLink } from '../../../../../components';
 import ManageServices from '../modals/manageService';
@@ -56,28 +56,10 @@ const ServicesDetails = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (serviceId && serviceDetails?.dettaglioServizio?.nome) {
-      dispatch(
-        updateBreadcrumb([
-          {
-            label: 'Area Amministrativa',
-            url: '/area-amministrativa',
-            link: false,
-          },
-          {
-            label: 'Servizi',
-            url: '/area-amministrativa/servizi',
-            link: true,
-          },
-          {
-            label: serviceDetails.dettaglioServizio.nome,
-            url: `/area-amministrativa/servizi/${serviceId}`,
-            link: false,
-          },
-        ])
-      );
+    if (serviceId && serviceDetails?.dettaglioServizio?.nomeServizio) {
+      dispatch(setInfoIdsBreadcrumb({ id: serviceId, nome: serviceDetails?.dettaglioServizio?.nomeServizio}))
     }
-  }, [serviceId]);
+  }, [serviceId, serviceDetails]);
 
   const centerActiveItem = () => {
     switch (activeTab) {

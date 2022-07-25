@@ -65,6 +65,24 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
   }, [form]);
 
   useEffect(() => {
+    if (
+      form &&
+      formDisabled &&
+      Object.entries(form).some(([_key, value]) => !value.disabled)
+    ) {
+      updateForm(
+        Object.fromEntries(
+          Object.entries(form).map(([key, value]) => [
+            key,
+            { ...value, disabled: formDisabled },
+          ])
+        ),
+        true
+      );
+    }
+  }, [formDisabled]);
+
+  useEffect(() => {
     if (programDetails) {
       // setFormValues(
       //   Object.fromEntries(

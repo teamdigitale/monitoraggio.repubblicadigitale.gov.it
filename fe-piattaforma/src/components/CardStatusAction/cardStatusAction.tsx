@@ -15,6 +15,9 @@ const fieldMappedForTranslations: { [key: string]: string } = {
   ente: 'body',
   id: 'id',
   ente_ref: 'ente_ref',
+  profilo: 'Profilo',
+  ruoli: 'Ruoli',
+  ref: 'Referenti',
 };
 
 interface CardStatusActionI {
@@ -103,13 +106,62 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
           device.mediaIsPhone && 'flex-wrap'
         )}
       >
-        <div className={clsx(device.mediaIsPhone && 'title')}>
-          <span className='neutral-1-color-a8 card-status-action__title'>
-            <strong>{title}</strong>
-            {subtitle && <span className='neutral-1-color-a8'>{subtitle}</span>}
-          </span>
-        </div>
+        <div
+          className={clsx(
+            device.mediaIsPhone && 'title',
+            'd-flex',
+            'flex-row',
+            'justify-content-between',
+            'align-items-center',
+            'flex-wrap'
+          )}
+        >
+          <div
+            style={{
+              minWidth: device.mediaIsDesktop ? '300px' : '200px',
+            }}
+          >
+            <span className='neutral-1-color-a8 card-status-action__title text-wrap'>
+              <strong>{title}</strong>
+              {subtitle && (
+                <span className='neutral-1-color-a8'>{subtitle}</span>
+              )}
+            </span>
+          </div>
 
+          {fullInfo && Object.keys(fullInfo).length ? (
+            <div
+              className={clsx(
+                device.mediaIsPhone
+                  ? 'd-flex flex-column align-items-start'
+                  : 'd-flex flex-row flex-wrap'
+              )}
+            >
+              {Object.keys(fullInfo).map((key, index) => {
+                return (
+                  <div
+                    className={clsx(
+                      'd-flex',
+                      'flex-column',
+                      'py-3',
+                      device.mediaIsPhone && 'px-1',
+                      device.mediaIsTablet && 'pr-2',
+                      device.mediaIsDesktop && 'pr-5'
+                    )}
+                    key={index}
+                  >
+                    <span className='primary-color-a12 mr-2 text-wrap'>
+                      {t(fieldMappedForTranslations[key])}
+                    </span>
+                    <span className='neutral-1-color-a8 weight-600 text-wrap'>
+                      {fullInfo[key] === null ? '---' : fullInfo[key]}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          ) : null}
+        </div>
         <div
           className={clsx(
             'd-flex',
@@ -117,10 +169,18 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
             'align-items-center',
             device.mediaIsPhone
               ? 'align-items-start justify-content-start'
-              : 'd-flex flex-row  justify-content-end'
+              : 'd-flex flex-row justify-content-end'
           )}
         >
-          <div className='d-flex flex-row align-items-center'>
+          <div
+            className={clsx(
+              'd-flex',
+              'flex-row',
+              'align-items-center',
+              'justify-content-end'
+            )}
+            style={{ minWidth: device.mediaIsDesktop ? '150px' : '' }}
+          >
             {status && (
               <StatusChip
                 className={clsx(
@@ -169,7 +229,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
                   onClick={() => {
                     onActionClick[CRUDActionTypes.VIEW](cf ? cf : id);
                   }}
-                  className={clsx(device.mediaIsPhone ? 'px-0' : 'px-4')}
+                  className={clsx(device.mediaIsPhone ? 'px-0' : 'px-2')}
                 >
                   <Icon
                     color='primary'
@@ -197,33 +257,6 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
             </span>
           ) : null}
         </div>
-      </div>
-      <div>
-        {fullInfo && Object.keys(fullInfo).length ? (
-          <div className={clsx('d-flex', 'flex-row', 'flex-wrap')}>
-            {Object.keys(fullInfo).map((key, index) => {
-              return (
-                <div
-                  className={clsx(
-                    'd-flex',
-                    'flex-column',
-                    'py-3',
-                    device.mediaIsPhone ? 'px-1' : 'pr-5'
-                  )}
-                  key={index}
-                  style={{ minWidth: '120px' }}
-                >
-                  <span className='primary-color-a12 mr-2 text-wrap'>
-                    {t(fieldMappedForTranslations[key])}
-                  </span>
-                  <span className='neutral-1-color-a8 weight-600 text-wrap'>
-                    {fullInfo[key] === null ? '---' : fullInfo[key]}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        ) : null}
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import { FormHelper, FormI } from '../../../../../../utils/formHelper';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
   selectDevice,
-  updateBreadcrumb,
+  setInfoIdsBreadcrumb,
 } from '../../../../../../redux/features/app/appSlice';
 import DetailLayout from '../../../../../../components/DetailLayout/detailLayout';
 import {
@@ -45,28 +45,10 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
   const { idQuestionario } = useParams();
 
   useEffect(() => {
-    if (form['survey-name'].value && idQuestionario) {
-      dispatch(
-        updateBreadcrumb([
-          {
-            label: 'Area Amministrativa',
-            url: '/area-amministrativa',
-            link: false,
-          },
-          {
-            label: 'Questionari',
-            url: '/area-amministrativa/questionari',
-            link: true,
-          },
-          {
-            label: form['survey-name'].value,
-            url: `/area-amministrativa/questionari/${idQuestionario}`,
-            link: false,
-          },
-        ])
-      );
+    if (form['survey-name']?.value && idQuestionario) {
+      dispatch(setInfoIdsBreadcrumb({ id: idQuestionario, nome: form['survey-name'].value }))
     }
-  }, [idQuestionario]);
+  }, [idQuestionario, form['survey-name']?.value]);
 
   useEffect(() => {
     const locationSplit = location.pathname.split('/');
@@ -177,13 +159,13 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
     <div className='mb-5'>
       <DetailLayout
         titleInfo={{
-          title: 'Nome questionario',
+          title: form['survey-name']?.value,
           status: '',
           upperTitle: { icon: 'it-file', text: 'Questionario' },
         }}
         formButtons={[]} // TODO?
         buttonsPosition='TOP'
-        goBackTitle='Torna indietro'
+        goBackTitle='Elenco questionari'
         goBackPath='/area-amministrativa/questionari'
       />
 

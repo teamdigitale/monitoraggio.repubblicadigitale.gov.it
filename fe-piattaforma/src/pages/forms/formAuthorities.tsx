@@ -44,10 +44,10 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
     setFormValues = () => ({}),
     form,
     onInputChange,
-    sendNewValues,
+    sendNewValues = () => ({}),
     isValidForm,
-    setIsFormValid,
-    getFormValues,
+    setIsFormValid = () => ({}),
+    getFormValues = () => ({}),
     creation = false,
     enteType,
     updateForm = () => ({}),
@@ -56,6 +56,24 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
   const formDisabled = !!props.formDisabled;
   const { projectId, entityId, authorityId } = useParams();
+
+  useEffect(() => {
+    if (
+      form &&
+      formDisabled &&
+      Object.entries(form).some(([_key, value]) => !value.disabled)
+    ) {
+      updateForm(
+        Object.fromEntries(
+          Object.entries(form).map(([key, value]) => [
+            key,
+            { ...value, disabled: formDisabled },
+          ])
+        ),
+        true
+      );
+    }
+  }, [formDisabled, form]);
 
   const newGestoreProgetto = () => {
     dispatch(
@@ -133,7 +151,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
       }
     }
   }, [enteType, creation]);
-  
+
   useEffect(() => {
     if (formData) {
       setFormValues(formData);
@@ -152,14 +170,12 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
     field?: formFieldI['field']
   ) => {
     onInputChange?.(value, field);
-    sendNewValues?.(getFormValues?.());
+    setIsFormValid(isValidForm);
+    // sendNewValues?.(getFormValues?.());
   };
 
   useEffect(() => {
-    setIsFormValid?.(isValidForm);
-    if(getFormValues?.()?.id){
-      sendNewValues?.(getFormValues?.());
-    }
+    sendNewValues(getFormValues());
   }, [form]);
 
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';

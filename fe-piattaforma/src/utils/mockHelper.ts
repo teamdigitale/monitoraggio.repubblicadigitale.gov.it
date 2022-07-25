@@ -116,17 +116,17 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });*/
 
-    mockInstance.onPost('/utente/ruoli/dropdown').reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/roleDropdown.json');
-      return [200, response];
-    });
+    // mockInstance.onPost('/utente/ruoli/dropdown').reply(async () => {
+    //   // @ts-ignore
+    //   const response = await import('/mock/roleDropdown.json');
+    //   return [200, response];
+    // });
 
-    mockInstance.onPost('/utente/stati/dropdown').reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/statiDropdown.json');
-      return [200, response];
-    });
+    // mockInstance.onPost('/utente/stati/dropdown').reply(async () => {
+    //   // @ts-ignore
+    //   const response = await import('/mock/statiDropdown.json');
+    //   return [200, response];
+    // });
 
     // mockInstance.onPost('/cittadino/all').reply(async () => {
     //   // @ts-ignore

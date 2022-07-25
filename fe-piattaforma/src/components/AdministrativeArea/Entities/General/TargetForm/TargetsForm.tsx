@@ -175,6 +175,7 @@ const TargetsForm = ({
             <Form.Row key={index} className='mb-5 mb-lg-0'>
               <Input
                 {...form[row[0]]}
+                disabled={disabled}
                 onInputChange={(value, field) => {
                   onInputDataChange(value, field);
                 }}
@@ -188,6 +189,7 @@ const TargetsForm = ({
                   onInputDataChange(value, field);
                 }}
                 type={disabled ? 'text' : 'date'}
+                disabled={disabled}
                 col={clsx('col-12', !disabled ? 'col-lg-4' : 'col-lg-6')}
                 className='pl-lg-3 mb-3'
               />

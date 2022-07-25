@@ -140,6 +140,7 @@ const AddressForm: React.FC<AddressFormI> = ({
           className='mb-3'
           label={`Via e numero civico`}
           required
+          disabled={formDisabled}
           col='col-12 col-lg-6'
           value={address}
           onInputChange={(value) =>

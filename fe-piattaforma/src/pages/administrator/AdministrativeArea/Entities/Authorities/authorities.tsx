@@ -25,7 +25,6 @@ import { useNavigate } from 'react-router-dom';
 import ManageGenericAuthority from '../modals/manageGenericAuthority';
 
 import { AuthoritiesLightI } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
-import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 import {
   DownloadEntityValues,
   GetEntityFilterValues,
@@ -65,20 +64,6 @@ const Authorities: React.FC = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area Amministrativa',
-          url: '/area-amministrativa',
-          link: false,
-        },
-        {
-          label: 'Enti',
-          url: '/area-amministrativa/enti',
-          link: true,
-        },
-      ])
-    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

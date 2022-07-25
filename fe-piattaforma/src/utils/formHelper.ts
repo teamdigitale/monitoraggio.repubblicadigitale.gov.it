@@ -34,6 +34,7 @@ export interface formFieldI {
   valid?: boolean;
   type?: InputType;
   required?: boolean;
+  disabled?: boolean;
   regex?: string;
   touched?: boolean;
   options?: OptionType[] | undefined;
@@ -66,6 +67,7 @@ export const newFormField = ({
   valid,
   type = 'text',
   required = false,
+  disabled = false,
   regex = RegexpType.ALPHA_NUMERIC_INPUT,
   touched = false,
   options,
@@ -91,6 +93,7 @@ export const newFormField = ({
   valid: valid || !(required && touched),
   type,
   required,
+  disabled,
   regex,
   touched,
   options,
@@ -122,6 +125,7 @@ export const newForm = (fields: formFieldI[] = [], keepPosition = false) => {
         value,
         type,
         required,
+        disabled,
         regex,
         touched = false,
         options,
@@ -152,6 +156,7 @@ export const newForm = (fields: formFieldI[] = [], keepPosition = false) => {
           valid,
           type,
           required,
+          disabled,
           regex,
           touched,
           options,

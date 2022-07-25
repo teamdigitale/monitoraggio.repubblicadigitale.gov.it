@@ -54,11 +54,29 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
   }, [creation, projectId]);
 
   useEffect(() => {
-    setIsFormValid?.(isValidForm);
+    setIsFormValid(isValidForm);
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
+
+  useEffect(() => {
+    if (
+      form &&
+      formDisabled &&
+      Object.entries(form).some(([_key, value]) => !value.disabled)
+    ) {
+      updateForm(
+        Object.fromEntries(
+          Object.entries(form).map(([key, value]) => [
+            key,
+            { ...value, disabled: formDisabled },
+          ])
+        ),
+        true
+      );
+    }
+  }, [formDisabled, form]);
 
   useEffect(() => {
     if (formData && !creation) {

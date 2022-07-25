@@ -68,6 +68,24 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
 
+  useEffect(() => {
+    if (
+      form &&
+      formDisabled &&
+      Object.entries(form).some(([_key, value]) => !value.disabled)
+    ) {
+      updateForm(
+        Object.fromEntries(
+          Object.entries(form).map(([key, value]) => [
+            key,
+            { ...value, disabled: formDisabled },
+          ])
+        ),
+        true
+      );
+    }
+  }, [formDisabled, form]);
+
   const handleCheckboxChange = (
     value?: formFieldI['value'],
     field?: formFieldI['field']

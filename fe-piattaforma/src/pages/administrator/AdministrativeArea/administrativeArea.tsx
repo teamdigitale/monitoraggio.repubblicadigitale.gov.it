@@ -327,7 +327,7 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='progetti-dettaglio-utenti-dettaglio'
-    path='progetti/:entityId/:userType/:userId'
+    path='progetti/:projectId/:authorityId/:userType/:userId'
     element={<UsersDetails />}
   />,
   <Route key='enti' path='enti' element={<Authorities />} />,
@@ -375,7 +375,7 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='questionari-dettaglio-info'
-    path='questionari/:idQuestionario/info'
+    path='questionari/:idQuestionario'
     element={<SurveyDetailsEdit />}
   />,
   <Route

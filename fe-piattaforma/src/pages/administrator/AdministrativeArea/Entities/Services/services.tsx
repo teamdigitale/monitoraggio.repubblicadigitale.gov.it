@@ -32,7 +32,6 @@ import {
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import ManageServices from '../modals/manageService';
 import { formTypes } from '../utils';
-import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 import { formatDate } from '../../../../../utils/datesHelper';
 import {
   DownloadEntityValuesQueryParams,
@@ -76,20 +75,6 @@ const Services = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area Amministrativa',
-          url: '/area-amministrativa',
-          link: false,
-        },
-        {
-          label: 'Servizi',
-          url: '/area-amministrativa/servizi',
-          link: true,
-        },
-      ])
-    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

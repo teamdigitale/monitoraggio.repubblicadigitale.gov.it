@@ -35,6 +35,7 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
     sendNewValues,
     setIsFormValid = () => ({}),
     getFormValues,
+    updateForm = () => ({}),
     creation = false,
   } = props;
   const formData = useAppSelector(selectServices)?.detail?.dettaglioServizio;
@@ -49,6 +50,24 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
+
+  useEffect(() => {
+    if (
+      form &&
+      formDisabled &&
+      Object.entries(form).some(([_key, value]) => !value.disabled)
+    ) {
+      updateForm(
+        Object.fromEntries(
+          Object.entries(form).map(([key, value]) => [
+            key,
+            { ...value, disabled: formDisabled },
+          ])
+        ),
+        true
+      );
+    }
+  }, [formDisabled, form]);
 
   const onInputDataChange = (
     value: formFieldI['value'],

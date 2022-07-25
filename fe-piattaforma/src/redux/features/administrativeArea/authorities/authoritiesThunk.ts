@@ -231,21 +231,10 @@ export const GetAuthoritiesBySearch =
       dispatch(showLoader());
       dispatch({ ...GetAuthoritiesBySearchAction });
 
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
-        getUserHeaders();
-
-      const body = {
-        filtroRequest: { criterioRicerca: search },
-        idProgramma,
-        idProgetto,
-        cfUtente: codiceFiscale,
-        codiceRuolo,
-      };
-
-      const res = await API.post(`/ente/all`, body);
+      const res = await API.get(`/ente/cerca?criterioRicerca=${search}`);
 
       if (search && res.data) {
-        dispatch(setAuthoritiesList(res.data.enti));
+        dispatch(setAuthoritiesList(res.data));
       } else {
         dispatch(setAuthoritiesList([]));
       }

@@ -38,10 +38,6 @@ import { formFieldI } from '../../../../../utils/formHelper';
 //import SideSelection from '../../../../../components/SideSelection/sideSelection';
 import PageTitle from '../../../../../components/PageTitle/pageTitle';
 import {
-  //selectDevice,
-  updateBreadcrumb,
-} from '../../../../../redux/features/app/appSlice';
-import {
   GetAllSurveys,
   UpdateSurveyExclusiveField,
 } from '../../../../../redux/features/administrativeArea/surveys/surveysThunk';
@@ -69,20 +65,6 @@ const Surveys = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area Amministrativa',
-          url: '/area-amministrativa',
-          link: false,
-        },
-        {
-          label: 'Questionari',
-          url: '/area-amministrativa/questionari',
-          link: true,
-        },
-      ])
-    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -274,7 +256,7 @@ const Surveys = () => {
       navigate(
         `/area-amministrativa/questionari/${
           typeof td !== 'string' ? td.id : td
-        }/info`
+        }`
       );
     },
     [CRUDActionTypes.CLONE]: (td: TableRowI | string) => {

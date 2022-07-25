@@ -19,7 +19,7 @@ import PeopleIcon from '/public/assets/img/people-icon.png';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
   selectDevice,
-  updateBreadcrumb,
+  setInfoIdsBreadcrumb,
 } from '../../../../../redux/features/app/appSlice';
 import clsx from 'clsx';
 import FormAuthorities from '../../../../forms/formAuthorities';
@@ -37,6 +37,7 @@ import {
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import { RemoveAuthorityHeadquarter } from '../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
 import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
+import { CardStatusAction } from '../../../../../components';
 
 const AuthoritiesDetails = () => {
   const authorityDetails = useAppSelector(selectAuthorities)?.detail;
@@ -53,28 +54,15 @@ const AuthoritiesDetails = () => {
   }, []);
 
   useEffect(() => {
-    if (authorityDetails?.dettagliInfo?.nomeBreve && authorityId) {
+    if (authorityId && authorityDetails?.dettagliInfoEnte?.nome) {
       dispatch(
-        updateBreadcrumb([
-          {
-            label: 'Area Amministrativa',
-            url: '/area-amministrativa',
-            link: false,
-          },
-          {
-            label: 'Enti',
-            url: '/area-amministrativa/enti',
-            link: true,
-          },
-          {
-            label: authorityDetails?.dettagliInfo?.nomeBreve,
-            url: `/area-amministrativa/enti/${authorityId}`,
-            link: false,
-          },
-        ])
+        setInfoIdsBreadcrumb({
+          id: authorityId,
+          nome: authorityDetails?.dettagliInfoEnte?.nome,
+        })
       );
     }
-  }, [authorityId]);
+  }, [authorityId, authorityDetails]);
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
@@ -258,14 +246,34 @@ const AuthoritiesDetails = () => {
     dispatch(closeModal());
   };
 
+  const handleOnProfileView = (profile: {
+    id: string | number;
+    profilo: string;
+  }) => {
+    const profilo = profile?.profilo.toLowerCase().trim();
+    let redirectURL = '/area-amministrativa/';
+    switch (profilo) {
+      case 'ente gestore di programma':
+        redirectURL = `${redirectURL}programmi/${profile?.id}/info`;
+        break;
+      case '':
+      default:
+        redirectURL = `${redirectURL}progetti/${profile?.id}/info`;
+        break;
+    }
+    navigate(redirectURL, {
+      replace: true,
+    });
+  };
+
   return (
     <div className={clsx('d-flex', 'flex-row', device.mediaIsPhone && 'mt-5')}>
       <div className='d-flex flex-column w-100'>
         <div>
           <DetailLayout
             titleInfo={{
-              title: authorityDetails?.nome,
-              status: authorityDetails?.stato,
+              title: authorityDetails?.dettagliInfoEnte?.nome,
+              status: authorityDetails?.dettagliInfoEnte?.stato,
               upperTitle: { icon: PeopleIcon, text: 'Ente' },
             }}
             formButtons={buttons}
@@ -283,6 +291,33 @@ const AuthoritiesDetails = () => {
               enteType={projectId ? formTypes.ENTE_PARTNER : ''}
             />
           </DetailLayout>
+          {authorityDetails?.profili?.length ? (
+            <div className={clsx('my-5')}>
+              <h5 className={clsx('primary-color', 'mb-4')}>Profili</h5>
+              {authorityDetails?.profili.map((profile: any) => (
+                <CardStatusAction
+                  key={profile.id}
+                  id={profile.id}
+                  status={profile.stato}
+                  title={profile.nome}
+                  fullInfo={
+                    profile.referenti.length === 0
+                      ? { profilo: profile.profilo }
+                      : {
+                          profilo: profile.profilo,
+                          ref:
+                            profile.referenti.length > 1
+                              ? `Referenti associati:${profile.referenti.length}`
+                              : profile.referenti,
+                        }
+                  }
+                  onActionClick={{
+                    [CRUDActionTypes.VIEW]: () => handleOnProfileView(profile),
+                  }}
+                />
+              ))}
+            </div>
+          ) : null}
           <ManageGenericAuthority />
           <ManageDelegate />
           <ManageReferal />

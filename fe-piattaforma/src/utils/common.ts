@@ -42,7 +42,7 @@ export const mapOptions = (
 ) => {
   const arrayMapped: FilterI[] = [];
   arrayToMap?.map((elem) => {
-    arrayMapped.push({ label: elem.nome?.toString(), value: elem.id });
+    arrayMapped.push({ label: elem.toString().charAt(0).toUpperCase() + elem.toString().slice(1).toLowerCase(), value: elem.toString()});
   });
   return arrayMapped;
 };
@@ -192,7 +192,7 @@ export const MenuRoutes = [
   }),
   newMenuItem({
     label: 'Documenti',
-    path: '/documents',
+    path: '/documenti',
     id: 'tab-documenti',
     visible: [
       process.env.NODE_ENV === 'development' ? 'visible' : 'hidden',

@@ -53,6 +53,7 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     setIsFormValid = () => ({}),
     getFormValues = () => ({}),
     clearForm = () => ({}),
+    updateForm = () => ({}),
     // creation = false,
     formDisabled,
   } = props;
@@ -88,6 +89,20 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     onInputChange(value, field);
     setIsFormValid(isValidForm);
   };
+
+  useEffect(() => {
+    if (form && Object.entries(form).some(([_key, value]) => !value.disabled)) {
+      updateForm(
+        Object.fromEntries(
+          Object.entries(form).map(([key, value]) => [
+            key,
+            { ...value, disabled: formDisabled ? formDisabled : false },
+          ])
+        ),
+        true
+      );
+    }
+  }, [formDisabled, form]);
 
   return (
     <Form className='mt-5' formDisabled={formDisabled ? formDisabled : false}>

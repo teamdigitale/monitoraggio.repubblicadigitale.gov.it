@@ -44,7 +44,7 @@ const HeadquartersDetails = () => {
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
       navigate(
-        `/area-amministrativa/utenti/${typeof td === 'string' ? td : td?.id}`
+        `/area-amministrativa/progetti/${projectId}/${authorityId}/${formTypes.FACILITATORE}/${td}`
       );
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {

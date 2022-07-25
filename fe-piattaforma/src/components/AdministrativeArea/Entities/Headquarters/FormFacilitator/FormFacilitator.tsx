@@ -78,7 +78,6 @@ const FormFacilitator: React.FC<FacilitatorFormI> = (props) => {
           {formDisabled ? (
             <Input
               {...form?.tipoContratto}
-              required
               label='Tipo di Contratto'
               col='col-12 col-lg-6'
               // placeholder='Tipologia di contratto'
@@ -89,7 +88,6 @@ const FormFacilitator: React.FC<FacilitatorFormI> = (props) => {
           ) : (
             <Select
               {...form?.tipoContratto}
-              required
               value={form?.tipoContratto.value as string}
               col='col-12 col-lg-6'
               label='Tipo di Contratto'
