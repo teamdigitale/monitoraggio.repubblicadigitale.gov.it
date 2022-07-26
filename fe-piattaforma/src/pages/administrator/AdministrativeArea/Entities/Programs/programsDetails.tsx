@@ -20,9 +20,7 @@ import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
 import ManageProgram from '../modals/manageProgram';
 import ManageManagerAuthority from '../modals/manageManagerAuthority';
 import { useAppSelector } from '../../../../../redux/hooks';
-import {
-  setInfoIdsBreadcrumb,
-} from '../../../../../redux/features/app/appSlice';
+import { setInfoIdsBreadcrumb } from '../../../../../redux/features/app/appSlice';
 import {
   selectAuthorities,
   selectPrograms,
@@ -52,6 +50,7 @@ import {
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import TerminateEntityModal from '../../../../../components/AdministrativeArea/Entities/General/TerminateEntityModal/TerminateEntityModal';
 import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
+import { formFieldI } from '../../../../../utils/formHelper';
 
 const tabs = {
   INFO: 'info',
@@ -121,7 +120,9 @@ const ProgramsDetails: React.FC = () => {
 
   useEffect(() => {
     if (entityId && programDetails?.nomeBreve) {
-      dispatch(setInfoIdsBreadcrumb({ id: entityId, nome: programDetails?.nomeBreve}))
+      dispatch(
+        setInfoIdsBreadcrumb({ id: entityId, nome: programDetails?.nomeBreve })
+      );
     }
   }, [entityId, programDetails]);
 
@@ -204,8 +205,6 @@ const ProgramsDetails: React.FC = () => {
 
   const onActionClickProgetti: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      console.log(td);
-
       navigate(`${td}/info`);
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
@@ -245,6 +244,11 @@ const ProgramsDetails: React.FC = () => {
             outline: true,
             color: 'primary',
             text: 'Elimina',
+            disabled:
+              authorityInfo?.referentiEnteGestore?.filter(
+                (ref: { [key: string]: formFieldI['value'] }) =>
+                  ref.stato === 'ATTIVO'
+              )?.length > 0,
             onClick: () =>
               dispatch(
                 openModal({
@@ -470,7 +474,18 @@ const ProgramsDetails: React.FC = () => {
             (progetto: { id: string; nome: string; stato: string }) => ({
               ...progetto,
               fullInfo: { id: progetto.id },
-              actions: onActionClickProgetti,
+              actions:
+                progetto?.stato !== 'ATTIVO'
+                  ? {
+                      [CRUDActionTypes.VIEW]:
+                        onActionClickProgetti[CRUDActionTypes.VIEW],
+                      [CRUDActionTypes.DELETE]:
+                        onActionClickProgetti[CRUDActionTypes.DELETE],
+                    }
+                  : {
+                      [CRUDActionTypes.VIEW]:
+                        onActionClickProgetti[CRUDActionTypes.VIEW],
+                    },
             })
           ),
         });
@@ -669,7 +684,13 @@ const ProgramsDetails: React.FC = () => {
   useEffect(() => {
     handleActiveTab(activeTab);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab, programDetails, authorityInfo, surveyDefault?.items[0]?.id]);
+  }, [
+    activeTab,
+    programDetails,
+    authorityInfo,
+    surveyDefault?.items[0]?.id,
+    authorityInfo?.referentiEnteGestore,
+  ]);
 
   const nav = (
     <Nav tabs className='mb-5 overflow-hidden'>

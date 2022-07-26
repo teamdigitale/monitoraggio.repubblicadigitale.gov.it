@@ -30,6 +30,7 @@ interface EnteInformationI {
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   setIsFormValid?: (param: boolean | undefined) => void;
   creation?: boolean | undefined;
+  noIdField?: boolean | undefined;
   enteType?: string;
 }
 
@@ -49,6 +50,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
     setIsFormValid = () => ({}),
     getFormValues = () => ({}),
     creation = false,
+    noIdField = false,
     enteType,
     updateForm = () => ({}),
     clearForm = () => ({}),
@@ -183,152 +185,194 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
   return (
     <Form className='mt-5 mb-5' formDisabled={formDisabled}>
       {form && (
-        <>
-          <Form.Row className={bootClass}>
-            {/* <Input
-              {...form?.id}
-              col='col-12 col-lg-6'
-              label='ID'
-              onInputChange={(value, field) => {
-                onInputDataChange(value, field);
-              }}
-            /> */}
-            <Input
-              {...form?.nome}
-              label='Nome Ente'
-              col='col-12 col-lg-6'
-              // placeholder='Inserisci nome programma'
-              onInputChange={(value, field) => {
-                onInputDataChange(value, field);
-              }}
-            />
-            <Input
-              {...form?.nomeBreve}
-              required
-              col='col-12 col-lg-6'
-              label='Nome breve'
-              // placeholder='Inserisci il nome breve'
-              onInputChange={(value, field) => {
-                onInputDataChange(value, field);
-              }}
-            />
-          </Form.Row>
-          <Form.Row className={bootClass}>
-            {/* <Input
-              {...form?.nomeBreve}
-              col='col-12 col-lg-6'
-              label='Nome breve'
-              placeholder='Inserisci il nome breve'
-              onInputChange={(value, field) => {
-                onInputDataChange(value, field);
-              }}
-            /> */}
-            {/* <Input
-              {...form?.tipologia}
-              label='Tipologia'
-              col='col-12 col-lg-6'
-              placeholder='Inserisci la tipologia'
-              onInputChange={(value, field) => {
-                onInputDataChange(value, field);
-              }}
-            /> */}
-            {formDisabled ? (
-              <Input
-                {...form?.tipologia}
-                required
-                label='Tipologia'
-                col='col-12 col-lg-6'
-                onInputChange={(value, field) => {
-                  onInputDataChange(value, field);
-                }}
-              />
-            ) : (
-              <Select
-                {...form?.tipologia}
-                required
-                value={form?.tipologia.value as string}
-                col='col-12 col-lg-6'
-                label='Tipologia'
-                // placeholder='Inserisci la tipologia'
-                options={[
-                  { label: 'Ente pubblico', value: 'Ente pubblico' },
-                  {
-                    label: 'Ente del terzo settore',
-                    value: 'Ente del terzo settore',
-                  },
-                ]}
-                onInputChange={(value, field) => {
-                  onInputDataChange(value, field);
-                }}
-                wrapperClassName='mb-5'
-                aria-label='tipologia'
-              />
-            )}
-            <Input
-              {...form?.piva}
-              label='Codice Fiscale'
-              col='col-12 col-lg-6'
-              // placeholder='Inserisci il Codice Fiscale'
-              onInputChange={(value, field) => {
-                onInputDataChange(value, field);
-              }}
-            />
-          </Form.Row>
-          {/* <Form.Row className={bootClass}>
-          <Input
-            {...form?.profilo}
-            label='Profilo'
-            col='col-12 col-lg-6'
-            placeholder='Inserisci il profilo'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
-          />
-          <Input
-            {...form?.fiscalCode}
-            label='Codice fiscale'
-            col='col-12 col-lg-6'
-            placeholder='Inserisci il codice fiscale'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
-          />
-        </Form.Row> */}
-          <Form.Row className={bootClass}>
-            <Input
-              col='col-12 col-lg-6'
-              {...form?.sedeLegale}
-              label='Sede legale'
-              // placeholder='Inserisci la sede legale'
-              onInputChange={(value, field) => {
-                onInputDataChange(value, field);
-              }}
-            />
-            <Input
-              {...form?.indirizzoPec}
-              label='PEC'
-              col='col-12 col-lg-6'
-              // placeholder='Inserisci PEC'
-              onInputChange={(value, field) => {
-                onInputDataChange(value, field);
-              }}
-            />
-          </Form.Row>
-          {form?.profilo && (
-            <Form.Row className={bootClass}>
-              <Input
-                {...form?.profilo}
-                required
-                label='Profilo'
-                col='col-12 col-lg-6'
-                // placeholder='Inserisci profilo'
-                onInputChange={(value, field) => {
-                  onInputDataChange(value, field);
-                }}
-              />
-            </Form.Row>
+        <div>
+          {(creation || noIdField) ? (
+            <>
+              <Form.Row className={bootClass}>
+                <Input
+                  {...form?.nome}
+                  label='Nome Ente'
+                  col='col-12 col-lg-6'
+                  // placeholder='Inserisci nome programma'
+                  onInputChange={(value, field) => {
+                    onInputDataChange(value, field);
+                  }}
+                />
+                <Input
+                  {...form?.nomeBreve}
+                  required
+                  col='col-12 col-lg-6'
+                  label='Nome breve'
+                  // placeholder='Inserisci il nome breve'
+                  onInputChange={(value, field) => {
+                    onInputDataChange(value, field);
+                  }}
+                />
+              </Form.Row>
+              <Form.Row className={bootClass}>
+                {formDisabled ? (
+                  <Input
+                    {...form?.tipologia}
+                    required
+                    label='Tipologia'
+                    col='col-12 col-lg-6'
+                    onInputChange={(value, field) => {
+                      onInputDataChange(value, field);
+                    }}
+                  />
+                ) : (
+                  <Select
+                    {...form?.tipologia}
+                    required
+                    value={form?.tipologia.value as string}
+                    col='col-12 col-lg-6'
+                    label='Tipologia'
+                    // placeholder='Inserisci la tipologia'
+                    options={[
+                      { label: 'Ente pubblico', value: 'Ente pubblico' },
+                      {
+                        label: 'Ente del terzo settore',
+                        value: 'Ente del terzo settore',
+                      },
+                    ]}
+                    onInputChange={(value, field) => {
+                      onInputDataChange(value, field);
+                    }}
+                    wrapperClassName='mb-5'
+                    aria-label='tipologia'
+                  />
+                )}
+                <Input
+                  {...form?.piva}
+                  label='Codice Fiscale'
+                  col='col-12 col-lg-6'
+                  // placeholder='Inserisci il Codice Fiscale'
+                  onInputChange={(value, field) => {
+                    onInputDataChange(value, field);
+                  }}
+                />
+              </Form.Row>
+              <Form.Row className={bootClass}>
+                <Input
+                  col='col-12 col-lg-6'
+                  {...form?.sedeLegale}
+                  label='Sede legale'
+                  // placeholder='Inserisci la sede legale'
+                  onInputChange={(value, field) => {
+                    onInputDataChange(value, field);
+                  }}
+                />
+                <Input
+                  {...form?.indirizzoPec}
+                  label='PEC'
+                  col='col-12 col-lg-6'
+                  // placeholder='Inserisci PEC'
+                  onInputChange={(value, field) => {
+                    onInputDataChange(value, field);
+                  }}
+                />
+              </Form.Row>
+            </>
+          ) : (
+            <>
+              <Form.Row className={bootClass}>
+                <Input {...form?.id} col='col-12 col-lg-6' label='ID' />
+                <Input
+                  {...form?.nome}
+                  label='Nome Ente'
+                  col='col-12 col-lg-6'
+                  // placeholder='Inserisci nome programma'
+                  onInputChange={(value, field) => {
+                    onInputDataChange(value, field);
+                  }}
+                />
+              </Form.Row>
+              <Form.Row className={bootClass}>
+                <Input
+                  {...form?.nomeBreve}
+                  required
+                  col='col-12 col-lg-6'
+                  label='Nome breve'
+                  // placeholder='Inserisci il nome breve'
+                  onInputChange={(value, field) => {
+                    onInputDataChange(value, field);
+                  }}
+                />
+                {formDisabled ? (
+                  <Input
+                    {...form?.tipologia}
+                    required
+                    label='Tipologia'
+                    col='col-12 col-lg-6'
+                    onInputChange={(value, field) => {
+                      onInputDataChange(value, field);
+                    }}
+                  />
+                ) : (
+                  <Select
+                    {...form?.tipologia}
+                    required
+                    value={form?.tipologia.value as string}
+                    col='col-12 col-lg-6'
+                    label='Tipologia'
+                    // placeholder='Inserisci la tipologia'
+                    options={[
+                      { label: 'Ente pubblico', value: 'Ente pubblico' },
+                      {
+                        label: 'Ente del terzo settore',
+                        value: 'Ente del terzo settore',
+                      },
+                    ]}
+                    onInputChange={(value, field) => {
+                      onInputDataChange(value, field);
+                    }}
+                    wrapperClassName='mb-5'
+                    aria-label='tipologia'
+                  />
+                )}
+              </Form.Row>
+              <Form.Row className={bootClass}>
+                <Input
+                  {...form?.piva}
+                  label='Codice Fiscale'
+                  col='col-12 col-lg-6'
+                  // placeholder='Inserisci il Codice Fiscale'
+                  onInputChange={(value, field) => {
+                    onInputDataChange(value, field);
+                  }}
+                />
+                <Input
+                  col='col-12 col-lg-6'
+                  {...form?.sedeLegale}
+                  label='Sede legale'
+                  // placeholder='Inserisci la sede legale'
+                  onInputChange={(value, field) => {
+                    onInputDataChange(value, field);
+                  }}
+                />
+              </Form.Row>
+              <Form.Row className={bootClass}>
+                <Input
+                  {...form?.indirizzoPec}
+                  label='PEC'
+                  col='col-12 col-lg-6'
+                  // placeholder='Inserisci PEC'
+                  onInputChange={(value, field) => {
+                    onInputDataChange(value, field);
+                  }}
+                />
+                {form?.profilo && (
+                  <Input
+                    {...form?.profilo}
+                    required
+                    label='Profilo'
+                    col='col-12 col-lg-6'
+                  />
+                )}
+              </Form.Row>
+            </>
           )}
-        </>
+        </div>
       )}
     </Form>
   );

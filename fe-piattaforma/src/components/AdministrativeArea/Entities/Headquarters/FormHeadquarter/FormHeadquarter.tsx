@@ -91,7 +91,11 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
   };
 
   useEffect(() => {
-    if (form && Object.entries(form).some(([_key, value]) => !value.disabled)) {
+    if (
+      form &&
+      formDisabled &&
+      Object.entries(form).some(([_key, value]) => !value.disabled)
+    ) {
       updateForm(
         Object.fromEntries(
           Object.entries(form).map(([key, value]) => [

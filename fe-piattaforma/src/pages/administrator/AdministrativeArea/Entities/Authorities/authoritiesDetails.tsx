@@ -321,7 +321,7 @@ const AuthoritiesDetails = () => {
           <ManageGenericAuthority />
           <ManageDelegate />
           <ManageReferal />
-          <ManageHeadquarter enteType='partner' />
+          <ManageHeadquarter creation={true} enteType='partner' />
           <DeleteEntityModal
             onClose={() => dispatch(closeModal())}
             onConfirm={(payload) => {

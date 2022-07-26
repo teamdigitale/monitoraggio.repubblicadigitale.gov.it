@@ -38,8 +38,8 @@ import {
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 
 const entity = 'utente';
-const statusDropdownLabel = 'stato';
-const ruoliDropdownLabel = 'ruolo';
+const statusDropdownLabel = 'stati';
+const ruoliDropdownLabel = 'ruoli';
 
 const Users = () => {
   const navigate = useNavigate();
@@ -54,15 +54,15 @@ const Users = () => {
   const [filterDropdownSelected, setFilterDropdownSelected] =
     useState<string>('');
 
-  const { criterioRicerca, ruolo, stato } = filtersList;
+  const { criterioRicerca, ruoli, stati } = filtersList;
 
   const { pageNumber } = pagination;
 
   const getAllFilters = () => {
-    if (filterDropdownSelected !== 'stato')
-      dispatch(GetEntityFilterValues({ entity, dropdownType: 'stati' }));
-    if (filterDropdownSelected !== 'ruolo')
-      dispatch(GetEntityFilterValues({ entity, dropdownType: 'ruoli' }));
+    if (filterDropdownSelected !== statusDropdownLabel)
+      dispatch(GetEntityFilterValues({ entity, dropdownType: statusDropdownLabel }));
+    if (filterDropdownSelected !== ruoliDropdownLabel)
+      dispatch(GetEntityFilterValues({ entity, dropdownType: ruoliDropdownLabel }));
   };
 
   useEffect(() => {
@@ -113,7 +113,7 @@ const Users = () => {
     getUsersList();
     getAllFilters();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [criterioRicerca, ruolo, stato, pageNumber]);
+  }, [criterioRicerca, ruoli, stati, pageNumber]);
 
   const handleOnChangePage = (pageNumber: number = pagination?.pageNumber) => {
     dispatch(setEntityPagination({ pageNumber }));
@@ -125,7 +125,7 @@ const Users = () => {
 
   const handleDropdownFilters = (
     values: FilterI[],
-    filterKey: 'ruolo' | 'stato'
+    filterKey: 'ruoli' | 'stati'
   ) => {
     setFilterDropdownSelected(filterKey);
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
@@ -133,7 +133,7 @@ const Users = () => {
 
   const handleOnSearchDropdownOptions = (
     searchValue: formFieldI['value'],
-    filterId: 'ruolo' | 'stato'
+    filterId: 'ruoli' | 'stati'
   ) => {
     const searchDropdownValues = [...searchDropdown];
     if (
@@ -152,7 +152,7 @@ const Users = () => {
   const dropdowns: DropdownFilterI[] = [
     {
       filterName: 'Ruoli',
-      options: dropdownFilterOptions['ruoli'],
+      options: dropdownFilterOptions[ruoliDropdownLabel],
       id: ruoliDropdownLabel,
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, ruoliDropdownLabel),
@@ -166,7 +166,7 @@ const Users = () => {
     },
     {
       filterName: 'Stato',
-      options: dropdownFilterOptions['stati'],
+      options: dropdownFilterOptions[statusDropdownLabel],
       id: statusDropdownLabel,
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, statusDropdownLabel),

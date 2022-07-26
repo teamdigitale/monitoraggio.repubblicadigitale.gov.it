@@ -100,12 +100,20 @@ const ProjectsDetails = () => {
   const sediRef = useRef<HTMLLIElement>(null);
   const infoRef = useRef<HTMLLIElement>(null);
   const { entityId, projectId } = useParams();
-  const managerAuthority = useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
+  const managerAuthority =
+    useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
 
   useEffect(() => {
     if (projectId && projectDetails?.nome) {
-      dispatch(setInfoIdsBreadcrumb({ id: programDetails?.id, nome: programDetails?.nomeBreve}))
-      dispatch(setInfoIdsBreadcrumb({ id: projectId, nome: projectDetails?.nome}))
+      dispatch(
+        setInfoIdsBreadcrumb({
+          id: programDetails?.id,
+          nome: programDetails?.nomeBreve,
+        })
+      );
+      dispatch(
+        setInfoIdsBreadcrumb({ id: projectId, nome: projectDetails?.nome })
+      );
     }
   }, [projectId, projectDetails]);
 
@@ -842,7 +850,7 @@ const ProjectsDetails = () => {
           />
           <ManageDelegate />
           <ManageReferal />
-          <ManageHeadquarter />
+          <ManageHeadquarter creation={true} />
         </div>
       </div>
     </div>

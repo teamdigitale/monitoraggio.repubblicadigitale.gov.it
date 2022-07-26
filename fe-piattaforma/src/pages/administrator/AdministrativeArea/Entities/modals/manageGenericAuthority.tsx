@@ -60,6 +60,7 @@ const ManageGenericAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
     >
       <div className='px-5'>
         <FormAuthorities
+          noIdField
           creation={creation}
           formDisabled={!!formDisabled}
           sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>

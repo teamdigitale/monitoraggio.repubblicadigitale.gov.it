@@ -158,6 +158,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
 
   let content = (
     <FormAuthorities
+      noIdField
       creation={creation}
       formDisabled={!!formDisabled}
       sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>

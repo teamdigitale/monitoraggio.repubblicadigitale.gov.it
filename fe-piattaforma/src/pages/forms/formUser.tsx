@@ -133,7 +133,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
         />
         <Input
           {...form?.telefono}
-          required
+          //required
           col='col-12 col-lg-6'
           label='Telefono'
           // placeholder='Inserisci telefono'
@@ -202,7 +202,7 @@ const form = newForm([
     field: 'telefono',
     id: 'telefono',
     regex: RegexpType.TELEPHONE,
-    required: true,
+    //required: true,
     minimum: 9,
     maximum: 20,
   }),
@@ -215,7 +215,7 @@ const form = newForm([
   newFormField({
     field: 'mansione',
     id: 'mansione',
-    required: true,
+    //required: true,
     maximum: 160,
   }),
 ]);
