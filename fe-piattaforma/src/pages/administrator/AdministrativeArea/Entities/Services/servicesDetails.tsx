@@ -57,7 +57,12 @@ const ServicesDetails = () => {
 
   useEffect(() => {
     if (serviceId && serviceDetails?.dettaglioServizio?.nomeServizio) {
-      dispatch(setInfoIdsBreadcrumb({ id: serviceId, nome: serviceDetails?.dettaglioServizio?.nomeServizio}))
+      dispatch(
+        setInfoIdsBreadcrumb({
+          id: serviceId,
+          nome: serviceDetails?.dettaglioServizio?.nomeServizio,
+        })
+      );
     }
   }, [serviceId, serviceDetails]);
 

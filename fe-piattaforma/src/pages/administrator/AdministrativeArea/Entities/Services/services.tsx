@@ -96,7 +96,8 @@ const Services = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(servicesList) && servicesList.length) setTableValues(updateTableValues());
+    if (Array.isArray(servicesList) && servicesList.length)
+      setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [servicesList]);
 

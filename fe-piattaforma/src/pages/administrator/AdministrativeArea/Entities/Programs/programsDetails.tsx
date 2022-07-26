@@ -50,6 +50,7 @@ import {
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import TerminateEntityModal from '../../../../../components/AdministrativeArea/Entities/General/TerminateEntityModal/TerminateEntityModal';
 import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
+import useGuard from '../../../../../hooks/guard';
 import { formFieldI } from '../../../../../utils/formHelper';
 
 const tabs = {
@@ -60,13 +61,13 @@ const tabs = {
 };
 
 const ProgramsDetails: React.FC = () => {
+  const { hasUserPermission } = useGuard();
   const program = useAppSelector(selectPrograms).detail;
   const surveyList = program?.questionari;
   const otherSurveyList = useAppSelector(selectSurveys);
   const projectsList = program?.progetti;
   const authorityInfo = useAppSelector(selectAuthorities)?.detail;
   const dispatch = useDispatch();
-  const [editItemModalTitle, setEditItemModalTitle] = useState<string>('');
   const [activeTab, setActiveTab] = useState<string>(tabs.INFO);
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
   const [emptySection, setEmptySection] = useState<React.ReactElement>();
@@ -76,9 +77,6 @@ const ProgramsDetails: React.FC = () => {
     ItemsListI[] | null
   >();
   const [edit, setEdit] = useState<boolean>(false);
-  const [modalIdToOpen, setModalIdToOpen] = useState<string>(
-    formTypes.PROGRAMMA
-  );
   const [correctButtons, setCorrectButtons] = useState<ButtonInButtonsBar[]>(
     []
   );
@@ -228,51 +226,53 @@ const ProgramsDetails: React.FC = () => {
 
   const AuthoritySection = () => {
     if (managerAuthorityId) {
-      setModalIdToOpen(formTypes.ENTE_GESTORE_PROGRAMMA),
-        setEditItemModalTitle('Modifica ente gestore programma'),
-        setCurrentForm(
-          <FormAuthorities
-            formDisabled
-            enteType={formTypes.ENTE_GESTORE_PROGRAMMA}
-          />
-        ),
+      setCurrentForm(
+        <FormAuthorities
+          formDisabled
+          enteType={formTypes.ENTE_GESTORE_PROGRAMMA}
+        />
+      ),
         setCorrectModal(<ManageManagerAuthority />),
         setItemList(null),
-        setCorrectButtons([
-          {
-            size: 'xs',
-            outline: true,
-            color: 'primary',
-            text: 'Elimina',
-            disabled:
-              authorityInfo?.referentiEnteGestore?.filter(
-                (ref: { [key: string]: formFieldI['value'] }) =>
-                  ref.stato === 'ATTIVO'
-              )?.length > 0,
-            onClick: () =>
-              dispatch(
-                openModal({
-                  id: 'delete-entity',
-                  payload: {
-                    entity: 'authority',
-                    text: 'Confermi di volere eliminare questo gestore di programma?',
-                  },
-                })
-              ),
-          },
-          {
-            size: 'xs',
-            color: 'primary',
-            text: 'Modifica',
-            onClick: () =>
-              dispatch(
-                openModal({
-                  id: 'ente-gestore',
-                  payload: { title: 'Modifica ente gestore programma' },
-                })
-              ),
-          },
-        ]),
+        setCorrectButtons(
+          hasUserPermission(['upd.enti.gest.prgm'])
+            ? [
+                {
+                  size: 'xs',
+                  outline: true,
+                  color: 'primary',
+                  text: 'Elimina',
+                  disabled:
+                    authorityInfo?.referentiEnteGestore?.filter(
+                      (ref: { [key: string]: formFieldI['value'] }) =>
+                        ref.stato === 'ATTIVO'
+                    )?.length > 0,
+                  onClick: () =>
+                    dispatch(
+                      openModal({
+                        id: 'delete-entity',
+                        payload: {
+                          entity: 'authority',
+                          text: 'Confermi di volere eliminare questo gestore di programma?',
+                        },
+                      })
+                    ),
+                },
+                {
+                  size: 'xs',
+                  color: 'primary',
+                  text: 'Modifica',
+                  onClick: () =>
+                    dispatch(
+                      openModal({
+                        id: 'ente-gestore',
+                        payload: { title: 'Modifica ente gestore programma' },
+                      })
+                    ),
+                },
+              ]
+            : []
+        ),
         setItemAccordionList([
           {
             title: 'Referenti',
@@ -314,7 +314,11 @@ const ProgramsDetails: React.FC = () => {
             subtitle={
               'Per attivare il progetto aggiungi un Ente gestore di Programma'
             }
-            buttons={EmptySectionButtons.slice(1, 2)}
+            buttons={
+              hasUserPermission(['add.enti.gest.prgm'])
+                ? EmptySectionButtons.slice(1, 2)
+                : []
+            }
           />
         )
       );
@@ -348,7 +352,7 @@ const ProgramsDetails: React.FC = () => {
   };
 
   useEffect(() => {
-    if (changeSurveyButtonVisible) {
+    if (changeSurveyButtonVisible && activeTab === tabs.QUESTIONARI) {
       setCorrectButtons([
         {
           size: 'xs',
@@ -591,61 +595,126 @@ const ProgramsDetails: React.FC = () => {
     let formButtons: ButtonInButtonsBar[] = [];
     switch (programDetails?.stato) {
       case 'ATTIVO':
-        formButtons = [
-          {
-            size: 'xs',
-            color: 'danger',
-            outline: true,
-            text: 'Termina programma',
-            onClick: () => dispatch(openModal({ id: 'terminate-entity' })),
-          },
-          {
-            size: 'xs',
-            color: 'primary',
-            text: 'Modifica',
-            onClick: () => {
-              dispatch(
-                openModal({
-                  id: modalIdToOpen,
-                  payload: { title: editItemModalTitle },
-                })
-              ),
-                setEdit(true);
-            },
-          },
-        ];
+        formButtons = hasUserPermission(['upd.enti.card.prgm', 'end.prgm'])
+          ? [
+              {
+                size: 'xs',
+                color: 'danger',
+                outline: true,
+                text: 'Termina programma',
+                onClick: () => dispatch(openModal({ id: 'terminate-entity' })),
+              },
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Modifica',
+                onClick: () => {
+                  dispatch(
+                    openModal({
+                      id: formTypes.PROGRAMMA,
+                      payload: { title: 'Modifica Programma' },
+                    })
+                  ),
+                    setEdit(true);
+                },
+              },
+            ]
+          : hasUserPermission(['upd.enti.card.prgm'])
+          ? [
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Modifica',
+                onClick: () => {
+                  dispatch(
+                    openModal({
+                      id: formTypes.PROGRAMMA,
+                      payload: { title: 'Modifica Programma' },
+                    })
+                  ),
+                    setEdit(true);
+                },
+              },
+            ]
+          : hasUserPermission(['end.prgm'])
+          ? [
+              {
+                size: 'xs',
+                color: 'danger',
+                outline: true,
+                text: 'Termina programma',
+                onClick: () => dispatch(openModal({ id: 'terminate-entity' })),
+              },
+            ]
+          : [];
         break;
       case 'NON ATTIVO':
-        formButtons = [
-          {
-            size: 'xs',
-            outline: true,
-            color: 'primary',
-            text: 'Elimina',
-            onClick: () =>
-              dispatch(
-                openModal({
-                  id: 'delete-entity',
-                  payload: {
-                    entity: 'program',
-                    text: 'Confermi di volere eliminare questo programma?',
-                  },
-                })
-              ),
-          },
-          {
-            size: 'xs',
-            color: 'primary',
-            text: 'Modifica',
-            onClick: () =>
-              dispatch(
-                openModal({
-                  id: modalIdToOpen,
-                  payload: { title: editItemModalTitle },
-                })
-              ),
-          },
-        ];
+        formButtons = hasUserPermission(['del.prgm', 'upd.enti.card.prgm'])
+          ? [
+              {
+                size: 'xs',
+                outline: true,
+                color: 'primary',
+                text: 'Elimina',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: 'delete-entity',
+                      payload: {
+                        entity: 'program',
+                        text: 'Confermi di volere eliminare questo programma?',
+                      },
+                    })
+                  ),
+              },
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Modifica',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: formTypes.PROGRAMMA,
+                      payload: { title: 'Modifica Programma' },
+                    })
+                  ),
+              },
+            ]
+          : hasUserPermission(['upd.enti.card.prgm'])
+          ? [
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Modifica',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: formTypes.PROGRAMMA,
+                      payload: { title: 'Modifica Programma' },
+                    })
+                  ),
+              },
+            ]
+          : hasUserPermission(['del.prgm'])
+          ? [
+              {
+                size: 'xs',
+                outline: true,
+                color: 'primary',
+                text: 'Elimina',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: 'delete-entity',
+                      payload: {
+                        entity: 'program',
+                        text: 'Confermi di volere eliminare questo programma?',
+                      },
+                    })
+                  ),
+              },
+            ]
+          : [];
         break;
       case 'TERMINATO':
       default:
@@ -657,10 +726,8 @@ const ProgramsDetails: React.FC = () => {
   const handleActiveTab = (tab: string) => {
     switch (tab) {
       case tabs.INFO:
-        setModalIdToOpen(formTypes.PROGRAMMA);
         setCurrentForm(<ProgramlInfoAccordionForm />);
         setCorrectModal(<ManageProgram edit={edit} />);
-        setEditItemModalTitle('Modifica programma');
         setItemAccordionList([]);
         setItemList(null);
         setCorrectButtons(programInfoButtons());

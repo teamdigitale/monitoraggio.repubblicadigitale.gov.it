@@ -14,7 +14,7 @@ interface AppStateI {
     count: number;
   };
   breadCrumb: BreadcrumbI[];
-  infoIdsBreadcrumb: { id: string | number, nome: string}[]
+  infoIdsBreadcrumb: { id: string | number; nome: string }[];
 }
 
 const initialState: AppStateI = {
@@ -52,19 +52,29 @@ export const appSlice = createSlice({
       state.breadCrumb = [...action.payload];
     },
     setInfoIdsBreadcrumb: (state, action: PayloadAction<any>) => {
-      if(!state.infoIdsBreadcrumb.filter(elem => elem.id === action.payload?.id)[0]){
+      if (
+        !state.infoIdsBreadcrumb.filter(
+          (elem) => elem.id === action.payload?.id
+        )[0]
+      ) {
         state.infoIdsBreadcrumb.push(action.payload);
       }
     },
   },
 });
 
-export const { showLoader, hideLoader, updateDevice, updateBreadcrumb, setInfoIdsBreadcrumb } =
-  appSlice.actions;
+export const {
+  showLoader,
+  hideLoader,
+  updateDevice,
+  updateBreadcrumb,
+  setInfoIdsBreadcrumb,
+} = appSlice.actions;
 
 export const selectLoader = (state: RootState) => state.app.loader;
 export const selectDevice = (state: RootState) => state.app.device;
 export const selectBreadcrumb = (state: RootState) => state.app.breadCrumb;
-export const selectInfoIdsBreadcrumb = (state: RootState) => state.app.infoIdsBreadcrumb;
+export const selectInfoIdsBreadcrumb = (state: RootState) =>
+  state.app.infoIdsBreadcrumb;
 
 export default appSlice.reducer;

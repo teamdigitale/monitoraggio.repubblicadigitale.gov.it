@@ -17,6 +17,7 @@ import {
   CreatePartnerAuthority,
   GetAuthoritiesBySearch,
   GetAuthorityDetail,
+  GetPartnerAuthorityDetail,
   UpdatePartnerAuthority,
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
@@ -50,7 +51,7 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
   const [showForm, setShowForm] = useState<boolean>(true);
   const [alreadySearched, setAlreadySearched] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const { projectId } = useParams();
+  const { projectId, authorityId } = useParams();
   const authoritiesList = useAppSelector(selectAuthorities).list;
 
   useEffect(() => {
@@ -74,10 +75,14 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
     if (isFormValid) {
       if (newFormValues.id) {
         // Update
-        projectId &&
-          (await dispatch(
+        if (projectId) {
+          await dispatch(
             UpdatePartnerAuthority({ ...newFormValues }, projectId)
-          ));
+          );
+
+          authorityId &&
+            dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
+        }
       } else {
         // Create
         projectId &&
@@ -86,7 +91,7 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
           ));
       }
       dispatch(closeModal());
-      if (projectId) dispatch(GetProjectDetail(projectId));
+      if (projectId && !authorityId) dispatch(GetProjectDetail(projectId));
     }
     resetModal();
     dispatch(closeModal());

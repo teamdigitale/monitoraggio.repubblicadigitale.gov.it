@@ -325,13 +325,12 @@ export const initMock = (apiInstance: AxiosInstance) => {
       const response = await import('/mock/notificationsList.json');
       return [200, response];
     });
-    /*mockInstance
-      .onPost('/contesto')
-      .reply(async () => {
-        // @ts-ignore
-        const response = await import('/mock/userContext.json');
-        return [200, response];
-      });*/
+
+    /*mockInstance.onPost('/contesto').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/userContext.json');
+      return [200, response];
+    });*/
 
     /*mockInstance.onPost('/contesto/confermaIntegrazione').reply(async () => {
       return [200];

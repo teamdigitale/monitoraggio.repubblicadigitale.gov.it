@@ -51,7 +51,8 @@ export const GetEntityValues =
           );
         }
       });
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } = getUserHeaders();
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
       const body = {
         filtroRequest,
         idProgramma,
@@ -113,7 +114,8 @@ export const GetEntityFilterValues =
           );
         }
       });
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } = getUserHeaders();
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
       const body = {
         filtroRequest,
         idProgramma,
@@ -131,7 +133,8 @@ export const GetEntityFilterValues =
         const filterResponse = {
           [payload.dropdownType]: res.data.map((option: string) => ({
             label:
-              (payload.dropdownType === 'stati' || payload.dropdownType === 'ruoli')
+              payload.dropdownType === 'stati' ||
+              payload.dropdownType === 'ruoli'
                 ? option[0] + option.slice(1).toLowerCase()
                 : option,
             value: option,

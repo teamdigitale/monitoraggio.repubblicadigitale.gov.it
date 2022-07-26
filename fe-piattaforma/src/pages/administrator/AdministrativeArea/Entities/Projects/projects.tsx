@@ -109,7 +109,8 @@ const Projects: React.FC = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(progettiList) && progettiList.length) setTableValues(updateTableValues());
+    if (Array.isArray(progettiList) && progettiList.length)
+      setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progettiList]);
 

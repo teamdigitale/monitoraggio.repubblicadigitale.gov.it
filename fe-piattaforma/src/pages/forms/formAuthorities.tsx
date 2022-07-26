@@ -186,7 +186,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
     <Form className='mt-5 mb-5' formDisabled={formDisabled}>
       {form && (
         <div>
-          {(creation || noIdField) ? (
+          {creation || noIdField ? (
             <>
               <Form.Row className={bootClass}>
                 <Input

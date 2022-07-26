@@ -178,6 +178,10 @@ const AppRoutes: React.FC = () => {
         </Route>
         <Route path='/stampa-questionario' element={<PrintSurvey />} />
         <Route
+          path='/auth-spid'
+          element={isLogged ? <Navigate to='/area-amministrativa' /> : <Auth />}
+        />
+        <Route
           path='/auth'
           element={isLogged ? <Navigate to='/area-amministrativa' /> : <Auth />}
         />

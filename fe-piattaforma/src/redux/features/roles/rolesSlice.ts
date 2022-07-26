@@ -15,7 +15,14 @@ export type RolePermissionI =
   | 'list.dwnl.prgm'
   | 'list.dwnl.prgt'
   | 'view.card.prgm.full'
-  | 'new.prgm';
+  | 'new.prgm'
+  | 'del.prgm'
+  | 'end.prgm'
+  | 'add.enti.gest.prgm'
+  | 'upd.enti.card.prgm'
+  | 'upd.enti.gest.prgm'
+  | 'add.ref_del.gest.prgm'
+  | 'upd.rel.quest_prgm';
 
 interface RoleI {
   name: string;

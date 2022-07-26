@@ -46,7 +46,12 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
 
   useEffect(() => {
     if (form['survey-name']?.value && idQuestionario) {
-      dispatch(setInfoIdsBreadcrumb({ id: idQuestionario, nome: form['survey-name'].value }))
+      dispatch(
+        setInfoIdsBreadcrumb({
+          id: idQuestionario,
+          nome: form['survey-name'].value,
+        })
+      );
     }
   }, [idQuestionario, form['survey-name']?.value]);
 
