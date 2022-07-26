@@ -39,12 +39,12 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 	             + "		   OR UPPER( utente.COGNOME ) LIKE UPPER( :criterioRicercaLike ) "
 	             + "		   OR UPPER( utente.CODICE_FISCALE ) LIKE UPPER( :criterioRicercaLike ) "
 	             + "	) "
-				 + " 	AND  ( :ruolo IS NULL 		   OR  ruolo.NOME = :ruolo ) ",
+ 			     + "	AND  ( COALESCE(:ruoli) IS NULL 		   OR   ruolo.NOME IN (:ruoli) ) " ,
 			nativeQuery = true)
 	public Set<UtenteEntity> findByFilter(
 			@Param(value = "criterioRicerca") String criterioRicerca,
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike,
-			@Param(value = "ruolo") String ruolo
+			@Param(value = "ruoli") List<String> ruoli
 	);
 
 	
@@ -91,14 +91,14 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
             + "			  OR UPPER( utente.COGNOME ) LIKE UPPER( :criterioRicercaLike )  "
             + "			  OR UPPER( utente.CODICE_FISCALE ) LIKE UPPER( :criterioRicercaLike )  "
             + "		) "
-			+ "		AND  ( :ruolo IS NULL  OR   ruolo.NOME = :ruolo )  "
-			+ "		AND  ( :stato IS NULL  OR   utente.STATO  = :stato ) ",
+			+ "		AND  ( COALESCE(:ruolo) IS NULL 		   OR   ruolo.NOME IN (:ruolo) ) "
+			+ "		AND  ( COALESCE(:stato) IS NULL 		   OR   utente.STATO  IN (:stato) ) ",
 			nativeQuery = true)
 	public Set<UtenteEntity> findUtentiPerDSCU(
 			@Param(value = "criterioRicerca") String criterioRicerca,
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
-			@Param(value = "ruolo") String ruolo,
-			@Param(value = "stato")  String stato
+			@Param(value = "ruolo") List<String> ruolo,
+			@Param(value = "stato")  List<String> stato
 	);
 
 	@Query(value = "SELECT * "
@@ -134,16 +134,16 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 	        + "	    	OR UPPER( utente.NOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.COGNOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.CODICE_FISCALE ) LIKE UPPER( :criterioRicercaLike ) ) "
-			+ "		AND  ( :ruolo IS NULL 		   OR   ruolo.NOME = :ruolo ) "
-			+ "		AND  ( :stato IS NULL 		   OR   utente.STATO  = :stato ) ", 
+			+ "		AND  ( COALESCE(:ruolo) IS NULL 		   OR   ruolo.NOME IN (:ruolo) ) "
+			+ "		AND  ( COALESCE(:stato) IS NULL 		   OR   utente.STATO  IN (:stato) ) ", 
 			nativeQuery = true)
 	public Set<UtenteEntity> findUtentiPerReferenteDelegatoGestoreProgramma(
 			@Param(value = "idProgramma") Long idProgramma, 
 			@Param(value = "cfUtente")String cfUtente,
 			@Param(value = "criterioRicerca") String criterioRicerca,
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
-			@Param(value = "ruolo") String ruolo,
-			@Param(value = "stato")  String stato
+			@Param(value = "ruolo") List<String> ruolo,
+			@Param(value = "stato")  List<String> stato
 	);
 
 	@Query(value = "SELECT * "
@@ -173,8 +173,8 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 	        + "	    	OR UPPER( utente.NOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.COGNOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.CODICE_FISCALE ) LIKE UPPER( :criterioRicercaLike ) ) "
-			+ "		AND  ( :ruolo IS NULL 		   OR   ruolo.NOME = :ruolo ) "
-			+ "		AND  ( :stato IS NULL 		   OR   utente.STATO  = :stato ) ", 
+			+ "		AND  ( COALESCE(:ruolo) IS NULL 		   OR   ruolo.NOME IN (:ruolo) ) "
+			+ "		AND  ( COALESCE(:stato) IS NULL 		   OR   utente.STATO  IN (:stato) ) ", 
 			nativeQuery = true)
 	public Set<UtenteEntity> findUtentiPerReferenteDelegatoGestoreProgetti(
 			@Param(value = "idProgramma") Long idProgramma,
@@ -182,8 +182,8 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			@Param(value = "cfUtente")String cfUtente, 
 			@Param(value = "criterioRicerca") String criterioRicerca,
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
-			@Param(value = "ruolo") String ruolo,
-			@Param(value = "stato")  String stato
+			@Param(value = "ruolo") List<String> ruolo,
+			@Param(value = "stato")  List<String> stato
 	);
 
 	@Query(value = "SELECT * "
@@ -213,8 +213,8 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 	        + "	    	OR UPPER( utente.NOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.COGNOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.CODICE_FISCALE ) LIKE UPPER( :criterioRicercaLike ) ) "
-			+ "		AND  ( :ruolo IS NULL 		   OR   ruolo.NOME = :ruolo ) "
-			+ "		AND  ( :stato IS NULL 		   OR   utente.STATO  = :stato ) ",
+			+ "		AND  ( COALESCE(:ruolo) IS NULL 		   OR   ruolo.NOME IN (:ruolo) ) "
+			+ "		AND  ( COALESCE(:stato) IS NULL 		   OR   utente.STATO  IN (:stato) ) ",
 			nativeQuery = true)
 	public Set<UtenteEntity> findUtentiPerReferenteDelegatoEntePartnerProgetti(
 			@Param(value = "idProgramma") Long idProgramma,
@@ -222,8 +222,8 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			@Param(value = "cfUtente")String cfUtente, 
 			@Param(value = "criterioRicerca") String criterioRicerca,
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
-			@Param(value = "ruolo") String ruolo,
-			@Param(value = "stato")  String stato
+			@Param(value = "ruolo") List<String> ruolo,
+			@Param(value = "stato")  List<String> stato
 	);
 
 	@Query(value = "SELECT DISTINCT UTENTI.STATO " 
@@ -264,14 +264,14 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 	        + "	    	OR UPPER( utente.NOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.COGNOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.CODICE_FISCALE ) LIKE UPPER( :criterioRicercaLike ) ) "
-			+ "		AND  ( :ruolo IS NULL 		   OR   ruolo.NOME = :ruolo ) "
-			+ "		AND  ( :stato IS NULL 		   OR   utente.STATO  = :stato ) ",
+			+ "		AND  ( COALESCE(:ruolo) IS NULL 		   OR   ruolo.NOME IN (:ruolo) ) "
+			+ "		AND  ( COALESCE(:stato) IS NULL 		   OR   utente.STATO  IN (:stato) ) ",
 			nativeQuery = true)
 	public List<String> findStatiByPolicy(
 			@Param(value = "criterioRicerca") String criterioRicerca,
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
-			@Param(value = "ruolo") String ruolo,
-			@Param(value = "stato")  String stato
+			@Param(value = "ruolo") List<String> ruolo,
+			@Param(value = "stato")  List<String> stato
 	);
 
 	@Query(value = "SELECT DISTINCT UTENTI.STATO "
@@ -307,16 +307,16 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 	        + "	    	OR UPPER( utente.NOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.COGNOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.CODICE_FISCALE ) LIKE UPPER( :criterioRicercaLike ) ) "
-			+ "		AND  ( :ruolo IS NULL 		   OR   ruolo.NOME = :ruolo ) "
-			+ "		AND  ( :stato IS NULL 		   OR   utente.STATO  = :stato ) ", 
+			+ "		AND  ( COALESCE(:ruolo) IS NULL 		   OR   ruolo.NOME IN (:ruolo) ) "
+			+ "		AND  ( COALESCE(:stato) IS NULL 		   OR   utente.STATO  IN (:stato) ) ", 
 			nativeQuery = true)
 	public List<String> findStatiPerReferenteDelegatoGestoreProgramma(
 			@Param(value = "idProgramma") Long idProgramma, 
 			@Param(value = "cfUtente")String cfUtente,
 			@Param(value = "criterioRicerca") String criterioRicerca,
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
-			@Param(value = "ruolo") String ruolo,
-			@Param(value = "stato")  String stato
+			@Param(value = "ruolo") List<String> ruolo,
+			@Param(value = "stato")  List<String> stato
 	);
 
 	@Query(value = "SELECT DISTINCT UTENTI.STATO "
@@ -346,8 +346,8 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 	        + "	    	OR UPPER( utente.NOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.COGNOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.CODICE_FISCALE ) LIKE UPPER( :criterioRicercaLike ) ) "
-			+ "		AND  ( :ruolo IS NULL 		   OR   ruolo.NOME = :ruolo ) "
-			+ "		AND  ( :stato IS NULL 		   OR   utente.STATO  = :stato ) ", 
+			+ "		AND  ( COALESCE(:ruolo) IS NULL 		   OR   ruolo.NOME IN (:ruolo) ) "
+			+ "		AND  ( COALESCE(:stato) IS NULL 		   OR   utente.STATO  IN (:stato) ) ",
 			nativeQuery = true)
 	public List<String> findStatiPerReferenteDelegatoGestoreProgetti(
 			@Param(value = "idProgramma") Long idProgramma,
@@ -355,8 +355,8 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			@Param(value = "cfUtente")String cfUtente, 
 			@Param(value = "criterioRicerca") String criterioRicerca,
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
-			@Param(value = "ruolo") String ruolo,
-			@Param(value = "stato")  String stato
+			@Param(value = "ruolo") List<String> ruolo,
+			@Param(value = "stato")  List<String> stato
 	);
 
 	@Query(value = "SELECT DISTINCT UTENTI.STATO "
@@ -386,8 +386,8 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 	        + "	    	OR UPPER( utente.NOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.COGNOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.CODICE_FISCALE ) LIKE UPPER( :criterioRicercaLike ) ) "
-			+ "		AND  ( :ruolo IS NULL 		   OR   ruolo.NOME = :ruolo ) "
-			+ "		AND  ( :stato IS NULL 		   OR   utente.STATO  = :stato ) ",
+			+ "		AND  ( COALESCE(:ruolo) IS NULL 		   OR   ruolo.NOME IN (:ruolo) ) "
+			+ "		AND  ( COALESCE(:stato) IS NULL 		   OR   utente.STATO  IN (:stato) ) ",
 			nativeQuery = true)
 	public List<String> findStatiPerReferenteDelegatoEntePartnerProgetti(
 			@Param(value = "idProgramma") Long idProgramma,
@@ -395,8 +395,8 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			@Param(value = "cfUtente")String cfUtente, 
 			@Param(value = "criterioRicerca") String criterioRicerca,
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
-			@Param(value = "ruolo") String ruolo,
-			@Param(value = "stato")  String stato
+			@Param(value = "ruolo") List<String> ruolo,
+			@Param(value = "stato")  List<String> stato
 	);
 
 	@Query(value = ""
@@ -414,14 +414,14 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
             + "			  OR UPPER( utente.COGNOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			  OR UPPER( utente.CODICE_FISCALE ) LIKE UPPER( :criterioRicercaLike ) "
             + "		) "
-			+ " 	AND ( :ruolo IS NULL  OR  ruolo.NOME = :ruolo ) "
-			+ " 	AND ( :stato IS NULL  OR  utente.STATO  = :stato )", 
+			+ "		AND  ( COALESCE(:ruolo) IS NULL 		   OR   ruolo.NOME IN (:ruolo) ) "
+			+ "		AND  ( COALESCE(:stato) IS NULL 		   OR   utente.STATO  IN (:stato) ) ",
 		nativeQuery = true)
 	public List<String> findAllRuoli(
 			@Param(value = "criterioRicerca") String criterioRicerca,
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike,  
-			@Param(value = "ruolo") String ruolo,
-			@Param(value = "stato")  String stato
+			@Param(value = "ruolo") List<String> ruolo,
+			@Param(value = "stato")  List<String> stato
 	);
 
 	@Query(value = "SELECT DISTINCT ruolo.NOME " 
@@ -462,14 +462,14 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 	        + "	    	OR UPPER( utente.NOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.COGNOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.CODICE_FISCALE ) LIKE UPPER( :criterioRicercaLike ) ) "
-			+ "		AND  ( :ruolo IS NULL 		   OR   ruolo.NOME = :ruolo ) "
-			+ "		AND  ( :stato IS NULL 		   OR   utente.STATO  = :stato ) ",
+			+ "		AND  ( COALESCE(:ruolo) IS NULL 		   OR   ruolo.NOME IN (:ruolo) ) "
+			+ "		AND  ( COALESCE(:stato) IS NULL 		   OR   utente.STATO  IN (:stato) ) ",
 			nativeQuery = true)
 	public List<String> findRuoliPerDSCU(
 			@Param(value = "criterioRicerca") String criterioRicerca,
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike,  
-			@Param(value = "ruolo") String ruolo,
-			@Param(value = "stato")  String stato
+			@Param(value = "ruolo") List<String> ruolo,
+			@Param(value = "stato")  List<String> stato
 	);
 
 	@Query(value = "SELECT DISTINCT ruolo.NOME "
@@ -505,16 +505,16 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 	        + "	    	OR UPPER( utente.NOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.COGNOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.CODICE_FISCALE ) LIKE UPPER( :criterioRicercaLike ) ) "
-			+ "		AND  ( :ruolo IS NULL 		   OR   ruolo.NOME = :ruolo ) "
-			+ "		AND  ( :stato IS NULL 		   OR   utente.STATO  = :stato ) ", 
+			+ "		AND  ( COALESCE(:ruolo) IS NULL 		   OR   ruolo.NOME IN (:ruolo) ) "
+			+ "		AND  ( COALESCE(:stato) IS NULL 		   OR   utente.STATO  IN (:stato) ) ",
 			nativeQuery = true)
 	public List<String> findRuoliPerReferenteDelegatoGestoreProgramma(
 			@Param(value = "idProgramma") Long idProgramma, 
 			@Param(value = "cfUtente")String cfUtente,
 			@Param(value = "criterioRicerca") String criterioRicerca,
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
-			@Param(value = "ruolo") String ruolo,
-			@Param(value = "stato")  String stato
+			@Param(value = "ruolo") List<String> ruolo,
+			@Param(value = "stato")  List<String> stato
 	);
 
 	@Query(value = "SELECT DISTINCT ruolo.NOME "
@@ -544,8 +544,8 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 	        + "	    	OR UPPER( utente.NOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.COGNOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.CODICE_FISCALE ) LIKE UPPER( :criterioRicercaLike ) ) "
-			+ "		AND  ( :ruolo IS NULL 		   OR   ruolo.NOME = :ruolo ) "
-			+ "		AND  ( :stato IS NULL 		   OR   utente.STATO  = :stato ) ", 
+			+ "		AND  ( COALESCE(:ruolo) IS NULL 		   OR   ruolo.NOME IN (:ruolo) ) "
+			+ "		AND  ( COALESCE(:stato) IS NULL 		   OR   utente.STATO  IN (:stato) ) ",
 			nativeQuery = true)
 	public List<String> findRuoliPerReferenteDelegatoGestoreProgetti(
 			@Param(value = "idProgramma") Long idProgramma, 
@@ -553,8 +553,8 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			@Param(value = "cfUtente")String cfUtente,
 			@Param(value = "criterioRicerca") String criterioRicerca,
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
-			@Param(value = "ruolo") String ruolo,
-			@Param(value = "stato")  String stato
+			@Param(value = "ruolo") List<String> ruolo,
+			@Param(value = "stato")  List<String> stato
 	);
 
 	@Query(value = "SELECT DISTINCT ruolo.NOME "
@@ -584,8 +584,8 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 	        + "	    	OR UPPER( utente.NOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.COGNOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			OR UPPER( utente.CODICE_FISCALE ) LIKE UPPER( :criterioRicercaLike ) ) "
-			+ "		AND  ( :ruolo IS NULL 		   OR   ruolo.NOME = :ruolo ) "
-			+ "		AND  ( :stato IS NULL 		   OR   utente.STATO  = :stato ) ",
+			+ "		AND  ( COALESCE(:ruolo) IS NULL 		   OR   ruolo.NOME IN (:ruolo) ) "
+			+ "		AND  ( COALESCE(:stato) IS NULL 		   OR   utente.STATO  IN (:stato) ) ",
 			nativeQuery = true)
 	public List<String> findRuoliPerReferenteDelegatoEntePartnerProgetti(
 			@Param(value = "idProgramma") Long idProgramma, 
@@ -593,8 +593,8 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			@Param(value = "cfUtente")String cfUtente,
 			@Param(value = "criterioRicerca") String criterioRicerca,
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
-			@Param(value = "ruolo") String ruolo,
-			@Param(value = "stato")  String stato
+			@Param(value = "ruolo") List<String> ruolo,
+			@Param(value = "stato")  List<String> stato
 	);
 
 	@Query(value = ""

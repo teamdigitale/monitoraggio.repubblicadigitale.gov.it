@@ -59,7 +59,7 @@ public class OpenDataService {
 //					   │ │ │ │  │ │              (or MON-SUN -- 0 or 7 is Sunday)
 //					   │ │ │ │  │ │
 //					   * * * *  * *
-	@Scheduled(cron = "0 30 15 * * *")
+	@Scheduled(cron = "0 49 17 * * *")
 	@LogMethod
 	@LogExecutionTime
 	public void caricaFileListaCittadiniSuAmazonS3() throws IOException {
@@ -127,5 +127,12 @@ public class OpenDataService {
 	@LogExecutionTime
 	public Long getCountFile(final String fileToDownload) throws IOException{
 		return cittadinoRepository.getCountDownload(fileToDownload);
+	}
+	
+	@LogMethod
+	@LogExecutionTime
+	public String getPresignedUrl(final String fileToDownload) throws IOException{
+		cittadinoRepository.updateCountDownload(fileToDownload, new Date());
+		return this.s3Service.getPresignedUrl(fileToDownload, this.nomeDelBucketS3);
 	}
 }

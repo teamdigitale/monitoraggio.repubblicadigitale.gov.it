@@ -28,5 +28,11 @@ public class AggiornaUtenteRequest implements Serializable {
 	
 	@JsonProperty(value = "tipoContratto")
 	private String tipoContratto;
+	
+	@JsonProperty(value = "nome")
+	private String nome;
+	
+	@JsonProperty(value = "cognome")
+	private String cognome;
 
 }
