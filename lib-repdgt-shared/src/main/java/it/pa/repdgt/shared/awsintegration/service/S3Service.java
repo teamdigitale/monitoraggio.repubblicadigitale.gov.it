@@ -2,6 +2,7 @@ package it.pa.repdgt.shared.awsintegration.service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.Duration;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,6 +21,10 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.S3Exception;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
+import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 
 @Service
 @Scope("singleton")
@@ -88,4 +93,41 @@ public class S3Service {
 		
 		return response;
 	}
+	
+	public String getPresignedUrl(String nomeFile, String bucketName) {
+		S3Presigner presigner = S3Presigner.builder()
+                .region(Region.EU_CENTRAL_1)
+                .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(this.accessKey, this.secretKey)))
+                .build();
+		return getPresignedUrl(presigner, bucketName, nomeFile);
+	}
+	
+	public String getPresignedUrl(S3Presigner presigner, String bucketName, String keyName ) {
+		String url = "";
+        try {
+            GetObjectRequest getObjectRequest =
+                    GetObjectRequest.builder()
+                            .bucket(bucketName)
+                            .key(keyName)
+                            .build();
+
+            GetObjectPresignRequest getObjectPresignRequest =  GetObjectPresignRequest.builder()
+                            .signatureDuration(Duration.ofMinutes(10))
+                            .getObjectRequest(getObjectRequest)
+                             .build();
+
+            // Generate the presigned request
+            PresignedGetObjectRequest presignedGetObjectRequest =
+                    presigner.presignGetObject(getObjectPresignRequest);
+
+            // Log the presigned URL
+            url = presignedGetObjectRequest.url().toString();
+
+            
+
+        } catch (S3Exception e) {
+            e.getStackTrace();
+        }
+        return url;
+    }
 }

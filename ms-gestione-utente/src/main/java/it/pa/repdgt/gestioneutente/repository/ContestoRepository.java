@@ -268,7 +268,8 @@ public interface ContestoRepository extends JpaRepository<ProgrammaEntity, Long>
 	@Modifying
 	@Query(value = "UPDATE ente_sede_progetto_facilitatore "
 			+ "SET STATO_UTENTE = 'ATTIVO', "
-			+ "DATA_ORA_AGGIORNAMENTO = CURRENT_TIMESTAMP "
+			+ "DATA_ORA_AGGIORNAMENTO = CURRENT_TIMESTAMP, "
+			+ "DATA_ORA_ATTIVAZIONE = CURRENT_TIMESTAMP "
 			+ "WHERE ID_PROGETTO = :idProgetto "
 			+ "AND ID_ENTE = :idEnte "
 			+ "AND ID_SEDE = :idSede "

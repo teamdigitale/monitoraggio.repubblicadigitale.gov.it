@@ -9,6 +9,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,5 +37,15 @@ public class OpenDataRestApi {
 	@PostMapping(path = "/count/download")
 	public Long getCountDownloadListaCSVCittadini() throws IOException {
 		return this.openDataService.getCountFile(NOME_FILE);
+	}
+	
+	@PostMapping(path = "/presigned/download")
+	public String getPresignedListaCSVCittadini() throws IOException {
+		return this.openDataService.getPresignedUrl(NOME_FILE);
+	}
+
+	@GetMapping(path = "/carica-file/cittadini")
+	public void caricaFileCittadini() throws IOException {
+		this.openDataService.caricaFileListaCittadiniSuAmazonS3();
 	}
 }
