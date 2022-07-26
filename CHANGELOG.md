@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.52](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.51...1.0.0-develop.52) (2022-07-26)
+
+
+### Features
+
+* **be:** api presigned + api upload opendata ([1a0fef4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1a0fef40bd034eef3836aadcd38a019ebcd278c3))
+
 ## [1.0.0-develop.51](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.50...1.0.0-develop.51) (2022-07-25)
 
 
