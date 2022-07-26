@@ -10,6 +10,19 @@ import org.springframework.data.repository.query.Param;
 import it.pa.repdgt.shared.entity.ServizioEntity;
 
 public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Long> {
+	
+	@Query(value = ""
+			+ " SELECT "
+			+ "	s.* "
+			+ " FROM   "
+			+ "	servizio s "
+			+ " WHERE 1=1 "
+			+ " AND s.id = :idServizio"
+			+ " AND s.id_facilitatore = :idFacilitatore ",
+			nativeQuery = true)
+	Optional<ServizioEntity> findByFacilitatoreAndIdServizio(
+			@Param(value = "idFacilitatore") String idFacilitatore,
+			@Param(value = "idServizio") Long idServizio);
 
 	@Query(value = ""
 			+ " SELECT "

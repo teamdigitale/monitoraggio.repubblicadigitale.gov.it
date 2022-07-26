@@ -48,7 +48,8 @@ public class CSVServizioUtil {
 				"NOME",
 				"FACILITATORE",
 				"DATA",
-				"STATO"
+				"STATO",
+				"DURATA_SERVIZIO"
 			);
 	
 	public static ByteArrayInputStream exportCSVServizi(final List<ServizioResource> servizi, final CSVFormat csvFormat) {
@@ -86,7 +87,8 @@ public class CSVServizioUtil {
 							servizioResource.getNomeServizio(),
 							servizioResource.getNominativoFacilitatore(),
 							servizioResource.getDataServizio(),
-							servizioResource.getStato()
+							servizioResource.getStato(),
+							servizioResource.getDurataServizio()
 						);
 	}
 	

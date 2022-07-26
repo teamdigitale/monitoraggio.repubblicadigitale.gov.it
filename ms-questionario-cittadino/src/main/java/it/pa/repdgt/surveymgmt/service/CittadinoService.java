@@ -229,6 +229,7 @@ public class CittadinoService {
 		
 		CittadinoEntity cittadinoEntity = this.cittadinoMapper.toEntityFrom(cittadinoRequest);
 		cittadinoEntity.setId(id);
+		cittadinoEntity.setDataOraCreazione(this.cittadinoRepository.findById(id).get().getDataOraCreazione());
 		cittadinoEntity.setDataOraAggiornamento(new Date());
 		
 		// aggiorno cittadino su mysql

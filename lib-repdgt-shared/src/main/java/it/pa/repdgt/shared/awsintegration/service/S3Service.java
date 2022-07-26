@@ -31,8 +31,6 @@ import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequ
 @Validated
 @Slf4j
 public class S3Service {
-	@Value(value = "${aws.app-id:}")
-	private String appId;
 	@Value(value = "${aws.s3.access-key:}")
 	private String accessKey;
 	@Value(value = "${aws.s3.secret-key:}")

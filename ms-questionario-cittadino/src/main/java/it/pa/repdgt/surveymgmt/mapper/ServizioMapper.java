@@ -64,7 +64,7 @@ public class ServizioMapper {
 		final UtenteEntity facilitatore = this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleFacilitatore);
 		final String nominativoFacilitatore = String.format("%s %s", facilitatore.getNome(), facilitatore.getCognome());
 		servizioResource.setNominativoFacilitatore(nominativoFacilitatore);
-		
+		servizioResource.setDurataServizio(servizioEntity.getDurataServizio());
 		servizioResource.setStato(servizioEntity.getStato());
 		return servizioResource;
 	}

@@ -337,7 +337,7 @@ insert into programma_x_questionario_template(programma_id, questionario_templat
 	
 	
 --SERVIZIO
-insert into servizio values(1,current_timestamp,current_timestamp,current_date, 1005,'UTENTE2', 256,1,1,'','nome_servizio','ATTIVO','');
+-- insert into servizio values(1,current_timestamp,current_timestamp,current_date, 1005,'UTENTE2', 256,1,1,'','nome_servizio','ATTIVO','');
 
 --QUESTIONARIO_COMPILATO
 insert into QUESTIONARIO_COMPILATO values(1,current_timestamp,current_timestamp, 1005,'UTENTE2',256,1,1,1,'ATTIVO',1);

@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Email;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -40,7 +39,7 @@ public class QuestionarioInviatoOnlineEntity implements Serializable {
 	@Column(name = "TOKEN", nullable = false, unique = true)
 	private String token;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "DATA_ORA_CREAZIONE", nullable = true)
 	private Date dataOraCreazione;
 }
