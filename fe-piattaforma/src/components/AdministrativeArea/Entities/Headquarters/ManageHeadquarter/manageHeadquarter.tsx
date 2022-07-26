@@ -36,8 +36,8 @@ import {
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import {
   closeModal,
-  selectModalId,
-  selectModalState,
+  // selectModalId,
+  // selectModalState,
 } from '../../../../../redux/features/modal/modalSlice';
 
 const id = formTypes.SEDE;
@@ -102,11 +102,11 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
   const headquarterDetails =
     useAppSelector(selectHeadquarters).detail?.dettagliInfoSede;
   const dispatch = useDispatch();
-  const modalId = useAppSelector(selectModalId);
-  const open = useAppSelector(selectModalState);
+  // const modalId = useAppSelector(selectModalId);
+  // const open = useAppSelector(selectModalState);
 
   useEffect(() => {
-    if (headquarterDetails && open && modalId === id) {
+    if (headquarterDetails) {
       if (headquarterDetails?.indirizziSedeFasceOrarie)
         setAddressList([...headquarterDetails.indirizziSedeFasceOrarie]);
       if (headquarterDetails?.itinere)
@@ -311,20 +311,22 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
       centerButtons
     >
       <div>
-        <SearchBar
-          className={clsx(
-            'w-100',
-            'py-4',
-            'px-5',
-            'search-bar-borders',
-            'lightgrey-bg-c2'
-          )}
-          placeholder='Inserisci il nome della sede che stai cercando'
-          onSubmit={handleSearchHeadquarter}
-          onReset={handleSearchReset}
-          title='Cerca'
-          search
-        />
+        {creation && (
+          <SearchBar
+            className={clsx(
+              'w-100',
+              'py-4',
+              'px-5',
+              'search-bar-borders',
+              'lightgrey-bg-c2'
+            )}
+            placeholder='Inserisci il nome della sede che stai cercando'
+            onSubmit={handleSearchHeadquarter}
+            onReset={handleSearchReset}
+            title='Cerca'
+            search
+          />
+        )}
         <div className='mx-5'>{content}</div>
       </div>
     </GenericModal>

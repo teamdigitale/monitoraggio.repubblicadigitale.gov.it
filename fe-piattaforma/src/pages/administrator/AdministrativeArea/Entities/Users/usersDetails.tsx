@@ -25,17 +25,15 @@ import FormUser from '../../../../forms/formUser';
 import { selectUsers } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import clsx from 'clsx';
 import { CardStatusAction } from '../../../../../components';
+import ManageFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/ManageFacilitator/ManageFacilitator';
+import FormFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/FormFacilitator/FormFacilitator';
 
 const UsersDetails = () => {
-  const [deleteText, setDeleteText] = useState<string>('');
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
   const [currentModal, setCorrectModal] = useState<React.ReactElement>();
   const [itemList, setItemList] = useState<ItemsListI | null>();
   const [correctButtons, setCorrectButtons] = useState<ButtonInButtonsBar[]>(
     []
-  );
-  const [buttonsPosition, setButtonsPosition] = useState<'TOP' | 'BOTTOM'>(
-    'TOP'
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -48,11 +46,16 @@ const UsersDetails = () => {
 
   useEffect(() => {
     //if (userId) dispatch(GetUserDetails(userId));
-    if(userId && userInfo?.nome){
-      dispatch(setInfoIdsBreadcrumb({ id: userId, nome: userInfo?.nome + ' ' + userInfo?.cognome}))
+    if (userId && userInfo?.nome) {
+      dispatch(
+        setInfoIdsBreadcrumb({
+          id: userId,
+          nome: userInfo?.nome + ' ' + userInfo?.cognome,
+        })
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId,userInfo]);
+  }, [userId, userInfo]);
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
@@ -63,10 +66,16 @@ const UsersDetails = () => {
   };
 
   useEffect(() => {
-    setButtonsPosition('TOP');
-    setCurrentForm(<FormUser formDisabled />);
-    setCorrectModal(<ManageUsers />);
-    setDeleteText('Confermi di voler eliminare questo utente?');
+    if (userType === formTypes.FACILITATORE) {
+      setCurrentForm(<FormFacilitator formDisabled />);
+      setCorrectModal(<ManageFacilitator />);
+    } else {
+      setCurrentForm(<FormUser formDisabled />);
+      setCorrectModal(<ManageUsers />);
+    }
+  }, [userType]);
+
+  useEffect(() => {
     setItemList({
       title: 'Ruoli',
       items: [
@@ -185,12 +194,14 @@ const UsersDetails = () => {
             }}
             formButtons={correctButtons}
             itemsList={itemList}
-            buttonsPosition={buttonsPosition}
+            buttonsPosition={'TOP'}
             goBackPath='/area-amministrativa/utenti'
           >
             {currentForm}
           </DetailLayout>
-          {!(entityId || projectId) && userRoles?.length ? (
+          {!(entityId || projectId) &&
+          userRoles?.length &&
+          userType === 'utenti' ? (
             <div className={clsx('my-5')}>
               <h5 className={clsx('primary-color', 'mb-4')}>Ruoli</h5>
               {userRoles.map((role: any) => (
@@ -218,7 +229,7 @@ const UsersDetails = () => {
             onClose={() => {
               dispatch(closeModal());
             }}
-            text={deleteText}
+            text={'Confermi di voler eliminare questo utente?'}
           />
         </div>
       </div>

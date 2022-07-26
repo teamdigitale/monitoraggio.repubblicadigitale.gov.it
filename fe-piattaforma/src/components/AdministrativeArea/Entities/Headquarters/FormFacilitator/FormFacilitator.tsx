@@ -45,6 +45,7 @@ const FormFacilitator: React.FC<FacilitatorFormI> = (props) => {
   useEffect(() => {
     if (form && newFormValues)
       sendNewValues({ ...newFormValues, ...getFormValues() });
+    setIsFormValid(isValidForm);
   }, [form, newFormValues]);
 
   useEffect(() => {
@@ -73,7 +74,7 @@ const FormFacilitator: React.FC<FacilitatorFormI> = (props) => {
         }
         setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
       />
-      <Form>
+      <Form formDisabled={formDisabled}>
         <Form.Row className={clsx(bootClass, 'mt-0')}>
           {formDisabled ? (
             <Input
@@ -91,6 +92,7 @@ const FormFacilitator: React.FC<FacilitatorFormI> = (props) => {
               value={form?.tipoContratto.value as string}
               col='col-12 col-lg-6'
               label='Tipo di Contratto'
+              placeholder='Seleziona tipo di contratto'
               options={[
                 { label: 'Volontario', value: 'Volontario' },
                 { label: 'Dipendente', value: 'Dipendente' },

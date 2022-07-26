@@ -231,9 +231,13 @@ export const FormHelper = {
       Object.getPrototypeOf(newForm) === Object.prototype
     ) {
       Object.keys(newFormValues)
-        .filter((field) => (newFormValues as any)[field])
+        .filter(
+          (field) =>
+            (newFormValues as any)[field] !== undefined &&
+            (newFormValues as any)[field] !== null
+        )
         .forEach((field) => {
-          if (newFormValues[field] && newForm[field]) {
+          if (newForm[field]) {
             newForm[field] = {
               ...newForm[field],
               valid: validator(newForm[field], (newFormValues as any)[field]),

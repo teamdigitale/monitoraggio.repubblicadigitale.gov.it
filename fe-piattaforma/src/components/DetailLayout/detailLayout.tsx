@@ -74,7 +74,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
       <div>
         {showGoBack && (
           <Button
-            onClick={() => goBackPath ? navigate(goBackPath):navigate(-1)}
+            onClick={() => (goBackPath && goBackTitle !== 'Torna indietro') ? navigate(goBackPath):navigate(-1)}
             className={clsx(device.mediaIsPhone ? 'px-0 mb-5 mr-5' : 'px-0')}
           >
             <Icon

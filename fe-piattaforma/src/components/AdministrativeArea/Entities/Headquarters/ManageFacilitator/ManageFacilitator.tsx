@@ -19,6 +19,7 @@ import {
 import {
   GetUserDetails,
   GetUsersBySearch,
+  UpdateUser,
 } from '../../../../../redux/features/administrativeArea/user/userThunk';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
@@ -52,7 +53,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   const usersList = useAppSelector(selectUsers).list;
   const [noResult, setNoResult] = useState(false);
   const dispatch = useDispatch();
-  const { projectId, authorityId, headquarterId } = useParams();
+  const { projectId, authorityId, headquarterId, userId } = useParams();
   const programPolicy =
     useAppSelector(selectHeadquarters).detail?.programmaPolicy;
 
@@ -69,8 +70,14 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   }, [usersList]);
 
   const handleSaveEnte = async () => {
-    if (isFormValid) {
-      if (projectId && authorityId && headquarterId && programPolicy) {
+    if (isFormValid && newFormValues) {
+      if (
+        projectId &&
+        authorityId &&
+        headquarterId &&
+        programPolicy &&
+        creation
+      ) {
         await dispatch(
           AssignHeadquarterFacilitator(
             newFormValues,
@@ -82,8 +89,18 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         );
         dispatch(GetHeadquarterDetails(headquarterId, authorityId, projectId));
         dispatch(setUserDetails(null));
-        dispatch(closeModal());
+      } else if (userId) {
+        userId &&
+          (await dispatch(
+            UpdateUser(userId, {
+              ...newFormValues,
+            })
+          ));
+
+        userId && dispatch(GetUserDetails(userId));
       }
+
+      dispatch(closeModal());
     }
   };
 
@@ -151,20 +168,22 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
       centerButtons
     >
       <div>
-        <SearchBar
-          className={clsx(
-            'w-100',
-            'py-4',
-            'px-5',
-            'search-bar-borders',
-            'search-bar-bg'
-          )}
-          placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’utente'
-          onSubmit={handleSearchUser}
-          onReset={() => dispatch(setUsersList(null))}
-          title='Cerca'
-          search
-        />
+        {creation && (
+          <SearchBar
+            className={clsx(
+              'w-100',
+              'py-4',
+              'px-5',
+              'search-bar-borders',
+              'search-bar-bg'
+            )}
+            placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’utente'
+            onSubmit={handleSearchUser}
+            onReset={() => dispatch(setUsersList(null))}
+            title='Cerca'
+            search
+          />
+        )}
         <div className='mx-5'>{content}</div>
       </div>
     </GenericModal>

@@ -1,5 +1,5 @@
 import { Toggle } from 'design-react-kit';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { selectHeadquarters } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
 import Form from '../../../../Form/form';
@@ -9,16 +9,6 @@ import FormHeadquarter from '../FormHeadquarter/FormHeadquarter';
 const HeadquarterDetailsContent = () => {
   const headquarterDetails =
     useAppSelector(selectHeadquarters).detail?.dettagliInfoSede;
-
-  useEffect(() => {
-    // console.log(headquarterDetails);
-  }, [headquarterDetails]);
-
-  /**
-   *  An accordion is used to display address to reduce space but in case it is
-   * required it can be modified.
-   * Mobile version for detail does not exist in figma.
-   */
 
   return (
     <>

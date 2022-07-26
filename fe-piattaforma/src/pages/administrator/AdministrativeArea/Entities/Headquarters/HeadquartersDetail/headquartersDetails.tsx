@@ -87,6 +87,7 @@ const HeadquartersDetails = () => {
       outline: true,
       color: 'primary',
       text: 'Elimina',
+      disabled: headquarterDetails?.stato === 'ATTIVO',
       onClick: () =>
         dispatch(
           openModal({
@@ -164,7 +165,7 @@ const HeadquartersDetails = () => {
             <HeadquarterDetailsContent />
           </DetailLayout>
           <ManageHeadquarter />
-          <ManageFacilitator />
+          <ManageFacilitator creation={true} />
           <DeleteEntityModal
             onClose={() => dispatch(closeModal())}
             onConfirm={(payload) => {

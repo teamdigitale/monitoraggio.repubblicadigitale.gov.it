@@ -51,12 +51,13 @@ export const GetEntityValues =
           );
         }
       });
-      const { codiceFiscale, codiceRuolo, idProgramma } = getUserHeaders();
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } = getUserHeaders();
       const body = {
         filtroRequest,
-        idProgramma: idProgramma,
+        idProgramma,
+        idProgetto,
         cfUtente: codiceFiscale,
-        codiceRuolo: codiceRuolo,
+        codiceRuolo,
       };
 
       const res = await API.post(entityEndpoint, body, {
@@ -112,12 +113,13 @@ export const GetEntityFilterValues =
           );
         }
       });
-      const { codiceFiscale, codiceRuolo, idProgramma } = getUserHeaders();
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } = getUserHeaders();
       const body = {
         filtroRequest,
         idProgramma,
+        idProgetto,
         cfUtente: codiceFiscale,
-        codiceRuolo: codiceRuolo,
+        codiceRuolo,
       };
       const entityFilterEndpoint = `/${payload.entity}/${payload.dropdownType}${
         payload.entity === 'progetto' && payload.dropdownType === 'policies'
