@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.55](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.54...1.0.0-develop.55) (2022-07-26)
+
+
+### Bug Fixes
+
+* **be:** aggiunti log per s3 ([19a7497](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/19a7497e2eb6c1c7db1059d234289d2ada2302e3))
+
 ## [1.0.0-develop.54](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.53...1.0.0-develop.54) (2022-07-26)
 
 
