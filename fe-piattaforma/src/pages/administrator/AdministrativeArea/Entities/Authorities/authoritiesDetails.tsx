@@ -38,6 +38,7 @@ import {
 import { RemoveAuthorityHeadquarter } from '../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
 import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 import { CardStatusAction } from '../../../../../components';
+import ManagePartnerAuthority from '../modals/managePartnerAuthority';
 
 const AuthoritiesDetails = () => {
   const authorityDetails = useAppSelector(selectAuthorities)?.detail;
@@ -216,7 +217,7 @@ const AuthoritiesDetails = () => {
       onClick: () =>
         dispatch(
           openModal({
-            id: formTypes.ENTE_PARTNER,
+            id: projectId ? 'ente-partner' : 'ente',
             payload: { title: 'Modifica ente' },
           })
         ),
@@ -319,6 +320,7 @@ const AuthoritiesDetails = () => {
             </div>
           ) : null}
           <ManageGenericAuthority />
+          <ManagePartnerAuthority />
           <ManageDelegate />
           <ManageReferal />
           <ManageHeadquarter creation={true} enteType='partner' />

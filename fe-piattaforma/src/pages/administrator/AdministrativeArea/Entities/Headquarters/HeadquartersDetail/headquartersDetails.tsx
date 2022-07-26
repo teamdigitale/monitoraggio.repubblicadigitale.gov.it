@@ -10,7 +10,10 @@ import {
 import { useDispatch } from 'react-redux';
 import DetailLayout from '../../../../../../components/DetailLayout/detailLayout';
 import { useAppSelector } from '../../../../../../redux/hooks';
-import { selectDevice } from '../../../../../../redux/features/app/appSlice';
+import {
+  selectDevice,
+  setInfoIdsBreadcrumb,
+} from '../../../../../../redux/features/app/appSlice';
 import clsx from 'clsx';
 import ManageHeadquarter from '../../../../../../components/AdministrativeArea/Entities/Headquarters/ManageHeadquarter/manageHeadquarter';
 import HeadquarterDetailsContent from '../../../../../../components/AdministrativeArea/Entities/Headquarters/HeadquarterDetailsContent/HeadquarterDetailsContent';
@@ -38,13 +41,20 @@ const HeadquartersDetails = () => {
   const headquarterDetails =
     useAppSelector(selectHeadquarters).detail?.dettagliInfoSede;
 
+  const programPolicy =
+    useAppSelector(selectHeadquarters).detail?.programmaPolicy;
+
   const programDetails =
     useAppSelector(selectHeadquarters).detail?.dettaglioProgetto;
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
       navigate(
-        `/area-amministrativa/progetti/${projectId}/${authorityId}/${formTypes.FACILITATORE}/${td}`
+        `/area-amministrativa/progetti/${projectId}/${authorityId}/${
+          programPolicy === 'SCD'
+            ? formTypes.VOLONTARIO
+            : formTypes.FACILITATORE
+        }/${td}`
       );
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
@@ -60,6 +70,23 @@ const HeadquartersDetails = () => {
       );
     },
   };
+
+  useEffect(() => {
+    if (programDetails && headquarterDetails && authorityId) {
+      dispatch(
+        setInfoIdsBreadcrumb({
+          id: programDetails?.id,
+          nome: programDetails?.nomeBreve,
+        })
+      );
+      dispatch(
+        setInfoIdsBreadcrumb({
+          id: authorityId,
+          nome: headquarterDetails?.enteDiRiferimento,
+        })
+      );
+    }
+  }, [programDetails, headquarterDetails, authorityId]);
 
   useEffect(() => {
     if (headquarterId && projectId && authorityId) {

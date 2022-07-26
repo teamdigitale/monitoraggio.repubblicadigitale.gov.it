@@ -137,6 +137,7 @@ export const formTypes = {
   DELEGATI: 'delegati',
   USER: 'user',
   FACILITATORE: 'facilitatore',
+  VOLONTARIO: 'volontario',
   SERVICES: 'services',
   CITIZENS: 'cittadino',
   PROFILE: 'profilo',

@@ -15,7 +15,7 @@ interface AccordionI {
   title: string;
   totElem?: number;
   children?: JSX.Element | JSX.Element[];
-  cta?: string;
+  cta?: string | null;
   className?: string;
   checkbox?: boolean;
   disabledCheckbox?: boolean;

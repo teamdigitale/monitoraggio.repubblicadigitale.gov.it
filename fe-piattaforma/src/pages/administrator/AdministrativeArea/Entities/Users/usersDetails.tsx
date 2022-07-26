@@ -27,6 +27,7 @@ import clsx from 'clsx';
 import { CardStatusAction } from '../../../../../components';
 import ManageFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/ManageFacilitator/ManageFacilitator';
 import FormFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/FormFacilitator/FormFacilitator';
+import { formFieldI } from '../../../../../utils/formHelper';
 
 const UsersDetails = () => {
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
@@ -46,7 +47,15 @@ const UsersDetails = () => {
 
   useEffect(() => {
     //if (userId) dispatch(GetUserDetails(userId));
-    if (userId && userInfo?.nome) {
+    if (userId && userInfo?.nome && userRoles) {
+      dispatch(
+        setInfoIdsBreadcrumb({
+          id: entityId,
+          nome: userRoles?.filter(
+            (rol: { [key: string]: formFieldI['value'] }) => rol.id?.toString() === entityId
+          )[0]?.nome,
+        })
+      );
       dispatch(
         setInfoIdsBreadcrumb({
           id: userId,
@@ -55,7 +64,7 @@ const UsersDetails = () => {
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId, userInfo]);
+  }, [userId, userInfo, userRoles]);
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
@@ -66,7 +75,10 @@ const UsersDetails = () => {
   };
 
   useEffect(() => {
-    if (userType === formTypes.FACILITATORE) {
+    if (
+      userType === formTypes.FACILITATORE ||
+      userType === formTypes.VOLONTARIO
+    ) {
       setCurrentForm(<FormFacilitator formDisabled />);
       setCorrectModal(<ManageFacilitator />);
     } else {
@@ -99,6 +111,7 @@ const UsersDetails = () => {
         color: 'primary',
         outline: true,
         text: 'Elimina',
+        disabled: getUserStatus() === 'ATTIVO',
         onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
       },
       {
@@ -114,7 +127,7 @@ const UsersDetails = () => {
           ),
       },
     ]);
-  }, [mediaIsDesktop]);
+  }, [mediaIsDesktop, userInfo]);
 
   const getUpperTitle = () => {
     if (userType) {
@@ -125,6 +138,8 @@ const UsersDetails = () => {
           return formTypes.REFERENTE;
         case formTypes.FACILITATORE:
           return formTypes.FACILITATORE;
+        case formTypes.VOLONTARIO:
+          return formTypes.VOLONTARIO;
         default:
           'utente';
       }
@@ -140,6 +155,7 @@ const UsersDetails = () => {
         case formTypes.REFERENTE:
           return formTypes.REFERENTE;
         case formTypes.FACILITATORE:
+        case formTypes.VOLONTARIO:
           return formTypes.FACILITATORE;
         default:
           return formTypes.USER;
@@ -155,6 +171,7 @@ const UsersDetails = () => {
         case formTypes.REFERENTI:
           return 'Modifica Referente';
         case formTypes.FACILITATORE:
+        case formTypes.VOLONTARIO:
           return 'Modifica Facilitatore';
         default:
           return 'Modifica Utente';
@@ -166,7 +183,8 @@ const UsersDetails = () => {
     if (
       userType === formTypes.DELEGATI ||
       (userType === formTypes.REFERENTI && userRoles?.length) ||
-      userType === formTypes.FACILITATORE
+      userType === formTypes.FACILITATORE ||
+      userType === formTypes.VOLONTARIO
     ) {
       const id = projectId || entityId;
       const entityRole = userRoles.filter(

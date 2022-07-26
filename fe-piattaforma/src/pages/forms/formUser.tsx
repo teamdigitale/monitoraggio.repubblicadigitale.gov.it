@@ -87,8 +87,8 @@ const FormUser: React.FC<UserFormI> = (props) => {
   }, [formData]);
 
   useEffect(() => {
-    setIsFormValid?.(isValidForm);
-    sendNewValues?.(getFormValues?.());
+    setIsFormValid(isValidForm);
+    sendNewValues(getFormValues());
   }, [form]);
 
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';

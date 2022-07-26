@@ -79,17 +79,23 @@ const Breadcrumb = () => {
       const newList: { label: string; url: string; link: boolean }[] = [];
       (currentLocation || []).map((elem: string, index: number) => {
         if (elem !== '') {
-          if (currentLocation?.length > 3 && index < currentLocation?.length -1) {
+          if (
+            currentLocation?.length > 3 &&
+            index < currentLocation?.length - 1
+          ) {
             newList.push({
               label: getLabelBreadcrumb(elem),
               url: createUrl(index),
-              link: (index !== 0 && index !== currentLocation?.length -2) ? true : false,
+              link:
+                index !== 0 && index !== currentLocation?.length - 2
+                  ? true
+                  : false,
             });
-          }else if(currentLocation?.length <= 3){
+          } else if (currentLocation?.length <= 3) {
             newList.push({
               label: getLabelBreadcrumb(elem),
               url: createUrl(index),
-              link: (index !== 0 && index !== 2) ? true : false,
+              link: index !== 0 && index !== 2 ? true : false,
             });
           }
         }

@@ -7,6 +7,7 @@ import { formFieldI } from '../../../../../utils/formHelper';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 import {
   createProgram,
+  GetProgramDetail,
   updateProgram,
 } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
@@ -58,7 +59,10 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
           );
         }
       } else {
-        entityId && dispatch(updateProgram(entityId, newFormValues));
+        if (entityId) {
+          await dispatch(updateProgram(entityId, newFormValues));
+          dispatch(GetProgramDetail(entityId));
+        }
       }
       setCurrentStep(0);
       dispatch(closeModal());

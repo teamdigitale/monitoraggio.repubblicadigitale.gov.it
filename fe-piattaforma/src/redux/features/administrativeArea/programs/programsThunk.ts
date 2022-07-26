@@ -136,10 +136,9 @@ export const updateProgram =
         setProgramGeneralInfo({ currentStep: 4, newFormValues: payload })
       );
       if (body) {
-        const res = await API.put(`/programma/${programId}`, {
+        await API.put(`/programma/${programId}`, {
           ...body,
         });
-        console.log('updateProgramDetails res', res);
       }
     } catch (error) {
       console.log(error);

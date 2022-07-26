@@ -9,9 +9,8 @@ import { UpdateAuthorityDetails } from '../../../../../redux/features/administra
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormAuthorities from '../../../../forms/formAuthorities';
-import { formTypes } from '../utils';
 
-const id = formTypes.ENTE_PARTNER;
+const id = 'ente';
 
 interface ManageEntePartnerFormI {
   formDisabled?: boolean;

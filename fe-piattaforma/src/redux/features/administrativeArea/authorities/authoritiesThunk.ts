@@ -400,6 +400,7 @@ export const UpdatePartnerAuthority =
       dispatch(showLoader());
       dispatch({ ...UpdateAuthorityAction });
       if (authorityDetail) {
+        await API.put(`/ente/${authorityDetail.id}`, authorityDetail);
         await API.put(
           `/ente/partner/associa/${authorityDetail.id}/progetto/${entityId}`
         );
@@ -474,6 +475,11 @@ export const AssignManagerAuthorityReferentDelegate =
         };
       }
       if (userDetail?.id) {
+        userDetail.codiceFiscale &&
+          (await API.put(
+            `/utente/${userDetail.codiceFiscale.toString().toUpperCase()}`,
+            userDetail
+          ));
         await API.post(endpoint, body);
       } else {
         const payload = {
@@ -514,6 +520,11 @@ export const AssignPartnerAuthorityReferentDelegate =
       dispatch({ ...AssignReferentDelegateAction });
       const endpoint = '/ente/associa/referenteDelegato/partner';
       if (userDetail?.id) {
+        userDetail.codiceFiscale &&
+          (await API.put(
+            `/utente/${userDetail.codiceFiscale.toString().toUpperCase()}`,
+            userDetail
+          ));
         await API.post(endpoint, {
           cfUtente: userDetail.codiceFiscale?.toString().toUpperCase(),
           codiceRuolo: role,
@@ -627,8 +638,6 @@ export const UpdateAuthorityDetails =
       dispatch({ ...UpdateAuthorityDetailsAction });
 
       await API.put(`/ente/${idEnte}`, payload);
-
-      await API.get(`/ente/${idEnte}`);
     } catch (error) {
       console.log(error);
     } finally {

@@ -19,6 +19,7 @@ import {
   CreateManagerAuthority,
   GetAuthoritiesBySearch,
   GetAuthorityDetail,
+  GetAuthorityManagerDetail,
   UpdateManagerAuthority,
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
@@ -87,7 +88,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
 
   const resetModal = () => {
     clearForm();
-    dispatch(setAuthorityDetails(null));
+    if (creation) dispatch(setAuthorityDetails(null));
     setNoResult(false);
     //dispatch(resetAuthorityDetails());
   };
@@ -108,13 +109,15 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
           await dispatch(
             UpdateManagerAuthority({ ...newFormValues }, projectId, 'progetto')
           );
-          dispatch(GetProjectDetail(projectId));
+          await dispatch(GetProjectDetail(projectId));
+          dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
         } else if (entityId) {
           // Program
           await dispatch(
             UpdateManagerAuthority({ ...newFormValues }, entityId, 'programma')
           );
-          dispatch(GetProgramDetail(entityId));
+          await dispatch(GetProgramDetail(entityId));
+          dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
         }
       }
       // Creation
@@ -124,13 +127,15 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
           await dispatch(
             CreateManagerAuthority({ ...newFormValues }, projectId, 'progetto')
           );
-          dispatch(GetProjectDetail(projectId));
+          await dispatch(GetProjectDetail(projectId));
+          dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
         } else if (entityId) {
           // Program
           await dispatch(
             CreateManagerAuthority({ ...newFormValues }, entityId, 'programma')
           );
-          dispatch(GetProgramDetail(entityId));
+          await dispatch(GetProgramDetail(entityId));
+          dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
         }
       }
       resetModal();

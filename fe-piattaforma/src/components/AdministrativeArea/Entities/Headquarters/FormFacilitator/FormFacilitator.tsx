@@ -41,11 +41,12 @@ const FormFacilitator: React.FC<FacilitatorFormI> = (props) => {
     [key: string]: formFieldI['value'];
   }>({});
   const userDetails = useAppSelector(selectUsers).detail?.dettaglioUtente;
+  const [isFormUserValid, setIsFormUserValid] = useState<boolean>(false);
 
   useEffect(() => {
     if (form && newFormValues)
       sendNewValues({ ...newFormValues, ...getFormValues() });
-    setIsFormValid(isValidForm);
+    setIsFormValid(isValidForm && isFormUserValid);
   }, [form, newFormValues]);
 
   useEffect(() => {
@@ -59,7 +60,7 @@ const FormFacilitator: React.FC<FacilitatorFormI> = (props) => {
     field?: formFieldI['field']
   ) => {
     onInputChange(value, field);
-    setIsFormValid(isValidForm);
+    setIsFormValid(isValidForm && isFormUserValid);
   };
 
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
@@ -72,7 +73,7 @@ const FormFacilitator: React.FC<FacilitatorFormI> = (props) => {
         sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
           setNewFormValues({ ...newData })
         }
-        setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+        setIsFormValid={(value: boolean | undefined) => setIsFormUserValid(!!value)}
       />
       <Form formDisabled={formDisabled}>
         <Form.Row className={clsx(bootClass, 'mt-0')}>

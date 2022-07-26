@@ -42,7 +42,12 @@ export const mapOptions = (
 ) => {
   const arrayMapped: FilterI[] = [];
   arrayToMap?.map((elem) => {
-    arrayMapped.push({ label: elem.toString().charAt(0).toUpperCase() + elem.toString().slice(1).toLowerCase(), value: elem.toString()});
+    arrayMapped.push({
+      label:
+        elem.toString().charAt(0).toUpperCase() +
+        elem.toString().slice(1).toLowerCase(),
+      value: elem.toString(),
+    });
   });
   return arrayMapped;
 };
@@ -178,25 +183,19 @@ export const MenuRoutes = [
     label: 'Community',
     path: '/community',
     id: 'tab-community',
-    visible: [
-      process.env.NODE_ENV === 'development' ? 'visible' : 'hidden',
-    ],
+    visible: [process.env.NODE_ENV === 'development' ? 'visible' : 'hidden'],
   }),
   newMenuItem({
     label: 'Bacheca digitale',
     path: '/bacheca-digitale',
     id: 'tab-bacheca-digitale',
-    visible: [
-      process.env.NODE_ENV === 'development' ? 'visible' : 'hidden',
-    ],
+    visible: [process.env.NODE_ENV === 'development' ? 'visible' : 'hidden'],
   }),
   newMenuItem({
     label: 'Documenti',
     path: '/documenti',
     id: 'tab-documenti',
-    visible: [
-      process.env.NODE_ENV === 'development' ? 'visible' : 'hidden',
-    ],
+    visible: [process.env.NODE_ENV === 'development' ? 'visible' : 'hidden'],
   }),
 ];
 

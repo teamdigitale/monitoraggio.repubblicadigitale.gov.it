@@ -60,9 +60,13 @@ const Users = () => {
 
   const getAllFilters = () => {
     if (filterDropdownSelected !== statusDropdownLabel)
-      dispatch(GetEntityFilterValues({ entity, dropdownType: statusDropdownLabel }));
+      dispatch(
+        GetEntityFilterValues({ entity, dropdownType: statusDropdownLabel })
+      );
     if (filterDropdownSelected !== ruoliDropdownLabel)
-      dispatch(GetEntityFilterValues({ entity, dropdownType: ruoliDropdownLabel }));
+      dispatch(
+        GetEntityFilterValues({ entity, dropdownType: ruoliDropdownLabel })
+      );
   };
 
   useEffect(() => {
@@ -100,7 +104,8 @@ const Users = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(usersList) && usersList.length) setTableValues(updateTableValues());
+    if (Array.isArray(usersList) && usersList.length)
+      setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usersList]);
 
