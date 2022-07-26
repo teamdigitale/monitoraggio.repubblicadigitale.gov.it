@@ -14,7 +14,7 @@
 
 	<groupId>it.pa.repdgt</groupId>
 	<artifactId>ms-open-data</artifactId>
-	<version>1.0.0-develop.54</version>
+	<version>1.0.0-develop.55</version>
 	<packaging>jar</packaging>
 
 	<properties>
