@@ -45,6 +45,9 @@ public class S3Service {
 	}
 	
 	public void uploadFile(@NotBlank final String nomeBucket, @NotNull final File fileToUpload) throws FileNotFoundException {
+		log.info("BUCKET NAME : {}", nomeBucket);
+		log.info("ACCESS KEY : {}", accessKey);
+		log.info("SECRET KEY : {}", secretKey);
 		final String fileToUploadName = fileToUpload.getName();
 		final PutObjectRequest putObjectRequest = PutObjectRequest.builder()
 			.bucket(nomeBucket)
