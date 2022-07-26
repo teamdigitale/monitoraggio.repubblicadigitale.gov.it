@@ -43,7 +43,7 @@ public class ServizioRequest implements Serializable {
 
 	@JsonProperty(value = "durataServizio")
 	@NotNull
-	private Long durataServizio;
+	private String durataServizio;
 	
 	@JsonProperty(value = "tipoDiServizioPrenotato")
 	@NotBlank

@@ -106,6 +106,12 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'",codiceFiscaleUtenteLoggato);
 			throw new ServizioException(messaggioErrore);
 		}
+		
+		// Verifico se il facilitatore è il creatore di quel servizio
+		if( !this.servizioSqlRepository.findByFacilitatoreAndIdServizio(codiceFiscaleUtenteLoggato, idServizio).isPresent() ) {
+			final String messaggioErrore = String.format("Servizio non accessibile per l'utente con codice fiscale '%s'",codiceFiscaleUtenteLoggato);
+			throw new ServizioException(messaggioErrore);
+		}
 
 		// Recupero tutti i cittadini del servizion con id idServizio in base ai filtri selezionati
 		final List<CittadinoServizioProjection> listaCittadiniServizio = this.getAllServiziByProfilazioneAndFiltro(idServizio, filtroListaCittadiniServizio);

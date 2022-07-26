@@ -10,8 +10,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +22,7 @@ public class OpenDataRestApi {
 	private OpenDataService openDataService;
 	final static String NOME_FILE = "fileCittadini.csv";
 	
-	@PostMapping(path = "/download")
+	@GetMapping(path = "/download")
 	public ResponseEntity<InputStreamResource> downloadListaCSVCittadini() throws IOException {
 		byte[] bytes = this.openDataService.scaricaFileListaCittadiniSuAmazonS3(NOME_FILE);
 		InputStream is = new ByteArrayInputStream(bytes);
@@ -34,12 +32,12 @@ public class OpenDataRestApi {
 				.contentType(MediaType.parseMediaType("application/csv")).body(fileCSV);
 	}
 	
-	@PostMapping(path = "/count/download")
+	@GetMapping(path = "/count/download")
 	public Long getCountDownloadListaCSVCittadini() throws IOException {
 		return this.openDataService.getCountFile(NOME_FILE);
 	}
 	
-	@PostMapping(path = "/presigned/download")
+	@GetMapping(path = "/presigned/download")
 	public String getPresignedListaCSVCittadini() throws IOException {
 		return this.openDataService.getPresignedUrl(NOME_FILE);
 	}

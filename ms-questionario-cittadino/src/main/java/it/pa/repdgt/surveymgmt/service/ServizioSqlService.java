@@ -247,6 +247,7 @@ public class ServizioSqlService {
 		servizioEntity.setNome(servizioRequest.getNomeServizio());
 		servizioEntity.setTipologiaServizio(servizioRequest.getTipologiaServizio());
 		servizioEntity.setDataServizio(servizioRequest.getDataServizio());
+		servizioEntity.setDurataServizio(servizioRequest.getDurataServizio());
 		servizioEntity.setIdQuestionarioTemplateSnapshot(idQuestinarioTemplate);
 		servizioEntity.setIdEnteSedeProgettoFacilitatore(enteSedeProgettoFacilitatore.getId());
 		servizioEntity.setIdTemplateCompilatoQ3(idSezioneQ3Compilato);
