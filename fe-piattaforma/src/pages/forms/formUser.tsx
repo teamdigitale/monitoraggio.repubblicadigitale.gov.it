@@ -1,8 +1,7 @@
-import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Form, Input } from '../../components';
+import { Form, Input, Select } from '../../components';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../hoc/withFormHandler';
@@ -16,6 +15,8 @@ import {
   newFormField,
 } from '../../utils/formHelper';
 import { RegexpType } from '../../utils/validator';
+import { selectRolesList } from '../../redux/features/roles/rolesSlice';
+import { GetRolesListValues } from '../../redux/features/roles/rolesThunk';
 
 interface UserInformationI {
   /*formData:
@@ -49,11 +50,13 @@ const FormUser: React.FC<UserFormI> = (props) => {
     creation = false,
   } = props;
 
-  const formDisabled = !!props.formDisabled;
+  const dispatch = useDispatch();
   const { userId } = useParams();
   const formData: { [key: string]: string } =
     useAppSelector(selectUsers)?.detail?.dettaglioUtente;
-  const dispatch = useDispatch();
+  const ruoliList = useAppSelector(selectRolesList);
+
+  const formDisabled = !!props.formDisabled;
 
   useEffect(() => {
     if (
@@ -71,12 +74,16 @@ const FormUser: React.FC<UserFormI> = (props) => {
         true
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formDisabled, form]);
 
   useEffect(() => {
     if (!creation) {
       userId && dispatch(GetUserDetails(userId));
+    } else {
+      dispatch(GetRolesListValues({ tipologiaRuoli: 'NP' }));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [creation]);
 
   useEffect(() => {
@@ -89,6 +96,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
   useEffect(() => {
     setIsFormValid(isValidForm);
     sendNewValues(getFormValues());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
@@ -96,75 +104,84 @@ const FormUser: React.FC<UserFormI> = (props) => {
   return (
     <Form className='mt-5 mb-0' formDisabled={formDisabled}>
       <Form.Row className={bootClass}>
-        {/* <Input
-          {...form?.userId}
+        <>
+          {formDisabled ? (<Input
+          {...form?.id}
           col='col-12 col-lg-6'
-          label='User id'
-          placeholder='Inserisci user id'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-        /> */}
-        <Input
-          {...form?.nome}
-          required
-          col='col-lg-6 col-12'
-          label='Nome'
-          // placeholder='Inserisci nome utente'
-          onInputChange={onInputChange}
-        />
-        <Input
-          {...form?.cognome}
-          required
-          col='col-12 col-lg-6'
-          label='Cognome'
-          // placeholder='Inserisci cognome utente'
-          onInputChange={onInputChange}
-        />
-      </Form.Row>
-      <Form.Row className={bootClass}>
-        <Input
-          {...form?.codiceFiscale}
-          required
-          label='Codice fiscale'
-          col='col-12 col-lg-6'
-          // placeholder='Inserisci codice fiscale'
-          onInputChange={onInputChange}
-        />
-        <Input
-          {...form?.telefono}
-          //required
-          col='col-12 col-lg-6'
-          label='Telefono'
-          // placeholder='Inserisci telefono'
-          onInputChange={onInputChange}
-        />
-      </Form.Row>
-      <Form.Row className={clsx(bootClass, 'mb-0')}>
-        <Input
-          {...form?.email}
-          label='Indirizzo email'
-          col='col-12 col-lg-6'
-          // placeholder='Inserisci email'
-          onInputChange={onInputChange}
-        />
-        <Input
-          {...form?.mansione}
-          label='Posizione Lavorativa'
-          col='col-12 col-lg-6'
-          // placeholder='Inserisci bio'
-          onInputChange={onInputChange}
-        />
-      </Form.Row>
-      {/* <Form.Row>
-       <Input
+          label='ID'
+        />) : null}
+          <Input
+            {...form?.nome}
+            required
+            col='col-lg-6 col-12'
+            label='Nome'
+            // placeholder='Inserisci nome utente'
+            onInputChange={onInputChange}
+          />
+          <Input
+            {...form?.cognome}
+            required
+            col='col-12 col-lg-6'
+            label='Cognome'
+            // placeholder='Inserisci cognome utente'
+            onInputChange={onInputChange}
+          />
+          {creation ? (
+            <Select
+              {...form?.ruolo}
+              value={form?.ruolo.value as string}
+              col='col-12 col-lg-6'
+              label='Ruolo'
+              placeholder='Seleziona ruolo'
+              options={ruoliList.map((role) => ({
+                value: role.codiceRuolo,
+                label: role.nomeRuolo,
+              }))}
+              onInputChange={onInputChange}
+              wrapperClassName='mb-5'
+              aria-label='ruolo'
+              required
+            />
+          ) : null}
+          <Input
+            {...form?.codiceFiscale}
+            required
+            label='Codice fiscale'
+            col='col-12 col-lg-6'
+            // placeholder='Inserisci codice fiscale'
+            onInputChange={onInputChange}
+          />
+          <Input
+            {...form?.telefono}
+            //required
+            col='col-12 col-lg-6'
+            label='Telefono'
+            // placeholder='Inserisci telefono'
+            onInputChange={onInputChange}
+          />
+          <Input
+            {...form?.email}
+            label='Indirizzo email'
+            col='col-12 col-lg-6'
+            // placeholder='Inserisci email'
+            onInputChange={onInputChange}
+          />
+          <Input
+            {...form?.mansione}
+            label='Posizione Lavorativa'
+            col='col-12 col-lg-6'
+            // placeholder='Inserisci bio'
+            onInputChange={onInputChange}
+          />
+          {/*<Input
           {...form?.authorityRef}
           col='col-12 col-lg-6'
           label='Ente di riferimento'
           placeholder='Inserisci ente di riferimento'
-           onInputChange={onInputChange}
-        />
-      </Form.Row> */}
+          onInputChange={onInputChange}
+        />*/}
+        </>
+      </Form.Row>
     </Form>
   );
 };
@@ -181,6 +198,12 @@ const form = newForm([
     field: 'cognome',
     id: 'cognome',
     required: true,
+  }),
+  newFormField({
+    field: 'ruolo',
+    id: 'ruolo',
+    type: 'select',
+    //required: true,
   }),
   newFormField({
     field: 'id',

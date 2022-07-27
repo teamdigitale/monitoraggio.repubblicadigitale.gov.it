@@ -30,6 +30,7 @@ import {
   GetEntityFilterValues,
   GetEntityValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
+import useGuard from '../../../../../hooks/guard';
 
 const entity = 'ente';
 const profileDropdownLabel = 'profili';
@@ -48,6 +49,8 @@ const Authorities: React.FC = () => {
   >([]);
   const [filterDropdownSelected, setFilterDropdownSelected] =
     useState<string>('');
+
+  const { hasUserPermission } = useGuard();
 
   const { criterioRicerca, idsProgetti, profili, idsProgrammi } = filtersList;
 
@@ -215,7 +218,9 @@ const Authorities: React.FC = () => {
       searchInformation={searchInformation}
       dropdowns={dropdowns}
       filtersList={filtersList}
-      ctaDownload={handleDownloadList}
+      ctaDownload={
+        hasUserPermission(['list.dwnl.enti']) ? handleDownloadList : undefined
+      }
       resetFilterDropdownSelected={(filterKey: string) =>
         setFilterDropdownSelected(filterKey)
       }

@@ -353,18 +353,22 @@ const ProgramsDetails: React.FC = () => {
 
   useEffect(() => {
     if (changeSurveyButtonVisible && activeTab === tabs.QUESTIONARI) {
-      setCorrectButtons([
-        {
-          size: 'xs',
-          color: 'primary',
-          text: 'Cambia questionario',
-          disabled: otherSurveyList?.list?.length < 2,
-          onClick: () => {
-            setChangeSurveyButtonVisible(false);
-            setRadioButtonsSurveys(true);
-          },
-        },
-      ]);
+      setCorrectButtons(
+        hasUserPermission(['upd.rel.quest_prgm'])
+          ? [
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Cambia questionario',
+                disabled: otherSurveyList?.list?.length < 2,
+                onClick: () => {
+                  setChangeSurveyButtonVisible(false);
+                  setRadioButtonsSurveys(true);
+                },
+              },
+            ]
+          : []
+      );
     } else if (changeSurveyButtonVisible === false) {
       setSurveyDefault({
         items: [{ ...surveyList[0], actions: onActionClickQuestionariPreview }],
@@ -425,18 +429,22 @@ const ProgramsDetails: React.FC = () => {
           });
         }
       }
-      setCorrectButtons([
-        {
-          size: 'xs',
-          color: 'primary',
-          text: 'Cambia questionario',
-          disabled: otherSurveyList?.list?.length < 2,
-          onClick: () => {
-            setChangeSurveyButtonVisible(false);
-            setRadioButtonsSurveys(true);
-          },
-        },
-      ]);
+      setCorrectButtons(
+        hasUserPermission(['upd.rel.quest_prgm'])
+          ? [
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Cambia questionario',
+                disabled: otherSurveyList?.list?.length < 2,
+                onClick: () => {
+                  setChangeSurveyButtonVisible(false);
+                  setRadioButtonsSurveys(true);
+                },
+              },
+            ]
+          : []
+      );
       setEmptySection(undefined);
     } else {
       setItemList(undefined),
@@ -445,7 +453,11 @@ const ProgramsDetails: React.FC = () => {
           <EmptySection
             title={'Questa sezione è ancora vuota'}
             subtitle={'Per attivare il programma aggiungi un Questionario'}
-            buttons={EmptySectionButtons.slice(0, 1)}
+            buttons={
+              hasUserPermission(['upd.rel.quest_prgm'])
+                ? EmptySectionButtons.slice(0, 1)
+                : []
+            }
             withIcon
             icon='it-note'
           />
@@ -459,20 +471,24 @@ const ProgramsDetails: React.FC = () => {
     setCurrentForm(undefined);
     setCorrectModal(<ManageProject creation />);
     if (projectsList?.length) {
-      setCorrectButtons([
-        {
-          size: 'xs',
-          color: 'primary',
-          text: 'Aggiungi Progetto',
-          onClick: () =>
-            dispatch(
-              openModal({
-                id: formTypes.PROGETTO,
-                payload: { title: 'Aggiungi Progetto' },
-              })
-            ),
-        },
-      ]),
+      setCorrectButtons(
+        hasUserPermission(['add.prgt'])
+          ? [
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Aggiungi Progetto',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: formTypes.PROGETTO,
+                      payload: { title: 'Aggiungi Progetto' },
+                    })
+                  ),
+              },
+            ]
+          : []
+      ),
         setItemList({
           items: projectsList?.map(
             (progetto: { id: string; nome: string; stato: string }) => ({
@@ -844,6 +860,15 @@ const ProgramsDetails: React.FC = () => {
     if (entityId) dispatch(GetProgramDetail(entityId));
   };
 
+  const removeManagerAuthority = async (
+    authorityId: string,
+    programId: string
+  ) => {
+    await dispatch(RemoveManagerAuthority(authorityId, programId, 'programma'));
+    dispatch(GetProgramDetail(programId));
+    dispatch(closeModal());
+  };
+
   return (
     <div className='pb-3'>
       <DetailLayout
@@ -899,13 +924,7 @@ const ProgramsDetails: React.FC = () => {
             entityId &&
               managerAuthority &&
               managerAuthority?.id &&
-              dispatch(
-                RemoveManagerAuthority(
-                  managerAuthority.id,
-                  entityId,
-                  'programma'
-                )
-              );
+              removeManagerAuthority(managerAuthority.id, entityId);
         }}
       />
       <PreviewSurvey

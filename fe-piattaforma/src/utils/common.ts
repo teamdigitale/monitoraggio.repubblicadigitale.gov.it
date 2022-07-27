@@ -148,12 +148,12 @@ export const MenuRoutes = [
       newMenuItem({
         label: 'Enti',
         path: '/area-amministrativa/enti',
-        visible: ['tab.am'],
+        visible: ['tab.am', 'subtab.enti'],
       }),
       newMenuItem({
         label: 'Utenti',
         path: '/area-amministrativa/utenti',
-        visible: ['tab.am'],
+        visible: ['tab.am', 'subtab.utenti'],
       }),
       newMenuItem({
         label: 'Questionari',
@@ -171,7 +171,7 @@ export const MenuRoutes = [
     label: 'Area cittadini',
     path: '/area-cittadini',
     id: 'tab-citizen',
-    //visible: // TODO implement condition based on role permission
+    visible: ['tab.citt'],
   }),
   newMenuItem({
     label: 'Dashboard',
