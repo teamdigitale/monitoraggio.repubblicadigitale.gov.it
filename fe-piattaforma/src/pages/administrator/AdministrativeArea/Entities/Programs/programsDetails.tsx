@@ -282,7 +282,7 @@ const ProgramsDetails: React.FC = () => {
                   // TODO: check when BE add codiceFiscale
                   ...ref,
                   id: ref?.codiceFiscale,
-                  actions: onActionClickReferenti,
+                  actions: ref?.stato === 'ATTIVO' ? { [CRUDActionTypes.VIEW]: onActionClickReferenti[CRUDActionTypes.VIEW] }:onActionClickReferenti,
                 })
               ) || [],
           },
@@ -294,7 +294,7 @@ const ProgramsDetails: React.FC = () => {
                   // TODO: check when BE add codiceFiscale
                   ...del,
                   id: del?.codiceFiscale,
-                  actions: onActionClickDelegati,
+                  actions: del?.stato === 'ATTIVO' ? { [CRUDActionTypes.VIEW]: onActionClickDelegati[CRUDActionTypes.VIEW] }:onActionClickDelegati,
                 })
               ) || [],
           },
@@ -395,7 +395,7 @@ const ProgramsDetails: React.FC = () => {
     setCorrectModal(undefined);
     setItemAccordionList(null);
     setCurrentForm(undefined);
-    setButtonsPosition('TOP');
+    setButtonsPosition('BOTTOM');
     if (surveyList?.length) {
       setSurveyDefault({
         items: [
@@ -479,17 +479,12 @@ const ProgramsDetails: React.FC = () => {
               ...progetto,
               fullInfo: { id: progetto.id },
               actions:
-                progetto?.stato !== 'ATTIVO'
+                progetto?.stato === 'ATTIVO'
                   ? {
                       [CRUDActionTypes.VIEW]:
                         onActionClickProgetti[CRUDActionTypes.VIEW],
-                      [CRUDActionTypes.DELETE]:
-                        onActionClickProgetti[CRUDActionTypes.DELETE],
                     }
-                  : {
-                      [CRUDActionTypes.VIEW]:
-                        onActionClickProgetti[CRUDActionTypes.VIEW],
-                    },
+                  : onActionClickProgetti,
             })
           ),
         });
@@ -729,6 +724,7 @@ const ProgramsDetails: React.FC = () => {
         setCurrentForm(<ProgramlInfoAccordionForm />);
         setCorrectModal(<ManageProgram edit={edit} />);
         setItemAccordionList([]);
+        setButtonsPosition('BOTTOM');
         setItemList(null);
         setCorrectButtons(programInfoButtons());
         setEmptySection(undefined);

@@ -169,7 +169,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
           upperTitle: { icon: 'it-file', text: 'Questionario' },
         }}
         formButtons={[]} // TODO?
-        buttonsPosition='TOP'
+        buttonsPosition='BOTTOM'
         goBackTitle='Elenco questionari'
         goBackPath='/area-amministrativa/questionari'
       />

@@ -52,7 +52,8 @@ const UsersDetails = () => {
         setInfoIdsBreadcrumb({
           id: entityId,
           nome: userRoles?.filter(
-            (rol: { [key: string]: formFieldI['value'] }) => rol.id?.toString() === entityId
+            (rol: { [key: string]: formFieldI['value'] }) =>
+              rol.id?.toString() === entityId
           )[0]?.nome,
         })
       );
@@ -212,7 +213,7 @@ const UsersDetails = () => {
             }}
             formButtons={correctButtons}
             itemsList={itemList}
-            buttonsPosition={'TOP'}
+            buttonsPosition={'BOTTOM'}
             goBackPath='/area-amministrativa/utenti'
           >
             {currentForm}

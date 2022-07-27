@@ -118,6 +118,14 @@ const AppRoutes: React.FC = () => {
             }
           />
           <Route
+            path='/gestione-ruoli/:idRuoloUtente'
+            element={
+              <ProtectedComponent visibleTo={[]} redirect='/'>
+                <RoleManagementDetails />
+              </ProtectedComponent>
+            }
+          />
+          <Route
             path='/gestione-ruoli'
             element={
               <ProtectedComponent visibleTo={[]} redirect='/'>
@@ -135,14 +143,6 @@ const AppRoutes: React.FC = () => {
               }
             />
           ) : null}
-          <Route
-            path='/gestione-ruoli/:idRuoloUtente'
-            element={
-              <ProtectedComponent visibleTo={[]} redirect='/'>
-                <RoleManagementDetails />
-              </ProtectedComponent>
-            }
-          />
           <Route path='/onboarding' element={<Onboarding />} />
           <Route
             path='/dashboard'

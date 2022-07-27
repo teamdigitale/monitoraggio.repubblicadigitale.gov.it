@@ -79,7 +79,7 @@ const CitizensDetail: React.FC = () => {
           status: '',
           upperTitle: { icon: 'it-user', text: 'Cittadino' },
         }}
-        buttonsPosition='TOP'
+        buttonsPosition='BOTTOM'
         goBackTitle='I miei cittadini'
         goBackPath='/area-cittadini'
         formButtons={citizenButtons}

@@ -243,7 +243,7 @@ const ServicesDetails = () => {
             status: serviceDetails.dettaglioServizio.stato,
             upperTitle: { icon: 'it-calendar', text: 'Servizio' },
           }}
-          buttonsPosition='TOP'
+          buttonsPosition='BOTTOM'
           itemsList={itemList}
           showItemsList={activeTab === tabs.INFO}
           nav={nav}

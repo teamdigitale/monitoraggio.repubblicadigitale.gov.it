@@ -187,7 +187,7 @@ const HeadquartersDetails = () => {
             }}
             formButtons={buttons}
             itemsAccordionList={itemAccordionList}
-            buttonsPosition='TOP'
+            buttonsPosition='BOTTOM'
           >
             <HeadquarterDetailsContent />
           </DetailLayout>

@@ -40,8 +40,8 @@ const Breadcrumb = () => {
   };
 
   const getLabelBreadcrumb = (pathElem: string) => {
-    if (idsBreadcrumb.filter((x) => x.id.toString() === pathElem)[0]) {
-      return idsBreadcrumb.filter((x) => x.id.toString() === pathElem)[0].nome;
+    if (idsBreadcrumb.filter((x) => x?.id?.toString() === pathElem)[0]) {
+      return idsBreadcrumb.filter((x) => x?.id?.toString() === pathElem)[0].nome;
     } else {
       switch (pathElem) {
         case 'area-amministrativa':

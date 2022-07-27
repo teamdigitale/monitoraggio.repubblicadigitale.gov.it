@@ -62,7 +62,7 @@ const UserProfile = () => {
           headingRole: false,
         }}
         goBackPath='/'
-        buttonsPosition='TOP'
+        buttonsPosition='BOTTOM'
         formButtons={correctButtons}
       >
         {currentForm}
