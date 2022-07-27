@@ -25,8 +25,8 @@ export type RolePermissionI =
   | 'upd.rel.quest_prgm';
 
 interface RoleI {
-  name: string;
-  id: string;
+  codiceRuolo: string;
+  nomeRuolo: string;
 }
 
 interface RolesStateI {

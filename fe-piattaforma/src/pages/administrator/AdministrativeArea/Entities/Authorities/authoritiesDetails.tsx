@@ -280,7 +280,7 @@ const AuthoritiesDetails = () => {
             formButtons={buttons}
             itemsList={itemsList}
             itemsAccordionList={itemAccordionList}
-            buttonsPosition='TOP'
+            buttonsPosition='BOTTOM'
             goBackPath={
               projectId
                 ? `/area-amministrativa/progetti/${projectId}/enti-partner`

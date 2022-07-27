@@ -176,11 +176,11 @@ export const initMock = (apiInstance: AxiosInstance) => {
         return [200, response];
       });
 
-    mockInstance.onGet('/roles/all/test').reply(async () => {
+    /*mockInstance.onGet('/ruolo').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/listaRuoli.json');
-      return [200, response];
-    });
+      return [200, response.data];
+    });*/
 
     /*mockInstance.onGet('/programma/idProgramma').reply(async () => {
       // @ts-ignore

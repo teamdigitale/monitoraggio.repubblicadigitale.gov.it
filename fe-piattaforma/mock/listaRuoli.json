@@ -1,22 +1,40 @@
 {
-  "data": {
-    "list": [
-      {
-        "id": 1,
-        "name": "DTD Amministratore"
-      },
-      {
-        "id": 2,
-        "name": "DSCU Referente"
-      },
-      {
-        "id": 3,
-        "name": "DSCU Delegato"
-      },
-      {
-        "id": 4,
-        "name": "Referente ente gestore di programma"
-      }
-    ]
-  }
+  "data": [
+    {
+      "codiceRuolo": "DEG",
+      "nomeRuolo": "DELEGATO ENTE GESTORE PROGRAMMA"
+    },
+    {
+      "codiceRuolo": "DEGP",
+      "nomeRuolo": "DELEGATO ENTE GESTORE PROGETTO"
+    },
+    {
+      "codiceRuolo": "DEPP",
+      "nomeRuolo": "DELEGATO ENTE PARTNER"
+    },
+    {
+      "codiceRuolo": "DSCU",
+      "nomeRuolo": "DSCU"
+    },
+    {
+      "codiceRuolo": "FAC",
+      "nomeRuolo": "FACILITATORE"
+    },
+    {
+      "codiceRuolo": "REG",
+      "nomeRuolo": "REFERENTE ENTE GESTORE PROGRAMMA"
+    },
+    {
+      "codiceRuolo": "REGP",
+      "nomeRuolo": "REFERENTE ENTE GESTORE PROGETTO"
+    },
+    {
+      "codiceRuolo": "REPP",
+      "nomeRuolo": "REFERENTE ENTE PARTNER"
+    },
+    {
+      "codiceRuolo": "VOL",
+      "nomeRuolo": "VOLONTARIO"
+    }
+  ]
 }

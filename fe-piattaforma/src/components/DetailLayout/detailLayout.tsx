@@ -245,7 +245,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
             })
           : null}
 
-        {buttonsPosition === 'BOTTOM' &&
+        {buttonsPosition === 'TOP' &&
         formButtons &&
         formButtons.length !== 0 ? (
           <>
@@ -261,7 +261,9 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
         ) : null}
       </div>
 
-      {buttonsPosition === 'TOP' && formButtons && formButtons.length !== 0 ? (
+      {buttonsPosition === 'BOTTOM' &&
+      formButtons &&
+      formButtons.length !== 0 ? (
         <>
           <div aria-hidden='true' className='mt-5 w-100'>
             <Sticky mode='bottom' stickyClassName='sticky bg-white container'>

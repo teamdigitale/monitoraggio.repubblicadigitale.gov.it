@@ -293,7 +293,7 @@ const ProjectsDetails = () => {
 
   const AuthoritySection = () => {
     if (managingAuthorityID) {
-      setButtonsPosition('TOP');
+      setButtonsPosition('BOTTOM');
       setCurrentForm(
         <FormAuthorities
           formDisabled
@@ -341,7 +341,7 @@ const ProjectsDetails = () => {
                 // TODO: check when BE add codiceFiscale
                 ...ref,
                 id: ref.codiceFiscale,
-                actions: onActionClickReferenti,
+                actions: ref?.stato === 'ATTIVO' ? { [CRUDActionTypes.VIEW]: onActionClickReferenti[CRUDActionTypes.VIEW] }:onActionClickReferenti,
               })
             ) || [],
         },
@@ -353,7 +353,7 @@ const ProjectsDetails = () => {
                 // TODO: check when BE add codiceFiscale
                 ...del,
                 id: del.codiceFiscale,
-                actions: onActionClickDelegati,
+                actions: del?.stato === 'ATTIVO' ? { [CRUDActionTypes.VIEW]: onActionClickDelegati[CRUDActionTypes.VIEW] }:onActionClickDelegati,
               })
             ) || [],
         },
@@ -363,7 +363,7 @@ const ProjectsDetails = () => {
             authorityInfo?.sediGestoreProgetto?.map(
               (sedi: { [key: string]: string }) => ({
                 ...sedi,
-                actions: onActionClickSede,
+                actions: sedi?.stato === 'ATTIVO' ? { [CRUDActionTypes.VIEW]: onActionClickSede[CRUDActionTypes.VIEW] }:onActionClickSede,
               })
             ) || [],
         },
@@ -425,7 +425,7 @@ const ProjectsDetails = () => {
 
   const HeadquartersSection = () => {
     if (headquarterList?.length) {
-      setButtonsPosition('TOP');
+      setButtonsPosition('BOTTOM');
       setCurrentForm(undefined);
       setCorrectModal(<ManageHeadquarter creation />);
       setItemList({
@@ -710,7 +710,7 @@ const ProjectsDetails = () => {
   useEffect(() => {
     switch (activeTab) {
       case tabs.INFO:
-        setButtonsPosition('TOP');
+        setButtonsPosition('BOTTOM');
         setCurrentForm(<ProjectAccordionForm />);
         setCorrectModal(<ManageProject />);
         setItemAccordionList([]);

@@ -1,6 +1,7 @@
 import { Container } from 'design-react-kit';
 import React, { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Table } from '../../../components';
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
@@ -14,12 +15,10 @@ import {
 import { setEntityFilters } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import {
   selectRolesList,
-  selectRolesPagination,
 } from '../../../redux/features/roles/rolesSlice';
 import { GetRolesListValues } from '../../../redux/features/roles/rolesThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import { CRUDActionsI, CRUDActionTypes } from '../../../utils/common';
-import { useNavigate } from 'react-router-dom';
 import {
   selectDevice,
   updateBreadcrumb,
@@ -38,25 +37,14 @@ const arrayBreadcrumb = [
 const RoleManagement = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const device = useAppSelector(selectDevice);
   const ruoliList = useAppSelector(selectRolesList);
-  const pagination = useAppSelector(selectRolesPagination);
+
   const handleOnSearch = (searchValue: string) => {
     dispatch(
       setEntityFilters({ nomeLike: { label: searchValue, value: searchValue } })
     );
   };
-
-  useEffect(() => {
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Gestione ruoli',
-          url: '/gestione-ruoli',
-          link: false,
-        },
-      ])
-    );
-  }, []);
 
   const searchInformation: SearchInformationI = {
     autocomplete: false,
@@ -75,36 +63,41 @@ const RoleManagement = () => {
   ];
 
   const updateTableValues = () => {
+
     const table = newTable(
       TableHeading,
       (ruoliList || []).map((td) => ({
-        id: td.id,
-        name: td.name,
+        id: td.codiceRuolo,
+        name: td.nomeRuolo,
       }))
     );
-    return {
-      ...table,
-      // TODO remove slice after BE integration
-      values: table.values.slice(
-        pagination?.pageNumber * pagination?.pageSize - pagination?.pageSize,
-        pagination?.pageNumber * pagination?.pageSize
-      ),
-    };
+    return table;
   };
 
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    setTableValues(updateTableValues());
+    if (Array.isArray(ruoliList) && ruoliList.length)
+      setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ruoliList]);
 
   const getRolesList = () => {
-    dispatch(GetRolesListValues('test'));
+    dispatch(GetRolesListValues());
   };
 
   useEffect(() => {
     getRolesList();
+    dispatch(
+      updateBreadcrumb([
+        {
+          label: 'Gestione ruoli',
+          url: '/gestione-ruoli',
+          link: false,
+        },
+      ])
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onActionClick: CRUDActionsI = {
@@ -122,8 +115,6 @@ const RoleManagement = () => {
   const addRole = () => {
     console.log('aggiungi ruolo');
   };
-
-  const device = useAppSelector(selectDevice);
 
   return (
     <>

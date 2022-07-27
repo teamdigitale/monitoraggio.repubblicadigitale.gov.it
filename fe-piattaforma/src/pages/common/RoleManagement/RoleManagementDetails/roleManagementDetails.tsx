@@ -99,7 +99,7 @@ const RolesManagementDetails: React.FC<RoleDetailsI> = (props) => {
             upperTitle: { icon: 'it-settings', text: 'Ruolo' },
           }}
           formButtons={[]}
-          buttonsPosition='TOP'
+          buttonsPosition='BOTTOM'
           goBackTitle='Vai alla Lista Ruoli'
         />
         <Form className='mt-4'>
