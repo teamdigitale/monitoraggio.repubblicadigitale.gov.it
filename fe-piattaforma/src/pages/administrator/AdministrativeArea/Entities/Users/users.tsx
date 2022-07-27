@@ -36,6 +36,7 @@ import {
   GetEntityFilterValues,
   GetEntityValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
+import useGuard from '../../../../../hooks/guard';
 
 const entity = 'utente';
 const statusDropdownLabel = 'stati';
@@ -53,6 +54,8 @@ const Users = () => {
   >([]);
   const [filterDropdownSelected, setFilterDropdownSelected] =
     useState<string>('');
+
+  const { hasUserPermission } = useGuard();
 
   const { criterioRicerca, ruoli, stati } = filtersList;
 
@@ -234,7 +237,9 @@ const Users = () => {
       filtersList={filtersList}
       {...userCta}
       cta={newUser}
-      ctaDownload={handleDownloadList}
+      ctaDownload={
+        hasUserPermission(['list.dwnl.utenti']) ? handleDownloadList : undefined
+      }
       resetFilterDropdownSelected={(filterKey: string) =>
         setFilterDropdownSelected(filterKey)
       }

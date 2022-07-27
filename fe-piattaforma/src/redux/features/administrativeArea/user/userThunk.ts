@@ -152,14 +152,13 @@ export const CreateUser =
       dispatch({ ...CreateUserAction, payload });
 
       const body = {
-        telefono: payload?.telefono,
-        codiceFiscale: payload?.codiceFiscale?.toString().toUpperCase(),
-        cognome: payload?.cognome,
-        email: payload?.email,
-        mansione: payload?.mansione,
-        nome: payload?.nome,
-        ruolo: 'REG', // TODO: valore?
-        tipoContratto: '', // TODO: valore?
+        telefono: payload?.telefono?.toString().trim(),
+        codiceFiscale: payload?.codiceFiscale?.toString().toUpperCase().trim(),
+        cognome: payload?.cognome?.toString().trim(),
+        email: payload?.email?.toString().trim(),
+        mansione: payload?.mansione?.toString().trim(),
+        nome: payload?.nome?.toString()?.trim(),
+        ruolo: payload?.ruolo,
       };
 
       const res = await API.post(`/utente`, body);
@@ -206,3 +205,45 @@ export const UpdateUser =
       dispatch(hideLoader());
     }
   };
+
+const UserAddRoleAction = {
+  type: 'user/UserAddRole',
+};
+export const UserAddRole =
+  (payload: { cfUtente: string; ruolo: string }) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...UserAddRoleAction, payload });
+      const { cfUtente, ruolo } = payload;
+      const res = await API.put(`/utente/${cfUtente}/assegnaRuolo/${ruolo}`);
+      if (res) {
+        return true;
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const UserDeleteRoleAction = {
+  type: 'user/UserAddRole',
+};
+export const UserDeleteRole =
+  (payload: { cfUtente: string; ruolo: string }) =>
+    async (dispatch: Dispatch) => {
+      try {
+        dispatch(showLoader());
+        dispatch({ ...UserDeleteRoleAction, payload });
+        const { cfUtente, ruolo } = payload;
+        const res = await API.delete(`/utente/${cfUtente}/cancellaRuolo/${ruolo}`);
+        if (res) {
+          return true;
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        dispatch(hideLoader());
+      }
+    };

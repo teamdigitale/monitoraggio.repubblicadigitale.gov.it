@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Button, Icon } from 'design-react-kit';
+import clsx from 'clsx';
 import { formTypes } from '../utils';
 import {
   CRUDActionsI,
@@ -23,11 +25,15 @@ import {
 } from '../../../../../redux/features/app/appSlice';
 import FormUser from '../../../../forms/formUser';
 import { selectUsers } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
-import clsx from 'clsx';
 import { CardStatusAction } from '../../../../../components';
 import ManageFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/ManageFacilitator/ManageFacilitator';
 import FormFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/FormFacilitator/FormFacilitator';
 import { formFieldI } from '../../../../../utils/formHelper';
+import AddUserRole from "../modals/addUserRole";
+import {
+  GetUserDetails,
+  UserDeleteRole
+} from "../../../../../redux/features/administrativeArea/user/userThunk";
 
 const UsersDetails = () => {
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
@@ -192,9 +198,22 @@ const UsersDetails = () => {
         (role: { id: string | number }) =>
           role.id?.toString().toLowerCase() === id?.toString().toLowerCase()
       )[0];
-      return entityRole?.statoP;
+      return entityRole?.stato;
     }
     return userInfo?.stato;
+  };
+
+  const handleDeleteUserRole = async (ruolo: string) => {
+    if (userId) {
+      const res = await dispatch(
+        UserDeleteRole({ cfUtente: userId, ruolo })
+      );
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (res) {
+        dispatch(GetUserDetails(userId));
+      }
+    }
   };
 
   return (
@@ -222,22 +241,57 @@ const UsersDetails = () => {
           userRoles?.length &&
           userType === 'utenti' ? (
             <div className={clsx('my-5')}>
-              <h5 className={clsx('primary-color', 'mb-4')}>Ruoli</h5>
-              {userRoles.map((role: any) => (
-                <CardStatusAction
-                  key={role.id}
-                  id={role.id}
-                  status={role.stato}
-                  title={role.nome}
-                  fullInfo={role.stato && { ruoli: role.ruolo }}
-                  onActionClick={{
+              <div
+                className={clsx('w-100', 'position-relative')}
+              >
+                <h5 className={clsx('primary-color', 'mb-4')}>Ruoli</h5>
+                <div className='d-flex cta-buttons'>
+                  <Button
+                    onClick={() => (
+                      dispatch(openModal({ id: 'AddUserRole' }))
+                    )}
+                    className='d-flex justify-content-between'
+                    type='button'
+                  >
+                    <Icon
+                      color='primary'
+                      icon='it-plus-circle'
+                      size='sm'
+                      className='mr-2'
+                      aria-label='Aggiungi'
+                    />
+                    Aggiungi ruolo
+                  </Button>
+                </div>
+              </div>
+              {userRoles.map((role: any) => {
+                let roleActions = {};
+                if (role.id) {
+                  roleActions = {
                     [CRUDActionTypes.VIEW]: () =>
                       navigate(`/area-amministrativa/programmi/${role?.id}`, {
                         replace: true,
                       }),
-                  }}
-                />
-              ))}
+                  }
+                } else {
+                  roleActions = {
+                    [CRUDActionTypes.DELETE]: () => {
+                      handleDeleteUserRole(role.codiceRuolo || role.nome);
+                    },
+                  }
+                }
+                return (
+                  <CardStatusAction
+                    key={role.id}
+                    id={role.id || role.codiceRuolo || role.nome}
+                    status={role.statoP}
+                    title={role.nome}
+                    fullInfo={role.stato && { ruoli: role.ruolo }}
+                    onActionClick={roleActions}
+                  />
+                )
+              }
+              )}
             </div>
           ) : null}
           {currentModal ? currentModal : null}
@@ -250,6 +304,7 @@ const UsersDetails = () => {
             }}
             text={'Confermi di voler eliminare questo utente?'}
           />
+          <AddUserRole />
         </div>
       </div>
     </div>

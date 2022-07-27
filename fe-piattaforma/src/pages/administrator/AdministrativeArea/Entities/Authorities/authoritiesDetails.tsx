@@ -32,6 +32,7 @@ import ManageReferal from '../modals/manageReferal';
 import ManageHeadquarter from '../../../../../components/AdministrativeArea/Entities/Headquarters/ManageHeadquarter/manageHeadquarter';
 import {
   GetPartnerAuthorityDetail,
+  RemovePartnerAuthority,
   RemoveReferentDelegate,
   UserAuthorityRole,
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
@@ -39,6 +40,7 @@ import { RemoveAuthorityHeadquarter } from '../../../../../redux/features/admini
 import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 import { CardStatusAction } from '../../../../../components';
 import ManagePartnerAuthority from '../modals/managePartnerAuthority';
+import useGuard from '../../../../../hooks/guard';
 
 const AuthoritiesDetails = () => {
   const authorityDetails = useAppSelector(selectAuthorities)?.detail;
@@ -49,6 +51,7 @@ const AuthoritiesDetails = () => {
   const { projectId, authorityId } = useParams();
   const profiles = useAppSelector(selectAuthorities).detail.profili;
   const device = useAppSelector(selectDevice);
+  const { hasUserPermission } = useGuard();
 
   useEffect(() => {
     dispatch(setHeadquarterDetails(null));
@@ -193,36 +196,107 @@ const AuthoritiesDetails = () => {
     ];
   }
 
-  const buttons: ButtonInButtonsBar[] = [
-    {
-      size: 'xs',
-      color: 'primary',
-      outline: true,
-      text: 'Elimina',
-      onClick: () =>
-        dispatch(
-          openModal({
-            id: 'delete-entity',
-            payload: {
-              entity: 'authority',
-              text: 'Confermi di voler eliminare questo ente?',
-            },
-          })
-        ),
-    },
-    {
-      size: 'xs',
-      color: 'primary',
-      text: 'Modifica',
-      onClick: () =>
-        dispatch(
-          openModal({
-            id: projectId ? 'ente-partner' : 'ente',
-            payload: { title: 'Modifica ente' },
-          })
-        ),
-    },
-  ];
+  let buttons: ButtonInButtonsBar[] = hasUserPermission(['upd.card.enti'])
+    ? [
+        // {
+        //   size: 'xs',
+        //   color: 'primary',
+        //   outline: true,
+        //   text: 'Elimina',
+        //   onClick: () =>
+        //     dispatch(
+        //       openModal({
+        //         id: 'delete-entity',
+        //         payload: {
+        //           entity: 'authority',
+        //           text: 'Confermi di voler eliminare questo ente?',
+        //         },
+        //       })
+        //     ),
+        // },
+        {
+          size: 'xs',
+          color: 'primary',
+          text: 'Modifica',
+          onClick: () =>
+            dispatch(
+              openModal({
+                id: 'ente',
+                payload: { title: 'Modifica ente' },
+              })
+            ),
+        },
+      ]
+    : [];
+
+  if (projectId) {
+    buttons = hasUserPermission(['upd.ente.partner', 'del.ente.partner'])
+      ? [
+          {
+            size: 'xs',
+            color: 'primary',
+            outline: true,
+            text: 'Elimina',
+            onClick: () =>
+              dispatch(
+                openModal({
+                  id: 'delete-entity',
+                  payload: {
+                    entity: 'authority',
+                    text: 'Confermi di voler eliminare questo ente?',
+                  },
+                })
+              ),
+          },
+          {
+            size: 'xs',
+            color: 'primary',
+            text: 'Modifica',
+            onClick: () =>
+              dispatch(
+                openModal({
+                  id: 'ente-partner',
+                  payload: { title: 'Modifica ente' },
+                })
+              ),
+          },
+        ]
+      : hasUserPermission(['del.ente.partner'])
+      ? [
+          {
+            size: 'xs',
+            color: 'primary',
+            outline: true,
+            text: 'Elimina',
+            onClick: () =>
+              dispatch(
+                openModal({
+                  id: 'delete-entity',
+                  payload: {
+                    entity: 'authority',
+                    text: 'Confermi di voler eliminare questo ente?',
+                  },
+                })
+              ),
+          },
+        ]
+      : hasUserPermission(['upd.ente.partner'])
+      ? [
+          {
+            size: 'xs',
+            color: 'primary',
+            text: 'Modifica',
+            onClick: () =>
+              dispatch(
+                openModal({
+                  id: 'ente-partner',
+                  payload: { title: 'Modifica ente' },
+                })
+              ),
+          },
+        ]
+      : [];
+  }
 
   const removeReferentDelegate = async (
     cf: string,
@@ -265,6 +339,15 @@ const AuthoritiesDetails = () => {
     navigate(redirectURL, {
       replace: true,
     });
+  };
+
+  const removeAuthority = async (authorityId: string, projectId?: string) => {
+    if (projectId) {
+      await dispatch(RemovePartnerAuthority(authorityId, projectId));
+    }
+
+    dispatch(closeModal());
+    navigate(-1);
   };
 
   return (
@@ -331,7 +414,8 @@ const AuthoritiesDetails = () => {
                 removeReferentDelegate(payload?.cf, payload?.role);
               if (payload?.entity === 'headquarter')
                 removeHeadquarter(payload?.headquarterId);
-              if (payload?.entity === 'authority') dispatch(closeModal());
+              if (payload?.entity === 'authority')
+                authorityId && removeAuthority(authorityId, projectId);
             }}
           />
         </div>

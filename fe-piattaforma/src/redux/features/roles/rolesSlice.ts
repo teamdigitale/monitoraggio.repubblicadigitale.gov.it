@@ -22,7 +22,35 @@ export type RolePermissionI =
   | 'upd.enti.card.prgm'
   | 'upd.enti.gest.prgm'
   | 'add.ref_del.gest.prgm'
-  | 'upd.rel.quest_prgm';
+  | 'upd.rel.quest_prgm'
+  // Surveys
+  | 'upd.rel.quest_prgm'
+  // Projects
+  | 'add.prgt'
+  | 'del.prgt'
+  | 'act.prgt'
+  | 'term.prgt'
+  | 'upd.car.prgt'
+  | 'add.enti.gest.prgt'
+  | 'upd.enti.gest.prgt'
+  | 'add.ente.partner'
+  | 'upd.ente.partner'
+  | 'del.ente.partner'
+  // Authorities
+  | 'list.dwnl.enti'
+  | 'list.enti'
+  | 'subtab.enti'
+  | 'view.card.enti'
+  | 'upd.card.enti'
+  // Users
+  | 'subtab.utenti'
+  | 'list.utenti'
+  | 'list.dwnl.utenti'
+  | 'view.card.utenti'
+  // Citizien
+  | 'tab.citt'
+  | 'list.citt'
+  | 'list.dwnl.citt';
 
 interface RoleI {
   codiceRuolo: string;

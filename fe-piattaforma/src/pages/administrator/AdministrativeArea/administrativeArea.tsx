@@ -330,13 +330,36 @@ const AreaAmministrativaRoutes = [
     path='progetti/:projectId/:authorityId/:userType/:userId'
     element={<UsersDetails />}
   />,
-  <Route key='enti' path='enti' element={<Authorities />} />,
+  <Route
+    key='enti'
+    path='enti'
+    element={
+      <ProtectedComponent visibleTo={['tab.am', 'list.enti']} redirect='/'>
+        <Authorities />
+      </ProtectedComponent>
+    }
+  />,
   <Route
     key='enti-dettaglio'
     path='enti/:authorityId'
-    element={<AuthoritiesDetails />}
+    element={
+      <ProtectedComponent
+        visibleTo={['view.card.enti']}
+        redirect='/area-amministrativa/enti'
+      >
+        <AuthoritiesDetails />
+      </ProtectedComponent>
+    }
   />,
-  <Route key='utenti' path='utenti' element={<Users />} />,
+  <Route
+    key='utenti'
+    path='utenti'
+    element={
+      <ProtectedComponent visibleTo={['tab.am', 'list.utenti']} redirect='/'>
+        <Users />
+      </ProtectedComponent>
+    }
+  />,
   <Route
     key='programmi-dettaglio-referenti-delegati-dettaglio'
     path='programmi/:entityId/:userType/:userId'
@@ -350,7 +373,14 @@ const AreaAmministrativaRoutes = [
   <Route
     key='utenti-detail'
     path=':userType/:userId'
-    element={<UsersDetails />}
+    element={
+      <ProtectedComponent
+        visibleTo={['view.card.utenti']}
+        redirect='/area-amministrativa/utenti'
+      >
+        <UsersDetails />
+      </ProtectedComponent>
+    }
   />,
   <Route
     key='sedi-dettaglio'
