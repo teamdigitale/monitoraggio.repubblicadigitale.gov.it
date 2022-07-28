@@ -265,6 +265,11 @@ const AreaAmministrativaRoutes = [
     path='programmi/:entityId/:userType/:userId'
     element={<UsersDetails />}
   />,
+  <Route 
+    key='programmi-dettaglio-questionari-dettaglio'
+    path='programmi/:entityId/questionari/:idQuestionario'
+    element={<SurveyDetailsEdit />}
+  />,
   <Route
     key='programmi-dettaglio-progetti-dettaglio-utenti-dettaglio'
     path='programmi/:entityId/progetti/:projectId/:userType/:userId'
@@ -397,7 +402,18 @@ const AreaAmministrativaRoutes = [
     path='questionari/:idQuestionario/modifica'
     element={<SurveyDetailsEdit editMode />}
   />,
-  <Route key='questionari' path='questionari' element={<Surveys />} />,
+  <Route
+    key='questionari'
+    path='questionari'
+    element={
+      <ProtectedComponent
+        visibleTo={['subtab.quest', 'list.quest.templ']}
+        redirect='/'
+      >
+        <Surveys />
+      </ProtectedComponent>
+    }
+  />,
   <Route
     key='questionari-clona'
     path='questionari/:idQuestionario/clona'
@@ -406,7 +422,14 @@ const AreaAmministrativaRoutes = [
   <Route
     key='questionari-dettaglio-info'
     path='questionari/:idQuestionario'
-    element={<SurveyDetailsEdit />}
+    element={
+      <ProtectedComponent
+        visibleTo={['view.quest.templ']}
+        redirect='/area-amministrativa/questionari'
+      >
+        <SurveyDetailsEdit />
+      </ProtectedComponent>
+    }
   />,
   <Route
     key='questionari-dettaglio'
@@ -415,12 +438,26 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='area-amministrativa-servizi'
-    element={<Services />}
+    element={
+      <ProtectedComponent
+        visibleTo={['tab.am', 'subtab.serv', 'list.serv']}
+        redirect='/'
+      >
+        <Services />
+      </ProtectedComponent>
+    }
     path='servizi'
   />,
   <Route
     key='area-amministrativa-servizi-dettaglio'
-    element={<ServicesDetails />}
+    element={
+      <ProtectedComponent
+        visibleTo={['view.card.serv']}
+        redirect='/area-amministrativa/servizi'
+      >
+        <ServicesDetails />
+      </ProtectedComponent>
+    }
     path='servizi/:serviceId/info'
   />,
   <Route

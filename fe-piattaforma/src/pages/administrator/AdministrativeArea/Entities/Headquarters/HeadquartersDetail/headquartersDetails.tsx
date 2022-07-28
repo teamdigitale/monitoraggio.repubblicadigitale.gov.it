@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { formTypes } from '../../utils';
-import { CRUDActionsI, CRUDActionTypes } from '../../../../../../utils/common';
+import {
+  CRUDActionsI,
+  CRUDActionTypes,
+  ItemsListI,
+} from '../../../../../../utils/common';
 import { TableRowI } from '../../../../../../components/Table/table';
 import {
   closeModal,
@@ -30,6 +34,12 @@ import {
 import ManageFacilitator from '../../../../../../components/AdministrativeArea/Entities/Headquarters/ManageFacilitator/ManageFacilitator';
 import DeleteEntityModal from '../../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 import { ButtonInButtonsBar } from '../../../../../../components/ButtonsBar/buttonsBar';
+import useGuard from '../../../../../../hooks/guard';
+import {
+  Accordion,
+  CardStatusAction,
+  EmptySection,
+} from '../../../../../../components';
 
 const HeadquartersDetails = () => {
   const { mediaIsPhone } = useAppSelector(selectDevice);
@@ -46,6 +56,8 @@ const HeadquartersDetails = () => {
 
   const programDetails =
     useAppSelector(selectHeadquarters).detail?.dettaglioProgetto;
+
+  const { hasUserPermission } = useGuard();
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
@@ -95,7 +107,7 @@ const HeadquartersDetails = () => {
     }
   }, [headquarterId, projectId, authorityId]);
 
-  const itemAccordionList = [
+  const itemAccordionList: ItemsListI[] = [
     {
       title: 'Facilitatori',
       items:
@@ -114,6 +126,7 @@ const HeadquartersDetails = () => {
       outline: true,
       color: 'primary',
       text: 'Elimina',
+      buttonClass: 'btn-secondary',
       disabled: headquarterDetails?.stato === 'ATTIVO',
       onClick: () =>
         dispatch(
@@ -168,6 +181,34 @@ const HeadquartersDetails = () => {
     dispatch(closeModal());
   };
 
+  const getAccordionCTA = (title?: string) => {
+    switch (title) {
+      case 'Facilitatori':
+        return hasUserPermission(['add.fac'])
+          ? {
+              cta: `Aggiungi ${title}`,
+              ctaAction: () =>
+                dispatch(
+                  openModal({
+                    id: formTypes.FACILITATORE,
+                    payload: {
+                      title: `Aggiungi ${title}`,
+                    },
+                  })
+                ),
+            }
+          : {
+              cta: null,
+              ctaAction: () => ({}),
+            };
+      default:
+        return {
+          cta: null,
+          ctaAction: () => ({}),
+        };
+    }
+  };
+
   return (
     <div
       className={clsx(
@@ -186,11 +227,45 @@ const HeadquartersDetails = () => {
               subTitle: programDetails?.nomeBreve,
             }}
             formButtons={buttons}
-            itemsAccordionList={itemAccordionList}
+            // itemsAccordionList={itemAccordionList}
             buttonsPosition='BOTTOM'
           >
             <HeadquarterDetailsContent />
           </DetailLayout>
+          {itemAccordionList?.length
+            ? itemAccordionList?.map((item, index) => (
+                <Accordion
+                  key={index}
+                  title={item.title || ''}
+                  totElem={item.items.length}
+                  cta={getAccordionCTA(item.title).cta}
+                  onClickCta={getAccordionCTA(item.title)?.ctaAction}
+                  lastBottom={index === itemAccordionList.length - 1}
+                >
+                  {item.items?.length ? (
+                    item.items.map((cardItem) => (
+                      <CardStatusAction
+                        key={cardItem.id}
+                        title={`${cardItem.nome} ${
+                          cardItem.cognome ? cardItem.cognome : ''
+                        }`.trim()}
+                        status={cardItem.stato}
+                        id={cardItem.id}
+                        fullInfo={cardItem.fullInfo}
+                        cf={cardItem.codiceFiscale}
+                        onActionClick={cardItem.actions}
+                      />
+                    ))
+                  ) : (
+                    <EmptySection
+                      title={`Non esistono ${item.title?.toLowerCase()} associati`}
+                      horizontal
+                      aside
+                    />
+                  )}
+                </Accordion>
+              ))
+            : null}
           <ManageHeadquarter />
           <ManageFacilitator creation={true} />
           <DeleteEntityModal

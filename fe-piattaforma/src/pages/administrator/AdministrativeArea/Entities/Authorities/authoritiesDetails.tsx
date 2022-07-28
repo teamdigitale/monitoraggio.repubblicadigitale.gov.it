@@ -38,7 +38,11 @@ import {
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import { RemoveAuthorityHeadquarter } from '../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
 import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
-import { CardStatusAction } from '../../../../../components';
+import {
+  Accordion,
+  CardStatusAction,
+  EmptySection,
+} from '../../../../../components';
 import ManagePartnerAuthority from '../modals/managePartnerAuthority';
 import useGuard from '../../../../../hooks/guard';
 
@@ -89,28 +93,40 @@ const AuthoritiesDetails = () => {
   let itemAccordionList: ItemsListI[] = [];
 
   // Function need to be checked
-  const onActionClickReferenti: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        `/area-amministrativa/${formTypes.REFERENTI}/${
-          typeof td === 'string' ? td : td?.codiceFiscale
-        }`
-      );
-    },
-    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      dispatch(
-        openModal({
-          id: 'delete-entity',
-          payload: {
-            entity: 'referent-delegate',
-            cf: td,
-            role: 'REPP',
-            text: 'Confermi di voler eliminare questo referente?',
-          },
-        })
-      );
-    },
-  };
+  const onActionClickReferenti: CRUDActionsI = hasUserPermission([
+    'del.ref_del.partner',
+  ])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            `/area-amministrativa/${formTypes.REFERENTI}/${
+              typeof td === 'string' ? td : td?.codiceFiscale
+            }`
+          );
+        },
+        [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+          dispatch(
+            openModal({
+              id: 'delete-entity',
+              payload: {
+                entity: 'referent-delegate',
+                cf: td,
+                role: 'REPP',
+                text: 'Confermi di voler eliminare questo referente?',
+              },
+            })
+          );
+        },
+      }
+    : {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            `/area-amministrativa/${formTypes.REFERENTI}/${
+              typeof td === 'string' ? td : td?.codiceFiscale
+            }`
+          );
+        },
+      };
 
   // Function need to be checked
   const onActionClickDelegati: CRUDActionsI = {
@@ -236,6 +252,7 @@ const AuthoritiesDetails = () => {
             size: 'xs',
             color: 'primary',
             outline: true,
+            buttonClass: 'btn-secondary',
             text: 'Elimina',
             onClick: () =>
               dispatch(
@@ -267,6 +284,7 @@ const AuthoritiesDetails = () => {
             size: 'xs',
             color: 'primary',
             outline: true,
+            buttonClass: 'btn-secondary',
             text: 'Elimina',
             onClick: () =>
               dispatch(
@@ -350,6 +368,56 @@ const AuthoritiesDetails = () => {
     navigate(-1);
   };
 
+  const getAccordionCTA = (title?: string) => {
+    switch (title) {
+      case 'Referenti':
+      case 'Delegati':
+        return hasUserPermission(['add.ref_del.partner'])
+          ? {
+              cta: `Aggiungi ${title}`,
+              ctaAction: () =>
+                dispatch(
+                  openModal({
+                    id:
+                      title === 'Referenti'
+                        ? formTypes.REFERENTE
+                        : formTypes.DELEGATO,
+                    payload: {
+                      title: `Aggiungi ${title}`,
+                    },
+                  })
+                ),
+            }
+          : {
+              cta: null,
+              ctaAction: () => ({}),
+            };
+      case 'Sedi':
+        return hasUserPermission(['add.sede.partner'])
+          ? {
+              cta: `Aggiungi Sede`,
+              ctaAction: () =>
+                dispatch(
+                  openModal({
+                    id: formTypes.SEDE,
+                    payload: {
+                      title: `Aggiungi Sede`,
+                    },
+                  })
+                ),
+            }
+          : {
+              cta: null,
+              ctaAction: () => ({}),
+            };
+      default:
+        return {
+          cta: null,
+          ctaAction: () => ({}),
+        };
+    }
+  };
+
   return (
     <div className={clsx('d-flex', 'flex-row', device.mediaIsPhone && 'mt-5')}>
       <div className='d-flex flex-column w-100'>
@@ -362,7 +430,7 @@ const AuthoritiesDetails = () => {
             }}
             formButtons={buttons}
             itemsList={itemsList}
-            itemsAccordionList={itemAccordionList}
+            // itemsAccordionList={itemAccordionList}
             buttonsPosition='BOTTOM'
             goBackPath={
               projectId
@@ -375,6 +443,40 @@ const AuthoritiesDetails = () => {
               enteType={projectId ? formTypes.ENTE_PARTNER : ''}
             />
           </DetailLayout>
+          {itemAccordionList?.length
+            ? itemAccordionList?.map((item, index) => (
+                <Accordion
+                  key={index}
+                  title={item.title || ''}
+                  totElem={item.items.length}
+                  cta={getAccordionCTA(item.title).cta}
+                  onClickCta={getAccordionCTA(item.title)?.ctaAction}
+                  lastBottom={index === itemAccordionList.length - 1}
+                >
+                  {item.items?.length ? (
+                    item.items.map((cardItem) => (
+                      <CardStatusAction
+                        key={cardItem.id}
+                        title={`${cardItem.nome} ${
+                          cardItem.cognome ? cardItem.cognome : ''
+                        }`.trim()}
+                        status={cardItem.stato}
+                        id={cardItem.id}
+                        fullInfo={cardItem.fullInfo}
+                        cf={cardItem.codiceFiscale}
+                        onActionClick={cardItem.actions}
+                      />
+                    ))
+                  ) : (
+                    <EmptySection
+                      title={`Non esistono ${item.title?.toLowerCase()} associati`}
+                      horizontal
+                      aside
+                    />
+                  )}
+                </Accordion>
+              ))
+            : null}
           {authorityDetails?.profili?.length ? (
             <div className={clsx('my-5')}>
               <h5 className={clsx('primary-color', 'mb-4')}>Profili</h5>

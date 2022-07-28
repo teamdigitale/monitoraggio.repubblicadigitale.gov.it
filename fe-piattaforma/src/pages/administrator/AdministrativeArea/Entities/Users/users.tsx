@@ -200,15 +200,17 @@ const Users = () => {
     title: 'Cerca programma',
   };
 
-  const onActionClick: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        `/area-amministrativa/utenti/${
-          typeof td === 'string' ? td : td?.codiceFiscale
-        }`
-      );
-    },
-  };
+  const onActionClick: CRUDActionsI = hasUserPermission(['view.card.utenti'])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            `/area-amministrativa/utenti/${
+              typeof td === 'string' ? td : td?.codiceFiscale
+            }`
+          );
+        },
+      }
+    : {};
 
   const newUser = () => {
     dispatch(resetUserDetails());

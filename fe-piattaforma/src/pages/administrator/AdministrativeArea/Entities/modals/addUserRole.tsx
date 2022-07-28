@@ -25,8 +25,6 @@ const AddUserRole: React.FC<withFormHandlerProps> = (props) => {
   const { userId } = useParams();
   const ruoliList = useAppSelector(selectRolesList);
 
-  console.log('userId', userId);
-
   useEffect(() => {
     dispatch(GetRolesListValues({ tipologiaRuoli: 'NP' }));
     // eslint-disable-next-line react-hooks/exhaustive-deps

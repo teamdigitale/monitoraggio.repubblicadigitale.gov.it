@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Icon } from 'design-react-kit';
 import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
@@ -13,6 +13,7 @@ import {
   SurveyQuestionI,
   selectSurveyForm,
   setSurveyFormFieldValue,
+  selectSurveyName,
 } from '../../../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 import { SetSurveyQuestion } from '../../../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 
@@ -30,9 +31,14 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
   const dispatch = useDispatch();
   const form = useAppSelector(selectSurveyForm);
   const sections = useAppSelector(selectSurveySections) || [];
-  const [cloneSurveyTitle, setCloneSurveyTitle] = useState(
-    form['survey-name'].value + ' clone'
-  );
+  const [cloneSurveyTitle, setCloneSurveyTitle] = useState('');
+  const surveyName = useAppSelector(selectSurveyName);
+
+  useEffect(() => {
+    if(cloneMode){
+      setCloneSurveyTitle(surveyName || 'clone');
+    }
+  },[surveyName]);
 
   const handleOnInputChange = (
     value: string | number | boolean | Date | string[] | undefined,
@@ -89,7 +95,7 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
             col='col-12 col-lg-6 '
             label='Nome'
             id='survey-field-name'
-            onInputChange={(value, field) =>
+            onInputBlur={(value, field) =>
               handleOnInputChange(value, field, true)
             }
             placeholder='Inserici nome questionario'

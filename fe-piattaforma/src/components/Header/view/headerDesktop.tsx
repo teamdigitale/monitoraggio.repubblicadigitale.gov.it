@@ -24,6 +24,7 @@ import AvatarInitials, {
   AvatarSizes,
   AvatarTextSizes,
 } from '../../AvatarInitials/avatarInitials';
+import useGuard from '../../../hooks/guard';
 
 const HeaderDesktop: React.FC<HeaderI> = ({
   isHeaderFull = true,
@@ -40,6 +41,8 @@ const HeaderDesktop: React.FC<HeaderI> = ({
   const { t } = useTranslation();
   const [openUser, setOpenUser] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  const { hasUserPermission } = useGuard();
 
   const userDropdownOptions = [
     {
@@ -77,7 +80,9 @@ const HeaderDesktop: React.FC<HeaderI> = ({
             </h6>
             <h6 className='font-weight-light text-nowrap'>
               {/*<em>{getRoleLabel(userProfile?.codiceRuolo)}</em>*/}
-              <em>{`${userProfile?.descrizioneRuolo}${userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}`: ''}`}</em>
+              <em>{`${userProfile?.descrizioneRuolo}${
+                userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
+              }`}</em>
             </h6>
           </div>
         </div>
@@ -184,44 +189,46 @@ const HeaderDesktop: React.FC<HeaderI> = ({
           )}
         </div> */}
 
-            <div
-              className={clsx(
-                'mr-2',
-                'px-3',
-                'border-left',
-                'border-right',
-                'd-inline-flex',
-                'flex-row',
-                'align-items-center',
-                'primary-bg-b2',
-                'header-panel-btn'
-              )}
-            >
-              <a
-                href='/gestione-ruoli'
-                className='text-decoration-none text-white'
+            {hasUserPermission(['btn.gest.ruoli']) ? (
+              <div
+                className={clsx(
+                  'mr-2',
+                  'px-3',
+                  'border-left',
+                  'border-right',
+                  'd-inline-flex',
+                  'flex-row',
+                  'align-items-center',
+                  'primary-bg-b2',
+                  'header-panel-btn'
+                )}
               >
-                <div className='d-flex flew-row'>
-                  <Icon
-                    icon='it-settings'
-                    size='sm'
-                    color='white'
-                    aria-label='Gestione profili'
-                  />
-                  <h6
-                    className={clsx(
-                      'm-0',
-                      'ml-2',
-                      'font-weight-light',
-                      'text-nowrap'
-                    )}
-                  >
-                    {' '}
-                    {t('role_management')}{' '}
-                  </h6>
-                </div>
-              </a>
-            </div>
+                <a
+                  href='/gestione-ruoli'
+                  className='text-decoration-none text-white'
+                >
+                  <div className='d-flex flew-row'>
+                    <Icon
+                      icon='it-settings'
+                      size='sm'
+                      color='white'
+                      aria-label='Gestione profili'
+                    />
+                    <h6
+                      className={clsx(
+                        'm-0',
+                        'ml-2',
+                        'font-weight-light',
+                        'text-nowrap'
+                      )}
+                    >
+                      {' '}
+                      {t('role_management')}{' '}
+                    </h6>
+                  </div>
+                </a>
+              </div>
+            ) : null}
 
             {/* <div>
             <Dropdown

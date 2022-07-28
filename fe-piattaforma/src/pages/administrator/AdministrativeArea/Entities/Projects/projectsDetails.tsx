@@ -28,6 +28,7 @@ import {
   selectProjects,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import {
+  Accordion,
   CardStatusAction,
   EmptySection,
   NavLink,
@@ -133,61 +134,95 @@ const ProjectsDetails = () => {
     return `/area-amministrativa/progetti/${projectId}/${userType}/${userId}`;
   };
 
-  const onActionClickReferenti: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        getActionRedirectURL(
-          formTypes.REFERENTI,
-          (typeof td === 'string' ? td : td.codiceFiscale).toString()
-        )
-      );
-      /*`/area-amministrativa/${formTypes.REFERENTI}/${
+  const onActionClickReferenti: CRUDActionsI = hasUserPermission([
+    'del.ref_del.gest.prgt',
+  ])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            getActionRedirectURL(
+              formTypes.REFERENTI,
+              (typeof td === 'string' ? td : td.codiceFiscale).toString()
+            )
+          );
+          /*`/area-amministrativa/${formTypes.REFERENTI}/${
           typeof td === 'string' ? td : td?.codiceFiscale
         }`
       );*/
-    },
-    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      dispatch(
-        openModal({
-          id: 'delete-entity',
-          payload: {
-            entity: 'referent-delegate',
-            cf: td,
-            role: 'REGP',
-            text: 'Confermi di voler eliminare questo referente?',
-          },
-        })
-      );
-    },
-  };
+        },
+        [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+          dispatch(
+            openModal({
+              id: 'delete-entity',
+              payload: {
+                entity: 'referent-delegate',
+                cf: td,
+                role: 'REGP',
+                text: 'Confermi di voler eliminare questo referente?',
+              },
+            })
+          );
+        },
+      }
+    : {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            getActionRedirectURL(
+              formTypes.REFERENTI,
+              (typeof td === 'string' ? td : td.codiceFiscale).toString()
+            )
+          );
+          /*`/area-amministrativa/${formTypes.REFERENTI}/${
+          typeof td === 'string' ? td : td?.codiceFiscale
+        }`
+      );*/
+        },
+      };
 
-  const onActionClickDelegati: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        getActionRedirectURL(
-          formTypes.DELEGATI,
-          (typeof td === 'string' ? td : td.codiceFiscale).toString()
-        )
-      );
-      /*`/area-amministrativa/${formTypes.DELEGATI}/${
+  const onActionClickDelegati: CRUDActionsI = hasUserPermission([
+    'del.ref_del.gest.prgt',
+  ])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            getActionRedirectURL(
+              formTypes.DELEGATI,
+              (typeof td === 'string' ? td : td.codiceFiscale).toString()
+            )
+          );
+          /*`/area-amministrativa/${formTypes.DELEGATI}/${
           typeof td === 'string' ? td : td?.codiceFiscale
         }`
       );*/
-    },
-    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      dispatch(
-        openModal({
-          id: 'delete-entity',
-          payload: {
-            entity: 'referent-delegate',
-            cf: td,
-            role: 'DEGP',
-            text: 'Confermi di voler eliminare questo delegato?',
-          },
-        })
-      );
-    },
-  };
+        },
+        [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+          dispatch(
+            openModal({
+              id: 'delete-entity',
+              payload: {
+                entity: 'referent-delegate',
+                cf: td,
+                role: 'DEGP',
+                text: 'Confermi di voler eliminare questo delegato?',
+              },
+            })
+          );
+        },
+      }
+    : {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            getActionRedirectURL(
+              formTypes.DELEGATI,
+              (typeof td === 'string' ? td : td.codiceFiscale).toString()
+            )
+          );
+          /*`/area-amministrativa/${formTypes.DELEGATI}/${
+          typeof td === 'string' ? td : td?.codiceFiscale
+        }`
+      );*/
+        },
+      };
 
   const centerActiveItem = () => {
     switch (activeTab) {
@@ -239,6 +274,7 @@ const ProjectsDetails = () => {
       iconForButton: 'it-download',
       iconColor: 'primary',
       outline: true,
+      buttonClass: 'btn-secondary',
       text: 'Carica lista enti partner',
       onClick: () => console.log('carica lista enti partner'),
     },
@@ -313,6 +349,7 @@ const ProjectsDetails = () => {
                 size: 'xs',
                 outline: true,
                 color: 'primary',
+                buttonClass: 'btn-secondary',
                 text: 'Elimina',
                 onClick: () =>
                   dispatch(
@@ -349,7 +386,13 @@ const ProjectsDetails = () => {
                 // TODO: check when BE add codiceFiscale
                 ...ref,
                 id: ref.codiceFiscale,
-                actions: ref?.stato === 'ATTIVO' ? { [CRUDActionTypes.VIEW]: onActionClickReferenti[CRUDActionTypes.VIEW] }:onActionClickReferenti,
+                actions:
+                  ref?.stato === 'ATTIVO'
+                    ? {
+                        [CRUDActionTypes.VIEW]:
+                          onActionClickReferenti[CRUDActionTypes.VIEW],
+                      }
+                    : onActionClickReferenti,
               })
             ) || [],
         },
@@ -361,7 +404,13 @@ const ProjectsDetails = () => {
                 // TODO: check when BE add codiceFiscale
                 ...del,
                 id: del.codiceFiscale,
-                actions: del?.stato === 'ATTIVO' ? { [CRUDActionTypes.VIEW]: onActionClickDelegati[CRUDActionTypes.VIEW] }:onActionClickDelegati,
+                actions:
+                  del?.stato === 'ATTIVO'
+                    ? {
+                        [CRUDActionTypes.VIEW]:
+                          onActionClickDelegati[CRUDActionTypes.VIEW],
+                      }
+                    : onActionClickDelegati,
               })
             ) || [],
         },
@@ -371,7 +420,13 @@ const ProjectsDetails = () => {
             authorityInfo?.sediGestoreProgetto?.map(
               (sedi: { [key: string]: string }) => ({
                 ...sedi,
-                actions: sedi?.stato === 'ATTIVO' ? { [CRUDActionTypes.VIEW]: onActionClickSede[CRUDActionTypes.VIEW] }:onActionClickSede,
+                actions:
+                  sedi?.stato === 'ATTIVO'
+                    ? {
+                        [CRUDActionTypes.VIEW]:
+                          onActionClickSede[CRUDActionTypes.VIEW],
+                      }
+                    : onActionClickSede,
               })
             ) || [],
         },
@@ -696,6 +751,7 @@ const ProjectsDetails = () => {
               {
                 size: 'xs',
                 outline: true,
+                buttonClass: 'btn-secondary',
                 color: 'primary',
                 text: 'Elimina',
                 onClick: () =>
@@ -743,6 +799,7 @@ const ProjectsDetails = () => {
                 size: 'xs',
                 outline: true,
                 color: 'primary',
+                buttonClass: 'btn-secondary',
                 text: 'Elimina',
                 onClick: () =>
                   dispatch(
@@ -765,6 +822,7 @@ const ProjectsDetails = () => {
                 size: 'xs',
                 outline: true,
                 color: 'primary',
+                buttonClass: 'btn-secondary',
                 text: 'Attiva',
                 onClick: () => projectActivation(),
               },
@@ -801,6 +859,7 @@ const ProjectsDetails = () => {
               {
                 size: 'xs',
                 outline: true,
+                buttonClass: 'btn-secondary',
                 color: 'primary',
                 text: 'Attiva',
                 onClick: () => projectActivation(),
@@ -884,6 +943,56 @@ const ProjectsDetails = () => {
     dispatch(closeModal());
   };
 
+  const getAccordionCTA = (title?: string) => {
+    switch (title) {
+      case 'Referenti':
+      case 'Delegati':
+        return hasUserPermission(['add.ref_del.gest.prgt'])
+          ? {
+              cta: `Aggiungi ${title}`,
+              ctaAction: () =>
+                dispatch(
+                  openModal({
+                    id:
+                      title === 'Referenti'
+                        ? formTypes.REFERENTE
+                        : formTypes.DELEGATO,
+                    payload: {
+                      title: `Aggiungi ${title}`,
+                    },
+                  })
+                ),
+            }
+          : {
+              cta: null,
+              ctaAction: () => ({}),
+            };
+      case 'Sedi':
+        return hasUserPermission(['add.sede.gest.prgt'])
+          ? {
+              cta: `Aggiungi Sede`,
+              ctaAction: () =>
+                dispatch(
+                  openModal({
+                    id: formTypes.SEDE,
+                    payload: {
+                      title: `Aggiungi Sede`,
+                    },
+                  })
+                ),
+            }
+          : {
+              cta: null,
+              ctaAction: () => ({}),
+            };
+      default:
+        return {
+          cta: null,
+          ctaAction: () => ({}),
+        };
+    }
+  };
+
   return (
     <div className={clsx(mediaIsPhone && 'mt-5', 'd-flex', 'flex-row')}>
       <div className='d-flex flex-column w-100'>
@@ -898,7 +1007,7 @@ const ProjectsDetails = () => {
             }}
             currentTab={activeTab}
             formButtons={correctButtons}
-            itemsAccordionList={itemAccordionList}
+            // itemsAccordionList={itemAccordionList}
             itemsList={itemList}
             buttonsPosition={buttonsPosition}
             goBackTitle='Elenco progetti'
@@ -909,6 +1018,40 @@ const ProjectsDetails = () => {
               {emptySection}
             </>
           </DetailLayout>
+          {itemAccordionList?.length
+            ? itemAccordionList?.map((item, index) => (
+                <Accordion
+                  key={index}
+                  title={item.title || ''}
+                  totElem={item.items.length}
+                  cta={getAccordionCTA(item.title).cta}
+                  onClickCta={getAccordionCTA(item.title)?.ctaAction}
+                  lastBottom={index === itemAccordionList.length - 1}
+                >
+                  {item.items?.length ? (
+                    item.items.map((cardItem) => (
+                      <CardStatusAction
+                        key={cardItem.id}
+                        title={`${cardItem.nome} ${
+                          cardItem.cognome ? cardItem.cognome : ''
+                        }`.trim()}
+                        status={cardItem.stato}
+                        id={cardItem.id}
+                        fullInfo={cardItem.fullInfo}
+                        cf={cardItem.codiceFiscale}
+                        onActionClick={cardItem.actions}
+                      />
+                    ))
+                  ) : (
+                    <EmptySection
+                      title={`Non esistono ${item.title?.toLowerCase()} associati`}
+                      horizontal
+                      aside
+                    />
+                  )}
+                </Accordion>
+              ))
+            : null}
           {activeTab === tabs.INFO && !entityId && programDetails?.id ? (
             <div className={clsx('my-5')}>
               <h5 className={clsx('mb-4')} style={{ color: '#5C6F82' }}>

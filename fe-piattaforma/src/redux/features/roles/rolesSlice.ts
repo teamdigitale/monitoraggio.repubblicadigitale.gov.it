@@ -7,6 +7,8 @@ export type RolePermissionI =
   | 'hidden'
 
   // BE permissions
+  | 'tab.dshb'
+  | 'view.dshb'
   | 'tab.am'
   | 'subtab.prgm'
   | 'subtab.prgt'
@@ -23,8 +25,15 @@ export type RolePermissionI =
   | 'upd.enti.gest.prgm'
   | 'add.ref_del.gest.prgm'
   | 'upd.rel.quest_prgm'
+  | 'del.ref_del.gest.prgm'
   // Surveys
+  | 'subtab.quest'
   | 'upd.rel.quest_prgm'
+  | 'list.quest.templ'
+  | 'view.quest.templ'
+  | 'upd.quest.templ'
+  | 'del.quest.templ'
+  | 'new.quest.templ'
   // Projects
   | 'add.prgt'
   | 'del.prgt'
@@ -36,6 +45,13 @@ export type RolePermissionI =
   | 'add.ente.partner'
   | 'upd.ente.partner'
   | 'del.ente.partner'
+  | 'add.ref_del.gest.prgt'
+  | 'del.ref_del.gest.prgt'
+  | 'add.sede.gest.prgt'
+  | 'add.ref_del.partner'
+  | 'add.sede.partner'
+  | 'upd.sede.partner'
+  | 'del.ref_del.partner'
   // Authorities
   | 'list.dwnl.enti'
   | 'list.enti'
@@ -47,18 +63,63 @@ export type RolePermissionI =
   | 'list.utenti'
   | 'list.dwnl.utenti'
   | 'view.card.utenti'
+  | 'upd.anag.utenti'
+  | 'add.del.ruolo.utente'
+  | 'upd.card.utenti'
   // Citizien
   | 'tab.citt'
   | 'list.citt'
-  | 'list.dwnl.citt';
+  | 'list.dwnl.citt'
+  // Headquarters
+  | 'add.fac'
+  // Roles
+  | 'btn.gest.ruoli'
+  | 'list.ruoli'
+  | 'new.ruoli'
+  | 'view.ruoli'
+  | 'del.ruoli'
+  | 'add.upd.permessi'
+  // Services
+  | 'subtab.serv'
+  | 'list.serv'
+  | 'new.serv'
+  | 'del.serv'
+  | 'upd.card.serv'
+  | 'list.dwnl.serv'
+  | 'view.card.serv';
 
 interface RoleI {
   codiceRuolo: string;
   nomeRuolo: string;
+  tipologiaRuolo: 'P' | 'NP';
 }
 
-interface RolesStateI {
+interface PermissionI {
+  id: string | number;
+  codice: RolePermissionI;
+  descrizione: string;
+}
+
+export interface GroupI {
+  codice: string;
+  descrizione: string;
+  permessi: PermissionI[];
+}
+
+export interface RolesStateI {
   list: RoleI[];
+  groups: GroupI[];
+  role: {
+    dettaglioRuolo?: {
+      nome: string;
+      stato: string;
+      tipologia: string;
+    };
+    dettaglioGruppi?: {
+      codice: string; // TODO RoleGroupI
+      descrizione: string;
+    }[];
+  };
   pagination: {
     pageSize: number;
     pageNumber: number;
@@ -67,6 +128,8 @@ interface RolesStateI {
 
 const initialState: RolesStateI = {
   list: [],
+  groups: [],
+  role: {},
   pagination: {
     pageSize: 8,
     pageNumber: 1,
@@ -86,13 +149,26 @@ export const rolesSlice = createSlice({
         ...action.payload,
       };
     },
+    setRoleDetails: (state, action: PayloadAction<any>) => {
+      state.role = action.payload;
+    },
+    setGroupsList: (state, action: PayloadAction<any>) => {
+      state.groups = action.payload.list;
+    },
   },
 });
 
-export const { setRolesList, setRolesPagination } = rolesSlice.actions;
+export const {
+  setRolesList,
+  setRolesPagination,
+  setRoleDetails,
+  setGroupsList,
+} = rolesSlice.actions;
 
 export const selectRolesList = (state: RootState) => state.roles.list;
 export const selectRolesPagination = (state: RootState) =>
   state.roles.pagination;
+export const selectRoleDetails = (state: RootState) => state.roles.role;
+export const selectGroupsList = (state: RootState) => state.roles.groups;
 
 export default rolesSlice.reducer;

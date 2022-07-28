@@ -11,12 +11,14 @@ import { updateBreadcrumb } from '../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../redux/hooks';
 import ManageProfile from '../../administrator/AdministrativeArea/Entities/modals/manageProfile';
 import { selectUser } from '../../../redux/features/user/userSlice';
+import useGuard from '../../../hooks/guard';
 
 const UserProfile = () => {
   /* const userInfo = useAppSelector(selectUsers)?.detail?.info; */
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
   const dispatch = useDispatch();
   const user = useAppSelector(selectUser);
+  const { hasUserPermission } = useGuard();
 
   useEffect(() => {
     dispatch(
@@ -34,20 +36,24 @@ const UserProfile = () => {
     setCurrentForm(<FormOnboarding formDisabled />);
   }, []);
 
-  const correctButtons: ButtonInButtonsBar[] = [
-    {
-      size: 'xs',
-      text: 'Modifica',
-      color: 'primary',
-      onClick: () =>
-        dispatch(
-          openModal({
-            id: formTypes.PROFILE,
-            payload: { title: 'Aggiorna Profilo' },
-          })
-        ),
-    },
-  ];
+  const correctButtons: ButtonInButtonsBar[] = hasUserPermission([
+    'upd.card.utenti',
+  ])
+    ? [
+        {
+          size: 'xs',
+          text: 'Modifica',
+          color: 'primary',
+          onClick: () =>
+            dispatch(
+              openModal({
+                id: formTypes.PROFILE,
+                payload: { title: 'Aggiorna Profilo' },
+              })
+            ),
+        },
+      ]
+    : [];
 
   return (
     <div className='container'>

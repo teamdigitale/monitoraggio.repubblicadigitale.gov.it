@@ -36,7 +36,7 @@ interface GenericSearchFilterTableLayoutI {
   filtersList?: any;
   cta?: (() => void) | undefined;
   ctaHref?: string;
-  textCta?: string;
+  textCta?: string | undefined;
   iconCta?: string;
   ctaPrintText?: string;
   ctaPrint?: () => void;

@@ -90,7 +90,9 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
                         <Collapse isOpen={collapseOpen}>
                           <LinkList sublist>
                             {link.subRoutes
-                              .filter(({ visible = ['hidden'] }) => hasUserPermission(visible))
+                              .filter(({ visible = ['hidden'] }) =>
+                                hasUserPermission(visible)
+                              )
                               .map((sub, index) => (
                                 <li key={`sub-${index}`}>
                                   <Link
@@ -123,23 +125,25 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
                     </li>
                   );
                 })}
-              <li className='manage-profile-container'>
-                <div>
-                  <div className='nav-divider primary-bg-a6'></div>
-                  <Link
-                    to='/gestione-ruoli'
-                    className='primary-color manage-profile mt-4'
-                  >
-                    <Icon
-                      className='mr-3'
-                      icon='it-settings'
-                      color='primary'
-                      aria-label='icona ingranaggio'
-                    />
-                    Gestione Profili
-                  </Link>
-                </div>
-              </li>
+              {hasUserPermission(['btn.gest.ruoli']) ? (
+                <li className='manage-profile-container'>
+                  <div>
+                    <div className='nav-divider primary-bg-a6'></div>
+                    <Link
+                      to='/gestione-ruoli'
+                      className='primary-color manage-profile mt-4'
+                    >
+                      <Icon
+                        className='mr-3'
+                        icon='it-settings'
+                        color='primary'
+                        aria-label='icona ingranaggio'
+                      />
+                      Gestione Profili
+                    </Link>
+                  </div>
+                </li>
+              ) : null}
             </ul>
 
             <div className={clsx('primary-bg-a6', 'p-4', 'pl-0', 'mb-3')}>

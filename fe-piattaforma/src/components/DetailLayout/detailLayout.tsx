@@ -25,7 +25,7 @@ interface DetailLayoutI {
   itemsAccordionList?: ItemsListI[] | null | undefined;
   titleInfo: {
     title: string;
-    status: string;
+    status?: string | undefined;
     upperTitle: {
       icon: string;
       text: string;
@@ -76,7 +76,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
           <Button
             onClick={() =>
               goBackPath && goBackTitle !== 'Torna indietro'
-                ? navigate(goBackPath)
+                ? navigate(goBackPath, { replace: true })
                 : navigate(-1)
             }
             className={clsx(device.mediaIsPhone ? 'px-0 mb-5 mr-5' : 'px-0')}

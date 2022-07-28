@@ -24,6 +24,7 @@ import ButtonsBar, {
   ButtonInButtonsBar,
 } from '../../../../../../components/ButtonsBar/buttonsBar';
 import Sticky from 'react-sticky-el';
+import useGuard from '../../../../../../hooks/guard';
 
 interface SurveyDetailsEditI {
   editMode?: boolean;
@@ -41,8 +42,13 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
   const sections = useAppSelector(selectSurveySections) || [];
   const [editModeState, setEditModeState] = useState<boolean>(editMode);
   const [cloneModeState, setCloneModeState] = useState<boolean>(cloneMode);
-
   const { idQuestionario } = useParams();
+  const { hasUserPermission } = useGuard();
+
+  useEffect(() => {
+    if (idQuestionario) dispatch(GetSurveyInfo(idQuestionario));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idQuestionario]);
 
   useEffect(() => {
     if (form['survey-name']?.value && idQuestionario) {
@@ -53,26 +59,8 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
         })
       );
     }
-  }, [idQuestionario, form['survey-name']?.value]);
-
-  useEffect(() => {
-    const locationSplit = location.pathname.split('/');
-    let surveyId = '';
-    if (locationSplit.length > 0) {
-      switch (locationSplit[locationSplit.length - 1]) {
-        case 'modifica':
-        case 'clona':
-        case 'info':
-          surveyId = locationSplit[locationSplit?.length - 2];
-          break;
-        default:
-          surveyId = locationSplit[locationSplit?.length - 1];
-          break;
-      }
-    }
-    dispatch(GetSurveyInfo(surveyId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [idQuestionario, form['survey-name']?.value]);
 
   const checkValidityQuestions = (questions: SurveyQuestionI[]) => {
     let isValid = true;
@@ -119,46 +107,102 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
 
   const device = useAppSelector(selectDevice);
 
+  const createUpdateSurvey = async () => {
+    setEditModeState(false);
+    setCloneModeState(false);
+    const res = await dispatch(SetSurveyCreation(cloneModeState));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (res?.data?.['survey-id']) {
+      navigate(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        `/area-amministrativa/questionari/${res?.data?.['survey-id']}`,
+        { replace: true }
+      );
+    } else if (idQuestionario) {
+      navigate(`/area-amministrativa/questionari/${idQuestionario}`, {
+        replace: true,
+      });
+      dispatch(GetSurveyInfo(idQuestionario));
+    }
+  };
+
   const cancelSaveButtons: ButtonInButtonsBar[] = [
     {
       text: 'Annulla',
       color: 'primary',
       outline: true,
+      buttonClass: 'btn-secondary',
       onClick: () => {
         setEditModeState(false);
         setCloneModeState(false);
+        navigate(`/area-amministrativa/questionari/${idQuestionario}`, {
+          replace: true,
+        });
+        if (idQuestionario) dispatch(GetSurveyInfo(idQuestionario));
       },
     },
     {
-      text: 'Salva Questionario',
+      text: cloneModeState ? 'Crea questionario' : 'Salva Questionario',
       color: 'primary',
       disabled: !checkValidityForm(form),
-      onClick: () => dispatch(SetSurveyCreation(false)),
+      onClick: () => createUpdateSurvey(),
     },
   ];
 
-  const cloneEditButtons: ButtonInButtonsBar[] = [
-    {
-      text: 'Duplica',
-      color: 'primary',
-      outline: true,
-      onClick: () => {
-        setCloneModeState(true);
-        setEditModeState(false);
-        dispatch(SetSurveyCreation(true));
-        navigate(`/area-amministrativa/questionari/${1}/clona`);
-      },
-    },
-    {
-      text: 'Modifica',
-      color: 'primary',
-      onClick: () => {
-        setEditModeState(true);
-        setCloneModeState(false);
-        navigate(`/area-amministrativa/questionari/${1}/modifica`);
-      },
-    },
-  ];
+  const cloneEditButtons: ButtonInButtonsBar[] = hasUserPermission([
+    'new.quest.templ',
+    'upd.quest.templ',
+  ])
+    ? [
+        {
+          text: 'Duplica',
+          color: 'primary',
+          buttonClass: 'btn-secondary',
+          outline: true,
+          onClick: () => {
+            setCloneModeState(true);
+            setEditModeState(false);
+            navigate(`/area-amministrativa/questionari/${idQuestionario}/clona`);
+          },
+        },
+        {
+          text: 'Modifica',
+          color: 'primary',
+          onClick: () => {
+            setEditModeState(true);
+            setCloneModeState(false);
+            navigate(`/area-amministrativa/questionari/${idQuestionario}/modifica`);
+          },
+        },
+      ]
+    : hasUserPermission(['new.quest.templ'])
+    ? [
+        {
+          text: 'Duplica',
+          color: 'primary',
+          outline: true,
+          onClick: () => {
+            setCloneModeState(true);
+            setEditModeState(false);
+            navigate(`/area-amministrativa/questionari/${idQuestionario}/clona`);
+          },
+        },
+      ]
+    : hasUserPermission(['upd.quest.templ'])
+    ? [
+        {
+          text: 'Modifica',
+          color: 'primary',
+          onClick: () => {
+            setEditModeState(true);
+            setCloneModeState(false);
+            navigate(`/area-amministrativa/questionari/${idQuestionario}/modifica`);
+          },
+        },
+      ]
+    : [];
 
   return (
     <div className='mb-5'>
@@ -168,9 +212,12 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
           status: '',
           upperTitle: { icon: 'it-file', text: 'Questionario' },
         }}
-        formButtons={[]} // TODO?
         buttonsPosition='BOTTOM'
-        goBackTitle='Elenco questionari'
+        goBackTitle={
+          location.pathname.includes('programmi')
+            ? 'Torna indietro'
+            : 'Elenco questionari'
+        }
         goBackPath='/area-amministrativa/questionari'
       />
 

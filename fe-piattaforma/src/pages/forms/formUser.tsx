@@ -105,11 +105,9 @@ const FormUser: React.FC<UserFormI> = (props) => {
     <Form className='mt-5 mb-0' formDisabled={formDisabled}>
       <Form.Row className={bootClass}>
         <>
-          {formDisabled ? (<Input
-          {...form?.id}
-          col='col-12 col-lg-6'
-          label='ID'
-        />) : null}
+          {formDisabled ? (
+            <Input {...form?.id} col='col-12 col-lg-6' label='ID' />
+          ) : null}
           <Input
             {...form?.nome}
             required

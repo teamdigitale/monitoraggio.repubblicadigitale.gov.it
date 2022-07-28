@@ -118,9 +118,28 @@ const AppRoutes: React.FC = () => {
             }
           />
           <Route
-            path='/gestione-ruoli/:idRuoloUtente'
+            path='/gestione-ruoli/crea-nuovo'
             element={
               <ProtectedComponent visibleTo={[]} redirect='/'>
+                <RoleManagementDetails creation />
+              </ProtectedComponent>
+            }
+          />
+          <Route
+            path='/gestione-ruoli/:codiceRuolo/modifica'
+            element={
+              <ProtectedComponent visibleTo={[]} redirect='/'>
+                <RoleManagementDetails edit />
+              </ProtectedComponent>
+            }
+          />
+          <Route
+            path='/gestione-ruoli/:codiceRuolo'
+            element={
+              <ProtectedComponent
+                visibleTo={['view.ruoli']}
+                redirect='/gestione-ruoli'
+              >
                 <RoleManagementDetails />
               </ProtectedComponent>
             }
@@ -128,7 +147,7 @@ const AppRoutes: React.FC = () => {
           <Route
             path='/gestione-ruoli'
             element={
-              <ProtectedComponent visibleTo={[]} redirect='/'>
+              <ProtectedComponent visibleTo={['list.ruoli']} redirect='/'>
                 <RoleManagement />
               </ProtectedComponent>
             }
@@ -147,7 +166,10 @@ const AppRoutes: React.FC = () => {
           <Route
             path='/dashboard'
             element={
-              <ProtectedComponent visibleTo={[]} redirect='/'>
+              <ProtectedComponent
+                visibleTo={['tab.dshb', 'view.dshb']}
+                redirect='/'
+              >
                 <Dashboard />
               </ProtectedComponent>
             }
@@ -177,10 +199,6 @@ const AppRoutes: React.FC = () => {
           />
         </Route>
         <Route path='/stampa-questionario' element={<PrintSurvey />} />
-        <Route
-          path='/auth-spid'
-          element={isLogged ? <Navigate to='/area-amministrativa' /> : <Auth />}
-        />
         <Route
           path='/auth'
           element={isLogged ? <Navigate to='/area-amministrativa' /> : <Auth />}

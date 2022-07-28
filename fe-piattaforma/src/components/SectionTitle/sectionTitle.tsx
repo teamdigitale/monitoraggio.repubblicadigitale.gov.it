@@ -12,7 +12,7 @@ import { Icon } from 'design-react-kit';
 
 interface SectionTitleI {
   title: string;
-  status?: string;
+  status?: string | undefined;
   upperTitle?: {
     icon: string | any;
     text: string;

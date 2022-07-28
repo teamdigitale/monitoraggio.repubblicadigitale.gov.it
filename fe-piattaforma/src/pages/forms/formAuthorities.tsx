@@ -25,6 +25,18 @@ import {
 } from '../../utils/formHelper';
 import { formTypes } from '../administrator/AdministrativeArea/Entities/utils';
 
+const TipologiaEnteOptions = [
+  { label: 'Ente pubblico', value: 'Ente pubblico' },
+  {
+    label: 'Ente del terzo settore',
+    value: 'Ente del terzo settore',
+  },
+  {
+    label: 'Ente privato',
+    value: 'Ente privato',
+  },
+];
+
 interface EnteInformationI {
   formDisabled?: boolean;
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
@@ -228,13 +240,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
                     col='col-12 col-lg-6'
                     label='Tipologia'
                     // placeholder='Inserisci la tipologia'
-                    options={[
-                      { label: 'Ente pubblico', value: 'Ente pubblico' },
-                      {
-                        label: 'Ente del terzo settore',
-                        value: 'Ente del terzo settore',
-                      },
-                    ]}
+                    options={TipologiaEnteOptions}
                     onInputChange={(value, field) => {
                       onInputDataChange(value, field);
                     }}
@@ -316,13 +322,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
                     col='col-12 col-lg-6'
                     label='Tipologia'
                     // placeholder='Inserisci la tipologia'
-                    options={[
-                      { label: 'Ente pubblico', value: 'Ente pubblico' },
-                      {
-                        label: 'Ente del terzo settore',
-                        value: 'Ente del terzo settore',
-                      },
-                    ]}
+                    options={TipologiaEnteOptions}
                     onInputChange={(value, field) => {
                       onInputDataChange(value, field);
                     }}

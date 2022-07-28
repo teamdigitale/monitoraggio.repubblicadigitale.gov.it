@@ -27,6 +27,22 @@ export interface SurveySectionI {
   cloneMode?: boolean;
 }
 
+export interface SurveySectionResponseI {
+  id: string;
+  schema: { json: string };
+  schemaui: { json: string };
+  title: string;
+  'default-section': boolean;
+}
+
+export interface SurveySectionPayloadI {
+  id: string;
+  schema: string;
+  schemaui: string;
+  title: string;
+  'default-section': boolean;
+}
+
 export interface SurveyStateI {
   surveyId: string;
   surveyStatus: string;
@@ -36,25 +52,18 @@ export interface SurveyStateI {
   form?: any;
   sections: SurveySectionI[];
   compilingSurveyForms: FormI[];
-  sectionsSchemaResponse?: {
-    id: string;
-    schema: string;
-    schemaUI: string;
-    title: string;
-    'default-section': boolean;
-  }[];
+  sectionsSchemaResponse?: SurveySectionResponseI[];
+  surveyName?: string;
 }
 
 const baseSurveyForm = newForm([
   newFormField({
     field: 'survey-name',
     required: true,
-    value: 'Questionario di default',
   }),
   newFormField({
     field: 'survey-description',
     required: true,
-    value: 'Questionario padre di tutti',
   }),
 ]);
 
@@ -68,6 +77,7 @@ const initialState: SurveyStateI = {
   sections: [],
   sectionsSchemaResponse: [],
   compilingSurveyForms: [],
+  surveyName: '',
 };
 
 export const surveysSlice = createSlice({
@@ -243,8 +253,8 @@ export const surveysSlice = createSlice({
       }
     },
     setSurveyInfoForm: (state, action: PayloadAction<any>) => {
+      state.sectionsSchemaResponse = [...action.payload['survey-sections']];
       const surveyDetails = transformJsonToForm(action.payload);
-      state.sectionsSchemaResponse = action.payload.sections;
       if (surveyDetails) {
         state.surveyId = surveyDetails.surveyId;
         state.surveyStatus = surveyDetails.surveyStatus;
@@ -253,6 +263,8 @@ export const surveysSlice = createSlice({
         state.lastUpdate = surveyDetails.lastUpdate;
         state.form = surveyDetails.form;
         state.sections = surveyDetails.sections;
+
+        state.surveyName = surveyDetails.form['survey-name']?.value;
       }
     },
     setCompilingSurveyForm: (
@@ -299,5 +311,7 @@ export const selectCompilingSurveyForms = (state: RootState) =>
 
 export const selectResponseSectionsSchema = (state: RootState) =>
   state.survey.sectionsSchemaResponse;
+
+export const selectSurveyName = (state: RootState) => state.survey.surveyName;
 
 export default surveysSlice.reducer;

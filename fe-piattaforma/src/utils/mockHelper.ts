@@ -176,9 +176,27 @@ export const initMock = (apiInstance: AxiosInstance) => {
         return [200, response];
       });
 
-    /*mockInstance.onGet('/ruolo').reply(async () => {
+    /*mockInstance.onGet('/ruolo?tipologiaRuoli=NP').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/listaRuoli.json');
+      return [200, response.data];
+    });*/
+
+    /*mockInstance.onGet('/ruolo/all').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/listaRuoli.json');
+      return [200, response.data];
+    });*/
+
+    /*mockInstance.onGet('/ruolo/DTD').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/roleDetails.json');
+      return [200, response.data];
+    });*/
+
+    /*mockInstance.onGet('/gruppo/all').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/listaRuoliGruppi.json');
       return [200, response.data];
     });*/
 
@@ -248,33 +266,33 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });
 
-    mockInstance
-      .onPost('/questionarioTemplate/stati/dropdown')
-      .reply(async () => {
-        // @ts-ignore
-        const response = await import('/mock/statiDropdown.json');
-        return [200, response];
-      });
+    // mockInstance
+    //   .onPost('/questionarioTemplate/stati/dropdown')
+    //   .reply(async () => {
+    //     // @ts-ignore
+    //     const response = await import('/mock/statiDropdown.json');
+    //     return [200, response];
+    //   });
 
-    mockInstance.onGet('/questionarioTemplate/1').reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/responseQuestionario.json');
-      return [200, response];
-    });
+    // mockInstance.onGet('/questionarioTemplate/1').reply(async () => {
+    //   // @ts-ignore
+    //   const response = await import('/mock/responseQuestionario.json');
+    //   return [200, response];
+    // });
 
-    mockInstance
-      .onGet('/questionarioTemplate/6c00da35-c6ee-4be1-bf2b-e28e7bcaeea8')
-      .reply(async () => {
-        // @ts-ignore
-        const response = await import('/mock/responseQuestionario.json');
-        return [200, response];
-      });
+    // mockInstance
+    //   .onGet('/questionarioTemplate/6c00da35-c6ee-4be1-bf2b-e28e7bcaeea8')
+    //   .reply(async () => {
+    //     // @ts-ignore
+    //     const response = await import('/mock/responseQuestionario.json');
+    //     return [200, response];
+    //   });
 
-    mockInstance.onGet('/questionarioTemplate/prova2').reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/responseQuestionario.json');
-      return [200, response];
-    });
+    // mockInstance.onGet('/questionarioTemplate/prova2').reply(async () => {
+    //   // @ts-ignore
+    //   const response = await import('/mock/responseQuestionario.json');
+    //   return [200, response];
+    // });
 
     mockInstance.onPost('/servizio/all').reply(async () => {
       // @ts-ignore
@@ -325,13 +343,13 @@ export const initMock = (apiInstance: AxiosInstance) => {
       const response = await import('/mock/notificationsList.json');
       return [200, response];
     });
-
-    /*mockInstance.onPost('/contesto').reply(async () => {
+    /*
+    mockInstance.onPost('/contesto').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/userContext.json');
       return [200, response];
-    });*/
-
+    });
+*/
     /*mockInstance.onPost('/contesto/confermaIntegrazione').reply(async () => {
       return [200];
     });*/

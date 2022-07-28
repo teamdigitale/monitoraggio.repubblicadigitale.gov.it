@@ -161,7 +161,7 @@ export const UpdateProgramSurveyDefault =
       await API.put(`/programma/${idProgramma}/aggiungi/${idQuestionario}`);
       // GetProgramDetail(idProgramma); // TODO: far dispatchare azioni anche qui!
     } catch (e) {
-      console.error('UpdateSurveyDefault error', e);
+      console.error('UpdateProgramSurveyDefault error', e);
     } finally {
       dispatch(hideLoader());
     }

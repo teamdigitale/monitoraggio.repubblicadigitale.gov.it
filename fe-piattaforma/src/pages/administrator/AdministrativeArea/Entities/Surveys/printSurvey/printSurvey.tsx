@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
-import { SurveyCreationBodyI } from '../../../../../../redux/features/administrativeArea/surveys/surveysThunk';
+import { SurveyResponseBodyI } from '../../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 import { formFieldI, FormI } from '../../../../../../utils/formHelper';
 import { generateForm } from '../../../../../../utils/jsonFormHelper';
 import PrintBoxField from './components/printBoxField';
@@ -8,7 +8,7 @@ import PrintSelectField from './components/printSelectField';
 import PrintTextField from './components/printTextField';
 
 const PrintSurvey: React.FC = () => {
-  const [formMock, setFormMock] = useState<SurveyCreationBodyI>({});
+  const [formMock, setFormMock] = useState<SurveyResponseBodyI>({});
   const [sectionsForm, setSectionsForm] = useState<FormI[]>([]);
   const [sectionsTitle, setSectionsTitle] = useState<string[]>();
 
@@ -30,11 +30,11 @@ const PrintSurvey: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (formMock && formMock.sections) {
+    if (formMock && formMock['survey-sections']) {
       const sections: FormI[] = [];
       const titles: string[] = [];
-      formMock.sections.map((section) => {
-        sections.push(generateForm(JSON.parse(section.schema), true));
+      formMock['survey-sections'].map((section) => {
+        sections.push(generateForm(JSON.parse(section.schema.json), true));
         titles.push(section.title);
       });
       setSectionsForm(sections);

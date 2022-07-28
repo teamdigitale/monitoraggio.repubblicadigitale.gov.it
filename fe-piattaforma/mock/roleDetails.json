@@ -1,0 +1,99 @@
+{
+  "data": {
+    "dettaglioRuolo": {
+      "nome": "DTD AMMINISTRATORE",
+      "stato": "ATTIVO",
+      "tipologia": "NP"
+    },
+    "dettaglioGruppi": [
+      {
+        "codice": "ACC.DSHB.SELF",
+        "descrizione": "accesso al tool di self BI"
+      },
+      {
+        "codice": "ASS.QUEST",
+        "descrizione": "associazione questionari"
+      },
+      {
+        "codice": "ASS.RUOLI",
+        "descrizione": "associazione ruoli utenti"
+      },
+      {
+        "codice": "ATT.TERM.PRGT",
+        "descrizione": "attivazione e terminazione progetti"
+      },
+      {
+        "codice": "DATI.UTENTI",
+        "descrizione": "i tuoi dati personali"
+      },
+      {
+        "codice": "GEST.RUOLI_CUSTOM",
+        "descrizione": "gestione ruoli custom"
+      },
+      {
+        "codice": "MOD.PARTNER",
+        "descrizione": "modifica enti partner"
+      },
+      {
+        "codice": "MOD.PRGM",
+        "descrizione": "modifica programmi"
+      },
+      {
+        "codice": "MOD.PRGT",
+        "descrizione": "modifica progetti"
+      },
+      {
+        "codice": "RED.ENTI",
+        "descrizione": "redazione enti"
+      },
+      {
+        "codice": "RED.FAC_SEDI.PARTNER",
+        "descrizione": "redazione sedi e facilitatori a livello di enti partner"
+      },
+      {
+        "codice": "RED.FAC_SEDI.PRGT",
+        "descrizione": "redazione sedi e facilitatori a livello di enti gestori di progetti"
+      },
+      {
+        "codice": "RED.PARTNER",
+        "descrizione": "redazione enti partner"
+      },
+      {
+        "codice": "RED.PRGM",
+        "descrizione": "redazione programmi"
+      },
+      {
+        "codice": "RED.PRGT",
+        "descrizione": "redazione progetti"
+      },
+      {
+        "codice": "RED.QUEST.TEMPL",
+        "descrizione": "redazione template questionari"
+      },
+      {
+        "codice": "RED.UTENTI",
+        "descrizione": "redazione utenti"
+      },
+      {
+        "codice": "VIS_ENTE",
+        "descrizione": "visualizzazione enti"
+      },
+      {
+        "codice": "VIS.DSHB",
+        "descrizione": "visualizzazione dashboard"
+      },
+      {
+        "codice": "VIS.PRGM.PRGT",
+        "descrizione": "visualizzazione programmi e progetti"
+      },
+      {
+        "codice": "VIS.QUEST.TEMPL",
+        "descrizione": "visualizzazione template questionari"
+      },
+      {
+        "codice": "VIS.UTENTI",
+        "descrizione": "visualizzazione utenti"
+      }
+    ]
+  }
+}

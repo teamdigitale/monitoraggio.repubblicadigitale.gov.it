@@ -29,19 +29,17 @@ import { CardStatusAction } from '../../../../../components';
 import ManageFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/ManageFacilitator/ManageFacilitator';
 import FormFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/FormFacilitator/FormFacilitator';
 import { formFieldI } from '../../../../../utils/formHelper';
-import AddUserRole from "../modals/addUserRole";
+import AddUserRole from '../modals/addUserRole';
 import {
   GetUserDetails,
-  UserDeleteRole
-} from "../../../../../redux/features/administrativeArea/user/userThunk";
+  UserDeleteRole,
+} from '../../../../../redux/features/administrativeArea/user/userThunk';
+import useGuard from '../../../../../hooks/guard';
 
 const UsersDetails = () => {
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
   const [currentModal, setCorrectModal] = useState<React.ReactElement>();
   const [itemList, setItemList] = useState<ItemsListI | null>();
-  const [correctButtons, setCorrectButtons] = useState<ButtonInButtonsBar[]>(
-    []
-  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userDetails = useAppSelector(selectUsers)?.detail;
@@ -50,6 +48,7 @@ const UsersDetails = () => {
   const { mediaIsDesktop /* mediaIsPhone */ } = useAppSelector(selectDevice);
   const headquarterInfo = userInfo?.authorityRef || undefined;
   const { entityId, userType, userId, projectId } = useParams();
+  const { hasUserPermission } = useGuard();
 
   useEffect(() => {
     //if (userId) dispatch(GetUserDetails(userId));
@@ -112,28 +111,6 @@ const UsersDetails = () => {
         },
       ],
     });
-    setCorrectButtons([
-      {
-        size: 'xs',
-        color: 'primary',
-        outline: true,
-        text: 'Elimina',
-        disabled: getUserStatus() === 'ATTIVO',
-        onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
-      },
-      {
-        size: 'xs',
-        color: 'primary',
-        text: 'Modifica',
-        onClick: () =>
-          dispatch(
-            openModal({
-              id: getModalID(),
-              payload: { title: getModalPayload(), codiceFiscale: userId },
-            })
-          ),
-      },
-    ]);
   }, [mediaIsDesktop, userInfo]);
 
   const getUpperTitle = () => {
@@ -205,9 +182,7 @@ const UsersDetails = () => {
 
   const handleDeleteUserRole = async (ruolo: string) => {
     if (userId) {
-      const res = await dispatch(
-        UserDeleteRole({ cfUtente: userId, ruolo })
-      );
+      const res = await dispatch(UserDeleteRole({ cfUtente: userId, ruolo }));
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       if (res) {
@@ -215,6 +190,43 @@ const UsersDetails = () => {
       }
     }
   };
+
+  const buttons: ButtonInButtonsBar[] = hasUserPermission(['upd.anag.utenti'])
+    ? [
+        {
+          size: 'xs',
+          color: 'primary',
+          outline: true,
+          text: 'Elimina',
+          disabled: getUserStatus() === 'ATTIVO',
+          onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+        },
+        {
+          size: 'xs',
+          color: 'primary',
+          text: 'Modifica',
+          onClick: () =>
+            dispatch(
+              openModal({
+                id: getModalID(),
+                payload: {
+                  title: getModalPayload(),
+                  codiceFiscale: userId,
+                },
+              })
+            ),
+        },
+      ]
+    : [
+        {
+          size: 'xs',
+          color: 'primary',
+          outline: true,
+          text: 'Elimina',
+          disabled: getUserStatus() === 'ATTIVO',
+          onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+        },
+      ];
 
   return (
     <div className='d-flex flex-row'>
@@ -230,7 +242,7 @@ const UsersDetails = () => {
               name: userInfo?.nome,
               surname: userInfo?.cognome,
             }}
-            formButtons={correctButtons}
+            formButtons={buttons}
             itemsList={itemList}
             buttonsPosition={'BOTTOM'}
             goBackPath='/area-amministrativa/utenti'
@@ -241,29 +253,27 @@ const UsersDetails = () => {
           userRoles?.length &&
           userType === 'utenti' ? (
             <div className={clsx('my-5')}>
-              <div
-                className={clsx('w-100', 'position-relative')}
-              >
-                <h5 className={clsx('primary-color', 'mb-4')}>Ruoli</h5>
-                <div className='d-flex cta-buttons'>
-                  <Button
-                    onClick={() => (
-                      dispatch(openModal({ id: 'AddUserRole' }))
-                    )}
-                    className='d-flex justify-content-between'
-                    type='button'
-                  >
-                    <Icon
-                      color='primary'
-                      icon='it-plus-circle'
-                      size='sm'
-                      className='mr-2'
-                      aria-label='Aggiungi'
-                    />
-                    Aggiungi ruolo
-                  </Button>
+              {hasUserPermission(['add.del.ruolo.utente']) ? (
+                <div className={clsx('w-100', 'position-relative')}>
+                  <h5 className={clsx('primary-color', 'mb-4')}>Ruoli</h5>
+                  <div className='d-flex cta-buttons'>
+                    <Button
+                      onClick={() => dispatch(openModal({ id: 'AddUserRole' }))}
+                      className='d-flex justify-content-between'
+                      type='button'
+                    >
+                      <Icon
+                        color='primary'
+                        icon='it-plus-circle'
+                        size='sm'
+                        className='mr-2'
+                        aria-label='Aggiungi'
+                      />
+                      Aggiungi ruolo
+                    </Button>
+                  </div>
                 </div>
-              </div>
+              ) : null}
               {userRoles.map((role: any) => {
                 let roleActions = {};
                 if (role.id) {
@@ -272,13 +282,15 @@ const UsersDetails = () => {
                       navigate(`/area-amministrativa/programmi/${role?.id}`, {
                         replace: true,
                       }),
-                  }
+                  };
                 } else {
-                  roleActions = {
-                    [CRUDActionTypes.DELETE]: () => {
-                      handleDeleteUserRole(role.codiceRuolo || role.nome);
-                    },
-                  }
+                  roleActions = hasUserPermission(['add.del.ruolo.utente'])
+                    ? {
+                        [CRUDActionTypes.DELETE]: () => {
+                          handleDeleteUserRole(role.codiceRuolo || role.nome);
+                        },
+                      }
+                    : {};
                 }
                 return (
                   <CardStatusAction
@@ -289,9 +301,8 @@ const UsersDetails = () => {
                     fullInfo={role.stato && { ruoli: role.ruolo }}
                     onActionClick={roleActions}
                   />
-                )
-              }
-              )}
+                );
+              })}
             </div>
           ) : null}
           {currentModal ? currentModal : null}
