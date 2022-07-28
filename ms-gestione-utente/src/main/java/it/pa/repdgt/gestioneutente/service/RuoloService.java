@@ -179,6 +179,7 @@ public class RuoloService {
 		DettaglioRuoloBean dettaglioRuolo = new DettaglioRuoloBean();
 		dettaglioRuolo.setNome(ruoloFetchDB.getNome());
 		dettaglioRuolo.setStato(ruoloFetchDB.getStato());
+		dettaglioRuolo.setTipologia(ruoloFetchDB.getPredefinito() ? "P" : "NP");
 		
 		List<GruppoEntity> listaGruppiPerRuolo = this.gruppoService.getGruppiByRuolo(codiceRuolo);
 		List<DettaglioGruppiBean> listaDettaglioGruppi = listaGruppiPerRuolo.stream()

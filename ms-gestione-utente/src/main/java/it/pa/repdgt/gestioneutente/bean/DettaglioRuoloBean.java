@@ -8,4 +8,5 @@ import lombok.Setter;
 public class DettaglioRuoloBean {
 	private String nome;
 	private String stato;
+	private String tipologia;
 }
