@@ -42,6 +42,8 @@ public class QuestionarioTemplateService {
 	@Autowired
 	private QuestionarioTemplateSqlService questionarioTemplateSqlService;
 	@Autowired
+	private ProgrammaXQuestionarioTemplateService programmaXQuestionarioTemplateService;
+	@Autowired
 	private RuoloService ruoloService;
 	@Autowired
 	private QuestionarioTemplateRepository questionarioTemplateRepository;
@@ -282,37 +284,49 @@ public class QuestionarioTemplateService {
 
 	@LogMethod
 	@LogExecutionTime
+	@Transactional(rollbackOn = Exception.class)
 	public void cancellaQuestionarioTemplate(
 			@NotNull(message = "id questionario template deve essere non null") final String idQuestioanarioTemplate) {
-		QuestionarioTemplateCollection questionarioTemplateDaCancellare = null;
+		QuestionarioTemplateCollection questionarioTemplateMongoDaCancellare = null;
+		QuestionarioTemplateEntity questionarioTemplateMysqlDaCancellare = null;
 
-		// Verifico se esiste questionarioTemplate da cancellare
+		// Verifico se esiste contemporanemaente record questionarioTemplate da cancellare :
+		// -> su MongoDB 
+		// -> su MySql
+		// In caso negativo in almeno uno dei due db, lancio eccezione
+		String messaggioErrore = null;
 		try {
-			questionarioTemplateDaCancellare = this.getQuestionarioTemplateById(idQuestioanarioTemplate);
+			questionarioTemplateMongoDaCancellare = this.getQuestionarioTemplateById(idQuestioanarioTemplate);
+			questionarioTemplateMysqlDaCancellare = this.questionarioTemplateSqlService.getQuestionarioTemplateById(idQuestioanarioTemplate);
 		} catch (ResourceNotFoundException ex) {
-			final String messaggioErrore = String.format("Impossibile aggiornare il questionario. Questionario con id='%s' non esiste.", idQuestioanarioTemplate);
+			messaggioErrore = String.format("Impossibile cancellare il questionario. Questionario con id='%s' non esiste.", idQuestioanarioTemplate);
 			throw new QuestionarioTemplateException(messaggioErrore, ex);
 		}
 
-		final String statoQuestionario = questionarioTemplateDaCancellare.getStato();
-		// Verifico se è possibile cancellare il questionario template in base al ciclo di vita
-		if(!this.isQuestionarioTemplateCancellabileByStato(statoQuestionario)) {
-			final String messaggioErrore = String.format("Impossibile cancellare il questionario con id '%s'. Stato questionario = '%s'.",
-					idQuestioanarioTemplate, statoQuestionario);
+		// Verifico se è possibile cancellare il questionario template
+		// e in caso negativo lancio eccezione
+		if(!this.isQuestionarioTemplateCancellabile(questionarioTemplateMysqlDaCancellare)) {
+			messaggioErrore = String.format("Impossibile cancellare il questionario con id '%s'. "
+					+ "Stato del questionario diverso da 'NON ATTIVO' oppure è un questionario di default per policy RFD o SCD", idQuestioanarioTemplate);
 			throw new QuestionarioTemplateException(messaggioErrore);
 		}
-		// Allineamento questionario template su mysql
-		final QuestionarioTemplateEntity questionarioTemplateEntity = this.questionarioTemplateMapper.toEntityFrom(questionarioTemplateDaCancellare);
-		this.questionarioTemplateSqlService.cancellaQuestionarioTemplate(questionarioTemplateEntity);
-
-		// Cancellazione questionario template su MongoDB
+		
+		// 1. Cancellazione record di associazioni programmma_x_questioanario_template (id_programma, id_questionario_template)
+		this.programmaXQuestionarioTemplateService.deleteByQuestionarioTemplate(idQuestioanarioTemplate);
+		// 2. Cancellazione del questionario template su mysql
+		this.questionarioTemplateSqlService.cancellaQuestionarioTemplate(idQuestioanarioTemplate);
+		// 3. Cancellazione del questionario template su MongoDB
 		this.questionarioTemplateRepository.deleteByIdQuestionarioTemplate(idQuestioanarioTemplate);
 	}
 
 	@LogMethod
 	@LogExecutionTime
-	public boolean isQuestionarioTemplateCancellabileByStato(@NotNull final String statoQuestionario) {
-		return StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(statoQuestionario);
+	public boolean isQuestionarioTemplateCancellabile(@NotNull final QuestionarioTemplateEntity questionarioTemplate) {
+		return ( 
+				     StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(questionarioTemplate.getStato())
+				  && questionarioTemplate.getDefaultRFD() == Boolean.FALSE
+				  && questionarioTemplate.getDefaultSCD() == Boolean.FALSE
+				);
 	}
 
 	@LogMethod

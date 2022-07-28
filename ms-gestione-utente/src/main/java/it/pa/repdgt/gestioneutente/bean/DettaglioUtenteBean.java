@@ -15,5 +15,4 @@ public class DettaglioUtenteBean {
 	private String Stato;
 	private String tipoContratto;
 	private String mansione;
-	
 }

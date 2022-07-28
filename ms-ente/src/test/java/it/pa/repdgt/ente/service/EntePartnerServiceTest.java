@@ -6,6 +6,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +21,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
 
+import it.pa.repdgt.ente.bean.EntePartnerUploadBean;
 import it.pa.repdgt.ente.exception.EnteException;
+import it.pa.repdgt.ente.exception.ResourceNotFoundException;
 import it.pa.repdgt.ente.repository.EntePartnerRepository;
 import it.pa.repdgt.ente.request.ReferenteDelegatoPartnerRequest;
 import it.pa.repdgt.shared.entity.EnteEntity;
@@ -63,13 +69,22 @@ public class EntePartnerServiceTest {
 	ReferenteDelegatoPartnerRequest referenteDelegatoPartnerRequest;
 	List<Long> listaIdEntiPartner;
 	RuoloEntity ruolo1;
+	MockMultipartFile file;
+	EntePartnerUploadBean entePartnerUploadBean;
+	List<EntePartnerUploadBean> listaEntePartnerUploadBeans;
+	byte[] data;
+	InputStream stream;
 	
 	@BeforeEach
-	public void setUp() {
+	public void setUp() throws IOException {
 		progetto1 = new ProgettoEntity();
 		progetto1.setId(1L);
 		ente1 = new EnteEntity();
 		ente1.setId(1L);
+		ente1.setNome("ente1");
+		ente1.setNomeBreve("ente1Breve");
+		ente1.setPiva("3299329");
+		ente1.setSedeLegale("via legale");
 		entePartnerKey = new EntePartnerKey(progetto1.getId(), ente1.getId());
 		entePartnerEntity = new EntePartnerEntity();
 		entePartnerEntity.setId(entePartnerKey);
@@ -92,6 +107,13 @@ public class EntePartnerServiceTest {
 		listaIdEntiPartner.add(ente1.getId());
 		ruolo1 = new RuoloEntity();
 		ruolo1.setCodice("DEPP");
+		data = new byte[] {1, 2, 3, 4};
+		stream = new ByteArrayInputStream(data);
+		file = new MockMultipartFile("test", stream);
+		entePartnerUploadBean = new EntePartnerUploadBean(ente1.getNome(), ente1.getNomeBreve(), ente1.getPiva(), ente1.getSedeLegale());
+		listaEntePartnerUploadBeans = new ArrayList<>();
+		listaEntePartnerUploadBeans.add(entePartnerUploadBean);
+		
 	}
 	
 	@Test
@@ -175,5 +197,63 @@ public class EntePartnerServiceTest {
 		when(this.referentiDelegatiEntePartnerDiProgettoService.esisteById(Mockito.any(ReferentiDelegatiEntePartnerDiProgettoKey.class))).thenReturn(false);
 		when(this.ruoloService.getRuoloByCodiceRuolo(referenteDelegatoPartnerRequest.getCodiceRuolo())).thenReturn(ruolo1);
 		entePartnerService.associaReferenteODelegatoPartner(referenteDelegatoPartnerRequest);
+	}
+	
+	@Test
+	public void associaReferenteODelegatoPartnerKOTest() {
+		//test KO per progetto inesistente
+		when(this.progettoService.esisteProgettoById(referenteDelegatoPartnerRequest.getIdProgetto())).thenReturn(false);
+		Assertions.assertThrows(EnteException.class, () -> 	entePartnerService.associaReferenteODelegatoPartner(referenteDelegatoPartnerRequest));
+		assertThatExceptionOfType(EnteException.class);
+		
+		//test KO per ente inesistente
+		when(this.progettoService.esisteProgettoById(referenteDelegatoPartnerRequest.getIdProgetto())).thenReturn(true);
+		when(this.enteService.esisteEnteById(referenteDelegatoPartnerRequest.getIdEntePartner())).thenReturn(false);
+		Assertions.assertThrows(EnteException.class, () -> 	entePartnerService.associaReferenteODelegatoPartner(referenteDelegatoPartnerRequest));
+		assertThatExceptionOfType(EnteException.class);
+		
+		//test KO per assenza di associazione tra progetto e ente partner
+		when(this.progettoService.esisteProgettoById(referenteDelegatoPartnerRequest.getIdProgetto())).thenReturn(true);
+		when(this.enteService.esisteEnteById(referenteDelegatoPartnerRequest.getIdEntePartner())).thenReturn(true);
+		when(this.entePartnerRepository.findEntiPartnerByProgetto(progetto1.getId())).thenReturn(new ArrayList<>());
+		Assertions.assertThrows(EnteException.class, () -> 	entePartnerService.associaReferenteODelegatoPartner(referenteDelegatoPartnerRequest));
+		assertThatExceptionOfType(EnteException.class);
+		
+		//test KO per utente inesistente
+		when(this.progettoService.esisteProgettoById(referenteDelegatoPartnerRequest.getIdProgetto())).thenReturn(true);
+		when(this.enteService.esisteEnteById(referenteDelegatoPartnerRequest.getIdEntePartner())).thenReturn(true);
+		when(this.entePartnerRepository.findEntiPartnerByProgetto(progetto1.getId())).thenReturn(listaIdEntiPartner);
+		when(this.utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenThrow(ResourceNotFoundException.class);
+		Assertions.assertThrows(EnteException.class, () -> 	entePartnerService.associaReferenteODelegatoPartner(referenteDelegatoPartnerRequest));
+		assertThatExceptionOfType(EnteException.class);
+	}
+	
+	@Test
+	public void associaReferenteODelegatoPartnerKOTest2() {
+		//test KO per codice ruolo errato
+		referenteDelegatoPartnerRequest.setCodiceRuolo("DSCU");
+		when(this.progettoService.esisteProgettoById(referenteDelegatoPartnerRequest.getIdProgetto())).thenReturn(true);
+		when(this.enteService.esisteEnteById(referenteDelegatoPartnerRequest.getIdEntePartner())).thenReturn(true);
+		when(this.entePartnerRepository.findEntiPartnerByProgetto(progetto1.getId())).thenReturn(listaIdEntiPartner);
+		when(this.utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
+		Assertions.assertThrows(EnteException.class, () -> 	entePartnerService.associaReferenteODelegatoPartner(referenteDelegatoPartnerRequest));
+		assertThatExceptionOfType(EnteException.class);
+	}
+	
+	@Test
+	public void associaReferenteODelegatoPartnerKOTest3() {
+		//test KO per associazione referente/delegato già esistente
+		when(this.progettoService.esisteProgettoById(referenteDelegatoPartnerRequest.getIdProgetto())).thenReturn(true);
+		when(this.enteService.esisteEnteById(referenteDelegatoPartnerRequest.getIdEntePartner())).thenReturn(true);
+		when(this.entePartnerRepository.findEntiPartnerByProgetto(progetto1.getId())).thenReturn(listaIdEntiPartner);
+		when(this.utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
+		when(this.referentiDelegatiEntePartnerDiProgettoService.esisteById(Mockito.any(ReferentiDelegatiEntePartnerDiProgettoKey.class))).thenReturn(true);
+		Assertions.assertThrows(EnteException.class, () -> 	entePartnerService.associaReferenteODelegatoPartner(referenteDelegatoPartnerRequest));
+		assertThatExceptionOfType(EnteException.class);
+	}
+	
+	@Test
+	public void caricaEntiPartnerTest() throws IOException {
+		entePartnerService.caricaEntiPartner(file, progetto1.getId());
 	}
 }
