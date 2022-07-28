@@ -35,5 +35,4 @@ public class RequestFilter implements Filter {
 	public void destroy() {
 		log.debug("Filter - destroy");
 	}
-
 }

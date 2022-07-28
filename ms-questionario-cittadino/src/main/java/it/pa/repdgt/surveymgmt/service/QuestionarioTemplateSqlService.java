@@ -146,16 +146,8 @@ public class QuestionarioTemplateSqlService {
 	@LogExecutionTime
 	@Transactional(rollbackFor = Exception.class)
 	public void cancellaQuestionarioTemplate(
-			@NotNull final QuestionarioTemplateEntity questionarioTemplateEntity) {
-		final String idQuestionarioTemplate = questionarioTemplateEntity.getId();
-		final Optional<QuestionarioTemplateEntity> questionarioDBFetch = this.templateQuestionarioSqlRepository.findById(idQuestionarioTemplate);
-
-		//  Verifico se esiste il questionarioTemplate 
-		if(!questionarioDBFetch.isPresent()) {
-			final String messaggioErrore = String.format("Impossibile cancellare il questionario. Questionario con id='%s' non presente", idQuestionarioTemplate);
-			throw new QuestionarioTemplateException(messaggioErrore);
-		}
-		this.templateQuestionarioSqlRepository.delete(questionarioTemplateEntity);
+			@NotNull final String questionarioTemplateId) {
+		this.templateQuestionarioSqlRepository.deleteById(questionarioTemplateId);
 	}
 
 	@LogMethod

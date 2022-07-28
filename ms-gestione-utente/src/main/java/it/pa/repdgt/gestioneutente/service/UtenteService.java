@@ -273,13 +273,14 @@ public class UtenteService {
 	
 	@LogExecutionTime
 	@LogMethod
+	@Transactional
 	public UtenteEntity creaNuovoUtente(UtenteEntity utente, String codiceRuolo) {
 //		if(isEmailDuplicata(utente.getEmail(), utente.getCodiceFiscale())) {
 //			throw new UtenteException("ERRORE: non possono esistere a sistema due email per due utenti diversi");
 //		}
-		Optional<UtenteEntity> oldUtente = this.utenteRepository.findByCodiceFiscale(utente.getCodiceFiscale());
-		if(oldUtente.isPresent()) {
-			utente.setId(oldUtente.get().getId());
+		Optional<UtenteEntity> utenteDBFetch = this.utenteRepository.findByCodiceFiscale(utente.getCodiceFiscale());
+		if(utenteDBFetch.isPresent()) {
+			new UtenteException(String.format("Utente con codice fiscale '%s' già esistente", utente.getCodiceFiscale()));
 		}
 		utente.setStato(StatoEnum.ATTIVO.getValue());
 		RuoloEntity ruolo = this.ruoloService.getRuoloByCodiceRuolo(codiceRuolo);
@@ -663,6 +664,7 @@ public class UtenteService {
 										if(mappaProgrammiProgettiUtente.get(ruolo).isEmpty()) {
 											DettaglioRuoliBean dettaglioRuolo = new DettaglioRuoliBean();
 											dettaglioRuolo.setNome(ruolo.getNome());
+											dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
 											listaDettaglioRuoli.add(dettaglioRuolo);
 										}
 										List<Long> listaIds = mappaProgrammiProgettiUtente.get(ruolo);
@@ -676,6 +678,7 @@ public class UtenteService {
 													ProgrammaEntity programmaFetchDB = this.programmaService.getProgrammaById(id);
 													dettaglioRuolo.setId(id);
 													dettaglioRuolo.setNome(programmaFetchDB.getNome());
+													dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
 													dettaglioRuolo.setRuolo(ruolo.getNome());
 													dettaglioRuolo.setStatoP(programmaFetchDB.getStato());
 													List<String> listaRecRefProg = referentiDelegatiEnteGestoreProgrammaRepository
@@ -694,6 +697,7 @@ public class UtenteService {
 													ProgettoEntity progettoXEgpFetchDB = this.progettoService.getProgettoById(id);
 													dettaglioRuolo.setId(id);
 													dettaglioRuolo.setNome(progettoXEgpFetchDB.getNome());
+													dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
 													dettaglioRuolo.setRuolo(ruolo.getNome());
 													dettaglioRuolo.setStatoP(progettoXEgpFetchDB.getStato());
 													List<String> listaRecRefProgt = referentiDelegatiEnteGestoreProgettoRepository
@@ -712,6 +716,7 @@ public class UtenteService {
 													ProgettoEntity progettoXEppFetchDB = this.progettoService.getProgettoById(id);
 													dettaglioRuolo.setId(id);
 													dettaglioRuolo.setNome(progettoXEppFetchDB.getNome());
+													dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
 													dettaglioRuolo.setRuolo(ruolo.getNome());
 													dettaglioRuolo.setStatoP(progettoXEppFetchDB.getStato());
 													List<String> listaRecRefPart = referentiDelegatiEntePartnerDiProgettoRepository
@@ -730,6 +735,7 @@ public class UtenteService {
 													ProgettoEntity progettoXFacFetchDB = this.progettoService.getProgettoById(id);
 													dettaglioRuolo.setId(id);
 													dettaglioRuolo.setNome(progettoXFacFetchDB.getNome());
+													dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
 													dettaglioRuolo.setRuolo(ruolo.getNome());
 													dettaglioRuolo.setStatoP(progettoXFacFetchDB.getStato());
 													List<String> listaRecRefFacVol = this.enteSedeProgettoFacilitatoreService
@@ -745,6 +751,7 @@ public class UtenteService {
 													break;
 												default:
 													dettaglioRuolo.setNome(ruolo.getNome());
+													dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
 													listaDettaglioRuoli.add(dettaglioRuolo);
 													break;
 												}

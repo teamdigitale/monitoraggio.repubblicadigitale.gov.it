@@ -55,7 +55,7 @@ public class QuestionarioTemplateRequest implements Serializable {
 		@JsonString
 		private String schema;
 		
-		@JsonProperty(value = "schemaUI")
+		@JsonProperty(value = "schemaui")
 		@JsonString
 		private String schemaui;
 	}

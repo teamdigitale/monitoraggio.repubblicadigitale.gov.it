@@ -18,6 +18,12 @@ public class GruppoService {
 	
 	@LogMethod
 	@LogExecutionTime
+	public List<GruppoEntity> getAllGruppi() {
+		return this.gruppoRepository.findAll();
+	}
+	
+	@LogMethod
+	@LogExecutionTime
 	public GruppoEntity getGruppoByCodice(String codiceGruppo) {
 		String messaggioErrore = String.format("Gruppo con codice=%s non presente", codiceGruppo);
 		

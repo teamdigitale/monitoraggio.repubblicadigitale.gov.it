@@ -33,7 +33,7 @@ public class RuoloRestApi {
 	@Autowired
 	private RuoloMapper ruoloMapper;
 	
-	// TOUCH POINT - 1.3.7 B 
+	// TOUCH POINT - 1.3.7 B
 	@GetMapping
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<RuoloLightResource>  getAllRuoliByTipologia(
