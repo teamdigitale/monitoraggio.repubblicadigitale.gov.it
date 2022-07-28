@@ -207,11 +207,13 @@ const Authorities: React.FC = () => {
     title: 'Cerca progetto',
   };
 
-  const onActionClick: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(`${typeof td === 'string' ? td : td.id}`);
-    },
-  };
+  const onActionClick: CRUDActionsI = hasUserPermission(['view.card.enti'])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(`${typeof td === 'string' ? td : td.id}`);
+        },
+      }
+    : {};
 
   return (
     <GenericSearchFilterTableLayout

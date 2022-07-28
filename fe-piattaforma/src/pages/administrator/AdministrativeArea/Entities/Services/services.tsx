@@ -37,6 +37,7 @@ import {
   DownloadEntityValuesQueryParams,
   GetEntityFilterQueryParamsValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
+import useGuard from '../../../../../hooks/guard';
 
 const entity = 'servizio';
 const statusDropdownLabel = 'stato';
@@ -54,6 +55,8 @@ const Services = () => {
   >([]);
   const [filterDropdownSelected, setFilterDropdownSelected] =
     useState<string>('');
+
+  const { hasUserPermission } = useGuard();
 
   const { criterioRicerca, policies, stato, tipologiaServizio } = filtersList;
 
@@ -186,11 +189,13 @@ const Services = () => {
     title: 'Cerca programma',
   };
 
-  const onActionClick: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(`${typeof td === 'string' ? td : td?.id}/info`);
-    },
-  };
+  const onActionClick: CRUDActionsI = hasUserPermission(['view.card.serv'])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(`${typeof td === 'string' ? td : td?.id}/info`);
+        },
+      }
+    : {};
 
   const newService = () => {
     dispatch(
@@ -220,8 +225,10 @@ const Services = () => {
       dropdowns={dropdowns}
       filtersList={filtersList}
       {...servicesCta}
-      cta={newService}
-      ctaDownload={handleDownloadList}
+      cta={hasUserPermission(['new.serv']) ? newService : undefined}
+      ctaDownload={
+        hasUserPermission(['list.dwnl.serv']) ? handleDownloadList : undefined
+      }
       resetFilterDropdownSelected={(filterKey: string) =>
         setFilterDropdownSelected(filterKey)
       }
@@ -238,17 +245,24 @@ const Services = () => {
               withActions
               totalCounter={pagination?.totalElements}
             />
-            <Paginator
-              activePage={pagination?.pageNumber}
-              center
-              refID='#table'
-              pageSize={pagination?.pageSize}
-              total={servicesList.length}
-              onChange={handleOnChangePage}
-            />
+            {pagination?.pageNumber ? (
+              <Paginator
+                activePage={pagination?.pageNumber}
+                center
+                refID='#table'
+                pageSize={pagination?.pageSize}
+                total={pagination?.totalPages}
+                onChange={handleOnChangePage}
+              />
+            ) : null}
           </>
         ) : (
-          <EmptySection title='Non ci sono servizi' />
+          <EmptySection
+            title='Non ci sono servizi'
+            subtitle='associati al tuo ruolo'
+            icon='it-note'
+            withIcon
+          />
         )}
       </div>
       <ManageServices creation />

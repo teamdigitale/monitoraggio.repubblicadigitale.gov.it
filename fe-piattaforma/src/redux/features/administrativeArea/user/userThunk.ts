@@ -232,18 +232,20 @@ const UserDeleteRoleAction = {
 };
 export const UserDeleteRole =
   (payload: { cfUtente: string; ruolo: string }) =>
-    async (dispatch: Dispatch) => {
-      try {
-        dispatch(showLoader());
-        dispatch({ ...UserDeleteRoleAction, payload });
-        const { cfUtente, ruolo } = payload;
-        const res = await API.delete(`/utente/${cfUtente}/cancellaRuolo/${ruolo}`);
-        if (res) {
-          return true;
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        dispatch(hideLoader());
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...UserDeleteRoleAction, payload });
+      const { cfUtente, ruolo } = payload;
+      const res = await API.delete(
+        `/utente/${cfUtente}/cancellaRuolo/${ruolo}`
+      );
+      if (res) {
+        return true;
       }
-    };
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };

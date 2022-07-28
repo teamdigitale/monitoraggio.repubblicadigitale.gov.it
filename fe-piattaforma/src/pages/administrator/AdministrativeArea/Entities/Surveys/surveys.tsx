@@ -42,6 +42,7 @@ import {
   UpdateSurveyExclusiveField,
 } from '../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 import { formatDate } from '../../../../../utils/datesHelper';
+import useGuard from '../../../../../hooks/guard';
 
 const entity = 'questionarioTemplate';
 const statusDropdownLabel = 'stato';
@@ -58,6 +59,8 @@ const Surveys = () => {
   >([]);
   const [filterDropdownSelected, setFilterDropdownSelected] =
     useState<string>('');
+
+  const { hasUserPermission } = useGuard();
 
   const { criterioRicerca, stato } = filtersList;
 
@@ -85,7 +88,7 @@ const Surveys = () => {
               disabled={false}
               checked={td.defaultSCD}
               onChange={(e) =>
-                handleToggleChange('scd', e.target.checked, td.id)
+                handleToggleChange('SCD', e.target.checked, td.id)
               }
             />
             <span id={`toggle-SCD-${td.id}`} className='d-none'>
@@ -101,7 +104,7 @@ const Surveys = () => {
               disabled={false}
               checked={td.defaultRFD}
               onChange={(e) =>
-                handleToggleChange('rfd', e.target.checked, td.id)
+                handleToggleChange('RFD', e.target.checked, td.id)
               }
             />
             <span id={`toggle-RFD-${td.id}`} className='d-none'>
@@ -183,7 +186,7 @@ const Surveys = () => {
 
   // HANDLE TOGGLE CHANGE for SCD and RFD
   const handleToggleChange = async (
-    flagType: 'scd' | 'rfd',
+    flagType: 'SCD' | 'RFD',
     flagChecked: boolean,
     surveyId: string
   ) => {
@@ -251,30 +254,55 @@ const Surveys = () => {
     },
   ];
 
-  const onActionClick: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        `/area-amministrativa/questionari/${
-          typeof td !== 'string' ? td.id : td
-        }`
-      );
-    },
-    [CRUDActionTypes.CLONE]: (td: TableRowI | string) => {
-      // TODO: chiamata per clonare questionario
-      navigate(
-        `/area-amministrativa/questionari/${
-          typeof td !== 'string' ? td.id : td
-        }/clona`
-      );
-    },
-  };
+  const onActionClick: CRUDActionsI = hasUserPermission([
+    'view.quest.templ',
+    'new.quest.templ',
+  ])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            `/area-amministrativa/questionari/${
+              typeof td !== 'string' ? td.id : td
+            }`
+          );
+        },
+        [CRUDActionTypes.CLONE]: (td: TableRowI | string) => {
+          // TODO: chiamata per clonare questionario
+          navigate(
+            `/area-amministrativa/questionari/${
+              typeof td !== 'string' ? td.id : td
+            }/clona`
+          );
+        },
+      }
+    : hasUserPermission(['view.quest.templ'])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            `/area-amministrativa/questionari/${
+              typeof td !== 'string' ? td.id : td
+            }`
+          );
+        },
+      }
+    : hasUserPermission(['new.quest.templ'])
+    ? {
+        [CRUDActionTypes.CLONE]: (td: TableRowI | string) => {
+          // TODO: chiamata per clonare questionario
+          navigate(
+            `/area-amministrativa/questionari/${
+              typeof td !== 'string' ? td.id : td
+            }/clona`
+          );
+        },
+      }
+    : {};
 
   const objectToPass =
     filter.value === 'questionnaire'
       ? { ...questionaraireCta }
       : { ...addendumCta };
 
-  //const device = useAppSelector(selectDevice);
 
   return (
     /*  <div className={clsx(device.mediaIsDesktop && 'row')}>
@@ -319,17 +347,24 @@ const Surveys = () => {
                 withActions
                 totalCounter={pagination?.totalElements}
               />
-              <Paginator
-                activePage={pagination?.pageNumber}
-                center
-                refID='#table'
-                pageSize={pagination?.pageSize}
-                total={questionariList.list.length}
-                onChange={handleOnChangePage}
-              />
+              {pagination?.pageNumber ? (
+                <Paginator
+                  activePage={pagination?.pageNumber}
+                  center
+                  refID='#table'
+                  pageSize={pagination?.pageSize}
+                  total={pagination?.totalPages}
+                  onChange={handleOnChangePage}
+                />
+              ) : null}
             </>
           ) : (
-            <EmptySection title='Non ci sono questionari' />
+            <EmptySection
+              title='Non ci sono questionari'
+              subtitle='associati al tuo ruolo'
+              icon='it-note'
+              withIcon
+            />
           )}
         </div>
       </GenericSearchFilterTableLayout>

@@ -256,7 +256,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
             </div>
             <div className='d-flex flex-column'>
               <span>Tipologia risposta</span>
-              {(!editMode || !cloneMode) && form['question-default']?.value ? (
+              {(!editMode && !cloneMode) || form['question-default']?.value ? (
                 <span className='ml-2'>
                   <strong>
                     {

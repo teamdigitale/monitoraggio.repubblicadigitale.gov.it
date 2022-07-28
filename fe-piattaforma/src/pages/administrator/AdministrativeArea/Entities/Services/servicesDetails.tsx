@@ -29,6 +29,7 @@ import {
 import { TableRowI } from '../../../../../components/Table/table';
 import CitizensList from './citizensList';
 import FormService from '../../../../forms/formServices/formService';
+import useGuard from '../../../../../hooks/guard';
 
 const tabs = {
   INFO: 'info',
@@ -54,6 +55,7 @@ const ServicesDetails = () => {
   const [content, setContent] = useState<React.ReactElement>();
   const [itemList, setItemList] = useState<ItemsListI | null>();
   const location = useLocation();
+  const { hasUserPermission } = useGuard();
 
   useEffect(() => {
     if (serviceId && serviceDetails?.dettaglioServizio?.nomeServizio) {
@@ -84,6 +86,7 @@ const ServicesDetails = () => {
     {
       size: 'xs',
       outline: true,
+      buttonClass: 'btn-secondary',
       color: 'primary',
       text: ' Carica lista cittadini',
       onClick: () => console.log('carica csv'),
@@ -164,33 +167,64 @@ const ServicesDetails = () => {
     dispatch(GetCitizenListServiceDetail(serviceId));
   }, []);
 
-  const buttons: ButtonInButtonsBar[] = [
-    {
-      size: 'xs',
-      outline: true,
-      color: 'primary',
-      text: 'Elimina',
-      onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
-    },
-    {
-      size: 'xs',
-      color: 'primary',
-      text: 'Modifica',
-      onClick: () =>
-        dispatch(
-          openModal({
-            id: formTypes.SERVICES,
-            payload: { title: 'Modifica servizio', idServizio: serviceId },
-          })
-        ),
-    },
-  ];
+  const buttons: ButtonInButtonsBar[] = hasUserPermission([
+    'upd.card.serv',
+    'del.serv',
+  ])
+    ? [
+        {
+          size: 'xs',
+          outline: true,
+          color: 'primary',
+          text: 'Elimina',
+          onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+        },
+        {
+          size: 'xs',
+          color: 'primary',
+          text: 'Modifica',
+          onClick: () =>
+            dispatch(
+              openModal({
+                id: formTypes.SERVICES,
+                payload: { title: 'Modifica servizio', idServizio: serviceId },
+              })
+            ),
+        },
+      ]
+    : hasUserPermission(['del.serv'])
+    ? [
+        {
+          size: 'xs',
+          outline: true,
+          color: 'primary',
+          text: 'Elimina',
+          onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+        },
+      ]
+    : hasUserPermission(['upd.card.serv'])
+    ? [
+        {
+          size: 'xs',
+          color: 'primary',
+          text: 'Modifica',
+          onClick: () =>
+            dispatch(
+              openModal({
+                id: formTypes.SERVICES,
+                payload: { title: 'Modifica servizio', idServizio: serviceId },
+              })
+            ),
+        },
+      ]
+    : [];
 
   const buttonsCitizen: ButtonInButtonsBar[] = [
     {
       size: 'xs',
       outline: true,
       color: 'primary',
+      buttonClass: 'btn-secondary',
       text: 'Stampa questionario',
       iconForButton: 'it-print',
       iconColor: 'primary',

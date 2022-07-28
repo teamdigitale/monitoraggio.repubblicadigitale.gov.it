@@ -154,6 +154,7 @@ const CitizensList: React.FC<CitizensListI> = ({ citizens }) => {
       text: 'Carica lista cittadini',
       outline: true,
       iconForButton: 'it-upload',
+      buttonClass: 'btn-secondary',
       iconColor: 'primary',
       color: 'primary',
     },

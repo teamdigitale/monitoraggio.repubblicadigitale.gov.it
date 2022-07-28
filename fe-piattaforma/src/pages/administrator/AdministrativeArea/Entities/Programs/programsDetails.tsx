@@ -26,12 +26,16 @@ import {
   selectPrograms,
   selectSurveys,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
-import { EmptySection, NavLink } from '../../../../../components';
+import {
+  Accordion,
+  CardStatusAction,
+  EmptySection,
+  NavLink,
+} from '../../../../../components';
 import ProgramlInfoAccordionForm from '../../../../forms/formPrograms/ProgramAccordionForm/ProgramInfoAccordionForm';
 import FormAuthorities from '../../../../forms/formAuthorities';
 import ManageDelegate from '../modals/manageDelegate';
 import ManageReferal from '../modals/manageReferal';
-import { GetAllSurveys } from '../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 import ManageProject from '../modals/manageProject';
 import {
   DeleteEntity,
@@ -52,6 +56,7 @@ import TerminateEntityModal from '../../../../../components/AdministrativeArea/E
 import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 import useGuard from '../../../../../hooks/guard';
 import { formFieldI } from '../../../../../utils/formHelper';
+import { GetSurveyAllLight } from '../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 
 const tabs = {
   INFO: 'info',
@@ -128,60 +133,83 @@ const ProgramsDetails: React.FC = () => {
     return `/area-amministrativa/programmi/${entityId}/${userType}/${userId}`;
   };
 
-  const onActionClickReferenti: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        getActionRedirectURL(
-          formTypes.REFERENTI,
-          (typeof td === 'string' ? td : td.codiceFiscale).toString()
-        )
-      );
-    },
-    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      dispatch(
-        openModal({
-          id: 'delete-entity',
-          payload: {
-            entity: 'referent-delegate',
-            cf: td,
-            role: 'REG',
-            text: 'Confermi di voler eliminare questo referente?',
-          },
-        })
-      );
-    },
-  };
+  const onActionClickReferenti: CRUDActionsI = hasUserPermission([
+    'del.ref_del.gest.prgm',
+  ])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            getActionRedirectURL(
+              formTypes.REFERENTI,
+              (typeof td === 'string' ? td : td.codiceFiscale).toString()
+            )
+          );
+        },
+        [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+          dispatch(
+            openModal({
+              id: 'delete-entity',
+              payload: {
+                entity: 'referent-delegate',
+                cf: td,
+                role: 'REG',
+                text: 'Confermi di voler eliminare questo referente?',
+              },
+            })
+          );
+        },
+      }
+    : {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            getActionRedirectURL(
+              formTypes.REFERENTI,
+              (typeof td === 'string' ? td : td.codiceFiscale).toString()
+            )
+          );
+        },
+      };
 
-  const onActionClickDelegati: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        getActionRedirectURL(
-          formTypes.DELEGATI,
-          (typeof td === 'string' ? td : td.codiceFiscale).toString()
-        )
-      );
-    },
-    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      dispatch(
-        openModal({
-          id: 'delete-entity',
-          payload: {
-            entity: 'referent-delegate',
-            cf: td,
-            role: 'DEG',
-            text: 'Confermi di voler eliminare questo delegato?',
-          },
-        })
-      );
-    },
-  };
+  const onActionClickDelegati: CRUDActionsI = hasUserPermission([
+    'del.ref_del.gest.prgm',
+  ])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            getActionRedirectURL(
+              formTypes.DELEGATI,
+              (typeof td === 'string' ? td : td.codiceFiscale).toString()
+            )
+          );
+        },
+        [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+          dispatch(
+            openModal({
+              id: 'delete-entity',
+              payload: {
+                entity: 'referent-delegate',
+                cf: td,
+                role: 'DEG',
+                text: 'Confermi di voler eliminare questo delegato?',
+              },
+            })
+          );
+        },
+      }
+    : {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            getActionRedirectURL(
+              formTypes.DELEGATI,
+              (typeof td === 'string' ? td : td.codiceFiscale).toString()
+            )
+          );
+        },
+      };
+
   const onActionClickQuestionariView: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        `/area-amministrativa/questionari/${
-          typeof td === 'string' ? td : td?.id
-        }`
-      );
+      navigate(`${td}`);
     },
   };
   const onActionClickQuestionariPreview: CRUDActionsI = {
@@ -201,23 +229,29 @@ const ProgramsDetails: React.FC = () => {
     },
   };
 
-  const onActionClickProgetti: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(`${td}/info`);
-    },
-    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      dispatch(
-        openModal({
-          id: 'delete-entity',
-          payload: {
-            entity: 'project',
-            projectId: td,
-            text: 'Confermi di volere eliminare questo progetto?',
-          },
-        })
-      );
-    },
-  };
+  const onActionClickProgetti: CRUDActionsI = hasUserPermission(['del.prgt'])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(`${td}/info`);
+        },
+        [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+          dispatch(
+            openModal({
+              id: 'delete-entity',
+              payload: {
+                entity: 'project',
+                projectId: td,
+                text: 'Confermi di volere eliminare questo progetto?',
+              },
+            })
+          );
+        },
+      }
+    : {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(`${td}/info`);
+        },
+      };
 
   const gestoreRef = useRef<HTMLLIElement>(null);
   const questionariRef = useRef<HTMLLIElement>(null);
@@ -242,6 +276,7 @@ const ProgramsDetails: React.FC = () => {
                   outline: true,
                   color: 'primary',
                   text: 'Elimina',
+                  buttonClass: 'btn-secondary',
                   disabled:
                     authorityInfo?.referentiEnteGestore?.filter(
                       (ref: { [key: string]: formFieldI['value'] }) =>
@@ -282,7 +317,13 @@ const ProgramsDetails: React.FC = () => {
                   // TODO: check when BE add codiceFiscale
                   ...ref,
                   id: ref?.codiceFiscale,
-                  actions: ref?.stato === 'ATTIVO' ? { [CRUDActionTypes.VIEW]: onActionClickReferenti[CRUDActionTypes.VIEW] }:onActionClickReferenti,
+                  actions:
+                    ref?.stato === 'ATTIVO'
+                      ? {
+                          [CRUDActionTypes.VIEW]:
+                            onActionClickReferenti[CRUDActionTypes.VIEW],
+                        }
+                      : onActionClickReferenti,
                 })
               ) || [],
           },
@@ -294,7 +335,13 @@ const ProgramsDetails: React.FC = () => {
                   // TODO: check when BE add codiceFiscale
                   ...del,
                   id: del?.codiceFiscale,
-                  actions: del?.stato === 'ATTIVO' ? { [CRUDActionTypes.VIEW]: onActionClickDelegati[CRUDActionTypes.VIEW] }:onActionClickDelegati,
+                  actions:
+                    del?.stato === 'ATTIVO'
+                      ? {
+                          [CRUDActionTypes.VIEW]:
+                            onActionClickDelegati[CRUDActionTypes.VIEW],
+                        }
+                      : onActionClickDelegati,
                 })
               ) || [],
           },
@@ -326,7 +373,7 @@ const ProgramsDetails: React.FC = () => {
   };
 
   const getListaQuestionari = () => {
-    dispatch(GetAllSurveys(true));
+    dispatch(GetSurveyAllLight());
   };
 
   useEffect(() => {
@@ -378,6 +425,7 @@ const ProgramsDetails: React.FC = () => {
           size: 'xs',
           color: 'primary',
           outline: true,
+          buttonClass: 'btn-secondary',
           text: 'Annulla',
           onClick: () => cancelSurvey(),
         },
@@ -667,6 +715,7 @@ const ProgramsDetails: React.FC = () => {
                 outline: true,
                 color: 'primary',
                 text: 'Elimina',
+                buttonClass: 'btn-secondary',
                 onClick: () =>
                   dispatch(
                     openModal({
@@ -713,6 +762,7 @@ const ProgramsDetails: React.FC = () => {
                 outline: true,
                 color: 'primary',
                 text: 'Elimina',
+                buttonClass: 'btn-secondary',
                 onClick: () =>
                   dispatch(
                     openModal({
@@ -869,6 +919,36 @@ const ProgramsDetails: React.FC = () => {
     dispatch(closeModal());
   };
 
+  const getAccordionCTA = (title?: string) => {
+    switch (title) {
+      case 'Referenti':
+      case 'Delegati':
+        return hasUserPermission(['add.ref_del.gest.prgm'])
+          ? {
+              cta: `Aggiungi ${title}`,
+              ctaAction: () =>
+                dispatch(
+                  openModal({
+                    id: formTypes.REFERENTE,
+                    payload: {
+                      title: `Aggiungi ${title}`,
+                    },
+                  })
+                ),
+            }
+          : {
+              cta: null,
+              ctaAction: () => ({}),
+            };
+
+      default:
+        return {
+          cta: null,
+          ctaAction: () => ({}),
+        };
+    }
+  };
+
   return (
     <div className='pb-3'>
       <DetailLayout
@@ -880,7 +960,7 @@ const ProgramsDetails: React.FC = () => {
         }}
         formButtons={correctButtons}
         currentTab={activeTab}
-        itemsAccordionList={itemAccordionList}
+        // itemsAccordionList={itemAccordionList}
         itemsList={itemList}
         buttonsPosition={buttonsPosition}
         goBackTitle='Elenco programmi'
@@ -896,6 +976,40 @@ const ProgramsDetails: React.FC = () => {
           {emptySection}
         </>
       </DetailLayout>
+      {itemAccordionList?.length
+        ? itemAccordionList?.map((item, index) => (
+            <Accordion
+              key={index}
+              title={item.title || ''}
+              totElem={item.items.length}
+              cta={getAccordionCTA(item.title).cta}
+              onClickCta={getAccordionCTA(item.title)?.ctaAction}
+              lastBottom={index === itemAccordionList.length - 1}
+            >
+              {item.items?.length ? (
+                item.items.map((cardItem) => (
+                  <CardStatusAction
+                    key={cardItem.id}
+                    title={`${cardItem.nome} ${
+                      cardItem.cognome ? cardItem.cognome : ''
+                    }`.trim()}
+                    status={cardItem.stato}
+                    id={cardItem.id}
+                    fullInfo={cardItem.fullInfo}
+                    cf={cardItem.codiceFiscale}
+                    onActionClick={cardItem.actions}
+                  />
+                ))
+              ) : (
+                <EmptySection
+                  title={`Non esistono ${item.title?.toLowerCase()} associati`}
+                  horizontal
+                  aside
+                />
+              )}
+            </Accordion>
+          ))
+        : null}
       {currentModal ? currentModal : null}
       <TerminateEntityModal
         text='Confermi di voler terminare il Programma?'

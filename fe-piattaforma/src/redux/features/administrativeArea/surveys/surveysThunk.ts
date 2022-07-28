@@ -6,10 +6,11 @@ import {
 } from '../../../../utils/common';
 import {
   FormHelper,
+  FormI,
   newForm,
   newFormField,
 } from '../../../../utils/formHelper';
-import { generateJsonFormSchema } from '../../../../utils/jsonFormHelper';
+// import { generateJsonFormSchema } from '../../../../utils/jsonFormHelper';
 import { RegexpType } from '../../../../utils/validator';
 import { RootState } from '../../../store';
 import { hideLoader, showLoader } from '../../app/appSlice';
@@ -26,6 +27,8 @@ import {
   setSurveySection,
   SurveyQuestionI,
   SurveySectionI,
+  SurveySectionPayloadI,
+  SurveySectionResponseI,
 } from './surveysSlice';
 
 export interface SurveyLightI {
@@ -39,12 +42,21 @@ export interface SurveyLightI {
   dataUltimaModifica: string;
 }
 
+export interface SchemaPayloadI {
+  type: string;
+  properties: {
+    [key: string]: any;
+  };
+  required: string[];
+  default: string[];
+}
+
 // Changes in endpoints request and response may require changes in the actions below
 
 const GetAllSurveysAction = { type: 'administrativeArea/getAllSurveys' };
 
 export const GetAllSurveys =
-  (isDetail?: boolean) => async (dispatch: Dispatch, select: Selector) => {
+  () => async (dispatch: Dispatch, select: Selector) => {
     try {
       dispatch(showLoader());
       // I dispatch this action because it has been done in other file
@@ -66,12 +78,10 @@ export const GetAllSurveys =
         idProgramma: idProgramma,
       };
       const res = await API.post(endpoint, body, {
-        params: isDetail
-          ? {}
-          : {
-              currPage: Math.max(0, pagination.pageNumber - 1),
-              pageSize: pagination.pageSize,
-            },
+        params: {
+          currPage: Math.max(0, pagination.pageNumber - 1),
+          pageSize: pagination.pageSize,
+        },
       });
       if (res.data)
         dispatch(setSurveysList({ data: res.data.questionariTemplate }));
@@ -261,20 +271,107 @@ export const SetSurveyQuestion =
     }
   };
 
-const transformQuestionToFormField = (question: any, questionId: string) => {
-  return newFormField({
-    field: question['question-description'],
-    options: question['question-values']
-      ? JSON.parse(question['question-values'])
-      : undefined,
-    required: question['question-required'],
-    type: question['question-type'],
-    preset: question['question-default'],
-    id: questionId,
-  });
+// const transformQuestionToFormField = (question: any, questionId: string) => {
+//   return newFormField({
+//     field: question['question-description'],
+//     options: question['question-values']
+//       ? JSON.parse(question['question-values'])
+//       : undefined,
+//     required: question['question-required'],
+//     type: question['question-type'],
+//     preset: question['question-default'],
+//     id: questionId,
+//   });
+// };
+
+const getSchemaTypeQuestion = (form: FormI) => {
+  const properties: { [key: string]: any } = {};
+  const valuesEnum: string[] = [];
+  const valuesProperties: { [key: string]: { type: string } } = {};
+  switch (form['question-type']?.value) {
+    case 'number':
+      properties.type = 'number';
+      break;
+    case 'time':
+      properties.type = 'time';
+      break;
+    case 'date':
+      properties.type = 'date';
+      break;
+    case 'select':
+      properties.type = 'string';
+      if (typeof form['question-values'].value === 'string') {
+        // eslint-disable-next-line no-case-declarations
+        const values: { label: string; value: string }[] = JSON.parse(
+          form['question-values'].value
+        );
+        values.map((val) => valuesEnum.push(val.value));
+        properties.enum = valuesEnum;
+      }
+      break;
+    case 'checkbox':
+      properties.type = 'object';
+      if (typeof form['question-values'].value === 'string') {
+        // eslint-disable-next-line no-case-declarations
+        const values: { label: string; value: string }[] = JSON.parse(
+          form['question-values'].value
+        );
+        values.map((val) => {
+          valuesProperties[val.value] = { type: 'boolean' };
+        });
+        properties.properties = valuesProperties;
+      }
+      break;
+    case 'text':
+    default:
+      properties.type = 'string';
+      break;
+  }
+  return properties;
 };
 
-export interface SurveyCreationBodyI {
+const getSchemaSection = (
+  section: SurveySectionI,
+  originalSchemaSection: string
+) => {
+  const originalSchemaSectionParsed = JSON.parse(originalSchemaSection);
+  const schemaSection: SchemaPayloadI = {
+    type: originalSchemaSectionParsed?.type,
+    properties: {},
+    required: [],
+    default: [],
+  };
+
+  (section.questions || []).map((question, index) => {
+    if (question?.id) {
+      if (originalSchemaSectionParsed.properties[question?.id]) {
+        // default question
+        const id = question.id;
+        schemaSection.properties[id] = {
+          ...originalSchemaSectionParsed.properties[id],
+          title: question.form['question-description'].value,
+        };
+        schemaSection.required.push(id);
+        schemaSection.default.push(id);
+      } else {
+        // new question
+        console.log('new question', question);
+        const id = question.id;
+        schemaSection.properties[id] = {
+          id: id,
+          title: question.form['question-description'].value,
+          ...getSchemaTypeQuestion(question.form),
+          order: index + 1,
+        };
+        if (question.form['question-required'].value === 'true')
+          schemaSection.required.push(id);
+      }
+    }
+  });
+  return JSON.stringify(schemaSection);
+};
+
+export interface SurveyResponseBodyI {
   'survey-id'?: string;
   'survey-status'?: string;
   'default-RFD'?: boolean;
@@ -282,13 +379,13 @@ export interface SurveyCreationBodyI {
   'last-update'?: string;
   'survey-name'?: string;
   'survey-description'?: string;
-  sections?: {
-    id: string;
-    title: string;
-    schema: string;
-    schemaUI?: string | undefined;
-    'default-section': boolean;
-  }[];
+  'survey-sections'?: SurveySectionResponseI[];
+}
+
+export interface SurveyCreationBodyI {
+  'survey-name'?: string;
+  'survey-description'?: string;
+  'survey-sections'?: SurveySectionPayloadI[];
 }
 
 const SetSurveyCreationAction = { type: 'surveys/SetSurveyCreation' };
@@ -303,66 +400,37 @@ export const SetSurveyCreation =
         survey,
       } = select((state: RootState) => state);
       if (survey) {
-        let valid = true;
-        valid = valid && FormHelper.isValidForm(survey.form);
-        if (valid) {
-          const body: SurveyCreationBodyI = {
-            ...FormHelper.getFormValues(survey.form),
-            sections: [],
+        const body: SurveyCreationBodyI = {
+          ...FormHelper.getFormValues(survey.form),
+          'survey-sections': [],
+        };
+        survey.sections.forEach((section: SurveySectionI, index: number) => {
+          const newSection = {
+            id: survey?.sectionsSchemaResponse[index].id,
+            title: survey?.sectionsSchemaResponse[index].title,
+            'default-section':
+              survey?.sectionsSchemaResponse[index]['default-section'],
+            schema: '',
+            schemaui: survey?.sectionsSchemaResponse[index].schemaui.json,
           };
-          survey.sections.forEach((section: SurveySectionI, index: number) => {
-            // valid = valid && FormHelper.isValidForm(section.form);
-            if (valid) {
-              const finalForm: any = [];
-              (section.questions || []).forEach((question: SurveyQuestionI) => {
-                valid = valid && FormHelper.isValidForm(question.form);
-                if (valid) {
-                  finalForm.push(
-                    transformQuestionToFormField(
-                      FormHelper.getFormValues(question.form),
-                      question.id || ''
-                    )
-                  );
-                }
-              });
-              // if (!isClone) {    // non presenti nel payload delle POST/PUT
-              //   body['survey-id'] = survey.surveyId;
-              //   body['survey-status'] = survey.surveyStatus;
-              //   body['default-RFD'] = survey.defaultRFD;
-              //   body['default-SCD'] = survey.defaultSCD;
-              //   body['last-update'] = survey.lastUpdate;
-              // }
-              if (isClone) {
-                body['survey-name'] =
-                  survey.form['survey-name']?.value + ' clone';
-              }
-              body.sections?.push({
-                id: section.id || `${new Date().getTime()}`,
-                title: section.sectionTitle,
-                ...generateJsonFormSchema(
-                  newForm(finalForm, true),
-                  index,
-                  survey.sectionsSchemaResponse
-                ),
-                'default-section': true,
-              });
-            }
-          });
-          if (valid) {
-            let res;
-            if (isClone) {
-              res = await API.post(`questionarioTemplate`, body);
-            } else {
-              res = await API.put(
-                `questionarioTemplate/${survey.surveyId}`,
-                body
-              );
-            }
-            if (res) {
-              /* TODO: controllo se post andata a buon fine */
-            }
+          if (index < 2) {
+            newSection.schema =
+              survey?.sectionsSchemaResponse[index].schema.json;
+          } else {
+            newSection.schema = getSchemaSection(
+              section,
+              survey?.sectionsSchemaResponse[index].schema.json
+            );
           }
+          body['survey-sections']?.push(newSection);
+        });
+        let res;
+        if (isClone) {
+          res = await API.post(`questionarioTemplate`, body);
+        } else {
+          res = await API.put(`questionarioTemplate/${survey.surveyId}`, body);
         }
+        return res;
       }
     } finally {
       dispatch(hideLoader());
@@ -417,31 +485,51 @@ export const PostFormCompletedByCitizen =
 export const UpdateSurveyExclusiveField =
   (payload?: any) => async (dispatch: any) => {
     dispatch(showLoader());
-    const { flagType, /*flagChecked,*/ surveyId } = payload;
+    const { flagType, surveyId } = payload;
     try {
-      const endpoint = `/questionarioTemplate/aggiornadefault/${surveyId}?tipoDefault=${
-        flagType === 'scd' ? 'defaultSCD' : 'defaultRFD'
-      }`;
-
-      await API.patch(endpoint);
+      const endpoint = `/questionarioTemplate/aggiornadefault/${surveyId}?tipoDefault=${flagType}`;
+      await API.put(endpoint);
       dispatch(hideLoader());
     } catch (error) {
       dispatch(hideLoader());
     }
   };
 
-const UpdateSurveyDefaultAction = {
-  type: 'surveys/UpdateSurveyDefault',
+const GetSurveyAllLightAction = {
+  type: 'administrativeArea/GetSurveyAllLight',
 };
 
-export const UpdateSurveyDefault =
+export const GetSurveyAllLight = () => async (dispatch: Dispatch) => {
+  try {
+    dispatch(showLoader());
+    dispatch({ ...GetSurveyAllLightAction });
+    const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+      getUserHeaders();
+    const body = {
+      codiceFiscaleUtenteLoggato: codiceFiscale,
+      codiceRuoloUtenteLoggato: codiceRuolo,
+      idProgetto: idProgetto,
+      idProgramma: idProgramma,
+    };
+    const res = await API.post(`questionarioTemplate/all/light`, body);
+    if (res.data) dispatch(setSurveysList({ data: res.data }));
+  } catch (error) {
+    console.log('GetSurveyAllLight error', error);
+  } finally {
+    dispatch(hideLoader());
+  }
+};
+
+const DeleteSurveyAction = {
+  type: 'surveys/DeleteSurvey',
+};
+
+export const DeleteSurvey =
   (idQuestionario: string) => async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
-      dispatch({ ...UpdateSurveyDefaultAction, idQuestionario });
-      const res = await API.put(
-        `/questionarioTemplate/aggiornadefault/${idQuestionario}`
-      );
+      dispatch({ ...DeleteSurveyAction, idQuestionario });
+      const res = await API.delete(`/questionarioTemplate/${idQuestionario}`);
       if (res) {
         /* TODO: controllo se post andata a buon fine */
       }

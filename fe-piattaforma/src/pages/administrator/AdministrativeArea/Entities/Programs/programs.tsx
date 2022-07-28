@@ -189,18 +189,20 @@ const Programs = () => {
     title: 'Cerca programma',
   };
 
-  const onActionClick: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      if (typeof td !== 'string') {
-        const programId = programmiList.filter(
-          (program: any) =>
-            program?.codice?.toString().toLowerCase() ===
-            td.id.toString().toLowerCase()
-        )[0].id;
-        navigate(`${programId}/info`);
+  const onActionClick: CRUDActionsI = hasUserPermission(['view.card.prgm.full'])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          if (typeof td !== 'string') {
+            const programId = programmiList.filter(
+              (program: any) =>
+                program?.codice?.toString().toLowerCase() ===
+                td.id.toString().toLowerCase()
+            )[0].id;
+            navigate(`${programId}/info`);
+          }
+        },
       }
-    },
-  };
+    : {};
 
   const newProgram = () => {
     dispatch(resetProgramDetails());
