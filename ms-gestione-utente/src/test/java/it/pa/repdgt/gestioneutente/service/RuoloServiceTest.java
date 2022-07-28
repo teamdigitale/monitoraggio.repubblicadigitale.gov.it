@@ -116,10 +116,10 @@ public class RuoloServiceTest {
 		when(this.ruoloRepository.findAll()).thenReturn(ruoli);
 		assertThat(service.getRuoliByFiltroDiRicerca("").get(0).getCodice()).isEqualTo("codice");
 
-		when(this.ruoloRepository.findByNome("NOME")).thenReturn(Optional.of(ruolo));
+		when(this.ruoloRepository.findByNomeContaining("NOME")).thenReturn(Optional.of(ruolo));
 		assertThat(service.getRuoliByFiltroDiRicerca("nome").get(0).getNome()).isEqualTo("nome");
 		
-		when(this.ruoloRepository.findByNome("NOME1")).thenReturn(Optional.empty());
+		when(this.ruoloRepository.findByNomeContaining("NOME1")).thenReturn(Optional.empty());
 		Assertions.assertThrows(ResourceNotFoundException.class, () -> service.getRuoliByFiltroDiRicerca("NOME1"));
 	}
 	

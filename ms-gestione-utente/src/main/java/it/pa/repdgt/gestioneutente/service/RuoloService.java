@@ -91,7 +91,7 @@ public class RuoloService {
 	@LogExecutionTime
 	public RuoloEntity getRuoloByNome(String nomeRuolo) {
 		String messaggioErrore = String.format("Ruolo con nome = %s non trovato", nomeRuolo);
-		return this.ruoloRepository.findByNome(nomeRuolo)
+		return this.ruoloRepository.findByNomeContaining(nomeRuolo)
 				.orElseThrow( () -> new ResourceNotFoundException(messaggioErrore));
 	}
 
