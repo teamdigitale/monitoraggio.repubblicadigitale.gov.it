@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.65](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.64...1.0.0-develop.65) (2022-07-29)
+
+
+### Bug Fixes
+
+* **be:** da cf a id ([f737f8c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f737f8c45787512d094237a38eea8d1dcdfa5f59))
+
 ## [1.0.0-develop.64](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.63...1.0.0-develop.64) (2022-07-29)
 
 
