@@ -47,9 +47,11 @@ import it.pa.repdgt.gestioneutente.util.CSVUtil;
 import it.pa.repdgt.shared.awsintegration.service.S3Service;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.light.UtenteLightEntity;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping(path = "/utente")
+@Slf4j
 public class UtenteRestApi {
 	@Autowired
 	private UtenteService utenteService;
@@ -89,16 +91,16 @@ public class UtenteRestApi {
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public UtenteResource creaNuovoUtente(@RequestBody @Valid NuovoUtenteRequest nuovoUtenteRequest) {
 		UtenteEntity utenteEntity = this.utenteMapper.toUtenteEntityFrom(nuovoUtenteRequest);
-		return new UtenteResource(this.utenteService.creaNuovoUtente(utenteEntity, nuovoUtenteRequest.getRuolo()).getCodiceFiscale());
+		return new UtenteResource(this.utenteService.creaNuovoUtente(utenteEntity, nuovoUtenteRequest.getRuolo()).getId());
 	}
 	
 	// TOUCH POINT - 1.3.3 - Update Utente
-	@PutMapping(path = "/{codiceFiscale}")
+	@PutMapping(path = "/{idUtente}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void aggiornaUtente(
-			@PathVariable(value = "codiceFiscale") String cfUtente,
+			@PathVariable(value = "idUtente") Long idUtente,
 			@RequestBody @Valid AggiornaUtenteRequest aggiornaUtenteRequest) {
-		this.utenteService.aggiornaUtente(aggiornaUtenteRequest, cfUtente);
+		this.utenteService.aggiornaUtente(aggiornaUtenteRequest, idUtente);
 	}
 	
 	// TOUCH POINT - 1.3.6 -  Lista Stati Utenti Dropdown
@@ -120,35 +122,35 @@ public class UtenteRestApi {
 	}
 	
 	// TOUCH POINT - 4.1 - Scheda Utente
-	@GetMapping(path = "/{codiceFiscale}")
+	@GetMapping(path = "/{idUtente}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public SchedaUtenteBean getSchedaUtenteByCodiceFiscale(@PathVariable(value = "codiceFiscale") String cfUtente) {
-		return this.utenteService.getSchedaUtenteByCodiceFiscale(cfUtente);
+	public SchedaUtenteBean getSchedaUtenteByIdUtente(@PathVariable(value = "idUtente") Long idUtente) {
+		return this.utenteService.getSchedaUtenteByIdUtente(idUtente);
 	}
 	
 	// TOUCH POINT - 4.4 - Associa Ruolo ad Utente
-	@PutMapping(path = "/{codiceFiscale}/assegnaRuolo/{codiceRuolo}")
+	@PutMapping(path = "/{idUtente}/assegnaRuolo/{codiceRuolo}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void assegnaRuoloAUtente(
-			@PathVariable(value = "codiceFiscale") String codiceFiscale, 
+			@PathVariable(value = "idUtente") Long idUtente, 
 			@PathVariable(value = "codiceRuolo") String codiceRuolo) {
-		this.utenteService.assegnaRuoloAUtente(codiceFiscale, codiceRuolo);
+		this.utenteService.assegnaRuoloAUtente(idUtente, codiceRuolo);
 	}
 	
 	// TOUCH POINT - 4.5 - Cancella Ruolo da Utente
-	@DeleteMapping(path = "/{codiceFiscale}/cancellaRuolo/{codiceRuolo}")
+	@DeleteMapping(path = "/{idUtente}/cancellaRuolo/{codiceRuolo}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void cancellaRuoloDaUtente(
-			@PathVariable(value = "codiceFiscale") String codiceFiscale, 
+			@PathVariable(value = "idUtente") Long idUtente, 
 			@PathVariable(value = "codiceRuolo") String codiceRuolo) {
-		this.utenteService.cancellaRuoloDaUtente(codiceFiscale, codiceRuolo);
+		this.utenteService.cancellaRuoloDaUtente(idUtente, codiceRuolo);
 	}
 
 	// TOUCH POINT - 1.3.4 -  Delete Utente
-	@DeleteMapping(path = "/{codiceFiscale}")
+	@DeleteMapping(path = "/{idUtente}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void cancellaUtente(@PathVariable(value = "codiceFiscale") String cfUtente) {
-		this.utenteService.cancellaUtente(cfUtente);
+	public void cancellaUtente(@PathVariable(value = "idUtente") Long idUtente) {
+		this.utenteService.cancellaUtente(idUtente);
 	}
 	
 	// TOUCH-POINT 1.3.8 - Scarica lista utenti in formato csv
@@ -164,21 +166,26 @@ public class UtenteRestApi {
 				.body(fileCSV);
 	}
 	
-	@PostMapping(path = "/upload/immagineProfilo/{codiceFiscale}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	@PostMapping(path = "/upload/immagineProfilo/{idUtente}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	public void uploadImmagineProfiloUtente(
-			@PathVariable(value = "codiceFiscale") String codiceFiscaleUtente,
+			@PathVariable(value = "idUtente") Long idUtente,
 			@RequestPart MultipartFile multipartifile) throws IOException {
+		this.utenteService.getUtenteById(idUtente);
 		InputStream initialStream = multipartifile.getInputStream();
 		byte[] buffer = new byte[initialStream.available()];
 		initialStream.read(buffer);
 
-		File targetFile = new File(SUFFIX_FILE_IMG_PROFILO + codiceFiscaleUtente);
+		File targetFile = new File(SUFFIX_FILE_IMG_PROFILO + idUtente);
 		try (OutputStream outStream = new FileOutputStream(targetFile)) {
 		    outStream.write(buffer);
 		}
-		this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleUtente);
-		this.s3Service.uploadFile(nomeDelBucketS3, targetFile);
-		targetFile.delete();
+		try {
+			this.s3Service.uploadFile(nomeDelBucketS3, targetFile);
+		}catch(Exception e) {
+			throw e;
+		}finally {
+			targetFile.delete();
+		}
 	}
 	
 	@GetMapping(path = "/download/immagineProfilo/{nomeFile}")

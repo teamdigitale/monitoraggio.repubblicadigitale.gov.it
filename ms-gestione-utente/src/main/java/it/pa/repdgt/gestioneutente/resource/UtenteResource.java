@@ -10,5 +10,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UtenteResource {
-	private String codiceFiscale;
+	private Long idUtente;
 }

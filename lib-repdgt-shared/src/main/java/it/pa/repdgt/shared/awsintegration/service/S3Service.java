@@ -44,7 +44,7 @@ public class S3Service {
 		
 	}
 	
-	public void uploadFile(@NotBlank final String nomeBucket, @NotNull final File fileToUpload) throws FileNotFoundException {
+	public void uploadFile(@NotBlank(message="il nome del bucket deve essere not blank") final String nomeBucket, @NotNull final File fileToUpload) throws FileNotFoundException {
 		final String fileToUploadName = fileToUpload.getName();
 		final PutObjectRequest putObjectRequest = PutObjectRequest.builder()
 			.bucket(nomeBucket)
