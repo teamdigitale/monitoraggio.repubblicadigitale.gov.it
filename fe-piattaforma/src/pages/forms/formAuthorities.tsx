@@ -56,7 +56,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
   const {
     setFormValues = () => ({}),
     form,
-    onInputChange,
+    onInputChange = () => ({}),
     sendNewValues = () => ({}),
     isValidForm,
     setIsFormValid = () => ({}),
@@ -87,6 +87,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
         true
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formDisabled, form]);
 
   const newGestoreProgetto = () => {
@@ -125,9 +126,11 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
         field: 'profilo',
         id: 'profilo',
         required: true,
+        disabled: true,
       });
       updateForm({ ...form, profilo });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [creation, enteType, formData]);
 
   if (formData && !creation) {
@@ -164,12 +167,14 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
           break;
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enteType, creation]);
 
   useEffect(() => {
     if (formData) {
       setFormValues(formData);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
 
   useEffect(() => {
@@ -177,19 +182,17 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
       clearForm();
       //dispatch(resetAuthorityDetails());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [creation]);
 
-  const onInputDataChange = (
-    value: formFieldI['value'],
-    field?: formFieldI['field']
-  ) => {
-    onInputChange?.(value, field);
+  useEffect(() => {
     setIsFormValid(isValidForm);
-    // sendNewValues?.(getFormValues?.());
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isValidForm]);
 
   useEffect(() => {
     sendNewValues(getFormValues());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
@@ -205,45 +208,32 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
                   {...form?.nome}
                   label='Nome Ente'
                   col='col-12 col-lg-6'
-                  // placeholder='Inserisci nome programma'
-                  onInputChange={(value, field) => {
-                    onInputDataChange(value, field);
-                  }}
+                  onInputChange={onInputChange}
                 />
                 <Input
                   {...form?.nomeBreve}
-                  required
                   col='col-12 col-lg-6'
                   label='Nome breve'
-                  // placeholder='Inserisci il nome breve'
-                  onInputChange={(value, field) => {
-                    onInputDataChange(value, field);
-                  }}
+                  onInputChange={onInputChange}
                 />
               </Form.Row>
               <Form.Row className={bootClass}>
                 {formDisabled ? (
                   <Input
                     {...form?.tipologia}
-                    required
                     label='Tipologia'
                     col='col-12 col-lg-6'
-                    onInputChange={(value, field) => {
-                      onInputDataChange(value, field);
-                    }}
+                    onInputChange={onInputChange}
                   />
                 ) : (
                   <Select
                     {...form?.tipologia}
-                    required
                     value={form?.tipologia.value as string}
                     col='col-12 col-lg-6'
                     label='Tipologia'
-                    // placeholder='Inserisci la tipologia'
+                    placeholder='Seleziona la tipologia'
                     options={TipologiaEnteOptions}
-                    onInputChange={(value, field) => {
-                      onInputDataChange(value, field);
-                    }}
+                    onInputChange={onInputChange}
                     wrapperClassName='mb-5'
                     aria-label='tipologia'
                   />
@@ -252,10 +242,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
                   {...form?.piva}
                   label='Codice Fiscale'
                   col='col-12 col-lg-6'
-                  // placeholder='Inserisci il Codice Fiscale'
-                  onInputChange={(value, field) => {
-                    onInputDataChange(value, field);
-                  }}
+                  onInputChange={onInputChange}
                 />
               </Form.Row>
               <Form.Row className={bootClass}>
@@ -263,19 +250,13 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
                   col='col-12 col-lg-6'
                   {...form?.sedeLegale}
                   label='Sede legale'
-                  // placeholder='Inserisci la sede legale'
-                  onInputChange={(value, field) => {
-                    onInputDataChange(value, field);
-                  }}
+                  onInputChange={onInputChange}
                 />
                 <Input
                   {...form?.indirizzoPec}
                   label='PEC'
                   col='col-12 col-lg-6'
-                  // placeholder='Inserisci PEC'
-                  onInputChange={(value, field) => {
-                    onInputDataChange(value, field);
-                  }}
+                  onInputChange={onInputChange}
                 />
               </Form.Row>
             </>
@@ -287,45 +268,32 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
                   {...form?.nome}
                   label='Nome Ente'
                   col='col-12 col-lg-6'
-                  // placeholder='Inserisci nome programma'
-                  onInputChange={(value, field) => {
-                    onInputDataChange(value, field);
-                  }}
+                  onInputChange={onInputChange}
                 />
               </Form.Row>
               <Form.Row className={bootClass}>
                 <Input
                   {...form?.nomeBreve}
-                  required
                   col='col-12 col-lg-6'
                   label='Nome breve'
-                  // placeholder='Inserisci il nome breve'
-                  onInputChange={(value, field) => {
-                    onInputDataChange(value, field);
-                  }}
+                  onInputChange={onInputChange}
                 />
                 {formDisabled ? (
                   <Input
                     {...form?.tipologia}
-                    required
                     label='Tipologia'
                     col='col-12 col-lg-6'
-                    onInputChange={(value, field) => {
-                      onInputDataChange(value, field);
-                    }}
+                    onInputChange={onInputChange}
                   />
                 ) : (
                   <Select
                     {...form?.tipologia}
-                    required
                     value={form?.tipologia.value as string}
                     col='col-12 col-lg-6'
                     label='Tipologia'
-                    // placeholder='Inserisci la tipologia'
+                    placeholder='Seleziona la tipologia'
                     options={TipologiaEnteOptions}
-                    onInputChange={(value, field) => {
-                      onInputDataChange(value, field);
-                    }}
+                    onInputChange={onInputChange}
                     wrapperClassName='mb-5'
                     aria-label='tipologia'
                   />
@@ -336,19 +304,13 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
                   {...form?.piva}
                   label='Codice Fiscale'
                   col='col-12 col-lg-6'
-                  // placeholder='Inserisci il Codice Fiscale'
-                  onInputChange={(value, field) => {
-                    onInputDataChange(value, field);
-                  }}
+                  onInputChange={onInputChange}
                 />
                 <Input
-                  col='col-12 col-lg-6'
                   {...form?.sedeLegale}
+                  col='col-12 col-lg-6'
                   label='Sede legale'
-                  // placeholder='Inserisci la sede legale'
-                  onInputChange={(value, field) => {
-                    onInputDataChange(value, field);
-                  }}
+                  onInputChange={onInputChange}
                 />
               </Form.Row>
               <Form.Row className={bootClass}>
@@ -356,15 +318,11 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
                   {...form?.indirizzoPec}
                   label='PEC'
                   col='col-12 col-lg-6'
-                  // placeholder='Inserisci PEC'
-                  onInputChange={(value, field) => {
-                    onInputDataChange(value, field);
-                  }}
+                  onInputChange={onInputChange}
                 />
                 {form?.profilo && (
                   <Input
                     {...form?.profilo}
-                    required
                     label='Profilo'
                     col='col-12 col-lg-6'
                   />

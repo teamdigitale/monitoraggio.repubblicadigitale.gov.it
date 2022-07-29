@@ -51,7 +51,7 @@ const Breadcrumb = () => {
         default:
           return (
             pathElem.charAt(0).toUpperCase() +
-            pathElem.slice(1, pathElem.length)
+            pathElem.slice(1, pathElem.length).replace('-', ' ')
           );
       }
     }
@@ -95,7 +95,7 @@ const Breadcrumb = () => {
             newList.push({
               label: getLabelBreadcrumb(elem),
               url: createUrl(index),
-              link: index !== 0 && index !== 2 ? true : false,
+              link: index !== 0 && index !== currentLocation?.length -1 ? true : false,
             });
           }
         }

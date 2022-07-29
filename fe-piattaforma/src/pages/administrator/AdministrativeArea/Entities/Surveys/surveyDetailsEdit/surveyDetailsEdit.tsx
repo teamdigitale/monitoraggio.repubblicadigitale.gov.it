@@ -25,6 +25,8 @@ import ButtonsBar, {
 } from '../../../../../../components/ButtonsBar/buttonsBar';
 import Sticky from 'react-sticky-el';
 import useGuard from '../../../../../../hooks/guard';
+import { GetProgramDetail } from '../../../../../../redux/features/administrativeArea/programs/programsThunk';
+import { selectPrograms } from '../../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 
 interface SurveyDetailsEditI {
   editMode?: boolean;
@@ -42,8 +44,9 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
   const sections = useAppSelector(selectSurveySections) || [];
   const [editModeState, setEditModeState] = useState<boolean>(editMode);
   const [cloneModeState, setCloneModeState] = useState<boolean>(cloneMode);
-  const { idQuestionario } = useParams();
+  const { idQuestionario, entityId } = useParams();
   const { hasUserPermission } = useGuard();
+  const programName = useAppSelector(selectPrograms).detail?.dettagliInfoProgramma?.nomeBreve;
 
   useEffect(() => {
     if (idQuestionario) dispatch(GetSurveyInfo(idQuestionario));
@@ -51,6 +54,20 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
   }, [idQuestionario]);
 
   useEffect(() => {
+    if(location.pathname.includes('programmi') && !programName && entityId){
+      dispatch(GetProgramDetail(entityId));
+    }
+  },[]);
+
+  useEffect(() => {
+    if(location.pathname.includes('programmi') && programName){
+      dispatch(
+        setInfoIdsBreadcrumb({
+          id: entityId,
+          nome: programName,
+        })
+      )
+    }
     if (form['survey-name']?.value && idQuestionario) {
       dispatch(
         setInfoIdsBreadcrumb({
@@ -60,7 +77,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [idQuestionario, form['survey-name']?.value]);
+  }, [idQuestionario, form['survey-name']?.value, programName]);
 
   const checkValidityQuestions = (questions: SurveyQuestionI[]) => {
     let isValid = true;
@@ -121,10 +138,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
         { replace: true }
       );
     } else if (idQuestionario) {
-      navigate(`/area-amministrativa/questionari/${idQuestionario}`, {
-        replace: true,
-      });
-      dispatch(GetSurveyInfo(idQuestionario));
+      navigate(-1);
     }
   };
 
@@ -137,10 +151,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
       onClick: () => {
         setEditModeState(false);
         setCloneModeState(false);
-        navigate(`/area-amministrativa/questionari/${idQuestionario}`, {
-          replace: true,
-        });
-        if (idQuestionario) dispatch(GetSurveyInfo(idQuestionario));
+        navigate(-1);
       },
     },
     {
@@ -164,7 +175,11 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
           onClick: () => {
             setCloneModeState(true);
             setEditModeState(false);
-            navigate(`/area-amministrativa/questionari/${idQuestionario}/clona`);
+            location.pathname.includes('programmi')
+              ? navigate(location.pathname + '/clona')
+              : navigate(
+                  `/area-amministrativa/questionari/${idQuestionario}/clona`
+                );
           },
         },
         {
@@ -173,7 +188,11 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
           onClick: () => {
             setEditModeState(true);
             setCloneModeState(false);
-            navigate(`/area-amministrativa/questionari/${idQuestionario}/modifica`);
+            location.pathname.includes('programmi')
+              ? navigate(location.pathname + '/modifica')
+              : navigate(
+                  `/area-amministrativa/questionari/${idQuestionario}/modifica`
+                );
           },
         },
       ]
@@ -186,7 +205,11 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
           onClick: () => {
             setCloneModeState(true);
             setEditModeState(false);
-            navigate(`/area-amministrativa/questionari/${idQuestionario}/clona`);
+            location.pathname.includes('programmi')
+              ? navigate(location.pathname + '/clona')
+              : navigate(
+                  `/area-amministrativa/questionari/${idQuestionario}/clona`
+                );
           },
         },
       ]
@@ -198,7 +221,11 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
           onClick: () => {
             setEditModeState(true);
             setCloneModeState(false);
-            navigate(`/area-amministrativa/questionari/${idQuestionario}/modifica`);
+            location.pathname.includes('programmi')
+              ? navigate(location.pathname + '/modifica')
+              : navigate(
+                  `/area-amministrativa/questionari/${idQuestionario}/modifica`
+                );
           },
         },
       ]

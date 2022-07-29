@@ -103,7 +103,8 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
     <div>
       {!open && (
         <>
-          {!form['question-default'].value && (
+          {!form['question-default'].value && 
+           (editMode || cloneMode) && (
             <Button onClick={handleDeleteQuestion} className='px-1 pt-0'>
               <Icon
                 color='primary'
@@ -227,6 +228,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
                       className='mb-0 w-100'
                       type={device.mediaIsPhone ? 'textarea' : undefined}
                       aria-label={`Testo della domanda ${position}`}
+                      maximum={250}
                     />
                   </div>
                 </Form>

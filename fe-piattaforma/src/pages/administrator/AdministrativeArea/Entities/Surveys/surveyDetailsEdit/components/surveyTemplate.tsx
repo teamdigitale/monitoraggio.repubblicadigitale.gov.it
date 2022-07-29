@@ -103,6 +103,7 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
             className={clsx(
               device.mediaIsPhone || device.mediaIsTablet ? 'w-100' : 'w-75'
             )}
+            maximum={100}
           />
           <Input
             {...form['survey-description']}
@@ -115,6 +116,7 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
             className={clsx(
               device.mediaIsPhone || device.mediaIsTablet ? 'w-100' : 'w-75'
             )}
+            maximum={100}
           />
         </Form.Row>
       </Form>
@@ -138,6 +140,7 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
             )}
           >
             {!modal &&
+             (editMode || cloneMode) &&
               section.id !== 'anagraphic-citizen-section' &&
               section.id !== 'anagraphic-booking-section' && (
                 <Button

@@ -48,6 +48,7 @@ export type RolePermissionI =
   | 'add.ref_del.gest.prgt'
   | 'del.ref_del.gest.prgt'
   | 'add.sede.gest.prgt'
+  | 'upd.sede.gest.prgt'
   | 'add.ref_del.partner'
   | 'add.sede.partner'
   | 'upd.sede.partner'

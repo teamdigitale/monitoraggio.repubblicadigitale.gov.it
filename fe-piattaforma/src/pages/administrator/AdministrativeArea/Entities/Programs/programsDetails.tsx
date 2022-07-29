@@ -836,7 +836,7 @@ const ProgramsDetails: React.FC = () => {
           to={`/area-amministrativa/programmi/${entityId}/${tabs.ENTE}`}
           active={activeTab === tabs.ENTE}
         >
-          {!entityId ? (
+          {!managerAuthorityId ? (
             <div>
               <span className='mr-1'> * Ente gestore </span>
               <Icon icon='it-warning-circle' size='sm' />

@@ -2,6 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 interface FormI {
+  autocomplete?: boolean | undefined;
   className?: string;
   children: JSX.Element | JSX.Element[] | undefined | null | string;
   formDisabled?: boolean;
@@ -11,6 +12,7 @@ interface FormI {
 
 const Form = (props: FormI) => {
   const {
+    autocomplete = false,
     className,
     children,
     formDisabled = false,
@@ -19,7 +21,7 @@ const Form = (props: FormI) => {
   } = props;
 
   return (
-    <form className={clsx('form ', className)} id={id}>
+    <form className={clsx('form ', className)} id={id} autoComplete={autocomplete ? 'on' : 'off'}>
       <fieldset disabled={formDisabled} form={id}>
         <legend className='sr-only'>{legend}</legend>
         {children}

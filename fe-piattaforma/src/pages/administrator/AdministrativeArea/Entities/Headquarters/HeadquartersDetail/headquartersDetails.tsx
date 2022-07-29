@@ -23,6 +23,7 @@ import ManageHeadquarter from '../../../../../../components/AdministrativeArea/E
 import HeadquarterDetailsContent from '../../../../../../components/AdministrativeArea/Entities/Headquarters/HeadquarterDetailsContent/HeadquarterDetailsContent';
 import {
   GetHeadquarterDetails,
+  GetHeadquarterLightDetails,
   HeadquarterFacilitator,
   RemoveAuthorityHeadquarter,
   RemoveHeadquarterFacilitator,
@@ -45,7 +46,7 @@ const HeadquartersDetails = () => {
   const { mediaIsPhone } = useAppSelector(selectDevice);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { headquarterId, projectId, authorityId } = useParams();
+  const { headquarterId, projectId, authorityId, authorityType } = useParams();
   const headquarterfacilitators =
     useAppSelector(selectHeadquarters).detail?.facilitatoriSede;
   const headquarterDetails =
@@ -104,6 +105,8 @@ const HeadquartersDetails = () => {
     if (headquarterId && projectId && authorityId) {
       dispatch(GetHeadquarterDetails(headquarterId, authorityId, projectId));
       dispatch(setUserDetails(null));
+    } else if (headquarterId) {
+      dispatch(GetHeadquarterLightDetails(headquarterId));
     }
   }, [headquarterId, projectId, authorityId]);
 
@@ -120,38 +123,86 @@ const HeadquartersDetails = () => {
     },
   ];
 
-  const buttons: ButtonInButtonsBar[] = [
-    {
-      size: 'xs',
-      outline: true,
-      color: 'primary',
-      text: 'Elimina',
-      buttonClass: 'btn-secondary',
-      disabled: headquarterDetails?.stato === 'ATTIVO',
-      onClick: () =>
-        dispatch(
-          openModal({
-            id: 'delete-entity',
-            payload: {
-              entity: 'headquarter',
-              text: 'Confermi di volere eliminare questa sede?',
-            },
-          })
-        ),
-    },
-    {
-      size: 'xs',
-      color: 'primary',
-      text: 'Modifica',
-      onClick: () =>
-        dispatch(
-          openModal({
-            id: formTypes.SEDE,
-            payload: { title: 'Modifica Sede' },
-          })
-        ),
-    },
-  ];
+  let buttons: ButtonInButtonsBar[] = [];
+
+  if (authorityType) {
+    switch (authorityType) {
+      case 'ente-partner':
+        buttons = hasUserPermission(['upd.sede.partner'])
+          ? [
+              {
+                size: 'xs',
+                outline: true,
+                color: 'primary',
+                text: 'Elimina',
+                buttonClass: 'btn-secondary',
+                disabled: headquarterDetails?.stato === 'ATTIVO',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: 'delete-entity',
+                      payload: {
+                        entity: 'headquarter',
+                        text: 'Confermi di volere eliminare questa sede?',
+                      },
+                    })
+                  ),
+              },
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Modifica',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: formTypes.SEDE,
+                      payload: { title: 'Modifica Sede' },
+                    })
+                  ),
+              },
+            ]
+          : [];
+        break;
+      case 'ente-gestore':
+        buttons = hasUserPermission(['upd.sede.gest.prgt'])
+          ? [
+              {
+                size: 'xs',
+                outline: true,
+                color: 'primary',
+                text: 'Elimina',
+                buttonClass: 'btn-secondary',
+                disabled: headquarterDetails?.stato === 'ATTIVO',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: 'delete-entity',
+                      payload: {
+                        entity: 'headquarter',
+                        text: 'Confermi di volere eliminare questa sede?',
+                      },
+                    })
+                  ),
+              },
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Modifica',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: formTypes.SEDE,
+                      payload: { title: 'Modifica Sede' },
+                    })
+                  ),
+              },
+            ]
+          : [];
+        break;
+      default:
+        break;
+    }
+  }
 
   const removeFacilitator = async (userCF: string) => {
     if (userCF && headquarterId && projectId && authorityId) {
@@ -238,7 +289,7 @@ const HeadquartersDetails = () => {
                   key={index}
                   title={item.title || ''}
                   totElem={item.items.length}
-                  cta={getAccordionCTA(item.title).cta}
+                  cta={authorityId ? getAccordionCTA(item.title).cta : null}
                   onClickCta={getAccordionCTA(item.title)?.ctaAction}
                   lastBottom={index === itemAccordionList.length - 1}
                 >
