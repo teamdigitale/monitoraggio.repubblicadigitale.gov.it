@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.64](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.63...1.0.0-develop.64) (2022-07-29)
+
+
+### Bug Fixes
+
+* **be:** fix ruoli e questionarioTemplate ([b559dc6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b559dc6759dd8cc8429c81d08081082d8671665a))
+
 ## [1.0.0-develop.63](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.62...1.0.0-develop.63) (2022-07-29)
 
 
