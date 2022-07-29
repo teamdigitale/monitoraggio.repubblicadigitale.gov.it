@@ -44,23 +44,27 @@ const AccordionRow: React.FC<AccordionRowI> = ({
             'align-items-center'
           )}
         >
-          {isOpen ? (
-            <Button onClick={() => setIsOpen(false)}>
-              <Icon
-                icon='it-less-circle'
-                className='accordion-row--icon'
-                aria-label='nascondi elemento'
-              />
-            </Button>
-          ) : null}
-          {!isOpen ? (
-            <Button onClick={() => setIsOpen(true)}>
-              <Icon
-                icon='it-plus-circle'
-                className='accordion-row--icon'
-                aria-label='mostra elemento'
-              />
-            </Button>
+          {innerInfo ? (
+            <>
+              {isOpen ? (
+                <Button onClick={() => setIsOpen(false)}>
+                  <Icon
+                    icon='it-less-circle'
+                    className='accordion-row--icon'
+                    aria-label='nascondi elemento'
+                  />
+                </Button>
+              ) : null}
+              {!isOpen ? (
+                <Button onClick={() => setIsOpen(true)}>
+                  <Icon
+                    icon='it-plus-circle'
+                    className='accordion-row--icon'
+                    aria-label='mostra elemento'
+                  />
+                </Button>
+              ) : null}
+            </>
           ) : null}
           <span className='font-weight-semibold'>{title}</span>
         </div>

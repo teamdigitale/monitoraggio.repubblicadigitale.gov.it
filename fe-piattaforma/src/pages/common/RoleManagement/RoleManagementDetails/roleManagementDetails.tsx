@@ -286,7 +286,7 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
                 <Button
                   color='primary'
                   outline
-                  onClick={() => console.log('elimina ruolo')}
+                  onClick={handleDelete}
                   className='mr-2 role-management-details-container__button-width'
                 >
                   Elimina ruolo
@@ -301,22 +301,6 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
                   Modifica
                 </Button>
               ) : null}
-              {/* TODO check for custom role -> only custom roles can be modified!*/}
-              <Button
-                color='primary'
-                outline
-                onClick={handleDelete}
-                className='mr-2 role-management-details-container__button-width'
-              >
-                Elimina ruolo
-              </Button>
-              <Button
-                color='primary'
-                onClick={() => setEnableForm(!formEnabled)}
-                className='role-management-details-container__button-width'
-              >
-                Modifica
-              </Button>
             </>
           ) : null}
         </div>

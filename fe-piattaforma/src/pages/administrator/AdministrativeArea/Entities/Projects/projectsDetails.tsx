@@ -518,6 +518,14 @@ const ProjectsDetails = () => {
               nFacilitatori: sede.nrFacilitatori,
               serviziErogati: sede.serviziErogati,
             },
+            actions: {
+              [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+                projectId &&
+                  navigate(
+                    `/area-amministrativa/progetti/${projectId}/sedi/${td}`
+                  );
+              },
+            },
           })
         ),
       });
@@ -669,7 +677,7 @@ const ProjectsDetails = () => {
       projectId &&
         managingAuthorityID &&
         navigate(
-          `/area-amministrativa/progetti/${projectId}/enti/${managingAuthorityID}/sedi/${td}`
+          `/area-amministrativa/progetti/${projectId}/ente-gestore/${managingAuthorityID}/sedi/${td}`
         );
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {

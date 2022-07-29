@@ -113,6 +113,7 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
   if (showForm) {
     content = (
       <FormAuthorities
+        noIdField
         creation={creation}
         formDisabled={!!formDisabled}
         sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {

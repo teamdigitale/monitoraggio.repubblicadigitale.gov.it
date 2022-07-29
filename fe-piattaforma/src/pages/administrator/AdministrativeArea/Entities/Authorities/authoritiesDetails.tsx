@@ -157,7 +157,7 @@ const AuthoritiesDetails = () => {
       projectId &&
         authorityId &&
         navigate(
-          `/area-amministrativa/progetti/${projectId}/enti/${authorityId}/sedi/${td}`
+          `/area-amministrativa/progetti/${projectId}/ente-partner/${authorityId}/sedi/${td}`
         );
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import isEmpty from 'lodash.isempty';
 import AccordionRow, { AccordionRowI } from '../../AccordionRow/accordionRow';
 import { TableRowI } from '../table';
 import { CRUDActionsI, CRUDActionTypes } from '../../../utils/common';
@@ -18,12 +19,13 @@ const TableMobile: React.FC<MobileTableI> = ({
   useEffect(() => {
     if (values && values.length) {
       const temp = values.map((item) => {
-        const { nome, label, status, ...rest } = item;
+        const { id, name, nome, label, status, ...rest } = item;
         return {
-          title: nome || label,
+          title: nome || label || name,
           status,
+          id,
           clickViewAction: () => onActionClick?.[CRUDActionTypes.VIEW](item),
-          innerInfo: { ...rest },
+          innerInfo: isEmpty(rest) ? undefined : { ...rest },
         };
       });
 
@@ -31,6 +33,7 @@ const TableMobile: React.FC<MobileTableI> = ({
       //@ts-ignore
       setValuesForMobile([...temp]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values]);
 
   return (

@@ -59,6 +59,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
 
   useEffect(() => {
     dispatch(setUsersList(null));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -119,7 +120,6 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
 
   let content = (
     <FormFacilitator
-      creation={creation}
       formDisabled={!!formDisabled}
       sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
         setNewFormValues({ ...newData })
