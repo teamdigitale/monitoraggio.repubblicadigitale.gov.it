@@ -19,30 +19,30 @@
 	values('UTENTE2','U2', 'U2', 'u2@a.com', 'ATTIVO', CURRENT_TIME());
 
 -- CREAZIONE ANAGRAFICA RUOLI
-  insert into ruolo(codice, nome, predefinito)
-    values('DTD', 'DTD AMMINISTRATORE', false);
-  insert into ruolo(codice, nome, predefinito)
-    values('DSCU', 'DSCU .....', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('REG', 'REFERENTE ENTE GESTORE PROGRAMMA', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('REGP', 'REFERENTE ENTE GESTORE PROGETTO', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('DEG', 'DELEGATO ENTE GESTORE PROGRAMMA', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('DEGP', 'DELEGATO ENTE GESTORE PROGETTO', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('REP', 'REFERENTE ENTE PARTNER GESTORE PROGRAMMA', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('REPP', 'REFERENTE ENTE PARTNER GESTORE PROGETTO', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('DEP', 'DELEGATO ENTE PARTNER GESTORE PROGRAMMA', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('DEPP', 'DELEGATO ENTE PARTNER GESTORE PROGETTO', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('FAC', 'FACILITATORE', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('VOL', 'VOLONTARIO', true);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DTD', 'DTD AMMINISTRATORE', FALSE, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DSCU', 'DSCU .....', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('REG', 'REFERENTE ENTE GESTORE PROGRAMMA', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('REGP', 'REFERENTE ENTE GESTORE PROGETTO', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DEG', 'DELEGATO ENTE GESTORE PROGRAMMA', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DEGP', 'DELEGATO ENTE GESTORE PROGETTO', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('REP', 'REFERENTE ENTE PARTNER GESTORE PROGRAMMA', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('REPP', 'REFERENTE ENTE PARTNER GESTORE PROGETTO', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DEP', 'DELEGATO ENTE PARTNER GESTORE PROGRAMMA', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DEPP', 'DELEGATO ENTE PARTNER GESTORE PROGETTO', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('FAC', 'FACILITATORE', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('VOL', 'VOLONTARIO', true, false);
     
   -- ASSEGNAMENTO RUOLO A UTENTE
   insert into utente_x_ruolo(utente_id, ruolo_codice)

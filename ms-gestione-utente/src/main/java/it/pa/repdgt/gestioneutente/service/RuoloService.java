@@ -22,6 +22,7 @@ import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.constants.TipologiaRuoloConstants;
 import it.pa.repdgt.shared.entity.GruppoEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
+import it.pa.repdgt.shared.entityenum.StatoEnum;
 
 @Service
 public class RuoloService {
@@ -123,6 +124,8 @@ public class RuoloService {
 		nuovoRuolo.setCodice(nomeRuolo);
 		nuovoRuolo.setNome(nomeRuolo);
 		nuovoRuolo.setPredefinito(false);
+		nuovoRuolo.setStato(StatoEnum.NON_ATTIVO.getValue());
+		nuovoRuolo.setModificabile(true);
 		nuovoRuolo.setDataOraCreazione(new Date());
 		nuovoRuolo.setDataOraAggiornamento(nuovoRuolo.getDataOraCreazione());
 		this.aggiungiGruppiAlRuolo(nuovoRuoloRequest.getCodiciGruppi(), nuovoRuolo);
@@ -180,7 +183,8 @@ public class RuoloService {
 		dettaglioRuolo.setNome(ruoloFetchDB.getNome());
 		dettaglioRuolo.setStato(ruoloFetchDB.getStato());
 		dettaglioRuolo.setTipologia(ruoloFetchDB.getPredefinito() ? "P" : "NP");
-		
+		dettaglioRuolo.setModificabile(ruoloFetchDB.getModificabile());
+
 		List<GruppoEntity> listaGruppiPerRuolo = this.gruppoService.getGruppiByRuolo(codiceRuolo);
 		List<DettaglioGruppiBean> listaDettaglioGruppi = listaGruppiPerRuolo.stream()
 															   .map(gruppo -> {
