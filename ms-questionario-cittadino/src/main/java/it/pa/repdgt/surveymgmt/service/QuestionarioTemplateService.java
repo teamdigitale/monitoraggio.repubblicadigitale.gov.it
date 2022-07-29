@@ -107,7 +107,7 @@ public class QuestionarioTemplateService {
 				
 				String statoQuestionarioFiltro = null;
 				if(filtroListaQuestionariTemplate.getStatoQuestionario() != null) {
-					statoQuestionarioFiltro = filtroListaQuestionariTemplate.getStatoQuestionario().getValue();
+					statoQuestionarioFiltro = filtroListaQuestionariTemplate.getStatoQuestionario();
 				}
 
 				switch (codiceRuoloUtenteLoggato) {
@@ -175,7 +175,7 @@ public class QuestionarioTemplateService {
 		
 		String statoQuestionarioFiltro = null;
 		if(filtroListaQuestionariTemplate.getStatoQuestionario() != null) {
-			statoQuestionarioFiltro = filtroListaQuestionariTemplate.getStatoQuestionario().getValue();
+			statoQuestionarioFiltro = filtroListaQuestionariTemplate.getStatoQuestionario();
 		}
 
 		switch (codiceRuoloUtenteLoggato) {

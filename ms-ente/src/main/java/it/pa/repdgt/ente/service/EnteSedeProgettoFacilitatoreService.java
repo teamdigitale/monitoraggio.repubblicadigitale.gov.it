@@ -236,7 +236,7 @@ public class EnteSedeProgettoFacilitatoreService {
 		}
 	}
 		
-	private void terminaAssociazioneFacilitatoreOVolontario(EnteSedeProgettoFacilitatoreKey id) {
+	public void terminaAssociazioneFacilitatoreOVolontario(EnteSedeProgettoFacilitatoreKey id) {
 		EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatoreFetch = this.enteSedeProgettoFacilitatoreRepository.findById(id).get();
 		enteSedeProgettoFacilitatoreFetch.setStatoUtente(StatoEnum.TERMINATO.getValue());
 		enteSedeProgettoFacilitatoreFetch.setDataOraTerminazione(new Date());

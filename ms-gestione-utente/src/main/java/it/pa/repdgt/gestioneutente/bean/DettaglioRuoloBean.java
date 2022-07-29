@@ -9,4 +9,5 @@ public class DettaglioRuoloBean {
 	private String nome;
 	private String stato;
 	private String tipologia;
+	private Boolean modificabile;
 }
