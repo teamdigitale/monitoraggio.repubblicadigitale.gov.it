@@ -34,13 +34,16 @@ import {
 } from '../../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import ManageFacilitator from '../../../../../../components/AdministrativeArea/Entities/Headquarters/ManageFacilitator/ManageFacilitator';
 import DeleteEntityModal from '../../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
-import { ButtonInButtonsBar } from '../../../../../../components/ButtonsBar/buttonsBar';
+import ButtonsBar, {
+  ButtonInButtonsBar,
+} from '../../../../../../components/ButtonsBar/buttonsBar';
 import useGuard from '../../../../../../hooks/guard';
 import {
   Accordion,
   CardStatusAction,
   EmptySection,
 } from '../../../../../../components';
+import Sticky from 'react-sticky-el';
 
 const HeadquartersDetails = () => {
   const { mediaIsPhone } = useAppSelector(selectDevice);
@@ -118,7 +121,7 @@ const HeadquartersDetails = () => {
           nome: `${facilitator.nome} ${facilitator.cognome}`,
           stato: facilitator.stato,
           actions: onActionClick,
-          id: facilitator?.codiceFiscale,
+          id: facilitator?.id,
         })) || [],
     },
   ];
@@ -277,7 +280,7 @@ const HeadquartersDetails = () => {
               upperTitle: { icon: 'it-map-marker-plus', text: formTypes.SEDE },
               subTitle: programDetails?.nomeBreve,
             }}
-            formButtons={buttons}
+            //formButtons={buttons}
             // itemsAccordionList={itemAccordionList}
             buttonsPosition='BOTTOM'
           >
@@ -317,6 +320,11 @@ const HeadquartersDetails = () => {
                 </Accordion>
               ))
             : null}
+          <Sticky mode='bottom' stickyClassName='sticky bg-white container '>
+            <div className='container pl-5'>
+              <ButtonsBar buttons={buttons} />
+            </div>
+          </Sticky>
           <ManageHeadquarter />
           <ManageFacilitator creation={true} />
           <DeleteEntityModal

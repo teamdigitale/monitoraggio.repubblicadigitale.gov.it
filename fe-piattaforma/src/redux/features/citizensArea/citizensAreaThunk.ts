@@ -161,7 +161,6 @@ export const GetEntitySearchResult =
           searchType === 'codiceFiscale' ? 'CF' : 'NUM_DOC'
         }`
       );
-      console.log(res, 'AAAAA');
       if (res?.data) {
         if (Array.isArray(res.data.data)) {
           dispatch(getEntitySearchMultiple(res.data.data));

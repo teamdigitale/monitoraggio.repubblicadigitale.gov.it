@@ -182,7 +182,7 @@ const UsersDetails = () => {
 
   const handleDeleteUserRole = async (ruolo: string) => {
     if (userId) {
-      const res = await dispatch(UserDeleteRole({ cfUtente: userId, ruolo }));
+      const res = await dispatch(UserDeleteRole({ idUtente: userId, ruolo }));
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       if (res) {
@@ -197,6 +197,7 @@ const UsersDetails = () => {
           size: 'xs',
           color: 'primary',
           outline: true,
+          buttonClass: 'btn-secondary',
           text: 'Elimina',
           disabled: getUserStatus() === 'ATTIVO',
           onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
@@ -211,7 +212,7 @@ const UsersDetails = () => {
                 id: getModalID(),
                 payload: {
                   title: getModalPayload(),
-                  codiceFiscale: userId,
+                  userId: userId || userInfo?.id
                 },
               })
             ),
@@ -222,6 +223,7 @@ const UsersDetails = () => {
           size: 'xs',
           color: 'primary',
           outline: true,
+          buttonClass: 'btn-secondary',
           text: 'Elimina',
           disabled: getUserStatus() === 'ATTIVO',
           onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
@@ -229,8 +231,8 @@ const UsersDetails = () => {
       ];
 
   return (
-    <div className='d-flex flex-row'>
-      <div className='d-flex flex-column w-100'>
+    <div className='d-flex flex-row container'>
+      <div className='d-flex flex-column w-100 container'>
         <div>
           <DetailLayout
             titleInfo={{

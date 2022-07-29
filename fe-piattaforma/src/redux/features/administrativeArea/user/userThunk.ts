@@ -177,11 +177,11 @@ const UpdateUserAction = {
   type: 'administrativeArea/UpdateUser',
 };
 export const UpdateUser =
-  (cfUtente: string, payload: { [key: string]: formFieldI['value'] }) =>
+  (idUtente: string, payload: { [key: string]: formFieldI['value'] }) => 
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
-      dispatch({ ...UpdateUserAction, cfUtente });
+      dispatch({ ...UpdateUserAction, idUtente });
 
       const body = {
         telefono: payload?.telefono,
@@ -194,7 +194,7 @@ export const UpdateUser =
         tipoContratto: payload?.tipoContratto, // TODO: valore?
       };
 
-      const res = await API.put(`/utente/${cfUtente}`, body);
+      const res = await API.put(`/utente/${idUtente}`, body);
 
       if (res) {
         console.log(res);
@@ -210,13 +210,13 @@ const UserAddRoleAction = {
   type: 'user/UserAddRole',
 };
 export const UserAddRole =
-  (payload: { cfUtente: string; ruolo: string }) =>
+  (payload: { idUtente: string; ruolo: string }) => 
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...UserAddRoleAction, payload });
-      const { cfUtente, ruolo } = payload;
-      const res = await API.put(`/utente/${cfUtente}/assegnaRuolo/${ruolo}`);
+      const { idUtente, ruolo } = payload;
+      const res = await API.put(`/utente/${idUtente}/assegnaRuolo/${ruolo}`);
       if (res) {
         return true;
       }
@@ -231,14 +231,14 @@ const UserDeleteRoleAction = {
   type: 'user/UserAddRole',
 };
 export const UserDeleteRole =
-  (payload: { cfUtente: string; ruolo: string }) =>
+  (payload: { idUtente: string; ruolo: string }) =>  
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...UserDeleteRoleAction, payload });
-      const { cfUtente, ruolo } = payload;
+      const { idUtente, ruolo } = payload;
       const res = await API.delete(
-        `/utente/${cfUtente}/cancellaRuolo/${ruolo}`
+        `/utente/${idUtente}/cancellaRuolo/${ruolo}`
       );
       if (res) {
         return true;

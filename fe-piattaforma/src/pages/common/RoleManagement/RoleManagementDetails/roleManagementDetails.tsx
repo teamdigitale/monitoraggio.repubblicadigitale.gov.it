@@ -35,20 +35,6 @@ import {
 } from '../../../../utils/formHelper';
 import { scrollTo } from '../../../../utils/common';
 
-const arrayBreadcrumb = [
-  {
-    label: 'Home',
-    url: '/',
-  },
-  {
-    label: 'Profilazione',
-    url: '/gestione-ruoli',
-  },
-  {
-    label: 'current',
-  },
-];
-
 interface RolesManagementDetailsI extends withFormHandlerProps {
   creation?: boolean;
   edit?: boolean;
@@ -211,7 +197,7 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
 
   return (
     <>
-      <PageTitle breadcrumb={arrayBreadcrumb} />
+      <PageTitle />
       <Container>
         <DetailLayout
           titleInfo={{
@@ -280,9 +266,10 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
                 {`Salva${!creation ? ' modifiche' : ''}`}
               </Button>
             </>
-          ) : role?.dettaglioRuolo?.tipologia === 'NP' ? (
+          ) : (
             <>
-              {hasUserPermission(['del.ruoli']) ? (
+              {hasUserPermission(['del.ruoli']) &&
+              role?.dettaglioRuolo?.stato === 'NON ATTIVO' ? (
                 <Button
                   color='primary'
                   outline
@@ -292,7 +279,8 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
                   Elimina ruolo
                 </Button>
               ) : null}
-              {hasUserPermission(['add.upd.permessi']) ? (
+              {hasUserPermission(['add.upd.permessi']) &&
+              role?.dettaglioRuolo?.modificabile ? (
                 <Button
                   color='primary'
                   onClick={() => setEnableForm(!formEnabled)}
@@ -302,7 +290,7 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
                 </Button>
               ) : null}
             </>
-          ) : null}
+          )}
         </div>
       </Container>
     </>

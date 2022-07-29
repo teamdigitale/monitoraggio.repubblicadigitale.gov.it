@@ -81,6 +81,7 @@ const GenericSearchFilterTableLayout: React.FC<
     // TODO update keys when API integration is done
     switch (key) {
       case 'filtroCriterioRicerca':
+      case 'filtroNomeRuolo':
       case 'criterioRicerca':
         return 'Ricerca';
       case 'filtroPolicies':
@@ -162,11 +163,9 @@ const GenericSearchFilterTableLayout: React.FC<
   };
 
   useEffect(() => {
-    if (dropdowns?.length && filtersList && Object.keys(filtersList).length) {
-      setShowChips(true);
-    } else {
-      setShowChips(false);
-    }
+    setShowChips(
+      !!dropdowns?.length || !!Object.keys(filtersList || []).length
+    );
   }, [dropdowns, filtersList]);
 
   const { t } = useTranslation();

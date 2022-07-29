@@ -114,7 +114,11 @@ const TableDesktop: React.FC<TableI> = (props) => {
                       'mt-1'
                     )}
                   >
-                    {onActionClick[CRUDActionTypes.INFO] ? (
+                    {(
+                      td.actions
+                        ? td.actions.toString().includes(CRUDActionTypes.INFO)
+                        : onActionClick[CRUDActionTypes.INFO]
+                    ) ? (
                       <Button
                         onClick={() => onActionClick[CRUDActionTypes.INFO](td)}
                         className='mr-2 p-0'
@@ -128,7 +132,11 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         />
                       </Button>
                     ) : null}
-                    {onActionClick[CRUDActionTypes.CREATE] ? (
+                    {(
+                      td.actions
+                        ? td.actions.toString().includes(CRUDActionTypes.CREATE)
+                        : onActionClick[CRUDActionTypes.CREATE]
+                    ) ? (
                       <Button
                         onClick={() =>
                           onActionClick[CRUDActionTypes.CREATE](td)
@@ -144,7 +152,11 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         />
                       </Button>
                     ) : null}
-                    {onActionClick[CRUDActionTypes.EDIT] ? (
+                    {(
+                      td.actions
+                        ? td.actions.toString().includes(CRUDActionTypes.EDIT)
+                        : onActionClick[CRUDActionTypes.EDIT]
+                    ) ? (
                       <Button
                         onClick={() => onActionClick[CRUDActionTypes.EDIT](td)}
                         className='mr-2 p-0'
@@ -158,7 +170,11 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         />
                       </Button>
                     ) : null}
-                    {onActionClick[CRUDActionTypes.DELETE] ? (
+                    {(
+                      td.actions
+                        ? td.actions.toString().includes(CRUDActionTypes.DELETE)
+                        : onActionClick[CRUDActionTypes.DELETE]
+                    ) ? (
                       <Button
                         onClick={() =>
                           onActionClick[CRUDActionTypes.DELETE](td)
@@ -174,7 +190,11 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         />
                       </Button>
                     ) : null}
-                    {onActionClick[CRUDActionTypes.CLONE] ? (
+                    {(
+                      td.actions
+                        ? td.actions.toString().includes(CRUDActionTypes.CLONE)
+                        : onActionClick[CRUDActionTypes.CLONE]
+                    ) ? (
                       <Button
                         onClick={() => onActionClick[CRUDActionTypes.CLONE](td)}
                         className='mr-2 p-0'
@@ -187,7 +207,11 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         />
                       </Button>
                     ) : null}
-                    {onActionClick[CRUDActionTypes.VIEW] ? (
+                    {(
+                      td.actions
+                        ? td.actions.toString().includes(CRUDActionTypes.VIEW)
+                        : onActionClick[CRUDActionTypes.VIEW]
+                    ) ? (
                       <Button
                         onClick={() => onActionClick[CRUDActionTypes.VIEW](td)}
                         className='p-0'

@@ -6,14 +6,14 @@ import { RootState } from '../../store';
 
 const GetRolesListAction = { type: 'roles/GetRolesListValues' };
 export const GetRolesListValues =
-  (filters: { tipologiaRuoli?: string } = {}) =>
+  (filters: { tipologiaRuoli?: string; filtroNomeRuolo?: string } = {}) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch({ ...GetRolesListAction, filters }); // TODO manage dispatch for dev env only
       dispatch(showLoader());
-      const { tipologiaRuoli } = filters;
+      const { tipologiaRuoli, filtroNomeRuolo } = filters;
       const res = await API.get(`/ruolo${tipologiaRuoli ? '' : '/all'}`, {
-        params: { tipologiaRuoli },
+        params: { tipologiaRuoli, filtroNomeRuolo },
       });
       if (res?.data) {
         dispatch(setRolesList({ list: res.data }));

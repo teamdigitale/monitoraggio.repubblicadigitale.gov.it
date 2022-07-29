@@ -46,7 +46,8 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
   const [cloneModeState, setCloneModeState] = useState<boolean>(cloneMode);
   const { idQuestionario, entityId } = useParams();
   const { hasUserPermission } = useGuard();
-  const programName = useAppSelector(selectPrograms).detail?.dettagliInfoProgramma?.nomeBreve;
+  const programName =
+    useAppSelector(selectPrograms).detail?.dettagliInfoProgramma?.nomeBreve;
 
   useEffect(() => {
     if (idQuestionario) dispatch(GetSurveyInfo(idQuestionario));
@@ -54,19 +55,19 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
   }, [idQuestionario]);
 
   useEffect(() => {
-    if(location.pathname.includes('programmi') && !programName && entityId){
+    if (location.pathname.includes('programmi') && !programName && entityId) {
       dispatch(GetProgramDetail(entityId));
     }
-  },[]);
+  }, []);
 
   useEffect(() => {
-    if(location.pathname.includes('programmi') && programName){
+    if (location.pathname.includes('programmi') && programName) {
       dispatch(
         setInfoIdsBreadcrumb({
           id: entityId,
           nome: programName,
         })
-      )
+      );
     }
     if (form['survey-name']?.value && idQuestionario) {
       dispatch(
@@ -232,48 +233,50 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
     : [];
 
   return (
-    <div className='mb-5'>
-      <DetailLayout
-        titleInfo={{
-          title: form['survey-name']?.value,
-          status: '',
-          upperTitle: { icon: 'it-file', text: 'Questionario' },
-        }}
-        buttonsPosition='BOTTOM'
-        goBackTitle={
-          location.pathname.includes('programmi')
-            ? 'Torna indietro'
-            : 'Elenco questionari'
-        }
-        goBackPath='/area-amministrativa/questionari'
-      />
+    <div className='mb-5 container'>
+      <div className='container'>
+        <DetailLayout
+          titleInfo={{
+            title: form['survey-name']?.value,
+            status: '',
+            upperTitle: { icon: 'it-file', text: 'Questionario' },
+          }}
+          buttonsPosition='BOTTOM'
+          goBackTitle={
+            location.pathname.includes('programmi')
+              ? 'Torna indietro'
+              : 'Elenco questionari'
+          }
+          goBackPath='/area-amministrativa/questionari'
+        />
 
-      <SurveyTemplate editMode={editModeState} cloneMode={cloneModeState} />
+        <SurveyTemplate editMode={editModeState} cloneMode={cloneModeState} />
 
-      <div
-        className={clsx(
-          'd-flex',
-          'flex-row',
-          device.mediaIsPhone
-            ? 'justify-content-around'
-            : 'justify-content-end',
-          'w-100',
-          'mt-3'
-        )}
-      >
-        {editModeState || cloneModeState ? (
-          <div aria-hidden='true' className='mt-5 w-100'>
-            <Sticky mode='bottom' stickyClassName='sticky bg-white container'>
-              <ButtonsBar buttons={cancelSaveButtons} />
-            </Sticky>
-          </div>
-        ) : (
-          <div aria-hidden='true' className='mt-5 w-100'>
-            <Sticky mode='bottom' stickyClassName='sticky bg-white container'>
-              <ButtonsBar buttons={cloneEditButtons} />
-            </Sticky>
-          </div>
-        )}
+        <div
+          className={clsx(
+            'd-flex',
+            'flex-row',
+            device.mediaIsPhone
+              ? 'justify-content-around'
+              : 'justify-content-end',
+            'w-100',
+            'mt-3'
+          )}
+        >
+          {editModeState || cloneModeState ? (
+            <div aria-hidden='true' className='mt-5 w-100'>
+              <Sticky mode='bottom' stickyClassName='sticky bg-white container'>
+                <ButtonsBar buttons={cancelSaveButtons} />
+              </Sticky>
+            </div>
+          ) : (
+            <div aria-hidden='true' className='mt-5 w-100'>
+              <Sticky mode='bottom' stickyClassName='sticky bg-white container'>
+                <ButtonsBar buttons={cloneEditButtons} />
+              </Sticky>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

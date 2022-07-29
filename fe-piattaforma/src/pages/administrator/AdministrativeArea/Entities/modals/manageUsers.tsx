@@ -48,7 +48,7 @@ const ManageUsers: React.FC<ManageUsersI> = ({
     [key: string]: formFieldI['value'];
   }>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
-  const codiceFiscale = useAppSelector(selectModalPayload)?.codiceFiscale;
+  const userIdPayload = useAppSelector(selectModalPayload)?.userId
   const { userId } = useParams();
 
   const handleSaveEnte = async () => {
@@ -57,16 +57,16 @@ const ManageUsers: React.FC<ManageUsersI> = ({
         const res = await dispatch(CreateUser(newFormValues));
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        if (res?.data?.codiceFiscale) {
+        if (res?.data?.idUtente) {
           navigate(
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            `/area-amministrativa/utenti/${res.data.codiceFiscale}`
+            `/area-amministrativa/utenti/${res.data.idUtente}`
           );
         }
       } else {
-        await dispatch(UpdateUser(userId || codiceFiscale, newFormValues));
-        dispatch(GetUserDetails(userId || codiceFiscale));
+        await dispatch(UpdateUser(userId || userIdPayload, newFormValues));
+        dispatch(GetUserDetails(userId || userIdPayload));
       }
     }
     dispatch(closeModal());

@@ -113,7 +113,6 @@ const Users = () => {
   }, [usersList]);
 
   const getUsersList = () => {
-    //dispatch(GetAllUsers());
     dispatch(GetEntityValues({ entity: 'utente' }));
   };
 
@@ -205,7 +204,7 @@ const Users = () => {
         [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
           navigate(
             `/area-amministrativa/utenti/${
-              typeof td === 'string' ? td : td?.codiceFiscale
+              typeof td === 'string' ? td : td?.id
             }`
           );
         },
