@@ -133,7 +133,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
       <Table
         heading={headings}
         values={usersList.map((item) => ({
-          id: item.codiceFiscale,
+          id: item.id || item.codiceFiscale,
           cognome: item.cognome,
           nome: item.nome,
         }))}

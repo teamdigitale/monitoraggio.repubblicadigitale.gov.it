@@ -100,7 +100,7 @@ const AuthoritiesDetails = () => {
         [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
           navigate(
             `/area-amministrativa/${formTypes.REFERENTI}/${
-              typeof td === 'string' ? td : td?.codiceFiscale
+              typeof td === 'string' ? td : td?.id
             }`
           );
         },
@@ -122,7 +122,7 @@ const AuthoritiesDetails = () => {
         [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
           navigate(
             `/area-amministrativa/${formTypes.REFERENTI}/${
-              typeof td === 'string' ? td : td?.codiceFiscale
+              typeof td === 'string' ? td : td?.id
             }`
           );
         },
@@ -133,7 +133,7 @@ const AuthoritiesDetails = () => {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
       navigate(
         `/area-amministrativa/${formTypes.DELEGATI}/${
-          typeof td === 'string' ? td : td?.codiceFiscale
+          typeof td === 'string' ? td : td?.id
         }`
       );
     },
@@ -181,9 +181,8 @@ const AuthoritiesDetails = () => {
         items:
           authorityDetails?.referentiEntePartner?.map(
             (ref: { [key: string]: string }) => ({
-              // TODO: check when BE add codiceFiscale
               ...ref,
-              id: ref.codiceFiscale,
+              id: ref?.id,
               actions: onActionClickReferenti,
             })
           ) || [],
@@ -194,7 +193,7 @@ const AuthoritiesDetails = () => {
           authorityDetails?.delegatiEntePartner?.map(
             (del: { [key: string]: string }) => ({
               ...del,
-              id: del.codiceFiscale,
+              id: del?.id,
               actions: onActionClickDelegati,
             })
           ) || [],
@@ -419,8 +418,15 @@ const AuthoritiesDetails = () => {
   };
 
   return (
-    <div className={clsx('d-flex', 'flex-row', device.mediaIsPhone && 'mt-5')}>
-      <div className='d-flex flex-column w-100'>
+    <div
+      className={clsx(
+        'd-flex',
+        'flex-row',
+        'container',
+        device.mediaIsPhone && 'mt-5'
+      )}
+    >
+      <div className='d-flex flex-column w-100 container'>
         <div>
           <DetailLayout
             titleInfo={{

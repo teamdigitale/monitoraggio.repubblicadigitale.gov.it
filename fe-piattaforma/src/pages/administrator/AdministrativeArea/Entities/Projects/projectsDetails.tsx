@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Icon, Nav } from 'design-react-kit';
+import { Icon, Nav, Tooltip } from 'design-react-kit';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { formTypes } from '../utils';
 import {
@@ -88,6 +88,7 @@ const ProjectsDetails = () => {
   const [itemAccordionList, setItemAccordionList] = useState<
     ItemsListI[] | null
   >();
+  const [openOne, toggleOne] = useState(false);
   const [correctButtons, setCorrectButtons] = useState<ButtonInButtonsBar[]>(
     []
   );
@@ -109,6 +110,12 @@ const ProjectsDetails = () => {
   const { hasUserPermission } = useGuard();
 
   useEffect(() => {
+    if (location.pathname === `/area-amministrativa/progetti/${entityId}`) {
+      navigate(`/area-amministrativa/progetti/${entityId}/info`);
+    }
+  }, []);
+
+  useEffect(() => {
     if (projectId && projectDetails?.nome) {
       dispatch(
         setInfoIdsBreadcrumb({
@@ -120,18 +127,20 @@ const ProjectsDetails = () => {
         setInfoIdsBreadcrumb({ id: projectId, nome: projectDetails?.nome })
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId, projectDetails]);
 
   useEffect(() => {
     scrollTo(0, 0);
     centerActiveItem();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
 
   const getActionRedirectURL = (userType: string, userId: string) => {
     if (entityId) {
       return `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${userType}/${userId}`;
     }
-    return `/area-amministrativa/progetti/${projectId}/${userType}/${userId}`;
+    return `/area-amministrativa/progetti/${projectId}/ente/${userType}/${userId}`;
   };
 
   const onActionClickReferenti: CRUDActionsI = hasUserPermission([
@@ -142,7 +151,7 @@ const ProjectsDetails = () => {
           navigate(
             getActionRedirectURL(
               formTypes.REFERENTI,
-              (typeof td === 'string' ? td : td.codiceFiscale).toString()
+              (typeof td === 'string' ? td : td.id).toString()
             )
           );
           /*`/area-amministrativa/${formTypes.REFERENTI}/${
@@ -169,7 +178,7 @@ const ProjectsDetails = () => {
           navigate(
             getActionRedirectURL(
               formTypes.REFERENTI,
-              (typeof td === 'string' ? td : td.codiceFiscale).toString()
+              (typeof td === 'string' ? td : td.id).toString()
             )
           );
           /*`/area-amministrativa/${formTypes.REFERENTI}/${
@@ -187,7 +196,7 @@ const ProjectsDetails = () => {
           navigate(
             getActionRedirectURL(
               formTypes.DELEGATI,
-              (typeof td === 'string' ? td : td.codiceFiscale).toString()
+              (typeof td === 'string' ? td : td.id).toString()
             )
           );
           /*`/area-amministrativa/${formTypes.DELEGATI}/${
@@ -214,7 +223,7 @@ const ProjectsDetails = () => {
           navigate(
             getActionRedirectURL(
               formTypes.DELEGATI,
-              (typeof td === 'string' ? td : td.codiceFiscale).toString()
+              (typeof td === 'string' ? td : td.id).toString()
             )
           );
           /*`/area-amministrativa/${formTypes.DELEGATI}/${
@@ -385,7 +394,7 @@ const ProjectsDetails = () => {
               (ref: { [key: string]: string }) => ({
                 // TODO: check when BE add codiceFiscale
                 ...ref,
-                id: ref.codiceFiscale,
+                id: ref.id,
                 actions:
                   ref?.stato === 'ATTIVO'
                     ? {
@@ -403,7 +412,7 @@ const ProjectsDetails = () => {
               (del: { [key: string]: string }) => ({
                 // TODO: check when BE add codiceFiscale
                 ...del,
-                id: del.codiceFiscale,
+                id: del.id,
                 actions:
                   del?.stato === 'ATTIVO'
                     ? {
@@ -587,8 +596,16 @@ const ProjectsDetails = () => {
           active={activeTab === tabs.ENTE_GESTORE}
         >
           {!managingAuthorityID ? (
-            <div>
+            <div id='tab-ente-gestore-progetto'>
               <span className='mr-1'> * Ente gestore </span>
+              <Tooltip
+                placement='bottom'
+                target='tab-ente-gestore-progetto'
+                isOpen={openOne}
+                toggle={() => toggleOne(!openOne)}
+              >
+                Compilazione obbligatoria
+              </Tooltip>
               <Icon icon='it-warning-circle' size='sm' />
             </div>
           ) : (
@@ -1002,8 +1019,15 @@ const ProjectsDetails = () => {
   };
 
   return (
-    <div className={clsx(mediaIsPhone && 'mt-5', 'd-flex', 'flex-row')}>
-      <div className='d-flex flex-column w-100'>
+    <div
+      className={clsx(
+        mediaIsPhone && 'mt-5',
+        'd-flex',
+        'flex-row',
+        'container'
+      )}
+    >
+      <div className='d-flex flex-column w-100 container'>
         <div>
           <DetailLayout
             nav={nav}

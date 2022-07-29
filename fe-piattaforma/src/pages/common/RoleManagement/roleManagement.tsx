@@ -12,7 +12,10 @@ import {
   TableHeadingI,
   TableRowI,
 } from '../../../components/Table/table';
-import { setEntityFilters } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
+import {
+  selectEntityFilters,
+  setEntityFilters,
+} from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { selectRolesList } from '../../../redux/features/roles/rolesSlice';
 import {
   GetGroupsListValues,
@@ -41,13 +44,14 @@ const RoleManagement = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
+  const filtersList = useAppSelector(selectEntityFilters);
   const ruoliList = useAppSelector(selectRolesList);
   const { hasUserPermission } = useGuard();
 
+  const { filtroNomeRuolo } = filtersList;
+
   const handleOnSearch = (searchValue: string) => {
-    dispatch(
-      setEntityFilters({ nomeLike: { label: searchValue, value: searchValue } })
-    );
+    dispatch(setEntityFilters({ filtroNomeRuolo: searchValue }));
   };
 
   const searchInformation: SearchInformationI = {
@@ -69,10 +73,21 @@ const RoleManagement = () => {
   const updateTableValues = () => {
     const table = newTable(
       TableHeading,
-      (ruoliList || []).map((td) => ({
-        id: td.codiceRuolo,
-        name: td.nomeRuolo,
-      }))
+      (ruoliList || []).map((td) => {
+        const actions = [];
+        if (!!td.codiceRuolo) {
+          actions.push([CRUDActionTypes.VIEW]);
+          actions.push([CRUDActionTypes.CLONE]);
+        }
+        if (td.modificabile) {
+          actions.push([CRUDActionTypes.EDIT]);
+        }
+        return {
+          id: td.codiceRuolo,
+          name: td.nomeRuolo,
+          actions: actions.join(','),
+        };
+      })
     );
     return table;
   };
@@ -86,14 +101,20 @@ const RoleManagement = () => {
   }, [ruoliList]);
 
   const getRolesList = () => {
-    dispatch(GetRolesListValues());
+    dispatch(
+      GetRolesListValues(
+        filtroNomeRuolo
+          ? { filtroNomeRuolo: filtroNomeRuolo?.toString() || '' }
+          : {}
+      )
+    );
   };
+
   const getGroupsList = () => {
     dispatch(GetGroupsListValues());
   };
 
   useEffect(() => {
-    getRolesList();
     getGroupsList();
     dispatch(
       updateBreadcrumb([
@@ -106,6 +127,11 @@ const RoleManagement = () => {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    getRolesList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filtroNomeRuolo]);
 
   const handleOnClone = async (codiceRuolo: string) => {
     const roleClone = await dispatch(GetRoleDetails(codiceRuolo));
@@ -143,7 +169,7 @@ const RoleManagement = () => {
       <Container className={device.mediaIsPhone ? 'px-4' : ''}>
         <GenericSearchFilterTableLayout
           searchInformation={searchInformation}
-          showButtons={false}
+          filtersList={filtersList}
           textCta={
             hasUserPermission(['new.ruoli']) ? 'Aggiungi ruolo' : undefined
           }

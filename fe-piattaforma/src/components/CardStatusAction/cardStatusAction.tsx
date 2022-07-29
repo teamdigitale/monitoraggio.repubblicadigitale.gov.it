@@ -47,7 +47,6 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
     fullInfo,
     onActionClick,
     id,
-    cf,
     moreThanOneSurvey = false,
     onCheckedChange,
   } = props;
@@ -227,7 +226,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
               {onActionClick[CRUDActionTypes.VIEW] ? (
                 <Button
                   onClick={() => {
-                    onActionClick[CRUDActionTypes.VIEW](cf ? cf : id);
+                    onActionClick[CRUDActionTypes.VIEW](id);
                   }}
                   className={clsx(device.mediaIsPhone ? 'px-0' : 'px-2')}
                 >

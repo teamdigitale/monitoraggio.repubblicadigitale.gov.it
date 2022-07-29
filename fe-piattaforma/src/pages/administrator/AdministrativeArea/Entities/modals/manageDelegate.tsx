@@ -148,7 +148,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
         values={usersList.map((item) => ({
           nome: item.nome,
           cognome: item.cognome,
-          id: item.codiceFiscale,
+          id:  item.id || item.codiceFiscale,
         }))}
         onActionRadio={handleSelectUser}
         id='table'

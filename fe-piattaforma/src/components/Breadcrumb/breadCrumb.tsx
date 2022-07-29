@@ -40,8 +40,9 @@ const Breadcrumb = () => {
   };
 
   const getLabelBreadcrumb = (pathElem: string) => {
+    let breadcrumbLabel;
     if (idsBreadcrumb.filter((x) => x?.id?.toString() === pathElem)[0]) {
-      return idsBreadcrumb.filter((x) => x?.id?.toString() === pathElem)[0].nome;
+      breadcrumbLabel = idsBreadcrumb.filter((x) => x?.id?.toString() === pathElem)[0].nome;
     } else {
       switch (pathElem) {
         case 'area-amministrativa':
@@ -49,12 +50,14 @@ const Breadcrumb = () => {
         case 'area-cittadini':
           return 'Area cittadini';
         default:
-          return (
+          breadcrumbLabel = (
             pathElem.charAt(0).toUpperCase() +
             pathElem.slice(1, pathElem.length).replace('-', ' ')
           );
+          break;
       }
     }
+    return decodeURI(breadcrumbLabel);
   };
 
   const getUrlBreadcrumbList = () => {
@@ -86,16 +89,13 @@ const Breadcrumb = () => {
             newList.push({
               label: getLabelBreadcrumb(elem),
               url: createUrl(index),
-              link:
-                index !== 0 && index !== currentLocation?.length - 2
-                  ? true
-                  : false,
+              link: index !== 0 && index !== currentLocation?.length - 2,
             });
           } else if (currentLocation?.length <= 3) {
             newList.push({
               label: getLabelBreadcrumb(elem),
               url: createUrl(index),
-              link: index !== 0 && index !== currentLocation?.length -1 ? true : false,
+              link: index !== 0 && index !== currentLocation?.length -1,
             });
           }
         }

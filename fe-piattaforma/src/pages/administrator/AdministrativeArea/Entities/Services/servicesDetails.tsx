@@ -263,8 +263,8 @@ const ServicesDetails = () => {
     </Nav>
   );
   return (
-    <div className='d-flex flex-column'>
-      <div>
+    <div className='d-flex flex-column container'>
+      <div className='container'>
         <DetailLayout
           formButtons={
             activeTab === tabs.CITIZENS &&

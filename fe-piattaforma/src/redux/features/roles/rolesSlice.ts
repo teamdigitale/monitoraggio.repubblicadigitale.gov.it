@@ -93,6 +93,7 @@ interface RoleI {
   codiceRuolo: string;
   nomeRuolo: string;
   tipologiaRuolo: 'P' | 'NP';
+  modificabile: boolean;
 }
 
 interface PermissionI {
@@ -115,6 +116,7 @@ export interface RolesStateI {
       nome: string;
       stato: string;
       tipologia: string;
+      modificabile: boolean;
     };
     dettaglioGruppi?: {
       codice: string; // TODO RoleGroupI

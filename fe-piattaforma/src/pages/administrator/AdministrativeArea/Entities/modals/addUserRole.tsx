@@ -33,7 +33,7 @@ const AddUserRole: React.FC<withFormHandlerProps> = (props) => {
   const handleAddRole = async () => {
     if (isValidForm && form?.ruolo?.value && userId) {
       const res = await dispatch(
-        UserAddRole({ cfUtente: userId, ruolo: form.ruolo.value.toString() })
+        UserAddRole({ idUtente: userId, ruolo: form.ruolo.value.toString() })
       );
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
