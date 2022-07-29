@@ -267,6 +267,14 @@ public class UtenteService {
 	
 	@LogMethod
 	@LogExecutionTime
+	public UtenteEntity getUtenteById(Long idUtente) {
+		String messaggioErrore = String.format("risorsa con id=%s non trovata", idUtente);
+		return this.utenteRepository.findById(idUtente)
+				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore) );
+	}
+	
+	@LogMethod
+	@LogExecutionTime
 	public UtenteEntity getUtenteEagerByCodiceFiscale(String codiceFiscale) {
 		return this.utenteRepository.findUtenteEagerByCodiceFiscale(codiceFiscale);
 	}
@@ -301,18 +309,18 @@ public class UtenteService {
 		return utente;
 	}
 	
-	private boolean isEmailDuplicata(String email, String codiceFiscale) {
-		return this.utenteRepository.findByEmailAndCodiceFiscaleNot(email, codiceFiscale).isPresent();
-	}
+//	private boolean isEmailDuplicata(String email, String codiceFiscale) {
+//		return this.utenteRepository.findByEmailAndCodiceFiscaleNot(email, codiceFiscale).isPresent();
+//	}
 
 	@LogExecutionTime
 	@LogMethod
-	public void aggiornaUtente(AggiornaUtenteRequest aggiornaUtenteRequest, String cfUtente) {
+	public void aggiornaUtente(AggiornaUtenteRequest aggiornaUtenteRequest, Long idUtente) {
 		UtenteEntity utenteFetchDB = null;
 		try {
-			utenteFetchDB = this.getUtenteByCodiceFiscale(cfUtente);
+			utenteFetchDB = this.getUtenteById(idUtente);
 		} catch (ResourceNotFoundException ex) {
-			String messaggioErrore = String.format("utente con codice fiscale=%s non trovato", cfUtente);
+			String messaggioErrore = String.format("utente con id=%s non trovato", idUtente);
 			throw new UtenteException(messaggioErrore, ex);
 		}
 		utenteFetchDB.setEmail(aggiornaUtenteRequest.getEmail());
@@ -333,16 +341,16 @@ public class UtenteService {
 
 	@LogExecutionTime
 	@LogMethod
-	public void cancellaUtente(String cfUtente) {
+	public void cancellaUtente(Long idUtente) {
 		UtenteEntity utente = null;
 		try {
-			utente = this.getUtenteByCodiceFiscale(cfUtente);
+			utente = this.getUtenteById(idUtente);
 		} catch (ResourceNotFoundException ex) {
 			String messaggioErrore = String.format("Impossibile cancellare un utente che non esiste");
 			throw new UtenteException(messaggioErrore, ex);
 		}
-		if(this.utenteXRuoloService.countRuoliByCfUtente(cfUtente) > 0) {
-			String errorMessage = String.format("Impossibile cancellare l'utente con codice fiscale %s poiché ha almeno un ruolo associato", cfUtente);
+		if(this.utenteXRuoloService.countRuoliByCfUtente(utente.getCodiceFiscale()) > 0) {
+			String errorMessage = String.format("Impossibile cancellare l'utente con codice fiscale %s poiché ha almeno un ruolo associato", utente.getCodiceFiscale());
 			throw new UtenteException(errorMessage);
 		}
 		this.utenteRepository.delete(utente);
@@ -359,7 +367,7 @@ public class UtenteService {
 	@LogMethod
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
-	public void assegnaRuoloAUtente(String codiceFiscaleUtente, String codiceRuolo) {
+	public void assegnaRuoloAUtente(Long idUtente, String codiceRuolo) {
 		RuoloEntity ruolo = null;
 		try {
 			ruolo = this.ruoloService.getRuoloByCodiceRuolo(codiceRuolo);
@@ -369,13 +377,13 @@ public class UtenteService {
 		}
 		UtenteEntity utente = null;
 		try {
-			utente = this.getUtenteByCodiceFiscale(codiceFiscaleUtente);
+			utente = this.getUtenteById(idUtente);
 		} catch (ResourceNotFoundException ex) {
-			String messaggioErrore = String.format("Impossibile assegnare il ruolo con codice = %s poiché l'utente con codice fiscale = %s non esiste", codiceRuolo, codiceFiscaleUtente);
+			String messaggioErrore = String.format("Impossibile assegnare il ruolo con codice = %s poiché l'utente con id = %s non esiste", codiceRuolo, idUtente);
 			throw new UtenteException(messaggioErrore, ex);
 		}
 		if(utente.getRuoli().contains(ruolo)) {
-			String messaggioErrore = String.format("L'utente con codice fiscale = %s ha già il ruolo con codice = %s assegnato", codiceFiscaleUtente, codiceRuolo);
+			String messaggioErrore = String.format("L'utente con id = %s ha già il ruolo con codice = %s assegnato", idUtente, codiceRuolo);
 			throw new UtenteException(messaggioErrore);
 		}
 		if(codiceRuolo.equals("DTD") || codiceRuolo.equals("DSCU")) {
@@ -613,8 +621,10 @@ public class UtenteService {
 
 	@LogMethod
 	@LogExecutionTime
-	public SchedaUtenteBean getSchedaUtenteByCodiceFiscale(String cfUtente) {
-		UtenteEntity utenteFetchDB = this.getUtenteByCodiceFiscale(cfUtente);
+	public SchedaUtenteBean getSchedaUtenteByIdUtente(Long idUtente) {
+		UtenteEntity utenteFetchDB = this.getUtenteById(idUtente);
+		
+		String cfUtente = utenteFetchDB.getCodiceFiscale();
 		
 		DettaglioUtenteBean dettaglioUtente = new DettaglioUtenteBean();
 		dettaglioUtente.setId(utenteFetchDB.getId());
@@ -775,27 +785,28 @@ public class UtenteService {
 
 	@LogMethod
 	@LogExecutionTime
-	public void cancellaRuoloDaUtente(String codiceFiscale, String codiceRuolo) {
+	public void cancellaRuoloDaUtente(Long idUtente, String codiceRuolo) {
 		if(this.ruoloService.getRuoloByCodiceRuolo(codiceRuolo) == null) {
 			String errorMessage = String.format("Il codice ruolo %s inserito non corrisponde a nessun ruolo esistente", codiceRuolo);
 			throw new RuoloException(errorMessage);
 		}
-		if(this.getUtenteByCodiceFiscale(codiceFiscale) == null ) {
-			String errorMessage = String.format("L'utente con codice fiscale %s non esiste", codiceFiscale);
+		UtenteEntity utente = this.getUtenteById(idUtente);
+		if(utente == null ) {
+			String errorMessage = String.format("L'utente con id %s non esiste", idUtente);
 			throw new UtenteException(errorMessage);
 		}
 		RuoloEntity ruolo = this.ruoloService.getRuoloByCodiceRuolo(codiceRuolo);
-		if(!this.getUtenteByCodiceFiscale(codiceFiscale).getRuoli().contains(ruolo)) {
+		if(!utente.getRuoli().contains(ruolo)) {
 			String errorMessage = String.format("Impossibile cancellare un ruolo non associato all'utente");
 			throw new RuoloException(errorMessage);
 		}
 		if(ruolo.getPredefinito() == false) {
-			UtenteXRuolo utenteRuolo = this.utenteXRuoloService.getUtenteXRuoloByCfUtenteAndCodiceRuolo(codiceFiscale, codiceRuolo);
+			UtenteXRuolo utenteRuolo = this.utenteXRuoloService.getUtenteXRuoloByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), codiceRuolo);
 			this.utenteXRuoloService.cancellaRuoloUtente(utenteRuolo);
 			return;
 		}
 		if(codiceRuolo.equals("DTD") || codiceRuolo.equals("DSCU")) {
-			UtenteXRuolo utenteRuolo = this.utenteXRuoloService.getUtenteXRuoloByCfUtenteAndCodiceRuolo(codiceFiscale, codiceRuolo);
+			UtenteXRuolo utenteRuolo = this.utenteXRuoloService.getUtenteXRuoloByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), codiceRuolo);
 			this.utenteXRuoloService.cancellaRuoloUtente(utenteRuolo);
 			return;
 		}
