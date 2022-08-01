@@ -103,7 +103,7 @@ public class UtenteService {
 					utenteDto.setId(utente.getId());
 					utenteDto.setNome(utente.getNome() + " " + utente.getCognome());
 					utenteDto.setCodiceFiscale(utente.getCodiceFiscale());
-					utenteDto.setStato(utente.getRuoli().size() > 0 ? StatoEnum.ATTIVO.getValue(): StatoEnum.NON_ATTIVO.getValue());
+					utenteDto.setStato(utente.getStato());
 					
 					StringBuilder ruoliAggregati = new StringBuilder();
 					utente.getRuoli()
@@ -290,7 +290,7 @@ public class UtenteService {
 		if(utenteDBFetch.isPresent()) {
 			new UtenteException(String.format("Utente con codice fiscale '%s' già esistente", utente.getCodiceFiscale()));
 		}
-		utente.setStato(StatoEnum.ATTIVO.getValue());
+		utente.setStato(StatoEnum.NON_ATTIVO.getValue());
 		RuoloEntity ruolo = this.ruoloService.getRuoloByCodiceRuolo(codiceRuolo);
 		utente.getRuoli().add(ruolo);
 		utente.setDataOraCreazione(new Date());

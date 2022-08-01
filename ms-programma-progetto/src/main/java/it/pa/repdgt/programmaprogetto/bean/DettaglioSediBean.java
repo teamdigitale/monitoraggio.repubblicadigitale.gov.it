@@ -13,6 +13,7 @@ public class DettaglioSediBean {
 	private String nome;
 	private String ruoloEnte;
 	private String serviziErogati;
+	private Long identeDiRiferimento;
 	private String enteDiRiferimento;
 	private int nrFacilitatori;
 	private String stato;

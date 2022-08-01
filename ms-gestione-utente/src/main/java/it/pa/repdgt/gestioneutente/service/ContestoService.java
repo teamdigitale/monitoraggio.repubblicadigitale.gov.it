@@ -278,6 +278,7 @@ public class ContestoService implements RuoliUtentiConstants{
 		utenteDBFtech.setAbilitazioneConsensoTrammentoDati(Boolean.TRUE);
 		utenteDBFtech.setDataOraAbilitazioneConsensoDati(new Date());
 		utenteDBFtech.setDataOraAggiornamento(new Date());
+		utenteDBFtech.setStato(StatoEnum.ATTIVO.getValue());
 		try {
 			this.utenteService.salvaUtente(utenteDBFtech);
 		}catch(Exception e) {

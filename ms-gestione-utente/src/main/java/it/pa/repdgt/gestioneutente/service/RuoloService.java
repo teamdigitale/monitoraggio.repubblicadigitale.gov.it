@@ -79,7 +79,7 @@ public class RuoloService {
 		if(nomeRuolo == null || nomeRuolo.trim().isEmpty()){
 			return this.getAllRuoli();
 		}
-		return Arrays.asList( this.getRuoloByNome(nomeRuolo.trim().toUpperCase()) );
+		return this.getRuoliByNome(nomeRuolo.trim().toUpperCase());
 	}
 	
 	@LogMethod
@@ -90,10 +90,8 @@ public class RuoloService {
 	
 	@LogMethod
 	@LogExecutionTime
-	public RuoloEntity getRuoloByNome(String nomeRuolo) {
-		String messaggioErrore = String.format("Ruolo con nome = %s non trovato", nomeRuolo);
-		return this.ruoloRepository.findByNomeContaining(nomeRuolo)
-				.orElseThrow( () -> new ResourceNotFoundException(messaggioErrore));
+	public List<RuoloEntity> getRuoliByNome(String nomeRuolo) {
+		return this.ruoloRepository.findByNomeContaining(nomeRuolo);
 	}
 
 	@LogExecutionTime

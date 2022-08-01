@@ -46,6 +46,7 @@ public class OpenDataService {
 	
 	private static final String patternDate = "dd_MM_yyyy";
 	private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(patternDate);
+	final static String NOME_FILE = "fileCittadini.csv";
 	
 	@Autowired
 	private OpenDataCSVService openDataCSVService;
@@ -59,13 +60,14 @@ public class OpenDataService {
 //					   │ │ │ │  │ │              (or MON-SUN -- 0 or 7 is Sunday)
 //					   │ │ │ │  │ │
 //					   * * * *  * *
-	@Scheduled(cron = "0 49 17 * * *")
+	//@Scheduled(cron = "0 0 0 1 */6 *")//job schedulato il giorno 1 del mese a mezzanotte ogni 6 mesi
+	@Scheduled(cron = "0 0 13 * * *")//job schedulato ogni giorno alle 13 
 	@LogMethod
 	@LogExecutionTime
 	public void caricaFileListaCittadiniSuAmazonS3() throws IOException {
 		String nowDate = simpleDateFormat.format(new Date());
 //		final String fileNameToUpload = "./fileCittadiniToUploadOn".concat(nowDate.toString().concat(".csv"));
-		final String fileNameToUpload = "./fileCittadini".concat(".csv");
+		final String fileNameToUpload = "./".concat(NOME_FILE);
 		
 		final List<OpenDataCittadinoCSVBean> openDataCittadinoCSVBeanList = this.openDataCSVService.getAllOpenDataCittadino();
 		ByteArrayInputStream byteArrayInputStream = CSVUtil.exportCSVOpenData(openDataCittadinoCSVBeanList, CSVFormat.EXCEL.builder().setDelimiter(";").build());
@@ -74,15 +76,19 @@ public class OpenDataService {
 		byte[] bytes = new byte[nBytes];
 		byteArrayInputStream.read(bytes, 0, nBytes);
 		String datiToUpload = new String(bytes, StandardCharsets.UTF_8);
-		
+		File fileToUpload = null;
 		try {
-			final File fileToUpload = this.creaFileToUpload(datiToUpload, fileNameToUpload);
+			fileToUpload = this.creaFileToUpload(datiToUpload, fileNameToUpload);
 			// upload file su AmazonS3
 			this.s3Service.uploadFile(this.nomeDelBucketS3, fileToUpload);
 			this.cancellaFile(fileToUpload);
+			cittadinoRepository.azzeraCountDownload(NOME_FILE);
 		} catch (Exception ex) {
 			log.error("Errore caricamento file lista cittadini su AmazonS3 in data={}. ex={}", ex, nowDate);
-		} 
+		}finally {
+			if(fileToUpload.exists()) 
+				fileToUpload.delete();
+		}
 	}
 	
 	public File creaFileToUpload(@NotNull final String dati, @NotBlank final String fileName) throws IOException {

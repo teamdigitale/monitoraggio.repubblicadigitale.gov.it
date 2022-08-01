@@ -441,7 +441,9 @@ public class ProgettoService {
 						    dettaglioSede.setRuoloEnte(this.enteService.getRuoloEnteByIdProgettoAndIdSedeAndIdEnte(idProgetto, sede.getId(), idEnte));
 						    dettaglioSede.setNrFacilitatori(this.utenteService.countFacilitatoriPerSedeProgettoEnte(idProgetto, sede.getId(), idEnte));
 						    dettaglioSede.setServiziErogati(sede.getServiziErogati());
-						    dettaglioSede.setEnteDiRiferimento(this.enteService.getEnteById(idEnte).getNome());
+						    EnteEntity enteDiRiferimento = this.enteService.getEnteById(idEnte);
+						    dettaglioSede.setIdenteDiRiferimento(enteDiRiferimento.getId());
+						    dettaglioSede.setEnteDiRiferimento(enteDiRiferimento.getNome());
 						    dettaglioSede.setStato(this.sedeService.getStatoSedeByIdProgettoAndIdSedeAndIdEnte(idProgetto, sede.getId(), idEnte));
 						    return dettaglioSede;
 				})

@@ -64,5 +64,13 @@ public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long
 			+ "     FROM count_download_file"
 			+ "     where nome_file = :nomeFile"
 			,nativeQuery = true)
-	Long getCountDownload(@Param(value = "nomeFile")String nomeFile); 
+	Long getCountDownload(@Param(value = "nomeFile")String nomeFile);
+	
+	@Transactional
+	@Modifying
+	@Query(value = "UPDATE count_download_file"
+			+ "     set count = 0"
+			+ "     where nome_file = :nomeFile"
+	   ,nativeQuery = true)
+	void azzeraCountDownload(@Param(value = "nomeFile")String nomeFile);
 }

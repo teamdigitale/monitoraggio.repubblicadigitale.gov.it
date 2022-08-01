@@ -19,6 +19,7 @@ public class CSVQuestionarioTemplateUtil {
 	private static final String NESSUN_RECORD_PRESENTE = "Nessun record presente";
 
 	private static final List<String> HEADERS = Arrays.asList(
+				"ID",
 				"NOME",
 				"DESCRIZIONE",
 				"STATO"
@@ -56,6 +57,7 @@ public class CSVQuestionarioTemplateUtil {
 
 	private static List<String> getCSVRecord(final QuestionarioTemplateLightResource questionarioTemplateLightResource) {
 		return  Arrays.asList(
+						questionarioTemplateLightResource.getIdQuestionarioTemplate(),
 						questionarioTemplateLightResource.getNomeQuestionarioTemplate(),
 						questionarioTemplateLightResource.getDescrizione(),
 						questionarioTemplateLightResource.getStatoQuestionarioTemplate()
