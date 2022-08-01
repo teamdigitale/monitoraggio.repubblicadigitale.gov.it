@@ -35,7 +35,7 @@
     "react-moment": "^1.1.2",
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.3.0",
-    "react-select": "^5.2.2",
+    "react-select": "^5.4.0",
     "react-sticky-el": "^2.0.9",
     "react-teleporter": "^2.2.1",
     "redux-devtools-extension": "^2.13.9",
