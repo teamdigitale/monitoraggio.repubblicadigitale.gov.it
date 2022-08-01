@@ -57,6 +57,7 @@ public class EnteSedeProgettoServiceTest {
 	EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey;
 	EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatoreEntity;
 	List<EnteSedeProgettoFacilitatoreEntity> listaEnteSedeProgettoFacilitatore;
+	List<EnteSedeProgetto> listaEnteSedeProgetto;
 	
 	@BeforeEach
 	public void setUp() {
@@ -80,7 +81,10 @@ public class EnteSedeProgettoServiceTest {
 		enteSedeProgettoFacilitatoreEntity.setStatoUtente("ATTIVO");
 		listaEnteSedeProgettoFacilitatore = new ArrayList<>();
 		listaEnteSedeProgettoFacilitatore.add(enteSedeProgettoFacilitatoreEntity);
+		listaEnteSedeProgetto = new ArrayList<>();
+		listaEnteSedeProgetto.add(enteSedeProgetto);
 	}
+	
 	
 	@Test
 	public void getAssociazioneEnteSedeProgettoTest() {
@@ -158,5 +162,40 @@ public class EnteSedeProgettoServiceTest {
 		when(this.enteSedeProgettoRepository.existsById(Mockito.any(EnteSedeProgettoKey.class))).thenReturn(false);
 		Assertions.assertThrows(EnteSedeProgettoException.class, () -> 	enteSedeProgettoService.terminaAssociazioneEnteSedeProgetto(ente1.getId(), sede1.getId(), progetto1.getId()));
 		assertThatExceptionOfType(ResourceNotFoundException.class);
+	}
+	
+	@Test
+	public void cancellazioneAssociazioneEnteSedeProgettoTest() {
+		when(this.enteSedeProgettoRepository.existsById(Mockito.any(EnteSedeProgettoKey.class))).thenReturn(true);
+		when(this.enteSedeProgettoRepository.findById(Mockito.any(EnteSedeProgettoKey.class))).thenReturn(Optional.of(enteSedeProgetto));
+		enteSedeProgettoService.cancellazioneAssociazioneEnteSedeProgetto(ente1.getId(), sede1.getId(), progetto1.getId());
+	}
+	
+	@Test
+	public void cancellazioneAssociazioneEnteSedeProgettoKOTest() {
+		//test KO per enteSedeProgettoKey inesistente
+		when(this.enteSedeProgettoRepository.existsById(Mockito.any(EnteSedeProgettoKey.class))).thenReturn(false);
+		Assertions.assertThrows(EnteSedeProgettoException.class, () -> 	enteSedeProgettoService.cancellazioneAssociazioneEnteSedeProgetto(ente1.getId(), sede1.getId(), progetto1.getId()));
+		assertThatExceptionOfType(ResourceNotFoundException.class);
+	}
+	
+	@Test
+	public void cancellazioneAssociazioniEnteSedeProgettoByIdEnteAndIdProgettoTest() {
+		doAnswer(invocation -> {
+			return null;
+		}).when(this.enteSedeProgettoRepository).cancellazioneAssociazioniEnteSedeProgettoByIdEnteAndIdProgetto(ente1.getId(), progetto1.getId());
+		enteSedeProgettoService.cancellazioneAssociazioniEnteSedeProgettoByIdEnteAndIdProgetto(ente1.getId(), progetto1.getId());
+	}
+	
+	@Test
+	public void getSediPerProgettoAndEnteTest() {
+		when(this.enteSedeProgettoRepository.findSediPerProgettoAndEnte(ente1.getId(), progetto1.getId())).thenReturn(listaEnteSedeProgetto);
+		enteSedeProgettoService.getSediPerProgettoAndEnte(ente1.getId(), progetto1.getId());
+	}
+	
+	@Test
+	public void salvaEnteSedeProgettoTest() {
+		when(this.enteSedeProgettoRepository.save(enteSedeProgetto)).thenReturn(enteSedeProgetto);
+		enteSedeProgettoService.salvaEnteSedeProgetto(enteSedeProgetto);
 	}
 }

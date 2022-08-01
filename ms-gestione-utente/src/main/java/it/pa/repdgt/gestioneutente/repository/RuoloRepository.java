@@ -13,7 +13,7 @@ import it.pa.repdgt.shared.entity.RuoloEntity;
 @Repository
 public interface RuoloRepository extends JpaRepository<RuoloEntity, String> {
 
-	Optional<RuoloEntity> findByNomeContaining(String nome);
+	List<RuoloEntity> findByNomeContaining(String nome);
 
 	Optional<RuoloEntity> findByCodice(String codiceRuolo);
 	
