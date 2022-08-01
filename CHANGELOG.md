@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.67](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.66...1.0.0-develop.67) (2022-08-01)
+
+
+### Bug Fixes
+
+* **be:** fix per mostrare facilitatori schada sedi ([d8f263a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d8f263ae0ca3e324d651c2d750b51f82d0b8d7f2))
+
 ## [1.0.0-develop.66](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.65...1.0.0-develop.66) (2022-07-29)
 
 
