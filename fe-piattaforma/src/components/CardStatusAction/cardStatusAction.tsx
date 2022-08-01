@@ -47,6 +47,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
     fullInfo,
     onActionClick,
     id,
+    cf,
     moreThanOneSurvey = false,
     onCheckedChange,
   } = props;
@@ -210,7 +211,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
                 device.mediaIsPhone ? null : (
                   <Button
                     onClick={() => {
-                      onActionClick[CRUDActionTypes.DELETE](id);
+                      onActionClick[CRUDActionTypes.DELETE](cf ? cf : id);
                     }}
                     className='pl-3 pr-0'
                   >

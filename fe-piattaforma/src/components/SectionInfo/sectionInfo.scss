@@ -7,8 +7,13 @@
   }
 
   .section-info-list {
+    display: flex;
+    flex-wrap: wrap;
     ul {
       list-style: none;
+      li {
+        width: 300px;
+      }
     }
     ul li::before {
       content: '•';

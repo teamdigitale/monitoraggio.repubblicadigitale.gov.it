@@ -62,6 +62,7 @@ const AuthoritiesDetails = () => {
   }, []);
 
   useEffect(() => {
+    // For breadcrumb
     if (authorityId && authorityDetails?.dettagliInfoEnte?.nome) {
       dispatch(
         setInfoIdsBreadcrumb({
@@ -112,7 +113,7 @@ const AuthoritiesDetails = () => {
                 entity: 'referent-delegate',
                 cf: td,
                 role: 'REPP',
-                text: 'Confermi di voler eliminare questo referente?',
+                text: 'Confermi di voler disassociare questo referente?',
               },
             })
           );
@@ -145,7 +146,7 @@ const AuthoritiesDetails = () => {
             entity: 'referent-delegate',
             cf: td,
             role: 'DEPP',
-            text: 'Confermi di voler eliminare questo delegato?',
+            text: 'Confermi di voler disassociare questo delegato?',
           },
         })
       );
@@ -183,7 +184,13 @@ const AuthoritiesDetails = () => {
             (ref: { [key: string]: string }) => ({
               ...ref,
               id: ref?.id,
-              actions: onActionClickReferenti,
+              actions:
+                ref.stato === 'NON ATTIVO'
+                  ? {
+                      [CRUDActionTypes.VIEW]:
+                        onActionClickReferenti[CRUDActionTypes.VIEW],
+                    }
+                  : onActionClickReferenti,
             })
           ) || [],
       },
@@ -194,7 +201,12 @@ const AuthoritiesDetails = () => {
             (del: { [key: string]: string }) => ({
               ...del,
               id: del?.id,
-              actions: onActionClickDelegati,
+              actions: del.stato
+                ? {
+                    [CRUDActionTypes.VIEW]:
+                      onActionClickDelegati[CRUDActionTypes.VIEW],
+                  }
+                : onActionClickDelegati,
             })
           ) || [],
       },
@@ -253,6 +265,7 @@ const AuthoritiesDetails = () => {
             outline: true,
             buttonClass: 'btn-secondary',
             text: 'Elimina',
+            disabled: authorityDetails?.stato === 'ATTIVO',
             onClick: () =>
               dispatch(
                 openModal({
@@ -285,6 +298,7 @@ const AuthoritiesDetails = () => {
             outline: true,
             buttonClass: 'btn-secondary',
             text: 'Elimina',
+            disabled: authorityDetails?.stato === 'ATTIVO',
             onClick: () =>
               dispatch(
                 openModal({

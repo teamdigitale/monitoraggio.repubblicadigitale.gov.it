@@ -113,6 +113,7 @@ export const GetUserDetails =
       const res = await API.get(`utente/${userId}`);
       if (res?.data) {
         dispatch(setUserDetails(res.data));
+        return res.data;
       }
     } catch (error) {
       console.log('GetHeadquartersDetail error', error);

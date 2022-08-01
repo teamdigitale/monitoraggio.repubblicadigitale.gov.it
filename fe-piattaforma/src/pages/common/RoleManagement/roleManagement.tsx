@@ -2,7 +2,7 @@ import { Container } from 'design-react-kit';
 import React, { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Table } from '../../../components';
+import { EmptySection, Table } from '../../../components';
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
 } from '../../../components/genericSearchFilterTableLayout/genericSearchFilterTableLayout';
@@ -75,7 +75,7 @@ const RoleManagement = () => {
       TableHeading,
       (ruoliList || []).map((td) => {
         const actions = [];
-        if (!!td.codiceRuolo) {
+        if (td.codiceRuolo) {
           actions.push([CRUDActionTypes.VIEW]);
           actions.push([CRUDActionTypes.CLONE]);
         }
@@ -176,13 +176,19 @@ const RoleManagement = () => {
           iconCta='it-plus'
           cta={hasUserPermission(['new.ruoli']) ? () => addRole() : undefined}
         >
-          <Table
-            {...tableValues}
-            id='table'
-            onActionClick={onActionClick}
-            withActions
-            rolesTable
-          />
+          {ruoliList?.length && tableValues?.values?.length ? (
+            <Table
+              {...tableValues}
+              id='table'
+              onActionClick={onActionClick}
+              withActions
+              rolesTable
+            />
+          ) : (
+            <div className='pb-5'>
+              <EmptySection title='Non esistono ruoli' withIcon />
+            </div>
+          )}
         </GenericSearchFilterTableLayout>
       </Container>
     </>

@@ -43,8 +43,8 @@ import {
 import {
   GetAuthorityManagerDetail,
   RemoveManagerAuthority,
-  RemovePartnerAuthority,
   RemoveReferentDelegate,
+  TerminatePartnerAuthority,
   UserAuthorityRole,
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import {
@@ -110,12 +110,14 @@ const ProjectsDetails = () => {
   const { hasUserPermission } = useGuard();
 
   useEffect(() => {
+    // For breadcrumb
     if (location.pathname === `/area-amministrativa/progetti/${entityId}`) {
       navigate(`/area-amministrativa/progetti/${entityId}/info`);
     }
   }, []);
 
   useEffect(() => {
+    // For breadcrumb
     if (projectId && projectDetails?.nome) {
       dispatch(
         setInfoIdsBreadcrumb({
@@ -167,7 +169,7 @@ const ProjectsDetails = () => {
                 entity: 'referent-delegate',
                 cf: td,
                 role: 'REGP',
-                text: 'Confermi di voler eliminare questo referente?',
+                text: 'Confermi di voler disassociare questo referente?',
               },
             })
           );
@@ -212,7 +214,7 @@ const ProjectsDetails = () => {
                 entity: 'referent-delegate',
                 cf: td,
                 role: 'DEGP',
-                text: 'Confermi di voler eliminare questo delegato?',
+                text: 'Confermi di voler disassociare questo delegato?',
               },
             })
           );
@@ -395,8 +397,9 @@ const ProjectsDetails = () => {
                 // TODO: check when BE add codiceFiscale
                 ...ref,
                 id: ref.id,
+                codiceFiscale: ref.codiceFiscale,
                 actions:
-                  ref?.stato === 'ATTIVO'
+                  ref?.stato === 'NON ATTIVO'
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickReferenti[CRUDActionTypes.VIEW],
@@ -413,8 +416,9 @@ const ProjectsDetails = () => {
                 // TODO: check when BE add codiceFiscale
                 ...del,
                 id: del.id,
+                codiceFiscale: del.codiceFiscale,
                 actions:
-                  del?.stato === 'ATTIVO'
+                  del?.stato === 'NON ATTIVO'
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickDelegati[CRUDActionTypes.VIEW],
@@ -476,7 +480,13 @@ const ProjectsDetails = () => {
           }) => ({
             ...entePartner,
             fullInfo: { ref: entePartner.referenti },
-            actions: onActionClickEntiPartner,
+            actions:
+              entePartner.stato === 'NON ATTIVO'
+                ? {
+                    [CRUDActionTypes.VIEW]:
+                      onActionClickEntiPartner[CRUDActionTypes.VIEW],
+                  }
+                : onActionClickEntiPartner,
           })
         ),
       });
@@ -518,6 +528,7 @@ const ProjectsDetails = () => {
             nome: string;
             stato: string;
             enteDiRiferimento: string;
+            identeDiRiferimento?: string | number;
             nrFacilitatori: number;
             serviziErogati: string;
           }) => ({
@@ -531,7 +542,7 @@ const ProjectsDetails = () => {
               [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
                 projectId &&
                   navigate(
-                    `/area-amministrativa/progetti/${projectId}/sedi/${td}`
+                    `/area-amministrativa/progetti/${projectId}/${sede?.identeDiRiferimento}/sedi/${td}`
                   );
               },
             },
@@ -618,14 +629,7 @@ const ProjectsDetails = () => {
           to={replaceLastUrlSection(tabs.ENTI_PARTNER)}
           active={activeTab === tabs.ENTI_PARTNER}
         >
-          {!partnerAuthoritiesList?.length ? (
-            <div>
-              <span className='mr-1'> * Enti Partner </span>
-              <Icon icon='it-warning-circle' size='sm' />
-            </div>
-          ) : (
-            'Enti Partner'
-          )}
+          <span> Enti partner </span>
         </NavLink>
       </li>
       <li ref={sediRef}>
@@ -633,24 +637,17 @@ const ProjectsDetails = () => {
           to={replaceLastUrlSection(tabs.SEDI)}
           active={activeTab === tabs.SEDI}
         >
-          {!headquarterList?.length ? (
-            <div>
-              <span className='mr-1'> * Sedi </span>
-              <Icon icon='it-warning-circle' size='sm' />
-            </div>
-          ) : (
-            'Sedi'
-          )}
+          <span> Sedi </span>
         </NavLink>
       </li>
     </Nav>
   );
 
-  const removeAuthorityPartner = async (
+  const terminateAuthorityPartner = async (
     authorityId: string,
     projectId: string
   ) => {
-    await dispatch(RemovePartnerAuthority(authorityId, projectId));
+    await dispatch(TerminatePartnerAuthority(authorityId, projectId));
     dispatch(closeModal());
     dispatch(GetProjectDetail(projectId));
   };
@@ -681,7 +678,7 @@ const ProjectsDetails = () => {
           payload: {
             entity: 'partner-authority',
             authorityId: td,
-            text: 'Confermi di volere eliminare questo Ente partner?',
+            text: 'Confermi di volere disassociare questo Ente partner?',
           },
         })
       );
@@ -1018,6 +1015,24 @@ const ProjectsDetails = () => {
     }
   };
 
+  // const onConfirmDeleteEntityModal = async (payload: {[key: string]: string | UserAuthorityRole}) => {
+  //   if (payload?.entity === 'referent-delegate')
+  //     removeReferentDelegate(payload?.cf, payload?.role);
+  //   if (payload?.entity === 'headquarter')
+  //     removeHeadquarter(payload?.headquarterId);
+  //   if (payload?.entity === 'partner-authority')
+  //     projectId && removeAuthorityPartner(payload?.authorityId, projectId);
+  //   if (payload?.entity === 'authority')
+  //     projectId &&
+  //       managerAuthority &&
+  //       managerAuthority?.id &&
+  //       removeManagerAuthority(managerAuthority.id, projectId);
+  //   if (payload?.entity === 'project' && projectId) {
+  //     await dispatch(DeleteEntity('progetto', projectId));
+  //     navigate(-1);
+  //   }
+  // };
+
   return (
     <div
       className={clsx(
@@ -1115,21 +1130,23 @@ const ProjectsDetails = () => {
           />
           <DeleteEntityModal
             onClose={() => dispatch(closeModal())}
-            onConfirm={(payload) => {
+            onConfirm={async (payload) => {
               if (payload?.entity === 'referent-delegate')
                 removeReferentDelegate(payload?.cf, payload?.role);
               if (payload?.entity === 'headquarter')
                 removeHeadquarter(payload?.headquarterId);
               if (payload?.entity === 'partner-authority')
                 projectId &&
-                  removeAuthorityPartner(payload?.authorityId, projectId);
+                  terminateAuthorityPartner(payload?.authorityId, projectId);
               if (payload?.entity === 'authority')
                 projectId &&
                   managerAuthority &&
                   managerAuthority?.id &&
                   removeManagerAuthority(managerAuthority.id, projectId);
-              if (payload?.entity === 'project')
-                projectId && dispatch(DeleteEntity('progetto', projectId));
+              if (payload?.entity === 'project' && projectId) {
+                await dispatch(DeleteEntity('progetto', projectId));
+                navigate(-1);
+              }
             }}
           />
           <ManageDelegate />

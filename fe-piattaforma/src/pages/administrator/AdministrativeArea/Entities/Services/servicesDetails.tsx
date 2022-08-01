@@ -57,7 +57,7 @@ const ServicesDetails = () => {
   const location = useLocation();
   const { hasUserPermission } = useGuard();
 
-  useEffect(() => {
+  useEffect(() => { // For breadcrumb
     if (serviceId && serviceDetails?.dettaglioServizio?.nomeServizio) {
       dispatch(
         setInfoIdsBreadcrumb({

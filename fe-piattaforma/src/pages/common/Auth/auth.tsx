@@ -255,7 +255,6 @@ const Auth: React.FC<withFormHandlerProps> = ({
 const form = newForm([
   newFormField({
     field: 'mockUser',
-    value: 'UTENTE2',
   }),
 ]);
 export default memo(withFormHandler({ form }, Auth));

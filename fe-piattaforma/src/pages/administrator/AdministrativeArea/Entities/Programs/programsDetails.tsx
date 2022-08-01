@@ -1,9 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  useLocation,
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Icon, Nav, Tooltip } from 'design-react-kit';
 import {
   closeModal,
@@ -129,6 +125,7 @@ const ProgramsDetails: React.FC = () => {
     useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
 
   useEffect(() => {
+    // For breadcrumb
     if (location.pathname === `/area-amministrativa/programmi/${entityId}`) {
       navigate(`/area-amministrativa/programmi/${entityId}/info`);
     }
@@ -140,6 +137,7 @@ const ProgramsDetails: React.FC = () => {
   }, [entityId]);
 
   useEffect(() => {
+    // For breadcrumb
     if (entityId && programDetails?.nomeBreve) {
       dispatch(
         setInfoIdsBreadcrumb({ id: entityId, nome: programDetails?.nomeBreve })
@@ -876,14 +874,7 @@ const ProgramsDetails: React.FC = () => {
           to={`/area-amministrativa/programmi/${entityId}/${tabs.QUESTIONARI}`}
           active={activeTab === tabs.QUESTIONARI}
         >
-          {!surveyList?.length ? (
-            <div>
-              <span className='mr-1'> * Questionari </span>
-              <Icon icon='it-warning-circle' size='sm' />
-            </div>
-          ) : (
-            'Questionari'
-          )}
+          <span> Questionari </span>
         </NavLink>
       </li>
       <li ref={projectRef}>
@@ -891,14 +882,7 @@ const ProgramsDetails: React.FC = () => {
           active={activeTab === tabs.PROGETTI}
           to={`/area-amministrativa/programmi/${entityId}/${tabs.PROGETTI}`}
         >
-          {!projectsList?.length ? (
-            <div id='tab-progetti'>
-              <span className='mr-1'> * Progetti </span>
-              <Icon icon='it-warning-circle' size='sm' />
-            </div>
-          ) : (
-            'Progetti'
-          )}
+          <span> Progetti </span>
         </NavLink>
       </li>
     </Nav>
@@ -954,7 +938,10 @@ const ProgramsDetails: React.FC = () => {
               ctaAction: () =>
                 dispatch(
                   openModal({
-                    id: formTypes.REFERENTE,
+                    id:
+                      title === 'Referenti'
+                        ? formTypes.REFERENTE
+                        : formTypes.DELEGATO,
                     payload: {
                       title: `Aggiungi ${title}`,
                     },
@@ -1059,13 +1046,13 @@ const ProgramsDetails: React.FC = () => {
         <ManageProject creation />
         <DeleteEntityModal
           onClose={() => dispatch(closeModal())}
-          onConfirm={(payload) => {
+          onConfirm={async (payload) => {
             if (payload?.entity === 'referent-delegate')
               removeReferentDelegate(payload?.cf, payload?.role);
             if (payload?.entity === 'project')
               deleteProject(payload?.projectId);
-            if (payload?.entity === 'program') {
-              entityId && dispatch(DeleteEntity('programma', entityId));
+            if (payload?.entity === 'program' && entityId) {
+              await dispatch(DeleteEntity('programma', entityId));
               navigate(-1);
             }
             if (payload?.entity === 'authority')
