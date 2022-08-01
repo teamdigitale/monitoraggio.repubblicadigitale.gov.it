@@ -8,7 +8,7 @@ import Table, { TableRowI } from '../../../../../components/Table/table';
 
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import {
-  resetAuthorityDetails,
+  // resetAuthorityDetails,
   selectAuthorities,
   setAuthoritiesList,
   setAuthorityDetails,
@@ -62,7 +62,7 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
     clearForm();
     setShowForm(true);
     setAlreadySearched(false);
-    dispatch(resetAuthorityDetails());
+    // dispatch(resetAuthorityDetails());
   };
 
   const handleSearchAuthority = (search: string) => {

@@ -430,6 +430,22 @@ export const RemovePartnerAuthority =
     }
   };
 
+export const TerminatePartnerAuthority =
+  (authorityId: string, entityId: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...RemoveAuthorityAction });
+
+      if (authorityId && entityId) {
+        await API.delete(`/ente/${authorityId}/terminaentepartner/${entityId}`);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
 const AssignReferentDelegateAction = {
   type: 'administrativeArea/AssignReferentDelegate',
 };
@@ -477,7 +493,7 @@ export const AssignManagerAuthorityReferentDelegate =
       if (userDetail?.id) {
         userDetail.codiceFiscale &&
           (await API.put(
-            `/utente/${userDetail.codiceFiscale.toString().toUpperCase()}`,
+            `/utente/${userDetail.id.toString().toUpperCase()}`,
             userDetail
           ));
         await API.post(endpoint, body);
@@ -638,6 +654,7 @@ export const UpdateAuthorityDetails =
       dispatch({ ...UpdateAuthorityDetailsAction });
 
       await API.put(`/ente/${idEnte}`, payload);
+      return true;
     } catch (error) {
       console.log(error);
     } finally {

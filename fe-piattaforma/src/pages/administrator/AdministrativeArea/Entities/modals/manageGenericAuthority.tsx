@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 //import { useDispatch } from 'react-redux';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import { resetAuthorityDetails } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
-import { UpdateAuthorityDetails } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
+import {
+  GetAuthorityDetail,
+  UpdateAuthorityDetails,
+} from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormAuthorities from '../../../../forms/formAuthorities';
@@ -30,15 +34,20 @@ const ManageGenericAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
     [key: string]: formFieldI['value'];
   }>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  const { authorityId } = useParams();
 
   const dispatch = useDispatch();
 
-  const handleSaveEnte = () => {
+  const handleSaveEnte = async () => {
     if (isFormValid) {
-      dispatch(
+      await dispatch(
         UpdateAuthorityDetails(newFormValues['id']?.toString(), newFormValues)
       );
+      clearForm();
+      dispatch(resetAuthorityDetails());
+      dispatch(closeModal());
     }
+    authorityId && dispatch(GetAuthorityDetail(authorityId));
     clearForm();
     dispatch(resetAuthorityDetails());
     dispatch(closeModal());

@@ -270,15 +270,15 @@ const AreaAmministrativaRoutes = [
     path='programmi/:entityId/questionari/:idQuestionario'
     element={<SurveyDetailsEdit />}
   />,
-  <Route 
+  <Route
     key='programmi-dettaglio-questionari-dettaglio'
     path='programmi/:entityId/questionari/:idQuestionario/clona'
-    element={<SurveyDetailsEdit cloneMode/>}
+    element={<SurveyDetailsEdit cloneMode />}
   />,
-  <Route 
+  <Route
     key='programmi-dettaglio-questionari-dettaglio'
     path='programmi/:entityId/questionari/:idQuestionario/modifica'
-    element={<SurveyDetailsEdit editMode/>}
+    element={<SurveyDetailsEdit editMode />}
   />,
   <Route
     key='programmi-dettaglio-progetti-dettaglio-utenti-dettaglio'
@@ -337,8 +337,18 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='progetti-dettaglio-ente-dettaglio-sedi-dettaglio'
+    path='progetti/:projectId/:authorityId/sedi/:headquarterId'
+    element={<HeadquartersDetails />}
+  />,
+  <Route
+    key='progetti-dettaglio-ente-dettaglio-sedi-dettaglio'
     path='progetti/:projectId/:authorityType/:authorityId/sedi/:headquarterId'
     element={<HeadquartersDetails />}
+  />,
+  <Route
+    key='progetti-dettaglio-utenti-dettaglio'
+    path='progetti/:projectId/:authorityId/:headquarterId/:userType/:userId'
+    element={<UsersDetails />}
   />,
   <Route
     key='progetti-dettaglio-utenti-dettaglio'

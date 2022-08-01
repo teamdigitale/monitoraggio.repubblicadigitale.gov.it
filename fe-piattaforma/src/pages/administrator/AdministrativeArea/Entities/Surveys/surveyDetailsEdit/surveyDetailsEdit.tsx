@@ -54,14 +54,14 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idQuestionario]);
 
-  useEffect(() => {
-    if (location.pathname.includes('programmi') && !programName && entityId) {
+  useEffect(() => { // For breadcrumb
+    if(location.pathname.includes('programmi') && !programName && entityId){
       dispatch(GetProgramDetail(entityId));
     }
   }, []);
 
-  useEffect(() => {
-    if (location.pathname.includes('programmi') && programName) {
+  useEffect(() => { // For breadcrumb
+    if(location.pathname.includes('programmi') && programName){
       dispatch(
         setInfoIdsBreadcrumb({
           id: entityId,
@@ -252,31 +252,39 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
 
         <SurveyTemplate editMode={editModeState} cloneMode={cloneModeState} />
 
-        <div
-          className={clsx(
-            'd-flex',
-            'flex-row',
-            device.mediaIsPhone
-              ? 'justify-content-around'
-              : 'justify-content-end',
-            'w-100',
-            'mt-3'
-          )}
-        >
-          {editModeState || cloneModeState ? (
-            <div aria-hidden='true' className='mt-5 w-100'>
-              <Sticky mode='bottom' stickyClassName='sticky bg-white container'>
-                <ButtonsBar buttons={cancelSaveButtons} />
-              </Sticky>
-            </div>
-          ) : (
-            <div aria-hidden='true' className='mt-5 w-100'>
-              <Sticky mode='bottom' stickyClassName='sticky bg-white container'>
-                <ButtonsBar buttons={cloneEditButtons} />
-              </Sticky>
-            </div>
-          )}
-        </div>
+        {!location.pathname.includes('programmi') && (
+          <div
+            className={clsx(
+              'd-flex',
+              'flex-row',
+              device.mediaIsPhone
+                ? 'justify-content-around'
+                : 'justify-content-end',
+              'w-100',
+              'mt-3'
+            )}
+          >
+            {editModeState || cloneModeState ? (
+              <div aria-hidden='true' className='mt-5 w-100'>
+                <Sticky
+                  mode='bottom'
+                  stickyClassName='sticky bg-white container'
+                >
+                  <ButtonsBar buttons={cancelSaveButtons} />
+                </Sticky>
+              </div>
+            ) : (
+              <div aria-hidden='true' className='mt-5 w-100'>
+                <Sticky
+                  mode='bottom'
+                  stickyClassName='sticky bg-white container'
+                >
+                  <ButtonsBar buttons={cloneEditButtons} />
+                </Sticky>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

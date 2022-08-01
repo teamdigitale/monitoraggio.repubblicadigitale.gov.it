@@ -4,6 +4,7 @@ import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
 import { selectPrograms } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { selectProfile } from '../../../redux/features/user/userSlice';
 import { useAppSelector } from '../../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
 import { RegexpType } from '../../../utils/validator';
@@ -41,6 +42,8 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     useAppSelector(selectPrograms).detail.dettagliInfoProgramma;
 
   const formDisabled = !!props.formDisabled;
+
+  const userRole = useAppSelector(selectProfile)?.codiceRuolo;
 
   // useEffect(() => {
   //   if (!creation) {
@@ -111,6 +114,12 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [programDetails]);
+
+  useEffect(() => {
+    if (userRole && form) {
+      if (userRole === 'DSCU') onInputDataChange('SCD', 'policy');
+    }
+  }, [userRole]);
 
   const onInputDataChange = (
     value: formFieldI['value'],
@@ -199,7 +208,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           />
         ) : (
           <Select
-            isDisabled={!creation && !edit}
+            isDisabled={(!creation && !edit) || userRole === 'DSCU'}
             {...form?.policy}
             required
             value={form?.policy.value as string}
@@ -220,15 +229,19 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
         )}
       </Form.Row>
       <Form.Row className={bootClass}>
-        <Input
-          {...form?.bando}
-          label='Bando'
-          col='col-12 col-lg-6'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-          className='pr-lg-3'
-        />
+        {form?.policy?.value === 'SCD' || !form?.policy?.value ? (
+          <Input
+            {...form?.bando}
+            label='Bando'
+            col='col-12 col-lg-6'
+            onInputChange={(value, field) => {
+              onInputDataChange(value, field);
+            }}
+            className='pr-lg-3'
+          />
+        ) : (
+          <span></span>
+        )}
         <Input
           {...form?.cup}
           label='CUP - Codice Unico Progetto'

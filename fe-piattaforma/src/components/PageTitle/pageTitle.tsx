@@ -1,10 +1,11 @@
-import clsx from 'clsx';
-import { Button, Container, Icon } from 'design-react-kit';
 import React, { memo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Button, Container, Icon } from 'design-react-kit';
+import clsx from 'clsx';
+import '../SectionInfo/sectionInfo.scss';
 import './pageTitle.scss';
 import SectionInfo from '../../components/SectionInfo/sectionInfo';
-import '../SectionInfo/sectionInfo.scss';
-import { useLocation } from 'react-router-dom';
+
 import { surveyBody } from '../SectionInfo/bodies';
 
 interface BreadcrumbI {
@@ -23,11 +24,10 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
   const { hasBackground, title, sectionInfo, alignTitle } = props;
 
   const [sectionInfoOpened, setSectionInfoOpened] = useState<boolean>(false);
-  /*  const [sectionBody, setSectionBody] = useState<string>(''); */
   const location = useLocation();
 
   const openSectionInfo = () => {
-    setSectionInfoOpened(true);
+    setSectionInfoOpened((current) => !current);
   };
 
   const correctSectionInfo = () => {
@@ -75,6 +75,10 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
           <SectionInfo
             title='Informazioni sulla sezione'
             body={correctSectionInfo()}
+            open={sectionInfoOpened}
+            setIsOpen={(value) => {
+              setSectionInfoOpened(value);
+            }}
           />
         ) : null}
       </Container>

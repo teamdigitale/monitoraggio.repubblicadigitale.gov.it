@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Button, Icon } from 'design-react-kit';
 import clsx from 'clsx';
 import { formTypes } from '../utils';
@@ -15,8 +15,6 @@ import {
   openModal,
 } from '../../../../../redux/features/modal/modalSlice';
 import { useDispatch } from 'react-redux';
-import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
-import ConfirmDeleteModal from '../modals/confirmDeleteModal';
 import ManageUsers from '../modals/manageUsers';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
@@ -24,7 +22,12 @@ import {
   setInfoIdsBreadcrumb,
 } from '../../../../../redux/features/app/appSlice';
 import FormUser from '../../../../forms/formUser';
-import { selectUsers } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import {
+  selectPrograms,
+  selectProjects,
+  selectUsers,
+  setUserDetails,
+} from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { CardStatusAction } from '../../../../../components';
 import ManageFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/ManageFacilitator/ManageFacilitator';
 import FormFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/FormFacilitator/FormFacilitator';
@@ -35,6 +38,11 @@ import {
   UserDeleteRole,
 } from '../../../../../redux/features/administrativeArea/user/userThunk';
 import useGuard from '../../../../../hooks/guard';
+import { GetProgramDetail } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
+import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
+import { RemoveHeadquarterFacilitator } from '../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
+import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
+import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
 
 const UsersDetails = () => {
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
@@ -47,12 +55,44 @@ const UsersDetails = () => {
     userDetails;
   const { mediaIsDesktop /* mediaIsPhone */ } = useAppSelector(selectDevice);
   const headquarterInfo = userInfo?.authorityRef || undefined;
-  const { entityId, userType, userId, projectId } = useParams();
+  const { entityId, userType, userId, projectId, headquarterId, authorityId } =
+    useParams();
   const { hasUserPermission } = useGuard();
+  const location = useLocation();
+  const programName =
+    useAppSelector(selectPrograms).detail?.dettagliInfoProgramma?.nomeBreve;
+  const projectName =
+    useAppSelector(selectProjects).detail?.dettagliInfoProgetto?.nome;
 
   useEffect(() => {
-    //if (userId) dispatch(GetUserDetails(userId));
+    // For breadcrumb
+    if (location.pathname.includes('programmi') && !programName && entityId) {
+      dispatch(GetProgramDetail(entityId));
+    }
+    if (location.pathname.includes('progetti') && !projectName && projectId) {
+      dispatch(GetProjectDetail(projectId));
+    }
+  }, []);
+
+  useEffect(() => {
+    // For breadcrumb
     if (userId && userInfo?.nome && userRoles) {
+      if (location.pathname.includes('programmi') && programName) {
+        dispatch(
+          setInfoIdsBreadcrumb({
+            id: entityId,
+            nome: programName,
+          })
+        );
+      }
+      if (location.pathname.includes('progetti') && projectName) {
+        dispatch(
+          setInfoIdsBreadcrumb({
+            id: projectId,
+            nome: projectName,
+          })
+        );
+      }
       dispatch(
         setInfoIdsBreadcrumb({
           id: entityId,
@@ -180,17 +220,6 @@ const UsersDetails = () => {
     return userInfo?.stato;
   };
 
-  const handleDeleteUserRole = async (ruolo: string) => {
-    if (userId) {
-      const res = await dispatch(UserDeleteRole({ idUtente: userId, ruolo }));
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      if (res) {
-        dispatch(GetUserDetails(userId));
-      }
-    }
-  };
-
   const buttons: ButtonInButtonsBar[] = hasUserPermission(['upd.anag.utenti'])
     ? [
         {
@@ -200,7 +229,15 @@ const UsersDetails = () => {
           buttonClass: 'btn-secondary',
           text: 'Elimina',
           disabled: getUserStatus() === 'ATTIVO',
-          onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+          onClick: () =>
+            dispatch(
+              openModal({
+                id: 'delete-entity',
+                payload: {
+                  text: 'Confermi di volere eliminare questo utente?',
+                },
+              })
+            ),
         },
         {
           size: 'xs',
@@ -212,7 +249,7 @@ const UsersDetails = () => {
                 id: getModalID(),
                 payload: {
                   title: getModalPayload(),
-                  userId: userId || userInfo?.id
+                  userId: userId || userInfo?.id,
                 },
               })
             ),
@@ -229,6 +266,42 @@ const UsersDetails = () => {
           onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
         },
       ];
+
+  const removeFacilitator = async (userCF: string) => {
+    if (userCF && headquarterId && projectId && authorityId) {
+      await dispatch(
+        RemoveHeadquarterFacilitator(
+          userCF,
+          authorityId,
+          projectId,
+          headquarterId
+        )
+      );
+    }
+  };
+
+  // const removeReferentDelegate = async (
+  //   cf: string,
+  //   role: UserAuthorityRole
+  // ) => {
+  //   if (projectId && authorityId) {
+  //     await dispatch(RemoveReferentDelegate(authorityId, projectId, cf, role));
+  //   }
+  // };
+
+  const onConfirmDelete = async (role?: string) => {
+    if (userType === formTypes.FACILITATORE ||
+      userType === formTypes.VOLONTARIO) {
+      removeFacilitator(userInfo.codiceFiscale);
+      dispatch(closeModal());
+      dispatch(setUserDetails(null));
+      navigate(-1);
+    } else if (role && userId) {
+      await dispatch(UserDeleteRole({ idUtente: userId, ruolo: role }));
+      await dispatch(GetUserDetails(userId));
+      dispatch(closeModal());
+    }
+  };
 
   return (
     <div className='d-flex flex-row container'>
@@ -248,6 +321,11 @@ const UsersDetails = () => {
             itemsList={itemList}
             buttonsPosition={'BOTTOM'}
             goBackPath='/area-amministrativa/utenti'
+            goBackTitle={
+              location.pathname === `/area-amministrativa/utenti/${userId}`
+                ? 'Elenco utenti'
+                : 'Torna indietro'
+            }
           >
             {currentForm}
           </DetailLayout>
@@ -289,7 +367,16 @@ const UsersDetails = () => {
                   roleActions = hasUserPermission(['add.del.ruolo.utente'])
                     ? {
                         [CRUDActionTypes.DELETE]: () => {
-                          handleDeleteUserRole(role.codiceRuolo || role.nome);
+                          dispatch(
+                            openModal({
+                              id: 'delete-entity',
+                              payload: {
+                                entity: 'headquarter',
+                                text: 'Confermi di volere eliminare questo ruolo?',
+                                role: role.codiceRuolo || role.nome,
+                              },
+                            })
+                          );
                         },
                       }
                     : {};
@@ -308,14 +395,9 @@ const UsersDetails = () => {
             </div>
           ) : null}
           {currentModal ? currentModal : null}
-          <ConfirmDeleteModal
-            onConfirm={() => {
-              dispatch(closeModal());
-            }}
-            onClose={() => {
-              dispatch(closeModal());
-            }}
-            text={'Confermi di voler eliminare questo utente?'}
+          <DeleteEntityModal
+            onClose={() => dispatch(closeModal())}
+            onConfirm={(payload) => onConfirmDelete(payload.role)}
           />
           <AddUserRole />
         </div>

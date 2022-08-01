@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Button, Icon } from 'design-react-kit';
 import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
@@ -31,23 +31,26 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
   const dispatch = useDispatch();
   const form = useAppSelector(selectSurveyForm);
   const sections = useAppSelector(selectSurveySections) || [];
-  const [cloneSurveyTitle, setCloneSurveyTitle] = useState('');
   const surveyName = useAppSelector(selectSurveyName);
 
   useEffect(() => {
-    if(cloneMode){
-      setCloneSurveyTitle(surveyName || 'clone');
+    if (cloneMode && surveyName) {
+      dispatch(
+        setSurveyFormFieldValue({
+          form: FormHelper.onInputChange(
+            form,
+            surveyName + 'clone',
+            'survey-name'
+          ),
+        })
+      );
     }
-  },[surveyName]);
+  }, [surveyName]);
 
   const handleOnInputChange = (
     value: string | number | boolean | Date | string[] | undefined,
-    field: string | undefined,
-    isTitle: boolean
+    field: string | undefined
   ) => {
-    if (isTitle && typeof value === 'string') {
-      setCloneSurveyTitle(value);
-    }
     dispatch(
       setSurveyFormFieldValue({
         form: FormHelper.onInputChange(form, value, field),
@@ -91,15 +94,12 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
         >
           <Input
             {...form['survey-name']}
-            value={cloneMode ? cloneSurveyTitle : form['survey-name'].value}
             col='col-12 col-lg-6 '
             label='Nome'
             id='survey-field-name'
-            onInputBlur={(value, field) =>
-              handleOnInputChange(value, field, true)
-            }
+            onInputBlur={handleOnInputChange}
             placeholder='Inserici nome questionario'
-            disabled={!cloneMode}
+            disabled={!editMode && !cloneMode}
             className={clsx(
               device.mediaIsPhone || device.mediaIsTablet ? 'w-100' : 'w-75'
             )}
@@ -140,7 +140,7 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
             )}
           >
             {!modal &&
-             (editMode || cloneMode) &&
+              (editMode || cloneMode) &&
               section.id !== 'anagraphic-citizen-section' &&
               section.id !== 'anagraphic-booking-section' && (
                 <Button

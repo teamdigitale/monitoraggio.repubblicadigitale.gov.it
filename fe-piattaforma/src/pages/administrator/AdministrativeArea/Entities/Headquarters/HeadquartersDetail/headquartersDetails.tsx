@@ -66,7 +66,7 @@ const HeadquartersDetails = () => {
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
       navigate(
-        `/area-amministrativa/progetti/${projectId}/${authorityId}/${
+        `/area-amministrativa/progetti/${projectId}/${authorityId}/${headquarterId}/${
           programPolicy === 'SCD'
             ? formTypes.VOLONTARIO
             : formTypes.FACILITATORE
@@ -79,7 +79,7 @@ const HeadquartersDetails = () => {
           id: 'delete-entity',
           payload: {
             userCF: td,
-            text: 'Confermi di voler eliminare questo facilitatore?',
+            text: 'Confermi di voler disassociare questo facilitatore?',
             entity: 'facilitator',
           },
         })
@@ -88,6 +88,7 @@ const HeadquartersDetails = () => {
   };
 
   useEffect(() => {
+    // For breadcrumb
     if (programDetails && headquarterDetails && authorityId) {
       dispatch(
         setInfoIdsBreadcrumb({
@@ -120,8 +121,14 @@ const HeadquartersDetails = () => {
         headquarterfacilitators?.map((facilitator: HeadquarterFacilitator) => ({
           nome: `${facilitator.nome} ${facilitator.cognome}`,
           stato: facilitator.stato,
-          actions: onActionClick,
+          actions:
+            facilitator.stato === 'ATTIVO'
+              ? onActionClick
+              : {
+                  [CRUDActionTypes.VIEW]: onActionClick[CRUDActionTypes.VIEW],
+                },
           id: facilitator?.id,
+          codiceFiscale: facilitator?.codiceFiscale,
         })) || [],
     },
   ];
@@ -238,7 +245,7 @@ const HeadquartersDetails = () => {
   const getAccordionCTA = (title?: string) => {
     switch (title) {
       case 'Facilitatori':
-        return hasUserPermission(['add.fac'])
+        return hasUserPermission(['add.fac']) && authorityType
           ? {
               cta: `Aggiungi ${title}`,
               ctaAction: () =>
