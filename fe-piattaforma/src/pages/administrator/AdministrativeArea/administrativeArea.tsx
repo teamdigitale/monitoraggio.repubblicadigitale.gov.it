@@ -209,11 +209,20 @@ const AreaAmministrativaRoutes = [
     }
   />,
   <Route
-    key='programmi-dettaglio-ente'
-    path='programmi/:entityId/ente'
+    key='programmi-dettaglio-ente-gestore'
+    path='programmi/:entityId/ente-gestore-programma'
     element={
       <ProtectedComponent visibleTo={['view.card.prgm.full']}>
         <ProgramsDetails />
+      </ProtectedComponent>
+    }
+  />,
+  <Route
+    key='programmi-dettaglio-ente-gestore-utenti'
+    path='programmi/:entityId/:authorityType/:authorityId/:userType/:userId'
+    element={
+      <ProtectedComponent visibleTo={['view.card.prgm.full']}>
+        <UsersDetails />
       </ProtectedComponent>
     }
   />,
@@ -247,7 +256,7 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='programmi-dettaglio-progetti-dettaglio-ente-gestore'
-    path='programmi/:entityId/progetti/:projectId/ente-gestore'
+    path='programmi/:entityId/progetti/:projectId/:authorityType'
     element={<ProjectsDetails />}
   />,
   <Route
@@ -256,14 +265,39 @@ const AreaAmministrativaRoutes = [
     element={<ProjectsDetails />}
   />,
   <Route
+    key='programmi-dettaglio-progetti-dettaglio-enti'
+    path='programmi/:entityId/progetti/:projectId/:authorityType/:authorityId'
+    element={<AuthoritiesDetails />}
+  />,
+  <Route
+    key='programmi-dettaglio-progetti-dettaglio-enti-utenti'
+    path='programmi/:entityId/progetti/:projectId/:authorityType/:authorityId/:userType/:userId'
+    element={<UsersDetails />}
+  />,
+  <Route
+    key='programmi-dettaglio-progetti-dettaglio-enti-sedi'
+    path='programmi/:entityId/progetti/:projectId/:authorityType/:authorityId/sedi/:headquarterId'
+    element={<HeadquartersDetails />}
+  />,
+  <Route
+    key='programmi-dettaglio-progetti-dettaglio-enti-sedi'
+    path='programmi/:entityId/progetti/:projectId/:authorityId/sedi/:headquarterId'
+    element={<HeadquartersDetails />}
+  />,
+  <Route
+    key='programmi-dettaglio-progetti-dettaglio-enti-sedi'
+    path='programmi/:entityId/progetti/:projectId/:authorityType/:authorityId/:headquarterId'
+    element={<HeadquartersDetails />}
+  />,
+  <Route
+    key='programmi-dettaglio-progetti-dettaglio-enti-sedi-facilitatori'
+    path='programmi/:entityId/progetti/:projectId/:authorityType/:authorityId/:headquarterId/:userType/:userId'
+    element={<UsersDetails />}
+  />,
+  <Route
     key='programmi-dettaglio-progetti-dettaglio-sedi'
     path='programmi/:entityId/progetti/:projectId/sedi'
     element={<ProjectsDetails />}
-  />,
-  <Route
-    key='programmi-dettaglio-utenti-dettaglio'
-    path='programmi/:entityId/:userType/:userId'
-    element={<UsersDetails />}
   />,
   <Route
     key='programmi-dettaglio-questionari-dettaglio'
@@ -280,17 +314,6 @@ const AreaAmministrativaRoutes = [
     path='programmi/:entityId/questionari/:idQuestionario/modifica'
     element={<SurveyDetailsEdit editMode />}
   />,
-  <Route
-    key='programmi-dettaglio-progetti-dettaglio-utenti-dettaglio'
-    path='programmi/:entityId/progetti/:projectId/:userType/:userId'
-    element={<UsersDetails />}
-  />,
-  <Route
-    key='programmi-dettaglio-progetti-dettaglio-enti-dettaglio'
-    path='programmi/:entityId/progetti/:projectId/enti/:enteId'
-    element={<AuthoritiesDetails />}
-  />,
-
   <Route
     key='progetti'
     path='progetti'
@@ -312,7 +335,12 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='progetti-dettaglio-ente-gestore'
-    path='progetti/:projectId/ente-gestore'
+    path='progetti/:projectId/ente-gestore-progetto'
+    element={<ProjectsDetails />}
+  />,
+  <Route
+    key='progetti-dettaglio-ente-gestore'
+    path='progetti/:projectId/ente-gestore-progetto/:authorityId'
     element={<ProjectsDetails />}
   />,
   <Route
@@ -321,38 +349,48 @@ const AreaAmministrativaRoutes = [
     element={<ProjectsDetails />}
   />,
   <Route
+    key='progetti-dettaglio-enti'
+    path='progetti/:projectId/:authorityType/:authorityId'
+    element={<AuthoritiesDetails />}
+  />,
+  <Route
+    key='progetti-dettaglio-enti-utenti'
+    path='progetti/:projectId/:authorityType/:authorityId/:userType/:userId'
+    element={<UsersDetails />}
+  />,
+  <Route
+    key='progetti-dettaglio-enti-sedi'
+    path='progetti/:projectId/:authorityType/:authorityId/sedi/:headquarterId'
+    element={<HeadquartersDetails />}
+  />,
+  <Route
+    key='progetti-dettaglio-enti-sedi'
+    path='progetti/:projectId/:authorityType/:authorityId/:headquarterId'
+    element={<HeadquartersDetails />}
+  />,
+  <Route
+    key='progetti-dettaglio-enti-sedi-facilitatori'
+    path='progetti/:projectId/:authorityType/:authorityId/:headquarterId/:userType/:userId'
+    element={<UsersDetails />}
+  />,
+  <Route
     key='progetti-dettaglio-sedi'
     path='progetti/:projectId/sedi'
     element={<ProjectsDetails />}
   />,
   <Route
-    key='progetti-dettaglio-enti-dettaglio'
-    path='progetti/:projectId/enti/:authorityId'
-    element={<AuthoritiesDetails />}
+    key='progetti-dettaglio-sede-dettaglio'
+    path='progetti/:projectId/:identeDiRiferimento'
+    element={<ProjectsDetails />}
   />,
   <Route
-    key='progetti-dettaglio-sedi-dettaglio'
-    path='progetti/:projectId/sedi/:headquarterId'
+    key='progetti-dettaglio-sede-dettaglio'
+    path='progetti/:projectId/:identeDiRiferimento/sedi/:headquarterId'
     element={<HeadquartersDetails />}
   />,
   <Route
-    key='progetti-dettaglio-ente-dettaglio-sedi-dettaglio'
-    path='progetti/:projectId/:authorityId/sedi/:headquarterId'
-    element={<HeadquartersDetails />}
-  />,
-  <Route
-    key='progetti-dettaglio-ente-dettaglio-sedi-dettaglio'
-    path='progetti/:projectId/:authorityType/:authorityId/sedi/:headquarterId'
-    element={<HeadquartersDetails />}
-  />,
-  <Route
-    key='progetti-dettaglio-utenti-dettaglio'
-    path='progetti/:projectId/:authorityId/:headquarterId/:userType/:userId'
-    element={<UsersDetails />}
-  />,
-  <Route
-    key='progetti-dettaglio-utenti-dettaglio'
-    path='progetti/:projectId/:authorityId/:userType/:userId'
+    key='progetti-dettaglio-sede-dettaglio-facilitatori'
+    path='progetti/:projectId/:identeDiRiferimento/:authorityId/:headquarterId/:userType/:userId'
     element={<UsersDetails />}
   />,
   <Route

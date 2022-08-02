@@ -5,7 +5,6 @@ export const surveyBody = `
       seguenti informazioni:
     </p>
     <ul class="section-info-list" style="padding-bottom: 24px; padding-left: 24px">
-    <div class="d-flex">
       <li>
         <strong> Nome </strong>
       </li>
@@ -18,8 +17,6 @@ export const surveyBody = `
          questionario sa associabile di default a tutti
           i programmi dell'intervento SCD
       </li>
-      </div>
-      <div class="d-flex">
       <li>
         <strong> ID </strong>
       </li>
@@ -32,7 +29,6 @@ export const surveyBody = `
          indica che il questionario sarà associabile
           di default a tutti i programmi dell'intervento RFD.
       </li>
-      </div>
     </ul>
     <p>
       In base ai permessi assegnati all'utente,

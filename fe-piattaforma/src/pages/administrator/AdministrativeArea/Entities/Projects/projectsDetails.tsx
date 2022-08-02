@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Icon, Nav, Tooltip } from 'design-react-kit';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { formTypes } from '../utils';
+import { entityStatus, formTypes } from '../utils';
 import {
   CRUDActionsI,
   CRUDActionTypes,
@@ -61,7 +61,7 @@ import useGuard from '../../../../../hooks/guard';
 
 const tabs = {
   INFO: 'info',
-  ENTE_GESTORE: 'ente-gestore',
+  ENTE_GESTORE: 'ente-gestore-progetto',
   ENTI_PARTNER: 'enti-partner',
   SEDI: 'sedi',
 };
@@ -103,7 +103,8 @@ const ProjectsDetails = () => {
   const partnerRef = useRef<HTMLLIElement>(null);
   const sediRef = useRef<HTMLLIElement>(null);
   const infoRef = useRef<HTMLLIElement>(null);
-  const { entityId, projectId } = useParams();
+  const { entityId, projectId, identeDiRiferimento, authorityType } =
+    useParams();
   const managerAuthority =
     useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
 
@@ -112,6 +113,12 @@ const ProjectsDetails = () => {
   useEffect(() => {
     // For breadcrumb
     if (location.pathname === `/area-amministrativa/progetti/${entityId}`) {
+      navigate(`/area-amministrativa/progetti/${entityId}/info`);
+    }
+    if (
+      location.pathname ===
+      `/area-amministrativa/progetti/${entityId}/${identeDiRiferimento}`
+    ) {
       navigate(`/area-amministrativa/progetti/${entityId}/info`);
     }
   }, []);
@@ -139,10 +146,10 @@ const ProjectsDetails = () => {
   }, [activeTab]);
 
   const getActionRedirectURL = (userType: string, userId: string) => {
-    if (entityId) {
-      return `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${userType}/${userId}`;
+    if (entityId && authorityType && managingAuthorityID) {
+      return `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${authorityType}/${managingAuthorityID}/${userType}/${userId}`;
     }
-    return `/area-amministrativa/progetti/${projectId}/ente/${userType}/${userId}`;
+    return `/area-amministrativa/progetti/${projectId}/ente-gestore-progetto/${managingAuthorityID}/${userType}/${userId}`;
   };
 
   const onActionClickReferenti: CRUDActionsI = hasUserPermission([
@@ -156,10 +163,6 @@ const ProjectsDetails = () => {
               (typeof td === 'string' ? td : td.id).toString()
             )
           );
-          /*`/area-amministrativa/${formTypes.REFERENTI}/${
-          typeof td === 'string' ? td : td?.codiceFiscale
-        }`
-      );*/
         },
         [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
           dispatch(
@@ -183,10 +186,6 @@ const ProjectsDetails = () => {
               (typeof td === 'string' ? td : td.id).toString()
             )
           );
-          /*`/area-amministrativa/${formTypes.REFERENTI}/${
-          typeof td === 'string' ? td : td?.codiceFiscale
-        }`
-      );*/
         },
       };
 
@@ -201,10 +200,6 @@ const ProjectsDetails = () => {
               (typeof td === 'string' ? td : td.id).toString()
             )
           );
-          /*`/area-amministrativa/${formTypes.DELEGATI}/${
-          typeof td === 'string' ? td : td?.codiceFiscale
-        }`
-      );*/
         },
         [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
           dispatch(
@@ -228,10 +223,6 @@ const ProjectsDetails = () => {
               (typeof td === 'string' ? td : td.id).toString()
             )
           );
-          /*`/area-amministrativa/${formTypes.DELEGATI}/${
-          typeof td === 'string' ? td : td?.codiceFiscale
-        }`
-      );*/
         },
       };
 
@@ -394,12 +385,11 @@ const ProjectsDetails = () => {
           items:
             authorityInfo?.referentiEnteGestore?.map(
               (ref: { [key: string]: string }) => ({
-                // TODO: check when BE add codiceFiscale
                 ...ref,
                 id: ref.id,
                 codiceFiscale: ref.codiceFiscale,
                 actions:
-                  ref?.stato === 'NON ATTIVO'
+                  ref?.stato !== entityStatus.ATTIVO
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickReferenti[CRUDActionTypes.VIEW],
@@ -413,12 +403,11 @@ const ProjectsDetails = () => {
           items:
             authorityInfo?.delegatiEnteGestore?.map(
               (del: { [key: string]: string }) => ({
-                // TODO: check when BE add codiceFiscale
                 ...del,
                 id: del.id,
                 codiceFiscale: del.codiceFiscale,
                 actions:
-                  del?.stato === 'NON ATTIVO'
+                  del?.stato !== entityStatus.ATTIVO
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickDelegati[CRUDActionTypes.VIEW],
@@ -433,13 +422,15 @@ const ProjectsDetails = () => {
             authorityInfo?.sediGestoreProgetto?.map(
               (sedi: { [key: string]: string }) => ({
                 ...sedi,
-                actions:
-                  sedi?.stato === 'ATTIVO'
-                    ? {
-                        [CRUDActionTypes.VIEW]:
-                          onActionClickSede[CRUDActionTypes.VIEW],
-                      }
-                    : onActionClickSede,
+                actions: {
+                  [CRUDActionTypes.VIEW]:
+                    onActionClickSede[CRUDActionTypes.VIEW],
+                  [CRUDActionTypes.DELETE]: hasUserPermission([
+                    'del.sede.gest.prgt',
+                  ])
+                    ? onActionClickSede[CRUDActionTypes.DELETE]
+                    : undefined,
+                },
               })
             ) || [],
         },
@@ -481,12 +472,32 @@ const ProjectsDetails = () => {
             ...entePartner,
             fullInfo: { ref: entePartner.referenti },
             actions:
-              entePartner.stato === 'NON ATTIVO'
+              entePartner.stato !== entityStatus.ATTIVO
                 ? {
                     [CRUDActionTypes.VIEW]:
                       onActionClickEntiPartner[CRUDActionTypes.VIEW],
                   }
-                : onActionClickEntiPartner,
+                : {
+                    [CRUDActionTypes.VIEW]:
+                      onActionClickEntiPartner[CRUDActionTypes.VIEW],
+                    [CRUDActionTypes.DELETE]: hasUserPermission([
+                      'del.ente.partner',
+                    ])
+                      ? (td: TableRowI | string) => {
+                          dispatch(
+                            openModal({
+                              id: 'delete-entity',
+                              payload: {
+                                entity: 'partner-authority',
+                                authorityId: td,
+                                text: 'Confermi di volere disassociare questo Ente partner?',
+                              },
+                            })
+                          );
+                          // projectId && removeAuthorityPartner(td as string, projectId);
+                        }
+                      : undefined,
+                  },
           })
         ),
       });
@@ -502,10 +513,10 @@ const ProjectsDetails = () => {
       setCorrectButtons([]);
       setEmptySection(
         <EmptySection
-          title={'Questa sezione è ancora vuota'}
+          title='Questa sezione è ancora vuota'
           withIcon
           icon='it-note'
-          subtitle={'Per attivare il progetto aggiungi un Ente partner'}
+          subtitle='Per attivare il progetto aggiungi un Ente partner'
           buttons={
             hasUserPermission(['add.ente.partner'])
               ? partnerAuthorityButtons
@@ -540,10 +551,16 @@ const ProjectsDetails = () => {
             },
             actions: {
               [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-                projectId &&
+                if (entityId && projectId) {
                   navigate(
-                    `/area-amministrativa/progetti/${projectId}/${sede?.identeDiRiferimento}/sedi/${td}`
+                    `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${sede?.identeDiRiferimento}/sedi/${td}`
                   );
+                } else {
+                  projectId &&
+                    navigate(
+                      `/area-amministrativa/progetti/${projectId}/${sede?.identeDiRiferimento}/sedi/${td}`
+                    );
+                }
               },
             },
           })
@@ -668,31 +685,32 @@ const ProjectsDetails = () => {
 
   const onActionClickEntiPartner: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      projectId &&
-        navigate(`/area-amministrativa/progetti/${projectId}/enti/${td}`);
-    },
-    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      dispatch(
-        openModal({
-          id: 'delete-entity',
-          payload: {
-            entity: 'partner-authority',
-            authorityId: td,
-            text: 'Confermi di volere disassociare questo Ente partner?',
-          },
-        })
-      );
-      // projectId && removeAuthorityPartner(td as string, projectId);
+      if (entityId && projectId) {
+        navigate(
+          `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/enti-partner/${td}`
+        );
+      } else {
+        projectId &&
+          navigate(
+            `/area-amministrativa/progetti/${projectId}/enti-partner/${td}`
+          );
+      }
     },
   };
 
   const onActionClickSede: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      projectId &&
-        managingAuthorityID &&
+      if (entityId && projectId && managingAuthorityID) {
         navigate(
-          `/area-amministrativa/progetti/${projectId}/ente-gestore/${managingAuthorityID}/sedi/${td}`
+          `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/ente-gestore-progetto/${managingAuthorityID}/sedi/${td}`
         );
+      } else {
+        projectId &&
+          managingAuthorityID &&
+          navigate(
+            `/area-amministrativa/progetti/${projectId}/ente-gestore-progetto/${managingAuthorityID}/sedi/${td}`
+          );
+      }
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       dispatch(
@@ -1057,8 +1075,14 @@ const ProjectsDetails = () => {
             // itemsAccordionList={itemAccordionList}
             itemsList={itemList}
             buttonsPosition={buttonsPosition}
-            goBackTitle='Elenco progetti'
             goBackPath='/area-amministrativa/progetti'
+            goBackTitle={
+              location.pathname.includes(
+                `/area-amministrativa/progetti/${projectId}`
+              )
+                ? 'Elenco progetti'
+                : 'Torna indietro'
+            }
           >
             <>
               {currentForm}

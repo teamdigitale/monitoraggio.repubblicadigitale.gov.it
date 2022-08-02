@@ -437,7 +437,7 @@ export const TerminatePartnerAuthority =
       dispatch({ ...RemoveAuthorityAction });
 
       if (authorityId && entityId) {
-        await API.delete(`/ente/${authorityId}/terminaentepartner/${entityId}`);
+        await API.put(`/ente/${authorityId}/terminaentepartner/${entityId}`);
       }
     } catch (error) {
       console.log(error);
@@ -538,7 +538,7 @@ export const AssignPartnerAuthorityReferentDelegate =
       if (userDetail?.id) {
         userDetail.codiceFiscale &&
           (await API.put(
-            `/utente/${userDetail.codiceFiscale.toString().toUpperCase()}`,
+            `/utente/${userDetail.id.toString().toUpperCase()}`,
             userDetail
           ));
         await API.post(endpoint, {

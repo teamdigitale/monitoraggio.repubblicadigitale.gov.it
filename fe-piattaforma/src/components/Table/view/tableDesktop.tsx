@@ -101,7 +101,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
               )}
               {heading.map((th, j) => (
                 <td key={`td-${i}-${j}`} className='py-4'>
-                  {td[th.field]}
+                  {td[th.field] || '-'}
                 </td>
               ))}
               {onActionClick ? (
