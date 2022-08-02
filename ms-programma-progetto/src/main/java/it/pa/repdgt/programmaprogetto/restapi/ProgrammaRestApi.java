@@ -33,6 +33,7 @@ import it.pa.repdgt.programmaprogetto.mapper.ProgrammaMapper;
 import it.pa.repdgt.programmaprogetto.request.FiltroRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammaRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammiParam;
+import it.pa.repdgt.programmaprogetto.request.SceltaProfiloParam;
 import it.pa.repdgt.programmaprogetto.request.TerminaRequest;
 import it.pa.repdgt.programmaprogetto.resource.CreaProgrammaResource;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammiLightResourcePaginata;
@@ -84,9 +85,17 @@ public class ProgrammaRestApi {
 	// TOUCH POINT - 2.1.1 - scheda programma
 	@GetMapping(path = "/{idProgramma}")
 	@ResponseStatus(value = HttpStatus.OK)
-//	@ApiParam(allowEmptyValue = false, allowableValues = "U,D", name = "tipoOperazione", required = true)
 	public SchedaProgrammaBean getSchedaProgrammaById(@PathVariable(value = "idProgramma") Long idProgramma) {
 		 return this.programmaService.getSchedaProgrammaById(idProgramma);
+	}
+	
+	// TOUCH POINT - 2.1.1 - scheda programma
+	@PostMapping(path = "/{idProgramma}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public SchedaProgrammaBean getSchedaProgrammaByIdAndSceltaProfilo(
+			@PathVariable(value = "idProgramma") Long idProgramma,
+			@RequestBody SceltaProfiloParam sceltaProfiloParam) {
+		return this.programmaService.getSchedaProgrammaByIdAndSceltaProfilo(idProgramma, sceltaProfiloParam);
 	}
 	
 	// TOUCH POINT - 1.1.7 - Creazione nuovo proramma

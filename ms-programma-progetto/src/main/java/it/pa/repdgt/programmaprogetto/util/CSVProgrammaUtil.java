@@ -12,6 +12,7 @@ import org.apache.commons.csv.CSVPrinter;
 
 import it.pa.repdgt.programmaprogetto.exception.EnteException;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 
 public class CSVProgrammaUtil {
 
@@ -38,7 +39,7 @@ public class CSVProgrammaUtil {
 			csvPrinter.flush();
 			return new ByteArrayInputStream(outputStream.toByteArray());
 		} catch (IOException ex) {
-			throw new EnteException("Errore export csv enti", ex);
+			throw new EnteException("Errore export csv programmi", ex, CodiceErroreEnum.P08);
 		}
 	}
 

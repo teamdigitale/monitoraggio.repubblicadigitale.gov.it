@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -29,4 +30,7 @@ public class ProgettoLightEntity implements Serializable {
 
 	@Column(name = "STATO")
 	private String stato;
+
+	@Transient
+	private Boolean associatoAUtente;
 }

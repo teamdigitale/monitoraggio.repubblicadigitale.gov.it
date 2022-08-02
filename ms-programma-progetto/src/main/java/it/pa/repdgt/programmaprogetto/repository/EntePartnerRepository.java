@@ -34,6 +34,20 @@ public interface EntePartnerRepository extends JpaRepository<EntePartnerEntity, 
 			@Param(value = "idProgetto") Long idProgetto, 
 			@Param(value = "idEnte") Long idEnte
 	);
+	
+	@Query(value = "SELECT utente.codice_fiscale "
+			+ "FROM utente utente "
+			+ "	INNER JOIN referente_delegati_partner  rdp "
+			+ "		ON utente.CODICE_FISCALE = rdp.CF_UTENTE "
+			+ "WHERE rdp.ID_PROGETTO = :idProgetto "
+			+ "		AND rdp.CODICE_RUOLO = :codiceRuolo "
+			+ "		AND rdp.ID_ENTE = :idEnte ", 
+			nativeQuery = true)
+	public List<String> findCodiceFiscaleReferentiODelegatiEntePartnerProgetto(
+			@Param(value = "idProgetto") Long idProgetto, 
+			@Param(value = "idEnte") Long idEnte,
+			@Param(value = "codiceRuolo") String codiceRuolo
+	);
 
 	@Query(value = "SELECT ep.STATO_ENTE_PARTNER "
 			+ "FROM ente_partner ep "

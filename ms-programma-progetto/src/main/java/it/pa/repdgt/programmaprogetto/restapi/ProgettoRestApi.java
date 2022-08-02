@@ -32,6 +32,7 @@ import it.pa.repdgt.programmaprogetto.mapper.ProgettoMapper;
 import it.pa.repdgt.programmaprogetto.request.ProgettiParam;
 import it.pa.repdgt.programmaprogetto.request.ProgettoFiltroRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
+import it.pa.repdgt.programmaprogetto.request.SceltaProfiloParam;
 import it.pa.repdgt.programmaprogetto.request.TerminaRequest;
 import it.pa.repdgt.programmaprogetto.resource.CreaProgettoResource;
 import it.pa.repdgt.programmaprogetto.resource.ProgettiLightResourcePaginati;
@@ -92,6 +93,15 @@ public class ProgettoRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaProgettoBean getSchedaProgettoById(@PathVariable(value = "idProgetto") Long idProgetto) {
 		 return this.progettoService.getSchedaProgettoById(idProgetto);
+	}
+	
+	// TOUCH POINT - 3.1 - Scheda Progetto
+	@PostMapping(path = "/{idProgetto}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public SchedaProgettoBean getSchedaProgettoByIdByProfilo(
+			@PathVariable(value = "idProgetto") Long idProgetto,
+			@RequestBody SceltaProfiloParam sceltaProfiloParam) {
+		return this.progettoService.getSchedaProgettoByIdAndSceltaProfilo(idProgetto, sceltaProfiloParam);
 	}
 	
 	// TOUCH POINT - 2.2.6 -  CRUD Crea Progetto + Assegnazione progetto a programma

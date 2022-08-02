@@ -17,6 +17,7 @@ import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.EntePartnerEntity;
 import it.pa.repdgt.shared.entity.ReferentiDelegatiEntePartnerDiProgettoEntity;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.service.storico.StoricoService;
 
 @Service
@@ -70,7 +71,7 @@ public class EnteService {
 						   try {
 							this.storicoService.storicizzaEntePartner(ente, StatoEnum.TERMINATO.getValue());
 						} catch (Exception e) {
-							throw new ProgrammaException("Impossibile Storicizzare Ente");
+							throw new ProgrammaException("Impossibile Storicizzare Ente", CodiceErroreEnum.C02);
 						}
 						   this.terminaEntePartner(ente);
 					   }
