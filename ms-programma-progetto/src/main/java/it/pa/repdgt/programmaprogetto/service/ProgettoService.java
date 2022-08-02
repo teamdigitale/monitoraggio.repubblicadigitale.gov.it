@@ -495,7 +495,7 @@ public class ProgettoService {
 						dettaglioEntePartner.setAssociatoAUtente(delegatiEntePartner.contains(sceltaProfilo.getCfUtente()));
 						break;
 					default:
-						dettaglioEntePartner.setAssociatoAUtente(false);
+						dettaglioEntePartner.setAssociatoAUtente(true);
 						break;
 					}
 					return dettaglioEntePartner;
