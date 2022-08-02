@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.70](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.69...1.0.0-develop.70) (2022-08-02)
+
+
+### Bug Fixes
+
+* **be:** fix refactor scheda progetto - programma ([be684bd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/be684bd0d869c477e1b87454fa359a0e59124eb2))
+
 ## [1.0.0-develop.69](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.68...1.0.0-develop.69) (2022-08-02)
 
 
