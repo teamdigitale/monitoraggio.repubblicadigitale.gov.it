@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { formTypes } from '../utils';
+import { entityStatus, formTypes } from '../utils';
 import {
   CRUDActionsI,
   CRUDActionTypes,
@@ -25,6 +25,7 @@ import clsx from 'clsx';
 import FormAuthorities from '../../../../forms/formAuthorities';
 import {
   selectAuthorities,
+  selectProjects,
   setHeadquarterDetails,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import ManageDelegate from '../modals/manageDelegate';
@@ -45,6 +46,7 @@ import {
 } from '../../../../../components';
 import ManagePartnerAuthority from '../modals/managePartnerAuthority';
 import useGuard from '../../../../../hooks/guard';
+import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 
 const AuthoritiesDetails = () => {
   const authorityDetails = useAppSelector(selectAuthorities)?.detail;
@@ -52,10 +54,12 @@ const AuthoritiesDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { projectId, authorityId } = useParams();
+  const { entityId, projectId, authorityId, authorityType } = useParams();
   const profiles = useAppSelector(selectAuthorities).detail.profili;
   const device = useAppSelector(selectDevice);
   const { hasUserPermission } = useGuard();
+  const projectName =
+    useAppSelector(selectProjects).detail?.dettagliInfoProgetto?.nome;
 
   useEffect(() => {
     dispatch(setHeadquarterDetails(null));
@@ -63,6 +67,21 @@ const AuthoritiesDetails = () => {
 
   useEffect(() => {
     // For breadcrumb
+    if (!projectName && projectId) {
+      dispatch(GetProjectDetail(projectId));
+    }
+  }, []);
+
+  useEffect(() => {
+    // For breadcrumb
+    if (projectId && projectName) {
+      dispatch(
+        setInfoIdsBreadcrumb({
+          id: projectId,
+          nome: projectName,
+        })
+      );
+    }
     if (authorityId && authorityDetails?.dettagliInfoEnte?.nome) {
       dispatch(
         setInfoIdsBreadcrumb({
@@ -71,7 +90,7 @@ const AuthoritiesDetails = () => {
         })
       );
     }
-  }, [authorityId, authorityDetails]);
+  }, [authorityId, authorityDetails, projectName]);
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
@@ -94,49 +113,47 @@ const AuthoritiesDetails = () => {
   let itemAccordionList: ItemsListI[] = [];
 
   // Function need to be checked
-  const onActionClickReferenti: CRUDActionsI = hasUserPermission([
-    'del.ref_del.partner',
-  ])
-    ? {
-        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+  const onActionClickReferenti: CRUDActionsI = {
+    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+      if (entityId && projectId) {
+        navigate(
+          `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${authorityType}/${authorityId}/${formTypes.REFERENTI}/${td}`
+        );
+      } else {
+        projectId &&
           navigate(
-            `/area-amministrativa/${formTypes.REFERENTI}/${
-              typeof td === 'string' ? td : td?.id
-            }`
+            `/area-amministrativa/progetti/${projectId}/${authorityType}/${authorityId}/${formTypes.REFERENTI}/${td}`
           );
-        },
-        [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-          dispatch(
-            openModal({
-              id: 'delete-entity',
-              payload: {
-                entity: 'referent-delegate',
-                cf: td,
-                role: 'REPP',
-                text: 'Confermi di voler disassociare questo referente?',
-              },
-            })
-          );
-        },
       }
-    : {
-        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-          navigate(
-            `/area-amministrativa/${formTypes.REFERENTI}/${
-              typeof td === 'string' ? td : td?.id
-            }`
-          );
-        },
-      };
+    },
+    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+      dispatch(
+        openModal({
+          id: 'delete-entity',
+          payload: {
+            entity: 'referent-delegate',
+            cf: td,
+            role: 'REPP',
+            text: 'Confermi di voler disassociare questo referente?',
+          },
+        })
+      );
+    },
+  };
 
   // Function need to be checked
   const onActionClickDelegati: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        `/area-amministrativa/${formTypes.DELEGATI}/${
-          typeof td === 'string' ? td : td?.id
-        }`
-      );
+      if (entityId && projectId) {
+        navigate(
+          `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${authorityType}/${authorityId}/${formTypes.DELEGATI}/${td}`
+        );
+      } else {
+        projectId &&
+          navigate(
+            `/area-amministrativa/progetti/${projectId}/${authorityType}/${authorityId}/${formTypes.DELEGATI}/${td}`
+          );
+      }
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       dispatch(
@@ -155,11 +172,7 @@ const AuthoritiesDetails = () => {
 
   const onActionClickSede: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      projectId &&
-        authorityId &&
-        navigate(
-          `/area-amministrativa/progetti/${projectId}/ente-partner/${authorityId}/sedi/${td}`
-        );
+      projectId && authorityId && navigate(`sedi/${td}`);
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       dispatch(
@@ -185,12 +198,20 @@ const AuthoritiesDetails = () => {
               ...ref,
               id: ref?.id,
               actions:
-                ref.stato === 'NON ATTIVO'
+                ref.stato !== entityStatus.ATTIVO
                   ? {
                       [CRUDActionTypes.VIEW]:
                         onActionClickReferenti[CRUDActionTypes.VIEW],
                     }
-                  : onActionClickReferenti,
+                  : {
+                      [CRUDActionTypes.VIEW]:
+                        onActionClickReferenti[CRUDActionTypes.VIEW],
+                      [CRUDActionTypes.DELETE]: hasUserPermission([
+                        'del.ref_del.partner',
+                      ])
+                        ? onActionClickReferenti[CRUDActionTypes.DELETE]
+                        : undefined,
+                    },
             })
           ) || [],
       },
@@ -201,12 +222,21 @@ const AuthoritiesDetails = () => {
             (del: { [key: string]: string }) => ({
               ...del,
               id: del?.id,
-              actions: del.stato
-                ? {
-                    [CRUDActionTypes.VIEW]:
-                      onActionClickDelegati[CRUDActionTypes.VIEW],
-                  }
-                : onActionClickDelegati,
+              actions:
+                del.stato !== entityStatus.ATTIVO
+                  ? {
+                      [CRUDActionTypes.VIEW]:
+                        onActionClickDelegati[CRUDActionTypes.VIEW],
+                    }
+                  : {
+                      [CRUDActionTypes.VIEW]:
+                        onActionClickDelegati[CRUDActionTypes.VIEW],
+                      [CRUDActionTypes.DELETE]: hasUserPermission([
+                        'del.ref_del.partner',
+                      ])
+                        ? onActionClickDelegati[CRUDActionTypes.DELETE]
+                        : undefined,
+                    },
             })
           ) || [],
       },
@@ -216,7 +246,14 @@ const AuthoritiesDetails = () => {
           authorityDetails?.sediEntePartner?.map(
             (sedi: { [key: string]: string }) => ({
               ...sedi,
-              actions: onActionClickSede,
+              actions: {
+                [CRUDActionTypes.VIEW]: onActionClickSede[CRUDActionTypes.VIEW],
+                [CRUDActionTypes.DELETE]: hasUserPermission([
+                  'del.sede.partner',
+                ])
+                  ? onActionClickSede[CRUDActionTypes.DELETE]
+                  : undefined,
+              },
             })
           ) || [],
       },

@@ -212,15 +212,17 @@ const Users = () => {
     : {};
 
   const newUser = () => {
-    dispatch(resetUserDetails());
-    dispatch(
-      openModal({
-        id: formTypes.USER,
-        payload: {
-          title: 'Crea un nuovo utente',
-        },
-      })
-    );
+    if (hasUserPermission(['new.utente'])) {
+      dispatch(resetUserDetails());
+      dispatch(
+        openModal({
+          id: formTypes.USER,
+          payload: {
+            title: 'Crea un nuovo utente',
+          },
+        })
+      );
+    }
   };
 
   const userCta = {
@@ -237,7 +239,7 @@ const Users = () => {
       dropdowns={dropdowns}
       filtersList={filtersList}
       {...userCta}
-      cta={newUser}
+      cta={hasUserPermission(['new.utente']) ? newUser : undefined}
       ctaDownload={
         hasUserPermission(['list.dwnl.utenti']) ? handleDownloadList : undefined
       }

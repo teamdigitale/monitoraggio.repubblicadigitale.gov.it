@@ -8,7 +8,7 @@ import {
 import { useDispatch } from 'react-redux';
 
 import { ButtonInButtonsBar } from '../../../../../components/ButtonsBar/buttonsBar';
-import { formTypes } from '../utils';
+import { entityStatus, formTypes } from '../utils';
 import {
   CRUDActionsI,
   CRUDActionTypes,
@@ -64,7 +64,7 @@ import clsx from 'clsx';
 
 const tabs = {
   INFO: 'info',
-  ENTE: 'ente',
+  ENTE: 'ente-gestore-programma',
   QUESTIONARI: 'questionari',
   PROGETTI: 'progetti',
 };
@@ -147,7 +147,7 @@ const ProgramsDetails: React.FC = () => {
   }, [entityId, programDetails]);
 
   const getActionRedirectURL = (userType: string, userId: string) => {
-    return `/area-amministrativa/programmi/${entityId}/${userType}/${userId}`;
+    return `/area-amministrativa/programmi/${entityId}/ente-gestore-programma/${managerAuthorityId}/${userType}/${userId}`;
   };
 
   const onActionClickReferenti: CRUDActionsI = hasUserPermission([
@@ -334,7 +334,7 @@ const ProgramsDetails: React.FC = () => {
                 ...ref,
                 id: ref?.id,
                 actions:
-                  ref?.stato === 'ATTIVO'
+                  ref?.stato !== entityStatus.ATTIVO
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickReferenti[CRUDActionTypes.VIEW],
@@ -352,7 +352,7 @@ const ProgramsDetails: React.FC = () => {
                 ...del,
                 id: del?.id,
                 actions:
-                  del?.stato === 'ATTIVO'
+                  del?.stato !== entityStatus.ATTIVO
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickDelegati[CRUDActionTypes.VIEW],

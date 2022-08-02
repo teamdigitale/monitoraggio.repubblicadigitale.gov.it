@@ -116,7 +116,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
   }, [programDetails]);
 
   useEffect(() => {
-    if (userRole && form) {
+    if (userRole && form && creation) {
       if (userRole === 'DSCU') onInputDataChange('SCD', 'policy');
     }
   }, [userRole]);

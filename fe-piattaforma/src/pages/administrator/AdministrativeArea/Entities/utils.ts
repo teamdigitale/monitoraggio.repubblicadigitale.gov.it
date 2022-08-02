@@ -129,6 +129,7 @@ export const formTypes = {
   ENTI_GESTORE_PROGETTO: 'enti-gestore-progetto',
   ENTI_PARTNER: 'enti-partner',
   ENTE_PARTNER: 'ente-partner',
+  ENTE_GESTORE: 'ente-gestore',
   SEDI: 'sedi',
   SEDE: 'sede',
   REFERENTE: 'referente',
@@ -141,6 +142,7 @@ export const formTypes = {
   SERVICES: 'services',
   CITIZENS: 'cittadino',
   PROFILE: 'profilo',
+  UTENTI: 'utenti',
 };
 
 export interface ItemListI {
@@ -156,3 +158,13 @@ export interface AccordionItemListI {
     [key: string]: string | CRUDActionsI | TableRowI;
   }[];
 }
+
+export const entityStatus = {
+  ATTIVO: 'ATTIVO',
+  ATTIVABILE: 'ATTIVABILE',
+  NON_ATTIVO: 'NON ATTIVO',
+  TERMINATO: 'TERMINATO',
+  TERMINABILE: 'TERMINABILE',
+  ELIMINATO: 'ELIMINATO',
+  CANCELLATO: 'CANCELLATO',
+};

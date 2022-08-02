@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { formTypes } from '../../utils';
+import Sticky from 'react-sticky-el';
+import clsx from 'clsx';
+import { entityStatus, formTypes } from '../../utils';
 import {
   CRUDActionsI,
   CRUDActionTypes,
@@ -11,14 +14,12 @@ import {
   closeModal,
   openModal,
 } from '../../../../../../redux/features/modal/modalSlice';
-import { useDispatch } from 'react-redux';
 import DetailLayout from '../../../../../../components/DetailLayout/detailLayout';
 import { useAppSelector } from '../../../../../../redux/hooks';
 import {
   selectDevice,
   setInfoIdsBreadcrumb,
 } from '../../../../../../redux/features/app/appSlice';
-import clsx from 'clsx';
 import ManageHeadquarter from '../../../../../../components/AdministrativeArea/Entities/Headquarters/ManageHeadquarter/manageHeadquarter';
 import HeadquarterDetailsContent from '../../../../../../components/AdministrativeArea/Entities/Headquarters/HeadquarterDetailsContent/HeadquarterDetailsContent';
 import {
@@ -43,35 +44,58 @@ import {
   CardStatusAction,
   EmptySection,
 } from '../../../../../../components';
-import Sticky from 'react-sticky-el';
 
 const HeadquartersDetails = () => {
   const { mediaIsPhone } = useAppSelector(selectDevice);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { headquarterId, projectId, authorityId, authorityType } = useParams();
+  const { hasUserPermission } = useGuard();
+  const {
+    headquarterId,
+    projectId,
+    authorityId,
+    authorityType,
+    identeDiRiferimento,
+    entityId,
+  } = useParams();
   const headquarterfacilitators =
     useAppSelector(selectHeadquarters).detail?.facilitatoriSede;
   const headquarterDetails =
     useAppSelector(selectHeadquarters).detail?.dettagliInfoSede;
-
   const programPolicy =
     useAppSelector(selectHeadquarters).detail?.programmaPolicy;
-
   const programDetails =
     useAppSelector(selectHeadquarters).detail?.dettaglioProgetto;
 
-  const { hasUserPermission } = useGuard();
-
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        `/area-amministrativa/progetti/${projectId}/${authorityId}/${headquarterId}/${
-          programPolicy === 'SCD'
-            ? formTypes.VOLONTARIO
-            : formTypes.FACILITATORE
-        }/${td}`
-      );
+      if (!authorityType && (authorityId || identeDiRiferimento)) {
+        navigate(
+          `/area-amministrativa/${
+            entityId ? `programmi/${entityId}/` : ''
+          }progetti/${projectId}/${
+            authorityId || identeDiRiferimento
+          }/${headquarterId}/${
+            programPolicy === 'SCD'
+              ? formTypes.VOLONTARIO
+              : formTypes.FACILITATORE
+          }/${td}`
+        );
+      } else if (authorityType) {
+        navigate(
+          `/area-amministrativa/${
+            entityId ? `programmi/${entityId}/` : ''
+          }progetti/${projectId}/${
+            authorityType === formTypes.ENTI_PARTNER
+              ? formTypes.ENTI_PARTNER
+              : formTypes.ENTE_GESTORE
+          }/${authorityId || identeDiRiferimento}/${headquarterId}/${
+            programPolicy === 'SCD'
+              ? formTypes.VOLONTARIO
+              : formTypes.FACILITATORE
+          }/${td}`
+        );
+      }
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
       dispatch(
@@ -106,8 +130,14 @@ const HeadquartersDetails = () => {
   }, [programDetails, headquarterDetails, authorityId]);
 
   useEffect(() => {
-    if (headquarterId && projectId && authorityId) {
-      dispatch(GetHeadquarterDetails(headquarterId, authorityId, projectId));
+    if (headquarterId && projectId && (authorityId || identeDiRiferimento)) {
+      dispatch(
+        GetHeadquarterDetails(
+          headquarterId,
+          authorityId || identeDiRiferimento || '',
+          projectId
+        )
+      );
       dispatch(setUserDetails(null));
     } else if (headquarterId) {
       dispatch(GetHeadquarterLightDetails(headquarterId));
@@ -122,10 +152,15 @@ const HeadquartersDetails = () => {
           nome: `${facilitator.nome} ${facilitator.cognome}`,
           stato: facilitator.stato,
           actions:
-            facilitator.stato === 'ATTIVO'
+            facilitator.stato === entityStatus.ATTIVO &&
+            hasUserPermission(['add.fac']) &&
+            authorityType
               ? onActionClick
               : {
-                  [CRUDActionTypes.VIEW]: onActionClick[CRUDActionTypes.VIEW],
+                  [CRUDActionTypes.VIEW]:
+                    hasUserPermission(['add.fac']) && authorityType
+                      ? onActionClick[CRUDActionTypes.VIEW]
+                      : undefined,
                 },
           id: facilitator?.id,
           codiceFiscale: facilitator?.codiceFiscale,
@@ -137,7 +172,7 @@ const HeadquartersDetails = () => {
 
   if (authorityType) {
     switch (authorityType) {
-      case 'ente-partner':
+      case formTypes.ENTI_PARTNER:
         buttons = hasUserPermission(['upd.sede.partner'])
           ? [
               {
@@ -173,7 +208,8 @@ const HeadquartersDetails = () => {
             ]
           : [];
         break;
-      case 'ente-gestore':
+      case formTypes.ENTE_GESTORE_PROGRAMMA:
+      case formTypes.ENTE_GESTORE_PROGETTO:
         buttons = hasUserPermission(['upd.sede.gest.prgt'])
           ? [
               {

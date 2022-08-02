@@ -55,13 +55,13 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
   }, [idQuestionario]);
 
   useEffect(() => { // For breadcrumb
-    if(location.pathname.includes('programmi') && !programName && entityId){
+    if(!programName && entityId){
       dispatch(GetProgramDetail(entityId));
     }
   }, []);
 
   useEffect(() => { // For breadcrumb
-    if(location.pathname.includes('programmi') && programName){
+    if(entityId && programName){
       dispatch(
         setInfoIdsBreadcrumb({
           id: entityId,
@@ -176,7 +176,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
           onClick: () => {
             setCloneModeState(true);
             setEditModeState(false);
-            location.pathname.includes('programmi')
+            entityId
               ? navigate(location.pathname + '/clona')
               : navigate(
                   `/area-amministrativa/questionari/${idQuestionario}/clona`
@@ -189,7 +189,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
           onClick: () => {
             setEditModeState(true);
             setCloneModeState(false);
-            location.pathname.includes('programmi')
+            entityId
               ? navigate(location.pathname + '/modifica')
               : navigate(
                   `/area-amministrativa/questionari/${idQuestionario}/modifica`
@@ -206,7 +206,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
           onClick: () => {
             setCloneModeState(true);
             setEditModeState(false);
-            location.pathname.includes('programmi')
+            entityId
               ? navigate(location.pathname + '/clona')
               : navigate(
                   `/area-amministrativa/questionari/${idQuestionario}/clona`
@@ -222,7 +222,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
           onClick: () => {
             setEditModeState(true);
             setCloneModeState(false);
-            location.pathname.includes('programmi')
+            entityId
               ? navigate(location.pathname + '/modifica')
               : navigate(
                   `/area-amministrativa/questionari/${idQuestionario}/modifica`
@@ -243,7 +243,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
           }}
           buttonsPosition='BOTTOM'
           goBackTitle={
-            location.pathname.includes('programmi')
+            entityId
               ? 'Torna indietro'
               : 'Elenco questionari'
           }
@@ -252,7 +252,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
 
         <SurveyTemplate editMode={editModeState} cloneMode={cloneModeState} />
 
-        {!location.pathname.includes('programmi') && (
+        {!entityId && (
           <div
             className={clsx(
               'd-flex',

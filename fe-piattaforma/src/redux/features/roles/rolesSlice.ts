@@ -24,7 +24,6 @@ export type RolePermissionI =
   | 'upd.enti.card.prgm'
   | 'upd.enti.gest.prgm'
   | 'add.ref_del.gest.prgm'
-  | 'upd.rel.quest_prgm'
   | 'del.ref_del.gest.prgm'
   // Surveys
   | 'subtab.quest'
@@ -60,6 +59,8 @@ export type RolePermissionI =
   | 'view.card.enti'
   | 'upd.card.enti'
   // Users
+  | 'new.utente'
+  | 'del.utente'
   | 'subtab.utenti'
   | 'list.utenti'
   | 'list.dwnl.utenti'
@@ -73,6 +74,8 @@ export type RolePermissionI =
   | 'list.dwnl.citt'
   // Headquarters
   | 'add.fac'
+  | 'del.sede.gest.prgt'
+  | 'del.sede.partner'
   // Roles
   | 'btn.gest.ruoli'
   | 'list.ruoli'
@@ -123,20 +126,12 @@ export interface RolesStateI {
       descrizione: string;
     }[];
   };
-  pagination: {
-    pageSize: number;
-    pageNumber: number;
-  };
 }
 
 const initialState: RolesStateI = {
   list: [],
   groups: [],
   role: {},
-  pagination: {
-    pageSize: 8,
-    pageNumber: 1,
-  },
 };
 
 export const rolesSlice = createSlice({
@@ -145,12 +140,6 @@ export const rolesSlice = createSlice({
   reducers: {
     setRolesList: (state, action: PayloadAction<any>) => {
       state.list = action.payload.list;
-    },
-    setRolesPagination: (state, action: PayloadAction<any>) => {
-      state.pagination = {
-        ...state.pagination,
-        ...action.payload,
-      };
     },
     setRoleDetails: (state, action: PayloadAction<any>) => {
       state.role = action.payload;
@@ -163,14 +152,11 @@ export const rolesSlice = createSlice({
 
 export const {
   setRolesList,
-  setRolesPagination,
   setRoleDetails,
   setGroupsList,
 } = rolesSlice.actions;
 
 export const selectRolesList = (state: RootState) => state.roles.list;
-export const selectRolesPagination = (state: RootState) =>
-  state.roles.pagination;
 export const selectRoleDetails = (state: RootState) => state.roles.role;
 export const selectGroupsList = (state: RootState) => state.roles.groups;
 

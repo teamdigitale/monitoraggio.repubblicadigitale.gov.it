@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Button, Icon } from 'design-react-kit';
 import clsx from 'clsx';
-import { formTypes } from '../utils';
+import { entityStatus, formTypes } from '../utils';
 import {
   CRUDActionsI,
   CRUDActionTypes,
@@ -23,8 +23,9 @@ import {
 } from '../../../../../redux/features/app/appSlice';
 import FormUser from '../../../../forms/formUser';
 import {
+  selectAuthorities,
+  selectHeadquarters,
   selectPrograms,
-  selectProjects,
   selectUsers,
   setUserDetails,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
@@ -39,10 +40,17 @@ import {
 } from '../../../../../redux/features/administrativeArea/user/userThunk';
 import useGuard from '../../../../../hooks/guard';
 import { GetProgramDetail } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
-import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
-import { RemoveHeadquarterFacilitator } from '../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
+import {
+  GetHeadquarterDetails,
+  RemoveHeadquarterFacilitator,
+} from '../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
 import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
+import {
+  RemoveReferentDelegate,
+  UserAuthorityRole,
+} from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
+import { GetPartnerAuthorityDetail } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 
 const UsersDetails = () => {
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
@@ -53,43 +61,72 @@ const UsersDetails = () => {
   const userDetails = useAppSelector(selectUsers)?.detail;
   const { dettaglioUtente: userInfo = {}, dettaglioRuolo: userRoles = [] } =
     userDetails;
-  const { mediaIsDesktop /* mediaIsPhone */ } = useAppSelector(selectDevice);
+  const { mediaIsDesktop } = useAppSelector(selectDevice);
   const headquarterInfo = userInfo?.authorityRef || undefined;
-  const { entityId, userType, userId, projectId, headquarterId, authorityId } =
-    useParams();
+  const {
+    entityId,
+    userType,
+    userId,
+    projectId,
+    headquarterId,
+    authorityId,
+    authorityType,
+  } = useParams();
   const { hasUserPermission } = useGuard();
   const location = useLocation();
   const programName =
     useAppSelector(selectPrograms).detail?.dettagliInfoProgramma?.nomeBreve;
-  const projectName =
-    useAppSelector(selectProjects).detail?.dettagliInfoProgetto?.nome;
+  const headquarterDetails = useAppSelector(selectHeadquarters).detail;
+  const headquarterName = headquarterDetails?.dettagliInfoSede?.nome;
+  const projectName = headquarterDetails?.dettaglioProgetto?.nomeBreve;
+  const authorityName =
+    useAppSelector(selectAuthorities)?.detail?.dettagliInfoEnte?.nome;
 
   useEffect(() => {
     // For breadcrumb
-    if (location.pathname.includes('programmi') && !programName && entityId) {
+    if (!programName && entityId) {
       dispatch(GetProgramDetail(entityId));
     }
-    if (location.pathname.includes('progetti') && !projectName && projectId) {
-      dispatch(GetProjectDetail(projectId));
+    if (headquarterId && authorityId && projectId) {
+      dispatch(GetHeadquarterDetails(headquarterId, authorityId, projectId));
+    }
+    if (!authorityName && projectId && authorityId) {
+      dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
     }
   }, []);
 
   useEffect(() => {
     // For breadcrumb
     if (userId && userInfo?.nome && userRoles) {
-      if (location.pathname.includes('programmi') && programName) {
-        dispatch(
-          setInfoIdsBreadcrumb({
-            id: entityId,
-            nome: programName,
-          })
-        );
-      }
-      if (location.pathname.includes('progetti') && projectName) {
+      if (projectId && projectName) {
         dispatch(
           setInfoIdsBreadcrumb({
             id: projectId,
             nome: projectName,
+          })
+        );
+      }
+      if (authorityId && authorityName) {
+        dispatch(
+          setInfoIdsBreadcrumb({
+            id: authorityId,
+            nome: authorityName,
+          })
+        );
+      }
+      if (headquarterId && headquarterName) {
+        dispatch(
+          setInfoIdsBreadcrumb({
+            id: headquarterId,
+            nome: headquarterName,
+          })
+        );
+      }
+      if (entityId && programName) {
+        dispatch(
+          setInfoIdsBreadcrumb({
+            id: entityId,
+            nome: programName,
           })
         );
       }
@@ -110,7 +147,14 @@ const UsersDetails = () => {
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId, userInfo, userRoles]);
+  }, [
+    userId,
+    userInfo,
+    userRoles,
+    headquarterName,
+    projectName,
+    authorityName,
+  ]);
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
@@ -203,7 +247,7 @@ const UsersDetails = () => {
     }
   };
 
-  const getUserStatus = () => {
+  const getUserRoleInfo = () => {
     if (
       userType === formTypes.DELEGATI ||
       (userType === formTypes.REFERENTI && userRoles?.length) ||
@@ -215,57 +259,116 @@ const UsersDetails = () => {
         (role: { id: string | number }) =>
           role.id?.toString().toLowerCase() === id?.toString().toLowerCase()
       )[0];
-      return entityRole?.stato;
+      return {
+        status: entityRole?.stato,
+        role: entityRole?.codiceRuolo,
+      };
     }
-    return userInfo?.stato;
+    return {
+      status: userInfo?.stato,
+      role: '',
+    };
   };
 
-  const buttons: ButtonInButtonsBar[] = hasUserPermission(['upd.anag.utenti'])
-    ? [
-        {
-          size: 'xs',
-          color: 'primary',
-          outline: true,
-          buttonClass: 'btn-secondary',
-          text: 'Elimina',
-          disabled: getUserStatus() === 'ATTIVO',
-          onClick: () =>
-            dispatch(
-              openModal({
-                id: 'delete-entity',
-                payload: {
-                  text: 'Confermi di volere eliminare questo utente?',
-                },
-              })
-            ),
-        },
-        {
-          size: 'xs',
-          color: 'primary',
-          text: 'Modifica',
-          onClick: () =>
-            dispatch(
-              openModal({
-                id: getModalID(),
-                payload: {
-                  title: getModalPayload(),
-                  userId: userId || userInfo?.id,
-                },
-              })
-            ),
-        },
-      ]
-    : [
-        {
-          size: 'xs',
-          color: 'primary',
-          outline: true,
-          buttonClass: 'btn-secondary',
-          text: 'Elimina',
-          disabled: getUserStatus() === 'ATTIVO',
-          onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
-        },
-      ];
+  const deleteButton: ButtonInButtonsBar = {
+    size: 'xs',
+    color: 'primary',
+    outline: true,
+    buttonClass: 'btn-secondary',
+    text: 'Elimina',
+    disabled: getUserRoleInfo().status === entityStatus.ATTIVO,
+    onClick: () =>
+      dispatch(
+        openModal({
+          id: 'delete-entity',
+          payload: {
+            text: 'Confermi di volere eliminare questo utente?',
+          },
+        })
+      ),
+  };
+
+  const editButton: ButtonInButtonsBar = {
+    size: 'xs',
+    color: 'primary',
+    text: 'Modifica',
+    onClick: () =>
+      dispatch(
+        openModal({
+          id: getModalID(),
+          payload: {
+            title: getModalPayload(),
+            userId: userId || userInfo?.id,
+          },
+        })
+      ),
+  };
+
+  const getButtons = () => {
+    const buttons: ButtonInButtonsBar[] = [];
+    if (userType === formTypes.UTENTI && hasUserPermission(['del.utente'])) {
+      buttons.push(deleteButton);
+    } else if (
+      authorityType &&
+      (userType === formTypes.REFERENTI || userType === formTypes.DELEGATI)
+    ) {
+      switch (authorityType) {
+        case formTypes.ENTE_GESTORE_PROGRAMMA: {
+          if (hasUserPermission(['del.ref_del.gest.prgm'])) {
+            buttons.push(deleteButton);
+          }
+          break;
+        }
+        case formTypes.ENTE_GESTORE_PROGETTO: {
+          if (hasUserPermission(['del.ref_del.gest.prgt'])) {
+            buttons.push(deleteButton);
+          }
+          break;
+        }
+        case formTypes.ENTI_PARTNER: {
+          if (hasUserPermission(['del.ref_del.partner'])) {
+            buttons.push(deleteButton);
+          }
+          break;
+        }
+        default:
+          break;
+      }
+    }
+    if (
+      userType === formTypes.UTENTI &&
+      hasUserPermission(['upd.anag.utenti'])
+    ) {
+      buttons.push(editButton);
+    } else if (
+      authorityType &&
+      (userType === formTypes.REFERENTI || userType === formTypes.DELEGATI)
+    ) {
+      switch (authorityType) {
+        case formTypes.ENTE_GESTORE_PROGRAMMA: {
+          if (hasUserPermission(['add.ref_del.gest.prgm'])) {
+            buttons.push(editButton);
+          }
+          break;
+        }
+        case formTypes.ENTE_GESTORE_PROGETTO: {
+          if (hasUserPermission(['add.ref_del.gest.prgt'])) {
+            buttons.push(editButton);
+          }
+          break;
+        }
+        case formTypes.ENTI_PARTNER: {
+          if (hasUserPermission(['add.ref_del.partner'])) {
+            buttons.push(editButton);
+          }
+          break;
+        }
+        default:
+          break;
+      }
+    }
+    return buttons;
+  };
 
   const removeFacilitator = async (userCF: string) => {
     if (userCF && headquarterId && projectId && authorityId) {
@@ -280,19 +383,39 @@ const UsersDetails = () => {
     }
   };
 
-  // const removeReferentDelegate = async (
-  //   cf: string,
-  //   role: UserAuthorityRole
-  // ) => {
-  //   if (projectId && authorityId) {
-  //     await dispatch(RemoveReferentDelegate(authorityId, projectId, cf, role));
-  //   }
-  // };
+  const removeReferentDelegate = async (
+    cf: string,
+    role: UserAuthorityRole
+  ) => {
+    if (authorityId) {
+      projectId &&
+        (await dispatch(
+          RemoveReferentDelegate(authorityId, projectId, cf, role)
+        ));
+      entityId &&
+        (await dispatch(
+          RemoveReferentDelegate(authorityId, entityId, cf, role)
+        ));
+    }
+  };
 
   const onConfirmDelete = async (role?: string) => {
-    if (userType === formTypes.FACILITATORE ||
-      userType === formTypes.VOLONTARIO) {
-      removeFacilitator(userInfo.codiceFiscale);
+    if (
+      userType === formTypes.FACILITATORE ||
+      userType === formTypes.VOLONTARIO
+    ) {
+      await removeFacilitator(userInfo.codiceFiscale);
+      dispatch(closeModal());
+      dispatch(setUserDetails(null));
+      navigate(-1);
+    } else if (
+      userType === formTypes.REFERENTI ||
+      userType === formTypes.DELEGATI
+    ) {
+      await removeReferentDelegate(
+        userInfo.codiceFiscale,
+        getUserRoleInfo().role
+      );
       dispatch(closeModal());
       dispatch(setUserDetails(null));
       navigate(-1);
@@ -310,16 +433,16 @@ const UsersDetails = () => {
           <DetailLayout
             titleInfo={{
               title: userInfo?.nome + ' ' + userInfo?.cognome,
-              status: getUserStatus(),
+              status: getUserRoleInfo().status,
               upperTitle: { icon: 'it-user', text: getUpperTitle() },
               subTitle: headquarterInfo,
               iconAvatar: true,
               name: userInfo?.nome,
               surname: userInfo?.cognome,
             }}
-            formButtons={buttons}
+            formButtons={getButtons()}
             itemsList={itemList}
-            buttonsPosition={'BOTTOM'}
+            buttonsPosition='BOTTOM'
             goBackPath='/area-amministrativa/utenti'
             goBackTitle={
               location.pathname === `/area-amministrativa/utenti/${userId}`
@@ -371,7 +494,7 @@ const UsersDetails = () => {
                             openModal({
                               id: 'delete-entity',
                               payload: {
-                                entity: 'headquarter',
+                                entity: 'role',
                                 text: 'Confermi di volere eliminare questo ruolo?',
                                 role: role.codiceRuolo || role.nome,
                               },
@@ -397,7 +520,7 @@ const UsersDetails = () => {
           {currentModal ? currentModal : null}
           <DeleteEntityModal
             onClose={() => dispatch(closeModal())}
-            onConfirm={(payload) => onConfirmDelete(payload.role)}
+            onConfirm={(payload) => onConfirmDelete(payload?.role)}
           />
           <AddUserRole />
         </div>
