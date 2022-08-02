@@ -15,4 +15,5 @@ public class DettaglioEntiPartnerBean {
 	private String nome;
 	private List<String> referenti;
 	private String stato;
+	private Boolean associatoAUtente;
 }

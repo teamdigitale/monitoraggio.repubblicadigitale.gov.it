@@ -654,9 +654,29 @@ public class ProgrammaServiceTest {
 	
 	@Test
 	public void associaQuestionarioTemplateAProgrammaTest() {
+		//test con lo stato di programmaXQuestionario = ATTIVO
 		ProgrammaXQuestionarioTemplateKey programmaXQuestionarioKey = new ProgrammaXQuestionarioTemplateKey(programma1.getId(), questionario1.getId());
 		ProgrammaXQuestionarioTemplateEntity programmaXQuestionario = new ProgrammaXQuestionarioTemplateEntity();
 		programmaXQuestionario.setProgrammaXQuestionarioTemplateKey(programmaXQuestionarioKey);
+		programmaXQuestionario.setStato("ATTIVO");
+		List<ProgrammaXQuestionarioTemplateEntity> listaProgrammaXQuestionario = new ArrayList<>();
+		listaProgrammaXQuestionario.add(programmaXQuestionario);
+		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
+		when(questionarioTemplateSqlService.esisteQuestionarioById(questionario1.getId())).thenReturn(true);
+		when(questionarioTemplateSqlService.getQuestionarioTemplateById(questionario1.getId())).thenReturn(questionario1);
+		when(programmaXQuestionarioTemplateService.getAssociazioneQuestionarioTemplateByIdProgramma(programma1.getId())).thenReturn(listaProgrammaXQuestionario);
+		programmaService.associaQuestionarioTemplateAProgramma(programma1.getId(), questionario1.getId());
+		assertThat(questionario1.getStato()).isEqualTo("ATTIVO");
+		verify(questionarioTemplateSqlService, atLeastOnce()).salvaQuestionarioTemplate(questionario1);
+	}
+	
+	@Test
+	public void associaQuestionarioTemplateAProgrammaTest2() {
+		//test con lo stato di programmaXQuestionario = NON ATTIVO
+		ProgrammaXQuestionarioTemplateKey programmaXQuestionarioKey = new ProgrammaXQuestionarioTemplateKey(programma1.getId(), questionario1.getId());
+		ProgrammaXQuestionarioTemplateEntity programmaXQuestionario = new ProgrammaXQuestionarioTemplateEntity();
+		programmaXQuestionario.setProgrammaXQuestionarioTemplateKey(programmaXQuestionarioKey);
+		programmaXQuestionario.setStato("NON ATTIVO");
 		List<ProgrammaXQuestionarioTemplateEntity> listaProgrammaXQuestionario = new ArrayList<>();
 		listaProgrammaXQuestionario.add(programmaXQuestionario);
 		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);

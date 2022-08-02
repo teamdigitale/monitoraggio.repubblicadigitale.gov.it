@@ -10,6 +10,7 @@ import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.EntePartnerEntity;
 import it.pa.repdgt.shared.entity.ReferentiDelegatiEntePartnerDiProgettoEntity;
+import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 
 @Service
 public class EntePartnerService {
@@ -30,6 +31,12 @@ public class EntePartnerService {
 	@LogExecutionTime
 	public List<String> getReferentiEntePartnerProgetto(Long idProgetto, Long idEnte) {
 		return this.entePartnerRepository.findReferentiEntePartnerProgetto(idProgetto, idEnte);
+	}
+	
+	@LogMethod
+	@LogExecutionTime
+	public List<String> getCodiceFiscaleReferentiODelegatiEntePartnerProgetto(Long idProgetto, Long idEnte, String codiceRuolo) {
+		return this.entePartnerRepository.findCodiceFiscaleReferentiODelegatiEntePartnerProgetto(idProgetto, idEnte, codiceRuolo);
 	}
 	
 	@LogMethod
