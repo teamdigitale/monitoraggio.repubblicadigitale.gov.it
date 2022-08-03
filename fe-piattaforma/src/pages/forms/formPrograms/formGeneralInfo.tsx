@@ -6,6 +6,7 @@ import withFormHandler, {
 import { selectPrograms } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { selectProfile } from '../../../redux/features/user/userSlice';
 import { useAppSelector } from '../../../redux/hooks';
+import { formatDate } from '../../../utils/common';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
 import { RegexpType } from '../../../utils/validator';
 
@@ -171,9 +172,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pr-lg-3'
         />
-
         <Input
           {...form?.nome}
           required
@@ -182,10 +181,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pl-lg-3'
         />
-      </Form.Row>
-      <Form.Row className={bootClass}>
         <Input
           {...form?.nomeBreve}
           required
@@ -194,7 +190,6 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pr-lg-3'
         />
         {formDisabled ? (
           <Input
@@ -204,7 +199,6 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
             onInputChange={(value, field) => {
               onInputDataChange(value, field);
             }}
-            className='pl-lg-3'
           />
         ) : (
           <Select
@@ -222,13 +216,10 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
             onInputChange={(value, field) => {
               onInputDataChange(value, field);
             }}
-            wrapperClassName='mb-5'
+            wrapperClassName='mb-5 pr-lg-3'
             aria-label='intervento'
-            className='pl-lg-3'
           />
         )}
-      </Form.Row>
-      <Form.Row className={bootClass}>
         {form?.policy?.value === 'SCD' || !form?.policy?.value ? (
           <Input
             {...form?.bando}
@@ -237,7 +228,6 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
             onInputChange={(value, field) => {
               onInputDataChange(value, field);
             }}
-            className='pr-lg-3'
           />
         ) : (
           <span></span>
@@ -249,31 +239,28 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pl-lg-3'
         />
-      </Form.Row>
-      <Form.Row className={bootClass}>
         <Input
           {...form?.dataInizio}
           required
           label='Data inizio'
+          maximum={formatDate(form?.dataFine.value as string)}
           type={'date'}
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pr-lg-3'
         />
         <Input
           {...form?.dataFine}
           required
+          minimum={formatDate(form?.dataInizio.value as string)}
           label='Data fine'
           type={'date'}
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pl-lg-3'
         />
       </Form.Row>
     </Form>

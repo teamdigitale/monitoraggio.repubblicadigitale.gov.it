@@ -61,6 +61,7 @@ import useGuard from '../../../../../hooks/guard';
 import { formFieldI } from '../../../../../utils/formHelper';
 import { GetSurveyAllLight } from '../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 import clsx from 'clsx';
+import { roles } from '../Users/usersDetails';
 
 const tabs = {
   INFO: 'info',
@@ -157,7 +158,7 @@ const ProgramsDetails: React.FC = () => {
         [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
           navigate(
             getActionRedirectURL(
-              formTypes.REFERENTI,
+              roles.REG,
               (typeof td === 'string' ? td : td.id).toString()
             )
           );
@@ -180,7 +181,7 @@ const ProgramsDetails: React.FC = () => {
         [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
           navigate(
             getActionRedirectURL(
-              formTypes.REFERENTI,
+              roles.REG,
               (typeof td === 'string' ? td : td.id).toString()
             )
           );
@@ -194,7 +195,7 @@ const ProgramsDetails: React.FC = () => {
         [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
           navigate(
             getActionRedirectURL(
-              formTypes.DELEGATI,
+              roles.DEG,
               (typeof td === 'string' ? td : td.id).toString()
             )
           );
@@ -217,7 +218,7 @@ const ProgramsDetails: React.FC = () => {
         [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
           navigate(
             getActionRedirectURL(
-              formTypes.DELEGATI,
+              roles.DEG,
               (typeof td === 'string' ? td : td.id).toString()
             )
           );
@@ -499,7 +500,7 @@ const ProgramsDetails: React.FC = () => {
                 size: 'xs',
                 color: 'primary',
                 text: 'Cambia questionario',
-                disabled: otherSurveyList?.list?.length < 2,
+                disabled: !(otherSurveyList?.list?.filter(elem => elem.id !== surveyDefault?.items[0]?.id)?.length > 0),
                 onClick: () => {
                   setChangeSurveyButtonVisible(false);
                   setRadioButtonsSurveys(true);

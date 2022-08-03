@@ -219,7 +219,7 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='programmi-dettaglio-ente-gestore-utenti'
-    path='programmi/:entityId/:authorityType/:authorityId/:userType/:userId'
+    path='programmi/:entityId/:authorityType/:authorityId/:userRole/:userId'
     element={
       <ProtectedComponent visibleTo={['view.card.prgm.full']}>
         <UsersDetails />
@@ -271,7 +271,7 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='programmi-dettaglio-progetti-dettaglio-enti-utenti'
-    path='programmi/:entityId/progetti/:projectId/:authorityType/:authorityId/:userType/:userId'
+    path='programmi/:entityId/progetti/:projectId/:authorityType/:authorityId/:userRole/:userId'
     element={<UsersDetails />}
   />,
   <Route
@@ -291,7 +291,7 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='programmi-dettaglio-progetti-dettaglio-enti-sedi-facilitatori'
-    path='programmi/:entityId/progetti/:projectId/:authorityType/:authorityId/:headquarterId/:userType/:userId'
+    path='programmi/:entityId/progetti/:projectId/:authorityType/:authorityId/:headquarterId/:userRole/:userId'
     element={<UsersDetails />}
   />,
   <Route
@@ -355,7 +355,7 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='progetti-dettaglio-enti-utenti'
-    path='progetti/:projectId/:authorityType/:authorityId/:userType/:userId'
+    path='progetti/:projectId/:authorityType/:authorityId/:userRole/:userId'
     element={<UsersDetails />}
   />,
   <Route
@@ -370,7 +370,7 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='progetti-dettaglio-enti-sedi-facilitatori'
-    path='progetti/:projectId/:authorityType/:authorityId/:headquarterId/:userType/:userId'
+    path='progetti/:projectId/:authorityType/:authorityId/:headquarterId/:userRole/:userId'
     element={<UsersDetails />}
   />,
   <Route
@@ -390,7 +390,7 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='progetti-dettaglio-sede-dettaglio-facilitatori'
-    path='progetti/:projectId/:identeDiRiferimento/:authorityId/:headquarterId/:userType/:userId'
+    path='progetti/:projectId/:identeDiRiferimento/:authorityId/:headquarterId/:userRole/:userId'
     element={<UsersDetails />}
   />,
   <Route
@@ -425,17 +425,17 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='programmi-dettaglio-referenti-delegati-dettaglio'
-    path='programmi/:entityId/:userType/:userId'
+    path='programmi/:entityId/:userRole/:userId'
     element={<UsersDetails />}
   />,
   <Route
     key='programmi-dettaglio-progetti-dettaglio-referenti-delegati-dettaglio'
-    path='programmi/:entityId/progetti/:projectId/:userType/:userId'
+    path='programmi/:entityId/progetti/:projectId/:userRole/:userId'
     element={<UsersDetails />}
   />,
   <Route
     key='utenti-detail'
-    path=':userType/:userId'
+    path=':userRole/:userId'
     element={
       <ProtectedComponent
         visibleTo={['view.card.utenti']}

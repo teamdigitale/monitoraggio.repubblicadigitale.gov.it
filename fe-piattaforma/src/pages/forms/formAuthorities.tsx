@@ -202,133 +202,123 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
       {form && (
         <div>
           {creation || noIdField ? (
-            <>
-              <Form.Row className={bootClass}>
+            <Form.Row className={bootClass}>
+              <Input
+                {...form?.nome}
+                label='Nome Ente'
+                col='col-12 col-lg-6'
+                onInputChange={onInputChange}
+              />
+              <Input
+                {...form?.nomeBreve}
+                col='col-12 col-lg-6'
+                label='Nome breve'
+                onInputChange={onInputChange}
+              />
+              {formDisabled ? (
                 <Input
-                  {...form?.nome}
-                  label='Nome Ente'
+                  {...form?.tipologia}
+                  label='Tipologia'
                   col='col-12 col-lg-6'
                   onInputChange={onInputChange}
                 />
-                <Input
-                  {...form?.nomeBreve}
+              ) : (
+                <Select
+                  {...form?.tipologia}
+                  value={form?.tipologia.value as string}
                   col='col-12 col-lg-6'
-                  label='Nome breve'
+                  label='Tipologia'
+                  placeholder='Seleziona la tipologia'
+                  options={TipologiaEnteOptions}
                   onInputChange={onInputChange}
+                  wrapperClassName='mb-5 pr-lg-3'
+                  aria-label='tipologia'
                 />
-              </Form.Row>
-              <Form.Row className={bootClass}>
-                {formDisabled ? (
-                  <Input
-                    {...form?.tipologia}
-                    label='Tipologia'
-                    col='col-12 col-lg-6'
-                    onInputChange={onInputChange}
-                  />
-                ) : (
-                  <Select
-                    {...form?.tipologia}
-                    value={form?.tipologia.value as string}
-                    col='col-12 col-lg-6'
-                    label='Tipologia'
-                    placeholder='Seleziona la tipologia'
-                    options={TipologiaEnteOptions}
-                    onInputChange={onInputChange}
-                    wrapperClassName='mb-5'
-                    aria-label='tipologia'
-                  />
-                )}
-                <Input
-                  {...form?.piva}
-                  label='Codice Fiscale'
-                  col='col-12 col-lg-6'
-                  onInputChange={onInputChange}
-                />
-              </Form.Row>
-              <Form.Row className={bootClass}>
-                <Input
-                  col='col-12 col-lg-6'
-                  {...form?.sedeLegale}
-                  label='Sede legale'
-                  onInputChange={onInputChange}
-                />
-                <Input
-                  {...form?.indirizzoPec}
-                  label='PEC'
-                  col='col-12 col-lg-6'
-                  onInputChange={onInputChange}
-                />
-              </Form.Row>
-            </>
+              )}
+              <Input
+                {...form?.piva}
+                label='Codice Fiscale'
+                col='col-12 col-lg-6'
+                onInputChange={onInputChange}
+              />
+              <Input
+                col='col-12 col-lg-6'
+                {...form?.sedeLegale}
+                label='Sede legale'
+                onInputChange={onInputChange}
+              />
+              <Input
+                {...form?.indirizzoPec}
+                label='PEC'
+                col='col-12 col-lg-6'
+                onInputChange={onInputChange}
+              />
+            </Form.Row>
           ) : (
-            <>
-              <Form.Row className={bootClass}>
-                <Input {...form?.id} col='col-12 col-lg-6' label='ID' />
+            <Form.Row className={bootClass}>
+              <Input
+                {...form?.id}
+                col='col-12 col-lg-6'
+                label='ID'
+              />
+              <Input
+                {...form?.nome}
+                label='Nome Ente'
+                col='col-12 col-lg-6'
+                onInputChange={onInputChange}
+              />
+              <Input
+                {...form?.nomeBreve}
+                col='col-12 col-lg-6'
+                label='Nome breve'
+                onInputChange={onInputChange}
+              />
+              {formDisabled ? (
                 <Input
-                  {...form?.nome}
-                  label='Nome Ente'
+                  {...form?.tipologia}
+                  label='Tipologia'
                   col='col-12 col-lg-6'
                   onInputChange={onInputChange}
                 />
-              </Form.Row>
-              <Form.Row className={bootClass}>
-                <Input
-                  {...form?.nomeBreve}
+              ) : (
+                <Select
+                  {...form?.tipologia}
+                  value={form?.tipologia.value as string}
                   col='col-12 col-lg-6'
-                  label='Nome breve'
+                  label='Tipologia'
+                  placeholder='Seleziona la tipologia'
+                  options={TipologiaEnteOptions}
                   onInputChange={onInputChange}
+                  wrapperClassName='mb-5 pr-lg-3'
+                  aria-label='tipologia'
                 />
-                {formDisabled ? (
-                  <Input
-                    {...form?.tipologia}
-                    label='Tipologia'
-                    col='col-12 col-lg-6'
-                    onInputChange={onInputChange}
-                  />
-                ) : (
-                  <Select
-                    {...form?.tipologia}
-                    value={form?.tipologia.value as string}
-                    col='col-12 col-lg-6'
-                    label='Tipologia'
-                    placeholder='Seleziona la tipologia'
-                    options={TipologiaEnteOptions}
-                    onInputChange={onInputChange}
-                    wrapperClassName='mb-5'
-                    aria-label='tipologia'
-                  />
-                )}
-              </Form.Row>
-              <Form.Row className={bootClass}>
+              )}
+              <Input
+                {...form?.piva}
+                label='Codice Fiscale'
+                col='col-12 col-lg-6'
+                onInputChange={onInputChange}
+              />
+              <Input
+                {...form?.sedeLegale}
+                col='col-12 col-lg-6'
+                label='Sede legale'
+                onInputChange={onInputChange}
+              />
+              <Input
+                {...form?.indirizzoPec}
+                label='PEC'
+                col='col-12 col-lg-6'
+                onInputChange={onInputChange}
+              />
+              {form?.profilo && (
                 <Input
-                  {...form?.piva}
-                  label='Codice Fiscale'
+                  {...form?.profilo}
+                  label='Profilo'
                   col='col-12 col-lg-6'
-                  onInputChange={onInputChange}
                 />
-                <Input
-                  {...form?.sedeLegale}
-                  col='col-12 col-lg-6'
-                  label='Sede legale'
-                  onInputChange={onInputChange}
-                />
-              </Form.Row>
-              <Form.Row className={bootClass}>
-                <Input
-                  {...form?.indirizzoPec}
-                  label='PEC'
-                  col='col-12 col-lg-6'
-                  onInputChange={onInputChange}
-                />
-                {form?.profilo && (
-                  <Input
-                    {...form?.profilo}
-                    label='Profilo'
-                    col='col-12 col-lg-6'
-                  />
-                )}
-              </Form.Row>
-            </>
+              )}
+            </Form.Row>
           )}
         </div>
       )}

@@ -44,6 +44,7 @@ import {
   CardStatusAction,
   EmptySection,
 } from '../../../../../../components';
+import { roles } from '../../Users/usersDetails';
 
 const HeadquartersDetails = () => {
   const { mediaIsPhone } = useAppSelector(selectDevice);
@@ -76,9 +77,7 @@ const HeadquartersDetails = () => {
           }progetti/${projectId}/${
             authorityId || identeDiRiferimento
           }/${headquarterId}/${
-            programPolicy === 'SCD'
-              ? formTypes.VOLONTARIO
-              : formTypes.FACILITATORE
+            programPolicy === 'SCD' ? roles.VOL : roles.FAC
           }/${td}`
         );
       } else if (authorityType) {
@@ -90,9 +89,7 @@ const HeadquartersDetails = () => {
               ? formTypes.ENTI_PARTNER
               : formTypes.ENTE_GESTORE
           }/${authorityId || identeDiRiferimento}/${headquarterId}/${
-            programPolicy === 'SCD'
-              ? formTypes.VOLONTARIO
-              : formTypes.FACILITATORE
+            programPolicy === 'SCD' ? roles.VOL : roles.FAC
           }/${td}`
         );
       }

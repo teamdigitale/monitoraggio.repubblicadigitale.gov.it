@@ -9,12 +9,14 @@ export interface AccordionAddressListI {
   addressList: AddressInfoI[];
   onSetAddressList?: (addressList: AddressInfoI[]) => void;
   isReadOnly?: boolean;
+  movingHeadquarter?: boolean;
 }
 
 const AccordionAddressList: React.FC<AccordionAddressListI> = ({
   addressList,
   onSetAddressList,
   isReadOnly = false,
+  movingHeadquarter = false,
 }) => {
   const addressListChangeHandler = (
     changedAddressInfo: AddressInfoI,
@@ -49,20 +51,27 @@ const AccordionAddressList: React.FC<AccordionAddressListI> = ({
 
   return (
     <div>
-      {addressList
-        .filter((address) => !address.indirizzoSede?.cancellato)
-        .map((address, index, arr) => (
+      {addressList.map((address, index, arr) =>
+        !address.indirizzoSede?.cancellato ? (
           <AccordionAddress
             isReadOnly={isReadOnly}
             key={index}
-            index={index + 1}
+            index={
+              arr.slice(0, index + 1).filter((a) => !a.indirizzoSede.cancellato)
+                .length
+            }
             addressInfo={address}
-            canBeDeleted={arr.length > 2}
+            canBeDeleted={
+              movingHeadquarter
+                ? arr.filter((a) => !a.indirizzoSede.cancellato).length > 2
+                : arr.filter((a) => !a.indirizzoSede.cancellato).length > 1
+            }
             onAddressInfoChange={(addressInfo: AddressInfoI) =>
               addressListChangeHandler(addressInfo, index)
             }
           />
-        ))}
+        ) : null
+      )}
       {!isReadOnly && (
         <div
           className={clsx(

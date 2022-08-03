@@ -96,8 +96,6 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
           placeholder={`Inserisci ${form?.nomeEnte?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
         />
-      </Form.Row>
-      <Form.Row>
         <Input
           {...form?.nomeSede}
           col='col-12 col-lg-6'

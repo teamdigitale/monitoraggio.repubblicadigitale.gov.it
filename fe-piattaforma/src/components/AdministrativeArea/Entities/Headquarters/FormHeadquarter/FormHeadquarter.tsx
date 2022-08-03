@@ -157,7 +157,7 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
               },
             ]}
             onInputChange={onInputDataChange}
-            wrapperClassName='mb-5'
+            wrapperClassName='mb-5 pr-lg-3'
             aria-label='servizi'
           />
         )}

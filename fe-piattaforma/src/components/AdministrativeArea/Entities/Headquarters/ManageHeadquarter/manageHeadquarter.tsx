@@ -8,7 +8,7 @@ import { AddressInfoI } from '../AccordionAddressList/AccordionAddress/Accordion
 import { Form } from '../../../..';
 import { Toggle } from 'design-react-kit';
 import AccordionAddressList from '../AccordionAddressList/AccordionAddressList';
-import AddressInfoForm from '../AddressInfoForm/AddressInfoForm';
+// import AddressInfoForm from '../AddressInfoForm/AddressInfoForm';
 import { useParams } from 'react-router-dom';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
@@ -123,18 +123,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
   }, [headquartersList]);
 
   useEffect(() => {
-    if (!movingHeadquarter) {
-      setAddressList((prevList) =>
-        prevList.map((add, i) =>
-          i !== 0
-            ? {
-                ...add,
-                indirizzoSede: { ...add.indirizzoSede, cancellato: true },
-              }
-            : { ...add }
-        )
-      );
-    } else {
+    if (movingHeadquarter) {
       const newAddressList = [...addressList];
       while (
         newAddressList.filter((address) => !address.indirizzoSede?.cancellato)
@@ -254,21 +243,13 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
         </Form.Row>
       </Form>
 
-      {movingHeadquarter ? (
-        <AccordionAddressList
-          addressList={addressList}
-          onSetAddressList={(addressList: AddressInfoI[]) =>
-            setAddressList([...addressList])
-          }
-        />
-      ) : (
-        <AddressInfoForm
-          addressInfo={addressList[0]}
-          onAddressInfoChange={(addressInfo: AddressInfoI) =>
-            setAddressList([addressInfo])
-          }
-        />
-      )}
+      <AccordionAddressList
+        addressList={addressList}
+        onSetAddressList={(addressList: AddressInfoI[]) =>
+          setAddressList([...addressList])
+        }
+        movingHeadquarter={movingHeadquarter}
+      />
     </>
   );
 

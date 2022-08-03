@@ -118,9 +118,45 @@ const TargetsForm = ({
 
   const removeTarget = (row: string[]) => {
     if (form) {
-      const newFormList = Object.fromEntries(
-        Object.entries(form).filter(([key]) => !row.includes(key))
+      let newFormList = Object.fromEntries(
+        Object.entries(form)
+          .filter(([key]) => !row.includes(key))
+          .sort(
+            ([key_a], [key_b]) =>
+              parseInt(key_a[key_a.length - 1]) -
+              parseInt(key_b[key_b.length - 1])
+          )
       );
+
+      const dataTargets = Object.fromEntries(
+        Object.entries(newFormList)
+          .filter(([key]) => key.includes('Data'))
+          .map(([, value], i) => [
+            `n${section}DataTarget${i + 1}`,
+            {
+              ...value,
+              field: `n${section}DataTarget${i + 1}`,
+              id: `n${section}DataTarget${i + 1}`,
+              label: `Data Obiettivo ${i + 1}`,
+            },
+          ])
+      );
+
+      const targets = Object.fromEntries(
+        Object.entries(newFormList)
+          .filter(([key]) => !key.includes('Data'))
+          .map(([, value], i) => [
+            `n${section}Target${i + 1}`,
+            {
+              ...value,
+              field: `n${section}Target${i + 1}`,
+              id: `n${section}Target${i + 1}`,
+              label: `Valore obiettivo ${i + 1}`,
+            },
+          ])
+      );
+
+      newFormList = { ...targets, ...dataTargets };
 
       updateForm(newFormList, true);
       setTargetsCount((prev) => prev - 1);
@@ -181,7 +217,6 @@ const TargetsForm = ({
                 }}
                 type={disabled ? 'text' : 'number'}
                 col='col-12 col-lg-6'
-                className='pr-lg-3'
               />
               <Input
                 {...form[row[1]]}
@@ -191,7 +226,7 @@ const TargetsForm = ({
                 type={disabled ? 'text' : 'date'}
                 disabled={disabled}
                 col={clsx('col-12', !disabled ? 'col-lg-4' : 'col-lg-6')}
-                className='pl-lg-3 mb-3'
+                className='mb-3'
               />
               <div className='col-12 col-lg-2 d-flex justify-content-lg-center'>
                 {!disabled ? (
