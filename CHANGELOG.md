@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.72](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.71...1.0.0-develop.72) (2022-08-03)
+
+
+### Bug Fixes
+
+* **be:** aggiunta stato per dettaglio ente ([fd6b1de](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fd6b1dede628c45a09b3f5e30d0b818e22d467bb))
+
 ## [1.0.0-develop.71](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.70...1.0.0-develop.71) (2022-08-02)
 
 
