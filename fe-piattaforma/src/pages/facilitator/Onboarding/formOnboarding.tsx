@@ -82,8 +82,6 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
             col='col-12 col-md-6'
             onInputChange={onInputChange}
           />
-        </Form.Row>
-        <Form.Row className={bootClass}>
           <Input
             {...form?.codiceFiscale}
             disabled
@@ -102,8 +100,6 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
             col='col-12 col-md-6'
             onInputChange={onInputChange}
           />
-        </Form.Row>
-        <Form.Row className={bootClass}>
           <Input
             {...form?.telefono}
             required

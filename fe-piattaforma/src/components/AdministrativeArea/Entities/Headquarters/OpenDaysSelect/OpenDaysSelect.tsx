@@ -53,7 +53,7 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
                   </p>
                 </div>
               </div>
-              <Form formDisabled={isReadOnly}>
+              <Form formDisabled={isReadOnly} className='mr-2'>
                 {isReadOnly ? (
                   <Input value={v} withLabel={false} />
                 ) : (
@@ -72,6 +72,7 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
                         }
                       }}
                       withLabel={false}
+                      className='mr-2'
                     />
                     <Label for={`input-checkbox-day-${index}-${i}`} check>
                       {v}
@@ -80,7 +81,7 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
                 )}
               </Form>
             </div>
-            <div className={clsx(!isMobile && 'col')}>
+            <div className={clsx(!isMobile && 'col mr-2')}>
               <Collapse
                 className={clsx(isMobile && 'pt-5')}
                 isOpen={

@@ -1,9 +1,18 @@
+import moment from 'moment';
 import React from 'react';
 
 import { FilterI } from '../components/DropdownFilter/dropdownFilter';
 import { OptionType } from '../components/Form/select';
 import { TableRowI } from '../components/Table/table';
 import { RolePermissionI } from '../redux/features/roles/rolesSlice';
+
+export const formatDate = (date?: string) => {
+  if (date) {
+    return moment(date).format('YYYY-MM-DD');
+  }
+
+  return undefined;
+};
 
 export const scrollTo = (y: number) => {
   window.scrollTo({

@@ -8,6 +8,7 @@ import withFormHandler, {
 import { selectProjects } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { GetProjectDetail } from '../../../redux/features/administrativeArea/projects/projectsThunk';
 import { useAppSelector } from '../../../redux/hooks';
+import { formatDate } from '../../../utils/common';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
 import { RegexpType } from '../../../utils/validator';
 
@@ -138,7 +139,6 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pr-lg-3'
         /> */}
         <Input
           {...form?.nome}
@@ -149,8 +149,6 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
             onInputDataChange(value, field);
           }}
         />
-      </Form.Row>
-      <Form.Row className={bootClass}>
         <Input
           {...form?.nomeBreve}
           required
@@ -159,7 +157,6 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pr-lg-3'
         />
         <Input
           {...form?.cup}
@@ -168,29 +165,26 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pl-lg-3'
         />
-      </Form.Row>
-      <Form.Row className={bootClass}>
         <Input
           {...form?.dataInizio}
           required
           label='Data inizio'
+          maximum={formatDate(form?.dataFine.value as string)}
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pr-lg-3'
         />
         <Input
           {...form?.dataFine}
           required
           label='Data fine'
+          minimum={formatDate(form?.dataInizio.value as string)}
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pl-lg-3'
         />
       </Form.Row>
     </Form>

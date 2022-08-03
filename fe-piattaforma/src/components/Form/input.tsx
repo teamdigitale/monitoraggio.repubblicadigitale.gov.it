@@ -23,6 +23,7 @@ export interface InputI extends Omit<InputProps, 'value'> {
     | undefined;
   value?: formFieldI['value'];
   withLabel?: boolean;
+  className?: string;
 }
 
 const Input: React.FC<InputI> = (props) => {
@@ -44,6 +45,7 @@ const Input: React.FC<InputI> = (props) => {
     valid,
     value = '',
     withLabel = props.type !== 'radio',
+    className = '',
   } = props;
 
   const [val, setVal] = useState<formFieldI['value']>(value);
@@ -95,9 +97,11 @@ const Input: React.FC<InputI> = (props) => {
         ? check
         : undefined,
     id: id || field || `input-${new Date().getTime()}`,
-    max: type === 'number' && maximum ? maximum : undefined,
+    max:
+      (type === 'number' || type === 'date') && maximum ? maximum : undefined,
     maxLength: type === 'text' && maximum ? Number(maximum) : undefined,
-    min: type === 'number' && minimum ? minimum : undefined,
+    min:
+      (type === 'number' || type === 'date') && minimum ? minimum : undefined,
     minLength: type === 'text' && minimum ? Number(minimum) : undefined,
     onBlur: (e) => {
       if (onInputBlur) onInputBlur(val, field);
@@ -191,6 +195,7 @@ const Input: React.FC<InputI> = (props) => {
       onChange={handleOnChange}
       value={typeof val === 'number' ? val : val?.toString() || ''}
       innerRef={inputRef}
+      className={clsx(className, 'pr-lg-3')}
     />
   );
 };

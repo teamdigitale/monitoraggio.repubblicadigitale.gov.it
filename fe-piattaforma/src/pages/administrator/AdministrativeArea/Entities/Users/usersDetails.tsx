@@ -52,6 +52,18 @@ import {
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import { GetPartnerAuthorityDetail } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 
+export const roles = {
+  VOL: 'VOL',
+  FAC: 'FAC',
+  REG: 'REG',
+  DEG: 'DEG',
+  REGP: 'REGP',
+  DEGP: 'DEGP',
+  REPP: 'REPP',
+  DEPP: 'DEPP',
+  USR: 'utenti',
+};
+
 const UsersDetails = () => {
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
   const [currentModal, setCorrectModal] = useState<React.ReactElement>();
@@ -65,7 +77,7 @@ const UsersDetails = () => {
   const headquarterInfo = userInfo?.authorityRef || undefined;
   const {
     entityId,
-    userType,
+    userRole,
     userId,
     projectId,
     headquarterId,
@@ -165,17 +177,14 @@ const UsersDetails = () => {
   };
 
   useEffect(() => {
-    if (
-      userType === formTypes.FACILITATORE ||
-      userType === formTypes.VOLONTARIO
-    ) {
+    if (userRole === roles.FAC || userRole === roles.VOL) {
       setCurrentForm(<FormFacilitator formDisabled />);
       setCorrectModal(<ManageFacilitator />);
     } else {
       setCurrentForm(<FormUser formDisabled />);
       setCorrectModal(<ManageUsers />);
     }
-  }, [userType]);
+  }, [userRole]);
 
   useEffect(() => {
     setItemList({
@@ -198,15 +207,19 @@ const UsersDetails = () => {
   }, [mediaIsDesktop, userInfo]);
 
   const getUpperTitle = () => {
-    if (userType) {
-      switch (userType) {
-        case formTypes.DELEGATI:
+    if (userRole) {
+      switch (userRole) {
+        case roles.DEG:
+        case roles.DEGP:
+        case roles.DEPP:
           return formTypes.DELEGATO;
-        case formTypes.REFERENTI:
+        case roles.REG:
+        case roles.REGP:
+        case roles.REPP:
           return formTypes.REFERENTE;
-        case formTypes.FACILITATORE:
+        case roles.FAC:
           return formTypes.FACILITATORE;
-        case formTypes.VOLONTARIO:
+        case roles.VOL:
           return formTypes.VOLONTARIO;
         default:
           'utente';
@@ -216,14 +229,18 @@ const UsersDetails = () => {
   };
 
   const getModalID = () => {
-    if (userType) {
-      switch (userType) {
-        case formTypes.DELEGATO:
+    if (userRole) {
+      switch (userRole) {
+        case roles.DEG:
+        case roles.DEGP:
+        case roles.DEPP:
           return formTypes.DELEGATO;
-        case formTypes.REFERENTE:
+        case roles.REG:
+        case roles.REGP:
+        case roles.REPP:
           return formTypes.REFERENTE;
-        case formTypes.FACILITATORE:
-        case formTypes.VOLONTARIO:
+        case roles.FAC:
+        case roles.VOL:
           return formTypes.FACILITATORE;
         default:
           return formTypes.USER;
@@ -232,14 +249,18 @@ const UsersDetails = () => {
   };
 
   const getModalPayload = () => {
-    if (userType) {
-      switch (userType) {
-        case formTypes.DELEGATI:
+    if (userRole) {
+      switch (userRole) {
+        case roles.DEG:
+        case roles.DEGP:
+        case roles.DEPP:
           return 'Modifica Delegato';
-        case formTypes.REFERENTI:
+        case roles.REG:
+        case roles.REGP:
+        case roles.REPP:
           return 'Modifica Referente';
-        case formTypes.FACILITATORE:
-        case formTypes.VOLONTARIO:
+        case roles.FAC:
+        case roles.VOL:
           return 'Modifica Facilitatore';
         default:
           return 'Modifica Utente';
@@ -247,27 +268,22 @@ const UsersDetails = () => {
     }
   };
 
-  const getUserRoleInfo = () => {
+  const getUserRoleStatus = () => {
     if (
-      userType === formTypes.DELEGATI ||
-      (userType === formTypes.REFERENTI && userRoles?.length) ||
-      userType === formTypes.FACILITATORE ||
-      userType === formTypes.VOLONTARIO
+      userRole &&
+      Object.values(roles).includes(userRole) &&
+      userRoles?.length
     ) {
       const id = projectId || entityId;
       const entityRole = userRoles.filter(
-        (role: { id: string | number }) =>
-          role.id?.toString().toLowerCase() === id?.toString().toLowerCase()
+        (role: { id: string | number; codiceRuolo: string }) =>
+          role.id?.toString().toLowerCase() === id?.toString().toLowerCase() &&
+          role.codiceRuolo === userRole
       )[0];
-      return {
-        status: entityRole?.stato,
-        role: entityRole?.codiceRuolo,
-      };
+
+      return entityRole?.stato;
     }
-    return {
-      status: userInfo?.stato,
-      role: '',
-    };
+    return userInfo?.stato;
   };
 
   const deleteButton: ButtonInButtonsBar = {
@@ -276,7 +292,7 @@ const UsersDetails = () => {
     outline: true,
     buttonClass: 'btn-secondary',
     text: 'Elimina',
-    disabled: getUserRoleInfo().status === entityStatus.ATTIVO,
+    disabled: getUserRoleStatus() === entityStatus.ATTIVO,
     onClick: () =>
       dispatch(
         openModal({
@@ -306,11 +322,21 @@ const UsersDetails = () => {
 
   const getButtons = () => {
     const buttons: ButtonInButtonsBar[] = [];
-    if (userType === formTypes.UTENTI && hasUserPermission(['del.utente'])) {
+    if (userRole === roles.USR && hasUserPermission(['del.utente'])) {
+      buttons.push(deleteButton);
+    } else if (userRole === roles.FAC || userRole === roles.VOL) {
       buttons.push(deleteButton);
     } else if (
       authorityType &&
-      (userType === formTypes.REFERENTI || userType === formTypes.DELEGATI)
+      userRole &&
+      [
+        roles.REG,
+        roles.REGP,
+        roles.REPP,
+        roles.DEG,
+        roles.DEGP,
+        roles.DEPP,
+      ].includes(userRole)
     ) {
       switch (authorityType) {
         case formTypes.ENTE_GESTORE_PROGRAMMA: {
@@ -335,14 +361,21 @@ const UsersDetails = () => {
           break;
       }
     }
-    if (
-      userType === formTypes.UTENTI &&
-      hasUserPermission(['upd.anag.utenti'])
-    ) {
+    if (userRole === roles.USR && hasUserPermission(['upd.anag.utenti'])) {
+      buttons.push(editButton);
+    } else if (userRole === roles.FAC || userRole === roles.VOL) {
       buttons.push(editButton);
     } else if (
       authorityType &&
-      (userType === formTypes.REFERENTI || userType === formTypes.DELEGATI)
+      userRole &&
+      [
+        roles.REG,
+        roles.REGP,
+        roles.REPP,
+        roles.DEG,
+        roles.DEGP,
+        roles.DEPP,
+      ].includes(userRole)
     ) {
       switch (authorityType) {
         case formTypes.ENTE_GESTORE_PROGRAMMA: {
@@ -400,21 +433,25 @@ const UsersDetails = () => {
   };
 
   const onConfirmDelete = async (role?: string) => {
-    if (
-      userType === formTypes.FACILITATORE ||
-      userType === formTypes.VOLONTARIO
-    ) {
+    if (userRole === roles.FAC || userRole === roles.VOL) {
       await removeFacilitator(userInfo.codiceFiscale);
       dispatch(closeModal());
       dispatch(setUserDetails(null));
       navigate(-1);
     } else if (
-      userType === formTypes.REFERENTI ||
-      userType === formTypes.DELEGATI
+      userRole &&
+      [
+        roles.REG,
+        roles.REGP,
+        roles.REPP,
+        roles.DEG,
+        roles.DEGP,
+        roles.DEPP,
+      ].includes(userRole)
     ) {
       await removeReferentDelegate(
         userInfo.codiceFiscale,
-        getUserRoleInfo().role
+        userRole as UserAuthorityRole
       );
       dispatch(closeModal());
       dispatch(setUserDetails(null));
@@ -433,7 +470,7 @@ const UsersDetails = () => {
           <DetailLayout
             titleInfo={{
               title: userInfo?.nome + ' ' + userInfo?.cognome,
-              status: getUserRoleInfo().status,
+              status: getUserRoleStatus(),
               upperTitle: { icon: 'it-user', text: getUpperTitle() },
               subTitle: headquarterInfo,
               iconAvatar: true,
@@ -454,7 +491,7 @@ const UsersDetails = () => {
           </DetailLayout>
           {!(entityId || projectId) &&
           userRoles?.length &&
-          userType === 'utenti' ? (
+          userRole === roles.USR ? (
             <div className={clsx('my-5')}>
               {hasUserPermission(['add.del.ruolo.utente']) ? (
                 <div className={clsx('w-100', 'position-relative')}>

@@ -47,6 +47,7 @@ import {
 import ManagePartnerAuthority from '../modals/managePartnerAuthority';
 import useGuard from '../../../../../hooks/guard';
 import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
+import { roles } from '../Users/usersDetails';
 
 const AuthoritiesDetails = () => {
   const authorityDetails = useAppSelector(selectAuthorities)?.detail;
@@ -117,12 +118,12 @@ const AuthoritiesDetails = () => {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
       if (entityId && projectId) {
         navigate(
-          `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${authorityType}/${authorityId}/${formTypes.REFERENTI}/${td}`
+          `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${authorityType}/${authorityId}/${roles.REPP}/${td}`
         );
       } else {
         projectId &&
           navigate(
-            `/area-amministrativa/progetti/${projectId}/${authorityType}/${authorityId}/${formTypes.REFERENTI}/${td}`
+            `/area-amministrativa/progetti/${projectId}/${authorityType}/${authorityId}/${roles.REPP}/${td}`
           );
       }
     },
@@ -146,12 +147,12 @@ const AuthoritiesDetails = () => {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
       if (entityId && projectId) {
         navigate(
-          `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${authorityType}/${authorityId}/${formTypes.DELEGATI}/${td}`
+          `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${authorityType}/${authorityId}/${roles.DEPP}/${td}`
         );
       } else {
         projectId &&
           navigate(
-            `/area-amministrativa/progetti/${projectId}/${authorityType}/${authorityId}/${formTypes.DELEGATI}/${td}`
+            `/area-amministrativa/progetti/${projectId}/${authorityType}/${authorityId}/${roles.DEPP}/${td}`
           );
       }
     },
@@ -302,7 +303,9 @@ const AuthoritiesDetails = () => {
             outline: true,
             buttonClass: 'btn-secondary',
             text: 'Elimina',
-            disabled: authorityDetails?.stato === 'ATTIVO',
+            disabled:
+              authorityDetails?.dettagliInfoEnte?.statoEnte !==
+              entityStatus.NON_ATTIVO,
             onClick: () =>
               dispatch(
                 openModal({
@@ -335,7 +338,9 @@ const AuthoritiesDetails = () => {
             outline: true,
             buttonClass: 'btn-secondary',
             text: 'Elimina',
-            disabled: authorityDetails?.stato === 'ATTIVO',
+            disabled:
+              authorityDetails?.dettagliInfoEnte?.statoEnte !==
+              entityStatus.NON_ATTIVO,
             onClick: () =>
               dispatch(
                 openModal({
