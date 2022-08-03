@@ -9,4 +9,5 @@ public interface EnteProjection {
 	public String getSedeLegale();
 	public String getProfilo();
 	public String getIndirizzoPec();
+	public String getStatoEnte();
 }

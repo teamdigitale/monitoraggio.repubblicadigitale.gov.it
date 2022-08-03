@@ -48,6 +48,7 @@ import it.pa.repdgt.ente.service.EntePartnerService;
 import it.pa.repdgt.ente.service.EnteService;
 import it.pa.repdgt.ente.util.CSVUtil;
 import it.pa.repdgt.shared.entity.EnteEntity;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 
 @RestController
 @RequestMapping(path = "ente")
@@ -313,7 +314,7 @@ public class EnteRestApi {
 			@RequestPart MultipartFile file,
 			@PathVariable(value = "idProgetto") Long idProgetto) {
 		if (file == null || !CSVUtil.hasCSVFormat(file)) {
-			throw new EnteException("il file non è valido"); 
+			throw new EnteException("il file non è valido", CodiceErroreEnum.EN02); 
 		}
 		return this.entePartnerService.caricaEntiPartner(file, idProgetto);
 	}

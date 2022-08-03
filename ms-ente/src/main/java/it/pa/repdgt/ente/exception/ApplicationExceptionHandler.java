@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice
@@ -35,6 +36,7 @@ public class ApplicationExceptionHandler {
 		listFieldError.forEach(fieldError -> {
 			erroriValidazione.put(fieldError.getField(), fieldError.getDefaultMessage());
 		});
+		erroriValidazione.put("errorCode", CodiceErroreEnum.G02.toString());
 		return erroriValidazione;
 	}
 	
@@ -55,6 +57,7 @@ public class ApplicationExceptionHandler {
 		log.error("{}", exc);
 		Map<String, String> errori = new HashMap<>();
 		errori.put("message", exc.getMessage());
+		errori.put("errorCode", exc.getCodiceErroreEnum().toString());
 		return errori;
 	}
 	
@@ -64,15 +67,40 @@ public class ApplicationExceptionHandler {
 		log.error("{}", exc);
 		Map<String, String> errori = new HashMap<>();
 		errori.put("message", "Manca il corpo della richiesta oppure il json della richiesta non è valido");
+		errori.put("errorCode", CodiceErroreEnum.G02.toString());
 		return errori;
 	}
 	
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-	@ExceptionHandler(value = { EnteException.class, SedeException.class, Exception.class })
+	@ExceptionHandler(value = { EnteException.class, SedeException.class, EnteSedeProgettoException.class,
+							    EnteSedeProgettoFacilitatoreException.class, RuoloException.class, Exception.class })
 	public Map<String, String> handleException(Exception exc) {
 		log.error("{}", exc);
 		Map<String, String> errori = new HashMap<>();
 		errori.put("message", exc.getMessage());
+		EnteException enteException;
+		SedeException sedeException;
+		EnteSedeProgettoException enteSedeProgettoException;
+		EnteSedeProgettoFacilitatoreException enteSedeProgettoFacilitatoreException;
+		RuoloException ruoloException;
+		if(exc instanceof EnteException) {
+			enteException = (EnteException) exc;
+			errori.put("errorCode", enteException.getCodiceErroreEnum().toString());
+		} else if(exc instanceof SedeException) {
+			sedeException = (SedeException) exc;
+			errori.put("errorCode", sedeException.getCodiceErroreEnum().toString());
+		} else if(exc instanceof EnteSedeProgettoException) {
+			enteSedeProgettoException = (EnteSedeProgettoException) exc;
+			errori.put("errorCode", enteSedeProgettoException.getCodiceErroreEnum().toString());
+		} else if(exc instanceof RuoloException) {
+			enteSedeProgettoFacilitatoreException = (EnteSedeProgettoFacilitatoreException) exc;
+			errori.put("errorCode", enteSedeProgettoFacilitatoreException.getCodiceErroreEnum().toString());
+		} else if(exc instanceof RuoloException){
+			ruoloException = (RuoloException) exc;
+			errori.put("errorCode", ruoloException.getCodiceErroreEnum().toString());
+		} else {
+			errori.put("errorCode", CodiceErroreEnum.G01.toString());
+		}
 		return errori;
 	}
 }

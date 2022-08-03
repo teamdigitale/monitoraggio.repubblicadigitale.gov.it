@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import it.pa.repdgt.ente.bean.EntePartnerUploadBean;
 import it.pa.repdgt.ente.dto.EnteDto;
 import it.pa.repdgt.ente.exception.EnteException;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 
 public class CSVUtil {
 
@@ -49,7 +50,7 @@ public class CSVUtil {
 			csvPrinter.flush();
 			return new ByteArrayInputStream(outputStream.toByteArray());
 		} catch (IOException ex) {
-			throw new EnteException("Errore export csv enti", ex);
+			throw new EnteException("Errore export csv enti", ex, CodiceErroreEnum.EN01);
 		}
 	}
 

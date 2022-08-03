@@ -39,6 +39,7 @@ import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEntePartnerDiProgettoKey;
 import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -127,16 +128,16 @@ public class EntePartnerService {
 		
 		if(!this.progettoService.esisteProgettoById(idProgetto)) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente partner per progetto con id=%s non esistente", idProgetto);
-			throw new EnteException(messaggioErrore);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN04);
 		}
 		
 		if(!this.enteService.esisteEnteById(idEntePartner)) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente partner per ente con id=%s non esistente", idEntePartner);
-			throw new EnteException(messaggioErrore);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN04);
 		}
 		if(this.getEntiPartnerByProgetto(idProgetto).isEmpty()) {
 			String messaggioErrore = String.format("ERRORE: l'ente con id = %s non è associato al progetto con id = %s", idEntePartner, idProgetto);
-			throw new EnteException(messaggioErrore);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN04);
 		}
 		
 		UtenteEntity utenteFetch;
@@ -144,12 +145,12 @@ public class EntePartnerService {
 			utenteFetch = this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleUtente);
 		} catch (ResourceNotFoundException ex) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente partner perche l'utente con codice fiscale=%s non esiste", codiceFiscaleUtente);
-			throw new EnteException(messaggioErrore, ex);
+			throw new EnteException(messaggioErrore, ex, CodiceErroreEnum.EN04);
 		}
 		
 		if(!(RuoloUtenteEnum.REPP.toString().equals(codiceRuolo) || RuoloUtenteEnum.DEPP.toString().equals(codiceRuolo))) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente partner di progetto all'ente con id=%s, codice ruolo errato: usare 'REPP' o 'DEPP'", idEntePartner);
-			throw new EnteException(messaggioErrore);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN04);
 		}
 		
 		if(utenteFetch.getMansione() == null) {
@@ -168,7 +169,7 @@ public class EntePartnerService {
 		//Controllo se l'associazione già esiste
 		if(this.referentiDelegatiEntePartnerDiProgettoService.esisteById(id)) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato a ente partner perche l'utente con codice fiscale=%s è già referente/delegato", codiceFiscaleUtente);
-			throw new EnteException(messaggioErrore);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN04);
 		}
 		
 		//Se l'associazione non esiste la creo
@@ -266,7 +267,7 @@ public class EntePartnerService {
 				esiti.add(ente);
 			}
 		} catch (IOException e) {
-			throw new EnteException("Impossibile effettuare upload lista enti partner", e);
+			throw new EnteException("Impossibile effettuare upload lista enti partner", e, CodiceErroreEnum.EN05);
 		}
 		return esiti;
 	}
@@ -300,7 +301,10 @@ public class EntePartnerService {
 		
 		//Se l'utente è REPP(referente) e non ci sono altri REPP(referenti) oltre a lui lancio eccezione.
 		if (codiceRuolo.equalsIgnoreCase("REPP") && unicoReferenteODelegato) {
-			throw new EnteException("Impossibile cancellare associazione referente. E' l'unico referente ATTIVO del partner. Per eliminarlo procedere prima con l'associazione di un altro referente al partner.");
+			throw new EnteException(
+					"Impossibile cancellare associazione referente. E' l'unico referente ATTIVO del partner. "
+					+ "Per eliminarlo procedere prima con l'associazione di un altro referente al partner.",
+					CodiceErroreEnum.EN06);
 		}
 		referenteDelegatoEntePartnerDiProgettoEntity.setStatoUtente(StatoEnum.TERMINATO.getValue());
 		referenteDelegatoEntePartnerDiProgettoEntity.setDataOraAggiornamento(new Date());

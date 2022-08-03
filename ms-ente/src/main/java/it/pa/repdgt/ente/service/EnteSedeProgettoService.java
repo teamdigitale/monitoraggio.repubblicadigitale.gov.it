@@ -21,6 +21,7 @@ import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoKey;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 
 @Service
 public class EnteSedeProgettoService {
@@ -43,7 +44,7 @@ public class EnteSedeProgettoService {
 		String errorMessage = String.format("Associazione sede-ente-progetto non presente per sede con id=%s, ente con id=%s, progetto con id=%s",
 				idSede, idEnte, idProgetto);
 		return this.enteSedeProgettoRepository.findById(id)
-					.orElseThrow(() -> new ResourceNotFoundException(errorMessage));
+					.orElseThrow(() -> new ResourceNotFoundException(errorMessage, CodiceErroreEnum.C01));
 	}
 
 	/**
@@ -70,7 +71,7 @@ public class EnteSedeProgettoService {
 			progetto = this.progettoService.getProgettoById(idProgetto);
 		} catch (ResourceNotFoundException ex) {
 			String errorMessage = "Impossibile associare ente-sede-progetto perchè uno dei 3 non esiste";
-			throw new EnteSedeProgettoException(errorMessage, ex);
+			throw new EnteSedeProgettoException(errorMessage, ex, CodiceErroreEnum.C01);
 		}
 		EnteSedeProgettoKey id = new EnteSedeProgettoKey(idEnte, idSede, idProgetto);
 		EnteSedeProgetto enteSedeProgetto = new EnteSedeProgetto();
@@ -112,7 +113,7 @@ public class EnteSedeProgettoService {
 			return;
 		}
 		if(!isEnteSedeProgettoDisassociabili(idEnte, idSede, idProgetto)) {
-			throw new EnteSedeProgettoException("Impossibile cancellare associazione Ente-Sede-Progetto");
+			throw new EnteSedeProgettoException("Impossibile cancellare associazione Ente-Sede-Progetto", CodiceErroreEnum.EN09);
 		}
 		this.terminaAssociazioneEnteSedeProgetto(idEnte, idSede, idProgetto);
 	}
@@ -125,7 +126,7 @@ public class EnteSedeProgettoService {
 		if(!this.enteSedeProgettoRepository.existsById(enteSedeProgettoId)) {
 			String errorMessage = String.format("Impossibile cancellare associazione Ente-Sede-Progetto. Associazione Ente-Sede-Progetto=%s-%s-%s non presente.", 
 					idEnte, idSede, idProgetto);
-			throw new EnteSedeProgettoException(errorMessage);
+			throw new EnteSedeProgettoException(errorMessage, CodiceErroreEnum.EN09);
 		}
 		
 		List<EnteSedeProgettoFacilitatoreEntity> facilitatori = this.enteSedeProgettoFacilitatoreService.getAllFacilitatoriByEnteAndSedeAndProgetto(idEnte, idSede, idProgetto);
@@ -169,7 +170,7 @@ public class EnteSedeProgettoService {
 		if(!this.enteSedeProgettoRepository.existsById(enteSedeProgettoId)) {
 			String errorMessage = String.format("Impossibile cancellare associazione Ente-Sede-Progetto. Associazione Ente-Sede-Progetto=%s-%s-%s non presente.", 
 					idEnte, idSede, idProgetto);
-			throw new EnteSedeProgettoException(errorMessage);
+			throw new EnteSedeProgettoException(errorMessage, CodiceErroreEnum.EN09);
 		}
 		this.enteSedeProgettoFacilitatoreService.cancellaAssociazioniFacilitatoriOVolontariAEnteSedeProgetto(idSede, idEnte, idProgetto);
 		EnteSedeProgetto enteSedeProgettoDBFetch = this.getAssociazioneEnteSedeProgetto(idSede, idEnte, idProgetto);

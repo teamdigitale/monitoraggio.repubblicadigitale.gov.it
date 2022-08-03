@@ -28,6 +28,7 @@ import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -73,7 +74,9 @@ public class EnteSedeProgettoFacilitatoreService {
 		// verifico se utente esiste
 		boolean esisteUtente = this.utenteService.esisteUtenteByCodiceFiscale(codiceFiscaleUtente);
 		if(!esisteUtente) {
-			throw new EnteSedeProgettoFacilitatoreException(String.format("Impossibile associare facilitatore. Utente con codiceFiscale=%s non trovato", codiceFiscaleUtente));
+			throw new EnteSedeProgettoFacilitatoreException(
+					String.format("Impossibile associare facilitatore. Utente con codiceFiscale=%s non trovato", codiceFiscaleUtente),
+					CodiceErroreEnum.EN07);
 		}
 		
 		// verifico se ente, sede e progetto esistono
@@ -84,7 +87,7 @@ public class EnteSedeProgettoFacilitatoreService {
 		if(!(esisteEnte && esisteSede && esisteProgetto)) {
 			String errorMessage = String.format("Impossibile associare facilitatore/volontario codiceFiscale=%s alla sede con id=%s per l'ente con id=%s sul progetto con id=%s, sede e/o ente e/o progetto non esistente/i", 
 					codiceFiscaleUtente, idSede, idEnte, idProgetto);
-			throw new EnteSedeProgettoFacilitatoreException(errorMessage);
+			throw new EnteSedeProgettoFacilitatoreException(errorMessage, CodiceErroreEnum.EN07);
 		}
 		
 		final ProgettoEntity progettoDBFEtch = this.progettoService.getProgettoById(idProgetto);
@@ -97,14 +100,14 @@ public class EnteSedeProgettoFacilitatoreService {
 			if(utenteDBFetch.getRuoli().contains(ruoloVolontario)) {
 				String errorMessage = String.format("Impossibile associare facilitatore con codiceFiscale=%s alla sede con id=%s per l'ente con id=%s sul progetto con id=%s, l'utente è già un volontario",
 						codiceFiscaleUtente, idSede, idEnte, idProgetto);
-				throw new EnteSedeProgettoFacilitatoreException(errorMessage);
+				throw new EnteSedeProgettoFacilitatoreException(errorMessage, CodiceErroreEnum.EN07);
 			}
 			codiceRuolo = RuoloUtenteEnum.FAC.toString();
 		} else {
 			if(utenteDBFetch.getRuoli().contains(ruoloFacilitatore)) {
 				String errorMessage = String.format("Impossibile associare volontario con codiceFiscale=%s alla sede con id=%s per l'ente con id=%s sul progetto con id=%s, l'utente è già un facilitatore",
 						codiceFiscaleUtente, idSede, idEnte, idProgetto);
-				throw new EnteSedeProgettoFacilitatoreException(errorMessage);
+				throw new EnteSedeProgettoFacilitatoreException(errorMessage, CodiceErroreEnum.EN07);
 			}
 			codiceRuolo = RuoloUtenteEnum.VOL.toString();
 		}
@@ -116,7 +119,7 @@ public class EnteSedeProgettoFacilitatoreService {
 		enteSedeProgettoFacilitatore.setRuoloUtente(codiceRuolo);
 		if(this.enteSedeProgettoFacilitatoreRepository.existsById(id)) {
 			String messaggioErrore = String.format("Impossibile assegnare facilitatore/volontario a ente, sede, progetto perchè l'utente con codice fiscale =%s è già facilitatore/volontario", codiceFiscaleUtente);
-			throw new EnteSedeProgettoFacilitatoreException(messaggioErrore);
+			throw new EnteSedeProgettoFacilitatoreException(messaggioErrore, CodiceErroreEnum.EN07);
 		}
 		enteSedeProgettoFacilitatore.setDataOraCreazione(new Date());
 		enteSedeProgettoFacilitatore.setDataOraAggiornamento(new Date());
@@ -205,10 +208,15 @@ public class EnteSedeProgettoFacilitatoreService {
 		boolean isUnicoFacilitatore = this.enteSedeProgettoFacilitatoreRepository.findAltriFacilitatoriAttivi(codiceFiscaleUtente, idProgetto, codiceRuolo).isEmpty();
 		
 		if(RuoliUtentiConstants.FACILITATORE.equals(codiceRuolo) && isUnicoFacilitatore) {
-			throw new EnteSedeProgettoFacilitatoreException("Impossibile cancellare associazione facilitatore. E' l'unico facilitatore ATTIVO del progetto. Per eliminarlo procedere prima con l'associazione di un altro facilitatore al progetto.");
+			throw new EnteSedeProgettoFacilitatoreException(
+					"Impossibile cancellare associazione facilitatore. E' l'unico facilitatore ATTIVO del progetto. "
+					+ "Per eliminarlo procedere prima con l'associazione di un altro facilitatore al progetto.",
+					CodiceErroreEnum.EN08);
 		}
 		if(RuoliUtentiConstants.VOLONTARIO.equals(codiceRuolo) && isUnicoFacilitatore) {
-			throw new EnteSedeProgettoFacilitatoreException("Impossibile cancellare associazione volontario. E' l'unico volontario ATTIVO del progetto. Per eliminarlo procedere prima con l'associazione di un altro volontario al progetto.");
+			throw new EnteSedeProgettoFacilitatoreException("Impossibile cancellare associazione volontario. E' l'unico volontario ATTIVO del progetto. "
+					+ "Per eliminarlo procedere prima con l'associazione di un altro volontario al progetto.",
+					CodiceErroreEnum.EN08);
 		}
 		//quando lo stato del facilitatore è attivo dobbiamo terminarlo
 		this.terminaAssociazioneFacilitatoreOVolontario(id);

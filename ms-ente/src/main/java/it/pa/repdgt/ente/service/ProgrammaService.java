@@ -16,6 +16,7 @@ import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 
 @Service
 public class ProgrammaService {
@@ -42,7 +43,7 @@ public class ProgrammaService {
 	public ProgrammaEntity getProgrammaById(Long id) {
 		String messaggioErrore = String.format("Programma con id=%s non presente", String.valueOf(id));
 		return this.programmaRepository.findById(id)
-									   .orElseThrow( () -> new ResourceNotFoundException(messaggioErrore));
+									   .orElseThrow( () -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
 	}
 
 	@LogMethod
@@ -81,14 +82,14 @@ public class ProgrammaService {
 			programmaFetchDB = this.getProgrammaById(idProgramma);
 		} catch (ResourceNotFoundException ex) {
 			String errorMessage = String.format("Impossibile assegnare ente con id=%s come gestore del programma con id=%s. Programma non presente", idEnteGestore, idProgramma);
-			throw new EnteException(errorMessage);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN03);
 		}
 		EnteEntity enteFetchDB = null;
 		try {
 			enteFetchDB = this.enteService.getEnteById(idEnteGestore);
 		} catch (ResourceNotFoundException ex) {
 			String errorMessage = String.format("Impossibile assegnare ente con id=%s come gestore del programma con id=%s. Ente non presente", idEnteGestore, idProgramma);
-			throw new EnteException(errorMessage);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN03);
 		}
 		programmaFetchDB.setEnteGestoreProgramma(enteFetchDB);
 		programmaFetchDB.setStatoGestoreProgramma(StatoEnum.NON_ATTIVO.getValue());

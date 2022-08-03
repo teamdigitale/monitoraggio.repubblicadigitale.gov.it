@@ -12,6 +12,7 @@ import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.ReferentiDelegatiEnteGestoreProgettoEntity;
 import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEnteGestoreProgettoKey;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 
 @Service
 public class ReferentiDelegatiEnteGestoreProgettoService {
@@ -101,7 +102,7 @@ public class ReferentiDelegatiEnteGestoreProgettoService {
 			String codiceFiscaleUtente, Long idEnte, String codiceRuolo) {
 		String errorMessage = String.format("Associazione di utente con codiceFiscale =%s a ente gestore di progetto con id=%s per progetto con id=%s con codice ruolo =%s non trovata", codiceFiscaleUtente, idEnte, idProgetto, codiceRuolo);
 		return this.referentiDelegatiEnteGestoreProgettoRepository.findReferenteDelegatiEnteGestoreProgetto(idProgetto, codiceFiscaleUtente, idEnte, codiceRuolo)
-																   .orElseThrow( () -> new ResourceNotFoundException(errorMessage));
+																   .orElseThrow( () -> new ResourceNotFoundException(errorMessage, CodiceErroreEnum.C01));
 	}
 
 	@LogMethod

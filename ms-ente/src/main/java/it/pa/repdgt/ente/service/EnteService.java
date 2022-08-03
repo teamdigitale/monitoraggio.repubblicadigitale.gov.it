@@ -63,6 +63,7 @@ import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.service.storico.StoricoService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -118,7 +119,7 @@ public class EnteService {
 	public EnteEntity getEnteById(Long idEnte) {
 		String messaggioErrore = String.format("Ente con id=%s non presente", String.valueOf(idEnte));
 		return this.enteRepository.findById(idEnte)
-				.orElseThrow( () -> new ResourceNotFoundException(messaggioErrore));
+				.orElseThrow( () -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
 	}
 	
 	/**
@@ -129,7 +130,7 @@ public class EnteService {
 	public EnteEntity getEnteByPartitaIva(String partitaIva) {
 		String messaggioErrore = String.format("Ente con partita iva = %s non presente", partitaIva);
 		return this.enteRepository.findByPartitaIva(partitaIva)
-				.orElseThrow( () -> new ResourceNotFoundException(messaggioErrore) );
+				.orElseThrow( () -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01) );
 	}
 	
 	@LogMethod
@@ -152,7 +153,7 @@ public class EnteService {
 			.anyMatch(ruolo -> ruolo.getCodice().equals(codiceRuoloUtente));
 		
 		if(!hasRuoloUtente) {
-			throw new EnteException("ERRORE: ruolo non definito per l'utente");
+			throw new EnteException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
 		}
 		
 		Pageable paginazione = PageRequest.of(currPage, pageSize);
@@ -165,7 +166,7 @@ public class EnteService {
 		int end = Math.min((start + paginazione.getPageSize()), entiUtenteAggregati.size());
 		
 		if(start > end) {
-			throw new EnteException("ERRORE: pagina richiesta inesistente");
+			throw new EnteException("ERRORE: pagina richiesta inesistente", CodiceErroreEnum.G03);
 		}
 		
 		return new PageImpl<EnteDto>(entiUtenteAggregati.subList(start, end), paginazione, entiUtenteAggregati.size());
@@ -180,7 +181,7 @@ public class EnteService {
 				.stream()
 				.anyMatch(ruolo -> ruolo.getCodice().equals(codiceRuoloUtente));
 		if(!hasRuoloUtente) {
-			throw new EnteException("ERRORE: ruolo non definito per l'utente");
+			throw new EnteException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
 		}
 		List<String> profiliEnti = this.getAllEntiByCodiceRuoloAndIdProgramma(entiPaginatiParam)
 									   .stream()
@@ -199,7 +200,7 @@ public class EnteService {
 				.stream()
 				.anyMatch(ruolo -> ruolo.getCodice().equals(codiceRuoloUtente));
 		if(!hasRuoloUtente) {
-			throw new EnteException("ERRORE: ruolo non definito per l'utente");
+			throw new EnteException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
 		}
 		List<ProgrammaDto> programmiDropdown = this.getAllProgrammiDropdownByCodiceRuoloAndIdProgramma(entiPaginatiParam);
 		return programmiDropdown;
@@ -214,7 +215,7 @@ public class EnteService {
 				.stream()
 				.anyMatch(ruolo -> ruolo.getCodice().equals(codiceRuoloUtente));
 		if(!hasRuoloUtente) {
-			throw new EnteException("ERRORE: ruolo non definito per l'utente");
+			throw new EnteException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
 		}
 		List<ProgettoDto> progettiDropdown = this.getAllProgettiDropdownByCodiceRuoloAndIdProgramma(entiPaginatiParam);
 		return progettiDropdown;
@@ -589,7 +590,7 @@ public class EnteService {
 	public EnteEntity creaNuovoEnte(@NotNull EnteEntity enteEntity) {
 		if(this.esisteEnteByPartitaIva(enteEntity.getPiva())) {
 			String messaggioErrore = String.format("Ente con partita iva = '%s' già presente", enteEntity.getPiva());
-			throw new EnteException(messaggioErrore);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN10);
 		}
 		enteEntity.setDataOraCreazione(new Date());
 		enteEntity.setDataOraAggiornamento(new Date());
@@ -610,7 +611,7 @@ public class EnteService {
 		
 		if(!this.programmaService.esisteProgrammaById(idProgramma)) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente gestore di programma per programma con id=%s poiché non esistente", idProgramma);
-			throw new EnteException(messaggioErrore);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN11);
 		}
 		
 		UtenteEntity utenteFetch;
@@ -618,16 +619,16 @@ public class EnteService {
 			utenteFetch = this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleUtente);
 		} catch (ResourceNotFoundException ex) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente gestore di programma perche l'utente con codice fidcale=%s poiché non esiste", codiceFiscaleUtente);
-			throw new EnteException(messaggioErrore, ex);
+			throw new EnteException(messaggioErrore, ex, CodiceErroreEnum.EN11);
 		}
 		if(!this.esisteEnteById(idEnte)) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente gestore di programma all'ente con id=%s poiché non esistente", idEnte);
-			throw new EnteException(messaggioErrore);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN11);
 		}
 		
 		if(!(RuoloUtenteEnum.REG.toString().equals(codiceRuolo) || RuoloUtenteEnum.DEG.toString().equals(codiceRuolo))) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente gestore di programma all'ente con id=%s, codice ruolo errato: usare 'REG' o 'DEG'", idEnte);
-			throw new EnteException(messaggioErrore);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN11);
 		}
 		
 		if(utenteFetch.getMansione() == null) {
@@ -646,7 +647,7 @@ public class EnteService {
 		//Controllo se l'associazione già esiste
 		if(this.referentiDelegatiEnteGestoreProgrammaService.esisteById(id)) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato a ente gestore di programma perchè l'utente con codice fiscale =%s è già referente/delegato", codiceFiscaleUtente);
-			throw new EnteException(messaggioErrore);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN11);
 		}
 		
 		//Se l'associazione non esiste la creo
@@ -708,7 +709,7 @@ public class EnteService {
 		
 		if(!this.progettoService.esisteProgettoById(idProgetto)) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente gestore di progetto per progetto con id=%s non esistente", idProgetto);
-			throw new EnteException(messaggioErrore);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN12);
 		}
 		
 		UtenteEntity utenteFetch;
@@ -716,12 +717,12 @@ public class EnteService {
 			utenteFetch = this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleUtente);
 		} catch (ResourceNotFoundException ex) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente gestore di progetto perche l'utente con codice fiscale=%s non esiste", codiceFiscaleUtente);
-			throw new EnteException(messaggioErrore, ex);
+			throw new EnteException(messaggioErrore, ex, CodiceErroreEnum.EN12);
 		}
 		
 		if(!(RuoloUtenteEnum.REGP.toString().equals(codiceRuolo) || RuoloUtenteEnum.DEGP.toString().equals(codiceRuolo))) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente gestore di progetto all'ente con id=%s, codice ruolo errato: usare 'REGP' o 'DEGP'", idEnte);
-			throw new EnteException(messaggioErrore);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN12);
 		}
 		
 		if(utenteFetch.getMansione() == null) {
@@ -740,7 +741,7 @@ public class EnteService {
 		//Controllo se l'associazione già esiste
 		if(this.referentiDelegatiEnteGestoreProgettoService.esisteById(id)) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato a ente gestore di progetto perchè l'utente con codice fiscale = %s è già referente/delegato", codiceFiscaleUtente);
-			throw new EnteException(messaggioErrore);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN12);
 		}
 		
 		//Se l'associazione non esiste la creo
@@ -794,7 +795,7 @@ public class EnteService {
 		String errorMessage = String.format("Non esiste nessun ente gestore per programma con id=%s", idProgramma);
 		SchedaEnteGestoreBean schedaEnteGestoreProgramma = new SchedaEnteGestoreBean();
 		EnteProjection ente = this.enteRepository.findEnteGestoreProgrammaByIdProgramma(idProgramma)
-				.orElseThrow(() -> new EnteException(errorMessage));
+				.orElseThrow(() -> new EnteException(errorMessage, CodiceErroreEnum.C01));
 		
 		List<UtenteProjection> referenti = this.referentiDelegatiEnteGestoreProgrammaService.getReferentiEnteGestoreByIdProgrammaAndIdEnte(idProgramma, ente.getId());
 		List<UtenteProjection> delegati = this.referentiDelegatiEnteGestoreProgrammaService.getDelegatiEnteGestoreByIdProgrammaAndIdEnte(idProgramma, ente.getId());
@@ -811,7 +812,7 @@ public class EnteService {
 		String errorMessage = String.format("Non esiste nessun ente gestore per progetto con id=%s", idProgetto);
 		SchedaEnteGestoreProgettoBean schedaEnteGestoreProgetto = new SchedaEnteGestoreProgettoBean();
 		EnteProjection ente = this.enteRepository.findEnteGestoreProgettoByIdProgetto(idProgetto)
-				.orElseThrow(() -> new EnteException(errorMessage));
+				.orElseThrow(() -> new EnteException(errorMessage, CodiceErroreEnum.C01));
 		
 		List<UtenteProjection> referenti = this.referentiDelegatiEnteGestoreProgettoService.getReferentiEnteGestoreByIdProgettoAndIdEnte(idProgetto, ente.getId());
 		List<UtenteProjection> delegati = this.referentiDelegatiEnteGestoreProgettoService.getDelegatiEnteGestoreByIdProgettoAndIdEnte(idProgetto, ente.getId());
@@ -839,7 +840,7 @@ public class EnteService {
 	@LogExecutionTime
 	public SchedaEnteBean getSchedaEnteById(Long idEnte) {
 		String errorMessage = String.format("Non esiste nessun ente con id = %s ", idEnte);
-		EnteEntity ente = this.enteRepository.findById(idEnte).orElseThrow(() -> new EnteException(errorMessage));
+		EnteEntity ente = this.enteRepository.findById(idEnte).orElseThrow(() -> new EnteException(errorMessage, CodiceErroreEnum.C01));
 		
 		DettaglioEnteBean dettaglioEnte = new DettaglioEnteBean();
 		dettaglioEnte.setId(idEnte);
@@ -940,7 +941,7 @@ public class EnteService {
 	public void aggiornaEnte(EnteEntity enteEntity, Long idEnte) {
 		if (!this.enteRepository.existsById(idEnte)) {
 			String errorMessage = String.format("Impossibile aggiornare l'ente con id=%s. Ente non presente", idEnte);
-			throw new EnteException(errorMessage);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN13);
 		}
 		EnteEntity enteFetchDB = this.getEnteById(idEnte);
 		enteEntity.setDataOraCreazione(enteFetchDB.getDataOraCreazione());
@@ -964,7 +965,7 @@ public class EnteService {
 				this.enteRepository.save(enteModificato);
 			} else {
 				String errorMessage = "E' già presente un ente con questa Partita IVA, usare la funzione di ricerca";
-				throw new EnteException(errorMessage);
+				throw new EnteException(errorMessage, CodiceErroreEnum.EN14);
 			}
 		} else {
 			if(!optionalEnte.isPresent() || optionalEnte.get().getId().equals(enteModificato.getId())) {
@@ -980,7 +981,7 @@ public class EnteService {
 				this.programmaService.assegnaEnteGestoreProgramma(idProgramma, enteModificato.getId());
 			} else {
 				String errorMessage = "E' già presente un ente con questa Partita IVA, usare la funzione di ricerca";
-				throw new EnteException(errorMessage);
+				throw new EnteException(errorMessage, CodiceErroreEnum.EN14);
 			}
 		}
 	}
@@ -1001,7 +1002,7 @@ public class EnteService {
 				this.enteRepository.save(enteModificato);
 			} else {
 				String errorMessage = "E' già presente un ente con questa Partita IVA, usare la funzione di ricerca";
-				throw new EnteException(errorMessage);
+				throw new EnteException(errorMessage, CodiceErroreEnum.EN15);
 			}
 		} else {
 			if(!optionalEnte.isPresent() || optionalEnte.get().getId().equals(enteModificato.getId())) {
@@ -1017,7 +1018,7 @@ public class EnteService {
 				this.progettoService.assegnaEnteGestoreProgetto(idProgetto, enteModificato.getId());
 			} else {
 				String errorMessage = "E' già presente un ente con questa Partita IVA, usare la funzione di ricerca";
-				throw new EnteException(errorMessage);
+				throw new EnteException(errorMessage, CodiceErroreEnum.EN15);
 			}
 		}
 	}
@@ -1028,19 +1029,19 @@ public class EnteService {
 	public void cancellaEntePartnerPerProgetto(Long idEnte, Long idProgetto) {
 		if(!this.esisteEnteById(idEnte)) {
 			String errorMessage = String.format("L'ente con id=%s non esiste", idEnte);
-			throw new EnteException(errorMessage);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN16);
 		}
 		//controllo se esiste l'associazione tra progetto e ente partner
 		if(this.entePartnerService.getEntePartnerByIdEnteAndIdProgetto(idEnte, idProgetto) == null) {
 			String errorMessage = String.format("L'ente con id=%s non è ente partner del progetto con id=%s", idEnte, idProgetto);
-			throw new EnteException(errorMessage);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN16);
 		}
 		//prendo l'associazione tra progetto e ente partner
 		EntePartnerEntity entePartnerProgetto = this.entePartnerService.getEntePartnerByIdEnteAndIdProgetto(idEnte, idProgetto);
 		//controllo se lo stato dell'ente partner è diverso da NON ATTIVO
 		if(!entePartnerProgetto.getStatoEntePartner().equals(StatoEnum.NON_ATTIVO.getValue())) {
 			String errorMessage = String.format("Imposibile cancellare l'ente con id=%s poiché risulta essere attivo su questo progetto", idEnte);
-			throw new EnteException(errorMessage);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN16);
 		}
 		//prendo referenti e delegati per l'ente partner di quel progetto
 		List<ReferentiDelegatiEntePartnerDiProgettoEntity> listaReferentiDelegatiEntePartner = this.referentiDelegatiEntePartnerDiProgettoService.getReferentiDelegatiEntePartner(idEnte, idProgetto);
@@ -1080,12 +1081,12 @@ public class EnteService {
 	public void cancellaGestoreProgramma(Long idEnte, Long idProgramma) {
 		if(!this.esisteEnteById(idEnte)) {
 			String errorMessage = String.format("L'ente con id=%s non esiste", idEnte);
-			throw new EnteException(errorMessage);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN17);
 		}
 		//controllo se lo stato dell'ente gestore di programma è diverso da NON ATTIVO
 		if(!this.programmaService.getProgrammaById(idProgramma).getStatoGestoreProgramma().equals(StatoEnum.NON_ATTIVO.getValue())) {
 			String errorMessage = String.format("Impossibile cancellare l'ente gestore di programma poiché lo stato dell'ente risulta attivo per questo programma");
-			throw new EnteException(errorMessage);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN17);
 		}
 		
 		ProgrammaEntity programmaFetchDB = this.programmaService.getProgrammaById(idProgramma);
@@ -1114,12 +1115,12 @@ public class EnteService {
 	public void cancellaGestoreProgetto(Long idEnte, Long idProgetto) {
 		if(!this.esisteEnteById(idEnte)) {
 			String errorMessage = String.format("L'ente con id=%s non esiste", idEnte);
-			throw new EnteException(errorMessage);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN18);
 		}
 		//controllo se lo stato dell'ente gestore di progetto è diverso da NON ATTIVO
 		if(!this.progettoService.getProgettoById(idProgetto).getStatoGestoreProgetto().equals(StatoEnum.NON_ATTIVO.getValue())) {
 			String errorMessage = String.format("Impossibile cancellare l'ente gestore di progetto poiché lo stato dell'ente risulta attivo per questo progetto");
-			throw new EnteException(errorMessage);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN18);
 		}
 		
 		ProgettoEntity progettoFetchDB = this.progettoService.getProgettoById(idProgetto);
@@ -1163,12 +1164,12 @@ public class EnteService {
 	public void terminaGestoreProgramma(Long idEnte, Long idProgramma){
 		if(!this.esisteEnteById(idEnte)) {
 			String errorMessage = String.format("L'ente con id=%s non esiste", idEnte);
-			throw new EnteException(errorMessage);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN19);
 		}
 		//controllo se lo stato dell'ente gestore di programma è diverso da ATTIVO
 		if(!this.programmaService.getProgrammaById(idProgramma).getStatoGestoreProgramma().equals(StatoEnum.ATTIVO.getValue())) {
 			String errorMessage = String.format("Impossibile terminare l'ente gestore di programma poiché lo stato dell'ente risulta non attivo o terminato per questo programma");
-			throw new EnteException(errorMessage);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN19);
 		}
 		ProgrammaEntity programmaFetchDB = this.programmaService.getProgrammaById(idProgramma);
 		List<ReferentiDelegatiEnteGestoreProgrammaEntity> referentiEDelegatiEnte = this.referentiDelegatiEnteGestoreProgrammaService.getReferentiAndDelegatiByIdProgrammaAndIdEnte(idProgramma, idEnte);
@@ -1184,7 +1185,7 @@ public class EnteService {
 		try {
 			this.storicoService.storicizzaEnteGestoreProgramma(programmaFetchDB, StatoEnum.TERMINATO.getValue());
 		} catch (Exception e) {
-			throw new EnteException("Impossibile Storicizzare Ente");
+			throw new EnteException("Impossibile Storicizzare Ente", CodiceErroreEnum.C02);
 		}
 		programmaFetchDB.setEnteGestoreProgramma(null);
 		programmaFetchDB.setStatoGestoreProgramma(null);
@@ -1197,12 +1198,12 @@ public class EnteService {
 	public void terminaGestoreProgetto(Long idEnte, Long idProgetto) {
 		if(!this.esisteEnteById(idEnte)) {
 			String errorMessage = String.format("L'ente con id=%s non esiste", idEnte);
-			throw new EnteException(errorMessage);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN20);
 		}
 		//controllo se lo stato dell'ente gestore di progetto è diverso da ATTIVO
 		if(!this.progettoService.getProgettoById(idProgetto).getStatoGestoreProgetto().equals(StatoEnum.ATTIVO.getValue())) {
 			String errorMessage = String.format("Impossibile terminare l'ente gestore di progetto poiché lo stato dell'ente risulta non attivo o terminato per questo progetto");
-			throw new EnteException(errorMessage);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN20);
 		}
 		ProgettoEntity progettoFetchDB = this.progettoService.getProgettoById(idProgetto);
 		List<ReferentiDelegatiEnteGestoreProgettoEntity> referentiEDelegatiEnte = this.referentiDelegatiEnteGestoreProgettoService.getReferentiAndDelegatiByIdProgettoAndIdEnte(idProgetto, idEnte);
@@ -1218,7 +1219,7 @@ public class EnteService {
 		try {
 			this.storicoService.storicizzaEnteGestoreProgetto(progettoFetchDB, StatoEnum.TERMINATO.getValue());
 		} catch (Exception e) {
-			throw new EnteException("Impossibile Storicizzare Ente");
+			throw new EnteException("Impossibile Storicizzare Ente", CodiceErroreEnum.C02);
 		}
 		progettoFetchDB.setEnteGestoreProgetto(null);
 		progettoFetchDB.setStatoGestoreProgetto(null);
@@ -1242,19 +1243,19 @@ public class EnteService {
 	public void terminaEntePartnerPerProgetto(Long idEnte, Long idProgetto) {
 		if(!this.esisteEnteById(idEnte)) {
 			String errorMessage = String.format("L'ente con id=%s non esiste", idEnte);
-			throw new EnteException(errorMessage);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN21);
 		}
 		//controllo se esiste l'associazione tra progetto e ente partner
 		if(this.entePartnerService.getEntePartnerByIdEnteAndIdProgetto(idEnte, idProgetto) == null) {
 			String errorMessage = String.format("L'ente con id=%s non è ente partner del progetto con id=%s", idEnte, idProgetto);
-			throw new EnteException(errorMessage);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN21);
 		}
 		//prendo l'associazione tra progetto e ente partner
 		EntePartnerEntity entePartnerProgetto = this.entePartnerService.getEntePartnerByIdEnteAndIdProgetto(idEnte, idProgetto);
 		//controllo se lo stato dell'ente partner è diverso da ATTIVO
 		if(!entePartnerProgetto.getStatoEntePartner().equals(StatoEnum.ATTIVO.getValue())) {
 			String errorMessage = String.format("Imposibile terminare l'ente partner con id=%s poiché risulta essere non attivo o terminato su questo progetto", idEnte);
-			throw new EnteException(errorMessage);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN21);
 		}
 		//prendo le sedi del progetto per quell'ente
 		List<EnteSedeProgetto> listaSediPerProgettoAndEnte = this.enteSedeProgettoService.getSediPerProgettoAndEnte(idEnte, idProgetto);
@@ -1280,7 +1281,7 @@ public class EnteService {
 		try {
 			this.storicoService.storicizzaEntePartner(entePartnerProgetto, StatoEnum.TERMINATO.getValue());
 		} catch (Exception e) {
-			throw new EnteException("Impossibile Storicizzare Ente");
+			throw new EnteException("Impossibile Storicizzare Ente", CodiceErroreEnum.C02);
 		}
 		entePartnerProgetto.setStatoEntePartner(StatoEnum.TERMINATO.getValue());
 		entePartnerProgetto.setTerminatoSingolarmente(Boolean.TRUE);
@@ -1319,7 +1320,8 @@ public class EnteService {
 		
 		//Se l'utente è REG(referente) e non ci sono altri REG(referenti) oltre a lui lancio eccezione.
 		if (codiceRuolo.equalsIgnoreCase(RuoloUtenteEnum.REG.toString()) && unicoReferenteODelegato) {
-			throw new EnteException("Impossibile terminare associazione referente. E' l'unico referente ATTIVO del gestore programma. Per terminarlo procedere prima con l'associazione di un altro referente al gestore programma.");
+			throw new EnteException("Impossibile terminare associazione referente. E' l'unico referente ATTIVO del gestore programma."
+					+ " Per terminarlo procedere prima con l'associazione di un altro referente al gestore programma.", CodiceErroreEnum.EN22);
 		}
 		referentiDelegatiEnteGestoreProgrammaEntity.setStatoUtente(StatoEnum.TERMINATO.getValue());
 		referentiDelegatiEnteGestoreProgrammaEntity.setDataOraAggiornamento(new Date());
@@ -1366,7 +1368,8 @@ public class EnteService {
 		
 		//Se l'utente è REGP(referente) e non ci sono altri REGP(referenti) oltre a lui lancio eccezione.
 		if (codiceRuolo.equalsIgnoreCase("REGP") && unicoReferenteODelegato) {
-			throw new EnteException("Impossibile cancellare associazione referente. E' l'unico referente ATTIVO del gestore progetto. Per eliminarlo procedere prima con l'associazione di un altro referente al gestore progetto.");
+			throw new EnteException("Impossibile cancellare associazione referente. E' l'unico referente ATTIVO del gestore progetto. "
+					+ "Per eliminarlo procedere prima con l'associazione di un altro referente al gestore progetto.", CodiceErroreEnum.EN23);
 		 }
 		referentiDelegatiEnteGestoreProgettoEntity.setStatoUtente(StatoEnum.TERMINATO.getValue());
 		referentiDelegatiEnteGestoreProgettoEntity.setDataOraAggiornamento(new Date());

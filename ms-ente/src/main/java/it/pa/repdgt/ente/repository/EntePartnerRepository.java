@@ -30,6 +30,7 @@ public interface EntePartnerRepository extends JpaRepository<EntePartnerEntity, 
 			 + "	,ente.TIPOLOGIA as tipologia "
 			 + "	,ente.SEDE_LEGALE as sedeLegale "
 			 + "	,ente.INDIRIZZO_PEC as indirizzoPec "
+			 + "	,ep.STATO_ENTE_PARTNER as statoEnte "
 			 + "	,'Ente Partner' as profilo "
 			 + " FROM "
 			 + "	ente ente "

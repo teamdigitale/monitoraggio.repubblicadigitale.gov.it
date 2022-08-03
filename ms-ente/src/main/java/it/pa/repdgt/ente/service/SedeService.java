@@ -35,6 +35,7 @@ import it.pa.repdgt.shared.entity.IndirizzoSedeEntity;
 import it.pa.repdgt.shared.entity.IndirizzoSedeFasciaOrariaEntity;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 
 @Service
 @Validated
@@ -63,7 +64,7 @@ public class SedeService {
 	public SedeEntity getSedeById(@NotNull Long idSede) {
 		String errorMessage = String.format("Sede con id=%s non presente", String.valueOf(idSede));
 		return this.sedeRepository.findById(idSede)
-					.orElseThrow(() -> new ResourceNotFoundException(errorMessage));
+					.orElseThrow(() -> new ResourceNotFoundException(errorMessage, CodiceErroreEnum.C01));
 	}
 	
 	@LogMethod
@@ -91,7 +92,7 @@ public class SedeService {
 		final String nomeSede = nuovaSedeRequest.getNome();
 		if(this.esisteSedeByNome(nomeSede)) {
 			final String messaggioErrore = String.format("Errore Creazione Sede. Sede con nome='%s' già presente", nomeSede);
-			throw new SedeException(messaggioErrore);
+			throw new SedeException(messaggioErrore, CodiceErroreEnum.SD01);
 		}
 		
 		final SedeEntity sede = this.sedeMapper.toEntityFrom(nuovaSedeRequest);
@@ -191,11 +192,11 @@ public class SedeService {
 	public void aggiornaSede(Long idSede, @Valid NuovaSedeRequest nuovaSedeRequest) {
 		if(!this.sedeRepository.existsById(idSede)) {
 			String errorMessage = String.format("La Sede con id = %s non esiste", idSede);
-			throw new SedeException(errorMessage);
+			throw new SedeException(errorMessage, CodiceErroreEnum.SD02);
 		}
 		if(this.esisteSedeByNomeAndNotIdSede(nuovaSedeRequest.getNome(), idSede)) {
 			final String messaggioErrore = String.format("Errore Creazione Sede. Sede con nome='%s' già presente", nuovaSedeRequest.getNome());
-			throw new SedeException(messaggioErrore);
+			throw new SedeException(messaggioErrore, CodiceErroreEnum.SD02);
 		}
 		//aggiorno la sede
 		SedeEntity sedeFetchDB = this.getSedeById(idSede);
