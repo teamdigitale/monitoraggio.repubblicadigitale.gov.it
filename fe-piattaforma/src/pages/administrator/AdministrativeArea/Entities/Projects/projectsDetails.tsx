@@ -59,6 +59,7 @@ import { RemoveAuthorityHeadquarter } from '../../../../../redux/features/admini
 import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 import useGuard from '../../../../../hooks/guard';
 import { roles } from '../Users/usersDetails';
+import UploadCSVModal from '../../../../../components/AdministrativeArea/Entities/General/UploadCSVModal/UploadCSVModal';
 
 const tabs = {
   INFO: 'info',
@@ -279,7 +280,17 @@ const ProjectsDetails = () => {
       outline: true,
       buttonClass: 'btn-secondary',
       text: 'Carica lista enti partner',
-      onClick: () => console.log('carica lista enti partner'),
+      onClick: () =>
+        dispatch(
+          openModal({
+            id: 'upload-csv',
+            payload: {
+              title: 'Carica lista Enti partner',
+              entity: 'enti',
+              data: 'NOME,NOME BREVE, TIPOLOGIA, CODICE FISCALE, SEDE LEGALE, PEC',
+            },
+          })
+        ),
     },
     {
       size: 'xs',
@@ -390,7 +401,8 @@ const ProjectsDetails = () => {
                 id: ref.id,
                 codiceFiscale: ref.codiceFiscale,
                 actions:
-                  ref?.stato !== entityStatus.ATTIVO
+                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                    entityStatus.TERMINATO || ref?.stato !== entityStatus.ATTIVO
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickReferenti[CRUDActionTypes.VIEW],
@@ -408,7 +420,8 @@ const ProjectsDetails = () => {
                 id: del.id,
                 codiceFiscale: del.codiceFiscale,
                 actions:
-                  del?.stato !== entityStatus.ATTIVO
+                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                    entityStatus.TERMINATO || del?.stato !== entityStatus.ATTIVO
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickDelegati[CRUDActionTypes.VIEW],
@@ -423,15 +436,23 @@ const ProjectsDetails = () => {
             authorityInfo?.sediGestoreProgetto?.map(
               (sedi: { [key: string]: string }) => ({
                 ...sedi,
-                actions: {
-                  [CRUDActionTypes.VIEW]:
-                    onActionClickSede[CRUDActionTypes.VIEW],
-                  [CRUDActionTypes.DELETE]: hasUserPermission([
-                    'del.sede.gest.prgt',
-                  ])
-                    ? onActionClickSede[CRUDActionTypes.DELETE]
-                    : undefined,
-                },
+                actions:
+                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                  entityStatus.TERMINATO
+                    ? {
+                        [CRUDActionTypes.VIEW]:
+                          onActionClickSede[CRUDActionTypes.VIEW],
+                      }
+                    : {
+                        [CRUDActionTypes.VIEW]:
+                          onActionClickSede[CRUDActionTypes.VIEW],
+                        [CRUDActionTypes.DELETE]:
+                          sedi.stato !== entityStatus.ATTIVO
+                            ? undefined
+                            : hasUserPermission(['del.sede.gest.prgt'])
+                            ? onActionClickSede[CRUDActionTypes.DELETE]
+                            : undefined,
+                      },
               })
             ) || [],
         },
@@ -459,52 +480,66 @@ const ProjectsDetails = () => {
 
   const PartnerAuthoritySection = () => {
     setCorrectModal(<ManagePartnerAuthority creation />);
-    if (partnerAuthoritiesList?.length) {
+    if (
+      partnerAuthoritiesList?.filter(
+        (entePartner: { associatoAUtente: boolean }) =>
+          entePartner.associatoAUtente
+      )?.length
+    ) {
       setButtonsPosition('BOTTOM');
       setCurrentForm(undefined);
       setItemList({
-        items: partnerAuthoritiesList?.map(
-          (entePartner: {
-            id: string;
-            nome: string;
-            referenti: string;
-            stato: string;
-          }) => ({
-            ...entePartner,
-            fullInfo: { ref: entePartner.referenti },
-            actions:
-              entePartner.stato !== entityStatus.ATTIVO
-                ? {
-                    [CRUDActionTypes.VIEW]:
-                      onActionClickEntiPartner[CRUDActionTypes.VIEW],
-                  }
-                : {
-                    [CRUDActionTypes.VIEW]:
-                      onActionClickEntiPartner[CRUDActionTypes.VIEW],
-                    [CRUDActionTypes.DELETE]: hasUserPermission([
-                      'del.ente.partner',
-                    ])
-                      ? (td: TableRowI | string) => {
-                          dispatch(
-                            openModal({
-                              id: 'delete-entity',
-                              payload: {
-                                entity: 'partner-authority',
-                                authorityId: td,
-                                text: 'Confermi di volere disassociare questo Ente partner?',
-                              },
-                            })
-                          );
-                          // projectId && removeAuthorityPartner(td as string, projectId);
-                        }
-                      : undefined,
-                  },
-          })
-        ),
+        items: partnerAuthoritiesList
+          .filter(
+            (entePartner: { associatoAUtente: boolean }) =>
+              entePartner.associatoAUtente
+          )
+          ?.map(
+            (entePartner: {
+              id: string;
+              nome: string;
+              referenti: string;
+              stato: string;
+            }) => ({
+              ...entePartner,
+              fullInfo: { ref: entePartner.referenti },
+              actions:
+                entePartner.stato !== entityStatus.ATTIVO ||
+                projectDetails?.stato === entityStatus.TERMINATO
+                  ? {
+                      [CRUDActionTypes.VIEW]:
+                        onActionClickEntiPartner[CRUDActionTypes.VIEW],
+                    }
+                  : {
+                      [CRUDActionTypes.VIEW]:
+                        onActionClickEntiPartner[CRUDActionTypes.VIEW],
+                      [CRUDActionTypes.DELETE]: hasUserPermission([
+                        'del.ente.partner',
+                      ])
+                        ? (td: TableRowI | string) => {
+                            dispatch(
+                              openModal({
+                                id: 'delete-entity',
+                                payload: {
+                                  entity: 'partner-authority',
+                                  authorityId: td,
+                                  text: 'Confermi di volere disassociare questo Ente partner?',
+                                },
+                              })
+                            );
+                            // projectId && removeAuthorityPartner(td as string, projectId);
+                          }
+                        : undefined,
+                    },
+            })
+          ),
       });
       setItemAccordionList(null);
       setCorrectButtons(
-        hasUserPermission(['add.ente.partner']) ? partnerAuthorityButtons : []
+        hasUserPermission(['add.ente.partner']) &&
+          projectDetails?.stato !== entityStatus.TERMINATO
+          ? partnerAuthorityButtons
+          : []
       );
       setEmptySection(undefined);
     } else {
@@ -519,7 +554,8 @@ const ProjectsDetails = () => {
           icon='it-note'
           subtitle='Per attivare il progetto aggiungi un Ente partner'
           buttons={
-            hasUserPermission(['add.ente.partner'])
+            hasUserPermission(['add.ente.partner']) &&
+            projectDetails?.stato !== entityStatus.TERMINATO
               ? partnerAuthorityButtons
               : []
           }
@@ -781,7 +817,16 @@ const ProjectsDetails = () => {
                 color: 'danger',
                 outline: true,
                 text: 'Termina progetto',
-                onClick: () => dispatch(openModal({ id: 'terminate-entity' })),
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: 'terminate-entity',
+                      payload: {
+                        entity: 'project',
+                        text: 'Confermi di voler terminare il Progetto?',
+                      },
+                    })
+                  ),
               },
             ]
           : [];
@@ -988,7 +1033,8 @@ const ProjectsDetails = () => {
     switch (title) {
       case 'Referenti':
       case 'Delegati':
-        return hasUserPermission(['add.ref_del.gest.prgt'])
+        return authorityInfo?.dettagliInfoEnte?.statoEnte !==
+          entityStatus.TERMINATO && hasUserPermission(['add.ref_del.gest.prgt'])
           ? {
               cta: `Aggiungi ${title}`,
               ctaAction: () =>
@@ -1009,7 +1055,8 @@ const ProjectsDetails = () => {
               ctaAction: () => ({}),
             };
       case 'Sedi':
-        return hasUserPermission(['add.sede.gest.prgt'])
+        return authorityInfo?.dettagliInfoEnte?.statoEnte !==
+          entityStatus.TERMINATO && hasUserPermission(['add.sede.gest.prgt'])
           ? {
               cta: `Aggiungi Sede`,
               ctaAction: () =>
@@ -1145,9 +1192,8 @@ const ProjectsDetails = () => {
           ) : null}
           {currentModal ? currentModal : null}
           <TerminateEntityModal
-            text='Confermi di voler terminare il Progetto?'
             onClose={() => dispatch(closeModal())}
-            onConfirm={(terminationDate: string) =>
+            onConfirm={(_entity: string, terminationDate: string) =>
               terminationDate &&
               projectId &&
               terminateProject(projectId, terminationDate)
@@ -1174,9 +1220,13 @@ const ProjectsDetails = () => {
               }
             }}
           />
-          <ManageDelegate />
-          <ManageReferal />
-          <ManageHeadquarter creation={true} />
+          <UploadCSVModal
+            onClose={() => dispatch(closeModal())}
+            onConfirm={() => dispatch(closeModal())}
+          />
+          <ManageDelegate creation />
+          <ManageReferal creation />
+          <ManageHeadquarter creation />
         </div>
       </div>
     </div>

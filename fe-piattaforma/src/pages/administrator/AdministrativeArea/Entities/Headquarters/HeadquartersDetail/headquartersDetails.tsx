@@ -178,7 +178,7 @@ const HeadquartersDetails = () => {
                 color: 'primary',
                 text: 'Elimina',
                 buttonClass: 'btn-secondary',
-                disabled: headquarterDetails?.stato === 'ATTIVO',
+                disabled: headquarterDetails?.stato !== entityStatus.NON_ATTIVO,
                 onClick: () =>
                   dispatch(
                     openModal({
@@ -194,6 +194,7 @@ const HeadquartersDetails = () => {
                 size: 'xs',
                 color: 'primary',
                 text: 'Modifica',
+                disabled: headquarterDetails?.stato === entityStatus.TERMINATO,
                 onClick: () =>
                   dispatch(
                     openModal({
@@ -215,7 +216,7 @@ const HeadquartersDetails = () => {
                 color: 'primary',
                 text: 'Elimina',
                 buttonClass: 'btn-secondary',
-                disabled: headquarterDetails?.stato === 'ATTIVO',
+                disabled: headquarterDetails?.stato !== entityStatus.NON_ATTIVO,
                 onClick: () =>
                   dispatch(
                     openModal({
@@ -231,6 +232,7 @@ const HeadquartersDetails = () => {
                 size: 'xs',
                 color: 'primary',
                 text: 'Modifica',
+                disabled: headquarterDetails?.stato === entityStatus.TERMINATO,
                 onClick: () =>
                   dispatch(
                     openModal({
@@ -366,7 +368,7 @@ const HeadquartersDetails = () => {
             </div>
           </Sticky>
           <ManageHeadquarter />
-          <ManageFacilitator creation={true} />
+          <ManageFacilitator creation />
           <DeleteEntityModal
             onClose={() => dispatch(closeModal())}
             onConfirm={(payload) => {

@@ -145,6 +145,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
 
       setAddressList([...newAddressList]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [movingHeadquarter]);
 
   const handleSelectHeadquarter: CRUDActionsI = {
@@ -292,7 +293,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
       centerButtons
     >
       <div>
-        {creation && (
+        {creation ? (
           <SearchBar
             className={clsx(
               'w-100',
@@ -307,7 +308,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
             title='Cerca'
             search
           />
-        )}
+        ) : null}
         <div className='mx-5'>{content}</div>
       </div>
     </GenericModal>

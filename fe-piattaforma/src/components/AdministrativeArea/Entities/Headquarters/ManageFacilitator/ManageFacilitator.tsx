@@ -7,9 +7,9 @@ import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import { headings } from '../../../../../pages/administrator/AdministrativeArea/Entities/modals/manageReferal';
 import { formTypes } from '../../../../../pages/administrator/AdministrativeArea/Entities/utils';
 import {
+  resetUserDetails,
   selectHeadquarters,
   selectUsers,
-  setUserDetails,
   setUsersList,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import {
@@ -63,6 +63,11 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   }, []);
 
   useEffect(() => {
+    dispatch(resetUserDetails());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [creation]);
+
+  useEffect(() => {
     if (usersList && usersList.length === 0) {
       setNoResult(true);
     } else {
@@ -89,7 +94,6 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
           )
         );
         dispatch(GetHeadquarterDetails(headquarterId, authorityId, projectId));
-        dispatch(setUserDetails(null));
       } else if (userId) {
         userId &&
           (await dispatch(
@@ -134,6 +138,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         heading={headings}
         values={usersList.map((item) => ({
           id: item.id || item.codiceFiscale,
+          codiceFiscale: item.codiceFiscale,
           cognome: item.cognome,
           nome: item.nome,
         }))}
@@ -168,7 +173,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
       centerButtons
     >
       <div>
-        {creation && (
+        {creation ? (
           <SearchBar
             className={clsx(
               'w-100',
@@ -183,7 +188,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
             title='Cerca'
             search
           />
-        )}
+        ) : null}
         <div className='mx-5'>{content}</div>
       </div>
     </GenericModal>

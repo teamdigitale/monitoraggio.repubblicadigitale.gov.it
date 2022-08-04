@@ -64,13 +64,11 @@ const AuthoritiesDetails = () => {
 
   useEffect(() => {
     dispatch(setHeadquarterDetails(null));
-  }, []);
-
-  useEffect(() => {
     // For breadcrumb
     if (!projectName && projectId) {
       dispatch(GetProjectDetail(projectId));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -91,6 +89,7 @@ const AuthoritiesDetails = () => {
         })
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authorityId, authorityDetails, projectName]);
 
   const onActionClick: CRUDActionsI = {
@@ -249,11 +248,12 @@ const AuthoritiesDetails = () => {
               ...sedi,
               actions: {
                 [CRUDActionTypes.VIEW]: onActionClickSede[CRUDActionTypes.VIEW],
-                [CRUDActionTypes.DELETE]: hasUserPermission([
-                  'del.sede.partner',
-                ])
-                  ? onActionClickSede[CRUDActionTypes.DELETE]
-                  : undefined,
+                [CRUDActionTypes.DELETE]:
+                  sedi.stato !== entityStatus.ATTIVO
+                    ? undefined
+                    : hasUserPermission(['del.sede.partner'])
+                    ? onActionClickSede[CRUDActionTypes.DELETE]
+                    : undefined,
               },
             })
           ) || [],
@@ -261,114 +261,57 @@ const AuthoritiesDetails = () => {
     ];
   }
 
-  let buttons: ButtonInButtonsBar[] = hasUserPermission(['upd.card.enti'])
-    ? [
-        // {
-        //   size: 'xs',
-        //   color: 'primary',
-        //   outline: true,
-        //   text: 'Elimina',
-        //   onClick: () =>
-        //     dispatch(
-        //       openModal({
-        //         id: 'delete-entity',
-        //         payload: {
-        //           entity: 'authority',
-        //           text: 'Confermi di voler eliminare questo ente?',
-        //         },
-        //       })
-        //     ),
-        // },
-        {
-          size: 'xs',
-          color: 'primary',
-          text: 'Modifica',
-          onClick: () =>
-            dispatch(
-              openModal({
-                id: 'ente',
-                payload: { title: 'Modifica ente' },
-              })
-            ),
-        },
-      ]
-    : [];
+  const deleteButton: ButtonInButtonsBar = {
+    size: 'xs',
+    color: 'primary',
+    outline: true,
+    buttonClass: 'btn-secondary',
+    text: 'Elimina',
+    disabled:
+      authorityDetails?.dettagliInfoEnte?.statoEnte !== entityStatus.NON_ATTIVO,
+    onClick: () =>
+      dispatch(
+        openModal({
+          id: 'delete-entity',
+          payload: {
+            entity: 'authority',
+            text: 'Confermi di voler eliminare questo ente?',
+          },
+        })
+      ),
+  };
+
+  const editButton: ButtonInButtonsBar = {
+    size: 'xs',
+    color: 'primary',
+    text: 'Modifica',
+    onClick: () =>
+      dispatch(
+        openModal({
+          id: 'ente',
+          payload: { title: 'Modifica ente' },
+        })
+      ),
+  };
+
+  let buttons: ButtonInButtonsBar[] =
+    authorityDetails?.dettagliInfoEnte?.statoEnte !== entityStatus.TERMINATO &&
+    hasUserPermission(['upd.card.enti'])
+      ? [editButton]
+      : [];
 
   if (projectId) {
-    buttons = hasUserPermission(['upd.ente.partner', 'del.ente.partner'])
-      ? [
-          {
-            size: 'xs',
-            color: 'primary',
-            outline: true,
-            buttonClass: 'btn-secondary',
-            text: 'Elimina',
-            disabled:
-              authorityDetails?.dettagliInfoEnte?.statoEnte !==
-              entityStatus.NON_ATTIVO,
-            onClick: () =>
-              dispatch(
-                openModal({
-                  id: 'delete-entity',
-                  payload: {
-                    entity: 'authority',
-                    text: 'Confermi di voler eliminare questo ente?',
-                  },
-                })
-              ),
-          },
-          {
-            size: 'xs',
-            color: 'primary',
-            text: 'Modifica',
-            onClick: () =>
-              dispatch(
-                openModal({
-                  id: 'ente-partner',
-                  payload: { title: 'Modifica ente' },
-                })
-              ),
-          },
-        ]
-      : hasUserPermission(['del.ente.partner'])
-      ? [
-          {
-            size: 'xs',
-            color: 'primary',
-            outline: true,
-            buttonClass: 'btn-secondary',
-            text: 'Elimina',
-            disabled:
-              authorityDetails?.dettagliInfoEnte?.statoEnte !==
-              entityStatus.NON_ATTIVO,
-            onClick: () =>
-              dispatch(
-                openModal({
-                  id: 'delete-entity',
-                  payload: {
-                    entity: 'authority',
-                    text: 'Confermi di voler eliminare questo ente?',
-                  },
-                })
-              ),
-          },
-        ]
-      : hasUserPermission(['upd.ente.partner'])
-      ? [
-          {
-            size: 'xs',
-            color: 'primary',
-            text: 'Modifica',
-            onClick: () =>
-              dispatch(
-                openModal({
-                  id: 'ente-partner',
-                  payload: { title: 'Modifica ente' },
-                })
-              ),
-          },
-        ]
-      : [];
+    buttons = [];
+    if (hasUserPermission(['del.ente.partner'])) {
+      buttons.push(deleteButton);
+    }
+    if (
+      authorityDetails?.dettagliInfoEnte?.statoEnte !==
+        entityStatus.TERMINATO &&
+      hasUserPermission(['upd.ente.partner'])
+    ) {
+      buttons.push(editButton);
+    }
   }
 
   const removeReferentDelegate = async (
@@ -427,7 +370,8 @@ const AuthoritiesDetails = () => {
     switch (title) {
       case 'Referenti':
       case 'Delegati':
-        return hasUserPermission(['add.ref_del.partner'])
+        return authorityDetails?.dettagliInfoEnte?.statoEnte !==
+          entityStatus.TERMINATO && hasUserPermission(['add.ref_del.partner'])
           ? {
               cta: `Aggiungi ${title}`,
               ctaAction: () =>
@@ -448,7 +392,8 @@ const AuthoritiesDetails = () => {
               ctaAction: () => ({}),
             };
       case 'Sedi':
-        return hasUserPermission(['add.sede.partner'])
+        return authorityDetails?.dettagliInfoEnte?.statoEnte !==
+          entityStatus.TERMINATO && hasUserPermission(['add.sede.partner'])
           ? {
               cta: `Aggiungi Sede`,
               ctaAction: () =>
@@ -568,9 +513,9 @@ const AuthoritiesDetails = () => {
           ) : null}
           <ManageGenericAuthority />
           <ManagePartnerAuthority />
-          <ManageDelegate />
-          <ManageReferal />
-          <ManageHeadquarter creation={true} enteType='partner' />
+          <ManageDelegate creation />
+          <ManageReferal creation />
+          <ManageHeadquarter creation enteType='partner' />
           <DeleteEntityModal
             onClose={() => dispatch(closeModal())}
             onConfirm={(payload) => {

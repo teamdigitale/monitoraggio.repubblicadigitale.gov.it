@@ -8,6 +8,7 @@ import {
 } from '../administrativeAreaSlice';
 import { formFieldI } from '../../../../utils/formHelper';
 import { parseResult } from '../programs/programsThunk';
+import { getUserHeaders } from '../../user/userThunk';
 
 export interface ProjectLightI {
   id: number;
@@ -27,13 +28,24 @@ const GetProjectDetailAction = {
   type: 'administrativeArea/GetProjectDetail',
 };
 export const GetProjectDetail =
-  (idProgetto: string) => async (dispatch: Dispatch) => {
+  (projectId: string) => async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
-      dispatch({ ...GetProjectDetailAction, idProgetto });
+      dispatch({ ...GetProjectDetailAction, projectId });
 
-      if (idProgetto) {
+      if (projectId) {
+        const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+          getUserHeaders();
+        const res = await API.post(`progetto/${projectId}`, {
+          idProgramma,
+          idProgetto,
+          cfUtente: codiceFiscale,
+          codiceRuolo,
+        });
+
+        /* OLD
         const res = await API.get(`progetto/${idProgetto}`);
+        */
 
         if (res?.data) {
           dispatch(
