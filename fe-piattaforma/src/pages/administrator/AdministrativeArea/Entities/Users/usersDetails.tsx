@@ -51,6 +51,8 @@ import {
   UserAuthorityRole,
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import { GetPartnerAuthorityDetail } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
+import ManageDelegate from '../modals/manageDelegate';
+import ManageReferal from '../modals/manageReferal';
 
 export const roles = {
   VOL: 'VOL',
@@ -66,7 +68,6 @@ export const roles = {
 
 const UsersDetails = () => {
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
-  const [currentModal, setCorrectModal] = useState<React.ReactElement>();
   const [itemList, setItemList] = useState<ItemsListI | null>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -179,10 +180,8 @@ const UsersDetails = () => {
   useEffect(() => {
     if (userRole === roles.FAC || userRole === roles.VOL) {
       setCurrentForm(<FormFacilitator formDisabled />);
-      setCorrectModal(<ManageFacilitator />);
     } else {
       setCurrentForm(<FormUser formDisabled />);
-      setCorrectModal(<ManageUsers />);
     }
   }, [userRole]);
 
@@ -264,6 +263,26 @@ const UsersDetails = () => {
           return 'Modifica Facilitatore';
         default:
           return 'Modifica Utente';
+      }
+    }
+  };
+
+  const includeModalByRole = () => {
+    if (userRole) {
+      switch (userRole) {
+        case roles.DEG:
+        case roles.DEGP:
+        case roles.DEPP:
+          return <ManageDelegate />;
+        case roles.REG:
+        case roles.REGP:
+        case roles.REPP:
+          return <ManageReferal />;
+        case roles.FAC:
+        case roles.VOL:
+          return <ManageFacilitator />;
+        default:
+          return <ManageUsers />;
       }
     }
   };
@@ -554,12 +573,12 @@ const UsersDetails = () => {
               })}
             </div>
           ) : null}
-          {currentModal ? currentModal : null}
           <DeleteEntityModal
             onClose={() => dispatch(closeModal())}
             onConfirm={(payload) => onConfirmDelete(payload?.role)}
           />
           <AddUserRole />
+          {includeModalByRole()}
         </div>
       </div>
     </div>

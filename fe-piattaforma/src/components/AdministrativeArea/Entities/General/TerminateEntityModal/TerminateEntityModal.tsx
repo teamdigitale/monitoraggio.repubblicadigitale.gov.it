@@ -8,13 +8,14 @@ import Form from '../../../../Form/form';
 import Input from '../../../../Form/input';
 import GenericModal from '../../../../Modals/GenericModal/genericModal';
 import { RegexpType } from '../../../../../utils/validator';
+import { useAppSelector } from '../../../../../redux/hooks';
+import { selectModalPayload } from '../../../../../redux/features/modal/modalSlice';
 
 const id = 'terminate-entity';
 
 interface TerminateEntityModalI {
-  onConfirm: (date: string) => void;
+  onConfirm: (entity: 'program' | 'project', date: string, id?: string) => void;
   onClose: () => void;
-  text: string;
 }
 
 interface TerminateEntityModalFullI
@@ -33,12 +34,12 @@ const form = newForm([
 const TerminateEntityModal = ({
   onConfirm,
   onClose,
-  text,
   form,
   onInputChange = () => ({}),
   getFormValues = () => ({}),
 }: TerminateEntityModalFullI) => {
   const [terminationDate, setTerminationDate] = useState('');
+  const payload = useAppSelector(selectModalPayload);
 
   useEffect(() => {
     const newDate = getFormValues()['date'] as string;
@@ -75,7 +76,13 @@ const TerminateEntityModal = ({
       primaryCTA={{
         label: 'Conferma',
         disabled: !terminationDate,
-        onClick: () => terminationDate && onConfirm(terminationDate),
+        onClick: () =>
+          terminationDate &&
+          onConfirm(
+            payload?.entity,
+            terminationDate,
+            payload?.entity === 'project' ? payload?.projectId : undefined
+          ),
       }}
       secondaryCTA={{
         label: 'Annulla',
@@ -92,14 +99,14 @@ const TerminateEntityModal = ({
             aria-label='Errore'
           />
         </div>
-        <div className='text-center pb-3'>{text}</div>
+        <div className='text-center pb-3'>{payload?.text}</div>
         <Form>
           <Form.Row>
             <div className='col'></div>
             <Input
               {...form?.date}
               col='col-6'
-              max={new Date().toISOString().split('T')[0]}
+              maximum={new Date().toISOString().split('T')[0]}
               placeholder='Seleziona Data'
               onInputChange={(value, field) => {
                 onInputChange(value, field);

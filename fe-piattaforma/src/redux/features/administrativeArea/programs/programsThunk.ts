@@ -8,6 +8,7 @@ import {
   setProgramGeneralInfo,
 } from '../administrativeAreaSlice';
 import { formFieldI } from '../../../../utils/formHelper';
+import { getUserHeaders } from '../../user/userThunk';
 
 export interface ProgramsLightI {
   id: number;
@@ -44,7 +45,19 @@ export const GetProgramDetail =
       dispatch(showLoader());
       dispatch({ ...GetProgramDetailAction, programId });
       if (programId) {
+        const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+          getUserHeaders();
+        const res = await API.post(`/programma/${programId}`, {
+          idProgramma,
+          idProgetto,
+          cfUtente: codiceFiscale,
+          codiceRuolo,
+        });
+
+        /* old
         const res = await API.get(`/programma/${programId}`);
+        */
+
         if (res?.data) {
           dispatch(
             setProgramDetails({

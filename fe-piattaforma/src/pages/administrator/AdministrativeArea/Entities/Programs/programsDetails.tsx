@@ -255,11 +255,11 @@ const ProgramsDetails: React.FC = () => {
         [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
           dispatch(
             openModal({
-              id: 'delete-entity',
+              id: 'terminate-entity',
               payload: {
                 entity: 'project',
                 projectId: td,
-                text: 'Confermi di volere eliminare questo progetto?',
+                text: 'Confermi di volere terminare il Progetto?',
               },
             })
           );
@@ -335,7 +335,8 @@ const ProgramsDetails: React.FC = () => {
                 ...ref,
                 id: ref?.id,
                 actions:
-                  ref?.stato !== entityStatus.ATTIVO
+                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                    entityStatus.TERMINATO || ref?.stato !== entityStatus.ATTIVO
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickReferenti[CRUDActionTypes.VIEW],
@@ -349,11 +350,11 @@ const ProgramsDetails: React.FC = () => {
           items:
             authorityInfo?.delegatiEnteGestore?.map(
               (del: { [key: string]: string }) => ({
-                // TODO: check when BE add codiceFiscale
                 ...del,
                 id: del?.id,
                 actions:
-                  del?.stato !== entityStatus.ATTIVO
+                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                    entityStatus.TERMINATO || del?.stato !== entityStatus.ATTIVO
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickDelegati[CRUDActionTypes.VIEW],
@@ -371,13 +372,12 @@ const ProgramsDetails: React.FC = () => {
       setItemAccordionList([]);
       setEmptySection(
         <EmptySection
-          title={'Questa sezione è ancora vuota'}
+          title='Questa sezione è ancora vuota'
           withIcon
           icon='it-note'
-          subtitle={
-            'Per attivare il progetto aggiungi un Ente gestore di Programma'
-          }
+          subtitle='Per attivare il progetto aggiungi un Ente gestore di Programma'
           buttons={
+            program?.dettagliInfoProgramma?.stato !== entityStatus.TERMINATO &&
             hasUserPermission(['add.enti.gest.prgm'])
               ? EmptySectionButtons.slice(1, 2)
               : []
@@ -416,7 +416,8 @@ const ProgramsDetails: React.FC = () => {
   useEffect(() => {
     if (changeSurveyButtonVisible && activeTab === tabs.QUESTIONARI) {
       setCorrectButtons(
-        hasUserPermission(['upd.rel.quest_prgm'])
+        program?.dettagliInfoProgramma?.stato !== entityStatus.TERMINATO &&
+          hasUserPermission(['upd.rel.quest_prgm'])
           ? [
               {
                 size: 'xs',
@@ -494,13 +495,18 @@ const ProgramsDetails: React.FC = () => {
         }
       }
       setCorrectButtons(
-        hasUserPermission(['upd.rel.quest_prgm'])
+        program?.dettagliInfoProgramma?.stato !== entityStatus.TERMINATO &&
+          hasUserPermission(['upd.rel.quest_prgm'])
           ? [
               {
                 size: 'xs',
                 color: 'primary',
                 text: 'Cambia questionario',
-                disabled: !(otherSurveyList?.list?.filter(elem => elem.id !== surveyDefault?.items[0]?.id)?.length > 0),
+                disabled: !(
+                  otherSurveyList?.list?.filter(
+                    (elem) => elem.id !== surveyDefault?.items[0]?.id
+                  )?.length > 0
+                ),
                 onClick: () => {
                   setChangeSurveyButtonVisible(false);
                   setRadioButtonsSurveys(true);
@@ -515,9 +521,10 @@ const ProgramsDetails: React.FC = () => {
       setCorrectButtons([]);
       setEmptySection(
         <EmptySection
-          title={'Questa sezione è ancora vuota'}
-          subtitle={'Per attivare il programma aggiungi un Questionario'}
+          title='Questa sezione è ancora vuota'
+          subtitle='Per attivare il programma aggiungi un Questionario'
           buttons={
+            program?.dettagliInfoProgramma?.stato !== entityStatus.TERMINATO &&
             hasUserPermission(['upd.rel.quest_prgm'])
               ? EmptySectionButtons.slice(0, 1)
               : []
@@ -534,9 +541,14 @@ const ProgramsDetails: React.FC = () => {
     setItemAccordionList(null);
     setCurrentForm(undefined);
     setCorrectModal(<ManageProject creation />);
-    if (projectsList?.length) {
+    if (
+      projectsList?.filter(
+        (progetto: { associatoAUtente: boolean }) => progetto.associatoAUtente
+      )?.length
+    ) {
       setCorrectButtons(
-        hasUserPermission(['add.prgt'])
+        program?.dettagliInfoProgramma?.stato !== entityStatus.TERMINATO &&
+          hasUserPermission(['add.prgt'])
           ? [
               {
                 size: 'xs',
@@ -554,28 +566,35 @@ const ProgramsDetails: React.FC = () => {
           : []
       );
       setItemList({
-        items: projectsList?.map(
-          (progetto: { id: string; nome: string; stato: string }) => ({
+        items: projectsList
+          .filter(
+            (progetto: { associatoAUtente: boolean }) =>
+              progetto.associatoAUtente
+          )
+          ?.map((progetto: { id: string; nome: string; stato: string }) => ({
             ...progetto,
             fullInfo: { id: progetto.id },
             actions:
-              progetto?.stato === 'ATTIVO'
+              progetto?.stato !== entityStatus.ATTIVO
                 ? {
                     [CRUDActionTypes.VIEW]:
                       onActionClickProgetti[CRUDActionTypes.VIEW],
                   }
                 : onActionClickProgetti,
-          })
-        ),
+          })),
       });
       setEmptySection(undefined);
     } else {
       setCorrectButtons([]);
       setEmptySection(
         <EmptySection
-          title={'Questa sezione è ancora vuota'}
-          subtitle={'Per attivare il programma aggiungi un Progetto'}
-          buttons={EmptySectionButtons.slice(2)}
+          title='Questa sezione è ancora vuota'
+          subtitle='Per attivare il programma aggiungi un Progetto'
+          buttons={
+            program?.dettagliInfoProgramma?.stato !== entityStatus.TERMINATO
+              ? EmptySectionButtons.slice(2)
+              : []
+          }
           withIcon
           icon='it-note'
         />
@@ -677,7 +696,16 @@ const ProgramsDetails: React.FC = () => {
                 color: 'danger',
                 outline: true,
                 text: 'Termina programma',
-                onClick: () => dispatch(openModal({ id: 'terminate-entity' })),
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: 'terminate-entity',
+                      payload: {
+                        entity: 'program',
+                        text: 'Confermi di volere terminare il Programma?',
+                      },
+                    })
+                  ),
               },
               {
                 size: 'xs',
@@ -899,6 +927,15 @@ const ProgramsDetails: React.FC = () => {
     terminationDate: string
   ) => {
     await dispatch(TerminateEntity(programId, 'programma', terminationDate));
+    dispatch(GetProgramDetail(programId));
+    dispatch(closeModal());
+  };
+
+  const terminateProject = async (
+    projectId: string,
+    terminationDate: string
+  ) => {
+    await dispatch(TerminateEntity(projectId, 'progetto', terminationDate));
     dispatch(closeModal());
   };
 
@@ -933,7 +970,8 @@ const ProgramsDetails: React.FC = () => {
     switch (title) {
       case 'Referenti':
       case 'Delegati':
-        return hasUserPermission(['add.ref_del.gest.prgm'])
+        return authorityInfo?.dettagliInfoEnte?.statoEnte !==
+          entityStatus.TERMINATO && hasUserPermission(['add.ref_del.gest.prgm'])
           ? {
               cta: `Aggiungi ${title}`,
               ctaAction: () =>
@@ -1033,16 +1071,25 @@ const ProgramsDetails: React.FC = () => {
           : null}
         {currentModal ? currentModal : null}
         <TerminateEntityModal
-          text='Confermi di voler terminare il Programma?'
           onClose={() => dispatch(closeModal())}
-          onConfirm={(terminationDate: string) =>
-            terminationDate &&
-            entityId &&
-            terminateProgram(entityId, terminationDate)
-          }
+          onConfirm={(entity: string, terminationDate: string, id?: string) => {
+            switch (entity) {
+              case 'program':
+                terminationDate &&
+                  entityId &&
+                  terminateProgram(entityId, terminationDate);
+                break;
+              case 'project':
+                terminationDate && id && terminateProject(id, terminationDate);
+                break;
+              default:
+                dispatch(closeModal());
+                break;
+            }
+          }}
         />
-        <ManageDelegate />
-        <ManageReferal />
+        <ManageDelegate creation />
+        <ManageReferal creation />
         {/* /<ManageProgramManagerAuthority /> */}
         <ManageProject creation />
         <DeleteEntityModal

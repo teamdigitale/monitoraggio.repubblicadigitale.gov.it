@@ -48,7 +48,7 @@ export const headings: TableHeadingI[] = [
   },
   {
     label: 'Codice Fiscale',
-    field: 'id',
+    field: 'codiceFiscale',
     size: 'medium',
   },
 ];
@@ -81,13 +81,17 @@ const ManageReferal: React.FC<ManageReferalI> = ({
     setShowForm(true);
     setAlreadySearched(false);
     dispatch(setUsersList(null));
-    dispatch(resetUserDetails());
   };
 
   useEffect(() => {
     resetModal();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    dispatch(resetUserDetails());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [creation]);
 
   const handleSaveReferal = async () => {
     if (isFormValid && authority?.id) {
@@ -168,7 +172,8 @@ const ManageReferal: React.FC<ManageReferalI> = ({
         values={usersList.map((item) => ({
           nome: item.nome,
           cognome: item.cognome,
-          id:  item.id || item.codiceFiscale,
+          id: item.id || item.codiceFiscale,
+          codiceFiscale: item.codiceFiscale,
         }))}
         onActionRadio={handleSelectUser}
         id='table'
@@ -198,20 +203,22 @@ const ManageReferal: React.FC<ManageReferalI> = ({
       onClose={resetModal}
     >
       <div>
-        <SearchBar
-          className={clsx(
-            'w-100',
-            'py-4',
-            'px-5',
-            'search-bar-borders',
-            'search-bar-bg'
-          )}
-          placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’utente'
-          onSubmit={handleSearchUser}
-          onReset={() => setShowForm(true)}
-          title='Cerca'
-          search
-        />
+        {creation ? (
+          <SearchBar
+            className={clsx(
+              'w-100',
+              'py-4',
+              'px-5',
+              'search-bar-borders',
+              'search-bar-bg'
+            )}
+            placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’utente'
+            onSubmit={handleSearchUser}
+            onReset={() => setShowForm(true)}
+            title='Cerca'
+            search
+          />
+        ) : null}
         <div className='mx-5'>{content}</div>
       </div>
     </GenericModal>
