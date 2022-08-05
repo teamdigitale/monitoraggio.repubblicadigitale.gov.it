@@ -30,6 +30,9 @@ public class QuestionarioInviatoOnlineEntity implements Serializable {
 	@Column(name = "CODICE_FISCALE", nullable = true)
 	private String codiceFiscale;
 	
+	@Column(name = "NUM_DOCUMENTO", nullable = true)
+	private String numDocumento;
+	
 	@Column(name = "ID_QUESTIONARIO_COMPILATO", nullable = false, unique = true)
 	private String idQuestionarioCompilato;
 	

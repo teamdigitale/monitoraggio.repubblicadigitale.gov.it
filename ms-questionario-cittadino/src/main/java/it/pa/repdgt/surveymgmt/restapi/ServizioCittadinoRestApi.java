@@ -36,6 +36,7 @@ import it.pa.repdgt.surveymgmt.param.FiltroListaCittadiniServizioParam;
 import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import it.pa.repdgt.surveymgmt.projection.GetCittadinoProjection;
 import it.pa.repdgt.surveymgmt.request.NuovoCittadinoServizioRequest;
+import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoAnonimoRequest;
 import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoRequest;
 import it.pa.repdgt.surveymgmt.resource.CittadiniServizioPaginatiResource;
 import it.pa.repdgt.surveymgmt.resource.CittadinoResource;
@@ -199,9 +200,9 @@ public class ServizioCittadinoRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void compilaQuestionarioAnonimo(
 			@PathVariable(value = "idQuestionario") String idQuestionario,
-			@Valid @RequestBody QuestionarioCompilatoRequest questionarioCompilatoRequest,
+			@Valid @RequestBody QuestionarioCompilatoAnonimoRequest questionarioCompilatoAnonimoRequest,
 			@RequestParam(value = "t") String t) throws ParseException {
-		this.questionarioCompilatoService.compilaQuestionarioAnonimo(idQuestionario, questionarioCompilatoRequest, t);
+		this.questionarioCompilatoService.compilaQuestionarioAnonimo(idQuestionario, questionarioCompilatoAnonimoRequest, t);
 	}
 	
 	
