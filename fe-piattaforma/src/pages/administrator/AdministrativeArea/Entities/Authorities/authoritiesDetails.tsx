@@ -59,8 +59,9 @@ const AuthoritiesDetails = () => {
   const profiles = useAppSelector(selectAuthorities).detail.profili;
   const device = useAppSelector(selectDevice);
   const { hasUserPermission } = useGuard();
-  const projectName =
-    useAppSelector(selectProjects).detail?.dettagliInfoProgetto?.nome;
+  const projectDetail =
+    useAppSelector(selectProjects).detail?.dettagliInfoProgetto;
+  const { nome: projectName, stato: projectState } = projectDetail;
 
   useEffect(() => {
     dispatch(setHeadquarterDetails(null));
@@ -198,7 +199,8 @@ const AuthoritiesDetails = () => {
               ...ref,
               id: ref?.id,
               actions:
-                ref.stato !== entityStatus.ATTIVO
+                ref.stato !== entityStatus.ATTIVO ||
+                projectState === entityStatus.TERMINATO
                   ? {
                       [CRUDActionTypes.VIEW]:
                         onActionClickReferenti[CRUDActionTypes.VIEW],
@@ -223,7 +225,8 @@ const AuthoritiesDetails = () => {
               ...del,
               id: del?.id,
               actions:
-                del.stato !== entityStatus.ATTIVO
+                del.stato !== entityStatus.ATTIVO ||
+                projectState === entityStatus.TERMINATO
                   ? {
                       [CRUDActionTypes.VIEW]:
                         onActionClickDelegati[CRUDActionTypes.VIEW],
@@ -249,7 +252,8 @@ const AuthoritiesDetails = () => {
               actions: {
                 [CRUDActionTypes.VIEW]: onActionClickSede[CRUDActionTypes.VIEW],
                 [CRUDActionTypes.DELETE]:
-                  sedi.stato !== entityStatus.ATTIVO
+                  sedi.stato !== entityStatus.ATTIVO ||
+                  projectState === entityStatus.TERMINATO
                     ? undefined
                     : hasUserPermission(['del.sede.partner'])
                     ? onActionClickSede[CRUDActionTypes.DELETE]
@@ -268,7 +272,8 @@ const AuthoritiesDetails = () => {
     buttonClass: 'btn-secondary',
     text: 'Elimina',
     disabled:
-      authorityDetails?.dettagliInfoEnte?.statoEnte !== entityStatus.NON_ATTIVO,
+      authorityDetails?.dettagliInfoEnte?.statoEnte !==
+        entityStatus.NON_ATTIVO || projectState === entityStatus.TERMINATO,
     onClick: () =>
       dispatch(
         openModal({
@@ -296,6 +301,7 @@ const AuthoritiesDetails = () => {
 
   let buttons: ButtonInButtonsBar[] =
     authorityDetails?.dettagliInfoEnte?.statoEnte !== entityStatus.TERMINATO &&
+    projectState !== entityStatus.TERMINATO &&
     hasUserPermission(['upd.card.enti'])
       ? [editButton]
       : [];
@@ -308,6 +314,7 @@ const AuthoritiesDetails = () => {
     if (
       authorityDetails?.dettagliInfoEnte?.statoEnte !==
         entityStatus.TERMINATO &&
+      projectState !== entityStatus.TERMINATO &&
       hasUserPermission(['upd.ente.partner'])
     ) {
       buttons.push(editButton);
@@ -371,7 +378,9 @@ const AuthoritiesDetails = () => {
       case 'Referenti':
       case 'Delegati':
         return authorityDetails?.dettagliInfoEnte?.statoEnte !==
-          entityStatus.TERMINATO && hasUserPermission(['add.ref_del.partner'])
+          entityStatus.TERMINATO &&
+          projectState !== entityStatus.TERMINATO &&
+          hasUserPermission(['add.ref_del.partner'])
           ? {
               cta: `Aggiungi ${title}`,
               ctaAction: () =>
@@ -393,7 +402,9 @@ const AuthoritiesDetails = () => {
             };
       case 'Sedi':
         return authorityDetails?.dettagliInfoEnte?.statoEnte !==
-          entityStatus.TERMINATO && hasUserPermission(['add.sede.partner'])
+          entityStatus.TERMINATO &&
+          projectState !== entityStatus.TERMINATO &&
+          hasUserPermission(['add.sede.partner'])
           ? {
               cta: `Aggiungi Sede`,
               ctaAction: () =>

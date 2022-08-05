@@ -357,7 +357,8 @@ const ProjectsDetails = () => {
       setCorrectModal(<ManageManagerAuthority />);
       setItemList(null);
       setCorrectButtons(
-        hasUserPermission(['upd.enti.gest.prgt'])
+        authorityInfo?.dettagliInfoEnte?.statoEnte !== entityStatus.TERMINATO &&
+          hasUserPermission(['upd.enti.gest.prgt'])
           ? [
               {
                 size: 'xs',
@@ -997,6 +998,7 @@ const ProjectsDetails = () => {
     terminationDate: string
   ) => {
     await dispatch(TerminateEntity(projectId, 'progetto', terminationDate));
+    dispatch(GetProjectDetail(projectId));
     dispatch(closeModal());
   };
 

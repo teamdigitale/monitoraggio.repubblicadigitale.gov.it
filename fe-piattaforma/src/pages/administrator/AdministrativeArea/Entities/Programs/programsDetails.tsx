@@ -62,6 +62,7 @@ import { formFieldI } from '../../../../../utils/formHelper';
 import { GetSurveyAllLight } from '../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 import clsx from 'clsx';
 import { roles } from '../Users/usersDetails';
+import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 
 const tabs = {
   INFO: 'info',
@@ -287,7 +288,8 @@ const ProgramsDetails: React.FC = () => {
       setCorrectModal(<ManageManagerAuthority />);
       setItemList(null);
       setCorrectButtons(
-        hasUserPermission(['upd.enti.gest.prgm'])
+        program?.dettagliInfoProgramma?.stato !== entityStatus.TERMINATO &&
+          hasUserPermission(['upd.enti.gest.prgm'])
           ? [
               {
                 size: 'xs',
@@ -936,6 +938,7 @@ const ProgramsDetails: React.FC = () => {
     terminationDate: string
   ) => {
     await dispatch(TerminateEntity(projectId, 'progetto', terminationDate));
+    dispatch(GetProjectDetail(projectId));
     dispatch(closeModal());
   };
 

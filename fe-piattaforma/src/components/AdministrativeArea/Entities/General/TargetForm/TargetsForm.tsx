@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { Button, Icon } from 'design-react-kit';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import withFormHandler, {
@@ -220,6 +221,13 @@ const TargetsForm = ({
               />
               <Input
                 {...form[row[1]]}
+                value={
+                  disabled
+                    ? moment(form[row[1]].value as string).format(
+                        'MM/DD/YYYY'
+                      ) || ''
+                    : form[row[1]].value || ''
+                }
                 onInputChange={(value, field) => {
                   onInputDataChange(value, field);
                 }}
