@@ -352,10 +352,10 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 				ID_DOMANDA_PREFISSO,cittadino.getPrefissoTelefono(),
 				ID_DOMANDA_NUMERO_CELLULARE,cittadino.getNumeroDiCellulare(),
 				ID_DOMANDA_TELEFONO,cittadino.getTelefono(),
-				ID_DOMANDA_TIPO_CONSENSO, cittadino.getTipoConferimentoConsenso() != null ? cittadino.getTipoConferimentoConsenso() : "",
+				ID_DOMANDA_TIPO_CONSENSO, cittadino.getTipoConferimentoConsenso() != null ? cittadino.getTipoConferimentoConsenso() : "$consenso",
 				ID_DOMANDA_DATA_CONSENSO, cittadino.getDataConferimentoConsenso() != null ? 
 						simpleDateFormat.format(cittadino.getDataConferimentoConsenso()) :
-							"");
+							"$dataConsenso");
 		
 		return jsonStringSezioneQ1;
 	}
@@ -557,23 +557,30 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	@LogMethod
 	@LogExecutionTime
 	public String generaToken(CittadinoEntity cittadino, String idQuestionarioCompilato) {
-		// Recupera QuestionarioInviato a partire dal questionario compialato e codice fiscale cittadino se esiste.
-		// Altrimenti crea un QuestionarioInviato ex-novo
-		QuestionarioInviatoOnlineEntity invioQuestionario = questionarioInviatoOnlineRepository
-				.findByIdQuestionarioCompilatoAndCodiceFiscale(idQuestionarioCompilato, cittadino.getCodiceFiscale())
-				.orElse(new QuestionarioInviatoOnlineEntity());
-		
-		invioQuestionario.setCodiceFiscale(cittadino.getCodiceFiscale());
-		invioQuestionario.setEmail(cittadino.getEmail());
-		invioQuestionario.setIdQuestionarioCompilato(idQuestionarioCompilato);
+		// Recupera QuestionarioInviato a partire dal questionario compialato e codice fiscale/numDocumento cittadino se esiste.
+        // Altrimenti crea un QuestionarioInviato ex-novo
+        QuestionarioInviatoOnlineEntity invioQuestionario = questionarioInviatoOnlineRepository
+                .findByIdQuestionarioCompilatoAndCodiceFiscale(idQuestionarioCompilato, cittadino.getCodiceFiscale())
+                .orElse(null);
+        
+        if(invioQuestionario == null) {
+            invioQuestionario = questionarioInviatoOnlineRepository
+                    .findByIdQuestionarioCompilatoAndNumDocumento(idQuestionarioCompilato, cittadino.getNumeroDocumento())
+                    .orElse(new QuestionarioInviatoOnlineEntity());
+        }
+        
+        invioQuestionario.setCodiceFiscale(cittadino.getCodiceFiscale());
+        invioQuestionario.setNumDocumento(cittadino.getNumeroDocumento());
+        invioQuestionario.setEmail(cittadino.getEmail());
+        invioQuestionario.setIdQuestionarioCompilato(idQuestionarioCompilato);
 
-		String token = UUID.randomUUID().toString();
-		invioQuestionario.setToken(token);
-		invioQuestionario.setDataOraCreazione(new Date());
-		
-		questionarioInviatoOnlineRepository.save(invioQuestionario);
-		
-		return token;
+        String token = UUID.randomUUID().toString();
+        invioQuestionario.setToken(token);
+        invioQuestionario.setDataOraCreazione(new Date());
+        
+        questionarioInviatoOnlineRepository.save(invioQuestionario);
+        
+        return token;
 	}
 
 	@Transactional

@@ -3,6 +3,9 @@ package it.pa.repdgt.surveymgmt.service;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.when;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,12 +21,16 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mock.web.MockMultipartFile;
 
 import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.entity.CittadinoEntity;
+import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
+import it.pa.repdgt.shared.entity.QuestionarioInviatoOnlineEntity;
 import it.pa.repdgt.shared.entity.ServizioEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
+import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
 import it.pa.repdgt.surveymgmt.bean.CittadinoUploadBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.collection.SezioneQ3Collection;
@@ -40,6 +47,7 @@ import it.pa.repdgt.surveymgmt.repository.QuestionarioInviatoOnlineRepository;
 import it.pa.repdgt.surveymgmt.repository.ServizioSqlRepository;
 import it.pa.repdgt.surveymgmt.repository.ServizioXCittadinoRepository;
 import it.pa.repdgt.surveymgmt.request.NuovoCittadinoServizioRequest;
+import software.amazon.awssdk.services.pinpoint.model.SendMessagesResponse;
 
 @ExtendWith(MockitoExtension.class)
 public class CittadiniServizioServiceTest {
@@ -82,9 +90,17 @@ public class CittadiniServizioServiceTest {
 	SezioneQ3Collection sezioneQ3;
 	QuestionarioCompilatoCollection questionarioCompilatoCollection;
 	CittadinoUploadBean cittadinoUpload;
+	QuestionarioCompilatoEntity questionarioCompilato;
+	SendMessagesResponse message;
+	String[] arrayString;
+	QuestionarioInviatoOnlineEntity invioQuestionario;
+	List<QuestionarioCompilatoEntity> listaQuestionariCompilati;
+	MockMultipartFile file;
+	byte[] data;
+	InputStream stream;
 	
 	@BeforeEach
-	public void setUp() {
+	public void setUp() throws IOException {
 		profilazione = new ProfilazioneParam();
 		profilazione.setCodiceFiscaleUtenteLoggato("CFUTENTE");
 		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD);
@@ -104,6 +120,7 @@ public class CittadiniServizioServiceTest {
 		nuovoCittadinoRequest.setCodiceFiscaleNonDisponibile(false);
 		cittadino = new CittadinoEntity();
 		cittadino.setId(1L);
+		cittadino.setEmail("prova@gmail.com");
 		sezioneQ3 = new SezioneQ3Collection();
 		sezioneQ3.setId("1");
 		sezioneQ3.setMongoId("1");
@@ -113,6 +130,17 @@ public class CittadiniServizioServiceTest {
 		questionarioCompilatoCollection = new QuestionarioCompilatoCollection();
 		questionarioCompilatoCollection.setIdQuestionarioCompilato("1");
 		cittadinoUpload = new CittadinoUploadBean("CFUTENTE", "NOME", "COGNOME", "NUM_DOC", "34R2F4", "", "1990", "DIPLOMA", "", "", "", "", "", "", "", "");
+		questionarioCompilato = new QuestionarioCompilatoEntity();
+		questionarioCompilato.setId("idQuestionario");
+		questionarioCompilato.setCittadino(cittadino);
+		arrayString = new String[] {cittadino.getEmail(), "TOKEN"};
+		invioQuestionario = new QuestionarioInviatoOnlineEntity();
+		invioQuestionario.setId(1L);
+		listaQuestionariCompilati = new ArrayList<>();
+		listaQuestionariCompilati.add(questionarioCompilato);
+		data = new byte[] {1, 2, 3, 4};
+		stream = new ByteArrayInputStream(data);
+		file = new MockMultipartFile("test", stream);
 	}
 	
 	@Test
@@ -287,6 +315,42 @@ public class CittadiniServizioServiceTest {
 	
 	@Test
 	public void inviaQuestionarioTest() {
-		
+		when(questionarioCompilatoSqlRepository.findById(questionarioCompilato.getId())).thenReturn(Optional.of(questionarioCompilato));
+		cittadiniServizioService.inviaQuestionario(questionarioCompilato.getId(), cittadino.getId());
+	}
+	
+	@Test
+	public void inviaQuestionarioKOTest() {
+		//test KO per coppia cittadino - id questionario inesistente
+		when(questionarioCompilatoSqlRepository.findById(questionarioCompilato.getId())).thenReturn(Optional.of(questionarioCompilato));
+		Assertions.assertThrows(ServizioException.class, () -> cittadiniServizioService.inviaQuestionario(questionarioCompilato.getId(), 2L));
+		assertThatExceptionOfType(ServizioException.class);
+	}
+	
+	@Test
+	public void inviaLinkAnonimoAndAggiornaStatoQuestionarioCompilatoTest() {
+		cittadiniServizioService.inviaLinkAnonimoAndAggiornaStatoQuestionarioCompilato(questionarioCompilato.getId(), questionarioCompilato, cittadino);
+	}
+	
+	@Test
+	public void inviaLinkAnonimoTest() {
+		cittadiniServizioService.inviaLinkAnonimo(cittadino, questionarioCompilato.getId());
+	}
+	
+	@Test
+	public void generaTokenTest() {
+		when(questionarioInviatoOnlineRepository.findByIdQuestionarioCompilatoAndCodiceFiscale(questionarioCompilato.getId(), cittadino.getCodiceFiscale())).thenReturn(Optional.of(invioQuestionario));
+		cittadiniServizioService.generaToken(cittadino, questionarioCompilato.getId());
+	}
+	
+	@Test
+	public void inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizioTest() {
+		when(this.questionarioCompilatoSqlRepository.findByIdServizioAndStato(servizio.getId(), StatoQuestionarioEnum.NON_INVIATO.toString())).thenReturn(listaQuestionariCompilati);
+		cittadiniServizioService.inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizio(servizio.getId());
+	}
+	
+	@Test
+	public void caricaCittadiniSuServizioTest() {
+		cittadiniServizioService.caricaCittadiniSuServizio(file, servizio.getId());
 	}
 }

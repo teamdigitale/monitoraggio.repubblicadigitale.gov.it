@@ -5,7 +5,6 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +14,5 @@ import lombok.Setter;
 public class QuestionarioCompilatoBean implements Serializable {
 	private static final long serialVersionUID = -8064312467245241720L;
 
-	private QuestionarioCompilatoCollection questionarioCompilatoCompilato;
 	private boolean abilitatoConsensoTrattatamentoDatiCittadino;
 }
