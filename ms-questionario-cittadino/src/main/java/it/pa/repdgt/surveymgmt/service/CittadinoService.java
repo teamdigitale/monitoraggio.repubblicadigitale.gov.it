@@ -22,6 +22,7 @@ import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.CittadinoEntity;
 import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.bean.DettaglioCittadinoBean;
 import it.pa.repdgt.surveymgmt.bean.DettaglioServizioSchedaCittadinoBean;
 import it.pa.repdgt.surveymgmt.bean.SchedaCittadinoBean;
@@ -36,6 +37,7 @@ import it.pa.repdgt.surveymgmt.mapper.CittadinoMapper;
 import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioCompilatoMongoRepository;
 import it.pa.repdgt.surveymgmt.param.CittadiniPaginatiParam;
 import it.pa.repdgt.surveymgmt.param.FiltroListaCittadiniParam;
+import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import it.pa.repdgt.surveymgmt.projection.CittadinoProjection;
 import it.pa.repdgt.surveymgmt.projection.DettaglioServizioSchedaCittadinoProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
@@ -66,7 +68,7 @@ public class CittadinoService {
 	public CittadinoEntity getCittadinoById(Long idCittadino) {
 		String errorMessage = String.format("Cittadino con id=%s non presente", String.valueOf(idCittadino));
 		return this.cittadinoRepository.findById(idCittadino)
-				.orElseThrow( () -> new ResourceNotFoundException(errorMessage));
+				.orElseThrow( () -> new ResourceNotFoundException(errorMessage, CodiceErroreEnum.C01));
 	}
 
 	@LogMethod
@@ -83,11 +85,11 @@ public class CittadinoService {
 			.anyMatch(ruolo -> ruolo.getCodice().equals(codiceRuoloUtente));
 		
 		if(!hasRuoloUtente) {
-			throw new CittadinoException("ERRORE: ruolo non definito per l'utente");
+			throw new CittadinoException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
 		}
 		
 		if(!RuoloUtenteEnum.FAC.toString().equals(codiceRuoloUtente)) {
-			throw new CittadinoException("ERRORE: L'utente non è un facilitatore");
+			throw new CittadinoException("ERRORE: L'utente non è un facilitatore", CodiceErroreEnum.U06);
 		}
 		
 		Pageable paginazione = PageRequest.of(currPage, pageSize);
@@ -100,7 +102,7 @@ public class CittadinoService {
 					cittadinoDto.setNome(record.getNome());
 					cittadinoDto.setCognome(record.getCognome());
 					cittadinoDto.setNumeroServizi(record.getNumeroServizi());
-					cittadinoDto.setNumeroQuestionariCompilati(record.getNumeroQuestionariCompilati());
+					cittadinoDto.setNumeroQuestionariCompilati(record.getNumeroQuestionariCompilati() == null ? 0L : record.getNumeroQuestionariCompilati());
 					return cittadinoDto;
 			})
 			.collect(Collectors.toList());
@@ -111,13 +113,13 @@ public class CittadinoService {
 		int end = Math.min((start + paginazione.getPageSize()), cittadini.size());
 		
 		if(start > end) {
-			throw new CittadinoException("ERRORE: pagina richiesta inesistente");
+			throw new CittadinoException("ERRORE: pagina richiesta inesistente", CodiceErroreEnum.G03);
 		}
 		
 		return new PageImpl<CittadinoDto>(cittadini.subList(start, end), paginazione, cittadini.size());
 	}
 	
-	private List<CittadinoProjection> getAllCittadiniFacilitatoreFiltrati( CittadiniPaginatiParam cittadiniPaginatiParam) {
+	public List<CittadinoProjection> getAllCittadiniFacilitatoreFiltrati( CittadiniPaginatiParam cittadiniPaginatiParam) {
 		FiltroListaCittadiniParam filtro = cittadiniPaginatiParam.getFiltro();
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsSedi;
@@ -141,11 +143,11 @@ public class CittadinoService {
 			.anyMatch(ruolo -> ruolo.getCodice().equals(codiceRuoloUtente));
 		
 		if(!hasRuoloUtente) {
-			throw new CittadinoException("ERRORE: ruolo non definito per l'utente");
+			throw new CittadinoException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
 		}
 		
 		if(!RuoloUtenteEnum.FAC.toString().equals(codiceRuoloUtente)) {
-			throw new CittadinoException("ERRORE: L'utente non è un facilitatore");
+			throw new CittadinoException("ERRORE: L'utente non è un facilitatore", CodiceErroreEnum.U06);
 		}
 		
 		List<SedeProjection> listaSediProjection = this.sedeService.getAllSediFacilitatoreFiltrate(cittadiniPaginatiParam);
@@ -164,7 +166,7 @@ public class CittadinoService {
 
 	@LogMethod
 	@LogExecutionTime
-	public SchedaCittadinoBean getSchedaCittadinoById(Long idCittadino) {
+	public SchedaCittadinoBean getSchedaCittadinoById(Long idCittadino, ProfilazioneParam profilazione) {
 		CittadinoEntity cittadinoFetchDB = this.getCittadinoById(idCittadino);
 		
 		DettaglioCittadinoBean dettaglioCittadino = this.cittadinoMapper.toDettaglioCittadinoBeanFrom(cittadinoFetchDB);
@@ -177,6 +179,7 @@ public class CittadinoService {
 			dettaglioServizioSchedaCittadino.setNomeCompletoFacilitatore(nomeCompletoFacilitatore);
 			dettaglioServizioSchedaCittadino.setIdQuestionarioCompilato(record.getIdQuestionarioCompilato());
 			dettaglioServizioSchedaCittadino.setStatoQuestionario(record.getStatoQuestionarioCompilato());
+			dettaglioServizioSchedaCittadino.setAssociatoAUtente(this.isAssociatoAUtente(profilazione, record.getCodiceFiscaleFacilitatore(), record.getIdProgetto()));
 			return dettaglioServizioSchedaCittadino;
 		}).collect(Collectors.toList());
 		
@@ -184,6 +187,28 @@ public class CittadinoService {
 		schedaCittadino.setDettaglioCittadino(dettaglioCittadino);
 		schedaCittadino.setServiziCittadino(serviziBean);
 		return schedaCittadino;
+	}
+
+	private Boolean isAssociatoAUtente(ProfilazioneParam profilazione, String codiceFiscaleFacilitatore, Long idProgetto) {
+		RuoloUtenteEnum ruoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato();
+		String codiceFiscaleUtenteLoggato = profilazione.getCodiceFiscaleUtenteLoggato();
+		
+		switch (ruoloUtenteLoggato) {
+		case FAC:
+			//controllo se il codice fiscale dell'utente loggato è uguale al codice fiscale del facilitatore
+			if(codiceFiscaleUtenteLoggato.equals(codiceFiscaleFacilitatore) && profilazione.getIdProgetto().equals(idProgetto)) {
+				return true;
+			}
+			return false;
+		case VOL:
+			//controllo se il codice fiscale dell'utente loggato è uguale al codice fiscale del volontario
+			if(codiceFiscaleUtenteLoggato.equals(codiceFiscaleFacilitatore) && profilazione.getIdProgetto().equals(idProgetto)) {
+				return true;
+			}
+			return false;
+		default:
+			return true;
+		}
 	}
 
 	private List<DettaglioServizioSchedaCittadinoProjection> getDettaglioServiziSchedaCittadino(Long idCittadino) {
@@ -196,9 +221,10 @@ public class CittadinoService {
 			final Boolean isCodiceFiscaleNonDisponibile,
 			final String codiceFiscale, 
 			final String numeroDocumento) {
-		if(isCodiceFiscaleNonDisponibile == null || isCodiceFiscaleNonDisponibile) {
-			if(numeroDocumento == null || numeroDocumento.equals(""))
-				throw new CittadinoException("ERRORE: occorre definire il CF o il numero documento");
+		if((codiceFiscale == null || codiceFiscale.isEmpty()) && 
+				(numeroDocumento == null || numeroDocumento.isEmpty()))
+			throw new CittadinoException("ERRORE: occorre definire il CF o il numero documento", CodiceErroreEnum.U08);
+		if(isCodiceFiscaleNonDisponibile == null || isCodiceFiscaleNonDisponibile) {				
 			return cittadinoRepository.findByNumeroDocumento(numeroDocumento);
 		}
 		return cittadinoRepository.findByCodiceFiscale(codiceFiscale);
@@ -224,7 +250,7 @@ public class CittadinoService {
 	public void aggiornaCittadino(Long id, CittadinoRequest cittadinoRequest) {
 		if(!this.cittadinoRepository.findById(id).isPresent()) {
 			String messaggioErrore = String.format("Impossibile aggiornare il cittadino. Cittadino con id=%s non presente", id);
-			throw new CittadinoException(messaggioErrore);
+			throw new CittadinoException(messaggioErrore, CodiceErroreEnum.CIT02);
 		}
 		
 		CittadinoEntity cittadinoEntity = this.cittadinoMapper.toEntityFrom(cittadinoRequest);
@@ -242,7 +268,7 @@ public class CittadinoService {
 			Optional<QuestionarioCompilatoCollection> optionalQuestionarioCompilatoCollection = this.questionarioCompilatoMongoRepository.findQuestionarioCompilatoById(idQuestionarioCompilato);
 	        if(!optionalQuestionarioCompilatoCollection.isPresent()) {
 	            final String messaggioErrore = String.format("Questionario compilato con id=%s non presente in MongoDB", idQuestionarioCompilato);
-	            throw new QuestionarioCompilatoException(messaggioErrore);
+	            throw new QuestionarioCompilatoException(messaggioErrore, CodiceErroreEnum.QC02);
 	        }
 	        
 	        final QuestionarioCompilatoCollection questionarioCompilatoDBMongoFetch = optionalQuestionarioCompilatoCollection.get();

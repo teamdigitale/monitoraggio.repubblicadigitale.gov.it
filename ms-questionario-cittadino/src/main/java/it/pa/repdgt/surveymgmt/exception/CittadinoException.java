@@ -1,18 +1,20 @@
 package it.pa.repdgt.surveymgmt.exception;
 
+import it.pa.repdgt.shared.exception.BaseException;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class CittadinoException extends RuntimeException {
-	private static final long serialVersionUID = -3953238341091104333L;
-
-	public CittadinoException(String messageException, Exception ex) {
+public class CittadinoException extends BaseException {
+	public CittadinoException(String messageException, Exception ex, CodiceErroreEnum codiceErroreEnum) {
 		super(messageException, ex);
+		this.codiceErroreEnum = codiceErroreEnum;
 	}
 	
-	public CittadinoException(String messageException) {
-		this(messageException, null);
+	public CittadinoException(String messageException, CodiceErroreEnum codiceErroreEnum) {
+		super(messageException, null);
+		this.codiceErroreEnum = codiceErroreEnum;
 	}
 }

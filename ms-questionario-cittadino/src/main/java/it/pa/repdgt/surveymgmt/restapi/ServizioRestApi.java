@@ -37,6 +37,7 @@ import it.pa.repdgt.surveymgmt.projection.EnteProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
 import it.pa.repdgt.surveymgmt.resource.ServiziPaginatiResource;
+import it.pa.repdgt.surveymgmt.resource.ServizioIdResource;
 import it.pa.repdgt.surveymgmt.resource.ServizioResource;
 import it.pa.repdgt.surveymgmt.service.ServizioService;
 import it.pa.repdgt.surveymgmt.service.ServizioSqlService;
@@ -101,8 +102,8 @@ public class ServizioRestApi {
 	// TOUCH POINT - 9.1.3
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public void creaServizio(@RequestBody @Valid final ServizioRequest servizioRequest) {
-		this.servizioService.creaServizio(servizioRequest);
+	public ServizioIdResource creaServizio(@RequestBody @Valid final ServizioRequest servizioRequest) {
+		return new ServizioIdResource(this.servizioService.creaServizio(servizioRequest).getId());
 	}
 	
 	/***

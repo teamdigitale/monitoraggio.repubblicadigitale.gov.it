@@ -31,9 +31,15 @@ public class ContestoResource implements Serializable {
 	@JsonProperty(value = "codiceFiscale")
 	private String codiceFiscale;
 	
+	@JsonProperty(value = "mostraBio")
+	private boolean mostraBio;
+	
 	// bio/mansione
 	@JsonProperty(value = "bio")
 	private String bio;
+	
+	@JsonProperty(value = "mostraTipoContratto")
+	private boolean mostraTipoContratto;
 	
 	@JsonProperty(value = "tipoContratto")
 	private String tipoContratto;

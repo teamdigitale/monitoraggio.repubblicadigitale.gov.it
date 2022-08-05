@@ -85,6 +85,8 @@ public class EntePartnerServiceTest {
 		ente1.setNomeBreve("ente1Breve");
 		ente1.setPiva("3299329");
 		ente1.setSedeLegale("via legale");
+		ente1.setTipologia("Ente privato");
+		ente1.setIndirizzoPec("pec@pec.com");
 		entePartnerKey = new EntePartnerKey(progetto1.getId(), ente1.getId());
 		entePartnerEntity = new EntePartnerEntity();
 		entePartnerEntity.setId(entePartnerKey);
@@ -110,7 +112,7 @@ public class EntePartnerServiceTest {
 		data = new byte[] {1, 2, 3, 4};
 		stream = new ByteArrayInputStream(data);
 		file = new MockMultipartFile("test", stream);
-		entePartnerUploadBean = new EntePartnerUploadBean(ente1.getNome(), ente1.getNomeBreve(), ente1.getPiva(), ente1.getSedeLegale());
+		entePartnerUploadBean = new EntePartnerUploadBean(ente1.getNome(), ente1.getNomeBreve(), ente1.getPiva(), ente1.getSedeLegale(), ente1.getTipologia(), ente1.getIndirizzoPec());
 		listaEntePartnerUploadBeans = new ArrayList<>();
 		listaEntePartnerUploadBeans.add(entePartnerUploadBean);
 		

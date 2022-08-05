@@ -837,7 +837,6 @@ public class ProgettoServiceTest {
 	public void attivaProgettoTest() {
 		progetto1.setStato("ATTIVABILE");
 		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
-		when(enteSedeProgettoFacilitatoreService.getAllEmailFacilitatoriEVolontariByProgetto(progetto1.getId())).thenReturn(new ArrayList<UtenteFacilitatoreProjection>());
 		progettoService.attivaProgetto(progetto1.getId());
 		assertThat(progetto1.getStato()).isEqualTo("ATTIVO");
 		verify(progettoRepository, times(1)).save(progetto1);

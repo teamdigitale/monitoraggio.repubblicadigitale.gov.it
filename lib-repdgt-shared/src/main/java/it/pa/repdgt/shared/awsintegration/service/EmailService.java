@@ -24,28 +24,29 @@ public class EmailService {
 	public SendMessagesResponse inviaEmail(
 			@NotNull final String indirizzoEmailDestinatario,
 			EmailTemplateEnum emailTemplate,
-			String[] args) {
+			String[] argsEmailTemplate) {
 		try {
-			GetEmailTemplateResponse response= this.pinpoint.getClient()
+			GetEmailTemplateResponse response = this.pinpoint.getClient()
 					.getEmailTemplate(GetEmailTemplateRequest.builder().templateName(emailTemplate.getValueTemplate()).build());
 			
-			String html = "";
+			String htmlTemplateEmail = "";
 			switch(emailTemplate){
 				case GEST_PROG:
 				case GEST_PROGE_PARTNER:
 				case FACILITATORE:
 				case RUOLO_CUSTOM:
-					html = response.emailTemplateResponse().htmlPart().replaceFirst("%S", args[0]).replaceFirst("%S", args[1] );
+				case QUESTIONARIO_ONLINE:
+					htmlTemplateEmail = response.emailTemplateResponse().htmlPart().replaceFirst("%S", argsEmailTemplate[0]).replaceFirst("%S", argsEmailTemplate[1] );
 					break;
 				case CONSENSO:
-				case QUESTIONARIO_ONLINE:
-					html = response.emailTemplateResponse().htmlPart().replace("%S", args[0]);
+					htmlTemplateEmail = response.emailTemplateResponse().htmlPart().replace("%S", argsEmailTemplate[0]);
 					break;				
 			}
 			
-			final SendMessagesRequest richiestaInvioEmail = this.pinpoint.creaRichiestaInvioEmail(emailTemplate.getValueTemplateSubject(), indirizzoEmailDestinatario, html);
+			final SendMessagesRequest richiestaInvioEmail = this.pinpoint.creaRichiestaInvioEmail(emailTemplate.getValueTemplateSubject(), indirizzoEmailDestinatario, htmlTemplateEmail);
 			final SendMessagesResponse  rispostaDaRichiestaInvioEmail = this.pinpoint.getClient().sendMessages(richiestaInvioEmail);
 			log.info("sendMessagesResponse = {}", rispostaDaRichiestaInvioEmail);
+			
 			return rispostaDaRichiestaInvioEmail;
 		} catch (Exception exc) {
 			String messaggioErrore = String.format("Errore invio email a '%s'", indirizzoEmailDestinatario);

@@ -22,6 +22,7 @@ import it.pa.repdgt.shared.entity.ProgrammaXQuestionarioTemplateEntity;
 import it.pa.repdgt.shared.entity.ServizioEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioTemplateException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
@@ -49,7 +50,7 @@ public class ServizioSqlService {
 	public ServizioEntity getServizioById(@NotNull Long idServizio) {
 		final String messaggioErrore = String.format("Servizio con id=%s non presente", idServizio);
 		return this.servizioSqlRepository.findById(idServizio)
-				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore));
+				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
 	}
 	
 	/**
@@ -224,11 +225,11 @@ public class ServizioSqlService {
 		final List<ProgrammaXQuestionarioTemplateEntity> listaProgrammaXQuestionario = this.programmaXQuestionarioTemplateService.getByIdProgramma(idProgramma);
 		if( listaProgrammaXQuestionario.isEmpty() ) {
 			final String messaggioErrore = String.format("Impossibile creare servizio. Nessun questionario template associato al programma con id '%s'", idProgramma);
-			throw new ServizioException(messaggioErrore);
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S04);
 		}
 		if(listaProgrammaXQuestionario.isEmpty()) {
 			final String messaggioErrore = String.format("Impossibile creare servizio. Non esiste nessun questionario template associato al programma con id=%s", idProgramma);
-			throw new ServizioException(messaggioErrore);
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S04);
 		}
 		final String idQuestinarioTemplate = listaProgrammaXQuestionario
 																	.get(0)
@@ -270,6 +271,8 @@ public class ServizioSqlService {
 			servizioDaAggiornareRequest.getProfilazioneParam().getCodiceFiscaleUtenteLoggato()
 		);
 		
+		this.enteSedeProgettoFacilitatoreService.getById(enteSedeProgettoFacilitatoreAggiornato);
+		
 		// Recupero servizio in MySql a partire dall'id e
 		// aggiorno i dati sul servizio fetchato dal db
 		final ServizioEntity servizioFecthDB = this.getServizioById(idServizio);
@@ -298,7 +301,7 @@ public class ServizioSqlService {
 					!codiceRuoloUtenteLoggato.equalsIgnoreCase(RuoliUtentiConstants.VOLONTARIO) )) {
 			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'.\nOppure l'utente non è un FACILITATORE/VOLONTARIO",
 					codiceFiscaleUtenteLoggato);
-			throw new QuestionarioTemplateException(messaggioErrore);
+			throw new QuestionarioTemplateException(messaggioErrore, CodiceErroreEnum.U06);
 		}
 		
 		return this.enteSedeProgettoFacilitatoreService.getEntiByFacilitatore(profilazioneParam);
@@ -321,7 +324,7 @@ public class ServizioSqlService {
 					!codiceRuoloUtenteLoggato.equalsIgnoreCase(RuoliUtentiConstants.VOLONTARIO) )) {
 			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'.\nOppure l'utente non è un FACILITATORE/VOLONTARIO",
 					codiceFiscaleUtenteLoggato);
-			throw new QuestionarioTemplateException(messaggioErrore);
+			throw new QuestionarioTemplateException(messaggioErrore, CodiceErroreEnum.U06);
 		}
 		
 		return this.enteSedeProgettoFacilitatoreService.getSediByFacilitatore(profilazioneParam);

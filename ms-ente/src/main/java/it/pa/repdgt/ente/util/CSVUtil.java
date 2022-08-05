@@ -25,7 +25,7 @@ import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 public class CSVUtil {
 
 	public static String TYPE = "text/csv";
-	static String[] HEADERs = { "Nome", "Nome_Breve", "PIVA", "Sede_Legale" };
+	static String[] HEADERs = { "NOME", "NOME_BREVE", "CODICE_FISCALE", "SEDE_LEGALE", "TIPOLOGIA_ENTE", "PEC" };
 
 	private static final List<String> HEADERS = Arrays.asList(
 			"ID",
@@ -87,10 +87,12 @@ public class CSVUtil {
 			Iterable<CSVRecord> csvRecords = csvParser.getRecords();
 			for (CSVRecord csvRecord : csvRecords) {
 				EntePartnerUploadBean ente = new EntePartnerUploadBean(
-						csvRecord.get("Nome"),
-						csvRecord.get("Nome_Breve"),
-						csvRecord.get("PIVA"),
-						csvRecord.get("Sede_Legale")
+						csvRecord.get("NOME"),
+						csvRecord.get("NOME_BREVE"),
+						csvRecord.get("CODICE_FISCALE"),
+						csvRecord.get("SEDE_LEGALE"),
+						csvRecord.get("TIPOLOGIA_ENTE"),
+						csvRecord.get("PEC")
 						);
 				enti.add(ente);
 			}

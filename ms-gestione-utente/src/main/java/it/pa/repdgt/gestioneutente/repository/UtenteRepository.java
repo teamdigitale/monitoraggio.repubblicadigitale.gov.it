@@ -226,11 +226,11 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			@Param(value = "stato")  List<String> stato
 	);
 
-	@Query(value = "SELECT DISTINCT UTENTI.STATO " 
+	@Query(value = "SELECT DISTINCT utenti.STATO_UTENTE " 
 			+ "FROM ( "
 			+ "SELECT DISTINCT rdg.CF_UTENTE, rdg.STATO_UTENTE "
 			+ "	FROM referente_delegati_gestore_programma rdg "
-			+ "	INNER JOIN PROGRAMMA programma "
+			+ "	INNER JOIN programma programma "
 			+ "		ON rdg.ID_PROGRAMMA = programma.ID "
 			+ "	WHERE programma.POLICY = 'SCD' "
 			+ "UNION "
@@ -274,7 +274,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			@Param(value = "stato")  List<String> stato
 	);
 
-	@Query(value = "SELECT DISTINCT UTENTI.STATO "
+	@Query(value = "SELECT DISTINCT utenti.STATO_UTENTE "
 			+ "FROM ( "
 			+ "SELECT DISTINCT rdg.CF_UTENTE, rdg.STATO_UTENTE "
 			+ "	FROM referente_delegati_gestore_programma rdg "
@@ -319,7 +319,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			@Param(value = "stato")  List<String> stato
 	);
 
-	@Query(value = "SELECT DISTINCT UTENTI.STATO "
+	@Query(value = "SELECT DISTINCT utenti.STATO_UTENTE "
 			+ "FROM ( "
 			+ "SELECT DISTINCT rdg.CF_UTENTE, rdg.STATO_UTENTE "
 			+ "	FROM referente_delegati_gestore_programma rdg "
@@ -359,7 +359,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			@Param(value = "stato")  List<String> stato
 	);
 
-	@Query(value = "SELECT DISTINCT UTENTI.STATO "
+	@Query(value = "SELECT DISTINCT utenti.STATO_UTENTE "
 			+ "FROM ( "
 			+ "SELECT DISTINCT rdg.CF_UTENTE, rdg.STATO_UTENTE "
 			+ "	FROM referente_delegati_gestore_programma rdg "
@@ -526,7 +526,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "SELECT DISTINCT rdgp.CF_UTENTE "
 			+ "	FROM referente_delegati_gestore_progetto rdgp "
 			+ "	WHERE rdgp.CF_UTENTE != :cfUtente "
-			+ "		AND rdgp.ID = :idProgetto "
+			+ "		AND rdgp.ID_progetto = :idProgetto "
 			+ "UNION "
 			+ "SELECT DISTINCT rdp.CF_UTENTE "
 			+ "	FROM referente_delegati_partner rdp "

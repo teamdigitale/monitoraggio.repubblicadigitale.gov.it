@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.EnteEntity;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.repository.EnteRepository;
 
@@ -19,6 +20,6 @@ public class EnteService {
 	public EnteEntity getById(final Long idEnte) {
 		final String messaggioErrore = String.format("Ente con id %s non presente", idEnte);
 		return this.enteRepository.findById(idEnte)
-				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore));
+				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
 	}
 }

@@ -113,7 +113,7 @@ public class EnteRestApi {
 			@PathVariable(value = "idEnte") Long idEnte) {
 		return this.enteService.getSchedaEnteById(idEnte);
 	}
-
+	
 	// TOUCH POINT - 2.1.5 - dettaglio ente gestore di un determinato programma
 	@GetMapping(path = "/gestoreProgramma/{idProgramma}")
 	@ResponseStatus(value = HttpStatus.OK)
@@ -123,20 +123,42 @@ public class EnteRestApi {
 	}
 
 	// TOUCH POINT - 3.4 - dettaglio ente gestore di un determinato progetto
+	@Deprecated
 	@GetMapping(path = "/gestoreProgetto/{idProgetto}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaEnteGestoreProgettoBean getSchedaEnteGestoreProgetto(
 			@PathVariable(value = "idProgetto") Long idProgetto) {
 		return this.enteService.getSchedaEnteGestoreProgettoByIdProgetto(idProgetto);
 	}
+	
+
+	// TOUCH POINT - 3.4 - dettaglio ente gestore di un determinato progetto
+	@PostMapping(path = "/gestoreProgetto/{idProgetto}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public SchedaEnteGestoreProgettoBean getSchedaEnteGestoreProgettoBySceltaProfilo(
+			@PathVariable(value = "idProgetto") Long idProgetto,
+			@RequestBody @Valid EntiPaginatiParam entiPaginatiParam) {
+		return this.enteService.getSchedaEnteGestoreProgettoByIdProgettoAndSceltaProfilo(idProgetto, entiPaginatiParam);
+	}
 
 	// TOUCH POINT - 3.5 - dettaglio ente partner di un determinato progetto
+	@Deprecated
 	@GetMapping (path = "/partner/{idProgetto}/{idEnte}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaEntePartnerBean getSchedaEntePartner(
 			@PathVariable(value = "idProgetto") Long idProgetto,
 			@PathVariable(value = "idEnte") Long idEnte) {
 		return this.entePartnerService.getSchedaEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte);
+	}
+	
+	// TOUCH POINT - 3.5 - dettaglio ente partner di un determinato progetto
+	@PostMapping (path = "/partner/{idProgetto}/{idEnte}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public SchedaEntePartnerBean getSchedaEntePartneroBySceltaProfilo(
+			@PathVariable(value = "idProgetto") Long idProgetto,
+			@PathVariable(value = "idEnte") Long idEnte,
+			@RequestBody @Valid EntiPaginatiParam entiPaginatiParam) {
+		return this.entePartnerService.getSchedaEntePartnerByIdProgettoAndIdEnteAndSceltaProfilo(idProgetto, idEnte, entiPaginatiParam);
 	}
 
 	// TOUCH-POINT 2.2.1 - Creazione ente 

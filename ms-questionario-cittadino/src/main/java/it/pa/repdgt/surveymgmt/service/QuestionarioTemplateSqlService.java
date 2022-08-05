@@ -16,6 +16,7 @@ import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioTemplateException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.repository.QuestionarioTemplateSqlRepository;
@@ -44,7 +45,7 @@ public class QuestionarioTemplateSqlService {
 		final String idQuestionarioTemplate = questionarioTemplateEntity.getId();
 		if(this.templateQuestionarioSqlRepository.existsById(idQuestionarioTemplate)) {
 			final String messaggioErrore = String.format("Impossibile salvare il questionario. Questionario con id='%s' già presente", idQuestionarioTemplate);
-			throw new QuestionarioTemplateException(messaggioErrore);
+			throw new QuestionarioTemplateException(messaggioErrore, CodiceErroreEnum.QT07);
 		}
 		questionarioTemplateEntity.setDataOraCreazione(new Date());
 		return this.templateQuestionarioSqlRepository.save(questionarioTemplateEntity);
@@ -61,7 +62,7 @@ public class QuestionarioTemplateSqlService {
 		//  Verifico se esiste il questionarioTemplate
 		if(!questionarioDBFetch.isPresent()) {
 			final String messaggioErrore = String.format("Impossibile aggiornare il questionario. Questionario con id='%s' non presente", idQuestionarioTemplate);
-			throw new QuestionarioTemplateException(messaggioErrore);
+			throw new QuestionarioTemplateException(messaggioErrore, CodiceErroreEnum.QT02);
 		}
 		
 		questionarioTemplateEntity.setDataOraAggiornamento(new Date());
@@ -173,6 +174,6 @@ public class QuestionarioTemplateSqlService {
 	public QuestionarioTemplateEntity getQuestionarioTemplateById(String idQuestionarioTemplate) {
 		final String messaggioErrore = String.format("Questionario template con id='%s' non presente", idQuestionarioTemplate);
 		return this.templateQuestionarioSqlRepository.findById(idQuestionarioTemplate)
-					.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore));
+					.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
 	}
 }

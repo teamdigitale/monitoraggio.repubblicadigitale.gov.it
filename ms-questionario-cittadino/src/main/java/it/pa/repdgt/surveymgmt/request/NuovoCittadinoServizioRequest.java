@@ -15,11 +15,9 @@ public class NuovoCittadinoServizioRequest implements Serializable {
 	private static final long serialVersionUID = 443289012578169806L;
 
 	@JsonProperty(value = "nome")
-	@NotBlank
 	private String nome;
 
 	@JsonProperty(value = "cognome")
-	@NotBlank
 	private String cognome;
 
 	@JsonProperty(value = "codiceFiscale")

@@ -53,12 +53,17 @@ public enum CodiceErroreEnum {
 	,QT01("Errore export csv questionari template")
 	,QT02("Errore impossibile aggiornare il questionario")
 	,QT03("Errore impossibile cancellare il questionario")
+	,QT04("Errore impossibile recuperare il questionario poichè inesistente su MongoDB")
+	,QT05("Errore impossibile recuperare il questionario poichè inesistente su MySql")
+	,QT06("Errore impossibile avere un programma senza associato alcun questionario template")
+	,QT07("Errore impossibile salvare il questionario template perchè id questionario template già esistente")
 	
 	,QC01("Errore questionario compilato non presente su mySql")
 	,QC02("Errore questionario compilato non presente su MongoDB")
 	
 	,CIT01("Errore upload cittadini")
 	,CIT02("Errore impossibile aggiornare cittadino")
+	,CIT03("Errore export csv cittadini")
 	
 	,E01("Errore invio email")
 	

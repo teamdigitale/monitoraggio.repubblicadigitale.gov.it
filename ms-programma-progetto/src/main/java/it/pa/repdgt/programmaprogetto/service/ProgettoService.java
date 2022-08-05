@@ -266,23 +266,23 @@ public class ProgettoService {
 	public List<ProgettoEntity> getProgettiByRuolo(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto, ProgettoFiltroRequest filtroRequest) {
 		List<ProgettoEntity> progettiUtente = new ArrayList<>();
 		switch (codiceRuolo) {
-		case "DTD":
-			return this.getAllProgetti(filtroRequest);
-		case "DSCU":
-			return this.getProgettiPerDSCU(filtroRequest);
-		case "REG":
-		case "DEG":
-			return this.getProgettiPerReferenteDelegatoGestoreProgramma(idProgramma, filtroRequest);
-		case "REGP":
-		case "DEGP":
-			progettiUtente.add(this.getProgettoById(idProgetto));
-			return progettiUtente;
-		case "REPP":
-		case "DEPP":
-			progettiUtente.add(this.getProgettoById(idProgetto));
-			return progettiUtente;
-		default:
-			return this.getAllProgetti(filtroRequest);
+			case "DTD":
+				return this.getAllProgetti(filtroRequest);
+			case "DSCU":
+				return this.getProgettiPerDSCU(filtroRequest);
+			case "REG":
+			case "DEG":
+				return this.getProgettiPerReferenteDelegatoGestoreProgramma(idProgramma, filtroRequest);
+			case "REGP":
+			case "DEGP":
+			case "REPP":
+			case "DEPP":
+			case "FAC":
+			case "VOL":
+				progettiUtente.add(this.getProgettoById(idProgetto));
+				return progettiUtente;
+			default:
+				return this.getAllProgetti(filtroRequest);
 		}
 	}
 
@@ -475,6 +475,8 @@ public class ProgettoService {
 		DettaglioProgettoBean dettaglioProgetto = this.progettoMapper.toDettaglioProgettoBeanFrom(progettoFetchDB);
 		dettaglioProgetto.setId(idProgetto);
 
+		String codiceRuoloUtenteLoggato = sceltaProfilo.getCodiceRuolo();
+		String cfUtenteLoggato = sceltaProfilo.getCfUtente();
 		List<Long> listaIdEntiPartner = this.entePartnerService.getIdEntiPartnerByProgetto(idProgetto);
 		List<DettaglioEntiPartnerBean> listaEntiPartner = listaIdEntiPartner
 				.stream()
@@ -485,18 +487,23 @@ public class ProgettoService {
 					dettaglioEntePartner.setNome(enteFetchDB.getNome());
 					dettaglioEntePartner.setReferenti(this.entePartnerService.getReferentiEntePartnerProgetto(idProgetto, idEnte));
 					dettaglioEntePartner.setStato(this.entePartnerService.getStatoEntePartner(idProgetto, idEnte));
-					switch(sceltaProfilo.getCodiceRuolo()) {
-					case "REPP":
-						List<String> referentiEntePartner = this.entePartnerService.getCodiceFiscaleReferentiODelegatiEntePartnerProgetto(idProgetto, idEnte, RuoloUtenteEnum.REPP.toString());
-						dettaglioEntePartner.setAssociatoAUtente(referentiEntePartner.contains(sceltaProfilo.getCfUtente()));
-						break;
-					case "DEPP":
-						List<String> delegatiEntePartner = this.entePartnerService.getCodiceFiscaleReferentiODelegatiEntePartnerProgetto(idProgetto, idEnte, RuoloUtenteEnum.DEPP.toString());
-						dettaglioEntePartner.setAssociatoAUtente(delegatiEntePartner.contains(sceltaProfilo.getCfUtente()));
-						break;
-					default:
-						dettaglioEntePartner.setAssociatoAUtente(true);
-						break;
+					switch(codiceRuoloUtenteLoggato) {
+						case "REPP":
+							List<String> referentiEntePartner = this.entePartnerService.getCodiceFiscaleReferentiODelegatiEntePartnerProgetto(idProgetto, idEnte, RuoloUtenteEnum.REPP.toString());
+							dettaglioEntePartner.setAssociatoAUtente(referentiEntePartner.contains(cfUtenteLoggato));
+							break;
+						case "DEPP":
+							List<String> delegatiEntePartner = this.entePartnerService.getCodiceFiscaleReferentiODelegatiEntePartnerProgetto(idProgetto, idEnte, RuoloUtenteEnum.DEPP.toString());
+							dettaglioEntePartner.setAssociatoAUtente(delegatiEntePartner.contains(cfUtenteLoggato));
+							break;
+						case "FAC":
+						case "VOL":
+							boolean isEnteAssociatoAFacOVol = this.enteSedeProgettoFacilitatoreService.isEnteAssociatoAFacVol(idEnte, idProgetto, cfUtenteLoggato);
+							dettaglioEntePartner.setAssociatoAUtente(isEnteAssociatoAFacOVol);
+							break;
+						default:
+							dettaglioEntePartner.setAssociatoAUtente(true);
+							break;
 					}
 					return dettaglioEntePartner;
 				})
@@ -528,6 +535,24 @@ public class ProgettoService {
 						dettaglioSede.setIdenteDiRiferimento(enteDiRiferimento.getId());
 						dettaglioSede.setEnteDiRiferimento(enteDiRiferimento.getNome());
 						dettaglioSede.setStato(this.sedeService.getStatoSedeByIdProgettoAndIdSedeAndIdEnte(idProgetto, sede.getId(), idEnte));
+						switch(codiceRuoloUtenteLoggato) {
+						case "REPP":
+							List<String> referentiEntePartner = this.entePartnerService.getCodiceFiscaleReferentiODelegatiEntePartnerProgetto(idProgetto, idEnte, RuoloUtenteEnum.REPP.toString());
+							dettaglioSede.setAssociatoAUtente(referentiEntePartner.contains(cfUtenteLoggato));
+							break;
+						case "DEPP":
+							List<String> delegatiEntePartner = this.entePartnerService.getCodiceFiscaleReferentiODelegatiEntePartnerProgetto(idProgetto, idEnte, RuoloUtenteEnum.DEPP.toString());
+							dettaglioSede.setAssociatoAUtente(delegatiEntePartner.contains(cfUtenteLoggato));
+							break;
+						case "FAC":
+						case "VOL":
+							boolean isSedeAssociataAFacOVol = this.enteSedeProgettoFacilitatoreService.getById(idEnte, sede.getId(), idProgetto, cfUtenteLoggato).isPresent();
+							dettaglioSede.setAssociatoAUtente(isSedeAssociataAFacOVol);
+							break;
+						default:
+							dettaglioSede.setAssociatoAUtente(true);
+							break;
+					}
 						return dettaglioSede;
 					})
 					.collect(Collectors.toList());
@@ -614,15 +639,20 @@ public class ProgettoService {
 		progetto.setDataOraAggiornamento(new Date());
 		progettoRepository.save(progetto);
 
-		enteSedeProgettoFacilitatoreService.getAllEmailFacilitatoriEVolontariByProgetto(idProgetto).forEach(utenteFetch -> {
-			try {
-				this.emailService.inviaEmail(utenteFetch.getEmail(), 
-						EmailTemplateEnum.GEST_PROGE_PARTNER, 
-						new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(utenteFetch.getCodiceRuolo()).getValue() });
-			} catch (Exception ex) {
-				log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore progetto per progetto con id={}.", idProgetto);
-				log.error("{}", ex);
-			}
-		});
+		// stacco un thread e invio email ai facilitatori/volontari di quel progetto
+		new Thread(() -> {
+			this.enteSedeProgettoFacilitatoreService
+			.getAllEmailFacilitatoriEVolontariByProgetto(idProgetto)
+			.forEach(utenteFetch -> {
+				try {
+					this.emailService.inviaEmail(utenteFetch.getEmail(), 
+							EmailTemplateEnum.GEST_PROGE_PARTNER, 
+							new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(utenteFetch.getCodiceRuolo()).getValue() });
+				} catch (Exception ex) {
+					log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore progetto per progetto con id={}.", idProgetto);
+					log.error("{}", ex);
+				}
+			});
+		}).start();
 	}
 }

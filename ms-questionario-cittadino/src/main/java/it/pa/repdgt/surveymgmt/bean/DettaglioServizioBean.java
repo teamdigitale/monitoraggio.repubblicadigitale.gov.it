@@ -2,6 +2,7 @@ package it.pa.repdgt.surveymgmt.bean;
 
 import java.io.Serializable;
 
+import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 import it.pa.repdgt.surveymgmt.collection.SezioneQ3Collection;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,4 +17,5 @@ public class DettaglioServizioBean implements Serializable {
 	private String nomeSede;
 	private String tipologiaServizio;
 	private SezioneQ3Collection sezioneQ3compilato;
+	private QuestionarioTemplateCollection questionarioTemplateSnapshot;
 }

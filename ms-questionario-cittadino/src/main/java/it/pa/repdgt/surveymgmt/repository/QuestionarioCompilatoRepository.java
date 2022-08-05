@@ -24,4 +24,6 @@ public interface QuestionarioCompilatoRepository extends JpaRepository<Questiona
 	List<QuestionarioCompilatoEntity> findQuestionariCompilatiByCittadinoAndStatoNonCompilato(
 			@Param(value = "idCittadino") Long idCittadino
 		);
+
+	List<QuestionarioCompilatoEntity> findByIdServizioAndStato(Long idServizio, String string);
 }

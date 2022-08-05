@@ -44,7 +44,6 @@ import it.pa.repdgt.shared.entity.ReferentiDelegatiEnteGestoreProgrammaEntity;
 import it.pa.repdgt.shared.entity.light.ProgettoLightEntity;
 import it.pa.repdgt.shared.entity.light.QuestionarioTemplateLightEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
-import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.service.storico.StoricoService;
@@ -176,6 +175,8 @@ public class ProgrammaService {
 		case "DEG":
 		case "DEGP":
 		case "DEPP":
+		case "FAC":
+		case "VOL":
 			return Arrays.asList( 
 					this.getProgrammaById(idProgramma)
 					);
@@ -546,7 +547,7 @@ public class ProgrammaService {
 			progettoLight.setStato(progetto.getStato());
 			return progettoLight;
 		})
-				.collect(Collectors.toList());
+		.collect(Collectors.toList());
 
 		List<QuestionarioTemplateEntity> questionari = this.questionarioTemplateSqlService.getQuestionariByIdProgramma(idProgramma);
 		List<QuestionarioTemplateLightEntity> questionariLight = questionari.stream().map(questionario -> {
@@ -556,7 +557,7 @@ public class ProgrammaService {
 			questionarioLight.setStato(questionario.getStato());
 			return questionarioLight;
 		})
-				.collect(Collectors.toList());
+		.collect(Collectors.toList());
 
 		SchedaProgrammaBean schedaProgramma = new SchedaProgrammaBean();
 		schedaProgramma.setDettaglioProgramma(dettaglioProgramma);
@@ -576,35 +577,41 @@ public class ProgrammaService {
 
 		List<ProgettoEntity> progetti = progettoService.getProgettiByIdProgramma(idProgramma);
 		// mapping da Progetti a ProgettiLight
-		List<ProgettoLightEntity> progettiLight = progetti.stream().map(progetto -> {
-			ProgettoLightEntity progettoLight = new ProgettoLightEntity();
-			progettoLight.setId(progetto.getId());
-			progettoLight.setNome(progetto.getNome());
-			progettoLight.setStato(progetto.getStato());
-			switch(sceltaProfilo.getCodiceRuolo()) {
-			case "REGP":
-			case "DEGP":
-			case "REPP":
-			case "DEPP":
-				progettoLight.setAssociatoAUtente(sceltaProfilo.getIdProgetto().equals(progetto.getId()));
-				break;
-			default:
-				progettoLight.setAssociatoAUtente(true);
-				break;
-			}
-			return progettoLight;
+		List<ProgettoLightEntity> progettiLight = progetti
+			.stream()
+			.map(progetto -> {
+				ProgettoLightEntity progettoLight = new ProgettoLightEntity();
+				progettoLight.setId(progetto.getId());
+				progettoLight.setNome(progetto.getNome());
+				progettoLight.setStato(progetto.getStato());
+				switch(sceltaProfilo.getCodiceRuolo()) {
+				case "REGP":
+				case "DEGP":
+				case "REPP":
+				case "DEPP":
+				case "FAC":
+				case "VOL":
+					progettoLight.setAssociatoAUtente(sceltaProfilo.getIdProgetto().equals(progetto.getId()));
+					break;
+				default:
+					progettoLight.setAssociatoAUtente(true);
+					break;
+				}
+				return progettoLight;
 		})
-				.collect(Collectors.toList());
+		.collect(Collectors.toList());
 
 		List<QuestionarioTemplateEntity> questionari = this.questionarioTemplateSqlService.getQuestionariByIdProgramma(idProgramma);
-		List<QuestionarioTemplateLightEntity> questionariLight = questionari.stream().map(questionario -> {
-			QuestionarioTemplateLightEntity questionarioLight = new QuestionarioTemplateLightEntity();
-			questionarioLight.setId(questionario.getId());
-			questionarioLight.setNome(questionario.getNome());
-			questionarioLight.setStato(questionario.getStato());
-			return questionarioLight;
+		List<QuestionarioTemplateLightEntity> questionariLight = questionari
+			.stream()
+			.map(questionario -> {
+				QuestionarioTemplateLightEntity questionarioLight = new QuestionarioTemplateLightEntity();
+				questionarioLight.setId(questionario.getId());
+				questionarioLight.setNome(questionario.getNome());
+				questionarioLight.setStato(questionario.getStato());
+				return questionarioLight;
 		})
-				.collect(Collectors.toList());
+		.collect(Collectors.toList());
 
 		SchedaProgrammaBean schedaProgramma = new SchedaProgrammaBean();
 		schedaProgramma.setDettaglioProgramma(dettaglioProgramma);

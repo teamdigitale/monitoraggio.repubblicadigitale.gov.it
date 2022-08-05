@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.resource.QuestionarioTemplateLightResource;
 
@@ -45,7 +46,7 @@ public class CSVQuestionarioTemplateUtil {
 			csvPrinter.flush();
 			return new ByteArrayInputStream(outputStream.toByteArray());
 		} catch (IOException ex) {
-			throw new ServizioException("Errore export csv questionariTemplate", ex);
+			throw new ServizioException("Errore export csv questionariTemplate", ex, CodiceErroreEnum.QT01);
 		}
 	}
 

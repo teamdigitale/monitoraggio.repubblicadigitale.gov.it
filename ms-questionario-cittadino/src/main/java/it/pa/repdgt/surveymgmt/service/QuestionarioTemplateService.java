@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,21 +22,23 @@ import org.springframework.validation.annotation.Validated;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
+import it.pa.repdgt.shared.entity.ProgrammaEntity;
+import it.pa.repdgt.shared.entity.ProgrammaXQuestionarioTemplateEntity;
 import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioTemplateException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
+import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.mapper.QuestionarioTemplateMapper;
 import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioTemplateRepository;
 import it.pa.repdgt.surveymgmt.param.FiltroListaQuestionariTemplateParam;
 import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Validated
-@Slf4j
 public class QuestionarioTemplateService {
 	@Autowired
 	private QuestionarioTemplateMapper questionarioTemplateMapper;
@@ -47,6 +50,8 @@ public class QuestionarioTemplateService {
 	private RuoloService ruoloService;
 	@Autowired
 	private QuestionarioTemplateRepository questionarioTemplateRepository;
+	@Autowired
+	private ProgrammaService programmaService;
 
 	@LogMethod
 	@LogExecutionTime
@@ -54,7 +59,6 @@ public class QuestionarioTemplateService {
 			@NotNull @Valid final ProfilazioneParam profilazione,
 			@NotNull @Valid final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplate,
 			@NotNull final Pageable pagina ) {
-		log.info("getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro - START");
 		final String codiceFiscaleUtenteLoggato = profilazione.getCodiceFiscaleUtenteLoggato();
 		final String codiceRuoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato().toString();
 		
@@ -66,7 +70,7 @@ public class QuestionarioTemplateService {
 		
 		if(!hasRuoloUtente) {
 			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'",codiceFiscaleUtenteLoggato);
-			throw new QuestionarioTemplateException(messaggioErrore);
+			throw new QuestionarioTemplateException(messaggioErrore, CodiceErroreEnum.U06);
 		}
 		// Recupero tutti i QuestionariTemplate in base al ruolo profilato dell'utente loggato e in base ai filtri selezionati
 		final List<QuestionarioTemplateEntity> listaQuestionariTemplate = this.getAllQuestionariTemplateByProfilazioneAndFiltro(profilazione, filtroListaQuestionariTemplate);
@@ -75,7 +79,7 @@ public class QuestionarioTemplateService {
 		int start = (int) pagina.getOffset();
 		int end = Math.min((start + pagina.getPageSize()), listaQuestionariTemplate.size());
 		if(start > end) {
-			throw new QuestionarioTemplateException("ERRORE: pagina richiesta inesistente");
+			throw new QuestionarioTemplateException("ERRORE: pagina richiesta inesistente", CodiceErroreEnum.G03);
 		}
 		return new PageImpl<QuestionarioTemplateEntity>(listaQuestionariTemplate.subList(start, end), pagina, listaQuestionariTemplate.size());
 	}
@@ -85,7 +89,6 @@ public class QuestionarioTemplateService {
 	public List<QuestionarioTemplateEntity> getAllQuestionariTemplateByProfilazioneAndFiltro(
 			@NotNull @Valid final ProfilazioneParam profilazione,
 			@NotNull @Valid final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplate) {
-		log.info("getAllQuestionariTemplateByProfilazioneAndFiltro - START");
 		final String codiceRuoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato().toString();
 		
 		// Recupero i questionari in base alla profilazione dell'utente loggatosi
@@ -141,7 +144,6 @@ public class QuestionarioTemplateService {
 	public List<String> getAllStatiDropdownByProfilazioneAndFiltro(
 			@NotNull @Valid final ProfilazioneParam profilazione,
 			@NotNull @Valid final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplate) {
-		log.info("getAllStatiDropdownByProfilazioneAndFiltro - START");
 		final String codiceFiscaleUtenteLoggato = profilazione.getCodiceFiscaleUtenteLoggato();
 		final String codiceRuoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato().toString();
 		
@@ -153,7 +155,7 @@ public class QuestionarioTemplateService {
 		
 		if(!hasRuoloUtente) {
 			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'",codiceFiscaleUtenteLoggato);
-			throw new QuestionarioTemplateException(messaggioErrore);
+			throw new QuestionarioTemplateException(messaggioErrore, CodiceErroreEnum.U06);
 		}
 		
 		// Recupero i questionari in base alla profilazione dell'utente loggatosi
@@ -207,10 +209,9 @@ public class QuestionarioTemplateService {
 	@LogMethod
 	@LogExecutionTime
 	public QuestionarioTemplateCollection getQuestionarioTemplateById(@NotNull String idQuestionarioTemplate) {
-		log.info("getById - id={} START", idQuestionarioTemplate);
 		final String messaggioErrore = String.format("templateQuestionario con id=%s non presente.", idQuestionarioTemplate);
 		return this.questionarioTemplateRepository.findTemplateQuestionarioById(idQuestionarioTemplate)
-				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore));
+				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
 	}
 
 	@LogMethod
@@ -219,7 +220,6 @@ public class QuestionarioTemplateService {
 	public QuestionarioTemplateCollection creaNuovoQuestionarioTemplate(
 			@NotNull(message = "Questionario da creare deve essere non null") 
 			@Valid final QuestionarioTemplateCollection questionarioTemplateCollection) {
-		log.info("creaNuovoQuestionarioTemplate - START");
 		final String idQuestionarioTemplateDaCreare = UUID.randomUUID().toString();
 		questionarioTemplateCollection.setIdQuestionarioTemplate(idQuestionarioTemplateDaCreare);
 		questionarioTemplateCollection.setStato(StatoEnum.NON_ATTIVO.getValue());
@@ -242,7 +242,6 @@ public class QuestionarioTemplateService {
 	public QuestionarioTemplateCollection aggiornaQuestionarioTemplate(
 			@NotNull(message = "id questionario template deve essere non null") String idQuestionarioTemplate,
 			@NotNull @Valid final QuestionarioTemplateCollection questionarioTemplateDaAggiornare) {
-		log.info("aggiornaQuestionarioTemplate - START");
 		QuestionarioTemplateCollection questionarioTemplateFetchDB = null;
 
 		// Verifico se esiste questionarioTemplate da aggiornare
@@ -250,7 +249,7 @@ public class QuestionarioTemplateService {
 			questionarioTemplateFetchDB = this.getQuestionarioTemplateById(idQuestionarioTemplate);
 		} catch (ResourceNotFoundException ex) {
 			final String messaggioErrore = String.format("Impossibile aggiornare il questionario. Questionario con id='%s' non esiste.", idQuestionarioTemplate);
-			throw new QuestionarioTemplateException(messaggioErrore, ex);
+			throw new QuestionarioTemplateException(messaggioErrore, ex, CodiceErroreEnum.QT02);
 		}
 		
 		// Verifico se è possibile aggiornare il questionario template in base al ciclo di vita
@@ -258,7 +257,7 @@ public class QuestionarioTemplateService {
 		if(!this.isQuestionarioTemplateModificabileByStato(statoQuestionario)) {
 			final String messaggioErrore = String.format("Impossibile aggiornare il questionario con id '%s'. Stato questionario = '%s'.",
 					idQuestionarioTemplate, statoQuestionario);
-			throw new QuestionarioTemplateException(messaggioErrore);
+			throw new QuestionarioTemplateException(messaggioErrore, CodiceErroreEnum.QT02);
 		}
 		
 		questionarioTemplateFetchDB.setNomeQuestionarioTemplate(questionarioTemplateDaAggiornare.getNomeQuestionarioTemplate());
@@ -300,7 +299,7 @@ public class QuestionarioTemplateService {
 			questionarioTemplateMysqlDaCancellare = this.questionarioTemplateSqlService.getQuestionarioTemplateById(idQuestioanarioTemplate);
 		} catch (ResourceNotFoundException ex) {
 			messaggioErrore = String.format("Impossibile cancellare il questionario. Questionario con id='%s' non esiste.", idQuestioanarioTemplate);
-			throw new QuestionarioTemplateException(messaggioErrore, ex);
+			throw new QuestionarioTemplateException(messaggioErrore, ex, CodiceErroreEnum.QT03);
 		}
 
 		// Verifico se è possibile cancellare il questionario template
@@ -308,7 +307,7 @@ public class QuestionarioTemplateService {
 		if(!this.isQuestionarioTemplateCancellabile(questionarioTemplateMysqlDaCancellare)) {
 			messaggioErrore = String.format("Impossibile cancellare il questionario con id '%s'. "
 					+ "Stato del questionario diverso da 'NON ATTIVO' oppure è un questionario di default per policy RFD o SCD", idQuestioanarioTemplate);
-			throw new QuestionarioTemplateException(messaggioErrore);
+			throw new QuestionarioTemplateException(messaggioErrore, CodiceErroreEnum.QT03);
 		}
 		
 		// 1. Cancellazione record di associazioni programmma_x_questioanario_template (id_programma, id_questionario_template)
@@ -343,7 +342,7 @@ public class QuestionarioTemplateService {
 
 		if(!hasRuoloUtente) {
 			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'", codiceFiscaleUtente);
-			throw new QuestionarioTemplateException(messaggioErrore);
+			throw new QuestionarioTemplateException(messaggioErrore, CodiceErroreEnum.U06);
 		}
 		
 		// Recupero i questionari in base alla profilazione dell'utente loggatosi
@@ -396,5 +395,47 @@ public class QuestionarioTemplateService {
 			questionarioTemplate.setDefaultSCD(true);
 			this.questionarioTemplateSqlService.salvaQuestionario(questionarioTemplate);
 		}
+	}
+
+	@LogMethod
+	@LogExecutionTime
+	public QuestionarioTemplateCollection getQuestionarioTemplateByIdProgramma(Long idProgramma) {
+		// verifico se esiste il programma
+		String errorMessage = String.format("Programma con id='%s' non esiste", idProgramma);
+		try {
+			this.programmaService.getProgrammaById(idProgramma);
+		} catch (NoSuchElementException ex) {
+			throw new QuestionarioTemplateException(errorMessage, ex, CodiceErroreEnum.Q01);
+		}
+		
+		List<ProgrammaXQuestionarioTemplateEntity> programmaTemplateList = this.programmaXQuestionarioTemplateService.getByIdProgramma(idProgramma);
+		if(programmaTemplateList.isEmpty()) {
+			errorMessage = String.format("Programma con id='%s' deve avere associato un questionarioTemplate", idProgramma);
+			throw new QuestionarioTemplateException(errorMessage, CodiceErroreEnum.QT06);
+		}
+		
+		// Recupero il primo soltanto perchè attualmente da specifiche si prevede che il programma abbia associato
+		// un solo questionarioTemplate
+		ProgrammaXQuestionarioTemplateEntity programmaTemplate = programmaTemplateList.get(0);
+		String idQuestionairioTemplateAssociatoAlProgramma = programmaTemplate.getProgrammaXQuestionarioTemplateKey().getIdQuestionarioTemplate();
+		
+		// verifico se il questionarioTemplate associato al programma è presente su Mysql
+		try {
+			this.questionarioTemplateSqlService.getQuestionarioTemplateById(idQuestionairioTemplateAssociatoAlProgramma);
+		} catch (ResourceNotFoundException ex) {
+			errorMessage = String.format("QuestionarioTemplate con id=%s non presente in MySql", idQuestionairioTemplateAssociatoAlProgramma);
+			throw new ServizioException(errorMessage, ex, CodiceErroreEnum.QT05);
+		}
+		
+		// verifico se il questionarioTemplate associato al programma è presente su MongoDb
+		QuestionarioTemplateCollection questionarioTemplateAssociatoAlProgramma = null;
+		try {
+			questionarioTemplateAssociatoAlProgramma = this.getQuestionarioTemplateById(idQuestionairioTemplateAssociatoAlProgramma);
+		} catch (ResourceNotFoundException ex) {
+			errorMessage = String.format("QuestionarioTemplate con id=%s non presente in MongoDB", idQuestionairioTemplateAssociatoAlProgramma);
+			throw new ServizioException(errorMessage, ex, CodiceErroreEnum.QT04);
+		}
+		
+		return questionarioTemplateAssociatoAlProgramma;
 	}
 }

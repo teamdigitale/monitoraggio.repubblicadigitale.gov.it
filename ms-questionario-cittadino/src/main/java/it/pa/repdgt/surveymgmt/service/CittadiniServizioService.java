@@ -33,6 +33,7 @@ import it.pa.repdgt.shared.entity.key.ServizioCittadinoKey;
 import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.bean.CittadinoServizioBean;
 import it.pa.repdgt.surveymgmt.bean.CittadinoUploadBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
@@ -104,13 +105,13 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		// Verifico se l'utente possiede il ruolo mandato nella richiesta
 		if( !this.utenteService.hasRuoloUtente(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato) ) {
 			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'",codiceFiscaleUtenteLoggato);
-			throw new ServizioException(messaggioErrore);
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.U06);
 		}
 		
 		// Verifico se il facilitatore è il creatore di quel servizio
 		if( !this.servizioSqlRepository.findByFacilitatoreAndIdServizio(codiceFiscaleUtenteLoggato, idServizio).isPresent() ) {
 			final String messaggioErrore = String.format("Servizio non accessibile per l'utente con codice fiscale '%s'",codiceFiscaleUtenteLoggato);
-			throw new ServizioException(messaggioErrore);
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S03);
 		}
 
 		// Recupero tutti i cittadini del servizion con id idServizio in base ai filtri selezionati
@@ -120,8 +121,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		int start = (int) pagina.getOffset();
 		int end = Math.min((start + pagina.getPageSize()), listaCittadiniServizio.size());
 		if(start > end) {
-			throw new ServizioException("ERRORE: pagina richiesta inesistente");
-		}
+			throw new ServizioException("ERRORE: pagina richiesta inesistente", CodiceErroreEnum.G03);
+		}	
 		bean.setListaCittadiniServizio(new PageImpl<CittadinoServizioProjection>(listaCittadiniServizio.subList(start, end), pagina, listaCittadiniServizio.size()));
 		bean.setNumCittadini(listaCittadiniServizio.size());
 		bean.setNumQuestionariCompilati(
@@ -161,7 +162,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		// Verifico se l'utente possiede il ruolo mandato nella richiesta
 		if( !this.utenteService.hasRuoloUtente(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato) ) {
 			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'",codiceFiscaleUtenteLoggato);
-			throw new ServizioException(messaggioErrore);
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.U06);
 		}
 		//recupero stati questionario dropdown
 		return filtroListaCittadiniServizio.getStatiQuestionario().isEmpty() 
@@ -199,7 +200,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	@LogMethod
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
-	public void creaNuovoCittadino(
+	public CittadinoEntity creaNuovoCittadino(
 			@NotNull final Long idServizio, 
 			@NotNull final NuovoCittadinoServizioRequest nuovoCittadinoRequest) {
 		final Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService.getCittadinoByCodiceFiscaleOrNumeroDocumento(
@@ -221,38 +222,29 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 						cittadino.getNumeroDocumento(),
 						idServizio
 					);
-				throw new CittadinoException(messaggioErrore);
+				throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U07);
 			}
-			
-			if(!nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile() &&
-					nuovoCittadinoRequest.getNumeroDocumento() != null &&
-					!nuovoCittadinoRequest.getNumeroDocumento().isEmpty() ) {
-				cittadino.setNumeroDocumento(nuovoCittadinoRequest.getNumeroDocumento());
-				cittadino.setTipoDocumento(cittadino.getTipoDocumento());
-			}
-		} else { 
+		} else {
 			cittadino.setCodiceFiscale(nuovoCittadinoRequest.getCodiceFiscale());
 			cittadino.setTipoDocumento(nuovoCittadinoRequest.getTipoDocumento());
 			cittadino.setNumeroDocumento(nuovoCittadinoRequest.getNumeroDocumento());
+			cittadino.setCognome(nuovoCittadinoRequest.getCognome());
+			cittadino.setNome(nuovoCittadinoRequest.getNome());
+			cittadino.setEmail(nuovoCittadinoRequest.getEmail());
+			cittadino.setDataOraCreazione(new Date());
+			cittadino.setDataOraAggiornamento(new Date());
+			cittadino.setAnnoDiNascita(nuovoCittadinoRequest.getAnnoNascita());
+			cittadino.setCategoriaFragili(nuovoCittadinoRequest.getCategoriaFragili());
+			cittadino.setCittadinanza(nuovoCittadinoRequest.getCittadinanza());
+			cittadino.setComuneDiDomicilio(nuovoCittadinoRequest.getComuneDomicilio());
+			cittadino.setGenere(nuovoCittadinoRequest.getGenere());
+			cittadino.setNumeroDiCellulare(nuovoCittadinoRequest.getNumeroCellulare());
+			cittadino.setOccupazione(nuovoCittadinoRequest.getStatoOccupazionale());
+			cittadino.setPrefissoTelefono(nuovoCittadinoRequest.getPrefisso());
+			cittadino.setTelefono(nuovoCittadinoRequest.getTelefono());
+			cittadino.setTitoloDiStudio(nuovoCittadinoRequest.getTitoloStudio());
+			cittadino = cittadinoRepository.save(cittadino);
 		}
-		
-		cittadino.setCognome(nuovoCittadinoRequest.getCognome());
-		cittadino.setNome(nuovoCittadinoRequest.getNome());
-		cittadino.setEmail(nuovoCittadinoRequest.getEmail());
-		cittadino.setDataOraCreazione(new Date());
-		cittadino.setDataOraAggiornamento(new Date());
-		cittadino.setAnnoDiNascita(nuovoCittadinoRequest.getAnnoNascita());
-		cittadino.setCategoriaFragili(nuovoCittadinoRequest.getCategoriaFragili());
-		cittadino.setCittadinanza(nuovoCittadinoRequest.getCittadinanza());
-		cittadino.setComuneDiDomicilio(nuovoCittadinoRequest.getComuneDomicilio());
-		cittadino.setGenere(nuovoCittadinoRequest.getGenere());
-		cittadino.setNumeroDiCellulare(nuovoCittadinoRequest.getNumeroCellulare());
-		cittadino.setOccupazione(nuovoCittadinoRequest.getStatoOccupazionale());
-		cittadino.setPrefissoTelefono(nuovoCittadinoRequest.getPrefisso());
-		cittadino.setTelefono(nuovoCittadinoRequest.getTelefono());
-		cittadino.setTitoloDiStudio(nuovoCittadinoRequest.getTitoloStudio());
-		
-		cittadino = cittadinoRepository.save(cittadino);
 		
 		//associo il cittadino al servizio
 		this.associaCittadinoAServizio(idServizio, cittadino);
@@ -265,9 +257,11 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		
 		//creo il questionario in stato NON_INVIATO
 		this.creaQuestionarioNonInviato(servizioDBFetch, cittadino);
+		
+		return cittadino;
 	}
 
-	private boolean esisteCittadinoByIdServizioAndIdCittadino(@NotNull final Long idServizio, @NotNull final Long idCittadino) {
+	public boolean esisteCittadinoByIdServizioAndIdCittadino(@NotNull final Long idServizio, @NotNull final Long idCittadino) {
 		return this.servizioXCittadinoRepository.findCittadinoByIdServizioAndIdCittadino(idServizio, idCittadino) > 0;
 	}
 	
@@ -275,7 +269,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	@LogMethod
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
-	private void associaCittadinoAServizio(@NotNull final Long idServizio, @NotNull final CittadinoEntity cittadino) {
+	public void associaCittadinoAServizio(@NotNull final Long idServizio, @NotNull final CittadinoEntity cittadino) {
 		ServizioXCittadinoEntity servizioXCittadino = new ServizioXCittadinoEntity();
 		ServizioCittadinoKey key = new ServizioCittadinoKey(cittadino.getId(), idServizio);
 		servizioXCittadino.setId(key);
@@ -459,11 +453,11 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 			
 			return esiti;
 		} catch (IOException e) {
-			throw new ServizioException("Impossibile effettuare upload lista cittadini", e);
+			throw new ServizioException("Impossibile effettuare upload lista cittadini", e, CodiceErroreEnum.CIT01);
 		}
 	}
 
-	private void inserisciCittadino(CittadinoEntity cittadino, Long idServizio) {
+	public void inserisciCittadino(CittadinoEntity cittadino, Long idServizio) {
 		cittadino = cittadinoRepository.save(cittadino);
 		
 		//associo il cittadino al servizio
@@ -482,7 +476,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		
 	}
 
-	private void popolaCittadino(CittadinoEntity cittadino, CittadinoUploadBean cittadinoUpload) {
+	public void popolaCittadino(CittadinoEntity cittadino, CittadinoUploadBean cittadinoUpload) {
 		cittadino.setCodiceFiscale(cittadinoUpload.getCodiceFiscale());
 		cittadino.setTipoDocumento(cittadinoUpload.getTipoDocumento());
 		cittadino.setNumeroDocumento(cittadinoUpload.getNumeroDocumento());
@@ -507,52 +501,94 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		
 	}
 
-	private boolean esisteCodFiscaleODocumento(CittadinoUploadBean cittadinoUpload) {
+	public boolean esisteCodFiscaleODocumento(CittadinoUploadBean cittadinoUpload) {
 		return cittadinoUpload.getCodiceFiscale() != null && !cittadinoUpload.getCodiceFiscale().isEmpty() ||
 				cittadinoUpload.getNumeroDocumento() != null && !cittadinoUpload.getNumeroDocumento().isEmpty();
 	}
 
 	@LogMethod
 	@LogExecutionTime
-	@Transactional(rollbackOn = Exception.class)
 	public void inviaQuestionario(@NotNull final String idQuestionario, @NotNull final Long idCittadino) {
 		QuestionarioCompilatoEntity questionarioCompilato = questionarioCompilatoSqlRepository.findById(idQuestionario)
-				.orElseThrow(() -> new ServizioException("id questionario inesistente") );
+				.orElseThrow(() -> new ServizioException("id questionario inesistente", CodiceErroreEnum.Q01) );
 		CittadinoEntity cittadino = questionarioCompilato.getCittadino();
 		if(cittadino == null || !idCittadino.equals(cittadino.getId())) {
-			throw new ServizioException("coppia cittadino - id questionario inesistente");
+			throw new ServizioException("coppia cittadino - id questionario inesistente", CodiceErroreEnum.Q01);
 		}
+		inviaLinkAnonimoAndAggiornaStatoQuestionarioCompilato(idQuestionario, questionarioCompilato, cittadino);
+	}
+
+	@LogMethod
+	@LogExecutionTime
+	@Transactional(rollbackOn = Exception.class)
+	public void inviaLinkAnonimoAndAggiornaStatoQuestionarioCompilato(
+			final String idQuestionario,
+			QuestionarioCompilatoEntity questionarioCompilato, 
+			CittadinoEntity cittadino) {
 		inviaLinkAnonimo(cittadino,idQuestionario);
 		questionarioCompilato.setStato(StatoQuestionarioEnum.INVIATO.getValue());
 		questionarioCompilatoSqlRepository.save(questionarioCompilato);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
-	private void inviaLinkAnonimo(CittadinoEntity cittadino,String idQuestionario) {
-		generaToken(cittadino, idQuestionario);
-		try {
-			this.emailService.inviaEmail(cittadino.getEmail(), 
+	public void inviaLinkAnonimo(CittadinoEntity cittadino,String idQuestionario) {
+		new Thread( () -> {
+			try {
+				String token = this.generaToken(cittadino, idQuestionario);
+				String[] argsTemplate = new String[] { cittadino.getNome(), token};
+
+				// stacco un thread per invio email
+				this.emailService.inviaEmail(
+					cittadino.getEmail(), 
 					EmailTemplateEnum.QUESTIONARIO_ONLINE, 
-					new String[] { cittadino.getNome() } );
-		}catch(Exception ex) {
-			log.error("Impossibile inviare la mail al cittadino con id={}.", cittadino.getId());
-			log.error("{}", ex);
-			throw new ServizioException("Impossibile inviare la mail");
-		}
+					argsTemplate
+				);
+			} catch(Exception ex) {
+				log.error("Impossibile inviare la mail al cittadino con id={}.", cittadino.getId());
+				log.error("{}", ex);
+				throw new ServizioException("Impossibile inviare la mail", ex, CodiceErroreEnum.E01);
+			}
+		}).start();
 	}
 
 	@Transactional(rollbackOn = Exception.class)
-	private String generaToken(CittadinoEntity cittadino, String idQuestionarioCompilato) {
-		String token = UUID.randomUUID().toString();
-		QuestionarioInviatoOnlineEntity invioQuestionario = questionarioInviatoOnlineRepository.
-				findByIdQuestionarioCompilatoAndCodiceFiscale(idQuestionarioCompilato, cittadino.getCodiceFiscale())
+	@LogMethod
+	@LogExecutionTime
+	public String generaToken(CittadinoEntity cittadino, String idQuestionarioCompilato) {
+		// Recupera QuestionarioInviato a partire dal questionario compialato e codice fiscale cittadino se esiste.
+		// Altrimenti crea un QuestionarioInviato ex-novo
+		QuestionarioInviatoOnlineEntity invioQuestionario = questionarioInviatoOnlineRepository
+				.findByIdQuestionarioCompilatoAndCodiceFiscale(idQuestionarioCompilato, cittadino.getCodiceFiscale())
 				.orElse(new QuestionarioInviatoOnlineEntity());
+		
 		invioQuestionario.setCodiceFiscale(cittadino.getCodiceFiscale());
 		invioQuestionario.setEmail(cittadino.getEmail());
-		invioQuestionario.setDataOraCreazione(new Date());
 		invioQuestionario.setIdQuestionarioCompilato(idQuestionarioCompilato);
+
+		String token = UUID.randomUUID().toString();
 		invioQuestionario.setToken(token);
+		invioQuestionario.setDataOraCreazione(new Date());
+		
 		questionarioInviatoOnlineRepository.save(invioQuestionario);
+		
 		return token;
+	}
+
+	@Transactional
+	@LogMethod
+	@LogExecutionTime
+	public void inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizio(Long idServizio) {
+		// recupero tutti i questionari compilati con STATO = NON INVIATO per quel servizio
+		List<QuestionarioCompilatoEntity> questionarioCompilatoList = this.questionarioCompilatoSqlRepository.findByIdServizioAndStato(idServizio, StatoQuestionarioEnum.NON_INVIATO.toString());
+		
+		questionarioCompilatoList
+			.stream()
+			.forEach(questionarioCompilato -> {
+				String idQuestionarioCompilato = questionarioCompilato.getId();
+				CittadinoEntity cittadinoAssociatoQuestionarioCompilato = questionarioCompilato.getCittadino();
+				this.inviaLinkAnonimoAndAggiornaStatoQuestionarioCompilato(idQuestionarioCompilato, questionarioCompilato, cittadinoAssociatoQuestionarioCompilato);
+			});
 	}
 }
