@@ -458,7 +458,8 @@ export const AssignManagerAuthorityReferentDelegate =
       [key: string]: string | number | boolean | Date | string[] | undefined;
     },
     entity: 'programma' | 'progetto',
-    role: UserAuthorityRole
+    role: UserAuthorityRole,
+    userId?: string
   ) =>
   async (dispatch: Dispatch) => {
     try {
@@ -490,13 +491,13 @@ export const AssignManagerAuthorityReferentDelegate =
           mansione: userDetail.mansione,
         };
       }
-      if (userDetail?.id) {
+      if (userDetail?.id && userId) {
         userDetail.codiceFiscale &&
           (await API.put(
             `/utente/${userDetail.id.toString().toUpperCase()}`,
             userDetail
           ));
-        await API.post(endpoint, body);
+        userId !== userDetail.id.toString() && (await API.post(endpoint, body));
       } else {
         const payload = {
           telefono: userDetail?.telefono,

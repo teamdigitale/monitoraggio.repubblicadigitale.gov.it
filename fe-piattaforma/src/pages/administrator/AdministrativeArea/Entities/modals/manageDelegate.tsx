@@ -53,7 +53,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
   const [alreadySearched, setAlreadySearched] = useState<boolean>(false);
   const dispatch = useDispatch();
   const usersList = useAppSelector(selectUsers).list;
-  const { entityId, projectId, authorityId } = useParams();
+  const { entityId, projectId, authorityId, userId } = useParams();
   const authority = useAppSelector(selectAuthorities).detail.dettagliInfoEnte;
 
   const resetModal = () => {
@@ -74,23 +74,23 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
   }, [creation]);
 
   const handleSaveDelegate = async () => {
-    if (isFormValid && authority?.id) {
+    if (isFormValid && (authority?.id || authorityId)) {
       if (projectId) {
-        if (authorityId) {
+        if (authority?.id || authorityId) {
           await dispatch(
             AssignPartnerAuthorityReferentDelegate(
-              authorityId,
+              (authority?.id || authorityId),
               projectId,
               newFormValues,
               'DEPP'
             )
           );
 
-          dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
+          dispatch(GetPartnerAuthorityDetail(projectId, (authority?.id || authorityId)));
         } else {
           await dispatch(
             AssignManagerAuthorityReferentDelegate(
-              authority.id,
+              (authority?.id || authorityId),
               projectId,
               newFormValues,
               'progetto',
@@ -101,16 +101,18 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
           dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
         }
       } else if (entityId) {
-        await dispatch(
-          AssignManagerAuthorityReferentDelegate(
-            authority.id,
-            entityId,
-            newFormValues,
-            'programma',
-            'DEG'
-          )
-        );
+          await dispatch(
+            AssignManagerAuthorityReferentDelegate(
+              (authority?.id || authorityId),
+              entityId,
+              newFormValues,
+              'programma',
+              'DEG',
+              userId
+            )
+          );
         dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+        if (userId) dispatch(GetUserDetails(userId));
       }
       resetModal();
       dispatch(closeModal());
