@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.75](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.74...1.0.0-develop.75) (2022-08-05)
+
+
+### Bug Fixes
+
+* **be:** fix integrazioni FE ([a87c7a5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a87c7a5cc1793fb15357ad9d8d737235c34ac125))
+
 ## [1.0.0-develop.74](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.73...1.0.0-develop.74) (2022-08-04)
 
 
