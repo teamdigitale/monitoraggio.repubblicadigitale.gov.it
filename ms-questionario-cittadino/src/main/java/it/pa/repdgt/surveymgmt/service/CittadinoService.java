@@ -305,11 +305,11 @@ public class CittadinoService {
 
 	/**
 	 * Restituisce la stringa contenente la tipologia di consenso 
-	 * data per il cittadino che ha quel dato codice fiscale
+	 * data per il cittadino che ha quel dato codice fiscale o numero documento
 	 * */
 	@LogMethod
 	@LogExecutionTime
-	public String getConsensoByCodiceFiscaleCittadino(String codiceFiscaleCittadino) {
-		return this.cittadinoRepository.findConsensoByCodiceFiscale(codiceFiscaleCittadino);
+	public String getConsensoByCodiceFiscaleCittadinoOrNumeroDocumento(String codiceFiscaleCittadino, String numeroDocumento) {
+		return this.cittadinoRepository.findConsensoByCodiceFiscaleOrNumeroDocumento(codiceFiscaleCittadino, numeroDocumento);
 	}
 }

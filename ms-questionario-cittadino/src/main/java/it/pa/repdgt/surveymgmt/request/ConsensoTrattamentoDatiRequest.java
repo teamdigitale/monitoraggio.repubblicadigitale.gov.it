@@ -16,6 +16,8 @@ public class ConsensoTrattamentoDatiRequest implements Serializable {
 
 	@NotBlank(message = "codiceFiscaleCittadino non può essere null o blank")
 	private String codiceFiscaleCittadino;
+	@NotBlank(message = "numero documento non può essere null o blank")
+	private String numeroDocumentoCittadino;
 	@NotNull(message = "consensoTrattamentoDatiEnum non può essere null")
 	private ConsensoTrattamentoDatiEnum consensoTrattamentoDatiEnum;
 }
