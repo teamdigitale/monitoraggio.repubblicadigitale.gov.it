@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.78](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.77...1.0.0-develop.78) (2022-08-05)
+
+
+### Bug Fixes
+
+* **be:** fix per compila anonimo ([4a7c1bf](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4a7c1bfbbb85811feaf66f023f7328ab240a0724))
+
 ## [1.0.0-develop.77](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.76...1.0.0-develop.77) (2022-08-05)
 
 
