@@ -39,6 +39,7 @@ import it.pa.repdgt.gestioneutente.dto.UtenteDto;
 import it.pa.repdgt.gestioneutente.mapper.UtenteMapper;
 import it.pa.repdgt.gestioneutente.request.AggiornaUtenteRequest;
 import it.pa.repdgt.gestioneutente.request.NuovoUtenteRequest;
+import it.pa.repdgt.gestioneutente.request.ProfilazioneRequest;
 import it.pa.repdgt.gestioneutente.request.UtenteRequest;
 import it.pa.repdgt.gestioneutente.resource.UtenteResource;
 import it.pa.repdgt.gestioneutente.resource.UtentiLightResourcePaginata;
@@ -126,6 +127,14 @@ public class UtenteRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaUtenteBean getSchedaUtenteByIdUtente(@PathVariable(value = "idUtente") Long idUtente) {
 		return this.utenteService.getSchedaUtenteByIdUtente(idUtente);
+	}
+	
+	// TOUCH POINT - 4.1 - Scheda Utente
+	@PostMapping(path = "/{idUtente}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public SchedaUtenteBean getSchedaUtenteByIdUtente(@PathVariable(value = "idUtente") Long idUtente,
+			@RequestBody ProfilazioneRequest sceltaProfilo) {
+		return this.utenteService.getSchedaUtenteByIdUtente(idUtente, sceltaProfilo);
 	}
 	
 	// TOUCH POINT - 4.4 - Associa Ruolo ad Utente
