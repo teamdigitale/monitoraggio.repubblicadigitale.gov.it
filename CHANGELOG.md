@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.77](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.76...1.0.0-develop.77) (2022-08-05)
+
+
+### Bug Fixes
+
+* **be:** aggiorna utente e cittadino ([a599f57](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a599f579498e694e1b016516b2dc535b734549d3))
+
 ## [1.0.0-develop.76](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.75...1.0.0-develop.76) (2022-08-05)
 
 
