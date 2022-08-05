@@ -43,6 +43,7 @@ import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.UtenteXRuolo;
 import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -286,27 +287,34 @@ public class UtenteService {
 //		if(isEmailDuplicata(utente.getEmail(), utente.getCodiceFiscale())) {
 //			throw new UtenteException("ERRORE: non possono esistere a sistema due email per due utenti diversi");
 //		}
+		// Verifico se esiste sul DB un utente con stesso codice fiscale e in caso affermativo lancio eccezione
 		Optional<UtenteEntity> utenteDBFetch = this.utenteRepository.findByCodiceFiscale(utente.getCodiceFiscale());
 		if(utenteDBFetch.isPresent()) {
 			new UtenteException(String.format("Utente con codice fiscale '%s' già esistente", utente.getCodiceFiscale()));
 		}
+		
 		utente.setStato(StatoEnum.NON_ATTIVO.getValue());
 		RuoloEntity ruolo = this.ruoloService.getRuoloByCodiceRuolo(codiceRuolo);
 		utente.getRuoli().add(ruolo);
 		utente.setDataOraCreazione(new Date());
 		utente.setDataOraAggiornamento(utente.getDataOraCreazione());
-		utente = this.salvaUtente(utente);
+		
+		final UtenteEntity utenteSalvato = this.salvaUtente(utente);
 		if(!ruolo.getPredefinito()) {
-			try {
-				this.emailService.inviaEmail(utente.getEmail(), 
-						EmailTemplateEnum.RUOLO_CUSTOM, 
-						new String[] { utente.getNome(), codiceRuolo});
-			}catch(Exception ex) {
-				log.error("Impossibile inviare la mail al nuovo utente censito con codice fiscale {}", utente.getCodiceFiscale());
-				log.error("{}", ex);
-			}
+			// stacco un thread per invio email al nuovo utente censito
+			new Thread(() ->{
+				try {
+					this.emailService.inviaEmail(utenteSalvato.getEmail(), 
+							EmailTemplateEnum.RUOLO_CUSTOM, 
+							new String[] { utente.getNome(), codiceRuolo});
+				}catch(Exception ex) {
+					log.error("Impossibile inviare la mail al nuovo utente censito con codice fiscale {}", utente.getCodiceFiscale());
+					log.error("{}", ex);
+				}
+			}).start();
 		}
-		return utente;
+		
+		return utenteSalvato;
 	}
 	
 //	private boolean isEmailDuplicata(String email, String codiceFiscale) {

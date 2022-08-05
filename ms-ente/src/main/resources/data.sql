@@ -152,14 +152,14 @@ insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora
      values(1006, 'Regione Campania', 'Regione Campania', 'pubblico', '22344672811', 'Via Battisti,15 80124 Napoli', CURRENT_TIME( ));
      
  -- CREAZIONE ANAGRAFICA SEDE
- insert into sede(id, nome)
-	values(1, 'Sede x');
- insert into sede(id, nome)
-	values(2, 'Sede y');
- insert into sede(id, nome)
-	values(3, 'Sede z');
- insert into sede(id, nome)
-	values(4, 'Sede w');
+ insert into sede(id, nome, data_ora_creazione, data_ora_aggiornamento)
+	values(1, 'Sede x', CURRENT_TIME, CURRENT_TIME);
+ insert into sede(id, nome, data_ora_creazione, data_ora_aggiornamento)
+	values(2, 'Sede y', CURRENT_TIME, CURRENT_TIME);
+ insert into sede(id, nome, data_ora_creazione, data_ora_aggiornamento)
+	values(3, 'Sede z', CURRENT_TIME, CURRENT_TIME);
+ insert into sede(id, nome, data_ora_creazione, data_ora_aggiornamento)
+	values(4, 'Sede w', CURRENT_TIME, CURRENT_TIME);
 	
 -- CREAZIONE ANAGRAFICA INDIRIZZO_SEDE E ASSOCIAZIONE A SEDE
 insert into indirizzo_sede(id, cap, civico, comune, data_ora_aggiornamento, data_ora_creazione, sede_id, nazione, provincia, via) 
@@ -175,6 +175,8 @@ insert into indirizzo_sede(id, cap, civico, comune, data_ora_aggiornamento, data
 	
 	
 -- CREAZIONE ANAGRAFICA INDIRIZZO_SEDE_FASCIA_ORARIA E ASSOCIAZIONE A INDIRIZZO_SEDE
+INSERT INTO indirizzo_sede_fascia_oraria (id,indirizzo_sede_id,lun_orario_apertura_1,lun_orario_chiusura_1,lun_orario_apertura_2,lun_orario_chiusura_2,mar_orario_apertura_1,mar_orario_chiusura_1,mar_orario_apertura_2,mar_orario_chiusura_2,mer_orario_apertura_1,mer_orario_chiusura_1,mer_orario_apertura_2,mer_orario_chiusura_2,gio_orario_apertura_1,gio_orario_chiusura_1,gio_orario_apertura_2,gio_orario_chiusura_2,ven_orario_apertura_1,ven_orario_chiusura_1,ven_orario_apertura_2,ven_orario_chiusura_2,sab_orario_apertura_1,sab_orario_chiusura_1,sab_orario_apertura_2,sab_orario_chiusura_2,dom_orario_apertura_1,dom_orario_chiusura_1,dom_orario_apertura_2,dom_orario_chiusura_2,data_ora_creazione,data_ora_aggiornamento)
+	VALUES (1, 1, '07:00','13:00', '07:00','13:00', '07:00','13:00', '07:00','13:00','07:00','13:00','07:00','14:00','07:00','09:00','07:00','09:00','07:00','09:00','07:00','09:00','07:30','22:00','07:30','22:00','07:00','20:00','07:30','22:00','2022-07-19 11:42:06','2022-07-19 11:42:06');
 
  -- ASSEGNAMENTO DEGLI ENTI GESTORI DI PROGRAMMA AI PROGRAMMI
  -- E ASSEGNAZIONE STATO DELL'ENTE GESTORE DI PROGRAMMA

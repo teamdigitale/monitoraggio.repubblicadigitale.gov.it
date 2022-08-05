@@ -57,6 +57,7 @@ import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.UtenteXRuolo;
+import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEnteGestoreProgettoKey;
 import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEnteGestoreProgrammaKey;
 import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
@@ -659,15 +660,17 @@ public class EnteService {
 			this.ruoloService.aggiungiRuoloAUtente(codiceFiscaleUtente, codiceRuolo);
 		}
 		
-		//invio email welcome al referente/delegato
-		try {
-			this.emailService.inviaEmail(utenteFetch.getEmail(), 
-					EmailTemplateEnum.GEST_PROG, 
-					new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(codiceRuolo).getValue() });
-		} catch (Exception ex) {
-			log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore programma per programma con id={}.", idProgramma);
-			log.error("{}", ex);
-		}
+		//stacco un thread per invio email welcome al referente/delegato
+		new Thread(() -> {
+			try {
+				this.emailService.inviaEmail(utenteFetch.getEmail(), 
+						EmailTemplateEnum.GEST_PROG, 
+						new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(codiceRuolo).getValue() });
+			} catch (Exception ex) {
+				log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore programma per programma con id={}.", idProgramma);
+				log.error("{}", ex);
+			}
+		}).start();
 	}
 	
 	/**
@@ -753,15 +756,17 @@ public class EnteService {
 			this.ruoloService.aggiungiRuoloAUtente(codiceFiscaleUtente, codiceRuolo);	
 		}
 		
-		//invio email welcome al referente/delegato
-		try {
-			this.emailService.inviaEmail(utenteFetch.getEmail(), 
-					EmailTemplateEnum.GEST_PROGE_PARTNER, 
-					new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(codiceRuolo).getValue() });
-		} catch (Exception ex) {
-			log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore progetto per progetto con id={}.", idProgetto);
-			log.error("{}", ex);
-		}
+		//stacco un thread per invio email welcome al referente/delegato
+		new Thread(() -> {
+			try {
+				this.emailService.inviaEmail(utenteFetch.getEmail(), 
+						EmailTemplateEnum.GEST_PROGE_PARTNER, 
+						new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(codiceRuolo).getValue() });
+			} catch (Exception ex) {
+				log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore progetto per progetto con id={}.", idProgetto);
+				log.error("{}", ex);
+			}
+		}).start();
 	}
 	
 	/**
@@ -806,6 +811,7 @@ public class EnteService {
 		return schedaEnteGestoreProgramma;
 	}
 	
+	@Deprecated
 	@LogMethod
 	@LogExecutionTime
 	public SchedaEnteGestoreProgettoBean getSchedaEnteGestoreProgettoByIdProgetto(Long idProgetto) {
@@ -828,6 +834,47 @@ public class EnteService {
 										sedeGestoreProgetto.setStato(this.sedeService.getStatoSedeByIdProgettoAndIdSedeAndIdEnte(idProgetto, sede.getId(), ente.getId()));
 										return sedeGestoreProgetto;
 										}).collect(Collectors.toList());
+		
+		schedaEnteGestoreProgetto.setEnte(ente);
+		schedaEnteGestoreProgetto.setReferentiEnteGestoreProgetto(referenti);
+		schedaEnteGestoreProgetto.setDelegatiEnteGestoreProgetto(delegati);
+		schedaEnteGestoreProgetto.setSediEnteGestoreProgetto(sediGestoreProgetto);
+		return schedaEnteGestoreProgetto;
+	}
+	
+	@LogMethod
+	@LogExecutionTime
+	public SchedaEnteGestoreProgettoBean getSchedaEnteGestoreProgettoByIdProgettoAndSceltaProfilo(Long idProgetto, EntiPaginatiParam entiPaginatiParam) {
+		String errorMessage = String.format("Non esiste nessun ente gestore per progetto con id=%s", idProgetto);
+		SchedaEnteGestoreProgettoBean schedaEnteGestoreProgetto = new SchedaEnteGestoreProgettoBean();
+		EnteProjection ente = this.enteRepository.findEnteGestoreProgettoByIdProgetto(idProgetto)
+				.orElseThrow(() -> new EnteException(errorMessage, CodiceErroreEnum.C01));
+		
+		List<UtenteProjection> referenti = this.referentiDelegatiEnteGestoreProgettoService.getReferentiEnteGestoreByIdProgettoAndIdEnte(idProgetto, ente.getId());
+		List<UtenteProjection> delegati = this.referentiDelegatiEnteGestoreProgettoService.getDelegatiEnteGestoreByIdProgettoAndIdEnte(idProgetto, ente.getId());
+		List<SedeEntity> sedi = this.sedeService.getSediEnteByIdProgettoAndIdEnte(idProgetto, ente.getId());
+		List<SedeBean> sediGestoreProgetto = sedi
+									.stream()
+									.map(sede -> {
+										SedeBean sedeGestoreProgetto = new SedeBean();
+										sedeGestoreProgetto.setId(sede.getId());
+										sedeGestoreProgetto.setNome(sede.getNome());
+										sedeGestoreProgetto.setServiziErogati(sede.getServiziErogati());
+										sedeGestoreProgetto.setNrFacilitatori(this.utenteService.countFacilitatoriPerSedeProgettoEnte(idProgetto, sede.getId(), ente.getId()));
+										sedeGestoreProgetto.setStato(this.sedeService.getStatoSedeByIdProgettoAndIdSedeAndIdEnte(idProgetto, sede.getId(), ente.getId()));
+										
+										List<String> facilitatoriVolontari = Arrays.asList(RuoloUtenteEnum.FAC.toString(), RuoloUtenteEnum.VOL.toString());
+										if(facilitatoriVolontari.contains(entiPaginatiParam.getCodiceRuolo().toString())) {
+											String cfUtenteLoggato = entiPaginatiParam.getCfUtente();
+											EnteSedeProgettoFacilitatoreKey id = new EnteSedeProgettoFacilitatoreKey(ente.getId(), sede.getId(), idProgetto, cfUtenteLoggato);
+											boolean isSedeAssociatoAUtente = this.enteSedeProgettoFacilitatoreService.getEnteSedeProgettoFacilitatoreById(id).isPresent();
+											sedeGestoreProgetto.setAssociatoAUtente(isSedeAssociatoAUtente);
+										} else {
+											sedeGestoreProgetto.setAssociatoAUtente(Boolean.TRUE);
+										}
+										
+										return sedeGestoreProgetto;
+									}).collect(Collectors.toList());
 		
 		schedaEnteGestoreProgetto.setEnte(ente);
 		schedaEnteGestoreProgetto.setReferentiEnteGestoreProgetto(referenti);

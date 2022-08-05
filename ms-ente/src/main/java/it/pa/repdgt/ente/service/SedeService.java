@@ -111,8 +111,11 @@ public class SedeService {
 				indirizzoSede.setDataOraCreazione(new Date());
 				indirizzoSede.setDataOraAggiornamento(new Date());
 				final IndirizzoSedeEntity indirizzoSedeSalvato = this.indirizzoSedeService.salvaIndirizzoSede(indirizzoSede);
+				
 				IndirizzoSedeFasciaOrariaEntity fasceOrarieDaSalvare = indirizzoSedeRequest.getFasceOrarieAperturaIndirizzoSede();
 				fasceOrarieDaSalvare.setIdIndirizzoSede(indirizzoSedeSalvato.getId());
+				fasceOrarieDaSalvare.setDataOraCreazione(new Date());
+				fasceOrarieDaSalvare.setDataOraAggiornamento(fasceOrarieDaSalvare.getDataOraCreazione());
 				this.indirizzoSedeFasciaOrariaService.salvaIndirizzoSedeFasciaOraria(fasceOrarieDaSalvare);
 		});
 		return sedeSalvata;
@@ -244,6 +247,8 @@ public class SedeService {
 		Optional<IndirizzoSedeFasciaOrariaEntity> fasceOrarieDaAggiornare = this.indirizzoSedeFasciaOrariaService.getFasceOrarieByIdIndirizzoSede(indirizzoSedeEntity.getId());
 		if(fasceOrarieDaAggiornare.isPresent()) {
 			fasciaOraria.setId(fasceOrarieDaAggiornare.get().getId());
+			fasciaOraria.setDataOraCreazione(fasceOrarieDaAggiornare.get().getDataOraCreazione());
+			fasciaOraria.setDataOraAggiornamento(new Date());
 		}
 		fasciaOraria.setIdIndirizzoSede(indirizzoRequest.getId());
 		this.indirizzoSedeFasciaOrariaService.salvaIndirizzoSedeFasciaOraria(fasciaOraria);

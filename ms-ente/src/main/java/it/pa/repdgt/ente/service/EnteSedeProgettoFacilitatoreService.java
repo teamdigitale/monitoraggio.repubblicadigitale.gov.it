@@ -2,6 +2,7 @@ package it.pa.repdgt.ente.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
@@ -165,15 +166,17 @@ public class EnteSedeProgettoFacilitatoreService {
 		}
 		
 		if(StatoEnum.ATTIVO.getValue().equalsIgnoreCase(progettoDBFEtch.getStato())) {
-			//INVIO EMAIL WELCOME KIT AL FACILITATORE SSE IL PROGETTO E' ATTIVO
-			try {
-				this.emailService.inviaEmail(utenteFetch.getEmail(), 
-						EmailTemplateEnum.FACILITATORE, 
-						new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(codiceRuolo).getValue() });
-			} catch (Exception ex) {
-				log.error("Impossibile inviare la mail al facilitatore del progetto con id={}.", idProgetto);
-				log.error("{}", ex);
-			}
+			//STACCO UN THREAD E INVIO EMAIL WELCOME KIT AL FACILITATORE SSE IL PROGETTO E' ATTIVO
+			new Thread(() ->{
+				try {
+					this.emailService.inviaEmail(utenteFetch.getEmail(), 
+							EmailTemplateEnum.FACILITATORE, 
+							new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(codiceRuolo).getValue() });
+				} catch (Exception ex) {
+					log.error("Impossibile inviare la mail al facilitatore del progetto con id={}.", idProgetto);
+					log.error("{}", ex);
+				}
+			}).start();
 		}
 	}
 	
@@ -305,5 +308,11 @@ public class EnteSedeProgettoFacilitatoreService {
 	@LogExecutionTime
 	public int countAssociazioniFacilitatoreAndVolontario(String facilitatore, String codiceRuolo) {
 		return this.enteSedeProgettoFacilitatoreRepository.countAssociazioniFacilitatoreAndVolontario(facilitatore, codiceRuolo);
+	}
+
+	@LogMethod
+	@LogExecutionTime
+	public Optional<EnteSedeProgettoFacilitatoreEntity> getEnteSedeProgettoFacilitatoreById(EnteSedeProgettoFacilitatoreKey id) {
+		return this.enteSedeProgettoFacilitatoreRepository.findById(id);
 	}
 }

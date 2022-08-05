@@ -1,5 +1,6 @@
 package it.pa.repdgt.surveymgmt.service;
 
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -27,10 +28,13 @@ import it.pa.repdgt.shared.entity.QuestionarioInviatoOnlineEntity;
 import it.pa.repdgt.shared.entityenum.ConsensoTrattamentoDatiEnum;
 import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.surveymgmt.bean.QuestionarioCompilatoBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection.DatiIstanza;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioCompilatoException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
+import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioCompilatoMongoRepository;
 import it.pa.repdgt.surveymgmt.repository.QuestionarioCompilatoSqlRepository;
 import it.pa.repdgt.surveymgmt.repository.QuestionarioInviatoOnlineRepository;
@@ -55,7 +59,7 @@ public class QuestionarioCompilatoService {
 	public QuestionarioCompilatoCollection getQuestionarioCompilatoById(@NotBlank final String idQuestionarioCompilato) {
 		final String messaggioErrore = String.format("Questionario compilato con id=%s non trovato", idQuestionarioCompilato);
 		return questionarioCompilatoMongoRepository.findQuestionarioCompilatoById(idQuestionarioCompilato)
-				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore));
+				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
 	}
 	
 	@LogMethod
@@ -71,11 +75,11 @@ public class QuestionarioCompilatoService {
 		final Optional<QuestionarioCompilatoCollection> questionarioCompilatoCollection = this.questionarioCompilatoMongoRepository.findQuestionarioCompilatoById(idQuestionarioCompilato);
 		if(!questionarioCompilatoEntity.isPresent()) {
 			final String messaggioErrore = String.format("Questionario compilato con id=%s non presente in MySql", idQuestionarioCompilato);
-			throw new QuestionarioCompilatoException(messaggioErrore);
+			throw new QuestionarioCompilatoException(messaggioErrore, CodiceErroreEnum.QC01);
 		}
 		if(!questionarioCompilatoCollection.isPresent()) {
 			final String messaggioErrore = String.format("Questionario compilato con id=%s non presente in MongoDB", idQuestionarioCompilato);
-			throw new QuestionarioCompilatoException(messaggioErrore);
+			throw new QuestionarioCompilatoException(messaggioErrore, CodiceErroreEnum.QC02);
 		}
 		
 		// Recupero dalla request:
@@ -141,9 +145,15 @@ public class QuestionarioCompilatoService {
 					// solo in caso di consenso email,
 					// oltre a salvare il consenso sulla tabella cittadino, 
 					// occorre inviare email al cittadino
-					String[] argsTemplate = {  cittadinoDBFetch.getNome() };
-					this.emailService.inviaEmail(cittadinoDBFetch.getEmail(), EmailTemplateEnum.CONSENSO, argsTemplate);
-					cittadinoDBFetch.setTipoConferimentoConsenso(ConsensoTrattamentoDatiEnum.EMAIL.toString());
+					new Thread(() -> {
+						String[] argsTemplate = {  cittadinoDBFetch.getNome() };
+						try {
+							this.emailService.inviaEmail(cittadinoDBFetch.getEmail(), EmailTemplateEnum.CONSENSO, argsTemplate);
+						} catch(QuestionarioCompilatoException ex) {
+							throw new ServizioException("Impossibile inviare la mail", ex, CodiceErroreEnum.E01);
+						}
+						cittadinoDBFetch.setTipoConferimentoConsenso(ConsensoTrattamentoDatiEnum.EMAIL.toString());
+					}).start();
 					break;
 				default:
 					throw new UnsupportedOperationException("Consenso Trattamento specificato non valido");
@@ -174,18 +184,29 @@ public class QuestionarioCompilatoService {
 
 	@LogMethod
 	@LogExecutionTime
-	public QuestionarioCompilatoCollection getQuestionarioCompilatoByIdAnonimo(String idQuestionario, String token) throws ParseException {
-		verificaTokenQuestionario(idQuestionario, token);
-		return getQuestionarioCompilatoById(idQuestionario);		
+	public QuestionarioCompilatoBean getQuestionarioCompilatoByIdAnonimo(String idQuestionarioCompilato, String token) throws ParseException {
+		final QuestionarioCompilatoBean questionarioCompilatoBean = new QuestionarioCompilatoBean();
+		
+		verificaTokenQuestionario(idQuestionarioCompilato, token);
+		
+		CittadinoEntity cittadinoAssociatoAlQuestionarioCompilato = this.questionarioCompilatoSQLRepository.findById(idQuestionarioCompilato).get().getCittadino();
+		
+		QuestionarioCompilatoCollection questioanarioCompilatoDBFetch = this.getQuestionarioCompilatoById(idQuestionarioCompilato);	
+		questionarioCompilatoBean.setQuestionarioCompilatoCompilato(questioanarioCompilatoDBFetch);
+		
+		boolean isAbilitatoTrattamentoDati = cittadinoAssociatoAlQuestionarioCompilato.getTipoConferimentoConsenso() != null;
+		questionarioCompilatoBean.setAbilitatoConsensoTrattatamentoDatiCittadino(isAbilitatoTrattamentoDati);
+		
+		return questionarioCompilatoBean;
 	}
 
 	public void verificaTokenQuestionario(String idQuestionario, String token) throws ParseException {
 		QuestionarioInviatoOnlineEntity tokenQuestionario = questionarioInviatoOnlineRepository.
 				findByIdQuestionarioCompilatoAndToken(idQuestionario, token)
-				.orElseThrow(() -> new ResourceNotFoundException(String.format("token non valido per idQuestionario %s", idQuestionario)) );
+				.orElseThrow(() -> new ResourceNotFoundException(String.format("token non valido per idQuestionario %s", idQuestionario), CodiceErroreEnum.T01));
 
 		if(isTokenExpired(tokenQuestionario)) {
-			throw new QuestionarioCompilatoException(String.format("token scaduto per idQuestionario %s", idQuestionario)); 
+			throw new QuestionarioCompilatoException(String.format("token scaduto per idQuestionario %s", idQuestionario), CodiceErroreEnum.T02); 
 		}
 	}
 	

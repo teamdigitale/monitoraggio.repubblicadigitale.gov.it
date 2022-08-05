@@ -1,18 +1,21 @@
 package it.pa.repdgt.surveymgmt.exception;
 
+import it.pa.repdgt.shared.exception.BaseException;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class QuestionarioTemplateException extends RuntimeException {
-	private static final long serialVersionUID = -5106720840826699191L;
+public class QuestionarioTemplateException extends BaseException {
 	
-	public QuestionarioTemplateException(String messageException, Exception ex) {
+	public QuestionarioTemplateException(String messageException, Exception ex, CodiceErroreEnum codiceErroreEnum) {
 		super(messageException, ex);
+		this.codiceErroreEnum = codiceErroreEnum;
 	}
 	
-	public QuestionarioTemplateException(String messageException) {
-		this(messageException, null);
+	public QuestionarioTemplateException(String messageException, CodiceErroreEnum codiceErroreEnum) {
+		super(messageException, null);
+		this.codiceErroreEnum = codiceErroreEnum;
 	}
 }

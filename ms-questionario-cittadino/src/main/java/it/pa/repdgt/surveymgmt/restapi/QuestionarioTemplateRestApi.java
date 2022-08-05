@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiParam;
 import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
-import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 import it.pa.repdgt.surveymgmt.mapper.QuestionarioTemplateMapper;
 import it.pa.repdgt.surveymgmt.param.FiltroListaQuestionariTemplateParam;
@@ -50,6 +49,16 @@ public class QuestionarioTemplateRestApi {
 	private QuestionarioTemplateMapper questionarioTemplateMapper;
 	@Autowired
 	private QuestionarioTemplateService questionarioTemplateService;
+	
+	/**
+	 * Restituisce questionatio template che è associato al programma con particolare id
+	 * 
+	 * */
+	@ResponseStatus(value = HttpStatus.OK)
+	@GetMapping(path = "/programma/{idProgramma}")
+	public QuestionarioTemplateCollection getQuestionarioTemplateByIdProgramma(@PathVariable(value = "idProgramma") Long idProgramma) {
+		return this.questionarioTemplateService.getQuestionarioTemplateByIdProgramma(idProgramma);
+	}
 	
 	/***
 	 * Restituisce tutti i TemplateQuestionario paginati persistiti su database MongoDb 

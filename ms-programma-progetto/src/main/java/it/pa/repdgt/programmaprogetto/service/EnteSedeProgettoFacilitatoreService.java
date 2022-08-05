@@ -1,6 +1,7 @@
 package it.pa.repdgt.programmaprogetto.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
@@ -13,6 +14,7 @@ import it.pa.repdgt.programmaprogetto.projection.UtenteFacilitatoreProjection;
 import it.pa.repdgt.programmaprogetto.repository.EnteSedeProgettoFacilitatoreRepository;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
+import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 
@@ -91,5 +93,20 @@ public class EnteSedeProgettoFacilitatoreService {
 	@LogExecutionTime
 	public void salvaEnteSedeProgettoFacilitatore(EnteSedeProgettoFacilitatoreEntity utente) {
 		this.enteSedeProgettoFacilitatoreRepository.save(utente);
+	}
+
+	public boolean isEnteAssociatoAFacVol(Long idEnte, Long idProgetto, String cfUtente) {
+		return this.enteSedeProgettoFacilitatoreRepository.findByIdEnteAndIdProgettoAndIdFacilitatore(idEnte, idProgetto, cfUtente).isPresent();
+		
+	}
+	
+	public Optional<EnteSedeProgettoFacilitatoreEntity> getById(Long idEnte, Long idSede, Long idProgetto, String idFacilitatore) {
+		EnteSedeProgettoFacilitatoreKey id = new EnteSedeProgettoFacilitatoreKey(
+				idEnte,
+				idSede,
+				idProgetto,
+				idFacilitatore
+				);
+		return enteSedeProgettoFacilitatoreRepository.findById(id);
 	}
 }

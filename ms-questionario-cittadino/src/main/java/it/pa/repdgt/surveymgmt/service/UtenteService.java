@@ -14,6 +14,7 @@ import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.repository.UtenteRepository;
 
@@ -30,7 +31,7 @@ public class UtenteService {
 	public UtenteEntity getUtenteByCodiceFiscale(@NotNull final String codiceFiscaleUtente) {
 		final String messaggioErrore = String.format("Utente con codice fiscale '%s' non presente.", codiceFiscaleUtente);
 		return this.utenteRepository.findByCodiceFiscale(codiceFiscaleUtente)
-				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore) );
+				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01) );
 	}
 
 	@LogMethod

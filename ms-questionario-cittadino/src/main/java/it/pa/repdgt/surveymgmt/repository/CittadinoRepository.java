@@ -89,6 +89,7 @@ public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long
 	@Query(value = "SELECT "
 			+ "			s.id as idServizio "
 			+ "		  , s.nome as nomeServizio "
+			+ "		  , s.id_progetto as idProgetto "
 			+ "		  , qc.facilitatore_id as codiceFiscaleFacilitatore "
 			+ "		  , qc.id as idQuestionarioCompilato "
 			+ "		  , qc.stato as statoQuestionarioCompilato "

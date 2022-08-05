@@ -2,6 +2,7 @@ package it.pa.repdgt.ente.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.hibernate.query.criteria.internal.predicate.IsEmptyPredicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -23,11 +25,11 @@ import it.pa.repdgt.ente.exception.EnteException;
 import it.pa.repdgt.ente.exception.ResourceNotFoundException;
 import it.pa.repdgt.ente.repository.EntePartnerRepository;
 import it.pa.repdgt.ente.request.ReferenteDelegatoPartnerRequest;
+import it.pa.repdgt.ente.restapi.param.EntiPaginatiParam;
 import it.pa.repdgt.ente.util.CSVUtil;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.awsintegration.service.EmailService;
-import it.pa.repdgt.shared.constants.ProfiliEntiConstants;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.EntePartnerEntity;
 import it.pa.repdgt.shared.entity.ReferentiDelegatiEntePartnerDiProgettoEntity;
@@ -35,6 +37,7 @@ import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.key.EntePartnerKey;
+import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEntePartnerDiProgettoKey;
 import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
@@ -63,6 +66,8 @@ public class EntePartnerService {
 	private RuoloService ruoloService;
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+	private EnteSedeProgettoFacilitatoreService enteSedeProgettoFacilitatoreService;
 
 	@LogMethod
 	@LogExecutionTime
@@ -89,6 +94,7 @@ public class EntePartnerService {
 	}
 	
 	//il seguente metodo presenta delle projection (interfacce) non può essere utilizzato da metodi esterni
+	@Deprecated
 	public SchedaEntePartnerBean getSchedaEntePartnerByIdProgettoAndIdEnte(Long idProgetto, Long idEnte) {
 		SchedaEntePartnerBean schedaEntePartner = new SchedaEntePartnerBean();
 		EnteProjection ente = this.entePartnerRepository.findEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte);		
@@ -113,6 +119,45 @@ public class EntePartnerService {
 		schedaEntePartner.setSediEntePartner(sediPartner);
 		return schedaEntePartner;
 	}
+	
+	public SchedaEntePartnerBean getSchedaEntePartnerByIdProgettoAndIdEnteAndSceltaProfilo(Long idProgetto, Long idEnte, EntiPaginatiParam entiPaginatiParam) {
+		SchedaEntePartnerBean schedaEntePartner = new SchedaEntePartnerBean();
+		EnteProjection ente = this.entePartnerRepository.findEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte);		
+		List<UtenteProjection> referenti = this.referentiDelegatiEntePartnerDiProgettoService.getReferentiEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte);
+		List<UtenteProjection> delegati = this.referentiDelegatiEntePartnerDiProgettoService.getDelegatiEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte);
+		List<SedeEntity> sedi = this.sedeService.getSediEnteByIdProgettoAndIdEnte(idProgetto, idEnte);
+		List<SedeBean> sediPartner = sedi
+									.stream()
+									.map(sede -> {
+										SedeBean sedePartner = new SedeBean();
+										sedePartner.setId(sede.getId());
+										sedePartner.setNome(sede.getNome());
+										sedePartner.setServiziErogati(sede.getServiziErogati());
+										sedePartner.setNrFacilitatori(this.utenteService.countFacilitatoriPerSedeProgettoEnte(idProgetto, sede.getId(), idEnte));
+										sedePartner.setStato(this.sedeService.getStatoSedeByIdProgettoAndIdSedeAndIdEnte(idProgetto, sede.getId(), idEnte));
+										
+										
+										List<String> facilitatoreVolontario = Arrays.asList(RuoloUtenteEnum.FAC.toString(), RuoloUtenteEnum.VOL.toString());
+										if(facilitatoreVolontario.contains(entiPaginatiParam.getCodiceRuolo().toString())) {
+											String cfUtenteLoggato = entiPaginatiParam.getCfUtente();
+											EnteSedeProgettoFacilitatoreKey id = new EnteSedeProgettoFacilitatoreKey(idEnte, sede.getId(), idProgetto, cfUtenteLoggato);
+											boolean isSedeAsssociataAUtente = this.enteSedeProgettoFacilitatoreService.getEnteSedeProgettoFacilitatoreById(id).isPresent();
+											sedePartner.setAssociatoAUtente(isSedeAsssociataAUtente);
+										} else {
+											sedePartner.setAssociatoAUtente(Boolean.TRUE);
+										}
+										
+										return sedePartner;
+									}).collect(Collectors.toList());
+		
+		schedaEntePartner.setEnte(ente);
+		schedaEntePartner.setReferentiEntePartner(referenti);
+		schedaEntePartner.setDelegatiEntePartner(delegati);
+		schedaEntePartner.setSediEntePartner(sediPartner);
+		return schedaEntePartner;
+	}
+	
+	
 	
 	/**
 	 * Assegna Utente Referente o utente delegato all'ente partner
@@ -181,15 +226,17 @@ public class EntePartnerService {
 			this.ruoloService.aggiungiRuoloAUtente(codiceFiscaleUtente, codiceRuolo);	
 		}
 		
-		//invio email welcome al referente/delegato
-		try {
-			this.emailService.inviaEmail(utenteFetch.getEmail(), 
-					EmailTemplateEnum.GEST_PROGE_PARTNER, 
-					new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(codiceRuolo).getValue() });
-		} catch (Exception ex) {
-			log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente partner con id {} per progetto con id={}.", idEntePartner, idProgetto);
-			log.error("{}", ex);
-		}
+		//stacco un thread per invio email welcome al referente/delegato 
+		new Thread(() -> {
+			try {
+				this.emailService.inviaEmail(utenteFetch.getEmail(), 
+						EmailTemplateEnum.GEST_PROGE_PARTNER, 
+						new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(codiceRuolo).getValue() });
+			} catch (Exception ex) {
+				log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente partner con id {} per progetto con id={}.", idEntePartner, idProgetto);
+				log.error("{}", ex);
+			}
+		}).start();
 	}
 
 	/**
@@ -237,32 +284,40 @@ public class EntePartnerService {
 			//estraggo gli enti dal file csv
 			List<EntePartnerUploadBean> enti = CSVUtil.csvToEnti(fileEntiPartner.getInputStream());
 			for(EntePartnerUploadBean ente: enti) {
-				//per ogni record verifico se esiste l'entita Ente
-				//se esiste aggiungo nuova entita Ente + associazione ente - progetto in EntePartner
-				if(!enteService.esisteEnteByPartitaIva(ente.getPiva())) {
-					EnteEntity nuovoEnte = new EnteEntity();
-					nuovoEnte.setNome(ente.getNome());
-					nuovoEnte.setNomeBreve(ente.getNomeBreve());
-					nuovoEnte.setPiva(ente.getPiva());
-					nuovoEnte.setSedeLegale(ente.getSedeLegale());
-					nuovoEnte.setTipologia(ProfiliEntiConstants.ENTE_PARTNER);
-					Long idEnte = enteService.creaNuovoEnte(nuovoEnte).getId();
-					
-					associaEntePartnerPerProgetto(idEnte, idProgetto);
-					
-					ente.setEsito("UPLOAD OK");
-				}else {
-					//se esiste gia l'entita ente devo verificare se esista gia l'associazione entePartner
-					Long idEnte = enteService.getEnteByPartitaIva(ente.getPiva()).getId();
-					//se esiste --> KO
-					if(this.entePartnerRepository.findEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte) != null) {
-						ente.setEsito("KO - ASSOCIAZIONE ESISTENTE");
-					}else {
-						//altrimenti aggiungo associazione EntePartner
+				//verifico validità campo tipologiaEnte
+				if(Arrays.asList("Ente pubblico", "Ente del terzo settore", "Ente privato")
+						.contains(ente.getTipologiaEnte())) {
+					//per ogni record verifico se esiste l'entita Ente
+					//se esiste aggiungo nuova entita Ente + associazione ente - progetto in EntePartner
+					if(!enteService.esisteEnteByPartitaIva(ente.getPiva())) {
+						EnteEntity nuovoEnte = new EnteEntity();
+						nuovoEnte.setNome(ente.getNome());
+						nuovoEnte.setNomeBreve(ente.getNomeBreve());
+						nuovoEnte.setPiva(ente.getPiva());
+						nuovoEnte.setSedeLegale(ente.getSedeLegale());
+						nuovoEnte.setTipologia(ente.getTipologiaEnte());
+						nuovoEnte.setIndirizzoPec(ente.getPec());
+						Long idEnte = enteService.creaNuovoEnte(nuovoEnte).getId();
+						
 						associaEntePartnerPerProgetto(idEnte, idProgetto);
 						
 						ente.setEsito("UPLOAD OK");
+					}else {
+						//se esiste gia l'entita ente devo verificare se esista gia l'associazione entePartner
+						Long idEnte = enteService.getEnteByPartitaIva(ente.getPiva()).getId();
+						//se esiste --> KO
+						if(this.entePartnerRepository.findEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte) != null) {
+							ente.setEsito("KO - ASSOCIAZIONE ESISTENTE");
+						}else {
+							//altrimenti aggiungo associazione EntePartner
+							associaEntePartnerPerProgetto(idEnte, idProgetto);
+							
+							ente.setEsito("UPLOAD OK");
+						}
 					}
+					
+				}else {
+					ente.setEsito("KO - TIPOLOGIA ENTE NON CONSENTITA");
 				}
 				esiti.add(ente);
 			}
@@ -319,4 +374,5 @@ public class EntePartnerService {
 		referenteDelegatoEntePartnerDiProgettoEntity.setDataOraAggiornamento(new Date());
 		this.referentiDelegatiEntePartnerDiProgettoService.save(referenteDelegatoEntePartnerDiProgettoEntity);
 	}
+
 }

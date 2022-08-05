@@ -17,4 +17,5 @@ public class DettaglioSediBean {
 	private String enteDiRiferimento;
 	private int nrFacilitatori;
 	private String stato;
+	private boolean associatoAUtente;
 }

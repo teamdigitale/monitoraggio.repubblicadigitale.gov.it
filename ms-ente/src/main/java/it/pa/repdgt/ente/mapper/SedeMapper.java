@@ -1,6 +1,7 @@
 package it.pa.repdgt.ente.mapper;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -81,6 +82,20 @@ public class SedeMapper {
 		sedeFetchDB.setNome(nuovaSedeRequest.getNome());
 		sedeFetchDB.setServiziErogati(nuovaSedeRequest.getServiziErogati());
 		sedeFetchDB.setItinere(nuovaSedeRequest.getIsItinere());
+		
+		 Optional<IndirizzoSedeRequest> indirizzoSedeFiltrata = nuovaSedeRequest.getIndirizziSedeFasceOrarie()
+			.stream()
+			.filter(indirizzoSede -> indirizzoSede.getId() == sedeFetchDB.getId() ).findFirst();
+		
+		if(indirizzoSedeFiltrata.isPresent()) {
+			sedeFetchDB.setVia(indirizzoSedeFiltrata.get().getVia());
+			sedeFetchDB.setCivico(indirizzoSedeFiltrata.get().getCivico());
+			sedeFetchDB.setComune(indirizzoSedeFiltrata.get().getComune());
+			sedeFetchDB.setRegione(indirizzoSedeFiltrata.get().getRegione());
+			sedeFetchDB.setProvincia(indirizzoSedeFiltrata.get().getProvincia());
+			sedeFetchDB.setNazione(indirizzoSedeFiltrata.get().getNazione());
+		}
+		
 		return sedeFetchDB;
 	}
 }
