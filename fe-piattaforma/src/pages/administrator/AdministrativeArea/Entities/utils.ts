@@ -168,3 +168,10 @@ export const entityStatus = {
   ELIMINATO: 'ELIMINATO',
   CANCELLATO: 'CANCELLATO',
 };
+
+export const userRoles = {
+  DTD: 'DTD',
+  DSCU: 'DSCU',
+  REG: 'REG',
+  REGP: 'REGP',
+}

@@ -17,14 +17,15 @@ interface ProgramInformationI {
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   setIsFormValid?: (param?: boolean | undefined) => void;
   creation?: boolean;
+  program?: { dataInizio: string; dataFine: string } | undefined;
 }
 
-interface FormEnteGestoreProgettoFullInterface
+interface FormProjectGeneralInfoInterface
   extends withFormHandlerProps,
     ProgramInformationI {
   intoModal?: boolean;
 }
-const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
+const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
   props
 ) => {
   const {
@@ -38,6 +39,7 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     creation = false,
     updateForm = () => ({}),
     intoModal = false,
+    program,
   } = props;
   const { projectId } = useParams();
 
@@ -170,7 +172,14 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           {...form?.dataInizio}
           required
           label='Data inizio'
-          maximum={formatDate(form?.dataFine.value as string)}
+          minimum={creation ? program?.dataInizio : undefined}
+          maximum={
+            creation
+              ? form?.dataFine.value
+                ? formatDate(form?.dataFine.value as string)
+                : program?.dataFine
+              : formatDate(form?.dataFine.value as string)
+          }
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
@@ -180,7 +189,14 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           {...form?.dataFine}
           required
           label='Data fine'
-          minimum={formatDate(form?.dataInizio.value as string)}
+          minimum={
+            creation
+              ? form?.dataInizio.value
+                ? formatDate(form?.dataInizio.value as string)
+                : program?.dataInizio
+              : formatDate(form?.dataInizio.value as string)
+          }
+          maximum={creation ? program?.dataFine : undefined}
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);

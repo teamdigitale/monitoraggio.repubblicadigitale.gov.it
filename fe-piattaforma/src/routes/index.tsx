@@ -46,6 +46,10 @@ const UserProfile = lazy(
   () => import('../pages/common/UserProfile/userProfile')
 );
 
+const OpenData = lazy(
+  () => import('../pages/common/OpenData/openData')
+);
+
 /**
  The "routes.tsx" file is now useless, lazy loading is implemented for every 
  routes and this file is the top of the routes tree.
@@ -93,6 +97,10 @@ const AppRoutes: React.FC = () => {
           </Route>
         ) : null}
         <Route path='/' element={<FullLayout />}>
+          <Route
+            path='/open-data'
+            element={<OpenData />}
+          />
           <Route
             path='/area-amministrativa/*'
             element={

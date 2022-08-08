@@ -553,7 +553,7 @@ const ProjectsDetails = () => {
           title='Questa sezione è ancora vuota'
           withIcon
           icon='it-note'
-          subtitle='Per attivare il progetto aggiungi un Ente partner'
+          //subtitle='Per attivare il progetto aggiungi un Ente partner'
           buttons={
             hasUserPermission(['add.ente.partner']) &&
             projectDetails?.stato !== entityStatus.TERMINATO
@@ -628,10 +628,10 @@ const ProjectsDetails = () => {
       setCorrectButtons([]);
       setEmptySection(
         <EmptySection
-          title={'Questa sezione è ancora vuota'}
+          title='Questa sezione è ancora vuota'
           withIcon
           icon='it-note'
-          subtitle={'Per attivare il progetto aggiungi una Sede'}
+          subtitle='Per attivare il progetto aggiungi una Sede all’Ente gestore o ad un Ente partner'
           // buttons={EmptySectionButtons.slice(2)}
         />
       );

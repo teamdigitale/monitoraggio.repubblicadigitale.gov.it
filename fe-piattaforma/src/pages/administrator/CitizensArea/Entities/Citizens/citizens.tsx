@@ -195,7 +195,7 @@ const Citizens = () => {
 
   return (
     <>
-      <PageTitle title={'I miei cittadini'} />
+      <PageTitle title='I miei cittadini' />
       <GenericSearchFilterTableLayout
         searchInformation={searchInformation}
         dropdowns={dropdowns}

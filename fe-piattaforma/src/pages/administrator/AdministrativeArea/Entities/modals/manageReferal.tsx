@@ -163,6 +163,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
           setNewFormValues({ ...newData })
         }
         setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+        fieldsToHide={['ruolo']}
       />
     );
   } else if (usersList && usersList.length > 0) {

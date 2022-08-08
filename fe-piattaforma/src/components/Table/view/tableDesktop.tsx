@@ -46,7 +46,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
               )}
               {heading.map((th) => (
                 <th
-                  key={th.label}
+                  key={th.field}
                   scope='col'
                   className={clsx(
                     `th-${th.size || 'auto'}`,
