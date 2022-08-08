@@ -355,7 +355,8 @@ const UsersDetails = () => {
         roles.DEG,
         roles.DEGP,
         roles.DEPP,
-      ].includes(userRole)
+      ].includes(userRole) &&
+      getUserRoleStatus() !== entityStatus.TERMINATO
     ) {
       switch (authorityType) {
         case formTypes.ENTE_GESTORE_PROGRAMMA: {
@@ -394,7 +395,8 @@ const UsersDetails = () => {
         roles.DEG,
         roles.DEGP,
         roles.DEPP,
-      ].includes(userRole)
+      ].includes(userRole) &&
+      getUserRoleStatus() !== entityStatus.TERMINATO
     ) {
       switch (authorityType) {
         case formTypes.ENTE_GESTORE_PROGRAMMA: {

@@ -15,13 +15,21 @@ interface BreadcrumbI {
 export interface PageTitleI {
   breadcrumb?: BreadcrumbI[];
   title?: string;
+  subtitle?: string;
   hasBackground?: boolean;
   sectionInfo?: boolean;
   alignTitle?: boolean;
+  cta?:
+    | {
+        action: () => void;
+        label: string;
+      }
+    | undefined;
 }
 
 const PageTitle: React.FC<PageTitleI> = (props) => {
-  const { hasBackground, title, sectionInfo, alignTitle } = props;
+  const { cta, hasBackground, title, subtitle, sectionInfo, alignTitle } =
+    props;
 
   const [sectionInfoOpened, setSectionInfoOpened] = useState<boolean>(false);
   const location = useLocation();
@@ -70,7 +78,23 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
             </Button>
           ) : null}
         </div>
-
+        {subtitle ? (
+          <div
+            className={clsx(
+              'd-flex',
+              'flex-row',
+              'align-items-center',
+              alignTitle ? 'justify-content-center' : null
+            )}
+          >
+            <p className={clsx('py-2', 'mb-2')}>{subtitle}</p>
+            {cta ? (
+              <Button onClick={cta.action} color='primary'>
+                {cta.label}
+              </Button>
+            ) : null}
+          </div>
+        ) : null}
         {sectionInfoOpened ? (
           <SectionInfo
             title='Informazioni sulla sezione'

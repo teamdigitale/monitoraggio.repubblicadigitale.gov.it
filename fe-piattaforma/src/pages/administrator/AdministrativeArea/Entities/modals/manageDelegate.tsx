@@ -145,6 +145,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
           setNewFormValues({ ...newData })
         }
         setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+        fieldsToHide={['ruolo']}
       />
     );
   } else if (usersList && usersList.length > 0) {
@@ -166,7 +167,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
     (usersList?.length === 0 || !usersList) &&
     !showForm
   ) {
-    content = <EmptySection title={'Nessun risultato'} withIcon horizontal />;
+    content = <EmptySection title='Nessun risultato' withIcon horizontal />;
   }
 
   return (

@@ -34,6 +34,7 @@ interface UserInformationI {
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   setIsFormValid?: (param: boolean | undefined) => void;
   creation?: boolean;
+  fieldsToHide?: ('ruolo' | 'mansione')[];
 }
 
 interface UserFormI extends withFormHandlerProps, UserInformationI {}
@@ -48,6 +49,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
     getFormValues = () => ({}),
     updateForm = () => ({}),
     creation = false,
+    fieldsToHide = [],
   } = props;
 
   const dispatch = useDispatch();
@@ -80,7 +82,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
   useEffect(() => {
     if (!creation) {
       userId && dispatch(GetUserDetails(userId));
-    } else {
+    } else if (!fieldsToHide.includes('ruolo')){
       dispatch(GetRolesListValues({ tipologiaRuoli: 'NP' }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -124,7 +126,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
             // placeholder='Inserisci cognome utente'
             onInputChange={onInputChange}
           />
-          {creation ? (
+          {creation && !fieldsToHide.includes('ruolo') ? (
             <Select
               {...form?.ruolo}
               value={form?.ruolo.value as string}

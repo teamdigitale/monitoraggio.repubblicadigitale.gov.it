@@ -16,7 +16,7 @@ import { useAppSelector } from '../../../../../redux/hooks';
 import FormProjectGeneralInfo from '../../../../forms/formProjects/formProjectGeneralInfo';
 
 import {
-  resetProjectDetails,
+  resetProjectDetails, selectPrograms,
   selectProjects,
   setProjectGeneralInfo,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
@@ -148,6 +148,8 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
   const device = useAppSelector(selectDevice);
   const projectDetails =
     useAppSelector(selectProjects).detail.dettagliInfoProgetto;
+  const { dettagliInfoProgramma: programDetails } = useAppSelector(selectPrograms).detail || {};
+  console.log('programDetails', programDetails)
 
   const stepsArray = () => {
     const allSteps: string[] = [];
@@ -211,7 +213,8 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
           setIsFormValid={(value: boolean | undefined) =>
             setIsFormValid(!!value)
           }
-          creation={creation}
+          creation
+          program={programDetails}
         />
       );
       break;

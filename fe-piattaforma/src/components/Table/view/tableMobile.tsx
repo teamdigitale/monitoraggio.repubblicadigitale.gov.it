@@ -19,13 +19,13 @@ const TableMobile: React.FC<MobileTableI> = ({
   useEffect(() => {
     if (values && values.length) {
       const temp = values.map((item) => {
-        const { actions, id, name, nome, label, status, ...rest } = item;
+        const { attributo, actions, id, name, nome, label, status, ...rest } = item;
         return {
-          title: nome || label || name,
+          title: nome || label || name || attributo,
           status,
           id,
           actions,
-          clickViewAction: () => onActionClick?.[CRUDActionTypes.VIEW](item),
+          clickViewAction: onActionClick?.[CRUDActionTypes.VIEW] ? () => onActionClick?.[CRUDActionTypes.VIEW](item) : undefined,
           innerInfo: isEmpty(rest) ? undefined : { ...rest },
         };
       });

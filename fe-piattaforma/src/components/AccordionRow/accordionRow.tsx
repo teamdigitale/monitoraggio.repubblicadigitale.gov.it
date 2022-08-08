@@ -68,15 +68,15 @@ const AccordionRow: React.FC<AccordionRowI> = ({
           ) : null}
           <span className='font-weight-semibold'>{title}</span>
         </div>
-        <Button>
+        {clickViewAction ? <Button>
           <div className='d-flex justify-content-start'>
             <Icon
               icon='it-chevron-right'
               onClick={clickViewAction}
-              aria-label='seleziona programma'
+              aria-label='vai al dettaglio'
             />
           </div>
-        </Button>
+        </Button> : null}
       </div>
       <div>
         {innerInfo?.['defaultSCD'] && innerInfo?.['defaultRFD'] ? (

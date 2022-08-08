@@ -357,5 +357,10 @@ export const initMock = (apiInstance: AxiosInstance) => {
     /*mockInstance.onPost('/contesto/sceltaProfilo').reply(async () => {
       return [200];
     });*/
+
+    mockInstance.onGet('/open-data/count/download').reply(async () => {
+      // @ts-ignore
+      return [200, Math.floor(Math.random() * 9999)];
+    });
   }
 };
