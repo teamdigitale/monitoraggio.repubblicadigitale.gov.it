@@ -228,19 +228,20 @@ const getTypeReverse: (formField: schemaFieldI) => baseTypeObjectI = (
     }
     case 'number':
     case 'integer': {
-      if (formField.minimum && formField.maximum) {
-        return {
-          ...baseTypeObject,
-          type: 'range',
-          regex: RegexpType.NUMBER,
-        };
-      }
       return {
         ...baseTypeObject,
         type: 'number',
         regex: RegexpType.NUMBER,
       };
     }
+    case 'range':
+      return {
+        ...baseTypeObject,
+        type: 'range',
+        regex: RegexpType.NUMBER,
+        minimum: formField?.minimum || 1,
+        maximum: formField?.maximum || 5,
+      };
     case 'object': {
       if (formField.properties) {
         return {

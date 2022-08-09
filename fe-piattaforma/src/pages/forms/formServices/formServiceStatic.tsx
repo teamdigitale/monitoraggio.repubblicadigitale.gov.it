@@ -82,7 +82,7 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
   }, [form]);
 
   return (
-    <Form formDisabled={formDisabled}>
+    <Form id='form-service-static' formDisabled={formDisabled}>
       <Form.Row>
         <Input
           {...form?.nomeServizio}

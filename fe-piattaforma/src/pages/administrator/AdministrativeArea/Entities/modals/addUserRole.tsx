@@ -58,7 +58,7 @@ const AddUserRole: React.FC<withFormHandlerProps> = (props) => {
       }}
       title='Aggiungi nuovo ruolo'
     >
-      <Form className='mt-5 mb-0'>
+      <Form id='form-add-user-role' className='mt-5 mb-0'>
         <Form.Row
           className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-2')}
         >

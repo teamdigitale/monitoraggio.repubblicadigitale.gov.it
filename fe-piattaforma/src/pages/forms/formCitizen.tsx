@@ -153,7 +153,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
   };
 
   return (
-    <Form className='mt-5' formDisabled={formDisabled}>
+    <Form id='form-citizen' className='mt-5' formDisabled={formDisabled}>
       <Form.Row>
         <Input
           {...form?.nome}

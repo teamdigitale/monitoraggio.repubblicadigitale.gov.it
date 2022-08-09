@@ -491,7 +491,7 @@ export const AssignManagerAuthorityReferentDelegate =
           mansione: userDetail.mansione,
         };
       }
-      if (userDetail?.id && userId) {
+      if (userDetail?.id) {
         userDetail.codiceFiscale &&
           (await API.put(
             `/utente/${userDetail.id.toString().toUpperCase()}`,

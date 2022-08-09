@@ -104,7 +104,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 
   return (
-    <Form className='mt-5 mb-0' formDisabled={formDisabled}>
+    <Form id='form-user' className='mt-5 mb-0' formDisabled={formDisabled}>
       <Form.Row className={bootClass}>
         <>
           {formDisabled ? (

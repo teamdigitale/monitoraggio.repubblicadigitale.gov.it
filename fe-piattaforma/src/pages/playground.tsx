@@ -110,7 +110,7 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
         </ProtectedComponent>
       </div>
       <Row className='mt-2'>
-        <Form>
+        <Form id='form-playground-2'>
           <FormGroup check>
             <div className='my-3'>
               <Input name='pippo' type='radio' id={`1`} label='1' withLabel />
@@ -148,7 +148,7 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
           </Button>
         </Col>
       </Row>
-      <Form className='mt-5 mb-5'>
+      <Form id='form-playground-1' className='mt-5 mb-5'>
         <Form.Row>
           <Input
             {...props.form?.name}
@@ -216,7 +216,7 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
       </section> */}
       <section>
         <Row>
-          <Form>
+          <Form id='form-playground'>
             <fieldset>
               <Input type='text' onInputChange={(e) => console.log(e)} />
             </fieldset>

@@ -225,6 +225,7 @@ const TargetDateFormProjects: React.FC<TargetDateFormProjectsI> = (props) => {
   ) : (
     <div>
       <Form
+        id='form-target-date-projects'
         className={clsx(formDisabled ? 'mt-3 pb-1' : 'mt-4 pb-1')}
         formDisabled={formDisabled}
       >
