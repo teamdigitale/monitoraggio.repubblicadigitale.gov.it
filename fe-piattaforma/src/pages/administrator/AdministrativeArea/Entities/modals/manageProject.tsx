@@ -149,7 +149,6 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
   const projectDetails =
     useAppSelector(selectProjects).detail.dettagliInfoProgetto;
   const { dettagliInfoProgramma: programDetails } = useAppSelector(selectPrograms).detail || {};
-  console.log('programDetails', programDetails)
 
   const stepsArray = () => {
     const allSteps: string[] = [];

@@ -132,7 +132,7 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 
   return (
-    <Form className='mt-5' formDisabled={formDisabled}>
+    <Form id='form-project-general-info' className='mt-5' formDisabled={formDisabled}>
       <Form.Row className={bootClass}>
         {/* <Input
           {...form?.codice}

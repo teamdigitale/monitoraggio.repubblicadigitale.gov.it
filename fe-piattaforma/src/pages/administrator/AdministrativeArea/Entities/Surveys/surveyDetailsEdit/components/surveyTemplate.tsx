@@ -86,7 +86,7 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
 
   return (
     <>
-      <Form className='pt-5'>
+      <Form id='form-survey-template' className='pt-5'>
         <Form.Row
           className={clsx(
             device.mediaIsPhone ? '' : 'd-flex justify-content-start'

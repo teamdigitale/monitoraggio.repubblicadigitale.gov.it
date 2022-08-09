@@ -100,7 +100,7 @@ const TerminateEntityModal = ({
           />
         </div>
         <div className='text-center pb-3'>{payload?.text}</div>
-        <Form>
+        <Form id='form-terminate-entity'>
           <Form.Row>
             <div className='col'></div>
             <Input

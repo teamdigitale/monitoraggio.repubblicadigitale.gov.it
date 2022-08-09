@@ -756,7 +756,7 @@ const ProjectsDetails = () => {
           id: 'delete-entity',
           payload: {
             entity: 'headquarter',
-            text: 'Confermi di volere eliminare questa sede?',
+            text: 'Confermi di volere disassociare questa sede?',
             headquarterId: td,
           },
         })

@@ -280,7 +280,7 @@ const HeadquartersDetails = () => {
   const getAccordionCTA = (title?: string) => {
     switch (title) {
       case 'Facilitatori':
-        return hasUserPermission(['add.fac']) && authorityType
+        return (hasUserPermission(['add.fac']) && authorityType && headquarterDetails?.stato !== entityStatus.TERMINATO)
           ? {
               cta: `Aggiungi ${title}`,
               ctaAction: () =>

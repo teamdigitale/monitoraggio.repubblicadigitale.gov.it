@@ -298,6 +298,11 @@ const getSchemaTypeQuestion = (form: FormI) => {
     case 'date':
       properties.type = 'date';
       break;
+    case 'range':
+      properties.type = 'range';
+      properties.minimum = 1;
+      properties.maximum = 5;
+      break;
     case 'select':
       properties.type = 'string';
       if (typeof form['question-values'].value === 'string') {
@@ -344,7 +349,7 @@ const getSchemaSection = (
 
   (section.questions || []).map((question, index) => {
     if (question?.id) {
-      if (originalSchemaSectionParsed.properties[question?.id]) {
+      if (Number(question?.id) > 0 && Number(question?.id) < 35) {
         // default question
         const id = question.id;
         schemaSection.properties[id] = {
@@ -355,7 +360,6 @@ const getSchemaSection = (
         schemaSection.default.push(id);
       } else {
         // new question
-        console.log('new question', question);
         const id = question.id;
         schemaSection.properties[id] = {
           id: id,

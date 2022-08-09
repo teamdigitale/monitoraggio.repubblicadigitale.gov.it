@@ -61,7 +61,7 @@ const AuthoritiesDetails = () => {
   const { hasUserPermission } = useGuard();
   const projectDetail =
     useAppSelector(selectProjects).detail?.dettagliInfoProgetto;
-  const { nome: projectName, stato: projectState } = projectDetail;
+  const { nome: projectName, stato: projectState } = projectDetail || {};
 
   useEffect(() => {
     dispatch(setHeadquarterDetails(null));

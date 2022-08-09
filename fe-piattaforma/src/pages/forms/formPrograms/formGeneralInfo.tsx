@@ -31,18 +31,17 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     form,
     updateForm = () => ({}),
     onInputChange,
-    sendNewValues,
+    sendNewValues = () => ({}),
     isValidForm,
     setIsFormValid = () => false,
     getFormValues = () => ({}),
     creation = true,
     // intoModal = false,
     edit = false,
+    formDisabled = false,
   } = props;
   const programDetails: { [key: string]: string } | undefined =
     useAppSelector(selectPrograms).detail.dettagliInfoProgramma;
-
-  const formDisabled = !!props.formDisabled;
 
   const userRole = useAppSelector(selectProfile)?.codiceRuolo;
 
@@ -120,6 +119,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     if (userRole && form && creation) {
       if (userRole === 'DSCU') onInputDataChange('SCD', 'policy');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userRole]);
 
   const onInputDataChange = (
@@ -131,7 +131,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
   };
 
   useEffect(() => {
-    sendNewValues?.(getFormValues?.());
+    sendNewValues(getFormValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
@@ -162,7 +162,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 
   return (
-    <Form className='mt-5' formDisabled={formDisabled}>
+    <Form id='form-general-info' className='mt-5' formDisabled={formDisabled}>
       <Form.Row className={bootClass}>
         <Input
           {...form?.codice}

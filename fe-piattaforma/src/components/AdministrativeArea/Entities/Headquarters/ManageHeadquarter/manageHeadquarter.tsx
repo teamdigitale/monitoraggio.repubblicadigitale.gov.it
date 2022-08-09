@@ -232,7 +232,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
         sendNewValues={(newData) => setNewFormValues({ ...newData })}
         setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
       />
-      <Form className='mx-5 mb-5'>
+      <Form id='form-manage-headquarter' className='mx-5 mb-5'>
         <Form.Row>
           <div className='col-10 col-md-6'>
             <Toggle

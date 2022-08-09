@@ -204,7 +204,7 @@ const TargetsForm = ({
       }
     />
   ) : (
-    <Form formDisabled={disabled} className='pt-5 px-4 pr-lg-5'>
+    <Form id='form-targets' formDisabled={disabled} className='pt-5 px-4 pr-lg-5'>
       {form && (
         <>
           {getRows(form).map((row, index) => (
@@ -212,19 +212,15 @@ const TargetsForm = ({
               <Input
                 {...form[row[0]]}
                 disabled={disabled}
-                onInputChange={(value, field) => {
-                  onInputDataChange(value, field);
-                }}
+                onInputChange={onInputDataChange}
                 type={disabled ? 'text' : 'number'}
-                col='col-12 col-lg-6'
+                col={clsx('col-12', !disabled ? 'col-lg-5' : 'col-lg-6')}
               />
               <Input
                 {...form[row[1]]}
-                onInputChange={(value, field) => {
-                  onInputDataChange(value, field);
-                }}
+                onInputChange={onInputDataChange}
                 disabled={disabled}
-                col={clsx('col-12', !disabled ? 'col-lg-4' : 'col-lg-6')}
+                col={clsx('col-12', !disabled ? 'col-lg-5' : 'col-lg-6')}
                 className='mb-3'
               />
               <div className='col-12 col-lg-2 d-flex justify-content-lg-center'>

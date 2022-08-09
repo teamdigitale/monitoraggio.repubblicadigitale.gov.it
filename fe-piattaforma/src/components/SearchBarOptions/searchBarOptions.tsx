@@ -32,7 +32,7 @@ const SearchBarOptions: React.FC<SearchBarOptionsI> = ({
       )}
     >
       <div>
-        <Form className='m-3'>
+        <Form id='form-searchbar-opt' className='m-3'>
           <FormGroup check className='justify-content-around'>
             {Object.keys(steps).map((item, index) => (
               <div key={index} className='d-flex align-items-center'>

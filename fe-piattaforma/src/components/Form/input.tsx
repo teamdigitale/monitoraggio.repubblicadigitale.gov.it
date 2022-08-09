@@ -1,8 +1,32 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Input as InputKit, InputProps, Label } from 'design-react-kit';
+import clsx from 'clsx';
 import { formFieldI } from '../../utils/formHelper';
 import { dayOfWeek } from '../../pages/administrator/AdministrativeArea/Entities/utils';
-import clsx from 'clsx';
+
+const blackList = [
+  'checked',
+  'col',
+  'dependencyFlag',
+  'dependencyNotFlag',
+  'enumLevel1',
+  'enumLevel2',
+  'field',
+  'flag',
+  'formDisabled',
+  'keyService',
+  'maximum',
+  'minimum',
+  'onInputBlur',
+  'onInputChange',
+  'placeholder',
+  'preset',
+  'privacy',
+  'relatedFrom',
+  'relatedTo',
+  'touched',
+  'withLabel',
+];
 
 /**
  * A fix for input warning has been made, maybe it could be the case to improve input component
@@ -135,29 +159,6 @@ const Input: React.FC<InputI> = (props) => {
       inputLabel?.classList.add('visibility-hidden');
     }
   }, [withLabel, inputLabel]);
-
-  const blackList = [
-    'checked',
-    'col',
-    'dependencyFlag',
-    'dependencyNotFlag',
-    'enumLevel1',
-    'enumLevel2',
-    'field',
-    'flag',
-    'keyService',
-    'maximum',
-    'minimum',
-    'onInputBlur',
-    'onInputChange',
-    'placeholder',
-    'preset',
-    'privacy',
-    'relatedFrom',
-    'relatedTo',
-    'touched',
-    'withLabel',
-  ];
 
   const BaseProps = Object.fromEntries(
     Object.entries(props).filter(([key]) => !blackList.includes(key))

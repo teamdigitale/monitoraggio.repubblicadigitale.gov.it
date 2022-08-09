@@ -212,7 +212,7 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
           goBackTitle='Vai alla Lista Ruoli'
           goBackPath='/gestione-ruoli'
         />
-        <Form className='mt-4'>
+        <Form id='form-role-management' className='mt-4'>
           <Input
             {...form.roleName}
             disabled={creation ? false : !formEnabled}

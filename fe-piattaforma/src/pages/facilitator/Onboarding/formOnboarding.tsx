@@ -60,6 +60,7 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
   return (
     <div className={clsx(device.mediaIsPhone ? 'mx-4 mt-5' : 'mt-5 container')}>
       <Form
+        id='form-onboarding'
         className={clsx('mt-5', 'mb-5', 'pt-5', 'onboarding__form-container')}
         formDisabled={formDisabled}
       >

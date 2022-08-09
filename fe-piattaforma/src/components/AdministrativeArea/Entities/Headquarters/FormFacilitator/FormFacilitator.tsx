@@ -76,7 +76,7 @@ const FormFacilitator: React.FC<FacilitatorFormI> = (props) => {
         setIsFormValid={(value: boolean | undefined) => setIsFormUserValid(!!value)}
         fieldsToHide={['ruolo']}
       />
-      <Form formDisabled={formDisabled}>
+      <Form id='form-facilitator' formDisabled={formDisabled}>
         <Form.Row className={clsx(bootClass, 'mt-0')}>
           {formDisabled ? (
             <Input
