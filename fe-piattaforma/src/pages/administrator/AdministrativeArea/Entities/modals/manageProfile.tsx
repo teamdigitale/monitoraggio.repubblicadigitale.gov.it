@@ -50,7 +50,7 @@ const ManageProfile: React.FC = () => {
         sendNewForm={(newForm: FormI) =>
           setNewFormValues(FormHelper.getFormValues(newForm))
         }
-        setIsFormValid={(value: boolean) => setIsFormValid(value)}
+        setIsFormValid={setIsFormValid}
       />
     </GenericModal>
   );

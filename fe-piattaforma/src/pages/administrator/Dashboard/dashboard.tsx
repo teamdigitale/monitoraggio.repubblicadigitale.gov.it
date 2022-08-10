@@ -19,7 +19,10 @@ const baseFrameURL =
 // OLD'https://hnmhsi4ogf.execute-api.eu-central-1.amazonaws.com/test/anonymous-embed-sample';
 */
 
+/* TODO enable when update env keys on github
 const dashboardBaseURL = process.env.REACT_APP_DASHBOARD_BASE_URL;
+ */
+const dashboardBaseURL = 'https://backend.facilitazione-dev.mitd.technology/dashboard_dev';
 
 const dashboardRoles: {
   [key: string]: {

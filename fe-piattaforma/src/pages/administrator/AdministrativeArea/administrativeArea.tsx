@@ -1,6 +1,7 @@
 import React, { lazy, useEffect } from 'react';
 import { Container } from 'design-react-kit';
 import {
+  Navigate,
   Route,
   Routes,
   useLocation,
@@ -48,6 +49,7 @@ const SurveyDetailsEdit = lazy(
   () => import('./Entities/Surveys/surveyDetailsEdit/surveyDetailsEdit')
 );
 import ProtectedComponent from '../../../hoc/AuthGuard/ProtectedComponent/ProtectedComponent';
+import { defaultRedirectUrl } from '../../../routes';
 
 interface PageTitleMockI {
   [key: string]: {
@@ -185,7 +187,7 @@ const AreaAmministrativaRoutes = [
     key='programmi'
     path='programmi'
     element={
-      <ProtectedComponent visibleTo={['tab.am', 'list.prgm']} redirect='/'>
+      <ProtectedComponent visibleTo={['tab.am', 'list.prgm']}>
         <Programs />
       </ProtectedComponent>
     }
@@ -318,7 +320,7 @@ const AreaAmministrativaRoutes = [
     key='progetti'
     path='progetti'
     element={
-      <ProtectedComponent visibleTo={['tab.am', 'list.prgt']} redirect='/'>
+      <ProtectedComponent visibleTo={['tab.am', 'list.prgt']}>
         <Projects />
       </ProtectedComponent>
     }
@@ -397,7 +399,7 @@ const AreaAmministrativaRoutes = [
     key='enti'
     path='enti'
     element={
-      <ProtectedComponent visibleTo={['tab.am', 'list.enti']} redirect='/'>
+      <ProtectedComponent visibleTo={['tab.am', 'list.enti']}>
         <Authorities />
       </ProtectedComponent>
     }
@@ -406,10 +408,7 @@ const AreaAmministrativaRoutes = [
     key='enti-dettaglio'
     path='enti/:authorityId'
     element={
-      <ProtectedComponent
-        visibleTo={['view.card.enti']}
-        redirect='/area-amministrativa/enti'
-      >
+      <ProtectedComponent visibleTo={['view.card.enti']}>
         <AuthoritiesDetails />
       </ProtectedComponent>
     }
@@ -418,7 +417,7 @@ const AreaAmministrativaRoutes = [
     key='utenti'
     path='utenti'
     element={
-      <ProtectedComponent visibleTo={['tab.am', 'list.utenti']} redirect='/'>
+      <ProtectedComponent visibleTo={['tab.am', 'list.utenti']}>
         <Users />
       </ProtectedComponent>
     }
@@ -437,10 +436,7 @@ const AreaAmministrativaRoutes = [
     key='utenti-detail'
     path=':userRole/:userId'
     element={
-      <ProtectedComponent
-        visibleTo={['view.card.utenti']}
-        redirect='/area-amministrativa/utenti'
-      >
+      <ProtectedComponent visibleTo={['view.card.utenti']}>
         <UsersDetails />
       </ProtectedComponent>
     }
@@ -464,10 +460,7 @@ const AreaAmministrativaRoutes = [
     key='questionari'
     path='questionari'
     element={
-      <ProtectedComponent
-        visibleTo={['subtab.quest', 'list.quest.templ']}
-        redirect='/'
-      >
+      <ProtectedComponent visibleTo={['subtab.quest', 'list.quest.templ']}>
         <Surveys />
       </ProtectedComponent>
     }
@@ -481,10 +474,7 @@ const AreaAmministrativaRoutes = [
     key='questionari-dettaglio-info'
     path='questionari/:idQuestionario'
     element={
-      <ProtectedComponent
-        visibleTo={['view.quest.templ']}
-        redirect='/area-amministrativa/questionari'
-      >
+      <ProtectedComponent visibleTo={['view.quest.templ']}>
         <SurveyDetailsEdit />
       </ProtectedComponent>
     }
@@ -497,10 +487,7 @@ const AreaAmministrativaRoutes = [
   <Route
     key='area-amministrativa-servizi'
     element={
-      <ProtectedComponent
-        visibleTo={['tab.am', 'subtab.serv', 'list.serv']}
-        redirect='/'
-      >
+      <ProtectedComponent visibleTo={['tab.am', 'subtab.serv', 'list.serv']}>
         <Services />
       </ProtectedComponent>
     }
@@ -509,10 +496,7 @@ const AreaAmministrativaRoutes = [
   <Route
     key='area-amministrativa-servizi-dettaglio'
     element={
-      <ProtectedComponent
-        visibleTo={['view.card.serv']}
-        redirect='/area-amministrativa/servizi'
-      >
+      <ProtectedComponent visibleTo={['view.card.serv']}>
         <ServicesDetails />
       </ProtectedComponent>
     }
@@ -522,5 +506,10 @@ const AreaAmministrativaRoutes = [
     key='area-amministrativa-servizi-dettaglio-cittadini'
     element={<ServicesDetails />}
     path='servizi/:serviceId/cittadini'
+  />,
+  <Route
+    key='default-redirect-url'
+    path='*'
+    element={<Navigate replace to={defaultRedirectUrl} />}
   />,
 ];

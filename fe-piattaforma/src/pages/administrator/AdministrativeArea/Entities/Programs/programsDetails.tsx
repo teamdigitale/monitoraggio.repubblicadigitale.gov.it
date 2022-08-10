@@ -8,7 +8,7 @@ import {
 import { useDispatch } from 'react-redux';
 
 import { ButtonInButtonsBar } from '../../../../../components/ButtonsBar/buttonsBar';
-import { entityStatus, formTypes } from '../utils';
+import {entityStatus, formTypes, userRoles} from '../utils';
 import {
   CRUDActionsI,
   CRUDActionTypes,
@@ -63,6 +63,7 @@ import { GetSurveyAllLight } from '../../../../../redux/features/administrativeA
 import clsx from 'clsx';
 import { roles } from '../Users/usersDetails';
 import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
+import { selectProfile } from '../../../../../redux/features/user/userSlice';
 
 const tabs = {
   INFO: 'info',
@@ -73,6 +74,7 @@ const tabs = {
 
 const ProgramsDetails: React.FC = () => {
   const { hasUserPermission } = useGuard();
+  const { codiceRuolo: userRole } = useAppSelector(selectProfile) || {};
   const program = useAppSelector(selectPrograms).detail;
   const surveyList = program?.questionari;
   const otherSurveyList = useAppSelector(selectSurveys);
@@ -131,6 +133,7 @@ const ProgramsDetails: React.FC = () => {
     if (location.pathname === `/area-amministrativa/programmi/${entityId}`) {
       navigate(`/area-amministrativa/programmi/${entityId}/info`);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -1027,6 +1030,7 @@ const ProgramsDetails: React.FC = () => {
           buttonsPosition={buttonsPosition}
           goBackTitle='Elenco programmi'
           goBackPath='/area-amministrativa/programmi'
+          showGoBack={userRole !== userRoles.REG && userRole !== userRoles.REGP}
           surveyDefault={surveyDefault}
           isRadioButtonItem={radioButtonsSurveys}
           onRadioChange={(surveyCheckedId: string) =>

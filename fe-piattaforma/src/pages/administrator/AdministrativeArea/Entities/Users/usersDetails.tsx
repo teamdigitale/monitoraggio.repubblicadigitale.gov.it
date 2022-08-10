@@ -535,44 +535,59 @@ const UsersDetails = () => {
                   </div>
                 </div>
               ) : null}
-              {userRoles.map((role: any) => {
-                let roleActions = {};
-                if (role.id) {
-                  roleActions = {
-                    [CRUDActionTypes.VIEW]: () =>
-                      navigate(`/area-amministrativa/programmi/${role?.id}`, {
-                        replace: true,
-                      }),
-                  };
-                } else {
-                  roleActions = hasUserPermission(['add.del.ruolo.utente'])
-                    ? {
-                        [CRUDActionTypes.DELETE]: () => {
-                          dispatch(
-                            openModal({
-                              id: 'delete-entity',
-                              payload: {
-                                entity: 'role',
-                                text: 'Confermi di volere eliminare questo ruolo?',
-                                role: role.codiceRuolo || role.nome,
-                              },
-                            })
-                          );
-                        },
-                      }
-                    : {};
+              {userRoles.map(
+                (role: {
+                  id: string;
+                  codiceRuolo: string;
+                  nome: string;
+                  stato: string;
+                  statoP: string;
+                  ruolo: string;
+                  associatoAUtente: boolean;
+                }) => {
+                  let roleActions = {};
+                  if (role.id) {
+                    roleActions = {
+                      [CRUDActionTypes.VIEW]: role.associatoAUtente
+                        ? () =>
+                            navigate(
+                              `/area-amministrativa/programmi/${role?.id}`,
+                              {
+                                replace: true,
+                              }
+                            )
+                        : undefined,
+                    };
+                  } else {
+                    roleActions = hasUserPermission(['add.del.ruolo.utente'])
+                      ? {
+                          [CRUDActionTypes.DELETE]: () => {
+                            dispatch(
+                              openModal({
+                                id: 'delete-entity',
+                                payload: {
+                                  entity: 'role',
+                                  text: 'Confermi di volere eliminare questo ruolo?',
+                                  role: role.codiceRuolo || role.nome,
+                                },
+                              })
+                            );
+                          },
+                        }
+                      : {};
+                  }
+                  return (
+                    <CardStatusAction
+                      key={role.id}
+                      id={role.id || role.codiceRuolo || role.nome}
+                      status={role.statoP}
+                      title={role.nome}
+                      fullInfo={role.stato ? { ruoli: role.ruolo } : undefined}
+                      onActionClick={roleActions}
+                    />
+                  );
                 }
-                return (
-                  <CardStatusAction
-                    key={role.id}
-                    id={role.id || role.codiceRuolo || role.nome}
-                    status={role.statoP}
-                    title={role.nome}
-                    fullInfo={role.stato && { ruoli: role.ruolo }}
-                    onActionClick={roleActions}
-                  />
-                );
-              })}
+              )}
             </div>
           ) : null}
           <DeleteEntityModal

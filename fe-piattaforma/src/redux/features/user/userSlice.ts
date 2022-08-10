@@ -23,14 +23,7 @@ export interface UserStateI {
   permissions: RolePermissionI[];
   idProgramma: string | null;
   idProgetto: string[] | null;
-  profilo?: {
-    codiceRuolo: string;
-    descrizioneRuolo: string;
-    descrizioneRuoloCompleta?: string | undefined;
-    idProgramma?: string | number | undefined;
-    nomeProgramma?: string | undefined;
-    nomeEnte?: string | undefined;
-  } | null;
+  profilo?: UserProfileI | null;
   ruoli: {
     codiceRuolo: string;
     permessi: [];
@@ -40,10 +33,12 @@ export interface UserStateI {
 export interface UserProfileI {
   codiceRuolo: string;
   descrizioneRuolo: string;
-  idProgetto: string;
-  idProgramma: string;
-  nomeEnte: string;
-  nomeProgramma: string;
+  descrizioneRuoloCompleta?: string | undefined;
+  idProgetto?: string;
+  idProgramma?: string;
+  nomeEnte?: string;
+  nomeProgramma?: string;
+  nomeProgettoBreve?: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

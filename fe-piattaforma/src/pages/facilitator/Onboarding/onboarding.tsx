@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import {Navigate, useNavigate} from 'react-router-dom';
 import { useAppSelector } from '../../../redux/hooks';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import Profile from '/public/assets/img/change-profile.png';
@@ -28,6 +28,7 @@ import {
 } from '../../../redux/features/user/userThunk';
 import { openModal } from '../../../redux/features/modal/modalSlice';
 import FormOnboarding from './formOnboarding';
+import {defaultRedirectUrl} from "../../../routes";
 
 interface ProfilePicI {
   image?: boolean;
@@ -37,7 +38,7 @@ interface OnboardingI extends ProfilePicI, withFormHandlerProps {}
 
 const Onboarding: React.FC<OnboardingI> = (props) => {
   const dispatch = useDispatch();
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
   const user = useAppSelector(selectUser);
   const [image, setImage] = useState<string>(Profile);
@@ -81,6 +82,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
   };
 
   const loginUser = () => {
+    navigate(defaultRedirectUrl, { replace: true });
     dispatch(login());
   };
 
@@ -207,7 +209,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
             </div>
           </div>
         ) : null}
-        <FormOnboarding sendNewForm={(newForm) => updateForm(newForm)} />
+        <FormOnboarding sendNewForm={updateForm} />
         <Form
           id='form-onboarding'
           className={clsx('mt-5', 'mb-5', 'pt-5', 'onboarding__form-container')}

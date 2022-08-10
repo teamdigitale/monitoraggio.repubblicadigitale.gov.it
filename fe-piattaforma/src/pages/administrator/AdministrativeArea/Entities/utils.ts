@@ -174,4 +174,5 @@ export const userRoles = {
   DSCU: 'DSCU',
   REG: 'REG',
   REGP: 'REGP',
+  VOL: 'VOL',
 }

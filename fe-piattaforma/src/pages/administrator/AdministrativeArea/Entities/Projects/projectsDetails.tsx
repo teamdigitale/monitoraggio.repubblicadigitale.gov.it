@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Icon, Nav, Tooltip } from 'design-react-kit';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { entityStatus, formTypes } from '../utils';
+import { entityStatus, formTypes, userRoles } from '../utils';
 import {
   CRUDActionsI,
   CRUDActionTypes,
@@ -60,6 +60,7 @@ import DeleteEntityModal from '../../../../../components/AdministrativeArea/Enti
 import useGuard from '../../../../../hooks/guard';
 import { roles } from '../Users/usersDetails';
 import UploadCSVModal from '../../../../../components/AdministrativeArea/Entities/General/UploadCSVModal/UploadCSVModal';
+import { selectProfile } from '../../../../../redux/features/user/userSlice';
 
 const tabs = {
   INFO: 'info',
@@ -75,6 +76,7 @@ export const buttonsPositioning = {
 
 const ProjectsDetails = () => {
   const { mediaIsDesktop, mediaIsPhone } = useAppSelector(selectDevice);
+  const { codiceRuolo: userRole } = useAppSelector(selectProfile) || {};
   const project = useAppSelector(selectProjects).detail;
   const projectDetails = project.dettagliInfoProgetto;
   const programDetails = project.dettagliInfoProgramma;
@@ -1133,6 +1135,7 @@ const ProjectsDetails = () => {
                 ? 'Elenco progetti'
                 : 'Torna indietro'
             }
+            showGoBack={userRole !== userRoles.REGP}
           >
             <>
               {currentForm}
