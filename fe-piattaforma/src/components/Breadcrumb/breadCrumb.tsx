@@ -12,6 +12,9 @@ import {
   selectBreadcrumb,
   selectInfoIdsBreadcrumb,
 } from '../../redux/features/app/appSlice';
+import { useAppSelector } from '../../redux/hooks';
+import { selectProfile } from '../../redux/features/user/userSlice';
+import { userRoles } from '../../pages/administrator/AdministrativeArea/Entities/utils';
 
 export interface BreadcrumbI {
   label?: string;
@@ -20,6 +23,7 @@ export interface BreadcrumbI {
 }
 
 const Breadcrumb = () => {
+  const userProfile = useAppSelector(selectProfile);
   const breadcrumbList = useSelector(selectBreadcrumb);
   const idsBreadcrumb = useSelector(selectInfoIdsBreadcrumb);
   const urlCurrentLocation = useLocation().pathname;
@@ -90,13 +94,26 @@ const Breadcrumb = () => {
             newList.push({
               label: getLabelBreadcrumb(elem),
               url: createUrl(index),
-              link: index !== 0 && index !== currentLocation?.length - 2,
+              link:
+                (userProfile?.codiceRuolo === userRoles.REGP &&
+                  getLabelBreadcrumb(elem) === 'Progetti') ||
+                ((userProfile?.codiceRuolo === userRoles.REG ||
+                  userProfile?.codiceRuolo === userRoles.REGP) &&
+                  getLabelBreadcrumb(elem) === 'Programmi')
+                  ? false
+                  : index !== 0 && index !== currentLocation?.length - 2,
             });
           } else if (currentLocation?.length <= 3) {
             newList.push({
               label: getLabelBreadcrumb(elem),
               url: createUrl(index),
-              link: index !== 0 && index !== currentLocation?.length - 1,
+              link:
+                (userProfile?.codiceRuolo === userRoles.REGP &&
+                  getLabelBreadcrumb(elem) === 'Progetti') ||
+                (userProfile?.codiceRuolo === userRoles.REG &&
+                  getLabelBreadcrumb(elem) === 'Programmi')
+                  ? false
+                  : index !== 0 && index !== currentLocation?.length - 1,
             });
           }
         }

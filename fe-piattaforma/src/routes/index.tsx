@@ -9,6 +9,8 @@ import { Loader } from '../components';
 import Notifications from '../pages/common/NotificationsPage/notifications';
 import { SessionCheck } from '../redux/features/user/userThunk';
 
+const AuthRedirect = lazy(() => import('../pages/common/Auth/authRedirect'));
+
 const HomeFacilitator = lazy(() => import('../pages/facilitator/Home/home'));
 const AdministrativeArea = lazy(
   () => import('../pages/administrator/AdministrativeArea/administrativeArea')
@@ -46,9 +48,7 @@ const UserProfile = lazy(
   () => import('../pages/common/UserProfile/userProfile')
 );
 
-const OpenData = lazy(
-  () => import('../pages/common/OpenData/openData')
-);
+const OpenData = lazy(() => import('../pages/common/OpenData/openData'));
 
 /**
  The "routes.tsx" file is now useless, lazy loading is implemented for every 
@@ -56,6 +56,7 @@ const OpenData = lazy(
  In the way to implement lazy loading and to semplify further changes, routes are expandend
  in this component
  */
+export const defaultRedirectUrl = '/auth-redirect';
 
 const AppRoutes: React.FC = () => {
   const dispatch = useDispatch();
@@ -74,7 +75,8 @@ const AppRoutes: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (validSession && isLogged) navigate('/');
+    if (validSession && isLogged)
+      navigate(defaultRedirectUrl, { replace: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogged]);
 
@@ -84,132 +86,132 @@ const AppRoutes: React.FC = () => {
     // This fix is need cause Loader will cause a wdyr error if used here
     <Suspense fallback={<Loader />}>
       <Routes>
-        {process.env.NODE_ENV === 'development' ? (
-          <Route path='/' element={<FullLayout isFull />}>
-            <Route
-              path='/'
-              element={
-                <ProtectedComponent visibleTo={[]} redirect='/auth'>
-                  <HomeFacilitator />
-                </ProtectedComponent>
-              }
-            />
-          </Route>
-        ) : null}
+        <Route path='/auth-redirect' element={<AuthRedirect />} />
+        {isLogged ? (
+          <>
+            <Route path='/' element={<FullLayout isFull />}>
+              <Route path='/stampa-questionario' element={<PrintSurvey />} />
+              {process.env.NODE_ENV === 'development' ? (
+                <Route
+                  path='/'
+                  element={
+                    <ProtectedComponent visibleTo={[]}>
+                      <HomeFacilitator />
+                    </ProtectedComponent>
+                  }
+                />
+              ) : null}
+              <Route
+                path='/'
+                element={<Navigate replace to={defaultRedirectUrl} />}
+              />
+            </Route>
+            <Route path='/' element={<FullLayout />}>
+              <Route
+                path='/area-personale'
+                element={
+                  <ProtectedComponent visibleTo={[]}>
+                    <UserProfile />
+                  </ProtectedComponent>
+                }
+              />
+              <Route
+                path='/documenti'
+                element={
+                  <ProtectedComponent visibleTo={[]}>
+                    <Documents />
+                  </ProtectedComponent>
+                }
+              />
+              <Route
+                path='/gestione-ruoli/crea-nuovo'
+                element={
+                  <ProtectedComponent visibleTo={[]} redirect='/gestione-ruoli'>
+                    <RoleManagementDetails creation />
+                  </ProtectedComponent>
+                }
+              />
+              <Route
+                path='/gestione-ruoli/:codiceRuolo/modifica'
+                element={
+                  <ProtectedComponent visibleTo={[]} redirect='/gestione-ruoli'>
+                    <RoleManagementDetails edit />
+                  </ProtectedComponent>
+                }
+              />
+              <Route
+                path='/gestione-ruoli/:codiceRuolo'
+                element={
+                  <ProtectedComponent
+                    visibleTo={['view.ruoli']}
+                    redirect='/gestione-ruoli'
+                  >
+                    <RoleManagementDetails />
+                  </ProtectedComponent>
+                }
+              />
+              <Route
+                path='/gestione-ruoli'
+                element={
+                  <ProtectedComponent visibleTo={['list.ruoli']}>
+                    <RoleManagement />
+                  </ProtectedComponent>
+                }
+              />
+              {process.env.NODE_ENV === 'development' ? (
+                <Route
+                  path='/notifiche'
+                  element={
+                    <ProtectedComponent visibleTo={[]}>
+                      <Notifications />
+                    </ProtectedComponent>
+                  }
+                />
+              ) : null}
+              <Route
+                path='/dashboard'
+                element={
+                  <ProtectedComponent visibleTo={['tab.dshb', 'view.dshb']}>
+                    <Dashboard />
+                  </ProtectedComponent>
+                }
+              />
+              {process.env.NODE_ENV === 'development' ? (
+                <Route path='/playground' element={<Playground />} />
+              ) : null}
+              <Route
+                path='/area-amministrativa/*'
+                element={
+                  <ProtectedComponent visibleTo={['tab.am']}>
+                    <AdministrativeArea />
+                  </ProtectedComponent>
+                }
+              />
+              <Route
+                path='/area-cittadini/*'
+                element={
+                  <ProtectedComponent visibleTo={[]}>
+                    <CitizenArea />
+                  </ProtectedComponent>
+                }
+              />
+            </Route>
+          </>
+        ) : (
+          <>
+            <Route path='/' element={<FullLayout />}>
+              <Route path='/onboarding' element={<Onboarding />} />
+            </Route>
+            <Route path='/auth' element={<Auth />} />
+          </>
+        )}
         <Route path='/' element={<FullLayout />}>
-          <Route
-            path='/open-data'
-            element={<OpenData />}
-          />
-          <Route
-            path='/area-amministrativa/*'
-            element={
-              <ProtectedComponent visibleTo={['tab.am']} redirect='/'>
-                <AdministrativeArea />
-              </ProtectedComponent>
-            }
-          />
-          <Route
-            path='/area-cittadini/*'
-            element={
-              <ProtectedComponent visibleTo={[]} redirect='/'>
-                <CitizenArea />
-              </ProtectedComponent>
-            }
-          />
-          <Route
-            path='/documenti'
-            element={
-              <ProtectedComponent visibleTo={[]} redirect='/'>
-                <Documents />
-              </ProtectedComponent>
-            }
-          />
-          <Route
-            path='/gestione-ruoli/crea-nuovo'
-            element={
-              <ProtectedComponent visibleTo={[]} redirect='/'>
-                <RoleManagementDetails creation />
-              </ProtectedComponent>
-            }
-          />
-          <Route
-            path='/gestione-ruoli/:codiceRuolo/modifica'
-            element={
-              <ProtectedComponent visibleTo={[]} redirect='/'>
-                <RoleManagementDetails edit />
-              </ProtectedComponent>
-            }
-          />
-          <Route
-            path='/gestione-ruoli/:codiceRuolo'
-            element={
-              <ProtectedComponent
-                visibleTo={['view.ruoli']}
-                redirect='/gestione-ruoli'
-              >
-                <RoleManagementDetails />
-              </ProtectedComponent>
-            }
-          />
-          <Route
-            path='/gestione-ruoli'
-            element={
-              <ProtectedComponent visibleTo={['list.ruoli']} redirect='/'>
-                <RoleManagement />
-              </ProtectedComponent>
-            }
-          />
-          {process.env.NODE_ENV === 'development' ? (
-            <Route
-              path='/notifiche'
-              element={
-                <ProtectedComponent visibleTo={[]} redirect='/'>
-                  <Notifications />
-                </ProtectedComponent>
-              }
-            />
-          ) : null}
-          <Route path='/onboarding' element={<Onboarding />} />
-          <Route
-            path='/dashboard'
-            element={
-              <ProtectedComponent
-                visibleTo={['tab.dshb', 'view.dshb']}
-                redirect='/'
-              >
-                <Dashboard />
-              </ProtectedComponent>
-            }
-          />
-          <Route
-            path='/area-personale'
-            element={
-              <ProtectedComponent visibleTo={[]} redirect='/'>
-                <UserProfile />
-              </ProtectedComponent>
-            }
-          />
-          {process.env.NODE_ENV === 'development' ? (
-            <Route path='/playground' element={<Playground />} />
-          ) : null}
-          <Route
-            path='/'
-            element={
-              <Navigate to={isLogged ? '/area-amministrativa' : '/auth'} />
-            }
-          />
-          <Route
-            path='*'
-            element={
-              <Navigate to={isLogged ? '/area-amministrativa' : '/auth'} />
-            }
-          />
+          {/* Public Paths */}
+          <Route path='/open-data' element={<OpenData />} />
         </Route>
-        <Route path='/stampa-questionario' element={<PrintSurvey />} />
         <Route
-          path='/auth'
-          element={isLogged ? <Navigate to='/area-amministrativa' /> : <Auth />}
+          path='*'
+          element={<Navigate replace to={defaultRedirectUrl} />}
         />
       </Routes>
     </Suspense>

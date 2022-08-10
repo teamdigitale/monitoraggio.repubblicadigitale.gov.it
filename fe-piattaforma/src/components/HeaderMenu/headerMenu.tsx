@@ -6,28 +6,36 @@ import {
   Icon,
   UncontrolledDropdown,
 } from 'design-react-kit';
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
-import { MenuItem, MenuRoutes } from '../../utils/common';
+import { MenuItem } from '../../utils/common';
 import useGuard from '../../hooks/guard';
 
 interface HeaderMenuI {
   isHeaderFull: boolean;
+  menuRoutes: MenuItem[];
 }
 
 const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
-  const { isHeaderFull } = props;
+  const { isHeaderFull, menuRoutes = [] } = props;
   const { hasUserPermission } = useGuard();
-  const [activeTab, setActiveTab] = useState(
-    MenuRoutes.filter(({ path }) =>
-      window.location.pathname.includes(path)
-    ).reduce((a, b) => (a.path.length > b.path.length ? a : b)).id
-  );
+
+  const updateActiveTab = () =>
+    menuRoutes
+      .filter(({ path }) => window.location.pathname.includes(path))
+      .reduce((a, b) => (a.path.length > b.path.length ? a : b)).id;
+
+  const [activeTab, setActiveTab] = useState(updateActiveTab());
   const { t } = useTranslation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [dropdownEventsOpen, setDropdownEventsOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setActiveTab(updateActiveTab());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [menuRoutes]);
 
   const navDropDown: React.FC<MenuItem> = (li) => {
     const toggle = (dropdown: string) => {
@@ -66,7 +74,7 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
                 : dropdownOpen
             }
           >
-            {li.label}{' '}
+            {li.label}
             <Icon icon='it-expand' size='sm' color='white' aria-label='Apri' />
           </DropdownToggle>
           <DropdownMenu role='menu' tag='ul'>
@@ -117,8 +125,8 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
       tabIndex={-1}
     >
       <ul className='d-flex align-items-end mb-0' role='menu'>
-        {(MenuRoutes || [])
-          .filter(({ visible }) => hasUserPermission(visible))
+        {menuRoutes
+          .filter(({ visible = [] }) => hasUserPermission(visible))
           .map((li) => (
             <li
               key={li.path}
@@ -150,10 +158,9 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
                   </Link>
                   <div
                     className={clsx(
-                      activeTab === li.id &&
-                        'bg-white header-menu-container__tab-bar mt-1',
-                      activeTab !== li.id &&
-                        'bg-transparent header-menu-container__tab-bar mt-1'
+                      activeTab === li.id
+                        ? 'bg-white header-menu-container__tab-bar mt-1'
+                        : 'bg-transparent header-menu-container__tab-bar mt-1'
                     )}
                   />
                 </>

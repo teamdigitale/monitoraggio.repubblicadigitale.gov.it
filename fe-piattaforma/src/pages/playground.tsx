@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { Button, Col, FormGroup, Row } from 'design-react-kit';
 import { useTranslation } from 'react-i18next';
 import { dispatchNotify } from '../utils/notifictionHelper';
-import { openModal } from '../redux/features/modal/modalSlice';
 import {
   Form,
   InfoPanel,
@@ -18,7 +17,6 @@ import withFormHandler, { withFormHandlerProps } from '../hoc/withFormHandler';
 import { formFieldI, newForm, newFormField } from '../utils/formHelper';
 import { i18nChangeLanguage } from '../utils/i18nHelper';
 import { guard } from '../utils/guardHelper';
-import SwitchProfileModal from '../components/Modals/SwitchProfileModal/switchProfileModal';
 import { FilterI } from '../components/DropdownFilter/dropdownFilter';
 // import { groupOptions } from '../components/Form/multipleSelectConstants';
 // import ManageOTP from '../components/AdministrativeArea/Entities/Surveys/ManageOTP/ManageOTP';
@@ -182,22 +180,6 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
 
       <Stepper nSteps={5} currentStep={3} />
       <Rating />
-
-      <section>
-        <Row>
-          <Button
-            color='primary'
-            outline
-            size='lg'
-            onClick={() => {
-              dispatch(openModal({ id: 'switchProfileModal' }));
-            }}
-          >
-            Apri modale switch profile
-          </Button>
-          <SwitchProfileModal />
-        </Row>
-      </section>
 
       {/* <section>
         <Row>

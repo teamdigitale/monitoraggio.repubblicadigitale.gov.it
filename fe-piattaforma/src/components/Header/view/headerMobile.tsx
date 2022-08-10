@@ -14,12 +14,12 @@ import Bell from '/public/assets/img/campanella.png';
 import { HeaderI } from '../header';
 import { logout } from '../../../redux/features/user/userSlice';
 import HamburgerMenu from '../../HamburgerMenu/hamburgerMenu';
-import SwitchProfileModal from '../../Modals/SwitchProfileModal/switchProfileModal';
 import { openModal } from '../../../redux/features/modal/modalSlice';
 import AvatarInitials, {
   AvatarSizes,
   AvatarTextSizes,
 } from '../../AvatarInitials/avatarInitials';
+import { defaultRedirectUrl } from '../../../routes';
 
 const HeaderMobile: React.FC<HeaderI> = ({
   dispatch,
@@ -27,6 +27,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
   userProfile,
   isLogged,
   notification,
+  menuRoutes,
 }) => {
   const [openUser, setOpenUser] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -61,7 +62,9 @@ const HeaderMobile: React.FC<HeaderI> = ({
           <div className='d-flex flex-row justify-content-start'>
             <p className='h6 text-wrap font-weight-light'>
               {/*<em>{getRoleLabel(userProfile?.codiceRuolo)}</em>*/}
-              <em>{`${userProfile?.descrizioneRuolo}${userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}`: ''}`}</em>
+              <em>{`${userProfile?.descrizioneRuolo}${
+                userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
+              }`}</em>
             </p>
           </div>
         </div>
@@ -161,7 +164,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
             'w-100'
           )}
         >
-          <HamburgerMenu open={isOpen} setOpen={setIsOpen} />
+          <HamburgerMenu open={isOpen} setOpen={setIsOpen} menuRoutes={menuRoutes} />
           <div
             className={clsx(
               'd-flex',
@@ -226,7 +229,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
               'ml-2'
             )}
           >
-            <Link to='/' replace>
+            <Link to={defaultRedirectUrl} replace>
               <img src={LogoMobile} alt='logo' />
             </Link>
           </div>
@@ -255,7 +258,6 @@ const HeaderMobile: React.FC<HeaderI> = ({
           ) : null}
         </div>
       </div>
-      <SwitchProfileModal />
     </header>
   );
 };

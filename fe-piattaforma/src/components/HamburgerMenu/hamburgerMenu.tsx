@@ -2,23 +2,24 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Button, Collapse, Icon, LinkList } from 'design-react-kit';
-import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import ClickOutside from '../../hoc/ClickOutside';
 import './hamburgerMenu.scss';
+import ClickOutside from '../../hoc/ClickOutside';
 import LogoSmall from '/public/assets/img/logo-mobile.png';
-import { focusId, MenuRoutes } from '../../utils/common';
+import { focusId, MenuItem } from '../../utils/common';
 import useGuard from '../../hooks/guard';
 
 interface HBMenuProps {
   open: boolean;
   setOpen: (state: boolean) => void;
+  menuRoutes: MenuItem[];
 }
 
 const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
-  const { open, setOpen } = props;
+  const { open, setOpen, menuRoutes = [] } = props;
   const { hasUserPermission } = useGuard();
 
   const [collapseOpen, setCollapseOpen] = useState(false);
@@ -46,8 +47,8 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
             id='hamburger'
           >
             <ul>
-              {(MenuRoutes || [])
-                .filter(({ visible }) => hasUserPermission(visible))
+              {menuRoutes
+                .filter(({ visible = [] }) => hasUserPermission(visible))
                 .map((link, index: number) => {
                   return link.subRoutes?.length ? (
                     <React.Fragment key={index}>

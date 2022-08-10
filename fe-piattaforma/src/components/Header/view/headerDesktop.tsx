@@ -19,12 +19,12 @@ import { HeaderI } from '../header';
 import { logout } from '../../../redux/features/user/userSlice';
 import HeaderMenu from '../../HeaderMenu/headerMenu';
 import { openModal } from '../../../redux/features/modal/modalSlice';
-import SwitchProfileModal from '../../Modals/SwitchProfileModal/switchProfileModal';
 import AvatarInitials, {
   AvatarSizes,
   AvatarTextSizes,
 } from '../../AvatarInitials/avatarInitials';
 import useGuard from '../../../hooks/guard';
+import { defaultRedirectUrl } from '../../../routes';
 
 const HeaderDesktop: React.FC<HeaderI> = ({
   isHeaderFull = true,
@@ -33,6 +33,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
   userProfile,
   isLogged,
   notification,
+                                            menuRoutes,
 }) => {
   //const languages = ['ITA', 'ENG'];
 
@@ -222,8 +223,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                         'text-nowrap'
                       )}
                     >
-                      {' '}
-                      {t('role_management')}{' '}
+                      {t('role_management')}
                     </h6>
                   </div>
                 </a>
@@ -340,7 +340,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 'pt-3'
               )}
             >
-              <Link to='/' replace>
+              <Link to={defaultRedirectUrl} replace>
                 <img src={Logo} alt='logo' />
               </Link>
             </div>
@@ -398,10 +398,9 @@ const HeaderDesktop: React.FC<HeaderI> = ({
       )}
       {isLogged ? (
         <div className='header-container__nav primary-bg pt-2'>
-          <HeaderMenu isHeaderFull={isHeaderFull} />
+          <HeaderMenu isHeaderFull={isHeaderFull} menuRoutes={menuRoutes} />
         </div>
       ) : null}
-      <SwitchProfileModal />
     </header>
   );
 };
