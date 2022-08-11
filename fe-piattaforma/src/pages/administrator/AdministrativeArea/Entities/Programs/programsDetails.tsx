@@ -1030,7 +1030,7 @@ const ProgramsDetails: React.FC = () => {
           buttonsPosition={buttonsPosition}
           goBackTitle='Elenco programmi'
           goBackPath='/area-amministrativa/programmi'
-          showGoBack={userRole !== userRoles.REG && userRole !== userRoles.REGP}
+          showGoBack={userRole !== userRoles.REG && userRole !== userRoles.REGP && userRole !== userRoles.FAC}
           surveyDefault={surveyDefault}
           isRadioButtonItem={radioButtonsSurveys}
           onRadioChange={(surveyCheckedId: string) =>

@@ -15,6 +15,8 @@ const AuthRedirect = () => {
   const profile = useAppSelector(selectProfile);
   const navigate = useNavigate();
 
+  console.log('passa')
+
   const redirectTo = (to: string, replace = true) => {
     navigate(to, { replace });
   };
@@ -23,6 +25,7 @@ const AuthRedirect = () => {
     if (profile?.codiceRuolo) {
       const { codiceRuolo, idProgramma, idProgetto } = profile;
       switch (codiceRuolo) {
+        case userRoles.FAC:
         case userRoles.VOL:
         case userRoles.REG:
         case userRoles.REGP: {

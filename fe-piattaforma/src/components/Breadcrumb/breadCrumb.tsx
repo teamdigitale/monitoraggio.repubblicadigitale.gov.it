@@ -95,10 +95,12 @@ const Breadcrumb = () => {
               label: getLabelBreadcrumb(elem),
               url: createUrl(index),
               link:
-                (userProfile?.codiceRuolo === userRoles.REGP &&
+                ((userProfile?.codiceRuolo === userRoles.REGP ||
+                  userProfile?.codiceRuolo === userRoles.FAC) &&
                   getLabelBreadcrumb(elem) === 'Progetti') ||
                 ((userProfile?.codiceRuolo === userRoles.REG ||
-                  userProfile?.codiceRuolo === userRoles.REGP) &&
+                  userProfile?.codiceRuolo === userRoles.REGP ||
+                  userProfile?.codiceRuolo === userRoles.FAC) &&
                   getLabelBreadcrumb(elem) === 'Programmi')
                   ? false
                   : index !== 0 && index !== currentLocation?.length - 2,

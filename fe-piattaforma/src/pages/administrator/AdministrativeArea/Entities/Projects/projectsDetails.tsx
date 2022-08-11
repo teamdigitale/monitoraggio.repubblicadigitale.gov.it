@@ -1135,7 +1135,7 @@ const ProjectsDetails = () => {
                 ? 'Elenco progetti'
                 : 'Torna indietro'
             }
-            showGoBack={userRole !== userRoles.REGP}
+            showGoBack={userRole !== userRoles.REGP && userRole !== userRoles.FAC}
           >
             <>
               {currentForm}
