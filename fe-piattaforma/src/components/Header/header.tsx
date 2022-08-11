@@ -42,7 +42,8 @@ const parseMenuRoute = (menuRoute: MenuItem, userProfile: UserProfileI) => {
       }
       return menuRoute;
     }
-    case userRoles.REGP: {
+    case userRoles.REGP:
+    case userRoles.FAC: {
       if (userProfile?.idProgetto && menuRoute.path === '/area-amministrativa/progetti') {
         return {
           ...menuRoute,

@@ -175,4 +175,5 @@ export const userRoles = {
   REG: 'REG',
   REGP: 'REGP',
   VOL: 'VOL',
+  FAC: 'FAC',
 }

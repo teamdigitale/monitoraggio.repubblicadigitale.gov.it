@@ -199,16 +199,24 @@ const AppRoutes: React.FC = () => {
           </>
         ) : (
           <>
+            <Route path='/auth' element={<Auth />} />
             <Route path='/' element={<FullLayout />}>
               <Route path='/onboarding' element={<Onboarding />} />
+              <Route
+                path='/'
+                element={<Navigate replace to={defaultRedirectUrl} />}
+              />
             </Route>
-            <Route path='/auth' element={<Auth />} />
           </>
         )}
         <Route path='/' element={<FullLayout />}>
           {/* Public Paths */}
           <Route path='/open-data' element={<OpenData />} />
         </Route>
+        <Route
+          path='/'
+          element={<Navigate replace to={defaultRedirectUrl} />}
+        />
         <Route
           path='*'
           element={<Navigate replace to={defaultRedirectUrl} />}
