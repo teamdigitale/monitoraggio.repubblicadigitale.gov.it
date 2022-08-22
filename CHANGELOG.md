@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.83](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.82...1.0.0-develop.83) (2022-08-22)
+
+
+### Bug Fixes
+
+* **be:** servizi-cittadini-questionari ([e52ecf6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e52ecf672f6302035fa31e5a0412e117d4e12c16))
+
 ## [1.0.0-develop.82](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.81...1.0.0-develop.82) (2022-08-11)
 
 
