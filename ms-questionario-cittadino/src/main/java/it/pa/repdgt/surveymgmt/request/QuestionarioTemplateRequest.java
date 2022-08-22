@@ -47,10 +47,6 @@ public class QuestionarioTemplateRequest implements Serializable {
 		@NotBlank
 		private String titolo;
 		
-		@JsonProperty(value = "default-section")
-		@NotNull
-		private Boolean sezioneDiDefault;
-		
 		@JsonProperty(value = "schema")
 		@JsonString
 		private String schema;

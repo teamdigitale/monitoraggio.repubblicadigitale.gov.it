@@ -61,7 +61,6 @@ public class QuestionarioTemplateMapper {
 		final SezioneQuestionarioTemplate sezioneQuestionarioTemplate = new QuestionarioTemplateCollection.SezioneQuestionarioTemplate();
 		sezioneQuestionarioTemplate.setId(sezioneQuestionarioTemplateRequest.getId());
 		sezioneQuestionarioTemplate.setTitolo(sezioneQuestionarioTemplateRequest.getTitolo());
-		sezioneQuestionarioTemplate.setSezioneDiDefault(sezioneQuestionarioTemplateRequest.getSezioneDiDefault());
 		sezioneQuestionarioTemplate.setSchema(new JsonObject(sezioneQuestionarioTemplateRequest.getSchema()));
 		sezioneQuestionarioTemplate.setSchemaui(new JsonObject(sezioneQuestionarioTemplateRequest.getSchemaui()));
 		return sezioneQuestionarioTemplate;
@@ -127,9 +126,8 @@ public class QuestionarioTemplateMapper {
 		final SezioneQuestionarioTemplateResource sezioneQuestionarioTemplateResource = new QuestionarioTemplateResource.SezioneQuestionarioTemplateResource();
 		sezioneQuestionarioTemplateResource.setId(sezioneQuestionarioTemplate.getId());
 		sezioneQuestionarioTemplateResource.setTitolo(sezioneQuestionarioTemplate.getTitolo());
-		sezioneQuestionarioTemplateResource.setSezioneDiDefault(sezioneQuestionarioTemplate.getSezioneDiDefault());
-		sezioneQuestionarioTemplateResource.setSchema(sezioneQuestionarioTemplate.getSchema());
-		sezioneQuestionarioTemplateResource.setSchemaui(sezioneQuestionarioTemplate.getSchemaui());
+		sezioneQuestionarioTemplateResource.setSchema(   ((JsonObject) sezioneQuestionarioTemplate.getSchema() ).getJson());
+		sezioneQuestionarioTemplateResource.setSchemaui( ((JsonObject) sezioneQuestionarioTemplate.getSchemaui() ).getJson());
 		return sezioneQuestionarioTemplateResource;
 	}
 	

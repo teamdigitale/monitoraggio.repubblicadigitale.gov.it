@@ -27,7 +27,6 @@ import it.pa.repdgt.surveymgmt.bean.SchedaCittadinoBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.dto.CittadinoDto;
 import it.pa.repdgt.surveymgmt.dto.SedeDto;
-import it.pa.repdgt.surveymgmt.mapper.CittadinoMapper;
 import it.pa.repdgt.surveymgmt.param.CittadiniPaginatiParam;
 import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import it.pa.repdgt.surveymgmt.projection.CittadinoProjection;
@@ -44,8 +43,6 @@ public class CittadinoRestApi {
 	private CittadinoService cittadinoService;
 	@Autowired
 	private QuestionarioCompilatoService questionarioCompilatoService;
-	@Autowired
-	private CittadinoMapper cittadinoMapper;
 	
 	/***
 	 * Restituisce tutti i cittadini paginati 
