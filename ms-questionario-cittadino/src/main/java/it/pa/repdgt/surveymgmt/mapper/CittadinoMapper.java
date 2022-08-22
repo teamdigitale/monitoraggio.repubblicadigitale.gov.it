@@ -1,12 +1,5 @@
 package it.pa.repdgt.surveymgmt.mapper;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.Email;
-
 import org.springframework.stereotype.Component;
 
 import it.pa.repdgt.shared.entity.CittadinoEntity;
@@ -25,15 +18,15 @@ public class CittadinoMapper {
 		dettaglioCittadino.setTipoDocumento(cittadinoFetchDB.getTipoDocumento());
 		dettaglioCittadino.setNumeroDocumento(cittadinoFetchDB.getNumeroDocumento());
 		dettaglioCittadino.setGenere(cittadinoFetchDB.getGenere());
-		dettaglioCittadino.setAnnoDiNascita(cittadinoFetchDB.getAnnoDiNascita());
-		dettaglioCittadino.setTitoloDiStudio(cittadinoFetchDB.getTitoloDiStudio());
-		dettaglioCittadino.setOccupazione(cittadinoFetchDB.getOccupazione());
+		dettaglioCittadino.setAnnoNascita(cittadinoFetchDB.getAnnoDiNascita());
+		dettaglioCittadino.setTitoloStudio(cittadinoFetchDB.getTitoloDiStudio());
+		dettaglioCittadino.setStatoOccupazionale(cittadinoFetchDB.getOccupazione());
 		dettaglioCittadino.setCittadinanza(cittadinoFetchDB.getCittadinanza());
-		dettaglioCittadino.setComuneDiDomicilio(cittadinoFetchDB.getComuneDiDomicilio());
+		dettaglioCittadino.setComuneDomicilio(cittadinoFetchDB.getComuneDiDomicilio());
 		dettaglioCittadino.setCategoriaFragili(cittadinoFetchDB.getCategoriaFragili());
 		dettaglioCittadino.setEmail(cittadinoFetchDB.getEmail());
-		dettaglioCittadino.setPrefissoTelefono(cittadinoFetchDB.getPrefissoTelefono());
-		dettaglioCittadino.setNumeroDiCellulare(cittadinoFetchDB.getNumeroDiCellulare());
+		dettaglioCittadino.setPrefisso(cittadinoFetchDB.getPrefissoTelefono());
+		dettaglioCittadino.setNumeroCellulare(cittadinoFetchDB.getNumeroDiCellulare());
 		dettaglioCittadino.setTelefono(cittadinoFetchDB.getTelefono());
 		dettaglioCittadino.setTipoConferimentoConsenso(cittadinoFetchDB.getTipoConferimentoConsenso());
 		dettaglioCittadino.setDataConferimentoConsenso(cittadinoFetchDB.getDataConferimentoConsenso());

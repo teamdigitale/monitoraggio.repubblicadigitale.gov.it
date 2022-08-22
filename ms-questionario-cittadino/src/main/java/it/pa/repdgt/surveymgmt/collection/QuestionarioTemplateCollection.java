@@ -77,10 +77,6 @@ public class QuestionarioTemplateCollection implements Serializable {
 		@NotBlank
 		@Field(name = "titolo")
 		private String titolo;
-		
-		@NotBlank
-		@Field(name = "sezioneDiDefault")
-		private Boolean sezioneDiDefault;
 
 		@NotNull
 		@Field(name = "schema")

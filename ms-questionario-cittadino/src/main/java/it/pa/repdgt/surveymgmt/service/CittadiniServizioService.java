@@ -3,6 +3,7 @@ package it.pa.repdgt.surveymgmt.service;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -167,7 +168,10 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		//recupero stati questionario dropdown
 		return filtroListaCittadiniServizio.getStatiQuestionario().isEmpty() 
 				? this.getAllStatiQuestionarioByProfilazioneAndFiltro(idServizio, filtroListaCittadiniServizio)
-						: filtroListaCittadiniServizio.getStatiQuestionario();
+						: this.getAllStatiQuestionarioByProfilazioneAndFiltro(idServizio, filtroListaCittadiniServizio)
+						.containsAll(filtroListaCittadiniServizio.getStatiQuestionario()) 
+						? filtroListaCittadiniServizio.getStatiQuestionario()
+								: List.of();
 	}
 
 	@LogMethod

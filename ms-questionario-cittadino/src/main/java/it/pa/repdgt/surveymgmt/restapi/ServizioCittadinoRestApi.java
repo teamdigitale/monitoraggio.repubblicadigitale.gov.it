@@ -5,13 +5,16 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +38,7 @@ import it.pa.repdgt.surveymgmt.mapper.GetCittadinoServizioMapper;
 import it.pa.repdgt.surveymgmt.param.FiltroListaCittadiniServizioParam;
 import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import it.pa.repdgt.surveymgmt.projection.GetCittadinoProjection;
+import it.pa.repdgt.surveymgmt.request.GetCittadiniRequest;
 import it.pa.repdgt.surveymgmt.request.NuovoCittadinoServizioRequest;
 import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoAnonimoRequest;
 import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoRequest;
@@ -105,15 +109,14 @@ public class ServizioCittadinoRestApi {
 			);
 	}
 	
-	@GetMapping
+	@PostMapping
 	@ResponseStatus(value = HttpStatus.OK)
 	private List<GetCittadinoResource> getCittadini(
-		@RequestParam(name = "criterioRicerca", required = true) final String criterioRicerca,
-		@ApiParam(allowEmptyValue = false, allowableValues = "CF, NUM_DOC", name = "tipoDocumento", required = true)
-		@RequestParam(name = "tipoDocumento", required = true) final String tipoDocumento) {
+			@RequestBody @Valid GetCittadiniRequest request){
+		
 		final List<GetCittadinoProjection> cittadini = this.cittadiniServizioService.getAllCittadiniByCodFiscOrNumDoc(
-				tipoDocumento, 
-				criterioRicerca
+				request.getTipoDocumento(), 
+				request.getCriterioRicerca()
 			);
 		
 		return this.getCittadinoServizioMapper.toResourceFrom(cittadini);
