@@ -352,6 +352,31 @@ public class QuestionarioTemplateRestApiTest {
 		assertThat(questionarioTemplateResource.getId()).isEqualTo(result.getIdQuestionarioTemplate());
 	}
 	
+	@Test
+	@DisplayName(value = "downloadCSVSElencoQuestionariTemplate - OK")
+	@Order(10)
+	public void downloadCSVSElencoQuestionariTemplateTest() {
+		final String filtroCriterioRicerca = "";
+		final String filtroStato = "";
+		
+		ProfilazioneParam profilazioneParam = new ProfilazioneParam();
+		String codiceFiscaleUtenteDTD = "UIHPLW87R49F205X";
+		profilazioneParam.setCodiceFiscaleUtenteLoggato(codiceFiscaleUtenteDTD);
+		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD);
+		
+		String urlToCall = "http://localhost:" + randomServerPort +
+				"/questionarioTemplate/download?criterioRicerca="+filtroCriterioRicerca+"&stato="+filtroStato;
+		String elencoQuestionariTemplate = restTemplate.postForObject(
+				urlToCall, 
+				profilazioneParam,
+				String.class
+			);
+		 
+		String[] questionariTemplateRecord = elencoQuestionariTemplate.split("\\n");
+		
+		assertThat(elencoQuestionariTemplate).isNotNull();
+	}
+	
 //	@Test
 //	@DisplayName(value = "creaQuestionarioTemplateTest - OK")
 //	@Order(10)

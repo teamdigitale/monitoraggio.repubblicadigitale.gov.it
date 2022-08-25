@@ -14,14 +14,11 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.programmaprogetto.bean.DettaglioProgrammaBean;
 import it.pa.repdgt.programmaprogetto.bean.SchedaProgrammaBean;
+import it.pa.repdgt.programmaprogetto.exception.ProgettoException;
 import it.pa.repdgt.programmaprogetto.exception.ProgrammaException;
 import it.pa.repdgt.programmaprogetto.exception.ResourceNotFoundException;
 import it.pa.repdgt.programmaprogetto.mapper.ProgrammaMapper;
@@ -32,6 +29,7 @@ import it.pa.repdgt.programmaprogetto.request.ProgettoFiltroRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammaRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammiParam;
 import it.pa.repdgt.programmaprogetto.request.SceltaProfiloParam;
+import it.pa.repdgt.programmaprogetto.resource.PaginaProgrammi;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
@@ -80,8 +78,32 @@ public class ProgrammaService {
 
 	@LogMethod
 	@LogExecutionTime
+	public List<ProgrammaEntity> getAllProgrammiPaginatiFiltrati(FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
+		return this.programmaRepository.findAllPaginati(
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getPolicies(),
+				filtroRequest.getStati(),
+				currPage*pageSize,
+				pageSize
+				);
+	}
+	
+	@LogMethod
+	@LogExecutionTime
 	public List<ProgrammaEntity> getAllProgrammi(FiltroRequest filtroRequest) {
 		return this.programmaRepository.findAll(
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getPolicies(),
+				filtroRequest.getStati()
+				);
+	}
+	
+	@LogMethod
+	@LogExecutionTime
+	public Long getCountAllProgrammi(FiltroRequest filtroRequest) {
+		return this.programmaRepository.countAll(
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getPolicies(),
@@ -103,19 +125,11 @@ public class ProgrammaService {
 
 	@LogMethod
 	@LogExecutionTime
-	public Page<ProgrammaEntity> getAllProgrammiPaginati(ProgrammiParam sceltaContesto, Integer currPage, Integer pageSize, FiltroRequest filtroRequest) {
+	public PaginaProgrammi getAllProgrammiPaginati(ProgrammiParam sceltaContesto, Integer currPage, Integer pageSize, FiltroRequest filtroRequest) {
 		if(this.ruoloService.getCodiceRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
 			throw new ProgrammaException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
 		}
-		Pageable paginazione = PageRequest.of(currPage, pageSize);
-		List<ProgrammaEntity> programmiUtente = this.getAllProgrammiByRuoloAndIdProgramma(sceltaContesto.getCodiceRuolo(), sceltaContesto.getIdProgramma(), filtroRequest);
-		programmiUtente.sort((programma1, programma2) -> programma1.getId().compareTo(programma2.getId()));
-		int start = (int) paginazione.getOffset();
-		int end = Math.min((start + paginazione.getPageSize()), programmiUtente.size());
-		if(start > end) {
-			throw new ProgrammaException("ERRORE: pagina richiesta inesistente", CodiceErroreEnum.G03);
-		}
-		return new PageImpl<ProgrammaEntity>(programmiUtente.subList(start, end), paginazione, programmiUtente.size());
+		return this.getAllProgrammiByRuoloAndIdProgrammaPaginati(sceltaContesto.getCodiceRuolo(), sceltaContesto.getIdProgramma(), filtroRequest, currPage, pageSize);
 	}
 
 	@LogMethod
@@ -156,6 +170,55 @@ public class ProgrammaService {
 	}
 
 	/**
+	 * Recupera tutti i programmi paginati e filtrati in base al filtro passato che sono associati all'utente che ha quel ruolo associato a quel particolare programma
+	 *
+	 * @param codiceRuolo - il ruolo scelto dall'utente in fase di login
+	 * @return List<ProgrammaEntity> programmi - la lista dei programmi associati all'utente
+	 */
+	@LogMethod
+	@LogExecutionTime
+	public PaginaProgrammi getAllProgrammiByRuoloAndIdProgrammaPaginati(String codiceRuolo, Long idProgramma, FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
+		PaginaProgrammi paginaProgrammi = new PaginaProgrammi();
+		Long numeroElementi = 0L;
+		switch (codiceRuolo) {
+		case "DTD":
+			paginaProgrammi.setPaginaProgrammi(getAllProgrammiPaginatiFiltrati(filtroRequest, currPage, pageSize));
+			numeroElementi = getCountAllProgrammi(filtroRequest);
+			break;
+		case "DSCU":
+			paginaProgrammi.setPaginaProgrammi(this.getProgrammiPerDSCUPaginatiFiltrati(filtroRequest, currPage, pageSize));
+			numeroElementi = getCountProgrammiPerDSCU(filtroRequest);
+			break;
+		case "REG":
+		case "REGP":
+		case "REPP":
+		case "DEG":
+		case "DEGP":
+		case "DEPP":
+		case "FAC":
+		case "VOL":
+			paginaProgrammi.setPaginaProgrammi(Arrays.asList( 
+					this.getProgrammaById(idProgramma)
+					));
+			numeroElementi = 1L;
+			break;
+		default:
+			paginaProgrammi.setPaginaProgrammi(this.getAllProgrammiPaginatiFiltrati(filtroRequest, currPage, pageSize));
+			numeroElementi = getCountAllProgrammi(filtroRequest);
+			break;
+		}
+		paginaProgrammi.setTotalElements(numeroElementi);
+		Integer pagine = (int) (numeroElementi/pageSize);
+		paginaProgrammi.setTotalPages(numeroElementi%pageSize > 0 ? pagine + 1 : pagine);
+		
+		if(paginaProgrammi.getTotalElements() > 0 && currPage >= paginaProgrammi.getTotalPages()) {
+			throw new ProgrammaException("Errore Pagina richiesta non esistente", CodiceErroreEnum.G03);
+		}
+		
+		return paginaProgrammi;
+	}
+	
+	/**
 	 * Recupera tutti i programmi filtrati in base al filtro passato che sono associati all'utente che ha quel ruolo associato a quel particolare programma
 	 *
 	 * @param codiceRuolo - il ruolo scelto dall'utente in fase di login
@@ -166,9 +229,9 @@ public class ProgrammaService {
 	public List<ProgrammaEntity> getAllProgrammiByRuoloAndIdProgramma(String codiceRuolo, Long idProgramma, FiltroRequest filtroRequest) {
 		switch (codiceRuolo) {
 		case "DTD":
-			return this.getAllProgrammi(filtroRequest);
+			return getAllProgrammi(filtroRequest);
 		case "DSCU":
-			return this.getProgrammiPerDSCU(filtroRequest);
+			return getProgrammiPerDSCU(filtroRequest);
 		case "REG":
 		case "REGP":
 		case "REPP":
@@ -181,7 +244,7 @@ public class ProgrammaService {
 					this.getProgrammaById(idProgramma)
 					);
 		default:
-			return this.getAllProgrammi(filtroRequest);
+			return getAllProgrammi(filtroRequest);
 		}
 	}
 
@@ -298,8 +361,32 @@ public class ProgrammaService {
 
 	@LogMethod
 	@LogExecutionTime
+	public List<ProgrammaEntity> getProgrammiPerDSCUPaginatiFiltrati(FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
+		return this.programmaRepository.findProgrammiByPolicyPaginati(
+				PolicyEnum.SCD.toString(),
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getStati(),
+				currPage*pageSize,
+				pageSize
+				);
+	}
+	
+	@LogMethod
+	@LogExecutionTime
 	public List<ProgrammaEntity> getProgrammiPerDSCU(FiltroRequest filtroRequest) {
 		return this.programmaRepository.findProgrammiByPolicy(
+				PolicyEnum.SCD.toString(),
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getStati()
+				);
+	}
+	
+	@LogMethod
+	@LogExecutionTime
+	public Long getCountProgrammiPerDSCU(FiltroRequest filtroRequest) {
+		return this.programmaRepository.countProgrammiByPolicy(
 				PolicyEnum.SCD.toString(),
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",

@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.csv.CSVFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,6 +35,7 @@ import it.pa.repdgt.programmaprogetto.request.ProgrammiParam;
 import it.pa.repdgt.programmaprogetto.request.SceltaProfiloParam;
 import it.pa.repdgt.programmaprogetto.request.TerminaRequest;
 import it.pa.repdgt.programmaprogetto.resource.CreaProgrammaResource;
+import it.pa.repdgt.programmaprogetto.resource.PaginaProgrammi;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammiLightResourcePaginata;
 import it.pa.repdgt.programmaprogetto.service.ProgrammaService;
 import it.pa.repdgt.programmaprogetto.util.CSVProgrammaUtil;
@@ -50,21 +50,19 @@ public class ProgrammaRestApi {
 	@Autowired
 	private ProgrammaMapper programmaMapper;
 	
-	// TOUCH POINT - 1.1.1 - Lista programmi paginata e filtrata per ruolo utente  
-	// TOUCH POINT - 1.1.2 - Lista programmi filtrata  
+	//2.1 Lista programmi paginata e filtrata per ruolo utente 
 	@PostMapping(path = "/all")
 	@ResponseStatus(value = HttpStatus.OK)
 	public ProgrammiLightResourcePaginata getAllProgrammiPaginatiByRuolo(
 			@RequestBody @Valid @NotNull ProgrammiParam sceltaContesto,
 			@RequestParam(name = "currPage", required = false, defaultValue = "0")  Integer currPage,
 			@RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-		Page<ProgrammaEntity> paginaProgrammi = this.programmaService.getAllProgrammiPaginati(sceltaContesto, currPage, pageSize, sceltaContesto.getFiltroRequest());
+		PaginaProgrammi paginaProgrammi = this.programmaService.getAllProgrammiPaginati(sceltaContesto, currPage, pageSize, sceltaContesto.getFiltroRequest());
 		ProgrammiLightResourcePaginata listaPaginataProgrammiResource = this.programmaMapper.toProgrammiLightResourcePaginataFrom(paginaProgrammi);
 		return listaPaginataProgrammiResource;
 	}
 	
-	// TOUCH POINT - 1.1.5 - Lista policy per dropdown in elenco programmi
-	// TOUCH POINT - 1.2.5 - Lista policy per dropdown in elenco progetti
+	// 2.2 - Lista policy per dropdown in elenco programmi
 	@PostMapping(path = "/policies/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<String> getAllPoliciesDropdownByRuolo(
@@ -73,7 +71,7 @@ public class ProgrammaRestApi {
 		return policiesDropdown;
 	}
 	
-	// TOUCH POINT - 1.1.6 -  Lista Stati Programma per dropdown
+	// 2.3 -  Lista Stati Programma per dropdown
 	@PostMapping(path = "/stati/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<String> getAllStatiDropdownByRuolo(
@@ -82,14 +80,14 @@ public class ProgrammaRestApi {
 		return statiDropdown;
 	}
 	
-	// TOUCH POINT - 2.1.1 - scheda programma
+	//scheda programma
 	@GetMapping(path = "/{idProgramma}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaProgrammaBean getSchedaProgrammaById(@PathVariable(value = "idProgramma") Long idProgramma) {
 		 return this.programmaService.getSchedaProgrammaById(idProgramma);
 	}
 	
-	// TOUCH POINT - 2.1.1 - scheda programma
+	// 2.4 - scheda programma
 	@PostMapping(path = "/{idProgramma}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaProgrammaBean getSchedaProgrammaByIdAndSceltaProfilo(
@@ -98,7 +96,7 @@ public class ProgrammaRestApi {
 		return this.programmaService.getSchedaProgrammaByIdAndSceltaProfilo(idProgramma, sceltaProfiloParam);
 	}
 	
-	// TOUCH POINT - 1.1.7 - Creazione nuovo proramma
+	// 2.5 - Creazione nuovo proramma
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public CreaProgrammaResource creaNuovoProgramma(@RequestBody @Valid ProgrammaRequest nuovoProgrammaRequest) {
@@ -106,7 +104,7 @@ public class ProgrammaRestApi {
 		return new CreaProgrammaResource(this.programmaService.creaNuovoProgramma(programmaEntity).getId());
 	}
 	
-	// TOUCH POINT - 1.1.3 - Aggiornamento programma esistente
+	// 2.6 - Aggiornamento programma esistente
 	@PutMapping(path = "/{idProgramma}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void aggiornaProgramma(
@@ -115,7 +113,7 @@ public class ProgrammaRestApi {
 		this.programmaService.aggiornaProgramma(programmaRequest, idProgramma);
 	}
 	
-	// TOUCH POINT - 2.2.2 - associa Ente a programma come Gestore Programma 
+	// 2.7 - associa Ente a programma come Gestore Programma 
 	@PutMapping(path = "/{idProgramma}/assegna/entegestore/{idEnteGestore}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void assegnaEnteGestoreProgrammaAlProgramma(
@@ -124,7 +122,7 @@ public class ProgrammaRestApi {
 		this.programmaService.assegnaEnteGestoreProgramma(idProgramma, idEnteGestore);
 	}
 	
-	// TOUCH POINT - 2.2.5 - associa questionario template a programma
+	// 2.8 - associa questionario template a programma
 	@PutMapping(path = "/{idProgramma}/aggiungi/{idQuestionario}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void associaQuestionarioTemplateAProgramma(
@@ -133,7 +131,7 @@ public class ProgrammaRestApi {
 		this.programmaService.associaQuestionarioTemplateAProgramma(idProgramma, idQuestionario);
 	}
 	
-	// TOUCH POINT - 1.1.9 - termina Programma 
+	// 2.9 - termina Programma 
 	@PutMapping(path = "termina/{idProgramma}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void terminaProgramma(
@@ -143,14 +141,14 @@ public class ProgrammaRestApi {
 		this.programmaService.terminaProgramma(idProgramma, sdf.parse(terminaRequest.getDataTerminazione()));
 	}
 	
-	// TOUCH POINT - 1.1.4 - Cancellazione Programma
+	// 2.10 - Cancellazione Programma
 	@DeleteMapping(path = "/{idProgramma}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void cancellazioneProgramma(@PathVariable(value = "idProgramma") Long idProgramma) {
 		this.programmaService.cancellazioneProgramma(idProgramma);
 	}
 	
-	// TOUCH-POINT 1.1.8 - Scarica lista programmi in formato csv
+	// 2.11 - Scarica lista programmi in formato csv
 	@PostMapping(path = "/download")
 	public ResponseEntity<InputStreamResource> downloadListaCSVProgrammi(@RequestBody @Valid ProgrammiParam programmiParam) {
 		String codiceRuolo = programmiParam.getCodiceRuolo();

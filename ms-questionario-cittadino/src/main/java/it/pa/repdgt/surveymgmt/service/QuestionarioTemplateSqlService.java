@@ -31,6 +31,12 @@ public class QuestionarioTemplateSqlService {
 	
 	@LogMethod
 	@LogExecutionTime
+	public Long getNumeroTotaleQuestionariTemplateByFiltro(String criterioRicerca, String statoQuestionario) {
+		return this.templateQuestionarioSqlRepository.countQuestionarioTemplateByFiltro(criterioRicerca, statoQuestionario);
+	}
+	
+	@LogMethod
+	@LogExecutionTime
 	public List<QuestionarioTemplateEntity> getQuestionariTemplateByIdProgetto(
 			@NotNull final Long idProgetto) {
 		return this.templateQuestionarioSqlRepository.findQuestionarioTemplateByIdProgetto(idProgetto);
@@ -71,10 +77,28 @@ public class QuestionarioTemplateSqlService {
 	
 	@LogMethod
 	@LogExecutionTime
+	public List<QuestionarioTemplateEntity> findAllQuestionariTemplatePaginatiByFiltro(
+			final String criterioRicerca,
+			final String statoQuestionario,
+			@NotNull final Integer currPage,
+			@NotNull final Integer pageSize) {
+		return this.templateQuestionarioSqlRepository.findAllByFiltro(
+				criterioRicerca, 
+				statoQuestionario,
+				currPage*pageSize,
+				pageSize
+			);
+	}
+	
+	@LogMethod
+	@LogExecutionTime
 	public List<QuestionarioTemplateEntity> findAllQuestionariTemplateByFiltro(
 			final String criterioRicerca,
 			final String statoQuestionario) {
-		return this.templateQuestionarioSqlRepository.findAllByFiltro(criterioRicerca, statoQuestionario);
+		return this.templateQuestionarioSqlRepository.findAllByFiltro(
+				criterioRicerca, 
+				statoQuestionario
+			);
 	}
 	
 	@LogMethod
@@ -87,11 +111,32 @@ public class QuestionarioTemplateSqlService {
 
 	@LogMethod
 	@LogExecutionTime
+	public List<QuestionarioTemplateEntity> findQuestionariTemplatePaginatiByIdProgrammaAndFiltro(
+			@NotNull final Long idProgramma,
+			final String criterioRicerca, 
+			final String statoQuestionario,
+			@NotNull final Integer currPage,
+			@NotNull final Integer pageSize) {
+		return this.templateQuestionarioSqlRepository.findQuestionariTemplateByIdProgrammaAndFiltro(
+				idProgramma, 
+				criterioRicerca, 
+				statoQuestionario,
+				currPage*pageSize,
+				pageSize
+			);
+	}
+	
+	@LogMethod
+	@LogExecutionTime
 	public List<QuestionarioTemplateEntity> findQuestionariTemplateByIdProgrammaAndFiltro(
 			@NotNull final Long idProgramma,
 			final String criterioRicerca, 
-			final String statoQuestionario) {
-		return this.templateQuestionarioSqlRepository.findQuestionariTemplateByIdProgrammaAndFiltro(idProgramma, criterioRicerca, statoQuestionario);
+			final String statoQuestionario ) {
+		return this.templateQuestionarioSqlRepository.findQuestionariTemplateByIdProgrammaAndFiltro(
+				idProgramma, 
+				criterioRicerca,
+				statoQuestionario
+			);
 	}
 	
 	@LogMethod
@@ -129,10 +174,28 @@ public class QuestionarioTemplateSqlService {
 
 	@LogMethod
 	@LogExecutionTime
+	public List<QuestionarioTemplateEntity> findQuestionariTemplatePaginatiByDefaultPolicySCDAndFiltro(
+			String criterioRicerca,
+			String statoQuestionario,
+			@NotNull Integer currPage,
+			@NotNull Integer pageSize) {
+		return this.templateQuestionarioSqlRepository.findQuestionariTemplateByDefaultPolicySCDAndFiltro(
+				criterioRicerca, 
+				statoQuestionario,
+				currPage*pageSize,
+				pageSize
+			);
+	}
+	
+	@LogMethod
+	@LogExecutionTime
 	public List<QuestionarioTemplateEntity> findQuestionariTemplateByDefaultPolicySCDAndFiltro(
 			String criterioRicerca,
-			String statoQuestionario) {
-		return this.templateQuestionarioSqlRepository.findQuestionariTemplateByDefaultPolicySCDAndFiltro(criterioRicerca, statoQuestionario);
+			String statoQuestionario ) {
+		return this.templateQuestionarioSqlRepository.findQuestionariTemplateByDefaultPolicySCDAndFiltro(
+				criterioRicerca, 
+				statoQuestionario
+			);
 	}
 	
 	@LogMethod

@@ -27,7 +27,6 @@ import software.amazon.awssdk.services.pinpoint.model.VerifyOtpMessageRequest;
 @Service
 @Scope("singleton")
 public class AWSPinpointService {
-	private static final String INDIRIZZO_EMAIL_MITTENTE = "RepDigDev@mitd.technology";
 	private static final String REFERENCE_ID_REQ_RESP = "RepDGDevOTP";
 	private static final String CHARSET_EMAIL = "UTF-8";
 	
@@ -37,6 +36,8 @@ public class AWSPinpointService {
 	private String accessKey;
 	@Value(value = "${aws.pinpoint.secret-key:}")
 	private String secretKey;
+	@Value(value = "${aws.email.mittente:RepDigDev@mitd.technology}")
+	private String indirizzoEmailMittente;
 
 	public PinpointClient getClient() {
 		return PinpointClient.builder()
@@ -81,7 +82,7 @@ public class AWSPinpointService {
 
 		final EmailMessage emailMessage = EmailMessage.builder()
 											.body(htmlBody)
-											.fromAddress(INDIRIZZO_EMAIL_MITTENTE)
+											.fromAddress(indirizzoEmailMittente)
 											.simpleEmail(SimpleEmail.builder()
 													.htmlPart(email)
 													.subject(oggetto)

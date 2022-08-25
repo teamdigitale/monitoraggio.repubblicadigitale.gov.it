@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import it.pa.repdgt.gestioneutente.dto.UtenteDto;
@@ -18,15 +17,13 @@ import it.pa.repdgt.shared.entity.light.UtenteLightEntity;
 @Component
 public class UtenteMapper {
 
-	public UtentiLightResourcePaginata toUtentiLightResourcePaginataFrom(Page<UtenteDto> paginaUtenti) {
+	public UtentiLightResourcePaginata toUtentiLightResourcePaginataFrom(List<UtenteDto> paginaUtenti) {
 		if(paginaUtenti == null) {
 			return null;
 		}
-		List<UtenteDto> utenti = paginaUtenti.hasContent()? paginaUtenti.getContent(): Collections.emptyList();
+		List<UtenteDto> utenti = paginaUtenti.isEmpty()? Collections.emptyList() : paginaUtenti;
 		UtentiLightResourcePaginata utentiLightResourcePaginata = new UtentiLightResourcePaginata();
 		utentiLightResourcePaginata.setListaUtenti(utenti);
-		utentiLightResourcePaginata.setNumeroPagine(paginaUtenti.getTotalPages());
-		utentiLightResourcePaginata.setNumeroTotaleElementi(paginaUtenti.getTotalElements());
 		return utentiLightResourcePaginata;
 	}
 	

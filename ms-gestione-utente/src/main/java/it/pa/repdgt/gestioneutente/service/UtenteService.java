@@ -2,6 +2,7 @@ package it.pa.repdgt.gestioneutente.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,12 +13,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.gestioneutente.bean.DettaglioRuoliBean;
@@ -82,19 +80,12 @@ public class UtenteService {
 	
 	@LogMethod
 	@LogExecutionTime
-	public Page<UtenteDto> getAllUtentiPaginati(UtenteRequest sceltaContesto, Integer currPage, Integer pageSize) {
+	public List<UtenteDto> getAllUtentiPaginati(UtenteRequest sceltaContesto, Integer currPage, Integer pageSize) {
 		if(this.ruoloService.getRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
 			throw new UtenteException("ERRORE: ruolo non definito per l'utente");
 		}
-		Pageable paginazione = PageRequest.of(currPage, pageSize);
-		List<UtenteDto> utenti = this.getUtentiByRuolo(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
-		utenti.sort((utente1, utente2) -> utente1.getId().compareTo(utente2.getId()));
-		final int start = (int)paginazione.getOffset();
-		final int end = Math.min((start + paginazione.getPageSize()), utenti.size());
-		if(start > end) {
-			throw new UtenteException("ERRORE: pagina richiesta inesistente");
-		}
-		return new PageImpl<UtenteDto>(utenti.subList(start, end), paginazione, utenti.size());
+		return this.getUtentiPaginatiByRuolo(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest(),currPage, pageSize);
+		
 	}
 	
 	@LogMethod
@@ -152,64 +143,32 @@ public class UtenteService {
 	
 	@LogMethod
 	@LogExecutionTime
-	public List<UtenteDto> getUtentiByRuolo(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto, FiltroRequest filtroRequest) {
+	public List<UtenteDto> getUtentiPaginatiByRuolo(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto, FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
 		List<UtenteEntity> listaUtenti = new ArrayList<>();
 		Set<UtenteEntity> utenti = new HashSet<>();
 
 		switch (codiceRuolo) {
 			case "DTD":
-				utenti = this.getUtentiByFiltri(filtroRequest);
-				//controllo la presenza del filtro Stato
-				if(null != filtroRequest.getStati()) {
-					//passare i 2 stati "ATTIVO" e "NON ATTIVO" insieme equivale ad eseguire la getAll
-					//se mi viene passato uno stato, controllo qual è e filtro la lista
-					if(filtroRequest.getStati().size() == 1) {
-						if(StatoEnum.NON_ATTIVO.getValue().equals(filtroRequest.getStati().get(0))) {
-							List<UtenteEntity> utentiNonAttivi = utenti.stream().filter(utente -> utente.getRuoli().size() == 0).collect(Collectors.toList());
-							listaUtenti.addAll(utentiNonAttivi);
-							break;
-						} else if(StatoEnum.ATTIVO.getValue().equals(filtroRequest.getStati().get(0))){
-							List<UtenteEntity> utentiAttivi = utenti.stream().filter(utente -> utente.getRuoli().size() > 0).collect(Collectors.toList());
-							listaUtenti.addAll(utentiAttivi);
-							break;
-						}
-					}
-				}
+				utenti = this.getUtentiByFiltri(filtroRequest, currPage, pageSize);
 				listaUtenti.addAll(utenti);
 				break;
 			case "DSCU":
-				listaUtenti.addAll(this.getUtentiPerDSCU(filtroRequest));
+				listaUtenti.addAll(this.getUtentiPerDSCU(filtroRequest, currPage, pageSize));
 				break;
 			case "REG":
 			case "DEG":
-				listaUtenti.addAll(this.getUtentiPerReferenteDelegatoGestoreProgramma(idProgramma, cfUtente, filtroRequest));
+				listaUtenti.addAll(this.getUtentiPerReferenteDelegatoGestoreProgramma(idProgramma, cfUtente, filtroRequest, currPage, pageSize));
 				break;
 			case "REGP":
 			case "DEGP":
-				listaUtenti.addAll(this.getUtentiPerReferenteDelegatoGestoreProgetti(idProgramma, idProgetto, cfUtente, filtroRequest));
+				listaUtenti.addAll(this.getUtentiPerReferenteDelegatoGestoreProgetti(idProgramma, idProgetto, cfUtente, filtroRequest, currPage, pageSize));
 				break;
 			case "REPP":
 			case "DEPP":
-				listaUtenti.addAll(this.getUtentiPerReferenteDelegatoEntePartnerProgetti(idProgramma, idProgetto, cfUtente, filtroRequest));
+				listaUtenti.addAll(this.getUtentiPerReferenteDelegatoEntePartnerProgetti(idProgramma, idProgetto, cfUtente, filtroRequest, currPage, pageSize));
 				break;
 			default:
-				utenti = this.getUtentiByFiltri(filtroRequest);
-				//controllo la presenza del filtro Stato
-				if(null != filtroRequest.getStati()) {
-					//passare i 2 stati "ATTIVO" e "NON ATTIVO" insieme equivale ad eseguire la getAll
-					//se mi viene passato uno stato, controllo qual è e filtro la lista
-					if(filtroRequest.getStati().size() == 1) {
-						if(StatoEnum.NON_ATTIVO.getValue().equals(filtroRequest.getStati().get(0))) {
-							List<UtenteEntity> utentiNonAttivi = utenti.stream().filter(utente -> utente.getRuoli().size() == 0).collect(Collectors.toList());
-							listaUtenti.addAll(utentiNonAttivi);
-							break;
-						} else if(StatoEnum.ATTIVO.getValue().equals(filtroRequest.getStati().get(0))){
-							List<UtenteEntity> utentiAttivi = utenti.stream().filter(utente -> utente.getRuoli().size() > 0).collect(Collectors.toList());
-							listaUtenti.addAll(utentiAttivi);
-							break;
-						}
-					}
-				}
+				utenti = this.getUtentiByFiltri(filtroRequest, currPage, pageSize);
 				listaUtenti.addAll(utenti);
 				break;
 		}
@@ -218,7 +177,7 @@ public class UtenteService {
 	}
 
 	private Set<UtenteEntity> getUtentiPerReferenteDelegatoEntePartnerProgetti(Long idProgramma, Long idProgetto,
-			String cfUtente, FiltroRequest filtroRequest) {
+			String cfUtente, FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
 		return this.utenteRepository.findUtentiPerReferenteDelegatoEntePartnerProgetti(
 																	  idProgramma,
 																	  idProgetto,
@@ -226,11 +185,14 @@ public class UtenteService {
 																	  filtroRequest.getCriterioRicerca(),
 																	   "%" + filtroRequest.getCriterioRicerca() + "%",
 																	  filtroRequest.getRuoli(),
-																	  filtroRequest.getStati());
+																	  currPage*pageSize,
+																	  pageSize);
 	}
 
 	private Set<UtenteEntity> getUtentiPerReferenteDelegatoGestoreProgetti(Long idProgramma, Long idProgetto,
-			String cfUtente, FiltroRequest filtroRequest) {
+			String cfUtente, FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
+		//nel caso di REGP/DEGP non viene applicato il filtro degli stati perché si presume che possa vedere tutti gli utenti legati almeno ad un ruolo,
+	    //quindi sono sempre attivi
 		return this.utenteRepository.findUtentiPerReferenteDelegatoGestoreProgetti(
 																	  idProgramma,
 																	  idProgetto,
@@ -238,25 +200,32 @@ public class UtenteService {
 																	  filtroRequest.getCriterioRicerca(),
 																	   "%" + filtroRequest.getCriterioRicerca() + "%",
 																	  filtroRequest.getRuoli(),
-																	  filtroRequest.getStati());
+																	  currPage*pageSize,
+																	   pageSize);
 	}
 
-	private Set<UtenteEntity> getUtentiPerReferenteDelegatoGestoreProgramma(Long idProgramma, String cfUtente, FiltroRequest filtroRequest) {
+	private Set<UtenteEntity> getUtentiPerReferenteDelegatoGestoreProgramma(Long idProgramma, String cfUtente, FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
+		//nel caso di REG/DEG non viene applicato il filtro degli stati perché si presume che possa vedere tutti gli utenti legati almeno ad un ruolo,
+	    //quindi sono sempre attivi
 		return this.utenteRepository.findUtentiPerReferenteDelegatoGestoreProgramma(
 																	   idProgramma,
 																	   cfUtente,
 																	   filtroRequest.getCriterioRicerca(),
 																	   "%" + filtroRequest.getCriterioRicerca() + "%",
 																	   filtroRequest.getRuoli(),
-																	   filtroRequest.getStati());
+																	   currPage*pageSize,
+																	   pageSize);
 	}
 
-	private Set<UtenteEntity> getUtentiPerDSCU(FiltroRequest filtroRequest) {
+	private Set<UtenteEntity> getUtentiPerDSCU(FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
+		//nel caso di DSCU non viene applicato il filtro degli stati perché si presume che il DSCU possa vedere tutti gli utenti legati almeno ad un ruolo,
+		//quindi sono sempre attivi
 		return this.utenteRepository.findUtentiPerDSCU(
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getRuoli(),
-				filtroRequest.getStati()
+				currPage*pageSize,
+				pageSize
 				);
 	}
 
@@ -366,11 +335,23 @@ public class UtenteService {
 		this.utenteRepository.delete(utente);
 	}
 
-	private Set<UtenteEntity> getUtentiByFiltri(FiltroRequest filtroRequest) {
-		return this.utenteRepository.findByFilter(
+	private Set<UtenteEntity> getUtentiByFiltri(FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
+		return this.utenteRepository.findUtentiByFiltri(
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
-				filtroRequest.getRuoli()
+				filtroRequest.getRuoli(),
+				filtroRequest.getStati(),
+				currPage*pageSize,
+				pageSize
+		);
+	}
+	
+	private Set<String> getStatoUtentiByFiltri(FiltroRequest filtroRequest) {
+		return this.utenteRepository.findStatiByFilter(
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getRuoli(),
+				filtroRequest.getStati()
 		);
 	}
 
@@ -424,117 +405,24 @@ public class UtenteService {
 	private List<String> getAllStatiByRuoloAndcfUtente(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto,
 			FiltroRequest filtroRequest) {
 		List<String> stati = new ArrayList<>();
-		Set<UtenteEntity> utenti = new HashSet<>();
 		
 		switch (codiceRuolo) {
 		case "DTD":
-			utenti = this.getUtentiByFiltri(filtroRequest);
-			//controllo la presenza del filtro Stato
-			if(null != filtroRequest.getStati()) {
-				//passare i 2 stati "ATTIVO" e "NON ATTIVO" insieme equivale ad eseguire la getAll
-				//se mi viene passato uno stato, controllo qual è e filtro la lista
-				if(filtroRequest.getStati().size() == 1) {
-					if(StatoEnum.NON_ATTIVO.getValue().equals(filtroRequest.getStati().get(0))) {
-						Set<UtenteEntity> utentiNonAttivi = utenti.stream().filter(utente -> utente.getRuoli().size() == 0).collect(Collectors.toSet());
-						stati.addAll(this.getStatiByUtenti(utentiNonAttivi));
-						return stati;
-					} else if(StatoEnum.ATTIVO.getValue().equals(filtroRequest.getStati().get(0))) {
-						Set<UtenteEntity> utentiAttivi = utenti.stream().filter(utente -> utente.getRuoli().size() > 0).collect(Collectors.toSet());
-						stati.addAll(this.getStatiByUtenti(utentiAttivi));
-						return stati;
-					}
-				}
-			}
-			stati.addAll(this.getStatiByUtenti(utenti));
+			stati.addAll(this.getStatoUtentiByFiltri(filtroRequest));
 			return stati;
 		case "DSCU":
-			stati.addAll(this.getStatiPerDSCU(filtroRequest));
-			return stati;
 		case "REG":
 		case "DEG":
-			return this.getStatiPerReferenteDelegatoGestoreProgramma(idProgramma, cfUtente, filtroRequest);
 		case "REGP":
 		case "DEGP":
-			stati.addAll(this.getStatiPerReferenteDelegatoGestoreProgetti(idProgramma, idProgetto, cfUtente, filtroRequest));
-			return stati;
 		case "REPP":
 		case "DEPP":
-			stati.addAll(this.getStatiPerReferenteDelegatoEntePartnerProgetti(idProgramma, idProgetto, cfUtente, filtroRequest));
+			stati.add(StatoEnum.ATTIVO.getValue());
 			return stati;
 		default:
-			utenti = this.getUtentiByFiltri(filtroRequest);
-			//controllo la presenza del filtro Stato
-			if(null != filtroRequest.getStati()) {
-				//passare i 2 stati "ATTIVO" e "NON ATTIVO" insieme equivale ad eseguire la getAll
-				//se mi viene passato uno stato, controllo qual è e filtro la lista
-				if(filtroRequest.getStati().size() == 1) {
-					if(StatoEnum.NON_ATTIVO.getValue().equals(filtroRequest.getStati().get(0))) {
-						Set<UtenteEntity> utentiNonAttivi = utenti.stream().filter(utente -> utente.getRuoli().size() == 0).collect(Collectors.toSet());
-						stati.addAll(this.getStatiByUtenti(utentiNonAttivi));
-						return stati;
-					} else if(StatoEnum.ATTIVO.getValue().equals(filtroRequest.getStati().get(0))) {
-						Set<UtenteEntity> utentiAttivi = utenti.stream().filter(utente -> utente.getRuoli().size() > 0).collect(Collectors.toSet());
-						stati.addAll(this.getStatiByUtenti(utentiAttivi));
-						return stati;
-					}
-				}
-			} 
-			stati.addAll(this.getStatiByUtenti(utenti));
+			stati.addAll(this.getStatoUtentiByFiltri(filtroRequest));
 			return stati;
 		}
-	}
-
-	private Set<String> getStatiByUtenti(Set<UtenteEntity> utenti) {
-		Set<String> stati = new HashSet<>(); 
-		utenti.stream().forEach(utente -> {
-			stati.add(utente.getRuoli().size() > 0 ? StatoEnum.ATTIVO.getValue() : StatoEnum.NON_ATTIVO.getValue());
-		});
-		return stati;
-	}
-
-	private List<String> getStatiPerReferenteDelegatoEntePartnerProgetti(Long idProgramma, Long idProgetto,
-			String cfUtente, FiltroRequest filtroRequest) {
-		return this.utenteRepository.findStatiPerReferenteDelegatoEntePartnerProgetti(
-				idProgramma,
-				idProgetto,
-				cfUtente,
-				filtroRequest.getCriterioRicerca(),
-				"%" + filtroRequest.getCriterioRicerca() + "%",
-				filtroRequest.getRuoli(),
-				filtroRequest.getStati()
-				);
-	}
-
-	private List<String> getStatiPerReferenteDelegatoGestoreProgetti(Long idProgramma, Long idProgetto, String cfUtente, FiltroRequest filtroRequest) {
-		return this.utenteRepository.findStatiPerReferenteDelegatoGestoreProgetti(
-				idProgramma,
-				idProgetto,
-				cfUtente,
-				filtroRequest.getCriterioRicerca(),
-				"%" + filtroRequest.getCriterioRicerca() + "%",
-				filtroRequest.getRuoli(),
-				filtroRequest.getStati()
-				);
-	}
-
-	private List<String> getStatiPerReferenteDelegatoGestoreProgramma(Long idProgramma, String cfUtente, FiltroRequest filtroRequest) {
-		return this.utenteRepository.findStatiPerReferenteDelegatoGestoreProgramma(
-				idProgramma,
-				cfUtente,
-				filtroRequest.getCriterioRicerca(),
-				"%" + filtroRequest.getCriterioRicerca() + "%",
-				filtroRequest.getRuoli(),
-				filtroRequest.getStati()
-				);
-	}
-
-	private List<String> getStatiPerDSCU(FiltroRequest filtroRequest) {
-		return this.utenteRepository.findStatiByPolicy(
-				filtroRequest.getCriterioRicerca(),
-				"%" + filtroRequest.getCriterioRicerca() + "%",
-				filtroRequest.getRuoli(),
-				filtroRequest.getStati()
-				);
 	}
 
 	@LogMethod
@@ -552,7 +440,9 @@ public class UtenteService {
 		
 		switch (codiceRuolo) {
 		case "DTD":
-			return this.getAllRuoli(filtroRequest);
+			stati.addAll(this.getAllRuoli(filtroRequest));
+			stati.removeAll(Collections.singleton(null));
+			return stati;
 		case "DSCU":
 			stati.addAll(this.getRuoliPerDSCU(filtroRequest));
 			return stati;
@@ -569,6 +459,7 @@ public class UtenteService {
 			return stati;
 		default:
 			stati.addAll(this.getAllRuoli(filtroRequest));
+			stati.removeAll(Collections.singleton(null));
 		}
 		return stati;
 	}
@@ -581,8 +472,7 @@ public class UtenteService {
 				cfUtente,
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
-				filtroRequest.getRuoli(),
-				filtroRequest.getStati()
+				filtroRequest.getRuoli()
 		);
 	}
 
@@ -594,8 +484,7 @@ public class UtenteService {
 				cfUtente,
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
-				filtroRequest.getRuoli(),
-				filtroRequest.getStati()
+				filtroRequest.getRuoli()
 		);
 	}
 
@@ -606,8 +495,7 @@ public class UtenteService {
 				cfUtente,
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
-				filtroRequest.getRuoli(),
-				filtroRequest.getStati()
+				filtroRequest.getRuoli()
 		);
 	}
 
@@ -615,8 +503,7 @@ public class UtenteService {
 		return this.utenteRepository.findRuoliPerDSCU(
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%", 
-				filtroRequest.getRuoli(),
-				filtroRequest.getStati()
+				filtroRequest.getRuoli()
 				);
 	}
 
@@ -1026,4 +913,172 @@ public class UtenteService {
 		String errorMessage = String.format("Impossibile cancellare un ruolo predefinito all'infuori di DTD e DSCU");
 		throw new RuoloException(errorMessage);
 	}
+
+	public int countUtentiTrovati(@Valid UtenteRequest sceltaContesto) {
+		return this.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+	}
+
+	private int countUtentiTrovatiByRuolo(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto,
+			FiltroRequest filtroRequest) {
+		int numeroUtentiTrovati = 0;
+		
+		switch (codiceRuolo) {
+		case "DTD":
+			numeroUtentiTrovati = this.countUtentiTrovati(filtroRequest);
+			break;
+		case "DSCU":
+			numeroUtentiTrovati = this.countUtentiPerDSCU(filtroRequest);
+			break;
+		case "REG":
+		case "DEG":
+			numeroUtentiTrovati = this.countUtentiPerReferenteDelegatoGestoreProgramma(idProgramma, cfUtente, filtroRequest);
+			break;
+		case "REGP":
+		case "DEGP":
+			numeroUtentiTrovati = this.countUtentiPerReferenteDelegatoGestoreProgetti(idProgramma, idProgetto, cfUtente, filtroRequest);
+			break;
+		case "REPP":
+		case "DEPP":
+			numeroUtentiTrovati = this.countUtentiPerReferenteDelegatoEntePartnerProgetti(idProgramma, idProgetto, cfUtente, filtroRequest);
+			break;
+		default:
+			numeroUtentiTrovati = this.countUtentiTrovati(filtroRequest);
+			break;
+	}
+	
+		return numeroUtentiTrovati;
+	}
+
+	private int countUtentiPerReferenteDelegatoEntePartnerProgetti(Long idProgramma, Long idProgetto, String cfUtente,
+			FiltroRequest filtroRequest) {
+		return this.utenteRepository.countUtentiTrovatiPerReferenteDelegatoEntePartnerProgetti(
+				idProgramma,
+				idProgetto,
+				cfUtente,
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getRuoli()
+				);
+	}
+
+	private int countUtentiPerReferenteDelegatoGestoreProgetti(Long idProgramma, Long idProgetto, String cfUtente,
+			FiltroRequest filtroRequest) {
+		return this.utenteRepository.countUtentiTrovatiPerReferenteDelegatoGestoreProgetti(
+				idProgramma,
+				idProgetto,
+				cfUtente,
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getRuoli()
+				);
+	}
+
+	private int countUtentiPerReferenteDelegatoGestoreProgramma(Long idProgramma, String cfUtente,
+			FiltroRequest filtroRequest) {
+		return this.utenteRepository.countUtentiTrovatiPerReferenteDelegatoGestoreProgramma(
+				idProgramma,
+				cfUtente,
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getRuoli()
+				);
+	}
+
+	private int countUtentiPerDSCU(FiltroRequest filtroRequest) {
+		return this.utenteRepository.countUtentiTrovatiPerDSCU(
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getRuoli()
+				);
+	}
+
+	private int countUtentiTrovati(FiltroRequest filtroRequest) {
+		return this.utenteRepository.countUtentiTrovati(
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getRuoli(),
+				filtroRequest.getStati());
+	}
+
+	public List<UtenteDto> getUtentiPerDownload(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto,
+			FiltroRequest filtroRequest) {
+		List<UtenteEntity> listaUtenti = new ArrayList<>();
+		Set<UtenteEntity> utenti = new HashSet<>();
+
+		switch (codiceRuolo) {
+			case "DTD":
+				utenti = this.getUtentiByFiltriPerDownload(filtroRequest);
+				listaUtenti.addAll(utenti);
+				break;
+			case "DSCU":
+				listaUtenti.addAll(this.getUtentiPerDSCUPerDownload(filtroRequest));
+				break;
+			case "REG":
+			case "DEG":
+				listaUtenti.addAll(this.getUtentiPerReferenteDelegatoGestoreProgrammaPerDownload(idProgramma, cfUtente, filtroRequest));
+				break;
+			case "REGP":
+			case "DEGP":
+				listaUtenti.addAll(this.getUtentiPerReferenteDelegatoGestoreProgettiPerDownload(idProgramma, idProgetto, cfUtente, filtroRequest));
+				break;
+			case "REPP":
+			case "DEPP":
+				listaUtenti.addAll(this.getUtentiPerReferenteDelegatoEntePartnerProgettiPerDownload(idProgramma, idProgetto, cfUtente, filtroRequest));
+				break;
+			default:
+				utenti = this.getUtentiByFiltriPerDownload(filtroRequest);
+				listaUtenti.addAll(utenti);
+				break;
+		}
+		
+		return this.getUtentiConRuoliAggregati(listaUtenti);
+	}
+
+	private Set<UtenteEntity> getUtentiPerReferenteDelegatoEntePartnerProgettiPerDownload(
+			Long idProgramma, Long idProgetto, String cfUtente, FiltroRequest filtroRequest) {
+		return this.utenteRepository.findUtentiPerReferenteDelegatoEntePartnerProgettiPerDownload(
+				idProgramma,
+				idProgetto,
+				cfUtente, 
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getRuoli());
+	}
+
+	private Set<UtenteEntity> getUtentiPerReferenteDelegatoGestoreProgettiPerDownload(Long idProgramma,
+			Long idProgetto, String cfUtente, FiltroRequest filtroRequest) {
+		return this.utenteRepository.findUtentiPerReferenteDelegatoGestoreProgettiPerDownload(
+				idProgramma,
+				idProgetto,
+				cfUtente, 
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getRuoli());
+	}
+
+	private Set<UtenteEntity> getUtentiPerReferenteDelegatoGestoreProgrammaPerDownload(
+			Long idProgramma, String cfUtente, FiltroRequest filtroRequest) {
+		return this.utenteRepository.findUtentiPerReferenteDelegatoGestoreProgrammaPerDownload(
+				idProgramma,
+				cfUtente,
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getRuoli());
+	}
+
+	private Set<UtenteEntity> getUtentiPerDSCUPerDownload(FiltroRequest filtroRequest) {
+		return this.utenteRepository.findUtentiPerDSCUPerDownload(
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getRuoli());
+	}
+
+	private Set<UtenteEntity> getUtentiByFiltriPerDownload(FiltroRequest filtroRequest) {
+		return this.utenteRepository.findUtentiByFiltriPerDownload(
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getRuoli(),
+				filtroRequest.getStati());
+	}
+		
 }

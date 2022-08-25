@@ -4,13 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Map;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 import it.pa.repdgt.ente.AppTests;
 import it.pa.repdgt.ente.bean.SchedaEnteBean;
-import it.pa.repdgt.ente.bean.SchedaEnteGestoreBean;
 import it.pa.repdgt.ente.request.FiltroRequest;
 import it.pa.repdgt.ente.request.NuovoEnteRequest;
 import it.pa.repdgt.ente.resource.EnteResource;
@@ -113,5 +113,29 @@ public class EnteRestApiIntegrationTest extends AppTests {
 		assertThat(response.get("referentiEnteGestoreProgetto")).isNotNull();
 		assertThat(response.get("delegatiEnteGestoreProgetto")).isNotNull();
 		assertThat(response.get("sediEnteGestoreProgetto")).isNotNull();
+	}
+	
+	@Test
+	@DisplayName(value = "downloadCSVSElencoEnti - OK")
+	public void downloadCSVSElencoEntiTest() {
+		
+		EntiPaginatiParam entiParam = new EntiPaginatiParam();
+		entiParam.setCfUtente("UIHPLW87R49F205X");
+		entiParam.setCodiceRuolo(RuoloUtenteEnum.DTD);
+		entiParam.setFiltroRequest(new FiltroRequest());
+		
+		String urlToCall = "http://localhost:" + randomServerPort +
+				"/ente/download";
+		
+		String elencoEnti = restTemplate.postForObject(
+				urlToCall, 
+				entiParam,
+				String.class
+			);
+		
+		String[] entiRecord = elencoEnti.split("\\n");
+		
+		assertThat(elencoEnti).isNotNull();
+		assertThat(entiRecord.length).isEqualTo(8);
 	}
 }
