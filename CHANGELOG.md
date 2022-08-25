@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.84](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.83...1.0.0-develop.84) (2022-08-25)
+
+
+### Bug Fixes
+
+* **be:** paginazione entità ([8545a0a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8545a0a8d65a99193b1887db4f32d25c3a94aad4))
+
 ## [1.0.0-develop.83](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.82...1.0.0-develop.83) (2022-08-22)
 
 
