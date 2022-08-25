@@ -9,9 +9,6 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.csv.CSVFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -73,20 +70,25 @@ public class QuestionarioTemplateRestApi {
 			@RequestParam(name = "currPage", defaultValue = "0")  final String currPage,
 			@RequestParam(name = "pageSize", defaultValue = "10") final String pageSize,
 			@RequestBody @Valid final ProfilazioneParam profilazioneParam) {
-		final Pageable pagina = PageRequest.of(Integer.parseInt(currPage), Integer.parseInt(pageSize));
 		final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplateParam = new FiltroListaQuestionariTemplateParam();
 		filtroListaQuestionariTemplateParam.setCriterioRicerca(criterioRicerca);
 		filtroListaQuestionariTemplateParam.setStatoQuestionario(statoQuestionarioTemplate);
-		final Page<QuestionarioTemplateEntity> paginaQuestionariTemplate = this.questionarioTemplateService.getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro(
+		filtroListaQuestionariTemplateParam.setCurrPage(Integer.parseInt(currPage));
+		filtroListaQuestionariTemplateParam.setPageSize(Integer.parseInt(pageSize));
+		filtroListaQuestionariTemplateParam.setStatoQuestionario(statoQuestionarioTemplate);
+		final List<QuestionarioTemplateEntity> questionariTemplateList = this.questionarioTemplateService.getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro(
 				profilazioneParam,
-				filtroListaQuestionariTemplateParam,
-				pagina
+				filtroListaQuestionariTemplateParam
 			);
-		final List<QuestionarioTemplateLightResource> questionariTemplateLightResource = this.questionarioTemplateMapper.toLightResourceFrom(paginaQuestionariTemplate.getContent());
+		final List<QuestionarioTemplateLightResource> questionariTemplateLightResource = this.questionarioTemplateMapper.toLightResourceFrom(questionariTemplateList);
+	
+		final Long totaleElementi = this.questionarioTemplateService.getNumeroTotaleQuestionariTemplateByFiltro(criterioRicerca, statoQuestionarioTemplate);
+		final int numeroPagine = (int) (totaleElementi / Integer.parseInt(pageSize));
+
 		return new QuestionariTemplatePaginatiResource(
 				questionariTemplateLightResource,
-				paginaQuestionariTemplate.getTotalPages(),
-				paginaQuestionariTemplate.getTotalElements()
+				totaleElementi % Integer.parseInt(pageSize) > 0 ? numeroPagine+1 : numeroPagine,
+				totaleElementi
 			);
 	}
 	
@@ -206,7 +208,7 @@ public class QuestionarioTemplateRestApi {
 		final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplateParam = new FiltroListaQuestionariTemplateParam();
 		filtroListaQuestionariTemplateParam.setCriterioRicerca(criterioRicerca);
 		filtroListaQuestionariTemplateParam.setStatoQuestionario(statoQuestionarioTemplate);
-		final List<QuestionarioTemplateEntity> questionariTemplateEntity = this.questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltro(
+		final List<QuestionarioTemplateEntity> questionariTemplateEntity = this.questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltroSenzaPaginazione(
 				profilazioneParam,
 				filtroListaQuestionariTemplateParam
 			);

@@ -13,7 +13,7 @@ public enum CodiceErroreEnum {
 	,C07("Errore integrazione dati utente")
 	
 	,G01("Errore Generico")
-	,G02("Errore Richista errata")
+	,G02("Errore Richiesta errata")
 	,G03("Errore Pagina richista non esistente")
 	
 	,R01("Errore Ruolo già esistente")

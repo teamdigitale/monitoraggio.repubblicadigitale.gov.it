@@ -11,10 +11,6 @@ import javax.validation.Valid;
 
 import org.bson.json.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
@@ -73,7 +69,7 @@ public class CittadinoService {
 
 	@LogMethod
 	@LogExecutionTime
-	public Page<CittadinoDto> getAllCittadiniPaginati(
+	public List<CittadinoDto> getAllCittadiniPaginati(
 			CittadiniPaginatiParam cittadiniPaginatiParam,
 			Integer currPage, 
 			Integer pageSize) {
@@ -88,12 +84,11 @@ public class CittadinoService {
 			throw new CittadinoException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
 		}
 		
-		if(!RuoloUtenteEnum.FAC.toString().equals(codiceRuoloUtente)) {
+		if(!RuoloUtenteEnum.FAC.toString().equals(codiceRuoloUtente) && !RuoloUtenteEnum.VOL.toString().equals(codiceRuoloUtente)) {
 			throw new CittadinoException("ERRORE: L'utente non è un facilitatore", CodiceErroreEnum.U06);
 		}
 		
-		Pageable paginazione = PageRequest.of(currPage, pageSize);
-		List<CittadinoProjection> cittadiniProjection = this.getAllCittadiniFacilitatoreFiltrati(cittadiniPaginatiParam);
+		List<CittadinoProjection> cittadiniProjection = this.getAllCittadiniFacilitatorePaginatiByFiltro(cittadiniPaginatiParam, currPage, pageSize);
 		List<CittadinoDto> cittadini = cittadiniProjection
 				.stream()
 				.map(record -> {
@@ -108,18 +103,10 @@ public class CittadinoService {
 			.collect(Collectors.toList());
 		
 		cittadini.sort((cittadino1, cittadino2) -> cittadino1.getId().compareTo(cittadino2.getId()));
-		
-		int start = (int) paginazione.getOffset();
-		int end = Math.min((start + paginazione.getPageSize()), cittadini.size());
-		
-		if(start > end) {
-			throw new CittadinoException("ERRORE: pagina richiesta inesistente", CodiceErroreEnum.G03);
-		}
-		
-		return new PageImpl<CittadinoDto>(cittadini.subList(start, end), paginazione, cittadini.size());
+		return cittadini;
 	}
 	
-	public List<CittadinoProjection> getAllCittadiniFacilitatoreFiltrati( CittadiniPaginatiParam cittadiniPaginatiParam) {
+	public List<CittadinoProjection> getAllCittadiniFacilitatoreByFiltro(CittadiniPaginatiParam cittadiniPaginatiParam){
 		FiltroListaCittadiniParam filtro = cittadiniPaginatiParam.getFiltro();
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsSedi;
@@ -129,7 +116,50 @@ public class CittadinoService {
 			idsSedi = filtro.getIdsSedi();
 		}
 		
-		return this.cittadinoRepository.findAllCittadiniFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsSedi);
+		return this.cittadinoRepository.findAllCittadiniByFiltro(
+				criterioRicerca, 
+				"%" + criterioRicerca + "%",
+				idsSedi,
+				cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato()
+			);
+	}
+	
+	public List<CittadinoProjection> getAllCittadiniFacilitatorePaginatiByFiltro(
+			CittadiniPaginatiParam cittadiniPaginatiParam, 
+			Integer currPage, 
+			Integer pageSize) {
+		FiltroListaCittadiniParam filtro = cittadiniPaginatiParam.getFiltro();
+		String criterioRicerca = filtro.getCriterioRicerca();
+		List<String> idsSedi;
+		if(filtro.getIdsSedi() == null) {
+			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto());
+		} else {
+			idsSedi = filtro.getIdsSedi();
+		}
+		
+		return this.cittadinoRepository.findAllCittadiniPaginatiByFiltro(
+				criterioRicerca, 
+				"%" + criterioRicerca + "%", 
+				idsSedi, 
+				cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato(),
+				currPage*pageSize, pageSize
+			);
+	}
+	
+	public Integer getNumeroTotaleCittadiniFacilitatoreByFiltro(CittadiniPaginatiParam cittadiniPaginatiParam) {
+		FiltroListaCittadiniParam filtro = cittadiniPaginatiParam.getFiltro();
+		String criterioRicerca = filtro.getCriterioRicerca();
+		List<String> idsSedi;
+		if(filtro.getIdsSedi() == null) {
+			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto());
+		} else {
+			idsSedi = filtro.getIdsSedi();
+		}
+		
+		return this.cittadinoRepository.findAllCittadiniByFiltro(
+				criterioRicerca, "%" + criterioRicerca + "%",
+				idsSedi, cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato()
+			).size();
 	}
 
 	@LogMethod

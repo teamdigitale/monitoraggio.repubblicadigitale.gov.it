@@ -46,6 +46,48 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 			@Param(value = "stati") List<String> stati
 		);
 	
+	@Query(value = "SELECT programma.* "
+			+ " FROM programma programma "
+			+ "	LEFT JOIN ente ente "
+			+ "		ON programma.ID_ENTE_GESTORE_PROGRAMMA = ente.ID "
+			+ " WHERE  1=1 "
+			+ " 	AND	 ( :criterioRicerca IS NULL  "
+			+ "			OR programma.CODICE = :criterioRicerca "
+			+ "			OR UPPER( programma.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
+			+ "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
+			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) ) "
+			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR programma.STATO IN (:stati) ) "
+			+ "	ORDER BY programma.ID "
+			+ " LIMIT :currPageIndex, :pageSize",
+			nativeQuery = true)
+	public List<ProgrammaEntity> findAllPaginati(
+			@Param(value = "criterioRicerca") String criterioRicerca,
+			@Param(value = "criterioRicercaLike") String criterioRicercaLike,
+			@Param(value = "policies") List<String> policies, 
+			@Param(value = "stati") List<String> stati,
+			@Param(value = "currPageIndex") Integer currPageIndex, 
+			@Param(value = "pageSize") Integer pageSize
+			);
+	
+	@Query(value = "SELECT count(*) "
+			+ " FROM programma programma "
+			+ "	LEFT JOIN ente ente "
+			+ "		ON programma.ID_ENTE_GESTORE_PROGRAMMA = ente.ID "
+			+ " WHERE  1=1 "
+			+ " 	AND	 ( :criterioRicerca IS NULL  "
+			+ "			OR programma.CODICE = :criterioRicerca "
+			+ "			OR UPPER( programma.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
+			+ "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
+			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) ) "
+			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR programma.STATO IN (:stati) ) ",
+			nativeQuery = true)
+	public Long countAll(
+			@Param(value = "criterioRicerca") String criterioRicerca,
+			@Param(value = "criterioRicercaLike") String criterioRicercaLike,
+			@Param(value = "policies") List<String> policies, 
+			@Param(value = "stati") List<String> stati
+			);
+	
 	@Query(value = "SELECT DISTINCT programma.*"
 			+ " FROM "
 			+ "		programma programma "
@@ -85,13 +127,83 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 		    + "			OR UPPER( programma.CODICE ) = UPPER( :criterioRicerca ) "
 		    + "			OR UPPER( programma.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
 	        + "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
-			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR programma.STATO IN (:stati) )",
+			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR programma.STATO IN (:stati) )"
+			+ "	ORDER BY programma.ID "
+			+ " LIMIT :currPageIndex, :pageSize",
 		   nativeQuery = true)
-	public List<ProgrammaEntity> findProgrammiByPolicy(
+	public List<ProgrammaEntity> findProgrammiByPolicyPaginati(
 				String policy,
 				@Param(value = "criterioRicerca") String criterioRicerca,
 				@Param(value = "criterioRicercaLike") String criterioRicercaLike,
-				@Param(value = "stati") List<String> stati
+				@Param(value = "stati") List<String> stati,
+				@Param(value = "currPageIndex") Integer currPageIndex, 
+				@Param(value = "pageSize") Integer pageSize
+			);
+	
+	@Query(value = "SELECT *"
+			+ " FROM "
+			+ "		programma programma  "
+			+ "	LEFT JOIN "
+			+ "		ente ente "
+			+ "	ON "
+			+ "		programma.ID_ENTE_GESTORE_PROGRAMMA = ente.ID "
+			+ " WHERE 	1=1"
+			+ "		AND programma.POLICY = :policy "
+			+ " 	AND	 ( :criterioRicerca IS NULL  "
+			+ "			OR UPPER( programma.CODICE ) = UPPER( :criterioRicerca ) "
+			+ "			OR UPPER( programma.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
+			+ "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
+			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR programma.STATO IN (:stati) )",
+			nativeQuery = true)
+	public List<ProgrammaEntity> findProgrammiByPolicy(
+			String policy,
+			@Param(value = "criterioRicerca") String criterioRicerca,
+			@Param(value = "criterioRicercaLike") String criterioRicercaLike,
+			@Param(value = "stati") List<String> stati
+			);
+	
+	@Query(value = "SELECT *"
+			+ " FROM "
+			+ "		programma programma  "
+			+ "	LEFT JOIN "
+			+ "		ente ente "
+			+ "	ON "
+			+ "		programma.ID_ENTE_GESTORE_PROGRAMMA = ente.ID "
+			+ " WHERE 	1=1"
+			+ "		AND programma.POLICY = :policy "
+			+ " 	AND	 ( :criterioRicerca IS NULL  "
+			+ "			OR UPPER( programma.CODICE ) = UPPER( :criterioRicerca ) "
+			+ "			OR UPPER( programma.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
+			+ "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
+			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR programma.STATO IN (:stati) )",
+			nativeQuery = true)
+	public List<ProgrammaEntity> findProgrammiByPolicyPaginati(
+			String policy,
+			@Param(value = "criterioRicerca") String criterioRicerca,
+			@Param(value = "criterioRicercaLike") String criterioRicercaLike,
+			@Param(value = "stati") List<String> stati
+			);
+	
+	@Query(value = "SELECT count(*)"
+			+ " FROM "
+			+ "		programma programma  "
+			+ "	LEFT JOIN "
+			+ "		ente ente "
+			+ "	ON "
+			+ "		programma.ID_ENTE_GESTORE_PROGRAMMA = ente.ID "
+			+ " WHERE 	1=1"
+			+ "		AND programma.POLICY = :policy "
+			+ " 	AND	 ( :criterioRicerca IS NULL  "
+			+ "			OR UPPER( programma.CODICE ) = UPPER( :criterioRicerca ) "
+			+ "			OR UPPER( programma.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
+			+ "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
+			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR programma.STATO IN (:stati) )",
+			nativeQuery = true)
+	public Long countProgrammiByPolicy(
+			String policy,
+			@Param(value = "criterioRicerca") String criterioRicerca,
+			@Param(value = "criterioRicercaLike") String criterioRicercaLike,
+			@Param(value = "stati") List<String> stati
 			);
 	
 	@Query(value = "SELECT DISTINCT programma.*"

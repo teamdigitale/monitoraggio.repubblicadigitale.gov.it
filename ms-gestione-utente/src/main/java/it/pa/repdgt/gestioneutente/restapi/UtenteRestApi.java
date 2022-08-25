@@ -16,7 +16,6 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -48,11 +47,9 @@ import it.pa.repdgt.gestioneutente.util.CSVUtil;
 import it.pa.repdgt.shared.awsintegration.service.S3Service;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.light.UtenteLightEntity;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping(path = "/utente")
-@Slf4j
 public class UtenteRestApi {
 	@Autowired
 	private UtenteService utenteService;
@@ -74,8 +71,13 @@ public class UtenteRestApi {
 			@RequestBody @Valid UtenteRequest sceltaContesto,
 			@RequestParam(name = "currPage", required = false, defaultValue = "0")  Integer currPage,
 			@RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-		Page<UtenteDto> utenti = this.utenteService.getAllUtentiPaginati(sceltaContesto,currPage, pageSize);
+		List<UtenteDto> utenti = this.utenteService.getAllUtentiPaginati(sceltaContesto, currPage, pageSize);
 		UtentiLightResourcePaginata listaPaginataUtentiResource = this.utenteMapper.toUtentiLightResourcePaginataFrom(utenti);
+		
+		int numeroUtentiTrovati = this.utenteService.countUtentiTrovati(sceltaContesto);
+		listaPaginataUtentiResource.setNumeroTotaleElementi(numeroUtentiTrovati);
+		listaPaginataUtentiResource.setNumeroPagine(numeroUtentiTrovati % pageSize > 0 ? (numeroUtentiTrovati / pageSize) + 1 : (numeroUtentiTrovati / pageSize));
+		
 		return listaPaginataUtentiResource;
 	}
 	
@@ -165,7 +167,7 @@ public class UtenteRestApi {
 	// TOUCH-POINT 1.3.8 - Scarica lista utenti in formato csv
 	@PostMapping(path = "/download")
 	public ResponseEntity<InputStreamResource> downloadListaCSVUtenti(@RequestBody @Valid UtenteRequest sceltaContesto) {
-		List<UtenteDto> listaUtentiDto = this.utenteService.getUtentiByRuolo(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		List<UtenteDto> listaUtentiDto = this.utenteService.getUtentiPerDownload(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
 		ByteArrayInputStream byteArrayInputStream = CSVUtil.exportCSVUtenti(listaUtentiDto, CSVFormat.DEFAULT);
 		InputStreamResource fileCSV = new InputStreamResource(byteArrayInputStream);
 		

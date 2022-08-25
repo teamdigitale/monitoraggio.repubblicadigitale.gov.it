@@ -3,7 +3,6 @@ package it.pa.repdgt.surveymgmt.service;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -15,8 +14,6 @@ import javax.validation.constraints.NotNull;
 
 import org.bson.json.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
@@ -97,7 +94,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 			Long idServizio,
 			@NotNull @Valid final ProfilazioneParam profilazione,
 			@NotNull @Valid final FiltroListaCittadiniServizioParam filtroListaCittadiniServizio,
-			@NotNull final Pageable pagina ) {
+			Integer currPage,
+			Integer pageSize ) {
 		CittadinoServizioBean bean = new CittadinoServizioBean();
 		// Recupero codiceFiscale e codiceRuolo con cui si è profilato l'utente loggato alla piattaforma
 		final String codiceFiscaleUtenteLoggato = profilazione.getCodiceFiscaleUtenteLoggato().trim();
@@ -111,20 +109,19 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		
 		// Verifico se il facilitatore è il creatore di quel servizio
 		if( !this.servizioSqlRepository.findByFacilitatoreAndIdServizio(codiceFiscaleUtenteLoggato, idServizio).isPresent() ) {
-			final String messaggioErrore = String.format("Servizio non accessibile per l'utente con codice fiscale '%s'",codiceFiscaleUtenteLoggato);
+			final String messaggioErrore = String.format("Servizio non accessibile per l'utente con codice fiscale '%s in quanto non risulta il creatore del servizio'",codiceFiscaleUtenteLoggato);
 			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S03);
 		}
 
 		// Recupero tutti i cittadini del servizion con id idServizio in base ai filtri selezionati
-		final List<CittadinoServizioProjection> listaCittadiniServizio = this.getAllServiziByProfilazioneAndFiltro(idServizio, filtroListaCittadiniServizio);
+		final List<CittadinoServizioProjection> listaCittadiniServizio = this.getAllServiziByProfilazioneAndFiltro(
+				idServizio, 
+				filtroListaCittadiniServizio,
+				currPage,
+				pageSize
+			);
 
-		// Effettuo la paginazione della lista dei servizi recuperati in precedenza
-		int start = (int) pagina.getOffset();
-		int end = Math.min((start + pagina.getPageSize()), listaCittadiniServizio.size());
-		if(start > end) {
-			throw new ServizioException("ERRORE: pagina richiesta inesistente", CodiceErroreEnum.G03);
-		}	
-		bean.setListaCittadiniServizio(new PageImpl<CittadinoServizioProjection>(listaCittadiniServizio.subList(start, end), pagina, listaCittadiniServizio.size()));
+		bean.setListaCittadiniServizio(listaCittadiniServizio);
 		bean.setNumCittadini(listaCittadiniServizio.size());
 		bean.setNumQuestionariCompilati(
 				listaCittadiniServizio.stream()
@@ -136,7 +133,9 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
 	private List<CittadinoServizioProjection> getAllServiziByProfilazioneAndFiltro(
 			Long idServizio,
-			@NotNull @Valid FiltroListaCittadiniServizioParam filtroListaCittadiniServizio) {
+			@NotNull @Valid FiltroListaCittadiniServizioParam filtroListaCittadiniServizio,
+			@NotNull Integer currPage,
+			@NotNull Integer pageSize) {
 		String criterioRicercaCittadinoServizioLike = null;
 		String criterioRicercaCittadinoServizio = null;
 		if(filtroListaCittadiniServizio.getCriterioRicerca() != null) {
@@ -144,10 +143,33 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 			criterioRicercaCittadinoServizioLike = "%".concat(criterioRicercaCittadinoServizio).concat("%");
 		}
 
-		return cittadinoServizioRepository.findAllCittadiniServizioByFiltro(idServizio, 
+		return cittadinoServizioRepository.findAllCittadiniServizioPaginatiByFiltro(
+				idServizio, 
 				criterioRicercaCittadinoServizio, 
 				criterioRicercaCittadinoServizioLike, 
-				filtroListaCittadiniServizio.getStatiQuestionario());
+				filtroListaCittadiniServizio.getStatiQuestionario(),
+				currPage,
+				pageSize
+			);
+	}
+	
+	@LogMethod
+	@LogExecutionTime
+	public Integer countCittadiniServizioByFiltro(
+			Long idServizio,
+			@NotNull @Valid FiltroListaCittadiniServizioParam filtroListaCittadiniServizio) {
+		String criterioRicercaCittadinoServizioLike = null;
+		String criterioRicercaCittadinoServizio = null;
+		if(filtroListaCittadiniServizio.getCriterioRicerca() != null) {
+			criterioRicercaCittadinoServizio = filtroListaCittadiniServizio.getCriterioRicerca();
+			criterioRicercaCittadinoServizioLike = "%".concat(criterioRicercaCittadinoServizio).concat("%");
+		}
+		return cittadinoServizioRepository.findAllCittadiniServizioByFiltro(
+				idServizio, 
+				criterioRicercaCittadinoServizio, 
+				criterioRicercaCittadinoServizioLike, 
+				filtroListaCittadiniServizio.getStatiQuestionario()
+			).size();
 	}
 
 	@LogMethod
@@ -171,7 +193,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 						: this.getAllStatiQuestionarioByProfilazioneAndFiltro(idServizio, filtroListaCittadiniServizio)
 						.containsAll(filtroListaCittadiniServizio.getStatiQuestionario()) 
 						? filtroListaCittadiniServizio.getStatiQuestionario()
-								: List.of();
+								: new ArrayList<>();
 	}
 
 	@LogMethod

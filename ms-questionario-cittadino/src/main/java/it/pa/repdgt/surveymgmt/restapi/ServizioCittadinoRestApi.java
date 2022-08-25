@@ -5,16 +5,11 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import io.swagger.annotations.ApiParam;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.bean.CittadinoServizioBean;
 import it.pa.repdgt.surveymgmt.bean.CittadinoUploadBean;
@@ -71,7 +65,6 @@ public class ServizioCittadinoRestApi {
 			@RequestParam(name = "statiQuestionario", required = false) final List<String> statiQuestionarioFiltro,
 			@RequestParam(name = "currPage", defaultValue = "0")  @Pattern(regexp = "[0-9]+") final String currPage,
 			@RequestParam(name = "pageSize", defaultValue = "10") @Pattern(regexp = "[0-9]+") final String pageSize) {
-		final Pageable pagina = PageRequest.of(Integer.parseInt(currPage), Integer.parseInt(pageSize));
 		final FiltroListaCittadiniServizioParam filtroListaCittadiniServizioParam = new FiltroListaCittadiniServizioParam();
 		filtroListaCittadiniServizioParam.setCriterioRicerca(criterioRicercaFiltro);
 		filtroListaCittadiniServizioParam.setStatiQuestionario(statiQuestionarioFiltro);
@@ -79,14 +72,18 @@ public class ServizioCittadinoRestApi {
 		CittadinoServizioBean cittadinoServiziBean = this.cittadiniServizioService.getAllCittadiniServizioByProfilazioneAndFiltroPaginati(
 				idServizio,
 				profilazioneParam, 
-				filtroListaCittadiniServizioParam, 
-				pagina
+				filtroListaCittadiniServizioParam,
+				Integer.parseInt(currPage),
+				Integer.parseInt(pageSize)
 			);
 		
-		final List<CittadinoServizioResource> cittadinoServizioResource = this.cittadinoServizioMapper.toResourceFrom(cittadinoServiziBean.getListaCittadiniServizio().getContent());
+		final int totaleElementi = this.cittadiniServizioService.countCittadiniServizioByFiltro(idServizio, filtroListaCittadiniServizioParam);
+		final int numeroPagine = (int) (totaleElementi / Integer.parseInt(pageSize));
+		
+		final List<CittadinoServizioResource> cittadinoServizioResource = this.cittadinoServizioMapper.toResourceFrom(cittadinoServiziBean.getListaCittadiniServizio());
 		final CittadiniServizioPaginatiResource cittadiniServizioPaginatiResource = new CittadiniServizioPaginatiResource();
 		cittadiniServizioPaginatiResource.setCittadiniServizioResource(cittadinoServizioResource);
-		cittadiniServizioPaginatiResource.setNumeroPagine(cittadinoServiziBean.getListaCittadiniServizio().getTotalPages());
+		cittadiniServizioPaginatiResource.setNumeroPagine(totaleElementi % Integer.parseInt(pageSize) > 0 ? numeroPagine+1 : numeroPagine);
 		cittadiniServizioPaginatiResource.setNumeroCittadini(cittadinoServiziBean.getNumCittadini());
 		cittadiniServizioPaginatiResource.setNumeroQuestionariCompilati(cittadinoServiziBean.getNumQuestionariCompilati());
 		return cittadiniServizioPaginatiResource;

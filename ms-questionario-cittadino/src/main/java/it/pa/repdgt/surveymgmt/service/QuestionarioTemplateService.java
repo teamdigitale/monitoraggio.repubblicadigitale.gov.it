@@ -13,16 +13,12 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
-import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.ProgrammaXQuestionarioTemplateEntity;
 import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
@@ -55,10 +51,15 @@ public class QuestionarioTemplateService {
 
 	@LogMethod
 	@LogExecutionTime
-	public Page<QuestionarioTemplateEntity> getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro(
+	public Long getNumeroTotaleQuestionariTemplateByFiltro(String criterioRicerca, String statoQuestionario) {
+		return this.questionarioTemplateSqlService.getNumeroTotaleQuestionariTemplateByFiltro(criterioRicerca, statoQuestionario);
+	}
+	
+	@LogMethod
+	@LogExecutionTime
+	public List<QuestionarioTemplateEntity> getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro(
 			@NotNull @Valid final ProfilazioneParam profilazione,
-			@NotNull @Valid final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplate,
-			@NotNull final Pageable pagina ) {
+			@NotNull @Valid final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplate) {
 		final String codiceFiscaleUtenteLoggato = profilazione.getCodiceFiscaleUtenteLoggato();
 		final String codiceRuoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato().toString();
 		
@@ -73,20 +74,74 @@ public class QuestionarioTemplateService {
 			throw new QuestionarioTemplateException(messaggioErrore, CodiceErroreEnum.U06);
 		}
 		// Recupero tutti i QuestionariTemplate in base al ruolo profilato dell'utente loggato e in base ai filtri selezionati
-		final List<QuestionarioTemplateEntity> listaQuestionariTemplate = this.getAllQuestionariTemplateByProfilazioneAndFiltro(profilazione, filtroListaQuestionariTemplate);
+		return this.getAllQuestionariTemplateByProfilazioneAndFiltroConPaginazione(profilazione, filtroListaQuestionariTemplate);
 		
-		// Effettuo la paginazione della lista dei quetionariTemplate recuperati in precedenza
-		int start = (int) pagina.getOffset();
-		int end = Math.min((start + pagina.getPageSize()), listaQuestionariTemplate.size());
-		if(start > end) {
-			throw new QuestionarioTemplateException("ERRORE: pagina richiesta inesistente", CodiceErroreEnum.G03);
-		}
-		return new PageImpl<QuestionarioTemplateEntity>(listaQuestionariTemplate.subList(start, end), pagina, listaQuestionariTemplate.size());
 	}
 	
 	@LogMethod
 	@LogExecutionTime
-	public List<QuestionarioTemplateEntity> getAllQuestionariTemplateByProfilazioneAndFiltro(
+	public List<QuestionarioTemplateEntity> getAllQuestionariTemplateByProfilazioneAndFiltroConPaginazione(
+			@NotNull @Valid final ProfilazioneParam profilazione,
+			@NotNull @Valid final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplate) {
+		final String codiceRuoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato().toString();
+		
+		// Recupero i questionari in base alla profilazione dell'utente loggatosi
+				// Se: utente loggato si è profilato con uno dei seguenti ruoli,
+				// Allora: non mostro nessun questionario
+				if( RuoliUtentiConstants.REGP.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+					|| RuoliUtentiConstants.DEGP.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+					|| RuoliUtentiConstants.REPP.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+					|| RuoliUtentiConstants.DEPP.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+					|| RuoliUtentiConstants.FACILITATORE.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+					|| RuoliUtentiConstants.VOLONTARIO.equalsIgnoreCase(codiceRuoloUtenteLoggato) ) {
+					return new ArrayList<QuestionarioTemplateEntity>(Collections.emptyList());
+				}
+
+				String criterioRicercaFiltro = null;
+				if(filtroListaQuestionariTemplate.getCriterioRicerca() != null) {
+					criterioRicercaFiltro = "%".concat(filtroListaQuestionariTemplate.getCriterioRicerca()).concat("%");
+				}
+				
+				String statoQuestionarioFiltro = null;
+				if(filtroListaQuestionariTemplate.getStatoQuestionario() != null) {
+					statoQuestionarioFiltro = filtroListaQuestionariTemplate.getStatoQuestionario();
+				}
+
+				switch (codiceRuoloUtenteLoggato) {
+					case RuoliUtentiConstants.DSCU:
+						return this.questionarioTemplateSqlService.findQuestionariTemplatePaginatiByDefaultPolicySCDAndFiltro(
+								criterioRicercaFiltro, 
+								statoQuestionarioFiltro,
+								filtroListaQuestionariTemplate.getCurrPage(),
+								filtroListaQuestionariTemplate.getPageSize()
+							);
+					case RuoliUtentiConstants.REG:
+					case RuoliUtentiConstants.DEG:
+						// Se: l'utente loggato si è profilato con ruolo che diverso da DTD/DSCU (ovvero dropdown scelta profilo ha scelto ruolo REG/DEG/REGP/DEGP/ ...),
+						// Allora: Recupero l'unico questionario associato al programma scelto 
+						// dall'utente durante la profilazione (ovvero dropdown scelta profilo)
+						return this.questionarioTemplateSqlService.findQuestionariTemplatePaginatiByIdProgrammaAndFiltro(
+								profilazione.getIdProgramma(),
+								criterioRicercaFiltro, 
+								statoQuestionarioFiltro,
+								filtroListaQuestionariTemplate.getCurrPage(),
+								filtroListaQuestionariTemplate.getPageSize()
+							);
+					default:
+						// Se: l'utente loggato si è profilato con ruolo di DTD/ruolo custom
+						// Allora: Recupero tutti i questionari template da mostrare nella lista dei questionari template del FE
+						return this.questionarioTemplateSqlService.findAllQuestionariTemplatePaginatiByFiltro(
+								criterioRicercaFiltro,
+								statoQuestionarioFiltro,
+								filtroListaQuestionariTemplate.getCurrPage(),
+								filtroListaQuestionariTemplate.getPageSize()
+							);
+				}
+	}
+	
+	@LogMethod
+	@LogExecutionTime
+	public List<QuestionarioTemplateEntity> getAllQuestionariTemplateByProfilazioneAndFiltroSenzaPaginazione(
 			@NotNull @Valid final ProfilazioneParam profilazione,
 			@NotNull @Valid final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplate) {
 		final String codiceRuoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato().toString();

@@ -46,6 +46,7 @@ import it.pa.repdgt.programmaprogetto.request.ProgettiParam;
 import it.pa.repdgt.programmaprogetto.request.ProgettoFiltroRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammaRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammiParam;
+import it.pa.repdgt.programmaprogetto.resource.PaginaProgrammi;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
@@ -125,12 +126,12 @@ public class ProgrammaServiceTest {
 	ProgettoFiltroRequest progettoFiltro;
 	ProgrammiParam progParam;
 	ProgettiParam progettiParam;
-	Page<ProgrammaEntity> pagina;
 	List<String> listaRuoli;
 	int currPage;
 	int pageSize;
 	ProgettoEntity progetto1;
 	QuestionarioTemplateEntity questionario1;
+	PaginaProgrammi paginaProgrammi;
 	
 	@BeforeEach
 	public void setUp() {
@@ -173,7 +174,6 @@ public class ProgrammaServiceTest {
 		progettiParam.setCodiceRuolo("DTD");
 		progettiParam.setFiltroRequest(progettoFiltro);
 		progettiParam.setIdProgramma(1L);
-		pagina = new PageImpl<>(listaProgrammi);
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("DTD");
 		currPage = 0;
@@ -207,6 +207,10 @@ public class ProgrammaServiceTest {
 		questionario1.setStato("NON ATTIVO");
 		listaQuestionari = new ArrayList<>();
 		listaQuestionari.add(questionario1);
+		paginaProgrammi = new PaginaProgrammi();
+		paginaProgrammi.setPaginaProgrammi(listaProgrammi);
+		paginaProgrammi.setTotalElements(2);
+		paginaProgrammi.setTotalPages(1);
 	}
 	
 	
@@ -244,11 +248,24 @@ public class ProgrammaServiceTest {
 	public void getAllProgrammiPaginatiPerDTDTest() {
 		//getAll programmi Per DTD
 		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);
-		when(programmaService.getAllProgrammiByRuoloAndIdProgramma(progParam.getCodiceRuolo(), progParam.getIdProgramma(), filtro)).thenReturn(listaProgrammi);
-		Page<ProgrammaEntity> paginaProgrammi = programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize, filtro);
-		assertThat(listaProgrammi.size()).isEqualTo(2);
-		assertThat(paginaProgrammi.getTotalElements()).isEqualTo(pagina.getTotalElements());
-		verify(programmaRepository, atLeastOnce()).findAll(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati());
+		when(this.programmaRepository.findAllPaginati(
+				filtro.getCriterioRicerca(),
+				"%" + filtro.getCriterioRicerca() + "%",
+				filtro.getPolicies(),
+				filtro.getStati(),
+				currPage*pageSize,
+				pageSize
+				)).thenReturn(listaProgrammi);
+		when(this.programmaRepository.countAll(
+				filtro.getCriterioRicerca(),
+				"%" + filtro.getCriterioRicerca() + "%",
+				filtro.getPolicies(),
+				filtro.getStati()
+				)).thenReturn(2L);
+		PaginaProgrammi paginaProgrammiResult = programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize, filtro);
+		assertThat(paginaProgrammiResult.getPaginaProgrammi().size()).isEqualTo(2);
+		assertThat(paginaProgrammiResult.getTotalElements()).isEqualTo(paginaProgrammi.getTotalElements());
+		verify(programmaRepository, atLeastOnce()).findAllPaginati(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati(), currPage, pageSize);
 	}
 	
 	@Test
@@ -258,11 +275,24 @@ public class ProgrammaServiceTest {
 		listaRuoli.add("DSCU");
 		progParam.setCodiceRuolo("DSCU");
 		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);
-		when(programmaService.getAllProgrammiByRuoloAndIdProgramma(progParam.getCodiceRuolo(), progParam.getIdProgramma(), filtro)).thenReturn(listaProgrammi);
-		Page<ProgrammaEntity> paginaProgrammi = programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize, filtro);
-		assertThat(listaProgrammi.size()).isEqualTo(2);
-		assertThat(paginaProgrammi.getTotalElements()).isEqualTo(pagina.getTotalElements());
-		verify(programmaRepository, atLeastOnce()).findProgrammiByPolicy(PolicyEnum.SCD.toString(), filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getStati());
+		when(this.programmaRepository.findProgrammiByPolicyPaginati(
+				PolicyEnum.SCD.toString(),
+				filtro.getCriterioRicerca(),
+				"%" + filtro.getCriterioRicerca() + "%",
+				filtro.getStati(),
+				currPage*pageSize,
+				pageSize
+				)).thenReturn(listaProgrammi);
+		when(this.programmaRepository.countProgrammiByPolicy(
+				PolicyEnum.SCD.toString(),
+				filtro.getCriterioRicerca(),
+				"%" + filtro.getCriterioRicerca() + "%",
+				filtro.getStati()
+				)).thenReturn(2L);
+		PaginaProgrammi paginaProgrammiResult = programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize, filtro);
+		assertThat(paginaProgrammiResult.getPaginaProgrammi().size()).isEqualTo(2);
+		assertThat(paginaProgrammiResult.getTotalElements()).isEqualTo(paginaProgrammi.getTotalElements());
+		verify(programmaRepository, atLeastOnce()).findProgrammiByPolicyPaginati(PolicyEnum.SCD.toString(), filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getStati(), currPage, pageSize);
 	}
 	
 	// ruoli: REG - DEG - REGP - DEGP - REPP - DEPP
@@ -274,8 +304,8 @@ public class ProgrammaServiceTest {
 		progParam.setCodiceRuolo("REG");
 		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);
 		when(programmaRepository.findById(programmaOptional.get().getId())).thenReturn(programmaOptional);
-		Page<ProgrammaEntity> paginaProgrammi = programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize, filtro);
-		assertThat(paginaProgrammi.getTotalElements()).isNotEqualTo(pagina.getTotalElements());
+		PaginaProgrammi paginaProgrammiResult = programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize, filtro);
+		assertThat(paginaProgrammiResult.getTotalElements()).isNotEqualTo(paginaProgrammi.getTotalElements());
 		verify(programmaRepository, atLeastOnce()).findById(programma1.getId());
 	}
 	
@@ -285,12 +315,25 @@ public class ProgrammaServiceTest {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("RUOLONONPREDEFINITO");
 		progParam.setCodiceRuolo("RUOLONONPREDEFINITO");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);
-		when(programmaService.getAllProgrammiByRuoloAndIdProgramma(progParam.getCodiceRuolo(), progParam.getIdProgramma(), filtro)).thenReturn(listaProgrammi);
-		Page<ProgrammaEntity> paginaProgrammi = programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize, filtro);
-		assertThat(listaProgrammi.size()).isEqualTo(2);
-		assertThat(paginaProgrammi.getTotalElements()).isEqualTo(pagina.getTotalElements());
-		verify(programmaRepository, atLeastOnce()).findAll(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati());
+		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);		
+		when(this.programmaRepository.findAllPaginati(
+				filtro.getCriterioRicerca(),
+				"%" + filtro.getCriterioRicerca() + "%",
+				filtro.getPolicies(),
+				filtro.getStati(),
+				currPage*pageSize,
+				pageSize
+				)).thenReturn(listaProgrammi);
+		when(this.programmaRepository.countAll(
+				filtro.getCriterioRicerca(),
+				"%" + filtro.getCriterioRicerca() + "%",
+				filtro.getPolicies(),
+				filtro.getStati()
+				)).thenReturn(2L);
+		
+		PaginaProgrammi paginaProgrammiResult = programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize, filtro);
+		assertThat(paginaProgrammiResult.getPaginaProgrammi().size()).isEqualTo(2);
+		assertThat(paginaProgrammiResult.getTotalElements()).isEqualTo(paginaProgrammi.getTotalElements());
 	}
 	
 	@Test
@@ -300,11 +343,6 @@ public class ProgrammaServiceTest {
 		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize, filtro));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).findAll(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati());
-		
-		//Test KO per pagina non trovata
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.getAllProgrammiPaginati(progParam, 11, pageSize, filtro));
-		assertThatExceptionOfType(ProgrammaException.class);
 		
 		//test KO per programma non trovato
 		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);

@@ -8,7 +8,6 @@ import javax.validation.Valid;
 import org.apache.commons.csv.CSVFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -52,18 +51,22 @@ public class CittadinoRestApi {
 	@PostMapping(path = "/all")
 	@ResponseStatus(value = HttpStatus.OK)
 	public CittadiniPaginatiResource getAllCittadini(
-		@RequestParam(name = "currPage", defaultValue = "0") Integer currPage,
+		@RequestParam(name = "currPage", defaultValue = "0")  Integer currPage,
 		@RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
 		@RequestBody @Valid final CittadiniPaginatiParam cittadiniPaginatiParam) {
-		final Page<CittadinoDto> paginaCittadini = this.cittadinoService.getAllCittadiniPaginati(
+		final List<CittadinoDto> cittadiniList = this.cittadinoService.getAllCittadiniPaginati(
 				cittadiniPaginatiParam,
 				currPage,
 				pageSize
 			);
+		
+		final Integer totaleElementi = this.cittadinoService.getNumeroTotaleCittadiniFacilitatoreByFiltro(cittadiniPaginatiParam);
+		final int numeroPagine = (int) (totaleElementi /pageSize);
+
 		return new CittadiniPaginatiResource(
-				paginaCittadini.getContent(), 
-				paginaCittadini.getTotalPages(),
-				paginaCittadini.getTotalElements()
+				cittadiniList, 
+				totaleElementi % pageSize > 0 ? numeroPagine+1 : numeroPagine,
+				new Long(totaleElementi)
 			);
 	}
 	
@@ -119,7 +122,7 @@ public class CittadinoRestApi {
 	 */
 	@PostMapping(path = "/download")
 	public ResponseEntity<InputStreamResource> downloadListaCSVCittadini(@RequestBody @Valid CittadiniPaginatiParam cittadiniPaginatiParam) {
-		List<CittadinoProjection> cittadiniProjection = this.cittadinoService.getAllCittadiniFacilitatoreFiltrati(cittadiniPaginatiParam);
+		List<CittadinoProjection> cittadiniProjection = this.cittadinoService.getAllCittadiniFacilitatoreByFiltro(cittadiniPaginatiParam);
 		ByteArrayInputStream byteArrayInputStream = CSVCittadiniUtil.exportCSVCittadini(cittadiniProjection, CSVFormat.DEFAULT);
 		InputStreamResource fileCSV = new InputStreamResource(byteArrayInputStream);
 		

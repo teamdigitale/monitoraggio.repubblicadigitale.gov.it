@@ -7,12 +7,12 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import it.pa.repdgt.programmaprogetto.bean.DettaglioProgettoBean;
 import it.pa.repdgt.programmaprogetto.bean.DettaglioProgrammaLightBean;
 import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
+import it.pa.repdgt.programmaprogetto.resource.PaginaProgetti;
 import it.pa.repdgt.programmaprogetto.resource.ProgettiLightResourcePaginati;
 import it.pa.repdgt.programmaprogetto.resource.ProgettoLightResource;
 import it.pa.repdgt.programmaprogetto.service.ProgrammaService;
@@ -110,11 +110,11 @@ public class ProgettoMapper {
 		return progetto;
 	}
 
-	public ProgettiLightResourcePaginati toProgettiLightResourcePaginataConContatoreFrom(Page<ProgettoEntity> paginaProgetti) {
+	public ProgettiLightResourcePaginati toProgettiLightResourcePaginataConContatoreFrom(PaginaProgetti paginaProgetti) {
 		if(paginaProgetti == null) {
 			return null;
 		}
-		List<ProgettoEntity> progetti = paginaProgetti.hasContent()? paginaProgetti.getContent(): Collections.emptyList();
+		List<ProgettoEntity> progetti = paginaProgetti.getPaginaProgetti() != null ? paginaProgetti.getPaginaProgetti() : Collections.emptyList();
 		ProgettiLightResourcePaginati progettiLightResourcePaginata = new ProgettiLightResourcePaginati();
 		progettiLightResourcePaginata.setListaProgettiLight(this.toLightResourceFrom(progetti));
 		progettiLightResourcePaginata.setNumeroPagine(paginaProgetti.getTotalPages());

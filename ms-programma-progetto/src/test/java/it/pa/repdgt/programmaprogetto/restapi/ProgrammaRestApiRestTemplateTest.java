@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -17,11 +18,14 @@ import org.springframework.http.ResponseEntity;
 import it.pa.repdgt.programmaprogetto.AppTests;
 import it.pa.repdgt.programmaprogetto.bean.SchedaProgrammaBean;
 import it.pa.repdgt.programmaprogetto.request.FiltroRequest;
+import it.pa.repdgt.programmaprogetto.request.ProgettiParam;
+import it.pa.repdgt.programmaprogetto.request.ProgettoFiltroRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammaRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammiParam;
 import it.pa.repdgt.programmaprogetto.resource.CreaProgrammaResource;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammiLightResourcePaginata;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
+import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 
 @TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
@@ -89,15 +93,27 @@ public class ProgrammaRestApiRestTemplateTest extends AppTests{
 		restTemplate.postForEntity("http://localhost:" + randomServerPort + "/programma", programmaRequest, CreaProgrammaResource.class);
 	}
 	
-//	@Test
-//	@Order(value = 5)
-//	void downloadListaCSVProgrammiTest() throws IOException {
-//		ProgrammiParam progParam = new ProgrammiParam();
-//		progParam.setCfUtente("SMTPAL67R31F111X");
-//		progParam.setCodiceRuolo("DTD");
-//		progParam.setFiltroRequest(new FiltroRequest());
-//		
-//		InputStreamResource response = restTemplate.postForObject("http://localhost:" + randomServerPort + "/programma/download", progParam, InputStreamResource.class);
-//		assertThat(response.contentLength()).isEqualTo(6);
-//	}
+	@Test
+	@Order(value = 5)
+	public void downloadCSVSElencoProgrammiTest() {
+		
+		ProgrammiParam programmiParam = new ProgrammiParam();
+		programmiParam.setCfUtente("UIHPLW87R49F205X");
+		programmiParam.setCodiceRuolo(RuoloUtenteEnum.DTD.toString());
+		programmiParam.setFiltroRequest(new FiltroRequest());
+		
+		String urlToCall = "http://localhost:" + randomServerPort +
+				"/programma/download";
+		
+		String elencoProgrammi = restTemplate.postForObject(
+				urlToCall, 
+				programmiParam,
+				String.class
+			);
+		
+		String[] programmiRecord = elencoProgrammi.split("\\n");
+		
+		assertThat(programmiRecord).isNotNull();
+		assertThat(programmiRecord.length).isEqualTo(8);
+	}
 }

@@ -7,12 +7,12 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import it.pa.repdgt.programmaprogetto.bean.DettaglioProgrammaBean;
 import it.pa.repdgt.programmaprogetto.request.ProgrammaRequest;
+import it.pa.repdgt.programmaprogetto.resource.PaginaProgrammi;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaLightResource;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammiLightResourcePaginata;
@@ -113,11 +113,12 @@ public class ProgrammaMapper {
 		return programma;
 	}
 	
-	public ProgrammiLightResourcePaginata toProgrammiLightResourcePaginataFrom(Page<ProgrammaEntity> paginaProgrammi) {
+	public ProgrammiLightResourcePaginata toProgrammiLightResourcePaginataFrom(PaginaProgrammi paginaProgrammi) {
 		if(paginaProgrammi == null) {
 			return null;
 		}
-		List<ProgrammaEntity> programmi = paginaProgrammi.hasContent()? paginaProgrammi.getContent(): Collections.emptyList();
+		
+		List<ProgrammaEntity> programmi = paginaProgrammi.getPaginaProgrammi() != null ? paginaProgrammi.getPaginaProgrammi() : Collections.emptyList();
 		ProgrammiLightResourcePaginata programmiLightResourcePaginata = new ProgrammiLightResourcePaginata();
 		programmiLightResourcePaginata.setListaProgrammiLight(this.toLightResourceFrom(programmi));
 		programmiLightResourcePaginata.setNumeroPagine(paginaProgrammi.getTotalPages());

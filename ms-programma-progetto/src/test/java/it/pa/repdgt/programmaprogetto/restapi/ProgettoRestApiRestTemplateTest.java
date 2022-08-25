@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -19,6 +20,7 @@ import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
 import it.pa.repdgt.programmaprogetto.resource.CreaProgettoResource;
 import it.pa.repdgt.programmaprogetto.resource.ProgettiLightResourcePaginati;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
+import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
 public class ProgettoRestApiRestTemplateTest extends AppTests{
@@ -88,5 +90,27 @@ public class ProgettoRestApiRestTemplateTest extends AppTests{
 		restTemplate.postForObject("http://localhost:" + randomServerPort + "/progetto?idProgramma=100", progettoRequest, CreaProgettoResource.class);
 	}
 	
-	
+	@Test
+	@DisplayName(value = "downloadCSVSElencoProgetti - OK")
+	public void downloadCSVSElencoProgettiTest() {
+		
+		ProgettiParam progettiParam = new ProgettiParam();
+		progettiParam.setCfUtente("UIHPLW87R49F205X");
+		progettiParam.setCodiceRuolo(RuoloUtenteEnum.DTD.toString());
+		progettiParam.setFiltroRequest(new ProgettoFiltroRequest());
+		
+		String urlToCall = "http://localhost:" + randomServerPort +
+				"/progetto/download";
+		
+		String elencoProgetti = restTemplate.postForObject(
+				urlToCall, 
+				progettiParam,
+				String.class
+			);
+		
+		String[] progettiRecord = elencoProgetti.split("\\n");
+		
+		assertThat(elencoProgetti).isNotNull();
+		assertThat(progettiRecord.length).isEqualTo(11);
+	}
 }

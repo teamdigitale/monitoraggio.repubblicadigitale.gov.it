@@ -3,6 +3,7 @@ package it.pa.repdgt.programmaprogetto.service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,10 +15,6 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.programmaprogetto.bean.DettaglioEntiPartnerBean;
@@ -33,6 +30,7 @@ import it.pa.repdgt.programmaprogetto.request.ProgettiParam;
 import it.pa.repdgt.programmaprogetto.request.ProgettoFiltroRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
 import it.pa.repdgt.programmaprogetto.request.SceltaProfiloParam;
+import it.pa.repdgt.programmaprogetto.resource.PaginaProgetti;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
@@ -239,20 +237,12 @@ public class ProgettoService {
 
 	@LogMethod
 	@LogExecutionTime
-	public Page<ProgettoEntity> getAllProgettiPaginati(ProgettiParam sceltaContesto,
+	public PaginaProgetti getAllProgettiPaginati(ProgettiParam sceltaContesto,
 			Integer currPage, Integer pageSize, ProgettoFiltroRequest filtroRequest) {
 		if(this.ruoloService.getCodiceRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
 			throw new ProgettoException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
 		}
-		Pageable paginazione = PageRequest.of(currPage, pageSize);
-		List<ProgettoEntity> progettiUtente = this.getProgettiByRuolo(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRequest);
-		progettiUtente.sort((progetto1, progetto2) -> progetto1.getId().compareTo(progetto2.getId()));
-		int start = (int) paginazione.getOffset();
-		int end = Math.min((start + paginazione.getPageSize()), progettiUtente.size());
-		if(start > end) {
-			throw new ProgettoException("ERRORE: pagina richiesta inesistente", CodiceErroreEnum.G03);
-		}
-		return new PageImpl<ProgettoEntity>(progettiUtente.subList(start, end), paginazione, progettiUtente.size());
+		return this.getProgettiByRuoloPaginati(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRequest, currPage, pageSize);
 	}
 
 	/**
@@ -285,6 +275,56 @@ public class ProgettoService {
 				return this.getAllProgetti(filtroRequest);
 		}
 	}
+	
+	/**
+	 * Recupera tutti i progetti filtrati e paginati in base al filtro passato che sono associati all'utente che ha quel ruolo associato a quel particolare progetto
+	 *
+	 * @param codiceRuolo - il ruolo scelto dall'utente in fase di login
+	 * @return List<ProgettoEntity> progetti - la lista dei progetti associati all'utente
+	 */
+	@LogMethod
+	@LogExecutionTime
+	public PaginaProgetti getProgettiByRuoloPaginati(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto, ProgettoFiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
+		PaginaProgetti paginaProgetti = new PaginaProgetti();
+		Long numeroElementi = 0L;
+		switch (codiceRuolo) {
+		case "DTD":
+			paginaProgetti.setPaginaProgetti(getAllProgettiPaginati(filtroRequest, currPage, pageSize)); 
+			numeroElementi = getCountAllProgetti(filtroRequest);
+			break;
+		case "DSCU":
+			paginaProgetti.setPaginaProgetti(this.getProgettiPerDSCUPaginati(filtroRequest, currPage, pageSize));
+			numeroElementi = getCountProgettiPerDSCU(filtroRequest);
+			break;
+		case "REG":
+		case "DEG":
+			paginaProgetti.setPaginaProgetti(this.getProgettiPerReferenteDelegatoGestoreProgrammaPaginati(idProgramma, filtroRequest, currPage, pageSize));
+			numeroElementi = getCountProgettiPerReferenteDelegatoGestoreProgramma(idProgramma, filtroRequest);
+			break;
+		case "REGP":
+		case "DEGP":
+		case "REPP":
+		case "DEPP":
+		case "FAC":
+		case "VOL":
+			paginaProgetti.setPaginaProgetti(Arrays.asList(this.getProgettoById(idProgetto))); 
+			numeroElementi = 1L;
+			break;
+		default:
+			paginaProgetti.setPaginaProgetti(getAllProgettiPaginati(filtroRequest, currPage, pageSize)); 
+			numeroElementi = getCountAllProgetti(filtroRequest);
+			break;
+		}
+		paginaProgetti.setTotalElements(numeroElementi);
+		Integer pagine = (int) (numeroElementi/pageSize);
+		paginaProgetti.setTotalPages(numeroElementi%pageSize > 0 ? pagine + 1 : pagine);
+		
+		if(paginaProgetti.getTotalElements() > 0 && currPage >= paginaProgetti.getTotalPages()) {
+			throw new ProgettoException("Errore Pagina richiesta non esistente", CodiceErroreEnum.G03);
+		}
+		
+		return paginaProgetti;
+	}
 
 	private List<ProgettoEntity> getProgettiPerReferenteDelegatoGestoreProgramma(Long idProgramma, ProgettoFiltroRequest filtroRequest) {
 		return this.progettoRepository.findProgettiPerReferenteDelegatoGestoreProgramma(
@@ -294,6 +334,28 @@ public class ProgettoService {
 				filtroRequest.getPolicies(),
 				filtroRequest.getIdsProgrammi(),
 				filtroRequest.getStati());
+	}
+	
+	private Long getCountProgettiPerReferenteDelegatoGestoreProgramma(Long idProgramma, ProgettoFiltroRequest filtroRequest) {
+		return this.progettoRepository.countProgettiPerReferenteDelegatoGestoreProgramma(
+				idProgramma,
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getPolicies(),
+				filtroRequest.getIdsProgrammi(),
+				filtroRequest.getStati());
+	}
+	
+	private List<ProgettoEntity> getProgettiPerReferenteDelegatoGestoreProgrammaPaginati(Long idProgramma, ProgettoFiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
+		return this.progettoRepository.findProgettiPerReferenteDelegatoGestoreProgrammaPaginati(
+				idProgramma,
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getPolicies(),
+				filtroRequest.getIdsProgrammi(),
+				filtroRequest.getStati(),
+				currPage*pageSize,
+				pageSize);
 	}
 
 	private List<ProgettoEntity> getProgettiPerDSCU(ProgettoFiltroRequest filtroRequest) {
@@ -305,9 +367,53 @@ public class ProgettoService {
 				filtroRequest.getStati()
 				);
 	}
+	
+	private Long getCountProgettiPerDSCU(ProgettoFiltroRequest filtroRequest) {
+		return this.progettoRepository.countByPolicy(
+				PolicyEnum.SCD.toString(),
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getIdsProgrammi(),
+				filtroRequest.getStati()
+				);
+	}
+	
+	private List<ProgettoEntity> getProgettiPerDSCUPaginati(ProgettoFiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
+		return this.progettoRepository.findByPolicyPaginati(
+				PolicyEnum.SCD.toString(),
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getIdsProgrammi(),
+				filtroRequest.getStati(),
+				currPage*pageSize,
+				pageSize
+				);
+	}
 
 	private List<ProgettoEntity> getAllProgetti(ProgettoFiltroRequest filtroRequest) {
 		return this.progettoRepository.findAll(
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getPolicies(),
+				filtroRequest.getIdsProgrammi(),
+				filtroRequest.getStati()
+				);
+	}
+	
+	private List<ProgettoEntity> getAllProgettiPaginati(ProgettoFiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
+		return this.progettoRepository.findAllPaginati(
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getPolicies(),
+				filtroRequest.getIdsProgrammi(),
+				filtroRequest.getStati(),
+				currPage*pageSize,
+				pageSize
+				);
+	}
+	
+	private Long getCountAllProgetti(ProgettoFiltroRequest filtroRequest) {
+		return this.progettoRepository.countAll(
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getPolicies(),
