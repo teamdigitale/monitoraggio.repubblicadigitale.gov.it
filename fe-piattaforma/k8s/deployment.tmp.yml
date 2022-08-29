@@ -48,6 +48,7 @@ metadata:
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
     alb.ingress.kubernetes.io/certificate-arn: ${K8S_INGRESS_CERTIFICATE}
+    alb.ingress.kubernetes.io/load-balancer-name: alb-fe-${K8S_NAMESPACE}
 spec:
   ingressClassName: alb
   rules:
