@@ -99,6 +99,7 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
     service.beta.kubernetes.io/aws-load-balancer-scheme: internal
     external-dns.alpha.kubernetes.io/hostname: programmaprogetto.backend-${K8S_NAMESPACE}.mitd.technology
+    service.beta.kubernetes.io/aws-load-balancer-name: nlb-ms-programma-progetto-${K8S_NAMESPACE}
 spec:
   type: LoadBalancer
   ports:
