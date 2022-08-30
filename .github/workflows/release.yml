@@ -197,7 +197,7 @@ jobs:
 
       - name: Modify Env File
         run: |
-          sed -i "s/{{_REACT_APP_BE_BASE_URL_}}/${{ secrets.REACT_APP_BE_BASE_URL }}/g" .env
+          sed -i "s\/{{_REACT_APP_BE_BASE_URL_}}\/${{ secrets.REACT_APP_BE_BASE_URL }}\/g" .env
 
       - name: File Regex Replace
         uses: mingjun97/file-regex-replace@v1
