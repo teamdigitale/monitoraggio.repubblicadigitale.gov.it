@@ -57,7 +57,7 @@ const Row: React.FC<{
           ...child.props,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          disabled: formDisabled,
+          disabled: child.props.disabled || formDisabled,
         })
       }
       return null

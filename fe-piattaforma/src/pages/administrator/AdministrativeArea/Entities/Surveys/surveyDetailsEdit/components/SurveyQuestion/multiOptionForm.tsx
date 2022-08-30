@@ -27,7 +27,7 @@ const MultiOptionForm: React.FC<MultiOptionFormI> = (props) => {
     onFormChange = () => ({}),
     updateFormField = () => ({}),
     updateForm = () => ({}),
-    areValuesDefault,
+    areValuesDefault = false,
     values,
   } = props;
 

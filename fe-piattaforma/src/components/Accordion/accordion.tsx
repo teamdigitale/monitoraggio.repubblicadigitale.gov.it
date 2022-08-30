@@ -35,7 +35,7 @@ const Accordion: React.FC<AccordionI> = (props) => {
     className,
     lastBottom,
     checkbox,
-    disabledCheckbox,
+    disabledCheckbox = false,
     isChecked,
     handleOnCheck,
     handleOnToggle,

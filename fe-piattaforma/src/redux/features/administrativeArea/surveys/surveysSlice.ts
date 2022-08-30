@@ -29,8 +29,8 @@ export interface SurveySectionI {
 
 export interface SurveySectionResponseI {
   id: string;
-  schema: { json: string };
-  schemaui: { json: string };
+  schema: string;
+  schemaui: string;
   title: string;
   'default-section': boolean;
 }

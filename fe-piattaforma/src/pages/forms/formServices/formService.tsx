@@ -45,7 +45,7 @@ const FormService: React.FC<FormServiceI> = (props) => {
 
   useEffect(() => {
     if (serviceQ3Schema) {
-      const formFromSchema = generateForm(JSON.parse(serviceQ3Schema.json)); // TODO: qui non c'è .json, dovrebbe essere solo una stringa -> da fixare!
+      const formFromSchema = generateForm(JSON.parse(serviceQ3Schema)); // TODO: qui non c'è .json, dovrebbe essere solo una stringa -> da fixare!
       Object.keys(formFromSchema).forEach((key: string) => {
         formFromSchema[key].label = formFromSchema[key].value?.toString() || '';
         formFromSchema[key].value = '';
