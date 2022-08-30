@@ -34,7 +34,7 @@ const PrintSurvey: React.FC = () => {
       const sections: FormI[] = [];
       const titles: string[] = [];
       formMock['survey-sections'].map((section) => {
-        sections.push(generateForm(JSON.parse(section.schema.json), true));
+        sections.push(generateForm(JSON.parse(section.schema), true));
         titles.push(section.title);
       });
       setSectionsForm(sections);
