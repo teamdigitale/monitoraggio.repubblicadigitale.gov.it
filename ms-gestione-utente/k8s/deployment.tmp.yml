@@ -93,7 +93,7 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-type: external
     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
     service.beta.kubernetes.io/aws-load-balancer-scheme: internal
-    external-dns.alpha.kubernetes.io/hostname: gestioneutente.backend-${K8S_NAMESPACE}.mitd.technology
+    external-dns.alpha.kubernetes.io/hostname: gestioneutente.api-${K8S_NAMESPACE}.repubblicadigitale.gov.it
     service.beta.kubernetes.io/aws-load-balancer-name: nlb-ms-gestione-utente-${K8S_NAMESPACE}
 spec:
   type: LoadBalancer
