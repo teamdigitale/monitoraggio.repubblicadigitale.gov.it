@@ -79,16 +79,6 @@ spec:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: DB_MONGO_PASSWORD
-            - name: KEYSTORE_PATH
-              valueFrom:
-                configMapKeyRef:
-                  name: env-${K8S_NAMESPACE}-options
-                  key: KEYSTORE_PATH
-            - name: KEYSTORE_PASSWORD
-              valueFrom:
-                configMapKeyRef:
-                  name: env-${K8S_NAMESPACE}-options
-                  key: KEYSTORE_PASSWORD
             - name: awsS3AccessKey
               valueFrom:
                 configMapKeyRef:
@@ -114,7 +104,7 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-type: external
     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
     service.beta.kubernetes.io/aws-load-balancer-scheme: internal
-    external-dns.alpha.kubernetes.io/hostname: opendata.backend-${K8S_NAMESPACE}.mitd.technology
+    external-dns.alpha.kubernetes.io/hostname: opendata.api-${K8S_NAMESPACE}.repubblicadigitale.gov.it
     service.beta.kubernetes.io/aws-load-balancer-name: nlb-ms-open-data-${K8S_NAMESPACE}
 spec:
   type: LoadBalancer
