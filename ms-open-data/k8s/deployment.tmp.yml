@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
         app.kubernetes.io/name: ms-open-data
-  replicas: 2
+  replicas: 3
   strategy:
     type: RollingUpdate
   template:
