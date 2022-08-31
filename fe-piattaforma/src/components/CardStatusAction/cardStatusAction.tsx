@@ -117,6 +117,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
           )}
         >
           <div
+            className='card-status-action__title w-100 pr-4 text-truncate'
             style={{
               minWidth: device.mediaIsDesktop ? '300px' : '200px',
             }}

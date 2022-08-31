@@ -61,7 +61,14 @@ const CardStatusActionHeadquarters: React.FC<CardStatusActionI> = (props) => {
           device.mediaIsPhone && 'flex-wrap'
         )}
       >
-        <div className={clsx(device.mediaIsPhone && 'title')}>
+        <div
+          className={clsx(
+            device.mediaIsPhone && 'title',
+            'card-status-action__title',
+            'pr-4',
+            'text-truncate'
+          )}
+        >
           <span className='neutral-1-color-a8 card-status-action__title'>
             <strong>{title}</strong>
             {subtitle && <span className='neutral-1-color-a8'>{subtitle}</span>}

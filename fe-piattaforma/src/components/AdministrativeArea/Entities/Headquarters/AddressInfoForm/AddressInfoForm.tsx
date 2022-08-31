@@ -87,7 +87,7 @@ const AddressInfoForm: React.FC<AddressInfoFormI> = ({
           }
         />
         <OpenDaysSelect
-          openDays={addressInfo.fasceOrarieAperturaIndirizzoSede}
+          openDays={addressInfo.fasceOrarieAperturaIndirizzoSede || {}}
           onAddOpenDay={openDayAddHandler}
           onRemoveOpenDay={openDayRemoveHandler}
           onTimeChange={timeChangeHandler}

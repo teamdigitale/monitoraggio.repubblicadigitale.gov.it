@@ -437,8 +437,12 @@ export const selectEntityPagination = (state: RootState) =>
   state.administrativeArea.pagination;
 export const selectPrograms = (state: RootState) =>
   state.administrativeArea.programs;
+export const selectEnteGestoreProgramma = (state: RootState) =>
+  state.administrativeArea.programs?.detail?.idEnteGestoreProgramma;
 export const selectProjects = (state: RootState) =>
   state.administrativeArea.projects;
+export const selectEnteGestoreProgetto = (state: RootState) =>
+  state.administrativeArea.projects?.detail?.idEnteGestoreProgetto;
 export const selectSurveys = (state: RootState) =>
   state.administrativeArea.surveys;
 export const selectUsers = (state: RootState) => state.administrativeArea.users;

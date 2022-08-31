@@ -285,32 +285,41 @@ const UpdateAuthorityAction = {
 };
 
 export const UpdateManagerAuthority =
-  (authorityDetail: any, entityId: string, entity: 'programma' | 'progetto') =>
+  (authorityDetail: any, enteGestoreId: string | number, entityId: string, entity: 'programma' | 'progetto') =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
-      dispatch({ ...UpdateAuthorityAction });
-
-      if (authorityDetail) {
-        let res = await API.put(
-          `/ente/${authorityDetail.id}/${
+      dispatch({ ...UpdateAuthorityAction, ...authorityDetail, entityId, entity });
+      if (authorityDetail?.id) {
+        let res;
+        if (enteGestoreId) {
+          res = await API.put(`/ente/${enteGestoreId}/${
             entity === 'programma' ? 'gestoreProgramma' : 'gestoreProgetto'
-          }/${entityId}`,
-          {
-            ...authorityDetail,
-          }
-        );
+          }/${entityId}`, authorityDetail);
 
-        res = await API.put(
-          `/${entity}/${entityId}/assegna/${
-            entity === 'programma' ? 'entegestore' : 'enteGestore'
-          }/${authorityDetail.id}`
-        );
+          return res;
+        } else {
+          res = await API.put(
+            `/ente/${authorityDetail.id}/${
+              entity === 'programma' ? 'gestoreProgramma' : 'gestoreProgetto'
+            }/${entityId}`,
+            {
+              ...authorityDetail,
+            }
+          );
 
-        return res;
+          res = await API.put(
+            `/${entity}/${entityId}/assegna/${
+              entity === 'programma' ? 'entegestore' : 'enteGestore'
+            }/${authorityDetail.id}`
+          );
+
+          return res;
+        }
       }
     } catch (error) {
       console.log(error);
+      return false;
     } finally {
       dispatch(hideLoader());
     }
