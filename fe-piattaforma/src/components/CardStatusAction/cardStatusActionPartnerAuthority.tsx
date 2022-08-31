@@ -64,7 +64,7 @@ const CardStatusActionPartnerAuthority: React.FC<CardStatusActionI> = (
               : 'flex-column align-items-start'
           )}
         >
-          <div className='card-status-action__title w-100'>
+          <div className='card-status-action__title w-100 pr-4 text-truncate'>
             <span className='neutral-1-color-a8'>
               <strong>{title}</strong>
               {subtitle && (
