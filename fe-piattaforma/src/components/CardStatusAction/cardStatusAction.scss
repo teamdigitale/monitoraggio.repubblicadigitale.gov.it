@@ -1,5 +1,5 @@
 .card-status-action {
-  border-radius: rem(10px);
+  border-radius: rem(5px);
   box-shadow: rem(0px) rem(0px) rem(40px) rgba(0, 43, 85, 0.1);
   padding: 0 rem(24px);
 
@@ -30,6 +30,13 @@
 
   &__title {
     min-width: rem(200px);
-    //max-width: rem(250px);
+    max-width: rem(250px);
+    display: block;
   }
+
+ 
+}
+
+.active-role-border {
+  border-left: 8px solid #0066CC;
 }

@@ -14,6 +14,7 @@ import {
 import Form from '../../../../Form/form';
 import Input from '../../../../Form/input';
 import Select from '../../../../Form/select';
+import { contractTypes } from '../../../../../pages/administrator/AdministrativeArea/Entities/utils';
 
 interface FacilitatorI {
   creation?: boolean;
@@ -47,12 +48,14 @@ const FormFacilitator: React.FC<FacilitatorFormI> = (props) => {
     if (form && newFormValues)
       sendNewValues({ ...newFormValues, ...getFormValues() });
     setIsFormValid(isValidForm && isFormUserValid);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form, newFormValues]);
 
   useEffect(() => {
     if (userDetails) {
       setFormValues(userDetails);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userDetails]);
 
   const onInputDataChange = (
@@ -69,11 +72,13 @@ const FormFacilitator: React.FC<FacilitatorFormI> = (props) => {
     <>
       <FormUser
         creation={creation}
-        formDisabled={!!formDisabled}
+        formDisabled={formDisabled}
         sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
           setNewFormValues({ ...newData })
         }
-        setIsFormValid={(value: boolean | undefined) => setIsFormUserValid(!!value)}
+        setIsFormValid={(value: boolean | undefined) =>
+          setIsFormUserValid(!!value)
+        }
         fieldsToHide={['ruolo']}
       />
       <Form id='form-facilitator' formDisabled={formDisabled}>
@@ -95,14 +100,7 @@ const FormFacilitator: React.FC<FacilitatorFormI> = (props) => {
               col='col-12 col-lg-6'
               label='Tipo di Contratto'
               placeholder='Seleziona tipo di contratto'
-              options={[
-                { label: 'Volontario', value: 'Volontario' },
-                { label: 'Dipendente', value: 'Dipendente' },
-                {
-                  label: 'Collaboratore',
-                  value: 'Collaboratore',
-                },
-              ]}
+              options={contractTypes}
               onInputChange={onInputDataChange}
               wrapperClassName='mb-5'
               aria-label='contratto'

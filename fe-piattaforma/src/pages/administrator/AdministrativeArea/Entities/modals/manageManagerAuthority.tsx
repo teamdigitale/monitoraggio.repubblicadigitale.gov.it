@@ -12,6 +12,8 @@ import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import {
   //resetAuthorityDetails,
   selectAuthorities,
+  selectEnteGestoreProgetto,
+  selectEnteGestoreProgramma,
   setAuthoritiesList,
   setAuthorityDetails,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
@@ -73,9 +75,12 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
   const dispatch = useDispatch();
   const { entityId, projectId } = useParams();
   const authoritiesList = useAppSelector(selectAuthorities).list;
+  const enteGestoreProgettoId = useAppSelector(selectEnteGestoreProgetto);
+  const enteGestoreProgrammaId = useAppSelector(selectEnteGestoreProgramma);
 
   useEffect(() => {
     dispatch(setAuthoritiesList(null));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -90,6 +95,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
     clearForm();
     if (creation) dispatch(setAuthorityDetails(null));
     setNoResult(false);
+    dispatch(closeModal());
     //dispatch(resetAuthorityDetails());
   };
 
@@ -106,18 +112,38 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
       if (newFormValues.id) {
         if (projectId) {
           // Project
-          await dispatch(
-            UpdateManagerAuthority({ ...newFormValues }, projectId, 'progetto')
+          const res = await dispatch(
+            UpdateManagerAuthority(
+              { ...newFormValues },
+              enteGestoreProgettoId,
+              projectId,
+              'progetto'
+            )
           );
-          await dispatch(GetProjectDetail(projectId));
-          dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          if (res) {
+            await dispatch(GetProjectDetail(projectId));
+            dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+            resetModal();
+          }
         } else if (entityId) {
           // Program
-          await dispatch(
-            UpdateManagerAuthority({ ...newFormValues }, entityId, 'programma')
+          const res = await dispatch(
+            UpdateManagerAuthority(
+              { ...newFormValues },
+              enteGestoreProgrammaId,
+              entityId,
+              'programma'
+            )
           );
-          await dispatch(GetProgramDetail(entityId));
-          dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          if (res) {
+            await dispatch(GetProgramDetail(entityId));
+            dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+            resetModal();
+          }
         }
       }
       // Creation
@@ -129,6 +155,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
           );
           await dispatch(GetProjectDetail(projectId));
           dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+          resetModal();
         } else if (entityId) {
           // Program
           await dispatch(
@@ -136,10 +163,9 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
           );
           await dispatch(GetProgramDetail(entityId));
           dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+          resetModal();
         }
       }
-      resetModal();
-      dispatch(closeModal());
     }
   };
 

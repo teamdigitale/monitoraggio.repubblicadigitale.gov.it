@@ -14,7 +14,6 @@ import { useAppSelector } from '../../../../../redux/hooks';
 import {
   selectAuthorities,
   selectHeadquarters,
-  setHeadquarterDetails,
   setHeadquartersList,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { useDispatch } from 'react-redux';
@@ -95,7 +94,8 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
 
   // flag for conditionally render multiple address selection
   const [movingHeadquarter, setMovingHeadquarter] = useState<boolean>(false);
-  const { projectId, authorityId, headquarterId } = useParams();
+  const { projectId, authorityId, headquarterId, identeDiRiferimento } =
+    useParams();
   const authorityInfo =
     useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
   const headquartersList = useAppSelector(selectHeadquarters).list;
@@ -205,8 +205,6 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
   };
 
   const handleSearchReset = () => {
-    dispatch(setHeadquartersList(null));
-    dispatch(setHeadquarterDetails(null));
     setAddressList([
       {
         indirizzoSede: {
@@ -222,6 +220,17 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
       },
     ]);
     setMovingHeadquarter(false);
+    if (headquarterId && projectId && (authorityId || identeDiRiferimento)) {
+      dispatch(
+        GetHeadquarterDetails(
+          headquarterId,
+          authorityId || identeDiRiferimento || '',
+          projectId
+        )
+      );
+    } else if (headquarterId) {
+      dispatch(GetHeadquarterLightDetails(headquarterId));
+    }
   };
 
   let content = (
@@ -282,7 +291,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
     <GenericModal
       id={id}
       primaryCTA={{
-        disabled: !isFormValid,
+        disabled: !isFormValid || !validateAddressList(addressList),
         label: 'Conferma',
         onClick: handleSaveAssignHeadquarter,
       }}

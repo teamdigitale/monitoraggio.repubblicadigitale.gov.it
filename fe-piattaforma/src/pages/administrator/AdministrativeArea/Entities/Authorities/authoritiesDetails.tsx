@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { entityStatus, formTypes } from '../utils';
+import { entityStatus, formTypes, userRoles } from '../utils';
 import {
   CRUDActionsI,
   CRUDActionTypes,
@@ -47,7 +47,6 @@ import {
 import ManagePartnerAuthority from '../modals/managePartnerAuthority';
 import useGuard from '../../../../../hooks/guard';
 import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
-import { roles } from '../Users/usersDetails';
 
 const AuthoritiesDetails = () => {
   const authorityDetails = useAppSelector(selectAuthorities)?.detail;
@@ -118,12 +117,12 @@ const AuthoritiesDetails = () => {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
       if (entityId && projectId) {
         navigate(
-          `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${authorityType}/${authorityId}/${roles.REPP}/${td}`
+          `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${authorityType}/${authorityId}/${userRoles.REPP}/${td}`
         );
       } else {
         projectId &&
           navigate(
-            `/area-amministrativa/progetti/${projectId}/${authorityType}/${authorityId}/${roles.REPP}/${td}`
+            `/area-amministrativa/progetti/${projectId}/${authorityType}/${authorityId}/${userRoles.REPP}/${td}`
           );
       }
     },
@@ -147,12 +146,12 @@ const AuthoritiesDetails = () => {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
       if (entityId && projectId) {
         navigate(
-          `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${authorityType}/${authorityId}/${roles.DEPP}/${td}`
+          `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${authorityType}/${authorityId}/${userRoles.DEPP}/${td}`
         );
       } else {
         projectId &&
           navigate(
-            `/area-amministrativa/progetti/${projectId}/${authorityType}/${authorityId}/${roles.DEPP}/${td}`
+            `/area-amministrativa/progetti/${projectId}/${authorityType}/${authorityId}/${userRoles.DEPP}/${td}`
           );
       }
     },

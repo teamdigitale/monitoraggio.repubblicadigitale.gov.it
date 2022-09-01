@@ -403,7 +403,7 @@ export const transformJsonToForm = (questionarioJson: SurveyResponseBodyI) => {
       newSection({
         sectionTitle: section.title,
         id: section.id,
-        questions: transformJsonQuestionToForm(JSON.parse(section.schema.json)),
+        questions: transformJsonQuestionToForm(JSON.parse(section.schema)),
       })
     );
   });
