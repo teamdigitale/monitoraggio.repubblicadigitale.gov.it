@@ -16,6 +16,9 @@ import lombok.Setter;
 public class ContestoResource implements Serializable {
 	private static final long serialVersionUID = 8956013718778000343L;
 	
+	@JsonProperty(value = "id")
+	private Long id;
+	
 	@JsonProperty(value = "nome")
 	private String nome;
 	

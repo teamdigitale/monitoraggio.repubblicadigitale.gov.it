@@ -18,6 +18,7 @@ public class ContestoMapper {
 			return null;
 		}
 		ContestoResource contestoResource = new ContestoResource();
+		contestoResource.setId(utente.getId());
 		contestoResource.setCodiceFiscale(utente.getCodiceFiscale());
 		contestoResource.setNome(utente.getNome());
 		contestoResource.setCognome(utente.getCognome());

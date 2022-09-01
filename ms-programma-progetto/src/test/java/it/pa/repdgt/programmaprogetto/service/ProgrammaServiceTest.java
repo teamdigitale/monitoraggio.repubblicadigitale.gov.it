@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -28,8 +29,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 
 import it.pa.repdgt.programmaprogetto.bean.DettaglioProgrammaBean;
 import it.pa.repdgt.programmaprogetto.bean.SchedaProgrammaBean;
@@ -58,7 +57,6 @@ import it.pa.repdgt.shared.entity.key.ProgrammaXQuestionarioTemplateKey;
 import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEnteGestoreProgrammaKey;
 import it.pa.repdgt.shared.entity.light.ProgettoLightEntity;
 import it.pa.repdgt.shared.entity.light.QuestionarioTemplateLightEntity;
-import it.pa.repdgt.shared.entity.storico.StoricoEnteGestoreProgrammaEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.StoricoEnteException;
@@ -149,6 +147,7 @@ public class ProgrammaServiceTest {
 		ente1.setId(1L);
 		ente1.setNome("ente1");
 		programma1.setEnteGestoreProgramma(ente1);
+		programma1.setStatoGestoreProgramma(StatoEnum.ATTIVO.getValue());
 		listaProgrammi = new ArrayList<>();
 		listaProgrammi.add(programma1);
 		listaProgrammi.add(programma2);
@@ -744,6 +743,7 @@ public class ProgrammaServiceTest {
 	
 	@Test
 	public void terminaProgrammaTest() throws Exception {
+		//test per programma con statoEnteGestore == "ATTIVO"
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		Calendar c = Calendar.getInstance();
 		c.setTime(sdf.parse(sdf.format(new Date())));
@@ -757,14 +757,29 @@ public class ProgrammaServiceTest {
 		when(programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
 		when(progettoService.getProgettiByIdProgramma(programma1.getId())).thenReturn(listaProgetti);
 		when(referentiDelegatiEnteGestoreProgrammaService.getReferentiEDelegatiProgramma(programma1.getId())).thenReturn(listaReferentiDelegati);
-		doAnswer(invocation -> {
-			StoricoEnteGestoreProgrammaEntity storico = new StoricoEnteGestoreProgrammaEntity();
-			storico.setIdProgramma(programma1.getId());
-			storico.setIdEnte(programma1.getEnteGestoreProgramma().getId());
-			storico.setStato(StatoEnum.TERMINATO.getValue());
-			storico.setDataOraCreazione(new Date());
-			return this.storicoEnteGestoreProgrammaRepository.save(storico);
-		}).when(storicoService).storicizzaEnteGestoreProgramma(programma1, StatoEnum.TERMINATO.getValue());
+		doNothing().when(storicoService).storicizzaEnteGestoreProgramma(programma1, StatoEnum.TERMINATO.getValue());
+		this.programmaService.terminaProgramma(programma1.getId(), currentDate);
+		assertThat(programma1.getStato()).isEqualTo("TERMINATO");
+		verify(programmaRepository, atLeastOnce()).save(programma1);
+	}
+	
+	@Test
+	public void terminaProgrammaTest2() throws Exception {
+		//test per programma con statoEnteGestore == "NON ATTIVO"
+		programma1.setStatoGestoreProgramma(StatoEnum.NON_ATTIVO.getValue());
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		Calendar c = Calendar.getInstance();
+		c.setTime(sdf.parse(sdf.format(new Date())));
+        Date currentDate = c.getTime();
+		ReferentiDelegatiEnteGestoreProgrammaKey referentiDelegatiKey = new ReferentiDelegatiEnteGestoreProgrammaKey(programma1.getId(), "DSARTN89D21N303N", ente1.getId());
+		ReferentiDelegatiEnteGestoreProgrammaEntity referentiDelegati = new ReferentiDelegatiEnteGestoreProgrammaEntity();
+		referentiDelegati.setId(referentiDelegatiKey);
+		List<ReferentiDelegatiEnteGestoreProgrammaEntity> listaReferentiDelegati = new ArrayList<>();
+		listaReferentiDelegati.add(referentiDelegati);
+		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
+		when(programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
+		when(progettoService.getProgettiByIdProgramma(programma1.getId())).thenReturn(listaProgetti);
+		when(referentiDelegatiEnteGestoreProgrammaService.getReferentiEDelegatiProgramma(programma1.getId())).thenReturn(listaReferentiDelegati);
 		this.programmaService.terminaProgramma(programma1.getId(), currentDate);
 		assertThat(programma1.getStato()).isEqualTo("TERMINATO");
 		verify(programmaRepository, atLeastOnce()).save(programma1);
