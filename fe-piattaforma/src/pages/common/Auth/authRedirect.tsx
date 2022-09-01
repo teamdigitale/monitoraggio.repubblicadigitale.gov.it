@@ -28,7 +28,12 @@ const AuthRedirect = () => {
         case userRoles.FAC:
         case userRoles.VOL:
         case userRoles.REG:
-        case userRoles.REGP: {
+        case userRoles.REGP:
+        case userRoles.REPP:
+        case userRoles.DEG:
+        case userRoles.DEGP:
+        case userRoles.DEPP:
+        {
           if (idProgetto && idProgramma) {
             redirectTo(
               `/area-amministrativa/programmi/${idProgramma}/progetti/${idProgetto}/info`

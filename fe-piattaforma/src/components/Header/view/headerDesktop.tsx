@@ -112,7 +112,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               </Button>
             </li>
           ))}
-          {user?.profiliUtente?.length > 1 ? (
+          {(user?.profiliUtente?.length || 0) > 1 ? (
             <li role='none' className='px-4'>
               <Button
                 className={clsx(

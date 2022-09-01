@@ -36,6 +36,7 @@ interface CardStatusActionI {
   cf?: string | undefined;
   moreThanOneSurvey?: boolean;
   onCheckedChange?: (checked: string) => void;
+  activeRole?: boolean;
 }
 
 const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
@@ -50,6 +51,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
     cf,
     moreThanOneSurvey = false,
     onCheckedChange,
+    activeRole = false,
   } = props;
   const device = useAppSelector(selectDevice);
   const [isChecked, setIsChecked] = useState<string>('');
@@ -70,7 +72,8 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
         'card-status-action',
         'mx-3',
         'mb-3',
-        device.mediaIsPhone && 'py-0'
+        device.mediaIsPhone && 'py-0',
+        activeRole && 'active-role-border'
       )}
     >
       <div

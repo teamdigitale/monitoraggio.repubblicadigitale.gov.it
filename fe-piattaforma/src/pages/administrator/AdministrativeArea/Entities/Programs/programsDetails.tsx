@@ -8,7 +8,7 @@ import {
 import { useDispatch } from 'react-redux';
 
 import { ButtonInButtonsBar } from '../../../../../components/ButtonsBar/buttonsBar';
-import {entityStatus, formTypes, userRoles} from '../utils';
+import { entityStatus, formTypes, userRoles } from '../utils';
 import {
   CRUDActionsI,
   CRUDActionTypes,
@@ -61,7 +61,6 @@ import useGuard from '../../../../../hooks/guard';
 import { formFieldI } from '../../../../../utils/formHelper';
 import { GetSurveyAllLight } from '../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 import clsx from 'clsx';
-import { roles } from '../Users/usersDetails';
 import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 import { selectProfile } from '../../../../../redux/features/user/userSlice';
 
@@ -162,7 +161,7 @@ const ProgramsDetails: React.FC = () => {
         [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
           navigate(
             getActionRedirectURL(
-              roles.REG,
+              userRoles.REG,
               (typeof td === 'string' ? td : td.id).toString()
             )
           );
@@ -185,7 +184,7 @@ const ProgramsDetails: React.FC = () => {
         [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
           navigate(
             getActionRedirectURL(
-              roles.REG,
+              userRoles.REG,
               (typeof td === 'string' ? td : td.id).toString()
             )
           );
@@ -199,7 +198,7 @@ const ProgramsDetails: React.FC = () => {
         [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
           navigate(
             getActionRedirectURL(
-              roles.DEG,
+              userRoles.DEG,
               (typeof td === 'string' ? td : td.id).toString()
             )
           );
@@ -222,7 +221,7 @@ const ProgramsDetails: React.FC = () => {
         [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
           navigate(
             getActionRedirectURL(
-              roles.DEG,
+              userRoles.DEG,
               (typeof td === 'string' ? td : td.id).toString()
             )
           );
@@ -1030,7 +1029,11 @@ const ProgramsDetails: React.FC = () => {
           buttonsPosition={buttonsPosition}
           goBackTitle='Elenco programmi'
           goBackPath='/area-amministrativa/programmi'
-          showGoBack={userRole !== userRoles.REG && userRole !== userRoles.REGP && userRole !== userRoles.FAC}
+          showGoBack={
+            userRole !== userRoles.REG &&
+            userRole !== userRoles.REGP &&
+            userRole !== userRoles.FAC
+          }
           surveyDefault={surveyDefault}
           isRadioButtonItem={radioButtonsSurveys}
           onRadioChange={(surveyCheckedId: string) =>

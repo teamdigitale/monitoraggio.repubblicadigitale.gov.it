@@ -58,7 +58,6 @@ import ManageManagerAuthority from '../modals/manageManagerAuthority';
 import { RemoveAuthorityHeadquarter } from '../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
 import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 import useGuard from '../../../../../hooks/guard';
-import { roles } from '../Users/usersDetails';
 import UploadCSVModal from '../../../../../components/AdministrativeArea/Entities/General/UploadCSVModal/UploadCSVModal';
 import { selectProfile } from '../../../../../redux/features/user/userSlice';
 
@@ -163,7 +162,7 @@ const ProjectsDetails = () => {
         [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
           navigate(
             getActionRedirectURL(
-              roles.REGP,
+              userRoles.REGP,
               (typeof td === 'string' ? td : td.id).toString()
             )
           );
@@ -186,7 +185,7 @@ const ProjectsDetails = () => {
         [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
           navigate(
             getActionRedirectURL(
-              roles.REGP,
+              userRoles.REGP,
               (typeof td === 'string' ? td : td.id).toString()
             )
           );
@@ -200,7 +199,7 @@ const ProjectsDetails = () => {
         [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
           navigate(
             getActionRedirectURL(
-              roles.DEGP,
+              userRoles.DEGP,
               (typeof td === 'string' ? td : td.id).toString()
             )
           );
@@ -223,7 +222,7 @@ const ProjectsDetails = () => {
         [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
           navigate(
             getActionRedirectURL(
-              roles.DEGP,
+              userRoles.DEGP,
               (typeof td === 'string' ? td : td.id).toString()
             )
           );
@@ -1135,7 +1134,9 @@ const ProjectsDetails = () => {
                 ? 'Elenco progetti'
                 : 'Torna indietro'
             }
-            showGoBack={userRole !== userRoles.REGP && userRole !== userRoles.FAC}
+            showGoBack={
+              userRole !== userRoles.REGP && userRole !== userRoles.FAC
+            }
           >
             <>
               {currentForm}
