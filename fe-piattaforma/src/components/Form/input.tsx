@@ -36,7 +36,6 @@ export interface InputI extends Omit<InputProps, 'value'> {
   col?: string | undefined;
   field?: string;
   id?: string | undefined;
-  disabled?: boolean | undefined;
   maximum?: string | number | undefined;
   minimum?: string | number | undefined;
   onInputBlur?:
@@ -56,7 +55,7 @@ const Input: React.FC<InputI> = (props) => {
     col = props.wrapperClassName ?? 'col-auto',
     field,
     id,
-    disabled,
+    disabled = false,
     label = props.field,
     maximum,
     minimum,
@@ -131,6 +130,7 @@ const Input: React.FC<InputI> = (props) => {
       if (onInputBlur) onInputBlur(val, field);
       handleOnChange(e);
     },
+    disabled,
     required,
     type,
     wrapperClassName: col,

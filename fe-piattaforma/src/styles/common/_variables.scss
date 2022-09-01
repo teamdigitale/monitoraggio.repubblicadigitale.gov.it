@@ -27,7 +27,7 @@ $z-index-docked: 1;
 $z-index-base: 10;
 $z-index-modal: $z-index-base + 900;
 $z-index-curtain: $z-index-modal - 10;
-$z-index-notification: $z-index-curtain - 10;
+$z-index-notification: $z-index-base + 9999;
 $z-index-banner: $z-index-notification - 10;
 $z-index-sticky: $z-index-banner - 10;
 $z-index-dropdown: $z-index-sticky - 10;

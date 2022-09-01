@@ -222,7 +222,7 @@ const Auth: React.FC<withFormHandlerProps> = ({
                 </div>
                 <div className='my-5'>
                   <hr />
-                  <h4 className='py-2'>Login DEV</h4>
+                  <h4 className='py-2'>Provisional Login</h4>
                   {/* TODO Remove next block, it's for dev purpose only*/}
                   <Input
                     {...form.mockUser}
@@ -238,7 +238,7 @@ const Auth: React.FC<withFormHandlerProps> = ({
                     color='secondary'
                     onClick={handleFakeLogin}
                   >
-                    Login DEV
+                    Provisional Login
                   </Button>
                 </div>
               </Card>

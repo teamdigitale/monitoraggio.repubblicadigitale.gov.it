@@ -212,7 +212,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
           setIsFormValid={(value: boolean | undefined) =>
             setIsFormValid(!!value)
           }
-          creation
+          creation={creation}
           program={programDetails}
         />
       );

@@ -46,7 +46,7 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
     if (sections?.length) {
       updateForm(
         {
-          ...generateForm(JSON.parse(sections[activeSection].schema.json), true),
+          ...generateForm(JSON.parse(sections[activeSection].schema), true),
           ...surveyStore[activeSection],
         },
         true

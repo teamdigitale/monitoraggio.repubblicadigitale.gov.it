@@ -27,7 +27,7 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
     className = '',
     noLabel = false,
     classNameLabelOption = '',
-    disabled,
+    disabled = false,
   } = props;
   const parseExternalValue = () => value.toString().split(separator);
   const [values, setValues] = useState<string[]>(parseExternalValue());
