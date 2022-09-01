@@ -60,4 +60,4 @@ spec:
             service:
               name: service-ingress-fe-${K8S_NAMESPACE}
               port:
-                number: 443
+                number: 80
