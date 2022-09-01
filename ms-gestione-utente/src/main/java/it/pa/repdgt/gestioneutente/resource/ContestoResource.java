@@ -50,6 +50,9 @@ public class ContestoResource implements Serializable {
 	@JsonProperty(value = "stato")
 	private String stato;
 	
+	@JsonProperty(value = "immagineProfilo")
+	private String immagineProfilo;
+	
 	// combinazione Ruolo Programma
 	@JsonProperty(value = "profiliUtente")
 	List<RuoloProgrammaResource> profili;

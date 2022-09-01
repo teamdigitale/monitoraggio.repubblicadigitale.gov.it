@@ -3,6 +3,7 @@ package it.pa.repdgt.gestioneutente.restapi;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,15 +17,22 @@ import it.pa.repdgt.gestioneutente.request.IntegraContestoRequest;
 import it.pa.repdgt.gestioneutente.request.ProfilazioneRequest;
 import it.pa.repdgt.gestioneutente.resource.ContestoResource;
 import it.pa.repdgt.gestioneutente.service.ContestoService;
+import it.pa.repdgt.shared.awsintegration.service.S3Service;
 import it.pa.repdgt.shared.entity.UtenteEntity;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping(path = "/contesto")
+@Slf4j
 public class ContestoRestApi {
 	@Autowired
 	private ContestoService contestoService;
 	@Autowired
 	private ContestoMapper contestoMapper;
+	@Autowired
+	private S3Service s3Service;
+	@Value("${AWS.S3.BUCKET-NAME:}")
+	private String nomeDelBucketS3;
 
 	// TOUCH POINT - 0.1.1 - creazione contesto  
 	@PostMapping
@@ -32,6 +40,11 @@ public class ContestoRestApi {
 	public ContestoResource creaContesto(@RequestBody CreaContestoRequest creaContestoRequest) {
 		UtenteEntity utenteFetched = contestoService.creaContesto(creaContestoRequest.getCodiceFiscale());
 		ContestoResource contesto = contestoMapper.toContestoFromUtenteEntity(utenteFetched);
+		try{ 
+			contesto.setImmagineProfilo(this.s3Service.getPresignedUrl(utenteFetched.getImmagineProfilo(), this.nomeDelBucketS3));
+		}catch(Exception e) {
+			log.error(e.getMessage());
+		}
 		if(utenteFetched.getIntegrazione()) {
 			contesto.setRuoli(contestoService.getGruppiPermessi(contesto.getRuoli()));
 			contesto.setProfili(contestoService.getProfili(utenteFetched.getCodiceFiscale()));

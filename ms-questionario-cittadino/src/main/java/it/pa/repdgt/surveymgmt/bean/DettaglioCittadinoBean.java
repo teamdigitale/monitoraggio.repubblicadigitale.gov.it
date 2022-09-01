@@ -17,7 +17,7 @@ public class DettaglioCittadinoBean implements Serializable {
 	private String tipoDocumento;
 	private String numeroDocumento;
 	private String genere;
-	private Integer annoNascita;
+	private String annoNascita;
 	private String titoloStudio;
 	private String statoOccupazionale;
 	private String cittadinanza;

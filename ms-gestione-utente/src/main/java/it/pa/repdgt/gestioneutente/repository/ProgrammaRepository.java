@@ -17,7 +17,7 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 			+ "	WHERE rdg.CF_UTENTE = :cfUtente "
 			+ " 	AND rdg.CODICE_RUOLO = :ruolo ",
 			nativeQuery = true)
-	public List<Long> findDistinctIdProgrammiByRuoloUtente(
+	List<Long> findDistinctIdProgrammiByRuoloUtente(
 			@Param(value = "cfUtente") String cfUtente,
 			@Param(value = "ruolo") String ruolo
 	);

@@ -1,5 +1,10 @@
 package it.pa.repdgt.gestioneutente.service;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,7 +21,9 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import it.pa.repdgt.gestioneutente.bean.DettaglioRuoliBean;
 import it.pa.repdgt.gestioneutente.bean.DettaglioUtenteBean;
@@ -36,6 +43,7 @@ import it.pa.repdgt.gestioneutente.request.UtenteRequest;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.awsintegration.service.EmailService;
+import it.pa.repdgt.shared.awsintegration.service.S3Service;
 import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
@@ -43,6 +51,7 @@ import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.UtenteXRuolo;
 import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
+import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import lombok.extern.slf4j.Slf4j;
 
@@ -71,6 +80,13 @@ public class UtenteService {
 	private ReferentiDelegatiEnteGestoreProgettoRepository referentiDelegatiEnteGestoreProgettoRepository;
 	@Autowired
 	private ReferentiDelegatiEntePartnerDiProgettoRepository referentiDelegatiEntePartnerDiProgettoRepository;
+	@Autowired
+	private S3Service s3Service;
+	
+	@Value("${AWS.S3.BUCKET-NAME:}")
+	private String nomeDelBucketS3;
+	
+	private static final String PREFIX_FILE_IMG_PROFILO = "immagineProfilo-";
 
 	@LogExecutionTime
 	@LogMethod
@@ -765,8 +781,15 @@ public class UtenteService {
 														if(sceltaProfilo.getIdProgramma().equals(id)) {
 															dettaglioRuolo.setAssociatoAUtente(true);
 														}
-													}else
+													}else if(RuoliUtentiConstants.DSCU.equals(sceltaProfilo.getCodiceRuolo())) {
+														if(PolicyEnum.SCD.equals(programmaFetchDB.getPolicy())){
+															dettaglioRuolo.setAssociatoAUtente(true);
+														}else {
+															dettaglioRuolo.setAssociatoAUtente(false);
+														}
+													}else{
 														dettaglioRuolo.setAssociatoAUtente(true);
+													}
 															
 														
 													listaDettaglioRuoli.add(dettaglioRuolo);
@@ -869,8 +892,16 @@ public class UtenteService {
 			if(sceltaProfilo.getIdProgramma().equals(progetto.getProgramma().getId())) {
 				return true;
 			}
-		}else
+		}else if(RuoliUtentiConstants.DSCU.equals(sceltaProfilo.getCodiceRuolo())) {
+			if(progetto.getProgramma().getPolicy().equals(PolicyEnum.SCD)) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			// CASO DTD, RUOLO_CUSTOM
 			return true;
+		}
 		return false;
 	}
 
@@ -1079,6 +1110,40 @@ public class UtenteService {
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getRuoli(),
 				filtroRequest.getStati());
+	}
+	
+	@LogExecutionTime
+	@LogMethod
+	@Transactional
+	public String uploadImmagineProfiloUtente(Long idUtente, MultipartFile multipartifile) throws IOException {
+		UtenteEntity utente = getUtenteById(idUtente);
+		InputStream initialStream = multipartifile.getInputStream();
+		byte[] buffer = new byte[initialStream.available()];
+		initialStream.read(buffer);
+		String[] fileNameSplitted = multipartifile.getOriginalFilename().split("\\.");
+		String fileExtension = fileNameSplitted[fileNameSplitted.length - 1];
+		String nomeFileDb = PREFIX_FILE_IMG_PROFILO + idUtente + "." + fileExtension;
+		File targetFile = new File(nomeFileDb);
+		try (OutputStream outStream = new FileOutputStream(targetFile)) {
+		    outStream.write(buffer);
+		}
+		try {
+			this.s3Service.uploadFile(nomeDelBucketS3, targetFile);
+			utente.setImmagineProfilo(nomeFileDb);
+			salvaUtente(utente);
+		}catch(Exception e) {
+			throw e;
+		}finally {
+			targetFile.delete();
+		}
+		return nomeFileDb;
+	}
+	
+	@LogExecutionTime
+	@LogMethod
+	@Transactional
+	public String downloadImmagineProfiloUtente(String nomeFile) throws IOException {
+		return this.s3Service.getPresignedUrl(nomeFile, this.nomeDelBucketS3);
 	}
 		
 }

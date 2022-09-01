@@ -2,8 +2,6 @@ package it.pa.repdgt.surveymgmt.request;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotBlank;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
@@ -36,7 +34,7 @@ public class NuovoCittadinoServizioRequest implements Serializable {
 	private String genere;
 	
 	@JsonProperty(value = "annoNascita")
-	private Integer annoNascita;
+	private String annoNascita;
 	
 	@JsonProperty(value = "titoloStudio")
 	private String titoloStudio;

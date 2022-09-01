@@ -38,6 +38,7 @@ import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection.DatiIstanza;
 import it.pa.repdgt.surveymgmt.collection.SezioneQ3Collection;
 import it.pa.repdgt.surveymgmt.exception.CittadinoException;
+import it.pa.repdgt.surveymgmt.exception.QuestionarioCompilatoException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioCompilatoMongoRepository;
 import it.pa.repdgt.surveymgmt.mongo.repository.SezioneQ3Respository;
@@ -328,7 +329,16 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	public QuestionarioCompilatoCollection creoQuestionarioCompilatoCollection(
 			CittadinoEntity cittadino,
 			ServizioEntity servizio) {
-		Optional<SezioneQ3Collection> SezioneQuestionarioQ3DBFetch = sezioneQ3Respository.findById(servizio.getIdTemplateCompilatoQ3());
+		final String idQuestionarioTemplateQ3AssociatoAlServizio = servizio.getIdTemplateCompilatoQ3();
+		final Optional<SezioneQ3Collection> SezioneQuestionarioQ3DBFetch = sezioneQ3Respository.findById(idQuestionarioTemplateQ3AssociatoAlServizio);
+		
+		if(!SezioneQuestionarioQ3DBFetch.isPresent()) {
+			final String messaggioErrore = String.format(
+					"Servizio con id={} non ha associato templateQ3 con id={} associato. "
+				  + "Verifica che il templateQ3 con id={} esiste su MongoDB", 
+					servizio.getId(), idQuestionarioTemplateQ3AssociatoAlServizio, idQuestionarioTemplateQ3AssociatoAlServizio);
+			throw new QuestionarioCompilatoException(messaggioErrore, CodiceErroreEnum.QT08);
+		}
 		
 		List<DatiIstanza> sezioniQuestionarioTemplateIstanze = new ArrayList<>();
 		
@@ -513,8 +523,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		cittadino.setDataOraCreazione(new Date());
 		cittadino.setDataOraAggiornamento(new Date());
 		
-		Integer annoDiNascita = Integer.parseInt(cittadinoUpload.getAnnoNascita());
-		cittadino.setAnnoDiNascita(annoDiNascita);
+		cittadino.setAnnoDiNascita(cittadinoUpload.getAnnoNascita());
 		cittadino.setCategoriaFragili(cittadinoUpload.getCategoriaFragili());
 		cittadino.setCittadinanza(cittadinoUpload.getCittadinanza());
 		cittadino.setComuneDiDomicilio(cittadinoUpload.getComuneDomicilio());

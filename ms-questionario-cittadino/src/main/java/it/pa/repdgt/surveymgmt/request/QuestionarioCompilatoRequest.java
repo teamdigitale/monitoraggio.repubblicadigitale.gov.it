@@ -1,15 +1,7 @@
 package it.pa.repdgt.surveymgmt.request;
 
 import java.io.Serializable;
-import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import it.pa.repdgt.surveymgmt.annotation.JsonString;
@@ -46,7 +38,7 @@ public class QuestionarioCompilatoRequest implements Serializable {
 	private String  tipoDocumentoDaAggiornare;
 	private String  numeroDocumentoDaAggiornare;
 	private String  genereDaAggiornare;
-	private Integer annoDiNascitaDaAggiornare;
+	private String  annoDiNascitaDaAggiornare;
 	private String  titoloDiStudioDaAggiornare;
 	private String  occupazioneDaAggiornare;
 	private String  cittadinanzaDaAggiornare;

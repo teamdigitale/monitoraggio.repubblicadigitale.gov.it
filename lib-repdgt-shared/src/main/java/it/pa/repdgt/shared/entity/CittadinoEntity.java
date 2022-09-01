@@ -47,7 +47,7 @@ public class CittadinoEntity implements Serializable {
 	private String genere;
 	
 	@Column(name = "ANNO_DI_NASCITA", nullable = true)
-	private Integer annoDiNascita;
+	private String annoDiNascita;
 	
 	@Column(name = "TITOLO_DI_STUDIO", nullable = true)
 	private String titoloDiStudio;

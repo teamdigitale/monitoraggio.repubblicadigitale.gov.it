@@ -200,10 +200,22 @@ public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long
 				 + "	cittadino cit "
 				 + " WHERE 1=1 "
 				 + "	AND cit.CODICE_FISCALE = :codiceFiscaleCittadino "
-				 + "	OR  cit.NUM_DOCUMENTO = :numeroDocumento "
 				 + " ",
 		   nativeQuery = true)
-	String findConsensoByCodiceFiscaleOrNumeroDocumento(
-			@Param(value = "codiceFiscaleCittadino") String codiceFiscaleCittadino, 
-			@Param(value = "numeroDocumento") String numeroDocumento);
+	String findConsensoByCodiceFiscaleCittadino(
+			@Param(value = "codiceFiscaleCittadino") String codiceFiscaleCittadino
+		);
+
+	@Query(value = " "
+			 + " SELECT "
+			 + "	cit.TIPO_CONFERIMENTO_CONSENSO "
+			 + " FROM "
+			 + "	cittadino cit "
+			 + " WHERE 1=1 "
+			 + "	AND cit.NUM_DOCUMENTO = :numeroDocumento "
+			 + " ",
+	   nativeQuery = true)
+	String findConsensoByNumDocumentoCittadino(
+			@Param(value = "numeroDocumento") String numeroDocumento
+		);
 }
