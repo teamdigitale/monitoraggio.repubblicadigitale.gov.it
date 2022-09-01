@@ -176,4 +176,18 @@ export const userRoles = {
   REGP: 'REGP',
   VOL: 'VOL',
   FAC: 'FAC',
+  DEG: 'DEG',
+  DEGP: 'DEGP',
+  REPP: 'REPP',
+  DEPP: 'DEPP',
+  USR: 'utenti',
 }
+
+export const contractTypes = [
+  { label: 'Volontario', value: 'Volontario' },
+  { label: 'Dipendente', value: 'Dipendente' },
+  {
+    label: 'Collaboratore',
+    value: 'Collaboratore',
+  },
+];

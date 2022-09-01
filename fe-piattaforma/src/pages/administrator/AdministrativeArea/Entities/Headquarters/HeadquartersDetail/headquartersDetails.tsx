@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import Sticky from 'react-sticky-el';
 import clsx from 'clsx';
-import { entityStatus, formTypes } from '../../utils';
+import { entityStatus, formTypes, userRoles } from '../../utils';
 import {
   CRUDActionsI,
   CRUDActionTypes,
@@ -44,7 +44,6 @@ import {
   CardStatusAction,
   EmptySection,
 } from '../../../../../../components';
-import { roles } from '../../Users/usersDetails';
 
 const HeadquartersDetails = () => {
   const { mediaIsPhone } = useAppSelector(selectDevice);
@@ -77,7 +76,7 @@ const HeadquartersDetails = () => {
           }progetti/${projectId}/${
             authorityId || identeDiRiferimento
           }/${headquarterId}/${
-            programPolicy === 'SCD' ? roles.VOL : roles.FAC
+            programPolicy === 'SCD' ? userRoles.VOL : userRoles.FAC
           }/${td}`
         );
       } else if (authorityType) {
@@ -89,7 +88,7 @@ const HeadquartersDetails = () => {
               ? formTypes.ENTI_PARTNER
               : formTypes.ENTE_GESTORE
           }/${authorityId || identeDiRiferimento}/${headquarterId}/${
-            programPolicy === 'SCD' ? roles.VOL : roles.FAC
+            programPolicy === 'SCD' ? userRoles.VOL : userRoles.FAC
           }/${td}`
         );
       }
@@ -280,7 +279,9 @@ const HeadquartersDetails = () => {
   const getAccordionCTA = (title?: string) => {
     switch (title) {
       case 'Facilitatori':
-        return (hasUserPermission(['add.fac']) && authorityType && headquarterDetails?.stato !== entityStatus.TERMINATO)
+        return hasUserPermission(['add.fac']) &&
+          authorityType &&
+          headquarterDetails?.stato !== entityStatus.TERMINATO
           ? {
               cta: `Aggiungi ${title}`,
               ctaAction: () =>

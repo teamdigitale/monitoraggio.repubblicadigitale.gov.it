@@ -415,15 +415,15 @@ export const SetSurveyCreation =
             'default-section':
               survey?.sectionsSchemaResponse[index]['default-section'],
             schema: '',
-            schemaui: survey?.sectionsSchemaResponse[index].schemaui.json,
+            schemaui: survey?.sectionsSchemaResponse[index].schemaui,
           };
           if (index < 2) {
             newSection.schema =
-              survey?.sectionsSchemaResponse[index].schema.json;
+              survey?.sectionsSchemaResponse[index].schema;
           } else {
             newSection.schema = getSchemaSection(
               section,
-              survey?.sectionsSchemaResponse[index].schema.json
+              survey?.sectionsSchemaResponse[index].schema
             );
           }
           body['survey-sections']?.push(newSection);

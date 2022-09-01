@@ -15,8 +15,10 @@ export interface UserStateI {
         cognome?: string;
         role?: string;
         codiceFiscale: string;
-        profiliUtente?: any;
+        profiliUtente: UserProfileI[];
         integrazione: boolean;
+        mostraBio?: boolean;
+        mostraTipoContratto?: boolean;
       }
     | Record<string, never>;
   notification?: [];
@@ -52,6 +54,7 @@ const initialStateLogged: UserStateI = {
     role: 'DTD',
     codiceFiscale: 'UTENTE1',
     integrazione: true,
+    profiliUtente: [],
   },
   permissions: [],
   idProgramma: '0',

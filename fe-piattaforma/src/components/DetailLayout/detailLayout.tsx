@@ -47,6 +47,7 @@ interface DetailLayoutI {
   surveyDefault?: ItemsListI | null | undefined;
   isRadioButtonItem?: boolean;
   onRadioChange?: (surveyDefault: string) => void;
+  isUserProfile?: boolean;
 }
 const DetailLayout: React.FC<DetailLayoutI> = ({
   formButtons,
@@ -63,6 +64,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   currentTab,
   surveyDefault,
   isRadioButtonItem = false,
+  isUserProfile = false,
   onRadioChange,
 }) => {
   const navigate = useNavigate();
@@ -89,7 +91,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
             <span className='primary-color'>{goBackTitle}</span>
           </Button>
         )}
-        <SectionTitle {...titleInfo} />
+        <SectionTitle isUserProfile={isUserProfile} {...titleInfo} />
         {nav && (
           <div
             className={clsx(

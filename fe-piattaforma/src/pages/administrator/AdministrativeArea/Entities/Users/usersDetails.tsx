@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Button, Icon } from 'design-react-kit';
 import clsx from 'clsx';
-import { entityStatus, formTypes } from '../utils';
+import { entityStatus, formTypes, userRoles } from '../utils';
 import {
   CRUDActionsI,
   CRUDActionTypes,
@@ -54,25 +54,13 @@ import { GetPartnerAuthorityDetail } from '../../../../../redux/features/adminis
 import ManageDelegate from '../modals/manageDelegate';
 import ManageReferal from '../modals/manageReferal';
 
-export const roles = {
-  VOL: 'VOL',
-  FAC: 'FAC',
-  REG: 'REG',
-  DEG: 'DEG',
-  REGP: 'REGP',
-  DEGP: 'DEGP',
-  REPP: 'REPP',
-  DEPP: 'DEPP',
-  USR: 'utenti',
-};
-
 const UsersDetails = () => {
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
   const [itemList, setItemList] = useState<ItemsListI | null>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userDetails = useAppSelector(selectUsers)?.detail;
-  const { dettaglioUtente: userInfo = {}, dettaglioRuolo: userRoles = [] } =
+  const { dettaglioUtente: userInfo = {}, dettaglioRuolo: userRoleList = [] } =
     userDetails;
   const { mediaIsDesktop } = useAppSelector(selectDevice);
   const headquarterInfo = userInfo?.authorityRef || undefined;
@@ -110,7 +98,7 @@ const UsersDetails = () => {
 
   useEffect(() => {
     // For breadcrumb
-    if (userId && userInfo?.nome && userRoles) {
+    if (userId && userInfo?.nome && userRoleList) {
       if (projectId && projectName) {
         dispatch(
           setInfoIdsBreadcrumb({
@@ -146,7 +134,7 @@ const UsersDetails = () => {
       dispatch(
         setInfoIdsBreadcrumb({
           id: entityId,
-          nome: userRoles?.filter(
+          nome: userRoleList?.filter(
             (rol: { [key: string]: formFieldI['value'] }) =>
               rol.id?.toString() === entityId
           )[0]?.nome,
@@ -163,7 +151,7 @@ const UsersDetails = () => {
   }, [
     userId,
     userInfo,
-    userRoles,
+    userRoleList,
     headquarterName,
     projectName,
     authorityName,
@@ -178,7 +166,7 @@ const UsersDetails = () => {
   };
 
   useEffect(() => {
-    if (userRole === roles.FAC || userRole === roles.VOL) {
+    if (userRole === userRoles.FAC || userRole === userRoles.VOL) {
       setCurrentForm(<FormFacilitator formDisabled />);
     } else {
       setCurrentForm(<FormUser formDisabled />);
@@ -208,17 +196,17 @@ const UsersDetails = () => {
   const getUpperTitle = () => {
     if (userRole) {
       switch (userRole) {
-        case roles.DEG:
-        case roles.DEGP:
-        case roles.DEPP:
+        case userRoles.DEG:
+        case userRoles.DEGP:
+        case userRoles.DEPP:
           return formTypes.DELEGATO;
-        case roles.REG:
-        case roles.REGP:
-        case roles.REPP:
+        case userRoles.REG:
+        case userRoles.REGP:
+        case userRoles.REPP:
           return formTypes.REFERENTE;
-        case roles.FAC:
+        case userRoles.FAC:
           return formTypes.FACILITATORE;
-        case roles.VOL:
+        case userRoles.VOL:
           return formTypes.VOLONTARIO;
         default:
           'utente';
@@ -230,16 +218,16 @@ const UsersDetails = () => {
   const getModalID = () => {
     if (userRole) {
       switch (userRole) {
-        case roles.DEG:
-        case roles.DEGP:
-        case roles.DEPP:
+        case userRoles.DEG:
+        case userRoles.DEGP:
+        case userRoles.DEPP:
           return formTypes.DELEGATO;
-        case roles.REG:
-        case roles.REGP:
-        case roles.REPP:
+        case userRoles.REG:
+        case userRoles.REGP:
+        case userRoles.REPP:
           return formTypes.REFERENTE;
-        case roles.FAC:
-        case roles.VOL:
+        case userRoles.FAC:
+        case userRoles.VOL:
           return formTypes.FACILITATORE;
         default:
           return formTypes.USER;
@@ -250,16 +238,16 @@ const UsersDetails = () => {
   const getModalPayload = () => {
     if (userRole) {
       switch (userRole) {
-        case roles.DEG:
-        case roles.DEGP:
-        case roles.DEPP:
+        case userRoles.DEG:
+        case userRoles.DEGP:
+        case userRoles.DEPP:
           return 'Modifica Delegato';
-        case roles.REG:
-        case roles.REGP:
-        case roles.REPP:
+        case userRoles.REG:
+        case userRoles.REGP:
+        case userRoles.REPP:
           return 'Modifica Referente';
-        case roles.FAC:
-        case roles.VOL:
+        case userRoles.FAC:
+        case userRoles.VOL:
           return 'Modifica Facilitatore';
         default:
           return 'Modifica Utente';
@@ -270,16 +258,16 @@ const UsersDetails = () => {
   const includeModalByRole = () => {
     if (userRole) {
       switch (userRole) {
-        case roles.DEG:
-        case roles.DEGP:
-        case roles.DEPP:
+        case userRoles.DEG:
+        case userRoles.DEGP:
+        case userRoles.DEPP:
           return <ManageDelegate />;
-        case roles.REG:
-        case roles.REGP:
-        case roles.REPP:
+        case userRoles.REG:
+        case userRoles.REGP:
+        case userRoles.REPP:
           return <ManageReferal />;
-        case roles.FAC:
-        case roles.VOL:
+        case userRoles.FAC:
+        case userRoles.VOL:
           return <ManageFacilitator />;
         default:
           return <ManageUsers />;
@@ -290,11 +278,11 @@ const UsersDetails = () => {
   const getUserRoleStatus = () => {
     if (
       userRole &&
-      Object.values(roles).includes(userRole) &&
-      userRoles?.length
+      Object.values(userRoles).includes(userRole) &&
+      userRoleList?.length
     ) {
       const id = projectId || entityId;
-      const entityRole = userRoles.filter(
+      const entityRole = userRoleList.filter(
         (role: { id: string | number; codiceRuolo: string }) =>
           role.id?.toString().toLowerCase() === id?.toString().toLowerCase() &&
           role.codiceRuolo === userRole
@@ -341,20 +329,20 @@ const UsersDetails = () => {
 
   const getButtons = () => {
     const buttons: ButtonInButtonsBar[] = [];
-    if (userRole === roles.USR && hasUserPermission(['del.utente'])) {
+    if (userRole === userRoles.USR && hasUserPermission(['del.utente'])) {
       buttons.push(deleteButton);
-    } else if (userRole === roles.FAC || userRole === roles.VOL) {
+    } else if (userRole === userRoles.FAC || userRole === userRoles.VOL) {
       buttons.push(deleteButton);
     } else if (
       authorityType &&
       userRole &&
       [
-        roles.REG,
-        roles.REGP,
-        roles.REPP,
-        roles.DEG,
-        roles.DEGP,
-        roles.DEPP,
+        userRoles.REG,
+        userRoles.REGP,
+        userRoles.REPP,
+        userRoles.DEG,
+        userRoles.DEGP,
+        userRoles.DEPP,
       ].includes(userRole) &&
       getUserRoleStatus() !== entityStatus.TERMINATO
     ) {
@@ -381,20 +369,20 @@ const UsersDetails = () => {
           break;
       }
     }
-    if (userRole === roles.USR && hasUserPermission(['upd.anag.utenti'])) {
+    if (userRole === userRoles.USR && hasUserPermission(['upd.anag.utenti'])) {
       buttons.push(editButton);
-    } else if (userRole === roles.FAC || userRole === roles.VOL) {
+    } else if (userRole === userRoles.FAC || userRole === userRoles.VOL) {
       buttons.push(editButton);
     } else if (
       authorityType &&
       userRole &&
       [
-        roles.REG,
-        roles.REGP,
-        roles.REPP,
-        roles.DEG,
-        roles.DEGP,
-        roles.DEPP,
+        userRoles.REG,
+        userRoles.REGP,
+        userRoles.REPP,
+        userRoles.DEG,
+        userRoles.DEGP,
+        userRoles.DEPP,
       ].includes(userRole) &&
       getUserRoleStatus() !== entityStatus.TERMINATO
     ) {
@@ -454,7 +442,7 @@ const UsersDetails = () => {
   };
 
   const onConfirmDelete = async (role?: string) => {
-    if (userRole === roles.FAC || userRole === roles.VOL) {
+    if (userRole === userRoles.FAC || userRole === userRoles.VOL) {
       await removeFacilitator(userInfo.codiceFiscale);
       dispatch(closeModal());
       dispatch(setUserDetails(null));
@@ -462,12 +450,12 @@ const UsersDetails = () => {
     } else if (
       userRole &&
       [
-        roles.REG,
-        roles.REGP,
-        roles.REPP,
-        roles.DEG,
-        roles.DEGP,
-        roles.DEPP,
+        userRoles.REG,
+        userRoles.REGP,
+        userRoles.REPP,
+        userRoles.DEG,
+        userRoles.DEGP,
+        userRoles.DEPP,
       ].includes(userRole)
     ) {
       await removeReferentDelegate(
@@ -511,8 +499,8 @@ const UsersDetails = () => {
             {currentForm}
           </DetailLayout>
           {!(entityId || projectId) &&
-          userRoles?.length &&
-          userRole === roles.USR ? (
+          userRoleList?.length &&
+          userRole === userRoles.USR ? (
             <div className={clsx('my-5')}>
               {hasUserPermission(['add.del.ruolo.utente']) ? (
                 <div className={clsx('w-100', 'position-relative')}>
@@ -535,7 +523,7 @@ const UsersDetails = () => {
                   </div>
                 </div>
               ) : null}
-              {userRoles.map(
+              {userRoleList.map(
                 (role: {
                   id: string;
                   codiceRuolo: string;
