@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.87](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.86...1.0.0-develop.87) (2022-09-01)
+
+
+### Bug Fixes
+
+* **be:** fix metodo getCittadini in SerivizioCittadinoRestApi ([5533d75](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5533d759b74cbc262899df1c436a1c6f673605e8))
+
 ## [1.0.0-develop.86](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.85...1.0.0-develop.86) (2022-08-31)
 
 
