@@ -1,20 +1,14 @@
 package it.pa.repdgt.gestioneutente.restapi;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.csv.CSVFormat;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -44,7 +38,6 @@ import it.pa.repdgt.gestioneutente.resource.UtenteResource;
 import it.pa.repdgt.gestioneutente.resource.UtentiLightResourcePaginata;
 import it.pa.repdgt.gestioneutente.service.UtenteService;
 import it.pa.repdgt.gestioneutente.util.CSVUtil;
-import it.pa.repdgt.shared.awsintegration.service.S3Service;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.light.UtenteLightEntity;
 
@@ -55,13 +48,6 @@ public class UtenteRestApi {
 	private UtenteService utenteService;
 	@Autowired
 	private UtenteMapper utenteMapper;
-	@Autowired
-	private S3Service s3Service;
-	
-	@Value("${AWS.S3.BUCKET-NAME:}")
-	private String nomeDelBucketS3;
-	
-	private static final String SUFFIX_FILE_IMG_PROFILO = "immagineProfilo-";
 	
 	// TOUCH POINT - 1.3.1 - Lista utenti paginata
 	// TOUCH POINT - 1.3.2 - Lista utenti filtrata
@@ -178,31 +164,15 @@ public class UtenteRestApi {
 	}
 	
 	@PostMapping(path = "/upload/immagineProfilo/{idUtente}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-	public void uploadImmagineProfiloUtente(
+	public String uploadImmagineProfiloUtente(
 			@PathVariable(value = "idUtente") Long idUtente,
 			@RequestPart MultipartFile multipartifile) throws IOException {
-		this.utenteService.getUtenteById(idUtente);
-		InputStream initialStream = multipartifile.getInputStream();
-		byte[] buffer = new byte[initialStream.available()];
-		initialStream.read(buffer);
-
-		File targetFile = new File(SUFFIX_FILE_IMG_PROFILO + idUtente);
-		try (OutputStream outStream = new FileOutputStream(targetFile)) {
-		    outStream.write(buffer);
-		}
-		try {
-			this.s3Service.uploadFile(nomeDelBucketS3, targetFile);
-		}catch(Exception e) {
-			throw e;
-		}finally {
-			targetFile.delete();
-		}
+		return this.utenteService.uploadImmagineProfiloUtente(idUtente, multipartifile);
 	}
 	
 	@GetMapping(path = "/download/immagineProfilo/{nomeFile}")
-	public String downloadImmagineProfiloUtente(
+	public String downloadImmagineProfiloUtentePresigned(
 			@PathVariable(value = "nomeFile") final String nomeFile) throws IOException {
-		byte[] bytes = this.s3Service.downloadFile(this.nomeDelBucketS3, nomeFile).asByteArray();
-		return Base64.encodeBase64String(bytes);
+		return this.utenteService.downloadImmagineProfiloUtente(nomeFile);
 	}
 }
