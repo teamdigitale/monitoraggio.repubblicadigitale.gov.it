@@ -15,8 +15,6 @@ const AuthRedirect = () => {
   const profile = useAppSelector(selectProfile);
   const navigate = useNavigate();
 
-  console.log('passa')
-
   const redirectTo = (to: string, replace = true) => {
     navigate(to, { replace });
   };
