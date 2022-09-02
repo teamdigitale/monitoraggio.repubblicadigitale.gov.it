@@ -3,6 +3,7 @@ package it.pa.repdgt.programmaprogetto.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -28,8 +29,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 
 import it.pa.repdgt.programmaprogetto.bean.DettaglioEntiPartnerBean;
 import it.pa.repdgt.programmaprogetto.bean.DettaglioProgettoBean;
@@ -57,7 +56,6 @@ import it.pa.repdgt.programmaprogetto.resource.PaginaProgetti;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
 import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.entity.EnteEntity;
-import it.pa.repdgt.shared.entity.EntePartnerEntity;
 import it.pa.repdgt.shared.entity.EnteSedeProgetto;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
@@ -65,7 +63,6 @@ import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
 import it.pa.repdgt.shared.entity.ReferentiDelegatiEnteGestoreProgettoEntity;
 import it.pa.repdgt.shared.entity.ReferentiDelegatiEntePartnerDiProgettoEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
-import it.pa.repdgt.shared.entity.storico.StoricoEnteGestoreProgettoEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.StoricoEnteException;
@@ -812,41 +809,43 @@ public class ProgettoServiceTest {
 	
 	@Test
 	public void terminaProgettoTest() throws Exception {
+		//test per progretto con statoGestoreProgetto == "ATTIVO"
+		progetto1.setStatoGestoreProgetto(StatoEnum.ATTIVO.getValue());
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		Calendar c = Calendar.getInstance();
 		c.setTime(sdf.parse(sdf.format(new Date())));
         Date currentDate = c.getTime();
 		progetto1.setEnteGestoreProgetto(ente1);
 		List<ReferentiDelegatiEnteGestoreProgettoEntity> referentiDelegati = new ArrayList<>();
-		StoricoEnteGestoreProgettoEntity storicoEnteGestoreProgetto = new StoricoEnteGestoreProgettoEntity();
-		List<EntePartnerEntity> entiPartner = new ArrayList<>();
-		List<EnteSedeProgetto> entisediprogetto = new ArrayList<>();
 		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
 		when(referentiDelegatiEnteGestoreProgettoService.getReferentiEDelegatiProgetto(progetto1.getId())).thenReturn(referentiDelegati);
-		when(storicoEnteGestoreProgettoRepository.save(storicoEnteGestoreProgetto)).thenReturn(storicoEnteGestoreProgetto);
-		when(entePartnerService.getEntiPartnerByProgetto(progetto1.getId())).thenReturn(entiPartner);
-		when(enteSedeProgettoRepository.getEnteSedeProgettoByIdProgetto(progetto1.getId())).thenReturn(entisediprogetto);
-		doAnswer(invocation -> {
-			storicoEnteGestoreProgetto.setIdProgetto(progetto1.getId());
-			storicoEnteGestoreProgetto.setIdEnte(progetto1.getEnteGestoreProgetto().getId());
-			storicoEnteGestoreProgetto.setStato(StatoEnum.TERMINATO.getValue());
-			storicoEnteGestoreProgetto.setDataOraCreazione(new Date());
-			this.storicoEnteGestoreProgettoRepository.save(storicoEnteGestoreProgetto);
-			return storicoEnteGestoreProgetto;
-		}).when(storicoService).storicizzaEnteGestoreProgetto(progetto1, StatoEnum.TERMINATO.getValue());
-		doAnswer(invocation -> {
-			this.entePartnerService.getEntiPartnerByProgetto(progetto1.getId());
-			return entiPartner;
-		}).when(enteService).terminaEntiPartner(progetto1.getId());
-		doAnswer(invocation -> {
-			List<EnteSedeProgetto> enteSedeProgetto = this.enteSedeProgettoRepository.getEnteSedeProgettoByIdProgetto(progetto1.getId());
-			return enteSedeProgetto;
-			}).when(enteSedeProgettoService).cancellaOTerminaEnteSedeProgetto(progetto1.getId());
+		doNothing().when(storicoService).storicizzaEnteGestoreProgetto(progetto1, StatoEnum.TERMINATO.getValue());
+		doNothing().when(enteService).terminaEntiPartner(progetto1.getId());
+		doNothing().when(enteSedeProgettoService).cancellaOTerminaEnteSedeProgetto(progetto1.getId());
 		progettoService.terminaProgetto(progetto1.getId(), currentDate);
 		assertThat(progetto1.getStatoGestoreProgetto()).isEqualTo("TERMINATO");
 		verify(progettoRepository, times(1)).save(progetto1);
 	}
 	
+	@Test
+	public void terminaProgettoTest2() throws Exception {
+		//test per progretto con statoGestoreProgetto == "NON ATTIVO"
+		progetto1.setStatoGestoreProgetto(StatoEnum.NON_ATTIVO.getValue());
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		Calendar c = Calendar.getInstance();
+		c.setTime(sdf.parse(sdf.format(new Date())));
+        Date currentDate = c.getTime();
+		progetto1.setEnteGestoreProgetto(ente1);
+		List<ReferentiDelegatiEnteGestoreProgettoEntity> referentiDelegati = new ArrayList<>();
+		progetto1.setEnteGestoreProgetto(ente1);
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
+		when(referentiDelegatiEnteGestoreProgettoService.getReferentiEDelegatiProgetto(progetto1.getId())).thenReturn(referentiDelegati);
+		doNothing().when(enteService).terminaEntiPartner(progetto1.getId());
+		doNothing().when(enteSedeProgettoService).cancellaOTerminaEnteSedeProgetto(progetto1.getId());
+		progettoService.terminaProgetto(progetto1.getId(), currentDate);
+		assertThat(progetto1.getStatoGestoreProgetto()).isEqualTo(null);
+		verify(progettoRepository, times(1)).save(progetto1);
+	}
 	@Test
 	public void terminaProgettoKOTest() throws Exception {
 		//test KO per data terminazione nel futuro
@@ -875,6 +874,7 @@ public class ProgettoServiceTest {
 	@Test
 	public void terminaProgettoKOTest2() throws Exception {
 		//test KO impossibile storicizzare ente
+		progetto1.setStatoGestoreProgetto(StatoEnum.ATTIVO.getValue());
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		Calendar c = Calendar.getInstance();
 		c.setTime(sdf.parse(sdf.format(new Date())));
@@ -928,44 +928,40 @@ public class ProgettoServiceTest {
 		}).when(enteSedeProgettoService).cancellaEnteSedeProgetto(progetto1.getId());
 		progettoService.cancellaOTerminaProgetto(progetto1, new Date());
 		verify(progettoRepository,times(1)).delete(progetto1);
-		
-		//test con progetto ATTIVABILE o ATTIVO
+	}
+	
+	@Test
+	public void cancellaOTerminaProgettoAttivoConStatoGestoreTest() throws Exception {
+		//test con progetto ATTIVABILE o ATTIVO e statoGestoreProgetto == "ATTIVO"
 		progetto1.setStato("ATTIVO");
+		progetto1.setStatoGestoreProgetto(StatoEnum.ATTIVO.getValue());
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		Calendar c = Calendar.getInstance();
 		c.setTime(sdf.parse(sdf.format(new Date())));
-        Date currentDate = c.getTime();
+		Date currentDate = c.getTime();
 		progetto1.setEnteGestoreProgetto(ente1);
 		List<ReferentiDelegatiEnteGestoreProgettoEntity> referentiDelegati = new ArrayList<>();
-		StoricoEnteGestoreProgettoEntity storicoEnteGestoreProgetto = new StoricoEnteGestoreProgettoEntity();
-		List<EntePartnerEntity> entiPartner = new ArrayList<>();
-		List<EnteSedeProgetto> entisediprogetto = new ArrayList<>();
 		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
 		when(referentiDelegatiEnteGestoreProgettoService.getReferentiEDelegatiProgetto(progetto1.getId())).thenReturn(referentiDelegati);
-		when(storicoEnteGestoreProgettoRepository.save(storicoEnteGestoreProgetto)).thenReturn(storicoEnteGestoreProgetto);
-		when(entePartnerService.getEntiPartnerByProgetto(progetto1.getId())).thenReturn(entiPartner);
-		when(enteSedeProgettoRepository.getEnteSedeProgettoByIdProgetto(progetto1.getId())).thenReturn(entisediprogetto);
-		doAnswer(invocation -> {
-			storicoEnteGestoreProgetto.setIdProgetto(progetto1.getId());
-			storicoEnteGestoreProgetto.setIdEnte(progetto1.getEnteGestoreProgetto().getId());
-			storicoEnteGestoreProgetto.setStato(StatoEnum.TERMINATO.getValue());
-			storicoEnteGestoreProgetto.setDataOraCreazione(new Date());
-			this.storicoEnteGestoreProgettoRepository.save(storicoEnteGestoreProgetto);
-			return storicoEnteGestoreProgetto;
-		}).when(storicoService).storicizzaEnteGestoreProgetto(progetto1, StatoEnum.TERMINATO.getValue());
-		doAnswer(invocation -> {
-			this.entePartnerService.getEntiPartnerByProgetto(progetto1.getId());
-			return entiPartner;
-		}).when(enteService).terminaEntiPartner(progetto1.getId());
-		doAnswer(invocation -> {
-			List<EnteSedeProgetto> enteSedeProgetto = this.enteSedeProgettoRepository.getEnteSedeProgettoByIdProgetto(progetto1.getId());
-			return enteSedeProgetto;
-			}).when(enteSedeProgettoService).cancellaOTerminaEnteSedeProgetto(progetto1.getId());
+		doNothing().when(storicoService).storicizzaEnteGestoreProgetto(progetto1, StatoEnum.TERMINATO.getValue());
+		doNothing().when(enteService).terminaEntiPartner(progetto1.getId());
+		doNothing().when(enteSedeProgettoService).cancellaOTerminaEnteSedeProgetto(progetto1.getId());
 		progettoService.cancellaOTerminaProgetto(progetto1, currentDate);
 		assertThat(progetto1.getStatoGestoreProgetto()).isEqualTo("TERMINATO");
 		verify(progettoRepository, times(1)).save(progetto1);
+		
+		//test con progetto ATTIVABILE o ATTIVO e statoGestoreProgetto == "NON ATTIVO"
+		progetto1.setStato("ATTIVO");
+		progetto1.setStatoGestoreProgetto(StatoEnum.NON_ATTIVO.getValue());
+		progetto1.setEnteGestoreProgetto(ente1);
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
+		when(referentiDelegatiEnteGestoreProgettoService.getReferentiEDelegatiProgetto(progetto1.getId())).thenReturn(referentiDelegati);
+		doNothing().when(enteService).terminaEntiPartner(progetto1.getId());
+		doNothing().when(enteSedeProgettoService).cancellaOTerminaEnteSedeProgetto(progetto1.getId());
+		progettoService.cancellaOTerminaProgetto(progetto1, currentDate);
+		assertThat(progetto1.getStatoGestoreProgetto()).isEqualTo(null);
+		verify(progettoRepository, times(2)).save(progetto1);
 	}
-	
 	@Test
 	public void attivaProgettoKOTest() {
 		//test KO per progetto non presente

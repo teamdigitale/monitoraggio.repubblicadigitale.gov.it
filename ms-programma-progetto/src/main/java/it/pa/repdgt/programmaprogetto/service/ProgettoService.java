@@ -696,14 +696,19 @@ public class ProgettoService {
 		//se sono ATTIVI li termino, se sono NON ATTIVI li cancello
 		referentiEDelegatiProgetto.forEach(this.referentiDelegatiEnteGestoreProgettoService::cancellaOTerminaAssociazioneReferenteDelegatoProgetto);
 		progettoDBFetch.setStato(StatoEnum.TERMINATO.getValue());
-		try {
-			this.storicoService.storicizzaEnteGestoreProgetto(progettoDBFetch, StatoEnum.TERMINATO.getValue());
-		} catch (Exception e) {
-			throw new ProgettoException("Impossibile Storicizzare Ente", CodiceErroreEnum.C02);
+		if(StatoEnum.ATTIVO.getValue().equals(progettoDBFetch.getStatoGestoreProgetto())) {	
+			try {
+				this.storicoService.storicizzaEnteGestoreProgetto(progettoDBFetch, StatoEnum.TERMINATO.getValue());
+				progettoDBFetch.setStatoGestoreProgetto(StatoEnum.TERMINATO.getValue());
+			} catch (Exception e) {
+				throw new ProgettoException("Impossibile Storicizzare Ente", e, CodiceErroreEnum.C02);
+			}
+		} else if(StatoEnum.NON_ATTIVO.getValue().equals(progettoDBFetch.getStatoGestoreProgetto())) {
+			progettoDBFetch.setEnteGestoreProgetto(null);
+			progettoDBFetch.setStatoGestoreProgetto(null);
 		}
 		this.enteService.terminaEntiPartner(idProgetto);
 		this.enteSedeProgettoService.cancellaOTerminaEnteSedeProgetto(idProgetto);
-		progettoDBFetch.setStatoGestoreProgetto(StatoEnum.TERMINATO.getValue());
 		progettoDBFetch.setDataOraTerminazione(dataTerminazione);
 		this.salvaProgetto(progettoDBFetch);
 	}

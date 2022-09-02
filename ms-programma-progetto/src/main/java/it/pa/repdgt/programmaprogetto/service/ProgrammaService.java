@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.programmaprogetto.bean.DettaglioProgrammaBean;
 import it.pa.repdgt.programmaprogetto.bean.SchedaProgrammaBean;
-import it.pa.repdgt.programmaprogetto.exception.ProgettoException;
 import it.pa.repdgt.programmaprogetto.exception.ProgrammaException;
 import it.pa.repdgt.programmaprogetto.exception.ResourceNotFoundException;
 import it.pa.repdgt.programmaprogetto.mapper.ProgrammaMapper;
@@ -744,12 +743,18 @@ public class ProgrammaService {
 		referentiEDelegati.stream()
 		.forEach(this.referentiDelegatiEnteGestoreProgrammaService::cancellaOTerminaAssociazioneReferenteDelegatoProgramma);
 		programmaFetch.setStato(StatoEnum.TERMINATO.getValue());
-		try {
-			this.storicoService.storicizzaEnteGestoreProgramma(programmaFetch, StatoEnum.TERMINATO.getValue());
-		} catch (Exception e) {
-			throw new ProgrammaException("Impossibile Storicizzare Ente", CodiceErroreEnum.C02);
+		if(StatoEnum.ATTIVO.getValue().equals(programmaFetch.getStatoGestoreProgramma())) {
+			try {
+					this.storicoService.storicizzaEnteGestoreProgramma(programmaFetch, StatoEnum.TERMINATO.getValue());
+					programmaFetch.setStatoGestoreProgramma(StatoEnum.TERMINATO.getValue());
+			}
+			catch (Exception e) {
+				throw new ProgrammaException("Impossibile Storicizzare Ente", CodiceErroreEnum.C02);
+			}
+		} else if (StatoEnum.NON_ATTIVO.getValue().equals(programmaFetch.getStatoGestoreProgramma())) {
+			programmaFetch.setEnteGestoreProgramma(null);
+			programmaFetch.setStatoGestoreProgramma(null);
 		}
-		programmaFetch.setStatoGestoreProgramma(StatoEnum.TERMINATO.getValue());
 		programmaFetch.setDataOraTerminazioneProgramma(dataTerminazione);
 		this.salvaProgramma(programmaFetch);
 	}

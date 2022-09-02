@@ -24,10 +24,9 @@ public interface DomandeStrutturaQ1AndQ2Constants {
 	public final String ID_DOMANDA_PRIMA_VOLTA = "20";
 	public final String ID_DOMANDA_TIPO_PRIMO_SERVIZIO = "21";
 
-	
 	public final String SEZIONE_Q1_TEMPLATE = "{ "
-			+ " \"id\": \"Q1\", "
-			+ " \"title\": \"Sezione Q1\", "
+			+ " \"id\": \"anagraphic-citizen-section\", "
+			+ " \"title\": \"Anagrafica del cittadino\", "
 			+ " \"properties\": ["
 					+ " \"{'%s': ['%s']}\", "
 					+ " \"{'%s': ['%s']}\", "
@@ -52,8 +51,8 @@ public interface DomandeStrutturaQ1AndQ2Constants {
 			+ "}";
 	
 	public final String SEZIONE_Q2_TEMPLATE = "{ "
-			+ " \"id\": \"Q2\", "
-			+ " \"title\": \"Sezione Q2\", "
+			+ " \"id\": \"anagraphic-booking-section\", "
+			+ " \"title\": \"Anagrafica della prenotazione\", "
 			+ " \"properties\": ["
 					+ " \"{'%s': ['%s']}\", "
 					+ " \"{'%s': ['%s']}\" "

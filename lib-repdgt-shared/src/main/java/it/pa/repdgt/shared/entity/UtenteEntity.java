@@ -84,4 +84,7 @@ public class UtenteEntity implements Serializable {
 	
 	@Column(name = "INTEGRAZIONE")
 	private Boolean integrazione;
+	
+	@Column(name = "IMMAGINE_PROFILO")
+	private String immagineProfilo;
 }

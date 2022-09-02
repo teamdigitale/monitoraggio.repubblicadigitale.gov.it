@@ -57,7 +57,8 @@ public enum CodiceErroreEnum {
 	,QT05("Errore impossibile recuperare il questionario poichè inesistente su MySql")
 	,QT06("Errore impossibile avere un programma senza associato alcun questionario template")
 	,QT07("Errore impossibile salvare il questionario template perchè id questionario template già esistente")
-	
+	,QT08("Errore creazione questionario compilato. SezioneQuestionarioQ3 attualmente associata al servizio del cittadino non presente su MongoDB.")
+
 	,QC01("Errore questionario compilato non presente su mySql")
 	,QC02("Errore questionario compilato non presente su MongoDB")
 	
