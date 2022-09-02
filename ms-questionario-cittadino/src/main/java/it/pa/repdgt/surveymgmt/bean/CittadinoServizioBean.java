@@ -1,8 +1,7 @@
 package it.pa.repdgt.surveymgmt.bean;
 
 import java.io.Serializable;
-
-import org.springframework.data.domain.Page;
+import java.util.List;
 
 import it.pa.repdgt.surveymgmt.projection.CittadinoServizioProjection;
 import lombok.Getter;
@@ -17,5 +16,5 @@ public class CittadinoServizioBean implements Serializable {
 	
 	private Long numQuestionariCompilati;
 	
-	private Page<CittadinoServizioProjection> listaCittadiniServizio;
+	private List<CittadinoServizioProjection> listaCittadiniServizio;
 }

@@ -14,14 +14,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
+import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
 import it.pa.repdgt.shared.entity.ProgrammaXQuestionarioTemplateEntity;
 import it.pa.repdgt.shared.entity.ServizioEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.surveymgmt.exception.QuestionarioTemplateException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
+import it.pa.repdgt.surveymgmt.param.ProfilazioneSedeParam;
 import it.pa.repdgt.surveymgmt.projection.EnteProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
 import it.pa.repdgt.surveymgmt.repository.ServizioSqlRepository;
@@ -36,12 +42,15 @@ public class ServizioSqlService {
 	private ProgrammaXQuestionarioTemplateService programmaXQuestionarioTemplateService;
 	@Autowired
 	private ServizioSqlRepository servizioSqlRepository;
+	@Autowired
+	private RuoloService ruoloService;
 	
-
+	@LogMethod
+	@LogExecutionTime
 	public ServizioEntity getServizioById(@NotNull Long idServizio) {
 		final String messaggioErrore = String.format("Servizio con id=%s non presente", idServizio);
 		return this.servizioSqlRepository.findById(idServizio)
-				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore));
+				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
 	}
 	
 	/**
@@ -51,6 +60,8 @@ public class ServizioSqlService {
 	 *  - statiServizioFiltro - stati serivizio da filtrare scelto nella dropdwon nella sezione Servizi
 	 *  
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public List<ServizioEntity> getAllServiziByFiltro(
 			final String criterioRicercaServizio, 
 			final List<String> tipologieServizi,
@@ -69,6 +80,8 @@ public class ServizioSqlService {
 	 *  - statiServizioFiltro - stati serivizio da filtrare scelto nella dropdwon nella sezione Servizi
 	 * 
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public List<ServizioEntity> getAllServiziByPolicySCDAndFiltro(
 			final String criterioRicercaServizio,
 			final List<String> tipologieServizi, 
@@ -90,6 +103,8 @@ public class ServizioSqlService {
 	 *  - idsProgettoFiltro  - conterrà l'unico progetto  con cui l'utente facilitatore si è profilato
 	 *  
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public List<ServizioEntity> getAllServiziByFacilitatoreOVolontarioAndFiltro(
 			final String criterioRicercaServizio,
 			@NotEmpty final List<String> idsProgrammaFiltro, 
@@ -117,6 +132,8 @@ public class ServizioSqlService {
 	 * 	- idsProgrammaFiltro - conterrà l'unico programma con cui l'utente referente/delegato dell'ente gestore di programma si è profilato
 	 *  
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public List<ServizioEntity> getAllServiziByReferenteODelegatoGestoreProgrammaAndFiltro(
 			final String criterioRicercaServizio,
 			@NotEmpty final List<String> idsProgrammaFiltro, 
@@ -141,6 +158,8 @@ public class ServizioSqlService {
 	 *  - idsProgettoFiltro  - conterrà l'unico progetto  con cui l'utente referente/delegato dell'ente gestore di progetto si è profilato
 	 *  
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public List<ServizioEntity> getAllServiziByReferenteODelegatoGestoreProgettoAndFiltro(
 			final String criterioRicercaServizio,
 			@NotEmpty final List<String> idsProgrammaFiltro, 
@@ -167,6 +186,8 @@ public class ServizioSqlService {
 	 *  - idsProgettoFiltro  - conterrà l'unico progetto  con cui l'utente referente/delegato dell'ente partner si è profilato
 	 *  
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public List<ServizioEntity> getAllServiziByReferenteODelegatoEntePartnerAndFiltro(
 			final String criterioRicercaServizio,
 			@NotEmpty final List<String> idsProgrammaFiltro, 
@@ -182,6 +203,8 @@ public class ServizioSqlService {
 			);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public ServizioEntity salvaServizio(
 			@NotNull final ServizioRequest servizioRequest,
@@ -190,6 +213,8 @@ public class ServizioSqlService {
 		return this.servizioSqlRepository.save(servizioEntity);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public ServizioEntity creaServizio(
 			@NotNull final ServizioRequest servizioRequest,
 			@NotNull final String idSezioneQ3Compilato) {
@@ -200,11 +225,11 @@ public class ServizioSqlService {
 		final List<ProgrammaXQuestionarioTemplateEntity> listaProgrammaXQuestionario = this.programmaXQuestionarioTemplateService.getByIdProgramma(idProgramma);
 		if( listaProgrammaXQuestionario.isEmpty() ) {
 			final String messaggioErrore = String.format("Impossibile creare servizio. Nessun questionario template associato al programma con id '%s'", idProgramma);
-			throw new ServizioException(messaggioErrore);
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S04);
 		}
 		if(listaProgrammaXQuestionario.isEmpty()) {
 			final String messaggioErrore = String.format("Impossibile creare servizio. Non esiste nessun questionario template associato al programma con id=%s", idProgramma);
-			throw new ServizioException(messaggioErrore);
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S04);
 		}
 		final String idQuestinarioTemplate = listaProgrammaXQuestionario
 																	.get(0)
@@ -223,6 +248,7 @@ public class ServizioSqlService {
 		servizioEntity.setNome(servizioRequest.getNomeServizio());
 		servizioEntity.setTipologiaServizio(servizioRequest.getTipologiaServizio());
 		servizioEntity.setDataServizio(servizioRequest.getDataServizio());
+		servizioEntity.setDurataServizio(servizioRequest.getDurataServizio());
 		servizioEntity.setIdQuestionarioTemplateSnapshot(idQuestinarioTemplate);
 		servizioEntity.setIdEnteSedeProgettoFacilitatore(enteSedeProgettoFacilitatore.getId());
 		servizioEntity.setIdTemplateCompilatoQ3(idSezioneQ3Compilato);
@@ -232,6 +258,8 @@ public class ServizioSqlService {
 		return servizioEntity;
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public ServizioEntity aggiornaServizio(
 			@NotNull final Long idServizio, 
@@ -242,6 +270,8 @@ public class ServizioSqlService {
 			servizioDaAggiornareRequest.getProfilazioneParam().getIdProgetto(),
 			servizioDaAggiornareRequest.getProfilazioneParam().getCodiceFiscaleUtenteLoggato()
 		);
+		
+		this.enteSedeProgettoFacilitatoreService.getById(enteSedeProgettoFacilitatoreAggiornato);
 		
 		// Recupero servizio in MySql a partire dall'id e
 		// aggiorno i dati sul servizio fetchato dal db
@@ -254,18 +284,60 @@ public class ServizioSqlService {
 		return this.servizioSqlRepository.save(servizioFecthDB);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<EnteProjection> getEntiByFacilitatore(ProfilazioneParam profilazioneParam) {
+		final String codiceFiscaleUtenteLoggato = profilazioneParam.getCodiceFiscaleUtenteLoggato();
+		final String codiceRuoloUtenteLoggato = profilazioneParam.getCodiceRuoloUtenteLoggato().toString();
+		
+		// Verifico se l'utente possiede il ruolo mandato nella richiesta
+		boolean hasRuoloUtente = this.ruoloService
+			.getRuoliByCodiceFiscale(codiceFiscaleUtenteLoggato)
+			.stream()
+			.anyMatch(ruolo -> codiceRuoloUtenteLoggato.equalsIgnoreCase(ruolo.getCodice()));
+		
+		if(!hasRuoloUtente 
+				|| (!codiceRuoloUtenteLoggato.equalsIgnoreCase(RuoliUtentiConstants.FACILITATORE) &&
+					!codiceRuoloUtenteLoggato.equalsIgnoreCase(RuoliUtentiConstants.VOLONTARIO) )) {
+			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'.\nOppure l'utente non è un FACILITATORE/VOLONTARIO",
+					codiceFiscaleUtenteLoggato);
+			throw new QuestionarioTemplateException(messaggioErrore, CodiceErroreEnum.U06);
+		}
+		
 		return this.enteSedeProgettoFacilitatoreService.getEntiByFacilitatore(profilazioneParam);
 	}
 
-	public List<SedeProjection> getSediByFacilitatore(ProfilazioneParam profilazioneParam) {
+	@LogMethod
+	@LogExecutionTime
+	public List<SedeProjection> getSediByFacilitatore(ProfilazioneSedeParam profilazioneParam) {
+		final String codiceFiscaleUtenteLoggato = profilazioneParam.getCodiceFiscaleUtenteLoggato();
+		final String codiceRuoloUtenteLoggato = profilazioneParam.getCodiceRuoloUtenteLoggato().toString();
+		
+		// Verifico se l'utente possiede il ruolo mandato nella richiesta
+		boolean hasRuoloUtente = this.ruoloService
+			.getRuoliByCodiceFiscale(codiceFiscaleUtenteLoggato)
+			.stream()
+			.anyMatch(ruolo -> codiceRuoloUtenteLoggato.equalsIgnoreCase(ruolo.getCodice()));
+
+		if(!hasRuoloUtente 
+				|| (!codiceRuoloUtenteLoggato.equalsIgnoreCase(RuoliUtentiConstants.FACILITATORE) &&
+					!codiceRuoloUtenteLoggato.equalsIgnoreCase(RuoliUtentiConstants.VOLONTARIO) )) {
+			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'.\nOppure l'utente non è un FACILITATORE/VOLONTARIO",
+					codiceFiscaleUtenteLoggato);
+			throw new QuestionarioTemplateException(messaggioErrore, CodiceErroreEnum.U06);
+		}
+		
 		return this.enteSedeProgettoFacilitatoreService.getSediByFacilitatore(profilazioneParam);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaServivio(@NotNull final ServizioEntity servizioEntity) {
 		this.servizioSqlRepository.delete(servizioEntity);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public Optional<ServizioEntity> getPrimoServizioByIdCittadino(@NotNull Long idServizio, @NotNull Long idCittadino) {
 		return this.servizioSqlRepository.findServizioByCittadinoNotEqual(idServizio, idCittadino);
 	}

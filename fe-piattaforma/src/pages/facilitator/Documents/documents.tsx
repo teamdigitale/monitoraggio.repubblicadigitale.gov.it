@@ -60,7 +60,7 @@ const Documents = () => {
       updateBreadcrumb([
         {
           label: 'Documenti',
-          url: '/documents',
+          url: '/documenti',
           link: false,
         },
       ])

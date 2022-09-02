@@ -1,6 +1,7 @@
 package it.pa.repdgt.gestioneutente.restapi;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -9,7 +10,6 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.csv.CSVFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,14 +22,19 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import it.pa.repdgt.gestioneutente.bean.SchedaUtenteBean;
 import it.pa.repdgt.gestioneutente.dto.UtenteDto;
 import it.pa.repdgt.gestioneutente.mapper.UtenteMapper;
+import it.pa.repdgt.gestioneutente.request.AggiornaUtenteRequest;
 import it.pa.repdgt.gestioneutente.request.NuovoUtenteRequest;
+import it.pa.repdgt.gestioneutente.request.ProfilazioneRequest;
 import it.pa.repdgt.gestioneutente.request.UtenteRequest;
+import it.pa.repdgt.gestioneutente.resource.UtenteResource;
 import it.pa.repdgt.gestioneutente.resource.UtentiLightResourcePaginata;
 import it.pa.repdgt.gestioneutente.service.UtenteService;
 import it.pa.repdgt.gestioneutente.util.CSVUtil;
@@ -50,10 +55,15 @@ public class UtenteRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public UtentiLightResourcePaginata getAllUtentiPaginati(
 			@RequestBody @Valid UtenteRequest sceltaContesto,
-			@RequestParam(name = "currPage", defaultValue = "0") Integer currPage,
-			@RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
-		Page<UtenteDto> utenti = this.utenteService.getAllUtentiPaginati(sceltaContesto,currPage, pageSize);
+			@RequestParam(name = "currPage", required = false, defaultValue = "0")  Integer currPage,
+			@RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+		List<UtenteDto> utenti = this.utenteService.getAllUtentiPaginati(sceltaContesto, currPage, pageSize);
 		UtentiLightResourcePaginata listaPaginataUtentiResource = this.utenteMapper.toUtentiLightResourcePaginataFrom(utenti);
+		
+		int numeroUtentiTrovati = this.utenteService.countUtentiTrovati(sceltaContesto);
+		listaPaginataUtentiResource.setNumeroTotaleElementi(numeroUtentiTrovati);
+		listaPaginataUtentiResource.setNumeroPagine(numeroUtentiTrovati % pageSize > 0 ? (numeroUtentiTrovati / pageSize) + 1 : (numeroUtentiTrovati / pageSize));
+		
 		return listaPaginataUtentiResource;
 	}
 	
@@ -68,18 +78,18 @@ public class UtenteRestApi {
 	// TOUCH POINT - 1.3.7 -  CRUD Crea Utente
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public void creaNuovoUtente(@RequestBody @Valid NuovoUtenteRequest nuovoUtenteRequest) {
+	public UtenteResource creaNuovoUtente(@RequestBody @Valid NuovoUtenteRequest nuovoUtenteRequest) {
 		UtenteEntity utenteEntity = this.utenteMapper.toUtenteEntityFrom(nuovoUtenteRequest);
-		this.utenteService.creaNuovoUtente(utenteEntity, nuovoUtenteRequest.getRuolo());
+		return new UtenteResource(this.utenteService.creaNuovoUtente(utenteEntity, nuovoUtenteRequest.getRuolo()).getId());
 	}
 	
 	// TOUCH POINT - 1.3.3 - Update Utente
-	@PutMapping(path = "/{codiceFiscale}")
+	@PutMapping(path = "/{idUtente}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void aggiornaUtente(
-			@PathVariable(value = "codiceFiscale") String cfUtente,
-			@RequestBody @Valid NuovoUtenteRequest nuovoUtenteRequest) {
-		this.utenteService.aggiornaUtente(nuovoUtenteRequest, cfUtente);
+			@PathVariable(value = "idUtente") Long idUtente,
+			@RequestBody @Valid AggiornaUtenteRequest aggiornaUtenteRequest) {
+		this.utenteService.aggiornaUtente(aggiornaUtenteRequest, idUtente);
 	}
 	
 	// TOUCH POINT - 1.3.6 -  Lista Stati Utenti Dropdown
@@ -101,41 +111,49 @@ public class UtenteRestApi {
 	}
 	
 	// TOUCH POINT - 4.1 - Scheda Utente
-	@GetMapping(path = "/{codiceFiscale}")
+	@GetMapping(path = "/{idUtente}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public SchedaUtenteBean getSchedaUtenteByCodiceFiscale(@PathVariable(value = "codiceFiscale") String cfUtente) {
-		return this.utenteService.getSchedaUtenteByCodiceFiscale(cfUtente);
+	public SchedaUtenteBean getSchedaUtenteByIdUtente(@PathVariable(value = "idUtente") Long idUtente) {
+		return this.utenteService.getSchedaUtenteByIdUtente(idUtente);
+	}
+	
+	// TOUCH POINT - 4.1 - Scheda Utente
+	@PostMapping(path = "/{idUtente}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public SchedaUtenteBean getSchedaUtenteByIdUtente(@PathVariable(value = "idUtente") Long idUtente,
+			@RequestBody ProfilazioneRequest sceltaProfilo) {
+		return this.utenteService.getSchedaUtenteByIdUtente(idUtente, sceltaProfilo);
 	}
 	
 	// TOUCH POINT - 4.4 - Associa Ruolo ad Utente
-	@PutMapping(path = "/{codiceFiscale}/assegnaRuolo/{codiceRuolo}")
+	@PutMapping(path = "/{idUtente}/assegnaRuolo/{codiceRuolo}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void assegnaRuoloAUtente(
-			@PathVariable(value = "codiceFiscale") String codiceFiscale, 
+			@PathVariable(value = "idUtente") Long idUtente, 
 			@PathVariable(value = "codiceRuolo") String codiceRuolo) {
-		this.utenteService.assegnaRuoloAUtente(codiceFiscale, codiceRuolo);
+		this.utenteService.assegnaRuoloAUtente(idUtente, codiceRuolo);
 	}
 	
 	// TOUCH POINT - 4.5 - Cancella Ruolo da Utente
-	@DeleteMapping(path = "/{codiceFiscale}/cancellaRuolo/{codiceRuolo}")
+	@DeleteMapping(path = "/{idUtente}/cancellaRuolo/{codiceRuolo}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void cancellaRuoloDaUtente(
-			@PathVariable(value = "codiceFiscale") String codiceFiscale, 
+			@PathVariable(value = "idUtente") Long idUtente, 
 			@PathVariable(value = "codiceRuolo") String codiceRuolo) {
-		this.utenteService.cancellaRuoloDaUtente(codiceFiscale, codiceRuolo);
+		this.utenteService.cancellaRuoloDaUtente(idUtente, codiceRuolo);
 	}
 
 	// TOUCH POINT - 1.3.4 -  Delete Utente
-	@DeleteMapping(path = "/{codiceFiscale}")
+	@DeleteMapping(path = "/{idUtente}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void cancellaUtente(@PathVariable(value = "codiceFiscale") String cfUtente) {
-		this.utenteService.cancellaUtente(cfUtente);
+	public void cancellaUtente(@PathVariable(value = "idUtente") Long idUtente) {
+		this.utenteService.cancellaUtente(idUtente);
 	}
 	
 	// TOUCH-POINT 1.3.8 - Scarica lista utenti in formato csv
 	@PostMapping(path = "/download")
 	public ResponseEntity<InputStreamResource> downloadListaCSVUtenti(@RequestBody @Valid UtenteRequest sceltaContesto) {
-		List<UtenteDto> listaUtentiDto = this.utenteService.getUtentiByRuolo(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		List<UtenteDto> listaUtentiDto = this.utenteService.getUtentiPerDownload(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
 		ByteArrayInputStream byteArrayInputStream = CSVUtil.exportCSVUtenti(listaUtentiDto, CSVFormat.DEFAULT);
 		InputStreamResource fileCSV = new InputStreamResource(byteArrayInputStream);
 		
@@ -143,5 +161,18 @@ public class UtenteRestApi {
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=utenti.csv")
 				.contentType(MediaType.parseMediaType("application/csv"))
 				.body(fileCSV);
+	}
+	
+	@PostMapping(path = "/upload/immagineProfilo/{idUtente}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public String uploadImmagineProfiloUtente(
+			@PathVariable(value = "idUtente") Long idUtente,
+			@RequestPart MultipartFile multipartifile) throws IOException {
+		return this.utenteService.uploadImmagineProfiloUtente(idUtente, multipartifile);
+	}
+	
+	@GetMapping(path = "/download/immagineProfilo/{nomeFile}")
+	public String downloadImmagineProfiloUtentePresigned(
+			@PathVariable(value = "nomeFile") final String nomeFile) throws IOException {
+		return this.utenteService.downloadImmagineProfiloUtente(nomeFile);
 	}
 }

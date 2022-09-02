@@ -61,7 +61,54 @@ public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long> 
 			@Param(value = "policies") List<String> policies,
 			@Param(value = "idsProgrammi") List<String> idsProgrammi, 
 			@Param(value = "stati") List<String> stati);
-
+	
+	@Query(value = "SELECT count(*)"
+			+ " FROM progetto progetto "
+			+ "	INNER JOIN programma programma "
+			+ "		ON progetto.ID_PROGRAMMA = programma.ID "
+			+ "	LEFT JOIN ente ente "
+			+ "		ON progetto.ID_ENTE_GESTORE_PROGETTO = ente.ID "
+			+ " WHERE  1=1"
+			+ " 	AND	 ( :criterioRicerca IS NULL  "
+			+ "			OR CONVERT(progetto.ID, CHAR) = :criterioRicerca "
+			+ "			OR UPPER( progetto.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
+			+ "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
+			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) )"
+			+ " 	AND	 ( COALESCE(:idsProgrammi) IS NULL  OR   programma.ID IN (:idsProgrammi) )"
+			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR progetto.STATO IN (:stati) )",
+			nativeQuery = true)
+	public Long countAll(
+			@Param(value = "criterioRicerca") String criterioRicerca,
+			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
+			@Param(value = "policies") List<String> policies,
+			@Param(value = "idsProgrammi") List<String> idsProgrammi, 
+			@Param(value = "stati") List<String> stati);
+	
+	@Query(value = "SELECT progetto.*"
+			+ " FROM progetto progetto "
+			+ "	INNER JOIN programma programma "
+			+ "		ON progetto.ID_PROGRAMMA = programma.ID "
+			+ "	LEFT JOIN ente ente "
+			+ "		ON progetto.ID_ENTE_GESTORE_PROGETTO = ente.ID "
+			+ " WHERE  1=1"
+			+ " 	AND	 ( :criterioRicerca IS NULL  "
+			+ "			OR CONVERT(progetto.ID, CHAR) = :criterioRicerca "
+			+ "			OR UPPER( progetto.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
+			+ "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
+			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) )"
+			+ " 	AND	 ( COALESCE(:idsProgrammi) IS NULL  OR   programma.ID IN (:idsProgrammi) )"
+			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR progetto.STATO IN (:stati) )"
+			+ "	 ORDER BY progetto.ID "
+			+ "  LIMIT :currPageIndex, :pageSize",
+			nativeQuery = true)
+	public List<ProgettoEntity> findAllPaginati(
+			@Param(value = "criterioRicerca") String criterioRicerca,
+			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
+			@Param(value = "policies") List<String> policies,
+			@Param(value = "idsProgrammi") List<String> idsProgrammi, 
+			@Param(value = "stati") List<String> stati,
+			@Param(value = "currPageIndex") Integer currPageIndex, 
+			@Param(value = "pageSize") Integer pageSize);
 
 	@Query(value = "SELECT *"
 			+ " FROM "
@@ -77,16 +124,67 @@ public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long> 
 			+ "			OR UPPER( progetto.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
 		    + "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
 			+ " 	AND	 ( COALESCE(:idsProgrammi) IS NULL  OR   programma.ID IN (:idsProgrammi) )"
-			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR progetto.STATO IN (:stati) )",
+			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR progetto.STATO IN (:stati) )"
+			+ "	 ORDER BY progetto.ID "
+			+ "  LIMIT :currPageIndex, :pageSize",
 		   nativeQuery = true)
-	public List<ProgettoEntity> findByPolicy(
+	public List<ProgettoEntity> findByPolicyPaginati(
 				String policy,
 				@Param(value = "criterioRicerca") String criterioRicerca,
 				@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
 				@Param(value = "idsProgrammi") List<String> idsProgrammi, 
-				@Param(value = "stati") List<String> stati
+				@Param(value = "stati") List<String> stati,
+				@Param(value = "currPageIndex") Integer currPageIndex, 
+				@Param(value = "pageSize") Integer pageSize
 			);
-
+	
+	@Query(value = "SELECT *"
+			+ " FROM "
+			+ "		progetto progetto "
+			+ "	INNER JOIN programma programma "
+			+ "		ON progetto.ID_PROGRAMMA = programma.ID "
+			+ "	LEFT JOIN ente ente "
+			+ "		ON progetto.ID_ENTE_GESTORE_PROGETTO = ente.ID "
+			+ " WHERE 	1=1"
+			+ "		AND programma.POLICY = :policy "
+			+ " 	AND	 ( :criterioRicerca IS NULL  "
+			+ "			OR CONVERT(progetto.ID, CHAR) = :criterioRicerca "
+			+ "			OR UPPER( progetto.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
+			+ "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
+			+ " 	AND	 ( COALESCE(:idsProgrammi) IS NULL  OR   programma.ID IN (:idsProgrammi) )"
+			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR progetto.STATO IN (:stati) )",
+			nativeQuery = true)
+	public List<ProgettoEntity> findByPolicy(
+			String policy,
+			@Param(value = "criterioRicerca") String criterioRicerca,
+			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
+			@Param(value = "idsProgrammi") List<String> idsProgrammi, 
+			@Param(value = "stati") List<String> stati
+			);
+	
+	@Query(value = "SELECT count(*)"
+			+ " FROM "
+			+ "		progetto progetto "
+			+ "	INNER JOIN programma programma "
+			+ "		ON progetto.ID_PROGRAMMA = programma.ID "
+			+ "	LEFT JOIN ente ente "
+			+ "		ON progetto.ID_ENTE_GESTORE_PROGETTO = ente.ID "
+			+ " WHERE 	1=1"
+			+ "		AND programma.POLICY = :policy "
+			+ " 	AND	 ( :criterioRicerca IS NULL  "
+			+ "			OR CONVERT(progetto.ID, CHAR) = :criterioRicerca "
+			+ "			OR UPPER( progetto.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
+			+ "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
+			+ " 	AND	 ( COALESCE(:idsProgrammi) IS NULL  OR   programma.ID IN (:idsProgrammi) )"
+			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR progetto.STATO IN (:stati) )",
+			nativeQuery = true)
+	public Long countByPolicy(
+			String policy,
+			@Param(value = "criterioRicerca") String criterioRicerca,
+			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
+			@Param(value = "idsProgrammi") List<String> idsProgrammi, 
+			@Param(value = "stati") List<String> stati
+			);
 
 	@Query(value = "SELECT DISTINCT progetto.STATO"
 			+ " FROM progetto progetto "
@@ -116,7 +214,7 @@ public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long> 
 			+ "		progetto progetto "
 			+ "	INNER JOIN programma programma "
 			+ "		ON progetto.ID_PROGRAMMA = programma.ID "
-			+ "	INNER JOIN ente ente "
+			+ "	LEFT JOIN ente ente "
 			+ "		ON progetto.ID_ENTE_GESTORE_PROGETTO = ente.ID "
 			+ " WHERE 	1=1"
 			+ "		AND programma.POLICY = :policy "
@@ -158,12 +256,65 @@ public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long> 
 			@Param(value = "idsProgrammi") List<String> idsProgrammi,
 			@Param(value = "stati") List<String> stati
 		);
+	
+	@Query(value = "SELECT count(*) "
+			+ "FROM progetto progetto "
+			+ "	INNER JOIN programma programma "
+			+ "		ON progetto.ID_PROGRAMMA = programma.ID "
+			+ "	LEFT JOIN ente ente "
+			+ "		ON progetto.ID_ENTE_GESTORE_PROGETTO = ente.ID "
+			+ "WHERE progetto.ID_PROGRAMMA = :idProgramma"
+			+ " 	AND	 ( :criterioRicerca IS NULL  "
+			+ "			OR CONVERT(progetto.ID, CHAR) = :criterioRicerca "
+			+ "			OR UPPER( progetto.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
+			+ "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
+			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) )"
+			+ " 	AND	 ( COALESCE(:idsProgrammi) IS NULL  OR   programma.ID IN (:idsProgrammi) )"
+			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR progetto.STATO IN (:stati) )",
+			nativeQuery = true)
+	public Long countProgettiPerReferenteDelegatoGestoreProgramma(
+			@Param(value = "idProgramma") Long idProgramma, 
+			@Param(value = "criterioRicerca") String criterioRicerca,
+			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
+			@Param(value = "policies") List<String> policies,
+			@Param(value = "idsProgrammi") List<String> idsProgrammi,
+			@Param(value = "stati") List<String> stati
+			);
+	
+
+	@Query(value = "SELECT progetto.* "
+			+ "FROM progetto progetto "
+			+ "	INNER JOIN programma programma "
+			+ "		ON progetto.ID_PROGRAMMA = programma.ID "
+			+ "	LEFT JOIN ente ente "
+			+ "		ON progetto.ID_ENTE_GESTORE_PROGETTO = ente.ID "
+			+ "WHERE progetto.ID_PROGRAMMA = :idProgramma"
+		    + " 	AND	 ( :criterioRicerca IS NULL  "
+			+ "			OR CONVERT(progetto.ID, CHAR) = :criterioRicerca "
+			+ "			OR UPPER( progetto.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
+		    + "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
+			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) )"
+			+ " 	AND	 ( COALESCE(:idsProgrammi) IS NULL  OR   programma.ID IN (:idsProgrammi) )"
+			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR progetto.STATO IN (:stati) )"
+			+ "	 ORDER BY progetto.ID "
+			+ "  LIMIT :currPageIndex, :pageSize",
+			nativeQuery = true)
+	public List<ProgettoEntity> findProgettiPerReferenteDelegatoGestoreProgrammaPaginati(
+			@Param(value = "idProgramma") Long idProgramma, 
+			@Param(value = "criterioRicerca") String criterioRicerca,
+			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
+			@Param(value = "policies") List<String> policies,
+			@Param(value = "idsProgrammi") List<String> idsProgrammi,
+			@Param(value = "stati") List<String> stati,
+			@Param(value = "currPageIndex") Integer currPageIndex, 
+			@Param(value = "pageSize") Integer pageSize
+		);
 
 	@Query(value = "SELECT progetto.STATO "
 			+ "FROM progetto progetto "
 			+ "	INNER JOIN programma programma "
 			+ "		ON progetto.ID_PROGRAMMA = programma.ID "
-			+ "	INNER JOIN ente ente "
+			+ "	LEFT JOIN ente ente "
 			+ "		ON progetto.ID_ENTE_GESTORE_PROGETTO = ente.ID "
 			+ "WHERE progetto.ID_PROGRAMMA = :idProgramma"
 			+ " 	AND	 ( :criterioRicerca IS NULL  "

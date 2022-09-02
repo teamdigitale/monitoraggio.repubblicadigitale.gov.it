@@ -10,7 +10,10 @@ import {
   setEntityPagination,
 } from './citizensAreaSlice';
 import { RootState } from '../../store';
+// import { mapOptions } from '../../../utils/common';
+import { OptionType } from '../../../components/Form/select';
 import { mapOptions } from '../../../utils/common';
+import { getUserHeaders } from '../user/userThunk';
 
 const GetValuesAction = { type: 'citizensArea/GetEntityValues' };
 
@@ -25,16 +28,28 @@ export const GetEntityValues =
         citizensArea: { filters, pagination },
       } = select((state: RootState) => state);
       const entityEndpoint = `/cittadino/all`;
+      const filtroRequest: {
+        [key: string]: string[] | undefined;
+      } = {};
+      Object.keys(filters).forEach((filter: string) => {
+        if (filter === 'criterioRicerca') {
+          filtroRequest[filter] =
+            filters[filter]?.value || filters[filter] || null;
+        } else {
+          filtroRequest[filter] = filters[filter]?.map(
+            (value: OptionType) => value.value
+          );
+        }
+      });
+      // const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+      //   getUserHeaders();
+
       const body = {
-        filtro: {
-          ...filters,
-          criterioRicerca: null,
-          idsSedi: [],
-        },
-        idProgetto: 0,
-        idProgramma: 0,
-        codiceFiscaleUtenteLoggato: 'UTENTE1', //MOCK
-        codiceRuoloUtenteLoggato: 'DTD', //MOCK DA MANTENERE SOLO NELL'HEADER
+        filtro: filtroRequest,
+        idProgetto: 0, // TODO: update con variabile
+        idProgramma: 0, // TODO: update con variabile
+        codiceFiscaleUtenteLoggato: 'SMNRRR56F12G500Q', // TODO: update con variabile
+        codiceRuoloUtenteLoggato: 'FAC', // TODO: update con variabile
       };
       const res = await API.post(entityEndpoint, body, {
         params: {
@@ -46,7 +61,12 @@ export const GetEntityValues =
         dispatch(
           setEntityValues({ entity: payload.entity, data: res.data.cittadini })
         );
-        dispatch(setEntityPagination({ totalPages: res.data.numeroPagine }));
+        dispatch(
+          setEntityPagination({
+            totalPages: res.data.numeroPagine,
+            totalElements: res.data.numeroTotaleElementi,
+          })
+        );
       }
     } catch (error) {
       console.log('GetEntityValues citizensArea error', error);
@@ -59,10 +79,9 @@ const GetFilterValuesAction = {
   type: 'citizensArea/GetFilterValues',
 };
 export const GetEntityFilterValues =
-  (entityFilter: any, payload?: any) =>
-  async (dispatch: Dispatch, select: Selector) => {
+  (entityFilter: any) => async (dispatch: Dispatch, select: Selector) => {
     try {
-      dispatch({ ...GetFilterValuesAction, payload });
+      dispatch({ ...GetFilterValuesAction });
       dispatch(showLoader());
       const {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -71,22 +90,33 @@ export const GetEntityFilterValues =
       } = select((state: RootState) => state);
       // } = select((state: RootState) => state);
       const entityFilterEndpoint = `cittadino/${entityFilter}/dropdown`;
+      const filtroRequest: {
+        [key: string]: string[] | undefined;
+      } = {};
+      Object.keys(filters).forEach((filter: string) => {
+        if (filter === 'criterioRicerca') {
+          filtroRequest[filter] =
+            filters[filter]?.value || filters[filter] || null;
+        } else {
+          filtroRequest[filter] = filters[filter]?.map(
+            (value: OptionType) => value.value
+          );
+        }
+      });
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
       const body = {
-        filtro: {
-          ...filters,
-          criterioRicerca: null,
-          idsSedi: [],
-        },
-        idProgetto: 0,
-        idProgramma: 0,
-        codiceFiscaleUtenteLoggato: 'UTENTE1', //MOCK
-        codiceRuoloUtenteLoggato: 'DTD', //MOCK DA MANTENERE SOLO NELL'HEADER
+        filtro: filtroRequest,
+        idProgetto,
+        idProgramma,
+        codiceFiscaleUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
       };
       const res = await API.post(entityFilterEndpoint, body);
       if (res?.data) {
         dispatch(
           setEntityFilterOptions({
-            [entityFilter]: mapOptions(res.data.data.list),
+            [entityFilter]: mapOptions(res.data),
           })
         );
       }
@@ -122,13 +152,15 @@ const GetEntitySearchResultAction = {
 };
 
 export const GetEntitySearchResult =
-  (cfUtente: string, searchType: string) => async (dispatch: Dispatch) => {
+  (searchValue: string, searchType: string) => async (dispatch: Dispatch) => {
     try {
+      dispatch({ ...GetEntitySearchResultAction, searchValue, searchType });
       dispatch(showLoader());
-      dispatch({ ...GetEntitySearchResultAction, cfUtente, searchType });
-      const res = await API.get('cittadino/light/idCittadino', {
-        params: { cfUtente, searchType },
-      });
+      const res = await API.get(
+        `/servizio/cittadino?criterioRicerca=${searchValue}&tipoDocumento=${
+          searchType === 'codiceFiscale' ? 'CF' : 'NUM_DOC'
+        }`
+      );
       if (res?.data) {
         if (Array.isArray(res.data.data)) {
           dispatch(getEntitySearchMultiple(res.data.data));
@@ -138,6 +170,26 @@ export const GetEntitySearchResult =
       }
     } catch (error) {
       console.log('GetEntitySearchResult citizensArea error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const UpdateCitizenDetailAction = {
+  type: 'citizensArea/UpdateCitizenDetail',
+};
+export const UpdateCitizenDetail =
+  (idCittadino: string | undefined, payload?: any) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...UpdateCitizenDetailAction, idCittadino, payload });
+      const res = await API.put(`cittadino/${idCittadino}`);
+      if (res?.data) {
+        // TODO: richiama api dettaglio
+      }
+    } catch (error) {
+      console.log('UpdateCitizenDetail citizensArea error', error);
     } finally {
       dispatch(hideLoader());
     }

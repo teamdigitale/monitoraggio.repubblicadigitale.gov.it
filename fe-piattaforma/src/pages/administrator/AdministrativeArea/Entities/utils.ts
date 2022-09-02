@@ -11,6 +11,8 @@ export const dayOfWeek = [
   'Domenica',
 ];
 
+export const dayCode = ['lun', 'mar', 'mer', 'gio', 'ven', 'sab', 'dom'];
+
 export const TableHeading: TableHeadingI[] = [
   {
     label: 'Nome',
@@ -24,7 +26,7 @@ export const TableHeading: TableHeadingI[] = [
   },
   {
     field: 'policy',
-    label: 'Policy',
+    label: 'Intervento',
     size: 'small',
   },
   {
@@ -65,7 +67,7 @@ export const TableHeadingUsers: TableHeadingI[] = [
 export const TableHeadingQuestionnaires: TableHeadingI[] = [
   {
     label: 'Nome questionario',
-    field: 'label',
+    field: 'nome',
     size: 'auto',
   },
   {
@@ -75,22 +77,22 @@ export const TableHeadingQuestionnaires: TableHeadingI[] = [
   },
   {
     label: 'Data ultima modifica',
-    field: 'lastChangeDate',
+    field: 'dataUltimaModifica',
     size: 'auto',
   },
   {
     label: 'Stato',
-    field: 'status',
+    field: 'stato',
     size: 'auto',
   },
   {
     label: 'Default SCD',
-    field: 'default_SCD',
+    field: 'defaultSCD',
     size: 'auto',
   },
   {
     label: 'Default RFD',
-    field: 'default_RFD',
+    field: 'defaultRFD',
     size: 'auto',
   },
 ];
@@ -127,6 +129,7 @@ export const formTypes = {
   ENTI_GESTORE_PROGETTO: 'enti-gestore-progetto',
   ENTI_PARTNER: 'enti-partner',
   ENTE_PARTNER: 'ente-partner',
+  ENTE_GESTORE: 'ente-gestore',
   SEDI: 'sedi',
   SEDE: 'sede',
   REFERENTE: 'referente',
@@ -135,8 +138,11 @@ export const formTypes = {
   DELEGATI: 'delegati',
   USER: 'user',
   FACILITATORE: 'facilitatore',
+  VOLONTARIO: 'volontario',
   SERVICES: 'services',
   CITIZENS: 'cittadino',
+  PROFILE: 'profilo',
+  UTENTI: 'utenti',
 };
 
 export interface ItemListI {
@@ -152,3 +158,36 @@ export interface AccordionItemListI {
     [key: string]: string | CRUDActionsI | TableRowI;
   }[];
 }
+
+export const entityStatus = {
+  ATTIVO: 'ATTIVO',
+  ATTIVABILE: 'ATTIVABILE',
+  NON_ATTIVO: 'NON ATTIVO',
+  TERMINATO: 'TERMINATO',
+  TERMINABILE: 'TERMINABILE',
+  ELIMINATO: 'ELIMINATO',
+  CANCELLATO: 'CANCELLATO',
+};
+
+export const userRoles = {
+  DTD: 'DTD',
+  DSCU: 'DSCU',
+  REG: 'REG',
+  REGP: 'REGP',
+  VOL: 'VOL',
+  FAC: 'FAC',
+  DEG: 'DEG',
+  DEGP: 'DEGP',
+  REPP: 'REPP',
+  DEPP: 'DEPP',
+  USR: 'utenti',
+}
+
+export const contractTypes = [
+  { label: 'Volontario', value: 'Volontario' },
+  { label: 'Dipendente', value: 'Dipendente' },
+  {
+    label: 'Collaboratore',
+    value: 'Collaboratore',
+  },
+];

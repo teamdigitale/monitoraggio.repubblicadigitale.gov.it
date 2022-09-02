@@ -3,13 +3,14 @@ import type { RootState } from '../../store';
 
 export interface ModalPayloadI {
   description?: string;
-  title?: string;
+  title?: string | undefined;
+  [key: string]: any;
 }
 
 export interface ModalStateI {
-  id: string;
+  id: string | undefined;
   open?: boolean | undefined;
-  payload?: ModalPayloadI;
+  payload?: ModalPayloadI | undefined;
 }
 
 const initialState: ModalStateI = {
@@ -37,6 +38,7 @@ export const modalSlice = createSlice({
 export const { resetModalState, openModal, closeModal } = modalSlice.actions;
 
 export const selectModalId = (state: RootState) => state.modal.id;
+export const selectModalState = (state: RootState) => state.modal.open;
 export const selectModalPayload = (state: RootState) => state.modal.payload;
 
 export default modalSlice.reducer;

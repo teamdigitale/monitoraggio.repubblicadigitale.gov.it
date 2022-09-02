@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { FormGroup, Toggle } from 'design-react-kit';
-//import clsx from 'clsx';
-import { Paginator, StatusChip, Table } from '../../../../../components';
+import {
+  EmptySection,
+  Paginator,
+  StatusChip,
+  Table,
+} from '../../../../../components';
 import { newTable, TableRowI } from '../../../../../components/Table/table';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
@@ -15,10 +19,8 @@ import {
   setEntityPagination,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import {
-  DownloadEntityValues,
-  // GetEntityValues,
-  GetEntityFilterValues,
-  // DownloadEntityValues,
+  DownloadEntityValuesQueryParams,
+  GetEntityFilterQueryParamsValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import { TableHeadingQuestionnaires } from '../utils';
 
@@ -36,17 +38,14 @@ import { formFieldI } from '../../../../../utils/formHelper';
 //import SideSelection from '../../../../../components/SideSelection/sideSelection';
 import PageTitle from '../../../../../components/PageTitle/pageTitle';
 import {
-  //selectDevice,
-  updateBreadcrumb,
-} from '../../../../../redux/features/app/appSlice';
-import {
   GetAllSurveys,
-  GetFilterValuesSurvey,
   UpdateSurveyExclusiveField,
 } from '../../../../../redux/features/administrativeArea/surveys/surveysThunk';
+import { formatDate } from '../../../../../utils/datesHelper';
+import useGuard from '../../../../../hooks/guard';
 
 const entity = 'questionarioTemplate';
-const statusDropdownLabel = 'stati';
+const statusDropdownLabel = 'stato';
 
 const Surveys = () => {
   const dispatch = useDispatch();
@@ -61,26 +60,14 @@ const Surveys = () => {
   const [filterDropdownSelected, setFilterDropdownSelected] =
     useState<string>('');
 
-  const { criterioRicerca, stati } = filtersList;
+  const { hasUserPermission } = useGuard();
+
+  const { criterioRicerca, stato } = filtersList;
 
   const { pageNumber } = pagination;
 
   useEffect(() => {
-    dispatch(setEntityPagination({ pageSize: 3 }));
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area Amministrativa',
-          url: '/area-amministrativa',
-          link: false,
-        },
-        {
-          label: 'Questionari',
-          url: '/area-amministrativa/questionari',
-          link: true,
-        },
-      ])
-    );
+    dispatch(setEntityPagination({ pageSize: 8 }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -89,11 +76,11 @@ const Surveys = () => {
       TableHeadingQuestionnaires,
       questionariList?.list.map((td) => ({
         id: td.id,
-        label: td.nome,
-        type: td.tipo,
-        status: <StatusChip status={td.stato} rowTableId={td.id} />,
-        lastChangeDate: td.dataUltimaModifica,
-        default_SCD: (
+        nome: td.nome,
+        stato: <StatusChip status={td.stato} rowTableId={td.id} />,
+        dataUltimaModifica:
+          formatDate(td.dataUltimaModifica, 'shortDate') || '-',
+        defaultSCD: (
           <FormGroup check className='table-container__toggle-button'>
             <Toggle
               label=''
@@ -101,7 +88,7 @@ const Surveys = () => {
               disabled={false}
               checked={td.defaultSCD}
               onChange={(e) =>
-                handleToggleChange('scd', e.target.checked, td.id)
+                handleToggleChange('SCD', e.target.checked, td.id)
               }
             />
             <span id={`toggle-SCD-${td.id}`} className='d-none'>
@@ -109,7 +96,7 @@ const Surveys = () => {
             </span>
           </FormGroup>
         ),
-        default_RFD: (
+        defaultRFD: (
           <FormGroup check className='table-container__toggle-button'>
             <Toggle
               label=''
@@ -117,7 +104,7 @@ const Surveys = () => {
               disabled={false}
               checked={td.defaultRFD}
               onChange={(e) =>
-                handleToggleChange('rfd', e.target.checked, td.id)
+                handleToggleChange('RFD', e.target.checked, td.id)
               }
             />
             <span id={`toggle-RFD-${td.id}`} className='d-none'>
@@ -127,14 +114,7 @@ const Surveys = () => {
         ),
       }))
     );
-    return {
-      ...table,
-      // TODO remove slice after BE integration
-      values: table.values.slice(
-        pagination?.pageNumber * pagination?.pageSize - pagination?.pageSize,
-        pagination?.pageNumber * pagination?.pageSize
-      ),
-    };
+    return table;
   };
 
   const [tableValues, setTableValues] = useState(updateTableValues());
@@ -170,9 +150,10 @@ const Surveys = () => {
   );
 
   useEffect(() => {
-    setTableValues(updateTableValues());
+    if (Array.isArray(questionariList?.list) && questionariList.list.length)
+      setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [questionariList]);
+  }, [questionariList?.list]);
 
   const getSurveysList = () => {
     dispatch(GetAllSurveys());
@@ -180,9 +161,12 @@ const Surveys = () => {
 
   const getAllFilters = () => {
     // TODO: check chiavi filtri
-    if (filterDropdownSelected !== 'filtroStati')
+    if (filterDropdownSelected !== 'stato')
       dispatch(
-        GetEntityFilterValues({ entity, dropdownType: statusDropdownLabel })
+        GetEntityFilterQueryParamsValues({
+          entity,
+          dropdownType: 'stati',
+        })
       );
   };
 
@@ -190,7 +174,7 @@ const Surveys = () => {
     getAllFilters();
     getSurveysList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [criterioRicerca, stati, pageNumber]);
+  }, [criterioRicerca, stato, pageNumber]);
 
   const handleOnChangePage = (pageNumber: number = pagination?.pageNumber) => {
     dispatch(setEntityPagination({ pageNumber }));
@@ -201,12 +185,16 @@ const Surveys = () => {
   };
 
   // HANDLE TOGGLE CHANGE for SCD and RFD
-  const handleToggleChange = (
-    flagType: 'scd' | 'rfd',
+  const handleToggleChange = async (
+    flagType: 'SCD' | 'RFD',
     flagChecked: boolean,
     surveyId: string
   ) => {
-    dispatch(UpdateSurveyExclusiveField({ flagType, flagChecked, surveyId }));
+    await dispatch(
+      UpdateSurveyExclusiveField({ flagType, flagChecked, surveyId })
+    );
+    // update the table
+    await dispatch(GetAllSurveys());
   };
 
   const handleDropdownFilters = (values: FilterI[], filterKey: string) => {
@@ -230,11 +218,10 @@ const Surveys = () => {
       searchDropdownValues.push({ filterId: filterId, value: searchValue });
     }
     setSearchDropdown(searchDropdownValues);
-    dispatch(GetFilterValuesSurvey(filterId as 'tipo' | 'stato')); // esempio di parametro con cui filtrare le opzioni tramite api
   };
 
   const handleDownloadList = () => {
-    dispatch(DownloadEntityValues({ entity }));
+    dispatch(DownloadEntityValuesQueryParams({ entity }));
   };
 
   const searchInformation: SearchInformationI = {
@@ -254,11 +241,11 @@ const Surveys = () => {
   const dropdowns: DropdownFilterI[] = [
     {
       filterName: 'Stato',
-      options: dropdownFilterOptions[statusDropdownLabel],
+      options: dropdownFilterOptions['stati'],
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, statusDropdownLabel),
       id: statusDropdownLabel,
-      values: filtersList[statusDropdownLabel],
+      values: filtersList[statusDropdownLabel] || [],
       handleOnSearch: (searchKey) =>
         handleOnSearchDropdownOptions(searchKey, statusDropdownLabel),
       valueSearch: searchDropdown
@@ -267,30 +254,55 @@ const Surveys = () => {
     },
   ];
 
-  const onActionClick: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        `/area-amministrativa/questionari/${
-          typeof td !== 'string' ? td.id : td
-        }/info`
-      );
-    },
-    [CRUDActionTypes.CLONE]: (td: TableRowI | string) => {
-      // TODO: chiamata per clonare questionario
-      navigate(
-        `/area-amministrativa/questionari/${
-          typeof td !== 'string' ? td.id : td
-        }/clona`
-      );
-    },
-  };
+  const onActionClick: CRUDActionsI = hasUserPermission([
+    'view.quest.templ',
+    'new.quest.templ',
+  ])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            `/area-amministrativa/questionari/${
+              typeof td !== 'string' ? td.id : td
+            }`
+          );
+        },
+        [CRUDActionTypes.CLONE]: (td: TableRowI | string) => {
+          // TODO: chiamata per clonare questionario
+          navigate(
+            `/area-amministrativa/questionari/${
+              typeof td !== 'string' ? td.id : td
+            }/clona`
+          );
+        },
+      }
+    : hasUserPermission(['view.quest.templ'])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            `/area-amministrativa/questionari/${
+              typeof td !== 'string' ? td.id : td
+            }`
+          );
+        },
+      }
+    : hasUserPermission(['new.quest.templ'])
+    ? {
+        [CRUDActionTypes.CLONE]: (td: TableRowI | string) => {
+          // TODO: chiamata per clonare questionario
+          navigate(
+            `/area-amministrativa/questionari/${
+              typeof td !== 'string' ? td.id : td
+            }/clona`
+          );
+        },
+      }
+    : {};
 
   const objectToPass =
     filter.value === 'questionnaire'
       ? { ...questionaraireCta }
       : { ...addendumCta };
 
-  //const device = useAppSelector(selectDevice);
 
   return (
     /*  <div className={clsx(device.mediaIsDesktop && 'row')}>
@@ -311,6 +323,7 @@ const Surveys = () => {
             ? 'Elenco Questionari'
             : 'Elenco Addendum'
         }
+        sectionInfo
       />
       <GenericSearchFilterTableLayout
         searchInformation={searchInformation}
@@ -318,25 +331,41 @@ const Surveys = () => {
         dropdowns={dropdowns}
         {...objectToPass}
         ctaDownload={handleDownloadList}
-        resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
+        resetFilterDropdownSelected={(filterKey: string) =>
+          setFilterDropdownSelected(filterKey)
+        }
       >
         <div>
-          <Table
-            {...tableValues}
-            id='table'
-            onActionClick={onActionClick}
-            onCellClick={(field, row) => console.log(field, row)}
-            //onRowClick={row => console.log(row)}
-            withActions
-          />
-          <Paginator
-            activePage={pagination?.pageNumber}
-            center
-            refID='#table'
-            pageSize={pagination?.pageSize}
-            total={questionariList.list.length}
-            onChange={handleOnChangePage}
-          />
+          {questionariList?.list?.length && tableValues?.values?.length ? (
+            <>
+              <Table
+                {...tableValues}
+                id='table'
+                onActionClick={onActionClick}
+                onCellClick={(field, row) => console.log(field, row)}
+                //onRowClick={row => console.log(row)}
+                withActions
+                totalCounter={pagination?.totalElements}
+              />
+              {pagination?.pageNumber ? (
+                <Paginator
+                  activePage={pagination?.pageNumber}
+                  center
+                  refID='#table'
+                  pageSize={pagination?.pageSize}
+                  total={pagination?.totalPages}
+                  onChange={handleOnChangePage}
+                />
+              ) : null}
+            </>
+          ) : (
+            <EmptySection
+              title='Non ci sono questionari'
+              subtitle='associati al tuo ruolo'
+              icon='it-note'
+              withIcon
+            />
+          )}
         </div>
       </GenericSearchFilterTableLayout>
     </div>

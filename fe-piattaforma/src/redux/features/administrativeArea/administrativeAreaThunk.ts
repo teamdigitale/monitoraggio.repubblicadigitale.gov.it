@@ -9,9 +9,13 @@ import {
 } from './administrativeAreaSlice';
 import { RootState } from '../../store';
 import { OptionType } from '../../../components/Form/select';
-import { downloadCSV } from '../../../utils/common';
+import {
+  downloadCSV,
+  transformFiltersToQueryParams,
+} from '../../../utils/common';
+import { getUserHeaders } from '../user/userThunk';
 
-interface EntityFilterValuesPayloadI {
+export interface EntityFilterValuesPayloadI {
   entity: string;
   dropdownType: string;
 }
@@ -29,7 +33,6 @@ export const GetEntityValues =
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         administrativeArea: { filters, pagination },
-        // TODO get user cf, role, idProgramma, idProgetto
       } = select((state: RootState) => state);
       const entityEndpoint = `/${payload.entity}/all`;
       const filtroRequest: {
@@ -48,12 +51,14 @@ export const GetEntityValues =
           );
         }
       });
-
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
       const body = {
         filtroRequest,
-        idProgramma: 0, //MOCK
-        cfUtente: 'UTENTE1', //MOCK
-        codiceRuolo: 'DTD', //MOCK DA MANTENERE SOLO NELL'HEADER
+        idProgramma,
+        idProgetto,
+        cfUtente: codiceFiscale,
+        codiceRuolo,
       };
 
       const res = await API.post(entityEndpoint, body, {
@@ -65,7 +70,12 @@ export const GetEntityValues =
 
       if (res?.data) {
         dispatch(setEntityValues({ entity: payload.entity, data: res.data }));
-        dispatch(setEntityPagination({ totalPages: res.data.numeroPagine }));
+        dispatch(
+          setEntityPagination({
+            totalPages: res.data.numeroPagine,
+            totalElements: res.data.numeroTotaleElementi,
+          })
+        );
       }
     } catch (error) {
       console.log('GetEntityValues error', error);
@@ -88,7 +98,6 @@ export const GetEntityFilterValues =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
-
       const filtroRequest: {
         [key: string]: string[] | undefined;
       } = {};
@@ -105,12 +114,14 @@ export const GetEntityFilterValues =
           );
         }
       });
-
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
       const body = {
         filtroRequest,
-        idProgramma: 0,
-        cfUtente: 'UTENTE1', //MOCK
-        codiceRuolo: 'DTD', //MOCK DA MANTENERE SOLO NELL'HEADER
+        idProgramma,
+        idProgetto,
+        cfUtente: codiceFiscale,
+        codiceRuolo,
       };
       const entityFilterEndpoint = `/${payload.entity}/${payload.dropdownType}${
         payload.entity === 'progetto' && payload.dropdownType === 'policies'
@@ -122,7 +133,8 @@ export const GetEntityFilterValues =
         const filterResponse = {
           [payload.dropdownType]: res.data.map((option: string) => ({
             label:
-              payload.dropdownType === 'stati'
+              payload.dropdownType === 'stati' ||
+              payload.dropdownType === 'ruoli'
                 ? option[0] + option.slice(1).toLowerCase()
                 : option,
             value: option,
@@ -150,6 +162,50 @@ export const GetEntityFilterValues =
     }
   };
 
+const GetEntityFilterQueryParamsValuesAction = {
+  type: 'administrativeArea/GetEntityFilterQueryParamsValues',
+};
+export const GetEntityFilterQueryParamsValues =
+  (payload: EntityFilterValuesPayloadI) =>
+  async (dispatch: Dispatch, select: Selector) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...GetEntityFilterQueryParamsValuesAction, payload });
+      const {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        administrativeArea: { filters },
+      } = select((state: RootState) => state);
+      const queryParamFilters = transformFiltersToQueryParams(filters);
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
+      const body = {
+        codiceFiscaleUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
+        idProgetto,
+        idProgramma,
+      };
+      const entityFilterEndpoint = `/${payload.entity}/${payload.dropdownType}/dropdown${queryParamFilters}`;
+      const res = await API.post(entityFilterEndpoint, body);
+      if (res?.data) {
+        const filterResponse = {
+          [payload.dropdownType]: res.data.map((option: string) => ({
+            label:
+              payload.dropdownType === 'stati'
+                ? option[0] + option.slice(1).toLowerCase()
+                : option,
+            value: option,
+          })),
+        };
+        dispatch(setEntityFilterOptions(filterResponse));
+      }
+    } catch (error) {
+      console.log('GetEntityFilterQueryParamsValues error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
 const DownloadEntityValuesAction = {
   type: 'administrativeArea/DownloadEntityValues',
 };
@@ -163,13 +219,14 @@ export const DownloadEntityValues =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
+      const { codiceFiscale, codiceRuolo, idProgramma } = getUserHeaders();
       const body = {
         filtroRequest: {
           ...filters,
         },
-        idProgramma: 0,
-        cfUtente: 'UTENTE1', //MOCK
-        codiceRuolo: 'DTD', //MOCK DA MANTENERE SOLO NELL'HEADER
+        idProgramma,
+        cfUtente: codiceFiscale,
+        codiceRuolo,
       };
       const entityEndpoint = `/${payload.entity}/download`;
       const res = await API.post(entityEndpoint, body);
@@ -178,6 +235,40 @@ export const DownloadEntityValues =
       }
     } catch (error) {
       console.log('DownloadEntityValues error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const DownloadEntityValuesQueryParamsAction = {
+  type: 'administrativeArea/DownloadEntityValuesQueryParams',
+};
+export const DownloadEntityValuesQueryParams =
+  (payload: any) => async (dispatch: Dispatch, select: Selector) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...DownloadEntityValuesQueryParamsAction, payload });
+      const {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        administrativeArea: { filters },
+      } = select((state: RootState) => state);
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
+      const body = {
+        codiceFiscaleUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
+        idProgetto,
+        idProgramma,
+      };
+      const queryParamFilters = transformFiltersToQueryParams(filters);
+      const entityEndpoint = `/${payload.entity}/download${queryParamFilters}`;
+      const res = await API.post(entityEndpoint, body);
+      if (res?.data) {
+        downloadCSV(res.data, `${payload.entity}.csv`, true);
+      }
+    } catch (error) {
+      console.log('DownloadEntityValuesQueryParams error', error);
     } finally {
       dispatch(hideLoader());
     }
@@ -217,5 +308,27 @@ export const GetEntityDetail =
       console.log('GetEntityDetail error', error);
     } finally {
       //   dispatch(hideLoader());
+    }
+  };
+
+export const TerminateEntity =
+  (
+    entityId: string,
+    entity: 'programma' | 'progetto',
+    terminationDate: string
+  ) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ type: 'admistrativeArea/TerminateEntity' });
+      if (entityId && terminationDate) {
+        await API.put(`/${entity}/termina/${entityId}`, {
+          dataTerminazione: terminationDate,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
     }
   };

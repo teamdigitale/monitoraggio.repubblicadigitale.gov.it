@@ -1,15 +1,22 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Form, Input } from '../../components';
+import { Form, Input, Select } from '../../components';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../hoc/withFormHandler';
 import { selectUsers } from '../../redux/features/administrativeArea/administrativeAreaSlice';
-import { GetUserDetail } from '../../redux/features/administrativeArea/user/userThunk';
+import { GetUserDetails } from '../../redux/features/administrativeArea/user/userThunk';
 import { useAppSelector } from '../../redux/hooks';
-import { formFieldI, newForm, newFormField } from '../../utils/formHelper';
+import {
+  CommonFields,
+  formFieldI,
+  newForm,
+  newFormField,
+} from '../../utils/formHelper';
 import { RegexpType } from '../../utils/validator';
+import { selectRolesList } from '../../redux/features/roles/rolesSlice';
+import { GetRolesListValues } from '../../redux/features/roles/rolesThunk';
 
 interface UserInformationI {
   /*formData:
@@ -27,32 +34,58 @@ interface UserInformationI {
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   setIsFormValid?: (param: boolean | undefined) => void;
   creation?: boolean;
+  fieldsToHide?: ('ruolo' | 'mansione')[];
 }
 
 interface UserFormI extends withFormHandlerProps, UserInformationI {}
 const FormUser: React.FC<UserFormI> = (props) => {
   const {
-    //    getFormValues = () => ({}),
     setFormValues = () => ({}),
     form,
-    onInputChange,
-    sendNewValues,
     isValidForm,
-    setIsFormValid,
-    getFormValues,
+    onInputChange = () => ({}),
+    sendNewValues = () => ({}),
+    setIsFormValid = () => ({}),
+    getFormValues = () => ({}),
+    updateForm = () => ({}),
     creation = false,
+    fieldsToHide = [],
   } = props;
 
-  const formDisabled = !!props.formDisabled;
-  const { userId } = useParams();
-  const formData: { [key: string]: string } | undefined =
-    useAppSelector(selectUsers)?.detail?.info;
   const dispatch = useDispatch();
+  const { userId } = useParams();
+  const formData: { [key: string]: string } =
+    useAppSelector(selectUsers)?.detail?.dettaglioUtente;
+  const ruoliList = useAppSelector(selectRolesList);
+
+  const formDisabled = !!props.formDisabled;
+
+  useEffect(() => {
+    if (
+      form &&
+      formDisabled &&
+      Object.entries(form).some(([_key, value]) => !value.disabled)
+    ) {
+      updateForm(
+        Object.fromEntries(
+          Object.entries(form).map(([key, value]) => [
+            key,
+            { ...value, disabled: formDisabled },
+          ])
+        ),
+        true
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formDisabled, form]);
 
   useEffect(() => {
     if (!creation) {
-      dispatch(GetUserDetail(userId || ''));
+      userId && dispatch(GetUserDetails(userId));
+    } else if (!fieldsToHide.includes('ruolo')){
+      dispatch(GetRolesListValues({ tipologiaRuoli: 'NP' }));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [creation]);
 
   useEffect(() => {
@@ -62,98 +95,92 @@ const FormUser: React.FC<UserFormI> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
 
-  const onInputDataChange = (
-    value: formFieldI['value'],
-    field?: formFieldI['field']
-  ) => {
-    onInputChange?.(value, field);
-    sendNewValues?.(getFormValues?.());
-    setIsFormValid?.(isValidForm);
-  };
+  useEffect(() => {
+    setIsFormValid(isValidForm);
+    sendNewValues(getFormValues());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form]);
 
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 
   return (
-    <Form className='mt-5 mb-5' formDisabled={formDisabled}>
+    <Form id='form-user' className='mt-5 mb-0' formDisabled={formDisabled}>
       <Form.Row className={bootClass}>
-        <Input
-          {...form?.userId}
-          col='col-12 col-lg-6'
-          label='User id'
-          placeholder='Inserisci user id'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-        />
-        <Input
-          {...form?.name}
-          col='col-lg-6 col-12'
-          label='Nome'
-          placeholder='Inserisci nome utente'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-        />
-      </Form.Row>
-      <Form.Row className={bootClass}>
-        <Input
-          {...form?.lastName}
-          col='col-12 col-lg-6'
-          label='Cognome'
-          placeholder='Inserisci cognome utente'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-        />
-        <Input
-          {...form?.fiscalCode}
-          label='Codice fiscale'
-          col='col-12 col-lg-6'
-          placeholder='Inserisci codice fiscale'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-        />
-      </Form.Row>
-      <Form.Row className={bootClass}>
-        <Input
-          {...form?.phone}
-          col='col-12 col-lg-6'
-          label='Telefono'
-          placeholder='Inserisci telefono'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-        />
-        <Input
-          {...form?.email}
-          label='Email'
-          col='col-12 col-lg-6'
-          placeholder='Inserisci email'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-        />
-      </Form.Row>
-      <Form.Row className={bootClass}>
-        <Input
+        <>
+          {formDisabled ? (
+            <Input {...form?.id} col='col-12 col-lg-6' label='ID' />
+          ) : null}
+          <Input
+            {...form?.nome}
+            required
+            col='col-lg-6 col-12'
+            label='Nome'
+            // placeholder='Inserisci nome utente'
+            onInputChange={onInputChange}
+          />
+          <Input
+            {...form?.cognome}
+            required
+            col='col-12 col-lg-6'
+            label='Cognome'
+            // placeholder='Inserisci cognome utente'
+            onInputChange={onInputChange}
+          />
+          {creation && !fieldsToHide.includes('ruolo') ? (
+            <Select
+              {...form?.ruolo}
+              value={form?.ruolo.value as string}
+              col='col-12 col-lg-6'
+              label='Ruolo'
+              placeholder='Seleziona ruolo'
+              options={ruoliList.map((role) => ({
+                value: role.codiceRuolo,
+                label: role.nomeRuolo,
+              }))}
+              onInputChange={onInputChange}
+              wrapperClassName='mb-5'
+              aria-label='ruolo'
+              required
+            />
+          ) : null}
+          <Input
+            {...form?.codiceFiscale}
+            required
+            label='Codice fiscale'
+            col='col-12 col-lg-6'
+            // placeholder='Inserisci codice fiscale'
+            onInputChange={onInputChange}
+          />
+          <Input
+            {...form?.telefono}
+            //required
+            col='col-12 col-lg-6'
+            label='Telefono'
+            // placeholder='Inserisci telefono'
+            onInputChange={onInputChange}
+          />
+          <Input
+            {...form?.email}
+            label='Indirizzo email'
+            col='col-12 col-lg-6'
+            // placeholder='Inserisci email'
+            onInputChange={onInputChange}
+          />
+          <Input
+            {...form?.mansione}
+            label='Posizione Lavorativa'
+            col='col-12 col-lg-6'
+            // placeholder='Inserisci bio'
+            onInputChange={onInputChange}
+          />
+          {/*<Input
           {...form?.authorityRef}
           col='col-12 col-lg-6'
           label='Ente di riferimento'
           placeholder='Inserisci ente di riferimento'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-        />
-        <Input
-          {...form?.bio}
-          label='Bio'
-          col='col-12 col-lg-6'
-          placeholder='Inserisci bio'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-        />
+          onInputChange={onInputChange}
+        />*/}
+        </>
       </Form.Row>
     </Form>
   );
@@ -161,37 +188,58 @@ const FormUser: React.FC<UserFormI> = (props) => {
 
 const form = newForm([
   newFormField({
-    field: 'name',
-    id: 'name',
+    ...CommonFields.NOME,
+    field: 'nome',
+    id: 'nome',
+    required: true,
   }),
   newFormField({
-    field: 'lastName',
-    id: 'lastName',
+    ...CommonFields.COGNOME,
+    field: 'cognome',
+    id: 'cognome',
+    required: true,
   }),
   newFormField({
-    field: 'userId',
-    id: 'userId',
+    field: 'ruolo',
+    id: 'ruolo',
+    type: 'select',
+    //required: true,
   }),
   newFormField({
-    field: 'fiscalCode',
-    id: 'fiscalCode',
+    field: 'id',
+    id: 'id',
   }),
   newFormField({
+    ...CommonFields.CODICE_FISCALE,
+    field: 'codiceFiscale',
+    id: 'codiceFiscale',
+    required: true,
+  }),
+  newFormField({
+    ...CommonFields.EMAIL,
     field: 'email',
-    regex: RegexpType.EMAIL,
     id: 'email',
+    required: true,
   }),
   newFormField({
-    field: 'phone',
-    id: 'phone',
+    field: 'telefono',
+    id: 'telefono',
+    regex: RegexpType.TELEPHONE,
+    //required: true,
+    minimum: 9,
+    maximum: 20,
   }),
+  /*
   newFormField({
     field: 'authorityRef',
     id: 'authorityRef',
   }),
+  */
   newFormField({
-    field: 'bio',
-    id: 'bio',
+    field: 'mansione',
+    id: 'mansione',
+    //required: true,
+    maximum: 160,
   }),
 ]);
 export default withFormHandler({ form }, FormUser);

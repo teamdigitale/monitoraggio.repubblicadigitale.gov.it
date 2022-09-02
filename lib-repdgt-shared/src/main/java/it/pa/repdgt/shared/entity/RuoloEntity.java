@@ -55,6 +55,9 @@ public class RuoloEntity implements Serializable {
 	
 	@Column(name = "STATO")
 	private String stato;
+	
+	@Column(name = "MODIFICABILE",  nullable = false)
+	private Boolean modificabile;
 
 	public List<GruppoEntity> aggiungiGruppo(GruppoEntity gruppo) {
 		this.gruppi.add(gruppo);

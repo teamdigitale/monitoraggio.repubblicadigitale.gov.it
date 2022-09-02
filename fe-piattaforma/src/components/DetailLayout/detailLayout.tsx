@@ -13,6 +13,11 @@ import clsx from 'clsx';
 import { openModal } from '../../redux/features/modal/modalSlice';
 import { useDispatch } from 'react-redux';
 import { formTypes } from '../../pages/administrator/AdministrativeArea/Entities/utils';
+import CardStatusActionProject from '../CardStatusAction/cardStatusActionProject';
+import CardStatusActionHeadquarters from '../CardStatusAction/cardStatusActionHeadquarters';
+import CardStatusActionSurveys from '../CardStatusAction/cardStatusActionSurveys';
+import CardStatusActionPartnerAuthority from '../CardStatusAction/cardStatusActionPartnerAuthority';
+import EmptySection from '../EmptySection/emptySection';
 
 interface DetailLayoutI {
   nav?: ReactElement;
@@ -20,16 +25,16 @@ interface DetailLayoutI {
   itemsAccordionList?: ItemsListI[] | null | undefined;
   titleInfo: {
     title: string;
-    status: string;
+    status?: string | undefined;
     upperTitle: {
-      icon: string | any;
+      icon: string;
       text: string;
     };
     subTitle?: string;
     headingRole?: boolean;
     iconAvatar?: boolean;
-    name?: string;
-    surname?: string;
+    name?: string | undefined;
+    surname?: string | undefined;
   };
   itemsList?: ItemsListI | null | undefined;
   showItemsList?: boolean;
@@ -42,6 +47,7 @@ interface DetailLayoutI {
   surveyDefault?: ItemsListI | null | undefined;
   isRadioButtonItem?: boolean;
   onRadioChange?: (surveyDefault: string) => void;
+  isUserProfile?: boolean;
 }
 const DetailLayout: React.FC<DetailLayoutI> = ({
   formButtons,
@@ -53,11 +59,12 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   buttonsPosition,
   showGoBack = true,
   goBackTitle = 'Torna indietro',
-  goBackPath = '/',
+  goBackPath,
   children,
   currentTab,
   surveyDefault,
   isRadioButtonItem = false,
+  isUserProfile = false,
   onRadioChange,
 }) => {
   const navigate = useNavigate();
@@ -69,7 +76,11 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
       <div>
         {showGoBack && (
           <Button
-            onClick={() => navigate(goBackPath)}
+            onClick={() =>
+              goBackPath && goBackTitle !== 'Torna indietro'
+                ? navigate(goBackPath, { replace: true })
+                : navigate(-1)
+            }
             className={clsx(device.mediaIsPhone ? 'px-0 mb-5 mr-5' : 'px-0')}
           >
             <Icon
@@ -80,7 +91,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
             <span className='primary-color'>{goBackTitle}</span>
           </Button>
         )}
-        <SectionTitle {...titleInfo} />
+        <SectionTitle isUserProfile={isUserProfile} {...titleInfo} />
         {nav && (
           <div
             className={clsx(
@@ -95,11 +106,10 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
           </div>
         )}
         <div>{children}</div>
-
-        {itemsAccordionList && itemsAccordionList.length
+        {itemsAccordionList?.length
           ? itemsAccordionList.map((singleItem, index) => (
               <Accordion
-                title={singleItem.title ? singleItem.title : ''}
+                title={singleItem.title || ''}
                 totElem={singleItem.items.length}
                 cta={`Aggiungi ${singleItem.title}`}
                 onClickCta={() =>
@@ -108,7 +118,11 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                       id:
                         singleItem.title === 'Referenti'
                           ? formTypes.REFERENTE
-                          : formTypes.DELEGATO,
+                          : singleItem.title === 'Delegati'
+                          ? formTypes.DELEGATO
+                          : singleItem.title === 'Facilitatori'
+                          ? formTypes.FACILITATORE
+                          : formTypes.SEDE,
                       payload: { title: `Aggiungi ${singleItem.title}` },
                     })
                   )
@@ -116,38 +130,52 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                 key={index}
                 lastBottom={index === itemsAccordionList.length - 1}
               >
-                {singleItem.items.map((item, index: number) => (
-                  <CardStatusAction
-                    key={index}
-                    title={item.nome}
-                    status={item.stato}
-                    onActionClick={item.actions}
-                    id={item.id}
-                    fullInfo={item.fullInfo}
+                {singleItem.items?.length ? (
+                  singleItem.items.map((item) => (
+                    <CardStatusAction
+                      key={item.id}
+                      title={`${item.nome} ${
+                        item.cognome ? item.cognome : ''
+                      }`.trim()}
+                      status={item.stato}
+                      onActionClick={item.actions}
+                      id={item.id}
+                      fullInfo={item.fullInfo}
+                      cf={item.codiceFiscale}
+                    />
+                  ))
+                ) : (
+                  <EmptySection
+                    title={`Non esistono ${singleItem.title?.toLowerCase()} associati`}
+                    horizontal
+                    aside
                   />
-                ))}
+                )}
               </Accordion>
             ))
           : null}
-        {currentTab === 'questionari' && surveyDefault?.items?.length && (
-          <div>
-            <CardStatusAction
-              //moreThanOneSurvey={isRadioButtonItem}
-              title={surveyDefault?.items[0].nome}
-              status={surveyDefault?.items[0].stato}
-              id={surveyDefault?.items[0].id}
-              fullInfo={surveyDefault?.items[0]?.fullInfo}
-              onActionClick={surveyDefault?.items[0]?.actions}
-            />
-            {isRadioButtonItem &&
-              device.mediaIsDesktop &&
-              currentTab === 'questionari' &&
-              itemsList?.items?.length && (
-                <h3 className='h4 text-muted mx-3'> Altri questionari </h3>
-              )}
-          </div>
-        )}
-        {showItemsList && itemsList?.items?.length ? (
+        {currentTab === 'questionari' ? (
+          surveyDefault?.items?.length && showItemsList ? (
+            <div>
+              <CardStatusActionSurveys
+                title={surveyDefault?.items[0].nome}
+                status={surveyDefault?.items[0].stato}
+                id={surveyDefault?.items[0].id}
+                fullInfo={surveyDefault?.items[0]?.fullInfo}
+                onActionClick={surveyDefault?.items[0]?.actions}
+              />
+              {isRadioButtonItem &&
+                !device.mediaIsPhone &&
+                currentTab === 'questionari' &&
+                itemsList?.items?.length && (
+                  <h3 className='h4 text-muted mx-3'> Altri questionari </h3>
+                )}
+            </div>
+          ) : null
+        ) : null}
+        {showItemsList &&
+        itemsList?.items?.length &&
+        currentTab === 'questionari' ? (
           <>
             {itemsList.title && (
               <h2 className='h4 neutral-1-color-a7'>{itemsList.title}</h2>
@@ -156,7 +184,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
               currentTab !== 'questionari') &&
               itemsList.items.map((item) => {
                 return (
-                  <CardStatusAction
+                  <CardStatusActionSurveys
                     moreThanOneSurvey={
                       currentTab === 'questionari' && isRadioButtonItem
                     }
@@ -174,7 +202,52 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
               })}{' '}
           </>
         ) : null}
-        {buttonsPosition === 'BOTTOM' &&
+        {currentTab === 'progetti' && showItemsList && itemsList?.items?.length
+          ? itemsList.items.map((item) => {
+              return (
+                <CardStatusActionProject
+                  title={item.nome}
+                  status={item.stato}
+                  key={item.id}
+                  id={item.id}
+                  fullInfo={item.fullInfo}
+                  onActionClick={item.actions}
+                />
+              );
+            })
+          : null}
+        {currentTab === 'enti-partner' &&
+        showItemsList &&
+        itemsList?.items?.length
+          ? itemsList.items.map((item) => {
+              return (
+                <CardStatusActionPartnerAuthority
+                  title={item.nome}
+                  status={item.stato}
+                  key={item.id}
+                  id={item.id}
+                  fullInfo={item.fullInfo}
+                  onActionClick={item.actions}
+                />
+              );
+            })
+          : null}
+        {currentTab === 'sedi' && showItemsList && itemsList?.items?.length
+          ? itemsList.items.map((item) => {
+              return (
+                <CardStatusActionHeadquarters
+                  title={item.nome}
+                  status={item.stato}
+                  key={item.id}
+                  id={item.id}
+                  fullInfo={item.fullInfo}
+                  onActionClick={item.actions}
+                />
+              );
+            })
+          : null}
+
+        {buttonsPosition === 'TOP' &&
         formButtons &&
         formButtons.length !== 0 ? (
           <>
@@ -189,7 +262,10 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
           </>
         ) : null}
       </div>
-      {buttonsPosition === 'TOP' && formButtons && formButtons.length !== 0 ? (
+
+      {buttonsPosition === 'BOTTOM' &&
+      formButtons &&
+      formButtons.length !== 0 ? (
         <>
           <div aria-hidden='true' className='mt-5 w-100'>
             <Sticky mode='bottom' stickyClassName='sticky bg-white container'>

@@ -11,6 +11,7 @@ insert into utente (codice_fiscale, nome, cognome, email, stato, integrazione) v
 insert into utente (codice_fiscale, nome, cognome, email, stato, integrazione) values('UTENTE4','U4', 'U1', 'd@a.com', 'ATTIVO', false);
 insert into utente (codice_fiscale, nome, cognome, email, stato, integrazione) values('FACILITATORE1','F1', 'F1', 'f1@a.com', 'ATTIVO', false);
 insert into utente (codice_fiscale, nome, cognome, email, stato, integrazione) values('FACILITATORE2','F2', 'F2', 'f2@a.com', 'ATTIVO', false);
+insert into utente (id, codice_fiscale, nome, cognome, email, stato, integrazione) values(99, 'UTENTE99','U99', 'U99', 'u99@a.com', 'ATTIVO', false);
 
 
 insert into utente (codice_fiscale, nome, cognome, email, stato, integrazione)
@@ -24,30 +25,32 @@ insert into utente (codice_fiscale, nome, cognome, email, stato, integrazione)
     
 
 -- CREAZIONE ANAGRAFICA RUOLI
-  insert into ruolo(codice, nome, predefinito)
-    values('DTD', 'DTD AMMINISTRATORE', false);
-  insert into ruolo(codice, nome, predefinito)
-    values('DSCU', 'DSCU .....', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('REG', 'REFERENTE ENTE GESTORE PROGRAMMA', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('REGP', 'REFERENTE ENTE GESTORE PROGETTO', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('DEG', 'DELEGATO ENTE GESTORE PROGRAMMA', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('DEGP', 'DELEGATO ENTE GESTORE PROGETTO', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('REP', 'REFERENTE ENTE PARTNER GESTORE PROGRAMMA', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('REPP', 'REFERENTE ENTE PARTNER GESTORE PROGETTO', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('DEP', 'DELEGATO ENTE PARTNER GESTORE PROGRAMMA', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('DEPP', 'DELEGATO ENTE PARTNER GESTORE PROGETTO', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('FAC', 'FACILITATORE', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('VOL', 'VOLONTARIO', true);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DTD', 'DTD AMMINISTRATORE', FALSE, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DSCU', 'DSCU .....', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('REG', 'REFERENTE ENTE GESTORE PROGRAMMA', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('REGP', 'REFERENTE ENTE GESTORE PROGETTO', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DEG', 'DELEGATO ENTE GESTORE PROGRAMMA', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DEGP', 'DELEGATO ENTE GESTORE PROGETTO', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('REP', 'REFERENTE ENTE PARTNER GESTORE PROGRAMMA', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('REPP', 'REFERENTE ENTE PARTNER GESTORE PROGETTO', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DEP', 'DELEGATO ENTE PARTNER GESTORE PROGRAMMA', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DEPP', 'DELEGATO ENTE PARTNER GESTORE PROGETTO', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('FAC', 'FACILITATORE', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('VOL', 'VOLONTARIO', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('CUSTOM ROLE', 'CUSTOM FANTASTIC ROLE', FALSE, false);
     
   -- CREAZIONE ANAGRAFICA GRUPPI
   insert into gruppo(codice, descrizione)
@@ -79,15 +82,15 @@ insert into utente (codice_fiscale, nome, cognome, email, stato, integrazione)
   INSERT INTO UTENTE_X_RUOLO(UTENTE_ID, RUOLO_CODICE) VALUES('ASDPDS17R65F313X', 'REPP');
 
 insert into utente_x_ruolo(UTENTE_ID, RUOLO_CODICE) values ('UTENTE1', 'DTD');
-insert into utente_x_ruolo(UTENTE_ID, RUOLO_CODICE) values ('UTENTE2', 'REG');
-insert into utente_x_ruolo(UTENTE_ID, RUOLO_CODICE) values ('UTENTE3', 'DEG');
-insert into utente_x_ruolo(UTENTE_ID, RUOLO_CODICE) values ('UTENTE2', 'DEG');
 insert into utente_x_ruolo(UTENTE_ID, RUOLO_CODICE) values ('UTENTE1', 'DEGP');
-insert into utente_x_ruolo(UTENTE_ID, RUOLO_CODICE) values ('UTENTE4', 'REGP');
+insert into utente_x_ruolo(UTENTE_ID, RUOLO_CODICE) values ('UTENTE2', 'DEG');
 insert into utente_x_ruolo(UTENTE_ID, RUOLO_CODICE) values ('UTENTE2', 'DEPP');
-insert into utente_x_ruolo(UTENTE_ID, RUOLO_CODICE) values ('UTENTE3', 'REPP');
+insert into utente_x_ruolo(UTENTE_ID, RUOLO_CODICE) values ('UTENTE2', 'REG');
 insert into utente_x_ruolo(UTENTE_ID, RUOLO_CODICE) values ('UTENTE2', 'FAC');
 insert into utente_x_ruolo(UTENTE_ID, RUOLO_CODICE) values ('UTENTE2', 'VOL');
+insert into utente_x_ruolo(UTENTE_ID, RUOLO_CODICE) values ('UTENTE3', 'DEG');
+insert into utente_x_ruolo(UTENTE_ID, RUOLO_CODICE) values ('UTENTE3', 'REPP');
+insert into utente_x_ruolo(UTENTE_ID, RUOLO_CODICE) values ('UTENTE4', 'REGP');
 insert into utente_x_ruolo(UTENTE_ID, RUOLO_CODICE) values ('FACILITATORE1', 'FAC');
 insert into utente_x_ruolo(UTENTE_ID, RUOLO_CODICE) values ('FACILITATORE2', 'FAC');
 

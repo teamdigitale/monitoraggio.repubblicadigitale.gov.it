@@ -43,4 +43,8 @@ public class StoricoEnteGestoreProgrammaEntity implements Serializable {
 	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column(name = "DATA_ATTIVAZIONE_ENTE", nullable = false)
 	private Date dataAttivazioneEnte;
+	
+	@Temporal(value = TemporalType.TIMESTAMP)
+	@Column(name = "DATA_ORA_TERMINAZIONE", nullable = true)
+	private Date dataOraTerminazione;
 }

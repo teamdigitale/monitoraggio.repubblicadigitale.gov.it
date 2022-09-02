@@ -1,6 +1,7 @@
 package it.pa.repdgt.gestioneutente.request;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -15,9 +16,9 @@ public class FiltroRequest implements Serializable {
 	@JsonProperty(value = "criterioRicerca")
 	private String criterioRicerca;
 	
-	@JsonProperty(value = "ruolo")
-	private String ruolo;
+	@JsonProperty(value = "ruoli")
+	private List<String> ruoli;
 	
-	@JsonProperty(value = "stato")
-	private String stato;
+	@JsonProperty(value = "stati")
+	private List<String> stati;
 }

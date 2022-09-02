@@ -6,9 +6,12 @@ import clsx from 'clsx';
 
 interface EmptySectionI {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   icon?: string;
   buttons?: ButtonInButtonsBar[];
+  withIcon?: boolean;
+  aside?: boolean;
+  horizontal?: boolean;
 }
 
 const EmptySection: React.FC<EmptySectionI> = ({
@@ -16,24 +19,33 @@ const EmptySection: React.FC<EmptySectionI> = ({
   subtitle,
   icon,
   buttons,
+  withIcon,
+  aside,
+  horizontal,
 }) => {
   return (
     <div
       className={clsx(
         'd-flex',
-        'justify-content-center',
-        'align-items-center',
+        'mt-5',
+        horizontal
+          ? 'flex-row justify-content-center'
+          : 'justify-content-center align-items-center flex-column',
+        aside && 'justify-content-start',
         'empty-section',
-        'flex-column',
         'w-100'
       )}
     >
-      <Icon
-        icon={icon || 'it-warning-circle'}
-        className='empty-section__icon'
-      />
-      <h1 className='h5'>{title || 'Questa sezione è ancora vuota'}</h1>
-      {subtitle && <h2 className='h6'>{subtitle}</h2>}
+      {withIcon && (
+        <Icon
+          icon={icon || 'it-warning-circle'}
+          className={clsx('empty-section__icon ', horizontal && 'mr-3')}
+        />
+      )}
+      <div className='d-flex flex-column align-items-center'>
+        <h1 className='h5'>{title || 'Questa sezione è ancora vuota'}</h1>
+        {subtitle && <h2 className='h6'>{subtitle}</h2>}
+      </div>
       {buttons && <ButtonsBar buttons={buttons} />}
     </div>
   );

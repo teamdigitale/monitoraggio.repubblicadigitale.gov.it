@@ -18,18 +18,19 @@ import {
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
 } from '../../../../../components/genericSearchFilterTableLayout/genericSearchFilterTableLayout';
-import { Paginator, Table } from '../../../../../components';
+import { EmptySection, Paginator, Table } from '../../../../../components';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import { useNavigate } from 'react-router-dom';
 import ManageGenericAuthority from '../modals/manageGenericAuthority';
 
 import { AuthoritiesLightI } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
-import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 import {
+  DownloadEntityValues,
   GetEntityFilterValues,
   GetEntityValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
+import useGuard from '../../../../../hooks/guard';
 
 const entity = 'ente';
 const profileDropdownLabel = 'profili';
@@ -49,6 +50,8 @@ const Authorities: React.FC = () => {
   const [filterDropdownSelected, setFilterDropdownSelected] =
     useState<string>('');
 
+  const { hasUserPermission } = useGuard();
+
   const { criterioRicerca, idsProgetti, profili, idsProgrammi } = filtersList;
 
   const { pageNumber } = pagination;
@@ -64,20 +67,6 @@ const Authorities: React.FC = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area Amministrativa',
-          url: '/area-amministrativa',
-          link: false,
-        },
-        {
-          label: 'Enti',
-          url: '/area-amministrativa/enti',
-          link: true,
-        },
-      ])
-    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -98,7 +87,16 @@ const Authorities: React.FC = () => {
         id: td.id,
         nome: td.nome,
         tipologia: td.tipologia,
-        profilo: td.profilo,
+        profilo:
+          td.profilo.split(',').length === 1 ? (
+            td.profilo
+          ) : (
+            <p>
+              {' '}
+              <strong> {td.profilo.split(',').length} </strong> profili
+              assegnati{' '}
+            </p>
+          ),
       }))
     );
     return table;
@@ -107,7 +105,8 @@ const Authorities: React.FC = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(entiList)) setTableValues(updateTableValues());
+    if (Array.isArray(entiList) && entiList.length)
+      setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entiList]);
 
@@ -195,6 +194,10 @@ const Authorities: React.FC = () => {
     },
   ];
 
+  const handleDownloadList = () => {
+    dispatch(DownloadEntityValues({ entity }));
+  };
+
   const searchInformation: SearchInformationI = {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
@@ -204,36 +207,57 @@ const Authorities: React.FC = () => {
     title: 'Cerca progetto',
   };
 
-  const onActionClick: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(`${typeof td === 'string' ? td : td.id}`);
-    },
-  };
+  const onActionClick: CRUDActionsI = hasUserPermission(['view.card.enti'])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(`${typeof td === 'string' ? td : td.id}`);
+        },
+      }
+    : {};
 
   return (
     <GenericSearchFilterTableLayout
       searchInformation={searchInformation}
       dropdowns={dropdowns}
       filtersList={filtersList}
-      resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
+      ctaDownload={
+        hasUserPermission(['list.dwnl.enti']) ? handleDownloadList : undefined
+      }
+      resetFilterDropdownSelected={(filterKey: string) =>
+        setFilterDropdownSelected(filterKey)
+      }
     >
-      <Table
-        {...tableValues}
-        id='table'
-        onActionClick={onActionClick}
-        onCellClick={(field, row) => console.log(field, row)}
-        withActions
-      />
-      {pagination?.pageNumber ? (
-        <Paginator
-          activePage={pagination?.pageNumber}
-          center
-          refID='#table'
-          pageSize={pagination?.pageSize}
-          total={pagination?.totalPages}
-          onChange={handleOnChangePage}
-        />
-      ) : null}
+      <div>
+        {entiList?.length && tableValues?.values?.length ? (
+          <>
+            <Table
+              {...tableValues}
+              id='table'
+              onActionClick={onActionClick}
+              onCellClick={(field, row) => console.log(field, row)}
+              withActions
+              totalCounter={pagination?.totalElements}
+            />
+            {pagination?.pageNumber ? (
+              <Paginator
+                activePage={pagination?.pageNumber}
+                center
+                refID='#table'
+                pageSize={pagination?.pageSize}
+                total={pagination?.totalPages}
+                onChange={handleOnChangePage}
+              />
+            ) : null}
+          </>
+        ) : (
+          <EmptySection
+            title='Non sono presenti progetti'
+            subtitle='associati al tuo ruolo'
+            icon='it-note'
+            withIcon
+          />
+        )}
+      </div>
       <ManageGenericAuthority creation />
     </GenericSearchFilterTableLayout>
   );

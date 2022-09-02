@@ -16,13 +16,14 @@ import { useAppSelector } from '../../../../../redux/hooks';
 import FormProjectGeneralInfo from '../../../../forms/formProjects/formProjectGeneralInfo';
 
 import {
-  resetProjectDetails,
+  resetProjectDetails, selectPrograms,
   selectProjects,
   setProjectGeneralInfo,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import clsx from 'clsx';
 import TargetsForm from '../../../../../components/AdministrativeArea/Entities/General/TargetForm/TargetsForm';
 import { useParams } from 'react-router-dom';
+import { GetProgramDetail } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
 
 interface ProgramInformationI {
   formDisabled?: boolean;
@@ -43,15 +44,16 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
   const { projectId, entityId } = useParams();
 
-  const handleSaveProgram = () => {
+  const handleSaveProgram = async () => {
     if (isFormValid) {
-      if (creation) {
-        entityId && dispatch(createProject(entityId, newFormValues));
+      if (creation && entityId) {
+        await dispatch(createProject(entityId, newFormValues));
         setCurrentStep(0);
         // here dispatch create new program
-      } else {
+        dispatch(GetProgramDetail(entityId));
+      } else if (projectId) {
         // dispatch(createProjectDetails(newFormValues));
-        projectId && dispatch(updateProject(projectId, newFormValues));
+        await dispatch(updateProject(projectId, newFormValues));
         setCurrentStep(0);
         // TODO here dispatch update program
       }
@@ -64,7 +66,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       title: 'Informazioni generali',
       primaryCTA: {
         disabled: !isFormValid,
-        label: 'Step Successivo',
+        label: 'Avanti',
         onClick: () => updateDetailInfoHandler(),
       },
       secondaryCTA: {
@@ -77,7 +79,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       title: 'Numero punti di facilitazione',
       primaryCTA: {
         disabled: !isFormValid,
-        label: 'Step Successivo',
+        label: 'Avanti',
         onClick: () => updateDetailInfoHandler(),
       },
       secondaryCTA: {
@@ -85,7 +87,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         onClick: () => ({}),
       },
       tertiatyCTA: {
-        label: 'Step precedente',
+        label: 'Indietro',
         onClick: () => setCurrentStep((prev) => prev - 1),
       },
     },
@@ -93,7 +95,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       title: 'Numero utenti unici',
       primaryCTA: {
         disabled: !isFormValid,
-        label: 'Step Successivo',
+        label: 'Avanti',
         onClick: () => updateDetailInfoHandler(),
       },
       secondaryCTA: {
@@ -101,7 +103,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         onClick: () => ({}),
       },
       tertiatyCTA: {
-        label: 'Step precedente',
+        label: 'Indietro',
         onClick: () => setCurrentStep((prev) => prev - 1),
       },
     },
@@ -109,7 +111,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       title: 'Numero servizi',
       primaryCTA: {
         disabled: !isFormValid,
-        label: 'Step Successivo',
+        label: 'Avanti',
         onClick: () => updateDetailInfoHandler(),
       },
       secondaryCTA: {
@@ -117,7 +119,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         onClick: () => ({}),
       },
       tertiatyCTA: {
-        label: 'Step precedente',
+        label: 'Indietro',
         onClick: () => setCurrentStep((prev) => prev - 1),
       },
     },
@@ -130,10 +132,10 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => ({}),
+        onClick: () => () => ({}),
       },
       tertiatyCTA: {
-        label: 'Step precedente',
+        label: 'Indietro',
         onClick: () => setCurrentStep((prev) => prev - 1),
       },
     },
@@ -146,6 +148,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
   const device = useAppSelector(selectDevice);
   const projectDetails =
     useAppSelector(selectProjects).detail.dettagliInfoProgetto;
+  const { dettagliInfoProgramma: programDetails } = useAppSelector(selectPrograms).detail || {};
 
   const stepsArray = () => {
     const allSteps: string[] = [];
@@ -210,6 +213,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             setIsFormValid(!!value)
           }
           creation={creation}
+          program={programDetails}
         />
       );
       break;

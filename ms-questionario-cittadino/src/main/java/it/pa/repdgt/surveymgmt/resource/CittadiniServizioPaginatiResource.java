@@ -15,7 +15,7 @@ import lombok.Setter;
 public class CittadiniServizioPaginatiResource implements Serializable {
 	private static final long serialVersionUID = -2324352133478003836L;
 
-	@JsonProperty(value = "servizi")
+	@JsonProperty(value = "cittadini")
 	private List<CittadinoServizioResource> cittadiniServizioResource; 
 	
 	@JsonProperty(value = "numeroPagine")

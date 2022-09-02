@@ -16,7 +16,7 @@ import {
 import CitizensArea from '../pages/administrator/CitizensArea/citizensArea';
 import RoleManagement from '../pages/common/RoleManagement/roleManagement';
 import RoleManagementDetails from '../pages/common/RoleManagement/RoleManagementDetails/roleManagementDetails';
-import Onboarding from '../pages/facilitator/Onboarding/onboarding';
+import Onboarding from '../pages/facilitator/Onboarding/formOnboarding';
 import { RolePermissionI } from '../redux/features/roles/rolesSlice';
 import PrintSurvey from '../pages/administrator/AdministrativeArea/Entities/Surveys/printSurvey/printSurvey';
 import Programs from '../pages/administrator/AdministrativeArea/Entities/Programs/programs';
@@ -35,6 +35,8 @@ import Services from '../pages/administrator/AdministrativeArea/Entities/Service
 import ServicesDetails from '../pages/administrator/AdministrativeArea/Entities/Services/servicesDetails';
 import Citizens from '../pages/administrator/CitizensArea/Entities/Citizens/citizens';
 import CitizensDetail from '../pages/administrator/CitizensArea/Entities/Citizens/citizensDetail';
+import Notifications from '../pages/common/NotificationsPage/notifications';
+import UserProfile from '../pages/common/UserProfile/userProfile';
 
 export enum layoutEnum {
   fullLayout = 'FULL_LAYOUT',
@@ -89,7 +91,7 @@ const routes = [
     scope: 'app',
     path: '/',
     title: 'Home',
-    visibleTo: ['permission-1'],
+    visibleTo: [],
     element: <HomeFacilitator />,
     layout: layoutEnum.fullLayout,
     isHeaderFull: true,
@@ -98,7 +100,7 @@ const routes = [
     scope: 'app',
     path: '/area-amministrativa',
     title: `Area amministrativa`,
-    visibleTo: ['permission-1'],
+    visibleTo: [],
     element: <AdministrativeArea />,
     outlet: 'administrative-area',
     layout: layoutEnum.fullLayout,
@@ -109,7 +111,7 @@ const routes = [
   //   path: '/area-amministrativa/programmi',
   //   title: 'Dettaglio area amministrativa',
   //   element: <ProgramsDetails />,
-  //   visibleTo: ['permission-1'],
+  //   visibleTo: [],
   //   layout: layoutEnum.fullLayout,
   //   isHeaderFull: false,
   // }),
@@ -119,7 +121,7 @@ const routes = [
     title: 'Area cittadini',
     element: <CitizensArea />,
     outlet: 'citizens-area',
-    visibleTo: ['permission-1'],
+    visibleTo: [],
     layout: layoutEnum.fullLayout,
     isHeaderFull: true,
   }),
@@ -128,16 +130,16 @@ const routes = [
     path: '/survey',
     title: 'Survey',
     element: <Survey />,
-    visibleTo: ['permission-1'],
+    visibleTo: [],
     layout: layoutEnum.fullLayout,
     isHeaderFull: false,
   }),
   newRoute({
     scope: 'app',
-    path: '/documents',
+    path: '/documenti',
     title: 'Documenti',
     element: <Documents />,
-    visibleTo: ['permission-1'],
+    visibleTo: [],
     layout: layoutEnum.fullLayout,
     isHeaderFull: true,
   }),
@@ -146,16 +148,25 @@ const routes = [
     path: '/gestione-ruoli',
     title: 'gestione-ruoli',
     element: <RoleManagement />,
-    visibleTo: ['permission-1'],
+    visibleTo: [],
     layout: layoutEnum.fullLayout,
     isHeaderFull: true,
   }),
   newRoute({
     scope: 'app',
-    path: '/gestione-ruoli/:idRuoloUtente',
+    path: '/notifiche',
+    title: 'notifiche',
+    element: <Notifications />,
+    visibleTo: [],
+    layout: layoutEnum.fullLayout,
+    isHeaderFull: true,
+  }),
+  newRoute({
+    scope: 'app',
+    path: '/gestione-ruoli/:codiceRuolo',
     title: 'Dettaglio gestione ruoli',
     element: <RoleManagementDetails />,
-    visibleTo: ['permission-1'],
+    visibleTo: [],
     layout: layoutEnum.fullLayout,
     isHeaderFull: false,
   }),
@@ -164,7 +175,7 @@ const routes = [
     path: '/onboarding',
     title: `Onboarding`,
     element: <Onboarding />,
-    visibleTo: ['permission-1'],
+    visibleTo: [],
     layout: layoutEnum.mainLayout,
     isHeaderFull: false,
   }),
@@ -282,7 +293,7 @@ const routes = [
   }),
   newRoute({
     scope: 'administrative-area',
-    path: 'programmi/:entityId/progetti/:projectId/ente-gestore-progetto',
+    path: 'programmi/:entityId/progetti/:projectId/ente-gestore',
     title: 'Programmi Dettaglio',
     element: <ProjectsDetails />,
     visibleTo: [],
@@ -291,7 +302,7 @@ const routes = [
   }),
   newRoute({
     scope: 'administrative-area',
-    path: 'programmi/:entityId/progetti/:projectId/enti-partner-progetto',
+    path: 'programmi/:entityId/progetti/:projectId/enti-partner',
     title: 'Programmi Dettaglio',
     element: <ProjectsDetails />,
     visibleTo: [],
@@ -303,6 +314,33 @@ const routes = [
     path: 'programmi/:entityId/progetti/:projectId/sedi',
     title: 'Programmi Dettaglio',
     element: <ProjectsDetails />,
+    visibleTo: [],
+    layout: layoutEnum.none,
+    isHeaderFull: false,
+  }),
+  newRoute({
+    scope: 'administrative-area',
+    path: 'programmi/:entityId/questionari/:idQuestionario',
+    title: 'Programmi dettaglio',
+    element:  <SurveyDetailsEdit />,
+    visibleTo: [],
+    layout: layoutEnum.none,
+    isHeaderFull: false,
+  }),
+  newRoute({
+    scope: 'administrative-area',
+    path: 'programmi/:entityId/questionari/:idQuestionario/clona',
+    title: 'Programmi dettaglio',
+    element:  <SurveyDetailsEdit cloneMode/>,
+    visibleTo: [],
+    layout: layoutEnum.none,
+    isHeaderFull: false,
+  }),
+  newRoute({
+    scope: 'administrative-area',
+    path: 'programmi/:entityId/questionari/:idQuestionario/modifica',
+    title: 'Programmi dettaglio',
+    element:  <SurveyDetailsEdit editMode/>,
     visibleTo: [],
     layout: layoutEnum.none,
     isHeaderFull: false,
@@ -327,7 +365,7 @@ const routes = [
   }),
   newRoute({
     scope: 'administrative-area',
-    path: 'programmi/:entityId/progetti/:projectId/enti/:enteId',
+    path: 'programmi/:entityId/progetti/:projectId/enti-partner/:enteId',
     title: 'Programmi Dettaglio',
     element: <AuthoritiesDetails />,
     visibleTo: [],
@@ -391,7 +429,7 @@ const routes = [
   }),
   newRoute({
     scope: 'administrative-area',
-    path: 'progetti/:entityId/enti/:enteId',
+    path: 'progetti/:entityId/enti-partner/:enteId',
     title: 'Progetti',
     element: <AuthoritiesDetails />,
     visibleTo: [],
@@ -447,7 +485,7 @@ const routes = [
   }),
   newRoute({
     scope: 'administrative-area',
-    path: ':userType/:entityId',
+    path: ':userType/:userId',
     title: 'Utenti',
     element: <UsersDetails />,
     visibleTo: [],
@@ -486,7 +524,7 @@ const routes = [
   newRoute({
     scope: 'administrative-area',
     path: 'questionari/:idQuestionario',
-    title: 'Questionari',
+    title: 'Questionari dettaglio',
     element: <SurveyDetailsEdit />,
     visibleTo: [],
     layout: layoutEnum.none,
@@ -495,16 +533,7 @@ const routes = [
   newRoute({
     scope: 'administrative-area',
     path: 'questionari/:idQuestionario/modifica',
-    title: 'Questionari',
-    element: <SurveyDetailsEdit editMode />,
-    visibleTo: [],
-    layout: layoutEnum.none,
-    isHeaderFull: false,
-  }),
-  newRoute({
-    scope: 'administrative-area',
-    path: 'questionari/:idQuestionario/modifica',
-    title: 'Questionari',
+    title: 'Questionari modifica',
     element: <SurveyDetailsEdit editMode />,
     visibleTo: [],
     layout: layoutEnum.none,
@@ -513,17 +542,8 @@ const routes = [
   newRoute({
     scope: 'administrative-area',
     path: 'questionari/:idQuestionario/clona',
-    title: 'Questionari',
+    title: 'Questionari clona',
     element: <SurveyDetailsEdit cloneMode />,
-    visibleTo: [],
-    layout: layoutEnum.none,
-    isHeaderFull: false,
-  }),
-  newRoute({
-    scope: 'administrative-area',
-    path: 'questionari/:idQuestionario/info',
-    title: 'Questionari',
-    element: <SurveyDetailsEdit />,
     visibleTo: [],
     layout: layoutEnum.none,
     isHeaderFull: false,
@@ -576,6 +596,15 @@ const routes = [
     element: <CitizensDetail />,
     visibleTo: [],
     layout: layoutEnum.none,
+    isHeaderFull: false,
+  }),
+  /* PROFILE ROUTE */
+  newRoute({
+    scope: 'personal-area',
+    path: '/area-personale',
+    title: 'Area Personale',
+    element: <UserProfile />,
+    layout: layoutEnum.fullLayout,
     isHeaderFull: false,
   }),
 ];

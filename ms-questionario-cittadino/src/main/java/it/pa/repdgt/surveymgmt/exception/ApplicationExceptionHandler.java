@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice(basePackages = {"it.pa.repdgt"})
@@ -29,10 +30,12 @@ public class ApplicationExceptionHandler {
 	@ExceptionHandler(value = MethodArgumentNotValidException.class)
 	public Map<String, String> handleInvalidArgument(MethodArgumentNotValidException exc) {
 		log.error("{}", exc);
-		return exc.getBindingResult()
+		Map<String, String> erroriValidazione = exc.getBindingResult()
 				.getFieldErrors()
 				.stream()
 				.collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+		erroriValidazione.put("errorCode", CodiceErroreEnum.G02.toString());
+		return erroriValidazione;
 	}
 
 	// Gestione errore per annotation @Validated
@@ -52,6 +55,7 @@ public class ApplicationExceptionHandler {
 		log.error("{}", exc);
 		Map<String, String> errori = new HashMap<>();
 		errori.put("message", "Manca il corpo della richiesta oppure il json della richiesta non è valido");
+		errori.put("errorCode", CodiceErroreEnum.G02.toString());
 		return errori;
 	}
 	
@@ -61,15 +65,37 @@ public class ApplicationExceptionHandler {
 		log.error("{}", exc);
 		final Map<String, String> errori = new HashMap<>();
 		errori.put("message", exc.getMessage());
+		errori.put("errorCode", exc.getCodiceErroreEnum().toString());
 		return errori;
 	}
 	
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-	@ExceptionHandler(value = {  QuestionarioTemplateException.class, Exception.class })
+	@ExceptionHandler(value = {  QuestionarioTemplateException.class, CittadinoException.class, ServizioException.class, 
+								 QuestionarioCompilatoException.class, Exception.class })
 	public Map<String, String> handleException(Exception exc) {
 		log.error("{}", exc);
 		final Map<String, String> errori = new HashMap<>();
 		errori.put("message", exc.getMessage());
+		QuestionarioTemplateException questionarioTemplateException;
+		CittadinoException cittadinoException;
+		ServizioException servizioException;
+		QuestionarioCompilatoException questionarioCompilatoException;
+		if(exc instanceof QuestionarioTemplateException) {
+			questionarioTemplateException = (QuestionarioTemplateException) exc;
+			errori.put("errorCode", questionarioTemplateException.getCodiceErroreEnum().toString());
+		} else if(exc instanceof QuestionarioTemplateException) {
+			cittadinoException = (CittadinoException) exc;
+			errori.put("errorCode", cittadinoException.getCodiceErroreEnum().toString());
+		} else if(exc instanceof QuestionarioTemplateException) {
+			servizioException = (ServizioException) exc;
+			errori.put("errorCode", servizioException.getCodiceErroreEnum().toString());
+		} else if(exc instanceof QuestionarioTemplateException) {
+			questionarioCompilatoException = (QuestionarioCompilatoException) exc;
+			errori.put("errorCode", questionarioCompilatoException.getCodiceErroreEnum().toString());
+		} else {
+			errori.put("errorCode", CodiceErroreEnum.G01.toString());
+		}
+		
 		return errori;
 	}
 }

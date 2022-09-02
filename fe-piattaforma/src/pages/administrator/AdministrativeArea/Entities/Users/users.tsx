@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Paginator, StatusChip, Table } from '../../../../../components';
+import {
+  EmptySection,
+  Paginator,
+  StatusChip,
+  Table,
+} from '../../../../../components';
 import { newTable, TableRowI } from '../../../../../components/Table/table';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
+  resetUserDetails,
   selectEntityFilters,
   selectEntityFiltersOptions,
+  selectEntityList,
   selectEntityPagination,
-  selectUsers,
   setEntityFilters,
   setEntityPagination,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
@@ -25,20 +31,21 @@ import { formFieldI } from '../../../../../utils/formHelper';
 import { openModal } from '../../../../../redux/features/modal/modalSlice';
 import { useNavigate } from 'react-router-dom';
 import ManageUsers from '../modals/manageUsers';
-
 import {
-  GetAllUtenti,
-  GetFilterValuesUtenti,
-} from '../../../../../redux/features/administrativeArea/user/userThunk';
-import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
+  DownloadEntityValues,
+  GetEntityFilterValues,
+  GetEntityValues,
+} from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
+import useGuard from '../../../../../hooks/guard';
 
+const entity = 'utente';
 const statusDropdownLabel = 'stati';
 const ruoliDropdownLabel = 'ruoli';
 
-const Programmi = () => {
+const Users = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const usersList = useAppSelector(selectUsers);
+  const usersList = useAppSelector(selectEntityList)?.utenti;
   const filtersList = useAppSelector(selectEntityFilters);
   const pagination = useAppSelector(selectEntityPagination);
   const dropdownFilterOptions = useAppSelector(selectEntityFiltersOptions);
@@ -48,69 +55,65 @@ const Programmi = () => {
   const [filterDropdownSelected, setFilterDropdownSelected] =
     useState<string>('');
 
+  const { hasUserPermission } = useGuard();
+
   const { criterioRicerca, ruoli, stati } = filtersList;
 
   const { pageNumber } = pagination;
 
   const getAllFilters = () => {
-    // TODO: check chiavi filtri
-    if (filterDropdownSelected !== 'filtroStati')
-      dispatch(GetFilterValuesUtenti(statusDropdownLabel));
-    if (filterDropdownSelected !== 'ruoli')
-      dispatch(GetFilterValuesUtenti(ruoliDropdownLabel));
+    if (filterDropdownSelected !== statusDropdownLabel)
+      dispatch(
+        GetEntityFilterValues({ entity, dropdownType: statusDropdownLabel })
+      );
+    if (filterDropdownSelected !== ruoliDropdownLabel)
+      dispatch(
+        GetEntityFilterValues({ entity, dropdownType: ruoliDropdownLabel })
+      );
   };
 
   useEffect(() => {
-    dispatch(setEntityPagination({ pageSize: 1 }));
-    getAllFilters();
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area Amministrativa',
-          url: '/area-amministrativa',
-          link: false,
-        },
-        {
-          label: 'Utenti',
-          url: '/area-amministrativa/utenti',
-          link: true,
-        },
-      ])
-    );
+    dispatch(setEntityPagination({ pageSize: 8 }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateTableValues = () => {
     const table = newTable(
       TableHeadingUsers,
-      usersList.list.map((td) => {
-        return {
-          id: td.id,
-          label: td.nome,
-          role: td.ruoli,
-          status: <StatusChip status={td.stato} rowTableId={td.id} />,
-        };
-      })
+      usersList
+        ? usersList?.map((td: any) => {
+            return {
+              id: td.id,
+              label: td.nome,
+              role:
+                td.ruoli.split(',').length === 1 ? (
+                  td.ruoli
+                ) : (
+                  <p>
+                    {' '}
+                    Ruoli assegnati:{' '}
+                    <strong> {td.ruoli.split(',').length} </strong>{' '}
+                  </p>
+                ),
+              status: <StatusChip status={td.stato} rowTableId={td.id} />,
+              codiceFiscale: td.codiceFiscale,
+            };
+          })
+        : []
     );
-    return {
-      ...table,
-      // TODO remove slice after BE integration
-      values: table.values.slice(
-        pagination?.pageNumber * pagination?.pageSize - pagination?.pageSize,
-        pagination?.pageNumber * pagination?.pageSize
-      ),
-    };
+    return table;
   };
 
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    setTableValues(updateTableValues());
+    if (Array.isArray(usersList) && usersList.length)
+      setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usersList]);
 
   const getUsersList = () => {
-    dispatch(GetAllUtenti());
+    dispatch(GetEntityValues({ entity: 'utente' }));
   };
 
   useEffect(() => {
@@ -124,9 +127,7 @@ const Programmi = () => {
   };
 
   const handleOnSearch = (searchValue: string) => {
-    dispatch(
-      setEntityFilters({ nomeLike: { label: searchValue, value: searchValue } })
-    );
+    dispatch(setEntityFilters({ criterioRicerca: searchValue }));
   };
 
   const handleDropdownFilters = (
@@ -185,6 +186,10 @@ const Programmi = () => {
     },
   ];
 
+  const handleDownloadList = () => {
+    dispatch(DownloadEntityValues({ entity }));
+  };
+
   const searchInformation: SearchInformationI = {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
@@ -194,26 +199,33 @@ const Programmi = () => {
     title: 'Cerca programma',
   };
 
-  const onActionClick: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      console.log(td);
-      //TODO REPLACE WITH DYNAMIC ID WHEN WE HAVE THE APIS
-      navigate('321321');
-    },
-  };
-
-  const newProgram = () => {
-    dispatch(
-      openModal({
-        id: formTypes.PROGRAMMA,
-        payload: {
-          title: 'Crea un nuovo programma',
+  const onActionClick: CRUDActionsI = hasUserPermission(['view.card.utenti'])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            `/area-amministrativa/utenti/${
+              typeof td === 'string' ? td : td?.id
+            }`
+          );
         },
-      })
-    );
+      }
+    : {};
+
+  const newUser = () => {
+    if (hasUserPermission(['new.utente'])) {
+      dispatch(resetUserDetails());
+      dispatch(
+        openModal({
+          id: formTypes.USER,
+          payload: {
+            title: 'Crea un nuovo utente',
+          },
+        })
+      );
+    }
   };
 
-  const programCta = {
+  const userCta = {
     title: 'Area Amministrativa',
     subtitle:
       'Qui potrai gestire utenti, enti, programmi e progetti e creare i questionari',
@@ -226,29 +238,46 @@ const Programmi = () => {
       searchInformation={searchInformation}
       dropdowns={dropdowns}
       filtersList={filtersList}
-      {...programCta}
-      cta={newProgram}
-      resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
+      {...userCta}
+      cta={hasUserPermission(['new.utente']) ? newUser : undefined}
+      ctaDownload={
+        hasUserPermission(['list.dwnl.utenti']) ? handleDownloadList : undefined
+      }
+      resetFilterDropdownSelected={(filterKey: string) =>
+        setFilterDropdownSelected(filterKey)
+      }
     >
-      <Table
-        {...tableValues}
-        id='table'
-        onActionClick={onActionClick}
-        onCellClick={(field, row) => console.log(field, row)}
-        //onRowClick={row => console.log(row)}
-        withActions
-      />
-      <Paginator
-        activePage={pagination?.pageNumber}
-        center
-        refID='#table'
-        pageSize={pagination?.pageSize}
-        total={usersList.list.length}
-        onChange={handleOnChangePage}
-      />
+      {usersList?.length && tableValues?.values?.length ? (
+        <>
+          <Table
+            {...tableValues}
+            id='table'
+            onActionClick={onActionClick}
+            onCellClick={(field, row) => console.log(field, row)}
+            //onRowClick={row => console.log(row)}
+            withActions
+            totalCounter={pagination?.totalElements}
+          />
+          <Paginator
+            activePage={pagination?.pageNumber}
+            center
+            refID='#table'
+            pageSize={pagination?.pageSize}
+            total={pagination?.totalPages}
+            onChange={handleOnChangePage}
+          />
+        </>
+      ) : (
+        <EmptySection
+          title='Non sono presenti utenti'
+          subtitle='associati al tuo ruolo'
+          icon='it-note'
+          withIcon
+        />
+      )}
       <ManageUsers creation />
     </GenericSearchFilterTableLayout>
   );
 };
 
-export default Programmi;
+export default Users;

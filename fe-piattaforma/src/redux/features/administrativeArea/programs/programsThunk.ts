@@ -8,6 +8,7 @@ import {
   setProgramGeneralInfo,
 } from '../administrativeAreaSlice';
 import { formFieldI } from '../../../../utils/formHelper';
+import { getUserHeaders } from '../../user/userThunk';
 
 export interface ProgramsLightI {
   id: number;
@@ -44,7 +45,19 @@ export const GetProgramDetail =
       dispatch(showLoader());
       dispatch({ ...GetProgramDetailAction, programId });
       if (programId) {
+        const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+          getUserHeaders();
+        const res = await API.post(`/programma/${programId}`, {
+          idProgramma,
+          idProgetto,
+          cfUtente: codiceFiscale,
+          codiceRuolo,
+        });
+
+        /* old
         const res = await API.get(`/programma/${programId}`);
+        */
+
         if (res?.data) {
           dispatch(
             setProgramDetails({
@@ -96,7 +109,9 @@ export const createProgram =
         const res = await API.post(`/programma`, {
           ...body,
         });
-        console.log('createProgramDetails res', res);
+        if (res) {
+          return res;
+        }
       }
     } catch (error) {
       console.log(error);
@@ -134,10 +149,9 @@ export const updateProgram =
         setProgramGeneralInfo({ currentStep: 4, newFormValues: payload })
       );
       if (body) {
-        const res = await API.put(`/programma/${programId}`, {
+        await API.put(`/programma/${programId}`, {
           ...body,
         });
-        console.log('updateProgramDetails res', res);
       }
     } catch (error) {
       console.log(error);
@@ -160,7 +174,7 @@ export const UpdateProgramSurveyDefault =
       await API.put(`/programma/${idProgramma}/aggiungi/${idQuestionario}`);
       // GetProgramDetail(idProgramma); // TODO: far dispatchare azioni anche qui!
     } catch (e) {
-      console.error('UpdateSurveyDefault error', e);
+      console.error('UpdateProgramSurveyDefault error', e);
     } finally {
       dispatch(hideLoader());
     }

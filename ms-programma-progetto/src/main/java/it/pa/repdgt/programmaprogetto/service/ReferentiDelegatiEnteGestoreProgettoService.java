@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.programmaprogetto.repository.ReferentiDelegatiEnteGestoreProgettoRepository;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.ReferentiDelegatiEnteGestoreProgettoEntity;
 import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEnteGestoreProgettoKey;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
@@ -24,6 +26,8 @@ public class ReferentiDelegatiEnteGestoreProgettoService {
 	@Autowired
 	private ReferentiDelegatiEnteGestoreProgettoRepository referentiDelegatiEnteGestoreProgettoRepository;
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellaReferentiDelegatiProgetto(Long idProgetto) {
 		List<ReferentiDelegatiEnteGestoreProgettoEntity> referentiDelegati = this.referentiDelegatiEnteGestoreProgettoRepository.getReferentiDelegatiEnteGestoreProgettoByIdProgetto(idProgetto);
@@ -34,6 +38,8 @@ public class ReferentiDelegatiEnteGestoreProgettoService {
 	/**
 	 * Cancella associazione Utente Referente o utente delegato all'ente gestore di progetto
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
     public void cancellaAssociazioneReferenteODelegatoGestoreProgetto(ReferentiDelegatiEnteGestoreProgettoEntity referentiDelegatiEnteGestoreProgetto) {
 		Long idProgetto = referentiDelegatiEnteGestoreProgetto.getId().getIdProgetto();
@@ -54,10 +60,14 @@ public class ReferentiDelegatiEnteGestoreProgettoService {
 		}
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<ReferentiDelegatiEnteGestoreProgettoEntity> getReferentiEDelegatiProgetto(Long idProgetto) {
 		return this.referentiDelegatiEnteGestoreProgettoRepository.findReferentiEDelegatiProgetto(idProgetto);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaOTerminaAssociazioneReferenteDelegatoProgetto(ReferentiDelegatiEnteGestoreProgettoEntity utente) {
 		if(utente.getStatoUtente().equals(StatoEnum.ATTIVO.getValue())) {
 			utente.setStatoUtente(StatoEnum.TERMINATO.getValue());

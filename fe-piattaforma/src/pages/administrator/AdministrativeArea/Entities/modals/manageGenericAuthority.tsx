@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 //import { useDispatch } from 'react-redux';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
+import { resetAuthorityDetails } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import {
+  GetAuthorityDetail,
+  UpdateAuthorityDetails,
+} from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
+import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormAuthorities from '../../../../forms/formAuthorities';
 
-const id = 'ENTE';
+const id = 'ente';
 
 interface ManageEntePartnerFormI {
   formDisabled?: boolean;
@@ -18,7 +26,7 @@ interface ManageEnteGestoreProgettoI
     ManageEntePartnerFormI {}
 
 const ManageGenericAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
-  clearForm,
+  clearForm = () => ({}),
   formDisabled,
   creation = false,
 }) => {
@@ -26,13 +34,23 @@ const ManageGenericAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
     [key: string]: formFieldI['value'];
   }>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  const { authorityId } = useParams();
 
-  //  const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  const handleSaveEnte = () => {
+  const handleSaveEnte = async () => {
     if (isFormValid) {
-      console.log(newFormValues);
+      await dispatch(
+        UpdateAuthorityDetails(newFormValues['id']?.toString(), newFormValues)
+      );
+      clearForm();
+      dispatch(resetAuthorityDetails());
+      dispatch(closeModal());
     }
+    authorityId && dispatch(GetAuthorityDetail(authorityId));
+    clearForm();
+    dispatch(resetAuthorityDetails());
+    dispatch(closeModal());
   };
 
   return (
@@ -48,14 +66,19 @@ const ManageGenericAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
         onClick: () => clearForm?.(),
       }}
     >
-      <FormAuthorities
-        creation={creation}
-        formDisabled={!!formDisabled}
-        sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
-          setNewFormValues({ ...newData })
-        }
-        setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
-      />
+      <div className='px-5'>
+        <FormAuthorities
+          noIdField
+          creation={creation}
+          formDisabled={!!formDisabled}
+          sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+            setNewFormValues({ ...newData })
+          }
+          setIsFormValid={(value: boolean | undefined) =>
+            setIsFormValid(!!value)
+          }
+        />
+      </div>
     </GenericModal>
   );
 };

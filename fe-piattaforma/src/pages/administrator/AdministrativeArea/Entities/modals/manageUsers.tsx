@@ -1,6 +1,18 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
+import {
+  CreateUser,
+  GetUserDetails,
+  UpdateUser,
+} from '../../../../../redux/features/administrativeArea/user/userThunk';
+import {
+  closeModal,
+  selectModalPayload,
+} from '../../../../../redux/features/modal/modalSlice';
+import { useAppSelector } from '../../../../../redux/hooks';
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormUser from '../../../../forms/formUser';
 import { formTypes } from '../utils';
@@ -30,16 +42,34 @@ const ManageUsers: React.FC<ManageUsersI> = ({
   formDisabled,
   creation = false,
 }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
   }>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  const userIdPayload = useAppSelector(selectModalPayload)?.userId
+  const { userId } = useParams();
 
-  const handleSaveEnte = () => {
+  const handleSaveEnte = async () => {
     if (isFormValid) {
-      console.log(newFormValues);
-      // TODO update with real api
+      if (creation) {
+        const res = await dispatch(CreateUser(newFormValues));
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (res?.data?.idUtente) {
+          navigate(
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            `/area-amministrativa/utenti/${res.data.idUtente}`
+          );
+        }
+      } else {
+        await dispatch(UpdateUser(userId || userIdPayload, newFormValues));
+        dispatch(GetUserDetails(userId || userIdPayload));
+      }
     }
+    dispatch(closeModal());
   };
 
   return (
@@ -47,7 +77,7 @@ const ManageUsers: React.FC<ManageUsersI> = ({
       id={id}
       primaryCTA={{
         disabled: !isFormValid,
-        label: 'Conferma',
+        label: creation ? 'Conferma' : 'Salva',
         onClick: handleSaveEnte,
       }}
       secondaryCTA={{

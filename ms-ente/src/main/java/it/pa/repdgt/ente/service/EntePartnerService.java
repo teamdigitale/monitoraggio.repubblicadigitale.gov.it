@@ -2,6 +2,7 @@ package it.pa.repdgt.ente.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.hibernate.query.criteria.internal.predicate.IsEmptyPredicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -23,11 +25,11 @@ import it.pa.repdgt.ente.exception.EnteException;
 import it.pa.repdgt.ente.exception.ResourceNotFoundException;
 import it.pa.repdgt.ente.repository.EntePartnerRepository;
 import it.pa.repdgt.ente.request.ReferenteDelegatoPartnerRequest;
+import it.pa.repdgt.ente.restapi.param.EntiPaginatiParam;
 import it.pa.repdgt.ente.util.CSVUtil;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.awsintegration.service.EmailService;
-import it.pa.repdgt.shared.constants.ProfiliEntiConstants;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.EntePartnerEntity;
 import it.pa.repdgt.shared.entity.ReferentiDelegatiEntePartnerDiProgettoEntity;
@@ -35,10 +37,12 @@ import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.key.EntePartnerKey;
+import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEntePartnerDiProgettoKey;
 import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -62,15 +66,15 @@ public class EntePartnerService {
 	private RuoloService ruoloService;
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+	private EnteSedeProgettoFacilitatoreService enteSedeProgettoFacilitatoreService;
 
-	// MI SERVE
 	@LogMethod
 	@LogExecutionTime
 	public EntePartnerEntity salvaEntePartner(EntePartnerEntity entePartner) {
 		return this.entePartnerRepository.save(entePartner);
 	}
 	
-	// MI SERVE
 	@LogMethod
 	@LogExecutionTime
 	public void associaEntePartnerPerProgetto(Long idEntePartner, Long idProgetto) {
@@ -79,6 +83,7 @@ public class EntePartnerService {
 		entePartnerEntity.setId(entePartnerKey);
 		entePartnerEntity.setStatoEntePartner(StatoEnum.NON_ATTIVO.getValue());
 		entePartnerEntity.setDataOraCreazione(new Date());
+		entePartnerEntity.setDataOraAggiornamento(new Date());
 		this.salvaEntePartner(entePartnerEntity);
 	}
 	
@@ -89,6 +94,7 @@ public class EntePartnerService {
 	}
 	
 	//il seguente metodo presenta delle projection (interfacce) non può essere utilizzato da metodi esterni
+	@Deprecated
 	public SchedaEntePartnerBean getSchedaEntePartnerByIdProgettoAndIdEnte(Long idProgetto, Long idEnte) {
 		SchedaEntePartnerBean schedaEntePartner = new SchedaEntePartnerBean();
 		EnteProjection ente = this.entePartnerRepository.findEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte);		
@@ -114,9 +120,50 @@ public class EntePartnerService {
 		return schedaEntePartner;
 	}
 	
+	public SchedaEntePartnerBean getSchedaEntePartnerByIdProgettoAndIdEnteAndSceltaProfilo(Long idProgetto, Long idEnte, EntiPaginatiParam entiPaginatiParam) {
+		SchedaEntePartnerBean schedaEntePartner = new SchedaEntePartnerBean();
+		EnteProjection ente = this.entePartnerRepository.findEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte);		
+		List<UtenteProjection> referenti = this.referentiDelegatiEntePartnerDiProgettoService.getReferentiEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte);
+		List<UtenteProjection> delegati = this.referentiDelegatiEntePartnerDiProgettoService.getDelegatiEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte);
+		List<SedeEntity> sedi = this.sedeService.getSediEnteByIdProgettoAndIdEnte(idProgetto, idEnte);
+		List<SedeBean> sediPartner = sedi
+									.stream()
+									.map(sede -> {
+										SedeBean sedePartner = new SedeBean();
+										sedePartner.setId(sede.getId());
+										sedePartner.setNome(sede.getNome());
+										sedePartner.setServiziErogati(sede.getServiziErogati());
+										sedePartner.setNrFacilitatori(this.utenteService.countFacilitatoriPerSedeProgettoEnte(idProgetto, sede.getId(), idEnte));
+										sedePartner.setStato(this.sedeService.getStatoSedeByIdProgettoAndIdSedeAndIdEnte(idProgetto, sede.getId(), idEnte));
+										
+										
+										List<String> facilitatoreVolontario = Arrays.asList(RuoloUtenteEnum.FAC.toString(), RuoloUtenteEnum.VOL.toString());
+										if(facilitatoreVolontario.contains(entiPaginatiParam.getCodiceRuolo().toString())) {
+											String cfUtenteLoggato = entiPaginatiParam.getCfUtente();
+											EnteSedeProgettoFacilitatoreKey id = new EnteSedeProgettoFacilitatoreKey(idEnte, sede.getId(), idProgetto, cfUtenteLoggato);
+											boolean isSedeAsssociataAUtente = this.enteSedeProgettoFacilitatoreService.getEnteSedeProgettoFacilitatoreById(id).isPresent();
+											sedePartner.setAssociatoAUtente(isSedeAsssociataAUtente);
+										} else {
+											sedePartner.setAssociatoAUtente(Boolean.TRUE);
+										}
+										
+										return sedePartner;
+									}).collect(Collectors.toList());
+		
+		schedaEntePartner.setEnte(ente);
+		schedaEntePartner.setReferentiEntePartner(referenti);
+		schedaEntePartner.setDelegatiEntePartner(delegati);
+		schedaEntePartner.setSediEntePartner(sediPartner);
+		return schedaEntePartner;
+	}
+	
+	
+	
 	/**
 	 * Assegna Utente Referente o utente delegato all'ente partner
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
     public void associaReferenteODelegatoPartner(ReferenteDelegatoPartnerRequest referenteDelegatoPartnerRequest) {
 		Long idProgetto = referenteDelegatoPartnerRequest.getIdProgetto();
@@ -126,16 +173,16 @@ public class EntePartnerService {
 		
 		if(!this.progettoService.esisteProgettoById(idProgetto)) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente partner per progetto con id=%s non esistente", idProgetto);
-			throw new EnteException(messaggioErrore);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN04);
 		}
 		
 		if(!this.enteService.esisteEnteById(idEntePartner)) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente partner per ente con id=%s non esistente", idEntePartner);
-			throw new EnteException(messaggioErrore);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN04);
 		}
 		if(this.getEntiPartnerByProgetto(idProgetto).isEmpty()) {
 			String messaggioErrore = String.format("ERRORE: l'ente con id = %s non è associato al progetto con id = %s", idEntePartner, idProgetto);
-			throw new EnteException(messaggioErrore);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN04);
 		}
 		
 		UtenteEntity utenteFetch;
@@ -143,7 +190,12 @@ public class EntePartnerService {
 			utenteFetch = this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleUtente);
 		} catch (ResourceNotFoundException ex) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente partner perche l'utente con codice fiscale=%s non esiste", codiceFiscaleUtente);
-			throw new EnteException(messaggioErrore, ex);
+			throw new EnteException(messaggioErrore, ex, CodiceErroreEnum.EN04);
+		}
+		
+		if(!(RuoloUtenteEnum.REPP.toString().equals(codiceRuolo) || RuoloUtenteEnum.DEPP.toString().equals(codiceRuolo))) {
+			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente partner di progetto all'ente con id=%s, codice ruolo errato: usare 'REPP' o 'DEPP'", idEntePartner);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN04);
 		}
 		
 		if(utenteFetch.getMansione() == null) {
@@ -157,11 +209,12 @@ public class EntePartnerService {
 		referentiDelegatiEntePartnerDiProgetto.setCodiceRuolo(codiceRuolo);
 		referentiDelegatiEntePartnerDiProgetto.setStatoUtente(StatoEnum.NON_ATTIVO.getValue());
 		referentiDelegatiEntePartnerDiProgetto.setDataOraCreazione(new Date());
+		referentiDelegatiEntePartnerDiProgetto.setDataOraAggiornamento(new Date());
 		
 		//Controllo se l'associazione già esiste
 		if(this.referentiDelegatiEntePartnerDiProgettoService.esisteById(id)) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato a ente partner perche l'utente con codice fiscale=%s è già referente/delegato", codiceFiscaleUtente);
-			throw new EnteException(messaggioErrore);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN04);
 		}
 		
 		//Se l'associazione non esiste la creo
@@ -173,20 +226,24 @@ public class EntePartnerService {
 			this.ruoloService.aggiungiRuoloAUtente(codiceFiscaleUtente, codiceRuolo);	
 		}
 		
-		//invio email welcome al referente/delegato
-		try {
-			this.emailService.inviaEmail(utenteFetch.getEmail(), 
-					EmailTemplateEnum.GEST_PROGE_PARTNER, 
-					new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(codiceRuolo).getValue() });
-		} catch (Exception ex) {
-			log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente partner con id {} per progetto con id={}.", idEntePartner, idProgetto);
-			log.error("{}", ex);
-		}
+		//stacco un thread per invio email welcome al referente/delegato 
+		new Thread(() -> {
+			try {
+				this.emailService.inviaEmail(utenteFetch.getEmail(), 
+						EmailTemplateEnum.GEST_PROGE_PARTNER, 
+						new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(codiceRuolo).getValue() });
+			} catch (Exception ex) {
+				log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente partner con id {} per progetto con id={}.", idEntePartner, idProgetto);
+				log.error("{}", ex);
+			}
+		}).start();
 	}
 
 	/**
 	 * Cancella associazione Utente Referente o utente delegato all'ente partner
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaAssociazioneReferenteODelegatoPartner(ReferentiDelegatiEntePartnerDiProgettoEntity referenteDelegatoEntePartnerDiProgettoEntity, String codiceRuolo) {
 		Long idProgetto = referenteDelegatoEntePartnerDiProgettoEntity.getId().getIdProgetto();
 		String codiceFiscaleUtente = referenteDelegatoEntePartnerDiProgettoEntity.getId().getCodFiscaleUtente();
@@ -206,14 +263,20 @@ public class EntePartnerService {
 		}	
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaAssociazioneEntePartnerPerProgetto(EntePartnerEntity entePartnerProgetto) {
 		this.entePartnerRepository.delete(entePartnerProgetto);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public EntePartnerEntity getEntePartnerByIdEnteAndIdProgetto(Long idEnte, Long idProgetto) {
 		return this.entePartnerRepository.findEntePartnerByIdEnteAndIdProgetto(idEnte, idProgetto);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public List<EntePartnerUploadBean> caricaEntiPartner(MultipartFile fileEntiPartner, Long idProgetto) {
 		List<EntePartnerUploadBean> esiti = new ArrayList<>();
@@ -221,56 +284,68 @@ public class EntePartnerService {
 			//estraggo gli enti dal file csv
 			List<EntePartnerUploadBean> enti = CSVUtil.csvToEnti(fileEntiPartner.getInputStream());
 			for(EntePartnerUploadBean ente: enti) {
-				//per ogni record verifico se esiste l'entita Ente
-				//se esiste aggiungo nuova entita Ente + associazione ente - progetto in EntePartner
-				if(!enteService.esisteEnteByPartitaIva(ente.getPiva())) {
-					EnteEntity nuovoEnte = new EnteEntity();
-					nuovoEnte.setNome(ente.getNome());
-					nuovoEnte.setNomeBreve(ente.getNomeBreve());
-					nuovoEnte.setPiva(ente.getPiva());
-					nuovoEnte.setSedeLegale(ente.getSedeLegale());
-					nuovoEnte.setTipologia(ProfiliEntiConstants.ENTE_PARTNER);
-					Long idEnte = enteService.creaNuovoEnte(nuovoEnte).getId();
-					
-					associaEntePartnerPerProgetto(idEnte, idProgetto);
-					
-					ente.setEsito("UPLOAD OK");
-				}else {
-					//se esiste gia l'entita ente devo verificare se esista gia l'associazione entePartner
-					Long idEnte = enteService.getEnteByPartitaIva(ente.getPiva()).getId();
-					//se esiste --> KO
-					if(this.entePartnerRepository.findEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte) != null) {
-						ente.setEsito("KO - ASSOCIAZIONE ESISTENTE");
-					}else {
-						//altrimenti aggiungo associazione EntePartner
+				//verifico validità campo tipologiaEnte
+				if(Arrays.asList("Ente pubblico", "Ente del terzo settore", "Ente privato")
+						.contains(ente.getTipologiaEnte())) {
+					//per ogni record verifico se esiste l'entita Ente
+					//se esiste aggiungo nuova entita Ente + associazione ente - progetto in EntePartner
+					if(!enteService.esisteEnteByPartitaIva(ente.getPiva())) {
+						EnteEntity nuovoEnte = new EnteEntity();
+						nuovoEnte.setNome(ente.getNome());
+						nuovoEnte.setNomeBreve(ente.getNomeBreve());
+						nuovoEnte.setPiva(ente.getPiva());
+						nuovoEnte.setSedeLegale(ente.getSedeLegale());
+						nuovoEnte.setTipologia(ente.getTipologiaEnte());
+						nuovoEnte.setIndirizzoPec(ente.getPec());
+						Long idEnte = enteService.creaNuovoEnte(nuovoEnte).getId();
+						
 						associaEntePartnerPerProgetto(idEnte, idProgetto);
 						
 						ente.setEsito("UPLOAD OK");
+					}else {
+						//se esiste gia l'entita ente devo verificare se esista gia l'associazione entePartner
+						Long idEnte = enteService.getEnteByPartitaIva(ente.getPiva()).getId();
+						//se esiste --> KO
+						if(this.entePartnerRepository.findEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte) != null) {
+							ente.setEsito("KO - ASSOCIAZIONE ESISTENTE");
+						}else {
+							//altrimenti aggiungo associazione EntePartner
+							associaEntePartnerPerProgetto(idEnte, idProgetto);
+							
+							ente.setEsito("UPLOAD OK");
+						}
 					}
+					
+				}else {
+					ente.setEsito("KO - TIPOLOGIA ENTE NON CONSENTITA");
 				}
 				esiti.add(ente);
 			}
 		} catch (IOException e) {
-			throw new EnteException("Impossibile effettuare upload lista enti partner", e);
+			throw new EnteException("Impossibile effettuare upload lista enti partner", e, CodiceErroreEnum.EN05);
 		}
 		return esiti;
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaOTerminaAssociazioneReferenteODelegatoPartner(
 			@Valid ReferenteDelegatoPartnerRequest referenteDelegatoPartnerRequest) {
 		Long idProgetto = referenteDelegatoPartnerRequest.getIdProgetto();
 		String codiceFiscaleUtente = referenteDelegatoPartnerRequest.getCodiceFiscaleUtente();
 		Long idEnte = referenteDelegatoPartnerRequest.getIdEntePartner();
 		String codiceRuolo = referenteDelegatoPartnerRequest.getCodiceRuolo().toUpperCase();
-		ReferentiDelegatiEntePartnerDiProgettoEntity referenteDelegatoEntePartnerDiProgettoEntity = this.referentiDelegatiEntePartnerDiProgettoService.getReferenteDelegatoEntePartner(idProgetto, codiceFiscaleUtente, idEnte);
-		if(referenteDelegatoEntePartnerDiProgettoEntity.getStatoUtente().equals(StatoEnum.ATTIVO.getValue())) {
+		ReferentiDelegatiEntePartnerDiProgettoEntity referenteDelegatoEntePartnerDiProgettoEntity = this.referentiDelegatiEntePartnerDiProgettoService.getReferenteDelegatoEntePartner(idProgetto, codiceFiscaleUtente, idEnte, codiceRuolo);
+		if(StatoEnum.ATTIVO.getValue().equals(referenteDelegatoEntePartnerDiProgettoEntity.getStatoUtente())) {
 			this.terminaAssociazioneReferenteDelegatoEntePartner(referenteDelegatoEntePartnerDiProgettoEntity, codiceRuolo);
 		}
-		if(referenteDelegatoEntePartnerDiProgettoEntity.getStatoUtente().equals(StatoEnum.NON_ATTIVO.getValue())) {
+		if(StatoEnum.NON_ATTIVO.getValue().equals(referenteDelegatoEntePartnerDiProgettoEntity.getStatoUtente())) {
 			this.cancellaAssociazioneReferenteODelegatoPartner(referenteDelegatoEntePartnerDiProgettoEntity, codiceRuolo);
 		}
 	}
-
+	
+	@LogMethod
+	@LogExecutionTime
 	public void terminaAssociazioneReferenteDelegatoEntePartner(
 			ReferentiDelegatiEntePartnerDiProgettoEntity referenteDelegatoEntePartnerDiProgettoEntity, String codiceRuolo) {
 		Long idProgetto = referenteDelegatoEntePartnerDiProgettoEntity.getId().getIdProgetto();
@@ -281,17 +356,23 @@ public class EntePartnerService {
 		
 		//Se l'utente è REPP(referente) e non ci sono altri REPP(referenti) oltre a lui lancio eccezione.
 		if (codiceRuolo.equalsIgnoreCase("REPP") && unicoReferenteODelegato) {
-			throw new EnteException("Impossibile cancellare associazione referente. E' l'unico referente ATTIVO del partner. Per eliminarlo procedere prima con l'associazione di un altro referente al partner.");
+			throw new EnteException(
+					"Impossibile cancellare associazione referente. E' l'unico referente ATTIVO del partner. "
+					+ "Per eliminarlo procedere prima con l'associazione di un altro referente al partner.",
+					CodiceErroreEnum.EN06);
 		}
 		referenteDelegatoEntePartnerDiProgettoEntity.setStatoUtente(StatoEnum.TERMINATO.getValue());
 		referenteDelegatoEntePartnerDiProgettoEntity.setDataOraAggiornamento(new Date());
 		this.referentiDelegatiEntePartnerDiProgettoService.save(referenteDelegatoEntePartnerDiProgettoEntity);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public void terminaACascataAssociazioneReferenteDelegatoEntePartner(
 			ReferentiDelegatiEntePartnerDiProgettoEntity referenteDelegatoEntePartnerDiProgettoEntity, String codiceRuolo) {
 		referenteDelegatoEntePartnerDiProgettoEntity.setStatoUtente(StatoEnum.TERMINATO.getValue());
 		referenteDelegatoEntePartnerDiProgettoEntity.setDataOraAggiornamento(new Date());
 		this.referentiDelegatiEntePartnerDiProgettoService.save(referenteDelegatoEntePartnerDiProgettoEntity);
 	}
+
 }

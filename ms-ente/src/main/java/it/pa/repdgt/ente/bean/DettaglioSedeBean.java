@@ -17,4 +17,5 @@ public class DettaglioSedeBean implements Serializable {
 	private String enteDiRiferimento;
 	private Boolean itinere;
 	private List<IndirizzoSedeFasceOrarieBean> indirizziSedeFasceOrarie;
+	private String stato;
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.bson.json.JsonObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -22,8 +23,6 @@ import it.pa.repdgt.surveymgmt.App;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection.SezioneQuestionarioTemplate;
 import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
-import it.pa.repdgt.surveymgmt.request.QuestionarioTemplateRequest;
-import it.pa.repdgt.surveymgmt.request.QuestionarioTemplateRequest.SezioneQuestionarioTemplateRequest;
 import it.pa.repdgt.surveymgmt.resource.QuestionariTemplatePaginatiResource;
 import it.pa.repdgt.surveymgmt.resource.QuestionarioTemplateResource;
 import it.pa.repdgt.surveymgmt.service.QuestionarioTemplateService;
@@ -335,9 +334,8 @@ public class QuestionarioTemplateRestApiTest {
 		SezioneQuestionarioTemplate sezione = new SezioneQuestionarioTemplate();
 		sezione.setId(UUID.randomUUID().toString());
 		sezione.setTitolo("Sezione test");
-		sezione.setSezioneDiDefault(false);
-		sezione.setSchema(new String("{ json schema }"));
-		sezione.setSchema(new String("{ json uiSchema }"));
+		sezione.setSchema(new JsonObject("{ json schema }"));
+		sezione.setSchemaui(new JsonObject("{ json uiSchema }"));
 		
 		sezioni.add(sezione);
 		questionarioTemplateCollection.setSezioniQuestionarioTemplate(sezioni);
@@ -352,6 +350,31 @@ public class QuestionarioTemplateRestApiTest {
 		
 		assertThat(questionarioTemplateResource).isNotNull();
 		assertThat(questionarioTemplateResource.getId()).isEqualTo(result.getIdQuestionarioTemplate());
+	}
+	
+	@Test
+	@DisplayName(value = "downloadCSVSElencoQuestionariTemplate - OK")
+	@Order(10)
+	public void downloadCSVSElencoQuestionariTemplateTest() {
+		final String filtroCriterioRicerca = "";
+		final String filtroStato = "";
+		
+		ProfilazioneParam profilazioneParam = new ProfilazioneParam();
+		String codiceFiscaleUtenteDTD = "UIHPLW87R49F205X";
+		profilazioneParam.setCodiceFiscaleUtenteLoggato(codiceFiscaleUtenteDTD);
+		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD);
+		
+		String urlToCall = "http://localhost:" + randomServerPort +
+				"/questionarioTemplate/download?criterioRicerca="+filtroCriterioRicerca+"&stato="+filtroStato;
+		String elencoQuestionariTemplate = restTemplate.postForObject(
+				urlToCall, 
+				profilazioneParam,
+				String.class
+			);
+		 
+		String[] questionariTemplateRecord = elencoQuestionariTemplate.split("\\n");
+		
+		assertThat(elencoQuestionariTemplate).isNotNull();
 	}
 	
 //	@Test

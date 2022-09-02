@@ -11,16 +11,12 @@ export const TableHeading: TableHeadingI[] = [
     size: 'small',
   },
   {
-    label: 'Questionari sottomessi',
-    field: 'submitted',
+    label: 'N. servizi utilizzati',
+    field: 'numeroServizi',
   },
   {
-    label: 'Questionari in bozza',
-    field: 'onDraft',
-  },
-  {
-    label: 'Stato questionari',
-    field: 'status',
+    label: 'N. questionari compilati',
+    field: 'numeroQuestionariCompilati',
   },
 ];
 
@@ -39,18 +35,18 @@ export const TableHeadingSearchResults: TableHeadingI[] = [
   },
 ];
 
-export const TableHeadingEventsList: TableHeadingI[] = [
+export const TableHeadingServicesList: TableHeadingI[] = [
   {
     field: 'nome',
     label: 'Nome',
   },
   {
-    field: 'serviceType',
+    field: 'tipologiaServizio',
     label: 'Tipo di servizio prenotato',
     size: 'medium',
   },
   {
-    field: 'date',
+    field: 'data',
     label: 'data',
     size: 'small',
   },
@@ -59,7 +55,7 @@ export const TableHeadingEventsList: TableHeadingI[] = [
     label: 'Facilitatore',
   },
   {
-    field: 'status',
+    field: 'stato',
     label: 'Stato',
   },
 ];

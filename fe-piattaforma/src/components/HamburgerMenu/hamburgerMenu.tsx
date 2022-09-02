@@ -2,22 +2,25 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Button, Collapse, Icon, LinkList } from 'design-react-kit';
-import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import ClickOutside from '../../hoc/ClickOutside';
 import './hamburgerMenu.scss';
+import ClickOutside from '../../hoc/ClickOutside';
 import LogoSmall from '/public/assets/img/logo-mobile.png';
-import { focusId, menuRoutes } from '../../utils/common';
+import { focusId, MenuItem } from '../../utils/common';
+import useGuard from '../../hooks/guard';
 
 interface HBMenuProps {
   open: boolean;
   setOpen: (state: boolean) => void;
+  menuRoutes: MenuItem[];
 }
 
 const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
-  const { open, setOpen } = props;
+  const { open, setOpen, menuRoutes = [] } = props;
+  const { hasUserPermission } = useGuard();
 
   const [collapseOpen, setCollapseOpen] = useState(false);
 
@@ -44,96 +47,104 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
             id='hamburger'
           >
             <ul>
-              {menuRoutes.map((link, index: number) => {
-                return link.subRoutes ? (
-                  <React.Fragment key={index}>
-                    <li
-                      className={clsx(
-                        'right-icon',
-                        'd-flex',
-                        'justify-content-between',
-                        'pr-3',
-                        'flex-column'
-                      )}
-                      {...(collapseOpen ? expanded : {})}
-                      id={link.id}
-                    >
-                      <Button
+              {menuRoutes
+                .filter(({ visible = [] }) => hasUserPermission(visible))
+                .map((link, index: number) => {
+                  return link.subRoutes?.length ? (
+                    <React.Fragment key={index}>
+                      <li
                         className={clsx(
-                          'primary-color d-flex',
+                          'right-icon',
                           'd-flex',
                           'justify-content-between',
-                          'anchor-button'
+                          'pr-3',
+                          'flex-column'
                         )}
-                        onClick={() => setCollapseOpen(!collapseOpen)}
+                        {...(collapseOpen ? expanded : {})}
+                        id={link.id}
+                      >
+                        <Button
+                          className={clsx(
+                            'primary-color d-flex',
+                            'd-flex',
+                            'justify-content-between',
+                            'anchor-button'
+                          )}
+                          onClick={() => setCollapseOpen(!collapseOpen)}
+                        >
+                          {link.label}
+                          <Icon
+                            className='right'
+                            icon='it-expand'
+                            color='primary'
+                            aria-hidden
+                            aria-label='freccia destra'
+                          />
+                        </Button>
+                      </li>
+                      <li
+                        className={clsx(
+                          !collapseOpen && 'd-none',
+                          'sublist-container'
+                        )}
+                      >
+                        <Collapse isOpen={collapseOpen}>
+                          <LinkList sublist>
+                            {link.subRoutes
+                              .filter(({ visible = ['hidden'] }) =>
+                                hasUserPermission(visible)
+                              )
+                              .map((sub, index) => (
+                                <li key={`sub-${index}`}>
+                                  <Link
+                                    className='ml-2 font-weight-normal'
+                                    to={sub.path}
+                                    onClick={() => {
+                                      setOpen(false);
+                                      setCollapseOpen(false);
+                                    }}
+                                  >
+                                    {sub.label}
+                                  </Link>
+                                </li>
+                              ))}
+                          </LinkList>
+                        </Collapse>
+                      </li>
+                    </React.Fragment>
+                  ) : (
+                    <li key={index} id={link.id}>
+                      <Link
+                        to={link.path}
+                        onClick={() => {
+                          setOpen(false);
+                          setCollapseOpen(false);
+                        }}
                       >
                         {link.label}
-                        <Icon
-                          className='right'
-                          icon='it-expand'
-                          color='primary'
-                          aria-hidden
-                          aria-label='freccia destra'
-                        />
-                      </Button>
+                      </Link>
                     </li>
-                    <li
-                      className={clsx(
-                        !collapseOpen && 'd-none',
-                        'sublist-container'
-                      )}
-                    >
-                      <Collapse isOpen={collapseOpen}>
-                        <LinkList sublist>
-                          {link.subRoutes.map((sub, index) => (
-                            <li key={`sub-${index}`}>
-                              <Link
-                                className='ml-2 font-weight-normal'
-                                to={sub.path}
-                                onClick={() => {
-                                  setOpen(false);
-                                  setCollapseOpen(false);
-                                }}
-                              >
-                                {sub.label}
-                              </Link>
-                            </li>
-                          ))}
-                        </LinkList>
-                      </Collapse>
-                    </li>
-                  </React.Fragment>
-                ) : (
-                  <li key={index} id={link.id}>
+                  );
+                })}
+              {hasUserPermission(['btn.gest.ruoli']) ? (
+                <li className='manage-profile-container'>
+                  <div>
+                    <div className='nav-divider primary-bg-a6'></div>
                     <Link
-                      to={link.path}
-                      onClick={() => {
-                        setOpen(false);
-                        setCollapseOpen(false);
-                      }}
+                      to='/gestione-ruoli'
+                      className='primary-color manage-profile mt-4'
                     >
-                      {link.label}
+                      <Icon
+                        className='mr-3'
+                        icon='it-settings'
+                        color='primary'
+                        aria-label='icona ingranaggio'
+                      />
+                      Gestione Profili
                     </Link>
-                  </li>
-                );
-              })}
-              <li className='manage-profile-container'>
-                <div>
-                  <div className='nav-divider primary-bg-a6'></div>
-                  <Link
-                    to='/gestione-ruoli'
-                    className='primary-color manage-profile mt-4'
-                  >
-                    <Icon
-                      className='mr-3'
-                      icon='it-settings'
-                      color='primary'
-                      aria-label='icona ingranaggio'
-                    />
-                    Gestione Profili
-                  </Link>
-                </div>
-              </li>
+                  </div>
+                </li>
+              ) : null}
             </ul>
 
             <div className={clsx('primary-bg-a6', 'p-4', 'pl-0', 'mb-3')}>

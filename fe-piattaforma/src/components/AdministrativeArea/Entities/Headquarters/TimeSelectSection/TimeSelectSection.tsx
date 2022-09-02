@@ -31,7 +31,7 @@ const TimeSelectSection: React.FC<TimeSelectionSectionI> = ({
       <div className='row'>
         <div className='col-6'>
           {isReadOnly ? (
-            <Form formDisabled className='mb-3'>
+            <Form id='form-time-selection-ro-d' formDisabled className='mb-3'>
               <Input value={timeSpan.flat()[0]} withLabel={false} />
             </Form>
           ) : (
@@ -51,7 +51,7 @@ const TimeSelectSection: React.FC<TimeSelectionSectionI> = ({
         </div>
         <div className='col-6'>
           {isReadOnly ? (
-            <Form formDisabled>
+            <Form id='form-time-selection-ro' formDisabled>
               <Input value={timeSpan.flat()[1]} withLabel={false} />
             </Form>
           ) : (
@@ -76,7 +76,7 @@ const TimeSelectSection: React.FC<TimeSelectionSectionI> = ({
       <div className='row'>
         <div className='col-6'>
           {isReadOnly ? (
-            <Form formDisabled className='mb-5'>
+            <Form id='form-time-selection' formDisabled className='mb-5'>
               <Input value={timeSpan.flat()[2]} withLabel={false} />
             </Form>
           ) : (
@@ -96,7 +96,7 @@ const TimeSelectSection: React.FC<TimeSelectionSectionI> = ({
         </div>
         <div className='col-6'>
           {isReadOnly ? (
-            <Form formDisabled>
+            <Form id='form-time-select' formDisabled>
               <Input value={timeSpan.flat()[3]} withLabel={false} />
             </Form>
           ) : (

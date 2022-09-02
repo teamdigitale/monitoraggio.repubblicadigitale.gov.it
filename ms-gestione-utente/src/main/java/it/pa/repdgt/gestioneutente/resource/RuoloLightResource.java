@@ -22,4 +22,10 @@ public class RuoloLightResource implements Serializable {
 
 	@JsonProperty(value = "nomeRuolo")
 	private String nomeRuolo;
+	
+	@JsonProperty(value = "tipologiaRuolo")
+	private String tipologiaRuolo;
+
+	@JsonProperty(value = "modificabile")
+	private Boolean modificabile;
 }

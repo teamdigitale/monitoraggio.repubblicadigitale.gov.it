@@ -1,24 +1,40 @@
-import React from 'react';
-import Accordion from '../../../../../Accordion/accordion';
+import {
+  Accordion,
+  AccordionBody,
+  AccordionHeader,
+  Button,
+  Icon,
+} from 'design-react-kit';
+import React, { useState } from 'react';
+import { dayCode } from '../../../../../../pages/administrator/AdministrativeArea/Entities/utils';
 import AddressForm from '../../../../../General/AddressForm/AddressForm';
 import OpenDaysSelect from '../../OpenDaysSelect/OpenDaysSelect';
 
-export interface OpenDay {
-  index: number;
-  hourSpan: string[][];
+export interface OpenDayHours {
+  [key: string]: string | null;
+}
+
+export interface Address {
+  cancellato?: boolean;
+  id?: string;
+  via: string;
+  civico: string;
+  comune: string;
+  provincia: string;
+  cap: string;
+  regione: string;
+  nazione: string;
 }
 
 export interface AddressInfoI {
-  address: string;
-  CAP: string;
-  city: string;
-  province: string;
-  openDays: OpenDay[];
+  indirizzoSede: Address;
+  fasceOrarieAperturaIndirizzoSede: OpenDayHours;
 }
 
 interface AccordionAddressI {
   addressInfo: AddressInfoI;
   index: number;
+  canBeDeleted?: boolean;
   onAddressInfoChange: (addressInfo: AddressInfoI) => void;
   handleOnToggle?: (isOpen: boolean) => void;
   isReadOnly?: boolean | undefined;
@@ -29,83 +45,132 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
   isReadOnly = false,
   index,
   onAddressInfoChange,
-  handleOnToggle,
+  canBeDeleted = false,
+  // handleOnToggle,
 }) => {
-  const accordionToggleHandler = (isOpen: boolean) => {
-    if (handleOnToggle) handleOnToggle(isOpen);
-  };
+  const [addressOpen, setAddressOpen] = useState(index === 1);
+  // const accordionToggleHandler = (isOpen: boolean) => {
+  //   if (handleOnToggle) handleOnToggle(isOpen);
+  // };
 
   const addressChangeHandler = (
     address: string,
     province: string,
+    state: string,
     city: string,
     CAP: string
   ) => {
     onAddressInfoChange({
       ...addressInfo,
-      address: address,
-      province: province,
-      city: city,
-      CAP: CAP,
+      indirizzoSede: {
+        ...addressInfo.indirizzoSede,
+        via: address,
+        provincia: province,
+        regione: state,
+        comune: city,
+        cap: CAP,
+      },
+    });
+  };
+
+  const addressRemoveHandler = () => {
+    onAddressInfoChange({
+      ...addressInfo,
+      indirizzoSede: {
+        ...addressInfo.indirizzoSede,
+        cancellato: true,
+      },
     });
   };
 
   const openDayAddHandler = (dayIndex: number) => {
+    const newTimeSlots = { ...addressInfo.fasceOrarieAperturaIndirizzoSede };
+    newTimeSlots[`${dayCode[dayIndex]}OrarioApertura1`] = '09:00';
+    newTimeSlots[`${dayCode[dayIndex]}OrarioChiusura1`] = '12:00';
+    newTimeSlots[`${dayCode[dayIndex]}OrarioApertura2`] = '14:00';
+    newTimeSlots[`${dayCode[dayIndex]}OrarioChiusura2`] = '18:00';
+
     onAddressInfoChange({
       ...addressInfo,
-      openDays: [
-        ...addressInfo.openDays,
-        {
-          index: dayIndex,
-          hourSpan: [
-            ['09:00', '13:00'],
-            ['14:00', '18:00'],
-          ],
-        },
-      ],
+      fasceOrarieAperturaIndirizzoSede: {
+        ...newTimeSlots,
+      },
     });
   };
 
   const openDayRemoveHandler = (dayIndex: number) => {
+    const newTimeSlots = { ...addressInfo.fasceOrarieAperturaIndirizzoSede };
+    newTimeSlots[`${dayCode[dayIndex]}OrarioApertura1`] = null;
+    newTimeSlots[`${dayCode[dayIndex]}OrarioChiusura1`] = null;
+    newTimeSlots[`${dayCode[dayIndex]}OrarioApertura2`] = null;
+    newTimeSlots[`${dayCode[dayIndex]}OrarioChiusura2`] = null;
+
     onAddressInfoChange({
       ...addressInfo,
-      openDays: addressInfo.openDays.filter((day) => day.index !== dayIndex),
+      fasceOrarieAperturaIndirizzoSede: { ...newTimeSlots },
     });
   };
 
   const timeChangeHandler = (dayIndex: number, timeSpan: string[][]) => {
+    const newTimeSlots = { ...addressInfo.fasceOrarieAperturaIndirizzoSede };
+    newTimeSlots[`${dayCode[dayIndex]}OrarioApertura1`] = timeSpan[0][0];
+    newTimeSlots[`${dayCode[dayIndex]}OrarioChiusura1`] = timeSpan[0][1];
+    newTimeSlots[`${dayCode[dayIndex]}OrarioApertura2`] = timeSpan[1][0];
+    newTimeSlots[`${dayCode[dayIndex]}OrarioChiusura2`] = timeSpan[1][1];
+
     onAddressInfoChange({
       ...addressInfo,
-      openDays: addressInfo.openDays.map((day) =>
-        day.index === dayIndex ? { ...day, hourSpan: timeSpan } : day
-      ),
+      fasceOrarieAperturaIndirizzoSede: { ...newTimeSlots },
     });
   };
 
   return (
-    <Accordion
-      title={`Indirizzo ${index}`}
-      className='my-5 px-5'
-      handleOnToggle={(isOpen: boolean) => accordionToggleHandler(isOpen)}
-    >
-      <AddressForm
-        address={addressInfo.address}
-        province={addressInfo.province}
-        city={addressInfo.city}
-        CAP={addressInfo.CAP}
-        onAddressChange={(address, province, city, CAP) =>
-          addressChangeHandler(address, province, city, CAP)
-        }
-        formDisabled={isReadOnly}
-      />
+    <Accordion iconLeft>
+      <AccordionHeader
+        active={addressOpen}
+        onToggle={() => setAddressOpen((prev) => !prev)}
+        className='d-flex align-items-center'
+      >
+        <span className='mr-auto'>{`Indirizzo ${index}`}</span>
+        {canBeDeleted && !isReadOnly && (
+          <Button
+            onClick={(e) => {
+              e.stopPropagation();
+              addressRemoveHandler();
+            }}
+            className='pl-3 pr-0'
+          >
+            <Icon
+              color='primary'
+              icon='it-delete'
+              size='sm'
+              aria-label='Elimina'
+            />
+          </Button>
+        )}
+      </AccordionHeader>
+      <AccordionBody className='px-0 pt-5' active={addressOpen}>
+        <AddressForm
+          address={addressInfo.indirizzoSede.via}
+          province={addressInfo.indirizzoSede.provincia}
+          state={addressInfo.indirizzoSede.regione}
+          city={addressInfo.indirizzoSede.comune}
+          CAP={addressInfo.indirizzoSede.cap}
+          onAddressChange={(address, province, state, city, CAP) =>
+            addressChangeHandler(address, province, state, city, CAP)
+          }
+          formDisabled={isReadOnly}
+        />
 
-      <OpenDaysSelect
-        openDays={addressInfo.openDays}
-        onAddOpenDay={openDayAddHandler}
-        onRemoveOpenDay={openDayRemoveHandler}
-        onTimeChange={timeChangeHandler}
-        isReadOnly={isReadOnly}
-      />
+        <OpenDaysSelect
+          openDays={addressInfo.fasceOrarieAperturaIndirizzoSede || {}}
+          index={index}
+          onAddOpenDay={openDayAddHandler}
+          onRemoveOpenDay={openDayRemoveHandler}
+          onTimeChange={timeChangeHandler}
+          isReadOnly={isReadOnly}
+        />
+      </AccordionBody>
     </Accordion>
   );
 };

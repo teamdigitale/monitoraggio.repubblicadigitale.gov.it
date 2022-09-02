@@ -1,25 +1,30 @@
 import clsx from 'clsx';
 import { Collapse, FormGroup, Label } from 'design-react-kit';
 import React from 'react';
-import { dayOfWeek } from '../../../../../pages/administrator/AdministrativeArea/Entities/utils';
+import {
+  dayCode,
+  dayOfWeek,
+} from '../../../../../pages/administrator/AdministrativeArea/Entities/utils';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
 import Form from '../../../../Form/form';
 import Input from '../../../../Form/input';
-import { OpenDay } from '../AccordionAddressList/AccordionAddress/AccordionAddress';
+import { OpenDayHours } from '../AccordionAddressList/AccordionAddress/AccordionAddress';
 import TimeSelectSection from '../TimeSelectSection/TimeSelectSection';
 
 interface OpenDaysSelectI {
-  openDays: OpenDay[];
+  openDays: OpenDayHours;
   onAddOpenDay: (i: number) => void;
   onRemoveOpenDay: (i: number) => void;
   onTimeChange: (i: number, timeSpan: string[][]) => void;
   isReadOnly?: boolean | undefined;
+  index?: number;
 }
 
 const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
   openDays,
   isReadOnly = false,
+  index = 0,
   onAddOpenDay,
   onRemoveOpenDay,
   onTimeChange,
@@ -48,15 +53,17 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
                   </p>
                 </div>
               </div>
-              <Form formDisabled={isReadOnly}>
+              <Form id='form-open-days' formDisabled={isReadOnly} className='mr-2'>
                 {isReadOnly ? (
                   <Input value={v} withLabel={false} />
                 ) : (
                   <FormGroup check>
                     <Input
-                      id={`input-checkbox-day-${i}`}
+                      id={`input-checkbox-day-${index}-${i}`}
                       type='checkbox'
-                      checked={openDays.some((day) => day.index === i)}
+                      checked={Object.entries(openDays).some(
+                        ([key, value]) => key.includes(dayCode[i]) && value
+                      )}
                       onInputChange={(value) => {
                         if (value) {
                           onAddOpenDay(i);
@@ -65,23 +72,42 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
                         }
                       }}
                       withLabel={false}
+                      className='mr-2'
                     />
-                    <Label for={`input-checkbox-day-${i}`} check>
+                    <Label for={`input-checkbox-day-${index}-${i}`} check>
                       {v}
                     </Label>
                   </FormGroup>
                 )}
               </Form>
             </div>
-            <div className={clsx(!isMobile && 'col')}>
+            <div className={clsx(!isMobile && 'col mr-2')}>
               <Collapse
                 className={clsx(isMobile && 'pt-5')}
-                isOpen={!isMobile || openDays.some((day) => day.index === i)}
+                isOpen={
+                  !isMobile ||
+                  Object.entries(openDays).some(
+                    ([key, value]) => key.includes(dayCode[i]) && value
+                  )
+                }
               >
                 <TimeSelectSection
                   isReadOnly={isReadOnly}
-                  disabled={!openDays.some((day) => day.index === i)}
-                  timeSpan={openDays.find((day) => day.index === i)?.hourSpan}
+                  disabled={
+                    !Object.entries(openDays).some(
+                      ([key, value]) => key.includes(dayCode[i]) && value
+                    )
+                  }
+                  timeSpan={[
+                    [
+                      openDays[`${dayCode[i]}OrarioApertura1`] || '09:00',
+                      openDays[`${dayCode[i]}OrarioChiusura1`] || '13:00',
+                    ],
+                    [
+                      openDays[`${dayCode[i]}OrarioApertura2`] || '14:00',
+                      openDays[`${dayCode[i]}OrarioChiusura2`] || '18:00',
+                    ],
+                  ]}
                   onTimeChange={(timeSpan: string[][]) =>
                     onTimeChange(i, timeSpan)
                   }
@@ -92,7 +118,10 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
         ))
         .filter(
           (_d, idx) =>
-            (isReadOnly && openDays.find((day) => day.index === idx)) ||
+            (isReadOnly &&
+              Object.entries(openDays).some(
+                ([key, value]) => key.includes(dayCode[idx]) && value
+              )) ||
             !isReadOnly
         )}
     </div>

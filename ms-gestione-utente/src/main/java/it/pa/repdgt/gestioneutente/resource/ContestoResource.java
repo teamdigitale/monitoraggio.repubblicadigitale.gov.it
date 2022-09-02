@@ -16,6 +16,9 @@ import lombok.Setter;
 public class ContestoResource implements Serializable {
 	private static final long serialVersionUID = 8956013718778000343L;
 	
+	@JsonProperty(value = "id")
+	private Long id;
+	
 	@JsonProperty(value = "nome")
 	private String nome;
 	
@@ -25,17 +28,33 @@ public class ContestoResource implements Serializable {
 	@JsonProperty(value = "email")
 	private String email;
 
-	@JsonProperty(value = "numero cellulare")
+	@JsonProperty(value = "telefono")
 	private String numeroCellulare;
 	
 	@JsonProperty(value = "codiceFiscale")
 	private String codiceFiscale;
+	
+	@JsonProperty(value = "mostraBio")
+	private boolean mostraBio;
+	
+	// bio/mansione
+	@JsonProperty(value = "bio")
+	private String bio;
+	
+	@JsonProperty(value = "mostraTipoContratto")
+	private boolean mostraTipoContratto;
+	
+	@JsonProperty(value = "tipoContratto")
+	private String tipoContratto;
 	
 	@JsonProperty(value = "ruoli")
 	private List<RuoloResource> ruoli;
 	
 	@JsonProperty(value = "stato")
 	private String stato;
+	
+	@JsonProperty(value = "immagineProfilo")
+	private String immagineProfilo;
 	
 	// combinazione Ruolo Programma
 	@JsonProperty(value = "profiliUtente")

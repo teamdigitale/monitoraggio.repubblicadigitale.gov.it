@@ -11,7 +11,10 @@ import lombok.Setter;
 @Getter
 public class DettaglioRuoliBean {
 	private String nome;
+	private String codiceRuolo;
 	private String ruolo;
 	private String stato;
+	private String statoP;
 	private Long id;
+	private boolean associatoAUtente;
 }

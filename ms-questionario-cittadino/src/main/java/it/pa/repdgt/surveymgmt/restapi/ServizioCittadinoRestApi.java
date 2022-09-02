@@ -8,8 +8,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,9 +21,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import io.swagger.annotations.ApiParam;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.bean.CittadinoServizioBean;
 import it.pa.repdgt.surveymgmt.bean.CittadinoUploadBean;
+import it.pa.repdgt.surveymgmt.bean.QuestionarioCompilatoBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.mapper.CittadinoServizioMapper;
@@ -33,9 +32,12 @@ import it.pa.repdgt.surveymgmt.mapper.GetCittadinoServizioMapper;
 import it.pa.repdgt.surveymgmt.param.FiltroListaCittadiniServizioParam;
 import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import it.pa.repdgt.surveymgmt.projection.GetCittadinoProjection;
+import it.pa.repdgt.surveymgmt.request.GetCittadiniRequest;
 import it.pa.repdgt.surveymgmt.request.NuovoCittadinoServizioRequest;
+import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoAnonimoRequest;
 import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoRequest;
 import it.pa.repdgt.surveymgmt.resource.CittadiniServizioPaginatiResource;
+import it.pa.repdgt.surveymgmt.resource.CittadinoResource;
 import it.pa.repdgt.surveymgmt.resource.CittadinoServizioResource;
 import it.pa.repdgt.surveymgmt.resource.GetCittadinoResource;
 import it.pa.repdgt.surveymgmt.service.CittadiniServizioService;
@@ -63,7 +65,6 @@ public class ServizioCittadinoRestApi {
 			@RequestParam(name = "statiQuestionario", required = false) final List<String> statiQuestionarioFiltro,
 			@RequestParam(name = "currPage", defaultValue = "0")  @Pattern(regexp = "[0-9]+") final String currPage,
 			@RequestParam(name = "pageSize", defaultValue = "10") @Pattern(regexp = "[0-9]+") final String pageSize) {
-		final Pageable pagina = PageRequest.of(Integer.parseInt(currPage), Integer.parseInt(pageSize));
 		final FiltroListaCittadiniServizioParam filtroListaCittadiniServizioParam = new FiltroListaCittadiniServizioParam();
 		filtroListaCittadiniServizioParam.setCriterioRicerca(criterioRicercaFiltro);
 		filtroListaCittadiniServizioParam.setStatiQuestionario(statiQuestionarioFiltro);
@@ -71,14 +72,18 @@ public class ServizioCittadinoRestApi {
 		CittadinoServizioBean cittadinoServiziBean = this.cittadiniServizioService.getAllCittadiniServizioByProfilazioneAndFiltroPaginati(
 				idServizio,
 				profilazioneParam, 
-				filtroListaCittadiniServizioParam, 
-				pagina
+				filtroListaCittadiniServizioParam,
+				Integer.parseInt(currPage),
+				Integer.parseInt(pageSize)
 			);
 		
-		final List<CittadinoServizioResource> cittadinoServizioResource = this.cittadinoServizioMapper.toResourceFrom(cittadinoServiziBean.getListaCittadiniServizio().getContent());
+		final int totaleElementi = this.cittadiniServizioService.countCittadiniServizioByFiltro(idServizio, filtroListaCittadiniServizioParam);
+		final int numeroPagine = (int) (totaleElementi / Integer.parseInt(pageSize));
+		
+		final List<CittadinoServizioResource> cittadinoServizioResource = this.cittadinoServizioMapper.toResourceFrom(cittadinoServiziBean.getListaCittadiniServizio());
 		final CittadiniServizioPaginatiResource cittadiniServizioPaginatiResource = new CittadiniServizioPaginatiResource();
 		cittadiniServizioPaginatiResource.setCittadiniServizioResource(cittadinoServizioResource);
-		cittadiniServizioPaginatiResource.setNumeroPagine(cittadinoServiziBean.getListaCittadiniServizio().getTotalPages());
+		cittadiniServizioPaginatiResource.setNumeroPagine(totaleElementi % Integer.parseInt(pageSize) > 0 ? numeroPagine+1 : numeroPagine);
 		cittadiniServizioPaginatiResource.setNumeroCittadini(cittadinoServiziBean.getNumCittadini());
 		cittadiniServizioPaginatiResource.setNumeroQuestionariCompilati(cittadinoServiziBean.getNumQuestionariCompilati());
 		return cittadiniServizioPaginatiResource;
@@ -101,15 +106,14 @@ public class ServizioCittadinoRestApi {
 			);
 	}
 	
-	@GetMapping
+	@PostMapping
 	@ResponseStatus(value = HttpStatus.OK)
 	private List<GetCittadinoResource> getCittadini(
-		@RequestParam(name = "criterioRicerca", required = true) final String criterioRicerca,
-		@ApiParam(allowEmptyValue = false, allowableValues = "CF, NUM_DOC", name = "tipoDocumento", required = true)
-		@RequestParam(name = "tipoDocumento", required = true) final String tipoDocumento) {
+			@RequestBody @Valid GetCittadiniRequest request){
+		
 		final List<GetCittadinoProjection> cittadini = this.cittadiniServizioService.getAllCittadiniByCodFiscOrNumDoc(
-				tipoDocumento, 
-				criterioRicerca
+				request.getTipoDocumento(), 
+				request.getCriterioRicerca()
 			);
 		
 		return this.getCittadinoServizioMapper.toResourceFrom(cittadini);
@@ -117,13 +121,10 @@ public class ServizioCittadinoRestApi {
 	
 	@PostMapping(path="/{idServizio}")
 	@ResponseStatus(value = HttpStatus.CREATED)
-	private void creaNuovoCittadinoServizio(
+	private CittadinoResource creaNuovoCittadinoServizio(
 		@PathVariable(name = "idServizio") final Long idServizio,
 		@RequestBody @Valid final NuovoCittadinoServizioRequest nuovoCittadino) {
-		this.cittadiniServizioService.creaNuovoCittadino(
-				idServizio,
-				nuovoCittadino
-			);
+		return new CittadinoResource(this.cittadiniServizioService.creaNuovoCittadino(idServizio, nuovoCittadino).getId());
 	}
 	
 	// TOUCH POINT - 9.2.5
@@ -133,13 +134,13 @@ public class ServizioCittadinoRestApi {
 			@RequestPart MultipartFile file,
 			@PathVariable(value = "idServizio") Long idServizio) {
 		if (file == null || !CSVServizioUtil.hasCSVFormat(file)) {
-			throw new ServizioException("il file non è valido"); 
+			throw new ServizioException("il file non è valido", CodiceErroreEnum.S01); 
 		}
 		return this.cittadiniServizioService.caricaCittadiniSuServizio(file, idServizio);
 	}
 	
 	/**
-	 * invio questionario al cittadino per compilazione anonima
+	 * invio questionario al cittadino per compilazione
 	 * 
 	 * */
 	// TOUCH POINT 9.2.9
@@ -147,9 +148,19 @@ public class ServizioCittadinoRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void inviaQuestionario(
 			@RequestParam(value = "idQuestionario") String idQuestionario,
-			@RequestParam(value = "idCittadino") Long idCittadino
-			) {
+			@RequestParam(value = "idCittadino") Long idCittadino ) {
 		this.cittadiniServizioService.inviaQuestionario(idQuestionario, idCittadino);
+	}
+	/**
+	 * invio questionario a tutti i cittadini associati al servizio con quel particolare id
+	 * e per cui ancora non è stato inviato il questionario
+	 * 
+	 * */
+	// TOUCH POINT 9.2.9
+	@PostMapping(path = "servizio/{idServizio}/questionarioCompilato/inviaATutti")
+	@ResponseStatus(value = HttpStatus.OK)
+	public void inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizio(@PathVariable(value = "idServizio") Long idServizio) {
+		this.cittadiniServizioService.inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizio(idServizio);
 	}
 	
 	/**
@@ -160,11 +171,10 @@ public class ServizioCittadinoRestApi {
 	// TOUCH POINT 9.2.6
 	@GetMapping(path = "/questionarioCompilato/{idQuestionario}/anonimo")
 	@ResponseStatus(value = HttpStatus.OK)
-	public QuestionarioCompilatoCollection getQuestionarioCompilatoAnonimo(
+	public QuestionarioCompilatoBean getQuestionarioCompilatoAnonimo(
 		@PathVariable(value = "idQuestionario") String idQuestionario,
-		@RequestParam(value = "token") String token) throws ParseException {
-		//TODO: aggiungere verifica del token
-		return this.questionarioCompilatoService.getQuestionarioCompilatoByIdAnonimo(idQuestionario, token);
+		@RequestParam(value = "t") String t) throws ParseException {
+		return this.questionarioCompilatoService.getQuestionarioCompilatoByIdAnonimo(idQuestionario, t);
 	}
 	
 	/**
@@ -190,8 +200,20 @@ public class ServizioCittadinoRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void compilaQuestionarioAnonimo(
 			@PathVariable(value = "idQuestionario") String idQuestionario,
-			@Valid @RequestBody QuestionarioCompilatoRequest questionarioCompilatoRequest,
-			@RequestParam(value = "token") String token) throws ParseException {
-		this.questionarioCompilatoService.compilaQuestionarioAnonimo(idQuestionario, questionarioCompilatoRequest, token);
+			@Valid @RequestBody QuestionarioCompilatoAnonimoRequest questionarioCompilatoAnonimoRequest,
+			@RequestParam(value = "t") String t) throws ParseException {
+		this.questionarioCompilatoService.compilaQuestionarioAnonimo(idQuestionario, questionarioCompilatoAnonimoRequest, t);
+	}
+	
+	
+	/***
+	 * Restituisce il questionario compilato con specifico id persistito su mongoDB
+	 * 
+	 * */
+	@GetMapping(path = "questionarioCompilato/compilato/{idQuestionarioCompilato}",  produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(value = HttpStatus.OK)
+	public QuestionarioCompilatoCollection getQuestioanarioCompilatoById(
+			@PathVariable(value = "idQuestionarioCompilato") final String questionarioCompilatoId) {
+		return this.questionarioCompilatoService.getQuestionarioCompilatoById(questionarioCompilatoId);
 	}
 }

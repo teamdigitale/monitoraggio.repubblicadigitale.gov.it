@@ -103,7 +103,8 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
     <div>
       {!open && (
         <>
-          {!form['question-default'].value && (
+          {!form['question-default'].value && 
+           (editMode || cloneMode) && (
             <Button onClick={handleDeleteQuestion} className='px-1 pt-0'>
               <Icon
                 color='primary'
@@ -227,6 +228,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
                       className='mb-0 w-100'
                       type={device.mediaIsPhone ? 'textarea' : undefined}
                       aria-label={`Testo della domanda ${position}`}
+                      maximum={250}
                     />
                   </div>
                 </Form>
@@ -245,7 +247,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
               'ml-lg-5',
               'ml-0',
               'pl-lg-0',
-              device.mediaIsPhone || device.mediaIsTablet && 'pl-4'
+              !device.mediaIsDesktop && 'pl-4'
             )}
           >
             <div className='d-flex flex-column'>
@@ -256,7 +258,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
             </div>
             <div className='d-flex flex-column'>
               <span>Tipologia risposta</span>
-              {(!editMode || !cloneMode) && form['question-default']?.value ? (
+              {(!editMode && !cloneMode) || form['question-default']?.value ? (
                 <span className='ml-2'>
                   <strong>
                     {

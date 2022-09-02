@@ -13,7 +13,7 @@ const ProgramInfoAccordionForm = () => {
 
   return (
     <>
-      <FormGeneralInfo formDisabled />
+      <FormGeneralInfo formDisabled edit />
       {accordions.map((accordion, index) => (
         <Accordion
           title={accordion.title}

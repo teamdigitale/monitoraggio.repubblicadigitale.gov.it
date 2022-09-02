@@ -8,6 +8,7 @@ import withFormHandler, {
 import { selectProjects } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { GetProjectDetail } from '../../../redux/features/administrativeArea/projects/projectsThunk';
 import { useAppSelector } from '../../../redux/hooks';
+import { formatDate } from '../../../utils/common';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
 import { RegexpType } from '../../../utils/validator';
 
@@ -16,14 +17,15 @@ interface ProgramInformationI {
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   setIsFormValid?: (param?: boolean | undefined) => void;
   creation?: boolean;
+  program?: { dataInizio: string; dataFine: string } | undefined;
 }
 
-interface FormEnteGestoreProgettoFullInterface
+interface FormProjectGeneralInfoInterface
   extends withFormHandlerProps,
     ProgramInformationI {
   intoModal?: boolean;
 }
-const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
+const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
   props
 ) => {
   const {
@@ -37,6 +39,7 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     creation = false,
     updateForm = () => ({}),
     intoModal = false,
+    program,
   } = props;
   const { projectId } = useParams();
 
@@ -54,11 +57,29 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
   }, [creation, projectId]);
 
   useEffect(() => {
-    setIsFormValid?.(isValidForm);
+    setIsFormValid(isValidForm);
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
+
+  useEffect(() => {
+    if (
+      form &&
+      formDisabled &&
+      Object.entries(form).some(([_key, value]) => !value.disabled)
+    ) {
+      updateForm(
+        Object.fromEntries(
+          Object.entries(form).map(([key, value]) => [
+            key,
+            { ...value, disabled: formDisabled },
+          ])
+        ),
+        true
+      );
+    }
+  }, [formDisabled, form]);
 
   useEffect(() => {
     if (formData && !creation) {
@@ -111,7 +132,7 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 
   return (
-    <Form className='mt-5' formDisabled={formDisabled}>
+    <Form id='form-project-general-info' className='mt-5' formDisabled={formDisabled}>
       <Form.Row className={bootClass}>
         {/* <Input
           {...form?.codice}
@@ -120,26 +141,24 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pr-lg-3'
         /> */}
         <Input
           {...form?.nome}
+          required
           col='col-12'
           label='Nome progetto'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
         />
-      </Form.Row>
-      <Form.Row className={bootClass}>
         <Input
           {...form?.nomeBreve}
+          required
           col='col-12 col-lg-6'
           label='Nome breve'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pr-lg-3'
         />
         <Input
           {...form?.cup}
@@ -148,27 +167,40 @@ const FormProjectGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pl-lg-3'
         />
-      </Form.Row>
-      <Form.Row className={bootClass}>
         <Input
           {...form?.dataInizio}
+          required
           label='Data inizio'
+          minimum={creation ? program?.dataInizio : undefined}
+          maximum={
+            creation
+              ? form?.dataFine.value
+                ? formatDate(form?.dataFine.value as string)
+                : program?.dataFine
+              : formatDate(form?.dataFine.value as string)
+          }
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pr-lg-3'
         />
         <Input
           {...form?.dataFine}
+          required
           label='Data fine'
+          minimum={
+            creation
+              ? form?.dataInizio.value
+                ? formatDate(form?.dataInizio.value as string)
+                : program?.dataInizio
+              : formatDate(form?.dataInizio.value as string)
+          }
+          maximum={creation ? program?.dataFine : undefined}
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pl-lg-3'
         />
       </Form.Row>
     </Form>

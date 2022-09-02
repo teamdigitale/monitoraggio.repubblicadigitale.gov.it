@@ -4,7 +4,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,6 +37,7 @@ class ProgrammaXQuestionarioTemplateServiceTestWithMocks {
 	
 	ProgrammaEntity programma1;
 	QuestionarioTemplateEntity questionario1;
+	List<ProgrammaXQuestionarioTemplateEntity> listaProgrammaXQuestionario;
 	
 	@BeforeEach
 	public void setUp() {
@@ -49,6 +51,8 @@ class ProgrammaXQuestionarioTemplateServiceTestWithMocks {
 		programmaXQuestionarioTemplateEntity = new ProgrammaXQuestionarioTemplateEntity();
 		programmaXQuestionarioTemplateEntity.setProgrammaXQuestionarioTemplateKey(programmaXQuestionarioTemplateKey);
 		programmaXQuestionarioTemplateEntity.setStato("ATTIVO");
+		listaProgrammaXQuestionario = new ArrayList<>();
+		listaProgrammaXQuestionario.add(programmaXQuestionarioTemplateEntity);
 	}
 	
 	@Test
@@ -59,15 +63,15 @@ class ProgrammaXQuestionarioTemplateServiceTestWithMocks {
 	}
 	
 	@Test
-	public void getAssociazioneQuestionarioTemplateAttivaByIdProgrammaTest() {
-		when(programmaXQuestionarioTemplateRepository.getAssociazioneQuestionarioTemplateAttivaByIdProgramma(programma1.getId())).thenReturn(Optional.of(programmaXQuestionarioTemplateEntity));
-		programmaXQuestionarioTemplateService.getAssociazioneQuestionarioTemplateAttivaByIdProgramma(programma1.getId());
-		verify(programmaXQuestionarioTemplateRepository, times(1)).getAssociazioneQuestionarioTemplateAttivaByIdProgramma(programma1.getId());
+	public void getAssociazioneQuestionarioTemplateByIdProgrammaTest() {
+		when(programmaXQuestionarioTemplateRepository.getAssociazioneQuestionarioTemplateByIdProgramma(programma1.getId())).thenReturn(listaProgrammaXQuestionario);
+		programmaXQuestionarioTemplateService.getAssociazioneQuestionarioTemplateByIdProgramma(programma1.getId());
+		verify(programmaXQuestionarioTemplateRepository, times(1)).getAssociazioneQuestionarioTemplateByIdProgramma(programma1.getId());
 	}
 	
 	@Test
 	public void cancellaAssociazioneQuestionarioTemplateAProgrammaTest() {
-		when(programmaXQuestionarioTemplateRepository.getAssociazioneQuestionarioTemplateAttivaByIdProgramma(programma1.getId())).thenReturn(Optional.of(programmaXQuestionarioTemplateEntity));
+		when(programmaXQuestionarioTemplateRepository.getAssociazioneQuestionarioTemplateByIdProgramma(programma1.getId())).thenReturn(listaProgrammaXQuestionario);
 		programmaXQuestionarioTemplateService.cancellaAssociazioneQuestionarioTemplateAProgramma(programma1.getId());
 		verify(programmaXQuestionarioTemplateRepository, times(1)).delete(programmaXQuestionarioTemplateEntity);
 	}

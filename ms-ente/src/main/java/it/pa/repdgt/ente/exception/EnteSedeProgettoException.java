@@ -1,15 +1,16 @@
 package it.pa.repdgt.ente.exception;
 
-import java.io.Serializable;
+import it.pa.repdgt.shared.exception.BaseException;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 
-public class EnteSedeProgettoException extends RuntimeException implements Serializable {
-	private static final long serialVersionUID = -1711082481928313676L;
-
-	public EnteSedeProgettoException(String exceptionMessage) {
+public class EnteSedeProgettoException extends BaseException {
+	public EnteSedeProgettoException(String exceptionMessage, CodiceErroreEnum codiceErroreEnum) {
 		super(exceptionMessage);
+		this.codiceErroreEnum = codiceErroreEnum;
 	}
 	
-	public EnteSedeProgettoException(String exceptionMessage, Exception ex) {
+	public EnteSedeProgettoException(String exceptionMessage, Exception ex, CodiceErroreEnum codiceErroreEnum) {
 		super (exceptionMessage, ex);
+		this.codiceErroreEnum = codiceErroreEnum;
 	}
 }

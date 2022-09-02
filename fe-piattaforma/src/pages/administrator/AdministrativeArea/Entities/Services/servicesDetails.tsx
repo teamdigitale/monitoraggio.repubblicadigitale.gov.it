@@ -2,7 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { selectServices } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
-import { GetServicesDetail } from '../../../../../redux/features/administrativeArea/services/servicesThunk';
+import {
+  CitizenListI,
+  GetCitizenListServiceDetail,
+  GetServicesDetail,
+} from '../../../../../redux/features/administrativeArea/services/servicesThunk';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
 import { ButtonInButtonsBar } from '../../../../../components/ButtonsBar/buttonsBar';
@@ -11,8 +15,7 @@ import {
   openModal,
 } from '../../../../../redux/features/modal/modalSlice';
 import { formTypes } from '../utils';
-import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
-import FormServices from '../../../../forms/formServices';
+import { setInfoIdsBreadcrumb } from '../../../../../redux/features/app/appSlice';
 import { Nav, NavItem } from 'design-react-kit';
 import { EmptySection, NavLink } from '../../../../../components';
 import ManageServices from '../modals/manageService';
@@ -20,10 +23,13 @@ import SearchCitizenModal from '../../../CitizensArea/Entities/SearchCitizenModa
 import {
   CRUDActionsI,
   CRUDActionTypes,
+  ItemListElemI,
   ItemsListI,
 } from '../../../../../utils/common';
 import { TableRowI } from '../../../../../components/Table/table';
-import CitizensList, { CitizenI } from './citizensList';
+import CitizensList from './citizensList';
+import FormService from '../../../../forms/formServices/formService';
+import useGuard from '../../../../../hooks/guard';
 
 const tabs = {
   INFO: 'info',
@@ -35,8 +41,13 @@ const ServicesDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const serviceDetails: {
-    info: { [key: string]: string };
-    cittadini: CitizenI[];
+    dettaglioServizio: { [key: string]: string };
+    progettiAssociatiAlServizio: {
+      id: string;
+      nomeBreve: string;
+      stato: string;
+    }[];
+    cittadini: CitizenListI;
   } = useAppSelector(selectServices)?.detail;
   const dettagliRef = useRef<HTMLSpanElement>(null);
   const cittadiniRef = useRef<HTMLSpanElement>(null);
@@ -44,30 +55,18 @@ const ServicesDetails = () => {
   const [content, setContent] = useState<React.ReactElement>();
   const [itemList, setItemList] = useState<ItemsListI | null>();
   const location = useLocation();
+  const { hasUserPermission } = useGuard();
 
-  useEffect(() => {
-    if (serviceId && serviceDetails.info.nome) {
+  useEffect(() => { // For breadcrumb
+    if (serviceId && serviceDetails?.dettaglioServizio?.nomeServizio) {
       dispatch(
-        updateBreadcrumb([
-          {
-            label: 'Area Amministrativa',
-            url: '/area-amministrativa',
-            link: false,
-          },
-          {
-            label: 'Servizi',
-            url: '/area-amministrativa/servizi',
-            link: true,
-          },
-          {
-            label: serviceDetails.info.nome,
-            url: `/area-amministrativa/servizi/${serviceId}`,
-            link: false,
-          },
-        ])
+        setInfoIdsBreadcrumb({
+          id: serviceId,
+          nome: serviceDetails?.dettaglioServizio?.nomeServizio,
+        })
       );
     }
-  }, [serviceId]);
+  }, [serviceId, serviceDetails]);
 
   const centerActiveItem = () => {
     switch (activeTab) {
@@ -87,6 +86,7 @@ const ServicesDetails = () => {
     {
       size: 'xs',
       outline: true,
+      buttonClass: 'btn-secondary',
       color: 'primary',
       text: ' Carica lista cittadini',
       onClick: () => console.log('carica csv'),
@@ -109,29 +109,24 @@ const ServicesDetails = () => {
       navigate(
         `/area-amministrativa/progetti/${typeof td === 'string' ? td : td?.id}`
       );
-      console.log(td);
     },
   };
 
   useEffect(() => {
+    const projectsAssociated: ItemListElemI[] = [];
+    serviceDetails.progettiAssociatiAlServizio.map((elem) =>
+      projectsAssociated.push({
+        id: elem.id,
+        nome: elem.nomeBreve,
+        stato: elem.stato,
+        actions: onActionClick,
+      })
+    );
     setItemList({
       title: 'Progetti associati',
-      items: [
-        {
-          nome: 'Progetto 1',
-          stato: 'active',
-          actions: onActionClick,
-          id: 'progetto1',
-        },
-        {
-          nome: 'Progetto 2',
-          stato: 'active',
-          actions: onActionClick,
-          id: 'progetto2',
-        },
-      ],
+      items: [...projectsAssociated],
     });
-  }, []);
+  }, [serviceDetails]);
 
   useEffect(() => {
     const locationSplit = location.pathname.split('/');
@@ -139,12 +134,12 @@ const ServicesDetails = () => {
       switch (locationSplit[locationSplit.length - 1]) {
         case tabs.INFO:
           setActiveTab(tabs.INFO);
-          setContent(<FormServices formDisabled />);
+          setContent(<FormService formDisabled />);
           break;
         case tabs.CITIZENS:
           setActiveTab(tabs.CITIZENS);
           setContent(
-            serviceDetails?.cittadini.length === 0 ? (
+            serviceDetails?.cittadini?.servizi?.length === 0 ? (
               <EmptySection
                 title='Questa sezione è ancora vuota'
                 subtitle='Aggiungi i cittadini'
@@ -169,35 +164,67 @@ const ServicesDetails = () => {
 
   useEffect(() => {
     dispatch(GetServicesDetail(serviceId));
+    dispatch(GetCitizenListServiceDetail(serviceId));
   }, []);
 
-  const buttons: ButtonInButtonsBar[] = [
-    {
-      size: 'xs',
-      outline: true,
-      color: 'primary',
-      text: 'Elimina',
-      onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
-    },
-    {
-      size: 'xs',
-      color: 'primary',
-      text: 'Modifica',
-      onClick: () =>
-        dispatch(
-          openModal({
-            id: formTypes.SERVICES,
-            payload: { title: 'Modifica servizio' },
-          })
-        ),
-    },
-  ];
+  const buttons: ButtonInButtonsBar[] = hasUserPermission([
+    'upd.card.serv',
+    'del.serv',
+  ])
+    ? [
+        {
+          size: 'xs',
+          outline: true,
+          color: 'primary',
+          text: 'Elimina',
+          onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+        },
+        {
+          size: 'xs',
+          color: 'primary',
+          text: 'Modifica',
+          onClick: () =>
+            dispatch(
+              openModal({
+                id: formTypes.SERVICES,
+                payload: { title: 'Modifica servizio', idServizio: serviceId },
+              })
+            ),
+        },
+      ]
+    : hasUserPermission(['del.serv'])
+    ? [
+        {
+          size: 'xs',
+          outline: true,
+          color: 'primary',
+          text: 'Elimina',
+          onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+        },
+      ]
+    : hasUserPermission(['upd.card.serv'])
+    ? [
+        {
+          size: 'xs',
+          color: 'primary',
+          text: 'Modifica',
+          onClick: () =>
+            dispatch(
+              openModal({
+                id: formTypes.SERVICES,
+                payload: { title: 'Modifica servizio', idServizio: serviceId },
+              })
+            ),
+        },
+      ]
+    : [];
 
   const buttonsCitizen: ButtonInButtonsBar[] = [
     {
       size: 'xs',
       outline: true,
       color: 'primary',
+      buttonClass: 'btn-secondary',
       text: 'Stampa questionario',
       iconForButton: 'it-print',
       iconColor: 'primary',
@@ -236,20 +263,21 @@ const ServicesDetails = () => {
     </Nav>
   );
   return (
-    <div className='d-flex flex-column'>
-      <div>
+    <div className='d-flex flex-column container'>
+      <div className='container'>
         <DetailLayout
           formButtons={
-            activeTab === tabs.CITIZENS && serviceDetails.cittadini.length
+            activeTab === tabs.CITIZENS &&
+            serviceDetails.cittadini?.servizi?.length
               ? buttonsCitizen
               : buttons
           }
           titleInfo={{
-            title: serviceDetails.info.nome,
-            status: serviceDetails.info.stato,
+            title: serviceDetails.dettaglioServizio.nomeServizio,
+            status: serviceDetails.dettaglioServizio.stato,
             upperTitle: { icon: 'it-calendar', text: 'Servizio' },
           }}
-          buttonsPosition='TOP'
+          buttonsPosition='BOTTOM'
           itemsList={itemList}
           showItemsList={activeTab === tabs.INFO}
           nav={nav}

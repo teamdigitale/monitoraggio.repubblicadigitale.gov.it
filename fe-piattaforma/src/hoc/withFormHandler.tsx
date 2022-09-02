@@ -11,7 +11,7 @@ export interface withFormHandlerProps {
   isValidForm?: boolean;
   onInputChange?: (
     value: formFieldI['value'],
-    field?: formFieldI['field']
+    field?: formFieldI['field'] | undefined
   ) => FormI;
   updateForm?: (newForm: FormI, override?: boolean) => void;
   updateFormField?: (

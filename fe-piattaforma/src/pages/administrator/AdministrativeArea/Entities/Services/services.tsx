@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Paginator, StatusChip, Table } from '../../../../../components';
+import {
+  EmptySection,
+  Paginator,
+  StatusChip,
+  Table,
+} from '../../../../../components';
 import { newTable, TableRowI } from '../../../../../components/Table/table';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
   DropdownFilterI,
   FilterI,
 } from '../../../../../components/DropdownFilter/dropdownFilter';
-import { TableHeadingEventsList } from '../../../CitizensArea/utils';
+import { TableHeadingServicesList } from '../../../CitizensArea/utils';
 
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
@@ -16,10 +21,7 @@ import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import { openModal } from '../../../../../redux/features/modal/modalSlice';
 import { useNavigate } from 'react-router-dom';
-import {
-  GetAllEvents,
-  GetEntityFilterValues,
-} from '../../../../../redux/features/administrativeArea/services/servicesThunk';
+import { GetAllServices } from '../../../../../redux/features/administrativeArea/services/servicesThunk';
 import {
   selectServices,
   selectEntityFilters,
@@ -30,15 +32,21 @@ import {
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import ManageServices from '../modals/manageService';
 import { formTypes } from '../utils';
-import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
+import { formatDate } from '../../../../../utils/datesHelper';
+import {
+  DownloadEntityValuesQueryParams,
+  GetEntityFilterQueryParamsValues,
+} from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
+import useGuard from '../../../../../hooks/guard';
 
-const entity = 'servizi';
-const statusDropdownLabel = 'stati';
+const entity = 'servizio';
+const statusDropdownLabel = 'stato';
+const serviceTypeDropdownLabel = 'tipologiaServizio';
 
 const Services = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const eventsList = useAppSelector(selectServices)?.list;
+  const servicesList = useAppSelector(selectServices)?.list;
   const filtersList = useAppSelector(selectEntityFilters);
   const pagination = useAppSelector(selectEntityPagination);
   const dropdownFilterOptions = useAppSelector(selectEntityFiltersOptions);
@@ -48,73 +56,67 @@ const Services = () => {
   const [filterDropdownSelected, setFilterDropdownSelected] =
     useState<string>('');
 
-  const { criterioRicerca, policies, stati } = filtersList;
+  const { hasUserPermission } = useGuard();
+
+  const { criterioRicerca, policies, stato, tipologiaServizio } = filtersList;
 
   const { pageNumber } = pagination;
 
   const getAllFilters = () => {
-    // TODO: check chiavi filtri
-    if (filterDropdownSelected !== 'filtroStati')
-      dispatch(GetEntityFilterValues({ entity, dropdownType: 'stati' }));
+    if (filterDropdownSelected !== 'stato')
+      dispatch(
+        GetEntityFilterQueryParamsValues({ entity, dropdownType: 'stati' })
+      );
+    if (filterDropdownSelected !== 'tipologiaServizio')
+      dispatch(
+        GetEntityFilterQueryParamsValues({
+          entity,
+          dropdownType: 'tipologiaServizio',
+        })
+      );
   };
 
   useEffect(() => {
-    dispatch(setEntityPagination({ pageSize: 1 }));
-    getAllFilters();
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area Amministrativa',
-          url: '/area-amministrativa',
-          link: false,
-        },
-        {
-          label: 'Servizi',
-          url: '/area-amministrativa/servizi',
-          link: true,
-        },
-      ])
-    );
+    dispatch(setEntityPagination({ pageSize: 8 }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateTableValues = () => {
     const table = newTable(
-      TableHeadingEventsList,
-      eventsList.map((td) => {
+      TableHeadingServicesList,
+      servicesList.map((td) => {
         return {
           ...td,
-          nome: td.name,
-          status: <StatusChip status={td.status} rowTableId={td.id} />,
+          nome: td.nome,
+          data: formatDate(td.data, 'shortDate') || '-',
+          status: <StatusChip status={td.stato} rowTableId={td.id} />,
         };
       })
     );
-    return {
-      ...table,
-      // TODO remove slice after BE integration
-      values: table.values.slice(
-        pagination?.pageNumber * pagination?.pageSize - pagination?.pageSize,
-        pagination?.pageNumber * pagination?.pageSize
-      ),
-    };
+    return table;
   };
 
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    setTableValues(updateTableValues());
+    if (Array.isArray(servicesList) && servicesList.length)
+      setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eventsList]);
+  }, [servicesList]);
 
-  const getProgramsList = () => {
-    dispatch(GetAllEvents());
+  const getServicesList = () => {
+    dispatch(GetAllServices());
   };
 
   useEffect(() => {
-    getAllFilters();
-    getProgramsList();
+    getServicesList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [criterioRicerca, policies, stati, pageNumber]);
+  }, [criterioRicerca, policies, stato, tipologiaServizio, pageNumber]);
+
+  useEffect(() => {
+    getAllFilters();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [criterioRicerca, policies, stato, tipologiaServizio]);
 
   const handleOnChangePage = (pageNumber: number = pagination?.pageNumber) => {
     dispatch(setEntityPagination({ pageNumber }));
@@ -126,7 +128,7 @@ const Services = () => {
 
   const handleDropdownFilters = (
     values: FilterI[],
-    filterKey: 'policies' | 'stati' | 'programmi' | 'progetti'
+    filterKey: 'stato' | 'tipologiaServizio'
   ) => {
     setFilterDropdownSelected(filterKey);
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
@@ -134,7 +136,7 @@ const Services = () => {
 
   const handleOnSearchDropdownOptions = (
     searchValue: formFieldI['value'],
-    filterId: 'policies' | 'stati' | 'programmi' | 'progetti'
+    filterId: 'stato' | 'tipologiaServizio'
   ) => {
     const searchDropdownValues = [...searchDropdown];
     if (
@@ -152,8 +154,21 @@ const Services = () => {
 
   const dropdowns: DropdownFilterI[] = [
     {
+      filterName: 'Tipo di servizio prenotato',
+      options: dropdownFilterOptions[serviceTypeDropdownLabel],
+      id: serviceTypeDropdownLabel,
+      onOptionsChecked: (options) =>
+        handleDropdownFilters(options, serviceTypeDropdownLabel),
+      values: filtersList[serviceTypeDropdownLabel] || [],
+      handleOnSearch: (searchKey) =>
+        handleOnSearchDropdownOptions(searchKey, serviceTypeDropdownLabel),
+      valueSearch: searchDropdown?.filter(
+        (f) => f.filterId === serviceTypeDropdownLabel
+      )[0]?.value,
+    },
+    {
       filterName: 'Stato',
-      options: dropdownFilterOptions[statusDropdownLabel],
+      options: dropdownFilterOptions['stati'],
       id: statusDropdownLabel,
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, statusDropdownLabel),
@@ -174,12 +189,13 @@ const Services = () => {
     title: 'Cerca programma',
   };
 
-  const onActionClick: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      console.log(td);
-      navigate('event1/info');
-    },
-  };
+  const onActionClick: CRUDActionsI = hasUserPermission(['view.card.serv'])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(`${typeof td === 'string' ? td : td?.id}/info`);
+        },
+      }
+    : {};
 
   const newService = () => {
     dispatch(
@@ -199,31 +215,56 @@ const Services = () => {
     iconCta: 'it-plus',
   };
 
+  const handleDownloadList = () => {
+    dispatch(DownloadEntityValuesQueryParams({ entity }));
+  };
+
   return (
     <GenericSearchFilterTableLayout
       searchInformation={searchInformation}
       dropdowns={dropdowns}
       filtersList={filtersList}
       {...servicesCta}
-      cta={newService}
-      resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
+      cta={hasUserPermission(['new.serv']) ? newService : undefined}
+      ctaDownload={
+        hasUserPermission(['list.dwnl.serv']) ? handleDownloadList : undefined
+      }
+      resetFilterDropdownSelected={(filterKey: string) =>
+        setFilterDropdownSelected(filterKey)
+      }
     >
-      <Table
-        {...tableValues}
-        id='table'
-        onActionClick={onActionClick}
-        onCellClick={(field, row) => console.log(field, row)}
-        //onRowClick={row => console.log(row)}
-        withActions
-      />
-      <Paginator
-        activePage={pagination?.pageNumber}
-        center
-        refID='#table'
-        pageSize={pagination?.pageSize}
-        total={eventsList.length}
-        onChange={handleOnChangePage}
-      />
+      <div>
+        {servicesList?.length && tableValues?.values?.length ? (
+          <>
+            <Table
+              {...tableValues}
+              id='table'
+              onActionClick={onActionClick}
+              onCellClick={(field, row) => console.log(field, row)}
+              //onRowClick={row => console.log(row)}
+              withActions
+              totalCounter={pagination?.totalElements}
+            />
+            {pagination?.pageNumber ? (
+              <Paginator
+                activePage={pagination?.pageNumber}
+                center
+                refID='#table'
+                pageSize={pagination?.pageSize}
+                total={pagination?.totalPages}
+                onChange={handleOnChangePage}
+              />
+            ) : null}
+          </>
+        ) : (
+          <EmptySection
+            title='Non ci sono servizi'
+            subtitle='associati al tuo ruolo'
+            icon='it-note'
+            withIcon
+          />
+        )}
+      </div>
       <ManageServices creation />
     </GenericSearchFilterTableLayout>
   );

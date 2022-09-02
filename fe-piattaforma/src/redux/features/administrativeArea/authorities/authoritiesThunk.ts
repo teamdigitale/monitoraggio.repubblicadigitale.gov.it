@@ -9,8 +9,10 @@ import {
   setEntityFilterOptions,
   setAuthorityDetails,
   resetAuthorityDetails,
+  setHeadquarterDetails,
 } from '../administrativeAreaSlice';
 import { mapOptions } from '../../../../utils/common';
+import { getUserHeaders } from '../../user/userThunk';
 // import { formTypes } from '../../../../pages/administrator/AdministrativeArea/Entities/utils';
 
 export interface AuthoritiesLightI {
@@ -24,6 +26,15 @@ export interface AuthoritiesListResponseI {
   numeroPagine: number;
   programmiLight: AuthoritiesLightI[];
 }
+
+export type UserAuthorityRole =
+  | 'REG'
+  | 'DEG'
+  | 'REGP'
+  | 'DEGP'
+  | 'REPP'
+  | 'DEPP';
+
 /*
 export const sanitizeResult = (data: any) => Object.fromEntries(
   Object.entries(data).map(([key, value]) => {
@@ -51,11 +62,12 @@ export const GetAllEnti =
       const endpoint = `ente/all`;
       let res;
       if (!isEmpty(filters)) {
+        const { codiceFiscale, codiceRuolo, idProgramma } = getUserHeaders();
         const body = {
           filtroRequest: { ...filters },
-          idProgramma: 0,
-          cfUtente: '',
-          codiceRuolo: '',
+          idProgramma,
+          cfUtente: codiceFiscale,
+          codiceRuolo,
         };
         res = await API.post(endpoint, body, {
           params: {
@@ -92,11 +104,12 @@ export const GetFilterValuesEnti =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
+      const { codiceFiscale, codiceRuolo, idProgramma } = getUserHeaders();
       const body = {
-        cfUtente: '',
-        codiceRuolo: '',
+        cfUtente: codiceFiscale,
+        codiceRuolo,
         filtroRequest: { ...filters },
-        idProgramma: 0,
+        idProgramma,
       };
       const entityFilterEndpoint = `/ente/${dropdownType}/dropdown`;
       const res = await API.post(entityFilterEndpoint, body);
@@ -182,15 +195,24 @@ export const GetAuthorityManagerDetail =
       if (res.data) {
         dispatch(
           setAuthorityDetails({
-            delegatiEnteGestore: res.data.delegatiEnteGestore,
-            referentiEnteGestore: res.data.referentiEnteGestore,
+            delegatiEnteGestore:
+              entity === 'programma'
+                ? res.data.delegatiEnteGestore
+                : res.data.delegatiEnteGestoreProgetto,
+            referentiEnteGestore:
+              entity === 'programma'
+                ? res.data.referentiEnteGestore
+                : res.data.referentiEnteGestoreProgetto,
             dettagliInfoEnte: Object.fromEntries(
               Object.entries(res.data.ente).map(([key, value]) =>
                 key === 'partitaIva' ? ['piva', value] : [key, value]
               )
             ),
+            sediGestoreProgetto:
+              entity === 'progetto' ? res.data.sediEnteGestoreProgetto : null,
           })
         );
+        dispatch(setHeadquarterDetails(null));
       }
     } catch (error) {
       console.log(error);
@@ -208,20 +230,13 @@ export const GetAuthoritiesBySearch =
     try {
       dispatch(showLoader());
       dispatch({ ...GetAuthoritiesBySearchAction });
-      console.log(search);
 
-      const body = {
-        filtroRequest: {},
-        idProgramma: 0,
-        idProgetto: 0,
-        cfUtente: 'UTENTE1',
-        codiceRuolo: 'DTD',
-      };
+      const res = await API.get(`/ente/cerca?criterioRicerca=${search}`);
 
-      const res = await API.post(`/ente/all`, body);
-
-      if (res.data) {
-        dispatch(setAuthoritiesList(res.data.enti));
+      if (search && res.data) {
+        dispatch(setAuthoritiesList(res.data));
+      } else {
+        dispatch(setAuthoritiesList([]));
       }
     } catch (error) {
       console.log(error);
@@ -246,22 +261,22 @@ export const CreateManagerAuthority =
       );
 
       if (body) {
-        let res = await API.post(`/ente/`, {
+        const res = await API.post(`/ente`, {
           ...body,
         });
         if (res) {
-          res = await API.put(
+          await API.put(
             `/${entity}/${entityId}/assegna/${
               entity === 'programma' ? 'entegestore' : 'enteGestore'
             }/${res.data.id}`
           );
+          return res.data.id;
         }
       }
     } catch (error) {
       console.log(error);
     } finally {
       dispatch(hideLoader());
-      // window.location.reload();
     }
   };
 
@@ -270,33 +285,389 @@ const UpdateAuthorityAction = {
 };
 
 export const UpdateManagerAuthority =
-  (authorityDetail: any, entityId: string, entity: 'programma' | 'progetto') =>
+  (authorityDetail: any, enteGestoreId: string | number, entityId: string, entity: 'programma' | 'progetto') =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
-      dispatch({ ...UpdateAuthorityAction });
-
-      if (authorityDetail) {
-        let res = await API.put(
-          `/ente/${authorityDetail.id}/${
+      dispatch({ ...UpdateAuthorityAction, ...authorityDetail, entityId, entity });
+      if (authorityDetail?.id) {
+        let res;
+        if (enteGestoreId) {
+          res = await API.put(`/ente/${enteGestoreId}/${
             entity === 'programma' ? 'gestoreProgramma' : 'gestoreProgetto'
-          }/${entityId}`,
-          {
-            ...authorityDetail,
-          }
-        );
-        console.log(res);
+          }/${entityId}`, authorityDetail);
 
-        res = await API.put(
-          `/${entity}/${entityId}/assegna/${
-            entity === 'programma' ? 'entegestore' : 'enteGestore'
-          }/${authorityDetail.id}`
+          return res;
+        } else {
+          res = await API.put(
+            `/ente/${authorityDetail.id}/${
+              entity === 'programma' ? 'gestoreProgramma' : 'gestoreProgetto'
+            }/${entityId}`,
+            {
+              ...authorityDetail,
+            }
+          );
+
+          res = await API.put(
+            `/${entity}/${entityId}/assegna/${
+              entity === 'programma' ? 'entegestore' : 'enteGestore'
+            }/${authorityDetail.id}`
+          );
+
+          return res;
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      return false;
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const RemoveAuthorityAction = {
+  type: 'administrativeArea/RemoveAuthority',
+};
+
+export const RemoveManagerAuthority =
+  (authorityId: string, entityId: string, entity: 'programma' | 'progetto') =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...RemoveAuthorityAction });
+
+      if (authorityId && entityId) {
+        await API.delete(
+          `/ente/${authorityId}/cancellagestore${entity}/${entityId}`
         );
       }
     } catch (error) {
       console.log(error);
     } finally {
       dispatch(hideLoader());
-      // window.location.reload();
+    }
+  };
+
+export const GetPartnerAuthorityDetail =
+  (projectId: string, authorityId: string) => async (dispatch: Dispatch) => {
+    dispatch(showLoader());
+    dispatch({ ...SetAuthorityDetailAction });
+    try {
+      const res = await API.get(`/ente/partner/${projectId}/${authorityId}`);
+
+      if (res.data) {
+        dispatch(
+          setAuthorityDetails({
+            delegatiEntePartner: res.data.delegatiEntePartner,
+            referentiEntePartner: res.data.referentiEntePartner,
+            dettagliInfoEnte: Object.fromEntries(
+              Object.entries(res.data.ente).map(([key, value]) =>
+                key === 'partitaIva' ? ['piva', value] : [key, value]
+              )
+            ),
+            sediEntePartner: res.data.sediEntePartner,
+          })
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+export const CreatePartnerAuthority =
+  (authorityDetail: any, entityId: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...CreateAuthorityAction });
+
+      const body = Object.fromEntries(
+        Object.entries(authorityDetail).filter(([key, _value]) => key !== 'id')
+      );
+
+      if (body) {
+        let res = await API.post(`/ente`, {
+          ...body,
+        });
+        if (res) {
+          res = await API.put(
+            `/ente/partner/associa/${res.data.id}/progetto/${entityId}`
+          );
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+export const UpdatePartnerAuthority =
+  (authorityDetail: any, entityId: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...UpdateAuthorityAction });
+      if (authorityDetail) {
+        await API.put(`/ente/${authorityDetail.id}`, authorityDetail);
+        await API.put(
+          `/ente/partner/associa/${authorityDetail.id}/progetto/${entityId}`
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+export const RemovePartnerAuthority =
+  (authorityId: string, entityId: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...RemoveAuthorityAction });
+
+      if (authorityId && entityId) {
+        await API.delete(
+          `/ente/${authorityId}/cancellaentepartner/${entityId}`
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+export const TerminatePartnerAuthority =
+  (authorityId: string, entityId: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...RemoveAuthorityAction });
+
+      if (authorityId && entityId) {
+        await API.put(`/ente/${authorityId}/terminaentepartner/${entityId}`);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const AssignReferentDelegateAction = {
+  type: 'administrativeArea/AssignReferentDelegate',
+};
+
+export const AssignManagerAuthorityReferentDelegate =
+  (
+    authorityId: string,
+    entityId: string,
+    userDetail: {
+      [key: string]: string | number | boolean | Date | string[] | undefined;
+    },
+    entity: 'programma' | 'progetto',
+    role: UserAuthorityRole,
+    userId?: string
+  ) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...AssignReferentDelegateAction });
+      const endpoint =
+        entity === 'programma'
+          ? '/ente/associa/referenteDelegato/gestoreProgramma'
+          : entity === 'progetto'
+          ? '/ente/associa/referenteDelegato/gestoreProgetto'
+          : '';
+      let body = {};
+      if (entity === 'programma') {
+        body = {
+          cfReferenteDelegato: userDetail?.codiceFiscale
+            ?.toString()
+            .toUpperCase(),
+          codiceRuolo: role,
+          idEnte: authorityId,
+          idProgramma: entityId,
+          mansione: userDetail.mansione,
+        };
+      } else {
+        body = {
+          cfUtente: userDetail?.codiceFiscale?.toString().toUpperCase(),
+          codiceRuolo: role,
+          idEnte: authorityId,
+          idProgetto: entityId,
+          mansione: userDetail.mansione,
+        };
+      }
+      if (userDetail?.id) {
+        userDetail.codiceFiscale &&
+          (await API.put(
+            `/utente/${userDetail.id.toString().toUpperCase()}`,
+            userDetail
+          ));
+        userId !== userDetail.id.toString() && (await API.post(endpoint, body));
+      } else {
+        const payload = {
+          telefono: userDetail?.telefono,
+          codiceFiscale: userDetail?.codiceFiscale?.toString().toUpperCase(),
+          cognome: userDetail?.cognome,
+          email: userDetail?.email,
+          mansione: userDetail?.mansione,
+          nome: userDetail?.nome,
+          ruolo: role,
+          tipoContratto: '', // TODO: valore?
+        };
+        // eslint-disable-next-line no-case-declarations
+        const res = await API.post(`/utente`, payload);
+        if (res) {
+          await API.post(endpoint, body);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+export const AssignPartnerAuthorityReferentDelegate =
+  (
+    authorityId: string,
+    entityId: string,
+    userDetail: {
+      [key: string]: string | number | boolean | Date | string[] | undefined;
+    },
+    role: UserAuthorityRole
+  ) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...AssignReferentDelegateAction });
+      const endpoint = '/ente/associa/referenteDelegato/partner';
+      if (userDetail?.id) {
+        userDetail.codiceFiscale &&
+          (await API.put(
+            `/utente/${userDetail.id.toString().toUpperCase()}`,
+            userDetail
+          ));
+        await API.post(endpoint, {
+          cfUtente: userDetail.codiceFiscale?.toString().toUpperCase(),
+          codiceRuolo: role,
+          idEntePartner: authorityId,
+          idProgetto: entityId,
+          mansione: userDetail.mansione,
+        });
+      } else {
+        const payload = {
+          telefono: userDetail?.telefono,
+          codiceFiscale: userDetail.codiceFiscale?.toString().toUpperCase(),
+          cognome: userDetail?.cognome,
+          email: userDetail?.email,
+          mansione: userDetail?.mansione,
+          nome: userDetail?.nome,
+          ruolo: role,
+          tipoContratto: '', // TODO: valore?
+        };
+        // eslint-disable-next-line no-case-declarations
+        const res = await API.post(`/utente`, payload);
+        if (res) {
+          await API.post(endpoint, {
+            cfUtente: userDetail.codiceFiscale?.toString().toUpperCase(),
+            codiceRuolo: role,
+            idEntePartner: authorityId,
+            idProgetto: entityId,
+            mansione: userDetail.mansione,
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const RemoveReferentDelegateAction = {
+  type: 'administrativeArea/RemoveReferentDelegate',
+};
+
+export const RemoveReferentDelegate =
+  (
+    authorityId: string,
+    entityId: string,
+    userCF: string,
+    role: UserAuthorityRole
+  ) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...RemoveReferentDelegateAction });
+      switch (role) {
+        case 'DEPP':
+        case 'REPP':
+          await API.post(
+            '/ente/cancellaOTerminaAssociazione/referenteDelegato/partner',
+            {
+              cfUtente: userCF.toUpperCase(),
+              codiceRuolo: role,
+              idEntePartner: authorityId,
+              idProgetto: entityId,
+              mansione: 'string',
+            }
+          );
+          break;
+        case 'DEG':
+        case 'REG':
+          await API.post(
+            '/ente/cancellaOTerminaAssociazione/referenteDelegato/gestoreProgramma',
+            {
+              cfReferenteDelegato: userCF.toUpperCase(),
+              codiceRuolo: role,
+              idEnte: authorityId,
+              idProgramma: entityId,
+              mansione: 'string',
+            }
+          );
+          break;
+        case 'DEGP':
+        case 'REGP':
+          await API.post(
+            '/ente/cancellaOTerminaAssociazione/referenteDelegato/gestoreProgetto',
+            {
+              cfUtente: userCF.toUpperCase(),
+              codiceRuolo: role,
+              idEnte: authorityId,
+              idProgetto: entityId,
+              mansione: 'string',
+            }
+          );
+          break;
+        default:
+          break;
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const UpdateAuthorityDetailsAction = {
+  type: 'administrativeArea/UpdateAuthorityDetails',
+};
+
+export const UpdateAuthorityDetails =
+  (idEnte: string | undefined, payload: any) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...UpdateAuthorityDetailsAction });
+
+      await API.put(`/ente/${idEnte}`, payload);
+      return true;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(hideLoader());
     }
   };

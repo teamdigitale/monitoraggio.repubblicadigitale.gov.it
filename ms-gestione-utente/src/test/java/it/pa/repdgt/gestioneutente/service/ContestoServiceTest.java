@@ -43,8 +43,6 @@ import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.key.EntePartnerKey;
-import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
-import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.StoricoEnteException;
 import it.pa.repdgt.shared.service.storico.StoricoService;
@@ -194,7 +192,6 @@ public class ContestoServiceTest {
 		permessi.add(permesso);
 		gruppo.setPermessi(permessi);
 		gruppiPerRuolo.add(gruppo);
-		when(permessoRepository.findPermessiByGruppo("codiceGruppo")).thenReturn(permessi);
 		when(gruppoRepository.findGruppiByRuolo("DTD")).thenReturn(gruppiPerRuolo);
 		assertThat(service.getGruppiPermessi(ruoli).get(0).getCodiceRuolo()).isEqualTo("DTD");
 
@@ -337,14 +334,10 @@ public class ContestoServiceTest {
 		integraContestoRequestRequest.setAbilitazioneConsensoTrattamentoDatiPersonali(Boolean.TRUE);
 		integraContestoRequestRequest.setBio("bio");
 		integraContestoRequestRequest.setCodiceFiscale("codiceFiscale");
-		integraContestoRequestRequest.setCognome("cognome");
-		integraContestoRequestRequest.setNome("nome");
 		integraContestoRequestRequest.setEmail("email");
 		integraContestoRequestRequest.setTelefono("43734987");
 		UtenteEntity utenteDBFtech = new UtenteEntity();
 		utenteDBFtech.setIntegrazione(Boolean.TRUE);
-		utenteDBFtech.setNome(integraContestoRequestRequest.getNome());
-		utenteDBFtech.setCognome(integraContestoRequestRequest.getCognome());
 		utenteDBFtech.setCodiceFiscale(integraContestoRequestRequest.getCodiceFiscale());
 		utenteDBFtech.setEmail(integraContestoRequestRequest.getEmail());
 		utenteDBFtech.setTelefono(integraContestoRequestRequest.getTelefono());
@@ -360,11 +353,11 @@ public class ContestoServiceTest {
 	
 	@Setter
 	public class ProfiloProjectionImplementation implements ProfiloProjection{
-
 		private String idProgramma;
 		private String nomeProgramma;
 		private String idProgetto;
 		private String nomeEnte;
+		private String nomeBreveProgetto;
 		
 		@Override
 		public String getIdProgramma() {
@@ -384,6 +377,11 @@ public class ContestoServiceTest {
 		@Override
 		public String getNomeEnte() {
 			return nomeEnte;
+		}
+
+		@Override
+		public String getNomeBreveProgetto() {
+			return nomeBreveProgetto;
 		}
 	}
 	

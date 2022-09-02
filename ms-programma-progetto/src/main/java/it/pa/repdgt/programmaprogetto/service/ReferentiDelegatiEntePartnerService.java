@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.programmaprogetto.repository.ReferentiDelegatiEntePartnerRepository;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.ReferentiDelegatiEntePartnerDiProgettoEntity;
 import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEntePartnerDiProgettoKey;
 
@@ -18,6 +20,8 @@ public class ReferentiDelegatiEntePartnerService {
 	@Autowired
 	private ReferentiDelegatiEntePartnerRepository referentiDelegatiEntePartnerRepository;
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellaReferentiDelegatiPartner(Long idProgetto) {
 		List<ReferentiDelegatiEntePartnerDiProgettoEntity> referentiDelegati = this.referentiDelegatiEntePartnerRepository.getReferentiDelegatiEnteGestoreProgettoByIdProgetto(idProgetto);
@@ -28,6 +32,8 @@ public class ReferentiDelegatiEntePartnerService {
 	/**
 	 * Cancella associazione Utente Referente o utente delegato all'ente gestore di progetto
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
     public void cancellaAssociazioneReferenteODelegatoPartner(ReferentiDelegatiEntePartnerDiProgettoEntity referentiDelegatiEntePartner) {
 		Long idProgetto = referentiDelegatiEntePartner.getId().getIdProgetto();
@@ -49,10 +55,14 @@ public class ReferentiDelegatiEntePartnerService {
 		}
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void salvaReferenteODelegato(ReferentiDelegatiEntePartnerDiProgettoEntity utente) {
 		this.referentiDelegatiEntePartnerRepository.save(utente);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<ReferentiDelegatiEntePartnerDiProgettoEntity> getReferentiEDelegatiEntePartner(Long idEnte,
 			Long idProgetto) {
 		return this.referentiDelegatiEntePartnerRepository.findReferentiEDelegatiEntePartner(idEnte, idProgetto);

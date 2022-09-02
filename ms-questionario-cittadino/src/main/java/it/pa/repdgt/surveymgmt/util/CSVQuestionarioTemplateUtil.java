@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.resource.QuestionarioTemplateLightResource;
 
@@ -19,6 +20,7 @@ public class CSVQuestionarioTemplateUtil {
 	private static final String NESSUN_RECORD_PRESENTE = "Nessun record presente";
 
 	private static final List<String> HEADERS = Arrays.asList(
+				"ID",
 				"NOME",
 				"DESCRIZIONE",
 				"STATO"
@@ -44,7 +46,7 @@ public class CSVQuestionarioTemplateUtil {
 			csvPrinter.flush();
 			return new ByteArrayInputStream(outputStream.toByteArray());
 		} catch (IOException ex) {
-			throw new ServizioException("Errore export csv questionariTemplate", ex);
+			throw new ServizioException("Errore export csv questionariTemplate", ex, CodiceErroreEnum.QT01);
 		}
 	}
 
@@ -56,6 +58,7 @@ public class CSVQuestionarioTemplateUtil {
 
 	private static List<String> getCSVRecord(final QuestionarioTemplateLightResource questionarioTemplateLightResource) {
 		return  Arrays.asList(
+						questionarioTemplateLightResource.getIdQuestionarioTemplate(),
 						questionarioTemplateLightResource.getNomeQuestionarioTemplate(),
 						questionarioTemplateLightResource.getDescrizione(),
 						questionarioTemplateLightResource.getStatoQuestionarioTemplate()

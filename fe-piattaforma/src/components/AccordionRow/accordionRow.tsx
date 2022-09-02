@@ -44,45 +44,49 @@ const AccordionRow: React.FC<AccordionRowI> = ({
             'align-items-center'
           )}
         >
-          {isOpen ? (
-            <Button onClick={() => setIsOpen(false)}>
-              <Icon
-                icon='it-less-circle'
-                className='accordion-row--icon'
-                aria-label='nascondi elemento'
-              />
-            </Button>
-          ) : null}
-          {!isOpen ? (
-            <Button onClick={() => setIsOpen(true)}>
-              <Icon
-                icon='it-plus-circle'
-                className='accordion-row--icon'
-                aria-label='mostra elemento'
-              />
-            </Button>
+          {innerInfo ? (
+            <>
+              {isOpen ? (
+                <Button onClick={() => setIsOpen(false)}>
+                  <Icon
+                    icon='it-less-circle'
+                    className='accordion-row--icon'
+                    aria-label='nascondi elemento'
+                  />
+                </Button>
+              ) : null}
+              {!isOpen ? (
+                <Button onClick={() => setIsOpen(true)}>
+                  <Icon
+                    icon='it-plus-circle'
+                    className='accordion-row--icon'
+                    aria-label='mostra elemento'
+                  />
+                </Button>
+              ) : null}
+            </>
           ) : null}
           <span className='font-weight-semibold'>{title}</span>
         </div>
-        <Button>
+        {clickViewAction ? <Button>
           <div className='d-flex justify-content-start'>
             <Icon
               icon='it-chevron-right'
               onClick={clickViewAction}
-              aria-label='seleziona programma'
+              aria-label='vai al dettaglio'
             />
           </div>
-        </Button>
+        </Button> : null}
       </div>
       <div>
-        {innerInfo?.['default_SCD'] && innerInfo?.['default_RFD'] ? (
+        {innerInfo?.['defaultSCD'] && innerInfo?.['defaultRFD'] ? (
           <div className='d-flex flex-row justify-content-center'>
             <div className='d-flex flex-row mr-2'>
-              {innerInfo['default_SCD']}{' '}
+              {innerInfo['defaultSCD']}{' '}
               <span className='ml-2'>Default SCD</span>
             </div>
             <div className='d-flex flex-row ml-2'>
-              {innerInfo['default_RFD']}{' '}
+              {innerInfo['defaultRFD']}{' '}
               <span className='ml-2'>Default RFD</span>
             </div>
           </div>
@@ -101,7 +105,7 @@ const AccordionRow: React.FC<AccordionRowI> = ({
         >
           <div className='d-flex flex-column pl-4'>
             {Object.keys(innerInfo)
-              .filter((el) => el !== 'default_SCD' && el !== 'default_RFD')
+              .filter((el) => el !== 'defaultSCD' && el !== 'defaultRFD')
               .map((x, index) => (
                 <div className='info-row' key={index}>
                   <span className='text-uppercase font-weight-semibold info-title'>

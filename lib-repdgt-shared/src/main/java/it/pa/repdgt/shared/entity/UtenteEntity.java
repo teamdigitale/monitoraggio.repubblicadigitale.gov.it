@@ -43,7 +43,7 @@ public class UtenteEntity implements Serializable {
 	@Column(name = "COGNOME", nullable = true)
 	private String cognome;
 	
-	@Column(name = "EMAIL", nullable = false, unique = true)
+	@Column(name = "EMAIL", nullable = false)
 	@Email
 	private String email;
 	
@@ -84,4 +84,7 @@ public class UtenteEntity implements Serializable {
 	
 	@Column(name = "INTEGRAZIONE")
 	private Boolean integrazione;
+	
+	@Column(name = "IMMAGINE_PROFILO")
+	private String immagineProfilo;
 }

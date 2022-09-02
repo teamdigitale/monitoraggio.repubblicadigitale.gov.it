@@ -15,7 +15,7 @@ interface AccordionI {
   title: string;
   totElem?: number;
   children?: JSX.Element | JSX.Element[];
-  cta?: string;
+  cta?: string | null;
   className?: string;
   checkbox?: boolean;
   disabledCheckbox?: boolean;
@@ -35,7 +35,7 @@ const Accordion: React.FC<AccordionI> = (props) => {
     className,
     lastBottom,
     checkbox,
-    disabledCheckbox,
+    disabledCheckbox = false,
     isChecked,
     handleOnCheck,
     handleOnToggle,
@@ -62,7 +62,7 @@ const Accordion: React.FC<AccordionI> = (props) => {
       >
         <div className='d-flex justify-content-between'>
           <span>
-            {title} {totElem && '(' + totElem + ')'}
+            {title} {totElem?.toString() && '(' + totElem + ')'}
           </span>
         </div>
       </AccordionHeader>

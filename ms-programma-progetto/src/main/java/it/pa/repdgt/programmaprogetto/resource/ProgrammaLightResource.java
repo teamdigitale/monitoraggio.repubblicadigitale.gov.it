@@ -33,4 +33,7 @@ public class ProgrammaLightResource implements Serializable {
 	
 	@JsonProperty(value = "nomeEnteGestore")
 	private String nomeEnteGestore;
+	
+	@JsonProperty(value = "codice")
+	private String codice;
 }

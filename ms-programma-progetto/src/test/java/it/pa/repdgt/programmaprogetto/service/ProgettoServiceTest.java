@@ -3,6 +3,7 @@ package it.pa.repdgt.programmaprogetto.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -28,18 +29,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 
 import it.pa.repdgt.programmaprogetto.bean.DettaglioEntiPartnerBean;
 import it.pa.repdgt.programmaprogetto.bean.DettaglioProgettoBean;
+import it.pa.repdgt.programmaprogetto.bean.DettaglioProgrammaLightBean;
 import it.pa.repdgt.programmaprogetto.bean.DettaglioSediBean;
 import it.pa.repdgt.programmaprogetto.bean.SchedaProgettoBean;
 import it.pa.repdgt.programmaprogetto.exception.ProgettoException;
 import it.pa.repdgt.programmaprogetto.exception.ResourceNotFoundException;
 import it.pa.repdgt.programmaprogetto.mapper.ProgettoMapper;
 import it.pa.repdgt.programmaprogetto.mapper.ProgrammaMapper;
-import it.pa.repdgt.programmaprogetto.projection.UtenteFacilitatoreProjection;
 import it.pa.repdgt.programmaprogetto.repository.EnteRepository;
 import it.pa.repdgt.programmaprogetto.repository.EnteSedeProgettoRepository;
 import it.pa.repdgt.programmaprogetto.repository.ProgettoRepository;
@@ -53,10 +52,10 @@ import it.pa.repdgt.programmaprogetto.request.ProgettiParam;
 import it.pa.repdgt.programmaprogetto.request.ProgettoFiltroRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammiParam;
+import it.pa.repdgt.programmaprogetto.resource.PaginaProgetti;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
 import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.entity.EnteEntity;
-import it.pa.repdgt.shared.entity.EntePartnerEntity;
 import it.pa.repdgt.shared.entity.EnteSedeProgetto;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
@@ -64,7 +63,6 @@ import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
 import it.pa.repdgt.shared.entity.ReferentiDelegatiEnteGestoreProgettoEntity;
 import it.pa.repdgt.shared.entity.ReferentiDelegatiEntePartnerDiProgettoEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
-import it.pa.repdgt.shared.entity.storico.StoricoEnteGestoreProgettoEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.StoricoEnteException;
@@ -159,7 +157,7 @@ public class ProgettoServiceTest {
 	ProgettoFiltroRequest progettoFiltro;
 	ProgrammiParam progParam;
 	ProgettiParam progettiParam;
-	Page<ProgettoEntity> pagina;
+	PaginaProgetti pagina;
 	List<String> listaRuoli;
 	int currPage;
 	int pageSize;
@@ -218,7 +216,10 @@ public class ProgettoServiceTest {
 		progetto1.setCup("432789122");
 		listaProgetti = new ArrayList<>();
 		listaProgetti.add(progetto1);
-		pagina = new PageImpl<>(listaProgetti);
+		pagina = new PaginaProgetti();
+		pagina.setPaginaProgetti(listaProgetti);
+		pagina.setTotalElements(1);
+		pagina.setTotalPages(1);
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("DTD");
 		currPage = 0;
@@ -257,11 +258,25 @@ public class ProgettoServiceTest {
 	@Test
 	public void getAllProgettiPaginatiDTDTest() {
 		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
-		when(progettoService.getProgettiByRuolo(progettiParam.getCodiceRuolo(), progettiParam.getCfUtente(), progettiParam.getIdProgramma(), progettiParam.getIdProgetto(), progettoFiltro)).thenReturn(listaProgetti);
-		Page<ProgettoEntity> paginaProgetti = this.progettoService.getAllProgettiPaginati(progettiParam, currPage, pageSize, progettoFiltro);
-		assertThat(listaProgetti.size()).isEqualTo(1);
+		when(progettoRepository.findAllPaginati(
+				progettiParam.getFiltroRequest().getCriterioRicerca(),
+				"%" + progettiParam.getFiltroRequest().getCriterioRicerca() + "%",
+				progettiParam.getFiltroRequest().getPolicies(),
+				progettiParam.getFiltroRequest().getIdsProgrammi(),
+				progettiParam.getFiltroRequest().getStati(),
+				0,
+				10
+				)).thenReturn(listaProgetti);
+		when(progettoRepository.countAll(
+				progettiParam.getFiltroRequest().getCriterioRicerca(),
+				"%" + progettiParam.getFiltroRequest().getCriterioRicerca() + "%",
+				progettiParam.getFiltroRequest().getPolicies(),
+				progettiParam.getFiltroRequest().getIdsProgrammi(),
+				progettiParam.getFiltroRequest().getStati()
+				)).thenReturn(1L);
+		PaginaProgetti paginaProgetti = this.progettoService.getAllProgettiPaginati(progettiParam, currPage, pageSize, progettoFiltro);
+		assertThat(paginaProgetti.getPaginaProgetti().size()).isEqualTo(1);
 		assertThat(paginaProgetti.getTotalElements()).isEqualTo(pagina.getTotalElements());
-		verify(progettoRepository, times(1)).findAll(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(), progettoFiltro.getIdsProgrammi(), progettoFiltro.getStati());
 	}
 	
 	//test getAllProgettiPaginati per utenti DSCU
@@ -271,11 +286,25 @@ public class ProgettoServiceTest {
 		listaRuoli.add("DSCU");
 		progettiParam.setCodiceRuolo("DSCU");
 		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
-		when(progettoService.getProgettiByRuolo(progettiParam.getCodiceRuolo(), progettiParam.getCfUtente(), progettiParam.getIdProgramma(), progettiParam.getIdProgetto(), progettoFiltro)).thenReturn(listaProgetti);
-		Page<ProgettoEntity> paginaProgetti = this.progettoService.getAllProgettiPaginati(progettiParam, currPage, pageSize, progettoFiltro);
-		assertThat(listaProgetti.size()).isEqualTo(1);
+		when(progettoRepository.findByPolicyPaginati(
+				PolicyEnum.SCD.toString(),
+				progettiParam.getFiltroRequest().getCriterioRicerca(),
+				"%" + progettiParam.getFiltroRequest().getCriterioRicerca() + "%",
+				progettiParam.getFiltroRequest().getIdsProgrammi(),
+				progettiParam.getFiltroRequest().getStati(),
+				currPage*pageSize,
+				pageSize
+				)).thenReturn(listaProgetti);
+		when(progettoRepository.countByPolicy(
+				PolicyEnum.SCD.toString(),
+				progettiParam.getFiltroRequest().getCriterioRicerca(),
+				"%" + progettiParam.getFiltroRequest().getCriterioRicerca() + "%",
+				progettiParam.getFiltroRequest().getIdsProgrammi(),
+				progettiParam.getFiltroRequest().getStati()
+				)).thenReturn(1L);
+		PaginaProgetti paginaProgetti = this.progettoService.getAllProgettiPaginati(progettiParam, currPage, pageSize, progettoFiltro);
+		assertThat(paginaProgetti.getPaginaProgetti().size()).isEqualTo(1);
 		assertThat(paginaProgetti.getTotalElements()).isEqualTo(pagina.getTotalElements());
-		verify(progettoRepository, times(1)).findByPolicy(PolicyEnum.SCD.toString(), progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%",  progettoFiltro.getIdsProgrammi(), progettoFiltro.getStati());
 	}
 	
 	// test getAllProgettiPaginati per utenti con ruoli: REG - DEG
@@ -285,11 +314,25 @@ public class ProgettoServiceTest {
 		listaRuoli.add("REG");
 		progettiParam.setCodiceRuolo("REG");
 		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
-		when(progettoService.getProgettiByRuolo(progettiParam.getCodiceRuolo(), progettiParam.getCfUtente(), progettiParam.getIdProgramma(), progettiParam.getIdProgetto(), progettoFiltro)).thenReturn(listaProgetti);
-		Page<ProgettoEntity> paginaProgetti = this.progettoService.getAllProgettiPaginati(progettiParam, currPage, pageSize, progettoFiltro);
-		assertThat(listaProgetti.size()).isEqualTo(1);
+		when(progettoRepository.findProgettiPerReferenteDelegatoGestoreProgrammaPaginati(
+				progettiParam.getIdProgramma(),
+				progettiParam.getFiltroRequest().getCriterioRicerca(),
+				"%" + progettiParam.getFiltroRequest().getCriterioRicerca() + "%",
+				progettiParam.getFiltroRequest().getPolicies(),
+				progettiParam.getFiltroRequest().getIdsProgrammi(),
+				progettiParam.getFiltroRequest().getStati(),
+				currPage*pageSize,
+				pageSize)).thenReturn(listaProgetti);
+		when(this.progettoRepository.countProgettiPerReferenteDelegatoGestoreProgramma(
+				progettiParam.getIdProgramma(),
+				progettiParam.getFiltroRequest().getCriterioRicerca(),
+				"%" + progettiParam.getFiltroRequest().getCriterioRicerca() + "%",
+				progettiParam.getFiltroRequest().getPolicies(),
+				progettiParam.getFiltroRequest().getIdsProgrammi(),
+				progettiParam.getFiltroRequest().getStati())).thenReturn(1L);
+		PaginaProgetti paginaProgetti = this.progettoService.getAllProgettiPaginati(progettiParam, currPage, pageSize, progettoFiltro);
+		assertThat(paginaProgetti.getPaginaProgetti().size()).isEqualTo(1);
 		assertThat(paginaProgetti.getTotalElements()).isEqualTo(pagina.getTotalElements());
-		verify(progettoRepository, times(1)).findProgettiPerReferenteDelegatoGestoreProgramma(programma1.getId(), progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(),  progettoFiltro.getIdsProgrammi(), progettoFiltro.getStati());
 	}
 	
 	// test getAllProgettiPaginati per utenti con ruoli: REGP - DEGP
@@ -300,26 +343,11 @@ public class ProgettoServiceTest {
 		progettiParam.setCodiceRuolo("REGP");
 		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
 		when(progettoRepository.findById(progettiParam.getIdProgetto())).thenReturn(progettoOptional);
-		Page<ProgettoEntity> paginaProgetti = this.progettoService.getAllProgettiPaginati(progettiParam, currPage, pageSize, progettoFiltro);
-		assertThat(progettoOptional.get().getId()).isEqualTo(progetto1.getId());
+		PaginaProgetti paginaProgetti = this.progettoService.getAllProgettiPaginati(progettiParam, currPage, pageSize, progettoFiltro);
+		assertThat(paginaProgetti.getPaginaProgetti().get(0).getId()).isEqualTo(progetto1.getId());
 		assertThat(paginaProgetti.getTotalElements()).isEqualTo(pagina.getTotalElements());
-		verify(progettoRepository, times(1)).findById(progetto1.getId());
 	}
-	
-	// test getAllProgettiPaginati per utenti con ruoli: REPP - DEPP
-	@Test
-	public void getAllProgettiPaginatiREPPTest() {
-		listaRuoli = new ArrayList<>();
-		listaRuoli.add("REPP");
-		progettiParam.setCodiceRuolo("REPP");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
-		when(progettoRepository.findById(progettiParam.getIdProgetto())).thenReturn(progettoOptional);
-		Page<ProgettoEntity> paginaProgetti = this.progettoService.getAllProgettiPaginati(progettiParam, currPage, pageSize, progettoFiltro);
-		assertThat(progettoOptional.get().getId()).isEqualTo(progetto1.getId());
-		assertThat(paginaProgetti.getTotalElements()).isEqualTo(pagina.getTotalElements());
-		verify(progettoRepository, times(1)).findById(progetto1.getId());
-	}
-	
+
 	//test getAllProgettiPaginati per utenti con ruoli non predefiniti
 	@Test
 	public void getAllProgettiPaginatiRuoloNonPredefinitoTest() {
@@ -327,11 +355,25 @@ public class ProgettoServiceTest {
 		listaRuoli.add("RUOLONONPREDEFINITO");
 		progettiParam.setCodiceRuolo("RUOLONONPREDEFINITO");
 		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
-		when(progettoService.getProgettiByRuolo(progettiParam.getCodiceRuolo(), progettiParam.getCfUtente(), progettiParam.getIdProgramma(), progettiParam.getIdProgetto(), progettoFiltro)).thenReturn(listaProgetti);
-		Page<ProgettoEntity> paginaProgetti = this.progettoService.getAllProgettiPaginati(progettiParam, currPage, pageSize, progettoFiltro);
-		assertThat(listaProgetti.size()).isEqualTo(1);
+		when(progettoRepository.findAllPaginati(
+				progettiParam.getFiltroRequest().getCriterioRicerca(),
+				"%" + progettiParam.getFiltroRequest().getCriterioRicerca() + "%",
+				progettiParam.getFiltroRequest().getPolicies(),
+				progettiParam.getFiltroRequest().getIdsProgrammi(),
+				progettiParam.getFiltroRequest().getStati(),
+				0,
+				10
+				)).thenReturn(listaProgetti);
+		when(progettoRepository.countAll(
+				progettiParam.getFiltroRequest().getCriterioRicerca(),
+				"%" + progettiParam.getFiltroRequest().getCriterioRicerca() + "%",
+				progettiParam.getFiltroRequest().getPolicies(),
+				progettiParam.getFiltroRequest().getIdsProgrammi(),
+				progettiParam.getFiltroRequest().getStati()
+				)).thenReturn(1L);
+		PaginaProgetti paginaProgetti = this.progettoService.getAllProgettiPaginati(progettiParam, currPage, pageSize, progettoFiltro);
+		assertThat(paginaProgetti.getPaginaProgetti().size()).isEqualTo(1);
 		assertThat(paginaProgetti.getTotalElements()).isEqualTo(pagina.getTotalElements());
-		verify(progettoRepository, times(1)).findAll(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(), progettoFiltro.getIdsProgrammi(), progettoFiltro.getStati());
 	}
 	
 	@Test
@@ -344,6 +386,22 @@ public class ProgettoServiceTest {
 	
 		//Test KO per pagina non trovata
 		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);
+		when(progettoRepository.findAllPaginati(
+				progettiParam.getFiltroRequest().getCriterioRicerca(),
+				"%" + progettiParam.getFiltroRequest().getCriterioRicerca() + "%",
+				progettiParam.getFiltroRequest().getPolicies(),
+				progettiParam.getFiltroRequest().getIdsProgrammi(),
+				progettiParam.getFiltroRequest().getStati(),
+				110,
+				10
+				)).thenReturn(listaProgetti);
+		when(progettoRepository.countAll(
+				progettiParam.getFiltroRequest().getCriterioRicerca(),
+				"%" + progettiParam.getFiltroRequest().getCriterioRicerca() + "%",
+				progettiParam.getFiltroRequest().getPolicies(),
+				progettiParam.getFiltroRequest().getIdsProgrammi(),
+				progettiParam.getFiltroRequest().getStati()
+				)).thenReturn(1L);
 		Assertions.assertThrows(ProgettoException.class, () -> progettoService.getAllProgettiPaginati(progettiParam, 11, pageSize, progettoFiltro));
 		assertThatExceptionOfType(ProgettoException.class);
 		
@@ -476,10 +534,12 @@ public class ProgettoServiceTest {
 	
 	@Test
 	public void getSchedaProgettoByIdTest() {
+		DettaglioProgrammaLightBean dettaglioProgramma = new DettaglioProgrammaLightBean();
 		DettaglioProgettoBean dettaglioProgetto = new DettaglioProgettoBean();
 		List<Long> idsEntiPartner = new ArrayList<>();
 		idsEntiPartner.add(ente1.getId());
 		when(progettoRepository.findById(progettiParam.getIdProgramma())).thenReturn(progettoOptional);
+		when(progettoMapper.toDettaglioProgrammaLightBeanFrom(programma1)).thenReturn(dettaglioProgramma);
 		when(progettoMapper.toDettaglioProgettoBeanFrom(progetto1)).thenReturn(dettaglioProgetto);
 		when(entePartnerService.getIdEntiPartnerByProgetto(progettiParam.getIdProgetto())).thenReturn(idsEntiPartner);
 		when(enteService.getEnteById(ente1.getId())).thenReturn(ente1);
@@ -539,10 +599,12 @@ public class ProgettoServiceTest {
 	//test con ente gestore programma del programma1 a null
 	@Test
 	public void getSchedaProgettoByIdTest2() {
+		DettaglioProgrammaLightBean dettaglioProgramma = new DettaglioProgrammaLightBean();
 		DettaglioProgettoBean dettaglioProgetto = new DettaglioProgettoBean();
 		List<Long> idsEntiPartner = new ArrayList<>();
 		idsEntiPartner.add(ente1.getId());
 		when(progettoRepository.findById(progettiParam.getIdProgramma())).thenReturn(progettoOptional);
+		when(progettoMapper.toDettaglioProgrammaLightBeanFrom(programma1)).thenReturn(dettaglioProgramma);
 		when(progettoMapper.toDettaglioProgettoBeanFrom(progetto1)).thenReturn(dettaglioProgetto);
 		when(entePartnerService.getIdEntiPartnerByProgetto(progettiParam.getIdProgetto())).thenReturn(idsEntiPartner);
 		when(enteService.getEnteById(ente1.getId())).thenReturn(ente1);
@@ -747,41 +809,43 @@ public class ProgettoServiceTest {
 	
 	@Test
 	public void terminaProgettoTest() throws Exception {
+		//test per progretto con statoGestoreProgetto == "ATTIVO"
+		progetto1.setStatoGestoreProgetto(StatoEnum.ATTIVO.getValue());
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		Calendar c = Calendar.getInstance();
 		c.setTime(sdf.parse(sdf.format(new Date())));
         Date currentDate = c.getTime();
 		progetto1.setEnteGestoreProgetto(ente1);
 		List<ReferentiDelegatiEnteGestoreProgettoEntity> referentiDelegati = new ArrayList<>();
-		StoricoEnteGestoreProgettoEntity storicoEnteGestoreProgetto = new StoricoEnteGestoreProgettoEntity();
-		List<EntePartnerEntity> entiPartner = new ArrayList<>();
-		List<EnteSedeProgetto> entisediprogetto = new ArrayList<>();
 		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
 		when(referentiDelegatiEnteGestoreProgettoService.getReferentiEDelegatiProgetto(progetto1.getId())).thenReturn(referentiDelegati);
-		when(storicoEnteGestoreProgettoRepository.save(storicoEnteGestoreProgetto)).thenReturn(storicoEnteGestoreProgetto);
-		when(entePartnerService.getEntiPartnerByProgetto(progetto1.getId())).thenReturn(entiPartner);
-		when(enteSedeProgettoRepository.getEnteSedeProgettoByIdProgetto(progetto1.getId())).thenReturn(entisediprogetto);
-		doAnswer(invocation -> {
-			storicoEnteGestoreProgetto.setIdProgetto(progetto1.getId());
-			storicoEnteGestoreProgetto.setIdEnte(progetto1.getEnteGestoreProgetto().getId());
-			storicoEnteGestoreProgetto.setStato(StatoEnum.TERMINATO.getValue());
-			storicoEnteGestoreProgetto.setDataOraCreazione(new Date());
-			this.storicoEnteGestoreProgettoRepository.save(storicoEnteGestoreProgetto);
-			return storicoEnteGestoreProgetto;
-		}).when(storicoService).storicizzaEnteGestoreProgetto(progetto1, StatoEnum.TERMINATO.getValue());
-		doAnswer(invocation -> {
-			this.entePartnerService.getEntiPartnerByProgetto(progetto1.getId());
-			return entiPartner;
-		}).when(enteService).terminaEntiPartner(progetto1.getId());
-		doAnswer(invocation -> {
-			List<EnteSedeProgetto> enteSedeProgetto = this.enteSedeProgettoRepository.getEnteSedeProgettoByIdProgetto(progetto1.getId());
-			return enteSedeProgetto;
-			}).when(enteSedeProgettoService).cancellaOTerminaEnteSedeProgetto(progetto1.getId());
+		doNothing().when(storicoService).storicizzaEnteGestoreProgetto(progetto1, StatoEnum.TERMINATO.getValue());
+		doNothing().when(enteService).terminaEntiPartner(progetto1.getId());
+		doNothing().when(enteSedeProgettoService).cancellaOTerminaEnteSedeProgetto(progetto1.getId());
 		progettoService.terminaProgetto(progetto1.getId(), currentDate);
 		assertThat(progetto1.getStatoGestoreProgetto()).isEqualTo("TERMINATO");
 		verify(progettoRepository, times(1)).save(progetto1);
 	}
 	
+	@Test
+	public void terminaProgettoTest2() throws Exception {
+		//test per progretto con statoGestoreProgetto == "NON ATTIVO"
+		progetto1.setStatoGestoreProgetto(StatoEnum.NON_ATTIVO.getValue());
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		Calendar c = Calendar.getInstance();
+		c.setTime(sdf.parse(sdf.format(new Date())));
+        Date currentDate = c.getTime();
+		progetto1.setEnteGestoreProgetto(ente1);
+		List<ReferentiDelegatiEnteGestoreProgettoEntity> referentiDelegati = new ArrayList<>();
+		progetto1.setEnteGestoreProgetto(ente1);
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
+		when(referentiDelegatiEnteGestoreProgettoService.getReferentiEDelegatiProgetto(progetto1.getId())).thenReturn(referentiDelegati);
+		doNothing().when(enteService).terminaEntiPartner(progetto1.getId());
+		doNothing().when(enteSedeProgettoService).cancellaOTerminaEnteSedeProgetto(progetto1.getId());
+		progettoService.terminaProgetto(progetto1.getId(), currentDate);
+		assertThat(progetto1.getStatoGestoreProgetto()).isEqualTo(null);
+		verify(progettoRepository, times(1)).save(progetto1);
+	}
 	@Test
 	public void terminaProgettoKOTest() throws Exception {
 		//test KO per data terminazione nel futuro
@@ -810,6 +874,7 @@ public class ProgettoServiceTest {
 	@Test
 	public void terminaProgettoKOTest2() throws Exception {
 		//test KO impossibile storicizzare ente
+		progetto1.setStatoGestoreProgetto(StatoEnum.ATTIVO.getValue());
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		Calendar c = Calendar.getInstance();
 		c.setTime(sdf.parse(sdf.format(new Date())));
@@ -832,7 +897,6 @@ public class ProgettoServiceTest {
 	public void attivaProgettoTest() {
 		progetto1.setStato("ATTIVABILE");
 		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
-		when(enteSedeProgettoFacilitatoreService.getAllEmailFacilitatoriEVolontariByProgetto(progetto1.getId())).thenReturn(new ArrayList<UtenteFacilitatoreProjection>());
 		progettoService.attivaProgetto(progetto1.getId());
 		assertThat(progetto1.getStato()).isEqualTo("ATTIVO");
 		verify(progettoRepository, times(1)).save(progetto1);
@@ -864,44 +928,40 @@ public class ProgettoServiceTest {
 		}).when(enteSedeProgettoService).cancellaEnteSedeProgetto(progetto1.getId());
 		progettoService.cancellaOTerminaProgetto(progetto1, new Date());
 		verify(progettoRepository,times(1)).delete(progetto1);
-		
-		//test con progetto ATTIVABILE o ATTIVO
+	}
+	
+	@Test
+	public void cancellaOTerminaProgettoAttivoConStatoGestoreTest() throws Exception {
+		//test con progetto ATTIVABILE o ATTIVO e statoGestoreProgetto == "ATTIVO"
 		progetto1.setStato("ATTIVO");
+		progetto1.setStatoGestoreProgetto(StatoEnum.ATTIVO.getValue());
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		Calendar c = Calendar.getInstance();
 		c.setTime(sdf.parse(sdf.format(new Date())));
-        Date currentDate = c.getTime();
+		Date currentDate = c.getTime();
 		progetto1.setEnteGestoreProgetto(ente1);
 		List<ReferentiDelegatiEnteGestoreProgettoEntity> referentiDelegati = new ArrayList<>();
-		StoricoEnteGestoreProgettoEntity storicoEnteGestoreProgetto = new StoricoEnteGestoreProgettoEntity();
-		List<EntePartnerEntity> entiPartner = new ArrayList<>();
-		List<EnteSedeProgetto> entisediprogetto = new ArrayList<>();
 		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
 		when(referentiDelegatiEnteGestoreProgettoService.getReferentiEDelegatiProgetto(progetto1.getId())).thenReturn(referentiDelegati);
-		when(storicoEnteGestoreProgettoRepository.save(storicoEnteGestoreProgetto)).thenReturn(storicoEnteGestoreProgetto);
-		when(entePartnerService.getEntiPartnerByProgetto(progetto1.getId())).thenReturn(entiPartner);
-		when(enteSedeProgettoRepository.getEnteSedeProgettoByIdProgetto(progetto1.getId())).thenReturn(entisediprogetto);
-		doAnswer(invocation -> {
-			storicoEnteGestoreProgetto.setIdProgetto(progetto1.getId());
-			storicoEnteGestoreProgetto.setIdEnte(progetto1.getEnteGestoreProgetto().getId());
-			storicoEnteGestoreProgetto.setStato(StatoEnum.TERMINATO.getValue());
-			storicoEnteGestoreProgetto.setDataOraCreazione(new Date());
-			this.storicoEnteGestoreProgettoRepository.save(storicoEnteGestoreProgetto);
-			return storicoEnteGestoreProgetto;
-		}).when(storicoService).storicizzaEnteGestoreProgetto(progetto1, StatoEnum.TERMINATO.getValue());
-		doAnswer(invocation -> {
-			this.entePartnerService.getEntiPartnerByProgetto(progetto1.getId());
-			return entiPartner;
-		}).when(enteService).terminaEntiPartner(progetto1.getId());
-		doAnswer(invocation -> {
-			List<EnteSedeProgetto> enteSedeProgetto = this.enteSedeProgettoRepository.getEnteSedeProgettoByIdProgetto(progetto1.getId());
-			return enteSedeProgetto;
-			}).when(enteSedeProgettoService).cancellaOTerminaEnteSedeProgetto(progetto1.getId());
+		doNothing().when(storicoService).storicizzaEnteGestoreProgetto(progetto1, StatoEnum.TERMINATO.getValue());
+		doNothing().when(enteService).terminaEntiPartner(progetto1.getId());
+		doNothing().when(enteSedeProgettoService).cancellaOTerminaEnteSedeProgetto(progetto1.getId());
 		progettoService.cancellaOTerminaProgetto(progetto1, currentDate);
 		assertThat(progetto1.getStatoGestoreProgetto()).isEqualTo("TERMINATO");
 		verify(progettoRepository, times(1)).save(progetto1);
+		
+		//test con progetto ATTIVABILE o ATTIVO e statoGestoreProgetto == "NON ATTIVO"
+		progetto1.setStato("ATTIVO");
+		progetto1.setStatoGestoreProgetto(StatoEnum.NON_ATTIVO.getValue());
+		progetto1.setEnteGestoreProgetto(ente1);
+		when(progettoRepository.findById(progetto1.getId())).thenReturn(progettoOptional);
+		when(referentiDelegatiEnteGestoreProgettoService.getReferentiEDelegatiProgetto(progetto1.getId())).thenReturn(referentiDelegati);
+		doNothing().when(enteService).terminaEntiPartner(progetto1.getId());
+		doNothing().when(enteSedeProgettoService).cancellaOTerminaEnteSedeProgetto(progetto1.getId());
+		progettoService.cancellaOTerminaProgetto(progetto1, currentDate);
+		assertThat(progetto1.getStatoGestoreProgetto()).isEqualTo(null);
+		verify(progettoRepository, times(2)).save(progetto1);
 	}
-	
 	@Test
 	public void attivaProgettoKOTest() {
 		//test KO per progetto non presente

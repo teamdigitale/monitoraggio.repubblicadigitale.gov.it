@@ -11,7 +11,8 @@ import it.pa.repdgt.surveymgmt.projection.CittadinoServizioProjection;
 import it.pa.repdgt.surveymgmt.projection.GetCittadinoProjection;
 
 public interface CittadinoServizioRepository extends JpaRepository<CittadinoEntity, Long> {
-	@Query(value = " SELECT "
+	@Query(value = " "
+			 + " SELECT "
 			 + "	DISTINCT c.id as idCittadino,"
 			 + "			 c.nome,"
 			 + "			 c.cognome,"
@@ -24,7 +25,7 @@ public interface CittadinoServizioRepository extends JpaRepository<CittadinoEnti
 			 + "	ON s.ID = s_x_c.id_servizio "
 			 + "	INNER JOIN cittadino c "
 			 + "	ON s_x_c.id_cittadino = c.id"
-			 + "	INNER JOIN questionario_compilato q_c"
+			 + "	LEFT JOIN questionario_compilato q_c"
 			 + "	ON q_c.servizio_id = s.id"
 			 + "	AND q_c.id_cittadino = c.id"
 			 + " WHERE 1=1 "
@@ -37,8 +38,44 @@ public interface CittadinoServizioRepository extends JpaRepository<CittadinoEnti
 		     + "		 OR UPPER(c.codice_fiscale) = UPPER( :criterioRicercaServizio ) "
 	         + "    ) "
 	         + "    AND ( COALESCE( :statiQuestionariFiltro  ) IS NULL OR q_c.STATO IN ( :statiQuestionariFiltro ) ) "
-	         ,
+	         + "	LIMIT :currPage, :pageSize",
 			 nativeQuery = true)
+	List<CittadinoServizioProjection> findAllCittadiniServizioPaginatiByFiltro(
+			@Param(value = "idServizio") Long idServizio,
+			@Param(value = "criterioRicercaServizio") String criterioRicercaServizio,
+			@Param(value = "criterioRicercaServizioLike") String criterioRicercaServizioLike, 
+			@Param(value = "statiQuestionariFiltro") List<String> statiQuestionariFiltro,
+			@Param(value = "currPage") Integer currPage,
+			@Param(value = "pageSize") Integer pageSize
+		);
+	
+	@Query(value = " SELECT "
+			+ "	DISTINCT c.id as idCittadino,"
+			+ "			 c.nome,"
+			+ "			 c.cognome,"
+			+ "			 c.codice_fiscale as codiceFiscale,"
+			+ "			 q_c.id as idQuestionario,"
+			+ "			 q_c.stato as statoQuestionario"
+			+ " FROM "
+			+ "	servizio s "
+			+ "	INNER JOIN servizio_x_cittadino s_x_c   "
+			+ "	ON s.ID = s_x_c.id_servizio "
+			+ "	INNER JOIN cittadino c "
+			+ "	ON s_x_c.id_cittadino = c.id"
+			+ "	LEFT JOIN questionario_compilato q_c"
+			+ "	ON q_c.servizio_id = s.id"
+			+ "	AND q_c.id_cittadino = c.id"
+			+ " WHERE 1=1 "
+			+ "    AND s.id = :idServizio"
+			+ "    AND ( "
+			+ "		    :criterioRicercaServizio IS NULL  "	
+			+ "	   	 OR UPPER(c.NOME) LIKE UPPER( :criterioRicercaServizioLike ) "
+			+ "		 OR UPPER(c.COGNOME) LIKE UPPER( :criterioRicercaServizioLike ) "
+			+ "		 OR UPPER(c.NUM_DOCUMENTO) = UPPER( :criterioRicercaServizio ) "
+			+ "		 OR UPPER(c.codice_fiscale) = UPPER( :criterioRicercaServizio ) "
+			+ "    ) "
+			+ "    AND ( COALESCE( :statiQuestionariFiltro  ) IS NULL OR q_c.STATO IN ( :statiQuestionariFiltro ) ) ",
+			nativeQuery = true)
 	List<CittadinoServizioProjection> findAllCittadiniServizioByFiltro(
 			@Param(value = "idServizio") Long idServizio,
 			@Param(value = "criterioRicercaServizio") String criterioRicercaServizio,

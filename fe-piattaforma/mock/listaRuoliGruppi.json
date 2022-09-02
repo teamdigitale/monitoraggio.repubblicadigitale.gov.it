@@ -1,0 +1,154 @@
+{
+  "data": [
+    {
+      "codice": "ACC.DSHB.SELF",
+      "descrizione": "accesso al tool di self BI",
+      "permessi": [
+        {
+          "id": 79,
+          "codice": "tab.dshb",
+          "descrizione": "tab dashboard",
+          "dataOraCreazione": 1658232144000,
+          "dataOraAggiornamento": 1658232144000
+        },
+        {
+          "id": 80,
+          "codice": "view.dshb",
+          "descrizione": "visualizzazione dashboard",
+          "dataOraCreazione": 1658232144000,
+          "dataOraAggiornamento": 1658232144000
+        },
+        {
+          "id": 81,
+          "codice": "acc.self.dshb",
+          "descrizione": "Accesso al tool di self reportistica",
+          "dataOraCreazione": 1658232144000,
+          "dataOraAggiornamento": 1658232144000
+        }
+      ],
+      "dataOraCreazione": 1658233681000,
+      "dataOraAggiornamento": 1658233681000
+    },
+    {
+      "codice": "ASS.QUEST",
+      "descrizione": "associazione questionari",
+      "permessi": [
+        {
+          "id": 1,
+          "codice": "tab.am",
+          "descrizione": "tab area amministrativa",
+          "dataOraCreazione": 1658231496000,
+          "dataOraAggiornamento": 1658231496000
+        },
+        {
+          "id": 2,
+          "codice": "subtab.prgm",
+          "descrizione": "sotto-tab programmi",
+          "dataOraCreazione": 1658231514000,
+          "dataOraAggiornamento": 1658231514000
+        },
+        {
+          "id": 3,
+          "codice": "subtab.prgt",
+          "descrizione": "sotto-tab progetti",
+          "dataOraCreazione": 1658231515000,
+          "dataOraAggiornamento": 1658231515000
+        },
+        {
+          "id": 4,
+          "codice": "list.prgm",
+          "descrizione": "elenco programmi",
+          "dataOraCreazione": 1658231515000,
+          "dataOraAggiornamento": 1658231515000
+        },
+        {
+          "id": 5,
+          "codice": "list.prgt",
+          "descrizione": "elenco progetti",
+          "dataOraCreazione": 1658231515000,
+          "dataOraAggiornamento": 1658231515000
+        },
+        {
+          "id": 6,
+          "codice": "list.dwnl.prgm",
+          "descrizione": "scarica elenco programmi",
+          "dataOraCreazione": 1658231515000,
+          "dataOraAggiornamento": 1658231515000
+        },
+        {
+          "id": 7,
+          "codice": "list.dwnl.prgt",
+          "descrizione": "scarica elenco progetti",
+          "dataOraCreazione": 1658231515000,
+          "dataOraAggiornamento": 1658231515000
+        },
+        {
+          "id": 8,
+          "codice": "view.card.prgm.full",
+          "descrizione": "visualizzazione scheda programmi fino alla foglia",
+          "dataOraCreazione": 1658231515000,
+          "dataOraAggiornamento": 1658231515000
+        },
+        {
+          "id": 17,
+          "codice": "upd.rel.quest_prgm",
+          "descrizione": " modifica associazione questionari a programmi",
+          "dataOraCreazione": 1658231516000,
+          "dataOraAggiornamento": 1658231516000
+        }
+      ],
+      "dataOraCreazione": 1658233680000,
+      "dataOraAggiornamento": 1658233680000
+    },
+    {
+      "codice": "ASS.RUOLI",
+      "descrizione": "associazione ruoli utenti",
+      "permessi": [
+        {
+          "id": 1,
+          "codice": "tab.am",
+          "descrizione": "tab area amministrativa",
+          "dataOraCreazione": 1658231496000,
+          "dataOraAggiornamento": 1658231496000
+        },
+        {
+          "id": 41,
+          "codice": "subtab.utenti",
+          "descrizione": "sotto-tab utenti",
+          "dataOraCreazione": 1658231905000,
+          "dataOraAggiornamento": 1658231905000
+        },
+        {
+          "id": 42,
+          "codice": "list.utenti",
+          "descrizione": "elenco utenti",
+          "dataOraCreazione": 1658231905000,
+          "dataOraAggiornamento": 1658231905000
+        },
+        {
+          "id": 43,
+          "codice": "list.dwnl.utenti",
+          "descrizione": "scarica elenco utenti",
+          "dataOraCreazione": 1658231906000,
+          "dataOraAggiornamento": 1658231906000
+        },
+        {
+          "id": 44,
+          "codice": "view.card.utenti",
+          "descrizione": "visualizzazione scheda utenti",
+          "dataOraCreazione": 1658231906000,
+          "dataOraAggiornamento": 1658231906000
+        },
+        {
+          "id": 46,
+          "codice": "add.del.ruolo.utente",
+          "descrizione": "aggiunta/rimozione ruoli ad utenti",
+          "dataOraCreazione": 1658231906000,
+          "dataOraAggiornamento": 1658231906000
+        }
+      ],
+      "dataOraCreazione": 1658233681000,
+      "dataOraAggiornamento": 1658233681000
+    }
+  ]
+}

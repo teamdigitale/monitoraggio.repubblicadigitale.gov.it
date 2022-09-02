@@ -84,7 +84,7 @@ const PrintBoxField: React.FC<PrintFieldI> = (props) => {
 
   return (
     <div className={clsx(className, 'w-100')}>
-      <Form className={clsx('mx-0')}>
+      <Form id='form-print-box' className={clsx('mx-0')}>
         <p>
           <strong>{info.label}</strong>
         </p>

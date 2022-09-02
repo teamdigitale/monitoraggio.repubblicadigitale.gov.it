@@ -39,6 +39,7 @@ public class StoricoService {
 			storicoEnteGestoreProgramma = storicoEnteGestoreProgrammaRepository.findStoricoEnteByIdProgrammaAndIdEnte(idProgramma, idEnte)
 					.orElseThrow(() -> new StoricoEnteException(messaggioErrore));
 			storicoEnteGestoreProgramma.setStato(StatoEnum.TERMINATO.getValue());
+			storicoEnteGestoreProgramma.setDataOraTerminazione(new Date());
 		}else {
 			storicoEnteGestoreProgramma.setDataAttivazioneEnte(new Date());
 			storicoEnteGestoreProgramma.setStato(StatoEnum.ATTIVO.getValue());
@@ -61,6 +62,7 @@ public class StoricoService {
 			storicoEnteGestoreProgetto = storicoEnteGestoreProgettoRepository.findStoricoEnteByIdProgrammaAndIdEnteAndIdProgetto(idProgramma, idEnte, idProgetto)
 					.orElseThrow(() -> new StoricoEnteException(messaggioErrore));
 			storicoEnteGestoreProgetto.setStato(StatoEnum.TERMINATO.getValue());
+			storicoEnteGestoreProgetto.setDataOraTerminazione(new Date());
 		}else {
 			storicoEnteGestoreProgetto.setDataAttivazioneEnte(new Date());
 			storicoEnteGestoreProgetto.setStato(StatoEnum.ATTIVO.getValue());
@@ -84,6 +86,7 @@ public class StoricoService {
 			storicoEntePartner = storicoEntePartnerRepository.findStoricoEnteByIdProgrammaAndIdEnteAndIdProgetto(idProgramma, idEnte, idProgetto)
 					.orElseThrow(() -> new StoricoEnteException(messaggioErrore));
 			storicoEntePartner.setStato(StatoEnum.TERMINATO.getValue());
+			storicoEntePartner.setDataOraTerminazione(new Date());
 		}else {
 			storicoEntePartner.setDataAttivazioneEnte(new Date());
 			storicoEntePartner.setStato(StatoEnum.ATTIVO.getValue());

@@ -26,10 +26,12 @@ interface AddressFormI {
   address: string;
   CAP: string;
   province: string;
+  state: string;
   city: string;
   onAddressChange: (
     address: string,
     province: string,
+    state: string,
     city: string,
     CAP: string
   ) => void;
@@ -40,6 +42,7 @@ const AddressForm: React.FC<AddressFormI> = ({
   address,
   CAP,
   province,
+  state,
   city,
   onAddressChange,
   formDisabled = false,
@@ -49,32 +52,66 @@ const AddressForm: React.FC<AddressFormI> = ({
   const [CAPS, setCAPS] = useState<string[]>([]);
 
   useEffect(() => {
-    axios('/assets/indirizzi/province.json').then((res) =>
-      setProvinces(
-        res.data.map((province: any) => ({
-          name: province.nome,
-          state: province.regione,
-        }))
-      )
-    );
-  }, []);
+    initValues();
+  }, [province, city]);
 
-  const onSelectProvince = (value: string) => {
-    onAddressChange(address, value.split('/')[0], '', '');
-    axios(`/assets/indirizzi/comuni/${value.split('/')[1]}.json`).then((res) =>
+  const initValues = async () => {
+    const provs = [...(await axios('/assets/indirizzi/province.json')).data];
+    if (province && state) {
+      const cits = [
+        ...(await axios(`/assets/indirizzi/comuni/${state.toLowerCase()}.json`))
+          .data,
+      ];
+
       setCities(
-        res.data
+        cits
           .filter(
             (city: any) =>
-              city.provincia.nome.toLowerCase() ===
-              value.split('/')[0].toLowerCase()
+              city.provincia.nome.toLowerCase() === province.toLowerCase()
           )
           .map((city: any) => ({
             name: city.nome,
             province: city.provincia.nome,
             cap: city.cap,
           }))
-      )
+      );
+
+      if (city) {
+        setCAPS([...cits.find((c) => c.nome === city).cap]);
+      }
+    }
+
+    setProvinces(
+      provs.map((province: any) => ({
+        name: province.nome,
+        state: province.regione,
+      }))
+    );
+  };
+
+  const onSelectProvince = async (value: string) => {
+    onAddressChange(
+      address,
+      value.split('/')[0],
+      value.split('/')[1],
+      city,
+      CAP
+    );
+    const res = await axios(
+      `/assets/indirizzi/comuni/${value.split('/')[1]}.json`
+    );
+    setCities(
+      res.data
+        .filter(
+          (city: any) =>
+            city.provincia.nome.toLowerCase() ===
+            value.split('/')[0].toLowerCase()
+        )
+        .map((city: any) => ({
+          name: city.nome,
+          province: city.provincia.nome,
+          cap: city.cap,
+        }))
     );
   };
 
@@ -87,6 +124,7 @@ const AddressForm: React.FC<AddressFormI> = ({
       onAddressChange(
         address,
         province,
+        state,
         selected.name,
         selected.cap.length === 1 ? selected.cap[0] : ''
       );
@@ -96,34 +134,36 @@ const AddressForm: React.FC<AddressFormI> = ({
   };
 
   return (
-    <Form formDisabled={formDisabled}>
+    <Form id='form-address' formDisabled={formDisabled}>
       <Form.Row>
         <Input
           className='mb-3'
-          label={`Indirizzo`}
+          label={`Via e numero civico`}
+          required
+          disabled={formDisabled}
           col='col-12 col-lg-6'
           value={address}
           onInputChange={(value) =>
-            onAddressChange(value as string, CAP, province, city)
+            onAddressChange(value as string, province, state, city, CAP)
           }
           placeholder='Inserisci un indirizzo'
         />
         {formDisabled ? (
           <>
             <Input
-              className='mt-6'
+              // className='mt-6'
               label={`Provincia`}
               col='col-12 col-lg-6'
               value={province}
             />
             <Input
-              className='mt-3'
+              // className='mt-3'
               label={`CAP`}
               col='col-12 col-lg-6'
               value={CAP}
             />
             <Input
-              className='mt-3'
+              // className='mt-3'
               label={`Comune`}
               col='col-12 col-lg-6'
               value={city}
@@ -135,7 +175,8 @@ const AddressForm: React.FC<AddressFormI> = ({
               className='mt-6'
               label='Provincia'
               col='col-12 col-lg-6'
-              value={province}
+              value={`${province}/${state}`}
+              required
               options={provinces.map((p) => ({
                 value: `${p.name}/${p.state}`,
                 label: p.name,
@@ -147,6 +188,8 @@ const AddressForm: React.FC<AddressFormI> = ({
               label='Comune'
               col='col-12 col-lg-6'
               value={city}
+              isDisabled={!province}
+              required
               options={cities.map((c, _i) => ({
                 value: c.name,
                 label: c.name,
@@ -157,10 +200,12 @@ const AddressForm: React.FC<AddressFormI> = ({
               className='mt-3'
               label='CAP'
               col='col-12 col-lg-6'
+              isDisabled={!city}
               value={CAP}
+              required
               options={CAPS.map((c) => ({ value: c, label: c }))}
               onInputChange={(value) =>
-                onAddressChange(address, province, city, value as string)
+                onAddressChange(address, province, state, city, value as string)
               }
             />
           </>

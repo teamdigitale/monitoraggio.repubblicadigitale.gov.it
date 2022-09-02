@@ -1,5 +1,5 @@
 .dropdown-filter-container {
-  width: 200px;
+  min-width: 200px;
 
   @media screen and (max-width: 576px) {
     width: 140px;
@@ -12,6 +12,12 @@
     }
     .popover.bs-popover-auto[x-placement^='bottom'] .arrow:after {
       left: -400%;
+    }
+  }
+
+  &__larger {
+    .popover.show {
+      width: 250px;
     }
   }
 

@@ -1,11 +1,12 @@
 import store from '../redux/store';
 import { NotifyI } from '../redux/features/notification/notificationSlice';
 import { NewNotify } from '../redux/features/notification/notificationThunk';
+import axios from 'axios';
 
 export const dispatchNotify = (notify?: NotifyI) => {
   store.dispatch(NewNotify(notify) as any);
 };
-
+/*
 const getErrorMessage = ({ response }: any) => {
   console.log('response', response);
   switch (response?.status) {
@@ -18,9 +19,23 @@ const getErrorMessage = ({ response }: any) => {
       return 'Si è verificato un errore';
   }
 };
+*/
 
-export const errorHandler = (error: unknown) => {
-  console.log('error', error);
+export const getErrorMessage = async ({ response }: any) => {
+  try {
+    const res = await axios('/assets/errors/errors.json');
+    if (res?.data) {
+      const errorsList = { ...res.data.errors };
+      const errorCode = response.data.errorCode;
+      return errorsList[errorCode] || 'Si è verificato un errore';
+    }
+  } catch (error) {
+    return 'Si è verificato un errore';
+  }
+};
+
+export const errorHandler = async (error: unknown) => {
+  // console.log('error', error);
   if (error instanceof TypeError) {
     // statements to handle TypeError exceptions
     console.log(1);
@@ -32,10 +47,10 @@ export const errorHandler = (error: unknown) => {
     console.log(3);
   } else {
     // statements to handle any unspecified exceptions
-    console.log(4);
+    // console.log(4);
     dispatchNotify({
       status: 'error',
-      message: getErrorMessage(error),
+      message: await getErrorMessage(error),
     });
   }
 };

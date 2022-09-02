@@ -1,22 +1,59 @@
 {
-  "data": {
-    "list": [
-      {
-        "id": 1,
-        "name": "DTD Amministratore"
-      },
-      {
-        "id": 2,
-        "name": "DSCU Referente"
-      },
-      {
-        "id": 3,
-        "name": "DSCU Delegato"
-      },
-      {
-        "id": 4,
-        "name": "Referente ente gestore di programma"
-      }
-    ]
-  }
+  "data": [
+    {
+      "codiceRuolo": "DEG",
+      "nomeRuolo": "DELEGATO ENTE GESTORE PROGRAMMA",
+      "tipologiaRuolo": "P"
+    },
+    {
+      "codiceRuolo": "DEGP",
+      "nomeRuolo": "DELEGATO ENTE GESTORE PROGETTO",
+      "tipologiaRuolo": "P"
+    },
+    {
+      "codiceRuolo": "DEPP",
+      "nomeRuolo": "DELEGATO ENTE PARTNER",
+      "tipologiaRuolo": "P"
+    },
+    {
+      "codiceRuolo": "DSCU",
+      "nomeRuolo": "DSCU",
+      "tipologiaRuolo": "P"
+    },
+    {
+      "codiceRuolo": "DTD",
+      "nomeRuolo": "DTD AMMINISTRATORE",
+      "tipologiaRuolo": "NP"
+    },
+    {
+      "codiceRuolo": "FAC",
+      "nomeRuolo": "FACILITATORE",
+      "tipologiaRuolo": "P"
+    },
+    {
+      "codiceRuolo": "prova nuova custom",
+      "nomeRuolo": "prova nuova custom",
+      "tipologiaRuolo": "NP"
+    },
+    {
+      "codiceRuolo": "REG",
+      "nomeRuolo": "REFERENTE ENTE GESTORE PROGRAMMA",
+      "tipologiaRuolo": "P"
+    },
+    {
+      "codiceRuolo": "REGP",
+      "nomeRuolo": "REFERENTE ENTE GESTORE PROGETTO",
+      "tipologiaRuolo": "P"
+    },
+    {
+      "codiceRuolo": "REPP",
+      "nomeRuolo": "REFERENTE ENTE PARTNER",
+      "tipologiaRuolo": "P"
+    },
+    {
+      "codiceRuolo": "VOL",
+      "nomeRuolo": "VOLONTARIO",
+      "tipologiaRuolo": "P"
+    }
+  ]
 }

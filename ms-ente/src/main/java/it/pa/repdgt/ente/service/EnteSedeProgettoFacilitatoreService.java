@@ -2,6 +2,7 @@ package it.pa.repdgt.ente.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
@@ -14,6 +15,8 @@ import org.springframework.validation.annotation.Validated;
 import it.pa.repdgt.ente.exception.EnteSedeProgettoFacilitatoreException;
 import it.pa.repdgt.ente.repository.EnteSedeProgettoFacilitatoreRepository;
 import it.pa.repdgt.ente.request.EnteSedeProgettoFacilitatoreRequest;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.EnteSedeProgetto;
@@ -26,6 +29,7 @@ import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -46,17 +50,19 @@ public class EnteSedeProgettoFacilitatoreService {
 	@Autowired
 	private EnteSedeProgettoFacilitatoreRepository enteSedeProgettoFacilitatoreRepository;
 	@Autowired
-	private ReferentiDelegatiEnteGestoreProgettoService referentiDelegatiEnteGestoreProgettoService;
-	@Autowired
 	@Lazy
 	private EnteSedeProgettoService enteSedeProgettoService;
 	@Autowired
 	private EmailService emailService;
 
+	@LogMethod
+	@LogExecutionTime
 	public List<EnteSedeProgettoFacilitatoreEntity> getAllFacilitatoriByEnteAndSedeAndProgetto(Long idEnte, Long idSede, Long idProgetto) {
 		return this.enteSedeProgettoFacilitatoreRepository.findAllFacilitatoriByEnteAndSedeAndProgetto(idEnte, idSede, idProgetto);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void associaFacilitatoreAEnteSedeProgetto(EnteSedeProgettoFacilitatoreRequest enteSedeProgettoFacilitatoreRequest) {
 		String codiceFiscaleUtente = enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleUtente();
@@ -69,7 +75,9 @@ public class EnteSedeProgettoFacilitatoreService {
 		// verifico se utente esiste
 		boolean esisteUtente = this.utenteService.esisteUtenteByCodiceFiscale(codiceFiscaleUtente);
 		if(!esisteUtente) {
-			throw new EnteSedeProgettoFacilitatoreException(String.format("Impossibile associare facilitatore. Utente con codiceFiscale=%s non trovato", codiceFiscaleUtente));
+			throw new EnteSedeProgettoFacilitatoreException(
+					String.format("Impossibile associare facilitatore. Utente con codiceFiscale=%s non trovato", codiceFiscaleUtente),
+					CodiceErroreEnum.EN07);
 		}
 		
 		// verifico se ente, sede e progetto esistono
@@ -78,17 +86,31 @@ public class EnteSedeProgettoFacilitatoreService {
 		boolean esisteProgetto = this.progettoService.esisteProgettoById(idProgetto);
 		
 		if(!(esisteEnte && esisteSede && esisteProgetto)) {
-			String errorMessage = String.format("Impossibile associare facilitatore/volontario codiceFiscale=%s alla sede con id=% per l'ente con id=%s sul progetto con id=%s, sede e/o ente e/o progetto non esistente/i", 
+			String errorMessage = String.format("Impossibile associare facilitatore/volontario codiceFiscale=%s alla sede con id=%s per l'ente con id=%s sul progetto con id=%s, sede e/o ente e/o progetto non esistente/i", 
 					codiceFiscaleUtente, idSede, idEnte, idProgetto);
-			throw new EnteSedeProgettoFacilitatoreException(errorMessage);
+			throw new EnteSedeProgettoFacilitatoreException(errorMessage, CodiceErroreEnum.EN07);
 		}
 		
 		final ProgettoEntity progettoDBFEtch = this.progettoService.getProgettoById(idProgetto);
 		
+		final UtenteEntity utenteDBFetch = this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleUtente);
+		final RuoloEntity ruoloFacilitatore = this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.FAC.toString());
+		final RuoloEntity ruoloVolontario = this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.VOL.toString());
+		
 		if(PolicyEnum.RFD.getValue().equals(progettoDBFEtch.getProgramma().getPolicy().getValue())) {
-			codiceRuolo = "FAC";
+			if(utenteDBFetch.getRuoli().contains(ruoloVolontario)) {
+				String errorMessage = String.format("Impossibile associare facilitatore con codiceFiscale=%s alla sede con id=%s per l'ente con id=%s sul progetto con id=%s, l'utente è già un volontario",
+						codiceFiscaleUtente, idSede, idEnte, idProgetto);
+				throw new EnteSedeProgettoFacilitatoreException(errorMessage, CodiceErroreEnum.EN07);
+			}
+			codiceRuolo = RuoloUtenteEnum.FAC.toString();
 		} else {
-			codiceRuolo = "VOL";
+			if(utenteDBFetch.getRuoli().contains(ruoloFacilitatore)) {
+				String errorMessage = String.format("Impossibile associare volontario con codiceFiscale=%s alla sede con id=%s per l'ente con id=%s sul progetto con id=%s, l'utente è già un facilitatore",
+						codiceFiscaleUtente, idSede, idEnte, idProgetto);
+				throw new EnteSedeProgettoFacilitatoreException(errorMessage, CodiceErroreEnum.EN07);
+			}
+			codiceRuolo = RuoloUtenteEnum.VOL.toString();
 		}
 		
 		EnteSedeProgettoFacilitatoreKey id = new EnteSedeProgettoFacilitatoreKey(idEnte, idSede, idProgetto, codiceFiscaleUtente);
@@ -98,9 +120,10 @@ public class EnteSedeProgettoFacilitatoreService {
 		enteSedeProgettoFacilitatore.setRuoloUtente(codiceRuolo);
 		if(this.enteSedeProgettoFacilitatoreRepository.existsById(id)) {
 			String messaggioErrore = String.format("Impossibile assegnare facilitatore/volontario a ente, sede, progetto perchè l'utente con codice fiscale =%s è già facilitatore/volontario", codiceFiscaleUtente);
-			throw new EnteSedeProgettoFacilitatoreException(messaggioErrore);
+			throw new EnteSedeProgettoFacilitatoreException(messaggioErrore, CodiceErroreEnum.EN07);
 		}
 		enteSedeProgettoFacilitatore.setDataOraCreazione(new Date());
+		enteSedeProgettoFacilitatore.setDataOraAggiornamento(new Date());
 		this.enteSedeProgettoFacilitatoreRepository.save(enteSedeProgettoFacilitatore);
 		
 		EnteSedeProgetto enteSedeProgetto = enteSedeProgettoService.getAssociazioneEnteSedeProgetto(idSede, idEnte, idProgetto);
@@ -112,7 +135,7 @@ public class EnteSedeProgettoFacilitatoreService {
 		}
 		
 		// controllo se progetto con id progetto è NON ATTIVO --> passa ad attivabile 
-		// perchè e' stato associato il primo facilitatore a quel progetto per qull'ente su quella sede
+		// perchè e' stato associato il primo facilitatore a quel progetto per quell'ente su quella sede
 		if(progettoDBFEtch.getStato().equalsIgnoreCase(StatoEnum.NON_ATTIVO.getValue())) {
 			// aggiornare lo stato del progetto da NON ATTIVO a ATTIVABILE
 			progettoDBFEtch.setStato(StatoEnum.ATTIVABILE.getValue());
@@ -143,19 +166,23 @@ public class EnteSedeProgettoFacilitatoreService {
 		}
 		
 		if(StatoEnum.ATTIVO.getValue().equalsIgnoreCase(progettoDBFEtch.getStato())) {
-			//INVIO EMAIL WELCOME KIT AL FACILITATORE SSE IL PROGETTO E' ATTIVO
-			try {
-				this.emailService.inviaEmail(utenteFetch.getEmail(), 
-						EmailTemplateEnum.FACILITATORE, 
-						new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(codiceRuolo).getValue() });
-			} catch (Exception ex) {
-				log.error("Impossibile inviare la mail al facilitatore del progetto con id={}.", idProgetto);
-				log.error("{}", ex);
-			}
+			//STACCO UN THREAD E INVIO EMAIL WELCOME KIT AL FACILITATORE SSE IL PROGETTO E' ATTIVO
+			new Thread(() ->{
+				try {
+					this.emailService.inviaEmail(utenteFetch.getEmail(), 
+							EmailTemplateEnum.FACILITATORE, 
+							new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(codiceRuolo).getValue() });
+				} catch (Exception ex) {
+					log.error("Impossibile inviare la mail al facilitatore del progetto con id={}.", idProgetto);
+					log.error("{}", ex);
+				}
+			}).start();
 		}
 	}
 	
 	@Transactional(rollbackOn = Exception.class)
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaOTerminaAssociazioneFacilitatoreAEnteSedeProgetto(
 			EnteSedeProgettoFacilitatoreRequest enteSedeProgettoFacilitatoreRequest) {
 		String codiceFiscaleUtente = enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleUtente();
@@ -184,13 +211,23 @@ public class EnteSedeProgettoFacilitatoreService {
 		boolean isUnicoFacilitatore = this.enteSedeProgettoFacilitatoreRepository.findAltriFacilitatoriAttivi(codiceFiscaleUtente, idProgetto, codiceRuolo).isEmpty();
 		
 		if(RuoliUtentiConstants.FACILITATORE.equals(codiceRuolo) && isUnicoFacilitatore) {
-			throw new EnteSedeProgettoFacilitatoreException("Impossibile cancellare associazione facilitatore. E' l'unico facilitatore ATTIVO del progetto. Per eliminarlo procedere prima con l'associazione di un altro facilitatore al progetto.");
+			throw new EnteSedeProgettoFacilitatoreException(
+					"Impossibile cancellare associazione facilitatore. E' l'unico facilitatore ATTIVO del progetto. "
+					+ "Per eliminarlo procedere prima con l'associazione di un altro facilitatore al progetto.",
+					CodiceErroreEnum.EN08);
+		}
+		if(RuoliUtentiConstants.VOLONTARIO.equals(codiceRuolo) && isUnicoFacilitatore) {
+			throw new EnteSedeProgettoFacilitatoreException("Impossibile cancellare associazione volontario. E' l'unico volontario ATTIVO del progetto. "
+					+ "Per eliminarlo procedere prima con l'associazione di un altro volontario al progetto.",
+					CodiceErroreEnum.EN08);
 		}
 		//quando lo stato del facilitatore è attivo dobbiamo terminarlo
 		this.terminaAssociazioneFacilitatoreOVolontario(id);
 	}
 	
 	@Transactional(rollbackOn = Exception.class)
+	@LogMethod
+	@LogExecutionTime
 	public void cancellaOTerminaAssociazioneFacilitatoreOVolontarioAEnteSedeProgetto(
 			EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatore) {
 		
@@ -210,13 +247,15 @@ public class EnteSedeProgettoFacilitatoreService {
 		}
 	}
 		
-	private void terminaAssociazioneFacilitatoreOVolontario(EnteSedeProgettoFacilitatoreKey id) {
-		EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatoreFetch = this.enteSedeProgettoFacilitatoreRepository.getById(id);
+	public void terminaAssociazioneFacilitatoreOVolontario(EnteSedeProgettoFacilitatoreKey id) {
+		EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatoreFetch = this.enteSedeProgettoFacilitatoreRepository.findById(id).get();
 		enteSedeProgettoFacilitatoreFetch.setStatoUtente(StatoEnum.TERMINATO.getValue());
 		enteSedeProgettoFacilitatoreFetch.setDataOraTerminazione(new Date());
 		this.enteSedeProgettoFacilitatoreRepository.save(enteSedeProgettoFacilitatoreFetch);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellaAssociazioniFacilitatoriOVolontariAEnteSedeProgetto(
 			@NotNull Long idSede, 
@@ -235,6 +274,8 @@ public class EnteSedeProgettoFacilitatoreService {
 		});
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellaAssociazioneFacilitatore(Long idEnte, Long idSede, Long idProgetto, String codiceFiscaleUtente, String codiceRuolo) {
 		EnteSedeProgettoFacilitatoreKey id = new EnteSedeProgettoFacilitatoreKey(idEnte, idSede, idProgetto, codiceFiscaleUtente);
@@ -251,15 +292,27 @@ public class EnteSedeProgettoFacilitatoreService {
 		}
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public void cancellazioneAssociazioniEnteSedeProgettoFacilitatoreByIdEnteAndIdProgetto(Long idEnte, Long idProgetto) {
 		this.enteSedeProgettoFacilitatoreRepository.cancellazioneAssociazioniEnteSedeProgettoFacilitatoreByIdEnteAndIdProgetto(idEnte, idProgetto);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<EnteSedeProgettoFacilitatoreEntity> getFacilitatoriByIdEnteAndIdProgetto(Long idEnte, Long idProgetto) {
 		return this.enteSedeProgettoFacilitatoreRepository.getFacilitatoriByIdEnteAndIdProgetto(idEnte, idProgetto);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public int countAssociazioniFacilitatoreAndVolontario(String facilitatore, String codiceRuolo) {
 		return this.enteSedeProgettoFacilitatoreRepository.countAssociazioniFacilitatoreAndVolontario(facilitatore, codiceRuolo);
+	}
+
+	@LogMethod
+	@LogExecutionTime
+	public Optional<EnteSedeProgettoFacilitatoreEntity> getEnteSedeProgettoFacilitatoreById(EnteSedeProgettoFacilitatoreKey id) {
+		return this.enteSedeProgettoFacilitatoreRepository.findById(id);
 	}
 }

@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Paginator, StatusChip, Table } from '../../../../../components';
+import {
+  EmptySection,
+  Paginator,
+  StatusChip,
+  Table,
+} from '../../../../../components';
 import { newTable, TableRowI } from '../../../../../components/Table/table';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
@@ -30,7 +35,7 @@ import {
   GetEntityFilterValues,
   DownloadEntityValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
-import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
+import useGuard from '../../../../../hooks/guard';
 
 const entity = 'programma';
 const statusDropdownLabel = 'filtroStati';
@@ -39,6 +44,7 @@ const policyDropdownLabel = 'filtroPolicies';
 const Programs = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { hasUserPermission } = useGuard();
   const { programmi: programmiList = [] } = useAppSelector(selectEntityList);
   const filtersList = useAppSelector(selectEntityFilters);
   const pagination = useAppSelector(selectEntityPagination);
@@ -62,25 +68,6 @@ const Programs = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
-    /**
-     * When the component is rendered the breadcrumb is initialized with
-     * the rigth path. This operation is performed in every component that
-     * needs breadcrumb
-     */
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area Amministrativa',
-          url: '/area-amministrativa',
-          link: false,
-        },
-        {
-          label: 'Programmi',
-          url: '/area-amministrativa/programmi',
-          link: true,
-        },
-      ])
-    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -91,7 +78,7 @@ const Programs = () => {
       programmiList.map((td: any) => {
         return {
           label: td.nomeBreve || td.nome,
-          id: td.id,
+          id: td.codice || td.id,
           policy: td.policy,
           enteGestore: td.enteGestore || td.nomeEnteGestore,
           status: <StatusChip status={td.stato} rowTableId={td.id} />,
@@ -104,7 +91,8 @@ const Programs = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(programmiList)) setTableValues(updateTableValues());
+    if (Array.isArray(programmiList) && programmiList.length)
+      setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [programmiList]);
 
@@ -163,7 +151,7 @@ const Programs = () => {
 
   const dropdowns: DropdownFilterI[] = [
     {
-      filterName: 'Policy',
+      filterName: 'Intervento',
       options: dropdownFilterOptions['policies'],
       id: policyDropdownLabel,
       onOptionsChecked: (options) =>
@@ -201,11 +189,20 @@ const Programs = () => {
     title: 'Cerca programma',
   };
 
-  const onActionClick: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      if (typeof td !== 'string') navigate(`${td.id}/info`);
-    },
-  };
+  const onActionClick: CRUDActionsI = hasUserPermission(['view.card.prgm.full'])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          if (typeof td !== 'string') {
+            const programId = programmiList.filter(
+              (program: any) =>
+                program?.codice?.toString().toLowerCase() ===
+                td.id.toString().toLowerCase()
+            )[0].id;
+            navigate(`${programId}/info`);
+          }
+        },
+      }
+    : {};
 
   const newProgram = () => {
     dispatch(resetProgramDetails());
@@ -233,29 +230,49 @@ const Programs = () => {
       dropdowns={dropdowns}
       filtersList={filtersList}
       {...programCta}
-      cta={newProgram}
-      ctaDownload={handleDownloadList}
-      resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
+      cta={hasUserPermission(['new.prgm']) ? newProgram : undefined}
+      ctaDownload={
+        programmiList?.length &&
+        tableValues?.values?.length &&
+        hasUserPermission(['list.dwnl.prgm'])
+          ? handleDownloadList
+          : undefined
+      }
+      resetFilterDropdownSelected={(filterKey: string) =>
+        setFilterDropdownSelected(filterKey)
+      }
     >
       <div>
-        <Table
-          {...tableValues}
-          id='table'
-          onActionClick={onActionClick}
-          onCellClick={(field, row) => console.log(field, row)}
-          //onRowClick={row => console.log(row)}
-          withActions
-        />
-        {pagination?.pageNumber ? (
-          <Paginator
-            activePage={pagination?.pageNumber}
-            center
-            refID='#table'
-            pageSize={pagination?.pageSize}
-            total={pagination?.totalPages}
-            onChange={handleOnChangePage}
+        {programmiList?.length && tableValues?.values?.length ? (
+          <>
+            <Table
+              {...tableValues}
+              id='table'
+              onActionClick={onActionClick}
+              onCellClick={(field, row) => console.log(field, row)}
+              //onRowClick={row => console.log(row)}
+              withActions
+              totalCounter={pagination?.totalElements}
+            />
+            {pagination?.pageNumber ? (
+              <Paginator
+                activePage={pagination?.pageNumber}
+                center
+                refID='#table'
+                pageSize={pagination?.pageSize}
+                total={pagination?.totalPages}
+                onChange={handleOnChangePage}
+              />
+            ) : null}
+          </>
+        ) : (
+          <EmptySection
+            title='Non sono presenti programmi'
+            subtitle='associati al tuo ruolo'
+            icon='it-note'
+            withIcon
           />
-        ) : null}
+        )}
       </div>
       <ManageProgram creation />
     </GenericSearchFilterTableLayout>

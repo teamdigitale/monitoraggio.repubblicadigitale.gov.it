@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import clsx from 'clsx';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Badge,
   Button,
@@ -11,38 +11,29 @@ import {
 } from 'design-react-kit';
 import LogoMobile from '/public/assets/img/logo-mobile.png';
 import Bell from '/public/assets/img/campanella.png';
-
 import { HeaderI } from '../header';
 import { logout } from '../../../redux/features/user/userSlice';
-
 import HamburgerMenu from '../../HamburgerMenu/hamburgerMenu';
-import SwitchProfileModal from '../../Modals/SwitchProfileModal/switchProfileModal';
 import { openModal } from '../../../redux/features/modal/modalSlice';
-
 import AvatarInitials, {
   AvatarSizes,
   AvatarTextSizes,
 } from '../../AvatarInitials/avatarInitials';
-import { getRoleLabel } from '../../../utils/roleHelper';
+import { defaultRedirectUrl } from '../../../routes';
 
 const HeaderMobile: React.FC<HeaderI> = ({
   dispatch,
   user,
+  userProfile,
   isLogged,
   notification,
+  menuRoutes,
 }) => {
   const [openUser, setOpenUser] = useState<boolean>(false);
-  //const navigate = useNavigate();
-
+  const navigate = useNavigate();
   const userDropdownOptions = [
-    { optionName: 'Il mio profilo', action: () => console.log('i tuoi dati') },
-    {
-      optionName: 'Cambia ruolo',
-      action: () => dispatch(openModal({ id: 'switchProfileModal' })),
-    },
-    { optionName: 'Esci', action: () => dispatch(logout()) },
+    { optionName: 'Il mio profilo', action: () => navigate('/area-personale') },
   ];
-
   const userDropDown = () => (
     <Dropdown
       className='p-0 header-container__top__user-dropdown mr-4'
@@ -63,21 +54,29 @@ const HeaderMobile: React.FC<HeaderI> = ({
         >
           <div>
             <AvatarInitials
-              user={{ uName: user?.name, uSurname: user?.surname }}
+              user={{ uName: user?.nome, uSurname: user?.cognome }}
               size={AvatarSizes.Small}
               font={AvatarTextSizes.Small}
             />
           </div>
           <div className='d-flex flex-row justify-content-start'>
             <p className='h6 text-wrap font-weight-light'>
-              <em>{getRoleLabel(user?.role)}</em>
+              {/*<em>{getRoleLabel(userProfile?.codiceRuolo)}</em>*/}
+              <em>{`${userProfile?.descrizioneRuolo}${
+                userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
+              }`}</em>
             </p>
           </div>
         </div>
       </DropdownToggle>
       <DropdownMenu role='menu' tag='ul'>
         {userDropdownOptions.map((item, index) => (
-          <li key={index} role='none' className='px-4'>
+          <li
+            key={index}
+            role='none'
+            className='px-4'
+            onClick={() => setOpenUser(!openUser)}
+          >
             <Button
               className={clsx(
                 'primary-color-b1',
@@ -99,57 +98,104 @@ const HeaderMobile: React.FC<HeaderI> = ({
             </Button>
           </li>
         ))}
+        {(user?.profiliUtente?.length || 0) > 1 ? (
+          <li role='none' className='px-4'>
+            <Button
+              className={clsx(
+                'primary-color-b1',
+                'py-2',
+                'w-100',
+                'd-flex',
+                'justify-content-between'
+              )}
+              role='menuitem'
+              onClick={() => dispatch(openModal({ id: 'switchProfileModal' }))}
+            >
+              <span>Cambia ruolo</span>
+              <Icon
+                icon='it-chevron-right'
+                color='primary'
+                size='sm'
+                aria-label='Apri'
+              />
+            </Button>
+          </li>
+        ) : null}
+        {isLogged ? (
+          <li role='none' className='px-4'>
+            <Button
+              className={clsx(
+                'primary-color-b1',
+                'py-2',
+                'w-100',
+                'd-flex',
+                'justify-content-between'
+              )}
+              role='menuitem'
+              onClick={() => dispatch(logout())}
+            >
+              <span>Esci</span>
+              <Icon
+                icon='it-chevron-right'
+                color='primary'
+                size='sm'
+                aria-label='Apri'
+              />
+            </Button>
+          </li>
+        ) : null}
       </DropdownMenu>
     </Dropdown>
   );
-
   const [isOpen, setIsOpen] = useState(false);
-
   return (
     <header
       className={clsx('header-container', isLogged && 'user-logged', 'w-100')}
     >
-      <div
-        className={clsx(
-          'container',
-          'header-container__top',
-          'd-flex',
-          'justify-content-between',
-          'align-items-center',
-          isLogged ? 'text.white primary-bg-b2' : '',
-          'w-100'
-        )}
-      >
-        {isLogged && <HamburgerMenu open={isOpen} setOpen={setIsOpen} />}
-
+      {isLogged && (
         <div
           className={clsx(
+            'container',
+            'header-container__top',
             'd-flex',
-            'align-items-center',
             'justify-content-between',
-            'my-0',
-            'mobile-top-container',
+            'align-items-center',
+            isLogged ? 'text.white primary-bg-b2' : '',
             'w-100'
           )}
         >
-          {isLogged ? (
-            <>
-              {userDropDown()}
-              <div className='ml-auto pr-3'>
-                <Icon
-                  color='white'
-                  icon={Bell}
-                  size='sm'
-                  aria-label='Menu utente'
-                />
-                {notification?.length ? (
-                  <Badge>{notification.length}</Badge>
-                ) : null}
-              </div>
-            </>
-          ) : null}
+          <HamburgerMenu open={isOpen} setOpen={setIsOpen} menuRoutes={menuRoutes} />
+          <div
+            className={clsx(
+              'd-flex',
+              'align-items-center',
+              'justify-content-between',
+              'my-0',
+              'mobile-top-container',
+              'w-100'
+            )}
+          >
+            {isLogged ? (
+              <>
+                {userDropDown()}
+                <div className='ml-auto pr-3'>
+                  <a href='/notifiche'>
+                    <Icon
+                      color='white'
+                      icon={Bell}
+                      size='sm'
+                      aria-label='Menu utente'
+                    />
+                    {notification?.length ? (
+                      <Badge>{notification.length}</Badge>
+                    ) : null}
+                  </a>
+                </div>
+              </>
+            ) : null}
+          </div>
         </div>
-      </div>
+      )}
       <div
         className={clsx(
           'header-container__main',
@@ -161,18 +207,19 @@ const HeaderMobile: React.FC<HeaderI> = ({
         )}
       >
         <div className='container d-flex align-items-center'>
-          <Button
-            onClick={() => setIsOpen(true)}
-            className='primary-bg-a6 px-2'
-          >
-            <Icon
-              icon='it-burger'
-              size='sm'
-              color='white'
-              aria-label='hamburger menu'
-            />
-          </Button>
-
+          {isLogged && (
+            <Button
+              onClick={() => setIsOpen(true)}
+              className='primary-bg-a6 px-2'
+            >
+              <Icon
+                icon='it-burger'
+                size='sm'
+                color='white'
+                aria-label='hamburger menu'
+              />
+            </Button>
+          )}
           <div
             className={clsx(
               'flex-direction-row',
@@ -182,7 +229,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
               'ml-2'
             )}
           >
-            <Link to='/'>
+            <Link to={defaultRedirectUrl} replace>
               <img src={LogoMobile} alt='logo' />
             </Link>
           </div>
@@ -211,18 +258,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
           ) : null}
         </div>
       </div>
-      <SwitchProfileModal
-        profiles={[
-          { name: ' "ente partner"', programName: 'Programma 1' },
-          {
-            name: ' "ente gestore di progetto"',
-            programName: 'Programma 2',
-          },
-        ]}
-        currentProfile=' "ente partner"'
-      />
     </header>
   );
 };
-
 export default memo(HeaderMobile);

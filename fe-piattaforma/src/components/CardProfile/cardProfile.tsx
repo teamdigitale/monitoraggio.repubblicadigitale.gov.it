@@ -9,17 +9,17 @@ import AvatarInitials, {
   AvatarTextSizes,
 } from '../AvatarInitials/avatarInitials';
 import './cardProfile.scss';
+import { UserStateI } from '../../redux/features/user/userSlice';
 
 interface CardProfileI extends CardProps {
-  name?: string;
-  program?: string;
   className?: string;
   activeProfile?: boolean;
-  user: { name: string; surname: string; role?: string };
+  user: UserStateI['user'];
+  profile?: any;
 }
 
 const CardProfile: React.FC<CardProfileI> = (props) => {
-  const { program, className, activeProfile, user } = props;
+  const { className, activeProfile, user = {}, profile = {} } = props;
 
   const device = useAppSelector(selectDevice);
 
@@ -60,7 +60,7 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
               )}
             >
               <AvatarInitials
-                user={{ uName: user?.name, uSurname: user?.surname }}
+                user={{ uName: user?.nome, uSurname: user?.cognome }}
                 size={device.mediaIsPhone ? AvatarSizes.Big : AvatarSizes.Small}
                 font={
                   device.mediaIsPhone
@@ -73,21 +73,16 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
           ) : null}
           <div>
             <CardTitle className='mb-1 primary-color-a12'>
-              {activeProfile ? (
-                <span>
-                  <strong>Delegato </strong>
-                  <em>
-                    <strong>{user.name}</strong>
-                  </em>
-                </span>
-              ) : (
-                <span>
-                  <strong>Referente </strong>
-                  <em>
-                    <strong>{user.name}</strong>
-                  </em>
-                </span>
-              )}
+              <span>
+                <strong>
+                  {profile?.descrizioneRuolo}
+                  {profile?.nomeEnte ? (
+                    <>
+                      &nbsp;&ldquo;<i>{profile?.nomeEnte}</i>&ldquo;
+                    </>
+                  ) : null}
+                </strong>
+              </span>
             </CardTitle>
             <CardText
               className={clsx(
@@ -95,7 +90,7 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
                 !activeProfile && 'neutral-2-color-a3'
               )}
             >
-              {program}
+              {profile?.nomeProgramma}
             </CardText>
           </div>
         </div>

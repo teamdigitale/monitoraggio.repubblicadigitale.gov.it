@@ -17,6 +17,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.web.multipart.MultipartFile;
 
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.bean.CittadinoUploadBean;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.resource.ServizioResource;
@@ -48,7 +49,8 @@ public class CSVServizioUtil {
 				"NOME",
 				"FACILITATORE",
 				"DATA",
-				"STATO"
+				"STATO",
+				"DURATA_SERVIZIO"
 			);
 	
 	public static ByteArrayInputStream exportCSVServizi(final List<ServizioResource> servizi, final CSVFormat csvFormat) {
@@ -71,7 +73,7 @@ public class CSVServizioUtil {
 			csvPrinter.flush();
 			return new ByteArrayInputStream(outputStream.toByteArray());
 		} catch (IOException ex) {
-			throw new ServizioException("Errore export csv servizi", ex);
+			throw new ServizioException("Errore export csv servizi", ex, CodiceErroreEnum.S02);
 		}
 	}
 
@@ -86,7 +88,8 @@ public class CSVServizioUtil {
 							servizioResource.getNomeServizio(),
 							servizioResource.getNominativoFacilitatore(),
 							servizioResource.getDataServizio(),
-							servizioResource.getStato()
+							servizioResource.getStato(),
+							servizioResource.getDurataServizio()
 						);
 	}
 	

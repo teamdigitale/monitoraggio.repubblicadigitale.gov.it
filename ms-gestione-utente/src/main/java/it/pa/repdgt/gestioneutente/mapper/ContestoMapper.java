@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import it.pa.repdgt.gestioneutente.resource.ContestoResource;
 import it.pa.repdgt.gestioneutente.resource.RuoloResource;
+import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 
 @Component
@@ -17,6 +18,7 @@ public class ContestoMapper {
 			return null;
 		}
 		ContestoResource contestoResource = new ContestoResource();
+		contestoResource.setId(utente.getId());
 		contestoResource.setCodiceFiscale(utente.getCodiceFiscale());
 		contestoResource.setNome(utente.getNome());
 		contestoResource.setCognome(utente.getCognome());
@@ -24,6 +26,8 @@ public class ContestoMapper {
 		contestoResource.setEmail(utente.getEmail());
 		contestoResource.setStato(utente.getStato());
 		contestoResource.setIntegrazione(utente.getIntegrazione());
+		contestoResource.setBio(utente.getMansione());
+		contestoResource.setTipoContratto(utente.getTipoContratto());
 		
 		List<RuoloResource> ruoliResource = utente.getRuoli()
 				.stream()
@@ -32,21 +36,40 @@ public class ContestoMapper {
 					ruoloResource.setCodiceRuolo(ruolo.getCodice());
 					ruoloResource.setNomeRuolo(ruolo.getNome());
 					
-//					List<PermessoResource> permessiResource = ruolo.getPermessi()
-//						.stream()
-//						.map(permesso -> {
-//							PermessoResource permessoResource = new PermessoResource();
-//							permessoResource.setDescrizionePermesso(permesso.getDescrizione());
-//							return permessoResource;
-//					    })
-//						.collect(Collectors.toList());
-//					
-//					ruoloResource.setPermessi(permessiResource);
 					return ruoloResource;
 				})
 				.collect(Collectors.toList());
 		
 		contestoResource.setRuoli(ruoliResource);
+		
+		boolean contestoContieneRuoloFacOVol = ruoliResource
+			.stream()
+			.anyMatch(ruoloResource -> { 
+				return (
+						RuoliUtentiConstants.FACILITATORE.equalsIgnoreCase(ruoloResource.getCodiceRuolo()) 
+						|| RuoliUtentiConstants.VOLONTARIO.equalsIgnoreCase(ruoloResource.getCodiceRuolo())
+					);
+			});
+		if(contestoContieneRuoloFacOVol) {
+			contestoResource.setMostraTipoContratto(Boolean.TRUE);
+		}
+		
+		boolean contestoContieneRuoliReferentiODelegati = ruoliResource
+				.stream()
+				.anyMatch(ruoloResource -> { 
+					return (
+							   RuoliUtentiConstants.REG.equalsIgnoreCase(ruoloResource.getCodiceRuolo()) 
+							|| RuoliUtentiConstants.DEG.equalsIgnoreCase(ruoloResource.getCodiceRuolo())
+							|| RuoliUtentiConstants.DEG.equalsIgnoreCase(ruoloResource.getCodiceRuolo())
+							|| RuoliUtentiConstants.REGP.equalsIgnoreCase(ruoloResource.getCodiceRuolo())
+							|| RuoliUtentiConstants.DEGP.equalsIgnoreCase(ruoloResource.getCodiceRuolo())
+							|| RuoliUtentiConstants.REPP.equalsIgnoreCase(ruoloResource.getCodiceRuolo())
+							|| RuoliUtentiConstants.DEPP.equalsIgnoreCase(ruoloResource.getCodiceRuolo())
+						);
+				});
+		if(contestoContieneRuoliReferentiODelegati) {
+			contestoResource.setMostraBio(Boolean.TRUE);
+		}
 		
 		return contestoResource;
 	}

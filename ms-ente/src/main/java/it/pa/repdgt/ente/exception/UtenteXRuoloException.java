@@ -1,15 +1,18 @@
 package it.pa.repdgt.ente.exception;
 
-import java.io.Serializable;
+import it.pa.repdgt.shared.exception.BaseException;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import lombok.Getter;
 
-public class UtenteXRuoloException extends RuntimeException implements Serializable {
-	private static final long serialVersionUID = -2408925357949957553L;
-
-	public UtenteXRuoloException(String exceptionMessage) {
+@Getter
+public class UtenteXRuoloException extends BaseException {
+	public UtenteXRuoloException(String exceptionMessage, CodiceErroreEnum codiceErroreEnum) {
 		super(exceptionMessage);
+		this.codiceErroreEnum = codiceErroreEnum;
 	}
 	
-	public UtenteXRuoloException(String exceptionMessage, Exception ex) {
+	public UtenteXRuoloException(String exceptionMessage, Exception ex, CodiceErroreEnum codiceErroreEnum) {
 		super (exceptionMessage, ex);
+		this.codiceErroreEnum = codiceErroreEnum;
 	}
 }

@@ -18,13 +18,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
 import it.pa.repdgt.shared.entity.ServizioEntity;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.bean.DettaglioServizioBean;
 import it.pa.repdgt.surveymgmt.bean.SchedaDettaglioServizioBean;
+import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 import it.pa.repdgt.surveymgmt.collection.SezioneQ3Collection;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
@@ -52,6 +56,10 @@ public class ServizioService {
 	private EnteService enteService;
 	@Autowired
 	private SedeService sedeService;
+	@Autowired
+	private QuestionarioTemplateService questionarioTemplateService;
+	@Autowired 
+	private QuestionarioTemplateSqlService questionarioTemplateSqlService;
 	
 	/**
 	 * Recupera l'elenco dei servizi paginati sulla base della profilazione dell'utente loggato e dei filtri in input
@@ -59,6 +67,8 @@ public class ServizioService {
 	 * - FiltroListaServiziParam - contiene tutti i filtri da applicare all'elenco dei servizi
 	 * 
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public Page<ServizioEntity> getAllServiziPaginatiByProfilazioneAndFiltri(
 			@NotNull @Valid final ProfilazioneParam profilazione,
 			@NotNull @Valid final FiltroListaServiziParam filtroListaServizi,
@@ -70,7 +80,7 @@ public class ServizioService {
 		// Verifico se l'utente possiede il ruolo mandato nella richiesta
 		if( !this.utenteService.hasRuoloUtente(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato) ) {
 			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'",codiceFiscaleUtenteLoggato);
-			throw new ServizioException(messaggioErrore);
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.U06);
 		}
 		
 		// Recupero tutti i Servizi in base al ruolo profilato dell'utente loggato e in base ai filtri selezionati
@@ -80,7 +90,7 @@ public class ServizioService {
 		int start = (int) pagina.getOffset();
 		int end = Math.min((start + pagina.getPageSize()), listaServizi.size());
 		if(start > end) {
-			throw new ServizioException("ERRORE: pagina richiesta inesistente");
+			throw new ServizioException("ERRORE: pagina richiesta inesistente", CodiceErroreEnum.G03);
 		}
 		return new PageImpl<ServizioEntity>(listaServizi.subList(start, end), pagina, listaServizi.size());
 	}
@@ -91,6 +101,8 @@ public class ServizioService {
 	 * - FiltroListaServiziParam - contiene tutti i filtri da applicare all'elenco dei servizi
 	 * 
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public List<ServizioEntity> getAllServiziByProfilazioneUtenteLoggatoAndFiltri(
 			@NotNull @Valid ProfilazioneParam profilazione,
 			@NotNull @Valid FiltroListaServiziParam filtroListaServizi) {
@@ -101,7 +113,7 @@ public class ServizioService {
 		// Verifico se l'utente possiede il ruolo mandato nella richiesta
 		if( !this.utenteService.hasRuoloUtente(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato) ) {
 			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'",codiceFiscaleUtenteLoggato);
-			throw new ServizioException(messaggioErrore);
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.U01);
 		}
 		
 		if(filtroListaServizi.getCriterioRicerca() != null) {
@@ -175,6 +187,8 @@ public class ServizioService {
 		}
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public ServizioEntity creaServizio(
 			@NotNull final ServizioRequest servizioRequest) {
@@ -183,7 +197,7 @@ public class ServizioService {
 		
 		if( ! this.utenteService.isUtenteFacilitatore(codiceFiscaletenteLoggato, ruoloUtenteLoggato) ) {
 			final String messaggioErrore = String.format("Impossibile creare servizio. Utente con codice fiscale '%s' non ha ruolo FACILITATORE", codiceFiscaletenteLoggato);
-			throw new ServizioException(messaggioErrore);
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S05);
 		}
 		
 		// creo SezioneQ3Mongo
@@ -198,6 +212,8 @@ public class ServizioService {
 		return servizioCreato;
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public SezioneQ3Collection creaSezioneQ3(@NotNull final ServizioRequest servizioRequest) {
 		final SezioneQ3Collection sezioneQ3Collection = this.servizioMapper.toCollectionFrom(servizioRequest);
 		sezioneQ3Collection.setId(UUID.randomUUID().toString());
@@ -206,6 +222,8 @@ public class ServizioService {
 		return sezioneQ3Collection;
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void aggiornaServizio(
 			@NotNull Long idServizioDaAggiornare, 
@@ -215,7 +233,7 @@ public class ServizioService {
 		
 		if( !this.utenteService.isUtenteFacilitatore(codiceFiscaletenteLoggato, ruoloUtenteLoggato) ) {
 			final String messaggioErrore = String.format("Impossibile aggiornare servizio. Utente con codice fiscale '%s' non ha ruolo FACILITATORE", codiceFiscaletenteLoggato);
-			throw new ServizioException(messaggioErrore);
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S05);
 		}
 		
 		// Aggiorno servizio su MySql
@@ -223,19 +241,16 @@ public class ServizioService {
 
 		// Recupero SezioneQ3Compilato
 		final String idSezioneQ3Compilato = servizioAggiornato.getIdTemplateCompilatoQ3();
-		final SezioneQ3Collection sezioneQ3Compilato = this.sezioneQ3Repository
+		final SezioneQ3Collection sezioneQ3CompilatoDBFetch = this.sezioneQ3Repository
 				.findById(idSezioneQ3Compilato)
-				.orElseThrow(() -> new ResourceNotFoundException(String.format("SezioneQ3Compilato con id=%s non presente", idSezioneQ3Compilato)));
+				.orElseThrow(() -> new ResourceNotFoundException(String.format("SezioneQ3Compilato con id=%s non presente", idSezioneQ3Compilato), CodiceErroreEnum.C01));
 
-		// Cancello SezioneQ3Mongo su MongoDB e lo risalvo con i valori aggiornati
-		this.sezioneQ3Repository.deleteByIdSezioneQ3(sezioneQ3Compilato.getId());
 		
 		// Salvo SezioneQ3Compilato con i dati da aggiornare su MongoDB
 		final SezioneQ3Collection sezioneQ3DaAggiornare = this.servizioMapper.toCollectionFrom(servizioDaAggiornareRequest);
-		sezioneQ3DaAggiornare.setId(sezioneQ3Compilato.getId());
-		sezioneQ3DaAggiornare.setDataOraCreazione(sezioneQ3Compilato.getDataOraCreazione());
-		sezioneQ3DaAggiornare.setDataOraUltimoAggiornamento(new Date());
-		this.sezioneQ3Repository.save(sezioneQ3DaAggiornare);
+		sezioneQ3CompilatoDBFetch.setDataOraUltimoAggiornamento(new Date());
+		sezioneQ3CompilatoDBFetch.setSezioneQ3Compilato(sezioneQ3DaAggiornare.getSezioneQ3Compilato());
+		this.sezioneQ3Repository.save(sezioneQ3CompilatoDBFetch);
 	}
 
 	/**
@@ -243,6 +258,8 @@ public class ServizioService {
 	 * con un determinato profilo
 	 * 
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public List<String> getAllTipologiaServizioFiltroDropdown(
 			@NotNull @Valid final ProfilazioneParam profilazione, 
 			@NotNull @Valid final FiltroListaServiziParam filtroListaServizi) {
@@ -258,6 +275,8 @@ public class ServizioService {
 	 * con un determinato profilo
 	 * 
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public List<String> getAllStatiServizioFiltroDropdown(
 			@NotNull @Valid final ProfilazioneParam profilazione, 
 			@NotNull @Valid final FiltroListaServiziParam filtroListaServizi) {
@@ -275,8 +294,12 @@ public class ServizioService {
 	 * dall'id del servizio
 	 * 
 	 * */
+	@LogMethod
+	@LogExecutionTime
 	public SchedaDettaglioServizioBean getSchedaDettaglioServizio(@NotNull final Long idServizio) {
+		// Recupero servizio
 		final ServizioEntity servizioEntity = this.servizioSQLService.getServizioById(idServizio);
+		// Recupero ente che eroga il servizio e su quale sede
 		final EnteEntity enteEntity = this.enteService.getById(servizioEntity.getIdEnteSedeProgettoFacilitatore().getIdEnte());
 		final SedeEntity sedeEntity = this.sedeService.getById(servizioEntity.getIdEnteSedeProgettoFacilitatore().getIdSede());
 		
@@ -286,6 +309,24 @@ public class ServizioService {
 		dettaglioServizioBean.setNomeEnte(enteEntity.getNome());
 		dettaglioServizioBean.setNomeSede(sedeEntity.getNome());
 		dettaglioServizioBean.setTipologiaServizio(servizioEntity.getTipologiaServizio());
+		
+		// verifico se il questionarioTemplate associato al servizio è presente su Mysql
+		try {
+			this.questionarioTemplateSqlService.getQuestionarioTemplateById(servizioEntity.getIdQuestionarioTemplateSnapshot());
+		} catch (ResourceNotFoundException ex) {
+			String errorMessage = String.format("QuestionarioTemplate con id=%s associato al servizio non presente in MySql", servizioEntity.getIdQuestionarioTemplateSnapshot());
+			throw new ServizioException(errorMessage, ex, CodiceErroreEnum.QT05);
+		}
+		
+		// verifico se il questionarioTemplate associato al servizio è presente su MongoDb
+		QuestionarioTemplateCollection questionarioTemplateAssociatoAlServizio = null;
+		try {
+			questionarioTemplateAssociatoAlServizio = questionarioTemplateService.getQuestionarioTemplateById(servizioEntity.getIdQuestionarioTemplateSnapshot());
+		} catch (ResourceNotFoundException ex) {
+			String errorMessage = String.format("QuestionarioTemplate con id=%s associato al servizio non presente in MongoDB", servizioEntity.getIdQuestionarioTemplateSnapshot());
+			throw new ServizioException(errorMessage, ex, CodiceErroreEnum.QT04);
+		}
+		dettaglioServizioBean.setQuestionarioTemplateSnapshot(questionarioTemplateAssociatoAlServizio);
 		
 		final Optional<SezioneQ3Collection> sezioneQ3Compilato = this.sezioneQ3Repository.findById(servizioEntity.getIdTemplateCompilatoQ3());
 		dettaglioServizioBean.setSezioneQ3compilato(sezioneQ3Compilato.orElse(null));
@@ -297,6 +338,8 @@ public class ServizioService {
 		return schedaDettaglioServizioBean;
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void eliminaServizio(@NotNull final Long idServizio) {
 		final ServizioEntity servizioEntity = this.servizioSQLService.getServizioById(idServizio);
@@ -305,7 +348,7 @@ public class ServizioService {
 		final String statoServizio = servizioEntity.getStato();
 		if(! this.isServizioEliminabile(statoServizio)) {
 			final String messaggioErrore = String.format("Impossibile eliminare Servizio con id=%s. Stato Servizio = '%s'", idServizio, statoServizio);
-			throw new ServizioException(messaggioErrore);
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S07);
 		}
 		
 		// cancello servizio su MySql
@@ -315,6 +358,8 @@ public class ServizioService {
 		this.sezioneQ3Repository.deleteByIdSezioneQ3(servizioEntity.getIdTemplateCompilatoQ3());
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public boolean isServizioEliminabile(@NotNull final String statoServizio) {
 		return StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(statoServizio);
 	}

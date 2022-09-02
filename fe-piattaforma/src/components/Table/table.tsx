@@ -26,6 +26,7 @@ export interface TableI {
   withActions?: boolean;
   rolesTable?: boolean;
   onActionRadio?: CRUDActionsI;
+  totalCounter?: number;
 }
 
 const Table: React.FC<TableI> = (props) => {

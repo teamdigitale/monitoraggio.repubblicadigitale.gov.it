@@ -2,27 +2,41 @@ import React from 'react';
 import clsx from 'clsx';
 
 interface FormI {
+  autocomplete?: boolean | undefined;
   className?: string;
   children: JSX.Element | JSX.Element[] | undefined | null | string;
   formDisabled?: boolean;
-  id?: string;
+  id: string;
   legend?: string;
 }
 
 const Form = (props: FormI) => {
   const {
+    autocomplete = false,
     className,
     children,
     formDisabled = false,
-    id = `form-${new Date().getTime()}`,
+    id,
     legend = 'Default form legend',
   } = props;
 
   return (
-    <form className={clsx('form ', className)} id={id}>
+    <form className={clsx('form ', className)} id={id} autoComplete={autocomplete ? 'on' : 'off'}>
       <fieldset disabled={formDisabled} form={id}>
         <legend className='sr-only'>{legend}</legend>
-        {children}
+        {React.Children.map(children, child => {
+          if(React.isValidElement(child)) {
+            return React.cloneElement(child, {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              ...child.props,
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              formDisabled,
+            })
+          }
+          return null
+        })}
       </fieldset>
     </form>
   );
@@ -31,9 +45,24 @@ const Form = (props: FormI) => {
 const Row: React.FC<{
   className?: FormI['className'];
   children: FormI['children'];
+  formDisabled?: boolean;
 }> = (props) => {
-  const { className, children } = props;
-  return <div className={clsx('form-row', className)}>{children}</div>;
+  const { className, children, formDisabled = false, } = props;
+  return <div className={clsx('form-row', className)}>
+    {React.Children.map(children, child => {
+      if(React.isValidElement(child)) {
+        return React.cloneElement(child, {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          ...child.props,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          disabled: child.props.disabled || formDisabled,
+        })
+      }
+      return null
+    })}
+  </div>;
 };
 
 Form.Row = Row;

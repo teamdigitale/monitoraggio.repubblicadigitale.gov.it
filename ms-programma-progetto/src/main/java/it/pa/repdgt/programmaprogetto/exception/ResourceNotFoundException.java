@@ -1,21 +1,19 @@
 package it.pa.repdgt.programmaprogetto.exception;
 
-import java.io.Serializable;
-
+import it.pa.repdgt.shared.exception.BaseException;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.Getter;
 
 @Getter
-public class ResourceNotFoundException extends RuntimeException implements Serializable {
+public class ResourceNotFoundException extends BaseException {
 	private static final long serialVersionUID = 4751093921632088853L;
 	
-	private Object[] args;
-
 	public ResourceNotFoundException(String exceptionMessage) {
 		super(exceptionMessage);
 	}
 	
-	public ResourceNotFoundException(String exceptionMessage, Object[] args) {
+	public ResourceNotFoundException(String exceptionMessage, CodiceErroreEnum codiceErroreEnum) {
 		super(exceptionMessage);
-		this.args = args;
+		this.codiceErroreEnum = codiceErroreEnum;
 	}
 }

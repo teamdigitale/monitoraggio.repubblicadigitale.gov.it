@@ -6,9 +6,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SedeBean {
-	Long id;
-	String nome;
-	int nrFacilitatori;
-	String serviziErogati;
-	String stato;
+	private Long id;
+	private String nome;
+	private int nrFacilitatori;
+	private String serviziErogati;
+	private String stato;
+	private boolean associatoAUtente;
 }

@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.util.List;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 
 import org.apache.commons.csv.CSVFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +32,12 @@ import it.pa.repdgt.surveymgmt.bean.SchedaDettaglioServizioBean;
 import it.pa.repdgt.surveymgmt.mapper.ServizioMapper;
 import it.pa.repdgt.surveymgmt.param.FiltroListaServiziParam;
 import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
+import it.pa.repdgt.surveymgmt.param.ProfilazioneSedeParam;
 import it.pa.repdgt.surveymgmt.projection.EnteProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
 import it.pa.repdgt.surveymgmt.resource.ServiziPaginatiResource;
+import it.pa.repdgt.surveymgmt.resource.ServizioIdResource;
 import it.pa.repdgt.surveymgmt.resource.ServizioResource;
 import it.pa.repdgt.surveymgmt.service.ServizioService;
 import it.pa.repdgt.surveymgmt.service.ServizioSqlService;
@@ -101,8 +102,8 @@ public class ServizioRestApi {
 	// TOUCH POINT - 9.1.3
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public void creaServizio(@RequestBody @Valid final ServizioRequest servizioRequest) {
-		this.servizioService.creaServizio(servizioRequest);
+	public ServizioIdResource creaServizio(@RequestBody @Valid final ServizioRequest servizioRequest) {
+		return new ServizioIdResource(this.servizioService.creaServizio(servizioRequest).getId());
 	}
 	
 	/***
@@ -175,7 +176,7 @@ public class ServizioRestApi {
 	// TOUCH POINT - 9.1.7
 	@PostMapping(path = "/facilitatore/sedi/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<SedeProjection> getSediByFacilitatore(@RequestBody @Valid final ProfilazioneParam profilazioneParam) {
+	public List<SedeProjection> getSediByFacilitatore(@RequestBody @Valid final ProfilazioneSedeParam profilazioneParam) {
 		return this.servizioSqlService.getSediByFacilitatore(profilazioneParam);
 	}
 	

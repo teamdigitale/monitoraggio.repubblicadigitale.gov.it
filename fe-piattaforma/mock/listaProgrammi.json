@@ -71,5 +71,6 @@
       "nomeEnteGestore": ""
     }
   ],
-  "numeroPagine": 2
+  "numeroPagine": 2,
+  "numeroTotaleElementi": 10
 }

@@ -1,34 +1,127 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
+import { useDispatch } from 'react-redux';
+import {Navigate, useNavigate} from 'react-router-dom';
 import { useAppSelector } from '../../../redux/hooks';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import Profile from '/public/assets/img/change-profile.png';
-import { FormI, newForm, newFormField } from '../../../utils/formHelper';
+import {
+  CommonFields,
+  FormI,
+  newForm,
+  newFormField,
+} from '../../../utils/formHelper';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
-import { OptionType } from '../../../components/Form/select';
 import { Form, Input } from '../../../components';
 import { Button, FormGroup, Icon, Label } from 'design-react-kit';
-import clsx from 'clsx';
+import {
+  login,
+  logout,
+  selectUser,
+} from '../../../redux/features/user/userSlice';
+import {
+  CreateUserContext,
+  EditUser,
+  SelectUserRole,
+} from '../../../redux/features/user/userThunk';
+import { openModal } from '../../../redux/features/modal/modalSlice';
+import FormOnboarding from './formOnboarding';
+import {defaultRedirectUrl} from "../../../routes";
 
-export interface OnboardingI {
-  addProfilePicture?: () => void;
-  onInputChange?: withFormHandlerProps['onInputChange'];
-  onSubmitForm?: () => void;
-  optionsSelect?: OptionType[];
-  form: withFormHandlerProps['form'];
+interface ProfilePicI {
+  image?: boolean;
 }
 
-const FormOnboarding: React.FC<withFormHandlerProps> = (props) => {
-  const { onInputChange = () => ({}) } = props;
+interface OnboardingI extends ProfilePicI, withFormHandlerProps {}
+
+const Onboarding: React.FC<OnboardingI> = (props) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
+  const user = useAppSelector(selectUser);
+  const [image, setImage] = useState<string>(Profile);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const {
+    form,
+    isValidForm,
+    getFormValues = () => ({}),
+    onInputChange = () => ({}),
+    updateForm = () => ({}),
+  } = props;
+
+  useEffect(() => {
+    if (user?.integrazione) {
+      selectUserRole();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
+  if (!user?.codiceFiscale) return <Navigate to='/auth' replace />;
 
   const addProfilePicture = () => {
-    console.log('add picture');
+    if (inputRef.current !== null) {
+      inputRef.current.click();
+    }
   };
 
-  const onSubmitForm = () => {
-    console.log('onSubmit', props.getFormValues && props.getFormValues());
+  const updateImage = () => {
+    const input: HTMLInputElement = document.getElementById(
+      'profile_pic'
+    ) as HTMLInputElement;
+
+    if (input.files?.length) {
+      const selectedImage = input.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(selectedImage);
+      reader.onloadend = () => {
+        setImage(reader.result as string);
+      };
+    }
+  };
+
+  const loginUser = () => {
+    navigate(defaultRedirectUrl, { replace: true });
+    dispatch(login());
+  };
+
+  const selectUserRole = async () => {
+    if (user.profiliUtente?.length > 1) {
+      dispatch(
+        openModal({
+          id: 'switchProfileModal',
+          payload: {
+            onSubmit: loginUser,
+          },
+        })
+      );
+    } else {
+      const res = await dispatch(SelectUserRole(user.profiliUtente[0]));
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (res) loginUser();
+    }
+  };
+
+  const onSubmitForm = async () => {
+    try {
+      if (isValidForm) {
+        const res = await dispatch(EditUser(getFormValues()));
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (res) {
+          const res2 = await dispatch(CreateUserContext(user.codiceFiscale));
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          if (res2) {
+            selectUserRole();
+          }
+        }
+      }
+    } catch {
+      dispatch(logout());
+    }
   };
 
   return (
@@ -58,17 +151,30 @@ const FormOnboarding: React.FC<withFormHandlerProps> = (props) => {
               'pt-3'
             )}
           >
-            <div
-              onMouseDown={addProfilePicture}
-              role='button'
-              tabIndex={0}
-              className=' position-relative'
-            >
-              <img
-                src={Profile}
-                alt=''
-                className='onboarding__img-profile mr-2'
+            <div role='button' tabIndex={0} className=' position-relative'>
+              <input
+                type='file'
+                id='profile_pic'
+                onChange={updateImage}
+                accept='image/*, .png, .jpeg, .jpg'
+                capture
+                ref={inputRef}
+                className='sr-only'
               />
+
+              <div className='rounded-circle'>
+                <img
+                  src={image}
+                  alt='profile'
+                  className='mr-2 rounded-circle onboarding__img-profile'
+                  style={{
+                    maxWidth: '174px',
+                    maxHeight: '174px',
+                    minHeight: '174px',
+                  }}
+                />
+              </div>
+
               <div
                 className={clsx(
                   'onboarding__icon-container',
@@ -76,14 +182,21 @@ const FormOnboarding: React.FC<withFormHandlerProps> = (props) => {
                   'position-absolute',
                   'rounded-circle'
                 )}
+                style={{ bottom: '0px', right: '10px' }}
               >
-                <Icon
-                  size='lg'
-                  icon='it-camera'
-                  padding
-                  color='white'
-                  aria-label='Foto'
-                />
+                <Button
+                  onClick={addProfilePicture}
+                  size='xs'
+                  className='profile-picture-btn'
+                >
+                  <Icon
+                    size='lg'
+                    icon='it-camera'
+                    padding
+                    color='white'
+                    aria-label='Foto'
+                  />
+                </Button>
               </div>
             </div>
             <div>
@@ -96,65 +209,11 @@ const FormOnboarding: React.FC<withFormHandlerProps> = (props) => {
             </div>
           </div>
         ) : null}
+        <FormOnboarding sendNewForm={updateForm} isOnboarding />
         <Form
+          id='form-onboarding'
           className={clsx('mt-5', 'mb-5', 'pt-5', 'onboarding__form-container')}
         >
-          <Form.Row>
-            <Input
-              {...form?.name}
-              label='Nome'
-              required
-              placeholder='Inserisci nome'
-              col='col-12 col-md-6'
-              onInputChange={onInputChange}
-            />
-            <Input
-              {...form?.surname}
-              required
-              label='Cognome'
-              placeholder='Inserisci cognome'
-              col='col-12 col-md-6'
-              onInputChange={onInputChange}
-            />
-          </Form.Row>
-          <Form.Row>
-            <Input
-              {...form?.ID}
-              required
-              label='Codice Fiscale'
-              placeholder='Inserisci Codice Fiscale'
-              col='col-12 col-md-6'
-              type='text'
-              onInputChange={onInputChange}
-            />
-            <Input
-              {...form?.email}
-              required
-              label='Email'
-              placeholder='Inserisci email'
-              col='col-12 col-md-6'
-              onInputChange={onInputChange}
-            />
-          </Form.Row>
-          <Form.Row>
-            <Input
-              {...form?.mobile}
-              required
-              label='Mobile'
-              placeholder='Inserisci mobile'
-              col='col-12 col-md-6'
-              onInputChange={onInputChange}
-            />
-            <Input
-              {...form?.BIO}
-              required
-              label='Bio'
-              placeholder='Nome Mansione'
-              col='col-12 col-md-6'
-              onInputChange={onInputChange}
-              className={clsx(device.mediaIsPhone && 'mb-0')}
-            />
-          </Form.Row>
           <div
             className={clsx(
               'd-flex flex-row justify-content-start',
@@ -163,9 +222,17 @@ const FormOnboarding: React.FC<withFormHandlerProps> = (props) => {
             )}
           >
             <FormGroup check>
-              <Input type='checkbox' checked={false} withLabel={false} />
-              <Label>
-                Consenso al <a href='/'> Trattamento dei dati personali </a>
+              <Input
+                aria-label='checkbox-consenso'
+                id='checkbox-consenso'
+                field='consenso'
+                type='checkbox'
+                checked={Boolean(form?.consenso?.value)}
+                onInputChange={(v) => onInputChange(v, form?.consenso?.field)}
+                withLabel={false}
+              />
+              <Label check for='checkbox-consenso'>
+                Consenso al&nbsp;<a href='/'>Trattamento dei dati personali</a>
               </Label>
             </FormGroup>
           </div>
@@ -176,7 +243,11 @@ const FormOnboarding: React.FC<withFormHandlerProps> = (props) => {
               'justify-content-end'
             )}
           >
-            <Button color='primary' onClick={onSubmitForm}>
+            <Button
+              disabled={!isValidForm}
+              color='primary'
+              onClick={onSubmitForm}
+            >
               Completa Regitrazione
             </Button>
           </div>
@@ -191,34 +262,45 @@ const FormOnboarding: React.FC<withFormHandlerProps> = (props) => {
 
 const form: FormI = newForm([
   newFormField({
-    field: 'name',
+    ...CommonFields.NOME,
+    field: 'nome',
     required: true,
     id: 'name',
   }),
   newFormField({
-    field: 'surname',
+    ...CommonFields.COGNOME,
+    field: 'cognome',
     required: true,
     id: 'surname',
   }),
   newFormField({
+    ...CommonFields.EMAIL,
     field: 'email',
     required: true,
     id: 'email',
   }),
   newFormField({
-    field: 'ID',
+    ...CommonFields.CODICE_FISCALE,
+    field: 'codiceFiscale',
     required: true,
-    id: 'fiscal code',
+    id: 'fiscalcode',
   }),
   newFormField({
-    field: 'mobile',
+    field: 'telefono',
     required: true,
-    id: 'mobile',
+    id: 'telefono',
   }),
   newFormField({
-    field: 'BIO',
-    id: 'bio',
+    field: 'bio',
+    id: 'mansione',
+    required: true,
+  }),
+  newFormField({
+    field: 'consenso',
+    required: true,
+    type: 'checkbox',
+    value: false,
   }),
 ]);
 
-export default withFormHandler({ form }, FormOnboarding);
+export default withFormHandler({ form }, Onboarding);

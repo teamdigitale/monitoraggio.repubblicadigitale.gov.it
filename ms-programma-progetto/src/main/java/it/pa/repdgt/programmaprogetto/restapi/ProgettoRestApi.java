@@ -3,12 +3,10 @@ package it.pa.repdgt.programmaprogetto.restapi;
 import java.io.ByteArrayInputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
 
 import org.apache.commons.csv.CSVFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +29,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.pa.repdgt.programmaprogetto.bean.SchedaProgettoBean;
 import it.pa.repdgt.programmaprogetto.mapper.ProgettoMapper;
-import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgettiParam;
 import it.pa.repdgt.programmaprogetto.request.ProgettoFiltroRequest;
+import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
+import it.pa.repdgt.programmaprogetto.request.SceltaProfiloParam;
+import it.pa.repdgt.programmaprogetto.request.TerminaRequest;
+import it.pa.repdgt.programmaprogetto.resource.CreaProgettoResource;
+import it.pa.repdgt.programmaprogetto.resource.PaginaProgetti;
 import it.pa.repdgt.programmaprogetto.resource.ProgettiLightResourcePaginati;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
 import it.pa.repdgt.programmaprogetto.service.ProgettoService;
@@ -48,19 +50,19 @@ public class ProgettoRestApi {
 	@Autowired
 	private ProgettoMapper progettoMapper;
 	
-	// TOUCH POINT - 1.2.1 - 1.2.2 - lista progetti paginata 
+	// 3.1 - lista progetti paginata 
 	@PostMapping(path = "/all")
 	@ResponseStatus(value = HttpStatus.OK)
 	public ProgettiLightResourcePaginati getAllProgettiPaginatiByRuolo(
 			@RequestBody @Valid @NotNull(message = "Deve essere non null") ProgettiParam sceltaContesto,
 			@RequestParam(name = "currPage", required = false, defaultValue = "0")  Integer currPage,
 			@RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-		Page<ProgettoEntity> paginaProgetti = this.progettoService.getAllProgettiPaginati(sceltaContesto, currPage, pageSize, sceltaContesto.getFiltroRequest());
+		PaginaProgetti paginaProgetti = this.progettoService.getAllProgettiPaginati(sceltaContesto, currPage, pageSize, sceltaContesto.getFiltroRequest());
 		ProgettiLightResourcePaginati listaPaginataProgettiResource = this.progettoMapper.toProgettiLightResourcePaginataConContatoreFrom(paginaProgetti);
 		return listaPaginataProgettiResource;
 	}
 	
-	// TOUCH POINT - 1.2.6 - lista programmi per dropdown 
+	// 3.2 - lista programmi per dropdown 
 	@PostMapping(path = "/programmi/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<ProgrammaDropdownResource> getAllProgrammiDropdownPerProgetti(
@@ -69,7 +71,7 @@ public class ProgettoRestApi {
 		return programmiLightDropdown;
 	}
 	
-	// TOUCH POINT - 1.2.5 - Lista policy per dropdown in elenco progetti
+	// 3.3 - Lista policy per dropdown in elenco progetti
 	@PostMapping(path = "/policies/programmi/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<String> getAllPoliciesDropdownByRuolo(
@@ -78,7 +80,7 @@ public class ProgettoRestApi {
 		return policiesDropdown;
 	}
 	
-	// TOUCH POINT - 1.2.7 - Lista Stati Progetto per dropdown
+	// 3.4 - Lista Stati Progetto per dropdown
 	@PostMapping(path = "/stati/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<String> getAllStatiDropdownByRuolo(
@@ -87,23 +89,32 @@ public class ProgettoRestApi {
 		return statiDropdown;
 	}
 	
-	// TOUCH POINT - 3.1 - Scheda Progetto
+	// Scheda Progetto
 	@GetMapping(path = "/{idProgetto}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaProgettoBean getSchedaProgettoById(@PathVariable(value = "idProgetto") Long idProgetto) {
 		 return this.progettoService.getSchedaProgettoById(idProgetto);
 	}
 	
-	// TOUCH POINT - 2.2.6 -  CRUD Crea Progetto + Assegnazione progetto a programma
-	@PostMapping
-	@ResponseStatus(value = HttpStatus.CREATED)
-	public void creaNuovoProgetto(@RequestBody @Valid ProgettoRequest nuovoProgettoRequest,
-			@RequestParam(value = "idProgramma") Long idProgramma) {
-		ProgettoEntity progettoEntity = this.progettoMapper.toEntityFrom(nuovoProgettoRequest, idProgramma);
-		this.progettoService.creaNuovoProgetto(progettoEntity);
+	// 3.5 - Scheda Progetto
+	@PostMapping(path = "/{idProgetto}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public SchedaProgettoBean getSchedaProgettoByIdByProfilo(
+			@PathVariable(value = "idProgetto") Long idProgetto,
+			@RequestBody SceltaProfiloParam sceltaProfiloParam) {
+		return this.progettoService.getSchedaProgettoByIdAndSceltaProfilo(idProgetto, sceltaProfiloParam);
 	}
 	
-	// TOUCH-POINT 1.2.3 - 3.3 - Update Progetto
+	// 3.6 -  CRUD Crea Progetto + Assegnazione progetto a programma
+	@PostMapping
+	@ResponseStatus(value = HttpStatus.CREATED)
+	public CreaProgettoResource creaNuovoProgetto(@RequestBody @Valid ProgettoRequest nuovoProgettoRequest,
+			@RequestParam(value = "idProgramma") Long idProgramma) {
+		ProgettoEntity progettoEntity = this.progettoMapper.toEntityFrom(nuovoProgettoRequest, idProgramma);
+		return new CreaProgettoResource(this.progettoService.creaNuovoProgetto(progettoEntity).getId());
+	}
+	
+	// 3.7 - Update Progetto
 	@PutMapping(path = "/{idProgetto}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void aggiornaProgetto(@PathVariable(value = "idProgetto") Long idProgetto,
@@ -111,6 +122,7 @@ public class ProgettoRestApi {
 		this.progettoService.aggiornaProgetto(progettoRequest, idProgetto);
 	}
 
+	// 3.8 - Associa Ente a Progetto come Gestore Progetto
 	@PutMapping(path = "/{idProgetto}/assegna/enteGestore/{idEnteGestore}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void assegnaGestoreAlProgetto(
@@ -119,22 +131,24 @@ public class ProgettoRestApi {
 		this.progettoService.assegnaEnteGestoreProgetto(idProg, idEnteGest);
 	}
 	
-	// TOUCH-POINT 1.2.4 - Delete Progetto
+	// 3.9 - Termina Progetto
+	@PutMapping(path = "/termina/{idProgetto}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public void terminaProgetto(
+			@PathVariable(value = "idProgetto") Long idProgetto, 
+			@RequestBody TerminaRequest terminaRequest) throws ParseException {
+		SimpleDateFormat sdf= new SimpleDateFormat("dd-MM-yyyy");
+		this.progettoService.terminaProgetto(idProgetto, sdf.parse(terminaRequest.getDataTerminazione()));
+	}
+	
+	// 3.10 - Delete Progetto
 	@DeleteMapping("/{idProgetto}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void cancellazioneProgetto(@PathVariable(value = "idProgetto") Long id){
 		this.progettoService.cancellazioneProgetto(id);
 	}
 	
-	@PutMapping(path = "/termina/{idProgetto}")
-	@ResponseStatus(value = HttpStatus.OK)
-	public void terminaProgetto(
-			@PathVariable(value = "idProgetto") Long idProgetto, 
-			@RequestParam String dataTerminazione) throws ParseException {
-		SimpleDateFormat sdf= new SimpleDateFormat("dd-MM-yyyy");
-		this.progettoService.terminaProgetto(idProgetto, sdf.parse(dataTerminazione));
-	}
-	
+	// 3.11 - Attiva Progetto
 	@PutMapping(path = "/attiva/{idProgetto}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void attivaProgetto(
@@ -142,7 +156,7 @@ public class ProgettoRestApi {
 		this.progettoService.attivaProgetto(idProgetto);
 	}
 	
-	// TOUCH-POINT 1.2.8 - Scarica lista progetti in formato csv
+	// 3.12 - Scarica lista progetti in formato csv
 	@PostMapping(path = "/download")
 	public ResponseEntity<InputStreamResource> downloadListaCSVProgetti(
 			@RequestBody @Valid @NotNull(message = "Deve essere non null") ProgettiParam sceltaContesto) {

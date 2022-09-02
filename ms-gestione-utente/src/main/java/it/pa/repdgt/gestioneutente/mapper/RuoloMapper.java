@@ -30,6 +30,8 @@ public class RuoloMapper {
 		RuoloLightResource ruoloLightResource  = new RuoloLightResource();
 		ruoloLightResource.setCodiceRuolo(ruoloEntity.getCodice());
 		ruoloLightResource.setNomeRuolo(ruoloEntity.getNome());
+		ruoloLightResource.setTipologiaRuolo(ruoloEntity.getPredefinito() ? "P" : "NP");
+		ruoloLightResource.setModificabile(ruoloEntity.getModificabile());
 		return ruoloLightResource;
 	}
 }

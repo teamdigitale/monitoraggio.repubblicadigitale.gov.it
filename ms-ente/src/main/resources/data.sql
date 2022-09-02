@@ -19,30 +19,30 @@
 	values('UTENTE2','U2', 'U2', 'u2@a.com', 'ATTIVO', CURRENT_TIME());
 
 -- CREAZIONE ANAGRAFICA RUOLI
-  insert into ruolo(codice, nome, predefinito)
-    values('DTD', 'DTD AMMINISTRATORE', false);
-  insert into ruolo(codice, nome, predefinito)
-    values('DSCU', 'DSCU .....', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('REG', 'REFERENTE ENTE GESTORE PROGRAMMA', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('REGP', 'REFERENTE ENTE GESTORE PROGETTO', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('DEG', 'DELEGATO ENTE GESTORE PROGRAMMA', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('DEGP', 'DELEGATO ENTE GESTORE PROGETTO', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('REP', 'REFERENTE ENTE PARTNER GESTORE PROGRAMMA', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('REPP', 'REFERENTE ENTE PARTNER GESTORE PROGETTO', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('DEP', 'DELEGATO ENTE PARTNER GESTORE PROGRAMMA', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('DEPP', 'DELEGATO ENTE PARTNER GESTORE PROGETTO', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('FAC', 'FACILITATORE', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('VOL', 'VOLONTARIO', true);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DTD', 'DTD AMMINISTRATORE', FALSE, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DSCU', 'DSCU .....', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('REG', 'REFERENTE ENTE GESTORE PROGRAMMA', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('REGP', 'REFERENTE ENTE GESTORE PROGETTO', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DEG', 'DELEGATO ENTE GESTORE PROGRAMMA', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DEGP', 'DELEGATO ENTE GESTORE PROGETTO', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('REP', 'REFERENTE ENTE PARTNER GESTORE PROGRAMMA', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('REPP', 'REFERENTE ENTE PARTNER GESTORE PROGETTO', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DEP', 'DELEGATO ENTE PARTNER GESTORE PROGRAMMA', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DEPP', 'DELEGATO ENTE PARTNER GESTORE PROGETTO', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('FAC', 'FACILITATORE', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('VOL', 'VOLONTARIO', true, false);
     
   -- ASSEGNAMENTO RUOLO A UTENTE
   insert into utente_x_ruolo(utente_id, ruolo_codice)
@@ -152,14 +152,14 @@ insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora
      values(1006, 'Regione Campania', 'Regione Campania', 'pubblico', '22344672811', 'Via Battisti,15 80124 Napoli', CURRENT_TIME( ));
      
  -- CREAZIONE ANAGRAFICA SEDE
- insert into sede(id, nome)
-	values(1, 'Sede x');
- insert into sede(id, nome)
-	values(2, 'Sede y');
- insert into sede(id, nome)
-	values(3, 'Sede z');
- insert into sede(id, nome)
-	values(4, 'Sede w');
+ insert into sede(id, nome, data_ora_creazione, data_ora_aggiornamento)
+	values(1, 'Sede x', CURRENT_TIME, CURRENT_TIME);
+ insert into sede(id, nome, data_ora_creazione, data_ora_aggiornamento)
+	values(2, 'Sede y', CURRENT_TIME, CURRENT_TIME);
+ insert into sede(id, nome, data_ora_creazione, data_ora_aggiornamento)
+	values(3, 'Sede z', CURRENT_TIME, CURRENT_TIME);
+ insert into sede(id, nome, data_ora_creazione, data_ora_aggiornamento)
+	values(4, 'Sede w', CURRENT_TIME, CURRENT_TIME);
 	
 -- CREAZIONE ANAGRAFICA INDIRIZZO_SEDE E ASSOCIAZIONE A SEDE
 insert into indirizzo_sede(id, cap, civico, comune, data_ora_aggiornamento, data_ora_creazione, sede_id, nazione, provincia, via) 
@@ -175,46 +175,8 @@ insert into indirizzo_sede(id, cap, civico, comune, data_ora_aggiornamento, data
 	
 	
 -- CREAZIONE ANAGRAFICA INDIRIZZO_SEDE_FASCIA_ORARIA E ASSOCIAZIONE A INDIRIZZO_SEDE
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(1, NULL, CURRENT_TIME(), 'Lunedì', 1, '8:00', '20:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(2, NULL, CURRENT_TIME(), 'Martedì', 1, '15:00', '20:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(3, NULL, CURRENT_TIME(), 'Mercoledì', 1, '8:00', '20:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(4, NULL, CURRENT_TIME(), 'Giovedì', 1, '15:00', '20:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(5, NULL, CURRENT_TIME(), 'Lunedì', 2, '8:00', '15:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(6, NULL, CURRENT_TIME(), 'Martedì', 2, '10:00', '17:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(7, NULL, CURRENT_TIME(), 'Mercoledì', 2, '8:00', '15:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(8, NULL, CURRENT_TIME(), 'Giovedì', 2, '10:00', '17:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(9, NULL, CURRENT_TIME(), 'Lunedì', 3, '8:00', '15:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(10, NULL, CURRENT_TIME(), 'Martedì', 3, '10:00', '17:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(11, NULL, CURRENT_TIME(), 'Mercoledì', 3, '8:00', '15:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(12, NULL, CURRENT_TIME(), 'Giovedì', 3, '10:00', '17:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(13, NULL, CURRENT_TIME(), 'Lunedì', 4, '7:00', '14:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(14, NULL, CURRENT_TIME(), 'Martedì', 4, '09:00', '16:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(15, NULL, CURRENT_TIME(), 'Mercoledì', 4, '7:00', '14:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(16, NULL, CURRENT_TIME(), 'Giovedì', 4, '09:00', '16:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(17, NULL, CURRENT_TIME(), 'Lunedì', 5, '11:00', '16:30');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(18, NULL, CURRENT_TIME(), 'Martedì', 5, '09:00', '19:45');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(19, NULL, CURRENT_TIME(), 'Mercoledì', 5, '11:00', '16:30');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(20, NULL, CURRENT_TIME(), 'Giovedì', 5, '09:00', '19:45');
+INSERT INTO indirizzo_sede_fascia_oraria (id,indirizzo_sede_id,lun_orario_apertura_1,lun_orario_chiusura_1,lun_orario_apertura_2,lun_orario_chiusura_2,mar_orario_apertura_1,mar_orario_chiusura_1,mar_orario_apertura_2,mar_orario_chiusura_2,mer_orario_apertura_1,mer_orario_chiusura_1,mer_orario_apertura_2,mer_orario_chiusura_2,gio_orario_apertura_1,gio_orario_chiusura_1,gio_orario_apertura_2,gio_orario_chiusura_2,ven_orario_apertura_1,ven_orario_chiusura_1,ven_orario_apertura_2,ven_orario_chiusura_2,sab_orario_apertura_1,sab_orario_chiusura_1,sab_orario_apertura_2,sab_orario_chiusura_2,dom_orario_apertura_1,dom_orario_chiusura_1,dom_orario_apertura_2,dom_orario_chiusura_2,data_ora_creazione,data_ora_aggiornamento)
+	VALUES (1, 1, '07:00','13:00', '07:00','13:00', '07:00','13:00', '07:00','13:00','07:00','13:00','07:00','14:00','07:00','09:00','07:00','09:00','07:00','09:00','07:00','09:00','07:30','22:00','07:30','22:00','07:00','20:00','07:30','22:00','2022-07-19 11:42:06','2022-07-19 11:42:06');
 
  -- ASSEGNAMENTO DEGLI ENTI GESTORI DI PROGRAMMA AI PROGRAMMI
  -- E ASSEGNAZIONE STATO DELL'ENTE GESTORE DI PROGRAMMA
