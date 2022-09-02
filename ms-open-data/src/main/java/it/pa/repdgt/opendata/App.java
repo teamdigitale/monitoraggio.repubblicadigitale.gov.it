@@ -16,8 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 @EntityScan(basePackages = {"it.pa.repdgt"})
 @Slf4j
 public class App {
-	public static void main(String[] args  ) {
+	public static void main(String[] args) {
 		/*ConfigurableApplicationContext springBootApp =*/ SpringApplication.run(App.class, args);
-		log.info("*****  APPLICATION START  *****");
+		log.info("***** APPLICATION START *****");
 	}
 }
