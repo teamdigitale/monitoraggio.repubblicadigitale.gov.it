@@ -16,7 +16,6 @@ spec:
       labels:
         app.kubernetes.io/name: ms-open-data
     spec:
-      serviceAccountName: ${K8S_SERVICEACCOUNT}
       containers:
         - name: ms-open-data
           image: ${ECR_REPOSITORY}:${IMAGE_TAG}
