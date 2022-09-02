@@ -102,7 +102,7 @@ public class QuestionarioCompilatoService {
 			cittadino.setCategoriaFragili(questionarioCompilatoRequest.getCategoriaFragiliDaAggiornare());
 			cittadino.setCittadinanza(questionarioCompilatoRequest.getCittadinanzaDaAggiornare());
 			cittadino.setCodiceFiscale(questionarioCompilatoRequest.getCodiceFiscaleDaAggiornare());
-			cittadino.setCognome(questionarioCompilatoRequest.getCodiceFiscaleDaAggiornare());
+			cittadino.setCognome(questionarioCompilatoRequest.getCognomeDaAggiornare());
 			cittadino.setComuneDiDomicilio(questionarioCompilatoRequest.getComuneDiDomicilioDaAggiornare());
 			cittadino.setEmail(questionarioCompilatoRequest.getEmailDaAggiornare());
 			cittadino.setGenere(questionarioCompilatoRequest.getGenereDaAggiornare());
@@ -115,7 +115,6 @@ public class QuestionarioCompilatoService {
 			cittadino.setTipoDocumento(questionarioCompilatoRequest.getTipoDocumentoDaAggiornare());
 			cittadino.setTitoloDiStudio(questionarioCompilatoRequest.getTitoloDiStudioDaAggiornare());
 			cittadino.setDataOraAggiornamento(new Date());
-			
 			this.cittadinoService.salvaCittadino(cittadino);
 		});
 		
