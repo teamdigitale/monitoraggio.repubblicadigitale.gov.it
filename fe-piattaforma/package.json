@@ -63,7 +63,7 @@
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
     "@welldone-software/why-did-you-render": "^7.0.1",
-    "axe-core": "^4.4.2",
+    "axe-core": "^4.4.3",
     "axios-mock-adapter": "^1.20.0",
     "babel-loader": "^8.2.5",
     "babel-preset-env": "^1.7.0",
