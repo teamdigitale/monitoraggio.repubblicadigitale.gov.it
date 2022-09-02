@@ -175,6 +175,7 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
                 onInputChange={onInputChange}
                 wrapperClassName='mb-5'
                 aria-label='contratto'
+                required
               />
             )
           ) : (
@@ -222,8 +223,12 @@ const form: FormI = newForm([
   newFormField({
     field: 'bio',
     id: 'mansione',
-    required: true,
+    //required: true,
     maximum: 160,
+  }),
+  newFormField({
+    field: 'tipoContratto',
+    id: 'tipoContratto',
   }),
 ]);
 

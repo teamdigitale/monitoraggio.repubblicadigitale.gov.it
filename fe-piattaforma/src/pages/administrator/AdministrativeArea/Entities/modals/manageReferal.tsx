@@ -73,7 +73,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
   const [alreadySearched, setAlreadySearched] = useState<boolean>(false);
   const dispatch = useDispatch();
   const usersList = useAppSelector(selectUsers).list;
-  const { entityId, projectId, authorityId } = useParams();
+  const { entityId, projectId, authorityId, userId } = useParams();
   const authority = useAppSelector(selectAuthorities).detail.dettagliInfoEnte;
 
   const resetModal = () => {
@@ -94,7 +94,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
   }, [creation]);
 
   const handleSaveReferal = async () => {
-    if (isFormValid && authority?.id) {
+    if (isFormValid && (authority?.id || authorityId)) {
       // Project details
       if (projectId) {
         if (authorityId) {
@@ -115,22 +115,26 @@ const ManageReferal: React.FC<ManageReferalI> = ({
               projectId,
               newFormValues,
               'progetto',
-              'REGP'
+              'REGP',
+              userId
             )
           );
           await dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+          if (userId) await dispatch(GetUserDetails(userId));
         }
       } else if (entityId) {
         await dispatch(
           AssignManagerAuthorityReferentDelegate(
-            authority.id,
+            authority?.id || authorityId,
             entityId,
             newFormValues,
             'programma',
-            'REG'
+            'REG',
+            userId
           )
         );
         await dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+        if (userId) await dispatch(GetUserDetails(userId));
       }
       resetModal();
       dispatch(closeModal());
