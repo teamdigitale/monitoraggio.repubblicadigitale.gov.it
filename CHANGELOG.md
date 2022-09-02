@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.2...1.0.0-test.3) (2022-09-02)
+
+
+### Features
+
+* **be:** allineamento nuove feat - fix -test ([287efcc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/287efcc49c9e104fabb6b8257df7efbde2cb594d))
+
 ## [1.0.0-test.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.1...1.0.0-test.2) (2022-09-01)
 
 
