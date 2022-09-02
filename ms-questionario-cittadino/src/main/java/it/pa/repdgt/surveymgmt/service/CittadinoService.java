@@ -219,7 +219,7 @@ public class CittadinoService {
 		return schedaCittadino;
 	}
 
-	private Boolean isAssociatoAUtente(ProfilazioneParam profilazione, String codiceFiscaleFacilitatore, Long idProgetto) {
+	public Boolean isAssociatoAUtente(ProfilazioneParam profilazione, String codiceFiscaleFacilitatore, Long idProgetto) {
 		RuoloUtenteEnum ruoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato();
 		String codiceFiscaleUtenteLoggato = profilazione.getCodiceFiscaleUtenteLoggato();
 		
@@ -241,7 +241,7 @@ public class CittadinoService {
 		}
 	}
 
-	private List<DettaglioServizioSchedaCittadinoProjection> getDettaglioServiziSchedaCittadino(Long idCittadino) {
+	public List<DettaglioServizioSchedaCittadinoProjection> getDettaglioServiziSchedaCittadino(Long idCittadino) {
 		return this.cittadinoRepository.findDettaglioServiziSchedaCittadino(idCittadino);
 	}
 	
@@ -340,6 +340,12 @@ public class CittadinoService {
 	@LogMethod
 	@LogExecutionTime
 	public String getConsensoByCodiceFiscaleCittadinoOrNumeroDocumento(String codiceFiscaleCittadino, String numeroDocumento) {
-		return this.cittadinoRepository.findConsensoByCodiceFiscaleOrNumeroDocumento(codiceFiscaleCittadino, numeroDocumento);
+		if(codiceFiscaleCittadino != null && !codiceFiscaleCittadino.isEmpty()) {
+			return this.cittadinoRepository.findConsensoByCodiceFiscaleCittadino(codiceFiscaleCittadino);
+		}
+		if(numeroDocumento != null && !numeroDocumento.isEmpty()) {
+			return this.cittadinoRepository.findConsensoByNumDocumentoCittadino(numeroDocumento);
+		}
+		return null;
 	}
 }
