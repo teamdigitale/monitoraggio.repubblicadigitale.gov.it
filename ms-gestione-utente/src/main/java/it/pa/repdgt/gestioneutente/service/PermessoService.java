@@ -14,6 +14,8 @@ public class PermessoService {
 	@Autowired
 	private PermessoRepository permessoRepository;
 	
+	@LogMethod
+	@LogExecutionTime
 	public PermessoEntity getPermessoById(Long idPermesso) {
 		String messaggioErrore = String.format("Permesso con id=%s non trovato", idPermesso);
 		return this.permessoRepository.findById(idPermesso)
@@ -25,10 +27,4 @@ public class PermessoService {
 	public PermessoEntity save(PermessoEntity permesso) {
 		return this.permessoRepository.save(permesso);
 	}
-
-//	public List<PermessoEntity> getPermessiByRuolo(String codiceRuolo) {
-//		return this.permessoRepository.findPermessiByRuolo(codiceRuolo);
-//	}
-	
-	
 }

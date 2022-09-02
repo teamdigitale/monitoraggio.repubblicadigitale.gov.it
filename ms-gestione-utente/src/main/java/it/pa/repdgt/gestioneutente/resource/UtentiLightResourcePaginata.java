@@ -25,5 +25,5 @@ public class UtentiLightResourcePaginata implements Serializable{
 	private int numeroPagine;
 	
 	@JsonProperty(value = "numeroTotaleElementi")
-	private Long numeroTotaleElementi;
+	private int numeroTotaleElementi;
 }

@@ -1,6 +1,7 @@
 import React, { lazy, useEffect } from 'react';
 import { Container } from 'design-react-kit';
 import {
+  Navigate,
   Route,
   Routes,
   useLocation,
@@ -14,14 +15,14 @@ import ManageProgramManagerAuthority from './Entities/Programs/manageEnteGestore
 import ManageEntiPartner from './Entities/Programs/manageEntiPartner/manageEntiPartner';
 import ManageHeadquarter from './Entities/Programs/manageSedi/manageSedi';
 import ManageProjectManagerAuthority from './Entities/Programs/manageEnteGestoreProgetto/manageEnteGestoreProgetto';*/
-import ManageUsers from './Entities/modals/manageUsers';
+// import ManageUsers from './Entities/modals/manageUsers';
 import { useAppSelector } from '../../../redux/hooks';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import { LocationIndex } from '../../../components';
-import { menuRoutes } from '../../../utils/common';
+import { MenuRoutes } from '../../../utils/common';
 const Programs = lazy(() => import('./Entities/Programs/programs'));
 const Projects = lazy(() => import('./Entities/Projects/projects'));
-const Utenti = lazy(() => import('./Entities/Users/users'));
+const Users = lazy(() => import('./Entities/Users/users'));
 const Surveys = lazy(() => import('./Entities/Surveys/surveys'));
 const Authorities = lazy(() => import('./Entities/Authorities/authorities'));
 const CompileSurvey = lazy(
@@ -48,6 +49,7 @@ const SurveyDetailsEdit = lazy(
   () => import('./Entities/Surveys/surveyDetailsEdit/surveyDetailsEdit')
 );
 import ProtectedComponent from '../../../hoc/AuthGuard/ProtectedComponent/ProtectedComponent';
+import { defaultRedirectUrl } from '../../../routes';
 
 interface PageTitleMockI {
   [key: string]: {
@@ -142,9 +144,9 @@ const AdministrativeArea = () => {
 
   const device = useAppSelector(selectDevice);
 
-  const noDetailRoute = menuRoutes
-    .find((x) => x.id === 'tab-admin')
-    ?.subRoutes?.some((y) => y.path === location.pathname);
+  const noDetailRoute = MenuRoutes.find(
+    (x) => x.id === 'tab-admin'
+  )?.subRoutes?.some((y) => y.path === location.pathname);
 
   return (
     <>
@@ -158,7 +160,7 @@ const AdministrativeArea = () => {
           <LocationIndex
             title='Area amministrativa'
             routes={
-              menuRoutes.find((x) => x.id === 'tab-admin')?.subRoutes || []
+              MenuRoutes.find((x) => x.id === 'tab-admin')?.subRoutes || []
             }
           />
         </div>
@@ -173,7 +175,7 @@ const AdministrativeArea = () => {
       <Container>
         <Routes>{AreaAmministrativaRoutes}</Routes>
       </Container>
-      <ManageUsers />
+      {/* <ManageUsers /> */}
     </>
   );
 };
@@ -181,35 +183,68 @@ const AdministrativeArea = () => {
 export default AdministrativeArea;
 
 const AreaAmministrativaRoutes = [
-  <Route key='programmi' path='programmi' element={<Programs />} />,
+  <Route
+    key='programmi'
+    path='programmi'
+    element={
+      <ProtectedComponent visibleTo={['tab.am', 'list.prgm']}>
+        <Programs />
+      </ProtectedComponent>
+    }
+  />,
   <Route
     key='programmi-dettaglio'
     path='programmi/:entityId'
-    element={<ProgramsDetails />}
-  />,
-  <Route
-    key='programmi-dettaglio-info'
-    path='programmi/:entityId/info'
     element={
-      <ProtectedComponent visibleTo={['permission-1']}>
+      <ProtectedComponent visibleTo={['view.card.prgm.full']}>
         <ProgramsDetails />
       </ProtectedComponent>
     }
   />,
   <Route
-    key='programmi-dettaglio-ente'
-    path='programmi/:entityId/ente'
-    element={<ProgramsDetails />}
+    key='programmi-dettaglio-info'
+    path='programmi/:entityId/info'
+    element={
+      <ProtectedComponent visibleTo={['view.card.prgm.full']}>
+        <ProgramsDetails />
+      </ProtectedComponent>
+    }
+  />,
+  <Route
+    key='programmi-dettaglio-ente-gestore'
+    path='programmi/:entityId/ente-gestore-programma'
+    element={
+      <ProtectedComponent visibleTo={['view.card.prgm.full']}>
+        <ProgramsDetails />
+      </ProtectedComponent>
+    }
+  />,
+  <Route
+    key='programmi-dettaglio-ente-gestore-utenti'
+    path='programmi/:entityId/:authorityType/:authorityId/:userRole/:userId'
+    element={
+      <ProtectedComponent visibleTo={['view.card.prgm.full']}>
+        <UsersDetails />
+      </ProtectedComponent>
+    }
   />,
   <Route
     key='programmi-dettaglio-questionari'
     path='programmi/:entityId/questionari'
-    element={<ProgramsDetails />}
+    element={
+      <ProtectedComponent visibleTo={['view.card.prgm.full']}>
+        <ProgramsDetails />
+      </ProtectedComponent>
+    }
   />,
   <Route
     key='programmi-dettaglio-progetti'
     path='programmi/:entityId/progetti'
-    element={<ProgramsDetails />}
+    element={
+      <ProtectedComponent visibleTo={['view.card.prgm.full']}>
+        <ProgramsDetails />
+      </ProtectedComponent>
+    }
   />,
   <Route
     key='programmi-dettaglio-progetti-dettaglio'
@@ -223,13 +258,43 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='programmi-dettaglio-progetti-dettaglio-ente-gestore'
-    path='programmi/:entityId/progetti/:projectId/ente-gestore-progetto'
+    path='programmi/:entityId/progetti/:projectId/:authorityType'
     element={<ProjectsDetails />}
   />,
   <Route
     key='programmi-dettaglio-progetti-dettaglio-enti-partner'
-    path='programmi/:entityId/progetti/:projectId/enti-partner-progetto'
+    path='programmi/:entityId/progetti/:projectId/enti-partner'
     element={<ProjectsDetails />}
+  />,
+  <Route
+    key='programmi-dettaglio-progetti-dettaglio-enti'
+    path='programmi/:entityId/progetti/:projectId/:authorityType/:authorityId'
+    element={<AuthoritiesDetails />}
+  />,
+  <Route
+    key='programmi-dettaglio-progetti-dettaglio-enti-utenti'
+    path='programmi/:entityId/progetti/:projectId/:authorityType/:authorityId/:userRole/:userId'
+    element={<UsersDetails />}
+  />,
+  <Route
+    key='programmi-dettaglio-progetti-dettaglio-enti-sedi'
+    path='programmi/:entityId/progetti/:projectId/:authorityType/:authorityId/sedi/:headquarterId'
+    element={<HeadquartersDetails />}
+  />,
+  <Route
+    key='programmi-dettaglio-progetti-dettaglio-enti-sedi'
+    path='programmi/:entityId/progetti/:projectId/:authorityId/sedi/:headquarterId'
+    element={<HeadquartersDetails />}
+  />,
+  <Route
+    key='programmi-dettaglio-progetti-dettaglio-enti-sedi'
+    path='programmi/:entityId/progetti/:projectId/:authorityType/:authorityId/:headquarterId'
+    element={<HeadquartersDetails />}
+  />,
+  <Route
+    key='programmi-dettaglio-progetti-dettaglio-enti-sedi-facilitatori'
+    path='programmi/:entityId/progetti/:projectId/:authorityType/:authorityId/:headquarterId/:userRole/:userId'
+    element={<UsersDetails />}
   />,
   <Route
     key='programmi-dettaglio-progetti-dettaglio-sedi'
@@ -237,22 +302,29 @@ const AreaAmministrativaRoutes = [
     element={<ProjectsDetails />}
   />,
   <Route
-    key='programmi-dettaglio-utenti-dettaglio'
-    path='programmi/:entityId/:userType/:userId'
-    element={<UsersDetails />}
+    key='programmi-dettaglio-questionari-dettaglio'
+    path='programmi/:entityId/questionari/:idQuestionario'
+    element={<SurveyDetailsEdit />}
   />,
   <Route
-    key='programmi-dettaglio-progetti-dettaglio-utenti-dettaglio'
-    path='programmi/:entityId/progetti/:projectId/:userType/:userId'
-    element={<UsersDetails />}
+    key='programmi-dettaglio-questionari-dettaglio'
+    path='programmi/:entityId/questionari/:idQuestionario/clona'
+    element={<SurveyDetailsEdit cloneMode />}
   />,
   <Route
-    key='programmi-dettaglio-progetti-dettaglio-enti-dettaglio'
-    path='programmi/:entityId/progetti/:projectId/enti/:enteId'
-    element={<AuthoritiesDetails />}
+    key='programmi-dettaglio-questionari-dettaglio'
+    path='programmi/:entityId/questionari/:idQuestionario/modifica'
+    element={<SurveyDetailsEdit editMode />}
   />,
-
-  <Route key='progetti' path='progetti' element={<Projects />} />,
+  <Route
+    key='progetti'
+    path='progetti'
+    element={
+      <ProtectedComponent visibleTo={['tab.am', 'list.prgt']}>
+        <Projects />
+      </ProtectedComponent>
+    }
+  />,
   <Route
     key='progetti-dettaglio'
     path='progetti/:entityId'
@@ -269,9 +341,39 @@ const AreaAmministrativaRoutes = [
     element={<ProjectsDetails />}
   />,
   <Route
-    key='progetti-dettaglio-enti-partner'
-    path='progetti/:projectId/enti-partner-progetto'
+    key='progetti-dettaglio-ente-gestore'
+    path='progetti/:projectId/ente-gestore-progetto/:authorityId'
     element={<ProjectsDetails />}
+  />,
+  <Route
+    key='progetti-dettaglio-enti-partner'
+    path='progetti/:projectId/enti-partner'
+    element={<ProjectsDetails />}
+  />,
+  <Route
+    key='progetti-dettaglio-enti'
+    path='progetti/:projectId/:authorityType/:authorityId'
+    element={<AuthoritiesDetails />}
+  />,
+  <Route
+    key='progetti-dettaglio-enti-utenti'
+    path='progetti/:projectId/:authorityType/:authorityId/:userRole/:userId'
+    element={<UsersDetails />}
+  />,
+  <Route
+    key='progetti-dettaglio-enti-sedi'
+    path='progetti/:projectId/:authorityType/:authorityId/sedi/:headquarterId'
+    element={<HeadquartersDetails />}
+  />,
+  <Route
+    key='progetti-dettaglio-enti-sedi'
+    path='progetti/:projectId/:authorityType/:authorityId/:headquarterId'
+    element={<HeadquartersDetails />}
+  />,
+  <Route
+    key='progetti-dettaglio-enti-sedi-facilitatori'
+    path='progetti/:projectId/:authorityType/:authorityId/:headquarterId/:userRole/:userId'
+    element={<UsersDetails />}
   />,
   <Route
     key='progetti-dettaglio-sedi'
@@ -279,31 +381,65 @@ const AreaAmministrativaRoutes = [
     element={<ProjectsDetails />}
   />,
   <Route
-    key='progetti-dettaglio-enti-dettaglio'
-    path='progetti/:entityId/enti/:enteId'
-    element={<AuthoritiesDetails />}
+    key='progetti-dettaglio-sede-dettaglio'
+    path='progetti/:projectId/:identeDiRiferimento'
+    element={<ProjectsDetails />}
   />,
   <Route
-    key='progetti-dettaglio-sedi-dettaglio'
-    path='progetti/:entityId/sedi/:sedeId'
+    key='progetti-dettaglio-sede-dettaglio'
+    path='progetti/:projectId/:identeDiRiferimento/sedi/:headquarterId'
     element={<HeadquartersDetails />}
   />,
   <Route
-    key='progetti-dettaglio-utenti-dettaglio'
-    path='progetti/:entityId/:userType/:userId'
+    key='progetti-dettaglio-sede-dettaglio-facilitatori'
+    path='progetti/:projectId/:identeDiRiferimento/:authorityId/:headquarterId/:userRole/:userId'
     element={<UsersDetails />}
   />,
-  <Route key='enti' path='enti' element={<Authorities />} />,
+  <Route
+    key='enti'
+    path='enti'
+    element={
+      <ProtectedComponent visibleTo={['tab.am', 'list.enti']}>
+        <Authorities />
+      </ProtectedComponent>
+    }
+  />,
   <Route
     key='enti-dettaglio'
-    path='enti/:idEnte'
-    element={<AuthoritiesDetails />}
+    path='enti/:authorityId'
+    element={
+      <ProtectedComponent visibleTo={['view.card.enti']}>
+        <AuthoritiesDetails />
+      </ProtectedComponent>
+    }
   />,
-  <Route key='utenti' path='utenti' element={<Utenti />} />,
+  <Route
+    key='utenti'
+    path='utenti'
+    element={
+      <ProtectedComponent visibleTo={['tab.am', 'list.utenti']}>
+        <Users />
+      </ProtectedComponent>
+    }
+  />,
+  <Route
+    key='programmi-dettaglio-referenti-delegati-dettaglio'
+    path='programmi/:entityId/:userRole/:userId'
+    element={<UsersDetails />}
+  />,
+  <Route
+    key='programmi-dettaglio-progetti-dettaglio-referenti-delegati-dettaglio'
+    path='programmi/:entityId/progetti/:projectId/:userRole/:userId'
+    element={<UsersDetails />}
+  />,
   <Route
     key='utenti-detail'
-    path=':userType/:entityId'
-    element={<UsersDetails />}
+    path=':userRole/:userId'
+    element={
+      <ProtectedComponent visibleTo={['view.card.utenti']}>
+        <UsersDetails />
+      </ProtectedComponent>
+    }
   />,
   <Route
     key='sedi-dettaglio'
@@ -320,7 +456,15 @@ const AreaAmministrativaRoutes = [
     path='questionari/:idQuestionario/modifica'
     element={<SurveyDetailsEdit editMode />}
   />,
-  <Route key='questionari' path='questionari' element={<Surveys />} />,
+  <Route
+    key='questionari'
+    path='questionari'
+    element={
+      <ProtectedComponent visibleTo={['subtab.quest', 'list.quest.templ']}>
+        <Surveys />
+      </ProtectedComponent>
+    }
+  />,
   <Route
     key='questionari-clona'
     path='questionari/:idQuestionario/clona'
@@ -328,8 +472,12 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='questionari-dettaglio-info'
-    path='questionari/:idQuestionario/info'
-    element={<SurveyDetailsEdit />}
+    path='questionari/:idQuestionario'
+    element={
+      <ProtectedComponent visibleTo={['view.quest.templ']}>
+        <SurveyDetailsEdit />
+      </ProtectedComponent>
+    }
   />,
   <Route
     key='questionari-dettaglio'
@@ -338,17 +486,30 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='area-amministrativa-servizi'
-    element={<Services />}
+    element={
+      <ProtectedComponent visibleTo={['tab.am', 'subtab.serv', 'list.serv']}>
+        <Services />
+      </ProtectedComponent>
+    }
     path='servizi'
   />,
   <Route
     key='area-amministrativa-servizi-dettaglio'
-    element={<ServicesDetails />}
+    element={
+      <ProtectedComponent visibleTo={['view.card.serv']}>
+        <ServicesDetails />
+      </ProtectedComponent>
+    }
     path='servizi/:serviceId/info'
   />,
   <Route
     key='area-amministrativa-servizi-dettaglio-cittadini'
     element={<ServicesDetails />}
     path='servizi/:serviceId/cittadini'
+  />,
+  <Route
+    key='default-redirect-url'
+    path='*'
+    element={<Navigate replace to={defaultRedirectUrl} />}
   />,
 ];

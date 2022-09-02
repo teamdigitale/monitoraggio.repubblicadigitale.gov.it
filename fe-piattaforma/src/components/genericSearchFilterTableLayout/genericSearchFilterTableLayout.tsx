@@ -18,6 +18,7 @@ import { selectDevice } from '../../redux/features/app/appSlice';
 import ButtonsBar, { ButtonInButtonsBar } from '../ButtonsBar/buttonsBar';
 import Sticky from 'react-sticky-el';
 import CardCounter, { CardCounterI } from '../CardCounter/cardCounter';
+import { cleanEntityFiltersCitizen } from '../../redux/features/citizensArea/citizensAreaSlice';
 
 export interface SearchInformationI {
   onHandleSearch?: (searchValue: string) => void;
@@ -33,16 +34,17 @@ interface GenericSearchFilterTableLayoutI {
   Sidebar?: ReactElement;
   showButtons?: boolean;
   filtersList?: any;
-  cta?: () => void;
+  cta?: (() => void) | undefined;
   ctaHref?: string;
-  textCta?: string;
+  textCta?: string | undefined;
   iconCta?: string;
   ctaPrintText?: string;
   ctaPrint?: () => void;
   buttonsList?: ButtonInButtonsBar[];
   cardsCounter?: CardCounterI[];
-  ctaDownload?: () => void;
-  resetFilterDropdownSelected?: () => void;
+  ctaDownload?: (() => void) | undefined;
+  resetFilterDropdownSelected?: (filterKey: string) => void;
+  citizen?: boolean;
 }
 
 const GenericSearchFilterTableLayout: React.FC<
@@ -64,6 +66,7 @@ const GenericSearchFilterTableLayout: React.FC<
   cardsCounter,
   ctaDownload,
   resetFilterDropdownSelected,
+  citizen,
 }) => {
   const dispatch = useDispatch();
   const [showChips, setShowChips] = useState<boolean>(false);
@@ -78,13 +81,16 @@ const GenericSearchFilterTableLayout: React.FC<
     // TODO update keys when API integration is done
     switch (key) {
       case 'filtroCriterioRicerca':
+      case 'filtroNomeRuolo':
       case 'criterioRicerca':
         return 'Ricerca';
       case 'filtroPolicies':
       case 'policies':
-        return 'Policy';
+        return 'Intervento';
       case 'filtroStati':
       case 'stati':
+      case 'statiQuestionario':
+      case 'stato':
         return 'Stato';
       case 'filtroIdsProgrammi':
       case 'idsProgrammi':
@@ -98,8 +104,11 @@ const GenericSearchFilterTableLayout: React.FC<
         return 'Profilo';
       case 'ruoli':
         return 'Ruolo';
+      case 'idsSedi':
       case 'sedi':
         return 'Sede';
+      case 'tipologiaServizio':
+        return 'Tipo di servizio prenotato';
       default:
         key;
     }
@@ -109,10 +118,12 @@ const GenericSearchFilterTableLayout: React.FC<
     filterKey: string,
     value: string | number | string[]
   ) => {
-    dispatch(cleanEntityFilters({ filterKey, value: value }));
+    citizen
+      ? dispatch(cleanEntityFiltersCitizen({ filterKey, value: value }))
+      : dispatch(cleanEntityFilters({ filterKey, value: value }));
     if (filterKey === 'filtroCriterioRicerca')
       dispatch(deleteFiltroCriterioRicerca());
-    if (resetFilterDropdownSelected) resetFilterDropdownSelected();
+    if (resetFilterDropdownSelected) resetFilterDropdownSelected(filterKey);
   };
 
   const getLabelsChips = (
@@ -152,11 +163,9 @@ const GenericSearchFilterTableLayout: React.FC<
   };
 
   useEffect(() => {
-    if (dropdowns?.length && filtersList && Object.keys(filtersList).length) {
-      setShowChips(true);
-    } else {
-      setShowChips(false);
-    }
+    setShowChips(
+      !!dropdowns?.length || !!Object.keys(filtersList || []).length
+    );
   }, [dropdowns, filtersList]);
 
   const { t } = useTranslation();

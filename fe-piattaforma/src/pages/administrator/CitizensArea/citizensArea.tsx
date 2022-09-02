@@ -5,6 +5,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { useAppSelector } from '../../../redux/hooks';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import clsx from 'clsx';
+import ProtectedComponent from '../../../hoc/AuthGuard/ProtectedComponent/ProtectedComponent';
 const Citizens = lazy(() => import('./Entities/Citizens/citizens'));
 const CitizensDetail = lazy(() => import('./Entities/Citizens/citizensDetail'));
 
@@ -67,7 +68,15 @@ const CitizensArea = () => {
 export default CitizensArea;
 
 export const AreaCittadiniRoutes = [
-  <Route key='area-cittadini' element={<Citizens />} path='/' />,
+  <Route
+    key='area-cittadini'
+    element={
+      <ProtectedComponent visibleTo={['tab.citt', 'list.citt']} redirect='/'>
+        <Citizens />
+      </ProtectedComponent>
+    }
+    path='/'
+  />,
   <Route
     key='area-cittadini-dettaglio'
     element={<CitizensDetail />}

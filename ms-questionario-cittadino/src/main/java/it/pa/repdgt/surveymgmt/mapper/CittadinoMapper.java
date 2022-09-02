@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import it.pa.repdgt.shared.entity.CittadinoEntity;
 import it.pa.repdgt.surveymgmt.bean.DettaglioCittadinoBean;
+import it.pa.repdgt.surveymgmt.request.CittadinoRequest;
 
 @Component
 public class CittadinoMapper {
@@ -17,19 +18,42 @@ public class CittadinoMapper {
 		dettaglioCittadino.setTipoDocumento(cittadinoFetchDB.getTipoDocumento());
 		dettaglioCittadino.setNumeroDocumento(cittadinoFetchDB.getNumeroDocumento());
 		dettaglioCittadino.setGenere(cittadinoFetchDB.getGenere());
-		dettaglioCittadino.setAnnoDiNascita(cittadinoFetchDB.getAnnoDiNascita());
-		dettaglioCittadino.setTitoloDiStudio(cittadinoFetchDB.getTitoloDiStudio());
-		dettaglioCittadino.setOccupazione(cittadinoFetchDB.getOccupazione());
+		dettaglioCittadino.setAnnoNascita(cittadinoFetchDB.getAnnoDiNascita());
+		dettaglioCittadino.setTitoloStudio(cittadinoFetchDB.getTitoloDiStudio());
+		dettaglioCittadino.setStatoOccupazionale(cittadinoFetchDB.getOccupazione());
 		dettaglioCittadino.setCittadinanza(cittadinoFetchDB.getCittadinanza());
-		dettaglioCittadino.setComuneDiDomicilio(cittadinoFetchDB.getComuneDiDomicilio());
+		dettaglioCittadino.setComuneDomicilio(cittadinoFetchDB.getComuneDiDomicilio());
 		dettaglioCittadino.setCategoriaFragili(cittadinoFetchDB.getCategoriaFragili());
 		dettaglioCittadino.setEmail(cittadinoFetchDB.getEmail());
-		dettaglioCittadino.setPrefissoTelefono(cittadinoFetchDB.getPrefissoTelefono());
-		dettaglioCittadino.setNumeroDiCellulare(cittadinoFetchDB.getNumeroDiCellulare());
+		dettaglioCittadino.setPrefisso(cittadinoFetchDB.getPrefissoTelefono());
+		dettaglioCittadino.setNumeroCellulare(cittadinoFetchDB.getNumeroDiCellulare());
 		dettaglioCittadino.setTelefono(cittadinoFetchDB.getTelefono());
 		dettaglioCittadino.setTipoConferimentoConsenso(cittadinoFetchDB.getTipoConferimentoConsenso());
 		dettaglioCittadino.setDataConferimentoConsenso(cittadinoFetchDB.getDataConferimentoConsenso());
 		
 		return dettaglioCittadino;
+	}
+	
+	public CittadinoEntity toEntityFrom(CittadinoRequest cittadinoRequest) {
+		CittadinoEntity cittadinoEntity = new CittadinoEntity();
+		
+		cittadinoEntity.setCodiceFiscale(cittadinoRequest.getCodiceFiscale());
+		cittadinoEntity.setNome(cittadinoRequest.getNome());
+		cittadinoEntity.setCognome(cittadinoRequest.getCognome());
+		cittadinoEntity.setTipoDocumento(cittadinoRequest.getTipoDocumento());
+		cittadinoEntity.setNumeroDocumento(cittadinoRequest.getNumeroDocumento());
+		cittadinoEntity.setGenere(cittadinoRequest.getGenere());
+		cittadinoEntity.setAnnoDiNascita(cittadinoRequest.getAnnoNascita());
+		cittadinoEntity.setTitoloDiStudio(cittadinoRequest.getTitoloStudio());
+		cittadinoEntity.setOccupazione(cittadinoRequest.getStatoOccupazionale());
+		cittadinoEntity.setCittadinanza(cittadinoRequest.getCittadinanza());
+		cittadinoEntity.setComuneDiDomicilio(cittadinoRequest.getComuneDomicilio());
+		cittadinoEntity.setCategoriaFragili(cittadinoRequest.getCategoriaFragili());
+		cittadinoEntity.setEmail(cittadinoRequest.getEmail());
+		cittadinoEntity.setPrefissoTelefono(cittadinoRequest.getPrefisso());
+		cittadinoEntity.setNumeroDiCellulare(cittadinoRequest.getNumeroCellulare());
+		cittadinoEntity.setTelefono(cittadinoRequest.getTelefono());
+		
+		return cittadinoEntity;
 	}
 }

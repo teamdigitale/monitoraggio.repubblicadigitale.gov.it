@@ -13,7 +13,7 @@ import it.pa.repdgt.shared.entity.key.EnteSedeProgettoKey;
 public interface EnteSedeProgettoRepository extends JpaRepository<EnteSedeProgetto, EnteSedeProgettoKey> {
 
 	@Query(value = " SELECT "
-				 + "	COUNT (*) "
+				 + "	COUNT(*) "
 				 + " FROM ( "
 				 + "		SELECT "
 				 + "			DISTINCT( esp.ID_ENTE || '-' || esp.ID_SEDE || '-' || esp.ID_PROGETTO ) as associazioneEnteSedeProgetto "

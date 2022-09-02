@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Email;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +30,9 @@ public class QuestionarioInviatoOnlineEntity implements Serializable {
 	@Column(name = "CODICE_FISCALE", nullable = true)
 	private String codiceFiscale;
 	
+	@Column(name = "NUM_DOCUMENTO", nullable = true)
+	private String numDocumento;
+	
 	@Column(name = "ID_QUESTIONARIO_COMPILATO", nullable = false, unique = true)
 	private String idQuestionarioCompilato;
 	
@@ -40,7 +42,7 @@ public class QuestionarioInviatoOnlineEntity implements Serializable {
 	@Column(name = "TOKEN", nullable = false, unique = true)
 	private String token;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "DATA_ORA_CREAZIONE", nullable = true)
 	private Date dataOraCreazione;
 }

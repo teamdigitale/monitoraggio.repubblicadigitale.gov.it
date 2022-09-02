@@ -29,4 +29,25 @@ public interface EnteSedeProgettoFacilitatoreRepository extends JpaRepository<En
 	List<Long> findIdProgettiFacilitatoreVolontario(
 			@Param(value = "cfUtente")String cfUtente,
 			@Param(value = "codiceRuolo")String codiceRuolo);
+	
+	@Query(value = "SELECT DISTINCT espf.STATO_UTENTE "
+			+ "		FROM ente_sede_progetto_facilitatore espf "
+			+ "		WHERE espf.ID_FACILITATORE = :cfUtente"
+			+ "		AND RUOLO_UTENTE = :codiceRuolo "
+			+ "     AND ID_PROGETTO = :idProgetto", 
+			nativeQuery = true)
+	List<String> findDistinctStatoByIdProgettoIdFacilitatoreVolontario(
+			@Param(value = "cfUtente")String cfUtente,
+			@Param(value = "codiceRuolo")String codiceRuolo,
+			@Param(value = "idProgetto")Long idProgetto);
+	
+	@Query(value = "SELECT COUNT(*) "
+			+ "		FROM ente_sede_progetto_facilitatore espf "
+			+ "		WHERE espf.ID_FACILITATORE = :cfUtente"
+			+ "		AND RUOLO_UTENTE = :codiceRuolo ", 
+			nativeQuery = true)
+	Integer countByIdFacilitatore(
+			@Param(value = "cfUtente")String cfUtente,
+			@Param(value = "codiceRuolo")String codiceRuolo);
+	
 }

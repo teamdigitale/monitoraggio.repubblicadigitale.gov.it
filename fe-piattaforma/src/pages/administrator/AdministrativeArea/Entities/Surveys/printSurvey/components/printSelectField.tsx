@@ -22,7 +22,7 @@ const PrintSelectField: React.FC<PrintFieldI> = (props) => {
           {' (una sola scelta)'}
         </p>
       )}
-      <Form className={clsx('mr-3', 'mt-3', 'd-flex', 'flex-column')}>
+      <Form id='form-print-select' className={clsx('mr-3', 'mt-3', 'd-flex', 'flex-column')}>
         {(info.options || []).map((val: OptionType, i: number) => (
           <FormGroup
             check

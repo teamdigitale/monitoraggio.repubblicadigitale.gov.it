@@ -1,14 +1,19 @@
 package it.pa.repdgt.ente.mapper;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import org.springframework.stereotype.Component;
 
+import it.pa.repdgt.ente.bean.DettaglioProgettoLightBean;
 import it.pa.repdgt.ente.bean.DettaglioSedeBean;
 import it.pa.repdgt.ente.request.NuovaSedeRequest;
 import it.pa.repdgt.ente.request.NuovaSedeRequest.IndirizzoSedeRequest;
 import it.pa.repdgt.ente.resource.SedeResource;
+import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
 
 @Component
@@ -20,11 +25,11 @@ public class SedeMapper {
 		sedeEntity.setServiziErogati(nuovaSedeRequest.getServiziErogati());
 		sedeEntity.setItinere(nuovaSedeRequest.getIsItinere());
 		
-		if(nuovaSedeRequest.getIndirizziSede() == null || nuovaSedeRequest.getIndirizziSede().isEmpty() ) {
+		if(nuovaSedeRequest.getIndirizziSedeFasceOrarie() == null || nuovaSedeRequest.getIndirizziSedeFasceOrarie().isEmpty() ) {
 			return sedeEntity;
 		}
 		
-		final IndirizzoSedeRequest primoIndirizzoSede = nuovaSedeRequest.getIndirizziSede().get(0);
+		final IndirizzoSedeRequest primoIndirizzoSede = nuovaSedeRequest.getIndirizziSedeFasceOrarie().get(0);
 		sedeEntity.setVia(primoIndirizzoSede.getVia());
 		sedeEntity.setCivico(primoIndirizzoSede.getCivico());
 		sedeEntity.setComune(primoIndirizzoSede.getComune());
@@ -64,5 +69,33 @@ public class SedeMapper {
 					.stream()
 					.map(this::toResourceFrom)
 					.collect(Collectors.toList());
+	}
+
+	public DettaglioProgettoLightBean toDettaglioProgettoLightBeanFrom(ProgettoEntity progettoFetchDB) {
+		DettaglioProgettoLightBean dettaglioProgetto = new DettaglioProgettoLightBean();
+		dettaglioProgetto.setId(progettoFetchDB.getId());
+		dettaglioProgetto.setNomeBreve(progettoFetchDB.getNomeBreve());
+		return dettaglioProgetto;
+	}
+
+	public SedeEntity toEntityFrom(@Valid NuovaSedeRequest nuovaSedeRequest, SedeEntity sedeFetchDB) {
+		sedeFetchDB.setNome(nuovaSedeRequest.getNome());
+		sedeFetchDB.setServiziErogati(nuovaSedeRequest.getServiziErogati());
+		sedeFetchDB.setItinere(nuovaSedeRequest.getIsItinere());
+		
+		 Optional<IndirizzoSedeRequest> indirizzoSedeFiltrata = nuovaSedeRequest.getIndirizziSedeFasceOrarie()
+			.stream()
+			.filter(indirizzoSede -> indirizzoSede.getId() == sedeFetchDB.getId() ).findFirst();
+		
+		if(indirizzoSedeFiltrata.isPresent()) {
+			sedeFetchDB.setVia(indirizzoSedeFiltrata.get().getVia());
+			sedeFetchDB.setCivico(indirizzoSedeFiltrata.get().getCivico());
+			sedeFetchDB.setComune(indirizzoSedeFiltrata.get().getComune());
+			sedeFetchDB.setRegione(indirizzoSedeFiltrata.get().getRegione());
+			sedeFetchDB.setProvincia(indirizzoSedeFiltrata.get().getProvincia());
+			sedeFetchDB.setNazione(indirizzoSedeFiltrata.get().getNazione());
+		}
+		
+		return sedeFetchDB;
 	}
 }

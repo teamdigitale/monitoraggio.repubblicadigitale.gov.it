@@ -19,30 +19,30 @@
 	values('UTENTE2','U2', 'U2', 'u2@a.com', 'ATTIVO', CURRENT_TIME());
 
 -- CREAZIONE ANAGRAFICA RUOLI
-  insert into ruolo(codice, nome, predefinito)
-    values('DTD', 'DTD AMMINISTRATORE', false);
-  insert into ruolo(codice, nome, predefinito)
-    values('DSCU', 'DSCU .....', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('REG', 'REFERENTE ENTE GESTORE PROGRAMMA', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('REGP', 'REFERENTE ENTE GESTORE PROGETTO', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('DEG', 'DELEGATO ENTE GESTORE PROGRAMMA', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('DEGP', 'DELEGATO ENTE GESTORE PROGETTO', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('REP', 'REFERENTE ENTE PARTNER GESTORE PROGRAMMA', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('REPP', 'REFERENTE ENTE PARTNER GESTORE PROGETTO', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('DEP', 'DELEGATO ENTE PARTNER GESTORE PROGRAMMA', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('DEPP', 'DELEGATO ENTE PARTNER GESTORE PROGETTO', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('FAC', 'FACILITATORE', true);
-  insert into ruolo(codice, nome, predefinito)
-    values('VOL', 'VOLONTARIO', true);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DTD', 'DTD AMMINISTRATORE', FALSE, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DSCU', 'DSCU .....', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('REG', 'REFERENTE ENTE GESTORE PROGRAMMA', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('REGP', 'REFERENTE ENTE GESTORE PROGETTO', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DEG', 'DELEGATO ENTE GESTORE PROGRAMMA', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DEGP', 'DELEGATO ENTE GESTORE PROGETTO', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('REP', 'REFERENTE ENTE PARTNER GESTORE PROGRAMMA', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('REPP', 'REFERENTE ENTE PARTNER GESTORE PROGETTO', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DEP', 'DELEGATO ENTE PARTNER GESTORE PROGRAMMA', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('DEPP', 'DELEGATO ENTE PARTNER GESTORE PROGETTO', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('FAC', 'FACILITATORE', true, false);
+  insert into ruolo(codice, nome, predefinito, modificabile)
+    values('VOL', 'VOLONTARIO', true, false);
     
   -- ASSEGNAMENTO RUOLO A UTENTE
   insert into utente_x_ruolo(utente_id, ruolo_codice)
@@ -71,7 +71,7 @@
 	values('FACILITATORE2', 'VOL');
  insert into utente_x_ruolo(utente_id, ruolo_codice) 
 	values('UTENTE2', 'FAC');
-	 insert into utente_x_ruolo(utente_id, ruolo_codice)
+	 insert into utente_x_ruolo(utente_id, ruolo_codice) 
 	values('UTENTE2', 'VOL');
  insert into utente_x_ruolo(utente_id, ruolo_codice) 
 	values('UTENTE2', 'REGP');
@@ -91,7 +91,7 @@ insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora
  insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora_creazione)
 	values(104, 'Programma Rho', 'R104', 'codice5', 'Programma Rho', 'SCD', 'ATTIVO', CURRENT_TIME( ));
  insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora_creazione)
-	values(105, 'Programma Tau', 'T105', 'codice6', 'Programma Tau', 'SCD', 'ATTIVO', CURRENT_TIME( ));
+	values(105, 'Programma Tau', 'T105', 'codice6', 'Programma Tau', 'RFD', 'NON ATTIVO', CURRENT_TIME( ));
 
 -- CREAZIONE ANAGRAFICA PROGETTI
  insert into progetto(id, nome, nome_breve, stato, data_ora_creazione, cup)
@@ -111,9 +111,13 @@ insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora
  insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione, cup)
 	values(257, 'Progetto Block Chain', 'Progetto Block Chain', 'ATTIVO', CURRENT_TIME( ), 'W11DG45');
  insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione, cup)
-	values(258, 'Progetto Sviluppo Mobile', 'Progetto Sviluppo Mobile', 'ATTIVO', CURRENT_TIME( ), 'YFSFD11');
+	values(258, 'Progetto Sviluppo Mobile', 'Progetto Sviluppo Mobile', 'NON ATTIVO', CURRENT_TIME( ), 'YFSFD11');
  insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione, cup)
-	values(259, 'Progetto Sviluppo Videogame', 'Progetto Sviluppo Videogame', 'ATTIVO', CURRENT_TIME( ), 'X1NFD1');
+	values(259, 'Progetto Sviluppo Videogame', 'Progetto Sviluppo Videogame', 'NON ATTIVO', CURRENT_TIME( ), 'X1NFD1');
+ insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione, cup)
+	values(260, 'Progetto RPA', 'Progetto RPA', 'ATTIVABILE', CURRENT_TIME( ), 'E24RR2T');
+	 insert into progetto(id, nome, nome_breve,  stato, data_ora_creazione, cup)
+	values(261, 'Progetto E-Commerce', 'Progetto E-Commerce', 'NON ATTIVO', CURRENT_TIME( ), 'R4IS8O');
 	
 -- ASSOCIAZIONE DEI PROGETTI AI PROGRAMMI
  update progetto
@@ -131,8 +135,8 @@ insert into programma(id, nome, cup, codice, nome_breve, policy, stato, data_ora
   update progetto
     set id_programma = 101 
  where id = 254;
- update progetto
-    set id_programma = 102 
+  update progetto
+    set id_programma = 103 
  where id = 255;
  update progetto
     set id_programma = 103 
@@ -187,46 +191,6 @@ insert into indirizzo_sede(id, cap, civico, comune, data_ora_aggiornamento, data
 	
 	
 -- CREAZIONE ANAGRAFICA INDIRIZZO_SEDE_FASCIA_ORARIA E ASSOCIAZIONE A INDIRIZZO_SEDE
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(1, NULL, CURRENT_TIME(), 'Lunedì', 1, '8:00', '20:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(2, NULL, CURRENT_TIME(), 'Martedì', 1, '15:00', '20:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(3, NULL, CURRENT_TIME(), 'Mercoledì', 1, '8:00', '20:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(4, NULL, CURRENT_TIME(), 'Giovedì', 1, '15:00', '20:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(5, NULL, CURRENT_TIME(), 'Lunedì', 2, '8:00', '15:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(6, NULL, CURRENT_TIME(), 'Martedì', 2, '10:00', '17:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(7, NULL, CURRENT_TIME(), 'Mercoledì', 2, '8:00', '15:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(8, NULL, CURRENT_TIME(), 'Giovedì', 2, '10:00', '17:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(9, NULL, CURRENT_TIME(), 'Lunedì', 3, '8:00', '15:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(10, NULL, CURRENT_TIME(), 'Martedì', 3, '10:00', '17:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(11, NULL, CURRENT_TIME(), 'Mercoledì', 3, '8:00', '15:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(12, NULL, CURRENT_TIME(), 'Giovedì', 3, '10:00', '17:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(13, NULL, CURRENT_TIME(), 'Lunedì', 4, '7:00', '14:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(14, NULL, CURRENT_TIME(), 'Martedì', 4, '09:00', '16:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(15, NULL, CURRENT_TIME(), 'Mercoledì', 4, '7:00', '14:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(16, NULL, CURRENT_TIME(), 'Giovedì', 4, '09:00', '16:00');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(17, NULL, CURRENT_TIME(), 'Lunedì', 5, '11:00', '16:30');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(18, NULL, CURRENT_TIME(), 'Martedì', 5, '09:00', '19:45');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(19, NULL, CURRENT_TIME(), 'Mercoledì', 5, '11:00', '16:30');
-INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_creazione, giorno_apertura, indirizzo_sede_id, orario_apertura, orario_chiusura)
-	VALUES(20, NULL, CURRENT_TIME(), 'Giovedì', 5, '09:00', '19:45');
 
  -- ASSEGNAMENTO DEGLI ENTI GESTORI DI PROGRAMMA AI PROGRAMMI
  -- E ASSEGNAZIONE STATO DELL'ENTE GESTORE DI PROGRAMMA
@@ -243,7 +207,7 @@ INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_cr
  update programma
     set 
     	  id_ente_gestore_programma = 1001
-    	 ,stato_gestore_programma = 'NON ATTIVO'
+    	 ,stato_gestore_programma = 'ATTIVO'
  where id = 102;
  update programma
     set 
@@ -284,7 +248,7 @@ INSERT INTO INDIRIZZO_SEDE_FASCIA_ORARIA(id, data_ora_aggiornamento, data_ora_cr
   update progetto
 	set 
 		 id_ente_gestore_progetto = 1003
-		,stato_gestore_progetto = 'NON ATTIVO'
+		,stato_gestore_progetto = 'ATTIVO'
   where id = 255;
   update progetto
 	set 
@@ -324,6 +288,8 @@ insert into referente_delegati_partner(cf_utente, id_ente, id_progetto, codice_r
 	values('MWEDSQ99E20K123A', 1006, 254, 'REPP', CURRENT_TIME( ));
 	
 -- ASSEGNAMENTO ENTE_SEDE_PROGETTO
+insert into ENTE_SEDE_PROGETTO(id_ente, id_progetto, id_sede, ruolo_ente, stato_sede)
+	values(1004, 256, 1, 'EGP', 'ATTIVO');
 insert into ENTE_SEDE_PROGETTO(id_ente, id_progetto, id_sede, ruolo_ente, stato_sede)
 	values(1005, 256, 1, 'EGP', 'ATTIVO');
 insert into ente_sede_progetto(id_ente, id_progetto, id_sede, ruolo_ente, stato_sede)
@@ -373,3 +339,10 @@ insert into ente_sede_progetto_facilitatore (id_ente, ID_progetto, id_sede, id_f
 INSERT INTO questionario_template (id, nome, stato, descrizione, default_rfd, default_scd) VALUES ('1', 'prova', 'ATTIVO', 'provaTest', '1', '1');
 --insert programma_x_questionario template
 INSERT INTO programma_x_questionario_template (programma_id, questionario_template_id, stato) VALUES (2, '563847ffhgs', 'TERMINATO');
+INSERT INTO programma_x_questionario_template (programma_id, questionario_template_id, stato) VALUES (105, 1, 'ATTIVO');
+--insert storico_ente_gestore_progetto
+INSERT INTO storico_ente_gestore_progetto (id, data_ora_creazione, ente_id, progetto_id, programma_id, data_attivazione_ente, stato) 
+	VALUES (3, '2022-07-13 11:12:37', 1003, 255, 103, '2022-07-13 11:12:37', 'ATTIVO');
+--insert storico_ente_gestore_programma
+INSERT INTO storico_ente_gestore_programma (id, data_ora_creazione, ente_id, programma_id, data_attivazione_ente, stato) 
+	VALUES (3, '2022-07-13 11:12:37', 1001, 102, '2022-07-13 11:12:37', 'ATTIVO');

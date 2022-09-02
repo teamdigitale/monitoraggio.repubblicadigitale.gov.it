@@ -15,6 +15,7 @@ import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.light.ProgettoLightEntity;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 
 @Service
 public class ProgettoService {
@@ -32,13 +33,15 @@ public class ProgettoService {
 	public ProgettoEntity getProgettoById(Long id) {
 		String messaggioErrore = String.format("Progetto con id=%s non presente", String.valueOf(id));
 		return this.progettoRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore));
+				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public ProgettoLightEntity getProgettoLightById(Long id) {
 		String messaggioErrore = String.format("Progetto con id=%s non presente", String.valueOf(id));
 		return this.progettoRepository.findProgettoLightById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore));
+				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
 	}
 	
 	@LogMethod
@@ -53,30 +56,44 @@ public class ProgettoService {
 		return this.getProgettoById(id).getStato();
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public List<Long> getIdProgettiByIdEnte(Long idEnte) {
 		return this.progettoRepository.findIdProgettiByIdEnte(idEnte);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<Long> getIdProgettiEntePartnerByIdEnte(Long idEnte) {
 		return this.progettoRepository.findIdProgettiEntePartnerByIdEnte(idEnte);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public int countProgettiEnte(Long idEnte) {
 		return this.progettoRepository.countProgettiEnte(idEnte);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public int countProgettiEntePartner(Long idEnte) {
 		return this.progettoRepository.countProgettiEntePartner(idEnte);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<ProgettoEntity> getProgettiByIdEnte(Long idEnte) {
 		return this.progettoRepository.getProgettiByIdEnte(idEnte);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void salvaProgetto(ProgettoEntity progettoFetchDB) {
 		this.progettoRepository.save(progettoFetchDB);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void salvaOAggiornaProgetto(ProgettoEntity progettoDBFEtch) {
 		this.progettoRepository.save(progettoDBFEtch);
 	}
@@ -92,14 +109,14 @@ public class ProgettoService {
 			progettoFetchDB = this.getProgettoById(idProgetto);
 		} catch (ResourceNotFoundException ex) {
 			String errorMessage = String.format("Impossibile Assegnare gestore a progetto perchè progetto con id=%s non presente", idProgetto);
-			throw new EnteException(errorMessage);		
+			throw new EnteException(errorMessage, CodiceErroreEnum.PR09);		
 		}
 		EnteEntity enteFetchDB = null;
 		try {
 			enteFetchDB = this.enteService.getEnteById(idEnteGestore);
 		} catch (ResourceNotFoundException ex) {
 			String errorMessage = String.format("Impossibile Assegnare gestore a progetto perchè ente gestore con id=%s non presente", idEnteGestore);
-			throw new EnteException(errorMessage);
+			throw new EnteException(errorMessage, CodiceErroreEnum.PR09);
 		}
 		progettoFetchDB.setEnteGestoreProgetto(enteFetchDB);
 		progettoFetchDB.setStatoGestoreProgetto(StatoEnum.NON_ATTIVO.getValue());

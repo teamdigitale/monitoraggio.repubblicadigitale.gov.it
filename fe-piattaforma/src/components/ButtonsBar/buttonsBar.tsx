@@ -8,6 +8,7 @@ export interface ButtonInButtonsBar extends ButtonProps {
   text: string;
   iconForButton?: string;
   iconColor?: string;
+  buttonClass?: string;
 }
 
 interface StickyButtonsI {
@@ -31,7 +32,7 @@ const ButtonsBar: React.FC<StickyButtonsI> = ({ buttons = [] }) => {
           key={index}
           {...button}
           tabIndex={-1}
-          className={clsx('text-nowrap', 'px-2')}
+          className={clsx('text-nowrap', 'px-2', button.buttonClass)}
           size='xs'
         >
           {button.iconForButton && (

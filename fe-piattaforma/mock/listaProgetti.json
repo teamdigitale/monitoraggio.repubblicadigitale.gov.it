@@ -15,5 +15,6 @@
       "stato": "ATTIVABILE"
     }
   ],
-  "numeroPagine": 1
+  "numeroPagine": 1,
+  "numeroTotaleElementi": 2
 }

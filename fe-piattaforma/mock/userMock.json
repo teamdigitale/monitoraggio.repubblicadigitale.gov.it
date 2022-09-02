@@ -8,7 +8,8 @@
       "email": "mail@mail.com",
       "phone": "338390458305",
       "authorityRef": "Comune di Milano",
-      "bio": "Descrizione Bio"
+      "bio": "Descrizione Bio",
+      "status": "ATTIVO"
     },
     "roles": [
       { "name": "Simone Viola", "status": "Active" },

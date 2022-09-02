@@ -1,15 +1,18 @@
 package it.pa.repdgt.ente.exception;
 
-import java.io.Serializable;
+import it.pa.repdgt.shared.exception.BaseException;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import lombok.Getter;
 
-public class EnteSedeProgettoFacilitatoreException extends RuntimeException implements Serializable {
-	private static final long serialVersionUID = 3311207025753558917L;
-
-	public EnteSedeProgettoFacilitatoreException(String exceptionMessage) {
+@Getter
+public class EnteSedeProgettoFacilitatoreException extends BaseException {
+	public EnteSedeProgettoFacilitatoreException(String exceptionMessage, CodiceErroreEnum codiceErroreEnum) {
 		super(exceptionMessage);
+		this.codiceErroreEnum = codiceErroreEnum;
 	}
 	
-	public EnteSedeProgettoFacilitatoreException(String exceptionMessage, Exception ex) {
+	public EnteSedeProgettoFacilitatoreException(String exceptionMessage, Exception ex, CodiceErroreEnum codiceErroreEnum) {
 		super (exceptionMessage, ex);
+		this.codiceErroreEnum = codiceErroreEnum;
 	}
 }

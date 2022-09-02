@@ -2,10 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, Col, FormGroup, Row } from 'design-react-kit';
 import { useTranslation } from 'react-i18next';
-import { useAppSelector } from '../redux/hooks';
-import { login, logout } from '../redux/features/user/userSlice';
 import { dispatchNotify } from '../utils/notifictionHelper';
-import { openModal } from '../redux/features/modal/modalSlice';
 import {
   Form,
   InfoPanel,
@@ -20,7 +17,6 @@ import withFormHandler, { withFormHandlerProps } from '../hoc/withFormHandler';
 import { formFieldI, newForm, newFormField } from '../utils/formHelper';
 import { i18nChangeLanguage } from '../utils/i18nHelper';
 import { guard } from '../utils/guardHelper';
-import SwitchProfileModal from '../components/Modals/SwitchProfileModal/switchProfileModal';
 import { FilterI } from '../components/DropdownFilter/dropdownFilter';
 // import { groupOptions } from '../components/Form/multipleSelectConstants';
 // import ManageOTP from '../components/AdministrativeArea/Entities/Surveys/ManageOTP/ManageOTP';
@@ -29,7 +25,6 @@ import { updateBreadcrumb } from '../redux/features/app/appSlice';
 
 const Playground: React.FC<withFormHandlerProps> = (props) => {
   const { t } = useTranslation();
-  const isLogged = useAppSelector((state) => state.user.isLogged);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -43,14 +38,6 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
       ])
     );
   }, []);
-
-  const handleUserLogged = () => {
-    if (isLogged) {
-      dispatch(logout());
-    } else {
-      dispatch(login());
-    }
-  };
 
   const createNotify = () => {
     dispatchNotify({
@@ -104,7 +91,7 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
       <h1>Playground {t('hello')}</h1>
       <div className='my-5'>
         {/* Testing Protected Component */}
-        <ProtectedComponent visibleTo={['permission-1']}>
+        <ProtectedComponent visibleTo={[]}>
           <DropdownFilter
             filterName='test'
             id='test'
@@ -121,7 +108,7 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
         </ProtectedComponent>
       </div>
       <Row className='mt-2'>
-        <Form>
+        <Form id='form-playground-2'>
           <FormGroup check>
             <div className='my-3'>
               <Input name='pippo' type='radio' id={`1`} label='1' withLabel />
@@ -154,17 +141,12 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
       </Row>
       <Row className='mt-2'>
         <Col sm={6} md={4}>
-          <Button color='primary' onClick={handleUserLogged} size='sm'>
-            {isLogged ? 'Logout' : 'Login'}
-          </Button>
-        </Col>
-        <Col sm={6} md={4}>
           <Button color='primary' onClick={createNotify} size='sm'>
             Dispatch Notify
           </Button>
         </Col>
       </Row>
-      <Form className='mt-5 mb-5'>
+      <Form id='form-playground-1' className='mt-5 mb-5'>
         <Form.Row>
           <Input
             {...props.form?.name}
@@ -199,31 +181,6 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
       <Stepper nSteps={5} currentStep={3} />
       <Rating />
 
-      <section>
-        <Row>
-          <Button
-            color='primary'
-            outline
-            size='lg'
-            onClick={() => {
-              dispatch(openModal({ id: 'switchProfileModal' }));
-            }}
-          >
-            Apri modale switch profile
-          </Button>
-          <SwitchProfileModal
-            profiles={[
-              { name: 'Delegato ente partner', programName: 'Programma 1' },
-              {
-                name: 'Referente ente gestore di progetto',
-                programName: 'Programma 2',
-              },
-            ]}
-            currentProfile='Delegato ente partner'
-          />
-        </Row>
-      </section>
-
       {/* <section>
         <Row>
           <Button
@@ -241,7 +198,7 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
       </section> */}
       <section>
         <Row>
-          <Form>
+          <Form id='form-playground'>
             <fieldset>
               <Input type='text' onInputChange={(e) => console.log(e)} />
             </fieldset>

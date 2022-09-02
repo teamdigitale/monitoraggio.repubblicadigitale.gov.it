@@ -2,6 +2,7 @@ package it.pa.repdgt.shared.awsintegration.service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.Duration;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,14 +21,16 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.S3Exception;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
+import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 
 @Service
 @Scope("singleton")
 @Validated
 @Slf4j
 public class S3Service {
-	@Value(value = "${aws.app-id:}")
-	private String appId;
 	@Value(value = "${aws.s3.access-key:}")
 	private String accessKey;
 	@Value(value = "${aws.s3.secret-key:}")
@@ -41,7 +44,7 @@ public class S3Service {
 		
 	}
 	
-	public void uploadFile(@NotBlank final String nomeBucket, @NotNull final File fileToUpload) throws FileNotFoundException {
+	public void uploadFile(@NotBlank(message="il nome del bucket deve essere not blank") final String nomeBucket, @NotNull final File fileToUpload) throws FileNotFoundException {
 		final String fileToUploadName = fileToUpload.getName();
 		final PutObjectRequest putObjectRequest = PutObjectRequest.builder()
 			.bucket(nomeBucket)
@@ -57,9 +60,12 @@ public class S3Service {
 		try {
 			log.info("Uploading file con nome '{}' su AmazonS3...", fileToUploadName);
 			this.getClient().putObject(putObjectRequest, fileToUpload.toPath());
-			log.info("Uploading file su AmazonS3 riuscito.");
+			log.info("Upload file: '{}' su AmazonS3 avvenuto con successo.", fileToUploadName);
 		} catch (Exception ex) {
-			log.error("Errore upload del file su AmazonS3 per il file con nome '{}'. ex={}", fileToUploadName, ex);
+			String messaggioErrore = String.format("Errore upload del file su AmazonS3 per il file con nome '%s'.", fileToUploadName);
+			log.error(messaggioErrore);
+			log.error("ex={}", ex);
+			throw new RuntimeException(messaggioErrore);
 		}
 	}
 	
@@ -74,11 +80,52 @@ public class S3Service {
 		try {
 			log.info("Downloading file con nome '{}' su AmazonS3...", fileNameToDownload);
 			response  = this.getClient().getObjectAsBytes(getObjectRequest);
-			log.info("Downloading file Amazon S3 avvenuto con successo");
+			log.info("Download file: '{}' da Amazon S3 avvenuto con successo.", fileNameToDownload);
 		} catch (Exception ex) {
-			log.error("Errore upload del file su AmazonS3 per il file con nome '{}'. ex={}", fileNameToDownload, ex);
+			String messaggioErrore = String.format("Errore download del file su AmazonS3 per il file con nome '%s'."
+					+ " Verifica che il nome del file da scaricare sia correto e riprova.", fileNameToDownload);
+			log.error(messaggioErrore);
+			log.error("ex={}", ex);
+			throw new RuntimeException(messaggioErrore);
 		}
 		
 		return response;
 	}
+	
+	public String getPresignedUrl(String nomeFile, String bucketName) {
+		S3Presigner presigner = S3Presigner.builder()
+                .region(Region.EU_CENTRAL_1)
+                .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(this.accessKey, this.secretKey)))
+                .build();
+		return getPresignedUrl(presigner, bucketName, nomeFile);
+	}
+	
+	public String getPresignedUrl(S3Presigner presigner, String bucketName, String keyName ) {
+		String url = "";
+        try {
+            GetObjectRequest getObjectRequest =
+                    GetObjectRequest.builder()
+                            .bucket(bucketName)
+                            .key(keyName)
+                            .build();
+
+            GetObjectPresignRequest getObjectPresignRequest =  GetObjectPresignRequest.builder()
+                            .signatureDuration(Duration.ofMinutes(10))
+                            .getObjectRequest(getObjectRequest)
+                             .build();
+
+            // Generate the presigned request
+            PresignedGetObjectRequest presignedGetObjectRequest =
+                    presigner.presignGetObject(getObjectPresignRequest);
+
+            // Log the presigned URL
+            url = presignedGetObjectRequest.url().toString();
+
+            
+
+        } catch (S3Exception e) {
+            e.getStackTrace();
+        }
+        return url;
+    }
 }

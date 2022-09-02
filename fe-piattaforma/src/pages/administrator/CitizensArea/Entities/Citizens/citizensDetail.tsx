@@ -7,13 +7,16 @@ import {
   //clearInfoForm,
   selectEntityDetail,
 } from '../../../../../redux/features/citizensArea/citizensAreaSlice';
-import CitizenQuestionari from './CitizenQuestionari';
 import FormCitizen from '../../../../forms/formCitizen';
 import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
-import { openModal } from '../../../../../redux/features/modal/modalSlice';
+import {
+  closeModal,
+  openModal,
+} from '../../../../../redux/features/modal/modalSlice';
 import ManageCitizens from '../../../AdministrativeArea/Entities/modals/manageCitizens';
 import { formTypes } from '../../../AdministrativeArea/Entities/utils';
 import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
+import CitizenServices from './CitizenServices';
 
 const CitizensDetail: React.FC = () => {
   const dispatch = useDispatch();
@@ -50,7 +53,6 @@ const CitizensDetail: React.FC = () => {
 
   const citizenButtons = [
     {
-      outline: true,
       color: 'primary',
       text: 'Modifica',
       className: 'align-self-end mr-2',
@@ -64,15 +66,6 @@ const CitizensDetail: React.FC = () => {
           })
         ),
     },
-
-    {
-      color: 'primary',
-      iconForButton: 'it-plus',
-      text: 'Compila questionario',
-      className: 'align-self-end',
-      outline: false,
-      onClick: () => console.log('compila questionario'),
-    },
   ];
 
   return (
@@ -83,19 +76,21 @@ const CitizensDetail: React.FC = () => {
             citizen?.dettaglioCittadino?.nome +
             ' ' +
             citizen?.dettaglioCittadino?.cognome,
-          status: 'ATTIVO', // TODO: update
+          status: '',
           upperTitle: { icon: 'it-user', text: 'Cittadino' },
         }}
-        buttonsPosition='TOP'
+        buttonsPosition='BOTTOM'
         goBackTitle='I miei cittadini'
         goBackPath='/area-cittadini'
         formButtons={citizenButtons}
       >
         <FormCitizen formDisabled />
       </DetailLayout>
-      <CitizenQuestionari questionari={[]} />{' '}
-      {/* questionari={citizen?.serviziCittadino */}
-      <ManageCitizens />
+      <CitizenServices servizi={citizen?.serviziCittadino} />{' '}
+      <ManageCitizens
+        idCitizen={idCittadino}
+        onClose={() => dispatch(closeModal())}
+      />
     </div>
   );
 };

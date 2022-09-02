@@ -1,7 +1,18 @@
+import moment from 'moment';
 import React from 'react';
 
 import { FilterI } from '../components/DropdownFilter/dropdownFilter';
+import { OptionType } from '../components/Form/select';
 import { TableRowI } from '../components/Table/table';
+import { RolePermissionI } from '../redux/features/roles/rolesSlice';
+
+export const formatDate = (date?: string) => {
+  if (date) {
+    return moment(date).format('YYYY-MM-DD');
+  }
+
+  return undefined;
+};
 
 export const scrollTo = (y: number) => {
   window.scrollTo({
@@ -40,7 +51,12 @@ export const mapOptions = (
 ) => {
   const arrayMapped: FilterI[] = [];
   arrayToMap?.map((elem) => {
-    arrayMapped.push({ label: elem.nome?.toString(), value: elem.id });
+    arrayMapped.push({
+      label:
+        elem.toString().charAt(0).toUpperCase() +
+        elem.toString().slice(1).toLowerCase(),
+      value: elem.toString(),
+    });
   });
   return arrayMapped;
 };
@@ -78,14 +94,16 @@ export interface FormActionsI {
 
 export interface ItemListElemI {
   nome: string;
-    actions: CRUDActionsI;
-    status?: string;
-    stato?: string;
-    id?: string;
-    fullInfo?: {
-      [key: string]: string;
-    };
-    default?: boolean;
+  cognome?: string;
+  actions: CRUDActionsI;
+  status?: string;
+  stato?: string;
+  id?: string;
+  fullInfo?: {
+    [key: string]: string;
+  };
+  default?: boolean;
+  codiceFiscale?: string;
 }
 
 export interface ItemsListI {
@@ -93,64 +111,101 @@ export interface ItemsListI {
   items: ItemListElemI[];
 }
 
-export const menuRoutes = [
-  { label: 'Home', path: '/', id: 'tab-home' },
-  {
+export interface MenuItem {
+  label: string;
+  path: string;
+  id?: string;
+  subRoutes?: MenuItem[];
+  visible?: RolePermissionI[];
+}
+
+const newMenuItem = ({
+  label,
+  path,
+  id = label,
+  visible = [],
+  subRoutes = [],
+}: MenuItem) => ({
+  label,
+  path,
+  id,
+  visible,
+  subRoutes,
+});
+export const MenuRoutes = [
+  newMenuItem({
+    label: 'Home',
+    path: '/',
+    id: 'tab-home',
+  }),
+  newMenuItem({
     label: 'Area amministrativa',
     path: '/area-amministrativa',
     id: 'tab-admin',
+    visible: ['tab.am'],
     subRoutes: [
-      {
+      newMenuItem({
         label: 'Programmi',
         path: '/area-amministrativa/programmi',
-      },
-      {
+        visible: ['tab.am', 'subtab.prgm'],
+      }),
+      newMenuItem({
         label: 'Progetti',
         path: '/area-amministrativa/progetti',
-      },
-      {
+        visible: ['tab.am', 'subtab.prgt'],
+      }),
+      newMenuItem({
         label: 'Enti',
         path: '/area-amministrativa/enti',
-      },
-      {
+        visible: ['tab.am', 'subtab.enti'],
+      }),
+      newMenuItem({
         label: 'Utenti',
         path: '/area-amministrativa/utenti',
-      },
-      {
+        visible: ['tab.am', 'subtab.utenti'],
+      }),
+      newMenuItem({
         label: 'Questionari',
         path: '/area-amministrativa/questionari',
-      },
-      {
+        visible: ['tab.am', 'subtab.quest'],
+      }),
+      newMenuItem({
         label: 'Servizi',
         path: '/area-amministrativa/servizi',
-      },
+        visible: ['tab.am', 'subtab.serv'],
+      }),
     ],
-  },
-  {
+  }),
+  newMenuItem({
     label: 'Area cittadini',
     path: '/area-cittadini',
     id: 'tab-citizen',
-  },
-  {
+    visible: ['tab.citt'],
+  }),
+  newMenuItem({
     label: 'Dashboard',
     path: '/dashboard',
     id: 'tab-dashboard',
-  },
-  {
+    visible: ['tab.dshb'],
+  }),
+  newMenuItem({
     label: 'Community',
     path: '/community',
     id: 'tab-community',
-  },
-  {
+    visible: [process.env.NODE_ENV === 'development' ? 'visible' : 'hidden'],
+  }),
+  newMenuItem({
     label: 'Bacheca digitale',
     path: '/bacheca-digitale',
     id: 'tab-bacheca-digitale',
-  },
-  {
+    visible: [process.env.NODE_ENV === 'development' ? 'visible' : 'hidden'],
+  }),
+  newMenuItem({
     label: 'Documenti',
-    path: '/documents',
+    path: '/documenti',
     id: 'tab-documenti',
-  },
+    visible: [process.env.NODE_ENV === 'development' ? 'visible' : 'hidden'],
+  }),
 ];
 
 // Flattens all child elements into a single list
@@ -216,4 +271,32 @@ export const downloadCSV = (
     csvData = transformToCSV(data);
   }
   downloadBlob(csvData, filename, 'text/csv;charset=utf-8;');
+};
+
+export const transformFiltersToQueryParams = (filters: {
+  [key: string]: { label: string; value: string }[] | undefined;
+}) => {
+  let filterString = '';
+  Object.keys(filters)?.forEach((filter: string) => {
+    if (filter === 'criterioRicerca' || filter === 'filtroCriterioRicerca') {
+      if (filters[filter])
+        filterString =
+          filterString +
+          (filterString !== '' ? '&' : '') +
+          filter +
+          '=' +
+          filters[filter];
+    } else {
+      filters[filter]?.map(
+        (value: OptionType) =>
+          (filterString =
+            filterString +
+            (filterString !== '' ? '&' : '') +
+            filter +
+            '=' +
+            value?.value)
+      );
+    }
+  });
+  return filterString === '' ? filterString : '?' + filterString;
 };

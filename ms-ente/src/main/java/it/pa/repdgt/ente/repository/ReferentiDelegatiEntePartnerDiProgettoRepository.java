@@ -1,6 +1,7 @@
 package it.pa.repdgt.ente.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -20,7 +21,8 @@ public interface ReferentiDelegatiEntePartnerDiProgettoRepository extends JpaRep
 			 + "	 u.ID "
 			 + "	,u.NOME "
 			 + "	,u.COGNOME "
-			 + "	,u.STATO "
+			 + "	,u.CODICE_FISCALE as codiceFiscale "
+			 + "	,rdpp.STATO_UTENTE as STATO "
 			 + " FROM "
 			 + "	referente_delegati_partner rdpp"
 			 + "    INNER JOIN utente u"
@@ -37,7 +39,8 @@ public interface ReferentiDelegatiEntePartnerDiProgettoRepository extends JpaRep
 			 + "	 u.ID "
 			 + "	,u.NOME "
 			 + "	,u.COGNOME "
-			 + "	,u.STATO "
+			 + "	,u.CODICE_FISCALE as codiceFiscale "
+			 + "	,rdpp.STATO_UTENTE as STATO "
 			 + " FROM "
 			 + "	referente_delegati_partner rdpp"
 			 + "    INNER JOIN utente u"
@@ -111,12 +114,14 @@ public interface ReferentiDelegatiEntePartnerDiProgettoRepository extends JpaRep
 			+ "FROM referente_delegati_partner rdp "
 			+ "WHERE rdp.ID_PROGETTO = :idProgetto "
 			+ "		AND rdp.CF_UTENTE = :codiceFiscaleUtente "
-			+ "		AND rdp.ID_ENTE = :idEnte", 
+			+ "		AND rdp.ID_ENTE = :idEnte"
+			+ "		AND rdp.CODICE_RUOLO = :codiceRuolo", 
 			nativeQuery = true)
-	public ReferentiDelegatiEntePartnerDiProgettoEntity findReferenteDelegatoEntePartner(
+	public Optional<ReferentiDelegatiEntePartnerDiProgettoEntity> findReferenteDelegatoEntePartner(
 			@Param(value = "idProgetto") Long idProgetto,
 			@Param(value = "codiceFiscaleUtente") String codiceFiscaleUtente, 
-			@Param(value = "idEnte") Long idEnte);
+			@Param(value = "idEnte") Long idEnte,
+			@Param(value = "codiceRuolo") String codiceRuolo);
 
 	@Query(value = "SELECT * "
 			+ "FROM referente_delegati_partner rdp "

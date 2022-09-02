@@ -39,41 +39,11 @@ public class LoggingAspect {
 		// Method is empty as this is just a Pointcut, the implementations are in the
 		// advices.
 	}
-
-	/**
-	 * Advice that logs when a method is entered and exited.
-	 *
-	 * @param joinPoint join point for advice
-	 * @return result
-	 * @throws Throwable throws IllegalArgumentException
-	 */
-	@Around("myApplicationPackagePointcut() && springBeanPointcut()")
-	public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
-		Signature methodSignature = joinPoint.getSignature();
-		final String className  = methodSignature.getDeclaringTypeName();
-		final String methodName = methodSignature.getName();
-		final String methodArgs = Arrays.toString(joinPoint.getArgs());
-		
-		if (log.isDebugEnabled()) {
-			log.info("START: {}.{}() with argument[s] = {}", className, methodName, methodArgs);
-		}
-		try {
-			Object result = joinPoint.proceed();
-			if (log.isDebugEnabled()) {
-				log.debug("END: {}.{}() with result = {}", className, methodName, result);
-			}
-			return result;
-		} catch (IllegalArgumentException ex) {
-			log.error("Illegal argument: {} in {}.{}()", methodArgs, className, methodName);
-			throw ex;
-		}
-	}
-
 	
 	@Around("@annotation(it.pa.repdgt.shared.annotation.LogMethod)")
 	public Object logMethod(ProceedingJoinPoint joinPoint) throws Throwable {
 		final Object proced = joinPoint.proceed();
-		if (log.isDebugEnabled()) {
+		if (!log.isDebugEnabled()) {
 			return proced;
 		}
 		

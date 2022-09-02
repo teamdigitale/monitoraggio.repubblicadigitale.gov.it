@@ -18,16 +18,22 @@ import {
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
 } from '../../../../../components/genericSearchFilterTableLayout/genericSearchFilterTableLayout';
-import { Paginator, StatusChip, Table } from '../../../../../components';
+import {
+  EmptySection,
+  Paginator,
+  StatusChip,
+  Table,
+} from '../../../../../components';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import ManageProject from '../modals/manageProject';
 import { useNavigate } from 'react-router-dom';
 import {
+  DownloadEntityValues,
   GetEntityFilterValues,
   GetEntityValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
-import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
+import useGuard from '../../../../../hooks/guard';
 
 const entity = 'progetto';
 const statusDropdownLabel = 'filtroStati';
@@ -36,6 +42,8 @@ const programDropdownLabel = 'filtroIdsProgrammi';
 
 const Projects: React.FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { hasUserPermission } = useGuard();
   const { progetti: progettiList = [] } = useAppSelector(selectEntityList);
   const filtersList = useAppSelector(selectEntityFilters);
   const pagination = useAppSelector(selectEntityPagination);
@@ -43,7 +51,6 @@ const Projects: React.FC = () => {
   const [searchDropdown, setSearchDropdown] = useState<
     { filterId: string; value: formFieldI['value'] }[]
   >([]);
-  const navigate = useNavigate();
   const {
     filtroCriterioRicerca,
     filtroPolicies,
@@ -65,20 +72,6 @@ const Projects: React.FC = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area Amministrativa',
-          url: '/area-amministrativa',
-          link: false,
-        },
-        {
-          label: 'Progetti',
-          url: '/area-amministrativa/progetti',
-          link: true,
-        },
-      ])
-    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -116,7 +109,8 @@ const Projects: React.FC = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    if (Array.isArray(progettiList)) setTableValues(updateTableValues());
+    if (Array.isArray(progettiList) && progettiList.length)
+      setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progettiList]);
 
@@ -161,7 +155,7 @@ const Projects: React.FC = () => {
 
   const dropdowns: DropdownFilterI[] = [
     {
-      filterName: 'Policy',
+      filterName: 'Intervento',
       options: dropdownFilterOptions['policies'],
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, policyDropdownLabel),
@@ -206,6 +200,9 @@ const Projects: React.FC = () => {
       )[0]?.value,
     },
   ];
+  const handleDownloadList = () => {
+    dispatch(DownloadEntityValues({ entity }));
+  };
 
   const searchInformation: SearchInformationI = {
     autocomplete: false,
@@ -227,26 +224,49 @@ const Projects: React.FC = () => {
       searchInformation={searchInformation}
       dropdowns={dropdowns}
       filtersList={filtersList}
-      resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
+      resetFilterDropdownSelected={(filterKey: string) =>
+        setFilterDropdownSelected(filterKey)
+      }
+      ctaDownload={
+        progettiList?.length &&
+        tableValues?.values?.length &&
+        hasUserPermission(['list.dwnl.prgt'])
+          ? handleDownloadList
+          : undefined
+      }
     >
-      <Table
-        {...tableValues}
-        id='table'
-        onActionClick={onActionClick}
-        onCellClick={(field, row) => console.log(field, row)}
-        //onRowClick={row => console.log(row)}
-        withActions
-      />
-      {pagination?.pageNumber ? (
-        <Paginator
-          activePage={pagination?.pageNumber}
-          center
-          refID='#table'
-          pageSize={pagination?.pageSize}
-          total={pagination?.totalPages}
-          onChange={handleOnChangePage}
-        />
-      ) : null}
+      <div>
+        {progettiList?.length && tableValues?.values?.length ? (
+          <>
+            <Table
+              {...tableValues}
+              id='table'
+              onActionClick={onActionClick}
+              onCellClick={(field, row) => console.log(field, row)}
+              //onRowClick={row => console.log(row)}
+              withActions
+              totalCounter={pagination?.totalElements}
+            />
+            {pagination?.pageNumber ? (
+              <Paginator
+                activePage={pagination?.pageNumber}
+                center
+                refID='#table'
+                pageSize={pagination?.pageSize}
+                total={pagination?.totalPages}
+                onChange={handleOnChangePage}
+              />
+            ) : null}
+          </>
+        ) : (
+          <EmptySection
+            title='Non sono presenti progetti'
+            subtitle='associati al tuo ruolo'
+            icon='it-note'
+            withIcon
+          />
+        )}
+      </div>
       <ManageProject creation />
     </GenericSearchFilterTableLayout>
   );

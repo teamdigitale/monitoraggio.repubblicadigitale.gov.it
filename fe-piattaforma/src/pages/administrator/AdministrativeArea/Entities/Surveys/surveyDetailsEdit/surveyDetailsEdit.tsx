@@ -6,7 +6,7 @@ import { FormHelper, FormI } from '../../../../../../utils/formHelper';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
   selectDevice,
-  updateBreadcrumb,
+  setInfoIdsBreadcrumb,
 } from '../../../../../../redux/features/app/appSlice';
 import DetailLayout from '../../../../../../components/DetailLayout/detailLayout';
 import {
@@ -24,6 +24,9 @@ import ButtonsBar, {
   ButtonInButtonsBar,
 } from '../../../../../../components/ButtonsBar/buttonsBar';
 import Sticky from 'react-sticky-el';
+import useGuard from '../../../../../../hooks/guard';
+import { GetProgramDetail } from '../../../../../../redux/features/administrativeArea/programs/programsThunk';
+import { selectPrograms } from '../../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 
 interface SurveyDetailsEditI {
   editMode?: boolean;
@@ -41,55 +44,41 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
   const sections = useAppSelector(selectSurveySections) || [];
   const [editModeState, setEditModeState] = useState<boolean>(editMode);
   const [cloneModeState, setCloneModeState] = useState<boolean>(cloneMode);
-
-  const { idQuestionario } = useParams();
+  const { idQuestionario, entityId } = useParams();
+  const { hasUserPermission } = useGuard();
+  const programName =
+    useAppSelector(selectPrograms).detail?.dettagliInfoProgramma?.nomeBreve;
 
   useEffect(() => {
-    if (form['survey-name'].value && idQuestionario) {
-      dispatch(
-        updateBreadcrumb([
-          {
-            label: 'Area Amministrativa',
-            url: '/area-amministrativa',
-            link: false,
-          },
-          {
-            label: 'Questionari',
-            url: '/area-amministrativa/questionari',
-            link: true,
-          },
-          {
-            label: form['survey-name'].value,
-            url: `/area-amministrativa/questionari/${idQuestionario}`,
-            link: false,
-          },
-        ])
-      );
-    }
+    if (idQuestionario) dispatch(GetSurveyInfo(idQuestionario));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idQuestionario]);
 
-  useEffect(() => {
-    const locationSplit = location.pathname.split('/');
-    let surveyId = '';
-    if (locationSplit.length > 0) {
-      switch (locationSplit[locationSplit.length - 1]) {
-        case 'modifica':
-        case 'clona':
-        case 'info':
-          surveyId = locationSplit[locationSplit?.length - 2];
-          break;
-        default:
-          surveyId = locationSplit[locationSplit?.length - 1];
-          break;
-      }
+  useEffect(() => { // For breadcrumb
+    if(!programName && entityId){
+      dispatch(GetProgramDetail(entityId));
     }
-    dispatch(GetSurveyInfo(surveyId));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleOnSubmit = () => {
-    dispatch(SetSurveyCreation(false));
-  };
+  useEffect(() => { // For breadcrumb
+    if(entityId && programName){
+      dispatch(
+        setInfoIdsBreadcrumb({
+          id: entityId,
+          nome: programName,
+        })
+      );
+    }
+    if (form['survey-name']?.value && idQuestionario) {
+      dispatch(
+        setInfoIdsBreadcrumb({
+          id: idQuestionario,
+          nome: form['survey-name'].value,
+        })
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idQuestionario, form['survey-name']?.value, programName]);
 
   const checkValidityQuestions = (questions: SurveyQuestionI[]) => {
     let isValid = true;
@@ -136,87 +125,164 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
 
   const device = useAppSelector(selectDevice);
 
+  const createUpdateSurvey = async () => {
+    setEditModeState(false);
+    setCloneModeState(false);
+    const res = await dispatch(SetSurveyCreation(cloneModeState));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (res?.data?.['survey-id']) {
+      navigate(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        `/area-amministrativa/questionari/${res?.data?.['survey-id']}`,
+        { replace: true }
+      );
+    } else if (idQuestionario) {
+      navigate(-1);
+    }
+  };
+
   const cancelSaveButtons: ButtonInButtonsBar[] = [
     {
       text: 'Annulla',
       color: 'primary',
       outline: true,
+      buttonClass: 'btn-secondary',
       onClick: () => {
         setEditModeState(false);
         setCloneModeState(false);
+        navigate(-1);
       },
     },
     {
-      text: 'Salva Questionario',
+      text: cloneModeState ? 'Crea questionario' : 'Salva Questionario',
       color: 'primary',
       disabled: !checkValidityForm(form),
-      onClick: () => {
-        handleOnSubmit;
-      },
+      onClick: () => createUpdateSurvey(),
     },
   ];
 
-  const cloneEditButtons: ButtonInButtonsBar[] = [
-    {
-      text: 'Duplica',
-      color: 'primary',
-      outline: true,
-      onClick: () => {
-        setCloneModeState(true);
-        setEditModeState(false);
-        dispatch(SetSurveyCreation(true));
-        navigate(`/area-amministrativa/questionari/${1}/clona`);
-      },
-    },
-    {
-      text: 'Modifica',
-      color: 'primary',
-      onClick: () => {
-        setEditModeState(true);
-        setCloneModeState(false);
-        navigate(`/area-amministrativa/questionari/${1}/modifica`);
-      },
-    },
-  ];
+  const cloneEditButtons: ButtonInButtonsBar[] = hasUserPermission([
+    'new.quest.templ',
+    'upd.quest.templ',
+  ])
+    ? [
+        {
+          text: 'Duplica',
+          color: 'primary',
+          buttonClass: 'btn-secondary',
+          outline: true,
+          onClick: () => {
+            setCloneModeState(true);
+            setEditModeState(false);
+            entityId
+              ? navigate(location.pathname + '/clona')
+              : navigate(
+                  `/area-amministrativa/questionari/${idQuestionario}/clona`
+                );
+          },
+        },
+        {
+          text: 'Modifica',
+          color: 'primary',
+          onClick: () => {
+            setEditModeState(true);
+            setCloneModeState(false);
+            entityId
+              ? navigate(location.pathname + '/modifica')
+              : navigate(
+                  `/area-amministrativa/questionari/${idQuestionario}/modifica`
+                );
+          },
+        },
+      ]
+    : hasUserPermission(['new.quest.templ'])
+    ? [
+        {
+          text: 'Duplica',
+          color: 'primary',
+          outline: true,
+          onClick: () => {
+            setCloneModeState(true);
+            setEditModeState(false);
+            entityId
+              ? navigate(location.pathname + '/clona')
+              : navigate(
+                  `/area-amministrativa/questionari/${idQuestionario}/clona`
+                );
+          },
+        },
+      ]
+    : hasUserPermission(['upd.quest.templ'])
+    ? [
+        {
+          text: 'Modifica',
+          color: 'primary',
+          onClick: () => {
+            setEditModeState(true);
+            setCloneModeState(false);
+            entityId
+              ? navigate(location.pathname + '/modifica')
+              : navigate(
+                  `/area-amministrativa/questionari/${idQuestionario}/modifica`
+                );
+          },
+        },
+      ]
+    : [];
 
   return (
-    <div className='mb-5'>
-      <DetailLayout
-        titleInfo={{
-          title: 'Nome questionario',
-          status: '',
-          upperTitle: { icon: 'it-file', text: 'Questionario' },
-        }}
-        formButtons={[]} // TODO?
-        buttonsPosition='TOP'
-        goBackTitle='Torna indietro'
-        goBackPath='/area-amministrativa/questionari'
-      />
+    <div className='mb-5 container'>
+      <div className='container'>
+        <DetailLayout
+          titleInfo={{
+            title: form['survey-name']?.value,
+            status: '',
+            upperTitle: { icon: 'it-file', text: 'Questionario' },
+          }}
+          buttonsPosition='BOTTOM'
+          goBackTitle={
+            entityId
+              ? 'Torna indietro'
+              : 'Elenco questionari'
+          }
+          goBackPath='/area-amministrativa/questionari'
+        />
 
-      <SurveyTemplate editMode={editModeState} cloneMode={cloneModeState} />
+        <SurveyTemplate editMode={editModeState} cloneMode={cloneModeState} />
 
-      <div
-        className={clsx(
-          'd-flex',
-          'flex-row',
-          device.mediaIsPhone
-            ? 'justify-content-around'
-            : 'justify-content-end',
-          'w-100',
-          'mt-3'
-        )}
-      >
-        {editModeState || cloneModeState ? (
-          <div aria-hidden='true' className='mt-5 w-100'>
-            <Sticky mode='bottom' stickyClassName='sticky bg-white container'>
-              <ButtonsBar buttons={cancelSaveButtons} />
-            </Sticky>
-          </div>
-        ) : (
-          <div aria-hidden='true' className='mt-5 w-100'>
-            <Sticky mode='bottom' stickyClassName='sticky bg-white container'>
-              <ButtonsBar buttons={cloneEditButtons} />
-            </Sticky>
+        {!entityId && (
+          <div
+            className={clsx(
+              'd-flex',
+              'flex-row',
+              device.mediaIsPhone
+                ? 'justify-content-around'
+                : 'justify-content-end',
+              'w-100',
+              'mt-3'
+            )}
+          >
+            {editModeState || cloneModeState ? (
+              <div aria-hidden='true' className='mt-5 w-100'>
+                <Sticky
+                  mode='bottom'
+                  stickyClassName='sticky bg-white container'
+                >
+                  <ButtonsBar buttons={cancelSaveButtons} />
+                </Sticky>
+              </div>
+            ) : (
+              <div aria-hidden='true' className='mt-5 w-100'>
+                <Sticky
+                  mode='bottom'
+                  stickyClassName='sticky bg-white container'
+                >
+                  <ButtonsBar buttons={cloneEditButtons} />
+                </Sticky>
+              </div>
+            )}
           </div>
         )}
       </div>

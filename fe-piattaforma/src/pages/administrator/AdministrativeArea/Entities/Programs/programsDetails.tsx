@@ -1,15 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Icon, Nav } from 'design-react-kit';
+import { Icon, Nav, Tooltip } from 'design-react-kit';
 import {
   closeModal,
   openModal,
 } from '../../../../../redux/features/modal/modalSlice';
 import { useDispatch } from 'react-redux';
-import ConfirmDeleteModal from '../modals/confirmDeleteModal';
 
 import { ButtonInButtonsBar } from '../../../../../components/ButtonsBar/buttonsBar';
-import { formTypes } from '../utils';
+import { entityStatus, formTypes, userRoles } from '../utils';
 import {
   CRUDActionsI,
   CRUDActionTypes,
@@ -23,44 +22,64 @@ import ManageManagerAuthority from '../modals/manageManagerAuthority';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
   selectDevice,
-  updateBreadcrumb,
+  setInfoIdsBreadcrumb,
 } from '../../../../../redux/features/app/appSlice';
 import {
   selectAuthorities,
   selectPrograms,
   selectSurveys,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
-import { EmptySection, NavLink } from '../../../../../components';
+import {
+  Accordion,
+  CardStatusAction,
+  EmptySection,
+  NavLink,
+} from '../../../../../components';
 import ProgramlInfoAccordionForm from '../../../../forms/formPrograms/ProgramAccordionForm/ProgramInfoAccordionForm';
 import FormAuthorities from '../../../../forms/formAuthorities';
 import ManageDelegate from '../modals/manageDelegate';
 import ManageReferal from '../modals/manageReferal';
-import { GetAllSurveys } from '../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 import ManageProject from '../modals/manageProject';
-import { DeleteEntity } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
+import {
+  DeleteEntity,
+  TerminateEntity,
+} from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import {
   GetProgramDetail,
   UpdateProgramSurveyDefault,
 } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
 import PreviewSurvey from '../modals/previewSurvey';
+import {
+  GetAuthorityManagerDetail,
+  RemoveManagerAuthority,
+  RemoveReferentDelegate,
+  UserAuthorityRole,
+} from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
+import TerminateEntityModal from '../../../../../components/AdministrativeArea/Entities/General/TerminateEntityModal/TerminateEntityModal';
+import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
+import useGuard from '../../../../../hooks/guard';
+import { formFieldI } from '../../../../../utils/formHelper';
+import { GetSurveyAllLight } from '../../../../../redux/features/administrativeArea/surveys/surveysThunk';
+import clsx from 'clsx';
+import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
+import { selectProfile } from '../../../../../redux/features/user/userSlice';
 
 const tabs = {
   INFO: 'info',
-  ENTE: 'ente',
+  ENTE: 'ente-gestore-programma',
   QUESTIONARI: 'questionari',
   PROGETTI: 'progetti',
 };
 
 const ProgramsDetails: React.FC = () => {
-  const { mediaIsDesktop } = useAppSelector(selectDevice);
-  const programma = useAppSelector(selectPrograms);
-  const surveyList = programma.detail?.questionari;
+  const { hasUserPermission } = useGuard();
+  const { codiceRuolo: userRole } = useAppSelector(selectProfile) || {};
+  const program = useAppSelector(selectPrograms).detail;
+  const surveyList = program?.questionari;
   const otherSurveyList = useAppSelector(selectSurveys);
-  const projectsList = programma.detail?.progetti;
-  const authorityInfo = useAppSelector(selectAuthorities)?.detail || {};
+  const projectsList = program?.progetti;
+  const authorityInfo = useAppSelector(selectAuthorities)?.detail;
   const dispatch = useDispatch();
-  const [deleteText, setDeleteText] = useState<string>('');
-  const [editItemModalTitle, setEditItemModalTitle] = useState<string>('');
   const [activeTab, setActiveTab] = useState<string>(tabs.INFO);
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
   const [emptySection, setEmptySection] = useState<React.ReactElement>();
@@ -69,11 +88,14 @@ const ProgramsDetails: React.FC = () => {
   const [itemAccordionList, setItemAccordionList] = useState<
     ItemsListI[] | null
   >();
-  const [modalIdToOpen, setModalIdToOpen] = useState<string>(
-    formTypes.PROGRAMMA
-  );
+  const [openOne, toggleOne] = useState(false);
+
+  const [edit, setEdit] = useState<boolean>(false);
   const [correctButtons, setCorrectButtons] = useState<ButtonInButtonsBar[]>(
     []
+  );
+  const [buttonsPosition, setButtonsPosition] = useState<'TOP' | 'BOTTOM'>(
+    'TOP'
   );
   const navigate = useNavigate();
   const location = useLocation();
@@ -87,6 +109,7 @@ const ProgramsDetails: React.FC = () => {
   >(true);
   const [surveyPreviewId, setSurveyPreviewId] = useState<string>('');
   const [newSurveyDefaultId, setNewSurveyDefaultId] = useState<string>('');
+  const device = useAppSelector(selectDevice);
 
   /**
    * The entity id is passed to the breadcrumb but it maybe the case to
@@ -99,68 +122,115 @@ const ProgramsDetails: React.FC = () => {
     useAppSelector(selectPrograms).detail?.dettagliInfoProgramma || {};
 
   const managerAuthorityId =
-    useAppSelector(selectPrograms).detail.idEnteGestoreProgramma;
+    useAppSelector(selectPrograms).detail?.idEnteGestoreProgramma;
+
+  const managerAuthority =
+    useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
+
+  useEffect(() => {
+    // For breadcrumb
+    if (location.pathname === `/area-amministrativa/programmi/${entityId}`) {
+      navigate(`/area-amministrativa/programmi/${entityId}/info`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (entityId) dispatch(GetProgramDetail(entityId));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entityId]);
 
   useEffect(() => {
-    if (entityId && programDetails) {
+    // For breadcrumb
+    if (entityId && programDetails?.nomeBreve) {
       dispatch(
-        updateBreadcrumb([
-          {
-            label: 'Area Amministrativa',
-            url: '/area-amministrativa',
-            link: false,
-          },
-          {
-            label: 'Programmi',
-            url: '/area-amministrativa/programmi',
-            link: true,
-          },
-          {
-            label: programDetails.nomeBreve,
-            url: `/area-amministrativa/programmi/${entityId}`,
-            link: false,
-          },
-        ])
+        setInfoIdsBreadcrumb({ id: entityId, nome: programDetails?.nomeBreve })
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entityId, programDetails]);
 
-  const onActionClickReferenti: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        `/area-amministrativa/${formTypes.REFERENTI}/${
-          typeof td === 'string' ? td : td?.id
-        }`
-      );
-    },
-    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      console.log(td);
-    },
+  const getActionRedirectURL = (userType: string, userId: string) => {
+    return `/area-amministrativa/programmi/${entityId}/ente-gestore-programma/${managerAuthorityId}/${userType}/${userId}`;
   };
 
-  const onActionClickDelegati: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        `/area-amministrativa/${formTypes.DELEGATI}/${
-          typeof td === 'string' ? td : td?.id
-        }`
-      );
-    },
-    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      console.log(td);
-    },
-  };
+  const onActionClickReferenti: CRUDActionsI = hasUserPermission([
+    'del.ref_del.gest.prgm',
+  ])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            getActionRedirectURL(
+              userRoles.REG,
+              (typeof td === 'string' ? td : td.id).toString()
+            )
+          );
+        },
+        [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+          dispatch(
+            openModal({
+              id: 'delete-entity',
+              payload: {
+                entity: 'referent-delegate',
+                cf: td,
+                role: 'REG',
+                text: 'Confermi di voler eliminare questo referente?',
+              },
+            })
+          );
+        },
+      }
+    : {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            getActionRedirectURL(
+              userRoles.REG,
+              (typeof td === 'string' ? td : td.id).toString()
+            )
+          );
+        },
+      };
+
+  const onActionClickDelegati: CRUDActionsI = hasUserPermission([
+    'del.ref_del.gest.prgm',
+  ])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            getActionRedirectURL(
+              userRoles.DEG,
+              (typeof td === 'string' ? td : td.id).toString()
+            )
+          );
+        },
+        [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+          dispatch(
+            openModal({
+              id: 'delete-entity',
+              payload: {
+                entity: 'referent-delegate',
+                cf: td,
+                role: 'DEG',
+                text: 'Confermi di voler eliminare questo delegato?',
+              },
+            })
+          );
+        },
+      }
+    : {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            getActionRedirectURL(
+              userRoles.DEG,
+              (typeof td === 'string' ? td : td.id).toString()
+            )
+          );
+        },
+      };
+
   const onActionClickQuestionariView: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        `/area-amministrativa/questionari/${
-          typeof td === 'string' ? td : td?.id
-        }`
-      );
+      navigate(`${td}`);
     },
   };
   const onActionClickQuestionariPreview: CRUDActionsI = {
@@ -180,16 +250,29 @@ const ProgramsDetails: React.FC = () => {
     },
   };
 
-  const onActionClickProgetti: CRUDActionsI = {
-    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      console.log(td);
-
-      navigate(`${td}/info`);
-    },
-    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      console.log('delete', td);
-    },
-  };
+  const onActionClickProgetti: CRUDActionsI = hasUserPermission(['del.prgt'])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(`${td}/info`);
+        },
+        [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+          dispatch(
+            openModal({
+              id: 'terminate-entity',
+              payload: {
+                entity: 'project',
+                projectId: td,
+                text: 'Confermi di volere terminare il Progetto?',
+              },
+            })
+          );
+        },
+      }
+    : {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(`${td}/info`);
+        },
+      };
 
   const gestoreRef = useRef<HTMLLIElement>(null);
   const questionariRef = useRef<HTMLLIElement>(null);
@@ -198,84 +281,118 @@ const ProgramsDetails: React.FC = () => {
 
   const AuthoritySection = () => {
     if (managerAuthorityId) {
-      setModalIdToOpen(formTypes.ENTE_GESTORE_PROGRAMMA),
-        setDeleteText(
-          'Confermi di voler eliminare questo gestore di programs?'
-        ),
-        setEditItemModalTitle('Modifica ente gestore programs'),
-        setCurrentForm(
-          <FormAuthorities
-            formDisabled
-            enteType={formTypes.ENTE_GESTORE_PROGRAMMA}
-          />
-        ),
-        setCorrectModal(<ManageManagerAuthority />),
-        setItemList(null),
-        setCorrectButtons([
-          {
-            size: 'xs',
-            color: 'primary',
-            text: 'Elimina',
-            onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
-          },
-          {
-            size: 'xs',
-            outline: true,
-            color: 'primary',
-            text: ' Modifica',
-            onClick: () =>
-              dispatch(
-                openModal({
-                  id: 'ente-gestore',
-                  payload: { title: 'Modifica ente gestore programma' },
-                })
-              ),
-          },
-        ]),
-        setItemAccordionList([
-          {
-            title: 'Referenti',
-            items:
-              authorityInfo?.referenti?.map(
-                (ref: { [key: string]: string }) => ({
-                  ...ref,
-                  actions: onActionClickReferenti,
-                })
-              ) || [],
-          },
-          {
-            title: 'Delegati',
-            items:
-              authorityInfo?.delegati?.map(
-                (del: { [key: string]: string }) => ({
-                  ...del,
-                  actions: onActionClickDelegati,
-                })
-              ) || [],
-          },
-        ]);
+      setCurrentForm(
+        <FormAuthorities
+          formDisabled
+          enteType={formTypes.ENTE_GESTORE_PROGRAMMA}
+        />
+      );
+      setCorrectModal(<ManageManagerAuthority />);
+      setItemList(null);
+      setCorrectButtons(
+        program?.dettagliInfoProgramma?.stato !== entityStatus.TERMINATO &&
+          hasUserPermission(['upd.enti.gest.prgm'])
+          ? [
+              {
+                size: 'xs',
+                outline: true,
+                color: 'primary',
+                text: 'Elimina',
+                buttonClass: 'btn-secondary',
+                disabled:
+                  authorityInfo?.referentiEnteGestore?.filter(
+                    (ref: { [key: string]: formFieldI['value'] }) =>
+                      ref.stato === 'ATTIVO'
+                  )?.length > 0,
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: 'delete-entity',
+                      payload: {
+                        entity: 'authority',
+                        text: 'Confermi di volere eliminare questo gestore di programma?',
+                      },
+                    })
+                  ),
+              },
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Modifica',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: 'ente-gestore',
+                      payload: { title: 'Modifica ente gestore programma' },
+                    })
+                  ),
+              },
+            ]
+          : []
+      );
+      setItemAccordionList([
+        {
+          title: 'Referenti',
+          items:
+            authorityInfo?.referentiEnteGestore?.map(
+              (ref: { [key: string]: string }) => ({
+                ...ref,
+                id: ref?.id,
+                actions:
+                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                    entityStatus.TERMINATO || ref?.stato !== entityStatus.ATTIVO
+                    ? {
+                        [CRUDActionTypes.VIEW]:
+                          onActionClickReferenti[CRUDActionTypes.VIEW],
+                      }
+                    : onActionClickReferenti,
+              })
+            ) || [],
+        },
+        {
+          title: 'Delegati',
+          items:
+            authorityInfo?.delegatiEnteGestore?.map(
+              (del: { [key: string]: string }) => ({
+                ...del,
+                id: del?.id,
+                actions:
+                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                    entityStatus.TERMINATO || del?.stato !== entityStatus.ATTIVO
+                    ? {
+                        [CRUDActionTypes.VIEW]:
+                          onActionClickDelegati[CRUDActionTypes.VIEW],
+                      }
+                    : onActionClickDelegati,
+              })
+            ) || [],
+        },
+      ]);
       setEmptySection(undefined);
     } else {
-      return (
-        setCurrentForm(undefined),
-        setCorrectModal(<ManageManagerAuthority creation />),
-        setCorrectButtons([]),
-        setItemAccordionList([]),
-        setEmptySection(
-          <EmptySection
-            title={'Questa sezione è ancora vuota'}
-            subtitle={
-              'Per attivare il progetto aggiungi un Ente gestore di Programma'
-            }
-            buttons={EmptySectionButtons.slice(1, 2)}
-          />
-        )
+      setCurrentForm(undefined);
+      setCorrectModal(<ManageManagerAuthority creation />);
+      setCorrectButtons([]);
+      setItemAccordionList([]);
+      setEmptySection(
+        <EmptySection
+          title='Questa sezione è ancora vuota'
+          withIcon
+          icon='it-note'
+          subtitle='Per attivare il progetto aggiungi un Ente gestore di Programma'
+          buttons={
+            program?.dettagliInfoProgramma?.stato !== entityStatus.TERMINATO &&
+            hasUserPermission(['add.enti.gest.prgm'])
+              ? EmptySectionButtons.slice(1, 2)
+              : []
+          }
+        />
       );
     }
   };
 
   const getListaQuestionari = () => {
-    dispatch(GetAllSurveys(true));
+    dispatch(GetSurveyAllLight());
   };
 
   useEffect(() => {
@@ -288,31 +405,37 @@ const ProgramsDetails: React.FC = () => {
     setRadioButtonsSurveys(false);
   };
 
-  const confirmSurvey = () => {
+  const confirmSurvey = async () => {
     setChangeSurveyButtonVisible(true);
     setRadioButtonsSurveys(false);
-    dispatch(
+    await dispatch(
       UpdateProgramSurveyDefault({
         idProgramma: entityId?.toString() || '',
         idQuestionario: newSurveyDefaultId,
       })
     );
+    if (entityId) dispatch(GetProgramDetail(entityId));
   };
 
   useEffect(() => {
-    if (changeSurveyButtonVisible) {
-      setCorrectButtons([
-        {
-          size: 'xs',
-          color: 'primary',
-          text: 'Cambia questionario',
-          disabled: otherSurveyList?.list?.length < 2,
-          onClick: () => {
-            setChangeSurveyButtonVisible(false);
-            setRadioButtonsSurveys(true);
-          },
-        },
-      ]);
+    if (changeSurveyButtonVisible && activeTab === tabs.QUESTIONARI) {
+      setCorrectButtons(
+        program?.dettagliInfoProgramma?.stato !== entityStatus.TERMINATO &&
+          hasUserPermission(['upd.rel.quest_prgm'])
+          ? [
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Cambia questionario',
+                disabled: otherSurveyList?.list?.length < 2,
+                onClick: () => {
+                  setChangeSurveyButtonVisible(false);
+                  setRadioButtonsSurveys(true);
+                },
+              },
+            ]
+          : []
+      );
     } else if (changeSurveyButtonVisible === false) {
       setSurveyDefault({
         items: [{ ...surveyList[0], actions: onActionClickQuestionariPreview }],
@@ -322,6 +445,7 @@ const ProgramsDetails: React.FC = () => {
           size: 'xs',
           color: 'primary',
           outline: true,
+          buttonClass: 'btn-secondary',
           text: 'Annulla',
           onClick: () => cancelSurvey(),
         },
@@ -333,6 +457,7 @@ const ProgramsDetails: React.FC = () => {
         },
       ]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     changeSurveyButtonVisible,
     newSurveyDefaultId,
@@ -343,6 +468,7 @@ const ProgramsDetails: React.FC = () => {
     setCorrectModal(undefined);
     setItemAccordionList(null);
     setCurrentForm(undefined);
+    setButtonsPosition('BOTTOM');
     if (surveyList?.length) {
       setSurveyDefault({
         items: [
@@ -372,29 +498,45 @@ const ProgramsDetails: React.FC = () => {
           });
         }
       }
-      setCorrectButtons([
-        {
-          size: 'xs',
-          color: 'primary',
-          text: 'Cambia questionario',
-          disabled: otherSurveyList?.list?.length < 2,
-          onClick: () => {
-            setChangeSurveyButtonVisible(false);
-            setRadioButtonsSurveys(true);
-          },
-        },
-      ]);
+      setCorrectButtons(
+        program?.dettagliInfoProgramma?.stato !== entityStatus.TERMINATO &&
+          hasUserPermission(['upd.rel.quest_prgm'])
+          ? [
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Cambia questionario',
+                disabled: !(
+                  otherSurveyList?.list?.filter(
+                    (elem) => elem.id !== surveyDefault?.items[0]?.id
+                  )?.length > 0
+                ),
+                onClick: () => {
+                  setChangeSurveyButtonVisible(false);
+                  setRadioButtonsSurveys(true);
+                },
+              },
+            ]
+          : []
+      );
       setEmptySection(undefined);
     } else {
-      setItemList(undefined),
-        setCorrectButtons([]),
-        setEmptySection(
-          <EmptySection
-            title={'Questa sezione è ancora vuota'}
-            subtitle={'Per attivare il programma aggiungi un Questionario'}
-            buttons={EmptySectionButtons.slice(0, 1)}
-          />
-        );
+      setItemList(undefined);
+      setCorrectButtons([]);
+      setEmptySection(
+        <EmptySection
+          title='Questa sezione è ancora vuota'
+          subtitle='Per attivare il programma aggiungi un Questionario'
+          buttons={
+            program?.dettagliInfoProgramma?.stato !== entityStatus.TERMINATO &&
+            hasUserPermission(['upd.rel.quest_prgm'])
+              ? EmptySectionButtons.slice(0, 1)
+              : []
+          }
+          withIcon
+          icon='it-note'
+        />
+      );
     }
   };
 
@@ -403,42 +545,67 @@ const ProgramsDetails: React.FC = () => {
     setItemAccordionList(null);
     setCurrentForm(undefined);
     setCorrectModal(<ManageProject creation />);
-    if (projectsList?.length) {
-      setCorrectButtons([
-        {
-          size: 'xs',
-          color: 'primary',
-          text: 'Aggiungi Progetto',
-          onClick: () =>
-            dispatch(
-              openModal({
-                id: formTypes.PROGETTO,
-                payload: { title: 'Aggiungi Progetto' },
-              })
-            ),
-        },
-      ]),
-        setItemList({
-          items: projectsList?.map(
-            (progetto: { id: string; nome: string; stato: string }) => ({
-              ...progetto,
-              fullInfo: { id: progetto.id },
-              actions: onActionClickProgetti,
-            })
-          ),
-        });
+    if (
+      projectsList?.filter(
+        (progetto: { associatoAUtente: boolean }) => progetto.associatoAUtente
+      )?.length
+    ) {
+      setCorrectButtons(
+        program?.dettagliInfoProgramma?.stato !== entityStatus.TERMINATO &&
+          hasUserPermission(['add.prgt'])
+          ? [
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Aggiungi Progetto',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: formTypes.PROGETTO,
+                      payload: { title: 'Aggiungi Progetto' },
+                    })
+                  ),
+              },
+            ]
+          : []
+      );
+      setItemList({
+        items: projectsList
+          .filter(
+            (progetto: { associatoAUtente: boolean }) =>
+              progetto.associatoAUtente
+          )
+          ?.map((progetto: { id: string; nome: string; stato: string }) => ({
+            ...progetto,
+            fullInfo: { id: progetto.id },
+            actions:
+              progetto?.stato !== entityStatus.ATTIVO
+                ? {
+                    [CRUDActionTypes.VIEW]:
+                      onActionClickProgetti[CRUDActionTypes.VIEW],
+                  }
+                : onActionClickProgetti,
+          })),
+      });
       setEmptySection(undefined);
     } else {
+      setCorrectButtons([]);
       setEmptySection(
         <EmptySection
-          title={'Questa sezione è ancora vuota'}
-          subtitle={'Per attivare il programma aggiungi un Progetto'}
-          buttons={EmptySectionButtons.slice(2)}
+          title='Questa sezione è ancora vuota'
+          subtitle='Per attivare il programma aggiungi un Progetto'
+          buttons={
+            program?.dettagliInfoProgramma?.stato !== entityStatus.TERMINATO
+              ? EmptySectionButtons.slice(2)
+              : []
+          }
+          withIcon
+          icon='it-note'
         />
-      ),
-        setItemList({
-          items: [],
-        });
+      );
+      setItemList({
+        items: [],
+      });
     }
   };
 
@@ -473,6 +640,7 @@ const ProgramsDetails: React.FC = () => {
     if (locationSplit.length > 0) {
       switch (locationSplit[locationSplit.length - 1]) {
         case tabs.INFO:
+        default:
           setActiveTab(tabs.INFO);
           break;
         case tabs.ENTE:
@@ -484,8 +652,6 @@ const ProgramsDetails: React.FC = () => {
         case tabs.PROGETTI:
           setActiveTab(tabs.PROGETTI);
           break;
-        default:
-          setActiveTab(tabs.INFO);
       }
     }
   }, [location]);
@@ -523,16 +689,159 @@ const ProgramsDetails: React.FC = () => {
     },
   ];
 
-  useEffect(() => {
-    switch (activeTab) {
+  const programInfoButtons = () => {
+    let formButtons: ButtonInButtonsBar[] = [];
+    switch (programDetails?.stato) {
+      case 'ATTIVO':
+        formButtons = hasUserPermission(['upd.enti.card.prgm', 'end.prgm'])
+          ? [
+              {
+                size: 'xs',
+                color: 'danger',
+                outline: true,
+                text: 'Termina programma',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: 'terminate-entity',
+                      payload: {
+                        entity: 'program',
+                        text: 'Confermi di volere terminare il Programma?',
+                      },
+                    })
+                  ),
+              },
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Modifica',
+                onClick: () => {
+                  dispatch(
+                    openModal({
+                      id: formTypes.PROGRAMMA,
+                      payload: { title: 'Modifica Programma' },
+                    })
+                  );
+                  setEdit(true);
+                },
+              },
+            ]
+          : hasUserPermission(['upd.enti.card.prgm'])
+          ? [
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Modifica',
+                onClick: () => {
+                  dispatch(
+                    openModal({
+                      id: formTypes.PROGRAMMA,
+                      payload: { title: 'Modifica Programma' },
+                    })
+                  );
+                  setEdit(true);
+                },
+              },
+            ]
+          : hasUserPermission(['end.prgm'])
+          ? [
+              {
+                size: 'xs',
+                color: 'danger',
+                outline: true,
+                text: 'Termina programma',
+                onClick: () => dispatch(openModal({ id: 'terminate-entity' })),
+              },
+            ]
+          : [];
+        break;
+      case 'NON ATTIVO':
+        formButtons = hasUserPermission(['del.prgm', 'upd.enti.card.prgm'])
+          ? [
+              {
+                size: 'xs',
+                outline: true,
+                color: 'primary',
+                text: 'Elimina',
+                buttonClass: 'btn-secondary',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: 'delete-entity',
+                      payload: {
+                        entity: 'program',
+                        text: 'Confermi di volere eliminare questo programma?',
+                      },
+                    })
+                  ),
+              },
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Modifica',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: formTypes.PROGRAMMA,
+                      payload: { title: 'Modifica Programma' },
+                    })
+                  ),
+              },
+            ]
+          : hasUserPermission(['upd.enti.card.prgm'])
+          ? [
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Modifica',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: formTypes.PROGRAMMA,
+                      payload: { title: 'Modifica Programma' },
+                    })
+                  ),
+              },
+            ]
+          : hasUserPermission(['del.prgm'])
+          ? [
+              {
+                size: 'xs',
+                outline: true,
+                color: 'primary',
+                text: 'Elimina',
+                buttonClass: 'btn-secondary',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: 'delete-entity',
+                      payload: {
+                        entity: 'program',
+                        text: 'Confermi di volere eliminare questo programma?',
+                      },
+                    })
+                  ),
+              },
+            ]
+          : [];
+        break;
+      case 'TERMINATO':
+      default:
+        break;
+    }
+    return formButtons;
+  };
+
+  const handleActiveTab = (tab: string) => {
+    switch (tab) {
       case tabs.INFO:
-        setModalIdToOpen(formTypes.PROGRAMMA);
         setCurrentForm(<ProgramlInfoAccordionForm />);
-        setCorrectModal(<ManageProgram />);
-        setDeleteText('Confermi di voler eliminare questo programma?');
-        setEditItemModalTitle('Modifica programma');
+        setCorrectModal(<ManageProgram edit={edit} />);
         setItemAccordionList([]);
+        setButtonsPosition('BOTTOM');
         setItemList(null);
+        setCorrectButtons(programInfoButtons());
+        setEmptySection(undefined);
         break;
       case tabs.ENTE:
         AuthoritySection();
@@ -547,43 +856,18 @@ const ProgramsDetails: React.FC = () => {
       default:
         return;
     }
+  };
+
+  useEffect(() => {
+    handleActiveTab(activeTab);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     activeTab,
-    mediaIsDesktop,
     programDetails,
     authorityInfo,
     surveyDefault?.items[0]?.id,
+    authorityInfo?.referentiEnteGestore,
   ]);
-
-  const formButtons: ButtonInButtonsBar[] = [
-    {
-      size: 'xs',
-      color: 'danger',
-      outline: true,
-      text: 'Termina programma',
-      onClick: () => console.log('termina programma'),
-    },
-    {
-      size: 'xs',
-      outline: true,
-      color: 'primary',
-      text: 'Elimina',
-      onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
-    },
-    {
-      size: 'xs',
-      color: 'primary',
-      text: ' Modifica',
-      onClick: () =>
-        dispatch(
-          openModal({
-            id: modalIdToOpen,
-            payload: { title: editItemModalTitle },
-          })
-        ),
-    },
-  ];
 
   const nav = (
     <Nav tabs className='mb-5 overflow-hidden'>
@@ -600,9 +884,17 @@ const ProgramsDetails: React.FC = () => {
           to={`/area-amministrativa/programmi/${entityId}/${tabs.ENTE}`}
           active={activeTab === tabs.ENTE}
         >
-          {!entityId ? (
-            <div>
+          {!managerAuthorityId ? (
+            <div id='tab-ente-gestore'>
               <span className='mr-1'> * Ente gestore </span>
+              <Tooltip
+                placement='bottom'
+                target='tab-ente-gestore'
+                isOpen={openOne}
+                toggle={() => toggleOne(!openOne)}
+              >
+                Compilazione obbligatoria
+              </Tooltip>
               <Icon icon='it-warning-circle' size='sm' />
             </div>
           ) : (
@@ -615,14 +907,7 @@ const ProgramsDetails: React.FC = () => {
           to={`/area-amministrativa/programmi/${entityId}/${tabs.QUESTIONARI}`}
           active={activeTab === tabs.QUESTIONARI}
         >
-          {!surveyList?.length ? (
-            <div>
-              <span className='mr-1'> * Questionari </span>
-              <Icon icon='it-warning-circle' size='sm' />
-            </div>
-          ) : (
-            'Questionari'
-          )}
+          <span> Questionari </span>
         </NavLink>
       </li>
       <li ref={projectRef}>
@@ -630,87 +915,221 @@ const ProgramsDetails: React.FC = () => {
           active={activeTab === tabs.PROGETTI}
           to={`/area-amministrativa/programmi/${entityId}/${tabs.PROGETTI}`}
         >
-          {!projectsList?.length ? (
-            <div>
-              <span className='mr-1'> * Progetti </span>
-              <Icon icon='it-warning-circle' size='sm' />
-            </div>
-          ) : (
-            'Progetti'
-          )}
+          <span> Progetti </span>
         </NavLink>
       </li>
     </Nav>
   );
 
-  const showINFOButtons = () => activeTab === tabs.INFO;
-  const showENTEButtons = () => activeTab === tabs.ENTE;
-  const showPROGETTIButtons = () => activeTab === tabs.PROGETTI;
-  const showQUESTIONARIButtons = () => activeTab === tabs.QUESTIONARI;
+  // const showINFOButtons = () => activeTab === tabs.INFO;
+  // const showENTEButtons = () => activeTab === tabs.ENTE;
+  // const showPROGETTIButtons = () => activeTab === tabs.PROGETTI;
+  //const showQUESTIONARIButtons = () => activeTab === tabs.QUESTIONARI;
+
+  const terminateProgram = async (
+    programId: string,
+    terminationDate: string
+  ) => {
+    await dispatch(TerminateEntity(programId, 'programma', terminationDate));
+    dispatch(GetProgramDetail(programId));
+    dispatch(closeModal());
+  };
+
+  const terminateProject = async (
+    projectId: string,
+    terminationDate: string
+  ) => {
+    await dispatch(TerminateEntity(projectId, 'progetto', terminationDate));
+    dispatch(GetProjectDetail(projectId));
+    dispatch(closeModal());
+  };
+
+  const removeReferentDelegate = async (
+    cf: string,
+    role: UserAuthorityRole
+  ) => {
+    if (entityId && managerAuthorityId) {
+      await dispatch(
+        RemoveReferentDelegate(managerAuthorityId, entityId, cf, role)
+      );
+      dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+    }
+    dispatch(closeModal());
+  };
+  const deleteProject = async (projectId: string) => {
+    await dispatch(DeleteEntity('progetto', projectId));
+    dispatch(closeModal());
+    if (entityId) dispatch(GetProgramDetail(entityId));
+  };
+
+  const removeManagerAuthority = async (
+    authorityId: string,
+    programId: string
+  ) => {
+    await dispatch(RemoveManagerAuthority(authorityId, programId, 'programma'));
+    dispatch(GetProgramDetail(programId));
+    dispatch(closeModal());
+  };
+
+  const getAccordionCTA = (title?: string) => {
+    switch (title) {
+      case 'Referenti':
+      case 'Delegati':
+        return authorityInfo?.dettagliInfoEnte?.statoEnte !==
+          entityStatus.TERMINATO && hasUserPermission(['add.ref_del.gest.prgm'])
+          ? {
+              cta: `Aggiungi ${title}`,
+              ctaAction: () =>
+                dispatch(
+                  openModal({
+                    id:
+                      title === 'Referenti'
+                        ? formTypes.REFERENTE
+                        : formTypes.DELEGATO,
+                    payload: {
+                      title: `Aggiungi ${title}`,
+                    },
+                  })
+                ),
+            }
+          : {
+              cta: null,
+              ctaAction: () => ({}),
+            };
+
+      default:
+        return {
+          cta: null,
+          ctaAction: () => ({}),
+        };
+    }
+  };
 
   return (
-    <div className='pb-3'>
-      <DetailLayout
-        nav={nav}
-        titleInfo={{
-          title: programDetails.nomeBreve,
-          status: programDetails.stato,
-          upperTitle: { icon: 'it-user', text: 'Programma' },
-        }}
-        formButtons={
-          showINFOButtons()
-            ? formButtons
-            : showENTEButtons()
-            ? correctButtons
-            : showQUESTIONARIButtons()
-            ? correctButtons
-            : showPROGETTIButtons()
-            ? correctButtons
-            : []
-        }
-        currentTab={activeTab}
-        itemsAccordionList={itemAccordionList}
-        itemsList={itemList}
-        buttonsPosition={showQUESTIONARIButtons() ? 'BOTTOM' : 'TOP'}
-        goBackTitle='Elenco programmi'
-        goBackPath='/area-amministrativa/programmi'
-        surveyDefault={surveyDefault}
-        isRadioButtonItem={radioButtonsSurveys}
-        onRadioChange={(surveyCheckedId: string) =>
-          setNewSurveyDefaultId(surveyCheckedId)
-        }
-      >
-        <>
-          {currentForm}
-          {emptySection}
-        </>
-      </DetailLayout>
-      {currentModal ? currentModal : null}
-      <ConfirmDeleteModal
-        onConfirm={() => {
-          entityId && dispatch(DeleteEntity('programma', entityId));
-          dispatch(closeModal());
-          navigate(-1);
-        }}
-        onClose={() => {
-          dispatch(closeModal());
-        }}
-        text={deleteText}
-      />
-
-      <ManageDelegate />
-      <ManageReferal />
-      {/* /<ManageProgramManagerAuthority /> */}
-      <ManageProject creation />
-      <PreviewSurvey
-        surveyId={surveyPreviewId}
-        onClose={() => dispatch(closeModal())}
-        primaryCtaAction={() => {
-          confirmSurvey();
-          dispatch(closeModal());
-        }}
-        secondaryCtaAction={() => cancelSurvey()}
-      />
+    <div
+      className={clsx(
+        device.mediaIsPhone && 'mt-5',
+        'd-flex',
+        'flex-row',
+        'container'
+      )}
+    >
+      <div className='d-flex flex-column w-100 container'>
+        <DetailLayout
+          nav={nav}
+          titleInfo={{
+            title: programDetails.nomeBreve,
+            status: programDetails.stato,
+            upperTitle: { icon: 'it-user', text: 'Programma' },
+          }}
+          formButtons={correctButtons}
+          currentTab={activeTab}
+          // itemsAccordionList={itemAccordionList}
+          itemsList={itemList}
+          buttonsPosition={buttonsPosition}
+          goBackTitle='Elenco programmi'
+          goBackPath='/area-amministrativa/programmi'
+          showGoBack={
+            userRole !== userRoles.REG &&
+            userRole !== userRoles.REGP &&
+            userRole !== userRoles.FAC
+          }
+          surveyDefault={surveyDefault}
+          isRadioButtonItem={radioButtonsSurveys}
+          onRadioChange={(surveyCheckedId: string) =>
+            setNewSurveyDefaultId(surveyCheckedId)
+          }
+        >
+          <>
+            {currentForm}
+            {emptySection}
+          </>
+        </DetailLayout>
+        {itemAccordionList?.length
+          ? itemAccordionList?.map((item, index) => (
+              <Accordion
+                key={index}
+                title={item.title || ''}
+                totElem={item.items.length}
+                cta={getAccordionCTA(item.title).cta}
+                onClickCta={getAccordionCTA(item.title)?.ctaAction}
+                lastBottom={index === itemAccordionList.length - 1}
+              >
+                {item.items?.length ? (
+                  item.items.map((cardItem) => (
+                    <CardStatusAction
+                      key={cardItem.id}
+                      title={`${cardItem.nome} ${
+                        cardItem.cognome ? cardItem.cognome : ''
+                      }`.trim()}
+                      status={cardItem.stato}
+                      id={cardItem.id}
+                      fullInfo={cardItem.fullInfo}
+                      cf={cardItem.codiceFiscale}
+                      onActionClick={cardItem.actions}
+                    />
+                  ))
+                ) : (
+                  <EmptySection
+                    title={`Non esistono ${item.title?.toLowerCase()} associati`}
+                    horizontal
+                    aside
+                  />
+                )}
+              </Accordion>
+            ))
+          : null}
+        {currentModal ? currentModal : null}
+        <TerminateEntityModal
+          onClose={() => dispatch(closeModal())}
+          onConfirm={(entity: string, terminationDate: string, id?: string) => {
+            switch (entity) {
+              case 'program':
+                terminationDate &&
+                  entityId &&
+                  terminateProgram(entityId, terminationDate);
+                break;
+              case 'project':
+                terminationDate && id && terminateProject(id, terminationDate);
+                break;
+              default:
+                dispatch(closeModal());
+                break;
+            }
+          }}
+        />
+        <ManageDelegate creation />
+        <ManageReferal creation />
+        {/* /<ManageProgramManagerAuthority /> */}
+        <ManageProject creation />
+        <DeleteEntityModal
+          onClose={() => dispatch(closeModal())}
+          onConfirm={async (payload) => {
+            if (payload?.entity === 'referent-delegate')
+              removeReferentDelegate(payload?.cf, payload?.role);
+            if (payload?.entity === 'project')
+              deleteProject(payload?.projectId);
+            if (payload?.entity === 'program' && entityId) {
+              await dispatch(DeleteEntity('programma', entityId));
+              navigate(-1);
+            }
+            if (payload?.entity === 'authority')
+              entityId &&
+                managerAuthority &&
+                managerAuthority?.id &&
+                removeManagerAuthority(managerAuthority.id, entityId);
+          }}
+        />
+        <PreviewSurvey
+          surveyId={surveyPreviewId}
+          onClose={() => dispatch(closeModal())}
+          primaryCtaAction={() => {
+            confirmSurvey();
+            dispatch(closeModal());
+          }}
+          secondaryCtaAction={() => cancelSurvey()}
+        />
+      </div>
     </div>
   );
 };

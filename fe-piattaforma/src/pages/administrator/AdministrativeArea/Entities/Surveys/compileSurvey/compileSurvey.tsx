@@ -14,7 +14,7 @@ import {
   setCompilingSurveyForm,
 } from '../../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 import {
-  /* PostFormCompletedByCitizen,*/ SurveyCreationBodyI,
+  /* PostFormCompletedByCitizen,*/ SurveyResponseBodyI,
 } from '../../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 import { useAppSelector } from '../../../../../../redux/hooks';
 import { FormHelper, FormI, newForm } from '../../../../../../utils/formHelper';
@@ -37,7 +37,7 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
   } = props;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [sections, setSections] = useState<SurveyCreationBodyI['sections']>();
+  const [sections, setSections] = useState<SurveyResponseBodyI['survey-sections']>();
   const [activeSection, setActiveSection] = useState(0);
   const surveyStore = useAppSelector(selectCompilingSurveyForms);
   const [flag, setFlag] = useState<string>('');
@@ -66,7 +66,7 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
 
   const changeRequiredFlag = (form: FormI, flag: string) => {
     const tmpForm = form;
-    if (form[flag].value === '') {
+    if (form[flag]?.value === '') {
       Object.keys(tmpForm).forEach((field) => {
         if (tmpForm[field]?.dependencyNotFlag === flag)
           tmpForm[field].required = true;
@@ -144,6 +144,7 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
       outline: true,
       color: 'primary',
       className: 'mr-auto',
+      buttonClass: 'btn-secondary',
       text: 'Step precedente',
       onClick: () => {
         setActiveSection(activeSection - 1);

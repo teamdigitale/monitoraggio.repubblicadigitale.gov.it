@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import useGuard from '../../../hooks/guard';
 import { RolePermissionI } from '../../../redux/features/roles/rolesSlice';
+import { defaultRedirectUrl } from '../../../routes';
 
 /**
  * This Wrpper/HOC  allow to guard routes and
@@ -12,13 +13,13 @@ import { RolePermissionI } from '../../../redux/features/roles/rolesSlice';
 interface ProtectedRouteI {
   visibleTo?: RolePermissionI[] | undefined;
   children?: JSX.Element;
-  redirect?: string | undefined;
+  redirect?: string;
 }
 
 const ProtectedComponent = ({
   visibleTo,
   children,
-  redirect,
+  redirect = defaultRedirectUrl,
 }: ProtectedRouteI) => {
   const { hasUserPermission } = useGuard();
 

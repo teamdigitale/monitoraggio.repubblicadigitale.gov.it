@@ -34,6 +34,7 @@ export interface formFieldI {
   valid?: boolean;
   type?: InputType;
   required?: boolean;
+  disabled?: boolean;
   regex?: string;
   touched?: boolean;
   options?: OptionType[] | undefined;
@@ -66,6 +67,7 @@ export const newFormField = ({
   valid,
   type = 'text',
   required = false,
+  disabled = false,
   regex = RegexpType.ALPHA_NUMERIC_INPUT,
   touched = false,
   options,
@@ -91,6 +93,7 @@ export const newFormField = ({
   valid: valid || !(required && touched),
   type,
   required,
+  disabled,
   regex,
   touched,
   options,
@@ -122,6 +125,7 @@ export const newForm = (fields: formFieldI[] = [], keepPosition = false) => {
         value,
         type,
         required,
+        disabled,
         regex,
         touched = false,
         options,
@@ -152,6 +156,7 @@ export const newForm = (fields: formFieldI[] = [], keepPosition = false) => {
           valid,
           type,
           required,
+          disabled,
           regex,
           touched,
           options,
@@ -185,7 +190,7 @@ export const FormHelper = {
     field?: formFieldI['field']
   ) => {
     const newForm = { ...form };
-    if (newForm && (value || value === '') && field) {
+    if (newForm && value !== undefined && field) {
       newForm[field] = {
         ...newForm[field],
         touched: true,
@@ -198,8 +203,13 @@ export const FormHelper = {
   isValidForm: (form: FormI = {}) => {
     let isValid = true;
     Object.keys(form).forEach((key: string) => {
-      const { required = false, value, valid = false } = form[key] || {};
-      isValid = isValid && (required ? Boolean(value) && valid : valid);
+      const { required = false, value, valid = false, regex } = form[key] || {};
+      if(regex === RegexpType.BOOLEAN){
+        isValid = isValid && (required ? value !== undefined && value !== null && valid : valid);
+      }else{
+        isValid = isValid && (required ? Boolean(value) && valid : valid);
+      }
+      
     });
     return isValid;
   },
@@ -226,9 +236,13 @@ export const FormHelper = {
       Object.getPrototypeOf(newForm) === Object.prototype
     ) {
       Object.keys(newFormValues)
-        .filter((field) => (newFormValues as any)[field])
+        .filter(
+          (field) =>
+            (newFormValues as any)[field] !== undefined &&
+            (newFormValues as any)[field] !== null
+        )
         .forEach((field) => {
-          if (newFormValues[field] && newForm[field]) {
+          if (newForm[field]) {
             newForm[field] = {
               ...newForm[field],
               valid: validator(newForm[field], (newFormValues as any)[field]),
@@ -258,5 +272,33 @@ export const FormHelper = {
       }
       default:
     }
+  },
+};
+
+export const CommonFields = {
+  CODICE_FISCALE: {
+    minimum: 16,
+    maximum: 16,
+    regex: RegexpType.FISCAL_CODE,
+  },
+  COGNOME: {
+    minimum: 2,
+    maximum: 30,
+    regex: RegexpType.REGISTRY,
+  },
+  EMAIL: {
+    regex: RegexpType.EMAIL,
+    minimum: 5,
+    maximum: 50,
+  },
+  NOME: {
+    minimum: 3,
+    maximum: 30,
+    regex: RegexpType.REGISTRY,
+  },
+  PIVA: {
+    minimum: 11,
+    maximum: 11,
+    regex: RegexpType.PIVA,
   },
 };

@@ -13,4 +13,6 @@ public interface QuestionarioInviatoOnlineRepository extends JpaRepository<Quest
 	public Optional<QuestionarioInviatoOnlineEntity> findByIdQuestionarioCompilatoAndCodiceFiscale(String idQuestionarioCompilato, String codiceFiscaleCittadino);
 	
 	public Optional<QuestionarioInviatoOnlineEntity> findByIdQuestionarioCompilatoAndToken(String idQuestionarioCompilato, String token);
+	
+	public Optional<QuestionarioInviatoOnlineEntity> findByIdQuestionarioCompilatoAndNumDocumento(String idQuestionarioCompilato, String numDocumento);
 }

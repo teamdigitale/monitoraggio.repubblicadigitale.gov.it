@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import it.pa.repdgt.gestioneutente.exception.ResourceNotFoundException;
 import it.pa.repdgt.gestioneutente.exception.RuoloXGruppoException;
 import it.pa.repdgt.gestioneutente.repository.RuoloXGruppoRepository;
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.RuoloXGruppo;
 import it.pa.repdgt.shared.entity.key.RuoloXGruppoKey;
 
@@ -21,6 +23,8 @@ public class RuoloXGruppoService {
 	@Autowired
 	private RuoloXGruppoRepository ruoloXGruppoRepository;
 	
+	@LogMethod
+	@LogExecutionTime
 	public RuoloXGruppo getAssociazioneRuoloXGruppo(String codiceRuolo, String codiceGruppo) {
 		RuoloXGruppoKey id = new RuoloXGruppoKey(codiceRuolo, codiceGruppo);
 		String messaggioErrore = String.format("Il gruppo con codice=%s non associato al ruolo con codice=%s", codiceRuolo, codiceGruppo);
@@ -28,6 +32,8 @@ public class RuoloXGruppoService {
 				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore));
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void salvaNuovaAssociazioneInRuoloXGruppo(String codiceRuolo, String codiceGruppo) {
 		RuoloXGruppoKey id = new RuoloXGruppoKey(codiceRuolo, codiceGruppo);
@@ -37,6 +43,8 @@ public class RuoloXGruppoService {
 		ruoloXGruppoRepository.save(ruoloXGruppo);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void salvaAssociazioniInRuoloXGruppo(String codiceRuolo, List<String> codiciGruppi) {
 		if(codiceRuolo == null || codiciGruppi == null) {
@@ -48,6 +56,8 @@ public class RuoloXGruppoService {
 		}
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void aggiornaAssociazioniRuoloGruppo(String codiceRuolo, List<String> codiciGruppi) {
 		if(codiceRuolo == null || codiciGruppi == null) {
@@ -60,6 +70,8 @@ public class RuoloXGruppoService {
 		}
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellaAssociazioniInRuoloXGruppoByCodiceRuolo(String codiceRuolo) {
 		this.ruoloXGruppoRepository.deleteAllRuoloXGruppoByCodiceRuolo(codiceRuolo);

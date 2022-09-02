@@ -61,7 +61,9 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
   onConfirmText,
   onConfirmFunction,
 }) => {
-  const [currentStep, setCurrentStep] = useState<string>();
+  const [currentStep, setCurrentStep] = useState<string>(
+    selectedSteps.FISCAL_CODE
+  );
   const dispatch = useDispatch();
   const citizenData: CittadinoInfoI | CittadinoInfoI[] | undefined =
     useAppSelector(selectEntitySearchResponse);
@@ -87,10 +89,6 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
       // setCurrentStep(selectedSteps.RESULT_NOT_FOUND);
     }
   }, [citizenData]);
-
-  useEffect(() => {
-    setCurrentStep(selectedSteps.FISCAL_CODE);
-  }, []);
 
   const loadCorrectStep = () => {
     if (

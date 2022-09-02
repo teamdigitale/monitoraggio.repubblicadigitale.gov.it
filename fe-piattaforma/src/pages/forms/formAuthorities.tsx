@@ -7,23 +7,42 @@ import withFormHandler, {
   withFormHandlerProps,
 } from '../../hoc/withFormHandler';
 import {
-  resetAuthorityDetails,
+  //resetAuthorityDetails,
   selectAuthorities,
 } from '../../redux/features/administrativeArea/administrativeAreaSlice';
 import {
   GetAuthorityDetail,
   GetAuthorityManagerDetail,
+  GetPartnerAuthorityDetail,
 } from '../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import { openModal } from '../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../redux/hooks';
-import { formFieldI, newForm, newFormField } from '../../utils/formHelper';
+import {
+  CommonFields,
+  formFieldI,
+  newForm,
+  newFormField,
+} from '../../utils/formHelper';
 import { formTypes } from '../administrator/AdministrativeArea/Entities/utils';
+
+const TipologiaEnteOptions = [
+  { label: 'Ente pubblico', value: 'Ente pubblico' },
+  {
+    label: 'Ente del terzo settore',
+    value: 'Ente del terzo settore',
+  },
+  {
+    label: 'Ente privato',
+    value: 'Ente privato',
+  },
+];
 
 interface EnteInformationI {
   formDisabled?: boolean;
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   setIsFormValid?: (param: boolean | undefined) => void;
-  creation?: boolean;
+  creation?: boolean | undefined;
+  noIdField?: boolean | undefined;
   enteType?: string;
 }
 
@@ -37,17 +56,39 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
   const {
     setFormValues = () => ({}),
     form,
-    onInputChange,
-    sendNewValues,
+    formDisabled = false,
+    onInputChange = () => ({}),
+    sendNewValues = () => ({}),
     isValidForm,
-    setIsFormValid,
-    getFormValues,
+    setIsFormValid = () => ({}),
+    getFormValues = () => ({}),
     creation = false,
+    noIdField = false,
     enteType,
+    updateForm = () => ({}),
+    clearForm = () => ({}),
   } = props;
 
-  const formDisabled = !!props.formDisabled;
-  const { projectId, entityId, idEnte } = useParams();
+  const { projectId, entityId, authorityId } = useParams();
+
+  useEffect(() => {
+    if (
+      form &&
+      formDisabled &&
+      Object.entries(form).some(([_key, value]) => !value.disabled)
+    ) {
+      updateForm(
+        Object.fromEntries(
+          Object.entries(form).map(([key, value]) => [
+            key,
+            { ...value, disabled: formDisabled },
+          ])
+        ),
+        true
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formDisabled, form]);
 
   const newGestoreProgetto = () => {
     dispatch(
@@ -73,6 +114,25 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
     useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (
+      !creation &&
+      form &&
+      (enteType === formTypes.ENTE_GESTORE_PROGRAMMA ||
+        enteType === formTypes.ENTE_GESTORE_PROGETTO ||
+        enteType === formTypes.ENTE_PARTNER)
+    ) {
+      const profilo = newFormField({
+        field: 'profilo',
+        id: 'profilo',
+        required: true,
+        disabled: true,
+      });
+      updateForm({ ...form, profilo });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [creation, enteType, formData]);
+
   if (formData && !creation) {
     <EmptySection
       title={'Questa sezione è ancora vuota'}
@@ -92,7 +152,9 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
         case formTypes.ENTE_PARTNER:
         case formTypes.ENTI_PARTNER:
           //dispatch(GetEntePartnerDetail(secondParam || '', 'prova'));
-          dispatch(GetAuthorityDetail(enteType));
+          projectId &&
+            authorityId &&
+            dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
           break;
         case formTypes.ENTE_GESTORE_PROGRAMMA:
           entityId &&
@@ -101,179 +163,158 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
           break;
         default:
           //dispatch(GetEnteGestoreProgrammaDetail(firstParam || '', 'prova'));
-          idEnte && dispatch(GetAuthorityDetail(idEnte));
+          authorityId && dispatch(GetAuthorityDetail(authorityId));
           break;
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enteType, creation]);
 
   useEffect(() => {
     if (formData) {
       setFormValues(formData);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
 
   useEffect(() => {
-    if (creation) dispatch(resetAuthorityDetails());
+    if (creation) {
+      clearForm();
+      //dispatch(resetAuthorityDetails());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [creation]);
 
-  const onInputDataChange = (
-    value: formFieldI['value'],
-    field?: formFieldI['field']
-  ) => {
-    onInputChange?.(value, field);
-    setIsFormValid?.(isValidForm);
-  };
+  useEffect(() => {
+    setIsFormValid(isValidForm);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isValidForm]);
 
   useEffect(() => {
-    sendNewValues?.(getFormValues?.());
+    sendNewValues(getFormValues());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
-  // const bootClass = '' // 'justify-content-between px-0 px-lg-5 mx-2';
+  const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 
   return (
-    <Form className='mt-5 mb-5' formDisabled={formDisabled}>
-      {form && (
-        <>
-          <Form.Row>
-            {/* <Input
-              {...form?.id}
-              col='col-12 col-lg-6'
-              label='ID'
-              onInputChange={(value, field) => {
-                onInputDataChange(value, field);
-              }}
-            /> */}
+    <Form
+      id='form-authorities'
+      className='mt-5 mb-5'
+      formDisabled={formDisabled}
+    >
+      {creation || noIdField ? (
+        <Form.Row className={bootClass}>
+          <Input
+            {...form?.nome}
+            label='Nome Ente'
+            col='col-12 col-lg-6'
+            onInputChange={onInputChange}
+          />
+          <Input
+            {...form?.nomeBreve}
+            col='col-12 col-lg-6'
+            label='Nome breve'
+            onInputChange={onInputChange}
+          />
+          {formDisabled ? (
             <Input
-              {...form?.nome}
-              label='Nome ente'
-              col='col-12 col-lg-6'
-              placeholder='Inserisci nome programma'
-              onInputChange={(value, field) => {
-                onInputDataChange(value, field);
-              }}
-            />
-            <Input
-              {...form?.nomeBreve}
-              col='col-12 col-lg-6'
-              label='Nome breve'
-              placeholder='Inserisci il nome breve'
-              onInputChange={(value, field) => {
-                onInputDataChange(value, field);
-              }}
-            />
-          </Form.Row>
-          <Form.Row>
-            {/* <Input
-              {...form?.nomeBreve}
-              col='col-12 col-lg-6'
-              label='Nome breve'
-              placeholder='Inserisci il nome breve'
-              onInputChange={(value, field) => {
-                onInputDataChange(value, field);
-              }}
-            /> */}
-            {/* <Input
               {...form?.tipologia}
               label='Tipologia'
               col='col-12 col-lg-6'
-              placeholder='Inserisci la tipologia'
-              onInputChange={(value, field) => {
-                onInputDataChange(value, field);
-              }}
-            /> */}
-            {formDisabled ? (
-              <Input
-                {...form?.tipologia}
-                label='Tipologia'
-                col='col-12 col-lg-6'
-                onInputChange={(value, field) => {
-                  onInputDataChange(value, field);
-                }}
-              />
-            ) : (
-              <Select
-                {...form?.tipologia}
-                value={form?.tipologia.value as string}
-                col='col-12 col-lg-6'
-                label='Tipologia'
-                placeholder='Inserisci la tipologia'
-                options={[
-                  { label: 'Ente pubblico', value: 'Ente pubblico' },
-                  {
-                    label: 'Ente del terzo settore',
-                    value: 'Ente del terzo settore',
-                  },
-                ]}
-                onInputChange={(value, field) => {
-                  onInputDataChange(value, field);
-                }}
-                wrapperClassName='mb-5'
-                aria-label='tipologia'
-              />
-            )}
-            <Input
-              {...form?.indirizzoPec}
-              label='PEC'
-              col='col-12 col-lg-6'
-              placeholder='Inserisci PEC'
-              onInputChange={(value, field) => {
-                onInputDataChange(value, field);
-              }}
+              onInputChange={onInputChange}
             />
-          </Form.Row>
-          {/* <Form.Row className={bootClass}>
+          ) : (
+            <Select
+              {...form?.tipologia}
+              value={form?.tipologia.value as string}
+              col='col-12 col-lg-6'
+              label='Tipologia'
+              placeholder='Seleziona la tipologia'
+              options={TipologiaEnteOptions}
+              onInputChange={onInputChange}
+              wrapperClassName='mb-5 pr-lg-3'
+              aria-label='tipologia'
+            />
+          )}
           <Input
-            {...form?.profilo}
-            label='Profilo'
+            {...form?.piva}
+            label='Codice Fiscale'
             col='col-12 col-lg-6'
-            placeholder='Inserisci il profilo'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
+            onInputChange={onInputChange}
           />
           <Input
-            {...form?.fiscalCode}
-            label='Codice fiscale'
             col='col-12 col-lg-6'
-            placeholder='Inserisci il codice fiscale'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
+            {...form?.sedeLegale}
+            label='Sede legale'
+            onInputChange={onInputChange}
           />
-        </Form.Row> */}
-          <Form.Row>
+          <Input
+            {...form?.indirizzoPec}
+            label='PEC'
+            col='col-12 col-lg-6'
+            onInputChange={onInputChange}
+          />
+        </Form.Row>
+      ) : (
+        <Form.Row className={bootClass}>
+          <Input {...form?.id} col='col-12 col-lg-6' label='ID' />
+          <Input
+            {...form?.nome}
+            label='Nome Ente'
+            col='col-12 col-lg-6'
+            onInputChange={onInputChange}
+          />
+          <Input
+            {...form?.nomeBreve}
+            col='col-12 col-lg-6'
+            label='Nome breve'
+            onInputChange={onInputChange}
+          />
+          {formDisabled ? (
             <Input
+              {...form?.tipologia}
+              label='Tipologia'
               col='col-12 col-lg-6'
-              {...form?.sedeLegale}
-              label='Sede legale'
-              placeholder='Inserisci la sede legale'
-              onInputChange={(value, field) => {
-                onInputDataChange(value, field);
-              }}
+              onInputChange={onInputChange}
             />
-            <Input
-              {...form?.piva}
-              label='Partita Iva'
+          ) : (
+            <Select
+              {...form?.tipologia}
+              value={form?.tipologia.value as string}
               col='col-12 col-lg-6'
-              placeholder='Inserisci la partita iva'
-              onInputChange={(value, field) => {
-                onInputDataChange(value, field);
-              }}
+              label='Tipologia'
+              placeholder='Seleziona la tipologia'
+              options={TipologiaEnteOptions}
+              onInputChange={onInputChange}
+              wrapperClassName='mb-5 pr-lg-3'
+              aria-label='tipologia'
             />
-          </Form.Row>
-          {/* <Form.Row className={bootClass}>
-            <Input
-              {...form?.indirizzoPec}
-              label='PEC'
-              col='col-12 col-lg-6'
-              placeholder='Inserisci PEC'
-              onInputChange={(value, field) => {
-                onInputDataChange(value, field);
-              }}
-            />
-          </Form.Row> */}
-        </>
+          )}
+          <Input
+            {...form?.piva}
+            label='Codice Fiscale'
+            col='col-12 col-lg-6'
+            onInputChange={onInputChange}
+          />
+          <Input
+            {...form?.sedeLegale}
+            col='col-12 col-lg-6'
+            label='Sede legale'
+            onInputChange={onInputChange}
+          />
+          <Input
+            {...form?.indirizzoPec}
+            label='PEC'
+            col='col-12 col-lg-6'
+            onInputChange={onInputChange}
+          />
+          {form?.profilo ? (
+            <Input {...form?.profilo} label='Profilo' col='col-12 col-lg-6' />
+          ) : (
+            <span />
+          )}
+        </Form.Row>
       )}
     </Form>
   );
@@ -288,24 +329,23 @@ const form = newForm([
   newFormField({
     field: 'nome',
     id: 'nome',
+    required: true,
   }),
   newFormField({
     field: 'nomeBreve',
     id: 'nomeBreve',
+    required: true,
   }),
   newFormField({
     field: 'tipologia',
     id: 'tipologia',
+    required: true,
   }),
-  /*
   newFormField({
-    field: 'profilo',
-    id: 'profilo',
-  }),
-  */
-  newFormField({
+    ...CommonFields.PIVA,
     field: 'piva',
     id: 'piva',
+    required: true,
   }),
   /*
   newFormField({
@@ -318,6 +358,7 @@ const form = newForm([
     id: 'sedeLegale',
   }),
   newFormField({
+    ...CommonFields.EMAIL,
     field: 'indirizzoPec',
     id: 'indirizzoPec',
   }),

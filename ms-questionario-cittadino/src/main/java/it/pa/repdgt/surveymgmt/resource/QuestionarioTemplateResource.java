@@ -49,13 +49,10 @@ public class QuestionarioTemplateResource implements Serializable {
 		@JsonProperty(value = "title")
 		private String titolo;
 
-		@JsonProperty(value = "default-section")
-		private Boolean sezioneDiDefault;
-
 		@JsonProperty(value = "schema")
-		private Object schema;
+		private String schema;
 		
 		@JsonProperty(value = "schemaui")
-		private Object schemaui;
+		private String schemaui;
 	}
 }

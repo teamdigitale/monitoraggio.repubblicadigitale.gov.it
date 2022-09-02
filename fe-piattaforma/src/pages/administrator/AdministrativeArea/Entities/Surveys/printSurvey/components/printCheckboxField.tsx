@@ -16,7 +16,7 @@ const PrintCheckboxField: React.FC<PrintFieldI> = (props) => {
         'print-fields-container__checkbox-field'
       )}
     >
-      <Form className={clsx('d-flex', 'align-items-end')}>
+      <Form id='form-print-checkbox' className={clsx('d-flex', 'align-items-end')}>
         <p className='invisible'>
           <strong>{info.label}</strong> {'(scelta multipla)'}
         </p>

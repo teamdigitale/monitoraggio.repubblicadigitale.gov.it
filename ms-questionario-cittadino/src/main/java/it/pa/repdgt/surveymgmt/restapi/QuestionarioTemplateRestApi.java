@@ -5,14 +5,10 @@ import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 import org.apache.commons.csv.CSVFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiParam;
 import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
-import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 import it.pa.repdgt.surveymgmt.mapper.QuestionarioTemplateMapper;
 import it.pa.repdgt.surveymgmt.param.FiltroListaQuestionariTemplateParam;
@@ -52,6 +47,16 @@ public class QuestionarioTemplateRestApi {
 	@Autowired
 	private QuestionarioTemplateService questionarioTemplateService;
 	
+	/**
+	 * Restituisce questionatio template che è associato al programma con particolare id
+	 * 
+	 * */
+	@ResponseStatus(value = HttpStatus.OK)
+	@GetMapping(path = "/programma/{idProgramma}")
+	public QuestionarioTemplateCollection getQuestionarioTemplateByIdProgramma(@PathVariable(value = "idProgramma") Long idProgramma) {
+		return this.questionarioTemplateService.getQuestionarioTemplateByIdProgramma(idProgramma);
+	}
+	
 	/***
 	 * Restituisce tutti i TemplateQuestionario paginati persistiti su database MongoDb 
 	 * 
@@ -61,24 +66,29 @@ public class QuestionarioTemplateRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public QuestionariTemplatePaginatiResource getAllQuestionariTemplatate(
 			@RequestParam(name = "criterioRicerca", required = false) final String criterioRicerca,
-			@RequestParam(name = "stato",           required = false) final StatoQuestionarioEnum statoQuestionario,
+			@RequestParam(name = "stato",           required = false) final String statoQuestionarioTemplate,
 			@RequestParam(name = "currPage", defaultValue = "0")  final String currPage,
 			@RequestParam(name = "pageSize", defaultValue = "10") final String pageSize,
 			@RequestBody @Valid final ProfilazioneParam profilazioneParam) {
-		final Pageable pagina = PageRequest.of(Integer.parseInt(currPage), Integer.parseInt(pageSize));
 		final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplateParam = new FiltroListaQuestionariTemplateParam();
 		filtroListaQuestionariTemplateParam.setCriterioRicerca(criterioRicerca);
-		filtroListaQuestionariTemplateParam.setStatoQuestionario(statoQuestionario);
-		final Page<QuestionarioTemplateEntity> paginaQuestionariTemplate = this.questionarioTemplateService.getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro(
+		filtroListaQuestionariTemplateParam.setStatoQuestionario(statoQuestionarioTemplate);
+		filtroListaQuestionariTemplateParam.setCurrPage(Integer.parseInt(currPage));
+		filtroListaQuestionariTemplateParam.setPageSize(Integer.parseInt(pageSize));
+		filtroListaQuestionariTemplateParam.setStatoQuestionario(statoQuestionarioTemplate);
+		final List<QuestionarioTemplateEntity> questionariTemplateList = this.questionarioTemplateService.getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro(
 				profilazioneParam,
-				filtroListaQuestionariTemplateParam,
-				pagina
+				filtroListaQuestionariTemplateParam
 			);
-		final List<QuestionarioTemplateLightResource> questionariTemplateLightResource = this.questionarioTemplateMapper.toLightResourceFrom(paginaQuestionariTemplate.getContent());
+		final List<QuestionarioTemplateLightResource> questionariTemplateLightResource = this.questionarioTemplateMapper.toLightResourceFrom(questionariTemplateList);
+	
+		final Long totaleElementi = this.questionarioTemplateService.getNumeroTotaleQuestionariTemplateByFiltro(criterioRicerca, statoQuestionarioTemplate);
+		final int numeroPagine = (int) (totaleElementi / Integer.parseInt(pageSize));
+
 		return new QuestionariTemplatePaginatiResource(
 				questionariTemplateLightResource,
-				paginaQuestionariTemplate.getTotalPages(),
-				paginaQuestionariTemplate.getTotalElements()
+				totaleElementi % Integer.parseInt(pageSize) > 0 ? numeroPagine+1 : numeroPagine,
+				totaleElementi
 			);
 	}
 	
@@ -91,11 +101,11 @@ public class QuestionarioTemplateRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<String> getAllStatiDropdown(
 			@RequestParam(name = "criterioRicerca", required = false) final String criterioRicerca,
-			@RequestParam(name = "stato",           required = false) final StatoQuestionarioEnum statoQuestionario,
+			@RequestParam(name = "stato",           required = false) final String statoQuestionarioTemplate,
 			@RequestBody @Valid final ProfilazioneParam profilazioneParam) {
 		final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplateParam = new FiltroListaQuestionariTemplateParam();
 		filtroListaQuestionariTemplateParam.setCriterioRicerca(criterioRicerca);
-		filtroListaQuestionariTemplateParam.setStatoQuestionario(statoQuestionario);
+		filtroListaQuestionariTemplateParam.setStatoQuestionario(statoQuestionarioTemplate);
 		List<String> listaStati = this.questionarioTemplateService.getAllStatiDropdownByProfilazioneAndFiltro(
 				profilazioneParam,
 				filtroListaQuestionariTemplateParam
@@ -193,12 +203,12 @@ public class QuestionarioTemplateRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public ResponseEntity<InputStreamResource> downloadCSVSElencoQuestionariTemplate(
 			@RequestParam(name = "criterioRicerca", required = false) final String criterioRicerca,
-			@RequestParam(name = "stato",           required = false) final StatoQuestionarioEnum statoQuestionario,
+			@RequestParam(name = "stato",           required = false) final String statoQuestionarioTemplate,
 			@RequestBody @Valid final ProfilazioneParam profilazioneParam) {
 		final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplateParam = new FiltroListaQuestionariTemplateParam();
 		filtroListaQuestionariTemplateParam.setCriterioRicerca(criterioRicerca);
-		filtroListaQuestionariTemplateParam.setStatoQuestionario(statoQuestionario);
-		final List<QuestionarioTemplateEntity> questionariTemplateEntity = this.questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltro(
+		filtroListaQuestionariTemplateParam.setStatoQuestionario(statoQuestionarioTemplate);
+		final List<QuestionarioTemplateEntity> questionariTemplateEntity = this.questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltroSenzaPaginazione(
 				profilazioneParam,
 				filtroListaQuestionariTemplateParam
 			);

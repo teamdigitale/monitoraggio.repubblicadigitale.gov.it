@@ -1,12 +1,8 @@
 package it.pa.repdgt.gestioneutente.restapi;
 
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,12 +17,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import it.pa.repdgt.gestioneutente.request.CreaContestoRequest;
 import it.pa.repdgt.gestioneutente.request.IntegraContestoRequest;
 import it.pa.repdgt.gestioneutente.request.ProfilazioneRequest;
 import it.pa.repdgt.gestioneutente.service.ContestoService;
-import it.pa.repdgt.shared.entity.RuoloEntity;
-import it.pa.repdgt.shared.entity.UtenteEntity;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -68,14 +61,13 @@ public class ContestoRestApiTest{
 	
 	@Test
 	public void confermaIntegrazioneTest() throws Exception {
-		
 		IntegraContestoRequest integraContestoRequestRequest = new IntegraContestoRequest();
 		integraContestoRequestRequest.setCodiceFiscale("codiceFiscale");
-		integraContestoRequestRequest.setCognome("cognome");
-		integraContestoRequestRequest.setNome("nome");
 		integraContestoRequestRequest.setTelefono("45234234");
 		integraContestoRequestRequest.setBio("bio");
 		integraContestoRequestRequest.setEmail("a@a.it");
+		integraContestoRequestRequest.setTipoContratto("test");
+		integraContestoRequestRequest.setBio("bio test");
 		integraContestoRequestRequest.setAbilitazioneConsensoTrattamentoDatiPersonali(true);
 		
 		this.mockMvc

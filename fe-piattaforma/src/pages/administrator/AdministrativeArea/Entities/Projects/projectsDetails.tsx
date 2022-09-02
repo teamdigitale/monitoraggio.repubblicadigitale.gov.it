@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Icon, Nav } from 'design-react-kit';
+import { Icon, Nav, Tooltip } from 'design-react-kit';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { formTypes } from '../utils';
+import { entityStatus, formTypes, userRoles } from '../utils';
 import {
   CRUDActionsI,
   CRUDActionTypes,
@@ -15,28 +15,56 @@ import {
 } from '../../../../../redux/features/modal/modalSlice';
 import { useDispatch } from 'react-redux';
 import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
-import ConfirmDeleteModal from '../modals/confirmDeleteModal';
 import ManageProject from '../modals/manageProject';
 import ManageHeadquarter from '../../../../../components/AdministrativeArea/Entities/Headquarters/ManageHeadquarter/manageHeadquarter';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
   selectDevice,
-  updateBreadcrumb,
+  setInfoIdsBreadcrumb,
 } from '../../../../../redux/features/app/appSlice';
 import clsx from 'clsx';
-import { selectProjects } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
-//import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
-import { EmptySection, NavLink } from '../../../../../components';
+import {
+  selectAuthorities,
+  selectProjects,
+} from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import {
+  Accordion,
+  CardStatusAction,
+  EmptySection,
+  NavLink,
+} from '../../../../../components';
 import ProjectAccordionForm from '../../../../forms/formProjects/ProjectAccordionForm/ProjectAccordionForm';
 import FormAuthorities from '../../../../forms/formAuthorities';
 import ManagePartnerAuthority from '../modals/managePartnerAuthority';
-import { DeleteEntity } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
+import {
+  DeleteEntity,
+  TerminateEntity,
+} from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
+import {
+  GetAuthorityManagerDetail,
+  RemoveManagerAuthority,
+  RemoveReferentDelegate,
+  TerminatePartnerAuthority,
+  UserAuthorityRole,
+} from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
+import {
+  ActivateProject,
+  GetProjectDetail,
+} from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
+import TerminateEntityModal from '../../../../../components/AdministrativeArea/Entities/General/TerminateEntityModal/TerminateEntityModal';
+import ManageDelegate from '../modals/manageDelegate';
+import ManageReferal from '../modals/manageReferal';
 import ManageManagerAuthority from '../modals/manageManagerAuthority';
+import { RemoveAuthorityHeadquarter } from '../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
+import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
+import useGuard from '../../../../../hooks/guard';
+import UploadCSVModal from '../../../../../components/AdministrativeArea/Entities/General/UploadCSVModal/UploadCSVModal';
+import { selectProfile } from '../../../../../redux/features/user/userSlice';
 
 const tabs = {
-  INFO: 'info-progetto',
+  INFO: 'info',
   ENTE_GESTORE: 'ente-gestore-progetto',
-  ENTI_PARTNER: 'enti-partner-progetto',
+  ENTI_PARTNER: 'enti-partner',
   SEDI: 'sedi',
 };
 
@@ -47,11 +75,14 @@ export const buttonsPositioning = {
 
 const ProjectsDetails = () => {
   const { mediaIsDesktop, mediaIsPhone } = useAppSelector(selectDevice);
-  const progetti = useAppSelector(selectProjects);
-  const managingAuthorityID = progetti.detail?.idEnteGestoreProgetto;
-  const PartnerAuthoritiesList = progetti.detail?.entiPartner;
-  const headquarterList = progetti?.detail?.sedi;
-  const [deleteText, setDeleteText] = useState<string>('');
+  const { codiceRuolo: userRole } = useAppSelector(selectProfile) || {};
+  const project = useAppSelector(selectProjects).detail;
+  const projectDetails = project.dettagliInfoProgetto;
+  const programDetails = project.dettagliInfoProgramma;
+  const managingAuthorityID = project.idEnteGestoreProgetto;
+  const partnerAuthoritiesList = project.entiPartner;
+  const headquarterList = project?.sedi;
+  const authorityInfo = useAppSelector(selectAuthorities).detail;
   const [activeTab, setActiveTab] = useState<string>(tabs.INFO);
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
   const [currentModal, setCorrectModal] = useState<React.ReactElement>();
@@ -60,6 +91,7 @@ const ProjectsDetails = () => {
   const [itemAccordionList, setItemAccordionList] = useState<
     ItemsListI[] | null
   >();
+  const [openOne, toggleOne] = useState(false);
   const [correctButtons, setCorrectButtons] = useState<ButtonInButtonsBar[]>(
     []
   );
@@ -74,38 +106,128 @@ const ProjectsDetails = () => {
   const partnerRef = useRef<HTMLLIElement>(null);
   const sediRef = useRef<HTMLLIElement>(null);
   const infoRef = useRef<HTMLLIElement>(null);
-  const { projectId } = useParams();
-  const projectshortName =
-    progetti.detail?.dettaglioProgetto?.generalInfo?.nomeBreve;
+  const { entityId, projectId, identeDiRiferimento, authorityType } =
+    useParams();
+  const managerAuthority =
+    useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
+
+  const { hasUserPermission } = useGuard();
 
   useEffect(() => {
-    if (projectId && projectshortName) {
+    // For breadcrumb
+    if (location.pathname === `/area-amministrativa/progetti/${entityId}`) {
+      navigate(`/area-amministrativa/progetti/${entityId}/info`);
+    }
+    if (
+      location.pathname ===
+      `/area-amministrativa/progetti/${entityId}/${identeDiRiferimento}`
+    ) {
+      navigate(`/area-amministrativa/progetti/${entityId}/info`);
+    }
+  }, []);
+
+  useEffect(() => {
+    // For breadcrumb
+    if (projectId && projectDetails?.nome) {
       dispatch(
-        updateBreadcrumb([
-          {
-            label: 'Area Amministrativa',
-            url: '/area-amministrativa',
-            link: false,
-          },
-          {
-            label: 'Progetti',
-            url: '/area-amministrativa/progetti',
-            link: true,
-          },
-          {
-            label: projectshortName,
-            url: `/area-amministrativa/progetti/${projectId}`,
-            link: false,
-          },
-        ])
+        setInfoIdsBreadcrumb({
+          id: programDetails?.id,
+          nome: programDetails?.nomeBreve,
+        })
+      );
+      dispatch(
+        setInfoIdsBreadcrumb({ id: projectId, nome: projectDetails?.nome })
       );
     }
-  }, [projectId, projectshortName]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [projectId, projectDetails]);
 
   useEffect(() => {
     scrollTo(0, 0);
     centerActiveItem();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
+
+  const getActionRedirectURL = (userType: string, userId: string) => {
+    if (entityId && authorityType && managingAuthorityID) {
+      return `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${authorityType}/${managingAuthorityID}/${userType}/${userId}`;
+    }
+    return `/area-amministrativa/progetti/${projectId}/ente-gestore-progetto/${managingAuthorityID}/${userType}/${userId}`;
+  };
+
+  const onActionClickReferenti: CRUDActionsI = hasUserPermission([
+    'del.ref_del.gest.prgt',
+  ])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            getActionRedirectURL(
+              userRoles.REGP,
+              (typeof td === 'string' ? td : td.id).toString()
+            )
+          );
+        },
+        [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+          dispatch(
+            openModal({
+              id: 'delete-entity',
+              payload: {
+                entity: 'referent-delegate',
+                cf: td,
+                role: 'REGP',
+                text: 'Confermi di voler disassociare questo referente?',
+              },
+            })
+          );
+        },
+      }
+    : {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            getActionRedirectURL(
+              userRoles.REGP,
+              (typeof td === 'string' ? td : td.id).toString()
+            )
+          );
+        },
+      };
+
+  const onActionClickDelegati: CRUDActionsI = hasUserPermission([
+    'del.ref_del.gest.prgt',
+  ])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            getActionRedirectURL(
+              userRoles.DEGP,
+              (typeof td === 'string' ? td : td.id).toString()
+            )
+          );
+        },
+        [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+          dispatch(
+            openModal({
+              id: 'delete-entity',
+              payload: {
+                entity: 'referent-delegate',
+                cf: td,
+                role: 'DEGP',
+                text: 'Confermi di voler disassociare questo delegato?',
+              },
+            })
+          );
+        },
+      }
+    : {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            getActionRedirectURL(
+              userRoles.DEGP,
+              (typeof td === 'string' ? td : td.id).toString()
+            )
+          );
+        },
+      };
 
   const centerActiveItem = () => {
     switch (activeTab) {
@@ -129,8 +251,8 @@ const ProjectsDetails = () => {
 
   useEffect(() => {
     const locationSplit = location.pathname.split('/');
-    if (locationSplit.length > 0) {
-      switch (locationSplit[locationSplit.length - 1]) {
+    if (locationSplit?.length > 0) {
+      switch (locationSplit[locationSplit?.length - 1]) {
         case tabs.INFO:
           setActiveTab(tabs.INFO);
           break;
@@ -145,9 +267,45 @@ const ProjectsDetails = () => {
           break;
         default:
           setActiveTab(tabs.INFO);
+          break;
       }
     }
   }, [location]);
+
+  const partnerAuthorityButtons: ButtonInButtonsBar[] = [
+    {
+      size: 'xs',
+      color: 'primary',
+      iconForButton: 'it-download',
+      iconColor: 'primary',
+      outline: true,
+      buttonClass: 'btn-secondary',
+      text: 'Carica lista enti partner',
+      onClick: () =>
+        dispatch(
+          openModal({
+            id: 'upload-csv',
+            payload: {
+              title: 'Carica lista Enti partner',
+              entity: 'enti',
+              data: 'NOME,NOME BREVE, TIPOLOGIA, CODICE FISCALE, SEDE LEGALE, PEC',
+            },
+          })
+        ),
+    },
+    {
+      size: 'xs',
+      color: 'primary',
+      text: ' Aggiungi Ente partner',
+      onClick: () =>
+        dispatch(
+          openModal({
+            id: formTypes.ENTE_PARTNER,
+            payload: { title: 'Aggiungi ente partner' },
+          })
+        ),
+    },
+  ];
 
   const EmptySectionButtons: ButtonInButtonsBar[] = [
     {
@@ -169,7 +327,7 @@ const ProjectsDetails = () => {
       onClick: () =>
         dispatch(
           openModal({
-            id: 'ente-gestore-progetto',
+            id: 'ente-partner',
             payload: { title: 'Aggiungi Ente partner' },
           })
         ),
@@ -181,7 +339,7 @@ const ProjectsDetails = () => {
       onClick: () =>
         dispatch(
           openModal({
-            id: formTypes.SEDE,
+            id: 'sede',
             payload: { title: 'Aggiungi Sede' },
           })
         ),
@@ -190,8 +348,7 @@ const ProjectsDetails = () => {
 
   const AuthoritySection = () => {
     if (managingAuthorityID) {
-      setButtonsPosition('TOP');
-      setDeleteText('Confermi di voler eliminare questo gestore di progetto?');
+      setButtonsPosition('BOTTOM');
       setCurrentForm(
         <FormAuthorities
           formDisabled
@@ -200,81 +357,192 @@ const ProjectsDetails = () => {
       );
       setCorrectModal(<ManageManagerAuthority />);
       setItemList(null);
-      setCorrectButtons([
+      setCorrectButtons(
+        authorityInfo?.dettagliInfoEnte?.statoEnte !== entityStatus.TERMINATO &&
+          hasUserPermission(['upd.enti.gest.prgt'])
+          ? [
+              {
+                size: 'xs',
+                outline: true,
+                color: 'primary',
+                buttonClass: 'btn-secondary',
+                text: 'Elimina',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: 'delete-entity',
+                      payload: {
+                        entity: 'authority',
+                        text: 'Confermi di volere eliminare questo gestore di progetto?',
+                      },
+                    })
+                  ),
+              },
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Modifica',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: 'ente-gestore',
+                      payload: { title: 'Modifica ente gestore progetto' },
+                    })
+                  ),
+              },
+            ]
+          : []
+      );
+      setItemAccordionList([
         {
-          size: 'xs',
-          outline: true,
-          color: 'primary',
-          text: 'Elimina',
-          onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+          title: 'Referenti',
+          items:
+            authorityInfo?.referentiEnteGestore?.map(
+              (ref: { [key: string]: string }) => ({
+                ...ref,
+                id: ref.id,
+                codiceFiscale: ref.codiceFiscale,
+                actions:
+                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                    entityStatus.TERMINATO || ref?.stato !== entityStatus.ATTIVO
+                    ? {
+                        [CRUDActionTypes.VIEW]:
+                          onActionClickReferenti[CRUDActionTypes.VIEW],
+                      }
+                    : onActionClickReferenti,
+              })
+            ) || [],
         },
         {
-          size: 'xs',
-          color: 'primary',
-          text: 'Modifica',
-          onClick: () =>
-            dispatch(
-              openModal({
-                id: 'ente-gestore',
-                payload: { title: 'Modifica ente gestore progetto' },
+          title: 'Delegati',
+          items:
+            authorityInfo?.delegatiEnteGestore?.map(
+              (del: { [key: string]: string }) => ({
+                ...del,
+                id: del.id,
+                codiceFiscale: del.codiceFiscale,
+                actions:
+                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                    entityStatus.TERMINATO || del?.stato !== entityStatus.ATTIVO
+                    ? {
+                        [CRUDActionTypes.VIEW]:
+                          onActionClickDelegati[CRUDActionTypes.VIEW],
+                      }
+                    : onActionClickDelegati,
               })
-            ),
+            ) || [],
+        },
+        {
+          title: 'Sedi',
+          items:
+            authorityInfo?.sediGestoreProgetto?.map(
+              (sedi: { [key: string]: string }) => ({
+                ...sedi,
+                actions:
+                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                  entityStatus.TERMINATO
+                    ? {
+                        [CRUDActionTypes.VIEW]:
+                          onActionClickSede[CRUDActionTypes.VIEW],
+                      }
+                    : {
+                        [CRUDActionTypes.VIEW]:
+                          onActionClickSede[CRUDActionTypes.VIEW],
+                        [CRUDActionTypes.DELETE]:
+                          sedi.stato !== entityStatus.ATTIVO
+                            ? undefined
+                            : hasUserPermission(['del.sede.gest.prgt'])
+                            ? onActionClickSede[CRUDActionTypes.DELETE]
+                            : undefined,
+                      },
+              })
+            ) || [],
         },
       ]);
       setEmptySection(undefined);
     } else {
       setItemList(null);
       setCorrectButtons([]);
+      setItemAccordionList([]);
       setCurrentForm(undefined);
       setCorrectModal(<ManageManagerAuthority creation />);
       setEmptySection(
         <EmptySection
           title={'Questa sezione è ancora vuota'}
-          subtitle={
-            'Per attivare il progetto aggiungi un Ente gestore e una Sede'
+          subtitle={'Per attivare il progetto aggiungi un Ente gestore'}
+          buttons={
+            hasUserPermission(['add.enti.gest.prgt'])
+              ? EmptySectionButtons.slice(0, 1)
+              : []
           }
-          buttons={EmptySectionButtons.slice(0, 1)}
         />
       );
     }
   };
 
   const PartnerAuthoritySection = () => {
-    if (PartnerAuthoritiesList?.length) {
+    setCorrectModal(<ManagePartnerAuthority creation />);
+    if (
+      partnerAuthoritiesList?.filter(
+        (entePartner: { associatoAUtente: boolean }) =>
+          entePartner.associatoAUtente
+      )?.length
+    ) {
       setButtonsPosition('BOTTOM');
       setCurrentForm(undefined);
-      setCorrectModal(<ManagePartnerAuthority creation />);
       setItemList({
-        items: PartnerAuthoritiesList?.map(
-          (ente: { id: string; nome: string; ref: string; stato: string }) => ({
-            ...ente,
-            fullInfo: { ref: ente.ref },
-            actions: onActionClickEntiPartner,
-          })
-        ),
+        items: partnerAuthoritiesList
+          .filter(
+            (entePartner: { associatoAUtente: boolean }) =>
+              entePartner.associatoAUtente
+          )
+          ?.map(
+            (entePartner: {
+              id: string;
+              nome: string;
+              referenti: string;
+              stato: string;
+            }) => ({
+              ...entePartner,
+              fullInfo: { ref: entePartner.referenti },
+              actions:
+                entePartner.stato !== entityStatus.ATTIVO ||
+                projectDetails?.stato === entityStatus.TERMINATO
+                  ? {
+                      [CRUDActionTypes.VIEW]:
+                        onActionClickEntiPartner[CRUDActionTypes.VIEW],
+                    }
+                  : {
+                      [CRUDActionTypes.VIEW]:
+                        onActionClickEntiPartner[CRUDActionTypes.VIEW],
+                      [CRUDActionTypes.DELETE]: hasUserPermission([
+                        'del.ente.partner',
+                      ])
+                        ? (td: TableRowI | string) => {
+                            dispatch(
+                              openModal({
+                                id: 'delete-entity',
+                                payload: {
+                                  entity: 'partner-authority',
+                                  authorityId: td,
+                                  text: 'Confermi di volere disassociare questo Ente partner?',
+                                },
+                              })
+                            );
+                            // projectId && removeAuthorityPartner(td as string, projectId);
+                          }
+                        : undefined,
+                    },
+            })
+          ),
       });
       setItemAccordionList(null);
-      setCorrectButtons([
-        {
-          size: 'xs',
-          color: 'primary',
-          text: 'Carica lista enti partner',
-          onClick: () => console.log('carica lista enti partner'),
-        },
-        {
-          size: 'xs',
-          outline: true,
-          color: 'primary',
-          text: ' Aggiungi Ente partner',
-          onClick: () =>
-            dispatch(
-              openModal({
-                id: formTypes.ENTE_PARTNER,
-                payload: { title: 'Aggiungi ente partner' },
-              })
-            ),
-        },
-      ]);
+      setCorrectButtons(
+        hasUserPermission(['add.ente.partner']) &&
+          projectDetails?.stato !== entityStatus.TERMINATO
+          ? partnerAuthorityButtons
+          : []
+      );
       setEmptySection(undefined);
     } else {
       setItemAccordionList(null);
@@ -283,9 +551,16 @@ const ProjectsDetails = () => {
       setCorrectButtons([]);
       setEmptySection(
         <EmptySection
-          title={'Questa sezione è ancora vuota'}
-          subtitle={'Per attivare il progetto aggiungi un Ente partner'}
-          buttons={EmptySectionButtons.slice(1, 2)}
+          title='Questa sezione è ancora vuota'
+          withIcon
+          icon='it-note'
+          //subtitle='Per attivare il progetto aggiungi un Ente partner'
+          buttons={
+            hasUserPermission(['add.ente.partner']) &&
+            projectDetails?.stato !== entityStatus.TERMINATO
+              ? partnerAuthorityButtons
+              : []
+          }
         />
       );
     }
@@ -303,6 +578,7 @@ const ProjectsDetails = () => {
             nome: string;
             stato: string;
             enteDiRiferimento: string;
+            identeDiRiferimento?: string | number;
             nrFacilitatori: number;
             serviziErogati: string;
           }) => ({
@@ -312,26 +588,38 @@ const ProjectsDetails = () => {
               nFacilitatori: sede.nrFacilitatori,
               serviziErogati: sede.serviziErogati,
             },
-            actions: onActionClickSede,
+            actions: {
+              [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+                if (entityId && projectId) {
+                  navigate(
+                    `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${sede?.identeDiRiferimento}/sedi/${td}`
+                  );
+                } else {
+                  projectId &&
+                    navigate(
+                      `/area-amministrativa/progetti/${projectId}/${sede?.identeDiRiferimento}/sedi/${td}`
+                    );
+                }
+              },
+            },
           })
         ),
       });
       setItemAccordionList(null);
       setCorrectButtons([
-        {
-          size: 'xs',
-          outline: true,
-          color: 'primary',
-
-          text: ' Aggiungi sede',
-          onClick: () =>
-            dispatch(
-              openModal({
-                id: formTypes.SEDE,
-                payload: { title: 'Sede' },
-              })
-            ),
-        },
+        // {
+        //   size: 'xs',
+        //   outline: true,
+        //   color: 'primary',
+        //   text: ' Aggiungi sede',
+        //   onClick: () =>
+        //     dispatch(
+        //       openModal({
+        //         id: formTypes.SEDE,
+        //         payload: { title: 'Sede' },
+        //       })
+        //     ),
+        // },
       ]);
       setEmptySection(undefined);
     } else {
@@ -341,9 +629,11 @@ const ProjectsDetails = () => {
       setCorrectButtons([]);
       setEmptySection(
         <EmptySection
-          title={'Questa sezione è ancora vuota'}
-          subtitle={'Per attivare il progetto aggiungi una Sede'}
-          buttons={EmptySectionButtons.slice(2)}
+          title='Questa sezione è ancora vuota'
+          withIcon
+          icon='it-note'
+          subtitle='Per attivare il progetto aggiungi una Sede all’Ente gestore o ad un Ente partner'
+          // buttons={EmptySectionButtons.slice(2)}
         />
       );
     }
@@ -352,7 +642,7 @@ const ProjectsDetails = () => {
   const replaceLastUrlSection = (tab: string): string => {
     const { pathname } = location;
     const splitLocation = pathname.split('/');
-    splitLocation[splitLocation.length - 1] = tab;
+    splitLocation[splitLocation?.length - 1] = tab;
     return splitLocation.join('/');
   };
 
@@ -373,8 +663,16 @@ const ProjectsDetails = () => {
           active={activeTab === tabs.ENTE_GESTORE}
         >
           {!managingAuthorityID ? (
-            <div>
+            <div id='tab-ente-gestore-progetto'>
               <span className='mr-1'> * Ente gestore </span>
+              <Tooltip
+                placement='bottom'
+                target='tab-ente-gestore-progetto'
+                isOpen={openOne}
+                toggle={() => toggleOne(!openOne)}
+              >
+                Compilazione obbligatoria
+              </Tooltip>
               <Icon icon='it-warning-circle' size='sm' />
             </div>
           ) : (
@@ -387,14 +685,7 @@ const ProjectsDetails = () => {
           to={replaceLastUrlSection(tabs.ENTI_PARTNER)}
           active={activeTab === tabs.ENTI_PARTNER}
         >
-          {!PartnerAuthoritiesList?.length ? (
-            <div>
-              <span className='mr-1'> * Enti Partner </span>
-              <Icon icon='it-warning-circle' size='sm' />
-            </div>
-          ) : (
-            'Enti Partner'
-          )}
+          <span> Enti partner </span>
         </NavLink>
       </li>
       <li ref={sediRef}>
@@ -402,36 +693,75 @@ const ProjectsDetails = () => {
           to={replaceLastUrlSection(tabs.SEDI)}
           active={activeTab === tabs.SEDI}
         >
-          {!headquarterList?.length ? (
-            <div>
-              <span className='mr-1'> * Sedi </span>
-              <Icon icon='it-warning-circle' size='sm' />
-            </div>
-          ) : (
-            'Sedi'
-          )}
+          <span> Sedi </span>
         </NavLink>
       </li>
     </Nav>
   );
 
+  const terminateAuthorityPartner = async (
+    authorityId: string,
+    projectId: string
+  ) => {
+    await dispatch(TerminatePartnerAuthority(authorityId, projectId));
+    dispatch(closeModal());
+    dispatch(GetProjectDetail(projectId));
+  };
+
+  const removeManagerAuthority = async (
+    authorityId: string,
+    projectId: string
+  ) => {
+    await dispatch(RemoveManagerAuthority(authorityId, projectId, 'progetto'));
+    await dispatch(GetProjectDetail(projectId));
+    dispatch(closeModal());
+  };
+
+  const projectActivation = async () => {
+    await dispatch(ActivateProject(projectDetails?.id));
+    dispatch(GetProjectDetail(projectDetails?.id));
+  };
+
   const onActionClickEntiPartner: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(`/area-amministrativa/enti/${td}`);
-    },
-    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      console.log(td);
+      if (entityId && projectId) {
+        navigate(
+          `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/enti-partner/${td}`
+        );
+      } else {
+        projectId &&
+          navigate(
+            `/area-amministrativa/progetti/${projectId}/enti-partner/${td}`
+          );
+      }
     },
   };
 
   const onActionClickSede: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        `/area-amministrativa/sedi/${typeof td === 'string' ? td : td?.id}`
-      );
+      if (entityId && projectId && managingAuthorityID) {
+        navigate(
+          `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/ente-gestore-progetto/${managingAuthorityID}/sedi/${td}`
+        );
+      } else {
+        projectId &&
+          managingAuthorityID &&
+          navigate(
+            `/area-amministrativa/progetti/${projectId}/ente-gestore-progetto/${managingAuthorityID}/sedi/${td}`
+          );
+      }
     },
     [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      console.log(td);
+      dispatch(
+        openModal({
+          id: 'delete-entity',
+          payload: {
+            entity: 'headquarter',
+            text: 'Confermi di volere disassociare questa sede?',
+            headquarterId: td,
+          },
+        })
+      );
     },
   };
 
@@ -441,65 +771,208 @@ const ProjectsDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
 
-  useEffect(() => {
-    const locationSplit = location.pathname.split('/');
-    if (locationSplit.length === 5) {
-      switch (locationSplit[4]) {
-        case tabs.INFO:
-          setActiveTab(tabs.INFO);
-          break;
-        case tabs.ENTE_GESTORE:
-          setActiveTab(tabs.ENTE_GESTORE);
-          break;
-        case tabs.ENTI_PARTNER:
-          setActiveTab(tabs.ENTI_PARTNER);
-          break;
-        case tabs.SEDI:
-          setActiveTab(tabs.SEDI);
-          break;
-        default:
-          setActiveTab(tabs.INFO);
-      }
+  const projectInfoButtons = () => {
+    let formButtons: ButtonInButtonsBar[] = [];
+    switch (projectDetails?.stato) {
+      case 'ATTIVO':
+        formButtons = hasUserPermission(['upd.car.prgt', 'term.prgt'])
+          ? [
+              {
+                size: 'xs',
+                color: 'danger',
+                outline: true,
+                text: 'Termina progetto',
+                onClick: () => dispatch(openModal({ id: 'terminate-entity' })),
+              },
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Modifica',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: formTypes.PROGETTO,
+                      payload: { title: 'Modifica progetto' },
+                    })
+                  ),
+              },
+            ]
+          : hasUserPermission(['upd.car.prgt'])
+          ? [
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Modifica',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: formTypes.PROGETTO,
+                      payload: { title: 'Modifica progetto' },
+                    })
+                  ),
+              },
+            ]
+          : hasUserPermission(['term.prgt'])
+          ? [
+              {
+                size: 'xs',
+                color: 'danger',
+                outline: true,
+                text: 'Termina progetto',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: 'terminate-entity',
+                      payload: {
+                        entity: 'project',
+                        text: 'Confermi di voler terminare il Progetto?',
+                      },
+                    })
+                  ),
+              },
+            ]
+          : [];
+        break;
+      case 'NON ATTIVO':
+        formButtons = hasUserPermission(['del.prgt', 'upd.car.prgt'])
+          ? [
+              {
+                size: 'xs',
+                outline: true,
+                buttonClass: 'btn-secondary',
+                color: 'primary',
+                text: 'Elimina',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: 'delete-entity',
+                      payload: {
+                        entity: 'project',
+                        text: 'Confermi di volere eliminare questo progetto?',
+                      },
+                    })
+                  ),
+              },
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Modifica',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: formTypes.PROGETTO,
+                      payload: { title: 'Modifica progetto' },
+                    })
+                  ),
+              },
+            ]
+          : hasUserPermission(['upd.car.prgt'])
+          ? [
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Modifica',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: formTypes.PROGETTO,
+                      payload: { title: 'Modifica progetto' },
+                    })
+                  ),
+              },
+            ]
+          : hasUserPermission(['del.prgt'])
+          ? [
+              {
+                size: 'xs',
+                outline: true,
+                color: 'primary',
+                buttonClass: 'btn-secondary',
+                text: 'Elimina',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: 'delete-entity',
+                      payload: {
+                        entity: 'project',
+                        text: 'Confermi di volere eliminare questo progetto?',
+                      },
+                    })
+                  ),
+              },
+            ]
+          : [];
+        break;
+      case 'ATTIVABILE':
+        formButtons = hasUserPermission(['act.prgt', 'upd.car.prgt'])
+          ? [
+              {
+                size: 'xs',
+                outline: true,
+                color: 'primary',
+                buttonClass: 'btn-secondary',
+                text: 'Attiva',
+                onClick: () => projectActivation(),
+              },
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Modifica',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: formTypes.PROGETTO,
+                      payload: { title: 'Modifica progetto' },
+                    })
+                  ),
+              },
+            ]
+          : hasUserPermission(['upd.car.prgt'])
+          ? [
+              {
+                size: 'xs',
+                color: 'primary',
+                text: 'Modifica',
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: formTypes.PROGETTO,
+                      payload: { title: 'Modifica progetto' },
+                    })
+                  ),
+              },
+            ]
+          : hasUserPermission(['act.prgt'])
+          ? [
+              {
+                size: 'xs',
+                outline: true,
+                buttonClass: 'btn-secondary',
+                color: 'primary',
+                text: 'Attiva',
+                onClick: () => projectActivation(),
+              },
+            ]
+          : [];
+
+        break;
+      case 'TERMINATO':
+      default:
+        break;
     }
-  }, [location]);
+    return formButtons;
+  };
 
   useEffect(() => {
     switch (activeTab) {
       case tabs.INFO:
-        setButtonsPosition('TOP');
+        setButtonsPosition('BOTTOM');
         setCurrentForm(<ProjectAccordionForm />);
         setCorrectModal(<ManageProject />);
-        setDeleteText('Confermi di voler eliminare questo programma?');
         setItemAccordionList([]);
         setItemList(null);
-        setCorrectButtons([
-          {
-            size: 'xs',
-            color: 'danger',
-            outline: true,
-            text: 'Termina progetto',
-            onClick: () => console.log('termina progetto'),
-          },
-          {
-            size: 'xs',
-            outline: true,
-            color: 'primary',
-            text: 'Elimina',
-            onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
-          },
-          {
-            size: 'xs',
-            color: 'primary',
-            text: 'Modifica',
-            onClick: () =>
-              dispatch(
-                openModal({
-                  id: formTypes.PROGETTO,
-                  payload: { title: 'Modifica progetto' },
-                })
-              ),
-          },
-        ]);
+        setCorrectButtons(projectInfoButtons());
+        setEmptySection(undefined);
         break;
       case tabs.ENTE_GESTORE:
         AuthoritySection();
@@ -513,44 +986,253 @@ const ProjectsDetails = () => {
       default:
         return;
     }
-  }, [activeTab, mediaIsDesktop, progetti]);
+  }, [
+    activeTab,
+    mediaIsDesktop,
+    projectDetails,
+    authorityInfo,
+    partnerAuthoritiesList,
+  ]);
+
+  const terminateProject = async (
+    projectId: string,
+    terminationDate: string
+  ) => {
+    await dispatch(TerminateEntity(projectId, 'progetto', terminationDate));
+    dispatch(GetProjectDetail(projectId));
+    dispatch(closeModal());
+  };
+
+  const removeReferentDelegate = async (
+    cf: string,
+    role: UserAuthorityRole
+  ) => {
+    if (projectId && managingAuthorityID) {
+      await dispatch(
+        RemoveReferentDelegate(managingAuthorityID, projectId, cf, role)
+      );
+      dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+    }
+    dispatch(closeModal());
+  };
+
+  const removeHeadquarter = async (headquarterId: string) => {
+    if (projectId && managingAuthorityID) {
+      await dispatch(
+        RemoveAuthorityHeadquarter(
+          managingAuthorityID,
+          headquarterId,
+          projectId
+        )
+      );
+
+      dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+    }
+
+    dispatch(closeModal());
+  };
+
+  const getAccordionCTA = (title?: string) => {
+    switch (title) {
+      case 'Referenti':
+      case 'Delegati':
+        return authorityInfo?.dettagliInfoEnte?.statoEnte !==
+          entityStatus.TERMINATO && hasUserPermission(['add.ref_del.gest.prgt'])
+          ? {
+              cta: `Aggiungi ${title}`,
+              ctaAction: () =>
+                dispatch(
+                  openModal({
+                    id:
+                      title === 'Referenti'
+                        ? formTypes.REFERENTE
+                        : formTypes.DELEGATO,
+                    payload: {
+                      title: `Aggiungi ${title}`,
+                    },
+                  })
+                ),
+            }
+          : {
+              cta: null,
+              ctaAction: () => ({}),
+            };
+      case 'Sedi':
+        return authorityInfo?.dettagliInfoEnte?.statoEnte !==
+          entityStatus.TERMINATO && hasUserPermission(['add.sede.gest.prgt'])
+          ? {
+              cta: `Aggiungi Sede`,
+              ctaAction: () =>
+                dispatch(
+                  openModal({
+                    id: formTypes.SEDE,
+                    payload: {
+                      title: `Aggiungi Sede`,
+                    },
+                  })
+                ),
+            }
+          : {
+              cta: null,
+              ctaAction: () => ({}),
+            };
+      default:
+        return {
+          cta: null,
+          ctaAction: () => ({}),
+        };
+    }
+  };
+
+  // const onConfirmDeleteEntityModal = async (payload: {[key: string]: string | UserAuthorityRole}) => {
+  //   if (payload?.entity === 'referent-delegate')
+  //     removeReferentDelegate(payload?.cf, payload?.role);
+  //   if (payload?.entity === 'headquarter')
+  //     removeHeadquarter(payload?.headquarterId);
+  //   if (payload?.entity === 'partner-authority')
+  //     projectId && removeAuthorityPartner(payload?.authorityId, projectId);
+  //   if (payload?.entity === 'authority')
+  //     projectId &&
+  //       managerAuthority &&
+  //       managerAuthority?.id &&
+  //       removeManagerAuthority(managerAuthority.id, projectId);
+  //   if (payload?.entity === 'project' && projectId) {
+  //     await dispatch(DeleteEntity('progetto', projectId));
+  //     navigate(-1);
+  //   }
+  // };
 
   return (
-    <div className={clsx(mediaIsPhone && 'mt-5', 'd-flex', 'flex-row')}>
-      <div className='d-flex flex-column w-100'>
+    <div
+      className={clsx(
+        mediaIsPhone && 'mt-5',
+        'd-flex',
+        'flex-row',
+        'container'
+      )}
+    >
+      <div className='d-flex flex-column w-100 container'>
         <div>
           <DetailLayout
             nav={nav}
             titleInfo={{
-              title: 'Nome Progetto 1 breve',
-              status: 'ATTIVO',
+              title: projectDetails?.nome,
+              status: projectDetails?.stato,
               upperTitle: { icon: 'it-user', text: 'Progetto' },
-              subTitle: 'Programma 1 nome breve',
+              subTitle: programDetails?.nomeBreve,
             }}
+            currentTab={activeTab}
             formButtons={correctButtons}
-            itemsAccordionList={itemAccordionList}
+            // itemsAccordionList={itemAccordionList}
             itemsList={itemList}
             buttonsPosition={buttonsPosition}
-            goBackTitle='Elenco progetti'
             goBackPath='/area-amministrativa/progetti'
+            goBackTitle={
+              location.pathname.includes(
+                `/area-amministrativa/progetti/${projectId}`
+              )
+                ? 'Elenco progetti'
+                : 'Torna indietro'
+            }
+            showGoBack={
+              userRole !== userRoles.REGP && userRole !== userRoles.FAC
+            }
           >
             <>
               {currentForm}
               {emptySection}
             </>
           </DetailLayout>
+          {itemAccordionList?.length
+            ? itemAccordionList?.map((item, index) => (
+                <Accordion
+                  key={index}
+                  title={item.title || ''}
+                  totElem={item.items.length}
+                  cta={getAccordionCTA(item.title).cta}
+                  onClickCta={getAccordionCTA(item.title)?.ctaAction}
+                  lastBottom={index === itemAccordionList.length - 1}
+                >
+                  {item.items?.length ? (
+                    item.items.map((cardItem) => (
+                      <CardStatusAction
+                        key={cardItem.id}
+                        title={`${cardItem.nome} ${
+                          cardItem.cognome ? cardItem.cognome : ''
+                        }`.trim()}
+                        status={cardItem.stato}
+                        id={cardItem.id}
+                        fullInfo={cardItem.fullInfo}
+                        cf={cardItem.codiceFiscale}
+                        onActionClick={cardItem.actions}
+                      />
+                    ))
+                  ) : (
+                    <EmptySection
+                      title={`Non esistono ${item.title?.toLowerCase()} associati`}
+                      horizontal
+                      aside
+                    />
+                  )}
+                </Accordion>
+              ))
+            : null}
+          {activeTab === tabs.INFO && !entityId && programDetails?.id ? (
+            <div className={clsx('my-5')}>
+              <h5 className={clsx('mb-4')} style={{ color: '#5C6F82' }}>
+                Programma associato
+              </h5>
+              <CardStatusAction
+                id={programDetails?.id}
+                status={programDetails?.stato}
+                title={programDetails?.nomeBreve}
+                onActionClick={{
+                  [CRUDActionTypes.VIEW]: () =>
+                    navigate(
+                      `/area-amministrativa/programmi/${programDetails?.id}/info`,
+                      { replace: true }
+                    ),
+                }}
+              />
+            </div>
+          ) : null}
           {currentModal ? currentModal : null}
-          <ConfirmDeleteModal
-            onConfirm={() => {
-              console.log('confirm delete');
-              projectId && dispatch(DeleteEntity(projectId, 'progetto'));
-              dispatch(closeModal());
-            }}
-            onClose={() => {
-              dispatch(closeModal());
-            }}
-            text={deleteText}
+          <TerminateEntityModal
+            onClose={() => dispatch(closeModal())}
+            onConfirm={(_entity: string, terminationDate: string) =>
+              terminationDate &&
+              projectId &&
+              terminateProject(projectId, terminationDate)
+            }
           />
+          <DeleteEntityModal
+            onClose={() => dispatch(closeModal())}
+            onConfirm={async (payload) => {
+              if (payload?.entity === 'referent-delegate')
+                removeReferentDelegate(payload?.cf, payload?.role);
+              if (payload?.entity === 'headquarter')
+                removeHeadquarter(payload?.headquarterId);
+              if (payload?.entity === 'partner-authority')
+                projectId &&
+                  terminateAuthorityPartner(payload?.authorityId, projectId);
+              if (payload?.entity === 'authority')
+                projectId &&
+                  managerAuthority &&
+                  managerAuthority?.id &&
+                  removeManagerAuthority(managerAuthority.id, projectId);
+              if (payload?.entity === 'project' && projectId) {
+                await dispatch(DeleteEntity('progetto', projectId));
+                navigate(-1);
+              }
+            }}
+          />
+          <UploadCSVModal
+            onClose={() => dispatch(closeModal())}
+            onConfirm={() => dispatch(closeModal())}
+          />
+          <ManageDelegate creation />
+          <ManageReferal creation />
+          <ManageHeadquarter creation />
         </div>
       </div>
     </div>

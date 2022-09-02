@@ -38,17 +38,11 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });*/
 
-    mockInstance.onGet('/utente/all').reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/listaUtenti.json');
-      return [200, response];
-    });
-
-    mockInstance.onPost('/utente/all').reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/listaUtenti.json');
-      return [200, response];
-    });
+    // mockInstance.onPost('/utente/all').reply(async () => {
+    //   // @ts-ignore
+    //   const response = await import('/mock/listaUtenti.json');
+    //   return [200, response];
+    // });
 
     // mockInstance.onPost('/questionarioTemplate/all').reply(async () => {
     //   // @ts-ignore
@@ -122,29 +116,23 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });*/
 
-    mockInstance.onPost('/utente/ruoli/dropdown').reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/roleDropdown.json');
-      return [200, response];
-    });
+    // mockInstance.onPost('/utente/ruoli/dropdown').reply(async () => {
+    //   // @ts-ignore
+    //   const response = await import('/mock/roleDropdown.json');
+    //   return [200, response];
+    // });
 
-    mockInstance.onPost('/utente/stati/dropdown').reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/statiDropdown.json');
-      return [200, response];
-    });
+    // mockInstance.onPost('/utente/stati/dropdown').reply(async () => {
+    //   // @ts-ignore
+    //   const response = await import('/mock/statiDropdown.json');
+    //   return [200, response];
+    // });
 
-    mockInstance.onGet('/cittadino/all').reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/listaCittadini.json');
-      return [200, response];
-    });
-
-    mockInstance.onPost('/cittadino/all').reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/listaCittadini.json');
-      return [200, response];
-    });
+    // mockInstance.onPost('/cittadino/all').reply(async () => {
+    //   // @ts-ignore
+    //   const response = await import('/mock/listaCittadini.json');
+    //   return [200, response];
+    // });
 
     mockInstance.onGet('/citizensArea/site/dropdown/test').reply(async () => {
       // @ts-ignore
@@ -180,17 +168,37 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });
 
-    mockInstance.onGet('/cittadino/light/idCittadino').reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/cittadinoDetailSearchDetail.json');
-      return [200, response];
-    });
+    mockInstance
+      .onGet('/servizio/cittadino?criterioRicerca=aaa&tipoDocumento=CF')
+      .reply(async () => {
+        // @ts-ignore
+        const response = await import('/mock/cittadinoDetailSearchDetail.json');
+        return [200, response];
+      });
 
-    mockInstance.onGet('/roles/all/test').reply(async () => {
+    /*mockInstance.onGet('/ruolo?tipologiaRuoli=NP').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/listaRuoli.json');
-      return [200, response];
-    });
+      return [200, response.data];
+    });*/
+
+    /*mockInstance.onGet('/ruolo/all').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/listaRuoli.json');
+      return [200, response.data];
+    });*/
+
+    /*mockInstance.onGet('/ruolo/DTD').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/roleDetails.json');
+      return [200, response.data];
+    });*/
+
+    /*mockInstance.onGet('/gruppo/all').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/listaRuoliGruppi.json');
+      return [200, response.data];
+    });*/
 
     /*mockInstance.onGet('/programma/idProgramma').reply(async () => {
       // @ts-ignore
@@ -258,58 +266,101 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });
 
-    mockInstance.onGet('/questionarioTemplate/1').reply(async () => {
+    // mockInstance
+    //   .onPost('/questionarioTemplate/stati/dropdown')
+    //   .reply(async () => {
+    //     // @ts-ignore
+    //     const response = await import('/mock/statiDropdown.json');
+    //     return [200, response];
+    //   });
+
+    // mockInstance.onGet('/questionarioTemplate/1').reply(async () => {
+    //   // @ts-ignore
+    //   const response = await import('/mock/responseQuestionario.json');
+    //   return [200, response];
+    // });
+
+    // mockInstance
+    //   .onGet('/questionarioTemplate/6c00da35-c6ee-4be1-bf2b-e28e7bcaeea8')
+    //   .reply(async () => {
+    //     // @ts-ignore
+    //     const response = await import('/mock/responseQuestionario.json');
+    //     return [200, response];
+    //   });
+
+    // mockInstance.onGet('/questionarioTemplate/prova2').reply(async () => {
+    //   // @ts-ignore
+    //   const response = await import('/mock/responseQuestionario.json');
+    //   return [200, response];
+    // });
+
+    mockInstance.onPost('/servizio/all').reply(async () => {
       // @ts-ignore
-      const response = await import('/mock/responseQuestionario.json');
+      const response = await import('/mock/listaServizi.json');
       return [200, response];
     });
 
-    mockInstance.onGet('/questionarioTemplate/tewbebe').reply(async () => {
+    mockInstance.onPost('/servizio/stati/dropdown').reply(async () => {
       // @ts-ignore
-      const response = await import('/mock/responseQuestionario.json');
+      const response = await import('/mock/listaServizi.json');
       return [200, response];
     });
 
-    mockInstance.onGet('/questionarioTemplate/prova2').reply(async () => {
+    // mockInstance.onPost('/servizio/stati/dropdown').reply(async () => {
+    //   // @ts-ignore
+    //   const response = await import('/mock/statiDropdown.json');
+    //   return [200, response];
+    // });
+
+    // mockInstance.onPost('/servizio/tipologiaServizio/dropdown').reply(async () => {
+    //   // @ts-ignore
+    //   const response = await import('/mock/tipologiaServizioDropdown.json');
+    //   return [200, response];
+    // });
+
+    mockInstance.onGet('/servizio/1/schedaDettaglio').reply(async () => {
       // @ts-ignore
-      const response = await import('/mock/responseQuestionario.json');
+      const response = await import('/mock/servicesDetail.json');
       return [200, response];
     });
 
-    mockInstance.onGet('/eventi/all').reply(async () => {
+    mockInstance.onPost('/servizio/cittadino/all/1').reply(async () => {
       // @ts-ignore
-      const response = await import('/mock/allEvents.json');
-      return [200, response];
-    });
-
-    mockInstance.onPost('/eventi/all').reply(async () => {
-      // @ts-ignore
-      const response = await import('/mock/allEvents.json');
+      const response = await import('/mock/servicesCitizenList.json');
       return [200, response];
     });
 
     mockInstance
-      .onPost('areaCittadini/eventi/stati/dropdown/')
-      .reply(async () => {
-        // @ts-ignore
-        const response = await import('/mock/statiDropdown.json');
-        return [200, response];
-      });
-
-    mockInstance
-      .onGet('areaAmministrativa/services/servizio1')
-      .reply(async () => {
-        // @ts-ignore
-        const response = await import('/mock/servicesDetail.json');
-        return [200, response];
-      });
-
-    mockInstance
-      .onPost('areaCittadini/servizi/dettaglio/stati/dropdown')
+      .onPost('/servizio/cittadino/stati/dropdown/1')
       .reply(async () => {
         // @ts-ignore
         const response = await import('/mock/statiServiziDropdown.json');
         return [200, response];
       });
+
+    mockInstance.onPost('/Notifications/all').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/notificationsList.json');
+      return [200, response];
+    });
+    /*
+    mockInstance.onPost('/contesto').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/userContext.json');
+      return [200, response];
+    });
+*/
+    /*mockInstance.onPost('/contesto/confermaIntegrazione').reply(async () => {
+      return [200];
+    });*/
+
+    /*mockInstance.onPost('/contesto/sceltaProfilo').reply(async () => {
+      return [200];
+    });*/
+
+    mockInstance.onGet('/open-data/count/download').reply(async () => {
+      // @ts-ignore
+      return [200, Math.floor(Math.random() * 9999)];
+    });
   }
 };

@@ -7,7 +7,15 @@ import { UtentiLightI } from './user/userThunk';
 import { AuthoritiesLightI } from './authorities/authoritiesThunk';
 import { SurveyLightI } from './surveys/surveysThunk';
 import { CitizenI } from '../../../pages/administrator/AdministrativeArea/Entities/Services/citizensList';
-import { ServicesI } from './services/servicesThunk';
+import { CitizenListI, ServicesI } from './services/servicesThunk';
+import { HeadquarterLight } from './headquarters/headquartersThunk';
+
+export interface PaginationI {
+  pageSize: number;
+  pageNumber: number;
+  totalPages: number;
+  totalElements: number;
+}
 
 export interface AreaAmministrativaStateI {
   list: any;
@@ -21,11 +29,7 @@ export interface AreaAmministrativaStateI {
       | { label: string; value: string | number | any[] }[]
       | undefined;
   };
-  pagination: {
-    pageSize: number;
-    pageNumber: number;
-    totalPages: number;
-  };
+  pagination: PaginationI;
   detail: {
     info?: { [key: string]: string };
     ref?: { name: string; status: string; id: string }[];
@@ -47,7 +51,7 @@ export interface AreaAmministrativaStateI {
     detail: any;
   };
   users: {
-    list: UtentiLightI[];
+    list: UtentiLightI[] | null;
     detail: any;
   };
   authorities: {
@@ -56,10 +60,19 @@ export interface AreaAmministrativaStateI {
   };
   headquarters: {
     detail: any;
+    list: HeadquarterLight[] | null;
   };
   services: {
     list: ServicesI[];
-    detail: { info: { [key: string]: string }; cittadini: CitizenI[] };
+    detail: {
+      dettaglioServizio: { [key: string]: string };
+      progettiAssociatiAlServizio: {
+        id: string;
+        nomeBreve: string;
+        stato: string;
+      }[];
+      cittadini: CitizenListI;
+    };
   };
 }
 
@@ -71,6 +84,7 @@ const initialState: AreaAmministrativaStateI = {
     pageSize: 8,
     pageNumber: 1,
     totalPages: 1,
+    totalElements: 0,
   },
   detail: {},
   programs: {
@@ -95,10 +109,15 @@ const initialState: AreaAmministrativaStateI = {
   },
   headquarters: {
     detail: {},
+    list: null,
   },
   services: {
     list: [],
-    detail: { info: {}, cittadini: [] },
+    detail: {
+      dettaglioServizio: {},
+      progettiAssociatiAlServizio: [],
+      cittadini: { servizi: [] },
+    },
   },
 };
 
@@ -140,6 +159,7 @@ export const administrativeAreaSlice = createSlice({
         ...state.filters,
         ...action.payload,
       };
+      state.pagination = initialState.pagination;
     },
     setEntityFilterOptions: (state, action: PayloadAction<any>) => {
       state.filterOptions = {
@@ -172,7 +192,7 @@ export const administrativeAreaSlice = createSlice({
       state.surveys.list = [...action.payload.data];
     },
     setUsersList: (state, action: PayloadAction<any>) => {
-      state.users.list = [...action.payload.data];
+      state.users.list = action.payload ? [...action.payload] : null;
     },
     setAuthoritiesList: (state, action: PayloadAction<any>) => {
       state.authorities.list = action.payload ? [...action.payload] : null;
@@ -335,20 +355,32 @@ export const administrativeAreaSlice = createSlice({
     setSurveyDetail: (state, action) => {
       state.surveys.detail = { ...action.payload.data };
     },
-    setHeadquartersDetails: (state, action) => {
-      state.headquarters.detail = { ...action.payload.data };
+    setHeadquartersList: (state, action) => {
+      state.headquarters.list = action.payload ? [...action.payload] : null;
+    },
+    setHeadquarterDetails: (state, action) => {
+      state.headquarters.detail = action.payload ? { ...action.payload } : null;
     },
     setUserDetails: (state, action) => {
-      state.users.detail = { ...action.payload.data };
+      state.users.detail = { ...action.payload };
     },
-    setEventsList: (state, action: PayloadAction<any>) => {
+    resetUserDetails: (state) => {
+      state.users.detail = {};
+    },
+    setServicesList: (state, action: PayloadAction<any>) => {
       state.services.list = action.payload.data;
     },
     setServicesDetail: (state, action: PayloadAction<any>) => {
-      state.services.detail = action.payload;
+      state.services.detail.dettaglioServizio =
+        action.payload.dettaglioServizio;
+      state.services.detail.progettiAssociatiAlServizio =
+        action.payload.progettiAssociatiAlServizio;
+    },
+    setServicesDetailCitizenList: (state, action: PayloadAction<any>) => {
+      state.services.detail.cittadini = action.payload;
     },
     addCitizenToList: (state, action: PayloadAction<CitizenI>) => {
-      state.services.detail.cittadini.push({ ...action.payload });
+      state.services.detail.cittadini.servizi.push({ ...action.payload });
     },
     deleteFiltroCriterioRicerca: (state) => {
       const newFilters = { ...state.filters };
@@ -380,10 +412,13 @@ export const {
   setProgramDetails,
   setProjectDetails,
   setSurveyDetail,
-  setHeadquartersDetails,
+  setHeadquartersList,
+  setHeadquarterDetails,
   setUserDetails,
-  setEventsList,
+  resetUserDetails,
+  setServicesList,
   setServicesDetail,
+  setServicesDetailCitizenList,
   setProgramGeneralInfo,
   resetProgramDetails,
   setProjectGeneralInfo,
@@ -402,8 +437,12 @@ export const selectEntityPagination = (state: RootState) =>
   state.administrativeArea.pagination;
 export const selectPrograms = (state: RootState) =>
   state.administrativeArea.programs;
+export const selectEnteGestoreProgramma = (state: RootState) =>
+  state.administrativeArea.programs?.detail?.idEnteGestoreProgramma;
 export const selectProjects = (state: RootState) =>
   state.administrativeArea.projects;
+export const selectEnteGestoreProgetto = (state: RootState) =>
+  state.administrativeArea.projects?.detail?.idEnteGestoreProgetto;
 export const selectSurveys = (state: RootState) =>
   state.administrativeArea.surveys;
 export const selectUsers = (state: RootState) => state.administrativeArea.users;

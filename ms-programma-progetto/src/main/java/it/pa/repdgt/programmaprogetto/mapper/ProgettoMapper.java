@@ -7,11 +7,12 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import it.pa.repdgt.programmaprogetto.bean.DettaglioProgettoBean;
+import it.pa.repdgt.programmaprogetto.bean.DettaglioProgrammaLightBean;
 import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
+import it.pa.repdgt.programmaprogetto.resource.PaginaProgetti;
 import it.pa.repdgt.programmaprogetto.resource.ProgettiLightResourcePaginati;
 import it.pa.repdgt.programmaprogetto.resource.ProgettoLightResource;
 import it.pa.repdgt.programmaprogetto.service.ProgrammaService;
@@ -109,11 +110,11 @@ public class ProgettoMapper {
 		return progetto;
 	}
 
-	public ProgettiLightResourcePaginati toProgettiLightResourcePaginataConContatoreFrom(Page<ProgettoEntity> paginaProgetti) {
+	public ProgettiLightResourcePaginati toProgettiLightResourcePaginataConContatoreFrom(PaginaProgetti paginaProgetti) {
 		if(paginaProgetti == null) {
 			return null;
 		}
-		List<ProgettoEntity> progetti = paginaProgetti.hasContent()? paginaProgetti.getContent(): Collections.emptyList();
+		List<ProgettoEntity> progetti = paginaProgetti.getPaginaProgetti() != null ? paginaProgetti.getPaginaProgetti() : Collections.emptyList();
 		ProgettiLightResourcePaginati progettiLightResourcePaginata = new ProgettiLightResourcePaginati();
 		progettiLightResourcePaginata.setListaProgettiLight(this.toLightResourceFrom(progetti));
 		progettiLightResourcePaginata.setNumeroPagine(paginaProgetti.getTotalPages());
@@ -251,6 +252,7 @@ public class ProgettoMapper {
 		dettaglioProgetto.setDataInizio(progettoFetchDB.getDataInizioProgetto());
 		dettaglioProgetto.setDataFine(progettoFetchDB.getDataFineProgetto());
 		dettaglioProgetto.setStato(progettoFetchDB.getStato());
+		dettaglioProgetto.setPolicy(progettoFetchDB.getProgramma().getPolicy().toString());
 		//Numero Target Punti di Facilitazione
 		dettaglioProgetto.setNPuntiFacilitazioneTarget1(progettoFetchDB.getNPuntiFacilitazioneTarget1());
 		dettaglioProgetto.setNPuntiFacilitazioneTarget2(progettoFetchDB.getNPuntiFacilitazioneTarget2());
@@ -301,5 +303,14 @@ public class ProgettoMapper {
 		dettaglioProgetto.setNFacilitatoriDataTarget5(progettoFetchDB.getNFacilitatoriDataTarget5());
 		
 		return dettaglioProgetto;
+	}
+
+	public DettaglioProgrammaLightBean toDettaglioProgrammaLightBeanFrom(ProgrammaEntity programmaFetchDB) {
+		DettaglioProgrammaLightBean dettaglioProgramma = new DettaglioProgrammaLightBean();
+		dettaglioProgramma.setId(programmaFetchDB.getId());
+		dettaglioProgramma.setCodice(programmaFetchDB.getCodice());
+		dettaglioProgramma.setNomeBreve(programmaFetchDB.getNomeBreve());
+		dettaglioProgramma.setStato(programmaFetchDB.getStato());
+		return dettaglioProgramma;
 	}
 }

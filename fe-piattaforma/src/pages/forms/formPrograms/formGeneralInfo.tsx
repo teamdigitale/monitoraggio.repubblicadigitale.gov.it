@@ -4,7 +4,9 @@ import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
 import { selectPrograms } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { selectProfile } from '../../../redux/features/user/userSlice';
 import { useAppSelector } from '../../../redux/hooks';
+import { formatDate } from '../../../utils/common';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
 import { RegexpType } from '../../../utils/validator';
 
@@ -13,6 +15,7 @@ interface ProgramInformationI {
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   setIsFormValid?: (param?: boolean | undefined) => void;
   creation?: boolean;
+  edit?: boolean;
 }
 
 interface FormEnteGestoreProgettoFullInterface
@@ -28,17 +31,19 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     form,
     updateForm = () => ({}),
     onInputChange,
-    sendNewValues,
+    sendNewValues = () => ({}),
     isValidForm,
     setIsFormValid = () => false,
     getFormValues = () => ({}),
-    // creation = false,
+    creation = true,
     // intoModal = false,
+    edit = false,
+    formDisabled = false,
   } = props;
   const programDetails: { [key: string]: string } | undefined =
     useAppSelector(selectPrograms).detail.dettagliInfoProgramma;
 
-  const formDisabled = !!props.formDisabled;
+  const userRole = useAppSelector(selectProfile)?.codiceRuolo;
 
   // useEffect(() => {
   //   if (!creation) {
@@ -61,6 +66,24 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
+
+  useEffect(() => {
+    if (
+      form &&
+      formDisabled &&
+      Object.entries(form).some(([_key, value]) => !value.disabled)
+    ) {
+      updateForm(
+        Object.fromEntries(
+          Object.entries(form).map(([key, value]) => [
+            key,
+            { ...value, disabled: formDisabled },
+          ])
+        ),
+        true
+      );
+    }
+  }, [formDisabled]);
 
   useEffect(() => {
     if (programDetails) {
@@ -92,6 +115,13 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [programDetails]);
 
+  useEffect(() => {
+    if (userRole && form && creation) {
+      if (userRole === 'DSCU') onInputDataChange('SCD', 'policy');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userRole]);
+
   const onInputDataChange = (
     value: formFieldI['value'],
     field?: formFieldI['field']
@@ -101,7 +131,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
   };
 
   useEffect(() => {
-    sendNewValues?.(getFormValues?.());
+    sendNewValues(getFormValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
@@ -132,75 +162,53 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 
   return (
-    <Form className='mt-5' formDisabled={formDisabled}>
+    <Form id='form-general-info' className='mt-5' formDisabled={formDisabled}>
       <Form.Row className={bootClass}>
         <Input
           {...form?.codice}
+          required
           col='col-12 col-lg-6'
           label='ID'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pr-lg-3'
         />
-
         <Input
           {...form?.nome}
+          required
           col='col-12 col-lg-6'
           label='Nome programma'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pl-lg-3'
         />
-      </Form.Row>
-      <Form.Row className={bootClass}>
         <Input
           {...form?.nomeBreve}
+          required
           col='col-12 col-lg-6'
           label='Nome breve'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pr-lg-3'
-        />
-        <Input
-          {...form?.cup}
-          label='CUP - Codice Unico Progetto'
-          col='col-12 col-lg-6'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-          className='pl-lg-3'
-        />
-      </Form.Row>
-      <Form.Row className={bootClass}>
-        <Input
-          {...form?.bando}
-          label='Bando'
-          col='col-12 col-lg-6'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-          className='pr-lg-3'
         />
         {formDisabled ? (
           <Input
             {...form?.policy}
-            label='Policy'
+            label='Intervento'
             col='col-12 col-lg-6'
             onInputChange={(value, field) => {
               onInputDataChange(value, field);
             }}
-            className='pl-lg-3'
           />
         ) : (
           <Select
+            isDisabled={(!creation && !edit) || userRole === 'DSCU'}
             {...form?.policy}
+            required
             value={form?.policy.value as string}
             col='col-12 col-lg-6'
-            label='Policy *'
-            placeholder='Inserisci policy'
+            label='Intervento'
+            placeholder='Inserisci intervento'
             options={[
               { label: 'RFD', value: 'RFD' },
               { label: 'SCD', value: 'SCD' },
@@ -208,32 +216,51 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
             onInputChange={(value, field) => {
               onInputDataChange(value, field);
             }}
-            wrapperClassName='mb-5'
-            aria-label='policy'
-            className='pl-lg-3'
+            wrapperClassName='mb-5 pr-lg-3'
+            aria-label='intervento'
           />
         )}
-      </Form.Row>
-      <Form.Row className={bootClass}>
+        {form?.policy?.value === 'SCD' || !form?.policy?.value ? (
+          <Input
+            {...form?.bando}
+            label='Bando'
+            col='col-12 col-lg-6'
+            onInputChange={(value, field) => {
+              onInputDataChange(value, field);
+            }}
+          />
+        ) : (
+          <span></span>
+        )}
+        <Input
+          {...form?.cup}
+          label='CUP - Codice Unico Progetto'
+          col='col-12 col-lg-6'
+          onInputChange={(value, field) => {
+            onInputDataChange(value, field);
+          }}
+        />
         <Input
           {...form?.dataInizio}
+          required
           label='Data inizio'
+          maximum={formatDate(form?.dataFine.value as string)}
           type={'date'}
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pr-lg-3'
         />
         <Input
           {...form?.dataFine}
+          required
+          minimum={formatDate(form?.dataInizio.value as string)}
           label='Data fine'
           type={'date'}
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
           }}
-          className='pl-lg-3'
         />
       </Form.Row>
     </Form>

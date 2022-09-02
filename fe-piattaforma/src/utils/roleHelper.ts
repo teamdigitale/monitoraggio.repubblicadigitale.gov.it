@@ -6,12 +6,16 @@ interface RolesTableI {
 
 const rolesTable: RolesTableI = {
   DTD: {
-    label: 'Dipartimento per la trasformazione digitale',
+    label: 'DTD Amministratore',
   },
   DSCU: {
     label:
       'Dipartimento per le politiche giovanili e il Servizio Civile Universale',
   },
+  REG: {
+    label: 'Referente Ente Gestore Programma',
+  },
+  // TODO add here other roles
 };
 
 export const getRoleLabel = (role = '-') =>

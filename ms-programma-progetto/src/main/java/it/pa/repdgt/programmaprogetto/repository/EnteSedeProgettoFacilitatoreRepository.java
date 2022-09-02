@@ -1,6 +1,7 @@
 package it.pa.repdgt.programmaprogetto.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -50,5 +51,22 @@ public interface EnteSedeProgettoFacilitatoreRepository extends JpaRepository<En
 			, nativeQuery = true)
 	List<UtenteFacilitatoreProjection> findAllEmailFacilitatoriEVolontariByProgetto(
 			@Param("idProgetto") Long idProgetto
-			);
+		);
+
+
+	@Query(value = " "
+			+ "	SELECT "
+			+ "		DISTINCT * "
+			+ " FROM "
+			+ "		ente_sede_progetto_facilitatore espf "
+			+ " WHERE 1=1 "
+			+ "		AND espf.ID_PROGETTO = :idProgetto   "
+			+ "		AND espf.ID_ENTE = :idEnte           "
+			+ "		AND espf.ID_FACILITATORE = :cfUtente "
+			, nativeQuery = true)
+	Optional<EnteSedeProgettoFacilitatoreEntity> findByIdEnteAndIdProgettoAndIdFacilitatore(
+			@Param("idEnte")Long idEnte, 
+			@Param("idProgetto")Long idProgetto, 
+			@Param("cfUtente")String cfUtente
+		);
 }

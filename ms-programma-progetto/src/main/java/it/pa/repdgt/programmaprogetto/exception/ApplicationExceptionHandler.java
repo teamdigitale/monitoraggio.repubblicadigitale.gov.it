@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice
@@ -35,6 +36,7 @@ public class ApplicationExceptionHandler {
 		listFieldError.forEach(fieldError -> {
 			erroriValidazione.put(fieldError.getField(), fieldError.getDefaultMessage());
 		});
+		erroriValidazione.put("errorCode", CodiceErroreEnum.G02.toString());
 		return erroriValidazione;
 	}
 	
@@ -57,6 +59,7 @@ public class ApplicationExceptionHandler {
 		Map<String, String> errori = new HashMap<>();
 		String messaggioTradotto = exc.getMessage();
 		errori.put("message", messaggioTradotto);
+		errori.put("errorCode", exc.getCodiceErroreEnum().toString());
 		return errori;
 	}
 	
@@ -66,16 +69,35 @@ public class ApplicationExceptionHandler {
 		log.error("{}", exc);
 		Map<String, String> errori = new HashMap<>();
 		errori.put("message", "Manca il corpo della richiesta oppure il json della richiesta non è valido");
+		errori.put("errorCode", CodiceErroreEnum.G02.toString());
 		return errori;
 	}
 	
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-	@ExceptionHandler(value = {ProgrammaException.class, ProgettoException.class, EnteException.class, Exception.class})
+	@ExceptionHandler(value = {ProgrammaException.class, ProgettoException.class, EnteException.class, RuoloException.class, Exception.class})
 	public Map<String, String> handleException(Exception exc) {
 		log.error("{}", exc);
 		Map<String, String> errori = new HashMap<>();
 		errori.put("message", exc.getMessage());
-		errori.put("causa", exc.getCause().getMessage());
+		ProgrammaException programmaException;
+		ProgettoException progettoException;
+		EnteException enteException;
+		RuoloException ruoloException;
+		if(exc instanceof ProgrammaException) {
+			programmaException = (ProgrammaException) exc;
+			errori.put("errorCode", programmaException.getCodiceErroreEnum().toString());
+		} else if(exc instanceof ProgettoException) {
+			progettoException = (ProgettoException) exc;
+			errori.put("errorCode", progettoException.getCodiceErroreEnum().toString());
+		} else if(exc instanceof EnteException) {
+			enteException = (EnteException) exc;
+			errori.put("errorCode", enteException.getCodiceErroreEnum().toString());
+		} else if(exc instanceof RuoloException) {
+			ruoloException = (RuoloException) exc;
+			errori.put("errorCode", ruoloException.getCodiceErroreEnum().toString());
+		} else {
+			errori.put("errorCode", CodiceErroreEnum.G01.toString());
+		}
 		return errori;
 	}
 }

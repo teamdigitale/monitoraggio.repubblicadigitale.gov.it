@@ -12,11 +12,12 @@ import org.apache.commons.csv.CSVPrinter;
 
 import it.pa.repdgt.programmaprogetto.exception.EnteException;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 
 public class CSVProgrammaUtil {
 
 	private static final List<String> HEADERS = Arrays.asList(
-				"ID",
+				"CODICE",
 				"NOME",
 				"POLICY",
 				"STATO"
@@ -38,7 +39,7 @@ public class CSVProgrammaUtil {
 			csvPrinter.flush();
 			return new ByteArrayInputStream(outputStream.toByteArray());
 		} catch (IOException ex) {
-			throw new EnteException("Errore export csv enti", ex);
+			throw new EnteException("Errore export csv programmi", ex, CodiceErroreEnum.P08);
 		}
 	}
 
@@ -48,7 +49,7 @@ public class CSVProgrammaUtil {
 
 	private static List<String> getCSVRecord(ProgrammaEntity programma) {
 		return  Arrays.asList(
-							programma.getId().toString(),
+							programma.getCodice(),
 							programma.getNome(),
 							programma.getPolicy().toString(),
 							programma.getStato()

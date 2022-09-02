@@ -1,34 +1,45 @@
 package it.pa.repdgt.surveymgmt.service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.bson.json.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import it.pa.repdgt.shared.annotation.LogExecutionTime;
+import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.CittadinoEntity;
+import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.bean.DettaglioCittadinoBean;
 import it.pa.repdgt.surveymgmt.bean.DettaglioServizioSchedaCittadinoBean;
 import it.pa.repdgt.surveymgmt.bean.SchedaCittadinoBean;
+import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
+import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection.DatiIstanza;
 import it.pa.repdgt.surveymgmt.dto.CittadinoDto;
 import it.pa.repdgt.surveymgmt.dto.SedeDto;
 import it.pa.repdgt.surveymgmt.exception.CittadinoException;
+import it.pa.repdgt.surveymgmt.exception.QuestionarioCompilatoException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.mapper.CittadinoMapper;
+import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioCompilatoMongoRepository;
 import it.pa.repdgt.surveymgmt.param.CittadiniPaginatiParam;
 import it.pa.repdgt.surveymgmt.param.FiltroListaCittadiniParam;
+import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import it.pa.repdgt.surveymgmt.projection.CittadinoProjection;
 import it.pa.repdgt.surveymgmt.projection.DettaglioServizioSchedaCittadinoProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
 import it.pa.repdgt.surveymgmt.repository.CittadinoRepository;
+import it.pa.repdgt.surveymgmt.repository.QuestionarioCompilatoRepository;
+import it.pa.repdgt.surveymgmt.request.CittadinoRequest;
 
 @Service
 public class CittadinoService {
@@ -43,14 +54,22 @@ public class CittadinoService {
 	private EnteSedeProgettoFacilitatoreService enteSedeProgettoFacilitatoreService;
 	@Autowired
 	private CittadinoMapper cittadinoMapper;
+	@Autowired
+	private QuestionarioCompilatoRepository questionarioCompilatoRepository;
+	@Autowired
+	private QuestionarioCompilatoMongoRepository questionarioCompilatoMongoRepository;
 	
+	@LogMethod
+	@LogExecutionTime
 	public CittadinoEntity getCittadinoById(Long idCittadino) {
 		String errorMessage = String.format("Cittadino con id=%s non presente", String.valueOf(idCittadino));
 		return this.cittadinoRepository.findById(idCittadino)
-				.orElseThrow( () -> new ResourceNotFoundException(errorMessage));
+				.orElseThrow( () -> new ResourceNotFoundException(errorMessage, CodiceErroreEnum.C01));
 	}
-	
-	public Page<CittadinoDto> getAllCittadiniPaginati(
+
+	@LogMethod
+	@LogExecutionTime
+	public List<CittadinoDto> getAllCittadiniPaginati(
 			CittadiniPaginatiParam cittadiniPaginatiParam,
 			Integer currPage, 
 			Integer pageSize) {
@@ -62,15 +81,14 @@ public class CittadinoService {
 			.anyMatch(ruolo -> ruolo.getCodice().equals(codiceRuoloUtente));
 		
 		if(!hasRuoloUtente) {
-			throw new CittadinoException("ERRORE: ruolo non definito per l'utente");
+			throw new CittadinoException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
 		}
 		
-		if(!RuoloUtenteEnum.FAC.toString().equals(codiceRuoloUtente)) {
-			throw new CittadinoException("ERRORE: L'utente non è un facilitatore");
+		if(!RuoloUtenteEnum.FAC.toString().equals(codiceRuoloUtente) && !RuoloUtenteEnum.VOL.toString().equals(codiceRuoloUtente)) {
+			throw new CittadinoException("ERRORE: L'utente non è un facilitatore", CodiceErroreEnum.U06);
 		}
 		
-		Pageable paginazione = PageRequest.of(currPage, pageSize);
-		List<CittadinoProjection> cittadiniProjection = this.getAllCittadiniFacilitatoreFiltrati(cittadiniPaginatiParam);
+		List<CittadinoProjection> cittadiniProjection = this.getAllCittadiniFacilitatorePaginatiByFiltro(cittadiniPaginatiParam, currPage, pageSize);
 		List<CittadinoDto> cittadini = cittadiniProjection
 				.stream()
 				.map(record -> {
@@ -79,24 +97,16 @@ public class CittadinoService {
 					cittadinoDto.setNome(record.getNome());
 					cittadinoDto.setCognome(record.getCognome());
 					cittadinoDto.setNumeroServizi(record.getNumeroServizi());
-					cittadinoDto.setNumeroQuestionariCompilati(record.getNumeroQuestionariCompilati());
+					cittadinoDto.setNumeroQuestionariCompilati(record.getNumeroQuestionariCompilati() == null ? 0L : record.getNumeroQuestionariCompilati());
 					return cittadinoDto;
 			})
 			.collect(Collectors.toList());
 		
 		cittadini.sort((cittadino1, cittadino2) -> cittadino1.getId().compareTo(cittadino2.getId()));
-		
-		int start = (int) paginazione.getOffset();
-		int end = Math.min((start + paginazione.getPageSize()), cittadini.size());
-		
-		if(start > end) {
-			throw new CittadinoException("ERRORE: pagina richiesta inesistente");
-		}
-		
-		return new PageImpl<CittadinoDto>(cittadini.subList(start, end), paginazione, cittadini.size());
+		return cittadini;
 	}
 	
-	private List<CittadinoProjection> getAllCittadiniFacilitatoreFiltrati( CittadiniPaginatiParam cittadiniPaginatiParam) {
+	public List<CittadinoProjection> getAllCittadiniFacilitatoreByFiltro(CittadiniPaginatiParam cittadiniPaginatiParam){
 		FiltroListaCittadiniParam filtro = cittadiniPaginatiParam.getFiltro();
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsSedi;
@@ -106,9 +116,54 @@ public class CittadinoService {
 			idsSedi = filtro.getIdsSedi();
 		}
 		
-		return this.cittadinoRepository.findAllCittadiniFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsSedi);
+		return this.cittadinoRepository.findAllCittadiniByFiltro(
+				criterioRicerca, 
+				"%" + criterioRicerca + "%",
+				idsSedi,
+				cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato()
+			);
+	}
+	
+	public List<CittadinoProjection> getAllCittadiniFacilitatorePaginatiByFiltro(
+			CittadiniPaginatiParam cittadiniPaginatiParam, 
+			Integer currPage, 
+			Integer pageSize) {
+		FiltroListaCittadiniParam filtro = cittadiniPaginatiParam.getFiltro();
+		String criterioRicerca = filtro.getCriterioRicerca();
+		List<String> idsSedi;
+		if(filtro.getIdsSedi() == null) {
+			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto());
+		} else {
+			idsSedi = filtro.getIdsSedi();
+		}
+		
+		return this.cittadinoRepository.findAllCittadiniPaginatiByFiltro(
+				criterioRicerca, 
+				"%" + criterioRicerca + "%", 
+				idsSedi, 
+				cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato(),
+				currPage*pageSize, pageSize
+			);
+	}
+	
+	public Integer getNumeroTotaleCittadiniFacilitatoreByFiltro(CittadiniPaginatiParam cittadiniPaginatiParam) {
+		FiltroListaCittadiniParam filtro = cittadiniPaginatiParam.getFiltro();
+		String criterioRicerca = filtro.getCriterioRicerca();
+		List<String> idsSedi;
+		if(filtro.getIdsSedi() == null) {
+			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto());
+		} else {
+			idsSedi = filtro.getIdsSedi();
+		}
+		
+		return this.cittadinoRepository.findAllCittadiniByFiltro(
+				criterioRicerca, "%" + criterioRicerca + "%",
+				idsSedi, cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato()
+			).size();
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public List<SedeDto> getAllSediDropdown(@Valid CittadiniPaginatiParam cittadiniPaginatiParam) {
 		String codiceRuoloUtente = cittadiniPaginatiParam.getCodiceRuoloUtenteLoggato().toString();
 		
@@ -118,11 +173,11 @@ public class CittadinoService {
 			.anyMatch(ruolo -> ruolo.getCodice().equals(codiceRuoloUtente));
 		
 		if(!hasRuoloUtente) {
-			throw new CittadinoException("ERRORE: ruolo non definito per l'utente");
+			throw new CittadinoException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
 		}
 		
 		if(!RuoloUtenteEnum.FAC.toString().equals(codiceRuoloUtente)) {
-			throw new CittadinoException("ERRORE: L'utente non è un facilitatore");
+			throw new CittadinoException("ERRORE: L'utente non è un facilitatore", CodiceErroreEnum.U06);
 		}
 		
 		List<SedeProjection> listaSediProjection = this.sedeService.getAllSediFacilitatoreFiltrate(cittadiniPaginatiParam);
@@ -139,7 +194,9 @@ public class CittadinoService {
 			return listaSediDto;
 	}
 
-	public SchedaCittadinoBean getSchedaCittadinoById(Long idCittadino) {
+	@LogMethod
+	@LogExecutionTime
+	public SchedaCittadinoBean getSchedaCittadinoById(Long idCittadino, ProfilazioneParam profilazione) {
 		CittadinoEntity cittadinoFetchDB = this.getCittadinoById(idCittadino);
 		
 		DettaglioCittadinoBean dettaglioCittadino = this.cittadinoMapper.toDettaglioCittadinoBeanFrom(cittadinoFetchDB);
@@ -152,6 +209,7 @@ public class CittadinoService {
 			dettaglioServizioSchedaCittadino.setNomeCompletoFacilitatore(nomeCompletoFacilitatore);
 			dettaglioServizioSchedaCittadino.setIdQuestionarioCompilato(record.getIdQuestionarioCompilato());
 			dettaglioServizioSchedaCittadino.setStatoQuestionario(record.getStatoQuestionarioCompilato());
+			dettaglioServizioSchedaCittadino.setAssociatoAUtente(this.isAssociatoAUtente(profilazione, record.getCodiceFiscaleFacilitatore(), record.getIdProgetto()));
 			return dettaglioServizioSchedaCittadino;
 		}).collect(Collectors.toList());
 		
@@ -161,27 +219,133 @@ public class CittadinoService {
 		return schedaCittadino;
 	}
 
-	private List<DettaglioServizioSchedaCittadinoProjection> getDettaglioServiziSchedaCittadino(Long idCittadino) {
+	public Boolean isAssociatoAUtente(ProfilazioneParam profilazione, String codiceFiscaleFacilitatore, Long idProgetto) {
+		RuoloUtenteEnum ruoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato();
+		String codiceFiscaleUtenteLoggato = profilazione.getCodiceFiscaleUtenteLoggato();
+		
+		switch (ruoloUtenteLoggato) {
+		case FAC:
+			//controllo se il codice fiscale dell'utente loggato è uguale al codice fiscale del facilitatore
+			if(codiceFiscaleUtenteLoggato.equals(codiceFiscaleFacilitatore) && profilazione.getIdProgetto().equals(idProgetto)) {
+				return true;
+			}
+			return false;
+		case VOL:
+			//controllo se il codice fiscale dell'utente loggato è uguale al codice fiscale del volontario
+			if(codiceFiscaleUtenteLoggato.equals(codiceFiscaleFacilitatore) && profilazione.getIdProgetto().equals(idProgetto)) {
+				return true;
+			}
+			return false;
+		default:
+			return true;
+		}
+	}
+
+	public List<DettaglioServizioSchedaCittadinoProjection> getDettaglioServiziSchedaCittadino(Long idCittadino) {
 		return this.cittadinoRepository.findDettaglioServiziSchedaCittadino(idCittadino);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
 	public Optional<CittadinoEntity> getCittadinoByCodiceFiscaleOrNumeroDocumento(
 			final Boolean isCodiceFiscaleNonDisponibile,
 			final String codiceFiscale, 
 			final String numeroDocumento) {
-		if(isCodiceFiscaleNonDisponibile == null || isCodiceFiscaleNonDisponibile) {
+		if((codiceFiscale == null || codiceFiscale.isEmpty()) && 
+				(numeroDocumento == null || numeroDocumento.isEmpty()))
+			throw new CittadinoException("ERRORE: occorre definire il CF o il numero documento", CodiceErroreEnum.U08);
+		if(isCodiceFiscaleNonDisponibile == null || isCodiceFiscaleNonDisponibile) {				
 			return cittadinoRepository.findByNumeroDocumento(numeroDocumento);
 		}
 		return cittadinoRepository.findByCodiceFiscale(codiceFiscale);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public Optional<CittadinoEntity> getByCodiceFiscaleOrNumeroDocumento(
 			final String codiceFiscale, 
 			final String numeroDocumento ) {
 		return this.cittadinoRepository.findByCodiceFiscaleOrNumeroDocumento(codiceFiscale, numeroDocumento);
 	}
 
+	@LogMethod
+	@LogExecutionTime
 	public void salvaCittadino(CittadinoEntity cittadino) {
 		this.cittadinoRepository.save(cittadino);
+	}
+
+	@LogMethod
+	@LogExecutionTime
+	@Transactional(rollbackOn = Exception.class)
+	public void aggiornaCittadino(Long id, CittadinoRequest cittadinoRequest) {
+		if(!this.cittadinoRepository.findById(id).isPresent()) {
+			String messaggioErrore = String.format("Impossibile aggiornare il cittadino. Cittadino con id=%s non presente", id);
+			throw new CittadinoException(messaggioErrore, CodiceErroreEnum.CIT02);
+		}
+		
+		CittadinoEntity cittadinoEntity = this.cittadinoMapper.toEntityFrom(cittadinoRequest);
+		cittadinoEntity.setId(id);
+		cittadinoEntity.setDataOraCreazione(this.cittadinoRepository.findById(id).get().getDataOraCreazione());
+		cittadinoEntity.setDataOraAggiornamento(new Date());
+		
+		// aggiorno cittadino su mysql
+		this.cittadinoRepository.save(cittadinoEntity);
+		
+		// recupero tutte le collection 'questionariCompilato' per quel cittadino con stato!=COMPILATO
+		List<QuestionarioCompilatoEntity> questionariCompilatiCittadinoNonAncoraCompilati = this.questionarioCompilatoRepository.findQuestionariCompilatiByCittadinoAndStatoNonCompilato(id);
+		questionariCompilatiCittadinoNonAncoraCompilati.forEach(questionarioNonAncoraCompilato -> {
+			String idQuestionarioCompilato = questionarioNonAncoraCompilato.getId();
+			Optional<QuestionarioCompilatoCollection> optionalQuestionarioCompilatoCollection = this.questionarioCompilatoMongoRepository.findQuestionarioCompilatoById(idQuestionarioCompilato);
+	        if(!optionalQuestionarioCompilatoCollection.isPresent()) {
+	            final String messaggioErrore = String.format("Questionario compilato con id=%s non presente in MongoDB", idQuestionarioCompilato);
+	            throw new QuestionarioCompilatoException(messaggioErrore, CodiceErroreEnum.QC02);
+	        }
+	        
+	        final QuestionarioCompilatoCollection questionarioCompilatoDBMongoFetch = optionalQuestionarioCompilatoCollection.get();
+
+	        // recupero tutte le sezioni del questioanario tranne la sezione Q1
+	        List<DatiIstanza> datiIstanzeSenzaQ1 = questionarioCompilatoDBMongoFetch
+	        		.getSezioniQuestionarioTemplateIstanze()
+	        		.stream()
+	        		.filter(datiIstanza -> { 
+	        			JsonObject jsonDatiIstanza = (JsonObject) datiIstanza.getDomandaRisposta();
+	        			return !jsonDatiIstanza.getJson().contains("Q1");
+	        		})
+	        		.collect(Collectors.toList());
+
+	        // costruisco la sezione del questionario Q1
+	        DatiIstanza datiIstanzaQ1 = new DatiIstanza();
+	        datiIstanzaQ1.setDomandaRisposta(new JsonObject(cittadinoRequest.getQuestionarioQ1()));
+	        
+	        List<DatiIstanza> nuoviDatiIstanzaQuestionarioCompilato = new ArrayList<>();
+	        nuoviDatiIstanzaQuestionarioCompilato.add(datiIstanzaQ1);
+	        nuoviDatiIstanzaQuestionarioCompilato.addAll(datiIstanzeSenzaQ1);
+	        
+	        questionarioCompilatoDBMongoFetch.setSezioniQuestionarioTemplateIstanze(nuoviDatiIstanzaQuestionarioCompilato);
+	        
+	        // cancello il questionarioCompilato corrente e successivamento lo risalvo con i nuovi dati del q1
+	        this.questionarioCompilatoMongoRepository.deleteByIdQuestionarioTemplate(idQuestionarioCompilato);
+	        
+	        questionarioCompilatoDBMongoFetch.setMongoId(null);
+	        questionarioCompilatoDBMongoFetch.setDataOraUltimoAggiornamento(new Date());
+	        // salvo nuovamente il questionarioCompilato cancellato precedentemente ma con la sezione Q1 aggiornata
+	        this.questionarioCompilatoMongoRepository.save(questionarioCompilatoDBMongoFetch);
+		});
+	}
+
+	/**
+	 * Restituisce la stringa contenente la tipologia di consenso 
+	 * data per il cittadino che ha quel dato codice fiscale o numero documento
+	 * */
+	@LogMethod
+	@LogExecutionTime
+	public String getConsensoByCodiceFiscaleCittadinoOrNumeroDocumento(String codiceFiscaleCittadino, String numeroDocumento) {
+		if(codiceFiscaleCittadino != null && !codiceFiscaleCittadino.isEmpty()) {
+			return this.cittadinoRepository.findConsensoByCodiceFiscaleCittadino(codiceFiscaleCittadino);
+		}
+		if(numeroDocumento != null && !numeroDocumento.isEmpty()) {
+			return this.cittadinoRepository.findConsensoByNumDocumentoCittadino(numeroDocumento);
+		}
+		return null;
 	}
 }

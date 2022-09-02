@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { formFieldI } from '../../../utils/formHelper';
 import { RootState } from '../../store';
+import { PaginationI } from '../administrativeArea/administrativeAreaSlice';
 
 export interface CittadinoInfoI {
   idCittadino?: string;
@@ -52,10 +53,7 @@ interface AreaCittadiniStateI {
       | { label: string; value: string | number | any[] }[]
       | undefined;
   };
-  pagination: {
-    pageSize: number;
-    pageNumber: number;
-  };
+  pagination: PaginationI;
   detail: CittadinoI;
   searchResult: CittadinoInfoI;
   multipleSearchResult: CittadinoInfoI[];
@@ -66,15 +64,12 @@ const initialState: AreaCittadiniStateI = {
   filters: {
     // nameLike: [{ label: 'mario', value: 'mario_1' }],
   },
-  filterOptions: {
-    policy: [
-      { label: 'RFD', value: 1 },
-      { label: 'SCD', value: 2 },
-    ],
-  },
+  filterOptions: {},
   pagination: {
     pageSize: 8,
     pageNumber: 1,
+    totalPages: 1,
+    totalElements: 0,
   },
   detail: { dettaglioCittadino: {}, serviziCittadino: [] },
   searchResult: {},
@@ -86,7 +81,7 @@ export const citizensAreaSlice = createSlice({
   initialState,
   reducers: {
     resetAreaCittadiniState: () => initialState,
-    cleanEntityFilters: (state, action: PayloadAction<any>) => {
+    cleanEntityFiltersCitizen: (state, action: PayloadAction<any>) => {
       if (action.payload) {
         let newFilterValue = null;
         if (Array.isArray(state.filters[action.payload.filterKey])) {
@@ -113,6 +108,7 @@ export const citizensAreaSlice = createSlice({
         ...state.filters,
         ...action.payload,
       };
+      state.pagination = initialState.pagination;
     },
     setEntityFilterOptions: (state, action: PayloadAction<any>) => {
       state.filterOptions = {
@@ -149,12 +145,17 @@ export const citizensAreaSlice = createSlice({
       state.searchResult = {};
       state.multipleSearchResult = [];
     },
+    deleteFiltroCriterioRicercaCitizen: (state) => {
+      const newFilters = { ...state.filters };
+      delete newFilters.criterioRicerca;
+      state.filters = { ...newFilters };
+    },
   },
 });
 
 export const {
   resetAreaCittadiniState,
-  cleanEntityFilters,
+  cleanEntityFiltersCitizen,
   setEntityFilters,
   setEntityFilterOptions,
   setEntityPagination,
@@ -164,6 +165,7 @@ export const {
   clearInfoForm,
   getEntitySearchMultiple,
   clearCitizenSearch,
+  deleteFiltroCriterioRicercaCitizen,
 } = citizensAreaSlice.actions;
 
 export const selectEntityList = (state: RootState) => state.citizensArea.list;

@@ -7,6 +7,7 @@ import { formFieldI } from '../../../../../utils/formHelper';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 import {
   createProgram,
+  GetProgramDetail,
   updateProgram,
 } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
@@ -20,11 +21,12 @@ import {
   setProgramGeneralInfo,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import clsx from 'clsx';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import TargetsForm from '../../../../../components/AdministrativeArea/Entities/General/TargetForm/TargetsForm';
 interface ProgramInformationI {
   formDisabled?: boolean;
   creation?: boolean;
+  edit?: boolean;
 }
 
 const id = formTypes.PROGRAMMA;
@@ -37,20 +39,32 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
   // clearForm = () => ({}),
   formDisabled,
   creation = false,
+  edit = false,
 }) => {
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
   const { entityId } = useParams();
+  const navigate = useNavigate();
 
-  const handleSaveProgram = () => {
+  const handleSaveProgram = async () => {
     if (isFormValid) {
       if (creation) {
-        dispatch(createProgram(newFormValues));
-        setCurrentStep(0);
+        const res = await dispatch(createProgram(newFormValues));
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (res?.data?.idProgrammaCreato) {
+          navigate(
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            `/area-amministrativa/programmi/${res.data.idProgrammaCreato}/info`
+          );
+        }
       } else {
-        // TODO here dispatch update program
-        entityId && dispatch(updateProgram(entityId, newFormValues));
-        setCurrentStep(0);
+        if (entityId) {
+          await dispatch(updateProgram(entityId, newFormValues));
+          dispatch(GetProgramDetail(entityId));
+        }
       }
+      setCurrentStep(0);
       dispatch(closeModal());
     }
   };
@@ -60,7 +74,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       title: 'Informazioni generali',
       primaryCTA: {
         disabled: !isFormValid,
-        label: 'Step Successivo',
+        label: 'Avanti',
         onClick: () => updateDetailInfoHandler(),
       },
       secondaryCTA: {
@@ -73,7 +87,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       title: 'Numero punti di facilitazione',
       primaryCTA: {
         disabled: !isFormValid,
-        label: 'Step Successivo',
+        label: 'Avanti',
         onClick: () => updateDetailInfoHandler(),
       },
       secondaryCTA: {
@@ -81,7 +95,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         onClick: () => ({}),
       },
       tertiatyCTA: {
-        label: 'Step precedente',
+        label: 'Indietro',
         onClick: () => setCurrentStep((prev) => prev - 1),
       },
     },
@@ -89,7 +103,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       title: 'Numero utenti unici',
       primaryCTA: {
         disabled: !isFormValid,
-        label: 'Step Successivo',
+        label: 'Avanti',
         onClick: () => updateDetailInfoHandler(),
       },
       secondaryCTA: {
@@ -97,7 +111,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         onClick: () => ({}),
       },
       tertiatyCTA: {
-        label: 'Step precedente',
+        label: 'Indietro',
         onClick: () => setCurrentStep((prev) => prev - 1),
       },
     },
@@ -105,7 +119,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       title: 'Numero servizi',
       primaryCTA: {
         disabled: !isFormValid,
-        label: 'Step Successivo',
+        label: 'Avanti',
         onClick: () => updateDetailInfoHandler(),
       },
       secondaryCTA: {
@@ -113,7 +127,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         onClick: () => ({}),
       },
       tertiatyCTA: {
-        label: 'Step precedente',
+        label: 'Indietro',
         onClick: () => setCurrentStep((prev) => prev - 1),
       },
     },
@@ -129,7 +143,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         onClick: () => () => ({}),
       },
       tertiatyCTA: {
-        label: 'Step precedente',
+        label: 'Indietro',
         onClick: () => setCurrentStep((prev) => prev - 1),
       },
     },
@@ -199,6 +213,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
     case 0:
       currentForm = (
         <FormGeneralInfo
+          edit={edit}
           intoModal
           formDisabled={!!formDisabled}
           sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {
@@ -316,7 +331,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
   }
 
   useEffect(() => {
-    dispatch(resetProgramDetails());
+    if (creation) dispatch(resetProgramDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [creation]);
 

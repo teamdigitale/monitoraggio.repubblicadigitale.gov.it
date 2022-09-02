@@ -3,8 +3,6 @@ package it.pa.repdgt.surveymgmt.repository;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,7 +15,7 @@ public interface QuestionarioTemplateSqlRepository extends JpaRepository<Questio
 
 	@Query(value = ""
 			+ " SELECT "
-			+ "		qt.* "
+			+ "		count(*) "
 			+ " FROM "
 			+ "		questionario_template qt "
 			+ " WHERE 1=1 "
@@ -27,6 +25,45 @@ public interface QuestionarioTemplateSqlRepository extends JpaRepository<Questio
 	        + "	   		OR UPPER(qt.NOME) LIKE UPPER( :criterioRicerca ) "
             + "   ) "
             + "	  AND  ( :statoQuestionario IS NULL  OR  qt.stato = :statoQuestionario )",
+			nativeQuery = true)
+	Long countQuestionarioTemplateByFiltro(
+			@Param(value = "criterioRicerca")   String criterioRicerca,
+			@Param(value = "statoQuestionario") String statoQuestionario
+		); 
+	
+	@Query(value = ""
+			+ " SELECT "
+			+ "		qt.* "
+			+ " FROM "
+			+ "		questionario_template qt "
+			+ " WHERE 1=1 "
+			+ "   AND ( "
+			+ "			:criterioRicerca IS NULL  "	
+	        + "			OR qt.ID LIKE :criterioRicerca "
+	        + "	   		OR UPPER(qt.NOME) LIKE UPPER( :criterioRicerca ) "
+            + "   ) "
+            + "	  AND  ( :statoQuestionario IS NULL  OR  qt.stato = :statoQuestionario )"
+            + "	  LIMIT :currPage, :pageSize",
+			nativeQuery = true)
+	List<QuestionarioTemplateEntity> findAllByFiltro(
+			@Param(value = "criterioRicerca")   String criterioRicerca,
+			@Param(value = "statoQuestionario") String statoQuestionario,
+			@Param(value = "currPage") Integer currPage,
+			@Param(value = "pageSize") Integer pageSize
+		); 
+	
+	@Query(value = ""
+			+ " SELECT "
+			+ "		qt.* "
+			+ " FROM "
+			+ "		questionario_template qt "
+			+ " WHERE 1=1 "
+			+ "   AND ( "
+			+ "			:criterioRicerca IS NULL  "	
+			+ "			OR qt.ID LIKE :criterioRicerca "
+			+ "	   		OR UPPER(qt.NOME) LIKE UPPER( :criterioRicerca ) "
+			+ "   ) "
+			+ "	  AND  ( :statoQuestionario IS NULL  OR  qt.stato = :statoQuestionario )",
 			nativeQuery = true)
 	List<QuestionarioTemplateEntity> findAllByFiltro(
 			@Param(value = "criterioRicerca")   String criterioRicerca,
@@ -50,6 +87,32 @@ public interface QuestionarioTemplateSqlRepository extends JpaRepository<Questio
 			@Param(value = "criterioRicerca")   String criterioRicerca,
 			@Param(value = "statoQuestionario") String statoQuestionario
 		); 
+	
+	@Query(value = ""
+			+ " SELECT "
+			+ "		qt.* "
+			+ " FROM "
+			+ "		programma_x_questionario_template pqt "
+			+ "		INNER JOIN questionario_template qt "
+			+ "		ON qt.id = pqt.questionario_template_id "
+			+ " WHERE 1=1 "
+			+ "   AND pqt.stato = 'ATTIVO'"
+			+ "   AND pqt.programma_id = :idProgramma"
+			+ "   AND ( "
+			+ "			:criterioRicerca IS NULL  "
+	        + "			OR UPPER(qt.id) LIKE UPPER(:criterioRicerca) "
+	        + "	   		OR UPPER(qt.nome) LIKE UPPER( :criterioRicerca ) "
+            + "   ) "
+            + "	  AND  ( :statoQuestionario IS NULL  OR  qt.stato = :statoQuestionario )"
+            + "	  LIMIT :currPage, :pageSize",
+			nativeQuery = true)
+	List<QuestionarioTemplateEntity> findQuestionariTemplateByIdProgrammaAndFiltro(
+			@Param(value = "idProgramma") Long idProgramma,
+			@Param(value = "criterioRicerca") String criterioRicerca,
+			@Param(value = "statoQuestionario") String statoQuestionario,
+			@Param(value = "currPage") Integer currPage,
+			@Param(value = "pageSize") Integer pageSize
+		);
 	
 	@Query(value = ""
 			+ " SELECT "
@@ -124,11 +187,36 @@ public interface QuestionarioTemplateSqlRepository extends JpaRepository<Questio
 	        + "			OR qt.id LIKE :criterioRicerca "
 	        + "	   		OR UPPER(qt.nome) LIKE UPPER( :criterioRicerca ) "
             + "   ) "
-            + "	  AND  ( :statoQuestionario IS NULL  OR  qt.stato = :statoQuestionario )",
+            + "	  AND  ( :statoQuestionario IS NULL  OR  qt.stato = :statoQuestionario )"
+            + "	  LIMIT :currPage, :pageSize",
 			nativeQuery = true)
 	List<QuestionarioTemplateEntity> findQuestionariTemplateByDefaultPolicySCDAndFiltro(
 			String criterioRicerca,
-			String statoQuestionario);
+			String statoQuestionario,
+			Integer currPage,
+			Integer pageSize);
+	
+	@Query(value = ""
+			+ " SELECT "
+			+ "		qt.* "
+			+ " FROM "
+			+ "		programma_x_questionario_template pqt "
+			+ "		INNER JOIN questionario_template qt "
+			+ "		ON qt.id = pqt.QUESTIONARIO_TEMPLATE_ID "
+			+ " WHERE 1=1 "
+			+ "   AND pqt.stato = 'ATTIVO' "
+			+ "   AND qt.default_scd = TRUE "
+			+ "   AND ( "
+			+ "			:criterioRicerca IS NULL  "
+			+ "			OR qt.id LIKE :criterioRicerca "
+			+ "	   		OR UPPER(qt.nome) LIKE UPPER( :criterioRicerca ) "
+			+ "   ) "
+			+ "	  AND  ( :statoQuestionario IS NULL  OR  qt.stato = :statoQuestionario )",
+			nativeQuery = true)
+	List<QuestionarioTemplateEntity> findQuestionariTemplateByDefaultPolicySCDAndFiltro(
+			String criterioRicerca,
+			String statoQuestionario
+		);
 	
 	@Query(value = ""
 			+ " SELECT "

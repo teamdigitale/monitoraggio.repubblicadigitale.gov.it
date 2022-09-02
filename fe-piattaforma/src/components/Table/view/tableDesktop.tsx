@@ -24,57 +24,58 @@ const TableDesktop: React.FC<TableI> = (props) => {
     withActions = false,
     rolesTable = false,
     onActionRadio,
+    totalCounter,
   } = props;
   const [rowChecked, setRowChecked] = useState<string>('');
 
   return values?.length ? (
-    <TableKit
-      className={clsx('table-container', className)}
-      id={id}
-      tabIndex={-1}
-    >
-      {heading?.length ? (
-        <thead>
-          <tr className='lightgrey-bg-a1 neutral-2-color-b4'>
-            {onActionRadio && (
-              <th
-                scope='col'
-                className={rolesTable ? 'th-actions-roles' : 'th-actions'}
-              />
-            )}
-            {heading.map((th) => (
-              <th
-                key={th.label}
-                scope='col'
-                className={clsx(
-                  `th-${th.size || 'auto'}`,
-                  'table-container__intestazione'
-                )}
-              >
-                <span>{th.label.toUpperCase()}</span>
-                {/* <Icon           // TODO: decommentare quando aggiungono il sort
+    <>
+      <TableKit
+        className={clsx('table-container', className)}
+        id={id}
+        tabIndex={-1}
+      >
+        {heading?.length ? (
+          <thead>
+            <tr className='lightgrey-bg-a1 neutral-2-color-b4'>
+              {onActionRadio && (
+                <th
+                  scope='col'
+                  className={rolesTable ? 'th-actions-roles' : 'th-actions'}
+                />
+              )}
+              {heading.map((th) => (
+                <th
+                  key={th.field}
+                  scope='col'
+                  className={clsx(
+                    `th-${th.size || 'auto'}`,
+                    'table-container__intestazione'
+                  )}
+                >
+                  <span>{th.label.toUpperCase()}</span>
+                  {/* <Icon           // TODO: decommentare quando aggiungono il sort
                   icon='it-arrow-down-triangle'
                   color='secondary'
                   className='mb-2'
                 /> */}
-              </th>
-            ))}
-            {withActions && (
-              <th
-                scope='col'
-                className={rolesTable ? 'th-actions-roles' : 'th-actions'}
-              />
-            )}
-          </tr>
-        </thead>
-      ) : null}
-      {values?.length ? (
+                </th>
+              ))}
+              {withActions && (
+                <th
+                  scope='col'
+                  className={rolesTable ? 'th-actions-roles' : 'th-actions'}
+                />
+              )}
+            </tr>
+          </thead>
+        ) : null}
         <tbody>
           {values.map((td, i) => (
             <tr key={`tr-${i}`} onClick={() => onRowClick(td)}>
               {onActionRadio && (
                 <td>
-                  <Form>
+                  <Form id='form-table-dsk'>
                     <FormGroup check>
                       <Input
                         name='group'
@@ -100,7 +101,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
               )}
               {heading.map((th, j) => (
                 <td key={`td-${i}-${j}`} className='py-4'>
-                  {td[th.field]}
+                  {td[th.field] || '-'}
                 </td>
               ))}
               {onActionClick ? (
@@ -113,7 +114,11 @@ const TableDesktop: React.FC<TableI> = (props) => {
                       'mt-1'
                     )}
                   >
-                    {onActionClick[CRUDActionTypes.INFO] ? (
+                    {(
+                      td.actions
+                        ? td.actions.toString().includes(CRUDActionTypes.INFO)
+                        : onActionClick[CRUDActionTypes.INFO]
+                    ) ? (
                       <Button
                         onClick={() => onActionClick[CRUDActionTypes.INFO](td)}
                         className='mr-2 p-0'
@@ -127,7 +132,11 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         />
                       </Button>
                     ) : null}
-                    {onActionClick[CRUDActionTypes.CREATE] ? (
+                    {(
+                      td.actions
+                        ? td.actions.toString().includes(CRUDActionTypes.CREATE)
+                        : onActionClick[CRUDActionTypes.CREATE]
+                    ) ? (
                       <Button
                         onClick={() =>
                           onActionClick[CRUDActionTypes.CREATE](td)
@@ -143,7 +152,11 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         />
                       </Button>
                     ) : null}
-                    {onActionClick[CRUDActionTypes.EDIT] ? (
+                    {(
+                      td.actions
+                        ? td.actions.toString().includes(CRUDActionTypes.EDIT)
+                        : onActionClick[CRUDActionTypes.EDIT]
+                    ) ? (
                       <Button
                         onClick={() => onActionClick[CRUDActionTypes.EDIT](td)}
                         className='mr-2 p-0'
@@ -157,7 +170,11 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         />
                       </Button>
                     ) : null}
-                    {onActionClick[CRUDActionTypes.DELETE] ? (
+                    {(
+                      td.actions
+                        ? td.actions.toString().includes(CRUDActionTypes.DELETE)
+                        : onActionClick[CRUDActionTypes.DELETE]
+                    ) ? (
                       <Button
                         onClick={() =>
                           onActionClick[CRUDActionTypes.DELETE](td)
@@ -173,7 +190,11 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         />
                       </Button>
                     ) : null}
-                    {onActionClick[CRUDActionTypes.CLONE] ? (
+                    {(
+                      td.actions
+                        ? td.actions.toString().includes(CRUDActionTypes.CLONE)
+                        : onActionClick[CRUDActionTypes.CLONE]
+                    ) ? (
                       <Button
                         onClick={() => onActionClick[CRUDActionTypes.CLONE](td)}
                         className='mr-2 p-0'
@@ -186,7 +207,11 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         />
                       </Button>
                     ) : null}
-                    {onActionClick[CRUDActionTypes.VIEW] ? (
+                    {(
+                      td.actions
+                        ? td.actions.toString().includes(CRUDActionTypes.VIEW)
+                        : onActionClick[CRUDActionTypes.VIEW]
+                    ) ? (
                       <Button
                         onClick={() => onActionClick[CRUDActionTypes.VIEW](td)}
                         className='p-0'
@@ -207,8 +232,13 @@ const TableDesktop: React.FC<TableI> = (props) => {
             </tr>
           ))}
         </tbody>
+      </TableKit>
+      {totalCounter ? (
+        <div
+          className={clsx('text-right', 'neutral-2-color-b4')}
+        >{`${values.length} di ${totalCounter}`}</div>
       ) : null}
-    </TableKit>
+    </>
   ) : (
     <div className='d-flex flex-column align-items-center'>
       <div className='w-100 d-flex flex-row'>

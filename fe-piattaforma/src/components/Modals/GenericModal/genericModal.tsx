@@ -156,6 +156,8 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
             ? 'd-flex justify-content-center'
             : device.mediaIsPhone
             ? 'd-flex flex-row justify-content-center'
+            : tertiaryCTA
+            ? 'd-flex flex-row justify-content-between'
             : ''
         )}
       >
@@ -163,47 +165,57 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
           <>
             {footer}
             {tertiaryCTA ? (
-              <Button
-                {...tertiaryCTA}
-                color='secondary'
-                className={clsx(
-                  device.mediaIsPhone ? 'cta-button' : 'mr-2 cta-button',
-                  device.mediaIsPhone && noPaddingSecondary && 'pt-0'
-                )}
-                onClick={() => handleAction('tertiary')}
-                size='xs'
-              >
-                {tertiaryCTA.label}
-              </Button>
+              <div className='d-flex flex-row justify-content-start'>
+                <Button
+                  {...tertiaryCTA}
+                  color='secondary'
+                  className={clsx(
+                    device.mediaIsPhone ? 'cta-button' : 'mr-2 cta-button',
+                    device.mediaIsPhone && noPaddingSecondary && 'pt-0'
+                  )}
+                  onClick={() => handleAction('tertiary')}
+                  size='xs'
+                >
+                  {tertiaryCTA.label}
+                </Button>
+              </div>
             ) : null}
-            {secondaryCTA ? (
-              <Button
-                {...secondaryCTA}
-                color='secondary'
-                className={clsx(
-                  device.mediaIsPhone ? 'cta-button' : 'mr-2 cta-button',
-                  device.mediaIsPhone && noPaddingSecondary && 'pt-0'
-                )}
-                onClick={() => handleAction('secondary')}
-                size='xs'
-              >
-                {secondaryCTA.label}
-              </Button>
-            ) : null}
-            {primaryCTA ? (
-              <Button
-                {...primaryCTA}
-                className={clsx(
-                  device.mediaIsPhone ? 'cta-button' : 'cta-button',
-                  device.mediaIsPhone && noPaddingPrimary && 'pt-0'
-                )}
-                color='primary'
-                onClick={() => handleAction('primary')}
-                size='xs'
-              >
-                {primaryCTA.label}
-              </Button>
-            ) : null}
+            <div
+              className={clsx(
+                device.mediaIsPhone
+                  ? 'd-flex flex-column align-items-center'
+                  : 'd-flex flex-row justify-content-end'
+              )}
+            >
+              {secondaryCTA ? (
+                <Button
+                  {...secondaryCTA}
+                  color='secondary'
+                  className={clsx(
+                    device.mediaIsPhone ? 'cta-button mb-2' : 'mr-2 cta-button',
+                    device.mediaIsPhone && noPaddingSecondary && 'pt-0'
+                  )}
+                  onClick={() => handleAction('secondary')}
+                  size='xs'
+                >
+                  {secondaryCTA.label}
+                </Button>
+              ) : null}
+              {primaryCTA ? (
+                <Button
+                  {...primaryCTA}
+                  className={clsx(
+                    device.mediaIsPhone ? 'cta-button' : 'cta-button',
+                    device.mediaIsPhone && noPaddingPrimary && 'pt-0'
+                  )}
+                  color='primary'
+                  onClick={() => handleAction('primary')}
+                  size='xs'
+                >
+                  {primaryCTA.label}
+                </Button>
+              ) : null}
+            </div>
           </>
         ) : null}
       </ModalFooter>
