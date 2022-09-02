@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.89](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.88...1.0.0-develop.89) (2022-09-02)
+
+
+### Bug Fixes
+
+* **be:** aggiunta id in crea contesto + test ([c661278](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c661278702eb10673a74a4d0e96bd34e6f2677d2))
+
 ## [1.0.0-develop.88](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.87...1.0.0-develop.88) (2022-09-01)
 
 
