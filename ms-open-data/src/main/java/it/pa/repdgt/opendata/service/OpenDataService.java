@@ -91,7 +91,7 @@ public class OpenDataService {
 		}
 	}
 	
-	public File creaFileToUpload(@NotNull final String datiToUpload, @NotBlank final String fileName) throws IOException {
+	public File creaFileToUpload(@NotNull final String dati, @NotBlank final String fileName) throws IOException {
 		final File fileToUpload = new File(fileName);
 		
 		FileWriter fileWriter = null;
@@ -100,7 +100,7 @@ public class OpenDataService {
 			fileToUpload.createNewFile();
 			fileWriter = new FileWriter(fileToUpload);
 			bufferedWriter = new BufferedWriter(fileWriter);
-			bufferedWriter.write(datiToUpload);
+			bufferedWriter.write(dati);
 		} catch (Exception ex) {
 			log.error("Errore creazione del file contenetente la lista cittadini. ex={}", ex);
 		} finally {
