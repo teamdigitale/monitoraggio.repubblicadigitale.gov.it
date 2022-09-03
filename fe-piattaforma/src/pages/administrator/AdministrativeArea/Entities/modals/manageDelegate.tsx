@@ -147,7 +147,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
           setNewFormValues({ ...newData })
         }
         setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
-        fieldsToHide={['ruolo']}
+        fieldsToHide={['ruolo', 'tipoContratto']}
       />
     );
   } else if (usersList && usersList.length > 0) {
