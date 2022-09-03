@@ -103,11 +103,12 @@ const ManageReferal: React.FC<ManageReferalI> = ({
               authorityId,
               projectId,
               newFormValues,
-              'REPP'
+              'REPP',
+              userId
             )
           );
-
-          dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
+          await dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
+          if (userId) await dispatch(GetUserDetails(userId));
         } else {
           await dispatch(
             AssignManagerAuthorityReferentDelegate(
@@ -167,7 +168,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
           setNewFormValues({ ...newData })
         }
         setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
-        fieldsToHide={['ruolo']}
+        fieldsToHide={['ruolo', 'tipoContratto']}
       />
     );
   } else if (usersList && usersList.length > 0) {

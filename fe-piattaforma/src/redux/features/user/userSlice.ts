@@ -17,8 +17,8 @@ export interface UserStateI {
         codiceFiscale: string;
         profiliUtente: UserProfileI[];
         integrazione: boolean;
-        mostraBio?: boolean;
-        mostraTipoContratto?: boolean;
+        mostraBio: boolean;
+        mostraTipoContratto: boolean;
       }
     | Record<string, never>;
   notification?: [];
@@ -55,6 +55,8 @@ const initialStateLogged: UserStateI = {
     codiceFiscale: 'UTENTE1',
     integrazione: true,
     profiliUtente: [],
+    mostraBio: false,
+    mostraTipoContratto: false,
   },
   permissions: [],
   idProgramma: '0',

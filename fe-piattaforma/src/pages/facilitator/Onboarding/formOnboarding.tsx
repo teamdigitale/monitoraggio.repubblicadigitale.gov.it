@@ -17,7 +17,6 @@ import { selectUser } from '../../../redux/features/user/userSlice';
 import { RegexpType } from '../../../utils/validator';
 import {
   contractTypes,
-  userRoles,
 } from '../../administrator/AdministrativeArea/Entities/utils';
 
 export interface FormOnboardingI {
@@ -26,7 +25,6 @@ export interface FormOnboardingI {
   optionsSelect?: OptionType[];
   formDisabled?: boolean;
   creation?: boolean;
-  isOnboarding?: boolean;
   sendNewForm?: (newForm: FormI) => void;
   setIsFormValid?: (param: boolean) => void;
 }
@@ -35,16 +33,16 @@ interface FormProfileI extends withFormHandlerProps, FormOnboardingI {}
 const FormOnboarding: React.FC<FormProfileI> = (props) => {
   const {
     setFormValues = () => ({}),
+    updateFormField = () => ({}),
     setIsFormValid = () => ({}),
     form,
     isValidForm,
     onInputChange,
     sendNewForm = () => ({}),
-    isOnboarding = false,
   } = props;
 
   const device = useAppSelector(selectDevice);
-  const user = useAppSelector(selectUser);
+  const user = useAppSelector(selectUser) || {};
   const formDisabled = !!props.formDisabled;
 
   const [showBio, setShowBio] = useState(false);
@@ -55,6 +53,25 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       setFormValues(user);
+      setShowBio(
+        user.mostraBio
+        /*&& !!user?.profiliUtente?.filter(
+          ({ codiceRuolo }) =>
+            codiceRuolo === userRoles.REG ||
+            codiceRuolo === userRoles.REGP ||
+            codiceRuolo === userRoles.DEG ||
+            codiceRuolo === userRoles.DEGP ||
+            codiceRuolo === userRoles.REPP ||
+            codiceRuolo === userRoles.DEPP
+        ).length*/
+      );
+      setShowTipoContratto(
+        user.mostraTipoContratto
+        /*&& !!user?.profiliUtente?.filter(
+          ({ codiceRuolo }) =>
+            codiceRuolo === userRoles.FAC || codiceRuolo === userRoles.VOL
+        ).length*/
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
@@ -66,27 +83,12 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
   }, [form, isValidForm]);
 
   useEffect(() => {
-    setShowBio(
-      (isOnboarding && user?.mostraBio) ||
-        !!user?.profiliUtente?.filter(
-          ({ codiceRuolo }) =>
-            codiceRuolo === userRoles.REG ||
-            codiceRuolo === userRoles.REGP ||
-            codiceRuolo === userRoles.DEG ||
-            codiceRuolo === userRoles.DEGP ||
-            codiceRuolo === userRoles.REPP ||
-            codiceRuolo === userRoles.DEPP
-        ).length
-    );
-    setShowTipoContratto(
-      (isOnboarding && user?.mostraTipoContratto) ||
-        !!user?.profiliUtente?.filter(
-          ({ codiceRuolo }) =>
-            codiceRuolo === userRoles.FAC || codiceRuolo === userRoles.VOL
-        ).length
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, isOnboarding]);
+    if (form?.bio) setTimeout(() => updateFormField({ ...form.bio, required: showBio }), 500);
+  }, [showBio]);
+
+  useEffect(() => {
+    if (form?.tipoContratto) setTimeout(() => updateFormField({ ...form.tipoContratto, required: showTipoContratto }), 500);
+  }, [showTipoContratto]);
 
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 
