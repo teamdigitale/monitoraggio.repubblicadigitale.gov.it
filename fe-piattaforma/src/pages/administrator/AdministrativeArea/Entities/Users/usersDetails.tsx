@@ -31,7 +31,6 @@ import {
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { CardStatusAction } from '../../../../../components';
 import ManageFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/ManageFacilitator/ManageFacilitator';
-import FormFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/FormFacilitator/FormFacilitator';
 import { formFieldI } from '../../../../../utils/formHelper';
 import AddUserRole from '../modals/addUserRole';
 import {
@@ -53,6 +52,7 @@ import {
 import { GetPartnerAuthorityDetail } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import ManageDelegate from '../modals/manageDelegate';
 import ManageReferal from '../modals/manageReferal';
+import FormFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/FormFacilitator/FormFacilitator';
 
 const UsersDetails = () => {
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
@@ -169,7 +169,9 @@ const UsersDetails = () => {
     if (userRole === userRoles.FAC || userRole === userRoles.VOL) {
       setCurrentForm(<FormFacilitator formDisabled />);
     } else {
-      setCurrentForm(<FormUser formDisabled />);
+      setCurrentForm(
+        <FormUser formDisabled fieldsToHide={['tipoContratto']} />
+      );
     }
   }, [userRole]);
 

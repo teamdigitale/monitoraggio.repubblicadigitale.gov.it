@@ -538,7 +538,8 @@ export const AssignPartnerAuthorityReferentDelegate =
     userDetail: {
       [key: string]: string | number | boolean | Date | string[] | undefined;
     },
-    role: UserAuthorityRole
+    role: UserAuthorityRole,
+    userId?: string,
   ) =>
   async (dispatch: Dispatch) => {
     try {
@@ -551,13 +552,13 @@ export const AssignPartnerAuthorityReferentDelegate =
             `/utente/${userDetail.id.toString().toUpperCase()}`,
             userDetail
           ));
-        await API.post(endpoint, {
+        userId !== userDetail.id.toString() && (await API.post(endpoint, {
           cfUtente: userDetail.codiceFiscale?.toString().toUpperCase(),
           codiceRuolo: role,
           idEntePartner: authorityId,
           idProgetto: entityId,
           mansione: userDetail.mansione,
-        });
+        }));
       } else {
         const payload = {
           telefono: userDetail?.telefono,

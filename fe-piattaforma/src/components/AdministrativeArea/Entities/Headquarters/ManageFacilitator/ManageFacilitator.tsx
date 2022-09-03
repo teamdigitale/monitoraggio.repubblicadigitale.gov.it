@@ -129,6 +129,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         setNewFormValues({ ...newData })
       }
       setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+      creation={creation}
     />
   );
 
