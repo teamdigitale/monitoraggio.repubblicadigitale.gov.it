@@ -209,7 +209,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
             </div>
           </div>
         ) : null}
-        <FormOnboarding sendNewForm={updateForm} isOnboarding />
+        <FormOnboarding sendNewForm={updateForm} />
         <Form
           id='form-onboarding'
           className={clsx('mt-5', 'mb-5', 'pt-5', 'onboarding__form-container')}

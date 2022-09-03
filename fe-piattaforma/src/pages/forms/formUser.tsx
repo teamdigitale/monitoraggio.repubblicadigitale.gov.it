@@ -38,7 +38,7 @@ interface UserInformationI {
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   setIsFormValid?: (param: boolean | undefined) => void;
   creation?: boolean;
-  fieldsToHide?: ('ruolo' | 'mansione')[];
+  fieldsToHide?: ('ruolo' | 'mansione' | 'tipoContratto')[];
 }
 
 interface UserFormI extends withFormHandlerProps, UserInformationI {}
@@ -62,6 +62,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
   const formData = userDetails?.dettaglioUtente;
   const ruoliList = useAppSelector(selectRolesList);
   const [showTipoContratto, setShowTipoContratto] = useState(false);
+  const [showMansione, setShowMansione] = useState(false);
 
   const formDisabled = !!props.formDisabled;
 
@@ -102,12 +103,25 @@ const FormUser: React.FC<UserFormI> = (props) => {
 
   useEffect(() => {
     setShowTipoContratto(
+      !fieldsToHide.includes('tipoContratto') &&
       !!(userDetails?.dettaglioRuolo || []).filter(
         ({ codiceRuolo }: { codiceRuolo: string }) =>
           codiceRuolo === userRoles.FAC || codiceRuolo === userRoles.VOL
       ).length
     );
-  }, [userDetails]);
+    setShowMansione(
+      !fieldsToHide.includes('mansione') &&
+      !!(userDetails?.dettaglioRuolo || []).filter(
+        ({ codiceRuolo }: { codiceRuolo: string }) =>
+          codiceRuolo === userRoles.REG ||
+          codiceRuolo === userRoles.REGP ||
+          codiceRuolo === userRoles.DEG ||
+          codiceRuolo === userRoles.DEGP ||
+          codiceRuolo === userRoles.REPP ||
+          codiceRuolo === userRoles.DEPP
+      ).length
+    );
+  }, [userDetails, fieldsToHide.length]);
 
   useEffect(() => {
     setIsFormValid(isValidForm);
@@ -180,13 +194,17 @@ const FormUser: React.FC<UserFormI> = (props) => {
             // placeholder='Inserisci email'
             onInputChange={onInputChange}
           />
-          <Input
-            {...form?.mansione}
-            label='Posizione Lavorativa'
-            col='col-12 col-lg-6'
-            // placeholder='Inserisci bio'
-            onInputChange={onInputChange}
-          />
+          {showMansione ? (
+            <Input
+              {...form?.mansione}
+              label='Posizione Lavorativa'
+              col='col-12 col-lg-6'
+              // placeholder='Inserisci bio'
+              onInputChange={onInputChange}
+            />
+          ) : (
+            <span />
+          )}
           {showTipoContratto ? (
             formDisabled ? (
               <Input
@@ -207,7 +225,6 @@ const FormUser: React.FC<UserFormI> = (props) => {
                 onInputChange={onInputChange}
                 wrapperClassName='mb-5'
                 aria-label='contratto'
-                required
               />
             )
           ) : (
