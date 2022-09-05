@@ -104,24 +104,25 @@ const FormUser: React.FC<UserFormI> = (props) => {
   useEffect(() => {
     setShowTipoContratto(
       !fieldsToHide.includes('tipoContratto') &&
-      !!(userDetails?.dettaglioRuolo || []).filter(
-        ({ codiceRuolo }: { codiceRuolo: string }) =>
-          codiceRuolo === userRoles.FAC || codiceRuolo === userRoles.VOL
-      ).length
+        !!(userDetails?.dettaglioRuolo || []).filter(
+          ({ codiceRuolo }: { codiceRuolo: string }) =>
+            codiceRuolo === userRoles.FAC || codiceRuolo === userRoles.VOL
+        ).length
     );
     setShowMansione(
       !fieldsToHide.includes('mansione') &&
-      !!(userDetails?.dettaglioRuolo || []).filter(
-        ({ codiceRuolo }: { codiceRuolo: string }) =>
-          codiceRuolo === userRoles.REG ||
-          codiceRuolo === userRoles.REGP ||
-          codiceRuolo === userRoles.DEG ||
-          codiceRuolo === userRoles.DEGP ||
-          codiceRuolo === userRoles.REPP ||
-          codiceRuolo === userRoles.DEPP
-      ).length
+        (creation ||
+          !!(userDetails?.dettaglioRuolo || []).filter(
+            ({ codiceRuolo }: { codiceRuolo: string }) =>
+              codiceRuolo === userRoles.REG ||
+              codiceRuolo === userRoles.REGP ||
+              codiceRuolo === userRoles.DEG ||
+              codiceRuolo === userRoles.DEGP ||
+              codiceRuolo === userRoles.REPP ||
+              codiceRuolo === userRoles.DEPP
+          ).length)
     );
-  }, [userDetails, fieldsToHide.length]);
+  }, [userDetails, fieldsToHide.length, creation]);
 
   useEffect(() => {
     setIsFormValid(isValidForm);

@@ -5,6 +5,7 @@ import { FilterI } from '../components/DropdownFilter/dropdownFilter';
 import { OptionType } from '../components/Form/select';
 import { TableRowI } from '../components/Table/table';
 import { RolePermissionI } from '../redux/features/roles/rolesSlice';
+import { formFieldI } from './formHelper';
 
 export const formatDate = (date?: string) => {
   if (date) {
@@ -56,6 +57,21 @@ export const mapOptions = (
         elem.toString().charAt(0).toUpperCase() +
         elem.toString().slice(1).toLowerCase(),
       value: elem.toString(),
+    });
+  });
+  return arrayMapped;
+};
+
+export const mapOptionsCitizens = (
+  arrayToMap: { [key: string]: string | number }[]
+) => {
+  const arrayMapped: FilterI[] = [];
+  arrayToMap?.map((elem) => {
+    arrayMapped.push({
+      label:
+        elem.nome.toString().charAt(0).toUpperCase() +
+        elem.nome.toString().slice(1).toLowerCase(),
+      value: elem.id,
     });
   });
   return arrayMapped;
@@ -299,4 +315,73 @@ export const transformFiltersToQueryParams = (filters: {
     }
   });
   return filterString === '' ? filterString : '?' + filterString;
+};
+
+export const formatAndParseJsonString = (jsonString: string) => {
+  try {
+    return JSON.parse(jsonString);
+  } catch (error) {
+    try {
+      return JSON.parse(decodeURI(jsonString).replace(/\s+/g, ' ').trim());
+    } catch (error) {
+      try {
+        return JSON.parse(decodeURI(jsonString).replaceAll("'", '"'));
+      } catch (error) {
+        return '';
+      }
+    }
+  }
+};
+
+export const createStringOfCompiledSurveySection = (
+  formValues: { [key: string]: formFieldI['value'] | undefined } | undefined
+) => {
+  if (formValues === undefined) return '';
+  const formattedData = { ...formValues };
+  Object.keys(formattedData).forEach((key: string) => {
+    if (!Array.isArray(formattedData[key])) {
+      const tmp =
+        typeof formattedData[key] === 'string'
+          ? formattedData[key]?.toString()
+          : '';
+      tmp ? (formattedData[key] = [tmp]) : null;
+    }
+  });
+  const newData: { [key: string]: any }[] = [];
+  Object.keys(formattedData).forEach((key: string) => {
+    newData.push({ [key]: formattedData[key] });
+  });
+  return JSON.stringify(newData);
+};
+
+export const convertPayloadSectionInString = (sectionPayload: {
+  [key: string]: string | { [key: string]: boolean };
+}, section: number) => {
+  const newObject: { [key: string]: string[] } = {};
+  Object.keys(sectionPayload).map((key: string) => {
+    if (sectionPayload[key]) {
+      if (typeof sectionPayload[key] === 'string') {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        newObject[key] = [sectionPayload[key]];
+      } else if (Object.keys(sectionPayload[key])?.length > 0) {
+        const val: string[] = [];
+        Object.keys(sectionPayload[key]).map((key2: string) => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          if (sectionPayload[key][key2]) val.push(key2);
+        });
+        newObject[key] = val;
+      }
+    } else {
+      newObject[key] = [''];
+    }
+  });
+  switch(section){
+    case 0: return "{'id':'anagraphic-citizen-section','title':'Anagrafica del cittadino','properties':" + JSON.stringify(newObject).replaceAll('"', "'") + '}';
+    case 1: return "{'id':'anagraphic-booking-section','title':'Anagrafica della prenotazione','properties':" + JSON.stringify(newObject).replaceAll('"', "'") + '}';
+    case 2: return "{'id':'anagraphic-service-section','title':'Anagrafica del servizio','properties':" + JSON.stringify(newObject).replaceAll('"', "'") + '}';
+    case 3: return "{'id':'content-service-section','title':'Contenuti del servizio','properties':" + JSON.stringify(newObject).replaceAll('"', "'") + '}';
+    default: return JSON.stringify(newObject);
+  }
 };

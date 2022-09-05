@@ -13,8 +13,9 @@ import '../compileSurvey/compileSurvey.scss';
 import { useEffect } from 'react';
 import { setCompilingSurveyForm } from '../../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 import { useDispatch } from 'react-redux';
-import { useAppSelector } from '../../../../../../redux/hooks';
-import { selectDevice } from '../../../../../../redux/features/app/appSlice';
+import { OptionTypeMulti } from '../../../../../../components/Form/selectMultiple';
+// import { useAppSelector } from '../../../../../../redux/hooks';
+// import { selectDevice } from '../../../../../../redux/features/app/appSlice';
 interface JsonFormRenderI {
   form: FormI;
   onInputChange: (
@@ -22,12 +23,18 @@ interface JsonFormRenderI {
     field?: formFieldI['field']
   ) => void;
   currentStep: number;
+  viewMode?: boolean;
 }
 
 const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
-  const { form = {}, onInputChange = () => ({}), currentStep } = props;
+  const {
+    form = {},
+    onInputChange = () => ({}),
+    currentStep,
+    viewMode = false,
+  } = props;
   const dispatch = useDispatch();
-  const device = useAppSelector(selectDevice);
+  //const device = useAppSelector(selectDevice);
 
   useEffect(() => {
     if (currentStep === 3) {
@@ -57,22 +64,23 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
           // @ts-ignore
           <Input
             {...formField}
-            className={clsx(
-              device.mediaIsPhone || device.mediaIsTablet
-                ? 'd-flex w-100 flex-column mt-1'
-                : 'd-inline-block',
+            // className={clsx(
+            //   (device.mediaIsPhone || device.mediaIsTablet) &&
+            //     'd-flex w-100 flex-column mt-1'
+            // )}
+            col={clsx(
               formField?.label?.toLowerCase() === 'prefisso' &&
-                'compile-survey-container__prefix-width',
+                'col-12 col-lg-2',
               formField?.label?.toLowerCase().includes('cellulare') &&
-                'compile-survey-container__mobile-width',
+                'col-12 col-lg-4',
               formField?.label?.toLowerCase() !== 'prefisso' &&
                 !formField?.label?.toLowerCase().includes('cellulare') &&
-                'compile-survey-container__half-width',
-              'mr-3',
-              'mb-3'
+                'col-12 col-lg-6',
+              formField?.field === '19' && 'mt-4'
             )}
             label={`${formField?.label}`}
             onInputBlur={onInputChange}
+            disabled={viewMode}
           />
         );
       }
@@ -83,15 +91,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
             // @ts-ignore
             <Select
               {...formField}
-              wrapperClassName={clsx(
-                device.mediaIsPhone || device.mediaIsTablet
-                  ? 'd-flex w-100 flex-column mt-1 py-3'
-                  : 'd-inline-block',
-                'compile-survey-container__half-width',
-                'compile-survey-container__select-margin',
-                'mr-3',
-                'mb-3'
-              )}
+              col='col-12 col-lg-6'
               onInputChange={onInputChange}
               placeholder={`Seleziona ${
                 (formField?.label || '')?.length < 20
@@ -99,6 +99,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
                   : ''
               }`}
               label={`${formField?.label}`}
+              isDisabled={formField.disabled || viewMode}
             />
           );
         }
@@ -145,6 +146,29 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
               }
             );
           }
+
+          // mappa valori
+          const valuesSecondLevel =
+            formField?.relatedTo && form[formField?.relatedTo]?.value;
+          const values: OptionTypeMulti[] = [];
+          Array.isArray(valuesSecondLevel) &&
+            (valuesSecondLevel || []).map((val: string) => {
+              let upperLevel = '';
+              Object.keys(multiSelectOptions).forEach((key: any) => {
+                if (
+                  multiSelectOptions[key].options.filter((x) => x.label === val)
+                    ?.length > 0
+                ) {
+                  upperLevel = multiSelectOptions[key].label;
+                }
+              });
+              values.push({
+                label: val,
+                value: val,
+                upperLevel: upperLevel,
+              });
+            });
+
           return (
             <SelectMultiple
               field={formField.field}
@@ -157,15 +181,9 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
               onInputChange={onInputChange}
               onSecondLevelInputChange={onInputChange}
               placeholder='Seleziona'
-              wrapperClassName={clsx(
-                device.mediaIsPhone || device.mediaIsTablet
-                  ? 'd-flex w-100 flex-column mt-1 py-2'
-                  : 'd-inline-block',
-                'compile-survey-container__half-width',
-                'compile-survey-container__select-margin',
-                'mr-3',
-                'mb-3'
-              )}
+              col='col-12'
+              value={values}
+              isDisabled={viewMode}
             />
           );
         }
@@ -175,19 +193,12 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
             // @ts-ignore
             <CheckboxGroup
               {...formField}
-              className={clsx(
-                device.mediaIsPhone || device.mediaIsTablet
-                  ? 'd-flex w-100 flex-column pb-3'
-                  : 'd-inline-block',
-                'compile-survey-container__half-width',
-                'compile-survey-container__select-margin',
-                'mr-3',
-                'mb-3'
-              )}
+              className='col-12 col-lg-6'
               onInputChange={onInputChange}
               label={`${formField?.label}`}
               styleLabelForm
               noLabel={formField.flag === true ? true : false}
+              disabled={viewMode}
             />
           );
         }
@@ -196,14 +207,10 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
           // @ts-ignore
           <Input
             {...formField}
-            className={clsx(
-              'd-inline-block',
-              'compile-survey-container__half-width',
-              'mr-3',
-              'mb-3'
-            )}
+            col='col-12 col-lg-6'
             onInputBlur={onInputChange}
             label={`${formField?.label}`}
+            disabled={viewMode}
           />
         );
       }
@@ -211,7 +218,10 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
         return (
           <>
             <label>{formField.field}</label>
-            <Rating onChange={(val) => onInputChange(val, formField.field)} />
+            <Rating
+              className='col-12 col-lg-6'
+              onChange={(val) => onInputChange(val, formField.field)}
+            />
           </>
         );
     }
@@ -219,11 +229,13 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
 
   return (
     <Form id='compile-survey-form'>
-      {orderedForm.map((field) => (
-        <React.Fragment key={field}>
-          {renderInputByType(form[field])}
-        </React.Fragment>
-      ))}
+      <div className='d-inline-flex flex-wrap w-100'>
+        {orderedForm.map((field) => (
+          <React.Fragment key={field}>
+            {renderInputByType(form[field])}
+          </React.Fragment>
+        ))}
+      </div>
     </Form>
   );
 };

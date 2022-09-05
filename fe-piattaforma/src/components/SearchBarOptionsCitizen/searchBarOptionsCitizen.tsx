@@ -1,26 +1,34 @@
 import React from 'react';
 import SearchBar from '../SearchBar/searchBar';
-import { Form } from '../../components';
+import { Form } from '..';
 import { FormGroup, Label } from 'design-react-kit';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
 import { GetEntitySearchResult } from '../../redux/features/citizensArea/citizensAreaThunk';
 import Input from '../Form/input';
+import { setCitizenSearchResults } from '../../redux/features/citizensArea/citizensAreaSlice';
 
 interface SearchBarOptionsI {
   setCurrentStep: (value: string) => void;
   currentStep: string | undefined;
   steps: { [key: string]: string };
+  alreadySearched?: (param: boolean) => void;
 }
 
-const SearchBarOptions: React.FC<SearchBarOptionsI> = ({
+const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
   setCurrentStep,
   currentStep,
   steps,
+  alreadySearched,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
+  const handleSearchReset = () => {
+    dispatch(setCitizenSearchResults([]));
+  };
+
   return (
     <div
       className={clsx(
@@ -60,10 +68,12 @@ const SearchBarOptions: React.FC<SearchBarOptionsI> = ({
         placeholder='Inserisci i dati del tipo di documento selezionato'
         onSubmit={(data) => {
           dispatch(GetEntitySearchResult(data, currentStep ? currentStep : ''));
+          if (alreadySearched) alreadySearched(true);
         }}
+        onReset={handleSearchReset}
       />
     </div>
   );
 };
 
-export default SearchBarOptions;
+export default SearchBarOptionsCitizen;

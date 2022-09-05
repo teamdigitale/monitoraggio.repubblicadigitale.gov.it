@@ -1,13 +1,25 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { PrintFieldI } from './printTextField';
 import './printFields.scss';
 import { FormGroup } from 'design-react-kit';
 import { Form, Input } from '../../../../../../../components';
-import { OptionType } from '../../../../../../../components/Form/select';
 
 const PrintSelectField: React.FC<PrintFieldI> = (props) => {
   const { info, className, noLabel = false, halfWidth = false } = props;
+  const [options, setOptions] = useState<string[]>([]);
+
+  useEffect(() => {
+    if(info?.properties){
+      const tmpOptions: string[] = [];
+      Object.keys(info.properties).map((key: string) => {
+        tmpOptions.push(key);
+      });
+      setOptions(tmpOptions);
+    }else if(info?.enum){
+      setOptions(info.enum);
+    }
+  },[info]);
 
   return (
     <div
@@ -18,23 +30,22 @@ const PrintSelectField: React.FC<PrintFieldI> = (props) => {
     >
       {!noLabel && (
         <p>
-          <strong>{info.label}</strong>
+          <strong>{info.title}</strong>
           {' (una sola scelta)'}
         </p>
       )}
       <Form id='form-print-select' className={clsx('mr-3', 'mt-3', 'd-flex', 'flex-column')}>
-        {(info.options || []).map((val: OptionType, i: number) => (
+        {(options || []).map((key: string, i: number) => (
           <FormGroup
             check
             key={i}
             className='print-fields-container__checkbox-field'
           >
             <Input
-              id={`checkbox-select-${val.label}`}
+              id={`checkbox-select-${key}`}
               type='checkbox'
-              label={val.label}
-              aria-label={val.label}
-              disabled
+              label={key}
+              aria-label={key}
             />
           </FormGroup>
         ))}

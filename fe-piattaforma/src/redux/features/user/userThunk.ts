@@ -10,6 +10,7 @@ import {
 } from './userSlice';
 import { getSessionValues } from '../../../utils/sessionHelper';
 import { RootState } from '../../store';
+import {isActiveProvisionalLogin} from "../../../pages/common/Auth/auth";
 
 export const getUserHeaders = () => {
   const { codiceFiscale } = JSON.parse(getSessionValues('user'));
@@ -18,8 +19,8 @@ export const getUserHeaders = () => {
   );
 
   return {
-    codiceFiscale: codiceFiscale.toUpperCase(),
-    codiceRuolo,
+    codiceFiscale: isActiveProvisionalLogin ? codiceFiscale.toUpperCase() : undefined,
+    codiceRuolo: isActiveProvisionalLogin ? codiceRuolo : undefined,
     idProgramma,
     idProgetto,
   };

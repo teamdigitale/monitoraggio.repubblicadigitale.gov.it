@@ -181,7 +181,7 @@ const routes = [
   }),
   newRoute({
     scope: 'app',
-    path: '/stampa-questionario',
+    path: '/stampa-questionario/:idQuestionario',
     title: `Stampa Questionario`,
     element: <PrintSurvey />,
     visibleTo: [],
@@ -514,7 +514,7 @@ const routes = [
   }),
   newRoute({
     scope: 'administrative-area',
-    path: 'questionari/compila',
+    path: 'servizi/:serviceId/cittadini/compila/:idQuestionarioCompilato',
     title: 'Questionari',
     element: <CompileSurvey />,
     visibleTo: [],

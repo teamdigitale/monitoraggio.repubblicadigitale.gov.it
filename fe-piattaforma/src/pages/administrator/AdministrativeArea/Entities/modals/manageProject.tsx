@@ -7,6 +7,7 @@ import { formFieldI } from '../../../../../utils/formHelper';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 import {
   createProject,
+  GetProjectDetail,
   updateProject,
 } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
@@ -16,7 +17,8 @@ import { useAppSelector } from '../../../../../redux/hooks';
 import FormProjectGeneralInfo from '../../../../forms/formProjects/formProjectGeneralInfo';
 
 import {
-  resetProjectDetails, selectPrograms,
+  resetProjectDetails,
+  selectPrograms,
   selectProjects,
   setProjectGeneralInfo,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
@@ -44,7 +46,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
   const { projectId, entityId } = useParams();
 
-  const handleSaveProgram = async () => {
+  const handleSaveProject = async () => {
     if (isFormValid) {
       if (creation && entityId) {
         await dispatch(createProject(entityId, newFormValues));
@@ -61,6 +63,13 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
     }
   };
 
+  const handleCancel = () => {
+    if (!creation && projectId) {
+      dispatch(GetProjectDetail(projectId));
+      setCurrentStep(0);
+    }
+  };
+
   const steps = [
     {
       title: 'Informazioni generali',
@@ -71,7 +80,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => ({}),
+        onClick: () => handleCancel(),
       },
       tertiatyCTA: null,
     },
@@ -84,7 +93,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => ({}),
+        onClick: () => handleCancel(),
       },
       tertiatyCTA: {
         label: 'Indietro',
@@ -100,7 +109,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => ({}),
+        onClick: () => handleCancel(),
       },
       tertiatyCTA: {
         label: 'Indietro',
@@ -116,7 +125,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => ({}),
+        onClick: () => handleCancel(),
       },
       tertiatyCTA: {
         label: 'Indietro',
@@ -128,11 +137,11 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       primaryCTA: {
         disabled: !isFormValid,
         label: 'Conferma',
-        onClick: handleSaveProgram,
+        onClick: handleSaveProject,
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => () => ({}),
+        onClick: () => () => handleCancel(),
       },
       tertiatyCTA: {
         label: 'Indietro',
@@ -148,7 +157,8 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
   const device = useAppSelector(selectDevice);
   const projectDetails =
     useAppSelector(selectProjects).detail.dettagliInfoProgetto;
-  const { dettagliInfoProgramma: programDetails } = useAppSelector(selectPrograms).detail || {};
+  const { dettagliInfoProgramma: programDetails } =
+    useAppSelector(selectPrograms).detail || {};
 
   const stepsArray = () => {
     const allSteps: string[] = [];

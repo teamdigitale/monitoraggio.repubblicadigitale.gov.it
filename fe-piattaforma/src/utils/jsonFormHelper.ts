@@ -34,9 +34,8 @@ interface schemaFieldI {
   relatedTo?: string;
   enumLevel1?: string[];
   enumLevel2?: { label: string; value: string; upperLevel: string }[];
-  keyService?: string;
   regex?: string;
-  privacy?: boolean;
+  keyBE?: string;
 }
 export interface SchemaI {
   id?: schemaFieldI['id'];
@@ -190,7 +189,7 @@ type baseTypeObjectI = {
   regex: string;
   type: InputType;
 };
-const getTypeReverse: (formField: schemaFieldI) => baseTypeObjectI = (
+export const getTypeReverse: (formField: schemaFieldI) => baseTypeObjectI = (
   formField: schemaFieldI
 ) => {
   const baseTypeObject: baseTypeObjectI = {
@@ -307,7 +306,6 @@ export const generateForm: (schema: SchemaI, compile?: boolean) => FormI = (
           : schema.required.includes(field),
         preset: schema.default.includes(field) || false,
         flag: schema.properties[field].flag ? true : false,
-        privacy: schema.properties[field].privacy ? true : false,
         format: schema.properties[field].format || '',
         order: schema.properties[field].order || 1,
         dependencyFlag: schema.properties[field].dependencyFlag || '',
@@ -316,7 +314,7 @@ export const generateForm: (schema: SchemaI, compile?: boolean) => FormI = (
         relatedTo: schema.properties[field].relatedTo || '',
         enumLevel1: schema.properties[field].enumLevel1 || undefined,
         enumLevel2: schema.properties[field].enumLevel2 || undefined,
-        keyService: schema.properties[field].keyService || undefined,
+        keyBE: schema.properties[field].keyBE || undefined,
       })
     )
   );

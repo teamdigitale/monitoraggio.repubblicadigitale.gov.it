@@ -45,6 +45,7 @@ interface GenericSearchFilterTableLayoutI {
   ctaDownload?: (() => void) | undefined;
   resetFilterDropdownSelected?: (filterKey: string) => void;
   citizen?: boolean;
+  isDetail?: boolean;
 }
 
 const GenericSearchFilterTableLayout: React.FC<
@@ -67,6 +68,7 @@ const GenericSearchFilterTableLayout: React.FC<
   ctaDownload,
   resetFilterDropdownSelected,
   citizen,
+  isDetail,
 }) => {
   const dispatch = useDispatch();
   const [showChips, setShowChips] = useState<boolean>(false);
@@ -172,7 +174,7 @@ const GenericSearchFilterTableLayout: React.FC<
 
   const device = useAppSelector(selectDevice);
   return (
-    <>
+    <div>
       {cardsCounter && (
         <div className='d-flex justify-content-center mb-5'>
           <div className='d-flex flex-row'>
@@ -191,12 +193,12 @@ const GenericSearchFilterTableLayout: React.FC<
       <div
         className={clsx(
           'd-flex',
-          'justify-content-between',
+          !isDetail ? 'justify-content-between' : 'justify-content-end',
           'align-items-center',
           'mt-2',
           'mb-3',
-          'flex-wrap',
-          'flex-lg-nowrap'
+          'flex-wrap'
+          /*  'flex-lg-nowrap' */
         )}
       >
         {searchInformation?.onHandleSearch && (
@@ -204,7 +206,7 @@ const GenericSearchFilterTableLayout: React.FC<
             className={clsx('flex-grow-1', 'col-12', cta && 'col-md-9', 'pl-0')}
           >
             <div
-              className={clsx(!cta && 'w-100', 'col-9', 'pl-0')}
+              className={clsx(!cta ? 'w-100' : 'col-9', 'pl-0')}
               data-testid='create-new-element'
             >
               <SearchBar
@@ -296,6 +298,7 @@ const GenericSearchFilterTableLayout: React.FC<
                 key={index}
                 filterName={dropdown.filterName || ''}
                 {...dropdown}
+                isDetail={isDetail}
               />
             ))}
           </div>
@@ -308,7 +311,8 @@ const GenericSearchFilterTableLayout: React.FC<
               'flex-wrap',
               'pt-lg-3',
               'pt-0',
-              'w-50'
+              'w-50',
+              isDetail && 'justify-content-end'
             )}
           >
             <ButtonsBar buttons={buttonsList} />
@@ -401,7 +405,7 @@ const GenericSearchFilterTableLayout: React.FC<
           </Sticky>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
