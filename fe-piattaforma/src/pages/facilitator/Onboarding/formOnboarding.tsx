@@ -83,11 +83,11 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
   }, [form, isValidForm]);
 
   useEffect(() => {
-    if (form?.bio) setTimeout(() => updateFormField({ ...form.bio, required: showBio }), 500);
+    if (showBio && form?.bio) setTimeout(() => updateFormField({ ...form.bio, required: showBio }), 500);
   }, [showBio]);
 
   useEffect(() => {
-    if (form?.tipoContratto) setTimeout(() => updateFormField({ ...form.tipoContratto, required: showTipoContratto }), 500);
+    if (showTipoContratto && form?.tipoContratto) setTimeout(() => updateFormField({ ...form.tipoContratto, required: showTipoContratto }), 500);
   }, [showTipoContratto]);
 
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';

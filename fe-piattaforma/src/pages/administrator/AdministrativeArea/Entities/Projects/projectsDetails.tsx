@@ -773,6 +773,7 @@ const ProjectsDetails = () => {
 
   const projectInfoButtons = () => {
     let formButtons: ButtonInButtonsBar[] = [];
+
     switch (projectDetails?.stato) {
       case 'ATTIVO':
         formButtons = hasUserPermission(['upd.car.prgt', 'term.prgt'])

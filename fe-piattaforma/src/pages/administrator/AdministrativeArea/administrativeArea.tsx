@@ -448,8 +448,13 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='questionari-compila'
-    path='questionari/compila'
+    path='servizi/:serviceId/cittadini/compila/:idQuestionarioCompilato'
     element={<CompileSurvey />}
+  />,
+  <Route
+    key='questionari-compilato'
+    path='servizi/:serviceId/cittadini/compilato/:idQuestionarioCompilato'
+    element={<CompileSurvey viewMode/>}
   />,
   <Route
     key='questionari-modifica'
@@ -494,7 +499,7 @@ const AreaAmministrativaRoutes = [
     path='servizi'
   />,
   <Route
-    key='area-amministrativa-servizi-dettaglio'
+    key='area-amministrativa-servizi-dettaglio-info'
     element={
       <ProtectedComponent visibleTo={['view.card.serv']}>
         <ServicesDetails />
@@ -506,6 +511,15 @@ const AreaAmministrativaRoutes = [
     key='area-amministrativa-servizi-dettaglio-cittadini'
     element={<ServicesDetails />}
     path='servizi/:serviceId/cittadini'
+  />,
+  <Route
+    key='area-amministrativa-servizi-dettaglio'
+    path='servizi/:serviceId'
+    element={
+      <ProtectedComponent visibleTo={['view.card.serv']}>
+        <ServicesDetails />
+      </ProtectedComponent>
+    }
   />,
   <Route
     key='default-redirect-url'

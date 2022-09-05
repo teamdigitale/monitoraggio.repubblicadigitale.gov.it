@@ -17,6 +17,8 @@ import withFormHandler, {
 } from '../../../hoc/withFormHandler';
 import { newForm, newFormField } from '../../../utils/formHelper';
 
+export const isActiveProvisionalLogin = true;
+
 const Auth: React.FC<withFormHandlerProps> = ({
   form = {},
   onInputChange = () => ({}),
@@ -27,7 +29,7 @@ const Auth: React.FC<withFormHandlerProps> = ({
   const navigate = useNavigate();
 
   const handleFakeLogin = async () => {
-    if (form.mockUser?.value) {
+    if (isActiveProvisionalLogin && form.mockUser?.value) {
       const validUser = await dispatch(
         CreateUserContext(form.mockUser?.value?.toString())
       );
@@ -220,8 +222,8 @@ const Auth: React.FC<withFormHandlerProps> = ({
                     Entra con CIE
                   </Button>
                 </div>
-                <div className='my-5'>
-                  <hr />
+                {isActiveProvisionalLogin ? (<div className='my-5'>
+                  <hr/>
                   <h4 className='py-2'>Provisional Login</h4>
                   {/* TODO Remove next block, it's for dev purpose only*/}
                   <Input
@@ -240,7 +242,7 @@ const Auth: React.FC<withFormHandlerProps> = ({
                   >
                     Provisional Login
                   </Button>
-                </div>
+                </div>) : null}
               </Card>
             </div>
           </div>
@@ -252,9 +254,9 @@ const Auth: React.FC<withFormHandlerProps> = ({
 };
 
 // TODO for DEV purpose only, to remove!
-const form = newForm([
+const form = newForm(isActiveProvisionalLogin ? [
   newFormField({
     field: 'mockUser',
   }),
-]);
+] : []);
 export default memo(withFormHandler({ form }, Auth));

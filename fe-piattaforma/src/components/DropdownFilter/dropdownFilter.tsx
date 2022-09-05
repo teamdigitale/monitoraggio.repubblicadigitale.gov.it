@@ -22,6 +22,7 @@ export interface DropdownFilterI {
   id: string;
   handleOnSearch?: (searchKey: formFieldI['value']) => void;
   valueSearch?: formFieldI['value'] | undefined;
+  isDetail?: boolean | undefined;
 }
 
 let focusedInput = -1;
@@ -35,6 +36,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
     id,
     // handleOnSearch,
     valueSearch,
+    isDetail,
   } = props;
   const [open, setOpen] = useState(false);
   const [checkedOptions, setCheckedOptions] = useState<FilterI[]>(values);
@@ -176,7 +178,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
         'dropdown-filter-container',
         'mr-lg-4',
         'mr-2',
-        'mt-4'
+        isDetail ? 'mt-2' : 'mt-4'
       )}
     >
       <Button
@@ -187,7 +189,8 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
           'd-flex',
           'flex-row',
           'justify-content-between',
-          'w-100'
+          'w-100',
+          isDetail && 'btn-xs'
         )}
         id={`filter-${id}`}
         innerRef={popoverRef}

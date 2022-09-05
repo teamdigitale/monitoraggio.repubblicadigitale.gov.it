@@ -5,10 +5,13 @@ import {
   clearSessionValues,
   setSessionValues,
 } from '../../../utils/sessionHelper';
+import { isActiveProvisionalLogin } from '../../../pages/common/Auth/auth';
 
 export interface UserStateI {
   isLogged: boolean;
-  user?: {
+  user?:
+    | {
+        id?: string;
         name?: string;
         nome?: string;
         surname?: string;
@@ -97,7 +100,9 @@ export const userSlice = createSlice({
       state.idProgetto = [action.payload.idProgetto];
       state.profilo = payload;
       if (state.ruoli?.length) {
-        state.permissions = state.ruoli.filter(({ codiceRuolo }) => codiceRuolo === action.payload.codiceRuolo)[0]?.permessi
+        state.permissions = state.ruoli.filter(
+          ({ codiceRuolo }) => codiceRuolo === action.payload.codiceRuolo
+        )[0]?.permessi;
       }
       if (action.payload.saveSession) {
         setSessionValues('profile', payload);
@@ -106,6 +111,12 @@ export const userSlice = createSlice({
     login: (state) => {
       setSessionValues('user', state.user);
       setSessionValues('profile', state.profilo);
+      setSessionValues(
+        'auth',
+        isActiveProvisionalLogin
+          ? 'fguhbjinokj8765d578t9yvghugyftr646tg'
+          : 'TBD'
+      );
       state.isLogged = true;
     },
     logout: (state) => {

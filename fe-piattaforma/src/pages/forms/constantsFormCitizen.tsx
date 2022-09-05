@@ -1,5 +1,5 @@
 export const citizenFormDropdownOptions = {
-  'flag-codice-fiscale': [
+  codiceFiscaleNonDisponibile: [
     {
       label: 'Codice fiscale non disponibile',
       value: 'Codice fiscale non disponibile',
@@ -21,6 +21,7 @@ export const citizenFormDropdownOptions = {
     { label: 'Altro - non UE', value: 'Altro - non UE' },
   ],
   categoriaFragili: [
+    { label: 'No', value: 'No'},
     { label: 'Rifugiato', value: 'Rifugiato' },
     { label: 'Migrante', value: 'Migrante' },
     {
@@ -32,7 +33,7 @@ export const citizenFormDropdownOptions = {
       value: 'Altro percettore di sussidio (es. reddito di cittadinanza)',
     },
   ],
-  titoloDiStudio: [
+  titoloStudio: [
     {
       label: 'Diploma di istruzione primaria (scuola elementare)',
       value: 'Diploma di istruzione primaria (scuola elementare)',
@@ -62,45 +63,23 @@ export const citizenFormDropdownOptions = {
     },
   ],
   tipoConferimentoConsenso: [
-    { label: 'Cartaceo', value: 'Cartaceo' },
-    { label: 'Email', value: 'Email' },
-    { label: 'Online', value: 'Online' },
+    { label: 'Cartaceo', value: 'CARTACEO' },
+    { label: 'Email', value: 'EMAIL' },
+    { label: 'Online', value: 'ONLINE' },
   ],
-  statoOccupazionale: ['Occupato', 'Inoccupato', 'Disoccupato', 'Altro'],
-  occupazione: [
-    { label: 'Dipendente', value: 'Dipendente', upperLevel: 'Occupato' },
-    {
-      label: 'Lavoro autonomo',
-      value: 'Lavoro autonomo',
-      upperLevel: 'Occupato',
-    },
-    {
-      label:
-        'A (non presta attività lavorativa con un regolare contratto di assunzione, es. prestazioni occasionali)',
-      value:
-        'A (non presta attività lavorativa con un regolare contratto di assunzione, es. prestazioni occasionali)',
-      upperLevel: 'Inoccupato',
-    },
-    {
-      label: 'B (in cerca di lavoro per la prima volta)',
-      value: 'B (in cerca di lavoro per la prima volta)',
-      upperLevel: 'Inoccupato',
-    },
-    {
-      label: 'A (da 365 giorni e meno)',
-      value: 'A (da 365 giorni e meno)',
-      upperLevel: 'Disoccupato',
-    },
-    {
-      label: 'B (da 365 giorni e più)',
-      value: 'B (da 365 giorni e più)',
-      upperLevel: 'Disoccupato',
-    },
-    {
-      label: 'Studente/In formazione',
-      value: 'Studente/In formazione',
-      upperLevel: 'Altro',
-    },
-    { label: 'Pensionato', value: 'Pensionato', upperLevel: 'Altro' },
+  statoOccupazionale: [
+    { label: 'Dipendente a tempo indeterminato', value: 'Dipendente a tempo indeterminato'},
+    { label: 'Dipendente a tempo determinato', value: 'Dipendente a tempo determinato'},
+    { label: 'Imprenditore', value: 'Imprenditore'},
+    { label: 'Libero professionista', value: 'Libero professionista'},
+    { label: 'Commerciante/Artigiano', value: 'Commerciante/Artigiano'},
+    { label: 'Inoccupato/a', value: 'Inoccupato/a'},
+    { label: 'Disoccupato/a', value: 'Disoccupato/a'},
+    { label: 'Volontario/a', value: 'Volontario/a'},
+    { label: 'Studente o studentessa / in formazione', value: 'Studente o studentessa / in formazione'},
+    { label: 'Persona ritirata dal lavoro / Pensionato/a', value: 'Persona ritirata dal lavoro / Pensionato/a'},
+    { label: 'Casalinga/o', value: 'Casalinga/o'},
+    { label: 'Inabile al lavoro', value: 'Inabile al lavoro'},
+    { label: 'Altro', value: 'Altro'},
   ],
 };

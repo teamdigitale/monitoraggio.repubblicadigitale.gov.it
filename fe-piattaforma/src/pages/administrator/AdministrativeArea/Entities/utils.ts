@@ -141,6 +141,7 @@ export const formTypes = {
   VOLONTARIO: 'volontario',
   SERVICES: 'services',
   CITIZENS: 'cittadino',
+  SERVICE_CITIZEN: 'cittadino-in-servizio',
   PROFILE: 'profilo',
   UTENTI: 'utenti',
 };

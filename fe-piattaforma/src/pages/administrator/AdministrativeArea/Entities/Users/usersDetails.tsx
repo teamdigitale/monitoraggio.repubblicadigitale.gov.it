@@ -170,7 +170,7 @@ const UsersDetails = () => {
       setCurrentForm(<FormFacilitator formDisabled />);
     } else {
       setCurrentForm(
-        <FormUser formDisabled fieldsToHide={['tipoContratto']} />
+        <FormUser formDisabled fieldsToHide={userRole !== userRoles.USR ? ['tipoContratto'] : []} />
       );
     }
   }, [userRole]);
@@ -541,7 +541,16 @@ const UsersDetails = () => {
                       [CRUDActionTypes.VIEW]: role.associatoAUtente
                         ? () =>
                             navigate(
-                              `/area-amministrativa/programmi/${role?.id}`,
+                              `/area-amministrativa/${
+                                role?.codiceRuolo === userRoles.VOL ||
+                                role?.codiceRuolo === userRoles.FAC ||
+                                role?.codiceRuolo === userRoles.REGP ||
+                                role?.codiceRuolo === userRoles.DEGP ||
+                                role?.codiceRuolo === userRoles.REPP ||
+                                role?.codiceRuolo === userRoles.DEPP
+                                  ? 'progetti'
+                                  : 'programmi'
+                              }/${role?.id}`,
                               {
                                 replace: true,
                               }

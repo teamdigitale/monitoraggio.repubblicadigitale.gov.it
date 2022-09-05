@@ -22,7 +22,7 @@ export interface SelectMultipleI {
     value: formFieldI['value'],
     field?: formFieldI['field']
   ) => void;
-  onSecondLevelInputChange: (
+  onSecondLevelInputChange?: (
     value: formFieldI['value'],
     field?: formFieldI['field']
   ) => void;
@@ -73,7 +73,7 @@ const SelectMultiple: React.FC<SelectMultipleI> = (props) => {
         ? null
         : upperLevelArray.push(opt.upperLevel.toString());
     });
-    onSecondLevelInputChange(upperLevelArray, field);
+    if(onSecondLevelInputChange) onSecondLevelInputChange(upperLevelArray, field);
   }, [arrayVal]);
 
   const handleChange = (selectedOption: MultiValue<OptionTypeMulti>) => {
@@ -109,7 +109,7 @@ const SelectMultiple: React.FC<SelectMultipleI> = (props) => {
           className='text-decoration-none'
         >
           {label}
-          {required && ' *'}
+          {(required && !isDisabled) && ' *'}
         </label>
       ) : null}
       <SelectKit

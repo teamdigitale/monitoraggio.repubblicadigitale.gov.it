@@ -10,6 +10,7 @@ interface DetailsRowI {
   onActionClick: CRUDActionsI;
   innerInfo: { [key: string]: string };
   rowInfoType: string;
+  idQuestionario?: string;
 }
 
 const statusCases = {
@@ -25,14 +26,15 @@ const DetailsRow: React.FC<DetailsRowI> = ({
   onActionClick,
   innerInfo,
   rowInfoType,
+  idQuestionario = '',
 }) => {
   const loadIcons = () => {
     switch (stato.toUpperCase()) {
-      case statusCases.NOT_SENT:
+      case statusCases.SENT:
         return (
           <>
             <Button
-              onClick={() => onActionClick[CRUDActionTypes.COMPILE](id)}
+              onClick={() => onActionClick[CRUDActionTypes.COMPILE](idQuestionario)}
               aria-label='Compila riga'
             >
               <Icon
@@ -43,8 +45,9 @@ const DetailsRow: React.FC<DetailsRowI> = ({
               />
             </Button>
             <Button
-              onClick={() => onActionClick[CRUDActionTypes.SEND](id)}
+              onClick={() => onActionClick[CRUDActionTypes.SEND]({ idCittadino: id, idQuestionario: idQuestionario})}
               aria-label='Invia questionario'
+              disabled
             >
               <Icon
                 icon='it-external-link'
@@ -55,11 +58,11 @@ const DetailsRow: React.FC<DetailsRowI> = ({
             </Button>
           </>
         );
-      case statusCases.SENT:
+      case statusCases.NOT_SENT:
         return (
           <>
             <Button
-              onClick={() => onActionClick[CRUDActionTypes.COMPILE](id)}
+              onClick={() => onActionClick[CRUDActionTypes.COMPILE](idQuestionario)}
               aria-label='Compila riga'
             >
               <Icon
@@ -70,9 +73,8 @@ const DetailsRow: React.FC<DetailsRowI> = ({
               />
             </Button>
             <Button
-              onClick={() => onActionClick[CRUDActionTypes.SEND](id)}
+              onClick={() => onActionClick[CRUDActionTypes.SEND]({ idCittadino: id, idQuestionario: idQuestionario})}
               aria-label='Invia questionario disabilitato'
-              disabled
             >
               <Icon
                 icon='it-external-link'
@@ -86,11 +88,11 @@ const DetailsRow: React.FC<DetailsRowI> = ({
       case statusCases.FILLED_OUT:
         return (
           <Button
-            onClick={() => onActionClick[CRUDActionTypes.VIEW](id)}
+            onClick={() => onActionClick[CRUDActionTypes.VIEW](idQuestionario)}
             aria-label='Visualizza questionario'
           >
             <Icon
-              icon='it-zoom-in'
+              icon='it-file'
               color='primary'
               size='sm'
               aria-label='Compila riga'
@@ -109,13 +111,13 @@ const DetailsRow: React.FC<DetailsRowI> = ({
           <Button
             onClick={() => onActionClick[CRUDActionTypes.EDIT](id)}
             className='mr-2 p-0 details-row__name'
-            aria-label='Modifica riga'
+            aria-label='Modifica cittadino'
           >
             <Icon
               icon='it-pencil'
               color='primary'
               size='sm'
-              aria-label='Modifica riga'
+              aria-label='Modifica cittadino'
             />
           </Button>
         )}

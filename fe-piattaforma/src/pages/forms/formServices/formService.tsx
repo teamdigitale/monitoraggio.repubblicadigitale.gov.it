@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { selectResponseSectionsSchema } from '../../../redux/features/administrativeArea/surveys/surveysSlice';
-import { GetSurveyInfo } from '../../../redux/features/administrativeArea/surveys/surveysThunk';
+import {
+  selectQuestionarioTemplateServiceCreation,
+  selectQuestionarioTemplateSnapshot,
+} from '../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { GetSurveyTemplateServiceCreation } from '../../../redux/features/administrativeArea/services/servicesThunk';
 import { useAppSelector } from '../../../redux/hooks';
+import { createStringOfCompiledSurveySection } from '../../../utils/common';
 import { formFieldI, FormI } from '../../../utils/formHelper';
 import { generateForm } from '../../../utils/jsonFormHelper';
 import FormServiceDynamic from './formServiceDynamic';
@@ -26,26 +30,31 @@ const FormService: React.FC<FormServiceI> = (props) => {
   } = props;
   const dispatch = useDispatch();
   const serviceQ3Schema =
-    useAppSelector(selectResponseSectionsSchema)?.filter(
-      (section) => section?.id === 'anagraphic-service-section'
-    )[0]?.schema || undefined;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    useAppSelector(selectQuestionarioTemplateSnapshot)?.sezioniQuestionarioTemplate?.[2]?.schema;
+  const serviceQ3SchemaCreation = useAppSelector(
+    selectQuestionarioTemplateServiceCreation
+  )?.[2]?.schema;
   const [dynamicFormQ3, setDynamicFormQ3] = useState<FormI>({});
   const [newFormStaticValues, setNewFormStaticValues] = useState<{
     [key: string]: formFieldI['value'];
   }>({});
-  const [isFormStaticValid, setIsFormStaticValid] = useState<boolean>(true);
+  const [isFormStaticValid, setIsFormStaticValid] = useState<boolean>(false);
   const [newFormDynamicValues, setNewFormDynamicValues] = useState<{
     [key: string]: formFieldI['value'];
   }>({});
-  const [isFormDynamicValid, setIsFormDynamicValid] = useState<boolean>(true);
+  const [isFormDynamicValid, setIsFormDynamicValid] = useState<boolean>(false);
 
   useEffect(() => {
-    dispatch(GetSurveyInfo('1')); // TODO: aggiorna con id del questionario di default
+    if (creation) {
+      dispatch(GetSurveyTemplateServiceCreation());
+    }
   }, []);
 
   useEffect(() => {
     if (serviceQ3Schema) {
-      const formFromSchema = generateForm(JSON.parse(serviceQ3Schema)); // TODO: qui non c'è .json, dovrebbe essere solo una stringa -> da fixare!
+      const formFromSchema = generateForm(JSON.parse(serviceQ3Schema.json));
       Object.keys(formFromSchema).forEach((key: string) => {
         formFromSchema[key].label = formFromSchema[key].value?.toString() || '';
         formFromSchema[key].value = '';
@@ -53,6 +62,19 @@ const FormService: React.FC<FormServiceI> = (props) => {
       setDynamicFormQ3(formFromSchema);
     }
   }, [serviceQ3Schema]);
+
+  useEffect(() => {
+    if (creation && serviceQ3SchemaCreation) {
+      const formFromSchema = generateForm(
+        JSON.parse(serviceQ3SchemaCreation.json)
+      );
+      Object.keys(formFromSchema).forEach((key: string) => {
+        formFromSchema[key].label = formFromSchema[key].value?.toString() || '';
+        formFromSchema[key].value = '';
+      });
+      setDynamicFormQ3(formFromSchema);
+    }
+  }, [serviceQ3SchemaCreation]);
 
   useEffect(() => {
     areFormsValid(isFormStaticValid && isFormDynamicValid ? true : false);
@@ -65,17 +87,10 @@ const FormService: React.FC<FormServiceI> = (props) => {
   ]);
 
   useEffect(() => {
-    const formattedData = { ...newFormDynamicValues };
-    Object.keys(formattedData).forEach((key: string) => {
-      if (!Array.isArray(formattedData[key])) {
-        const tmp =
-          typeof formattedData[key] === 'string'
-            ? formattedData[key]?.toString()
-            : '';
-        tmp ? (formattedData[key] = [tmp]) : null;
-      }
-    });
-    getQuestioanarioCompilatoQ3(JSON.stringify(formattedData));
+    // to create the string of the compiled survey
+    getQuestioanarioCompilatoQ3(
+      createStringOfCompiledSurveySection(newFormDynamicValues)
+    );
   }, [newFormDynamicValues]);
 
   return (

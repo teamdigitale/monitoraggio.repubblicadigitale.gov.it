@@ -55,8 +55,7 @@ interface AreaCittadiniStateI {
   };
   pagination: PaginationI;
   detail: CittadinoI;
-  searchResult: CittadinoInfoI;
-  multipleSearchResult: CittadinoInfoI[];
+  searchResult: CittadinoInfoI[];
 }
 
 const initialState: AreaCittadiniStateI = {
@@ -72,8 +71,7 @@ const initialState: AreaCittadiniStateI = {
     totalElements: 0,
   },
   detail: { dettaglioCittadino: {}, serviziCittadino: [] },
-  searchResult: {},
-  multipleSearchResult: [],
+  searchResult: [],
 };
 
 export const citizensAreaSlice = createSlice({
@@ -132,18 +130,14 @@ export const citizensAreaSlice = createSlice({
         state.detail = action.payload;
       }
     },
-    getEntitySearch: (state, action: PayloadAction<any>) => {
+    setCitizenSearchResults: (state, action: PayloadAction<any>) => {
       state.searchResult = action.payload;
-    },
-    getEntitySearchMultiple: (state, action: PayloadAction<any>) => {
-      state.multipleSearchResult = action.payload;
     },
     clearInfoForm: (state) => {
       state.detail.dettaglioCittadino = {};
     },
     clearCitizenSearch: (state) => {
-      state.searchResult = {};
-      state.multipleSearchResult = [];
+      state.searchResult = [];
     },
     deleteFiltroCriterioRicercaCitizen: (state) => {
       const newFilters = { ...state.filters };
@@ -161,9 +155,8 @@ export const {
   setEntityPagination,
   setEntityValues,
   getEntityDetail,
-  getEntitySearch,
   clearInfoForm,
-  getEntitySearchMultiple,
+  setCitizenSearchResults,
   clearCitizenSearch,
   deleteFiltroCriterioRicercaCitizen,
 } = citizensAreaSlice.actions;
@@ -177,9 +170,7 @@ export const selectEntityPagination = (state: RootState) =>
   state.citizensArea.pagination;
 export const selectEntityDetail = (state: RootState) =>
   state.citizensArea.detail;
-export const selectEntitySearchResponse = (state: RootState) =>
+export const selectCitizenSearchResponse = (state: RootState) =>
   state.citizensArea.searchResult;
-export const selectEntitySearchMultiResponse = (state: RootState) =>
-  state.citizensArea.multipleSearchResult;
 
 export default citizensAreaSlice.reducer;
