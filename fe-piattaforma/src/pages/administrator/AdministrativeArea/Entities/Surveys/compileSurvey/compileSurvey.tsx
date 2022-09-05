@@ -1,7 +1,7 @@
 import { Button, Icon } from 'design-react-kit';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Sticky from 'react-sticky-el';
 import { ButtonsBar, ProgressBar, Stepper } from '../../../../../../components';
 import { ButtonInButtonsBar } from '../../../../../../components/ButtonsBar/buttonsBar';
@@ -12,24 +12,38 @@ import SectionTitle from '../../../../../../components/SectionTitle/sectionTitle
 import {
   selectCompilingSurveyForms,
   setCompilingSurveyForm,
+  SurveySectionPayloadI,
 } from '../../../../../../redux/features/administrativeArea/surveys/surveysSlice';
-import {
-  /* PostFormCompletedByCitizen,*/ SurveyResponseBodyI,
-} from '../../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 import { useAppSelector } from '../../../../../../redux/hooks';
 import { FormHelper, FormI, newForm } from '../../../../../../utils/formHelper';
 import { generateForm } from '../../../../../../utils/jsonFormHelper';
 import JsonFormRender from '../components/jsonFormRender';
 import isEqual from 'lodash.isequal';
 import clsx from 'clsx';
-import { selectDevice } from '../../../../../../redux/features/app/appSlice';
+import {
+  selectDevice,
+  setInfoIdsBreadcrumb,
+} from '../../../../../../redux/features/app/appSlice';
+import {
+  selectQuestionarioTemplateSnapshot,
+  selectServiceQuestionarioTemplateIstanze,
+  selectServices,
+} from '../../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import {
+  GetCompiledSurveyCitizenService,
+  GetServicesDetail,
+} from '../../../../../../redux/features/administrativeArea/services/servicesThunk';
+import { formatAndParseJsonString } from '../../../../../../utils/common';
+import { PostFormCompletedByCitizen } from '../../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 
 interface CompileSurveyI extends withFormHandlerProps {
+  viewMode?: boolean;
   publicLink?: boolean;
 }
 
 const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
   const {
+    viewMode = false,
     publicLink = false,
     onInputChange = () => ({}),
     updateForm = () => ({}),
@@ -37,30 +51,155 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
   } = props;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [sections, setSections] = useState<SurveyResponseBodyI['survey-sections']>();
+  const { serviceId, idQuestionarioCompilato } = useParams();
+  const [sections, setSections] = useState<SurveySectionPayloadI[]>([]);
   const [activeSection, setActiveSection] = useState(0);
-  const surveyStore = useAppSelector(selectCompilingSurveyForms);
+  const surveyStore: string | SurveySectionPayloadI[] = useAppSelector(
+    selectQuestionarioTemplateSnapshot
+  )?.sezioniQuestionarioTemplate;
+  const compiledSurveyCitizen = useAppSelector(
+    selectServiceQuestionarioTemplateIstanze
+  );
   const [flag, setFlag] = useState<string>('');
+  const surveyAnswersToSave = useAppSelector(selectCompilingSurveyForms);
+  const serviceDetails = useAppSelector(selectServices)?.detail;
 
   useEffect(() => {
-    if (sections?.length) {
+    // For breadcrumb
+    if (serviceId && serviceDetails?.dettaglioServizio?.nomeServizio) {
+      dispatch(
+        setInfoIdsBreadcrumb({
+          id: serviceId,
+          nome: serviceDetails?.dettaglioServizio?.nomeServizio,
+        })
+      );
+    }
+  }, [serviceId, serviceDetails]);
+
+  useEffect(() => {
+    if (surveyStore?.length && typeof surveyStore !== 'string')
+      setSections(surveyStore); // le sezioni sono del questionario associato al servizio
+  }, [surveyStore]);
+
+  useEffect(() => {
+    // se refresh get service detail per recuperare surveyStore
+    dispatch(GetServicesDetail(serviceId));
+  }, []);
+
+  const getValuesSurvey = (section: {
+    id: string;
+    properties: { [key: string]: string[] };
+    title: string;
+  }) => {
+    let values = {};
+    const valuesInArray = section?.properties || section;
+    Object.keys(valuesInArray).map((key: string) => {
+      if (typeof valuesInArray[key] === 'object') {
+        values = {
+          ...values,
+          ...{
+            [key]:
+              valuesInArray[key]?.length > 1 || key === '25' || key === '26'
+                ? valuesInArray[key]
+                : valuesInArray[key][0],
+          },
+        };
+      } else if (typeof valuesInArray[key] === 'string') {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const val = JSON.parse(decodeURI(valuesInArray[key]).replaceAll("'", '"'));
+        values = {
+          ...values,
+          ...val
+        };
+      }
+    });
+    return values;
+  };
+
+  /**
+   let valuesParsed: { [key: string]: string[] } = {};
+    (section?.properties || []).forEach((prop: string) => {
+      const val =
+        typeof prop === 'string'
+          ? JSON.parse(decodeURI(prop).replaceAll("'", '"'))
+          : prop;
+      valuesParsed = {
+        ...valuesParsed,
+        ...val,
+      };
+    });
+   * 
+   */
+
+  useEffect(() => {
+    if (idQuestionarioCompilato)
+      dispatch(GetCompiledSurveyCitizenService(idQuestionarioCompilato));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idQuestionarioCompilato]);
+
+  useEffect(() => {
+    if (surveyAnswersToSave?.length > 0 && surveyAnswersToSave[activeSection]) {
+      // upload answers when step back
       updateForm(
         {
-          ...generateForm(JSON.parse(sections[activeSection].schema), true),
-          ...surveyStore[activeSection],
+          ...surveyAnswersToSave[activeSection],
         },
         true
       );
+    } else {
+      // create form and prefill the sections
+      if (sections?.length) {
+        const newForm = generateForm(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          JSON.parse(sections[activeSection].schema?.json),
+          true
+        );
+
+        if (
+          activeSection < 3 &&
+          compiledSurveyCitizen?.length &&
+          compiledSurveyCitizen?.[activeSection]?.domandaRisposta?.json
+        ) {
+          const sectionParsed: {
+            id: string;
+            properties: { [key: string]: string[] };
+            title: string;
+          } = formatAndParseJsonString(
+            compiledSurveyCitizen?.[activeSection]?.domandaRisposta?.json
+          );
+          const values: { [key: string]: string } =
+            getValuesSurvey(sectionParsed);
+          Object.keys(newForm).map((key: string) => {
+            key === '20'
+              ? (newForm[key].value = ['SI', 'Si', 'si'].includes(values[key])
+                  ? 'Si'
+                  : 'No')
+              : (newForm[key].value = values[key]);
+            if (activeSection === 1) {
+              newForm[key].disabled = true;
+            }
+          });
+        }
+        updateForm(
+          {
+            ...newForm,
+          },
+          true
+        );
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeSection, sections]);
+  }, [activeSection, sections, compiledSurveyCitizen]);
 
   const device = useAppSelector(selectDevice);
 
   const progressSteps = () => {
     const allSteps: string[] = [];
-    sections?.map((section) => allSteps.push(section.title));
-
+    sections?.map((section) => {
+      if (section?.titolo) allSteps.push(section.titolo);
+    });
     return allSteps;
   };
 
@@ -106,7 +245,7 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
     }
   }, [flag, form]);
 
-  const generateFormCompleted = (surveyStore: FormI[]) => {
+  const generateFormCompleted = async (surveyStore: FormI[]) => {
     const body = surveyStore.map((section) =>
       FormHelper.getFormValues(section)
     );
@@ -134,8 +273,8 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
         });
       }
     );
-    console.log('invia questionario', body);
-    // dispatch(PostFormCompletedByCitizen({body}));
+    await dispatch(PostFormCompletedByCitizen(idQuestionarioCompilato, body));
+    navigate(`/area-amministrativa/servizi/${serviceId}/cittadini`);
   };
 
   const buttonsForBar: ButtonInButtonsBar[] = [
@@ -155,7 +294,7 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
       color: 'primary',
       className: 'mr-4',
       text: 'Step successivo',
-      disabled: !FormHelper.isValidForm(form),
+      disabled: viewMode ? false : !FormHelper.isValidForm(form),
       onClick: () => {
         dispatch(setCompilingSurveyForm({ id: activeSection, form }));
         setActiveSection(activeSection + 1);
@@ -168,7 +307,7 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
       text: 'Invia Questionario',
       disabled: !FormHelper.isValidForm(form),
       onClick: () => {
-        generateFormCompleted(surveyStore);
+        generateFormCompleted(surveyAnswersToSave);
       },
     },
   ];
@@ -247,7 +386,7 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
             color='primary'
             className='mx-3 mt-2 mb-3'
             onClick={() => {
-              generateFormCompleted(surveyStore);
+              generateFormCompleted(surveyAnswersToSave);
             }}
             disabled={!FormHelper.isValidForm(form)}
             aria-label='Invio Questionario'
@@ -258,19 +397,6 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
       </div>
     );
   };
-
-  const loadMock = async () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const response = await import('/mock/responseQuestionario.json');
-    if (response) {
-      setSections(response.sections);
-    }
-  };
-
-  useEffect(() => {
-    loadMock();
-  }, []);
 
   if (!sections?.length) return null;
 
@@ -321,7 +447,7 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
                 steps={progressSteps()}
               />
             ) : (
-              <Stepper nSteps={4} currentStep={activeSection + 1} />
+              <Stepper nSteps={4} currentStep={activeSection} />
             )}
           </div>
           {device.mediaIsPhone ? null : (
@@ -335,7 +461,7 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
                 'font-weight-bold'
               )}
             >
-              {sections[activeSection].title}
+              {sections[activeSection].titolo}
             </p>
           )}
         </>
@@ -360,6 +486,7 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
             form={form}
             onInputChange={onInputChange}
             currentStep={activeSection}
+            viewMode={viewMode}
           />
         </div>
       </div>

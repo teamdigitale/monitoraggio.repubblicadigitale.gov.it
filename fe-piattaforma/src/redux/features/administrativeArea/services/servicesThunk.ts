@@ -9,9 +9,12 @@ import {
   setServicesDetail,
   setServicesDetailCitizenList,
   setEntityPagination,
+  setServicesDropdownCreation,
+  setServicesSchemaFieldsCreation,
+  setServiceQuestionarioTemplateIstanze,
 } from '../administrativeAreaSlice';
-import { OptionType } from '../../../../components/Form/select';
 import { transformFiltersToQueryParams } from '../../../../utils/common';
+import { getUserHeaders } from '../../user/userThunk';
 
 export interface ServicesI {
   id: string;
@@ -26,15 +29,7 @@ export interface CitizenListI {
   numeroCittadini?: number;
   numeroPagine?: number;
   numeroQuestionariCompilati?: number;
-  servizi: any[];
-  // servizi: {
-  //   codiceFiscale: string;
-  //   cognome: string;
-  //   idCittadino: number;
-  //   idQuestionario: string;
-  //   nome: string;
-  //   statoQuestionario: string;
-  // }[];
+  cittadini: any[];
 }
 
 const GetAllServicesAction = { type: 'citizensArea/GetAllServices' };
@@ -50,11 +45,13 @@ export const GetAllServices =
       } = select((state: RootState) => state);
       const queryParamFilters = transformFiltersToQueryParams(filters);
       const entityEndpoint = `/servizio/all${queryParamFilters}`;
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
       const body = {
-        codiceFiscaleUtenteLoggato: 'UTENTE1', // MOCK
-        codiceRuoloUtenteLoggato: 'DTD', // MOCK
-        idProgetto: 0, // MOCK
-        idProgramma: 0, // MOCK
+        codiceFiscaleUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
+        idProgetto,
+        idProgramma,
       };
       const res = await API.post(entityEndpoint, body, {
         params: {
@@ -88,7 +85,7 @@ export const GetServicesDetail =
       dispatch({ ...GetServicesDetailAction, id });
       const res = await API.get(`/servizio/${id}/schedaDettaglio`);
       if (res?.data) {
-        dispatch(setServicesDetail(res.data.data));
+        dispatch(setServicesDetail(res.data));
       }
     } catch (error) {
       console.log('GetEntityDetail administrativeArea error', error);
@@ -111,40 +108,21 @@ export const GetCitizenListServiceDetail =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
       const body = {
-        codiceFiscaleUtenteLoggato: 'UTENTE1', //MOCK
-        codiceRuoloUtenteLoggato: 'DTD', //MOCK
-        idProgetto: 0,
-        idProgramma: 0,
+        codiceFiscaleUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
+        idProgetto,
+        idProgramma,
       };
-      let filterString = '?';
-      Object.keys(filters).forEach((filter: string) => {
-        if (filter === 'criterioRicerca') {
-          if (filters[filter])
-            filterString =
-              filterString +
-              (filterString !== '?' ? '&' : '') +
-              filter +
-              '=' +
-              filters[filter];
-        } else {
-          filters[filter]?.map(
-            (value: OptionType) =>
-              (filterString =
-                filterString +
-                (filterString !== '?' ? '&' : '') +
-                filter +
-                '=' +
-                value?.value)
-          );
-        }
-      });
+      const queryParamFilters = transformFiltersToQueryParams(filters);
       const res = await API.post(
-        `/servizio/cittadino/all/${idServizio}${filterString}`,
-        body
+        `/servizio/cittadino/all/${idServizio}${queryParamFilters}`,
+        body,
       );
       if (res?.data) {
-        dispatch(setServicesDetailCitizenList(res.data.data));
+        dispatch(setServicesDetailCitizenList(res.data));
       }
     } catch (error) {
       console.log(
@@ -170,21 +148,23 @@ export const GetServicesDetailFilters =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
       const body = {
-        codiceFiscaleUtenteLoggato: 'UTENTE1', //MOCK
-        codiceRuoloUtenteLoggato: 'DTD', //MOCK
-        idProgetto: 0,
-        idProgramma: 0,
+        codiceFiscaleUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
+        idProgetto,
+        idProgramma,
       };
+      const queryParamFilters = transformFiltersToQueryParams(filters);
       const res = await API.post(
-        `/servizio/cittadino/stati/dropdown/${idServizio}`,
+        `/servizio/cittadino/stati/dropdown/${idServizio}${queryParamFilters}`,
         body,
-        { params: { ...filters } }
       );
       if (res?.data) {
         const filterResponse = {
-          stati: res.data.data.map((option: string) => ({
-            label: option[0] + option.slice(1).toLowerCase(),
+          stati: res.data.map((option: string) => ({
+            label: option[0] + option.slice(1).toLowerCase().replace('_', ' '),
             value: option,
           })),
         };
@@ -223,6 +203,173 @@ export const UpdateService =
       await API.put(`/servizio/${idServizio}`, payload);
     } catch (error) {
       console.log('UpdateService administrativeArea error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const GetValuesDropdownServiceCreationAction = {
+  type: 'administrativeArea/GetValuesDropdownServiceCreation',
+};
+export const GetValuesDropdownServiceCreation =
+  (payload: { dropdownType: string; idEnte?: number }) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch({ ...GetValuesDropdownServiceCreationAction });
+      dispatch(showLoader());
+      const entityEndpoint = `/servizio/facilitatore/${payload.dropdownType}/dropdown`;
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
+      let body = {};
+      if (payload.dropdownType !== 'sedi') {
+        body = {
+          codiceFiscaleUtenteLoggato: codiceFiscale,
+          codiceRuoloUtenteLoggato: codiceRuolo,
+          idProgetto,
+          idProgramma,
+        };
+      } else {
+        body = {
+          codiceFiscaleUtenteLoggato: codiceFiscale,
+          codiceRuoloUtenteLoggato: codiceRuolo,
+          idProgetto,
+          idProgramma,
+          idEnte: payload.idEnte,
+        };
+      }
+      const res = await API.post(entityEndpoint, body);
+      if (res?.data) {
+        const dropdownOptions: { [key: string]: string | number }[] = [];
+        (res.data || []).map((elem: { [key: string]: string | number }) =>
+          dropdownOptions.push({ label: elem?.nome, value: elem?.id })
+        );
+        dispatch(
+          setServicesDropdownCreation({
+            [payload.dropdownType]: dropdownOptions,
+          })
+        );
+      }
+    } catch (error) {
+      console.log(
+        'GetValuesDropdownServiceCreation administrativeArea error',
+        error
+      );
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const GetSurveyTemplateServiceCreationAction = {
+  type: 'administrativeArea/GetSurveyTemplateServiceCreation',
+};
+
+export const GetSurveyTemplateServiceCreation =
+  () => async (dispatch: Dispatch) => {
+    try {
+      dispatch({ ...GetSurveyTemplateServiceCreationAction });
+      dispatch(showLoader());
+      const { idProgramma } = getUserHeaders();
+      const res = await API.get(
+        `questionarioTemplate/programma/${idProgramma}`
+      );
+      if (res?.data) {
+        dispatch(setServicesSchemaFieldsCreation(res.data));
+      }
+    } catch (error) {
+      console.log(
+        'GetSurveyTemplateServiceCreation administrativeArea error',
+        error
+      );
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const DeleteServiceAction = {
+  type: 'administrativeArea/DeleteService',
+};
+export const DeleteService =
+  (idServizio: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...DeleteServiceAction, idServizio });
+      await API.put(`/servizio/${idServizio}`);
+    } catch (error) {
+      console.log('DeleteService administrativeArea error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const AssociateCitizenToServiceAction = {
+  type: 'administrativeArea/AssociateCitizenToService',
+};
+export const AssociateCitizenToService =
+  (payload: { idServizio: string, body: { [key: string]: string | number | boolean | Date | string[] | undefined; } }) => async (dispatch: Dispatch) => {
+    try {
+      dispatch({ ...AssociateCitizenToServiceAction });
+      dispatch(showLoader());
+      const res = await API.post(`/servizio/cittadino/${payload.idServizio}`, payload.body);
+      if (res?.data) {
+        // TODO: check if correct
+      }
+    } catch (error) {
+      console.log('GetAllServices administrativeArea error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+  const SendSurveyToCitizenAction = {
+    type: 'administrativeArea/SendSurveyToCitizen',
+  };
+
+  export const SendSurveyToCitizen =
+  (idCittadino: string, idQuestionario: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch({ ...SendSurveyToCitizenAction });
+      dispatch(showLoader());
+      await API.post(`/servizio/cittadino/questionarioCompilato/invia?idCittadino=${idCittadino}&idQuestionario=${idQuestionario}`);
+    } catch (error) {
+      console.log('SendSurveyToCitizen administrativeArea error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+  const SendSurveyToAllAction = {
+    type: 'administrativeArea/SendSurveyToAll',
+  };
+
+  export const SendSurveyToAll =
+  (idServizio: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch({ ...SendSurveyToAllAction });
+      dispatch(showLoader());
+      await API.post(`/servizio/cittadino/servizio/${idServizio}/questionarioCompilato/inviaATutti`);
+    } catch (error) {
+      console.log('SendSurveyToAll administrativeArea error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+  const GetCompiledSurveyCitizenServiceAction = {
+    type: 'administrativeArea/GetCompiledSurveyCitizenService',
+  };
+
+  export const GetCompiledSurveyCitizenService =
+  (idQuestionarioCompilato: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch({ ...GetCompiledSurveyCitizenServiceAction });
+      dispatch(showLoader());
+      const res = await API.get(`/servizio/cittadino/questionarioCompilato/compilato/${idQuestionarioCompilato}`);
+      if (res?.data) {
+        dispatch(setServiceQuestionarioTemplateIstanze(res.data.sezioniQuestionarioTemplateIstanze));
+      }
+
+    } catch (error) {
+      console.log('GetCompiledSurveyCitizenService administrativeArea error', error);
     } finally {
       dispatch(hideLoader());
     }

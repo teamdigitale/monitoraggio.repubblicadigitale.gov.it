@@ -28,7 +28,7 @@ import Loader from './Loader/loader';
 import LocationIndex from './LocationIndex/locationIndex';
 import ProgressBar from './ProgressBar/progressBar';
 import NavLink from './NavLink/navLink';
-import SearchBarOptions from './SearchBarOptions/searchBarOptions';
+import SearchBarOptions from './SearchBarOptionsCitizen/searchBarOptionsCitizen';
 import InfoCard from './InfoCard/infoCard';
 import EmptySection from './EmptySection/emptySection';
 import DetailsRow from './DetailsRow/detailsRow';

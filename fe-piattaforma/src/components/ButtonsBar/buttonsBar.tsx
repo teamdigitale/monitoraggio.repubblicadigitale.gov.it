@@ -31,7 +31,6 @@ const ButtonsBar: React.FC<StickyButtonsI> = ({ buttons = [] }) => {
         <Button
           key={index}
           {...button}
-          tabIndex={-1}
           className={clsx('text-nowrap', 'px-2', button.buttonClass)}
           size='xs'
         >

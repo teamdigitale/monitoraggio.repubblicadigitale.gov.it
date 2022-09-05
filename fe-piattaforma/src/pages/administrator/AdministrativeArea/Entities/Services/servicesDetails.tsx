@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../../../../redux/hooks';
-import { selectServices } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { selectQuestionarioTemplateSnapshot, selectServices } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import {
   CitizenListI,
+  DeleteService,
   GetCitizenListServiceDetail,
   GetServicesDetail,
+  SendSurveyToAll,
 } from '../../../../../redux/features/administrativeArea/services/servicesThunk';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
@@ -17,7 +19,7 @@ import {
 import { formTypes } from '../utils';
 import { setInfoIdsBreadcrumb } from '../../../../../redux/features/app/appSlice';
 import { Nav, NavItem } from 'design-react-kit';
-import { EmptySection, NavLink } from '../../../../../components';
+import { NavLink } from '../../../../../components';
 import ManageServices from '../modals/manageService';
 import SearchCitizenModal from '../../../CitizensArea/Entities/SearchCitizenModal/searchCitizenModal';
 import {
@@ -30,6 +32,8 @@ import { TableRowI } from '../../../../../components/Table/table';
 import CitizensList from './citizensList';
 import FormService from '../../../../forms/formServices/formService';
 import useGuard from '../../../../../hooks/guard';
+import clsx from 'clsx';
+import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 
 const tabs = {
   INFO: 'info',
@@ -56,8 +60,18 @@ const ServicesDetails = () => {
   const [itemList, setItemList] = useState<ItemsListI | null>();
   const location = useLocation();
   const { hasUserPermission } = useGuard();
+  const idQuestionarioTemplate = useAppSelector(selectQuestionarioTemplateSnapshot)?.idQuestionarioTemplate;
 
-  useEffect(() => { // For breadcrumb
+  useEffect(() => {
+    // For breadcrumb
+    if (location.pathname === `/area-amministrativa/servizi/${serviceId}`) {
+      navigate(`/area-amministrativa/servizi/${serviceId}/info`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    // For breadcrumb
     if (serviceId && serviceDetails?.dettaglioServizio?.nomeServizio) {
       dispatch(
         setInfoIdsBreadcrumb({
@@ -82,27 +96,16 @@ const ServicesDetails = () => {
     }
   };
 
-  const emptyButtons: ButtonInButtonsBar[] = [
-    {
-      size: 'xs',
-      outline: true,
-      buttonClass: 'btn-secondary',
-      color: 'primary',
-      text: ' Carica lista cittadini',
-      onClick: () => console.log('carica csv'),
-    },
-    {
-      size: 'xs',
-      color: 'primary',
-      text: 'Aggiungi cittadino',
-      onClick: () =>
-        dispatch(
-          openModal({
-            id: 'search-citizen-modal',
-          })
-        ),
-    },
-  ];
+  useEffect(() => {
+    scrollTo(0, 0);
+    centerActiveItem();
+  }, [activeTab]);
+
+  useEffect(() => {
+    if (activeTab === tabs.INFO) dispatch(GetServicesDetail(serviceId));
+    if (activeTab === tabs.CITIZENS)
+      dispatch(GetCitizenListServiceDetail(serviceId));
+  }, []);
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
@@ -113,19 +116,21 @@ const ServicesDetails = () => {
   };
 
   useEffect(() => {
-    const projectsAssociated: ItemListElemI[] = [];
-    serviceDetails.progettiAssociatiAlServizio.map((elem) =>
-      projectsAssociated.push({
-        id: elem.id,
-        nome: elem.nomeBreve,
-        stato: elem.stato,
-        actions: onActionClick,
-      })
-    );
-    setItemList({
-      title: 'Progetti associati',
-      items: [...projectsAssociated],
-    });
+    if (serviceDetails?.progettiAssociatiAlServizio?.length) {
+      const projectsAssociated: ItemListElemI[] = [];
+      serviceDetails.progettiAssociatiAlServizio.map((elem) =>
+        projectsAssociated.push({
+          id: elem.id,
+          nome: elem.nomeBreve,
+          stato: elem.stato,
+          actions: onActionClick,
+        })
+      );
+      setItemList({
+        title: 'Progetti associati',
+        items: [...projectsAssociated],
+      });
+    }
   }, [serviceDetails]);
 
   useEffect(() => {
@@ -138,17 +143,7 @@ const ServicesDetails = () => {
           break;
         case tabs.CITIZENS:
           setActiveTab(tabs.CITIZENS);
-          setContent(
-            serviceDetails?.cittadini?.servizi?.length === 0 ? (
-              <EmptySection
-                title='Questa sezione è ancora vuota'
-                subtitle='Aggiungi i cittadini'
-                buttons={emptyButtons}
-              />
-            ) : (
-              <CitizensList citizens={serviceDetails.cittadini} />
-            )
-          );
+          setContent(<CitizensList />);
           break;
         default:
           setActiveTab(tabs.INFO);
@@ -156,16 +151,6 @@ const ServicesDetails = () => {
       centerActiveItem();
     }
   }, [location, serviceDetails]);
-
-  useEffect(() => {
-    scrollTo(0, 0);
-    centerActiveItem();
-  }, [activeTab]);
-
-  useEffect(() => {
-    dispatch(GetServicesDetail(serviceId));
-    dispatch(GetCitizenListServiceDetail(serviceId));
-  }, []);
 
   const buttons: ButtonInButtonsBar[] = hasUserPermission([
     'upd.card.serv',
@@ -177,7 +162,15 @@ const ServicesDetails = () => {
           outline: true,
           color: 'primary',
           text: 'Elimina',
-          onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+          onClick: () =>
+            dispatch(
+              openModal({
+                id: 'delete-entity',
+                payload: {
+                  text: 'Confermi di volere eliminare questo servizio?',
+                },
+              })
+            ),
         },
         {
           size: 'xs',
@@ -199,7 +192,15 @@ const ServicesDetails = () => {
           outline: true,
           color: 'primary',
           text: 'Elimina',
-          onClick: () => dispatch(openModal({ id: 'confirmDeleteModal' })),
+          onClick: () =>
+            dispatch(
+              openModal({
+                id: 'delete-entity',
+                payload: {
+                  text: 'Confermi di volere eliminare questo servizio?',
+                },
+              })
+            ),
         },
       ]
     : hasUserPermission(['upd.card.serv'])
@@ -228,15 +229,20 @@ const ServicesDetails = () => {
       text: 'Stampa questionario',
       iconForButton: 'it-print',
       iconColor: 'primary',
-      onClick: () => console.log('stampa questionario'),
+      onClick: () => window.open(`/stampa-questionario/${idQuestionarioTemplate}`, '_blank'), // TODO: idQuestionario
     },
     {
       size: 'xs',
       color: 'primary',
       text: 'Invia questionario a tutti',
-      onClick: () => console.log('invia questionario a tutti'),
+      onClick: () => dispatch(SendSurveyToAll(serviceId || '')),
     },
   ];
+
+  const onConfirmDelete = async () => {
+    if (serviceId) await DeleteService(serviceId);
+    dispatch(closeModal());
+  };
 
   const nav = (
     <Nav tabs className='mb-5 overflow-hidden'>
@@ -262,13 +268,16 @@ const ServicesDetails = () => {
       </NavItem>
     </Nav>
   );
+
   return (
-    <div className='d-flex flex-column container'>
+    <div
+      className={clsx('d-flex', 'container', 'justify-content-center', 'w-100')}
+      style={{ maxWidth: 'auto' }}
+    >
       <div className='container'>
         <DetailLayout
           formButtons={
-            activeTab === tabs.CITIZENS &&
-            serviceDetails.cittadini?.servizi?.length
+            activeTab === tabs.CITIZENS
               ? buttonsCitizen
               : buttons
           }
@@ -277,34 +286,23 @@ const ServicesDetails = () => {
             status: serviceDetails.dettaglioServizio.stato,
             upperTitle: { icon: 'it-calendar', text: 'Servizio' },
           }}
+          currentTab={activeTab}
           buttonsPosition='BOTTOM'
           itemsList={itemList}
           showItemsList={activeTab === tabs.INFO}
           nav={nav}
-          goBackTitle='Elenco servizi'
-          goBackPath='/area-amministrativa/servizi'
+          goBackTitle='Torna indietro'
+          //goBackPath='/area-amministrativa/servizi'
         >
-          {content}
+          <div className='mx-auto'>{content}</div>
         </DetailLayout>
         <ManageServices />
         <SearchCitizenModal
           onConfirmText='Aggiungi'
-          onConfirmFunction={(
-            newCitizen:
-              | {
-                  [key: string]:
-                    | string
-                    | number
-                    | boolean
-                    | Date
-                    | string[]
-                    | undefined;
-                }
-              | undefined
-          ) => {
-            console.log('aggiungi cittadino', newCitizen);
-            dispatch(closeModal());
-          }}
+        />
+        <DeleteEntityModal
+          onClose={() => dispatch(closeModal())}
+          onConfirm={() => onConfirmDelete()}
         />
       </div>
     </div>

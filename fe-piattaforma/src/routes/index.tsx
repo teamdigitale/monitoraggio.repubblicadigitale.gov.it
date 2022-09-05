@@ -89,8 +89,8 @@ const AppRoutes: React.FC = () => {
         <Route path='/auth-redirect' element={<AuthRedirect />} />
         {isLogged ? (
           <>
+          <Route path='/stampa-questionario/:idQuestionario' element={<PrintSurvey />} />
             <Route path='/' element={<FullLayout isFull />}>
-              <Route path='/stampa-questionario' element={<PrintSurvey />} />
               {process.env.NODE_ENV === 'development' ? (
                 <Route
                   path='/'

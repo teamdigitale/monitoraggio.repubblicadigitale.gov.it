@@ -81,15 +81,31 @@ const Services = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const getTypeService = (typeService: string) => {
+    if(!typeService.includes('[')){
+      return typeService;
+    }
+    const service = JSON.parse(typeService);
+    if (Array.isArray(service)) {
+      if (service?.length === 1) return service?.[0];
+      return (
+        <p>
+          <strong> {service?.length} </strong> tipologie
+        </p>
+      );
+    }
+  };
+
   const updateTableValues = () => {
     const table = newTable(
       TableHeadingServicesList,
       servicesList.map((td) => {
         return {
           ...td,
-          nome: td.nome,
-          data: formatDate(td.data, 'shortDate') || '-',
-          status: <StatusChip status={td.stato} rowTableId={td.id} />,
+          nome: td?.nome,
+          data: formatDate(td?.data, 'shortDate') || td?.data,
+          stato: <StatusChip status={td?.stato} rowTableId={td?.id} />,
+          tipologiaServizio: getTypeService(td?.tipologiaServizio),
         };
       })
     );
