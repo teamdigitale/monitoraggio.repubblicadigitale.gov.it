@@ -25,6 +25,7 @@ export interface SelectI
   value?: string | number | boolean | Date | string[] | undefined;
   wrapperClassName?: string;
   withLabel?: boolean;
+  isDisabled?: boolean;
 }
 
 const Select: React.FC<SelectI> = (props) => {
@@ -38,6 +39,7 @@ const Select: React.FC<SelectI> = (props) => {
     value = '',
     wrapperClassName,
     withLabel = true,
+    isDisabled = false,
   } = props;
   const [selectedOption, setSelectedOption] = useState<OptionType>();
 
@@ -93,7 +95,7 @@ const Select: React.FC<SelectI> = (props) => {
           className='text-decoration-none'
         >
           {label}
-          {required ? ' *' : ''}
+          {required && !isDisabled ? ' *' : ''}
         </label>
       ) : null}
       <SelectKit

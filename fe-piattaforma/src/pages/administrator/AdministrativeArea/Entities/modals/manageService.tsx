@@ -14,9 +14,11 @@ import {
 import {
   CreateService,
   GetAllServices,
+  GetServicesDetail,
   UpdateService,
 } from '../../../../../redux/features/administrativeArea/services/servicesThunk';
 import { useAppSelector } from '../../../../../redux/hooks';
+import { getUserHeaders } from '../../../../../redux/features/user/userThunk';
 
 const id = formTypes.SERVICES;
 
@@ -40,44 +42,46 @@ const ManageServices: React.FC<ManageServicesI> = ({
   const [areFormsValid, setAreFormsValid] = useState<boolean>(true);
   const [questionarioCompilatoQ3, setQuestionarioCompilatoQ3] =
     useState<string>('');
+  const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+    getUserHeaders();
 
   const createPayload = (answersForms: {
     [key: string]: formFieldI['value'];
   }) => {
     const answersQ3 =
-      "{'id':'anagraphic-service-section','title':'Anagrafica del servizio','properties':[" +
+      "{'id':'anagraphic-service-section','title':'Anagrafica del servizio','properties':" +
       questionarioCompilatoQ3?.replaceAll('"', "'") +
-      ']}';
+      '}';
 
     const payload = {
       data: answersForms['22'] || '',
-      durataServizio: answersForms?.durataServizio,
-      idEnte: answersForms?.nomeEnte,
-      idSede: answersForms?.nomeSede,
+      durataServizio: answersForms['23'] || '',
+      idEnte: answersForms?.idEnte,
+      idSede: answersForms?.idSede,
       nomeServizio: answersForms?.nomeServizio,
       profilazioneParam: {
-        // TODO: update profilazione MOCK
-        codiceFiscaleUtenteLoggato: 'UTENTE1',
-        codiceRuoloUtenteLoggato: 'DTD',
-        idProgetto: 0,
-        idProgramma: 0,
+        codiceFiscaleUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
+        idProgetto: idProgetto,
+        idProgramma: idProgramma,
       },
-      questionarioCompilatoQ3: answersQ3,
-      tipoDiServizioPrenotato: answersForms['25'] || '',
+      sezioneQuestionarioCompilatoQ3: answersQ3,
+      tipoDiServizioPrenotato: JSON.stringify(answersForms['26']),
     };
     return payload;
   };
 
-  const handleCreateService = () => {
+  const handleCreateService = async () => {
     if (areFormsValid) {
       if (creation) {
-        dispatch(CreateService(createPayload(newFormsValues)));
+        await dispatch(CreateService(createPayload(newFormsValues)));
+        dispatch(GetAllServices());
       } else {
-        dispatch(UpdateService(idServizio, createPayload(newFormsValues)));
+        await dispatch(UpdateService(idServizio, createPayload(newFormsValues)));
+        dispatch(GetServicesDetail(idServizio))
       }
     }
     dispatch(closeModal());
-    dispatch(GetAllServices());
   };
 
   return (
@@ -85,7 +89,7 @@ const ManageServices: React.FC<ManageServicesI> = ({
       id={id}
       primaryCTA={{
         disabled: !areFormsValid,
-        label: 'Crea servizio',
+        label: creation ? 'Crea servizio':'Salva',
         onClick: handleCreateService,
       }}
       secondaryCTA={{
@@ -94,7 +98,7 @@ const ManageServices: React.FC<ManageServicesI> = ({
       }}
     >
       <div className='px-3'>
-        <FormService // TODO: fix validity
+        <FormService
           creation={creation || false}
           formDisabled={!!formDisabled}
           sendNewFormsValues={(newData?: {

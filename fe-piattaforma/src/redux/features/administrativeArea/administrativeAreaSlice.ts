@@ -6,9 +6,9 @@ import { ProjectLightI } from './projects/projectsThunk';
 import { UtentiLightI } from './user/userThunk';
 import { AuthoritiesLightI } from './authorities/authoritiesThunk';
 import { SurveyLightI } from './surveys/surveysThunk';
-import { CitizenI } from '../../../pages/administrator/AdministrativeArea/Entities/Services/citizensList';
 import { CitizenListI, ServicesI } from './services/servicesThunk';
 import { HeadquarterLight } from './headquarters/headquartersThunk';
+import { SurveySectionPayloadI } from './surveys/surveysSlice';
 
 export interface PaginationI {
   pageSize: number;
@@ -66,13 +66,24 @@ export interface AreaAmministrativaStateI {
     list: ServicesI[];
     detail: {
       dettaglioServizio: { [key: string]: string };
+      sezioneQ3compilato: {
+        [key: string]: string | { [key: string]: { [key: string]: string } };
+      };
+      questionarioTemplateSnapshot: {
+        [key: string]: string | SurveySectionPayloadI[];
+      };
       progettiAssociatiAlServizio: {
         id: string;
         nomeBreve: string;
         stato: string;
       }[];
       cittadini: CitizenListI;
+      sezioniQuestionarioTemplateIstanze: {
+        domandaRisposta: { json: string };
+      }[];
     };
+    dropdownsCreation: { [key: string]: any[] };
+    dynamicSchemaFieldsCreation: any;
   };
 }
 
@@ -115,9 +126,14 @@ const initialState: AreaAmministrativaStateI = {
     list: [],
     detail: {
       dettaglioServizio: {},
+      sezioneQ3compilato: {},
+      questionarioTemplateSnapshot: {},
       progettiAssociatiAlServizio: [],
-      cittadini: { servizi: [] },
+      cittadini: { cittadini: [] },
+      sezioniQuestionarioTemplateIstanze: [],
     },
+    dropdownsCreation: {},
+    dynamicSchemaFieldsCreation: {},
   },
 };
 
@@ -373,19 +389,36 @@ export const administrativeAreaSlice = createSlice({
     setServicesDetail: (state, action: PayloadAction<any>) => {
       state.services.detail.dettaglioServizio =
         action.payload.dettaglioServizio;
+      state.services.detail.sezioneQ3compilato =
+        action.payload.dettaglioServizio?.sezioneQ3compilato;
+      state.services.detail.questionarioTemplateSnapshot =
+        action.payload.dettaglioServizio?.questionarioTemplateSnapshot;
       state.services.detail.progettiAssociatiAlServizio =
         action.payload.progettiAssociatiAlServizio;
     },
+    setServicesDropdownCreation: (state, action: PayloadAction<any>) => {
+      state.services.dropdownsCreation = {
+        ...state.services.dropdownsCreation,
+        ...action.payload,
+      };
+    },
+    setServicesSchemaFieldsCreation: (state, action: PayloadAction<any>) => {
+      state.services.dynamicSchemaFieldsCreation =
+        action.payload?.sezioniQuestionarioTemplate;
+    },
     setServicesDetailCitizenList: (state, action: PayloadAction<any>) => {
       state.services.detail.cittadini = action.payload;
-    },
-    addCitizenToList: (state, action: PayloadAction<CitizenI>) => {
-      state.services.detail.cittadini.servizi.push({ ...action.payload });
     },
     deleteFiltroCriterioRicerca: (state) => {
       const newFilters = { ...state.filters };
       delete newFilters.filtroCriterioRicerca;
       state.filters = { ...newFilters };
+    },
+    setServiceQuestionarioTemplateIstanze: (
+      state,
+      action: PayloadAction<any>
+    ) => {
+      state.services.detail.sezioniQuestionarioTemplateIstanze = action.payload;
     },
   },
 });
@@ -423,8 +456,10 @@ export const {
   resetProgramDetails,
   setProjectGeneralInfo,
   resetProjectDetails,
-  addCitizenToList,
   deleteFiltroCriterioRicerca,
+  setServicesDropdownCreation,
+  setServicesSchemaFieldsCreation,
+  setServiceQuestionarioTemplateIstanze,
 } = administrativeAreaSlice.actions;
 
 export const selectEntityList = (state: RootState) =>
@@ -452,5 +487,13 @@ export const selectHeadquarters = (state: RootState) =>
   state.administrativeArea.headquarters;
 export const selectServices = (state: RootState) =>
   state.administrativeArea.services;
+export const selectSezioneQ3compilato = (state: RootState) =>
+  state.administrativeArea.services.detail.sezioneQ3compilato;
+export const selectQuestionarioTemplateSnapshot = (state: RootState) =>
+  state.administrativeArea.services.detail.questionarioTemplateSnapshot;
+export const selectQuestionarioTemplateServiceCreation = (state: RootState) =>
+  state.administrativeArea.services.dynamicSchemaFieldsCreation;
+export const selectServiceQuestionarioTemplateIstanze = (state: RootState) =>
+  state.administrativeArea.services.detail.sezioniQuestionarioTemplateIstanze;
 
 export default administrativeAreaSlice.reducer;

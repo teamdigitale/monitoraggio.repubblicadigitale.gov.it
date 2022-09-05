@@ -15,7 +15,7 @@ import {
 } from '../../../../../redux/features/modal/modalSlice';
 import ManageCitizens from '../../../AdministrativeArea/Entities/modals/manageCitizens';
 import { formTypes } from '../../../AdministrativeArea/Entities/utils';
-import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
+import { setInfoIdsBreadcrumb } from '../../../../../redux/features/app/appSlice';
 import CitizenServices from './CitizenServices';
 
 const CitizensDetail: React.FC = () => {
@@ -24,29 +24,18 @@ const CitizensDetail: React.FC = () => {
   const citizen = useAppSelector(selectEntityDetail);
 
   useEffect(() => {
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area Cittadini',
-          url: '/area-cittadini',
-          link: false,
-        },
-        {
-          label: 'I miei cittadini',
-          url: '/area-cittadini/',
-          link: true,
-        },
-        {
-          label: `${citizen?.dettaglioCittadino?.name}`,
-          url: `/area-amministrativa/${citizen?.dettaglioCittadino?.idCittadino}`,
-          link: false,
-        },
-      ])
-    );
-  }, [citizen]);
+    // For breadcrumb
+    if (idCittadino && citizen?.dettaglioCittadino?.nome) {
+      dispatch(
+        setInfoIdsBreadcrumb({
+          id: idCittadino,
+          nome: citizen?.dettaglioCittadino?.nome + ' ' + citizen?.dettaglioCittadino?.cognome,
+        })
+      );
+    }
+  }, [idCittadino, citizen]);
 
   useEffect(() => {
-    // dispatch(clearInfoForm());
     dispatch(GetEntityDetail(idCittadino));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

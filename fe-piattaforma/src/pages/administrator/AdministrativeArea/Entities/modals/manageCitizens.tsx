@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
-import { UpdateCitizenDetail } from '../../../../../redux/features/citizensArea/citizensAreaThunk';
+import {
+  GetEntityDetail,
+  UpdateCitizenDetail,
+} from '../../../../../redux/features/citizensArea/citizensAreaThunk';
+import { createStringOfCompiledSurveySection } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormCitizen from '../../../../forms/formCitizen';
 import { formTypes } from '../utils';
@@ -29,11 +33,23 @@ const ManageCitizens: React.FC<ManageCitizensI> = ({
   }>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
 
-  const editCitizen = () => {
+  const editCitizen = async () => {
     if (isFormValid) {
-      // console.log(newFormValues);
-      dispatch(UpdateCitizenDetail(idCitizen, newFormValues));
+      const sezioneQ1Questionario =
+        "{'id':'anagraphic-citizen-section','title':'Anagrafica del cittadino','properties':" +
+        createStringOfCompiledSurveySection(newFormValues).replaceAll(
+          '"',
+          "'"
+        ) +
+        '}';
+
+      const body = {
+        ...newFormValues,
+        questionarioQ1: sezioneQ1Questionario,
+      };
+      await dispatch(UpdateCitizenDetail(idCitizen, body));
     }
+    dispatch(GetEntityDetail(idCitizen));
     if (onClose) onClose();
   };
 
@@ -55,7 +71,7 @@ const ManageCitizens: React.FC<ManageCitizensI> = ({
           sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {
             setNewFormValues({ ...newData });
           }}
-          isFormValid={(isValid: boolean) => setIsFormValid(isValid)}
+          setIsFormValid={(isValid: boolean) => setIsFormValid(isValid)}
           creation
         />
       </div>

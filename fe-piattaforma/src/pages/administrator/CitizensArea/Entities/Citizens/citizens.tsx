@@ -13,6 +13,7 @@ import {
   setEntityPagination,
 } from '../../../../../redux/features/citizensArea/citizensAreaSlice';
 import {
+  DownloadEntityValues,
   GetEntityFilterValues,
   GetEntityValues,
 } from '../../../../../redux/features/citizensArea/citizensAreaThunk';
@@ -164,18 +165,19 @@ const Citizens = () => {
   }, [citizensList?.length]);
 
   const onActionClick: CRUDActionsI = {
-    [CRUDActionTypes.CREATE]: (td: TableRowI | string) => {
-      console.log(td);
-    },
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
       navigate(`${typeof td === 'string' ? td : td?.id}`);
     },
-    [CRUDActionTypes.EDIT]: (td: TableRowI | string) => {
-      console.log(td);
-    },
-    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      console.log(td);
-    },
+    // [CRUDActionTypes.EDIT]: (td: TableRowI | string) => {
+    //   console.log(td);
+    // },
+    // [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+    //   console.log(td);
+    // },
+  };
+
+  const handleDownloadList = () => {
+    dispatch(DownloadEntityValues());
   };
 
   const PageTitleCitizen: {
@@ -209,6 +211,7 @@ const Citizens = () => {
           setFilterDropdownSelected(filterKey)
         }
         citizen
+        ctaDownload={handleDownloadList}
       >
         {citizensList?.length && tableValues?.values?.length ? (
           <div>

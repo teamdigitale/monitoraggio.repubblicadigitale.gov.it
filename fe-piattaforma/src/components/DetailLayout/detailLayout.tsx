@@ -246,7 +246,24 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
               );
             })
           : null}
-
+        {showItemsList && itemsList?.items?.length && currentTab === 'info' ? (
+          <>
+            {itemsList.title && (
+              <h2 className='h4 neutral-1-color-a7'>{itemsList.title}</h2>
+            )}{' '}
+            {itemsList.items.map((item) => {
+              return (
+                <CardStatusAction
+                  title={item.nome}
+                  status={item.stato}
+                  key={item.id}
+                  id={item.id}
+                  onActionClick={item.actions}
+                />
+              );
+            })}{' '}
+          </>
+        ) : null}
         {buttonsPosition === 'TOP' &&
         formButtons &&
         formButtons.length !== 0 ? (

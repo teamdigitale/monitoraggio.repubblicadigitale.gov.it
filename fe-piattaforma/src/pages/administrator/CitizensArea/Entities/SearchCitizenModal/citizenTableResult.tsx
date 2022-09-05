@@ -21,6 +21,7 @@ const CitizenTableResult: React.FC<CitizenTableResultI> = ({
         nome: td.nome || '',
         cognome: td.cognome || '',
         codiceFiscale: td.codiceFiscale || '',
+        id: td.idCittadino || '',
       }))
     );
     return {

@@ -10,42 +10,48 @@ import { useAppSelector } from '../../../../../redux/hooks';
 import {
   selectEntityFilters,
   selectEntityFiltersOptions,
+  selectServices,
   setEntityFilters,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import {
-  CitizenListI,
   GetCitizenListServiceDetail,
   GetServicesDetailFilters,
+  SendSurveyToCitizen,
 } from '../../../../../redux/features/administrativeArea/services/servicesThunk';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { formFieldI } from '../../../../../utils/formHelper';
-import { DetailsRow } from '../../../../../components';
+import { DetailsRow, EmptySection } from '../../../../../components';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { TableRowI } from '../../../../../components/Table/table';
 import { ButtonInButtonsBar } from '../../../../../components/ButtonsBar/buttonsBar';
 import { openModal } from '../../../../../redux/features/modal/modalSlice';
 import { CardCounterI } from '../../../../../components/CardCounter/cardCounter';
+import { formTypes } from '../utils';
+import ManageCitizenInService from '../modals/manageCitizenInService';
+import ConfirmSentSurveyModal from '../modals/confirmSentSurveyModal';
 
 export interface CitizenI {
-  id?: string;
+  idCittadino?: string;
   nome?: string;
+  cognome?: string;
   stato?: string;
+  codiceFiscale?: string;
+  idQuestionario?: string;
+  statoQuestionario?: string;
   innerInfo?: {
     ID: string;
     codiceFiscale: string;
   };
 }
 
-interface CitizensListI {
-  citizens: CitizenListI;
-}
-
 const statusDropdownLabel = 'statiQuestionario';
 
-const CitizensList: React.FC<CitizensListI> = ({ citizens }) => {
+const CitizensList: React.FC = () => {
   const { serviceId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const citizens = useAppSelector(selectServices)?.detail?.cittadini;
   const dropdownFilterOptions = useAppSelector(selectEntityFiltersOptions);
   const filtersList = useAppSelector(selectEntityFilters);
   const { criterioRicerca, statiQuestionario } = filtersList;
@@ -124,28 +130,37 @@ const CitizensList: React.FC<CitizensListI> = ({ citizens }) => {
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      console.log(td);
-      //TODO REPLACE WITH DYNAMIC ID WHEN WE HAVE THE APIS
+      navigate(`/area-amministrativa/servizi/${serviceId}/cittadini/compilato/${td}`);
     },
     [CRUDActionTypes.EDIT]: (td: TableRowI | string) => {
-      console.log(td);
-      //TODO REPLACE WITH DYNAMIC ID WHEN WE HAVE THE APIS
+      dispatch(
+        openModal({ id: formTypes.SERVICE_CITIZEN, payload: { idCittadino: td, serviceId: serviceId, viewMode: false } })
+      );
     },
-    [CRUDActionTypes.PRINT]: (td: TableRowI | string) => {
-      console.log(td);
-      //TODO REPLACE WITH DYNAMIC ID WHEN WE HAVE THE APIS
-    },
-    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      console.log(td);
-      //TODO REPLACE WITH DYNAMIC ID WHEN WE HAVE THE APIS
-    },
+    // [CRUDActionTypes.PRINT]: (td: TableRowI | string) => {
+    //   console.log(td);
+    //   //TODO REPLACE WITH DYNAMIC ID WHEN WE HAVE THE APIS
+    // },
+    // [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+    //   console.log(td);
+    //   //TODO REPLACE WITH DYNAMIC ID WHEN WE HAVE THE APIS
+    // },
     [CRUDActionTypes.COMPILE]: (td: TableRowI | string) => {
-      console.log(td);
-      //TODO REPLACE WITH DYNAMIC ID WHEN WE HAVE THE APIS
+      navigate(`/area-amministrativa/servizi/${serviceId}/cittadini/compila/${td}`);
     },
-    [CRUDActionTypes.SEND]: (td: TableRowI | string) => {
-      console.log(td);
-      //TODO REPLACE WITH DYNAMIC ID WHEN WE HAVE THE APIS
+    [CRUDActionTypes.SEND]: async (td: TableRowI | string) => {
+      if(typeof(td) !== 'string') {
+        await dispatch(SendSurveyToCitizen(td?.idCittadino.toString(), td?.idQuestionario.toString()));
+        // TODO: controllo sulla response che se ok aprire modale
+        dispatch(
+          openModal({
+            id: 'confirmSentSurveyModal',
+            payload: { text: 'Questionario inviato correttamente!' },
+          })
+        );
+      }
+      getServiceDetailsCitizens();
+      getAllFilters();
     },
   };
 
@@ -167,6 +182,28 @@ const CitizensList: React.FC<CitizensListI> = ({ citizens }) => {
     },
   ];
 
+  const emptyButtons: ButtonInButtonsBar[] = [
+    {
+      size: 'xs',
+      outline: true,
+      buttonClass: 'btn-secondary',
+      color: 'primary',
+      text: 'Carica lista cittadini',
+      onClick: () => console.log('carica csv'),
+    },
+    {
+      size: 'xs',
+      color: 'primary',
+      text: 'Aggiungi cittadino',
+      onClick: () =>
+        dispatch(
+          openModal({
+            id: 'search-citizen-modal',
+          })
+        ),
+    },
+  ];
+
   const cardsCounter: CardCounterI[] = [
     {
       title: 'Cittadini partecipanti',
@@ -183,26 +220,40 @@ const CitizensList: React.FC<CitizensListI> = ({ citizens }) => {
 
   return (
     <div className='container'>
-      <GenericSearchFilterTableLayout
-        searchInformation={searchInformation}
-        dropdowns={dropdowns}
-        buttonsList={buttons}
-        //showButtons={false}
-        filtersList={filtersList}
-        cardsCounter={cardsCounter}
-      >
-        {(citizens?.servizi || []).map((citizen: CitizenI, i: number) => (
-          <DetailsRow
-            key={i}
-            nome={citizen.nome || ''}
-            stato={citizen.stato || ''}
-            onActionClick={onActionClick}
-            id={citizen.nome || ''}
-            innerInfo={citizen.innerInfo || { ID: '', codiceFiscale: '' }}
-            rowInfoType='questionario'
-          />
-        ))}
-      </GenericSearchFilterTableLayout>
+      {citizens?.cittadini?.length > 0 ? (
+        <GenericSearchFilterTableLayout
+          searchInformation={searchInformation}
+          dropdowns={dropdowns}
+          buttonsList={buttons}
+          filtersList={filtersList}
+          cardsCounter={cardsCounter}
+          isDetail
+        >
+          {(citizens?.cittadini || []).map((citizen: CitizenI, i: number) => (
+            <DetailsRow
+              key={i}
+              nome={citizen?.nome + ' ' + citizen?.cognome}
+              stato={citizen?.statoQuestionario?.replace('_', ' ') || ''}
+              onActionClick={onActionClick}
+              id={citizen?.idCittadino || ''}
+              innerInfo={{
+                ID: citizen?.idCittadino || '',
+                codiceFiscale: citizen?.codiceFiscale || '',
+              }}
+              rowInfoType='questionario'
+              idQuestionario={citizen?.idQuestionario || ''}
+            />
+          ))}
+        </GenericSearchFilterTableLayout>
+      ) : (
+        <EmptySection
+          title='Questa sezione è ancora vuota'
+          subtitle='Aggiungi i cittadini'
+          buttons={emptyButtons}
+        />
+      )}
+      <ManageCitizenInService />
+      <ConfirmSentSurveyModal />
     </div>
   );
 };

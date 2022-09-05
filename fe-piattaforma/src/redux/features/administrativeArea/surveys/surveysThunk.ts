@@ -1,6 +1,7 @@
 import { Dispatch, Selector } from '@reduxjs/toolkit';
 import API from '../../../../utils/apiHelper';
 import {
+  convertPayloadSectionInString,
   mapOptions,
   transformFiltersToQueryParams,
 } from '../../../../utils/common';
@@ -22,6 +23,7 @@ import {
   setEntityPagination,
 } from '../administrativeAreaSlice';
 import {
+  setPrintSurveySection,
   setSurveyInfoForm,
   setSurveyQuestion,
   setSurveySection,
@@ -443,13 +445,17 @@ export const SetSurveyCreation =
 
 const GetSurveyInfoAction = { type: 'surveys/GetSurveyInfo' };
 export const GetSurveyInfo =
-  (questionarioId: string) => async (dispatch: Dispatch) => {
+  (questionarioId: string, isPrintPage?: boolean) =>
+  async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...GetSurveyInfoAction, questionarioId });
       const res = await API.get(`questionarioTemplate/${questionarioId}`);
       if (res?.data) {
         dispatch(setSurveyInfoForm(res.data));
+        if (isPrintPage) {
+          dispatch(setPrintSurveySection(res.data));
+        }
       }
     } catch (e) {
       console.error('questionario detail GetSurveyInfo', e);
@@ -462,18 +468,41 @@ const PostFormCompletedByCitizenAction = {
   type: 'surveys/PostFormCompletedByCitizen',
 };
 export const PostFormCompletedByCitizen =
-  (payload?: any) => async (dispatch: Dispatch) => {
+  (idQuestionario: string | undefined, payload: any) => async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...PostFormCompletedByCitizenAction, payload });
-      const entityEndpoint = `/`;
+      const entityEndpoint = `/servizio/cittadino/questionarioCompilato/${idQuestionario}/compila`;
+      const consenso = payload?.[0]['18']?.includes('Online') ? 'ONLINE': payload?.[0]['18']?.includes('Cartaceo') ? 'CARTACEO':'EMAIL';
+      if(consenso) payload[0]['18'] = consenso;
       const body = {
-        payload,
+        annoDiNascitaDaAggiornare: payload?.[0]['8'],
+        categoriaFragiliDaAggiornare: payload?.[0]['13'],
+        cittadinanzaDaAggiornare: payload?.[0]['11'],
+        codiceFiscaleDaAggiornare: payload?.[0]['3'],
+        cognomeDaAggiornare: payload?.[0]['2'],
+        comuneDiDomicilioDaAggiornare: payload?.[0]['12'],
+        consensoTrattamentoDatiRequest: {
+          codiceFiscaleCittadino: payload?.[0]['3'],
+          consensoTrattamentoDatiEnum: consenso,
+          numeroDocumentoCittadino: payload?.[0]['6'],
+        },
+        emailDaAggiornare: payload?.[0]['14'],
+        genereDaAggiornare: payload?.[0]['7'],
+        nomeDaAggiornare: payload?.[0]['1'],
+        numeroDiCellulareDaAggiornare: payload?.[0]['16'],
+        numeroDocumentoDaAggiornare: payload?.[0]['6'],
+        occupazioneDaAggiornare: payload?.[0]['10'],
+        prefissoTelefonoDaAggiornare: payload?.[0]['15'],
+        sezioneQ1Questionario: convertPayloadSectionInString(payload[0], 0),
+        sezioneQ2Questionario: convertPayloadSectionInString(payload[1], 1),
+        sezioneQ3Questionario: convertPayloadSectionInString(payload[2], 2),
+        sezioneQ4Questionario: convertPayloadSectionInString(payload[3], 3),
+        telefonoDaAggiornare: payload?.[0]['17'],
+        tipoDocumentoDaAggiornare: payload?.[0]['5'],
+        titoloDiStudioDaAggiornare: payload?.[0]['9'],
       };
-      const res = await API.post(entityEndpoint, body);
-      if (res) {
-        /* TODO: controllo se post andata a buon fine */
-      }
+      await API.post(entityEndpoint, body);
     } catch (e) {
       console.error(
         'post questionario compilato PostFormCompletedByCitizen',
