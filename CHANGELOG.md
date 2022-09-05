@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.94](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.93...1.0.0-develop.94) (2022-09-05)
+
+
+### Bug Fixes
+
+* **be:** utente scelta profilo e bio ([9fd9a01](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9fd9a01bc1ca77649d6608c29311c7750288a196))
+
 ## [1.0.0-develop.93](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.92...1.0.0-develop.93) (2022-09-03)
 
 
