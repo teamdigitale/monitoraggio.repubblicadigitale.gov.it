@@ -85,6 +85,11 @@ public class UtenteService {
 	
 	@Value("${AWS.S3.BUCKET-NAME:}")
 	private String nomeDelBucketS3;
+	@Value("${AWS.S3.PRESIGN_URL-EXPIRE-SCHEDAUTENTE:15}")
+	private String presignedUrlExpireSchedaUtente;
+	@Value("${AWS.S3.PRESIGN_URL-EXPIRE-CONTESTO:15}")
+	private String presignedUrlExpireContesto;
+	
 	
 	private static final String PREFIX_FILE_IMG_PROFILO = "immagineProfilo-";
 
@@ -866,6 +871,11 @@ public class UtenteService {
 		SchedaUtenteBean schedaUtente = new SchedaUtenteBean();
 		schedaUtente.setDettaglioUtente(dettaglioUtente);
 		schedaUtente.setDettaglioRuolo(listaDettaglioRuoli);
+		try {
+			schedaUtente.setImmagineProfilo(this.s3Service.getPresignedUrl(utenteFetchDB.getImmagineProfilo(), this.nomeDelBucketS3, Long.parseLong(this.presignedUrlExpireSchedaUtente)));
+		} catch (Exception e) {
+			log.error("Errore getting file da AWS S3 per file={}", utenteFetchDB.getImmagineProfilo());
+		}
 		return schedaUtente;
 	}
 	
@@ -1142,8 +1152,13 @@ public class UtenteService {
 	@LogExecutionTime
 	@LogMethod
 	@Transactional
-	public String downloadImmagineProfiloUtente(String nomeFile) throws IOException {
-		return this.s3Service.getPresignedUrl(nomeFile, this.nomeDelBucketS3);
+	public String downloadImmagineProfiloUtente(String nomeFile) {
+		String presignedUrlImmagineProfiloUtente = null;
+		try {
+			presignedUrlImmagineProfiloUtente = this.s3Service.getPresignedUrl(nomeFile, this.nomeDelBucketS3, Long.parseLong(this.presignedUrlExpireContesto));
+		} catch (Exception ex) {
+			throw new UtenteException("Errore download immagine profilo utente", ex);
+		}
+		return presignedUrlImmagineProfiloUtente;
 	}
-		
 }

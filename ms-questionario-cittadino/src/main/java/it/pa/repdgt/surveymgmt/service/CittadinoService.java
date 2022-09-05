@@ -59,6 +59,8 @@ public class CittadinoService {
 	@Autowired
 	private QuestionarioCompilatoMongoRepository questionarioCompilatoMongoRepository;
 	
+	private static final String ID_Q1 = "anagraphic-citizen-section";
+	
 	@LogMethod
 	@LogExecutionTime
 	public CittadinoEntity getCittadinoById(Long idCittadino) {
@@ -309,7 +311,7 @@ public class CittadinoService {
 	        		.stream()
 	        		.filter(datiIstanza -> { 
 	        			JsonObject jsonDatiIstanza = (JsonObject) datiIstanza.getDomandaRisposta();
-	        			return !jsonDatiIstanza.getJson().contains("Q1");
+	        			return !jsonDatiIstanza.getJson().contains(ID_Q1.toLowerCase());
 	        		})
 	        		.collect(Collectors.toList());
 

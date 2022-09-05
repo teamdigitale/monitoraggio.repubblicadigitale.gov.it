@@ -233,7 +233,8 @@ public interface ContestoRepository extends JpaRepository<ProgrammaEntity, Long>
 			+ "DATA_ORA_AGGIORNAMENTO = CURRENT_TIMESTAMP "
 			+ "WHERE ID_PROGRAMMA = :idProgramma "
 			+ "AND CF_UTENTE = :codiceFiscale "
-			+ "AND CODICE_RUOLO = :codiceRuolo", nativeQuery = true)
+			+ "AND CODICE_RUOLO = :codiceRuolo "
+			+ "AND STATO_UTENTE <> 'TERMINATO'", nativeQuery = true)
 	void attivaREGDEG(@Param(value = "idProgramma")Long idProgramma, 
 			@Param(value = "codiceFiscale")String codiceFiscale, 
 			@Param(value = "codiceRuolo")String codiceRuolo);
@@ -245,7 +246,8 @@ public interface ContestoRepository extends JpaRepository<ProgrammaEntity, Long>
 			+ "DATA_ORA_AGGIORNAMENTO = CURRENT_TIMESTAMP "
 			+ "WHERE ID_PROGETTO = :idProgetto "
 			+ "AND CF_UTENTE = :codiceFiscale "
-			+ "AND CODICE_RUOLO = :codiceRuolo", nativeQuery = true)
+			+ "AND CODICE_RUOLO = :codiceRuolo "
+			+ "AND STATO_UTENTE <> 'TERMINATO'", nativeQuery = true)
 	void attivaREGPDEGP(@Param(value = "idProgetto")Long idProgetto, 
 			@Param(value = "codiceFiscale")String codiceFiscale, 
 			@Param(value = "codiceRuolo")String codiceRuolo);
@@ -258,7 +260,8 @@ public interface ContestoRepository extends JpaRepository<ProgrammaEntity, Long>
 			+ "WHERE ID_PROGETTO = :idProgetto "
 			+ "AND ID_ENTE = :idEnte "
 			+ "AND CF_UTENTE = :codiceFiscale "
-			+ "AND CODICE_RUOLO = :codiceRuolo", nativeQuery = true)
+			+ "AND CODICE_RUOLO = :codiceRuolo "
+			+ "AND STATO_UTENTE <> 'TERMINATO'", nativeQuery = true)
 	void attivaREPPDEPP(@Param(value = "idProgetto")Long idProgetto, 
 			@Param(value = "idEnte")Long idEnte, 
 			@Param(value = "codiceFiscale")String codiceFiscale, 
@@ -274,7 +277,8 @@ public interface ContestoRepository extends JpaRepository<ProgrammaEntity, Long>
 			+ "AND ID_ENTE = :idEnte "
 			+ "AND ID_SEDE = :idSede "
 			+ "AND ID_FACILITATORE = :codiceFiscale "
-			+ "AND ruolo_utente = :codiceRuolo", nativeQuery = true)
+			+ "AND ruolo_utente = :codiceRuolo "
+			+ "AND STATO_UTENTE <> 'TERMINATO'", nativeQuery = true)
 	void attivaFACVOL(@Param(value = "idProgetto")Long idProgetto, 
 			@Param(value = "idEnte")Long idEnte, 
 			@Param(value = "idSede")Long idSede, 
