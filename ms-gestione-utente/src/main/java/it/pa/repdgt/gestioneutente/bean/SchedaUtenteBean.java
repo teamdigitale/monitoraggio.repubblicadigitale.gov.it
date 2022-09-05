@@ -10,4 +10,5 @@ import lombok.Setter;
 public class SchedaUtenteBean {
 	private DettaglioUtenteBean dettaglioUtente;
 	private List<DettaglioRuoliBean> dettaglioRuolo;
+	private String immagineProfilo;
 }

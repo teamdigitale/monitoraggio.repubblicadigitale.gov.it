@@ -31,7 +31,6 @@ public class IntegraContestoRequest implements Serializable {
 	private String telefono;
 	
 	@JsonProperty(value = "bio")
-	@NotBlank
 	private String bio;
 	
 	@JsonProperty(value = "tipoContratto")

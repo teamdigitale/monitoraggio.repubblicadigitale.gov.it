@@ -33,6 +33,8 @@ public class ContestoRestApi {
 	private S3Service s3Service;
 	@Value("${AWS.S3.BUCKET-NAME:}")
 	private String nomeDelBucketS3;
+	@Value("${AWS.S3.PRESIGN_URL-EXPIRE-CONTESTO:15}")
+	private String presignedUrlExpireContesto;
 
 	// TOUCH POINT - 0.1.1 - creazione contesto  
 	@PostMapping
@@ -41,9 +43,9 @@ public class ContestoRestApi {
 		UtenteEntity utenteFetched = contestoService.creaContesto(creaContestoRequest.getCodiceFiscale());
 		ContestoResource contesto = contestoMapper.toContestoFromUtenteEntity(utenteFetched);
 		try{ 
-			contesto.setImmagineProfilo(this.s3Service.getPresignedUrl(utenteFetched.getImmagineProfilo(), this.nomeDelBucketS3));
+			contesto.setImmagineProfilo(this.s3Service.getPresignedUrl(utenteFetched.getImmagineProfilo(), this.nomeDelBucketS3, Long.parseLong(this.presignedUrlExpireContesto)));
 		}catch(Exception e) {
-			log.error(e.getMessage());
+			log.error("Errore getting presignedUrl AWS S3 per file='{}' su bucket", utenteFetched.getImmagineProfilo());
 		}
 		if(utenteFetched.getIntegrazione()) {
 			contesto.setRuoli(contestoService.getGruppiPermessi(contesto.getRuoli()));
