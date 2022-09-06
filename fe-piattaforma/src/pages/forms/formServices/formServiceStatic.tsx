@@ -63,7 +63,7 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
       setFormValues(values);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData]);
+  }, [formData, dropdownOptions]);
 
   useEffect(() => {
     if (

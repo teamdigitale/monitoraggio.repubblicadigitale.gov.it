@@ -7,6 +7,8 @@ import './pageTitle.scss';
 import SectionInfo from '../../components/SectionInfo/sectionInfo';
 
 import { surveyBody } from '../SectionInfo/bodies';
+import { useAppSelector } from '../../redux/hooks';
+import { selectDevice } from '../../redux/features/app/appSlice';
 
 interface BreadcrumbI {
   label?: string;
@@ -33,6 +35,7 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
 
   const [sectionInfoOpened, setSectionInfoOpened] = useState<boolean>(false);
   const location = useLocation();
+  const device = useAppSelector(selectDevice);
 
   const openSectionInfo = () => {
     setSectionInfoOpened((current) => !current);
@@ -82,15 +85,26 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
           <div
             className={clsx(
               'd-flex',
-              'flex-row',
+              !device.mediaIsDesktop ? 'flex-column' : 'flex-row',
               'align-items-center',
               alignTitle ? 'justify-content-center' : null
             )}
           >
             <p className={clsx('py-2', 'mb-2')}>{subtitle}</p>
             {cta ? (
-              <Button onClick={cta.action} color='primary'>
-                {cta.label}
+              <Button
+                onClick={cta.action}
+                color='primary'
+                className={clsx(
+                  'd-flex',
+                  'flex-row',
+                  'justify-content-around',
+                  'align-items-center',
+                  'mb-3'
+                )}
+              >
+                <span className='text-nowrap pr-3'> {cta.label} </span>
+                <Icon icon='it-external-link' color='white' size='sm' />
               </Button>
             ) : null}
           </div>
