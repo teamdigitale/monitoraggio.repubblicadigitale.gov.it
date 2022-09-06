@@ -7,13 +7,24 @@ import { selectDevice } from '../../redux/features/app/appSlice';
 
 interface InfoPanelI {
   title?: string;
-  list: string[];
+  list?: string[];
   onlyList?: boolean;
   colsNo?: number;
+  openData?: boolean;
+  HTMLlist?: boolean;
+  body?: string;
 }
 
 const InfoPanel: React.FC<InfoPanelI> = (props) => {
-  const { title, list = [], onlyList = false, colsNo } = props;
+  const {
+    title,
+    list = [],
+    onlyList = false,
+    colsNo,
+    openData = false,
+    HTMLlist = false,
+    body = '',
+  } = props;
   const device = useAppSelector(selectDevice);
   const colStyle = device.mediaIsPhone
     ? `1fr`
@@ -31,50 +42,77 @@ const InfoPanel: React.FC<InfoPanelI> = (props) => {
           )}
           style={{ gridTemplateColumns: `${colStyle}` }}
         >
-          {list.map((item, index) => (
+          {!HTMLlist ? (
+            list.map((item, index) => (
+              <div
+                key={index}
+                className={clsx(
+                  'd-flex',
+                  'flex-row',
+                  'align-items-center',
+                  'mt-1',
+                  'pr-2'
+                )}
+              >
+                <div className='d-flex flex-row align-items-center'>
+                  <Icon icon={ColoredListBullets} />
+                  <p className='text-nowrap'>{item}</p>
+                </div>
+              </div>
+            ))
+          ) : (
             <div
-              key={index}
-              className={clsx(
-                'd-flex',
-                'flex-row',
-                'align-items-center',
-                'mt-1',
-                'pr-2'
-              )}
-            >
-              <Icon icon={ColoredListBullets} />
-              <p>{item}</p>
-            </div>
-          ))}
+              dangerouslySetInnerHTML={{ __html: body }}
+              className='section-info-list'
+            />
+          )}
         </div>
       ) : (
         <>
           {title ? <p className='h6 info-panel__title'>{title}</p> : null}
 
           <Card spacing className='card-bg pr-2'>
-            <CardBody className='pl-1 pr-2'>
+            <CardBody className={clsx('pb-0', !device.mediaIsPhone && 'pl-5')}>
               <div
                 className={clsx(
                   'info-panel__list-container',
                   device.mediaIsPhone && 'pl-4'
                 )}
-                style={{ gridTemplateColumns: `${colStyle}` }}
+                style={{ gridTemplateColumns: !HTMLlist ? `${colStyle}` : '' }}
               >
-                {list.map((item, index) => (
+                {!HTMLlist ? (
+                  list.map((item, index) => (
+                    <div
+                      key={index}
+                      className={clsx(
+                        'd-flex',
+                        'flex-column',
+                        'align-items-start',
+                        'mt-1',
+                        device.mediaIsPhone && 'mb-3'
+                      )}
+                    >
+                      <div
+                        className={clsx(
+                          'd-flex',
+                          'flex-row',
+                          'align-items-center',
+                          openData && 'pl-3 pr-5 py-2'
+                        )}
+                      >
+                        <div>
+                          <Icon icon={ColoredListBullets} />
+                          <p className='text-nowrap'>{item}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
                   <div
-                    key={index}
-                    className={clsx(
-                      'd-flex',
-                      'flex-row',
-                      'align-items-center',
-                      'mt-1',
-                      device.mediaIsPhone && 'mb-3'
-                    )}
-                  >
-                    <Icon icon={ColoredListBullets} />
-                    <p>{item}</p>
-                  </div>
-                ))}
+                    dangerouslySetInnerHTML={{ __html: body }}
+                    className='section-info-list'
+                  />
+                )}
               </div>
             </CardBody>
           </Card>

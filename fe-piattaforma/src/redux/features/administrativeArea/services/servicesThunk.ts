@@ -19,7 +19,7 @@ import { getUserHeaders } from '../../user/userThunk';
 export interface ServicesI {
   id: string;
   nome: string;
-  tipologiaServizio: string;
+  tipologiaServizio: string[];
   data: string;
   facilitatore: string;
   stato: string;
@@ -184,7 +184,10 @@ export const CreateService = (payload: any) => async (dispatch: Dispatch) => {
   try {
     dispatch(showLoader());
     dispatch({ ...CreateServiceAction, payload });
-    await API.post(`/servizio`, payload);
+    const res = await API.post(`/servizio`, payload);
+    if (res) {
+      return res;
+    }
   } catch (error) {
     console.log('CreateService administrativeArea error', error);
   } finally {

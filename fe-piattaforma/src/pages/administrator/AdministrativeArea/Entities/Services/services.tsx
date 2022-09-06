@@ -81,19 +81,14 @@ const Services = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getTypeService = (typeService: string) => {
-    if(!typeService.includes('[')){
-      return typeService;
-    }
-    const service = JSON.parse(typeService);
-    if (Array.isArray(service)) {
-      if (service?.length === 1) return service?.[0];
+  const getTypeService = (typeService: string[]) => {
+    if (typeService?.length === 1) return typeService?.[0];
+    else
       return (
         <p>
-          <strong> {service?.length} </strong> tipologie
+          <strong> {typeService?.length} </strong> tipologie
         </p>
       );
-    }
   };
 
   const updateTableValues = () => {
