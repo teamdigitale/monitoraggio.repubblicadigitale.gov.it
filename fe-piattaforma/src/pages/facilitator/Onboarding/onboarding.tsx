@@ -248,7 +248,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
               color='primary'
               onClick={onSubmitForm}
             >
-              Completa Regitrazione
+              Completa Registrazione
             </Button>
           </div>
           <p className={clsx('primary-color-a12', 'mt-5', 'mb-1', 'pb-2')}>

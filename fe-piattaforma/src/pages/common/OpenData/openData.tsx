@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
-import { Container } from 'design-react-kit';
+import { Container, Icon } from 'design-react-kit';
 import PageTitle from '../../../components/PageTitle/pageTitle';
 import { hideLoader, showLoader } from '../../../redux/features/app/appSlice';
 import API from '../../../utils/apiHelper';
@@ -9,6 +9,7 @@ import { InfoPanel, Table } from '../../../components';
 import { newTable } from '../../../components/Table/table';
 import { staticValues, TableHeading } from './utils';
 import moment from 'moment';
+import { openDataBody } from '../../../components/SectionInfo/bodies';
 
 const tableValues = newTable(TableHeading, staticValues);
 
@@ -43,26 +44,50 @@ const OpenData = () => {
         subtitle="Nell'ambito dell'iniziativa di Repubblica Digitale sono erogati servizi di facilitazione e formazione ai cittadini al fine di incrementare le loro competenze digitali.
 Tali servizi sono erogati a livello nazionale presso le sedi designate a tale scopo; inoltre sono rilevate le principali caratteristiche della popolazione partecipante e della tipologia di servizio erogato."
       />
-      <InfoPanel
-        list={[
-          'Nome Dataset: Statistiche del Piano Operativo per le Competenze Digitali',
-          'Copertura temporale: 2022',
-          'Data ultima pubblicazione: 23/12/2021',
-          'Periodicità rilevazione: Semestrale',
-          'Copertura geografica: Nazionale',
-        ]}
-      />
-      <a
-        className={clsx('btn', 'btn-primary', !docHref && 'disabled')}
-        href={docHref}
-        download
-      >
-        Scarica CSV (6 Mb)
-      </a>
+      <InfoPanel openData HTMLlist body={openDataBody} colsNo={0} />
+      <div className='d-flex justify-content-end py-4'>
+        <a
+          className={clsx('btn', 'btn-primary', !docHref && 'disabled')}
+          href={docHref}
+          download
+        >
+          Scarica CSV (6 Mb)
+        </a>
+      </div>
       <div className={clsx('mt-5')}>
         <Table {...tableValues} />
-        <div>
-          {moment().format('DD/MM/yyyy')} {totalCount}
+        <div
+          className={clsx(
+            'd-flex',
+            'flex-row',
+            'justify-content-end',
+            'pr-2',
+            'py-2'
+          )}
+        >
+          <div
+            className={clsx(
+              'pr-4',
+              'd-flex',
+              'flex-row',
+              'justify-content-end',
+              'align-items-center'
+            )}
+          >
+            <Icon icon='it-calendar' color='primary' size='' className='pr-2' />
+            {moment().format('DD/MM/yyyy')}
+          </div>
+          <div
+            className={clsx(
+              'd-flex',
+              'flex-row',
+              ',justify-content-end',
+              'align-items-center'
+            )}
+          >
+            <Icon icon='it-download' color='primary' size='' className='pr-2' />
+            {totalCount}
+          </div>
         </div>
       </div>
     </Container>

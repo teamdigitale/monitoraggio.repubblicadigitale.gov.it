@@ -13,12 +13,12 @@ import {
 } from '../../../../../redux/features/modal/modalSlice';
 import {
   CreateService,
-  GetAllServices,
   GetServicesDetail,
   UpdateService,
 } from '../../../../../redux/features/administrativeArea/services/servicesThunk';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { getUserHeaders } from '../../../../../redux/features/user/userThunk';
+import { useNavigate } from 'react-router-dom';
 
 const id = formTypes.SERVICES;
 
@@ -35,6 +35,7 @@ const ManageServices: React.FC<ManageServicesI> = ({
   creation,
 }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const idServizio = useAppSelector(selectModalPayload)?.idServizio;
   const [newFormsValues, setNewFormsValues] = useState<{
     [key: string]: formFieldI['value'];
@@ -66,7 +67,7 @@ const ManageServices: React.FC<ManageServicesI> = ({
         idProgramma: idProgramma,
       },
       sezioneQuestionarioCompilatoQ3: answersQ3,
-      tipoDiServizioPrenotato: JSON.stringify(answersForms['26']),
+      tipoDiServizioPrenotato: answersForms['26'],
     };
     return payload;
   };
@@ -74,11 +75,22 @@ const ManageServices: React.FC<ManageServicesI> = ({
   const handleCreateService = async () => {
     if (areFormsValid) {
       if (creation) {
-        await dispatch(CreateService(createPayload(newFormsValues)));
-        dispatch(GetAllServices());
+        const res = await dispatch(
+          CreateService(createPayload(newFormsValues))
+        );
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (res?.data)
+          navigate(
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            `/area-amministrativa/servizi/${res?.data?.idServizio}/info`
+          );
       } else {
-        await dispatch(UpdateService(idServizio, createPayload(newFormsValues)));
-        dispatch(GetServicesDetail(idServizio))
+        await dispatch(
+          UpdateService(idServizio, createPayload(newFormsValues))
+        );
+        dispatch(GetServicesDetail(idServizio));
       }
     }
     dispatch(closeModal());
@@ -89,7 +101,7 @@ const ManageServices: React.FC<ManageServicesI> = ({
       id={id}
       primaryCTA={{
         disabled: !areFormsValid,
-        label: creation ? 'Crea servizio':'Salva',
+        label: creation ? 'Crea servizio' : 'Salva',
         onClick: handleCreateService,
       }}
       secondaryCTA={{
