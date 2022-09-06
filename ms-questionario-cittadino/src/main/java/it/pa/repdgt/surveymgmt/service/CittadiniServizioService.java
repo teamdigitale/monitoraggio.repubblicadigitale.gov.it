@@ -403,7 +403,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		Boolean esistePrimoServizio = primoServizio.isPresent();
 		final String jsonStringSezioneQ2 = String.format(SEZIONE_Q2_TEMPLATE,
 				ID_DOMANDA_PRIMA_VOLTA, esistePrimoServizio ? "NO" : "SI",
-				ID_DOMANDA_TIPO_PRIMO_SERVIZIO, esistePrimoServizio ? primoServizio.get().getTipologiaServizio() : "");
+				ID_DOMANDA_TIPO_PRIMO_SERVIZIO, esistePrimoServizio ? primoServizio.get().getListaTipologiaServizi() : "");
 		
 		return jsonStringSezioneQ2;
 	}

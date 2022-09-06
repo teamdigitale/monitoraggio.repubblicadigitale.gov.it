@@ -37,6 +37,7 @@ import it.pa.repdgt.surveymgmt.mongo.repository.SezioneQ3Respository;
 import it.pa.repdgt.surveymgmt.param.FiltroListaServiziParam;
 import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import it.pa.repdgt.surveymgmt.projection.ProgettoProjection;
+import it.pa.repdgt.surveymgmt.repository.TipologiaServizioRepository;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
 
 @Service
@@ -48,6 +49,8 @@ public class ServizioService {
 	private UtenteService utenteService;
 	@Autowired
 	private SezioneQ3Respository sezioneQ3Repository;
+	@Autowired
+	private TipologiaServizioRepository tipologiaServizioRepository;
 	@Autowired
 	private ServizioSqlService servizioSQLService;
 	@Autowired
@@ -265,7 +268,8 @@ public class ServizioService {
 			@NotNull @Valid final FiltroListaServiziParam filtroListaServizi) {
 		return this.getAllServiziByProfilazioneUtenteLoggatoAndFiltri(profilazione, filtroListaServizi)
 				.stream()
-				.map(ServizioEntity::getTipologiaServizio)
+				.flatMap( servizio -> servizio.getListaTipologiaServizi().stream() )
+				.map(tipologiaServizio -> tipologiaServizio.getTitolo())
 				.distinct()
 				.collect(Collectors.toList());
 	}
@@ -308,7 +312,7 @@ public class ServizioService {
 		dettaglioServizioBean.setNomeServizio(servizioEntity.getNome());
 		dettaglioServizioBean.setNomeEnte(enteEntity.getNome());
 		dettaglioServizioBean.setNomeSede(sedeEntity.getNome());
-		dettaglioServizioBean.setTipologiaServizio(servizioEntity.getTipologiaServizio());
+		dettaglioServizioBean.setListaTipologiaServizio(servizioEntity.getListaTipologiaServizi());
 		
 		// verifico se il questionarioTemplate associato al servizio è presente su Mysql
 		try {
@@ -350,6 +354,8 @@ public class ServizioService {
 			final String messaggioErrore = String.format("Impossibile eliminare Servizio con id=%s. Stato Servizio = '%s'", idServizio, statoServizio);
 			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S07);
 		}
+		// cancello tutte le tipologie servizio associate al servizio su MySql
+//		this.tipologiaServizioRepository.deleteByIdServizio(idServizio);
 		
 		// cancello servizio su MySql
 		this.servizioSQLService.cancellaServivio(servizioEntity);

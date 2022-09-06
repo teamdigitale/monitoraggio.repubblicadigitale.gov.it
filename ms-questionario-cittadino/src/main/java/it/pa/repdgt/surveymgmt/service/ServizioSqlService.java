@@ -1,5 +1,6 @@
 package it.pa.repdgt.surveymgmt.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,7 @@ import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
 import it.pa.repdgt.shared.entity.ProgrammaXQuestionarioTemplateEntity;
 import it.pa.repdgt.shared.entity.ServizioEntity;
+import it.pa.repdgt.shared.entity.TipologiaServizioEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
@@ -31,6 +33,7 @@ import it.pa.repdgt.surveymgmt.param.ProfilazioneSedeParam;
 import it.pa.repdgt.surveymgmt.projection.EnteProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
 import it.pa.repdgt.surveymgmt.repository.ServizioSqlRepository;
+import it.pa.repdgt.surveymgmt.repository.TipologiaServizioRepository;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
 
 @Service
@@ -42,6 +45,8 @@ public class ServizioSqlService {
 	private ProgrammaXQuestionarioTemplateService programmaXQuestionarioTemplateService;
 	@Autowired
 	private ServizioSqlRepository servizioSqlRepository;
+	@Autowired
+	private TipologiaServizioRepository tipologiaServizioRepository;
 	@Autowired
 	private RuoloService ruoloService;
 	
@@ -246,7 +251,6 @@ public class ServizioSqlService {
 		
 		final ServizioEntity servizioEntity = new ServizioEntity();
 		servizioEntity.setNome(servizioRequest.getNomeServizio());
-		servizioEntity.setTipologiaServizio(servizioRequest.getTipologiaServizio());
 		servizioEntity.setDataServizio(servizioRequest.getDataServizio());
 		servizioEntity.setDurataServizio(servizioRequest.getDurataServizio());
 		servizioEntity.setIdQuestionarioTemplateSnapshot(idQuestinarioTemplate);
@@ -255,6 +259,20 @@ public class ServizioSqlService {
 		servizioEntity.setDataOraCreazione(new Date());
 		servizioEntity.setDataOraAggiornamento(servizioEntity.getDataOraCreazione());
 		servizioEntity.setStato(StatoEnum.NON_ATTIVO.getValue());
+		
+		final List<String> listaTitoloTipologiaServizi = servizioRequest.getListaTipologiaServizi();
+		
+		final List<TipologiaServizioEntity> listaTipologiaServizi = new ArrayList<>();
+		listaTitoloTipologiaServizi
+			.stream()
+			.forEach(titoloTiplogiaServizio -> {
+				TipologiaServizioEntity tipologiaServizio = new TipologiaServizioEntity();
+				tipologiaServizio.setTitolo(titoloTiplogiaServizio);
+				tipologiaServizio.setDataOraCreazione(new Date());
+				tipologiaServizio.setServizio(servizioEntity);
+				listaTipologiaServizi.add(tipologiaServizio);
+			});
+		servizioEntity.setListaTipologiaServizi(listaTipologiaServizi);
 		return servizioEntity;
 	}
 
@@ -278,7 +296,23 @@ public class ServizioSqlService {
 		final ServizioEntity servizioFecthDB = this.getServizioById(idServizio);
 		servizioFecthDB.setNome(servizioDaAggiornareRequest.getNomeServizio());
 		servizioFecthDB.setDataServizio(servizioDaAggiornareRequest.getDataServizio());
-		servizioFecthDB.setTipologiaServizio(servizioDaAggiornareRequest.getTipologiaServizio());
+		
+		final List<String> listaTitoloTipologiaServizi = servizioDaAggiornareRequest.getListaTipologiaServizi();
+		final List<TipologiaServizioEntity> listaTipologiaServizi = new ArrayList<>();
+		
+		
+		this.tipologiaServizioRepository.deleteByIdServizio(idServizio);
+		listaTitoloTipologiaServizi
+			.stream()
+			.forEach(titoloTipologiaServizio -> {
+				TipologiaServizioEntity tipologiaServizio = new TipologiaServizioEntity();
+				tipologiaServizio.setTitolo(titoloTipologiaServizio);
+				tipologiaServizio.setDataOraAggiornamento(new Date());
+				tipologiaServizio.setServizio(servizioFecthDB);
+				listaTipologiaServizi.add(tipologiaServizio);
+			});
+		
+		servizioFecthDB.setListaTipologiaServizi(listaTipologiaServizi);
 		servizioFecthDB.setIdEnteSedeProgettoFacilitatore(enteSedeProgettoFacilitatoreAggiornato);
 		servizioFecthDB.setDataOraAggiornamento(new Date());
 		return this.servizioSqlRepository.save(servizioFecthDB);

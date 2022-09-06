@@ -181,7 +181,7 @@ public class QuestionarioCompilatoService {
 		this.questionarioCompilatoMongoRepository.save(questionarioCompilatoDBMongoFetch);
 	}
 
-	private List<DatiIstanza> creaSezioniQuestionarioFromRequest(QuestionarioCompilatoRequest questionarioCompilatoRequest) {
+	public List<DatiIstanza> creaSezioniQuestionarioFromRequest(QuestionarioCompilatoRequest questionarioCompilatoRequest) {
 		final DatiIstanza sezioneQ1 = new DatiIstanza();
 		sezioneQ1.setDomandaRisposta(new JsonObject(questionarioCompilatoRequest.getSezioneQ1Questionario()));
 		final DatiIstanza sezioneQ2 = new DatiIstanza();
@@ -202,7 +202,7 @@ public class QuestionarioCompilatoService {
 	@LogMethod
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
-	private void verificaEseguiESalvaConsensoTrattamentoDatiPerAnonimo(String codiceFiscaleCittadino, String numeroDocumento, ConsensoTrattamentoDatiEnum consensoTrattamentoDatiEnum, DatiIstanza q1) {
+	public void verificaEseguiESalvaConsensoTrattamentoDatiPerAnonimo(String codiceFiscaleCittadino, String numeroDocumento, ConsensoTrattamentoDatiEnum consensoTrattamentoDatiEnum, DatiIstanza q1) {
 		String q1Text = ((JsonObject)q1.getDomandaRisposta()).toString();
 		// Se cittadino non ha mai dato il consenso, allora devo eseguire operazioni per la registrazione del consenso dati
 		if(!this.consensoCittadinoGiaDatoByCodiceFiscaleCittadino(codiceFiscaleCittadino, numeroDocumento)) {
@@ -249,7 +249,7 @@ public class QuestionarioCompilatoService {
 	@LogMethod
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
-	private void verificaEseguiESalvaConsensoTrattamentoDati(String codiceFiscaleCittadino, String numeroDocumento, ConsensoTrattamentoDatiEnum consensoTrattamentoDatiEnum) {
+	public void verificaEseguiESalvaConsensoTrattamentoDati(String codiceFiscaleCittadino, String numeroDocumento, ConsensoTrattamentoDatiEnum consensoTrattamentoDatiEnum) {
 		// Se cittadino non ha mai dato il consenso, allora devo eseguire operazioni per la registrazione del consenso dati
 		if(!this.consensoCittadinoGiaDatoByCodiceFiscaleCittadino(codiceFiscaleCittadino, numeroDocumento)) {
 			CittadinoEntity cittadinoDBFetch = this.cittadinoService.getByCodiceFiscaleOrNumeroDocumento(codiceFiscaleCittadino, numeroDocumento).get();

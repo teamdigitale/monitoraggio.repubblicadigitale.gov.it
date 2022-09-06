@@ -56,7 +56,7 @@ public class ServizioMapper {
 		final ServizioResource servizioResource = new ServizioResource();
 		servizioResource.setId(String.valueOf(servizioEntity.getId()));
 		servizioResource.setNomeServizio(servizioEntity.getNome());
-		servizioResource.setTipologiaServizio(servizioEntity.getTipologiaServizio());
+		servizioResource.setListaTipologiaServizi(servizioEntity.getListaTipologiaServizi().stream().map(tipologiaServizio -> tipologiaServizio.getTitolo()).collect(Collectors.toList()));
 		if(servizioEntity.getDataServizio() != null ) {
 			servizioResource.setDataServizio(simpleDateFormat.format(servizioEntity.getDataServizio()));
 		} 
