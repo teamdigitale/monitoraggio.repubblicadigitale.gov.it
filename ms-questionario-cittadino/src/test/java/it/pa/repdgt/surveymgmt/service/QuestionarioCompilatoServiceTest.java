@@ -4,9 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.when;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
+import org.bson.json.JsonObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +26,7 @@ import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
 import it.pa.repdgt.shared.entity.QuestionarioInviatoOnlineEntity;
 import it.pa.repdgt.shared.entityenum.ConsensoTrattamentoDatiEnum;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
+import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection.DatiIstanza;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioCompilatoException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioCompilatoMongoRepository;
@@ -56,12 +61,24 @@ public class QuestionarioCompilatoServiceTest {
 	CittadinoEntity cittadinoEntity;
 	QuestionarioCompilatoAnonimoRequest questionarioCompilatoAnonimoRequest;
 	QuestionarioInviatoOnlineEntity questionarioInviatoOnlineEntity;
+	DatiIstanza datiIstanza;
+	List<DatiIstanza> listaDatiIstanza;
 	
 	@BeforeEach
 	public void setUp() {
+		cittadinoEntity = new CittadinoEntity();
+		cittadinoEntity.setCodiceFiscale("CODICEFISCALECITTADINO");
+		cittadinoEntity.setId(1L);
+		cittadinoEntity.setNumeroDocumento("AE87D77D");
+		cittadinoEntity.setTipoConferimentoConsenso("TIPOCONFERIMENTO");
+		datiIstanza = new DatiIstanza();
+		datiIstanza.setDomandaRisposta(new JsonObject("{ \"Q1\" : \"domanda\" }"));
+		listaDatiIstanza = new ArrayList<>();
+		listaDatiIstanza.add(datiIstanza);
 		questionarioCompilatoCollection = new QuestionarioCompilatoCollection();
 		questionarioCompilatoCollection.setIdQuestionarioCompilato("IDQUESTIONARIO");
 		questionarioCompilatoCollection.setMongoId("IDQUESTIONARIO");
+		questionarioCompilatoCollection.setSezioniQuestionarioTemplateIstanze(listaDatiIstanza);
 		questionarioCompilatoEntity = new QuestionarioCompilatoEntity();
 		questionarioCompilatoEntity.setId("ID");
 		questionarioCompilatoEntity.setIdEnte(1L);
@@ -71,6 +88,7 @@ public class QuestionarioCompilatoServiceTest {
 		questionarioCompilatoEntity.setIdQuestionarioTemplate("IDQUESTIONARIO");
 		questionarioCompilatoEntity.setIdSede(1L);
 		questionarioCompilatoEntity.setIdServizio(1L);
+		questionarioCompilatoEntity.setCittadino(cittadinoEntity);
 		consensoTrattamentoDatiRequest = new ConsensoTrattamentoDatiRequest();
 		consensoTrattamentoDatiRequest.setCodiceFiscaleCittadino("CODICEFISCALECITTADINO");
 		consensoTrattamentoDatiRequest.setNumeroDocumentoCittadino("AE87D77D");
@@ -113,10 +131,6 @@ public class QuestionarioCompilatoServiceTest {
 		questionarioCompilatoRequest.setTelefonoDaAggiornare("0746907845");
 		questionarioCompilatoRequest.setTipoDocumentoDaAggiornare("CARTAIDENTITA");
 		questionarioCompilatoRequest.setTitoloDiStudioDaAggiornare("LAUREA");
-		cittadinoEntity = new CittadinoEntity();
-		cittadinoEntity.setCodiceFiscale("CODICEFISCALECITTADINO");
-		cittadinoEntity.setId(1L);
-		cittadinoEntity.setNumeroDocumento("AE87D77D");
 		questionarioCompilatoAnonimoRequest = new QuestionarioCompilatoAnonimoRequest();
 		questionarioCompilatoAnonimoRequest.setSezioneQ4Questionario("{ \"sezioneQuestionarioCompilatoQ4\": \"{ \\\"id\\\": \\\"Q4\\\", \\\"title\\\": \\\"Sezione Q4\\\", \\\"properties\\\": [ \\\"{'24': ['risposta a', 'risposta b']}\\\", \\\"{'25': ['risposta a']}\\\",  \\\"{'3.3': ['risposta d']}\\\", \\\"{'3.4': ['riposta risposta', 'risposta c']}\\\"] }\",\r\n"
 				+ "\r\n"
@@ -170,5 +184,113 @@ public class QuestionarioCompilatoServiceTest {
 		Assertions.assertThrows(QuestionarioCompilatoException.class, () -> questionarioCompilatoService.compilaQuestionario(questionarioCompilatoCollection.getIdQuestionarioCompilato(), questionarioCompilatoRequest));
 		assertThatExceptionOfType(QuestionarioCompilatoException.class);
 	}
+	
+	@Test
+	public void compilaQuestionarioPerAnonimoTest() {
+		when(this.questionarioCompilatoSQLRepository.findById(questionarioCompilatoCollection.getIdQuestionarioCompilato())).thenReturn(Optional.of(questionarioCompilatoEntity));
+		when(this.questionarioCompilatoMongoRepository.findQuestionarioCompilatoById(questionarioCompilatoCollection.getIdQuestionarioCompilato())).thenReturn(Optional.of(questionarioCompilatoCollection));
+		when(this.questionarioInviatoOnlineRepository.findByIdQuestionarioCompilatoAndToken(questionarioCompilatoCollection.getIdQuestionarioCompilato(), questionarioInviatoOnlineEntity.getToken())).thenReturn(Optional.of(questionarioInviatoOnlineEntity));
+		when(this.cittadinoService.getConsensoByCodiceFiscaleCittadinoOrNumeroDocumento(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento())).thenReturn("TRUE");
+		questionarioCompilatoService.compilaQuestionarioPerAnonimo(questionarioCompilatoCollection.getIdQuestionarioCompilato(), questionarioCompilatoAnonimoRequest, questionarioInviatoOnlineEntity.getToken());
+	}
+	
+	@Test
+	public void compilaQuestionarioPerAnonimoKOTest() {
+		//test KO per questionarioCompilato SQL non presente
+		when(this.questionarioCompilatoSQLRepository.findById(questionarioCompilatoCollection.getIdQuestionarioCompilato())).thenReturn(Optional.empty());
+		when(this.questionarioCompilatoMongoRepository.findQuestionarioCompilatoById(questionarioCompilatoCollection.getIdQuestionarioCompilato())).thenReturn(Optional.of(questionarioCompilatoCollection));
+		Assertions.assertThrows(QuestionarioCompilatoException.class, () -> questionarioCompilatoService.compilaQuestionarioPerAnonimo(questionarioCompilatoCollection.getIdQuestionarioCompilato(), questionarioCompilatoAnonimoRequest, questionarioInviatoOnlineEntity.getToken()));
+		assertThatExceptionOfType(QuestionarioCompilatoException.class);
+		
+		//test KO per questionarioCompilato MongoDB non presente
+		when(this.questionarioCompilatoSQLRepository.findById(questionarioCompilatoCollection.getIdQuestionarioCompilato())).thenReturn(Optional.of(questionarioCompilatoEntity));
+		when(this.questionarioCompilatoMongoRepository.findQuestionarioCompilatoById(questionarioCompilatoCollection.getIdQuestionarioCompilato())).thenReturn(Optional.empty());
+		Assertions.assertThrows(QuestionarioCompilatoException.class, () -> questionarioCompilatoService.compilaQuestionarioPerAnonimo(questionarioCompilatoCollection.getIdQuestionarioCompilato(), questionarioCompilatoAnonimoRequest, questionarioInviatoOnlineEntity.getToken()));
+		assertThatExceptionOfType(QuestionarioCompilatoException.class);
+	}
+	
+	@Test
+	public void creaSezioniQuestionarioFromRequestTest() {
+		List<DatiIstanza> risultato = questionarioCompilatoService.creaSezioniQuestionarioFromRequest(questionarioCompilatoRequest);
+		assertThat(risultato.size()).isEqualTo(4);
+	}
+	
+	@Test
+	public void verificaEseguiESalvaConsensoTrattamentoDatiPerAnonimoTest() {
+		//test per consensoCittadino già dato
+		when(this.cittadinoService.getConsensoByCodiceFiscaleCittadinoOrNumeroDocumento(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento())).thenReturn("TRUE");
+		questionarioCompilatoService.verificaEseguiESalvaConsensoTrattamentoDatiPerAnonimo(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento(), ConsensoTrattamentoDatiEnum.CARTACEO, datiIstanza);
+	}
+	
+	@Test
+	public void verificaEseguiESalvaConsensoTrattamentoDatiPerAnonimoTest2() {
+		//test per consensoCittadino non dato e ConsensoTrattamentoDatiEnum == CARTACEO
+		when(this.cittadinoService.getConsensoByCodiceFiscaleCittadinoOrNumeroDocumento(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento())).thenReturn(null);
+		when(this.cittadinoService.getByCodiceFiscaleOrNumeroDocumento(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento())).thenReturn(Optional.of(cittadinoEntity));
+		questionarioCompilatoService.verificaEseguiESalvaConsensoTrattamentoDatiPerAnonimo(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento(), ConsensoTrattamentoDatiEnum.CARTACEO, datiIstanza);
+		
+		//test per consensoCittadino non dato e ConsensoTrattamentoDatiEnum == ONLINE
+		when(this.cittadinoService.getConsensoByCodiceFiscaleCittadinoOrNumeroDocumento(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento())).thenReturn(null);
+		when(this.cittadinoService.getByCodiceFiscaleOrNumeroDocumento(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento())).thenReturn(Optional.of(cittadinoEntity));
+		questionarioCompilatoService.verificaEseguiESalvaConsensoTrattamentoDatiPerAnonimo(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento(), ConsensoTrattamentoDatiEnum.ONLINE, datiIstanza);
+		
+		//test per consensoCittadino non dato e ConsensoTrattamentoDatiEnum == EMAIL
+		when(this.cittadinoService.getConsensoByCodiceFiscaleCittadinoOrNumeroDocumento(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento())).thenReturn(null);
+		when(this.cittadinoService.getByCodiceFiscaleOrNumeroDocumento(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento())).thenReturn(Optional.of(cittadinoEntity));
+		questionarioCompilatoService.verificaEseguiESalvaConsensoTrattamentoDatiPerAnonimo(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento(), ConsensoTrattamentoDatiEnum.EMAIL, datiIstanza);
+	}
+	
+	@Test
+	public void verificaEseguiESalvaConsensoTrattamentoDatiTest() {
+		//test per consensoCittadino già dato
+		when(this.cittadinoService.getConsensoByCodiceFiscaleCittadinoOrNumeroDocumento(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento())).thenReturn("TRUE");
+		questionarioCompilatoService.verificaEseguiESalvaConsensoTrattamentoDati(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento(), ConsensoTrattamentoDatiEnum.CARTACEO);
+	}
+	
+	@Test
+	public void verificaEseguiESalvaConsensoTrattamentoDatiTest2() {
+		//test per consensoCittadino non dato e ConsensoTrattamentoDatiEnum == CARTACEO
+		when(this.cittadinoService.getConsensoByCodiceFiscaleCittadinoOrNumeroDocumento(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento())).thenReturn(null);
+		when(this.cittadinoService.getByCodiceFiscaleOrNumeroDocumento(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento())).thenReturn(Optional.of(cittadinoEntity));
+		questionarioCompilatoService.verificaEseguiESalvaConsensoTrattamentoDati(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento(), ConsensoTrattamentoDatiEnum.CARTACEO);
+		
+		//test per consensoCittadino non dato e ConsensoTrattamentoDatiEnum == ONLINE
+		when(this.cittadinoService.getConsensoByCodiceFiscaleCittadinoOrNumeroDocumento(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento())).thenReturn(null);
+		when(this.cittadinoService.getByCodiceFiscaleOrNumeroDocumento(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento())).thenReturn(Optional.of(cittadinoEntity));
+		questionarioCompilatoService.verificaEseguiESalvaConsensoTrattamentoDati(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento(), ConsensoTrattamentoDatiEnum.ONLINE);
+		
+		//test per consensoCittadino non dato e ConsensoTrattamentoDatiEnum == EMAIL
+		when(this.cittadinoService.getConsensoByCodiceFiscaleCittadinoOrNumeroDocumento(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento())).thenReturn(null);
+		when(this.cittadinoService.getByCodiceFiscaleOrNumeroDocumento(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento())).thenReturn(Optional.of(cittadinoEntity));
+		questionarioCompilatoService.verificaEseguiESalvaConsensoTrattamentoDati(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento(), ConsensoTrattamentoDatiEnum.EMAIL);
+	}
+	
+	@Test
+	public void compilaQuestionarioAnonimoTest() throws ParseException {
+		when(questionarioInviatoOnlineRepository.findByIdQuestionarioCompilatoAndToken(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato(), questionarioInviatoOnlineEntity.getToken())).thenReturn(Optional.of(questionarioInviatoOnlineEntity));
+		when(this.questionarioCompilatoSQLRepository.findById(questionarioCompilatoCollection.getIdQuestionarioCompilato())).thenReturn(Optional.of(questionarioCompilatoEntity));
+		when(this.questionarioCompilatoMongoRepository.findQuestionarioCompilatoById(questionarioCompilatoCollection.getIdQuestionarioCompilato())).thenReturn(Optional.of(questionarioCompilatoCollection));
+		when(this.questionarioInviatoOnlineRepository.findByIdQuestionarioCompilatoAndToken(questionarioCompilatoCollection.getIdQuestionarioCompilato(), questionarioInviatoOnlineEntity.getToken())).thenReturn(Optional.of(questionarioInviatoOnlineEntity));
+		when(this.cittadinoService.getConsensoByCodiceFiscaleCittadinoOrNumeroDocumento(cittadinoEntity.getCodiceFiscale(), cittadinoEntity.getNumeroDocumento())).thenReturn("TRUE");
+		questionarioCompilatoService.compilaQuestionarioAnonimo(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato(), questionarioCompilatoAnonimoRequest, questionarioInviatoOnlineEntity.getToken());
+	}
+	
+	@Test
+	public void getQuestionarioCompilatoByIdAnonimoTest() throws ParseException {
+		when(questionarioInviatoOnlineRepository.findByIdQuestionarioCompilatoAndToken(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato(), questionarioInviatoOnlineEntity.getToken())).thenReturn(Optional.of(questionarioInviatoOnlineEntity));
+		when(this.questionarioCompilatoSQLRepository.findById(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato())).thenReturn(Optional.of(questionarioCompilatoEntity));
+		questionarioCompilatoService.getQuestionarioCompilatoByIdAnonimo(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato(), questionarioInviatoOnlineEntity.getToken());
+	}
+	
+	@Test
+	public void verificaTokenQuestionarioTest() throws ParseException {
+		when(questionarioInviatoOnlineRepository.findByIdQuestionarioCompilatoAndToken(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato(), questionarioInviatoOnlineEntity.getToken())).thenReturn(Optional.of(questionarioInviatoOnlineEntity));
+		questionarioCompilatoService.verificaTokenQuestionario(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato(), questionarioInviatoOnlineEntity.getToken());
+	}
 
+	@Test
+	public void isTokenExpiredTest() throws ParseException {
+		boolean risultato = questionarioCompilatoService.isTokenExpired(questionarioInviatoOnlineEntity);
+		assertThat(risultato).isEqualTo(false);
+	}
 }
