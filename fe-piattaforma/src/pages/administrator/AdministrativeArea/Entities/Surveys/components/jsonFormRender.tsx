@@ -80,7 +80,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
             )}
             label={`${formField?.label}`}
             onInputBlur={onInputChange}
-            disabled={viewMode}
+            disabled={formField?.disabled || viewMode}
           />
         );
       }
@@ -99,7 +99,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
                   : ''
               }`}
               label={`${formField?.label}`}
-              isDisabled={formField.disabled || viewMode}
+              isDisabled={formField?.disabled || viewMode}
             />
           );
         }
@@ -183,7 +183,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
               placeholder='Seleziona'
               col='col-12'
               value={values}
-              isDisabled={viewMode}
+              isDisabled={formField?.disabled || viewMode}
             />
           );
         }
@@ -193,12 +193,14 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
             // @ts-ignore
             <CheckboxGroup
               {...formField}
-              className='col-12 col-lg-6'
+              className={formField.field === '27' ? 'col-12':'col-12 col-lg-6'}
               onInputChange={onInputChange}
               label={`${formField?.label}`}
               styleLabelForm
               noLabel={formField.flag === true ? true : false}
-              disabled={viewMode}
+              disabled={formField?.disabled || viewMode}
+              optionsInColumn={formField.field === '27'}
+              separator='§'
             />
           );
         }
@@ -210,7 +212,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
             col='col-12 col-lg-6'
             onInputBlur={onInputChange}
             label={`${formField?.label}`}
-            disabled={viewMode}
+            disabled={formField?.disabled || viewMode}
           />
         );
       }

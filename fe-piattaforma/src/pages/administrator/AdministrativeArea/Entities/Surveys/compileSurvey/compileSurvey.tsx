@@ -88,49 +88,38 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
 
   const getValuesSurvey = (section: {
     id: string;
-    properties: { [key: string]: string[] };
+    properties: any;
     title: string;
   }) => {
     let values = {};
     const valuesInArray = section?.properties || section;
     Object.keys(valuesInArray).map((key: string) => {
       if (typeof valuesInArray[key] === 'object') {
-        values = {
-          ...values,
-          ...{
-            [key]:
-              valuesInArray[key]?.length > 1 || key === '25' || key === '26'
-                ? valuesInArray[key]
-                : valuesInArray[key][0],
-          },
-        };
+        Object.keys(valuesInArray[key]).map((id: string) => {
+          values = {
+            ...values,
+            ...{
+              [id]:
+                valuesInArray[key][id]?.length > 1
+                  ? valuesInArray[key][id]
+                  : valuesInArray[key][id][0],
+            },
+          };
+        });
       } else if (typeof valuesInArray[key] === 'string') {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const val = JSON.parse(decodeURI(valuesInArray[key]).replaceAll("'", '"'));
+        const val = JSON.parse(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          decodeURI(valuesInArray[key]).replaceAll("'", '"')
+        );
         values = {
           ...values,
-          ...val
+          ...val,
         };
       }
     });
     return values;
   };
-
-  /**
-   let valuesParsed: { [key: string]: string[] } = {};
-    (section?.properties || []).forEach((prop: string) => {
-      const val =
-        typeof prop === 'string'
-          ? JSON.parse(decodeURI(prop).replaceAll("'", '"'))
-          : prop;
-      valuesParsed = {
-        ...valuesParsed,
-        ...val,
-      };
-    });
-   * 
-   */
 
   useEffect(() => {
     if (idQuestionarioCompilato)
@@ -177,7 +166,7 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
                   ? 'Si'
                   : 'No')
               : (newForm[key].value = values[key]);
-            if (activeSection === 1) {
+            if (activeSection === 1 || activeSection === 2) {
               newForm[key].disabled = true;
             }
           });

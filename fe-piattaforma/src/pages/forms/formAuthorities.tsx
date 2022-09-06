@@ -132,8 +132,6 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [creation, enteType, formData, formDisabled]);
 
-  console.log(form);
-
   const newGestoreProgetto = () => {
     dispatch(
       openModal({
@@ -195,6 +193,15 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
     if (creation) {
       clearForm();
       //dispatch(resetAuthorityDetails());
+      if (form?.profilo) {
+        updateForm({
+          ...form,
+          profilo: {
+            ...form.profilo,
+            required: !creation,
+          }
+        })
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [creation]);
