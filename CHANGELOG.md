@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.96](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.95...1.0.0-develop.96) (2022-09-06)
+
+
+### Bug Fixes
+
+* **be:** fix servizio one-to-many tipologia_servizio ([a2b73f4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a2b73f442c2859ce0aaeb10c1c84d1fa12e15c23))
+
 ## [1.0.0-develop.95](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.94...1.0.0-develop.95) (2022-09-05)
 
 
