@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.6...1.0.0-test.7) (2022-09-06)
+
+
+### Bug Fixes
+
+* **be:** fix servizio one-to-many tipologia_servizio ([fe14697](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fe1469716d13c6d76bf956ae8a4caa2bbe110a28))
+
 ## [1.0.0-test.6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.5...1.0.0-test.6) (2022-09-05)
 
 
