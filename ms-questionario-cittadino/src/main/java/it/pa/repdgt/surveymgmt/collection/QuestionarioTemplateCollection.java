@@ -14,6 +14,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,6 +34,7 @@ public class QuestionarioTemplateCollection implements Serializable {
 	private static final long serialVersionUID = -5135985858663895848L;
 	
 	@Id
+	@JsonIgnore
 	private String mongoId;
 	
 	@Field(name = "id")

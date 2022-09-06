@@ -39,7 +39,7 @@ public class UtenteService {
 	public boolean isUtenteFacilitatore(@NotBlank final String codiceFiscaleUtente, @NotBlank final String codiceRuolo) {
 		return ( this.hasRuoloUtente(codiceFiscaleUtente, codiceRuolo)
 				&& 
-				RuoloUtenteEnum.FAC.toString().equalsIgnoreCase(codiceRuolo) );
+				RuoloUtenteEnum.FAC.toString().equalsIgnoreCase(codiceRuolo) ||  RuoloUtenteEnum.VOL.toString().equalsIgnoreCase(codiceRuolo));
 	}
 	
 	@LogMethod
