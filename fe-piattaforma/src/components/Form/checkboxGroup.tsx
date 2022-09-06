@@ -13,6 +13,7 @@ interface CheckboxGroupI extends InputI {
   className?: string;
   noLabel?: boolean;
   classNameLabelOption?: string;
+  optionsInColumn?: boolean;
 }
 
 const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
@@ -28,6 +29,7 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
     noLabel = false,
     classNameLabelOption = '',
     disabled = false,
+    optionsInColumn = false,
   } = props;
   const parseExternalValue = () => value.toString().split(separator);
   const [values, setValues] = useState<string[]>(parseExternalValue());
@@ -77,9 +79,9 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
           )}
         </div>
       )}
-      <Form.Row>
+      <Form.Row className={clsx(optionsInColumn && 'd-flex flex-column')}>
         {options.map((check) => (
-          <FormGroup check inline key={check.value}>
+          <FormGroup check inline key={check.value} className={clsx(optionsInColumn && 'compile-survey-container__max-width-column')}>
             <Input
               {...check}
               field={`${field} ${check.label}`}
@@ -98,7 +100,7 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
             <Label
               for={`${field} ${check.label}`}
               check
-              className={classNameLabelOption}
+              className={clsx(classNameLabelOption, optionsInColumn && 'compile-survey-container__label-column')}
             >
               {check.label}
             </Label>
