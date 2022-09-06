@@ -80,7 +80,7 @@ const ManageServices: React.FC<ManageServicesI> = ({
         );
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        if (res?.data)
+        if (res?.data?.idServizio)
           navigate(
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
