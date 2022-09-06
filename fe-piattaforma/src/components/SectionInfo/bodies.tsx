@@ -36,3 +36,28 @@ export const surveyBody = `
         questionario oppure modificarlo e duplicarlo. 
     </p>
       `;
+
+export const openDataBody = `
+<ul class="section-info-list" style="padding-bottom: 24px; padding-left: 24px,white-space: nowrap">
+<li >
+  <strong>Nome Dataset: 
+  </strong> Statistiche del Piano Operativo per le Competenze Digitali
+</li>
+<li>
+  <strong> Copertura temporale:  </strong> 2022
+</li>
+<li >
+  <strong> Data ultima pubblicazione: 
+  </strong>
+  23/12/2021
+</li>
+<li>
+  <strong>Periodicita' rilevazione: 
+  </strong> Semestrale
+</li>
+<li>
+  <strong> Copertura geografica: 
+  </strong> Nazionale
+</li>
+</ul>
+`;

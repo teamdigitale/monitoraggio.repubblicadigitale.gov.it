@@ -153,8 +153,8 @@ const UserProfile: React.FC<UserProfileI> = ({
               onActionClick={roleActions}
               activeRole={
                 role.codiceRuolo === userRole.codiceRuolo &&
-                (role.idProgetto === userRole.id ||
-                  role.idProgramma === userRole.id)
+                (role.id?.toString() === userRole.idProgramma?.toString() ||
+                  role.id?.toString() === userRole.idProgetto?.toString())
               }
             />
           );
