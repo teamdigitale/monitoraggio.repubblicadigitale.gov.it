@@ -1,6 +1,6 @@
-import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { Form, Input, Select, SelectMultiple } from '../../../components';
+import CheckboxGroup from '../../../components/Form/checkboxGroup';
 import { OptionTypeMulti } from '../../../components/Form/selectMultiple';
 import withFormHandler, {
   withFormHandlerProps,
@@ -240,13 +240,15 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
           );
         }
         return (
-          <Input
+          <CheckboxGroup
             {...field}
-            className={clsx('mr-3', 'mb-3')}
-            col='col-12 col-lg-6'
-            onInputBlur={onInputChange}
-            label={field.label}
+            col='col-12'
+            onInputChange={onInputChange}
+            label={`${field?.label}`}
+            styleLabelForm
             disabled={formDisabled}
+            optionsInColumn
+            separator='§'
           />
         );
       }
