@@ -29,10 +29,12 @@ const FormService: React.FC<FormServiceI> = (props) => {
     getQuestioanarioCompilatoQ3 = () => ({}),
   } = props;
   const dispatch = useDispatch();
-  const serviceQ3Schema =
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    useAppSelector(selectQuestionarioTemplateSnapshot)?.sezioniQuestionarioTemplate?.[2]?.schema;
+  const sezioniQuestionarioTemplate = useAppSelector(
+    selectQuestionarioTemplateSnapshot
+  )?.sezioniQuestionarioTemplate;
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const serviceQ3Schema = sezioniQuestionarioTemplate?.[2]?.schema;
   const serviceQ3SchemaCreation = useAppSelector(
     selectQuestionarioTemplateServiceCreation
   )?.[2]?.schema;

@@ -110,7 +110,7 @@ const ServicesDetails = () => {
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
       navigate(
-        `/area-amministrativa/progetti/${typeof td === 'string' ? td : td?.id}`
+        `/area-amministrativa/progetti/${td}`
       );
     },
   };
@@ -162,6 +162,7 @@ const ServicesDetails = () => {
           outline: true,
           color: 'primary',
           text: 'Elimina',
+          disabled: serviceDetails?.dettaglioServizio?.statoServizio !== 'NON ATTIVO',
           onClick: () =>
             dispatch(
               openModal({
@@ -176,6 +177,7 @@ const ServicesDetails = () => {
           size: 'xs',
           color: 'primary',
           text: 'Modifica',
+          disabled: serviceDetails?.dettaglioServizio?.statoServizio !== 'NON ATTIVO',
           onClick: () =>
             dispatch(
               openModal({
@@ -192,6 +194,7 @@ const ServicesDetails = () => {
           outline: true,
           color: 'primary',
           text: 'Elimina',
+          disabled: serviceDetails?.dettaglioServizio?.statoServizio !== 'NON ATTIVO',
           onClick: () =>
             dispatch(
               openModal({
@@ -209,6 +212,7 @@ const ServicesDetails = () => {
           size: 'xs',
           color: 'primary',
           text: 'Modifica',
+          disabled: serviceDetails?.dettaglioServizio?.statoServizio !== 'NON ATTIVO',
           onClick: () =>
             dispatch(
               openModal({
@@ -282,9 +286,10 @@ const ServicesDetails = () => {
               : buttons
           }
           titleInfo={{
-            title: serviceDetails.dettaglioServizio.nomeServizio,
-            status: serviceDetails.dettaglioServizio.stato,
+            title: serviceDetails.dettaglioServizio?.nomeServizio,
+            status: serviceDetails.dettaglioServizio?.statoServizio,
             upperTitle: { icon: 'it-calendar', text: 'Servizio' },
+            subTitle: serviceDetails.dettaglioServizio?.nominativoFacilitatore
           }}
           currentTab={activeTab}
           buttonsPosition='BOTTOM'

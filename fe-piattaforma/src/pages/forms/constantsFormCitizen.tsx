@@ -8,22 +8,21 @@ export const citizenFormDropdownOptions = {
   genere: [
     { label: 'F', value: 'F' },
     { label: 'M', value: 'M' },
+    { label: 'Non binario', value: 'Non binario' },
   ],
   tipoDocumento: [
-    { label: 'Identità', value: 'Identità' },
+    { label: 'Carta di Identità', value: 'Carta di Identità' },
     { label: 'Patente', value: 'Patente' },
     { label: 'Passaporto', value: 'Passaporto' },
     { label: 'Permesso di soggiorno', value: 'Permesso di soggiorno' },
   ],
   cittadinanza: [
     { label: 'Italiana', value: 'Italiana' },
-    { label: 'Altro - UE', value: 'Altro - UE' },
-    { label: 'Altro - non UE', value: 'Altro - non UE' },
+    { label: "Straniera, di un Paese ALL'INTERNO dell'Unione Europea", value: "Straniera, di un Paese ALL'INTERNO dell'Unione Europea" },
+    { label: "Straniera, di un Paese AL DI FUORI dell'Unione Europea", value: "Straniera, di un Paese AL DI FUORI dell'Unione Europea" },
   ],
   categoriaFragili: [
-    { label: 'No', value: 'No'},
-    { label: 'Rifugiato', value: 'Rifugiato' },
-    { label: 'Migrante', value: 'Migrante' },
+    { label: 'Rifugiato/ Migrante', value: 'Rifugiato/ Migrante' },
     {
       label: 'Percettore di sussidio di disabilità',
       value: 'Percettore di sussidio di disabilità',
@@ -35,31 +34,35 @@ export const citizenFormDropdownOptions = {
   ],
   titoloStudio: [
     {
-      label: 'Diploma di istruzione primaria (scuola elementare)',
-      value: 'Diploma di istruzione primaria (scuola elementare)',
+      label: 'Licenza elementare / Scuola primaria',
+      value: 'Licenza elementare / Scuola primaria',
     },
     {
-      label: '"Diploma di scuola secondaria di I livello (scuola media)',
-      value: '"Diploma di scuola secondaria di I livello (scuola media)',
+      label: 'Licenza media inferiore / Scuola secondaria di I grado (3 anni)',
+      value: 'Licenza media inferiore / Scuola secondaria di I grado (3 anni)',
     },
     {
       label:
-        'Diploma di scuola secondaria di II livello o ITP (maturità o di tecnico superiore - ITS)',
+        'Diploma di scuola superiore (diploma di maturità) / Scuola secondaria di II grado (5 anni)',
       value:
-        'Diploma di scuola secondaria di II livello o ITP (maturità o di tecnico superiore - ITS)',
+        'Diploma di scuola superiore (diploma di maturità) / Scuola secondaria di II grado (5 anni)',
     },
     {
-      label: 'Laurea di I livello (triennale)',
-      value: 'Laurea di I livello (triennale)',
+      label: 'Diploma professionale (3 anni) / Istituti professionali / Istituti di Istruzione e Formazione Professionale (IeFP)',
+      value: 'Diploma professionale (3 anni) / Istituti professionali / Istituti di Istruzione e Formazione Professionale (IeFP)',
     },
     {
-      label: 'Laurea di II livello (specialistica o magistrale)',
-      value: 'Laurea di II livello (specialistica o magistrale)',
+      label: 'Laurea (3 anni)',
+      value: 'Laurea (3 anni)',
     },
-    { label: 'Dottorato o Master', value: 'Dottorato o Master' },
+    { label: 'Laurea magistrale (5 anni) / Master di I livello / Specializzazione post-laurea (2 anni)', value: 'Laurea magistrale (5 anni) / Master di I livello / Specializzazione post-laurea (2 anni)' },
     {
-      label: 'Non conosciuto / non fornito / Altro',
-      value: 'Non conosciuto / non fornito / Altro',
+      label: 'Dottorato, Master di II livello o titoli equiparati',
+      value: 'Dottorato, Master di II livello o titoli equiparati',
+    },
+    {
+      label: 'Non conosciuto / Non fornito / Altro',
+      value: 'Non conosciuto / Non fornito / Altro',
     },
   ],
   tipoConferimentoConsenso: [
@@ -72,7 +75,7 @@ export const citizenFormDropdownOptions = {
     { label: 'Dipendente a tempo determinato', value: 'Dipendente a tempo determinato'},
     { label: 'Imprenditore', value: 'Imprenditore'},
     { label: 'Libero professionista', value: 'Libero professionista'},
-    { label: 'Commerciante/Artigiano', value: 'Commerciante/Artigiano'},
+    { label: 'Commerciante/ Artigiano', value: 'Commerciante/ Artigiano'},
     { label: 'Inoccupato/a', value: 'Inoccupato/a'},
     { label: 'Disoccupato/a', value: 'Disoccupato/a'},
     { label: 'Volontario/a', value: 'Volontario/a'},
