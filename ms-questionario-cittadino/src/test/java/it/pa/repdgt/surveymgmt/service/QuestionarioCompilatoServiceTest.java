@@ -94,7 +94,7 @@ public class QuestionarioCompilatoServiceTest {
 		consensoTrattamentoDatiRequest.setNumeroDocumentoCittadino("AE87D77D");
 		consensoTrattamentoDatiRequest.setConsensoTrattamentoDatiEnum(ConsensoTrattamentoDatiEnum.CARTACEO);
 		questionarioCompilatoRequest = new QuestionarioCompilatoRequest();
-		questionarioCompilatoRequest.setAnnoDiNascitaDaAggiornare("1990");
+		questionarioCompilatoRequest.setAnnoDiNascitaDaAggiornare(1990);
 		questionarioCompilatoRequest.setCategoriaFragiliDaAggiornare("FRAGILI");
 		questionarioCompilatoRequest.setCittadinanzaDaAggiornare("ITALIANA");
 		questionarioCompilatoRequest.setCodiceFiscaleDaAggiornare("FERDSO67D09A232E");

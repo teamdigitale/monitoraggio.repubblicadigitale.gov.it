@@ -17,6 +17,8 @@ public class DettaglioServizioBean implements Serializable {
 	private String nomeServizio;
 	private String nomeEnte;
 	private String nomeSede;
+	private String statoServizio;
+	private String nominativoFacilitatore;
 	private List<TipologiaServizioEntity> listaTipologiaServizio;
 	private SezioneQ3Collection sezioneQ3compilato;
 	private QuestionarioTemplateCollection questionarioTemplateSnapshot;
