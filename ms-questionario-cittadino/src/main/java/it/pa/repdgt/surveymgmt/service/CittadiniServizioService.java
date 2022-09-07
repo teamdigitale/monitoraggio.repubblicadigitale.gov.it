@@ -523,7 +523,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		cittadino.setDataOraCreazione(new Date());
 		cittadino.setDataOraAggiornamento(new Date());
 		
-		cittadino.setAnnoDiNascita(cittadinoUpload.getAnnoNascita());
+		cittadino.setAnnoDiNascita(Integer.parseInt(cittadinoUpload.getAnnoNascita()));
 		cittadino.setCategoriaFragili(cittadinoUpload.getCategoriaFragili());
 		cittadino.setCittadinanza(cittadinoUpload.getCittadinanza());
 		cittadino.setComuneDiDomicilio(cittadinoUpload.getComuneDomicilio());
@@ -533,7 +533,6 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		cittadino.setPrefissoTelefono(cittadinoUpload.getPrefisso());
 		cittadino.setTelefono(cittadinoUpload.getTelefono());
 		cittadino.setTitoloDiStudio(cittadinoUpload.getTitoloStudio());
-		
 	}
 
 	public boolean esisteCodFiscaleODocumento(CittadinoUploadBean cittadinoUpload) {
@@ -572,7 +571,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		new Thread( () -> {
 			try {
 				String token = this.generaToken(cittadino, idQuestionario);
-				String[] argsTemplate = new String[] { cittadino.getNome(), token};
+				String[] argsTemplate = new String[] { cittadino.getNome(), idQuestionario, token};
 
 				// stacco un thread per invio email
 				this.emailService.inviaEmail(

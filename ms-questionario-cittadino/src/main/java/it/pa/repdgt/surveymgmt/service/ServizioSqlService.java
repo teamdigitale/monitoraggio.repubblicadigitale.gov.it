@@ -259,6 +259,7 @@ public class ServizioSqlService {
 		servizioEntity.setDataOraCreazione(new Date());
 		servizioEntity.setDataOraAggiornamento(servizioEntity.getDataOraCreazione());
 		servizioEntity.setStato(StatoEnum.NON_ATTIVO.getValue());
+		servizioEntity.setTipologiaServizio(String.join(", ", servizioRequest.getListaTipologiaServizi()));
 		
 		final List<String> listaTitoloTipologiaServizi = servizioRequest.getListaTipologiaServizi();
 		
@@ -315,6 +316,7 @@ public class ServizioSqlService {
 		servizioFecthDB.setListaTipologiaServizi(listaTipologiaServizi);
 		servizioFecthDB.setIdEnteSedeProgettoFacilitatore(enteSedeProgettoFacilitatoreAggiornato);
 		servizioFecthDB.setDataOraAggiornamento(new Date());
+		servizioFecthDB.setTipologiaServizio(String.join(", ", servizioDaAggiornareRequest.getListaTipologiaServizi()));
 		return this.servizioSqlRepository.save(servizioFecthDB);
 	}
 	
@@ -374,5 +376,11 @@ public class ServizioSqlService {
 	@LogExecutionTime
 	public Optional<ServizioEntity> getPrimoServizioByIdCittadino(@NotNull Long idServizio, @NotNull Long idCittadino) {
 		return this.servizioSqlRepository.findServizioByCittadinoNotEqual(idServizio, idCittadino);
+	}
+
+	@LogMethod
+	@LogExecutionTime
+	public String getNominativoFacilitatoreByIdFacilitatoreAndIdServizio(String idFacilitatore, Long idServizio) {
+		return this.servizioSqlRepository.findNominativoFacilitatoreByIdFacilitatoreAndIdServizio(idFacilitatore, idServizio);
 	}
 }
