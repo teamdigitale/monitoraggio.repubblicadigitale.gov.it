@@ -129,7 +129,7 @@ public class CittadinoServiceTest {
 		cittadinoRequest.setTipoDocumento("CF");
 		cittadinoRequest.setNumeroDocumento("E23K099D");
 		cittadinoRequest.setGenere("GENERE");
-		cittadinoRequest.setAnnoNascita("1990");
+		cittadinoRequest.setAnnoNascita(1990);
 		cittadinoRequest.setTitoloStudio("DIPLOMA");
 		cittadinoRequest.setStatoOccupazionale("DIPENDENTE");
 		cittadinoRequest.setCittadinanza("ITALIANA");
