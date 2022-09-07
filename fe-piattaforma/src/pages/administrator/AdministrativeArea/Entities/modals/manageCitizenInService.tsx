@@ -88,7 +88,7 @@ const ManageCitizenInService: React.FC<ManageCitizenInServiceI> = ({
     });
 
     const sezioneQ1Questionario =
-      "{'id':'anagraphic-citizen-section','title':'Anagrafica del cittadino','properties':" +
+      "{'id':'anagraphic-citizen-section','title':'Informazioni anagrafiche','properties':" +
       createStringOfCompiledSurveySection(newFormValues).replaceAll('"', "'") +
       '}';
 

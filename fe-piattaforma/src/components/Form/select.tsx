@@ -68,6 +68,13 @@ const Select: React.FC<SelectI> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, options]);
 
+  useEffect(() => {
+    if(options?.length === 1){
+      // if only one option, prefill select
+      setSelectedOption(options[0]);
+    }
+  },[options]);
+
   const handleChange = (option: OptionType) => {
     setSelectedOption(option);
   };
@@ -108,6 +115,7 @@ const Select: React.FC<SelectI> = (props) => {
         color='primary'
         classNamePrefix='bootstrap-select'
         aria-labelledby={`${(label || 'label select').replace(/\s/g, '-')}`}
+        isDisabled={options?.length === 1 || isDisabled}
       />
     </div>
   );

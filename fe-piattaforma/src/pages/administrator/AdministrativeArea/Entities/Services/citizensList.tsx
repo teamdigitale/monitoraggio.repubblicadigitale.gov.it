@@ -238,7 +238,7 @@ const CitizensList: React.FC = () => {
               id={citizen?.idCittadino || ''}
               innerInfo={{
                 ID: citizen?.idCittadino || '',
-                codiceFiscale: citizen?.codiceFiscale || '',
+                'Codice Fiscale': citizen?.codiceFiscale || '',
               }}
               rowInfoType='questionario'
               idQuestionario={citizen?.idQuestionario || ''}

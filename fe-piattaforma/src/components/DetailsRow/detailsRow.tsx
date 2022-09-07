@@ -47,7 +47,6 @@ const DetailsRow: React.FC<DetailsRowI> = ({
             <Button
               onClick={() => onActionClick[CRUDActionTypes.SEND]({ idCittadino: id, idQuestionario: idQuestionario})}
               aria-label='Invia questionario'
-              disabled
             >
               <Icon
                 icon='it-external-link'
@@ -74,13 +73,13 @@ const DetailsRow: React.FC<DetailsRowI> = ({
             </Button>
             <Button
               onClick={() => onActionClick[CRUDActionTypes.SEND]({ idCittadino: id, idQuestionario: idQuestionario})}
-              aria-label='Invia questionario disabilitato'
+              aria-label='Invia questionario'
             >
               <Icon
                 icon='it-external-link'
                 color='primary'
                 size='sm'
-                aria-label='Invia questionario disabilitato'
+                aria-label='Invia questionario'
               />
             </Button>
           </>
