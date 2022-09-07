@@ -57,6 +57,9 @@ public class ServizioEntity implements Serializable {
 	@Column(name = "STATO")
 	private String stato;
 	
+	@Column(name = "TIPOLOGIA_SERVIZIO")
+	private String tipologiaServizio;
+	
 	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column(name = "DATA_ORA_CREAZIONE")
 	private Date dataOraCreazione;

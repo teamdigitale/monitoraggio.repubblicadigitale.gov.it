@@ -313,6 +313,10 @@ public class ServizioService {
 		dettaglioServizioBean.setNomeEnte(enteEntity.getNome());
 		dettaglioServizioBean.setNomeSede(sedeEntity.getNome());
 		dettaglioServizioBean.setListaTipologiaServizio(servizioEntity.getListaTipologiaServizi());
+		dettaglioServizioBean.setStatoServizio(servizioEntity.getStato());
+		String idFacilitatore = servizioEntity.getIdEnteSedeProgettoFacilitatore().getIdFacilitatore();
+		String nominativoFacilitatore = this.servizioSQLService.getNominativoFacilitatoreByIdFacilitatoreAndIdServizio(idFacilitatore, servizioEntity.getId());
+		dettaglioServizioBean.setNominativoFacilitatore(nominativoFacilitatore);
 		
 		// verifico se il questionarioTemplate associato al servizio è presente su Mysql
 		try {
