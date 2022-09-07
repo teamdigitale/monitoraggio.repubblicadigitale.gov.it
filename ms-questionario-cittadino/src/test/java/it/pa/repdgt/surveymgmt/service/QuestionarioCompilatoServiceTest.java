@@ -27,6 +27,7 @@ import it.pa.repdgt.shared.entity.QuestionarioInviatoOnlineEntity;
 import it.pa.repdgt.shared.entityenum.ConsensoTrattamentoDatiEnum;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection.DatiIstanza;
+import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioCompilatoException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioCompilatoMongoRepository;
@@ -49,6 +50,8 @@ public class QuestionarioCompilatoServiceTest {
 	private QuestionarioInviatoOnlineRepository questionarioInviatoOnlineRepository;
 	@Mock
 	private EmailService emailService;
+	@Mock
+	private QuestionarioTemplateService questionarioTemplateService;
 	
 	@Autowired
 	@InjectMocks
@@ -279,6 +282,7 @@ public class QuestionarioCompilatoServiceTest {
 	public void getQuestionarioCompilatoByIdAnonimoTest() throws ParseException {
 		when(questionarioInviatoOnlineRepository.findByIdQuestionarioCompilatoAndToken(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato(), questionarioInviatoOnlineEntity.getToken())).thenReturn(Optional.of(questionarioInviatoOnlineEntity));
 		when(this.questionarioCompilatoSQLRepository.findById(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato())).thenReturn(Optional.of(questionarioCompilatoEntity));
+		when(this.questionarioTemplateService.getQuestionarioTemplateById(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato())).thenReturn(new QuestionarioTemplateCollection());
 		questionarioCompilatoService.getQuestionarioCompilatoByIdAnonimo(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato(), questionarioInviatoOnlineEntity.getToken());
 	}
 	
