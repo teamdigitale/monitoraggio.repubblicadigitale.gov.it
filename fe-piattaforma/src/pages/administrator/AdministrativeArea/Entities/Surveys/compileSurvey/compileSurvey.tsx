@@ -35,6 +35,7 @@ import {
 } from '../../../../../../redux/features/administrativeArea/services/servicesThunk';
 import { formatAndParseJsonString } from '../../../../../../utils/common';
 import { PostFormCompletedByCitizen } from '../../../../../../redux/features/administrativeArea/surveys/surveysThunk';
+import { OptionType } from '../../../../../../components/Form/select';
 
 interface CompileSurveyI extends withFormHandlerProps {
   viewMode?: boolean;
@@ -88,34 +89,29 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
 
   const getValuesSurvey = (section: {
     id: string;
-    properties: any;
+    properties: string[] | { [key: string]: string[] }[];
     title: string;
   }) => {
     let values = {};
     const valuesInArray = section?.properties || section;
-    Object.keys(valuesInArray).map((key: string) => {
-      if (typeof valuesInArray[key] === 'object') {
-        Object.keys(valuesInArray[key]).map((id: string) => {
+    (valuesInArray || []).map((value: string | { [key: string]: string[] }) => {
+      if (typeof value === 'object') {
+        Object.keys(value).map((id: string) => {
           values = {
             ...values,
             ...{
-              [id]:
-                valuesInArray[key][id]?.length > 1
-                  ? valuesInArray[key][id]
-                  : valuesInArray[key][id][0],
+              [id]: value[id]?.length > 1 ? value[id] : value[id][0],
             },
           };
         });
-      } else if (typeof valuesInArray[key] === 'string') {
-        const val = JSON.parse(
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          decodeURI(valuesInArray[key]).replaceAll("'", '"')
-        );
-        values = {
-          ...values,
-          ...val,
-        };
+      } else if (typeof value === 'string') {
+        const val = JSON.parse(decodeURI(value).replaceAll("'", '"'));
+        Object.keys(val).map((id: string) => {
+          values = {
+            ...values,
+            ...{ [id]: val[id]?.length > 1 ? val[id] : val[id][0] },
+          };
+        });
       }
     });
     return values;
@@ -153,7 +149,7 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
         ) {
           const sectionParsed: {
             id: string;
-            properties: { [key: string]: string[] };
+            properties: string[];
             title: string;
           } = formatAndParseJsonString(
             compiledSurveyCitizen?.[activeSection]?.domandaRisposta?.json
@@ -163,12 +159,30 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
           Object.keys(newForm).map((key: string) => {
             key === '20'
               ? (newForm[key].value = ['SI', 'Si', 'si'].includes(values[key])
-                  ? 'Si'
+                  ? 'Sì'
                   : 'No')
               : (newForm[key].value = values[key]);
             if (activeSection === 1 || activeSection === 2) {
               newForm[key].disabled = true;
             }
+            if (key === '18') {
+              if(!newForm[key].value) newForm[key].value = '$consenso';
+              const options: OptionType[] = [];
+              newForm[key].options?.map((opt: OptionType) => {
+                options?.push({ label: opt.label, value: opt.value.toString().toUpperCase()})
+              });
+              newForm[key].value === '$consenso'
+                ? (newForm[key].options = options?.filter(
+                    (opt: OptionType) => opt.value !== 'ONLINE'
+                  ))
+                : newForm[key].value === 'ONLINE'
+                ? (newForm[key].options = options?.filter(
+                    (opt: OptionType) => opt.value === 'ONLINE'
+                  ))
+                : options;
+              newForm[key].disabled = newForm[key].value === '$consenso' ? false:true;
+            }
+            if(key === '19') delete newForm[key];
           });
         }
         updateForm(
@@ -237,30 +251,6 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
   const generateFormCompleted = async (surveyStore: FormI[]) => {
     const body = surveyStore.map((section) =>
       FormHelper.getFormValues(section)
-    );
-    body.forEach(
-      (section: {
-        [key: string]:
-          | string
-          | number
-          | boolean
-          | Date
-          | string[]
-          | undefined
-          | { [key: string]: boolean };
-      }) => {
-        Object.keys(section).forEach((answerId: string) => {
-          if (Array.isArray(section[answerId])) {
-            const newAnswer: { [key: string]: boolean } = {};
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore // Keep the ignore here because there's already a check before.
-            section[answerId].map((val: string) => {
-              newAnswer[val] = true;
-            });
-            section[answerId] = newAnswer;
-          }
-        });
-      }
     );
     await dispatch(PostFormCompletedByCitizen(idQuestionarioCompilato, body));
     navigate(`/area-amministrativa/servizi/${serviceId}/cittadini`);

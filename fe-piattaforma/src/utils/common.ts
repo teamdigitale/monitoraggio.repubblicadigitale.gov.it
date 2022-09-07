@@ -378,10 +378,10 @@ export const convertPayloadSectionInString = (sectionPayload: {
     }
   });
   switch(section){
-    case 0: return "{'id':'anagraphic-citizen-section','title':'Anagrafica del cittadino','properties':" + JSON.stringify(newObject).replaceAll('"', "'") + '}';
-    case 1: return "{'id':'anagraphic-booking-section','title':'Anagrafica della prenotazione','properties':" + JSON.stringify(newObject).replaceAll('"', "'") + '}';
-    case 2: return "{'id':'anagraphic-service-section','title':'Anagrafica del servizio','properties':" + JSON.stringify(newObject).replaceAll('"', "'") + '}';
-    case 3: return "{'id':'content-service-section','title':'Contenuti del servizio','properties':" + JSON.stringify(newObject).replaceAll('"', "'") + '}';
-    default: return JSON.stringify(newObject);
+    case 0: return "{'id':'anagraphic-citizen-section','title':'Informazioni anagrafiche','properties':" + createStringOfCompiledSurveySection(newObject).replaceAll('"', "'") + '}';
+    case 1: return "{'id':'anagraphic-booking-section','title':'Informazioni sulla prenotazione','properties':" + createStringOfCompiledSurveySection(newObject).replaceAll('"', "'") + '}';
+    case 2: return "{'id':'anagraphic-service-section','title':'Informazioni sul servizio','properties':" + createStringOfCompiledSurveySection(newObject).replaceAll('"', "'") + '}';
+    case 3: return "{'id':'content-service-section','title':'Informazioni sull’esperienza','properties':" + createStringOfCompiledSurveySection(newObject).replaceAll('"', "'") + '}';
+    default: return createStringOfCompiledSurveySection(newObject);
   }
 };

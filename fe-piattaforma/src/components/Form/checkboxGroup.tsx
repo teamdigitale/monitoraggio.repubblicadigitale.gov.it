@@ -30,6 +30,7 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
     classNameLabelOption = '',
     disabled = false,
     optionsInColumn = false,
+    required = false,
   } = props;
   const parseExternalValue = () => value.toString().split(separator);
   const [values, setValues] = useState<string[]>(parseExternalValue());
@@ -72,7 +73,7 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
                 styleLabelForm && 'compile-survey-container__label-checkbox'
               )}
             >
-              {label}
+              {label} {required && '*'}
             </p>
           ) : (
             <p className='h6'>{field}</p>
