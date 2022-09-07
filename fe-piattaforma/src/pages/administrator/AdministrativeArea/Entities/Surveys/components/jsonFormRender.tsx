@@ -193,7 +193,9 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
             // @ts-ignore
             <CheckboxGroup
               {...formField}
-              className={formField.field === '27' ? 'col-12':'col-12 col-lg-6'}
+              className={
+                formField.field === '27' ? 'col-12' : 'col-12 col-lg-6'
+              }
               onInputChange={onInputChange}
               label={`${formField?.label}`}
               styleLabelForm

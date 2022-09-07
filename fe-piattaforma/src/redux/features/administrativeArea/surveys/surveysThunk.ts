@@ -473,8 +473,6 @@ export const PostFormCompletedByCitizen =
       dispatch(showLoader());
       dispatch({ ...PostFormCompletedByCitizenAction, payload });
       const entityEndpoint = `/servizio/cittadino/questionarioCompilato/${idQuestionario}/compila`;
-      const consenso = payload?.[0]['18']?.includes('Online') ? 'ONLINE': payload?.[0]['18']?.includes('Cartaceo') ? 'CARTACEO':'EMAIL';
-      if(consenso) payload[0]['18'] = consenso;
       const body = {
         annoDiNascitaDaAggiornare: payload?.[0]['8'],
         categoriaFragiliDaAggiornare: payload?.[0]['13'],
@@ -484,7 +482,7 @@ export const PostFormCompletedByCitizen =
         comuneDiDomicilioDaAggiornare: payload?.[0]['12'],
         consensoTrattamentoDatiRequest: {
           codiceFiscaleCittadino: payload?.[0]['3'],
-          consensoTrattamentoDatiEnum: consenso,
+          consensoTrattamentoDatiEnum: payload?.[0]['18'],
           numeroDocumentoCittadino: payload?.[0]['6'],
         },
         emailDaAggiornare: payload?.[0]['14'],
