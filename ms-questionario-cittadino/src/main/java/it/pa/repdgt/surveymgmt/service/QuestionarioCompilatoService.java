@@ -32,6 +32,7 @@ import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.bean.QuestionarioCompilatoBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection.DatiIstanza;
+import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioCompilatoException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
@@ -54,6 +55,8 @@ public class QuestionarioCompilatoService {
 	private QuestionarioInviatoOnlineRepository questionarioInviatoOnlineRepository;
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+	private QuestionarioTemplateService questionarioTemplateService;
 	
 	@LogMethod
 	@LogExecutionTime
@@ -308,11 +311,25 @@ public class QuestionarioCompilatoService {
 		
 		verificaTokenQuestionario(idQuestionarioCompilato, token);
 		
-		CittadinoEntity cittadinoAssociatoAlQuestionarioCompilato = this.questionarioCompilatoSQLRepository.findById(idQuestionarioCompilato).get().getCittadino();
+		QuestionarioCompilatoEntity questionarioCompilato = this.questionarioCompilatoSQLRepository.findById(idQuestionarioCompilato).get();
+		
+		CittadinoEntity cittadinoAssociatoAlQuestionarioCompilato = questionarioCompilato.getCittadino();
 		
 		boolean isAbilitatoTrattamentoDati = cittadinoAssociatoAlQuestionarioCompilato.getTipoConferimentoConsenso() != null;
 		questionarioCompilatoBean.setAbilitatoConsensoTrattatamentoDatiCittadino(isAbilitatoTrattamentoDati);
 		
+		String idQuestionarioTemplate = questionarioCompilato.getIdQuestionarioTemplate();
+		
+		// verifico se il questionarioTemplatquestionarioTemplateAssociatoAlProgrammae associato al programma è presente su MongoDb
+		QuestionarioTemplateCollection questionatioTemplate = null;
+			
+		String errorMessage = null;
+		try {
+			questionarioCompilatoBean.setQuestionarioTemplate(this.questionarioTemplateService.getQuestionarioTemplateById(idQuestionarioTemplate));
+		} catch (ResourceNotFoundException ex) {
+			errorMessage = String.format("QuestionarioTemplate con id=%s non presente in MongoDB", idQuestionarioTemplate);
+			throw new ServizioException(errorMessage, ex, CodiceErroreEnum.QT04);
+		}		
 		return questionarioCompilatoBean;
 	}
 

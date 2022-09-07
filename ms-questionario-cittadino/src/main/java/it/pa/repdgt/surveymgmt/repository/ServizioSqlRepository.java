@@ -233,12 +233,10 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 			 + "	CONCAT(u.nome, ' ', u.cognome) as nominativoFacilitatore "
 			 + " FROM            "
 			 + "	servizio s   "
-			 + "	INNER JOIN ente_sede_progetto_facilitatore espf "
-			 + "	ON s.id_facilitatore = espf.id_facilitatore     "
 			 + "	INNER JOIN utente u "
-			 + "	ON u.codice_fiscale = espf.id_facilitatore      "
+			 + "	ON u.codice_fiscale = s.id_facilitatore      "
 			 + " WHERE 1=1 "
-	         + "    AND espf.id_facilitatore = :idFacilitatore "
+	         + "    AND s.id_facilitatore = :idFacilitatore "
 	         + "	AND s.id = :idServizio"
 	         + " ",
 			 nativeQuery = true)
