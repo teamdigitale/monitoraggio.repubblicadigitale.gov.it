@@ -33,5 +33,11 @@ public class GetCittadinoResource implements Serializable {
 	@JsonProperty(value = "telefono")
 	private String telefono;
 	
+	@JsonProperty(value = "prefisso")
+	private String prefisso;
+	
+	@JsonProperty(value = "cellulare")
+	private String cellulare;
+	
 	
 }
