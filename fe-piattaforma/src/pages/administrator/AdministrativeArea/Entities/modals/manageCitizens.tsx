@@ -36,7 +36,7 @@ const ManageCitizens: React.FC<ManageCitizensI> = ({
   const editCitizen = async () => {
     if (isFormValid) {
       const sezioneQ1Questionario =
-        "{'id':'anagraphic-citizen-section','title':'Anagrafica del cittadino','properties':" +
+        '{"id":"anagraphic-citizen-section","title":"Informazioni anagrafiche","properties":' +
         createStringOfCompiledSurveySection(newFormValues).replaceAll(
           '"',
           "'"

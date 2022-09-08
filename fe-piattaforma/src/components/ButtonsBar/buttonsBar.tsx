@@ -27,25 +27,33 @@ const ButtonsBar: React.FC<StickyButtonsI> = ({ buttons = [] }) => {
         device.mediaIsPhone && 'py-2 flex-nowrap'
       )}
     >
-      {buttons.map((button: ButtonInButtonsBar, index: number) => (
-        <Button
-          key={index}
-          {...button}
-          className={clsx('text-nowrap', 'px-2', button.buttonClass)}
-          size='xs'
-        >
-          {button.iconForButton && (
-            <Icon
-              icon={button.iconForButton}
-              size='sm'
-              color={button.iconColor || 'white'}
-              className='mr-1'
-              aria-label={button.text}
-            />
-          )}
-          <span>{button.text}</span>
-        </Button>
-      ))}
+      {buttons.map((button: ButtonInButtonsBar, index: number) => {
+        const buttonProps = {
+          ...button,
+          buttonClass: undefined,
+          iconColor: undefined,
+          iconForButton: undefined,
+        };
+        return (
+          <Button
+            key={index}
+            {...buttonProps}
+            className={clsx('text-nowrap', 'px-2', button.buttonClass)}
+            size='xs'
+          >
+            {button.iconForButton && (
+              <Icon
+                icon={button.iconForButton}
+                size='sm'
+                color={button.iconColor || 'white'}
+                className='mr-1'
+                aria-label={button.text}
+              />
+            )}
+            <span>{button.text}</span>
+          </Button>
+        );
+      })}
     </div>
   );
 };

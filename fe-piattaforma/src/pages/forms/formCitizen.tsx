@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, Input, Select } from '../../components';
+import {Form, Input, PrefixPhone, Select} from '../../components';
 import CheckboxGroup from '../../components/Form/checkboxGroup';
 import withFormHandler, {
   withFormHandlerProps,
@@ -230,15 +230,14 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           required
         />
 
-        <Input
+        <PrefixPhone
           {...form?.prefisso}
-          col='col-12 col-lg-2'
           placeholder={`Inserisci ${form?.prefisso?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
         />
         <Input
           {...form?.numeroCellulare}
-          col='col-12 col-lg-4'
+          col='col-8 col-lg-4'
           placeholder={`Inserisci ${form?.numeroCellulare?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
         />

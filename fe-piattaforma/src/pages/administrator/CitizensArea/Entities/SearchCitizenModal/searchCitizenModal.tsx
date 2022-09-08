@@ -149,6 +149,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
             setNewUserValues({ ...newData });
           }}
           setIsFormValid={(isValid: boolean) => setFormValid(isValid)}
+          formDisabled
         />
       </>
     );

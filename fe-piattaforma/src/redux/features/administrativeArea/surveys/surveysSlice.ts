@@ -291,6 +291,9 @@ export const surveysSlice = createSlice({
         ...action.payload.form,
       };
     },
+    resetCompilingSurveyForm: (state) => {
+      state.compilingSurveyForms = [];
+    },
   },
 });
 
@@ -306,6 +309,7 @@ export const {
   setSurveyInfoForm,
   setCompilingSurveyForm,
   setPrintSurveySection,
+  resetCompilingSurveyForm,
 } = surveysSlice.actions;
 
 export const selectSurvey = (state: RootState) => state.survey;
