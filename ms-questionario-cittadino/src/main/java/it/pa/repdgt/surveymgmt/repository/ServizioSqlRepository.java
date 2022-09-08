@@ -123,8 +123,8 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 			@Param(value = "criterioRicercaServizio") String criterioRicercaServizio, 
 			@Param(value = "idsProgrammaFiltro")      List<String> idsProgrammaFiltro, 
 			@Param(value = "idsProgettoFiltro")       List<String> idsProgettoFiltro, 
-			@Param(value = "statiServizioFiltro")     List<String> statiServizioFiltro,
 			@Param(value = "tipologieServizi")        List<String> tipologieServizi,
+			@Param(value = "statiServizioFiltro")     List<String> statiServizioFiltro,
 			@Param(value = "codiceFiscaleUtente")     String codiceFiscaleUtente
 		);
 
