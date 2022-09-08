@@ -233,7 +233,7 @@ const ServicesDetails = () => {
       text: 'Stampa questionario',
       iconForButton: 'it-print',
       iconColor: 'primary',
-      onClick: () => window.open(`/stampa-questionario/${idQuestionarioTemplate}`, '_blank'), // TODO: idQuestionario
+      onClick: () => window.open(`/stampa-questionario/${idQuestionarioTemplate}`, '_blank'),
     },
     {
       size: 'xs',
@@ -244,8 +244,9 @@ const ServicesDetails = () => {
   ];
 
   const onConfirmDelete = async () => {
-    if (serviceId) await DeleteService(serviceId);
+    if (serviceId) await dispatch(DeleteService(serviceId));
     dispatch(closeModal());
+    navigate('/area-amministrativa/servizi');
   };
 
   const nav = (

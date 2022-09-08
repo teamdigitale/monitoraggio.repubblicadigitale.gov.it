@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Form,
   Input,
+  PrefixPhone,
   Rating,
   Select,
   SelectMultiple,
@@ -14,15 +15,14 @@ import { useEffect } from 'react';
 import { setCompilingSurveyForm } from '../../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 import { useDispatch } from 'react-redux';
 import { OptionTypeMulti } from '../../../../../../components/Form/selectMultiple';
-// import { useAppSelector } from '../../../../../../redux/hooks';
-// import { selectDevice } from '../../../../../../redux/features/app/appSlice';
+
 interface JsonFormRenderI {
   form: FormI;
-  onInputChange: (
+  onInputChange?: (
     value: formFieldI['value'],
     field?: formFieldI['field']
   ) => void;
-  currentStep: number;
+  currentStep?: number;
   viewMode?: boolean;
 }
 
@@ -55,10 +55,26 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
+  const renderPrefix = (field: formFieldI) => {
+    if (field?.keyBE === 'prefisso') {
+      return (
+        <PrefixPhone
+          {...field}
+          onInputChange={onInputChange}
+          disabled={field?.disabled || viewMode}
+        />
+      );
+    }
+    return;
+  };
+
   const renderInputByType = (formField: formFieldI) => {
     switch (formField?.type) {
       case 'text':
       default: {
+        if (formField?.keyBE?.toLowerCase() === 'prefisso') {
+          return renderPrefix(formField);
+        }
         return (
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -69,18 +85,15 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
             //     'd-flex w-100 flex-column mt-1'
             // )}
             col={clsx(
-              formField?.label?.toLowerCase() === 'prefisso' &&
-                'col-12 col-lg-2',
-              formField?.label?.toLowerCase().includes('cellulare') &&
-                'col-12 col-lg-4',
-              formField?.label?.toLowerCase() !== 'prefisso' &&
-                !formField?.label?.toLowerCase().includes('cellulare') &&
-                'col-12 col-lg-6',
+              formField?.keyBE?.toLowerCase() === 'numerocellulare'
+                ? 'col-8 col-lg-4'
+                : 'col-12 col-lg-6',
               formField?.field === '19' && 'mt-4'
             )}
-            label={`${formField?.label}`}
+            label={formField?.label}
             onInputBlur={onInputChange}
             disabled={formField?.disabled || viewMode}
+            placeholder={`Inserisci ${formField?.label}`}
           />
         );
       }
@@ -178,8 +191,9 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
               aria-label={`${formField?.label}`}
               options={multiSelectOptions}
               required={formField.required || false}
-              onInputChange={onInputChange}
-              onSecondLevelInputChange={onInputChange}
+              // only field 25 and it is not editable
+              // onInputChange={onInputChange}
+              // onSecondLevelInputChange={onInputChange}
               placeholder='Seleziona'
               col='col-12'
               value={values}
@@ -188,20 +202,22 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
           );
         }
         if (formField.options?.length) {
+          if(viewMode && Array.isArray(formField?.value)){
+            const valueString = formField?.value.join('§');
+            formField.value = valueString;
+          }
           return (
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             <CheckboxGroup
               {...formField}
-              className={
-                formField.field === '27' ? 'col-12' : 'col-12 col-lg-6'
-              }
+              className={formField?.field === '4' ? 'col-12 col-lg-6':'col-12'}
               onInputChange={onInputChange}
               label={`${formField?.label}`}
               styleLabelForm
               noLabel={formField.flag === true ? true : false}
               disabled={formField?.disabled || viewMode}
-              optionsInColumn={formField.field === '27'}
+              optionsInColumn={formField.field !== '18'}
               separator='§'
             />
           );
@@ -215,13 +231,15 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
             onInputBlur={onInputChange}
             label={`${formField?.label}`}
             disabled={formField?.disabled || viewMode}
+            placeholder={`Inserisci ${formField?.label}`}
           />
         );
       }
       case 'range':
         return (
           <>
-            <label>{formField.field}</label>
+            <label>{formField?.label}</label>
+            <br/>
             <Rating
               className='col-12 col-lg-6'
               onChange={(val) => onInputChange(val, formField.field)}
@@ -233,7 +251,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
 
   return (
     <Form id='compile-survey-form'>
-      <div className='d-inline-flex flex-wrap w-100'>
+      <div className={clsx('d-inline-flex flex-wrap w-100', viewMode && 'pt-5')}>
         {orderedForm.map((field) => (
           <React.Fragment key={field}>
             {renderInputByType(form[field])}

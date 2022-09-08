@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, Input } from '../../../components';
+import { Form, Input, PrefixPhone } from '../../../components';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
@@ -12,19 +12,19 @@ import { useAppSelector } from '../../../redux/hooks';
 import {
   CommonFields,
   formFieldI,
-  FormHelper,
   newForm,
   newFormField,
 } from '../../../utils/formHelper';
 import { RegexpType } from '../../../utils/validator';
 import { FormCitizenI } from '../formCitizen';
 
-
 interface FormEnteGestoreProgettoFullInterface
   extends withFormHandlerProps,
     FormCitizenI {}
 
-const FormServiceCitizenBase: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
+const FormServiceCitizenBase: React.FC<FormEnteGestoreProgettoFullInterface> = (
+  props
+) => {
   const {
     form,
     onInputChange = () => ({}),
@@ -34,14 +34,17 @@ const FormServiceCitizenBase: React.FC<FormEnteGestoreProgettoFullInterface> = (
     getFormValues,
     setFormValues = () => ({}),
     //creation = false,
+    isValidForm = false,
   } = props;
 
   // const device = useAppSelector(selectDevice);
   const formDisabled = !!props.formDisabled;
-  const formData: CittadinoInfoI = useAppSelector(selectCitizenSearchResponse)?.[0]; 
+  const formData: CittadinoInfoI = useAppSelector(
+    selectCitizenSearchResponse
+  )?.[0];
 
   useEffect(() => {
-    if(formData){
+    if (formData) {
       const values = { ...formData };
       setFormValues(values);
     }
@@ -57,9 +60,10 @@ const FormServiceCitizenBase: React.FC<FormEnteGestoreProgettoFullInterface> = (
   };
 
   useEffect(() => {
-    setIsFormValid?.(FormHelper.isValidForm(form));
+    setIsFormValid(isValidForm);
   }, [form]);
 
+  console.log('FormServiceCitizenBase', isValidForm, form);
 
   return (
     <Form id='form-citizen' className='mt-5' formDisabled={formDisabled}>
@@ -93,12 +97,16 @@ const FormServiceCitizenBase: React.FC<FormEnteGestoreProgettoFullInterface> = (
           onInputChange={onInputDataChange}
           required
         />
+        <PrefixPhone
+          {...form?.prefisso}
+          placeholder={`Inserisci ${form?.prefisso?.label?.toLowerCase()}`}
+          onInputChange={onInputDataChange}
+        />
         <Input
           {...form?.telefono}
-          col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.telefono?.label?.toLowerCase()}`}
+          col='col-8 col-lg-4'
+          placeholder={`Inserisci ${form?.numeroCellulare?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
-          required
         />
       </Form.Row>
     </Form>
@@ -132,10 +140,26 @@ const form = newForm([
     required: true,
   }),
   newFormField({
+    field: 'prefisso',
+    id: 'prefisso',
+    regex: RegexpType.MOBILE_PHONE_PREFIX,
+    label: 'Prefisso',
+    type: 'text',
+    //required: true,
+  }),
+  newFormField({
+    field: 'numeroCellulare',
+    id: 'numeroCellulare',
+    regex: RegexpType.TELEPHONE,
+    label: 'Cellulare',
+    type: 'text',
+    //required: true,
+  }),
+  newFormField({
     field: 'telefono',
     id: 'telefono',
     regex: RegexpType.TELEPHONE,
-    label: 'Telefono',
+    label: 'Cellulare',
     type: 'text',
   }),
 ]);

@@ -1,6 +1,12 @@
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Select, SelectMultiple } from '../../../components';
+import {
+  Form,
+  Input,
+  PrefixPhone,
+  Select,
+  SelectMultiple,
+} from '../../../components';
 import CheckboxGroup from '../../../components/Form/checkboxGroup';
 import { OptionTypeMulti } from '../../../components/Form/selectMultiple';
 import withFormHandler, {
@@ -57,11 +63,14 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
       );
       delete formFromSchema['18']; // tipo consenso non parte dell'anagrafica
       delete formFromSchema['19']; // data consenso non parte dell'anagrafica
-      Object.keys(formFromSchema).forEach((key: string) => {
+      Object.keys(formFromSchema).forEach((key: string) => {console.log(key)
         formFromSchema[key].label = formFromSchema[key].value?.toString() || '';
         formFromSchema[key].value = '';
         if (Number(key) === 4 || Number(key) === 5 || Number(key) === 6) {
           formFromSchema[key].required = false;
+        }
+        if(Number(key) === 15){
+          formFromSchema[key].value = '+39';
         }
       });
       setDynamicForm(formFromSchema);
@@ -109,27 +118,37 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
     setIsFormValid?.(FormHelper.isValidForm(form));
   }, [form]);
 
-  const getAnswerType = (field: formFieldI) => {
+  const renderPrefix = (field: formFieldI) => {
+    if (field?.keyBE === 'prefisso') {
+      return <PrefixPhone {...field} onInputChange={onInputDataChange} />;
+    }
+    return;
+  };
+
+  const getAnswerType = (field: formFieldI): any => {
     switch (field.type) {
       case 'date':
       case 'time':
       case 'number':
       case 'text': {
+        if (field?.keyBE === 'prefisso') {
+          return renderPrefix(field);
+        }
         return (
           <Input
             {...field}
             id={`input-${field.field}`}
             col={
-              field.label && field.label?.length > 30
+              field.keyBE === 'numeroCellulare'
+                ? 'col-8 col-lg-4'
+                : field.label && field.label?.length > 30
                 ? 'col-12'
                 : 'col-12 col-lg-6'
             }
             label={field.label}
             type={field.type}
             required={field.required || false}
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
+            onInputChange={onInputDataChange}
             placeholder={`Inserisci ${field.label?.toLowerCase()}`}
           />
         );
@@ -143,9 +162,7 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
             label={field.label || ''}
             col={field.field === '9' ? 'col-12' : 'col-12 col-lg-6'}
             required={field.required || false}
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
+            onInputChange={onInputDataChange}
             placeholder={`Inserisci ${field.label?.toLowerCase()}`}
             options={field.options}
             isDisabled={formDisabled}

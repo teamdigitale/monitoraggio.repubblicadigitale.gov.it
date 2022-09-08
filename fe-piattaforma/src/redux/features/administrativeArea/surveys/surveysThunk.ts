@@ -11,7 +11,6 @@ import {
   newForm,
   newFormField,
 } from '../../../../utils/formHelper';
-// import { generateJsonFormSchema } from '../../../../utils/jsonFormHelper';
 import { RegexpType } from '../../../../utils/validator';
 import { RootState } from '../../../store';
 import { hideLoader, showLoader } from '../../app/appSlice';
@@ -23,6 +22,7 @@ import {
   setEntityPagination,
 } from '../administrativeAreaSlice';
 import {
+  resetCompilingSurveyForm,
   setPrintSurveySection,
   setSurveyInfoForm,
   setSurveyQuestion,
@@ -237,8 +237,6 @@ const SetSurveySectionAction = { type: 'surveys/SetSurveySection' };
 export const SetSurveySection =
   (payload?: any) => async (dispatch: Dispatch) => {
     try {
-      // console.log({ payload });
-      // TODO manage update section
       dispatch({ ...SetSurveySectionAction, payload });
       dispatch(showLoader());
       dispatch(
@@ -420,8 +418,7 @@ export const SetSurveyCreation =
             schemaui: survey?.sectionsSchemaResponse[index].schemaui,
           };
           if (index < 2) {
-            newSection.schema =
-              survey?.sectionsSchemaResponse[index].schema;
+            newSection.schema = survey?.sectionsSchemaResponse[index].schema;
           } else {
             newSection.schema = getSchemaSection(
               section,
@@ -468,11 +465,25 @@ const PostFormCompletedByCitizenAction = {
   type: 'surveys/PostFormCompletedByCitizen',
 };
 export const PostFormCompletedByCitizen =
-  (idQuestionario: string | undefined, payload: any) => async (dispatch: Dispatch) => {
+  (idQuestionario: string | undefined, payload: any) =>
+  async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...PostFormCompletedByCitizenAction, payload });
       const entityEndpoint = `/servizio/cittadino/questionarioCompilato/${idQuestionario}/compila`;
+      const consenso = payload?.[0]['18']?.includes('ONLINE')
+        ? 'ONLINE'
+        : payload?.[0]['18']?.includes('CARTACEO')
+        ? 'CARTACEO'
+        : 'EMAIL';
+      (payload || []).map((section: any) => {
+        Object.keys(section).map((key: string) => {
+          if (typeof(section[key]) === 'string' && section[key]?.includes('§')) {
+            const arrayValues: string[] = section[key]?.split('§');
+            section[key] = arrayValues;
+          }
+        });
+      });
       const body = {
         annoDiNascitaDaAggiornare: payload?.[0]['8'],
         categoriaFragiliDaAggiornare: payload?.[0]['13'],
@@ -482,7 +493,7 @@ export const PostFormCompletedByCitizen =
         comuneDiDomicilioDaAggiornare: payload?.[0]['12'],
         consensoTrattamentoDatiRequest: {
           codiceFiscaleCittadino: payload?.[0]['3'],
-          consensoTrattamentoDatiEnum: payload?.[0]['18'],
+          consensoTrattamentoDatiEnum: consenso,
           numeroDocumentoCittadino: payload?.[0]['6'],
         },
         emailDaAggiornare: payload?.[0]['14'],
@@ -501,11 +512,13 @@ export const PostFormCompletedByCitizen =
         titoloDiStudioDaAggiornare: payload?.[0]['9'],
       };
       await API.post(entityEndpoint, body);
+      resetCompilingSurveyForm();
     } catch (e) {
       console.error(
         'post questionario compilato PostFormCompletedByCitizen',
         e
       );
+      resetCompilingSurveyForm();
     } finally {
       dispatch(hideLoader());
     }
