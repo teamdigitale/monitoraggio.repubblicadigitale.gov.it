@@ -7,4 +7,6 @@ public interface GetCittadinoProjection {
 	public String getCognome();
 	public String getEmail();
 	public String getTelefono();
+	public String getPrefisso();
+	public String getCellulare();
 }

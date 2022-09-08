@@ -30,6 +30,8 @@ public class GetCittadinoServizioMapper {
 		getCittadinoResource.setCodiceFiscale(getCittadino.getCodiceFiscale());
 		getCittadinoResource.setEmail(getCittadino.getEmail());
 		getCittadinoResource.setTelefono(getCittadino.getTelefono());
+		getCittadinoResource.setPrefisso(getCittadino.getPrefisso());
+		getCittadinoResource.setCellulare(getCittadino.getCellulare());
 		return getCittadinoResource;
 	}
 }
