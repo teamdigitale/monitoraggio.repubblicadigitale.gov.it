@@ -145,7 +145,6 @@ public class UtenteServiceTest {
 				
 		)).thenReturn(utentiSet);
 		List<UtenteDto> utentiAll = service.getAllUtentiPaginati(sceltaContesto, currPage, pageSize);
-//		assertThat(utentiAll.getNumberOfElements()).isEqualTo(2);
 		
 	}
 	
@@ -189,5 +188,58 @@ public class UtenteServiceTest {
 		utentiList.add(utente);
 		when(referentiDelegatiEnteGestoreProgrammaRepository.countByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), "REG")).thenReturn(1);
 		assertThat(service.getUtentiConRuoliAggregati(utentiList).get(0).getCodiceFiscale()).isEqualTo("CODICE_FISCALE");
+	}
+	
+	@Test
+	public void getUtentiPaginatiByRuolo() {
+		FiltroRequest filtroRequest = new FiltroRequest();
+		filtroRequest.setCriterioRicerca("criterioRicerca");
+		when(this.utenteRepository.findUtentiPerDSCU(
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getRuoli(),
+				currPage*pageSize,
+				pageSize
+				)).thenReturn(new HashSet<UtenteEntity>());
+		assertThat(service.getUtentiPaginatiByRuolo(RuoloUtenteEnum.DSCU.toString(), "CODICE_FISCALE", 1L, 1L, filtroRequest, currPage, pageSize)).isNotNull();
+		when(this.utenteRepository.findUtentiPerReferenteDelegatoGestoreProgramma(
+				   1L,
+				   "CODICE_FISCALE",
+				   filtroRequest.getCriterioRicerca(),
+				   "%" + filtroRequest.getCriterioRicerca() + "%",
+				   filtroRequest.getRuoli(),
+				   currPage*pageSize,
+				   pageSize)).thenReturn(new HashSet<UtenteEntity>());
+		assertThat(service.getUtentiPaginatiByRuolo(RuoloUtenteEnum.REG.toString(), "CODICE_FISCALE", 1L, 1L, filtroRequest, currPage, pageSize)).isNotNull();
+		when(this.utenteRepository.findUtentiPerReferenteDelegatoGestoreProgetti(
+				  1L,
+				  1L,
+				  "CODICE_FISCALE", 
+				  filtroRequest.getCriterioRicerca(),
+				   "%" + filtroRequest.getCriterioRicerca() + "%",
+				  filtroRequest.getRuoli(),
+				  currPage*pageSize,
+				   pageSize)).thenReturn(new HashSet<UtenteEntity>());
+		assertThat(service.getUtentiPaginatiByRuolo(RuoloUtenteEnum.DEGP.toString(), "CODICE_FISCALE", 1L, 1L, filtroRequest, currPage, pageSize)).isNotNull();
+		when(this.utenteRepository.findUtentiPerReferenteDelegatoEntePartnerProgetti(
+				  1L,
+				  1L,
+				  "CODICE_FISCALE",
+				  filtroRequest.getCriterioRicerca(),
+				   "%" + filtroRequest.getCriterioRicerca() + "%",
+				  filtroRequest.getRuoli(),
+				  currPage*pageSize,
+				  pageSize)).thenReturn(new HashSet<UtenteEntity>());
+		assertThat(service.getUtentiPaginatiByRuolo(RuoloUtenteEnum.DEPP.toString(), "CODICE_FISCALE", 1L, 1L, filtroRequest, currPage, pageSize)).isNotNull();
+		when(this.utenteRepository.findUtentiByFiltri(
+				filtroRicerca.getCriterioRicerca(),
+				"%" + filtroRicerca.getCriterioRicerca() + "%",
+				filtroRicerca.getRuoli(),
+				filtroRicerca.getStati(),
+				currPage*pageSize,
+				pageSize
+				
+		)).thenReturn(new HashSet<UtenteEntity>());
+		assertThat(service.getUtentiPaginatiByRuolo("RUOLO_CUSTOM", "CODICE_FISCALE", 1L, 1L, filtroRicerca, currPage, pageSize)).isNotNull();
 	}
 }
