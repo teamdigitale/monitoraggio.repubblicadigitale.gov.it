@@ -50,10 +50,10 @@ const ManageServices: React.FC<ManageServicesI> = ({
     [key: string]: formFieldI['value'];
   }) => {
     const answersQ3 =
-      "{'id':'anagraphic-service-section','title':'Anagrafica del servizio','properties':" +
+      "{\"id\":\"anagraphic-citizen-section\",\"title\":\"Informazioni anagrafiche\",\"properties\":" +
       questionarioCompilatoQ3?.replaceAll('"', "'") +
-      '}';
-
+      "}";
+    const tipologiaServizio = answersForms['24']?.toString()?.split('§');
     const payload = {
       data: answersForms['22'] || '',
       durataServizio: answersForms['23'] || '',
@@ -67,7 +67,7 @@ const ManageServices: React.FC<ManageServicesI> = ({
         idProgramma: idProgramma,
       },
       sezioneQuestionarioCompilatoQ3: answersQ3,
-      tipoDiServizioPrenotato: answersForms['26'],
+      tipoDiServizioPrenotato: tipologiaServizio,
     };
     return payload;
   };

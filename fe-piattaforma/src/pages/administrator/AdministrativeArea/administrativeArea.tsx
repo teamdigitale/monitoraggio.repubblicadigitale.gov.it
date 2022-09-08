@@ -50,6 +50,7 @@ const SurveyDetailsEdit = lazy(
 );
 import ProtectedComponent from '../../../hoc/AuthGuard/ProtectedComponent/ProtectedComponent';
 import { defaultRedirectUrl } from '../../../routes';
+import ViewSurvey from './Entities/Surveys/viewSurvey/viewSurvey';
 
 interface PageTitleMockI {
   [key: string]: {
@@ -454,7 +455,7 @@ const AreaAmministrativaRoutes = [
   <Route
     key='questionari-compilato'
     path='servizi/:serviceId/cittadini/compilato/:idQuestionarioCompilato'
-    element={<CompileSurvey viewMode/>}
+    element={<ViewSurvey />}
   />,
   <Route
     key='questionari-modifica'

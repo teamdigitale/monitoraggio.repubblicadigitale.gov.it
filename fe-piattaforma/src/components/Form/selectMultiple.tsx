@@ -18,7 +18,7 @@ export interface SelectMultipleI {
   secondLevelField?: formFieldI['field'] | undefined;
   label?: string;
   options?: { label: string; options: OptionTypeMulti[] }[] | undefined;
-  onInputChange: (
+  onInputChange?: (
     value: formFieldI['value'],
     field?: formFieldI['field']
   ) => void;

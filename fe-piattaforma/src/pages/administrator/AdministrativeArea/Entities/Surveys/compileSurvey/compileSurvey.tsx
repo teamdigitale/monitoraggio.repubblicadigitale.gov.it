@@ -38,13 +38,11 @@ import { PostFormCompletedByCitizen } from '../../../../../../redux/features/adm
 import { OptionType } from '../../../../../../components/Form/select';
 
 interface CompileSurveyI extends withFormHandlerProps {
-  viewMode?: boolean;
   publicLink?: boolean;
 }
 
 const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
   const {
-    viewMode = false,
     publicLink = false,
     onInputChange = () => ({}),
     updateForm = () => ({}),
@@ -100,7 +98,10 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
           values = {
             ...values,
             ...{
-              [id]: value[id]?.length > 1 ? value[id] : value[id][0],
+              [id]:
+                value[id]?.length > 1 || id === '25' || id === '26'
+                  ? value[id]
+                  : value[id][0],
             },
           };
         });
@@ -109,7 +110,14 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
         Object.keys(val).map((id: string) => {
           values = {
             ...values,
-            ...{ [id]: val[id]?.length > 1 ? val[id] : val[id][0] },
+            ...{
+              [id]:
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                value[id]?.length > 1 || id === '25' || id === '26'
+                  ? val[id]
+                  : val[id][0],
+            },
           };
         });
       }
@@ -166,12 +174,15 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
               newForm[key].disabled = true;
             }
             if (key === '18') {
-              if(!newForm[key].value) newForm[key].value = '$consenso';
+              if (!newForm[key].value || newForm[key].value === '$consenso') newForm[key].value = '';
               const options: OptionType[] = [];
               newForm[key].options?.map((opt: OptionType) => {
-                options?.push({ label: opt.label, value: opt.value.toString().toUpperCase()})
+                options?.push({
+                  label: opt.label,
+                  value: opt.value.toString().toUpperCase(),
+                });
               });
-              newForm[key].value === '$consenso'
+              newForm[key].value === ''
                 ? (newForm[key].options = options?.filter(
                     (opt: OptionType) => opt.value !== 'ONLINE'
                   ))
@@ -180,9 +191,10 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
                     (opt: OptionType) => opt.value === 'ONLINE'
                   ))
                 : options;
-              newForm[key].disabled = newForm[key].value === '$consenso' ? false:true;
+              newForm[key].disabled =
+                newForm[key].value === '' ? false : true;
             }
-            if(key === '19') delete newForm[key];
+            if (key === '19') delete newForm[key];
           });
         }
         updateForm(
@@ -273,7 +285,7 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
       color: 'primary',
       className: 'mr-4',
       text: 'Step successivo',
-      disabled: viewMode ? false : !FormHelper.isValidForm(form),
+      disabled: !FormHelper.isValidForm(form),
       onClick: () => {
         dispatch(setCompilingSurveyForm({ id: activeSection, form }));
         setActiveSection(activeSection + 1);
@@ -465,7 +477,6 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
             form={form}
             onInputChange={onInputChange}
             currentStep={activeSection}
-            viewMode={viewMode}
           />
         </div>
       </div>
