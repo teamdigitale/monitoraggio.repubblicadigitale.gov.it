@@ -18,7 +18,8 @@ public interface ProgrammaXQuestionarioTemplateRepository extends JpaRepository<
 				 + " FROM "
 				 + "	programma_x_questionario_template pxqt "
 				 + " WHERE 1=1 "
-				 + " 	AND pxqt.PROGRAMMA_ID = :idProgramma ",
+				 + " 	AND pxqt.PROGRAMMA_ID = :idProgramma "
+				 + " AND STATO = 'ATTIVO'",
 		   nativeQuery = true)
 	List<ProgrammaXQuestionarioTemplateEntity> findByIdProgramma(
 			@Param(value = "idProgramma") Long idProgramma);
