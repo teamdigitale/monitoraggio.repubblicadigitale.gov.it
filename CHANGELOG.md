@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.14](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.13...1.0.0-test.14) (2022-09-08)
+
+
+### Bug Fixes
+
+* **be:** allineamento test ([3c946f1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3c946f1b2f5ee6ea7d2ef113e08db06d82ddff91))
+
 ## [1.0.0-test.13](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.12...1.0.0-test.13) (2022-09-08)
 
 
