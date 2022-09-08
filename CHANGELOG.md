@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.13](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.12...1.0.0-test.13) (2022-09-08)
+
+
+### Bug Fixes
+
+* **be:** filtri all servizi ([529115b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/529115ba613243a711119ce362400a5352af80fa))
+
 ## [1.0.0-test.12](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.11...1.0.0-test.12) (2022-09-07)
 
 
