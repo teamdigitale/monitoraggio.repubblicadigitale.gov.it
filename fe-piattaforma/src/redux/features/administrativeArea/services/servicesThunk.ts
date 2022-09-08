@@ -296,7 +296,7 @@ export const DeleteService =
     try {
       dispatch(showLoader());
       dispatch({ ...DeleteServiceAction, idServizio });
-      await API.put(`/servizio/${idServizio}`);
+      await API.delete(`/servizio/${idServizio}`);
     } catch (error) {
       console.log('DeleteService administrativeArea error', error);
     } finally {

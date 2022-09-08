@@ -50,6 +50,13 @@
   &__menu {
     margin-top: 0 !important;
   }
+
+  &__control {
+    &--is-disabled {
+      border-bottom: 1px solid #797c80 !important;
+      background: #e6e9f2 !important;
+    }
+  }
 }
 
 .radio-btn-container {

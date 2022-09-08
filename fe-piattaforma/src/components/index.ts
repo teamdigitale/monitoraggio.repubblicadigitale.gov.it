@@ -11,6 +11,7 @@ import HamburgerMenu from './HamburgerMenu/hamburgerMenu';
 import Header from './Header/header';
 import HeaderMenu from './HeaderMenu/headerMenu';
 import Input from './Form/input';
+import PrefixPhone from './Form/prefixPhone';
 import Paginator from './Paginator/paginator';
 import Rating from './Rating/rating';
 import SearchBar from './SearchBar/searchBar';
@@ -49,6 +50,7 @@ export {
   Header,
   HeaderMenu,
   Input,
+  PrefixPhone,
   Paginator,
   Rating,
   SearchBar,

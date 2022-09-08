@@ -354,9 +354,12 @@ export const createStringOfCompiledSurveySection = (
   return JSON.stringify(newData);
 };
 
-export const convertPayloadSectionInString = (sectionPayload: {
-  [key: string]: string | { [key: string]: boolean };
-}, section: number) => {
+export const convertPayloadSectionInString = (
+  sectionPayload: {
+    [key: string]: string | { [key: string]: boolean } | string[];
+  },
+  section: number
+) => {
   const newObject: { [key: string]: string[] } = {};
   Object.keys(sectionPayload).map((key: string) => {
     if (sectionPayload[key]) {
@@ -364,6 +367,10 @@ export const convertPayloadSectionInString = (sectionPayload: {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         newObject[key] = [sectionPayload[key]];
+      } else if (Array.isArray(sectionPayload[key])) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        newObject[key] = sectionPayload[key];
       } else if (Object.keys(sectionPayload[key])?.length > 0) {
         const val: string[] = [];
         Object.keys(sectionPayload[key]).map((key2: string) => {
@@ -373,15 +380,34 @@ export const convertPayloadSectionInString = (sectionPayload: {
         });
         newObject[key] = val;
       }
-    } else {
-      newObject[key] = [''];
     }
   });
-  switch(section){
-    case 0: return "{'id':'anagraphic-citizen-section','title':'Informazioni anagrafiche','properties':" + createStringOfCompiledSurveySection(newObject).replaceAll('"', "'") + '}';
-    case 1: return "{'id':'anagraphic-booking-section','title':'Informazioni sulla prenotazione','properties':" + createStringOfCompiledSurveySection(newObject).replaceAll('"', "'") + '}';
-    case 2: return "{'id':'anagraphic-service-section','title':'Informazioni sul servizio','properties':" + createStringOfCompiledSurveySection(newObject).replaceAll('"', "'") + '}';
-    case 3: return "{'id':'content-service-section','title':'Informazioni sull’esperienza','properties':" + createStringOfCompiledSurveySection(newObject).replaceAll('"', "'") + '}';
-    default: return createStringOfCompiledSurveySection(newObject);
+  switch (section) {
+    case 0:
+      return (
+        "{\"id\":\"anagraphic-citizen-section\",\"title\":\"Informazioni anagrafiche\",\"properties\":" +
+        createStringOfCompiledSurveySection(newObject).replaceAll('"', "'") +
+        "}"
+      );
+    case 1:
+      return (
+        "{\"id\":\"anagraphic-booking-section\",\"title\":\"Informazioni sulla prenotazione\",\"properties\":" +
+        createStringOfCompiledSurveySection(newObject).replaceAll('"', "'") +
+        "}"
+      );
+    case 2:
+      return (
+        "{\"id\":\"anagraphic-service-section\",\"title\":\"Informazioni sul servizio\",\"properties\":" +
+        createStringOfCompiledSurveySection(newObject).replaceAll('"', "'") +
+        "}"
+      );
+    case 3:
+      return (
+        "{\"id\":\"content-service-section\",\"title\":\"Informazioni sull’esperienza\",\"properties\":" +
+        createStringOfCompiledSurveySection(newObject).replaceAll('"', "'") +
+        "}"
+      );
+    default:
+      return createStringOfCompiledSurveySection(newObject);
   }
 };
