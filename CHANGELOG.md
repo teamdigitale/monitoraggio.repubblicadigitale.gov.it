@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.104](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.103...1.0.0-develop.104) (2022-09-08)
+
+
+### Bug Fixes
+
+* **be:** anag cittadini ([e731bba](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e731bba0aae171fffcb258050a2826fb387a9354))
+
 ## [1.0.0-develop.103](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.102...1.0.0-develop.103) (2022-09-08)
 
 
