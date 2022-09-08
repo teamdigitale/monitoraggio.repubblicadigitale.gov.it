@@ -83,6 +83,21 @@ spec:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: awsEmailMittente
+            - name: awsS3UtenteAccessKey
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsS3UtenteAccessKey
+            - name: awsS3UtenteSecretKey
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsS3UtenteSecretKey
+            - name: awsS3UtenteBucketName
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsS3UtenteBucketName
 ---
 apiVersion: v1
 kind: Service
