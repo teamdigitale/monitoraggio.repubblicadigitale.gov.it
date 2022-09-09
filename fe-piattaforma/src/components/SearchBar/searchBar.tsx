@@ -35,6 +35,8 @@ interface SearchBarI extends Omit<SelectI, 'onInputChange'> {
   entityToRefresh?: string | undefined;
   search?: boolean;
   onReset?: () => void;
+  tooltip?: boolean;
+  tooltipText?: string;
 }
 
 const SearchBar: React.FC<SearchBarI> = (props) => {
@@ -52,6 +54,8 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
     title = 'Cerca',
     search = false,
     onReset,
+    tooltip = false,
+    tooltipText = '',
   } = props;
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState<
@@ -222,9 +226,9 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
               />
 
               {!hasSearchValue && device.mediaIsPhone && (
-                <span id='placeholder-icon'>
+                <span id='placeholder-icon' className='d-flex flex-row'>
                   <span
-                    className='placeholder-label font-weight-normal primary-color-a12'
+                    className='font-weight-normal primary-color-a12 mr-2'
                     onClick={focusOfSearch}
                     onKeyDown={(e) => {
                       if (e.key === ' ') {
@@ -234,14 +238,19 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                   >
                     {title}
                   </span>
-                  <span id='search-tooltip' className='ml-2'>
-                    <Icon
-                      icon='it-info-circle'
-                      size='xs'
-                      color='primary-color-a12'
-                      aria-label='icona info'
-                    />
-                  </span>
+                  {tooltip && (
+                    <div id='search-tooltip'>
+                      <Tooltip
+                        placement='bottom'
+                        target='search-tooltip'
+                        isOpen={openOne}
+                        toggle={() => toggleOne(!openOne)}
+                      >
+                        {tooltipText}
+                      </Tooltip>
+                      <Icon icon='it-warning-circle' size='xs' />
+                    </div>
+                  )}
                 </span>
               )}
             </div>
@@ -272,16 +281,6 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
               )}
             </div>
           </div>
-        )}
-        {!hasSearchValue && device.mediaIsPhone && (
-          <Tooltip
-            placement='top'
-            target='search-tooltip'
-            isOpen={openOne}
-            toggle={() => toggleOne(!openOne)}
-          >
-            {placeholder}
-          </Tooltip>
         )}
       </div>
     </div>

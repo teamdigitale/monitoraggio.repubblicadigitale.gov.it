@@ -241,6 +241,8 @@ const Programs = () => {
       resetFilterDropdownSelected={(filterKey: string) =>
         setFilterDropdownSelected(filterKey)
       }
+      tooltiptext={searchInformation.placeholder}
+      tooltip
     >
       <div>
         {programmiList?.length && tableValues?.values?.length ? (

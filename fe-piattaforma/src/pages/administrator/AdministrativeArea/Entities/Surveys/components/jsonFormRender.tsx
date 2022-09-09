@@ -15,6 +15,7 @@ import { useEffect } from 'react';
 import { setCompilingSurveyForm } from '../../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 import { useDispatch } from 'react-redux';
 import { OptionTypeMulti } from '../../../../../../components/Form/selectMultiple';
+import { Label } from 'design-react-kit';
 
 interface JsonFormRenderI {
   form: FormI;
@@ -202,7 +203,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
           );
         }
         if (formField.options?.length) {
-          if(viewMode && Array.isArray(formField?.value)){
+          if (viewMode && Array.isArray(formField?.value)) {
             const valueString = formField?.value.join('§');
             formField.value = valueString;
           }
@@ -211,7 +212,9 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
             // @ts-ignore
             <CheckboxGroup
               {...formField}
-              className={formField?.field === '4' ? 'col-12 col-lg-6':'col-12'}
+              className={
+                formField?.field === '4' ? 'col-12 col-lg-6' : 'col-12'
+              }
               onInputChange={onInputChange}
               label={`${formField?.label}`}
               styleLabelForm
@@ -237,23 +240,26 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
       }
       case 'range':
         return (
-          <>
-            <label>{formField?.label}</label>
-            <br/>
+          <div className='d-flex flex-column align-items-start'>
+            <Label style={{ fontSize: '14px', fontWeight: '600' }}>
+              {formField?.label} {formField?.required && '*'}{' '}
+            </Label>
             <Rating
               className='col-12 col-lg-6'
               onChange={(val) => onInputChange(val, formField.field)}
               value={Number(formField?.value)}
               disabled={formField?.disabled || viewMode}
             />
-          </>
+          </div>
         );
     }
   };
 
   return (
     <Form id='compile-survey-form'>
-      <div className={clsx('d-inline-flex flex-wrap w-100', viewMode && 'pt-5')}>
+      <div
+        className={clsx('d-inline-flex flex-wrap w-100', viewMode && 'pt-5')}
+      >
         {orderedForm.map((field) => (
           <React.Fragment key={field}>
             {renderInputByType(form[field])}

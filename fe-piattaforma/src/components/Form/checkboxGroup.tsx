@@ -82,14 +82,18 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
       )}
       <Form.Row className={clsx(optionsInColumn && 'd-flex flex-column')}>
         {options.map((check) => (
-          <FormGroup check inline key={check.value} className={clsx(optionsInColumn && 'compile-survey-container__max-width-column')}>
+          <FormGroup
+            check
+            inline
+            key={check.value}
+            className={clsx(
+              optionsInColumn && 'compile-survey-container__max-width-column'
+            )}
+          >
             <Input
               {...check}
               field={`${field} ${check.label}`}
               checked={values.includes(check.value.toString())}
-              onKeyDown={(e) =>
-                e.key == ' ' ? handleOnChange(check.value) : ''
-              }
               onInputChange={() => handleOnChange(check.value)}
               col='col-4'
               type='checkbox'
@@ -101,7 +105,10 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
             <Label
               for={`${field} ${check.label}`}
               check
-              className={clsx(classNameLabelOption, optionsInColumn && 'compile-survey-container__label-column')}
+              className={clsx(
+                classNameLabelOption,
+                optionsInColumn && 'compile-survey-container__label-column'
+              )}
             >
               {check.label}
             </Label>

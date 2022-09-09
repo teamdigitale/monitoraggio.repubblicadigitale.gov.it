@@ -34,7 +34,9 @@ const DetailsRow: React.FC<DetailsRowI> = ({
         return (
           <>
             <Button
-              onClick={() => onActionClick[CRUDActionTypes.COMPILE](idQuestionario)}
+              onClick={() =>
+                onActionClick[CRUDActionTypes.COMPILE](idQuestionario)
+              }
               aria-label='Compila riga'
             >
               <Icon
@@ -45,7 +47,12 @@ const DetailsRow: React.FC<DetailsRowI> = ({
               />
             </Button>
             <Button
-              onClick={() => onActionClick[CRUDActionTypes.SEND]({ idCittadino: id, idQuestionario: idQuestionario})}
+              onClick={() =>
+                onActionClick[CRUDActionTypes.SEND]({
+                  idCittadino: id,
+                  idQuestionario: idQuestionario,
+                })
+              }
               aria-label='Invia questionario'
             >
               <Icon
@@ -61,7 +68,9 @@ const DetailsRow: React.FC<DetailsRowI> = ({
         return (
           <>
             <Button
-              onClick={() => onActionClick[CRUDActionTypes.COMPILE](idQuestionario)}
+              onClick={() =>
+                onActionClick[CRUDActionTypes.COMPILE](idQuestionario)
+              }
               aria-label='Compila riga'
             >
               <Icon
@@ -72,7 +81,12 @@ const DetailsRow: React.FC<DetailsRowI> = ({
               />
             </Button>
             <Button
-              onClick={() => onActionClick[CRUDActionTypes.SEND]({ idCittadino: id, idQuestionario: idQuestionario})}
+              onClick={() =>
+                onActionClick[CRUDActionTypes.SEND]({
+                  idCittadino: id,
+                  idQuestionario: idQuestionario,
+                })
+              }
               aria-label='Invia questionario'
             >
               <Icon

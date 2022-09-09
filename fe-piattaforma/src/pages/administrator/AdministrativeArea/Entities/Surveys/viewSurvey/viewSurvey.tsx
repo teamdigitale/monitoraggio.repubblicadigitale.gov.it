@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import DetailLayout from '../../../../../../components/DetailLayout/detailLayout';
+import { OptionType } from '../../../../../../components/Form/select';
 import {
   selectQuestionarioTemplateSnapshot,
   selectServiceQuestionarioTemplateIstanze,
@@ -103,7 +104,15 @@ const ViewSurvey: React.FC = () => {
           JSON.parse(section.schema?.json),
           true
         );
-        if(newForm?.['19']) delete newForm?.['19']
+        if (newForm['18']?.options) {
+          newForm['18'].options = newForm['18']?.options?.map(
+            (opt: OptionType) => ({
+              label: opt.label,
+              value: opt.value.toString().toUpperCase(),
+            })
+          );
+        }
+        if (newForm?.['19']) delete newForm?.['19'];
         if (
           compiledSurveyCitizen?.length &&
           compiledSurveyCitizen?.[index]?.domandaRisposta?.json
@@ -137,7 +146,8 @@ const ViewSurvey: React.FC = () => {
       <div className='container'>
         <DetailLayout
           titleInfo={{
-            title: serviceDetails?.questionarioTemplateSnapshot?.nomeQuestionarioTemplate?.toString(),
+            title:
+              serviceDetails?.questionarioTemplateSnapshot?.nomeQuestionarioTemplate?.toString(),
             status: '',
             upperTitle: { icon: 'it-file', text: 'Questionario' },
           }}

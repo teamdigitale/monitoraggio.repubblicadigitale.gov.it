@@ -303,7 +303,6 @@ const Surveys = () => {
       ? { ...questionaraireCta }
       : { ...addendumCta };
 
-
   return (
     /*  <div className={clsx(device.mediaIsDesktop && 'row')}>
      {device.mediaIsDesktop && (
@@ -334,6 +333,8 @@ const Surveys = () => {
         resetFilterDropdownSelected={(filterKey: string) =>
           setFilterDropdownSelected(filterKey)
         }
+        tooltip
+        tooltiptext={searchInformation.placeholder}
       >
         <div>
           {questionariList?.list?.length && tableValues?.values?.length ? (

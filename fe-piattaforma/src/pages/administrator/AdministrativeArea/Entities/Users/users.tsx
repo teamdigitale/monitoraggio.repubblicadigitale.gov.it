@@ -246,6 +246,8 @@ const Users = () => {
       resetFilterDropdownSelected={(filterKey: string) =>
         setFilterDropdownSelected(filterKey)
       }
+      tooltip
+      tooltiptext={searchInformation.placeholder}
     >
       {usersList?.length && tableValues?.values?.length ? (
         <>
