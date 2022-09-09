@@ -6,9 +6,26 @@
   margin-bottom: rem(13px);
   padding: rem(33px 25px);
 
+  @media screen and (max-width: 576px){
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  @media screen and (min-width:577px) and (max-width: 992px){
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
   &__name {
     display: flex;
     align-items: flex-start;
+    
+     h2 {
+      width: 130px;
+     }
   }
 
   &__info {
@@ -22,13 +39,19 @@
       display: flex;
       flex-direction: column;
     }
+    
+    div > span {
+      @media screen and (max-width: 992px){
+        min-width: 80px;
+      }
+    }
   }
 
   &__left-section {
     grid-area: 1 / 1 / 2 / 4;
     display: flex;
     flex-wrap: nowrap;
-    align-items: start;
+    align-items: center;
     gap: rem(10px);
   }
 

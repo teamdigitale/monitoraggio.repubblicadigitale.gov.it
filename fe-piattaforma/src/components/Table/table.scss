@@ -30,6 +30,10 @@
     border-radius: 6px;
     padding: 0 8px;
     min-width: auto;
+
+    @media screen and (max-width: 576px) {
+      padding: 15px 8px;
+    }
   }
   &__toggle-button {
     margin: 0;

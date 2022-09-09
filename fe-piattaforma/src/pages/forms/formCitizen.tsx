@@ -61,13 +61,16 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
   useEffect(() => {
     if (formData) {
       const values = { ...formData };
-      const formattedDate = formatDate(
-        formData?.dataConferimentoConsenso?.toString(),
-        'snakeDate'
-      );
-      if (formattedDate) values.dataConferimentoConsenso = formattedDate;
+      if(formData?.dataConferimentoConsenso){
+        const formattedDate = formatDate(
+          Number(formData?.dataConferimentoConsenso),
+          'snakeDate'
+        );
+       values.dataConferimentoConsenso = formattedDate;
+      }
       setFormValues(values);
     }
+
     if (formDataService) {
       const values = { ...formDataService };
       setFormValues(values);
@@ -268,9 +271,10 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
         ) : (
           <span></span>
         )}
-        {citizenFormDropdownOptions['tipoConferimentoConsenso'].filter(
-          (opt) => opt.value === form?.tipoConferimentoConsenso?.value
-        )?.length > 1 ? (
+        {form?.tipoConferimentoConsenso?.value &&
+        ['ONLINE', 'EMAIL', 'CARTACEO'].includes(
+          form?.tipoConferimentoConsenso?.value.toString()
+        ) ? (
           <CheckboxGroup
             {...form?.tipoConferimentoConsenso}
             className={clsx(
@@ -285,7 +289,8 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
         ) : (
           <span></span>
         )}
-        {form?.dataConferimentoConsenso?.value && form?.dataConferimentoConsenso?.value !== '$dataConsenso' ? (
+        {form?.dataConferimentoConsenso?.value &&
+        form?.dataConferimentoConsenso?.value !== '$dataConsenso' ? (
           <Input
             {...form?.dataConferimentoConsenso}
             col='col-12 col-lg-6'
@@ -389,7 +394,6 @@ const form = newForm([
     id: 'categoriaFragili',
     label: 'Categorie fragili',
     type: 'select',
-    required: true,
   }),
   newFormField({
     ...CommonFields.EMAIL,
@@ -420,7 +424,6 @@ const form = newForm([
     regex: RegexpType.TELEPHONE,
     label: 'Telefono',
     type: 'text',
-    required: true,
   }),
   newFormField({
     field: 'tipoConferimentoConsenso',
