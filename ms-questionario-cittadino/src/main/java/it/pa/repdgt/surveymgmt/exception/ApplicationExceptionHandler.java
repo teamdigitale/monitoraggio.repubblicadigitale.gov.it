@@ -83,13 +83,13 @@ public class ApplicationExceptionHandler {
 		if(exc instanceof QuestionarioTemplateException) {
 			questionarioTemplateException = (QuestionarioTemplateException) exc;
 			errori.put("errorCode", questionarioTemplateException.getCodiceErroreEnum().toString());
-		} else if(exc instanceof QuestionarioTemplateException) {
+		} else if(exc instanceof CittadinoException) {
 			cittadinoException = (CittadinoException) exc;
 			errori.put("errorCode", cittadinoException.getCodiceErroreEnum().toString());
-		} else if(exc instanceof QuestionarioTemplateException) {
+		} else if(exc instanceof ServizioException) {
 			servizioException = (ServizioException) exc;
 			errori.put("errorCode", servizioException.getCodiceErroreEnum().toString());
-		} else if(exc instanceof QuestionarioTemplateException) {
+		} else if(exc instanceof QuestionarioCompilatoException) {
 			questionarioCompilatoException = (QuestionarioCompilatoException) exc;
 			errori.put("errorCode", questionarioCompilatoException.getCodiceErroreEnum().toString());
 		} else {

@@ -131,6 +131,7 @@ public class CittadiniServizioServiceTest {
 		questionarioCompilato = new QuestionarioCompilatoEntity();
 		questionarioCompilato.setId("idQuestionario");
 		questionarioCompilato.setCittadino(cittadino);
+		questionarioCompilato.setStato("NON_INVIATO");
 		arrayString = new String[] {cittadino.getEmail(), "TOKEN"};
 		invioQuestionario = new QuestionarioInviatoOnlineEntity();
 		invioQuestionario.setId(1L);
@@ -315,6 +316,8 @@ public class CittadiniServizioServiceTest {
 	public void inviaQuestionarioTest() {
 		when(questionarioCompilatoSqlRepository.findById(questionarioCompilato.getId())).thenReturn(Optional.of(questionarioCompilato));
 		cittadiniServizioService.inviaQuestionario(questionarioCompilato.getId(), cittadino.getId());
+		questionarioCompilato.setStato("COMPILATO");
+		Assertions.assertThrows(ServizioException.class, () -> cittadiniServizioService.inviaQuestionario(questionarioCompilato.getId(), 2L));
 	}
 	
 	@Test
