@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.106](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.105...1.0.0-develop.106) (2022-09-09)
+
+
+### Bug Fixes
+
+* **be:** fix test ([8ccde9e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8ccde9e53214d033e5cda0b6b62ed31b7f3f10d3))
+* **be:** get questionario compilato anonimo ([3c5dacc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3c5daccbaae0f8f7488d457870d6f3b3b04a4ff1))
+
 ## [1.0.0-develop.105](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.104...1.0.0-develop.105) (2022-09-08)
 
 
