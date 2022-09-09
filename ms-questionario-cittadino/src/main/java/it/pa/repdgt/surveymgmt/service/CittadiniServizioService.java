@@ -27,6 +27,7 @@ import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
 import it.pa.repdgt.shared.entity.QuestionarioInviatoOnlineEntity;
 import it.pa.repdgt.shared.entity.ServizioEntity;
 import it.pa.repdgt.shared.entity.ServizioXCittadinoEntity;
+import it.pa.repdgt.shared.entity.TipologiaServizioEntity;
 import it.pa.repdgt.shared.entity.key.ServizioCittadinoKey;
 import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
@@ -401,9 +402,25 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	public String creaSezioneQuestionarioQ2ByCittadino(@NotNull final Long idCittadino, @NotNull final Long idServizio) {
 		Optional<ServizioEntity> primoServizio = servizioSqlService.getPrimoServizioByIdCittadino(idServizio, idCittadino);
 		Boolean esistePrimoServizio = primoServizio.isPresent();
+		
+		String tipologiaServiziString = "";
+		
+		if(esistePrimoServizio) {
+			List<TipologiaServizioEntity> tipologiaServiziList = primoServizio.get().getListaTipologiaServizi();
+			
+			if(tipologiaServiziList != null && tipologiaServiziList.size() > 0) {
+				StringBuilder tipologiaServiziStringBuilder = new StringBuilder();
+				tipologiaServiziList.forEach(tipologiaServizio -> {
+					if(tipologiaServizio.getTitolo() != null) {
+						tipologiaServiziStringBuilder.append(tipologiaServizio.getTitolo().concat(", "));
+					}
+				});
+				tipologiaServiziString = tipologiaServiziStringBuilder.substring(0, tipologiaServiziStringBuilder.length()-2);
+			}
+		}
 		final String jsonStringSezioneQ2 = String.format(SEZIONE_Q2_TEMPLATE,
-				ID_DOMANDA_PRIMA_VOLTA, esistePrimoServizio ? "NO" : "SI",
-				ID_DOMANDA_TIPO_PRIMO_SERVIZIO, esistePrimoServizio ? primoServizio.get().getListaTipologiaServizi() : "");
+				ID_DOMANDA_PRIMA_VOLTA, esistePrimoServizio ? "No" : "Sì",
+				ID_DOMANDA_TIPO_PRIMO_SERVIZIO, esistePrimoServizio ? tipologiaServiziString : "");
 		
 		return jsonStringSezioneQ2;
 	}
@@ -546,6 +563,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		QuestionarioCompilatoEntity questionarioCompilato = questionarioCompilatoSqlRepository.findById(idQuestionario)
 				.orElseThrow(() -> new ServizioException("id questionario inesistente", CodiceErroreEnum.Q01) );
 		CittadinoEntity cittadino = questionarioCompilato.getCittadino();
+		
 		if(cittadino == null || !idCittadino.equals(cittadino.getId())) {
 			throw new ServizioException("coppia cittadino - id questionario inesistente", CodiceErroreEnum.Q01);
 		}
@@ -559,6 +577,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 			final String idQuestionario,
 			QuestionarioCompilatoEntity questionarioCompilato, 
 			CittadinoEntity cittadino) {
+		if(questionarioCompilato.getStato().equals(StatoQuestionarioEnum.COMPILATO.getValue()))
+			throw new ServizioException("Il questionario risulta già compilato", CodiceErroreEnum.Q02);
 		inviaLinkAnonimo(cittadino,idQuestionario);
 		questionarioCompilato.setStato(StatoQuestionarioEnum.INVIATO.getValue());
 		questionarioCompilatoSqlRepository.save(questionarioCompilato);
