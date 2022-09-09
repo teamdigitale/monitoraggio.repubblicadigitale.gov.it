@@ -29,9 +29,12 @@ a {
 
 .sticky {
   width: 100vw !important;
-  padding-right: rem(42px);
-  @media screen and (max-width: 576px) {
-    left: 0;
+
+  @media screen and (max-width: 992px) {
+    padding-right: rem(20px);
+  }
+  @media screen and (min-width: 993px) {
+    padding-right: rem(30px);
   }
 }
 

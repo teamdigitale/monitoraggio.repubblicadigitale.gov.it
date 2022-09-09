@@ -98,7 +98,7 @@ const Services = () => {
         return {
           ...td,
           nome: td?.nome,
-          data: formatDate(td?.data, 'shortDate') || td?.data,
+          data: td?.data || formatDate(Number(td?.data), 'snakeDate') || '-',
           stato: <StatusChip status={td?.stato} rowTableId={td?.id} />,
           tipologiaServizio: getTypeService(td?.tipologiaServizio),
         };

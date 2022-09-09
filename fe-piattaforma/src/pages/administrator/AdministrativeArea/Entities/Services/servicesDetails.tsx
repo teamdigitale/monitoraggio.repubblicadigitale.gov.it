@@ -7,6 +7,7 @@ import {
   DeleteService,
   GetCitizenListServiceDetail,
   GetServicesDetail,
+  GetServicesDetailFilters,
   SendSurveyToAll,
 } from '../../../../../redux/features/administrativeArea/services/servicesThunk';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -239,7 +240,11 @@ const ServicesDetails = () => {
       size: 'xs',
       color: 'primary',
       text: 'Invia questionario a tutti',
-      onClick: () => dispatch(SendSurveyToAll(serviceId || '')),
+      onClick: async() => {
+        await dispatch(SendSurveyToAll(serviceId))
+        dispatch(GetCitizenListServiceDetail(serviceId));
+        dispatch(GetServicesDetailFilters(serviceId));
+      }, // TODO: richiama all cittadini
     },
   ];
 
@@ -297,8 +302,8 @@ const ServicesDetails = () => {
           itemsList={itemList}
           showItemsList={activeTab === tabs.INFO}
           nav={nav}
-          goBackTitle='Torna indietro'
-          //goBackPath='/area-amministrativa/servizi'
+          goBackTitle='Elenco servizi'
+          goBackPath='/area-amministrativa/servizi'
         >
           <div className='mx-auto'>{content}</div>
         </DetailLayout>

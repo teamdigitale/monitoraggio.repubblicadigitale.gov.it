@@ -39,6 +39,7 @@ export interface GenericModalI {
   bigIcon?: boolean;
   isRoleManaging?: boolean;
   isSurveyOnline?: boolean;
+  isSuccesModal?: boolean;
 }
 
 const GenericModal: React.FC<GenericModalI> = (props) => {
@@ -65,6 +66,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
     iconColor = '',
     bigIcon = false,
     isSurveyOnline = false,
+    isSuccesModal = false,
   } = props;
 
   const handleAction = (action: 'primary' | 'secondary' | 'tertiary') => {
@@ -106,6 +108,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
           <div
             className={clsx(
               'icon-container',
+              isSuccesModal && 'bg-white',
               'p-3',
               'd-flex',
               'align-items-center',
@@ -114,7 +117,10 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
           >
             <Icon
               icon={icon}
-              style={{ width: bigIcon ? '60px' : '50px', height: '80px' }}
+              style={{
+                width: bigIcon ? '60px' : isSuccesModal ? '150px' : '50px',
+                height: isSuccesModal ? '150px' : '80px',
+              }}
               color={iconColor}
               className='my-0 mx-3 pl-1'
             />
@@ -134,9 +140,8 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
         >
           <p
             className={clsx(
-              'h5',
               'font-weight-semibold',
-              'primary-color',
+              isRoleManaging ? 'primary-color-a10 h3 pb-4' : 'primary-color h5',
               'my-auto'
             )}
           >
@@ -162,7 +167,11 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
               </div>
             </div>
           )}
-          <p className={clsx('text-muted', 'text-center', 'mx-auto', 'h5')}>
+          <p
+            className={clsx(
+              isSurveyOnline && 'text-muted text-center mx-auto h5'
+            )}
+          >
             {description || payload?.description}
           </p>
           {children}

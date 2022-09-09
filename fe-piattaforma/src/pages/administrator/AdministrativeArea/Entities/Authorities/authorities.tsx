@@ -226,6 +226,8 @@ const Authorities: React.FC = () => {
       resetFilterDropdownSelected={(filterKey: string) =>
         setFilterDropdownSelected(filterKey)
       }
+      tooltip
+      tooltiptext={searchInformation.placeholder}
     >
       <div>
         {entiList?.length && tableValues?.values?.length ? (

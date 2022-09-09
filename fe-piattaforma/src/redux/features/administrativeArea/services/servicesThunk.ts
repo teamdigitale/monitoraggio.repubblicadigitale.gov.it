@@ -332,9 +332,11 @@ export const AssociateCitizenToService =
     try {
       dispatch({ ...SendSurveyToCitizenAction });
       dispatch(showLoader());
-      await API.post(`/servizio/cittadino/questionarioCompilato/invia?idCittadino=${idCittadino}&idQuestionario=${idQuestionario}`);
+      const res = await API.post(`/servizio/cittadino/questionarioCompilato/invia?idCittadino=${idCittadino}&idQuestionario=${idQuestionario}`);
+      return res;
     } catch (error) {
       console.log('SendSurveyToCitizen administrativeArea error', error);
+      return 'error';
     } finally {
       dispatch(hideLoader());
     }
@@ -345,7 +347,7 @@ export const AssociateCitizenToService =
   };
 
   export const SendSurveyToAll =
-  (idServizio: string) => async (dispatch: Dispatch) => {
+  (idServizio?: string) => async (dispatch: Dispatch) => {
     try {
       dispatch({ ...SendSurveyToAllAction });
       dispatch(showLoader());
