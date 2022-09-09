@@ -1,5 +1,16 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.108](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.107...1.0.0-develop.108) (2022-09-09)
+
+
+### Bug Fixes
+
+* **be:** fix test ([63d9cd0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/63d9cd07c4a00a039090eb77785ce42b4ca7c39f))
+* **be:** tipologia servizi su Q2 ([8043539](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8043539949c4fc18bcaafe2100a0cbdec0dd4ffe))
+* **be:** aggiunta codici errore per utente ([e806890](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e80689051b844b02282e7d6f1b3e133e1ecdfcb1))
+* **be:** fix template q2 ([1f859ec](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1f859ec2b81023460e757367d51fd09bca50985b))
+* **be:** fix questionario compilato ([291d678](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/291d6783c3e8a3cf5c759f29cb99225954de728b))
+
 ## [1.0.0-develop.107](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.106...1.0.0-develop.107) (2022-09-09)
 
 
