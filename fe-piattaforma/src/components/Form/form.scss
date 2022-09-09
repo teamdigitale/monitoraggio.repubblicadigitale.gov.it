@@ -59,6 +59,22 @@
   }
 }
 
+.form-service-dynamic {
+  &__control {
+    &--is-disabled {
+      border-bottom: 1px solid #797c80 !important;
+      background: #e6e9f2 !important;
+    }
+  }
+  &__multi-value {
+    margin: 2px 2px 14px !important;
+    &--is-disabled {
+      border: 1px outset #e6e9f2 !important;
+      background: #e6e9f2 !important;
+    }
+  }
+}
+
 .radio-btn-container {
   min-height: 22px;
   min-width: 22px;

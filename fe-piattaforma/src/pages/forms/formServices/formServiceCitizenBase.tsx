@@ -103,9 +103,9 @@ const FormServiceCitizenBase: React.FC<FormEnteGestoreProgettoFullInterface> = (
           onInputChange={onInputDataChange}
         />
         <Input
-          {...form?.telefono}
+          {...form?.cellulare}
           col='col-8 col-lg-4'
-          placeholder={`Inserisci ${form?.numeroCellulare?.label?.toLowerCase()}`}
+          placeholder={`Inserisci ${form?.cellulare?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
         />
       </Form.Row>
@@ -148,7 +148,7 @@ const form = newForm([
     //required: true,
   }),
   newFormField({
-    field: 'numeroCellulare',
+    field: 'cellulare',
     id: 'numeroCellulare',
     regex: RegexpType.TELEPHONE,
     label: 'Cellulare',
