@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.110](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.109...1.0.0-develop.110) (2022-09-09)
+
+
+### Bug Fixes
+
+* **be:** getAll cittadini count servizi ([7b63fc6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7b63fc673dafe6a1f78226d24a35751bb840abd3))
+
 ## [1.0.0-develop.109](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.108...1.0.0-develop.109) (2022-09-09)
 
 
