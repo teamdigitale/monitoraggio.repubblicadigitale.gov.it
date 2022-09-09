@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.109](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.108...1.0.0-develop.109) (2022-09-09)
+
+
+### Bug Fixes
+
+* **be:** fix inserimento nuovo cittadino in servizio ([ff5d0bd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ff5d0bdf9167d99961717774e360d951509f6890))
+
 ## [1.0.0-develop.108](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.107...1.0.0-develop.108) (2022-09-09)
 
 
