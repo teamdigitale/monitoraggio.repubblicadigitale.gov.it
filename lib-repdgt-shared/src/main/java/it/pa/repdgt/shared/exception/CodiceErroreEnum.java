@@ -50,6 +50,7 @@ public enum CodiceErroreEnum {
 	,SD02("Errore aggiornamento sede")
 
 	,Q01("Errore questionario template inesistente")
+	,Q02("Errore Il questionario risulta già compilato")
 	,QT01("Errore export csv questionari template")
 	,QT02("Errore impossibile aggiornare il questionario")
 	,QT03("Errore impossibile cancellare il questionario")
