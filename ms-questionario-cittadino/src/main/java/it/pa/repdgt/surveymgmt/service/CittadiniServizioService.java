@@ -546,6 +546,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		QuestionarioCompilatoEntity questionarioCompilato = questionarioCompilatoSqlRepository.findById(idQuestionario)
 				.orElseThrow(() -> new ServizioException("id questionario inesistente", CodiceErroreEnum.Q01) );
 		CittadinoEntity cittadino = questionarioCompilato.getCittadino();
+		
 		if(cittadino == null || !idCittadino.equals(cittadino.getId())) {
 			throw new ServizioException("coppia cittadino - id questionario inesistente", CodiceErroreEnum.Q01);
 		}
@@ -559,6 +560,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 			final String idQuestionario,
 			QuestionarioCompilatoEntity questionarioCompilato, 
 			CittadinoEntity cittadino) {
+		if(questionarioCompilato.getStato().equals(StatoQuestionarioEnum.COMPILATO.getValue()))
+			throw new ServizioException("Il questionario risulta già compilato", CodiceErroreEnum.Q02);
 		inviaLinkAnonimo(cittadino,idQuestionario);
 		questionarioCompilato.setStato(StatoQuestionarioEnum.INVIATO.getValue());
 		questionarioCompilatoSqlRepository.save(questionarioCompilato);

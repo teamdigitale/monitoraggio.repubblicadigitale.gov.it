@@ -86,6 +86,9 @@ public class QuestionarioCompilatoService {
 			throw new QuestionarioCompilatoException(messaggioErrore, CodiceErroreEnum.QC02);
 		}
 		
+		if(questionarioCompilatoEntity.get().getStato().equals(StatoQuestionarioEnum.COMPILATO.getValue()))
+			throw new ServizioException("Il questionario risulta già compilato", CodiceErroreEnum.Q02);
+		
 		// Recupero dalla request:
 		// 	- dati consenso trattamento dati 
 		//	- codice fiscale del cittadino che sta compilando il questionario
@@ -145,24 +148,13 @@ public class QuestionarioCompilatoService {
 	public void compilaQuestionarioPerAnonimo(
 			@NotNull String idQuestionarioCompilato,
 			@NotNull @Valid QuestionarioCompilatoAnonimoRequest questionarioCompilatoAnonimoRequest,
+			QuestionarioCompilatoEntity questionarioCompilatoEntity,
+			QuestionarioCompilatoCollection questionarioCompilatoCollection,
 			@NotBlank String token) {
-		// Check record allineamento questionarioCompilato per (MySql, Mongo): 
-		//	- questionarioCompilato su MySql (tabella questionario_compilato) 
-		//	- collection questionarioTemplateIstanza su MOngoDB
-		final Optional<QuestionarioCompilatoEntity> questionarioCompilatoEntity = this.questionarioCompilatoSQLRepository.findById(idQuestionarioCompilato);
-		final Optional<QuestionarioCompilatoCollection> questionarioCompilatoCollection = this.questionarioCompilatoMongoRepository.findQuestionarioCompilatoById(idQuestionarioCompilato);
-		if(!questionarioCompilatoEntity.isPresent()) {
-			final String messaggioErrore = String.format("Questionario compilato con id=%s non presente in MySql", idQuestionarioCompilato);
-			throw new QuestionarioCompilatoException(messaggioErrore, CodiceErroreEnum.QC01);
-		}
-		if(!questionarioCompilatoCollection.isPresent()) {
-			final String messaggioErrore = String.format("Questionario compilato con id=%s non presente in MongoDB", idQuestionarioCompilato);
-			throw new QuestionarioCompilatoException(messaggioErrore, CodiceErroreEnum.QC02);
-		}
 		
 		QuestionarioInviatoOnlineEntity questionarioInviato = this.questionarioInviatoOnlineRepository.findByIdQuestionarioCompilatoAndToken(idQuestionarioCompilato, token).get();
 		
-		final QuestionarioCompilatoCollection questionarioCompilatoDBMongoFetch = questionarioCompilatoCollection.get();
+		final QuestionarioCompilatoCollection questionarioCompilatoDBMongoFetch = questionarioCompilatoCollection;
 		// Recupero le sezioni del questionario compilato salvate
 		List<DatiIstanza> datiIstanza = questionarioCompilatoDBMongoFetch.getSezioniQuestionarioTemplateIstanze();
 		DatiIstanza q1 = datiIstanza.stream().filter(sezione -> ((JsonObject)sezione.getDomandaRisposta()).toString().contains("anagraphic-citizen-section")).findFirst().get();
@@ -170,7 +162,7 @@ public class QuestionarioCompilatoService {
 		// lo registro per la prima volta. Ovvero salvo l'informazione sulla tabella Cittadino
 		this.verificaEseguiESalvaConsensoTrattamentoDatiPerAnonimo(questionarioInviato.getCodiceFiscale(), questionarioInviato.getNumDocumento(), ConsensoTrattamentoDatiEnum.ONLINE, q1);
 		// Aggiorno questionarioCompilato MySQl
-		final QuestionarioCompilatoEntity questionarioCompilatoDBMySqlFetch = questionarioCompilatoEntity.get();
+		final QuestionarioCompilatoEntity questionarioCompilatoDBMySqlFetch = questionarioCompilatoEntity;
 		questionarioCompilatoDBMySqlFetch.setStato(StatoQuestionarioEnum.COMPILATO.getValue());
 		questionarioCompilatoDBMySqlFetch.setDataOraAggiornamento(new Date());		
 		this.questionarioCompilatoSQLRepository.save(questionarioCompilatoDBMySqlFetch);
@@ -300,8 +292,28 @@ public class QuestionarioCompilatoService {
 			@NotNull String idQuestionarioCompilato,
 			@NotNull @Valid QuestionarioCompilatoAnonimoRequest questionarioCompilatoAnonimoRequest,
 			@NotNull String token) throws ParseException {
+		
+		// Check record allineamento questionarioCompilato per (MySql, Mongo): 
+		//	- questionarioCompilato su MySql (tabella questionario_compilato) 
+		//	- collection questionarioTemplateIstanza su MOngoDB
+		final Optional<QuestionarioCompilatoEntity> questionarioCompilatoEntity = this.questionarioCompilatoSQLRepository.findById(idQuestionarioCompilato);
+		final Optional<QuestionarioCompilatoCollection> questionarioCompilatoCollection = this.questionarioCompilatoMongoRepository.findQuestionarioCompilatoById(idQuestionarioCompilato);
+		if(!questionarioCompilatoEntity.isPresent()) {
+			final String messaggioErrore = String.format("Questionario compilato con id=%s non presente in MySql", idQuestionarioCompilato);
+			throw new QuestionarioCompilatoException(messaggioErrore, CodiceErroreEnum.QC01);
+		}
+		if(!questionarioCompilatoCollection.isPresent()) {
+			final String messaggioErrore = String.format("Questionario compilato con id=%s non presente in MongoDB", idQuestionarioCompilato);
+			throw new QuestionarioCompilatoException(messaggioErrore, CodiceErroreEnum.QC02);
+		}
+				
+		QuestionarioCompilatoEntity questionarioCompilato = questionarioCompilatoEntity.get();
+		
+		if(questionarioCompilato.getStato().equals(StatoQuestionarioEnum.COMPILATO.getValue()))
+			throw new ServizioException("Il questionario risulta già compilato", CodiceErroreEnum.Q02);
+		
 		verificaTokenQuestionario(idQuestionarioCompilato, token);
-		compilaQuestionarioPerAnonimo(idQuestionarioCompilato, questionarioCompilatoAnonimoRequest, token);
+		compilaQuestionarioPerAnonimo(idQuestionarioCompilato, questionarioCompilatoAnonimoRequest, questionarioCompilato, questionarioCompilatoCollection.get(), token);
 	}
 
 	@LogMethod
@@ -309,9 +321,16 @@ public class QuestionarioCompilatoService {
 	public QuestionarioCompilatoBean getQuestionarioCompilatoByIdAnonimo(String idQuestionarioCompilato, String token) throws ParseException {
 		final QuestionarioCompilatoBean questionarioCompilatoBean = new QuestionarioCompilatoBean();
 		
-		verificaTokenQuestionario(idQuestionarioCompilato, token);
+		Optional<QuestionarioCompilatoEntity> questionarioCompilatoOptional = this.questionarioCompilatoSQLRepository.findById(idQuestionarioCompilato);
+		if(!questionarioCompilatoOptional.isPresent())
+			throw new ServizioException("Errore impossibile recuperare il questionario poichè inesistente su MySql", CodiceErroreEnum.QT05);
 		
-		QuestionarioCompilatoEntity questionarioCompilato = this.questionarioCompilatoSQLRepository.findById(idQuestionarioCompilato).get();
+		QuestionarioCompilatoEntity questionarioCompilato = questionarioCompilatoOptional.get();
+		
+		if(questionarioCompilato.getStato().equals(StatoQuestionarioEnum.COMPILATO.getValue()))
+			throw new ServizioException("Il questionario risulta già compilato", CodiceErroreEnum.Q02);
+		
+		verificaTokenQuestionario(idQuestionarioCompilato, token);
 		
 		CittadinoEntity cittadinoAssociatoAlQuestionarioCompilato = questionarioCompilato.getCittadino();
 		
@@ -321,7 +340,6 @@ public class QuestionarioCompilatoService {
 		String idQuestionarioTemplate = questionarioCompilato.getIdQuestionarioTemplate();
 		
 		// verifico se il questionarioTemplatquestionarioTemplateAssociatoAlProgrammae associato al programma è presente su MongoDb
-		QuestionarioTemplateCollection questionatioTemplate = null;
 			
 		String errorMessage = null;
 		try {
@@ -336,7 +354,7 @@ public class QuestionarioCompilatoService {
 	public void verificaTokenQuestionario(String idQuestionario, String token) throws ParseException {
 		QuestionarioInviatoOnlineEntity tokenQuestionario = questionarioInviatoOnlineRepository.
 				findByIdQuestionarioCompilatoAndToken(idQuestionario, token)
-				.orElseThrow(() -> new ResourceNotFoundException(String.format("token non valido per idQuestionario %s", idQuestionario), CodiceErroreEnum.T01));
+				.orElseThrow(() -> new QuestionarioCompilatoException(String.format("token non valido per idQuestionario %s", idQuestionario), CodiceErroreEnum.T01));
 
 		if(isTokenExpired(tokenQuestionario)) {
 			throw new QuestionarioCompilatoException(String.format("token scaduto per idQuestionario %s", idQuestionario), CodiceErroreEnum.T02); 

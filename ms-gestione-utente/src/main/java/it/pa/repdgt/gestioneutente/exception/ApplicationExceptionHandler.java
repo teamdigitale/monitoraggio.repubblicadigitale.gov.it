@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice
@@ -58,13 +59,29 @@ public class ApplicationExceptionHandler {
 		errori.put("message", exc.getMessage());
 		return errori;
 	}
-
+	
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-	@ExceptionHandler(value = { UtenteException.class, RuoloException.class, UtenteXRuoloException.class, Exception.class })
+	@ExceptionHandler(value = {  UtenteException.class, RuoloException.class, UtenteXRuoloException.class, Exception.class })
 	public Map<String, String> handleException(Exception exc) {
 		log.error("{}", exc);
-		Map<String, String> errori = new HashMap<>();
+		final Map<String, String> errori = new HashMap<>();
 		errori.put("message", exc.getMessage());
+		UtenteException utenteException;
+		RuoloException ruoloException;
+		UtenteXRuoloException utenteXRuoloException;
+		if(exc instanceof UtenteException) {
+			utenteException = (UtenteException) exc;
+			errori.put("errorCode", utenteException.getCodiceErroreEnum().toString());
+		} else if(exc instanceof RuoloException) {
+			ruoloException = (RuoloException) exc;
+			errori.put("errorCode", ruoloException.getCodiceErroreEnum().toString());
+		} else if(exc instanceof UtenteXRuoloException) {
+			utenteXRuoloException = (UtenteXRuoloException) exc;
+			errori.put("errorCode", utenteXRuoloException.getCodiceErroreEnum().toString());
+		} else {
+			errori.put("errorCode", CodiceErroreEnum.G01.toString());
+		}
+		
 		return errori;
 	}
 }
