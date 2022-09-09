@@ -227,7 +227,7 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
               id={`multiple-select-${field.id}`}
               col='col-12'
               label={`${field?.label}`}
-              aria-label={`${field?.label}`}
+              aria-label={field?.label}
               options={multiSelectOptions}
               required={field.required || false}
               onInputChange={onInputDataChange}
@@ -235,7 +235,7 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
               placeholder='Seleziona'
               isDisabled={formDisabled}
               value={values}
-              wrapperClassName='mb-5 pr-lg-3'
+              classNamePrefix='form-service-dynamic'
             />
           );
         }

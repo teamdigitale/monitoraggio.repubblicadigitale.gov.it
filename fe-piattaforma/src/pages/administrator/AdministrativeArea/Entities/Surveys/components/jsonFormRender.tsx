@@ -243,6 +243,8 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
             <Rating
               className='col-12 col-lg-6'
               onChange={(val) => onInputChange(val, formField.field)}
+              value={Number(formField?.value)}
+              disabled={formField?.disabled || viewMode}
             />
           </>
         );

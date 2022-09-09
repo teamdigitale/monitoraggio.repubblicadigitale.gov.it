@@ -7,11 +7,24 @@ interface RatingI {
   className?: string;
   maxRating?: number;
   onChange?: (rate: number) => void;
+  value?: number | undefined;
+  disabled?: boolean | undefined;
 }
 
 const Rating: React.FC<RatingI> = (props) => {
-  const { rating = 0, className, maxRating = 5, onChange } = props;
+  const {
+    rating = 0,
+    className,
+    maxRating = 5,
+    onChange,
+    value = 0,
+    disabled = false,
+  } = props;
   const [rate, setRate] = useState<number>(rating);
+
+  useEffect(() => {
+    if (value) setRate(value);
+  }, [value]);
 
   useEffect(() => {
     if (onChange) onChange(rate);
@@ -36,7 +49,9 @@ const Rating: React.FC<RatingI> = (props) => {
               color='primary'
               icon='it-star-full'
               size='sm'
-              onClick={() => handleChangeRate(index)}
+              onClick={() => {
+                if (!disabled) handleChangeRate(index);
+              }}
               aria-label='Stella piena rating'
             />
           ) : null}
@@ -46,7 +61,9 @@ const Rating: React.FC<RatingI> = (props) => {
               color='primary'
               icon='it-star-outline'
               size='sm'
-              onClick={() => handleChangeRate(index)}
+              onClick={() => {
+                if (!disabled) handleChangeRate(index);
+              }}
               aria-label='Stella vuota rating'
             />
           ) : null}

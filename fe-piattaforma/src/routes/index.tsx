@@ -49,6 +49,7 @@ const UserProfile = lazy(
 );
 
 const OpenData = lazy(() => import('../pages/common/OpenData/openData'));
+const SurveyOnline = lazy(() => import('../pages/common/SurveyOnline/surveyOnline'));
 
 /**
  The "routes.tsx" file is now useless, lazy loading is implemented for every 
@@ -200,7 +201,13 @@ const AppRoutes: React.FC = () => {
         ) : (
           <>
             <Route path='/auth' element={<Auth />} />
-            <Route path='/' element={<FullLayout />}>
+
+            <Route path='/' element={<FullLayout withBreadcrumb={false} />}>
+              <Route path='/servizi/questionario/:idQuestionario/online/:token' element={<SurveyOnline />} />
+            </Route>
+              <Route path='/' element={<FullLayout />}>
+              {/* Public Paths */}
+              <Route path='/open-data' element={<OpenData />} />
               <Route path='/onboarding' element={<Onboarding />} />
               <Route
                 path='/'
@@ -209,10 +216,6 @@ const AppRoutes: React.FC = () => {
             </Route>
           </>
         )}
-        <Route path='/' element={<FullLayout />}>
-          {/* Public Paths */}
-          <Route path='/open-data' element={<OpenData />} />
-        </Route>
         <Route
           path='/'
           element={<Navigate replace to={defaultRedirectUrl} />}

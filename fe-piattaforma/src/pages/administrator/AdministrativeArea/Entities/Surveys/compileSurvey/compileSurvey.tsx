@@ -37,13 +37,8 @@ import { formatAndParseJsonString } from '../../../../../../utils/common';
 import { PostFormCompletedByCitizen } from '../../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 import { OptionType } from '../../../../../../components/Form/select';
 
-interface CompileSurveyI extends withFormHandlerProps {
-  publicLink?: boolean;
-}
-
-const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
+const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
   const {
-    publicLink = false,
     onInputChange = () => ({}),
     updateForm = () => ({}),
     form = {},
@@ -174,7 +169,8 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
               newForm[key].disabled = true;
             }
             if (key === '18') {
-              if (!newForm[key].value || newForm[key].value === '$consenso') newForm[key].value = '';
+              if (!newForm[key].value || newForm[key].value === '$consenso')
+                newForm[key].value = '';
               const options: OptionType[] = [];
               newForm[key].options?.map((opt: OptionType) => {
                 options?.push({
@@ -191,8 +187,7 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
                     (opt: OptionType) => opt.value === 'ONLINE'
                   ))
                 : options;
-              newForm[key].disabled =
-                newForm[key].value === '' ? false : true;
+              newForm[key].disabled = newForm[key].value === '' ? false : true;
             }
             if (key === '19') delete newForm[key];
           });
@@ -391,87 +386,54 @@ const CompileSurvey: React.FC<CompileSurveyI> = (props) => {
 
   if (!sections?.length) return null;
 
-  const getTitle = (currentStep: number) => {
-    switch (currentStep) {
-      case 0:
-        return 'Compila i dati anagrafici e procedi con il questionario';
-      case 1:
-        return 'Compila i dati della prenotazione e procedi con il questionario';
-      case 2:
-        return 'Compila i dati del servizio e procedi con il questionario';
-      case 3:
-        return 'Compila i dati dei contenuti del servizio e invia con il questionario';
-      default:
-        break;
-    }
-  };
-
   return (
     <div className='container'>
-      {!publicLink && (
-        <>
-          <Button
-            onClick={() => navigate(-1)}
-            className={clsx(device.mediaIsPhone && 'mb-5', 'px-0')}
-          >
-            <Icon
-              icon='it-chevron-left'
-              color='primary'
-              aria-label='Torna indietro'
-            />
-            <span className='primary-color'> Vai alla lista cittadini </span>
-          </Button>
-          <SectionTitle
-            title='Compilazione Questionario'
-            upperTitle={{ icon: 'it-file', text: 'QUESTIONARIO' }}
+      <Button
+        onClick={() => navigate(-1)}
+        className={clsx(device.mediaIsPhone && 'mb-5', 'px-0')}
+      >
+        <Icon
+          icon='it-chevron-left'
+          color='primary'
+          aria-label='Torna indietro'
+        />
+        <span className='primary-color'> Vai alla lista cittadini </span>
+      </Button>
+      <SectionTitle
+        title='Compilazione Questionario'
+        upperTitle={{ icon: 'it-file', text: 'QUESTIONARIO' }}
+      />
+      <div
+        className={clsx(
+          device.mediaIsPhone ? 'mb-0 mt-5' : 'my-5',
+          'd-flex',
+          'justify-content-center'
+        )}
+      >
+        {device.mediaIsPhone ? (
+          <ProgressBar
+            currentStep={activeSection + 1}
+            steps={progressSteps()}
           />
-          <div
-            className={clsx(
-              device.mediaIsPhone ? 'mb-0 mt-5' : 'my-5',
-              'd-flex',
-              'justify-content-center'
-            )}
-          >
-            {device.mediaIsPhone ? (
-              <ProgressBar
-                currentStep={activeSection + 1}
-                steps={progressSteps()}
-              />
-            ) : (
-              <Stepper nSteps={4} currentStep={activeSection} />
-            )}
-          </div>
-          {device.mediaIsPhone ? null : (
-            <p
-              className={clsx(
-                'h5',
-                'primary-color',
-                'lightgrey-bg-c2',
-                'mb-4',
-                'p-3',
-                'font-weight-bold'
-              )}
-            >
-              {sections[activeSection].titolo}
-            </p>
+        ) : (
+          <Stepper nSteps={4} currentStep={activeSection} />
+        )}
+      </div>
+      {device.mediaIsPhone ? null : (
+        <p
+          className={clsx(
+            'h5',
+            'primary-color',
+            'lightgrey-bg-c2',
+            'mb-4',
+            'p-3',
+            'font-weight-bold'
           )}
-        </>
+        >
+          {sections[activeSection].titolo}
+        </p>
       )}
       <div className='pt-3'>
-        {publicLink && (
-          <>
-            <h1 className='h4 text-primary'>{getTitle(activeSection)}</h1>
-            {activeSection === 0 && (
-              <p className='mt-4'>
-                Per completare l’anagrafica abbiamo bisogno di alcuni tuoi dati.
-              </p>
-            )}
-            <p className={clsx('mb-4', activeSection !== 0 && 'mt-4')}>
-              {' '}
-              Completa i campi obbligatori per procedere.
-            </p>
-          </>
-        )}
         <div className={clsx(device.mediaIsPhone && 'pt-0', 'pt-3')}>
           <JsonFormRender
             form={form}

@@ -21,10 +21,16 @@ export interface LayoutProp {
   isHeaderFull?: boolean;
   isFull?: boolean;
   children?: JSX.Element;
+  withBreadcrumb?: boolean;
 }
 
 const FullLayout: React.FC<LayoutProp> = (props) => {
-  const { isHeaderFull = true, children, isFull = false } = props;
+  const {
+    isHeaderFull = true,
+    children,
+    isFull = false,
+    withBreadcrumb = true,
+  } = props;
   const loader = useAppSelector(selectLoader);
   const device = useAppSelector(selectDevice);
   const location = useLocation();
@@ -33,13 +39,16 @@ const FullLayout: React.FC<LayoutProp> = (props) => {
     <>
       <LocationInterceptor />
       <Header isHeaderFull={isHeaderFull} />
-      {location.pathname !== '/' && !device.mediaIsPhone && <Breadcrumb />}
+      {withBreadcrumb && location.pathname !== '/' && !device.mediaIsPhone && (
+        <Breadcrumb />
+      )}
       {loader.isLoading && <Loader />}
       <main
         className={clsx(
           'main-container',
           'main-container__content-container',
-          !device.mediaIsDesktop || isFull ? null : 'container'
+          !device.mediaIsDesktop || isFull ? null : 'container',
+          !withBreadcrumb && 'mt-5'
         )}
         id='main'
         tabIndex={-1}
