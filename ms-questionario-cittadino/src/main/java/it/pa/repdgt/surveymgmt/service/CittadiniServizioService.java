@@ -402,7 +402,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		Optional<ServizioEntity> primoServizio = servizioSqlService.getPrimoServizioByIdCittadino(idServizio, idCittadino);
 		Boolean esistePrimoServizio = primoServizio.isPresent();
 		final String jsonStringSezioneQ2 = String.format(SEZIONE_Q2_TEMPLATE,
-				ID_DOMANDA_PRIMA_VOLTA, esistePrimoServizio ? "NO" : "SI",
+				ID_DOMANDA_PRIMA_VOLTA, esistePrimoServizio ? "No" : "Sì",
 				ID_DOMANDA_TIPO_PRIMO_SERVIZIO, esistePrimoServizio ? primoServizio.get().getListaTipologiaServizi() : "");
 		
 		return jsonStringSezioneQ2;
