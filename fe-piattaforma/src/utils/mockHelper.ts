@@ -362,5 +362,14 @@ export const initMock = (apiInstance: AxiosInstance) => {
       // @ts-ignore
       return [200, Math.floor(Math.random() * 9999)];
     });
+
+    mockInstance.onGet('/servizio/cittadino/questionarioCompilato/test/anonimo').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/responseQuestionarioOnlineMock.json');
+      return [200, response];
+    });
+    mockInstance.onPost('/servizio/cittadino/questionarioCompilato/test/compila/anonimo').reply(async () => {
+      return [200];
+    });
   }
 };
