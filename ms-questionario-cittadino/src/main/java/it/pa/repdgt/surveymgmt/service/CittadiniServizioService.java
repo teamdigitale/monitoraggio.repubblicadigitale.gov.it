@@ -401,19 +401,23 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	@LogExecutionTime
 	public String creaSezioneQuestionarioQ2ByCittadino(@NotNull final Long idCittadino, @NotNull final Long idServizio) {
 		Optional<ServizioEntity> primoServizio = servizioSqlService.getPrimoServizioByIdCittadino(idServizio, idCittadino);
-		List<TipologiaServizioEntity> tipologiaServiziList = primoServizio.get().getListaTipologiaServizi();
-		String tipologiaServiziString = "";
-		if(tipologiaServiziList != null && tipologiaServiziList.size() > 0) {
-			StringBuilder tipologiaServiziStringBuilder = new StringBuilder();
-			tipologiaServiziList.forEach(tipologiaServizio -> {
-				if(tipologiaServizio.getTitolo() != null) {
-					tipologiaServiziStringBuilder.append(tipologiaServizio.getTitolo().concat(", "));
-				}
-			});
-			tipologiaServiziString = tipologiaServiziStringBuilder.substring(0, tipologiaServiziStringBuilder.length()-2);
-		}
-		
 		Boolean esistePrimoServizio = primoServizio.isPresent();
+		
+		String tipologiaServiziString = "";
+		
+		if(esistePrimoServizio) {
+			List<TipologiaServizioEntity> tipologiaServiziList = primoServizio.get().getListaTipologiaServizi();
+			
+			if(tipologiaServiziList != null && tipologiaServiziList.size() > 0) {
+				StringBuilder tipologiaServiziStringBuilder = new StringBuilder();
+				tipologiaServiziList.forEach(tipologiaServizio -> {
+					if(tipologiaServizio.getTitolo() != null) {
+						tipologiaServiziStringBuilder.append(tipologiaServizio.getTitolo().concat(", "));
+					}
+				});
+				tipologiaServiziString = tipologiaServiziStringBuilder.substring(0, tipologiaServiziStringBuilder.length()-2);
+			}
+		}
 		final String jsonStringSezioneQ2 = String.format(SEZIONE_Q2_TEMPLATE,
 				ID_DOMANDA_PRIMA_VOLTA, esistePrimoServizio ? "No" : "Sì",
 				ID_DOMANDA_TIPO_PRIMO_SERVIZIO, esistePrimoServizio ? tipologiaServiziString : "");
