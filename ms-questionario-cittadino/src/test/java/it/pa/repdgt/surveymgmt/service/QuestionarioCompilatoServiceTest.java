@@ -75,7 +75,7 @@ public class QuestionarioCompilatoServiceTest {
 		cittadinoEntity.setNumeroDocumento("AE87D77D");
 		cittadinoEntity.setTipoConferimentoConsenso("TIPOCONFERIMENTO");
 		datiIstanza = new DatiIstanza();
-		datiIstanza.setDomandaRisposta(new JsonObject("{ \"Q1\" : \"domanda\" }"));
+		datiIstanza.setDomandaRisposta(new JsonObject("{ \"anagraphic-citizen-section\" : \"domanda\" }"));
 		listaDatiIstanza = new ArrayList<>();
 		listaDatiIstanza.add(datiIstanza);
 		questionarioCompilatoCollection = new QuestionarioCompilatoCollection();

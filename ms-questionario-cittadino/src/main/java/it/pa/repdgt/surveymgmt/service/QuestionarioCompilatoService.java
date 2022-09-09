@@ -165,7 +165,7 @@ public class QuestionarioCompilatoService {
 		final QuestionarioCompilatoCollection questionarioCompilatoDBMongoFetch = questionarioCompilatoCollection.get();
 		// Recupero le sezioni del questionario compilato salvate
 		List<DatiIstanza> datiIstanza = questionarioCompilatoDBMongoFetch.getSezioniQuestionarioTemplateIstanze();
-		DatiIstanza q1 = datiIstanza.stream().filter(sezione -> ((JsonObject)sezione.getDomandaRisposta()).toString().contains("Q1")).findFirst().get();
+		DatiIstanza q1 = datiIstanza.stream().filter(sezione -> ((JsonObject)sezione.getDomandaRisposta()).toString().contains("anagraphic-citizen-section")).findFirst().get();
 		// Verifico il consenso trattamento dati per il cittadino e in caso non lo abbia già dato, 
 		// lo registro per la prima volta. Ovvero salvo l'informazione sulla tabella Cittadino
 		this.verificaEseguiESalvaConsensoTrattamentoDatiPerAnonimo(questionarioInviato.getCodiceFiscale(), questionarioInviato.getNumDocumento(), ConsensoTrattamentoDatiEnum.ONLINE, q1);
