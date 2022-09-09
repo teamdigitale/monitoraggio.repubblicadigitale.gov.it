@@ -12,6 +12,7 @@ import org.apache.commons.csv.CSVPrinter;
 
 import it.pa.repdgt.gestioneutente.dto.UtenteDto;
 import it.pa.repdgt.gestioneutente.exception.UtenteException;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 
 
 public class CSVUtil {
@@ -38,7 +39,7 @@ public class CSVUtil {
 			csvPrinter.flush();
 			return new ByteArrayInputStream(outputStream.toByteArray());
 		} catch (IOException ex) {
-			throw new UtenteException("Errore export csv utenti", ex);
+			throw new UtenteException("Errore export csv utenti", ex, CodiceErroreEnum.U19);
 		}
 	}
 
