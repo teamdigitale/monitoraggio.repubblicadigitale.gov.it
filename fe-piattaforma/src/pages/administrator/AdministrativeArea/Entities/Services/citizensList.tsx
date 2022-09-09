@@ -78,8 +78,7 @@ const CitizensList: React.FC = () => {
   };
 
   const searchInformation: SearchInformationI = {
-    title:
-      'Cerca cittadino per nome, cognome, codice fiscale o  numero  documento',
+    title: 'Cerca cittadino',
     onHandleSearch: handleOnSearch,
     placeholder:
       'Cerca cittadino per nome, cognome, codice fiscale o  numero  documento',
@@ -130,11 +129,16 @@ const CitizensList: React.FC = () => {
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(`/area-amministrativa/servizi/${serviceId}/cittadini/compilato/${td}`);
+      navigate(
+        `/area-amministrativa/servizi/${serviceId}/cittadini/compilato/${td}`
+      );
     },
     [CRUDActionTypes.EDIT]: (td: TableRowI | string) => {
       dispatch(
-        openModal({ id: formTypes.SERVICE_CITIZEN, payload: { idCittadino: td, serviceId: serviceId, viewMode: false } })
+        openModal({
+          id: formTypes.SERVICE_CITIZEN,
+          payload: { idCittadino: td, serviceId: serviceId, viewMode: false },
+        })
       );
     },
     // [CRUDActionTypes.PRINT]: (td: TableRowI | string) => {
@@ -146,18 +150,35 @@ const CitizensList: React.FC = () => {
     //   //TODO REPLACE WITH DYNAMIC ID WHEN WE HAVE THE APIS
     // },
     [CRUDActionTypes.COMPILE]: (td: TableRowI | string) => {
-      navigate(`/area-amministrativa/servizi/${serviceId}/cittadini/compila/${td}`);
+      navigate(
+        `/area-amministrativa/servizi/${serviceId}/cittadini/compila/${td}`
+      );
     },
     [CRUDActionTypes.SEND]: async (td: TableRowI | string) => {
-      if(typeof(td) !== 'string') {
-        await dispatch(SendSurveyToCitizen(td?.idCittadino.toString(), td?.idQuestionario.toString()));
-        // TODO: controllo sulla response che se ok aprire modale
-        dispatch(
-          openModal({
-            id: 'confirmSentSurveyModal',
-            payload: { text: 'Questionario inviato correttamente!' },
-          })
+      if (typeof td !== 'string') {
+        const res = await dispatch(
+          SendSurveyToCitizen(
+            td?.idCittadino.toString(),
+            td?.idQuestionario.toString()
+          )
         );
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (res === 'error') {
+          dispatch(
+            openModal({
+              id: 'confirmSentSurveyModal',
+              payload: { text: 'Questionario non inviato correttamente!', error: true },
+            })
+          );
+        } else {
+          dispatch(
+            openModal({
+              id: 'confirmSentSurveyModal',
+              payload: { text: 'Questionario inviato correttamente!', error: false },
+            })
+          );
+        }
       }
       getServiceDetailsCitizens();
       getAllFilters();
@@ -219,7 +240,7 @@ const CitizensList: React.FC = () => {
   ];
 
   return (
-    <div className='container'>
+    <div>
       {citizens?.cittadini?.length > 0 ? (
         <GenericSearchFilterTableLayout
           searchInformation={searchInformation}
@@ -228,6 +249,9 @@ const CitizensList: React.FC = () => {
           filtersList={filtersList}
           cardsCounter={cardsCounter}
           isDetail
+          citizenList={true}
+          tooltip
+          tooltiptext='Cerca cittadino per nome, cognome, codice fiscale o  numero  documento'
         >
           {(citizens?.cittadini || []).map((citizen: CitizenI, i: number) => (
             <DetailsRow
@@ -237,8 +261,8 @@ const CitizensList: React.FC = () => {
               onActionClick={onActionClick}
               id={citizen?.idCittadino || ''}
               innerInfo={{
-                ID: citizen?.idCittadino || '',
-                'Codice Fiscale': citizen?.codiceFiscale || '',
+                ID: citizen?.idCittadino || '-',
+                'Codice Fiscale': citizen?.codiceFiscale || '-',
               }}
               rowInfoType='questionario'
               idQuestionario={citizen?.idQuestionario || ''}

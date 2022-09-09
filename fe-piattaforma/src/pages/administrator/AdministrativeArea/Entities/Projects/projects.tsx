@@ -234,6 +234,8 @@ const Projects: React.FC = () => {
           ? handleDownloadList
           : undefined
       }
+      tooltip
+      tooltiptext={searchInformation.placeholder}
     >
       <div>
         {progettiList?.length && tableValues?.values?.length ? (

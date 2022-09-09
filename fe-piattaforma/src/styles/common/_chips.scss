@@ -4,7 +4,11 @@
     border: none;
   }
   @media screen and (min-width: 670px) {
-    height: auto !important;
+    height: auto !important ;
+  }
+
+  &__chip-height {
+    height: 30px !important;
   }
 }
 
@@ -12,7 +16,11 @@
   transform: unset !important;
   line-height: rem(15px);
   @media screen and (min-width: 670px) {
-    height: auto !important;
+    height: auto !important ;
+  }
+
+  &__chip-height {
+    height: 30px !important;
   }
 }
 

@@ -25,6 +25,7 @@ import { generateForm } from '../../../utils/jsonFormHelper';
 import Loader from '../../../components/Loader/loader';
 import BigItUserWhite from '/public/assets/img/big-white-it-user.png';
 import { convertPayloadSectionInString } from '../../../utils/common';
+import BigCheckVerde from '/public/assets/img/green-check-circle.png';
 
 const SurveyOnlineModalId = 'SurveyOnlineModalId';
 const SurveyOnlineSuccessModalId = 'SurveyOnlineSuccessModalId';
@@ -154,9 +155,8 @@ const SurveyOnline: React.FC<withFormHandlerProps> = (props) => {
         label: 'Chiudi',
         onClick: handleRedirectHome,
       }}
-      icon='it-check-circle'
-      iconColor='white'
-      bigIcon
+      icon={BigCheckVerde}
+      isSuccesModal
       withIcon
       isSurveyOnline
       centerButtons

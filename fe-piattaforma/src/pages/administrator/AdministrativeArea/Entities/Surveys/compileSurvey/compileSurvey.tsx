@@ -169,25 +169,23 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
               newForm[key].disabled = true;
             }
             if (key === '18') {
-              if (!newForm[key].value || newForm[key].value === '$consenso')
-                newForm[key].value = '';
-              const options: OptionType[] = [];
-              newForm[key].options?.map((opt: OptionType) => {
-                options?.push({
+              newForm[key].options = newForm[key]?.options?.map(
+                (opt: OptionType) => ({
                   label: opt.label,
                   value: opt.value.toString().toUpperCase(),
-                });
-              });
-              newForm[key].value === ''
-                ? (newForm[key].options = options?.filter(
+                })
+              );
+              newForm[key].value === '$consenso'
+                ? (newForm[key].options = newForm[key].options?.filter(
                     (opt: OptionType) => opt.value !== 'ONLINE'
                   ))
                 : newForm[key].value === 'ONLINE'
-                ? (newForm[key].options = options?.filter(
+                ? (newForm[key].options = newForm[key].options?.filter(
                     (opt: OptionType) => opt.value === 'ONLINE'
                   ))
-                : options;
-              newForm[key].disabled = newForm[key].value === '' ? false : true;
+                : null;
+              newForm[key].disabled = newForm[key].value !== '$consenso';
+              newForm[key].valid = newForm[key].value === '$consenso' ? false:newForm[key].valid || true;
             }
             if (key === '19') delete newForm[key];
           });
@@ -387,7 +385,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
   if (!sections?.length) return null;
 
   return (
-    <div className='container'>
+    <>
       <Button
         onClick={() => navigate(-1)}
         className={clsx(device.mediaIsPhone && 'mb-5', 'px-0')}
@@ -442,7 +440,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
           />
         </div>
       </div>
-      <Sticky mode='bottom' stickyClassName='sticky bg-white'>
+      <Sticky mode='bottom' stickyClassName='sticky bg-white container'>
         {device.mediaIsPhone ? (
           <div className='container'>{mobileButtons()}</div>
         ) : (
@@ -451,7 +449,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
           </div>
         )}
       </Sticky>
-    </div>
+    </>
   );
 };
 

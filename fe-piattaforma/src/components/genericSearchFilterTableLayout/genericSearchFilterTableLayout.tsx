@@ -46,6 +46,9 @@ interface GenericSearchFilterTableLayoutI {
   resetFilterDropdownSelected?: (filterKey: string) => void;
   citizen?: boolean;
   isDetail?: boolean;
+  citizenList?: boolean;
+  tooltip?: boolean;
+  tooltiptext?: string;
 }
 
 const GenericSearchFilterTableLayout: React.FC<
@@ -69,6 +72,9 @@ const GenericSearchFilterTableLayout: React.FC<
   resetFilterDropdownSelected,
   citizen,
   isDetail,
+  citizenList = false,
+  tooltip = false,
+  tooltiptext = '',
 }) => {
   const dispatch = useDispatch();
   const [showChips, setShowChips] = useState<boolean>(false);
@@ -212,10 +218,14 @@ const GenericSearchFilterTableLayout: React.FC<
               <SearchBar
                 autocomplete={searchInformation.autocomplete}
                 onSubmit={searchInformation.onHandleSearch}
-                placeholder={searchInformation.placeholder}
+                placeholder={
+                  device.mediaIsPhone ? '' : searchInformation.placeholder
+                }
                 isClearable={searchInformation.isClearable}
                 title={searchInformation.title}
                 id='search-filter-table-layout'
+                tooltip={tooltip}
+                tooltipText={tooltiptext}
               />
             </div>
           </div>
@@ -280,17 +290,15 @@ const GenericSearchFilterTableLayout: React.FC<
           )}
         </div>
       </div>
-      <div className='d-flex justify-content-between w-100'>
+      <div className='d-flex flex-wrap justify-content-between'>
         {dropdowns?.length && (
           <div
             className={clsx(
               'd-flex',
               'flex-row',
               'flex-wrap',
-              'p',
-              'pt-lg-3',
-              'pt-0',
-              buttonsList?.length && 'w-50'
+              'p-lg-3',
+              'pt-0'
             )}
           >
             {dropdowns.map((dropdown, index) => (
@@ -307,18 +315,17 @@ const GenericSearchFilterTableLayout: React.FC<
           <div
             className={clsx(
               'd-flex',
-              'flex-row',
-              'flex-wrap',
-              'pt-lg-3',
+              !device.mediaIsDesktop ? 'flex-column' : 'flex-row',
+              'py-lg-3',
               'pt-0',
-              'w-50',
               isDetail && 'justify-content-end'
             )}
           >
-            <ButtonsBar buttons={buttonsList} />
+            <ButtonsBar citizenList={citizenList} buttons={buttonsList} />
           </div>
         )}
       </div>
+
       <div
         className={clsx(
           showChips && showButtons
@@ -377,6 +384,7 @@ const GenericSearchFilterTableLayout: React.FC<
           <div className='mt-5'></div>
         )}
       </div>
+
       {Sidebar ? (
         <div className='d-flex'>
           {Sidebar}
