@@ -1,5 +1,6 @@
+import clsx from 'clsx';
 import React, { useEffect } from 'react';
-import {Form, Input, PrefixPhone, Select} from '../../components';
+import { Form, Input, PrefixPhone, Select } from '../../components';
 import CheckboxGroup from '../../components/Form/checkboxGroup';
 import withFormHandler, {
   withFormHandlerProps,
@@ -65,7 +66,6 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
         'snakeDate'
       );
       if (formattedDate) values.dataConferimentoConsenso = formattedDate;
-      if(values.tipoConferimentoConsenso === '' || values.tipoConferimentoConsenso === null) values.tipoConferimentoConsenso = 'ONLINE';
       setFormValues(values);
     }
     if (formDataService) {
@@ -142,7 +142,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           placeholder='Inserisci codice fiscale'
           onInputChange={onInputDataChange}
         />
-        <CheckboxGroup     // TODO: fix accessibilità onkeydown
+        <CheckboxGroup // TODO: fix accessibilità onkeydown
           {...form?.codiceFiscaleNonDisponibile}
           className='col-12 col-lg-6'
           options={citizenFormDropdownOptions['codiceFiscaleNonDisponibile']}
@@ -247,24 +247,53 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           placeholder={`Inserisci ${form?.telefono?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
         />
-        {/* <CheckboxGroup
-          {...form?.tipoConferimentoConsenso}
-          className={clsx(
-            'col-12 col-lg-6',
-            'compile-survey-container__checkbox-margin'
-          )}
-          options={citizenFormDropdownOptions['tipoConferimentoConsenso']}
-          onInputChange={onInputDataChange}
-          styleLabelForm
-          classNameLabelOption='pl-5'
-          disabled
-        />
-        <Input
-          {...form?.dataConferimentoConsenso}
-          col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.dataConferimentoConsenso?.label?.toLowerCase()}`}
-          onInputChange={onInputDataChange}
-        /> */}
+        {form?.tipoConferimentoConsenso?.value === '$consenso' ||
+        form?.tipoConferimentoConsenso?.value === null ||
+        form?.tipoConferimentoConsenso?.value === '' ? (
+          <CheckboxGroup
+            className={clsx(
+              'col-12 col-lg-6',
+              'compile-survey-container__checkbox-margin'
+            )}
+            options={[
+              { label: "Gestita dall'ente", value: "Gestita dall'ente" },
+            ]}
+            onInputChange={onInputDataChange}
+            styleLabelForm
+            classNameLabelOption='pl-5'
+            label='Presa visione dell’informativa privacy'
+            value="Gestita dall'ente"
+            disabled
+          />
+        ) : (
+          <span></span>
+        )}
+        {citizenFormDropdownOptions['tipoConferimentoConsenso'].filter(
+          (opt) => opt.value === form?.tipoConferimentoConsenso?.value
+        )?.length > 1 ? (
+          <CheckboxGroup
+            {...form?.tipoConferimentoConsenso}
+            className={clsx(
+              'col-12 col-lg-6',
+              'compile-survey-container__checkbox-margin'
+            )}
+            options={citizenFormDropdownOptions['tipoConferimentoConsenso']}
+            styleLabelForm
+            classNameLabelOption='pl-5'
+            disabled
+          />
+        ) : (
+          <span></span>
+        )}
+        {form?.dataConferimentoConsenso?.value && form?.dataConferimentoConsenso?.value !== '$dataConsenso' ? (
+          <Input
+            {...form?.dataConferimentoConsenso}
+            col='col-12 col-lg-6'
+            disabled
+          />
+        ) : (
+          <span></span>
+        )}
       </Form.Row>
     </Form>
   );
@@ -393,21 +422,21 @@ const form = newForm([
     type: 'text',
     required: true,
   }),
-  // newFormField({
-  //   field: 'tipoConferimentoConsenso',
-  //   id: 'tipoConferimentoConsenso',
-  //   label: 'Tipo conferimento consenso',
-  //   type: 'checkbox',
-  //   required: true,
-  // }),
-  // newFormField({
-  //   field: 'dataConferimentoConsenso',
-  //   id: 'dataConferimentoConsenso',
-  //   regex: RegexpType.DATE,
-  //   label: 'Data conferimento consenso',
-  //   type: 'date',
-  //   required: true,
-  // }),
+  newFormField({
+    field: 'tipoConferimentoConsenso',
+    id: 'tipoConferimentoConsenso',
+    label: 'Tipo conferimento consenso',
+    type: 'checkbox',
+    // required: true,
+  }),
+  newFormField({
+    field: 'dataConferimentoConsenso',
+    id: 'dataConferimentoConsenso',
+    regex: RegexpType.DATE,
+    label: 'Data conferimento consenso',
+    type: 'date',
+    // required: true,
+  }),
 ]);
 
 export default withFormHandler({ form }, FormCitizen);

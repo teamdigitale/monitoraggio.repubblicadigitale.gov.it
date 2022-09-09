@@ -25,6 +25,7 @@ import {
   resetCompilingSurveyForm,
   setPrintSurveySection,
   setSurveyInfoForm,
+  setSurveyOnline,
   setSurveyQuestion,
   setSurveySection,
   SurveyQuestionI,
@@ -542,7 +543,6 @@ export const UpdateSurveyExclusiveField =
 const GetSurveyAllLightAction = {
   type: 'administrativeArea/GetSurveyAllLight',
 };
-
 export const GetSurveyAllLight = () => async (dispatch: Dispatch) => {
   try {
     dispatch(showLoader());
@@ -567,7 +567,6 @@ export const GetSurveyAllLight = () => async (dispatch: Dispatch) => {
 const DeleteSurveyAction = {
   type: 'surveys/DeleteSurvey',
 };
-
 export const DeleteSurvey =
   (idQuestionario: string) => async (dispatch: Dispatch) => {
     try {
@@ -579,6 +578,49 @@ export const DeleteSurvey =
       }
     } catch (e) {
       console.error('UpdateSurveyDefault error', e);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const GetSurveyOnlineAction = {type: 'surveys/GetSurveyOnline'};
+export const GetSurveyOnline =
+  (idQuestionario: string, token: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...GetSurveyOnlineAction, idQuestionario, token });
+      const res = await API.get(`/servizio/cittadino/questionarioCompilato/${idQuestionario}/anonimo`, {
+        params: { t: token },
+      });
+      if (res) {
+        dispatch(setSurveyOnline(res.data));
+        return true
+      }
+    } catch (e) {
+      console.error('GetSurveyOnline error', e);
+      return false
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const CompileSurveyOnlineAction = {type: 'surveys/CompileSurveyOnline'};
+export const CompileSurveyOnline =
+  (idQuestionario: string, token: string, body: any) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...CompileSurveyOnlineAction, body });
+      const res = await API.post(`/servizio/cittadino/questionarioCompilato/${idQuestionario}/compila/anonimo`, {
+        sezioneQ4Questionario: body,
+      }, {
+        params: { t: token },
+      });
+      if (res) {
+        return true
+      }
+    } catch (e) {
+      console.error('CompileSurveyOnline error', e);
+      return false
     } finally {
       dispatch(hideLoader());
     }
