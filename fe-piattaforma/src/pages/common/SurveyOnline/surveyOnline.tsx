@@ -23,7 +23,7 @@ import withFormHandler, {
 import JsonFormRender from '../../administrator/AdministrativeArea/Entities/Surveys/components/jsonFormRender';
 import { generateForm } from '../../../utils/jsonFormHelper';
 import Loader from '../../../components/Loader/loader';
-import BigItUserWhite from '../../../../public/assets/img/big-white-it-user.png';
+import BigItUserWhite from '/public/assets/img/big-white-it-user.png';
 import { convertPayloadSectionInString } from '../../../utils/common';
 
 const SurveyOnlineModalId = 'SurveyOnlineModalId';
