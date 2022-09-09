@@ -53,6 +53,7 @@ import it.pa.repdgt.shared.entity.UtenteXRuolo;
 import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -103,7 +104,7 @@ public class UtenteService {
 	@LogExecutionTime
 	public List<UtenteDto> getAllUtentiPaginati(UtenteRequest sceltaContesto, Integer currPage, Integer pageSize) {
 		if(this.ruoloService.getRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
-			throw new UtenteException("ERRORE: ruolo non definito per l'utente");
+			throw new UtenteException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
 		}
 		return this.getUtentiPaginatiByRuolo(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest(),currPage, pageSize);
 		
@@ -282,7 +283,7 @@ public class UtenteService {
 		// Verifico se esiste sul DB un utente con stesso codice fiscale e in caso affermativo lancio eccezione
 		Optional<UtenteEntity> utenteDBFetch = this.utenteRepository.findByCodiceFiscale(utente.getCodiceFiscale());
 		if(utenteDBFetch.isPresent()) {
-			new UtenteException(String.format("Utente con codice fiscale '%s' già esistente", utente.getCodiceFiscale()));
+			new UtenteException(String.format("Utente con codice fiscale '%s' già esistente", utente.getCodiceFiscale()), CodiceErroreEnum.U01);
 		}
 		
 		utente.setStato(StatoEnum.NON_ATTIVO.getValue());
@@ -321,7 +322,7 @@ public class UtenteService {
 			utenteFetchDB = this.getUtenteById(idUtente);
 		} catch (ResourceNotFoundException ex) {
 			String messaggioErrore = String.format("utente con id=%s non trovato", idUtente);
-			throw new UtenteException(messaggioErrore, ex);
+			throw new UtenteException(messaggioErrore, ex, CodiceErroreEnum.U11);
 		}
 		utenteFetchDB.setEmail(aggiornaUtenteRequest.getEmail());
 		utenteFetchDB.setTelefono(aggiornaUtenteRequest.getTelefono());
@@ -347,11 +348,11 @@ public class UtenteService {
 			utente = this.getUtenteById(idUtente);
 		} catch (ResourceNotFoundException ex) {
 			String messaggioErrore = String.format("Impossibile cancellare un utente che non esiste");
-			throw new UtenteException(messaggioErrore, ex);
+			throw new UtenteException(messaggioErrore, ex, CodiceErroreEnum.U12);
 		}
 		if(this.utenteXRuoloService.countRuoliByCfUtente(utente.getCodiceFiscale()) > 0) {
 			String errorMessage = String.format("Impossibile cancellare l'utente con codice fiscale %s poiché ha almeno un ruolo associato", utente.getCodiceFiscale());
-			throw new UtenteException(errorMessage);
+			throw new UtenteException(errorMessage, CodiceErroreEnum.U13);
 		}
 		this.utenteRepository.delete(utente);
 	}
@@ -385,18 +386,18 @@ public class UtenteService {
 			ruolo = this.ruoloService.getRuoloByCodiceRuolo(codiceRuolo);
 		} catch (ResourceNotFoundException ex) {
 			String messaggioErrore = String.format("Impossibile assegnare il ruolo con codice = %s poiché non esistente", codiceRuolo);
-			throw new UtenteException(messaggioErrore, ex);
+			throw new UtenteException(messaggioErrore, ex, CodiceErroreEnum.U14);
 		}
 		UtenteEntity utente = null;
 		try {
 			utente = this.getUtenteById(idUtente);
 		} catch (ResourceNotFoundException ex) {
 			String messaggioErrore = String.format("Impossibile assegnare il ruolo con codice = %s poiché l'utente con id = %s non esiste", codiceRuolo, idUtente);
-			throw new UtenteException(messaggioErrore, ex);
+			throw new UtenteException(messaggioErrore, ex, CodiceErroreEnum.U15);
 		}
 		if(utente.getRuoli().contains(ruolo)) {
 			String messaggioErrore = String.format("L'utente con id = %s ha già il ruolo con codice = %s assegnato", idUtente, codiceRuolo);
-			throw new UtenteException(messaggioErrore);
+			throw new UtenteException(messaggioErrore, CodiceErroreEnum.U16);
 		}
 		if(codiceRuolo.equals("DTD") || codiceRuolo.equals("DSCU")) {
 			ruolo.setStato(StatoEnum.ATTIVO.getValue());
@@ -411,14 +412,14 @@ public class UtenteService {
 			return;
 		}
 		String errorMessage = String.format("Impossibile assegnare un ruolo predefinito all'infuori di DTD e DSCU");
-		throw new UtenteException(errorMessage);
+		throw new UtenteException(errorMessage, CodiceErroreEnum.R13);
 	}
 	
 	@LogMethod
 	@LogExecutionTime
 	public List<String> getAllStatiDropdown(UtenteRequest sceltaContesto) {
 		if(this.ruoloService.getRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
-			throw new UtenteException("ERRORE: ruolo non definito per l'utente");
+			throw new UtenteException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
 		}
 		return this.getAllStatiByRuoloAndcfUtente(sceltaContesto.getCodiceRuolo(),sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
 	}
@@ -450,7 +451,7 @@ public class UtenteService {
 	@LogExecutionTime
 	public List<String> getAllRuoliDropdown(UtenteRequest sceltaContesto) {
 		if(this.ruoloService.getRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
-			throw new UtenteException("ERRORE: ruolo non definito per l'utente");
+			throw new UtenteException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
 		}
 		return this.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuolo(),sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
 	}
@@ -929,17 +930,17 @@ public class UtenteService {
 	public void cancellaRuoloDaUtente(Long idUtente, String codiceRuolo) {
 		if(this.ruoloService.getRuoloByCodiceRuolo(codiceRuolo) == null) {
 			String errorMessage = String.format("Il codice ruolo %s inserito non corrisponde a nessun ruolo esistente", codiceRuolo);
-			throw new RuoloException(errorMessage);
+			throw new RuoloException(errorMessage, CodiceErroreEnum.R14);
 		}
 		UtenteEntity utente = this.getUtenteById(idUtente);
 		if(utente == null ) {
 			String errorMessage = String.format("L'utente con id %s non esiste", idUtente);
-			throw new UtenteException(errorMessage);
+			throw new UtenteException(errorMessage, CodiceErroreEnum.U11);
 		}
 		RuoloEntity ruolo = this.ruoloService.getRuoloByCodiceRuolo(codiceRuolo);
 		if(!utente.getRuoli().contains(ruolo)) {
 			String errorMessage = String.format("Impossibile cancellare un ruolo non associato all'utente");
-			throw new RuoloException(errorMessage);
+			throw new RuoloException(errorMessage, CodiceErroreEnum.R15);
 		}
 		if(ruolo.getPredefinito() == false) {
 			UtenteXRuolo utenteRuolo = this.utenteXRuoloService.getUtenteXRuoloByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), codiceRuolo);
@@ -952,7 +953,7 @@ public class UtenteService {
 			return;
 		}
 		String errorMessage = String.format("Impossibile cancellare un ruolo predefinito all'infuori di DTD e DSCU");
-		throw new RuoloException(errorMessage);
+		throw new RuoloException(errorMessage, CodiceErroreEnum.R13);
 	}
 
 	public int countUtentiTrovati(@Valid UtenteRequest sceltaContesto) {
@@ -1157,7 +1158,7 @@ public class UtenteService {
 		try {
 			presignedUrlImmagineProfiloUtente = this.s3Service.getPresignedUrl(nomeFile, this.nomeDelBucketS3, Long.parseLong(this.presignedUrlExpireContesto));
 		} catch (Exception ex) {
-			throw new UtenteException("Errore download immagine profilo utente", ex);
+			throw new UtenteException("Errore download immagine profilo utente", ex, CodiceErroreEnum.U17);
 		}
 		return presignedUrlImmagineProfiloUtente;
 	}
