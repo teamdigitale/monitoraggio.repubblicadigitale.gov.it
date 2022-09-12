@@ -477,14 +477,14 @@ export const PostFormCompletedByCitizen =
         : payload?.[0]['18']?.includes('CARTACEO')
         ? 'CARTACEO'
         : 'EMAIL';
-      (payload || []).map((section: any) => {
+      /*(payload || []).map((section: any) => {
         Object.keys(section).map((key: string) => {
           if (typeof(section[key]) === 'string' && section[key]?.includes('§')) {
             const arrayValues: string[] = section[key]?.split('§');
             section[key] = arrayValues;
           }
         });
-      });
+      });*/
       const body = {
         annoDiNascitaDaAggiornare: payload?.[0]['8'],
         categoriaFragiliDaAggiornare: payload?.[0]['13'],
@@ -514,12 +514,14 @@ export const PostFormCompletedByCitizen =
       };
       await API.post(entityEndpoint, body);
       resetCompilingSurveyForm();
+      return true;
     } catch (e) {
       console.error(
         'post questionario compilato PostFormCompletedByCitizen',
         e
       );
       resetCompilingSurveyForm();
+      return false;
     } finally {
       dispatch(hideLoader());
     }

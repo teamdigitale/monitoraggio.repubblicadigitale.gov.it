@@ -34,6 +34,7 @@ export interface ServizioCittadinoI {
   nomeCompletoFacilitatore?: string;
   nomeServizio?: string;
   statoQuestionario?: string;
+  associatoAUtente?: boolean;
 }
 
 export interface CittadinoI {

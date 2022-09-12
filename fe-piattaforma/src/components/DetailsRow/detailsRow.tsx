@@ -139,12 +139,26 @@ const DetailsRow: React.FC<DetailsRowI> = ({
         </div>
       </div>
       <div className='details-row__info'>
-        {Object.keys(innerInfo).map((x, index) => (
-          <div key={index}>
-            <span className='font-weight-normal primary-color-a12'>{x}: </span>
-            <span className='text-uppercase'>{innerInfo[x]}</span>
+        {innerInfo?.['Codice Fiscale'] && innerInfo?.['Codice Fiscale'] !== '-' && (
+          <div>
+            <span className='font-weight-normal primary-color-a12'>
+              Codice Fiscale:{' '}
+            </span>
+            <span className='text-uppercase'>
+              {innerInfo['Codice Fiscale']}
+            </span>
           </div>
-        ))}
+        )}
+        {innerInfo?.['Numero Documento'] && innerInfo?.['Codice Fiscale'] === '-' && (
+          <div>
+            <span className='font-weight-normal primary-color-a12'>
+              Numero Documento:{' '}
+            </span>
+            <span className='text-uppercase'>
+              {innerInfo['Numero Documento']}
+            </span>
+          </div>
+        )}
       </div>
       <div className='details-row__right-section primary-color-b1'>
         <span className='text-uppercase'>{rowInfoType}</span>

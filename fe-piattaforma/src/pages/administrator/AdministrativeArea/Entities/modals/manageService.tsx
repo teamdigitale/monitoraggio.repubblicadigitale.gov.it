@@ -30,7 +30,7 @@ interface ManageServicesFormI {
 interface ManageServicesI extends withFormHandlerProps, ManageServicesFormI {}
 
 const ManageServices: React.FC<ManageServicesI> = ({
-  clearForm,
+  clearForm = () => ({}),
   formDisabled,
   creation,
 }) => {
@@ -106,8 +106,12 @@ const ManageServices: React.FC<ManageServicesI> = ({
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: () => clearForm?.(),
+        onClick: () => {
+          clearForm();
+          dispatch(closeModal());
+        },
       }}
+      closable={false}
     >
       <div className='px-3'>
         <FormService
