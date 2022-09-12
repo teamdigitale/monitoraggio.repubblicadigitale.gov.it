@@ -39,9 +39,11 @@ export interface CitizenI {
   codiceFiscale?: string;
   idQuestionario?: string;
   statoQuestionario?: string;
+  numeroDocumento?: string;
   innerInfo?: {
     ID: string;
     codiceFiscale: string;
+    numeroDocumento: string;
   };
 }
 
@@ -263,6 +265,7 @@ const CitizensList: React.FC = () => {
               innerInfo={{
                 ID: citizen?.idCittadino || '-',
                 'Codice Fiscale': citizen?.codiceFiscale || '-',
+                'Numero Documento': citizen?.numeroDocumento || '-',
               }}
               rowInfoType='questionario'
               idQuestionario={citizen?.idQuestionario || ''}

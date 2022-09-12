@@ -36,7 +36,12 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
   const [values, setValues] = useState<string[]>(parseExternalValue());
 
   useEffect(() => {
-    setValues(parseExternalValue());
+    if (
+      value === '' ||
+      options.filter((opt) => opt.value === value.toString()).length
+    ) {
+      setValues(parseExternalValue());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
@@ -47,7 +52,7 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
       if (!areEquals) onInputChange(newValues, field);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values.join(',')]);
+  }, [values.join(separator)]);
 
   const handleOnChange = (value: string | number) => {
     const valueIndex = values.findIndex((v) => v === value.toString());
@@ -73,7 +78,7 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
                 styleLabelForm && 'compile-survey-container__label-checkbox'
               )}
             >
-              {label} {required && '*'}
+              {label}&nbsp;{required && '*'}
             </p>
           ) : (
             <p className='h6'>{field}</p>

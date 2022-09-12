@@ -212,19 +212,24 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         ? td.actions.toString().includes(CRUDActionTypes.VIEW)
                         : onActionClick[CRUDActionTypes.VIEW]
                     ) ? (
-                      <Button
-                        onClick={() => onActionClick[CRUDActionTypes.VIEW](td)}
-                        className='p-0'
-                        aria-label='Pulsante selezione riga'
-                      >
-                        <Icon
-                          icon='it-chevron-right'
-                          color='primary'
-                          size='sm'
-                          aria-label='Vedi dettaglio elemento riga'
-                          focusable={false}
-                        />
-                      </Button>
+                      (!td?.citizen) ||
+                      (td?.citizen && td?.associatoAUtente) ? (
+                        <Button
+                          onClick={() =>
+                            onActionClick[CRUDActionTypes.VIEW](td)
+                          }
+                          className='p-0'
+                          aria-label='Pulsante selezione riga'
+                        >
+                          <Icon
+                            icon='it-chevron-right'
+                            color='primary'
+                            size='sm'
+                            aria-label='Vedi dettaglio elemento riga'
+                            focusable={false}
+                          />
+                        </Button>
+                      ) : null
                     ) : null}
                   </div>
                 </td>

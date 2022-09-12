@@ -8,6 +8,7 @@ import {
   SelectMultiple,
 } from '../../../components';
 import CheckboxGroup from '../../../components/Form/checkboxGroup';
+import { OptionType } from '../../../components/Form/select';
 import { OptionTypeMulti } from '../../../components/Form/selectMultiple';
 import withFormHandler, {
   withFormHandlerProps,
@@ -36,7 +37,7 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
     setFormValues = () => ({}),
     form,
     onInputChange = () => ({}),
-    sendNewValues,
+    sendNewValues = () => ({}),
     // isValidForm,
     setIsFormValid = () => ({}),
     getFormValues,
@@ -61,16 +62,33 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
       const formFromSchema = generateForm(
         JSON.parse(surveyTemplateQ1.schema.json)
       );
-      delete formFromSchema['18']; // tipo consenso non parte dell'anagrafica
       delete formFromSchema['19']; // data consenso non parte dell'anagrafica
-      Object.keys(formFromSchema).forEach((key: string) => {console.log(key)
+      Object.keys(formFromSchema).forEach((key: string) => {
+        
         formFromSchema[key].label = formFromSchema[key].value?.toString() || '';
         formFromSchema[key].value = '';
         if (Number(key) === 4 || Number(key) === 5 || Number(key) === 6) {
           formFromSchema[key].required = false;
         }
-        if(Number(key) === 15){
+        if (Number(key) === 15) {
           formFromSchema[key].value = '+39';
+        }
+        if (Number(key) === 18) {
+          if(creation){
+            formFromSchema[key].options = [
+              { label: "Gestita dall'ente", value: "$consenso" },
+            ];
+            formFromSchema[key].value = "$consenso";
+            formFromSchema[key].disabled = true;
+          }else{
+            formFromSchema[key].options = formFromSchema[key]?.options?.map(
+              (opt: OptionType) => ({
+                label: opt.label,
+                value: opt.value.toString().toUpperCase(),
+              })
+            );
+            formFromSchema[key].keyBE = 'tipoConferimentoConsenso';
+          } 
         }
       });
       setDynamicForm(formFromSchema);
@@ -109,14 +127,31 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
     value: formFieldI['value'],
     field?: formFieldI['field']
   ) => {
-    onInputChange?.(value, field);
-    setIsFormValid?.(FormHelper.isValidForm(form));
+    onInputChange(value, field);
+    setIsFormValid(FormHelper.isValidForm(form));
   };
 
   useEffect(() => {
-    sendNewValues?.(getFormValues?.());
-    setIsFormValid?.(FormHelper.isValidForm(form));
+    sendNewValues(getFormValues?.());
+    setIsFormValid(FormHelper.isValidForm(form));
   }, [form]);
+
+  useEffect(() => {
+    // form[3] = codiceFiscale, form[8] = annoNascita
+    if (
+      creation &&
+      form &&
+      form[3]?.value &&
+      form[3]?.valid &&
+      form[3]?.value?.toString().length === 16 &&
+      !form[8]?.value
+    ) {
+      onInputDataChange(
+        `19${form[3]?.value?.toString().slice(6, 8)}`,
+        form[8]?.field
+      );
+    }
+  }, [form, creation]);
 
   const renderPrefix = (field: formFieldI) => {
     if (field?.keyBE === 'prefisso') {
@@ -175,16 +210,16 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
         // checkbox if options
         if (field.options && field.options?.length > 0) {
           return (
-            <CheckboxGroup // TODO: fix accessibilità onkeydown
+            <CheckboxGroup
               {...field}
               id={`input-${field}`}
               field={field.field}
               className={clsx(
-                Number(field.field) === 18 ? 'col-12' : 'col-12 col-lg-6',
+                'col-12 col-lg-6',
                 'compile-survey-container__checkbox-margin'
               )}
               label={
-                Number(field.field) === 18 ? 'Data conferimento consenso' : ''
+                Number(field.field) === 18 ? 'Presa visione dell’informativa privacy' : ''
               }
               noLabel={Number(field.field) === 4}
               options={field.options}
@@ -303,7 +338,11 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
     <Form id='form-citizen' className='mt-5' formDisabled={formDisabled}>
       <div className='d-inline-flex flex-wrap w-100'>
         {form &&
-          Object.keys(form).map((key) => <>{getAnswerType(form[key])}</>)}
+          Object.keys(form).map((key) => (
+            <React.Fragment key={key}>
+              {getAnswerType(form[key])}
+            </React.Fragment>
+          ))}
       </div>
     </Form>
   );

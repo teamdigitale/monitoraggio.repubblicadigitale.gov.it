@@ -11,6 +11,7 @@ import { useAppSelector } from '../../../../../redux/hooks';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import { ServizioCittadinoI } from '../../../../../redux/features/citizensArea/citizensAreaSlice';
 import { useNavigate } from 'react-router-dom';
+import { Button, Icon } from 'design-react-kit';
 
 const TableHeadingEntities: TableHeadingI[] = [
   {
@@ -40,12 +41,31 @@ const CitizenServices: React.FC<{
         nomeServizio: td.nomeServizio || '',
         nomeCompletoFacilitatore: td.nomeCompletoFacilitatore || '',
         statoQuestionario: (
-          <StatusChip
-            status={td.statoQuestionario}
-            rowTableId={td.idServizio}
-          />
+          <>
+            <StatusChip
+              status={td.statoQuestionario}
+              rowTableId={td.idServizio}
+            />
+            {td.statoQuestionario === 'COMPILATO' && (
+              <Button
+                onClick={() => navigate(`/area-amministrativa/servizi/${td.idServizio}/cittadini/compilato/${td.idQuestionarioCompilato}`,{replace: true})}
+                className='py-0 px-2'
+                aria-label='Pulsante visualliza questionario compilato'
+              >
+                <Icon
+                  icon='it-zoom-in'
+                  color='primary'
+                  size='sm'
+                  aria-label='Vedi questionario compilato'
+                  focusable={false}
+                />
+              </Button>
+            )}
+          </>
         ),
         idQuestionarioCompilato: td.idQuestionarioCompilato || '',
+        associatoAUtente: td.associatoAUtente || false,
+        citizen: true,
       }))
     );
     return {
@@ -88,7 +108,7 @@ const CitizenServices: React.FC<{
       <Table
         {...tableValues}
         id='table'
-        onActionClick={onActionClick}
+        onActionClick={onActionClick} // td?.associatoAUtente
         onCellClick={(field, row) => console.log(field, row)}
         withActions
       />

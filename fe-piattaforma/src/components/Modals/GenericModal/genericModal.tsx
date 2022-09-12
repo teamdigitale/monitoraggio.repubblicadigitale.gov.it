@@ -18,6 +18,7 @@ interface CallToAction {
 }
 
 export interface GenericModalI {
+  closable?: boolean;
   description?: string | undefined;
   footer?: ReactChild;
   id?: string;

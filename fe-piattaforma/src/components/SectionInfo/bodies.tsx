@@ -61,3 +61,12 @@ export const openDataBody = `
 </li>
 </ul>
 `;
+
+export const openDataSubtitle = `
+<p class='text-muted' style='padding-bottom: 24px;'>
+Nell'ambito dell'iniziativa di <strong> Repubblica Digitale </strong> sono erogati servizi di facilitazione e formazione ai cittadini al fine di incrementare le loro competenze digitali. 
+<br>
+<br>
+Tali servizi sono erogati a livello nazionale presso le sedi designate a tale scopo; inoltre sono rilevate le principali caratteristiche della popolazione partecipante e della tipologia di servizio erogato.
+</p>
+`;
