@@ -20,7 +20,7 @@ import it.pa.repdgt.opendata.service.OpenDataService;
 public class OpenDataRestApi {
 	@Autowired
 	private OpenDataService openDataService;
-	final static String NOME_FILE = "fileCittadini.csv";
+	final static String NOME_FILE = "opendata_cittadini.csv";
 	
 	@GetMapping(path = "/download")
 	public ResponseEntity<InputStreamResource> downloadListaCSVCittadini() throws IOException {
