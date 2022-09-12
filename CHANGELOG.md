@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.113](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.112...1.0.0-develop.113) (2022-09-12)
+
+
+### Bug Fixes
+
+* **be:** fix test per nuovo cittadino ([9fe4bf1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9fe4bf138ff44bac5fec9eaf1be29dcb4375c3e1))
+* **be:** fix per creazione nuovo cittadino ([81fb08a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/81fb08a247abbc82fdca38e0a25959c898e6d881))
+
 ## [1.0.0-develop.112](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.111...1.0.0-develop.112) (2022-09-12)
 
 
