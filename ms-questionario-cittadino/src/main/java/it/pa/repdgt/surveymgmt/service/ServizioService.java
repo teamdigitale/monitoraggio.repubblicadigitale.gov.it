@@ -145,7 +145,7 @@ public class ServizioService {
 						filtroListaServizi.getStatiServizio()
 					);
 
-			// Se: Utente loggato si è profilato con ruolo Referente/Delegato Ente Gestore Progetto
+			// Se: Utente loggato si è profilato con ruolo Referente/Delegato Ente Gestore Partner
 			case RuoliUtentiConstants.REPP:
 			case RuoliUtentiConstants.DEPP:
 				return this.servizioSQLService.getAllServiziByReferenteODelegatoEntePartnerAndFiltro(
@@ -156,7 +156,7 @@ public class ServizioService {
 						filtroListaServizi.getStatiServizio()
 					);
 				
-			// Se: Utente loggato si è profilato con ruolo Referente/Delegato Ente Gestore Partner
+			// Se: Utente loggato si è profilato con ruolo Referente/Delegato Ente Gestore Progetto
 			case RuoliUtentiConstants.REGP:
 			case RuoliUtentiConstants.DEGP:
 				return this.servizioSQLService.getAllServiziByReferenteODelegatoGestoreProgettoAndFiltro(

@@ -231,11 +231,21 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	public CittadinoEntity creaNuovoCittadino(
 			@NotNull final Long idServizio, 
 			@NotNull final NuovoCittadinoServizioRequest nuovoCittadinoRequest) {
+		
 		final Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService.getCittadinoByCodiceFiscaleOrNumeroDocumento(
 				nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile(),
 				nuovoCittadinoRequest.getCodiceFiscale(),
 				nuovoCittadinoRequest.getNumeroDocumento()
 			);
+		
+		if(nuovoCittadinoRequest.getNuovoCittadino() && optionalCittadinoDBFetch.isPresent()) {
+			final String messaggioErrore = String.format(
+					"Cittadino con codice fiscale=%s, numero documento=%s già esistente", 
+					optionalCittadinoDBFetch.get().getCodiceFiscale(),
+					optionalCittadinoDBFetch.get().getNumeroDocumento()
+				);
+			throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U07);
+		}
 		
 		
 		CittadinoEntity cittadino = new CittadinoEntity();

@@ -17,6 +17,7 @@ public interface CittadinoServizioRepository extends JpaRepository<CittadinoEnti
 			 + "			 c.nome,"
 			 + "			 c.cognome,"
 			 + "			 c.codice_fiscale as codiceFiscale,"
+			 + "			 c.num_documento as numeroDocumento,"
 			 + "			 q_c.id as idQuestionario,"
 			 + "			 q_c.stato as statoQuestionario"
 			 + " FROM "
