@@ -116,6 +116,7 @@ public class CittadiniServizioServiceTest {
 		nuovoCittadinoRequest.setCodiceFiscale("CFUTENTE");
 		nuovoCittadinoRequest.setNumeroDocumento("A89E32");
 		nuovoCittadinoRequest.setCodiceFiscaleNonDisponibile(false);
+		nuovoCittadinoRequest.setNuovoCittadino(false);
 		cittadino = new CittadinoEntity();
 		cittadino.setId(1L);
 		cittadino.setEmail("prova@gmail.com");
