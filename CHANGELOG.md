@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.22](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.21...1.0.0-test.22) (2022-09-12)
+
+
+### Bug Fixes
+
+* **be:** allineamento per nuovo cittadino ([875f2ba](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/875f2baca2f6c177e09dde98fbb69f4b5c955e24))
+
 ## [1.0.0-test.21](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.20...1.0.0-test.21) (2022-09-09)
 
 
