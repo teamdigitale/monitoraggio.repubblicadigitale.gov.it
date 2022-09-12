@@ -62,4 +62,7 @@ public class NuovoCittadinoServizioRequest implements Serializable {
 	
 	@JsonProperty(value = "telefono")
 	private String telefono;
+	
+	@JsonProperty(value = "nuovoCittadino")
+	private Boolean nuovoCittadino;
 }
