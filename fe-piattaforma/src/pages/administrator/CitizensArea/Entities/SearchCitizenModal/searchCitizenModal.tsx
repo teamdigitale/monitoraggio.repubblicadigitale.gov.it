@@ -186,10 +186,12 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
             }
           }
         });
+        body['nuovoCittadino'] = true;
       } else {
         body = {
           codiceFiscale: selectedCitizen.codiceFiscale,
           codiceFiscaleNonDisponibile: false,
+          nuovoCittadino: false,
         };
       }
       if(serviceId) await dispatch(AssociateCitizenToService({ idServizio: serviceId, body }));

@@ -12,7 +12,7 @@ export interface TableHeadingI {
 }
 
 export interface TableRowI {
-  [key: string]: string | number | JSX.Element;
+  [key: string]: string | number | boolean | JSX.Element;
 }
 
 export interface TableI {

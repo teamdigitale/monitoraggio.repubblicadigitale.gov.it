@@ -28,6 +28,8 @@ interface FormEnteGestoreProgettoFullInterface
   extends withFormHandlerProps,
     FormServicesI {}
 
+const separator = '§';
+
 const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
   props
 ) => {
@@ -78,12 +80,15 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
         Object.keys(value).map((key: string) => {
           if (key === '25' || key === '26') {
             // multiple values
-            newFormData[key] = value[key];
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            newFormData[key] = (value[key] || ['']).map((e: string) => e.replaceAll(separator, ','));
           } else {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            newFormData[key] = value[key]?.[0];
+            newFormData[key] = (value[key] || ['']).map((e: string) => e.replaceAll(separator, ',')).join(separator);
           }
+          //newFormData[key] = (value[key] || ['']).map((e: string) => e.replaceAll(separator, ',')).join(separator);
         });
       });
       setFormValues(newFormData);
@@ -126,9 +131,7 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
             label={field.label}
             type={field.type}
             required
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
+            onInputChange={onInputDataChange}
             placeholder={`Inserisci ${field.label?.toLowerCase()}`}
             disabled={formDisabled}
           />
@@ -142,9 +145,7 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
             label={field.label || ''}
             col={field.field === '24' ? 'col-12' : 'col-12 col-lg-6'}
             required={field.required || false}
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
+            onInputChange={onInputDataChange}
             placeholder={`Inserisci ${field.label?.toLowerCase()}`}
             options={field.options}
             isDisabled={formDisabled}
@@ -248,7 +249,7 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
             styleLabelForm
             disabled={formDisabled}
             optionsInColumn
-            separator='§'
+            separator={separator}
           />
         );
       }
@@ -261,7 +262,7 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
     <Form id='form-service-dynamic' formDisabled={formDisabled}>
       <div className='d-inline-flex flex-wrap w-100'>
         {form &&
-          Object.keys(form).map((key) => <>{getAnswerType(form[key])}</>)}
+          Object.keys(form).map((key) => <React.Fragment key={key}>{getAnswerType(form[key])}</React.Fragment>)}
       </div>
     </Form>
   );

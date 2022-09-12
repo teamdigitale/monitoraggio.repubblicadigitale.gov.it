@@ -37,6 +37,8 @@ import { formatAndParseJsonString } from '../../../../../../utils/common';
 import { PostFormCompletedByCitizen } from '../../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 import { OptionType } from '../../../../../../components/Form/select';
 
+const separator = '§';
+
 const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
   const {
     onInputChange = () => ({}),
@@ -54,7 +56,6 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
   const compiledSurveyCitizen = useAppSelector(
     selectServiceQuestionarioTemplateIstanze
   );
-  const [flag, setFlag] = useState<string>('');
   const surveyAnswersToSave = useAppSelector(selectCompilingSurveyForms);
   const serviceDetails = useAppSelector(selectServices)?.detail;
 
@@ -160,11 +161,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
           const values: { [key: string]: string } =
             getValuesSurvey(sectionParsed);
           Object.keys(newForm).map((key: string) => {
-            key === '20'
-              ? (newForm[key].value = ['SI', 'Si', 'si'].includes(values[key])
-                  ? 'Sì'
-                  : 'No')
-              : (newForm[key].value = values[key]);
+            newForm[key].value = values[key];
             if (activeSection === 1 || activeSection === 2) {
               newForm[key].disabled = true;
             }
@@ -185,9 +182,33 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
                   ))
                 : null;
               newForm[key].disabled = newForm[key].value !== '$consenso';
-              newForm[key].valid = newForm[key].value === '$consenso' ? false:newForm[key].valid || true;
+              newForm[key].valid =
+                newForm[key].value === '$consenso'
+                  ? false
+                  : newForm[key].valid || true;
+              if (newForm[key].value === '$consenso') newForm[key].value = '';
+            } else if (key === '19') {
+              delete newForm[key];
+            } else if (key === '25' || key === '26') {
+              // multiple values
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              newForm[key].value = (values[key] || ['']).map((e: string) =>
+                e.replaceAll(separator, ',')
+              );
+            } else if (Array.isArray(values[key])) {
+              newForm[key].value = (values[key] || [''])
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                .map((e: string) => e.replaceAll(separator, ','))
+                .join(separator);
+            } else {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              newForm[key].value = values[key]
+                ?.toString()
+                .replaceAll(separator, ',');
             }
-            if (key === '19') delete newForm[key];
           });
         }
         updateForm(
@@ -211,54 +232,57 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
     return allSteps;
   };
 
-  const changeRequiredFlag = (form: FormI, flag: string) => {
-    const tmpForm = form;
-    if (form[flag]?.value === '') {
-      Object.keys(tmpForm).forEach((field) => {
-        if (tmpForm[field]?.dependencyNotFlag === flag)
-          tmpForm[field].required = true;
-        if (
-          tmpForm[field]?.dependencyFlag !== '' &&
-          tmpForm[field]?.dependencyFlag === flag
-        )
-          tmpForm[field].required = false;
-      });
-    } else {
-      Object.keys(tmpForm).forEach((field) => {
-        if (tmpForm[field]?.dependencyNotFlag === flag)
-          tmpForm[field].required = false;
-        if (
-          tmpForm[field]?.dependencyFlag !== '' &&
-          tmpForm[field]?.dependencyFlag === flag
-        )
-          tmpForm[field].required = true;
-      });
+  const updateRequiredFields = () => {
+    let shouldBeRequired = !form['4']?.value || form['4']?.value === 'false';
+    const tmpForm: FormI = {
+      ...form,
+      '4': {
+        ...form['4'],
+        value: shouldBeRequired ? '' : form['4']?.value || '',
+      },
+    };
+    Object.keys(tmpForm).map((key) => {
+      if (tmpForm[key].dependencyNotFlag === '4') {
+        tmpForm[key] = {
+          ...tmpForm[key],
+          required: shouldBeRequired,
+        };
+      } else if (tmpForm[key].dependencyFlag === '4') {
+        tmpForm[key] = {
+          ...tmpForm[key],
+          required: !shouldBeRequired,
+        };
+      }
+    });
+
+    if (!isEqual(form, tmpForm)) {
+      updateForm(tmpForm, true);
     }
-    return tmpForm;
   };
 
   useEffect(() => {
-    if (activeSection === 0) {
-      setFlag(Object.keys(form)?.filter((f) => f.includes('flag'))[0]);
+    if (
+      activeSection === 0 &&
+      form['4']?.value !== undefined &&
+      form['4']?.value !== null
+    ) {
+      updateRequiredFields();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form]);
-
-  useEffect(() => {
-    if (flag) {
-      const newForm = changeRequiredFlag(form, flag);
-      if (!isEqual(form, newForm)) {
-        updateForm(newForm);
-      }
-    }
-  }, [flag, form]);
+  }, [form['4']?.value]);
 
   const generateFormCompleted = async (surveyStore: FormI[]) => {
     const body = surveyStore.map((section) =>
       FormHelper.getFormValues(section)
     );
-    await dispatch(PostFormCompletedByCitizen(idQuestionarioCompilato, body));
-    navigate(`/area-amministrativa/servizi/${serviceId}/cittadini`);
+    const res = await dispatch(
+      PostFormCompletedByCitizen(idQuestionarioCompilato, body)
+    );
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (res) {
+      navigate(`/area-amministrativa/servizi/${serviceId}/cittadini`);
+    }
   };
 
   const buttonsForBar: ButtonInButtonsBar[] = [
