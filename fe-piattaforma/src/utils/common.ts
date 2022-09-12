@@ -340,11 +340,30 @@ export const createStringOfCompiledSurveySection = (
   const formattedData = { ...formValues };
   Object.keys(formattedData).forEach((key: string) => {
     if (!Array.isArray(formattedData[key])) {
-      const tmp =
-        typeof formattedData[key] === 'string'
-          ? formattedData[key]?.toString()
-          : '';
-      tmp ? (formattedData[key] = [tmp]) : null;
+      formattedData[key] = formattedData[key]
+        ?.toString()
+        .split('§')
+        .map((e) => e.replaceAll(',', '§'));
+    } else if (Array.isArray(formattedData[key])) {
+      if (key === '25' || key === '26') {
+        // @ts-ignore
+        formattedData[key] = (formattedData[key] || ['']).map((e) =>
+          e.toString().replaceAll(',', '§')
+        );
+        // @ts-ignore
+      } else if (formattedData[key].length === 1) {
+        // @ts-ignore
+        formattedData[key] = (formattedData[key] || [''])[0]
+          .toString()
+          .split('§')
+          // @ts-ignore
+          .map((e) => e.toString().replaceAll(',', '§'));
+      } else {
+        // @ts-ignore
+        formattedData[key] = (formattedData[key] || ['']).map((e) =>
+          e.toString().replaceAll(',', '§')
+        );
+      }
     }
   });
   const newData: { [key: string]: any }[] = [];
@@ -378,15 +397,6 @@ export const convertPayloadSectionInString = (
       } else {
         newObject[key] = [''];
       }
-      /*else if (Object.keys(sectionPayload[key])?.length > 0) {
-        const val: string[] = [];
-        Object.keys(sectionPayload[key]).map((key2: string) => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          if (sectionPayload[key][key2]) val.push(key2);
-        });
-        newObject[key] = val;
-      }*/
     }
   });
   switch (section) {

@@ -27,11 +27,21 @@ export interface PageTitleI {
         label: string;
       }
     | undefined;
+  innerHTML?: boolean;
+  HTMLsubtitle?: string;
 }
 
 const PageTitle: React.FC<PageTitleI> = (props) => {
-  const { cta, hasBackground, title, subtitle, sectionInfo, alignTitle } =
-    props;
+  const {
+    cta,
+    hasBackground,
+    title,
+    subtitle,
+    sectionInfo,
+    alignTitle,
+    innerHTML,
+    HTMLsubtitle = '',
+  } = props;
 
   const [sectionInfoOpened, setSectionInfoOpened] = useState<boolean>(false);
   const location = useLocation();
@@ -81,7 +91,7 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
             </Button>
           ) : null}
         </div>
-        {subtitle ? (
+        {subtitle || innerHTML ? (
           <div
             className={clsx(
               'd-flex',
@@ -90,7 +100,14 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
               alignTitle ? 'justify-content-center' : null
             )}
           >
-            <p className={clsx('py-2', 'mb-2')}>{subtitle}</p>
+            {innerHTML ? (
+              <div
+                dangerouslySetInnerHTML={{ __html: HTMLsubtitle }}
+                className='section-info-list'
+              />
+            ) : (
+              <p className={clsx('py-2', 'mb-2')}>{subtitle}</p>
+            )}
             {cta ? (
               <Button
                 onClick={cta.action}

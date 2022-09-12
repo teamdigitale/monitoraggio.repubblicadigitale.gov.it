@@ -9,7 +9,10 @@ import { InfoPanel, Table } from '../../../components';
 import { newTable } from '../../../components/Table/table';
 import { staticValues, TableHeading } from './utils';
 import moment from 'moment';
-import { openDataBody } from '../../../components/SectionInfo/bodies';
+import {
+  openDataBody,
+  openDataSubtitle,
+} from '../../../components/SectionInfo/bodies';
 
 const tableValues = newTable(TableHeading, staticValues);
 
@@ -39,13 +42,9 @@ const OpenData = () => {
 
   return (
     <Container>
-      <PageTitle
-        title='Open Data'
-        subtitle="Nell'ambito dell'iniziativa di Repubblica Digitale sono erogati servizi di facilitazione e formazione ai cittadini al fine di incrementare le loro competenze digitali.
-Tali servizi sono erogati a livello nazionale presso le sedi designate a tale scopo; inoltre sono rilevate le principali caratteristiche della popolazione partecipante e della tipologia di servizio erogato."
-      />
+      <PageTitle title='Open Data' innerHTML HTMLsubtitle={openDataSubtitle} />
       <InfoPanel openData HTMLlist body={openDataBody} colsNo={0} />
-      <div className='d-flex justify-content-end py-4'>
+      <div className='d-flex justify-content-end pt-4'>
         <a
           className={clsx('btn', 'btn-primary', !docHref && 'disabled')}
           href={docHref}

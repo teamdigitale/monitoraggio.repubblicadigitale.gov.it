@@ -73,8 +73,15 @@ const ViewSurvey: React.FC = () => {
             ...{
               [id]:
                 valuesInArray[key][id]?.length > 1
-                  ? valuesInArray[key][id]
-                  : valuesInArray[key][id][0],
+                  ? // @ts-ignore
+                    valuesInArray[key][id].map((e) =>
+                      e.toString().replaceAll('§', ',')
+                    )
+                  : valuesInArray[key][id][0]
+                      .toString()
+                      .split('§')
+                      // @ts-ignore
+                      .map((e) => e.toString().replaceAll('§', ',')),
             },
           };
         });
@@ -111,8 +118,7 @@ const ViewSurvey: React.FC = () => {
               value: opt.value.toString().toUpperCase(),
             })
           );
-        }
-        if (newForm?.['19']) delete newForm?.['19'];
+        } else if (newForm?.['19']) delete newForm?.['19'];
         if (
           compiledSurveyCitizen?.length &&
           compiledSurveyCitizen?.[index]?.domandaRisposta?.json
@@ -127,11 +133,7 @@ const ViewSurvey: React.FC = () => {
           const values: { [key: string]: string } =
             getValuesSurvey(sectionParsed);
           Object.keys(newForm).map((key: string) => {
-            key === '20'
-              ? (newForm[key].value = ['SI', 'Si', 'si'].includes(values[key])
-                  ? 'Si'
-                  : 'No')
-              : (newForm[key].value = values[key]);
+            newForm[key].value = values[key];
           });
         }
         forms.push(newForm);

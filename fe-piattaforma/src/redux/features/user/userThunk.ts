@@ -19,7 +19,7 @@ export const getUserHeaders = () => {
   );
 
   return {
-    codiceFiscale: isActiveProvisionalLogin ? codiceFiscale.toUpperCase() : undefined,
+    codiceFiscale: isActiveProvisionalLogin ? codiceFiscale?.toUpperCase() : undefined,
     codiceRuolo: isActiveProvisionalLogin ? codiceRuolo : undefined,
     idProgramma,
     idProgetto,
