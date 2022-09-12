@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.112](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.111...1.0.0-develop.112) (2022-09-12)
+
+
+### Bug Fixes
+
+* **be:** rename nome file ([80fd563](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/80fd563dfdcc2b2fab593159c8858bd9e0ad572e))
+
 ## [1.0.0-develop.111](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.110...1.0.0-develop.111) (2022-09-09)
 
 
