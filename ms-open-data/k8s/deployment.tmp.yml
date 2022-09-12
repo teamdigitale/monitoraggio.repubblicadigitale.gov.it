@@ -78,16 +78,6 @@ spec:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: DB_MONGO_PASSWORD
-            - name: KEYSTORE_PATH
-              valueFrom:
-                configMapKeyRef:
-                  name: env-${K8S_NAMESPACE}-options
-                  key: KEYSTORE_PATH
-            - name: KEYSTORE_PASSWORD
-              valueFrom:
-                configMapKeyRef:
-                  name: env-${K8S_NAMESPACE}-options
-                  key: KEYSTORE_PASSWORD
             - name: awsS3AccessKey
               valueFrom:
                 configMapKeyRef:
