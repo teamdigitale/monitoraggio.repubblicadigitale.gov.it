@@ -41,6 +41,14 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
       options.filter((opt) => opt.value === value.toString()).length
     ) {
       setValues(parseExternalValue());
+    } else if (value?.toString().includes(separator)) {
+      let newValues: string[] = [];
+      parseExternalValue().map(extValue => {
+        if (options.filter((opt) => opt.value === extValue.toString()).length) {
+          newValues.push(extValue);
+        }
+      })
+      setValues(newValues);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
