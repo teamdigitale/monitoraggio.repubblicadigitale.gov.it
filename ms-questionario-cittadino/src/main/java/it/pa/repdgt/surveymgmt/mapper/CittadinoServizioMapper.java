@@ -32,6 +32,7 @@ public class CittadinoServizioMapper {
 		cittadinoServizioResource.setNome(cittadiniServizi.getNome());
 		cittadinoServizioResource.setCognome(cittadiniServizi.getCognome());
 		cittadinoServizioResource.setCodiceFiscale(cittadiniServizi.getCodiceFiscale());
+		cittadinoServizioResource.setNumeroDocumento(cittadiniServizi.getNumeroDocumento());
 		cittadinoServizioResource.setIdQuestionario(cittadiniServizi.getIdQuestionario());
 		cittadinoServizioResource.setStatoQuestionario(cittadiniServizi.getStatoQuestionario());
 		return cittadinoServizioResource;
