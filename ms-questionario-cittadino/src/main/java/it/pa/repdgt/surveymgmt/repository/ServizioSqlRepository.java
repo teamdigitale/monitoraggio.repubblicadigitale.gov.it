@@ -244,4 +244,6 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 			@Param(value="idFacilitatore") String idFacilitatore,
 			@Param(value="idServizio") Long idServizio
 		);
+
+	Optional<ServizioEntity> findByNome(String nomeServizio);
 }

@@ -380,4 +380,8 @@ public class ServizioSqlService {
 	public String getNominativoFacilitatoreByIdFacilitatoreAndIdServizio(String idFacilitatore, Long idServizio) {
 		return this.servizioSqlRepository.findNominativoFacilitatoreByIdFacilitatoreAndIdServizio(idFacilitatore, idServizio);
 	}
+
+	public Optional<ServizioEntity> getServizioByNome(String nomeServizio) {
+		return this.servizioSqlRepository.findByNome(nomeServizio);
+	}
 }

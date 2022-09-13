@@ -195,6 +195,13 @@ public class ServizioService {
 	@Transactional(rollbackOn = Exception.class)
 	public ServizioEntity creaServizio(
 			@NotNull final ServizioRequest servizioRequest) {
+		
+		String nomeServizio = servizioRequest.getNomeServizio();
+		Optional<ServizioEntity> servizioDBFetch = this.servizioSQLService.getServizioByNome(nomeServizio);
+		if(servizioDBFetch.isPresent()) {
+			final String messaggioErrore = String.format("Impossibile creare servizio. Servizio con nome=%s già esistente", nomeServizio);
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S08);
+		}
 		final String codiceFiscaletenteLoggato = servizioRequest.getProfilazioneParam().getCodiceFiscaleUtenteLoggato();
 		final String ruoloUtenteLoggato = servizioRequest.getProfilazioneParam().getCodiceRuoloUtenteLoggato().toString();
 		

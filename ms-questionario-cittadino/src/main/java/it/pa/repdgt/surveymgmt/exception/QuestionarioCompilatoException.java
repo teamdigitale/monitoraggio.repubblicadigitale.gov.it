@@ -12,7 +12,6 @@ public class QuestionarioCompilatoException extends BaseException {
 	}
 	
 	public QuestionarioCompilatoException(String messageException, CodiceErroreEnum codiceErroreEnum) {
-		super(messageException, null);
-		this.codiceErroreEnum = codiceErroreEnum;
+		super(messageException, codiceErroreEnum);
 	}
 }

@@ -283,7 +283,7 @@ public class UtenteService {
 		// Verifico se esiste sul DB un utente con stesso codice fiscale e in caso affermativo lancio eccezione
 		Optional<UtenteEntity> utenteDBFetch = this.utenteRepository.findByCodiceFiscale(utente.getCodiceFiscale());
 		if(utenteDBFetch.isPresent()) {
-			new UtenteException(String.format("Utente con codice fiscale '%s' già esistente", utente.getCodiceFiscale()), CodiceErroreEnum.U01);
+			throw new UtenteException(String.format("Utente con codice fiscale '%s' già esistente", utente.getCodiceFiscale()), CodiceErroreEnum.U01);
 		}
 		
 		utente.setStato(StatoEnum.NON_ATTIVO.getValue());
@@ -368,7 +368,7 @@ public class UtenteService {
 		);
 	}
 	
-	private Set<String> getStatoUtentiByFiltri(FiltroRequest filtroRequest) {
+	public Set<String> getStatoUtentiByFiltri(FiltroRequest filtroRequest) {
 		return this.utenteRepository.findStatiByFilter(
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
@@ -424,7 +424,7 @@ public class UtenteService {
 		return this.getAllStatiByRuoloAndcfUtente(sceltaContesto.getCodiceRuolo(),sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
 	}
 
-	private List<String> getAllStatiByRuoloAndcfUtente(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto,
+	public List<String> getAllStatiByRuoloAndcfUtente(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto,
 			FiltroRequest filtroRequest) {
 		List<String> stati = new ArrayList<>();
 		
@@ -456,7 +456,7 @@ public class UtenteService {
 		return this.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuolo(),sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
 	}
 
-	private List<String> getAllRuoliByRuoloAndcfUtente(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto,
+	public List<String> getAllRuoliByRuoloAndcfUtente(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto,
 			FiltroRequest filtroRequest) {
 		List<String> stati = new ArrayList<>();
 		

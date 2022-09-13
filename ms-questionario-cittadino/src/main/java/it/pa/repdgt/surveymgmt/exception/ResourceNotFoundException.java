@@ -19,7 +19,6 @@ public class ResourceNotFoundException extends BaseException {
 	}
 	
 	public ResourceNotFoundException(String messageException, CodiceErroreEnum codiceErroreEnum) {
-		super(messageException, null);
-		this.codiceErroreEnum = codiceErroreEnum;
+		super(messageException, codiceErroreEnum);
 	}
 }

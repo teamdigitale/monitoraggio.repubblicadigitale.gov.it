@@ -46,7 +46,7 @@ public class OpenDataService {
 	
 	private static final String patternDate = "dd_MM_yyyy";
 	private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(patternDate);
-	final static String NOME_FILE = "fileCittadini.csv";
+	final static String NOME_FILE = "opendata_cittadini.csv";
 	
 	@Autowired
 	private OpenDataCSVService openDataCSVService;
