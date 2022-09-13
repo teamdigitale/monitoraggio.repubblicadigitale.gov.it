@@ -48,7 +48,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
   const handleSaveProgram = async () => {
     if (isFormValid) {
       if (creation) {
-        const res = await dispatch(createProgram(newFormValues));
+        const res: any = await dispatch(createProgram(newFormValues));
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (res?.data?.idProgrammaCreato) {
@@ -58,14 +58,16 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             `/area-amministrativa/programmi/${res.data.idProgrammaCreato}/info`
           );
         }
+
+        if (res.data.errorCode !== 'P01') dispatch(closeModal());
       } else {
         if (entityId) {
           await dispatch(updateProgram(entityId, newFormValues));
           dispatch(GetProgramDetail(entityId));
         }
+        dispatch(closeModal());
       }
       setCurrentStep(0);
-      dispatch(closeModal());
     }
   };
 

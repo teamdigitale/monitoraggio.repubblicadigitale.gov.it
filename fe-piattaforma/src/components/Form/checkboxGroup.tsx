@@ -45,11 +45,11 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
       setValues(parseExternalValue());
     } else if (value?.toString().includes(separator)) {
       const newValues: string[] = [];
-      parseExternalValue().map(extValue => {
+      parseExternalValue().map((extValue) => {
         if (options.filter((opt) => opt.value === extValue.toString()).length) {
           newValues.push(extValue);
         }
-      })
+      });
       setValues(newValues);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -65,9 +65,9 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
   }, [values.join(separator)]);
 
   const handleOnChange = (value: string | number) => {
-    if(singleSelection){
+    if (singleSelection) {
       setValues([value.toString()]);
-    }else{
+    } else {
       const valueIndex = values.findIndex((v) => v === value.toString());
       if (valueIndex !== -1) {
         const newValues = [...values];
@@ -77,7 +77,6 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
         setValues([...values, value.toString()]);
       }
     }
-    
   };
 
   return (

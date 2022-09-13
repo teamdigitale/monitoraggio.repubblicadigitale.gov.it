@@ -548,8 +548,8 @@ export const AssignManagerAuthorityReferentDelegate =
           await API.post(endpoint, body);
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      return error.response;
     } finally {
       dispatch(hideLoader());
     }
@@ -598,8 +598,9 @@ export const AssignPartnerAuthorityReferentDelegate =
         };
         // eslint-disable-next-line no-case-declarations
         const res = await API.post(`/utente`, payload);
+
         if (res) {
-          await API.post(endpoint, {
+          return await API.post(endpoint, {
             cfUtente: userDetail.codiceFiscale?.toString().toUpperCase(),
             codiceRuolo: role,
             idEntePartner: authorityId,
@@ -608,8 +609,8 @@ export const AssignPartnerAuthorityReferentDelegate =
           });
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      return error.response;
     } finally {
       dispatch(hideLoader());
     }

@@ -69,7 +69,9 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
   const [newUserValues, setNewUserValues] = useState<{
     [key: string]: string | number | boolean | Date | string[] | undefined;
   }>();
-  const [selectedCitizen, setSelectedCitizen] = useState<CittadinoInfoI | TableRowI | string>({});
+  const [selectedCitizen, setSelectedCitizen] = useState<
+    CittadinoInfoI | TableRowI | string
+  >({});
   const [validForm, setFormValid] = useState<boolean>(false);
   const [alreadySearched, setAlreadySearched] = useState<boolean>(false);
   const [showFormCompleteForm, setShowFormCompleteForm] =

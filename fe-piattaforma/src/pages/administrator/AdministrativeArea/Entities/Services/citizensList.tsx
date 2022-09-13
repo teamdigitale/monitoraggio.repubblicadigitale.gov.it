@@ -64,7 +64,7 @@ const CitizensList: React.FC = () => {
 
   useEffect(() => {
     dispatch(resetCompilingSurveyForm());
-  },[]);
+  }, []);
 
   const getServiceDetailsCitizens = () => {
     dispatch(GetCitizenListServiceDetail(serviceId));

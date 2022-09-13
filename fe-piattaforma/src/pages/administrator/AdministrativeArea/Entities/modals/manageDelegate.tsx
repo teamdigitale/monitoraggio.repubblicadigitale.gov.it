@@ -75,9 +75,10 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
 
   const handleSaveDelegate = async () => {
     if (isFormValid && (authority?.id || authorityId)) {
+      let res: any = null;
       if (projectId) {
         if (authorityId) {
-          await dispatch(
+          res = await dispatch(
             AssignPartnerAuthorityReferentDelegate(
               authorityId,
               projectId,
@@ -91,7 +92,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
           );
           if (userId) await dispatch(GetUserDetails(userId));
         } else if (authority?.id) {
-          await dispatch(
+          res = await dispatch(
             AssignManagerAuthorityReferentDelegate(
               authority?.id,
               projectId,
@@ -106,7 +107,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
           if (userId) await dispatch(GetUserDetails(userId));
         }
       } else if (entityId) {
-        await dispatch(
+        res = await dispatch(
           AssignManagerAuthorityReferentDelegate(
             authority?.id || authorityId,
             entityId,
@@ -119,8 +120,10 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
         await dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
         if (userId) dispatch(GetUserDetails(userId));
       }
-      resetModal();
-      dispatch(closeModal());
+      if (res.data.errorCode !== 'U01') {
+        resetModal();
+        dispatch(closeModal());
+      }
     }
   };
 
