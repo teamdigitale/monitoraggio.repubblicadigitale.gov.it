@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import Sticky from 'react-sticky-el';
+import isEqual from 'lodash.isequal';
+import clsx from 'clsx';
+import moment from 'moment';
 import { ButtonsBar, ProgressBar, Stepper } from '../../../../../../components';
 import { ButtonInButtonsBar } from '../../../../../../components/ButtonsBar/buttonsBar';
 import withFormHandler, {
@@ -18,8 +21,6 @@ import { useAppSelector } from '../../../../../../redux/hooks';
 import { FormHelper, FormI, newForm } from '../../../../../../utils/formHelper';
 import { generateForm } from '../../../../../../utils/jsonFormHelper';
 import JsonFormRender from '../components/jsonFormRender';
-import isEqual from 'lodash.isequal';
-import clsx from 'clsx';
 import {
   selectDevice,
   setInfoIdsBreadcrumb,
@@ -38,6 +39,7 @@ import { PostFormCompletedByCitizen } from '../../../../../../redux/features/adm
 import { OptionType } from '../../../../../../components/Form/select';
 
 const separator = '§';
+const saltoCondizionaleAttivo = false;
 
 const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
   const {
@@ -161,7 +163,11 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
           const values: { [key: string]: string } =
             getValuesSurvey(sectionParsed);
           Object.keys(newForm).map((key: string) => {
-            newForm[key].value = values[key];
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            newForm[key].value = values[key]
+              ?.toString()
+              .replaceAll(separator, ',');
             if (activeSection === 1 || activeSection === 2) {
               newForm[key].disabled = true;
             }
@@ -188,7 +194,15 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
                   : newForm[key].valid || true;
               if (newForm[key].value === '$consenso') newForm[key].value = '';
             } else if (key === '19') {
-              delete newForm[key];
+              if (newForm[key].value === '$dataConsenso') {
+                delete newForm[key];
+              } else {
+                newForm[key].value =
+                  moment(values[key]?.toString(), 'DD-MM-YYYY').format(
+                    'YYYY-MM-DD'
+                  ) || '';
+                newForm[key].disabled = true;
+              }
             } else if (key === '25' || key === '26') {
               // multiple values
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -202,12 +216,6 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
                 // @ts-ignore
                 .map((e: string) => e.replaceAll(separator, ','))
                 .join(separator);
-            } else {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              newForm[key].value = values[key]
-                ?.toString()
-                .replaceAll(separator, ',');
             }
           });
         }
@@ -233,7 +241,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
   };
 
   const updateRequiredFields = () => {
-    let shouldBeRequired = !form['4']?.value || form['4']?.value === 'false';
+    const shouldBeRequired = !form['4']?.value || form['4']?.value === 'false';
     const tmpForm: FormI = {
       ...form,
       '4': {
@@ -260,6 +268,26 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
     }
   };
 
+  const updateSkippedQuestion = () => {
+    const val = form['31']?.value || '';
+    const shouldBeSkipped = !(val.toString().includes('Sì') || val === '');
+    const tmpForm: FormI = {
+      ...form,
+    };
+    Object.keys(tmpForm).map((key) => {
+      if (key === '32') {
+        tmpForm[key] = {
+          ...tmpForm[key],
+          required: !shouldBeSkipped,
+          disabled: shouldBeSkipped,
+        };
+      }
+    });
+    if (!isEqual(form, tmpForm)) {
+      updateForm(tmpForm, true);
+    }
+  };
+
   useEffect(() => {
     if (
       activeSection === 0 &&
@@ -271,10 +299,25 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form['4']?.value]);
 
+  useEffect(() => {
+    if (
+      saltoCondizionaleAttivo && // TODO: quando vogliamo far vedere togliere questa variabile
+      activeSection === 3 &&
+      form['31']?.value !== undefined &&
+      form['31']?.value !== null
+    ) {
+      updateSkippedQuestion();
+    }
+  }, [form['31']?.value]);
+
   const generateFormCompleted = async (surveyStore: FormI[]) => {
     const body = surveyStore.map((section) =>
       FormHelper.getFormValues(section)
     );
+    if (!body[0][19]) {
+      // caso $dataConferimentoConsenso
+      body[0][19] = moment().format('DD-MM-YYYY');
+    }
     const res = await dispatch(
       PostFormCompletedByCitizen(idQuestionarioCompilato, body)
     );

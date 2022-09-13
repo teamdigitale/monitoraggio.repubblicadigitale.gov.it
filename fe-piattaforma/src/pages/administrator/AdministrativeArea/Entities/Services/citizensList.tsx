@@ -30,6 +30,7 @@ import { CardCounterI } from '../../../../../components/CardCounter/cardCounter'
 import { formTypes } from '../utils';
 import ManageCitizenInService from '../modals/manageCitizenInService';
 import ConfirmSentSurveyModal from '../modals/confirmSentSurveyModal';
+import { resetCompilingSurveyForm } from '../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 
 export interface CitizenI {
   idCittadino?: string;
@@ -60,6 +61,10 @@ const CitizensList: React.FC = () => {
   const [searchDropdown, setSearchDropdown] = useState<
     { filterId: string; value: formFieldI['value'] }[]
   >([]);
+
+  useEffect(() => {
+    dispatch(resetCompilingSurveyForm());
+  }, []);
 
   const getServiceDetailsCitizens = () => {
     dispatch(GetCitizenListServiceDetail(serviceId));
@@ -170,14 +175,20 @@ const CitizensList: React.FC = () => {
           dispatch(
             openModal({
               id: 'confirmSentSurveyModal',
-              payload: { text: 'Questionario non inviato correttamente!', error: true },
+              payload: {
+                text: 'Questionario non inviato correttamente!',
+                error: true,
+              },
             })
           );
         } else {
           dispatch(
             openModal({
               id: 'confirmSentSurveyModal',
-              payload: { text: 'Questionario inviato correttamente!', error: false },
+              payload: {
+                text: 'Questionario inviato correttamente!',
+                error: false,
+              },
             })
           );
         }

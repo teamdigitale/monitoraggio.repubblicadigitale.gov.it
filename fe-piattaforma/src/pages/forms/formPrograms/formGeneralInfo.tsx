@@ -297,6 +297,7 @@ const form = newForm([
     field: 'policy',
     type: 'text',
     id: 'policy',
+    required: true,
   }),
   newFormField({
     field: 'nomeBreve',

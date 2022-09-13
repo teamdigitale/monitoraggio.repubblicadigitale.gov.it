@@ -513,14 +513,13 @@ export const PostFormCompletedByCitizen =
         titoloDiStudioDaAggiornare: payload?.[0]['9'],
       };
       await API.post(entityEndpoint, body);
-      resetCompilingSurveyForm();
+      dispatch(resetCompilingSurveyForm());
       return true;
     } catch (e) {
       console.error(
         'post questionario compilato PostFormCompletedByCitizen',
         e
       );
-      resetCompilingSurveyForm();
       return false;
     } finally {
       dispatch(hideLoader());
@@ -585,44 +584,52 @@ export const DeleteSurvey =
     }
   };
 
-const GetSurveyOnlineAction = {type: 'surveys/GetSurveyOnline'};
+const GetSurveyOnlineAction = { type: 'surveys/GetSurveyOnline' };
 export const GetSurveyOnline =
   (idQuestionario: string, token: string) => async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...GetSurveyOnlineAction, idQuestionario, token });
-      const res = await API.get(`/servizio/cittadino/questionarioCompilato/${idQuestionario}/anonimo`, {
-        params: { t: token },
-      });
+      const res = await API.get(
+        `/servizio/cittadino/questionarioCompilato/${idQuestionario}/anonimo`,
+        {
+          params: { t: token },
+        }
+      );
       if (res) {
         dispatch(setSurveyOnline(res.data));
-        return true
+        return true;
       }
     } catch (e) {
       console.error('GetSurveyOnline error', e);
-      return false
+      return false;
     } finally {
       dispatch(hideLoader());
     }
   };
 
-const CompileSurveyOnlineAction = {type: 'surveys/CompileSurveyOnline'};
+const CompileSurveyOnlineAction = { type: 'surveys/CompileSurveyOnline' };
 export const CompileSurveyOnline =
-  (idQuestionario: string, token: string, body: any) => async (dispatch: Dispatch) => {
+  (idQuestionario: string, token: string, body: any) =>
+  async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...CompileSurveyOnlineAction, body });
-      const res = await API.post(`/servizio/cittadino/questionarioCompilato/${idQuestionario}/compila/anonimo`, {
-        sezioneQ4Questionario: body,
-      }, {
-        params: { t: token },
-      });
+      const res = await API.post(
+        `/servizio/cittadino/questionarioCompilato/${idQuestionario}/compila/anonimo`,
+        {
+          sezioneQ4Questionario: body,
+        },
+        {
+          params: { t: token },
+        }
+      );
       if (res) {
-        return true
+        return true;
       }
     } catch (e) {
       console.error('CompileSurveyOnline error', e);
-      return false
+      return false;
     } finally {
       dispatch(hideLoader());
     }

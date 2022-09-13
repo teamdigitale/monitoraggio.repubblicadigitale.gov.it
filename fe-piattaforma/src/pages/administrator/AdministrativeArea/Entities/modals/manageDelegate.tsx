@@ -75,35 +75,39 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
 
   const handleSaveDelegate = async () => {
     if (isFormValid && (authority?.id || authorityId)) {
+      let res: any = null;
       if (projectId) {
         if (authorityId) {
-          await dispatch(
+          res = await dispatch(
             AssignPartnerAuthorityReferentDelegate(
               authorityId,
               projectId,
               newFormValues,
-              'DEPP'
+              'DEPP',
+              userId
             )
           );
-
-          dispatch(
+          await dispatch(
             GetPartnerAuthorityDetail(projectId, authorityId || authority?.id)
           );
+          if (userId) await dispatch(GetUserDetails(userId));
         } else if (authority?.id) {
-          await dispatch(
+          res = await dispatch(
             AssignManagerAuthorityReferentDelegate(
               authority?.id,
               projectId,
               newFormValues,
               'progetto',
-              'DEGP'
+              'DEGP',
+              userId
             )
           );
 
-          dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+          await dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+          if (userId) await dispatch(GetUserDetails(userId));
         }
       } else if (entityId) {
-        await dispatch(
+        res = await dispatch(
           AssignManagerAuthorityReferentDelegate(
             authority?.id || authorityId,
             entityId,
@@ -113,11 +117,13 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
             userId
           )
         );
-        dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+        await dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
         if (userId) dispatch(GetUserDetails(userId));
       }
-      resetModal();
-      dispatch(closeModal());
+      if (res.data.errorCode !== 'U01') {
+        resetModal();
+        dispatch(closeModal());
+      }
     }
   };
 

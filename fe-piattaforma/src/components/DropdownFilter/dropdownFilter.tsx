@@ -52,7 +52,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
     if (searchValue) {
       const newOptions: FilterI[] =
         options?.filter((opt) =>
-          opt.label.toLowerCase().includes(searchValue)
+          opt.label.toLowerCase().includes(searchValue.toLowerCase())
         ) || [];
       setFilteredOptions(newOptions);
     } else if (searchValue === '' || !open) {
