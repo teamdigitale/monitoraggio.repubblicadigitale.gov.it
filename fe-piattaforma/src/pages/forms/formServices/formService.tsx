@@ -55,16 +55,25 @@ const FormService: React.FC<FormServiceI> = (props) => {
   }, []);
 
   useEffect(() => {
-    if (serviceQ3Schema) {
-      const formFromSchema = generateForm(JSON.parse(serviceQ3Schema.json));
+    if (serviceQ3Schema || (creation && serviceQ3SchemaCreation)) {
+      const formFromSchema = generateForm(
+        JSON.parse(
+          creation ? serviceQ3SchemaCreation.json : serviceQ3Schema.json
+        )
+      );
       Object.keys(formFromSchema).forEach((key: string) => {
         formFromSchema[key].label = formFromSchema[key].value?.toString() || '';
         formFromSchema[key].value = '';
+        // case durata
+        if (key === '23') {
+          formFromSchema[key].value = '00:00';
+        }
       });
       setDynamicFormQ3(formFromSchema);
     }
-  }, [serviceQ3Schema]);
+  }, [serviceQ3Schema, serviceQ3SchemaCreation]);
 
+  /*
   useEffect(() => {
     if (creation && serviceQ3SchemaCreation) {
       const formFromSchema = generateForm(
@@ -77,9 +86,10 @@ const FormService: React.FC<FormServiceI> = (props) => {
       setDynamicFormQ3(formFromSchema);
     }
   }, [serviceQ3SchemaCreation]);
+  */
 
   useEffect(() => {
-    areFormsValid(isFormStaticValid && isFormDynamicValid ? true : false);
+    areFormsValid(isFormStaticValid && isFormDynamicValid);
     sendNewFormsValues({ ...newFormStaticValues, ...newFormDynamicValues });
   }, [
     isFormStaticValid,
