@@ -1,0 +1,39 @@
+/* .primary-bg-a7 {
+    background-color: #005CB8 !important;
+} */
+
+.top-icon {
+    height: 48px;
+    width: 48px;
+}
+
+.footer {
+   background-color: #01254c; 
+   color: #fff;
+   min-height: 264px;
+}
+
+.footer div:first-child {
+    flex-grow: 1;
+}
+
+.footer h5 {
+    font-size: 20px;
+}
+
+.footer .text-1 {
+    font-size: 16px;
+}
+
+.footer .text-2 {
+    font-size: 14px;
+}
+
+.footer .text-3 {
+    font-size: 12px;
+    margin-bottom: 0;
+}
+
+.footer .digital-skills {
+    max-width: 300px;
+}

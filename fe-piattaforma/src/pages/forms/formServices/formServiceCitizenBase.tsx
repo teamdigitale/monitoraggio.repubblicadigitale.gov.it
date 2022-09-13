@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Form, Input, PrefixPhone } from '../../../components';
+import { TableRowI } from '../../../components/Table/table';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
@@ -18,8 +19,12 @@ import {
 import { RegexpType } from '../../../utils/validator';
 import { FormCitizenI } from '../formCitizen';
 
+interface FormServiceCitizenBaseI {
+  selectedCitizen?: CittadinoInfoI | TableRowI | string;
+}
 interface FormEnteGestoreProgettoFullInterface
   extends withFormHandlerProps,
+    FormServiceCitizenBaseI,
     FormCitizenI {}
 
 const FormServiceCitizenBase: React.FC<FormEnteGestoreProgettoFullInterface> = (
@@ -35,21 +40,33 @@ const FormServiceCitizenBase: React.FC<FormEnteGestoreProgettoFullInterface> = (
     setFormValues = () => ({}),
     //creation = false,
     isValidForm = false,
+    selectedCitizen = undefined,
   } = props;
 
   // const device = useAppSelector(selectDevice);
   const formDisabled = !!props.formDisabled;
-  const formData: CittadinoInfoI = useAppSelector(
+  const formDataCitizens: CittadinoInfoI[] = useAppSelector(
     selectCitizenSearchResponse
-  )?.[0];
+  );
 
   useEffect(() => {
-    if (formData) {
-      const values = { ...formData };
+    if (formDataCitizens?.length === 1) {
+      const values = { ...formDataCitizens[0] };
+      setFormValues(values);
+    } else if (formDataCitizens?.length > 1 && selectedCitizen) {
+      const values = {
+        ...formDataCitizens[
+          formDataCitizens.findIndex(
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            (x) => x.idCittadino === selectedCitizen?.id
+          )
+        ],
+      };
       setFormValues(values);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData]);
+  }, [formDataCitizens]);
 
   const onInputDataChange = (
     value: formFieldI['value'],
@@ -62,8 +79,6 @@ const FormServiceCitizenBase: React.FC<FormEnteGestoreProgettoFullInterface> = (
   useEffect(() => {
     setIsFormValid(isValidForm);
   }, [form]);
-
-  console.log('FormServiceCitizenBase', isValidForm, form);
 
   return (
     <Form id='form-citizen' className='mt-5' formDisabled={formDisabled}>

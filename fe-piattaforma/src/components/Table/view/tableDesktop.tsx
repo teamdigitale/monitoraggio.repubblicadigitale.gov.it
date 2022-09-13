@@ -5,6 +5,7 @@ import {
   Button,
   FormGroup,
   Label,
+  UncontrolledTooltip,
 } from 'design-react-kit';
 import clsx from 'clsx';
 import { TableI } from '../table';
@@ -19,6 +20,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
     heading = [],
     id = 'table',
     onActionClick,
+    onTooltipInfo,
     onRowClick = () => ({}),
     values = [],
     withActions = false,
@@ -212,8 +214,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         ? td.actions.toString().includes(CRUDActionTypes.VIEW)
                         : onActionClick[CRUDActionTypes.VIEW]
                     ) ? (
-                      (!td?.citizen) ||
-                      (td?.citizen && td?.associatoAUtente) ? (
+                      !td?.citizen || (td?.citizen && td?.associatoAUtente) ? (
                         <Button
                           onClick={() =>
                             onActionClick[CRUDActionTypes.VIEW](td)
@@ -234,6 +235,26 @@ const TableDesktop: React.FC<TableI> = (props) => {
                   </div>
                 </td>
               ) : null}
+              {onTooltipInfo && td?.isPresentInList ? (
+                <td id={`tooltip-${td.id}`}>
+                  <div className='d-inline-flex position-relative'>
+                    <UncontrolledTooltip
+                      placement='left'
+                      target={`tooltip-${td.id}`}
+                    >
+                      {onTooltipInfo}
+                    </UncontrolledTooltip>
+                    <Icon
+                      icon='it-info-circle'
+                      size='sm'
+                      color='primary'
+                      className='mt-2'
+                    />
+                  </div>
+                </td>
+              ) : (
+                <td />
+              )}
             </tr>
           ))}
         </tbody>

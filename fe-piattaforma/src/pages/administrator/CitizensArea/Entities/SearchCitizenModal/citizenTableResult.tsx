@@ -4,6 +4,8 @@ import { newTable, TableRowI } from '../../../../../components/Table/table';
 import { Table } from '../../../../../components';
 import { TableHeadingSearchResults } from '../../utils';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
+import { useAppSelector } from '../../../../../redux/hooks';
+import { selectServices } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 
 interface CitizenTableResultI {
   data: CittadinoInfoI[];
@@ -14,6 +16,8 @@ const CitizenTableResult: React.FC<CitizenTableResultI> = ({
   data,
   onCitizenSelected,
 }) => {
+  const citizensList = useAppSelector(selectServices)?.detail?.cittadini;
+
   const updateTableValues = () => {
     const table = newTable(
       TableHeadingSearchResults,
@@ -22,6 +26,10 @@ const CitizenTableResult: React.FC<CitizenTableResultI> = ({
         cognome: td.cognome || '',
         codiceFiscale: td.codiceFiscale || '',
         id: td.idCittadino || '',
+        isPresentInList:
+          citizensList.cittadini?.filter(
+            (cit) => cit.idCittadino === td.idCittadino
+          )?.length > 0,
       }))
     );
     return {
@@ -32,14 +40,10 @@ const CitizenTableResult: React.FC<CitizenTableResultI> = ({
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   useEffect(() => {
-    setTableValues(updateTableValues());
-  }, [data]);
-
-  const onActionClick: CRUDActionsI = {
-    [CRUDActionTypes.INFO]: (td: TableRowI | string) => {
-      console.log('info', td);
-    },
-  };
+    if (citizensList?.cittadini && data) {
+      setTableValues(updateTableValues());
+    }
+  }, [data, citizensList]);
 
   const onActionCheck: CRUDActionsI = {
     [CRUDActionTypes.SELECT]: (td: TableRowI | string) => {
@@ -51,7 +55,9 @@ const CitizenTableResult: React.FC<CitizenTableResultI> = ({
     <Table
       {...tableValues}
       id='table'
-      onActionClick={onActionClick}
+      onTooltipInfo={
+        'Il cittadino è già presente nella tua lista "I miei cittadini"'
+      }
       withActions
       onActionRadio={onActionCheck}
     />

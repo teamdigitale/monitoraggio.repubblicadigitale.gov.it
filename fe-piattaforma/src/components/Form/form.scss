@@ -75,6 +75,24 @@
   }
 }
 
+.multiple-select {
+  &__control {
+    &--is-disabled {
+      border-bottom: 1px solid #797c80 !important;
+      background: #e6e9f2 !important;
+    }
+  }
+  &__multi-value {
+    &__label {
+      background: #e6e9f2 !important;
+      border: 1px outset #e6e9f2 !important;
+    }
+    &__remove {
+      background: #e6e9f2 !important;
+    }
+  }
+}
+
 .radio-btn-container {
   min-height: 22px;
   min-width: 22px;
@@ -108,4 +126,9 @@
 
 .toggles label input[type='checkbox'][disabled] + .lever:after {
   background-color: #e6e9f2;
+}
+
+.rating-label {
+  font-size: 14px;
+  font-weight: 600;
 }

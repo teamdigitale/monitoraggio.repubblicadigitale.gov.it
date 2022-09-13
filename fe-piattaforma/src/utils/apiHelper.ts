@@ -17,9 +17,9 @@ API.interceptors.request.use((req) => {
     ...req,
     headers: {
       ...req.headers,
-      'authToken': getSessionValues('auth'),
-      'userRole': JSON.parse(getSessionValues('profile'))?.codiceRuolo,
-    }
+      authToken: getSessionValues('auth'),
+      userRole: JSON.parse(getSessionValues('profile'))?.codiceRuolo,
+    },
   };
 });
 
@@ -35,6 +35,7 @@ API.interceptors.response.use(
     } finally {
       errorHandler(error);
     }
+
     return Promise.reject(error);
   }
 );

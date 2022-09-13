@@ -186,11 +186,22 @@ export const GetAuthorityManagerDetail =
       dispatch({ ...SetAuthorityDetailAction });
       dispatch(resetAuthorityDetails());
 
-      const res = await API.get(
-        `/ente/${
-          entity === 'programma' ? 'gestoreProgramma' : 'gestoreProgetto'
-        }/${entityId}`
-      );
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
+      const body = {
+        cfUtente: codiceFiscale,
+        codiceRuolo,
+        idProgramma,
+        idProgetto,
+      };
+
+      let res;
+
+      if (entity === 'programma') {
+        res = await API.get(`/ente/gestoreProgramma/${entityId}`);
+      } else {
+        res = await API.post(`/ente/gestoreProgetto/${entityId}`, body);
+      }
 
       if (res.data) {
         dispatch(
@@ -285,17 +296,30 @@ const UpdateAuthorityAction = {
 };
 
 export const UpdateManagerAuthority =
-  (authorityDetail: any, enteGestoreId: string | number, entityId: string, entity: 'programma' | 'progetto') =>
+  (
+    authorityDetail: any,
+    enteGestoreId: string | number,
+    entityId: string,
+    entity: 'programma' | 'progetto'
+  ) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
-      dispatch({ ...UpdateAuthorityAction, ...authorityDetail, entityId, entity });
+      dispatch({
+        ...UpdateAuthorityAction,
+        ...authorityDetail,
+        entityId,
+        entity,
+      });
       if (authorityDetail?.id) {
         let res;
         if (enteGestoreId) {
-          res = await API.put(`/ente/${enteGestoreId}/${
-            entity === 'programma' ? 'gestoreProgramma' : 'gestoreProgetto'
-          }/${entityId}`, authorityDetail);
+          res = await API.put(
+            `/ente/${enteGestoreId}/${
+              entity === 'programma' ? 'gestoreProgramma' : 'gestoreProgetto'
+            }/${entityId}`,
+            authorityDetail
+          );
 
           return res;
         } else {
@@ -524,8 +548,8 @@ export const AssignManagerAuthorityReferentDelegate =
           await API.post(endpoint, body);
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      return error.response;
     } finally {
       dispatch(hideLoader());
     }
@@ -539,7 +563,7 @@ export const AssignPartnerAuthorityReferentDelegate =
       [key: string]: string | number | boolean | Date | string[] | undefined;
     },
     role: UserAuthorityRole,
-    userId?: string,
+    userId?: string
   ) =>
   async (dispatch: Dispatch) => {
     try {
@@ -552,13 +576,15 @@ export const AssignPartnerAuthorityReferentDelegate =
             `/utente/${userDetail.id.toString().toUpperCase()}`,
             userDetail
           ));
-        userId !== userDetail.id.toString() && (await API.post(endpoint, {
-          cfUtente: userDetail.codiceFiscale?.toString().toUpperCase(),
-          codiceRuolo: role,
-          idEntePartner: authorityId,
-          idProgetto: entityId,
-          mansione: userDetail.mansione,
-        }));
+        if (userId !== userDetail.id.toString()) {
+          await API.post(endpoint, {
+            cfUtente: userDetail.codiceFiscale?.toString().toUpperCase(),
+            codiceRuolo: role,
+            idEntePartner: authorityId,
+            idProgetto: entityId,
+            mansione: userDetail.mansione,
+          });
+        }
       } else {
         const payload = {
           telefono: userDetail?.telefono,
@@ -572,8 +598,9 @@ export const AssignPartnerAuthorityReferentDelegate =
         };
         // eslint-disable-next-line no-case-declarations
         const res = await API.post(`/utente`, payload);
+
         if (res) {
-          await API.post(endpoint, {
+          return await API.post(endpoint, {
             cfUtente: userDetail.codiceFiscale?.toString().toUpperCase(),
             codiceRuolo: role,
             idEntePartner: authorityId,
@@ -582,8 +609,8 @@ export const AssignPartnerAuthorityReferentDelegate =
           });
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      return error.response;
     } finally {
       dispatch(hideLoader());
     }

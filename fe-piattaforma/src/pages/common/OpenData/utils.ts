@@ -76,7 +76,7 @@ export const staticValues = [
     attributo: 'CAP',
     attributo_tipo: 'string',
     descrizione:
-      " E' il codice di avviamento postale che identifica il comune dove viene erogato il servizio di facilitazione/formazione al cittadino  ",
+      'È il codice di avviamento postale che identifica il comune dove viene erogato il servizio di facilitazione/formazione al cittadino  ',
     descrizione_tipo: '-',
   },
   {
@@ -133,21 +133,21 @@ export const staticValues = [
     attributo: 'ID_PROGRAMMA',
     attributo_tipo: 'string',
     descrizione:
-      "E' un codice interno che identifica il programma per cui si eroga il servizio di facilitazione/ formazione",
+      'È un codice interno che identifica il programma per cui si eroga il servizio di facilitazione/ formazione',
     descrizione_tipo: '-',
   },
   {
     attributo: 'INTERVENTO',
     attributo_tipo: 'string',
     descrizione:
-      "E' il tipo di intervento a cui sono associati i servizi di facilitazione/ formazione erogati",
+      'È il tipo di intervento a cui sono associati i servizi di facilitazione/ formazione erogati',
     descrizione_tipo: 'RFD, SCD',
   },
   {
-    attributo: 'ID_PREOGETTO',
+    attributo: 'ID_PROGETTO',
     attributo_tipo: 'string',
     descrizione:
-      "E' un codice interno che identifica il progetto per cui si eroga il servizio di facilitazione/ formazione",
+      'È un codice interno che identifica il progetto per cui si eroga il servizio di facilitazione/ formazione',
     descrizione_tipo: '-',
   },
 ];

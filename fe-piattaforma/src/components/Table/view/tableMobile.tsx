@@ -7,11 +7,13 @@ import EmptySection from '../../EmptySection/emptySection';
 
 interface MobileTableI {
   onActionClick?: CRUDActionsI;
+  onTooltipInfo?: string;
   values?: TableRowI[];
 }
 
 const TableMobile: React.FC<MobileTableI> = ({
   onActionClick,
+  onTooltipInfo = '',
   values = [],
 }) => {
   const [valuesForMobile, setValuesForMobile] = useState<AccordionRowI[]>();
@@ -19,14 +21,19 @@ const TableMobile: React.FC<MobileTableI> = ({
   useEffect(() => {
     if (values && values.length) {
       const temp = values.map((item) => {
-        const { attributo, actions, id, name, nome, label, status, ...rest } = item;
+        const { attributo, actions, id, name, nome, label, status, ...rest } =
+          item;
 
         return {
           title: nome || label || name || attributo,
           status,
           id,
           actions,
-          clickViewAction: (!item?.citizen || item?.citizen && item?.associatoAUtente) && onActionClick?.[CRUDActionTypes.VIEW] ? () => onActionClick?.[CRUDActionTypes.VIEW](item) : undefined,
+          clickViewAction:
+            (!item?.citizen || (item?.citizen && item?.associatoAUtente)) &&
+            onActionClick?.[CRUDActionTypes.VIEW]
+              ? () => onActionClick?.[CRUDActionTypes.VIEW](item)
+              : undefined,
           innerInfo: isEmpty(rest) ? undefined : { ...rest },
         };
       });
@@ -42,7 +49,7 @@ const TableMobile: React.FC<MobileTableI> = ({
     <div>
       {valuesForMobile ? (
         valuesForMobile.map((item, index: number) => (
-          <AccordionRow {...item} key={index} />
+          <AccordionRow {...item} key={index} onTooltipInfo={onTooltipInfo} />
         ))
       ) : (
         <div className='my-3'>
