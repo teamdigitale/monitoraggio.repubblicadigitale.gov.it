@@ -116,6 +116,7 @@ public class CittadiniServizioServiceTest {
 		nuovoCittadinoRequest.setCodiceFiscale("CFUTENTE");
 		nuovoCittadinoRequest.setNumeroDocumento("A89E32");
 		nuovoCittadinoRequest.setCodiceFiscaleNonDisponibile(false);
+		nuovoCittadinoRequest.setNuovoCittadino(true);
 		cittadino = new CittadinoEntity();
 		cittadino.setId(1L);
 		cittadino.setEmail("prova@gmail.com");
@@ -201,37 +202,35 @@ public class CittadiniServizioServiceTest {
 		cittadiniServizioService.getAllCittadiniByCodFiscOrNumDoc("NUM_DOC", "CRITERIORICERCA");
 	}
 	
-//	@Test
-//	public void creaNuovoCittadinoTest() {
-//		//test con cittadino presente a db
-//		when(this.cittadinoService.getCittadinoByCodiceFiscaleOrNumeroDocumento(
-//				nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile(),
-//				nuovoCittadinoRequest.getCodiceFiscale(),
-//				nuovoCittadinoRequest.getNumeroDocumento()
-//			)).thenReturn(Optional.of(cittadino));
-//		when(this.servizioXCittadinoRepository.findCittadinoByIdServizioAndIdCittadino(servizio.getId(), cittadino.getId())).thenReturn(0);
-//		when(servizioSqlService.getServizioById(servizio.getId())).thenReturn(servizio);
-//		when(sezioneQ3Respository.findById(servizio.getIdTemplateCompilatoQ3())).thenReturn(Optional.of(sezioneQ3));
-//		cittadiniServizioService.creaNuovoCittadino(servizio.getId(), nuovoCittadinoRequest);
-//	}
-	
-//	@Test
-//	public void creaNuovoCittadinoTest2() {
-//		//test con cittadino non presente a db
-//		when(this.cittadinoService.getCittadinoByCodiceFiscaleOrNumeroDocumento(
-//				nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile(),
-//				nuovoCittadinoRequest.getCodiceFiscale(),
-//				nuovoCittadinoRequest.getNumeroDocumento()
-//			)).thenReturn(Optional.empty());
-//		when(cittadinoRepository.save(Mockito.any(CittadinoEntity.class))).thenReturn(cittadino);
-//		when(servizioSqlService.getServizioById(servizio.getId())).thenReturn(servizio);
-//		when(sezioneQ3Respository.findById(servizio.getIdTemplateCompilatoQ3())).thenReturn(Optional.of(sezioneQ3));
-//		cittadiniServizioService.creaNuovoCittadino(servizio.getId(), nuovoCittadinoRequest);
-//	}
-	
+	@Test
+	public void creaNuovoCittadinoTest() {
+		when(this.cittadinoService.getCittadinoByCodiceFiscaleOrNumeroDocumento(
+				nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile(),
+				nuovoCittadinoRequest.getCodiceFiscale(),
+				nuovoCittadinoRequest.getNumeroDocumento()
+			)).thenReturn(Optional.empty());
+		when(cittadinoRepository.save(Mockito.any(CittadinoEntity.class))).thenReturn(cittadino);
+		when(servizioSqlService.getServizioById(servizio.getId())).thenReturn(servizio);
+		when(sezioneQ3Respository.findById(servizio.getIdTemplateCompilatoQ3())).thenReturn(Optional.of(sezioneQ3));
+		cittadiniServizioService.creaNuovoCittadino(servizio.getId(), nuovoCittadinoRequest);
+	}
+		
 	@Test
 	public void creaNuovoCittadinoKOTest() {
+		//test KO per cittadino già esistente
+		when(this.cittadinoService.getCittadinoByCodiceFiscaleOrNumeroDocumento(
+				nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile(),
+				nuovoCittadinoRequest.getCodiceFiscale(),
+				nuovoCittadinoRequest.getNumeroDocumento()
+			)).thenReturn(Optional.of(cittadino));
+		Assertions.assertThrows(CittadinoException.class, () -> cittadiniServizioService.creaNuovoCittadino(servizio.getId(), nuovoCittadinoRequest));
+		assertThatExceptionOfType(CittadinoException.class);
+	}
+	
+	@Test
+	public void creaNuovoCittadinoKOTest2() {
 		//test KO per cittadino già esistente sul servizio
+		nuovoCittadinoRequest.setNuovoCittadino(false);
 		when(this.cittadinoService.getCittadinoByCodiceFiscaleOrNumeroDocumento(
 				nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile(),
 				nuovoCittadinoRequest.getCodiceFiscale(),

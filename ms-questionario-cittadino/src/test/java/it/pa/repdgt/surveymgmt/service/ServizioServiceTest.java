@@ -114,6 +114,7 @@ public class ServizioServiceTest {
 		servizio = new ServizioEntity();
 		servizio.setId(1L);
 		servizio.setTipologiaServizio(null);
+		servizio.setNome("NOMESERVIZIO");
 		pagina = PageRequest.of(Integer.parseInt("0"), Integer.parseInt("10"));
 		servizioRequest = new ServizioRequest();
 		servizioRequest.setProfilazioneParam(profilazioneParam);
@@ -285,6 +286,7 @@ public class ServizioServiceTest {
 	
 	@Test
 	public void creaServizioTest() {
+		when(this.servizioSQLService.getServizioByNome(servizioRequest.getNomeServizio())).thenReturn(Optional.empty());
 		when(this.utenteService.isUtenteFacilitatore(profilazioneParam.getCodiceFiscaleUtenteLoggato(), profilazioneParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
 		when(this.servizioMapper.toCollectionFrom(servizioRequest)).thenReturn(sezioneQ3Collection);
 		servizioService.creaServizio(servizioRequest);
@@ -293,7 +295,7 @@ public class ServizioServiceTest {
 	@Test
 	public void creaServizioKOTest() {
 		//test KO per utente non facilitatore
-		when(this.utenteService.isUtenteFacilitatore(profilazioneParam.getCodiceFiscaleUtenteLoggato(), profilazioneParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(false);
+		when(this.servizioSQLService.getServizioByNome(servizioRequest.getNomeServizio())).thenReturn(Optional.of(servizio));
 		Assertions.assertThrows(ServizioException.class, () -> servizioService.creaServizio(servizioRequest));
 		assertThatExceptionOfType(ServizioException.class);
 	}
