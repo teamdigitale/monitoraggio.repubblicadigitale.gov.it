@@ -40,6 +40,7 @@ const Select: React.FC<SelectI> = (props) => {
     wrapperClassName,
     withLabel = true,
     isDisabled = false,
+    isSearchable = false,
   } = props;
   const [selectedOption, setSelectedOption] = useState<OptionType>();
 
@@ -116,6 +117,7 @@ const Select: React.FC<SelectI> = (props) => {
         classNamePrefix='bootstrap-select'
         aria-labelledby={`${(label || 'label select').replace(/\s/g, '-')}`}
         isDisabled={options?.length === 1 || isDisabled}
+        isSearchable={isSearchable}
       />
     </div>
   );

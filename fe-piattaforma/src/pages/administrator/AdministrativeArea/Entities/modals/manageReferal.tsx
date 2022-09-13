@@ -95,10 +95,11 @@ const ManageReferal: React.FC<ManageReferalI> = ({
 
   const handleSaveReferal = async () => {
     if (isFormValid && (authority?.id || authorityId)) {
+      let res: any = null;
       // Project details
       if (projectId) {
         if (authorityId) {
-          await dispatch(
+          res = await dispatch(
             AssignPartnerAuthorityReferentDelegate(
               authorityId,
               projectId,
@@ -110,7 +111,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
           await dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
           if (userId) await dispatch(GetUserDetails(userId));
         } else {
-          await dispatch(
+          res = await dispatch(
             AssignManagerAuthorityReferentDelegate(
               authority.id,
               projectId,
@@ -124,7 +125,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
           if (userId) await dispatch(GetUserDetails(userId));
         }
       } else if (entityId) {
-        await dispatch(
+        res = await dispatch(
           AssignManagerAuthorityReferentDelegate(
             authority?.id || authorityId,
             entityId,
@@ -137,8 +138,10 @@ const ManageReferal: React.FC<ManageReferalI> = ({
         await dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
         if (userId) await dispatch(GetUserDetails(userId));
       }
-      resetModal();
-      dispatch(closeModal());
+      if (res.data.errorCode !== 'U01') {
+        resetModal();
+        dispatch(closeModal());
+      }
     }
   };
 

@@ -74,13 +74,15 @@ const ViewSurvey: React.FC = () => {
             ...{
               [id]:
                 valuesInArray[key][id]?.length > 1
-                  ? // @ts-ignore
+                  ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
                     valuesInArray[key][id].map((e) =>
                       e.toString().replaceAll('§', ',')
                     )
                   : valuesInArray[key][id][0]
                       .toString()
                       .split('§')
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                       // @ts-ignore
                       .map((e) => e.toString().replaceAll('§', ',')),
             },
