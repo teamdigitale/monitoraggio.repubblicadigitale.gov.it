@@ -513,14 +513,13 @@ export const PostFormCompletedByCitizen =
         titoloDiStudioDaAggiornare: payload?.[0]['9'],
       };
       await API.post(entityEndpoint, body);
-      resetCompilingSurveyForm();
+      dispatch(resetCompilingSurveyForm());
       return true;
     } catch (e) {
       console.error(
         'post questionario compilato PostFormCompletedByCitizen',
         e
       );
-      resetCompilingSurveyForm();
       return false;
     } finally {
       dispatch(hideLoader());

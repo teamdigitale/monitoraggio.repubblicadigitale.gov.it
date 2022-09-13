@@ -20,6 +20,7 @@ export interface TableI {
   heading?: TableHeadingI[];
   id?: string;
   onActionClick?: CRUDActionsI;
+  onTooltipInfo?: string;
   onCellClick?: (field: string, row: TableRowI) => void;
   onRowClick?: (row: TableRowI) => void;
   values?: TableRowI[];

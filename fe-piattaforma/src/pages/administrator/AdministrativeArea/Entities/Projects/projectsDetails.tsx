@@ -440,12 +440,13 @@ const ProjectsDetails = () => {
                 ...sedi,
                 actions:
                   authorityInfo?.dettagliInfoEnte?.statoEnte ===
-                  entityStatus.TERMINATO
+                    entityStatus.TERMINATO && sedi.associatoAUtente
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickSede[CRUDActionTypes.VIEW],
                       }
-                    : {
+                    : sedi.associatoAUtente
+                    ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickSede[CRUDActionTypes.VIEW],
                         [CRUDActionTypes.DELETE]:
@@ -454,7 +455,8 @@ const ProjectsDetails = () => {
                             : hasUserPermission(['del.sede.gest.prgt'])
                             ? onActionClickSede[CRUDActionTypes.DELETE]
                             : undefined,
-                      },
+                      }
+                    : {},
               })
             ) || [],
         },

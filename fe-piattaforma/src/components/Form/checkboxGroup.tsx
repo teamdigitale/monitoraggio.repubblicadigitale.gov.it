@@ -14,6 +14,7 @@ interface CheckboxGroupI extends InputI {
   noLabel?: boolean;
   classNameLabelOption?: string;
   optionsInColumn?: boolean;
+  singleSelection?: boolean;
 }
 
 const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
@@ -31,6 +32,7 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
     disabled = false,
     optionsInColumn = false,
     required = false,
+    singleSelection = false,
   } = props;
   const parseExternalValue = () => value.toString().split(separator);
   const [values, setValues] = useState<string[]>(parseExternalValue());
@@ -42,7 +44,7 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
     ) {
       setValues(parseExternalValue());
     } else if (value?.toString().includes(separator)) {
-      let newValues: string[] = [];
+      const newValues: string[] = [];
       parseExternalValue().map(extValue => {
         if (options.filter((opt) => opt.value === extValue.toString()).length) {
           newValues.push(extValue);
@@ -63,14 +65,19 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
   }, [values.join(separator)]);
 
   const handleOnChange = (value: string | number) => {
-    const valueIndex = values.findIndex((v) => v === value.toString());
-    if (valueIndex !== -1) {
-      const newValues = [...values];
-      newValues.splice(valueIndex, 1);
-      setValues(newValues);
-    } else {
-      setValues([...values, value.toString()]);
+    if(singleSelection){
+      setValues([value.toString()]);
+    }else{
+      const valueIndex = values.findIndex((v) => v === value.toString());
+      if (valueIndex !== -1) {
+        const newValues = [...values];
+        newValues.splice(valueIndex, 1);
+        setValues(newValues);
+      } else {
+        setValues([...values, value.toString()]);
+      }
     }
+    
   };
 
   return (

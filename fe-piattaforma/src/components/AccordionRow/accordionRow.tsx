@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from 'react';
-import { Icon, Button } from 'design-react-kit';
+import { Icon, Button, UncontrolledTooltip } from 'design-react-kit';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 
@@ -13,6 +13,7 @@ export interface AccordionRowI {
     | undefined;
   status?: string | undefined;
   StatusElement?: ReactElement | undefined;
+  onTooltipInfo?: string;
 }
 
 const AccordionRow: React.FC<AccordionRowI> = ({
@@ -21,6 +22,7 @@ const AccordionRow: React.FC<AccordionRowI> = ({
   innerInfo,
   status,
   StatusElement,
+  onTooltipInfo = '',
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { t } = useTranslation();
@@ -66,17 +68,36 @@ const AccordionRow: React.FC<AccordionRowI> = ({
               ) : null}
             </>
           ) : null}
+
           <span className='font-weight-semibold'>{title}</span>
         </div>
-        {clickViewAction ? <Button>
-          <div className='d-flex justify-content-start'>
-            <Icon
-              icon='it-chevron-right'
-              onClick={clickViewAction}
-              aria-label='vai al dettaglio'
-            />
+        {clickViewAction ? (
+          <Button>
+            <div className='d-flex justify-content-start'>
+              <Icon
+                icon='it-chevron-right'
+                onClick={clickViewAction}
+                aria-label='vai al dettaglio'
+              />
+            </div>
+          </Button>
+        ) : null}
+        {onTooltipInfo && innerInfo?.isPresentInList ? (
+          <div
+            className='d-inline-flex position-relative'
+            id={`tooltip-${innerInfo.id}`}
+          >
+            <UncontrolledTooltip
+              placement='bottom'
+              target={`tooltip-${innerInfo.id}`}
+              /*  isOpen={openOne}
+                    toggle={() => toggleOne(!openOne)} */
+            >
+              {onTooltipInfo}
+            </UncontrolledTooltip>
+            <Icon icon='it-info-circle' size='sm' color='primary' />
           </div>
-        </Button> : null}
+        ) : null}
       </div>
       <div>
         {innerInfo?.['defaultSCD'] && innerInfo?.['defaultRFD'] ? (
@@ -105,7 +126,12 @@ const AccordionRow: React.FC<AccordionRowI> = ({
         >
           <div className='d-flex flex-column pl-4'>
             {Object.keys(innerInfo)
-              .filter((el) => el !== 'defaultSCD' && el !== 'defaultRFD')
+              .filter(
+                (el) =>
+                  el !== 'defaultSCD' &&
+                  el !== 'defaultRFD' &&
+                  el !== 'isPresentInList'
+              )
               .map((x, index) => (
                 <div className='info-row' key={index}>
                   <span className='text-uppercase font-weight-semibold info-title'>
@@ -115,6 +141,7 @@ const AccordionRow: React.FC<AccordionRowI> = ({
                 </div>
               ))}
           </div>
+
           <div
             className={clsx(
               'd-flex',

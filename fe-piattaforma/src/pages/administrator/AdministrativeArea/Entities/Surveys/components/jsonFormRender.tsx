@@ -204,8 +204,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
         }
         if (formField.options?.length) {
           if (viewMode && Array.isArray(formField?.value)) {
-            const valueString = formField?.value.join('§');
-            formField.value = valueString;
+            formField.value = formField?.value.join('§');
           }
           return (
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -218,10 +217,11 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
               onInputChange={onInputChange}
               label={`${formField?.label}`}
               styleLabelForm
-              noLabel={formField.flag === true ? true : false}
+              noLabel={formField.flag}
               disabled={formField?.disabled || viewMode}
               optionsInColumn={formField.field !== '18'}
               separator='§'
+              singleSelection={formField.field === '18'}
             />
           );
         }
@@ -241,7 +241,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
       case 'range':
         return (
           <div className='d-flex flex-column align-items-start'>
-            <Label style={{ fontSize: '14px', fontWeight: '600' }}>
+            <Label className='rating-label'>
               {formField?.label} {formField?.required && '*'}{' '}
             </Label>
             <Rating

@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import moment from 'moment/moment';
 import DetailLayout from '../../../../../../components/DetailLayout/detailLayout';
 import { OptionType } from '../../../../../../components/Form/select';
 import {
@@ -118,7 +119,7 @@ const ViewSurvey: React.FC = () => {
               value: opt.value.toString().toUpperCase(),
             })
           );
-        } else if (newForm?.['19']) delete newForm?.['19'];
+        }
         if (
           compiledSurveyCitizen?.length &&
           compiledSurveyCitizen?.[index]?.domandaRisposta?.json
@@ -134,6 +135,12 @@ const ViewSurvey: React.FC = () => {
             getValuesSurvey(sectionParsed);
           Object.keys(newForm).map((key: string) => {
             newForm[key].value = values[key];
+            if (key === '19') {
+              newForm[key].value =
+                moment(values[key]?.toString(), 'DD-MM-YYYY').format(
+                  'YYYY-MM-DD'
+                ) || '';
+            }
           });
         }
         forms.push(newForm);
