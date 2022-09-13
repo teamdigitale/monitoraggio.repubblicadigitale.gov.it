@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.116](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.115...1.0.0-develop.116) (2022-09-13)
+
+
+### Bug Fixes
+
+* **be:** aggiunto controllo servizio per univocità nome servizio ([463eb53](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/463eb533f89924485864edca4878fc360a072433))
+
 ## [1.0.0-develop.115](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.114...1.0.0-develop.115) (2022-09-12)
 
 
