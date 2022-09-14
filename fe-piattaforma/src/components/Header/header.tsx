@@ -115,7 +115,7 @@ const Header: React.FC<HeaderProp> = (props) => {
       ) : (
         <HeaderMobile {...componentProps} />
       )}
-      <SwitchProfileModal />
+      <SwitchProfileModal isOnboarding={!isLogged} />
     </>
   );
 };
