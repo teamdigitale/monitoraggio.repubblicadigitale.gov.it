@@ -284,8 +284,8 @@ export const CreateManagerAuthority =
           return res.data.id;
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      return error.response;
     } finally {
       dispatch(hideLoader());
     }
@@ -377,7 +377,18 @@ export const GetPartnerAuthorityDetail =
     dispatch(showLoader());
     dispatch({ ...SetAuthorityDetailAction });
     try {
-      const res = await API.get(`/ente/partner/${projectId}/${authorityId}`);
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
+      const body = {
+        cfUtente: codiceFiscale,
+        codiceRuolo,
+        idProgramma,
+        idProgetto,
+      };
+      const res = await API.post(
+        `/ente/partner/${projectId}/${authorityId}`,
+        body
+      );
 
       if (res.data) {
         dispatch(
@@ -420,8 +431,8 @@ export const CreatePartnerAuthority =
           );
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      return error.response;
     } finally {
       dispatch(hideLoader());
     }

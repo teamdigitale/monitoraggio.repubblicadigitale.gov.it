@@ -58,11 +58,12 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
     if (creation) dispatch(setAuthorityDetails({}));
   }, [creation]);
 
-  const resetModal = () => {
+  const resetModal = (toClose = true) => {
     clearForm();
     setShowForm(true);
     setAlreadySearched(false);
     // dispatch(resetAuthorityDetails());
+    if (toClose) dispatch(closeModal());
   };
 
   const handleSearchAuthority = (search: string) => {
@@ -73,6 +74,7 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
 
   const handleSaveEnte = async () => {
     if (isFormValid) {
+      let res: any = null;
       if (newFormValues.id) {
         // Update
         if (projectId) {
@@ -85,16 +87,19 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
         }
       } else {
         // Create
-        projectId &&
-          (await dispatch(
+        if (projectId) {
+          res = await dispatch(
             CreatePartnerAuthority({ ...newFormValues }, projectId)
-          ));
+          );
+        }
       }
-      dispatch(closeModal());
+
       if (projectId && !authorityId) dispatch(GetProjectDetail(projectId));
+      if (!res?.errorCode) {
+        resetModal();
+        dispatch(closeModal());
+      }
     }
-    resetModal();
-    dispatch(closeModal());
   };
 
   // The table makes me work with function defined this way
@@ -153,7 +158,7 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: () => resetModal(),
+        onClick: resetModal,
       }}
     >
       <div>

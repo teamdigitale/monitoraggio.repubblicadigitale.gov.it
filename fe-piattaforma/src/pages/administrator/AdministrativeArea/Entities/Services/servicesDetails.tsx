@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../../../../redux/hooks';
-import { selectQuestionarioTemplateSnapshot, selectServices } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import {
+  selectQuestionarioTemplateSnapshot,
+  selectServices,
+} from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import {
   CitizenListI,
   DeleteService,
@@ -61,7 +64,9 @@ const ServicesDetails = () => {
   const [itemList, setItemList] = useState<ItemsListI | null>();
   const location = useLocation();
   const { hasUserPermission } = useGuard();
-  const idQuestionarioTemplate = useAppSelector(selectQuestionarioTemplateSnapshot)?.idQuestionarioTemplate;
+  const idQuestionarioTemplate = useAppSelector(
+    selectQuestionarioTemplateSnapshot
+  )?.idQuestionarioTemplate;
 
   useEffect(() => {
     // For breadcrumb
@@ -110,9 +115,7 @@ const ServicesDetails = () => {
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-      navigate(
-        `/area-amministrativa/progetti/${td}`
-      );
+      navigate(`/area-amministrativa/progetti/${td}`);
     },
   };
 
@@ -163,7 +166,8 @@ const ServicesDetails = () => {
           outline: true,
           color: 'primary',
           text: 'Elimina',
-          disabled: serviceDetails?.dettaglioServizio?.statoServizio !== 'NON ATTIVO',
+          disabled:
+            serviceDetails?.dettaglioServizio?.statoServizio !== 'NON ATTIVO',
           onClick: () =>
             dispatch(
               openModal({
@@ -178,7 +182,8 @@ const ServicesDetails = () => {
           size: 'xs',
           color: 'primary',
           text: 'Modifica',
-          disabled: serviceDetails?.dettaglioServizio?.statoServizio !== 'NON ATTIVO',
+          disabled:
+            serviceDetails?.dettaglioServizio?.statoServizio !== 'NON ATTIVO',
           onClick: () =>
             dispatch(
               openModal({
@@ -195,7 +200,8 @@ const ServicesDetails = () => {
           outline: true,
           color: 'primary',
           text: 'Elimina',
-          disabled: serviceDetails?.dettaglioServizio?.statoServizio !== 'NON ATTIVO',
+          disabled:
+            serviceDetails?.dettaglioServizio?.statoServizio !== 'NON ATTIVO',
           onClick: () =>
             dispatch(
               openModal({
@@ -213,7 +219,8 @@ const ServicesDetails = () => {
           size: 'xs',
           color: 'primary',
           text: 'Modifica',
-          disabled: serviceDetails?.dettaglioServizio?.statoServizio !== 'NON ATTIVO',
+          disabled:
+            serviceDetails?.dettaglioServizio?.statoServizio !== 'NON ATTIVO',
           onClick: () =>
             dispatch(
               openModal({
@@ -234,14 +241,15 @@ const ServicesDetails = () => {
       text: 'Stampa questionario',
       iconForButton: 'it-print',
       iconColor: 'primary',
-      onClick: () => window.open(`/stampa-questionario/${idQuestionarioTemplate}`, '_blank'),
+      onClick: () =>
+        window.open(`/stampa-questionario/${idQuestionarioTemplate}`, '_blank'),
     },
     {
       size: 'xs',
       color: 'primary',
       text: 'Invia questionario a tutti',
-      onClick: async() => {
-        await dispatch(SendSurveyToAll(serviceId))
+      onClick: async () => {
+        await dispatch(SendSurveyToAll(serviceId));
         dispatch(GetCitizenListServiceDetail(serviceId));
         dispatch(GetServicesDetailFilters(serviceId));
       }, // TODO: richiama all cittadini
@@ -281,21 +289,17 @@ const ServicesDetails = () => {
 
   return (
     <div
-      className={clsx('d-flex', 'container', 'justify-content-center', 'w-100')}
+      className={clsx('d-flex', 'justify-content-center', 'w-100')}
       style={{ maxWidth: 'auto' }}
     >
       <div className='container'>
         <DetailLayout
-          formButtons={
-            activeTab === tabs.CITIZENS
-              ? buttonsCitizen
-              : buttons
-          }
+          formButtons={activeTab === tabs.CITIZENS ? buttonsCitizen : buttons}
           titleInfo={{
             title: serviceDetails.dettaglioServizio?.nomeServizio,
             status: serviceDetails.dettaglioServizio?.statoServizio,
             upperTitle: { icon: 'it-calendar', text: 'Servizio' },
-            subTitle: serviceDetails.dettaglioServizio?.nominativoFacilitatore
+            subTitle: serviceDetails.dettaglioServizio?.nominativoFacilitatore,
           }}
           currentTab={activeTab}
           buttonsPosition='BOTTOM'
@@ -304,13 +308,13 @@ const ServicesDetails = () => {
           nav={nav}
           goBackTitle='Elenco servizi'
           goBackPath='/area-amministrativa/servizi'
+          citizenList
+          citizenDeleteChange
         >
           <div className='mx-auto'>{content}</div>
         </DetailLayout>
         <ManageServices />
-        <SearchCitizenModal
-          onConfirmText='Aggiungi'
-        />
+        <SearchCitizenModal onConfirmText='Aggiungi' />
         <DeleteEntityModal
           onClose={() => dispatch(closeModal())}
           onConfirm={() => onConfirmDelete()}

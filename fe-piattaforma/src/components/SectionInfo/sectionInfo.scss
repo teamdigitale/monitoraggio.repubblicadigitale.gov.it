@@ -83,8 +83,8 @@
 
   .close-button {
     position: absolute;
-    right: 0;
-    top: -12px;
+    right: -15px;
+    top: -20px;
 
     @media screen and (max-width: 576px) {
       .close-button {

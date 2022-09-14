@@ -1,6 +1,8 @@
 import clsx from 'clsx';
 import { Icon } from 'design-react-kit';
 import React, { memo } from 'react';
+import { selectDevice } from '../../redux/features/app/appSlice';
+import { useAppSelector } from '../../redux/hooks';
 import './cardCounter.scss';
 
 export interface CardCounterI {
@@ -12,6 +14,7 @@ export interface CardCounterI {
 
 const CardCounter: React.FC<CardCounterI> = (props) => {
   const { title, counter, icon, className } = props;
+  const device = useAppSelector(selectDevice);
 
   return (
     <div
@@ -21,7 +24,8 @@ const CardCounter: React.FC<CardCounterI> = (props) => {
         'flex-row',
         'card-counter',
         'px-3',
-        'py-3'
+        'py-3',
+        device.mediaIsPhone && 'my-2 w-100'
       )}
     >
       <Icon

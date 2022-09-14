@@ -14,11 +14,13 @@ export interface ButtonInButtonsBar extends ButtonProps {
 interface StickyButtonsI {
   buttons: ButtonInButtonsBar[];
   citizenList?: boolean;
+  citizenDeleteChange?: boolean;
 }
 
 const ButtonsBar: React.FC<StickyButtonsI> = ({
   buttons = [],
   citizenList = false,
+  citizenDeleteChange = false,
 }) => {
   const device = useAppSelector(selectDevice);
 
@@ -27,6 +29,7 @@ const ButtonsBar: React.FC<StickyButtonsI> = ({
       className={clsx(
         'buttons-bar',
         citizenList ? 'justify-content-start' : 'justify-content-end',
+        citizenDeleteChange ? 'flex-nowrap' : null,
         'pt-2',
         device.mediaIsPhone && 'py-2'
       )}

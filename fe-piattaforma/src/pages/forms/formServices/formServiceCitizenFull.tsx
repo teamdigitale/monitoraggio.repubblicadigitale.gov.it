@@ -64,23 +64,20 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
       );
       delete formFromSchema['19']; // data consenso non parte dell'anagrafica
       Object.keys(formFromSchema).forEach((key: string) => {
-        
         formFromSchema[key].label = formFromSchema[key].value?.toString() || '';
         formFromSchema[key].value = '';
-        if (Number(key) === 4 || Number(key) === 5 || Number(key) === 6) {
+        if (key === '4' || key === '5' || key === '6') {
           formFromSchema[key].required = false;
         }
-        if (Number(key) === 15) {
+        if (key === '15') {
           formFromSchema[key].value = '+39';
         }
-        if (Number(key) === 18) {
-          if(creation){
+        if (key === '18') {
+          if (creation) {
             formFromSchema[key].options = [
-              { label: "Gestita dall'ente", value: "$consenso" },
+              { label: "Gestita dall'ente", value: '$consenso' },
             ];
-            formFromSchema[key].value = "$consenso";
-            formFromSchema[key].disabled = true;
-          }else{
+          } else {
             formFromSchema[key].options = formFromSchema[key]?.options?.map(
               (opt: OptionType) => ({
                 label: opt.label,
@@ -88,7 +85,7 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
               })
             );
             formFromSchema[key].keyBE = 'tipoConferimentoConsenso';
-          } 
+          }
         }
       });
       setDynamicForm(formFromSchema);
@@ -105,7 +102,14 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
       Object.keys(form).map((key: string) => {
         const keyBE = form[key]?.keyBE;
         if (keyBE) newValues[key] = formData[keyBE];
+        if (key === '18' && (!newValues[key] || newValues[key] === '')) {
+          newValues[key] = '$consenso';
+        }
       });
+      if(formData?.codiceFiscale === ''){
+        newValues['4'] = 'Codice fiscale non disponibile';
+        handleCheckboxChange('Codice fiscale non disponibile','4');
+      }
       setFormValues(newValues);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -219,14 +223,20 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
                 'compile-survey-container__checkbox-margin'
               )}
               label={
-                Number(field.field) === 18 ? 'Presa visione dell’informativa privacy' : ''
+                field.field === '18'
+                  ? 'Presa visione dell’informativa privacy'
+                  : ''
               }
-              noLabel={Number(field.field) === 4}
-              options={field.options}
+              noLabel={field.field === '4'}
+              options={
+                field.field === '18' && field.value === '$consenso'
+                  ? [{ label: "Gestita dall'ente", value: '$consenso' }]
+                  : field.options
+              }
               onInputChange={handleCheckboxChange}
               styleLabelForm
               classNameLabelOption='pl-5'
-              disabled={Number(field.field) === 18}
+              disabled={!creation && field.field === '18'}
             />
           );
         }

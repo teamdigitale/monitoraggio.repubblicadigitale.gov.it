@@ -100,6 +100,7 @@ const FormFacilitator: React.FC<FacilitatorFormI> = (props) => {
               col='col-12 col-lg-6'
               label='Tipo di Contratto'
               placeholder='Seleziona tipo di contratto'
+              position='top'
               options={contractTypes}
               onInputChange={onInputDataChange}
               wrapperClassName='mb-5'

@@ -248,16 +248,19 @@ const AuthoritiesDetails = () => {
           authorityDetails?.sediEntePartner?.map(
             (sedi: { [key: string]: string }) => ({
               ...sedi,
-              actions: {
-                [CRUDActionTypes.VIEW]: onActionClickSede[CRUDActionTypes.VIEW],
-                [CRUDActionTypes.DELETE]:
-                  sedi.stato !== entityStatus.ATTIVO ||
-                  projectState === entityStatus.TERMINATO
-                    ? undefined
-                    : hasUserPermission(['del.sede.partner'])
-                    ? onActionClickSede[CRUDActionTypes.DELETE]
-                    : undefined,
-              },
+              actions: sedi.associatoAUtente
+                ? {
+                    [CRUDActionTypes.VIEW]:
+                      onActionClickSede[CRUDActionTypes.VIEW],
+                    [CRUDActionTypes.DELETE]:
+                      sedi.stato !== entityStatus.ATTIVO ||
+                      projectState === entityStatus.TERMINATO
+                        ? undefined
+                        : hasUserPermission(['del.sede.partner'])
+                        ? onActionClickSede[CRUDActionTypes.DELETE]
+                        : undefined,
+                  }
+                : {},
             })
           ) || [],
       },

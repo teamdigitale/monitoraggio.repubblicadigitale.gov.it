@@ -36,10 +36,10 @@ const SectionInfo: React.FC<SectionInfoI> = (props) => {
             <div className='d-flex flex-row align-items-center'>
               <Icon
                 color='primary'
-                icon='it-pin'
+                icon='it-info-circle'
                 size='sm'
                 aria-label='calendar'
-                className='mr-2'
+                className='mr-2 mb-2'
               />
               <h1 className={clsx(!device.mediaIsDesktop ? 'h5' : 'h4')}>
                 {title}

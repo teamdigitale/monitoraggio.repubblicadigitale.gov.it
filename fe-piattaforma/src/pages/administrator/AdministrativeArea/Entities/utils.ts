@@ -82,7 +82,7 @@ export const TableHeadingQuestionnaires: TableHeadingI[] = [
   },
   {
     label: 'Stato',
-    field: 'stato',
+    field: 'status',
     size: 'auto',
   },
   {
@@ -182,7 +182,7 @@ export const userRoles = {
   REPP: 'REPP',
   DEPP: 'DEPP',
   USR: 'utenti',
-}
+};
 
 export const contractTypes = [
   { label: 'Volontario', value: 'Volontario' },

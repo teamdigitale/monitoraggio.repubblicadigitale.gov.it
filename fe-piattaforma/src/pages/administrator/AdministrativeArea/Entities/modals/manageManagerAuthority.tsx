@@ -148,22 +148,28 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
       }
       // Creation
       else {
+        let res: any = null;
         if (projectId) {
           // Project
-          await dispatch(
+          res = await dispatch(
             CreateManagerAuthority({ ...newFormValues }, projectId, 'progetto')
           );
-          await dispatch(GetProjectDetail(projectId));
-          dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
-          resetModal();
+
+          if (!res?.errorCode) {
+            await dispatch(GetProjectDetail(projectId));
+            dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+            resetModal();
+          }
         } else if (entityId) {
           // Program
-          await dispatch(
+          res = await dispatch(
             CreateManagerAuthority({ ...newFormValues }, entityId, 'programma')
           );
-          await dispatch(GetProgramDetail(entityId));
-          dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
-          resetModal();
+          if (!res?.errorCode) {
+            await dispatch(GetProgramDetail(entityId));
+            dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+            resetModal();
+          }
         }
       }
     }
