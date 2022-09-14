@@ -250,7 +250,6 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
         onClick: resetModal,
       }}
       centerButtons
-      onClose={resetModal}
     >
       <div className='d-flex flex-column search-citizen-modal'>
         <div className='mb-5'>
