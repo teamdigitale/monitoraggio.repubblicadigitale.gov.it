@@ -124,7 +124,7 @@ const AccordionRow: React.FC<AccordionRowI> = ({
             'align-items-center'
           )}
         >
-          <div className='d-flex flex-column pl-4'>
+          <div className='d-flex flex-column'>
             {Object.keys(innerInfo)
               .filter(
                 (el) =>

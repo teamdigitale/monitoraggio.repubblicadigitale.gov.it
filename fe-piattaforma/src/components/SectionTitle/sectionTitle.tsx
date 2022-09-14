@@ -105,7 +105,18 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
               'rounded-circle',
               'onboarding__icon-container'
             )}
-            style={{ bottom: '-10px', left: '-10px' }}
+            style={{
+              bottom: device.mediaIsDesktop
+                ? '-10px'
+                : device.mediaIsPhone
+                ? '90px'
+                : '',
+              left: device.mediaIsDesktop
+                ? '-10px'
+                : device.mediaIsPhone
+                ? '75px'
+                : '',
+            }}
           >
             <input
               type='file'
@@ -128,12 +139,21 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
                 color='white'
                 aria-label='Foto'
                 className='position-absolute'
-                style={{ top: '7px', left: '7px' }}
+                style={{
+                  top: '4px',
+                  left: '5px',
+                }}
               />
             </Button>
           </div>
         )}
-        <div className='custom-section-title__section-title primary-color-a9 text-nowrap'>
+        <div
+          className={clsx(
+            'custom-section-title__section-title',
+            'primary-color-a9',
+            !device.mediaIsPhone ? 'text-nowrap' : 'text-wrap text-center'
+          )}
+        >
           <span role='heading' aria-level={1}>
             {' '}
             {title}{' '}

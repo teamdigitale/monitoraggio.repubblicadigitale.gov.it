@@ -29,6 +29,7 @@ export interface PageTitleI {
     | undefined;
   innerHTML?: boolean;
   HTMLsubtitle?: string;
+  defaultOpen?: boolean;
 }
 
 const PageTitle: React.FC<PageTitleI> = (props) => {
@@ -41,14 +42,24 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
     alignTitle,
     innerHTML,
     HTMLsubtitle = '',
+    defaultOpen = false,
   } = props;
 
-  const [sectionInfoOpened, setSectionInfoOpened] = useState<boolean>(false);
+  const [sectionInfoOpened, setSectionInfoOpened] = useState<boolean>(defaultOpen);
   const location = useLocation();
   const device = useAppSelector(selectDevice);
 
   const openSectionInfo = () => {
     setSectionInfoOpened((current) => !current);
+  };
+
+  const correctSectionTitle = () => {
+    switch (location.pathname) {
+      case '/area-amministrativa/questionari':
+        return 'Come utilizzare la sezione questionari';
+      default:
+        return '';
+    }
   };
 
   const correctSectionInfo = () => {
@@ -68,7 +79,8 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
             'd-flex',
             'flex-row',
             'align-items-center',
-            alignTitle ? 'justify-content-center' : null
+            alignTitle ? 'justify-content-center' : null,
+            device.mediaIsPhone && 'container'
           )}
         >
           {title && (
@@ -126,9 +138,9 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
             ) : null}
           </div>
         ) : null}
-        {sectionInfoOpened ? (
+        {sectionInfo && sectionInfoOpened ? (
           <SectionInfo
-            title='Informazioni sulla sezione'
+            title={correctSectionTitle()}
             body={correctSectionInfo()}
             open={sectionInfoOpened}
             setIsOpen={(value) => {

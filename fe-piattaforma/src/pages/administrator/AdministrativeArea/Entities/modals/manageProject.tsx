@@ -68,6 +68,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       dispatch(GetProjectDetail(projectId));
       setCurrentStep(0);
     }
+    dispatch(closeModal());
   };
 
   const steps = [
@@ -80,7 +81,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => handleCancel(),
+        onClick: handleCancel,
       },
       tertiatyCTA: null,
     },
@@ -93,7 +94,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => handleCancel(),
+        onClick: handleCancel,
       },
       tertiatyCTA: {
         label: 'Indietro',
@@ -109,7 +110,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => handleCancel(),
+        onClick: handleCancel,
       },
       tertiatyCTA: {
         label: 'Indietro',
@@ -125,7 +126,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => handleCancel(),
+        onClick: handleCancel,
       },
       tertiatyCTA: {
         label: 'Indietro',
@@ -141,7 +142,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => () => handleCancel(),
+        onClick: handleCancel,
       },
       tertiatyCTA: {
         label: 'Indietro',

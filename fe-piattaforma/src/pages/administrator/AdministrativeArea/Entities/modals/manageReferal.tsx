@@ -76,15 +76,16 @@ const ManageReferal: React.FC<ManageReferalI> = ({
   const { entityId, projectId, authorityId, userId } = useParams();
   const authority = useAppSelector(selectAuthorities).detail.dettagliInfoEnte;
 
-  const resetModal = () => {
+  const resetModal = (toClose = true) => {
     clearForm();
     setShowForm(true);
     setAlreadySearched(false);
     dispatch(setUsersList(null));
+    if (toClose) dispatch(closeModal());
   };
 
   useEffect(() => {
-    resetModal();
+    resetModal(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -138,9 +139,8 @@ const ManageReferal: React.FC<ManageReferalI> = ({
         await dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
         if (userId) await dispatch(GetUserDetails(userId));
       }
-      if (res.data.errorCode !== 'U01') {
+      if (!res) {
         resetModal();
-        dispatch(closeModal());
       }
     }
   };
@@ -209,7 +209,6 @@ const ManageReferal: React.FC<ManageReferalI> = ({
         onClick: resetModal,
       }}
       centerButtons
-      onClose={resetModal}
     >
       <div>
         {creation ? (

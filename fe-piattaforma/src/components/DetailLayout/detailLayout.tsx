@@ -48,6 +48,8 @@ interface DetailLayoutI {
   isRadioButtonItem?: boolean;
   onRadioChange?: (surveyDefault: string) => void;
   isUserProfile?: boolean;
+  citizenList?: boolean;
+  citizenDeleteChange?: boolean;
 }
 const DetailLayout: React.FC<DetailLayoutI> = ({
   formButtons,
@@ -66,6 +68,8 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   isRadioButtonItem = false,
   isUserProfile = false,
   onRadioChange,
+  citizenList = false,
+  citizenDeleteChange = false,
 }) => {
   const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
@@ -99,7 +103,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
               'justify-content-center',
               'w-100',
               'mt-5',
-              'mb-5'
+              device.mediaIsPhone && citizenList ? 'mb-0' : 'mb-5'
             )}
           >
             {nav}
@@ -285,7 +289,14 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
       formButtons.length !== 0 ? (
         <>
           <div aria-hidden='true' className='mt-5 w-100'>
-            <Sticky mode='bottom' stickyClassName='sticky bg-white container'>
+            <Sticky
+              mode='bottom'
+              stickyClassName={clsx(
+                'sticky',
+                'bg-white',
+                !citizenList && 'container'
+              )}
+            >
               {formButtons.length === 3 ? (
                 device.mediaIsPhone ? (
                   <div
@@ -316,8 +327,13 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                   </div>
                 )
               ) : (
-                <div className='container text-center'>
-                  <ButtonsBar buttons={formButtons} />
+                <div
+                  className={clsx(!citizenList && 'container', 'text-center')}
+                >
+                  <ButtonsBar
+                    citizenDeleteChange={citizenDeleteChange}
+                    buttons={formButtons}
+                  />
                 </div>
               )}
             </Sticky>

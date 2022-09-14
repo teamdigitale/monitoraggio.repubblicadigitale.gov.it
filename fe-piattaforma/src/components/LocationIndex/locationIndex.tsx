@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { Button, Collapse, Icon, LinkList } from 'design-react-kit';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
+import useGuard from '../../hooks/guard';
+import { RolePermissionI } from '../../redux/features/roles/rolesSlice';
 
 interface subRoute {
   label: string;
   path: string;
+  visible?: RolePermissionI[];
 }
 
 interface LocationIndexProps {
@@ -15,6 +18,7 @@ interface LocationIndexProps {
 
 const LocationIndex: React.FC<LocationIndexProps> = ({ routes, title }) => {
   const [collapseOpen, setCollapseOpen] = useState(false);
+  const { hasUserPermission } = useGuard();
 
   const expanded = {
     'aria-expanded': true,
@@ -52,17 +56,19 @@ const LocationIndex: React.FC<LocationIndexProps> = ({ routes, title }) => {
       <Collapse isOpen={collapseOpen}>
         <LinkList sublist className='mt-3'>
           {routes &&
-            routes.map((sub, index) => (
-              <li key={`sub-${index}`} className='my-2 px-3 list-unstyled'>
-                <Link
-                  className='ml-2 font-weight-normal text-decoration-none'
-                  to={sub.path}
-                  onClick={() => setCollapseOpen(!collapseOpen)}
-                >
-                  {sub.label}
-                </Link>
-              </li>
-            ))}
+            routes
+              .filter(({ visible = ['hidden'] }) => hasUserPermission(visible))
+              .map((sub, index) => (
+                <li key={`sub-${index}`} className='my-2 px-3 list-unstyled'>
+                  <Link
+                    className='ml-2 font-weight-normal text-decoration-none'
+                    to={sub.path}
+                    onClick={() => setCollapseOpen(!collapseOpen)}
+                  >
+                    {sub.label}
+                  </Link>
+                </li>
+              ))}
         </LinkList>
       </Collapse>
     </div>
