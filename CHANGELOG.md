@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.119](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.118...1.0.0-develop.119) (2022-09-14)
+
+
+### Features
+
+* **fe-piattaforma:** fe updates 09142022 ([ae4c1df](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ae4c1dfb35549263bbe94519d64758d17e280fc6))
+* **fe-piattaforma:** fix auth redirect custom role ([bfe0e67](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bfe0e67bb1318c9d18f5bc88178cab0fb4175d1a))
+* **fe-piattaforma:** fe updates 09142022 ([bc25ab6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bc25ab63dd53ebb5d876916fe10cd7b5e7b32d4f))
+
 ## [1.0.0-develop.118](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.117...1.0.0-develop.118) (2022-09-14)
 
 
