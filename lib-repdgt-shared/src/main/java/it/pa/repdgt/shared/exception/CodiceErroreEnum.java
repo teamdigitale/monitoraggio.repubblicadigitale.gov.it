@@ -133,6 +133,8 @@ public enum CodiceErroreEnum {
 	,PR07("Errore attivare progetto")
 	,PR08("Errore export csv progetti")
 	,PR09("Errore Impossibile Assegnare gestore progetto per il progetto. Unico Facilitatore o Volontario attivo sul progetto")
+	
+	,D01("Errore chiamata servizio Drupal")
 	;
 	
 	private String descrizioneErrore;
