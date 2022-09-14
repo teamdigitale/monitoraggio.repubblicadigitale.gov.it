@@ -68,6 +68,10 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
         );
        values.dataConferimentoConsenso = formattedDate;
       }
+      if(formData?.codiceFiscale === ''){
+        values['codiceFiscaleNonDisponibile'] = 'Codice fiscale non disponibile';
+        handleCheckboxChange('Codice fiscale non disponibile','codiceFiscaleNonDisponibile');
+      }
       setFormValues(values);
     }
 

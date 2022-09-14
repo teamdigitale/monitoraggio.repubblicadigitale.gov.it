@@ -38,19 +38,24 @@ const ManageGenericAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
 
   const dispatch = useDispatch();
 
+  const resetModal = (toClose = true) => {
+    clearForm();
+    if (toClose) dispatch(closeModal());
+  };
+
   const handleSaveEnte = async () => {
     if (isFormValid) {
       await dispatch(
         UpdateAuthorityDetails(newFormValues['id']?.toString(), newFormValues)
       );
       clearForm();
-      dispatch(resetAuthorityDetails());
+      await dispatch(resetAuthorityDetails());
       dispatch(closeModal());
     }
-    authorityId && dispatch(GetAuthorityDetail(authorityId));
+    authorityId && (await dispatch(GetAuthorityDetail(authorityId)));
     clearForm();
     dispatch(resetAuthorityDetails());
-    dispatch(closeModal());
+    resetModal();
   };
 
   return (
@@ -63,7 +68,7 @@ const ManageGenericAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: () => clearForm?.(),
+        onClick: resetModal,
       }}
     >
       <div className='px-5'>

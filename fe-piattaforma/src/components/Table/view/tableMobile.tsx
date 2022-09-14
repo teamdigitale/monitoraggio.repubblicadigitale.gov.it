@@ -34,7 +34,7 @@ const TableMobile: React.FC<MobileTableI> = ({
             onActionClick?.[CRUDActionTypes.VIEW]
               ? () => onActionClick?.[CRUDActionTypes.VIEW](item)
               : undefined,
-          innerInfo: isEmpty(rest) ? undefined : { ...rest },
+          innerInfo: isEmpty(rest) ? undefined : { id, ...rest },
         };
       });
 

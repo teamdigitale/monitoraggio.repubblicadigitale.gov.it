@@ -26,6 +26,7 @@ export interface SelectI
   wrapperClassName?: string;
   withLabel?: boolean;
   isDisabled?: boolean;
+  position?: 'top' | 'bottom' | 'auto';
 }
 
 const Select: React.FC<SelectI> = (props) => {
@@ -41,6 +42,7 @@ const Select: React.FC<SelectI> = (props) => {
     withLabel = true,
     isDisabled = false,
     isSearchable = false,
+    position = 'auto',
   } = props;
   const [selectedOption, setSelectedOption] = useState<OptionType>();
 
@@ -70,11 +72,11 @@ const Select: React.FC<SelectI> = (props) => {
   }, [value, options]);
 
   useEffect(() => {
-    if(options?.length === 1){
+    if (options?.length === 1) {
       // if only one option, prefill select
       setSelectedOption(options[0]);
     }
-  },[options]);
+  }, [options]);
 
   const handleChange = (option: OptionType) => {
     setSelectedOption(option);
@@ -113,6 +115,7 @@ const Select: React.FC<SelectI> = (props) => {
         onChange={handleChange}
         options={options}
         value={selectedOption}
+        menuPlacement={position}
         color='primary'
         classNamePrefix='bootstrap-select'
         aria-labelledby={`${(label || 'label select').replace(/\s/g, '-')}`}

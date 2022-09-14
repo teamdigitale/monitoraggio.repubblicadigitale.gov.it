@@ -77,7 +77,8 @@ const Surveys = () => {
       questionariList?.list.map((td) => ({
         id: td.id,
         nome: td.nome,
-        stato: <StatusChip status={td.stato} rowTableId={td.id} />,
+        status: <StatusChip status={td.stato} rowTableId={td.id} />,
+
         dataUltimaModifica:
           formatDate(td.dataUltimaModifica, 'shortDate') || '-',
         defaultSCD: (
@@ -323,6 +324,7 @@ const Surveys = () => {
             : 'Elenco Addendum'
         }
         sectionInfo
+        defaultOpen
       />
       <GenericSearchFilterTableLayout
         searchInformation={searchInformation}

@@ -20,12 +20,14 @@ const OpenData = () => {
   const dispatch = useDispatch();
   const [totalCount, setTotalCount] = useState<string>('-');
   const [docHref, setDocHref] = useState<string>();
+  const [docSize, setDocSize] = useState<number>(0);
 
   const getOpenData = async () => {
     try {
       dispatch(showLoader());
       const resCount = await API.get('open-data/count/download');
-      setTotalCount(resCount.data.toString());
+      setTotalCount(resCount.data?.conteggioDownload?.toString());
+      setDocSize(Math.floor(Number(resCount.data?.dimensioneFile) / 1000));
       const resDoc = await API.get('open-data/presigned/download');
       setDocHref(resDoc.data.toString());
     } catch (error) {
@@ -50,7 +52,7 @@ const OpenData = () => {
           href={docHref}
           download
         >
-          Scarica CSV (6 Mb)
+          Scarica CSV {docSize ? `(${docSize} Kb)` : null}
         </a>
       </div>
       <div className={clsx('mt-5')}>
