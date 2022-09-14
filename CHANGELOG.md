@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.118](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.117...1.0.0-develop.118) (2022-09-14)
+
+
+### Bug Fixes
+
+* **be:** fix api programma-progetto e api open data ([1cb1fa4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1cb1fa4f702ff075af838200468bbd9e32c41930))
+
 ## [1.0.0-develop.117](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.116...1.0.0-develop.117) (2022-09-13)
 
 
