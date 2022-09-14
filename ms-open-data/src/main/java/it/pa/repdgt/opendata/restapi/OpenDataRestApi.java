@@ -3,6 +3,8 @@ package it.pa.repdgt.opendata.restapi;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -27,14 +29,25 @@ public class OpenDataRestApi {
 		byte[] bytes = this.openDataService.scaricaFileListaCittadiniSuAmazonS3(NOME_FILE);
 		InputStream is = new ByteArrayInputStream(bytes);
 		InputStreamResource fileCSV = new InputStreamResource(is);
+		
 
-		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=lista-cittadini.csv")
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=opendata-cittadini.csv")
 				.contentType(MediaType.parseMediaType("application/csv")).body(fileCSV);
 	}
 	
 	@GetMapping(path = "/count/download")
-	public Long getCountDownloadListaCSVCittadini() throws IOException {
-		return this.openDataService.getCountFile(NOME_FILE);
+	public Map<String,String> getCountDownloadListaCSVCittadini() throws IOException {
+		Map<String, String> resultMap = new HashMap<>();
+		
+		
+		byte[] bytes = this.openDataService.scaricaFileListaCittadiniSuAmazonS3(NOME_FILE);
+		InputStream is = new ByteArrayInputStream(bytes);
+		InputStreamResource fileCSV = new InputStreamResource(is);
+		
+		resultMap.put("conteggioDownload", String.valueOf(this.openDataService.getCountFile(NOME_FILE)));
+		resultMap.put("dimensioneFile", String.valueOf(fileCSV.contentLength()));
+		
+		return resultMap;
 	}
 	
 	@GetMapping(path = "/presigned/download")
