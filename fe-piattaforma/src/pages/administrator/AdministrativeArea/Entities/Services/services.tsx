@@ -197,7 +197,7 @@ const Services = () => {
     onHandleSearch: handleOnSearch,
     placeholder: "Inserisci l'identificativo o il nome del servizio",
     isClearable: true,
-    title: 'Cerca programma',
+    title: 'Cerca servzio',
   };
 
   const onActionClick: CRUDActionsI = hasUserPermission(['view.card.serv'])
@@ -243,6 +243,8 @@ const Services = () => {
       resetFilterDropdownSelected={(filterKey: string) =>
         setFilterDropdownSelected(filterKey)
       }
+      tooltip
+      tooltiptext={searchInformation.placeholder}
     >
       <div>
         {servicesList?.length && tableValues?.values?.length ? (

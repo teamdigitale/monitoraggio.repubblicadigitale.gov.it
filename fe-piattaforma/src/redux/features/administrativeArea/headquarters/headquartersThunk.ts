@@ -162,8 +162,8 @@ export const AssignAuthorityHeadquarter =
           `/sede/associa/ente/${authorityId}/sede/${headquarterId}/progetto/${projectId}/ruoloEnte/ruolo`
         );
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      return error.response;
     } finally {
       dispatch(hideLoader());
     }

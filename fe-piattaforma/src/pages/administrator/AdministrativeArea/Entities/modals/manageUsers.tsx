@@ -38,7 +38,7 @@ interface ManageUsersFormI {
 interface ManageUsersI extends withFormHandlerProps, ManageUsersFormI {}
 
 const ManageUsers: React.FC<ManageUsersI> = ({
-  clearForm,
+  clearForm = () => ({}),
   formDisabled,
   creation = false,
 }) => {
@@ -48,8 +48,13 @@ const ManageUsers: React.FC<ManageUsersI> = ({
     [key: string]: formFieldI['value'];
   }>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
-  const userIdPayload = useAppSelector(selectModalPayload)?.userId
+  const userIdPayload = useAppSelector(selectModalPayload)?.userId;
   const { userId } = useParams();
+
+  const resetModal = (toClose = true) => {
+    clearForm();
+    if (toClose) dispatch(closeModal());
+  };
 
   const handleSaveEnte = async () => {
     if (isFormValid) {
@@ -69,7 +74,7 @@ const ManageUsers: React.FC<ManageUsersI> = ({
         dispatch(GetUserDetails(userId || userIdPayload));
       }
     }
-    dispatch(closeModal());
+    resetModal();
   };
 
   return (
@@ -82,7 +87,7 @@ const ManageUsers: React.FC<ManageUsersI> = ({
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: () => clearForm?.(),
+        onClick: resetModal,
       }}
     >
       <FormUser

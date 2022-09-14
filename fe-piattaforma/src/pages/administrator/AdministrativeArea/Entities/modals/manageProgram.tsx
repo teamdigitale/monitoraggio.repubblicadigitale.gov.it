@@ -59,7 +59,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
           );
         }
 
-        if (res.data.errorCode !== 'P01') dispatch(closeModal());
+        if (!res?.data?.errorCode) dispatch(closeModal());
       } else {
         if (entityId) {
           await dispatch(updateProgram(entityId, newFormValues));
@@ -76,6 +76,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       dispatch(GetProgramDetail(entityId));
       setCurrentStep(0);
     }
+    dispatch(closeModal());
   };
 
   const steps = [
@@ -88,7 +89,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => handleCancel(),
+        onClick: handleCancel,
       },
       tertiatyCTA: null,
     },
@@ -101,7 +102,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => handleCancel(),
+        onClick: handleCancel,
       },
       tertiatyCTA: {
         label: 'Indietro',
@@ -117,7 +118,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => handleCancel(),
+        onClick: handleCancel,
       },
       tertiatyCTA: {
         label: 'Indietro',
@@ -133,7 +134,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => handleCancel(),
+        onClick: handleCancel,
       },
       tertiatyCTA: {
         label: 'Indietro',
@@ -149,7 +150,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       },
       secondaryCTA: {
         label: 'Annulla',
-        onClick: () => () => handleCancel(),
+        onClick: handleCancel,
       },
       tertiatyCTA: {
         label: 'Indietro',

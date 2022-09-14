@@ -46,13 +46,18 @@ const ManageServices: React.FC<ManageServicesI> = ({
   const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
     getUserHeaders();
 
+  const resetModal = (toClose = true) => {
+    clearForm();
+    if (toClose) dispatch(closeModal());
+  };
+
   const createPayload = (answersForms: {
     [key: string]: formFieldI['value'];
   }) => {
     const answersQ3 =
-      "{\"id\":\"anagraphic-citizen-section\",\"title\":\"Informazioni anagrafiche\",\"properties\":" +
+      '{"id":"anagraphic-citizen-section","title":"Informazioni anagrafiche","properties":' +
       questionarioCompilatoQ3?.replaceAll('"', "'") +
-      "}";
+      '}';
     const tipologiaServizio = answersForms['24']?.toString()?.split('§');
     const payload = {
       data: answersForms['22'] || '',
@@ -93,7 +98,7 @@ const ManageServices: React.FC<ManageServicesI> = ({
         dispatch(GetServicesDetail(idServizio));
       }
     }
-    dispatch(closeModal());
+    resetModal();
   };
 
   return (
@@ -106,12 +111,8 @@ const ManageServices: React.FC<ManageServicesI> = ({
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: () => {
-          clearForm();
-          dispatch(closeModal());
-        },
+        onClick: resetModal,
       }}
-      closable={false}
     >
       <div className='px-3'>
         <FormService

@@ -42,7 +42,7 @@ interface ManageFacilitatorI
     ManageFacilitatorFormI {}
 
 const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
-  clearForm,
+  clearForm = () => ({}),
   formDisabled,
   creation = false,
 }) => {
@@ -159,6 +159,11 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
     );
   }
 
+  const handleCancel = () => {
+    clearForm();
+    dispatch(closeModal());
+  };
+
   return (
     <GenericModal
       id={id}
@@ -169,7 +174,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: () => clearForm?.(),
+        onClick: () => handleCancel(),
       }}
       centerButtons
     >

@@ -33,7 +33,7 @@ interface ManageCitizenInServiceI
     ManageCitizenInServiceFormI {}
 
 const ManageCitizenInService: React.FC<ManageCitizenInServiceI> = ({
-  clearForm,
+  clearForm = () => ({}),
   //   formDisabled,
 }) => {
   const dispatch = useDispatch();
@@ -60,7 +60,7 @@ const ManageCitizenInService: React.FC<ManageCitizenInServiceI> = ({
   }, [idCittadino]);
 
   const resetModal = () => {
-    clearForm?.();
+    clearForm();
     dispatch(closeModal());
   };
 

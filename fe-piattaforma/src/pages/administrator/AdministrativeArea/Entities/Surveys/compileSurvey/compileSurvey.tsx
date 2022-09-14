@@ -171,6 +171,12 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
             if (activeSection === 1 || activeSection === 2) {
               newForm[key].disabled = true;
             }
+            if(key === '4' && newForm[key].value === 'true'){
+              newForm[key].value = 'Codice fiscale non disponibile';
+              newForm['3'].required = false;
+              newForm['5'].required = true;
+              newForm['6'].required = true;
+            }
             if (key === '18') {
               newForm[key].options = newForm[key]?.options?.map(
                 (opt: OptionType) => ({
@@ -397,7 +403,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
                 setActiveSection(activeSection - 1);
               }}
               size='xs'
-              disabled={activeSection === 0}
+              disabled={!FormHelper.isValidForm(form)}
               className='pl-0 pr-5'
               aria-label='Step Precedente'
             >
@@ -417,7 +423,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
                 setActiveSection(activeSection + 1);
               }}
               size='xs'
-              disabled={activeSection === 3}
+              disabled={!FormHelper.isValidForm(form)}
               className='mb-1'
               aria-label='Step successivo'
             >
@@ -435,11 +441,11 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
           <Button
             size='xs'
             color='primary'
-            className='mx-3 mt-2 mb-3'
+            className='mx-3 mt-2 mb-3 text-nowrap'
             onClick={() => {
               generateFormCompleted(surveyAnswersToSave);
             }}
-            disabled={!FormHelper.isValidForm(form)}
+            disabled={!FormHelper.isValidForm(form) || activeSection !== 3}
             aria-label='Invio Questionario'
           >
             Invia Questionario

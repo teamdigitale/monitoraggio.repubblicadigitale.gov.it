@@ -161,7 +161,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
     if (isFormValid && validateAddressList(addressList)) {
       if (newFormValues && addressList.length > 0) {
         if (projectId && ((authorityId && headquarterId) || authorityInfo)) {
-          await dispatch(
+          const res: any = await dispatch(
             AssignAuthorityHeadquarter(
               authorityId ? authorityId : authorityInfo?.id,
               {
@@ -193,8 +193,10 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
             if (enteType === 'partner')
               dispatch(GetPartnerAuthorityDetail(projectId, authorityInfo?.id));
           }
-          handleSearchReset();
-          dispatch(closeModal());
+          if (!res?.errorCode) {
+            handleSearchReset();
+            dispatch(closeModal());
+          }
         }
       }
     }
@@ -231,6 +233,8 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
     } else if (headquarterId) {
       dispatch(GetHeadquarterLightDetails(headquarterId));
     }
+
+    dispatch(closeModal());
   };
 
   let content = (

@@ -10,6 +10,7 @@ import { createStringOfCompiledSurveySection } from '../../../../../utils/common
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormCitizen from '../../../../forms/formCitizen';
 import { formTypes } from '../utils';
+import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 
 const id = formTypes.CITIZENS;
 
@@ -23,7 +24,7 @@ interface ManageCitizensFormI {
 interface ManageCitizensI extends withFormHandlerProps, ManageCitizensFormI {}
 
 const ManageCitizens: React.FC<ManageCitizensI> = ({
-  clearForm,
+  clearForm = () => ({}),
   idCitizen,
   onClose,
 }) => {
@@ -45,6 +46,7 @@ const ManageCitizens: React.FC<ManageCitizensI> = ({
 
       const body = {
         ...newFormValues,
+        codiceFiscaleNonDisponibile: newFormValues?.codiceFiscaleNonDisponibile !== '' ? true:false,
         questionarioQ1: sezioneQ1Questionario,
       };
       await dispatch(UpdateCitizenDetail(idCitizen, body));
@@ -59,11 +61,14 @@ const ManageCitizens: React.FC<ManageCitizensI> = ({
       primaryCTA={{
         disabled: !isFormValid,
         label: 'Salva',
-        onClick: () => editCitizen(),
+        onClick: editCitizen,
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: () => clearForm?.(),
+        onClick: () => {
+          clearForm();
+          dispatch(closeModal());
+        },
       }}
     >
       <div className='px-3'>

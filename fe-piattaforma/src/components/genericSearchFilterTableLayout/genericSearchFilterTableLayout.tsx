@@ -183,7 +183,12 @@ const GenericSearchFilterTableLayout: React.FC<
     <div>
       {cardsCounter && (
         <div className='d-flex justify-content-center mb-5'>
-          <div className='d-flex flex-row'>
+          <div
+            className={clsx(
+              'd-flex',
+              !device.mediaIsPhone ? 'flex-row' : 'flex-column'
+            )}
+          >
             {(cardsCounter || []).map((card: CardCounterI, i: number) => (
               <CardCounter
                 key={i}
@@ -212,7 +217,14 @@ const GenericSearchFilterTableLayout: React.FC<
             className={clsx('flex-grow-1', 'col-12', cta && 'col-md-9', 'pl-0')}
           >
             <div
-              className={clsx(!cta ? 'w-100' : 'col-9', 'pl-0')}
+              className={clsx(
+                device.mediaIsPhone && !cta
+                  ? 'w-100'
+                  : device.mediaIsPhone
+                  ? 'w-100'
+                  : 'col-9',
+                'pl-0'
+              )}
               data-testid='create-new-element'
             >
               <SearchBar
@@ -292,15 +304,7 @@ const GenericSearchFilterTableLayout: React.FC<
       </div>
       <div className='d-flex flex-wrap justify-content-between'>
         {dropdowns?.length && (
-          <div
-            className={clsx(
-              'd-flex',
-              'flex-row',
-              'flex-wrap',
-              'p-lg-3',
-              'pt-0'
-            )}
-          >
+          <div className={clsx('d-flex', 'flex-row', 'flex-wrap', 'py-lg-3')}>
             {dropdowns.map((dropdown, index) => (
               <DropdownFilter
                 key={index}
@@ -315,7 +319,7 @@ const GenericSearchFilterTableLayout: React.FC<
           <div
             className={clsx(
               'd-flex',
-              !device.mediaIsDesktop ? 'flex-column' : 'flex-row',
+              !device.mediaIsDesktop ? 'flex-column pt-4' : 'flex-row',
               'py-lg-3',
               'pt-0',
               isDetail && 'justify-content-end'
