@@ -29,9 +29,10 @@ const id = 'switchProfileModal';
 interface SwitchProfileModalI {
   //profiles?: ProfileI[];
   isRoleManaging?: boolean;
+  isOnboarding?: boolean;
 }
 
-const SwitchProfileModal: React.FC<SwitchProfileModalI> = () => {
+const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({ isOnboarding = false }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useAppSelector(selectUser) || {};
@@ -41,6 +42,11 @@ const SwitchProfileModal: React.FC<SwitchProfileModalI> = () => {
     JSON.parse(getSessionValues('profile'))
   );
   const [elementToFocus, setElementToFocus] = useState('utente-0');
+
+  const resetModal = () => {
+    setProfileSelected(JSON.parse(getSessionValues('profile')));
+    dispatch(closeModal());
+  };
 
   const handleSwitchProfile = async () => {
     const res = await dispatch(SelectUserRole(profileSelected, true));
@@ -95,15 +101,16 @@ const SwitchProfileModal: React.FC<SwitchProfileModalI> = () => {
       primaryCTA={{
         label: 'Conferma',
         onClick: handleSwitchProfile,
+        disabled: !Object.keys(profileSelected)?.length,
       }}
-      secondaryCTA={{
+      secondaryCTA={isOnboarding ? undefined : {
         label: 'Annulla',
-        //onClick: () => clearForm?.(),
+        onClick: resetModal,
       }}
-      title={'Scegli il ruolo'}
+      title='Scegli il ruolo'
       noSpaceAfterTitle
       centerButtons
-      isRoleManaging={true}
+      isRoleManaging
     >
       <div
         className={clsx(

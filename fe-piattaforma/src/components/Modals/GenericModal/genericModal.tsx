@@ -24,8 +24,8 @@ export interface GenericModalI {
   id?: string;
   onClose?: () => void;
   payload?: ModalPayloadI | undefined;
-  primaryCTA?: CallToAction;
-  secondaryCTA?: CallToAction;
+  primaryCTA?: CallToAction | undefined;
+  secondaryCTA?: CallToAction | undefined;
   tertiaryCTA?: CallToAction | null;
   title?: string | undefined;
   centerButtons?: boolean;
@@ -208,7 +208,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
                 {tertiaryCTA.label}
               </Button>
             </div>
-          ) : null}
+          ) : <button className='hidden-btn' />}
           {primaryCTA || secondaryCTA ? (
             <div
               className={clsx(
@@ -230,7 +230,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
                 >
                   {secondaryCTA.label}
                 </Button>
-              ) : null}
+              ) : <button className='hidden-btn' />}
               {primaryCTA ? (
                 <Button
                   {...primaryCTA}
@@ -244,9 +244,9 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
                 >
                   {primaryCTA.label}
                 </Button>
-              ) : null}
+              ) : <button className='hidden-btn' />}
             </div>
-          ) : null}
+          ) : <button className='hidden-btn' />}
         </ModalFooter>
       ) : (
         <span />

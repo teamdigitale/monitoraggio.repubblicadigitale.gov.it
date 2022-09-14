@@ -611,7 +611,7 @@ export const AssignPartnerAuthorityReferentDelegate =
         const res = await API.post(`/utente`, payload);
 
         if (res) {
-          return await API.post(endpoint, {
+          await API.post(endpoint, {
             cfUtente: userDetail.codiceFiscale?.toString().toUpperCase(),
             codiceRuolo: role,
             idEntePartner: authorityId,
