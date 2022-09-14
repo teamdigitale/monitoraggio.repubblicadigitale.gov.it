@@ -47,6 +47,7 @@ const AuthRedirect = () => {
           break;
         }
         default:
+          redirectTo('/area-personale', true);
       }
     }
   };
