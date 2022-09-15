@@ -130,7 +130,7 @@ public class ProgrammaServiceTest {
 	ProgettoEntity progetto1;
 	QuestionarioTemplateEntity questionario1;
 	PaginaProgrammi paginaProgrammi;
-	
+
 	@BeforeEach
 	public void setUp() {
 		programma1 = new ProgrammaEntity();
@@ -164,13 +164,13 @@ public class ProgrammaServiceTest {
 		idsProgrammi.add("2");
 		progettoFiltro.setIdsProgrammi(idsProgrammi);
 		progParam = new ProgrammiParam();
-		progParam.setCfUtente("UIHPLW87R49F205X");
-		progParam.setCodiceRuolo("DTD");
+		progParam.setCfUtenteLoggato("UIHPLW87R49F205X");
+		progParam.setCodiceRuoloUtenteLoggato("DTD");
 		progParam.setFiltroRequest(filtro);
 		progParam.setIdProgramma(1L);
 		progettiParam = new ProgettiParam();
-		progettiParam.setCfUtente("UIHPLW87R49F205X");
-		progettiParam.setCodiceRuolo("DTD");
+		progettiParam.setCfUtenteLoggato("UIHPLW87R49F205X");
+		progettiParam.setCodiceRuoloUtenteLoggato("DTD");
 		progettiParam.setFiltroRequest(progettoFiltro);
 		progettiParam.setIdProgramma(1L);
 		listaRuoli = new ArrayList<>();
@@ -246,7 +246,6 @@ public class ProgrammaServiceTest {
 	@Test
 	public void getAllProgrammiPaginatiPerDTDTest() {
 		//getAll programmi Per DTD
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);
 		when(this.programmaRepository.findAllPaginati(
 				filtro.getCriterioRicerca(),
 				"%" + filtro.getCriterioRicerca() + "%",
@@ -272,8 +271,7 @@ public class ProgrammaServiceTest {
 		//getAll programmi per DSCU
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("DSCU");
-		progParam.setCodiceRuolo("DSCU");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);
+		progParam.setCodiceRuoloUtenteLoggato("DSCU");
 		when(this.programmaRepository.findProgrammiByPolicyPaginati(
 				PolicyEnum.SCD.toString(),
 				filtro.getCriterioRicerca(),
@@ -300,8 +298,7 @@ public class ProgrammaServiceTest {
 		//getAll programmi per REG
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("REG");
-		progParam.setCodiceRuolo("REG");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);
+		progParam.setCodiceRuoloUtenteLoggato("REG");
 		when(programmaRepository.findById(programmaOptional.get().getId())).thenReturn(programmaOptional);
 		PaginaProgrammi paginaProgrammiResult = programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize, filtro);
 		assertThat(paginaProgrammiResult.getTotalElements()).isNotEqualTo(paginaProgrammi.getTotalElements());
@@ -313,8 +310,7 @@ public class ProgrammaServiceTest {
 	public void getAllProgrammiPaginatiRuoliNonPredefinitiTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("RUOLONONPREDEFINITO");
-		progParam.setCodiceRuolo("RUOLONONPREDEFINITO");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);		
+		progParam.setCodiceRuoloUtenteLoggato("RUOLONONPREDEFINITO");
 		when(this.programmaRepository.findAllPaginati(
 				filtro.getCriterioRicerca(),
 				"%" + filtro.getCriterioRicerca() + "%",
@@ -329,7 +325,7 @@ public class ProgrammaServiceTest {
 				filtro.getPolicies(),
 				filtro.getStati()
 				)).thenReturn(2L);
-		
+
 		PaginaProgrammi paginaProgrammiResult = programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize, filtro);
 		assertThat(paginaProgrammiResult.getPaginaProgrammi().size()).isEqualTo(2);
 		assertThat(paginaProgrammiResult.getTotalElements()).isEqualTo(paginaProgrammi.getTotalElements());
@@ -337,14 +333,7 @@ public class ProgrammaServiceTest {
 	
 	@Test
 	public void getAllProgrammiPaginatiKOTest() {
-		//Test KO per ruolo non definito per l'utente
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(new ArrayList<>());
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize, filtro));
-		assertThatExceptionOfType(ProgrammaException.class);
-		verify(programmaRepository, times(0)).findAll(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati());
-		
 		//test KO per programma non trovato
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);
 		this.programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize, filtro);
 		Assertions.assertThrows(ResourceNotFoundException.class, () -> programmaService.getProgrammaById(progParam.getIdProgramma()));
 		assertThatExceptionOfType(ResourceNotFoundException.class);
@@ -353,8 +342,7 @@ public class ProgrammaServiceTest {
 	//stati per utente DTD
 	@Test
 	public void getAllStatiDropdownPerDTDTest() {
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);
-		when(programmaService.getAllStatiByRuoloAndIdProgramma(progParam.getCodiceRuolo(), progParam.getIdProgramma(), filtro)).thenReturn(listaStati);
+		when(programmaService.getAllStatiByRuoloAndIdProgramma(progParam.getCodiceRuoloUtenteLoggato(), progParam.getIdProgramma(), filtro)).thenReturn(listaStati);
 		this.programmaService.getAllStatiDropdown(progParam, filtro);
 		assertThat(listaStati.size()).isEqualTo(2);
 		verify(programmaRepository, atLeastOnce()).findAllStati(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati());
@@ -365,8 +353,7 @@ public class ProgrammaServiceTest {
 	public void getAllStatiDropdownPerDSCUTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("DSCU");
-		progParam.setCodiceRuolo("DSCU");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);
+		progParam.setCodiceRuoloUtenteLoggato("DSCU");
 		when(programmaService.getStatiPerDSCU(filtro)).thenReturn(setStati);
 		when(programmaRepository.findStatiByPolicy(PolicyEnum.SCD.toString(), filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getStati())).thenReturn(setStati);
 		this.programmaService.getAllStatiDropdown(progParam, filtro);
@@ -379,11 +366,10 @@ public class ProgrammaServiceTest {
 	public void getAllStatiDropdownTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("REG");
-		progParam.setCodiceRuolo("REG");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);
+		progParam.setCodiceRuoloUtenteLoggato("REG");
 		when(programmaRepository.findStatoById(programma1.getId())).thenReturn(stato);
 //		when(programmaService.getStatoProgrammaByProgrammaId(programma1.getId())).thenReturn(programma1.getStato());
-//		when(programmaService.getAllStatiByRuoloAndIdProgramma(progParam.getCodiceRuolo(), progParam.getIdProgramma(), filtro)).thenReturn(listaStati);
+//		when(programmaService.getAllStatiByRuoloAndIdProgramma(progParam.getCodiceRuoloUtenteLoggato(), progParam.getIdProgramma(), filtro)).thenReturn(listaStati);
 		this.programmaService.getAllStatiDropdown(progParam, filtro);
 		assertThat(stato.get()).isEqualTo("ATTIVO");
 		verify(programmaRepository, atLeastOnce()).findStatoById(programma1.getId());
@@ -394,9 +380,8 @@ public class ProgrammaServiceTest {
 	public void getAllStatiDropdownPerRuoliNonPredefinitiTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("RUOLONONPREDEFINITO");
-		progParam.setCodiceRuolo("RUOLONONPREDEFINITO");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);
-		when(programmaService.getAllStatiByRuoloAndIdProgramma(progParam.getCodiceRuolo(), progParam.getIdProgramma(), filtro)).thenReturn(listaStati);
+		progParam.setCodiceRuoloUtenteLoggato("RUOLONONPREDEFINITO");
+		when(programmaService.getAllStatiByRuoloAndIdProgramma(progParam.getCodiceRuoloUtenteLoggato(), progParam.getIdProgramma(), filtro)).thenReturn(listaStati);
 		this.programmaService.getAllStatiDropdown(progParam, filtro);
 		assertThat(listaStati.size()).isEqualTo(2);
 		verify(programmaRepository, atLeastOnce()).findAllStati(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati());
@@ -405,14 +390,7 @@ public class ProgrammaServiceTest {
 	//test per ruolo utente non trovato
 	@Test
 	public void getAllStatiDropdownKOTest() {
-		//Test KO per ruolo non definito per l'utente
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(new ArrayList<>());
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.getAllStatiDropdown(progParam, filtro));
-		assertThatExceptionOfType(ProgrammaException.class);
-		verify(programmaRepository, times(0)).findAllStati(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati());
-		
 		//Test KO stato programma non trovato
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);
 		this.programmaService.getAllStatiDropdown(progParam, filtro);
 		Assertions.assertThrows(ResourceNotFoundException.class, () -> programmaService.getStatoProgrammaByProgrammaId(progParam.getIdProgramma()));
 		assertThatExceptionOfType(ResourceNotFoundException.class);
@@ -422,8 +400,7 @@ public class ProgrammaServiceTest {
 	//Policies per DTD
 	@Test
 	public void getAllPoliciesDropdownPerDTDTest() {
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);
-		when(programmaService.getAllPoliciesByRuoloAndIdProgramma(progParam.getCodiceRuolo(), progParam.getIdProgramma(), filtro)).thenReturn(listaPolicies);
+		when(programmaService.getAllPoliciesByRuoloAndIdProgramma(progParam.getCodiceRuoloUtenteLoggato(), progParam.getIdProgramma(), filtro)).thenReturn(listaPolicies);
 		this.programmaService.getAllPoliciesDropdown(progParam, filtro);
 		assertThat(listaPolicies.size()).isEqualTo(2);
 		verify(programmaRepository, atLeastOnce()).findAllPolicies(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati());
@@ -434,8 +411,7 @@ public class ProgrammaServiceTest {
 	public void getAllPoliciesDropdownPerDSCUTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("DSCU");
-		progParam.setCodiceRuolo("DSCU");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);
+		progParam.setCodiceRuoloUtenteLoggato("DSCU");
 		when(programmaService.getPoliciesPerDSCU()).thenReturn(setPolicies);
 		this.programmaService.getAllPoliciesDropdown(progParam, filtro);
 		assertThat(setPolicies.size()).isEqualTo(2);
@@ -447,8 +423,7 @@ public class ProgrammaServiceTest {
 	public void getAllPoliciesDropdownTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("REG");
-		progParam.setCodiceRuolo("REG");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);
+		progParam.setCodiceRuoloUtenteLoggato("REG");
 		when(programmaRepository.findPolicyById(programma1.getId())).thenReturn(policy);
 		this.programmaService.getAllPoliciesDropdown(progParam, filtro);
 		assertThat(listaPolicies.size()).isEqualTo(2);
@@ -460,9 +435,8 @@ public class ProgrammaServiceTest {
 	public void getAllPoliciesDropdownPerRuoliNonPredefinitiTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("RUOLONONPREDEFINITO");
-		progParam.setCodiceRuolo("RUOLONONPREDEFINITO");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);
-		when(programmaService.getAllPoliciesByRuoloAndIdProgramma(progParam.getCodiceRuolo(), progParam.getIdProgramma(), filtro)).thenReturn(listaPolicies);
+		progParam.setCodiceRuoloUtenteLoggato("RUOLONONPREDEFINITO");
+		when(programmaService.getAllPoliciesByRuoloAndIdProgramma(progParam.getCodiceRuoloUtenteLoggato(), progParam.getIdProgramma(), filtro)).thenReturn(listaPolicies);
 		this.programmaService.getAllPoliciesDropdown(progParam, filtro);
 		assertThat(listaPolicies.size()).isEqualTo(2);
 		verify(programmaRepository, atLeastOnce()).findAllPolicies(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati());
@@ -471,14 +445,7 @@ public class ProgrammaServiceTest {
 	//test per ruolo utente non trovato
 	@Test
 	public void getAllPoliciesDropdownKOTest() {
-		//Test KO per ruolo non definito per l'utente
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(new ArrayList<>());
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.getAllPoliciesDropdown(progParam, filtro));
-		assertThatExceptionOfType(ProgrammaException.class);
-		verify(programmaRepository, times(0)).findAllPolicies(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati());
-		
 		//Test KO stato programma non trovato
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);
 		this.programmaService.getAllPoliciesDropdown(progParam, filtro);
 		Assertions.assertThrows(ResourceNotFoundException.class, () -> programmaService.getPolicyProgrammaByProgrammaId(progParam.getIdProgramma()));
 		assertThatExceptionOfType(ResourceNotFoundException.class);
@@ -706,7 +673,7 @@ public class ProgrammaServiceTest {
 		assertThat(questionario1.getStato()).isEqualTo("ATTIVO");
 		verify(questionarioTemplateSqlService, atLeastOnce()).salvaQuestionarioTemplate(questionario1);
 	}
-	
+
 	@Test
 	public void associaQuestionarioTemplateAProgrammaTest2() {
 		//test con lo stato di programmaXQuestionario = NON ATTIVO
@@ -859,8 +826,7 @@ public class ProgrammaServiceTest {
 	//lista policies per DTD con ProgettoFiltroRequest (dropdown nella tab Progetti)
 	@Test
 	public void getAllPoliciesDropdownPerProgettiDTDTest() {
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
-		when(programmaService.getAllPoliciesByRuoloAndIdProgramma(progettiParam.getCodiceRuolo(), programma1.getId(), progettoFiltro)).thenReturn(listaPolicies);
+		when(programmaService.getAllPoliciesByRuoloAndIdProgramma(progettiParam.getCodiceRuoloUtenteLoggato(), programma1.getId(), progettoFiltro)).thenReturn(listaPolicies);
 		when(programmaService.getAllPolicies(progettoFiltro)).thenReturn(listaPolicies);
 		programmaService.getAllPoliciesDropdownPerProgetti(progettiParam, progettoFiltro);
 		assertThat(listaPolicies.size()).isEqualTo(2);
@@ -872,8 +838,7 @@ public class ProgrammaServiceTest {
 	public void getAllPoliciesDropdownPerProgettiDSCUTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("DSCU");
-		progettiParam.setCodiceRuolo("DSCU");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
+		progettiParam.setCodiceRuoloUtenteLoggato("DSCU");
 		when(programmaService.getPoliciesPerDSCU()).thenReturn(setPolicies);
 		programmaService.getAllPoliciesDropdownPerProgetti(progettiParam, progettoFiltro);
 		assertThat(listaPolicies.size()).isEqualTo(2);
@@ -885,8 +850,7 @@ public class ProgrammaServiceTest {
 	public void getAllPoliciesDropdownPerProgettiTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("REG");
-		progettiParam.setCodiceRuolo("REG");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
+		progettiParam.setCodiceRuoloUtenteLoggato("REG");
 		when(programmaRepository.findPolicyById(programma1.getId())).thenReturn(policy);
 		programmaService.getAllPoliciesDropdownPerProgetti(progettiParam, progettoFiltro);
 		assertThat(listaPolicies.size()).isEqualTo(2);
@@ -898,24 +862,14 @@ public class ProgrammaServiceTest {
 	public void getAllPoliciesDropdownPerProgettiRuoliNonPredefinitiTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("RUOLONONPREDEFINITO");
-		progettiParam.setCodiceRuolo("RUOLONONPREDEFINITO");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
-		when(programmaService.getAllPoliciesByRuoloAndIdProgramma(progettiParam.getCodiceRuolo(), programma1.getId(), progettoFiltro)).thenReturn(listaPolicies);
+		progettiParam.setCodiceRuoloUtenteLoggato("RUOLONONPREDEFINITO");
+		when(programmaService.getAllPoliciesByRuoloAndIdProgramma(progettiParam.getCodiceRuoloUtenteLoggato(), programma1.getId(), progettoFiltro)).thenReturn(listaPolicies);
 		when(programmaService.getAllPolicies(progettoFiltro)).thenReturn(listaPolicies);
 		programmaService.getAllPoliciesDropdownPerProgetti(progettiParam, progettoFiltro);
 		assertThat(listaPolicies.size()).isEqualTo(2);
 		verify(programmaRepository, atLeastOnce()).findAllPoliciesByProgettoFiltro(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(), progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
 	}
-	
-	@Test
-	public void getAllPoliciesDropdownPerProgettiKOTest() {
-		//test KO per ruolo non definito per l'utente
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(new ArrayList<>());
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.getAllPoliciesDropdownPerProgetti(progettiParam, progettoFiltro));
-		assertThatExceptionOfType(ProgrammaException.class);
-		verify(programmaRepository, times(0)).findAllPoliciesByProgettoFiltro(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(), progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
-	}
-	
+
 	//lista programmi nella dropdown (tab Progetti) per utente DTD
 	@Test 
 	public void getAllProgrammiDropdownPerProgettiDTDTest() {
@@ -924,8 +878,7 @@ public class ProgrammaServiceTest {
 		programmaLightDropdownResource.setNome(programma1.getNome());
 		List<ProgrammaDropdownResource> programmiLightDropdown = new ArrayList<>();
 		programmiLightDropdown.add(programmaLightDropdownResource);		
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
-		when(programmaService.getAllProgrammiDropdownByRuoloAndIdProgramma(progettiParam.getCodiceRuolo(), progettiParam.getIdProgramma(), progettoFiltro)).thenReturn(listaProgrammi);
+		when(programmaService.getAllProgrammiDropdownByRuoloAndIdProgramma(progettiParam.getCodiceRuoloUtenteLoggato(), progettiParam.getIdProgramma(), progettoFiltro)).thenReturn(listaProgrammi);
 		when(programmaService.getAllProgrammi(progettoFiltro)).thenReturn(listaProgrammi);
 		when(programmaMapper.toLightDropdownResourceFrom(listaProgrammi)).thenReturn(programmiLightDropdown);
 		programmaService.getAllProgrammiDropdownPerProgetti(progettiParam, progettoFiltro);
@@ -938,14 +891,13 @@ public class ProgrammaServiceTest {
 	public void getAllProgrammiDropdownPerProgettiDSCUTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("DSCU");
-		progettiParam.setCodiceRuolo("DSCU");
+		progettiParam.setCodiceRuoloUtenteLoggato("DSCU");
 		ProgrammaDropdownResource programmaLightDropdownResource = new ProgrammaDropdownResource();
 		programmaLightDropdownResource.setId(programma1.getId());
 		programmaLightDropdownResource.setNome(programma1.getNome());
 		List<ProgrammaDropdownResource> programmiLightDropdown = new ArrayList<>();
 		programmiLightDropdown.add(programmaLightDropdownResource);		
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
-		when(programmaService.getAllProgrammiDropdownByRuoloAndIdProgramma(progettiParam.getCodiceRuolo(), progettiParam.getIdProgramma(), progettoFiltro)).thenReturn(listaProgrammi);
+		when(programmaService.getAllProgrammiDropdownByRuoloAndIdProgramma(progettiParam.getCodiceRuoloUtenteLoggato(), progettiParam.getIdProgramma(), progettoFiltro)).thenReturn(listaProgrammi);
 		when(programmaService.getProgrammiPerDSCU(progettoFiltro)).thenReturn(listaProgrammi);
 		when(programmaMapper.toLightDropdownResourceFrom(listaProgrammi)).thenReturn(programmiLightDropdown);
 		programmaService.getAllProgrammiDropdownPerProgetti(progettiParam, progettoFiltro);
@@ -958,8 +910,7 @@ public class ProgrammaServiceTest {
 	public void getAllProgrammiDropdownPerProgettiTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("REG");
-		progettiParam.setCodiceRuolo("REG");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
+		progettiParam.setCodiceRuoloUtenteLoggato("REG");
 		when(programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
 		programmaService.getAllProgrammiDropdownPerProgetti(progettiParam, progettoFiltro);
 		verify(programmaRepository, atLeastOnce()).findById(programma1.getId());
@@ -970,30 +921,20 @@ public class ProgrammaServiceTest {
 	public void getAllProgrammiDropdownPerProgettiRuoloNonPredefinitoTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("RUOLONONPREDEFINITO");
-		progettiParam.setCodiceRuolo("RUOLONONPREDEFINITO");
+		progettiParam.setCodiceRuoloUtenteLoggato("RUOLONONPREDEFINITO");
 		ProgrammaDropdownResource programmaLightDropdownResource = new ProgrammaDropdownResource();
 		programmaLightDropdownResource.setId(programma1.getId());
 		programmaLightDropdownResource.setNome(programma1.getNome());
 		List<ProgrammaDropdownResource> programmiLightDropdown = new ArrayList<>();
 		programmiLightDropdown.add(programmaLightDropdownResource);		
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
-		when(programmaService.getAllProgrammiDropdownByRuoloAndIdProgramma(progettiParam.getCodiceRuolo(), progettiParam.getIdProgramma(), progettoFiltro)).thenReturn(listaProgrammi);
+		when(programmaService.getAllProgrammiDropdownByRuoloAndIdProgramma(progettiParam.getCodiceRuoloUtenteLoggato(), progettiParam.getIdProgramma(), progettoFiltro)).thenReturn(listaProgrammi);
 		when(programmaService.getAllProgrammi(progettoFiltro)).thenReturn(listaProgrammi);
 		when(programmaMapper.toLightDropdownResourceFrom(listaProgrammi)).thenReturn(programmiLightDropdown);
 		programmaService.getAllProgrammiDropdownPerProgetti(progettiParam, progettoFiltro);
 		assertThat(listaProgrammi.size()).isEqualTo(2);
 		verify(programmaRepository, atLeastOnce()).findAllByProgettoFiltro(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(), progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
 	}
-	
-	@Test 
-	public void getAllProgrammiDropdownPerProgettiKOTest() {
-		//test KO per ruolo non definito per l'utente
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(new ArrayList<>());
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.getAllProgrammiDropdownPerProgetti(progettiParam, progettoFiltro));
-		assertThatExceptionOfType(ProgrammaException.class);
-		verify(programmaRepository, times(0)).findAllByProgettoFiltro(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(), progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
-	}
-	
+
 	@Test
 	public void existsProgrammaByNomeTest() {
 		when(programmaRepository.findByNome(programma1.getNome())).thenReturn(programmaOptional);
