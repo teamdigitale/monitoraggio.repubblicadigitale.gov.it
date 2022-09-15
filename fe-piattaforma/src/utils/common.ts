@@ -4,6 +4,7 @@ import React from 'react';
 import { FilterI } from '../components/DropdownFilter/dropdownFilter';
 import { OptionType } from '../components/Form/select';
 import { TableRowI } from '../components/Table/table';
+import { idQ1, idQ2, idQ3, idQ4, titleQ1, titleQ2, titleQ3, titleQ4 } from '../pages/administrator/AdministrativeArea/Entities/Surveys/surveyConstants';
 import { RolePermissionI } from '../redux/features/roles/rolesSlice';
 import { formFieldI } from './formHelper';
 
@@ -402,27 +403,19 @@ export const convertPayloadSectionInString = (
   switch (section) {
     case 0:
       return (
-        '{"id":"anagraphic-citizen-section","title":"Informazioni anagrafiche","properties":' +
-        createStringOfCompiledSurveySection(newObject).replaceAll('"', "'") +
-        '}'
+        `{"id":"${idQ1}","title":"${titleQ1}","properties":${createStringOfCompiledSurveySection(newObject).replaceAll('"', "'")}}`
       );
     case 1:
       return (
-        '{"id":"anagraphic-booking-section","title":"Informazioni sulla prenotazione","properties":' +
-        createStringOfCompiledSurveySection(newObject).replaceAll('"', "'") +
-        '}'
+        `{"id":"${idQ2}","title":"${titleQ2}","properties":${createStringOfCompiledSurveySection(newObject).replaceAll('"', "'")}}`
       );
     case 2:
       return (
-        '{"id":"anagraphic-service-section","title":"Informazioni sul servizio","properties":' +
-        createStringOfCompiledSurveySection(newObject).replaceAll('"', "'") +
-        '}'
+        `{"id":"${idQ3}","title":"${titleQ3}","properties":${createStringOfCompiledSurveySection(newObject).replaceAll('"', "'")}}`
       );
     case 3:
       return (
-        '{"id":"content-service-section","title":"Informazioni sull’esperienza","properties":' +
-        createStringOfCompiledSurveySection(newObject).replaceAll('"', "'") +
-        '}'
+        `{"id":"${idQ4}","title":"${titleQ4}","properties":${createStringOfCompiledSurveySection(newObject).replaceAll('"', "'")}}`
       );
     default:
       return createStringOfCompiledSurveySection(newObject);

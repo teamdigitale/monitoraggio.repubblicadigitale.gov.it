@@ -22,6 +22,7 @@ interface SectionTitleI {
   name?: string | undefined;
   surname?: string | undefined;
   isUserProfile?: boolean;
+  enteIcon?: boolean;
 }
 
 const SectionTitle: React.FC<SectionTitleI> = (props) => {
@@ -34,6 +35,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
     name,
     surname,
     isUserProfile = false,
+    enteIcon = false,
   } = props;
   const device = useAppSelector(selectDevice);
 
@@ -65,8 +67,8 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
         <div className='d-flex flex-row'>
           <Icon
             icon={upperTitle.icon}
-            size='sm'
-            className='mr-1 icon-color'
+            size={'sm'}
+            className={clsx('mr-1', 'icon-color', enteIcon && 'ente-icon')}
             aria-label='Sezione'
           />
           <p

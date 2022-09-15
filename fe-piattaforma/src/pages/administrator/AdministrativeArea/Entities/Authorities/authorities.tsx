@@ -253,8 +253,7 @@ const Authorities: React.FC = () => {
           </>
         ) : (
           <EmptySection
-            title='Non sono presenti progetti'
-            subtitle='associati al tuo ruolo'
+            title='Non sono presenti enti per la tua ricerca'
             icon='it-note'
             withIcon
           />

@@ -448,6 +448,7 @@ const AuthoritiesDetails = () => {
               status: authorityDetails?.dettagliInfoEnte?.stato,
               upperTitle: { icon: PeopleIcon, text: 'Ente' },
             }}
+            enteIcon
             formButtons={buttons}
             itemsList={itemsList}
             // itemsAccordionList={itemAccordionList}

@@ -50,6 +50,7 @@ interface DetailLayoutI {
   isUserProfile?: boolean;
   citizenList?: boolean;
   citizenDeleteChange?: boolean;
+  enteIcon?: boolean;
 }
 const DetailLayout: React.FC<DetailLayoutI> = ({
   formButtons,
@@ -70,6 +71,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   onRadioChange,
   citizenList = false,
   citizenDeleteChange = false,
+  enteIcon = false,
 }) => {
   const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
@@ -95,7 +97,11 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
             <span className='primary-color'>{goBackTitle}</span>
           </Button>
         )}
-        <SectionTitle isUserProfile={isUserProfile} {...titleInfo} />
+        <SectionTitle
+          enteIcon={enteIcon}
+          isUserProfile={isUserProfile}
+          {...titleInfo}
+        />
         {nav && (
           <div
             className={clsx(
