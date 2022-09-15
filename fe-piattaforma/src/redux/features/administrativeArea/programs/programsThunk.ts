@@ -114,7 +114,7 @@ export const createProgram =
         }
       }
     } catch (error: any) {
-      return error.response;
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }

@@ -163,7 +163,7 @@ export const AssignAuthorityHeadquarter =
         );
       }
     } catch (error: any) {
-      return error.response;
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }

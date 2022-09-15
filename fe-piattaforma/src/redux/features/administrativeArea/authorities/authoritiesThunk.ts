@@ -285,7 +285,7 @@ export const CreateManagerAuthority =
         }
       }
     } catch (error: any) {
-      return error.response;
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }
@@ -341,9 +341,8 @@ export const UpdateManagerAuthority =
           return res;
         }
       }
-    } catch (error) {
-      console.log(error);
-      return false;
+    } catch (error: any) {
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }
@@ -432,7 +431,7 @@ export const CreatePartnerAuthority =
         }
       }
     } catch (error: any) {
-      return error.response;
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }
@@ -560,7 +559,7 @@ export const AssignManagerAuthorityReferentDelegate =
         }
       }
     } catch (error: any) {
-      return error.response;
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }
@@ -621,7 +620,7 @@ export const AssignPartnerAuthorityReferentDelegate =
         }
       }
     } catch (error: any) {
-      return error.response;
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }

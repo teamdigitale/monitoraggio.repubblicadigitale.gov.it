@@ -9,7 +9,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import isEqual from 'lodash.isequal';
 import { useSelector } from 'react-redux';
 import {
-  selectBreadcrumb,
+  selectCustomBreadcrumb,
   selectInfoIdsBreadcrumb,
 } from '../../redux/features/app/appSlice';
 import { useAppSelector } from '../../redux/hooks';
@@ -24,7 +24,7 @@ export interface BreadcrumbI {
 
 const Breadcrumb = () => {
   const userProfile = useAppSelector(selectProfile);
-  const breadcrumbList = useSelector(selectBreadcrumb);
+  const breadcrumbList = useSelector(selectCustomBreadcrumb);
   const idsBreadcrumb = useSelector(selectInfoIdsBreadcrumb);
   const urlCurrentLocation = useLocation().pathname;
   const location = useLocation()
@@ -67,7 +67,11 @@ const Breadcrumb = () => {
 
   const getUrlBreadcrumbList = () => {
     let urlStore = '';
-    breadcrumbList.map((elem) => (urlStore = urlStore + '/' + elem));
+    breadcrumbList.map((elem, index) => {
+      index === 0
+        ? (urlStore = urlStore + elem.url)
+        : (urlStore = urlStore + '/' + elem.url);
+    });
     return urlStore;
   };
 
@@ -122,7 +126,7 @@ const Breadcrumb = () => {
         setNavigationList(newList);
       });
     }
-  }, [currentLocation, currentLocation?.length, idsBreadcrumb]);
+  }, [currentLocation, currentLocation?.length, idsBreadcrumb, breadcrumbList]);
 
   return (
     <Container className='mt-3 pl-0'>

@@ -54,8 +54,9 @@ const ManageServices: React.FC<ManageServicesI> = ({
   const createPayload = (answersForms: {
     [key: string]: formFieldI['value'];
   }) => {
+    // TODO rendere dinamico
     const answersQ3 =
-      '{"id":"anagraphic-citizen-section","title":"Informazioni anagrafiche","properties":' +
+      '{"id":"anagraphic-service-section","title":"Informazioni anagrafiche","properties":' +
       questionarioCompilatoQ3?.replaceAll('"', "'") +
       '}';
     const tipologiaServizio = answersForms['24']?.toString()?.split('§');

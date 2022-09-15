@@ -10,7 +10,7 @@ import {
   formTypes,
   userRoles,
 } from '../../administrator/AdministrativeArea/Entities/utils';
-import { updateBreadcrumb } from '../../../redux/features/app/appSlice';
+import { updateCustomBreadcrumb } from '../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../redux/hooks';
 import ManageProfile from '../../administrator/AdministrativeArea/Entities/modals/manageProfile';
 import { selectUser } from '../../../redux/features/user/userSlice';
@@ -39,9 +39,9 @@ const UserProfile: React.FC<UserProfileI> = ({
 
   useEffect(() => {
     dispatch(
-      updateBreadcrumb([
+      updateCustomBreadcrumb([
         {
-          label: 'Area Personale',
+          label: 'Il mio profilo',
           url: '/area-personale',
           link: false,
         },

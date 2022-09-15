@@ -29,7 +29,6 @@ import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import SearchCitizenModal from '../SearchCitizenModal/searchCitizenModal';
 import PageTitle from '../../../../../components/PageTitle/pageTitle';
-import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 
 const entity = 'citizensArea';
 const siteDropdownLabel = 'idsSedi';
@@ -58,20 +57,6 @@ const Citizens = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area Cittadini',
-          url: '/area-cittadini',
-          link: false,
-        },
-        {
-          label: 'I miei cittadini',
-          url: '/area-cittadini',
-          link: true,
-        },
-      ])
-    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -1,12 +1,10 @@
 import { Button, Chip, ChipLabel, Col, Container, Row } from 'design-react-kit';
-import React, { memo, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { memo, useState } from 'react';
 import MessageList from './MessageList/messageList';
 import SingleMessage from './SingleMessage/singleMessage';
 import './notifications.scss';
 import clsx from 'clsx';
 import NotificationCard from '../../components/NotificationCards/notificationCard';
-import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 import PageTitle from '../../../../../components/PageTitle/pageTitle';
 
 const MessageListCardMock = [
@@ -76,24 +74,11 @@ const NotificationTwoPropsMock = {
 const NotificationMock = [NotificationOnePropsMock, NotificationTwoPropsMock];
 
 const Notifications = () => {
-  const dispatch = useDispatch();
   const [notification] = useState(NotificationMock);
 
   const handleDeleteMessage = () => {
     console.log('Elimina messaggio');
   };
-
-  useEffect(() => {
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area notifiche',
-          url: '/notifiche',
-          link: false,
-        },
-      ])
-    );
-  }, []);
 
   return (
     <>

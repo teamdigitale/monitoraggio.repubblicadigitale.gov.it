@@ -112,7 +112,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
       if (newFormValues.id) {
         if (projectId) {
           // Project
-          const res = await dispatch(
+          const res: any = await dispatch(
             UpdateManagerAuthority(
               { ...newFormValues },
               enteGestoreProgettoId,
@@ -122,14 +122,14 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
           );
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          if (res) {
+          if (res && !res.errorCode) {
             await dispatch(GetProjectDetail(projectId));
             dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
             resetModal();
           }
         } else if (entityId) {
           // Program
-          const res = await dispatch(
+          const res: any = await dispatch(
             UpdateManagerAuthority(
               { ...newFormValues },
               enteGestoreProgrammaId,
@@ -139,7 +139,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
           );
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          if (res) {
+          if (res && !res.errorCode) {
             await dispatch(GetProgramDetail(entityId));
             dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
             resetModal();
@@ -155,7 +155,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
             CreateManagerAuthority({ ...newFormValues }, projectId, 'progetto')
           );
 
-          if (!res?.errorCode) {
+          if (!res.errorCode) {
             await dispatch(GetProjectDetail(projectId));
             dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
             resetModal();
@@ -165,7 +165,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
           res = await dispatch(
             CreateManagerAuthority({ ...newFormValues }, entityId, 'programma')
           );
-          if (!res?.errorCode) {
+          if (!res.errorCode) {
             await dispatch(GetProgramDetail(entityId));
             dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
             resetModal();

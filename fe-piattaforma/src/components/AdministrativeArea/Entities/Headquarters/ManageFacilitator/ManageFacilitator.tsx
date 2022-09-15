@@ -21,7 +21,10 @@ import {
   GetUsersBySearch,
   UpdateUser,
 } from '../../../../../redux/features/administrativeArea/user/userThunk';
-import { closeModal } from '../../../../../redux/features/modal/modalSlice';
+import {
+  closeModal,
+  selectModalState,
+} from '../../../../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
@@ -56,6 +59,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   const { projectId, authorityId, headquarterId, userId } = useParams();
   const programPolicy =
     useAppSelector(selectHeadquarters).detail?.programmaPolicy;
+  const open = useAppSelector(selectModalState);
 
   useEffect(() => {
     dispatch(setUsersList(null));
@@ -63,9 +67,11 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   }, []);
 
   useEffect(() => {
-    dispatch(resetUserDetails());
+    if (creation && open) {
+      dispatch(resetUserDetails());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [creation]);
+  }, [creation, open]);
 
   useEffect(() => {
     if (usersList && usersList.length === 0) {
