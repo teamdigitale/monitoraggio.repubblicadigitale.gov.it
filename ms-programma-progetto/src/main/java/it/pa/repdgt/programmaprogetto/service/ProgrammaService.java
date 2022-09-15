@@ -27,7 +27,6 @@ import it.pa.repdgt.programmaprogetto.request.ProgettiParam;
 import it.pa.repdgt.programmaprogetto.request.ProgettoFiltroRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammaRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammiParam;
-import it.pa.repdgt.programmaprogetto.request.SceltaProfiloParam;
 import it.pa.repdgt.programmaprogetto.resource.PaginaProgrammi;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
@@ -43,6 +42,7 @@ import it.pa.repdgt.shared.entity.light.QuestionarioTemplateLightEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.shared.service.storico.StoricoService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -87,7 +87,7 @@ public class ProgrammaService {
 				pageSize
 				);
 	}
-	
+
 	@LogMethod
 	@LogExecutionTime
 	public List<ProgrammaEntity> getAllProgrammi(FiltroRequest filtroRequest) {
@@ -98,7 +98,7 @@ public class ProgrammaService {
 				filtroRequest.getStati()
 				);
 	}
-	
+
 	@LogMethod
 	@LogExecutionTime
 	public Long getCountAllProgrammi(FiltroRequest filtroRequest) {
@@ -125,46 +125,31 @@ public class ProgrammaService {
 	@LogMethod
 	@LogExecutionTime
 	public PaginaProgrammi getAllProgrammiPaginati(ProgrammiParam sceltaContesto, Integer currPage, Integer pageSize, FiltroRequest filtroRequest) {
-		if(this.ruoloService.getCodiceRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
-			throw new ProgrammaException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
-		}
-		return this.getAllProgrammiByRuoloAndIdProgrammaPaginati(sceltaContesto.getCodiceRuolo(), sceltaContesto.getIdProgramma(), filtroRequest, currPage, pageSize);
+		return this.getAllProgrammiByRuoloAndIdProgrammaPaginati(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getIdProgramma(), filtroRequest, currPage, pageSize);
 	}
 
 	@LogMethod
 	@LogExecutionTime
 	public List<String> getAllStatiDropdown(ProgrammiParam sceltaContesto, FiltroRequest filtroRequest) {
-		if(this.ruoloService.getCodiceRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
-			throw new ProgrammaException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
-		}
-		return this.getAllStatiByRuoloAndIdProgramma(sceltaContesto.getCodiceRuolo(), sceltaContesto.getIdProgramma(), filtroRequest);
+		return this.getAllStatiByRuoloAndIdProgramma(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getIdProgramma(), filtroRequest);
 	}
 
 	@LogMethod
 	@LogExecutionTime
 	public List<String> getAllPoliciesDropdown(ProgrammiParam sceltaContesto, FiltroRequest filtroRequest) {
-		if(this.ruoloService.getCodiceRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
-			throw new ProgrammaException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
-		}
-		return this.getAllPoliciesByRuoloAndIdProgramma(sceltaContesto.getCodiceRuolo(), sceltaContesto.getIdProgramma(), filtroRequest);
+		return this.getAllPoliciesByRuoloAndIdProgramma(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getIdProgramma(), filtroRequest);
 	}
 
 	@LogMethod
 	@LogExecutionTime
 	public List<String> getAllPoliciesDropdownPerProgetti(ProgettiParam sceltaContesto, ProgettoFiltroRequest filtroRequest) {
-		if(this.ruoloService.getCodiceRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
-			throw new ProgrammaException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
-		}
-		return this.getAllPoliciesByRuoloAndIdProgramma(sceltaContesto.getCodiceRuolo(), sceltaContesto.getIdProgramma(), filtroRequest);
+		return this.getAllPoliciesByRuoloAndIdProgramma(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getIdProgramma(), filtroRequest);
 	}
 
 	@LogMethod
 	@LogExecutionTime
 	public List<ProgrammaDropdownResource> getAllProgrammiDropdownPerProgetti(ProgettiParam sceltaContesto, ProgettoFiltroRequest filtroRequest){
-		if(this.ruoloService.getCodiceRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
-			throw new ProgrammaException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
-		}
-		List<ProgrammaEntity> programmiDropdown = this.getAllProgrammiDropdownByRuoloAndIdProgramma(sceltaContesto.getCodiceRuolo(), sceltaContesto.getIdProgramma(), filtroRequest);
+		List<ProgrammaEntity> programmiDropdown = this.getAllProgrammiDropdownByRuoloAndIdProgramma(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getIdProgramma(), filtroRequest);
 		return this.programmaMapper.toLightDropdownResourceFrom(programmiDropdown);
 	}
 
@@ -196,7 +181,7 @@ public class ProgrammaService {
 		case "DEPP":
 		case "FAC":
 		case "VOL":
-			paginaProgrammi.setPaginaProgrammi(Arrays.asList( 
+			paginaProgrammi.setPaginaProgrammi(Arrays.asList(
 					this.getProgrammaById(idProgramma)
 					));
 			numeroElementi = 1L;
@@ -209,14 +194,14 @@ public class ProgrammaService {
 		paginaProgrammi.setTotalElements(numeroElementi);
 		Integer pagine = (int) (numeroElementi/pageSize);
 		paginaProgrammi.setTotalPages(numeroElementi%pageSize > 0 ? pagine + 1 : pagine);
-		
+
 		if(paginaProgrammi.getTotalElements() > 0 && currPage >= paginaProgrammi.getTotalPages()) {
 			throw new ProgrammaException("Errore Pagina richiesta non esistente", CodiceErroreEnum.G03);
 		}
-		
+
 		return paginaProgrammi;
 	}
-	
+
 	/**
 	 * Recupera tutti i programmi filtrati in base al filtro passato che sono associati all'utente che ha quel ruolo associato a quel particolare programma
 	 *
@@ -239,7 +224,7 @@ public class ProgrammaService {
 		case "DEPP":
 		case "FAC":
 		case "VOL":
-			return Arrays.asList( 
+			return Arrays.asList(
 					this.getProgrammaById(idProgramma)
 					);
 		default:
@@ -334,7 +319,7 @@ public class ProgrammaService {
 		case "DEG":
 		case "DEGP":
 		case "DEPP":
-			return Arrays.asList( 
+			return Arrays.asList(
 					this.getProgrammaById(idProgramma)
 					);
 		default:
@@ -370,7 +355,7 @@ public class ProgrammaService {
 				pageSize
 				);
 	}
-	
+
 	@LogMethod
 	@LogExecutionTime
 	public List<ProgrammaEntity> getProgrammiPerDSCU(FiltroRequest filtroRequest) {
@@ -613,7 +598,7 @@ public class ProgrammaService {
 	public boolean isProgrammmaAggiornabileByStatoProgramma(final String statoProgramma) {
 		return (    
 				StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(statoProgramma)
-				|| StatoEnum.ATTIVO.getValue().equalsIgnoreCase(statoProgramma)  
+				|| StatoEnum.ATTIVO.getValue().equalsIgnoreCase(statoProgramma)
 				);
 	}
 
@@ -670,7 +655,7 @@ public class ProgrammaService {
 				progettoLight.setId(progetto.getId());
 				progettoLight.setNome(progetto.getNome());
 				progettoLight.setStato(progetto.getStato());
-				switch(sceltaProfilo.getCodiceRuolo()) {
+				switch(sceltaProfilo.getCodiceRuoloUtenteLoggato()) {
 				case "REGP":
 				case "DEGP":
 				case "REPP":
