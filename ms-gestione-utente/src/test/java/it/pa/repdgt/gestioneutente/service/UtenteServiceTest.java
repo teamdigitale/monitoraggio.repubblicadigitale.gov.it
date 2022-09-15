@@ -97,7 +97,7 @@ public class UtenteServiceTest {
 	List<Long> listaIds;
 	UtenteXRuoloKey utenteXRuoloKey;
 	UtenteXRuolo utenteXRuolo;
-	
+
 	@BeforeEach
 	public void setUp() {
 		utente = new UtenteEntity();
@@ -143,8 +143,8 @@ public class UtenteServiceTest {
 		utentiSet.add(utente2);
 		
 		sceltaContesto = new UtenteRequest();
-		sceltaContesto.setCfUtente("CODICE_FISCALE");
-		sceltaContesto.setCodiceRuolo(RuoloUtenteEnum.DTD.getValue());
+		sceltaContesto.setCfUtenteLoggato("CODICE_FISCALE");
+		sceltaContesto.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.getValue());
 		sceltaContesto.setIdProgramma(1L);
 		sceltaContesto.setIdProgetto(1L);
 		filtroRicerca = new FiltroRequest();
@@ -171,26 +171,26 @@ public class UtenteServiceTest {
 		
 		setStati = new HashSet<>();
 		setStati.add("ATTIVO");
-		
+
 		programma = new ProgrammaEntity();
 		programma.setId(1L);
 		programma.setNome("NOMEPROGRAMMA");
 		programma.setStato("ATTIVO");
 		programma.setPolicy(PolicyEnum.SCD);
-		
+
 		progetto = new ProgettoEntity();
 		progetto.setId(1L);
 		progetto.setNome("NOMEPROGETTO");
 		progetto.setStato("ATTIVO");
 		progetto.setProgramma(programma);
-		
+
 		listaStati = new ArrayList<>();
 		listaStati.add("ATTIVO");
 		listaStati.add("TERMINATO");
-		
+
 		listaIds = new ArrayList<>();
 		listaIds.add(1L);
-		
+
 		utenteXRuoloKey = new UtenteXRuoloKey(utente.getCodiceFiscale(), ruolo.getCodice());
 		utenteXRuolo = new UtenteXRuolo();
 		utenteXRuolo.setId(utenteXRuoloKey);
@@ -206,7 +206,6 @@ public class UtenteServiceTest {
 	public void getAllUtentiPaginatiTest() {
 		List<String> listaRuoli = new ArrayList<String>();
 		listaRuoli.add("DTD");
-		when(this.ruoloService.getRuoliByCodiceFiscaleUtente("CODICE_FISCALE")).thenReturn(listaRuoli);
 		when(this.utenteRepository.findUtentiByFiltri(
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
@@ -219,15 +218,7 @@ public class UtenteServiceTest {
 		List<UtenteDto> utentiAll = service.getAllUtentiPaginati(sceltaContesto, currPage, pageSize);
 		assertThat(utentiAll.size()).isEqualTo(utentiSet.size());
 	}
-	
-	@Test
-	public void getAllUtentiPaginatiKOTest() {
-		//test KO per ruolo non definito per l'utente
-		when(this.ruoloService.getRuoliByCodiceFiscaleUtente("CODICE_FISCALE")).thenReturn(new ArrayList<>());
-		Assertions.assertThrows(UtenteException.class, () -> service.getAllUtentiPaginati(sceltaContesto, currPage, pageSize));
-		assertThatExceptionOfType(UtenteException.class);
-	}
-	
+
 	@Test
 	public void getUtentiConRuoliAggregatiTest() {
 		RuoloEntity ruolo2 = new RuoloEntity();
@@ -485,7 +476,6 @@ public class UtenteServiceTest {
 	
 	@Test
 	public void getAllStatiDropdownTest() {
-		when(this.ruoloService.getRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente())).thenReturn(listaCodiciRuoli);
 		when(this.utenteRepository.findStatiByFilter(
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
@@ -494,15 +484,7 @@ public class UtenteServiceTest {
 		)).thenReturn(new HashSet<String>());
 		service.getAllStatiDropdown(sceltaContesto);
 	}
-	
-	@Test
-	public void getAllStatiDropdownKOTest() {
-		//test KO per ruolo non definito per l'utente
-		when(this.ruoloService.getRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente())).thenReturn(new ArrayList<>());
-		Assertions.assertThrows(UtenteException.class, () -> service.getAllStatiDropdown(sceltaContesto));
-		assertThatExceptionOfType(UtenteException.class);
-	}
-	
+
 	@Test
 	public void getAllStatiByRuoloAndcfUtenteDTDTest() {
 		//test con ruoloUtenteLoggato = DTD
@@ -512,35 +494,35 @@ public class UtenteServiceTest {
 				filtroRicerca.getRuoli(),
 				filtroRicerca.getStati()
 		)).thenReturn(setStati);
-		List<String> risultato = service.getAllStatiByRuoloAndcfUtente(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
+		List<String> risultato = service.getAllStatiByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(setStati.size());
 	}
 	
 	@Test
 	public void getAllStatiByRuoloAndcfUtenteTestConRuoliPrefediniti() {
 		//test con ruoloUtenteLoggato = DSCU/REG/DEG/REGP/DEGP/REPP/DEPP
-		sceltaContesto.setCodiceRuolo("DSCU");
-		List<String> risultato = service.getAllStatiByRuoloAndcfUtente(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
+		sceltaContesto.setCodiceRuoloUtenteLoggato("DSCU");
+		List<String> risultato = service.getAllStatiByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(1);
 	}
 	
 	@Test
 	public void getAllStatiByRuoloAndcfUtenteTestConRuoliNonPrefediniti() {
 		//test con ruoloUtenteLoggato = ruolo non predefinito
-		sceltaContesto.setCodiceRuolo("RUOLONONPREDEFINITO");
+		sceltaContesto.setCodiceRuoloUtenteLoggato("RUOLONONPREDEFINITO");
 		when(this.utenteRepository.findStatiByFilter(
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli(),
 				filtroRicerca.getStati()
 		)).thenReturn(setStati);
-		List<String> risultato = service.getAllStatiByRuoloAndcfUtente(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
+		List<String> risultato = service.getAllStatiByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(setStati.size());
 	}
 	
 	@Test
 	public void getAllRuoliDropdownTest() {
-		when(this.ruoloService.getRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente())).thenReturn(listaCodiciRuoli);
+		when(this.ruoloService.getRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtenteLoggato())).thenReturn(listaCodiciRuoli);
 		when(this.utenteRepository.findAllRuoli(
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
@@ -554,7 +536,7 @@ public class UtenteServiceTest {
 	@Test
 	public void getAllRuoliDropdownKOTest() {
 		//test KO per ruolo non definito per l'utente
-		when(this.ruoloService.getRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente())).thenReturn(new ArrayList<>());
+		when(this.ruoloService.getRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtenteLoggato())).thenReturn(new ArrayList<>());
 		Assertions.assertThrows(UtenteException.class, () -> service.getAllRuoliDropdown(sceltaContesto));
 		assertThatExceptionOfType(UtenteException.class);
 	}
@@ -568,84 +550,84 @@ public class UtenteServiceTest {
 				filtroRicerca.getRuoli(),
 				filtroRicerca.getStati()
 				)).thenReturn(listaCodiciRuoli);
-		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
+		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(listaCodiciRuoli.size());
 	}
 	
 	@Test
 	public void getAllRuoliByRuoloAndcfUtenteDSCUTest() {
 		//test con ruoloUtenteLoggato = DSCU
-		sceltaContesto.setCodiceRuolo("DSCU");
+		sceltaContesto.setCodiceRuoloUtenteLoggato("DSCU");
 		when(this.utenteRepository.findRuoliPerDSCU(
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli()
 				)).thenReturn(listaCodiciRuoli);
-		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
+		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(listaCodiciRuoli.size());
 	}
 	
 	@Test
 	public void getAllRuoliByRuoloAndcfUtenteREGTest() {
 		//test con ruoloUtenteLoggato = REG/DEG
-		sceltaContesto.setCodiceRuolo("REG");
+		sceltaContesto.setCodiceRuoloUtenteLoggato("REG");
 		when(this.utenteRepository.findRuoliPerReferenteDelegatoGestoreProgramma(
 				sceltaContesto.getIdProgramma(),
-				sceltaContesto.getCfUtente(),
+				sceltaContesto.getCfUtenteLoggato(),
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli()
 				)).thenReturn(listaCodiciRuoli);
-		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
+		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(listaCodiciRuoli.size());
 	}
 	
 	@Test
 	public void getAllRuoliByRuoloAndcfUtenteREGPTest() {
 		//test con ruoloUtenteLoggato = REGP/DEGP
-		sceltaContesto.setCodiceRuolo("REGP");
+		sceltaContesto.setCodiceRuoloUtenteLoggato("REGP");
 		when(this.utenteRepository.findRuoliPerReferenteDelegatoGestoreProgetti(
 				sceltaContesto.getIdProgramma(),
 				sceltaContesto.getIdProgetto(),
-				sceltaContesto.getCfUtente(),
+				sceltaContesto.getCfUtenteLoggato(),
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli()
 				)).thenReturn(listaCodiciRuoli);
-		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
+		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(listaCodiciRuoli.size());
 	}
 	
 	@Test
 	public void getAllRuoliByRuoloAndcfUtenteREPPTest() {
 		//test con ruoloUtenteLoggato = REPP/DEPP
-		sceltaContesto.setCodiceRuolo("REPP");
+		sceltaContesto.setCodiceRuoloUtenteLoggato("REPP");
 		when(this.utenteRepository.findRuoliPerReferenteDelegatoEntePartnerProgetti(
 				sceltaContesto.getIdProgramma(),
 				sceltaContesto.getIdProgetto(),
-				sceltaContesto.getCfUtente(),
+				sceltaContesto.getCfUtenteLoggato(),
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli()
 				)).thenReturn(listaCodiciRuoli);
-		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
+		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(listaCodiciRuoli.size());
 	}
 	
 	@Test
 	public void getAllRuoliByRuoloAndcfUtenteTestRuoloNonPredefinito() {
 		//test con ruoloUtenteLoggato = ruolo non predefinito
-		sceltaContesto.setCodiceRuolo("RUOLONONPREDEFINITO");
+		sceltaContesto.setCodiceRuoloUtenteLoggato("RUOLONONPREDEFINITO");
 		when(this.utenteRepository.findAllRuoli(
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli(),
 				filtroRicerca.getStati()
 				)).thenReturn(listaCodiciRuoli);
-		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
+		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(listaCodiciRuoli.size());
 	}
-	
+
 	@Test
 	public void getSchedaUtenteByIdUtenteDTDTest() {
 		//test con utente avente ruolo DTD/DSCU
@@ -653,7 +635,7 @@ public class UtenteServiceTest {
 		when(this.ruoloService.getRuoliCompletiByCodiceFiscaleUtente(utente.getCodiceFiscale())).thenReturn(ruoli);
 		service.getSchedaUtenteByIdUtente(utente.getId(), sceltaContesto);
 	}
-	
+
 	@Test
 	public void getSchedaUtenteByIdUtenteREGTest() {
 		//test con utente avente ruolo REG/DEG
@@ -664,12 +646,12 @@ public class UtenteServiceTest {
 		ruoli.add(ruolo1);
 		when(this.utenteRepository.findById(utente.getId())).thenReturn(Optional.of(utente));
 		when(this.ruoloService.getRuoliCompletiByCodiceFiscaleUtente(utente.getCodiceFiscale())).thenReturn(ruoli);
-		when(this.programmaService.getDistinctIdProgrammiByRuoloUtente(sceltaContesto.getCfUtente(), ruolo1.getCodice())).thenReturn(listaIds);
+		when(this.programmaService.getDistinctIdProgrammiByRuoloUtente(sceltaContesto.getCfUtenteLoggato(), ruolo1.getCodice())).thenReturn(listaIds);
 		when(this.programmaService.getProgrammaById(programma.getId())).thenReturn(programma);
-		when(referentiDelegatiEnteGestoreProgrammaRepository.findStatoByCfUtente(sceltaContesto.getCfUtente(), programma.getId(), ruolo1.getCodice())).thenReturn(listaStati);
+		when(referentiDelegatiEnteGestoreProgrammaRepository.findStatoByCfUtente(sceltaContesto.getCfUtenteLoggato(), programma.getId(), ruolo1.getCodice())).thenReturn(listaStati);
 		service.getSchedaUtenteByIdUtente(utente.getId(), sceltaContesto);
 	}
-	
+
 	@Test
 	public void getSchedaUtenteByIdUtenteREGPTest() {
 		//test con utente avente ruolo REGP/DEGP
@@ -680,12 +662,12 @@ public class UtenteServiceTest {
 		ruoli.add(ruolo1);
 		when(this.utenteRepository.findById(utente.getId())).thenReturn(Optional.of(utente));
 		when(this.ruoloService.getRuoliCompletiByCodiceFiscaleUtente(utente.getCodiceFiscale())).thenReturn(ruoli);
-		when(this.progettoService.getDistinctIdProgettiByRuoloUtente(sceltaContesto.getCfUtente(), ruolo1.getCodice())).thenReturn(listaIds);
+		when(this.progettoService.getDistinctIdProgettiByRuoloUtente(sceltaContesto.getCfUtenteLoggato(), ruolo1.getCodice())).thenReturn(listaIds);
 		when(this.progettoService.getProgettoById(progetto.getId())).thenReturn(progetto);
-		when(referentiDelegatiEnteGestoreProgettoRepository.findStatoByCfUtente(sceltaContesto.getCfUtente(), progetto.getId(), ruolo1.getCodice())).thenReturn(listaStati);
+		when(referentiDelegatiEnteGestoreProgettoRepository.findStatoByCfUtente(sceltaContesto.getCfUtenteLoggato(), progetto.getId(), ruolo1.getCodice())).thenReturn(listaStati);
 		service.getSchedaUtenteByIdUtente(utente.getId(), sceltaContesto);
 	}
-	
+
 	@Test
 	public void getSchedaUtenteByIdUtenteREPPTest() {
 		//test con utente avente ruolo REPP/DEPP
@@ -696,12 +678,12 @@ public class UtenteServiceTest {
 		ruoli.add(ruolo1);
 		when(this.utenteRepository.findById(utente.getId())).thenReturn(Optional.of(utente));
 		when(this.ruoloService.getRuoliCompletiByCodiceFiscaleUtente(utente.getCodiceFiscale())).thenReturn(ruoli);
-		when(this.entePartnerService.getIdProgettiEntePartnerByRuoloUtente(sceltaContesto.getCfUtente(), ruolo1.getCodice())).thenReturn(listaIds);
+		when(this.entePartnerService.getIdProgettiEntePartnerByRuoloUtente(sceltaContesto.getCfUtenteLoggato(), ruolo1.getCodice())).thenReturn(listaIds);
 		when(this.progettoService.getProgettoById(progetto.getId())).thenReturn(progetto);
-		when(referentiDelegatiEntePartnerDiProgettoRepository.findStatoByCfUtente(sceltaContesto.getCfUtente(), progetto.getId(), ruolo1.getCodice())).thenReturn(listaStati);
+		when(referentiDelegatiEntePartnerDiProgettoRepository.findStatoByCfUtente(sceltaContesto.getCfUtenteLoggato(), progetto.getId(), ruolo1.getCodice())).thenReturn(listaStati);
 		service.getSchedaUtenteByIdUtente(utente.getId(), sceltaContesto);
 	}
-	
+
 	@Test
 	public void getSchedaUtenteByIdUtenteFACTest() {
 		//test con utente avente ruolo FAC/VOL
@@ -712,61 +694,61 @@ public class UtenteServiceTest {
 		ruoli.add(ruolo1);
 		when(this.utenteRepository.findById(utente.getId())).thenReturn(Optional.of(utente));
 		when(this.ruoloService.getRuoliCompletiByCodiceFiscaleUtente(utente.getCodiceFiscale())).thenReturn(ruoli);
-		when(this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontario(sceltaContesto.getCfUtente(), ruolo1.getCodice())).thenReturn(listaIds);
+		when(this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontario(sceltaContesto.getCfUtenteLoggato(), ruolo1.getCodice())).thenReturn(listaIds);
 		when(this.progettoService.getProgettoById(progetto.getId())).thenReturn(progetto);
-		when(this.enteSedeProgettoFacilitatoreService.getDistinctStatoByIdProgettoIdFacilitatoreVolontario(sceltaContesto.getCfUtente(), ruolo1.getCodice(),  progetto.getId())).thenReturn(listaStati);
+		when(this.enteSedeProgettoFacilitatoreService.getDistinctStatoByIdProgettoIdFacilitatoreVolontario(sceltaContesto.getCfUtenteLoggato(), ruolo1.getCodice(),  progetto.getId())).thenReturn(listaStati);
 		service.getSchedaUtenteByIdUtente(utente.getId(), sceltaContesto);
 	}
-	
+
 	@Test
 	public void isProgettoAssociatoAUtenteLoggatoTest() {
 		//test con condizioni IF non rispettate
-		sceltaContesto.setCodiceRuolo("REGP");
+		sceltaContesto.setCodiceRuoloUtenteLoggato("REGP");
 		sceltaContesto.setIdProgetto(2L);
 		boolean risultato = service.isProgettoAssociatoAUtenteLoggato(sceltaContesto, progetto);
 		assertThat(risultato).isEqualTo(false);
 	}
-	
+
 	@Test
 	public void isProgettoAssociatoAUtenteLoggatoDTDTest() {
 		//test con ruoloUtenteLoggato = DTD/ruolo custom
 		boolean risultato = service.isProgettoAssociatoAUtenteLoggato(sceltaContesto, progetto);
 		assertThat(risultato).isEqualTo(true);
 	}
-	
+
 	@Test
 	public void isProgettoAssociatoAUtenteLoggatoDSCUTest() {
 		//test con ruoloUtenteLoggato = DSCU con policy programma = SCD
-		sceltaContesto.setCodiceRuolo("DSCU");
+		sceltaContesto.setCodiceRuoloUtenteLoggato("DSCU");
 		boolean risultato = service.isProgettoAssociatoAUtenteLoggato(sceltaContesto, progetto);
 		assertThat(risultato).isEqualTo(true);
 	}
-	
+
 	@Test
 	public void isProgettoAssociatoAUtenteLoggatoDSCUTest2() {
 		//test con ruoloUtenteLoggato = DSCU con policy programma = RFD
-		sceltaContesto.setCodiceRuolo("DSCU");
+		sceltaContesto.setCodiceRuoloUtenteLoggato("DSCU");
 		programma.setPolicy(PolicyEnum.RFD);
 		boolean risultato = service.isProgettoAssociatoAUtenteLoggato(sceltaContesto, progetto);
 		assertThat(risultato).isEqualTo(false);
 	}
-	
+
 	@Test
 	public void isProgettoAssociatoAUtenteLoggatoREGTest() {
 		//test con ruoloUtenteLoggato = REG
-		sceltaContesto.setCodiceRuolo("REG");
+		sceltaContesto.setCodiceRuoloUtenteLoggato("REG");
 		boolean risultato = service.isProgettoAssociatoAUtenteLoggato(sceltaContesto, progetto);
 		assertThat(risultato).isEqualTo(true);
 	}
-	
+
 	@Test
 	public void isProgettoAssociatoAUtenteLoggatoREGPTest() {
 		//test con ruoloUtenteLoggato = REGP
-		sceltaContesto.setCodiceRuolo("REGP");
+		sceltaContesto.setCodiceRuoloUtenteLoggato("REGP");
 		boolean risultato = service.isProgettoAssociatoAUtenteLoggato(sceltaContesto, progetto);
 		assertThat(risultato).isEqualTo(true);
 	}
-	
+
 	@Test
 	public void getUtenteByCriterioRicercaTest() {
 		when(this.utenteRepository.findUtenteByCriterioRicerca(
@@ -776,7 +758,7 @@ public class UtenteServiceTest {
 		List<UtenteEntity> risultato = service.getUtenteByCriterioRicerca(filtroRicerca.getCriterioRicerca());
 		assertThat(risultato.size()).isEqualTo(utentiList.size());
 	}
-	
+
 	@Test
 	public void cancellaRuoloDaUtenteTest() {
 		ruoli = new ArrayList<>();
@@ -789,7 +771,7 @@ public class UtenteServiceTest {
 		doNothing().when(this.utenteXRuoloService).cancellaRuoloUtente(utenteXRuolo);
 		service.cancellaRuoloDaUtente(utente.getId(), ruolo.getCodice());
 	}
-	
+
 	@Test
 	public void cancellaRuoloDaUtenteDTDTest() {
 		//test con codiceRuolo da eliminare = DSCU/DTD
@@ -808,14 +790,14 @@ public class UtenteServiceTest {
 		doNothing().when(this.utenteXRuoloService).cancellaRuoloUtente(utenteXRuolo);
 		service.cancellaRuoloDaUtente(utente.getId(), ruolo.getCodice());
 	}
-	
+
 	@Test
 	public void cancellaRuoloDaUtenteKOTest() {
 		//test KO per ruolo inesistente
 		Assertions.assertThrows(RuoloException.class, () -> service.cancellaRuoloDaUtente(utente.getId(), "RUOLOINESISTENTE"));
 		assertThatExceptionOfType(RuoloException.class);
 	}
-	
+
 	@Test
 	public void cancellaRuoloDaUtenteKOTest2() {
 		//test KO impossibile cancellare un ruolo non associato ad un utente
@@ -824,7 +806,7 @@ public class UtenteServiceTest {
 		Assertions.assertThrows(RuoloException.class, () -> service.cancellaRuoloDaUtente(utente.getId(), "DSCU"));
 		assertThatExceptionOfType(RuoloException.class);
 	}
-	
+
 	@Test
 	public void cancellaRuoloDaUtenteKOTest3() {
 		//test KO impossibile un ruolo predefinito
@@ -839,7 +821,7 @@ public class UtenteServiceTest {
 		Assertions.assertThrows(RuoloException.class, () -> service.cancellaRuoloDaUtente(utente.getId(), ruolo.getCodice()));
 		assertThatExceptionOfType(RuoloException.class);
 	}
-	
+
 	@Test
 	public void countUtentiTrovatiTest() {
 		when( this.utenteRepository.countUtentiTrovati(
@@ -849,7 +831,7 @@ public class UtenteServiceTest {
 				filtroRicerca.getStati())).thenReturn(1);
 		service.countUtentiTrovati(sceltaContesto);
 	}
-	
+
 	@Test
 	public void countUtentiTrovatiByRuoloDTDTest() {
 		//test con ruolo DTD
@@ -858,70 +840,70 @@ public class UtenteServiceTest {
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli(),
 				filtroRicerca.getStati())).thenReturn(1);
-		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
 	}
-	
+
 	@Test
 	public void countUtentiTrovatiByRuoloDSCUTest() {
 		//test con ruolo DSCU
-		sceltaContesto.setCodiceRuolo("DSCU");
+		sceltaContesto.setCodiceRuoloUtenteLoggato("DSCU");
 		when(this.utenteRepository.countUtentiTrovatiPerDSCU(
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli())).thenReturn(1);
-		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
 	}
-	
+
 	@Test
 	public void countUtentiTrovatiByRuoloREGTest() {
 		//test con ruolo REG/DEG
-		sceltaContesto.setCodiceRuolo("REG");
+		sceltaContesto.setCodiceRuoloUtenteLoggato("REG");
 		when(this.utenteRepository.countUtentiTrovatiPerReferenteDelegatoGestoreProgramma(
 				sceltaContesto.getIdProgramma(),
-				sceltaContesto.getCfUtente(),
+				sceltaContesto.getCfUtenteLoggato(),
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli())).thenReturn(1);
-		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
 	}
-	
+
 	@Test
 	public void countUtentiTrovatiByRuoloREGPTest() {
 		//test con ruolo REGP/DEGP
-		sceltaContesto.setCodiceRuolo("REGP");
+		sceltaContesto.setCodiceRuoloUtenteLoggato("REGP");
 		when(this.utenteRepository.countUtentiTrovatiPerReferenteDelegatoGestoreProgetti(
 				sceltaContesto.getIdProgramma(),
 				sceltaContesto.getIdProgetto(),
-				sceltaContesto.getCfUtente(),
+				sceltaContesto.getCfUtenteLoggato(),
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli())).thenReturn(1);
-		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
 	}
-	
+
 	@Test
 	public void countUtentiTrovatiByRuoloREPPTest() {
 		//test con ruolo REPP/DEPP
-		sceltaContesto.setCodiceRuolo("REPP");
+		sceltaContesto.setCodiceRuoloUtenteLoggato("REPP");
 		when(this.utenteRepository.countUtentiTrovatiPerReferenteDelegatoEntePartnerProgetti(
 				sceltaContesto.getIdProgramma(),
 				sceltaContesto.getIdProgetto(),
-				sceltaContesto.getCfUtente(),
+				sceltaContesto.getCfUtenteLoggato(),
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli())).thenReturn(1);
-		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
 	}
-	
+
 	@Test
 	public void countUtentiTrovatiByRuoloNonPredefinitoTest() {
 		//test con ruolo non predefinito
-		sceltaContesto.setCodiceRuolo("RUOLONONPREDEFINITO");
+		sceltaContesto.setCodiceRuoloUtenteLoggato("RUOLONONPREDEFINITO");
 		when(this.utenteRepository.countUtentiTrovati(
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli(),
 				filtroRicerca.getStati())).thenReturn(1);
-		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
 	}
 }

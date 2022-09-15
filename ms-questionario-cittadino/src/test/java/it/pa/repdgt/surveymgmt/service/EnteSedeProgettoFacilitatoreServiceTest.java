@@ -50,8 +50,8 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		listaIdsSedi = new ArrayList<>();
 		listaIdsSedi.add("1");
 		profilazione = new ProfilazioneSedeParam();
-		profilazione.setCodiceFiscaleUtenteLoggato("DFGREI79N20H101L");
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC);
+		profilazione.setCfUtenteLoggato("DFGREI79N20H101L");
+		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
 		profilazione.setIdProgetto(1L);
 		profilazione.setIdProgramma(1L);
 		profilazione.setIdEnte(1L);
@@ -107,7 +107,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		List<SedeProjection> listaSediProjection = new ArrayList<>();
 		listaSediProjection.add(sedeProjectionImplementation);
 		when(this.enteSedeProgettoFacilitatoreRepository.findSediByFacilitatore(
-				profilazione.getCodiceFiscaleUtenteLoggato(),
+				profilazione.getCfUtenteLoggato(),
 				profilazione.getIdEnte(),
 				profilazione.getIdProgetto()
 			)).thenReturn(listaSediProjection);

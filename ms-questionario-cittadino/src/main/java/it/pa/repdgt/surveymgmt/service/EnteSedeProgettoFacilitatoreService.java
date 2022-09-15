@@ -12,9 +12,9 @@ import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import it.pa.repdgt.surveymgmt.param.ProfilazioneSedeParam;
 import it.pa.repdgt.surveymgmt.projection.EnteProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
@@ -53,8 +53,8 @@ public class EnteSedeProgettoFacilitatoreService {
 
 	@LogMethod
 	@LogExecutionTime
-	public List<EnteProjection> getEntiByFacilitatore(ProfilazioneParam profilazioneParam) {
-		return this.enteSedeProgettoFacilitatoreRepository.findEntiByFacilitatoreAndIdProgetto(profilazioneParam.getCodiceFiscaleUtenteLoggato(),
+	public List<EnteProjection> getEntiByFacilitatore(SceltaProfiloParam profilazioneParam) {
+		return this.enteSedeProgettoFacilitatoreRepository.findEntiByFacilitatoreAndIdProgetto(profilazioneParam.getCfUtenteLoggato(),
 				profilazioneParam.getIdProgetto());
 	}
 
@@ -62,7 +62,7 @@ public class EnteSedeProgettoFacilitatoreService {
 	@LogExecutionTime
 	public List<SedeProjection> getSediByFacilitatore(ProfilazioneSedeParam profilazioneParam) {
 		return this.enteSedeProgettoFacilitatoreRepository.findSediByFacilitatore(
-				profilazioneParam.getCodiceFiscaleUtenteLoggato(),
+				profilazioneParam.getCfUtenteLoggato(),
 				profilazioneParam.getIdEnte(),
 				profilazioneParam.getIdProgetto()
 			);

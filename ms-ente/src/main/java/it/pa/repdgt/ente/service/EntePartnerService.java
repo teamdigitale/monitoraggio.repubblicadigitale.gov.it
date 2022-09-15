@@ -138,8 +138,8 @@ public class EntePartnerService {
 										
 										
 										List<String> facilitatoreVolontario = Arrays.asList(RuoloUtenteEnum.FAC.toString(), RuoloUtenteEnum.VOL.toString());
-										if(facilitatoreVolontario.contains(entiPaginatiParam.getCodiceRuolo().toString())) {
-											String cfUtenteLoggato = entiPaginatiParam.getCfUtente();
+										if(facilitatoreVolontario.contains(entiPaginatiParam.getCodiceRuoloUtenteLoggato().toString())) {
+											String cfUtenteLoggato = entiPaginatiParam.getCfUtenteLoggato();
 											EnteSedeProgettoFacilitatoreKey id = new EnteSedeProgettoFacilitatoreKey(idEnte, sede.getId(), idProgetto, cfUtenteLoggato);
 											boolean isSedeAsssociataAUtente = this.enteSedeProgettoFacilitatoreService.getEnteSedeProgettoFacilitatoreById(id).isPresent();
 											sedePartner.setAssociatoAUtente(isSedeAsssociataAUtente);

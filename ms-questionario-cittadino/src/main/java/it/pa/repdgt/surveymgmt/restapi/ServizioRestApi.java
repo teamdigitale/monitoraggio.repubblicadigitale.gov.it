@@ -28,10 +28,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.pa.repdgt.shared.entity.ServizioEntity;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.bean.SchedaDettaglioServizioBean;
 import it.pa.repdgt.surveymgmt.mapper.ServizioMapper;
 import it.pa.repdgt.surveymgmt.param.FiltroListaServiziParam;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import it.pa.repdgt.surveymgmt.param.ProfilazioneSedeParam;
 import it.pa.repdgt.surveymgmt.projection.EnteProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
@@ -63,7 +63,7 @@ public class ServizioRestApi {
 	@PostMapping(path = "/all")	
 	@ResponseStatus(value = HttpStatus.OK)
 	public ServiziPaginatiResource getAllServiziPaginatiByProfilaRzioneUtenteLoggatoAndFiltri(
-			@RequestBody @Valid final ProfilazioneParam profilazioneParam,
+			@RequestBody @Valid final SceltaProfiloParam profilazioneParam,
 			@RequestParam(name = "criterioRicerca", required = false) final String criterioRicercaFiltro,
 			@RequestParam(name = "tipologiaServizio", required = false) final List<String> tipologieServiziFiltro,
 			@RequestParam(name = "stato",       required = false)  final List<String> statiFiltro,
@@ -128,7 +128,7 @@ public class ServizioRestApi {
 	public List<String> getAllTipologiaServizioFiltroDropdown(
 		@RequestParam(name = "criterioRicerca", required = false) final String criterioRicercaFiltro,
 		@RequestParam(name = "stato",           required = false) final List<String> statiFiltro,
-		@RequestBody @Valid final ProfilazioneParam profilazioneParam) {
+		@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
 		final FiltroListaServiziParam filtroFiltroListaServiziParam = new FiltroListaServiziParam();
 		filtroFiltroListaServiziParam.setCriterioRicerca(criterioRicercaFiltro);
 		filtroFiltroListaServiziParam.setStatiServizio(statiFiltro);
@@ -148,7 +148,7 @@ public class ServizioRestApi {
 	public List<String> getAllStatiFiltroDropdown(
 		@RequestParam(name = "criterioRicerca",   required = false) final String criterioRicercaFiltro,
 		@RequestParam(name = "tipologiaServizio", required = false) final List<String> tipologieServiziFiltro,
-		@RequestBody @Valid final ProfilazioneParam profilazioneParam) {
+		@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
 		final FiltroListaServiziParam filtroFiltroListaServiziParam = new FiltroListaServiziParam();
 		filtroFiltroListaServiziParam.setCriterioRicerca(criterioRicercaFiltro);
 		filtroFiltroListaServiziParam.setTipologieServizi(tipologieServiziFiltro);
@@ -165,7 +165,7 @@ public class ServizioRestApi {
 	// TOUCH POINT - 9.1.6
 	@PostMapping(path = "/facilitatore/enti/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<EnteProjection> getEntiByFacilitatore(@RequestBody @Valid final ProfilazioneParam profilazioneParam) {
+	public List<EnteProjection> getEntiByFacilitatore(@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
 		return this.servizioSqlService.getEntiByFacilitatore(profilazioneParam);
 	}
 	
@@ -192,7 +192,7 @@ public class ServizioRestApi {
 			@RequestParam(name = "criterioRicerca",   required = false) final String criterioRicercaFiltro,
 			@RequestParam(name = "tipologiaServizio", required = false) final List<String> tipologieServiziFiltro,
 			@RequestParam(name = "stato",             required = false) final List<String> statiFiltro,
-			@RequestBody @Valid final ProfilazioneParam profilazioneParam) {
+			@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
 		final FiltroListaServiziParam filtroListaServiziParam = new FiltroListaServiziParam(
 				criterioRicercaFiltro,
 				tipologieServiziFiltro,

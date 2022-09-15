@@ -1,15 +1,21 @@
 package it.pa.repdgt.gestioneutente.exception;
 
-import java.io.Serializable;
+import it.pa.repdgt.shared.exception.BaseException;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import lombok.Getter;
 
-public class ContestoException extends RuntimeException implements Serializable{
-	private static final long serialVersionUID = 1745706542721964266L;
-
-	public ContestoException(String exceptionMessage) {
-		super(exceptionMessage);
+@Getter
+public class ContestoException extends BaseException {
+	public ContestoException(String exceptionMessage, CodiceErroreEnum codiceErroreEnum) {
+		super(exceptionMessage, codiceErroreEnum);
 	}
 	
 	public ContestoException(String exceptionMessage, Exception ex) {
 		super(exceptionMessage, ex);
+	}
+	
+	public ContestoException(String exceptionMessage, Exception ex, CodiceErroreEnum codiceErroreEnum) {
+		super(exceptionMessage, ex);
+		this.codiceErroreEnum = codiceErroreEnum;
 	}
 }
