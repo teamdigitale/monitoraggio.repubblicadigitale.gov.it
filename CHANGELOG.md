@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.28](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.27...1.0.0-test.28) (2022-09-15)
+
+
+### Bug Fixes
+
+* **be:** fix servizio-cittadino api restituzione numero documento ([31ee6a1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/31ee6a11929793e6fe494308a1d1792638c64cd5))
+
 ## [1.0.0-test.27](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.26...1.0.0-test.27) (2022-09-15)
 
 
