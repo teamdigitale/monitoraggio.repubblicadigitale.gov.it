@@ -7,8 +7,7 @@ import lombok.Getter;
 @Getter
 public class SedeException extends BaseException {
 	public SedeException(String exceptionMessage, CodiceErroreEnum codiceErroreEnum) {
-		super(exceptionMessage);
-		this.codiceErroreEnum = codiceErroreEnum;
+		super(exceptionMessage, codiceErroreEnum);
 	}
 	
 	public SedeException(String exceptionMessage, Exception ex, CodiceErroreEnum codiceErroreEnum) {

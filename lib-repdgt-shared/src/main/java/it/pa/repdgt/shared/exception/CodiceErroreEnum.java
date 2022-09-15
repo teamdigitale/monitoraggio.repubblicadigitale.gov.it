@@ -62,6 +62,7 @@ public enum CodiceErroreEnum {
 	,S05("Errore creazione servizio. Utente non ha ruolo FACILITATORE")
 	,S06("Errore aggiornare servizio. Utente non ha ruolo FACILITATORE")
 	,S07("Errore impossibile eliminare il servizio.")
+	,S08("Errore creazione servizio. Servizio con stesso nome già esistente")
 	
 	,SD01("Errore creazione sede")
 	,SD02("Errore aggiornamento sede")
@@ -132,6 +133,8 @@ public enum CodiceErroreEnum {
 	,PR07("Errore attivare progetto")
 	,PR08("Errore export csv progetti")
 	,PR09("Errore Impossibile Assegnare gestore progetto per il progetto. Unico Facilitatore o Volontario attivo sul progetto")
+	
+	,D01("Errore chiamata servizio Drupal")
 	;
 	
 	private String descrizioneErrore;

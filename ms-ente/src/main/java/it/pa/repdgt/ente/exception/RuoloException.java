@@ -5,7 +5,7 @@ import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 
 public class RuoloException extends BaseException {
 	public RuoloException(String exceptionMessage, CodiceErroreEnum codiceErroreEnum) {
-		super(exceptionMessage);
+		super(exceptionMessage, codiceErroreEnum);
 	}
 	
 	public RuoloException(String exceptionMessage, Exception ex, CodiceErroreEnum codiceErroreEnum) {
