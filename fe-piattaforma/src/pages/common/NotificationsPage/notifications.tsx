@@ -5,7 +5,6 @@ import { Paginator } from '../../../components';
 import PageTitle from '../../../components/PageTitle/pageTitle';
 import {
   selectDevice,
-  updateBreadcrumb,
 } from '../../../redux/features/app/appSlice';
 import { selectEntityPagination } from '../../../redux/features/citizensArea/citizensAreaSlice';
 import { useAppSelector } from '../../../redux/hooks';
@@ -47,15 +46,6 @@ const Notifications: React.FC = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 3 }));
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area notifiche',
-          url: '/notifiche',
-          link: false,
-        },
-      ])
-    );
     dispatch(GetNotificationsList());
   }, []);
 

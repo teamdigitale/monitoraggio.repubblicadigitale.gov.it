@@ -100,11 +100,8 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
   const device = useAppSelector(selectDevice);
 
   const questionButton = () => (
-    <div
-      className={clsx(device.mediaIsPhone && 'position-absolute')}
-      style={{ position: 'absolute', top: '10px', right: '0px' }}
-    >
-      {!open && (
+    <div className='question-buttons'>
+      {!open ? (
         <>
           {!form['question-default'].value && (editMode || cloneMode) && (
             <Button onClick={handleDeleteQuestion} className='px-1 pt-0'>
@@ -136,8 +133,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
             />
           </Button>
         </>
-      )}
-      {open && (
+      ) : (
         <Button onClick={() => setOpen(false)} className='px-2'>
           <Icon
             color='primary'
@@ -287,8 +283,9 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
               )}
             </div>
 
-            {(device.mediaIsDesktop || device.mediaIsTablet) &&
-              questionButton()}
+            {(device.mediaIsDesktop || device.mediaIsTablet) && (
+              <div className='pt-2'>{questionButton()}</div>
+            )}
           </div>
         </div>
         {(editMode || cloneMode) && !form['question-default']?.value && (

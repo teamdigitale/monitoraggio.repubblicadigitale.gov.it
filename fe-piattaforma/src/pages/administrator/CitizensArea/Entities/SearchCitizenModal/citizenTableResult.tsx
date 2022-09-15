@@ -60,6 +60,7 @@ const CitizenTableResult: React.FC<CitizenTableResultI> = ({
       }
       withActions
       onActionRadio={onActionCheck}
+      citizenTable
     />
   );
 };

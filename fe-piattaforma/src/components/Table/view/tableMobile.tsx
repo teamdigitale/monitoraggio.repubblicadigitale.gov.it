@@ -4,17 +4,20 @@ import AccordionRow, { AccordionRowI } from '../../AccordionRow/accordionRow';
 import { TableRowI } from '../table';
 import { CRUDActionsI, CRUDActionTypes } from '../../../utils/common';
 import EmptySection from '../../EmptySection/emptySection';
+import clsx from 'clsx';
 
 interface MobileTableI {
   onActionClick?: CRUDActionsI;
   onTooltipInfo?: string;
   values?: TableRowI[];
+  totalCounter?: number;
 }
 
 const TableMobile: React.FC<MobileTableI> = ({
   onActionClick,
   onTooltipInfo = '',
   values = [],
+  totalCounter,
 }) => {
   const [valuesForMobile, setValuesForMobile] = useState<AccordionRowI[]>();
 
@@ -56,6 +59,11 @@ const TableMobile: React.FC<MobileTableI> = ({
           <EmptySection title='Questa sezione è vuota' subtitle='' />
         </div>
       )}
+      {totalCounter ? (
+        <div
+          className={clsx('text-right', 'neutral-2-color-b4')}
+        >{`${values.length} di ${totalCounter}`}</div>
+      ) : null}
     </div>
   );
 };

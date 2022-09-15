@@ -22,7 +22,7 @@ import { FilterI } from '../components/DropdownFilter/dropdownFilter';
 // import { groupOptions } from '../components/Form/multipleSelectConstants';
 // import ManageOTP from '../components/AdministrativeArea/Entities/Surveys/ManageOTP/ManageOTP';
 import ProtectedComponent from '../hoc/AuthGuard/ProtectedComponent/ProtectedComponent';
-import { updateBreadcrumb } from '../redux/features/app/appSlice';
+import { updateCustomBreadcrumb } from '../redux/features/app/appSlice';
 
 const Playground: React.FC<withFormHandlerProps> = (props) => {
   const { t } = useTranslation();
@@ -30,7 +30,7 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
 
   useEffect(() => {
     dispatch(
-      updateBreadcrumb([
+      updateCustomBreadcrumb([
         {
           label: 'Playground',
           url: '/playground',

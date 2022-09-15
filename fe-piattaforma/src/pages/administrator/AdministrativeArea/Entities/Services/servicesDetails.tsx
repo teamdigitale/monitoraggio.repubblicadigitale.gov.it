@@ -289,7 +289,7 @@ const ServicesDetails = () => {
 
   return (
     <div
-      className={clsx('d-flex', 'justify-content-center', 'w-100')}
+      className={clsx('d-flex', 'container', 'justify-content-center', 'w-100')}
       style={{ maxWidth: 'auto' }}
     >
       <div className='container'>
@@ -308,8 +308,8 @@ const ServicesDetails = () => {
           nav={nav}
           goBackTitle='Elenco servizi'
           goBackPath='/area-amministrativa/servizi'
-          citizenList
-          citizenDeleteChange
+          /* citizenList
+          citizenDeleteChange */
         >
           <div className='mx-auto'>{content}</div>
         </DetailLayout>

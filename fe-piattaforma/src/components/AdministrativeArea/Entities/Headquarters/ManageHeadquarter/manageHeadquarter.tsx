@@ -12,6 +12,7 @@ import AccordionAddressList from '../AccordionAddressList/AccordionAddressList';
 import { useParams } from 'react-router-dom';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
+  resetHeadquarterDetails,
   selectAuthorities,
   selectHeadquarters,
   setHeadquartersList,
@@ -35,6 +36,7 @@ import {
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import {
   closeModal,
+  selectModalState,
   // selectModalId,
   // selectModalState,
 } from '../../../../../redux/features/modal/modalSlice';
@@ -103,7 +105,28 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
     useAppSelector(selectHeadquarters).detail?.dettagliInfoSede;
   const dispatch = useDispatch();
   // const modalId = useAppSelector(selectModalId);
-  // const open = useAppSelector(selectModalState);
+  const open = useAppSelector(selectModalState);
+
+  useEffect(() => {
+    if (creation && open) {
+      setAddressList([
+        {
+          indirizzoSede: {
+            via: '',
+            civico: '',
+            comune: '',
+            provincia: '',
+            cap: '',
+            regione: '',
+            nazione: '',
+          },
+          fasceOrarieAperturaIndirizzoSede: {},
+        },
+      ]);
+      setMovingHeadquarter(false);
+      dispatch(resetHeadquarterDetails());
+    }
+  }, [open, creation]);
 
   useEffect(() => {
     if (headquarterDetails) {
@@ -193,7 +216,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
             if (enteType === 'partner')
               dispatch(GetPartnerAuthorityDetail(projectId, authorityInfo?.id));
           }
-          if (!res?.errorCode) {
+          if (!res.errorCode) {
             handleSearchReset();
             dispatch(closeModal());
           }

@@ -21,6 +21,7 @@ export interface TableI {
   id?: string;
   onActionClick?: CRUDActionsI;
   onTooltipInfo?: string;
+  citizenTable?: boolean;
   onCellClick?: (field: string, row: TableRowI) => void;
   onRowClick?: (row: TableRowI) => void;
   values?: TableRowI[];
