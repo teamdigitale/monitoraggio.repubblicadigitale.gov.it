@@ -1,6 +1,7 @@
 package it.pa.repdgt.programmaprogetto.bean;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 
@@ -16,5 +17,7 @@ public class DettaglioProgrammaLightBean implements Serializable {
 	private Long id;
 	private String codice;
 	private String nomeBreve;
+	private Date dataInizio;
+	private Date dataFine;
 	private String stato;
 }

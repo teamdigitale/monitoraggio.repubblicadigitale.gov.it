@@ -7,7 +7,7 @@ public class UtenteXRuoloException extends BaseException {
 	private static final long serialVersionUID = -2408925357949957553L;
 
 	public UtenteXRuoloException(String exceptionMessage,CodiceErroreEnum codiceErroreEnum) {
-		super(exceptionMessage);
+		super(exceptionMessage, codiceErroreEnum);
 	}
 	
 	public UtenteXRuoloException(String exceptionMessage, Exception ex, CodiceErroreEnum codiceErroreEnum) {

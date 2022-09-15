@@ -8,8 +8,7 @@ import lombok.Getter;
 public class EnteException extends BaseException {
 
 	public EnteException(String exceptionMessage, CodiceErroreEnum codiceErroreEnum) {
-		super(exceptionMessage);
-		this.codiceErroreEnum = codiceErroreEnum;
+		super(exceptionMessage, codiceErroreEnum);
 	}
 	
 	public EnteException(String exceptionMessage, Exception ex, CodiceErroreEnum codiceErroreEnum) {

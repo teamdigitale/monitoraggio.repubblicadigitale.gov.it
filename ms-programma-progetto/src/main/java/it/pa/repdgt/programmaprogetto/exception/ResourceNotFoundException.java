@@ -9,11 +9,10 @@ public class ResourceNotFoundException extends BaseException {
 	private static final long serialVersionUID = 4751093921632088853L;
 	
 	public ResourceNotFoundException(String exceptionMessage) {
-		super(exceptionMessage);
+		super(exceptionMessage, CodiceErroreEnum.C01);
 	}
 	
 	public ResourceNotFoundException(String exceptionMessage, CodiceErroreEnum codiceErroreEnum) {
-		super(exceptionMessage);
-		this.codiceErroreEnum = codiceErroreEnum;
+		super(exceptionMessage, codiceErroreEnum);
 	}
 }

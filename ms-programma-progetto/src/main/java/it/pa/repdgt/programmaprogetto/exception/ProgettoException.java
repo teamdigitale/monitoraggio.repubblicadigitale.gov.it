@@ -9,8 +9,7 @@ public class ProgettoException extends BaseException {
 	private static final long serialVersionUID = 4751093921632088853L;
 	
 	public ProgettoException(String exceptionMessage, CodiceErroreEnum codiceErroreEnum) {
-		super(exceptionMessage);
-		this.codiceErroreEnum = codiceErroreEnum;
+		super(exceptionMessage, codiceErroreEnum);
 	}
 	
 	public ProgettoException(String exceptionMessage, Exception ex, CodiceErroreEnum codiceErroreEnum) {

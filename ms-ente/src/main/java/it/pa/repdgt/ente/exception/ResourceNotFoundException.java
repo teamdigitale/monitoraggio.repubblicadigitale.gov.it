@@ -7,7 +7,6 @@ import lombok.Getter;
 @Getter
 public class ResourceNotFoundException extends BaseException {
 	public ResourceNotFoundException(String exceptionMessage, CodiceErroreEnum codiceErroreEnum) {
-		super(exceptionMessage);
-		this.codiceErroreEnum = codiceErroreEnum;
+		super(exceptionMessage, codiceErroreEnum);
 	}
 }
