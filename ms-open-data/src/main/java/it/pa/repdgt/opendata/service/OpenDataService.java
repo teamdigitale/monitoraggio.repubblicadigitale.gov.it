@@ -78,11 +78,14 @@ public class OpenDataService {
 		String datiToUpload = new String(bytes, StandardCharsets.UTF_8);
 		File fileToUpload = null;
 		try {
+			log.info("Caricamento file {} in corso...", NOME_FILE);
 			fileToUpload = this.creaFileToUpload(datiToUpload, fileNameToUpload);
 			// upload file su AmazonS3
 			this.s3Service.uploadFile(this.nomeDelBucketS3, fileToUpload);
+			log.info("Caricamento file avvenuto con successo");
+			Long dimensioneFileToUpload = fileToUpload.length();
 			this.cancellaFile(fileToUpload);
-			cittadinoRepository.azzeraCountDownload(NOME_FILE);
+			cittadinoRepository.azzeraCountDownloadAndAggiornaDimensioneFile(NOME_FILE, String.valueOf(dimensioneFileToUpload));
 		} catch (Exception ex) {
 			log.error("Errore caricamento file lista cittadini su AmazonS3 in data={}. ex={}", ex, nowDate);
 		}finally {
@@ -140,5 +143,11 @@ public class OpenDataService {
 	public String getPresignedUrl(final String fileToDownload) throws IOException{
 		cittadinoRepository.updateCountDownload(fileToDownload, new Date());
 		return this.s3Service.getPresignedUrl(fileToDownload, this.nomeDelBucketS3);
+	}
+	
+	@LogMethod
+	@LogExecutionTime
+	public String getDimensioneFileOpenData(String nomeFile) {
+		return cittadinoRepository.findDimensioneFileOpenData(nomeFile);
 	}
 }

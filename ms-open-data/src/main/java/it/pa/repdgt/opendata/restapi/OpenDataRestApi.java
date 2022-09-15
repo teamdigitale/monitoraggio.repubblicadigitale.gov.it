@@ -24,6 +24,7 @@ public class OpenDataRestApi {
 	private OpenDataService openDataService;
 	final static String NOME_FILE = "opendata_cittadini.csv";
 	
+	@Deprecated
 	@GetMapping(path = "/download")
 	public ResponseEntity<InputStreamResource> downloadListaCSVCittadini() throws IOException {
 		byte[] bytes = this.openDataService.scaricaFileListaCittadiniSuAmazonS3(NOME_FILE);
@@ -38,15 +39,8 @@ public class OpenDataRestApi {
 	@GetMapping(path = "/count/download")
 	public Map<String,String> getCountDownloadListaCSVCittadini() throws IOException {
 		Map<String, String> resultMap = new HashMap<>();
-		
-		
-		byte[] bytes = this.openDataService.scaricaFileListaCittadiniSuAmazonS3(NOME_FILE);
-		InputStream is = new ByteArrayInputStream(bytes);
-		InputStreamResource fileCSV = new InputStreamResource(is);
-		
 		resultMap.put("conteggioDownload", String.valueOf(this.openDataService.getCountFile(NOME_FILE)));
-		resultMap.put("dimensioneFile", String.valueOf(fileCSV.contentLength()));
-		
+		resultMap.put("dimensioneFile", String.valueOf(this.openDataService.getDimensioneFileOpenData(NOME_FILE)));
 		return resultMap;
 	}
 	
