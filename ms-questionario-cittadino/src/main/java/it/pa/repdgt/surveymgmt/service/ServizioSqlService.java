@@ -384,4 +384,8 @@ public class ServizioSqlService {
 	public Optional<ServizioEntity> getServizioByNome(String nomeServizio) {
 		return this.servizioSqlRepository.findByNome(nomeServizio);
 	}
+	
+	public Optional<ServizioEntity> getServizioByNomeUpdate(String nomeServizio, Long idServizio) {
+		return this.servizioSqlRepository.findByNomeUpdate(nomeServizio, idServizio);
+	}
 }

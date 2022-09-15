@@ -241,6 +241,13 @@ public class ServizioService {
 		final String codiceFiscaletenteLoggato = servizioDaAggiornareRequest.getProfilazioneParam().getCodiceFiscaleUtenteLoggato();
 		final String ruoloUtenteLoggato = servizioDaAggiornareRequest.getProfilazioneParam().getCodiceRuoloUtenteLoggato().toString();
 		
+		String nomeServizio = servizioDaAggiornareRequest.getNomeServizio();
+		Optional<ServizioEntity> servizioDBFetch = this.servizioSQLService.getServizioByNomeUpdate(nomeServizio, idServizioDaAggiornare);
+		if(servizioDBFetch.isPresent()) {
+			final String messaggioErrore = String.format("Impossibile creare servizio. Servizio con nome=%s già esistente", nomeServizio);
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S08);
+		}
+		
 		if( !this.utenteService.isUtenteFacilitatore(codiceFiscaletenteLoggato, ruoloUtenteLoggato) ) {
 			final String messaggioErrore = String.format("Impossibile aggiornare servizio. Utente con codice fiscale '%s' non ha ruolo FACILITATORE", codiceFiscaletenteLoggato);
 			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S05);
