@@ -20,7 +20,7 @@ public class IntegraContestoRequest implements Serializable {
 	
 	@JsonProperty(value = "codiceFiscale")
 	@NotBlank
-	private String codiceFiscale;
+	private String cfUtenteLoggato;
 	
 	@JsonProperty(value = "email")
 	@Email

@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import it.pa.repdgt.gestioneutente.mapper.ContestoMapper;
 import it.pa.repdgt.gestioneutente.request.CreaContestoRequest;
 import it.pa.repdgt.gestioneutente.request.IntegraContestoRequest;
-import it.pa.repdgt.gestioneutente.request.ProfilazioneRequest;
 import it.pa.repdgt.gestioneutente.resource.ContestoResource;
 import it.pa.repdgt.gestioneutente.service.ContestoService;
 import it.pa.repdgt.shared.awsintegration.service.S3Service;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import lombok.extern.slf4j.Slf4j;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 
 @RestController
 @RequestMapping(path = "/contesto")
@@ -40,7 +40,7 @@ public class ContestoRestApi {
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.OK)
 	public ContestoResource creaContesto(@RequestBody CreaContestoRequest creaContestoRequest) {
-		UtenteEntity utenteFetched = contestoService.creaContesto(creaContestoRequest.getCodiceFiscale());
+		UtenteEntity utenteFetched = contestoService.creaContesto(creaContestoRequest.getCfUtenteLoggato());
 		ContestoResource contesto = contestoMapper.toContestoFromUtenteEntity(utenteFetched);
 		try{ 
 			contesto.setImmagineProfilo(this.s3Service.getPresignedUrl(utenteFetched.getImmagineProfilo(), this.nomeDelBucketS3, Long.parseLong(this.presignedUrlExpireContesto)));
@@ -57,9 +57,9 @@ public class ContestoRestApi {
 	// TOUCH POINT - 0.1.2 - servizio di scelta RUOLO – PROGRAMMA 
 	@ResponseStatus(value = HttpStatus.OK)
 	@PostMapping(path = "/sceltaProfilo")
-	public void sceltaProfilo(@RequestBody @Valid ProfilazioneRequest utenteRequest) {
-		final String codiceFiscaleUtente = utenteRequest.getCfUtente();
-		final String codiceRuoloUtente = utenteRequest.getCodiceRuolo();
+	public void sceltaProfilo(@RequestBody @Valid SceltaProfiloParam utenteRequest) {
+		final String codiceFiscaleUtente = utenteRequest.getCfUtenteLoggato();
+		final String codiceRuoloUtente = utenteRequest.getCodiceRuoloUtenteLoggato();
 		final Long idProgramma = utenteRequest.getIdProgramma();
 		final Long idProgetto = utenteRequest.getIdProgetto();
 		

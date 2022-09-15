@@ -33,6 +33,7 @@ import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.bean.CittadinoServizioBean;
 import it.pa.repdgt.surveymgmt.bean.CittadinoUploadBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
@@ -44,7 +45,6 @@ import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioCompilatoMongoRepository;
 import it.pa.repdgt.surveymgmt.mongo.repository.SezioneQ3Respository;
 import it.pa.repdgt.surveymgmt.param.FiltroListaCittadiniServizioParam;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import it.pa.repdgt.surveymgmt.projection.CittadinoServizioProjection;
 import it.pa.repdgt.surveymgmt.projection.GetCittadinoProjection;
 import it.pa.repdgt.surveymgmt.repository.CittadinoRepository;
@@ -94,13 +94,13 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	@LogExecutionTime
 	public CittadinoServizioBean getAllCittadiniServizioByProfilazioneAndFiltroPaginati(
 			Long idServizio,
-			@NotNull @Valid final ProfilazioneParam profilazione,
+			@NotNull @Valid final SceltaProfiloParam profilazione,
 			@NotNull @Valid final FiltroListaCittadiniServizioParam filtroListaCittadiniServizio,
 			Integer currPage,
 			Integer pageSize ) {
 		CittadinoServizioBean bean = new CittadinoServizioBean();
 		// Recupero codiceFiscale e codiceRuolo con cui si è profilato l'utente loggato alla piattaforma
-		final String codiceFiscaleUtenteLoggato = profilazione.getCodiceFiscaleUtenteLoggato().trim();
+		final String codiceFiscaleUtenteLoggato = profilazione.getCfUtenteLoggato().trim();
 		final String codiceRuoloUtenteLoggato   = profilazione.getCodiceRuoloUtenteLoggato().toString();
 
 		// Verifico se l'utente possiede il ruolo mandato nella richiesta
@@ -117,7 +117,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
 		// Recupero tutti i cittadini del servizion con id idServizio in base ai filtri selezionati
 		final List<CittadinoServizioProjection> listaCittadiniServizio = this.getAllServiziByProfilazioneAndFiltro(
-				idServizio, 
+				idServizio,
 				filtroListaCittadiniServizio,
 				currPage,
 				pageSize
@@ -146,15 +146,15 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		}
 
 		return cittadinoServizioRepository.findAllCittadiniServizioPaginatiByFiltro(
-				idServizio, 
-				criterioRicercaCittadinoServizio, 
-				criterioRicercaCittadinoServizioLike, 
+				idServizio,
+				criterioRicercaCittadinoServizio,
+				criterioRicercaCittadinoServizioLike,
 				filtroListaCittadiniServizio.getStatiQuestionario(),
 				currPage,
 				pageSize
 			);
 	}
-	
+
 	@LogMethod
 	@LogExecutionTime
 	public Integer countCittadiniServizioByFiltro(
@@ -167,7 +167,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 			criterioRicercaCittadinoServizioLike = "%".concat(criterioRicercaCittadinoServizio).concat("%");
 		}
 		return cittadinoServizioRepository.findAllCittadiniServizioByFiltro(
-				idServizio, 
+				idServizio,
 				criterioRicercaCittadinoServizio, 
 				criterioRicercaCittadinoServizioLike, 
 				filtroListaCittadiniServizio.getStatiQuestionario()
@@ -178,22 +178,11 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	@LogExecutionTime
 	public List<String> getAllStatiQuestionarioCittadinoServizioDropdown(
 			Long idServizio,
-			@NotNull @Valid final ProfilazioneParam profilazione,
 			final FiltroListaCittadiniServizioParam filtroListaCittadiniServizio) {
-		// Recupero codiceFiscale e codiceRuolo con cui si è profilato l'utente loggato alla piattaforma
-		final String codiceFiscaleUtenteLoggato = profilazione.getCodiceFiscaleUtenteLoggato().trim();
-		final String codiceRuoloUtenteLoggato   = profilazione.getCodiceRuoloUtenteLoggato().toString();
-
-		// Verifico se l'utente possiede il ruolo mandato nella richiesta
-		if( !this.utenteService.hasRuoloUtente(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato) ) {
-			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'",codiceFiscaleUtenteLoggato);
-			throw new ServizioException(messaggioErrore, CodiceErroreEnum.U06);
-		}
-		//recupero stati questionario dropdown
 		return filtroListaCittadiniServizio.getStatiQuestionario().isEmpty() 
 				? this.getAllStatiQuestionarioByProfilazioneAndFiltro(idServizio, filtroListaCittadiniServizio)
 						: this.getAllStatiQuestionarioByProfilazioneAndFiltro(idServizio, filtroListaCittadiniServizio)
-						.containsAll(filtroListaCittadiniServizio.getStatiQuestionario()) 
+						.containsAll(filtroListaCittadiniServizio.getStatiQuestionario())
 						? filtroListaCittadiniServizio.getStatiQuestionario()
 								: new ArrayList<>();
 	}
@@ -295,7 +284,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		
 		//creo il questionario in stato NON_INVIATO
 		this.creaQuestionarioNonInviato(servizioDBFetch, cittadino);
-		
+
 		return cittadino;
 	}
 
@@ -585,7 +574,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	@Transactional(rollbackOn = Exception.class)
 	public void inviaLinkAnonimoAndAggiornaStatoQuestionarioCompilato(
 			final String idQuestionario,
-			QuestionarioCompilatoEntity questionarioCompilato, 
+			QuestionarioCompilatoEntity questionarioCompilato,
 			CittadinoEntity cittadino) {
 		if(questionarioCompilato.getStato().equals(StatoQuestionarioEnum.COMPILATO.getValue()))
 			throw new ServizioException("Il questionario risulta già compilato", CodiceErroreEnum.Q02);
@@ -605,7 +594,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
 				// stacco un thread per invio email
 				this.emailService.inviaEmail(
-					cittadino.getEmail(), 
+					cittadino.getEmail(),
 					EmailTemplateEnum.QUESTIONARIO_ONLINE, 
 					argsTemplate
 				);
@@ -626,13 +615,13 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         QuestionarioInviatoOnlineEntity invioQuestionario = questionarioInviatoOnlineRepository
                 .findByIdQuestionarioCompilatoAndCodiceFiscale(idQuestionarioCompilato, cittadino.getCodiceFiscale())
                 .orElse(null);
-        
+
         if(invioQuestionario == null) {
             invioQuestionario = questionarioInviatoOnlineRepository
                     .findByIdQuestionarioCompilatoAndNumDocumento(idQuestionarioCompilato, cittadino.getNumeroDocumento())
                     .orElse(new QuestionarioInviatoOnlineEntity());
         }
-        
+
         invioQuestionario.setCodiceFiscale(cittadino.getCodiceFiscale());
         invioQuestionario.setNumDocumento(cittadino.getNumeroDocumento());
         invioQuestionario.setEmail(cittadino.getEmail());
@@ -641,9 +630,9 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         String token = UUID.randomUUID().toString();
         invioQuestionario.setToken(token);
         invioQuestionario.setDataOraCreazione(new Date());
-        
+
         questionarioInviatoOnlineRepository.save(invioQuestionario);
-        
+
         return token;
 	}
 
@@ -653,7 +642,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	public void inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizio(Long idServizio) {
 		// recupero tutti i questionari compilati con STATO = NON INVIATO per quel servizio
 		List<QuestionarioCompilatoEntity> questionarioCompilatoList = this.questionarioCompilatoSqlRepository.findByIdServizioAndStato(idServizio, StatoQuestionarioEnum.NON_INVIATO.toString());
-		
+
 		questionarioCompilatoList
 			.stream()
 			.forEach(questionarioCompilato -> {

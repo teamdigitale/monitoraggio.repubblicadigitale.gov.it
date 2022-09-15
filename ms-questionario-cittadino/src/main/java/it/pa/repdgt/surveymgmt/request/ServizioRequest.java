@@ -12,8 +12,8 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.annotation.JsonString;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,7 +25,7 @@ public class ServizioRequest implements Serializable {
 
 	@NotNull
 	@Valid
-	private ProfilazioneParam profilazioneParam;
+	private SceltaProfiloParam profilazioneParam;
 
 	@JsonProperty(value = "nomeServizio")
 	@NotBlank

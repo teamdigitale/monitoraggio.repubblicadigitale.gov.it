@@ -39,8 +39,8 @@ public class CittadinoRestApiTest {
 		String currPage = "0", pageSize = "10";
 		CittadiniPaginatiParam cittadiniParam = new CittadiniPaginatiParam();
 		String codiceFiscaleUtenteDTD = "UTENTE2";
-		cittadiniParam.setCodiceFiscaleUtenteLoggato(codiceFiscaleUtenteDTD);
-		cittadiniParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC);
+		cittadiniParam.setCfUtenteLoggato(codiceFiscaleUtenteDTD);
+		cittadiniParam.setCodiceRuoloUtenteLoggato("FAC");
 		FiltroListaCittadiniParam filtroRequest = new FiltroListaCittadiniParam();
 		List<String> isdSedi = new ArrayList<>();
 		isdSedi.add("1");
@@ -65,8 +65,8 @@ public class CittadinoRestApiTest {
 	public void downloadCSVSElencoCittadiniTest() {
 		CittadiniPaginatiParam cittadiniParam = new CittadiniPaginatiParam();
 		String codiceFiscaleUtenteDTD = "UTENTE2";
-		cittadiniParam.setCodiceFiscaleUtenteLoggato(codiceFiscaleUtenteDTD);
-		cittadiniParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC);
+		cittadiniParam.setCfUtenteLoggato(codiceFiscaleUtenteDTD);
+		cittadiniParam.setCodiceRuoloUtenteLoggato("FAC");
 		FiltroListaCittadiniParam filtroRequest = new FiltroListaCittadiniParam();
 		List<String> isdSedi = new ArrayList<>();
 		isdSedi.add("1");

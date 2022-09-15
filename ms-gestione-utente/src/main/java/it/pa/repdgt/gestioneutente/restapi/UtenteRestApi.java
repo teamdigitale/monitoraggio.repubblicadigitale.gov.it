@@ -32,7 +32,6 @@ import it.pa.repdgt.gestioneutente.dto.UtenteDto;
 import it.pa.repdgt.gestioneutente.mapper.UtenteMapper;
 import it.pa.repdgt.gestioneutente.request.AggiornaUtenteRequest;
 import it.pa.repdgt.gestioneutente.request.NuovoUtenteRequest;
-import it.pa.repdgt.gestioneutente.request.ProfilazioneRequest;
 import it.pa.repdgt.gestioneutente.request.UtenteRequest;
 import it.pa.repdgt.gestioneutente.resource.UtenteResource;
 import it.pa.repdgt.gestioneutente.resource.UtentiLightResourcePaginata;
@@ -40,6 +39,7 @@ import it.pa.repdgt.gestioneutente.service.UtenteService;
 import it.pa.repdgt.gestioneutente.util.CSVUtil;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.light.UtenteLightEntity;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 
 @RestController
 @RequestMapping(path = "/utente")
@@ -59,11 +59,11 @@ public class UtenteRestApi {
 			@RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
 		List<UtenteDto> utenti = this.utenteService.getAllUtentiPaginati(sceltaContesto, currPage, pageSize);
 		UtentiLightResourcePaginata listaPaginataUtentiResource = this.utenteMapper.toUtentiLightResourcePaginataFrom(utenti);
-		
+
 		int numeroUtentiTrovati = this.utenteService.countUtentiTrovati(sceltaContesto);
 		listaPaginataUtentiResource.setNumeroTotaleElementi(numeroUtentiTrovati);
 		listaPaginataUtentiResource.setNumeroPagine(numeroUtentiTrovati % pageSize > 0 ? (numeroUtentiTrovati / pageSize) + 1 : (numeroUtentiTrovati / pageSize));
-		
+
 		return listaPaginataUtentiResource;
 	}
 	
@@ -121,10 +121,10 @@ public class UtenteRestApi {
 	@PostMapping(path = "/{idUtente}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaUtenteBean getSchedaUtenteByIdUtente(@PathVariable(value = "idUtente") Long idUtente,
-			@RequestBody ProfilazioneRequest sceltaProfilo) {
+			@RequestBody SceltaProfiloParam sceltaProfilo) {
 		return this.utenteService.getSchedaUtenteByIdUtente(idUtente, sceltaProfilo);
 	}
-	
+
 	// TOUCH POINT - 4.4 - Associa Ruolo ad Utente
 	@PutMapping(path = "/{idUtente}/assegnaRuolo/{codiceRuolo}")
 	@ResponseStatus(value = HttpStatus.OK)
@@ -153,7 +153,7 @@ public class UtenteRestApi {
 	// TOUCH-POINT 1.3.8 - Scarica lista utenti in formato csv
 	@PostMapping(path = "/download")
 	public ResponseEntity<InputStreamResource> downloadListaCSVUtenti(@RequestBody @Valid UtenteRequest sceltaContesto) {
-		List<UtenteDto> listaUtentiDto = this.utenteService.getUtentiPerDownload(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		List<UtenteDto> listaUtentiDto = this.utenteService.getUtentiPerDownload(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
 		ByteArrayInputStream byteArrayInputStream = CSVUtil.exportCSVUtenti(listaUtentiDto, CSVFormat.DEFAULT);
 		InputStreamResource fileCSV = new InputStreamResource(byteArrayInputStream);
 		

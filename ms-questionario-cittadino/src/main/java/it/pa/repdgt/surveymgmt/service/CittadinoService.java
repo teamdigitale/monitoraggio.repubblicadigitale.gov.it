@@ -19,6 +19,7 @@ import it.pa.repdgt.shared.entity.CittadinoEntity;
 import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.bean.DettaglioCittadinoBean;
 import it.pa.repdgt.surveymgmt.bean.DettaglioServizioSchedaCittadinoBean;
 import it.pa.repdgt.surveymgmt.bean.SchedaCittadinoBean;
@@ -33,7 +34,6 @@ import it.pa.repdgt.surveymgmt.mapper.CittadinoMapper;
 import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioCompilatoMongoRepository;
 import it.pa.repdgt.surveymgmt.param.CittadiniPaginatiParam;
 import it.pa.repdgt.surveymgmt.param.FiltroListaCittadiniParam;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import it.pa.repdgt.surveymgmt.projection.CittadinoProjection;
 import it.pa.repdgt.surveymgmt.projection.DettaglioServizioSchedaCittadinoProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
@@ -46,8 +46,6 @@ public class CittadinoService {
 	
 	@Autowired
 	private CittadinoRepository cittadinoRepository;
-	@Autowired
-	private RuoloService ruoloService;
 	@Autowired
 	private SedeService sedeService;
 	@Autowired
@@ -76,16 +74,7 @@ public class CittadinoService {
 			Integer currPage, 
 			Integer pageSize) {
 		String codiceRuoloUtente = cittadiniPaginatiParam.getCodiceRuoloUtenteLoggato().toString();
-		
-		 boolean hasRuoloUtente = this.ruoloService
-			.getRuoliByCodiceFiscale(cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato())
-			.stream()
-			.anyMatch(ruolo -> ruolo.getCodice().equals(codiceRuoloUtente));
-		
-		if(!hasRuoloUtente) {
-			throw new CittadinoException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
-		}
-		
+
 		if(!RuoloUtenteEnum.FAC.toString().equals(codiceRuoloUtente) && !RuoloUtenteEnum.VOL.toString().equals(codiceRuoloUtente)) {
 			throw new CittadinoException("ERRORE: L'utente non è un facilitatore", CodiceErroreEnum.U06);
 		}
@@ -107,60 +96,60 @@ public class CittadinoService {
 		cittadini.sort((cittadino1, cittadino2) -> cittadino1.getId().compareTo(cittadino2.getId()));
 		return cittadini;
 	}
-	
+
 	public List<CittadinoProjection> getAllCittadiniFacilitatoreByFiltro(CittadiniPaginatiParam cittadiniPaginatiParam){
 		FiltroListaCittadiniParam filtro = cittadiniPaginatiParam.getFiltro();
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsSedi;
 		if(filtro.getIdsSedi() == null) {
-			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto());
+			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto());
 		} else {
 			idsSedi = filtro.getIdsSedi();
 		}
 		
 		return this.cittadinoRepository.findAllCittadiniByFiltro(
-				criterioRicerca, 
+				criterioRicerca,
 				"%" + criterioRicerca + "%",
 				idsSedi,
-				cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato()
+				cittadiniPaginatiParam.getCfUtenteLoggato()
 			);
 	}
 	
 	public List<CittadinoProjection> getAllCittadiniFacilitatorePaginatiByFiltro(
-			CittadiniPaginatiParam cittadiniPaginatiParam, 
-			Integer currPage, 
+			CittadiniPaginatiParam cittadiniPaginatiParam,
+			Integer currPage,
 			Integer pageSize) {
 		FiltroListaCittadiniParam filtro = cittadiniPaginatiParam.getFiltro();
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsSedi;
 		if(filtro.getIdsSedi() == null) {
-			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto());
+			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto());
 		} else {
 			idsSedi = filtro.getIdsSedi();
 		}
 		
 		return this.cittadinoRepository.findAllCittadiniPaginatiByFiltro(
-				criterioRicerca, 
-				"%" + criterioRicerca + "%", 
-				idsSedi, 
-				cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato(),
+				criterioRicerca,
+				"%" + criterioRicerca + "%",
+				idsSedi,
+				cittadiniPaginatiParam.getCfUtenteLoggato(),
 				currPage*pageSize, pageSize
 			);
 	}
-	
+
 	public Integer getNumeroTotaleCittadiniFacilitatoreByFiltro(CittadiniPaginatiParam cittadiniPaginatiParam) {
 		FiltroListaCittadiniParam filtro = cittadiniPaginatiParam.getFiltro();
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsSedi;
 		if(filtro.getIdsSedi() == null) {
-			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto());
+			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto());
 		} else {
 			idsSedi = filtro.getIdsSedi();
 		}
-		
+
 		return this.cittadinoRepository.findAllCittadiniByFiltro(
 				criterioRicerca, "%" + criterioRicerca + "%",
-				idsSedi, cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato()
+				idsSedi, cittadiniPaginatiParam.getCfUtenteLoggato()
 			).size();
 	}
 
@@ -168,17 +157,8 @@ public class CittadinoService {
 	@LogExecutionTime
 	public List<SedeDto> getAllSediDropdown(@Valid CittadiniPaginatiParam cittadiniPaginatiParam) {
 		String codiceRuoloUtente = cittadiniPaginatiParam.getCodiceRuoloUtenteLoggato().toString();
-		
-		 boolean hasRuoloUtente = this.ruoloService
-			.getRuoliByCodiceFiscale(cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato())
-			.stream()
-			.anyMatch(ruolo -> ruolo.getCodice().equals(codiceRuoloUtente));
-		
-		if(!hasRuoloUtente) {
-			throw new CittadinoException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
-		}
-		
-		if(!RuoloUtenteEnum.FAC.toString().equals(codiceRuoloUtente)) {
+
+		if(!RuoloUtenteEnum.FAC.toString().equals(codiceRuoloUtente) && !RuoloUtenteEnum.VOL.toString().equals(codiceRuoloUtente)) {
 			throw new CittadinoException("ERRORE: L'utente non è un facilitatore", CodiceErroreEnum.U06);
 		}
 		
@@ -198,7 +178,7 @@ public class CittadinoService {
 
 	@LogMethod
 	@LogExecutionTime
-	public SchedaCittadinoBean getSchedaCittadinoById(Long idCittadino, ProfilazioneParam profilazione) {
+	public SchedaCittadinoBean getSchedaCittadinoById(Long idCittadino, SceltaProfiloParam profilazione) {
 		CittadinoEntity cittadinoFetchDB = this.getCittadinoById(idCittadino);
 		
 		DettaglioCittadinoBean dettaglioCittadino = this.cittadinoMapper.toDettaglioCittadinoBeanFrom(cittadinoFetchDB);
@@ -221,18 +201,18 @@ public class CittadinoService {
 		return schedaCittadino;
 	}
 
-	public Boolean isAssociatoAUtente(ProfilazioneParam profilazione, String codiceFiscaleFacilitatore, Long idProgetto) {
-		RuoloUtenteEnum ruoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato();
-		String codiceFiscaleUtenteLoggato = profilazione.getCodiceFiscaleUtenteLoggato();
-		
+	public Boolean isAssociatoAUtente(SceltaProfiloParam profilazione, String codiceFiscaleFacilitatore, Long idProgetto) {
+		String ruoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato();
+		String codiceFiscaleUtenteLoggato = profilazione.getCfUtenteLoggato();
+
 		switch (ruoloUtenteLoggato) {
-		case FAC:
+		case "FAC":
 			//controllo se il codice fiscale dell'utente loggato è uguale al codice fiscale del facilitatore
 			if(codiceFiscaleUtenteLoggato.equals(codiceFiscaleFacilitatore) && profilazione.getIdProgetto().equals(idProgetto)) {
 				return true;
 			}
 			return false;
-		case VOL:
+		case "VOL":
 			//controllo se il codice fiscale dell'utente loggato è uguale al codice fiscale del volontario
 			if(codiceFiscaleUtenteLoggato.equals(codiceFiscaleFacilitatore) && profilazione.getIdProgetto().equals(idProgetto)) {
 				return true;
@@ -253,10 +233,10 @@ public class CittadinoService {
 			final Boolean isCodiceFiscaleNonDisponibile,
 			final String codiceFiscale, 
 			final String numeroDocumento) {
-		if((codiceFiscale == null || codiceFiscale.isEmpty()) && 
+		if((codiceFiscale == null || codiceFiscale.isEmpty()) &&
 				(numeroDocumento == null || numeroDocumento.isEmpty()))
 			throw new CittadinoException("ERRORE: occorre definire il CF o il numero documento", CodiceErroreEnum.U08);
-		if(isCodiceFiscaleNonDisponibile == null || isCodiceFiscaleNonDisponibile) {				
+		if(isCodiceFiscaleNonDisponibile == null || isCodiceFiscaleNonDisponibile) {
 			return cittadinoRepository.findByNumeroDocumento(numeroDocumento);
 		}
 		return cittadinoRepository.findByCodiceFiscale(codiceFiscale);

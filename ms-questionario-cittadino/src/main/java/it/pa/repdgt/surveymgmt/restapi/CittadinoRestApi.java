@@ -22,12 +22,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.bean.SchedaCittadinoBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.dto.CittadinoDto;
 import it.pa.repdgt.surveymgmt.dto.SedeDto;
 import it.pa.repdgt.surveymgmt.param.CittadiniPaginatiParam;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import it.pa.repdgt.surveymgmt.projection.CittadinoProjection;
 import it.pa.repdgt.surveymgmt.request.CittadinoRequest;
 import it.pa.repdgt.surveymgmt.resource.CittadiniPaginatiResource;
@@ -66,7 +66,7 @@ public class CittadinoRestApi {
 		return new CittadiniPaginatiResource(
 				cittadiniList, 
 				totaleElementi % pageSize > 0 ? numeroPagine+1 : numeroPagine,
-				new Long(totaleElementi)
+				Long.valueOf(totaleElementi)
 			);
 	}
 	
@@ -102,7 +102,7 @@ public class CittadinoRestApi {
 	@PostMapping(path = "/{idCittadino}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaCittadinoBean getSchedaCittadino(@PathVariable(value = "idCittadino") final Long idCittadino,
-			@RequestBody @Valid final ProfilazioneParam profilazioneParam) {
+			@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
 		return this.cittadinoService.getSchedaCittadinoById(idCittadino, profilazioneParam);
 	}
 	

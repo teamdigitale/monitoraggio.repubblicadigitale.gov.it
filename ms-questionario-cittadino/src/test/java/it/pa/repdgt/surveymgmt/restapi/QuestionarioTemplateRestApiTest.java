@@ -19,10 +19,10 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.web.client.RestTemplate;
 
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.App;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection.SezioneQuestionarioTemplate;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import it.pa.repdgt.surveymgmt.resource.QuestionariTemplatePaginatiResource;
 import it.pa.repdgt.surveymgmt.resource.QuestionarioTemplateResource;
 import it.pa.repdgt.surveymgmt.service.QuestionarioTemplateService;
@@ -48,10 +48,10 @@ public class QuestionarioTemplateRestApiTest {
 	public void getAllQuestionariTemplatePaginatiByProfilazioneAndFiltroTest() throws Exception {
 		int currPage = 0;
 		int pageSize = 10;
-		ProfilazioneParam profilazioneParam = new ProfilazioneParam();
+		SceltaProfiloParam profilazioneParam = new SceltaProfiloParam();
 		String codiceFiscaleUtenteDTD = "UIHPLW87R49F205X";
-		profilazioneParam.setCodiceFiscaleUtenteLoggato(codiceFiscaleUtenteDTD);
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD);
+		profilazioneParam.setCfUtenteLoggato(codiceFiscaleUtenteDTD);
+		profilazioneParam.setCodiceRuoloUtenteLoggato("DTD");
 		
 		String urlToCall = "http://localhost:" + randomServerPort +
 				"/questionarioTemplate/all?curPage="+currPage+"&pageSize="+pageSize;
@@ -70,10 +70,10 @@ public class QuestionarioTemplateRestApiTest {
 	public void getAllQuestionariTemplatePaginatiByProfilazioneAndFiltroTest2() throws Exception {
 		int currPage = 0;
 		int pageSize = 10;
-		ProfilazioneParam profilazioneParam = new ProfilazioneParam();
+		SceltaProfiloParam profilazioneParam = new SceltaProfiloParam();
 		String codiceFiscaleUtenteDSCU = "ASDPDS17R65F313X";
-		profilazioneParam.setCodiceFiscaleUtenteLoggato(codiceFiscaleUtenteDSCU);
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DSCU);
+		profilazioneParam.setCfUtenteLoggato(codiceFiscaleUtenteDSCU);
+		profilazioneParam.setCodiceRuoloUtenteLoggato("DSCU");
 		
 		String urlToCall = "http://localhost:" + randomServerPort +
 				"/questionarioTemplate/all?curPage="+currPage+"&pageSize="+pageSize;
@@ -92,10 +92,10 @@ public class QuestionarioTemplateRestApiTest {
 	public void getAllQuestionariTemplatePaginatiByProfilazioneAndFiltroTest3() throws Exception {
 		int currPage = 0;
 		int pageSize = 10;
-		ProfilazioneParam profilazioneParam = new ProfilazioneParam();
+		SceltaProfiloParam profilazioneParam = new SceltaProfiloParam();
 		String codiceFiscaleUtenteREG = "XTAAAA54E91E123Z";
-		profilazioneParam.setCodiceFiscaleUtenteLoggato(codiceFiscaleUtenteREG);
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REG);
+		profilazioneParam.setCfUtenteLoggato(codiceFiscaleUtenteREG);
+		profilazioneParam.setCodiceRuoloUtenteLoggato("REG");
 		Long idProgramma = 104L;
 		profilazioneParam.setIdProgramma(idProgramma);
 		
@@ -110,8 +110,8 @@ public class QuestionarioTemplateRestApiTest {
 		assertThat(response.getQuestionariTemplate().size()).isEqualTo(1);
 		
 		String codiceFiscaleUtenteDEG = "MWEDSQ99E20K123A";
-		profilazioneParam.setCodiceFiscaleUtenteLoggato(codiceFiscaleUtenteDEG);
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DEG);
+		profilazioneParam.setCfUtenteLoggato(codiceFiscaleUtenteDEG);
+		profilazioneParam.setCodiceRuoloUtenteLoggato("DEG");
 		response = restTemplate.postForObject(
 				urlToCall, 
 				profilazioneParam, 
@@ -127,10 +127,10 @@ public class QuestionarioTemplateRestApiTest {
 	public void getAllQuestionariTemplatePaginatiByProfilazioneAndFiltroTest4() throws Exception {
 		int currPage = 0;
 		int pageSize = 10;
-		ProfilazioneParam profilazioneParam = new ProfilazioneParam();
+		SceltaProfiloParam profilazioneParam = new SceltaProfiloParam();
 		String codiceFiscaleUtenteLoggato = "UTENTE2";
-		profilazioneParam.setCodiceFiscaleUtenteLoggato(codiceFiscaleUtenteLoggato);
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REGP);
+		profilazioneParam.setCfUtenteLoggato(codiceFiscaleUtenteLoggato);
+		profilazioneParam.setCodiceRuoloUtenteLoggato("REGP");
 		
 		String urlToCall = "http://localhost:" + randomServerPort +
 				"/questionarioTemplate/all?curPage="+currPage+"&pageSize="+pageSize;
@@ -141,7 +141,7 @@ public class QuestionarioTemplateRestApiTest {
 			);
 		assertThat(response.getQuestionariTemplate().size()).isEqualTo(0);
 		
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DEGP);
+		profilazioneParam.setCodiceRuoloUtenteLoggato("DEGP");
 		response = restTemplate.postForObject(
 				urlToCall, 
 				profilazioneParam, 
@@ -149,7 +149,7 @@ public class QuestionarioTemplateRestApiTest {
 			);
 		assertThat(response.getQuestionariTemplate().size()).isEqualTo(0);
 		
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REPP);
+		profilazioneParam.setCodiceRuoloUtenteLoggato("REPP");
 		response = restTemplate.postForObject(
 				urlToCall, 
 				profilazioneParam, 
@@ -157,7 +157,7 @@ public class QuestionarioTemplateRestApiTest {
 				);
 		assertThat(response.getQuestionariTemplate().size()).isEqualTo(0);
 		
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DEPP);
+		profilazioneParam.setCodiceRuoloUtenteLoggato("DEPP");
 		response = restTemplate.postForObject(
 				urlToCall, 
 				profilazioneParam, 
@@ -165,7 +165,7 @@ public class QuestionarioTemplateRestApiTest {
 				);
 		assertThat(response.getQuestionariTemplate().size()).isEqualTo(0);
 		
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC);
+		profilazioneParam.setCodiceRuoloUtenteLoggato("FAC");
 		response = restTemplate.postForObject(
 				urlToCall, 
 				profilazioneParam, 
@@ -173,7 +173,7 @@ public class QuestionarioTemplateRestApiTest {
 				);
 		assertThat(response.getQuestionariTemplate().size()).isEqualTo(0);
 		
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.VOL);
+		profilazioneParam.setCodiceRuoloUtenteLoggato("VOL");
 		response = restTemplate.postForObject(
 				urlToCall, 
 				profilazioneParam, 
@@ -186,10 +186,10 @@ public class QuestionarioTemplateRestApiTest {
 	@DisplayName(value = "getAllStatiDropdwon per DTD")
 	@Order(5)
 	public void getAllStatiDropdownTest1() {
-		ProfilazioneParam profilazioneParam = new ProfilazioneParam();
+		SceltaProfiloParam profilazioneParam = new SceltaProfiloParam();
 		String codiceFiscaleUtenteDTD = "UIHPLW87R49F205X";
-		profilazioneParam.setCodiceFiscaleUtenteLoggato(codiceFiscaleUtenteDTD);
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD);
+		profilazioneParam.setCfUtenteLoggato(codiceFiscaleUtenteDTD);
+		profilazioneParam.setCodiceRuoloUtenteLoggato("DTD");
 		
 		String urlToCall = "http://localhost:" + randomServerPort +
 				"/questionarioTemplate/stati/dropdown";
@@ -207,10 +207,10 @@ public class QuestionarioTemplateRestApiTest {
 	@DisplayName(value = "getAllStatiDropdwon per DSCU")
 	@Order(6)
 	public void getAllStatiDropdownTest2() throws Exception {
-		ProfilazioneParam profilazioneParam = new ProfilazioneParam();
+		SceltaProfiloParam profilazioneParam = new SceltaProfiloParam();
 		String codiceFiscaleUtenteREG = "XTAAAA54E91E123Z";
-		profilazioneParam.setCodiceFiscaleUtenteLoggato(codiceFiscaleUtenteREG);
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REG);
+		profilazioneParam.setCfUtenteLoggato(codiceFiscaleUtenteREG);
+		profilazioneParam.setCodiceRuoloUtenteLoggato("REG");
 		Long idProgramma = 104L;
 		profilazioneParam.setIdProgramma(idProgramma);
 		
@@ -226,8 +226,8 @@ public class QuestionarioTemplateRestApiTest {
 		assertThat(stati[0]).isEqualTo("ATTIVO");
 		
 		String codiceFiscaleUtenteDEG = "MWEDSQ99E20K123A";
-		profilazioneParam.setCodiceFiscaleUtenteLoggato(codiceFiscaleUtenteDEG);
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DEG);
+		profilazioneParam.setCfUtenteLoggato(codiceFiscaleUtenteDEG);
+		profilazioneParam.setCodiceRuoloUtenteLoggato("DEG");
 		stati = restTemplate.postForObject(
 				urlToCall, 
 				profilazioneParam, 
@@ -242,10 +242,10 @@ public class QuestionarioTemplateRestApiTest {
 	@DisplayName(value = "getAllStatiDropdwon per REG, DEG")
 	@Order(7)
 	public void getAllStatiDropdownTest3() throws Exception {
-		ProfilazioneParam profilazioneParam = new ProfilazioneParam();
+		SceltaProfiloParam profilazioneParam = new SceltaProfiloParam();
 		String codiceFiscaleUtenteDSCU = "ASDPDS17R65F313X";
-		profilazioneParam.setCodiceFiscaleUtenteLoggato(codiceFiscaleUtenteDSCU);
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DSCU);
+		profilazioneParam.setCfUtenteLoggato(codiceFiscaleUtenteDSCU);
+		profilazioneParam.setCodiceRuoloUtenteLoggato("DSCU");
 		
 		String urlToCall = "http://localhost:" + randomServerPort +
 				"/questionarioTemplate/stati/dropdown";
@@ -263,10 +263,10 @@ public class QuestionarioTemplateRestApiTest {
 	@DisplayName(value = "getAllStatiDropdwon per REGP, DEGP, REPP, DEPP, FACILITATORE, VOLONTARIO")
 	@Order(8)
 	public void getAllStatiDropdownTest4() throws Exception {
-		ProfilazioneParam profilazioneParam = new ProfilazioneParam();
+		SceltaProfiloParam profilazioneParam = new SceltaProfiloParam();
 		String codiceFiscaleUtenteLoggato = "UTENTE2";
-		profilazioneParam.setCodiceFiscaleUtenteLoggato(codiceFiscaleUtenteLoggato);
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REGP);
+		profilazioneParam.setCfUtenteLoggato(codiceFiscaleUtenteLoggato);
+		profilazioneParam.setCodiceRuoloUtenteLoggato("REGP");
 		
 		String urlToCall = "http://localhost:" + randomServerPort +
 				"/questionarioTemplate/stati/dropdown";
@@ -277,7 +277,7 @@ public class QuestionarioTemplateRestApiTest {
 			);
 		assertThat(stati.length).isEqualTo(0);
 		
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DEGP);
+		profilazioneParam.setCodiceRuoloUtenteLoggato("DEGP");
 		stati = restTemplate.postForObject(
 				urlToCall, 
 				profilazioneParam, 
@@ -285,7 +285,7 @@ public class QuestionarioTemplateRestApiTest {
 			);
 		assertThat(stati.length).isEqualTo(0);
 		
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REPP);
+		profilazioneParam.setCodiceRuoloUtenteLoggato("REPP");
 		stati = restTemplate.postForObject(
 				urlToCall, 
 				profilazioneParam, 
@@ -293,7 +293,7 @@ public class QuestionarioTemplateRestApiTest {
 			);
 		assertThat(stati.length).isEqualTo(0);
 		
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DEPP);
+		profilazioneParam.setCodiceRuoloUtenteLoggato("DEPP");
 		stati = restTemplate.postForObject(
 				urlToCall, 
 				profilazioneParam, 
@@ -301,7 +301,7 @@ public class QuestionarioTemplateRestApiTest {
 			);
 		assertThat(stati.length).isEqualTo(0);
 		
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC);
+		profilazioneParam.setCodiceRuoloUtenteLoggato("FAC");
 		stati = restTemplate.postForObject(
 				urlToCall, 
 				profilazioneParam, 
@@ -309,7 +309,7 @@ public class QuestionarioTemplateRestApiTest {
 			);
 		assertThat(stati.length).isEqualTo(0);
 		
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.VOL);
+		profilazioneParam.setCodiceRuoloUtenteLoggato("VOL");
 		stati = restTemplate.postForObject(
 				urlToCall, 
 				profilazioneParam, 
@@ -358,25 +358,23 @@ public class QuestionarioTemplateRestApiTest {
 	public void downloadCSVSElencoQuestionariTemplateTest() {
 		final String filtroCriterioRicerca = "";
 		final String filtroStato = "";
-		
-		ProfilazioneParam profilazioneParam = new ProfilazioneParam();
+
+		SceltaProfiloParam profilazioneParam = new SceltaProfiloParam();
 		String codiceFiscaleUtenteDTD = "UIHPLW87R49F205X";
-		profilazioneParam.setCodiceFiscaleUtenteLoggato(codiceFiscaleUtenteDTD);
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD);
-		
+		profilazioneParam.setCfUtenteLoggato(codiceFiscaleUtenteDTD);
+		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.getValue());
+
 		String urlToCall = "http://localhost:" + randomServerPort +
 				"/questionarioTemplate/download?criterioRicerca="+filtroCriterioRicerca+"&stato="+filtroStato;
 		String elencoQuestionariTemplate = restTemplate.postForObject(
-				urlToCall, 
+				urlToCall,
 				profilazioneParam,
 				String.class
 			);
-		 
-		String[] questionariTemplateRecord = elencoQuestionariTemplate.split("\\n");
-		
+
 		assertThat(elencoQuestionariTemplate).isNotNull();
 	}
-	
+
 //	@Test
 //	@DisplayName(value = "creaQuestionarioTemplateTest - OK")
 //	@Order(10)

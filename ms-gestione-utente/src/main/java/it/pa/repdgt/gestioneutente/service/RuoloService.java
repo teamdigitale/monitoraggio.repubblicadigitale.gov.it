@@ -64,7 +64,7 @@ public class RuoloService {
 	public RuoloEntity getRuoloByCodiceRuolo(String codiceRuolo) {
 		String messaggioErrore = String.format("Ruolo con codice = %s non trovato", codiceRuolo);
 		return this.ruoloRepository.findById(codiceRuolo)
-				.orElseThrow( () -> new ResourceNotFoundException(messaggioErrore));
+				.orElseThrow( () -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
 	}
 	
 	public List<String> getRuoliByCodiceFiscaleUtente(String codiceFiscale) {
@@ -105,7 +105,7 @@ public class RuoloService {
 	public List<GruppoEntity> getGruppByRuolo(String codiceRuolo){
 		if(!this.esisteRuoloByCodice(codiceRuolo)) {
 			String messaggioErrore = String.format("Il ruolo %s non esiste", codiceRuolo);
-			throw new ResourceNotFoundException(messaggioErrore);
+			throw new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01);
 		}
 		return this.gruppoService.getGruppiByRuolo(codiceRuolo);
 	}
@@ -116,7 +116,7 @@ public class RuoloService {
 		String nomeRuolo = nuovoRuoloRequest.getNomeRuolo();
 		String messaggioErrore = String.format("Ruolo con nome = %s già presente", nomeRuolo);
 		if(this.existsRuoloByNome(nomeRuolo)) {
-			throw new RuntimeException(messaggioErrore);
+			throw new RuoloException(messaggioErrore, CodiceErroreEnum.R01);
 		}
 		RuoloEntity nuovoRuolo = new RuoloEntity();
 		nuovoRuolo.setCodice(nomeRuolo);
