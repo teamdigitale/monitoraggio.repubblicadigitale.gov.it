@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.121](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.120...1.0.0-develop.121) (2022-09-15)
+
+
+### Bug Fixes
+
+* **be:** opendata e servizi ([d9234f7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d9234f7c919c4f58e4d7f5eaed519eca53ac7f6f))
+
 ## [1.0.0-develop.120](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.119...1.0.0-develop.120) (2022-09-14)
 
 
