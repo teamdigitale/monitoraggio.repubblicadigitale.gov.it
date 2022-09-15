@@ -28,6 +28,7 @@ public class GetCittadinoServizioMapper {
 		getCittadinoResource.setNome(getCittadino.getNome());
 		getCittadinoResource.setCognome(getCittadino.getCognome());
 		getCittadinoResource.setCodiceFiscale(getCittadino.getCodiceFiscale());
+		getCittadinoResource.setNumeroDocumento(getCittadino.getNumeroDocumento());
 		getCittadinoResource.setEmail(getCittadino.getEmail());
 		getCittadinoResource.setTelefono(getCittadino.getTelefono());
 		getCittadinoResource.setPrefisso(getCittadino.getPrefisso());

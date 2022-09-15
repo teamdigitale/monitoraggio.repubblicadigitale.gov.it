@@ -27,6 +27,9 @@ public class GetCittadinoResource implements Serializable {
 	@JsonProperty(value = "codiceFiscale")
 	private String codiceFiscale;
 	
+	@JsonProperty(value = "numeroDocumento")
+	private String numeroDocumento;
+	
 	@JsonProperty(value = "email")
 	private String email;
 	
