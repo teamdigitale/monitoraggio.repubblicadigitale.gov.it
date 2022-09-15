@@ -11,6 +11,7 @@ import { formFieldI } from '../../../../../utils/formHelper';
 import FormCitizen from '../../../../forms/formCitizen';
 import { formTypes } from '../utils';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
+import { idQ1, titleQ1 } from '../Surveys/surveyConstants';
 
 const id = formTypes.CITIZENS;
 
@@ -36,13 +37,7 @@ const ManageCitizens: React.FC<ManageCitizensI> = ({
 
   const editCitizen = async () => {
     if (isFormValid) {
-      const sezioneQ1Questionario =
-        '{"id":"anagraphic-citizen-section","title":"Informazioni anagrafiche","properties":' +
-        createStringOfCompiledSurveySection(newFormValues).replaceAll(
-          '"',
-          "'"
-        ) +
-        '}';
+      const sezioneQ1Questionario = `{"id":"${idQ1}","title":"${titleQ1}","properties":${createStringOfCompiledSurveySection(newFormValues).replaceAll('"', "'")}}`;
 
       const body = {
         ...newFormValues,
