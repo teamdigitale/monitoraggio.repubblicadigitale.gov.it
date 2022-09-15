@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.122](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.121...1.0.0-develop.122) (2022-09-15)
+
+
+### Features
+
+* **be:** applicazione filtro JWT per programma-progetto ([9e1b5f2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9e1b5f28cbfb2bd1f42b9eabd4189a912a077706))
+
 ## [1.0.0-develop.121](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.120...1.0.0-develop.121) (2022-09-15)
 
 
