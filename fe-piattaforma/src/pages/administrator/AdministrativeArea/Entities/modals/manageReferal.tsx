@@ -25,7 +25,10 @@ import {
   GetUserDetails,
   GetUsersBySearch,
 } from '../../../../../redux/features/administrativeArea/user/userThunk';
-import { closeModal } from '../../../../../redux/features/modal/modalSlice';
+import {
+  closeModal,
+  selectModalState,
+} from '../../../../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
@@ -75,6 +78,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
   const usersList = useAppSelector(selectUsers).list;
   const { entityId, projectId, authorityId, userId } = useParams();
   const authority = useAppSelector(selectAuthorities).detail.dettagliInfoEnte;
+  const open = useAppSelector(selectModalState);
 
   const resetModal = (toClose = true) => {
     clearForm();
@@ -85,14 +89,17 @@ const ManageReferal: React.FC<ManageReferalI> = ({
   };
 
   useEffect(() => {
-    resetModal(false);
+    if (open) {
+      resetModal(false);
+      if (creation) dispatch(resetUserDetails());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [open, creation]);
 
-  useEffect(() => {
-    dispatch(resetUserDetails());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [creation]);
+  // useEffect(() => {
+  //   dispatch(resetUserDetails());
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [creation]);
 
   const handleSaveReferal = async () => {
     if (isFormValid && (authority?.id || authorityId)) {

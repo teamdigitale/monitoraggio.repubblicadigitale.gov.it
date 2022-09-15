@@ -432,14 +432,15 @@ const UsersDetails = () => {
     role: UserAuthorityRole
   ) => {
     if (authorityId) {
-      projectId &&
-        (await dispatch(
+      if (projectId) {
+        await dispatch(
           RemoveReferentDelegate(authorityId, projectId, cf, role)
-        ));
-      entityId &&
-        (await dispatch(
+        )
+      } else if (entityId) {
+        await dispatch(
           RemoveReferentDelegate(authorityId, entityId, cf, role)
-        ));
+        )
+      }
     }
   };
 

@@ -64,7 +64,7 @@ const CardStatusActionPartnerAuthority: React.FC<CardStatusActionI> = (
               : 'flex-column align-items-start'
           )}
         >
-          <div className='card-status-action__title w-100 pr-4 text-truncate'>
+          <div className='card-status-action__title w-100 pr-4 text-wrap'>
             <span className='neutral-1-color-a8'>
               <strong>{title}</strong>
               {subtitle && (
@@ -73,7 +73,15 @@ const CardStatusActionPartnerAuthority: React.FC<CardStatusActionI> = (
             </span>
           </div>
 
-          <div>
+          <div
+            style={{
+              width: device.mediaIsPhone
+                ? ''
+                : device.mediaIsTablet
+                ? '300px'
+                : '550px',
+            }}
+          >
             {fullInfo && Object.keys(fullInfo).length ? (
               <div className={clsx('d-flex', 'flex-row', 'flex-wrap')}>
                 {Object.keys(fullInfo).map((key, index) => {
@@ -92,7 +100,9 @@ const CardStatusActionPartnerAuthority: React.FC<CardStatusActionI> = (
                         {t(fieldMappedForTranslations[key])}
                       </span>
                       <span className='neutral-1-color-a8 weight-600 text-wrap'>
-                        {fullInfo[key] === null ? '---' : fullInfo[key]}
+                        {fullInfo[key] === null
+                          ? '---'
+                          : fullInfo[key].toString().replaceAll(',', ', ')}
                       </span>
                     </div>
                   );

@@ -26,7 +26,6 @@ import { useAppSelector } from '../../../redux/hooks';
 import { CRUDActionsI, CRUDActionTypes } from '../../../utils/common';
 import {
   selectDevice,
-  updateBreadcrumb,
 } from '../../../redux/features/app/appSlice';
 import useGuard from '../../../hooks/guard';
 
@@ -116,15 +115,6 @@ const RoleManagement = () => {
 
   useEffect(() => {
     getGroupsList();
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Gestione ruoli',
-          url: '/gestione-ruoli',
-          link: false,
-        },
-      ])
-    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

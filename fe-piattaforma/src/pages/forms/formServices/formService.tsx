@@ -55,11 +55,10 @@ const FormService: React.FC<FormServiceI> = (props) => {
   }, []);
 
   useEffect(() => {
-    if (serviceQ3Schema || (creation && serviceQ3SchemaCreation)) {
+    const schema = serviceQ3SchemaCreation?.json || serviceQ3Schema?.json || '{}';
+    if (schema) {
       const formFromSchema = generateForm(
-        JSON.parse(
-          creation ? serviceQ3SchemaCreation.json : serviceQ3Schema.json
-        )
+        JSON.parse(schema)
       );
       Object.keys(formFromSchema).forEach((key: string) => {
         formFromSchema[key].label = formFromSchema[key].value?.toString() || '';

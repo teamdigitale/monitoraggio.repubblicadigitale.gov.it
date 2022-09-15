@@ -377,6 +377,9 @@ export const administrativeAreaSlice = createSlice({
     setHeadquarterDetails: (state, action) => {
       state.headquarters.detail = action.payload ? { ...action.payload } : null;
     },
+    resetHeadquarterDetails: (state) => {
+      state.headquarters.detail = {};
+    },
     setUserDetails: (state, action) => {
       state.users.detail = { ...action.payload };
     },
@@ -447,6 +450,7 @@ export const {
   setSurveyDetail,
   setHeadquartersList,
   setHeadquarterDetails,
+  resetHeadquarterDetails,
   setUserDetails,
   resetUserDetails,
   setServicesList,

@@ -27,6 +27,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
     rolesTable = false,
     onActionRadio,
     totalCounter,
+    citizenTable,
   } = props;
   const [rowChecked, setRowChecked] = useState<string>('');
 
@@ -252,9 +253,9 @@ const TableDesktop: React.FC<TableI> = (props) => {
                     />
                   </div>
                 </td>
-              ) : (
+              ) : citizenTable ? (
                 <td />
-              )}
+              ) : null}
             </tr>
           ))}
         </tbody>

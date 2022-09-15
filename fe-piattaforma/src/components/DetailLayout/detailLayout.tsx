@@ -294,7 +294,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
               stickyClassName={clsx(
                 'sticky',
                 'bg-white',
-                !citizenList && 'container'
+                !device.mediaIsPhone && 'container'
               )}
             >
               {formButtons.length === 3 ? (
