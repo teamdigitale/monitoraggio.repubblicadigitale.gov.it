@@ -1,0 +1,35 @@
+.custom-section-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  &__section-title {
+    font-weight: 700;
+    font-size: 32px;
+  }
+
+  &__upper-text {
+    font-weight: 200;
+  }
+
+  .icon-color {
+    fill: #004080 !important;
+  }
+
+  .camera-icon {
+    bottom: -7px;
+    left: -15px;
+    max-width: 25px;
+    max-height: 25px;
+
+    @media screen and (max-width: 576px) {
+      max-width: 25px;
+    }
+    @media screen and (min-width: 577px) and (max-width: 1250px) {
+      bottom: -7px;
+      left: -15px;
+      max-width: 25px;
+      max-height: 25px;
+    }
+  }
+}

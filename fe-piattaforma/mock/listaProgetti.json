@@ -1,0 +1,20 @@
+{
+  "progetti": [
+    {
+      "nomeEnteGestore": "Regione Molise",
+      "policy": "SCD",
+      "id": 250,
+      "nome": "Programma Sviluppo Web",
+      "stato": "ATTIVO"
+    },
+    {
+      "nomeEnteGestore": "Regione Lombardia",
+      "policy": "RFD",
+      "id": 251,
+      "nome": "Progetto Sicurezza Lavoro",
+      "stato": "ATTIVABILE"
+    }
+  ],
+  "numeroPagine": 1,
+  "numeroTotaleElementi": 2
+}

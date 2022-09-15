@@ -1,0 +1,28 @@
+{
+  "data": [
+    {
+      "nome": "Antonio",
+      "cognome": "Rossi",
+      "codiceFiscale": "codfiscale1",
+      "email": "antoniorossi@mail.com",
+      "telefono": "3211233232",
+      "idCittadino": 1
+    },
+    {
+      "nome": "Gino",
+      "cognome": "Rossi",
+      "codiceFiscale": "codfiscale2",
+      "email": "antoniorossi@mail.com",
+      "telefono": "3211233232",
+      "idCittadino": 2
+    },
+    {
+      "nome": "Lino",
+      "cognome": "Rossi",
+      "codiceFiscale": "codfiscale3",
+      "email": "antoniorossi@mail.com",
+      "telefono": "3211233232",
+      "idCittadino": 3
+    }
+  ]
+}

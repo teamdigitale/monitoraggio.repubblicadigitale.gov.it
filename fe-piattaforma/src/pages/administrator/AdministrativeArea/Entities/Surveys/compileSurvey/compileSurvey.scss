@@ -1,0 +1,29 @@
+.compile-survey-container {
+  &__half-width {
+    width: 48%;
+  }
+  &__prefix-width {
+    width: 15%;
+  }
+  &__mobile-width {
+    width: 32%;
+  }
+  &__select-margin {
+    top: 8px;
+  }
+  &__checkbox-margin {
+    top: -20px;
+  }
+  &__label-checkbox {
+    font-size: 14px;
+    color: #435a70;
+  }
+  &__max-width-column {
+    max-width: 100%;
+  }
+  &__label-column {
+    white-space: break-spaces !important;
+    overflow: visible !important;
+    display: inline-table !important;
+  }
+}

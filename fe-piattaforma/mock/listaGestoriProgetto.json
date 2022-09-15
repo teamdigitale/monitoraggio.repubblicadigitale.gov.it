@@ -1,0 +1,27 @@
+{
+  "data": {
+    "list": [
+      {
+        "id": 1,
+        "name": "Ente gestore progetto 1",
+        "ref": "Referente 1",
+        "type": "Tipologia 1",
+        "status": "ATTIVO"
+      },
+      {
+        "id": 2,
+        "name": "Ente gestore progetto 2",
+        "ref": "Referente 2",
+        "type": "Tipologia 2",
+        "status": "ATTIVO"
+      },
+      {
+        "id": 3,
+        "name": "Ente gestore progetto 3",
+        "ref": "Referente 3",
+        "type": "Tipologia 3",
+        "status": "ATTIVO"
+      }
+    ]
+  }
+}

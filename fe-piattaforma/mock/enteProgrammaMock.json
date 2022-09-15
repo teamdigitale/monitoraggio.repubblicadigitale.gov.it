@@ -1,0 +1,26 @@
+{
+  "data": {
+    "info": {
+      "id": "12321312",
+      "name": "Regione Lombardia Lorem Ipsum",
+      "shortName": "Regione Lombardia",
+      "type": "Ente pubblico",
+      "profile": "Gestore di programma",
+      "fiscalCode": "RSSMRA80B01F205W",
+      "address": "Via Roma 1 Roma RO",
+      "pec": "mail@pec.it"
+    },
+    "delegati": [
+      { "nome": "Simone Viola", "stato": "Active", "id": "1" },
+      { "nome": "Simone Violaa", "stato": "Active", "id": "2" }
+    ],
+    "referenti": [
+      { "nome": "Simone Blu", "stato": "Active", "id": "1" },
+      { "nome": "Simone Viola", "stato": "Active", "id": "2" }
+    ],
+    "sedi": [
+      { "nome": "Sede Blu", "stato": "Active", "id": "1" },
+      { "nome": "Sede Bluu", "stato": "Active", "id": "2" }
+    ]
+  }
+}

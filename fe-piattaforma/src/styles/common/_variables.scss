@@ -1,0 +1,36 @@
+/* PUBLIC FOLDER */
+$image-path: '/public/assets';
+
+/* HEADER */
+$header-main-height: 104px;
+$header-top-height: 80px;
+$header-nav-height: 56px;
+$header-height: calc($header-main-height + $header-top-height);
+$header-main-height-mobile: 104px;
+$header-top-height-mobile: 48px;
+$header-nav-height-mobile: 56px;
+$header-height-mobile: calc($header-main-height + $header-top-height);
+
+/* FOOTER */
+$footer-height: 264px;
+$footer-height-mobile: 50px;
+
+/* FONT_SIZE */
+$font-size-base: 16px;
+
+/* Z-INDEXES */
+$z-index-hideSkipLink: -999;
+$z-index-hide: -1;
+$z-index-auto: auto;
+$z-index-docked: 1;
+
+$z-index-base: 10;
+$z-index-modal: $z-index-base + 900;
+$z-index-curtain: $z-index-modal - 10;
+$z-index-notification: $z-index-base + 9999;
+$z-index-banner: $z-index-notification - 10;
+$z-index-sticky: $z-index-banner - 10;
+$z-index-dropdown: $z-index-sticky - 10;
+$z-index-toast: $z-index-modal + 10;
+$z-index-tooltip: $z-index-toast + 10;
+$z-index-skipLink: $z-index-tooltip + 10;

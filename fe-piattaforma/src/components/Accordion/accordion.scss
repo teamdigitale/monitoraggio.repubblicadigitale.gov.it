@@ -1,0 +1,22 @@
+.accordion-container {
+  &__borders {
+    .collapse-header [data-toggle='collapse'] {
+      border-top: none !important;
+      color: #5c6f82 !important;
+    }
+  }
+
+  &__form-checkbox {
+    bottom: 30%;
+    right: 2%;
+    &--collapsed {
+      bottom: 0;
+      right: 2%;
+      top: 5%;
+    }
+  }
+  &__input-checkbox {
+    height: 22px;
+    width: 22px;
+  }
+}

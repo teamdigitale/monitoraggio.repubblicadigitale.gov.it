@@ -1,0 +1,21 @@
+.buttons-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding: rem(15px 0);
+ // margin-right: rem(20px);
+  flex-wrap: wrap;
+  gap: rem(5px);
+
+  @media (max-width: 764px) {
+    justify-content: space-between;
+    .btn-xs {
+      min-width: rem(160px);
+      max-width: rem(220px);
+      max-height: rem(48px);
+      width: unset;
+    }
+  }
+  @media (min-width: 320px) {
+    justify-content: flex-end;
+  }
+}

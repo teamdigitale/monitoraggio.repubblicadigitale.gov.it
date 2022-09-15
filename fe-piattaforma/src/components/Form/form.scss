@@ -1,0 +1,134 @@
+.form {
+  input:active {
+    border-bottom: 2px solid #0073e5;
+  }
+  .form-group {
+    label {
+      z-index: unset;
+      padding-left: 2;
+    }
+  }
+  button {
+    min-width: 186px;
+  }
+}
+
+.form-control {
+  &:disabled {
+    border-bottom: 1px solid #797c80;
+    background: #e6e9f2;
+  }
+  &[type='text']:disabled,
+  &[type='date']:disabled {
+    border-bottom: 1px solid #797c80;
+  }
+
+  &[type='text'],
+  &[type='date'] {
+    border-bottom: 1px solid #0073e5;
+  }
+
+  &.is-valid {
+    border-bottom: 2px solid #0073e5;
+  }
+
+  &.is-invalid {
+    border-bottom: 2px solid #f73e5a;
+  }
+}
+
+.bootstrap-select {
+  &__control {
+    border-bottom: 1px solid #0073e5 !important;
+  }
+
+  &__control--menu-is-open,
+  &__control--is-focused {
+    border-bottom: 2px solid #0073e5 !important;
+  }
+
+  &__menu {
+    margin-top: 0 !important;
+  }
+
+  &__control {
+    &--is-disabled {
+      border-bottom: 1px solid #797c80 !important;
+      background: #e6e9f2 !important;
+    }
+  }
+}
+
+.form-service-dynamic {
+  &__control {
+    &--is-disabled {
+      border-bottom: 1px solid #797c80 !important;
+      background: #e6e9f2 !important;
+    }
+  }
+  &__multi-value {
+    margin: 2px 2px 14px !important;
+    &--is-disabled {
+      border: 1px outset #e6e9f2 !important;
+      background: #e6e9f2 !important;
+    }
+  }
+}
+
+.multiple-select {
+  &__control {
+    &--is-disabled {
+      border-bottom: 1px solid #797c80 !important;
+      background: #e6e9f2 !important;
+    }
+  }
+  &__multi-value {
+    &__label {
+      background: #e6e9f2 !important;
+      border: 1px outset #e6e9f2 !important;
+    }
+    &__remove {
+      background: #e6e9f2 !important;
+    }
+  }
+}
+
+.radio-btn-container {
+  min-height: 22px;
+  min-width: 22px;
+}
+
+.form-check [type='radio'] {
+  left: unset;
+  top: unset;
+  height: 100%;
+  width: 100%;
+}
+
+.form-check [type='checkbox']:checked + label::after {
+  border-color: #0073e5;
+  background-color: #0073e5;
+}
+
+.form-check [type='radio']:checked + label::after {
+  border-color: #0073e5;
+  background-color: #0073e5;
+}
+
+.form-check [type='radio']:disabled:checked + label::after {
+  border-color: #d1d6db;
+  background-color: #d1d6db;
+}
+
+.toggles label input[type='checkbox']:checked + .lever:after {
+  background-color: #0073e5;
+}
+
+.toggles label input[type='checkbox'][disabled] + .lever:after {
+  background-color: #e6e9f2;
+}
+
+.rating-label {
+  font-size: 14px;
+  font-weight: 600;
+}

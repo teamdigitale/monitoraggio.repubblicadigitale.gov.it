@@ -1,0 +1,22 @@
+{
+  "data": {
+    "info": {
+      "idSede": "321321",
+      "name": "Sede 1",
+      "services": "Facilitazione",
+      "ente": "Ente 1",
+      "address": "Via roma 1",
+      "cap": "20019",
+      "prov": "MI",
+      "country": "Milano"
+    },
+    "del": [
+      { "name": "Simone Viola", "status": "Active", "id": "1" },
+      { "name": "Simone Viola", "status": "Active", "id": "1" }
+    ],
+    "ref": [
+      { "name": "Simone Blu", "status": "Active", "id": "1" },
+      { "name": "Simone Blu", "status": "Active", "id": "1" }
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+.table-container {
+  .th-auto {
+    width: auto;
+  }
+  .th-small {
+    width: 10%;
+  }
+  .th-medium {
+    width: 25%;
+  }
+  .th-large {
+    width: 33%;
+  }
+  .th-actions {
+    width: 5%;
+  }
+  .th-actions-roles {
+    width: 1%;
+  }
+  tbody {
+    td:first-child {
+      color: #0066cc;
+      font-weight: 600;
+    }
+  }
+  &__intestazione {
+    padding: 0px 16px !important;
+  }
+  &__status-label {
+    border-radius: 6px;
+    padding: 0 8px;
+    min-width: auto;
+
+    @media screen and (max-width: 576px) {
+      padding: 15px 8px;
+    }
+  }
+  &__toggle-button {
+    margin: 0;
+    label {
+      input[type='checkbox'] + .lever {
+        margin: 5px 0 0;
+        float: left;
+      }
+    }
+  }
+  &__width-radio {
+    max-width: 50px;
+  }
+}

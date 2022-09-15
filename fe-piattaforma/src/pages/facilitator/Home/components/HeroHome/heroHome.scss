@@ -1,0 +1,15 @@
+.heroHome {
+  &__read-more {
+    position: unset !important;
+  }
+
+  &__hero-container {
+    padding: 0 150px;
+  }
+
+  &__hero-card {
+    flex-direction: unset !important;
+    flex-wrap: wrap;
+    padding: 8px 28px;
+  }
+}

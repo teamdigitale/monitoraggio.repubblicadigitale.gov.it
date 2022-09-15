@@ -1,0 +1,7895 @@
+[
+  {
+    "nome": "Acate",
+    "codice": "088001",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "088",
+      "nome": "Ragusa"
+    },
+    "sigla": "RG",
+    "codiceCatastale": "A014",
+    "cap": ["97011"],
+    "popolazione": 9574
+  },
+  {
+    "nome": "Aci Bonaccorsi",
+    "codice": "087001",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "A025",
+    "cap": ["95020"],
+    "popolazione": 3200
+  },
+  {
+    "nome": "Aci Castello",
+    "codice": "087002",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "A026",
+    "cap": ["95021"],
+    "popolazione": 18122
+  },
+  {
+    "nome": "Aci Catena",
+    "codice": "087003",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "A027",
+    "cap": ["95022"],
+    "popolazione": 28749
+  },
+  {
+    "nome": "Aci Sant'Antonio",
+    "codice": "087005",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "A029",
+    "cap": ["95025"],
+    "popolazione": 17270
+  },
+  {
+    "nome": "Acireale",
+    "codice": "087004",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "A028",
+    "cap": ["95024"],
+    "popolazione": 51456
+  },
+  {
+    "nome": "Acquaviva Platani",
+    "codice": "085001",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "A049",
+    "cap": ["93010"],
+    "popolazione": 1041
+  },
+  {
+    "nome": "Acquedolci",
+    "codice": "083107",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "M211",
+    "cap": ["98070"],
+    "popolazione": 5744
+  },
+  {
+    "nome": "Adrano",
+    "codice": "087006",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "A056",
+    "cap": ["95031"],
+    "popolazione": 35549
+  },
+  {
+    "nome": "Agira",
+    "codice": "086001",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "086",
+      "nome": "Enna"
+    },
+    "sigla": "EN",
+    "codiceCatastale": "A070",
+    "cap": ["94011"],
+    "popolazione": 8484
+  },
+  {
+    "nome": "Agrigento",
+    "codice": "084001",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "A089",
+    "cap": ["92100"],
+    "popolazione": 58323
+  },
+  {
+    "nome": "Aidone",
+    "codice": "086002",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "086",
+      "nome": "Enna"
+    },
+    "sigla": "EN",
+    "codiceCatastale": "A098",
+    "cap": ["94010"],
+    "popolazione": 4929
+  },
+  {
+    "nome": "Alcamo",
+    "codice": "081001",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "A176",
+    "cap": ["91011"],
+    "popolazione": 45314
+  },
+  {
+    "nome": "Alcara li Fusi",
+    "codice": "083001",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "A177",
+    "cap": ["98070"],
+    "popolazione": 2072
+  },
+  {
+    "nome": "Alessandria della Rocca",
+    "codice": "084002",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "A181",
+    "cap": ["92010"],
+    "popolazione": 3118
+  },
+  {
+    "nome": "Alia",
+    "codice": "082001",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "A195",
+    "cap": ["90021"],
+    "popolazione": 3806
+  },
+  {
+    "nome": "Alimena",
+    "codice": "082002",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "A202",
+    "cap": ["90020"],
+    "popolazione": 2152
+  },
+  {
+    "nome": "Aliminusa",
+    "codice": "082003",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "A203",
+    "cap": ["90020"],
+    "popolazione": 1291
+  },
+  {
+    "nome": "Altavilla Milicia",
+    "codice": "082004",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "A229",
+    "cap": ["90010"],
+    "popolazione": 7429
+  },
+  {
+    "nome": "Altofonte",
+    "codice": "082005",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "A239",
+    "cap": ["90030"],
+    "popolazione": 10266
+  },
+  {
+    "nome": "Alì",
+    "codice": "083002",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "A194",
+    "cap": ["98020"],
+    "popolazione": 823
+  },
+  {
+    "nome": "Alì Terme",
+    "codice": "083003",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "A201",
+    "cap": ["98021"],
+    "popolazione": 2567
+  },
+  {
+    "nome": "Antillo",
+    "codice": "083004",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "A313",
+    "cap": ["98030"],
+    "popolazione": 992
+  },
+  {
+    "nome": "Aragona",
+    "codice": "084003",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "A351",
+    "cap": ["92021"],
+    "popolazione": 9493
+  },
+  {
+    "nome": "Assoro",
+    "codice": "086003",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "086",
+      "nome": "Enna"
+    },
+    "sigla": "EN",
+    "codiceCatastale": "A478",
+    "cap": ["94010"],
+    "popolazione": 5366
+  },
+  {
+    "nome": "Augusta",
+    "codice": "089001",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "089",
+      "nome": "Siracusa"
+    },
+    "sigla": "SR",
+    "codiceCatastale": "A494",
+    "cap": ["96011"],
+    "popolazione": 36169
+  },
+  {
+    "nome": "Avola",
+    "codice": "089002",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "089",
+      "nome": "Siracusa"
+    },
+    "sigla": "SR",
+    "codiceCatastale": "A522",
+    "cap": ["96012"],
+    "popolazione": 31328
+  },
+  {
+    "nome": "Bagheria",
+    "codice": "082006",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "A546",
+    "cap": ["90011"],
+    "popolazione": 54257
+  },
+  {
+    "nome": "Balestrate",
+    "codice": "082007",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "A592",
+    "cap": ["90041"],
+    "popolazione": 6413
+  },
+  {
+    "nome": "Barcellona Pozzo di Gotto",
+    "codice": "083005",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "A638",
+    "cap": ["98051"],
+    "popolazione": 41632
+  },
+  {
+    "nome": "Barrafranca",
+    "codice": "086004",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "086",
+      "nome": "Enna"
+    },
+    "sigla": "EN",
+    "codiceCatastale": "A676",
+    "cap": ["94012"],
+    "popolazione": 13977
+  },
+  {
+    "nome": "Basicò",
+    "codice": "083006",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "A698",
+    "cap": ["98060"],
+    "popolazione": 679
+  },
+  {
+    "nome": "Baucina",
+    "codice": "082008",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "A719",
+    "cap": ["90020"],
+    "popolazione": 2014
+  },
+  {
+    "nome": "Belmonte Mezzagno",
+    "codice": "082009",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "A764",
+    "cap": ["90031"],
+    "popolazione": 11149
+  },
+  {
+    "nome": "Belpasso",
+    "codice": "087007",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "A766",
+    "cap": ["95032"],
+    "popolazione": 26378
+  },
+  {
+    "nome": "Biancavilla",
+    "codice": "087008",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "A841",
+    "cap": ["95033"],
+    "popolazione": 23703
+  },
+  {
+    "nome": "Bisacquino",
+    "codice": "082010",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "A882",
+    "cap": ["90032"],
+    "popolazione": 4829
+  },
+  {
+    "nome": "Bivona",
+    "codice": "084004",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "A896",
+    "cap": ["92010"],
+    "popolazione": 3882
+  },
+  {
+    "nome": "Blufi",
+    "codice": "082082",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "M268",
+    "cap": ["90020"],
+    "popolazione": 1083
+  },
+  {
+    "nome": "Bolognetta",
+    "codice": "082011",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "A946",
+    "cap": ["90030"],
+    "popolazione": 3932
+  },
+  {
+    "nome": "Bompensiere",
+    "codice": "085002",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "A957",
+    "cap": ["93010"],
+    "popolazione": 610
+  },
+  {
+    "nome": "Bompietro",
+    "codice": "082012",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "A958",
+    "cap": ["90020"],
+    "popolazione": 1474
+  },
+  {
+    "nome": "Borgetto",
+    "codice": "082013",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "A991",
+    "cap": ["90042"],
+    "popolazione": 7021
+  },
+  {
+    "nome": "Brolo",
+    "codice": "083007",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "B198",
+    "cap": ["98061"],
+    "popolazione": 5826
+  },
+  {
+    "nome": "Bronte",
+    "codice": "087009",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "B202",
+    "cap": ["95034"],
+    "popolazione": 19234
+  },
+  {
+    "nome": "Buccheri",
+    "codice": "089003",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "089",
+      "nome": "Siracusa"
+    },
+    "sigla": "SR",
+    "codiceCatastale": "B237",
+    "cap": ["96010"],
+    "popolazione": 2133
+  },
+  {
+    "nome": "Burgio",
+    "codice": "084005",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "B275",
+    "cap": ["92010"],
+    "popolazione": 2780
+  },
+  {
+    "nome": "Buscemi",
+    "codice": "089004",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "089",
+      "nome": "Siracusa"
+    },
+    "sigla": "SR",
+    "codiceCatastale": "B287",
+    "cap": ["96010"],
+    "popolazione": 1128
+  },
+  {
+    "nome": "Buseto Palizzolo",
+    "codice": "081002",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "B288",
+    "cap": ["91012"],
+    "popolazione": 3031
+  },
+  {
+    "nome": "Butera",
+    "codice": "085003",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "B302",
+    "cap": ["93011"],
+    "popolazione": 4937
+  },
+  {
+    "nome": "Caccamo",
+    "codice": "082014",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "B315",
+    "cap": ["90012"],
+    "popolazione": 8295
+  },
+  {
+    "nome": "Calamonaci",
+    "codice": "084006",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "B377",
+    "cap": ["92010"],
+    "popolazione": 1375
+  },
+  {
+    "nome": "Calascibetta",
+    "codice": "086005",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "086",
+      "nome": "Enna"
+    },
+    "sigla": "EN",
+    "codiceCatastale": "B381",
+    "cap": ["94010"],
+    "popolazione": 4628
+  },
+  {
+    "nome": "Calatabiano",
+    "codice": "087010",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "B384",
+    "cap": ["95011"],
+    "popolazione": 5383
+  },
+  {
+    "nome": "Calatafimi-Segesta",
+    "codice": "081003",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "B385",
+    "cap": ["91013"],
+    "popolazione": 6938
+  },
+  {
+    "nome": "Caltabellotta",
+    "codice": "084007",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "B427",
+    "cap": ["92010"],
+    "popolazione": 3907
+  },
+  {
+    "nome": "Caltagirone",
+    "codice": "087011",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "B428",
+    "cap": ["95041"],
+    "popolazione": 38123
+  },
+  {
+    "nome": "Caltanissetta",
+    "codice": "085004",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "B429",
+    "cap": ["93100"],
+    "popolazione": 61711
+  },
+  {
+    "nome": "Caltavuturo",
+    "codice": "082015",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "B430",
+    "cap": ["90022"],
+    "popolazione": 4171
+  },
+  {
+    "nome": "Camastra",
+    "codice": "084008",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "B460",
+    "cap": ["92020"],
+    "popolazione": 2163
+  },
+  {
+    "nome": "Cammarata",
+    "codice": "084009",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "B486",
+    "cap": ["92022"],
+    "popolazione": 6275
+  },
+  {
+    "nome": "Campobello di Licata",
+    "codice": "084010",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "B520",
+    "cap": ["92023"],
+    "popolazione": 10438
+  },
+  {
+    "nome": "Campobello di Mazara",
+    "codice": "081004",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "B521",
+    "cap": ["91021"],
+    "popolazione": 11580
+  },
+  {
+    "nome": "Campofelice di Fitalia",
+    "codice": "082016",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "B533",
+    "cap": ["90030"],
+    "popolazione": 548
+  },
+  {
+    "nome": "Campofelice di Roccella",
+    "codice": "082017",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "B532",
+    "cap": ["90010"],
+    "popolazione": 6918
+  },
+  {
+    "nome": "Campofiorito",
+    "codice": "082018",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "B535",
+    "cap": ["90030"],
+    "popolazione": 1332
+  },
+  {
+    "nome": "Campofranco",
+    "codice": "085005",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "B537",
+    "cap": ["93010"],
+    "popolazione": 3218
+  },
+  {
+    "nome": "Camporeale",
+    "codice": "082019",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "B556",
+    "cap": ["90043"],
+    "popolazione": 3448
+  },
+  {
+    "nome": "Camporotondo Etneo",
+    "codice": "087012",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "B561",
+    "cap": ["95040"],
+    "popolazione": 4476
+  },
+  {
+    "nome": "Canicattini Bagni",
+    "codice": "089005",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "089",
+      "nome": "Siracusa"
+    },
+    "sigla": "SR",
+    "codiceCatastale": "B603",
+    "cap": ["96010"],
+    "popolazione": 7186
+  },
+  {
+    "nome": "Canicattì",
+    "codice": "084011",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "B602",
+    "cap": ["92024"],
+    "popolazione": 34863
+  },
+  {
+    "nome": "Capaci",
+    "codice": "082020",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "B645",
+    "cap": ["90040"],
+    "popolazione": 11030
+  },
+  {
+    "nome": "Capizzi",
+    "codice": "083008",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "B660",
+    "cap": ["98031"],
+    "popolazione": 3347
+  },
+  {
+    "nome": "Capo d'Orlando",
+    "codice": "083009",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "B666",
+    "cap": ["98071"],
+    "popolazione": 13260
+  },
+  {
+    "nome": "Capri Leone",
+    "codice": "083010",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "B695",
+    "cap": ["98070"],
+    "popolazione": 4516
+  },
+  {
+    "nome": "Carini",
+    "codice": "082021",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "B780",
+    "cap": ["90044"],
+    "popolazione": 35681
+  },
+  {
+    "nome": "Carlentini",
+    "codice": "089006",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "089",
+      "nome": "Siracusa"
+    },
+    "sigla": "SR",
+    "codiceCatastale": "B787",
+    "cap": ["96013"],
+    "popolazione": 17958
+  },
+  {
+    "nome": "Caronia",
+    "codice": "083011",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "B804",
+    "cap": ["98072"],
+    "popolazione": 3463
+  },
+  {
+    "nome": "Casalvecchio Siculo",
+    "codice": "083012",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "B918",
+    "cap": ["98032"],
+    "popolazione": 907
+  },
+  {
+    "nome": "Cassaro",
+    "codice": "089007",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "089",
+      "nome": "Siracusa"
+    },
+    "sigla": "SR",
+    "codiceCatastale": "C006",
+    "cap": ["96010"],
+    "popolazione": 813
+  },
+  {
+    "nome": "Castel di Iudica",
+    "codice": "087013",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "C091",
+    "cap": ["95040"],
+    "popolazione": 4748
+  },
+  {
+    "nome": "Castel di Lucio",
+    "codice": "083013",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "C094",
+    "cap": ["98070"],
+    "popolazione": 1366
+  },
+  {
+    "nome": "Castelbuono",
+    "codice": "082022",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "C067",
+    "cap": ["90013"],
+    "popolazione": 9161
+  },
+  {
+    "nome": "Casteldaccia",
+    "codice": "082023",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "C074",
+    "cap": ["90014"],
+    "popolazione": 10884
+  },
+  {
+    "nome": "Castell'Umberto",
+    "codice": "083014",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "C051",
+    "cap": ["98070"],
+    "popolazione": 3295
+  },
+  {
+    "nome": "Castellammare del Golfo",
+    "codice": "081005",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "C130",
+    "cap": ["91014"],
+    "popolazione": 14603
+  },
+  {
+    "nome": "Castellana Sicula",
+    "codice": "082024",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "C135",
+    "cap": ["90020"],
+    "popolazione": 3549
+  },
+  {
+    "nome": "Castelmola",
+    "codice": "083015",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "C210",
+    "cap": ["98030"],
+    "popolazione": 1073
+  },
+  {
+    "nome": "Casteltermini",
+    "codice": "084012",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "C275",
+    "cap": ["92025"],
+    "popolazione": 8422
+  },
+  {
+    "nome": "Castelvetrano",
+    "codice": "081006",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "C286",
+    "cap": ["91022"],
+    "popolazione": 31824
+  },
+  {
+    "nome": "Castiglione di Sicilia",
+    "codice": "087014",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "C297",
+    "cap": ["95012"],
+    "popolazione": 3298
+  },
+  {
+    "nome": "Castrofilippo",
+    "codice": "084013",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "C341",
+    "cap": ["92020"],
+    "popolazione": 3020
+  },
+  {
+    "nome": "Castronovo di Sicilia",
+    "codice": "082025",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "C344",
+    "cap": ["90030"],
+    "popolazione": 3175
+  },
+  {
+    "nome": "Castroreale",
+    "codice": "083016",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "C347",
+    "cap": ["98053"],
+    "popolazione": 2548
+  },
+  {
+    "nome": "Catania",
+    "codice": "087015",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "C351",
+    "cap": [
+      "95121",
+      "95122",
+      "95123",
+      "95124",
+      "95125",
+      "95126",
+      "95127",
+      "95128",
+      "95129",
+      "95130",
+      "95131"
+    ],
+    "popolazione": 293902
+  },
+  {
+    "nome": "Catenanuova",
+    "codice": "086006",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "086",
+      "nome": "Enna"
+    },
+    "sigla": "EN",
+    "codiceCatastale": "C353",
+    "cap": ["94010"],
+    "popolazione": 4999
+  },
+  {
+    "nome": "Cattolica Eraclea",
+    "codice": "084014",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "C356",
+    "cap": ["92011"],
+    "popolazione": 3975
+  },
+  {
+    "nome": "Cefalà Diana",
+    "codice": "082026",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "C420",
+    "cap": ["90030"],
+    "popolazione": 1007
+  },
+  {
+    "nome": "Cefalù",
+    "codice": "082027",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "C421",
+    "cap": ["90015"],
+    "popolazione": 14354
+  },
+  {
+    "nome": "Centuripe",
+    "codice": "086007",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "086",
+      "nome": "Enna"
+    },
+    "sigla": "EN",
+    "codiceCatastale": "C471",
+    "cap": ["94010"],
+    "popolazione": 5599
+  },
+  {
+    "nome": "Cerami",
+    "codice": "086008",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "086",
+      "nome": "Enna"
+    },
+    "sigla": "EN",
+    "codiceCatastale": "C480",
+    "cap": ["94010"],
+    "popolazione": 2150
+  },
+  {
+    "nome": "Cerda",
+    "codice": "082028",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "C496",
+    "cap": ["90010"],
+    "popolazione": 5391
+  },
+  {
+    "nome": "Cesarò",
+    "codice": "083017",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "C568",
+    "cap": ["98033"],
+    "popolazione": 2572
+  },
+  {
+    "nome": "Chiaramonte Gulfi",
+    "codice": "088002",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "088",
+      "nome": "Ragusa"
+    },
+    "sigla": "RG",
+    "codiceCatastale": "C612",
+    "cap": ["97012"],
+    "popolazione": 8224
+  },
+  {
+    "nome": "Chiusa Sclafani",
+    "codice": "082029",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "C654",
+    "cap": ["90033"],
+    "popolazione": 2957
+  },
+  {
+    "nome": "Cianciana",
+    "codice": "084015",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "C668",
+    "cap": ["92012"],
+    "popolazione": 3517
+  },
+  {
+    "nome": "Ciminna",
+    "codice": "082030",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "C696",
+    "cap": ["90023"],
+    "popolazione": 3845
+  },
+  {
+    "nome": "Cinisi",
+    "codice": "082031",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "C708",
+    "cap": ["90045"],
+    "popolazione": 12031
+  },
+  {
+    "nome": "Collesano",
+    "codice": "082032",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "C871",
+    "cap": ["90016"],
+    "popolazione": 4095
+  },
+  {
+    "nome": "Comiso",
+    "codice": "088003",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "088",
+      "nome": "Ragusa"
+    },
+    "sigla": "RG",
+    "codiceCatastale": "C927",
+    "cap": ["97013"],
+    "popolazione": 29184
+  },
+  {
+    "nome": "Comitini",
+    "codice": "084016",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "C928",
+    "cap": ["92020"],
+    "popolazione": 944
+  },
+  {
+    "nome": "Condrò",
+    "codice": "083018",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "C956",
+    "cap": ["98040"],
+    "popolazione": 481
+  },
+  {
+    "nome": "Contessa Entellina",
+    "codice": "082033",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "C968",
+    "cap": ["90030"],
+    "popolazione": 1865
+  },
+  {
+    "nome": "Corleone",
+    "codice": "082034",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "D009",
+    "cap": ["90034"],
+    "popolazione": 11286
+  },
+  {
+    "nome": "Custonaci",
+    "codice": "081007",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "D234",
+    "cap": ["91015"],
+    "popolazione": 5392
+  },
+  {
+    "nome": "Delia",
+    "codice": "085006",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "D267",
+    "cap": ["93010"],
+    "popolazione": 4325
+  },
+  {
+    "nome": "Enna",
+    "codice": "086009",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "086",
+      "nome": "Enna"
+    },
+    "sigla": "EN",
+    "codiceCatastale": "C342",
+    "cap": ["94100"],
+    "popolazione": 27894
+  },
+  {
+    "nome": "Erice",
+    "codice": "081008",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "D423",
+    "cap": ["91016"],
+    "popolazione": 28012
+  },
+  {
+    "nome": "Falcone",
+    "codice": "083019",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "D474",
+    "cap": ["98060"],
+    "popolazione": 2874
+  },
+  {
+    "nome": "Favara",
+    "codice": "084017",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "D514",
+    "cap": ["92026"],
+    "popolazione": 32972
+  },
+  {
+    "nome": "Favignana",
+    "codice": "081009",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "D518",
+    "cap": ["91023"],
+    "popolazione": 4185
+  },
+  {
+    "nome": "Ferla",
+    "codice": "089008",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "089",
+      "nome": "Siracusa"
+    },
+    "sigla": "SR",
+    "codiceCatastale": "D540",
+    "cap": ["96010"],
+    "popolazione": 2600
+  },
+  {
+    "nome": "Ficarazzi",
+    "codice": "082035",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "D567",
+    "cap": ["90010"],
+    "popolazione": 11484
+  },
+  {
+    "nome": "Ficarra",
+    "codice": "083020",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "D569",
+    "cap": ["98062"],
+    "popolazione": 1566
+  },
+  {
+    "nome": "Fiumedinisi",
+    "codice": "083021",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "D622",
+    "cap": ["98022"],
+    "popolazione": 1559
+  },
+  {
+    "nome": "Fiumefreddo di Sicilia",
+    "codice": "087016",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "D623",
+    "cap": ["95013"],
+    "popolazione": 9690
+  },
+  {
+    "nome": "Floresta",
+    "codice": "083022",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "D635",
+    "cap": ["98030"],
+    "popolazione": 516
+  },
+  {
+    "nome": "Floridia",
+    "codice": "089009",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "089",
+      "nome": "Siracusa"
+    },
+    "sigla": "SR",
+    "codiceCatastale": "D636",
+    "cap": ["96014"],
+    "popolazione": 22685
+  },
+  {
+    "nome": "Fondachelli-Fantina",
+    "codice": "083023",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "D661",
+    "cap": ["98050"],
+    "popolazione": 1090
+  },
+  {
+    "nome": "Forza d'Agrò",
+    "codice": "083024",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "D733",
+    "cap": ["98030"],
+    "popolazione": 878
+  },
+  {
+    "nome": "Francavilla di Sicilia",
+    "codice": "083025",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "D765",
+    "cap": ["98034"],
+    "popolazione": 3901
+  },
+  {
+    "nome": "Francofonte",
+    "codice": "089010",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "089",
+      "nome": "Siracusa"
+    },
+    "sigla": "SR",
+    "codiceCatastale": "D768",
+    "cap": ["96015"],
+    "popolazione": 12923
+  },
+  {
+    "nome": "Frazzanò",
+    "codice": "083026",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "D793",
+    "cap": ["98070"],
+    "popolazione": 755
+  },
+  {
+    "nome": "Furci Siculo",
+    "codice": "083027",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "D824",
+    "cap": ["98023"],
+    "popolazione": 3428
+  },
+  {
+    "nome": "Furnari",
+    "codice": "083028",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "D825",
+    "cap": ["98054"],
+    "popolazione": 3665
+  },
+  {
+    "nome": "Gaggi",
+    "codice": "083029",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "D844",
+    "cap": ["98030"],
+    "popolazione": 3138
+  },
+  {
+    "nome": "Gagliano Castelferrato",
+    "codice": "086010",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "086",
+      "nome": "Enna"
+    },
+    "sigla": "EN",
+    "codiceCatastale": "D849",
+    "cap": ["94010"],
+    "popolazione": 3722
+  },
+  {
+    "nome": "Galati Mamertino",
+    "codice": "083030",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "D861",
+    "cap": ["98070"],
+    "popolazione": 2794
+  },
+  {
+    "nome": "Gallodoro",
+    "codice": "083031",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "D885",
+    "cap": ["98030"],
+    "popolazione": 381
+  },
+  {
+    "nome": "Gangi",
+    "codice": "082036",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "D907",
+    "cap": ["90024"],
+    "popolazione": 7063
+  },
+  {
+    "nome": "Gela",
+    "codice": "085007",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "D960",
+    "cap": ["93012"],
+    "popolazione": 75668
+  },
+  {
+    "nome": "Geraci Siculo",
+    "codice": "082037",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "D977",
+    "cap": ["90010"],
+    "popolazione": 1925
+  },
+  {
+    "nome": "Giardinello",
+    "codice": "082038",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "E013",
+    "cap": ["90040"],
+    "popolazione": 2258
+  },
+  {
+    "nome": "Giardini-Naxos",
+    "codice": "083032",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "E014",
+    "cap": ["98035"],
+    "popolazione": 9268
+  },
+  {
+    "nome": "Giarratana",
+    "codice": "088004",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "088",
+      "nome": "Ragusa"
+    },
+    "sigla": "RG",
+    "codiceCatastale": "E016",
+    "cap": ["97010"],
+    "popolazione": 3143
+  },
+  {
+    "nome": "Giarre",
+    "codice": "087017",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "E017",
+    "cap": ["95014"],
+    "popolazione": 28114
+  },
+  {
+    "nome": "Gibellina",
+    "codice": "081010",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "E023",
+    "cap": ["91024"],
+    "popolazione": 4264
+  },
+  {
+    "nome": "Gioiosa Marea",
+    "codice": "083033",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "E043",
+    "cap": ["98063"],
+    "popolazione": 7114
+  },
+  {
+    "nome": "Giuliana",
+    "codice": "082039",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "E055",
+    "cap": ["90030"],
+    "popolazione": 2032
+  },
+  {
+    "nome": "Godrano",
+    "codice": "082040",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "E074",
+    "cap": ["90030"],
+    "popolazione": 1153
+  },
+  {
+    "nome": "Grammichele",
+    "codice": "087018",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "E133",
+    "cap": ["95042"],
+    "popolazione": 13064
+  },
+  {
+    "nome": "Graniti",
+    "codice": "083034",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "E142",
+    "cap": ["98036"],
+    "popolazione": 1522
+  },
+  {
+    "nome": "Gratteri",
+    "codice": "082041",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "E149",
+    "cap": ["90010"],
+    "popolazione": 1019
+  },
+  {
+    "nome": "Gravina di Catania",
+    "codice": "087019",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "E156",
+    "cap": ["95030"],
+    "popolazione": 26543
+  },
+  {
+    "nome": "Grotte",
+    "codice": "084018",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "E209",
+    "cap": ["92020"],
+    "popolazione": 5839
+  },
+  {
+    "nome": "Gualtieri Sicaminò",
+    "codice": "083035",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "E233",
+    "cap": ["98040"],
+    "popolazione": 1834
+  },
+  {
+    "nome": "Isnello",
+    "codice": "082042",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "E337",
+    "cap": ["90010"],
+    "popolazione": 1598
+  },
+  {
+    "nome": "Isola delle Femmine",
+    "codice": "082043",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "E350",
+    "cap": ["90040"],
+    "popolazione": 7100
+  },
+  {
+    "nome": "Ispica",
+    "codice": "088005",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "088",
+      "nome": "Ragusa"
+    },
+    "sigla": "RG",
+    "codiceCatastale": "E366",
+    "cap": ["97014"],
+    "popolazione": 15122
+  },
+  {
+    "nome": "Itala",
+    "codice": "083036",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "E374",
+    "cap": ["98025"],
+    "popolazione": 1663
+  },
+  {
+    "nome": "Joppolo Giancaxio",
+    "codice": "084019",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "E390",
+    "cap": ["92010"],
+    "popolazione": 1210
+  },
+  {
+    "nome": "Lampedusa e Linosa",
+    "codice": "084020",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "E431",
+    "cap": ["92031"],
+    "popolazione": 6105
+  },
+  {
+    "nome": "Lascari",
+    "codice": "082044",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "E459",
+    "cap": ["90010"],
+    "popolazione": 3500
+  },
+  {
+    "nome": "Leni",
+    "codice": "083037",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "E523",
+    "cap": ["98050"],
+    "popolazione": 702
+  },
+  {
+    "nome": "Lentini",
+    "codice": "089011",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "089",
+      "nome": "Siracusa"
+    },
+    "sigla": "SR",
+    "codiceCatastale": "E532",
+    "cap": ["96016"],
+    "popolazione": 24484
+  },
+  {
+    "nome": "Leonforte",
+    "codice": "086011",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "086",
+      "nome": "Enna"
+    },
+    "sigla": "EN",
+    "codiceCatastale": "E536",
+    "cap": ["94013"],
+    "popolazione": 13878
+  },
+  {
+    "nome": "Lercara Friddi",
+    "codice": "082045",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "E541",
+    "cap": ["90025"],
+    "popolazione": 6935
+  },
+  {
+    "nome": "Letojanni",
+    "codice": "083038",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "E555",
+    "cap": ["98037"],
+    "popolazione": 2699
+  },
+  {
+    "nome": "Librizzi",
+    "codice": "083039",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "E571",
+    "cap": ["98064"],
+    "popolazione": 1771
+  },
+  {
+    "nome": "Licata",
+    "codice": "084021",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "E573",
+    "cap": ["92027"],
+    "popolazione": 38125
+  },
+  {
+    "nome": "Licodia Eubea",
+    "codice": "087020",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "E578",
+    "cap": ["95040"],
+    "popolazione": 3047
+  },
+  {
+    "nome": "Limina",
+    "codice": "083040",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "E594",
+    "cap": ["98030"],
+    "popolazione": 900
+  },
+  {
+    "nome": "Linguaglossa",
+    "codice": "087021",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "E602",
+    "cap": ["95015"],
+    "popolazione": 5416
+  },
+  {
+    "nome": "Lipari",
+    "codice": "083041",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "E606",
+    "cap": ["98055"],
+    "popolazione": 11642
+  },
+  {
+    "nome": "Longi",
+    "codice": "083042",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "E674",
+    "cap": ["98070"],
+    "popolazione": 1562
+  },
+  {
+    "nome": "Lucca Sicula",
+    "codice": "084022",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "E714",
+    "cap": ["92010"],
+    "popolazione": 1917
+  },
+  {
+    "nome": "Maletto",
+    "codice": "087022",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "E854",
+    "cap": ["95035"],
+    "popolazione": 4015
+  },
+  {
+    "nome": "Malfa",
+    "codice": "083043",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "E855",
+    "cap": ["98050"],
+    "popolazione": 988
+  },
+  {
+    "nome": "Malvagna",
+    "codice": "083044",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "E869",
+    "cap": ["98030"],
+    "popolazione": 794
+  },
+  {
+    "nome": "Mandanici",
+    "codice": "083045",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "E876",
+    "cap": ["98020"],
+    "popolazione": 629
+  },
+  {
+    "nome": "Maniace",
+    "codice": "087057",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "M283",
+    "cap": ["95030"],
+    "popolazione": 3671
+  },
+  {
+    "nome": "Marianopoli",
+    "codice": "085008",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "E953",
+    "cap": ["93010"],
+    "popolazione": 2006
+  },
+  {
+    "nome": "Marineo",
+    "codice": "082046",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "E957",
+    "cap": ["90035"],
+    "popolazione": 6779
+  },
+  {
+    "nome": "Marsala",
+    "codice": "081011",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "E974",
+    "cap": ["91025"],
+    "popolazione": 80218
+  },
+  {
+    "nome": "Mascali",
+    "codice": "087023",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "F004",
+    "cap": ["95016"],
+    "popolazione": 13792
+  },
+  {
+    "nome": "Mascalucia",
+    "codice": "087024",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "F005",
+    "cap": ["95030"],
+    "popolazione": 29984
+  },
+  {
+    "nome": "Mazara del Vallo",
+    "codice": "081012",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "F061",
+    "cap": ["91026"],
+    "popolazione": 49995
+  },
+  {
+    "nome": "Mazzarino",
+    "codice": "085009",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "F065",
+    "cap": ["93013"],
+    "popolazione": 12333
+  },
+  {
+    "nome": "Mazzarrone",
+    "codice": "087056",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "M271",
+    "cap": ["95040"],
+    "popolazione": 3989
+  },
+  {
+    "nome": "Mazzarrà Sant'Andrea",
+    "codice": "083046",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "F066",
+    "cap": ["98056"],
+    "popolazione": 1567
+  },
+  {
+    "nome": "Melilli",
+    "codice": "089012",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "089",
+      "nome": "Siracusa"
+    },
+    "sigla": "SR",
+    "codiceCatastale": "F107",
+    "cap": ["96010"],
+    "popolazione": 13076
+  },
+  {
+    "nome": "Menfi",
+    "codice": "084023",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "F126",
+    "cap": ["92013"],
+    "popolazione": 12711
+  },
+  {
+    "nome": "Merì",
+    "codice": "083047",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "F147",
+    "cap": ["98040"],
+    "popolazione": 2396
+  },
+  {
+    "nome": "Messina",
+    "codice": "083048",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "F158",
+    "cap": [
+      "98121",
+      "98122",
+      "98123",
+      "98124",
+      "98125",
+      "98126",
+      "98127",
+      "98128",
+      "98129",
+      "98130",
+      "98131",
+      "98132",
+      "98133",
+      "98134",
+      "98135",
+      "98136",
+      "98137",
+      "98138",
+      "98139",
+      "98140",
+      "98141",
+      "98142",
+      "98143",
+      "98144",
+      "98145",
+      "98146",
+      "98147",
+      "98148",
+      "98149",
+      "98150",
+      "98151",
+      "98152",
+      "98153",
+      "98154",
+      "98155",
+      "98156",
+      "98157",
+      "98158",
+      "98159",
+      "98160",
+      "98161",
+      "98162",
+      "98163",
+      "98164",
+      "98165",
+      "98166",
+      "98167",
+      "98168"
+    ],
+    "popolazione": 243262
+  },
+  {
+    "nome": "Mezzojuso",
+    "codice": "082047",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "F184",
+    "cap": ["90030"],
+    "popolazione": 3020
+  },
+  {
+    "nome": "Milazzo",
+    "codice": "083049",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "F206",
+    "cap": ["98057"],
+    "popolazione": 32146
+  },
+  {
+    "nome": "Milena",
+    "codice": "085010",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "E618",
+    "cap": ["93010"],
+    "popolazione": 3178
+  },
+  {
+    "nome": "Militello Rosmarino",
+    "codice": "083050",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "F210",
+    "cap": ["98070"],
+    "popolazione": 1334
+  },
+  {
+    "nome": "Militello in Val di Catania",
+    "codice": "087025",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "F209",
+    "cap": ["95043"],
+    "popolazione": 7807
+  },
+  {
+    "nome": "Milo",
+    "codice": "087026",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "F214",
+    "cap": ["95010"],
+    "popolazione": 1065
+  },
+  {
+    "nome": "Mineo",
+    "codice": "087027",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "F217",
+    "cap": ["95044"],
+    "popolazione": 5216
+  },
+  {
+    "nome": "Mirabella Imbaccari",
+    "codice": "087028",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "F231",
+    "cap": ["95040"],
+    "popolazione": 5191
+  },
+  {
+    "nome": "Mirto",
+    "codice": "083051",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "F242",
+    "cap": ["98070"],
+    "popolazione": 1000
+  },
+  {
+    "nome": "Misilmeri",
+    "codice": "082048",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "F246",
+    "cap": ["90036"],
+    "popolazione": 27570
+  },
+  {
+    "nome": "Misterbianco",
+    "codice": "087029",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "F250",
+    "cap": ["95045"],
+    "popolazione": 47356
+  },
+  {
+    "nome": "Mistretta",
+    "codice": "083052",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "F251",
+    "cap": ["98073"],
+    "popolazione": 5014
+  },
+  {
+    "nome": "Modica",
+    "codice": "088006",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "088",
+      "nome": "Ragusa"
+    },
+    "sigla": "RG",
+    "codiceCatastale": "F258",
+    "cap": ["97015"],
+    "popolazione": 53959
+  },
+  {
+    "nome": "Moio Alcantara",
+    "codice": "083053",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "F277",
+    "cap": ["98030"],
+    "popolazione": 756
+  },
+  {
+    "nome": "Monforte San Giorgio",
+    "codice": "083054",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "F359",
+    "cap": ["98041"],
+    "popolazione": 2880
+  },
+  {
+    "nome": "Mongiuffi Melia",
+    "codice": "083055",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "F368",
+    "cap": ["98030"],
+    "popolazione": 653
+  },
+  {
+    "nome": "Monreale",
+    "codice": "082049",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "F377",
+    "cap": ["90046"],
+    "popolazione": 38018
+  },
+  {
+    "nome": "Montagnareale",
+    "codice": "083056",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "F395",
+    "cap": ["98060"],
+    "popolazione": 1631
+  },
+  {
+    "nome": "Montalbano Elicona",
+    "codice": "083057",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "F400",
+    "cap": ["98065"],
+    "popolazione": 2420
+  },
+  {
+    "nome": "Montallegro",
+    "codice": "084024",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "F414",
+    "cap": ["92010"],
+    "popolazione": 2543
+  },
+  {
+    "nome": "Montedoro",
+    "codice": "085011",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "F489",
+    "cap": ["93010"],
+    "popolazione": 1643
+  },
+  {
+    "nome": "Montelepre",
+    "codice": "082050",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "F544",
+    "cap": ["90040"],
+    "popolazione": 6421
+  },
+  {
+    "nome": "Montemaggiore Belsito",
+    "codice": "082051",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "F553",
+    "cap": ["90020"],
+    "popolazione": 3566
+  },
+  {
+    "nome": "Monterosso Almo",
+    "codice": "088007",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "088",
+      "nome": "Ragusa"
+    },
+    "sigla": "RG",
+    "codiceCatastale": "F610",
+    "cap": ["97010"],
+    "popolazione": 3183
+  },
+  {
+    "nome": "Montevago",
+    "codice": "084025",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "F655",
+    "cap": ["92010"],
+    "popolazione": 3015
+  },
+  {
+    "nome": "Motta Camastra",
+    "codice": "083058",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "F772",
+    "cap": ["98030"],
+    "popolazione": 882
+  },
+  {
+    "nome": "Motta Sant'Anastasia",
+    "codice": "087030",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "F781",
+    "cap": ["95040"],
+    "popolazione": 11394
+  },
+  {
+    "nome": "Motta d'Affermo",
+    "codice": "083059",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "F773",
+    "cap": ["98070"],
+    "popolazione": 828
+  },
+  {
+    "nome": "Mussomeli",
+    "codice": "085012",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "F830",
+    "cap": ["93014"],
+    "popolazione": 11010
+  },
+  {
+    "nome": "Naro",
+    "codice": "084026",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "F845",
+    "cap": ["92028"],
+    "popolazione": 8103
+  },
+  {
+    "nome": "Naso",
+    "codice": "083060",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "F848",
+    "cap": ["98074"],
+    "popolazione": 4015
+  },
+  {
+    "nome": "Nicolosi",
+    "codice": "087031",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "F890",
+    "cap": ["95030"],
+    "popolazione": 7156
+  },
+  {
+    "nome": "Nicosia",
+    "codice": "086012",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "086",
+      "nome": "Enna"
+    },
+    "sigla": "EN",
+    "codiceCatastale": "F892",
+    "cap": ["94014"],
+    "popolazione": 14272
+  },
+  {
+    "nome": "Niscemi",
+    "codice": "085013",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "F899",
+    "cap": ["93015"],
+    "popolazione": 27975
+  },
+  {
+    "nome": "Nissoria",
+    "codice": "086013",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "086",
+      "nome": "Enna"
+    },
+    "sigla": "EN",
+    "codiceCatastale": "F900",
+    "cap": ["94010"],
+    "popolazione": 2969
+  },
+  {
+    "nome": "Nizza di Sicilia",
+    "codice": "083061",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "F901",
+    "cap": ["98026"],
+    "popolazione": 3723
+  },
+  {
+    "nome": "Noto",
+    "codice": "089013",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "089",
+      "nome": "Siracusa"
+    },
+    "sigla": "SR",
+    "codiceCatastale": "F943",
+    "cap": ["96017"],
+    "popolazione": 23704
+  },
+  {
+    "nome": "Novara di Sicilia",
+    "codice": "083062",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "F951",
+    "cap": ["98058"],
+    "popolazione": 1413
+  },
+  {
+    "nome": "Oliveri",
+    "codice": "083063",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "G036",
+    "cap": ["98060"],
+    "popolazione": 2157
+  },
+  {
+    "nome": "Pace del Mela",
+    "codice": "083064",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "G209",
+    "cap": ["98042"],
+    "popolazione": 6388
+  },
+  {
+    "nome": "Paceco",
+    "codice": "081013",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "G208",
+    "cap": ["91027"],
+    "popolazione": 11487
+  },
+  {
+    "nome": "Pachino",
+    "codice": "089014",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "089",
+      "nome": "Siracusa"
+    },
+    "sigla": "SR",
+    "codiceCatastale": "G211",
+    "cap": ["96018"],
+    "popolazione": 22068
+  },
+  {
+    "nome": "Pagliara",
+    "codice": "083065",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "G234",
+    "cap": ["98020"],
+    "popolazione": 1230
+  },
+  {
+    "nome": "Palagonia",
+    "codice": "087032",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "G253",
+    "cap": ["95046"],
+    "popolazione": 16540
+  },
+  {
+    "nome": "Palazzo Adriano",
+    "codice": "082052",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "G263",
+    "cap": ["90030"],
+    "popolazione": 2227
+  },
+  {
+    "nome": "Palazzolo Acreide",
+    "codice": "089015",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "089",
+      "nome": "Siracusa"
+    },
+    "sigla": "SR",
+    "codiceCatastale": "G267",
+    "cap": ["96010"],
+    "popolazione": 9091
+  },
+  {
+    "nome": "Palermo",
+    "codice": "082053",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "G273",
+    "cap": [
+      "90121",
+      "90122",
+      "90123",
+      "90124",
+      "90125",
+      "90126",
+      "90127",
+      "90128",
+      "90129",
+      "90130",
+      "90131",
+      "90132",
+      "90133",
+      "90134",
+      "90135",
+      "90136",
+      "90137",
+      "90138",
+      "90139",
+      "90140",
+      "90141",
+      "90142",
+      "90143",
+      "90144",
+      "90145",
+      "90146",
+      "90147",
+      "90148",
+      "90149",
+      "90150",
+      "90151"
+    ],
+    "popolazione": 657561
+  },
+  {
+    "nome": "Palma di Montechiaro",
+    "codice": "084027",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "G282",
+    "cap": ["92020"],
+    "popolazione": 23643
+  },
+  {
+    "nome": "Pantelleria",
+    "codice": "081014",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "G315",
+    "cap": ["91017"],
+    "popolazione": 7493
+  },
+  {
+    "nome": "Partanna",
+    "codice": "081015",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "G347",
+    "cap": ["91028"],
+    "popolazione": 10854
+  },
+  {
+    "nome": "Partinico",
+    "codice": "082054",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "G348",
+    "cap": ["90047"],
+    "popolazione": 31401
+  },
+  {
+    "nome": "Paternò",
+    "codice": "087033",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "G371",
+    "cap": ["95047"],
+    "popolazione": 47870
+  },
+  {
+    "nome": "Patti",
+    "codice": "083066",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "G377",
+    "cap": ["98066"],
+    "popolazione": 13325
+  },
+  {
+    "nome": "Pedara",
+    "codice": "087034",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "G402",
+    "cap": ["95030"],
+    "popolazione": 12896
+  },
+  {
+    "nome": "Petralia Soprana",
+    "codice": "082055",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "G510",
+    "cap": ["90026"],
+    "popolazione": 3443
+  },
+  {
+    "nome": "Petralia Sottana",
+    "codice": "082056",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "G511",
+    "cap": ["90027"],
+    "popolazione": 2975
+  },
+  {
+    "nome": "Petrosino",
+    "codice": "081024",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "M281",
+    "cap": ["91020"],
+    "popolazione": 7760
+  },
+  {
+    "nome": "Pettineo",
+    "codice": "083067",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "G522",
+    "cap": ["98070"],
+    "popolazione": 1433
+  },
+  {
+    "nome": "Piana degli Albanesi",
+    "codice": "082057",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "G543",
+    "cap": ["90037"],
+    "popolazione": 6010
+  },
+  {
+    "nome": "Piazza Armerina",
+    "codice": "086014",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "086",
+      "nome": "Enna"
+    },
+    "sigla": "EN",
+    "codiceCatastale": "G580",
+    "cap": ["94015"],
+    "popolazione": 22196
+  },
+  {
+    "nome": "Piedimonte Etneo",
+    "codice": "087035",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "G597",
+    "cap": ["95017"],
+    "popolazione": 4079
+  },
+  {
+    "nome": "Pietraperzia",
+    "codice": "086015",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "086",
+      "nome": "Enna"
+    },
+    "sigla": "EN",
+    "codiceCatastale": "G624",
+    "cap": ["94016"],
+    "popolazione": 7227
+  },
+  {
+    "nome": "Piraino",
+    "codice": "083068",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "G699",
+    "cap": ["98060"],
+    "popolazione": 3964
+  },
+  {
+    "nome": "Poggioreale",
+    "codice": "081016",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "G767",
+    "cap": ["91020"],
+    "popolazione": 1534
+  },
+  {
+    "nome": "Polizzi Generosa",
+    "codice": "082058",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "G792",
+    "cap": ["90028"],
+    "popolazione": 3607
+  },
+  {
+    "nome": "Pollina",
+    "codice": "082059",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "G797",
+    "cap": ["90010"],
+    "popolazione": 2998
+  },
+  {
+    "nome": "Porto Empedocle",
+    "codice": "084028",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "F299",
+    "cap": ["92014"],
+    "popolazione": 16841
+  },
+  {
+    "nome": "Portopalo di Capo Passero",
+    "codice": "089020",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "089",
+      "nome": "Siracusa"
+    },
+    "sigla": "SR",
+    "codiceCatastale": "M257",
+    "cap": ["96010"],
+    "popolazione": 3749
+  },
+  {
+    "nome": "Pozzallo",
+    "codice": "088008",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "088",
+      "nome": "Ragusa"
+    },
+    "sigla": "RG",
+    "codiceCatastale": "G953",
+    "cap": ["97016"],
+    "popolazione": 18929
+  },
+  {
+    "nome": "Priolo Gargallo",
+    "codice": "089021",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "089",
+      "nome": "Siracusa"
+    },
+    "sigla": "SR",
+    "codiceCatastale": "M279",
+    "cap": ["96010"],
+    "popolazione": 12167
+  },
+  {
+    "nome": "Prizzi",
+    "codice": "082060",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "H070",
+    "cap": ["90038"],
+    "popolazione": 5055
+  },
+  {
+    "nome": "Racalmuto",
+    "codice": "084029",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "H148",
+    "cap": ["92020"],
+    "popolazione": 8345
+  },
+  {
+    "nome": "Raccuja",
+    "codice": "083069",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "H151",
+    "cap": ["98067"],
+    "popolazione": 1139
+  },
+  {
+    "nome": "Raddusa",
+    "codice": "087036",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "H154",
+    "cap": ["95040"],
+    "popolazione": 3280
+  },
+  {
+    "nome": "Raffadali",
+    "codice": "084030",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "H159",
+    "cap": ["92015"],
+    "popolazione": 12837
+  },
+  {
+    "nome": "Ragalna",
+    "codice": "087058",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "M287",
+    "cap": ["95030"],
+    "popolazione": 3676
+  },
+  {
+    "nome": "Ragusa",
+    "codice": "088009",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "088",
+      "nome": "Ragusa"
+    },
+    "sigla": "RG",
+    "codiceCatastale": "H163",
+    "cap": ["97100"],
+    "popolazione": 69794
+  },
+  {
+    "nome": "Ramacca",
+    "codice": "087037",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "H168",
+    "cap": ["95040"],
+    "popolazione": 10775
+  },
+  {
+    "nome": "Randazzo",
+    "codice": "087038",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "H175",
+    "cap": ["95036"],
+    "popolazione": 11108
+  },
+  {
+    "nome": "Ravanusa",
+    "codice": "084031",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "H194",
+    "cap": ["92029"],
+    "popolazione": 12128
+  },
+  {
+    "nome": "Realmonte",
+    "codice": "084032",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "H205",
+    "cap": ["92010"],
+    "popolazione": 4487
+  },
+  {
+    "nome": "Regalbuto",
+    "codice": "086016",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "086",
+      "nome": "Enna"
+    },
+    "sigla": "EN",
+    "codiceCatastale": "H221",
+    "cap": ["94017"],
+    "popolazione": 7388
+  },
+  {
+    "nome": "Reitano",
+    "codice": "083070",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "H228",
+    "cap": ["98070"],
+    "popolazione": 829
+  },
+  {
+    "nome": "Resuttano",
+    "codice": "085014",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "H245",
+    "cap": ["93010"],
+    "popolazione": 2139
+  },
+  {
+    "nome": "Ribera",
+    "codice": "084033",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "H269",
+    "cap": ["92016"],
+    "popolazione": 19302
+  },
+  {
+    "nome": "Riesi",
+    "codice": "085015",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "H281",
+    "cap": ["93016"],
+    "popolazione": 11814
+  },
+  {
+    "nome": "Riposto",
+    "codice": "087039",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "H325",
+    "cap": ["95018"],
+    "popolazione": 14181
+  },
+  {
+    "nome": "Roccafiorita",
+    "codice": "083071",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "H405",
+    "cap": ["98030"],
+    "popolazione": 228
+  },
+  {
+    "nome": "Roccalumera",
+    "codice": "083072",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "H418",
+    "cap": ["98027"],
+    "popolazione": 4105
+  },
+  {
+    "nome": "Roccamena",
+    "codice": "082061",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "H422",
+    "cap": ["90040"],
+    "popolazione": 1562
+  },
+  {
+    "nome": "Roccapalumba",
+    "codice": "082062",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "H428",
+    "cap": ["90020"],
+    "popolazione": 2634
+  },
+  {
+    "nome": "Roccavaldina",
+    "codice": "083073",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "H380",
+    "cap": ["98040"],
+    "popolazione": 1149
+  },
+  {
+    "nome": "Roccella Valdemone",
+    "codice": "083074",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "H455",
+    "cap": ["98030"],
+    "popolazione": 711
+  },
+  {
+    "nome": "Rodì Milici",
+    "codice": "083075",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "H479",
+    "cap": ["98059"],
+    "popolazione": 2130
+  },
+  {
+    "nome": "Rometta",
+    "codice": "083076",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "H519",
+    "cap": ["98043"],
+    "popolazione": 6541
+  },
+  {
+    "nome": "Rosolini",
+    "codice": "089016",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "089",
+      "nome": "Siracusa"
+    },
+    "sigla": "SR",
+    "codiceCatastale": "H574",
+    "cap": ["96019"],
+    "popolazione": 21526
+  },
+  {
+    "nome": "Salaparuta",
+    "codice": "081017",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "H688",
+    "cap": ["91020"],
+    "popolazione": 1721
+  },
+  {
+    "nome": "Salemi",
+    "codice": "081018",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "H700",
+    "cap": ["91018"],
+    "popolazione": 10871
+  },
+  {
+    "nome": "Sambuca di Sicilia",
+    "codice": "084034",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "H743",
+    "cap": ["92017"],
+    "popolazione": 6114
+  },
+  {
+    "nome": "San Biagio Platani",
+    "codice": "084035",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "H778",
+    "cap": ["92020"],
+    "popolazione": 3501
+  },
+  {
+    "nome": "San Cataldo",
+    "codice": "085016",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "H792",
+    "cap": ["93017"],
+    "popolazione": 23424
+  },
+  {
+    "nome": "San Cipirello",
+    "codice": "082063",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "H797",
+    "cap": ["90040"],
+    "popolazione": 5478
+  },
+  {
+    "nome": "San Cono",
+    "codice": "087040",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "H805",
+    "cap": ["95040"],
+    "popolazione": 2790
+  },
+  {
+    "nome": "San Filippo del Mela",
+    "codice": "083077",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "H842",
+    "cap": ["98044"],
+    "popolazione": 7065
+  },
+  {
+    "nome": "San Fratello",
+    "codice": "083078",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "H850",
+    "cap": ["98075"],
+    "popolazione": 3942
+  },
+  {
+    "nome": "San Giovanni Gemini",
+    "codice": "084036",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "H914",
+    "cap": ["92020"],
+    "popolazione": 8127
+  },
+  {
+    "nome": "San Giovanni la Punta",
+    "codice": "087041",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "H922",
+    "cap": ["95037"],
+    "popolazione": 22049
+  },
+  {
+    "nome": "San Giuseppe Jato",
+    "codice": "082064",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "H933",
+    "cap": ["90048"],
+    "popolazione": 8511
+  },
+  {
+    "nome": "San Gregorio di Catania",
+    "codice": "087042",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "H940",
+    "cap": ["95027"],
+    "popolazione": 11497
+  },
+  {
+    "nome": "San Marco d'Alunzio",
+    "codice": "083079",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "H982",
+    "cap": ["98070"],
+    "popolazione": 2083
+  },
+  {
+    "nome": "San Mauro Castelverde",
+    "codice": "082065",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "I028",
+    "cap": ["90010"],
+    "popolazione": 1847
+  },
+  {
+    "nome": "San Michele di Ganzaria",
+    "codice": "087043",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "I035",
+    "cap": ["95040"],
+    "popolazione": 3463
+  },
+  {
+    "nome": "San Pier Niceto",
+    "codice": "083080",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "I084",
+    "cap": ["98045"],
+    "popolazione": 2911
+  },
+  {
+    "nome": "San Piero Patti",
+    "codice": "083081",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "I086",
+    "cap": ["98068"],
+    "popolazione": 3082
+  },
+  {
+    "nome": "San Pietro Clarenza",
+    "codice": "087044",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "I098",
+    "cap": ["95030"],
+    "popolazione": 7102
+  },
+  {
+    "nome": "San Salvatore di Fitalia",
+    "codice": "083082",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "I147",
+    "cap": ["98070"],
+    "popolazione": 1378
+  },
+  {
+    "nome": "San Teodoro",
+    "codice": "083090",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "I328",
+    "cap": ["98030"],
+    "popolazione": 1421
+  },
+  {
+    "nome": "San Vito Lo Capo",
+    "codice": "081020",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "I407",
+    "cap": ["91010"],
+    "popolazione": 4415
+  },
+  {
+    "nome": "Sant'Agata di Militello",
+    "codice": "083084",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "I199",
+    "cap": ["98076"],
+    "popolazione": 12803
+  },
+  {
+    "nome": "Sant'Agata li Battiati",
+    "codice": "087045",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "I202",
+    "cap": ["95030"],
+    "popolazione": 9829
+  },
+  {
+    "nome": "Sant'Alessio Siculo",
+    "codice": "083085",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "I215",
+    "cap": ["98030"],
+    "popolazione": 1497
+  },
+  {
+    "nome": "Sant'Alfio",
+    "codice": "087046",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "I216",
+    "cap": ["95010"],
+    "popolazione": 1631
+  },
+  {
+    "nome": "Sant'Angelo Muxaro",
+    "codice": "084039",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "I290",
+    "cap": ["92020"],
+    "popolazione": 1471
+  },
+  {
+    "nome": "Sant'Angelo di Brolo",
+    "codice": "083088",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "I283",
+    "cap": ["98060"],
+    "popolazione": 3297
+  },
+  {
+    "nome": "Santa Caterina Villarmosa",
+    "codice": "085017",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "I169",
+    "cap": ["93018"],
+    "popolazione": 5727
+  },
+  {
+    "nome": "Santa Cristina Gela",
+    "codice": "082066",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "I174",
+    "cap": ["90030"],
+    "popolazione": 925
+  },
+  {
+    "nome": "Santa Croce Camerina",
+    "codice": "088010",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "088",
+      "nome": "Ragusa"
+    },
+    "sigla": "RG",
+    "codiceCatastale": "I178",
+    "cap": ["97017"],
+    "popolazione": 9452
+  },
+  {
+    "nome": "Santa Domenica Vittoria",
+    "codice": "083083",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "I184",
+    "cap": ["98030"],
+    "popolazione": 1067
+  },
+  {
+    "nome": "Santa Elisabetta",
+    "codice": "084037",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "I185",
+    "cap": ["92020"],
+    "popolazione": 2608
+  },
+  {
+    "nome": "Santa Flavia",
+    "codice": "082067",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "I188",
+    "cap": ["90017"],
+    "popolazione": 10751
+  },
+  {
+    "nome": "Santa Lucia del Mela",
+    "codice": "083086",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "I220",
+    "cap": ["98046"],
+    "popolazione": 4744
+  },
+  {
+    "nome": "Santa Margherita di Belice",
+    "codice": "084038",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "I224",
+    "cap": ["92018"],
+    "popolazione": 6544
+  },
+  {
+    "nome": "Santa Maria di Licodia",
+    "codice": "087047",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "I240",
+    "cap": ["95038"],
+    "popolazione": 7322
+  },
+  {
+    "nome": "Santa Marina Salina",
+    "codice": "083087",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "I254",
+    "cap": ["98050"],
+    "popolazione": 892
+  },
+  {
+    "nome": "Santa Ninfa",
+    "codice": "081019",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "I291",
+    "cap": ["91029"],
+    "popolazione": 5095
+  },
+  {
+    "nome": "Santa Teresa di Riva",
+    "codice": "083089",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "I311",
+    "cap": ["98028"],
+    "popolazione": 9240
+  },
+  {
+    "nome": "Santa Venerina",
+    "codice": "087048",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "I314",
+    "cap": ["95010"],
+    "popolazione": 8351
+  },
+  {
+    "nome": "Santo Stefano Quisquina",
+    "codice": "084040",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "I356",
+    "cap": ["92020"],
+    "popolazione": 4897
+  },
+  {
+    "nome": "Santo Stefano di Camastra",
+    "codice": "083091",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "I370",
+    "cap": ["98077"],
+    "popolazione": 4674
+  },
+  {
+    "nome": "Saponara",
+    "codice": "083092",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "I420",
+    "cap": ["98047"],
+    "popolazione": 4078
+  },
+  {
+    "nome": "Savoca",
+    "codice": "083093",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "I477",
+    "cap": ["98038"],
+    "popolazione": 1766
+  },
+  {
+    "nome": "Scaletta Zanclea",
+    "codice": "083094",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "I492",
+    "cap": ["98029"],
+    "popolazione": 2249
+  },
+  {
+    "nome": "Sciacca",
+    "codice": "084041",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "I533",
+    "cap": ["92019"],
+    "popolazione": 40899
+  },
+  {
+    "nome": "Sciara",
+    "codice": "082068",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "I534",
+    "cap": ["90020"],
+    "popolazione": 2787
+  },
+  {
+    "nome": "Scicli",
+    "codice": "088011",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "088",
+      "nome": "Ragusa"
+    },
+    "sigla": "RG",
+    "codiceCatastale": "I535",
+    "cap": ["97018"],
+    "popolazione": 25922
+  },
+  {
+    "nome": "Scillato",
+    "codice": "082081",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "I538",
+    "cap": ["90020"],
+    "popolazione": 627
+  },
+  {
+    "nome": "Sclafani Bagni",
+    "codice": "082069",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "I541",
+    "cap": ["90020"],
+    "popolazione": 450
+  },
+  {
+    "nome": "Scordia",
+    "codice": "087049",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "I548",
+    "cap": ["95048"],
+    "popolazione": 17185
+  },
+  {
+    "nome": "Serradifalco",
+    "codice": "085018",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "I644",
+    "cap": ["93010"],
+    "popolazione": 6265
+  },
+  {
+    "nome": "Siculiana",
+    "codice": "084042",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "I723",
+    "cap": ["92010"],
+    "popolazione": 4632
+  },
+  {
+    "nome": "Sinagra",
+    "codice": "083095",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "I747",
+    "cap": ["98069"],
+    "popolazione": 2760
+  },
+  {
+    "nome": "Siracusa",
+    "codice": "089017",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "089",
+      "nome": "Siracusa"
+    },
+    "sigla": "SR",
+    "codiceCatastale": "I754",
+    "cap": ["96100"],
+    "popolazione": 118385
+  },
+  {
+    "nome": "Solarino",
+    "codice": "089018",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "089",
+      "nome": "Siracusa"
+    },
+    "sigla": "SR",
+    "codiceCatastale": "I785",
+    "cap": ["96010"],
+    "popolazione": 7853
+  },
+  {
+    "nome": "Sommatino",
+    "codice": "085019",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "I824",
+    "cap": ["93019"],
+    "popolazione": 7267
+  },
+  {
+    "nome": "Sortino",
+    "codice": "089019",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "089",
+      "nome": "Siracusa"
+    },
+    "sigla": "SR",
+    "codiceCatastale": "I864",
+    "cap": ["96010"],
+    "popolazione": 8907
+  },
+  {
+    "nome": "Spadafora",
+    "codice": "083096",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "I881",
+    "cap": ["98048"],
+    "popolazione": 5091
+  },
+  {
+    "nome": "Sperlinga",
+    "codice": "086017",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "086",
+      "nome": "Enna"
+    },
+    "sigla": "EN",
+    "codiceCatastale": "I891",
+    "cap": ["94010"],
+    "popolazione": 833
+  },
+  {
+    "nome": "Sutera",
+    "codice": "085020",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "L016",
+    "cap": ["93010"],
+    "popolazione": 1436
+  },
+  {
+    "nome": "Taormina",
+    "codice": "083097",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "L042",
+    "cap": ["98039"],
+    "popolazione": 11084
+  },
+  {
+    "nome": "Terme Vigliatore",
+    "codice": "083106",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "M210",
+    "cap": ["98050"],
+    "popolazione": 7213
+  },
+  {
+    "nome": "Termini Imerese",
+    "codice": "082070",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "L112",
+    "cap": ["90018"],
+    "popolazione": 26201
+  },
+  {
+    "nome": "Terrasini",
+    "codice": "082071",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "L131",
+    "cap": ["90049"],
+    "popolazione": 11985
+  },
+  {
+    "nome": "Torregrotta",
+    "codice": "083098",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "L271",
+    "cap": ["98040"],
+    "popolazione": 7426
+  },
+  {
+    "nome": "Torrenova",
+    "codice": "083108",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "M286",
+    "cap": ["98070"],
+    "popolazione": 4240
+  },
+  {
+    "nome": "Torretta",
+    "codice": "082072",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "L282",
+    "cap": ["90040"],
+    "popolazione": 4141
+  },
+  {
+    "nome": "Tortorici",
+    "codice": "083099",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "L308",
+    "cap": ["98078"],
+    "popolazione": 6732
+  },
+  {
+    "nome": "Trabia",
+    "codice": "082073",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "L317",
+    "cap": ["90019"],
+    "popolazione": 10360
+  },
+  {
+    "nome": "Trapani",
+    "codice": "081021",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "L331",
+    "cap": ["91100"],
+    "popolazione": 69241
+  },
+  {
+    "nome": "Trappeto",
+    "codice": "082074",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "L332",
+    "cap": ["90040"],
+    "popolazione": 3211
+  },
+  {
+    "nome": "Trecastagni",
+    "codice": "087050",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "L355",
+    "cap": ["95039"],
+    "popolazione": 10482
+  },
+  {
+    "nome": "Tremestieri Etneo",
+    "codice": "087051",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "L369",
+    "cap": ["95030"],
+    "popolazione": 21032
+  },
+  {
+    "nome": "Tripi",
+    "codice": "083100",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "L431",
+    "cap": ["98060"],
+    "popolazione": 933
+  },
+  {
+    "nome": "Troina",
+    "codice": "086018",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "086",
+      "nome": "Enna"
+    },
+    "sigla": "EN",
+    "codiceCatastale": "L448",
+    "cap": ["94018"],
+    "popolazione": 9628
+  },
+  {
+    "nome": "Tusa",
+    "codice": "083101",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "L478",
+    "cap": ["98079"],
+    "popolazione": 3051
+  },
+  {
+    "nome": "Ucria",
+    "codice": "083102",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "L482",
+    "cap": ["98060"],
+    "popolazione": 1105
+  },
+  {
+    "nome": "Ustica",
+    "codice": "082075",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "L519",
+    "cap": ["90051"],
+    "popolazione": 1287
+  },
+  {
+    "nome": "Valderice",
+    "codice": "081022",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "G319",
+    "cap": ["91019"],
+    "popolazione": 11951
+  },
+  {
+    "nome": "Valdina",
+    "codice": "083103",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "L561",
+    "cap": ["98040"],
+    "popolazione": 1352
+  },
+  {
+    "nome": "Valguarnera Caropepe",
+    "codice": "086019",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "086",
+      "nome": "Enna"
+    },
+    "sigla": "EN",
+    "codiceCatastale": "L583",
+    "cap": ["94019"],
+    "popolazione": 8182
+  },
+  {
+    "nome": "Valledolmo",
+    "codice": "082076",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "L603",
+    "cap": ["90029"],
+    "popolazione": 3747
+  },
+  {
+    "nome": "Vallelunga Pratameno",
+    "codice": "085021",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "L609",
+    "cap": ["93010"],
+    "popolazione": 3641
+  },
+  {
+    "nome": "Valverde",
+    "codice": "087052",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "L658",
+    "cap": ["95028"],
+    "popolazione": 7714
+  },
+  {
+    "nome": "Venetico",
+    "codice": "083104",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "L735",
+    "cap": ["98040"],
+    "popolazione": 3855
+  },
+  {
+    "nome": "Ventimiglia di Sicilia",
+    "codice": "082077",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "L740",
+    "cap": ["90020"],
+    "popolazione": 2080
+  },
+  {
+    "nome": "Viagrande",
+    "codice": "087053",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "L828",
+    "cap": ["95029"],
+    "popolazione": 8155
+  },
+  {
+    "nome": "Vicari",
+    "codice": "082078",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "L837",
+    "cap": ["90020"],
+    "popolazione": 2948
+  },
+  {
+    "nome": "Villabate",
+    "codice": "082079",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "L916",
+    "cap": ["90039"],
+    "popolazione": 19819
+  },
+  {
+    "nome": "Villafranca Sicula",
+    "codice": "084043",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "084",
+      "nome": "Agrigento"
+    },
+    "sigla": "AG",
+    "codiceCatastale": "L944",
+    "cap": ["92020"],
+    "popolazione": 1426
+  },
+  {
+    "nome": "Villafranca Tirrena",
+    "codice": "083105",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "083",
+      "nome": "Messina"
+    },
+    "sigla": "ME",
+    "codiceCatastale": "L950",
+    "cap": ["98049"],
+    "popolazione": 8748
+  },
+  {
+    "nome": "Villafrati",
+    "codice": "082080",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "082",
+      "nome": "Palermo"
+    },
+    "sigla": "PA",
+    "codiceCatastale": "L951",
+    "cap": ["90030"],
+    "popolazione": 3377
+  },
+  {
+    "nome": "Villalba",
+    "codice": "085022",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "085",
+      "nome": "Caltanissetta"
+    },
+    "sigla": "CL",
+    "codiceCatastale": "L959",
+    "cap": ["93010"],
+    "popolazione": 1731
+  },
+  {
+    "nome": "Villarosa",
+    "codice": "086020",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "086",
+      "nome": "Enna"
+    },
+    "sigla": "EN",
+    "codiceCatastale": "M011",
+    "cap": ["94010"],
+    "popolazione": 5130
+  },
+  {
+    "nome": "Vita",
+    "codice": "081023",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "081",
+      "nome": "Trapani"
+    },
+    "sigla": "TP",
+    "codiceCatastale": "M081",
+    "cap": ["91010"],
+    "popolazione": 2139
+  },
+  {
+    "nome": "Vittoria",
+    "codice": "088012",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "088",
+      "nome": "Ragusa"
+    },
+    "sigla": "RG",
+    "codiceCatastale": "M088",
+    "cap": ["97019"],
+    "popolazione": 61006
+  },
+  {
+    "nome": "Vizzini",
+    "codice": "087054",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "M100",
+    "cap": ["95049"],
+    "popolazione": 6409
+  },
+  {
+    "nome": "Zafferana Etnea",
+    "codice": "087055",
+    "zona": {
+      "codice": "5",
+      "nome": "Isole"
+    },
+    "regione": {
+      "codice": "19",
+      "nome": "Sicilia"
+    },
+    "provincia": {
+      "codice": "087",
+      "nome": "Catania"
+    },
+    "sigla": "CT",
+    "codiceCatastale": "M139",
+    "cap": ["95019"],
+    "popolazione": 9249
+  }
+]

@@ -1,0 +1,17 @@
+.accordion-row {
+  &--icon {
+    fill: color('blue-active-menu');
+  }
+  .info-container {
+    background-color: color('grey-050');
+    .info-row:first-child {
+      margin-top: rem(8px);
+    }
+    .info-row {
+      margin-bottom: rem(8px);
+    }
+    .info-title {
+      color: color('grey-600');
+    }
+  }
+}
