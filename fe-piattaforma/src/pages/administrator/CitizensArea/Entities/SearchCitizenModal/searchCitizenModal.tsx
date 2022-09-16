@@ -226,14 +226,19 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
           };
         }
       }
-      if (serviceId)
-        await dispatch(
+      if (serviceId) {
+        const res = await dispatch(
           AssociateCitizenToService({ idServizio: serviceId, body })
         );
-      // rifaccio get cittadini servizio
-      dispatch(GetCitizenListServiceDetail(serviceId));
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (res) {
+          // rifaccio get cittadini servizio
+          dispatch(GetCitizenListServiceDetail(serviceId));
+          resetModal();
+        }
+      }
     }
-    resetModal();
   };
 
   const addCitizen = () => {

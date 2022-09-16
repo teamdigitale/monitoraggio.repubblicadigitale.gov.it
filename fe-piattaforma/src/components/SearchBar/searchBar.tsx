@@ -186,24 +186,6 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
             )}
           >
             <div className='search-bar-custom__left-section'>
-              {searchValue && (
-                <div className='input-group-append input-button'>
-                  <Button
-                    onClick={clearSearch}
-                    className='border-0 px-0'
-                    id='button-addon1'
-                  >
-                    <Icon
-                      icon='it-close-big'
-                      aria-hidden
-                      size='xs'
-                      color='primary'
-                      aria-label='Chiudi'
-                    />
-                  </Button>
-                </div>
-              )}
-
               <Input
                 addon
                 className={clsx(
@@ -223,6 +205,12 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                 value={searchValue}
                 withLabel={false}
                 aria-label={id}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    handleOnSubmit();
+                  }
+                }}
+                tabIndex={0}
               />
 
               {!hasSearchValue && device.mediaIsPhone && (
@@ -254,6 +242,23 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                 </span>
               )}
             </div>
+            {searchValue && (
+              <div className='input-group-append input-button'>
+                <Button
+                  onClick={clearSearch}
+                  className='border-0 px-0'
+                  id='button-addon1'
+                >
+                  <Icon
+                    icon='it-close-big'
+                    aria-hidden
+                    size='xs'
+                    color='primary'
+                    aria-label='Chiudi'
+                  />
+                </Button>
+              </div>
+            )}
             <div className='input-group-append input-button'>
               {searchButton ? (
                 <Button

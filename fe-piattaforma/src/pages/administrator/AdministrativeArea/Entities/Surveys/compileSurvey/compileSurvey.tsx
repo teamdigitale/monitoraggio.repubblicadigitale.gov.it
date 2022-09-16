@@ -37,6 +37,7 @@ import {
 import { formatAndParseJsonString } from '../../../../../../utils/common';
 import { PostFormCompletedByCitizen } from '../../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 import { OptionType } from '../../../../../../components/Form/select';
+import { RegexpType } from '../../../../../../utils/validator';
 
 const separator = '§';
 const saltoCondizionaleAttivo = false;
@@ -170,6 +171,9 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
               .replaceAll(separator, ',');
             if (activeSection === 1 || activeSection === 2) {
               newForm[key].disabled = true;
+            }
+            if(key === '3'){
+              newForm[key].regex = RegexpType.FISCAL_CODE;
             }
             if(key === '4' && newForm[key].value === 'true'){
               newForm[key].value = 'Codice fiscale non disponibile';
