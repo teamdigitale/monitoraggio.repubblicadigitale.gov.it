@@ -85,20 +85,26 @@ const ManageServices: React.FC<ManageServicesI> = ({
         );
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        if (res?.data?.idServizio)
+        if (res?.data?.idServizio){
           navigate(
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             `/area-amministrativa/servizi/${res?.data?.idServizio}/info`
           );
+          resetModal();
+        }
       } else {
-        await dispatch(
+        const res = await dispatch(
           UpdateService(idServizio, createPayload(newFormsValues))
         );
-        dispatch(GetServicesDetail(idServizio));
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if(res){
+          dispatch(GetServicesDetail(idServizio));
+          resetModal();
+        }
       }
     }
-    resetModal();
   };
 
   return (

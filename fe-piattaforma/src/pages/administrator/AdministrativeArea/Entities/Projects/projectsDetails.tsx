@@ -232,19 +232,19 @@ const ProjectsDetails = () => {
   const centerActiveItem = () => {
     switch (activeTab) {
       case tabs.INFO:
-        infoRef.current?.scrollIntoView({ inline: 'center' });
+        infoRef.current?.scrollIntoView({ block: 'center' });
         break;
       case tabs.ENTE_GESTORE:
-        gestoreRef.current?.scrollIntoView({ inline: 'center' });
+        gestoreRef.current?.scrollIntoView({ block: 'center' });
         break;
       case tabs.ENTI_PARTNER:
-        partnerRef.current?.scrollIntoView({ inline: 'center' });
+        partnerRef.current?.scrollIntoView({ block: 'center' });
         break;
       case tabs.SEDI:
-        sediRef.current?.scrollIntoView({ inline: 'center' });
+        sediRef.current?.scrollIntoView({ block: 'center' });
         break;
       default:
-        infoRef.current?.scrollIntoView({ inline: 'center' });
+        infoRef.current?.scrollIntoView({ block: 'center' });
         break;
     }
   };

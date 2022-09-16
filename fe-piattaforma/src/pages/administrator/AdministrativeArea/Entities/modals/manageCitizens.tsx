@@ -37,17 +37,24 @@ const ManageCitizens: React.FC<ManageCitizensI> = ({
 
   const editCitizen = async () => {
     if (isFormValid) {
-      const sezioneQ1Questionario = `{"id":"${idQ1}","title":"${titleQ1}","properties":${createStringOfCompiledSurveySection(newFormValues).replaceAll('"', "'")}}`;
+      const sezioneQ1Questionario = `{"id":"${idQ1}","title":"${titleQ1}","properties":${createStringOfCompiledSurveySection(
+        newFormValues
+      ).replaceAll('"', "'")}}`;
 
       const body = {
         ...newFormValues,
-        codiceFiscaleNonDisponibile: newFormValues?.codiceFiscaleNonDisponibile !== '' ? true:false,
+        codiceFiscaleNonDisponibile:
+          newFormValues?.codiceFiscaleNonDisponibile !== '' ? true : false,
         questionarioQ1: sezioneQ1Questionario,
       };
-      await dispatch(UpdateCitizenDetail(idCitizen, body));
+      const res = await dispatch(UpdateCitizenDetail(idCitizen, body));
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (res) {
+        dispatch(GetEntityDetail(idCitizen));
+        if (onClose) onClose();
+      }
     }
-    dispatch(GetEntityDetail(idCitizen));
-    if (onClose) onClose();
   };
 
   return (
