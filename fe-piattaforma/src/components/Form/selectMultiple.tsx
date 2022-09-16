@@ -108,7 +108,7 @@ const SelectMultiple: React.FC<SelectMultipleI> = (props) => {
       {withLabel ? (
         <label
           id={`${(label || 'label-select').replace(/\s/g, '-')}`}
-          className='text-decoration-none'
+          className='text-decoration-none pl-0 pb-2'
         >
           {label}
           {(required && !isDisabled) && ' *'}

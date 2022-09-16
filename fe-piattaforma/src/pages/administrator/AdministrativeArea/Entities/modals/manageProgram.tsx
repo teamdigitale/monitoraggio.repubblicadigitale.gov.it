@@ -4,7 +4,10 @@ import GenericModal from '../../../../../components/Modals/GenericModal/genericM
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import { formTypes } from '../utils';
 import { formFieldI } from '../../../../../utils/formHelper';
-import { closeModal } from '../../../../../redux/features/modal/modalSlice';
+import {
+  closeModal,
+  selectModalState,
+} from '../../../../../redux/features/modal/modalSlice';
 import {
   createProgram,
   GetProgramDetail,
@@ -18,6 +21,7 @@ import FormGeneralInfo from '../../../../forms/formPrograms/formGeneralInfo';
 import {
   resetProgramDetails,
   selectPrograms,
+  setProgramDetails,
   setProgramGeneralInfo,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import clsx from 'clsx';
@@ -44,6 +48,14 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
   const { entityId } = useParams();
   const navigate = useNavigate();
+  const open = useAppSelector(selectModalState);
+
+  useEffect(() => {
+    if (open && creation) {
+      dispatch(setProgramDetails({}));
+      setCurrentStep(0);
+    }
+  }, [open]);
 
   const handleSaveProgram = async () => {
     if (isFormValid) {

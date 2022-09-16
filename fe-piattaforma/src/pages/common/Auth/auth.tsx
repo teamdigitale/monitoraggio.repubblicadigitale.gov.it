@@ -1,23 +1,29 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import LogoScrittaBlu from '/public/assets/img/logo-scritta-blu-x2.png';
 import { Footer, Input, Loader } from '../../../components';
-import clsx from 'clsx';
 import { Button, Card, Icon } from 'design-react-kit';
 import Authicon from '/public/assets/img/auth-box-icon.png';
 import { useAppSelector } from '../../../redux/hooks';
 import {
   selectDevice,
   selectLoader,
+  showLoader,
 } from '../../../redux/features/app/appSlice';
 import { CreateUserContext } from '../../../redux/features/user/userThunk';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
 import { newForm, newFormField } from '../../../utils/formHelper';
+import { getUrlParameter } from '../../../utils/common';
+import { GetSPIDToken } from '../../../redux/features/auth/authThunk';
+import { setSessionValues } from '../../../utils/sessionHelper';
 
-export const isActiveProvisionalLogin = true;
+const COGNITO_HREF = `${process?.env?.REACT_APP_COGNITO_BASE_URL}oauth2/authorize?client_id=${process?.env?.REACT_APP_COGNITO_CLIENT_ID}&redirect_uri=${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}&scope=openid&response_type=code`;
+
+export const isActiveProvisionalLogin = false;
 
 const Auth: React.FC<withFormHandlerProps> = ({
   form = {},
@@ -28,19 +34,56 @@ const Auth: React.FC<withFormHandlerProps> = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleFakeLogin = async () => {
-    if (isActiveProvisionalLogin && form.mockUser?.value) {
-      const validUser = await dispatch(
-        CreateUserContext(form.mockUser?.value?.toString())
-      );
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      if (validUser) navigate('/onboarding');
+  const cognitoRedirect = () => {
+    dispatch(showLoader());
+    window.location.replace(COGNITO_HREF);
+  };
+
+  const createContext = async () => {
+    const validUser = await dispatch(
+      CreateUserContext(form.mockUser?.value?.toString())
+    );
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (validUser) {
+      navigate('/onboarding');
+    } else {
+      console.log('manage context error');
     }
   };
 
-  const handleClick = () => {
-    console.log('clicked');
+  const getToken = async (preAuthCode: string) => {
+    if (preAuthCode) {
+      const res = await dispatch(GetSPIDToken(preAuthCode));
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (res) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        setSessionValues('auth', res['id_token']);
+        createContext();
+      } else {
+        cognitoRedirect();
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (!isActiveProvisionalLogin && window.location.search) {
+      const preAuthCode = getUrlParameter('code');
+      if (preAuthCode) {
+        getToken(preAuthCode);
+      }
+    } else if (!isActiveProvisionalLogin) {
+      cognitoRedirect();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isActiveProvisionalLogin, window.location]);
+
+  const handleFakeLogin = () => {
+    if (isActiveProvisionalLogin && form.mockUser?.value) {
+      createContext();
+    }
   };
 
   return (
@@ -170,7 +213,7 @@ const Auth: React.FC<withFormHandlerProps> = ({
                       device.mediaIsPhone ? 'btn-xs px-4' : 'btn-sm'
                     )}
                     color='primary'
-                    onClick={handleClick}
+                    onClick={cognitoRedirect}
                     size='xs'
                   >
                     <div
@@ -217,32 +260,34 @@ const Auth: React.FC<withFormHandlerProps> = ({
                       'mb-3'
                     )}
                     color='primary'
-                    onClick={handleClick}
+                    onClick={cognitoRedirect}
                   >
                     Entra con CIE
                   </Button>
                 </div>
-                {isActiveProvisionalLogin ? (<div className='my-5'>
-                  <hr/>
-                  <h4 className='py-2'>Provisional Login</h4>
-                  {/* TODO Remove next block, it's for dev purpose only*/}
-                  <Input
-                    {...form.mockUser}
-                    label='Codice fiscale'
-                    onInputChange={onInputChange}
-                  />
-                  <Button
-                    className={clsx(
-                      'mx-auto',
-                      'w-100',
-                      device.mediaIsPhone ? 'btn-xs px-4' : 'btn-sm'
-                    )}
-                    color='secondary'
-                    onClick={handleFakeLogin}
-                  >
-                    Provisional Login
-                  </Button>
-                </div>) : null}
+                {isActiveProvisionalLogin ? (
+                  <div className='my-5'>
+                    <hr />
+                    <h4 className='py-2'>Provisional Login</h4>
+                    {/* TODO Remove next block, it's for dev purpose only*/}
+                    <Input
+                      {...form.mockUser}
+                      label='Codice fiscale'
+                      onInputChange={onInputChange}
+                    />
+                    <Button
+                      className={clsx(
+                        'mx-auto',
+                        'w-100',
+                        device.mediaIsPhone ? 'btn-xs px-4' : 'btn-sm'
+                      )}
+                      color='secondary'
+                      onClick={handleFakeLogin}
+                    >
+                      Provisional Login
+                    </Button>
+                  </div>
+                ) : null}
               </Card>
             </div>
           </div>
@@ -254,9 +299,13 @@ const Auth: React.FC<withFormHandlerProps> = ({
 };
 
 // TODO for DEV purpose only, to remove!
-const form = newForm(isActiveProvisionalLogin ? [
-  newFormField({
-    field: 'mockUser',
-  }),
-] : []);
+const form = newForm(
+  isActiveProvisionalLogin
+    ? [
+        newFormField({
+          field: 'mockUser',
+        }),
+      ]
+    : []
+);
 export default memo(withFormHandler({ form }, Auth));

@@ -190,6 +190,7 @@ export const CreateService = (payload: any) => async (dispatch: Dispatch) => {
     }
   } catch (error) {
     console.log('CreateService administrativeArea error', error);
+    return false;
   } finally {
     dispatch(hideLoader());
   }
@@ -203,9 +204,13 @@ export const UpdateService =
     try {
       dispatch(showLoader());
       dispatch({ ...UpdateServiceAction, idServizio });
-      await API.put(`/servizio/${idServizio}`, payload);
+      const res = await API.put(`/servizio/${idServizio}`, payload);
+      if (res) {
+        return true;
+      }
     } catch (error) {
       console.log('UpdateService administrativeArea error', error);
+      return false;
     } finally {
       dispatch(hideLoader());
     }
@@ -313,11 +318,12 @@ export const AssociateCitizenToService =
       dispatch({ ...AssociateCitizenToServiceAction });
       dispatch(showLoader());
       const res = await API.post(`/servizio/cittadino/${payload.idServizio}`, payload.body);
-      if (res?.data) {
-        // TODO: check if correct
+      if (res) {
+        return true;
       }
     } catch (error) {
       console.log('GetAllServices administrativeArea error', error);
+      return false;
     } finally {
       dispatch(hideLoader());
     }

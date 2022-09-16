@@ -24,6 +24,7 @@ import {
   newForm,
 } from '../../../utils/formHelper';
 import { generateForm } from '../../../utils/jsonFormHelper';
+import { RegexpType } from '../../../utils/validator';
 import { FormCitizenI } from '../formCitizen';
 
 interface FormEnteGestoreProgettoFullInterface
@@ -66,6 +67,9 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
       Object.keys(formFromSchema).forEach((key: string) => {
         formFromSchema[key].label = formFromSchema[key].value?.toString() || '';
         formFromSchema[key].value = '';
+        if(key === '3'){
+          formFromSchema[key].regex = RegexpType.FISCAL_CODE;
+        }
         if (key === '4' || key === '5' || key === '6') {
           formFromSchema[key].required = false;
         }

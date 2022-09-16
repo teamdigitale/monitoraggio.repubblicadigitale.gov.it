@@ -58,7 +58,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  if (!user?.codiceFiscale) return <Navigate to='/auth' replace />;
+  if (!user?.codiceFiscale) return <Navigate to={defaultRedirectUrl} replace />;
 
   const addProfilePicture = () => {
     if (inputRef.current !== null) {

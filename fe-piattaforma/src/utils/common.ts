@@ -318,6 +318,19 @@ export const transformFiltersToQueryParams = (filters: {
   return filterString === '' ? filterString : '?' + filterString;
 };
 
+export const getUrlParameter = (parameterName: string) => {
+  let result = null,
+    tmp = [];
+  window.location.search
+    .substring(1)
+    .split('&')
+    .forEach((item) => {
+      tmp = item.split('=');
+      if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+    });
+  return result;
+};
+
 export const formatAndParseJsonString = (jsonString: string) => {
   try {
     return JSON.parse(jsonString);
@@ -419,5 +432,20 @@ export const convertPayloadSectionInString = (
       );
     default:
       return createStringOfCompiledSurveySection(newObject);
+  }
+};
+
+
+export const orderArray = (array: any[]) => {
+  if (array?.length > 0) {
+    return array.sort((a, b) => {
+      const labelA = a.label.toLowerCase();
+      const labelB = b.label.toLowerCase();
+      if (labelA < labelB) return -1;
+      if (labelA > labelB) return 1;
+      return 0;
+    });
+  } else {
+    return array;
   }
 };

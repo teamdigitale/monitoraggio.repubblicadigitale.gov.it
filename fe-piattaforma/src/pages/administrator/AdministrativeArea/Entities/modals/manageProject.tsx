@@ -4,7 +4,10 @@ import GenericModal from '../../../../../components/Modals/GenericModal/genericM
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import { formTypes } from '../utils';
 import { formFieldI } from '../../../../../utils/formHelper';
-import { closeModal } from '../../../../../redux/features/modal/modalSlice';
+import {
+  closeModal,
+  selectModalState,
+} from '../../../../../redux/features/modal/modalSlice';
 import {
   createProject,
   GetProjectDetail,
@@ -20,6 +23,7 @@ import {
   resetProjectDetails,
   selectPrograms,
   selectProjects,
+  setProjectDetails,
   setProjectGeneralInfo,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import clsx from 'clsx';
@@ -45,6 +49,14 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
 }) => {
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
   const { projectId, entityId } = useParams();
+  const open = useAppSelector(selectModalState);
+
+  useEffect(() => {
+    if (open && creation) {
+      dispatch(setProjectDetails({}));
+      setCurrentStep(0);
+    }
+  }, [open]);
 
   const handleSaveProject = async () => {
     if (isFormValid) {
