@@ -13,7 +13,7 @@ import {
 import { selectDevice } from '../../../../../../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../../../../../../redux/hooks';
 import { FormHelper } from '../../../../../../../../utils/formHelper';
-import { answerType } from '../../../surveyConstants';
+import { answerType, idQ1, idQ2 } from '../../../surveyConstants';
 import MultiOptionForm from './multiOptionForm';
 
 export interface SurveyQuestionComponentI extends SurveyQuestionI {
@@ -159,12 +159,12 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
           !form['question-default'].value &&
             'survey-question-container__shadow',
           !(editMode || cloneMode) &&
-            sectionID !== 'anagraphic-citizen-section' &&
-            sectionID !== 'anagraphic-booking-section' &&
+            sectionID !== idQ1 &&
+            sectionID !== idQ2 &&
             'survey-question-container__default-bg',
           (editMode || cloneMode) &&
-            sectionID !== 'anagraphic-citizen-section' &&
-            sectionID !== 'anagraphic-booking-section' &&
+            sectionID !== idQ1 &&
+            sectionID !== idQ2 &&
             'survey-question-container__shadow'
         )}
       >
@@ -196,8 +196,8 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
               </span>
               {(!editMode && !cloneMode) ||
               ((editMode || cloneMode) &&
-                (sectionID === 'anagraphic-citizen-section' ||
-                  sectionID === 'anagraphic-booking-section')) ? (
+                (sectionID === idQ1 ||
+                  sectionID === idQ2)) ? (
                 <span className='survey-question-container__question-description text-start text-wrap'>
                   <strong>
                     {surveyQuestion?.form['question-description'].value}
@@ -321,12 +321,12 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
             !form['question-default'].value &&
               'survey-question-container__shadow survey-question-container__expanded-box',
             !(editMode || cloneMode) &&
-              sectionID !== 'anagraphic-citizen-section' &&
-              sectionID !== 'anagraphic-booking-section' &&
+              sectionID !== idQ1 &&
+              sectionID !== idQ2 &&
               'survey-question-container__default-bg',
             (editMode || cloneMode) &&
-              sectionID !== 'anagraphic-citizen-section' &&
-              sectionID !== 'anagraphic-booking-section' &&
+              sectionID !== idQ1 &&
+              sectionID !== idQ2 &&
               'survey-question-container__shadow survey-question-container__expanded-box'
           )}
         >

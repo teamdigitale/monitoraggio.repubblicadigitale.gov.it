@@ -147,7 +147,9 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
     return (
       <>
         {citizensList?.cittadini.filter(
-          (cit) => cit.idCittadino === citizensData[0]?.idCittadino
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          (cit) => cit.idCittadino === selectedCitizen?.id
         )?.length > 0 && (
           <Infocard
             text='Il cittadino inserito è già incluso nella tua lista I miei cittadini'
@@ -204,13 +206,25 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
         });
         body['nuovoCittadino'] = true;
       } else {
-        body = {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          codiceFiscale: selectedCitizen?.codiceFiscale,
-          codiceFiscaleNonDisponibile: false,
-          nuovoCittadino: false,
-        };
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (selectedCitizen?.codiceFiscale) {
+          body = {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            codiceFiscale: selectedCitizen?.codiceFiscale,
+            codiceFiscaleNonDisponibile: false,
+            nuovoCittadino: false,
+          };
+        } else {
+          body = {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            numeroDocumento: selectedCitizen?.numeroDocumento,
+            codiceFiscaleNonDisponibile: true,
+            nuovoCittadino: false,
+          };
+        }
       }
       if (serviceId)
         await dispatch(

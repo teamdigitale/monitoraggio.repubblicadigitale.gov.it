@@ -16,6 +16,7 @@ import {
   selectSurveyName,
 } from '../../../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 import { SetSurveyQuestion } from '../../../../../../../redux/features/administrativeArea/surveys/surveysThunk';
+import { idQ1, idQ2 } from '../../surveyConstants';
 
 interface SurveyTemplateI {
   editMode?: boolean;
@@ -141,8 +142,8 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
           >
             {!modal &&
               (editMode || cloneMode) &&
-              section.id !== 'anagraphic-citizen-section' &&
-              section.id !== 'anagraphic-booking-section' && (
+              section.id !== idQ1 &&
+              section.id !== idQ2 && (
                 <Button
                   onClick={() => handleNewQuestion(section?.id || '')}
                   className={clsx(

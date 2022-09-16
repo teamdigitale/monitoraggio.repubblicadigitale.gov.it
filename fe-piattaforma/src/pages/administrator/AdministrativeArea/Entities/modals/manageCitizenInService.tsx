@@ -18,6 +18,7 @@ import { createStringOfCompiledSurveySection } from '../../../../../utils/common
 import { formFieldI } from '../../../../../utils/formHelper';
 import { generateForm } from '../../../../../utils/jsonFormHelper';
 import FormServiceCitizenFull from '../../../../forms/formServices/formServiceCitizenFull';
+import { idQ1, titleQ1 } from '../Surveys/surveyConstants';
 
 import { formTypes } from '../utils';
 
@@ -88,9 +89,7 @@ const ManageCitizenInService: React.FC<ManageCitizenInServiceI> = ({
     });
 
     const sezioneQ1Questionario =
-      '{"id":"anagraphic-citizen-section","title":"Informazioni anagrafiche","properties":' +
-      createStringOfCompiledSurveySection(newFormValues).replaceAll('"', "'") +
-      '}';
+      `{"id":"${idQ1}","title":"${titleQ1}","properties":${createStringOfCompiledSurveySection(newFormValues).replaceAll('"', "'")}}`;
 
     body = {
       ...body,
