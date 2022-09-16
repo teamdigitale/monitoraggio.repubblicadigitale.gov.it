@@ -52,9 +52,10 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	
 				JsonNode jsonNodeRoot = objectMapper.readTree(jwtPayload);
 				//recupero il codiceFiscale dal payload
-				JsonNode jsonCodiceFiscale = jsonNodeRoot.get("fiscalNumber");
+				JsonNode jsonCodiceFiscale = jsonNodeRoot.get("custom:fiscalNumber");
+				String[] codFiscTinit = jsonCodiceFiscale.asText().split("-");
 	
-				this.codiceFiscale = jsonCodiceFiscale.asText();
+				this.codiceFiscale = codFiscTinit.length > 1 ? codFiscTinit[1] : codFiscTinit[0];
 				this.codiceRuolo = codiceRuolo.get();
 				
 	            /*se ci troviamo in caso di chiamata a API con HTTP METHOD <> GET 
