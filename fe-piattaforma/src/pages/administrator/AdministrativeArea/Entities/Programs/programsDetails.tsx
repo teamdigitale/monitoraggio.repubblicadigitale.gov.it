@@ -618,19 +618,19 @@ const ProgramsDetails: React.FC = () => {
   const centerActiveItem = () => {
     switch (activeTab) {
       case tabs.INFO:
-        infoRef.current?.scrollIntoView({ inline: 'center' });
+        infoRef.current?.scrollIntoView({ block: 'center' });
         break;
       case tabs.ENTE:
-        gestoreRef.current?.scrollIntoView({ inline: 'center' });
+        gestoreRef.current?.scrollIntoView({ block: 'center' });
         break;
       case tabs.QUESTIONARI:
-        questionariRef.current?.scrollIntoView({ inline: 'center' });
+        questionariRef.current?.scrollIntoView({ block: 'center' });
         break;
       case tabs.PROGETTI:
-        projectRef.current?.scrollIntoView({ inline: 'center' });
+        projectRef.current?.scrollIntoView({ block: 'center' });
         break;
       default:
-        infoRef.current?.scrollIntoView({ inline: 'center' });
+        infoRef.current?.scrollIntoView({ block: 'center' });
         break;
     }
   };

@@ -1,32 +1,67 @@
-import { Dispatch, Selector } from '@reduxjs/toolkit';
-import API from '../../../utils/apiHelper';
+import { Dispatch } from '@reduxjs/toolkit';
 import { hideLoader, showLoader } from '../app/appSlice';
-import {
-  login,
-  logout,
-  setUserContext,
-  setUserProfile,
-  UserProfileI,
-} from './userSlice';
-import { getSessionValues } from '../../../utils/sessionHelper';
-import { RootState } from '../../store';
-import {isActiveProvisionalLogin} from "../../../pages/common/Auth/auth";
+import axios from 'axios';
 
-export const getUserHeaders = () => {
+const GetSPIDTokenAction = { type: 'auth/GetSPIDToken' };
+export const GetSPIDToken =
+  (preAuthCode: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch({ ...GetSPIDTokenAction, preAuthCode }); // TODO manage dispatch for dev env only
+      dispatch(showLoader());
+      const params = new URLSearchParams();
+      params.append('grant_type', 'authorization_code');
+      params.append(
+        'client_id',
+        `${process?.env?.REACT_APP_COGNITO_CLIENT_ID}`
+      );
+      params.append(
+        'client_secret',
+        `${process?.env?.REACT_APP_COGNITO_CLIENT_SECRET}`
+      );
+      params.append(
+        'redirect_uri',
+        `${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}`
+      );
+      params.append('code', `${preAuthCode}`);
+      const res = await axios
+        .create({
+          baseURL: `${process?.env?.REACT_APP_COGNITO_BASE_URL}`,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: `Basic ${window.btoa(
+              `${process?.env?.REACT_APP_COGNITO_CLIENT_ID}:${process?.env?.REACT_APP_COGNITO_CLIENT_SECRET}`
+            )}`,
+          },
+          timeout: 10000,
+        })
+        .post('oauth2/token', params);
+
+      if (res?.data) {
+        return res.data;
+      }
+    } catch (error) {
+      console.log('GetSPIDToken error', error);
+      return false;
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+/*export const getUserHeaders = () => {
   const { codiceFiscale } = JSON.parse(getSessionValues('user'));
   const { codiceRuolo, idProgramma, idProgetto } = JSON.parse(
     getSessionValues('profile')
   );
 
   return {
-    codiceFiscale: isActiveProvisionalLogin ? codiceFiscale?.toUpperCase() : undefined,
-    codiceRuolo: isActiveProvisionalLogin ? codiceRuolo : undefined,
+    codiceFiscale: codiceFiscale.toUpperCase(),
+    codiceRuolo,
     idProgramma,
     idProgetto,
   };
-};
+};*/
 
-export const SessionCheck = async (dispatch: any) => {
+/*export const SessionCheck = async (dispatch: any) => {
   try {
     dispatch(showLoader());
     const user = JSON.parse(getSessionValues('user'));
@@ -59,21 +94,15 @@ export const SessionCheck = async (dispatch: any) => {
     // eslint-disable-next-line no-unsafe-finally
     return true;
   }
-};
+};*/
 
-const CreateUserContextAction = { type: 'user/CreateUserContext' };
+/*const CreateUserContextAction = { type: 'user/CreateUserContext' };
 export const CreateUserContext =
-  (codiceFiscale?: string) => async (dispatch: Dispatch) => {
+  (codiceFiscale: string) => async (dispatch: Dispatch) => {
     try {
       dispatch({ ...CreateUserContextAction, codiceFiscale }); // TODO manage dispatch for dev env only
       dispatch(showLoader());
-      let body = {};
-      if (isActiveProvisionalLogin) {
-        body = {
-          codiceFiscale,
-        }
-      }
-      const res = await API.post('/contesto', body);
+      const res = await API.post('/contesto', { codiceFiscale });
 
       if (res?.data) {
         dispatch(setUserContext(res.data));
@@ -85,9 +114,9 @@ export const CreateUserContext =
     } finally {
       dispatch(hideLoader());
     }
-  };
+  };*/
 
-const SelectUserRoleAction = { type: 'user/SelectUserRole' };
+/*const SelectUserRoleAction = { type: 'user/SelectUserRole' };
 export const SelectUserRole =
   (profile: UserProfileI, saveSession = false) => async (dispatch: Dispatch, select: Selector) => {
     try {
@@ -119,34 +148,4 @@ export const SelectUserRole =
     } finally {
       dispatch(hideLoader());
     }
-  };
-
-const EditUserAction = { type: 'user/EditUser' };
-export const EditUser =
-  (newUser: any) => async (dispatch: Dispatch, select: Selector) => {
-    try {
-      dispatch({ ...EditUserAction });
-      dispatch(showLoader());
-      const {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        user: {
-          user: { codiceFiscale },
-        },
-      } = select((state: RootState) => state);
-      if (newUser?.codiceFiscale === codiceFiscale) {
-        const res = await API.post('/contesto/confermaIntegrazione', {
-          ...newUser,
-          abilitazioneConsensoTrattamentoDatiPersonali: true,
-        });
-
-        if (res) {
-          return true;
-        }
-      }
-    } catch (error) {
-      console.log('EditUser error', error);
-    } finally {
-      dispatch(hideLoader());
-    }
-  };
+  };*/

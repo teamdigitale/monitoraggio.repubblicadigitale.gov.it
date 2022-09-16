@@ -192,9 +192,13 @@ export const UpdateCitizenDetail =
     try {
       dispatch(showLoader());
       dispatch({ ...UpdateCitizenDetailAction, idCittadino, body });
-      await API.put(`cittadino/${idCittadino}`, body);
+      const res = await API.put(`cittadino/${idCittadino}`, body);
+      if(res){
+        return true;
+      }
     } catch (error) {
       console.log('UpdateCitizenDetail citizensArea error', error);
+      return false;
     } finally {
       dispatch(hideLoader());
     }

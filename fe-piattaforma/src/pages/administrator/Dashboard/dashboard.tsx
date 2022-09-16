@@ -24,7 +24,9 @@ const dashboardBaseURL = process.env.REACT_APP_DASHBOARD_BASE_URL || 'https://ba
 const dashboardRoles: {
   [key: string]: {
     append?: string;
-    endpoint: string;
+    endpoint?: string;
+    rfd?: string;
+    scd?: string;
   };
 } = {
   DTD: {
@@ -34,10 +36,12 @@ const dashboardRoles: {
     endpoint: 'vw-monitoraggio-dscu',
   },
   REG: {
-    endpoint: 'vw-ente-gestore-programma',
+    rfd: 'vw-ente-gestore-programma-rfd',
+    scd: 'ente-gest-programma-scd',
   },
   REGP: {
-    endpoint: 'vw-ente-gestore-progetto',
+    rfd: 'vw-ente-gestore-progetto-rfd',
+    scd: 'ente-gest-progetto-scd',
   },
   CITTADINO: {
     endpoint: 'vw-cittadino',
@@ -64,21 +68,21 @@ const Dashboard = () => {
         break;
       }
       case userRoles.REG: {
-        if (program?.policy) {
-          requestURL = `${requestURL}/${
-            dashboardRoles.REG.endpoint
-          }-${program.policy.toLowerCase()}`;
+        if (program.policy.toLowerCase() === 'rfd') {
+          requestURL = `${requestURL}/${dashboardRoles.REG.rfd}`;
+        } else if (program.policy.toLowerCase() === 'scd') {
+          requestURL = `${requestURL}/${dashboardRoles.REG.scd}`;
         } else {
           return null;
         }
         break;
       }
       case userRoles.REGP: {
-        if (project?.policy) {
-          requestURL = `${requestURL}/${
-            dashboardRoles.REGP.endpoint
-          }-${project.policy.toLowerCase()}`;
-        } else {
+        if (project.policy.toLowerCase() === 'rfd') {
+          requestURL = `${requestURL}/${dashboardRoles.REGP.rfd}`;
+        } else if (project.policy.toLowerCase() === 'scd') {
+          requestURL = `${requestURL}/${dashboardRoles.REGP.scd}`;
+        }  else {
           return null;
         }
         break;

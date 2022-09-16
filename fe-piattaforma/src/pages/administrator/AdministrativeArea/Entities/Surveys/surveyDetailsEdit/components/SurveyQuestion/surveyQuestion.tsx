@@ -301,6 +301,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
                       surveyQuestion?.form['question-required'].field
                     )
                   }
+                  checked={surveyQuestion?.form['question-required'].value === 'true'}
                 />
               </FormGroup>
             </Form>
