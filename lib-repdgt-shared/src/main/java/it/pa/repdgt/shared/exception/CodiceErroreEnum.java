@@ -53,8 +53,8 @@ public enum CodiceErroreEnum {
 	,U17("Errore download immagine profilo utente")
 	,U18("Errore Associazione tra utente e ruolo non trovata.")
 	,U19("Errore export csv utenti")
+	,U20("Errore utente con codice fiscale non esistente")
 
-	
 	,S01("Errore file upload cittadino non valido")
 	,S02("Errore export csv servizio")
 	,S03("Errore servizio non accessibile per l'utente")
