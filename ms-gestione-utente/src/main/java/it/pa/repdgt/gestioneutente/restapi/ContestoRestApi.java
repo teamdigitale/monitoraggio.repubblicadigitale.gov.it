@@ -11,13 +11,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.pa.repdgt.gestioneutente.exception.UtenteException;
 import it.pa.repdgt.gestioneutente.mapper.ContestoMapper;
+import it.pa.repdgt.gestioneutente.repository.UtenteRepository;
 import it.pa.repdgt.gestioneutente.request.CreaContestoRequest;
 import it.pa.repdgt.gestioneutente.request.IntegraContestoRequest;
 import it.pa.repdgt.gestioneutente.resource.ContestoResource;
 import it.pa.repdgt.gestioneutente.service.ContestoService;
 import it.pa.repdgt.shared.awsintegration.service.S3Service;
 import it.pa.repdgt.shared.entity.UtenteEntity;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.extern.slf4j.Slf4j;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 
@@ -27,6 +30,8 @@ import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 public class ContestoRestApi {
 	@Autowired
 	private ContestoService contestoService;
+	@Autowired
+	private UtenteRepository utenteRepository;
 	@Autowired
 	private ContestoMapper contestoMapper;
 	@Autowired
@@ -40,6 +45,12 @@ public class ContestoRestApi {
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.OK)
 	public ContestoResource creaContesto(@RequestBody CreaContestoRequest creaContestoRequest) {
+		final String codiceFiscaleUtenteLoggato = creaContestoRequest.getCfUtenteLoggato();
+		if(!this.utenteRepository.findByCodiceFiscale(codiceFiscaleUtenteLoggato).isPresent()) {
+			String messaggioErrore = String.format("Errore creazione contesto. Utente con codiceFiscale '%s' non esiste", codiceFiscaleUtenteLoggato);
+			throw new UtenteException(messaggioErrore, CodiceErroreEnum.U20);
+		}
+
 		UtenteEntity utenteFetched = contestoService.creaContesto(creaContestoRequest.getCfUtenteLoggato());
 		ContestoResource contesto = contestoMapper.toContestoFromUtenteEntity(utenteFetched);
 		try{ 
