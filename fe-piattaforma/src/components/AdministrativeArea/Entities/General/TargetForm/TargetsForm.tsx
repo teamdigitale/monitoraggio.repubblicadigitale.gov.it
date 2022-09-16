@@ -109,7 +109,7 @@ const TargetsForm = ({
         required: true,
         type: 'date',
         id: `n${section}DataTarget${targetsCount + 1}`,
-        label: `Data Obiettivo ${targetsCount + 1}`,
+        label: `Data obiettivo ${targetsCount + 1}`,
         order: targetsCount + 1,
       })
     );
@@ -204,7 +204,11 @@ const TargetsForm = ({
       }
     />
   ) : (
-    <Form id='form-targets' formDisabled={disabled} className='pt-5 px-4 pr-lg-5'>
+    <Form
+      id='form-targets'
+      formDisabled={disabled}
+      className='pt-5 px-4 pr-lg-5'
+    >
       {form && (
         <>
           {getRows(form).map((row, index) => (
@@ -233,7 +237,7 @@ const TargetsForm = ({
                   >
                     <Icon
                       className='mr-3'
-                      icon='it-delete'
+                      icon='it-less-circle'
                       color='primary'
                       size='sm'
                       aria-label='delete'

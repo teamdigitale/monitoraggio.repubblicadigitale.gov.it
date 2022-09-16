@@ -19,6 +19,7 @@ import {
 import { useAppSelector } from '../../../../../redux/hooks';
 import { getUserHeaders } from '../../../../../redux/features/user/userThunk';
 import { useNavigate } from 'react-router-dom';
+import { idQ3, titleQ3 } from '../Surveys/surveyConstants';
 
 const id = formTypes.SERVICES;
 
@@ -56,9 +57,7 @@ const ManageServices: React.FC<ManageServicesI> = ({
   }) => {
     // TODO rendere dinamico
     const answersQ3 =
-      '{"id":"anagraphic-service-section","title":"Informazioni anagrafiche","properties":' +
-      questionarioCompilatoQ3?.replaceAll('"', "'") +
-      '}';
+      `{"id":"${idQ3}","title":"${titleQ3}","properties":${questionarioCompilatoQ3?.replaceAll('"', "'")}}`;
     const tipologiaServizio = answersForms['24']?.toString()?.split('§');
     const payload = {
       data: answersForms['22'] || '',
