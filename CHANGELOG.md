@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.125](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.124...1.0.0-develop.125) (2022-09-16)
+
+
+### Bug Fixes
+
+* **be:** fix estazione codice fiscale TINIT ([6a5440e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6a5440e1d19b6049780e69f41a1afed98d8c971d))
+
 ## [1.0.0-develop.124](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.123...1.0.0-develop.124) (2022-09-16)
 
 
