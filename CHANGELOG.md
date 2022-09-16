@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.31](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.30...1.0.0-test.31) (2022-09-16)
+
+
+### Bug Fixes
+
+* **be:** rilascio open data ([d39df3f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d39df3f19f1c9409a26b8bf05e8725f03ff1a70a))
+
 ## [1.0.0-test.30](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.29...1.0.0-test.30) (2022-09-15)
 
 
