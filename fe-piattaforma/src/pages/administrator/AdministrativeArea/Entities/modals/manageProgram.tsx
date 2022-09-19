@@ -45,10 +45,11 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
   creation = false,
   edit = false,
 }) => {
-  const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  // const [isFormValid, setIsFormValid] = useState<boolean>(true);
   const { entityId } = useParams();
   const navigate = useNavigate();
   const open = useAppSelector(selectModalState);
+  const [validSteps, setValidSteps] = useState(new Array(5).fill(false));
 
   useEffect(() => {
     if (open && creation) {
@@ -58,7 +59,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
   }, [open]);
 
   const handleSaveProgram = async () => {
-    if (isFormValid) {
+    if (validSteps.every((step) => step)) {
       if (creation) {
         const res: any = await dispatch(createProgram(newFormValues));
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -71,13 +72,15 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
           );
         }
 
-        if (!res?.data?.errorCode) dispatch(closeModal());
+        if (!res?.errorCode) dispatch(closeModal());
       } else {
         if (entityId) {
-          await dispatch(updateProgram(entityId, newFormValues));
+          const res: any = await dispatch(
+            updateProgram(entityId, newFormValues)
+          );
           dispatch(GetProgramDetail(entityId));
+          if (!res.errorCode) dispatch(closeModal());
         }
-        dispatch(closeModal());
       }
       setCurrentStep(0);
     }
@@ -95,7 +98,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
     {
       title: 'Informazioni generali',
       primaryCTA: {
-        disabled: !isFormValid,
+        disabled: !validSteps[0],
         label: 'Avanti',
         onClick: () => updateDetailInfoHandler(),
       },
@@ -108,7 +111,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
     {
       title: 'Numero punti di facilitazione',
       primaryCTA: {
-        disabled: !isFormValid,
+        disabled: !validSteps[1],
         label: 'Avanti',
         onClick: () => updateDetailInfoHandler(),
       },
@@ -124,7 +127,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
     {
       title: 'Numero utenti unici',
       primaryCTA: {
-        disabled: !isFormValid,
+        disabled: !validSteps[2],
         label: 'Avanti',
         onClick: () => updateDetailInfoHandler(),
       },
@@ -140,7 +143,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
     {
       title: 'Numero servizi',
       primaryCTA: {
-        disabled: !isFormValid,
+        disabled: !validSteps[3],
         label: 'Avanti',
         onClick: () => updateDetailInfoHandler(),
       },
@@ -156,7 +159,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
     {
       title: 'Numero facilitatori',
       primaryCTA: {
-        disabled: !isFormValid,
+        disabled: !validSteps[4],
         label: 'Conferma',
         onClick: handleSaveProgram,
       },
@@ -242,7 +245,9 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             setNewFormValues({ ...newData });
           }}
           setIsFormValid={(value: boolean | undefined) =>
-            setIsFormValid(!!value)
+            setValidSteps((prev) =>
+              prev.map((step, i) => (i === 0 ? value : step))
+            )
           }
           creation={creation}
         />
@@ -255,6 +260,11 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
           section='puntiFacilitazione'
           sendValues={(newData?: { [key: string]: formFieldI['value'] }) =>
             setNewFormValues({ ...newData })
+          }
+          setIsFormValid={(value: boolean | undefined) =>
+            setValidSteps((prev) =>
+              prev.map((step, i) => (i === 1 ? value : step))
+            )
           }
           entityDetail={programDetails}
         />
@@ -281,6 +291,11 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
           sendValues={(newData?: { [key: string]: formFieldI['value'] }) =>
             setNewFormValues({ ...newData })
           }
+          setIsFormValid={(value: boolean | undefined) =>
+            setValidSteps((prev) =>
+              prev.map((step, i) => (i === 2 ? value : step))
+            )
+          }
           entityDetail={programDetails}
         />
       );
@@ -306,6 +321,11 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
           sendValues={(newData?: { [key: string]: formFieldI['value'] }) =>
             setNewFormValues({ ...newData })
           }
+          setIsFormValid={(value: boolean | undefined) =>
+            setValidSteps((prev) =>
+              prev.map((step, i) => (i === 3 ? value : step))
+            )
+          }
           entityDetail={programDetails}
         />
       );
@@ -330,6 +350,11 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
           section='facilitatori'
           sendValues={(newData?: { [key: string]: formFieldI['value'] }) =>
             setNewFormValues({ ...newData })
+          }
+          setIsFormValid={(value: boolean | undefined) =>
+            setValidSteps((prev) =>
+              prev.map((step, i) => (i === 4 ? value : step))
+            )
           }
           entityDetail={programDetails}
         />
