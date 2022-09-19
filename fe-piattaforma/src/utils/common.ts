@@ -258,9 +258,16 @@ export const downloadFile = (file: string, fileName: string) => {
   const link = document.createElement('a');
   link.setAttribute('href', file);
   link.setAttribute('download', fileName);
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  const target = document.getElementById('file-target');
+  if (target) {
+    target.appendChild(link);
+    link.click();
+    target.removeChild(link);
+  } else {
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 };
 
 export const downloadBlob = (

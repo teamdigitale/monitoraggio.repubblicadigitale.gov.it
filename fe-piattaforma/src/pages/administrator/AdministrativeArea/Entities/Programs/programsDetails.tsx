@@ -883,10 +883,11 @@ const ProgramsDetails: React.FC = () => {
         <NavLink
           to={`/area-amministrativa/programmi/${entityId}/${tabs.ENTE}`}
           active={activeTab === tabs.ENTE}
+          enteGestore={!managerAuthorityId}
         >
           {!managerAuthorityId ? (
             <div id='tab-ente-gestore'>
-              <span className='mr-1'> * Ente gestore </span>
+              * Ente gestore
               <Tooltip
                 placement='bottom'
                 target='tab-ente-gestore'
@@ -895,7 +896,7 @@ const ProgramsDetails: React.FC = () => {
               >
                 Compilazione obbligatoria
               </Tooltip>
-              <Icon icon='it-warning-circle' size='sm' />
+              <Icon icon='it-warning-circle' size='xs' className='ml-1' />
             </div>
           ) : (
             'Ente gestore'
@@ -907,7 +908,7 @@ const ProgramsDetails: React.FC = () => {
           to={`/area-amministrativa/programmi/${entityId}/${tabs.QUESTIONARI}`}
           active={activeTab === tabs.QUESTIONARI}
         >
-          <span> Questionari </span>
+          Questionari
         </NavLink>
       </li>
       <li ref={projectRef}>
@@ -915,7 +916,7 @@ const ProgramsDetails: React.FC = () => {
           active={activeTab === tabs.PROGETTI}
           to={`/area-amministrativa/programmi/${entityId}/${tabs.PROGETTI}`}
         >
-          <span> Progetti </span>
+          Progetti
         </NavLink>
       </li>
     </Nav>
@@ -1054,6 +1055,7 @@ const ProgramsDetails: React.FC = () => {
                 cta={getAccordionCTA(item.title).cta}
                 onClickCta={getAccordionCTA(item.title)?.ctaAction}
                 lastBottom={index === itemAccordionList.length - 1}
+                detailAccordion
               >
                 {item.items?.length ? (
                   item.items.map((cardItem) => (
@@ -1071,7 +1073,7 @@ const ProgramsDetails: React.FC = () => {
                   ))
                 ) : (
                   <EmptySection
-                    title={`Non esistono ${item.title?.toLowerCase()} associati`}
+                    title={`Non sono presenti ${item.title?.toLowerCase()} associati (o associate)`}
                     horizontal
                     aside
                   />

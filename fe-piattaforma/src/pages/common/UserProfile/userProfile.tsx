@@ -86,11 +86,12 @@ const UserProfile: React.FC<UserProfileI> = ({
           headingRole: false,
         }}
         isUserProfile={isUserProfile}
-        goBackPath='/'
+        //goBackPath='/'
+        showGoBack={false}
         buttonsPosition='BOTTOM'
         formButtons={correctButtons}
       >
-        <FormOnboarding formDisabled />
+        <FormOnboarding isProfile formDisabled />
       </DetailLayout>
       <div className='my-5'>
         <div className='w-100'>

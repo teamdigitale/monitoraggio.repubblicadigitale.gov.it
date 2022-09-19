@@ -45,12 +45,14 @@ const ManageGenericAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
 
   const handleSaveEnte = async () => {
     if (isFormValid) {
-      await dispatch(
+      const res: any = await dispatch(
         UpdateAuthorityDetails(newFormValues['id']?.toString(), newFormValues)
       );
-      clearForm();
-      await dispatch(resetAuthorityDetails());
-      dispatch(closeModal());
+      if (!res.errorCode) {
+        clearForm();
+        await dispatch(resetAuthorityDetails());
+        dispatch(closeModal());
+      }
     }
     authorityId && (await dispatch(GetAuthorityDetail(authorityId)));
     clearForm();

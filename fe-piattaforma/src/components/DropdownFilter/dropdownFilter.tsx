@@ -195,7 +195,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
         id={`filter-${id}`}
         innerRef={popoverRef}
       >
-        <span className='text-nowrap'> {filterName} </span>
+        <span className='text-nowrap font-weight-bold'> {filterName} </span>
         <Icon
           color='primary'
           icon='it-expand'
