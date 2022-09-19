@@ -70,13 +70,13 @@ const Auth: React.FC<withFormHandlerProps> = ({
   };
 
   useEffect(() => {
-    if (!isActiveProvisionalLogin && window.location.search) {
+    if (!isActiveProvisionalLogin && token) {
+      getToken(token);
+    } else if (!isActiveProvisionalLogin && window.location.search) {
       const preAuthCode = getUrlParameter('code');
       if (preAuthCode) {
         getToken(preAuthCode);
       }
-    } else if (!isActiveProvisionalLogin && token) {
-      getToken(token);
     } else if (!isActiveProvisionalLogin) {
       cognitoRedirect();
     }
