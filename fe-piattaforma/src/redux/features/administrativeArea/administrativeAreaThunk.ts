@@ -332,3 +332,28 @@ export const TerminateEntity =
       dispatch(hideLoader());
     }
   };
+
+const UploadFileAction = { type: 'user/UploadFile' };
+export const UploadFile =
+  (payload: { endpoint: string; formData: FormData }) =>
+  async (dispatch: Dispatch) => {
+    try {
+      const { endpoint, formData } = payload;
+      dispatch({ ...UploadFileAction, payload }); // TODO manage dispatch for dev env only
+      dispatch(showLoader());
+      const res = await API.post(endpoint, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      if (res?.data) {
+        return res.data;
+      }
+    } catch (error) {
+      console.log('UploadFile error', error);
+      return false;
+    } finally {
+      dispatch(hideLoader());
+    }
+  };

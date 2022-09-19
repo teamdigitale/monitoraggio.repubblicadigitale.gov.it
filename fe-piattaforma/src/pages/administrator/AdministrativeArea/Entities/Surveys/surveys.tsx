@@ -320,7 +320,7 @@ const Surveys = () => {
       <PageTitle
         title={
           filter.value === 'questionnaire'
-            ? 'Elenco Questionari'
+            ? 'Elenco questionari'
             : 'Elenco Addendum'
         }
         sectionInfo
@@ -363,7 +363,7 @@ const Surveys = () => {
             </>
           ) : (
             <EmptySection
-              title='Non ci sono questionari'
+              title='Non sono presenti questionari'
               subtitle='associati al tuo ruolo'
               icon='it-note'
               withIcon

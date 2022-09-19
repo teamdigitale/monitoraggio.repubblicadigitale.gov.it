@@ -10,19 +10,22 @@ import {
 } from './userSlice';
 import { getSessionValues } from '../../../utils/sessionHelper';
 import { RootState } from '../../store';
-import {isActiveProvisionalLogin} from "../../../pages/common/Auth/auth";
+import { isActiveProvisionalLogin } from '../../../pages/common/Auth/auth';
 
 export const getUserHeaders = () => {
-  const { codiceFiscale } = JSON.parse(getSessionValues('user'));
+  const { codiceFiscale, id: idUtente } = JSON.parse(getSessionValues('user'));
   const { codiceRuolo, idProgramma, idProgetto } = JSON.parse(
     getSessionValues('profile')
   );
 
   return {
-    codiceFiscale: isActiveProvisionalLogin ? codiceFiscale?.toUpperCase() : undefined,
+    codiceFiscale: isActiveProvisionalLogin
+      ? codiceFiscale?.toUpperCase()
+      : undefined,
     codiceRuolo: isActiveProvisionalLogin ? codiceRuolo : undefined,
     idProgramma,
     idProgetto,
+    idUtente,
   };
 };
 
@@ -83,7 +86,8 @@ export const CreateUserContext =
 
 const SelectUserRoleAction = { type: 'user/SelectUserRole' };
 export const SelectUserRole =
-  (profile: UserProfileI, saveSession = false) => async (dispatch: Dispatch, select: Selector) => {
+  (profile: UserProfileI, saveSession = false) =>
+  async (dispatch: Dispatch, select: Selector) => {
     try {
       dispatch({ ...SelectUserRoleAction }); // TODO manage dispatch for dev env only
       dispatch(showLoader());
@@ -140,6 +144,39 @@ export const EditUser =
       }
     } catch (error) {
       console.log('EditUser error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const UploadUserPicAction = { type: 'user/UploadUserPic' };
+export const UploadUserPic =
+  (multipartifile: any) => async (dispatch: Dispatch) => {
+    try {
+      dispatch({ ...UploadUserPicAction }); // TODO manage dispatch for dev env only
+      dispatch(showLoader());
+      const { idUtente } = getUserHeaders();
+      const formData = new FormData();
+      formData.append('idUtente', idUtente);
+      formData.append('multipartifile', multipartifile, 'test.jpg');
+      console.log('formData', formData);
+      const res = await API.post(
+        `/utente/upload/immagineProfilo/${idUtente}`,
+        //{ idUtente, multipartifile },
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      if (res?.data) {
+        return true;
+      }
+    } catch (error) {
+      console.log('UploadUserPic error', error);
+      return false;
     } finally {
       dispatch(hideLoader());
     }

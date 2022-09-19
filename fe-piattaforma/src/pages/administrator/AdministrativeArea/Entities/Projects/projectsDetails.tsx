@@ -276,7 +276,7 @@ const ProjectsDetails = () => {
     {
       size: 'xs',
       color: 'primary',
-      iconForButton: 'it-download',
+      iconForButton: 'it-upload',
       iconColor: 'primary',
       outline: true,
       buttonClass: 'btn-secondary',
@@ -288,7 +288,8 @@ const ProjectsDetails = () => {
             payload: {
               title: 'Carica lista Enti partner',
               entity: 'enti',
-              data: 'NOME,NOME BREVE, TIPOLOGIA, CODICE FISCALE, SEDE LEGALE, PEC',
+              data: 'NOME,NOME_BREVE,CODICE_FISCALE,SEDE_LEGALE,TIPOLOGIA_ENTE,PEC',
+              endpoint: `/ente/partner/upload/${projectId}`,
             },
           })
         ),
@@ -631,10 +632,10 @@ const ProjectsDetails = () => {
       setCorrectButtons([]);
       setEmptySection(
         <EmptySection
-          title='Questa sezione è ancora vuota'
+          title='Non sono presenti sedi associate'
           withIcon
           icon='it-note'
-          subtitle='Per attivare il progetto aggiungi una Sede all’Ente gestore o ad un Ente partner'
+          subtitle='Per attivare il progetto aggiungi una sede all’ente gestore o ad un ente partner'
           // buttons={EmptySectionButtons.slice(2)}
         />
       );
@@ -663,10 +664,11 @@ const ProjectsDetails = () => {
         <NavLink
           to={replaceLastUrlSection(tabs.ENTE_GESTORE)}
           active={activeTab === tabs.ENTE_GESTORE}
+          enteGestore={!managingAuthorityID}
         >
           {!managingAuthorityID ? (
             <div id='tab-ente-gestore-progetto'>
-              <span className='mr-1'> * Ente gestore </span>
+              * Ente gestore
               <Tooltip
                 placement='bottom'
                 target='tab-ente-gestore-progetto'
@@ -675,7 +677,7 @@ const ProjectsDetails = () => {
               >
                 Compilazione obbligatoria
               </Tooltip>
-              <Icon icon='it-warning-circle' size='sm' />
+              <Icon icon='it-warning-circle' size='xs' />
             </div>
           ) : (
             'Ente gestore'
@@ -1172,7 +1174,7 @@ const ProjectsDetails = () => {
                     ))
                   ) : (
                     <EmptySection
-                      title={`Non esistono ${item.title?.toLowerCase()} associati`}
+                      title={`Non sono presenti ${item.title?.toLowerCase()} associati (o associate)`}
                       horizontal
                       aside
                     />
@@ -1230,8 +1232,10 @@ const ProjectsDetails = () => {
             }}
           />
           <UploadCSVModal
-            onClose={() => dispatch(closeModal())}
-            onConfirm={() => dispatch(closeModal())}
+            accept='.csv'
+            onConfirm={() => {
+              if (projectId) dispatch(GetProjectDetail(projectId));
+            }}
           />
           <ManageDelegate creation />
           <ManageReferal creation />

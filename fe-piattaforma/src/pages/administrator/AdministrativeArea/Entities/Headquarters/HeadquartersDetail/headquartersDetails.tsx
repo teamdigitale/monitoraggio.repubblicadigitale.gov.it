@@ -355,7 +355,7 @@ const HeadquartersDetails = () => {
                     ))
                   ) : (
                     <EmptySection
-                      title={`Non esistono ${item.title?.toLowerCase()} associati`}
+                      title={`Non sono presenti ${item.title?.toLowerCase()} associati (o associate)`}
                       horizontal
                       aside
                     />

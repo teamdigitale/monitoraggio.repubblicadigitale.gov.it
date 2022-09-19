@@ -54,10 +54,7 @@ const AvatarInitials: React.FC<AvatarInitialsI> = (props) => {
       )}
     >
       {uName && uSurname ? (
-        <p className={`m-1 initials${font}`}>
-          {' '}
-          {getInitials(uName, uSurname)}{' '}
-        </p>
+        <p className={`m-1 initials${font}`}>{getInitials(uName, uSurname)}</p>
       ) : (
         <Icon icon='it-user' color='primary' className='p-1' />
       )}

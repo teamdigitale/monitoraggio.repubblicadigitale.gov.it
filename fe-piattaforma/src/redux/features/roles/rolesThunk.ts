@@ -58,6 +58,7 @@ export const CreateCustomRole =
       }
     } catch (error) {
       console.log('CreateCustomRole error', error);
+      return false;
     } finally {
       dispatch(hideLoader());
     }
@@ -94,6 +95,7 @@ export const EditCustomRole =
       }
     } catch (error) {
       console.log('EditCustomRole error', error);
+      return false;
     } finally {
       dispatch(hideLoader());
     }

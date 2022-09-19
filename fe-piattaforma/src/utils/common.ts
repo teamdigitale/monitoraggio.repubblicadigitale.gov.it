@@ -4,7 +4,16 @@ import React from 'react';
 import { FilterI } from '../components/DropdownFilter/dropdownFilter';
 import { OptionType } from '../components/Form/select';
 import { TableRowI } from '../components/Table/table';
-import { idQ1, idQ2, idQ3, idQ4, titleQ1, titleQ2, titleQ3, titleQ4 } from '../pages/administrator/AdministrativeArea/Entities/Surveys/surveyConstants';
+import {
+  idQ1,
+  idQ2,
+  idQ3,
+  idQ4,
+  titleQ1,
+  titleQ2,
+  titleQ3,
+  titleQ4,
+} from '../pages/administrator/AdministrativeArea/Entities/Surveys/surveyConstants';
 import { RolePermissionI } from '../redux/features/roles/rolesSlice';
 import { formFieldI } from './formHelper';
 
@@ -258,9 +267,16 @@ export const downloadFile = (file: string, fileName: string) => {
   const link = document.createElement('a');
   link.setAttribute('href', file);
   link.setAttribute('download', fileName);
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  const target = document.getElementById('file-target');
+  if (target) {
+    target.appendChild(link);
+    link.click();
+    target.removeChild(link);
+  } else {
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 };
 
 export const downloadBlob = (
@@ -347,19 +363,24 @@ export const createStringOfCompiledSurveySection = (
         .map((e) => e.replaceAll(',', '§'));
     } else if (Array.isArray(formattedData[key])) {
       if (key === '25' || key === '26') {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         formattedData[key] = (formattedData[key] || ['']).map((e) =>
           e.toString().replaceAll(',', '§')
         );
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
       } else if (formattedData[key].length === 1) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         formattedData[key] = (formattedData[key] || [''])[0]
           .toString()
           .split('§')
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           .map((e) => e.toString().replaceAll(',', '§'));
       } else {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         formattedData[key] = (formattedData[key] || ['']).map((e) =>
           e.toString().replaceAll(',', '§')
@@ -402,26 +423,25 @@ export const convertPayloadSectionInString = (
   });
   switch (section) {
     case 0:
-      return (
-        `{"id":"${idQ1}","title":"${titleQ1}","properties":${createStringOfCompiledSurveySection(newObject).replaceAll('"', "'")}}`
-      );
+      return `{"id":"${idQ1}","title":"${titleQ1}","properties":${createStringOfCompiledSurveySection(
+        newObject
+      ).replaceAll('"', "'")}}`;
     case 1:
-      return (
-        `{"id":"${idQ2}","title":"${titleQ2}","properties":${createStringOfCompiledSurveySection(newObject).replaceAll('"', "'")}}`
-      );
+      return `{"id":"${idQ2}","title":"${titleQ2}","properties":${createStringOfCompiledSurveySection(
+        newObject
+      ).replaceAll('"', "'")}}`;
     case 2:
-      return (
-        `{"id":"${idQ3}","title":"${titleQ3}","properties":${createStringOfCompiledSurveySection(newObject).replaceAll('"', "'")}}`
-      );
+      return `{"id":"${idQ3}","title":"${titleQ3}","properties":${createStringOfCompiledSurveySection(
+        newObject
+      ).replaceAll('"', "'")}}`;
     case 3:
-      return (
-        `{"id":"${idQ4}","title":"${titleQ4}","properties":${createStringOfCompiledSurveySection(newObject).replaceAll('"', "'")}}`
-      );
+      return `{"id":"${idQ4}","title":"${titleQ4}","properties":${createStringOfCompiledSurveySection(
+        newObject
+      ).replaceAll('"', "'")}}`;
     default:
       return createStringOfCompiledSurveySection(newObject);
   }
 };
-
 
 export const orderArray = (array: any[]) => {
   if (array?.length > 0) {
