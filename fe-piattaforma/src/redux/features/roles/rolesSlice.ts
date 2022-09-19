@@ -90,7 +90,9 @@ export type RolePermissionI =
   | 'del.serv'
   | 'upd.card.serv'
   | 'list.dwnl.serv'
-  | 'view.card.serv';
+  | 'view.card.serv'
+  // Dashboard
+  | 'acc.self.dshb';
 
 interface RoleI {
   codiceRuolo: string;
@@ -150,11 +152,8 @@ export const rolesSlice = createSlice({
   },
 });
 
-export const {
-  setRolesList,
-  setRoleDetails,
-  setGroupsList,
-} = rolesSlice.actions;
+export const { setRolesList, setRoleDetails, setGroupsList } =
+  rolesSlice.actions;
 
 export const selectRolesList = (state: RootState) => state.roles.list;
 export const selectRoleDetails = (state: RootState) => state.roles.role;
