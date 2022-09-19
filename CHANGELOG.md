@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.131](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.130...1.0.0-develop.131) (2022-09-19)
+
+
+### Bug Fixes
+
+* REWRITE expression changes ([76527b5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/76527b54d6945a2fa8f6f584005bee6cae1d868f))
+* REWRITE expression changes ([89c5360](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/89c5360b3ccaea136a6fc8598e7dfedf204e1273))
+
 ## [1.0.0-develop.130](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.129...1.0.0-develop.130) (2022-09-19)
 
 
