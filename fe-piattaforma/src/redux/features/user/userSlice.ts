@@ -111,12 +111,10 @@ export const userSlice = createSlice({
     login: (state) => {
       setSessionValues('user', state.user);
       setSessionValues('profile', state.profilo);
-      setSessionValues(
-        'auth',
-        isActiveProvisionalLogin
-          ? 'fguhbjinokj8765d578t9yvghugyftr646tg'
-          : 'TBD'
-      );
+      if (isActiveProvisionalLogin) {
+        setSessionValues('auth', 'fguhbjinokj8765d578t9yvghugyftr646tg');
+      }
+
       state.isLogged = true;
     },
     logout: (state) => {

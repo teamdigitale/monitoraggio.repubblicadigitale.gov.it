@@ -12,6 +12,7 @@ import {
 } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { userRoles } from '../AdministrativeArea/Entities/utils';
 import PageTitle from '../../../components/PageTitle/pageTitle';
+import useGuard from '../../../hooks/guard';
 
 /*
 const baseFrameURL =
@@ -20,6 +21,8 @@ const baseFrameURL =
 */
 
 const dashboardBaseURL = process.env.REACT_APP_DASHBOARD_BASE_URL || 'https://backend.facilitazione-dev.mitd.technology/dashboard_dev';
+
+const dashboard_BI_URL = process.env.REACT_APP_DASHBOARD_BI_URL || 'https://137642333557.signin.aws.amazon.com/console';
 
 const dashboardRoles: {
   [key: string]: {
@@ -52,6 +55,7 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const [frameUrl, setFrameUrl] = useState('');
   const user = getUserHeaders();
+  const { hasUserPermission } = useGuard();
   const { dettagliInfoProgramma: program } =
     useAppSelector(selectPrograms).detail;
   const { dettagliInfoProgetto: project } =
@@ -67,7 +71,8 @@ const Dashboard = () => {
         }`;
         break;
       }
-      case userRoles.REG: {
+      case userRoles.REG:
+      case userRoles.DEG: {
         if (program.policy.toLowerCase() === 'rfd') {
           requestURL = `${requestURL}/${dashboardRoles.REG.rfd}`;
         } else if (program.policy.toLowerCase() === 'scd') {
@@ -77,12 +82,13 @@ const Dashboard = () => {
         }
         break;
       }
-      case userRoles.REGP: {
+      case userRoles.REGP:
+      case userRoles.DEGP: {
         if (project.policy.toLowerCase() === 'rfd') {
           requestURL = `${requestURL}/${dashboardRoles.REGP.rfd}`;
         } else if (project.policy.toLowerCase() === 'scd') {
           requestURL = `${requestURL}/${dashboardRoles.REGP.scd}`;
-        }  else {
+        } else {
           return null;
         }
         break;
@@ -144,10 +150,17 @@ const Dashboard = () => {
       <PageTitle
         title='La mia dashboard'
         subtitle='Consulta le statistiche rappresentate in questa pagina, oppure accedi allo strumento di Business Intelligence per consultare, configurare e scaricare in autonomia i dati a tua disposizione'
-        cta={{
-          action: () => console.log('go to BI'),
-          label: 'Vai a Business intelligence',
-        }}
+        cta={
+          hasUserPermission(['acc.self.dshb'])
+            ? {
+                action: () => {
+                  console.log('go to BI', dashboard_BI_URL);
+                  window.open(dashboard_BI_URL, '_blank');
+                },
+                label: 'Vai a Business intelligence',
+              }
+            : undefined
+        }
       />
       <div className='dashboard-container__frame w-100 mt-5'>
         <iframe
