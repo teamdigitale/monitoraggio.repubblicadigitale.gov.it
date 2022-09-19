@@ -27,7 +27,7 @@ const EmptySection: React.FC<EmptySectionI> = ({
     <div
       className={clsx(
         'd-flex',
-        'mt-5',
+        'my-5',
         horizontal
           ? 'flex-row justify-content-center'
           : 'justify-content-center align-items-center flex-column',

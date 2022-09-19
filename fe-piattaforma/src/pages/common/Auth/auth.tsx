@@ -1,7 +1,7 @@
 import React, { memo, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import LogoScrittaBlu from '/public/assets/img/logo-scritta-blu-x2.png';
 import { Footer, Input, Loader } from '../../../components';
 import { Button, Card, Icon } from 'design-react-kit';
@@ -33,6 +33,7 @@ const Auth: React.FC<withFormHandlerProps> = ({
   const loader = useAppSelector(selectLoader);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { token } = useParams();
 
   const cognitoRedirect = () => {
     dispatch(showLoader());
@@ -74,11 +75,13 @@ const Auth: React.FC<withFormHandlerProps> = ({
       if (preAuthCode) {
         getToken(preAuthCode);
       }
+    } else if (!isActiveProvisionalLogin && token) {
+      getToken(token);
     } else if (!isActiveProvisionalLogin) {
       cognitoRedirect();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isActiveProvisionalLogin, window.location]);
+  }, [isActiveProvisionalLogin, window.location, token]);
 
   const handleFakeLogin = () => {
     if (isActiveProvisionalLogin && form.mockUser?.value) {

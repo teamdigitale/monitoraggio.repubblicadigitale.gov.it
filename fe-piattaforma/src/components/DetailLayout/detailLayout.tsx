@@ -156,7 +156,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                   ))
                 ) : (
                   <EmptySection
-                    title={`Non esistono ${singleItem.title?.toLowerCase()} associati`}
+                    title={`Non sono presenti ${singleItem.title?.toLowerCase()} associati (o associate).`}
                     horizontal
                     aside
                   />
@@ -339,6 +339,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                   <ButtonsBar
                     citizenDeleteChange={citizenDeleteChange}
                     buttons={formButtons}
+                    isUserProfile={isUserProfile}
                   />
                 </div>
               )}

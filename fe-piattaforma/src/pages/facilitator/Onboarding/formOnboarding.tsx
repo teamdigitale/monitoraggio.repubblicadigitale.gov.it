@@ -15,9 +15,7 @@ import Select, { OptionType } from '../../../components/Form/select';
 import { Form, Input } from '../../../components';
 import { selectUser } from '../../../redux/features/user/userSlice';
 import { RegexpType } from '../../../utils/validator';
-import {
-  contractTypes,
-} from '../../administrator/AdministrativeArea/Entities/utils';
+import { contractTypes } from '../../administrator/AdministrativeArea/Entities/utils';
 
 export interface FormOnboardingI {
   onInputChange?: withFormHandlerProps['onInputChange'];
@@ -27,6 +25,7 @@ export interface FormOnboardingI {
   creation?: boolean;
   sendNewForm?: (newForm: FormI) => void;
   setIsFormValid?: (param: boolean) => void;
+  isProfile?: boolean;
 }
 
 interface FormProfileI extends withFormHandlerProps, FormOnboardingI {}
@@ -39,6 +38,7 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
     isValidForm,
     onInputChange,
     sendNewForm = () => ({}),
+    isProfile = false,
   } = props;
 
   const device = useAppSelector(selectDevice);
@@ -83,14 +83,26 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
   }, [form, isValidForm]);
 
   useEffect(() => {
-    if (showBio && form?.bio) setTimeout(() => updateFormField({ ...form.bio, required: showBio }), 500);
+    if (showBio && form?.bio)
+      setTimeout(
+        () => updateFormField({ ...form.bio, required: showBio }),
+        500
+      );
   }, [showBio]);
 
   useEffect(() => {
-    if (showTipoContratto && form?.tipoContratto) setTimeout(() => updateFormField({ ...form.tipoContratto, required: showTipoContratto }), 500);
+    if (showTipoContratto && form?.tipoContratto)
+      setTimeout(
+        () =>
+          updateFormField({
+            ...form.tipoContratto,
+            required: showTipoContratto,
+          }),
+        500
+      );
   }, [showTipoContratto]);
 
-  const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
+  /* const bootClass = 'justify-content-between px-0 px-lg-5 mx-2'; */
 
   return (
     <div className={clsx(device.mediaIsPhone ? 'mx-4 mt-5' : 'mt-5 container')}>
@@ -99,7 +111,7 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
         className={clsx('mt-5', 'mb-5', 'pt-5', 'onboarding__form-container')}
         formDisabled={formDisabled}
       >
-        <Form.Row className={bootClass}>
+        <Form.Row /* className={bootClass} */>
           <Input
             {...form?.nome}
             disabled
@@ -118,6 +130,16 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
             col='col-12 col-md-6'
             onInputChange={onInputChange}
           />
+          {isProfile ? (
+            <Input
+              value={user?.id || ''}
+              disabled
+              label='ID'
+              col='col-12 col-md-6'
+            />
+          ) : (
+            <span />
+          )}
           <Input
             {...form?.codiceFiscale}
             disabled

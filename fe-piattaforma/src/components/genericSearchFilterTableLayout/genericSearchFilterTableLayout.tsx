@@ -368,7 +368,9 @@ const GenericSearchFilterTableLayout: React.FC<
                 'justify-content-center',
                 'align-items-center',
                 'px-0',
-                'px-lg-4'
+                'px-lg-4',
+                'pb-5',
+                'mb-2'
               )}
             >
               <div>
@@ -380,7 +382,7 @@ const GenericSearchFilterTableLayout: React.FC<
                 />
               </div>
               {!device.mediaIsPhone && (
-                <span className='ml-4'>{t('download_list')}</span>
+                <span className='ml-1'>{t('download_list')}</span>
               )}
             </Button>
           </div>

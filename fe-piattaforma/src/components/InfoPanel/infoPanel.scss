@@ -52,4 +52,9 @@
       }
     }
   }
+
+  &__text-list {
+    white-space: break-spaces;
+    overflow: visible;
+  }
 }

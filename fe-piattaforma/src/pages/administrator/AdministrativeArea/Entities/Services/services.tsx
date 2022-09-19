@@ -271,7 +271,7 @@ const Services = () => {
           </>
         ) : (
           <EmptySection
-            title='Non ci sono servizi'
+            title='Non sono presenti servizi'
             subtitle='associati al tuo ruolo'
             icon='it-note'
             withIcon

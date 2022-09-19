@@ -19,4 +19,19 @@
     height: 22px;
     width: 22px;
   }
+  &__header-acc {
+    font-size: 24px;
+  }
+  &__accordion-left-icon {
+    background-color: red;
+    button {
+      margin-top: 5px;
+    }
+  }
 }
+
+/* .collapse-div.collapse-left-icon
+        .collapse-header
+        [data-toggle='collapse']::before {
+       
+      } */

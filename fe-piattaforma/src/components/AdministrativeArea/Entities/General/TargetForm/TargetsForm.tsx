@@ -41,7 +41,7 @@ const TargetsForm = ({
   section,
   maxTargets = 5,
   isValidForm,
-  setIsFormValid,
+  setIsFormValid = () => ({}),
   sendValues = () => ({}),
   getFormValues = () => ({}),
   onInputChange,
@@ -90,6 +90,7 @@ const TargetsForm = ({
 
   useEffect(() => {
     sendValues(getFormValues());
+    setIsFormValid(isValidForm);
   }, [form]);
 
   const addTarget = () => {
@@ -137,7 +138,7 @@ const TargetsForm = ({
               ...value,
               field: `n${section}DataTarget${i + 1}`,
               id: `n${section}DataTarget${i + 1}`,
-              label: `Data Obiettivo ${i + 1}`,
+              label: `Data obiettivo ${i + 1}`,
             },
           ])
       );
