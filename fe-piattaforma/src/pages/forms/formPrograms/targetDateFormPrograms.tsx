@@ -160,7 +160,7 @@ const TargetDateFormPrograms: React.FC<TargetDateFormProgramsI> = (props) => {
           id: `${intoModal && 'modal-'}${formForSection}-valoreObiettivo${
             count + 1
           }`,
-          label: `valore Obiettivo`,
+          label: `Valore obiettivo`,
           order: count + 1,
         }),
         newFormField({
@@ -169,7 +169,7 @@ const TargetDateFormPrograms: React.FC<TargetDateFormProgramsI> = (props) => {
           required: true,
           type: 'date',
           id: `valoreObiettivo${count + 1}data`,
-          label: `Data Obiettivo`,
+          label: `Data obiettivo`,
           order: count + 1,
         })
       );

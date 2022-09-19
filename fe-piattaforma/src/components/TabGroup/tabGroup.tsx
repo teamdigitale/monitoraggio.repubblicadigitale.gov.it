@@ -26,7 +26,6 @@ const TabGroup: React.FC<TabGroupI> = (props) => {
           'd-flex',
           'align-items-center',
           'justify-content-around',
-          'm-0',
           'mb-3',
           'border-bottom',
           'border-primary'

@@ -10,7 +10,7 @@ import {
 } from './userSlice';
 import { getSessionValues } from '../../../utils/sessionHelper';
 import { RootState } from '../../store';
-import {isActiveProvisionalLogin} from "../../../pages/common/Auth/auth";
+import { isActiveProvisionalLogin } from '../../../pages/common/Auth/auth';
 
 export const getUserHeaders = () => {
   const { codiceFiscale, id: idUtente } = JSON.parse(getSessionValues('user'));
@@ -19,7 +19,9 @@ export const getUserHeaders = () => {
   );
 
   return {
-    codiceFiscale: isActiveProvisionalLogin ? codiceFiscale?.toUpperCase() : undefined,
+    codiceFiscale: isActiveProvisionalLogin
+      ? codiceFiscale?.toUpperCase()
+      : undefined,
     codiceRuolo: isActiveProvisionalLogin ? codiceRuolo : undefined,
     idProgramma,
     idProgetto,
@@ -157,7 +159,7 @@ export const UploadUserPic =
       const formData = new FormData();
       formData.append('idUtente', idUtente);
       formData.append('multipartifile', multipartifile, 'test.jpg');
-      console.log('formData', formData)
+      console.log('formData', formData);
       const res = await API.post(
         `/utente/upload/immagineProfilo/${idUtente}`,
         //{ idUtente, multipartifile },

@@ -101,7 +101,8 @@ const Citizens = () => {
   const searchInformation: SearchInformationI = {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
-    placeholder: 'Inserisci il nome, il cognome, l’identificativo, il codice fiscale o il n. documento del cittadino',
+    placeholder:
+      'Inserisci il nome, il cognome, l’identificativo, il codice fiscale o il n. documento del cittadino',
     isClearable: true,
     title: 'Cerca cittadino',
   };
@@ -221,7 +222,7 @@ const Citizens = () => {
             ) : null}
           </div>
         ) : (
-          <EmptySection title='Non ci sono cittadini' />
+          <EmptySection title='Non sono presenti cittadini' />
         )}
         <SearchCitizenModal />
       </GenericSearchFilterTableLayout>

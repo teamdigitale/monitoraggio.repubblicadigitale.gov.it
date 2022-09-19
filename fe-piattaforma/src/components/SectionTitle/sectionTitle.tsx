@@ -163,28 +163,37 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
           className={clsx(
             'custom-section-title__section-title',
             'primary-color-a9',
-            !device.mediaIsPhone ? 'text-nowrap' : 'text-wrap text-center'
+            !device.mediaIsPhone ? 'text-nowrap' : 'text-wrap text-center',
+            !device.mediaIsPhone && 'position-relative'
           )}
         >
           <span role='heading' aria-level={1}>
             {title}
           </span>
+
+          {status ? (
+            <div
+              className={clsx(
+                !device.mediaIsPhone && 'position-absolute status'
+              )}
+            >
+              <StatusChip
+                className={clsx(
+                  'table-container__status-label',
+                  'primary-bg-a9',
+                  'ml-4',
+                  'section-chip',
+                  'no-border',
+                  device.mediaIsPhone ? 'mx-0 ml-2 my-3' : 'mx-3'
+                )}
+                status={status}
+                rowTableId={name?.replace(/\s/g, '') || new Date().getTime()}
+              />
+            </div>
+          ) : null}
         </div>
-        {status ? (
-          <StatusChip
-            className={clsx(
-              'table-container__status-label',
-              'primary-bg-a9',
-              'mr-4',
-              'section-chip',
-              'no-border',
-              device.mediaIsPhone ? 'mx-0 ml-2 my-3' : 'mx-3'
-            )}
-            status={status}
-            rowTableId={name?.replace(/\s/g, '') || new Date().getTime()}
-          />
-        ) : null}
       </div>
+
       {subTitle ? (
         <div className='ml-3'>
           <p className='primary-color-a9 mb-0'> {subTitle} </p>

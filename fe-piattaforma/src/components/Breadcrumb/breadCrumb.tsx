@@ -52,7 +52,7 @@ const Breadcrumb = () => {
     } else {
       switch (pathElem) {
         case 'area-amministrativa':
-          return 'Area Amministrativa';
+          return 'Area amministrativa';
         case 'area-cittadini':
           return 'Area cittadini';
         default:

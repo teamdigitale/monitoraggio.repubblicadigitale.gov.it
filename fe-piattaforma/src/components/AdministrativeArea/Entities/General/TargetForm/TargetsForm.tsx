@@ -138,7 +138,7 @@ const TargetsForm = ({
               ...value,
               field: `n${section}DataTarget${i + 1}`,
               id: `n${section}DataTarget${i + 1}`,
-              label: `Data Obiettivo ${i + 1}`,
+              label: `Data obiettivo ${i + 1}`,
             },
           ])
       );

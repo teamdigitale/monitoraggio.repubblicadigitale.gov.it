@@ -46,6 +46,7 @@ import {
 import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
 import {
+  GetAuthorityManagerDetail,
   RemoveReferentDelegate,
   UserAuthorityRole,
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
@@ -63,7 +64,6 @@ const UsersDetails = () => {
   const { dettaglioUtente: userInfo = {}, dettaglioRuolo: userRoleList = [] } =
     userDetails;
   const { mediaIsDesktop } = useAppSelector(selectDevice);
-  const headquarterInfo = userInfo?.authorityRef || undefined;
   const {
     entityId,
     userRole,
@@ -166,11 +166,25 @@ const UsersDetails = () => {
   };
 
   useEffect(() => {
+    if (authorityName === undefined) {
+      if (entityId) {
+        dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+      }
+      if (projectId) {
+        dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     if (userRole === userRoles.FAC || userRole === userRoles.VOL) {
       setCurrentForm(<FormFacilitator formDisabled />);
     } else {
       setCurrentForm(
-        <FormUser formDisabled fieldsToHide={userRole !== userRoles.USR ? ['tipoContratto'] : []} />
+        <FormUser
+          formDisabled
+          fieldsToHide={userRole !== userRoles.USR ? ['tipoContratto'] : []}
+        />
       );
     }
   }, [userRole]);
@@ -215,6 +229,25 @@ const UsersDetails = () => {
       }
     }
     return 'utente';
+  };
+  const getSubtitle = () => {
+    if (userRole) {
+      switch (userRole) {
+        case userRoles.DEG:
+        case userRoles.DEGP:
+        case userRoles.DEPP:
+        case userRoles.REG:
+        case userRoles.REGP:
+        case userRoles.REPP:
+          return authorityName as string;
+        case userRoles.FAC:
+        case userRoles.VOL:
+          return '';
+        default:
+          '';
+      }
+    }
+    return '';
   };
 
   const getModalID = () => {
@@ -435,11 +468,9 @@ const UsersDetails = () => {
       if (projectId) {
         await dispatch(
           RemoveReferentDelegate(authorityId, projectId, cf, role)
-        )
+        );
       } else if (entityId) {
-        await dispatch(
-          RemoveReferentDelegate(authorityId, entityId, cf, role)
-        )
+        await dispatch(RemoveReferentDelegate(authorityId, entityId, cf, role));
       }
     }
   };
@@ -484,7 +515,7 @@ const UsersDetails = () => {
               title: userInfo?.nome + ' ' + userInfo?.cognome,
               status: getUserRoleStatus(),
               upperTitle: { icon: 'it-user', text: getUpperTitle() },
-              subTitle: headquarterInfo,
+              subTitle: getSubtitle(),
               iconAvatar: true,
               name: userInfo?.nome,
               surname: userInfo?.cognome,

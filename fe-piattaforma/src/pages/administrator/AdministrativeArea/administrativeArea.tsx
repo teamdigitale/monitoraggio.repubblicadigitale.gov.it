@@ -62,32 +62,32 @@ interface PageTitleMockI {
 
 export const PageTitleMock: PageTitleMockI = {
   '/area-amministrativa/programmi': {
-    title: 'Elenco Programmi',
+    title: 'Elenco programmi',
     textCta: 'Crea nuovo programma',
     iconCta: 'it-plus',
   },
   '/area-amministrativa/progetti': {
-    title: 'Elenco Progetti',
+    title: 'Elenco progetti',
     textCta: 'Crea nuovo progetto',
     iconCta: 'it-plus',
   },
   '/area-amministrativa/utenti': {
-    title: 'Elenco Utenti',
+    title: 'Elenco utenti',
     textCta: 'Crea nuovo utente',
     iconCta: 'it-plus',
   },
   '/area-amministrativa/enti': {
-    title: 'Elenco Enti',
+    title: 'Elenco enti',
     textCta: 'Crea nuovo ente',
     iconCta: 'it-plus',
   },
   '/area-amministrativa/questionari': {
-    title: 'Elenco Questionari',
+    title: 'Elenco questionari',
     textCta: 'Crea nuovo questionario',
     iconCta: 'it-plus',
   },
   '/area-amministrativa/servizi': {
-    title: 'Elenco Servizi',
+    title: 'Elenco servizi',
     textCta: 'Crea servizio',
     iconCta: 'it-plus',
   },
