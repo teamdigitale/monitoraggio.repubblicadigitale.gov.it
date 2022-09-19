@@ -9,6 +9,8 @@ import AvatarInitials, {
 } from '../AvatarInitials/avatarInitials';
 import StatusChip from '../StatusChip/statusChip';
 import { Button, Icon } from 'design-react-kit';
+import { useDispatch } from 'react-redux';
+import { UploadUserPic } from '../../redux/features/user/userThunk';
 
 interface SectionTitleI {
   title: string;
@@ -37,7 +39,9 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
     isUserProfile = false,
     enteIcon = false,
   } = props;
+
   const device = useAppSelector(selectDevice);
+  const dispatch = useDispatch();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const addProfilePicture = () => {
@@ -53,11 +57,17 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
 
     if (input.files?.length) {
       const selectedImage = input.files[0];
+      dispatch(UploadUserPic(selectedImage));
+
+      /*
       const reader = new FileReader();
+      //reader.readAsBinaryString(selectedImage);
       reader.readAsDataURL(selectedImage);
       reader.onloadend = () => {
-        return reader.result;
-      };
+        console.log(reader);
+        //return reader.result;
+        dispatch(UploadUserPic(reader.result));
+      };*/
     }
   };
 
@@ -157,8 +167,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
           )}
         >
           <span role='heading' aria-level={1}>
-            {' '}
-            {title}{' '}
+            {title}
           </span>
         </div>
         {status ? (

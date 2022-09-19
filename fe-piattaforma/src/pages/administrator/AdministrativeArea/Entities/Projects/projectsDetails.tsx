@@ -276,7 +276,7 @@ const ProjectsDetails = () => {
     {
       size: 'xs',
       color: 'primary',
-      iconForButton: 'it-download',
+      iconForButton: 'it-upload',
       iconColor: 'primary',
       outline: true,
       buttonClass: 'btn-secondary',
@@ -288,7 +288,8 @@ const ProjectsDetails = () => {
             payload: {
               title: 'Carica lista Enti partner',
               entity: 'enti',
-              data: 'NOME,NOME BREVE, TIPOLOGIA, CODICE FISCALE, SEDE LEGALE, PEC',
+              data: 'NOME,NOME_BREVE,CODICE_FISCALE,SEDE_LEGALE,TIPOLOGIA_ENTE,PEC',
+              endpoint: `/ente/partner/upload/${projectId}`,
             },
           })
         ),
@@ -1230,8 +1231,10 @@ const ProjectsDetails = () => {
             }}
           />
           <UploadCSVModal
-            onClose={() => dispatch(closeModal())}
-            onConfirm={() => dispatch(closeModal())}
+            accept='.csv'
+            onConfirm={() => {
+              if (projectId) dispatch(GetProjectDetail(projectId));
+            }}
           />
           <ManageDelegate creation />
           <ManageReferal creation />

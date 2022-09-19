@@ -86,7 +86,8 @@ const UserProfile: React.FC<UserProfileI> = ({
           headingRole: false,
         }}
         isUserProfile={isUserProfile}
-        goBackPath='/'
+        //goBackPath='/'
+        showGoBack={false}
         buttonsPosition='BOTTOM'
         formButtons={correctButtons}
       >
