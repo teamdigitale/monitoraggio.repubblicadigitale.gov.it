@@ -703,8 +703,9 @@ export const UpdateAuthorityDetails =
 
       await API.put(`/ente/${idEnte}`, payload);
       return true;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }
