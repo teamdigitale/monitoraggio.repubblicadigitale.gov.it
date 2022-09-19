@@ -203,6 +203,7 @@ jobs:
           sed -i "s/{{_REACT_APP_COGNITO_CLIENT_SECRET_}}/${{ secrets.REACT_APP_COGNITO_CLIENT_SECRET }}/g" .env
           sed -i "s/{{_REACT_APP_COGNITO_FE_REDIRECT_URL_}}/${{ secrets.REACT_APP_COGNITO_FE_REDIRECT_URL }}/g" .env
           sed -i "s/{{_REACT_APP_DASHBOARD_BASE_URL_}}/${{ secrets.REACT_APP_DASHBOARD_BASE_URL }}/g" .env
+          sed -i "s/{{_REACT_APP_DASHBOARD_BI_URL_}}/${{ secrets.REACT_APP_DASHBOARD_BI_URL }}/g" .env
 
       - name: File Regex Replace
         uses: mingjun97/file-regex-replace@v1
