@@ -15,12 +15,14 @@ interface StickyButtonsI {
   buttons: ButtonInButtonsBar[];
   citizenList?: boolean;
   citizenDeleteChange?: boolean;
+  isUserProfile?: boolean;
 }
 
 const ButtonsBar: React.FC<StickyButtonsI> = ({
   buttons = [],
   citizenList = false,
   citizenDeleteChange = false,
+  isUserProfile = false,
 }) => {
   const device = useAppSelector(selectDevice);
 
@@ -30,6 +32,7 @@ const ButtonsBar: React.FC<StickyButtonsI> = ({
         'buttons-bar',
         citizenList ? 'justify-content-start' : 'justify-content-end',
         citizenDeleteChange ? 'flex-nowrap' : null,
+        isUserProfile && 'mr-2',
         'pt-2',
         device.mediaIsPhone && 'py-2'
       )}

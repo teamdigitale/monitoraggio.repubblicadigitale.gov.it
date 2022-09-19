@@ -49,15 +49,13 @@ const InfoPanel: React.FC<InfoPanelI> = (props) => {
                 className={clsx(
                   'd-flex',
                   'flex-row',
-                  'align-items-center',
+                  'align-items-baseline',
                   'mt-1',
                   'pr-2'
                 )}
               >
-                <div className='d-flex flex-row align-items-center'>
-                  <Icon icon={ColoredListBullets} />
-                  <p className='text-nowrap'>{item}</p>
-                </div>
+                <Icon icon={ColoredListBullets} />
+                <p className='info-panel__text-list'>{item}</p>
               </div>
             ))
           ) : (
@@ -96,14 +94,12 @@ const InfoPanel: React.FC<InfoPanelI> = (props) => {
                         className={clsx(
                           'd-flex',
                           'flex-row',
-                          'align-items-center',
+                          'align-items-baseline',
                           openData && 'pl-3 pr-5 py-2'
                         )}
                       >
-                        <div>
-                          <Icon icon={ColoredListBullets} />
-                          <p className='text-nowrap'>{item}</p>
-                        </div>
+                        <Icon icon={ColoredListBullets} />
+                        <p className='info-panel__text-list'>{item}</p>
                       </div>
                     </div>
                   ))

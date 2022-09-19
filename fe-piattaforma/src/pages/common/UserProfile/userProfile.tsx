@@ -85,17 +85,16 @@ const UserProfile: React.FC<UserProfileI> = ({
           surname: user?.cognome,
           headingRole: false,
         }}
-        isUserProfile={isUserProfile}
-        //goBackPath='/'
         showGoBack={false}
+        isUserProfile={isUserProfile}
         buttonsPosition='BOTTOM'
         formButtons={correctButtons}
       >
         <FormOnboarding isProfile formDisabled />
       </DetailLayout>
-      <div className='my-5'>
+      <div className='my-5 container'>
         <div className='w-100'>
-          <h5 className={clsx('primary-color', 'mb-4')}>Ruoli</h5>
+          <h1 className={clsx('primary-color', 'mb-4', 'h4', 'ml-3')}>Ruoli</h1>
         </div>
         {userRoleList.map((role: any) => {
           let roleActions = {};

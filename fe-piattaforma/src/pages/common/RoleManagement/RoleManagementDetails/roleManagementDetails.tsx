@@ -1,8 +1,7 @@
 import React, { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import clsx from 'clsx';
-import { Button, Container } from 'design-react-kit';
+import { Container } from 'design-react-kit';
 import './roleManagementDetails.scss';
 import { Form, Input, Accordion, InfoPanel } from '../../../../components';
 import DetailLayout from '../../../../components/DetailLayout/detailLayout';
@@ -34,6 +33,7 @@ import {
   newFormField,
 } from '../../../../utils/formHelper';
 import { scrollTo } from '../../../../utils/common';
+import { ButtonInButtonsBar } from '../../../../components/ButtonsBar/buttonsBar';
 
 interface RolesManagementDetailsI extends withFormHandlerProps {
   creation?: boolean;
@@ -162,27 +162,41 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
     if (functionalities.length && isValidForm) {
       let roleCode;
       if (creation) {
-        await dispatch(
+        const res = await dispatch(
           CreateCustomRole({
             nomeRuolo: getFormValues().roleName?.toString().trim() || '',
             codiciGruppi: functionalities.map((func) => func.codice),
           })
         );
         roleCode = getFormValues().roleName;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (res) {
+          setEnableForm(false);
+          scrollTo(0);
+          navigate(`/gestione-ruoli/${roleCode}`, {
+            replace: true,
+          });
+        }
       } else if (codiceRuolo && role?.dettaglioRuolo?.tipologia === 'NP') {
-        await dispatch(
+        const res = await dispatch(
           EditCustomRole(codiceRuolo, {
             nomeRuolo: getFormValues().roleName?.toString().trim() || '',
             codiciGruppi: functionalities.map((func) => func.codice),
           })
         );
         roleCode = codiceRuolo;
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (res) {
+          setEnableForm(false);
+          scrollTo(0);
+          navigate(`/gestione-ruoli/${roleCode}`, {
+            replace: true,
+          });
+        }
       }
-      setEnableForm(false);
-      scrollTo(0);
-      navigate(`/gestione-ruoli/${roleCode}`, {
-        replace: true,
-      });
     }
   };
 
@@ -193,6 +207,57 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
         replace: true,
       });
     }
+  };
+
+  const getButtons = () => {
+    const buttons: ButtonInButtonsBar[] = [];
+    if (formEnabled) {
+      buttons.push({
+        text: 'Annulla',
+        color: 'primary',
+        outline: true,
+        onClick: () => {
+          if (creation) {
+            navigate(-1);
+          } else {
+            setEnableForm(!formEnabled);
+          }
+        },
+        className: 'mr-2 role-management-details-container__button-width',
+      });
+      buttons.push({
+        text: `Salva${!creation ? ' modifiche' : ''}`,
+        disabled: checkActionDisabled(),
+        color: 'primary',
+        onClick: () => handleSave(),
+        className: 'role-management-details-container__button-width',
+      });
+    } else {
+      if (
+        hasUserPermission(['del.ruoli']) &&
+        role?.dettaglioRuolo?.stato === 'NON ATTIVO'
+      ) {
+        buttons.push({
+          text: 'Elimina ruolo',
+          color: 'primary',
+          outline: true,
+          onClick: () => handleDelete(),
+          className: 'mr-2 role-management-details-container__button-width',
+        });
+      }
+      if (
+        hasUserPermission(['add.upd.permessi']) &&
+        role?.dettaglioRuolo?.modificabile
+      ) {
+        buttons.push({
+          text: 'Modifica',
+          color: 'primary',
+          onClick: () => setEnableForm(!formEnabled),
+          className: 'role-management-details-container__button-width',
+        });
+      }
+    }
+    return buttons;
   };
 
   return (
@@ -207,91 +272,40 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
             status: creation ? undefined : role?.dettaglioRuolo?.stato,
             upperTitle: { icon: 'it-settings', text: 'Ruolo' },
           }}
-          formButtons={[]}
+          formButtons={getButtons()}
           buttonsPosition='BOTTOM'
           goBackTitle='Vai alla Lista Ruoli'
           goBackPath='/gestione-ruoli'
-        />
-        <Form id='form-role-management' className='mt-4'>
-          <Input
-            {...form.roleName}
-            disabled={creation ? false : !formEnabled}
-            label={creation ? 'Inserisci nome ruolo' : 'Nome'}
-            className='role-management-details-container__input my-4'
-            onInputBlur={onInputChange}
-          />
-        </Form>
-        {(groups || []).map((group, index) => (
-          <Accordion
-            title={group.descrizione}
-            key={group.codice}
-            lastBottom={index === groups.length - 1}
-            checkbox
-            disabledCheckbox={!formEnabled}
-            isChecked={
-              !!functionalities?.find((grp) => grp.codice === group.codice)
-            }
-            handleOnCheck={() => handleChangeRole(group)}
-          >
-            <InfoPanel
-              list={group.permessi.map((permesso) => permesso.descrizione)}
-            />
-          </Accordion>
-        ))}
-        <div
-          className={clsx('d-flex', 'flex-row', 'justify-content-end', 'my-4')}
         >
-          {formEnabled ? (
-            <>
-              <Button
-                color='primary'
-                outline
-                onClick={() => {
-                  if (creation) {
-                    navigate(-1);
-                  } else {
-                    setEnableForm(!formEnabled);
-                  }
-                }}
-                className='mr-2 role-management-details-container__button-width'
+          <>
+            <Form id='form-role-management' className='mt-4'>
+              <Input
+                {...form.roleName}
+                disabled={creation ? false : !formEnabled}
+                label={creation ? 'Inserisci nome ruolo' : 'Nome'}
+                className='role-management-details-container__input my-4'
+                onInputBlur={onInputChange}
+              />
+            </Form>
+            {(groups || []).map((group, index) => (
+              <Accordion
+                title={group.descrizione}
+                key={group.codice}
+                lastBottom={index === groups.length - 1}
+                checkbox
+                disabledCheckbox={!formEnabled}
+                isChecked={
+                  !!functionalities?.find((grp) => grp.codice === group.codice)
+                }
+                handleOnCheck={() => handleChangeRole(group)}
               >
-                Annulla
-              </Button>
-              <Button
-                disabled={checkActionDisabled()}
-                color='primary'
-                onClick={handleSave}
-                className='role-management-details-container__button-width'
-              >
-                {`Salva${!creation ? ' modifiche' : ''}`}
-              </Button>
-            </>
-          ) : (
-            <>
-              {hasUserPermission(['del.ruoli']) &&
-              role?.dettaglioRuolo?.stato === 'NON ATTIVO' ? (
-                <Button
-                  color='primary'
-                  outline
-                  onClick={handleDelete}
-                  className='mr-2 role-management-details-container__button-width'
-                >
-                  Elimina ruolo
-                </Button>
-              ) : null}
-              {hasUserPermission(['add.upd.permessi']) &&
-              role?.dettaglioRuolo?.modificabile ? (
-                <Button
-                  color='primary'
-                  onClick={() => setEnableForm(!formEnabled)}
-                  className='role-management-details-container__button-width'
-                >
-                  Modifica
-                </Button>
-              ) : null}
-            </>
-          )}
-        </div>
+                <InfoPanel
+                  list={group.permessi.map((permesso) => permesso.descrizione)}
+                />
+              </Accordion>
+            ))}
+          </>
+        </DetailLayout>
       </Container>
     </>
   );

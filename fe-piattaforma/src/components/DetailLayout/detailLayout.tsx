@@ -339,6 +339,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                   <ButtonsBar
                     citizenDeleteChange={citizenDeleteChange}
                     buttons={formButtons}
+                    isUserProfile={isUserProfile}
                   />
                 </div>
               )}

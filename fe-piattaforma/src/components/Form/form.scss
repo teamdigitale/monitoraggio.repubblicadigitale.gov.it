@@ -57,6 +57,11 @@
       background: #e6e9f2 !important;
     }
   }
+  &__single-value {
+    &--is-disabled {
+      color: #17324d !important;
+    }
+  }
 }
 
 .form-service-dynamic {

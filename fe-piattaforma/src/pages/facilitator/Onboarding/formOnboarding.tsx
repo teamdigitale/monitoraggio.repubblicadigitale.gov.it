@@ -102,7 +102,7 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
       );
   }, [showTipoContratto]);
 
-  const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
+  /* const bootClass = 'justify-content-between px-0 px-lg-5 mx-2'; */
 
   return (
     <div className={clsx(device.mediaIsPhone ? 'mx-4 mt-5' : 'mt-5 container')}>
@@ -111,7 +111,7 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
         className={clsx('mt-5', 'mb-5', 'pt-5', 'onboarding__form-container')}
         formDisabled={formDisabled}
       >
-        <Form.Row className={bootClass}>
+        <Form.Row /* className={bootClass} */>
           <Input
             {...form?.nome}
             disabled
