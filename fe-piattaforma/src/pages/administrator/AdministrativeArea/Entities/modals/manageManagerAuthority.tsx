@@ -93,7 +93,12 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
 
   const resetModal = () => {
     clearForm();
-    if (creation) dispatch(setAuthorityDetails(null));
+    if (creation) {
+      dispatch(setAuthorityDetails(null));
+    } else {
+      projectId && dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+      entityId && dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+    }
     setNoResult(false);
     dispatch(closeModal());
     //dispatch(resetAuthorityDetails());
@@ -155,7 +160,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
             CreateManagerAuthority({ ...newFormValues }, projectId, 'progetto')
           );
 
-          if (!res.errorCode) {
+          if (!res?.errorCode) {
             await dispatch(GetProjectDetail(projectId));
             dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
             resetModal();
@@ -165,7 +170,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
           res = await dispatch(
             CreateManagerAuthority({ ...newFormValues }, entityId, 'programma')
           );
-          if (!res.errorCode) {
+          if (!res?.errorCode) {
             await dispatch(GetProgramDetail(entityId));
             dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
             resetModal();
@@ -270,7 +275,18 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
           placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’ente'
           onSubmit={handleSearchAuthority}
           title='Cerca'
-          onReset={() => dispatch(setAuthoritiesList(null))}
+          onReset={() => {
+            dispatch(setAuthoritiesList(null));
+            if (creation) {
+              dispatch(setAuthorityDetails(null));
+              clearForm();
+            } else {
+              projectId &&
+                dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+              entityId &&
+                dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+            }
+          }}
           search
         />
         <div className='mx-5'>{content}</div>

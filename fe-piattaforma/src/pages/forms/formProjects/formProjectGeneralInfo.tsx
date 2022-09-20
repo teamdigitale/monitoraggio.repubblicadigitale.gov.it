@@ -89,7 +89,8 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
       setFormValues(
         Object.fromEntries(
           Object.entries(formData).filter(
-            ([key, _val]) => !key.includes('Target') && !key.includes('id')
+            ([key, _val]) =>
+              !key.includes('Target') /* && !key.includes('id') */
           )
         )
       );
@@ -141,18 +142,22 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
       formDisabled={formDisabled}
     >
       <Form.Row className={bootClass}>
-        {/* <Input
-          {...form?.codice}
-          col='col-12 col-lg-6'
-          label='ID'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
-        /> */}
+        {formDisabled ? (
+          <Input
+            {...form?.id}
+            col='col-12 col-lg-6'
+            label='ID'
+            onInputChange={(value, field) => {
+              onInputDataChange(value, field);
+            }}
+          />
+        ) : (
+          <div className='sr-only' />
+        )}
         <Input
           {...form?.nome}
           required
-          col='col-12'
+          col='col-12 col-lg-6'
           label='Nome progetto'
           onInputChange={(value, field) => {
             onInputDataChange(value, field);
@@ -227,6 +232,11 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
 };
 
 const form = newForm([
+  newFormField({
+    field: 'id',
+    type: 'text',
+    id: 'project-name',
+  }),
   newFormField({
     field: 'nome',
     type: 'text',

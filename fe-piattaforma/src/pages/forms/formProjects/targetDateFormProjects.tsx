@@ -260,7 +260,7 @@ const TargetDateFormProjects: React.FC<TargetDateFormProjectsI> = (props) => {
                       >
                         <Icon
                           className='mr-3'
-                          icon='it-delete'
+                          icon='it-less-circle'
                           color='primary'
                           size='sm'
                           aria-label='delete'

@@ -34,6 +34,7 @@ import {
 } from '../../../../utils/formHelper';
 import { scrollTo } from '../../../../utils/common';
 import { ButtonInButtonsBar } from '../../../../components/ButtonsBar/buttonsBar';
+import { setInfoIdsBreadcrumb } from '../../../../redux/features/app/appSlice';
 
 interface RolesManagementDetailsI extends withFormHandlerProps {
   creation?: boolean;
@@ -55,6 +56,7 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
     isValidForm = false,
   } = props;
   const role = useAppSelector(selectRoleDetails);
+  const roleName = useAppSelector(selectRoleDetails)?.dettaglioRuolo?.nome;
   const groups = useAppSelector(selectGroupsList);
   const [formEnabled, setEnableForm] = useState(creation || edit);
   const [functionalities, setFunctionalities] = useState<GroupI[]>([]);
@@ -69,6 +71,16 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
     getRoleDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [codiceRuolo]);
+
+  useEffect(() => {
+    // For breadcrumb
+    if (codiceRuolo && roleName) {
+      dispatch(
+        setInfoIdsBreadcrumb({ id: encodeURI(codiceRuolo), nome: roleName, updateRoleBreadcrumb: true })
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [codiceRuolo, roleName]);
 
   const updateRoleName = (nomeRuolo: string) => {
     if (nomeRuolo) {
@@ -195,6 +207,8 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
           navigate(`/gestione-ruoli/${roleCode}`, {
             replace: true,
           });
+          // update details
+          dispatch(GetRoleDetails(roleCode));
         }
       }
     }
@@ -298,6 +312,7 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
                   !!functionalities?.find((grp) => grp.codice === group.codice)
                 }
                 handleOnCheck={() => handleChangeRole(group)}
+                roleList
               >
                 <InfoPanel
                   list={group.permessi.map((permesso) => permesso.descrizione)}

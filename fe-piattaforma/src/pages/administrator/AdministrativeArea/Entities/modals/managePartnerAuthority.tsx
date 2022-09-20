@@ -172,7 +172,10 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
           )}
           placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’ente'
           onSubmit={handleSearchAuthority}
-          onReset={() => setShowForm(true)}
+          onReset={() => {
+            setShowForm(true);
+            dispatch(setAuthorityDetails({}));
+          }}
           title='Cerca'
           search
         />

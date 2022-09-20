@@ -10,6 +10,8 @@ export interface AccordionAddressListI {
   onSetAddressList?: (addressList: AddressInfoI[]) => void;
   isReadOnly?: boolean;
   movingHeadquarter?: boolean;
+  detailAccordion?: boolean;
+  roleList?: boolean;
 }
 
 const AccordionAddressList: React.FC<AccordionAddressListI> = ({
@@ -17,6 +19,8 @@ const AccordionAddressList: React.FC<AccordionAddressListI> = ({
   onSetAddressList,
   isReadOnly = false,
   movingHeadquarter = false,
+  detailAccordion = false,
+  roleList = false,
 }) => {
   const addressListChangeHandler = (
     changedAddressInfo: AddressInfoI,
@@ -69,6 +73,8 @@ const AccordionAddressList: React.FC<AccordionAddressListI> = ({
             onAddressInfoChange={(addressInfo: AddressInfoI) =>
               addressListChangeHandler(addressInfo, index)
             }
+            detailAccordion={detailAccordion}
+            roleList={roleList}
           />
         ) : null
       )}
