@@ -294,8 +294,14 @@ public class ServizioServiceTest {
 	
 	@Test
 	public void creaServizioKOTest() {
-		//test KO per utente non facilitatore
+		//test KO per servizio già presente
 		when(this.servizioSQLService.getServizioByNome(servizioRequest.getNomeServizio())).thenReturn(Optional.of(servizio));
+		Assertions.assertThrows(ServizioException.class, () -> servizioService.creaServizio(servizioRequest));
+		assertThatExceptionOfType(ServizioException.class);
+		
+		//test KO per ruoloUtenteLoggato != FAC
+		when(this.servizioSQLService.getServizioByNome(servizioRequest.getNomeServizio())).thenReturn(Optional.empty());
+		when(this.utenteService.isUtenteFacilitatore(profilazioneParam.getCodiceFiscaleUtenteLoggato(), profilazioneParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(false);
 		Assertions.assertThrows(ServizioException.class, () -> servizioService.creaServizio(servizioRequest));
 		assertThatExceptionOfType(ServizioException.class);
 	}

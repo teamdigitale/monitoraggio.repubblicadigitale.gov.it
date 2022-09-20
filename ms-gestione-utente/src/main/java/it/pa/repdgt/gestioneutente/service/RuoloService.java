@@ -116,7 +116,7 @@ public class RuoloService {
 		String nomeRuolo = nuovoRuoloRequest.getNomeRuolo();
 		String messaggioErrore = String.format("Ruolo con nome = %s già presente", nomeRuolo);
 		if(this.existsRuoloByNome(nomeRuolo)) {
-			throw new RuntimeException(messaggioErrore);
+			throw new RuoloException(messaggioErrore, CodiceErroreEnum.R01);
 		}
 		RuoloEntity nuovoRuolo = new RuoloEntity();
 		nuovoRuolo.setCodice(nomeRuolo);

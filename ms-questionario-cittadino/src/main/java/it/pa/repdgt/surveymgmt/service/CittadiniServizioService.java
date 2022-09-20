@@ -466,9 +466,13 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	public List<CittadinoUploadBean> caricaCittadiniSuServizio(MultipartFile fileCittadiniCSV, Long idServizio) {
 		List<CittadinoUploadBean> esiti = new ArrayList<>();
 		
+		if(this.servizioSqlService.getServizioById(idServizio) == null ) {
+			throw new ServizioException("Servizio con id " + idServizio + "non esistente", CodiceErroreEnum.S09);
+		}
+		
 		try {
 			//estraggo i cittadini dal file csv
-			List<CittadinoUploadBean> cittadiniUpload = CSVServizioUtil.csvToCittadini(fileCittadiniCSV.getInputStream());
+			List<CittadinoUploadBean> cittadiniUpload = CSVServizioUtil.excelToCittadini(fileCittadiniCSV.getInputStream());
 		
 			for(CittadinoUploadBean cittadinoUpload: cittadiniUpload) {
 				Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService.getByCodiceFiscaleOrNumeroDocumento(cittadinoUpload.getCodiceFiscale(), cittadinoUpload.getNumeroDocumento());				
@@ -554,6 +558,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		cittadino.setCategoriaFragili(cittadinoUpload.getCategoriaFragili());
 		cittadino.setCittadinanza(cittadinoUpload.getCittadinanza());
 		cittadino.setComuneDiDomicilio(cittadinoUpload.getComuneDomicilio());
+		cittadino.setCategoriaFragili(cittadinoUpload.getCategoriaFragili());
 		cittadino.setGenere(cittadinoUpload.getGenere());
 		cittadino.setNumeroDiCellulare(cittadinoUpload.getNumeroCellulare());
 		cittadino.setOccupazione(cittadinoUpload.getStatoOccupazionale());

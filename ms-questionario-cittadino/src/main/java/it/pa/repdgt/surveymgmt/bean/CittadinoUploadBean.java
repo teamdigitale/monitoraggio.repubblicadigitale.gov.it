@@ -31,6 +31,10 @@ public class CittadinoUploadBean implements Serializable {
 	private String telefono;
 	private String esitoUpload;
 	
+	public CittadinoUploadBean( ) {
+		super();
+	}
+	
 	public CittadinoUploadBean(String codiceFiscale, String nome, String cognome, String tipoDocumento,
 			String numeroDocumento, String genere, String annoNascita, String titoloStudio, String statoOccupazionale,
 			String cittadinanza, String comuneDomicilio, String categoriaFragili, String email, String prefisso,

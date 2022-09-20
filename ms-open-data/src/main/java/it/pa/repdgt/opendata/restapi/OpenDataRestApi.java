@@ -24,6 +24,7 @@ public class OpenDataRestApi {
 	private OpenDataService openDataService;
 	final static String NOME_FILE = "opendata_cittadini.csv";
 	
+	@Deprecated
 	@GetMapping(path = "/download")
 	public ResponseEntity<InputStreamResource> downloadListaCSVCittadini() throws IOException {
 		byte[] bytes = this.openDataService.scaricaFileListaCittadiniSuAmazonS3(NOME_FILE);

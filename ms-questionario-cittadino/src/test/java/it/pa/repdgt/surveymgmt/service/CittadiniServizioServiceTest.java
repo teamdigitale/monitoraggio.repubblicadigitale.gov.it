@@ -1,5 +1,6 @@
 package it.pa.repdgt.surveymgmt.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.when;
 
@@ -26,6 +27,7 @@ import it.pa.repdgt.shared.entity.CittadinoEntity;
 import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
 import it.pa.repdgt.shared.entity.QuestionarioInviatoOnlineEntity;
 import it.pa.repdgt.shared.entity.ServizioEntity;
+import it.pa.repdgt.shared.entity.TipologiaServizioEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
@@ -33,11 +35,13 @@ import it.pa.repdgt.surveymgmt.bean.CittadinoUploadBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.collection.SezioneQ3Collection;
 import it.pa.repdgt.surveymgmt.exception.CittadinoException;
+import it.pa.repdgt.surveymgmt.exception.QuestionarioCompilatoException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioCompilatoMongoRepository;
 import it.pa.repdgt.surveymgmt.mongo.repository.SezioneQ3Respository;
 import it.pa.repdgt.surveymgmt.param.FiltroListaCittadiniServizioParam;
 import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
+import it.pa.repdgt.surveymgmt.projection.CittadinoServizioProjection;
 import it.pa.repdgt.surveymgmt.repository.CittadinoRepository;
 import it.pa.repdgt.surveymgmt.repository.CittadinoServizioRepository;
 import it.pa.repdgt.surveymgmt.repository.QuestionarioCompilatoRepository;
@@ -45,6 +49,7 @@ import it.pa.repdgt.surveymgmt.repository.QuestionarioInviatoOnlineRepository;
 import it.pa.repdgt.surveymgmt.repository.ServizioSqlRepository;
 import it.pa.repdgt.surveymgmt.repository.ServizioXCittadinoRepository;
 import it.pa.repdgt.surveymgmt.request.NuovoCittadinoServizioRequest;
+import lombok.Setter;
 import software.amazon.awssdk.services.pinpoint.model.SendMessagesResponse;
 
 @ExtendWith(MockitoExtension.class)
@@ -93,6 +98,8 @@ public class CittadiniServizioServiceTest {
 	String[] arrayString;
 	QuestionarioInviatoOnlineEntity invioQuestionario;
 	List<QuestionarioCompilatoEntity> listaQuestionariCompilati;
+	List<TipologiaServizioEntity> listaTipologiaServizi;
+	TipologiaServizioEntity tipologiaServizioEntity;
 	MockMultipartFile file;
 	byte[] data;
 	InputStream stream;
@@ -123,9 +130,15 @@ public class CittadiniServizioServiceTest {
 		sezioneQ3 = new SezioneQ3Collection();
 		sezioneQ3.setId("1");
 		sezioneQ3.setMongoId("1");
+		tipologiaServizioEntity = new TipologiaServizioEntity();
+		tipologiaServizioEntity.setId(1L);
+		tipologiaServizioEntity.setTitolo("TITOLO");
+		listaTipologiaServizi = new ArrayList<>();
+		listaTipologiaServizi.add(tipologiaServizioEntity);
 		servizio.setIdTemplateCompilatoQ3(sezioneQ3.getId());
 		servizio.setIdEnteSedeProgettoFacilitatore(new EnteSedeProgettoFacilitatoreKey(1L, 1L, 1L, "CFUTENTE"));
 		servizio.setIdQuestionarioTemplateSnapshot("1");
+		servizio.setListaTipologiaServizi(listaTipologiaServizi);
 		questionarioCompilatoCollection = new QuestionarioCompilatoCollection();
 		questionarioCompilatoCollection.setIdQuestionarioCompilato("1");
 		cittadinoUpload = new CittadinoUploadBean("CFUTENTE", "NOME", "COGNOME", "NUM_DOC", "34R2F4", "", "1990", "DIPLOMA", "", "", "", "", "", "", "", "");
@@ -258,11 +271,19 @@ public class CittadiniServizioServiceTest {
 //		cittadiniServizioService.creaQuestionarioNonInviato(servizio, cittadino);
 //	}
 	
-//	@Test
-//	public void creoQuestionarioCompilatoCollectionTest() {
-//		when(sezioneQ3Respository.findById(servizio.getIdTemplateCompilatoQ3())).thenReturn(Optional.of(sezioneQ3));
-//		cittadiniServizioService.creoQuestionarioCompilatoCollection(cittadino, servizio);
-//	}
+	@Test
+	public void creoQuestionarioCompilatoCollectionTest() {
+		when(sezioneQ3Respository.findById(servizio.getIdTemplateCompilatoQ3())).thenReturn(Optional.of(sezioneQ3));
+		cittadiniServizioService.creoQuestionarioCompilatoCollection(cittadino, servizio);
+	}
+	
+	@Test
+	public void creoQuestionarioCompilatoCollectionKOTest() {
+		//test KO per templateQ3 non associato al servizio
+		when(sezioneQ3Respository.findById(servizio.getIdTemplateCompilatoQ3())).thenReturn(Optional.empty());
+		Assertions.assertThrows(QuestionarioCompilatoException.class, () -> cittadiniServizioService.creoQuestionarioCompilatoCollection(cittadino, servizio));
+		assertThatExceptionOfType(QuestionarioCompilatoException.class);
+	}
 	
 	@Test
 	public void creaSezioneQuestionarioQ1ByCittadinoTest() {
@@ -349,8 +370,70 @@ public class CittadiniServizioServiceTest {
 		cittadiniServizioService.inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizio(servizio.getId());
 	}
 	
+//	@Test
+//	public void caricaCittadiniSuServizioTest() {
+//		cittadiniServizioService.caricaCittadiniSuServizio(file, servizio.getId());
+//	}
+	
 	@Test
-	public void caricaCittadiniSuServizioTest() {
-		cittadiniServizioService.caricaCittadiniSuServizio(file, servizio.getId());
+	public void countCittadiniServizioByFiltroTest() {
+		CittadinoServizioProjectionImplementation cittadinoServizioProjectionImplementation = new CittadinoServizioProjectionImplementation();
+		List<CittadinoServizioProjection> listaCittadiniProjection = new ArrayList<>();
+		listaCittadiniProjection.add(cittadinoServizioProjectionImplementation);
+		when(cittadinoServizioRepository.findAllCittadiniServizioByFiltro(
+				servizio.getId(), 
+				filtroListaCittadiniServizio.getCriterioRicerca(), 
+				"%" + filtroListaCittadiniServizio.getCriterioRicerca() + "%", 
+				filtroListaCittadiniServizio.getStatiQuestionario()
+			)).thenReturn(listaCittadiniProjection);
+		Integer risultato = cittadiniServizioService.countCittadiniServizioByFiltro(servizio.getId(), filtroListaCittadiniServizio);
+		assertThat(risultato).isEqualTo(listaCittadiniProjection.size());
+	}
+	
+	@Setter
+	public class CittadinoServizioProjectionImplementation implements CittadinoServizioProjection {
+		private Long idCittadino;
+		private String nome;
+		private String cognome;
+		private String codiceFiscale;
+		private String numeroDocumento;
+		private String idQuestionario;
+		private String statoQuestionario;
+
+		@Override
+		public Long getIdCittadino() {
+			return idCittadino;
+		}
+
+		@Override
+		public String getNome() {
+			return nome;
+		}
+
+		@Override
+		public String getCognome() {
+			return cognome;
+		}
+
+		@Override
+		public String getCodiceFiscale() {
+			return codiceFiscale;
+		}
+
+		@Override
+		public String getNumeroDocumento() {
+			return numeroDocumento;
+		}
+
+		@Override
+		public String getIdQuestionario() {
+			return idQuestionario;
+		}
+
+		@Override
+		public String getStatoQuestionario() {
+			return statoQuestionario;
+		}
+		
 	}
 }
