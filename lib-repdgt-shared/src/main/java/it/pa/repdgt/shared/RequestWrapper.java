@@ -16,23 +16,23 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class RequestWrapper extends HttpServletRequestWrapper {
 	private static final int SIZE_BUFFER = 128;
-        private static final String AUTH_TOKEN_HEADER = "authToken";
-        private static final String USER_ROLE_HEADER  = "userRole";
-        private static final String CODICE_RUOLO = "codiceRuolo";
-        private static final String CODICE_FISCALE = "codiceFiscale";
-        
+        private static final String AUTH_TOKEN_HEADER = "authtoken";
+        private static final String USER_ROLE_HEADER  = "userrole";
+        private static final String CODICE_RUOLO = "codiceRuoloUtenteLoggato";
+        private static final String CODICE_FISCALE = "cfUtenteLoggato";
+                
         private ObjectMapper objectMapper = new ObjectMapper();
 		private String body;
+		private String codiceFiscale;
+		private String codiceRuolo;
 		
-        public RequestWrapper(final HttpServletRequest httpServletRequest) throws IOException {
+        public RequestWrapper(final HttpServletRequest httpServletRequest) throws Exception {
             super(httpServletRequest);
             
             // to fix h2 in memory db
@@ -41,11 +41,32 @@ public class RequestWrapper extends HttpServletRequestWrapper {
             Map<String, String> headers = this.getRequestHeaders(httpServletRequest);
             Optional<String> authToken = Optional.ofNullable(headers.get(AUTH_TOKEN_HEADER));
             Optional<String> codiceRuolo = Optional.ofNullable(headers.get(USER_ROLE_HEADER));
-
-            final String inputCorpoRichiesta = this.getCorpoRichiesta(httpServletRequest);
-            if(inputCorpoRichiesta != null  && !inputCorpoRichiesta.trim().isEmpty()) {
-	            this.body = this.getCorpoRichiestaArricchitaConDatiContesto(inputCorpoRichiesta, authToken, codiceRuolo);
-            }
+            
+            /****** DECODE TOKEN ********/
+            //se non esiste codiceRuolo e/o authToken API GATEWAY blocca la chiamata
+            //split del JWT nelle sue 3 parti con il delimitatore '.' (part 1 = HEADER, part 2 = PAYLOAD, part 3 = SIGNATURE (Algorith (header + payload), secretKey)
+			if(authToken.isPresent()) {
+	            String[] parts = authToken.get().split("\\.");
+				//recupero la parte jwt del payload e la decodifico da Base64 
+				String jwtPayload = decode(parts[1]);
+	
+				JsonNode jsonNodeRoot = objectMapper.readTree(jwtPayload);
+				//recupero il codiceFiscale dal payload
+				JsonNode jsonCodiceFiscale = jsonNodeRoot.get("custom:fiscalNumber");
+				String[] codFiscTinit = jsonCodiceFiscale.asText().split("-");
+	
+				this.codiceFiscale = codFiscTinit.length > 1 ? codFiscTinit[1] : codFiscTinit[0];
+				this.codiceRuolo = codiceRuolo.get();
+				
+	            /*se ci troviamo in caso di chiamata a API con HTTP METHOD <> GET 
+	             * allora facciamo arricchimento body con codiceFiscale e codiceRuolo
+	             * (metodo getCorpoRichiestaArricchitaConDatiContesto)
+				*/
+	            final String inputCorpoRichiesta = this.getCorpoRichiesta(httpServletRequest);
+	            if(inputCorpoRichiesta != null  && !inputCorpoRichiesta.trim().isEmpty()) {
+		            this.body = this.getCorpoRichiestaArricchitaConDatiContesto(inputCorpoRichiesta);
+	            }
+			}
         }
 
         public String getCorpoRichiesta(final HttpServletRequest httpServletRequest) throws IOException {
@@ -67,45 +88,12 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 			return stringBuilder.toString();
 		}
         
-    	public String getCorpoRichiestaArricchitaConDatiContesto(final String corpoRichiesta, Optional<String> jwt, Optional<String> codiceRuolo) throws JsonProcessingException, JsonMappingException {
+    	public String getCorpoRichiestaArricchitaConDatiContesto(final String corpoRichiesta) throws Exception {
 			final JsonNode jsonNode = objectMapper.readTree(corpoRichiesta);
 			final ObjectNode objectNode = (ObjectNode) jsonNode;
 			
-
-			/*prova decode payload jwt esempio
-			 * {
-				    "iss": "Online JWT Builder",
-				    "iat": 1653487398,
-				    "exp": 1685023398,
-				    "aud": "www.example.com",
-				    "sub": "jrocket@example.com",
-				    "GivenName": "Johnny",
-				    "Surname": "Rocket",
-				    "Email": "jrocket@example.com",
-				    "Role": [
-				        "Manager",
-				        "Project Administrator"
-				    ]
-				}
-			 */
-			//JWT esempio
-//			jwt="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9."
-//					+ "eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2NTM0ODczOTgsImV4cCI6MTY4NTAyMzM5OCwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQcm9qZWN0IEFkbWluaXN0cmF0b3IiXX0."
-//					+ "AXZ8TntEPAjbdzHrPCp7UKrems7bX1pxj7g7DNOvni4";
-			//split JWT into 3 parts with . delimiter (part 1 = HEADER, part 2 = PAYLOAD, part 3 = SIGNATURE (Algorith (header + payload), secretKey)
-			if(jwt.isPresent()) {
-				//String header = decode(parts[0]);
-				String[] parts = jwt.get().split("\\.");
-				String jwtPayload = decode(parts[1]); //TODO: mappare da stringa a oggetto il payload
-			}
-				
-//			System.out.println("JWT DECODIFICATO: " + payload);
-			//String signature = decode(parts[2]);
-			//////////////////////////////////////////////////////////////////
-//			objectNode.put(CODICE_FISCALE, jwtPayload.getCodiceFiscale);	// setting valore con decodifica auth_token 
-			if(codiceRuolo.isPresent()) {
-				//	objectNode.put(CODICE_RUOLO, codiceRuolo);
-			}
+			objectNode.put(CODICE_FISCALE, this.codiceFiscale);	// setting valore con decodifica auth_token 
+			objectNode.put(CODICE_RUOLO, this.codiceRuolo);
 		
 			return jsonNode.toString();
 		}
@@ -158,4 +146,12 @@ public class RequestWrapper extends HttpServletRequestWrapper {
     		}
     		return headersMap;
     	}
+        
+        public String getCodiceFiscale() {
+        	return this.codiceFiscale;
+        }
+        
+        public String getCodiceRuolo() {
+        	return this.codiceRuolo;
+        }
 }

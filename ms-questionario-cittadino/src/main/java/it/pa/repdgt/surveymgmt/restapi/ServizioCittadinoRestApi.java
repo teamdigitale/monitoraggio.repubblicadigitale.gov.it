@@ -133,7 +133,7 @@ public class ServizioCittadinoRestApi {
 	public List<CittadinoUploadBean> caricaListaCittadini(
 			@RequestPart MultipartFile file,
 			@PathVariable(value = "idServizio") Long idServizio) {
-		if (file == null || !CSVServizioUtil.hasCSVFormat(file)) {
+		if (file == null || !CSVServizioUtil.hasExcelFormat(file)) {
 			throw new ServizioException("il file non è valido", CodiceErroreEnum.S01); 
 		}
 		return this.cittadiniServizioService.caricaCittadiniSuServizio(file, idServizio);

@@ -338,6 +338,20 @@ public class ServizioSqlServiceTest {
 		servizioSqlService.getNominativoFacilitatoreByIdFacilitatoreAndIdServizio("FERSDA89R32G975R", servizio.getId());
 	}
 	
+	@Test
+	public void getServizioByNomeTest() {
+		when(this.servizioSqlRepository.findByNome(servizio.getNome())).thenReturn(Optional.of(servizio));
+		Optional<ServizioEntity> risultato = servizioSqlService.getServizioByNome(servizio.getNome());
+		assertThat(risultato.get().getNome()).isEqualTo(servizio.getNome());
+	}
+	
+	@Test
+	public void getServizioByNomeUpdateTest() {
+		when(this.servizioSqlRepository.findByNomeUpdate(servizio.getNome(), servizio.getId())).thenReturn(Optional.of(servizio));
+		Optional<ServizioEntity> risultato = servizioSqlService.getServizioByNomeUpdate(servizio.getNome(), servizio.getId());
+		assertThat(risultato.get().getNome()).isEqualTo(servizio.getNome());
+	}
+	
 	@Setter
 	public class EnteProjectionImplementation implements EnteProjection {
 		private Long id;

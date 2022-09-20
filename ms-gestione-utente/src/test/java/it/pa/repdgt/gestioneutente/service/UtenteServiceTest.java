@@ -2,10 +2,12 @@ package it.pa.repdgt.gestioneutente.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -21,6 +23,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
 
 import it.pa.repdgt.gestioneutente.dto.UtenteDto;
 import it.pa.repdgt.gestioneutente.exception.ResourceNotFoundException;
@@ -97,9 +100,12 @@ public class UtenteServiceTest {
 	List<Long> listaIds;
 	UtenteXRuoloKey utenteXRuoloKey;
 	UtenteXRuolo utenteXRuolo;
+	MockMultipartFile file;
+	byte[] data;
+	InputStream stream;
 	
 	@BeforeEach
-	public void setUp() {
+	public void setUp() throws IOException {
 		utente = new UtenteEntity();
 		utente.setAbilitazioneConsensoTrammentoDati(true);
 		utente.setCodiceFiscale("CODICE_FISCALE");
@@ -194,6 +200,10 @@ public class UtenteServiceTest {
 		utenteXRuoloKey = new UtenteXRuoloKey(utente.getCodiceFiscale(), ruolo.getCodice());
 		utenteXRuolo = new UtenteXRuolo();
 		utenteXRuolo.setId(utenteXRuoloKey);
+		
+		data = new byte[] {1, 2, 3, 4};
+		stream = new ByteArrayInputStream(data);
+		file = new MockMultipartFile("test", stream);
 	}
 	
 	@Test
@@ -923,5 +933,99 @@ public class UtenteServiceTest {
 				filtroRicerca.getRuoli(),
 				filtroRicerca.getStati())).thenReturn(1);
 		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+	}
+	
+	@Test
+	public void getUtentiPerDownloadDTDTest() {
+		//test con ruolo = DTD
+		when(this.utenteRepository.findUtentiByFiltriPerDownload(
+				filtroRicerca.getCriterioRicerca(),
+				"%" + filtroRicerca.getCriterioRicerca() + "%",
+				filtroRicerca.getRuoli(),
+				filtroRicerca.getStati())).thenReturn(utentiSet);
+		List<UtenteDto> risultato = service.getUtentiPerDownload(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		assertThat(risultato.size()).isEqualTo(utentiSet.size());
+	}
+	
+	@Test
+	public void getUtentiPerDownloadDSCUTest() {
+		//test con ruolo = DSCU
+		sceltaContesto.setCodiceRuolo("DSCU");
+		when(this.utenteRepository.findUtentiPerDSCUPerDownload(
+				filtroRicerca.getCriterioRicerca(),
+				"%" + filtroRicerca.getCriterioRicerca() + "%",
+				filtroRicerca.getRuoli())).thenReturn(utentiSet);
+		List<UtenteDto> risultato = service.getUtentiPerDownload(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		assertThat(risultato.size()).isEqualTo(utentiSet.size());
+	}
+	
+	@Test
+	public void getUtentiPerDownloadREGTest() {
+		//test con ruolo = REG/DEG
+		sceltaContesto.setCodiceRuolo("REG");
+		when(this.utenteRepository.findUtentiPerReferenteDelegatoGestoreProgrammaPerDownload(
+				sceltaContesto.getIdProgramma(),
+				sceltaContesto.getCfUtente(),
+				filtroRicerca.getCriterioRicerca(),
+				"%" + filtroRicerca.getCriterioRicerca() + "%",
+				filtroRicerca.getRuoli())).thenReturn(utentiSet);
+		List<UtenteDto> risultato = service.getUtentiPerDownload(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		assertThat(risultato.size()).isEqualTo(utentiSet.size());
+	}
+	
+	@Test
+	public void getUtentiPerDownloadREGPTest() {
+		//test con ruolo = REGP/DEGP
+		sceltaContesto.setCodiceRuolo("REGP");
+		when(this.utenteRepository.findUtentiPerReferenteDelegatoGestoreProgettiPerDownload(
+				sceltaContesto.getIdProgramma(),
+				sceltaContesto.getIdProgetto(),
+				sceltaContesto.getCfUtente(), 
+				filtroRicerca.getCriterioRicerca(),
+				"%" + filtroRicerca.getCriterioRicerca() + "%",
+				filtroRicerca.getRuoli())).thenReturn(utentiSet);
+		List<UtenteDto> risultato = service.getUtentiPerDownload(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		assertThat(risultato.size()).isEqualTo(utentiSet.size());
+	}
+	
+	@Test
+	public void getUtentiPerDownloadREPPTest() {
+		//test con ruolo = REPP/DEPP
+		sceltaContesto.setCodiceRuolo("REPP");
+		when(this.utenteRepository.findUtentiPerReferenteDelegatoEntePartnerProgettiPerDownload(
+				sceltaContesto.getIdProgramma(),
+				sceltaContesto.getIdProgetto(),
+				sceltaContesto.getCfUtente(), 
+				filtroRicerca.getCriterioRicerca(),
+				"%" + filtroRicerca.getCriterioRicerca() + "%",
+				filtroRicerca.getRuoli())).thenReturn(utentiSet);
+		List<UtenteDto> risultato = service.getUtentiPerDownload(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		assertThat(risultato.size()).isEqualTo(utentiSet.size());
+	}
+	
+	@Test
+	public void getUtentiPerDownloadTestConRuoloNonPredefinito() {
+		//test con ruolo non predefinito
+		sceltaContesto.setCodiceRuolo("RUOLONONPREDEFINITO");
+		when(this.utenteRepository.findUtentiByFiltriPerDownload(
+				filtroRicerca.getCriterioRicerca(),
+				"%" + filtroRicerca.getCriterioRicerca() + "%",
+				filtroRicerca.getRuoli(),
+				filtroRicerca.getStati())).thenReturn(utentiSet);
+		List<UtenteDto> risultato = service.getUtentiPerDownload(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		assertThat(risultato.size()).isEqualTo(utentiSet.size());
+	}
+	
+	@Test
+	public void uploadImmagineProfiloUtenteTest() throws IOException {
+		when(this.utenteRepository.findById(utente.getId())).thenReturn(Optional.of(utente));
+		service.uploadImmagineProfiloUtente(utente.getId(), file);
+	}
+	
+	@Test
+	public void downloadImmagineProfiloUtenteKOTest() {
+		//test KO per errore upload immagine profilo
+		Assertions.assertThrows(UtenteException.class, () -> service.downloadImmagineProfiloUtente("NOMEFILE"));
+		assertThatExceptionOfType(UtenteException.class);
 	}
 }

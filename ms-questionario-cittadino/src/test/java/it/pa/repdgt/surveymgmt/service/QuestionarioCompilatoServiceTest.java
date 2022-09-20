@@ -284,11 +284,66 @@ public class QuestionarioCompilatoServiceTest {
 	}
 	
 	@Test
+	public void compilaQuestionarioAnonimoKOTest() {
+		//test KO per questionario non presente su Mysql
+		when(this.questionarioCompilatoSQLRepository.findById(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato())).thenReturn(Optional.empty());
+		when(this.questionarioCompilatoMongoRepository.findQuestionarioCompilatoById(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato())).thenReturn(Optional.empty());
+		Assertions.assertThrows(QuestionarioCompilatoException.class, () -> questionarioCompilatoService.compilaQuestionarioAnonimo(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato(), questionarioCompilatoAnonimoRequest, questionarioInviatoOnlineEntity.getToken()));
+		assertThatExceptionOfType(QuestionarioCompilatoException.class);
+	}
+	
+	@Test
+	public void compilaQuestionarioAnonimoKOTest2() {
+		//test KO per questionario non presente su MongoDB
+		when(this.questionarioCompilatoSQLRepository.findById(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato())).thenReturn(Optional.of(questionarioCompilatoEntity));
+		when(this.questionarioCompilatoMongoRepository.findQuestionarioCompilatoById(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato())).thenReturn(Optional.empty());
+		Assertions.assertThrows(QuestionarioCompilatoException.class, () -> questionarioCompilatoService.compilaQuestionarioAnonimo(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato(), questionarioCompilatoAnonimoRequest, questionarioInviatoOnlineEntity.getToken()));
+		assertThatExceptionOfType(QuestionarioCompilatoException.class);
+	}
+	
+	@Test
+	public void compilaQuestionarioAnonimoKOTest3() {
+		//test KO per questionario già compilato
+		questionarioCompilatoEntity.setStato("COMPILATO");
+		when(this.questionarioCompilatoSQLRepository.findById(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato())).thenReturn(Optional.of(questionarioCompilatoEntity));
+		when(this.questionarioCompilatoMongoRepository.findQuestionarioCompilatoById(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato())).thenReturn(Optional.of(questionarioCompilatoCollection));
+		Assertions.assertThrows(ServizioException.class, () -> questionarioCompilatoService.compilaQuestionarioAnonimo(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato(), questionarioCompilatoAnonimoRequest, questionarioInviatoOnlineEntity.getToken()));
+		assertThatExceptionOfType(ServizioException.class);
+	}
+	
+	@Test
 	public void getQuestionarioCompilatoByIdAnonimoTest() throws ParseException {
 		when(questionarioInviatoOnlineRepository.findByIdQuestionarioCompilatoAndToken(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato(), questionarioInviatoOnlineEntity.getToken())).thenReturn(Optional.of(questionarioInviatoOnlineEntity));
 		when(this.questionarioCompilatoSQLRepository.findById(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato())).thenReturn(Optional.of(questionarioCompilatoEntity));
 		when(this.questionarioTemplateService.getQuestionarioTemplateById(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato())).thenReturn(new QuestionarioTemplateCollection());
 		questionarioCompilatoService.getQuestionarioCompilatoByIdAnonimo(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato(), questionarioInviatoOnlineEntity.getToken());
+	}
+	
+	@Test
+	public void getQuestionarioCompilatoByIdAnonimoKOTest() {
+		//test KO per questionario non presente su Mysql
+		when(this.questionarioCompilatoSQLRepository.findById(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato())).thenReturn(Optional.empty());
+		Assertions.assertThrows(ServizioException.class, () -> questionarioCompilatoService.getQuestionarioCompilatoByIdAnonimo(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato(), questionarioInviatoOnlineEntity.getToken()));
+		assertThatExceptionOfType(ServizioException.class);
+	}
+	
+	@Test
+	public void getQuestionarioCompilatoByIdAnonimoKOTest2() {
+		//test KO per questionario già compilato
+		questionarioCompilatoEntity.setStato("COMPILATO");
+		when(this.questionarioCompilatoSQLRepository.findById(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato())).thenReturn(Optional.of(questionarioCompilatoEntity));
+		Assertions.assertThrows(ServizioException.class, () -> questionarioCompilatoService.getQuestionarioCompilatoByIdAnonimo(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato(), questionarioInviatoOnlineEntity.getToken()));
+		assertThatExceptionOfType(ServizioException.class);
+	}
+	
+	@Test
+	public void getQuestionarioCompilatoByIdAnonimoKOTest3() {
+		//test KO per questionario non presente su mongoDB
+		when(questionarioInviatoOnlineRepository.findByIdQuestionarioCompilatoAndToken(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato(), questionarioInviatoOnlineEntity.getToken())).thenReturn(Optional.of(questionarioInviatoOnlineEntity));
+		when(this.questionarioCompilatoSQLRepository.findById(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato())).thenReturn(Optional.of(questionarioCompilatoEntity));
+		when(this.questionarioTemplateService.getQuestionarioTemplateById(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato())).thenThrow(ResourceNotFoundException.class);
+		Assertions.assertThrows(ServizioException.class, () -> questionarioCompilatoService.getQuestionarioCompilatoByIdAnonimo(questionarioInviatoOnlineEntity.getIdQuestionarioCompilato(), questionarioInviatoOnlineEntity.getToken()));
+		assertThatExceptionOfType(ServizioException.class);
 	}
 	
 	@Test
