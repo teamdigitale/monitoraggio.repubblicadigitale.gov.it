@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.136](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.135...1.0.0-develop.136) (2022-09-20)
+
+
+### Bug Fixes
+
+* **be:** pom ms questionario ([0a61816](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0a618162c299e42e1e7c06185bf6cea72f9e3034))
+* **be:** fix test ([0034dda](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0034dda9474edb7dba30ed8399dda6c557804c6d))
+* **be:** fix per filtro SPID ([2ba9953](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2ba99539cc73ba5c3a2778f7eb5f7b23cde77175))
+
 ## [1.0.0-develop.135](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.134...1.0.0-develop.135) (2022-09-20)
 
 
