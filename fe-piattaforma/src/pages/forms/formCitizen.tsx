@@ -7,7 +7,6 @@ import withFormHandler, {
 } from '../../hoc/withFormHandler';
 import {
   CittadinoInfoI,
-  selectCitizenSearchResponse,
   selectEntityDetail,
 } from '../../redux/features/citizensArea/citizensAreaSlice';
 // import { selectDevice } from '../../redux/features/app/appSlice';
@@ -54,62 +53,42 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
   const formData: {
     [key: string]: formFieldI['value'] | undefined;
   } = useAppSelector(selectEntityDetail)?.dettaglioCittadino;
-  const formDataService: CittadinoInfoI = useAppSelector(
-    selectCitizenSearchResponse
-  )?.[0];
 
   useEffect(() => {
-    if (formData) {
-      const values = { ...formData };
-      if(formData?.dataConferimentoConsenso){
-        const formattedDate = formatDate(
-          Number(formData?.dataConferimentoConsenso),
-          'snakeDate'
-        );
-       values.dataConferimentoConsenso = formattedDate;
+    if (formData && form) {
+      const values: { [key: string]: formFieldI['value'] | undefined } = {};
+      Object.keys(formData).map((keyData: string) => {
+        Object.keys(form).map((keyForm: string) => {
+          if (form[keyForm]?.keyBE === keyData) {
+            values[keyForm] = formData[keyData];
+          }
+        });
+      });
+      if (!formData?.tipoConferimentoConsenso) {
+        values['18'] = '$consenso';
       }
-      if(formData?.codiceFiscale === ''){
-        values['codiceFiscaleNonDisponibile'] = 'Codice fiscale non disponibile';
-        handleCheckboxChange('Codice fiscale non disponibile','codiceFiscaleNonDisponibile');
+      if (!formData?.dataConferimentoConsenso) {
+        values['19'] = '$dataConsenso';
       }
-      setFormValues(values);
-    }
-
-    if (formDataService) {
-      const values = { ...formDataService };
+      if (formData?.codiceFiscale === '') {
+        values['4'] = 'Codice fiscale non disponibile';
+        handleCheckboxChange('Codice fiscale non disponibile', '4');
+      }
       setFormValues(values);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
 
-  useEffect(() => {
-    if (
-      form &&
-      formDisabled &&
-      Object.entries(form).some(([_key, value]) => !value.disabled)
-    ) {
-      updateForm(
-        Object.fromEntries(
-          Object.entries(form).map(([key, value]) => [
-            key,
-            { ...value, disabled: formDisabled },
-          ])
-        ),
-        true
-      );
-    }
-  }, [formDisabled, form]);
-
   const handleCheckboxChange = (
     value?: formFieldI['value'],
     field?: formFieldI['field']
   ) => {
-    if (field === 'codiceFiscaleNonDisponibile') {
+    if (field === '4') {
       const tmpForm = FormHelper.onInputChange(form, value, field);
-      const referenceBoolean = !tmpForm?.codiceFiscaleNonDisponibile?.value;
-      tmpForm.codiceFiscale.required = referenceBoolean;
-      tmpForm.tipoDocumento.required = !referenceBoolean;
-      tmpForm.numeroDocumento.required = !referenceBoolean;
+      const referenceBoolean = !tmpForm?.['4']?.value;
+      tmpForm['3'].required = referenceBoolean;
+      tmpForm['5'].required = !referenceBoolean;
+      tmpForm['6'].required = !referenceBoolean;
       updateForm(tmpForm);
     }
   };
@@ -131,26 +110,26 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     <Form id='form-citizen' className='mt-5' formDisabled={formDisabled}>
       <Form.Row>
         <Input
-          {...form?.nome}
+          {...form?.['1']}
           col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.nome?.label?.toLowerCase()}`}
+          placeholder={`Inserisci ${form?.['1']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
         />
         <Input
-          {...form?.cognome}
+          {...form?.['2']}
           col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.cognome?.label?.toLowerCase()}`}
+          placeholder={`Inserisci ${form?.['2']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
         />
         <Input
-          {...form?.codiceFiscale}
+          {...form?.['3']}
           col='col-12 col-lg-6'
           label='Codice fiscale'
           placeholder='Inserisci codice fiscale'
           onInputChange={onInputDataChange}
         />
-        <CheckboxGroup // TODO: fix accessibilità onkeydown
-          {...form?.codiceFiscaleNonDisponibile}
+        <CheckboxGroup
+          {...form?.['4']}
           className='col-12 col-lg-6'
           options={citizenFormDropdownOptions['codiceFiscaleNonDisponibile']}
           onInputChange={handleCheckboxChange}
@@ -158,8 +137,8 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           classNameLabelOption='pl-5'
         />
         <Select
-          {...form?.tipoDocumento}
-          placeholder={`Inserisci ${form?.tipoDocumento?.label?.toLowerCase()}`}
+          {...form?.['5']}
+          placeholder={`Inserisci ${form?.['5']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
           options={citizenFormDropdownOptions['tipoDocumento']}
@@ -167,14 +146,14 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           wrapperClassName='mb-5 pr-lg-3'
         />
         <Input
-          {...form?.numeroDocumento}
+          {...form?.['6']}
           col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.numeroDocumento?.label?.toLowerCase()}`}
+          placeholder={`Inserisci ${form?.['6']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
         />
         <Select
-          {...form?.genere}
-          placeholder={`Inserisci ${form?.genere?.label?.toLowerCase()}`}
+          {...form?.['7']}
+          placeholder={`Inserisci ${form?.['7']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
           options={citizenFormDropdownOptions['genere']}
@@ -182,14 +161,14 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           wrapperClassName='mb-5 pr-lg-3'
         />
         <Input
-          {...form?.annoNascita}
+          {...form?.['8']}
           col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.annoNascita?.label?.toLowerCase()}`}
+          placeholder={`Inserisci ${form?.['8']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
         />
         <Select
-          {...form?.titoloStudio}
-          placeholder={`Seleziona ${form?.titoloStudio?.label?.toLowerCase()}`}
+          {...form?.['9']}
+          placeholder={`Seleziona ${form?.['9']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
           options={citizenFormDropdownOptions['titoloStudio']}
@@ -197,8 +176,8 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           wrapperClassName='mb-5 pr-lg-3'
         />
         <Select
-          {...form?.statoOccupazionale}
-          placeholder={`Seleziona ${form?.statoOccupazionale?.label?.toLowerCase()}`}
+          {...form?.['10']}
+          placeholder={`Seleziona ${form?.['10']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
           options={citizenFormDropdownOptions['statoOccupazionale']}
@@ -206,8 +185,8 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           wrapperClassName='mb-5 pr-lg-3'
         />
         <Select
-          {...form?.cittadinanza}
-          placeholder={`Inserisci ${form?.cittadinanza?.label?.toLowerCase()}`}
+          {...form?.['11']}
+          placeholder={`Inserisci ${form?.['11']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
           options={citizenFormDropdownOptions['cittadinanza']}
@@ -215,14 +194,14 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           wrapperClassName='mb-5 pr-lg-3'
         />
         <Input
-          {...form?.comuneDomicilio}
+          {...form?.['12']}
           col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.comuneDomicilio?.label?.toLowerCase()}`}
+          placeholder={`Inserisci ${form?.['13']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
         />
         <Select
-          {...form?.categoriaFragili}
-          placeholder={`Inserisci ${form?.categoriaFragili?.label?.toLowerCase()}`}
+          {...form?.['13']}
+          placeholder={`Inserisci ${form?.['13']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
           options={citizenFormDropdownOptions['categoriaFragili']}
@@ -230,33 +209,32 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           wrapperClassName='mb-5 pr-lg-3'
         />
         <Input
-          {...form?.email}
+          {...form?.['14']}
           col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.email?.label?.toLowerCase()}`}
+          placeholder={`Inserisci ${form?.['14']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           required
         />
-
         <PrefixPhone
-          {...form?.prefisso}
-          placeholder={`Inserisci ${form?.prefisso?.label?.toLowerCase()}`}
+          {...form?.['15']}
+          placeholder={`Inserisci ${form?.['15']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
         />
         <Input
-          {...form?.numeroCellulare}
+          {...form?.['16']}
           col='col-8 col-lg-4'
-          placeholder={`Inserisci ${form?.numeroCellulare?.label?.toLowerCase()}`}
+          placeholder={`Inserisci ${form?.['17']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
         />
         <Input
-          {...form?.telefono}
+          {...form?.['17']}
           col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.telefono?.label?.toLowerCase()}`}
+          placeholder={`Inserisci ${form?.['17']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
         />
-        {form?.tipoConferimentoConsenso?.value === '$consenso' ||
-        form?.tipoConferimentoConsenso?.value === null ||
-        form?.tipoConferimentoConsenso?.value === '' ? (
+        {form?.['18']?.value === '$consenso' ||
+        form?.['18']?.value === null ||
+        form?.['18']?.value === '' ? (
           <CheckboxGroup
             className={clsx(
               'col-12 col-lg-6',
@@ -273,14 +251,14 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
             disabled
           />
         ) : (
-          <span></span>
+          <span />
         )}
-        {form?.tipoConferimentoConsenso?.value &&
+        {form?.['18']?.value &&
         ['ONLINE', 'EMAIL', 'CARTACEO'].includes(
-          form?.tipoConferimentoConsenso?.value.toString()
+          form?.['18']?.value.toString()
         ) ? (
           <CheckboxGroup
-            {...form?.tipoConferimentoConsenso}
+            {...form?.['18']}
             className={clsx(
               'col-12 col-lg-6',
               'compile-survey-container__checkbox-margin'
@@ -291,17 +269,22 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
             disabled
           />
         ) : (
-          <span></span>
+          <span />
         )}
-        {form?.dataConferimentoConsenso?.value &&
-        form?.dataConferimentoConsenso?.value !== '$dataConsenso' ? (
+        {form?.['19']?.value && form?.['19']?.value !== '$dataConsenso' ? (
           <Input
-            {...form?.dataConferimentoConsenso}
+            {...form?.['19']}
             col='col-12 col-lg-6'
             disabled
+            value={
+              formatDate(
+                Number(formData?.dataConferimentoConsenso),
+                'snakeDate'
+              ) || ''
+            }
           />
         ) : (
-          <span></span>
+          <span />
         )}
       </Form.Row>
     </Form>
@@ -311,134 +294,153 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
 const form = newForm([
   newFormField({
     ...CommonFields.NOME,
-    field: 'nome',
+    keyBE: 'nome',
     label: 'Nome',
-    id: 'name',
+    id: '1',
+    field: '1',
     required: true,
   }),
   newFormField({
     ...CommonFields.COGNOME,
-    field: 'cognome',
+    keyBE: 'cognome',
     label: 'Cognome',
-    id: 'surname',
+    id: '2',
+    field: '2',
     required: true,
   }),
   newFormField({
     ...CommonFields.CODICE_FISCALE,
-    field: 'codiceFiscale',
-    id: 'codiceFiscale',
+    keyBE: 'codiceFiscale',
+    id: '3',
+    field: '3',
     label: 'Codice fiscale',
     required: true,
   }),
   newFormField({
-    field: 'codiceFiscaleNonDisponibile',
-    id: 'codiceFiscaleNonDisponibile',
+    keyBE: 'codiceFiscaleNonDisponibile',
+    id: '4',
+    field: '4',
     type: 'checkbox',
     required: false,
   }),
   newFormField({
-    field: 'tipoDocumento',
-    id: 'tipoDocumento',
+    keyBE: 'tipoDocumento',
+    id: '5',
+    field: '5',
     label: 'Tipo documento',
     type: 'select',
     required: false,
   }),
   newFormField({
-    field: 'numeroDocumento',
-    id: 'numeroDocumento',
+    keyBE: 'numeroDocumento',
+    id: '6',
+    field: '6',
     label: 'Numero documento',
     type: 'text',
     required: false,
   }),
   newFormField({
-    field: 'genere',
-    id: 'genere',
+    keyBE: 'genere',
+    id: '7',
+    field: '7',
     label: 'Genere',
     type: 'select',
     required: true,
   }),
   newFormField({
-    field: 'annoNascita',
-    id: 'annoNascita',
+    keyBE: 'annoNascita',
+    id: '8',
+    field: '8',
     regex: RegexpType.NUMBER,
     label: 'Anno di nascita',
     type: 'number',
     required: true,
   }),
   newFormField({
-    field: 'titoloStudio',
-    id: 'titoloStudio',
+    keyBE: 'titoloStudio',
+    id: '9',
+    field: '9',
     label: 'Titolo di studio (livello più alto raggiunto)',
     type: 'select',
     required: true,
   }),
   newFormField({
-    field: 'statoOccupazionale',
-    id: 'statoOccupazionale',
+    keyBE: 'statoOccupazionale',
+    id: '10',
+    field: '10',
     label: 'Stato occupazionale',
     type: 'select',
     required: true,
   }),
   newFormField({
-    field: 'cittadinanza',
-    id: 'cittadinanza',
+    keyBE: 'cittadinanza',
+    id: '11',
+    field: '11',
     label: 'Cittadinanza',
     type: 'select',
     required: true,
   }),
   newFormField({
-    field: 'comuneDomicilio',
-    id: 'comuneDomicilio',
+    keyBE: 'comuneDomicilio',
+    id: '12',
+    field: '12',
     label: 'Comune di domicilio',
     type: 'text',
     required: true,
   }),
   newFormField({
-    field: 'categoriaFragili',
-    id: 'categoriaFragili',
+    keyBE: 'categoriaFragili',
+    id: '13',
+    field: '13',
     label: 'Categorie fragili',
     type: 'select',
   }),
   newFormField({
     ...CommonFields.EMAIL,
-    field: 'email',
-    id: 'email',
+    keyBE: 'email',
+    id: '14',
+    field: '14',
     label: 'Email',
     required: true,
   }),
   newFormField({
-    field: 'prefisso',
-    id: 'prefisso',
+    keyBE: 'prefisso',
+    id: '15',
+    field: '15',
     regex: RegexpType.MOBILE_PHONE_PREFIX,
     label: 'Prefisso',
     type: 'text',
     required: true,
   }),
   newFormField({
-    field: 'numeroCellulare',
-    id: 'numeroCellulare',
+    keyBE: 'numeroCellulare',
+    id: '16',
+    field: '16',
     regex: RegexpType.TELEPHONE,
     label: 'Cellulare',
     type: 'text',
     required: true,
   }),
   newFormField({
-    field: 'telefono',
-    id: 'telefono',
+    keyBE: 'telefono',
+    id: '17',
+    field: '17',
     regex: RegexpType.TELEPHONE,
     label: 'Telefono',
     type: 'text',
   }),
   newFormField({
-    field: 'tipoConferimentoConsenso',
-    id: 'tipoConferimentoConsenso',
+    keyBE: 'tipoConferimentoConsenso',
+    id: '18',
+    field: '18',
     label: 'Tipo conferimento consenso',
     type: 'checkbox',
     // required: true,
   }),
   newFormField({
-    field: 'dataConferimentoConsenso',
-    id: 'dataConferimentoConsenso',
+    keyBE: 'dataConferimentoConsenso',
+    id: '19',
+    field: '19',
     regex: RegexpType.DATE,
     label: 'Data conferimento consenso',
     type: 'date',

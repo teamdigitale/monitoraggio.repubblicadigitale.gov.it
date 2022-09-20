@@ -447,6 +447,7 @@ const AuthoritiesDetails = () => {
               title: authorityDetails?.dettagliInfoEnte?.nome,
               status: authorityDetails?.dettagliInfoEnte?.stato,
               upperTitle: { icon: PeopleIcon, text: 'Ente' },
+              subTitle: projectDetail?.nome || projectDetail?.nomeBreve || '',
             }}
             enteIcon
             formButtons={buttons}
@@ -473,6 +474,7 @@ const AuthoritiesDetails = () => {
                   cta={getAccordionCTA(item.title).cta}
                   onClickCta={getAccordionCTA(item.title)?.ctaAction}
                   lastBottom={index === itemAccordionList.length - 1}
+                  detailAccordion
                 >
                   {item.items?.length ? (
                     item.items.map((cardItem) => (
@@ -490,7 +492,7 @@ const AuthoritiesDetails = () => {
                     ))
                   ) : (
                     <EmptySection
-                      title={`Non sono presenti ${item.title?.toLowerCase()} associati (o associate)`}
+                      title={`Non sono presenti ${item.title?.toLowerCase()} associati.`}
                       horizontal
                       aside
                     />

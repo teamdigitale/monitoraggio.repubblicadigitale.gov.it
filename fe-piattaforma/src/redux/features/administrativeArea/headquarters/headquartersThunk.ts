@@ -236,8 +236,9 @@ export const AssignHeadquarterFacilitator =
           await API.post(endpoint, body);
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }

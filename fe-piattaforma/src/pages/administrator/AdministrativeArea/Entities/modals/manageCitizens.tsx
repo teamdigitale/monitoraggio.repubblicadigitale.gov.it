@@ -42,10 +42,24 @@ const ManageCitizens: React.FC<ManageCitizensI> = ({
       ).replaceAll('"', "'")}}`;
 
       const body = {
-        ...newFormValues,
-        codiceFiscaleNonDisponibile:
-          newFormValues?.codiceFiscaleNonDisponibile !== '' ? true : false,
+        annoNascita: newFormValues?.['8'],
+        categoriaFragili: newFormValues?.['13'],
+        cittadinanza: newFormValues?.['11'],
+        codiceFiscale: newFormValues?.['3'],
+        codiceFiscaleNonDisponibile: newFormValues?.['4'] !== '' ? true : false,
+        cognome: newFormValues?.['2'],
+        comuneDomicilio: newFormValues?.['12'],
+        email: newFormValues?.['14'],
+        genere: newFormValues?.['7'],
+        nome: newFormValues?.['1'],
+        numeroCellulare: newFormValues?.['16'],
+        numeroDocumento: newFormValues?.['6'],
+        prefisso: newFormValues?.['15'],
         questionarioQ1: sezioneQ1Questionario,
+        statoOccupazionale: newFormValues?.['10'],
+        telefono: newFormValues?.['17'],
+        tipoDocumento: newFormValues?.['5'],
+        titoloStudio: newFormValues?.['9'],
       };
       const res = await dispatch(UpdateCitizenDetail(idCitizen, body));
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment

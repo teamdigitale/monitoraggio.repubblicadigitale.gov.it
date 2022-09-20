@@ -19,6 +19,7 @@ const ProgramInfoAccordionForm = () => {
           title={accordion.title}
           key={index}
           className='general-info-accordion-container'
+          detailAccordion
         >
           <TargetsForm
             entityDetail={programDetails}

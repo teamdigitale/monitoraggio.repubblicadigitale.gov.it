@@ -155,7 +155,7 @@ const CardStatusActionPartnerAuthority: React.FC<CardStatusActionI> = (
                 >
                   <Icon
                     color='primary'
-                    icon='it-delete'
+                    icon='it-less-circle'
                     size='sm'
                     aria-label='Elimina'
                   />
