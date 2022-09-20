@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.38](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.37...1.0.0-test.38) (2022-09-20)
+
+
+### Bug Fixes
+
+* **be:** fix per riportare situazione senza SPID ([8e334ec](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8e334ec4f7f5afd4dc786d92dc4fdfdc63936bb6))
+
 ## [1.0.0-test.37](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.36...1.0.0-test.37) (2022-09-20)
 
 
