@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.37](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.36...1.0.0-test.37) (2022-09-20)
+
+
+### Bug Fixes
+
+* **be:** fix test cittadinoService ([8a0c38c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8a0c38c10bd413bcd8a05b67e16ee003128e031a))
+* **be:** fix per upload excel ([b59c30e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b59c30ef0eb3f6a359976d7033365cce01988942))
+
 ## [1.0.0-test.36](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.35...1.0.0-test.36) (2022-09-19)
 
 
