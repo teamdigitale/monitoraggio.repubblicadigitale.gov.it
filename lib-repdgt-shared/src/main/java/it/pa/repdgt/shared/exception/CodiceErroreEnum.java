@@ -63,6 +63,7 @@ public enum CodiceErroreEnum {
 	,S06("Errore aggiornare servizio. Utente non ha ruolo FACILITATORE")
 	,S07("Errore impossibile eliminare il servizio.")
 	,S08("Errore creazione servizio. Servizio con stesso nome già esistente")
+	,S09("Errore servizio non esistente")
 	
 	,SD01("Errore creazione sede")
 	,SD02("Errore aggiornamento sede")

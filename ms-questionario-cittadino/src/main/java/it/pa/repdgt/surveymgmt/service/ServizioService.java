@@ -37,7 +37,6 @@ import it.pa.repdgt.surveymgmt.mapper.ServizioMapper;
 import it.pa.repdgt.surveymgmt.mongo.repository.SezioneQ3Respository;
 import it.pa.repdgt.surveymgmt.param.FiltroListaServiziParam;
 import it.pa.repdgt.surveymgmt.projection.ProgettoProjection;
-import it.pa.repdgt.surveymgmt.repository.TipologiaServizioRepository;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
 
 @Service
@@ -49,8 +48,6 @@ public class ServizioService {
 	private UtenteService utenteService;
 	@Autowired
 	private SezioneQ3Respository sezioneQ3Repository;
-	@Autowired
-	private TipologiaServizioRepository tipologiaServizioRepository;
 	@Autowired
 	private ServizioSqlService servizioSQLService;
 	@Autowired
@@ -202,8 +199,8 @@ public class ServizioService {
 			final String messaggioErrore = String.format("Impossibile creare servizio. Servizio con nome=%s già esistente", nomeServizio);
 			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S08);
 		}
-		final String codiceFiscaletenteLoggato = servizioRequest.getProfilazioneParam().getCfUtenteLoggato();
-		final String ruoloUtenteLoggato = servizioRequest.getProfilazioneParam().getCodiceRuoloUtenteLoggato().toString();
+		final String codiceFiscaletenteLoggato = servizioRequest.getCfUtenteLoggato();
+		final String ruoloUtenteLoggato = servizioRequest.getCodiceRuoloUtenteLoggato().toString();
 		
 		if( ! this.utenteService.isUtenteFacilitatore(codiceFiscaletenteLoggato, ruoloUtenteLoggato) ) {
 			final String messaggioErrore = String.format("Impossibile creare servizio. Utente con codice fiscale '%s' non ha ruolo FACILITATORE", codiceFiscaletenteLoggato);
@@ -238,8 +235,8 @@ public class ServizioService {
 	public void aggiornaServizio(
 			@NotNull Long idServizioDaAggiornare, 
 			@NotNull @Valid ServizioRequest servizioDaAggiornareRequest) {
-		final String codiceFiscaletenteLoggato = servizioDaAggiornareRequest.getProfilazioneParam().getCfUtenteLoggato();
-		final String ruoloUtenteLoggato = servizioDaAggiornareRequest.getProfilazioneParam().getCodiceRuoloUtenteLoggato().toString();
+		final String codiceFiscaletenteLoggato = servizioDaAggiornareRequest.getCfUtenteLoggato();
+		final String ruoloUtenteLoggato = servizioDaAggiornareRequest.getCodiceRuoloUtenteLoggato().toString();
 		
 		String nomeServizio = servizioDaAggiornareRequest.getNomeServizio();
 		Optional<ServizioEntity> servizioDBFetch = this.servizioSQLService.getServizioByNomeUpdate(nomeServizio, idServizioDaAggiornare);
@@ -372,8 +369,6 @@ public class ServizioService {
 			final String messaggioErrore = String.format("Impossibile eliminare Servizio con id=%s. Stato Servizio = '%s'", idServizio, statoServizio);
 			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S07);
 		}
-		// cancello tutte le tipologie servizio associate al servizio su MySql
-//		this.tipologiaServizioRepository.deleteByIdServizio(idServizio);
 		
 		// cancello servizio su MySql
 		this.servizioSQLService.cancellaServivio(servizioEntity);

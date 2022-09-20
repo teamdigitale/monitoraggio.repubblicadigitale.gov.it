@@ -33,6 +33,8 @@ import it.pa.repdgt.shared.entity.TipologiaServizioEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParamLight;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParamLightProgramma;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 import it.pa.repdgt.surveymgmt.collection.SezioneQ3Collection;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
@@ -74,6 +76,7 @@ public class ServizioServiceTest {
 	private ServizioService servizioService;
 	
 	SceltaProfiloParam sceltaProfiloParam;
+	SceltaProfiloParamLightProgramma sceltaProfiloParamLightProgramma;
 	FiltroListaServiziParam filtroListaServizi;
 	List<String> listaStati;
 	List<String> listaTipologie;
@@ -107,6 +110,9 @@ public class ServizioServiceTest {
 		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
 		sceltaProfiloParam.setIdProgetto(1L);
 		sceltaProfiloParam.setIdProgramma(1L);
+		sceltaProfiloParamLightProgramma = new SceltaProfiloParamLightProgramma();
+		sceltaProfiloParamLightProgramma.setIdProgetto(1L);
+		sceltaProfiloParamLightProgramma.setIdProgramma(1L);
 		ruolo = new RuoloEntity();
 		ruolo.setCodice("FAC");
 		listaRuoli = new ArrayList<>();
@@ -117,7 +123,9 @@ public class ServizioServiceTest {
 		servizio.setNome("NOMESERVIZIO");
 		pagina = PageRequest.of(Integer.parseInt("0"), Integer.parseInt("10"));
 		servizioRequest = new ServizioRequest();
-		servizioRequest.setProfilazioneParam(sceltaProfiloParam);
+		servizioRequest.setCfUtenteLoggato("CFUTENTE");
+		servizioRequest.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
+		servizioRequest.setProfilazioneParam(sceltaProfiloParamLightProgramma);
 		servizioRequest.setNomeServizio("NOMESERVIZIO");
 		servizioRequest.setIdEnte(1L);
 		servizioRequest.setIdSede(1L);
@@ -294,8 +302,14 @@ public class ServizioServiceTest {
 	
 	@Test
 	public void creaServizioKOTest() {
-		//test KO per utente non facilitatore
+		//test KO per servizio già presente
 		when(this.servizioSQLService.getServizioByNome(servizioRequest.getNomeServizio())).thenReturn(Optional.of(servizio));
+		Assertions.assertThrows(ServizioException.class, () -> servizioService.creaServizio(servizioRequest));
+		assertThatExceptionOfType(ServizioException.class);
+		
+		//test KO per ruoloUtenteLoggato != FAC
+		when(this.servizioSQLService.getServizioByNome(servizioRequest.getNomeServizio())).thenReturn(Optional.empty());
+		when(this.utenteService.isUtenteFacilitatore(sceltaProfiloParam.getCfUtenteLoggato(), sceltaProfiloParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(false);
 		Assertions.assertThrows(ServizioException.class, () -> servizioService.creaServizio(servizioRequest));
 		assertThatExceptionOfType(ServizioException.class);
 	}
