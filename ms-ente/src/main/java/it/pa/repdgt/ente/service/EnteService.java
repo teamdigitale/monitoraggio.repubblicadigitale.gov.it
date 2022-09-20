@@ -80,7 +80,7 @@ public class EnteService {
 	private static final String NOME_PROGRAMMA = "NOME_PROGRAMMA";
 	private static final String ID_PROGETTO = "ID_PROGETTO";
 	private static final String NOME_PROGETTO = "NOME_PROGETTO";
-	private static final String IDP = "idP";
+	private static final String IDP = "IDP";
 
 	@Autowired
 	private StoricoService storicoService;
