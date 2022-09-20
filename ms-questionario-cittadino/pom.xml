@@ -14,7 +14,7 @@
 
 	<groupId>it.pa.repdgt</groupId>
 	<artifactId>ms-questionario-cittadino</artifactId>
-	<version>1.0.0-develop.125</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<properties>
@@ -73,6 +73,16 @@
 			<version>${commons-csv.version}</version>
 		</dependency>
 		<dependency>
+		  	<groupId>org.apache.poi</groupId>
+		 	<artifactId>poi</artifactId>
+		  	<version>5.2.2</version>
+		</dependency>
+		<dependency>
+		 	<groupId>org.apache.poi</groupId>
+		  	<artifactId>poi-ooxml</artifactId>
+		  	<version>5.2.2</version>
+		</dependency>
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
@@ -85,6 +95,7 @@
 		<dependency>
 		    <groupId>de.flapdoodle.embed</groupId>
 		    <artifactId>de.flapdoodle.embed.mongo</artifactId>
+		    <!-- da commentare si vuole lanciare in locale -->
 		    <scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -98,33 +109,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-			</plugin>
-			<plugin>
-			    <artifactId>maven-resources-plugin</artifactId>
-			    <version>3.0.1</version>
-			    <executions>
-			         <execution>
-					 <!-- includo nel progetto compilato il truststore -->
-			            <id>copy-resources</id>
-			            <phase>validate</phase>
-			            <goals>
-			               <goal>copy-resources</goal>
-			            </goals>
-			            <configuration>
-			               <outputDirectory>${basedir}/target/output</outputDirectory>
-			               <resources>          
-			                    <resource>
-			                        <directory>resources</directory>
-			                        <includes>
-			                        	<include>
-			                        		rds-truststore.jks
-			                        	</include>
-			                        </includes>
-			                    </resource>
-			               </resources>              
-			            </configuration>            
-			        </execution>
-			     </executions>
 			</plugin>
 		</plugins>
 	</build>
