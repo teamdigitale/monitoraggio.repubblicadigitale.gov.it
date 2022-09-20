@@ -80,6 +80,7 @@ public class EnteService {
 	private static final String NOME_PROGRAMMA = "NOME_PROGRAMMA";
 	private static final String ID_PROGETTO = "ID_PROGETTO";
 	private static final String NOME_PROGETTO = "NOME_PROGETTO";
+	private static final String IDP = "IDP";
 
 	@Autowired
 	private StoricoService storicoService;
@@ -225,6 +226,7 @@ public class EnteService {
 				enteDto.setNome(record.get(NOME_ENTE));
 				enteDto.setTipologia(record.get(TIPOLOGIA_ENTE));
 				enteDto.setProfilo(record.get(PROFILO_ENTE));
+				enteDto.setIdP(record.get(IDP));
 				return enteDto;
 		})
 		.collect(Collectors.toList());
@@ -237,21 +239,22 @@ public class EnteService {
 	public List<EnteDto> aggregaEntiUguali(List<EnteDto> enti) {
 		Set<EnteDto> setEntiAggregati = new HashSet<>();
 		
-		enti.stream()
-			.forEach(ente -> {
-				EnteDto enteAggregato = enti.stream()
-					.filter(e -> e.getNome().equals(ente.getNome()))
-					.reduce((ente1, ente2) -> {
-						if(ente1.getProfilo().contains(ente2.getProfilo())) {
-							return ente1;
-						}
-						ente1.setProfilo(ente1.getProfilo().concat(", ").concat(ente2.getProfilo()));
-						return ente1;
-					}).get();
-				
-				setEntiAggregati.add(enteAggregato);
-		});
-		
+		ArrayList<String> idEnti = new ArrayList<String>();
+		for(EnteDto ente1: enti) {
+			if(!idEnti.contains(ente1.getId())) {
+				EnteDto res = ente1;
+
+				for(EnteDto ente2: enti) {
+					if(ente1.getId().equals(ente2.getId())) {
+						if(!ente1.equals(ente2))
+							res.setProfilo(res.getProfilo().concat(", ").concat(ente2.getProfilo()));
+					}
+				}
+				idEnti.add(ente1.getId());
+				setEntiAggregati.add(res);
+			}	
+		}
+
 		return new ArrayList<EnteDto>(setEntiAggregati);
 	}
 	

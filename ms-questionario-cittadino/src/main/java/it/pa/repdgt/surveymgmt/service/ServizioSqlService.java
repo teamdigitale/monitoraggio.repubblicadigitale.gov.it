@@ -26,6 +26,7 @@ import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParamLightProgramma;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioTemplateException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
@@ -223,7 +224,7 @@ public class ServizioSqlService {
 	public ServizioEntity creaServizio(
 			@NotNull final ServizioRequest servizioRequest,
 			@NotNull final String idSezioneQ3Compilato) {
-		final SceltaProfiloParam profilazioneParam = servizioRequest.getProfilazioneParam();
+		final SceltaProfiloParamLightProgramma profilazioneParam = servizioRequest.getProfilazioneParam();
 		final Long idProgramma = profilazioneParam.getIdProgramma();
 		
 		// Recupero id template questionario associato al programma
@@ -243,7 +244,7 @@ public class ServizioSqlService {
 		idEnteSedeProgettoFacilitatore.setIdEnte(servizioRequest.getIdEnte());
 		idEnteSedeProgettoFacilitatore.setIdSede(servizioRequest.getIdSede());
 		idEnteSedeProgettoFacilitatore.setIdProgetto(profilazioneParam.getIdProgetto());
-		idEnteSedeProgettoFacilitatore.setIdFacilitatore(profilazioneParam.getCfUtenteLoggato());
+		idEnteSedeProgettoFacilitatore.setIdFacilitatore(servizioRequest.getCfUtenteLoggato());
 		final EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatore = this.enteSedeProgettoFacilitatoreService.getById(idEnteSedeProgettoFacilitatore);
 		
 		final ServizioEntity servizioEntity = new ServizioEntity();
@@ -284,7 +285,7 @@ public class ServizioSqlService {
 			servizioDaAggiornareRequest.getIdEnte(),
 			servizioDaAggiornareRequest.getIdSede(),
 			servizioDaAggiornareRequest.getProfilazioneParam().getIdProgetto(),
-			servizioDaAggiornareRequest.getProfilazioneParam().getCfUtenteLoggato()
+			servizioDaAggiornareRequest.getCfUtenteLoggato()
 		);
 		
 		this.enteSedeProgettoFacilitatoreService.getById(enteSedeProgettoFacilitatoreAggiornato);

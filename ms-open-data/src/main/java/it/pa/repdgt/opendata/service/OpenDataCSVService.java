@@ -59,7 +59,7 @@ public class OpenDataCSVService {
 						}
 					} catch (JsonProcessingException ex) {
 						log.error("{}", ex);
-						new RuntimeException("errore nella creazione del csv open data cittadini", ex);
+						throw new RuntimeException("errore nella creazione del csv open data cittadini", ex);
 					}
 				}
 				return openDataCittadinoCSVBean;

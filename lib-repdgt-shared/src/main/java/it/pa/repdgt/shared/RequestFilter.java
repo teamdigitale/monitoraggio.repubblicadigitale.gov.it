@@ -48,7 +48,8 @@ public class RequestFilter implements Filter {
 		,"^/swagger-ui*",
 		"^/favicon.ico*",
 		"^/swagger-resources*",
-		"^/v3/api-docs*"
+		"^/v3/api-docs*",
+		"^/v2/api-docs*"
 	);
 	private static final CharSequence VERIFICA_PROFILO_BASE_URI = "/contesto/sceltaProfilo";
 	
@@ -83,7 +84,7 @@ public class RequestFilter implements Filter {
 		} else {
 			// verifico se l'utente loggato possiede il ruolo con cui si è profilato
 			boolean hasRuoloUtente = this.ruoloService
-					.getRuoliByCodiceFiscaleUtente(wrappedRequest.getCodiceFiscale())
+					.getRuoliByCodiceFiscaleUtente(codiceFiscaleUtenteLoggato)
 					.stream()
 					.anyMatch(codiceRuolo -> codiceRuolo.equalsIgnoreCase(codiceRuoloUtenteLoggato));
 		

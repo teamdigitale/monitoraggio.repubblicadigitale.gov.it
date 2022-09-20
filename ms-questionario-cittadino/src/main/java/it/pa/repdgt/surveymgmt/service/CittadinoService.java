@@ -264,10 +264,13 @@ public class CittadinoService {
 			String messaggioErrore = String.format("Impossibile aggiornare il cittadino. Cittadino con id=%s non presente", id);
 			throw new CittadinoException(messaggioErrore, CodiceErroreEnum.CIT02);
 		}
+		CittadinoEntity cittadinoFetchDb = this.cittadinoRepository.findById(id).get();
 		
 		CittadinoEntity cittadinoEntity = this.cittadinoMapper.toEntityFrom(cittadinoRequest);
 		cittadinoEntity.setId(id);
-		cittadinoEntity.setDataOraCreazione(this.cittadinoRepository.findById(id).get().getDataOraCreazione());
+		cittadinoEntity.setDataOraCreazione(cittadinoFetchDb.getDataOraCreazione());
+		cittadinoEntity.setTipoConferimentoConsenso(cittadinoFetchDb.getTipoConferimentoConsenso());
+		cittadinoEntity.setDataConferimentoConsenso(cittadinoFetchDb.getDataConferimentoConsenso());
 		cittadinoEntity.setDataOraAggiornamento(new Date());
 		
 		// aggiorno cittadino su mysql
