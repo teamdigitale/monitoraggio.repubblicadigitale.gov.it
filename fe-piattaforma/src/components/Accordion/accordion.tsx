@@ -27,6 +27,7 @@ interface AccordionI {
   lastBottom?: boolean;
   onClickCta?: () => void;
   detailAccordion?: boolean;
+  roleList?: boolean;
 }
 
 const Accordion: React.FC<AccordionI> = (props) => {
@@ -44,6 +45,7 @@ const Accordion: React.FC<AccordionI> = (props) => {
     handleOnToggle,
     onClickCta,
     detailAccordion = false,
+    roleList = false,
   } = props;
   const [collapseOpen, setCollapseOpen] = useState(false);
   const device = useAppSelector(selectDevice);
@@ -57,7 +59,8 @@ const Accordion: React.FC<AccordionI> = (props) => {
       className={clsx(
         className,
         'position-relative',
-        !lastBottom && 'accordion-container__borders'
+        !lastBottom && 'accordion-container__borders',
+        !roleList && 'accordion-container__gray-title'
       )}
     >
       <AccordionHeader

@@ -216,7 +216,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
             if (enteType === 'partner')
               dispatch(GetPartnerAuthorityDetail(projectId, authorityInfo?.id));
           }
-          if (!res.errorCode) {
+          if (!res?.errorCode) {
             handleSearchReset();
             dispatch(closeModal());
           }
@@ -286,6 +286,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
           setAddressList([...addressList])
         }
         movingHeadquarter={movingHeadquarter}
+        detailAccordion
       />
     </>
   );

@@ -176,8 +176,9 @@ export const CreateUser =
       if (res) {
         return res;
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }
@@ -209,8 +210,9 @@ export const UpdateUser =
       if (res) {
         console.log(res);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }

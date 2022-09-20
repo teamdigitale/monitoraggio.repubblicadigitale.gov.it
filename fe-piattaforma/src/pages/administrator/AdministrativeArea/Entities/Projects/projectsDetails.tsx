@@ -7,7 +7,11 @@ import {
   CRUDActionTypes,
   ItemsListI,
 } from '../../../../../utils/common';
-import { TableRowI } from '../../../../../components/Table/table';
+import {
+  newTable,
+  TableHeadingI,
+  TableRowI,
+} from '../../../../../components/Table/table';
 import { ButtonInButtonsBar } from '../../../../../components/ButtonsBar/buttonsBar';
 import {
   closeModal,
@@ -32,6 +36,7 @@ import {
   CardStatusAction,
   EmptySection,
   NavLink,
+  Table,
 } from '../../../../../components';
 import ProjectAccordionForm from '../../../../forms/formProjects/ProjectAccordionForm/ProjectAccordionForm';
 import FormAuthorities from '../../../../forms/formAuthorities';
@@ -61,6 +66,9 @@ import useGuard from '../../../../../hooks/guard';
 import UploadCSVModal from '../../../../../components/AdministrativeArea/Entities/General/UploadCSVModal/UploadCSVModal';
 import { selectProfile } from '../../../../../redux/features/user/userSlice';
 
+const EntiPartnerTemplate =
+  '/assets/entity_templates/template_ente-partner.csv';
+
 const tabs = {
   INFO: 'info',
   ENTE_GESTORE: 'ente-gestore-progetto',
@@ -72,6 +80,24 @@ export const buttonsPositioning = {
   TOP: 'top',
   BOTTOM: 'bottom',
 };
+
+const EntePartnerTableHeading: TableHeadingI[] = [
+  {
+    label: 'Nome Ente',
+    field: 'nome',
+    size: 'medium',
+  },
+  {
+    label: 'Codice Fiscale',
+    field: 'codiceFiscale',
+    size: 'medium',
+  },
+  {
+    label: 'Esito',
+    field: 'esito',
+    size: 'small',
+  },
+];
 
 const ProjectsDetails = () => {
   const { mediaIsDesktop, mediaIsPhone } = useAppSelector(selectDevice);
@@ -97,6 +123,9 @@ const ProjectsDetails = () => {
   );
   const [buttonsPosition, setButtonsPosition] = useState<'TOP' | 'BOTTOM'>(
     'TOP'
+  );
+  const [entePartnerTable, setEntePartnerTable] = useState(
+    newTable(EntePartnerTableHeading, [])
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -288,7 +317,6 @@ const ProjectsDetails = () => {
             payload: {
               title: 'Carica lista Enti partner',
               entity: 'enti',
-              data: 'NOME,NOME_BREVE,CODICE_FISCALE,SEDE_LEGALE,TIPOLOGIA_ENTE,PEC',
               endpoint: `/ente/partner/upload/${projectId}`,
             },
           })
@@ -1089,6 +1117,21 @@ const ProjectsDetails = () => {
     }
   };
 
+  const handleEnteUploadEsito = (esito: { list: any[] }) => {
+    const { list = [] } = esito;
+    const table = newTable(
+      EntePartnerTableHeading,
+      list.map((td: any) => ({
+        nome: td.nomeBreve || td.nome,
+        codiceFiscale: td.piva || td.codiceFiscale,
+        esito: (td.esito || '').toUpperCase().includes('OK')
+          ? 'Riuscito'
+          : 'Fallito',
+      }))
+    );
+    setEntePartnerTable(table);
+  };
+
   // const onConfirmDeleteEntityModal = async (payload: {[key: string]: string | UserAuthorityRole}) => {
   //   if (payload?.entity === 'referent-delegate')
   //     removeReferentDelegate(payload?.cf, payload?.role);
@@ -1157,6 +1200,7 @@ const ProjectsDetails = () => {
                   cta={getAccordionCTA(item.title).cta}
                   onClickCta={getAccordionCTA(item.title)?.ctaAction}
                   lastBottom={index === itemAccordionList.length - 1}
+                  detailAccordion
                 >
                   {item.items?.length ? (
                     item.items.map((cardItem) => (
@@ -1174,7 +1218,11 @@ const ProjectsDetails = () => {
                     ))
                   ) : (
                     <EmptySection
-                      title={`Non sono presenti ${item.title?.toLowerCase()} associati (o associate)`}
+                      title={`Non sono presenti ${item.title?.toLowerCase()} ${
+                        item.title?.toLowerCase() === 'sedi'
+                          ? `associate.`
+                          : `associati.`
+                      }`}
                       horizontal
                       aside
                     />
@@ -1236,7 +1284,12 @@ const ProjectsDetails = () => {
             onConfirm={() => {
               if (projectId) dispatch(GetProjectDetail(projectId));
             }}
-          />
+            onEsito={handleEnteUploadEsito}
+            template={EntiPartnerTemplate}
+            templateName='enti_partner-template.csv'
+          >
+            <Table {...entePartnerTable} id='table-ente-partner' />
+          </UploadCSVModal>
           <ManageDelegate creation />
           <ManageReferal creation />
           <ManageHeadquarter creation />

@@ -21,9 +21,13 @@ import {
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { formFieldI } from '../../../../../utils/formHelper';
-import { DetailsRow, EmptySection } from '../../../../../components';
+import { DetailsRow, EmptySection, Table } from '../../../../../components';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
-import { TableRowI } from '../../../../../components/Table/table';
+import {
+  newTable,
+  TableHeadingI,
+  TableRowI,
+} from '../../../../../components/Table/table';
 import { ButtonInButtonsBar } from '../../../../../components/ButtonsBar/buttonsBar';
 import { openModal } from '../../../../../redux/features/modal/modalSlice';
 import { CardCounterI } from '../../../../../components/CardCounter/cardCounter';
@@ -31,6 +35,9 @@ import { formTypes } from '../utils';
 import ManageCitizenInService from '../modals/manageCitizenInService';
 import ConfirmSentSurveyModal from '../modals/confirmSentSurveyModal';
 import { resetCompilingSurveyForm } from '../../../../../redux/features/administrativeArea/surveys/surveysSlice';
+import UploadCSVModal from '../../../../../components/AdministrativeArea/Entities/General/UploadCSVModal/UploadCSVModal';
+
+const CitizenTemplate = '/assets/entity_templates/template_cittadino.xlsx';
 
 export interface CitizenI {
   idCittadino?: string;
@@ -50,6 +57,29 @@ export interface CitizenI {
 
 const statusDropdownLabel = 'statiQuestionario';
 
+const CitizenListTableHeading: TableHeadingI[] = [
+  {
+    label: 'Nome',
+    field: 'nome',
+    size: 'medium',
+  },
+  {
+    label: 'Cognome',
+    field: 'cognome',
+    size: 'medium',
+  },
+  {
+    label: 'Codice Fiscale',
+    field: 'codiceFiscale',
+    size: 'medium',
+  },
+  {
+    label: 'Esito',
+    field: 'esito',
+    size: 'small',
+  },
+];
+
 const CitizensList: React.FC = () => {
   const { serviceId } = useParams();
   const dispatch = useDispatch();
@@ -61,6 +91,9 @@ const CitizensList: React.FC = () => {
   const [searchDropdown, setSearchDropdown] = useState<
     { filterId: string; value: formFieldI['value'] }[]
   >([]);
+  const [citizenListTable, setCitizenListTable] = useState(
+    newTable(CitizenListTableHeading, [])
+  );
 
   useEffect(() => {
     dispatch(resetCompilingSurveyForm());
@@ -206,6 +239,17 @@ const CitizensList: React.FC = () => {
       buttonClass: 'btn-secondary',
       iconColor: 'primary',
       color: 'primary',
+      onClick: () =>
+        dispatch(
+          openModal({
+            id: 'upload-csv',
+            payload: {
+              title: 'Carica lista cittadini',
+              entity: 'cittadini',
+              endpoint: `/servizio/cittadino/${serviceId}/listaCittadini/upload`,
+            },
+          })
+        ),
     },
     {
       text: 'Aggiungi cittadino',
@@ -213,28 +257,6 @@ const CitizensList: React.FC = () => {
       onClick: () => {
         dispatch(openModal({ id: 'search-citizen-modal' }));
       },
-    },
-  ];
-
-  const emptyButtons: ButtonInButtonsBar[] = [
-    {
-      size: 'xs',
-      outline: true,
-      buttonClass: 'btn-secondary',
-      color: 'primary',
-      text: 'Carica lista cittadini',
-      onClick: () => console.log('carica csv'),
-    },
-    {
-      size: 'xs',
-      color: 'primary',
-      text: 'Aggiungi cittadino',
-      onClick: () =>
-        dispatch(
-          openModal({
-            id: 'search-citizen-modal',
-          })
-        ),
     },
   ];
 
@@ -251,6 +273,22 @@ const CitizensList: React.FC = () => {
       icon: 'it-file',
     },
   ];
+
+  const handleCitizenUploadEsito = (esito: { list: any[] }) => {
+    const { list = [] } = esito;
+    const table = newTable(
+      CitizenListTableHeading,
+      list.map((td: any) => ({
+        nome: td.nome,
+        cognome: td.cognome,
+        codiceFiscale: td.codiceFiscale,
+        esito: (td.esito || '').toUpperCase().includes('OK')
+          ? 'Riuscito'
+          : 'Fallito',
+      }))
+    );
+    setCitizenListTable(table);
+  };
 
   return (
     <div>
@@ -287,11 +325,22 @@ const CitizensList: React.FC = () => {
         <EmptySection
           title='Questa sezione è ancora vuota'
           subtitle='Aggiungi i cittadini'
-          buttons={emptyButtons}
+          buttons={buttons}
         />
       )}
       <ManageCitizenInService />
       <ConfirmSentSurveyModal />
+      <UploadCSVModal
+        accept='.xlsx'
+        onConfirm={() => {
+          if (serviceId) dispatch(GetCitizenListServiceDetail(serviceId));
+        }}
+        onEsito={handleCitizenUploadEsito}
+        template={CitizenTemplate}
+        templateName='cittadini-template.xlsx'
+      >
+        <Table {...citizenListTable} id='table-ente-partner' />
+      </UploadCSVModal>
     </div>
   );
 };

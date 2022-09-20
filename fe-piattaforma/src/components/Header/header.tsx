@@ -24,6 +24,7 @@ export interface HeaderI {
   isLogged: boolean;
   notification?: [] | undefined;
   menuRoutes: MenuItem[];
+  profilePicture: string | undefined;
 }
 
 export interface HeaderProp {
@@ -33,7 +34,10 @@ export interface HeaderProp {
 const parseMenuRoute = (menuRoute: MenuItem, userProfile: UserProfileI) => {
   switch (userProfile?.codiceRuolo) {
     case userRoles.REG: {
-      if (userProfile?.idProgramma && menuRoute.path === '/area-amministrativa/programmi') {
+      if (
+        userProfile?.idProgramma &&
+        menuRoute.path === '/area-amministrativa/programmi'
+      ) {
         return {
           ...menuRoute,
           label: 'Programma',
@@ -44,13 +48,19 @@ const parseMenuRoute = (menuRoute: MenuItem, userProfile: UserProfileI) => {
     }
     case userRoles.REGP:
     case userRoles.FAC: {
-      if (userProfile?.idProgetto && menuRoute.path === '/area-amministrativa/progetti') {
+      if (
+        userProfile?.idProgetto &&
+        menuRoute.path === '/area-amministrativa/progetti'
+      ) {
         return {
           ...menuRoute,
           label: 'Progetto',
           path: `/area-amministrativa/progetti/${userProfile.idProgetto}/info`,
         };
-      } else if (userProfile?.idProgramma && menuRoute.path === '/area-amministrativa/programmi') {
+      } else if (
+        userProfile?.idProgramma &&
+        menuRoute.path === '/area-amministrativa/programmi'
+      ) {
         return {
           ...menuRoute,
           label: 'Programma',
@@ -106,6 +116,7 @@ const Header: React.FC<HeaderProp> = (props) => {
     dispatch,
     isHeaderFull,
     menuRoutes,
+    profilePicture: '',
   };
 
   return (

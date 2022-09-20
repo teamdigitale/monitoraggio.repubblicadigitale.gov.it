@@ -15,11 +15,12 @@ import { HeaderI } from '../header';
 import { logout } from '../../../redux/features/user/userSlice';
 import HamburgerMenu from '../../HamburgerMenu/hamburgerMenu';
 import { openModal } from '../../../redux/features/modal/modalSlice';
-import AvatarInitials, {
+import {
   AvatarSizes,
   AvatarTextSizes,
-} from '../../AvatarInitials/avatarInitials';
+} from '../../Avatar/AvatarInitials/avatarInitials';
 import { defaultRedirectUrl } from '../../../routes';
+import UserAvatar from '../../Avatar/UserAvatar/UserAvatar';
 
 const HeaderMobile: React.FC<HeaderI> = ({
   dispatch,
@@ -28,6 +29,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
   isLogged,
   notification,
   menuRoutes,
+  profilePicture,
 }) => {
   const [openUser, setOpenUser] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -53,10 +55,12 @@ const HeaderMobile: React.FC<HeaderI> = ({
           )}
         >
           <div>
-            <AvatarInitials
+            <UserAvatar
+              avatarImage={profilePicture}
               user={{ uName: user?.nome, uSurname: user?.cognome }}
-              size={AvatarSizes.Small}
-              font={AvatarTextSizes.Small}
+              size={AvatarSizes.Big}
+              font={AvatarTextSizes.Big}
+              lightColor
             />
           </div>
           <div className='d-flex flex-row justify-content-start'>
@@ -164,7 +168,11 @@ const HeaderMobile: React.FC<HeaderI> = ({
             'w-100'
           )}
         >
-          <HamburgerMenu open={isOpen} setOpen={setIsOpen} menuRoutes={menuRoutes} />
+          <HamburgerMenu
+            open={isOpen}
+            setOpen={setIsOpen}
+            menuRoutes={menuRoutes}
+          />
           <div
             className={clsx(
               'd-flex',

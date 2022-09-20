@@ -3,14 +3,15 @@ import './sectionTitle.scss';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import clsx from 'clsx';
-import AvatarInitials, {
+import {
   AvatarSizes,
   AvatarTextSizes,
-} from '../AvatarInitials/avatarInitials';
+} from '../Avatar/AvatarInitials/avatarInitials';
 import StatusChip from '../StatusChip/statusChip';
 import { Button, Icon } from 'design-react-kit';
 import { useDispatch } from 'react-redux';
 import { UploadUserPic } from '../../redux/features/user/userThunk';
+import UserAvatar from '../Avatar/UserAvatar/UserAvatar';
 
 interface SectionTitleI {
   title: string;
@@ -25,6 +26,7 @@ interface SectionTitleI {
   surname?: string | undefined;
   isUserProfile?: boolean;
   enteIcon?: boolean;
+  profilePicture?: string | undefined;
 }
 
 const SectionTitle: React.FC<SectionTitleI> = (props) => {
@@ -38,6 +40,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
     surname,
     isUserProfile = false,
     enteIcon = false,
+    profilePicture,
   } = props;
 
   const device = useAppSelector(selectDevice);
@@ -98,14 +101,18 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
         className={clsx(
           'd-flex',
           device.mediaIsPhone ? 'flex-column align-items-center' : 'flex-row',
-          isUserProfile && 'position-relative'
+          'position-relative'
         )}
       >
         {iconAvatar && (
-          <AvatarInitials
-            user={{ uName: name || '', uSurname: surname || '' }}
-            size={AvatarSizes.Big}
-            font={AvatarTextSizes.Big}
+          <UserAvatar
+            avatarImage={profilePicture}
+            user={{ uName: name, uSurname: surname }}
+            size={device.mediaIsPhone ? AvatarSizes.Big : AvatarSizes.Small}
+            font={
+              device.mediaIsPhone ? AvatarTextSizes.Big : AvatarTextSizes.Small
+            }
+            lightColor={device.mediaIsPhone}
           />
         )}
         {isUserProfile && (
@@ -147,7 +154,6 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
               <Icon
                 size='xs'
                 icon='it-camera'
-                /* padding */
                 color='white'
                 aria-label='Foto'
                 className='position-absolute'
@@ -163,35 +169,38 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
           className={clsx(
             'custom-section-title__section-title',
             'primary-color-a9',
-            !device.mediaIsPhone ? 'text-nowrap' : 'text-wrap text-center',
+            'text-wrap text-center',
             !device.mediaIsPhone && 'position-relative'
           )}
         >
-          <span role='heading' aria-level={1}>
+          <span
+            /* role='heading' */ aria-level={1}
+            className={clsx(
+              'custom-section-title',
+              'custom-section-title__section-title'
+            )}
+          >
             {title}
           </span>
-
-          {status ? (
-            <div
-              className={clsx(
-                !device.mediaIsPhone && 'position-absolute status'
-              )}
-            >
-              <StatusChip
-                className={clsx(
-                  'table-container__status-label',
-                  'primary-bg-a9',
-                  'ml-4',
-                  'section-chip',
-                  'no-border',
-                  device.mediaIsPhone ? 'mx-0 ml-2 my-3' : 'mx-3'
-                )}
-                status={status}
-                rowTableId={name?.replace(/\s/g, '') || new Date().getTime()}
-              />
-            </div>
-          ) : null}
         </div>
+        {status ? (
+          <div
+            className={clsx(!device.mediaIsPhone && 'position-absolute status')}
+          >
+            <StatusChip
+              className={clsx(
+                'table-container__status-label',
+                'primary-bg-a9',
+                'ml-4',
+                'section-chip',
+                'no-border',
+                device.mediaIsPhone ? 'mx-0 ml-2 my-3' : 'mx-3'
+              )}
+              status={status}
+              rowTableId={name?.replace(/\s/g, '') || new Date().getTime()}
+            />
+          </div>
+        ) : null}
       </div>
 
       {subTitle ? (

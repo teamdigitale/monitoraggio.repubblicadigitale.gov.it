@@ -30,9 +30,13 @@ interface SwitchProfileModalI {
   //profiles?: ProfileI[];
   isRoleManaging?: boolean;
   isOnboarding?: boolean;
+  profilePicture?: string;
 }
 
-const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({ isOnboarding = false }) => {
+const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({
+  isOnboarding = false,
+  profilePicture = '',
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useAppSelector(selectUser) || {};
@@ -103,10 +107,14 @@ const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({ isOnboarding = fals
         onClick: handleSwitchProfile,
         disabled: !Object.keys(profileSelected)?.length,
       }}
-      secondaryCTA={isOnboarding ? undefined : {
-        label: 'Annulla',
-        onClick: resetModal,
-      }}
+      secondaryCTA={
+        isOnboarding
+          ? undefined
+          : {
+              label: 'Annulla',
+              onClick: resetModal,
+            }
+      }
       title='Scegli il ruolo'
       noSpaceAfterTitle
       centerButtons
@@ -149,6 +157,7 @@ const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({ isOnboarding = fals
                 activeProfile={isEqual(profile, profileSelected)}
                 className='mb-2'
                 user={user}
+                profilePicture={profilePicture}
               />
             </li>
           ))}

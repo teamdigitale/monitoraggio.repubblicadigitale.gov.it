@@ -95,6 +95,8 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
   useEffect(() => {
     if (formData) {
       setFormValues(formData);
+    } else {
+      clearForm();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
@@ -199,8 +201,8 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
           profilo: {
             ...form.profilo,
             required: !creation,
-          }
-        })
+          },
+        });
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -17,6 +17,7 @@ import { selectQuestionarioTemplateSnapshot } from '../../../redux/features/admi
 import { selectEntityDetail } from '../../../redux/features/citizensArea/citizensAreaSlice';
 // import { selectDevice } from '../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../redux/hooks';
+import { formatDate } from '../../../utils/datesHelper';
 import {
   formFieldI,
   FormHelper,
@@ -63,11 +64,11 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
       const formFromSchema = generateForm(
         JSON.parse(surveyTemplateQ1.schema.json)
       );
-      delete formFromSchema['19']; // data consenso non parte dell'anagrafica
+      // delete formFromSchema['19']; // data consenso non parte dell'anagrafica
       Object.keys(formFromSchema).forEach((key: string) => {
         formFromSchema[key].label = formFromSchema[key].value?.toString() || '';
         formFromSchema[key].value = '';
-        if(key === '3'){
+        if (key === '3') {
           formFromSchema[key].regex = RegexpType.FISCAL_CODE;
         }
         if (key === '4' || key === '5' || key === '6') {
@@ -91,6 +92,9 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
             formFromSchema[key].keyBE = 'tipoConferimentoConsenso';
           }
         }
+        if (key === '19') {
+          formFromSchema[key].keyBE = 'dataConferimentoConsenso';
+        }
       });
       setDynamicForm(formFromSchema);
     }
@@ -110,9 +114,9 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
           newValues[key] = '$consenso';
         }
       });
-      if(formData?.codiceFiscale === ''){
+      if (formData?.codiceFiscale === '') {
         newValues['4'] = 'Codice fiscale non disponibile';
-        handleCheckboxChange('Codice fiscale non disponibile','4');
+        handleCheckboxChange('Codice fiscale non disponibile', '4');
       }
       setFormValues(newValues);
     }
@@ -177,6 +181,24 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
         if (field?.keyBE === 'prefisso') {
           return renderPrefix(field);
         }
+        if (field.keyBE === 'dataConferimentoConsenso') {
+          if (field.value)
+            return (
+              <Input
+                {...field}
+                col='col-12 col-lg-6'
+                disabled
+                value={
+                  formatDate(
+                    Number(formData?.dataConferimentoConsenso),
+                    'snakeDate'
+                  ) || ''
+                }
+              />
+            );
+          else return null;
+        }
+
         return (
           <Input
             {...field}
@@ -223,7 +245,7 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
               id={`input-${field}`}
               field={field.field}
               className={clsx(
-                'col-12 col-lg-6',
+                field.field !== '18' && 'col-12 col-lg-6',
                 'compile-survey-container__checkbox-margin'
               )}
               label={

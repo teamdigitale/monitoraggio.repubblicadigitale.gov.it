@@ -83,6 +83,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
 
   const handleSaveEnte = async () => {
     if (isFormValid && newFormValues) {
+      let res: any = null;
       if (
         projectId &&
         authorityId &&
@@ -90,7 +91,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         programPolicy &&
         creation
       ) {
-        await dispatch(
+        res = await dispatch(
           AssignHeadquarterFacilitator(
             newFormValues,
             authorityId,
@@ -101,17 +102,16 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         );
         dispatch(GetHeadquarterDetails(headquarterId, authorityId, projectId));
       } else if (userId) {
-        userId &&
-          (await dispatch(
-            UpdateUser(userId, {
-              ...newFormValues,
-            })
-          ));
+        res = await dispatch(
+          UpdateUser(userId, {
+            ...newFormValues,
+          })
+        );
 
-        userId && dispatch(GetUserDetails(userId));
+        dispatch(GetUserDetails(userId));
       }
 
-      dispatch(closeModal());
+      if (!res?.errorCode) dispatch(closeModal());
     }
   };
 
@@ -196,7 +196,10 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
             )}
             placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’utente'
             onSubmit={handleSearchUser}
-            onReset={() => dispatch(setUsersList(null))}
+            onReset={() => {
+              dispatch(setUsersList(null));
+              dispatch(resetUserDetails());
+            }}
             title='Cerca'
             search
           />

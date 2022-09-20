@@ -76,6 +76,10 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
         if (formField?.keyBE?.toLowerCase() === 'prefisso') {
           return renderPrefix(formField);
         }
+        if(formField?.field === '19' && formField?.value === ''){
+          return null;
+        }
+
         return (
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore

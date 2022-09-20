@@ -19,12 +19,13 @@ import { HeaderI } from '../header';
 import { logout } from '../../../redux/features/user/userSlice';
 import HeaderMenu from '../../HeaderMenu/headerMenu';
 import { openModal } from '../../../redux/features/modal/modalSlice';
-import AvatarInitials, {
+import {
   AvatarSizes,
   AvatarTextSizes,
-} from '../../AvatarInitials/avatarInitials';
+} from '../../Avatar/AvatarInitials/avatarInitials';
 import useGuard from '../../../hooks/guard';
 import { defaultRedirectUrl } from '../../../routes';
+import UserAvatar from '../../Avatar/UserAvatar/UserAvatar';
 
 const HeaderDesktop: React.FC<HeaderI> = ({
   isHeaderFull = true,
@@ -33,7 +34,8 @@ const HeaderDesktop: React.FC<HeaderI> = ({
   userProfile,
   isLogged,
   notification,
-                                            menuRoutes,
+  menuRoutes,
+  profilePicture,
 }) => {
   //const languages = ['ITA', 'ENG'];
 
@@ -69,7 +71,8 @@ const HeaderDesktop: React.FC<HeaderI> = ({
           )}
         >
           <div>
-            <AvatarInitials
+            <UserAvatar
+              avatarImage={profilePicture}
               user={{ uName: user?.nome, uSurname: user?.cognome }}
               size={AvatarSizes.Small}
               font={AvatarTextSizes.Small}

@@ -1,33 +1,52 @@
 import { Button } from 'design-react-kit';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   closeModal,
   selectModalPayload,
 } from '../../../../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
-import { downloadCSV } from '../../../../../utils/common';
+import { downloadCSV, downloadFile } from '../../../../../utils/common';
 import FileInput from '../../../../General/FileInput/FileInput';
 import GenericModal from '../../../../Modals/GenericModal/genericModal';
-import { useDispatch } from 'react-redux';
 import { UploadFile } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 
 const id = 'upload-csv';
 
 interface UploadCSVModalI {
   accept?: string | undefined;
+  children?: React.ReactElement;
   onConfirm?: () => void;
   onClose?: () => void;
+  onEsito?: (esito: { ok: string; ko: string; list: any[] }) => void;
+  template?: any;
+  templateName?: string;
 }
 
-const UploadCSVModal = ({ accept, onConfirm, onClose }: UploadCSVModalI) => {
+const UploadCSVModal: React.FC<UploadCSVModalI> = (props) => {
+  const {
+    accept,
+    children,
+    onConfirm,
+    onClose,
+    onEsito,
+    template,
+    templateName,
+  } = props;
   const [step, setStep] = useState(0);
   const payload = useAppSelector(selectModalPayload);
   const [file, setFile] = useState<Blob | null>();
   const [esito, setEsito] = useState({
     ok: '-',
     ko: '-',
+    list: [],
   });
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (onEsito) onEsito(esito);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [esito]);
 
   const resetModal = () => {
     setStep(0);
@@ -36,7 +55,14 @@ const UploadCSVModal = ({ accept, onConfirm, onClose }: UploadCSVModalI) => {
   };
 
   const downloadTemplateHandler = () => {
-    downloadCSV(payload?.data, `${payload?.entity}-template.csv`, true);
+    if (template) {
+      downloadFile(
+        template,
+        templateName || `${payload?.entity}-template.xlsx`
+      );
+    } else if (payload?.data) {
+      downloadCSV(payload?.data, `${payload?.entity}-template.csv`, true);
+    }
   };
 
   let content = <span></span>;
@@ -58,20 +84,24 @@ const UploadCSVModal = ({ accept, onConfirm, onClose }: UploadCSVModalI) => {
         </div>
       );
       break;
-    case 1:
+    case 1: {
       content = (
-        <div className='d-flex justify-content-around align-items-center p-5 text-center'>
-          <div>
-            <h4>Riusciti</h4>
-            <p>{esito?.ok}</p>
+        <div className='container'>
+          <div className='d-flex justify-content-around align-items-center p-5 text-center'>
+            <div>
+              <h4>Riusciti</h4>
+              <p>{esito?.ok}</p>
+            </div>
+            <div>
+              <h4>Falliti</h4>
+              <p>{esito?.ko}</p>
+            </div>
           </div>
-          <div>
-            <h4>Falliti</h4>
-            <p>{esito?.ko}</p>
-          </div>
+          {children}
         </div>
       );
       break;
+    }
     default:
       break;
   }
@@ -105,6 +135,9 @@ const UploadCSVModal = ({ accept, onConfirm, onClose }: UploadCSVModalI) => {
                 ko: (res || []).filter(({ esito }: { esito: string }) =>
                   esito?.toUpperCase().includes('KO')
                 ).length,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                list: [...res],
               });
               setStep(1);
             }
@@ -131,15 +164,26 @@ const UploadCSVModal = ({ accept, onConfirm, onClose }: UploadCSVModalI) => {
   return (
     <GenericModal
       id={id}
-      primaryCTA={{
-        label: 'Conferma',
-        onClick: nextStep,
-        disabled: step === 0 && !file,
-      }}
-      secondaryCTA={{
-        label: 'Annulla',
-        onClick: resetModal,
-      }}
+      primaryCTA={
+        step === 0
+          ? {
+              label: 'Conferma',
+              onClick: nextStep,
+              disabled: step === 0 && !file,
+            }
+          : {
+              label: 'Chiudi',
+              onClick: resetModal,
+            }
+      }
+      secondaryCTA={
+        step === 0
+          ? {
+              label: 'Annulla',
+              onClick: resetModal,
+            }
+          : undefined
+      }
       centerButtons
     >
       {content}

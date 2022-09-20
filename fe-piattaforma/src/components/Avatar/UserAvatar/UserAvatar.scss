@@ -1,0 +1,17 @@
+.avatar-user-container {
+  &__circle-width {
+    &__big {
+      width: 53px;
+      min-height: 53px;
+      max-height: 53px;
+    }
+    &__small {
+      width: 35px;
+      min-height: 35px;
+      max-height: 35px;
+    }
+  }
+  &__avatar-image {
+    border-radius: 50%;
+  }
+}

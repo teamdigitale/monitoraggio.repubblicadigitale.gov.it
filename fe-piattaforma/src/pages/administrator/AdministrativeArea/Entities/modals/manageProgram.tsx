@@ -79,7 +79,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             updateProgram(entityId, newFormValues)
           );
           dispatch(GetProgramDetail(entityId));
-          if (!res.errorCode) dispatch(closeModal());
+          if (!res?.errorCode) dispatch(closeModal());
         }
       }
       setCurrentStep(0);
