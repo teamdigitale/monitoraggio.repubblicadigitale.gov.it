@@ -370,10 +370,10 @@ public class CittadiniServizioServiceTest {
 		cittadiniServizioService.inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizio(servizio.getId());
 	}
 	
-	@Test
-	public void caricaCittadiniSuServizioTest() {
-		cittadiniServizioService.caricaCittadiniSuServizio(file, servizio.getId());
-	}
+//	@Test
+//	public void caricaCittadiniSuServizioTest() {
+//		cittadiniServizioService.caricaCittadiniSuServizio(file, servizio.getId());
+//	}
 	
 	@Test
 	public void countCittadiniServizioByFiltroTest() {
