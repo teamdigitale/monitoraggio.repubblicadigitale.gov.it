@@ -12,7 +12,8 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParamLight;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParamLightProgramma;
 import it.pa.repdgt.surveymgmt.annotation.JsonString;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,12 +21,12 @@ import lombok.Setter;
 @Setter
 @Getter
 @JsonRootName(value = "servizioRequest")
-public class ServizioRequest implements Serializable {
+public class ServizioRequest extends SceltaProfiloParamLight implements Serializable {
 	private static final long serialVersionUID = 443289012578169806L;
 
 	@NotNull
 	@Valid
-	private SceltaProfiloParam profilazioneParam;
+	private SceltaProfiloParamLightProgramma profilazioneParam;
 
 	@JsonProperty(value = "nomeServizio")
 	@NotBlank

@@ -32,7 +32,6 @@ import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.bean.QuestionarioCompilatoBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection.DatiIstanza;
-import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioCompilatoException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;

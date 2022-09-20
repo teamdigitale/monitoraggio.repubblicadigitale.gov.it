@@ -29,6 +29,7 @@ import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entity.key.ProgrammaXQuestionarioTemplateKey;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParamLightProgramma;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioTemplateException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
@@ -65,6 +66,7 @@ public class ServizioSqlServiceTest {
 	List<String> listaStati;
 	List<String> listaTipologie;
 	SceltaProfiloParam sceltaprofiloParam;
+	SceltaProfiloParamLightProgramma sceltaProfiloParamLightProgramma;
 	ServizioRequest servizioRequest;
 	ProgrammaXQuestionarioTemplateKey programmaXQuestionarioTemplateKey;
 	ProgrammaXQuestionarioTemplateEntity programmaXQuestionarioTemplateEntity;
@@ -94,8 +96,13 @@ public class ServizioSqlServiceTest {
 		sceltaprofiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
 		sceltaprofiloParam.setIdProgetto(1L);
 		sceltaprofiloParam.setIdProgramma(1L);
+		sceltaProfiloParamLightProgramma = new SceltaProfiloParamLightProgramma();
+		sceltaProfiloParamLightProgramma.setIdProgetto(1L);
+		sceltaProfiloParamLightProgramma.setIdProgramma(1L);
 		servizioRequest = new ServizioRequest();
-		servizioRequest.setProfilazioneParam(sceltaprofiloParam);
+		servizioRequest.setProfilazioneParam(sceltaProfiloParamLightProgramma);
+		servizioRequest.setCfUtenteLoggato("CFUTENTE");
+		servizioRequest.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
 		servizioRequest.setNomeServizio("NOMESERVIZIO");
 		servizioRequest.setIdEnte(1L);
 		servizioRequest.setIdSede(1L);
@@ -336,6 +343,20 @@ public class ServizioSqlServiceTest {
 	public void getNominativoFacilitatoreByIdFacilitatoreAndIdServizioTest() {
 		when(this.servizioSqlRepository.findNominativoFacilitatoreByIdFacilitatoreAndIdServizio("FERSDA89R32G975R", servizio.getId())).thenReturn("NOMEFACILITATORE");
 		servizioSqlService.getNominativoFacilitatoreByIdFacilitatoreAndIdServizio("FERSDA89R32G975R", servizio.getId());
+	}
+	
+	@Test
+	public void getServizioByNomeTest() {
+		when(this.servizioSqlRepository.findByNome(servizio.getNome())).thenReturn(Optional.of(servizio));
+		Optional<ServizioEntity> risultato = servizioSqlService.getServizioByNome(servizio.getNome());
+		assertThat(risultato.get().getNome()).isEqualTo(servizio.getNome());
+	}
+	
+	@Test
+	public void getServizioByNomeUpdateTest() {
+		when(this.servizioSqlRepository.findByNomeUpdate(servizio.getNome(), servizio.getId())).thenReturn(Optional.of(servizio));
+		Optional<ServizioEntity> risultato = servizioSqlService.getServizioByNomeUpdate(servizio.getNome(), servizio.getId());
+		assertThat(risultato.get().getNome()).isEqualTo(servizio.getNome());
 	}
 	
 	@Setter

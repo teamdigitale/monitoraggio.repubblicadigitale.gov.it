@@ -284,8 +284,8 @@ public class EnteServiceTest {
 		filtro.setIdsProgetti(idsProgetti);
 		filtro.setProfili(profili);
 		entiPaginatiParam = new EntiPaginatiParam();
-		entiPaginatiParam.setCfUtenteLoggato("ABCABC12A12A123A");
-		entiPaginatiParam.setCodiceRuoloUtenteLoggato("DTD");
+		entiPaginatiParam.setCfUtente("ABCABC12A12A123A");
+		entiPaginatiParam.setCodiceRuolo(RuoloUtenteEnum.DTD);
 		entiPaginatiParam.setFiltroRequest(filtro);
 		currPage = 0;
 		pageSize = 10;
@@ -300,6 +300,7 @@ public class EnteServiceTest {
 	
 	@Test
 	public void getAllEntiPaginatiDTDTest() {
+		when(ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
 		when(enteRepository.findAllEntiFiltrati(filtro.getCriterioRicerca(),
 				"%"+filtro.getCriterioRicerca()+"%",
 				filtro.getIdsProgrammi(),
@@ -317,6 +318,7 @@ public class EnteServiceTest {
 	
 	@Test
 	public void getAllProgrammiDropdownDTDTest() {
+		when(ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
 		enteService.getAllProgrammiDropdown(entiPaginatiParam);
 		verify(enteRepository, times(1)).findAllProgrammiFiltrati(filtro.getCriterioRicerca(),
 				"%"+filtro.getCriterioRicerca()+"%",
@@ -328,6 +330,7 @@ public class EnteServiceTest {
 	
 	@Test
 	public void getAllProgettiDropdownDTDTest() {
+		when(ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
 		enteService.getAllProgettiDropdown(entiPaginatiParam);
 		verify(enteRepository, times(1)).findAllProgettiFiltrati(filtro.getCriterioRicerca(),
 				"%"+filtro.getCriterioRicerca()+"%",
@@ -339,7 +342,8 @@ public class EnteServiceTest {
 	
 	@Test
 	public void getAllEntiPaginatiDSCUTest() {
-		entiPaginatiParam.setCodiceRuoloUtenteLoggato("DSCU");
+		entiPaginatiParam.setCodiceRuolo(RuoloUtenteEnum.DSCU);
+		when(ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
 		enteService.getAllEntiPaginati(entiPaginatiParam, currPage, pageSize);
 		verify(enteRepository, times(1)).findAllEntiFiltrati(filtro.getCriterioRicerca(),
 				"%"+filtro.getCriterioRicerca()+"%",
@@ -351,7 +355,8 @@ public class EnteServiceTest {
 	
 	@Test
 	public void getAllProgrammiDropdownDSCUTest() {
-		entiPaginatiParam.setCodiceRuoloUtenteLoggato("DSCU");
+		entiPaginatiParam.setCodiceRuolo(RuoloUtenteEnum.DSCU);
+		when(ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
 		enteService.getAllProgrammiDropdown(entiPaginatiParam);
 		verify(enteRepository, times(1)).findAllProgrammiFiltrati(filtro.getCriterioRicerca(),
 				"%"+filtro.getCriterioRicerca()+"%",
@@ -363,7 +368,8 @@ public class EnteServiceTest {
 	
 	@Test
 	public void getAllProgettiDropdownDSCUTest() {
-		entiPaginatiParam.setCodiceRuoloUtenteLoggato("DSCU");
+		entiPaginatiParam.setCodiceRuolo(RuoloUtenteEnum.DSCU);
+		when(ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
 		enteService.getAllProgettiDropdown(entiPaginatiParam);
 		verify(enteRepository, times(1)).findAllProgettiFiltrati(filtro.getCriterioRicerca(),
 				"%"+filtro.getCriterioRicerca()+"%",
@@ -375,9 +381,10 @@ public class EnteServiceTest {
 	
 	@Test
 	public void getAllEntiPaginatiREGTest() {
-		entiPaginatiParam.setCodiceRuoloUtenteLoggato("REG");
+		entiPaginatiParam.setCodiceRuolo(RuoloUtenteEnum.REG);
 		programma1.setId(104L);
 		entiPaginatiParam.setIdProgramma(programma1.getId());
+		when(ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
 		enteService.getAllEntiPaginati(entiPaginatiParam, currPage, pageSize);
 		verify(enteRepository, times(1)).findAllEntiFiltrati(filtro.getCriterioRicerca(),
 				"%"+filtro.getCriterioRicerca()+"%",
@@ -389,18 +396,20 @@ public class EnteServiceTest {
 	
 	@Test
 	public void getAllProgrammiDropdownREGTest() {
-		entiPaginatiParam.setCodiceRuoloUtenteLoggato("REG");
+		entiPaginatiParam.setCodiceRuolo(RuoloUtenteEnum.REG);
 		programma1.setId(104L);
 		entiPaginatiParam.setIdProgramma(programma1.getId());
+		when(ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
 		enteService.getAllProgrammiDropdown(entiPaginatiParam);
 		verify(enteRepository, times(1)).findProgrammaById(programma1.getId());
 	}
 	
 	@Test
 	public void getAllProgettiDropdownREGTest() {
-		entiPaginatiParam.setCodiceRuoloUtenteLoggato("REG");
+		entiPaginatiParam.setCodiceRuolo(RuoloUtenteEnum.REG);
 		programma1.setId(104L);
 		entiPaginatiParam.setIdProgramma(programma1.getId());
+		when(ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
 		enteService.getAllProgettiDropdown(entiPaginatiParam);
 		verify(enteRepository, times(1)).findAllProgettiFiltrati(filtro.getCriterioRicerca(),
 				"%"+filtro.getCriterioRicerca()+"%",
@@ -412,11 +421,12 @@ public class EnteServiceTest {
 	
 	@Test
 	public void getAllEntiPaginatiREGPTest() {
-		entiPaginatiParam.setCodiceRuoloUtenteLoggato("REGP");
+		entiPaginatiParam.setCodiceRuolo(RuoloUtenteEnum.REGP);
 		programma1.setId(104L);
 		entiPaginatiParam.setIdProgramma(programma1.getId());
 		progetto1.setId(256L);
 		entiPaginatiParam.setIdProgetto(progetto1.getId());
+		when(ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
 		enteService.getAllEntiPaginati(entiPaginatiParam, currPage, pageSize);
 		verify(enteRepository, times(1)).findAllEntiFiltrati(filtro.getCriterioRicerca(),
 				"%"+filtro.getCriterioRicerca()+"%",
@@ -428,11 +438,12 @@ public class EnteServiceTest {
 	
 	@Test
 	public void getAllProgrammiDropdownREGPTest() {
-		entiPaginatiParam.setCodiceRuoloUtenteLoggato("REGP");
+		entiPaginatiParam.setCodiceRuolo(RuoloUtenteEnum.REGP);
 		programma1.setId(104L);
 		entiPaginatiParam.setIdProgramma(programma1.getId());
 		progetto1.setId(256L);
 		entiPaginatiParam.setIdProgetto(progetto1.getId());
+		when(ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
 		enteService.getAllProgettiDropdown(entiPaginatiParam);
 		verify(enteRepository, times(1)).findAllProgettiFiltrati(filtro.getCriterioRicerca(),
 				"%"+filtro.getCriterioRicerca()+"%",
@@ -444,11 +455,12 @@ public class EnteServiceTest {
 	
 	@Test
 	public void getAllEntiPaginatiREPPTest() {
-		entiPaginatiParam.setCodiceRuoloUtenteLoggato("REPP");
+		entiPaginatiParam.setCodiceRuolo(RuoloUtenteEnum.REPP);
 		programma1.setId(104L);
 		entiPaginatiParam.setIdProgramma(programma1.getId());
 		progetto1.setId(256L);
 		entiPaginatiParam.setIdProgetto(progetto1.getId());
+		when(ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
 		enteService.getAllEntiPaginati(entiPaginatiParam, currPage, pageSize);
 		verify(enteRepository, times(1)).findAllEntiFiltrati(filtro.getCriterioRicerca(),
 				"%"+filtro.getCriterioRicerca()+"%",
@@ -460,11 +472,12 @@ public class EnteServiceTest {
 	
 	@Test
 	public void getAllProgrammiDropdownREPPTest() {
-		entiPaginatiParam.setCodiceRuoloUtenteLoggato("REPP");
+		entiPaginatiParam.setCodiceRuolo(RuoloUtenteEnum.REPP);
 		programma1.setId(104L);
 		entiPaginatiParam.setIdProgramma(programma1.getId());
 		progetto1.setId(256L);
 		entiPaginatiParam.setIdProgetto(progetto1.getId());
+		when(ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
 		enteService.getAllProgettiDropdown(entiPaginatiParam);
 		verify(enteRepository, times(1)).findAllProgettiFiltrati(filtro.getCriterioRicerca(),
 				"%"+filtro.getCriterioRicerca()+"%",
@@ -476,15 +489,35 @@ public class EnteServiceTest {
 	
 	@Test
 	public void getAllEntiPaginatiKOTest() {
+		//test KO per ruolo non associato all'utente
+		when(this.ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(new ArrayList<>());
+		Assertions.assertThrows(EnteException.class, () -> enteService.getAllEntiPaginati(entiPaginatiParam, currPage, pageSize));
+		assertThatExceptionOfType(EnteException.class);
 		
 		//test KO per pagina inesistente
+		when(this.ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
 		Assertions.assertThrows(EnteException.class, () -> enteService.getAllEntiPaginati(entiPaginatiParam, 11, pageSize));
 		assertThatExceptionOfType(EnteException.class);
 	}
 	
 	@Test
+	public void getAllProgettiDropdownKOTest() {
+		when(this.ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(new ArrayList<>());
+		Assertions.assertThrows(EnteException.class, () -> enteService.getAllProgettiDropdown(entiPaginatiParam));
+		assertThatExceptionOfType(EnteException.class);
+	}
+	
+	@Test
+	public void getAllProgrammiDropdownKOTest() {
+		when(this.ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(new ArrayList<>());
+		Assertions.assertThrows(EnteException.class, () -> enteService.getAllProgrammiDropdown(entiPaginatiParam));
+		assertThatExceptionOfType(EnteException.class);
+	}
+	
+	@Test
 	public void getAllEntiPaginatiRuoloPersonalizzatoTest() {
-		entiPaginatiParam.setCodiceRuoloUtenteLoggato("FAC");
+		entiPaginatiParam.setCodiceRuolo(RuoloUtenteEnum.FAC);
+		when(ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
 		enteService.getAllEntiPaginati(entiPaginatiParam, currPage, pageSize);
 		verify(enteRepository, times(1)).findAllEntiFiltrati(filtro.getCriterioRicerca(),
 				"%"+filtro.getCriterioRicerca()+"%",
@@ -496,7 +529,8 @@ public class EnteServiceTest {
 	
 	@Test
 	public void getAllProgrammiDropdownRuoloPersonalizzatoREGTest() {
-		entiPaginatiParam.setCodiceRuoloUtenteLoggato("FAC");
+		entiPaginatiParam.setCodiceRuolo(RuoloUtenteEnum.FAC);
+		when(ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
 		enteService.getAllProgrammiDropdown(entiPaginatiParam);
 		verify(enteRepository, times(1)).findAllProgrammiFiltrati(filtro.getCriterioRicerca(),
 				"%"+filtro.getCriterioRicerca()+"%",
@@ -508,7 +542,8 @@ public class EnteServiceTest {
 	
 	@Test
 	public void getAllProgettiDropdownRuoloPersonalizzatoTest() {
-		entiPaginatiParam.setCodiceRuoloUtenteLoggato("FAC");
+		entiPaginatiParam.setCodiceRuolo(RuoloUtenteEnum.FAC);
+		when(ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
 		enteService.getAllProgettiDropdown(entiPaginatiParam);
 		verify(enteRepository, times(1)).findAllProgettiFiltrati(filtro.getCriterioRicerca(),
 				"%"+filtro.getCriterioRicerca()+"%",
@@ -1066,7 +1101,16 @@ public class EnteServiceTest {
 	
 	@Test
 	public void getAllProfiliEntiDropdownTest() {
+		when(this.ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(listaRuoli);
 		enteService.getAllProfiliEntiDropdown(entiPaginatiParam);
+	}
+	
+	@Test
+	public void getAllProfiliEntiDropdownKOTest() {
+		//test KO per ruolo non appartenente all'utente
+		when(this.ruoloService.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())).thenReturn(new ArrayList<RuoloEntity>());
+		Assertions.assertThrows(EnteException.class, () -> enteService.getAllProfiliEntiDropdown(entiPaginatiParam));
+		assertThatExceptionOfType(EnteException.class);
 	}
 	
 	@Test

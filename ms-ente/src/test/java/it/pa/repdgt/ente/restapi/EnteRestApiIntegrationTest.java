@@ -28,8 +28,8 @@ public class EnteRestApiIntegrationTest extends AppTests {
 		final String pageSize = "10";
 		final FiltroRequest filtroEnti = new FiltroRequest();
 		final EntiPaginatiParam entiPaginatiParamBodyRequest = new EntiPaginatiParam();
-		entiPaginatiParamBodyRequest.setCodiceRuoloUtenteLoggato("DTD");
-		entiPaginatiParamBodyRequest.setCfUtenteLoggato("UIHPLW87R49F205X");
+		entiPaginatiParamBodyRequest.setCodiceRuolo(RuoloUtenteEnum.DTD);
+		entiPaginatiParamBodyRequest.setCfUtente("UIHPLW87R49F205X");
 		entiPaginatiParamBodyRequest.setFiltroRequest(filtroEnti);
 		
 		String url = String.format("http://localhost:%s/ente/all?currPage=%s&pageSize=%s", randomServerPort, currPage, pageSize);
@@ -40,8 +40,8 @@ public class EnteRestApiIntegrationTest extends AppTests {
 		assertThat(response.getNumeroTotaleElementi()).isEqualTo(7L);
 		assertThat(response.getEnti().size()).isEqualTo(7L);
 		
-		entiPaginatiParamBodyRequest.setCodiceRuoloUtenteLoggato("DSCU");
-		entiPaginatiParamBodyRequest.setCfUtenteLoggato("ASDPDS17R65F313X");
+		entiPaginatiParamBodyRequest.setCodiceRuolo(RuoloUtenteEnum.DSCU);
+		entiPaginatiParamBodyRequest.setCfUtente("ASDPDS17R65F313X");
 		
 		url = String.format("http://localhost:%s/ente/all?currPage=%s&pageSize=%s", randomServerPort, currPage, pageSize);
 		response = restTemplate.postForObject(url, entiPaginatiParamBodyRequest, ListaEntiPaginatiResource.class);
@@ -120,8 +120,8 @@ public class EnteRestApiIntegrationTest extends AppTests {
 	public void downloadCSVSElencoEntiTest() {
 		
 		EntiPaginatiParam entiParam = new EntiPaginatiParam();
-		entiParam.setCfUtenteLoggato("UIHPLW87R49F205X");
-		entiParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.getValue());
+		entiParam.setCfUtente("UIHPLW87R49F205X");
+		entiParam.setCodiceRuolo(RuoloUtenteEnum.DTD);
 		entiParam.setFiltroRequest(new FiltroRequest());
 		
 		String urlToCall = "http://localhost:" + randomServerPort +

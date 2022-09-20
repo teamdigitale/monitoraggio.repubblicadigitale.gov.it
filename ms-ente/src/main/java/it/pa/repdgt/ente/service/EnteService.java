@@ -80,6 +80,7 @@ public class EnteService {
 	private static final String NOME_PROGRAMMA = "NOME_PROGRAMMA";
 	private static final String ID_PROGETTO = "ID_PROGETTO";
 	private static final String NOME_PROGETTO = "NOME_PROGETTO";
+	private static final String IDP = "idP";
 
 	@Autowired
 	private StoricoService storicoService;
@@ -146,6 +147,16 @@ public class EnteService {
 			EntiPaginatiParam entiPaginatiParam,
 			Integer currPage, 
 			Integer pageSize) {
+		String codiceRuoloUtente = entiPaginatiParam.getCodiceRuolo().toString();
+		
+		 boolean hasRuoloUtente = this.ruoloService
+			.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())
+			.stream()
+			.anyMatch(ruolo -> ruolo.getCodice().equals(codiceRuoloUtente));
+		
+		if(!hasRuoloUtente) {
+			throw new EnteException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
+		}
 		
 		Pageable paginazione = PageRequest.of(currPage, pageSize);
 		List<EnteDto> entiUtente = this.getAllEntiByCodiceRuoloAndIdProgramma(entiPaginatiParam);
@@ -166,6 +177,14 @@ public class EnteService {
 	@LogMethod
 	@LogExecutionTime
 	public List<String> getAllProfiliEntiDropdown(EntiPaginatiParam entiPaginatiParam) {
+		String codiceRuoloUtente = entiPaginatiParam.getCodiceRuolo().toString();
+		boolean hasRuoloUtente = this.ruoloService
+				.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())
+				.stream()
+				.anyMatch(ruolo -> ruolo.getCodice().equals(codiceRuoloUtente));
+		if(!hasRuoloUtente) {
+			throw new EnteException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
+		}
 		List<String> profiliEnti = this.getAllEntiByCodiceRuoloAndIdProgramma(entiPaginatiParam)
 									   .stream()
 									   .map(EnteDto::getProfilo)
@@ -177,6 +196,14 @@ public class EnteService {
 	@LogMethod
 	@LogExecutionTime
 	public List<ProgrammaDto> getAllProgrammiDropdown(EntiPaginatiParam entiPaginatiParam) {
+		String codiceRuoloUtente = entiPaginatiParam.getCodiceRuolo().toString();
+		boolean hasRuoloUtente = this.ruoloService
+				.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())
+				.stream()
+				.anyMatch(ruolo -> ruolo.getCodice().equals(codiceRuoloUtente));
+		if(!hasRuoloUtente) {
+			throw new EnteException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
+		}
 		List<ProgrammaDto> programmiDropdown = this.getAllProgrammiDropdownByCodiceRuoloAndIdProgramma(entiPaginatiParam);
 		return programmiDropdown;
 	}
@@ -184,6 +211,14 @@ public class EnteService {
 	@LogMethod
 	@LogExecutionTime
 	public List<ProgettoDto> getAllProgettiDropdown(EntiPaginatiParam entiPaginatiParam) {
+		String codiceRuoloUtente = entiPaginatiParam.getCodiceRuolo().toString();
+		boolean hasRuoloUtente = this.ruoloService
+				.getRuoliByCodiceFiscale(entiPaginatiParam.getCfUtente())
+				.stream()
+				.anyMatch(ruolo -> ruolo.getCodice().equals(codiceRuoloUtente));
+		if(!hasRuoloUtente) {
+			throw new EnteException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
+		}
 		List<ProgettoDto> progettiDropdown = this.getAllProgettiDropdownByCodiceRuoloAndIdProgramma(entiPaginatiParam);
 		return progettiDropdown;
 	}
@@ -193,23 +228,23 @@ public class EnteService {
 	public List<EnteDto> getAllEntiByCodiceRuoloAndIdProgramma(EntiPaginatiParam entiPaginatiParam) {
 		List<Map<String, String>> resultSet;
 		
-		switch (entiPaginatiParam.getCodiceRuoloUtenteLoggato()) {
-			case "DTD":
+		switch (entiPaginatiParam.getCodiceRuolo()) {
+			case DTD:
 				 resultSet = this.getAllEntiFiltrati(entiPaginatiParam.getFiltroRequest());
 				 break;
-			case "DSCU":
+			case DSCU:
 				 resultSet = this.getAllEntiPerDSCUFiltrati(entiPaginatiParam.getFiltroRequest());
 				 break;
-			case "REG":
-			case "DEG":
+			case REG:
+			case DEG:
 				resultSet = this.getAllEntiGestoreProgrammaByIdProgrammaFiltrati(entiPaginatiParam.getIdProgramma(), entiPaginatiParam.getFiltroRequest());
 				break;
-			case "REGP":
-			case "DEGP":
+			case REGP:
+			case DEGP:
 				resultSet = this.getAllEntiGestoreProgetto(entiPaginatiParam);
 				break;
-			case "REPP":
-			case "DEPP":
+			case REPP:
+			case DEPP:
 				resultSet = this.getAllEntiPartnerProgetto(entiPaginatiParam);
 				break;
 			default:
@@ -225,6 +260,7 @@ public class EnteService {
 				enteDto.setNome(record.get(NOME_ENTE));
 				enteDto.setTipologia(record.get(TIPOLOGIA_ENTE));
 				enteDto.setProfilo(record.get(PROFILO_ENTE));
+				enteDto.setIdP(record.get(IDP));
 				return enteDto;
 		})
 		.collect(Collectors.toList());
@@ -237,40 +273,41 @@ public class EnteService {
 	public List<EnteDto> aggregaEntiUguali(List<EnteDto> enti) {
 		Set<EnteDto> setEntiAggregati = new HashSet<>();
 		
-		enti.stream()
-			.forEach(ente -> {
-				EnteDto enteAggregato = enti.stream()
-					.filter(e -> e.getNome().equals(ente.getNome()))
-					.reduce((ente1, ente2) -> {
-						if(ente1.getProfilo().contains(ente2.getProfilo())) {
-							return ente1;
-						}
-						ente1.setProfilo(ente1.getProfilo().concat(", ").concat(ente2.getProfilo()));
-						return ente1;
-					}).get();
-				
-				setEntiAggregati.add(enteAggregato);
-		});
-		
+		ArrayList<String> idEnti = new ArrayList<String>();
+		for(EnteDto ente1: enti) {
+			if(!idEnti.contains(ente1.getId())) {
+				EnteDto res = ente1;
+
+				for(EnteDto ente2: enti) {
+					if(ente1.getId().equals(ente2.getId())) {
+						if(!ente1.equals(ente2))
+							res.setProfilo(res.getProfilo().concat(", ").concat(ente2.getProfilo()));
+					}
+				}
+				idEnti.add(ente1.getId());
+				setEntiAggregati.add(res);
+			}	
+		}
+
 		return new ArrayList<EnteDto>(setEntiAggregati);
 	}
 	
 	private List<ProgrammaDto> getAllProgrammiDropdownByCodiceRuoloAndIdProgramma(EntiPaginatiParam entiPaginatiParam) {
 		List<Map<String, String>> resultSet;
 		
-		switch (entiPaginatiParam.getCodiceRuoloUtenteLoggato()) {
-			case "DTD":
+		switch (entiPaginatiParam.getCodiceRuolo()) {
+			case DTD:
 				 resultSet = this.getAllProgrammiFiltrati(entiPaginatiParam.getFiltroRequest());
 				 break;
-			case "DSCU":
+			case DSCU:
 				 resultSet = this.getAllProgrammiPerDSCUFiltrati(entiPaginatiParam.getFiltroRequest());
 				 break;
-			case "REG":
-			case "DEG":
-			case "REGP":
-			case "DEGP":
-			case "REPP":
-			case "DEPP":
+			case REG:
+			case DEG:
+			case REGP:
+			case DEGP:
+			case REPP:
+			case DEPP:
 				resultSet = this.getProgrammaById(entiPaginatiParam.getIdProgramma());
 				break;
 			default:
@@ -294,23 +331,23 @@ public class EnteService {
 	private List<ProgettoDto> getAllProgettiDropdownByCodiceRuoloAndIdProgramma(EntiPaginatiParam entiPaginatiParam) {
 		List<Map<String, String>> resultSet;
 		
-		switch (entiPaginatiParam.getCodiceRuoloUtenteLoggato()) {
-			case "DTD":
+		switch (entiPaginatiParam.getCodiceRuolo()) {
+			case DTD:
 				 resultSet = this.getAllProgettiFiltrati(entiPaginatiParam.getFiltroRequest());
 				 break;
-			case "DSCU":
+			case DSCU:
 				 resultSet = this.getAllProgettiPerDSCUFiltrati(entiPaginatiParam.getFiltroRequest());
 				 break;
-			case "REG":
-			case "DEG":
+			case REG:
+			case DEG:
 				 resultSet = this.getAllProgettiGestoreProgrammaByIdProgrammaFiltrati(entiPaginatiParam.getIdProgramma(), entiPaginatiParam.getFiltroRequest());
 				 break;
-			case "REGP":
-			case "DEGP":
+			case REGP:
+			case DEGP:
 				 resultSet = this.getAllProgettiGestoreProgetto(entiPaginatiParam);
 				 break;
-			case "REPP":
-			case "DEPP":
+			case REPP:
+			case DEPP:
 				 resultSet = this.getAllProgettiPartnerProgetto(entiPaginatiParam);
 				 break;
 			default:
@@ -629,8 +666,8 @@ public class EnteService {
 		//stacco un thread per invio email welcome al referente/delegato
 		new Thread(() -> {
 			try {
-				this.emailService.inviaEmail(utenteFetch.getEmail(),
-						EmailTemplateEnum.GEST_PROG,
+				this.emailService.inviaEmail(utenteFetch.getEmail(), 
+						EmailTemplateEnum.GEST_PROG, 
 						new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(codiceRuolo).getValue() });
 			} catch (Exception ex) {
 				log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore programma per programma con id={}.", idProgramma);
@@ -725,8 +762,8 @@ public class EnteService {
 		//stacco un thread per invio email welcome al referente/delegato
 		new Thread(() -> {
 			try {
-				this.emailService.inviaEmail(utenteFetch.getEmail(),
-						EmailTemplateEnum.GEST_PROGE_PARTNER,
+				this.emailService.inviaEmail(utenteFetch.getEmail(), 
+						EmailTemplateEnum.GEST_PROGE_PARTNER, 
 						new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(codiceRuolo).getValue() });
 			} catch (Exception ex) {
 				log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore progetto per progetto con id={}.", idProgetto);
@@ -807,7 +844,7 @@ public class EnteService {
 		schedaEnteGestoreProgetto.setSediEnteGestoreProgetto(sediGestoreProgetto);
 		return schedaEnteGestoreProgetto;
 	}
-
+	
 	@LogMethod
 	@LogExecutionTime
 	public SchedaEnteGestoreProgettoBean getSchedaEnteGestoreProgettoByIdProgettoAndSceltaProfilo(Long idProgetto, EntiPaginatiParam entiPaginatiParam) {
@@ -815,7 +852,7 @@ public class EnteService {
 		SchedaEnteGestoreProgettoBean schedaEnteGestoreProgetto = new SchedaEnteGestoreProgettoBean();
 		EnteProjection ente = this.enteRepository.findEnteGestoreProgettoByIdProgetto(idProgetto)
 				.orElseThrow(() -> new EnteException(errorMessage, CodiceErroreEnum.C01));
-
+		
 		List<UtenteProjection> referenti = this.referentiDelegatiEnteGestoreProgettoService.getReferentiEnteGestoreByIdProgettoAndIdEnte(idProgetto, ente.getId());
 		List<UtenteProjection> delegati = this.referentiDelegatiEnteGestoreProgettoService.getDelegatiEnteGestoreByIdProgettoAndIdEnte(idProgetto, ente.getId());
 		List<SedeEntity> sedi = this.sedeService.getSediEnteByIdProgettoAndIdEnte(idProgetto, ente.getId());
@@ -828,20 +865,20 @@ public class EnteService {
 										sedeGestoreProgetto.setServiziErogati(sede.getServiziErogati());
 										sedeGestoreProgetto.setNrFacilitatori(this.utenteService.countFacilitatoriPerSedeProgettoEnte(idProgetto, sede.getId(), ente.getId()));
 										sedeGestoreProgetto.setStato(this.sedeService.getStatoSedeByIdProgettoAndIdSedeAndIdEnte(idProgetto, sede.getId(), ente.getId()));
-
+										
 										List<String> facilitatoriVolontari = Arrays.asList(RuoloUtenteEnum.FAC.toString(), RuoloUtenteEnum.VOL.toString());
-										if(facilitatoriVolontari.contains(entiPaginatiParam.getCodiceRuoloUtenteLoggato().toString())) {
-											String cfUtenteLoggato = entiPaginatiParam.getCfUtenteLoggato();
+										if(facilitatoriVolontari.contains(entiPaginatiParam.getCodiceRuolo().toString())) {
+											String cfUtenteLoggato = entiPaginatiParam.getCfUtente();
 											EnteSedeProgettoFacilitatoreKey id = new EnteSedeProgettoFacilitatoreKey(ente.getId(), sede.getId(), idProgetto, cfUtenteLoggato);
 											boolean isSedeAssociatoAUtente = this.enteSedeProgettoFacilitatoreService.getEnteSedeProgettoFacilitatoreById(id).isPresent();
 											sedeGestoreProgetto.setAssociatoAUtente(isSedeAssociatoAUtente);
 										} else {
 											sedeGestoreProgetto.setAssociatoAUtente(Boolean.TRUE);
 										}
-
+										
 										return sedeGestoreProgetto;
 									}).collect(Collectors.toList());
-
+		
 		schedaEnteGestoreProgetto.setEnte(ente);
 		schedaEnteGestoreProgetto.setReferentiEnteGestoreProgetto(referenti);
 		schedaEnteGestoreProgetto.setDelegatiEnteGestoreProgetto(delegati);
