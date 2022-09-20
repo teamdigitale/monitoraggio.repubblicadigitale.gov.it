@@ -52,6 +52,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
     setIsFormValid = () => ({}),
     getFormValues = () => ({}),
     updateForm = () => ({}),
+    clearForm = () => ({}),
     creation = false,
     fieldsToHide = [],
   } = props;
@@ -97,6 +98,8 @@ const FormUser: React.FC<UserFormI> = (props) => {
   useEffect(() => {
     if (formData) {
       setFormValues(formData);
+    } else {
+      clearForm();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);

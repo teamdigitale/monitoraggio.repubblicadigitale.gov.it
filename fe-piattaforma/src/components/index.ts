@@ -34,7 +34,7 @@ import InfoCard from './InfoCard/infoCard';
 import EmptySection from './EmptySection/emptySection';
 import DetailsRow from './DetailsRow/detailsRow';
 import StatusChip from './StatusChip/statusChip';
-import AvatarInitials from './AvatarInitials/avatarInitials';
+import AvatarInitials from './Avatar/AvatarInitials/avatarInitials';
 
 export {
   Accordion,

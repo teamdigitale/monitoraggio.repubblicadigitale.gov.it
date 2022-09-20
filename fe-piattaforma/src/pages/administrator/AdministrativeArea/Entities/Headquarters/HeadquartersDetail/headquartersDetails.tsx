@@ -338,6 +338,7 @@ const HeadquartersDetails = () => {
                   cta={authorityId ? getAccordionCTA(item.title).cta : null}
                   onClickCta={getAccordionCTA(item.title)?.ctaAction}
                   lastBottom={index === itemAccordionList.length - 1}
+                  detailAccordion
                 >
                   {item.items?.length ? (
                     item.items.map((cardItem) => (
@@ -355,7 +356,7 @@ const HeadquartersDetails = () => {
                     ))
                   ) : (
                     <EmptySection
-                      title={`Non sono presenti ${item.title?.toLowerCase()} associati (o associate)`}
+                      title={`Non sono presenti ${item.title?.toLowerCase()} associati.`}
                       horizontal
                       aside
                     />

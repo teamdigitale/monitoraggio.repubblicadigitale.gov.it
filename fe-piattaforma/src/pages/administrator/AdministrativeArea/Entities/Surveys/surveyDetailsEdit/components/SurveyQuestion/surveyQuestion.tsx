@@ -107,7 +107,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
             <Button onClick={handleDeleteQuestion} className='px-1 pt-0'>
               <Icon
                 color='primary'
-                icon='it-delete'
+                icon='it-less-circle'
                 size='sm'
                 aria-label='Elimina domanda'
               />
@@ -196,8 +196,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
               </span>
               {(!editMode && !cloneMode) ||
               ((editMode || cloneMode) &&
-                (sectionID === idQ1 ||
-                  sectionID === idQ2)) ? (
+                (sectionID === idQ1 || sectionID === idQ2)) ? (
                 <span className='survey-question-container__question-description text-start text-wrap'>
                   <strong>
                     {surveyQuestion?.form['question-description'].value}
@@ -301,7 +300,9 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
                       surveyQuestion?.form['question-required'].field
                     )
                   }
-                  checked={surveyQuestion?.form['question-required'].value === 'true'}
+                  checked={
+                    surveyQuestion?.form['question-required'].value === 'true'
+                  }
                 />
               </FormGroup>
             </Form>

@@ -212,7 +212,10 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
             )}
             placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’utente'
             onSubmit={handleSearchUser}
-            onReset={() => setShowForm(true)}
+            onReset={() => {
+              resetModal(false);
+              dispatch(resetUserDetails());
+            }}
             title='Cerca'
             search
           />

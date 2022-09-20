@@ -186,7 +186,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         aria-label='Elimina elemento riga'
                       >
                         <Icon
-                          icon='it-delete'
+                          icon='it-less-circle'
                           color='primary'
                           size='sm'
                           aria-label='Elimina elemento riga'

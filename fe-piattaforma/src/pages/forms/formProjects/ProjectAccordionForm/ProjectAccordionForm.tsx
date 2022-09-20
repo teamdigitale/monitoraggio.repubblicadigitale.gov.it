@@ -19,6 +19,7 @@ const ProjectAccordionForm = () => {
           title={accordion.title}
           key={index}
           className='general-info-accordion-container-project'
+          detailAccordion
         >
           <TargetsForm
             section={accordion.section as SectionT}

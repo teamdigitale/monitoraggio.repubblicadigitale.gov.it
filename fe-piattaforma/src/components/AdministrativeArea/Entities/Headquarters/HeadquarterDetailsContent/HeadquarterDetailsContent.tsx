@@ -28,6 +28,7 @@ const HeadquarterDetailsContent = () => {
       <AccordionAddressList
         addressList={headquarterDetails?.indirizziSedeFasceOrarie || []}
         isReadOnly
+        detailAccordion
       />
     </>
   );

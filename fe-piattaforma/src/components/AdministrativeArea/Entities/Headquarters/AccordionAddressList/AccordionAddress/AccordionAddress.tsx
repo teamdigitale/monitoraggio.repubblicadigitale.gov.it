@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import {
   Accordion,
   AccordionBody,
@@ -38,6 +39,8 @@ interface AccordionAddressI {
   onAddressInfoChange: (addressInfo: AddressInfoI) => void;
   handleOnToggle?: (isOpen: boolean) => void;
   isReadOnly?: boolean | undefined;
+  detailAccordion?: boolean;
+  roleList?: boolean;
 }
 
 const AccordionAddress: React.FC<AccordionAddressI> = ({
@@ -46,6 +49,8 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
   index,
   onAddressInfoChange,
   canBeDeleted = false,
+  detailAccordion = false,
+  roleList = false,
   // handleOnToggle,
 }) => {
   const [addressOpen, setAddressOpen] = useState(index === 1);
@@ -125,13 +130,21 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
   };
 
   return (
-    <Accordion iconLeft>
+    <Accordion
+      iconLeft
+      className={clsx(!roleList && 'accordion-container__gray-title')}
+    >
       <AccordionHeader
         active={addressOpen}
         onToggle={() => setAddressOpen((prev) => !prev)}
         className='d-flex align-items-center'
       >
-        <span className='mr-auto'>{`Indirizzo ${index}`}</span>
+        <span
+          className={clsx(
+            detailAccordion && 'accordion-container__header-acc',
+            'mr-auto'
+          )}
+        >{`Indirizzo ${index}`}</span>
         {canBeDeleted && !isReadOnly && (
           <Button
             onClick={(e) => {
@@ -142,7 +155,7 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
           >
             <Icon
               color='primary'
-              icon='it-delete'
+              icon='it-less-circle'
               size='sm'
               aria-label='Elimina'
             />

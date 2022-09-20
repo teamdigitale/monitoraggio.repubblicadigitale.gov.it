@@ -114,7 +114,7 @@ const MultiOptionForm: React.FC<MultiOptionFormI> = (props) => {
                       <Icon
                         className='minus'
                         color='primary'
-                        icon='it-delete'
+                        icon='it-less-circle'
                         size='sm'
                         aria-label='Elimina opzione'
                       />

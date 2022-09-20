@@ -122,7 +122,7 @@ const CardStatusActionHeadquarters: React.FC<CardStatusActionI> = (props) => {
                   >
                     <Icon
                       color='primary'
-                      icon='it-delete'
+                      icon='it-less-circle'
                       size='sm'
                       aria-label='Elimina'
                     />

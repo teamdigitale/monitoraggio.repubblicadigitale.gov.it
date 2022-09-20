@@ -58,8 +58,9 @@ const ManageUsers: React.FC<ManageUsersI> = ({
 
   const handleSaveEnte = async () => {
     if (isFormValid) {
+      let res: any = null;
       if (creation) {
-        const res = await dispatch(CreateUser(newFormValues));
+        res = await dispatch(CreateUser(newFormValues));
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (res?.data?.idUtente) {
@@ -73,8 +74,9 @@ const ManageUsers: React.FC<ManageUsersI> = ({
         await dispatch(UpdateUser(userId || userIdPayload, newFormValues));
         dispatch(GetUserDetails(userId || userIdPayload));
       }
+
+      if (!res?.errorCode) resetModal();
     }
-    resetModal();
   };
 
   return (

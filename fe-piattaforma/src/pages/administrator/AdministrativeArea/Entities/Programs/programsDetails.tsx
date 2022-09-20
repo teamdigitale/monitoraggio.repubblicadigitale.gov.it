@@ -1073,7 +1073,7 @@ const ProgramsDetails: React.FC = () => {
                   ))
                 ) : (
                   <EmptySection
-                    title={`Non sono presenti ${item.title?.toLowerCase()} associati (o associate)`}
+                    title={`Non sono presenti ${item.title?.toLowerCase()} associati.`}
                     horizontal
                     aside
                   />

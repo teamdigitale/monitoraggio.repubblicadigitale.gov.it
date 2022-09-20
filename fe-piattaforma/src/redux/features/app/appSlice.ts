@@ -15,7 +15,6 @@ interface AppStateI {
   };
   customBreadCrumb: BreadcrumbI[];
   infoIdsBreadcrumb: { id: string | number; nome: string }[];
-
 }
 
 const initialState: AppStateI = {
@@ -59,6 +58,13 @@ export const appSlice = createSlice({
         )[0]
       ) {
         state.infoIdsBreadcrumb.push(action.payload);
+      } else if (action.payload?.updateRoleBreadcrumb) {
+        // in role management: same id, update label realtime
+        const index = state.infoIdsBreadcrumb.findIndex(
+          (elem) =>
+            elem.id === action.payload?.id && elem.nome !== action.payload?.nome
+        );
+        state.infoIdsBreadcrumb[index].nome = action.payload?.nome;
       }
     },
   },
@@ -74,7 +80,8 @@ export const {
 
 export const selectLoader = (state: RootState) => state.app.loader;
 export const selectDevice = (state: RootState) => state.app.device;
-export const selectCustomBreadcrumb = (state: RootState) => state.app.customBreadCrumb;
+export const selectCustomBreadcrumb = (state: RootState) =>
+  state.app.customBreadCrumb;
 export const selectInfoIdsBreadcrumb = (state: RootState) =>
   state.app.infoIdsBreadcrumb;
 
