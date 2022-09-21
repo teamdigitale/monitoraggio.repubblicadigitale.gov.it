@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
         app.kubernetes.io/name: ms-open-data
-  replicas: 2
+  replicas: 3
   strategy:
     type: RollingUpdate
   template:
@@ -16,7 +16,6 @@ spec:
       labels:
         app.kubernetes.io/name: ms-open-data
     spec:
-      serviceAccountName: ${K8S_SERVICEACCOUNT}
       containers:
         - name: ms-open-data
           image: ${ECR_REPOSITORY}:${IMAGE_TAG}
@@ -79,16 +78,6 @@ spec:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: DB_MONGO_PASSWORD
-            - name: KEYSTORE_PATH
-              valueFrom:
-                configMapKeyRef:
-                  name: env-${K8S_NAMESPACE}-options
-                  key: KEYSTORE_PATH
-            - name: KEYSTORE_PASSWORD
-              valueFrom:
-                configMapKeyRef:
-                  name: env-${K8S_NAMESPACE}-options
-                  key: KEYSTORE_PASSWORD
             - name: awsS3AccessKey
               valueFrom:
                 configMapKeyRef:
@@ -114,7 +103,7 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-type: external
     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
     service.beta.kubernetes.io/aws-load-balancer-scheme: internal
-    external-dns.alpha.kubernetes.io/hostname: opendata.backend-${K8S_NAMESPACE}.mitd.technology
+    external-dns.alpha.kubernetes.io/hostname: opendata.api.repubblicadigitale.gov.it
     service.beta.kubernetes.io/aws-load-balancer-name: nlb-ms-open-data-${K8S_NAMESPACE}
 spec:
   type: LoadBalancer
