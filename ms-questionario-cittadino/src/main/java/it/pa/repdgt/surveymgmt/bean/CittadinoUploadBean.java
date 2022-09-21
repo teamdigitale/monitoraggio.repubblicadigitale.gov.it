@@ -29,7 +29,7 @@ public class CittadinoUploadBean implements Serializable {
 	private String prefisso;
 	private String numeroCellulare;
 	private String telefono;
-	private String esitoUpload;
+	private String esito;
 	
 	public CittadinoUploadBean( ) {
 		super();
