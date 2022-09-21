@@ -474,19 +474,19 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 						try{
 							popolaCittadino(cittadino, cittadinoUpload);
 							inserisciCittadino(cittadino, idServizio);
-							cittadinoUpload.setEsitoUpload("UPLOAD - OK");
+							cittadinoUpload.setEsito("UPLOAD - OK");
 						}catch(NumberFormatException e){
-							cittadinoUpload.setEsitoUpload("UPLOAD - KO - ANNO DI NASCITA IN FORMATO NON VALIDO");
+							cittadinoUpload.setEsito("UPLOAD - KO - ANNO DI NASCITA IN FORMATO NON VALIDO");
 						}
 					}else {
-						cittadinoUpload.setEsitoUpload("UPLOAD - KO - CF O NUM DOCUMENTO OBBLIGATORI");
+						cittadinoUpload.setEsito("UPLOAD - KO - CF O NUM DOCUMENTO OBBLIGATORI");
 					}
 				}else {
 					CittadinoEntity cittadinoDBFetch = optionalCittadinoDBFetch.get();
 					// verifico se già esiste il cittadino per quel determinato servizio 
 					// e in caso affermativo aggiungo KO
 					if(this.esisteCittadinoByIdServizioAndIdCittadino(idServizio, cittadinoDBFetch.getId())) {
-						cittadinoUpload.setEsitoUpload(String.format(
+						cittadinoUpload.setEsito(String.format(
 								"UPLOAD - KO - CITTADINO CON CODICE FISCALE=%s NUMERO DOCUMENTO=%s GIA' ESISTENTE SUL SERVIZIO CON ID %s",
 								cittadinoDBFetch.getCodiceFiscale(),
 								cittadinoDBFetch.getNumeroDocumento(),
@@ -498,9 +498,9 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 						try{
 							popolaCittadino(cittadino, cittadinoUpload);
 							inserisciCittadino(cittadino, idServizio);
-							cittadinoUpload.setEsitoUpload("UPLOAD - OK");
+							cittadinoUpload.setEsito("UPLOAD - OK");
 						}catch(NumberFormatException e){
-							cittadinoUpload.setEsitoUpload("UPLOAD - KO - ANNO DI NASCITA IN FORMATO NON VALIDO");
+							cittadinoUpload.setEsito("UPLOAD - KO - ANNO DI NASCITA IN FORMATO NON VALIDO");
 						}
 					}
 				}	
