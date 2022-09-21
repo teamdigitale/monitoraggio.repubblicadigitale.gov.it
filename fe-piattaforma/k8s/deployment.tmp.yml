@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: fe-piattaforma
-  replicas: 2
+  replicas: 3
   strategy:
     type: RollingUpdate
   template:
@@ -44,7 +44,7 @@ metadata:
   name: ingress-fe-${K8S_NAMESPACE}
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
-    external-dns.alpha.kubernetes.io/hostname: frontend.facilitazione-${K8S_NAMESPACE}.mitd.technology
+    external-dns.alpha.kubernetes.io/hostname: facilita.repubblicadigitale.gov.it
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
     alb.ingress.kubernetes.io/certificate-arn: ${K8S_INGRESS_CERTIFICATE}
