@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.40](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.39...1.0.0-test.40) (2022-09-21)
+
+
+### Bug Fixes
+
+* **b:** fix per get all enti ([d97e95d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d97e95dd4e2bea58baf8ab4a46d313ff110dd803))
+
 ## [1.0.0-test.39](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.38...1.0.0-test.39) (2022-09-20)
 
 
