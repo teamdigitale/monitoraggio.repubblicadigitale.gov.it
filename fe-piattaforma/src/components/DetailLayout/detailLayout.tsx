@@ -38,7 +38,7 @@ interface DetailLayoutI {
   };
   itemsList?: ItemsListI | null | undefined;
   showItemsList?: boolean;
-  buttonsPosition: 'TOP' | 'BOTTOM';
+  buttonsPosition?: 'TOP' | 'BOTTOM';
   showGoBack?: boolean;
   goBackTitle?: string;
   goBackPath?: string;
@@ -47,10 +47,11 @@ interface DetailLayoutI {
   surveyDefault?: ItemsListI | null | undefined;
   isRadioButtonItem?: boolean;
   onRadioChange?: (surveyDefault: string) => void;
-  isUserProfile?: boolean;
+  isUserProfile?: boolean | string | undefined;
   citizenList?: boolean;
   citizenDeleteChange?: boolean;
   enteIcon?: boolean;
+  profilePicture?: string | undefined;
 }
 const DetailLayout: React.FC<DetailLayoutI> = ({
   formButtons,
@@ -59,7 +60,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   nav,
   itemsList,
   showItemsList = true,
-  buttonsPosition,
+  buttonsPosition = 'BOTTOM',
   showGoBack = true,
   goBackTitle = 'Torna indietro',
   goBackPath,
@@ -72,6 +73,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   citizenList = false,
   citizenDeleteChange = false,
   enteIcon = false,
+  profilePicture,
 }) => {
   const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
@@ -100,6 +102,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
         <SectionTitle
           enteIcon={enteIcon}
           isUserProfile={isUserProfile}
+          profilePicture={profilePicture}
           {...titleInfo}
         />
         {nav && (
@@ -339,7 +342,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                   <ButtonsBar
                     citizenDeleteChange={citizenDeleteChange}
                     buttons={formButtons}
-                    isUserProfile={isUserProfile}
+                    isUserProfile={!!isUserProfile}
                   />
                 </div>
               )}

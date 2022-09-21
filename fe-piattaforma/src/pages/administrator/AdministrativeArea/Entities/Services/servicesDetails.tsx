@@ -38,6 +38,7 @@ import FormService from '../../../../forms/formServices/formService';
 import useGuard from '../../../../../hooks/guard';
 import clsx from 'clsx';
 import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
+import ConfirmSentSurveyModal from '../modals/confirmSentSurveyModal';
 
 const tabs = {
   INFO: 'info',
@@ -242,17 +243,43 @@ const ServicesDetails = () => {
       iconForButton: 'it-print',
       iconColor: 'primary',
       onClick: () =>
-        window.open(`/stampa-questionario/${idQuestionarioTemplate}`, '_blank'),
+        window.open(
+          `/area-amministrativa/servizi/${serviceId}/stampa-questionario/${idQuestionarioTemplate}`,
+          '_blank'
+        ),
     },
     {
       size: 'xs',
       color: 'primary',
       text: 'Invia questionario a tutti',
       onClick: async () => {
-        await dispatch(SendSurveyToAll(serviceId));
+        const res = await dispatch(SendSurveyToAll(serviceId));
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (res === 'error') {
+          dispatch(
+            openModal({
+              id: 'confirmSentSurveyModal',
+              payload: {
+                text: 'Questionari non inviati correttamente!',
+                error: true,
+              },
+            })
+          );
+        } else {
+          dispatch(
+            openModal({
+              id: 'confirmSentSurveyModal',
+              payload: {
+                text: 'Questionari inviati correttamente!',
+                error: false,
+              },
+            })
+          );
+        }
         dispatch(GetCitizenListServiceDetail(serviceId));
         dispatch(GetServicesDetailFilters(serviceId));
-      }, // TODO: richiama all cittadini
+      },
     },
   ];
 
@@ -319,6 +346,7 @@ const ServicesDetails = () => {
           onClose={() => dispatch(closeModal())}
           onConfirm={() => onConfirmDelete()}
         />
+        <ConfirmSentSurveyModal />
       </div>
     </div>
   );

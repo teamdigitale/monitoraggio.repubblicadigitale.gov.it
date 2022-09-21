@@ -56,7 +56,7 @@ const ManageGenericAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
     }
     authorityId && (await dispatch(GetAuthorityDetail(authorityId)));
     clearForm();
-    dispatch(resetAuthorityDetails());
+    // dispatch(resetAuthorityDetails());
     resetModal();
   };
 

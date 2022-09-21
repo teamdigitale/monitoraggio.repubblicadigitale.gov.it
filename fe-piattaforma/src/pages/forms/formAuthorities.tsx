@@ -382,7 +382,6 @@ const form = newForm([
   newFormField({
     field: 'profilo',
     id: 'profilo',
-    required: true,
     disabled: true,
   }),
   newFormField({

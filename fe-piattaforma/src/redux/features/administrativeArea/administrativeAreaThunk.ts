@@ -345,6 +345,7 @@ export const UploadFile =
         headers: {
           'Content-Type': 'multipart/form-data',
         },
+        timeout: 20000,
       });
 
       if (res?.data) {

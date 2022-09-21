@@ -49,8 +49,7 @@ const AvatarInitials: React.FC<AvatarInitialsI> = (props) => {
         'align-items-center',
         'justify-content-center',
         'font-weight-light',
-        `avatar-initials-container__circle-width${size}`,
-        'mr-2'
+        `avatar-initials-container__circle-width${size}`
       )}
     >
       {uName && uSurname ? (
