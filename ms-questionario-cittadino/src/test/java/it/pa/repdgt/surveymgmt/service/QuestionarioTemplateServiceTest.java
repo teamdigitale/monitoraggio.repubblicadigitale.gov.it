@@ -455,11 +455,15 @@ public class QuestionarioTemplateServiceTest {
 		//test passando RFD come parametro del metodo
 		when(this.questionarioTemplateSqlService.getQuestionarioTemplateById(questionarioTemplateCollection.getIdQuestionarioTemplate())).thenReturn(questionarioTemplateEntity);
 		when(this.questionarioTemplateSqlService.getQuestionarioTemplateDefaultRFD()).thenReturn(Optional.of(questionarioTemplateEntity));
+		when(this.questionarioTemplateRepository.findTemplateQuestionarioById(questionarioTemplateEntity.getId())).thenReturn(Optional.of(questionarioTemplateCollection));
+		when(this.questionarioTemplateRepository.save(questionarioTemplateCollection)).thenReturn(questionarioTemplateCollection);
 		questionarioTemplateService.aggiornaDefaultQuestionarioTemplate(questionarioTemplateEntity.getId(), "RFD");
 		
 		//test passando SCD come parametro del metodo
 		when(this.questionarioTemplateSqlService.getQuestionarioTemplateById(questionarioTemplateCollection.getIdQuestionarioTemplate())).thenReturn(questionarioTemplateEntity);
 		when(this.questionarioTemplateSqlService.getQuestionarioTemplateDefaultSCD()).thenReturn(Optional.of(questionarioTemplateEntity));
+		when(this.questionarioTemplateRepository.findTemplateQuestionarioById(questionarioTemplateEntity.getId())).thenReturn(Optional.of(questionarioTemplateCollection));
+		when(this.questionarioTemplateRepository.save(questionarioTemplateCollection)).thenReturn(questionarioTemplateCollection);
 		questionarioTemplateService.aggiornaDefaultQuestionarioTemplate(questionarioTemplateEntity.getId(), "SCD");
 	}
 	
