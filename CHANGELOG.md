@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.41](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.40...1.0.0-test.41) (2022-09-21)
+
+
+### Bug Fixes
+
+* **be:** fix test aggiorna default ([aefc3f4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/aefc3f464f104d64ee8bf15975324ae8c563e4a0))
+* **be:** questionario + servizio ([794218c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/794218c26834ffda19bd3cab5e11d29d2f252b2d))
+
 ## [1.0.0-test.40](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.39...1.0.0-test.40) (2022-09-21)
 
 
