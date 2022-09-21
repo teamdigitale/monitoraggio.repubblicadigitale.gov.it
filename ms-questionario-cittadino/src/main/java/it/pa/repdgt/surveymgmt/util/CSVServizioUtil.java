@@ -165,7 +165,11 @@ public class CSVServizioUtil {
             while (rowIterator.hasNext()) {
                 final Row row = rowIterator.next();
                 final CittadinoUploadBean cittadinoUpload = new CittadinoUploadBean();
-                
+                //nell'excel sono impostati dei drop down fino alla riga 100 che fanno leggere quei record anche se vuoti
+                //quindi quando trovo il primo record con la cella "CodiceFiscale" e "NumeroDocumento" 
+                //uguale a null significa che non devo piu leggere ed esco 
+                if(row.getCell(0) == null && row.getCell(4) == null)
+                	break;
                 for (int posCell=0; posCell<N_CELL; posCell++) {
                     final Cell cell = row.getCell(posCell);
                     switch(posCell) {
