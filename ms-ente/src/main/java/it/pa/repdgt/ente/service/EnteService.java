@@ -32,6 +32,7 @@ import it.pa.repdgt.ente.bean.SedeBean;
 import it.pa.repdgt.ente.dto.EnteDto;
 import it.pa.repdgt.ente.dto.ProgettoDto;
 import it.pa.repdgt.ente.dto.ProgrammaDto;
+import it.pa.repdgt.ente.entity.projection.AllEntiProjection;
 import it.pa.repdgt.ente.entity.projection.EnteProjection;
 import it.pa.repdgt.ente.entity.projection.UtenteProjection;
 import it.pa.repdgt.ente.exception.EnteException;
@@ -72,15 +73,10 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Validated
 public class EnteService {
-	private static final String ID_ENTE = "ID_ENTE";
-	private static final String NOME_ENTE = "NOME_ENTE";
-	private static final String PROFILO_ENTE = "PROFILO_ENTE";
-	private static final String TIPOLOGIA_ENTE = "TIPOLOGIA_ENTE";
 	private static final String ID_PROGRAMMA = "ID_PROGRAMMA";
 	private static final String NOME_PROGRAMMA = "NOME_PROGRAMMA";
 	private static final String ID_PROGETTO = "ID_PROGETTO";
 	private static final String NOME_PROGETTO = "NOME_PROGETTO";
-	private static final String IDP = "IDP";
 
 	@Autowired
 	private StoricoService storicoService;
@@ -192,7 +188,7 @@ public class EnteService {
 	@LogMethod
 	@LogExecutionTime
 	public List<EnteDto> getAllEntiByCodiceRuoloAndIdProgramma(EntiPaginatiParam entiPaginatiParam) {
-		List<Map<String, String>> resultSet;
+		List<AllEntiProjection> resultSet;
 		
 		switch (entiPaginatiParam.getCodiceRuoloUtenteLoggato()) {
 			case "DTD":
@@ -222,11 +218,11 @@ public class EnteService {
 			.stream()
 			.map(record -> {
 				EnteDto enteDto = new EnteDto();
-				enteDto.setId(String.valueOf(record.get(ID_ENTE)));
-				enteDto.setNome(record.get(NOME_ENTE));
-				enteDto.setTipologia(record.get(TIPOLOGIA_ENTE));
-				enteDto.setProfilo(record.get(PROFILO_ENTE));
-				enteDto.setIdP(record.get(IDP));
+				enteDto.setId(record.getIdEnte().toString());
+				enteDto.setNome(record.getNomeEnte());
+				enteDto.setTipologia(record.getTipologiaEnte());
+				enteDto.setProfilo(record.getProfiloEnte());
+				enteDto.setIdP(record.getIdp().toString());
 				return enteDto;
 		})
 		.collect(Collectors.toList());
@@ -336,7 +332,7 @@ public class EnteService {
 	
 	@LogMethod
 	@LogExecutionTime
-	public List<Map<String, String>> getAllEntiFiltrati(FiltroRequest filtro) {
+	public List<AllEntiProjection> getAllEntiFiltrati(FiltroRequest filtro) {
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsProgrammi = filtro.getIdsProgrammi();
 		List<String> idsProgetti =  filtro.getIdsProgetti();
@@ -385,7 +381,7 @@ public class EnteService {
 		return this.enteRepository.findAllProgettiFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsProgrammi, idsProgetti, profiliEnteUpperCase, policy);
 	}
 	
-	private List<Map<String, String>> getAllEntiPerDSCUFiltrati(FiltroRequest filtro) {
+	private List<AllEntiProjection> getAllEntiPerDSCUFiltrati(FiltroRequest filtro) {
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsProgrammi = filtro.getIdsProgrammi();
 		List<String> idsProgetti = filtro.getIdsProgetti();
@@ -436,7 +432,7 @@ public class EnteService {
 	
 	@LogMethod
 	@LogExecutionTime
-	private List<Map<String, String>> getAllEntiGestoreProgrammaByIdProgrammaFiltrati(Long idProgramma, FiltroRequest filtro) {
+	private List<AllEntiProjection> getAllEntiGestoreProgrammaByIdProgrammaFiltrati(Long idProgramma, FiltroRequest filtro) {
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsProgrammi = Arrays.asList(String.valueOf(idProgramma));
 		List<String> idsProgetti =  filtro.getIdsProgetti();
@@ -468,7 +464,7 @@ public class EnteService {
 		return this.enteRepository.findAllProgettiFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsProgrammi, idsProgetti, profiliEnteUpperCase, policy);
 	}
 	
-	private List<Map<String, String>> getAllEntiGestoreProgetto(EntiPaginatiParam entiPaginatiParam) {
+	private List<AllEntiProjection> getAllEntiGestoreProgetto(EntiPaginatiParam entiPaginatiParam) {
 		String criterioRicerca =  entiPaginatiParam.getFiltroRequest() != null? entiPaginatiParam.getFiltroRequest().getCriterioRicerca(): null;
 		List<String> idsProgrammi = Arrays.asList(String.valueOf(entiPaginatiParam.getIdProgramma()));
 		List<String> idsProgetti =  Arrays.asList(String.valueOf(entiPaginatiParam.getIdProgetto()));
@@ -500,7 +496,7 @@ public class EnteService {
 		return this.enteRepository.findAllProgettiFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsProgrammi, idsProgetti, profiliEnteUpperCase, policy);
 	}
 	
-	private List<Map<String, String>> getAllEntiPartnerProgetto(EntiPaginatiParam entiPaginatiParam) {
+	private List<AllEntiProjection> getAllEntiPartnerProgetto(EntiPaginatiParam entiPaginatiParam) {
 		String criterioRicerca =  entiPaginatiParam.getFiltroRequest() != null? entiPaginatiParam.getFiltroRequest().getCriterioRicerca(): null;
 		List<String> idsProgrammi = Arrays.asList(String.valueOf(entiPaginatiParam.getIdProgramma()));
 		List<String> idsProgetti =  Arrays.asList(String.valueOf(entiPaginatiParam.getIdProgetto()));
