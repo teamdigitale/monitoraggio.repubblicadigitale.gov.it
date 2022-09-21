@@ -257,7 +257,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
       dispatch(GetHeadquarterLightDetails(headquarterId));
     }
 
-    dispatch(closeModal());
+    // dispatch(closeModal());
   };
 
   let content = (
@@ -325,7 +325,10 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: () => handleSearchReset(),
+        onClick: () => {
+          handleSearchReset();
+          dispatch(closeModal());
+        },
       }}
       centerButtons
     >
@@ -341,7 +344,24 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
             )}
             placeholder='Inserisci il nome della sede che stai cercando'
             onSubmit={handleSearchHeadquarter}
-            onReset={handleSearchReset}
+            onReset={() => {
+              setAddressList([
+                {
+                  indirizzoSede: {
+                    via: '',
+                    civico: '',
+                    comune: '',
+                    provincia: '',
+                    cap: '',
+                    regione: '',
+                    nazione: '',
+                  },
+                  fasceOrarieAperturaIndirizzoSede: {},
+                },
+              ]);
+              setMovingHeadquarter(false);
+              dispatch(resetHeadquarterDetails());
+            }}
             title='Cerca'
             search
           />

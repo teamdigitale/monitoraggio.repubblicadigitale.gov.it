@@ -21,14 +21,7 @@ import { getSessionValues } from '../../../utils/sessionHelper';
 import { GetUserDetails } from '../../../redux/features/administrativeArea/user/userThunk';
 import { selectUsers } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 
-interface UserProfileI {
-  isUserProfile?: boolean;
-  activeRole?: boolean;
-}
-
-const UserProfile: React.FC<UserProfileI> = ({
-  isUserProfile = true /* activeRole= true */,
-}) => {
+const UserProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { hasUserPermission } = useGuard();
@@ -52,6 +45,7 @@ const UserProfile: React.FC<UserProfileI> = ({
 
   useEffect(() => {
     if (user?.id) dispatch(GetUserDetails(user?.id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
 
   const correctButtons: ButtonInButtonsBar[] = hasUserPermission([
@@ -86,9 +80,10 @@ const UserProfile: React.FC<UserProfileI> = ({
           headingRole: false,
         }}
         showGoBack={false}
-        isUserProfile={isUserProfile}
+        isUserProfile={user?.id}
         buttonsPosition='BOTTOM'
         formButtons={correctButtons}
+        profilePicture={user?.immagineProfilo}
       >
         <FormOnboarding isProfile formDisabled />
       </DetailLayout>

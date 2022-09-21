@@ -122,7 +122,6 @@ const UploadCSVModal: React.FC<UploadCSVModalI> = (props) => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             if (res) {
-              console.log('upload response', res);
               setEsito({
                 ...esito,
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

@@ -157,7 +157,7 @@ export const EditUser =
 
 const UploadUserPicAction = { type: 'user/UploadUserPic' };
 export const UploadUserPic =
-  (multipartifile: any) => async (dispatch: Dispatch) => {
+  (multipartifile: any, userId?: string) => async (dispatch: Dispatch) => {
     try {
       dispatch({ ...UploadUserPicAction }); // TODO manage dispatch for dev env only
       dispatch(showLoader());
@@ -167,7 +167,7 @@ export const UploadUserPic =
       formData.append('multipartifile', multipartifile, 'test.jpg');
       console.log('formData', formData);
       const res = await API.post(
-        `/utente/upload/immagineProfilo/${idUtente}`,
+        `/utente/upload/immagineProfilo/${userId || idUtente}`,
         //{ idUtente, multipartifile },
         formData,
         {
