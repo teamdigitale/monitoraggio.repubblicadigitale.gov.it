@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,6 +25,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
 import it.pa.repdgt.ente.dto.EnteDto;
+import it.pa.repdgt.ente.entity.projection.AllEntiProjection;
 import it.pa.repdgt.ente.exception.EnteException;
 import it.pa.repdgt.ente.exception.ResourceNotFoundException;
 import it.pa.repdgt.ente.repository.EntePartnerRepository;
@@ -64,6 +64,8 @@ import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.StoricoEnteException;
 import it.pa.repdgt.shared.repository.storico.StoricoEnteGestoreProgettoRepository;
 import it.pa.repdgt.shared.service.storico.StoricoService;
+import lombok.Getter;
+import lombok.Setter;
 
 @ExtendWith(MockitoExtension.class)
 public class EnteServiceTest {
@@ -159,7 +161,7 @@ public class EnteServiceTest {
 	List<String> idsProgetti;
 	List<String> profili;
 	Map<String, String> mappa;
-	List<Map<String, String>> resultSet;
+	List<AllEntiProjection> resultSet;
 	List<EnteDto> entiDto;
 	Integer currPage;
 	Integer pageSize;
@@ -289,13 +291,14 @@ public class EnteServiceTest {
 		entiPaginatiParam.setFiltroRequest(filtro);
 		currPage = 0;
 		pageSize = 10;
-		mappa = new HashMap<String, String>();
-		mappa.put("ID_ENTE", String.valueOf(ente1.getId())); 
-		mappa.put("NOME_ENTE", "provaNome");
-		mappa.put("TIPOLOGIA_ENTE", "provaTipologia");
-		mappa.put("PROFILO_ENTE", "provaProfilo");
-		resultSet = new ArrayList<>();
-		resultSet.add(mappa);
+		resultSet = new ArrayList<AllEntiProjection>();
+		AllEntiProjImplementation ente = new AllEntiProjImplementation();
+		ente.setIdEnte(ente1.getId());
+		ente.setIdp(ente1.getId());
+		ente.setNomeEnte("provaNome");
+		ente.setTipologiaEnte("provaTipologia");
+		ente.setProfiloEnte("provaProfilo");
+		resultSet.add(ente);
 	}
 	
 	@Test
@@ -1284,5 +1287,15 @@ public class EnteServiceTest {
 		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
 		Assertions.assertThrows(EnteException.class, () -> enteService.modificaEnteGestoreProgetto(enteModificato, ente1.getId(), progetto1.getId()));
 		assertThatExceptionOfType(EnteException.class);
+	}
+	
+	@Setter
+	@Getter
+	class AllEntiProjImplementation implements AllEntiProjection{
+		private Long idEnte;
+		private String nomeEnte;
+		private String tipologiaEnte;
+		private String profiloEnte;
+		private Long idp;
 	}
 }

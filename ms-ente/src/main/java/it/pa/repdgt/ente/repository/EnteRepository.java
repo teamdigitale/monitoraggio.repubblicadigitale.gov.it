@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import it.pa.repdgt.ente.entity.projection.AllEntiProjection;
 import it.pa.repdgt.ente.entity.projection.EnteProjection;
 import it.pa.repdgt.shared.entity.EnteEntity;
 
@@ -27,11 +28,11 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 
 	@Query(value = ""
 				+" SELECT "
-				+"    enti.ID_ENTE "
-				+"   ,enti.NOME_ENTE "
-				+"	 ,enti.TIPOLOGIA_ENTE "
-				+"	 ,enti.PROFILO_ENTE "
-				+ "  ,enti.IDP"
+				+"    enti.ID_ENTE as idEnte"
+				+"   ,enti.NOME_ENTE as nomeEnte"
+				+"	 ,enti.TIPOLOGIA_ENTE as tipologiaEnte"
+				+"	 ,enti.PROFILO_ENTE as profiloEnte"
+				+ "  ,enti.IDP as idp"
 				+" FROM ( "
 				+" 		SELECT DISTINCT "
 				+"		   e.PARTITA_IVA "
@@ -40,7 +41,7 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 				+" 		  ,e.TIPOLOGIA as TIPOLOGIA_ENTE"
 				+" 		  ,'ENTE GESTORE DI PROGRAMMA' AS PROFILO_ENTE "
 				+" 		  ,prgm.POLICY "
-				+ "       ,CAST(prgm.id as VARCHAR) as IDP"		
+				+ "       ,prgm.id as IDP"		
 				+" 	 	FROM "
 				+" 			ente e "
 				+" 			INNER JOIN programma prgm "
@@ -60,7 +61,7 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 				+" 		  ,e.TIPOLOGIA as TIPOLOGIA_ENTE"
 				+" 		  ,'ENTE GESTORE DI PROGETTO' AS PROFILO_ENTE "
 				+" 		  ,prgm.POLICY "
-				+ "		  ,CAST(prgt.id as VARCHAR) as IDP"
+				+ "		  ,prgt.id as IDP"
 				+" 		FROM "
 				+" 			ente e "
 				+" 			INNER JOIN progetto prgt "
@@ -80,7 +81,7 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 				+" 		  ,e.TIPOLOGIA as TIPOLOGIA_ENTE"
 				+" 		  ,'ENTE PARTNER' AS PROFILO_ENTE "
 				+" 		  ,prgm.POLICY "
-				+ "       ,CAST(prgt.id as VARCHAR) as IDP"
+				+ "       ,prgt.id as IDP"
 				+" 		FROM "
 				+" 			ente_partner ep "
 				+" 			INNER JOIN ente e "
@@ -103,7 +104,7 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 				+" 		AND  ( COALESCE(:profiliEnte) IS NULL  OR enti.PROFILO_ENTE IN (:profiliEnte) ) "
 				+" ORDER BY enti.NOME_ENTE",
 			nativeQuery = true)
-	public List<Map<String, String>> findAllEntiFiltrati(
+	public List<AllEntiProjection> findAllEntiFiltrati(
 		@Param("criterioRicerca") String criterioRicerca,
 		@Param("criterioRicercaLike") String criterioRicercaLike, 
 		@Param("idsProgrammi") List<String> idsProgrammi,
