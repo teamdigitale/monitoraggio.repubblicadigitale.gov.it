@@ -268,6 +268,12 @@ public class QuestionarioTemplateService {
 		return this.questionarioTemplateRepository.findTemplateQuestionarioById(idQuestionarioTemplate)
 				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
 	}
+	
+	@LogMethod
+	@LogExecutionTime
+	public QuestionarioTemplateCollection saveQuestionarioTemplate(QuestionarioTemplateCollection questionarioDaSalvare) {
+		return this.questionarioTemplateRepository.save(questionarioDaSalvare);
+	}
 
 	@LogMethod
 	@LogExecutionTime
@@ -434,9 +440,11 @@ public class QuestionarioTemplateService {
 		if(PolicyEnum.RFD.toString().equalsIgnoreCase(tipoDefault)) {
 			questionarioDaAggiornare = this.questionarioTemplateSqlService.getQuestionarioTemplateDefaultRFD();
 			if(questionarioDaAggiornare.isPresent()) {
+				updateDefaultQuestionarioCollection(questionarioDaAggiornare.get().getId(), PolicyEnum.RFD.toString(), false);
 				questionarioDaAggiornare.get().setDefaultRFD(false);
 				this.questionarioTemplateSqlService.salvaQuestionario(questionarioDaAggiornare.get());
 			}
+			updateDefaultQuestionarioCollection(questionarioTemplate.getId(), PolicyEnum.RFD.toString(), true);
 			questionarioTemplate.setDefaultRFD(true);
 			this.questionarioTemplateSqlService.salvaQuestionario(questionarioTemplate);
 		}
@@ -444,11 +452,26 @@ public class QuestionarioTemplateService {
 		if(PolicyEnum.SCD.toString().equalsIgnoreCase(tipoDefault)) {
 			questionarioDaAggiornare = this.questionarioTemplateSqlService.getQuestionarioTemplateDefaultSCD();
 			if(questionarioDaAggiornare.isPresent()) {
+				updateDefaultQuestionarioCollection(questionarioDaAggiornare.get().getId(), PolicyEnum.SCD.toString(), false);
 				questionarioDaAggiornare.get().setDefaultSCD(false);
 				this.questionarioTemplateSqlService.salvaQuestionario(questionarioDaAggiornare.get());
 			}
+			updateDefaultQuestionarioCollection(questionarioTemplate.getId(), PolicyEnum.SCD.toString(), true);
 			questionarioTemplate.setDefaultSCD(true);
 			this.questionarioTemplateSqlService.salvaQuestionario(questionarioTemplate);
+		}
+	}
+	
+	private void updateDefaultQuestionarioCollection(String idQuestionrioTempl, String tipoDefault, Boolean flag) {
+		if(PolicyEnum.RFD.toString().equalsIgnoreCase(tipoDefault)) {
+			final QuestionarioTemplateCollection questionarioTemplDaAggiornare = this.getQuestionarioTemplateById(idQuestionrioTempl);
+			questionarioTemplDaAggiornare.setDefaultRFD(flag);
+			this.saveQuestionarioTemplate(questionarioTemplDaAggiornare);
+		}
+		if(PolicyEnum.SCD.toString().equalsIgnoreCase(tipoDefault)) {
+			final QuestionarioTemplateCollection questionarioTemplDaAggiornare = this.getQuestionarioTemplateById(idQuestionrioTempl);
+			questionarioTemplDaAggiornare.setDefaultSCD(flag);
+			this.saveQuestionarioTemplate(questionarioTemplDaAggiornare);
 		}
 	}
 
