@@ -159,7 +159,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
   return (
     <div className={clsx(className, 'search-bar-custom')}>
       {!device.mediaIsPhone && search ? (
-        <h1 className='h4 primary-color mb-3'> {title} </h1>
+        <h1 className='search-bar-title primary-color mb-3'> {title} </h1>
       ) : null}
       <div className={clsx('d-inline-flex', 'w-100', 'mb-1')}>
         {autocomplete ? (

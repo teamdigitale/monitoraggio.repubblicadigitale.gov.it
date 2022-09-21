@@ -492,7 +492,11 @@ const AuthoritiesDetails = () => {
                     ))
                   ) : (
                     <EmptySection
-                      title={`Non sono presenti ${item.title?.toLowerCase()} associati.`}
+                      title={`Non sono presenti ${item.title?.toLowerCase()} ${
+                        item.title?.toLowerCase() === 'sedi'
+                          ? `associate.`
+                          : `associati.`
+                      }`}
                       horizontal
                       aside
                     />

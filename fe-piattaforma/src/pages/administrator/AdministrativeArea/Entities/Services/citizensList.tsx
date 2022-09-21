@@ -98,6 +98,7 @@ const CitizensList: React.FC = () => {
   useEffect(() => {
     dispatch(resetCompilingSurveyForm());
   }, []);
+  const [alreadySearched, setAlreadySearched] = useState(false);
 
   const getServiceDetailsCitizens = () => {
     dispatch(GetCitizenListServiceDetail(serviceId));
@@ -115,6 +116,7 @@ const CitizensList: React.FC = () => {
 
   const handleOnSearch = (searchValue: string) => {
     dispatch(setEntityFilters({ criterioRicerca: searchValue }));
+    setAlreadySearched(true);
   };
 
   const searchInformation: SearchInformationI = {
@@ -292,7 +294,8 @@ const CitizensList: React.FC = () => {
 
   return (
     <div>
-      {citizens?.cittadini?.length > 0 ? (
+      {citizens?.cittadini?.length > 0 ||
+      (citizens?.cittadini?.length === 0 && alreadySearched) ? (
         <GenericSearchFilterTableLayout
           searchInformation={searchInformation}
           dropdowns={dropdowns}
@@ -320,6 +323,9 @@ const CitizensList: React.FC = () => {
               idQuestionario={citizen?.idQuestionario || ''}
             />
           ))}
+          {citizens?.cittadini?.length === 0 && alreadySearched && (
+            <EmptySection title='Non sono presenti cittadini' />
+          )}
         </GenericSearchFilterTableLayout>
       ) : (
         <EmptySection

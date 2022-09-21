@@ -63,7 +63,7 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
             <div
               className={clsx(
                 'card-profile-container__icon',
-                'mr-2',
+                'mr-1',
                 !activeProfile && 'card-profile-container__opacity'
               )}
             >
@@ -80,7 +80,7 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
               />
             </div>
           ) : (
-            <div className='pl-5 ml-1' />
+            <div className='pl-5' />
           )}
           <div>
             <CardTitle className='mb-1 primary-color-a12'>

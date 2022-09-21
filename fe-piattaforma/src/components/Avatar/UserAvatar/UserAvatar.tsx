@@ -37,20 +37,20 @@ const UserAvatar: React.FC<UserAvatarI> = (props) => {
         'justify-content-center',
         'font-weight-light',
         `avatar-user-container__circle-width${size}`,
-        'mr-2'
+        'mr-2',
+        avatarImage && 'border border-primary'
       )}
+      style={{
+        width: device.mediaIsDesktop ? '35px' : '53px',
+        height: device.mediaIsDesktop ? '35px' : '53px',
+      }}
     >
       {avatarImage ? (
         <img
           src={avatarImage}
           alt='avatar'
           className='avatar-user-container__avatar-image'
-          style={{
-            maxWidth: '35px',
-            maxHeight: '35px',
-            minHeight: '35px',
-            borderRadius: '50%',
-          }}
+          style={{ borderRadius: '50%', width: '100%', height: '100%' }}
         />
       ) : (
         <AvatarInitials

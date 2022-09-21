@@ -22,6 +22,7 @@ export interface UserStateI {
         integrazione: boolean;
         mostraBio: boolean;
         mostraTipoContratto: boolean;
+        immagineProfilo?: string;
       }
     | Record<string, never>;
   notification?: [];
