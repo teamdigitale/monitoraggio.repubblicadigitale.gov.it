@@ -116,7 +116,7 @@ const Header: React.FC<HeaderProp> = (props) => {
     dispatch,
     isHeaderFull,
     menuRoutes,
-    profilePicture: '',
+    profilePicture: user?.immagineProfilo,
   };
 
   return (

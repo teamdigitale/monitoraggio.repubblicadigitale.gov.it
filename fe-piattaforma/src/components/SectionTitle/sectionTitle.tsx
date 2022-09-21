@@ -24,7 +24,7 @@ interface SectionTitleI {
   iconAvatar?: boolean;
   name?: string | undefined;
   surname?: string | undefined;
-  isUserProfile?: boolean;
+  isUserProfile?: boolean | string | undefined;
   enteIcon?: boolean;
   profilePicture?: string | undefined;
 }
@@ -53,24 +53,27 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
     }
   };
 
-  const updateImage = () => {
-    const input: HTMLInputElement = document.getElementById(
-      'profile_pic'
-    ) as HTMLInputElement;
+  const updateImage = async () => {
+    if (isUserProfile) {
+      const input: HTMLInputElement = document.getElementById(
+        'profile_pic'
+      ) as HTMLInputElement;
 
-    if (input.files?.length) {
-      const selectedImage = input.files[0];
-      dispatch(UploadUserPic(selectedImage));
-
-      /*
-      const reader = new FileReader();
-      //reader.readAsBinaryString(selectedImage);
-      reader.readAsDataURL(selectedImage);
-      reader.onloadend = () => {
-        console.log(reader);
-        //return reader.result;
-        dispatch(UploadUserPic(reader.result));
-      };*/
+      if (input.files?.length) {
+        const selectedImage = input.files[0];
+        await dispatch(UploadUserPic(selectedImage));
+        // TODO reload is temporary
+        window.location.reload();
+        /*
+        const reader = new FileReader();
+        //reader.readAsBinaryString(selectedImage);
+        reader.readAsDataURL(selectedImage);
+        reader.onloadend = () => {
+          console.log(reader);
+          //return reader.result;
+          dispatch(UploadUserPic(reader.result));
+        };*/
+      }
     }
   };
 

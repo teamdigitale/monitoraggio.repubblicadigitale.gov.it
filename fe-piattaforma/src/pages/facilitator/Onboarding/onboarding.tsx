@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
-import {Navigate, useNavigate} from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../../redux/hooks';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import Profile from '/public/assets/img/change-profile.png';
@@ -25,10 +25,11 @@ import {
   CreateUserContext,
   EditUser,
   SelectUserRole,
+  UploadUserPic,
 } from '../../../redux/features/user/userThunk';
 import { openModal } from '../../../redux/features/modal/modalSlice';
 import FormOnboarding from './formOnboarding';
-import {defaultRedirectUrl} from "../../../routes";
+import { defaultRedirectUrl } from '../../../routes';
 
 interface ProfilePicI {
   image?: boolean;
@@ -41,7 +42,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
   const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
   const user = useAppSelector(selectUser);
-  const [image, setImage] = useState<string>(Profile);
+  const [image, setImage] = useState<string>(user?.immagineProfilo || Profile);
   const inputRef = useRef<HTMLInputElement>(null);
   const {
     form,
@@ -66,13 +67,15 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
     }
   };
 
-  const updateImage = () => {
+  const updateImage = async () => {
     const input: HTMLInputElement = document.getElementById(
       'profile_pic'
     ) as HTMLInputElement;
 
     if (input.files?.length) {
       const selectedImage = input.files[0];
+      await dispatch(UploadUserPic(selectedImage, user?.id));
+
       const reader = new FileReader();
       reader.readAsDataURL(selectedImage);
       reader.onloadend = () => {
