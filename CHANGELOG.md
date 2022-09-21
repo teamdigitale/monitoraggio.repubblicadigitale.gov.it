@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.142](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.141...1.0.0-develop.142) (2022-09-21)
+
+
+### Bug Fixes
+
+* **be:** allineamento esito upload ([c245ec5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c245ec55654c0536bfb5aa192fbb0138c9d9f44b))
+
 ## [1.0.0-develop.141](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.140...1.0.0-develop.141) (2022-09-21)
 
 
