@@ -281,34 +281,47 @@ public class QuestionarioTemplateService {
 	public QuestionarioTemplateCollection aggiornaQuestionarioTemplate(
 			@NotNull(message = "id questionario template deve essere non null") String idQuestionarioTemplate,
 			@NotNull @Valid final QuestionarioTemplateCollection questionarioTemplateDaAggiornare) {
-		QuestionarioTemplateCollection questionarioTemplateFetchDB = null;
+		QuestionarioTemplateCollection questionarioTemplateCollectionFetchDB = null;
 
 		// Verifico se esiste questionarioTemplate da aggiornare
 		try {
-			questionarioTemplateFetchDB = this.getQuestionarioTemplateById(idQuestionarioTemplate);
+			questionarioTemplateCollectionFetchDB = this.getQuestionarioTemplateById(idQuestionarioTemplate);
 		} catch (ResourceNotFoundException ex) {
 			final String messaggioErrore = String.format("Impossibile aggiornare il questionario. Questionario con id='%s' non esiste.", idQuestionarioTemplate);
 			throw new QuestionarioTemplateException(messaggioErrore, ex, CodiceErroreEnum.QT02);
 		}
 		
+		QuestionarioTemplateEntity questionarioTemplateEntity = null;
+
+		// Verifico se esiste questionarioTemplate da aggiornare
+		try {
+			questionarioTemplateEntity = this.questionarioTemplateSqlService.getQuestionarioTemplateById(idQuestionarioTemplate);
+		} catch (ResourceNotFoundException ex) {
+			final String messaggioErrore = String.format("Impossibile recuperare il questionario template con id='%s' poichè inesistente su MySql", idQuestionarioTemplate);
+			throw new QuestionarioTemplateException(messaggioErrore, ex, CodiceErroreEnum.QT05);
+		}
+		
 		// Verifico se è possibile aggiornare il questionario template in base al ciclo di vita
-		final String statoQuestionario = questionarioTemplateFetchDB.getStato();
+		final String statoQuestionario = questionarioTemplateCollectionFetchDB.getStato();
 		if(!this.isQuestionarioTemplateModificabileByStato(statoQuestionario)) {
 			final String messaggioErrore = String.format("Impossibile aggiornare il questionario con id '%s'. Stato questionario = '%s'.",
 					idQuestionarioTemplate, statoQuestionario);
 			throw new QuestionarioTemplateException(messaggioErrore, CodiceErroreEnum.QT02);
 		}
 		
-		questionarioTemplateFetchDB.setNomeQuestionarioTemplate(questionarioTemplateDaAggiornare.getNomeQuestionarioTemplate());
-		questionarioTemplateFetchDB.setDescrizioneQuestionarioTemplate(questionarioTemplateDaAggiornare.getDescrizioneQuestionarioTemplate());
-		questionarioTemplateFetchDB.setSezioniQuestionarioTemplate(questionarioTemplateDaAggiornare.getSezioniQuestionarioTemplate());
-		questionarioTemplateFetchDB.setDataOraUltimoAggiornamento(new Date());
+		questionarioTemplateCollectionFetchDB.setNomeQuestionarioTemplate(questionarioTemplateDaAggiornare.getNomeQuestionarioTemplate());
+		questionarioTemplateCollectionFetchDB.setDescrizioneQuestionarioTemplate(questionarioTemplateDaAggiornare.getDescrizioneQuestionarioTemplate());
+		questionarioTemplateCollectionFetchDB.setSezioniQuestionarioTemplate(questionarioTemplateDaAggiornare.getSezioniQuestionarioTemplate());
+		questionarioTemplateCollectionFetchDB.setDataOraUltimoAggiornamento(new Date());
 
 		// Allineamento questionario template su mysql
-		final QuestionarioTemplateEntity questionarioTemplateEntity = this.questionarioTemplateMapper.toEntityFrom(questionarioTemplateFetchDB);
+		questionarioTemplateEntity.setNome(questionarioTemplateCollectionFetchDB.getNomeQuestionarioTemplate());
+		questionarioTemplateEntity.setDescrizione(questionarioTemplateCollectionFetchDB.getDescrizioneQuestionarioTemplate());
+		questionarioTemplateEntity.setDataOraAggiornamento(new Date());
+
 		this.questionarioTemplateSqlService.aggiornaQuestionarioTemplate(questionarioTemplateEntity);
 
-		return this.questionarioTemplateRepository.save(questionarioTemplateFetchDB);
+		return this.questionarioTemplateRepository.save(questionarioTemplateCollectionFetchDB);
 	}
 
 	@LogMethod
