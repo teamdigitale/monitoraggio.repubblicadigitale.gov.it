@@ -34,6 +34,12 @@ public class RuoloXGruppoService {
 	
 	@LogMethod
 	@LogExecutionTime
+	public List<String> getCodiceRuoliByCodiceGruppo(String codiceGruppo) {
+		return this.ruoloXGruppoRepository.findByCodiceGruppo(codiceGruppo);
+	}
+	
+	@LogMethod
+	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void salvaNuovaAssociazioneInRuoloXGruppo(String codiceRuolo, String codiceGruppo) {
 		RuoloXGruppoKey id = new RuoloXGruppoKey(codiceRuolo, codiceGruppo);
@@ -69,6 +75,7 @@ public class RuoloXGruppoService {
 			this.salvaAssociazioniInRuoloXGruppo(codiceRuolo, codiciGruppi);
 		}
 	}
+	
 
 	@LogMethod
 	@LogExecutionTime
