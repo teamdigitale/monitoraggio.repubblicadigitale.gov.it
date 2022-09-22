@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.144](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.143...1.0.0-develop.144) (2022-09-22)
+
+
+### Bug Fixes
+
+* REWRITE command ([ed65300](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ed6530038521fc02b70fe19e08c7e093d3e48078))
+* **be:** fix aggiornamento questionario template ([95196ca](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/95196caa6ea0d74210c1f780cda3f3c54e1de3fa))
+
 ## [1.0.0-develop.143](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.142...1.0.0-develop.143) (2022-09-22)
 
 
