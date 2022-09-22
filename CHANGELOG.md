@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.47](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.46...1.0.0-test.47) (2022-09-22)
+
+
+### Bug Fixes
+
+* **be:** fix query cittadinoServizioRepository ([e8b72b0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e8b72b036bf5959571bc6ad88969d6525abab8be))
+
 ## [1.0.0-test.46](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.45...1.0.0-test.46) (2022-09-22)
 
 
