@@ -391,7 +391,7 @@ public class QuestionarioTemplateServiceTest {
 	@Test
 	public void aggiornaQuestionarioTemplateTest() {
 		when(this.questionarioTemplateRepository.findTemplateQuestionarioById(questionarioTemplateCollection.getIdQuestionarioTemplate())).thenReturn(Optional.of(questionarioTemplateCollection));
-		when(this.questionarioTemplateMapper.toEntityFrom(questionarioTemplateCollection)).thenReturn(questionarioTemplateEntity);
+		when(this.questionarioTemplateSqlService.getQuestionarioTemplateById(questionarioTemplateCollection.getIdQuestionarioTemplate())).thenReturn(questionarioTemplateEntity);
 		questionarioTemplateService.aggiornaQuestionarioTemplate(questionarioTemplateCollection.getIdQuestionarioTemplate(), questionarioTemplateCollection);
 	}
 	
