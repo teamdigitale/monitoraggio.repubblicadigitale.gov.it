@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.44](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.43...1.0.0-test.44) (2022-09-22)
+
+
+### Bug Fixes
+
+* **be:** fix aggiornamento questionario template ([9cf2f72](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9cf2f72f4690069ddef8070bb42ae977a31b6081))
+
 ## [1.0.0-test.43](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.42...1.0.0-test.43) (2022-09-21)
 
 
