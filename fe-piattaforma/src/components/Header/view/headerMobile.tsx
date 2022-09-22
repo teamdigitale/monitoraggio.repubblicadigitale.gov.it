@@ -71,6 +71,9 @@ const HeaderMobile: React.FC<HeaderI> = ({
               }`}</em>
             </p>
           </div>
+          <div className='ml-2'>
+            <Icon size='' color='white' icon='it-expand' />
+          </div>
         </div>
       </DropdownToggle>
       <DropdownMenu role='menu' tag='ul'>
