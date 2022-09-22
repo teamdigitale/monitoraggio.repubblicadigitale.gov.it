@@ -34,6 +34,7 @@ import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
+import it.pa.repdgt.shared.util.Utils;
 import it.pa.repdgt.surveymgmt.bean.CittadinoServizioBean;
 import it.pa.repdgt.surveymgmt.bean.CittadinoUploadBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
@@ -255,8 +256,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 			cittadino.setCodiceFiscale(nuovoCittadinoRequest.getCodiceFiscale());
 			cittadino.setTipoDocumento(nuovoCittadinoRequest.getTipoDocumento());
 			cittadino.setNumeroDocumento(nuovoCittadinoRequest.getNumeroDocumento());
-			cittadino.setCognome(nuovoCittadinoRequest.getCognome());
-			cittadino.setNome(nuovoCittadinoRequest.getNome());
+			cittadino.setCognome(nuovoCittadinoRequest.getCognome().toUpperCase());
+			cittadino.setNome(Utils.toCamelCase(nuovoCittadinoRequest.getNome()));
 			cittadino.setEmail(nuovoCittadinoRequest.getEmail());
 			cittadino.setDataOraCreazione(new Date());
 			cittadino.setDataOraAggiornamento(new Date());
@@ -537,8 +538,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		cittadino.setTipoDocumento(cittadinoUpload.getTipoDocumento());
 		cittadino.setNumeroDocumento(cittadinoUpload.getNumeroDocumento());
 		
-		cittadino.setCognome(cittadinoUpload.getCognome());
-		cittadino.setNome(cittadinoUpload.getNome());
+		cittadino.setCognome(cittadinoUpload.getCognome().toUpperCase());
+		cittadino.setNome(Utils.toCamelCase(cittadinoUpload.getNome()));
 		cittadino.setEmail(cittadinoUpload.getEmail());
 		cittadino.setDataOraCreazione(new Date());
 		cittadino.setDataOraAggiornamento(new Date());

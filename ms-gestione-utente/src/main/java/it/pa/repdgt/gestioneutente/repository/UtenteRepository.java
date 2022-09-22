@@ -56,6 +56,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
                  + "               			OR CONVERT( utente.ID, CHAR ) = :criterioRicerca "
                  + "              			OR UPPER( utente.NOME ) LIKE UPPER( :criterioRicercaLike ) "
                  + "              			OR UPPER( utente.COGNOME ) LIKE UPPER( :criterioRicercaLike ) "
+                 + "                        concat(UPPER( utente.COGNOME ), ' ' , UPPER( utente.NOME ))  = UPPER(:criterioRicerca) "
                  + "              			OR UPPER( utente.CODICE_FISCALE ) LIKE UPPER( :criterioRicercaLike ) ) "
 				 + "                    AND ( "
 				 + "						 SELECT distinct u2.id "
