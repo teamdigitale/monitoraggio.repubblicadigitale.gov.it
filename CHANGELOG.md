@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.48](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.47...1.0.0-test.48) (2022-09-22)
+
+
+### Bug Fixes
+
+* **be:** fix query utenteRepository ([af97ca9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/af97ca93246d23dc475cc7123aed906cfd9ec854))
+
 ## [1.0.0-test.47](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.46...1.0.0-test.47) (2022-09-22)
 
 
