@@ -98,7 +98,7 @@ const GetCitizenListServiceDetailAction = {
   type: 'administrativeArea/GetCitizenListServiceDetail',
 };
 export const GetCitizenListServiceDetail =
-  (idServizio: string | undefined) =>
+  (idServizio: string | undefined, pagination?: boolean) =>
   async (dispatch: Dispatch, select: Selector) => {
     try {
       dispatch(showLoader());
@@ -116,7 +116,10 @@ export const GetCitizenListServiceDetail =
         idProgetto,
         idProgramma,
       };
-      const queryParamFilters = transformFiltersToQueryParams(filters);
+      let queryParamFilters = transformFiltersToQueryParams(filters);
+      if(pagination){
+        queryParamFilters = queryParamFilters === '' ? '?currPage=0&pageSize=1000': queryParamFilters + '&currPage=0&pageSize=1000';
+      }
       const res = await API.post(
         `/servizio/cittadino/all/${idServizio}${queryParamFilters}`,
         body

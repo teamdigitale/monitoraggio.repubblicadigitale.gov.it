@@ -341,7 +341,7 @@ const ServicesDetails = () => {
           <div className='mx-auto'>{content}</div>
         </DetailLayout>
         <ManageServices />
-        <SearchCitizenModal onConfirmText='Aggiungi' />
+        <SearchCitizenModal />
         <DeleteEntityModal
           onClose={() => dispatch(closeModal())}
           onConfirm={() => onConfirmDelete()}

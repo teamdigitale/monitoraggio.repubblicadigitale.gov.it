@@ -282,8 +282,8 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
 
       <AccordionAddressList
         addressList={addressList}
-        onSetAddressList={(addressList: AddressInfoI[]) =>
-          setAddressList([...addressList])
+        onSetAddressList={(newAddressList: AddressInfoI[]) =>
+          setAddressList([...newAddressList])
         }
         movingHeadquarter={movingHeadquarter}
         detailAccordion
@@ -345,6 +345,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
             placeholder='Inserisci il nome della sede che stai cercando'
             onSubmit={handleSearchHeadquarter}
             onReset={() => {
+              dispatch(resetHeadquarterDetails());
               setAddressList([
                 {
                   indirizzoSede: {
@@ -360,7 +361,6 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
                 },
               ]);
               setMovingHeadquarter(false);
-              dispatch(resetHeadquarterDetails());
             }}
             title='Cerca'
             search

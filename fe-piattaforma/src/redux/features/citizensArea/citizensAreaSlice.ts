@@ -26,6 +26,7 @@ export interface CittadinoInfoI {
   message?: string;
   numeroQuestionariCompilati?: string;
   numeroServizi?: string;
+  numeroDocumento?: string;
 }
 
 export interface ServizioCittadinoI {

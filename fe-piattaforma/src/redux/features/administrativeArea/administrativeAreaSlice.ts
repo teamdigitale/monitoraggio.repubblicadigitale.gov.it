@@ -414,7 +414,8 @@ export const administrativeAreaSlice = createSlice({
     },
     deleteFiltroCriterioRicerca: (state) => {
       const newFilters = { ...state.filters };
-      delete newFilters.filtroCriterioRicerca;
+      if(newFilters?.filtroCriterioRicerca) delete newFilters?.filtroCriterioRicerca;
+      if(newFilters?.criterioRicerca) delete newFilters?.criterioRicerca;
       state.filters = { ...newFilters };
     },
     setServiceQuestionarioTemplateIstanze: (

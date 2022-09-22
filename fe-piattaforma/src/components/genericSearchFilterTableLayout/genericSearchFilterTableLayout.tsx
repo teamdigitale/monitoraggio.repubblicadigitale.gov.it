@@ -129,7 +129,7 @@ const GenericSearchFilterTableLayout: React.FC<
     citizen
       ? dispatch(cleanEntityFiltersCitizen({ filterKey, value: value }))
       : dispatch(cleanEntityFilters({ filterKey, value: value }));
-    if (filterKey === 'filtroCriterioRicerca')
+    if (filterKey === 'filtroCriterioRicerca' || filterKey === 'criterioRicerca')
       dispatch(deleteFiltroCriterioRicerca());
     if (resetFilterDropdownSelected) resetFilterDropdownSelected(filterKey);
   };
@@ -322,7 +322,7 @@ const GenericSearchFilterTableLayout: React.FC<
             className={clsx(
               'd-flex',
               !device.mediaIsDesktop ? 'flex-column pt-4' : 'flex-row',
-              !citizenList ? 'py-lg-3' : 'pb-lg-3',
+              !citizenList && 'py-lg-3',
               'pt-0',
               isDetail && 'justify-content-end'
             )}
@@ -346,7 +346,6 @@ const GenericSearchFilterTableLayout: React.FC<
             className={clsx(
               'd-flex',
               'flex-row',
-              'mt-4',
               'mb-4',
               'flex-wrap',
               'align-items-center'

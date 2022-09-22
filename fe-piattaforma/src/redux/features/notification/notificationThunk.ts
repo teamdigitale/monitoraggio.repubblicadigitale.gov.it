@@ -14,11 +14,11 @@ const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const getDelayByDuration = (duration: NotifyI['duration'] = 'medium') => {
   switch (duration) {
     case 'slow':
-      return 10000;
+      return 25000;
     case 'medium':
-      return 5000;
+      return 15000;
     case 'fast':
-      return 3000;
+      return 5000;
     default:
       return duration;
   }
@@ -32,10 +32,10 @@ export const NewNotify = (payload?: NotifyI) => async (dispatch: Dispatch) => {
   };
   if (notify?.message && notify?.status) {
     dispatch(emitNotify(notify));
-    if (!notify.closable) {
-      await delay(getDelayByDuration(notify.duration));
-      dispatch(removeNotify({ id: notify.id }));
-    }
+    //if (!notify.closable) {
+    await delay(getDelayByDuration(notify.duration));
+    dispatch(removeNotify({ id: notify.id }));
+    //}
   }
 };
 

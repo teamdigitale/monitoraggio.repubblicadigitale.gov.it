@@ -1,10 +1,16 @@
 import React from 'react';
-import { Icon } from 'design-react-kit';
+import { Button, Icon } from 'design-react-kit';
 import fileIcon from '/public/assets/img/file_upload.png';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 
-const NoResultsFound: React.FC = () => {
+interface NoResultsFoundCitizenI {
+  onClickCta?: () => void;
+}
+
+const NoResultsFoundCitizen: React.FC<NoResultsFoundCitizenI> = ({
+  onClickCta,
+}) => {
   const { t } = useTranslation();
 
   return (
@@ -37,9 +43,11 @@ const NoResultsFound: React.FC = () => {
       <div className='card-bg no-results-found__first-access'>
         <div>
           <h4 className='h5 first-access-title'>Nuovo cittadino?</h4>
-          <h5 className='h6 first-access-subtitle analogue-1-color-a12-'>
-            Aggiungi i dati anagrafici del nuovo cittadino
-          </h5>
+          {onClickCta && (
+            <Button onClick={onClickCta} color='primary' type='button'>
+              Aggiungi il cittadino cliccando qui
+            </Button>
+          )}
         </div>
         <div>
           <img src={fileIcon} alt='icon' />
@@ -49,4 +57,4 @@ const NoResultsFound: React.FC = () => {
   );
 };
 
-export default NoResultsFound;
+export default NoResultsFoundCitizen;

@@ -6,9 +6,9 @@ import { useAppSelector } from '../../../../../redux/hooks';
 import {
   CittadinoInfoI,
   selectCitizenSearchResponse,
+  setCitizenSearchResults,
 } from '../../../../../redux/features/citizensArea/citizensAreaSlice';
 import CitizenTableResult from './citizenTableResult';
-import NoResultsFound from '../../../../../components/NoResultsFound/noResultsFound';
 import Infocard from '../../../../../components/InfoCard/infoCard';
 import { formFieldI } from '../../../../../utils/formHelper';
 import {
@@ -26,6 +26,7 @@ import {
 } from '../../../../../redux/features/administrativeArea/services/servicesThunk';
 import { SurveySectionPayloadI } from '../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 import { TableRowI } from '../../../../../components/Table/table';
+import NoResultsFoundCitizen from '../../../../../components/NoResultsFoundCitizen/noResultsFoundCitizen';
 
 const id = 'search-citizen-modal';
 
@@ -54,10 +55,11 @@ interface SearchCitizenModalI {
   creation?: boolean;
 }
 
-const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
-  onConfirmText,
-}) => {
+const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
   const [currentStep, setCurrentStep] = useState<string>(
+    selectedSteps.FISCAL_CODE
+  );
+  const [radioFilter, setRadioFilter] = useState<string>(
     selectedSteps.FISCAL_CODE
   );
   const dispatch = useDispatch();
@@ -96,18 +98,32 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
   }, [currentStep]);
 
   const onClose = () => {
+    setCurrentStep(selectedSteps.FISCAL_CODE);
     dispatch(closeModal());
   };
 
-  const resetModal = () => {
-    setCurrentStep(selectedSteps.FISCAL_CODE);
+  const resetModal = (dontClose?: boolean) => {
+    if (!dontClose) {
+      setRadioFilter(selectedSteps.FISCAL_CODE);
+      setCurrentStep(selectedSteps.FISCAL_CODE);
+    }
+    setShowFormCompleteForm(false);
     setAlreadySearched(false);
-    onClose();
+    setSelectedCitizen({});
+    dispatch(setCitizenSearchResults([]));
+    if (!dontClose) onClose();
   };
 
   useEffect(() => {
     resetModal();
   }, []);
+
+  const addCitizen = () => {
+    setCurrentStep(selectedSteps.ADD_CITIZEN);
+    if (alreadySearched && !(citizensData?.length > 0)) {
+      setShowFormCompleteForm(true);
+    }
+  };
 
   const loadFirstStep = () => {
     if (!alreadySearched) {
@@ -127,7 +143,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
         setCurrentStep(selectedSteps.ADD_CITIZEN);
         setSelectedCitizen(citizensData?.[0]);
       } else if (citizensData?.length === 0) {
-        return <NoResultsFound />;
+        return <NoResultsFoundCitizen onClickCta={addCitizen}/>;
       }
     }
   };
@@ -241,27 +257,19 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
     }
   };
 
-  const addCitizen = () => {
-    setCurrentStep(selectedSteps.ADD_CITIZEN);
-    if (alreadySearched && !(citizensData?.length > 0)) {
-      setShowFormCompleteForm(true);
-    }
-  };
-
   return (
     <GenericModal
       id={id}
       title='Aggiungi cittadino'
       noPaddingPrimary
       primaryCTA={{
-        label: `${onConfirmText || 'Compila questionario'}`,
-        onClick:
-          currentStep === selectedSteps.FISCAL_CODE ||
-          currentStep === selectedSteps.DOC_NUMBER
-            ? addCitizen
-            : onConfirm,
+        label: 'Aggiungi',
+        onClick: () => onConfirm(),
         disabled:
-          !alreadySearched ||
+          (currentStep === selectedSteps.FISCAL_CODE &&
+            !(Object.keys(selectedCitizen)?.length > 0)) ||
+          (currentStep === selectedSteps.DOC_NUMBER &&
+            !(Object.keys(selectedCitizen)?.length > 0)) ||
           (currentStep === selectedSteps.ADD_CITIZEN && !validForm),
       }}
       secondaryCTA={{
@@ -274,12 +282,18 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = ({
         <div className='mb-5'>
           <SearchBarOptionsCitizen
             setCurrentStep={setCurrentStep}
-            currentStep={currentStep}
+            setRadioFilter={setRadioFilter}
+            currentStep={radioFilter}
             steps={(({ FISCAL_CODE, DOC_NUMBER }) => ({
               FISCAL_CODE,
               DOC_NUMBER,
             }))(selectedSteps)}
             alreadySearched={(searched) => setAlreadySearched(searched)}
+            resetModal={() => {
+              resetModal(true);
+              
+              setCurrentStep(radioFilter);
+            }}
           />
           <div className='d-block px-5 mt-5'>
             {currentStep === selectedSteps.FISCAL_CODE ||

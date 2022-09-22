@@ -101,7 +101,7 @@ const CitizensList: React.FC = () => {
   const [alreadySearched, setAlreadySearched] = useState(false);
 
   const getServiceDetailsCitizens = () => {
-    dispatch(GetCitizenListServiceDetail(serviceId));
+    dispatch(GetCitizenListServiceDetail(serviceId, true));
   };
 
   const getAllFilters = () => {
@@ -339,7 +339,7 @@ const CitizensList: React.FC = () => {
       <UploadCSVModal
         accept='.xlsx'
         onClose={() => {
-          if (serviceId) dispatch(GetCitizenListServiceDetail(serviceId));
+          if (serviceId) dispatch(GetCitizenListServiceDetail(serviceId, true));
         }}
         onEsito={handleCitizenUploadEsito}
         template={CitizenTemplate}
