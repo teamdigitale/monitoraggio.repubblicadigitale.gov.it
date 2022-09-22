@@ -54,6 +54,7 @@ import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
+import it.pa.repdgt.shared.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -111,7 +112,7 @@ public class UtenteService {
 				.map(utente -> {
 					UtenteDto utenteDto = new UtenteDto();
 					utenteDto.setId(utente.getId());
-					utenteDto.setNome(utente.getNome() + " " + utente.getCognome());
+					utenteDto.setNome(utente.getCognome() + " " + utente.getNome());
 					utenteDto.setCodiceFiscale(utente.getCodiceFiscale());
 					utenteDto.setStato(utente.getStato());
 					
@@ -285,7 +286,9 @@ public class UtenteService {
 		utente.getRuoli().add(ruolo);
 		utente.setDataOraCreazione(new Date());
 		utente.setDataOraAggiornamento(utente.getDataOraCreazione());
-
+		utente.setNome(Utils.toCamelCase(utente.getNome()));
+		utente.setCognome(utente.getCognome().toUpperCase());
+		
 		final UtenteEntity utenteSalvato = this.salvaUtente(utente);
 		if(!ruolo.getPredefinito()) {
 			// stacco un thread per invio email al nuovo utente censito
@@ -320,8 +323,8 @@ public class UtenteService {
 		}
 		utenteFetchDB.setEmail(aggiornaUtenteRequest.getEmail());
 		utenteFetchDB.setTelefono(aggiornaUtenteRequest.getTelefono());
-		utenteFetchDB.setNome(aggiornaUtenteRequest.getNome());
-		utenteFetchDB.setCognome(aggiornaUtenteRequest.getCognome());
+		utenteFetchDB.setNome(Utils.toCamelCase(aggiornaUtenteRequest.getNome()));
+		utenteFetchDB.setCognome(aggiornaUtenteRequest.getCognome().toUpperCase());
 		utenteFetchDB.setMansione(aggiornaUtenteRequest.getMansione());
 		utenteFetchDB.setTipoContratto(aggiornaUtenteRequest.getTipoContratto());
 		utenteFetchDB.setDataOraAggiornamento(new Date());
