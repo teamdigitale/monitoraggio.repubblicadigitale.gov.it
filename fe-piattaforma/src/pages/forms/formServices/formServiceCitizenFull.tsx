@@ -74,6 +74,9 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
         if (key === '4' || key === '5' || key === '6') {
           formFromSchema[key].required = false;
         }
+        if (key === '14') {
+          formFromSchema[key].regex = RegexpType.EMAIL;
+        }
         if (key === '15') {
           formFromSchema[key].value = '+39';
         }

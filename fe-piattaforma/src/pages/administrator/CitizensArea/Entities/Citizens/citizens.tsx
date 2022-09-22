@@ -27,7 +27,6 @@ import { newTable, TableRowI } from '../../../../../components/Table/table';
 import { TableHeading } from '../../utils';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
-import SearchCitizenModal from '../SearchCitizenModal/searchCitizenModal';
 import PageTitle from '../../../../../components/PageTitle/pageTitle';
 
 const entity = 'citizensArea';
@@ -188,10 +187,6 @@ const Citizens = () => {
         searchInformation={searchInformation}
         dropdowns={dropdowns}
         filtersList={filtersList}
-        // cta={() => {
-        //   dispatch(openModal({ id: 'search-citizen-modal' }));
-        // }}
-        // ctaPrint={() => window.open('/stampa-questionario', '_blank')}
         {...PageTitleCitizen}
         resetFilterDropdownSelected={(filterKey: string) =>
           setFilterDropdownSelected(filterKey)
@@ -224,7 +219,6 @@ const Citizens = () => {
         ) : (
           <EmptySection title='Non sono presenti cittadini' />
         )}
-        <SearchCitizenModal />
       </GenericSearchFilterTableLayout>
     </>
   );

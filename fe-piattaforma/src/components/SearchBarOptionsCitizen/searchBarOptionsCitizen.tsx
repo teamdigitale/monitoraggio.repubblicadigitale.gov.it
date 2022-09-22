@@ -11,22 +11,27 @@ import { setCitizenSearchResults } from '../../redux/features/citizensArea/citiz
 
 interface SearchBarOptionsI {
   setCurrentStep: (value: string) => void;
+  setRadioFilter: (value: string) => void;
   currentStep: string | undefined;
   steps: { [key: string]: string };
   alreadySearched?: (param: boolean) => void;
+  resetModal?: () => void;
 }
 
 const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
   setCurrentStep,
+  setRadioFilter,
   currentStep,
   steps,
   alreadySearched,
+  resetModal,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const handleSearchReset = () => {
     dispatch(setCitizenSearchResults([]));
+    if (resetModal) resetModal();
   };
 
   return (
@@ -51,9 +56,11 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
                   checked={currentStep === steps[item]}
                   onClick={() => {
                     setCurrentStep(steps[item]);
+                    setRadioFilter(steps[item]);
                   }}
                   onInputChange={() => {
                     setCurrentStep(steps[item]);
+                    setRadioFilter(steps[item]);
                   }}
                 />
                 <Label check htmlFor={`current-step-${index}`}>
@@ -67,8 +74,13 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
       <SearchBar
         placeholder='Inserisci i dati del tipo di documento selezionato'
         onSubmit={(data) => {
-          dispatch(GetEntitySearchResult(data, currentStep ? currentStep : ''));
-          if (alreadySearched) alreadySearched(true);
+          if (resetModal) resetModal();
+          if (data) {
+            dispatch(
+              GetEntitySearchResult(data, currentStep ? currentStep : '')
+            );
+            if (alreadySearched) alreadySearched(true);
+          }
         }}
         onReset={handleSearchReset}
       />
