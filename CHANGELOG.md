@@ -1,5 +1,53 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## 1.0.0 (2022-09-22)
+
+
+### Features
+
+* **fe-piattaforma:** fix log ([317644b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/317644bbff12ff8887db4d055d96c1943bb8aa6d))
+* **monitoraggio:** dump develop into main ([d3465f5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d3465f5d33db605aa2b0a4b5a2db46f6ed91d65b))
+* **fe-piattaforma:** dependencies update ([7927fba](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7927fba3feab2424ecf75946c4fa12d910878d97))
+* **monitoraggio:** dump develop into main ([0686826](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0686826f870b490a15210ac854d3b3c594e3416c))
+* **be:** aggiunta logica template email ([eedf937](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/eedf937efa771f1fdb293d540dae173a42bcd502))
+* **fe-piattaforma:** FE update 07012022 1 ([27cc0c5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/27cc0c545ec31d7792be2e8c6aeb7a640faf3a18))
+* **fe-piattaforma:** fix and improvements on programs and projects sections ([e090047](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e090047a6f075a3eec22f21c2aa58885ae2d6557))
+* **fe-piattaforma:** fe update 06302022 api integration ([a73d3cb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a73d3cbe7d11e7cd288710f0a342930b115aa824))
+* **fe-piattaforma:** fe update 06302022 api integration ([311389b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/311389bfd2bb60e2d9007da3747956fa6ae7c177))
+* **fe-piattaforma:** FE update 06292022 ([#120](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/issues/120)) ([389d210](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/389d210c67acf614a5bc933644a5c9faaf8b9dc8))
+* **fe-piattaforma:** revert PR [#118](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/issues/118) ([#119](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/issues/119)) ([0ed9644](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0ed9644fbb99a7048bcf17a326635e370fce2898))
+* **be:** allineamento req api ([07f97cb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/07f97cb15ee68c374b6ef64afd0d8b558ce3ed93))
+* **be:** programma gestione data attivazione enti ([1b52f4d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1b52f4d33691e57585da4ffbb63c6716f36df673))
+* **be:** programma gestione data attivazione enti ([84b69fa](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/84b69fa34ed7e8daa21375bdd038a9a94a14ad1a))
+* **be:** aggiornamento api backend ([3950299](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3950299ef79b1f94155752f9d2b934a91cc899dc))
+* **be:** update pom e nuove feat per deploy ([3e72641](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3e726416a06f97d4499a33022d21c13380725138))
+* aggiornamento pom e nuove features ([d697355](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d697355caec2f403c7169b690bb54f1cc20d274f))
+* **fe:** update code ([24a7199](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/24a719968085f67a45f578a2ba1ebd673476b960))
+* **fe:** update code ([a38d09a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a38d09a8c1a6ec9648d1093834d83d5e6e907903))
+* **BE:** nuove versioni ([5bd24b8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5bd24b8653f78bcfae1a2eeb58323957f0022452))
+* **fe:** env management ([30f5dcb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/30f5dcba20ae3dc6f2fc585d7294a0026c164155))
+* **fe:** env management ([bab196f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bab196fe5c1b48a819f386c89ddc5db6b2ba045b))
+* **fe:** initial commit ([1f9ff12](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1f9ff12c08daea2080dfebe4875d1ceb2183b8ca))
+* **fe:** initial commit ([49dead1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/49dead14516689a41935707a4eeb0ee7c3d6902f))
+* **BE:** initial commit ([d6c58aa](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d6c58aa7c71cf44fdd1493472254d7f66555ba5f))
+* **BE:** initial commit ([09504a5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/09504a54b380a988b65e9205565cd2777fa35f0a))
+* initial commit ([6234b5a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6234b5a3e4289a6c37504faa930687ad3c2ac390)), closes [#2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/issues/2)
+* initial commit. ([f107961](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f1079610b2f967df9f6ec776b8a531d898ce291c))
+
+
+### Bug Fixes
+
+* **be:** fix integrazione questionario ed ente ([e2ea37a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e2ea37af9b7f22546e423569b6d9d85701b87f1a)), closes [#140](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/issues/140) [#140](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/issues/140) [#142](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/issues/142) [#142](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/issues/142) [#142](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/issues/142) [#142](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/issues/142)
+* **be:** commentati test in errore ([3f7161d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3f7161d0b03e28cb09d996aab1cc6859b1e28747))
+* **be:** fix test creazione template test ([0bed88c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0bed88cbca8118a96ad0433564c65eb90a1d677e))
+* **be:** fix integrazione questionario ed ente ([bb015e7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bb015e7aa9e8f3ff500cd0e28ac89a87b8f01b02))
+* **be:** fix per endpoint ente utente ([7e1777f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7e1777f66e0bdeb15bc5eee73a0a8d503c235ad4))
+* **be:** fix servizio scheda programma ([b450855](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b450855db7d52889619849fc51cc8a0dea98644e))
+* **be:** fix per api progetto-programma ([af8b94e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/af8b94e30c65cf8d79ec78460cd06e32877bc196))
+* **be:** eliminata configurazione tls per mongoDB ([cde00f9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/cde00f9c467d7fb9b52e2aa81130f2966f57f90a))
+* add new line as EOF ([cf36fb0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/cf36fb0b52d35434f053e569461ccb79d27f575e))
+* initial commit ([2b1e663](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2b1e663891d325448cca4dc65eb4a09bbf4bb153))
+
 ## [1.0.0-develop.89](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.88...1.0.0-develop.89) (2022-09-02)
 
 
