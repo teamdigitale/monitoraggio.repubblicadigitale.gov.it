@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.145](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.144...1.0.0-develop.145) (2022-09-22)
+
+
+### Bug Fixes
+
+* update REWRITE command ([f810ed6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f810ed65964e9f8c320cf67b3da3b9885f3145b8))
+
 ## [1.0.0-develop.144](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.143...1.0.0-develop.144) (2022-09-22)
 
 
