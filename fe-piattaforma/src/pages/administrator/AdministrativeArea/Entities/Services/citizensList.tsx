@@ -338,7 +338,7 @@ const CitizensList: React.FC = () => {
       <ConfirmSentSurveyModal />
       <UploadCSVModal
         accept='.xlsx'
-        onConfirm={() => {
+        onClose={() => {
           if (serviceId) dispatch(GetCitizenListServiceDetail(serviceId));
         }}
         onEsito={handleCitizenUploadEsito}

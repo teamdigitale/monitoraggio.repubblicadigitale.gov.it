@@ -23,6 +23,7 @@ export interface DropdownFilterI {
   handleOnSearch?: (searchKey: formFieldI['value']) => void;
   valueSearch?: formFieldI['value'] | undefined;
   isDetail?: boolean | undefined;
+  isGeneric?: boolean | undefined;
 }
 
 let focusedInput = -1;
@@ -37,6 +38,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
     // handleOnSearch,
     valueSearch,
     isDetail,
+    isGeneric,
   } = props;
   const [open, setOpen] = useState(false);
   const [checkedOptions, setCheckedOptions] = useState<FilterI[]>(values);
@@ -178,7 +180,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
         'dropdown-filter-container',
         'mr-lg-4',
         'mr-2',
-        isDetail ? 'mt-2' : 'mt-4'
+        isDetail || isGeneric ? 'mt-2' : 'mt-4'
       )}
     >
       <Button

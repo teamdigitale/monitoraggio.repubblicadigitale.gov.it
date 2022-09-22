@@ -67,7 +67,9 @@ const HeaderDesktop: React.FC<HeaderI> = ({
             'd-inline-flex',
             'align-items-center',
             'text.white',
-            'primary-bg-b2'
+            'primary-bg-b2',
+            'header-panel-btn',
+            'border-right'
           )}
         >
           <div>
@@ -88,6 +90,9 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
               }`}</em>
             </h6>
+          </div>
+          <div className='ml-2'>
+            <Icon size='' color='white' icon='it-expand' />
           </div>
         </div>
       </DropdownToggle>
@@ -290,7 +295,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               isLogged ? (
                 <>
                   {userDropDown()}
-                  <div className='mx-4'>
+                  <div className='mx-4 pr-2'>
                     {/* <Icon
                     color='white'
                     icon='campanella'
