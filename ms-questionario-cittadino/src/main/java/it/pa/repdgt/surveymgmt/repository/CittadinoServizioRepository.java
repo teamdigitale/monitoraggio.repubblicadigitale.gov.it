@@ -35,7 +35,7 @@ public interface CittadinoServizioRepository extends JpaRepository<CittadinoEnti
 			 + "		    :criterioRicercaServizio IS NULL  "	
 		     + "	   	 OR UPPER(c.NOME) LIKE UPPER( :criterioRicercaServizioLike ) "
 		     + "		 OR UPPER(c.COGNOME) LIKE UPPER( :criterioRicercaServizioLike ) "
-		     + "         concat(UPPER( c.COGNOME ), ' ' , UPPER( c.NOME ))  = UPPER(:criterioRicerca) "
+		     + "         OR concat(UPPER( c.COGNOME ), ' ' , UPPER( c.NOME ))  = UPPER(:criterioRicercaServizio) "
 		     + "		 OR UPPER(c.NUM_DOCUMENTO) = UPPER( :criterioRicercaServizio ) "
 		     + "		 OR UPPER(c.codice_fiscale) = UPPER( :criterioRicercaServizio ) "
 	         + "    ) "
