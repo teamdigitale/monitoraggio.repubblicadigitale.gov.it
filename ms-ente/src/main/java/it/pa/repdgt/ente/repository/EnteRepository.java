@@ -18,6 +18,8 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 	
 	public Optional<EnteEntity> findByNome(String nomeEnte);
 	
+	public Optional<EnteEntity> findByNomeAndIdNot(String nomeEnte, Long id);
+	
 	@Query(value = "SELECT ente FROM EnteEntity ente WHERE ente.piva = :partitaIva")
 	public Optional<EnteEntity> findByPartitaIva(@Param(value="partitaIva") String partitaIva);
 
@@ -99,7 +101,7 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 				+" 		AND (     :criterioRicerca IS NULL  "
 		        +"			   OR CONVERT( enti.ID_ENTE, CHAR ) = :criterioRicerca "
 		        +"	    	   OR UPPER( enti.NOME_ENTE ) LIKE UPPER( :criterioRicercaLike ) "
-	            +"		  	   OR UPPER( enti.PARTITA_IVA ) LIKE UPPER( :criterioRicercaLike ) "
+	            +"		  	   OR UPPER( enti.PARTITA_IVA ) = UPPER( :criterioRicercaLike ) "
 	            +"	    ) "
 				+" 		AND  ( COALESCE(:profiliEnte) IS NULL  OR enti.PROFILO_ENTE IN (:profiliEnte) ) "
 				+" ORDER BY enti.NOME_ENTE",

@@ -137,7 +137,8 @@ public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long
 	        + "			     	OR CONVERT( qc_cittadino.ID_CITTADINO, CHAR ) = :criterioRicerca "
 	        + "	    	     	OR UPPER( qc_cittadino.NOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "		  	      	OR UPPER( qc_cittadino.COGNOME ) LIKE UPPER( :criterioRicercaLike ) "
-            + "		  	     	OR UPPER( qc_cittadino.CODICE_FISCALE ) LIKE UPPER( :criterioRicercaLike ) "
+            + "                 OR Concat(UPPER( qc_cittadino.COGNOME ), ' ' , UPPER( qc_cittadino.NOME ))  = UPPER(:criterioRicercaLike) "
+            + "		  	     	OR UPPER( qc_cittadino.CODICE_FISCALE ) = UPPER( :criterioRicercaLike ) "
             + "		  	      	OR UPPER( qc_cittadino.NUM_DOCUMENTO ) LIKE UPPER( :criterioRicercaLike )"
             + "			) "
             + "	   LIMIT :currPage, :pageSize",
