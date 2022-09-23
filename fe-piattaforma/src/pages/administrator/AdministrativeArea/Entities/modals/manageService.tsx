@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
@@ -20,6 +20,7 @@ import { useAppSelector } from '../../../../../redux/hooks';
 import { getUserHeaders } from '../../../../../redux/features/user/userThunk';
 import { useNavigate } from 'react-router-dom';
 import { idQ3, titleQ3 } from '../Surveys/surveyConstants';
+import { resetServiceDetails } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 
 const id = formTypes.SERVICES;
 
@@ -47,6 +48,11 @@ const ManageServices: React.FC<ManageServicesI> = ({
   const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
     getUserHeaders();
 
+  useEffect(() => {
+    if (creation) dispatch(resetServiceDetails());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [creation]);
+
   const resetModal = (toClose = true) => {
     clearForm();
     if (toClose) dispatch(closeModal());
@@ -56,8 +62,10 @@ const ManageServices: React.FC<ManageServicesI> = ({
     [key: string]: formFieldI['value'];
   }) => {
     // TODO rendere dinamico
-    const answersQ3 =
-      `{"id":"${idQ3}","title":"${titleQ3}","properties":${questionarioCompilatoQ3?.replaceAll('"', "'")}}`;
+    const answersQ3 = `{"id":"${idQ3}","title":"${titleQ3}","properties":${questionarioCompilatoQ3?.replaceAll(
+      '"',
+      "'"
+    )}}`;
     const tipologiaServizio = answersForms['24']?.toString()?.split('§');
     const payload = {
       data: answersForms['22'] || '',
@@ -85,7 +93,7 @@ const ManageServices: React.FC<ManageServicesI> = ({
         );
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        if (res?.data?.idServizio){
+        if (res?.data?.idServizio) {
           navigate(
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
@@ -99,7 +107,7 @@ const ManageServices: React.FC<ManageServicesI> = ({
         );
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        if(res){
+        if (res) {
           dispatch(GetServicesDetail(idServizio));
           resetModal();
         }

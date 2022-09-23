@@ -86,7 +86,7 @@ const Surveys = () => {
             <Toggle
               label=''
               aria-labelledby={`toggle-SCD-${td.id}`}
-              disabled={false}
+              disabled={!hasUserPermission(['new.quest.templ'])}
               checked={td.defaultSCD}
               onChange={(e) =>
                 handleToggleChange('SCD', e.target.checked, td.id)
@@ -102,7 +102,7 @@ const Surveys = () => {
             <Toggle
               label=''
               aria-labelledby={`toggle-RFD-${td.id}`}
-              disabled={false}
+              disabled={!hasUserPermission(['new.quest.templ'])}
               checked={td.defaultRFD}
               onChange={(e) =>
                 handleToggleChange('RFD', e.target.checked, td.id)
@@ -268,7 +268,6 @@ const Surveys = () => {
           );
         },
         [CRUDActionTypes.CLONE]: (td: TableRowI | string) => {
-          // TODO: chiamata per clonare questionario
           navigate(
             `/area-amministrativa/questionari/${
               typeof td !== 'string' ? td.id : td
@@ -289,7 +288,6 @@ const Surveys = () => {
     : hasUserPermission(['new.quest.templ'])
     ? {
         [CRUDActionTypes.CLONE]: (td: TableRowI | string) => {
-          // TODO: chiamata per clonare questionario
           navigate(
             `/area-amministrativa/questionari/${
               typeof td !== 'string' ? td.id : td
@@ -346,7 +344,6 @@ const Surveys = () => {
                 id='table'
                 onActionClick={onActionClick}
                 onCellClick={(field, row) => console.log(field, row)}
-                //onRowClick={row => console.log(row)}
                 withActions
                 totalCounter={pagination?.totalElements}
               />

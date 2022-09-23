@@ -424,6 +424,9 @@ export const administrativeAreaSlice = createSlice({
     ) => {
       state.services.detail.sezioniQuestionarioTemplateIstanze = action.payload;
     },
+    resetServiceDetails: (state) => {
+      state.services.detail = initialState.services.detail;
+    },
   },
 });
 
@@ -465,6 +468,7 @@ export const {
   setServicesDropdownCreation,
   setServicesSchemaFieldsCreation,
   setServiceQuestionarioTemplateIstanze,
+  resetServiceDetails,
 } = administrativeAreaSlice.actions;
 
 export const selectEntityList = (state: RootState) =>

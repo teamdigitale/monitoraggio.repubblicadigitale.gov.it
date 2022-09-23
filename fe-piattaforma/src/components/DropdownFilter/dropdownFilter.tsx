@@ -7,6 +7,7 @@ import { focusId } from '../../utils/common';
 import { formFieldI } from '../../utils/formHelper';
 import ClickOutside from '../../hoc/ClickOutside';
 import isEqual from 'lodash.isequal';
+import { capitalize } from 'lodash';
 
 export interface FilterI {
   label: string;
@@ -24,6 +25,7 @@ export interface DropdownFilterI {
   valueSearch?: formFieldI['value'] | undefined;
   isDetail?: boolean | undefined;
   isGeneric?: boolean | undefined;
+  formatValues?: boolean | undefined;
 }
 
 let focusedInput = -1;
@@ -39,6 +41,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
     valueSearch,
     isDetail,
     isGeneric,
+    formatValues = false,
   } = props;
   const [open, setOpen] = useState(false);
   const [checkedOptions, setCheckedOptions] = useState<FilterI[]>(values);
@@ -310,7 +313,9 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
                             check
                             className='primary-color-b1 text-break'
                           >
-                            {opt.label}
+                            {formatValues
+                              ? capitalize(opt.label.toLowerCase())
+                              : opt.label}
                           </Label>
                         </FormGroup>
                       </li>

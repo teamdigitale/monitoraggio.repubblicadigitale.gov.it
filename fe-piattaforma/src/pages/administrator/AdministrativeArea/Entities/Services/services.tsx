@@ -29,6 +29,7 @@ import {
   selectEntityPagination,
   setEntityFilters,
   setEntityPagination,
+  resetServiceDetails,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import ManageServices from '../modals/manageService';
 import { formTypes } from '../utils';
@@ -209,6 +210,7 @@ const Services = () => {
     : {};
 
   const newService = () => {
+    dispatch(resetServiceDetails());
     dispatch(
       openModal({
         id: formTypes.SERVICES,
