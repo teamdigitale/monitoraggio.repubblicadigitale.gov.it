@@ -175,7 +175,7 @@ const AddressForm: React.FC<AddressFormI> = ({
               className='mt-6'
               label='Provincia'
               col='col-12 col-lg-6'
-              value={`${province}/${state}`}
+              value={province && state ? `${province}/${state}` : ''}
               required
               options={provinces.map((p) => ({
                 value: `${p.name}/${p.state}`,
@@ -201,7 +201,7 @@ const AddressForm: React.FC<AddressFormI> = ({
               label='CAP'
               col='col-12 col-lg-6'
               isDisabled={!city}
-              value={CAP}
+              value={city ? CAP : ''}
               required
               options={CAPS.map((c) => ({ value: c, label: c }))}
               onInputChange={(value) =>

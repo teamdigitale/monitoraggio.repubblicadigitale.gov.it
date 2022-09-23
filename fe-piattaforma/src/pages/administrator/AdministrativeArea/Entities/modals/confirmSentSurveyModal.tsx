@@ -24,7 +24,7 @@ const ConfirmSentSurveyModal: React.FC = () => {
       centerButtons
       onClose={() => dispatch(closeModal())}
     >
-      <div className='d-flex flex-column justify-content-center'>
+      <div className='d-flex flex-column justify-content-center mt-5'>
         <div className='d-flex justify-content-center mb-4'>
           {!payload?.error ? (
             <Icon

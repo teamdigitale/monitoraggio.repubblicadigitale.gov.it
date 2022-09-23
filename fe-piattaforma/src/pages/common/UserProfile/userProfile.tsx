@@ -68,7 +68,7 @@ const UserProfile = () => {
     : [];
 
   return (
-    <div className='container'>
+    <div className='container mt-5'>
       <DetailLayout
         titleInfo={{
           title: `${user?.nome} ${user?.cognome}`,

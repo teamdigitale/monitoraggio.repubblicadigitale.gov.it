@@ -132,11 +132,11 @@ export const GetEntityFilterValues =
       if (res?.data?.length) {
         const filterResponse = {
           [payload.dropdownType]: res.data.map((option: string) => ({
-            label:
-              payload.dropdownType === 'stati' ||
-              payload.dropdownType === 'ruoli'
-                ? option[0] + option.slice(1).toLowerCase()
-                : option,
+            label: option,
+            // payload.dropdownType === 'stati' ||
+            // payload.dropdownType === 'ruoli'
+            //   ? option[0] + option.slice(1).toLowerCase()
+            //   : option,
             value: option,
           })),
         };
@@ -345,6 +345,7 @@ export const UploadFile =
         headers: {
           'Content-Type': 'multipart/form-data',
         },
+        timeout: 20000,
       });
 
       if (res?.data) {

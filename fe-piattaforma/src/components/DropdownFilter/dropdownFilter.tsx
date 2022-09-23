@@ -7,6 +7,7 @@ import { focusId } from '../../utils/common';
 import { formFieldI } from '../../utils/formHelper';
 import ClickOutside from '../../hoc/ClickOutside';
 import isEqual from 'lodash.isequal';
+import { capitalize } from 'lodash';
 
 export interface FilterI {
   label: string;
@@ -23,6 +24,8 @@ export interface DropdownFilterI {
   handleOnSearch?: (searchKey: formFieldI['value']) => void;
   valueSearch?: formFieldI['value'] | undefined;
   isDetail?: boolean | undefined;
+  isGeneric?: boolean | undefined;
+  formatValues?: boolean | undefined;
 }
 
 let focusedInput = -1;
@@ -37,6 +40,8 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
     // handleOnSearch,
     valueSearch,
     isDetail,
+    isGeneric,
+    formatValues = false,
   } = props;
   const [open, setOpen] = useState(false);
   const [checkedOptions, setCheckedOptions] = useState<FilterI[]>(values);
@@ -178,7 +183,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
         'dropdown-filter-container',
         'mr-lg-4',
         'mr-2',
-        isDetail ? 'mt-2' : 'mt-4'
+        isDetail || isGeneric ? 'mt-2' : 'mt-4'
       )}
     >
       <Button
@@ -308,7 +313,9 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
                             check
                             className='primary-color-b1 text-break'
                           >
-                            {opt.label}
+                            {formatValues
+                              ? capitalize(opt.label.toLowerCase())
+                              : opt.label}
                           </Label>
                         </FormGroup>
                       </li>

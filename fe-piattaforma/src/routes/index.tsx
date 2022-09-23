@@ -101,7 +101,7 @@ const AppRoutes: React.FC = () => {
         {isLogged ? (
           <>
             <Route
-              path='/stampa-questionario/:idQuestionario'
+              path='/area-amministrativa/servizi/:serviceId/stampa-questionario/:idQuestionario'
               element={<PrintSurvey />}
             />
             <Route path='/' element={<FullLayout isFull />}>

@@ -153,8 +153,13 @@ const ProjectsDetails = () => {
     ) {
       navigate(`/area-amministrativa/progetti/${entityId}/info`);
     }
-    if(location.pathname === `/area-amministrativa/programmi/${entityId}/progetti/${projectId}`){
-      navigate(`/area-amministrativa/programmi/${entityId}/progetti/${projectId}/info`);
+    if (
+      location.pathname ===
+      `/area-amministrativa/programmi/${entityId}/progetti/${projectId}`
+    ) {
+      navigate(
+        `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/info`
+      );
     }
   }, []);
 

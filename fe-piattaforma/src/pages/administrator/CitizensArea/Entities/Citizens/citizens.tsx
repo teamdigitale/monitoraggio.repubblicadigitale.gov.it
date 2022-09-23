@@ -5,6 +5,7 @@ import GenericSearchFilterTableLayout, {
   SearchInformationI,
 } from '../../../../../components/genericSearchFilterTableLayout/genericSearchFilterTableLayout';
 import {
+  resetCitizenDetails,
   selectEntityFilters,
   selectEntityFiltersOptions,
   selectEntityList,
@@ -27,7 +28,6 @@ import { newTable, TableRowI } from '../../../../../components/Table/table';
 import { TableHeading } from '../../utils';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
-import SearchCitizenModal from '../SearchCitizenModal/searchCitizenModal';
 import PageTitle from '../../../../../components/PageTitle/pageTitle';
 
 const entity = 'citizensArea';
@@ -57,6 +57,7 @@ const Citizens = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
+    dispatch(resetCitizenDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -148,7 +149,7 @@ const Citizens = () => {
     if (Array.isArray(citizensList) && citizensList.length)
       setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [citizensList?.length]);
+  }, [citizensList]);
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
@@ -188,10 +189,6 @@ const Citizens = () => {
         searchInformation={searchInformation}
         dropdowns={dropdowns}
         filtersList={filtersList}
-        // cta={() => {
-        //   dispatch(openModal({ id: 'search-citizen-modal' }));
-        // }}
-        // ctaPrint={() => window.open('/stampa-questionario', '_blank')}
         {...PageTitleCitizen}
         resetFilterDropdownSelected={(filterKey: string) =>
           setFilterDropdownSelected(filterKey)
@@ -224,7 +221,6 @@ const Citizens = () => {
         ) : (
           <EmptySection title='Non sono presenti cittadini' />
         )}
-        <SearchCitizenModal />
       </GenericSearchFilterTableLayout>
     </>
   );

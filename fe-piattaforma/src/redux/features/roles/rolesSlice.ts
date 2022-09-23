@@ -108,9 +108,14 @@ interface PermissionI {
 }
 
 export interface GroupI {
-  codice: string;
-  descrizione: string;
-  permessi: PermissionI[];
+  gruppo: {
+    codice: string;
+    descrizione: string;
+    permessi: PermissionI[];
+    dataOraAggiornamento?: string | number;
+    dataOraCreazione?: string | number;
+  };
+  ruoliAssociatiAlGruppo?: string[];
 }
 
 export interface RolesStateI {

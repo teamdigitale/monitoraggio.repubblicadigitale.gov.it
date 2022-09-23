@@ -9,10 +9,7 @@
     font-size: 32px;
     flex-wrap: wrap;
     text-align: center;
-
-    @media screen and (min-width: 576px) {
-      width: 350px;
-    }
+    margin: auto;
   }
 
   &__upper-text {
@@ -44,9 +41,13 @@
       max-height: 25px;
     }
   }
-
-  .status {
-    right: -100px;
-    bottom: 12px;
+}
+.section-title {
+  &__icon-container {
+    bottom: -12px;
+    right: 36px;
+    width: 25px !important;
+    height: 25px !important;
   }
+
 }

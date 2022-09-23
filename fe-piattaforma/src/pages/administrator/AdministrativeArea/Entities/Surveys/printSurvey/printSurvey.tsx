@@ -13,6 +13,10 @@ import PrintTextField from './components/printTextField';
 import { GetSurveyInfo } from '../../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 import { useAppSelector } from '../../../../../../redux/hooks';
 import PrintFieldRating from './components/printFieldRating';
+import { selectServices } from '../../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { GetServicesDetail } from '../../../../../../redux/features/administrativeArea/services/servicesThunk';
+import DetailLayout from '../../../../../../components/DetailLayout/detailLayout';
+import Logo from '/public/assets/img/logo-scritta-blu-x2.png';
 
 export interface PrintSurveyQuestionI extends Omit<formFieldI, 'type'> {
   type: string;
@@ -27,19 +31,24 @@ interface PrintSuveySectionI {
   sectionTitle: string;
   questions: {
     [key: string]: PrintSurveyQuestionI;
-  }
+  };
 }
 
 const PrintSurvey: React.FC = () => {
   const dispatch = useDispatch();
-  const { idQuestionario } = useParams();
+  const { serviceId, idQuestionario } = useParams();
   const sections = useAppSelector(selectPrintSurveySections);
+  const serviceDetails = useAppSelector(selectServices)?.detail;
 
   useEffect(() => {
+    if (serviceId) dispatch(GetServicesDetail(serviceId));
     if (idQuestionario) dispatch(GetSurveyInfo(idQuestionario, true));
-  }, [idQuestionario]);
+  }, [serviceId, idQuestionario]);
 
-  const getAnswerType = (question: PrintSurveyQuestionI, section: PrintSuveySectionI) => {
+  const getAnswerType = (
+    question: PrintSurveyQuestionI,
+    section: PrintSuveySectionI
+  ) => {
     switch (question.type) {
       case 'range':
         return (
@@ -94,11 +103,7 @@ const PrintSurvey: React.FC = () => {
           return (
             <PrintSelectField
               info={question}
-              className={clsx(
-                'd-inline-block',
-                'mr-3',
-                'mb-5',
-              )}
+              className={clsx('d-inline-block', 'mr-3', 'mb-5')}
             />
           );
         } else {
@@ -124,17 +129,39 @@ const PrintSurvey: React.FC = () => {
 
   return (
     <div className='container my-3 py-5'>
-      {(sections || []).map((section: SurveySectionI, i: number) => (
-        <div key={i} className='mb-5'>
-          <h1 className='h2 primary-color-a6 mb-5'>{section?.sectionTitle}</h1>
-          {section?.questions &&
-            Object.keys(section?.questions).map((key) => (
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              <>{getAnswerType(section?.questions?.[key], section)}</>
-            ))}
-        </div>
-      ))}
+      <div className='header-container__main__logo mb-4'>
+        <img src={Logo} alt='logo' />
+      </div>
+      <DetailLayout
+        titleInfo={{
+          title: serviceDetails?.dettaglioServizio?.nomeServizio,
+          upperTitle: {
+            icon: 'it-calendar',
+            text:
+              serviceDetails?.progettiAssociatiAlServizio[0]?.nomeBreve ||
+              'Progetto',
+          },
+          subTitle:
+            'Facilitatore: ' +
+            serviceDetails?.dettaglioServizio?.nominativoFacilitatore,
+        }}
+        showGoBack={false}
+      />
+      <div className='mt-5'>
+        {(sections || []).map((section: SurveySectionI, i: number) => (
+          <div key={i} className='mb-5'>
+            <h1 className='h2 primary-color-a6 mb-5'>
+              {section?.sectionTitle}
+            </h1>
+            {section?.questions &&
+              Object.keys(section?.questions).map((key) => (
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                <>{getAnswerType(section?.questions?.[key], section)}</>
+              ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

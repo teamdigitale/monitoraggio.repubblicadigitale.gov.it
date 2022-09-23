@@ -56,7 +56,7 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
     isValidForm = false,
   } = props;
   const role = useAppSelector(selectRoleDetails);
-  const roleName = useAppSelector(selectRoleDetails)?.dettaglioRuolo?.nome;
+  const roleName = role?.dettaglioRuolo?.nome;
   const groups = useAppSelector(selectGroupsList);
   const [formEnabled, setEnableForm] = useState(creation || edit);
   const [functionalities, setFunctionalities] = useState<GroupI[]>([]);
@@ -76,7 +76,11 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
     // For breadcrumb
     if (codiceRuolo && roleName) {
       dispatch(
-        setInfoIdsBreadcrumb({ id: encodeURI(codiceRuolo), nome: roleName, updateRoleBreadcrumb: true })
+        setInfoIdsBreadcrumb({
+          id: encodeURI(codiceRuolo),
+          nome: roleName,
+          updateRoleBreadcrumb: true,
+        })
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -95,8 +99,8 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
   ) => {
     if (dettaglioGruppi?.length) {
       const roleGroups = dettaglioGruppi.map((group) => group.codice);
-      const checkedGroups = groups.filter((group) =>
-        roleGroups.includes(group.codice)
+      const checkedGroups = groups.filter(({ gruppo }) =>
+        roleGroups.includes(gruppo.codice)
       );
       setFunctionalities(checkedGroups);
     }
@@ -155,8 +159,8 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
 
   const handleChangeRole = (group: GroupI) => {
     let temp = [...functionalities];
-    if (temp.find((f) => group.codice === f.codice)) {
-      temp = temp.filter((f) => f.codice !== group.codice);
+    if (temp.find(({ gruppo }) => gruppo.codice === group.gruppo.codice)) {
+      temp = temp.filter(({ gruppo }) => gruppo.codice !== gruppo.codice);
     } else {
       temp.push(group);
     }
@@ -177,7 +181,7 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
         const res = await dispatch(
           CreateCustomRole({
             nomeRuolo: getFormValues().roleName?.toString().trim() || '',
-            codiciGruppi: functionalities.map((func) => func.codice),
+            codiciGruppi: functionalities.map(({ gruppo }) => gruppo.codice),
           })
         );
         roleCode = getFormValues().roleName;
@@ -194,7 +198,7 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
         const res = await dispatch(
           EditCustomRole(codiceRuolo, {
             nomeRuolo: getFormValues().roleName?.toString().trim() || '',
-            codiciGruppi: functionalities.map((func) => func.codice),
+            codiciGruppi: functionalities.map(({ gruppo }) => gruppo.codice),
           })
         );
         roleCode = codiceRuolo;
@@ -301,24 +305,33 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
                 onInputBlur={onInputChange}
               />
             </Form>
-            {(groups || []).map((group, index) => (
-              <Accordion
-                title={group.descrizione}
-                key={group.codice}
-                lastBottom={index === groups.length - 1}
-                checkbox
-                disabledCheckbox={!formEnabled}
-                isChecked={
-                  !!functionalities?.find((grp) => grp.codice === group.codice)
-                }
-                handleOnCheck={() => handleChangeRole(group)}
-                roleList
-              >
-                <InfoPanel
-                  list={group.permessi.map((permesso) => permesso.descrizione)}
-                />
-              </Accordion>
-            ))}
+            {(groups || []).map((group, index) => {
+              const {
+                gruppo: { descrizione, codice, permessi },
+              } = group;
+              return (
+                <Accordion
+                  title={descrizione}
+                  key={codice}
+                  lastBottom={index === groups.length - 1}
+                  checkbox
+                  disabledCheckbox={!formEnabled}
+                  isChecked={
+                    !!functionalities?.find(
+                      ({ gruppo: grp }) => codice === grp.codice
+                    )
+                  }
+                  handleOnCheck={() => handleChangeRole(group)}
+                  roleList
+                >
+                  <InfoPanel
+                    list={(permessi || []).map(
+                      (permesso) => permesso.descrizione
+                    )}
+                  />
+                </Accordion>
+              );
+            })}
           </>
         </DetailLayout>
       </Container>

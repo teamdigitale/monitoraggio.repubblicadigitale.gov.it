@@ -61,8 +61,11 @@ const UsersDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userDetails = useAppSelector(selectUsers)?.detail;
-  const { dettaglioUtente: userInfo = {}, dettaglioRuolo: userRoleList = [], immagineProfilo } =
-    userDetails;
+  const {
+    dettaglioUtente: userInfo = {},
+    dettaglioRuolo: userRoleList = [],
+    immagineProfilo,
+  } = userDetails;
   const { mediaIsDesktop } = useAppSelector(selectDevice);
   const {
     entityId,

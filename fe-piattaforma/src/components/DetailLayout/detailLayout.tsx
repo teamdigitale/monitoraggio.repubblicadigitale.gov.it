@@ -38,7 +38,7 @@ interface DetailLayoutI {
   };
   itemsList?: ItemsListI | null | undefined;
   showItemsList?: boolean;
-  buttonsPosition: 'TOP' | 'BOTTOM';
+  buttonsPosition?: 'TOP' | 'BOTTOM';
   showGoBack?: boolean;
   goBackTitle?: string;
   goBackPath?: string;
@@ -60,7 +60,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   nav,
   itemsList,
   showItemsList = true,
-  buttonsPosition,
+  buttonsPosition = 'BOTTOM',
   showGoBack = true,
   goBackTitle = 'Torna indietro',
   goBackPath,

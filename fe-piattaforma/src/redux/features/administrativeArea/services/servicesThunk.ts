@@ -98,7 +98,7 @@ const GetCitizenListServiceDetailAction = {
   type: 'administrativeArea/GetCitizenListServiceDetail',
 };
 export const GetCitizenListServiceDetail =
-  (idServizio: string | undefined) =>
+  (idServizio: string | undefined, pagination?: boolean) =>
   async (dispatch: Dispatch, select: Selector) => {
     try {
       dispatch(showLoader());
@@ -116,10 +116,13 @@ export const GetCitizenListServiceDetail =
         idProgetto,
         idProgramma,
       };
-      const queryParamFilters = transformFiltersToQueryParams(filters);
+      let queryParamFilters = transformFiltersToQueryParams(filters);
+      if(pagination){
+        queryParamFilters = queryParamFilters === '' ? '?currPage=0&pageSize=1000': queryParamFilters + '&currPage=0&pageSize=1000';
+      }
       const res = await API.post(
         `/servizio/cittadino/all/${idServizio}${queryParamFilters}`,
-        body,
+        body
       );
       if (res?.data) {
         dispatch(setServicesDetailCitizenList(res.data));
@@ -159,7 +162,7 @@ export const GetServicesDetailFilters =
       const queryParamFilters = transformFiltersToQueryParams(filters);
       const res = await API.post(
         `/servizio/cittadino/stati/dropdown/${idServizio}${queryParamFilters}`,
-        body,
+        body
       );
       if (res?.data) {
         const filterResponse = {
@@ -313,11 +316,20 @@ const AssociateCitizenToServiceAction = {
   type: 'administrativeArea/AssociateCitizenToService',
 };
 export const AssociateCitizenToService =
-  (payload: { idServizio: string, body: { [key: string]: string | number | boolean | Date | string[] | undefined; } }) => async (dispatch: Dispatch) => {
+  (payload: {
+    idServizio: string;
+    body: {
+      [key: string]: string | number | boolean | Date | string[] | undefined;
+    };
+  }) =>
+  async (dispatch: Dispatch) => {
     try {
       dispatch({ ...AssociateCitizenToServiceAction });
       dispatch(showLoader());
-      const res = await API.post(`/servizio/cittadino/${payload.idServizio}`, payload.body);
+      const res = await API.post(
+        `/servizio/cittadino/${payload.idServizio}`,
+        payload.body
+      );
       if (res) {
         return true;
       }
@@ -329,16 +341,19 @@ export const AssociateCitizenToService =
     }
   };
 
-  const SendSurveyToCitizenAction = {
-    type: 'administrativeArea/SendSurveyToCitizen',
-  };
+const SendSurveyToCitizenAction = {
+  type: 'administrativeArea/SendSurveyToCitizen',
+};
 
-  export const SendSurveyToCitizen =
-  (idCittadino: string, idQuestionario: string) => async (dispatch: Dispatch) => {
+export const SendSurveyToCitizen =
+  (idCittadino: string, idQuestionario: string) =>
+  async (dispatch: Dispatch) => {
     try {
       dispatch({ ...SendSurveyToCitizenAction });
       dispatch(showLoader());
-      const res = await API.post(`/servizio/cittadino/questionarioCompilato/invia?idCittadino=${idCittadino}&idQuestionario=${idQuestionario}`);
+      const res = await API.post(
+        `/servizio/cittadino/questionarioCompilato/invia?idCittadino=${idCittadino}&idQuestionario=${idQuestionario}`
+      );
       return res;
     } catch (error) {
       console.log('SendSurveyToCitizen administrativeArea error', error);
@@ -348,39 +363,51 @@ export const AssociateCitizenToService =
     }
   };
 
-  const SendSurveyToAllAction = {
-    type: 'administrativeArea/SendSurveyToAll',
-  };
+const SendSurveyToAllAction = {
+  type: 'administrativeArea/SendSurveyToAll',
+};
 
-  export const SendSurveyToAll =
+export const SendSurveyToAll =
   (idServizio?: string) => async (dispatch: Dispatch) => {
     try {
       dispatch({ ...SendSurveyToAllAction });
       dispatch(showLoader());
-      await API.post(`/servizio/cittadino/servizio/${idServizio}/questionarioCompilato/inviaATutti`);
+      const res = await API.post(
+        `/servizio/cittadino/servizio/${idServizio}/questionarioCompilato/inviaATutti`
+      );
+      return res;
     } catch (error) {
       console.log('SendSurveyToAll administrativeArea error', error);
+      return 'error';
     } finally {
       dispatch(hideLoader());
     }
   };
 
-  const GetCompiledSurveyCitizenServiceAction = {
-    type: 'administrativeArea/GetCompiledSurveyCitizenService',
-  };
+const GetCompiledSurveyCitizenServiceAction = {
+  type: 'administrativeArea/GetCompiledSurveyCitizenService',
+};
 
-  export const GetCompiledSurveyCitizenService =
+export const GetCompiledSurveyCitizenService =
   (idQuestionarioCompilato: string) => async (dispatch: Dispatch) => {
     try {
       dispatch({ ...GetCompiledSurveyCitizenServiceAction });
       dispatch(showLoader());
-      const res = await API.get(`/servizio/cittadino/questionarioCompilato/compilato/${idQuestionarioCompilato}`);
+      const res = await API.get(
+        `/servizio/cittadino/questionarioCompilato/compilato/${idQuestionarioCompilato}`
+      );
       if (res?.data) {
-        dispatch(setServiceQuestionarioTemplateIstanze(res.data.sezioniQuestionarioTemplateIstanze));
+        dispatch(
+          setServiceQuestionarioTemplateIstanze(
+            res.data.sezioniQuestionarioTemplateIstanze
+          )
+        );
       }
-
     } catch (error) {
-      console.log('GetCompiledSurveyCitizenService administrativeArea error', error);
+      console.log(
+        'GetCompiledSurveyCitizenService administrativeArea error',
+        error
+      );
     } finally {
       dispatch(hideLoader());
     }
