@@ -515,13 +515,13 @@ const UsersDetails = () => {
         <div>
           <DetailLayout
             titleInfo={{
-              title: userInfo?.nome + ' ' + userInfo?.cognome,
+              title: userInfo?.cognome + ' ' + userInfo?.nome,
               status: getUserRoleStatus(),
               upperTitle: { icon: 'it-user', text: getUpperTitle() },
               subTitle: getSubtitle(),
               iconAvatar: true,
-              name: userInfo?.nome,
               surname: userInfo?.cognome,
+              name: userInfo?.nome,
             }}
             profilePicture={immagineProfilo}
             formButtons={getButtons()}

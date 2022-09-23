@@ -96,7 +96,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
         >
           <UserAvatar
             avatarImage={profilePicture}
-            user={{ uName: name, uSurname: surname }}
+            user={{ uSurname: surname, uName: name }}
             size={device.mediaIsPhone ? AvatarSizes.Big : AvatarSizes.Small}
             font={
               device.mediaIsPhone ? AvatarTextSizes.Big : AvatarTextSizes.Small

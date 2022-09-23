@@ -480,8 +480,8 @@ const AuthoritiesDetails = () => {
                     item.items.map((cardItem) => (
                       <CardStatusAction
                         key={cardItem.id}
-                        title={`${cardItem.nome} ${
-                          cardItem.cognome ? cardItem.cognome : ''
+                        title={`${cardItem.cognome ? cardItem.cognome : ''} ${
+                          cardItem.nome
                         }`.trim()}
                         status={cardItem.stato}
                         id={cardItem.id}

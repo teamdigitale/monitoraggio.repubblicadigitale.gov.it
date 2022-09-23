@@ -310,7 +310,7 @@ const CitizensList: React.FC = () => {
           {(citizens?.cittadini || []).map((citizen: CitizenI, i: number) => (
             <DetailsRow
               key={i}
-              nome={citizen?.nome + ' ' + citizen?.cognome}
+              nome={citizen?.cognome + ' ' + citizen?.nome}
               stato={citizen?.statoQuestionario?.replace('_', ' ') || ''}
               onActionClick={onActionClick}
               id={citizen?.idCittadino || ''}

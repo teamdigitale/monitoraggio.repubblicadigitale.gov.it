@@ -75,14 +75,14 @@ const HeaderDesktop: React.FC<HeaderI> = ({
           <div>
             <UserAvatar
               avatarImage={profilePicture}
-              user={{ uName: user?.nome, uSurname: user?.cognome }}
+              user={{ uSurname: user?.cognome, uName: user?.nome }}
               size={AvatarSizes.Small}
               font={AvatarTextSizes.Small}
             />
           </div>
           <div className='d-flex flex-column align-items-start'>
             <h6 className='m-0 text-sans-serif'>
-              {user?.nome}&nbsp;{user?.cognome}
+              {user?.cognome}&nbsp;{user?.nome}
             </h6>
             <h6 className='font-weight-light text-nowrap'>
               {/*<em>{getRoleLabel(userProfile?.codiceRuolo)}</em>*/}
