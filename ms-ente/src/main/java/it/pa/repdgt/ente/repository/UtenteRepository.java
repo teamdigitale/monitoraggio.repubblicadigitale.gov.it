@@ -27,7 +27,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			@Param(value = "idEnte") Long idEnte
 	);
 	
-	@Query(value = "SELECT utente.NOME, utente.COGNOME "
+	@Query(value = "SELECT CONCAT(utente.COGNOME,' ', utente.NOME) "
 			+ "FROM utente utente "
 			+ "	INNER JOIN referente_delegati_gestore_programma rdg "
 			+ "		ON utente.CODICE_FISCALE = rdg.CF_UTENTE "
@@ -38,7 +38,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			nativeQuery = true)
 	public List<String> findReferentiProgrammaById(@Param(value = "idProgramma") Long id);
 	
-	@Query(value = "SELECT utente.NOME, utente.COGNOME "
+	@Query(value = "SELECT CONCAT(utente.COGNOME,' ', utente.NOME) "
 			+ "FROM utente utente "
 			+ "	INNER JOIN referente_delegati_gestore_progetto rdgp "
 			+ "		ON utente.CODICE_FISCALE = rdgp.CF_UTENTE "
@@ -49,7 +49,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			nativeQuery = true)
 	public List<String> findReferentiProgettoById(@Param(value = "idProgetto") Long id);
 	
-	@Query(value = "SELECT DISTINCT utente.NOME, utente.COGNOME "
+	@Query(value = "SELECT DISTINCT CONCAT(utente.COGNOME,' ', utente.NOME) "
 			+ "FROM utente utente "
 			+ "	INNER JOIN referente_delegati_partner rdp "
 			+ "		ON utente.CODICE_FISCALE = rdp.CF_UTENTE "

@@ -16,6 +16,7 @@ import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.surveymgmt.collection.SezioneQ3Collection;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
 import it.pa.repdgt.surveymgmt.resource.ServizioResource;
+import it.pa.repdgt.surveymgmt.service.SedeService;
 import it.pa.repdgt.surveymgmt.service.UtenteService;
 
 @Component
@@ -26,6 +27,8 @@ public class ServizioMapper {
 
 	@Autowired
 	private UtenteService utenteService;
+	@Autowired
+	private SedeService sedeService;
 	
 	/**
 	 * Mappa ServizioRequest in SezioneQ3Collection
@@ -62,10 +65,11 @@ public class ServizioMapper {
 		} 
 		final String codiceFiscaleFacilitatore = servizioEntity.getIdEnteSedeProgettoFacilitatore().getIdFacilitatore();
 		final UtenteEntity facilitatore = this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleFacilitatore);
-		final String nominativoFacilitatore = String.format("%s %s", facilitatore.getNome(), facilitatore.getCognome());
+		final String nominativoFacilitatore = String.format("%s %s", facilitatore.getCognome(), facilitatore.getNome());
 		servizioResource.setNominativoFacilitatore(nominativoFacilitatore);
 		servizioResource.setDurataServizio(servizioEntity.getDurataServizio());
 		servizioResource.setStato(servizioEntity.getStato());
+		servizioResource.setNomeSede(sedeService.getById(servizioEntity.getId()).getNome());
 		return servizioResource;
 	}
 	

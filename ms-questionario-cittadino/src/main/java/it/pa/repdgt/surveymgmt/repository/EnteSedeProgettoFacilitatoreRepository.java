@@ -27,7 +27,7 @@ public interface EnteSedeProgettoFacilitatoreRepository extends JpaRepository<En
 			@Param("idProgetto") Long idProgetto);
 
 	@Query(value = "SELECT CONCAT "
-			+ "			(u.nome, ' ', u.cognome) "
+			+ "			(u.cognome, ' ', u.nome) "
 			+ "		FROM "
 			+ "			utente u "
 			+ "		WHERE "
