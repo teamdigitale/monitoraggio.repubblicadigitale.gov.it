@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.51](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.50...1.0.0-test.51) (2022-09-23)
+
+
+### Bug Fixes
+
+* **be:** fix per errore deploy ([3d1fe17](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3d1fe174c80f8be9d45fc65b54504f88e65767d1))
+
 ## [1.0.0-test.50](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.49...1.0.0-test.50) (2022-09-23)
 
 
