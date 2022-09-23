@@ -49,32 +49,38 @@ const Select: React.FC<SelectI> = (props) => {
   useEffect(() => {
     if (
       onInputChange &&
-      selectedOption?.value !== value &&
-      selectedOption?.value
+      selectedOption &&
+      selectedOption.value &&
+      selectedOption.value !== value
     )
       onInputChange(selectedOption?.value, field);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedOption]);
 
   useEffect(() => {
-    if (options?.length) {
+    if (options.length > 0) {
       const newSelectedOption = options.find(
         (opt) => opt.value.toString() === value?.toString()
       );
 
       if (
-        newSelectedOption?.value !== selectedOption?.value &&
-        newSelectedOption
-      )
+        newSelectedOption &&
+        newSelectedOption.value !== selectedOption?.value
+      ) {
         setSelectedOption(newSelectedOption);
+      } else if (value === '' && selectedOption) {
+        setSelectedOption(undefined);
+      }
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, options]);
 
   useEffect(() => {
     if (options?.length === 1) {
       // if only one option, prefill select
-      setSelectedOption(options[0]);
+      if (options[0].value !== selectedOption?.value)
+        setSelectedOption(options[0]);
     }
   }, [options]);
 

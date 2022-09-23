@@ -51,6 +51,8 @@ export const errorHandler = async (error: unknown) => {
     dispatchNotify({
       status: 'error',
       message: await getErrorMessage(error),
+      closable: true,
+      duration: 'slow',
     });
   }
 };

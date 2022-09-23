@@ -25,6 +25,7 @@ const CitizenTableResult: React.FC<CitizenTableResultI> = ({
         nome: td.nome || '',
         cognome: td.cognome || '',
         codiceFiscale: td.codiceFiscale || '',
+        numeroDocumento: td.numeroDocumento || '',
         id: td.idCittadino || '',
         isPresentInList:
           citizensList.cittadini?.filter(

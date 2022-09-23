@@ -63,13 +63,13 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
             <div
               className={clsx(
                 'card-profile-container__icon',
-                'mr-2',
+                'mr-1',
                 !activeProfile && 'card-profile-container__opacity'
               )}
             >
               <UserAvatar
                 avatarImage={profilePicture}
-                user={{ uName: user?.nome, uSurname: user?.cognome }}
+                user={{ uSurname: user?.cognome, uName: user?.nome }}
                 size={device.mediaIsPhone ? AvatarSizes.Big : AvatarSizes.Small}
                 font={
                   device.mediaIsPhone
@@ -80,7 +80,7 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
               />
             </div>
           ) : (
-            <div className='pl-5 ml-1' />
+            <div className='pl-5' />
           )}
           <div>
             <CardTitle className='mb-1 primary-color-a12'>
@@ -100,6 +100,9 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
               )}
             >
               {profile?.nomeProgramma}
+              {profile?.nomeProgettoBreve
+                ? `, ${profile?.nomeProgettoBreve}`
+                : ''}
             </CardText>
           </div>
         </div>

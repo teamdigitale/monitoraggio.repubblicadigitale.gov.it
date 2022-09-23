@@ -30,6 +30,7 @@ import {
 import { openModal } from '../../../redux/features/modal/modalSlice';
 import FormOnboarding from './formOnboarding';
 import { defaultRedirectUrl } from '../../../routes';
+import '../../../../src/pages/facilitator/Onboarding/onboarding.scss';
 
 interface ProfilePicI {
   image?: boolean;
@@ -159,47 +160,40 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
                 type='file'
                 id='profile_pic'
                 onChange={updateImage}
-                accept='image/*, .png, .jpeg, .jpg'
+                accept='.png, .jpeg, .jpg'
                 capture
                 ref={inputRef}
                 className='sr-only'
               />
 
-              <div className='rounded-circle'>
+              <div className='rounded-circle onboarding__img-profile position-relative mr-3'>
                 <img
                   src={image}
                   alt='profile'
-                  className='mr-2 rounded-circle onboarding__img-profile'
-                  style={{
-                    maxWidth: '174px',
-                    maxHeight: '174px',
-                    minHeight: '174px',
-                  }}
+                  className='rounded-circle w-100 h-100'
                 />
-              </div>
-
-              <div
-                className={clsx(
-                  'onboarding__icon-container',
-                  'primary-bg',
-                  'position-absolute',
-                  'rounded-circle'
-                )}
-                style={{ bottom: '0px', right: '10px' }}
-              >
-                <Button
-                  onClick={addProfilePicture}
-                  size='xs'
-                  className='profile-picture-btn'
+                <div
+                  className={clsx(
+                    'onboarding__icon-container',
+                    'primary-bg',
+                    'position-absolute',
+                    'rounded-circle'
+                  )}
                 >
-                  <Icon
-                    size='lg'
-                    icon='it-camera'
-                    padding
-                    color='white'
-                    aria-label='Foto'
-                  />
-                </Button>
+                  <Button
+                    onClick={addProfilePicture}
+                    size='xs'
+                    className='profile-picture-btn'
+                  >
+                    <Icon
+                      size=''
+                      icon='it-camera'
+                      color='white'
+                      aria-label='Foto'
+                      className='position-absolute onboarding__icon'
+                    />
+                  </Button>
+                </div>
               </div>
             </div>
             <div>

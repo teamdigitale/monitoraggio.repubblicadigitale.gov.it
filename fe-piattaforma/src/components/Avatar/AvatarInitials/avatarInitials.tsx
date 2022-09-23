@@ -15,8 +15,8 @@ export enum AvatarTextSizes {
 
 export interface AvatarInitialsI {
   user: {
-    uName: string | undefined;
     uSurname: string | undefined;
+    uName: string | undefined;
   };
   lightColor?: boolean | undefined;
   size?: AvatarSizes;
@@ -25,17 +25,17 @@ export interface AvatarInitialsI {
 
 const AvatarInitials: React.FC<AvatarInitialsI> = (props) => {
   const {
-    user: { uName = '', uSurname = '' },
+    user: { uSurname = '', uName = '' },
     lightColor = false,
     size,
     font,
   } = props;
 
-  const getInitials = (name: string, surname: string) => {
-    const userName = name.charAt(0).toUpperCase();
+  const getInitials = (surname: string, name: string) => {
     const userSurname = surname.charAt(0).toUpperCase();
+    const userName = name.charAt(0).toUpperCase();
 
-    return userName + userSurname;
+    return userSurname + userName;
   };
 
   return (
@@ -49,12 +49,11 @@ const AvatarInitials: React.FC<AvatarInitialsI> = (props) => {
         'align-items-center',
         'justify-content-center',
         'font-weight-light',
-        `avatar-initials-container__circle-width${size}`,
-        'mr-2'
+        `avatar-initials-container__circle-width${size}`
       )}
     >
       {uName && uSurname ? (
-        <p className={`m-1 initials${font}`}>{getInitials(uName, uSurname)}</p>
+        <p className={`m-1 initials${font}`}>{getInitials(uSurname, uName)}</p>
       ) : (
         <Icon icon='it-user' color='primary' className='p-1' />
       )}

@@ -146,8 +146,8 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         values={usersList.map((item) => ({
           id: item.id || item.codiceFiscale,
           codiceFiscale: item.codiceFiscale,
-          cognome: item.cognome,
           nome: item.nome,
+          cognome: item.cognome,
         }))}
         onActionRadio={handleSelectUser}
         id='table'

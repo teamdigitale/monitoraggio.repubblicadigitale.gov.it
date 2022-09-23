@@ -153,8 +153,13 @@ const ProjectsDetails = () => {
     ) {
       navigate(`/area-amministrativa/progetti/${entityId}/info`);
     }
-    if(location.pathname === `/area-amministrativa/programmi/${entityId}/progetti/${projectId}`){
-      navigate(`/area-amministrativa/programmi/${entityId}/progetti/${projectId}/info`);
+    if (
+      location.pathname ===
+      `/area-amministrativa/programmi/${entityId}/progetti/${projectId}`
+    ) {
+      navigate(
+        `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/info`
+      );
     }
   }, []);
 
@@ -1209,8 +1214,8 @@ const ProjectsDetails = () => {
                     item.items.map((cardItem) => (
                       <CardStatusAction
                         key={cardItem.id}
-                        title={`${cardItem.nome} ${
-                          cardItem.cognome ? cardItem.cognome : ''
+                        title={`${cardItem.cognome ? cardItem.cognome : ''} ${
+                          cardItem.nome
                         }`.trim()}
                         status={cardItem.stato}
                         id={cardItem.id}

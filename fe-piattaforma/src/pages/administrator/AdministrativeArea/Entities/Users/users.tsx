@@ -74,6 +74,7 @@ const Users = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
+    dispatch(resetUserDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

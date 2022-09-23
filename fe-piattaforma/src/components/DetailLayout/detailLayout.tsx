@@ -38,7 +38,7 @@ interface DetailLayoutI {
   };
   itemsList?: ItemsListI | null | undefined;
   showItemsList?: boolean;
-  buttonsPosition: 'TOP' | 'BOTTOM';
+  buttonsPosition?: 'TOP' | 'BOTTOM';
   showGoBack?: boolean;
   goBackTitle?: string;
   goBackPath?: string;
@@ -60,7 +60,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   nav,
   itemsList,
   showItemsList = true,
-  buttonsPosition,
+  buttonsPosition = 'BOTTOM',
   showGoBack = true,
   goBackTitle = 'Torna indietro',
   goBackPath,
@@ -147,8 +147,8 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                   singleItem.items.map((item) => (
                     <CardStatusAction
                       key={item.id}
-                      title={`${item.nome} ${
-                        item.cognome ? item.cognome : ''
+                      title={`${item.cognome ? item.cognome : ''} ${
+                        item.nome
                       }`.trim()}
                       status={item.stato}
                       onActionClick={item.actions}

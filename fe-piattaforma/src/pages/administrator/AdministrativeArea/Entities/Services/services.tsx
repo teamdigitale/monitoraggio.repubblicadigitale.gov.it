@@ -29,6 +29,7 @@ import {
   selectEntityPagination,
   setEntityFilters,
   setEntityPagination,
+  resetServiceDetails,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import ManageServices from '../modals/manageService';
 import { formTypes } from '../utils';
@@ -78,6 +79,7 @@ const Services = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
+    dispatch(resetServiceDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -251,10 +253,9 @@ const Services = () => {
           <>
             <Table
               {...tableValues}
-              id='table'
+              id='table-services'
               onActionClick={onActionClick}
               onCellClick={(field, row) => console.log(field, row)}
-              //onRowClick={row => console.log(row)}
               withActions
               totalCounter={pagination?.totalElements}
             />

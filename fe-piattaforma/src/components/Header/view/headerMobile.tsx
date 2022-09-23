@@ -57,7 +57,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
           <div>
             <UserAvatar
               avatarImage={profilePicture}
-              user={{ uName: user?.nome, uSurname: user?.cognome }}
+              user={{ uSurname: user?.cognome, uName: user?.nome }}
               size={AvatarSizes.Big}
               font={AvatarTextSizes.Big}
               lightColor
@@ -70,6 +70,9 @@ const HeaderMobile: React.FC<HeaderI> = ({
                 userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
               }`}</em>
             </p>
+          </div>
+          <div className='ml-2'>
+            <Icon size='' color='white' icon='it-expand' />
           </div>
         </div>
       </DropdownToggle>

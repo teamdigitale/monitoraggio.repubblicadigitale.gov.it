@@ -145,7 +145,7 @@ const HeadquartersDetails = () => {
       title: 'Facilitatori',
       items:
         headquarterfacilitators?.map((facilitator: HeadquarterFacilitator) => ({
-          nome: `${facilitator.nome} ${facilitator.cognome}`,
+          nome: `${facilitator.cognome} ${facilitator.nome} `,
           stato: facilitator.stato,
           actions:
             facilitator.stato === entityStatus.ATTIVO &&
@@ -344,8 +344,8 @@ const HeadquartersDetails = () => {
                     item.items.map((cardItem) => (
                       <CardStatusAction
                         key={cardItem.id}
-                        title={`${cardItem.nome} ${
-                          cardItem.cognome ? cardItem.cognome : ''
+                        title={`${cardItem.cognome ? cardItem.cognome : ''} ${
+                          cardItem.nome
                         }`.trim()}
                         status={cardItem.stato}
                         id={cardItem.id}

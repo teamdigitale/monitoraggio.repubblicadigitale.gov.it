@@ -10,8 +10,8 @@ import AvatarInitials, {
 interface UserAvatarI {
   avatarImage?: string | undefined;
   user?: {
-    uName: string | undefined;
     uSurname: string | undefined;
+    uName: string | undefined;
   };
   lightColor?: boolean | undefined;
   size?: AvatarSizes;
@@ -22,7 +22,7 @@ const UserAvatar: React.FC<UserAvatarI> = (props) => {
   const {
     avatarImage = '',
     size,
-    user = { uName: '', uSurname: '' },
+    user = { uSurname: '', uName: '' },
     /*  lightColor = false,
     font, */
   } = props;
@@ -37,24 +37,24 @@ const UserAvatar: React.FC<UserAvatarI> = (props) => {
         'justify-content-center',
         'font-weight-light',
         `avatar-user-container__circle-width${size}`,
-        'mr-2'
+        'mr-2',
+        avatarImage && 'border border-primary'
       )}
+      style={{
+        width: device.mediaIsDesktop ? '35px' : '53px',
+        height: device.mediaIsDesktop ? '35px' : '53px',
+      }}
     >
       {avatarImage ? (
         <img
           src={avatarImage}
           alt='avatar'
           className='avatar-user-container__avatar-image'
-          style={{
-            maxWidth: '35px',
-            maxHeight: '35px',
-            minHeight: '35px',
-            borderRadius: '50%',
-          }}
+          style={{ borderRadius: '50%', width: '100%', height: '100%' }}
         />
       ) : (
         <AvatarInitials
-          user={user}
+          user={{ uSurname: user.uSurname, uName: user.uName }}
           lightColor={device.mediaIsPhone}
           size={device.mediaIsPhone ? AvatarSizes.Big : AvatarSizes.Small}
           font={

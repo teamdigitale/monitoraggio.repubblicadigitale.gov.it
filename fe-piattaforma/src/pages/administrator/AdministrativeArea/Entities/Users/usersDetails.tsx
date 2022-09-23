@@ -61,8 +61,11 @@ const UsersDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userDetails = useAppSelector(selectUsers)?.detail;
-  const { dettaglioUtente: userInfo = {}, dettaglioRuolo: userRoleList = [], immagineProfilo } =
-    userDetails;
+  const {
+    dettaglioUtente: userInfo = {},
+    dettaglioRuolo: userRoleList = [],
+    immagineProfilo,
+  } = userDetails;
   const { mediaIsDesktop } = useAppSelector(selectDevice);
   const {
     entityId,
@@ -512,13 +515,13 @@ const UsersDetails = () => {
         <div>
           <DetailLayout
             titleInfo={{
-              title: userInfo?.nome + ' ' + userInfo?.cognome,
+              title: userInfo?.cognome + ' ' + userInfo?.nome,
               status: getUserRoleStatus(),
               upperTitle: { icon: 'it-user', text: getUpperTitle() },
               subTitle: getSubtitle(),
               iconAvatar: true,
-              name: userInfo?.nome,
               surname: userInfo?.cognome,
+              name: userInfo?.nome,
             }}
             profilePicture={immagineProfilo}
             formButtons={getButtons()}

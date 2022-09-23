@@ -68,10 +68,10 @@ const UserProfile = () => {
     : [];
 
   return (
-    <div className='container'>
+    <div className='container mt-5'>
       <DetailLayout
         titleInfo={{
-          title: `${user?.nome} ${user?.cognome}`,
+          title: `${user?.cognome} ${user?.nome} `,
           status: 'ATTIVO',
           upperTitle: { icon: 'it-user', text: 'UTENTE' },
           iconAvatar: true,

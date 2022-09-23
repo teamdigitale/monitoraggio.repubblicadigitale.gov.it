@@ -101,7 +101,7 @@ const CitizensList: React.FC = () => {
   const [alreadySearched, setAlreadySearched] = useState(false);
 
   const getServiceDetailsCitizens = () => {
-    dispatch(GetCitizenListServiceDetail(serviceId));
+    dispatch(GetCitizenListServiceDetail(serviceId, true));
   };
 
   const getAllFilters = () => {
@@ -310,7 +310,7 @@ const CitizensList: React.FC = () => {
           {(citizens?.cittadini || []).map((citizen: CitizenI, i: number) => (
             <DetailsRow
               key={i}
-              nome={citizen?.nome + ' ' + citizen?.cognome}
+              nome={citizen?.cognome + ' ' + citizen?.nome}
               stato={citizen?.statoQuestionario?.replace('_', ' ') || ''}
               onActionClick={onActionClick}
               id={citizen?.idCittadino || ''}
@@ -338,8 +338,8 @@ const CitizensList: React.FC = () => {
       <ConfirmSentSurveyModal />
       <UploadCSVModal
         accept='.xlsx'
-        onConfirm={() => {
-          if (serviceId) dispatch(GetCitizenListServiceDetail(serviceId));
+        onClose={() => {
+          if (serviceId) dispatch(GetCitizenListServiceDetail(serviceId, true));
         }}
         onEsito={handleCitizenUploadEsito}
         template={CitizenTemplate}

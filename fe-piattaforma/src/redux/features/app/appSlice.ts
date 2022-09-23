@@ -64,7 +64,9 @@ export const appSlice = createSlice({
           (elem) =>
             elem.id === action.payload?.id && elem.nome !== action.payload?.nome
         );
-        state.infoIdsBreadcrumb[index].nome = action.payload?.nome;
+        if (index >= 0) {
+          state.infoIdsBreadcrumb[index].nome = action.payload?.nome;
+        }
       }
     },
   },

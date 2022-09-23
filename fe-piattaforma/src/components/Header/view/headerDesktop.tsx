@@ -67,20 +67,22 @@ const HeaderDesktop: React.FC<HeaderI> = ({
             'd-inline-flex',
             'align-items-center',
             'text.white',
-            'primary-bg-b2'
+            'primary-bg-b2',
+            'header-panel-btn',
+            'border-right'
           )}
         >
           <div>
             <UserAvatar
               avatarImage={profilePicture}
-              user={{ uName: user?.nome, uSurname: user?.cognome }}
+              user={{ uSurname: user?.cognome, uName: user?.nome }}
               size={AvatarSizes.Small}
               font={AvatarTextSizes.Small}
             />
           </div>
           <div className='d-flex flex-column align-items-start'>
             <h6 className='m-0 text-sans-serif'>
-              {user?.nome}&nbsp;{user?.cognome}
+              {user?.cognome}&nbsp;{user?.nome}
             </h6>
             <h6 className='font-weight-light text-nowrap'>
               {/*<em>{getRoleLabel(userProfile?.codiceRuolo)}</em>*/}
@@ -88,6 +90,9 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
               }`}</em>
             </h6>
+          </div>
+          <div className='ml-2'>
+            <Icon size='' color='white' icon='it-expand' />
           </div>
         </div>
       </DropdownToggle>
@@ -290,7 +295,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               isLogged ? (
                 <>
                   {userDropDown()}
-                  <div className='mx-4'>
+                  <div className='mx-4 pr-2'>
                     {/* <Icon
                     color='white'
                     icon='campanella'
