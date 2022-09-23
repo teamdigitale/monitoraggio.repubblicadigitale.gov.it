@@ -40,7 +40,7 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
         setSurveyFormFieldValue({
           form: FormHelper.onInputChange(
             form,
-            surveyName + 'clone',
+            surveyName + ' clone',
             'survey-name'
           ),
         })

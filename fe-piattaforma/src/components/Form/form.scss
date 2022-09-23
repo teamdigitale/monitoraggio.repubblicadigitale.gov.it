@@ -15,12 +15,12 @@
 
 .form-control {
   &:disabled {
-    border-bottom: 1px solid #797c80;
+    border-bottom: 1px solid #797c80 !important;
     background: #e6e9f2;
   }
   &[type='text']:disabled,
   &[type='date']:disabled {
-    border-bottom: 1px solid #797c80;
+    border-bottom: 1px solid #797c80 !important;
   }
 
   &[type='text'],

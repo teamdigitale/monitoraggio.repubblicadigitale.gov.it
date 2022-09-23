@@ -43,6 +43,7 @@ import {
 } from '../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 import { formatDate } from '../../../../../utils/datesHelper';
 import useGuard from '../../../../../hooks/guard';
+import { resetSurveyDetails } from '../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 
 const entity = 'questionarioTemplate';
 const statusDropdownLabel = 'stato';
@@ -68,6 +69,7 @@ const Surveys = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
+    dispatch(resetSurveyDetails())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

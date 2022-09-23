@@ -5,6 +5,7 @@ import GenericSearchFilterTableLayout, {
   SearchInformationI,
 } from '../../../../../components/genericSearchFilterTableLayout/genericSearchFilterTableLayout';
 import {
+  resetCitizenDetails,
   selectEntityFilters,
   selectEntityFiltersOptions,
   selectEntityList,
@@ -56,6 +57,7 @@ const Citizens = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
+    dispatch(resetCitizenDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

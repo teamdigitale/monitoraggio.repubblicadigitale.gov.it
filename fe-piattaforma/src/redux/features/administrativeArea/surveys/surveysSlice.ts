@@ -302,6 +302,7 @@ export const surveysSlice = createSlice({
     ) => {
       state.surveyOnline = action.payload;
     },
+    resetSurveyDetails: () => initialState,
   },
 });
 
@@ -319,6 +320,7 @@ export const {
   setPrintSurveySection,
   resetCompilingSurveyForm,
   setSurveyOnline,
+  resetSurveyDetails,
 } = surveysSlice.actions;
 
 export const selectSurvey = (state: RootState) => state.survey;

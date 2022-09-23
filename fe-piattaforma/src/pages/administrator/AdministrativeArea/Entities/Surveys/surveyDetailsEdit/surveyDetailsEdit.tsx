@@ -50,18 +50,22 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
     useAppSelector(selectPrograms).detail?.dettagliInfoProgramma?.nomeBreve;
 
   useEffect(() => {
-    if (idQuestionario) dispatch(GetSurveyInfo(idQuestionario));
+    if (idQuestionario && !(cloneModeState && form['survey-name']?.value))
+      dispatch(GetSurveyInfo(idQuestionario));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idQuestionario]);
 
-  useEffect(() => { // For breadcrumb
-    if(!programName && entityId){
+  useEffect(() => {
+    // For breadcrumb
+    if (!programName && entityId) {
       dispatch(GetProgramDetail(entityId));
     }
   }, []);
 
-  useEffect(() => { // For breadcrumb
-    if(entityId && programName){
+  useEffect(() => {
+    // For breadcrumb
+    if (entityId && programName) {
       dispatch(
         setInfoIdsBreadcrumb({
           id: entityId,
@@ -242,11 +246,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
             upperTitle: { icon: 'it-file', text: 'Questionario' },
           }}
           buttonsPosition='BOTTOM'
-          goBackTitle={
-            entityId
-              ? 'Torna indietro'
-              : 'Elenco questionari'
-          }
+          goBackTitle={entityId ? 'Torna indietro' : 'Elenco questionari'}
           goBackPath='/area-amministrativa/questionari'
         />
 
