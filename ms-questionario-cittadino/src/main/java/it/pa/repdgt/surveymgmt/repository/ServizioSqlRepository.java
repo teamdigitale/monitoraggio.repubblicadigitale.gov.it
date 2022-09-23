@@ -230,7 +230,7 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 
 	@Query(value = " "
 			 + " SELECT          "
-			 + "	CONCAT(u.nome, ' ', u.cognome) as nominativoFacilitatore "
+			 + "	CONCAT(u.cognome, ' ', u.nome) as nominativoFacilitatore "
 			 + " FROM            "
 			 + "	servizio s   "
 			 + "	INNER JOIN utente u "
