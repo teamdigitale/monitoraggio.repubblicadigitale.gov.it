@@ -82,7 +82,7 @@ public class QuestionarioTemplateRestApi {
 			);
 		final List<QuestionarioTemplateLightResource> questionariTemplateLightResource = this.questionarioTemplateMapper.toLightResourceFrom(questionariTemplateList);
 	
-		final Long totaleElementi = this.questionarioTemplateService.getNumeroTotaleQuestionariTemplateByFiltro(criterioRicerca, statoQuestionarioTemplate);
+		final Long totaleElementi = this.questionarioTemplateService.getNumeroTotaleQuestionariTemplateByFiltro(criterioRicerca, statoQuestionarioTemplate, profilazioneParam);
 		final int numeroPagine = (int) (totaleElementi / Integer.parseInt(pageSize));
 
 		return new QuestionariTemplatePaginatiResource(
