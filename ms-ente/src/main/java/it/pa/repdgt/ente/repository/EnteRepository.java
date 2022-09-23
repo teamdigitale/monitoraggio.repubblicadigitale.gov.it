@@ -101,7 +101,7 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 				+" 		AND (     :criterioRicerca IS NULL  "
 		        +"			   OR CONVERT( enti.ID_ENTE, CHAR ) = :criterioRicerca "
 		        +"	    	   OR UPPER( enti.NOME_ENTE ) LIKE UPPER( :criterioRicercaLike ) "
-	            +"		  	   OR UPPER( enti.PARTITA_IVA ) = UPPER( :criterioRicercaLike ) "
+	            +"		  	   OR UPPER( enti.PARTITA_IVA ) = UPPER( :criterioRicerca ) "
 	            +"	    ) "
 				+" 		AND  ( COALESCE(:profiliEnte) IS NULL  OR enti.PROFILO_ENTE IN (:profiliEnte) ) "
 				+" ORDER BY enti.NOME_ENTE",
