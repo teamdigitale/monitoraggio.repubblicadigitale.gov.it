@@ -29,7 +29,10 @@ const CitizensDetail: React.FC = () => {
       dispatch(
         setInfoIdsBreadcrumb({
           id: idCittadino,
-          nome: citizen?.dettaglioCittadino?.nome + ' ' + citizen?.dettaglioCittadino?.cognome,
+          nome:
+            citizen?.dettaglioCittadino?.nome +
+            ' ' +
+            citizen?.dettaglioCittadino?.cognome,
         })
       );
     }
@@ -62,9 +65,9 @@ const CitizensDetail: React.FC = () => {
       <DetailLayout
         titleInfo={{
           title:
-            citizen?.dettaglioCittadino?.nome +
+            citizen?.dettaglioCittadino?.cognome +
             ' ' +
-            citizen?.dettaglioCittadino?.cognome,
+            citizen?.dettaglioCittadino?.nome,
           status: '',
           upperTitle: { icon: 'it-user', text: 'Cittadino' },
         }}

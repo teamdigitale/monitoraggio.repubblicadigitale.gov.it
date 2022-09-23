@@ -3,6 +3,7 @@ import { TableHeading } from '../utils';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
+  resetProjectDetails,
   selectEntityFilters,
   selectEntityFiltersOptions,
   selectEntityList,
@@ -72,6 +73,7 @@ const Projects: React.FC = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
+    dispatch(resetProjectDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

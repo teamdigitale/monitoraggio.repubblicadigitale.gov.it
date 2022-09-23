@@ -146,6 +146,9 @@ export const citizensAreaSlice = createSlice({
       delete newFilters.criterioRicerca;
       state.filters = { ...newFilters };
     },
+    resetCitizenDetails: (state) => {
+      state.detail = initialState.detail;
+    }
   },
 });
 
@@ -161,6 +164,7 @@ export const {
   setCitizenSearchResults,
   clearCitizenSearch,
   deleteFiltroCriterioRicercaCitizen,
+  resetCitizenDetails,
 } = citizensAreaSlice.actions;
 
 export const selectEntityList = (state: RootState) => state.citizensArea.list;

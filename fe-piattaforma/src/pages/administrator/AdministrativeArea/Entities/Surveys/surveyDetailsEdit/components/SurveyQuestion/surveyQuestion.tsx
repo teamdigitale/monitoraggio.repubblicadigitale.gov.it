@@ -90,6 +90,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
                 surveyQuestion?.form['question-values'].field
               )
             }
+            viewDisabled={!(cloneMode || editMode)}
           />
         );
       default:

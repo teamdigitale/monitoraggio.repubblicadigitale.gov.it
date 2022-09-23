@@ -48,11 +48,15 @@ export const TableHeadingServicesList: TableHeadingI[] = [
   {
     field: 'data',
     label: 'data',
-    size: 'small',
+    //size: 'small',
   },
-  {
+  /*{
     field: 'facilitatore',
     label: 'Facilitatore',
+  },*/
+  {
+    field: 'nomeSede',
+    label: 'Sede',
   },
   {
     field: 'stato',
