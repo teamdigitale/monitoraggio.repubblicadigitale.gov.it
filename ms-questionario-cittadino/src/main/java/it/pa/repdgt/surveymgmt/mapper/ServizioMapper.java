@@ -69,7 +69,7 @@ public class ServizioMapper {
 		servizioResource.setNominativoFacilitatore(nominativoFacilitatore);
 		servizioResource.setDurataServizio(servizioEntity.getDurataServizio());
 		servizioResource.setStato(servizioEntity.getStato());
-		servizioResource.setNomeSede(sedeService.getById(servizioEntity.getId()).getNome());
+		servizioResource.setNomeSede(sedeService.getById(servizioEntity.getIdEnteSedeProgettoFacilitatore().getIdSede()).getNome());
 		return servizioResource;
 	}
 	
