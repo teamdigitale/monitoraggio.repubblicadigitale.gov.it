@@ -29,7 +29,7 @@ public class EnteSedeProgettoFacilitatoreService {
 	@LogMethod
 	@LogExecutionTime
 	public EnteSedeProgettoFacilitatoreEntity getById(@NotNull final EnteSedeProgettoFacilitatoreKey id) {
-		final String messaggioErrore = String.format("facilitatore con codice fiscale '%s' non presente per ente '%s' - sede '%s' - progetto '%s' ", 
+		final String messaggioErrore = String.format("Facilitatore con codice fiscale '%s' non presente per ente '%s' - sede '%s' - progetto '%s' ", 
 				id.getIdFacilitatore(), 
 				id.getIdEnte(),
 				id.getIdSede(),
