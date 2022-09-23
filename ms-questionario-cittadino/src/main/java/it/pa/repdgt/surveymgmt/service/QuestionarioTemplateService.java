@@ -22,6 +22,7 @@ import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.ProgrammaXQuestionarioTemplateEntity;
 import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
+import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
@@ -51,7 +52,21 @@ public class QuestionarioTemplateService {
 
 	@LogMethod
 	@LogExecutionTime
-	public Long getNumeroTotaleQuestionariTemplateByFiltro(String criterioRicerca, String statoQuestionario) {
+	public Long getNumeroTotaleQuestionariTemplateByFiltro(String criterioRicerca, 
+			String statoQuestionario,
+			@NotNull @Valid final SceltaProfiloParam profilazione) {
+		String codiceRuoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato().toString();
+		if( RuoliUtentiConstants.REGP.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+				|| RuoliUtentiConstants.DEGP.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+				|| RuoliUtentiConstants.REPP.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+				|| RuoliUtentiConstants.DEPP.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+				|| RuoliUtentiConstants.FACILITATORE.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+				|| RuoliUtentiConstants.VOLONTARIO.equalsIgnoreCase(codiceRuoloUtenteLoggato) ) 
+				return 0L;
+		else if(RuoliUtentiConstants.REG.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+				|| RuoliUtentiConstants.DEG.equalsIgnoreCase(codiceRuoloUtenteLoggato)
+				|| RuoliUtentiConstants.DSCU.equalsIgnoreCase(codiceRuoloUtenteLoggato))
+			return 1L;
 		return this.questionarioTemplateSqlService.getNumeroTotaleQuestionariTemplateByFiltro(criterioRicerca, statoQuestionario);
 	}
 

@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -41,16 +43,18 @@ public class GruppoEntity implements Serializable {
 	)
 	private List<PermessoEntity> permessi = new ArrayList<>();
 	
-	public List<PermessoEntity> addPermesso(PermessoEntity permesso) {
-		this.permessi.add(permesso);
-		return this.permessi;
-	}
-
+	@JsonIgnore
 	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column(name = "DATA_ORA_CREAZIONE")
 	private Date dataOraCreazione;
 
+	@JsonIgnore
 	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column(name = "DATA_ORA_AGGIORNAMENTO")
 	private Date dataOraAggiornamento;
+	
+	public List<PermessoEntity> addPermesso(PermessoEntity permesso) {
+		this.permessi.add(permesso);
+		return this.permessi;
+	}
 }

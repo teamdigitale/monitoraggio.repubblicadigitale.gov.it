@@ -31,6 +31,9 @@ public class ServizioResource implements Serializable {
 	@JsonProperty(value = "durataServizio")
 	private String durataServizio;
 	
+	@JsonProperty(value = "nomeSede")
+	private String nomeSede;
+	
 	// nome e cognome del facilitatore
 	@JsonProperty(value = "facilitatore")
 	private String nominativoFacilitatore;

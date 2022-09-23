@@ -105,7 +105,7 @@ public class QuestionarioTemplateServiceTest {
 	@Test
 	public void getNumeroTotaleQuestionariTemplateByFiltroTest() {
 		when(this.questionarioTemplateSqlService.getNumeroTotaleQuestionariTemplateByFiltro("CRITERIORICERCA", "ATTIVO")).thenReturn(1L);
-		Long risultato = questionarioTemplateService.getNumeroTotaleQuestionariTemplateByFiltro("CRITERIORICERCA", "ATTIVO");
+		Long risultato = questionarioTemplateService.getNumeroTotaleQuestionariTemplateByFiltro("CRITERIORICERCA", "ATTIVO", sceltaProfilazione);
 		assertThat(risultato).isEqualTo(1L);
 	}
 	
