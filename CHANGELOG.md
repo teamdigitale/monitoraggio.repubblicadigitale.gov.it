@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.52](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.51...1.0.0-test.52) (2022-09-23)
+
+
+### Bug Fixes
+
+* **be:** fix ricerca cittadino + servizio ([59d3ac4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/59d3ac4af23f1c6df08d18ac22bf713a6392494e))
+
 ## [1.0.0-test.51](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.50...1.0.0-test.51) (2022-09-23)
 
 
