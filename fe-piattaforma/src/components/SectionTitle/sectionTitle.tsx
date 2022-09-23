@@ -130,7 +130,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
                 type='file'
                 id='profile_pic'
                 onChange={updateImage}
-                accept='image/*, .png, .jpeg, .jpg'
+                accept='.png, .jpeg, .jpg'
                 capture
                 ref={inputRef}
                 className='sr-only'

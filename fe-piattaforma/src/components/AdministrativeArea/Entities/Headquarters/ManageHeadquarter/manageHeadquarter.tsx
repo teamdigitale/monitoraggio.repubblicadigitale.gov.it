@@ -361,6 +361,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
                 },
               ]);
               setMovingHeadquarter(false);
+              dispatch(setHeadquartersList(null));
             }}
             title='Cerca'
             search

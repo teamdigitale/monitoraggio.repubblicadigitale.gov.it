@@ -54,7 +54,9 @@ const CitizensArea = () => {
     if (pathname.includes(locations.events)) {
       setCorrectPageTitle(PageTitleMock.eventi);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <>
       <PageTitle breadcrumb={arrayBreadcrumb} {...correctPageTitle} />

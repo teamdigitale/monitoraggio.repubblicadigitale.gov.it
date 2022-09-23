@@ -147,7 +147,7 @@ const Citizens = () => {
     if (Array.isArray(citizensList) && citizensList.length)
       setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [citizensList?.length]);
+  }, [citizensList]);
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {

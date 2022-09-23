@@ -100,6 +100,9 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
               )}
             >
               {profile?.nomeProgramma}
+              {profile?.nomeProgettoBreve
+                ? `, ${profile?.nomeProgettoBreve}`
+                : ''}
             </CardText>
           </div>
         </div>
