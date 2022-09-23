@@ -10,8 +10,8 @@ import AvatarInitials, {
 interface UserAvatarI {
   avatarImage?: string | undefined;
   user?: {
-    uName: string | undefined;
     uSurname: string | undefined;
+    uName: string | undefined;
   };
   lightColor?: boolean | undefined;
   size?: AvatarSizes;
@@ -22,7 +22,7 @@ const UserAvatar: React.FC<UserAvatarI> = (props) => {
   const {
     avatarImage = '',
     size,
-    user = { uName: '', uSurname: '' },
+    user = { uSurname: '', uName: '' },
     /*  lightColor = false,
     font, */
   } = props;
@@ -54,7 +54,7 @@ const UserAvatar: React.FC<UserAvatarI> = (props) => {
         />
       ) : (
         <AvatarInitials
-          user={user}
+          user={{ uSurname: user.uSurname, uName: user.uName }}
           lightColor={device.mediaIsPhone}
           size={device.mediaIsPhone ? AvatarSizes.Big : AvatarSizes.Small}
           font={

@@ -135,7 +135,7 @@ const Citizens = () => {
       TableHeading,
       (citizensList || []).map((td) => ({
         id: td.id,
-        name: td.nome + ' ' + td.cognome,
+        name: td.cognome + ' ' + td.nome,
         numeroServizi: td.numeroServizi,
         numeroQuestionariCompilati: td.numeroQuestionariCompilati,
       }))

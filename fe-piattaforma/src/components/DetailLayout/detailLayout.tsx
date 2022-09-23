@@ -147,8 +147,8 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                   singleItem.items.map((item) => (
                     <CardStatusAction
                       key={item.id}
-                      title={`${item.nome} ${
-                        item.cognome ? item.cognome : ''
+                      title={`${item.cognome ? item.cognome : ''} ${
+                        item.nome
                       }`.trim()}
                       status={item.stato}
                       onActionClick={item.actions}

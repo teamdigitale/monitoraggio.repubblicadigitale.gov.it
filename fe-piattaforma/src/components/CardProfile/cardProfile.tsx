@@ -69,7 +69,7 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
             >
               <UserAvatar
                 avatarImage={profilePicture}
-                user={{ uName: user?.nome, uSurname: user?.cognome }}
+                user={{ uSurname: user?.cognome, uName: user?.nome }}
                 size={device.mediaIsPhone ? AvatarSizes.Big : AvatarSizes.Small}
                 font={
                   device.mediaIsPhone
