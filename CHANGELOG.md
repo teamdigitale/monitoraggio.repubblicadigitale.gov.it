@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.150](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.149...1.0.0-develop.150) (2022-09-23)
+
+
+### Bug Fixes
+
+* **be:** questionario template + filtri ([316589b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/316589b62c4fc122e89d16cbde2de564cd12f2bb))
+
 ## [1.0.0-develop.149](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.148...1.0.0-develop.149) (2022-09-22)
 
 
