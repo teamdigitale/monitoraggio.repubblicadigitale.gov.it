@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.53](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.52...1.0.0-test.53) (2022-09-23)
+
+
+### Bug Fixes
+
+* **be:** nominativo facilitatore ([115052b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/115052b6587936647f6195149f6792a646c81fbe))
+
 ## [1.0.0-test.52](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.51...1.0.0-test.52) (2022-09-23)
 
 
