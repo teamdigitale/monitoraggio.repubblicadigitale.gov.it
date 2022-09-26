@@ -8,7 +8,10 @@ import {
   setUserProfile,
   UserProfileI,
 } from './userSlice';
-import { getSessionValues } from '../../../utils/sessionHelper';
+import {
+  clearSessionValues,
+  getSessionValues,
+} from '../../../utils/sessionHelper';
 import { RootState } from '../../store';
 import { isActiveProvisionalLogin } from '../../../pages/common/Auth/auth';
 
@@ -198,6 +201,7 @@ export const LogoutRedirect = () => async (dispatch: Dispatch) => {
         '/auth',
         ''
       );
+    clearSessionValues();
     console.log('Logout Redirect to', logoutRedirectUrl);
     window.location.replace(logoutRedirectUrl);
   } catch (error) {

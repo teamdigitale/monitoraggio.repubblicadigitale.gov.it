@@ -16,7 +16,6 @@ import Logo from '/public/assets/img/logo.png';
 import Bell from '/public/assets/img/campanella.png';
 import { useTranslation } from 'react-i18next';
 import { HeaderI } from '../header';
-import { logout } from '../../../redux/features/user/userSlice';
 import HeaderMenu from '../../HeaderMenu/headerMenu';
 import { openModal } from '../../../redux/features/modal/modalSlice';
 import {
@@ -152,7 +151,6 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               )}
               role='menuitem'
               onClick={() => {
-                dispatch(logout());
                 dispatch(LogoutRedirect());
               }}
             >
