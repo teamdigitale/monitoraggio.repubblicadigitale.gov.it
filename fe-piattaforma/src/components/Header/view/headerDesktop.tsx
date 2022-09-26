@@ -26,6 +26,7 @@ import {
 import useGuard from '../../../hooks/guard';
 import { defaultRedirectUrl } from '../../../routes';
 import UserAvatar from '../../Avatar/UserAvatar/UserAvatar';
+import { LogoutRedirect } from '../../../redux/features/user/userThunk';
 
 const HeaderDesktop: React.FC<HeaderI> = ({
   isHeaderFull = true,
@@ -150,7 +151,10 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 'w-100'
               )}
               role='menuitem'
-              onClick={() => dispatch(logout())}
+              onClick={() => {
+                dispatch(logout());
+                dispatch(LogoutRedirect());
+              }}
             >
               <strong>Esci</strong>
               <Icon

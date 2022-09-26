@@ -21,6 +21,7 @@ import {
 } from '../../Avatar/AvatarInitials/avatarInitials';
 import { defaultRedirectUrl } from '../../../routes';
 import UserAvatar from '../../Avatar/UserAvatar/UserAvatar';
+import {LogoutRedirect} from "../../../redux/features/user/userThunk";
 
 const HeaderMobile: React.FC<HeaderI> = ({
   dispatch,
@@ -139,7 +140,10 @@ const HeaderMobile: React.FC<HeaderI> = ({
                 'justify-content-between'
               )}
               role='menuitem'
-              onClick={() => dispatch(logout())}
+              onClick={() => {
+                dispatch(logout());
+                dispatch(LogoutRedirect());
+              }}
             >
               <span>Esci</span>
               <Icon

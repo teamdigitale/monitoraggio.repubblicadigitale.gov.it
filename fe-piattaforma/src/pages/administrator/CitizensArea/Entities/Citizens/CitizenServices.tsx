@@ -11,7 +11,7 @@ import { useAppSelector } from '../../../../../redux/hooks';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import { ServizioCittadinoI } from '../../../../../redux/features/citizensArea/citizensAreaSlice';
 import { useNavigate } from 'react-router-dom';
-import { Button, Icon } from 'design-react-kit';
+import { Button, Icon, UncontrolledTooltip } from 'design-react-kit';
 
 const TableHeadingEntities: TableHeadingI[] = [
   {
@@ -47,19 +47,33 @@ const CitizenServices: React.FC<{
               rowTableId={td.idServizio}
             />
             {td.statoQuestionario === 'COMPILATO' && (
-              <Button
-                onClick={() => navigate(`/area-amministrativa/servizi/${td.idServizio}/cittadini/compilato/${td.idQuestionarioCompilato}`,{replace: true})}
-                className='py-0 px-2'
-                aria-label='Pulsante visualliza questionario compilato'
-              >
-                <Icon
-                  icon='it-zoom-in'
-                  color='primary'
-                  size='sm'
-                  aria-label='Vedi questionario compilato'
-                  focusable={false}
-                />
-              </Button>
+              <>
+                <Button
+                  onClick={() =>
+                    navigate(
+                      `/area-amministrativa/servizi/${td.idServizio}/cittadini/compilato/${td.idQuestionarioCompilato}`,
+                      { replace: true }
+                    )
+                  }
+                  className='py-0 px-2'
+                  aria-label='Pulsante visualliza questionario compilato'
+                  id={`button-view-${td.idQuestionarioCompilato}`}
+                >
+                  <Icon
+                    icon='it-zoom-in'
+                    color='primary'
+                    size='sm'
+                    aria-label='Vedi questionario compilato'
+                    focusable={false}
+                  />
+                </Button>
+                <UncontrolledTooltip
+                  placement='top'
+                  target={`button-view-${td.idQuestionarioCompilato}`}
+                >
+                  Visualizza questionario
+                </UncontrolledTooltip>
+              </>
             )}
           </>
         ),

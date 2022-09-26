@@ -74,7 +74,7 @@ export const CreateUserContext =
       if (isActiveProvisionalLogin) {
         body = {
           codiceFiscale,
-        }
+        };
       }
       const res = await API.post('/contesto', body);
 
@@ -187,3 +187,22 @@ export const UploadUserPic =
       dispatch(hideLoader());
     }
   };
+
+const LogoutRedirectAction = { type: 'user/LogoutRedirect' };
+export const LogoutRedirect = () => async (dispatch: Dispatch) => {
+  try {
+    dispatch({ ...LogoutRedirectAction }); // TODO manage dispatch for dev env only
+    dispatch(showLoader());
+    const logoutRedirectUrl =
+      `${process?.env?.REACT_APP_COGNITO_BASE_URL}logout?client_id=${process?.env?.REACT_APP_COGNITO_CLIENT_ID}&logout_uri=${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}`.replace(
+        '/auth',
+        ''
+      );
+    console.log('Logout Redirect to', logoutRedirectUrl);
+    window.location.replace(logoutRedirectUrl);
+  } catch (error) {
+    console.log('LogoutRedirect error', error);
+  } finally {
+    dispatch(hideLoader());
+  }
+};

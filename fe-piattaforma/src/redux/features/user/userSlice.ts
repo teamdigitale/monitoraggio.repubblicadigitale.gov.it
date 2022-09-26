@@ -119,8 +119,8 @@ export const userSlice = createSlice({
       state.isLogged = true;
     },
     logout: (state) => {
-      state.isLogged = false;
       clearSessionValues();
+      state.isLogged = false;
     },
   },
 });

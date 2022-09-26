@@ -24,6 +24,7 @@ import {
 import {
   CreateUserContext,
   EditUser,
+  LogoutRedirect,
   SelectUserRole,
   UploadUserPic,
 } from '../../../redux/features/user/userThunk';
@@ -125,6 +126,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
       }
     } catch {
       dispatch(logout());
+      dispatch(LogoutRedirect());
     }
   };
 
