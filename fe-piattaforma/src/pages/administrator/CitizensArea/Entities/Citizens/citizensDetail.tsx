@@ -30,9 +30,9 @@ const CitizensDetail: React.FC = () => {
         setInfoIdsBreadcrumb({
           id: idCittadino,
           nome:
-            citizen?.dettaglioCittadino?.nome +
+            citizen?.dettaglioCittadino?.cognome +
             ' ' +
-            citizen?.dettaglioCittadino?.cognome,
+            citizen?.dettaglioCittadino?.nome,
         })
       );
     }
