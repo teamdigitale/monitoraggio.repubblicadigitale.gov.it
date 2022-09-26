@@ -208,6 +208,5 @@ export const LogoutRedirect = () => async (dispatch: Dispatch) => {
     console.log('LogoutRedirect error', error);
   } finally {
     dispatch(hideLoader());
-    dispatch(logout());
   }
 };
