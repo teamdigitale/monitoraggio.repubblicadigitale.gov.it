@@ -146,7 +146,7 @@ const UsersDetails = () => {
       dispatch(
         setInfoIdsBreadcrumb({
           id: userId,
-          nome: userInfo?.nome + ' ' + userInfo?.cognome,
+          nome: userInfo?.cognome + ' ' + userInfo?.nome,
         })
       );
     }
