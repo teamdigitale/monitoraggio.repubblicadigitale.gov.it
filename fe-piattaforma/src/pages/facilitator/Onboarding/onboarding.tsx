@@ -16,11 +16,7 @@ import withFormHandler, {
 } from '../../../hoc/withFormHandler';
 import { Form, Input } from '../../../components';
 import { Button, FormGroup, Icon, Label } from 'design-react-kit';
-import {
-  login,
-  logout,
-  selectUser,
-} from '../../../redux/features/user/userSlice';
+import { login, selectUser } from '../../../redux/features/user/userSlice';
 import {
   CreateUserContext,
   EditUser,
@@ -125,7 +121,6 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
         }
       }
     } catch {
-      dispatch(logout());
       dispatch(LogoutRedirect());
     }
   };
