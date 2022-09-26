@@ -20,9 +20,13 @@ const baseFrameURL =
 // OLD'https://hnmhsi4ogf.execute-api.eu-central-1.amazonaws.com/test/anonymous-embed-sample';
 */
 
-const dashboardBaseURL = process.env.REACT_APP_DASHBOARD_BASE_URL || 'https://backend.facilitazione-dev.mitd.technology/dashboard_dev';
+const dashboardBaseURL =
+  process.env.REACT_APP_DASHBOARD_BASE_URL ||
+  'https://backend.facilitazione-dev.mitd.technology/dashboard_dev';
 
-const dashboard_BI_URL = process.env.REACT_APP_DASHBOARD_BI_URL || 'https://137642333557.signin.aws.amazon.com/console';
+const dashboard_BI_URL =
+  process.env.REACT_APP_DASHBOARD_BI_URL ||
+  'https://137642333557.signin.aws.amazon.com/console';
 
 const dashboardRoles: {
   [key: string]: {
@@ -49,6 +53,17 @@ const dashboardRoles: {
   CITTADINO: {
     endpoint: 'vw-cittadino',
   },
+};
+
+const publicContents = {
+  title: 'Repubblica Digitale per i cittadini',
+  subtitle: 'Consulta i dati del Piano operativo per le competenze digitali',
+};
+
+const authContents = {
+  title: 'La mia dashboard',
+  subtitle:
+    'Consulta le statistiche rappresentate in questa pagina, oppure accedi allo strumento di Business Intelligence per consultare, configurare e scaricare in autonomia i dati a tua disposizione',
 };
 
 const Dashboard = () => {
@@ -145,11 +160,13 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.codiceRuolo, program?.codice, project?.id]);
 
+  const contents = user?.codiceRuolo ? authContents : publicContents;
+
   return (
     <div className='container dashboard-container my-5'>
       <PageTitle
-        title='La mia dashboard'
-        subtitle='Consulta le statistiche rappresentate in questa pagina, oppure accedi allo strumento di Business Intelligence per consultare, configurare e scaricare in autonomia i dati a tua disposizione'
+        title={contents?.title}
+        subtitle={contents?.subtitle}
         cta={
           hasUserPermission(['acc.self.dshb'])
             ? {
