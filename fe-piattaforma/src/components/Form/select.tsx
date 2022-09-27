@@ -58,11 +58,12 @@ const Select: React.FC<SelectI> = (props) => {
   }, [selectedOption]);
 
   useEffect(() => {
-    if (options.length > 0) {
+    if (options.length) {
       const newSelectedOption = options.find(
-        (opt) => opt.value.toString() === value?.toString()
+        (opt) =>
+          opt.value.toString().toLowerCase().trim() ===
+          value?.toString().toLowerCase().trim()
       );
-
       if (
         newSelectedOption &&
         newSelectedOption.value !== selectedOption?.value
@@ -76,6 +77,7 @@ const Select: React.FC<SelectI> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, options]);
 
+  /*
   useEffect(() => {
     if (options?.length === 1) {
       // if only one option, prefill select
@@ -83,6 +85,7 @@ const Select: React.FC<SelectI> = (props) => {
         setSelectedOption(options[0]);
     }
   }, [options]);
+  */
 
   const handleChange = (option: OptionType) => {
     setSelectedOption(option);
@@ -125,7 +128,7 @@ const Select: React.FC<SelectI> = (props) => {
         color='primary'
         classNamePrefix='bootstrap-select'
         aria-labelledby={`${(label || 'label select').replace(/\s/g, '-')}`}
-        isDisabled={options?.length === 1 || isDisabled}
+        isDisabled={isDisabled}
         isSearchable={isSearchable}
       />
     </div>
