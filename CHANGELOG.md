@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.158](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.157...1.0.0-develop.158) (2022-09-27)
+
+
+### Bug Fixes
+
+* **be:** fix filtro per token stringa vuota ([88ac17f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/88ac17f69d3e6f0a1f5ca3827d8fdffc634e3574))
+
 ## [1.0.0-develop.157](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.156...1.0.0-develop.157) (2022-09-27)
 
 
