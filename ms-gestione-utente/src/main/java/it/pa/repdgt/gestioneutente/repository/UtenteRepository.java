@@ -13,10 +13,6 @@ import it.pa.repdgt.shared.entity.UtenteEntity;
 
 @Repository
 public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> { 
-
-//	@Query(value = "SELECT * FROM UENTE WHERE codiceFiscale = :codiceFiscale", nativeQuery = true)
-//	@Query(value = "SELECT u FROM UtenteEntity u WHERE u.codiceFiscale = :codiceFiscale ")
-//	public UtenteEntity findByCodiceFiscale(String codiceFiscale);
 	
 	public Optional<UtenteEntity> findByCodiceFiscale(String codiceFiscaleUtente);
 	

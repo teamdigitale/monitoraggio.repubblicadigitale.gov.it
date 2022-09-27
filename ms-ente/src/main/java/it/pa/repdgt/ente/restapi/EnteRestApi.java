@@ -60,8 +60,7 @@ public class EnteRestApi {
 	@Autowired
 	private EnteMapper enteMapper;
 
-	// TOUCH POINT - 1.4.1 - Lista enti paginata
-	// TOUCH POINT - 1.4.2 - Lista enti filtrata
+	// Lista enti paginata e filtrata
 	@PostMapping(path =  "/all")
 	@ResponseStatus(value = HttpStatus.OK)
 	public ListaEntiPaginatiResource getAllEntiPaginati(
@@ -72,9 +71,7 @@ public class EnteRestApi {
 		return this.enteMapper.toResourcefrom(paginaEnti);
 	}
 
-	// TOUCH POINT - 2.2.3  - dettaglio anagrafica ente (ricerca per criterioRicerca)
-	// TOUCH POINT - 2.2.9  - dettaglio anagrafica ente (ricerca per criterioRicerca)
-	// TOUCH POINT - 2.2.12 - dettaglio anagrafica ente (ricerca per criterioRicerca)
+	// Dettaglio anagrafica ente (ricerca per criterioRicerca)
 	@GetMapping(path =  "/cerca")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<EnteResource> cercaEntiByCriterioRicerca(@RequestParam(name = "criterioRicerca") String criterioRicerca) {
@@ -82,7 +79,7 @@ public class EnteRestApi {
 		return this.enteMapper.toResourceFrom(enti);
 	}
 
-	// TOUCH POINT - 1.4.3 -  Lista profili per dropdown ente 
+	// Lista profili per dropdown ente 
 	@PostMapping(path = "/profili/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<String> getAllProfiliEntiDropdown(
@@ -90,7 +87,7 @@ public class EnteRestApi {
 		return this.enteService.getAllProfiliEntiDropdown(entiPaginatiParam);
 	}
 
-	// TOUCH POINT - 1.4.4 - Lista programmi per dropdown ente
+	// Lista programmi per dropdown ente
 	@PostMapping(path = "/programmi/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<ProgrammaDto> getAllProgrammiDropdown(
@@ -98,7 +95,7 @@ public class EnteRestApi {
 		return this.enteService.getAllProgrammiDropdown(entiPaginatiParam);
 	}
 
-	// TOUCH POINT - 1.4.5 - Lista progetti per dropdown ente
+	// Lista progetti per dropdown ente
 	@PostMapping(path = "/progetti/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<ProgettoDto> getAllProgettiDropdown(
@@ -106,7 +103,7 @@ public class EnteRestApi {
 		return this.enteService.getAllProgettiDropdown(entiPaginatiParam);
 	}
 
-	// TOUCH POINT - 5.1 - Scheda Ente
+	// Scheda Ente
 	@GetMapping(path = "/{idEnte}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaEnteBean getSchedaEnteById(
@@ -114,7 +111,7 @@ public class EnteRestApi {
 		return this.enteService.getSchedaEnteById(idEnte);
 	}
 	
-	// TOUCH POINT - 2.1.5 - dettaglio ente gestore di un determinato programma
+	// Dettaglio ente gestore di un determinato programma
 	@GetMapping(path = "/gestoreProgramma/{idProgramma}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaEnteGestoreBean getSchedaEnteGestoreProgramma(
@@ -122,7 +119,7 @@ public class EnteRestApi {
 		return this.enteService.getSchedaEnteGestoreProgrammaByIdProgramma(idProgramma);
 	}
 
-	// TOUCH POINT - 3.4 - dettaglio ente gestore di un determinato progetto
+	// Dettaglio ente gestore di un determinato progetto
 	@Deprecated
 	@GetMapping(path = "/gestoreProgetto/{idProgetto}")
 	@ResponseStatus(value = HttpStatus.OK)
@@ -132,7 +129,7 @@ public class EnteRestApi {
 	}
 	
 
-	// TOUCH POINT - 3.4 - dettaglio ente gestore di un determinato progetto
+	// Dettaglio ente gestore di un determinato progetto
 	@PostMapping(path = "/gestoreProgetto/{idProgetto}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaEnteGestoreProgettoBean getSchedaEnteGestoreProgettoBySceltaProfilo(
@@ -141,7 +138,7 @@ public class EnteRestApi {
 		return this.enteService.getSchedaEnteGestoreProgettoByIdProgettoAndSceltaProfilo(idProgetto, entiPaginatiParam);
 	}
 
-	// TOUCH POINT - 3.5 - dettaglio ente partner di un determinato progetto
+	// Dettaglio ente partner di un determinato progetto
 	@Deprecated
 	@GetMapping (path = "/partner/{idProgetto}/{idEnte}")
 	@ResponseStatus(value = HttpStatus.OK)
@@ -151,7 +148,7 @@ public class EnteRestApi {
 		return this.entePartnerService.getSchedaEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte);
 	}
 	
-	// TOUCH POINT - 3.5 - dettaglio ente partner di un determinato progetto
+	// Dettaglio ente partner di un determinato progetto
 	@PostMapping (path = "/partner/{idProgetto}/{idEnte}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaEntePartnerBean getSchedaEntePartneroBySceltaProfilo(
@@ -161,7 +158,7 @@ public class EnteRestApi {
 		return this.entePartnerService.getSchedaEntePartnerByIdProgettoAndIdEnteAndSceltaProfilo(idProgetto, idEnte, entiPaginatiParam);
 	}
 
-	// TOUCH-POINT 2.2.1 - Creazione ente 
+	// Creazione ente 
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public EnteEntity creaNuovoEnte(@RequestBody @Valid NuovoEnteRequest nuovoEnteRequest) {
@@ -169,7 +166,7 @@ public class EnteRestApi {
 		return this.enteService.creaNuovoEnte(enteEntity);
 	}
 
-	// TOUCH-POINT 2.2.14B - Associa referente/delegato gestore programma
+	// Associa referente/delegato gestore programma
 	@PostMapping(path = "/associa/referenteDelegato/gestoreProgramma")
 	@ResponseStatus(code = HttpStatus.OK)
 	public void associaReferenteODelegatoGestoreProgramma(
@@ -177,7 +174,7 @@ public class EnteRestApi {
 		this.enteService.associaReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest);
 	}
 	
-	// TOUCH-POINT 2.2.14BX - Cancella o termina associazione referente/delegato gestore programma
+	// Cancella o termina associazione referente/delegato gestore programma
 	@PostMapping(path = "/cancellaOTerminaAssociazione/referenteDelegato/gestoreProgramma")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgramma(
@@ -185,7 +182,7 @@ public class EnteRestApi {
 		this.enteService.cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest);
 	}
 
-	// TOUCH-POINT 2.2.14C - Associa referente/delegato gestore progetto
+	// Associa referente/delegato gestore progetto
 	@PostMapping(path = "/associa/referenteDelegato/gestoreProgetto")
 	@ResponseStatus(code = HttpStatus.OK)
 	public void associaReferenteODelegatoGestoreProgetto(
@@ -193,7 +190,7 @@ public class EnteRestApi {
 		this.enteService.associaReferenteODelegatoGestoreProgetto(referenteDelegatoGestoreProgettoRequest);
 	}
 	
-	// TOUCH-POINT 2.2.14CX - Cancella o termina associazione referente/delegato gestore progetto
+	// Cancella o termina associazione referente/delegato gestore progetto
 	@PostMapping(path = "/cancellaOTerminaAssociazione/referenteDelegato/gestoreProgetto")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgetto(
@@ -201,7 +198,7 @@ public class EnteRestApi {
 		this.enteService.cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgetto(referenteDelegatoGestoreProgettoRequest);
 	}
 
-	// TOUCH-POINT 2.2.14D - Associa referente/delegato partner
+	// Associa referente/delegato partner
 	@PostMapping(path = "/associa/referenteDelegato/partner")
 	@ResponseStatus(code = HttpStatus.OK)
 	public void associaReferenteODelegatoPartner(
@@ -209,7 +206,7 @@ public class EnteRestApi {
 		this.entePartnerService.associaReferenteODelegatoPartner(referenteDelegatoPartnerRequest);
 	}
 	
-	// TOUCH-POINT 2.2.14DX - Cancella o termina associazione referente/delegato partner
+	// Cancella o termina associazione referente/delegato partner
 	@PostMapping(path = "/cancellaOTerminaAssociazione/referenteDelegato/partner")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void cancellaOTerminaAssociazioneReferenteODelegatoPartner(
@@ -217,11 +214,7 @@ public class EnteRestApi {
 		this.entePartnerService.cancellaOTerminaAssociazioneReferenteODelegatoPartner(referenteDelegatoPartnerRequest);
 	}
 
-	// TOUCH-POINT 2.2.11 - Associa Ente a progetto come entePartner
-	/**
-	 * Questo metodo associa un ente partner all'ente gestore di un determinato progetto
-	 * 
-	 * */
+	// Associa Ente a progetto come entePartner
 	@PutMapping(path = "/partner/associa/{idEntePartner}/progetto/{idProgetto}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public void associaEntePartnerPerProgetto(
@@ -230,7 +223,7 @@ public class EnteRestApi {
 		this.entePartnerService.associaEntePartnerPerProgetto(idEntePartner, idProgetto);
 	}
 
-	//TOUCH-POINT 5.3 - Update Ente
+	// Update Ente
 	@PutMapping(path = "/{idEnte}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public void aggiornaEnte(
@@ -240,7 +233,7 @@ public class EnteRestApi {
 		this.enteService.aggiornaEnte(enteEntity, idEnte);
 	}
 	
-	//TOUCH-POINT 2.1.5 B - Modifica Ente Gestore Programma
+	// Modifica Ente Gestore Programma
 		@PutMapping(path = "/{idEnte}/gestoreProgramma/{idProgramma}")
 		@ResponseStatus(code = HttpStatus.OK)
 	public void modificaEnteGestoreProgramma(
@@ -251,7 +244,7 @@ public class EnteRestApi {
 		this.enteService.modificaEnteGestoreProgramma(enteEntity, idEnte, idProgramma);
 	}
 		
-	//TOUCH-POINT 3.4 B - Modifica Ente Gestore Progetto
+	// Modifica Ente Gestore Progetto
 		@PutMapping(path = "/{idEnte}/gestoreProgetto/{idProgetto}")
 		@ResponseStatus(code = HttpStatus.OK)
 	public void modificaEnteGestoreProgetto(
@@ -262,7 +255,7 @@ public class EnteRestApi {
 		this.enteService.modificaEnteGestoreProgetto(enteEntity, idEnte, idProgetto);
 	}
 	
-	//TOUCH-POINT 5.2A - Elimina gestore programma 
+	// Elimina gestore programma 
 	@DeleteMapping(path = "/{idEnte}/cancellagestoreprogramma/{idProgramma}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void cancellaGestoreProgramma(
@@ -271,7 +264,7 @@ public class EnteRestApi {
 		this.enteService.cancellaGestoreProgramma(idEnte,idProgramma);
 	}
 	
-	//TOUCH-POINT 5.2AX - Termina gestore programma 
+	// Termina gestore programma 
 	@PutMapping(path = "/{idEnte}/terminagestoreprogramma/{idProgramma}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public void terminaGestoreProgramma(
@@ -280,7 +273,7 @@ public class EnteRestApi {
 		this.enteService.terminaGestoreProgramma(idEnte,idProgramma);
 	}
 	
-	//TOUCH-POINT 5.2B - Elimina gestore progetto 
+	// Elimina gestore progetto 
 	@DeleteMapping(path = "/{idEnte}/cancellagestoreprogetto/{idProgetto}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void cancellaGestoreProgetto(
@@ -289,7 +282,7 @@ public class EnteRestApi {
 		this.enteService.cancellaGestoreProgetto(idEnte, idProgetto);
 	}
 	
-	//TOUCH-POINT 5.2BX - Termina gestore progetto 
+	// Termina gestore progetto 
 	@PutMapping(path = "/{idEnte}/terminagestoreprogetto/{idProgetto}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public void terminaGestoreProgetto(
@@ -298,8 +291,7 @@ public class EnteRestApi {
 		this.enteService.terminaGestoreProgetto(idEnte, idProgetto);
 	}
 
-	//TOUCH-POINT 5.2C - Elimina ente partner da progetto
-	//TOUCH-POINT 2.2.11 A - Elimina ente partner da progetto
+	// Elimina ente partner da progetto
 	@DeleteMapping(path = "/{idEnte}/cancellaentepartner/{idProgetto}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void cancellaEntePartnerPerProgetto(
@@ -308,7 +300,7 @@ public class EnteRestApi {
 		this.enteService.cancellaEntePartnerPerProgetto(idEnte,idProgetto);
 	}
 	
-	//TOUCH-POINT 5.2CX - Termina ente partner da progetto
+	// Termina ente partner da progetto
 	@PutMapping(path = "/{idEnte}/terminaentepartner/{idProgetto}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public void terminaEntePartnerPerProgetto(
@@ -317,7 +309,7 @@ public class EnteRestApi {
 		this.enteService.terminaEntePartnerPerProgetto(idEnte,idProgetto);
 	}
 
-	// TOUCH-POINT 1.4.6 - Scarica lista enti in formato csv
+	// Scarica lista enti in formato csv
 	@PostMapping(path = "/download")
 	public ResponseEntity<InputStreamResource> downloadListaCSVEnti(@RequestBody @Valid EntiPaginatiParam entiPaginatiParam) {
 		List<EnteDto> listaEntiDto = this.enteService.getAllEntiByCodiceRuoloAndIdProgramma(entiPaginatiParam);
@@ -331,6 +323,7 @@ public class EnteRestApi {
 				.body(fileCSV);
 	}
 
+	// Upload caricamento lista enti partner a progetto
 	@PostMapping(path = "/partner/upload/{idProgetto}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	public List<EntePartnerUploadBean> uploadFileEntiPartner(
 			@RequestPart MultipartFile file,

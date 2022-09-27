@@ -25,6 +25,7 @@ import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.key.ProgrammaXQuestionarioTemplateKey;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioTemplateException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
@@ -32,7 +33,6 @@ import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.mapper.QuestionarioTemplateMapper;
 import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioTemplateRepository;
 import it.pa.repdgt.surveymgmt.param.FiltroListaQuestionariTemplateParam;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 
 @ExtendWith(MockitoExtension.class)
 public class QuestionarioTemplateServiceTest {
@@ -54,7 +54,7 @@ public class QuestionarioTemplateServiceTest {
 	@InjectMocks
 	private QuestionarioTemplateService questionarioTemplateService;
 	
-	ProfilazioneParam profilazione;
+	SceltaProfiloParam sceltaProfilazione;
 	FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplate;
 	List<RuoloEntity> listaRuoli;
 	RuoloEntity ruolo;
@@ -69,11 +69,11 @@ public class QuestionarioTemplateServiceTest {
 	
 	@BeforeEach
 	public void setUp() {
-		profilazione = new ProfilazioneParam();
-		profilazione.setCodiceFiscaleUtenteLoggato("CFUTENTE");
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD);
-		profilazione.setIdProgetto(1L);
-		profilazione.setIdProgramma(1L);
+		sceltaProfilazione = new SceltaProfiloParam();
+		sceltaProfilazione.setCfUtenteLoggato("CFUTENTE");
+		sceltaProfilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
+		sceltaProfilazione.setIdProgetto(1L);
+		sceltaProfilazione.setIdProgramma(1L);
 		filtroListaQuestionariTemplate = new FiltroListaQuestionariTemplateParam();
 		filtroListaQuestionariTemplate.setCriterioRicerca("CRITERIORICERCA");
 		filtroListaQuestionariTemplate.setCurrPage(0);
@@ -105,21 +105,20 @@ public class QuestionarioTemplateServiceTest {
 	@Test
 	public void getNumeroTotaleQuestionariTemplateByFiltroTest() {
 		when(this.questionarioTemplateSqlService.getNumeroTotaleQuestionariTemplateByFiltro("CRITERIORICERCA", "ATTIVO")).thenReturn(1L);
-		Long risultato = questionarioTemplateService.getNumeroTotaleQuestionariTemplateByFiltro("CRITERIORICERCA", "ATTIVO", profilazione);
+		Long risultato = questionarioTemplateService.getNumeroTotaleQuestionariTemplateByFiltro("CRITERIORICERCA", "ATTIVO", sceltaProfilazione);
 		assertThat(risultato).isEqualTo(1L);
 	}
 	
 	@Test
 	public void getAllQuestionariTemplatePaginatiByProfilazioneAndFiltroDTDTest() {
 		//test con ruoloUtenteLoggato = DTD
-		when(this.ruoloService.getRuoliByCodiceFiscale(profilazione.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
 		when(this.questionarioTemplateSqlService.findAllQuestionariTemplatePaginatiByFiltro(
 								"%" + filtroListaQuestionariTemplate.getCriterioRicerca() + "%",
 								filtroListaQuestionariTemplate.getStatoQuestionario(),
 								filtroListaQuestionariTemplate.getCurrPage(),
 								filtroListaQuestionariTemplate.getPageSize()
 							)).thenReturn(listaQuestionari);
-		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro(profilazione, filtroListaQuestionariTemplate);
+		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro(sceltaProfilazione, filtroListaQuestionariTemplate);
 		assertThat(risultato.size()).isEqualTo(listaQuestionari.size());
 	}
 	
@@ -129,15 +128,14 @@ public class QuestionarioTemplateServiceTest {
 		ruolo.setCodice("DSCU");
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add(ruolo);
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DSCU);
-		when(this.ruoloService.getRuoliByCodiceFiscale(profilazione.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
+		sceltaProfilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DSCU.toString());
 		when(this.questionarioTemplateSqlService.findQuestionariTemplatePaginatiByDefaultPolicySCDAndFiltro(
 								"%" + filtroListaQuestionariTemplate.getCriterioRicerca() + "%",
 								filtroListaQuestionariTemplate.getStatoQuestionario(),
 								filtroListaQuestionariTemplate.getCurrPage(),
 								filtroListaQuestionariTemplate.getPageSize()
 							)).thenReturn(listaQuestionari);
-		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro(profilazione, filtroListaQuestionariTemplate);
+		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro(sceltaProfilazione, filtroListaQuestionariTemplate);
 		assertThat(risultato.size()).isEqualTo(listaQuestionari.size());
 	}
 	
@@ -147,16 +145,15 @@ public class QuestionarioTemplateServiceTest {
 		ruolo.setCodice("REG");
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add(ruolo);
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REG);
-		when(this.ruoloService.getRuoliByCodiceFiscale(profilazione.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
+		sceltaProfilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REG.toString());
 		when(this.questionarioTemplateSqlService.findQuestionariTemplatePaginatiByIdProgrammaAndFiltro(
-								profilazione.getIdProgramma(),
+								sceltaProfilazione.getIdProgramma(),
 								"%" + filtroListaQuestionariTemplate.getCriterioRicerca() + "%",
 								filtroListaQuestionariTemplate.getStatoQuestionario(),
 								filtroListaQuestionariTemplate.getCurrPage(),
 								filtroListaQuestionariTemplate.getPageSize()
 							)).thenReturn(listaQuestionari);
-		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro(profilazione, filtroListaQuestionariTemplate);
+		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro(sceltaProfilazione, filtroListaQuestionariTemplate);
 		assertThat(risultato.size()).isEqualTo(listaQuestionari.size());
 	}
 	
@@ -167,21 +164,9 @@ public class QuestionarioTemplateServiceTest {
 		ruolo.setCodice("REGP");
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add(ruolo);
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REGP);
-		when(this.ruoloService.getRuoliByCodiceFiscale(profilazione.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
-		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro(profilazione, filtroListaQuestionariTemplate);
+		sceltaProfilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REGP.toString());
+		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro(sceltaProfilazione, filtroListaQuestionariTemplate);
 		assertThat(risultato.size()).isEqualTo(0);
-	}
-	
-	@Test
-	public void getAllQuestionariTemplatePaginatiByProfilazioneAndFiltroKOTest() {
-		//test KO per ruolo non definito per l'utente
-		ruolo.setCodice("REGP");
-		listaRuoli = new ArrayList<>();
-		listaRuoli.add(ruolo);
-		when(this.ruoloService.getRuoliByCodiceFiscale(profilazione.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
-		Assertions.assertThrows(QuestionarioTemplateException.class, () -> questionarioTemplateService.getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro(profilazione, filtroListaQuestionariTemplate));
-		assertThatExceptionOfType(QuestionarioTemplateException.class);
 	}
 	
 	@Test
@@ -193,7 +178,7 @@ public class QuestionarioTemplateServiceTest {
 				filtroListaQuestionariTemplate.getCurrPage(),
 				filtroListaQuestionariTemplate.getPageSize()
 			)).thenReturn(listaQuestionari);
-		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltroConPaginazione(profilazione, filtroListaQuestionariTemplate);
+		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltroConPaginazione(sceltaProfilazione, filtroListaQuestionariTemplate);
 		assertThat(risultato.size()).isEqualTo(listaQuestionari.size());
 	}
 	
@@ -203,14 +188,14 @@ public class QuestionarioTemplateServiceTest {
 		ruolo.setCodice("DSCU");
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add(ruolo);
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DSCU);
+		sceltaProfilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DSCU.toString());
 		when(this.questionarioTemplateSqlService.findQuestionariTemplatePaginatiByDefaultPolicySCDAndFiltro(
 				"%" + filtroListaQuestionariTemplate.getCriterioRicerca() + "%",
 				filtroListaQuestionariTemplate.getStatoQuestionario(),
 				filtroListaQuestionariTemplate.getCurrPage(),
 				filtroListaQuestionariTemplate.getPageSize()
 			)).thenReturn(listaQuestionari);
-		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltroConPaginazione(profilazione, filtroListaQuestionariTemplate);
+		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltroConPaginazione(sceltaProfilazione, filtroListaQuestionariTemplate);
 		assertThat(risultato.size()).isEqualTo(listaQuestionari.size());
 	}
 	
@@ -220,15 +205,15 @@ public class QuestionarioTemplateServiceTest {
 		ruolo.setCodice("REG");
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add(ruolo);
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REG);
+		sceltaProfilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REG.toString());
 		when(this.questionarioTemplateSqlService.findQuestionariTemplatePaginatiByIdProgrammaAndFiltro(
-								profilazione.getIdProgramma(),
+								sceltaProfilazione.getIdProgramma(),
 								"%" + filtroListaQuestionariTemplate.getCriterioRicerca() + "%",
 								filtroListaQuestionariTemplate.getStatoQuestionario(),
 								filtroListaQuestionariTemplate.getCurrPage(),
 								filtroListaQuestionariTemplate.getPageSize()
 							)).thenReturn(listaQuestionari);
-		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltroConPaginazione(profilazione, filtroListaQuestionariTemplate);
+		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltroConPaginazione(sceltaProfilazione, filtroListaQuestionariTemplate);
 		assertThat(risultato.size()).isEqualTo(listaQuestionari.size());
 	}
 	
@@ -239,8 +224,8 @@ public class QuestionarioTemplateServiceTest {
 		ruolo.setCodice("REGP");
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add(ruolo);
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REGP);
-		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltroConPaginazione(profilazione, filtroListaQuestionariTemplate);
+		sceltaProfilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REGP.toString());
+		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltroConPaginazione(sceltaProfilazione, filtroListaQuestionariTemplate);
 		assertThat(risultato.size()).isEqualTo(0);
 	}
 	
@@ -251,7 +236,7 @@ public class QuestionarioTemplateServiceTest {
 				"%" + filtroListaQuestionariTemplate.getCriterioRicerca() + "%",
 				filtroListaQuestionariTemplate.getStatoQuestionario()
 			)).thenReturn(listaQuestionari);
-		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltroSenzaPaginazione(profilazione, filtroListaQuestionariTemplate);
+		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltroSenzaPaginazione(sceltaProfilazione, filtroListaQuestionariTemplate);
 		assertThat(risultato.size()).isEqualTo(listaQuestionari.size());
 	}
 	
@@ -261,12 +246,12 @@ public class QuestionarioTemplateServiceTest {
 		ruolo.setCodice("DSCU");
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add(ruolo);
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DSCU);
+		sceltaProfilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DSCU.toString());
 		when(this.questionarioTemplateSqlService.findQuestionariTemplateByDefaultPolicySCDAndFiltro(
 				"%" + filtroListaQuestionariTemplate.getCriterioRicerca() + "%",
 				filtroListaQuestionariTemplate.getStatoQuestionario()
 			)).thenReturn(listaQuestionari);
-		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltroSenzaPaginazione(profilazione, filtroListaQuestionariTemplate);
+		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltroSenzaPaginazione(sceltaProfilazione, filtroListaQuestionariTemplate);
 		assertThat(risultato.size()).isEqualTo(listaQuestionari.size());
 	}
 	
@@ -276,13 +261,13 @@ public class QuestionarioTemplateServiceTest {
 		ruolo.setCodice("REG");
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add(ruolo);
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REG);
+		sceltaProfilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REG.toString());
 		when(this.questionarioTemplateSqlService.findQuestionariTemplateByIdProgrammaAndFiltro(
-								profilazione.getIdProgramma(),
+								sceltaProfilazione.getIdProgramma(),
 								"%" + filtroListaQuestionariTemplate.getCriterioRicerca() + "%",
 								filtroListaQuestionariTemplate.getStatoQuestionario()
 							)).thenReturn(listaQuestionari);
-		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltroSenzaPaginazione(profilazione, filtroListaQuestionariTemplate);
+		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltroSenzaPaginazione(sceltaProfilazione, filtroListaQuestionariTemplate);
 		assertThat(risultato.size()).isEqualTo(listaQuestionari.size());
 	}
 	
@@ -293,20 +278,19 @@ public class QuestionarioTemplateServiceTest {
 		ruolo.setCodice("REGP");
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add(ruolo);
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REGP);
-		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltroSenzaPaginazione(profilazione, filtroListaQuestionariTemplate);
+		sceltaProfilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REGP.toString());
+		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getAllQuestionariTemplateByProfilazioneAndFiltroSenzaPaginazione(sceltaProfilazione, filtroListaQuestionariTemplate);
 		assertThat(risultato.size()).isEqualTo(0);
 	}
 	
 	@Test
 	public void getAllStatiDropdownByProfilazioneAndFiltroDTDTest() {
 		//test con ruoloUtenteLoggato = DTD
-		when(this.ruoloService.getRuoliByCodiceFiscale(profilazione.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
 		when(this.questionarioTemplateSqlService.findAllStatiDropdownByFiltro(
 						"%" + filtroListaQuestionariTemplate.getCriterioRicerca() + "%",
 						filtroListaQuestionariTemplate.getStatoQuestionario()
 					)).thenReturn(listaStati);
-		List<String> risultato = questionarioTemplateService.getAllStatiDropdownByProfilazioneAndFiltro(profilazione, filtroListaQuestionariTemplate);
+		List<String> risultato = questionarioTemplateService.getAllStatiDropdownByProfilazioneAndFiltro(sceltaProfilazione, filtroListaQuestionariTemplate);
 		assertThat(risultato.size()).isEqualTo(listaStati.size());
 	}
 	
@@ -316,13 +300,12 @@ public class QuestionarioTemplateServiceTest {
 		ruolo.setCodice("DSCU");
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add(ruolo);
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DSCU);
-		when(this.ruoloService.getRuoliByCodiceFiscale(profilazione.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
+		sceltaProfilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DSCU.toString());
 		when(this.questionarioTemplateSqlService.findStatiDropdownByDefaultPolicySCDAndFiltro(
 						"%" + filtroListaQuestionariTemplate.getCriterioRicerca() + "%",
 						filtroListaQuestionariTemplate.getStatoQuestionario()
 					)).thenReturn(listaStati);
-		List<String> risultato = questionarioTemplateService.getAllStatiDropdownByProfilazioneAndFiltro(profilazione, filtroListaQuestionariTemplate);
+		List<String> risultato = questionarioTemplateService.getAllStatiDropdownByProfilazioneAndFiltro(sceltaProfilazione, filtroListaQuestionariTemplate);
 		assertThat(risultato.size()).isEqualTo(listaStati.size());
 	}
 	
@@ -332,14 +315,13 @@ public class QuestionarioTemplateServiceTest {
 		ruolo.setCodice("REG");
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add(ruolo);
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REG);
-		when(this.ruoloService.getRuoliByCodiceFiscale(profilazione.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
+		sceltaProfilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REG.toString());
 		when(this.questionarioTemplateSqlService.findStatiDropdownByIdProgrammaAndFiltro(
-						profilazione.getIdProgramma(),
+						sceltaProfilazione.getIdProgramma(),
 						"%" + filtroListaQuestionariTemplate.getCriterioRicerca() + "%",
 						filtroListaQuestionariTemplate.getStatoQuestionario()
 					)).thenReturn(listaStati);
-		List<String> risultato = questionarioTemplateService.getAllStatiDropdownByProfilazioneAndFiltro(profilazione, filtroListaQuestionariTemplate);
+		List<String> risultato = questionarioTemplateService.getAllStatiDropdownByProfilazioneAndFiltro(sceltaProfilazione, filtroListaQuestionariTemplate);
 		assertThat(risultato.size()).isEqualTo(listaStati.size());
 	}
 	
@@ -350,21 +332,9 @@ public class QuestionarioTemplateServiceTest {
 		ruolo.setCodice("REGP");
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add(ruolo);
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REGP);
-		when(this.ruoloService.getRuoliByCodiceFiscale(profilazione.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
-		List<String> risultato = questionarioTemplateService.getAllStatiDropdownByProfilazioneAndFiltro(profilazione, filtroListaQuestionariTemplate);
+		sceltaProfilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REGP.toString());
+		List<String> risultato = questionarioTemplateService.getAllStatiDropdownByProfilazioneAndFiltro(sceltaProfilazione, filtroListaQuestionariTemplate);
 		assertThat(risultato.size()).isEqualTo(0);
-	}
-	
-	@Test
-	public void getAllStatiDropdownByProfilazioneAndFiltroKOTest() {
-		//test KO per ruolo non definito per l'utente
-		ruolo.setCodice("REG");
-		listaRuoli = new ArrayList<>();
-		listaRuoli.add(ruolo);
-		when(this.ruoloService.getRuoliByCodiceFiscale(profilazione.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
-		Assertions.assertThrows(QuestionarioTemplateException.class, () -> questionarioTemplateService.getAllStatiDropdownByProfilazioneAndFiltro(profilazione, filtroListaQuestionariTemplate));
-		assertThatExceptionOfType(QuestionarioTemplateException.class);
 	}
 	
 	@Test
@@ -440,9 +410,8 @@ public class QuestionarioTemplateServiceTest {
 	@Test
 	public void getQuestionariTemplateByUtenteDTDTest() {
 		//test con ruoloUtenteLoggato = DTD
-		when(this.ruoloService.getRuoliByCodiceFiscale(profilazione.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
 		when(this.questionarioTemplateSqlService.getAllQuestionari()).thenReturn(listaQuestionari);
-		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getQuestionariTemplateByUtente(profilazione);
+		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getQuestionariTemplateByUtente(sceltaProfilazione);
 		assertThat(risultato.size()).isEqualTo(listaQuestionari.size());
 	}
 	
@@ -452,10 +421,9 @@ public class QuestionarioTemplateServiceTest {
 		ruolo.setCodice("DSCU");
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add(ruolo);
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DSCU);
-		when(this.ruoloService.getRuoliByCodiceFiscale(profilazione.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
+		sceltaProfilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DSCU.toString());
 		when(this.questionarioTemplateSqlService.getQuestionariSCD()).thenReturn(listaQuestionari);
-		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getQuestionariTemplateByUtente(profilazione);
+		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getQuestionariTemplateByUtente(sceltaProfilazione);
 		assertThat(risultato.size()).isEqualTo(listaQuestionari.size());
 	}
 	
@@ -465,10 +433,9 @@ public class QuestionarioTemplateServiceTest {
 		ruolo.setCodice("REG");
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add(ruolo);
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REG);
-		when(this.ruoloService.getRuoliByCodiceFiscale(profilazione.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
-		when(this.questionarioTemplateSqlService.getQuestionariPerReferenteDelegatoGestoreProgramma(profilazione.getIdProgramma())).thenReturn(listaQuestionari);
-		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getQuestionariTemplateByUtente(profilazione);
+		sceltaProfilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REG.toString());
+		when(this.questionarioTemplateSqlService.getQuestionariPerReferenteDelegatoGestoreProgramma(sceltaProfilazione.getIdProgramma())).thenReturn(listaQuestionari);
+		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getQuestionariTemplateByUtente(sceltaProfilazione);
 		assertThat(risultato.size()).isEqualTo(listaQuestionari.size());
 	}
 	
@@ -478,21 +445,9 @@ public class QuestionarioTemplateServiceTest {
 		ruolo.setCodice("REGP");
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add(ruolo);
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REGP);
-		when(this.ruoloService.getRuoliByCodiceFiscale(profilazione.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
-		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getQuestionariTemplateByUtente(profilazione);
+		sceltaProfilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REGP.toString());
+		List<QuestionarioTemplateEntity> risultato = questionarioTemplateService.getQuestionariTemplateByUtente(sceltaProfilazione);
 		assertThat(risultato.size()).isEqualTo(0);
-	}
-	
-	@Test
-	public void getQuestionariTemplateByUtenteKOTest() {
-		//test KO per ruolo non definito per l'utente
-		ruolo.setCodice("REGP");
-		listaRuoli = new ArrayList<>();
-		listaRuoli.add(ruolo);
-		when(this.ruoloService.getRuoliByCodiceFiscale(profilazione.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
-		Assertions.assertThrows(QuestionarioTemplateException.class, () ->questionarioTemplateService.getQuestionariTemplateByUtente(profilazione));
-		assertThatExceptionOfType(QuestionarioTemplateException.class);
 	}
 	
 	@Test

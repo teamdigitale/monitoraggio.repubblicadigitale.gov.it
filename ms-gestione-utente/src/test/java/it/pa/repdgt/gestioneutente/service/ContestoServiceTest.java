@@ -200,18 +200,12 @@ public class ContestoServiceTest {
 	@Test
 	public void verificaSceltaProfiloTest() throws Exception {
 		/** TEST DTD/DSCU/CUSTOM **/
-		when(this.ruoloService.getRuoliByCodiceFiscaleUtente(codiceFiscale)).thenReturn(Arrays.asList("DTD"));
 		service.verificaSceltaProfilo(codiceFiscale, "DTD", idProgramma, idProgetto);
 		
-		when(this.ruoloService.getRuoliByCodiceFiscaleUtente(codiceFiscale)).thenReturn(Arrays.asList("ECC"));
-		Assertions.assertThrows(ContestoException.class, () -> service.verificaSceltaProfilo(codiceFiscale, "DTD", idProgramma, idProgetto));
-		
 		/** TEST REG/DEG **/
-		when(this.ruoloService.getRuoliByCodiceFiscaleUtente(codiceFiscale)).thenReturn(Arrays.asList("DEG"));
 		when(contestoRepository.verificaUtenteRuoloDEGREGPerProgramma(idProgramma, codiceFiscale, "DEG")).thenReturn(0);
 		Assertions.assertThrows(ContestoException.class, () -> service.verificaSceltaProfilo(codiceFiscale, "DEG", idProgramma, idProgetto));
 		
-		when(this.ruoloService.getRuoliByCodiceFiscaleUtente(codiceFiscale)).thenReturn(Arrays.asList("DTD", "DEG"));
 		when(contestoRepository.verificaUtenteRuoloDEGREGPerProgramma(idProgramma, codiceFiscale, "DEG")).thenReturn(1);
 		when(contestoRepository.findById(idProgramma)).thenReturn(Optional.empty());
 		Assertions.assertThrows(ResourceNotFoundException.class, () -> service.verificaSceltaProfilo(codiceFiscale, "DEG", idProgramma, idProgetto));
@@ -265,7 +259,6 @@ public class ContestoServiceTest {
 		service.verificaSceltaProfilo(codiceFiscale, "DEG", idProgramma, idProgetto);
 		
 		/** TEST REGP/DEGP **/
-		when(this.ruoloService.getRuoliByCodiceFiscaleUtente(codiceFiscale)).thenReturn(Arrays.asList("REGP"));
 		when(contestoRepository.getProgettoProgramma(idProgetto, idProgramma)).thenReturn(0);
 		Assertions.assertThrows(ContestoException.class, () -> service.verificaSceltaProfilo(codiceFiscale, "REGP", idProgramma, idProgetto));
 		
@@ -294,7 +287,6 @@ public class ContestoServiceTest {
 		Assertions.assertThrows(ContestoException.class, () -> service.verificaSceltaProfilo(codiceFiscale, "REGP", idProgramma, idProgetto));
 
 		/** TEST REPP/DEPP **/
-		when(this.ruoloService.getRuoliByCodiceFiscaleUtente(codiceFiscale)).thenReturn(Arrays.asList("REPP"));		
 		when(contestoRepository.getProgettoProgramma(idProgetto, idProgramma)).thenReturn(1);
 		
 		when(contestoRepository.verificaUtenteRuoloDEPPREPPPerProgetto(idProgetto, codiceFiscale, "REPP")).thenReturn(0);
@@ -322,7 +314,6 @@ public class ContestoServiceTest {
 		Assertions.assertThrows(ContestoException.class, () -> service.verificaSceltaProfilo(codiceFiscale, "REPP", idProgramma, idProgetto));
 		
 		/** TEST FAC **/
-		when(this.ruoloService.getRuoliByCodiceFiscaleUtente(codiceFiscale)).thenReturn(Arrays.asList("FAC"));
 		ProgettoEnteSedeProjImplementation enteSedeProgetto = new ProgettoEnteSedeProjImplementation(idProgetto, idProgramma, 1005L, StatoEnum.ATTIVO.getValue());
 		when(contestoRepository.findSediPerProgrammaECodiceFiscaleFacilitatoreVolontario(idProgetto, codiceFiscale, "FAC")).thenReturn(Arrays.asList(enteSedeProgetto));
 		doNothing().when(contestoRepository).attivaFACVOL(enteSedeProgetto.getIdProgetto(), enteSedeProgetto.getIdEnte(), enteSedeProgetto.getIdSede(), codiceFiscale, "FAC");
@@ -333,12 +324,12 @@ public class ContestoServiceTest {
 		IntegraContestoRequest integraContestoRequestRequest = new IntegraContestoRequest();
 		integraContestoRequestRequest.setAbilitazioneConsensoTrattamentoDatiPersonali(Boolean.TRUE);
 		integraContestoRequestRequest.setBio("bio");
-		integraContestoRequestRequest.setCodiceFiscale("codiceFiscale");
+		integraContestoRequestRequest.setCfUtenteLoggato("codiceFiscale");
 		integraContestoRequestRequest.setEmail("email");
 		integraContestoRequestRequest.setTelefono("43734987");
 		UtenteEntity utenteDBFtech = new UtenteEntity();
 		utenteDBFtech.setIntegrazione(Boolean.TRUE);
-		utenteDBFtech.setCodiceFiscale(integraContestoRequestRequest.getCodiceFiscale());
+		utenteDBFtech.setCodiceFiscale(integraContestoRequestRequest.getCfUtenteLoggato());
 		utenteDBFtech.setEmail(integraContestoRequestRequest.getEmail());
 		utenteDBFtech.setTelefono(integraContestoRequestRequest.getTelefono());
 		utenteDBFtech.setMansione(integraContestoRequestRequest.getBio());

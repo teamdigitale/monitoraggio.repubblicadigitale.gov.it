@@ -16,13 +16,13 @@ import it.pa.repdgt.gestioneutente.mapper.ContestoMapper;
 import it.pa.repdgt.gestioneutente.repository.UtenteRepository;
 import it.pa.repdgt.gestioneutente.request.CreaContestoRequest;
 import it.pa.repdgt.gestioneutente.request.IntegraContestoRequest;
-import it.pa.repdgt.gestioneutente.request.ProfilazioneRequest;
 import it.pa.repdgt.gestioneutente.resource.ContestoResource;
 import it.pa.repdgt.gestioneutente.service.ContestoService;
 import it.pa.repdgt.shared.awsintegration.service.S3Service;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.extern.slf4j.Slf4j;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 
 @RestController
 @RequestMapping(path = "/contesto")
@@ -41,17 +41,17 @@ public class ContestoRestApi {
 	@Value("${AWS.S3.PRESIGN_URL-EXPIRE-CONTESTO:15}")
 	private String presignedUrlExpireContesto;
 
-	// TOUCH POINT - 0.1.1 - creazione contesto  
+	// creazione contesto  
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.OK)
 	public ContestoResource creaContesto(@RequestBody CreaContestoRequest creaContestoRequest) {
-		final String codiceFiscaleUtenteLoggato = creaContestoRequest.getCodiceFiscale();
+		final String codiceFiscaleUtenteLoggato = creaContestoRequest.getCfUtenteLoggato();
 		if(!this.utenteRepository.findByCodiceFiscale(codiceFiscaleUtenteLoggato).isPresent()) {
-			String messaggioErrore = String.format("Errore creazione contesto. Utente con codiceFiscale '%s' non esiste", codiceFiscaleUtenteLoggato);  
+			String messaggioErrore = String.format("Errore creazione contesto. Utente con codiceFiscale '%s' non esiste", codiceFiscaleUtenteLoggato);
 			throw new UtenteException(messaggioErrore, CodiceErroreEnum.U20);
 		}
-		
-		UtenteEntity utenteFetched = contestoService.creaContesto(creaContestoRequest.getCodiceFiscale());
+
+		UtenteEntity utenteFetched = contestoService.creaContesto(creaContestoRequest.getCfUtenteLoggato());
 		ContestoResource contesto = contestoMapper.toContestoFromUtenteEntity(utenteFetched);
 		try{ 
 			contesto.setImmagineProfilo(this.s3Service.getPresignedUrl(utenteFetched.getImmagineProfilo(), this.nomeDelBucketS3, Long.parseLong(this.presignedUrlExpireContesto)));
@@ -65,19 +65,19 @@ public class ContestoRestApi {
 		return contesto;
 	}
 	
-	// TOUCH POINT - 0.1.2 - servizio di scelta RUOLO – PROGRAMMA 
+	// servizio di scelta RUOLO – PROGRAMMA 
 	@ResponseStatus(value = HttpStatus.OK)
 	@PostMapping(path = "/sceltaProfilo")
-	public void sceltaProfilo(@RequestBody @Valid ProfilazioneRequest utenteRequest) {
-		final String codiceFiscaleUtente = utenteRequest.getCfUtente();
-		final String codiceRuoloUtente = utenteRequest.getCodiceRuolo();
+	public void sceltaProfilo(@RequestBody @Valid SceltaProfiloParam utenteRequest) {
+		final String codiceFiscaleUtente = utenteRequest.getCfUtenteLoggato();
+		final String codiceRuoloUtente = utenteRequest.getCodiceRuoloUtenteLoggato();
 		final Long idProgramma = utenteRequest.getIdProgramma();
 		final Long idProgetto = utenteRequest.getIdProgetto();
 		
 		contestoService.verificaSceltaProfilo(codiceFiscaleUtente, codiceRuoloUtente, idProgramma, idProgetto);
 	}
 	
-	// TOUCH POINT - 0.1.3 - CONFERMA INTEGRAZIONE 
+	// CONFERMA INTEGRAZIONE 
 	@ResponseStatus(value = HttpStatus.OK)
 	@PostMapping(path = "/confermaIntegrazione")
 	public void confermaIntegrazione(@RequestBody @Valid IntegraContestoRequest integraContestoRequestRequest) {

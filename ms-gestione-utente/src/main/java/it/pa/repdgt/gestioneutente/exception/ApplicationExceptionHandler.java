@@ -35,6 +35,7 @@ public class ApplicationExceptionHandler {
 		listFieldError.forEach(fieldError -> {
 			erroriValidazione.put(fieldError.getField(), fieldError.getDefaultMessage());
 		});
+		erroriValidazione.put("errorCode", CodiceErroreEnum.G02.toString());
 		return erroriValidazione;
 	}
 
@@ -57,9 +58,10 @@ public class ApplicationExceptionHandler {
 		log.error("{}", exc);
 		Map<String, String> errori = new HashMap<>();
 		errori.put("message", exc.getMessage());
+		errori.put("errorCode", exc.getCodiceErroreEnum().toString());
 		return errori;
 	}
-	
+
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(value = {  UtenteException.class, RuoloException.class, UtenteXRuoloException.class, Exception.class })
 	public Map<String, String> handleException(Exception exc) {
@@ -81,7 +83,7 @@ public class ApplicationExceptionHandler {
 		} else {
 			errori.put("errorCode", CodiceErroreEnum.G01.toString());
 		}
-		
+
 		return errori;
 	}
 }

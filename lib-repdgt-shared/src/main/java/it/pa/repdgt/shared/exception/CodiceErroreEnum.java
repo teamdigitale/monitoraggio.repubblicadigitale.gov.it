@@ -54,7 +54,7 @@ public enum CodiceErroreEnum {
 	,U18("Errore Associazione tra utente e ruolo non trovata.")
 	,U19("Errore export csv utenti")
 	,U20("Errore utente con codice fiscale non esistente")
-	
+
 	,S01("Errore file upload cittadino non valido")
 	,S02("Errore export csv servizio")
 	,S03("Errore servizio non accessibile per l'utente")
@@ -64,7 +64,7 @@ public enum CodiceErroreEnum {
 	,S07("Errore impossibile eliminare il servizio.")
 	,S08("Errore creazione servizio. Servizio con stesso nome già esistente")
 	,S09("Errore servizio non esistente")
-
+	
 	,SD01("Errore creazione sede")
 	,SD02("Errore aggiornamento sede")
 

@@ -18,10 +18,7 @@ import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 public class UtenteService {
 	@Autowired
 	private UtenteRepository utenteRepository;
-	
-	/**
-	 * @throws ResourceNotFoundException
-	 * */
+
 	@LogMethod
 	@LogExecutionTime
 	public UtenteEntity getUtenteByCodiceFiscale(String codiceFiscale) {

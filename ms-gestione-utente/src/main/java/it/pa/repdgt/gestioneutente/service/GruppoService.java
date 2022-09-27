@@ -13,6 +13,7 @@ import it.pa.repdgt.gestioneutente.repository.GruppoRepository;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.GruppoEntity;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 
 @Service
 public class GruppoService {
@@ -35,7 +36,7 @@ public class GruppoService {
 		String messaggioErrore = String.format("Gruppo con codice=%s non presente", codiceGruppo);
 		
 		return this.gruppoRepository.findByCodice(codiceGruppo)
-				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore));
+				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
 	}
 	
 	@LogMethod

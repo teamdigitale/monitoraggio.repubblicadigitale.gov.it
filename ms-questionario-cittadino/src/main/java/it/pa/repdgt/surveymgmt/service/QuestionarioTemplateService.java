@@ -22,9 +22,9 @@ import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.ProgrammaXQuestionarioTemplateEntity;
 import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
-import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioTemplateException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
@@ -32,10 +32,11 @@ import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.mapper.QuestionarioTemplateMapper;
 import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioTemplateRepository;
 import it.pa.repdgt.surveymgmt.param.FiltroListaQuestionariTemplateParam;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Validated
+@Slf4j
 public class QuestionarioTemplateService {
 	@Autowired
 	private QuestionarioTemplateMapper questionarioTemplateMapper;
@@ -43,8 +44,6 @@ public class QuestionarioTemplateService {
 	private QuestionarioTemplateSqlService questionarioTemplateSqlService;
 	@Autowired
 	private ProgrammaXQuestionarioTemplateService programmaXQuestionarioTemplateService;
-	@Autowired
-	private RuoloService ruoloService;
 	@Autowired
 	private QuestionarioTemplateRepository questionarioTemplateRepository;
 	@Autowired
@@ -54,7 +53,7 @@ public class QuestionarioTemplateService {
 	@LogExecutionTime
 	public Long getNumeroTotaleQuestionariTemplateByFiltro(String criterioRicerca, 
 			String statoQuestionario,
-			@NotNull @Valid final ProfilazioneParam profilazione) {
+			@NotNull @Valid final SceltaProfiloParam profilazione) {
 		String codiceRuoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato().toString();
 		if( RuoliUtentiConstants.REGP.equalsIgnoreCase(codiceRuoloUtenteLoggato)
 				|| RuoliUtentiConstants.DEGP.equalsIgnoreCase(codiceRuoloUtenteLoggato)
@@ -69,37 +68,26 @@ public class QuestionarioTemplateService {
 			return 1L;
 		return this.questionarioTemplateSqlService.getNumeroTotaleQuestionariTemplateByFiltro(criterioRicerca, statoQuestionario);
 	}
-	
+
 	@LogMethod
 	@LogExecutionTime
 	public List<QuestionarioTemplateEntity> getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro(
-			@NotNull @Valid final ProfilazioneParam profilazione,
+			@NotNull @Valid final SceltaProfiloParam profilazione,
 			@NotNull @Valid final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplate) {
-		final String codiceFiscaleUtenteLoggato = profilazione.getCodiceFiscaleUtenteLoggato();
-		final String codiceRuoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato().toString();
-		
-		// Verifico se l'utente possiede il ruolo mandato nella richiesta
-		boolean hasRuoloUtente = this.ruoloService
-			.getRuoliByCodiceFiscale(codiceFiscaleUtenteLoggato)
-			.stream()
-			.anyMatch(ruolo -> codiceRuoloUtenteLoggato.equalsIgnoreCase(ruolo.getCodice()));
-		
-		if(!hasRuoloUtente) {
-			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'",codiceFiscaleUtenteLoggato);
-			throw new QuestionarioTemplateException(messaggioErrore, CodiceErroreEnum.U06);
-		}
+		log.info("getAllQuestionariTemplatePaginatiByProfilazioneAndFiltro - START");
+
 		// Recupero tutti i QuestionariTemplate in base al ruolo profilato dell'utente loggato e in base ai filtri selezionati
 		return this.getAllQuestionariTemplateByProfilazioneAndFiltroConPaginazione(profilazione, filtroListaQuestionariTemplate);
 		
 	}
-	
+
 	@LogMethod
 	@LogExecutionTime
 	public List<QuestionarioTemplateEntity> getAllQuestionariTemplateByProfilazioneAndFiltroConPaginazione(
-			@NotNull @Valid final ProfilazioneParam profilazione,
+			@NotNull @Valid final SceltaProfiloParam profilazione,
 			@NotNull @Valid final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplate) {
 		final String codiceRuoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato().toString();
-		
+
 		// Recupero i questionari in base alla profilazione dell'utente loggatosi
 				// Se: utente loggato si è profilato con uno dei seguenti ruoli,
 				// Allora: non mostro nessun questionario
@@ -116,7 +104,7 @@ public class QuestionarioTemplateService {
 				if(filtroListaQuestionariTemplate.getCriterioRicerca() != null) {
 					criterioRicercaFiltro = "%".concat(filtroListaQuestionariTemplate.getCriterioRicerca()).concat("%");
 				}
-				
+
 				String statoQuestionarioFiltro = null;
 				if(filtroListaQuestionariTemplate.getStatoQuestionario() != null) {
 					statoQuestionarioFiltro = filtroListaQuestionariTemplate.getStatoQuestionario();
@@ -125,7 +113,7 @@ public class QuestionarioTemplateService {
 				switch (codiceRuoloUtenteLoggato) {
 					case RuoliUtentiConstants.DSCU:
 						return this.questionarioTemplateSqlService.findQuestionariTemplatePaginatiByDefaultPolicySCDAndFiltro(
-								criterioRicercaFiltro, 
+								criterioRicercaFiltro,
 								statoQuestionarioFiltro,
 								filtroListaQuestionariTemplate.getCurrPage(),
 								filtroListaQuestionariTemplate.getPageSize()
@@ -133,11 +121,11 @@ public class QuestionarioTemplateService {
 					case RuoliUtentiConstants.REG:
 					case RuoliUtentiConstants.DEG:
 						// Se: l'utente loggato si è profilato con ruolo che diverso da DTD/DSCU (ovvero dropdown scelta profilo ha scelto ruolo REG/DEG/REGP/DEGP/ ...),
-						// Allora: Recupero l'unico questionario associato al programma scelto 
+						// Allora: Recupero l'unico questionario associato al programma scelto
 						// dall'utente durante la profilazione (ovvero dropdown scelta profilo)
 						return this.questionarioTemplateSqlService.findQuestionariTemplatePaginatiByIdProgrammaAndFiltro(
 								profilazione.getIdProgramma(),
-								criterioRicercaFiltro, 
+								criterioRicercaFiltro,
 								statoQuestionarioFiltro,
 								filtroListaQuestionariTemplate.getCurrPage(),
 								filtroListaQuestionariTemplate.getPageSize()
@@ -157,7 +145,7 @@ public class QuestionarioTemplateService {
 	@LogMethod
 	@LogExecutionTime
 	public List<QuestionarioTemplateEntity> getAllQuestionariTemplateByProfilazioneAndFiltroSenzaPaginazione(
-			@NotNull @Valid final ProfilazioneParam profilazione,
+			@NotNull @Valid final SceltaProfiloParam profilazione,
 			@NotNull @Valid final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplate) {
 		final String codiceRuoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato().toString();
 		
@@ -212,22 +200,11 @@ public class QuestionarioTemplateService {
 	@LogMethod
 	@LogExecutionTime
 	public List<String> getAllStatiDropdownByProfilazioneAndFiltro(
-			@NotNull @Valid final ProfilazioneParam profilazione,
+			@NotNull @Valid final SceltaProfiloParam profilazione,
 			@NotNull @Valid final FiltroListaQuestionariTemplateParam filtroListaQuestionariTemplate) {
-		final String codiceFiscaleUtenteLoggato = profilazione.getCodiceFiscaleUtenteLoggato();
+		log.info("getAllStatiDropdownByProfilazioneAndFiltro - START");
 		final String codiceRuoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato().toString();
-		
-		// Verifico se l'utente possiede il ruolo mandato nella richiesta
-		boolean hasRuoloUtente = this.ruoloService
-			.getRuoliByCodiceFiscale(codiceFiscaleUtenteLoggato)
-			.stream()
-			.anyMatch(ruolo -> codiceRuoloUtenteLoggato.equalsIgnoreCase(ruolo.getCodice()));
-		
-		if(!hasRuoloUtente) {
-			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'",codiceFiscaleUtenteLoggato);
-			throw new QuestionarioTemplateException(messaggioErrore, CodiceErroreEnum.U06);
-		}
-		
+
 		// Recupero i questionari in base alla profilazione dell'utente loggatosi
 		// Se: utente loggato si è profilato con uno dei seguenti ruoli,
 		// Allora: non mostro nessun questionario
@@ -419,21 +396,9 @@ public class QuestionarioTemplateService {
 
 	@LogMethod
 	@LogExecutionTime
-	public List<QuestionarioTemplateEntity> getQuestionariTemplateByUtente(ProfilazioneParam profilazioneParam) {
-		String codiceFiscaleUtente = profilazioneParam.getCodiceFiscaleUtenteLoggato();
+	public List<QuestionarioTemplateEntity> getQuestionariTemplateByUtente(SceltaProfiloParam profilazioneParam) {
 		String codiceRuolo = profilazioneParam.getCodiceRuoloUtenteLoggato().toString();
-		
-		// Verifico se l'utente possiede il ruolo mandato nella richiesta
-		boolean hasRuoloUtente = this.ruoloService
-			.getRuoliByCodiceFiscale(codiceFiscaleUtente)
-			.stream()
-			.anyMatch(ruolo -> codiceRuolo.equalsIgnoreCase(ruolo.getCodice()));
 
-		if(!hasRuoloUtente) {
-			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'", codiceFiscaleUtente);
-			throw new QuestionarioTemplateException(messaggioErrore, CodiceErroreEnum.U06);
-		}
-		
 		// Recupero i questionari in base alla profilazione dell'utente loggatosi
 		// Se: utente loggato si è profilato con uno dei seguenti ruoli,
 		// Allora: non mostro nessun questionario
@@ -513,18 +478,18 @@ public class QuestionarioTemplateService {
 		} catch (NoSuchElementException ex) {
 			throw new QuestionarioTemplateException(errorMessage, ex, CodiceErroreEnum.Q01);
 		}
-		
+
 		List<ProgrammaXQuestionarioTemplateEntity> programmaTemplateList = this.programmaXQuestionarioTemplateService.getByIdProgramma(idProgramma);
 		if(programmaTemplateList.isEmpty()) {
 			errorMessage = String.format("Programma con id='%s' deve avere associato un questionarioTemplate", idProgramma);
 			throw new QuestionarioTemplateException(errorMessage, CodiceErroreEnum.QT06);
 		}
-		
+
 		// Recupero il primo soltanto perchè attualmente da specifiche si prevede che il programma abbia associato
 		// un solo questionarioTemplate
 		ProgrammaXQuestionarioTemplateEntity programmaTemplate = programmaTemplateList.get(0);
 		String idQuestionairioTemplateAssociatoAlProgramma = programmaTemplate.getProgrammaXQuestionarioTemplateKey().getIdQuestionarioTemplate();
-		
+
 		// verifico se il questionarioTemplate associato al programma è presente su Mysql
 		try {
 			this.questionarioTemplateSqlService.getQuestionarioTemplateById(idQuestionairioTemplateAssociatoAlProgramma);
@@ -532,7 +497,7 @@ public class QuestionarioTemplateService {
 			errorMessage = String.format("QuestionarioTemplate con id=%s non presente in MySql", idQuestionairioTemplateAssociatoAlProgramma);
 			throw new ServizioException(errorMessage, ex, CodiceErroreEnum.QT05);
 		}
-		
+
 		// verifico se il questionarioTemplate associato al programma è presente su MongoDb
 		QuestionarioTemplateCollection questionarioTemplateAssociatoAlProgramma = null;
 		try {
@@ -541,7 +506,7 @@ public class QuestionarioTemplateService {
 			errorMessage = String.format("QuestionarioTemplate con id=%s non presente in MongoDB", idQuestionairioTemplateAssociatoAlProgramma);
 			throw new ServizioException(errorMessage, ex, CodiceErroreEnum.QT04);
 		}
-		
+
 		return questionarioTemplateAssociatoAlProgramma;
 	}
 }

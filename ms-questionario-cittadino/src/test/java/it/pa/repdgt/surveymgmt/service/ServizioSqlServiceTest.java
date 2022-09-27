@@ -28,11 +28,12 @@ import it.pa.repdgt.shared.entity.ServizioEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entity.key.ProgrammaXQuestionarioTemplateKey;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParamLightProgramma;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioTemplateException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.param.FiltroListaServiziParam;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import it.pa.repdgt.surveymgmt.param.ProfilazioneSedeParam;
 import it.pa.repdgt.surveymgmt.projection.EnteProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
@@ -64,7 +65,8 @@ public class ServizioSqlServiceTest {
 	FiltroListaServiziParam filtroListaServizi;
 	List<String> listaStati;
 	List<String> listaTipologie;
-	ProfilazioneParam profilazioneParam;
+	SceltaProfiloParam sceltaprofiloParam;
+	SceltaProfiloParamLightProgramma sceltaProfiloParamLightProgramma;
 	ServizioRequest servizioRequest;
 	ProgrammaXQuestionarioTemplateKey programmaXQuestionarioTemplateKey;
 	ProgrammaXQuestionarioTemplateEntity programmaXQuestionarioTemplateEntity;
@@ -89,13 +91,18 @@ public class ServizioSqlServiceTest {
 		filtroListaServizi.setCriterioRicerca("CRITERIORICERCA");
 		filtroListaServizi.setStatiServizio(listaStati);
 		filtroListaServizi.setTipologieServizi(listaTipologie);
-		profilazioneParam = new ProfilazioneParam();
-		profilazioneParam.setCodiceFiscaleUtenteLoggato("CFUTENTE");
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD);
-		profilazioneParam.setIdProgetto(1L);
-		profilazioneParam.setIdProgramma(1L);
+		sceltaprofiloParam = new SceltaProfiloParam();
+		sceltaprofiloParam.setCfUtenteLoggato("CFUTENTE");
+		sceltaprofiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
+		sceltaprofiloParam.setIdProgetto(1L);
+		sceltaprofiloParam.setIdProgramma(1L);
+		sceltaProfiloParamLightProgramma = new SceltaProfiloParamLightProgramma();
+		sceltaProfiloParamLightProgramma.setIdProgetto(1L);
+		sceltaProfiloParamLightProgramma.setIdProgramma(1L);
 		servizioRequest = new ServizioRequest();
-		servizioRequest.setProfilazioneParam(profilazioneParam);
+		servizioRequest.setProfilazioneParam(sceltaProfiloParamLightProgramma);
+		servizioRequest.setCfUtenteLoggato("CFUTENTE");
+		servizioRequest.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
 		servizioRequest.setNomeServizio("NOMESERVIZIO");
 		servizioRequest.setIdEnte(1L);
 		servizioRequest.setIdSede(1L);
@@ -118,8 +125,8 @@ public class ServizioSqlServiceTest {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add(ruolo);
 		profilazioneSedeParam = new ProfilazioneSedeParam();
-		profilazioneSedeParam.setCodiceFiscaleUtenteLoggato("CFUTENTE");
-		profilazioneSedeParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC);
+		profilazioneSedeParam.setCfUtenteLoggato("CFUTENTE");
+		profilazioneSedeParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
 		profilazioneSedeParam.setIdEnte(1L);
 		profilazioneSedeParam.setIdProgetto(1L);
 		profilazioneSedeParam.setIdProgramma(1L);
@@ -172,19 +179,19 @@ public class ServizioSqlServiceTest {
 	public void getAllServiziByFacilitatoreOVolontarioAndFiltroTest() {
 		when(this.servizioSqlRepository.findAllServiziByFacilitatoreOVolontarioAndFiltro(
 				filtroListaServizi.getCriterioRicerca(),
-				Arrays.asList(profilazioneParam.getIdProgramma().toString()),
-				Arrays.asList(profilazioneParam.getIdProgetto().toString()),
+				Arrays.asList(sceltaprofiloParam.getIdProgramma().toString()),
+				Arrays.asList(sceltaprofiloParam.getIdProgetto().toString()),
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio(),
-				profilazioneParam.getCodiceFiscaleUtenteLoggato()
+				sceltaprofiloParam.getCfUtenteLoggato()
 			)).thenReturn(listaServizi);
 		List<ServizioEntity> risultato = servizioSqlService.getAllServiziByFacilitatoreOVolontarioAndFiltro(
 				filtroListaServizi.getCriterioRicerca(),
-				Arrays.asList(profilazioneParam.getIdProgramma().toString()),
-				Arrays.asList(profilazioneParam.getIdProgetto().toString()),
+				Arrays.asList(sceltaprofiloParam.getIdProgramma().toString()),
+				Arrays.asList(sceltaprofiloParam.getIdProgetto().toString()),
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio(),
-				profilazioneParam.getCodiceFiscaleUtenteLoggato());
+				sceltaprofiloParam.getCfUtenteLoggato());
 		assertThat(risultato.size()).isEqualTo(listaServizi.size());
 	}
 	
@@ -192,13 +199,13 @@ public class ServizioSqlServiceTest {
 	public void getAllServiziByReferenteODelegatoGestoreProgrammaAndFiltroTest() {
 		when(this.servizioSqlRepository.findAllServiziByReferenteODelegatoGestoreProgrammaAndFiltro(
 				filtroListaServizi.getCriterioRicerca(),
-				Arrays.asList(profilazioneParam.getIdProgramma().toString()),
+				Arrays.asList(sceltaprofiloParam.getIdProgramma().toString()),
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio()
 			)).thenReturn(listaServizi);
 		List<ServizioEntity> risultato = servizioSqlService.getAllServiziByReferenteODelegatoGestoreProgrammaAndFiltro(
 				filtroListaServizi.getCriterioRicerca(),
-				Arrays.asList(profilazioneParam.getIdProgramma().toString()),
+				Arrays.asList(sceltaprofiloParam.getIdProgramma().toString()),
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio());
 		assertThat(risultato.size()).isEqualTo(listaServizi.size());
@@ -208,15 +215,15 @@ public class ServizioSqlServiceTest {
 	public void getAllServiziByReferenteODelegatoGestoreProgettoAndFiltroTest() {
 		when(this.servizioSqlRepository.findAllServiziByReferenteODelegatoGestoreProgettoAndFiltro(
 				filtroListaServizi.getCriterioRicerca(),
-				Arrays.asList(profilazioneParam.getIdProgramma().toString()),
-				Arrays.asList(profilazioneParam.getIdProgetto().toString()),
+				Arrays.asList(sceltaprofiloParam.getIdProgramma().toString()),
+				Arrays.asList(sceltaprofiloParam.getIdProgetto().toString()),
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio()
 			)).thenReturn(listaServizi);
 		List<ServizioEntity> risultato = servizioSqlService.getAllServiziByReferenteODelegatoGestoreProgettoAndFiltro(
 				filtroListaServizi.getCriterioRicerca(),
-				Arrays.asList(profilazioneParam.getIdProgramma().toString()),
-				Arrays.asList(profilazioneParam.getIdProgetto().toString()),
+				Arrays.asList(sceltaprofiloParam.getIdProgramma().toString()),
+				Arrays.asList(sceltaprofiloParam.getIdProgetto().toString()),
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio());
 		assertThat(risultato.size()).isEqualTo(listaServizi.size());
@@ -226,15 +233,15 @@ public class ServizioSqlServiceTest {
 	public void getAllServiziByReferenteODelegatoEntePartnerAndFiltroTest() {
 		when(this.servizioSqlRepository.findAllServiziByReferenteODelegatoEntePartnerAndFiltro(
 				filtroListaServizi.getCriterioRicerca(),
-				Arrays.asList(profilazioneParam.getIdProgramma().toString()),
-				Arrays.asList(profilazioneParam.getIdProgetto().toString()),
+				Arrays.asList(sceltaprofiloParam.getIdProgramma().toString()),
+				Arrays.asList(sceltaprofiloParam.getIdProgetto().toString()),
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio()
 			)).thenReturn(listaServizi);
 		List<ServizioEntity> risultato = servizioSqlService.getAllServiziByReferenteODelegatoEntePartnerAndFiltro(
 				filtroListaServizi.getCriterioRicerca(),
-				Arrays.asList(profilazioneParam.getIdProgramma().toString()),
-				Arrays.asList(profilazioneParam.getIdProgetto().toString()),
+				Arrays.asList(sceltaprofiloParam.getIdProgramma().toString()),
+				Arrays.asList(sceltaprofiloParam.getIdProgetto().toString()),
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio());
 		assertThat(risultato.size()).isEqualTo(listaServizi.size());
@@ -242,7 +249,7 @@ public class ServizioSqlServiceTest {
 	
 	@Test
 	public void salvaServizioTest() {
-		when(this.programmaXQuestionarioTemplateService.getByIdProgramma(profilazioneParam.getIdProgramma())).thenReturn(listaProgrammaXQuestionario);
+		when(this.programmaXQuestionarioTemplateService.getByIdProgramma(sceltaprofiloParam.getIdProgramma())).thenReturn(listaProgrammaXQuestionario);
 		when(this.enteSedeProgettoFacilitatoreService.getById(Mockito.any(EnteSedeProgettoFacilitatoreKey.class))).thenReturn(enteSedeProgettoFacilitatoreEntity);
 		when(this.servizioSqlRepository.save(Mockito.any(ServizioEntity.class))).thenReturn(servizio);
 		ServizioEntity risultato = servizioSqlService.salvaServizio(servizioRequest, servizioRequest.getSezioneQuestionarioCompilatoQ3());
@@ -251,7 +258,7 @@ public class ServizioSqlServiceTest {
 	
 	@Test
 	public void creaServizioTest() {
-		when(this.programmaXQuestionarioTemplateService.getByIdProgramma(profilazioneParam.getIdProgramma())).thenReturn(listaProgrammaXQuestionario);
+		when(this.programmaXQuestionarioTemplateService.getByIdProgramma(sceltaprofiloParam.getIdProgramma())).thenReturn(listaProgrammaXQuestionario);
 		when(this.enteSedeProgettoFacilitatoreService.getById(Mockito.any(EnteSedeProgettoFacilitatoreKey.class))).thenReturn(enteSedeProgettoFacilitatoreEntity);
 		ServizioEntity risultato = servizioSqlService.creaServizio(servizioRequest, servizioRequest.getSezioneQuestionarioCompilatoQ3());
 		assertThat(risultato.getNome()).isEqualTo(servizioRequest.getNomeServizio());
@@ -260,7 +267,7 @@ public class ServizioSqlServiceTest {
 	@Test
 	public void creaServizioKOTest() {
 		//test KO per questionario non associato al programma
-		when(this.programmaXQuestionarioTemplateService.getByIdProgramma(profilazioneParam.getIdProgramma())).thenReturn(new ArrayList<>());
+		when(this.programmaXQuestionarioTemplateService.getByIdProgramma(sceltaprofiloParam.getIdProgramma())).thenReturn(new ArrayList<>());
 		Assertions.assertThrows(ServizioException.class, () -> servizioSqlService.creaServizio(servizioRequest, servizioRequest.getSezioneQuestionarioCompilatoQ3()));
 		assertThatExceptionOfType(ServizioException.class);
 	}
@@ -276,25 +283,25 @@ public class ServizioSqlServiceTest {
 	
 	@Test
 	public void getEntiByFacilitatoreTest() {
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC);
+		sceltaprofiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
 		EnteProjectionImplementation enteProjectionImplementation = new EnteProjectionImplementation();
 		enteProjectionImplementation.setId(1L);
 		enteProjectionImplementation.setNome("NOMEENTE");
 		enteProjectionImplementation.setNomeBreve("ENTE");
 		List<EnteProjection> listaEntiProjection = new ArrayList<>();
 		listaEntiProjection.add(enteProjectionImplementation);
-		when(this.ruoloService.getRuoliByCodiceFiscale(profilazioneParam.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
-		when(this.enteSedeProgettoFacilitatoreService.getEntiByFacilitatore(profilazioneParam)).thenReturn(listaEntiProjection);
-		List<EnteProjection> risultato = servizioSqlService.getEntiByFacilitatore(profilazioneParam);
+		when(this.ruoloService.getRuoliByCodiceFiscale(sceltaprofiloParam.getCfUtenteLoggato())).thenReturn(listaRuoli);
+		when(this.enteSedeProgettoFacilitatoreService.getEntiByFacilitatore(sceltaprofiloParam)).thenReturn(listaEntiProjection);
+		List<EnteProjection> risultato = servizioSqlService.getEntiByFacilitatore(sceltaprofiloParam);
 		assertThat(risultato.size()).isEqualTo(listaEntiProjection.size());
 	}
 	
 	@Test
 	public void getEntiByFacilitatoreKOTest() {
 		//test KO per ruolo non definito per l'utente o ruolo != FAC o VOL
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD);
-		when(this.ruoloService.getRuoliByCodiceFiscale(profilazioneParam.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
-		Assertions.assertThrows(QuestionarioTemplateException.class, () -> servizioSqlService.getEntiByFacilitatore(profilazioneParam));
+		sceltaprofiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
+		when(this.ruoloService.getRuoliByCodiceFiscale(sceltaprofiloParam.getCfUtenteLoggato())).thenReturn(listaRuoli);
+		Assertions.assertThrows(QuestionarioTemplateException.class, () -> servizioSqlService.getEntiByFacilitatore(sceltaprofiloParam));
 		assertThatExceptionOfType(QuestionarioTemplateException.class);
 	}
 	
@@ -305,7 +312,7 @@ public class ServizioSqlServiceTest {
 		sedeProjectionImplementation.setNome("NOMESEDE");
 		List<SedeProjection> listaSediProjection = new ArrayList<>();
 		listaSediProjection.add(sedeProjectionImplementation);
-		when(this.ruoloService.getRuoliByCodiceFiscale(profilazioneParam.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
+		when(this.ruoloService.getRuoliByCodiceFiscale(sceltaprofiloParam.getCfUtenteLoggato())).thenReturn(listaRuoli);
 		when(this.enteSedeProgettoFacilitatoreService.getSediByFacilitatore(profilazioneSedeParam)).thenReturn(listaSediProjection);
 		List<SedeProjection> risultato = servizioSqlService.getSediByFacilitatore(profilazioneSedeParam);
 		assertThat(risultato.size()).isEqualTo(listaSediProjection.size());
@@ -314,8 +321,8 @@ public class ServizioSqlServiceTest {
 	@Test
 	public void getSediByFacilitatoreKOTest() {
 		//test KO per ruolo non definito per l'utente o ruolo != FAC o VOL
-		profilazioneSedeParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD);
-		when(this.ruoloService.getRuoliByCodiceFiscale(profilazioneParam.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
+		profilazioneSedeParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
+		when(this.ruoloService.getRuoliByCodiceFiscale(sceltaprofiloParam.getCfUtenteLoggato())).thenReturn(listaRuoli);
 		Assertions.assertThrows(QuestionarioTemplateException.class, () -> servizioSqlService.getSediByFacilitatore(profilazioneSedeParam));
 		assertThatExceptionOfType(QuestionarioTemplateException.class);
 	}
