@@ -334,6 +334,19 @@ export const transformFiltersToQueryParams = (filters: {
   return filterString === '' ? filterString : '?' + filterString;
 };
 
+export const getUrlParameter = (parameterName: string) => {
+  let result = null,
+    tmp = [];
+  window.location.search
+    .substring(1)
+    .split('&')
+    .forEach((item) => {
+      tmp = item.split('=');
+      if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+    });
+  return result;
+};
+
 export const formatAndParseJsonString = (jsonString: string) => {
   try {
     return JSON.parse(jsonString);

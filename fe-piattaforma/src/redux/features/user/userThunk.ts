@@ -8,7 +8,11 @@ import {
   setUserProfile,
   UserProfileI,
 } from './userSlice';
-import { getSessionValues } from '../../../utils/sessionHelper';
+import {
+  clearSessionValues,
+  getSessionValues,
+  setSessionValues,
+} from '../../../utils/sessionHelper';
 import { RootState } from '../../store';
 import { isActiveProvisionalLogin } from '../../../pages/common/Auth/auth';
 
@@ -66,11 +70,17 @@ export const SessionCheck = async (dispatch: any) => {
 
 const CreateUserContextAction = { type: 'user/CreateUserContext' };
 export const CreateUserContext =
-  (codiceFiscale: string) => async (dispatch: Dispatch) => {
+  (codiceFiscale?: string) => async (dispatch: Dispatch) => {
     try {
       dispatch({ ...CreateUserContextAction, codiceFiscale }); // TODO manage dispatch for dev env only
       dispatch(showLoader());
-      const res = await API.post('/contesto', { codiceFiscale });
+      let body = {};
+      if (isActiveProvisionalLogin) {
+        body = {
+          codiceFiscale,
+        };
+      }
+      const res = await API.post('/contesto', body);
 
       if (res?.data) {
         dispatch(setUserContext(res.data));
@@ -100,9 +110,10 @@ export const SelectUserRole =
       } = select((state: RootState) => state);
       if (codiceFiscale && profile?.codiceRuolo) {
         const { codiceRuolo, idProgramma, idProgetto } = profile;
+        setSessionValues('profile', profile);
         const res = await API.post('/contesto/sceltaProfilo', {
-          cfUtente: codiceFiscale,
-          codiceRuolo,
+          cfUtente: isActiveProvisionalLogin ? codiceFiscale : undefined,
+          codiceRuolo: isActiveProvisionalLogin ? codiceRuolo : undefined,
           idProgramma,
           idProgetto,
         });
@@ -114,6 +125,7 @@ export const SelectUserRole =
       }
     } catch (error) {
       console.log('SelectUserRole error', error);
+      clearSessionValues('profile');
     } finally {
       dispatch(hideLoader());
     }
@@ -181,3 +193,21 @@ export const UploadUserPic =
       dispatch(hideLoader());
     }
   };
+
+const LogoutRedirectAction = { type: 'user/LogoutRedirect' };
+export const LogoutRedirect = () => async (dispatch: Dispatch) => {
+  try {
+    dispatch({ ...LogoutRedirectAction }); // TODO manage dispatch for dev env only
+    dispatch(showLoader());
+    const logoutRedirectUrl =
+      `${process?.env?.REACT_APP_COGNITO_BASE_URL}logout?client_id=${process?.env?.REACT_APP_COGNITO_CLIENT_ID}&logout_uri=${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}`.replace(
+        '/auth',
+        ''
+      );
+    clearSessionValues();
+    console.log('Logout Redirect to', logoutRedirectUrl);
+    window.location.replace(logoutRedirectUrl);
+  } catch (error) {
+    console.log('LogoutRedirect error', error);
+  }
+};

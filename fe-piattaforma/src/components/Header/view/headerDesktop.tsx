@@ -16,7 +16,6 @@ import Logo from '/public/assets/img/logo.png';
 import Bell from '/public/assets/img/campanella.png';
 import { useTranslation } from 'react-i18next';
 import { HeaderI } from '../header';
-import { logout } from '../../../redux/features/user/userSlice';
 import HeaderMenu from '../../HeaderMenu/headerMenu';
 import { openModal } from '../../../redux/features/modal/modalSlice';
 import {
@@ -26,6 +25,7 @@ import {
 import useGuard from '../../../hooks/guard';
 import { defaultRedirectUrl } from '../../../routes';
 import UserAvatar from '../../Avatar/UserAvatar/UserAvatar';
+import { LogoutRedirect } from '../../../redux/features/user/userThunk';
 
 const HeaderDesktop: React.FC<HeaderI> = ({
   isHeaderFull = true,
@@ -150,7 +150,9 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 'w-100'
               )}
               role='menuitem'
-              onClick={() => dispatch(logout())}
+              onClick={() => {
+                dispatch(LogoutRedirect());
+              }}
             >
               <strong>Esci</strong>
               <Icon

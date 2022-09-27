@@ -16,14 +16,11 @@ import withFormHandler, {
 } from '../../../hoc/withFormHandler';
 import { Form, Input } from '../../../components';
 import { Button, FormGroup, Icon, Label } from 'design-react-kit';
-import {
-  login,
-  logout,
-  selectUser,
-} from '../../../redux/features/user/userSlice';
+import { login, selectUser } from '../../../redux/features/user/userSlice';
 import {
   CreateUserContext,
   EditUser,
+  LogoutRedirect,
   SelectUserRole,
   UploadUserPic,
 } from '../../../redux/features/user/userThunk';
@@ -60,7 +57,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  if (!user?.codiceFiscale) return <Navigate to='/auth' replace />;
+  if (!user?.codiceFiscale) return <Navigate to={defaultRedirectUrl} replace />;
 
   const addProfilePicture = () => {
     if (inputRef.current !== null) {
@@ -124,7 +121,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
         }
       }
     } catch {
-      dispatch(logout());
+      dispatch(LogoutRedirect());
     }
   };
 
