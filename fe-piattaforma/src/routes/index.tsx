@@ -213,6 +213,7 @@ const AppRoutes: React.FC = () => {
           </>
         ) : (
           <>
+            <Route path='/auth/:token' element={<Auth />} />
             <Route path='/auth' element={<Auth />} />
             <Route path='/' element={<FullLayout />}>
               {/* Public Paths */}

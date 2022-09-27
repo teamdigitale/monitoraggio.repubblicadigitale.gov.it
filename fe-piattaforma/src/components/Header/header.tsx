@@ -33,7 +33,8 @@ export interface HeaderProp {
 
 const parseMenuRoute = (menuRoute: MenuItem, userProfile: UserProfileI) => {
   switch (userProfile?.codiceRuolo) {
-    case userRoles.REG: {
+    case userRoles.REG:
+    case userRoles.DEG: {
       if (
         userProfile?.idProgramma &&
         menuRoute.path === '/area-amministrativa/programmi'
@@ -47,6 +48,8 @@ const parseMenuRoute = (menuRoute: MenuItem, userProfile: UserProfileI) => {
       return menuRoute;
     }
     case userRoles.REGP:
+    case userRoles.DEGP:
+    case userRoles.VOL:
     case userRoles.FAC: {
       if (
         userProfile?.idProgetto &&

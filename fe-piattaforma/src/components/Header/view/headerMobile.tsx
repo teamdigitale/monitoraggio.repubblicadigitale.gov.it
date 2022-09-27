@@ -12,7 +12,6 @@ import {
 import LogoMobile from '/public/assets/img/logo-mobile.png';
 import Bell from '/public/assets/img/campanella.png';
 import { HeaderI } from '../header';
-import { logout } from '../../../redux/features/user/userSlice';
 import HamburgerMenu from '../../HamburgerMenu/hamburgerMenu';
 import { openModal } from '../../../redux/features/modal/modalSlice';
 import {
@@ -21,6 +20,7 @@ import {
 } from '../../Avatar/AvatarInitials/avatarInitials';
 import { defaultRedirectUrl } from '../../../routes';
 import UserAvatar from '../../Avatar/UserAvatar/UserAvatar';
+import { LogoutRedirect } from '../../../redux/features/user/userThunk';
 
 const HeaderMobile: React.FC<HeaderI> = ({
   dispatch,
@@ -139,7 +139,9 @@ const HeaderMobile: React.FC<HeaderI> = ({
                 'justify-content-between'
               )}
               role='menuitem'
-              onClick={() => dispatch(logout())}
+              onClick={() => {
+                dispatch(LogoutRedirect());
+              }}
             >
               <span>Esci</span>
               <Icon
