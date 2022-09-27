@@ -1,5 +1,18 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.156](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.155...1.0.0-develop.156) (2022-09-27)
+
+
+### Features
+
+* **fe-piattaforma:** fe updates 09272022 ([b2ca513](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b2ca5130a78e7fb57e0fd23f1286967ccc235e47))
+* **fe-piattaforma:** fe updates 09272022 ([db80d1a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/db80d1a3045c32fc625f935ce631a3b351abeb24))
+
+
+### Bug Fixes
+
+* **be:** commenti + filtro + utenti ([52101fb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/52101fb83359a49e9697306ad13a49ac5a92b2c3))
+
 ## [1.0.0-develop.155](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.154...1.0.0-develop.155) (2022-09-26)
 
 
