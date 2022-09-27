@@ -41,13 +41,17 @@ public class RequestWrapper extends HttpServletRequestWrapper {
             Map<String, String> headers = this.getRequestHeaders(httpServletRequest);
             Optional<String> authToken = Optional.ofNullable(headers.get(AUTH_TOKEN_HEADER));
             Optional<String> codiceRuolo = Optional.ofNullable(headers.get(USER_ROLE_HEADER));
+            String endpoint = httpServletRequest.getServletPath();
+            String metodoHttp = httpServletRequest.getMethod();
             
             /****** DECODE TOKEN ********/
-            //se non esiste codiceRuolo e/o authToken API GATEWAY blocca la chiamata
-            //split del JWT nelle sue 3 parti con il delimitatore '.' (part 1 = HEADER, part 2 = PAYLOAD, part 3 = SIGNATURE (Algorith (header + payload), secretKey)
+            /*se non esiste codiceRuolo e/o authToken API GATEWAY blocca la chiamata 
+             * split del JWT nelle sue 3 parti con il delimitatore '.' 
+             * (part 1 = HEADER, part 2 = PAYLOAD, part 3 = SIGNATURE (Algorith (header + payload), secretKey)
+             */
 			if(authToken.isPresent()) {
 	            String[] parts = authToken.get().split("\\.");
-	            //if in caso di api senza token (token = stringa vuota)
+	            //if in caso di api senza token (token = stringa vuota) --> API questionario ANONIMO
 	            if(parts.length > 1) {
 					//recupero la parte jwt del payload e la decodifico da Base64 
 					String jwtPayload = decode(parts[1]);
@@ -69,6 +73,15 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 			            this.body = this.getCorpoRichiestaArricchitaConDatiContesto(inputCorpoRichiesta);
 		            }
 	            }
+			}else if(FilterUtil.isEndpointQuestionarioCompilatoAnonimo(endpoint) && metodoHttp.equals("POST")){
+				/*
+				 * aggiunta a causa del fatto che l'api
+				 * POST - /servizio/cittadino/questionarioCompilato/{idQuestionario}/compila/anonimo  
+				 * (questionario compilato da cittadino) non prevede alcun token jwt 
+				 * ma al contrario il token applicativo per id questionario
+				 * quindi il filtro fa passare la chiamata ma occorre fare il pass-through del body
+				*/
+				body = this.getCorpoRichiesta(httpServletRequest);
 			}
         }
 
