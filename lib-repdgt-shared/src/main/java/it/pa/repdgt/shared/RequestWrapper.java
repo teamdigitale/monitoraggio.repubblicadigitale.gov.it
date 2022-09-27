@@ -20,6 +20,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class RequestWrapper extends HttpServletRequestWrapper {
 	private static final int SIZE_BUFFER = 128;
         private static final String AUTH_TOKEN_HEADER = "authtoken";
@@ -41,8 +44,12 @@ public class RequestWrapper extends HttpServletRequestWrapper {
             Map<String, String> headers = this.getRequestHeaders(httpServletRequest);
             Optional<String> authToken = Optional.ofNullable(headers.get(AUTH_TOKEN_HEADER));
             Optional<String> codiceRuolo = Optional.ofNullable(headers.get(USER_ROLE_HEADER));
+            
             String endpoint = httpServletRequest.getServletPath();
             String metodoHttp = httpServletRequest.getMethod();
+            
+            log.debug("Filter - ENDPOINT - {}", endpoint);
+            log.debug("Filter - METHOD - {}", metodoHttp);
             
             /****** DECODE TOKEN ********/
             /*se non esiste codiceRuolo e/o authToken API GATEWAY blocca la chiamata 
@@ -72,16 +79,16 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		            if(inputCorpoRichiesta != null  && !inputCorpoRichiesta.trim().isEmpty()) {
 			            this.body = this.getCorpoRichiestaArricchitaConDatiContesto(inputCorpoRichiesta);
 		            }
-	            }
-			}else if(FilterUtil.isEndpointQuestionarioCompilatoAnonimo(endpoint) && metodoHttp.equals("POST")){
-				/*
-				 * aggiunta a causa del fatto che l'api
-				 * POST - /servizio/cittadino/questionarioCompilato/{idQuestionario}/compila/anonimo  
-				 * (questionario compilato da cittadino) non prevede alcun token jwt 
-				 * ma al contrario il token applicativo per id questionario
-				 * quindi il filtro fa passare la chiamata ma occorre fare il pass-through del body
-				*/
-				body = this.getCorpoRichiesta(httpServletRequest);
+	            }else if(FilterUtil.isEndpointQuestionarioCompilatoAnonimo(endpoint) && metodoHttp.equals("POST")){
+					/*
+					 * aggiunta a causa del fatto che l'api
+					 * POST - /servizio/cittadino/questionarioCompilato/{idQuestionario}/compila/anonimo  
+					 * (questionario compilato da cittadino) non prevede alcun token jwt 
+					 * ma al contrario il token applicativo per id questionario
+					 * quindi il filtro fa passare la chiamata ma occorre fare il pass-through del body
+					*/
+					body = this.getCorpoRichiesta(httpServletRequest);
+				}
 			}
         }
 
