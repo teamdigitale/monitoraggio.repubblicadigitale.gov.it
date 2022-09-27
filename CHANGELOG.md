@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.57](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.56...1.0.0-test.57) (2022-09-27)
+
+
+### Features
+
+* **fe-piattaforma:** fe updates 09272022 ([0984119](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/098411928fd74714e09c53c7a17805ca13bcc3f6))
+* **be:** rilascio filtro SPID ([90141c7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/90141c704c37e927ec2acaa198869acd52c038a6))
+* **fe-piattaforma:** fe updates 09272022 ([b8573e2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b8573e28c6e33d17504f9c2300ec96a0fdadfcbc))
+
 ## [1.0.0-test.56](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.55...1.0.0-test.56) (2022-09-27)
 
 
