@@ -32,9 +32,9 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
     setFormValues = () => ({}),
     form,
     onInputChange,
-    sendNewValues,
+    sendNewValues = () => ({}),
     setIsFormValid = () => ({}),
-    getFormValues,
+    getFormValues = () => ({}),
     updateForm = () => ({}),
     creation = false,
   } = props;
@@ -44,26 +44,55 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(GetValuesDropdownServiceCreation({dropdownType: 'enti'}));
-  },[]);
+    dispatch(GetValuesDropdownServiceCreation({ dropdownType: 'enti' }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
-    if(form?.idEnte?.value){
-      dispatch(GetValuesDropdownServiceCreation({dropdownType: 'sedi', idEnte: Number(form?.idEnte?.value)}));
+    if (form?.idEnte?.value) {
+      dispatch(
+        GetValuesDropdownServiceCreation({
+          dropdownType: 'sedi',
+          idEnte: Number(form?.idEnte?.value),
+        })
+      );
     }
-  },[form?.idEnte?.value]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form?.idEnte?.value]);
 
   useEffect(() => {
     if (formData && !creation) {
       const values = {
         nomeServizio: formData?.nomeServizio,
-        idEnte: dropdownOptions['enti']?.filter(opt => opt.label === formData?.nomeEnte)[0]?.value,
-        idSede: dropdownOptions['sedi']?.filter(opt => opt.label === formData?.nomeSede)[0]?.value,
+        idEnte: dropdownOptions?.enti?.filter(
+          (opt) => opt.label === formData?.nomeEnte
+        )[0]?.value,
+        idSede: dropdownOptions?.sedi?.filter(
+          (opt) => opt.label === formData?.nomeSede
+        )[0]?.value,
       };
       setFormValues(values);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData, dropdownOptions]);
+
+  useEffect(() => {
+    if (creation) {
+      const values = {
+        nomeServizio: form?.nomeServizio?.value,
+        idEnte: form?.idEnte?.value,
+        idSede: form?.idSede?.value,
+      };
+      if (!values.idEnte && dropdownOptions?.enti?.length) {
+        values.idEnte = dropdownOptions.enti[0].value;
+      }
+      if (!values.idSede && dropdownOptions?.sedi?.length === 1) {
+        values.idSede = dropdownOptions.sedi[0].value;
+      }
+      setFormValues(values);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dropdownOptions?.enti, dropdownOptions?.sedi]);
 
   useEffect(() => {
     if (
@@ -92,8 +121,8 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
   };
 
   useEffect(() => {
-    sendNewValues?.(getFormValues?.());
-    setIsFormValid?.(FormHelper.isValidForm(form));
+    sendNewValues(getFormValues());
+    setIsFormValid(FormHelper.isValidForm(form));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
@@ -113,7 +142,7 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
           onInputChange={onInputDataChange}
           options={dropdownOptions['enti']}
           wrapperClassName='mb-5 pr-lg-3'
-          isDisabled={formDisabled}
+          isDisabled={formDisabled || dropdownOptions?.enti?.length === 1}
         />
         <Select
           {...form?.idSede}
@@ -122,7 +151,7 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
           onInputChange={onInputDataChange}
           options={dropdownOptions['sedi']}
           wrapperClassName='mb-5 pr-lg-3'
-          isDisabled={formDisabled}
+          isDisabled={formDisabled || dropdownOptions?.sedi?.length === 1}
         />
       </Form.Row>
     </Form>

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import API from '../../../utils/apiHelper';
 import { useDispatch } from 'react-redux';
 import { hideLoader, showLoader } from '../../../redux/features/app/appSlice';
-import { getUserHeaders } from '../../../redux/features/user/userThunk';
 import { GetProgramDetail } from '../../../redux/features/administrativeArea/programs/programsThunk';
 import { GetProjectDetail } from '../../../redux/features/administrativeArea/projects/projectsThunk';
 import { useAppSelector } from '../../../redux/hooks';
@@ -13,6 +12,7 @@ import {
 import { userRoles } from '../AdministrativeArea/Entities/utils';
 import PageTitle from '../../../components/PageTitle/pageTitle';
 import useGuard from '../../../hooks/guard';
+import { selectProfile } from '../../../redux/features/user/userSlice';
 
 /*
 const baseFrameURL =
@@ -69,7 +69,8 @@ const authContents = {
 const Dashboard = () => {
   const dispatch = useDispatch();
   const [frameUrl, setFrameUrl] = useState('');
-  const user = getUserHeaders();
+  //const user = getUserHeaders();
+  const user = useAppSelector(selectProfile);
   const { hasUserPermission } = useGuard();
   const { dettagliInfoProgramma: program } =
     useAppSelector(selectPrograms).detail;
