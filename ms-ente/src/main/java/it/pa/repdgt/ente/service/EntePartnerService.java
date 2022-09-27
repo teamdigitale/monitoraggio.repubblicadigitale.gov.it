@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-import org.hibernate.query.criteria.internal.predicate.IsEmptyPredicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -138,8 +137,8 @@ public class EntePartnerService {
 										
 										
 										List<String> facilitatoreVolontario = Arrays.asList(RuoloUtenteEnum.FAC.toString(), RuoloUtenteEnum.VOL.toString());
-										if(facilitatoreVolontario.contains(entiPaginatiParam.getCodiceRuolo().toString())) {
-											String cfUtenteLoggato = entiPaginatiParam.getCfUtente();
+										if(facilitatoreVolontario.contains(entiPaginatiParam.getCodiceRuoloUtenteLoggato().toString())) {
+											String cfUtenteLoggato = entiPaginatiParam.getCfUtenteLoggato();
 											EnteSedeProgettoFacilitatoreKey id = new EnteSedeProgettoFacilitatoreKey(idEnte, sede.getId(), idProgetto, cfUtenteLoggato);
 											boolean isSedeAsssociataAUtente = this.enteSedeProgettoFacilitatoreService.getEnteSedeProgettoFacilitatoreById(id).isPresent();
 											sedePartner.setAssociatoAUtente(isSedeAsssociataAUtente);

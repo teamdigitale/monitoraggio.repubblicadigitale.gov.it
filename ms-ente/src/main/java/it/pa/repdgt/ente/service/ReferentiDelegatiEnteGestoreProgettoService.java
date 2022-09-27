@@ -18,11 +18,7 @@ import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 public class ReferentiDelegatiEnteGestoreProgettoService {
 	@Autowired
 	private ReferentiDelegatiEnteGestoreProgettoRepository referentiDelegatiEnteGestoreProgettoRepository;
-	
-	// MI SERVE
-	/**
-	 * @throws ResourceNotFoundException
-	 * */
+
 	@LogMethod
 	@LogExecutionTime
 	public void save(ReferentiDelegatiEnteGestoreProgettoEntity referentiDelegatiEnteGestoreProgetto) {

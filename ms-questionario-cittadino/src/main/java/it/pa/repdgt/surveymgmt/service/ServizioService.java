@@ -26,6 +26,7 @@ import it.pa.repdgt.shared.entity.SedeEntity;
 import it.pa.repdgt.shared.entity.ServizioEntity;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.bean.DettaglioServizioBean;
 import it.pa.repdgt.surveymgmt.bean.SchedaDettaglioServizioBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
@@ -35,9 +36,7 @@ import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.mapper.ServizioMapper;
 import it.pa.repdgt.surveymgmt.mongo.repository.SezioneQ3Respository;
 import it.pa.repdgt.surveymgmt.param.FiltroListaServiziParam;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import it.pa.repdgt.surveymgmt.projection.ProgettoProjection;
-import it.pa.repdgt.surveymgmt.repository.TipologiaServizioRepository;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
 
 @Service
@@ -50,8 +49,6 @@ public class ServizioService {
 	@Autowired
 	private SezioneQ3Respository sezioneQ3Repository;
 	@Autowired
-	private TipologiaServizioRepository tipologiaServizioRepository;
-	@Autowired
 	private ServizioSqlService servizioSQLService;
 	@Autowired
 	private ProgettoService progettoService;
@@ -61,9 +58,9 @@ public class ServizioService {
 	private SedeService sedeService;
 	@Autowired
 	private QuestionarioTemplateService questionarioTemplateService;
-	@Autowired 
+	@Autowired
 	private QuestionarioTemplateSqlService questionarioTemplateSqlService;
-	
+
 	/**
 	 * Recupera l'elenco dei servizi paginati sulla base della profilazione dell'utente loggato e dei filtri in input
 	 * - ProfilazioneParama - contiene i dati della profilazione dell'utente loggato 
@@ -73,11 +70,11 @@ public class ServizioService {
 	@LogMethod
 	@LogExecutionTime
 	public Page<ServizioEntity> getAllServiziPaginatiByProfilazioneAndFiltri(
-			@NotNull @Valid final ProfilazioneParam profilazione,
+			@NotNull @Valid final SceltaProfiloParam profilazione,
 			@NotNull @Valid final FiltroListaServiziParam filtroListaServizi,
 			@NotNull final Pageable pagina ) {
 		// Recupero codiceFiscale e codiceRuolo con cui si è profilato l'utente loggato alla piattaforma
-		final String codiceFiscaleUtenteLoggato = profilazione.getCodiceFiscaleUtenteLoggato().trim().toUpperCase();
+		final String codiceFiscaleUtenteLoggato = profilazione.getCfUtenteLoggato().trim().toUpperCase();
 		final String codiceRuoloUtenteLoggato   = profilazione.getCodiceRuoloUtenteLoggato().toString().trim().toUpperCase();
 		
 		// Verifico se l'utente possiede il ruolo mandato nella richiesta
@@ -107,10 +104,10 @@ public class ServizioService {
 	@LogMethod
 	@LogExecutionTime
 	public List<ServizioEntity> getAllServiziByProfilazioneUtenteLoggatoAndFiltri(
-			@NotNull @Valid ProfilazioneParam profilazione,
+			@NotNull @Valid SceltaProfiloParam profilazione,
 			@NotNull @Valid FiltroListaServiziParam filtroListaServizi) {
 		// Recupero codiceFiscale e codiceRuolo con cui si è profilato l'utente loggato alla piattaforma
-		final String codiceFiscaleUtenteLoggato = profilazione.getCodiceFiscaleUtenteLoggato().trim().toUpperCase();
+		final String codiceFiscaleUtenteLoggato = profilazione.getCfUtenteLoggato().trim().toUpperCase();
 		final String codiceRuoloUtenteLoggato   = profilazione.getCodiceRuoloUtenteLoggato().toString().trim().toUpperCase();
 		
 		// Verifico se l'utente possiede il ruolo mandato nella richiesta
@@ -195,15 +192,15 @@ public class ServizioService {
 	@Transactional(rollbackOn = Exception.class)
 	public ServizioEntity creaServizio(
 			@NotNull final ServizioRequest servizioRequest) {
-		
+
 		String nomeServizio = servizioRequest.getNomeServizio();
 		Optional<ServizioEntity> servizioDBFetch = this.servizioSQLService.getServizioByNome(nomeServizio);
 		if(servizioDBFetch.isPresent()) {
 			final String messaggioErrore = String.format("Impossibile creare servizio. Servizio con nome=%s già esistente", nomeServizio);
 			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S08);
 		}
-		final String codiceFiscaletenteLoggato = servizioRequest.getProfilazioneParam().getCodiceFiscaleUtenteLoggato();
-		final String ruoloUtenteLoggato = servizioRequest.getProfilazioneParam().getCodiceRuoloUtenteLoggato().toString();
+		final String codiceFiscaletenteLoggato = servizioRequest.getCfUtenteLoggato();
+		final String ruoloUtenteLoggato = servizioRequest.getCodiceRuoloUtenteLoggato().toString();
 		
 		if( ! this.utenteService.isUtenteFacilitatore(codiceFiscaletenteLoggato, ruoloUtenteLoggato) ) {
 			final String messaggioErrore = String.format("Impossibile creare servizio. Utente con codice fiscale '%s' non ha ruolo FACILITATORE", codiceFiscaletenteLoggato);
@@ -238,8 +235,8 @@ public class ServizioService {
 	public void aggiornaServizio(
 			@NotNull Long idServizioDaAggiornare, 
 			@NotNull @Valid ServizioRequest servizioDaAggiornareRequest) {
-		final String codiceFiscaletenteLoggato = servizioDaAggiornareRequest.getProfilazioneParam().getCodiceFiscaleUtenteLoggato();
-		final String ruoloUtenteLoggato = servizioDaAggiornareRequest.getProfilazioneParam().getCodiceRuoloUtenteLoggato().toString();
+		final String codiceFiscaletenteLoggato = servizioDaAggiornareRequest.getCfUtenteLoggato();
+		final String ruoloUtenteLoggato = servizioDaAggiornareRequest.getCodiceRuoloUtenteLoggato().toString();
 		
 		String nomeServizio = servizioDaAggiornareRequest.getNomeServizio();
 		Optional<ServizioEntity> servizioDBFetch = this.servizioSQLService.getServizioByNomeUpdate(nomeServizio, idServizioDaAggiornare);
@@ -278,7 +275,7 @@ public class ServizioService {
 	@LogMethod
 	@LogExecutionTime
 	public List<String> getAllTipologiaServizioFiltroDropdown(
-			@NotNull @Valid final ProfilazioneParam profilazione, 
+			@NotNull @Valid final SceltaProfiloParam profilazione,
 			@NotNull @Valid final FiltroListaServiziParam filtroListaServizi) {
 		return this.getAllServiziByProfilazioneUtenteLoggatoAndFiltri(profilazione, filtroListaServizi)
 				.stream()
@@ -296,7 +293,7 @@ public class ServizioService {
 	@LogMethod
 	@LogExecutionTime
 	public List<String> getAllStatiServizioFiltroDropdown(
-			@NotNull @Valid final ProfilazioneParam profilazione, 
+			@NotNull @Valid final SceltaProfiloParam profilazione,
 			@NotNull @Valid final FiltroListaServiziParam filtroListaServizi) {
 		// Recupero tutti i servizi in base all'utente profilato che si è loggato 
 		// e dei servizi recuperati prendo solo il campo stato
@@ -331,7 +328,7 @@ public class ServizioService {
 		String idFacilitatore = servizioEntity.getIdEnteSedeProgettoFacilitatore().getIdFacilitatore();
 		String nominativoFacilitatore = this.servizioSQLService.getNominativoFacilitatoreByIdFacilitatoreAndIdServizio(idFacilitatore, servizioEntity.getId());
 		dettaglioServizioBean.setNominativoFacilitatore(nominativoFacilitatore);
-		
+
 		// verifico se il questionarioTemplate associato al servizio è presente su Mysql
 		try {
 			this.questionarioTemplateSqlService.getQuestionarioTemplateById(servizioEntity.getIdQuestionarioTemplateSnapshot());
@@ -339,7 +336,7 @@ public class ServizioService {
 			String errorMessage = String.format("QuestionarioTemplate con id=%s associato al servizio non presente in MySql", servizioEntity.getIdQuestionarioTemplateSnapshot());
 			throw new ServizioException(errorMessage, ex, CodiceErroreEnum.QT05);
 		}
-		
+
 		// verifico se il questionarioTemplate associato al servizio è presente su MongoDb
 		QuestionarioTemplateCollection questionarioTemplateAssociatoAlServizio = null;
 		try {
@@ -349,7 +346,7 @@ public class ServizioService {
 			throw new ServizioException(errorMessage, ex, CodiceErroreEnum.QT04);
 		}
 		dettaglioServizioBean.setQuestionarioTemplateSnapshot(questionarioTemplateAssociatoAlServizio);
-		
+
 		final Optional<SezioneQ3Collection> sezioneQ3Compilato = this.sezioneQ3Repository.findById(servizioEntity.getIdTemplateCompilatoQ3());
 		dettaglioServizioBean.setSezioneQ3compilato(sezioneQ3Compilato.orElse(null));
 		
@@ -372,8 +369,6 @@ public class ServizioService {
 			final String messaggioErrore = String.format("Impossibile eliminare Servizio con id=%s. Stato Servizio = '%s'", idServizio, statoServizio);
 			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S07);
 		}
-		// cancello tutte le tipologie servizio associate al servizio su MySql
-//		this.tipologiaServizioRepository.deleteByIdServizio(idServizio);
 		
 		// cancello servizio su MySql
 		this.servizioSQLService.cancellaServivio(servizioEntity);

@@ -18,8 +18,8 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.pa.repdgt.gestioneutente.request.IntegraContestoRequest;
-import it.pa.repdgt.gestioneutente.request.ProfilazioneRequest;
 import it.pa.repdgt.gestioneutente.service.ContestoService;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -44,9 +44,9 @@ public class ContestoRestApiTest{
 	@Test
 	public void sceltaProfiloTest() throws Exception {
 		
-		ProfilazioneRequest utenteRequest = new ProfilazioneRequest();
-		utenteRequest.setCfUtente("codiceFiscale");
-		utenteRequest.setCodiceRuolo("DTD");	
+		SceltaProfiloParam utenteRequest = new SceltaProfiloParam();
+		utenteRequest.setCfUtenteLoggato("codiceFiscale");
+		utenteRequest.setCodiceRuoloUtenteLoggato("DTD");	
 		
 		this.mockMvc
 		.perform(
@@ -62,7 +62,7 @@ public class ContestoRestApiTest{
 	@Test
 	public void confermaIntegrazioneTest() throws Exception {
 		IntegraContestoRequest integraContestoRequestRequest = new IntegraContestoRequest();
-		integraContestoRequestRequest.setCodiceFiscale("codiceFiscale");
+		integraContestoRequestRequest.setCfUtenteLoggato("codiceFiscale");
 		integraContestoRequestRequest.setTelefono("45234234");
 		integraContestoRequestRequest.setBio("bio");
 		integraContestoRequestRequest.setEmail("a@a.it");

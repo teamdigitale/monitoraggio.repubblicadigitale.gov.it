@@ -29,7 +29,6 @@ import it.pa.repdgt.programmaprogetto.repository.ProgettoRepository;
 import it.pa.repdgt.programmaprogetto.request.ProgettiParam;
 import it.pa.repdgt.programmaprogetto.request.ProgettoFiltroRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
-import it.pa.repdgt.programmaprogetto.request.SceltaProfiloParam;
 import it.pa.repdgt.programmaprogetto.resource.PaginaProgetti;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
@@ -45,6 +44,7 @@ import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.shared.service.storico.StoricoService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -161,14 +161,14 @@ public class ProgettoService {
 			progettoFetchDB = this.getProgettoById(idProgetto);
 		} catch (ResourceNotFoundException ex) {
 			String errorMessage = String.format("Impossibile Assegnare progetto a programma perchè progetto con id=%s non presente", idProgetto);
-			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR06);		
+			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR06);
 		}
 		ProgrammaEntity programmaFetchDB = null;
 		try {
 			programmaFetchDB = this.programmaService.getProgrammaById(idProgramma);
 		} catch (ResourceNotFoundException ex) {
 			String errorMessage = String.format("Impossibile Assegnare progetto a programma perchè programma con id=%s non presente", idProgramma);
-			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR06);		
+			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR06);
 		}
 		progettoFetchDB.setProgramma(programmaFetchDB);
 		return this.salvaProgetto(progettoFetchDB);
@@ -185,7 +185,7 @@ public class ProgettoService {
 			progettoFetchDB = this.getProgettoById(idProgetto);
 		} catch (ResourceNotFoundException ex) {
 			String errorMessage = String.format("Impossibile Assegnare gestore a progetto perchè progetto con id=%s non presente", idProgetto);
-			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR05);		
+			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR05);
 		}
 		EnteEntity enteFetchDB = null;
 		try {
@@ -231,7 +231,7 @@ public class ProgettoService {
 		return (
 				StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(statoProgetto)
 				||	StatoEnum.ATTIVABILE.getValue().equalsIgnoreCase(statoProgetto)
-				|| StatoEnum.ATTIVO.getValue().equalsIgnoreCase(statoProgetto)  
+				|| StatoEnum.ATTIVO.getValue().equalsIgnoreCase(statoProgetto)
 				);
 	}
 
@@ -239,10 +239,7 @@ public class ProgettoService {
 	@LogExecutionTime
 	public PaginaProgetti getAllProgettiPaginati(ProgettiParam sceltaContesto,
 			Integer currPage, Integer pageSize, ProgettoFiltroRequest filtroRequest) {
-		if(this.ruoloService.getCodiceRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
-			throw new ProgettoException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
-		}
-		return this.getProgettiByRuoloPaginati(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRequest, currPage, pageSize);
+		return this.getProgettiByRuoloPaginati(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRequest, currPage, pageSize);
 	}
 
 	/**
@@ -275,7 +272,7 @@ public class ProgettoService {
 				return this.getAllProgetti(filtroRequest);
 		}
 	}
-	
+
 	/**
 	 * Recupera tutti i progetti filtrati e paginati in base al filtro passato che sono associati all'utente che ha quel ruolo associato a quel particolare progetto
 	 *
@@ -289,7 +286,7 @@ public class ProgettoService {
 		Long numeroElementi = 0L;
 		switch (codiceRuolo) {
 		case "DTD":
-			paginaProgetti.setPaginaProgetti(getAllProgettiPaginati(filtroRequest, currPage, pageSize)); 
+			paginaProgetti.setPaginaProgetti(getAllProgettiPaginati(filtroRequest, currPage, pageSize));
 			numeroElementi = getCountAllProgetti(filtroRequest);
 			break;
 		case "DSCU":
@@ -307,22 +304,22 @@ public class ProgettoService {
 		case "DEPP":
 		case "FAC":
 		case "VOL":
-			paginaProgetti.setPaginaProgetti(Arrays.asList(this.getProgettoById(idProgetto))); 
+			paginaProgetti.setPaginaProgetti(Arrays.asList(this.getProgettoById(idProgetto)));
 			numeroElementi = 1L;
 			break;
 		default:
-			paginaProgetti.setPaginaProgetti(getAllProgettiPaginati(filtroRequest, currPage, pageSize)); 
+			paginaProgetti.setPaginaProgetti(getAllProgettiPaginati(filtroRequest, currPage, pageSize));
 			numeroElementi = getCountAllProgetti(filtroRequest);
 			break;
 		}
 		paginaProgetti.setTotalElements(numeroElementi);
 		Integer pagine = (int) (numeroElementi/pageSize);
 		paginaProgetti.setTotalPages(numeroElementi%pageSize > 0 ? pagine + 1 : pagine);
-		
+
 		if(paginaProgetti.getTotalElements() > 0 && currPage >= paginaProgetti.getTotalPages()) {
 			throw new ProgettoException("Errore Pagina richiesta non esistente", CodiceErroreEnum.G03);
 		}
-		
+
 		return paginaProgetti;
 	}
 
@@ -335,7 +332,7 @@ public class ProgettoService {
 				filtroRequest.getIdsProgrammi(),
 				filtroRequest.getStati());
 	}
-	
+
 	private Long getCountProgettiPerReferenteDelegatoGestoreProgramma(Long idProgramma, ProgettoFiltroRequest filtroRequest) {
 		return this.progettoRepository.countProgettiPerReferenteDelegatoGestoreProgramma(
 				idProgramma,
@@ -345,7 +342,7 @@ public class ProgettoService {
 				filtroRequest.getIdsProgrammi(),
 				filtroRequest.getStati());
 	}
-	
+
 	private List<ProgettoEntity> getProgettiPerReferenteDelegatoGestoreProgrammaPaginati(Long idProgramma, ProgettoFiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
 		return this.progettoRepository.findProgettiPerReferenteDelegatoGestoreProgrammaPaginati(
 				idProgramma,
@@ -367,7 +364,7 @@ public class ProgettoService {
 				filtroRequest.getStati()
 				);
 	}
-	
+
 	private Long getCountProgettiPerDSCU(ProgettoFiltroRequest filtroRequest) {
 		return this.progettoRepository.countByPolicy(
 				PolicyEnum.SCD.toString(),
@@ -377,7 +374,7 @@ public class ProgettoService {
 				filtroRequest.getStati()
 				);
 	}
-	
+
 	private List<ProgettoEntity> getProgettiPerDSCUPaginati(ProgettoFiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
 		return this.progettoRepository.findByPolicyPaginati(
 				PolicyEnum.SCD.toString(),
@@ -399,7 +396,7 @@ public class ProgettoService {
 				filtroRequest.getStati()
 				);
 	}
-	
+
 	private List<ProgettoEntity> getAllProgettiPaginati(ProgettoFiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
 		return this.progettoRepository.findAllPaginati(
 				filtroRequest.getCriterioRicerca(),
@@ -411,7 +408,7 @@ public class ProgettoService {
 				pageSize
 				);
 	}
-	
+
 	private Long getCountAllProgetti(ProgettoFiltroRequest filtroRequest) {
 		return this.progettoRepository.countAll(
 				filtroRequest.getCriterioRicerca(),
@@ -426,10 +423,7 @@ public class ProgettoService {
 	@LogExecutionTime
 	public List<String> getAllStatiDropdown(ProgettiParam sceltaContesto,
 			ProgettoFiltroRequest filtroRequest) {
-		if(this.ruoloService.getCodiceRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
-			throw new ProgettoException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
-		}
-		return this.getAllStatiByRuoloAndIdProgramma(sceltaContesto.getCodiceRuolo(),sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRequest);
+		return this.getAllStatiByRuoloAndIdProgramma(sceltaContesto.getCodiceRuoloUtenteLoggato(),sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRequest);
 	}
 
 	@LogMethod
@@ -581,8 +575,8 @@ public class ProgettoService {
 		DettaglioProgettoBean dettaglioProgetto = this.progettoMapper.toDettaglioProgettoBeanFrom(progettoFetchDB);
 		dettaglioProgetto.setId(idProgetto);
 
-		String codiceRuoloUtenteLoggato = sceltaProfilo.getCodiceRuolo();
-		String cfUtenteLoggato = sceltaProfilo.getCfUtente();
+		String codiceRuoloUtenteLoggato = sceltaProfilo.getCodiceRuoloUtenteLoggato();
+		String cfUtenteLoggato = sceltaProfilo.getCfUtenteLoggato();
 		List<Long> listaIdEntiPartner = this.entePartnerService.getIdEntiPartnerByProgetto(idProgetto);
 		List<DettaglioEntiPartnerBean> listaEntiPartner = listaIdEntiPartner
 				.stream()
@@ -721,7 +715,7 @@ public class ProgettoService {
 	private boolean isProgettoTerminabileByStatoProgetto(String statoProgetto) {
 		return (    
 				StatoEnum.ATTIVABILE.getValue().equalsIgnoreCase(statoProgetto)
-				|| StatoEnum.ATTIVO.getValue().equalsIgnoreCase(statoProgetto)  
+				|| StatoEnum.ATTIVO.getValue().equalsIgnoreCase(statoProgetto)
 				);
 	}
 
@@ -743,7 +737,7 @@ public class ProgettoService {
 		ProgettoEntity progetto = this.getProgettoById(idProgetto);
 		if(!StatoEnum.ATTIVABILE.getValue().equalsIgnoreCase(progetto.getStato())) {
 			String errorMessage = String.format("Impossibile attivare il progetto con id %s --> stato progetto = %s", progetto.getId(), progetto.getStato());
-			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR07); 
+			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR07);
 		}
 		progetto.setStato(StatoEnum.ATTIVO.getValue());
 		progetto.setDataOraAttivazione(new Date());
@@ -756,8 +750,8 @@ public class ProgettoService {
 			.getAllEmailFacilitatoriEVolontariByProgetto(idProgetto)
 			.forEach(utenteFetch -> {
 				try {
-					this.emailService.inviaEmail(utenteFetch.getEmail(), 
-							EmailTemplateEnum.GEST_PROGE_PARTNER, 
+					this.emailService.inviaEmail(utenteFetch.getEmail(),
+							EmailTemplateEnum.GEST_PROGE_PARTNER,
 							new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(utenteFetch.getCodiceRuolo()).getValue() });
 				} catch (Exception ex) {
 					log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore progetto per progetto con id={}.", idProgetto);

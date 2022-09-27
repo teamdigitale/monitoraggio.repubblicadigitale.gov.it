@@ -8,6 +8,7 @@ import it.pa.repdgt.gestioneutente.repository.PermessoRepository;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.PermessoEntity;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 
 @Service
 public class PermessoService {
@@ -19,7 +20,7 @@ public class PermessoService {
 	public PermessoEntity getPermessoById(Long idPermesso) {
 		String messaggioErrore = String.format("Permesso con id=%s non trovato", idPermesso);
 		return this.permessoRepository.findById(idPermesso)
-				.orElseThrow( () -> new ResourceNotFoundException(messaggioErrore) );
+				.orElseThrow( () -> new ResourceNotFoundException(messaggioErrore,CodiceErroreEnum.C01) );
 	}
 	
 	@LogExecutionTime

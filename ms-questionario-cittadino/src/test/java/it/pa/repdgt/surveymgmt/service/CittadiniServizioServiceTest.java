@@ -31,6 +31,7 @@ import it.pa.repdgt.shared.entity.TipologiaServizioEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.bean.CittadinoUploadBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.collection.SezioneQ3Collection;
@@ -40,7 +41,6 @@ import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioCompilatoMongoRepository;
 import it.pa.repdgt.surveymgmt.mongo.repository.SezioneQ3Respository;
 import it.pa.repdgt.surveymgmt.param.FiltroListaCittadiniServizioParam;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import it.pa.repdgt.surveymgmt.projection.CittadinoServizioProjection;
 import it.pa.repdgt.surveymgmt.repository.CittadinoRepository;
 import it.pa.repdgt.surveymgmt.repository.CittadinoServizioRepository;
@@ -84,7 +84,7 @@ public class CittadiniServizioServiceTest {
 	@InjectMocks
 	private CittadiniServizioService cittadiniServizioService;
 	
-	ProfilazioneParam profilazione;
+	SceltaProfiloParam profilazione;
 	FiltroListaCittadiniServizioParam filtroListaCittadiniServizio;
 	ServizioEntity servizio;
 	List<String> listaStatiQuestionari;
@@ -106,9 +106,9 @@ public class CittadiniServizioServiceTest {
 	
 	@BeforeEach
 	public void setUp() throws IOException {
-		profilazione = new ProfilazioneParam();
-		profilazione.setCodiceFiscaleUtenteLoggato("CFUTENTE");
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD);
+		profilazione = new SceltaProfiloParam();
+		profilazione.setCfUtenteLoggato("CFUTENTE");
+		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.getValue());
 		profilazione.setIdProgetto(1L);
 		profilazione.setIdProgramma(1L);
 		listaStatiQuestionari = new ArrayList<>();
@@ -161,8 +161,8 @@ public class CittadiniServizioServiceTest {
 	@Test
 	public void getAllCittadiniServizioByProfilazioneAndFiltroPaginatiTest() {
 		Integer currPage = 0, pageSize = 10;
-		when(this.utenteService.hasRuoloUtente(profilazione.getCodiceFiscaleUtenteLoggato(), profilazione.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
-		when(this.servizioSqlRepository.findByFacilitatoreAndIdServizio(profilazione.getCodiceFiscaleUtenteLoggato(), servizio.getId())).thenReturn(Optional.of(servizio));
+		when(this.utenteService.hasRuoloUtente(profilazione.getCfUtenteLoggato(), profilazione.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
+		when(this.servizioSqlRepository.findByFacilitatoreAndIdServizio(profilazione.getCfUtenteLoggato(), servizio.getId())).thenReturn(Optional.of(servizio));
 		cittadiniServizioService.getAllCittadiniServizioByProfilazioneAndFiltroPaginati(servizio.getId(), profilazione, filtroListaCittadiniServizio, currPage, pageSize);
 	}
 	
@@ -170,13 +170,13 @@ public class CittadiniServizioServiceTest {
 	public void getAllCittadiniServizioByProfilazioneAndFiltroPaginatiKOTest() {
 		//test KO per Ruolo non definito per l'utente
 		final Integer currPage = 0, pageSize = 10;
-		when(this.utenteService.hasRuoloUtente(profilazione.getCodiceFiscaleUtenteLoggato(), profilazione.getCodiceRuoloUtenteLoggato().toString())).thenReturn(false);
+		when(this.utenteService.hasRuoloUtente(profilazione.getCfUtenteLoggato(), profilazione.getCodiceRuoloUtenteLoggato().toString())).thenReturn(false);
 		Assertions.assertThrows(ServizioException.class, () -> cittadiniServizioService.getAllCittadiniServizioByProfilazioneAndFiltroPaginati(servizio.getId(), profilazione, filtroListaCittadiniServizio, currPage, pageSize));
 		assertThatExceptionOfType(ServizioException.class);
 		
 		//test KO per Servizio non accessibile per l'utente
-		when(this.utenteService.hasRuoloUtente(profilazione.getCodiceFiscaleUtenteLoggato(), profilazione.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
-		when(this.servizioSqlRepository.findByFacilitatoreAndIdServizio(profilazione.getCodiceFiscaleUtenteLoggato(), servizio.getId())).thenReturn(Optional.empty());
+		when(this.utenteService.hasRuoloUtente(profilazione.getCfUtenteLoggato(), profilazione.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
+		when(this.servizioSqlRepository.findByFacilitatoreAndIdServizio(profilazione.getCfUtenteLoggato(), servizio.getId())).thenReturn(Optional.empty());
 		Assertions.assertThrows(ServizioException.class, () -> cittadiniServizioService.getAllCittadiniServizioByProfilazioneAndFiltroPaginati(servizio.getId(), profilazione, filtroListaCittadiniServizio, currPage, pageSize));
 		assertThatExceptionOfType(ServizioException.class);
 		
@@ -191,21 +191,11 @@ public class CittadiniServizioServiceTest {
 	@Test
 	public void getAllStatiQuestionarioCittadinoServizioDropdownTest() {
 		//test con filtroListaCittadiniServizio.getStatiQuestionario() != empty
-		when(this.utenteService.hasRuoloUtente(profilazione.getCodiceFiscaleUtenteLoggato(), profilazione.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
-		cittadiniServizioService.getAllStatiQuestionarioCittadinoServizioDropdown(servizio.getId(), profilazione, filtroListaCittadiniServizio);
+		cittadiniServizioService.getAllStatiQuestionarioCittadinoServizioDropdown(servizio.getId(), filtroListaCittadiniServizio);
 		
 		//test con filtroListaCittadiniServizio.getStatiQuestionario() = empty
 		filtroListaCittadiniServizio.setStatiQuestionario(new ArrayList<>());
-		when(this.utenteService.hasRuoloUtente(profilazione.getCodiceFiscaleUtenteLoggato(), profilazione.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
-		cittadiniServizioService.getAllStatiQuestionarioCittadinoServizioDropdown(servizio.getId(), profilazione, filtroListaCittadiniServizio);
-	}
-	
-	@Test
-	public void getAllStatiQuestionarioCittadinoServizioDropdownKOTest() {
-		//test KO per Ruolo non definito per l'utente
-		when(this.utenteService.hasRuoloUtente(profilazione.getCodiceFiscaleUtenteLoggato(), profilazione.getCodiceRuoloUtenteLoggato().toString())).thenReturn(false);
-		Assertions.assertThrows(ServizioException.class, () -> cittadiniServizioService.getAllStatiQuestionarioCittadinoServizioDropdown(servizio.getId(), profilazione, filtroListaCittadiniServizio));
-		assertThatExceptionOfType(ServizioException.class);
+		cittadiniServizioService.getAllStatiQuestionarioCittadinoServizioDropdown(servizio.getId(), filtroListaCittadiniServizio);
 	}
 	
 	@Test
@@ -278,7 +268,7 @@ public class CittadiniServizioServiceTest {
 		when(sezioneQ3Respository.findById(servizio.getIdTemplateCompilatoQ3())).thenReturn(Optional.of(sezioneQ3));
 		cittadiniServizioService.creoQuestionarioCompilatoCollection(cittadino, servizio);
 	}
-	
+
 	@Test
 	public void creoQuestionarioCompilatoCollectionKOTest() {
 		//test KO per templateQ3 non associato al servizio
@@ -374,24 +364,25 @@ public class CittadiniServizioServiceTest {
 	
 //	@Test
 //	public void caricaCittadiniSuServizioTest() {
+//		when(this.servizioSqlService.getServizioById(servizio.getId())).thenReturn(servizio);
 //		cittadiniServizioService.caricaCittadiniSuServizio(file, servizio.getId());
 //	}
-	
+
 	@Test
 	public void countCittadiniServizioByFiltroTest() {
 		CittadinoServizioProjectionImplementation cittadinoServizioProjectionImplementation = new CittadinoServizioProjectionImplementation();
 		List<CittadinoServizioProjection> listaCittadiniProjection = new ArrayList<>();
 		listaCittadiniProjection.add(cittadinoServizioProjectionImplementation);
 		when(cittadinoServizioRepository.findAllCittadiniServizioByFiltro(
-				servizio.getId(), 
-				filtroListaCittadiniServizio.getCriterioRicerca(), 
-				"%" + filtroListaCittadiniServizio.getCriterioRicerca() + "%", 
+				servizio.getId(),
+				filtroListaCittadiniServizio.getCriterioRicerca(),
+				"%" + filtroListaCittadiniServizio.getCriterioRicerca() + "%",
 				filtroListaCittadiniServizio.getStatiQuestionario()
 			)).thenReturn(listaCittadiniProjection);
 		Integer risultato = cittadiniServizioService.countCittadiniServizioByFiltro(servizio.getId(), filtroListaCittadiniServizio);
 		assertThat(risultato).isEqualTo(listaCittadiniProjection.size());
 	}
-	
+
 	@Setter
 	public class CittadinoServizioProjectionImplementation implements CittadinoServizioProjection {
 		private Long idCittadino;
@@ -436,6 +427,6 @@ public class CittadiniServizioServiceTest {
 		public String getStatoQuestionario() {
 			return statoQuestionario;
 		}
-		
+
 	}
 }

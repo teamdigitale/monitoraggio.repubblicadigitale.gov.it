@@ -32,7 +32,6 @@ import it.pa.repdgt.programmaprogetto.mapper.ProgrammaMapper;
 import it.pa.repdgt.programmaprogetto.request.FiltroRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammaRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammiParam;
-import it.pa.repdgt.programmaprogetto.request.SceltaProfiloParam;
 import it.pa.repdgt.programmaprogetto.request.TerminaRequest;
 import it.pa.repdgt.programmaprogetto.resource.CreaProgrammaResource;
 import it.pa.repdgt.programmaprogetto.resource.PaginaProgrammi;
@@ -40,6 +39,7 @@ import it.pa.repdgt.programmaprogetto.resource.ProgrammiLightResourcePaginata;
 import it.pa.repdgt.programmaprogetto.service.ProgrammaService;
 import it.pa.repdgt.programmaprogetto.util.CSVProgrammaUtil;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 
 @RestController
 @RequestMapping(path = "/programma")
@@ -151,7 +151,7 @@ public class ProgrammaRestApi {
 	// 2.11 - Scarica lista programmi in formato csv
 	@PostMapping(path = "/download")
 	public ResponseEntity<InputStreamResource> downloadListaCSVProgrammi(@RequestBody @Valid ProgrammiParam programmiParam) {
-		String codiceRuolo = programmiParam.getCodiceRuolo();
+		String codiceRuolo = programmiParam.getCodiceRuoloUtenteLoggato();
 		Long idProgramma = programmiParam.getIdProgramma();
 		FiltroRequest filtro = programmiParam.getFiltroRequest();
 		

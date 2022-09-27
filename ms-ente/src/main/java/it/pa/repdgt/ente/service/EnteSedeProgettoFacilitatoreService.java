@@ -143,17 +143,6 @@ public class EnteSedeProgettoFacilitatoreService {
 			progettoDBFEtch.setDataOraProgettoAttivabile(new Date());
 			this.progettoService.salvaOAggiornaProgetto(progettoDBFEtch);
 		}
-//		// poi prendo ref/del dell'ente gestore di progetto e mandare la mail
-		/**************ELIMINATA la parte di notifica progetto ATTIVABILE**************/
-//		List<String> emailReferentiEDelegatiEnteGestoreProgetto = this.referentiDelegatiEnteGestoreProgettoService.getEmailReferentiAndDelegatiPerProgetto(idProgetto);
-//		emailReferentiEDelegatiEnteGestoreProgetto.forEach(emailReferenteODelegato -> {
-//			try {
-//				this.emailService.inviaEmail("oggetto_email", emailReferenteODelegato, "Test_template");
-//			} catch (Exception ex) {
-//				log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore progetto per progetto con id={}.", idProgetto);
-//				log.error("{}", ex);
-//			}
-//		});
 		
 		RuoloEntity ruolo = this.ruoloService.getRuoloByCodiceRuolo(codiceRuolo);
 		UtenteEntity utenteFetch = this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleUtente);

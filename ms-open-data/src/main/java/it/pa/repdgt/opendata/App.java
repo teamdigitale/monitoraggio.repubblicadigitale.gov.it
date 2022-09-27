@@ -19,7 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class App {
 	public static void main(String[] args) {
-		/*ConfigurableApplicationContext springBootApp =*/ SpringApplication.run(App.class, args);
+		/*ConfigurableApplicationContext springBootApp =*/ 
+		SpringApplication.run(App.class, args);
 		log.info("***** APPLICATION START *****");
 	}
 	

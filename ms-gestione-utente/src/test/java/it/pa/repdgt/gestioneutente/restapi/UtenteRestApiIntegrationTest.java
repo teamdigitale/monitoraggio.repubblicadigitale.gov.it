@@ -12,11 +12,11 @@ import it.pa.repdgt.gestioneutente.bean.SchedaUtenteBean;
 import it.pa.repdgt.gestioneutente.request.AggiornaUtenteRequest;
 import it.pa.repdgt.gestioneutente.request.FiltroRequest;
 import it.pa.repdgt.gestioneutente.request.NuovoUtenteRequest;
-import it.pa.repdgt.gestioneutente.request.ProfilazioneRequest;
 import it.pa.repdgt.gestioneutente.request.UtenteRequest;
 import it.pa.repdgt.gestioneutente.resource.UtenteResource;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
 public class UtenteRestApiIntegrationTest extends AppTests{
@@ -112,8 +112,8 @@ public class UtenteRestApiIntegrationTest extends AppTests{
 	public void downloadCSVSElencoUtentiTest() {
 		UtenteRequest utenteParam = new UtenteRequest();
 		String codiceFiscaleUtenteDTD = "UIHPLW87R49F205X";
-		utenteParam.setCfUtente(codiceFiscaleUtenteDTD);
-		utenteParam.setCodiceRuolo(RuoloUtenteEnum.DTD.toString());
+		utenteParam.setCfUtenteLoggato(codiceFiscaleUtenteDTD);
+		utenteParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
 		FiltroRequest filtroRequest = new FiltroRequest();
 		utenteParam.setFiltroRequest(filtroRequest);
 		
@@ -132,8 +132,8 @@ public class UtenteRestApiIntegrationTest extends AppTests{
 	public void getAllStatiDropdownTest() {
 		UtenteRequest utenteParam = new UtenteRequest();
 		String codiceFiscaleUtenteDTD = "UIHPLW87R49F205X";
-		utenteParam.setCfUtente(codiceFiscaleUtenteDTD);
-		utenteParam.setCodiceRuolo(RuoloUtenteEnum.DTD.toString());
+		utenteParam.setCfUtenteLoggato(codiceFiscaleUtenteDTD);
+		utenteParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
 		FiltroRequest filtroRequest = new FiltroRequest();
 		utenteParam.setFiltroRequest(filtroRequest);
 		
@@ -152,8 +152,8 @@ public class UtenteRestApiIntegrationTest extends AppTests{
 	public void getAllRuoliDropdownTest() {
 		UtenteRequest utenteParam = new UtenteRequest();
 		String codiceFiscaleUtenteDTD = "UIHPLW87R49F205X";
-		utenteParam.setCfUtente(codiceFiscaleUtenteDTD);
-		utenteParam.setCodiceRuolo(RuoloUtenteEnum.DTD.toString());
+		utenteParam.setCfUtenteLoggato(codiceFiscaleUtenteDTD);
+		utenteParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
 		FiltroRequest filtroRequest = new FiltroRequest();
 		utenteParam.setFiltroRequest(filtroRequest);
 		
@@ -171,9 +171,9 @@ public class UtenteRestApiIntegrationTest extends AppTests{
 	@DisplayName(value = "getSchedaUtenteByIdUtenteTest - OK")
 	public void getSchedaUtenteByIdUtenteTest() {
 		String idUtente = "2";
-		ProfilazioneRequest profilazioneRequest = new ProfilazioneRequest();
-		profilazioneRequest.setCfUtente("SMTPAL67R31F111X");
-		profilazioneRequest.setCodiceRuolo("DTD");
+		SceltaProfiloParam profilazioneRequest = new SceltaProfiloParam();
+		profilazioneRequest.setCfUtenteLoggato("SMTPAL67R31F111X");
+		profilazioneRequest.setCodiceRuoloUtenteLoggato("DTD");
 		
 		String urlToCall = "http://localhost:" + randomServerPort + "/utente/"+idUtente;
 		SchedaUtenteBean schedaUtenteBean = restTemplate.postForObject(

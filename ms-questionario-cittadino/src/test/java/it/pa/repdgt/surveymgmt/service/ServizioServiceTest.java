@@ -32,6 +32,9 @@ import it.pa.repdgt.shared.entity.ServizioEntity;
 import it.pa.repdgt.shared.entity.TipologiaServizioEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParamLight;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParamLightProgramma;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 import it.pa.repdgt.surveymgmt.collection.SezioneQ3Collection;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
@@ -39,7 +42,6 @@ import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.mapper.ServizioMapper;
 import it.pa.repdgt.surveymgmt.mongo.repository.SezioneQ3Respository;
 import it.pa.repdgt.surveymgmt.param.FiltroListaServiziParam;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import it.pa.repdgt.surveymgmt.projection.ProgettoProjection;
 import it.pa.repdgt.surveymgmt.repository.TipologiaServizioRepository;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
@@ -73,7 +75,8 @@ public class ServizioServiceTest {
 	@InjectMocks
 	private ServizioService servizioService;
 	
-	ProfilazioneParam profilazioneParam;
+	SceltaProfiloParam sceltaProfiloParam;
+	SceltaProfiloParamLightProgramma sceltaProfiloParamLightProgramma;
 	FiltroListaServiziParam filtroListaServizi;
 	List<String> listaStati;
 	List<String> listaTipologie;
@@ -102,11 +105,14 @@ public class ServizioServiceTest {
 		filtroListaServizi.setCriterioRicerca("CRITERIORICERCA");
 		filtroListaServizi.setStatiServizio(listaStati);
 		filtroListaServizi.setTipologieServizi(listaTipologie);
-		profilazioneParam = new ProfilazioneParam();
-		profilazioneParam.setCodiceFiscaleUtenteLoggato("CFUTENTE");
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD);
-		profilazioneParam.setIdProgetto(1L);
-		profilazioneParam.setIdProgramma(1L);
+		sceltaProfiloParam = new SceltaProfiloParam();
+		sceltaProfiloParam.setCfUtenteLoggato("CFUTENTE");
+		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
+		sceltaProfiloParam.setIdProgetto(1L);
+		sceltaProfiloParam.setIdProgramma(1L);
+		sceltaProfiloParamLightProgramma = new SceltaProfiloParamLightProgramma();
+		sceltaProfiloParamLightProgramma.setIdProgetto(1L);
+		sceltaProfiloParamLightProgramma.setIdProgramma(1L);
 		ruolo = new RuoloEntity();
 		ruolo.setCodice("FAC");
 		listaRuoli = new ArrayList<>();
@@ -117,7 +123,9 @@ public class ServizioServiceTest {
 		servizio.setNome("NOMESERVIZIO");
 		pagina = PageRequest.of(Integer.parseInt("0"), Integer.parseInt("10"));
 		servizioRequest = new ServizioRequest();
-		servizioRequest.setProfilazioneParam(profilazioneParam);
+		servizioRequest.setCfUtenteLoggato("CFUTENTE");
+		servizioRequest.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
+		servizioRequest.setProfilazioneParam(sceltaProfiloParamLightProgramma);
 		servizioRequest.setNomeServizio("NOMESERVIZIO");
 		servizioRequest.setIdEnte(1L);
 		servizioRequest.setIdSede(1L);
@@ -156,138 +164,138 @@ public class ServizioServiceTest {
 	
 	@Test
 	public void getAllServiziPaginatiByProfilazioneAndFiltriTest() {
-		when(this.utenteService.hasRuoloUtente(profilazioneParam.getCodiceFiscaleUtenteLoggato(), profilazioneParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
+		when(this.utenteService.hasRuoloUtente(sceltaProfiloParam.getCfUtenteLoggato(), sceltaProfiloParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
 		when(this.servizioSQLService.getAllServiziByFiltro(
 						"%" + filtroListaServizi.getCriterioRicerca() + "%",
 						filtroListaServizi.getTipologieServizi(),
 						filtroListaServizi.getStatiServizio()
 					)).thenReturn(listaServizi);
-		Page<ServizioEntity> risultato = servizioService.getAllServiziPaginatiByProfilazioneAndFiltri(profilazioneParam, filtroListaServizi, pagina);
+		Page<ServizioEntity> risultato = servizioService.getAllServiziPaginatiByProfilazioneAndFiltri(sceltaProfiloParam, filtroListaServizi, pagina);
 		assertThat(risultato.getContent().size()).isEqualTo(listaServizi.size());
 	}
 	
 	@Test
 	public void getAllServiziPaginatiByProfilazioneAndFiltriKOTest() {
 		//test KO per ruolo non definito per l'utente
-		when(this.utenteService.hasRuoloUtente(profilazioneParam.getCodiceFiscaleUtenteLoggato(), profilazioneParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(false);
-		Assertions.assertThrows(ServizioException.class, () -> servizioService.getAllServiziPaginatiByProfilazioneAndFiltri(profilazioneParam, filtroListaServizi, pagina));
+		when(this.utenteService.hasRuoloUtente(sceltaProfiloParam.getCfUtenteLoggato(), sceltaProfiloParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(false);
+		Assertions.assertThrows(ServizioException.class, () -> servizioService.getAllServiziPaginatiByProfilazioneAndFiltri(sceltaProfiloParam, filtroListaServizi, pagina));
 		assertThatExceptionOfType(ServizioException.class);
 		
 		//test KO per paginazione errata
 		pagina = PageRequest.of(Integer.parseInt("11"), Integer.parseInt("10"));
-		when(this.utenteService.hasRuoloUtente(profilazioneParam.getCodiceFiscaleUtenteLoggato(), profilazioneParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
+		when(this.utenteService.hasRuoloUtente(sceltaProfiloParam.getCfUtenteLoggato(), sceltaProfiloParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
 		when(this.servizioSQLService.getAllServiziByFiltro(
 						"%" + filtroListaServizi.getCriterioRicerca() + "%",
 						filtroListaServizi.getTipologieServizi(),
 						filtroListaServizi.getStatiServizio()
 					)).thenReturn(listaServizi);
-		Assertions.assertThrows(ServizioException.class, () -> servizioService.getAllServiziPaginatiByProfilazioneAndFiltri(profilazioneParam, filtroListaServizi, pagina));
+		Assertions.assertThrows(ServizioException.class, () -> servizioService.getAllServiziPaginatiByProfilazioneAndFiltri(sceltaProfiloParam, filtroListaServizi, pagina));
 		assertThatExceptionOfType(ServizioException.class);
 	}
 	
 	@Test
 	public void getAllServiziByProfilazioneUtenteLoggatoAndFiltriDTDTest() {
 		//test con ruoloUtenteLoggato = DTD
-		when(this.utenteService.hasRuoloUtente(profilazioneParam.getCodiceFiscaleUtenteLoggato(), profilazioneParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
+		when(this.utenteService.hasRuoloUtente(sceltaProfiloParam.getCfUtenteLoggato(), sceltaProfiloParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
 		when(this.servizioSQLService.getAllServiziByFiltro(
 				"%" + filtroListaServizi.getCriterioRicerca() + "%",
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio()
 			)).thenReturn(listaServizi);
-		List<ServizioEntity> risultato = servizioService.getAllServiziByProfilazioneUtenteLoggatoAndFiltri(profilazioneParam, filtroListaServizi);
+		List<ServizioEntity> risultato = servizioService.getAllServiziByProfilazioneUtenteLoggatoAndFiltri(sceltaProfiloParam, filtroListaServizi);
 		assertThat(risultato.size()).isEqualTo(listaServizi.size());
 	}
 	
 	@Test
 	public void getAllServiziByProfilazioneUtenteLoggatoAndFiltriDSCUTest() {
 		//test con ruoloUtenteLoggato = DSCU
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DSCU);
-		when(this.utenteService.hasRuoloUtente(profilazioneParam.getCodiceFiscaleUtenteLoggato(), profilazioneParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
+		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DSCU.toString());
+		when(this.utenteService.hasRuoloUtente(sceltaProfiloParam.getCfUtenteLoggato(), sceltaProfiloParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
 		when(this.servizioSQLService.getAllServiziByPolicySCDAndFiltro(
 				"%" + filtroListaServizi.getCriterioRicerca() + "%",
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio()
 			)).thenReturn(listaServizi);
-		List<ServizioEntity> risultato = servizioService.getAllServiziByProfilazioneUtenteLoggatoAndFiltri(profilazioneParam, filtroListaServizi);
+		List<ServizioEntity> risultato = servizioService.getAllServiziByProfilazioneUtenteLoggatoAndFiltri(sceltaProfiloParam, filtroListaServizi);
 		assertThat(risultato.size()).isEqualTo(listaServizi.size());
 	}
 	
 	@Test
 	public void getAllServiziByProfilazioneUtenteLoggatoAndFiltriREGTest() {
 		//test con ruoloUtenteLoggato = REG
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REG);
-		when(this.utenteService.hasRuoloUtente(profilazioneParam.getCodiceFiscaleUtenteLoggato(), profilazioneParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
+		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REG.toString());
+		when(this.utenteService.hasRuoloUtente(sceltaProfiloParam.getCfUtenteLoggato(), sceltaProfiloParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
 		when(this.servizioSQLService.getAllServiziByReferenteODelegatoGestoreProgrammaAndFiltro(
 				"%" + filtroListaServizi.getCriterioRicerca() + "%",
-				Arrays.asList( profilazioneParam.getIdProgramma().toString() ),
+				Arrays.asList( sceltaProfiloParam.getIdProgramma().toString() ),
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio()
 			)).thenReturn(listaServizi);
-		List<ServizioEntity> risultato = servizioService.getAllServiziByProfilazioneUtenteLoggatoAndFiltri(profilazioneParam, filtroListaServizi);
+		List<ServizioEntity> risultato = servizioService.getAllServiziByProfilazioneUtenteLoggatoAndFiltri(sceltaProfiloParam, filtroListaServizi);
 		assertThat(risultato.size()).isEqualTo(listaServizi.size());
 	}
 	
 	@Test
 	public void getAllServiziByProfilazioneUtenteLoggatoAndFiltriREGPTest() {
 		//test con ruoloUtenteLoggato = REGP/DEGP
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REGP);
-		when(this.utenteService.hasRuoloUtente(profilazioneParam.getCodiceFiscaleUtenteLoggato(), profilazioneParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
+		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REGP.toString());
+		when(this.utenteService.hasRuoloUtente(sceltaProfiloParam.getCfUtenteLoggato(), sceltaProfiloParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
 		when(this.servizioSQLService.getAllServiziByReferenteODelegatoGestoreProgettoAndFiltro(
 				"%" + filtroListaServizi.getCriterioRicerca() + "%",
-				Arrays.asList( profilazioneParam.getIdProgramma().toString() ),
-				Arrays.asList( profilazioneParam.getIdProgetto().toString() ),
+				Arrays.asList( sceltaProfiloParam.getIdProgramma().toString() ),
+				Arrays.asList( sceltaProfiloParam.getIdProgetto().toString() ),
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio()
 			)).thenReturn(listaServizi);
-		List<ServizioEntity> risultato = servizioService.getAllServiziByProfilazioneUtenteLoggatoAndFiltri(profilazioneParam, filtroListaServizi);
+		List<ServizioEntity> risultato = servizioService.getAllServiziByProfilazioneUtenteLoggatoAndFiltri(sceltaProfiloParam, filtroListaServizi);
 		assertThat(risultato.size()).isEqualTo(listaServizi.size());
 	}
 	
 	@Test
 	public void getAllServiziByProfilazioneUtenteLoggatoAndFiltriREPPTest() {
 		//test con ruoloUtenteLoggato = REPP/DEPP
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REPP);
-		when(this.utenteService.hasRuoloUtente(profilazioneParam.getCodiceFiscaleUtenteLoggato(), profilazioneParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
+		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REPP.toString());
+		when(this.utenteService.hasRuoloUtente(sceltaProfiloParam.getCfUtenteLoggato(), sceltaProfiloParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
 		when(this.servizioSQLService.getAllServiziByReferenteODelegatoEntePartnerAndFiltro(
 				"%" + filtroListaServizi.getCriterioRicerca() + "%",
-				Arrays.asList( profilazioneParam.getIdProgramma().toString() ),
-				Arrays.asList( profilazioneParam.getIdProgetto().toString() ),
+				Arrays.asList( sceltaProfiloParam.getIdProgramma().toString() ),
+				Arrays.asList( sceltaProfiloParam.getIdProgetto().toString() ),
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio()
 			)).thenReturn(listaServizi);
-		List<ServizioEntity> risultato = servizioService.getAllServiziByProfilazioneUtenteLoggatoAndFiltri(profilazioneParam, filtroListaServizi);
+		List<ServizioEntity> risultato = servizioService.getAllServiziByProfilazioneUtenteLoggatoAndFiltri(sceltaProfiloParam, filtroListaServizi);
 		assertThat(risultato.size()).isEqualTo(listaServizi.size());
 	}
 	
 	@Test
 	public void getAllServiziByProfilazioneUtenteLoggatoAndFiltriFACTest() {
 		//test con ruoloUtenteLoggato = FAC/VOL
-		profilazioneParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC);
-		when(this.utenteService.hasRuoloUtente(profilazioneParam.getCodiceFiscaleUtenteLoggato(), profilazioneParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
+		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
+		when(this.utenteService.hasRuoloUtente(sceltaProfiloParam.getCfUtenteLoggato(), sceltaProfiloParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
 		when(this.servizioSQLService.getAllServiziByFacilitatoreOVolontarioAndFiltro(
 				"%" + filtroListaServizi.getCriterioRicerca() + "%",
-				Arrays.asList( profilazioneParam.getIdProgramma().toString() ),
-				Arrays.asList( profilazioneParam.getIdProgetto().toString() ),
+				Arrays.asList( sceltaProfiloParam.getIdProgramma().toString() ),
+				Arrays.asList( sceltaProfiloParam.getIdProgetto().toString() ),
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio(),
-				profilazioneParam.getCodiceFiscaleUtenteLoggato()
+				sceltaProfiloParam.getCfUtenteLoggato()
 			)).thenReturn(listaServizi);
-		List<ServizioEntity> risultato = servizioService.getAllServiziByProfilazioneUtenteLoggatoAndFiltri(profilazioneParam, filtroListaServizi);
+		List<ServizioEntity> risultato = servizioService.getAllServiziByProfilazioneUtenteLoggatoAndFiltri(sceltaProfiloParam, filtroListaServizi);
 		assertThat(risultato.size()).isEqualTo(listaServizi.size());
 	}
 	
 	@Test
 	public void getAllServiziByProfilazioneUtenteLoggatoAndFiltriKOTest() {
 		//test KO per ruolo non definito per l'utente
-		when(this.utenteService.hasRuoloUtente(profilazioneParam.getCodiceFiscaleUtenteLoggato(), profilazioneParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(false);
-		Assertions.assertThrows(ServizioException.class, () -> servizioService.getAllServiziByProfilazioneUtenteLoggatoAndFiltri(profilazioneParam, filtroListaServizi));
+		when(this.utenteService.hasRuoloUtente(sceltaProfiloParam.getCfUtenteLoggato(), sceltaProfiloParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(false);
+		Assertions.assertThrows(ServizioException.class, () -> servizioService.getAllServiziByProfilazioneUtenteLoggatoAndFiltri(sceltaProfiloParam, filtroListaServizi));
 		assertThatExceptionOfType(ServizioException.class);
 	}
 	
 	@Test
 	public void creaServizioTest() {
 		when(this.servizioSQLService.getServizioByNome(servizioRequest.getNomeServizio())).thenReturn(Optional.empty());
-		when(this.utenteService.isUtenteFacilitatore(profilazioneParam.getCodiceFiscaleUtenteLoggato(), profilazioneParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
+		when(this.utenteService.isUtenteFacilitatore(sceltaProfiloParam.getCfUtenteLoggato(), sceltaProfiloParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
 		when(this.servizioMapper.toCollectionFrom(servizioRequest)).thenReturn(sezioneQ3Collection);
 		servizioService.creaServizio(servizioRequest);
 	}
@@ -301,7 +309,7 @@ public class ServizioServiceTest {
 		
 		//test KO per ruoloUtenteLoggato != FAC
 		when(this.servizioSQLService.getServizioByNome(servizioRequest.getNomeServizio())).thenReturn(Optional.empty());
-		when(this.utenteService.isUtenteFacilitatore(profilazioneParam.getCodiceFiscaleUtenteLoggato(), profilazioneParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(false);
+		when(this.utenteService.isUtenteFacilitatore(sceltaProfiloParam.getCfUtenteLoggato(), sceltaProfiloParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(false);
 		Assertions.assertThrows(ServizioException.class, () -> servizioService.creaServizio(servizioRequest));
 		assertThatExceptionOfType(ServizioException.class);
 	}
@@ -314,7 +322,7 @@ public class ServizioServiceTest {
 	
 	@Test
 	public void aggiornaServizioTest() {
-		when(this.utenteService.isUtenteFacilitatore(profilazioneParam.getCodiceFiscaleUtenteLoggato(), profilazioneParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
+		when(this.utenteService.isUtenteFacilitatore(sceltaProfiloParam.getCfUtenteLoggato(), sceltaProfiloParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
 		when(this.servizioSQLService.aggiornaServizio(servizio.getId(), servizioRequest)).thenReturn(servizio);
 		when(this.sezioneQ3Repository.findById(sezioneQ3Collection.getId())).thenReturn(Optional.of(sezioneQ3Collection));
 		when(this.servizioMapper.toCollectionFrom(servizioRequest)).thenReturn(sezioneQ3Collection);
@@ -324,12 +332,12 @@ public class ServizioServiceTest {
 	@Test
 	public void aggiornaServizioKOTest() {
 		//test KO per utente non facilitatore
-		when(this.utenteService.isUtenteFacilitatore(profilazioneParam.getCodiceFiscaleUtenteLoggato(), profilazioneParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(false);
+		when(this.utenteService.isUtenteFacilitatore(sceltaProfiloParam.getCfUtenteLoggato(), sceltaProfiloParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(false);
 		Assertions.assertThrows(ServizioException.class, () -> servizioService.aggiornaServizio(servizio.getId(), servizioRequest));
 		assertThatExceptionOfType(ServizioException.class);
 		
 		//test KO per sezioneQ3Compilato non presente
-		when(this.utenteService.isUtenteFacilitatore(profilazioneParam.getCodiceFiscaleUtenteLoggato(), profilazioneParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
+		when(this.utenteService.isUtenteFacilitatore(sceltaProfiloParam.getCfUtenteLoggato(), sceltaProfiloParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
 		when(this.servizioSQLService.aggiornaServizio(servizio.getId(), servizioRequest)).thenReturn(servizio);
 		when(this.sezioneQ3Repository.findById(sezioneQ3Collection.getId())).thenReturn(Optional.empty());
 		Assertions.assertThrows(ResourceNotFoundException.class, () -> servizioService.aggiornaServizio(servizio.getId(), servizioRequest));
@@ -338,25 +346,25 @@ public class ServizioServiceTest {
 	
 	@Test
 	public void getAllTipologiaServizioFiltroDropdownTest() {
-		when(this.utenteService.hasRuoloUtente(profilazioneParam.getCodiceFiscaleUtenteLoggato(), profilazioneParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
+		when(this.utenteService.hasRuoloUtente(sceltaProfiloParam.getCfUtenteLoggato(), sceltaProfiloParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
 		when(this.servizioSQLService.getAllServiziByFiltro(
 				"%" + filtroListaServizi.getCriterioRicerca() + "%",
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio()
 			)).thenReturn(listaServizi);
-		List<String> risultato = servizioService.getAllTipologiaServizioFiltroDropdown(profilazioneParam, filtroListaServizi);
+		List<String> risultato = servizioService.getAllTipologiaServizioFiltroDropdown(sceltaProfiloParam, filtroListaServizi);
 		assertThat(risultato.size()).isEqualTo(listaTipologie.size());
 	}
 	
 	@Test
 	public void getAllStatiServizioFiltroDropdownTest() {
-		when(this.utenteService.hasRuoloUtente(profilazioneParam.getCodiceFiscaleUtenteLoggato(), profilazioneParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
+		when(this.utenteService.hasRuoloUtente(sceltaProfiloParam.getCfUtenteLoggato(), sceltaProfiloParam.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
 		when(this.servizioSQLService.getAllServiziByFiltro(
 				"%" + filtroListaServizi.getCriterioRicerca() + "%",
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio()
 			)).thenReturn(listaServizi);
-		List<String> risultato = servizioService.getAllStatiServizioFiltroDropdown(profilazioneParam, filtroListaServizi);
+		List<String> risultato = servizioService.getAllStatiServizioFiltroDropdown(sceltaProfiloParam, filtroListaServizi);
 		assertThat(risultato.size()).isEqualTo(listaTipologie.size());
 	}
 	

@@ -43,7 +43,7 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 				+" 		  ,e.TIPOLOGIA as TIPOLOGIA_ENTE"
 				+" 		  ,'ENTE GESTORE DI PROGRAMMA' AS PROFILO_ENTE "
 				+" 		  ,prgm.POLICY "
-				+ "       ,prgm.id as IDP"		
+				+ "       ,prgm.id as IDP"
 				+" 	 	FROM "
 				+" 			ente e "
 				+" 			INNER JOIN programma prgm "
@@ -325,7 +325,6 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 		List<String> idsProgetti
 	);
 	
-	// TODO Alessandro da spostare nel suo repository
 	@Query(value = " "
 			+" SELECT"
 			+" 		 programma.id AS ID_PROGRAMMA"
