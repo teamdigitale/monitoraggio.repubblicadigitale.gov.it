@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.157](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.156...1.0.0-develop.157) (2022-09-27)
+
+
+### Bug Fixes
+
+* **be:** notifiche integration ([a17b2f5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a17b2f586e4639d9a01592cfba05bc717c7e9ff1))
+
 ## [1.0.0-develop.156](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.155...1.0.0-develop.156) (2022-09-27)
 
 
