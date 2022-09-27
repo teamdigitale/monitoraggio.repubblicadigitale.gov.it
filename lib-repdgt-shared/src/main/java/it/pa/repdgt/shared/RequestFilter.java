@@ -43,9 +43,13 @@ public class RequestFilter implements Filter {
 		"^/contesto$",
 		"^/contesto/confermaIntegrazione$",
 		"^/utente/upload/immagineProfilo*",
-		"^/utente/download/immagineProfilo*",
-		"^/servizio/cittadino/questionarioCompilato/(([A-Za-z0-9]+(\\-?)){1,})/compila/anonimo$",
-		"^/servizio/cittadino/questionarioCompilato/(([A-Za-z0-9]+(\\-?)){1,})/anonimo$"
+		"^/utente/download/immagineProfilo*"
+		
+//      Soluzione su ambienti TEST/PROD dove non esiste problema timeout matcher REGEXP
+		//,
+		//"^/servizio/cittadino/questionarioCompilato/(([A-Za-z0-9]+(\\-?)){1,})/compila/anonimo$",
+		//"^/servizio/cittadino/questionarioCompilato/(([A-Za-z0-9]+(\\-?)){1,})/anonimo$"
+
 //		da decommentare in locale(aggiunta endpoint per lanciare swagger):
 		,"^/swagger-ui*",
 		"^/favicon.ico*",
@@ -54,7 +58,6 @@ public class RequestFilter implements Filter {
 		"^/v2/api-docs*"
 	);
 	private static final CharSequence VERIFICA_PROFILO_BASE_URI = "/contesto/sceltaProfilo";
-	private static final String ENDPOINT_QUESTIONARIO_COMPILATO = "^/servizio/cittadino/questionarioCompilato/(([A-Za-z0-9]+(\\-?)){1,})/compila$";
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -81,7 +84,11 @@ public class RequestFilter implements Filter {
 		String metodoHttp = ((HttpServletRequest) request).getMethod();
 		String endpoint = ((HttpServletRequest) request).getServletPath();
 		
-		if(isEndpointNotChecked(endpoint)) {
+		if(isEndpointNotChecked(endpoint) 
+				/* per risolvere il problema di mysql "Error Code: 3699. Timeout exceeded in regular expression match."
+				 * per gli endpoint /servizio/cittadino/questionarioCompilato/.../anonimo che non hanno CF per login
+				 */
+				|| isEndpointQuestionarioCompilatoAnonimo(endpoint)) {
 			chain.doFilter(wrappedRequest, response);
 		} else {
 			// verifico se l'utente loggato possiede il ruolo con cui si è profilato
@@ -144,13 +151,36 @@ public class RequestFilter implements Filter {
 		}
 		return false;
 	}
+
+	//metodo per il problema di timeout su ambiente di DEV per il match delle REGEXP per far passare le api per anonimo
+	//"^/servizio/cittadino/questionarioCompilato/(([A-Za-z0-9]+(\\-?)){1,})/compila/anonimo$",
+	//"^/servizio/cittadino/questionarioCompilato/(([A-Za-z0-9]+(\\-?)){1,})/anonimo$"
+	private boolean isEndpointQuestionarioCompilatoAnonimo(String endpoint) {
+		String [] endpointQuestionarioCompilato =  endpoint.split("/"); 
+		if(endpointQuestionarioCompilato.length > 3) {
+				if(endpointQuestionarioCompilato[1].equals("servizio") &&
+						endpointQuestionarioCompilato[2].equals("cittadino") &&
+						endpointQuestionarioCompilato[3].equals("questionarioCompilato")) {
+					if((endpointQuestionarioCompilato.length == 6 && endpointQuestionarioCompilato[5].equals("anonimo")) ||
+							(endpointQuestionarioCompilato.length == 7 && endpointQuestionarioCompilato[6].equals("anonimo")))
+						return true;
+				}
+		}
+		return false;
+	}
 	
+	//metodo per il problema di timeout su ambiente di DEV per il match delle REGEXP per fare il check 
+	//dell'api "^/servizio/cittadino/questionarioCompilato/(([A-Za-z0-9]+(\\-?)){1,})/compila$"
 	private boolean isEndpointQuestionarioCompilato(String endpoint) {
-		String endpointQuestionarioCompilato =  ENDPOINT_QUESTIONARIO_COMPILATO; 
-			Pattern pattern = Pattern.compile(endpointQuestionarioCompilato);
-			Matcher matcher = pattern.matcher(endpoint);
-			if(matcher.find())
-				return true;
+		String [] endpointQuestionarioCompilato =  endpoint.split("/"); 
+		if(endpointQuestionarioCompilato.length == 6) {
+				if(endpointQuestionarioCompilato[1].equals("servizio") &&
+						endpointQuestionarioCompilato[2].equals("cittadino") &&
+						endpointQuestionarioCompilato[3].equals("questionarioCompilato")) {
+					if(endpointQuestionarioCompilato[5].equals("compila"))
+							return true;
+				}
+		}
 		return false;
 	}
 }
