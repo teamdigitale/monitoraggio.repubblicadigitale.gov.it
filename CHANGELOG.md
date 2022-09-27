@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.161](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.160...1.0.0-develop.161) (2022-09-27)
+
+
+### Bug Fixes
+
+* **be:** creazione request per questionario online ([ed3a4c5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ed3a4c596e9fa51bbfa56b498ad81c90ebd29d76))
+
 ## [1.0.0-develop.160](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.159...1.0.0-develop.160) (2022-09-27)
 
 
