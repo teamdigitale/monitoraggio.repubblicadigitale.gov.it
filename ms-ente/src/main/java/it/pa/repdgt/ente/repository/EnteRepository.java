@@ -325,7 +325,6 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 		List<String> idsProgetti
 	);
 	
-	// TODO Alessandro da spostare nel suo repository
 	@Query(value = " "
 			+" SELECT"
 			+" 		 programma.id AS ID_PROGRAMMA"

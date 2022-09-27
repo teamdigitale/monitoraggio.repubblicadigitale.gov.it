@@ -41,7 +41,7 @@ public class ContestoRestApi {
 	@Value("${AWS.S3.PRESIGN_URL-EXPIRE-CONTESTO:15}")
 	private String presignedUrlExpireContesto;
 
-	// TOUCH POINT - 0.1.1 - creazione contesto  
+	// creazione contesto  
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.OK)
 	public ContestoResource creaContesto(@RequestBody CreaContestoRequest creaContestoRequest) {
@@ -65,7 +65,7 @@ public class ContestoRestApi {
 		return contesto;
 	}
 	
-	// TOUCH POINT - 0.1.2 - servizio di scelta RUOLO – PROGRAMMA 
+	// servizio di scelta RUOLO – PROGRAMMA 
 	@ResponseStatus(value = HttpStatus.OK)
 	@PostMapping(path = "/sceltaProfilo")
 	public void sceltaProfilo(@RequestBody @Valid SceltaProfiloParam utenteRequest) {
@@ -77,7 +77,7 @@ public class ContestoRestApi {
 		contestoService.verificaSceltaProfilo(codiceFiscaleUtente, codiceRuoloUtente, idProgramma, idProgetto);
 	}
 	
-	// TOUCH POINT - 0.1.3 - CONFERMA INTEGRAZIONE 
+	// CONFERMA INTEGRAZIONE 
 	@ResponseStatus(value = HttpStatus.OK)
 	@PostMapping(path = "/confermaIntegrazione")
 	public void confermaIntegrazione(@RequestBody @Valid IntegraContestoRequest integraContestoRequestRequest) {

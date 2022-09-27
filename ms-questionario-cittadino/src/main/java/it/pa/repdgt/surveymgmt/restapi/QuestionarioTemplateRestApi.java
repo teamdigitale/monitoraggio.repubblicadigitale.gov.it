@@ -61,7 +61,7 @@ public class QuestionarioTemplateRestApi {
 	 * Restituisce tutti i TemplateQuestionario paginati persistiti su database MongoDb 
 	 * 
 	 * */
-	// TOUCH POINT - 1.5.1 - Lista questionari paginata
+	// Lista questionari paginata
 	@PostMapping(path = "/all")
 	@ResponseStatus(value = HttpStatus.OK)
 	public QuestionariTemplatePaginatiResource getAllQuestionariTemplatate(
@@ -95,7 +95,7 @@ public class QuestionarioTemplateRestApi {
 	 * Restituisce tutti gli stati dei TemplateQuestionario persistiti su database MongoDb 
 	 * 
 	 * */
-	// TOUCH POINT - 1.5.5 - Lista stati questionari
+	// Lista stati questionari
 	@PostMapping(path = "/stati/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<String> getAllStatiDropdown(
@@ -112,7 +112,7 @@ public class QuestionarioTemplateRestApi {
 		return listaStati;
 	}
 	
-	// TOUCH POINT 2.2.4 - 	lista questionari da aggiungere al programma
+	// lista questionari da aggiungere al programma
 	@PostMapping(path = "/all/light")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<QuestionarioTemplateLightResource> getQuestionariTemplateLightByUtente(
@@ -125,8 +125,7 @@ public class QuestionarioTemplateRestApi {
 	 * Restituisce il TemplateQuestionario con specifico id persistito su mongoDB
 	 * 
 	 * */
-	// TOUCH POINT - 2.1.4 - Visualizza scheda questionario 
-	// TOUCH POINT - 6.1 -   Visualizza scheda questionario
+	// Visualizza scheda questionario
 	@GetMapping(path = "/{idQuestionario}",  produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public QuestionarioTemplateResource getQuestioanarioTemplateById(
@@ -139,7 +138,7 @@ public class QuestionarioTemplateRestApi {
 	 * Creazione di un nuovo questionario template (duplicazione)
 	 * 
 	 * */
-	// TOUCH POINT - 1.5.4 - Crea Questionario template (duplica)
+	// Crea Questionario template (duplica)
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public QuestionarioTemplateResource creaQuestionarioTemplate(
@@ -154,8 +153,7 @@ public class QuestionarioTemplateRestApi {
 	 * Modifica un TemplateQuestionario
 	 * 
 	 * */
-	// TOUCH POINT - 1.5.2 - Modifica questionario template
-	// TOUCH POINT - 6.2 -   Crea Questionario template (duplica)
+	// Modifica questionario template
 	@PutMapping(path = "/{idQuestionario}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void aggiornaQuestioarioTemplate(
@@ -184,8 +182,7 @@ public class QuestionarioTemplateRestApi {
 	 * Cancellazione TemplateQuestionario
 	 * 
 	 * */
-	// TOUCH POINT - 1.5.3 - Cancella questionario template
-	// TOUCH POINT - 6.3   - Cancella questionario template
+	// Cancella questionario template
 	@DeleteMapping(path = "/{idQuestionario}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void cancellaQuestioarioTemplate(@PathVariable(value = "idQuestionario") final String questionarioTemplateId) {
@@ -197,7 +194,6 @@ public class QuestionarioTemplateRestApi {
 	 * in base ai filtri richiesti e alla profilazione dell'utente loggatosi
 	 * 
 	 * */
-	// TOUCH POINT - 1.5.6
 	@PostMapping(path = "/download")
 	@ResponseStatus(value = HttpStatus.OK)
 	public ResponseEntity<InputStreamResource> downloadCSVSElencoQuestionariTemplate(

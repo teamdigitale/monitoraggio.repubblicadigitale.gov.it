@@ -49,8 +49,7 @@ public class UtenteRestApi {
 	@Autowired
 	private UtenteMapper utenteMapper;
 	
-	// TOUCH POINT - 1.3.1 - Lista utenti paginata
-	// TOUCH POINT - 1.3.2 - Lista utenti filtrata
+	// Lista utenti paginata
 	@PostMapping(path = "/all")
 	@ResponseStatus(value = HttpStatus.OK)
 	public UtentiLightResourcePaginata getAllUtentiPaginati(
@@ -67,7 +66,7 @@ public class UtenteRestApi {
 		return listaPaginataUtentiResource;
 	}
 	
-	// TOUCH POINT 2.2.14F - Cerca Utente
+	// Cerca Utente
 	@GetMapping(path = "/cerca/{criterioRicerca}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<UtenteLightEntity> getUtenteByCriterioRicerca(@PathVariable(value = "criterioRicerca") String criterioRicerca) {
@@ -75,7 +74,7 @@ public class UtenteRestApi {
 		return this.utenteMapper.toUtenteLightEntityFrom(utentiCercati);
 	}
 	
-	// TOUCH POINT - 1.3.7 -  CRUD Crea Utente
+	// CRUD Crea Utente
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public UtenteResource creaNuovoUtente(@RequestBody @Valid NuovoUtenteRequest nuovoUtenteRequest) {
@@ -83,7 +82,7 @@ public class UtenteRestApi {
 		return new UtenteResource(this.utenteService.creaNuovoUtente(utenteEntity, nuovoUtenteRequest.getRuolo()).getId());
 	}
 	
-	// TOUCH POINT - 1.3.3 - Update Utente
+	// Update Utente
 	@PutMapping(path = "/{idUtente}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void aggiornaUtente(
@@ -92,7 +91,7 @@ public class UtenteRestApi {
 		this.utenteService.aggiornaUtente(aggiornaUtenteRequest, idUtente);
 	}
 	
-	// TOUCH POINT - 1.3.6 -  Lista Stati Utenti Dropdown
+	// Lista Stati Utenti Dropdown
 	@PostMapping(path = "/stati/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<String> getAllStatiDropdown(
@@ -101,7 +100,7 @@ public class UtenteRestApi {
 		return statiDropdown;
 	}
 	
-	// TOUCH POINT - 1.3.5 -  Lista Ruoli Utenti Dropdown
+	// Lista Ruoli Utenti Dropdown
 	@PostMapping(path = "/ruoli/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<String> getAllRuoliDropdown(
@@ -110,14 +109,14 @@ public class UtenteRestApi {
 		return ruoliDropdown;
 	}
 	
-	// TOUCH POINT - 4.1 - Scheda Utente
+	// Scheda Utente
 	@GetMapping(path = "/{idUtente}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaUtenteBean getSchedaUtenteByIdUtente(@PathVariable(value = "idUtente") Long idUtente) {
 		return this.utenteService.getSchedaUtenteByIdUtente(idUtente);
 	}
 	
-	// TOUCH POINT - 4.1 - Scheda Utente
+	// Scheda Utente
 	@PostMapping(path = "/{idUtente}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaUtenteBean getSchedaUtenteByIdUtente(@PathVariable(value = "idUtente") Long idUtente,
@@ -125,7 +124,7 @@ public class UtenteRestApi {
 		return this.utenteService.getSchedaUtenteByIdUtente(idUtente, sceltaProfilo);
 	}
 
-	// TOUCH POINT - 4.4 - Associa Ruolo ad Utente
+	// Associa Ruolo ad Utente
 	@PutMapping(path = "/{idUtente}/assegnaRuolo/{codiceRuolo}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void assegnaRuoloAUtente(
@@ -134,7 +133,7 @@ public class UtenteRestApi {
 		this.utenteService.assegnaRuoloAUtente(idUtente, codiceRuolo);
 	}
 	
-	// TOUCH POINT - 4.5 - Cancella Ruolo da Utente
+	// Cancella Ruolo da Utente
 	@DeleteMapping(path = "/{idUtente}/cancellaRuolo/{codiceRuolo}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void cancellaRuoloDaUtente(
@@ -143,14 +142,14 @@ public class UtenteRestApi {
 		this.utenteService.cancellaRuoloDaUtente(idUtente, codiceRuolo);
 	}
 
-	// TOUCH POINT - 1.3.4 -  Delete Utente
+	// Delete Utente
 	@DeleteMapping(path = "/{idUtente}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void cancellaUtente(@PathVariable(value = "idUtente") Long idUtente) {
 		this.utenteService.cancellaUtente(idUtente);
 	}
 	
-	// TOUCH-POINT 1.3.8 - Scarica lista utenti in formato csv
+	// Scarica lista utenti in formato csv
 	@PostMapping(path = "/download")
 	public ResponseEntity<InputStreamResource> downloadListaCSVUtenti(@RequestBody @Valid UtenteRequest sceltaContesto) {
 		List<UtenteDto> listaUtentiDto = this.utenteService.getUtentiPerDownload(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());

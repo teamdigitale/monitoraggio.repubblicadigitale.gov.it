@@ -70,9 +70,6 @@ public class ProgrammaService {
 		this.programmaRepository.save(programmaFetchDB);
 	}
 	
-	/**
-	 * @throws ProgrammaException
-	 */
 	@LogMethod
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)

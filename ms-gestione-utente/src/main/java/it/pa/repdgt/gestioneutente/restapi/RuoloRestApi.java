@@ -33,7 +33,7 @@ public class RuoloRestApi {
 	@Autowired
 	private RuoloMapper ruoloMapper;
 	
-	// TOUCH POINT - 1.3.7 B
+	// Lista ruoli filtrata per tipologia
 	@GetMapping
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<RuoloLightResource>  getAllRuoliByTipologia(
@@ -45,7 +45,7 @@ public class RuoloRestApi {
 		return this.ruoloMapper.toLightResourceFrom(listaRuoli);
 	}
 	
-	// TOUCH POINT - 8.1.1 - lista ruoli filtrata per nome ruolo 
+	// lista ruoli filtrata per nome ruolo 
 	/**
 	 * Ritorna la lista di tutti i ruoli se il filtro di ricerca nome del ruolo non viene passato,
 	 * altrimenti riitorna il ruolo ricercato tramite il suo nome.
@@ -64,16 +64,14 @@ public class RuoloRestApi {
 		this.ruoloService.creaNuovoRuolo(nuovoRuoloRequest);
 	}
 	
-	// TOUCH POINT - 8.1.4 - Scheda ruolo
-	// TOUCH POINT - 8.2.1 - Scheda ruolo
+	// Scheda ruolo
 	@GetMapping(path = "/{idRuolo}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaRuoloBean getSchedaRuolo(@PathVariable(value = "idRuolo") String codiceRuolo) {
 		return this.ruoloService.getSchedaRuoloByCodiceRuolo(codiceRuolo);
 	}
 	
-	// TOUCH POINT - 8.1.2 - update ruolo
-	// TOUCH POINT - 8.2.2 - update ruolo
+	// update ruolo
 	@PutMapping(path = "/{idRuolo}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void aggiornaRuolo(@PathVariable(value = "idRuolo") String codiceRuolo,

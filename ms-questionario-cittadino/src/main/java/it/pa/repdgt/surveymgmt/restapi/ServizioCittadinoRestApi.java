@@ -126,7 +126,6 @@ public class ServizioCittadinoRestApi {
 		return new CittadinoResource(this.cittadiniServizioService.creaNuovoCittadino(idServizio, nuovoCittadino).getId());
 	}
 	
-	// TOUCH POINT - 9.2.5
 	@PostMapping(path = "{idServizio}/listaCittadini/upload", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<CittadinoUploadBean> caricaListaCittadini(
@@ -142,7 +141,6 @@ public class ServizioCittadinoRestApi {
 	 * invio questionario al cittadino per compilazione
 	 * 
 	 * */
-	// TOUCH POINT 9.2.9
 	@PostMapping(path = "/questionarioCompilato/invia")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void inviaQuestionario(
@@ -155,7 +153,6 @@ public class ServizioCittadinoRestApi {
 	 * e per cui ancora non è stato inviato il questionario
 	 *
 	 * */
-	// TOUCH POINT 9.2.9
 	@PostMapping(path = "servizio/{idServizio}/questionarioCompilato/inviaATutti")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizio(@PathVariable(value = "idServizio") Long idServizio) {
@@ -167,7 +164,6 @@ public class ServizioCittadinoRestApi {
 	 * @throws ParseException 
 	 * 
 	 * */
-	// TOUCH POINT 9.2.6
 	@GetMapping(path = "/questionarioCompilato/{idQuestionario}/anonimo")
 	@ResponseStatus(value = HttpStatus.OK)
 	public QuestionarioCompilatoBean getQuestionarioCompilatoAnonimo(
@@ -180,7 +176,6 @@ public class ServizioCittadinoRestApi {
 	 * Compilazione del questionario 
 	 * 
 	 * */
-	// TOUCH POINT 9.2.7 
 	@PostMapping(path = "/questionarioCompilato/{idQuestionario}/compila")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void compilaQuestionario(
@@ -192,9 +187,7 @@ public class ServizioCittadinoRestApi {
 	/**
 	 * 
 	 * compilazione questionario in forma anonima da parte del cittadino
-	 * @throws ParseException 
 	 */
-	// TOUCH POINT 9.2.8
 	@PostMapping(path = "/questionarioCompilato/{idQuestionario}/compila/anonimo")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void compilaQuestionarioAnonimo(

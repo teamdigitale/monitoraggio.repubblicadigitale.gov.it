@@ -47,7 +47,7 @@ public class CittadinoRestApi {
 	 * Restituisce tutti i cittadini paginati 
 	 * 
 	 * */
-	// TOUCH POINT - 7.1.1 - Lista cittadini paginata
+	// Lista cittadini paginata
 	@PostMapping(path = "/all")
 	@ResponseStatus(value = HttpStatus.OK)
 	public CittadiniPaginatiResource getAllCittadini(
@@ -74,7 +74,7 @@ public class CittadinoRestApi {
 	 * Restituisce le sedi per popolare il filtro dei cittadini 
 	 * 
 	 * */
-	// TOUCH POINT - 7.1.2 - Lista sedi dropdown
+	// Lista sedi dropdown
 	@PostMapping(path = "/sedi/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<SedeDto> getAllSediDropdown(@RequestBody @Valid final CittadiniPaginatiParam cittadiniPaginatiParam) {
@@ -98,7 +98,7 @@ public class CittadinoRestApi {
 	 * Restituisce la scheda del cittadino 
 	 * 
 	 * */
-	// TOUCH POINT - 7.2.1 - Scheda cittadino
+	// Scheda cittadino
 	@PostMapping(path = "/{idCittadino}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaCittadinoBean getSchedaCittadino(@PathVariable(value = "idCittadino") final Long idCittadino,
@@ -118,7 +118,7 @@ public class CittadinoRestApi {
 	}
 	
 	/**
-	 *  TOUCH POINT 7.2.4 - Download lista cittadini
+	 *  Download lista cittadini
 	 */
 	@PostMapping(path = "/download")
 	public ResponseEntity<InputStreamResource> downloadListaCSVCittadini(@RequestBody @Valid CittadiniPaginatiParam cittadiniPaginatiParam) {

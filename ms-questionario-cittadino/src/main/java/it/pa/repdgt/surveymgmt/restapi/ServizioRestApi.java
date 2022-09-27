@@ -59,7 +59,6 @@ public class ServizioRestApi {
 	 * in base ai filtri richiesti e alla profilazione dell'utente loggatosi. 
 	 * 
 	 * */
-	// TOUCH POINT - 9.1.1
 	@PostMapping(path = "/all")	
 	@ResponseStatus(value = HttpStatus.OK)
 	public ServiziPaginatiResource getAllServiziPaginatiByProfilaRzioneUtenteLoggatoAndFiltri(
@@ -88,7 +87,6 @@ public class ServizioRestApi {
 	 * Recupera i dati da mostrare nella scheda dettaglio servizio a partire dall'id del servizio
 	 * 
 	 * */
-	// TOUCH POINT - 9.1.8
 	@GetMapping(path = "{id}/schedaDettaglio")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaDettaglioServizioBean getSchedaDettaglioServizioById(@PathVariable(value = "id") final Long idServizio) {
@@ -99,7 +97,6 @@ public class ServizioRestApi {
 	 * Creazione di un nuovo servizio
 	 * 
 	 * */
-	// TOUCH POINT - 9.1.3
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public ServizioIdResource creaServizio(@RequestBody @Valid final ServizioRequest servizioRequest) {
@@ -110,7 +107,6 @@ public class ServizioRestApi {
 	 * Modifica di un servizio a partire dall suo id
 	 * 
 	 * */
-	// TOUCH POINT - 9.1.4
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void aggiornaServizioById(
@@ -142,7 +138,6 @@ public class ServizioRestApi {
 	 * Recupera gli stati servizio da mostrare nella dropdown dei filtri per i servizi
 	 * 
 	 * */
-	// TOUCH POINT - 9.1.2
 	@PostMapping(path = "/stati/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<String> getAllStatiFiltroDropdown(
@@ -162,7 +157,6 @@ public class ServizioRestApi {
 	 * Recupera gli enti per popolare dropdown selezione ente servizio
 	 * 
 	 * */
-	// TOUCH POINT - 9.1.6
 	@PostMapping(path = "/facilitatore/enti/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<EnteProjection> getEntiByFacilitatore(@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
@@ -173,7 +167,6 @@ public class ServizioRestApi {
 	 * Recupera tutte le sedi per popolare dropdown selezione sede servizio
 	 * 
 	 * */
-	// TOUCH POINT - 9.1.7
 	@PostMapping(path = "/facilitatore/sedi/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<SedeProjection> getSediByFacilitatore(@RequestBody @Valid final ProfilazioneSedeParam profilazioneParam) {
@@ -185,7 +178,6 @@ public class ServizioRestApi {
 	 * in base ai filtri richiesti e alla profilazione dell'utente loggatosi
 	 * 
 	 * */
-	// TOUCH POINT - 9.1.9
 	@PostMapping(path = "/download")
 	@ResponseStatus(value = HttpStatus.OK)
 	public ResponseEntity<InputStreamResource> downloadCSVSElencoServizi(
@@ -215,7 +207,6 @@ public class ServizioRestApi {
 	 * Eliminazione di un servizio a partire dall suo id
 	 * 
 	 * */
-	// TOUCH POINT - 9.1.5
 	@DeleteMapping(path = "/{id}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void eliminaServizioById(@PathVariable(value = "id") final Long idServizio) {
