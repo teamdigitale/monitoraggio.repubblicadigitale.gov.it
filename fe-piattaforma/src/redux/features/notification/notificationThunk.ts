@@ -14,11 +14,11 @@ const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const getDelayByDuration = (duration: NotifyI['duration'] = 'medium') => {
   switch (duration) {
     case 'slow':
-      return 25000;
+      return 40000;
     case 'medium':
-      return 15000;
+      return 25000;
     case 'fast':
-      return 5000;
+      return 10000;
     default:
       return duration;
   }

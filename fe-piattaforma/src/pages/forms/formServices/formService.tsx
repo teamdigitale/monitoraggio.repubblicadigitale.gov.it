@@ -52,14 +52,14 @@ const FormService: React.FC<FormServiceI> = (props) => {
     if (creation) {
       dispatch(GetSurveyTemplateServiceCreation());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    const schema = serviceQ3SchemaCreation?.json || serviceQ3Schema?.json || '{}';
+    const schema =
+      serviceQ3SchemaCreation?.json || serviceQ3Schema?.json || '{}';
     if (schema) {
-      const formFromSchema = generateForm(
-        JSON.parse(schema)
-      );
+      const formFromSchema = generateForm(JSON.parse(schema));
       Object.keys(formFromSchema).forEach((key: string) => {
         formFromSchema[key].label = formFromSchema[key].value?.toString() || '';
         formFromSchema[key].value = '';
@@ -90,6 +90,7 @@ const FormService: React.FC<FormServiceI> = (props) => {
   useEffect(() => {
     areFormsValid(isFormStaticValid && isFormDynamicValid);
     sendNewFormsValues({ ...newFormStaticValues, ...newFormDynamicValues });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     isFormStaticValid,
     isFormDynamicValid,
@@ -102,6 +103,7 @@ const FormService: React.FC<FormServiceI> = (props) => {
     getQuestioanarioCompilatoQ3(
       createStringOfCompiledSurveySection(newFormDynamicValues)
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newFormDynamicValues]);
 
   return (

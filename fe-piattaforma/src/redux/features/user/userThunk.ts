@@ -11,6 +11,7 @@ import {
 import {
   clearSessionValues,
   getSessionValues,
+  setSessionValues,
 } from '../../../utils/sessionHelper';
 import { RootState } from '../../store';
 import { isActiveProvisionalLogin } from '../../../pages/common/Auth/auth';
@@ -109,9 +110,10 @@ export const SelectUserRole =
       } = select((state: RootState) => state);
       if (codiceFiscale && profile?.codiceRuolo) {
         const { codiceRuolo, idProgramma, idProgetto } = profile;
+        setSessionValues('profile', profile);
         const res = await API.post('/contesto/sceltaProfilo', {
-          cfUtente: codiceFiscale,
-          codiceRuolo,
+          cfUtente: isActiveProvisionalLogin ? codiceFiscale : undefined,
+          codiceRuolo: isActiveProvisionalLogin ? codiceRuolo : undefined,
           idProgramma,
           idProgetto,
         });
@@ -123,6 +125,7 @@ export const SelectUserRole =
       }
     } catch (error) {
       console.log('SelectUserRole error', error);
+      clearSessionValues('profile');
     } finally {
       dispatch(hideLoader());
     }
@@ -206,7 +209,5 @@ export const LogoutRedirect = () => async (dispatch: Dispatch) => {
     window.location.replace(logoutRedirectUrl);
   } catch (error) {
     console.log('LogoutRedirect error', error);
-  } finally {
-    dispatch(hideLoader());
   }
 };

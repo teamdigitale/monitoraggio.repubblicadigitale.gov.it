@@ -89,6 +89,10 @@ const Auth: React.FC<withFormHandlerProps> = ({
     }
   };
 
+  if (!isActiveProvisionalLogin && loader.isLoading) {
+    return <Loader />;
+  }
+
   return (
     <>
       {loader.isLoading && <Loader />}
