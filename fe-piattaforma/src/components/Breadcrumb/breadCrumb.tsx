@@ -100,11 +100,16 @@ const Breadcrumb = () => {
               url: createUrl(index),
               link:
                 ((userProfile?.codiceRuolo === userRoles.REGP ||
-                  userProfile?.codiceRuolo === userRoles.FAC) &&
+                  userProfile?.codiceRuolo === userRoles.DEGP ||
+                  userProfile?.codiceRuolo === userRoles.FAC ||
+                  userProfile?.codiceRuolo === userRoles.VOL) &&
                   getLabelBreadcrumb(elem) === 'Progetti') ||
                 ((userProfile?.codiceRuolo === userRoles.REG ||
+                  userProfile?.codiceRuolo === userRoles.DEG ||
                   userProfile?.codiceRuolo === userRoles.REGP ||
-                  userProfile?.codiceRuolo === userRoles.FAC) &&
+                  userProfile?.codiceRuolo === userRoles.DEGP ||
+                  userProfile?.codiceRuolo === userRoles.FAC ||
+                  userProfile?.codiceRuolo === userRoles.VOL) &&
                   getLabelBreadcrumb(elem) === 'Programmi')
                   ? false
                   : index !== 0 && index !== currentLocation?.length - 2,
@@ -114,9 +119,11 @@ const Breadcrumb = () => {
               label: getLabelBreadcrumb(elem),
               url: createUrl(index),
               link:
-                (userProfile?.codiceRuolo === userRoles.REGP &&
+                ((userProfile?.codiceRuolo === userRoles.REGP ||
+                  userProfile?.codiceRuolo === userRoles.DEGP) &&
                   getLabelBreadcrumb(elem) === 'Progetti') ||
-                (userProfile?.codiceRuolo === userRoles.REG &&
+                ((userProfile?.codiceRuolo === userRoles.REG ||
+                  userProfile?.codiceRuolo === userRoles.DEG) &&
                   getLabelBreadcrumb(elem) === 'Programmi')
                   ? false
                   : index !== 0 && index !== currentLocation?.length - 1,

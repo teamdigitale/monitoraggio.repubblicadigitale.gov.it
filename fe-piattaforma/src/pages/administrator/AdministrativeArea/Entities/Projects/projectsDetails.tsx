@@ -1191,7 +1191,10 @@ const ProjectsDetails = () => {
                 : 'Torna indietro'
             }
             showGoBack={
-              userRole !== userRoles.REGP && userRole !== userRoles.FAC
+              userRole !== userRoles.REGP &&
+              userRole !== userRoles.DEGP &&
+              userRole !== userRoles.FAC &&
+              userRole !== userRoles.VOL
             }
           >
             <>
