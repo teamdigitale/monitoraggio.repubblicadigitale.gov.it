@@ -19,10 +19,6 @@ public class ReferentiDelegatiEnteGestoreProgrammaService {
 	@Autowired
 	private ReferentiDelegatiEnteGestoreProgrammaRepository referentiDelegatiEnteGestoreProgrammaRepository;
 	
-	// MI SERVE
-	/**
-	 * @throws ResourceNotFoundException
-	 * */
 	@LogMethod
 	@LogExecutionTime
 	public void save(ReferentiDelegatiEnteGestoreProgrammaEntity referentiDelegatiEnteGestoreProgramma) {

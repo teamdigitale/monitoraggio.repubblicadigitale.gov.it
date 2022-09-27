@@ -23,8 +23,6 @@ import lombok.Setter;
 /**
  * Classe TemplateQuestionarioCollection mappa un template di questionario.
  * 	
- *  
- * Per maggiori info vedi: https://jsonforms.io/examples/basic/
  * */
 
 @Document(collection = "questionarioTemplate")

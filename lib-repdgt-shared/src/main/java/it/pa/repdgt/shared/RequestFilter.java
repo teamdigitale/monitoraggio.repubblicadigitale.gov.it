@@ -43,8 +43,10 @@ public class RequestFilter implements Filter {
 		"^/contesto$",
 		"^/contesto/confermaIntegrazione$",
 		"^/utente/upload/immagineProfilo*",
-		"^/utente/download/immagineProfilo*"
-		//da commentare:
+		"^/utente/download/immagineProfilo*",
+		"^/servizio/cittadino/questionarioCompilato/(([A-Za-z0-9]+(\\-?)){1,})/compila/anonimo$",
+		"^/servizio/cittadino/questionarioCompilato/(([A-Za-z0-9]+(\\-?)){1,})/anonimo$"
+//		da decommentare in locale(aggiunta endpoint per lanciare swagger):
 		,"^/swagger-ui*",
 		"^/favicon.ico*",
 		"^/swagger-resources*",
@@ -52,6 +54,7 @@ public class RequestFilter implements Filter {
 		"^/v2/api-docs*"
 	);
 	private static final CharSequence VERIFICA_PROFILO_BASE_URI = "/contesto/sceltaProfilo";
+	private static final String ENDPOINT_QUESTIONARIO_COMPILATO = "^/servizio/cittadino/questionarioCompilato/(([A-Za-z0-9]+(\\-?)){1,})/compila$";
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -78,7 +81,6 @@ public class RequestFilter implements Filter {
 		String metodoHttp = ((HttpServletRequest) request).getMethod();
 		String endpoint = ((HttpServletRequest) request).getServletPath();
 		
-		//if(ENDPOINT_NOT_CHECKED.contains(endpoint)) {
 		if(isEndpointNotChecked(endpoint)) {
 			chain.doFilter(wrappedRequest, response);
 		} else {
@@ -94,9 +96,19 @@ public class RequestFilter implements Filter {
 				if(endpoint.contains(VERIFICA_PROFILO_BASE_URI)) {
 					chain.doFilter(wrappedRequest, response);
 				} else {
-					List<String> codiciPermessoPerApi = this.permessiApiService.getCodiciPermessiApiByMetodoHttpAndPath(metodoHttp, endpoint);
+					List<String> codiciPermessoPerApi;
+					if(isEndpointQuestionarioCompilato(endpoint)) {
+						/* per risolvere il problema di mysql "Error Code: 3699. Timeout exceeded in regular expression match."
+						 * per l'endpoint /servizio/cittadino/questionarioCompilato/{idQuestionario}/compila
+						 */
+						codiciPermessoPerApi = Arrays.asList("wrt.quest.citt.serv");	
+					}else {
+						codiciPermessoPerApi = this.permessiApiService.getCodiciPermessiApiByMetodoHttpAndPath(metodoHttp, endpoint);						
+					}
 					List<String> codiciPermessoUtenteLoggato = this.permessoService.getCodiciPermessoByUtenteLoggato(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato);
 
+					
+					
 					// verifico il profilo dell'utente loggato è abilitato a poter chiamare quella particolare api
 					boolean isUtenteAbilitatoPerApi = false;
 					for(String codiciPermesso: codiciPermessoPerApi) {
@@ -130,6 +142,15 @@ public class RequestFilter implements Filter {
 			if(matcher.find())
 				return true;
 		}
+		return false;
+	}
+	
+	private boolean isEndpointQuestionarioCompilato(String endpoint) {
+		String endpointQuestionarioCompilato =  ENDPOINT_QUESTIONARIO_COMPILATO; 
+			Pattern pattern = Pattern.compile(endpointQuestionarioCompilato);
+			Matcher matcher = pattern.matcher(endpoint);
+			if(matcher.find())
+				return true;
 		return false;
 	}
 }

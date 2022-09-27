@@ -164,21 +164,6 @@ public class ContestoService implements RuoliUtentiConstants{
 				if(!idsProgetti.isEmpty()) {
 					contestoRepository.rendiProgettiAttivabili(idsProgetti);
 				}
-				/************ ELIMINATA FUNZIONALITA DI INVIO EMAIL PER PROGETTO ATTIVABILE *********/
-//				// Recupero referenti/delegati ente gestore progetti resi attivabili in precedenza 
-//				final List<ReferenteDelegatoEnteGestoreProgettoProjection> referentiODelegatiEnteGestoreProgetti = this.referentiDelegatiEnteGestoreProgettoService
-//						.getEmailReferentiDelegatiEnteGestoreByIdProgetto(idsProgetti);
-//				// Invio email a referenti/delegati ente gestore progetti
-//				referentiODelegatiEnteGestoreProgetti.forEach(referenteDelegatoEnteGestoreProgetto -> {
-//					try {
-//						this.emailService.inviaEmail(referenteDelegatoEnteGestoreProgetto.getEmail(), 
-//								EmailTemplateEnum.GEST_PROGE_PARTNER, 
-//								new String[] { referenteDelegatoEnteGestoreProgetto.getNome(), RuoloUtenteEnum.valueOf(referenteDelegatoEnteGestoreProgetto.getCodiceRuolo()).getValue() });
-//					}catch(Exception ex) {
-//						log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore progetto per progetto con id={}.", referenteDelegatoEnteGestoreProgetto.getIdProgetto());
-//						log.error("{}", ex);
-//					}
-//				});
 				break;
 			case REGP:
 			case DEGP:
