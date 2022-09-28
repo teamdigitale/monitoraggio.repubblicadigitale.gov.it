@@ -2,12 +2,17 @@ package it.pa.repdgt.shared.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -37,9 +42,9 @@ public class ServizioEntity implements Serializable {
 	@Column(name = "ID_QUESTIONARIO_TEMPLATE_SNAPSHOT")
 	private String idQuestionarioTemplateSnapshot;
 	
-	@Column(name = "TIPOLOGIA_SERVIZIO")
-	private String tipologiaServizio;
-
+	@OneToMany(mappedBy = "servizio", targetEntity = TipologiaServizioEntity.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private List<TipologiaServizioEntity> listaTipologiaServizi;
+	
 	@Temporal(value = TemporalType.DATE)
 	@Column(name = "DATA_SERVIZIO")
 	private Date dataServizio;
@@ -51,6 +56,9 @@ public class ServizioEntity implements Serializable {
 	
 	@Column(name = "STATO")
 	private String stato;
+	
+	@Column(name = "TIPOLOGIA_SERVIZIO")
+	private String tipologiaServizio;
 	
 	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column(name = "DATA_ORA_CREAZIONE")

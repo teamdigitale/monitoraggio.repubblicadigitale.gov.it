@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -18,22 +20,25 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "permesso")
 @Setter
 @Getter
-public class PermessoEntity implements Serializable {
-	private static final long serialVersionUID = 7781599515820836346L;
+@Table(name = "tipologia_servizio")
+public class TipologiaServizioEntity implements Serializable {
+	private static final long serialVersionUID = -6310179790779394657L;
 
 	@Id
+	@JsonIgnore
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	private Long id;
+
+	@Column(name = "TITOLO", nullable = true)
+	private String titolo;
 	
-	@Column(name = "CODICE", nullable = false, unique = true)
-	private String codice;
-	
-	@Column(name = "DESCRIZIONE", nullable = true)
-	private String descrizione;
+	@JsonIgnore
+	@ManyToOne(targetEntity = ServizioEntity.class)
+	@JoinColumn(name = "SERVIZIO_ID", referencedColumnName = "ID")
+	private ServizioEntity servizio;
 	
 	@JsonIgnore
 	@Temporal(value = TemporalType.TIMESTAMP)
