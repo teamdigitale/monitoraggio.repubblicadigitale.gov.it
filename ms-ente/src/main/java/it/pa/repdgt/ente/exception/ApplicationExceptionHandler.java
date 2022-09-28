@@ -92,7 +92,7 @@ public class ApplicationExceptionHandler {
 		} else if(exc instanceof EnteSedeProgettoException) {
 			enteSedeProgettoException = (EnteSedeProgettoException) exc;
 			errori.put("errorCode", enteSedeProgettoException.getCodiceErroreEnum().toString());
-		} else if(exc instanceof RuoloException) {
+		} else if(exc instanceof EnteSedeProgettoFacilitatoreException) {
 			enteSedeProgettoFacilitatoreException = (EnteSedeProgettoFacilitatoreException) exc;
 			errori.put("errorCode", enteSedeProgettoFacilitatoreException.getCodiceErroreEnum().toString());
 		} else if(exc instanceof RuoloException){

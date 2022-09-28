@@ -13,7 +13,6 @@ public class ServizioException extends BaseException {
 	}
 	
 	public ServizioException(String messageException, CodiceErroreEnum codiceErroreEnum) {
-		super(messageException, null);
-		this.codiceErroreEnum = codiceErroreEnum;
+		super(messageException, codiceErroreEnum);
 	}
 }

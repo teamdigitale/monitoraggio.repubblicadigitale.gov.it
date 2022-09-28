@@ -28,6 +28,7 @@ import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.bean.DettaglioCittadinoBean;
 import it.pa.repdgt.surveymgmt.bean.SchedaCittadinoBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
@@ -39,7 +40,6 @@ import it.pa.repdgt.surveymgmt.mapper.CittadinoMapper;
 import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioCompilatoMongoRepository;
 import it.pa.repdgt.surveymgmt.param.CittadiniPaginatiParam;
 import it.pa.repdgt.surveymgmt.param.FiltroListaCittadiniParam;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import it.pa.repdgt.surveymgmt.projection.CittadinoProjection;
 import it.pa.repdgt.surveymgmt.projection.DettaglioServizioSchedaCittadinoProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
@@ -81,10 +81,10 @@ public class CittadinoServiceTest {
 	ProjectionFactory dettaglioSchedaCittadino;
 	DettaglioServizioSchedaCittadinoProjection dettaglioSchedaCittadinoProjection;
 	UtenteEntity facilitatore;
-	ProfilazioneParam profilazione;
 	CittadinoRequest cittadinoRequest;
 	CittadinoProjectionImplementation cittadinoProjectionImplementation;
 	List<CittadinoProjection> listaCittadiniProjection;
+	SceltaProfiloParam sceltaProfiloParam;
 	
 	@BeforeEach
 	public void setUp() {
@@ -100,9 +100,18 @@ public class CittadinoServiceTest {
 		filtro = new FiltroListaCittadiniParam();
 		filtro.setCriterioRicerca("CRITERIORICERCA");
 		filtro.setIdsSedi(listaIdsSedi);
+		facilitatore = new UtenteEntity();
+		facilitatore.setNome("facilitatore1");
+		facilitatore.setCodiceFiscale("CFFACILITATORE");
+		facilitatore.setId(1L);
+		sceltaProfiloParam = new SceltaProfiloParam();
+		sceltaProfiloParam.setCfUtenteLoggato(facilitatore.getCodiceFiscale());
+		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
+		sceltaProfiloParam.setIdProgetto(1L);
+		sceltaProfiloParam.setIdProgramma(1L);
 		cittadiniPaginatiParam = new CittadiniPaginatiParam();
-		cittadiniPaginatiParam.setCodiceFiscaleUtenteLoggato("CFUTENTE");
-		cittadiniPaginatiParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC);
+		cittadiniPaginatiParam.setCfUtenteLoggato("CFUTENTE");
+		cittadiniPaginatiParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
 		cittadiniPaginatiParam.setIdProgetto(1L);
 		cittadiniPaginatiParam.setIdProgramma(1L);
 		cittadiniPaginatiParam.setFiltro(filtro);
@@ -113,15 +122,6 @@ public class CittadinoServiceTest {
 		listaDettagliCittadinoProjection = new ArrayList<>();
 		dettaglioSchedaCittadino = new SpelAwareProxyProjectionFactory();
 		dettaglioSchedaCittadinoProjection = dettaglioSchedaCittadino.createProjection(DettaglioServizioSchedaCittadinoProjection.class);
-		facilitatore = new UtenteEntity();
-		facilitatore.setNome("facilitatore1");
-		facilitatore.setCodiceFiscale("CFFACILITATORE");
-		facilitatore.setId(1L);
-		profilazione = new ProfilazioneParam();
-		profilazione.setCodiceFiscaleUtenteLoggato(facilitatore.getCodiceFiscale());
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC);
-		profilazione.setIdProgetto(1L);
-		profilazione.setIdProgramma(1L);
 		cittadinoRequest = new CittadinoRequest();
 		cittadinoRequest.setCodiceFiscale("CFCITTADINO");
 		cittadinoRequest.setNome("NOMECITTADINO");
@@ -129,7 +129,7 @@ public class CittadinoServiceTest {
 		cittadinoRequest.setTipoDocumento("CF");
 		cittadinoRequest.setNumeroDocumento("E23K099D");
 		cittadinoRequest.setGenere("GENERE");
-		cittadinoRequest.setAnnoNascita("1990");
+		cittadinoRequest.setAnnoNascita(1990);
 		cittadinoRequest.setTitoloStudio("DIPLOMA");
 		cittadinoRequest.setStatoOccupazionale("DIPENDENTE");
 		cittadinoRequest.setCittadinanza("ITALIANA");
@@ -179,11 +179,10 @@ public class CittadinoServiceTest {
 		cittadinoProjectionImplementation.setNumeroQuestionariCompilati(2L);
 		List<CittadinoProjection> listaCittadiniProjection = new ArrayList<>();
 		listaCittadiniProjection.add(cittadinoProjectionImplementation);
-		when(this.ruoloService.getRuoliByCodiceFiscale(cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
 		when(this.cittadinoRepository.findAllCittadiniPaginatiByFiltro(filtro.getCriterioRicerca(), 
 				"%" + filtro.getCriterioRicerca() + "%", 
 				filtro.getIdsSedi(), 
-				cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato(),
+				cittadiniPaginatiParam.getCfUtenteLoggato(),
 				0*10, 10
 			)).thenReturn(listaCittadiniProjection);
 		cittadinoService.getAllCittadiniPaginati(cittadiniPaginatiParam, 0, 10);
@@ -191,18 +190,8 @@ public class CittadinoServiceTest {
 	
 	@Test
 	public void getAllCittadiniPaginatiKOTest() {
-		//test KO per ruolo non definito per l'utente
-		when(this.ruoloService.getRuoliByCodiceFiscale(cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato())).thenReturn(new ArrayList<>());
-		Assertions.assertThrows(CittadinoException.class, () -> cittadinoService.getAllCittadiniPaginati(cittadiniPaginatiParam, 0, 10));
-		assertThatExceptionOfType(CittadinoException.class);
-		
-		//test KO per ruolo utente loggato != FAC
-		cittadiniPaginatiParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD);
-		ruolo = new RuoloEntity();
-		ruolo.setCodice("DTD");
-		listaRuoli = new ArrayList<>();
-		listaRuoli.add(ruolo);
-		when(this.ruoloService.getRuoliByCodiceFiscale(cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
+		//test KO per utente non facilitatore
+		cittadiniPaginatiParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
 		Assertions.assertThrows(CittadinoException.class, () -> cittadinoService.getAllCittadiniPaginati(cittadiniPaginatiParam, 0, 10));
 		assertThatExceptionOfType(CittadinoException.class);
 	}
@@ -217,7 +206,7 @@ public class CittadinoServiceTest {
 	@Test
 	public void getNumeroTotaleCittadiniFacilitatoreByFiltroTest() {
 		//test con filtro.getIdsSedi() != null
-		when(this.cittadinoRepository.findAllCittadiniByFiltro(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getIdsSedi(), cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato())).thenReturn(listaCittadiniProjection);
+		when(this.cittadinoRepository.findAllCittadiniByFiltro(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getIdsSedi(), cittadiniPaginatiParam.getCfUtenteLoggato())).thenReturn(listaCittadiniProjection);
 		Integer numeroTotaleCittadini = cittadinoService.getNumeroTotaleCittadiniFacilitatoreByFiltro(cittadiniPaginatiParam);
 		assertThat(numeroTotaleCittadini).isEqualTo(listaCittadiniProjection.size());
 	}
@@ -226,14 +215,14 @@ public class CittadinoServiceTest {
 	public void getNumeroTotaleCittadiniFacilitatoreByFiltroTest2() {
 		//test con filtro.getIdsSedi() = null
 		filtro.setIdsSedi(null);
-		when(this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto())).thenReturn(listaIdsSedi);
+		when(this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto())).thenReturn(listaIdsSedi);
 		cittadinoService.getNumeroTotaleCittadiniFacilitatoreByFiltro(cittadiniPaginatiParam);
 	}
 	
 	@Test
 	public void getAllCittadiniFacilitatoreByFiltroTest() {
 		//test con filtro.getIdsSedi() != null
-		when(this.cittadinoRepository.findAllCittadiniByFiltro(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getIdsSedi(), cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato())).thenReturn(listaCittadiniProjection);
+		when(this.cittadinoRepository.findAllCittadiniByFiltro(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getIdsSedi(), cittadiniPaginatiParam.getCfUtenteLoggato())).thenReturn(listaCittadiniProjection);
 		List<CittadinoProjection> listaCittadini = cittadinoService.getAllCittadiniFacilitatoreByFiltro(cittadiniPaginatiParam);
 		assertThat(listaCittadini.size()).isEqualTo(listaCittadiniProjection.size());
 	}
@@ -242,12 +231,12 @@ public class CittadinoServiceTest {
 	public void getAllCittadiniFacilitatoreByFiltroTest2() {
 		//test con filtro.getIdsSedi() = null
 		filtro.setIdsSedi(null);
-		when(this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto())).thenReturn(listaIdsSedi);
+		when(this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto())).thenReturn(listaIdsSedi);
 		when(this.cittadinoRepository.findAllCittadiniByFiltro(
 				filtro.getCriterioRicerca(), 
 				"%" + filtro.getCriterioRicerca() + "%",
 				listaIdsSedi,
-				cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato()
+				cittadiniPaginatiParam.getCfUtenteLoggato()
 			)).thenReturn(listaCittadiniProjection);
 		List<CittadinoProjection> listaCittadini = cittadinoService.getAllCittadiniFacilitatoreByFiltro(cittadiniPaginatiParam);
 		assertThat(listaCittadini.size()).isEqualTo(listaCittadiniProjection.size());
@@ -260,7 +249,7 @@ public class CittadinoServiceTest {
 				filtro.getCriterioRicerca(), 
 				"%" + filtro.getCriterioRicerca() + "%", 
 				filtro.getIdsSedi(), 
-				cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato(),
+				cittadiniPaginatiParam.getCfUtenteLoggato(),
 				0*10, 10
 			)).thenReturn(listaCittadiniProjection);
 		cittadinoService.getAllCittadiniFacilitatorePaginatiByFiltro(cittadiniPaginatiParam, 0, 10);
@@ -270,12 +259,12 @@ public class CittadinoServiceTest {
 	public void getAllCittadiniFacilitatorePaginatiByFiltroTest2() {
 		//test con filtro.getIdsSedi() = null
 		filtro.setIdsSedi(null);
-		when(this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto())).thenReturn(listaIdsSedi);
+		when(this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto())).thenReturn(listaIdsSedi);
 		when(this.cittadinoRepository.findAllCittadiniPaginatiByFiltro(
 				filtro.getCriterioRicerca(), 
 				"%" + filtro.getCriterioRicerca() + "%", 
 				listaIdsSedi, 
-				cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato(),
+				cittadiniPaginatiParam.getCfUtenteLoggato(),
 				0*10, 10
 			)).thenReturn(listaCittadiniProjection);
 		cittadinoService.getAllCittadiniFacilitatorePaginatiByFiltro(cittadiniPaginatiParam, 0, 10);
@@ -288,7 +277,6 @@ public class CittadinoServiceTest {
 		sedeProjectionImplementation.setNome("NOMESEDE");
 		List<SedeProjection> listaSediProjection = new ArrayList<>();
 		listaSediProjection.add(sedeProjectionImplementation);
-		when(this.ruoloService.getRuoliByCodiceFiscale(cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
 		when(this.sedeService.getAllSediFacilitatoreFiltrate(cittadiniPaginatiParam)).thenReturn(listaSediProjection);
 		List<SedeDto> listaSedi = cittadinoService.getAllSediDropdown(cittadiniPaginatiParam);
 		assertThat(listaSedi.size()).isEqualTo(listaSediProjection.size());
@@ -296,18 +284,8 @@ public class CittadinoServiceTest {
 	
 	@Test
 	public void getAllSediDropdownKOTest() {
-		//test KO per ruolo non definito per l'utente
-		when(this.ruoloService.getRuoliByCodiceFiscale(cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato())).thenReturn(new ArrayList<>());
-		Assertions.assertThrows(CittadinoException.class, () -> cittadinoService.getAllSediDropdown(cittadiniPaginatiParam));
-		assertThatExceptionOfType(CittadinoException.class);
-		
-		//test KO per utente non facilitatore
-		cittadiniPaginatiParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REG);
-		ruolo = new RuoloEntity();
-		ruolo.setCodice("REG");
-		listaRuoli = new ArrayList<>();
-		listaRuoli.add(ruolo);
-		when(this.ruoloService.getRuoliByCodiceFiscale(cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato())).thenReturn(listaRuoli);
+		//test KO per utente non facilitatore o volontario
+		cittadiniPaginatiParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
 		Assertions.assertThrows(CittadinoException.class, () -> cittadinoService.getAllSediDropdown(cittadiniPaginatiParam));
 		assertThatExceptionOfType(CittadinoException.class);
 	}
@@ -315,26 +293,26 @@ public class CittadinoServiceTest {
 	@Test
 	public void isAssociatoAUtenteTest() {
 		//test per codice fiscale utente loggato = codice fiscale facilitatore (con ruolo FAC)
-		Boolean risultato = cittadinoService.isAssociatoAUtente(profilazione, facilitatore.getCodiceFiscale(), 1L);
+		Boolean risultato = cittadinoService.isAssociatoAUtente(sceltaProfiloParam, facilitatore.getCodiceFiscale(), 1L);
 		assertThat(risultato).isEqualTo(true);
 		
 		//test per codice fiscale utente loggato != codice fiscale facilitatore (con ruolo FAC)
-		Boolean risultato2 = cittadinoService.isAssociatoAUtente(profilazione, "CFPROVA", 1L);
+		Boolean risultato2 = cittadinoService.isAssociatoAUtente(sceltaProfiloParam, "CFPROVA", 1L);
 		assertThat(risultato2).isEqualTo(false);
 		
 		//test per codice fiscale utente loggato = codice fiscale facilitatore (con ruolo VOL)
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.VOL);
-		Boolean risultato3 = cittadinoService.isAssociatoAUtente(profilazione, facilitatore.getCodiceFiscale(), 1L);
+		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.VOL.toString());
+		Boolean risultato3 = cittadinoService.isAssociatoAUtente(sceltaProfiloParam, facilitatore.getCodiceFiscale(), 1L);
 		assertThat(risultato3).isEqualTo(true);
 		
 		//test per codice fiscale utente loggato != codice fiscale facilitatore (con ruolo VOL)
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.VOL);
-		Boolean risultato4 = cittadinoService.isAssociatoAUtente(profilazione, "CFPROVA", 1L);
+		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.VOL.toString());
+		Boolean risultato4 = cittadinoService.isAssociatoAUtente(sceltaProfiloParam, "CFPROVA", 1L);
 		assertThat(risultato4).isEqualTo(false);
 		
 		//test per ruolo utente loggato != FAC & VOL
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REG);
-		Boolean risultato5 = cittadinoService.isAssociatoAUtente(profilazione, facilitatore.getCodiceFiscale(), 1L);
+		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REG.toString());
+		Boolean risultato5 = cittadinoService.isAssociatoAUtente(sceltaProfiloParam, facilitatore.getCodiceFiscale(), 1L);
 		assertThat(risultato5).isEqualTo(true);
 	}
 	
@@ -407,7 +385,7 @@ public class CittadinoServiceTest {
 		when(this.cittadinoMapper.toDettaglioCittadinoBeanFrom(cittadino)).thenReturn(dettaglioCittadinoBean);
 		when(this.cittadinoRepository.findDettaglioServiziSchedaCittadino(cittadino.getId())).thenReturn(listaDettaglioCittadino);
 		when(this.enteSedeProgettoFacilitatoreService.getNomeCompletoFacilitatoreByCodiceFiscale(dettaglioCittadino.getCodiceFiscaleFacilitatore())).thenReturn(facilitatore.getNome());
-		SchedaCittadinoBean cittadinoTrovato = cittadinoService.getSchedaCittadinoById(cittadino.getId(), profilazione);
+		SchedaCittadinoBean cittadinoTrovato = cittadinoService.getSchedaCittadinoById(cittadino.getId(), sceltaProfiloParam);
 		assertThat(cittadinoTrovato.getDettaglioCittadino().getCodiceFiscale()).isEqualTo(cittadino.getCodiceFiscale());
 	}
 	

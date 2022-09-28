@@ -5,7 +5,7 @@ import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 
 public class EnteSedeProgettoException extends BaseException {
 	public EnteSedeProgettoException(String exceptionMessage, CodiceErroreEnum codiceErroreEnum) {
-		super(exceptionMessage);
+		super(exceptionMessage, codiceErroreEnum);
 		this.codiceErroreEnum = codiceErroreEnum;
 	}
 	

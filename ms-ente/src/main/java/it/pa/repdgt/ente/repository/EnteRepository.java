@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import it.pa.repdgt.ente.entity.projection.AllEntiProjection;
 import it.pa.repdgt.ente.entity.projection.EnteProjection;
 import it.pa.repdgt.shared.entity.EnteEntity;
 
@@ -16,6 +17,8 @@ import it.pa.repdgt.shared.entity.EnteEntity;
 public interface EnteRepository extends JpaRepository<EnteEntity, Long> { 
 	
 	public Optional<EnteEntity> findByNome(String nomeEnte);
+	
+	public Optional<EnteEntity> findByNomeAndIdNot(String nomeEnte, Long id);
 	
 	@Query(value = "SELECT ente FROM EnteEntity ente WHERE ente.piva = :partitaIva")
 	public Optional<EnteEntity> findByPartitaIva(@Param(value="partitaIva") String partitaIva);
@@ -27,10 +30,11 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 
 	@Query(value = ""
 				+" SELECT "
-				+"    enti.ID_ENTE "
-				+"   ,enti.NOME_ENTE "
-				+"	 ,enti.TIPOLOGIA_ENTE "
-				+"	 ,enti.PROFILO_ENTE "
+				+"    enti.ID_ENTE as idEnte"
+				+"   ,enti.NOME_ENTE as nomeEnte"
+				+"	 ,enti.TIPOLOGIA_ENTE as tipologiaEnte"
+				+"	 ,enti.PROFILO_ENTE as profiloEnte"
+				+ "  ,enti.IDP as idp"
 				+" FROM ( "
 				+" 		SELECT DISTINCT "
 				+"		   e.PARTITA_IVA "
@@ -38,7 +42,8 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 				+" 	      ,e.NOME as NOME_ENTE "
 				+" 		  ,e.TIPOLOGIA as TIPOLOGIA_ENTE"
 				+" 		  ,'ENTE GESTORE DI PROGRAMMA' AS PROFILO_ENTE "
-				+" 		  ,prgm.POLICY "		
+				+" 		  ,prgm.POLICY "
+				+ "       ,prgm.id as IDP"
 				+" 	 	FROM "
 				+" 			ente e "
 				+" 			INNER JOIN programma prgm "
@@ -58,6 +63,7 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 				+" 		  ,e.TIPOLOGIA as TIPOLOGIA_ENTE"
 				+" 		  ,'ENTE GESTORE DI PROGETTO' AS PROFILO_ENTE "
 				+" 		  ,prgm.POLICY "
+				+ "		  ,prgt.id as IDP"
 				+" 		FROM "
 				+" 			ente e "
 				+" 			INNER JOIN progetto prgt "
@@ -77,6 +83,7 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 				+" 		  ,e.TIPOLOGIA as TIPOLOGIA_ENTE"
 				+" 		  ,'ENTE PARTNER' AS PROFILO_ENTE "
 				+" 		  ,prgm.POLICY "
+				+ "       ,prgt.id as IDP"
 				+" 		FROM "
 				+" 			ente_partner ep "
 				+" 			INNER JOIN ente e "
@@ -94,12 +101,12 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 				+" 		AND (     :criterioRicerca IS NULL  "
 		        +"			   OR CONVERT( enti.ID_ENTE, CHAR ) = :criterioRicerca "
 		        +"	    	   OR UPPER( enti.NOME_ENTE ) LIKE UPPER( :criterioRicercaLike ) "
-	            +"		  	   OR UPPER( enti.PARTITA_IVA ) LIKE UPPER( :criterioRicercaLike ) "
+	            +"		  	   OR UPPER( enti.PARTITA_IVA ) = UPPER( :criterioRicerca ) "
 	            +"	    ) "
 				+" 		AND  ( COALESCE(:profiliEnte) IS NULL  OR enti.PROFILO_ENTE IN (:profiliEnte) ) "
 				+" ORDER BY enti.NOME_ENTE",
 			nativeQuery = true)
-	public List<Map<String, String>> findAllEntiFiltrati(
+	public List<AllEntiProjection> findAllEntiFiltrati(
 		@Param("criterioRicerca") String criterioRicerca,
 		@Param("criterioRicercaLike") String criterioRicercaLike, 
 		@Param("idsProgrammi") List<String> idsProgrammi,
@@ -318,7 +325,6 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 		List<String> idsProgetti
 	);
 	
-	// TODO Alessandro da spostare nel suo repository
 	@Query(value = " "
 			+" SELECT"
 			+" 		 programma.id AS ID_PROGRAMMA"

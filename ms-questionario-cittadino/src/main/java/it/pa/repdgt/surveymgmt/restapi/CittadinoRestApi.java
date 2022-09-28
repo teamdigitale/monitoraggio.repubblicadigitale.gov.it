@@ -22,12 +22,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.bean.SchedaCittadinoBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.dto.CittadinoDto;
 import it.pa.repdgt.surveymgmt.dto.SedeDto;
 import it.pa.repdgt.surveymgmt.param.CittadiniPaginatiParam;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import it.pa.repdgt.surveymgmt.projection.CittadinoProjection;
 import it.pa.repdgt.surveymgmt.request.CittadinoRequest;
 import it.pa.repdgt.surveymgmt.resource.CittadiniPaginatiResource;
@@ -47,7 +47,7 @@ public class CittadinoRestApi {
 	 * Restituisce tutti i cittadini paginati 
 	 * 
 	 * */
-	// TOUCH POINT - 7.1.1 - Lista cittadini paginata
+	// Lista cittadini paginata
 	@PostMapping(path = "/all")
 	@ResponseStatus(value = HttpStatus.OK)
 	public CittadiniPaginatiResource getAllCittadini(
@@ -66,7 +66,7 @@ public class CittadinoRestApi {
 		return new CittadiniPaginatiResource(
 				cittadiniList, 
 				totaleElementi % pageSize > 0 ? numeroPagine+1 : numeroPagine,
-				new Long(totaleElementi)
+				Long.valueOf(totaleElementi)
 			);
 	}
 	
@@ -74,7 +74,7 @@ public class CittadinoRestApi {
 	 * Restituisce le sedi per popolare il filtro dei cittadini 
 	 * 
 	 * */
-	// TOUCH POINT - 7.1.2 - Lista sedi dropdown
+	// Lista sedi dropdown
 	@PostMapping(path = "/sedi/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<SedeDto> getAllSediDropdown(@RequestBody @Valid final CittadiniPaginatiParam cittadiniPaginatiParam) {
@@ -98,11 +98,11 @@ public class CittadinoRestApi {
 	 * Restituisce la scheda del cittadino 
 	 * 
 	 * */
-	// TOUCH POINT - 7.2.1 - Scheda cittadino
+	// Scheda cittadino
 	@PostMapping(path = "/{idCittadino}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaCittadinoBean getSchedaCittadino(@PathVariable(value = "idCittadino") final Long idCittadino,
-			@RequestBody @Valid final ProfilazioneParam profilazioneParam) {
+			@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
 		return this.cittadinoService.getSchedaCittadinoById(idCittadino, profilazioneParam);
 	}
 	
@@ -118,7 +118,7 @@ public class CittadinoRestApi {
 	}
 	
 	/**
-	 *  TOUCH POINT 7.2.4 - Download lista cittadini
+	 *  Download lista cittadini
 	 */
 	@PostMapping(path = "/download")
 	public ResponseEntity<InputStreamResource> downloadListaCSVCittadini(@RequestBody @Valid CittadiniPaginatiParam cittadiniPaginatiParam) {

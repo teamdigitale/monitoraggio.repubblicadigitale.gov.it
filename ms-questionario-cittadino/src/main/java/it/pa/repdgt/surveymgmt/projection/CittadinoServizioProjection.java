@@ -5,6 +5,7 @@ public interface CittadinoServizioProjection {
 	public String getNome();
 	public String getCognome();
 	public String getCodiceFiscale();
+	public String getNumeroDocumento();
 	public String getIdQuestionario();
 	public String getStatoQuestionario();
 }

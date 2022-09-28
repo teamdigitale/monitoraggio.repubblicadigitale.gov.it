@@ -31,6 +31,7 @@ import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.service.storico.StoricoService;
 
 @Service
@@ -41,8 +42,6 @@ public class ContestoService implements RuoliUtentiConstants{
 	private ContestoRepository contestoRepository;
 	@Autowired
 	private GruppoRepository gruppoRepository;
-	@Autowired
-	private RuoloService ruoloService;
 	@Autowired
 	private StoricoService storicoService;
 	@Autowired
@@ -132,28 +131,18 @@ public class ContestoService implements RuoliUtentiConstants{
 	@LogExecutionTime
 	@Transactional(rollbackFor = Exception.class)
 	public void verificaSceltaProfilo(String codiceFiscaleUtente, String codiceRuoloUtente, Long idProgramma, Long idProgetto){
-		//Verifico se il ruolo è valido per quell'utente avente quel codice fiscale
-		boolean hasRuoloUtente = this.ruoloService
-				.getRuoliByCodiceFiscaleUtente(codiceFiscaleUtente)
-				.stream()
-				.anyMatch(codiceRuolo -> codiceRuolo.equalsIgnoreCase(codiceRuoloUtente));
-		
-		if(!hasRuoloUtente) {
-			throw new ContestoException("ERRORE: ruolo non definito per l'utente");
-		}
-		
 		switch (codiceRuoloUtente.toUpperCase()) {
 			case REG:
 			case DEG:		
 				if(contestoRepository.verificaUtenteRuoloDEGREGPerProgramma(idProgramma, codiceFiscaleUtente, codiceRuoloUtente) == 0) {
-					throw new ContestoException("ERRORE: ruolo non definito per l'utente per il programma scelto");
+					throw new ContestoException("ERRORE: ruolo non definito per l'utente per il programma scelto", CodiceErroreEnum.C04);
 				}
 				//se sono REG/DEG verifico se il programma su cui mi trovo è NON ATTIVO --> passo ad ATTIVO il programma e stato_ente_gestore_programma
 				//se PROGETTO-SEDE-FACILITATORE associato porto ad attivabile anche il progetto
 				String errorMessage = String.format("Programma con id = %s non presente", String.valueOf(idProgramma));
 				ProgrammaEntity programma = contestoRepository.findById(idProgramma).
 						orElseThrow(() -> {
-							return new ResourceNotFoundException(errorMessage);
+							return new ResourceNotFoundException(errorMessage, CodiceErroreEnum.C01);
 						});
 				
 				if(StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(programma.getStato())) {
@@ -163,8 +152,8 @@ public class ContestoService implements RuoliUtentiConstants{
 					contestoRepository.updateStatoGestoreProgrammaToAttivo(idProgramma);
 					try {
 						storicoService.storicizzaEnteGestoreProgramma(programma, StatoEnum.ATTIVO.getValue());
-					} catch (Exception e) {
-						throw new ContestoException("ERRORE: Impossibile storicizzare ente");
+					} catch (Exception ex) {
+						throw new ContestoException("ERRORE: Impossibile storicizzare ente", ex, CodiceErroreEnum.C02);
 					}
 				}
 				if(!StatoEnum.TERMINATO.getValue().equalsIgnoreCase(programma.getStato())) {
@@ -175,28 +164,13 @@ public class ContestoService implements RuoliUtentiConstants{
 				if(!idsProgetti.isEmpty()) {
 					contestoRepository.rendiProgettiAttivabili(idsProgetti);
 				}
-				/************ ELIMINATA FUNZIONALITA DI INVIO EMAIL PER PROGETTO ATTIVABILE *********/
-//				// Recupero referenti/delegati ente gestore progetti resi attivabili in precedenza 
-//				final List<ReferenteDelegatoEnteGestoreProgettoProjection> referentiODelegatiEnteGestoreProgetti = this.referentiDelegatiEnteGestoreProgettoService
-//						.getEmailReferentiDelegatiEnteGestoreByIdProgetto(idsProgetti);
-//				// Invio email a referenti/delegati ente gestore progetti
-//				referentiODelegatiEnteGestoreProgetti.forEach(referenteDelegatoEnteGestoreProgetto -> {
-//					try {
-//						this.emailService.inviaEmail(referenteDelegatoEnteGestoreProgetto.getEmail(), 
-//								EmailTemplateEnum.GEST_PROGE_PARTNER, 
-//								new String[] { referenteDelegatoEnteGestoreProgetto.getNome(), RuoloUtenteEnum.valueOf(referenteDelegatoEnteGestoreProgetto.getCodiceRuolo()).getValue() });
-//					}catch(Exception ex) {
-//						log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore progetto per progetto con id={}.", referenteDelegatoEnteGestoreProgetto.getIdProgetto());
-//						log.error("{}", ex);
-//					}
-//				});
 				break;
 			case REGP:
 			case DEGP:
 				getProgettoProgramma(idProgetto, idProgramma);
 				
 				if(contestoRepository.verificaUtenteRuoloDEGPREGPPerProgetto(idProgetto, codiceFiscaleUtente, codiceRuoloUtente) == 0) {
-					throw new ContestoException("ERRORE: ruolo non definito per l'utente per il progetto scelto");
+					throw new ContestoException("ERRORE: ruolo non definito per l'utente per il progetto scelto", CodiceErroreEnum.C03);
 				}
 				//se sono REGP/DEGP se STATO_ENTE_GESTORE_PROGETTO è NON ATTIVO --> STATO A ATTIVO
 				//trovo progetto e verifico se STATO_GESTORE_PROGETTO è = NON ATTIVO
@@ -207,8 +181,8 @@ public class ContestoService implements RuoliUtentiConstants{
 					contestoRepository.updateStatoGestoreProgettoInAttivo(idProgetto);
 					try {
 						storicoService.storicizzaEnteGestoreProgetto(progettoService.getProgettoById(idProgetto), StatoEnum.ATTIVO.getValue());
-					} catch (Exception e) {
-						throw new ContestoException("ERRORE: Impossibile storicizzare ente");
+					} catch (Exception ex) {
+						throw new ContestoException("ERRORE: Impossibile storicizzare ente", ex, CodiceErroreEnum.C01);
 					}
 				}
 				contestoRepository.attivaREGPDEGP(idProgetto, codiceFiscaleUtente, codiceRuoloUtente);
@@ -218,7 +192,7 @@ public class ContestoService implements RuoliUtentiConstants{
 				getProgettoProgramma(idProgetto, idProgramma);
 				
 				if(contestoRepository.verificaUtenteRuoloDEPPREPPPerProgetto(idProgetto, codiceFiscaleUtente, codiceRuoloUtente) == 0) {
-					throw new ContestoException("ERRORE: ruolo non definito per l'utente per il progetto scelto");
+					throw new ContestoException("ERRORE: ruolo non definito per l'utente per il progetto scelto", CodiceErroreEnum.C05);
 				}
 				//se sono REPP/DEPP se STATO_ENTE_PARTNER è NON ATTIVO --> STATO A ATTIVO
 				//trovo le coppie progetto - ente all'interno del progetto idProgetto in cui l'utente è REPP o DEPP
@@ -230,8 +204,8 @@ public class ContestoService implements RuoliUtentiConstants{
 						contestoRepository.updateStatoEntePartnerProgettoToAttivo(progettoEnte.getIdProgetto(), progettoEnte.getIdEnte());
 						try {
 							storicoService.storicizzaEntePartner(entePartnerService.findEntePartnerByIdProgettoAndIdEnte(progettoEnte.getIdEnte(), progettoEnte.getIdProgetto()), StatoEnum.ATTIVO.getValue());
-						} catch (Exception e) {
-							throw new ContestoException("ERRORE: Impossibile storicizzare ente");
+						} catch (Exception ex) {
+							throw new ContestoException("ERRORE: Impossibile storicizzare ente", ex, CodiceErroreEnum.C02);
 						}
 					}
 					//a prescindere porto ad ATTIVO lo stato dell'utente come REPP/DEPP per quel progetto ente partner all'interno del programma che ho scelto
@@ -255,14 +229,14 @@ public class ContestoService implements RuoliUtentiConstants{
 	
 	private void getProgettoProgramma(Long idProgetto, Long idProgramma) {
 		if(contestoRepository.getProgettoProgramma(idProgetto, idProgramma) == 0){
-			throw new ContestoException("ERRORE: non esiste la combinazione progetto-programma a sistema");
+			throw new ContestoException("ERRORE: non esiste la combinazione progetto-programma a sistema", CodiceErroreEnum.C06);
 		}
 	}
 
 	@LogMethod
 	@LogExecutionTime
 	public void integraContesto(@Valid IntegraContestoRequest integraContestoRequestRequest) {
-		UtenteEntity utenteDBFtech = this.utenteService.getUtenteByCodiceFiscale(integraContestoRequestRequest.getCodiceFiscale());
+		UtenteEntity utenteDBFtech = this.utenteService.getUtenteByCodiceFiscale(integraContestoRequestRequest.getCfUtenteLoggato());
 		utenteDBFtech.setIntegrazione(Boolean.TRUE);
 		utenteDBFtech.setEmail(integraContestoRequestRequest.getEmail());
 		utenteDBFtech.setTelefono(integraContestoRequestRequest.getTelefono());
@@ -272,7 +246,7 @@ public class ContestoService implements RuoliUtentiConstants{
 		if(integraContestoRequestRequest.getAbilitazioneConsensoTrattamentoDatiPersonali() != Boolean.TRUE) {
 			final String messaggioErrore = "Impossibile richiedere integrazione dati senza"
 					+ " prima abilitare il consenso al trattamento dati personale.";
-			throw new ContestoException(messaggioErrore);
+			throw new ContestoException(messaggioErrore, CodiceErroreEnum.C07);
 		}
 		
 		utenteDBFtech.setAbilitazioneConsensoTrammentoDati(Boolean.TRUE);

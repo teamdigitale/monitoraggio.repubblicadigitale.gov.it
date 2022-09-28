@@ -13,10 +13,6 @@ import it.pa.repdgt.shared.entity.UtenteEntity;
 
 @Repository
 public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> { 
-
-//	@Query(value = "SELECT * FROM UENTE WHERE codiceFiscale = :codiceFiscale", nativeQuery = true)
-//	@Query(value = "SELECT u FROM UtenteEntity u WHERE u.codiceFiscale = :codiceFiscale ")
-//	public UtenteEntity findByCodiceFiscale(String codiceFiscale);
 	
 	public Optional<UtenteEntity> findByCodiceFiscale(String codiceFiscaleUtente);
 	
@@ -56,6 +52,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
                  + "               			OR CONVERT( utente.ID, CHAR ) = :criterioRicerca "
                  + "              			OR UPPER( utente.NOME ) LIKE UPPER( :criterioRicercaLike ) "
                  + "              			OR UPPER( utente.COGNOME ) LIKE UPPER( :criterioRicercaLike ) "
+                 + "                        OR concat(UPPER( utente.COGNOME ), ' ' , UPPER( utente.NOME ))  = UPPER(:criterioRicerca) "
                  + "              			OR UPPER( utente.CODICE_FISCALE ) LIKE UPPER( :criterioRicercaLike ) ) "
 				 + "                    AND ( "
 				 + "						 SELECT distinct u2.id "

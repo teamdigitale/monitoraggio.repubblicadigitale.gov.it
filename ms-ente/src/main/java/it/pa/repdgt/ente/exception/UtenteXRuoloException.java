@@ -7,8 +7,7 @@ import lombok.Getter;
 @Getter
 public class UtenteXRuoloException extends BaseException {
 	public UtenteXRuoloException(String exceptionMessage, CodiceErroreEnum codiceErroreEnum) {
-		super(exceptionMessage);
-		this.codiceErroreEnum = codiceErroreEnum;
+		super(exceptionMessage, codiceErroreEnum);
 	}
 	
 	public UtenteXRuoloException(String exceptionMessage, Exception ex, CodiceErroreEnum codiceErroreEnum) {

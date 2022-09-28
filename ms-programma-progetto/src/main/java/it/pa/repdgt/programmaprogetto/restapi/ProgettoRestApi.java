@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.csv.CSVFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,7 +31,6 @@ import it.pa.repdgt.programmaprogetto.mapper.ProgettoMapper;
 import it.pa.repdgt.programmaprogetto.request.ProgettiParam;
 import it.pa.repdgt.programmaprogetto.request.ProgettoFiltroRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
-import it.pa.repdgt.programmaprogetto.request.SceltaProfiloParam;
 import it.pa.repdgt.programmaprogetto.request.TerminaRequest;
 import it.pa.repdgt.programmaprogetto.resource.CreaProgettoResource;
 import it.pa.repdgt.programmaprogetto.resource.PaginaProgetti;
@@ -41,6 +39,7 @@ import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
 import it.pa.repdgt.programmaprogetto.service.ProgettoService;
 import it.pa.repdgt.programmaprogetto.util.CSVProgettoUtil;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 
 @RestController
 @RequestMapping(path = "/progetto")
@@ -160,8 +159,8 @@ public class ProgettoRestApi {
 	@PostMapping(path = "/download")
 	public ResponseEntity<InputStreamResource> downloadListaCSVProgetti(
 			@RequestBody @Valid @NotNull(message = "Deve essere non null") ProgettiParam sceltaContesto) {
-		String codiceRuolo = sceltaContesto.getCodiceRuolo();
-		String codiceFiscaleUtente = sceltaContesto.getCfUtente();
+		String codiceRuolo = sceltaContesto.getCodiceRuoloUtenteLoggato();
+		String codiceFiscaleUtente = sceltaContesto.getCfUtenteLoggato();
 		Long idProgramma = sceltaContesto.getIdProgramma();
 		Long idProgetto = sceltaContesto.getIdProgetto();
 		ProgettoFiltroRequest filtro = sceltaContesto.getFiltroRequest();

@@ -3,6 +3,7 @@ package it.pa.repdgt.surveymgmt.mapper;
 import org.springframework.stereotype.Component;
 
 import it.pa.repdgt.shared.entity.CittadinoEntity;
+import it.pa.repdgt.shared.util.Utils;
 import it.pa.repdgt.surveymgmt.bean.DettaglioCittadinoBean;
 import it.pa.repdgt.surveymgmt.request.CittadinoRequest;
 
@@ -38,8 +39,8 @@ public class CittadinoMapper {
 		CittadinoEntity cittadinoEntity = new CittadinoEntity();
 		
 		cittadinoEntity.setCodiceFiscale(cittadinoRequest.getCodiceFiscale());
-		cittadinoEntity.setNome(cittadinoRequest.getNome());
-		cittadinoEntity.setCognome(cittadinoRequest.getCognome());
+		cittadinoEntity.setNome(Utils.toCamelCase(cittadinoRequest.getNome()));
+		cittadinoEntity.setCognome(cittadinoRequest.getCognome().toUpperCase());
 		cittadinoEntity.setTipoDocumento(cittadinoRequest.getTipoDocumento());
 		cittadinoEntity.setNumeroDocumento(cittadinoRequest.getNumeroDocumento());
 		cittadinoEntity.setGenere(cittadinoRequest.getGenere());

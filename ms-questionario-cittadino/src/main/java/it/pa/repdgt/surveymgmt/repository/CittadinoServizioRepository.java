@@ -17,6 +17,7 @@ public interface CittadinoServizioRepository extends JpaRepository<CittadinoEnti
 			 + "			 c.nome,"
 			 + "			 c.cognome,"
 			 + "			 c.codice_fiscale as codiceFiscale,"
+			 + "			 c.num_documento as numeroDocumento,"
 			 + "			 q_c.id as idQuestionario,"
 			 + "			 q_c.stato as statoQuestionario"
 			 + " FROM "
@@ -34,6 +35,7 @@ public interface CittadinoServizioRepository extends JpaRepository<CittadinoEnti
 			 + "		    :criterioRicercaServizio IS NULL  "	
 		     + "	   	 OR UPPER(c.NOME) LIKE UPPER( :criterioRicercaServizioLike ) "
 		     + "		 OR UPPER(c.COGNOME) LIKE UPPER( :criterioRicercaServizioLike ) "
+		     + "         OR concat(UPPER( c.COGNOME ), ' ' , UPPER( c.NOME ))  = UPPER(:criterioRicercaServizio) "
 		     + "		 OR UPPER(c.NUM_DOCUMENTO) = UPPER( :criterioRicercaServizio ) "
 		     + "		 OR UPPER(c.codice_fiscale) = UPPER( :criterioRicercaServizio ) "
 	         + "    ) "
@@ -111,17 +113,22 @@ public interface CittadinoServizioRepository extends JpaRepository<CittadinoEnti
 			@Param(value = "criterioRicercaServizioLike") String criterioRicercaServizioLike
 			);
 
-	@Query(value = " SELECT id, "
-			+ "codice_fiscale as codiceFiscale, "
-			+ "nome, "
-			+ "cognome, "
-			+ "email, "
-			+ "telefono "
-			+ "FROM cittadino "
-			+ "WHERE 1=1 "
-			+ "AND ((UPPER(:tipoDocumento) = 'CF' AND UPPER(codice_fiscale) = UPPER(:criterioRicerca))"
-			+ " OR (UPPER(:tipoDocumento) = 'NUM_DOC' AND UPPER(num_documento) LIKE UPPER(:criterioRicerca)))"
-	         ,
+	@Query(value = "    "
+			+ " SELECT  "
+			+ "		id, "
+			+ "		codice_fiscale as codiceFiscale, "
+			+ "		nome,      "
+			+ "		cognome,   "
+			+ "		email,     "
+			+ "		telefono,  "
+			+ "		prefisso,  "
+			+ "		numero_di_cellulare as cellulare,  "
+			+ "		num_documento as numeroDocumento   "
+			+ " FROM          "
+			+ "		cittadino "
+			+ " WHERE 1=1     "
+			+ "		AND ((UPPER(:tipoDocumento) = 'CF' AND UPPER(codice_fiscale) = UPPER(:criterioRicerca))       "
+			+ " 	OR (UPPER(:tipoDocumento) = 'NUM_DOC' AND UPPER(num_documento) LIKE UPPER(:criterioRicerca))) ",
 			 nativeQuery = true)
 	List<GetCittadinoProjection> getAllCittadiniByCodFiscOrNumDoc(@Param(value = "tipoDocumento") String tipoDocumento,
 			@Param(value = "criterioRicerca") String criterioRicerca);

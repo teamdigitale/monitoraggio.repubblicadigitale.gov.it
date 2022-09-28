@@ -13,12 +13,12 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 	
 	@Query(value = ""
 			+ " SELECT "
-			+ "	s.* "
+			+ "		s.* "
 			+ " FROM   "
-			+ "	servizio s "
+			+ "		servizio s "
 			+ " WHERE 1=1 "
-			+ " AND s.id = :idServizio"
-			+ " AND s.id_facilitatore = :idFacilitatore ",
+			+ " 	AND s.id = :idServizio"
+			+ " 	AND s.id_facilitatore = :idFacilitatore ",
 			nativeQuery = true)
 	Optional<ServizioEntity> findByFacilitatoreAndIdServizio(
 			@Param(value = "idFacilitatore") String idFacilitatore,
@@ -26,14 +26,14 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 
 	@Query(value = ""
 			+ " SELECT "
-			+ "	s.* "
+			+ "		s.* "
 			+ " FROM   "
-			+ "	servizio s "
-			+ " INNER JOIN servizio_x_cittadino sxc "
-			+ " ON s.id = sxc.id_servizio"
+			+ "		servizio s "
+			+ " 	INNER JOIN servizio_x_cittadino sxc "
+			+ " 	ON s.id = sxc.id_servizio"
 			+ " WHERE 1=1 "
-			+ " AND sxc.id_servizio <> :idServizio "
-			+ " AND sxc.id_cittadino = :idCittadino "
+			+ " 	AND sxc.id_servizio <> :idServizio "
+			+ " 	AND sxc.id_cittadino = :idCittadino "
 			+ " ORDER BY sxc.data_ora_creazione DESC"
 			+ " LIMIT 1",
 			nativeQuery = true)
@@ -47,14 +47,16 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 			 + "	DISTINCT s.* "
 			 + " FROM            "
 			 + "	servizio s   "
+			 + "	INNER JOIN tipologia_servizio ts "
+			 + "	ON ts.servizio_id = s.id"
 			 + " WHERE 1=1 "
 			 + "    AND (  "
 			 + "		    :criterioRicercaServizio IS NULL   "	
 		     + "	 	 OR s.ID LIKE :criterioRicercaServizio "
 		     + "	   	 OR UPPER(s.NOME) LIKE UPPER( :criterioRicercaServizio ) "
 	         + "    ) "
-	         + "    AND ( COALESCE( :tipologieServizi )    IS NULL OR s.tipologia_servizio IN ( :tipologieServizi ) ) "
-	         + "    AND ( COALESCE( :statiServizioFiltro ) IS NULL OR s.stato IN ( :statiServizioFiltro ) )           "
+	         + "    AND ( COALESCE( :tipologieServizi )    IS NULL OR ts.titolo IN ( :tipologieServizi ) )    "
+	         + "    AND ( COALESCE( :statiServizioFiltro ) IS NULL OR s.stato   IN ( :statiServizioFiltro ) ) "
 	         + " ",
 			 nativeQuery = true)
 	List<ServizioEntity> findAllServiziByFiltro(
@@ -72,14 +74,16 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 			 + "	ON progetto.ID = s.ID_PROGETTO "
 			 + "	INNER JOIN programma programma "
 			 + "	ON programma.ID = progetto.ID_PROGRAMMA "
+			 + "	INNER JOIN tipologia_servizio ts "
+			 + "	ON ts.servizio_id = s.id"
 			 + " WHERE 1=1 "
 			 + "    AND (  "
 			 + "		    :criterioRicercaServizio IS NULL   "	
 		     + "	 	 OR s.ID LIKE :criterioRicercaServizio "
 		     + "	   	 OR UPPER(s.NOME) LIKE UPPER( :criterioRicercaServizio ) "
 	         + "    ) "
-	         + "    AND ( COALESCE( :tipologieServizi )    IS NULL OR s.tipologia_servizio IN ( :tipologieServizi ) ) "
-	         + "    AND ( COALESCE( :statiServizioFiltro ) IS NULL OR s.stato IN ( :statiServizioFiltro ) )           "
+	         + "    AND ( COALESCE( :tipologieServizi )    IS NULL OR ts.titolo IN ( :tipologieServizi ) )    "
+	         + "    AND ( COALESCE( :statiServizioFiltro ) IS NULL OR s.stato   IN ( :statiServizioFiltro ) ) "
 	         + "    AND (  programma.POLICY = 'SCD' ) "
 	         + " ",
 			 nativeQuery = true)
@@ -100,6 +104,8 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 			 + "	ON progetto.ID = s.ID_PROGETTO "
 			 + "	INNER JOIN programma programma "
 			 + "	ON programma.ID = progetto.ID_PROGRAMMA"
+			 + "	INNER JOIN tipologia_servizio ts "
+			 + "	ON ts.servizio_id = s.id"
 			 + " WHERE 1=1 "
 			 + "    AND ( UPPER( espf.ID_FACILITATORE ) = UPPER( :codiceFiscaleUtente ) ) "
 			 + "    AND (  "
@@ -109,16 +115,16 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 	         + "    ) "
 	         + "    AND ( COALESCE( :idsProgrammaFiltro  ) IS NULL OR programma.ID IN ( :idsProgrammaFiltro ) )       "
 	         + "    AND ( COALESCE( :idsProgettoFiltro   ) IS NULL OR progetto.ID  IN ( :idsProgettoFiltro  ) )       "
-	         + "    AND ( COALESCE( :tipologieServizi )    IS NULL OR s.tipologia_servizio IN ( :tipologieServizi ) ) "
-	         + "    AND ( COALESCE( :statiServizioFiltro ) IS NULL OR s.stato IN ( :statiServizioFiltro ) )           "
+	         + "    AND ( COALESCE( :tipologieServizi )    IS NULL OR ts.titolo    IN ( :tipologieServizi ) )         "
+	         + "    AND ( COALESCE( :statiServizioFiltro ) IS NULL OR s.stato      IN ( :statiServizioFiltro ) )      "
 	         + " ",
 			 nativeQuery = true)
 	List<ServizioEntity> findAllServiziByFacilitatoreOVolontarioAndFiltro(
 			@Param(value = "criterioRicercaServizio") String criterioRicercaServizio, 
 			@Param(value = "idsProgrammaFiltro")      List<String> idsProgrammaFiltro, 
 			@Param(value = "idsProgettoFiltro")       List<String> idsProgettoFiltro, 
-			@Param(value = "statiServizioFiltro")     List<String> statiServizioFiltro,
 			@Param(value = "tipologieServizi")        List<String> tipologieServizi,
+			@Param(value = "statiServizioFiltro")     List<String> statiServizioFiltro,
 			@Param(value = "codiceFiscaleUtente")     String codiceFiscaleUtente
 		);
 
@@ -134,15 +140,17 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 			 + "	ON programma.ID = progetto.ID_PROGRAMMA "
 			 + "	INNER JOIN referente_delegati_gestore_programma rdgp "
 			 + "	ON rdgp.ID_PROGRAMMA = programma.ID AND rdgp.ID_ENTE = programma.ID_ENTE_GESTORE_PROGRAMMA "
+			 + "	INNER JOIN tipologia_servizio ts "
+			 + "	ON ts.servizio_id = s.id"
 			 + " WHERE 1=1 "
 			 + "    AND (  "
 			 + "		    :criterioRicercaServizio IS NULL   "	
 		     + "	 	 OR s.ID LIKE :criterioRicercaServizio "
 		     + "	   	 OR UPPER(s.NOME) LIKE UPPER( :criterioRicercaServizio ) "
 	         + "    ) "
-	         + "    AND ( COALESCE( :idsProgrammaFiltro  ) IS NULL OR programma.ID IN ( :idsProgrammaFiltro ) )       "
-	         + "    AND ( COALESCE( :tipologieServizi )    IS NULL OR s.tipologia_servizio IN ( :tipologieServizi ) ) "
-	         + "    AND ( COALESCE( :statiServizioFiltro ) IS NULL OR s.stato IN ( :statiServizioFiltro ) )           "
+	         + "    AND ( COALESCE( :idsProgrammaFiltro  ) IS NULL OR programma.ID IN ( :idsProgrammaFiltro ) )  "
+	         + "    AND ( COALESCE( :tipologieServizi )    IS NULL OR ts.titolo    IN ( :tipologieServizi ) )    "
+	         + "    AND ( COALESCE( :statiServizioFiltro ) IS NULL OR s.stato      IN ( :statiServizioFiltro ) ) "
 	         + " ",
 			 nativeQuery = true)
 	List<ServizioEntity> findAllServiziByReferenteODelegatoGestoreProgrammaAndFiltro(
@@ -163,16 +171,18 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 			 + "	ON programma.ID = progetto.ID_PROGRAMMA "
 			 + "	INNER JOIN referente_delegati_gestore_progetto rdgp "
 			 + "	ON rdgp.ID_PROGETTO = progetto.ID AND rdgp.ID_ENTE = progetto.ID_ENTE_GESTORE_PROGETTO "
+			 + "	INNER JOIN tipologia_servizio ts "
+			 + "	ON ts.servizio_id = s.id"
 			 + " WHERE 1=1 "
 			 + "    AND (  "
 			 + "		    :criterioRicercaServizio IS NULL   "	
 		     + "	 	 OR s.ID LIKE :criterioRicercaServizio "
 		     + "	   	 OR UPPER(s.NOME) LIKE UPPER( :criterioRicercaServizio ) "
 	         + "    ) "
-	         + "    AND ( COALESCE( :idsProgrammaFiltro  ) IS NULL OR programma.ID IN ( :idsProgrammaFiltro ) )       "
-	         + "    AND ( COALESCE( :idsProgettoFiltro   ) IS NULL OR progetto.ID  IN ( :idsProgettoFiltro  ) )       "
-	         + "    AND ( COALESCE( :tipologieServizi )    IS NULL OR s.tipologia_servizio IN ( :tipologieServizi ) ) "
-	         + "    AND ( COALESCE( :statiServizioFiltro ) IS NULL OR s.stato IN ( :statiServizioFiltro ) )           "
+	         + "    AND ( COALESCE( :idsProgrammaFiltro  ) IS NULL OR programma.ID IN ( :idsProgrammaFiltro ) )  "
+	         + "    AND ( COALESCE( :idsProgettoFiltro   ) IS NULL OR progetto.ID  IN ( :idsProgettoFiltro  ) )  "
+	         + "    AND ( COALESCE( :tipologieServizi )    IS NULL OR ts.titolo    IN ( :tipologieServizi ) )    "
+	         + "    AND ( COALESCE( :statiServizioFiltro ) IS NULL OR s.stato      IN ( :statiServizioFiltro ) ) "
 	         + " ",
 			 nativeQuery = true)
 	List<ServizioEntity> findAllServiziByReferenteODelegatoGestoreProgettoAndFiltro(
@@ -194,16 +204,18 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 			 + "	ON programma.ID = progetto.ID_PROGRAMMA    "
 			 + "	INNER JOIN referente_delegati_partner rdgp "
 			 + "	ON rdgp.ID_PROGETTO = progetto.ID"
+			 + "	INNER JOIN tipologia_servizio ts "
+			 + "	ON ts.servizio_id = s.id"
 			 + " WHERE 1=1 "
 			 + "    AND (  "
 			 + "		    :criterioRicercaServizio IS NULL   "	
 		     + "	 	 OR s.ID LIKE :criterioRicercaServizio "
 		     + "	   	 OR UPPER(s.NOME) LIKE UPPER( :criterioRicercaServizio ) "
 	         + "    ) "
-	         + "    AND ( COALESCE( :idsProgrammaFiltro  ) IS NULL OR programma.ID IN ( :idsProgrammaFiltro ) )       "
-	         + "    AND ( COALESCE( :idsProgettoFiltro   ) IS NULL OR progetto.ID  IN ( :idsProgettoFiltro  ) )       "
-	         + "    AND ( COALESCE( :tipologieServizi )    IS NULL OR s.tipologia_servizio IN ( :tipologieServizi ) ) "
-	         + "    AND ( COALESCE( :statiServizioFiltro ) IS NULL OR s.stato IN ( :statiServizioFiltro ) )           "
+	         + "    AND ( COALESCE( :idsProgrammaFiltro  ) IS NULL OR programma.ID IN ( :idsProgrammaFiltro ) )  "
+	         + "    AND ( COALESCE( :idsProgettoFiltro   ) IS NULL OR progetto.ID  IN ( :idsProgettoFiltro  ) )  "
+	         + "    AND ( COALESCE( :tipologieServizi )    IS NULL OR ts.titolo    IN ( :tipologieServizi ) )    "
+	         + "    AND ( COALESCE( :statiServizioFiltro ) IS NULL OR s.stato      IN ( :statiServizioFiltro ) ) "
 	         + " ",
 			 nativeQuery = true)
 	List<ServizioEntity> findAllServiziByReferenteODelegatoEntePartnerAndFiltro(
@@ -213,5 +225,39 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 			@Param(value = "tipologieServizi")        List<String> tipologieServizi,
 			@Param(value = "statiServizioFiltro")     List<String> statiServizioFiltro
 		);
+	
 
+
+	@Query(value = " "
+			 + " SELECT          "
+			 + "	CONCAT(u.cognome, ' ', u.nome) as nominativoFacilitatore "
+			 + " FROM            "
+			 + "	servizio s   "
+			 + "	INNER JOIN utente u "
+			 + "	ON u.codice_fiscale = s.id_facilitatore      "
+			 + " WHERE 1=1 "
+	         + "    AND s.id_facilitatore = :idFacilitatore "
+	         + "	AND s.id = :idServizio"
+	         + " ",
+			 nativeQuery = true)
+	String findNominativoFacilitatoreByIdFacilitatoreAndIdServizio(
+			@Param(value="idFacilitatore") String idFacilitatore,
+			@Param(value="idServizio") Long idServizio
+		);
+
+	Optional<ServizioEntity> findByNome(String nomeServizio);
+	
+	@Query(value = " "
+			 + " SELECT          "
+			 + "	s.*"
+			 + " FROM            "
+			 + "	servizio s   "
+			 + " WHERE 1=1 "
+	         + "    AND s.id <> :idServizio "
+	         + "	AND s.nome = :nomeServizio"
+	         + " ",
+			 nativeQuery = true)
+	Optional<ServizioEntity> findByNomeUpdate(@Param(value="nomeServizio")String nomeServizio, 
+			@Param(value="idServizio") Long idServizio);
+	
 }

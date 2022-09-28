@@ -8,7 +8,6 @@ import lombok.Getter;
 @Getter
 public class RuoloException extends BaseException {
 	public RuoloException(String exceptionMessage, CodiceErroreEnum codiceErroreEnum) {
-		super(exceptionMessage);
-		this.codiceErroreEnum = codiceErroreEnum;
+		super(exceptionMessage, codiceErroreEnum);
 	}
 }

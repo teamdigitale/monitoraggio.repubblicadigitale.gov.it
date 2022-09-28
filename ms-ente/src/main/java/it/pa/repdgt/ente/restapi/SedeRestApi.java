@@ -39,7 +39,7 @@ public class SedeRestApi {
 	@Autowired
 	private EnteSedeProgettoFacilitatoreService enteSedeProgettoFacilitatoreService;
 	
-	// TOUCH POINT - 2.2.13B - Cerca sede (ricerca per nome della sede)
+	// Cerca sede (ricerca per nome della sede)
 	@GetMapping(path = "cerca/{nomeSede}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<SedeResource> cercaSedeByNomeSede(
@@ -48,7 +48,7 @@ public class SedeRestApi {
 		return this.sedeMapper.toResourceFrom(sedi);
 	}
 	
-	// TOUCH POINT - 3.6A - Dati relativi alla sede (indirizzi e fasce orarie)
+	// Dati relativi alla sede (indirizzi e fasce orarie)
 	@GetMapping(path = "/light/{idSede}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaSedeBean getSchedaAnagraficaSede (
@@ -56,14 +56,14 @@ public class SedeRestApi {
 		return this.sedeService.getSchedaSedeByIdSede(idSede);
 	}
 	
-	// TOUCH POINT - 2.2.13A - Crea sede
+	// Crea sede
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public CreaSedeResource creaNuovaSede(@RequestBody @Valid NuovaSedeRequest nuovaSedeRequest) {
 		return new CreaSedeResource(this.sedeService.creaNuovaSede(nuovaSedeRequest).getId());
 	}
 	
-	//TOUCH POINT - 2.2.13AX - Aggiorna sede
+	// Aggiorna sede
 	@PutMapping(path = "/aggiorna/{idSede}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void aggiornaSede(@PathVariable(value = "idSede") Long idSede,
@@ -71,7 +71,7 @@ public class SedeRestApi {
 		this.sedeService.aggiornaSede(idSede, nuovaSedeRequest);
 	}
 	
-	// TOUCH POINT - 2.2.13 C - Associazione sede, ente, progetto
+	// Associazione sede, ente, progetto
 	@GetMapping(path = "/associa/ente/{idEnte}/sede/{idSede}/progetto/{idProgetto}/ruoloEnte/{ruoloEnte}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void associaEnteSedeProgetto(
@@ -82,7 +82,7 @@ public class SedeRestApi {
 		this.enteSedeProgettoService.associaEnteSedeProgetto(idSede, idEnte, ruoloEnte, idProgetto);
 	}
 	
-	// TOUCH POINT - 2.2.13 D - Cancellazione o terminazione associazione sede, ente, progetto a seconda dello stato della sede
+	// Cancellazione o terminazione associazione sede, ente, progetto a seconda dello stato della sede
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	@DeleteMapping(path = "/cancellaOTerminaAssociazione/ente/{idEnte}/sede/{idSede}/progetto/{idProgetto}")
 	public void cancellaOTerminaAssociazioneEnteSedeProgetto(
@@ -92,7 +92,7 @@ public class SedeRestApi {
 		this.enteSedeProgettoService.cancellaOTerminaAssociazioneEnteSedeProgetto(idEnte, idSede, idProgetto);
 	}
 	
-	// TOUCH POINT - 2.2.14E - Associa facilitatore a ente, sede, progetto
+	// Associa facilitatore a ente, sede, progetto
 	@PostMapping(path = "/associa/facilitatore")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void associaFacilitatoreAEnteSedeProgetto (
@@ -100,7 +100,7 @@ public class SedeRestApi {
 		this.enteSedeProgettoFacilitatoreService.associaFacilitatoreAEnteSedeProgetto(enteSedeProgettoFacilitatoreRequest);
 	}
 	
-	// TOUCH POINT - 2.2.14EX - Cancellazione o terminazione Associazione facilitatore a ente, sede, progetto a seconda dello stato del facilitatore
+	// Cancellazione o terminazione Associazione facilitatore a ente, sede, progetto a seconda dello stato del facilitatore
 	@PostMapping(path = "cancellaOTerminaAssociazione/facilitatore")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void cancellaOTerminaAssociazioneFacilitatoreAEnteSedeProgetto (
@@ -108,7 +108,7 @@ public class SedeRestApi {
 		this.enteSedeProgettoFacilitatoreService.cancellaOTerminaAssociazioneFacilitatoreAEnteSedeProgetto(enteSedeProgettoFacilitatoreRequest);
 	}
 	
-	// TOUCH POINT - 3.6 - dettaglio sede
+	// Dettaglio sede
 	@GetMapping(path = "/{idProgetto}/{idEnte}/{idSede}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaSedeBean getSchedaSede (

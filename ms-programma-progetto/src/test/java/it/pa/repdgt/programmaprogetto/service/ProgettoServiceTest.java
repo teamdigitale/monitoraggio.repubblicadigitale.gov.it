@@ -198,13 +198,13 @@ public class ProgettoServiceTest {
 		idsProgrammi.add("2");
 		progettoFiltro.setIdsProgrammi(idsProgrammi);
 		progParam = new ProgrammiParam();
-		progParam.setCfUtente("UIHPLW87R49F205X");
-		progParam.setCodiceRuolo("DTD");
+		progParam.setCfUtenteLoggato("UIHPLW87R49F205X");
+		progParam.setCodiceRuoloUtenteLoggato("DTD");
 		progParam.setFiltroRequest(filtro);
 		progParam.setIdProgramma(1L);
 		progettiParam = new ProgettiParam();
-		progettiParam.setCfUtente("UIHPLW87R49F205X");
-		progettiParam.setCodiceRuolo("DTD");
+		progettiParam.setCfUtenteLoggato("UIHPLW87R49F205X");
+		progettiParam.setCodiceRuoloUtenteLoggato("DTD");
 		progettiParam.setFiltroRequest(progettoFiltro);
 		progettiParam.setIdProgramma(1L);
 		progettiParam.setIdProgetto(1L);
@@ -257,7 +257,6 @@ public class ProgettoServiceTest {
 	//test getAllProgettiPaginati per utenti DTD
 	@Test
 	public void getAllProgettiPaginatiDTDTest() {
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
 		when(progettoRepository.findAllPaginati(
 				progettiParam.getFiltroRequest().getCriterioRicerca(),
 				"%" + progettiParam.getFiltroRequest().getCriterioRicerca() + "%",
@@ -284,8 +283,7 @@ public class ProgettoServiceTest {
 	public void getAllProgettiPaginatiDSCUTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("DSCU");
-		progettiParam.setCodiceRuolo("DSCU");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
+		progettiParam.setCodiceRuoloUtenteLoggato("DSCU");
 		when(progettoRepository.findByPolicyPaginati(
 				PolicyEnum.SCD.toString(),
 				progettiParam.getFiltroRequest().getCriterioRicerca(),
@@ -312,8 +310,7 @@ public class ProgettoServiceTest {
 	public void getAllProgettiPaginatiREGTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("REG");
-		progettiParam.setCodiceRuolo("REG");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
+		progettiParam.setCodiceRuoloUtenteLoggato("REG");
 		when(progettoRepository.findProgettiPerReferenteDelegatoGestoreProgrammaPaginati(
 				progettiParam.getIdProgramma(),
 				progettiParam.getFiltroRequest().getCriterioRicerca(),
@@ -340,8 +337,7 @@ public class ProgettoServiceTest {
 	public void getAllProgettiPaginatiREGPTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("REGP");
-		progettiParam.setCodiceRuolo("REGP");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
+		progettiParam.setCodiceRuoloUtenteLoggato("REGP");
 		when(progettoRepository.findById(progettiParam.getIdProgetto())).thenReturn(progettoOptional);
 		PaginaProgetti paginaProgetti = this.progettoService.getAllProgettiPaginati(progettiParam, currPage, pageSize, progettoFiltro);
 		assertThat(paginaProgetti.getPaginaProgetti().get(0).getId()).isEqualTo(progetto1.getId());
@@ -353,8 +349,7 @@ public class ProgettoServiceTest {
 	public void getAllProgettiPaginatiRuoloNonPredefinitoTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("RUOLONONPREDEFINITO");
-		progettiParam.setCodiceRuolo("RUOLONONPREDEFINITO");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
+		progettiParam.setCodiceRuoloUtenteLoggato("RUOLONONPREDEFINITO");
 		when(progettoRepository.findAllPaginati(
 				progettiParam.getFiltroRequest().getCriterioRicerca(),
 				"%" + progettiParam.getFiltroRequest().getCriterioRicerca() + "%",
@@ -378,14 +373,7 @@ public class ProgettoServiceTest {
 	
 	@Test
 	public void getAllProgettiPaginatiKOTest() {
-		//Test KO per ruolo non definito per l'utente
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(new ArrayList<>());
-		Assertions.assertThrows(ProgettoException.class, () -> progettoService.getAllProgettiPaginati(progettiParam, currPage, pageSize, progettoFiltro));
-		assertThatExceptionOfType(ProgettoException.class);
-		verify(progettoRepository, times(0)).findAll(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(), progettoFiltro.getIdsProgrammi(), progettoFiltro.getStati());
-	
 		//Test KO per pagina non trovata
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progParam.getCfUtente())).thenReturn(listaRuoli);
 		when(progettoRepository.findAllPaginati(
 				progettiParam.getFiltroRequest().getCriterioRicerca(),
 				"%" + progettiParam.getFiltroRequest().getCriterioRicerca() + "%",
@@ -408,8 +396,7 @@ public class ProgettoServiceTest {
 		//Test KO per progetto non trovato
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("REGP");
-		progettiParam.setCodiceRuolo("REGP");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
+		progettiParam.setCodiceRuoloUtenteLoggato("REGP");
 		Assertions.assertThrows(ResourceNotFoundException.class, () -> progettoService.getAllProgettiPaginati(progettiParam, currPage, pageSize, progettoFiltro));
 		assertThatExceptionOfType(ResourceNotFoundException.class);
 	}
@@ -440,8 +427,7 @@ public class ProgettoServiceTest {
 	// test getAllStatiDropdown per utenti DTD
 	@Test
 	public void getAllStatiDropdownDTDTest() {
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
-		when(progettoService.getAllStatiByRuoloAndIdProgramma(progettiParam.getCodiceRuolo(), progettiParam.getCfUtente(), progettiParam.getIdProgramma(), progettiParam.getIdProgetto(), progettoFiltro)).thenReturn(listaStati);
+		when(progettoService.getAllStatiByRuoloAndIdProgramma(progettiParam.getCodiceRuoloUtenteLoggato(), progettiParam.getCfUtenteLoggato(), progettiParam.getIdProgramma(), progettiParam.getIdProgetto(), progettoFiltro)).thenReturn(listaStati);
 		progettoService.getAllStatiDropdown(progettiParam, progettoFiltro);
 		assertThat(listaStati.size()).isEqualTo(2);
 		verify(progettoRepository, times(1)).findAllStati(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(),  progettoFiltro.getIdsProgrammi(), progettoFiltro.getStati());
@@ -452,9 +438,8 @@ public class ProgettoServiceTest {
 	public void getAllStatiDropdownDSCUTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("DSCU");
-		progettiParam.setCodiceRuolo("DSCU");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
-		when(progettoService.getAllStatiByRuoloAndIdProgramma(progettiParam.getCodiceRuolo(), progettiParam.getCfUtente(), progettiParam.getIdProgramma(), progettiParam.getIdProgetto(), progettoFiltro)).thenReturn(listaStati);
+		progettiParam.setCodiceRuoloUtenteLoggato("DSCU");
+		when(progettoService.getAllStatiByRuoloAndIdProgramma(progettiParam.getCodiceRuoloUtenteLoggato(), progettiParam.getCfUtenteLoggato(), progettiParam.getIdProgramma(), progettiParam.getIdProgetto(), progettoFiltro)).thenReturn(listaStati);
 		progettoService.getAllStatiDropdown(progettiParam, progettoFiltro);
 		assertThat(listaStati.size()).isEqualTo(2);
 		verify(progettoRepository, times(1)).findStatiByPolicy(PolicyEnum.SCD.toString(), progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getIdsProgrammi(), progettoFiltro.getStati());
@@ -465,10 +450,9 @@ public class ProgettoServiceTest {
 	public void getAllStatiDropdownREGTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("REG");
-		progettiParam.setCodiceRuolo("REG");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
+		progettiParam.setCodiceRuoloUtenteLoggato("REG");
 		when(progettoService.getStatiPerReferenteDelegatoGestoreProgramma(progettiParam.getIdProgramma(), progettoFiltro)).thenReturn(listaStati);
-		when(progettoService.getAllStatiByRuoloAndIdProgramma(progettiParam.getCodiceRuolo(), progettiParam.getCfUtente(), progettiParam.getIdProgramma(), progettiParam.getIdProgetto(), progettoFiltro)).thenReturn(listaStati);
+		when(progettoService.getAllStatiByRuoloAndIdProgramma(progettiParam.getCodiceRuoloUtenteLoggato(), progettiParam.getCfUtenteLoggato(), progettiParam.getIdProgramma(), progettiParam.getIdProgetto(), progettoFiltro)).thenReturn(listaStati);
 		progettoService.getAllStatiDropdown(progettiParam, progettoFiltro);
 		assertThat(listaStati.size()).isEqualTo(2);
 		verify(progettoRepository, times(1)).findStatiPerReferenteDelegatoGestoreProgramma(progettiParam.getIdProgramma(), progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(),  progettoFiltro.getIdsProgrammi(), progettoFiltro.getStati());
@@ -479,8 +463,7 @@ public class ProgettoServiceTest {
 	public void getAllStatiDropdownREGPTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("REGP");
-		progettiParam.setCodiceRuolo("REGP");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
+		progettiParam.setCodiceRuoloUtenteLoggato("REGP");
 		when(progettoRepository.findById(progettiParam.getIdProgramma())).thenReturn(progettoOptional);
 		progettoService.getAllStatiDropdown(progettiParam, progettoFiltro);
 		assertThat(progettoOptional.get().getNome()).isEqualTo(progetto1.getNome());
@@ -492,8 +475,7 @@ public class ProgettoServiceTest {
 	public void getAllStatiDropdownREPPTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("REPP");
-		progettiParam.setCodiceRuolo("REPP");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
+		progettiParam.setCodiceRuoloUtenteLoggato("REPP");
 		when(progettoRepository.findById(progettiParam.getIdProgramma())).thenReturn(progettoOptional);
 		progettoService.getAllStatiDropdown(progettiParam, progettoFiltro);
 		assertThat(progettoOptional.get().getNome()).isEqualTo(progetto1.getNome());
@@ -505,9 +487,8 @@ public class ProgettoServiceTest {
 	public void getAllStatiDropdownRuoloNonPredefinitoTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("RUOLONONPREDEFINITO");
-		progettiParam.setCodiceRuolo("RUOLONONPREDEFINITO");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
-		when(progettoService.getAllStatiByRuoloAndIdProgramma(progettiParam.getCodiceRuolo(), progettiParam.getCfUtente(), progettiParam.getIdProgramma(), progettiParam.getIdProgetto(), progettoFiltro)).thenReturn(listaStati);
+		progettiParam.setCodiceRuoloUtenteLoggato("RUOLONONPREDEFINITO");
+		when(progettoService.getAllStatiByRuoloAndIdProgramma(progettiParam.getCodiceRuoloUtenteLoggato(), progettiParam.getCfUtenteLoggato(), progettiParam.getIdProgramma(), progettiParam.getIdProgetto(), progettoFiltro)).thenReturn(listaStati);
 		progettoService.getAllStatiDropdown(progettiParam, progettoFiltro);
 		assertThat(listaStati.size()).isEqualTo(2);
 		verify(progettoRepository, times(1)).findAllStati(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(),  progettoFiltro.getIdsProgrammi(), progettoFiltro.getStati());
@@ -515,17 +496,10 @@ public class ProgettoServiceTest {
 	
 	@Test
 	public void getAllStatiDropdownKOTest() {
-		//test KO per ruolo non definito per l'utente
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(new ArrayList<>());
-		Assertions.assertThrows(ProgettoException.class, () -> progettoService.getAllStatiDropdown(progettiParam, progettoFiltro));
-		assertThatExceptionOfType(ProgettoException.class);
-		verify(progettoRepository, times(0)).findAllStati(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(),  progettoFiltro.getIdsProgrammi(), progettoFiltro.getStati());
-		
 		//test KO per progetto non trovato
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("REGP");
-		progettiParam.setCodiceRuolo("REGP");
-		when(ruoloService.getCodiceRuoliByCodiceFiscaleUtente(progettiParam.getCfUtente())).thenReturn(listaRuoli);
+		progettiParam.setCodiceRuoloUtenteLoggato("REGP");
 		when(progettoRepository.findById(progettiParam.getIdProgramma())).thenReturn(Optional.empty());
 		Assertions.assertThrows(ResourceNotFoundException.class, () -> progettoService.getAllStatiDropdown(progettiParam, progettoFiltro));
 		assertThatExceptionOfType(ResourceNotFoundException.class);

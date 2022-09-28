@@ -1,15 +1,19 @@
 package it.pa.repdgt.gestioneutente.exception;
 
-import java.io.Serializable;
+import it.pa.repdgt.shared.exception.BaseException;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import lombok.Getter;
 
-public class UtenteXRuoloException extends RuntimeException implements Serializable {
+@Getter
+public class UtenteXRuoloException extends BaseException {
 	private static final long serialVersionUID = -2408925357949957553L;
 
-	public UtenteXRuoloException(String exceptionMessage) {
-		super(exceptionMessage);
+	public UtenteXRuoloException(String exceptionMessage,CodiceErroreEnum codiceErroreEnum) {
+		super(exceptionMessage, codiceErroreEnum);
 	}
 	
-	public UtenteXRuoloException(String exceptionMessage, Exception ex) {
-		super (exceptionMessage, ex);
+	public UtenteXRuoloException(String exceptionMessage, Exception ex, CodiceErroreEnum codiceErroreEnum) {
+		super(exceptionMessage, ex);
+		this.codiceErroreEnum = codiceErroreEnum;
 	}
 }
