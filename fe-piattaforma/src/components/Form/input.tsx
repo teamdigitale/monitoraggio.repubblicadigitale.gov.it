@@ -13,19 +13,17 @@ const blackList = [
   'enumLevel2',
   'field',
   'flag',
-  'formDisabled',
-  'keyService',
   'maximum',
   'minimum',
   'onInputBlur',
   'onInputChange',
   'placeholder',
   'preset',
-  'privacy',
   'relatedFrom',
   'relatedTo',
   'touched',
   'withLabel',
+  'keyBE'
 ];
 
 /**

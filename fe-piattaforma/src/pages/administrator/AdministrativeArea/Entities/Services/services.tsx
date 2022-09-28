@@ -29,6 +29,7 @@ import {
   selectEntityPagination,
   setEntityFilters,
   setEntityPagination,
+  resetServiceDetails,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import ManageServices from '../modals/manageService';
 import { formTypes } from '../utils';
@@ -78,8 +79,19 @@ const Services = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
+    dispatch(resetServiceDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const getTypeService = (typeService: string[]) => {
+    if (typeService?.length === 1) return typeService?.[0];
+    else
+      return (
+        <p>
+          <strong> {typeService?.length} </strong> tipologie
+        </p>
+      );
+  };
 
   const updateTableValues = () => {
     const table = newTable(
@@ -87,9 +99,10 @@ const Services = () => {
       servicesList.map((td) => {
         return {
           ...td,
-          nome: td.nome,
-          data: formatDate(td.data, 'shortDate') || '-',
-          status: <StatusChip status={td.stato} rowTableId={td.id} />,
+          nome: td?.nome,
+          data: td?.data || formatDate(Number(td?.data), 'snakeDate') || '-',
+          stato: <StatusChip status={td?.stato} rowTableId={td?.id} />,
+          tipologiaServizio: getTypeService(td?.tipologiaServizio),
         };
       })
     );
@@ -186,7 +199,7 @@ const Services = () => {
     onHandleSearch: handleOnSearch,
     placeholder: "Inserisci l'identificativo o il nome del servizio",
     isClearable: true,
-    title: 'Cerca programma',
+    title: 'Cerca servzio',
   };
 
   const onActionClick: CRUDActionsI = hasUserPermission(['view.card.serv'])
@@ -232,16 +245,17 @@ const Services = () => {
       resetFilterDropdownSelected={(filterKey: string) =>
         setFilterDropdownSelected(filterKey)
       }
+      tooltip
+      tooltiptext={searchInformation.placeholder}
     >
       <div>
         {servicesList?.length && tableValues?.values?.length ? (
           <>
             <Table
               {...tableValues}
-              id='table'
+              id='table-services'
               onActionClick={onActionClick}
               onCellClick={(field, row) => console.log(field, row)}
-              //onRowClick={row => console.log(row)}
               withActions
               totalCounter={pagination?.totalElements}
             />
@@ -258,7 +272,7 @@ const Services = () => {
           </>
         ) : (
           <EmptySection
-            title='Non ci sono servizi'
+            title='Non sono presenti servizi'
             subtitle='associati al tuo ruolo'
             icon='it-note'
             withIcon

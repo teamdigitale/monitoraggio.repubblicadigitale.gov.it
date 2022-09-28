@@ -15,12 +15,12 @@
 
 .form-control {
   &:disabled {
-    border-bottom: 1px solid #797c80;
+    border-bottom: 1px solid #797c80 !important;
     background: #e6e9f2;
   }
   &[type='text']:disabled,
   &[type='date']:disabled {
-    border-bottom: 1px solid #797c80;
+    border-bottom: 1px solid #797c80 !important;
   }
 
   &[type='text'],
@@ -39,7 +39,7 @@
 
 .bootstrap-select {
   &__control {
-    border-bottom: 1px solid #0073e5 !important;
+    border-bottom: 2px solid #0073e5 !important;
   }
 
   &__control--menu-is-open,
@@ -49,6 +49,52 @@
 
   &__menu {
     margin-top: 0 !important;
+  }
+
+  &__control {
+    &--is-disabled {
+      border-bottom: 1px solid #797c80 !important;
+      background: #e6e9f2 !important;
+    }
+  }
+  &__single-value {
+    &--is-disabled {
+      color: #17324d !important;
+    }
+  }
+}
+
+.form-service-dynamic {
+  &__control {
+    &--is-disabled {
+      border-bottom: 1px solid #797c80 !important;
+      background: #e6e9f2 !important;
+    }
+  }
+  &__multi-value {
+    margin: 2px 2px 14px !important;
+    &--is-disabled {
+      border: 1px outset #e6e9f2 !important;
+      background: #e6e9f2 !important;
+    }
+  }
+}
+
+.multiple-select {
+  &__control {
+    &--is-disabled {
+      border-bottom: 1px solid #797c80 !important;
+      background: #e6e9f2 !important;
+    }
+  }
+  &__multi-value {
+    &__label {
+      background: #e6e9f2 !important;
+      border: 1px outset #e6e9f2 !important;
+    }
+    &__remove {
+      background: #e6e9f2 !important;
+    }
   }
 }
 
@@ -85,4 +131,9 @@
 
 .toggles label input[type='checkbox'][disabled] + .lever:after {
   background-color: #e6e9f2;
+}
+
+.rating-label {
+  font-size: 14px;
+  font-weight: 600;
 }

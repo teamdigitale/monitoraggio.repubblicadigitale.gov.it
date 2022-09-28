@@ -1,14 +1,14 @@
-import clsx from 'clsx';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, Select, SelectMultiple } from '../../../components';
+import CheckboxGroup from '../../../components/Form/checkboxGroup';
 import { OptionTypeMulti } from '../../../components/Form/selectMultiple';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
-import { selectServices } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { selectSezioneQ3compilato } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 // import { selectDevice } from '../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../redux/hooks';
-import { formatDate } from '../../../utils/datesHelper';
+import { formatAndParseJsonString } from '../../../utils/common';
 import {
   formFieldI,
   FormHelper,
@@ -28,6 +28,8 @@ interface FormEnteGestoreProgettoFullInterface
   extends withFormHandlerProps,
     FormServicesI {}
 
+const separator = '§';
+
 const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
   props
 ) => {
@@ -44,43 +46,63 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
   } = props;
   // const device = useAppSelector(selectDevice);
   // const isMobile = device.mediaIsPhone;
-  const formData = useAppSelector(selectServices)?.detail?.dettaglioServizio;
+  const sezioneQ3 = useAppSelector(
+    selectSezioneQ3compilato
+  )?.sezioneQ3Compilato;
   const formDisabled = !!props.formDisabled;
+  const [sezioneQ3Compilato, setSezioneQ3Compilato] = useState<{
+    [key: string]: string | string[];
+  }>({});
 
   useEffect(() => {
-    if (dynamicFormQ3) updateForm(dynamicFormQ3);
-  }, [dynamicFormQ3]);
-
-  useEffect(() => {
-    if (formData && !creation) {
-      const values = { ...formData };
-      const formattedDate = formatDate(formData?.data?.toString(), 'snakeDate');
-      if (formattedDate) values.dataConferimentoConsenso = formattedDate;
-      setFormValues(values); // TODO: precompilare ????
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData]);
-
-  useEffect(() => {
+    // to get the schema of filled fields
     if (
-      form &&
-      formDisabled &&
-      Object.entries(form).some(([_key, value]) => !value.disabled)
+      !creation &&
+      typeof sezioneQ3 !== 'string' &&
+      sezioneQ3?.json &&
+      typeof sezioneQ3?.json === 'string'
     ) {
-      updateForm(
-        Object.fromEntries(
-          Object.entries(form).map(([key, value]) => [
-            key,
-            { ...value, disabled: formDisabled },
-          ])
-        ),
-        true
-      );
+      setSezioneQ3Compilato(formatAndParseJsonString(sezioneQ3?.json));
     }
-  }, [formDisabled, form]);
+  }, [sezioneQ3]);
+
+  useEffect(() => {
+    // to update the form with the pre-filled values
+    if (
+      !creation &&
+      form &&
+      Object.keys(form)?.length > 0 &&
+      Object.keys(sezioneQ3Compilato)?.length > 0 &&
+      Array.isArray(sezioneQ3Compilato?.properties)
+    ) {
+      const newFormData: { [key: string]: string | string[] } = {};
+      sezioneQ3Compilato?.properties.map((value) => {
+        Object.keys(value).map((key: string) => {
+          if (key === '25' || key === '26') {
+            // multiple values
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            newFormData[key] = (value[key] || ['']).map((e: string) => e.replaceAll(separator, ','));
+          } else {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            newFormData[key] = (value[key] || ['']).map((e: string) => e.replaceAll(separator, ',')).join(separator);
+          }
+          //newFormData[key] = (value[key] || ['']).map((e: string) => e.replaceAll(separator, ',')).join(separator);
+        });
+      });
+      setFormValues(newFormData);
+    }
+  }, [sezioneQ3Compilato, form && Object.keys(form)?.length]);
+
+  useEffect(() => {
+    // to update form structure
+    if (dynamicFormQ3) updateForm(dynamicFormQ3);
+  }, [dynamicFormQ3 && Object.keys(dynamicFormQ3)?.length]);
 
   useEffect(() => {
     sendNewValues?.(getFormValues?.());
+    setIsFormValid?.(FormHelper.isValidForm(form));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
@@ -109,10 +131,9 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
             label={field.label}
             type={field.type}
             required
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
+            onInputChange={onInputDataChange}
             placeholder={`Inserisci ${field.label?.toLowerCase()}`}
+            disabled={formDisabled}
           />
         );
       }
@@ -122,15 +143,14 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
             id={`input-${field}`}
             field={field.field}
             label={field.label || ''}
-            col='col-12 col-lg-6'
-            required
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
+            col={field.field === '24' ? 'col-12' : 'col-12 col-lg-6'}
+            required={field.required || false}
+            onInputChange={onInputDataChange}
             placeholder={`Inserisci ${field.label?.toLowerCase()}`}
             options={field.options}
             isDisabled={formDisabled}
             value={field.value}
+            wrapperClassName='mb-5 pr-lg-3'
           />
         );
       }
@@ -208,7 +228,7 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
               id={`multiple-select-${field.id}`}
               col='col-12'
               label={`${field?.label}`}
-              aria-label={`${field?.label}`}
+              aria-label={field?.label}
               options={multiSelectOptions}
               required={field.required || false}
               onInputChange={onInputDataChange}
@@ -216,16 +236,20 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
               placeholder='Seleziona'
               isDisabled={formDisabled}
               value={values}
+              classNamePrefix='form-service-dynamic'
             />
           );
         }
         return (
-          <Input
+          <CheckboxGroup
             {...field}
-            className={clsx('mr-3', 'mb-3')}
-            col='col-12 col-lg-6'
-            onInputBlur={onInputChange}
+            col='col-12'
+            onInputChange={onInputChange}
             label={`${field?.label}`}
+            styleLabelForm
+            disabled={formDisabled}
+            optionsInColumn
+            separator={separator}
           />
         );
       }
@@ -237,10 +261,8 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
   return (
     <Form id='form-service-dynamic' formDisabled={formDisabled}>
       <div className='d-inline-flex flex-wrap w-100'>
-        {dynamicFormQ3 &&
-          Object.keys(dynamicFormQ3).map((key) => (
-            <>{getAnswerType(dynamicFormQ3[key])}</>
-          ))}
+        {form &&
+          Object.keys(form).map((key) => <React.Fragment key={key}>{getAnswerType(form[key])}</React.Fragment>)}
       </div>
     </Form>
   );

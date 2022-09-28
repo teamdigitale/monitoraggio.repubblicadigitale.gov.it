@@ -14,7 +14,7 @@ import { i18nInit } from './utils/i18nHelper';
 i18nInit();
 
 const MyApp: React.FC = () => {
-  console.log('09212022 1');
+  console.log('09272022 1');
   return (
     <Provider store={store}>
       <FontLoader />

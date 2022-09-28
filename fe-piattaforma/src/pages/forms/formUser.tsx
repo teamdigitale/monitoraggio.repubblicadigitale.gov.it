@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Form, Input, Select } from '../../components';
@@ -17,6 +17,10 @@ import {
 import { RegexpType } from '../../utils/validator';
 import { selectRolesList } from '../../redux/features/roles/rolesSlice';
 import { GetRolesListValues } from '../../redux/features/roles/rolesThunk';
+import {
+  contractTypes,
+  userRoles,
+} from '../administrator/AdministrativeArea/Entities/utils';
 
 interface UserInformationI {
   /*formData:
@@ -34,7 +38,7 @@ interface UserInformationI {
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   setIsFormValid?: (param: boolean | undefined) => void;
   creation?: boolean;
-  fieldsToHide?: ('ruolo' | 'mansione')[];
+  fieldsToHide?: ('ruolo' | 'mansione' | 'tipoContratto')[];
 }
 
 interface UserFormI extends withFormHandlerProps, UserInformationI {}
@@ -48,15 +52,18 @@ const FormUser: React.FC<UserFormI> = (props) => {
     setIsFormValid = () => ({}),
     getFormValues = () => ({}),
     updateForm = () => ({}),
+    clearForm = () => ({}),
     creation = false,
     fieldsToHide = [],
   } = props;
 
   const dispatch = useDispatch();
   const { userId } = useParams();
-  const formData: { [key: string]: string } =
-    useAppSelector(selectUsers)?.detail?.dettaglioUtente;
+  const userDetails = useAppSelector(selectUsers)?.detail;
+  const formData = userDetails?.dettaglioUtente;
   const ruoliList = useAppSelector(selectRolesList);
+  const [showTipoContratto, setShowTipoContratto] = useState(false);
+  const [showMansione, setShowMansione] = useState(false);
 
   const formDisabled = !!props.formDisabled;
 
@@ -82,7 +89,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
   useEffect(() => {
     if (!creation) {
       userId && dispatch(GetUserDetails(userId));
-    } else if (!fieldsToHide.includes('ruolo')){
+    } else if (!fieldsToHide.includes('ruolo')) {
       dispatch(GetRolesListValues({ tipologiaRuoli: 'NP' }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -91,9 +98,34 @@ const FormUser: React.FC<UserFormI> = (props) => {
   useEffect(() => {
     if (formData) {
       setFormValues(formData);
+    } else {
+      clearForm();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
+
+  useEffect(() => {
+    setShowTipoContratto(
+      !fieldsToHide.includes('tipoContratto') &&
+        !!(userDetails?.dettaglioRuolo || []).filter(
+          ({ codiceRuolo }: { codiceRuolo: string }) =>
+            codiceRuolo === userRoles.FAC || codiceRuolo === userRoles.VOL
+        ).length
+    );
+    setShowMansione(
+      !fieldsToHide.includes('mansione') &&
+        (creation ||
+          !!(userDetails?.dettaglioRuolo || []).filter(
+            ({ codiceRuolo }: { codiceRuolo: string }) =>
+              codiceRuolo === userRoles.REG ||
+              codiceRuolo === userRoles.REGP ||
+              codiceRuolo === userRoles.DEG ||
+              codiceRuolo === userRoles.DEGP ||
+              codiceRuolo === userRoles.REPP ||
+              codiceRuolo === userRoles.DEPP
+          ).length)
+    );
+  }, [userDetails, fieldsToHide.length, creation]);
 
   useEffect(() => {
     setIsFormValid(isValidForm);
@@ -166,13 +198,42 @@ const FormUser: React.FC<UserFormI> = (props) => {
             // placeholder='Inserisci email'
             onInputChange={onInputChange}
           />
-          <Input
-            {...form?.mansione}
-            label='Posizione Lavorativa'
-            col='col-12 col-lg-6'
-            // placeholder='Inserisci bio'
-            onInputChange={onInputChange}
-          />
+          {showMansione ? (
+            <Input
+              {...form?.mansione}
+              label='Posizione Lavorativa'
+              col='col-12 col-lg-6'
+              // placeholder='Inserisci bio'
+              onInputChange={onInputChange}
+            />
+          ) : (
+            <span />
+          )}
+          {showTipoContratto ? (
+            formDisabled ? (
+              <Input
+                {...form?.tipoContratto}
+                label='Tipo di Contratto'
+                col='col-12 col-lg-6'
+                // placeholder='Tipologia di contratto'
+                onInputChange={onInputChange}
+              />
+            ) : (
+              <Select
+                {...form?.tipoContratto}
+                value={form?.tipoContratto?.value as string}
+                col='col-12 col-lg-6'
+                label='Tipo di Contratto'
+                placeholder='Seleziona tipo di contratto'
+                options={contractTypes}
+                onInputChange={onInputChange}
+                wrapperClassName='mb-5'
+                aria-label='contratto'
+              />
+            )
+          ) : (
+            <span />
+          )}
           {/*<Input
           {...form?.authorityRef}
           col='col-12 col-lg-6'
@@ -240,6 +301,10 @@ const form = newForm([
     id: 'mansione',
     //required: true,
     maximum: 160,
+  }),
+  newFormField({
+    field: 'tipoContratto',
+    id: 'tipoContratto',
   }),
 ]);
 export default withFormHandler({ form }, FormUser);

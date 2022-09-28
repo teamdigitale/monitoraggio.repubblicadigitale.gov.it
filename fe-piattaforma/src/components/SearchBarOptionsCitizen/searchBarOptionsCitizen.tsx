@@ -1,26 +1,39 @@
 import React from 'react';
 import SearchBar from '../SearchBar/searchBar';
-import { Form } from '../../components';
+import { Form } from '..';
 import { FormGroup, Label } from 'design-react-kit';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
 import { GetEntitySearchResult } from '../../redux/features/citizensArea/citizensAreaThunk';
 import Input from '../Form/input';
+import { setCitizenSearchResults } from '../../redux/features/citizensArea/citizensAreaSlice';
 
 interface SearchBarOptionsI {
   setCurrentStep: (value: string) => void;
+  setRadioFilter: (value: string) => void;
   currentStep: string | undefined;
   steps: { [key: string]: string };
+  alreadySearched?: (param: boolean) => void;
+  resetModal?: () => void;
 }
 
-const SearchBarOptions: React.FC<SearchBarOptionsI> = ({
+const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
   setCurrentStep,
+  setRadioFilter,
   currentStep,
   steps,
+  alreadySearched,
+  resetModal,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
+  const handleSearchReset = () => {
+    dispatch(setCitizenSearchResults([]));
+    if (resetModal) resetModal();
+  };
+
   return (
     <div
       className={clsx(
@@ -43,9 +56,11 @@ const SearchBarOptions: React.FC<SearchBarOptionsI> = ({
                   checked={currentStep === steps[item]}
                   onClick={() => {
                     setCurrentStep(steps[item]);
+                    setRadioFilter(steps[item]);
                   }}
                   onInputChange={() => {
                     setCurrentStep(steps[item]);
+                    setRadioFilter(steps[item]);
                   }}
                 />
                 <Label check htmlFor={`current-step-${index}`}>
@@ -59,11 +74,18 @@ const SearchBarOptions: React.FC<SearchBarOptionsI> = ({
       <SearchBar
         placeholder='Inserisci i dati del tipo di documento selezionato'
         onSubmit={(data) => {
-          dispatch(GetEntitySearchResult(data, currentStep ? currentStep : ''));
+          if (resetModal) resetModal();
+          if (data) {
+            dispatch(
+              GetEntitySearchResult(data, currentStep ? currentStep : '')
+            );
+            if (alreadySearched) alreadySearched(true);
+          }
         }}
+        onReset={handleSearchReset}
       />
     </div>
   );
 };
 
-export default SearchBarOptions;
+export default SearchBarOptionsCitizen;

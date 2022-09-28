@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { FormI, newForm, newFormField } from '../../../../utils/formHelper';
 import { transformJsonToForm } from '../../../../utils/jsonFormHelper';
 import { RootState } from '../../../store';
-import { newQuestion } from './surveysThunk';
+import { newQuestion, newSection } from './surveysThunk';
 
 export interface SurveyQuestionI {
   id?: string;
@@ -37,10 +37,11 @@ export interface SurveySectionResponseI {
 
 export interface SurveySectionPayloadI {
   id: string;
-  schema: string;
-  schemaui: string;
-  title: string;
-  'default-section': boolean;
+  schema: string | {json: string};
+  schemaui: string | {json: string};
+  title?: string;
+  titolo?: string;
+  'default-section'?: boolean;
 }
 
 export interface SurveyStateI {
@@ -54,6 +55,8 @@ export interface SurveyStateI {
   compilingSurveyForms: FormI[];
   sectionsSchemaResponse?: SurveySectionResponseI[];
   surveyName?: string;
+  printSections?: SurveySectionI[];
+  surveyOnline?: any;
 }
 
 const baseSurveyForm = newForm([
@@ -78,6 +81,8 @@ const initialState: SurveyStateI = {
   sectionsSchemaResponse: [],
   compilingSurveyForms: [],
   surveyName: '',
+  printSections: [],
+  surveyOnline: {},
 };
 
 export const surveysSlice = createSlice({
@@ -267,6 +272,19 @@ export const surveysSlice = createSlice({
         state.surveyName = surveyDetails.form['survey-name']?.value;
       }
     },
+    setPrintSurveySection: (state, action: PayloadAction<any>) => {
+      const printSections: SurveySectionI[] = [];
+      (action.payload['survey-sections'] || []).map((section: any) => {
+        printSections.push(
+          newSection({
+            sectionTitle: section.title,
+            id: section.id,
+            questions: JSON.parse(section.schema)?.properties,
+          })
+        );
+      });
+      state.printSections = printSections;
+    },
     setCompilingSurveyForm: (
       state,
       action: PayloadAction<{ id: number; form: FormI }>
@@ -275,6 +293,16 @@ export const surveysSlice = createSlice({
         ...action.payload.form,
       };
     },
+    resetCompilingSurveyForm: (state) => {
+      state.compilingSurveyForms = [];
+    },
+    setSurveyOnline: (
+      state,
+      action: PayloadAction<any>
+    ) => {
+      state.surveyOnline = action.payload;
+    },
+    resetSurveyDetails: () => initialState,
   },
 });
 
@@ -289,6 +317,10 @@ export const {
   setSurveyQuestionFieldValue,
   setSurveyInfoForm,
   setCompilingSurveyForm,
+  setPrintSurveySection,
+  resetCompilingSurveyForm,
+  setSurveyOnline,
+  resetSurveyDetails,
 } = surveysSlice.actions;
 
 export const selectSurvey = (state: RootState) => state.survey;
@@ -313,5 +345,9 @@ export const selectResponseSectionsSchema = (state: RootState) =>
   state.survey.sectionsSchemaResponse;
 
 export const selectSurveyName = (state: RootState) => state.survey.surveyName;
+
+export const selectPrintSurveySections = (state: RootState) => state.survey.printSections;
+
+export const selectSurveyOnline = (state: RootState) => state.survey.surveyOnline;
 
 export default surveysSlice.reducer;

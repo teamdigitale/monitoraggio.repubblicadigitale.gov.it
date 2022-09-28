@@ -25,6 +25,8 @@ export interface SelectI
   value?: string | number | boolean | Date | string[] | undefined;
   wrapperClassName?: string;
   withLabel?: boolean;
+  isDisabled?: boolean;
+  position?: 'top' | 'bottom' | 'auto';
 }
 
 const Select: React.FC<SelectI> = (props) => {
@@ -38,33 +40,52 @@ const Select: React.FC<SelectI> = (props) => {
     value = '',
     wrapperClassName,
     withLabel = true,
+    isDisabled = false,
+    isSearchable = false,
+    position = 'auto',
   } = props;
   const [selectedOption, setSelectedOption] = useState<OptionType>();
 
   useEffect(() => {
     if (
       onInputChange &&
-      selectedOption?.value !== value &&
-      selectedOption?.value
+      selectedOption &&
+      selectedOption.value &&
+      selectedOption.value !== value
     )
       onInputChange(selectedOption?.value, field);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedOption]);
 
   useEffect(() => {
-    if (options?.length) {
+    if (options.length) {
       const newSelectedOption = options.find(
-        (opt) => opt.value.toString() === value?.toString()
+        (opt) =>
+          opt.value.toString().toLowerCase().trim() ===
+          value?.toString().toLowerCase().trim()
       );
-
       if (
-        newSelectedOption?.value !== selectedOption?.value &&
-        newSelectedOption
-      )
+        newSelectedOption &&
+        newSelectedOption.value !== selectedOption?.value
+      ) {
         setSelectedOption(newSelectedOption);
+      } else if (value === '' && selectedOption) {
+        setSelectedOption(undefined);
+      }
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, options]);
+
+  /*
+  useEffect(() => {
+    if (options?.length === 1) {
+      // if only one option, prefill select
+      if (options[0].value !== selectedOption?.value)
+        setSelectedOption(options[0]);
+    }
+  }, [options]);
+  */
 
   const handleChange = (option: OptionType) => {
     setSelectedOption(option);
@@ -93,7 +114,7 @@ const Select: React.FC<SelectI> = (props) => {
           className='text-decoration-none'
         >
           {label}
-          {required ? ' *' : ''}
+          {required && !isDisabled ? ' *' : ''}
         </label>
       ) : null}
       <SelectKit
@@ -103,9 +124,12 @@ const Select: React.FC<SelectI> = (props) => {
         onChange={handleChange}
         options={options}
         value={selectedOption}
+        menuPlacement={position}
         color='primary'
         classNamePrefix='bootstrap-select'
         aria-labelledby={`${(label || 'label select').replace(/\s/g, '-')}`}
+        isDisabled={isDisabled}
+        isSearchable={isSearchable}
       />
     </div>
   );

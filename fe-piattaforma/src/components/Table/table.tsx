@@ -12,7 +12,7 @@ export interface TableHeadingI {
 }
 
 export interface TableRowI {
-  [key: string]: string | number | JSX.Element;
+  [key: string]: string | number | boolean | JSX.Element;
 }
 
 export interface TableI {
@@ -20,6 +20,8 @@ export interface TableI {
   heading?: TableHeadingI[];
   id?: string;
   onActionClick?: CRUDActionsI;
+  onTooltipInfo?: string;
+  citizenTable?: boolean;
   onCellClick?: (field: string, row: TableRowI) => void;
   onRowClick?: (row: TableRowI) => void;
   values?: TableRowI[];

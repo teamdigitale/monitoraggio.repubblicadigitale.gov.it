@@ -23,6 +23,10 @@
     border: none;
   }
 }
+.search-bar-title {
+  font-size: 24px;
+  font-weight: 600;
+}
 
 .search-bar-bg {
   background-color: rgba(235,236,237,0.2) ;
@@ -49,7 +53,7 @@
 .input-search > .form-control[type='text'] {
   font-weight: 400;
   border: none;
-  font-size: rem(18px);
+  font-size: 18px;
   text-overflow: ellipsis;
   padding-left: 0;
 }

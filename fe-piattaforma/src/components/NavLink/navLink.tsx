@@ -6,16 +6,26 @@ interface NavLinkI {
   onClick?: () => void;
   active?: boolean;
   to?: string;
+  enteGestore?: boolean;
 }
 
-const NavLink: React.FC<NavLinkI> = ({ onClick, children, active, to }) => {
+const NavLink: React.FC<NavLinkI> = ({
+  onClick,
+  children,
+  active,
+  to,
+  enteGestore = false,
+}) => {
   const navigate = useNavigate();
 
   return to && !onClick ? (
     <NavReactDom
       to={to as To}
       onKeyDown={() => navigate(to)}
-      className={active ? 'nav-link active' : 'nav-link'}
+      className={clsx(
+        active ? 'nav-link active' : 'nav-link',
+        !enteGestore && 'margin-for-border'
+      )}
     >
       {children}
     </NavReactDom>

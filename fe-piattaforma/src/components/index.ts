@@ -11,6 +11,7 @@ import HamburgerMenu from './HamburgerMenu/hamburgerMenu';
 import Header from './Header/header';
 import HeaderMenu from './HeaderMenu/headerMenu';
 import Input from './Form/input';
+import PrefixPhone from './Form/prefixPhone';
 import Paginator from './Paginator/paginator';
 import Rating from './Rating/rating';
 import SearchBar from './SearchBar/searchBar';
@@ -28,12 +29,12 @@ import Loader from './Loader/loader';
 import LocationIndex from './LocationIndex/locationIndex';
 import ProgressBar from './ProgressBar/progressBar';
 import NavLink from './NavLink/navLink';
-import SearchBarOptions from './SearchBarOptions/searchBarOptions';
+import SearchBarOptions from './SearchBarOptionsCitizen/searchBarOptionsCitizen';
 import InfoCard from './InfoCard/infoCard';
 import EmptySection from './EmptySection/emptySection';
 import DetailsRow from './DetailsRow/detailsRow';
 import StatusChip from './StatusChip/statusChip';
-import AvatarInitials from './AvatarInitials/avatarInitials';
+import AvatarInitials from './Avatar/AvatarInitials/avatarInitials';
 
 export {
   Accordion,
@@ -49,6 +50,7 @@ export {
   Header,
   HeaderMenu,
   Input,
+  PrefixPhone,
   Paginator,
   Rating,
   SearchBar,

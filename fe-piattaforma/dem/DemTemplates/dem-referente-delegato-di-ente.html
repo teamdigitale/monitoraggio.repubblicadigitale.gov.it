@@ -7,15 +7,11 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <link
-      rel="stylesheet"
-      href="./node_modules/bootstrap-italia/dist/css/bootstrap-italia.min.css"
-    />
     <title>Document</title>
     <style>
       body {
         margin: 0;
-        background-color: #cccccc;
+        background-color: #ffffff;
       }
       table {
         border-spacing: 0;
@@ -29,7 +25,7 @@
       .wrapper {
         width: 100%;
         table-layout: fixed;
-        background-color: #cccccc;
+        background-color: #ffffff;
         padding-bottom: 60px;
       }
       .main {
@@ -100,19 +96,23 @@
   <body>
     <div class="wrapper">
       <!-- LOGO -->
-      <table class="main" width="100%" style="overflow-x: hidden">
+      <table
+        class="main"
+        width="100%"
+        style="overflow-x: hidden; padding-top: 35px"
+      >
         <tr>
           <table class="main">
             <tr>
               <td>
-              <a href="#"
-                ><img
-                  src="https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/blob/develop/fe-piattaforma/public/assets/img/logo-scritta-blu.png?raw=true"
-                  alt="logo"
-                  width="204px"
-                  style="padding: 10px"
-              /></a>
-             </td>
+                <a href="#"
+                  ><img
+                    src="https://s3-frontend-dem.s3.eu-central-1.amazonaws.com/Immagini-DEM/logo-scritta-blu.png"
+                    alt="logo"
+                    width="204px"
+                    style="padding: 10px"
+                /></a>
+              </td>
             </tr>
           </table>
         </tr>
@@ -136,12 +136,54 @@
               </td>
             </tr>
             <tr>
-                <td>
-                  <p class="padding-text">
-                    Ti abbiamo selezionato come %S nell’ambito dell’iniziativa di Repubblica Digitale.
-                  </p>
-                </td>
-              </tr>
+              <td>
+                <p class="padding-text">
+                  Ti abbiamo selezionato come %S nell’ambito dell’iniziativa di
+                  Repubblica Digitale.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <ul>
+                  Grazie al tuo ruolo potrai aiutarci a:
+                </ul>
+
+                <div style="padding-left: 90px">
+                  <li>Gestire il programma;</li>
+                  <li>Visualizzare le informazioni relative al programma;</li>
+                  <li>Creare i progetti.</li>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </tr>
+
+        <!-- BANNER -->
+        <tr>
+          <table class="main">
+            <tr>
+              <td
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  padding: 0 35px 0 35px;
+                "
+              >
+                <img
+                  src="https://s3-frontend-dem.s3.eu-central-1.amazonaws.com/Immagini-DEM/dem-banner.png"
+                  alt="banner"
+                  class="padding"
+                  style="border-radius: 60px; width: 100%"
+                />
+              </td>
+            </tr>
+          </table>
+        </tr>
+        <!-- ACCESSIBILITA' E PROFILO -->
+        <tr>
+          <table class="main">
             <tr
               style="
                 display: flex;
@@ -151,58 +193,16 @@
               "
             >
               <td>
-                <p>Grazie al tuo ruolo potrai aiutarci a:</p>
+                <ul>
+                  Per iniziare questa nuova avventura, accedi utilizzando
+                  un'identità digitale:
+                </ul>
+
+                <div style="padding-left: 90px">
+                  <li>Accedi con SPID o CIE</li>
+                  <li>Compila i tuoi dati anagrafici</li>
+                </div>
               </td>
-              <td style="padding-left: 25px">
-                <p>- Gestire il programma;</p>
-                <p>- Visualizzare le informazioni relative al programma;</p>
-                <p>- Creare i progetti.</p>
-              </td>
-            </tr>
-          </table>
-        </tr>
-        <!-- BANNER -->
-        <tr>
-            <table class="main">
-              <tr>
-                <td
-                  style="
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    padding: 0 35px 0 35px;
-                  "
-                >
-                  <img
-                    src="C:\Users\riccardo.galassi\OneDrive - Accenture\Desktop\MITD\public\assets\img\dem-banner.png"
-                    alt="banner"
-                    class="padding"
-                    style="border-radius: 60px; width: 100%"
-                  />
-                </td>
-              </tr>
-            </table>
-        </tr>
-        <!-- ACCESSIBILITA' E PROFILO -->
-        <tr>
-          <table class="main">
-            <tr 
-            style="
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 35px 0 35px;
-          ">
-                    <td>
-                      <p>
-                        Per iniziare questa nuova avventura, accedi utilizzando
-                        un'identità digitale:
-                      </p>
-                    </td>
-                    <td style="padding-left: 25px">
-                      <p>- Accedi con SPID o CIE</p>
-                      <p>- Compila i tuoi dati anagrafici</p>
-                    </td>
             </tr>
           </table>
         </tr>
@@ -211,8 +211,18 @@
         <tr>
           <table class="main">
             <tr>
-              <td class="padding-y" style="text-align: center">
-                <button class="btn btn-primary" style="width: 250px">Accedi</button>
+              <td class="padding-y">
+                <div
+                  class="btn btn-primary"
+                  style="max-width: 250px; text-align: center; margin: auto"
+                >
+                  <a
+                    href="%S"
+                    style="padding: auto; text-decoration: none; color: #ffffff"
+                  >
+                    Accedi
+                  </a>
+                </div>
               </td>
             </tr>
           </table>
@@ -220,22 +230,21 @@
 
         <!-- WARNING MALFUNZIONAMENTO -->
         <tr>
-          <table class="main">
+          <table class="main" style="padding-bottom: 35px">
             <tr>
               <td>
-                <p>
-                  In caso di malfunzionamento dell’autenticazione digitale tramite
-                  SPID o CIE, contatta il seguente indirizzo email:
+                <p class="padding-text" style="font-size: 14px">
+                  In caso di malfunzionamento dell’autenticazione digitale
+                  tramite SPID o CIE, contatta il seguente indirizzo email:
                   <mark> info@email.i </mark>
                 </p>
                 <br />
-                <p>
-                  Se ritieni di avere ricevuto questa comunicazione per errore o non
-                  riesci ad accedere alla piattaforma, scrivi al seguente indirizzo
-                  email: <mark> info@email.i </mark>
+                <p class="padding-text" style="font-size: 14px">
+                  Se ritieni di avere ricevuto questa comunicazione per errore o
+                  non riesci ad accedere alla piattaforma, scrivi al seguente
+                  indirizzo email: <mark> info@email.i </mark>
                 </p>
-                
-          </td>
+              </td>
             </tr>
           </table>
         </tr>
@@ -258,40 +267,37 @@
                 flex-wrap: wrap;
               "
             >
-              <td
-                style="
-                  display: flex;
-                  flex-direction: column;
-                  align-items: flex-start;
-                "
-              >
+              <td style="width: 50%">
                 <p
                   class="text-white"
                   style="font-size: smaller; padding-bottom: 15px"
                 >
                   Progetto di:
                 </p>
+              </td>
+              <td style="width: 50%">
+                <p
+                  class="text-white"
+                  style="font-size: smaller; padding-bottom: 15px"
+                >
+                  Con la collaborazione di:
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td>
                 <a
                   href="https://urldefense.proofpoint.com/v2/url?u=https-3A__placeholder.com&amp;d=DwMGaQ&amp;c=eIGjsITfXP_y-DLLX0uEHXJvU8nOHrUK8IrwNKOtkVU&amp;r=So1Cb4xw6BR3Hp5b2boZTkoCAqbkMW6wJpXf1A9h8ek&amp;m=dtGhWvv-aoQGdlZuMx8OJDoN1dRaW2F4HtaVaQxx7lRHGwHYN69YWhqU9AFx8qpJ&amp;s=aY6cU7YAH6roOX4AWQaO6cegPYCzsUTFpvrG40EhDUo&amp;e="
                   ><img
-                    src="https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/blob/develop/fe-piattaforma/public/assets/img/mitd-logo.png?raw=true"
+                    src="https://s3-frontend-dem.s3.eu-central-1.amazonaws.com/Immagini-DEM/mitd-logo.png"
                     style="width: 260px; height: 40px"
                 /></a>
               </td>
-              <td
-                style="
-                  display: flex;
-                  flex-direction: column;
-                  align-items: flex-start;
-                "
-              >
-                <p class="text-white" style="font-size: smaller">
-                  Con la collaborazione di:
-                </p>
+              <td>
                 <a
                   href="https://urldefense.proofpoint.com/v2/url?u=https-3A__placeholder.com&amp;d=DwMGaQ&amp;c=eIGjsITfXP_y-DLLX0uEHXJvU8nOHrUK8IrwNKOtkVU&amp;r=So1Cb4xw6BR3Hp5b2boZTkoCAqbkMW6wJpXf1A9h8ek&amp;m=dtGhWvv-aoQGdlZuMx8OJDoN1dRaW2F4HtaVaQxx7lRHGwHYN69YWhqU9AFx8qpJ&amp;s=aY6cU7YAH6roOX4AWQaO6cegPYCzsUTFpvrG40EhDUo&amp;e="
                   ><img
-                    src="https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/blob/develop/fe-piattaforma/public/assets/img/mtid-mobile.png?raw=true"
+                    src="https://s3-frontend-dem.s3.eu-central-1.amazonaws.com/Immagini-DEM/digital-skills.png"
                     style="width: 260px; height: 65px"
                 /></a>
               </td>

@@ -38,7 +38,7 @@ interface DetailLayoutI {
   };
   itemsList?: ItemsListI | null | undefined;
   showItemsList?: boolean;
-  buttonsPosition: 'TOP' | 'BOTTOM';
+  buttonsPosition?: 'TOP' | 'BOTTOM';
   showGoBack?: boolean;
   goBackTitle?: string;
   goBackPath?: string;
@@ -47,7 +47,11 @@ interface DetailLayoutI {
   surveyDefault?: ItemsListI | null | undefined;
   isRadioButtonItem?: boolean;
   onRadioChange?: (surveyDefault: string) => void;
-  isUserProfile?: boolean;
+  isUserProfile?: boolean | string | undefined;
+  citizenList?: boolean;
+  citizenDeleteChange?: boolean;
+  enteIcon?: boolean;
+  profilePicture?: string | undefined;
 }
 const DetailLayout: React.FC<DetailLayoutI> = ({
   formButtons,
@@ -56,7 +60,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   nav,
   itemsList,
   showItemsList = true,
-  buttonsPosition,
+  buttonsPosition = 'BOTTOM',
   showGoBack = true,
   goBackTitle = 'Torna indietro',
   goBackPath,
@@ -66,6 +70,10 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   isRadioButtonItem = false,
   isUserProfile = false,
   onRadioChange,
+  citizenList = false,
+  citizenDeleteChange = false,
+  enteIcon = false,
+  profilePicture,
 }) => {
   const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
@@ -91,7 +99,12 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
             <span className='primary-color'>{goBackTitle}</span>
           </Button>
         )}
-        <SectionTitle isUserProfile={isUserProfile} {...titleInfo} />
+        <SectionTitle
+          enteIcon={enteIcon}
+          isUserProfile={isUserProfile}
+          profilePicture={profilePicture}
+          {...titleInfo}
+        />
         {nav && (
           <div
             className={clsx(
@@ -99,7 +112,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
               'justify-content-center',
               'w-100',
               'mt-5',
-              'mb-5'
+              device.mediaIsPhone && citizenList ? 'mb-0' : 'mb-5'
             )}
           >
             {nav}
@@ -134,8 +147,8 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                   singleItem.items.map((item) => (
                     <CardStatusAction
                       key={item.id}
-                      title={`${item.nome} ${
-                        item.cognome ? item.cognome : ''
+                      title={`${item.cognome ? item.cognome : ''} ${
+                        item.nome
                       }`.trim()}
                       status={item.stato}
                       onActionClick={item.actions}
@@ -146,7 +159,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                   ))
                 ) : (
                   <EmptySection
-                    title={`Non esistono ${singleItem.title?.toLowerCase()} associati`}
+                    title={`Non sono presenti ${singleItem.title?.toLowerCase()} associati.`}
                     horizontal
                     aside
                   />
@@ -246,7 +259,24 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
               );
             })
           : null}
-
+        {showItemsList && itemsList?.items?.length && currentTab === 'info' ? (
+          <>
+            {itemsList.title && (
+              <h2 className='h4 neutral-1-color-a7'>{itemsList.title}</h2>
+            )}{' '}
+            {itemsList.items.map((item) => {
+              return (
+                <CardStatusAction
+                  title={item.nome}
+                  status={item.stato}
+                  key={item.id}
+                  id={item.id}
+                  onActionClick={item.actions}
+                />
+              );
+            })}{' '}
+          </>
+        ) : null}
         {buttonsPosition === 'TOP' &&
         formButtons &&
         formButtons.length !== 0 ? (
@@ -268,7 +298,14 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
       formButtons.length !== 0 ? (
         <>
           <div aria-hidden='true' className='mt-5 w-100'>
-            <Sticky mode='bottom' stickyClassName='sticky bg-white container'>
+            <Sticky
+              mode='bottom'
+              stickyClassName={clsx(
+                'sticky',
+                'bg-white',
+                !device.mediaIsPhone && 'container'
+              )}
+            >
               {formButtons.length === 3 ? (
                 device.mediaIsPhone ? (
                   <div
@@ -299,8 +336,14 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                   </div>
                 )
               ) : (
-                <div className='container text-center'>
-                  <ButtonsBar buttons={formButtons} />
+                <div
+                  className={clsx(!citizenList && 'container', 'text-center')}
+                >
+                  <ButtonsBar
+                    citizenDeleteChange={citizenDeleteChange}
+                    buttons={formButtons}
+                    isUserProfile={!!isUserProfile}
+                  />
                 </div>
               )}
             </Sticky>

@@ -30,8 +30,12 @@ a {
 .sticky {
   width: 100vw !important;
   padding-right: rem(42px);
+  box-shadow: 0px -1px 0px  rgba(0, 0, 0, 0.1);;
   @media screen and (max-width: 576px) {
-    left: 0;
+    padding-right: rem(71px);
+  }
+  @media screen and (min-width: 577px) and (max-width: 992px) {
+    padding-right: rem(31px);
   }
 }
 

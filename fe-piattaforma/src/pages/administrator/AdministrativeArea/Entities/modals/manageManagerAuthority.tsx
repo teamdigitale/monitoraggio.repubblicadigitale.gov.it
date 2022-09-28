@@ -93,7 +93,12 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
 
   const resetModal = () => {
     clearForm();
-    if (creation) dispatch(setAuthorityDetails(null));
+    if (creation) {
+      dispatch(setAuthorityDetails(null));
+    } else {
+      projectId && dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+      entityId && dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+    }
     setNoResult(false);
     dispatch(closeModal());
     //dispatch(resetAuthorityDetails());
@@ -112,7 +117,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
       if (newFormValues.id) {
         if (projectId) {
           // Project
-          const res = await dispatch(
+          const res: any = await dispatch(
             UpdateManagerAuthority(
               { ...newFormValues },
               enteGestoreProgettoId,
@@ -122,14 +127,14 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
           );
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          if (res) {
+          if (res && !res.errorCode) {
             await dispatch(GetProjectDetail(projectId));
             dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
             resetModal();
           }
         } else if (entityId) {
           // Program
-          const res = await dispatch(
+          const res: any = await dispatch(
             UpdateManagerAuthority(
               { ...newFormValues },
               enteGestoreProgrammaId,
@@ -139,7 +144,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
           );
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          if (res) {
+          if (res && !res.errorCode) {
             await dispatch(GetProgramDetail(entityId));
             dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
             resetModal();
@@ -148,22 +153,28 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
       }
       // Creation
       else {
+        let res: any = null;
         if (projectId) {
           // Project
-          await dispatch(
+          res = await dispatch(
             CreateManagerAuthority({ ...newFormValues }, projectId, 'progetto')
           );
-          await dispatch(GetProjectDetail(projectId));
-          dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
-          resetModal();
+
+          if (!res?.errorCode) {
+            await dispatch(GetProjectDetail(projectId));
+            dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+            resetModal();
+          }
         } else if (entityId) {
           // Program
-          await dispatch(
+          res = await dispatch(
             CreateManagerAuthority({ ...newFormValues }, entityId, 'programma')
           );
-          await dispatch(GetProgramDetail(entityId));
-          dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
-          resetModal();
+          if (!res?.errorCode) {
+            await dispatch(GetProgramDetail(entityId));
+            dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+            resetModal();
+          }
         }
       }
     }
@@ -264,7 +275,18 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
           placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’ente'
           onSubmit={handleSearchAuthority}
           title='Cerca'
-          onReset={() => dispatch(setAuthoritiesList(null))}
+          onReset={() => {
+            dispatch(setAuthoritiesList(null));
+            if (creation) {
+              dispatch(setAuthorityDetails(null));
+              clearForm();
+            } else {
+              projectId &&
+                dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+              entityId &&
+                dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+            }
+          }}
           search
         />
         <div className='mx-5'>{content}</div>

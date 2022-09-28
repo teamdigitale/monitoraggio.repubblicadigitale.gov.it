@@ -8,6 +8,7 @@ import {
 import { useAppSelector } from '../redux/hooks';
 
 interface withModalStateProps {
+  closable?: boolean;
   onClose?: () => void;
   payload?: ModalPayloadI;
   title?: string;
@@ -19,6 +20,7 @@ const withModalState =
   ): React.FC<P & withModalStateProps> =>
   // eslint-disable-next-line react/display-name
   (props: withModalStateProps) => {
+    const { closable = false } = props;
     const dispatch = useDispatch();
     const payload = useAppSelector(selectModalPayload);
 
@@ -28,7 +30,7 @@ const withModalState =
       } catch (e) {
         console.log(e);
       } finally {
-        dispatch(closeModal());
+        if (closable) dispatch(closeModal());
       }
     };
 

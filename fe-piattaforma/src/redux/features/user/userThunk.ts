@@ -8,20 +8,28 @@ import {
   setUserProfile,
   UserProfileI,
 } from './userSlice';
-import { getSessionValues } from '../../../utils/sessionHelper';
+import {
+  clearSessionValues,
+  getSessionValues,
+  setSessionValues,
+} from '../../../utils/sessionHelper';
 import { RootState } from '../../store';
+import { isActiveProvisionalLogin } from '../../../pages/common/Auth/auth';
 
 export const getUserHeaders = () => {
-  const { codiceFiscale } = JSON.parse(getSessionValues('user'));
+  const { codiceFiscale, id: idUtente } = JSON.parse(getSessionValues('user'));
   const { codiceRuolo, idProgramma, idProgetto } = JSON.parse(
     getSessionValues('profile')
   );
 
   return {
-    codiceFiscale: codiceFiscale.toUpperCase(),
-    codiceRuolo,
+    codiceFiscale: isActiveProvisionalLogin
+      ? codiceFiscale?.toUpperCase()
+      : undefined,
+    codiceRuolo: isActiveProvisionalLogin ? codiceRuolo : undefined,
     idProgramma,
     idProgetto,
+    idUtente,
   };
 };
 
@@ -62,11 +70,17 @@ export const SessionCheck = async (dispatch: any) => {
 
 const CreateUserContextAction = { type: 'user/CreateUserContext' };
 export const CreateUserContext =
-  (codiceFiscale: string) => async (dispatch: Dispatch) => {
+  (codiceFiscale?: string) => async (dispatch: Dispatch) => {
     try {
       dispatch({ ...CreateUserContextAction, codiceFiscale }); // TODO manage dispatch for dev env only
       dispatch(showLoader());
-      const res = await API.post('/contesto', { codiceFiscale });
+      let body = {};
+      if (isActiveProvisionalLogin) {
+        body = {
+          codiceFiscale,
+        };
+      }
+      const res = await API.post('/contesto', body);
 
       if (res?.data) {
         dispatch(setUserContext(res.data));
@@ -82,7 +96,8 @@ export const CreateUserContext =
 
 const SelectUserRoleAction = { type: 'user/SelectUserRole' };
 export const SelectUserRole =
-  (profile: UserProfileI, saveSession = false) => async (dispatch: Dispatch, select: Selector) => {
+  (profile: UserProfileI, saveSession = false) =>
+  async (dispatch: Dispatch, select: Selector) => {
     try {
       dispatch({ ...SelectUserRoleAction }); // TODO manage dispatch for dev env only
       dispatch(showLoader());
@@ -95,9 +110,10 @@ export const SelectUserRole =
       } = select((state: RootState) => state);
       if (codiceFiscale && profile?.codiceRuolo) {
         const { codiceRuolo, idProgramma, idProgetto } = profile;
+        setSessionValues('profile', profile);
         const res = await API.post('/contesto/sceltaProfilo', {
-          cfUtente: codiceFiscale,
-          codiceRuolo,
+          cfUtente: isActiveProvisionalLogin ? codiceFiscale : undefined,
+          codiceRuolo: isActiveProvisionalLogin ? codiceRuolo : undefined,
           idProgramma,
           idProgetto,
         });
@@ -109,6 +125,7 @@ export const SelectUserRole =
       }
     } catch (error) {
       console.log('SelectUserRole error', error);
+      clearSessionValues('profile');
     } finally {
       dispatch(hideLoader());
     }
@@ -143,3 +160,54 @@ export const EditUser =
       dispatch(hideLoader());
     }
   };
+
+const UploadUserPicAction = { type: 'user/UploadUserPic' };
+export const UploadUserPic =
+  (multipartifile: any, userId?: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch({ ...UploadUserPicAction }); // TODO manage dispatch for dev env only
+      dispatch(showLoader());
+      const { idUtente } = getUserHeaders();
+      const formData = new FormData();
+      formData.append('idUtente', idUtente);
+      formData.append('multipartifile', multipartifile, 'test.jpg');
+      console.log('formData', formData);
+      const res = await API.post(
+        `/utente/upload/immagineProfilo/${userId || idUtente}`,
+        //{ idUtente, multipartifile },
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      if (res?.data) {
+        return true;
+      }
+    } catch (error) {
+      console.log('UploadUserPic error', error);
+      return false;
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const LogoutRedirectAction = { type: 'user/LogoutRedirect' };
+export const LogoutRedirect = () => async (dispatch: Dispatch) => {
+  try {
+    dispatch({ ...LogoutRedirectAction }); // TODO manage dispatch for dev env only
+    dispatch(showLoader());
+    const logoutRedirectUrl =
+      `${process?.env?.REACT_APP_COGNITO_BASE_URL}logout?client_id=${process?.env?.REACT_APP_COGNITO_CLIENT_ID}&logout_uri=${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}`.replace(
+        '/auth',
+        ''
+      );
+    clearSessionValues();
+    console.log('Logout Redirect to', logoutRedirectUrl);
+    window.location.replace(logoutRedirectUrl);
+  } catch (error) {
+    console.log('LogoutRedirect error', error);
+  }
+};

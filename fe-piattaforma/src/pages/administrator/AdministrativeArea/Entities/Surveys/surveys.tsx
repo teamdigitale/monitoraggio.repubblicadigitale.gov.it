@@ -43,6 +43,7 @@ import {
 } from '../../../../../redux/features/administrativeArea/surveys/surveysThunk';
 import { formatDate } from '../../../../../utils/datesHelper';
 import useGuard from '../../../../../hooks/guard';
+import { resetSurveyDetails } from '../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 
 const entity = 'questionarioTemplate';
 const statusDropdownLabel = 'stato';
@@ -68,6 +69,7 @@ const Surveys = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
+    dispatch(resetSurveyDetails())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -77,7 +79,8 @@ const Surveys = () => {
       questionariList?.list.map((td) => ({
         id: td.id,
         nome: td.nome,
-        stato: <StatusChip status={td.stato} rowTableId={td.id} />,
+        status: <StatusChip status={td.stato} rowTableId={td.id} />,
+
         dataUltimaModifica:
           formatDate(td.dataUltimaModifica, 'shortDate') || '-',
         defaultSCD: (
@@ -85,7 +88,7 @@ const Surveys = () => {
             <Toggle
               label=''
               aria-labelledby={`toggle-SCD-${td.id}`}
-              disabled={false}
+              disabled={!hasUserPermission(['new.quest.templ'])}
               checked={td.defaultSCD}
               onChange={(e) =>
                 handleToggleChange('SCD', e.target.checked, td.id)
@@ -101,7 +104,7 @@ const Surveys = () => {
             <Toggle
               label=''
               aria-labelledby={`toggle-RFD-${td.id}`}
-              disabled={false}
+              disabled={!hasUserPermission(['new.quest.templ'])}
               checked={td.defaultRFD}
               onChange={(e) =>
                 handleToggleChange('RFD', e.target.checked, td.id)
@@ -267,7 +270,6 @@ const Surveys = () => {
           );
         },
         [CRUDActionTypes.CLONE]: (td: TableRowI | string) => {
-          // TODO: chiamata per clonare questionario
           navigate(
             `/area-amministrativa/questionari/${
               typeof td !== 'string' ? td.id : td
@@ -288,7 +290,6 @@ const Surveys = () => {
     : hasUserPermission(['new.quest.templ'])
     ? {
         [CRUDActionTypes.CLONE]: (td: TableRowI | string) => {
-          // TODO: chiamata per clonare questionario
           navigate(
             `/area-amministrativa/questionari/${
               typeof td !== 'string' ? td.id : td
@@ -302,7 +303,6 @@ const Surveys = () => {
     filter.value === 'questionnaire'
       ? { ...questionaraireCta }
       : { ...addendumCta };
-
 
   return (
     /*  <div className={clsx(device.mediaIsDesktop && 'row')}>
@@ -320,10 +320,11 @@ const Surveys = () => {
       <PageTitle
         title={
           filter.value === 'questionnaire'
-            ? 'Elenco Questionari'
+            ? 'Elenco questionari'
             : 'Elenco Addendum'
         }
         sectionInfo
+        defaultOpen
       />
       <GenericSearchFilterTableLayout
         searchInformation={searchInformation}
@@ -334,6 +335,8 @@ const Surveys = () => {
         resetFilterDropdownSelected={(filterKey: string) =>
           setFilterDropdownSelected(filterKey)
         }
+        tooltip
+        tooltiptext={searchInformation.placeholder}
       >
         <div>
           {questionariList?.list?.length && tableValues?.values?.length ? (
@@ -343,7 +346,6 @@ const Surveys = () => {
                 id='table'
                 onActionClick={onActionClick}
                 onCellClick={(field, row) => console.log(field, row)}
-                //onRowClick={row => console.log(row)}
                 withActions
                 totalCounter={pagination?.totalElements}
               />
@@ -360,7 +362,7 @@ const Surveys = () => {
             </>
           ) : (
             <EmptySection
-              title='Non ci sono questionari'
+              title='Non sono presenti questionari'
               subtitle='associati al tuo ruolo'
               icon='it-note'
               withIcon

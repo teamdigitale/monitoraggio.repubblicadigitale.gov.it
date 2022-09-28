@@ -13,7 +13,7 @@ import {
 import { selectDevice } from '../../../../../../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../../../../../../redux/hooks';
 import { FormHelper } from '../../../../../../../../utils/formHelper';
-import { answerType } from '../../../surveyConstants';
+import { answerType, idQ1, idQ2 } from '../../../surveyConstants';
 import MultiOptionForm from './multiOptionForm';
 
 export interface SurveyQuestionComponentI extends SurveyQuestionI {
@@ -90,6 +90,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
                 surveyQuestion?.form['question-values'].field
               )
             }
+            viewDisabled={!(cloneMode || editMode)}
           />
         );
       default:
@@ -100,15 +101,14 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
   const device = useAppSelector(selectDevice);
 
   const questionButton = () => (
-    <div>
-      {!open && (
+    <div className='question-buttons'>
+      {!open ? (
         <>
-          {!form['question-default'].value && 
-           (editMode || cloneMode) && (
+          {!form['question-default'].value && (editMode || cloneMode) && (
             <Button onClick={handleDeleteQuestion} className='px-1 pt-0'>
               <Icon
                 color='primary'
-                icon='it-delete'
+                icon='it-less-circle'
                 size='sm'
                 aria-label='Elimina domanda'
               />
@@ -134,8 +134,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
             />
           </Button>
         </>
-      )}
-      {open && (
+      ) : (
         <Button onClick={() => setOpen(false)} className='px-2'>
           <Icon
             color='primary'
@@ -161,12 +160,12 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
           !form['question-default'].value &&
             'survey-question-container__shadow',
           !(editMode || cloneMode) &&
-            sectionID !== 'anagraphic-citizen-section' &&
-            sectionID !== 'anagraphic-booking-section' &&
+            sectionID !== idQ1 &&
+            sectionID !== idQ2 &&
             'survey-question-container__default-bg',
           (editMode || cloneMode) &&
-            sectionID !== 'anagraphic-citizen-section' &&
-            sectionID !== 'anagraphic-booking-section' &&
+            sectionID !== idQ1 &&
+            sectionID !== idQ2 &&
             'survey-question-container__shadow'
         )}
       >
@@ -188,7 +187,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
               'flex-grow-1',
               'align-items-center',
               'justify-content-between',
-              'w-50'
+              !device.mediaIsPhone ? 'w-50' : 'w-100'
             )}
           >
             <div className='d-flex align-items-center flex-grow-1'>
@@ -198,8 +197,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
               </span>
               {(!editMode && !cloneMode) ||
               ((editMode || cloneMode) &&
-                (sectionID === 'anagraphic-citizen-section' ||
-                  sectionID === 'anagraphic-booking-section')) ? (
+                (sectionID === idQ1 || sectionID === idQ2)) ? (
                 <span className='survey-question-container__question-description text-start text-wrap'>
                   <strong>
                     {surveyQuestion?.form['question-description'].value}
@@ -285,8 +283,9 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
               )}
             </div>
 
-            {(device.mediaIsDesktop || device.mediaIsTablet) &&
-              questionButton()}
+            {(device.mediaIsDesktop || device.mediaIsTablet) && (
+              <div className='pt-2'>{questionButton()}</div>
+            )}
           </div>
         </div>
         {(editMode || cloneMode) && !form['question-default']?.value && (
@@ -301,6 +300,9 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
                       e.target.checked.toString(),
                       surveyQuestion?.form['question-required'].field
                     )
+                  }
+                  checked={
+                    surveyQuestion?.form['question-required'].value === 'true'
                   }
                 />
               </FormGroup>
@@ -322,12 +324,12 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
             !form['question-default'].value &&
               'survey-question-container__shadow survey-question-container__expanded-box',
             !(editMode || cloneMode) &&
-              sectionID !== 'anagraphic-citizen-section' &&
-              sectionID !== 'anagraphic-booking-section' &&
+              sectionID !== idQ1 &&
+              sectionID !== idQ2 &&
               'survey-question-container__default-bg',
             (editMode || cloneMode) &&
-              sectionID !== 'anagraphic-citizen-section' &&
-              sectionID !== 'anagraphic-booking-section' &&
+              sectionID !== idQ1 &&
+              sectionID !== idQ2 &&
               'survey-question-container__shadow survey-question-container__expanded-box'
           )}
         >

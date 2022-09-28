@@ -10,6 +10,8 @@ import {
 import { Form, Input } from '../../components';
 import React, { useEffect, useState } from 'react';
 import './accordion.scss';
+import { useAppSelector } from '../../redux/hooks';
+import { selectDevice } from '../../redux/features/app/appSlice';
 
 interface AccordionI {
   title: string;
@@ -24,6 +26,8 @@ interface AccordionI {
   handleOnToggle?: (collapse: boolean) => void;
   lastBottom?: boolean;
   onClickCta?: () => void;
+  detailAccordion?: boolean;
+  roleList?: boolean;
 }
 
 const Accordion: React.FC<AccordionI> = (props) => {
@@ -40,9 +44,11 @@ const Accordion: React.FC<AccordionI> = (props) => {
     handleOnCheck,
     handleOnToggle,
     onClickCta,
+    detailAccordion = false,
+    roleList = false,
   } = props;
   const [collapseOpen, setCollapseOpen] = useState(false);
-
+  const device = useAppSelector(selectDevice);
   useEffect(() => {
     if (handleOnToggle) handleOnToggle(collapseOpen);
   }, [collapseOpen]);
@@ -53,15 +59,27 @@ const Accordion: React.FC<AccordionI> = (props) => {
       className={clsx(
         className,
         'position-relative',
-        !lastBottom && 'accordion-container__borders'
+        !lastBottom && 'accordion-container__borders',
+        !roleList && 'accordion-container__gray-title'
       )}
     >
       <AccordionHeader
         active={collapseOpen}
         onToggle={() => setCollapseOpen(!collapseOpen)}
+        className={clsx(detailAccordion && 'd-flex align-items-center')}
       >
-        <div className='d-flex justify-content-between'>
-          <span>
+        <div
+          className={clsx(
+            'd-flex',
+            'justify-content-between',
+            'align-items-center'
+          )}
+        >
+          <span
+            className={clsx(
+              detailAccordion && 'accordion-container__header-acc'
+            )}
+          >
             {title} {totElem?.toString() && '(' + totElem + ')'}
           </span>
         </div>
@@ -70,7 +88,7 @@ const Accordion: React.FC<AccordionI> = (props) => {
         <div className='d-flex cta-buttons'>
           <Button
             onClick={onClickCta}
-            className='d-flex justify-content-between'
+            className='d-flex justify-content-between align-items-center'
             type='button'
           >
             <Icon
@@ -80,7 +98,7 @@ const Accordion: React.FC<AccordionI> = (props) => {
               className='mr-2'
               aria-label='Aggiungi'
             />
-            {cta}
+            {!device.mediaIsPhone ? cta : null}
           </Button>
         </div>
       )}

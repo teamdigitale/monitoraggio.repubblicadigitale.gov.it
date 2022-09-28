@@ -31,7 +31,6 @@ import {
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { CardStatusAction } from '../../../../../components';
 import ManageFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/ManageFacilitator/ManageFacilitator';
-import FormFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/FormFacilitator/FormFacilitator';
 import { formFieldI } from '../../../../../utils/formHelper';
 import AddUserRole from '../modals/addUserRole';
 import {
@@ -47,12 +46,14 @@ import {
 import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
 import {
+  GetAuthorityManagerDetail,
   RemoveReferentDelegate,
   UserAuthorityRole,
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import { GetPartnerAuthorityDetail } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import ManageDelegate from '../modals/manageDelegate';
 import ManageReferal from '../modals/manageReferal';
+import FormFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/FormFacilitator/FormFacilitator';
 
 const UsersDetails = () => {
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
@@ -60,10 +61,12 @@ const UsersDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userDetails = useAppSelector(selectUsers)?.detail;
-  const { dettaglioUtente: userInfo = {}, dettaglioRuolo: userRoleList = [] } =
-    userDetails;
+  const {
+    dettaglioUtente: userInfo = {},
+    dettaglioRuolo: userRoleList = [],
+    immagineProfilo,
+  } = userDetails;
   const { mediaIsDesktop } = useAppSelector(selectDevice);
-  const headquarterInfo = userInfo?.authorityRef || undefined;
   const {
     entityId,
     userRole,
@@ -143,7 +146,7 @@ const UsersDetails = () => {
       dispatch(
         setInfoIdsBreadcrumb({
           id: userId,
-          nome: userInfo?.nome + ' ' + userInfo?.cognome,
+          nome: userInfo?.cognome + ' ' + userInfo?.nome,
         })
       );
     }
@@ -166,10 +169,26 @@ const UsersDetails = () => {
   };
 
   useEffect(() => {
+    if (authorityName === undefined) {
+      if (entityId) {
+        dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+      }
+      if (projectId) {
+        dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     if (userRole === userRoles.FAC || userRole === userRoles.VOL) {
       setCurrentForm(<FormFacilitator formDisabled />);
     } else {
-      setCurrentForm(<FormUser formDisabled />);
+      setCurrentForm(
+        <FormUser
+          formDisabled
+          fieldsToHide={userRole !== userRoles.USR ? ['tipoContratto'] : []}
+        />
+      );
     }
   }, [userRole]);
 
@@ -213,6 +232,25 @@ const UsersDetails = () => {
       }
     }
     return 'utente';
+  };
+  const getSubtitle = () => {
+    if (userRole) {
+      switch (userRole) {
+        case userRoles.DEG:
+        case userRoles.DEGP:
+        case userRoles.DEPP:
+        case userRoles.REG:
+        case userRoles.REGP:
+        case userRoles.REPP:
+          return authorityName as string;
+        case userRoles.FAC:
+        case userRoles.VOL:
+          return '';
+        default:
+          '';
+      }
+    }
+    return '';
   };
 
   const getModalID = () => {
@@ -430,14 +468,13 @@ const UsersDetails = () => {
     role: UserAuthorityRole
   ) => {
     if (authorityId) {
-      projectId &&
-        (await dispatch(
+      if (projectId) {
+        await dispatch(
           RemoveReferentDelegate(authorityId, projectId, cf, role)
-        ));
-      entityId &&
-        (await dispatch(
-          RemoveReferentDelegate(authorityId, entityId, cf, role)
-        ));
+        );
+      } else if (entityId) {
+        await dispatch(RemoveReferentDelegate(authorityId, entityId, cf, role));
+      }
     }
   };
 
@@ -478,14 +515,15 @@ const UsersDetails = () => {
         <div>
           <DetailLayout
             titleInfo={{
-              title: userInfo?.nome + ' ' + userInfo?.cognome,
+              title: userInfo?.cognome + ' ' + userInfo?.nome,
               status: getUserRoleStatus(),
               upperTitle: { icon: 'it-user', text: getUpperTitle() },
-              subTitle: headquarterInfo,
+              subTitle: getSubtitle(),
               iconAvatar: true,
-              name: userInfo?.nome,
               surname: userInfo?.cognome,
+              name: userInfo?.nome,
             }}
+            profilePicture={immagineProfilo}
             formButtons={getButtons()}
             itemsList={itemList}
             buttonsPosition='BOTTOM'
@@ -539,7 +577,16 @@ const UsersDetails = () => {
                       [CRUDActionTypes.VIEW]: role.associatoAUtente
                         ? () =>
                             navigate(
-                              `/area-amministrativa/programmi/${role?.id}`,
+                              `/area-amministrativa/${
+                                role?.codiceRuolo === userRoles.VOL ||
+                                role?.codiceRuolo === userRoles.FAC ||
+                                role?.codiceRuolo === userRoles.REGP ||
+                                role?.codiceRuolo === userRoles.DEGP ||
+                                role?.codiceRuolo === userRoles.REPP ||
+                                role?.codiceRuolo === userRoles.DEPP
+                                  ? 'progetti'
+                                  : 'programmi'
+                              }/${role?.id}`,
                               {
                                 replace: true,
                               }

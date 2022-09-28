@@ -49,6 +49,9 @@ const UserProfile = lazy(
 );
 
 const OpenData = lazy(() => import('../pages/common/OpenData/openData'));
+const SurveyOnline = lazy(
+  () => import('../pages/common/SurveyOnline/surveyOnline')
+);
 
 /**
  The "routes.tsx" file is now useless, lazy loading is implemented for every 
@@ -87,10 +90,21 @@ const AppRoutes: React.FC = () => {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route path='/auth-redirect' element={<AuthRedirect />} />
+        <Route
+          path='/open-data'
+          element={
+            <FullLayout>
+              <OpenData />
+            </FullLayout>
+          }
+        />
         {isLogged ? (
           <>
+            <Route
+              path='/area-amministrativa/servizi/:serviceId/stampa-questionario/:idQuestionario'
+              element={<PrintSurvey />}
+            />
             <Route path='/' element={<FullLayout isFull />}>
-              <Route path='/stampa-questionario' element={<PrintSurvey />} />
               {process.env.NODE_ENV === 'development' ? (
                 <Route
                   path='/'
@@ -199,9 +213,22 @@ const AppRoutes: React.FC = () => {
           </>
         ) : (
           <>
+            <Route path='/auth/:token' element={<Auth />} />
             <Route path='/auth' element={<Auth />} />
             <Route path='/' element={<FullLayout />}>
+              {/* Public Paths */}
               <Route path='/onboarding' element={<Onboarding />} />
+              <Route path='/dashboard' element={<Dashboard />} />
+              <Route
+                path='/'
+                element={<Navigate replace to={defaultRedirectUrl} />}
+              />
+            </Route>
+            <Route path='/' element={<FullLayout withBreadcrumb={false} />}>
+              <Route
+                path='/servizi/questionario/:idQuestionario/online/:token'
+                element={<SurveyOnline />}
+              />
               <Route
                 path='/'
                 element={<Navigate replace to={defaultRedirectUrl} />}
@@ -209,10 +236,6 @@ const AppRoutes: React.FC = () => {
             </Route>
           </>
         )}
-        <Route path='/' element={<FullLayout />}>
-          {/* Public Paths */}
-          <Route path='/open-data' element={<OpenData />} />
-        </Route>
         <Route
           path='/'
           element={<Navigate replace to={defaultRedirectUrl} />}

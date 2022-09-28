@@ -13,40 +13,57 @@ export interface ButtonInButtonsBar extends ButtonProps {
 
 interface StickyButtonsI {
   buttons: ButtonInButtonsBar[];
+  citizenList?: boolean;
+  citizenDeleteChange?: boolean;
+  isUserProfile?: boolean;
 }
 
-const ButtonsBar: React.FC<StickyButtonsI> = ({ buttons = [] }) => {
+const ButtonsBar: React.FC<StickyButtonsI> = ({
+  buttons = [],
+  citizenList = false,
+  citizenDeleteChange = false,
+  isUserProfile = false,
+}) => {
   const device = useAppSelector(selectDevice);
 
   return (
     <div
       className={clsx(
         'buttons-bar',
-        'justify-content-end',
+        citizenList ? 'justify-content-start' : 'justify-content-end',
+        citizenDeleteChange ? 'flex-nowrap' : null,
+        isUserProfile && 'mr-2',
         'pt-2',
-        device.mediaIsPhone && 'py-2 flex-nowrap'
+        device.mediaIsPhone && 'py-2'
       )}
     >
-      {buttons.map((button: ButtonInButtonsBar, index: number) => (
-        <Button
-          key={index}
-          {...button}
-          tabIndex={-1}
-          className={clsx('text-nowrap', 'px-2', button.buttonClass)}
-          size='xs'
-        >
-          {button.iconForButton && (
-            <Icon
-              icon={button.iconForButton}
-              size='sm'
-              color={button.iconColor || 'white'}
-              className='mr-1'
-              aria-label={button.text}
-            />
-          )}
-          <span>{button.text}</span>
-        </Button>
-      ))}
+      {buttons.map((button: ButtonInButtonsBar, index: number) => {
+        const buttonProps = {
+          ...button,
+          buttonClass: undefined,
+          iconColor: undefined,
+          iconForButton: undefined,
+        };
+        return (
+          <Button
+            key={index}
+            {...buttonProps}
+            className={clsx('text-nowrap', 'px-2', button.buttonClass)}
+            size='xs'
+          >
+            {button.iconForButton && (
+              <Icon
+                icon={button.iconForButton}
+                size='sm'
+                color={button.iconColor || 'white'}
+                className='mr-1'
+                aria-label={button.text}
+              />
+            )}
+            <span>{button.text}</span>
+          </Button>
+        );
+      })}
     </div>
   );
 };

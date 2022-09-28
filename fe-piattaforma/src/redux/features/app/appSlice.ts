@@ -13,7 +13,7 @@ interface AppStateI {
     isLoading: boolean;
     count: number;
   };
-  breadCrumb: BreadcrumbI[];
+  customBreadCrumb: BreadcrumbI[];
   infoIdsBreadcrumb: { id: string | number; nome: string }[];
 }
 
@@ -23,7 +23,7 @@ const initialState: AppStateI = {
     isLoading: false,
     count: 0,
   },
-  breadCrumb: [],
+  customBreadCrumb: [],
   infoIdsBreadcrumb: [],
 };
 
@@ -48,8 +48,8 @@ export const appSlice = createSlice({
     updateDevice: (state, action: PayloadAction<any>) => {
       state.device = action.payload;
     },
-    updateBreadcrumb: (state, action: PayloadAction<any>) => {
-      state.breadCrumb = [...action.payload];
+    updateCustomBreadcrumb: (state, action: PayloadAction<any>) => {
+      state.customBreadCrumb = [...action.payload];
     },
     setInfoIdsBreadcrumb: (state, action: PayloadAction<any>) => {
       if (
@@ -58,6 +58,15 @@ export const appSlice = createSlice({
         )[0]
       ) {
         state.infoIdsBreadcrumb.push(action.payload);
+      } else if (action.payload?.updateRoleBreadcrumb) {
+        // in role management: same id, update label realtime
+        const index = state.infoIdsBreadcrumb.findIndex(
+          (elem) =>
+            elem.id === action.payload?.id && elem.nome !== action.payload?.nome
+        );
+        if (index >= 0) {
+          state.infoIdsBreadcrumb[index].nome = action.payload?.nome;
+        }
       }
     },
   },
@@ -67,13 +76,14 @@ export const {
   showLoader,
   hideLoader,
   updateDevice,
-  updateBreadcrumb,
+  updateCustomBreadcrumb,
   setInfoIdsBreadcrumb,
 } = appSlice.actions;
 
 export const selectLoader = (state: RootState) => state.app.loader;
 export const selectDevice = (state: RootState) => state.app.device;
-export const selectBreadcrumb = (state: RootState) => state.app.breadCrumb;
+export const selectCustomBreadcrumb = (state: RootState) =>
+  state.app.customBreadCrumb;
 export const selectInfoIdsBreadcrumb = (state: RootState) =>
   state.app.infoIdsBreadcrumb;
 

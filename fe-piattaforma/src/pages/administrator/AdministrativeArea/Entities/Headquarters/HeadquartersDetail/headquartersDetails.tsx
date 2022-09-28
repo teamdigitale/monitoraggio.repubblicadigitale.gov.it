@@ -145,7 +145,7 @@ const HeadquartersDetails = () => {
       title: 'Facilitatori',
       items:
         headquarterfacilitators?.map((facilitator: HeadquarterFacilitator) => ({
-          nome: `${facilitator.nome} ${facilitator.cognome}`,
+          nome: `${facilitator.cognome} ${facilitator.nome} `,
           stato: facilitator.stato,
           actions:
             facilitator.stato === entityStatus.ATTIVO &&
@@ -338,13 +338,14 @@ const HeadquartersDetails = () => {
                   cta={authorityId ? getAccordionCTA(item.title).cta : null}
                   onClickCta={getAccordionCTA(item.title)?.ctaAction}
                   lastBottom={index === itemAccordionList.length - 1}
+                  detailAccordion
                 >
                   {item.items?.length ? (
                     item.items.map((cardItem) => (
                       <CardStatusAction
                         key={cardItem.id}
-                        title={`${cardItem.nome} ${
-                          cardItem.cognome ? cardItem.cognome : ''
+                        title={`${cardItem.cognome ? cardItem.cognome : ''} ${
+                          cardItem.nome
                         }`.trim()}
                         status={cardItem.stato}
                         id={cardItem.id}
@@ -355,7 +356,7 @@ const HeadquartersDetails = () => {
                     ))
                   ) : (
                     <EmptySection
-                      title={`Non esistono ${item.title?.toLowerCase()} associati`}
+                      title={`Non sono presenti ${item.title?.toLowerCase()} associati.`}
                       horizontal
                       aside
                     />

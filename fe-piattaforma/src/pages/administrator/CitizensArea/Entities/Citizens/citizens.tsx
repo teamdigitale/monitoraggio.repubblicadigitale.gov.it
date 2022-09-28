@@ -5,6 +5,7 @@ import GenericSearchFilterTableLayout, {
   SearchInformationI,
 } from '../../../../../components/genericSearchFilterTableLayout/genericSearchFilterTableLayout';
 import {
+  resetCitizenDetails,
   selectEntityFilters,
   selectEntityFiltersOptions,
   selectEntityList,
@@ -13,6 +14,7 @@ import {
   setEntityPagination,
 } from '../../../../../redux/features/citizensArea/citizensAreaSlice';
 import {
+  DownloadEntityValues,
   GetEntityFilterValues,
   GetEntityValues,
 } from '../../../../../redux/features/citizensArea/citizensAreaThunk';
@@ -26,9 +28,7 @@ import { newTable, TableRowI } from '../../../../../components/Table/table';
 import { TableHeading } from '../../utils';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
-import SearchCitizenModal from '../SearchCitizenModal/searchCitizenModal';
 import PageTitle from '../../../../../components/PageTitle/pageTitle';
-import { updateBreadcrumb } from '../../../../../redux/features/app/appSlice';
 
 const entity = 'citizensArea';
 const siteDropdownLabel = 'idsSedi';
@@ -57,20 +57,7 @@ const Citizens = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Area Cittadini',
-          url: '/area-cittadini',
-          link: false,
-        },
-        {
-          label: 'I miei cittadini',
-          url: '/area-cittadini',
-          link: true,
-        },
-      ])
-    );
+    dispatch(resetCitizenDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -115,7 +102,8 @@ const Citizens = () => {
   const searchInformation: SearchInformationI = {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
-    placeholder: 'Inserisci il codice fiscale del cittadino che stai cercando',
+    placeholder:
+      'Inserisci il nome, il cognome, l’identificativo, il codice fiscale o il n. documento del cittadino',
     isClearable: true,
     title: 'Cerca cittadino',
   };
@@ -147,7 +135,7 @@ const Citizens = () => {
       TableHeading,
       (citizensList || []).map((td) => ({
         id: td.id,
-        name: td.nome + ' ' + td.cognome,
+        name: td.cognome + ' ' + td.nome,
         numeroServizi: td.numeroServizi,
         numeroQuestionariCompilati: td.numeroQuestionariCompilati,
       }))
@@ -161,21 +149,22 @@ const Citizens = () => {
     if (Array.isArray(citizensList) && citizensList.length)
       setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [citizensList?.length]);
+  }, [citizensList]);
 
   const onActionClick: CRUDActionsI = {
-    [CRUDActionTypes.CREATE]: (td: TableRowI | string) => {
-      console.log(td);
-    },
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
       navigate(`${typeof td === 'string' ? td : td?.id}`);
     },
-    [CRUDActionTypes.EDIT]: (td: TableRowI | string) => {
-      console.log(td);
-    },
-    [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-      console.log(td);
-    },
+    // [CRUDActionTypes.EDIT]: (td: TableRowI | string) => {
+    //   console.log(td);
+    // },
+    // [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+    //   console.log(td);
+    // },
+  };
+
+  const handleDownloadList = () => {
+    dispatch(DownloadEntityValues());
   };
 
   const PageTitleCitizen: {
@@ -200,15 +189,12 @@ const Citizens = () => {
         searchInformation={searchInformation}
         dropdowns={dropdowns}
         filtersList={filtersList}
-        // cta={() => {
-        //   dispatch(openModal({ id: 'search-citizen-modal' }));
-        // }}
-        // ctaPrint={() => window.open('/stampa-questionario', '_blank')}
         {...PageTitleCitizen}
         resetFilterDropdownSelected={(filterKey: string) =>
           setFilterDropdownSelected(filterKey)
         }
         citizen
+        ctaDownload={handleDownloadList}
       >
         {citizensList?.length && tableValues?.values?.length ? (
           <div>
@@ -233,9 +219,8 @@ const Citizens = () => {
             ) : null}
           </div>
         ) : (
-          <EmptySection title='Non ci sono cittadini' />
+          <EmptySection title='Non sono presenti cittadini' />
         )}
-        <SearchCitizenModal />
       </GenericSearchFilterTableLayout>
     </>
   );

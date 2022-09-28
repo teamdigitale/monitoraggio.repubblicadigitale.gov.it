@@ -113,8 +113,8 @@ export const createProgram =
           return res;
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }

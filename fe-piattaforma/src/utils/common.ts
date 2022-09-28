@@ -4,7 +4,18 @@ import React from 'react';
 import { FilterI } from '../components/DropdownFilter/dropdownFilter';
 import { OptionType } from '../components/Form/select';
 import { TableRowI } from '../components/Table/table';
+import {
+  idQ1,
+  idQ2,
+  idQ3,
+  idQ4,
+  titleQ1,
+  titleQ2,
+  titleQ3,
+  titleQ4,
+} from '../pages/administrator/AdministrativeArea/Entities/Surveys/surveyConstants';
 import { RolePermissionI } from '../redux/features/roles/rolesSlice';
+import { formFieldI } from './formHelper';
 
 export const formatDate = (date?: string) => {
   if (date) {
@@ -56,6 +67,21 @@ export const mapOptions = (
         elem.toString().charAt(0).toUpperCase() +
         elem.toString().slice(1).toLowerCase(),
       value: elem.toString(),
+    });
+  });
+  return arrayMapped;
+};
+
+export const mapOptionsCitizens = (
+  arrayToMap: { [key: string]: string | number }[]
+) => {
+  const arrayMapped: FilterI[] = [];
+  arrayToMap?.map((elem) => {
+    arrayMapped.push({
+      label:
+        elem.nome.toString().charAt(0).toUpperCase() +
+        elem.nome.toString().slice(1).toLowerCase(),
+      value: elem.id,
     });
   });
   return arrayMapped;
@@ -241,9 +267,16 @@ export const downloadFile = (file: string, fileName: string) => {
   const link = document.createElement('a');
   link.setAttribute('href', file);
   link.setAttribute('download', fileName);
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  const target = document.getElementById('file-target');
+  if (target) {
+    target.appendChild(link);
+    link.click();
+    target.removeChild(link);
+  } else {
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 };
 
 export const downloadBlob = (
@@ -299,4 +332,140 @@ export const transformFiltersToQueryParams = (filters: {
     }
   });
   return filterString === '' ? filterString : '?' + filterString;
+};
+
+export const getUrlParameter = (parameterName: string) => {
+  let result = null,
+    tmp = [];
+  window.location.search
+    .substring(1)
+    .split('&')
+    .forEach((item) => {
+      tmp = item.split('=');
+      if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+    });
+  return result;
+};
+
+export const formatAndParseJsonString = (jsonString: string) => {
+  try {
+    return JSON.parse(jsonString);
+  } catch (error) {
+    try {
+      return JSON.parse(decodeURI(jsonString).replace(/\s+/g, ' ').trim());
+    } catch (error) {
+      try {
+        return JSON.parse(decodeURI(jsonString).replaceAll("'", '"'));
+      } catch (error) {
+        return '';
+      }
+    }
+  }
+};
+
+export const createStringOfCompiledSurveySection = (
+  formValues: { [key: string]: formFieldI['value'] | undefined } | undefined
+) => {
+  if (formValues === undefined) return '';
+  const formattedData = { ...formValues };
+  Object.keys(formattedData).forEach((key: string) => {
+    if (!Array.isArray(formattedData[key])) {
+      formattedData[key] = formattedData[key]
+        ?.toString()
+        .split('§')
+        .map((e) => e.replaceAll(',', '§'));
+    } else if (Array.isArray(formattedData[key])) {
+      if (key === '25' || key === '26') {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        formattedData[key] = (formattedData[key] || ['']).map((e) =>
+          e.toString().replaceAll(',', '§')
+        );
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+      } else if (formattedData[key].length === 1) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        formattedData[key] = (formattedData[key] || [''])[0]
+          .toString()
+          .split('§')
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          .map((e) => e.toString().replaceAll(',', '§'));
+      } else {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        formattedData[key] = (formattedData[key] || ['']).map((e) =>
+          e.toString().replaceAll(',', '§')
+        );
+      }
+    }
+  });
+  const newData: { [key: string]: any }[] = [];
+  Object.keys(formattedData).forEach((key: string) => {
+    newData.push({ [key]: formattedData[key] });
+  });
+  return JSON.stringify(newData);
+};
+
+export const convertPayloadSectionInString = (
+  sectionPayload: {
+    [key: string]: formFieldI['value'];
+  },
+  section: number
+) => {
+  const newObject: { [key: string]: string[] } = {};
+  Object.keys(sectionPayload).map((key: string) => {
+    if (sectionPayload[key]) {
+      if (
+        typeof sectionPayload[key] === 'string' ||
+        typeof sectionPayload[key] === 'number' ||
+        typeof sectionPayload[key] === 'boolean'
+      ) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        newObject[key] = [sectionPayload[key]];
+      } else if (Array.isArray(sectionPayload[key])) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        newObject[key] = sectionPayload[key];
+      } else {
+        newObject[key] = [''];
+      }
+    }
+  });
+  switch (section) {
+    case 0:
+      return `{"id":"${idQ1}","title":"${titleQ1}","properties":${createStringOfCompiledSurveySection(
+        newObject
+      ).replaceAll('"', "'")}}`;
+    case 1:
+      return `{"id":"${idQ2}","title":"${titleQ2}","properties":${createStringOfCompiledSurveySection(
+        newObject
+      ).replaceAll('"', "'")}}`;
+    case 2:
+      return `{"id":"${idQ3}","title":"${titleQ3}","properties":${createStringOfCompiledSurveySection(
+        newObject
+      ).replaceAll('"', "'")}}`;
+    case 3:
+      return `{"id":"${idQ4}","title":"${titleQ4}","properties":${createStringOfCompiledSurveySection(
+        newObject
+      ).replaceAll('"', "'")}}`;
+    default:
+      return createStringOfCompiledSurveySection(newObject);
+  }
+};
+
+export const orderArray = (array: any[]) => {
+  if (array?.length > 0) {
+    return array.sort((a, b) => {
+      const labelA = a.label.toLowerCase();
+      const labelB = b.label.toLowerCase();
+      if (labelA < labelB) return -1;
+      if (labelA > labelB) return 1;
+      return 0;
+    });
+  } else {
+    return array;
+  }
 };

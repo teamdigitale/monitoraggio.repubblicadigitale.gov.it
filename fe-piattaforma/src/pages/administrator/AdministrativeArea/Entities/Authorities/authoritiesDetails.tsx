@@ -248,16 +248,19 @@ const AuthoritiesDetails = () => {
           authorityDetails?.sediEntePartner?.map(
             (sedi: { [key: string]: string }) => ({
               ...sedi,
-              actions: {
-                [CRUDActionTypes.VIEW]: onActionClickSede[CRUDActionTypes.VIEW],
-                [CRUDActionTypes.DELETE]:
-                  sedi.stato !== entityStatus.ATTIVO ||
-                  projectState === entityStatus.TERMINATO
-                    ? undefined
-                    : hasUserPermission(['del.sede.partner'])
-                    ? onActionClickSede[CRUDActionTypes.DELETE]
-                    : undefined,
-              },
+              actions: sedi.associatoAUtente
+                ? {
+                    [CRUDActionTypes.VIEW]:
+                      onActionClickSede[CRUDActionTypes.VIEW],
+                    [CRUDActionTypes.DELETE]:
+                      sedi.stato !== entityStatus.ATTIVO ||
+                      projectState === entityStatus.TERMINATO
+                        ? undefined
+                        : hasUserPermission(['del.sede.partner'])
+                        ? onActionClickSede[CRUDActionTypes.DELETE]
+                        : undefined,
+                  }
+                : {},
             })
           ) || [],
       },
@@ -444,7 +447,9 @@ const AuthoritiesDetails = () => {
               title: authorityDetails?.dettagliInfoEnte?.nome,
               status: authorityDetails?.dettagliInfoEnte?.stato,
               upperTitle: { icon: PeopleIcon, text: 'Ente' },
+              subTitle: projectDetail?.nome || projectDetail?.nomeBreve || '',
             }}
+            enteIcon
             formButtons={buttons}
             itemsList={itemsList}
             // itemsAccordionList={itemAccordionList}
@@ -469,13 +474,14 @@ const AuthoritiesDetails = () => {
                   cta={getAccordionCTA(item.title).cta}
                   onClickCta={getAccordionCTA(item.title)?.ctaAction}
                   lastBottom={index === itemAccordionList.length - 1}
+                  detailAccordion
                 >
                   {item.items?.length ? (
                     item.items.map((cardItem) => (
                       <CardStatusAction
                         key={cardItem.id}
-                        title={`${cardItem.nome} ${
-                          cardItem.cognome ? cardItem.cognome : ''
+                        title={`${cardItem.cognome ? cardItem.cognome : ''} ${
+                          cardItem.nome
                         }`.trim()}
                         status={cardItem.stato}
                         id={cardItem.id}
@@ -486,7 +492,11 @@ const AuthoritiesDetails = () => {
                     ))
                   ) : (
                     <EmptySection
-                      title={`Non esistono ${item.title?.toLowerCase()} associati`}
+                      title={`Non sono presenti ${item.title?.toLowerCase()} ${
+                        item.title?.toLowerCase() === 'sedi'
+                          ? `associate.`
+                          : `associati.`
+                      }`}
                       horizontal
                       aside
                     />

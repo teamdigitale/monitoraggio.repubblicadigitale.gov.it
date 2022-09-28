@@ -1,14 +1,18 @@
 .onboarding {
   &__img-profile {
-    max-width: 174px;
-    max-height: 174px;
-    min-height: 174px,
+    width: 174px;
+    height: 174px;
   }
 
   &__icon-container {
-    bottom: 14px;
-    right: 30px;
+    bottom: 5px;
+    left: -5px;
+    width: 45px !important;
+    height: 45px !important;
   }
 
-  
+  &__icon {
+    left:6px;
+    top: 6px;
+  }
 }

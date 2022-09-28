@@ -153,7 +153,7 @@ const TargetDateFormProjects: React.FC<TargetDateFormProjectsI> = (props) => {
           id: `${intoModal && 'modal-'}${formForSection}-valoreObiettivo${
             count + 1
           }`,
-          label: `valore Obiettivo`,
+          label: `Valore obiettivo`,
           order: count + 1,
         }),
         newFormField({
@@ -162,7 +162,7 @@ const TargetDateFormProjects: React.FC<TargetDateFormProjectsI> = (props) => {
           required: true,
           type: 'date',
           id: `valoreObiettivo${count + 1}data`,
-          label: `Data Obiettivo`,
+          label: `Data obiettivo`,
           order: count + 1,
         })
       );
@@ -260,7 +260,7 @@ const TargetDateFormProjects: React.FC<TargetDateFormProjectsI> = (props) => {
                       >
                         <Icon
                           className='mr-3'
-                          icon='it-delete'
+                          icon='it-less-circle'
                           color='primary'
                           size='sm'
                           aria-label='delete'

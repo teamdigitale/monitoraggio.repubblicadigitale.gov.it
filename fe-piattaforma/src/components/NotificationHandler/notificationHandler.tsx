@@ -49,6 +49,7 @@ const NotificationHandler: React.FC = () => {
           key={notify?.id}
           className='position-relative'
           color={getColorByStatus(notify?.status)}
+          style={{ pointerEvents: 'all' }}
         >
           {notify?.message}
           {notify?.closable ? (

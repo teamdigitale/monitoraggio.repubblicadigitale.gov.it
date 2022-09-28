@@ -88,7 +88,6 @@ const StatusChip: React.FC<StatusChipI> = (props) => {
       <Button
         className='px-0 py-0'
         id={`button-status-${rowTableId ? rowTableId : new Date().getTime()}`}
-        // onClick={() => console.log('tooltip')}
       >
         <Chip
           className={clsx(
@@ -99,7 +98,15 @@ const StatusChip: React.FC<StatusChipI> = (props) => {
             device.mediaIsPhone && 'my-2'
           )}
         >
-          <ChipLabel className={clsx(statusColor(status), chipWidth && 'px-3')}>
+          <ChipLabel
+            className={clsx(
+              statusColor(status),
+              chipWidth && 'px-3',
+              device.mediaIsPhone &&
+                status?.length >= 11 &&
+                'chip-label__chip-height'
+            )}
+          >
             {status?.toUpperCase()}
           </ChipLabel>
         </Chip>{' '}

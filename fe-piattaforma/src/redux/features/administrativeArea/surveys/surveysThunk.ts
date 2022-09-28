@@ -1,6 +1,7 @@
 import { Dispatch, Selector } from '@reduxjs/toolkit';
 import API from '../../../../utils/apiHelper';
 import {
+  convertPayloadSectionInString,
   mapOptions,
   transformFiltersToQueryParams,
 } from '../../../../utils/common';
@@ -10,7 +11,6 @@ import {
   newForm,
   newFormField,
 } from '../../../../utils/formHelper';
-// import { generateJsonFormSchema } from '../../../../utils/jsonFormHelper';
 import { RegexpType } from '../../../../utils/validator';
 import { RootState } from '../../../store';
 import { hideLoader, showLoader } from '../../app/appSlice';
@@ -22,7 +22,10 @@ import {
   setEntityPagination,
 } from '../administrativeAreaSlice';
 import {
+  resetCompilingSurveyForm,
+  setPrintSurveySection,
   setSurveyInfoForm,
+  setSurveyOnline,
   setSurveyQuestion,
   setSurveySection,
   SurveyQuestionI,
@@ -235,8 +238,6 @@ const SetSurveySectionAction = { type: 'surveys/SetSurveySection' };
 export const SetSurveySection =
   (payload?: any) => async (dispatch: Dispatch) => {
     try {
-      // console.log({ payload });
-      // TODO manage update section
       dispatch({ ...SetSurveySectionAction, payload });
       dispatch(showLoader());
       dispatch(
@@ -418,8 +419,7 @@ export const SetSurveyCreation =
             schemaui: survey?.sectionsSchemaResponse[index].schemaui,
           };
           if (index < 2) {
-            newSection.schema =
-              survey?.sectionsSchemaResponse[index].schema;
+            newSection.schema = survey?.sectionsSchemaResponse[index].schema;
           } else {
             newSection.schema = getSchemaSection(
               section,
@@ -443,13 +443,17 @@ export const SetSurveyCreation =
 
 const GetSurveyInfoAction = { type: 'surveys/GetSurveyInfo' };
 export const GetSurveyInfo =
-  (questionarioId: string) => async (dispatch: Dispatch) => {
+  (questionarioId: string, isPrintPage?: boolean) =>
+  async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...GetSurveyInfoAction, questionarioId });
       const res = await API.get(`questionarioTemplate/${questionarioId}`);
       if (res?.data) {
         dispatch(setSurveyInfoForm(res.data));
+        if (isPrintPage) {
+          dispatch(setPrintSurveySection(res.data));
+        }
       }
     } catch (e) {
       console.error('questionario detail GetSurveyInfo', e);
@@ -462,23 +466,61 @@ const PostFormCompletedByCitizenAction = {
   type: 'surveys/PostFormCompletedByCitizen',
 };
 export const PostFormCompletedByCitizen =
-  (payload?: any) => async (dispatch: Dispatch) => {
+  (idQuestionario: string | undefined, payload: any) =>
+  async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...PostFormCompletedByCitizenAction, payload });
-      const entityEndpoint = `/`;
+      const entityEndpoint = `/servizio/cittadino/questionarioCompilato/${idQuestionario}/compila`;
+      const consenso = payload?.[0]['18']?.includes('ONLINE')
+        ? 'ONLINE'
+        : payload?.[0]['18']?.includes('CARTACEO')
+        ? 'CARTACEO'
+        : 'EMAIL';
+      /*(payload || []).map((section: any) => {
+        Object.keys(section).map((key: string) => {
+          if (typeof(section[key]) === 'string' && section[key]?.includes('§')) {
+            const arrayValues: string[] = section[key]?.split('§');
+            section[key] = arrayValues;
+          }
+        });
+      });*/
       const body = {
-        payload,
+        annoDiNascitaDaAggiornare: payload?.[0]['8'],
+        categoriaFragiliDaAggiornare: payload?.[0]['13'],
+        cittadinanzaDaAggiornare: payload?.[0]['11'],
+        codiceFiscaleDaAggiornare: payload?.[0]['3'],
+        cognomeDaAggiornare: payload?.[0]['2'],
+        comuneDiDomicilioDaAggiornare: payload?.[0]['12'],
+        consensoTrattamentoDatiRequest: {
+          codiceFiscaleCittadino: payload?.[0]['3'],
+          consensoTrattamentoDatiEnum: consenso,
+          numeroDocumentoCittadino: payload?.[0]['6'],
+        },
+        emailDaAggiornare: payload?.[0]['14'],
+        genereDaAggiornare: payload?.[0]['7'],
+        nomeDaAggiornare: payload?.[0]['1'],
+        numeroDiCellulareDaAggiornare: payload?.[0]['16'],
+        numeroDocumentoDaAggiornare: payload?.[0]['6'],
+        occupazioneDaAggiornare: payload?.[0]['10'],
+        prefissoTelefonoDaAggiornare: payload?.[0]['15'],
+        sezioneQ1Questionario: convertPayloadSectionInString(payload[0], 0),
+        sezioneQ2Questionario: convertPayloadSectionInString(payload[1], 1),
+        sezioneQ3Questionario: convertPayloadSectionInString(payload[2], 2),
+        sezioneQ4Questionario: convertPayloadSectionInString(payload[3], 3),
+        telefonoDaAggiornare: payload?.[0]['17'],
+        tipoDocumentoDaAggiornare: payload?.[0]['5'],
+        titoloDiStudioDaAggiornare: payload?.[0]['9'],
       };
-      const res = await API.post(entityEndpoint, body);
-      if (res) {
-        /* TODO: controllo se post andata a buon fine */
-      }
+      await API.post(entityEndpoint, body);
+      dispatch(resetCompilingSurveyForm());
+      return true;
     } catch (e) {
       console.error(
         'post questionario compilato PostFormCompletedByCitizen',
         e
       );
+      return false;
     } finally {
       dispatch(hideLoader());
     }
@@ -502,7 +544,6 @@ export const UpdateSurveyExclusiveField =
 const GetSurveyAllLightAction = {
   type: 'administrativeArea/GetSurveyAllLight',
 };
-
 export const GetSurveyAllLight = () => async (dispatch: Dispatch) => {
   try {
     dispatch(showLoader());
@@ -527,7 +568,6 @@ export const GetSurveyAllLight = () => async (dispatch: Dispatch) => {
 const DeleteSurveyAction = {
   type: 'surveys/DeleteSurvey',
 };
-
 export const DeleteSurvey =
   (idQuestionario: string) => async (dispatch: Dispatch) => {
     try {
@@ -539,6 +579,57 @@ export const DeleteSurvey =
       }
     } catch (e) {
       console.error('UpdateSurveyDefault error', e);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const GetSurveyOnlineAction = { type: 'surveys/GetSurveyOnline' };
+export const GetSurveyOnline =
+  (idQuestionario: string, token: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...GetSurveyOnlineAction, idQuestionario, token });
+      const res = await API.get(
+        `/servizio/cittadino/questionarioCompilato/${idQuestionario}/anonimo`,
+        {
+          params: { t: token },
+        }
+      );
+      if (res) {
+        dispatch(setSurveyOnline(res.data));
+        return true;
+      }
+    } catch (e) {
+      console.error('GetSurveyOnline error', e);
+      return false;
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const CompileSurveyOnlineAction = { type: 'surveys/CompileSurveyOnline' };
+export const CompileSurveyOnline =
+  (idQuestionario: string, token: string, body: any) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...CompileSurveyOnlineAction, body });
+      const res = await API.post(
+        `/servizio/cittadino/questionarioCompilato/${idQuestionario}/compila/anonimo`,
+        {
+          sezioneQ4Questionario: body,
+        },
+        {
+          params: { t: token },
+        }
+      );
+      if (res) {
+        return true;
+      }
+    } catch (e) {
+      console.error('CompileSurveyOnline error', e);
+      return false;
     } finally {
       dispatch(hideLoader());
     }

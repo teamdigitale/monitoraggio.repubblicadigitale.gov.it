@@ -74,6 +74,7 @@ const Users = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
+    dispatch(resetUserDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -246,6 +247,8 @@ const Users = () => {
       resetFilterDropdownSelected={(filterKey: string) =>
         setFilterDropdownSelected(filterKey)
       }
+      tooltip
+      tooltiptext={searchInformation.placeholder}
     >
       {usersList?.length && tableValues?.values?.length ? (
         <>

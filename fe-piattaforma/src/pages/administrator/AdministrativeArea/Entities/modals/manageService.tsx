@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
@@ -13,10 +13,14 @@ import {
 } from '../../../../../redux/features/modal/modalSlice';
 import {
   CreateService,
-  GetAllServices,
+  GetServicesDetail,
   UpdateService,
 } from '../../../../../redux/features/administrativeArea/services/servicesThunk';
 import { useAppSelector } from '../../../../../redux/hooks';
+import { getUserHeaders } from '../../../../../redux/features/user/userThunk';
+import { useNavigate } from 'react-router-dom';
+import { idQ3, titleQ3 } from '../Surveys/surveyConstants';
+import { resetServiceDetails } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 
 const id = formTypes.SERVICES;
 
@@ -28,11 +32,12 @@ interface ManageServicesFormI {
 interface ManageServicesI extends withFormHandlerProps, ManageServicesFormI {}
 
 const ManageServices: React.FC<ManageServicesI> = ({
-  clearForm,
+  clearForm = () => ({}),
   formDisabled,
   creation,
 }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const idServizio = useAppSelector(selectModalPayload)?.idServizio;
   const [newFormsValues, setNewFormsValues] = useState<{
     [key: string]: formFieldI['value'];
@@ -40,44 +45,74 @@ const ManageServices: React.FC<ManageServicesI> = ({
   const [areFormsValid, setAreFormsValid] = useState<boolean>(true);
   const [questionarioCompilatoQ3, setQuestionarioCompilatoQ3] =
     useState<string>('');
+  const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+    getUserHeaders();
+
+  useEffect(() => {
+    if (creation) dispatch(resetServiceDetails());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [creation]);
+
+  const resetModal = (toClose = true) => {
+    clearForm();
+    if (toClose) dispatch(closeModal());
+  };
 
   const createPayload = (answersForms: {
     [key: string]: formFieldI['value'];
   }) => {
-    const answersQ3 =
-      "{'id':'anagraphic-service-section','title':'Anagrafica del servizio','properties':[" +
-      questionarioCompilatoQ3?.replaceAll('"', "'") +
-      ']}';
-
+    // TODO rendere dinamico
+    const answersQ3 = `{"id":"${idQ3}","title":"${titleQ3}","properties":${questionarioCompilatoQ3?.replaceAll(
+      '"',
+      "'"
+    )}}`;
+    const tipologiaServizio = answersForms['24']?.toString()?.split('§');
     const payload = {
       data: answersForms['22'] || '',
-      durataServizio: answersForms?.durataServizio,
-      idEnte: answersForms?.nomeEnte,
-      idSede: answersForms?.nomeSede,
+      durataServizio: answersForms['23'] || '',
+      idEnte: answersForms?.idEnte,
+      idSede: answersForms?.idSede,
       nomeServizio: answersForms?.nomeServizio,
       profilazioneParam: {
-        // TODO: update profilazione MOCK
-        codiceFiscaleUtenteLoggato: 'UTENTE1',
-        codiceRuoloUtenteLoggato: 'DTD',
-        idProgetto: 0,
-        idProgramma: 0,
+        codiceFiscaleUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
+        idProgetto: idProgetto,
+        idProgramma: idProgramma,
       },
-      questionarioCompilatoQ3: answersQ3,
-      tipoDiServizioPrenotato: answersForms['25'] || '',
+      sezioneQuestionarioCompilatoQ3: answersQ3,
+      tipoDiServizioPrenotato: tipologiaServizio,
     };
     return payload;
   };
 
-  const handleCreateService = () => {
+  const handleCreateService = async () => {
     if (areFormsValid) {
       if (creation) {
-        dispatch(CreateService(createPayload(newFormsValues)));
+        const res = await dispatch(
+          CreateService(createPayload(newFormsValues))
+        );
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (res?.data?.idServizio) {
+          navigate(
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            `/area-amministrativa/servizi/${res?.data?.idServizio}/info`
+          );
+          resetModal();
+        }
       } else {
-        dispatch(UpdateService(idServizio, createPayload(newFormsValues)));
+        const res = await dispatch(
+          UpdateService(idServizio, createPayload(newFormsValues))
+        );
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (res) {
+          dispatch(GetServicesDetail(idServizio));
+          resetModal();
+        }
       }
     }
-    dispatch(closeModal());
-    dispatch(GetAllServices());
   };
 
   return (
@@ -85,16 +120,16 @@ const ManageServices: React.FC<ManageServicesI> = ({
       id={id}
       primaryCTA={{
         disabled: !areFormsValid,
-        label: 'Crea servizio',
+        label: creation ? 'Crea servizio' : 'Salva',
         onClick: handleCreateService,
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: () => clearForm?.(),
+        onClick: resetModal,
       }}
     >
       <div className='px-3'>
-        <FormService // TODO: fix validity
+        <FormService
           creation={creation || false}
           formDisabled={!!formDisabled}
           sendNewFormsValues={(newData?: {

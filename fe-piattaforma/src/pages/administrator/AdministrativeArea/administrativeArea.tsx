@@ -50,6 +50,7 @@ const SurveyDetailsEdit = lazy(
 );
 import ProtectedComponent from '../../../hoc/AuthGuard/ProtectedComponent/ProtectedComponent';
 import { defaultRedirectUrl } from '../../../routes';
+import ViewSurvey from './Entities/Surveys/viewSurvey/viewSurvey';
 
 interface PageTitleMockI {
   [key: string]: {
@@ -61,32 +62,32 @@ interface PageTitleMockI {
 
 export const PageTitleMock: PageTitleMockI = {
   '/area-amministrativa/programmi': {
-    title: 'Elenco Programmi',
+    title: 'Elenco programmi',
     textCta: 'Crea nuovo programma',
     iconCta: 'it-plus',
   },
   '/area-amministrativa/progetti': {
-    title: 'Elenco Progetti',
+    title: 'Elenco progetti',
     textCta: 'Crea nuovo progetto',
     iconCta: 'it-plus',
   },
   '/area-amministrativa/utenti': {
-    title: 'Elenco Utenti',
+    title: 'Elenco utenti',
     textCta: 'Crea nuovo utente',
     iconCta: 'it-plus',
   },
   '/area-amministrativa/enti': {
-    title: 'Elenco Enti',
+    title: 'Elenco enti',
     textCta: 'Crea nuovo ente',
     iconCta: 'it-plus',
   },
   '/area-amministrativa/questionari': {
-    title: 'Elenco Questionari',
+    title: 'Elenco questionari',
     textCta: 'Crea nuovo questionario',
     iconCta: 'it-plus',
   },
   '/area-amministrativa/servizi': {
-    title: 'Elenco Servizi',
+    title: 'Elenco servizi',
     textCta: 'Crea servizio',
     iconCta: 'it-plus',
   },
@@ -448,8 +449,13 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='questionari-compila'
-    path='questionari/compila'
+    path='servizi/:serviceId/cittadini/compila/:idQuestionarioCompilato'
     element={<CompileSurvey />}
+  />,
+  <Route
+    key='questionari-compilato'
+    path='servizi/:serviceId/cittadini/compilato/:idQuestionarioCompilato'
+    element={<ViewSurvey />}
   />,
   <Route
     key='questionari-modifica'
@@ -494,7 +500,7 @@ const AreaAmministrativaRoutes = [
     path='servizi'
   />,
   <Route
-    key='area-amministrativa-servizi-dettaglio'
+    key='area-amministrativa-servizi-dettaglio-info'
     element={
       <ProtectedComponent visibleTo={['view.card.serv']}>
         <ServicesDetails />
@@ -506,6 +512,15 @@ const AreaAmministrativaRoutes = [
     key='area-amministrativa-servizi-dettaglio-cittadini'
     element={<ServicesDetails />}
     path='servizi/:serviceId/cittadini'
+  />,
+  <Route
+    key='area-amministrativa-servizi-dettaglio'
+    path='servizi/:serviceId'
+    element={
+      <ProtectedComponent visibleTo={['view.card.serv']}>
+        <ServicesDetails />
+      </ProtectedComponent>
+    }
   />,
   <Route
     key='default-redirect-url'

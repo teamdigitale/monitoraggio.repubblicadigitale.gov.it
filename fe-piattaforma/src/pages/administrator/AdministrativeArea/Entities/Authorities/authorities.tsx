@@ -3,6 +3,7 @@ import { TableHeadingEntities } from '../utils';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
+  resetAuthorityDetails,
   selectEntityFilters,
   selectEntityFiltersOptions,
   selectEntityList,
@@ -67,6 +68,7 @@ const Authorities: React.FC = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
+    dispatch(resetAuthorityDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -226,6 +228,8 @@ const Authorities: React.FC = () => {
       resetFilterDropdownSelected={(filterKey: string) =>
         setFilterDropdownSelected(filterKey)
       }
+      tooltip
+      tooltiptext={searchInformation.placeholder}
     >
       <div>
         {entiList?.length && tableValues?.values?.length ? (
@@ -251,8 +255,7 @@ const Authorities: React.FC = () => {
           </>
         ) : (
           <EmptySection
-            title='Non sono presenti progetti'
-            subtitle='associati al tuo ruolo'
+            title='Non sono presenti enti per la tua ricerca'
             icon='it-note'
             withIcon
           />

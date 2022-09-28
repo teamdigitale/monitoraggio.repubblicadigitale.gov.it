@@ -12,14 +12,15 @@ import {
 import LogoMobile from '/public/assets/img/logo-mobile.png';
 import Bell from '/public/assets/img/campanella.png';
 import { HeaderI } from '../header';
-import { logout } from '../../../redux/features/user/userSlice';
 import HamburgerMenu from '../../HamburgerMenu/hamburgerMenu';
 import { openModal } from '../../../redux/features/modal/modalSlice';
-import AvatarInitials, {
+import {
   AvatarSizes,
   AvatarTextSizes,
-} from '../../AvatarInitials/avatarInitials';
+} from '../../Avatar/AvatarInitials/avatarInitials';
 import { defaultRedirectUrl } from '../../../routes';
+import UserAvatar from '../../Avatar/UserAvatar/UserAvatar';
+import { LogoutRedirect } from '../../../redux/features/user/userThunk';
 
 const HeaderMobile: React.FC<HeaderI> = ({
   dispatch,
@@ -28,6 +29,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
   isLogged,
   notification,
   menuRoutes,
+  profilePicture,
 }) => {
   const [openUser, setOpenUser] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -53,10 +55,12 @@ const HeaderMobile: React.FC<HeaderI> = ({
           )}
         >
           <div>
-            <AvatarInitials
-              user={{ uName: user?.nome, uSurname: user?.cognome }}
-              size={AvatarSizes.Small}
-              font={AvatarTextSizes.Small}
+            <UserAvatar
+              avatarImage={profilePicture}
+              user={{ uSurname: user?.cognome, uName: user?.nome }}
+              size={AvatarSizes.Big}
+              font={AvatarTextSizes.Big}
+              lightColor
             />
           </div>
           <div className='d-flex flex-row justify-content-start'>
@@ -66,6 +70,9 @@ const HeaderMobile: React.FC<HeaderI> = ({
                 userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
               }`}</em>
             </p>
+          </div>
+          <div className='ml-2'>
+            <Icon size='' color='white' icon='it-expand' />
           </div>
         </div>
       </DropdownToggle>
@@ -132,7 +139,9 @@ const HeaderMobile: React.FC<HeaderI> = ({
                 'justify-content-between'
               )}
               role='menuitem'
-              onClick={() => dispatch(logout())}
+              onClick={() => {
+                dispatch(LogoutRedirect());
+              }}
             >
               <span>Esci</span>
               <Icon
@@ -164,7 +173,11 @@ const HeaderMobile: React.FC<HeaderI> = ({
             'w-100'
           )}
         >
-          <HamburgerMenu open={isOpen} setOpen={setIsOpen} menuRoutes={menuRoutes} />
+          <HamburgerMenu
+            open={isOpen}
+            setOpen={setIsOpen}
+            menuRoutes={menuRoutes}
+          />
           <div
             className={clsx(
               'd-flex',

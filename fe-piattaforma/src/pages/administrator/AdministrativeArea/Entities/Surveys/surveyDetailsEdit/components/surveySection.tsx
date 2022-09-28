@@ -5,6 +5,9 @@ import {
   SurveyQuestionI,
   SurveySectionI,
 } from '../../../../../../../redux/features/administrativeArea/surveys/surveysSlice';
+import clsx from 'clsx';
+import { useAppSelector } from '../../../../../../../redux/hooks';
+import { selectDevice } from '../../../../../../../redux/features/app/appSlice';
 
 const SurveySection: React.FC<SurveySectionI> = (props) => {
   const {
@@ -15,6 +18,8 @@ const SurveySection: React.FC<SurveySectionI> = (props) => {
     cloneMode = false,
   } = props;
 
+  const device = useAppSelector(selectDevice);
+
   return (
     <section aria-label={sectionTitle}>
       <h2 className='h4 primary-color-a6 mb-4'>
@@ -22,7 +27,10 @@ const SurveySection: React.FC<SurveySectionI> = (props) => {
       </h2>
       <Col>
         {questions.map((question: SurveyQuestionI, i: number) => (
-          <React.Fragment key={`section-${id}-question-${i}`}>
+          <div
+            key={`section-${id}-question-${i}`}
+            className={clsx(device.mediaIsPhone && 'position-relative')}
+          >
             <SurveyQuestion
               {...question}
               sectionID={id}
@@ -30,7 +38,7 @@ const SurveySection: React.FC<SurveySectionI> = (props) => {
               editMode={editMode}
               cloneMode={cloneMode}
             />
-          </React.Fragment>
+          </div>
         ))}
       </Col>
     </section>

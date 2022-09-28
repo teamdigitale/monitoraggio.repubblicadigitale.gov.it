@@ -7,16 +7,20 @@ const API = axios.create({
   baseURL: `${process?.env?.REACT_APP_BE_BASE_URL}`,
   headers: {
     'Content-Type': 'application/json',
-    authToken: 'fguhbjinokj8765d578t9yvghugyftr646tg', // MOCK
-    userRole: JSON.parse(getSessionValues('profile'))?.codiceRuolo,
   },
   timeout: 10000,
 });
 
 API.interceptors.request.use((req) => {
-  // TODO implement retrieve authToken & userRole fron storage
-  // req.headers['authToken'] = 'fguhbjinokj8765d578t9yvghugyftr646tg';
-  return req;
+  // TODO implement retrieve authToken & userRole from storage
+  return {
+    ...req,
+    headers: {
+      ...req.headers,
+      authToken: getSessionValues('auth'),
+      userRole: JSON.parse(getSessionValues('profile'))?.codiceRuolo,
+    },
+  };
 });
 
 API.interceptors.response.use(
@@ -31,6 +35,7 @@ API.interceptors.response.use(
     } finally {
       errorHandler(error);
     }
+
     return Promise.reject(error);
   }
 );

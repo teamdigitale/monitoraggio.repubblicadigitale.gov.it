@@ -132,11 +132,11 @@ export const GetEntityFilterValues =
       if (res?.data?.length) {
         const filterResponse = {
           [payload.dropdownType]: res.data.map((option: string) => ({
-            label:
-              payload.dropdownType === 'stati' ||
-              payload.dropdownType === 'ruoli'
-                ? option[0] + option.slice(1).toLowerCase()
-                : option,
+            label: option,
+            // payload.dropdownType === 'stati' ||
+            // payload.dropdownType === 'ruoli'
+            //   ? option[0] + option.slice(1).toLowerCase()
+            //   : option,
             value: option,
           })),
         };
@@ -328,6 +328,32 @@ export const TerminateEntity =
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const UploadFileAction = { type: 'user/UploadFile' };
+export const UploadFile =
+  (payload: { endpoint: string; formData: FormData }) =>
+  async (dispatch: Dispatch) => {
+    try {
+      const { endpoint, formData } = payload;
+      dispatch({ ...UploadFileAction, payload }); // TODO manage dispatch for dev env only
+      dispatch(showLoader());
+      const res = await API.post(endpoint, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        timeout: 20000,
+      });
+
+      if (res?.data) {
+        return res.data;
+      }
+    } catch (error) {
+      console.log('UploadFile error', error);
+      return false;
     } finally {
       dispatch(hideLoader());
     }

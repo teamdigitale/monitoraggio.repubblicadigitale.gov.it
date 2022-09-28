@@ -13,6 +13,8 @@ interface CheckboxGroupI extends InputI {
   className?: string;
   noLabel?: boolean;
   classNameLabelOption?: string;
+  optionsInColumn?: boolean;
+  singleSelection?: boolean;
 }
 
 const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
@@ -28,12 +30,28 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
     noLabel = false,
     classNameLabelOption = '',
     disabled = false,
+    optionsInColumn = false,
+    required = false,
+    singleSelection = false,
   } = props;
   const parseExternalValue = () => value.toString().split(separator);
   const [values, setValues] = useState<string[]>(parseExternalValue());
 
   useEffect(() => {
-    setValues(parseExternalValue());
+    if (
+      value === '' ||
+      options.filter((opt) => opt.value === value.toString()).length
+    ) {
+      setValues(parseExternalValue());
+    } else if (value?.toString().includes(separator)) {
+      const newValues: string[] = [];
+      parseExternalValue().map((extValue) => {
+        if (options.filter((opt) => opt.value === extValue.toString()).length) {
+          newValues.push(extValue);
+        }
+      });
+      setValues(newValues);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
@@ -44,16 +62,20 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
       if (!areEquals) onInputChange(newValues, field);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values.join(',')]);
+  }, [values.join(separator)]);
 
   const handleOnChange = (value: string | number) => {
-    const valueIndex = values.findIndex((v) => v === value.toString());
-    if (valueIndex !== -1) {
-      const newValues = [...values];
-      newValues.splice(valueIndex, 1);
-      setValues(newValues);
+    if (singleSelection) {
+      setValues([value.toString()]);
     } else {
-      setValues([...values, value.toString()]);
+      const valueIndex = values.findIndex((v) => v === value.toString());
+      if (valueIndex !== -1) {
+        const newValues = [...values];
+        newValues.splice(valueIndex, 1);
+        setValues(newValues);
+      } else {
+        setValues([...values, value.toString()]);
+      }
     }
   };
 
@@ -70,23 +92,27 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
                 styleLabelForm && 'compile-survey-container__label-checkbox'
               )}
             >
-              {label}
+              {label}&nbsp;{required && '*'}
             </p>
           ) : (
             <p className='h6'>{field}</p>
           )}
         </div>
       )}
-      <Form.Row>
+      <Form.Row className={clsx(optionsInColumn && 'd-flex flex-column')}>
         {options.map((check) => (
-          <FormGroup check inline key={check.value}>
+          <FormGroup
+            check
+            inline
+            key={check.value}
+            className={clsx(
+              optionsInColumn && 'compile-survey-container__max-width-column'
+            )}
+          >
             <Input
               {...check}
               field={`${field} ${check.label}`}
               checked={values.includes(check.value.toString())}
-              onKeyDown={(e) =>
-                e.key == ' ' ? handleOnChange(check.value) : ''
-              }
               onInputChange={() => handleOnChange(check.value)}
               col='col-4'
               type='checkbox'
@@ -98,7 +124,10 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
             <Label
               for={`${field} ${check.label}`}
               check
-              className={classNameLabelOption}
+              className={clsx(
+                classNameLabelOption,
+                optionsInColumn && 'compile-survey-container__label-column'
+              )}
             >
               {check.label}
             </Label>

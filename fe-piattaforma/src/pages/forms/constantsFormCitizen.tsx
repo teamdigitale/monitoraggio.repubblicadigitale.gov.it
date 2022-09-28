@@ -1,5 +1,5 @@
 export const citizenFormDropdownOptions = {
-  'flag-codice-fiscale': [
+  codiceFiscaleNonDisponibile: [
     {
       label: 'Codice fiscale non disponibile',
       value: 'Codice fiscale non disponibile',
@@ -8,21 +8,21 @@ export const citizenFormDropdownOptions = {
   genere: [
     { label: 'F', value: 'F' },
     { label: 'M', value: 'M' },
+    { label: 'Non binario', value: 'Non binario' },
   ],
   tipoDocumento: [
-    { label: 'Identità', value: 'Identità' },
+    { label: 'Carta di Identità', value: 'Carta di Identità' },
     { label: 'Patente', value: 'Patente' },
     { label: 'Passaporto', value: 'Passaporto' },
     { label: 'Permesso di soggiorno', value: 'Permesso di soggiorno' },
   ],
   cittadinanza: [
     { label: 'Italiana', value: 'Italiana' },
-    { label: 'Altro - UE', value: 'Altro - UE' },
-    { label: 'Altro - non UE', value: 'Altro - non UE' },
+    { label: "Straniera, di un Paese ALL'INTERNO dell'Unione Europea", value: "Straniera, di un Paese ALL'INTERNO dell'Unione Europea" },
+    { label: "Straniera, di un Paese AL DI FUORI dell'Unione Europea", value: "Straniera, di un Paese AL DI FUORI dell'Unione Europea" },
   ],
   categoriaFragili: [
-    { label: 'Rifugiato', value: 'Rifugiato' },
-    { label: 'Migrante', value: 'Migrante' },
+    { label: 'Rifugiato/ Migrante', value: 'Rifugiato/ Migrante' },
     {
       label: 'Percettore di sussidio di disabilità',
       value: 'Percettore di sussidio di disabilità',
@@ -32,75 +32,57 @@ export const citizenFormDropdownOptions = {
       value: 'Altro percettore di sussidio (es. reddito di cittadinanza)',
     },
   ],
-  titoloDiStudio: [
+  titoloStudio: [
     {
-      label: 'Diploma di istruzione primaria (scuola elementare)',
-      value: 'Diploma di istruzione primaria (scuola elementare)',
+      label: 'Licenza elementare / Scuola primaria',
+      value: 'Licenza elementare / Scuola primaria',
     },
     {
-      label: '"Diploma di scuola secondaria di I livello (scuola media)',
-      value: '"Diploma di scuola secondaria di I livello (scuola media)',
+      label: 'Licenza media inferiore / Scuola secondaria di I grado (3 anni)',
+      value: 'Licenza media inferiore / Scuola secondaria di I grado (3 anni)',
     },
     {
       label:
-        'Diploma di scuola secondaria di II livello o ITP (maturità o di tecnico superiore - ITS)',
+        'Diploma di scuola superiore (diploma di maturità) / Scuola secondaria di II grado (5 anni)',
       value:
-        'Diploma di scuola secondaria di II livello o ITP (maturità o di tecnico superiore - ITS)',
+        'Diploma di scuola superiore (diploma di maturità) / Scuola secondaria di II grado (5 anni)',
     },
     {
-      label: 'Laurea di I livello (triennale)',
-      value: 'Laurea di I livello (triennale)',
+      label: 'Diploma professionale (3 anni) / Istituti professionali / Istituti di Istruzione e Formazione Professionale (IeFP)',
+      value: 'Diploma professionale (3 anni) / Istituti professionali / Istituti di Istruzione e Formazione Professionale (IeFP)',
     },
     {
-      label: 'Laurea di II livello (specialistica o magistrale)',
-      value: 'Laurea di II livello (specialistica o magistrale)',
+      label: 'Laurea (3 anni)',
+      value: 'Laurea (3 anni)',
     },
-    { label: 'Dottorato o Master', value: 'Dottorato o Master' },
+    { label: 'Laurea magistrale (5 anni) / Master di I livello / Specializzazione post-laurea (2 anni)', value: 'Laurea magistrale (5 anni) / Master di I livello / Specializzazione post-laurea (2 anni)' },
     {
-      label: 'Non conosciuto / non fornito / Altro',
-      value: 'Non conosciuto / non fornito / Altro',
+      label: 'Dottorato, Master di II livello o titoli equiparati',
+      value: 'Dottorato, Master di II livello o titoli equiparati',
+    },
+    {
+      label: 'Non conosciuto / Non fornito / Altro',
+      value: 'Non conosciuto / Non fornito / Altro',
     },
   ],
   tipoConferimentoConsenso: [
-    { label: 'Cartaceo', value: 'Cartaceo' },
-    { label: 'Email', value: 'Email' },
-    { label: 'Online', value: 'Online' },
+    { label: 'Cartaceo', value: 'CARTACEO' },
+    { label: 'Email', value: 'EMAIL' },
+    { label: 'Online', value: 'ONLINE' },
   ],
-  statoOccupazionale: ['Occupato', 'Inoccupato', 'Disoccupato', 'Altro'],
-  occupazione: [
-    { label: 'Dipendente', value: 'Dipendente', upperLevel: 'Occupato' },
-    {
-      label: 'Lavoro autonomo',
-      value: 'Lavoro autonomo',
-      upperLevel: 'Occupato',
-    },
-    {
-      label:
-        'A (non presta attività lavorativa con un regolare contratto di assunzione, es. prestazioni occasionali)',
-      value:
-        'A (non presta attività lavorativa con un regolare contratto di assunzione, es. prestazioni occasionali)',
-      upperLevel: 'Inoccupato',
-    },
-    {
-      label: 'B (in cerca di lavoro per la prima volta)',
-      value: 'B (in cerca di lavoro per la prima volta)',
-      upperLevel: 'Inoccupato',
-    },
-    {
-      label: 'A (da 365 giorni e meno)',
-      value: 'A (da 365 giorni e meno)',
-      upperLevel: 'Disoccupato',
-    },
-    {
-      label: 'B (da 365 giorni e più)',
-      value: 'B (da 365 giorni e più)',
-      upperLevel: 'Disoccupato',
-    },
-    {
-      label: 'Studente/In formazione',
-      value: 'Studente/In formazione',
-      upperLevel: 'Altro',
-    },
-    { label: 'Pensionato', value: 'Pensionato', upperLevel: 'Altro' },
+  statoOccupazionale: [
+    { label: 'Dipendente a tempo indeterminato', value: 'Dipendente a tempo indeterminato'},
+    { label: 'Dipendente a tempo determinato', value: 'Dipendente a tempo determinato'},
+    { label: 'Imprenditore', value: 'Imprenditore'},
+    { label: 'Libero professionista', value: 'Libero professionista'},
+    { label: 'Commerciante/ Artigiano', value: 'Commerciante/ Artigiano'},
+    { label: 'Inoccupato/a', value: 'Inoccupato/a'},
+    { label: 'Disoccupato/a', value: 'Disoccupato/a'},
+    { label: 'Volontario/a', value: 'Volontario/a'},
+    { label: 'Studente o studentessa / in formazione', value: 'Studente o studentessa / in formazione'},
+    { label: 'Persona ritirata dal lavoro / Pensionato/a', value: 'Persona ritirata dal lavoro / Pensionato/a'},
+    { label: 'Casalinga/o', value: 'Casalinga/o'},
+    { label: 'Inabile al lavoro', value: 'Inabile al lavoro'},
+    { label: 'Altro', value: 'Altro'},
   ],
 };
