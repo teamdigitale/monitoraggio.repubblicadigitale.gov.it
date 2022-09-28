@@ -186,11 +186,22 @@ export const GetAuthorityManagerDetail =
       dispatch({ ...SetAuthorityDetailAction });
       dispatch(resetAuthorityDetails());
 
-      const res = await API.get(
-        `/ente/${
-          entity === 'programma' ? 'gestoreProgramma' : 'gestoreProgetto'
-        }/${entityId}`
-      );
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
+      const body = {
+        cfUtente: codiceFiscale,
+        codiceRuolo,
+        idProgramma,
+        idProgetto,
+      };
+
+      let res;
+
+      if (entity === 'programma') {
+        res = await API.get(`/ente/gestoreProgramma/${entityId}`);
+      } else {
+        res = await API.post(`/ente/gestoreProgetto/${entityId}`, body);
+      }
 
       if (res.data) {
         dispatch(
@@ -273,8 +284,8 @@ export const CreateManagerAuthority =
           return res.data.id;
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }
@@ -285,17 +296,30 @@ const UpdateAuthorityAction = {
 };
 
 export const UpdateManagerAuthority =
-  (authorityDetail: any, enteGestoreId: string | number, entityId: string, entity: 'programma' | 'progetto') =>
+  (
+    authorityDetail: any,
+    enteGestoreId: string | number,
+    entityId: string,
+    entity: 'programma' | 'progetto'
+  ) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
-      dispatch({ ...UpdateAuthorityAction, ...authorityDetail, entityId, entity });
+      dispatch({
+        ...UpdateAuthorityAction,
+        ...authorityDetail,
+        entityId,
+        entity,
+      });
       if (authorityDetail?.id) {
         let res;
         if (enteGestoreId) {
-          res = await API.put(`/ente/${enteGestoreId}/${
-            entity === 'programma' ? 'gestoreProgramma' : 'gestoreProgetto'
-          }/${entityId}`, authorityDetail);
+          res = await API.put(
+            `/ente/${enteGestoreId}/${
+              entity === 'programma' ? 'gestoreProgramma' : 'gestoreProgetto'
+            }/${entityId}`,
+            authorityDetail
+          );
 
           return res;
         } else {
@@ -317,9 +341,8 @@ export const UpdateManagerAuthority =
           return res;
         }
       }
-    } catch (error) {
-      console.log(error);
-      return false;
+    } catch (error: any) {
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }
@@ -353,7 +376,18 @@ export const GetPartnerAuthorityDetail =
     dispatch(showLoader());
     dispatch({ ...SetAuthorityDetailAction });
     try {
-      const res = await API.get(`/ente/partner/${projectId}/${authorityId}`);
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
+      const body = {
+        cfUtente: codiceFiscale,
+        codiceRuolo,
+        idProgramma,
+        idProgetto,
+      };
+      const res = await API.post(
+        `/ente/partner/${projectId}/${authorityId}`,
+        body
+      );
 
       if (res.data) {
         dispatch(
@@ -396,8 +430,8 @@ export const CreatePartnerAuthority =
           );
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }
@@ -524,8 +558,8 @@ export const AssignManagerAuthorityReferentDelegate =
           await API.post(endpoint, body);
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }
@@ -538,7 +572,8 @@ export const AssignPartnerAuthorityReferentDelegate =
     userDetail: {
       [key: string]: string | number | boolean | Date | string[] | undefined;
     },
-    role: UserAuthorityRole
+    role: UserAuthorityRole,
+    userId?: string
   ) =>
   async (dispatch: Dispatch) => {
     try {
@@ -551,13 +586,15 @@ export const AssignPartnerAuthorityReferentDelegate =
             `/utente/${userDetail.id.toString().toUpperCase()}`,
             userDetail
           ));
-        await API.post(endpoint, {
-          cfUtente: userDetail.codiceFiscale?.toString().toUpperCase(),
-          codiceRuolo: role,
-          idEntePartner: authorityId,
-          idProgetto: entityId,
-          mansione: userDetail.mansione,
-        });
+        if (userId !== userDetail.id.toString()) {
+          await API.post(endpoint, {
+            cfUtente: userDetail.codiceFiscale?.toString().toUpperCase(),
+            codiceRuolo: role,
+            idEntePartner: authorityId,
+            idProgetto: entityId,
+            mansione: userDetail.mansione,
+          });
+        }
       } else {
         const payload = {
           telefono: userDetail?.telefono,
@@ -571,6 +608,7 @@ export const AssignPartnerAuthorityReferentDelegate =
         };
         // eslint-disable-next-line no-case-declarations
         const res = await API.post(`/utente`, payload);
+
         if (res) {
           await API.post(endpoint, {
             cfUtente: userDetail.codiceFiscale?.toString().toUpperCase(),
@@ -581,8 +619,8 @@ export const AssignPartnerAuthorityReferentDelegate =
           });
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }
@@ -665,8 +703,9 @@ export const UpdateAuthorityDetails =
 
       await API.put(`/ente/${idEnte}`, payload);
       return true;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }

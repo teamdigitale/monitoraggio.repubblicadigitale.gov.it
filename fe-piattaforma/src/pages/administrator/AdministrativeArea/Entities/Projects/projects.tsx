@@ -3,6 +3,7 @@ import { TableHeading } from '../utils';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
+  resetProjectDetails,
   selectEntityFilters,
   selectEntityFiltersOptions,
   selectEntityList,
@@ -72,6 +73,7 @@ const Projects: React.FC = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
+    dispatch(resetProjectDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -234,6 +236,8 @@ const Projects: React.FC = () => {
           ? handleDownloadList
           : undefined
       }
+      tooltip
+      tooltiptext={searchInformation.placeholder}
     >
       <div>
         {progettiList?.length && tableValues?.values?.length ? (

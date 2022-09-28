@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Icon } from 'design-react-kit';
 import clsx from 'clsx';
-import Mitd from '/public/assets/img/mtid-mobile.png';
+import Mitd from '/public/assets/img/digital-skills.png';
 import Logo from '/public/assets/img/logo-rep-mob.png';
 import { useTranslation } from 'react-i18next';
 

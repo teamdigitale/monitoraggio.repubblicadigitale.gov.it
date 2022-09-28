@@ -7,8 +7,7 @@ import lombok.Getter;
 @Getter
 public class EnteSedeProgettoFacilitatoreException extends BaseException {
 	public EnteSedeProgettoFacilitatoreException(String exceptionMessage, CodiceErroreEnum codiceErroreEnum) {
-		super(exceptionMessage);
-		this.codiceErroreEnum = codiceErroreEnum;
+		super(exceptionMessage, codiceErroreEnum);
 	}
 	
 	public EnteSedeProgettoFacilitatoreException(String exceptionMessage, Exception ex, CodiceErroreEnum codiceErroreEnum) {

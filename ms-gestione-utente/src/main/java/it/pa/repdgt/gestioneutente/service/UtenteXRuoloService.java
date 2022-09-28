@@ -9,6 +9,7 @@ import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.UtenteXRuolo;
 import it.pa.repdgt.shared.entity.key.UtenteXRuoloKey;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 
 @Service
 public class UtenteXRuoloService {
@@ -27,7 +28,7 @@ public class UtenteXRuoloService {
 		if(this.utenteXRuoloRepository.findById(id).isPresent()) {
 			return this.utenteXRuoloRepository.findById(id).get();
 		}
-		throw new UtenteXRuoloException(String.format("Associazione tra utente con codice fiscale = %s e ruolo con codice = %s non trovata.", id.getUtenteId(), id.getRuoloCodice()));
+		throw new UtenteXRuoloException(String.format("Associazione tra utente con codice fiscale = %s e ruolo con codice = %s non trovata.", id.getUtenteId(), id.getRuoloCodice()), CodiceErroreEnum.U18);
 	}
 
 	@LogMethod

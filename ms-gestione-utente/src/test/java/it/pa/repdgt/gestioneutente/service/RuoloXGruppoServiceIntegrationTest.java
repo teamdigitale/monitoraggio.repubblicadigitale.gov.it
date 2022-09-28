@@ -43,16 +43,4 @@ public class RuoloXGruppoServiceIntegrationTest {
 		gruppiString.add("programma.write");
 		service.aggiornaAssociazioniRuoloGruppo("DTD", gruppiString);
 	}
-	
-//	@Transactional(rollbackOn = Exception.class)
-//	public void aggiornaAssociazioniRuoloGruppo(String codiceRuolo, List<String> codiciGruppi) {
-//		if(codiceRuolo == null || codiciGruppi == null) {
-//			String messaggioErrore = String.format("Impossibile aggiornare associazione tra: ruolo con codiceRuolo='%s' e gruppi=[%s].", codiciGruppi, codiceRuolo);
-//			throw new RuoloXGruppoException(messaggioErrore);
-//		}
-//		if(this.gruppoService.existsAllGruppiByCodiciGruppi(codiciGruppi)) {
-//			this.cancellaAssociazioniInRuoloXGruppoByCodiceRuolo(codiceRuolo);
-//			this.salvaAssociazioniInRuoloXGruppo(codiceRuolo, codiciGruppi);
-//		}
-//	}
 }

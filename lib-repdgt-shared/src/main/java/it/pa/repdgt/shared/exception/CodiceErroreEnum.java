@@ -23,6 +23,14 @@ public enum CodiceErroreEnum {
 	,R05("Errore impossibile cancellare ruolo associato ad utente")
 	,R06("Errore impossibile cancellare ruolo")
 	,R07("Errore impossibile attivare il ruolo per l'utente")
+	,R08("Errore Tipologia ruolo non presente")
+	,R09("Errore Impossibile aggiornare ruolo predefinito")
+	,R10("Errore Impossibile cancellare i ruoli di DTD e DSCU")
+	,R11("Errore Impossibile cancellare i ruoli predefiniti")
+	,R12("Errore Impossibile cancellare i ruoli associati agli utenti")
+	,R13("Errore Impossibile assegnare un ruolo predefinito all'infuori di DTD e DSCU")
+	,R14("Errore Il codice ruolo inserito non corrisponde a nessun ruolo esistente")
+	,R15("Errore Impossibile cancellare un ruolo non associato all'utente")
 	,RG01("Errore impossibile creare associazione ruolo al gruppo")
 	,RG02("Errore impossibile aggiornare associazione ruolo al gruppo")
 	
@@ -36,8 +44,17 @@ public enum CodiceErroreEnum {
 	,U08("Errore codice fiscale o numero documento non specificato")
 	,U09("Errore impossibile aggiungere ruolo all'utente")
 	,U10("Errore impossibile cancellare ruolo all'utente")
+	,U11("Errore utente con id non trovato")
+	,U12("Errore impossibile cancellare un utente che non esiste")
+	,U13("Errore Impossibile cancellare l'utente con codice fiscale poiché ha almeno un ruolo associato")
+	,U14("Errore Impossibile assegnare il ruolo con codice")
+	,U15("Errore Impossibile assegnare il ruolo con codice poiché l'utente con id non esiste")
+	,U16("Errore L'utente con id ha già il ruolo con codice assegnato")
+	,U17("Errore download immagine profilo utente")
+	,U18("Errore Associazione tra utente e ruolo non trovata.")
+	,U19("Errore export csv utenti")
+	,U20("Errore utente con codice fiscale non esistente")
 
-	
 	,S01("Errore file upload cittadino non valido")
 	,S02("Errore export csv servizio")
 	,S03("Errore servizio non accessibile per l'utente")
@@ -45,11 +62,14 @@ public enum CodiceErroreEnum {
 	,S05("Errore creazione servizio. Utente non ha ruolo FACILITATORE")
 	,S06("Errore aggiornare servizio. Utente non ha ruolo FACILITATORE")
 	,S07("Errore impossibile eliminare il servizio.")
+	,S08("Errore creazione servizio. Servizio con stesso nome già esistente")
+	,S09("Errore servizio non esistente")
 	
 	,SD01("Errore creazione sede")
 	,SD02("Errore aggiornamento sede")
 
 	,Q01("Errore questionario template inesistente")
+	,Q02("Errore Il questionario risulta già compilato")
 	,QT01("Errore export csv questionari template")
 	,QT02("Errore impossibile aggiornare il questionario")
 	,QT03("Errore impossibile cancellare il questionario")
@@ -91,6 +111,8 @@ public enum CodiceErroreEnum {
 	,EN21("Errore Impossibile terminare ente partner per progetto")
 	,EN22("Errore Impossibile terminare referente/delegato gestore programma")
 	,EN23("Errore Impossibile terminare referente/delegato gestore progetto")
+	,EN24("Errore Ente partner non presente per idEnte idProgetto indicati")
+	,EN25("Errore Ente con stesso nome già esistente")
 	
 	,T01("Errore token non valido")
 	,T02("Errore token scaduto")
@@ -113,6 +135,8 @@ public enum CodiceErroreEnum {
 	,PR07("Errore attivare progetto")
 	,PR08("Errore export csv progetti")
 	,PR09("Errore Impossibile Assegnare gestore progetto per il progetto. Unico Facilitatore o Volontario attivo sul progetto")
+	
+	,D01("Errore chiamata servizio Drupal")
 	;
 	
 	private String descrizioneErrore;

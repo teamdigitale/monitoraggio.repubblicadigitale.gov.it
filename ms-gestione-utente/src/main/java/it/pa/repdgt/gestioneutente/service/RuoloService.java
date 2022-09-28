@@ -22,6 +22,7 @@ import it.pa.repdgt.shared.constants.TipologiaRuoloConstants;
 import it.pa.repdgt.shared.entity.GruppoEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 
 @Service
 public class RuoloService {
@@ -47,7 +48,7 @@ public class RuoloService {
 		
 		tipologiaRuolo = tipologiaRuolo.trim().toUpperCase();
 		if(!TipologiaRuoloConstants.LISTA_TIPOLOGIA_RUOLI.contains(tipologiaRuolo)) {
-			throw new RuoloException("Tipologia ruolo non presente");
+			throw new RuoloException("Tipologia ruolo non presente", CodiceErroreEnum.R08);
 		}
 		
 		if(tipologiaRuolo.equalsIgnoreCase(TipologiaRuoloConstants.PREDEFINITO)) {
@@ -63,7 +64,7 @@ public class RuoloService {
 	public RuoloEntity getRuoloByCodiceRuolo(String codiceRuolo) {
 		String messaggioErrore = String.format("Ruolo con codice = %s non trovato", codiceRuolo);
 		return this.ruoloRepository.findById(codiceRuolo)
-				.orElseThrow( () -> new ResourceNotFoundException(messaggioErrore));
+				.orElseThrow( () -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
 	}
 	
 	public List<String> getRuoliByCodiceFiscaleUtente(String codiceFiscale) {
@@ -104,7 +105,7 @@ public class RuoloService {
 	public List<GruppoEntity> getGruppByRuolo(String codiceRuolo){
 		if(!this.esisteRuoloByCodice(codiceRuolo)) {
 			String messaggioErrore = String.format("Il ruolo %s non esiste", codiceRuolo);
-			throw new ResourceNotFoundException(messaggioErrore);
+			throw new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01);
 		}
 		return this.gruppoService.getGruppiByRuolo(codiceRuolo);
 	}
@@ -115,7 +116,7 @@ public class RuoloService {
 		String nomeRuolo = nuovoRuoloRequest.getNomeRuolo();
 		String messaggioErrore = String.format("Ruolo con nome = %s già presente", nomeRuolo);
 		if(this.existsRuoloByNome(nomeRuolo)) {
-			throw new RuntimeException(messaggioErrore);
+			throw new RuoloException(messaggioErrore, CodiceErroreEnum.R01);
 		}
 		RuoloEntity nuovoRuolo = new RuoloEntity();
 		nuovoRuolo.setCodice(nomeRuolo);
@@ -142,7 +143,7 @@ public class RuoloService {
 		// se ruolo è un ruolo predefinito, allora non è possibile aggiornalo ==> errore
 		if(ruoloFetch.getPredefinito() == Boolean.TRUE) {
 			String messaggioErrore = String.format("Impossibile aggiornare ruolo predefinito con codice ruolo = %s", codiceRuolo);
-			throw new RuoloException(messaggioErrore);
+			throw new RuoloException(messaggioErrore, CodiceErroreEnum.R09);
 		}
 		ruoloFetch.setNome(ruoloRequest.getNomeRuolo());
 		ruoloFetch.setDataOraAggiornamento(new Date());
@@ -155,16 +156,16 @@ public class RuoloService {
 	public void cancellazioneRuolo(String codiceRuolo) {
 		if(codiceRuolo.equals("DTD") || codiceRuolo.equals("DSCU")) {
 			String errorMessage = String.format("Impossibile cancellare i ruoli di DTD e DSCU");
-			throw new RuoloException(errorMessage);
+			throw new RuoloException(errorMessage, CodiceErroreEnum.R10);
 		}
 		RuoloEntity ruoloFetch = this.getRuoloByCodiceRuolo(codiceRuolo);
 		if(ruoloFetch.getPredefinito() == true) {
 			String errorMessage = String.format("Impossibile cancellare i ruoli predefiniti");
-			throw new RuoloException(errorMessage);
+			throw new RuoloException(errorMessage, CodiceErroreEnum.R11);
 		}
 		if(this.countUtentiPerRuolo(codiceRuolo) > 0) {
 			String errorMessage = String.format("Impossibile cancellare i ruoli associati agli utenti");
-			throw new RuoloException(errorMessage);
+			throw new RuoloException(errorMessage, CodiceErroreEnum.R12);
 		}
 		this.ruoloRepository.delete(ruoloFetch);
 	}

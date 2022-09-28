@@ -35,8 +35,8 @@ public class ProgrammaRestApiRestTemplateTest extends AppTests{
 	@Order(value = 0)
 	void getAllProgrammiPaginatiByRuoloTest() {
 		ProgrammiParam progParam = new ProgrammiParam();
-		progParam.setCfUtente("SMTPAL67R31F111X");
-		progParam.setCodiceRuolo("DTD");
+		progParam.setCfUtenteLoggato("SMTPAL67R31F111X");
+		progParam.setCodiceRuoloUtenteLoggato("DTD");
 		progParam.setFiltroRequest(new FiltroRequest());
 		progParam.setIdProgramma(1L);
 		
@@ -48,8 +48,8 @@ public class ProgrammaRestApiRestTemplateTest extends AppTests{
 	@Order(value = 1)
 	void getAllPoliciesDropdownByRuoloTest() {
 		ProgrammiParam progParam = new ProgrammiParam();
-		progParam.setCfUtente("SMTPAL67R31F111X");
-		progParam.setCodiceRuolo("DTD");
+		progParam.setCfUtenteLoggato("SMTPAL67R31F111X");
+		progParam.setCodiceRuoloUtenteLoggato("DTD");
 		progParam.setFiltroRequest(new FiltroRequest());
 		progParam.setIdProgramma(1L);
 		
@@ -62,8 +62,8 @@ public class ProgrammaRestApiRestTemplateTest extends AppTests{
 	@Order(value = 2)
 	void getAllStatiDropdownByRuoloTest() {
 		ProgrammiParam progParam = new ProgrammiParam();
-		progParam.setCfUtente("SMTPAL67R31F111X");
-		progParam.setCodiceRuolo("DTD");
+		progParam.setCfUtenteLoggato("SMTPAL67R31F111X");
+		progParam.setCodiceRuoloUtenteLoggato("DTD");
 		progParam.setFiltroRequest(new FiltroRequest());
 		progParam.setIdProgramma(1L);
 		
@@ -98,8 +98,8 @@ public class ProgrammaRestApiRestTemplateTest extends AppTests{
 	public void downloadCSVSElencoProgrammiTest() {
 		
 		ProgrammiParam programmiParam = new ProgrammiParam();
-		programmiParam.setCfUtente("UIHPLW87R49F205X");
-		programmiParam.setCodiceRuolo(RuoloUtenteEnum.DTD.toString());
+		programmiParam.setCfUtenteLoggato("UIHPLW87R49F205X");
+		programmiParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
 		programmiParam.setFiltroRequest(new FiltroRequest());
 		
 		String urlToCall = "http://localhost:" + randomServerPort +

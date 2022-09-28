@@ -18,11 +18,11 @@ export interface SelectMultipleI {
   secondLevelField?: formFieldI['field'] | undefined;
   label?: string;
   options?: { label: string; options: OptionTypeMulti[] }[] | undefined;
-  onInputChange: (
+  onInputChange?: (
     value: formFieldI['value'],
     field?: formFieldI['field']
   ) => void;
-  onSecondLevelInputChange: (
+  onSecondLevelInputChange?: (
     value: formFieldI['value'],
     field?: formFieldI['field']
   ) => void;
@@ -32,6 +32,7 @@ export interface SelectMultipleI {
   wrapperClassName?: string;
   withLabel?: boolean;
   isDisabled?: boolean;
+  classNamePrefix?: string;
 }
 
 const SelectMultiple: React.FC<SelectMultipleI> = (props) => {
@@ -49,6 +50,7 @@ const SelectMultiple: React.FC<SelectMultipleI> = (props) => {
     wrapperClassName,
     withLabel = true,
     isDisabled = false,
+    classNamePrefix = 'multiple-select',
   } = props;
 
   const [selectedOptions, setSelectedOptions] = useState<
@@ -73,7 +75,7 @@ const SelectMultiple: React.FC<SelectMultipleI> = (props) => {
         ? null
         : upperLevelArray.push(opt.upperLevel.toString());
     });
-    onSecondLevelInputChange(upperLevelArray, field);
+    if(onSecondLevelInputChange) onSecondLevelInputChange(upperLevelArray, field);
   }, [arrayVal]);
 
   const handleChange = (selectedOption: MultiValue<OptionTypeMulti>) => {
@@ -106,10 +108,10 @@ const SelectMultiple: React.FC<SelectMultipleI> = (props) => {
       {withLabel ? (
         <label
           id={`${(label || 'label-select').replace(/\s/g, '-')}`}
-          className='text-decoration-none'
+          className='text-decoration-none pl-0 pb-2'
         >
           {label}
-          {required && ' *'}
+          {(required && !isDisabled) && ' *'}
         </label>
       ) : null}
       <SelectKit
@@ -121,6 +123,7 @@ const SelectMultiple: React.FC<SelectMultipleI> = (props) => {
         placeholder='Scegli opzioni'
         aria-label={`${(label || 'label-select').replace(/\s/g, '-')}`}
         isDisabled={isDisabled}
+        classNamePrefix={classNamePrefix || id}
       />
     </div>
   );

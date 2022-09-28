@@ -34,7 +34,7 @@ public class NuovoCittadinoServizioRequest implements Serializable {
 	private String genere;
 	
 	@JsonProperty(value = "annoNascita")
-	private String annoNascita;
+	private Integer annoNascita;
 	
 	@JsonProperty(value = "titoloStudio")
 	private String titoloStudio;
@@ -62,4 +62,7 @@ public class NuovoCittadinoServizioRequest implements Serializable {
 	
 	@JsonProperty(value = "telefono")
 	private String telefono;
+	
+	@JsonProperty(value = "nuovoCittadino")
+	private Boolean nuovoCittadino;
 }

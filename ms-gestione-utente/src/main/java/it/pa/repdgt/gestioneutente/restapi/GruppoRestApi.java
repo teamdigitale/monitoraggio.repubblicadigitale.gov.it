@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.pa.repdgt.gestioneutente.bean.RuoliGruppoBean;
 import it.pa.repdgt.gestioneutente.service.GruppoService;
-import it.pa.repdgt.shared.entity.GruppoEntity;
 
 @RestController
 @RequestMapping(path = "/gruppo")
@@ -17,7 +17,7 @@ public class GruppoRestApi {
 	private GruppoService gruppoService;
 	
 	@GetMapping(path = "/all")
-	public List<GruppoEntity> getAllGruppi() {
-		return this.gruppoService.getAllGruppi();
+	public List<RuoliGruppoBean> getAllGruppi() {
+		return this.gruppoService.getAllGruppoConRuoliAssociati();
 	}
 }

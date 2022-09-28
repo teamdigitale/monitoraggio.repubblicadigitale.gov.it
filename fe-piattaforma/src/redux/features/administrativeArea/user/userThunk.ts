@@ -110,7 +110,16 @@ export const GetUserDetails =
     try {
       dispatch(showLoader());
       dispatch({ ...GetUserDetailAction, userId });
-      const res = await API.get(`utente/${userId}`);
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
+      const body = {
+        cfUtente: codiceFiscale,
+        codiceRuolo,
+        idProgramma,
+        idProgetto,
+      };
+      //const res = await API.get(`utente/${userId}`);
+      const res = await API.post(`utente/${userId}`, body);
       if (res?.data) {
         dispatch(setUserDetails(res.data));
         return res.data;
@@ -167,8 +176,9 @@ export const CreateUser =
       if (res) {
         return res;
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }
@@ -178,7 +188,7 @@ const UpdateUserAction = {
   type: 'administrativeArea/UpdateUser',
 };
 export const UpdateUser =
-  (idUtente: string, payload: { [key: string]: formFieldI['value'] }) => 
+  (idUtente: string, payload: { [key: string]: formFieldI['value'] }) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
@@ -200,8 +210,9 @@ export const UpdateUser =
       if (res) {
         console.log(res);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }
@@ -211,7 +222,7 @@ const UserAddRoleAction = {
   type: 'user/UserAddRole',
 };
 export const UserAddRole =
-  (payload: { idUtente: string; ruolo: string }) => 
+  (payload: { idUtente: string; ruolo: string }) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
@@ -232,7 +243,7 @@ const UserDeleteRoleAction = {
   type: 'user/UserAddRole',
 };
 export const UserDeleteRole =
-  (payload: { idUtente: string; ruolo: string }) =>  
+  (payload: { idUtente: string; ruolo: string }) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());

@@ -12,11 +12,11 @@ export const shortFormats: { [key: string]: string } = {
   itaDefault: 'DD MMM YYYY \\at hh:mm',
 };
 
-export const formatDate = (timestamp: string | undefined, format: string) => {
+export const formatDate = (timestamp: string | number, format: string) => {
   if (!timestamp) {
     return undefined;
   }
-  return moment(timestamp).format(shortFormats[format] || shortFormats.default);
+  return moment(Number(timestamp)).format(shortFormats[format] || shortFormats.default);
 };
 
 export const dateToTimestamp = (date: string, format: string) => {

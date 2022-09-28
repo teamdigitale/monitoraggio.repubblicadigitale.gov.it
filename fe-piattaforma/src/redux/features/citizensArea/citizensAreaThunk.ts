@@ -3,16 +3,15 @@ import API from '../../../utils/apiHelper';
 import { hideLoader, showLoader } from '../app/appSlice';
 import {
   getEntityDetail,
-  getEntitySearch,
-  getEntitySearchMultiple,
   setEntityFilterOptions,
   setEntityValues,
   setEntityPagination,
+  setCitizenSearchResults,
 } from './citizensAreaSlice';
 import { RootState } from '../../store';
 // import { mapOptions } from '../../../utils/common';
 import { OptionType } from '../../../components/Form/select';
-import { mapOptions } from '../../../utils/common';
+import { downloadCSV, mapOptionsCitizens } from '../../../utils/common';
 import { getUserHeaders } from '../user/userThunk';
 
 const GetValuesAction = { type: 'citizensArea/GetEntityValues' };
@@ -41,15 +40,14 @@ export const GetEntityValues =
           );
         }
       });
-      // const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
-      //   getUserHeaders();
-
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
       const body = {
         filtro: filtroRequest,
-        idProgetto: 0, // TODO: update con variabile
-        idProgramma: 0, // TODO: update con variabile
-        codiceFiscaleUtenteLoggato: 'SMNRRR56F12G500Q', // TODO: update con variabile
-        codiceRuoloUtenteLoggato: 'FAC', // TODO: update con variabile
+        idProgetto: idProgetto,
+        idProgramma: idProgramma,
+        codiceFiscaleUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
       };
       const res = await API.post(entityEndpoint, body, {
         params: {
@@ -116,7 +114,7 @@ export const GetEntityFilterValues =
       if (res?.data) {
         dispatch(
           setEntityFilterOptions({
-            [entityFilter]: mapOptions(res.data),
+            [entityFilter]: mapOptionsCitizens(res.data),
           })
         );
       }
@@ -131,12 +129,19 @@ const GetEntityDetailAction = {
   type: 'citizensArea/GetEntityDetail',
 };
 export const GetEntityDetail =
-  (idCittadino: string | undefined, payload?: any) =>
-  async (dispatch: Dispatch) => {
+  (idCittadino: string | undefined) => async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
-      dispatch({ ...GetEntityDetailAction, idCittadino, payload });
-      const res = await API.get(`cittadino/${idCittadino}`);
+      dispatch({ ...GetEntityDetailAction, idCittadino });
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
+      const body = {
+        codiceFiscaleUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
+        idProgetto,
+        idProgramma,
+      };
+      const res = await API.post(`cittadino/${idCittadino}`, body);
       if (res?.data) {
         dispatch(getEntityDetail(res.data));
       }
@@ -156,16 +161,14 @@ export const GetEntitySearchResult =
     try {
       dispatch({ ...GetEntitySearchResultAction, searchValue, searchType });
       dispatch(showLoader());
-      const res = await API.get(
-        `/servizio/cittadino?criterioRicerca=${searchValue}&tipoDocumento=${
-          searchType === 'codiceFiscale' ? 'CF' : 'NUM_DOC'
-        }`
-      );
+      const body = {
+        criterioRicerca: searchValue,
+        tipoDocumento: searchType === 'codiceFiscale' ? 'CF' : 'NUM_DOC',
+      };
+      const res = await API.post(`/servizio/cittadino`, body);
       if (res?.data) {
-        if (Array.isArray(res.data.data)) {
-          dispatch(getEntitySearchMultiple(res.data.data));
-        } else {
-          dispatch(getEntitySearch(res.data.data));
+        if (Array.isArray(res.data)) {
+          dispatch(setCitizenSearchResults(res.data));
         }
       }
     } catch (error) {
@@ -179,17 +182,59 @@ const UpdateCitizenDetailAction = {
   type: 'citizensArea/UpdateCitizenDetail',
 };
 export const UpdateCitizenDetail =
-  (idCittadino: string | undefined, payload?: any) =>
+  (
+    idCittadino: string | undefined,
+    body: {
+      [key: string]: string | number | boolean | Date | string[] | undefined;
+    }
+  ) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
-      dispatch({ ...UpdateCitizenDetailAction, idCittadino, payload });
-      const res = await API.put(`cittadino/${idCittadino}`);
-      if (res?.data) {
-        // TODO: richiama api dettaglio
+      dispatch({ ...UpdateCitizenDetailAction, idCittadino, body });
+      const res = await API.put(`cittadino/${idCittadino}`, body);
+      if(res){
+        return true;
       }
     } catch (error) {
       console.log('UpdateCitizenDetail citizensArea error', error);
+      return false;
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const DownloadEntityValuesAction = {
+  type: 'citizensArea/DownloadEntityValues',
+};
+export const DownloadEntityValues =
+  () => async (dispatch: Dispatch, select: Selector) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...DownloadEntityValuesAction });
+      const {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        citizensArea: { filters },
+      } = select((state: RootState) => state);
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        getUserHeaders();
+      const body = {
+        codiceFiscaleUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
+        filtro: {
+          ...filters,
+        },
+        idProgetto: idProgetto,
+        idProgramma: idProgramma,
+      };
+      const entityEndpoint = `/cittadino/download`;
+      const res = await API.post(entityEndpoint, body);
+      if (res?.data) {
+        downloadCSV(res.data, `cittadino.csv`, true);
+      }
+    } catch (error) {
+      console.log('citizensArea error', error);
     } finally {
       dispatch(hideLoader());
     }

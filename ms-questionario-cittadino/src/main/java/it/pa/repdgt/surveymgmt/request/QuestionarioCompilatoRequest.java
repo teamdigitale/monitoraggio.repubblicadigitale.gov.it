@@ -38,7 +38,7 @@ public class QuestionarioCompilatoRequest implements Serializable {
 	private String  tipoDocumentoDaAggiornare;
 	private String  numeroDocumentoDaAggiornare;
 	private String  genereDaAggiornare;
-	private String  annoDiNascitaDaAggiornare;
+	private Integer  annoDiNascitaDaAggiornare;
 	private String  titoloDiStudioDaAggiornare;
 	private String  occupazioneDaAggiornare;
 	private String  cittadinanzaDaAggiornare;

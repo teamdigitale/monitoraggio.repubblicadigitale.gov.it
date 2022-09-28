@@ -1,7 +1,6 @@
 package it.pa.repdgt.opendata.bean;
 
 import java.io.Serializable;
-import java.util.Map;
 
 import it.pa.repdgt.opendata.projection.OpenDataCittadinoProjection;
 import lombok.Getter;

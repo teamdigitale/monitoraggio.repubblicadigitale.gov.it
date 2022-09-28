@@ -3,12 +3,15 @@ import './sectionTitle.scss';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import clsx from 'clsx';
-import AvatarInitials, {
+import {
   AvatarSizes,
   AvatarTextSizes,
-} from '../AvatarInitials/avatarInitials';
+} from '../Avatar/AvatarInitials/avatarInitials';
 import StatusChip from '../StatusChip/statusChip';
 import { Button, Icon } from 'design-react-kit';
+import { useDispatch } from 'react-redux';
+import { UploadUserPic } from '../../redux/features/user/userThunk';
+import UserAvatar from '../Avatar/UserAvatar/UserAvatar';
 
 interface SectionTitleI {
   title: string;
@@ -21,7 +24,9 @@ interface SectionTitleI {
   iconAvatar?: boolean;
   name?: string | undefined;
   surname?: string | undefined;
-  isUserProfile?: boolean;
+  isUserProfile?: boolean | string | undefined;
+  enteIcon?: boolean;
+  profilePicture?: string | undefined;
 }
 
 const SectionTitle: React.FC<SectionTitleI> = (props) => {
@@ -34,8 +39,12 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
     name,
     surname,
     isUserProfile = false,
+    enteIcon = false,
+    profilePicture,
   } = props;
+
   const device = useAppSelector(selectDevice);
+  const dispatch = useDispatch();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const addProfilePicture = () => {
@@ -44,107 +53,177 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
     }
   };
 
-  const updateImage = () => {
-    const input: HTMLInputElement = document.getElementById(
-      'profile_pic'
-    ) as HTMLInputElement;
+  const updateImage = async () => {
+    if (isUserProfile) {
+      const input: HTMLInputElement = document.getElementById(
+        'profile_pic'
+      ) as HTMLInputElement;
 
-    if (input.files?.length) {
-      const selectedImage = input.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(selectedImage);
-      reader.onloadend = () => {
-        return reader.result;
-      };
+      if (input.files?.length) {
+        const selectedImage = input.files[0];
+        await dispatch(UploadUserPic(selectedImage));
+        // TODO reload is temporary
+        window.location.reload();
+        /*
+        const reader = new FileReader();
+        //reader.readAsBinaryString(selectedImage);
+        reader.readAsDataURL(selectedImage);
+        reader.onloadend = () => {
+          console.log(reader);
+          //return reader.result;
+          dispatch(UploadUserPic(reader.result));
+        };*/
+      }
     }
   };
 
   return (
-    <div className='custom-section-title'>
-      {upperTitle ? (
-        <div className='d-flex flex-row'>
-          <Icon
-            icon={upperTitle.icon}
-            size='sm'
-            className='mr-1 icon-color'
-            aria-label='Sezione'
+    <div
+      className={clsx(
+        'd-flex',
+        device.mediaIsPhone ? 'flex-column' : 'flex-row justify-content-center',
+        'align-items-center',
+        'mx-auto'
+      )}
+    >
+      {iconAvatar && !device.mediaIsPhone && (
+        <div
+          className={clsx(
+            !subTitle && 'mt-4 pt-3',
+            'mt-2',
+            'position-relative'
+          )}
+        >
+          <UserAvatar
+            avatarImage={profilePicture}
+            user={{ uSurname: surname, uName: name }}
+            size={device.mediaIsPhone ? AvatarSizes.Big : AvatarSizes.Small}
+            font={
+              device.mediaIsPhone ? AvatarTextSizes.Big : AvatarTextSizes.Small
+            }
+            lightColor={device.mediaIsPhone}
           />
-          <p
-            className={clsx(
-              'h6',
-              'custom-section-title__upper-text',
-              'primary-color-a9',
-              'text-uppercase'
-            )}
-          >
-            {upperTitle.text}
-          </p>
-        </div>
-      ) : null}
 
+          {isUserProfile && (
+            <div
+              className={clsx(
+                'camera-icon',
+                'primary-bg',
+                'position-absolute',
+                'rounded-circle',
+                'section-title__icon-container'
+              )}
+              style={{
+                bottom: device.mediaIsDesktop
+                  ? '-10px'
+                  : device.mediaIsPhone
+                  ? '90px'
+                  : '',
+                left: device.mediaIsDesktop
+                  ? '-10px'
+                  : device.mediaIsPhone
+                  ? '75px'
+                  : '',
+              }}
+            >
+              <input
+                type='file'
+                id='profile_pic'
+                onChange={updateImage}
+                accept='.png, .jpeg, .jpg'
+                capture
+                ref={inputRef}
+                className='sr-only'
+              />
+              <Button
+                onClick={addProfilePicture}
+                size='xs'
+                className='profile-picture-btn'
+              >
+                <Icon
+                  size='xs'
+                  icon='it-camera'
+                  color='white'
+                  aria-label='Foto'
+                  className='position-absolute'
+                  style={{
+                    top: '4px',
+                    left: '5px',
+                  }}
+                />
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
       <div
         className={clsx(
           'd-flex',
-          device.mediaIsPhone ? 'flex-column align-items-center' : 'flex-row',
-          isUserProfile && 'position-relative'
+          'flex-column',
+          'align-items-center',
+          !iconAvatar && 'ml-5',
+          !iconAvatar && !status && 'mx-auto',
+          !status && 'mr-5'
         )}
       >
-        {iconAvatar && (
-          <AvatarInitials
-            user={{ uName: name || '', uSurname: surname || '' }}
-            size={AvatarSizes.Big}
-            font={AvatarTextSizes.Big}
-          />
-        )}
-        {isUserProfile && (
-          <div
-            className={clsx(
-              'camera-icon',
-              'primary-bg',
-              'position-absolute',
-              'rounded-circle',
-              'onboarding__icon-container'
-            )}
-            style={{ bottom: '-10px', left: '-10px' }}
-          >
-            <input
-              type='file'
-              id='profile_pic'
-              onChange={updateImage}
-              accept='image/*, .png, .jpeg, .jpg'
-              capture
-              ref={inputRef}
-              className='sr-only'
+        {upperTitle ? (
+          <div className='d-flex flex-row justify-content-center w-100'>
+            <Icon
+              icon={upperTitle.icon}
+              size={'sm'}
+              className={clsx('icon-color', enteIcon && 'ente-icon', 'mr-2')}
+              aria-label='Sezione'
             />
-            <Button
-              onClick={addProfilePicture}
-              size='xs'
-              className='profile-picture-btn'
+
+            <p
+              className={clsx(
+                'h6',
+                'custom-section-title__upper-text',
+                'primary-color-a9',
+                'text-uppercase'
+              )}
             >
-              <Icon
-                size='xs'
-                icon='it-camera'
-                /* padding */
-                color='white'
-                aria-label='Foto'
-                className='position-absolute'
-                style={{ top: '7px', left: '7px' }}
-              />
-            </Button>
+              {upperTitle.text}
+            </p>
           </div>
-        )}
-        <div className='custom-section-title__section-title primary-color-a9 text-nowrap'>
-          <span role='heading' aria-level={1}>
-            {' '}
-            {title}{' '}
+        ) : null}
+
+        <div
+          className={clsx(
+            'custom-section-title__section-title',
+            'primary-color-a9',
+            'text-wrap text-center',
+            'mx-auto'
+          )}
+        >
+          <span
+            aria-level={1}
+            className={clsx(
+              'custom-section-title',
+              'custom-section-title__section-title'
+            )}
+          >
+            {title}
           </span>
         </div>
-        {status ? (
+        {subTitle ? (
+          <div>
+            <p className='primary-color-a9 mb-0'> {subTitle} </p>
+          </div>
+        ) : null}
+      </div>
+      {status ? (
+        <div
+          className={clsx(
+            !subTitle && !device.mediaIsPhone && 'mt-4 pt-3',
+            'ml-4'
+          )}
+        >
           <StatusChip
             className={clsx(
               'table-container__status-label',
               'primary-bg-a9',
-              'mr-4',
+              'ml-4',
               'section-chip',
               'no-border',
               device.mediaIsPhone ? 'mx-0 ml-2 my-3' : 'mx-3'
@@ -152,11 +231,6 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
             status={status}
             rowTableId={name?.replace(/\s/g, '') || new Date().getTime()}
           />
-        ) : null}
-      </div>
-      {subTitle ? (
-        <div className='ml-3'>
-          <p className='primary-color-a9 mb-0'> {subTitle} </p>
         </div>
       ) : null}
     </div>

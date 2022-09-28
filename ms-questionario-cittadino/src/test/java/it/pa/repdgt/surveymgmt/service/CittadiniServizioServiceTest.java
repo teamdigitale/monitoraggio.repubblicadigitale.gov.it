@@ -1,5 +1,6 @@
 package it.pa.repdgt.surveymgmt.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.when;
 
@@ -26,18 +27,21 @@ import it.pa.repdgt.shared.entity.CittadinoEntity;
 import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
 import it.pa.repdgt.shared.entity.QuestionarioInviatoOnlineEntity;
 import it.pa.repdgt.shared.entity.ServizioEntity;
+import it.pa.repdgt.shared.entity.TipologiaServizioEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.bean.CittadinoUploadBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.collection.SezioneQ3Collection;
 import it.pa.repdgt.surveymgmt.exception.CittadinoException;
+import it.pa.repdgt.surveymgmt.exception.QuestionarioCompilatoException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioCompilatoMongoRepository;
 import it.pa.repdgt.surveymgmt.mongo.repository.SezioneQ3Respository;
 import it.pa.repdgt.surveymgmt.param.FiltroListaCittadiniServizioParam;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
+import it.pa.repdgt.surveymgmt.projection.CittadinoServizioProjection;
 import it.pa.repdgt.surveymgmt.repository.CittadinoRepository;
 import it.pa.repdgt.surveymgmt.repository.CittadinoServizioRepository;
 import it.pa.repdgt.surveymgmt.repository.QuestionarioCompilatoRepository;
@@ -45,6 +49,7 @@ import it.pa.repdgt.surveymgmt.repository.QuestionarioInviatoOnlineRepository;
 import it.pa.repdgt.surveymgmt.repository.ServizioSqlRepository;
 import it.pa.repdgt.surveymgmt.repository.ServizioXCittadinoRepository;
 import it.pa.repdgt.surveymgmt.request.NuovoCittadinoServizioRequest;
+import lombok.Setter;
 import software.amazon.awssdk.services.pinpoint.model.SendMessagesResponse;
 
 @ExtendWith(MockitoExtension.class)
@@ -79,7 +84,7 @@ public class CittadiniServizioServiceTest {
 	@InjectMocks
 	private CittadiniServizioService cittadiniServizioService;
 	
-	ProfilazioneParam profilazione;
+	SceltaProfiloParam profilazione;
 	FiltroListaCittadiniServizioParam filtroListaCittadiniServizio;
 	ServizioEntity servizio;
 	List<String> listaStatiQuestionari;
@@ -93,15 +98,17 @@ public class CittadiniServizioServiceTest {
 	String[] arrayString;
 	QuestionarioInviatoOnlineEntity invioQuestionario;
 	List<QuestionarioCompilatoEntity> listaQuestionariCompilati;
+	List<TipologiaServizioEntity> listaTipologiaServizi;
+	TipologiaServizioEntity tipologiaServizioEntity;
 	MockMultipartFile file;
 	byte[] data;
 	InputStream stream;
 	
 	@BeforeEach
 	public void setUp() throws IOException {
-		profilazione = new ProfilazioneParam();
-		profilazione.setCodiceFiscaleUtenteLoggato("CFUTENTE");
-		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD);
+		profilazione = new SceltaProfiloParam();
+		profilazione.setCfUtenteLoggato("CFUTENTE");
+		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.getValue());
 		profilazione.setIdProgetto(1L);
 		profilazione.setIdProgramma(1L);
 		listaStatiQuestionari = new ArrayList<>();
@@ -116,21 +123,31 @@ public class CittadiniServizioServiceTest {
 		nuovoCittadinoRequest.setCodiceFiscale("CFUTENTE");
 		nuovoCittadinoRequest.setNumeroDocumento("A89E32");
 		nuovoCittadinoRequest.setCodiceFiscaleNonDisponibile(false);
+		nuovoCittadinoRequest.setNuovoCittadino(true);
+		nuovoCittadinoRequest.setNome("nome");
+		nuovoCittadinoRequest.setCognome("cognome");
 		cittadino = new CittadinoEntity();
 		cittadino.setId(1L);
 		cittadino.setEmail("prova@gmail.com");
 		sezioneQ3 = new SezioneQ3Collection();
 		sezioneQ3.setId("1");
 		sezioneQ3.setMongoId("1");
+		tipologiaServizioEntity = new TipologiaServizioEntity();
+		tipologiaServizioEntity.setId(1L);
+		tipologiaServizioEntity.setTitolo("TITOLO");
+		listaTipologiaServizi = new ArrayList<>();
+		listaTipologiaServizi.add(tipologiaServizioEntity);
 		servizio.setIdTemplateCompilatoQ3(sezioneQ3.getId());
 		servizio.setIdEnteSedeProgettoFacilitatore(new EnteSedeProgettoFacilitatoreKey(1L, 1L, 1L, "CFUTENTE"));
 		servizio.setIdQuestionarioTemplateSnapshot("1");
+		servizio.setListaTipologiaServizi(listaTipologiaServizi);
 		questionarioCompilatoCollection = new QuestionarioCompilatoCollection();
 		questionarioCompilatoCollection.setIdQuestionarioCompilato("1");
 		cittadinoUpload = new CittadinoUploadBean("CFUTENTE", "NOME", "COGNOME", "NUM_DOC", "34R2F4", "", "1990", "DIPLOMA", "", "", "", "", "", "", "", "");
 		questionarioCompilato = new QuestionarioCompilatoEntity();
 		questionarioCompilato.setId("idQuestionario");
 		questionarioCompilato.setCittadino(cittadino);
+		questionarioCompilato.setStato("NON_INVIATO");
 		arrayString = new String[] {cittadino.getEmail(), "TOKEN"};
 		invioQuestionario = new QuestionarioInviatoOnlineEntity();
 		invioQuestionario.setId(1L);
@@ -144,8 +161,8 @@ public class CittadiniServizioServiceTest {
 	@Test
 	public void getAllCittadiniServizioByProfilazioneAndFiltroPaginatiTest() {
 		Integer currPage = 0, pageSize = 10;
-		when(this.utenteService.hasRuoloUtente(profilazione.getCodiceFiscaleUtenteLoggato(), profilazione.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
-		when(this.servizioSqlRepository.findByFacilitatoreAndIdServizio(profilazione.getCodiceFiscaleUtenteLoggato(), servizio.getId())).thenReturn(Optional.of(servizio));
+		when(this.utenteService.hasRuoloUtente(profilazione.getCfUtenteLoggato(), profilazione.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
+		when(this.servizioSqlRepository.findByFacilitatoreAndIdServizio(profilazione.getCfUtenteLoggato(), servizio.getId())).thenReturn(Optional.of(servizio));
 		cittadiniServizioService.getAllCittadiniServizioByProfilazioneAndFiltroPaginati(servizio.getId(), profilazione, filtroListaCittadiniServizio, currPage, pageSize);
 	}
 	
@@ -153,13 +170,13 @@ public class CittadiniServizioServiceTest {
 	public void getAllCittadiniServizioByProfilazioneAndFiltroPaginatiKOTest() {
 		//test KO per Ruolo non definito per l'utente
 		final Integer currPage = 0, pageSize = 10;
-		when(this.utenteService.hasRuoloUtente(profilazione.getCodiceFiscaleUtenteLoggato(), profilazione.getCodiceRuoloUtenteLoggato().toString())).thenReturn(false);
+		when(this.utenteService.hasRuoloUtente(profilazione.getCfUtenteLoggato(), profilazione.getCodiceRuoloUtenteLoggato().toString())).thenReturn(false);
 		Assertions.assertThrows(ServizioException.class, () -> cittadiniServizioService.getAllCittadiniServizioByProfilazioneAndFiltroPaginati(servizio.getId(), profilazione, filtroListaCittadiniServizio, currPage, pageSize));
 		assertThatExceptionOfType(ServizioException.class);
 		
 		//test KO per Servizio non accessibile per l'utente
-		when(this.utenteService.hasRuoloUtente(profilazione.getCodiceFiscaleUtenteLoggato(), profilazione.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
-		when(this.servizioSqlRepository.findByFacilitatoreAndIdServizio(profilazione.getCodiceFiscaleUtenteLoggato(), servizio.getId())).thenReturn(Optional.empty());
+		when(this.utenteService.hasRuoloUtente(profilazione.getCfUtenteLoggato(), profilazione.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
+		when(this.servizioSqlRepository.findByFacilitatoreAndIdServizio(profilazione.getCfUtenteLoggato(), servizio.getId())).thenReturn(Optional.empty());
 		Assertions.assertThrows(ServizioException.class, () -> cittadiniServizioService.getAllCittadiniServizioByProfilazioneAndFiltroPaginati(servizio.getId(), profilazione, filtroListaCittadiniServizio, currPage, pageSize));
 		assertThatExceptionOfType(ServizioException.class);
 		
@@ -174,21 +191,11 @@ public class CittadiniServizioServiceTest {
 	@Test
 	public void getAllStatiQuestionarioCittadinoServizioDropdownTest() {
 		//test con filtroListaCittadiniServizio.getStatiQuestionario() != empty
-		when(this.utenteService.hasRuoloUtente(profilazione.getCodiceFiscaleUtenteLoggato(), profilazione.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
-		cittadiniServizioService.getAllStatiQuestionarioCittadinoServizioDropdown(servizio.getId(), profilazione, filtroListaCittadiniServizio);
+		cittadiniServizioService.getAllStatiQuestionarioCittadinoServizioDropdown(servizio.getId(), filtroListaCittadiniServizio);
 		
 		//test con filtroListaCittadiniServizio.getStatiQuestionario() = empty
 		filtroListaCittadiniServizio.setStatiQuestionario(new ArrayList<>());
-		when(this.utenteService.hasRuoloUtente(profilazione.getCodiceFiscaleUtenteLoggato(), profilazione.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
-		cittadiniServizioService.getAllStatiQuestionarioCittadinoServizioDropdown(servizio.getId(), profilazione, filtroListaCittadiniServizio);
-	}
-	
-	@Test
-	public void getAllStatiQuestionarioCittadinoServizioDropdownKOTest() {
-		//test KO per Ruolo non definito per l'utente
-		when(this.utenteService.hasRuoloUtente(profilazione.getCodiceFiscaleUtenteLoggato(), profilazione.getCodiceRuoloUtenteLoggato().toString())).thenReturn(false);
-		Assertions.assertThrows(ServizioException.class, () -> cittadiniServizioService.getAllStatiQuestionarioCittadinoServizioDropdown(servizio.getId(), profilazione, filtroListaCittadiniServizio));
-		assertThatExceptionOfType(ServizioException.class);
+		cittadiniServizioService.getAllStatiQuestionarioCittadinoServizioDropdown(servizio.getId(), filtroListaCittadiniServizio);
 	}
 	
 	@Test
@@ -202,21 +209,6 @@ public class CittadiniServizioServiceTest {
 	
 	@Test
 	public void creaNuovoCittadinoTest() {
-		//test con cittadino presente a db
-		when(this.cittadinoService.getCittadinoByCodiceFiscaleOrNumeroDocumento(
-				nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile(),
-				nuovoCittadinoRequest.getCodiceFiscale(),
-				nuovoCittadinoRequest.getNumeroDocumento()
-			)).thenReturn(Optional.of(cittadino));
-		when(this.servizioXCittadinoRepository.findCittadinoByIdServizioAndIdCittadino(servizio.getId(), cittadino.getId())).thenReturn(0);
-		when(servizioSqlService.getServizioById(servizio.getId())).thenReturn(servizio);
-		when(sezioneQ3Respository.findById(servizio.getIdTemplateCompilatoQ3())).thenReturn(Optional.of(sezioneQ3));
-		cittadiniServizioService.creaNuovoCittadino(servizio.getId(), nuovoCittadinoRequest);
-	}
-	
-	@Test
-	public void creaNuovoCittadinoTest2() {
-		//test con cittadino non presente a db
 		when(this.cittadinoService.getCittadinoByCodiceFiscaleOrNumeroDocumento(
 				nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile(),
 				nuovoCittadinoRequest.getCodiceFiscale(),
@@ -227,10 +219,23 @@ public class CittadiniServizioServiceTest {
 		when(sezioneQ3Respository.findById(servizio.getIdTemplateCompilatoQ3())).thenReturn(Optional.of(sezioneQ3));
 		cittadiniServizioService.creaNuovoCittadino(servizio.getId(), nuovoCittadinoRequest);
 	}
-	
+		
 	@Test
 	public void creaNuovoCittadinoKOTest() {
+		//test KO per cittadino già esistente
+		when(this.cittadinoService.getCittadinoByCodiceFiscaleOrNumeroDocumento(
+				nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile(),
+				nuovoCittadinoRequest.getCodiceFiscale(),
+				nuovoCittadinoRequest.getNumeroDocumento()
+			)).thenReturn(Optional.of(cittadino));
+		Assertions.assertThrows(CittadinoException.class, () -> cittadiniServizioService.creaNuovoCittadino(servizio.getId(), nuovoCittadinoRequest));
+		assertThatExceptionOfType(CittadinoException.class);
+	}
+	
+	@Test
+	public void creaNuovoCittadinoKOTest2() {
 		//test KO per cittadino già esistente sul servizio
+		nuovoCittadinoRequest.setNuovoCittadino(false);
 		when(this.cittadinoService.getCittadinoByCodiceFiscaleOrNumeroDocumento(
 				nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile(),
 				nuovoCittadinoRequest.getCodiceFiscale(),
@@ -252,16 +257,24 @@ public class CittadiniServizioServiceTest {
 		cittadiniServizioService.associaCittadinoAServizio(servizio.getId(), cittadino);
 	}
 	
-	@Test
-	public void creaQuestionarioNonInviatoTest() {
-		when(sezioneQ3Respository.findById(servizio.getIdTemplateCompilatoQ3())).thenReturn(Optional.of(sezioneQ3));
-		cittadiniServizioService.creaQuestionarioNonInviato(servizio, cittadino);
-	}
+//	@Test
+//	public void creaQuestionarioNonInviatoTest() {
+//		when(sezioneQ3Respository.findById(servizio.getIdTemplateCompilatoQ3())).thenReturn(Optional.of(sezioneQ3));
+//		cittadiniServizioService.creaQuestionarioNonInviato(servizio, cittadino);
+//	}
 	
 	@Test
 	public void creoQuestionarioCompilatoCollectionTest() {
 		when(sezioneQ3Respository.findById(servizio.getIdTemplateCompilatoQ3())).thenReturn(Optional.of(sezioneQ3));
 		cittadiniServizioService.creoQuestionarioCompilatoCollection(cittadino, servizio);
+	}
+
+	@Test
+	public void creoQuestionarioCompilatoCollectionKOTest() {
+		//test KO per templateQ3 non associato al servizio
+		when(sezioneQ3Respository.findById(servizio.getIdTemplateCompilatoQ3())).thenReturn(Optional.empty());
+		Assertions.assertThrows(QuestionarioCompilatoException.class, () -> cittadiniServizioService.creoQuestionarioCompilatoCollection(cittadino, servizio));
+		assertThatExceptionOfType(QuestionarioCompilatoException.class);
 	}
 	
 	@Test
@@ -276,25 +289,25 @@ public class CittadiniServizioServiceTest {
 		cittadiniServizioService.creaSezioneQuestionarioQ2ByCittadino(cittadino.getId(), servizio.getId());
 	}
 	
-	@Test
-	public void creaSezioneQuestionarioQ2ByCittadinoTest2() {
-		//test con servizio inesistente
-		when(servizioSqlService.getPrimoServizioByIdCittadino(servizio.getId(), cittadino.getId())).thenReturn(Optional.empty());
-		cittadiniServizioService.creaSezioneQuestionarioQ2ByCittadino(cittadino.getId(), servizio.getId());
-	}
+//	@Test
+//	public void creaSezioneQuestionarioQ2ByCittadinoTest2() {
+//		//test con servizio inesistente
+//		when(servizioSqlService.getPrimoServizioByIdCittadino(servizio.getId(), cittadino.getId())).thenReturn(Optional.empty());
+//		cittadiniServizioService.creaSezioneQuestionarioQ2ByCittadino(cittadino.getId(), servizio.getId());
+//	}
 	
 	@Test
 	public void salvaQuestionarioCompilatoSqlTest() {
 		cittadiniServizioService.salvaQuestionarioCompilatoSql(cittadino, servizio, questionarioCompilatoCollection);
 	}
 	
-	@Test
-	public void inserisciCittadinoTest() {
-		when(cittadinoRepository.save(cittadino)).thenReturn(cittadino);
-		when(servizioSqlService.getServizioById(servizio.getId())).thenReturn(servizio);
-		when(sezioneQ3Respository.findById(servizio.getIdTemplateCompilatoQ3())).thenReturn(Optional.of(sezioneQ3));
-		cittadiniServizioService.inserisciCittadino(cittadino, servizio.getId());
-	}
+//	@Test
+//	public void inserisciCittadinoTest() {
+//		when(cittadinoRepository.save(cittadino)).thenReturn(cittadino);
+//		when(servizioSqlService.getServizioById(servizio.getId())).thenReturn(servizio);
+//		when(sezioneQ3Respository.findById(servizio.getIdTemplateCompilatoQ3())).thenReturn(Optional.of(sezioneQ3));
+//		cittadiniServizioService.inserisciCittadino(cittadino, servizio.getId());
+//	}
 	
 	@Test
 	public void popolaCittadinoTest() {
@@ -315,6 +328,8 @@ public class CittadiniServizioServiceTest {
 	public void inviaQuestionarioTest() {
 		when(questionarioCompilatoSqlRepository.findById(questionarioCompilato.getId())).thenReturn(Optional.of(questionarioCompilato));
 		cittadiniServizioService.inviaQuestionario(questionarioCompilato.getId(), cittadino.getId());
+		questionarioCompilato.setStato("COMPILATO");
+		Assertions.assertThrows(ServizioException.class, () -> cittadiniServizioService.inviaQuestionario(questionarioCompilato.getId(), 2L));
 	}
 	
 	@Test
@@ -347,8 +362,71 @@ public class CittadiniServizioServiceTest {
 		cittadiniServizioService.inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizio(servizio.getId());
 	}
 	
+//	@Test
+//	public void caricaCittadiniSuServizioTest() {
+//		when(this.servizioSqlService.getServizioById(servizio.getId())).thenReturn(servizio);
+//		cittadiniServizioService.caricaCittadiniSuServizio(file, servizio.getId());
+//	}
+
 	@Test
-	public void caricaCittadiniSuServizioTest() {
-		cittadiniServizioService.caricaCittadiniSuServizio(file, servizio.getId());
+	public void countCittadiniServizioByFiltroTest() {
+		CittadinoServizioProjectionImplementation cittadinoServizioProjectionImplementation = new CittadinoServizioProjectionImplementation();
+		List<CittadinoServizioProjection> listaCittadiniProjection = new ArrayList<>();
+		listaCittadiniProjection.add(cittadinoServizioProjectionImplementation);
+		when(cittadinoServizioRepository.findAllCittadiniServizioByFiltro(
+				servizio.getId(),
+				filtroListaCittadiniServizio.getCriterioRicerca(),
+				"%" + filtroListaCittadiniServizio.getCriterioRicerca() + "%",
+				filtroListaCittadiniServizio.getStatiQuestionario()
+			)).thenReturn(listaCittadiniProjection);
+		Integer risultato = cittadiniServizioService.countCittadiniServizioByFiltro(servizio.getId(), filtroListaCittadiniServizio);
+		assertThat(risultato).isEqualTo(listaCittadiniProjection.size());
+	}
+
+	@Setter
+	public class CittadinoServizioProjectionImplementation implements CittadinoServizioProjection {
+		private Long idCittadino;
+		private String nome;
+		private String cognome;
+		private String codiceFiscale;
+		private String numeroDocumento;
+		private String idQuestionario;
+		private String statoQuestionario;
+
+		@Override
+		public Long getIdCittadino() {
+			return idCittadino;
+		}
+
+		@Override
+		public String getNome() {
+			return nome;
+		}
+
+		@Override
+		public String getCognome() {
+			return cognome;
+		}
+
+		@Override
+		public String getCodiceFiscale() {
+			return codiceFiscale;
+		}
+
+		@Override
+		public String getNumeroDocumento() {
+			return numeroDocumento;
+		}
+
+		@Override
+		public String getIdQuestionario() {
+			return idQuestionario;
+		}
+
+		@Override
+		public String getStatoQuestionario() {
+			return statoQuestionario;
+		}
+
 	}
 }

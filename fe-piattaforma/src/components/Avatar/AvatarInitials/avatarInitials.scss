@@ -1,0 +1,20 @@
+.avatar-initials-container {
+  &__circle-width {
+    &__big {
+      width: 53px !important;
+      height: 53px !important;
+    }
+    &__small {
+      width: 35px !important;
+      height: 35px !important;
+    }
+  }
+}
+.initials {
+  &__font-small {
+    font-size: 15px;
+  }
+  &__font-big {
+    font-size: 24px;
+  }
+}

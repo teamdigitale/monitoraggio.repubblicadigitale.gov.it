@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.ente.exception.RuoloException;
-import it.pa.repdgt.ente.exception.UtenteXRuoloException;
 import it.pa.repdgt.ente.repository.RuoloRepository;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;

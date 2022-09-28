@@ -618,19 +618,19 @@ const ProgramsDetails: React.FC = () => {
   const centerActiveItem = () => {
     switch (activeTab) {
       case tabs.INFO:
-        infoRef.current?.scrollIntoView({ inline: 'center' });
+        infoRef.current?.scrollIntoView({ block: 'center' });
         break;
       case tabs.ENTE:
-        gestoreRef.current?.scrollIntoView({ inline: 'center' });
+        gestoreRef.current?.scrollIntoView({ block: 'center' });
         break;
       case tabs.QUESTIONARI:
-        questionariRef.current?.scrollIntoView({ inline: 'center' });
+        questionariRef.current?.scrollIntoView({ block: 'center' });
         break;
       case tabs.PROGETTI:
-        projectRef.current?.scrollIntoView({ inline: 'center' });
+        projectRef.current?.scrollIntoView({ block: 'center' });
         break;
       default:
-        infoRef.current?.scrollIntoView({ inline: 'center' });
+        infoRef.current?.scrollIntoView({ block: 'center' });
         break;
     }
   };
@@ -883,10 +883,11 @@ const ProgramsDetails: React.FC = () => {
         <NavLink
           to={`/area-amministrativa/programmi/${entityId}/${tabs.ENTE}`}
           active={activeTab === tabs.ENTE}
+          enteGestore={!managerAuthorityId}
         >
           {!managerAuthorityId ? (
             <div id='tab-ente-gestore'>
-              <span className='mr-1'> * Ente gestore </span>
+              * Ente gestore
               <Tooltip
                 placement='bottom'
                 target='tab-ente-gestore'
@@ -895,7 +896,7 @@ const ProgramsDetails: React.FC = () => {
               >
                 Compilazione obbligatoria
               </Tooltip>
-              <Icon icon='it-warning-circle' size='sm' />
+              <Icon icon='it-warning-circle' size='xs' className='ml-1' />
             </div>
           ) : (
             'Ente gestore'
@@ -907,7 +908,7 @@ const ProgramsDetails: React.FC = () => {
           to={`/area-amministrativa/programmi/${entityId}/${tabs.QUESTIONARI}`}
           active={activeTab === tabs.QUESTIONARI}
         >
-          <span> Questionari </span>
+          Questionari
         </NavLink>
       </li>
       <li ref={projectRef}>
@@ -915,7 +916,7 @@ const ProgramsDetails: React.FC = () => {
           active={activeTab === tabs.PROGETTI}
           to={`/area-amministrativa/programmi/${entityId}/${tabs.PROGETTI}`}
         >
-          <span> Progetti </span>
+          Progetti
         </NavLink>
       </li>
     </Nav>
@@ -1031,8 +1032,11 @@ const ProgramsDetails: React.FC = () => {
           goBackPath='/area-amministrativa/programmi'
           showGoBack={
             userRole !== userRoles.REG &&
+            userRole !== userRoles.DEG &&
             userRole !== userRoles.REGP &&
-            userRole !== userRoles.FAC
+            userRole !== userRoles.DEGP &&
+            userRole !== userRoles.FAC &&
+            userRole !== userRoles.VOL
           }
           surveyDefault={surveyDefault}
           isRadioButtonItem={radioButtonsSurveys}
@@ -1054,13 +1058,14 @@ const ProgramsDetails: React.FC = () => {
                 cta={getAccordionCTA(item.title).cta}
                 onClickCta={getAccordionCTA(item.title)?.ctaAction}
                 lastBottom={index === itemAccordionList.length - 1}
+                detailAccordion
               >
                 {item.items?.length ? (
                   item.items.map((cardItem) => (
                     <CardStatusAction
                       key={cardItem.id}
-                      title={`${cardItem.nome} ${
-                        cardItem.cognome ? cardItem.cognome : ''
+                      title={`${cardItem.cognome ? cardItem.cognome : ''} ${
+                        cardItem.nome
                       }`.trim()}
                       status={cardItem.stato}
                       id={cardItem.id}
@@ -1071,7 +1076,7 @@ const ProgramsDetails: React.FC = () => {
                   ))
                 ) : (
                   <EmptySection
-                    title={`Non esistono ${item.title?.toLowerCase()} associati`}
+                    title={`Non sono presenti ${item.title?.toLowerCase()} associati.`}
                     horizontal
                     aside
                   />

@@ -34,9 +34,8 @@ interface schemaFieldI {
   relatedTo?: string;
   enumLevel1?: string[];
   enumLevel2?: { label: string; value: string; upperLevel: string }[];
-  keyService?: string;
   regex?: string;
-  privacy?: boolean;
+  keyBE?: string;
 }
 export interface SchemaI {
   id?: schemaFieldI['id'];
@@ -190,7 +189,7 @@ type baseTypeObjectI = {
   regex: string;
   type: InputType;
 };
-const getTypeReverse: (formField: schemaFieldI) => baseTypeObjectI = (
+export const getTypeReverse: (formField: schemaFieldI) => baseTypeObjectI = (
   formField: schemaFieldI
 ) => {
   const baseTypeObject: baseTypeObjectI = {
@@ -289,37 +288,39 @@ const getSchemaRequired = (
 export const generateForm: (schema: SchemaI, compile?: boolean) => FormI = (
   schema,
   compile = false
-) =>
-  newForm(
-    Object.keys(schema.properties).map((field) =>
-      newFormField({
-        ...getTypeReverse(schema.properties[field]),
-        field,
-        id: `field-${(
-          schema.properties[field].id ||
-          schema.properties[field].title ||
-          `${new Date().getTime()}`
-        ).replace(/\s/g, '-')}`,
-        value: compile ? '' : schema.properties[field].title || '',
-        label: compile ? schema.properties[field].title || '' : '',
-        required: compile
-          ? getSchemaRequired(schema.properties[field], schema, field)
-          : schema.required.includes(field),
-        preset: schema.default.includes(field) || false,
-        flag: schema.properties[field].flag ? true : false,
-        privacy: schema.properties[field].privacy ? true : false,
-        format: schema.properties[field].format || '',
-        order: schema.properties[field].order || 1,
-        dependencyFlag: schema.properties[field].dependencyFlag || '',
-        dependencyNotFlag: schema.properties[field].dependencyNotFlag || '',
-        relatedFrom: schema.properties[field].relatedFrom || '',
-        relatedTo: schema.properties[field].relatedTo || '',
-        enumLevel1: schema.properties[field].enumLevel1 || undefined,
-        enumLevel2: schema.properties[field].enumLevel2 || undefined,
-        keyService: schema.properties[field].keyService || undefined,
-      })
-    )
-  );
+) => {
+  if (Object.keys(schema)?.length)
+    return newForm(
+      Object.keys(schema.properties).map((field) =>
+        newFormField({
+          ...getTypeReverse(schema.properties[field]),
+          field,
+          id: `field-${(
+            schema.properties[field].id ||
+            schema.properties[field].title ||
+            `${new Date().getTime()}`
+          ).replace(/\s/g, '-')}`,
+          value: compile ? '' : schema.properties[field].title || '',
+          label: compile ? schema.properties[field].title || '' : '',
+          required: compile
+            ? getSchemaRequired(schema.properties[field], schema, field)
+            : schema.required.includes(field),
+          preset: schema.default.includes(field) || false,
+          flag: schema.properties[field].flag ? true : false,
+          format: schema.properties[field].format || '',
+          order: schema.properties[field].order || 1,
+          dependencyFlag: schema.properties[field].dependencyFlag || '',
+          dependencyNotFlag: schema.properties[field].dependencyNotFlag || '',
+          relatedFrom: schema.properties[field].relatedFrom || '',
+          relatedTo: schema.properties[field].relatedTo || '',
+          enumLevel1: schema.properties[field].enumLevel1 || undefined,
+          enumLevel2: schema.properties[field].enumLevel2 || undefined,
+          keyBE: schema.properties[field].keyBE || undefined,
+        })
+      )
+    );
+  else return {};
+};
 
 const transformJsonQuestionToForm = (schema: SchemaI) => {
   const questionsFields = generateForm(schema);

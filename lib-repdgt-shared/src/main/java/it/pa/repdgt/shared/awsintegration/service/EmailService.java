@@ -35,12 +35,14 @@ public class EmailService {
 				case GEST_PROGE_PARTNER:
 				case FACILITATORE:
 				case RUOLO_CUSTOM:
-				case QUESTIONARIO_ONLINE:
 					htmlTemplateEmail = response.emailTemplateResponse().htmlPart().replaceFirst("%S", argsEmailTemplate[0]).replaceFirst("%S", argsEmailTemplate[1] );
 					break;
 				case CONSENSO:
 					htmlTemplateEmail = response.emailTemplateResponse().htmlPart().replace("%S", argsEmailTemplate[0]);
-					break;				
+					break;
+				case QUESTIONARIO_ONLINE:
+					htmlTemplateEmail = response.emailTemplateResponse().htmlPart().replaceFirst("%S", argsEmailTemplate[0]).replaceFirst("%S", argsEmailTemplate[1]).replaceFirst("%S", argsEmailTemplate[2]);
+					break;
 			}
 			
 			final SendMessagesRequest richiestaInvioEmail = this.pinpoint.creaRichiestaInvioEmail(emailTemplate.getValueTemplateSubject(), indirizzoEmailDestinatario, htmlTemplateEmail);

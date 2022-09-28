@@ -12,6 +12,7 @@ import AccordionAddressList from '../AccordionAddressList/AccordionAddressList';
 import { useParams } from 'react-router-dom';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
+  resetHeadquarterDetails,
   selectAuthorities,
   selectHeadquarters,
   setHeadquartersList,
@@ -35,6 +36,7 @@ import {
 } from '../../../../../redux/features/administrativeArea/authorities/authoritiesThunk';
 import {
   closeModal,
+  selectModalState,
   // selectModalId,
   // selectModalState,
 } from '../../../../../redux/features/modal/modalSlice';
@@ -103,7 +105,28 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
     useAppSelector(selectHeadquarters).detail?.dettagliInfoSede;
   const dispatch = useDispatch();
   // const modalId = useAppSelector(selectModalId);
-  // const open = useAppSelector(selectModalState);
+  const open = useAppSelector(selectModalState);
+
+  useEffect(() => {
+    if (creation && open) {
+      setAddressList([
+        {
+          indirizzoSede: {
+            via: '',
+            civico: '',
+            comune: '',
+            provincia: '',
+            cap: '',
+            regione: '',
+            nazione: '',
+          },
+          fasceOrarieAperturaIndirizzoSede: {},
+        },
+      ]);
+      setMovingHeadquarter(false);
+      dispatch(resetHeadquarterDetails());
+    }
+  }, [open, creation]);
 
   useEffect(() => {
     if (headquarterDetails) {
@@ -161,7 +184,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
     if (isFormValid && validateAddressList(addressList)) {
       if (newFormValues && addressList.length > 0) {
         if (projectId && ((authorityId && headquarterId) || authorityInfo)) {
-          await dispatch(
+          const res: any = await dispatch(
             AssignAuthorityHeadquarter(
               authorityId ? authorityId : authorityInfo?.id,
               {
@@ -193,8 +216,10 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
             if (enteType === 'partner')
               dispatch(GetPartnerAuthorityDetail(projectId, authorityInfo?.id));
           }
-          handleSearchReset();
-          dispatch(closeModal());
+          if (!res?.errorCode) {
+            handleSearchReset();
+            dispatch(closeModal());
+          }
         }
       }
     }
@@ -231,6 +256,8 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
     } else if (headquarterId) {
       dispatch(GetHeadquarterLightDetails(headquarterId));
     }
+
+    // dispatch(closeModal());
   };
 
   let content = (
@@ -255,10 +282,11 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
 
       <AccordionAddressList
         addressList={addressList}
-        onSetAddressList={(addressList: AddressInfoI[]) =>
-          setAddressList([...addressList])
+        onSetAddressList={(newAddressList: AddressInfoI[]) =>
+          setAddressList([...newAddressList])
         }
         movingHeadquarter={movingHeadquarter}
+        detailAccordion
       />
     </>
   );
@@ -297,7 +325,10 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: () => handleSearchReset(),
+        onClick: () => {
+          handleSearchReset();
+          dispatch(closeModal());
+        },
       }}
       centerButtons
     >
@@ -313,7 +344,25 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
             )}
             placeholder='Inserisci il nome della sede che stai cercando'
             onSubmit={handleSearchHeadquarter}
-            onReset={handleSearchReset}
+            onReset={() => {
+              dispatch(resetHeadquarterDetails());
+              setAddressList([
+                {
+                  indirizzoSede: {
+                    via: '',
+                    civico: '',
+                    comune: '',
+                    provincia: '',
+                    cap: '',
+                    regione: '',
+                    nazione: '',
+                  },
+                  fasceOrarieAperturaIndirizzoSede: {},
+                },
+              ]);
+              setMovingHeadquarter(false);
+              dispatch(setHeadquartersList(null));
+            }}
             title='Cerca'
             search
           />

@@ -38,7 +38,6 @@ import it.pa.repdgt.gestioneutente.repository.ReferentiDelegatiEntePartnerDiProg
 import it.pa.repdgt.gestioneutente.repository.UtenteRepository;
 import it.pa.repdgt.gestioneutente.request.AggiornaUtenteRequest;
 import it.pa.repdgt.gestioneutente.request.FiltroRequest;
-import it.pa.repdgt.gestioneutente.request.ProfilazioneRequest;
 import it.pa.repdgt.gestioneutente.request.UtenteRequest;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
@@ -53,6 +52,9 @@ import it.pa.repdgt.shared.entity.UtenteXRuolo;
 import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
+import it.pa.repdgt.shared.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -82,10 +84,13 @@ public class UtenteService {
 	private ReferentiDelegatiEntePartnerDiProgettoRepository referentiDelegatiEntePartnerDiProgettoRepository;
 	@Autowired
 	private S3Service s3Service;
-	
+
 	@Value("${AWS.S3.BUCKET-NAME:}")
 	private String nomeDelBucketS3;
-	
+	@Value("${AWS.S3.PRESIGN_URL-EXPIRE-SCHEDAUTENTE:15}")
+	private String presignedUrlExpireSchedaUtente;
+	@Value("${AWS.S3.PRESIGN_URL-EXPIRE-CONTESTO:15}")
+	private String presignedUrlExpireContesto;
 	private static final String PREFIX_FILE_IMG_PROFILO = "immagineProfilo-";
 
 	@LogExecutionTime
@@ -97,11 +102,7 @@ public class UtenteService {
 	@LogMethod
 	@LogExecutionTime
 	public List<UtenteDto> getAllUtentiPaginati(UtenteRequest sceltaContesto, Integer currPage, Integer pageSize) {
-		if(this.ruoloService.getRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
-			throw new UtenteException("ERRORE: ruolo non definito per l'utente");
-		}
-		return this.getUtentiPaginatiByRuolo(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest(),currPage, pageSize);
-		
+		return this.getUtentiPaginatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest(),currPage, pageSize);
 	}
 	
 	@LogMethod
@@ -111,7 +112,7 @@ public class UtenteService {
 				.map(utente -> {
 					UtenteDto utenteDto = new UtenteDto();
 					utenteDto.setId(utente.getId());
-					utenteDto.setNome(utente.getNome() + " " + utente.getCognome());
+					utenteDto.setNome(utente.getCognome() + " " + utente.getNome());
 					utenteDto.setCodiceFiscale(utente.getCodiceFiscale());
 					utenteDto.setStato(utente.getStato());
 					
@@ -250,7 +251,7 @@ public class UtenteService {
 	public UtenteEntity getUtenteByCodiceFiscale(String  codiceFiscaleUtente) {
 		String messaggioErrore = String.format("risorsa con codice Fiscale=%s non trovata", codiceFiscaleUtente);
 		return this.utenteRepository.findByCodiceFiscale(codiceFiscaleUtente)
-				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore) );
+				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01) );
 	}
 	
 	@LogMethod
@@ -258,9 +259,9 @@ public class UtenteService {
 	public UtenteEntity getUtenteById(Long idUtente) {
 		String messaggioErrore = String.format("risorsa con id=%s non trovata", idUtente);
 		return this.utenteRepository.findById(idUtente)
-				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore) );
+				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01) );
 	}
-	
+
 	@LogMethod
 	@LogExecutionTime
 	public UtenteEntity getUtenteEagerByCodiceFiscale(String codiceFiscale) {
@@ -277,22 +278,24 @@ public class UtenteService {
 		// Verifico se esiste sul DB un utente con stesso codice fiscale e in caso affermativo lancio eccezione
 		Optional<UtenteEntity> utenteDBFetch = this.utenteRepository.findByCodiceFiscale(utente.getCodiceFiscale());
 		if(utenteDBFetch.isPresent()) {
-			new UtenteException(String.format("Utente con codice fiscale '%s' già esistente", utente.getCodiceFiscale()));
+			throw new UtenteException(String.format("Utente con codice fiscale '%s' già esistente", utente.getCodiceFiscale()), CodiceErroreEnum.U01);
 		}
-		
+
 		utente.setStato(StatoEnum.NON_ATTIVO.getValue());
 		RuoloEntity ruolo = this.ruoloService.getRuoloByCodiceRuolo(codiceRuolo);
 		utente.getRuoli().add(ruolo);
 		utente.setDataOraCreazione(new Date());
 		utente.setDataOraAggiornamento(utente.getDataOraCreazione());
+		utente.setNome(Utils.toCamelCase(utente.getNome()));
+		utente.setCognome(utente.getCognome().toUpperCase());
 		
 		final UtenteEntity utenteSalvato = this.salvaUtente(utente);
 		if(!ruolo.getPredefinito()) {
 			// stacco un thread per invio email al nuovo utente censito
 			new Thread(() ->{
 				try {
-					this.emailService.inviaEmail(utenteSalvato.getEmail(), 
-							EmailTemplateEnum.RUOLO_CUSTOM, 
+					this.emailService.inviaEmail(utenteSalvato.getEmail(),
+							EmailTemplateEnum.RUOLO_CUSTOM,
 							new String[] { utente.getNome(), codiceRuolo});
 				}catch(Exception ex) {
 					log.error("Impossibile inviare la mail al nuovo utente censito con codice fiscale {}", utente.getCodiceFiscale());
@@ -300,7 +303,7 @@ public class UtenteService {
 				}
 			}).start();
 		}
-		
+
 		return utenteSalvato;
 	}
 	
@@ -316,12 +319,12 @@ public class UtenteService {
 			utenteFetchDB = this.getUtenteById(idUtente);
 		} catch (ResourceNotFoundException ex) {
 			String messaggioErrore = String.format("utente con id=%s non trovato", idUtente);
-			throw new UtenteException(messaggioErrore, ex);
+			throw new UtenteException(messaggioErrore, ex, CodiceErroreEnum.U11);
 		}
 		utenteFetchDB.setEmail(aggiornaUtenteRequest.getEmail());
 		utenteFetchDB.setTelefono(aggiornaUtenteRequest.getTelefono());
-		utenteFetchDB.setNome(aggiornaUtenteRequest.getNome());
-		utenteFetchDB.setCognome(aggiornaUtenteRequest.getCognome());
+		utenteFetchDB.setNome(Utils.toCamelCase(aggiornaUtenteRequest.getNome()));
+		utenteFetchDB.setCognome(aggiornaUtenteRequest.getCognome().toUpperCase());
 		utenteFetchDB.setMansione(aggiornaUtenteRequest.getMansione());
 		utenteFetchDB.setTipoContratto(aggiornaUtenteRequest.getTipoContratto());
 		utenteFetchDB.setDataOraAggiornamento(new Date());
@@ -342,11 +345,11 @@ public class UtenteService {
 			utente = this.getUtenteById(idUtente);
 		} catch (ResourceNotFoundException ex) {
 			String messaggioErrore = String.format("Impossibile cancellare un utente che non esiste");
-			throw new UtenteException(messaggioErrore, ex);
+			throw new UtenteException(messaggioErrore, ex, CodiceErroreEnum.U12);
 		}
 		if(this.utenteXRuoloService.countRuoliByCfUtente(utente.getCodiceFiscale()) > 0) {
 			String errorMessage = String.format("Impossibile cancellare l'utente con codice fiscale %s poiché ha almeno un ruolo associato", utente.getCodiceFiscale());
-			throw new UtenteException(errorMessage);
+			throw new UtenteException(errorMessage, CodiceErroreEnum.U13);
 		}
 		this.utenteRepository.delete(utente);
 	}
@@ -361,8 +364,8 @@ public class UtenteService {
 				pageSize
 		);
 	}
-	
-	private Set<String> getStatoUtentiByFiltri(FiltroRequest filtroRequest) {
+
+	public Set<String> getStatoUtentiByFiltri(FiltroRequest filtroRequest) {
 		return this.utenteRepository.findStatiByFilter(
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
@@ -380,18 +383,18 @@ public class UtenteService {
 			ruolo = this.ruoloService.getRuoloByCodiceRuolo(codiceRuolo);
 		} catch (ResourceNotFoundException ex) {
 			String messaggioErrore = String.format("Impossibile assegnare il ruolo con codice = %s poiché non esistente", codiceRuolo);
-			throw new UtenteException(messaggioErrore, ex);
+			throw new UtenteException(messaggioErrore, ex, CodiceErroreEnum.U14);
 		}
 		UtenteEntity utente = null;
 		try {
 			utente = this.getUtenteById(idUtente);
 		} catch (ResourceNotFoundException ex) {
 			String messaggioErrore = String.format("Impossibile assegnare il ruolo con codice = %s poiché l'utente con id = %s non esiste", codiceRuolo, idUtente);
-			throw new UtenteException(messaggioErrore, ex);
+			throw new UtenteException(messaggioErrore, ex, CodiceErroreEnum.U15);
 		}
 		if(utente.getRuoli().contains(ruolo)) {
 			String messaggioErrore = String.format("L'utente con id = %s ha già il ruolo con codice = %s assegnato", idUtente, codiceRuolo);
-			throw new UtenteException(messaggioErrore);
+			throw new UtenteException(messaggioErrore, CodiceErroreEnum.U16);
 		}
 		if(codiceRuolo.equals("DTD") || codiceRuolo.equals("DSCU")) {
 			ruolo.setStato(StatoEnum.ATTIVO.getValue());
@@ -406,19 +409,16 @@ public class UtenteService {
 			return;
 		}
 		String errorMessage = String.format("Impossibile assegnare un ruolo predefinito all'infuori di DTD e DSCU");
-		throw new UtenteException(errorMessage);
+		throw new UtenteException(errorMessage, CodiceErroreEnum.R13);
 	}
 	
 	@LogMethod
 	@LogExecutionTime
 	public List<String> getAllStatiDropdown(UtenteRequest sceltaContesto) {
-		if(this.ruoloService.getRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
-			throw new UtenteException("ERRORE: ruolo non definito per l'utente");
-		}
-		return this.getAllStatiByRuoloAndcfUtente(sceltaContesto.getCodiceRuolo(),sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		return this.getAllStatiByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(),sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
 	}
 
-	private List<String> getAllStatiByRuoloAndcfUtente(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto,
+	public List<String> getAllStatiByRuoloAndcfUtente(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto,
 			FiltroRequest filtroRequest) {
 		List<String> stati = new ArrayList<>();
 		
@@ -444,13 +444,13 @@ public class UtenteService {
 	@LogMethod
 	@LogExecutionTime
 	public List<String> getAllRuoliDropdown(UtenteRequest sceltaContesto) {
-		if(this.ruoloService.getRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtente()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuolo())).count() == 0) {
-			throw new UtenteException("ERRORE: ruolo non definito per l'utente");
+		if(this.ruoloService.getRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtenteLoggato()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuoloUtenteLoggato())).count() == 0) {
+			throw new UtenteException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
 		}
-		return this.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuolo(),sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		return this.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(),sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
 	}
 
-	private List<String> getAllRuoliByRuoloAndcfUtente(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto,
+	public List<String> getAllRuoliByRuoloAndcfUtente(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto,
 			FiltroRequest filtroRequest) {
 		List<String> stati = new ArrayList<>();
 		
@@ -537,7 +537,7 @@ public class UtenteService {
 	@LogExecutionTime
 	public SchedaUtenteBean getSchedaUtenteByIdUtente(Long idUtente) {
 		UtenteEntity utenteFetchDB = this.getUtenteById(idUtente);
-		
+
 		String cfUtente = utenteFetchDB.getCodiceFiscale();
 		
 		DettaglioUtenteBean dettaglioUtente = new DettaglioUtenteBean();
@@ -687,14 +687,14 @@ public class UtenteService {
 		schedaUtente.setDettaglioRuolo(listaDettaglioRuoli);
 		return schedaUtente;
 	}
-	
+
 	@LogMethod
 	@LogExecutionTime
-	public SchedaUtenteBean getSchedaUtenteByIdUtente(Long idUtente, ProfilazioneRequest sceltaProfilo) {
+	public SchedaUtenteBean getSchedaUtenteByIdUtente(Long idUtente, SceltaProfiloParam sceltaProfilo) {
 		UtenteEntity utenteFetchDB = this.getUtenteById(idUtente);
-		
+
 		String cfUtente = utenteFetchDB.getCodiceFiscale();
-		
+
 		DettaglioUtenteBean dettaglioUtente = new DettaglioUtenteBean();
 		dettaglioUtente.setId(utenteFetchDB.getId());
 		dettaglioUtente.setNome(utenteFetchDB.getNome());
@@ -705,12 +705,12 @@ public class UtenteService {
 		dettaglioUtente.setStato(utenteFetchDB.getStato());
 		dettaglioUtente.setTipoContratto(utenteFetchDB.getTipoContratto());
 		dettaglioUtente.setMansione(utenteFetchDB.getMansione());
-		
-		
+
+
 		List<RuoloEntity> listaRuoliUtente = this.ruoloService.getRuoliCompletiByCodiceFiscaleUtente(cfUtente);
-		
+
 		Map<RuoloEntity,List<Long>> mappaProgrammiProgettiUtente = new HashMap<>();
-		
+
 		listaRuoliUtente.stream()
 						.forEach(ruolo -> {
 							switch (ruolo.getCodice()) {
@@ -735,7 +735,7 @@ public class UtenteService {
 								break;
 							}
 						});
-		
+
 		List<DettaglioRuoliBean> listaDettaglioRuoli = new ArrayList<>();
 		mappaProgrammiProgettiUtente.keySet()
 									.stream()
@@ -762,26 +762,26 @@ public class UtenteService {
 													dettaglioRuolo.setStatoP(programmaFetchDB.getStato());
 													List<String> listaRecRefProg = referentiDelegatiEnteGestoreProgrammaRepository
 															.findStatoByCfUtente(cfUtente, programmaFetchDB.getId(), ruolo.getCodice());
-													dettaglioRuolo.setStato(listaRecRefProg.size() > 1 
+													dettaglioRuolo.setStato(listaRecRefProg.size() > 1
 															? listaRecRefProg
 																	.stream()
 																	.filter(el -> !"TERMINATO".equalsIgnoreCase(el))
 																	.findFirst()
 																	.orElse("TERMINATO")
 															: listaRecRefProg.get(0));
-													List<String> listaRuoli = Arrays.asList(RuoliUtentiConstants.REG, 
-															RuoliUtentiConstants.DEG, 
-															RuoliUtentiConstants.REGP, 
-															RuoliUtentiConstants.DEGP, 
-															RuoliUtentiConstants.REPP, 
-															RuoliUtentiConstants.DEPP, 
-															RuoliUtentiConstants.FACILITATORE, 
+													List<String> listaRuoli = Arrays.asList(RuoliUtentiConstants.REG,
+															RuoliUtentiConstants.DEG,
+															RuoliUtentiConstants.REGP,
+															RuoliUtentiConstants.DEGP,
+															RuoliUtentiConstants.REPP,
+															RuoliUtentiConstants.DEPP,
+															RuoliUtentiConstants.FACILITATORE,
 															RuoliUtentiConstants.VOLONTARIO);
-													if(listaRuoli.contains(sceltaProfilo.getCodiceRuolo())){
+													if(listaRuoli.contains(sceltaProfilo.getCodiceRuoloUtenteLoggato())){
 														if(sceltaProfilo.getIdProgramma().equals(id)) {
 															dettaglioRuolo.setAssociatoAUtente(true);
 														}
-													}else if(RuoliUtentiConstants.DSCU.equals(sceltaProfilo.getCodiceRuolo())) {
+													}else if(RuoliUtentiConstants.DSCU.equals(sceltaProfilo.getCodiceRuoloUtenteLoggato())) {
 														if(PolicyEnum.SCD.equals(programmaFetchDB.getPolicy())){
 															dettaglioRuolo.setAssociatoAUtente(true);
 														}else {
@@ -790,8 +790,8 @@ public class UtenteService {
 													}else{
 														dettaglioRuolo.setAssociatoAUtente(true);
 													}
-															
-														
+
+
 													listaDettaglioRuoli.add(dettaglioRuolo);
 													break;
 												case "REGP":
@@ -804,7 +804,7 @@ public class UtenteService {
 													dettaglioRuolo.setStatoP(progettoXEgpFetchDB.getStato());
 													List<String> listaRecRefProgt = referentiDelegatiEnteGestoreProgettoRepository
 															.findStatoByCfUtente(cfUtente, progettoXEgpFetchDB.getId(), ruolo.getCodice());
-													dettaglioRuolo.setStato(listaRecRefProgt.size() > 1 
+													dettaglioRuolo.setStato(listaRecRefProgt.size() > 1
 															? listaRecRefProgt
 																	.stream()
 																	.filter(el -> !"TERMINATO".equalsIgnoreCase(el))
@@ -824,7 +824,7 @@ public class UtenteService {
 													dettaglioRuolo.setStatoP(progettoXEppFetchDB.getStato());
 													List<String> listaRecRefPart = referentiDelegatiEntePartnerDiProgettoRepository
 															.findStatoByCfUtente(cfUtente, progettoXEppFetchDB.getId(), ruolo.getCodice());
-													dettaglioRuolo.setStato(listaRecRefPart.size() > 1 
+													dettaglioRuolo.setStato(listaRecRefPart.size() > 1
 															? listaRecRefPart
 																	.stream()
 																	.filter(el -> !"TERMINATO".equalsIgnoreCase(el))
@@ -844,7 +844,7 @@ public class UtenteService {
 													dettaglioRuolo.setStatoP(progettoXFacFetchDB.getStato());
 													List<String> listaRecRefFacVol = this.enteSedeProgettoFacilitatoreService
 															.getDistinctStatoByIdProgettoIdFacilitatoreVolontario(cfUtente, ruolo.getCodice(), progettoXFacFetchDB.getId());
-													dettaglioRuolo.setStato(listaRecRefFacVol.size() > 1 
+													dettaglioRuolo.setStato(listaRecRefFacVol.size() > 1
 															? listaRecRefFacVol
 																	.stream()
 																	.filter(el -> !"TERMINATO".equalsIgnoreCase(el))
@@ -862,37 +862,42 @@ public class UtenteService {
 												}
 											});
 									});
-									
+
 		SchedaUtenteBean schedaUtente = new SchedaUtenteBean();
 		schedaUtente.setDettaglioUtente(dettaglioUtente);
 		schedaUtente.setDettaglioRuolo(listaDettaglioRuoli);
+		try {
+			schedaUtente.setImmagineProfilo(this.s3Service.getPresignedUrl(utenteFetchDB.getImmagineProfilo(), this.nomeDelBucketS3, Long.parseLong(this.presignedUrlExpireSchedaUtente)));
+		} catch (Exception e) {
+			log.error("Errore getting file da AWS S3 per file={}", utenteFetchDB.getImmagineProfilo());
+		}
 		return schedaUtente;
 	}
-	
+
 	@LogMethod
 	@LogExecutionTime
-	public boolean isProgettoAssociatoAUtenteLoggato(ProfilazioneRequest sceltaProfilo, ProgettoEntity progetto) {
+	public boolean isProgettoAssociatoAUtenteLoggato(SceltaProfiloParam sceltaProfilo, ProgettoEntity progetto) {
 		List<String> listaRuoli = Arrays.asList(
-				RuoliUtentiConstants.REGP, 
-				RuoliUtentiConstants.DEGP, 
-				RuoliUtentiConstants.REPP, 
-				RuoliUtentiConstants.DEPP, 
-				RuoliUtentiConstants.FACILITATORE, 
+				RuoliUtentiConstants.REGP,
+				RuoliUtentiConstants.DEGP,
+				RuoliUtentiConstants.REPP,
+				RuoliUtentiConstants.DEPP,
+				RuoliUtentiConstants.FACILITATORE,
 				RuoliUtentiConstants.VOLONTARIO);
-		
+
 		List<String> listaRuoliEGP = Arrays.asList(
-				RuoliUtentiConstants.REG, 
+				RuoliUtentiConstants.REG,
 				RuoliUtentiConstants.DEG);
-		
-		if(listaRuoli.contains(sceltaProfilo.getCodiceRuolo())){
+
+		if(listaRuoli.contains(sceltaProfilo.getCodiceRuoloUtenteLoggato())){
 			if(sceltaProfilo.getIdProgetto().equals(progetto.getId())) {
 				return true;
 			}
-		}else if(listaRuoliEGP.contains(sceltaProfilo.getCodiceRuolo())) {
+		}else if(listaRuoliEGP.contains(sceltaProfilo.getCodiceRuoloUtenteLoggato())) {
 			if(sceltaProfilo.getIdProgramma().equals(progetto.getProgramma().getId())) {
 				return true;
 			}
-		}else if(RuoliUtentiConstants.DSCU.equals(sceltaProfilo.getCodiceRuolo())) {
+		}else if(RuoliUtentiConstants.DSCU.equals(sceltaProfilo.getCodiceRuoloUtenteLoggato())) {
 			if(progetto.getProgramma().getPolicy().equals(PolicyEnum.SCD)) {
 				return true;
 			} else {
@@ -919,17 +924,17 @@ public class UtenteService {
 	public void cancellaRuoloDaUtente(Long idUtente, String codiceRuolo) {
 		if(this.ruoloService.getRuoloByCodiceRuolo(codiceRuolo) == null) {
 			String errorMessage = String.format("Il codice ruolo %s inserito non corrisponde a nessun ruolo esistente", codiceRuolo);
-			throw new RuoloException(errorMessage);
+			throw new RuoloException(errorMessage, CodiceErroreEnum.R14);
 		}
 		UtenteEntity utente = this.getUtenteById(idUtente);
 		if(utente == null ) {
 			String errorMessage = String.format("L'utente con id %s non esiste", idUtente);
-			throw new UtenteException(errorMessage);
+			throw new UtenteException(errorMessage, CodiceErroreEnum.U11);
 		}
 		RuoloEntity ruolo = this.ruoloService.getRuoloByCodiceRuolo(codiceRuolo);
 		if(!utente.getRuoli().contains(ruolo)) {
 			String errorMessage = String.format("Impossibile cancellare un ruolo non associato all'utente");
-			throw new RuoloException(errorMessage);
+			throw new RuoloException(errorMessage, CodiceErroreEnum.R15);
 		}
 		if(ruolo.getPredefinito() == false) {
 			UtenteXRuolo utenteRuolo = this.utenteXRuoloService.getUtenteXRuoloByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), codiceRuolo);
@@ -942,17 +947,17 @@ public class UtenteService {
 			return;
 		}
 		String errorMessage = String.format("Impossibile cancellare un ruolo predefinito all'infuori di DTD e DSCU");
-		throw new RuoloException(errorMessage);
+		throw new RuoloException(errorMessage, CodiceErroreEnum.R13);
 	}
 
 	public int countUtentiTrovati(@Valid UtenteRequest sceltaContesto) {
-		return this.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuolo(), sceltaContesto.getCfUtente(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		return this.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
 	}
 
-	private int countUtentiTrovatiByRuolo(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto,
+	public int countUtentiTrovatiByRuolo(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto,
 			FiltroRequest filtroRequest) {
 		int numeroUtentiTrovati = 0;
-		
+
 		switch (codiceRuolo) {
 		case "DTD":
 			numeroUtentiTrovati = this.countUtentiTrovati(filtroRequest);
@@ -976,7 +981,7 @@ public class UtenteService {
 			numeroUtentiTrovati = this.countUtentiTrovati(filtroRequest);
 			break;
 	}
-	
+
 		return numeroUtentiTrovati;
 	}
 
@@ -1061,7 +1066,7 @@ public class UtenteService {
 				listaUtenti.addAll(utenti);
 				break;
 		}
-		
+
 		return this.getUtentiConRuoliAggregati(listaUtenti);
 	}
 
@@ -1070,7 +1075,7 @@ public class UtenteService {
 		return this.utenteRepository.findUtentiPerReferenteDelegatoEntePartnerProgettiPerDownload(
 				idProgramma,
 				idProgetto,
-				cfUtente, 
+				cfUtente,
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getRuoli());
@@ -1081,7 +1086,7 @@ public class UtenteService {
 		return this.utenteRepository.findUtentiPerReferenteDelegatoGestoreProgettiPerDownload(
 				idProgramma,
 				idProgetto,
-				cfUtente, 
+				cfUtente,
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getRuoli());
@@ -1111,7 +1116,7 @@ public class UtenteService {
 				filtroRequest.getRuoli(),
 				filtroRequest.getStati());
 	}
-	
+
 	@LogExecutionTime
 	@LogMethod
 	@Transactional
@@ -1138,12 +1143,17 @@ public class UtenteService {
 		}
 		return nomeFileDb;
 	}
-	
+
 	@LogExecutionTime
 	@LogMethod
 	@Transactional
-	public String downloadImmagineProfiloUtente(String nomeFile) throws IOException {
-		return this.s3Service.getPresignedUrl(nomeFile, this.nomeDelBucketS3);
+	public String downloadImmagineProfiloUtente(String nomeFile) {
+		String presignedUrlImmagineProfiloUtente = null;
+		try {
+			presignedUrlImmagineProfiloUtente = this.s3Service.getPresignedUrl(nomeFile, this.nomeDelBucketS3, Long.parseLong(this.presignedUrlExpireContesto));
+		} catch (Exception ex) {
+			throw new UtenteException("Errore download immagine profilo utente", ex, CodiceErroreEnum.U17);
+		}
+		return presignedUrlImmagineProfiloUtente;
 	}
-		
 }

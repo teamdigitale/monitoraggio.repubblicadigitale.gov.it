@@ -5,10 +5,13 @@ import {
   clearSessionValues,
   setSessionValues,
 } from '../../../utils/sessionHelper';
+import { isActiveProvisionalLogin } from '../../../pages/common/Auth/auth';
 
 export interface UserStateI {
   isLogged: boolean;
-  user?: {
+  user?:
+    | {
+        id?: string;
         name?: string;
         nome?: string;
         surname?: string;
@@ -17,8 +20,9 @@ export interface UserStateI {
         codiceFiscale: string;
         profiliUtente: UserProfileI[];
         integrazione: boolean;
-        mostraBio?: boolean;
-        mostraTipoContratto?: boolean;
+        mostraBio: boolean;
+        mostraTipoContratto: boolean;
+        immagineProfilo?: string;
       }
     | Record<string, never>;
   notification?: [];
@@ -55,6 +59,8 @@ const initialStateLogged: UserStateI = {
     codiceFiscale: 'UTENTE1',
     integrazione: true,
     profiliUtente: [],
+    mostraBio: false,
+    mostraTipoContratto: false,
   },
   permissions: [],
   idProgramma: '0',
@@ -95,7 +101,9 @@ export const userSlice = createSlice({
       state.idProgetto = [action.payload.idProgetto];
       state.profilo = payload;
       if (state.ruoli?.length) {
-        state.permissions = state.ruoli.filter(({ codiceRuolo }) => codiceRuolo === action.payload.codiceRuolo)[0]?.permessi
+        state.permissions = state.ruoli.filter(
+          ({ codiceRuolo }) => codiceRuolo === action.payload.codiceRuolo
+        )[0]?.permessi;
       }
       if (action.payload.saveSession) {
         setSessionValues('profile', payload);
@@ -104,11 +112,15 @@ export const userSlice = createSlice({
     login: (state) => {
       setSessionValues('user', state.user);
       setSessionValues('profile', state.profilo);
+      if (isActiveProvisionalLogin) {
+        setSessionValues('auth', 'fguhbjinokj8765d578t9yvghugyftr646tg');
+      }
+
       state.isLogged = true;
     },
     logout: (state) => {
-      state.isLogged = false;
       clearSessionValues();
+      state.isLogged = false;
     },
   },
 });

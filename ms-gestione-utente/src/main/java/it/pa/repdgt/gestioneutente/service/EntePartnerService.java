@@ -11,6 +11,7 @@ import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.EntePartnerEntity;
 import it.pa.repdgt.shared.entity.key.EntePartnerKey;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 
 @Service
 public class EntePartnerService {
@@ -28,6 +29,6 @@ public class EntePartnerService {
 	public EntePartnerEntity findEntePartnerByIdProgettoAndIdEnte(Long idEnte, Long idProgetto) {
 		String messaggioErrore = String.format("ente partner non presente per idEnte %s, idProgetto %s", idEnte, idProgetto);
 		return this.entePartnerRepository.findById(new EntePartnerKey(idProgetto, idEnte))
-				.orElseThrow(() -> new UtenteException(messaggioErrore));
+				.orElseThrow(() -> new UtenteException(messaggioErrore, CodiceErroreEnum.EN24));
 	}
 }

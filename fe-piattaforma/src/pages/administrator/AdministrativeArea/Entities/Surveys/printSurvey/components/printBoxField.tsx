@@ -22,10 +22,10 @@ const PrintBoxField: React.FC<PrintFieldI> = (props) => {
 
   const updateOptions = () => {
     const tmpOptions: multiLevelOptionsI[] = [];
-    (info.enumLevel1 || []).map((opt) => {
+    (info.enumLevel1 || [])?.map((opt) => {
       tmpOptions.push({ label: opt, options: [] });
     });
-    (optionsLevel2 || []).map(({ label, value, upperLevel }) => {
+    (optionsLevel2 || [])?.map(({ label, value, upperLevel }) => {
       const index = tmpOptions.findIndex((v) => v.label === upperLevel);
       tmpOptions[index].options.push({
         label: label,
@@ -68,7 +68,9 @@ const PrintBoxField: React.FC<PrintFieldI> = (props) => {
             'print-fields-container__box-field',
             'd-inline-block',
             'mr-3 my-3',
-            'align-top'
+            'align-top',
+            info?.id === '10' && 'print-fields-container__min-height-short',
+            info?.id === '25' && 'print-fields-container__min-height-long'
           )}
         >
           <div className='print-fields-container__box-field__box-title'>
@@ -86,7 +88,7 @@ const PrintBoxField: React.FC<PrintFieldI> = (props) => {
     <div className={clsx(className, 'w-100')}>
       <Form id='form-print-box' className={clsx('mx-0')}>
         <p>
-          <strong>{info.label}</strong>
+          <strong>{info.title}</strong>
         </p>
         <div>{renderLevel1(multiLevelOptions)}</div>
       </Form>

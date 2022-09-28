@@ -9,6 +9,7 @@ import org.bson.json.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,6 +37,7 @@ public class OpenDataCSVService {
 				openDataCittadinoCSVBean.setOpenDataCittadinoProjection(openDataCittadino);
 				
 				ObjectMapper mapper = new ObjectMapper();
+				mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
 				Optional<SezioneQ3Collection> sezioneQ3 = this.sezioneQ3Repository.findById(openDataCittadino.getIdTemplateQ3Compilato());
 				if(sezioneQ3.isPresent()) {
 					JsonObject sezioneQ3Compilato = (JsonObject) (sezioneQ3.get().getSezioneQ3Compilato());
@@ -46,18 +48,18 @@ public class OpenDataCSVService {
 						Iterator<JsonNode> it = propertiesNode.elements();
 						while(it.hasNext()) {
 							JsonNode domandaRisposta = (JsonNode) it.next();
-							if(domandaRisposta.asText().contains("24")) {
-								String risposta = domandaRisposta.asText().split(":")[1].replace("[", "").replace("]", "").replace("'", "").replace("}", "");
+							if(domandaRisposta.toString().contains("24")) {
+								String risposta = domandaRisposta.toString().split(":")[1].replace("[", "").replace("]", "").replace("'", "").replace("}", "").replace("\"", "");
 								openDataCittadinoCSVBean.setCompetenzeTrattate(risposta);
 							}
-							if(domandaRisposta.asText().contains("25")) {
-								String risposta = domandaRisposta.asText().split(":")[1].replace("[", "").replace("]", "").replace("'", "").replace("}", "");
+							if(domandaRisposta.toString().contains("25")) {
+								String risposta = domandaRisposta.toString().split(":")[1].replace("[", "").replace("]", "").replace("'", "").replace("}", "").replace("\"", "");
 								openDataCittadinoCSVBean.setAmbitoServizi(risposta);
 							}
 						}
 					} catch (JsonProcessingException ex) {
 						log.error("{}", ex);
-						new RuntimeException("errore nella creazione del csv open data cittadini", ex);
+						throw new RuntimeException("errore nella creazione del csv open data cittadini", ex);
 					}
 				}
 				return openDataCittadinoCSVBean;

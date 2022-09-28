@@ -16,6 +16,7 @@ interface MultiOptionFormI extends withFormHandlerProps {
   onFormChange?: (values: OptionType[]) => void;
   areValuesDefault?: boolean;
   values?: string;
+  viewDisabled?: boolean;
 }
 
 const MultiOptionForm: React.FC<MultiOptionFormI> = (props) => {
@@ -29,6 +30,7 @@ const MultiOptionForm: React.FC<MultiOptionFormI> = (props) => {
     updateForm = () => ({}),
     areValuesDefault = false,
     values,
+    viewDisabled = false,
   } = props;
 
   useEffect(() => {
@@ -53,6 +55,15 @@ const MultiOptionForm: React.FC<MultiOptionFormI> = (props) => {
         }
         updateForm(newForm(tmpForm));
       });
+    } else {
+      const tmpForm: formFieldI[] = [];
+      const newField = newFormField({
+        field: `multi-option-0-${new Date().getTime().toString()}`,
+        required: true,
+        value: '',
+      });
+      tmpForm.push(newField);
+      updateForm(newForm(tmpForm),true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -97,7 +108,7 @@ const MultiOptionForm: React.FC<MultiOptionFormI> = (props) => {
                     id={option}
                     onInputChange={onInputChange}
                     withLabel={false}
-                    disabled={areValuesDefault}
+                    disabled={areValuesDefault || viewDisabled}
                     className={clsx(
                       areValuesDefault && 'mt-3',
                       'position-relative'
@@ -114,7 +125,7 @@ const MultiOptionForm: React.FC<MultiOptionFormI> = (props) => {
                       <Icon
                         className='minus'
                         color='primary'
-                        icon='it-delete'
+                        icon='it-less-circle'
                         size='sm'
                         aria-label='Elimina opzione'
                       />
@@ -149,10 +160,5 @@ const MultiOptionForm: React.FC<MultiOptionFormI> = (props) => {
   );
 };
 
-const form = newForm([
-  newFormField({
-    field: `multi-option-${new Date().getTime().toString()}`,
-    required: true,
-  }),
-]);
+const form = newForm([]);
 export default withFormHandler({ form }, MultiOptionForm);

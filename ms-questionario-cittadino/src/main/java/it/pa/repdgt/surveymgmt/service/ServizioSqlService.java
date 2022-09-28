@@ -1,5 +1,6 @@
 package it.pa.repdgt.surveymgmt.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -20,17 +21,20 @@ import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
 import it.pa.repdgt.shared.entity.ProgrammaXQuestionarioTemplateEntity;
 import it.pa.repdgt.shared.entity.ServizioEntity;
+import it.pa.repdgt.shared.entity.TipologiaServizioEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParamLightProgramma;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioTemplateException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneParam;
 import it.pa.repdgt.surveymgmt.param.ProfilazioneSedeParam;
 import it.pa.repdgt.surveymgmt.projection.EnteProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
 import it.pa.repdgt.surveymgmt.repository.ServizioSqlRepository;
+import it.pa.repdgt.surveymgmt.repository.TipologiaServizioRepository;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
 
 @Service
@@ -42,6 +46,8 @@ public class ServizioSqlService {
 	private ProgrammaXQuestionarioTemplateService programmaXQuestionarioTemplateService;
 	@Autowired
 	private ServizioSqlRepository servizioSqlRepository;
+	@Autowired
+	private TipologiaServizioRepository tipologiaServizioRepository;
 	@Autowired
 	private RuoloService ruoloService;
 	
@@ -218,7 +224,7 @@ public class ServizioSqlService {
 	public ServizioEntity creaServizio(
 			@NotNull final ServizioRequest servizioRequest,
 			@NotNull final String idSezioneQ3Compilato) {
-		final ProfilazioneParam profilazioneParam = servizioRequest.getProfilazioneParam();
+		final SceltaProfiloParamLightProgramma profilazioneParam = servizioRequest.getProfilazioneParam();
 		final Long idProgramma = profilazioneParam.getIdProgramma();
 		
 		// Recupero id template questionario associato al programma
@@ -227,10 +233,7 @@ public class ServizioSqlService {
 			final String messaggioErrore = String.format("Impossibile creare servizio. Nessun questionario template associato al programma con id '%s'", idProgramma);
 			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S04);
 		}
-		if(listaProgrammaXQuestionario.isEmpty()) {
-			final String messaggioErrore = String.format("Impossibile creare servizio. Non esiste nessun questionario template associato al programma con id=%s", idProgramma);
-			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S04);
-		}
+		
 		final String idQuestinarioTemplate = listaProgrammaXQuestionario
 																	.get(0)
 																	.getProgrammaXQuestionarioTemplateKey()
@@ -241,12 +244,11 @@ public class ServizioSqlService {
 		idEnteSedeProgettoFacilitatore.setIdEnte(servizioRequest.getIdEnte());
 		idEnteSedeProgettoFacilitatore.setIdSede(servizioRequest.getIdSede());
 		idEnteSedeProgettoFacilitatore.setIdProgetto(profilazioneParam.getIdProgetto());
-		idEnteSedeProgettoFacilitatore.setIdFacilitatore(profilazioneParam.getCodiceFiscaleUtenteLoggato());
+		idEnteSedeProgettoFacilitatore.setIdFacilitatore(servizioRequest.getCfUtenteLoggato());
 		final EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatore = this.enteSedeProgettoFacilitatoreService.getById(idEnteSedeProgettoFacilitatore);
 		
 		final ServizioEntity servizioEntity = new ServizioEntity();
 		servizioEntity.setNome(servizioRequest.getNomeServizio());
-		servizioEntity.setTipologiaServizio(servizioRequest.getTipologiaServizio());
 		servizioEntity.setDataServizio(servizioRequest.getDataServizio());
 		servizioEntity.setDurataServizio(servizioRequest.getDurataServizio());
 		servizioEntity.setIdQuestionarioTemplateSnapshot(idQuestinarioTemplate);
@@ -255,6 +257,21 @@ public class ServizioSqlService {
 		servizioEntity.setDataOraCreazione(new Date());
 		servizioEntity.setDataOraAggiornamento(servizioEntity.getDataOraCreazione());
 		servizioEntity.setStato(StatoEnum.NON_ATTIVO.getValue());
+		servizioEntity.setTipologiaServizio(String.join(", ", servizioRequest.getListaTipologiaServizi()));
+		
+		final List<String> listaTitoloTipologiaServizi = servizioRequest.getListaTipologiaServizi();
+		
+		final List<TipologiaServizioEntity> listaTipologiaServizi = new ArrayList<>();
+		listaTitoloTipologiaServizi
+			.stream()
+			.forEach(titoloTiplogiaServizio -> {
+				TipologiaServizioEntity tipologiaServizio = new TipologiaServizioEntity();
+				tipologiaServizio.setTitolo(titoloTiplogiaServizio);
+				tipologiaServizio.setDataOraCreazione(new Date());
+				tipologiaServizio.setServizio(servizioEntity);
+				listaTipologiaServizi.add(tipologiaServizio);
+			});
+		servizioEntity.setListaTipologiaServizi(listaTipologiaServizi);
 		return servizioEntity;
 	}
 
@@ -268,26 +285,43 @@ public class ServizioSqlService {
 			servizioDaAggiornareRequest.getIdEnte(),
 			servizioDaAggiornareRequest.getIdSede(),
 			servizioDaAggiornareRequest.getProfilazioneParam().getIdProgetto(),
-			servizioDaAggiornareRequest.getProfilazioneParam().getCodiceFiscaleUtenteLoggato()
+			servizioDaAggiornareRequest.getCfUtenteLoggato()
 		);
 		
 		this.enteSedeProgettoFacilitatoreService.getById(enteSedeProgettoFacilitatoreAggiornato);
-		
+
 		// Recupero servizio in MySql a partire dall'id e
 		// aggiorno i dati sul servizio fetchato dal db
 		final ServizioEntity servizioFecthDB = this.getServizioById(idServizio);
 		servizioFecthDB.setNome(servizioDaAggiornareRequest.getNomeServizio());
 		servizioFecthDB.setDataServizio(servizioDaAggiornareRequest.getDataServizio());
-		servizioFecthDB.setTipologiaServizio(servizioDaAggiornareRequest.getTipologiaServizio());
+		
+		final List<String> listaTitoloTipologiaServizi = servizioDaAggiornareRequest.getListaTipologiaServizi();
+		final List<TipologiaServizioEntity> listaTipologiaServizi = new ArrayList<>();
+		
+		
+		this.tipologiaServizioRepository.deleteByIdServizio(idServizio);
+		listaTitoloTipologiaServizi
+			.stream()
+			.forEach(titoloTipologiaServizio -> {
+				TipologiaServizioEntity tipologiaServizio = new TipologiaServizioEntity();
+				tipologiaServizio.setTitolo(titoloTipologiaServizio);
+				tipologiaServizio.setDataOraAggiornamento(new Date());
+				tipologiaServizio.setServizio(servizioFecthDB);
+				listaTipologiaServizi.add(tipologiaServizio);
+			});
+		
+		servizioFecthDB.setListaTipologiaServizi(listaTipologiaServizi);
 		servizioFecthDB.setIdEnteSedeProgettoFacilitatore(enteSedeProgettoFacilitatoreAggiornato);
 		servizioFecthDB.setDataOraAggiornamento(new Date());
+		servizioFecthDB.setTipologiaServizio(String.join(", ", servizioDaAggiornareRequest.getListaTipologiaServizi()));
 		return this.servizioSqlRepository.save(servizioFecthDB);
 	}
 	
 	@LogMethod
 	@LogExecutionTime
-	public List<EnteProjection> getEntiByFacilitatore(ProfilazioneParam profilazioneParam) {
-		final String codiceFiscaleUtenteLoggato = profilazioneParam.getCodiceFiscaleUtenteLoggato();
+	public List<EnteProjection> getEntiByFacilitatore(SceltaProfiloParam profilazioneParam) {
+		final String codiceFiscaleUtenteLoggato = profilazioneParam.getCfUtenteLoggato();
 		final String codiceRuoloUtenteLoggato = profilazioneParam.getCodiceRuoloUtenteLoggato().toString();
 		
 		// Verifico se l'utente possiede il ruolo mandato nella richiesta
@@ -310,7 +344,7 @@ public class ServizioSqlService {
 	@LogMethod
 	@LogExecutionTime
 	public List<SedeProjection> getSediByFacilitatore(ProfilazioneSedeParam profilazioneParam) {
-		final String codiceFiscaleUtenteLoggato = profilazioneParam.getCodiceFiscaleUtenteLoggato();
+		final String codiceFiscaleUtenteLoggato = profilazioneParam.getCfUtenteLoggato();
 		final String codiceRuoloUtenteLoggato = profilazioneParam.getCodiceRuoloUtenteLoggato().toString();
 		
 		// Verifico se l'utente possiede il ruolo mandato nella richiesta
@@ -340,5 +374,19 @@ public class ServizioSqlService {
 	@LogExecutionTime
 	public Optional<ServizioEntity> getPrimoServizioByIdCittadino(@NotNull Long idServizio, @NotNull Long idCittadino) {
 		return this.servizioSqlRepository.findServizioByCittadinoNotEqual(idServizio, idCittadino);
+	}
+
+	@LogMethod
+	@LogExecutionTime
+	public String getNominativoFacilitatoreByIdFacilitatoreAndIdServizio(String idFacilitatore, Long idServizio) {
+		return this.servizioSqlRepository.findNominativoFacilitatoreByIdFacilitatoreAndIdServizio(idFacilitatore, idServizio);
+	}
+
+	public Optional<ServizioEntity> getServizioByNome(String nomeServizio) {
+		return this.servizioSqlRepository.findByNome(nomeServizio);
+	}
+	
+	public Optional<ServizioEntity> getServizioByNomeUpdate(String nomeServizio, Long idServizio) {
+		return this.servizioSqlRepository.findByNomeUpdate(nomeServizio, idServizio);
 	}
 }

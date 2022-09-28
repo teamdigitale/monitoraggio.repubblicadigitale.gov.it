@@ -10,7 +10,7 @@ import {
   formTypes,
   userRoles,
 } from '../../administrator/AdministrativeArea/Entities/utils';
-import { updateBreadcrumb } from '../../../redux/features/app/appSlice';
+import { updateCustomBreadcrumb } from '../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../redux/hooks';
 import ManageProfile from '../../administrator/AdministrativeArea/Entities/modals/manageProfile';
 import { selectUser } from '../../../redux/features/user/userSlice';
@@ -18,26 +18,23 @@ import useGuard from '../../../hooks/guard';
 import { CRUDActionTypes } from '../../../utils/common';
 import { CardStatusAction } from '../../../components';
 import { getSessionValues } from '../../../utils/sessionHelper';
+import { GetUserDetails } from '../../../redux/features/administrativeArea/user/userThunk';
+import { selectUsers } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 
-interface UserProfileI {
-  isUserProfile?: boolean;
-  activeRole?: boolean;
-}
-
-const UserProfile: React.FC<UserProfileI> = ({
-  isUserProfile = true /* activeRole= true */,
-}) => {
+const UserProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { hasUserPermission } = useGuard();
   const user = useAppSelector(selectUser);
+  const userRoleList =
+    useAppSelector(selectUsers)?.detail?.dettaglioRuolo || [];
   const userRole = JSON.parse(getSessionValues('profile'));
 
   useEffect(() => {
     dispatch(
-      updateBreadcrumb([
+      updateCustomBreadcrumb([
         {
-          label: 'Area Personale',
+          label: 'Il mio profilo',
           url: '/area-personale',
           link: false,
         },
@@ -45,6 +42,11 @@ const UserProfile: React.FC<UserProfileI> = ({
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (user?.id) dispatch(GetUserDetails(user?.id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
 
   const correctButtons: ButtonInButtonsBar[] = hasUserPermission([
     'upd.card.utenti',
@@ -66,10 +68,10 @@ const UserProfile: React.FC<UserProfileI> = ({
     : [];
 
   return (
-    <div className='container'>
+    <div className='container mt-5'>
       <DetailLayout
         titleInfo={{
-          title: `${user?.nome} ${user?.cognome}`,
+          title: `${user?.cognome} ${user?.nome} `,
           status: 'ATTIVO',
           upperTitle: { icon: 'it-user', text: 'UTENTE' },
           iconAvatar: true,
@@ -77,25 +79,40 @@ const UserProfile: React.FC<UserProfileI> = ({
           surname: user?.cognome,
           headingRole: false,
         }}
-        isUserProfile={isUserProfile}
-        goBackPath='/'
+        showGoBack={false}
+        isUserProfile={user?.id}
         buttonsPosition='BOTTOM'
         formButtons={correctButtons}
+        profilePicture={user?.immagineProfilo}
       >
-        <FormOnboarding formDisabled />
+        <FormOnboarding isProfile formDisabled />
       </DetailLayout>
-      <div className='my-5'>
+      <div className='my-5 container'>
         <div className='w-100'>
-          <h5 className={clsx('primary-color', 'mb-4')}>Ruoli</h5>
+          <h1 className={clsx('primary-color', 'mb-4', 'h4', 'ml-3')}>Ruoli</h1>
         </div>
-        {user?.profiliUtente?.map((role: any) => {
+        {userRoleList.map((role: any) => {
           let roleActions = {};
-          if (role?.idProgramma) {
+          if (role.id) {
             roleActions = {
-              [CRUDActionTypes.VIEW]: () =>
-                navigate(
-                  `/area-amministrativa/programmi/${role.idProgramma}/info`
-                ),
+              [CRUDActionTypes.VIEW]: role.associatoAUtente
+                ? () =>
+                    navigate(
+                      `/area-amministrativa/${
+                        role?.codiceRuolo === userRoles.VOL ||
+                        role?.codiceRuolo === userRoles.FAC ||
+                        role?.codiceRuolo === userRoles.REGP ||
+                        role?.codiceRuolo === userRoles.DEGP ||
+                        role?.codiceRuolo === userRoles.REPP ||
+                        role?.codiceRuolo === userRoles.DEPP
+                          ? 'progetti'
+                          : 'programmi'
+                      }/${role?.id}`,
+                      {
+                        replace: true,
+                      }
+                    )
+                : undefined,
             };
           }
           /*else {
@@ -118,26 +135,21 @@ const UserProfile: React.FC<UserProfileI> = ({
           }*/
           return (
             <CardStatusAction
-              key={`${role.idProgramma}${role.idProgetto}${role.codiceRuolo}`}
-              id={`${role.idProgramma}${role.idProgetto}${role.codiceRuolo}`}
+              key={`${role.id}${role.codiceRuolo}`}
+              id={`${role.id}${role.codiceRuolo}`}
               //status={role.}
-              title={
-                role.nomeProgramma ||
-                role.nomeEnte ||
-                role.descrizioneRuoloCompleta ||
-                role.descrizioneRuolo
-              }
+              title={role.nome}
               fullInfo={
                 role.codiceRuolo !== userRoles.DTD &&
                 role.codiceRuolo !== userRoles.DSCU
-                  ? { ruoli: role.descrizioneRuolo }
+                  ? { ruoli: role.ruolo }
                   : undefined
               }
               onActionClick={roleActions}
               activeRole={
                 role.codiceRuolo === userRole.codiceRuolo &&
-                role.idProgramma === userRole.idProgramma &&
-                role.idProgetto === userRole.idProgetto
+                (role.id?.toString() === userRole.idProgramma?.toString() ||
+                  role.id?.toString() === userRole.idProgetto?.toString())
               }
             />
           );

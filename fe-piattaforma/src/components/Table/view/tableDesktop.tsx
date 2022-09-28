@@ -5,6 +5,7 @@ import {
   Button,
   FormGroup,
   Label,
+  UncontrolledTooltip,
 } from 'design-react-kit';
 import clsx from 'clsx';
 import { TableI } from '../table';
@@ -19,12 +20,14 @@ const TableDesktop: React.FC<TableI> = (props) => {
     heading = [],
     id = 'table',
     onActionClick,
+    onTooltipInfo,
     onRowClick = () => ({}),
     values = [],
     withActions = false,
     rolesTable = false,
     onActionRadio,
     totalCounter,
+    citizenTable,
   } = props;
   const [rowChecked, setRowChecked] = useState<string>('');
 
@@ -183,7 +186,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         aria-label='Elimina elemento riga'
                       >
                         <Icon
-                          icon='it-delete'
+                          icon='it-less-circle'
                           color='primary'
                           size='sm'
                           aria-label='Elimina elemento riga'
@@ -212,22 +215,46 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         ? td.actions.toString().includes(CRUDActionTypes.VIEW)
                         : onActionClick[CRUDActionTypes.VIEW]
                     ) ? (
-                      <Button
-                        onClick={() => onActionClick[CRUDActionTypes.VIEW](td)}
-                        className='p-0'
-                        aria-label='Pulsante selezione riga'
-                      >
-                        <Icon
-                          icon='it-chevron-right'
-                          color='primary'
-                          size='sm'
-                          aria-label='Vedi dettaglio elemento riga'
-                          focusable={false}
-                        />
-                      </Button>
+                      !td?.citizen || (td?.citizen && td?.associatoAUtente) ? (
+                        <Button
+                          onClick={() =>
+                            onActionClick[CRUDActionTypes.VIEW](td)
+                          }
+                          className='p-0'
+                          aria-label='Pulsante selezione riga'
+                        >
+                          <Icon
+                            icon='it-chevron-right'
+                            color='primary'
+                            size='sm'
+                            aria-label='Vedi dettaglio elemento riga'
+                            focusable={false}
+                          />
+                        </Button>
+                      ) : null
                     ) : null}
                   </div>
                 </td>
+              ) : null}
+              {onTooltipInfo && td?.isPresentInList ? (
+                <td id={`tooltip-${td.id}`}>
+                  <div className='d-inline-flex position-relative'>
+                    <UncontrolledTooltip
+                      placement='left'
+                      target={`tooltip-${td.id}`}
+                    >
+                      {onTooltipInfo}
+                    </UncontrolledTooltip>
+                    <Icon
+                      icon='it-info-circle'
+                      size='sm'
+                      color='primary'
+                      className='mt-2'
+                    />
+                  </div>
+                </td>
+              ) : citizenTable ? (
+                <td />
               ) : null}
             </tr>
           ))}

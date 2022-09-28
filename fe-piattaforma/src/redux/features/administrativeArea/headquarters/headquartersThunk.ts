@@ -162,8 +162,8 @@ export const AssignAuthorityHeadquarter =
           `/sede/associa/ente/${authorityId}/sede/${headquarterId}/progetto/${projectId}/ruoloEnte/ruolo`
         );
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }
@@ -236,8 +236,9 @@ export const AssignHeadquarterFacilitator =
           await API.post(endpoint, body);
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      return error.response.data;
     } finally {
       dispatch(hideLoader());
     }

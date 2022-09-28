@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import React from 'react';
-import { formFieldI } from '../../../../../../../utils/formHelper';
+import { PrintSurveyQuestionI } from '../printSurvey';
 import './printFields.scss';
 
 export interface PrintFieldI {
-  info: formFieldI;
+  info: PrintSurveyQuestionI;
   className?: string;
   noLabel?: boolean;
   halfWidth?: boolean;
@@ -21,14 +21,14 @@ const PrintTextField: React.FC<PrintFieldI> = (props) => {
       className={clsx(
         className,
         'print-fields-container__text-field',
-        (info.label || '').length > 50
+        (info.title || '').length > 70
           ? 'w-100'
           : 'print-fields-container__half-width'
       )}
     >
       <p className='d-flex flex-column mb-3'>
-        <strong>{info.label}</strong>
-        <input className='border-0' />
+        <strong>{info.title}</strong>
+        <input className='border-0'/>
       </p>
     </div>
   );

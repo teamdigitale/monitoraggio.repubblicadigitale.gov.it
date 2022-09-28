@@ -69,8 +69,20 @@ public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long
 	@Transactional
 	@Modifying
 	@Query(value = "UPDATE count_download_file"
-			+ "     set count = 0"
-			+ "     where nome_file = :nomeFile"
+			+ "     SET count = 0,"
+			+ "     dimensione_file_opendata = :dimensioneFile"
+			+ "     WHERE nome_file = :nomeFile"
 	   ,nativeQuery = true)
-	void azzeraCountDownload(@Param(value = "nomeFile")String nomeFile);
+	void azzeraCountDownloadAndAggiornaDimensioneFile(
+			@Param(value = "nomeFile") String nomeFile, 
+			@Param(value = "dimensioneFile") String dimensioneFile
+		);
+
+	@Query(value = "SELECT dimensione_file_opendata"
+			+ "     FROM count_download_file"
+			+ "     WHERE nome_file = :nomeFile"
+			,nativeQuery = true)
+	String findDimensioneFileOpenData(
+			@Param(value = "nomeFile") String nomeFile
+		);
 }

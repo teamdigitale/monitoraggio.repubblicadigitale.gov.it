@@ -1,20 +1,28 @@
 package it.pa.repdgt.gestioneutente.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import it.pa.repdgt.gestioneutente.bean.RuoliGruppoBean;
 import it.pa.repdgt.gestioneutente.exception.ResourceNotFoundException;
 import it.pa.repdgt.gestioneutente.repository.GruppoRepository;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.GruppoEntity;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 
 @Service
 public class GruppoService {
 	@Autowired
 	private GruppoRepository gruppoRepository;
+
+	@Autowired
+	@Lazy
+	private RuoloXGruppoService ruoloXGruppoService;
 	
 	@LogMethod
 	@LogExecutionTime
@@ -28,7 +36,7 @@ public class GruppoService {
 		String messaggioErrore = String.format("Gruppo con codice=%s non presente", codiceGruppo);
 		
 		return this.gruppoRepository.findByCodice(codiceGruppo)
-				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore));
+				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
 	}
 	
 	@LogMethod
@@ -73,5 +81,19 @@ public class GruppoService {
 				 })
 				.filter(Boolean.TRUE::equals)
 				.count() == codiciGruppi.size();
+	}
+
+	public List<RuoliGruppoBean> getAllGruppoConRuoliAssociati() {
+		return this.getAllGruppi()
+			.stream().map( gruppo ->{
+				final RuoliGruppoBean ruoliGruppi = new RuoliGruppoBean();
+				ruoliGruppi.setGruppo(gruppo);
+				
+				final List<String> codiciRuoliAssociatiAlGruppo = this.ruoloXGruppoService.getCodiceRuoliByCodiceGruppo(gruppo.getCodice());
+				ruoliGruppi.setRuoliAssociatiAlGruppo(codiciRuoliAssociatiAlGruppo);
+				
+				return ruoliGruppi;
+			})
+			.collect(Collectors.toList());
 	}
 }

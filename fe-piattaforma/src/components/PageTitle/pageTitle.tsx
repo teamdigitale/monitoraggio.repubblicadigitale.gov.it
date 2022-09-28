@@ -7,6 +7,8 @@ import './pageTitle.scss';
 import SectionInfo from '../../components/SectionInfo/sectionInfo';
 
 import { surveyBody } from '../SectionInfo/bodies';
+import { useAppSelector } from '../../redux/hooks';
+import { selectDevice } from '../../redux/features/app/appSlice';
 
 interface BreadcrumbI {
   label?: string;
@@ -25,17 +27,39 @@ export interface PageTitleI {
         label: string;
       }
     | undefined;
+  innerHTML?: boolean;
+  HTMLsubtitle?: string;
+  defaultOpen?: boolean;
 }
 
 const PageTitle: React.FC<PageTitleI> = (props) => {
-  const { cta, hasBackground, title, subtitle, sectionInfo, alignTitle } =
-    props;
+  const {
+    cta,
+    hasBackground,
+    title,
+    subtitle,
+    sectionInfo,
+    alignTitle,
+    innerHTML,
+    HTMLsubtitle = '',
+    defaultOpen = false,
+  } = props;
 
-  const [sectionInfoOpened, setSectionInfoOpened] = useState<boolean>(false);
+  const [sectionInfoOpened, setSectionInfoOpened] = useState<boolean>(defaultOpen);
   const location = useLocation();
+  const device = useAppSelector(selectDevice);
 
   const openSectionInfo = () => {
     setSectionInfoOpened((current) => !current);
+  };
+
+  const correctSectionTitle = () => {
+    switch (location.pathname) {
+      case '/area-amministrativa/questionari':
+        return 'Come utilizzare la sezione questionari';
+      default:
+        return '';
+    }
   };
 
   const correctSectionInfo = () => {
@@ -55,7 +79,8 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
             'd-flex',
             'flex-row',
             'align-items-center',
-            alignTitle ? 'justify-content-center' : null
+            alignTitle ? 'justify-content-center' : null,
+            device.mediaIsPhone && 'container'
           )}
         >
           {title && (
@@ -78,26 +103,44 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
             </Button>
           ) : null}
         </div>
-        {subtitle ? (
+        {subtitle || innerHTML ? (
           <div
             className={clsx(
               'd-flex',
-              'flex-row',
+              !device.mediaIsDesktop ? 'flex-column' : 'flex-row',
               'align-items-center',
               alignTitle ? 'justify-content-center' : null
             )}
           >
-            <p className={clsx('py-2', 'mb-2')}>{subtitle}</p>
+            {innerHTML ? (
+              <div
+                dangerouslySetInnerHTML={{ __html: HTMLsubtitle }}
+                className='section-info-list'
+              />
+            ) : (
+              <p className={clsx('py-2', 'mb-2')}>{subtitle}</p>
+            )}
             {cta ? (
-              <Button onClick={cta.action} color='primary'>
-                {cta.label}
+              <Button
+                onClick={cta.action}
+                color='primary'
+                className={clsx(
+                  'd-flex',
+                  'flex-row',
+                  'justify-content-around',
+                  'align-items-center',
+                  'mb-3'
+                )}
+              >
+                <span className='text-nowrap pr-3'> {cta.label} </span>
+                <Icon icon='it-external-link' color='white' size='sm' />
               </Button>
             ) : null}
           </div>
         ) : null}
-        {sectionInfoOpened ? (
+        {sectionInfo && sectionInfoOpened ? (
           <SectionInfo
-            title='Informazioni sulla sezione'
+            title={correctSectionTitle()}
             body={correctSectionInfo()}
             open={sectionInfoOpened}
             setIsOpen={(value) => {

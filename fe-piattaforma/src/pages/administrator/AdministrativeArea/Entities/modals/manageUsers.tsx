@@ -38,7 +38,7 @@ interface ManageUsersFormI {
 interface ManageUsersI extends withFormHandlerProps, ManageUsersFormI {}
 
 const ManageUsers: React.FC<ManageUsersI> = ({
-  clearForm,
+  clearForm = () => ({}),
   formDisabled,
   creation = false,
 }) => {
@@ -48,13 +48,19 @@ const ManageUsers: React.FC<ManageUsersI> = ({
     [key: string]: formFieldI['value'];
   }>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
-  const userIdPayload = useAppSelector(selectModalPayload)?.userId
+  const userIdPayload = useAppSelector(selectModalPayload)?.userId;
   const { userId } = useParams();
+
+  const resetModal = (toClose = true) => {
+    clearForm();
+    if (toClose) dispatch(closeModal());
+  };
 
   const handleSaveEnte = async () => {
     if (isFormValid) {
+      let res: any = null;
       if (creation) {
-        const res = await dispatch(CreateUser(newFormValues));
+        res = await dispatch(CreateUser(newFormValues));
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (res?.data?.idUtente) {
@@ -68,8 +74,9 @@ const ManageUsers: React.FC<ManageUsersI> = ({
         await dispatch(UpdateUser(userId || userIdPayload, newFormValues));
         dispatch(GetUserDetails(userId || userIdPayload));
       }
+
+      if (!res?.errorCode) resetModal();
     }
-    dispatch(closeModal());
   };
 
   return (
@@ -82,7 +89,7 @@ const ManageUsers: React.FC<ManageUsersI> = ({
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: () => clearForm?.(),
+        onClick: resetModal,
       }}
     >
       <FormUser

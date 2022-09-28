@@ -25,7 +25,10 @@ import {
   GetUserDetails,
   GetUsersBySearch,
 } from '../../../../../redux/features/administrativeArea/user/userThunk';
-import { closeModal } from '../../../../../redux/features/modal/modalSlice';
+import {
+  closeModal,
+  selectModalState,
+} from '../../../../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
@@ -73,67 +76,79 @@ const ManageReferal: React.FC<ManageReferalI> = ({
   const [alreadySearched, setAlreadySearched] = useState<boolean>(false);
   const dispatch = useDispatch();
   const usersList = useAppSelector(selectUsers).list;
-  const { entityId, projectId, authorityId } = useParams();
+  const { entityId, projectId, authorityId, userId } = useParams();
   const authority = useAppSelector(selectAuthorities).detail.dettagliInfoEnte;
+  const open = useAppSelector(selectModalState);
 
-  const resetModal = () => {
+  const resetModal = (toClose = true) => {
     clearForm();
     setShowForm(true);
     setAlreadySearched(false);
     dispatch(setUsersList(null));
+    if (toClose) dispatch(closeModal());
   };
 
   useEffect(() => {
-    resetModal();
+    if (open) {
+      resetModal(false);
+      if (creation) dispatch(resetUserDetails());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [open, creation]);
 
-  useEffect(() => {
-    dispatch(resetUserDetails());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [creation]);
+  // useEffect(() => {
+  //   dispatch(resetUserDetails());
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [creation]);
 
   const handleSaveReferal = async () => {
-    if (isFormValid && authority?.id) {
+    if (isFormValid && (authority?.id || authorityId)) {
+      let res: any = null;
       // Project details
       if (projectId) {
         if (authorityId) {
-          await dispatch(
+          res = await dispatch(
             AssignPartnerAuthorityReferentDelegate(
               authorityId,
               projectId,
               newFormValues,
-              'REPP'
+              'REPP',
+              userId
             )
           );
-
-          dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
+          await dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
+          if (userId) await dispatch(GetUserDetails(userId));
         } else {
-          await dispatch(
+          res = await dispatch(
             AssignManagerAuthorityReferentDelegate(
               authority.id,
               projectId,
               newFormValues,
               'progetto',
-              'REGP'
+              'REGP',
+              userId
             )
           );
           await dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+          if (userId) await dispatch(GetUserDetails(userId));
         }
       } else if (entityId) {
-        await dispatch(
+        res = await dispatch(
           AssignManagerAuthorityReferentDelegate(
-            authority.id,
+            authority?.id || authorityId,
             entityId,
             newFormValues,
             'programma',
-            'REG'
+            'REG',
+            userId
           )
         );
         await dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+        if (userId) await dispatch(GetUserDetails(userId));
       }
-      resetModal();
-      dispatch(closeModal());
+      if (!res) {
+        resetModal();
+      }
     }
   };
 
@@ -163,7 +178,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
           setNewFormValues({ ...newData })
         }
         setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
-        fieldsToHide={['ruolo']}
+        fieldsToHide={['ruolo', 'tipoContratto']}
       />
     );
   } else if (usersList && usersList.length > 0) {
@@ -201,7 +216,6 @@ const ManageReferal: React.FC<ManageReferalI> = ({
         onClick: resetModal,
       }}
       centerButtons
-      onClose={resetModal}
     >
       <div>
         {creation ? (
@@ -215,7 +229,10 @@ const ManageReferal: React.FC<ManageReferalI> = ({
             )}
             placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’utente'
             onSubmit={handleSearchUser}
-            onReset={() => setShowForm(true)}
+            onReset={() => {
+              resetModal(false);
+              dispatch(resetUserDetails());
+            }}
             title='Cerca'
             search
           />

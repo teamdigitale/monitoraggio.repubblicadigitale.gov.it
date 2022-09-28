@@ -16,15 +16,16 @@ import Logo from '/public/assets/img/logo.png';
 import Bell from '/public/assets/img/campanella.png';
 import { useTranslation } from 'react-i18next';
 import { HeaderI } from '../header';
-import { logout } from '../../../redux/features/user/userSlice';
 import HeaderMenu from '../../HeaderMenu/headerMenu';
 import { openModal } from '../../../redux/features/modal/modalSlice';
-import AvatarInitials, {
+import {
   AvatarSizes,
   AvatarTextSizes,
-} from '../../AvatarInitials/avatarInitials';
+} from '../../Avatar/AvatarInitials/avatarInitials';
 import useGuard from '../../../hooks/guard';
 import { defaultRedirectUrl } from '../../../routes';
+import UserAvatar from '../../Avatar/UserAvatar/UserAvatar';
+import { LogoutRedirect } from '../../../redux/features/user/userThunk';
 
 const HeaderDesktop: React.FC<HeaderI> = ({
   isHeaderFull = true,
@@ -33,7 +34,8 @@ const HeaderDesktop: React.FC<HeaderI> = ({
   userProfile,
   isLogged,
   notification,
-                                            menuRoutes,
+  menuRoutes,
+  profilePicture,
 }) => {
   //const languages = ['ITA', 'ENG'];
 
@@ -65,19 +67,22 @@ const HeaderDesktop: React.FC<HeaderI> = ({
             'd-inline-flex',
             'align-items-center',
             'text.white',
-            'primary-bg-b2'
+            'primary-bg-b2',
+            'header-panel-btn',
+            'border-right'
           )}
         >
           <div>
-            <AvatarInitials
-              user={{ uName: user?.nome, uSurname: user?.cognome }}
+            <UserAvatar
+              avatarImage={profilePicture}
+              user={{ uSurname: user?.cognome, uName: user?.nome }}
               size={AvatarSizes.Small}
               font={AvatarTextSizes.Small}
             />
           </div>
           <div className='d-flex flex-column align-items-start'>
             <h6 className='m-0 text-sans-serif'>
-              {user?.nome}&nbsp;{user?.cognome}
+              {user?.cognome}&nbsp;{user?.nome}
             </h6>
             <h6 className='font-weight-light text-nowrap'>
               {/*<em>{getRoleLabel(userProfile?.codiceRuolo)}</em>*/}
@@ -85,6 +90,9 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
               }`}</em>
             </h6>
+          </div>
+          <div className='ml-2'>
+            <Icon size='' color='white' icon='it-expand' />
           </div>
         </div>
       </DropdownToggle>
@@ -142,7 +150,9 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 'w-100'
               )}
               role='menuitem'
-              onClick={() => dispatch(logout())}
+              onClick={() => {
+                dispatch(LogoutRedirect());
+              }}
             >
               <strong>Esci</strong>
               <Icon
@@ -287,7 +297,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               isLogged ? (
                 <>
                   {userDropDown()}
-                  <div className='mx-4'>
+                  <div className='mx-4 pr-2'>
                     {/* <Icon
                     color='white'
                     icon='campanella'

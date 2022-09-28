@@ -24,6 +24,7 @@ export interface HeaderI {
   isLogged: boolean;
   notification?: [] | undefined;
   menuRoutes: MenuItem[];
+  profilePicture: string | undefined;
 }
 
 export interface HeaderProp {
@@ -32,8 +33,12 @@ export interface HeaderProp {
 
 const parseMenuRoute = (menuRoute: MenuItem, userProfile: UserProfileI) => {
   switch (userProfile?.codiceRuolo) {
-    case userRoles.REG: {
-      if (userProfile?.idProgramma && menuRoute.path === '/area-amministrativa/programmi') {
+    case userRoles.REG:
+    case userRoles.DEG: {
+      if (
+        userProfile?.idProgramma &&
+        menuRoute.path === '/area-amministrativa/programmi'
+      ) {
         return {
           ...menuRoute,
           label: 'Programma',
@@ -43,14 +48,22 @@ const parseMenuRoute = (menuRoute: MenuItem, userProfile: UserProfileI) => {
       return menuRoute;
     }
     case userRoles.REGP:
+    case userRoles.DEGP:
+    case userRoles.VOL:
     case userRoles.FAC: {
-      if (userProfile?.idProgetto && menuRoute.path === '/area-amministrativa/progetti') {
+      if (
+        userProfile?.idProgetto &&
+        menuRoute.path === '/area-amministrativa/progetti'
+      ) {
         return {
           ...menuRoute,
           label: 'Progetto',
           path: `/area-amministrativa/progetti/${userProfile.idProgetto}/info`,
         };
-      } else if (userProfile?.idProgramma && menuRoute.path === '/area-amministrativa/programmi') {
+      } else if (
+        userProfile?.idProgramma &&
+        menuRoute.path === '/area-amministrativa/programmi'
+      ) {
         return {
           ...menuRoute,
           label: 'Programma',
@@ -106,6 +119,7 @@ const Header: React.FC<HeaderProp> = (props) => {
     dispatch,
     isHeaderFull,
     menuRoutes,
+    profilePicture: user?.immagineProfilo,
   };
 
   return (
@@ -115,7 +129,7 @@ const Header: React.FC<HeaderProp> = (props) => {
       ) : (
         <HeaderMobile {...componentProps} />
       )}
-      <SwitchProfileModal />
+      <SwitchProfileModal isOnboarding={!isLogged} />
     </>
   );
 };

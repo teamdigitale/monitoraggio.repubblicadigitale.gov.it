@@ -1,62 +1,64 @@
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
-import { SurveyResponseBodyI } from '../../../../../../redux/features/administrativeArea/surveys/surveysThunk';
-import { formFieldI, FormI } from '../../../../../../utils/formHelper';
-import { generateForm } from '../../../../../../utils/jsonFormHelper';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import {
+  selectPrintSurveySections,
+  SurveySectionI,
+} from '../../../../../../redux/features/administrativeArea/surveys/surveysSlice';
+import { formFieldI } from '../../../../../../utils/formHelper';
 import PrintBoxField from './components/printBoxField';
 import PrintSelectField from './components/printSelectField';
 import PrintTextField from './components/printTextField';
+import { GetSurveyInfo } from '../../../../../../redux/features/administrativeArea/surveys/surveysThunk';
+import { useAppSelector } from '../../../../../../redux/hooks';
+import PrintFieldRating from './components/printFieldRating';
+import { selectServices } from '../../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { GetServicesDetail } from '../../../../../../redux/features/administrativeArea/services/servicesThunk';
+import DetailLayout from '../../../../../../components/DetailLayout/detailLayout';
+import Logo from '/public/assets/img/logo-scritta-blu-x2.png';
+
+export interface PrintSurveyQuestionI extends Omit<formFieldI, 'type'> {
+  type: string;
+  title: string;
+  enum: string[];
+  properties: { [key: string]: { [key: string]: string } };
+}
+
+interface PrintSuveySectionI {
+  id: string;
+  type: string;
+  sectionTitle: string;
+  questions: {
+    [key: string]: PrintSurveyQuestionI;
+  };
+}
 
 const PrintSurvey: React.FC = () => {
-  const [formMock, setFormMock] = useState<SurveyResponseBodyI>({});
-  const [sectionsForm, setSectionsForm] = useState<FormI[]>([]);
-  const [sectionsTitle, setSectionsTitle] = useState<string[]>();
-
-  const loadMock = async () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const response = await import('/mock/responseQuestionario.json');
-    setFormMock(response?.default);
-  };
-
-  const updateFormToOrder = (form: FormI) => {
-    return Object.keys(form).sort(
-      (a, b) => Number(form[a].order) - Number(form[b].order)
-    );
-  };
+  const dispatch = useDispatch();
+  const { serviceId, idQuestionario } = useParams();
+  const sections = useAppSelector(selectPrintSurveySections);
+  const serviceDetails = useAppSelector(selectServices)?.detail;
 
   useEffect(() => {
-    loadMock();
-  }, []);
+    if (serviceId) dispatch(GetServicesDetail(serviceId));
+    if (idQuestionario) dispatch(GetSurveyInfo(idQuestionario, true));
+  }, [serviceId, idQuestionario]);
 
-  useEffect(() => {
-    if (formMock && formMock['survey-sections']) {
-      const sections: FormI[] = [];
-      const titles: string[] = [];
-      formMock['survey-sections'].map((section) => {
-        sections.push(generateForm(JSON.parse(section.schema), true));
-        titles.push(section.title);
-      });
-      setSectionsForm(sections);
-      setSectionsTitle(titles);
-    }
-  }, [formMock]);
-
-  const getAnswerType = (question: formFieldI, section: FormI) => {
+  const getAnswerType = (
+    question: PrintSurveyQuestionI,
+    section: PrintSuveySectionI
+  ) => {
     switch (question.type) {
-      case 'checkbox':
-      case 'select':
-        if (question.enumLevel1 && question.relatedTo) {
-          return (
-            <PrintBoxField
-              info={question}
-              className='d-inline-block mr-3 mb-5'
-              optionsLevel2={section[question.relatedTo].enumLevel2}
-            />
-          );
-        } else if (question.enumLevel2) {
-          return null;
-        } else {
+      case 'range':
+        return (
+          <PrintFieldRating
+            info={question}
+            className='d-inline-block mr-3 mb-5'
+          />
+        );
+      case 'object':
+        if (question?.properties) {
           return (
             <PrintSelectField
               info={question}
@@ -70,10 +72,51 @@ const PrintSurvey: React.FC = () => {
               halfWidth={question.flag ? true : false}
             />
           );
+        } else if (question?.enumLevel1 && question?.enumLevel2) {
+          return (
+            <PrintBoxField
+              info={question}
+              className='d-inline-block mr-3 mb-5'
+              optionsLevel2={question.enumLevel2}
+            />
+          );
+        } else if (
+          question?.enumLevel1 &&
+          !question?.enumLevel2 &&
+          question?.relatedTo
+        ) {
+          return (
+            <PrintBoxField
+              info={question}
+              className='d-inline-block mr-3 mb-5'
+              optionsLevel2={
+                section.questions?.[question.relatedTo]?.enumLevel2 || []
+              }
+            />
+          );
+        } else {
+          return null;
         }
-      case 'text':
+      case 'multiple':
+      case 'string':
+        if (question?.enum?.length) {
+          return (
+            <PrintSelectField
+              info={question}
+              className={clsx('d-inline-block', 'mr-3', 'mb-5')}
+            />
+          );
+        } else {
+          return (
+            <PrintTextField
+              info={question}
+              className='d-inline-block mr-3 mb-5'
+            />
+          );
+        }
       case 'date':
       case 'number':
+      case 'time':
       default:
         return (
           <PrintTextField
@@ -84,27 +127,41 @@ const PrintSurvey: React.FC = () => {
     }
   };
 
-  const orderSection = (section: FormI) => {
-    const orderQuestions = updateFormToOrder(section);
-    return (
-      <>
-        {orderQuestions.map((key) => (
-          <>{getAnswerType(section[key], section)}</>
-        ))}
-      </>
-    );
-  };
-
   return (
     <div className='container my-3 py-5'>
-      {(sectionsForm || []).map((section: FormI, i: number) => (
-        <div key={i} className='mb-5'>
-          <h1 className='h2 primary-color-a6 mb-5'>
-            {sectionsTitle ? sectionsTitle[i] : i}
-          </h1>
-          {orderSection(section)}
-        </div>
-      ))}
+      <div className='header-container__main__logo mb-4'>
+        <img src={Logo} alt='logo' />
+      </div>
+      <DetailLayout
+        titleInfo={{
+          title: serviceDetails?.dettaglioServizio?.nomeServizio,
+          upperTitle: {
+            icon: 'it-calendar',
+            text:
+              serviceDetails?.progettiAssociatiAlServizio[0]?.nomeBreve ||
+              'Progetto',
+          },
+          subTitle:
+            'Facilitatore: ' +
+            serviceDetails?.dettaglioServizio?.nominativoFacilitatore,
+        }}
+        showGoBack={false}
+      />
+      <div className='mt-5'>
+        {(sections || []).map((section: SurveySectionI, i: number) => (
+          <div key={i} className='mb-5'>
+            <h1 className='h2 primary-color-a6 mb-5'>
+              {section?.sectionTitle}
+            </h1>
+            {section?.questions &&
+              Object.keys(section?.questions).map((key) => (
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                <>{getAnswerType(section?.questions?.[key], section)}</>
+              ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

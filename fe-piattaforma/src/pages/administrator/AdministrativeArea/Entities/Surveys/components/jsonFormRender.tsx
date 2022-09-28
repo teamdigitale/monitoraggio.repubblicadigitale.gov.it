@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Form,
   Input,
+  PrefixPhone,
   Rating,
   Select,
   SelectMultiple,
@@ -13,21 +14,28 @@ import '../compileSurvey/compileSurvey.scss';
 import { useEffect } from 'react';
 import { setCompilingSurveyForm } from '../../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 import { useDispatch } from 'react-redux';
-import { useAppSelector } from '../../../../../../redux/hooks';
-import { selectDevice } from '../../../../../../redux/features/app/appSlice';
+import { OptionTypeMulti } from '../../../../../../components/Form/selectMultiple';
+import { Label } from 'design-react-kit';
+
 interface JsonFormRenderI {
   form: FormI;
-  onInputChange: (
+  onInputChange?: (
     value: formFieldI['value'],
     field?: formFieldI['field']
   ) => void;
-  currentStep: number;
+  currentStep?: number;
+  viewMode?: boolean;
 }
 
 const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
-  const { form = {}, onInputChange = () => ({}), currentStep } = props;
+  const {
+    form = {},
+    onInputChange = () => ({}),
+    currentStep,
+    viewMode = false,
+  } = props;
   const dispatch = useDispatch();
-  const device = useAppSelector(selectDevice);
+  //const device = useAppSelector(selectDevice);
 
   useEffect(() => {
     if (currentStep === 3) {
@@ -48,31 +56,49 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
+  const renderPrefix = (field: formFieldI) => {
+    if (field?.keyBE === 'prefisso') {
+      return (
+        <PrefixPhone
+          {...field}
+          onInputChange={onInputChange}
+          disabled={field?.disabled || viewMode}
+        />
+      );
+    }
+    return;
+  };
+
   const renderInputByType = (formField: formFieldI) => {
     switch (formField?.type) {
       case 'text':
       default: {
+        if (formField?.keyBE?.toLowerCase() === 'prefisso') {
+          return renderPrefix(formField);
+        }
+        if(formField?.field === '19' && formField?.value === ''){
+          return null;
+        }
+
         return (
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           <Input
             {...formField}
-            className={clsx(
-              device.mediaIsPhone || device.mediaIsTablet
-                ? 'd-flex w-100 flex-column mt-1'
-                : 'd-inline-block',
-              formField?.label?.toLowerCase() === 'prefisso' &&
-                'compile-survey-container__prefix-width',
-              formField?.label?.toLowerCase().includes('cellulare') &&
-                'compile-survey-container__mobile-width',
-              formField?.label?.toLowerCase() !== 'prefisso' &&
-                !formField?.label?.toLowerCase().includes('cellulare') &&
-                'compile-survey-container__half-width',
-              'mr-3',
-              'mb-3'
+            // className={clsx(
+            //   (device.mediaIsPhone || device.mediaIsTablet) &&
+            //     'd-flex w-100 flex-column mt-1'
+            // )}
+            col={clsx(
+              formField?.keyBE?.toLowerCase() === 'numerocellulare'
+                ? 'col-8 col-lg-4'
+                : 'col-12 col-lg-6',
+              formField?.field === '19' && 'mt-4'
             )}
-            label={`${formField?.label}`}
+            label={formField?.label}
             onInputBlur={onInputChange}
+            disabled={formField?.disabled || viewMode}
+            placeholder={`Inserisci ${formField?.label}`}
           />
         );
       }
@@ -83,15 +109,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
             // @ts-ignore
             <Select
               {...formField}
-              wrapperClassName={clsx(
-                device.mediaIsPhone || device.mediaIsTablet
-                  ? 'd-flex w-100 flex-column mt-1 py-3'
-                  : 'd-inline-block',
-                'compile-survey-container__half-width',
-                'compile-survey-container__select-margin',
-                'mr-3',
-                'mb-3'
-              )}
+              col='col-12 col-lg-6'
               onInputChange={onInputChange}
               placeholder={`Seleziona ${
                 (formField?.label || '')?.length < 20
@@ -99,6 +117,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
                   : ''
               }`}
               label={`${formField?.label}`}
+              isDisabled={formField?.disabled || viewMode}
             />
           );
         }
@@ -145,6 +164,29 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
               }
             );
           }
+
+          // mappa valori
+          const valuesSecondLevel =
+            formField?.relatedTo && form[formField?.relatedTo]?.value;
+          const values: OptionTypeMulti[] = [];
+          Array.isArray(valuesSecondLevel) &&
+            (valuesSecondLevel || []).map((val: string) => {
+              let upperLevel = '';
+              Object.keys(multiSelectOptions).forEach((key: any) => {
+                if (
+                  multiSelectOptions[key].options.filter((x) => x.label === val)
+                    ?.length > 0
+                ) {
+                  upperLevel = multiSelectOptions[key].label;
+                }
+              });
+              values.push({
+                label: val,
+                value: val,
+                upperLevel: upperLevel,
+              });
+            });
+
           return (
             <SelectMultiple
               field={formField.field}
@@ -154,40 +196,36 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
               aria-label={`${formField?.label}`}
               options={multiSelectOptions}
               required={formField.required || false}
-              onInputChange={onInputChange}
-              onSecondLevelInputChange={onInputChange}
+              // only field 25 and it is not editable
+              // onInputChange={onInputChange}
+              // onSecondLevelInputChange={onInputChange}
               placeholder='Seleziona'
-              wrapperClassName={clsx(
-                device.mediaIsPhone || device.mediaIsTablet
-                  ? 'd-flex w-100 flex-column mt-1 py-2'
-                  : 'd-inline-block',
-                'compile-survey-container__half-width',
-                'compile-survey-container__select-margin',
-                'mr-3',
-                'mb-3'
-              )}
+              col='col-12'
+              value={values}
+              isDisabled={formField?.disabled || viewMode}
             />
           );
         }
         if (formField.options?.length) {
+          if (viewMode && Array.isArray(formField?.value)) {
+            formField.value = formField?.value.join('§');
+          }
           return (
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             <CheckboxGroup
               {...formField}
-              className={clsx(
-                device.mediaIsPhone || device.mediaIsTablet
-                  ? 'd-flex w-100 flex-column pb-3'
-                  : 'd-inline-block',
-                'compile-survey-container__half-width',
-                'compile-survey-container__select-margin',
-                'mr-3',
-                'mb-3'
-              )}
+              className={
+                formField?.field === '4' ? 'col-12 col-lg-6' : 'col-12'
+              }
               onInputChange={onInputChange}
               label={`${formField?.label}`}
               styleLabelForm
-              noLabel={formField.flag === true ? true : false}
+              noLabel={formField.flag}
+              disabled={formField?.disabled || viewMode}
+              optionsInColumn={formField.field !== '18'}
+              separator='§'
+              singleSelection={formField.field === '18'}
             />
           );
         }
@@ -196,34 +234,42 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
           // @ts-ignore
           <Input
             {...formField}
-            className={clsx(
-              'd-inline-block',
-              'compile-survey-container__half-width',
-              'mr-3',
-              'mb-3'
-            )}
+            col='col-12 col-lg-6'
             onInputBlur={onInputChange}
             label={`${formField?.label}`}
+            disabled={formField?.disabled || viewMode}
+            placeholder={`Inserisci ${formField?.label}`}
           />
         );
       }
       case 'range':
         return (
-          <>
-            <label>{formField.field}</label>
-            <Rating onChange={(val) => onInputChange(val, formField.field)} />
-          </>
+          <div className='d-flex flex-column align-items-start'>
+            <Label className='rating-label'>
+              {formField?.label} {formField?.required && '*'}{' '}
+            </Label>
+            <Rating
+              className='col-12 col-lg-6'
+              onChange={(val) => onInputChange(val, formField.field)}
+              value={Number(formField?.value)}
+              disabled={formField?.disabled || viewMode}
+            />
+          </div>
         );
     }
   };
 
   return (
     <Form id='compile-survey-form'>
-      {orderedForm.map((field) => (
-        <React.Fragment key={field}>
-          {renderInputByType(form[field])}
-        </React.Fragment>
-      ))}
+      <div
+        className={clsx('d-inline-flex flex-wrap w-100', viewMode && 'pt-5')}
+      >
+        {orderedForm.map((field) => (
+          <React.Fragment key={field}>
+            {renderInputByType(form[field])}
+          </React.Fragment>
+        ))}
+      </div>
     </Form>
   );
 };

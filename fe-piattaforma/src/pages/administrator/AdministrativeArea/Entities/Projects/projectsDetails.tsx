@@ -7,7 +7,11 @@ import {
   CRUDActionTypes,
   ItemsListI,
 } from '../../../../../utils/common';
-import { TableRowI } from '../../../../../components/Table/table';
+import {
+  newTable,
+  TableHeadingI,
+  TableRowI,
+} from '../../../../../components/Table/table';
 import { ButtonInButtonsBar } from '../../../../../components/ButtonsBar/buttonsBar';
 import {
   closeModal,
@@ -32,6 +36,7 @@ import {
   CardStatusAction,
   EmptySection,
   NavLink,
+  Table,
 } from '../../../../../components';
 import ProjectAccordionForm from '../../../../forms/formProjects/ProjectAccordionForm/ProjectAccordionForm';
 import FormAuthorities from '../../../../forms/formAuthorities';
@@ -61,6 +66,9 @@ import useGuard from '../../../../../hooks/guard';
 import UploadCSVModal from '../../../../../components/AdministrativeArea/Entities/General/UploadCSVModal/UploadCSVModal';
 import { selectProfile } from '../../../../../redux/features/user/userSlice';
 
+const EntiPartnerTemplate =
+  '/assets/entity_templates/template_ente-partner.csv';
+
 const tabs = {
   INFO: 'info',
   ENTE_GESTORE: 'ente-gestore-progetto',
@@ -72,6 +80,24 @@ export const buttonsPositioning = {
   TOP: 'top',
   BOTTOM: 'bottom',
 };
+
+const EntePartnerTableHeading: TableHeadingI[] = [
+  {
+    label: 'Nome Ente',
+    field: 'nome',
+    size: 'medium',
+  },
+  {
+    label: 'Codice Fiscale',
+    field: 'codiceFiscale',
+    size: 'medium',
+  },
+  {
+    label: 'Esito',
+    field: 'esito',
+    size: 'small',
+  },
+];
 
 const ProjectsDetails = () => {
   const { mediaIsDesktop, mediaIsPhone } = useAppSelector(selectDevice);
@@ -98,6 +124,9 @@ const ProjectsDetails = () => {
   const [buttonsPosition, setButtonsPosition] = useState<'TOP' | 'BOTTOM'>(
     'TOP'
   );
+  const [entePartnerTable, setEntePartnerTable] = useState(
+    newTable(EntePartnerTableHeading, [])
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -123,6 +152,14 @@ const ProjectsDetails = () => {
       `/area-amministrativa/progetti/${entityId}/${identeDiRiferimento}`
     ) {
       navigate(`/area-amministrativa/progetti/${entityId}/info`);
+    }
+    if (
+      location.pathname ===
+      `/area-amministrativa/programmi/${entityId}/progetti/${projectId}`
+    ) {
+      navigate(
+        `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/info`
+      );
     }
   }, []);
 
@@ -232,19 +269,19 @@ const ProjectsDetails = () => {
   const centerActiveItem = () => {
     switch (activeTab) {
       case tabs.INFO:
-        infoRef.current?.scrollIntoView({ inline: 'center' });
+        infoRef.current?.scrollIntoView({ block: 'center' });
         break;
       case tabs.ENTE_GESTORE:
-        gestoreRef.current?.scrollIntoView({ inline: 'center' });
+        gestoreRef.current?.scrollIntoView({ block: 'center' });
         break;
       case tabs.ENTI_PARTNER:
-        partnerRef.current?.scrollIntoView({ inline: 'center' });
+        partnerRef.current?.scrollIntoView({ block: 'center' });
         break;
       case tabs.SEDI:
-        sediRef.current?.scrollIntoView({ inline: 'center' });
+        sediRef.current?.scrollIntoView({ block: 'center' });
         break;
       default:
-        infoRef.current?.scrollIntoView({ inline: 'center' });
+        infoRef.current?.scrollIntoView({ block: 'center' });
         break;
     }
   };
@@ -276,7 +313,7 @@ const ProjectsDetails = () => {
     {
       size: 'xs',
       color: 'primary',
-      iconForButton: 'it-download',
+      iconForButton: 'it-upload',
       iconColor: 'primary',
       outline: true,
       buttonClass: 'btn-secondary',
@@ -288,7 +325,7 @@ const ProjectsDetails = () => {
             payload: {
               title: 'Carica lista Enti partner',
               entity: 'enti',
-              data: 'NOME,NOME BREVE, TIPOLOGIA, CODICE FISCALE, SEDE LEGALE, PEC',
+              endpoint: `/ente/partner/upload/${projectId}`,
             },
           })
         ),
@@ -440,12 +477,13 @@ const ProjectsDetails = () => {
                 ...sedi,
                 actions:
                   authorityInfo?.dettagliInfoEnte?.statoEnte ===
-                  entityStatus.TERMINATO
+                    entityStatus.TERMINATO && sedi.associatoAUtente
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickSede[CRUDActionTypes.VIEW],
                       }
-                    : {
+                    : sedi.associatoAUtente
+                    ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickSede[CRUDActionTypes.VIEW],
                         [CRUDActionTypes.DELETE]:
@@ -454,7 +492,8 @@ const ProjectsDetails = () => {
                             : hasUserPermission(['del.sede.gest.prgt'])
                             ? onActionClickSede[CRUDActionTypes.DELETE]
                             : undefined,
-                      },
+                      }
+                    : {},
               })
             ) || [],
         },
@@ -629,10 +668,10 @@ const ProjectsDetails = () => {
       setCorrectButtons([]);
       setEmptySection(
         <EmptySection
-          title='Questa sezione è ancora vuota'
+          title='Non sono presenti sedi associate'
           withIcon
           icon='it-note'
-          subtitle='Per attivare il progetto aggiungi una Sede all’Ente gestore o ad un Ente partner'
+          subtitle='Per attivare il progetto aggiungi una sede all’ente gestore o ad un ente partner'
           // buttons={EmptySectionButtons.slice(2)}
         />
       );
@@ -661,10 +700,11 @@ const ProjectsDetails = () => {
         <NavLink
           to={replaceLastUrlSection(tabs.ENTE_GESTORE)}
           active={activeTab === tabs.ENTE_GESTORE}
+          enteGestore={!managingAuthorityID}
         >
           {!managingAuthorityID ? (
             <div id='tab-ente-gestore-progetto'>
-              <span className='mr-1'> * Ente gestore </span>
+              * Ente gestore
               <Tooltip
                 placement='bottom'
                 target='tab-ente-gestore-progetto'
@@ -673,7 +713,7 @@ const ProjectsDetails = () => {
               >
                 Compilazione obbligatoria
               </Tooltip>
-              <Icon icon='it-warning-circle' size='sm' />
+              <Icon icon='it-warning-circle' size='xs' />
             </div>
           ) : (
             'Ente gestore'
@@ -773,6 +813,7 @@ const ProjectsDetails = () => {
 
   const projectInfoButtons = () => {
     let formButtons: ButtonInButtonsBar[] = [];
+
     switch (projectDetails?.stato) {
       case 'ATTIVO':
         formButtons = hasUserPermission(['upd.car.prgt', 'term.prgt'])
@@ -1084,6 +1125,21 @@ const ProjectsDetails = () => {
     }
   };
 
+  const handleEnteUploadEsito = (esito: { list: any[] }) => {
+    const { list = [] } = esito;
+    const table = newTable(
+      EntePartnerTableHeading,
+      list.map((td: any) => ({
+        nome: td.nomeBreve || td.nome,
+        codiceFiscale: td.piva || td.codiceFiscale,
+        esito: (td.esito || '').toUpperCase().includes('OK')
+          ? 'Riuscito'
+          : 'Fallito',
+      }))
+    );
+    setEntePartnerTable(table);
+  };
+
   // const onConfirmDeleteEntityModal = async (payload: {[key: string]: string | UserAuthorityRole}) => {
   //   if (payload?.entity === 'referent-delegate')
   //     removeReferentDelegate(payload?.cf, payload?.role);
@@ -1135,7 +1191,10 @@ const ProjectsDetails = () => {
                 : 'Torna indietro'
             }
             showGoBack={
-              userRole !== userRoles.REGP && userRole !== userRoles.FAC
+              userRole !== userRoles.REGP &&
+              userRole !== userRoles.DEGP &&
+              userRole !== userRoles.FAC &&
+              userRole !== userRoles.VOL
             }
           >
             <>
@@ -1152,13 +1211,14 @@ const ProjectsDetails = () => {
                   cta={getAccordionCTA(item.title).cta}
                   onClickCta={getAccordionCTA(item.title)?.ctaAction}
                   lastBottom={index === itemAccordionList.length - 1}
+                  detailAccordion
                 >
                   {item.items?.length ? (
                     item.items.map((cardItem) => (
                       <CardStatusAction
                         key={cardItem.id}
-                        title={`${cardItem.nome} ${
-                          cardItem.cognome ? cardItem.cognome : ''
+                        title={`${cardItem.cognome ? cardItem.cognome : ''} ${
+                          cardItem.nome
                         }`.trim()}
                         status={cardItem.stato}
                         id={cardItem.id}
@@ -1169,7 +1229,11 @@ const ProjectsDetails = () => {
                     ))
                   ) : (
                     <EmptySection
-                      title={`Non esistono ${item.title?.toLowerCase()} associati`}
+                      title={`Non sono presenti ${item.title?.toLowerCase()} ${
+                        item.title?.toLowerCase() === 'sedi'
+                          ? `associate.`
+                          : `associati.`
+                      }`}
                       horizontal
                       aside
                     />
@@ -1227,9 +1291,16 @@ const ProjectsDetails = () => {
             }}
           />
           <UploadCSVModal
-            onClose={() => dispatch(closeModal())}
-            onConfirm={() => dispatch(closeModal())}
-          />
+            accept='.csv'
+            onClose={() => {
+              if (projectId) dispatch(GetProjectDetail(projectId));
+            }}
+            onEsito={handleEnteUploadEsito}
+            template={EntiPartnerTemplate}
+            templateName='enti_partner-template.csv'
+          >
+            <Table {...entePartnerTable} id='table-ente-partner' />
+          </UploadCSVModal>
           <ManageDelegate creation />
           <ManageReferal creation />
           <ManageHeadquarter creation />

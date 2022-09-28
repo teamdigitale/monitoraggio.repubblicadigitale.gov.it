@@ -35,6 +35,8 @@ interface SearchBarI extends Omit<SelectI, 'onInputChange'> {
   entityToRefresh?: string | undefined;
   search?: boolean;
   onReset?: () => void;
+  tooltip?: boolean;
+  tooltipText?: string;
 }
 
 const SearchBar: React.FC<SearchBarI> = (props) => {
@@ -52,6 +54,8 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
     title = 'Cerca',
     search = false,
     onReset,
+    tooltip = false,
+    tooltipText = '',
   } = props;
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState<
@@ -155,7 +159,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
   return (
     <div className={clsx(className, 'search-bar-custom')}>
       {!device.mediaIsPhone && search ? (
-        <h1 className='h4 primary-color mb-3'> {title} </h1>
+        <h1 className='search-bar-title primary-color mb-3'> {title} </h1>
       ) : null}
       <div className={clsx('d-inline-flex', 'w-100', 'mb-1')}>
         {autocomplete ? (
@@ -182,24 +186,6 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
             )}
           >
             <div className='search-bar-custom__left-section'>
-              {searchValue && (
-                <div className='input-group-append input-button'>
-                  <Button
-                    onClick={clearSearch}
-                    className='border-0 px-0'
-                    id='button-addon1'
-                  >
-                    <Icon
-                      icon='it-close-big'
-                      aria-hidden
-                      size='xs'
-                      color='primary'
-                      aria-label='Chiudi'
-                    />
-                  </Button>
-                </div>
-              )}
-
               <Input
                 addon
                 className={clsx(
@@ -219,12 +205,18 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                 value={searchValue}
                 withLabel={false}
                 aria-label={id}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    handleOnSubmit();
+                  }
+                }}
+                tabIndex={0}
               />
 
               {!hasSearchValue && device.mediaIsPhone && (
-                <span id='placeholder-icon'>
+                <span id='placeholder-icon' className='d-flex flex-row'>
                   <span
-                    className='placeholder-label font-weight-normal primary-color-a12'
+                    className='font-weight-normal primary-color-a12 mr-2'
                     onClick={focusOfSearch}
                     onKeyDown={(e) => {
                       if (e.key === ' ') {
@@ -234,17 +226,39 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                   >
                     {title}
                   </span>
-                  <span id='search-tooltip' className='ml-2'>
-                    <Icon
-                      icon='it-info-circle'
-                      size='xs'
-                      color='primary-color-a12'
-                      aria-label='icona info'
-                    />
-                  </span>
+                  {tooltip && (
+                    <div id='search-tooltip'>
+                      <Tooltip
+                        placement='bottom'
+                        target='search-tooltip'
+                        isOpen={openOne}
+                        toggle={() => toggleOne(!openOne)}
+                      >
+                        {tooltipText}
+                      </Tooltip>
+                      <Icon icon='it-warning-circle' size='xs' />
+                    </div>
+                  )}
                 </span>
               )}
             </div>
+            {searchValue && (
+              <div className='input-group-append input-button'>
+                <Button
+                  onClick={clearSearch}
+                  className='border-0 px-0'
+                  id='button-addon1'
+                >
+                  <Icon
+                    icon='it-close-big'
+                    aria-hidden
+                    size='xs'
+                    color='primary'
+                    aria-label='Chiudi'
+                  />
+                </Button>
+              </div>
+            )}
             <div className='input-group-append input-button'>
               {searchButton ? (
                 <Button
@@ -272,16 +286,6 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
               )}
             </div>
           </div>
-        )}
-        {!hasSearchValue && device.mediaIsPhone && (
-          <Tooltip
-            placement='top'
-            target='search-tooltip'
-            isOpen={openOne}
-            toggle={() => toggleOne(!openOne)}
-          >
-            {placeholder}
-          </Tooltip>
         )}
       </div>
     </div>

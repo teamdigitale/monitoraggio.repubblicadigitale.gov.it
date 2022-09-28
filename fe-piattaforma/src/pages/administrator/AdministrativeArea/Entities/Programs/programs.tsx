@@ -68,11 +68,11 @@ const Programs = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
+    dispatch(resetProgramDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateTableValues = () => {
-    //TODO align keys when API Integation is done
     const table = newTable(
       TableHeading,
       programmiList.map((td: any) => {
@@ -241,6 +241,8 @@ const Programs = () => {
       resetFilterDropdownSelected={(filterKey: string) =>
         setFilterDropdownSelected(filterKey)
       }
+      tooltiptext={searchInformation.placeholder}
+      tooltip
     >
       <div>
         {programmiList?.length && tableValues?.values?.length ? (

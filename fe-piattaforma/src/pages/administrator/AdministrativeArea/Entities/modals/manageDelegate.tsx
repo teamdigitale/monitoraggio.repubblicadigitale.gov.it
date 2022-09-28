@@ -21,7 +21,10 @@ import {
   GetUserDetails,
   GetUsersBySearch,
 } from '../../../../../redux/features/administrativeArea/user/userThunk';
-import { closeModal } from '../../../../../redux/features/modal/modalSlice';
+import {
+  closeModal,
+  selectModalState,
+} from '../../../../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
@@ -55,55 +58,64 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
   const usersList = useAppSelector(selectUsers).list;
   const { entityId, projectId, authorityId, userId } = useParams();
   const authority = useAppSelector(selectAuthorities).detail.dettagliInfoEnte;
+  const open = useAppSelector(selectModalState);
 
-  const resetModal = () => {
+  const resetModal = (toClose = true) => {
     clearForm();
     setShowForm(true);
     setAlreadySearched(false);
     dispatch(setUsersList(null));
+    if (toClose) dispatch(closeModal());
   };
 
   useEffect(() => {
-    resetModal();
+    if (open) {
+      resetModal(false);
+      if (creation) dispatch(resetUserDetails());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [open, creation]);
 
-  useEffect(() => {
-    dispatch(resetUserDetails());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [creation]);
+  // useEffect(() => {
+  //   dispatch(resetUserDetails());
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [creation]);
 
   const handleSaveDelegate = async () => {
     if (isFormValid && (authority?.id || authorityId)) {
+      let res: any = null;
       if (projectId) {
         if (authorityId) {
-          await dispatch(
+          res = await dispatch(
             AssignPartnerAuthorityReferentDelegate(
               authorityId,
               projectId,
               newFormValues,
-              'DEPP'
+              'DEPP',
+              userId
             )
           );
-
-          dispatch(
+          await dispatch(
             GetPartnerAuthorityDetail(projectId, authorityId || authority?.id)
           );
+          if (userId) await dispatch(GetUserDetails(userId));
         } else if (authority?.id) {
-          await dispatch(
+          res = await dispatch(
             AssignManagerAuthorityReferentDelegate(
               authority?.id,
               projectId,
               newFormValues,
               'progetto',
-              'DEGP'
+              'DEGP',
+              userId
             )
           );
 
-          dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+          await dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+          if (userId) await dispatch(GetUserDetails(userId));
         }
       } else if (entityId) {
-        await dispatch(
+        res = await dispatch(
           AssignManagerAuthorityReferentDelegate(
             authority?.id || authorityId,
             entityId,
@@ -113,11 +125,13 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
             userId
           )
         );
-        dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+        await dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
         if (userId) dispatch(GetUserDetails(userId));
       }
-      resetModal();
-      dispatch(closeModal());
+      if (!res) {
+        resetModal();
+        dispatch(closeModal());
+      }
     }
   };
 
@@ -147,7 +161,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
           setNewFormValues({ ...newData })
         }
         setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
-        fieldsToHide={['ruolo']}
+        fieldsToHide={['ruolo', 'tipoContratto']}
       />
     );
   } else if (usersList && usersList.length > 0) {
@@ -185,7 +199,6 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
         onClick: resetModal,
       }}
       centerButtons
-      onClose={resetModal}
     >
       <div>
         {creation ? (
@@ -199,7 +212,10 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
             )}
             placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’utente'
             onSubmit={handleSearchUser}
-            onReset={() => setShowForm(true)}
+            onReset={() => {
+              resetModal(false);
+              dispatch(resetUserDetails());
+            }}
             title='Cerca'
             search
           />

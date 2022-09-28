@@ -36,6 +36,8 @@ public class S3Service {
 	@Value(value = "${aws.s3.secret-key:}")
 	private String secretKey;
 	
+	private static final Long DEFAULT_SCADENZA_PRESIGNED_URL = 5L;
+	
 	public S3Client getClient() {
 		return S3Client.builder()
 				.credentialsProvider(
@@ -92,15 +94,22 @@ public class S3Service {
 		return response;
 	}
 	
-	public String getPresignedUrl(String nomeFile, String bucketName) {
+	public String getPresignedUrl(String nomeFile, String bucketName, Long... durataScadenzaPresignedUrl) {
+		if(nomeFile == null || nomeFile.trim().isEmpty()) {
+			throw new RuntimeException("nomeFile prisegnedUrl AWS S3 deve essere valorizzato non blank");
+		}
+		if(bucketName == null || bucketName.trim().isEmpty()) {
+			throw new RuntimeException("bucketName AWS S3 deve essere valorizzato non blank");
+		}
+		
 		S3Presigner presigner = S3Presigner.builder()
                 .region(Region.EU_CENTRAL_1)
                 .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(this.accessKey, this.secretKey)))
                 .build();
-		return getPresignedUrl(presigner, bucketName, nomeFile);
+		return getPresignedUrl(presigner, bucketName, nomeFile, durataScadenzaPresignedUrl);
 	}
 	
-	public String getPresignedUrl(S3Presigner presigner, String bucketName, String keyName ) {
+	public String getPresignedUrl(S3Presigner presigner, String bucketName, String keyName, Long... durataScadenzaPresignedUrl) {
 		String url = "";
         try {
             GetObjectRequest getObjectRequest =
@@ -109,8 +118,9 @@ public class S3Service {
                             .key(keyName)
                             .build();
 
+            final long durataScadenzaPresUrl = durataScadenzaPresignedUrl == null || durataScadenzaPresignedUrl.length == 0?DEFAULT_SCADENZA_PRESIGNED_URL: durataScadenzaPresignedUrl[0];
             GetObjectPresignRequest getObjectPresignRequest =  GetObjectPresignRequest.builder()
-                            .signatureDuration(Duration.ofMinutes(10))
+                            .signatureDuration(Duration.ofMinutes(durataScadenzaPresUrl))
                             .getObjectRequest(getObjectRequest)
                              .build();
 
@@ -121,11 +131,10 @@ public class S3Service {
             // Log the presigned URL
             url = presignedGetObjectRequest.url().toString();
 
-            
-
         } catch (S3Exception e) {
             e.getStackTrace();
         }
+        
         return url;
     }
 }

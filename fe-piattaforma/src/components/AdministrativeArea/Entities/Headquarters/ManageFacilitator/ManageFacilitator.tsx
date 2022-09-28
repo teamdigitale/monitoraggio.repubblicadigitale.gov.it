@@ -21,7 +21,10 @@ import {
   GetUsersBySearch,
   UpdateUser,
 } from '../../../../../redux/features/administrativeArea/user/userThunk';
-import { closeModal } from '../../../../../redux/features/modal/modalSlice';
+import {
+  closeModal,
+  selectModalState,
+} from '../../../../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
@@ -42,7 +45,7 @@ interface ManageFacilitatorI
     ManageFacilitatorFormI {}
 
 const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
-  clearForm,
+  clearForm = () => ({}),
   formDisabled,
   creation = false,
 }) => {
@@ -56,6 +59,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   const { projectId, authorityId, headquarterId, userId } = useParams();
   const programPolicy =
     useAppSelector(selectHeadquarters).detail?.programmaPolicy;
+  const open = useAppSelector(selectModalState);
 
   useEffect(() => {
     dispatch(setUsersList(null));
@@ -63,9 +67,11 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   }, []);
 
   useEffect(() => {
-    dispatch(resetUserDetails());
+    if (creation && open) {
+      dispatch(resetUserDetails());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [creation]);
+  }, [creation, open]);
 
   useEffect(() => {
     if (usersList && usersList.length === 0) {
@@ -77,6 +83,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
 
   const handleSaveEnte = async () => {
     if (isFormValid && newFormValues) {
+      let res: any = null;
       if (
         projectId &&
         authorityId &&
@@ -84,7 +91,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         programPolicy &&
         creation
       ) {
-        await dispatch(
+        res = await dispatch(
           AssignHeadquarterFacilitator(
             newFormValues,
             authorityId,
@@ -95,17 +102,16 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         );
         dispatch(GetHeadquarterDetails(headquarterId, authorityId, projectId));
       } else if (userId) {
-        userId &&
-          (await dispatch(
-            UpdateUser(userId, {
-              ...newFormValues,
-            })
-          ));
+        res = await dispatch(
+          UpdateUser(userId, {
+            ...newFormValues,
+          })
+        );
 
-        userId && dispatch(GetUserDetails(userId));
+        dispatch(GetUserDetails(userId));
       }
 
-      dispatch(closeModal());
+      if (!res?.errorCode) dispatch(closeModal());
     }
   };
 
@@ -129,6 +135,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         setNewFormValues({ ...newData })
       }
       setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+      creation={creation}
     />
   );
 
@@ -139,8 +146,8 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         values={usersList.map((item) => ({
           id: item.id || item.codiceFiscale,
           codiceFiscale: item.codiceFiscale,
-          cognome: item.cognome,
           nome: item.nome,
+          cognome: item.cognome,
         }))}
         onActionRadio={handleSelectUser}
         id='table'
@@ -158,6 +165,11 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
     );
   }
 
+  const handleCancel = () => {
+    clearForm();
+    dispatch(closeModal());
+  };
+
   return (
     <GenericModal
       id={id}
@@ -168,7 +180,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: () => clearForm?.(),
+        onClick: () => handleCancel(),
       }}
       centerButtons
     >
@@ -184,7 +196,10 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
             )}
             placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’utente'
             onSubmit={handleSearchUser}
-            onReset={() => dispatch(setUsersList(null))}
+            onReset={() => {
+              dispatch(setUsersList(null));
+              dispatch(resetUserDetails());
+            }}
             title='Cerca'
             search
           />

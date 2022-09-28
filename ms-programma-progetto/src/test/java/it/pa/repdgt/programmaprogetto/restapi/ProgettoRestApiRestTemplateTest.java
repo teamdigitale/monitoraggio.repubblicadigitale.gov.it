@@ -28,8 +28,8 @@ public class ProgettoRestApiRestTemplateTest extends AppTests{
 	@Test
 	void getAllProgettiPaginatiByRuolo() {
 		ProgettiParam progParam = new ProgettiParam();
-		progParam.setCfUtente("SMTPAL67R31F111X");
-		progParam.setCodiceRuolo("DTD");
+		progParam.setCfUtenteLoggato("SMTPAL67R31F111X");
+		progParam.setCodiceRuoloUtenteLoggato("DTD");
 		progParam.setFiltroRequest(new ProgettoFiltroRequest());
 		progParam.setIdProgramma(1L);
 		
@@ -40,8 +40,8 @@ public class ProgettoRestApiRestTemplateTest extends AppTests{
 	@Test
 	void getAllProgrammiDropdownPerProgettiTest() {
 		ProgettiParam progParam = new ProgettiParam();
-		progParam.setCfUtente("SMTPAL67R31F111X");
-		progParam.setCodiceRuolo("DTD");
+		progParam.setCfUtenteLoggato("SMTPAL67R31F111X");
+		progParam.setCodiceRuoloUtenteLoggato("DTD");
 		progParam.setFiltroRequest(new ProgettoFiltroRequest());
 		
 		@SuppressWarnings("unchecked")
@@ -52,8 +52,8 @@ public class ProgettoRestApiRestTemplateTest extends AppTests{
 	@Test
 	void getAllPoliciesDropdownByRuoloTest() {
 		ProgettiParam progParam = new ProgettiParam();
-		progParam.setCfUtente("SMTPAL67R31F111X");
-		progParam.setCodiceRuolo("DTD");
+		progParam.setCfUtenteLoggato("SMTPAL67R31F111X");
+		progParam.setCodiceRuoloUtenteLoggato("DTD");
 		progParam.setFiltroRequest(new ProgettoFiltroRequest());
 		
 		@SuppressWarnings("unchecked")
@@ -64,8 +64,8 @@ public class ProgettoRestApiRestTemplateTest extends AppTests{
 	@Test
 	void getAllStatiDropdownByRuoloTest() {
 		ProgettiParam progParam = new ProgettiParam();
-		progParam.setCfUtente("SMTPAL67R31F111X");
-		progParam.setCodiceRuolo("DTD");
+		progParam.setCfUtenteLoggato("SMTPAL67R31F111X");
+		progParam.setCodiceRuoloUtenteLoggato("DTD");
 		progParam.setFiltroRequest(new ProgettoFiltroRequest());
 		
 		@SuppressWarnings("unchecked")
@@ -95,8 +95,8 @@ public class ProgettoRestApiRestTemplateTest extends AppTests{
 	public void downloadCSVSElencoProgettiTest() {
 		
 		ProgettiParam progettiParam = new ProgettiParam();
-		progettiParam.setCfUtente("UIHPLW87R49F205X");
-		progettiParam.setCodiceRuolo(RuoloUtenteEnum.DTD.toString());
+		progettiParam.setCfUtenteLoggato("UIHPLW87R49F205X");
+		progettiParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
 		progettiParam.setFiltroRequest(new ProgettoFiltroRequest());
 		
 		String urlToCall = "http://localhost:" + randomServerPort +

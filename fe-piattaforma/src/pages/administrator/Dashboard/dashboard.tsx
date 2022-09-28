@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import API from '../../../utils/apiHelper';
 import { useDispatch } from 'react-redux';
 import { hideLoader, showLoader } from '../../../redux/features/app/appSlice';
-import { getUserHeaders } from '../../../redux/features/user/userThunk';
 import { GetProgramDetail } from '../../../redux/features/administrativeArea/programs/programsThunk';
 import { GetProjectDetail } from '../../../redux/features/administrativeArea/projects/projectsThunk';
 import { useAppSelector } from '../../../redux/hooks';
@@ -12,6 +11,8 @@ import {
 } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { userRoles } from '../AdministrativeArea/Entities/utils';
 import PageTitle from '../../../components/PageTitle/pageTitle';
+import useGuard from '../../../hooks/guard';
+import { selectProfile } from '../../../redux/features/user/userSlice';
 
 /*
 const baseFrameURL =
@@ -19,15 +20,20 @@ const baseFrameURL =
 // OLD'https://hnmhsi4ogf.execute-api.eu-central-1.amazonaws.com/test/anonymous-embed-sample';
 */
 
-/* TODO enable when update env keys on github
-const dashboardBaseURL = process.env.REACT_APP_DASHBOARD_BASE_URL;
- */
-const dashboardBaseURL = 'https://backend.facilitazione-dev.mitd.technology/dashboard_dev';
+const dashboardBaseURL =
+  process.env.REACT_APP_DASHBOARD_BASE_URL ||
+  'https://backend.facilitazione-dev.mitd.technology/dashboard_dev';
+
+const dashboard_BI_URL =
+  process.env.REACT_APP_DASHBOARD_BI_URL ||
+  'https://137642333557.signin.aws.amazon.com/console';
 
 const dashboardRoles: {
   [key: string]: {
     append?: string;
-    endpoint: string;
+    endpoint?: string;
+    rfd?: string;
+    scd?: string;
   };
 } = {
   DTD: {
@@ -37,20 +43,35 @@ const dashboardRoles: {
     endpoint: 'vw-monitoraggio-dscu',
   },
   REG: {
-    endpoint: 'vw-ente-gestore-programma',
+    rfd: 'vw-ente-gestore-programma-rfd',
+    scd: 'ente-gest-programma-scd',
   },
   REGP: {
-    endpoint: 'vw-ente-gestore-progetto',
+    rfd: 'vw-ente-gestore-progetto-rfd',
+    scd: 'ente-gest-progetto-scd',
   },
   CITTADINO: {
     endpoint: 'vw-cittadino',
   },
 };
 
+const publicContents = {
+  title: 'Repubblica Digitale per i cittadini',
+  subtitle: 'Consulta i dati del Piano operativo per le competenze digitali',
+};
+
+const authContents = {
+  title: 'La mia dashboard',
+  subtitle:
+    'Consulta le statistiche rappresentate in questa pagina, oppure accedi allo strumento di Business Intelligence per consultare, configurare e scaricare in autonomia i dati a tua disposizione',
+};
+
 const Dashboard = () => {
   const dispatch = useDispatch();
   const [frameUrl, setFrameUrl] = useState('');
-  const user = getUserHeaders();
+  //const user = getUserHeaders();
+  const user = useAppSelector(selectProfile);
+  const { hasUserPermission } = useGuard();
   const { dettagliInfoProgramma: program } =
     useAppSelector(selectPrograms).detail;
   const { dettagliInfoProgetto: project } =
@@ -66,21 +87,23 @@ const Dashboard = () => {
         }`;
         break;
       }
-      case userRoles.REG: {
-        if (program?.policy) {
-          requestURL = `${requestURL}/${
-            dashboardRoles.REG.endpoint
-          }-${program.policy.toLowerCase()}`;
+      case userRoles.REG:
+      case userRoles.DEG: {
+        if (program.policy.toLowerCase() === 'rfd') {
+          requestURL = `${requestURL}/${dashboardRoles.REG.rfd}`;
+        } else if (program.policy.toLowerCase() === 'scd') {
+          requestURL = `${requestURL}/${dashboardRoles.REG.scd}`;
         } else {
           return null;
         }
         break;
       }
-      case userRoles.REGP: {
-        if (project?.policy) {
-          requestURL = `${requestURL}/${
-            dashboardRoles.REGP.endpoint
-          }-${project.policy.toLowerCase()}`;
+      case userRoles.REGP:
+      case userRoles.DEGP: {
+        if (project.policy.toLowerCase() === 'rfd') {
+          requestURL = `${requestURL}/${dashboardRoles.REGP.rfd}`;
+        } else if (project.policy.toLowerCase() === 'scd') {
+          requestURL = `${requestURL}/${dashboardRoles.REGP.scd}`;
         } else {
           return null;
         }
@@ -138,15 +161,24 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.codiceRuolo, program?.codice, project?.id]);
 
+  const contents = user?.codiceRuolo ? authContents : publicContents;
+
   return (
     <div className='container dashboard-container my-5'>
       <PageTitle
-        title='La mia dashboard'
-        subtitle='Consulta le statistiche rappresentate in questa pagina, oppure accedi allo strumento di Business Intelligence per consultare, configurare e scaricare in autonomia i dati a tua disposizione'
-        cta={{
-          action: () => console.log('go to BI'),
-          label: 'Vai a Business intelligence',
-        }}
+        title={contents?.title}
+        subtitle={contents?.subtitle}
+        cta={
+          hasUserPermission(['acc.self.dshb'])
+            ? {
+                action: () => {
+                  console.log('go to BI', dashboard_BI_URL);
+                  window.open(dashboard_BI_URL, '_blank');
+                },
+                label: 'Vai a Business intelligence',
+              }
+            : undefined
+        }
       />
       <div className='dashboard-container__frame w-100 mt-5'>
         <iframe

@@ -23,10 +23,6 @@ import com.mongodb.client.MongoClient;
 @Profile("dev")
 public class MongoDBConnectionConfig {
 	
-//	@Value("${KEYSTORE_PATH}")
-//	private String keyStorePath;
-//	@Value("${KEYSTORE_PASSWORD}")
-//	private String keyStorePassword;
 	@Value("${MONGODB_HOST}")
 	private String host;
 	@Value("${MONGODB_PORT}")
@@ -68,30 +64,4 @@ public class MongoDBConnectionConfig {
 
 		return mongoClientFactory;
 	}
-
-//	@Bean
-//	public SSLContext mongoSSLContext() throws GeneralSecurityException, IOException {
-//		String trustStoreFile = keyStorePath;
-//		String trustStorePassword = keyStorePassword;
-//
-//		KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-//		try (InputStream in = new FileInputStream(trustStoreFile)) {
-//			trustStore.load(in, trustStorePassword.toCharArray());
-//		}
-//
-//		TrustManagerFactory trustManagerFactory = TrustManagerFactory
-//				.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-//		trustManagerFactory.init(trustStore);
-//
-//		SSLContext sslContext = SSLContext.getInstance("TLS");
-//		sslContext.init(null, trustManagerFactory.getTrustManagers(), new SecureRandom());
-//
-//		return sslContext;
-//	}
-
-//	@Bean
-//	public MongoClientSettingsBuilderCustomizer mongoSslCustomizer(SSLContext mongoSSLContext) {
-//		return clientSettingsBuilder -> clientSettingsBuilder
-//				.applyToSslSettings(sslBuilder -> sslBuilder.context(mongoSSLContext));
-//	}
 }

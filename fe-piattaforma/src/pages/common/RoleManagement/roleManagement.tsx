@@ -24,10 +24,7 @@ import {
 } from '../../../redux/features/roles/rolesThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import { CRUDActionsI, CRUDActionTypes } from '../../../utils/common';
-import {
-  selectDevice,
-  updateBreadcrumb,
-} from '../../../redux/features/app/appSlice';
+import { selectDevice } from '../../../redux/features/app/appSlice';
 import useGuard from '../../../hooks/guard';
 
 const arrayBreadcrumb = [
@@ -116,15 +113,6 @@ const RoleManagement = () => {
 
   useEffect(() => {
     getGroupsList();
-    dispatch(
-      updateBreadcrumb([
-        {
-          label: 'Gestione ruoli',
-          url: '/gestione-ruoli',
-          link: false,
-        },
-      ])
-    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -165,7 +153,7 @@ const RoleManagement = () => {
 
   return (
     <>
-      <PageTitle title='Elenco Ruoli' breadcrumb={arrayBreadcrumb} />
+      <PageTitle title='Elenco ruoli' breadcrumb={arrayBreadcrumb} />
       <Container className={device.mediaIsPhone ? 'px-4' : ''}>
         <GenericSearchFilterTableLayout
           searchInformation={searchInformation}
@@ -186,7 +174,7 @@ const RoleManagement = () => {
             />
           ) : (
             <div className='pb-5'>
-              <EmptySection title='Non esistono ruoli' withIcon />
+              <EmptySection title='Non sono presenti ruoli' withIcon />
             </div>
           )}
         </GenericSearchFilterTableLayout>

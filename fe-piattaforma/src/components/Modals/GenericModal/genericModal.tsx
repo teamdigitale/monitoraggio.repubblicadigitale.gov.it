@@ -18,13 +18,14 @@ interface CallToAction {
 }
 
 export interface GenericModalI {
-  description?: string;
+  closable?: boolean;
+  description?: string | undefined;
   footer?: ReactChild;
   id?: string;
   onClose?: () => void;
   payload?: ModalPayloadI | undefined;
-  primaryCTA?: CallToAction;
-  secondaryCTA?: CallToAction;
+  primaryCTA?: CallToAction | undefined;
+  secondaryCTA?: CallToAction | undefined;
   tertiaryCTA?: CallToAction | null;
   title?: string | undefined;
   centerButtons?: boolean;
@@ -35,7 +36,11 @@ export interface GenericModalI {
   noPaddingSecondary?: boolean;
   withIcon?: boolean;
   icon?: string;
+  iconColor?: string;
+  bigIcon?: boolean;
   isRoleManaging?: boolean;
+  isSurveyOnline?: boolean;
+  isSuccesModal?: boolean;
 }
 
 const GenericModal: React.FC<GenericModalI> = (props) => {
@@ -59,6 +64,10 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
     withIcon = false,
     icon = '',
     isRoleManaging = false,
+    iconColor = '',
+    bigIcon = false,
+    isSurveyOnline = false,
+    isSuccesModal = false,
   } = props;
 
   const handleAction = (action: 'primary' | 'secondary' | 'tertiary') => {
@@ -87,99 +96,120 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
 
   return (
     <Modal id={id} {...props} isRoleManaging={isRoleManaging}>
-      <div
-        className={clsx(
-          'd-flex',
-          'flex-column',
-          'justify-content-around',
-          'align-items-center',
-          isRoleManaging && device.mediaIsPhone ? 'px-2' : 'px-5'
-        )}
-      >
-        {withIcon && (
+      {withIcon && icon ? (
+        <div
+          className={clsx(
+            'd-flex',
+            'flex-column',
+            'justify-content-around',
+            'align-items-center',
+            isRoleManaging && device.mediaIsPhone ? 'px-2' : 'px-5'
+          )}
+        >
           <div
             className={clsx(
               'icon-container',
-              'p-4',
+              isSuccesModal && 'bg-white',
+              'p-3',
               'd-flex',
-              'align-items-center'
+              'align-items-center',
+              isSurveyOnline && 'mt-5 mb-4'
             )}
           >
             <Icon
               icon={icon}
-              style={{ width: '50px', height: '80px' }}
+              style={{
+                width: bigIcon ? '60px' : isSuccesModal ? '150px' : '50px',
+                height: isSuccesModal ? '150px' : '80px',
+              }}
+              color={iconColor}
               className='my-0 mx-3 pl-1'
             />
           </div>
-        )}
-      </div>
-      <div
-        className={clsx(
-          'modal-header-container',
-          !noSpaceAfterTitle && 'mb-4',
-          noSpaceAfterTitle && 'pb-0 mb-0',
-          withIcon ? 'mt-1 pt-1' : 'mt-4 pt-3'
-        )}
-      >
-        <p
+        </div>
+      ) : (
+        <span />
+      )}
+      {title || payload?.title ? (
+        <div
           className={clsx(
-            'h5',
-            'font-weight-semibold',
-            'primary-color',
-            'my-auto'
+            'modal-header-container',
+            !noSpaceAfterTitle && 'mb-4',
+            noSpaceAfterTitle && 'pb-0 mb-0',
+            withIcon ? 'mt-1 pt-1' : 'mt-4 pt-3'
           )}
         >
-          {title || payload?.title}
-        </p>
-      </div>
-      <ModalBody className='p-0'>
-        {hasSearch && (
-          //
-          <div className='row mx-5'>
-            <div className='col-12'>
-              <SearchBar
-                autocomplete={false}
-                onSubmit={() => console.log('ricerca modale')}
-                placeholder={searchPlaceholder}
-                isClearable
-                id='search-generic-modal'
-              />
-            </div>
-          </div>
-        )}
-        {description || payload?.description}
-        {children}
-      </ModalBody>
-      <ModalFooter
-        className={clsx(
-          centerButtons
-            ? 'd-flex justify-content-center'
-            : device.mediaIsPhone
-            ? 'd-flex flex-row justify-content-center'
-            : tertiaryCTA
-            ? 'd-flex flex-row justify-content-between'
-            : ''
-        )}
-      >
-        {footer || primaryCTA || secondaryCTA ? (
-          <>
-            {footer}
-            {tertiaryCTA ? (
-              <div className='d-flex flex-row justify-content-start'>
-                <Button
-                  {...tertiaryCTA}
-                  color='secondary'
-                  className={clsx(
-                    device.mediaIsPhone ? 'cta-button' : 'mr-2 cta-button',
-                    device.mediaIsPhone && noPaddingSecondary && 'pt-0'
-                  )}
-                  onClick={() => handleAction('tertiary')}
-                  size='xs'
-                >
-                  {tertiaryCTA.label}
-                </Button>
+          <p
+            className={clsx(
+              'font-weight-semibold',
+              isRoleManaging ? 'primary-color-a10 h3 pb-4' : 'primary-color h5',
+              'my-auto'
+            )}
+          >
+            {title || payload?.title}
+          </p>
+        </div>
+      ) : (
+        <span />
+      )}
+      {hasSearch || description || payload?.description || children ? (
+        <ModalBody className='p-0'>
+          {hasSearch && (
+            //
+            <div className='row mx-5'>
+              <div className='col-12'>
+                <SearchBar
+                  autocomplete={false}
+                  onSubmit={() => console.log('ricerca modale')}
+                  placeholder={searchPlaceholder}
+                  isClearable
+                  id='search-generic-modal'
+                />
               </div>
-            ) : null}
+            </div>
+          )}
+          <p
+            className={clsx(
+              isSurveyOnline && 'text-muted text-center mx-auto h5'
+            )}
+          >
+            {description || payload?.description}
+          </p>
+          {children}
+        </ModalBody>
+      ) : (
+        <span />
+      )}
+      {footer || primaryCTA || secondaryCTA ? (
+        <ModalFooter
+          className={clsx(
+            centerButtons
+              ? 'd-flex justify-content-center'
+              : device.mediaIsPhone
+              ? 'd-flex flex-row justify-content-center'
+              : tertiaryCTA
+              ? 'd-flex flex-row justify-content-between'
+              : ''
+          )}
+        >
+          {footer}
+          {tertiaryCTA ? (
+            <div className='d-flex flex-row justify-content-start'>
+              <Button
+                {...tertiaryCTA}
+                color='secondary'
+                className={clsx(
+                  device.mediaIsPhone ? 'cta-button' : 'mr-2 cta-button',
+                  device.mediaIsPhone && noPaddingSecondary && 'pt-0'
+                )}
+                onClick={() => handleAction('tertiary')}
+                size='xs'
+              >
+                {tertiaryCTA.label}
+              </Button>
+            </div>
+          ) : <button className='hidden-btn' />}
+          {primaryCTA || secondaryCTA ? (
             <div
               className={clsx(
                 device.mediaIsPhone
@@ -200,7 +230,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
                 >
                   {secondaryCTA.label}
                 </Button>
-              ) : null}
+              ) : <button className='hidden-btn' />}
               {primaryCTA ? (
                 <Button
                   {...primaryCTA}
@@ -214,11 +244,13 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
                 >
                   {primaryCTA.label}
                 </Button>
-              ) : null}
+              ) : <button className='hidden-btn' />}
             </div>
-          </>
-        ) : null}
-      </ModalFooter>
+          ) : <button className='hidden-btn' />}
+        </ModalFooter>
+      ) : (
+        <span />
+      )}
     </Modal>
   );
 };

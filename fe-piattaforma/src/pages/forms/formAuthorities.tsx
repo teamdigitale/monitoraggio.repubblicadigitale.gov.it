@@ -70,25 +70,69 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
   } = props;
 
   const { projectId, entityId, authorityId } = useParams();
+  const formData: { [key: string]: formFieldI['value'] } | undefined =
+    useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
+  const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   if (
+  //     form &&
+  //     formDisabled &&
+  //     Object.entries(form).some(([_key, value]) => !value.disabled)
+  //   ) {
+  //     updateForm(
+  //       Object.fromEntries(
+  //         Object.entries(form).map(([key, value]) => [
+  //           key,
+  //           { ...value, disabled: formDisabled },
+  //         ])
+  //       )
+  //     );
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [formDisabled]);
+
+  useEffect(() => {
+    if (formData) {
+      setFormValues(formData);
+    } else {
+      clearForm();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData]);
 
   useEffect(() => {
     if (
+      !creation &&
       form &&
-      formDisabled &&
-      Object.entries(form).some(([_key, value]) => !value.disabled)
+      (enteType === formTypes.ENTE_GESTORE_PROGRAMMA ||
+        enteType === formTypes.ENTE_GESTORE_PROGETTO ||
+        enteType === formTypes.ENTE_PARTNER)
     ) {
+      const profilo = newFormField({
+        field: 'profilo',
+        id: 'profilo',
+        required: true,
+        disabled: true,
+      });
+
       updateForm(
-        Object.fromEntries(
-          Object.entries(form).map(([key, value]) => [
-            key,
-            { ...value, disabled: formDisabled },
-          ])
-        ),
+        {
+          ...Object.fromEntries(
+            Object.entries(form).map(([key, value]) => [
+              key,
+              { ...value, disabled: formDisabled },
+            ])
+          ),
+          profilo,
+        },
         true
       );
+
+      formData && setFormValues(formData);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formDisabled, form]);
+  }, [creation, enteType, formData, formDisabled]);
 
   const newGestoreProgetto = () => {
     dispatch(
@@ -109,29 +153,6 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
       onClick: () => newGestoreProgetto(),
     },
   ];
-
-  const formData: { [key: string]: formFieldI['value'] } | undefined =
-    useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (
-      !creation &&
-      form &&
-      (enteType === formTypes.ENTE_GESTORE_PROGRAMMA ||
-        enteType === formTypes.ENTE_GESTORE_PROGETTO ||
-        enteType === formTypes.ENTE_PARTNER)
-    ) {
-      const profilo = newFormField({
-        field: 'profilo',
-        id: 'profilo',
-        required: true,
-        disabled: true,
-      });
-      updateForm({ ...form, profilo });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [creation, enteType, formData]);
 
   if (formData && !creation) {
     <EmptySection
@@ -171,16 +192,18 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
   }, [enteType, creation]);
 
   useEffect(() => {
-    if (formData) {
-      setFormValues(formData);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData]);
-
-  useEffect(() => {
     if (creation) {
       clearForm();
       //dispatch(resetAuthorityDetails());
+      if (form?.profilo) {
+        updateForm({
+          ...form,
+          profilo: {
+            ...form.profilo,
+            required: !creation,
+          },
+        });
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [creation]);
@@ -309,7 +332,10 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
             col='col-12 col-lg-6'
             onInputChange={onInputChange}
           />
-          {form?.profilo ? (
+          {form?.profilo &&
+          (enteType === formTypes.ENTE_GESTORE_PROGRAMMA ||
+            enteType === formTypes.ENTE_GESTORE_PROGETTO ||
+            enteType === formTypes.ENTE_PARTNER) ? (
             <Input {...form?.profilo} label='Profilo' col='col-12 col-lg-6' />
           ) : (
             <span />
@@ -353,6 +379,11 @@ const form = newForm([
     id: 'fiscalCode',
   }),
   */
+  newFormField({
+    field: 'profilo',
+    id: 'profilo',
+    disabled: true,
+  }),
   newFormField({
     field: 'sedeLegale',
     id: 'sedeLegale',

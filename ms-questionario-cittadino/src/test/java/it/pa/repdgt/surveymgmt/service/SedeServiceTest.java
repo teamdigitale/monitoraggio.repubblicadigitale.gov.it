@@ -53,8 +53,8 @@ public class SedeServiceTest {
 		filtro.setCriterioRicerca("CRITERIORICERCA");
 		filtro.setIdsSedi(listaIdsSedi);
 		cittadiniPaginatiParam = new CittadiniPaginatiParam();
-		cittadiniPaginatiParam.setCodiceFiscaleUtenteLoggato("CFUTENTE");
-		cittadiniPaginatiParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC);
+		cittadiniPaginatiParam.setCfUtenteLoggato("CFUTENTE");
+		cittadiniPaginatiParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
 		cittadiniPaginatiParam.setIdProgetto(1L);
 		cittadiniPaginatiParam.setIdProgramma(1L);
 		cittadiniPaginatiParam.setFiltro(filtro);
@@ -88,7 +88,7 @@ public class SedeServiceTest {
 		
 		//test con filtro.getIdsSedi == null
 		filtro.setIdsSedi(null);
-		when(this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto())).thenReturn(listaIdsSedi);
+		when(this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto())).thenReturn(listaIdsSedi);
 		when(this.sedeRepository.findAllSediFiltrate(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", listaIdsSedi)).thenReturn(listaSediProjection);
 		List<SedeProjection> risultato2 = sedeService.getAllSediFacilitatoreFiltrate(cittadiniPaginatiParam);
 		assertThat(risultato2.size()).isEqualTo(listaSediProjection.size());

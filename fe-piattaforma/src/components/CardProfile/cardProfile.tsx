@@ -4,22 +4,30 @@ import React, { memo } from 'react';
 
 import { selectDevice } from '../../redux/features/app/appSlice';
 import { useAppSelector } from '../../redux/hooks';
-import AvatarInitials, {
+import {
   AvatarSizes,
   AvatarTextSizes,
-} from '../AvatarInitials/avatarInitials';
+} from '../Avatar/AvatarInitials/avatarInitials';
 import './cardProfile.scss';
 import { UserStateI } from '../../redux/features/user/userSlice';
+import UserAvatar from '../Avatar/UserAvatar/UserAvatar';
 
 interface CardProfileI extends CardProps {
   className?: string;
   activeProfile?: boolean;
   user: UserStateI['user'];
   profile?: any;
+  profilePicture?: string | undefined;
 }
 
 const CardProfile: React.FC<CardProfileI> = (props) => {
-  const { className, activeProfile, user = {}, profile = {} } = props;
+  const {
+    className,
+    activeProfile,
+    user = {},
+    profile = {},
+    profilePicture,
+  } = props;
 
   const device = useAppSelector(selectDevice);
 
@@ -55,12 +63,13 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
             <div
               className={clsx(
                 'card-profile-container__icon',
-                'mr-2',
+                'mr-1',
                 !activeProfile && 'card-profile-container__opacity'
               )}
             >
-              <AvatarInitials
-                user={{ uName: user?.nome, uSurname: user?.cognome }}
+              <UserAvatar
+                avatarImage={profilePicture}
+                user={{ uSurname: user?.cognome, uName: user?.nome }}
                 size={device.mediaIsPhone ? AvatarSizes.Big : AvatarSizes.Small}
                 font={
                   device.mediaIsPhone
@@ -70,18 +79,18 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
                 lightColor={device.mediaIsPhone}
               />
             </div>
-          ) : null}
+          ) : (
+            <div className='pl-5' />
+          )}
           <div>
             <CardTitle className='mb-1 primary-color-a12'>
-              <span>
-                <strong>
-                  {profile?.descrizioneRuolo}
-                  {profile?.nomeEnte ? (
-                    <>
-                      &nbsp;&ldquo;<i>{profile?.nomeEnte}</i>&ldquo;
-                    </>
-                  ) : null}
-                </strong>
+              <span className={clsx(activeProfile && 'font-weight-semibold')}>
+                {profile?.descrizioneRuolo}
+                {profile?.nomeEnte ? (
+                  <>
+                    &nbsp;&ldquo;<i>{profile?.nomeEnte}</i>&ldquo;
+                  </>
+                ) : null}
               </span>
             </CardTitle>
             <CardText
@@ -91,6 +100,9 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
               )}
             >
               {profile?.nomeProgramma}
+              {profile?.nomeProgettoBreve
+                ? `, ${profile?.nomeProgettoBreve}`
+                : ''}
             </CardText>
           </div>
         </div>
