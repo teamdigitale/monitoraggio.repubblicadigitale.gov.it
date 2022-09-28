@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.1.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0...1.1.0) (2022-09-28)
+
+
+### Features
+
+* **be:** dump files ([3b97af6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3b97af64d2468147d9976e1c57c6e58f5a9d1a85))
+* **lib-repdgt-shared:** dumb files ([4602dcd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4602dcd4a02214c027680d5ef5b0b185ba6df0aa))
+* **fe-piattaforma:** dumb files ([c702d17](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c702d17e553a00c03a5443ca4652865b2049a6e2))
+
 ## 1.0.0 (2022-09-22)
 
 
