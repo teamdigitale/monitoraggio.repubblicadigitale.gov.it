@@ -24,9 +24,13 @@ public interface RuoloXGruppoRepository extends JpaRepository<RuoloXGruppo, Ruol
 	void deleteAllRuoloXGruppoByCodiceRuolo(@Param(value = "codiceRuolo") String codiceRuolo);
 
 	@Query(value = " SELECT"
-				 + " 		rxg.ruolo_codice"
+				 + " 		r.nome"
 				 + " FROM "
-				 + "	  ruolo_x_gruppo rxg "
+				 + "	  ruolo_x_gruppo rxg"
+				 + " INNER JOIN "
+				 + "      ruolo r "
+				 + " ON "
+				 + "      rxg.ruolo_codice = r.codice"
 				 + " WHERE 1=1 "
 				 + "	AND rxg.GRUPPO_CODICE = :codiceGruppo",
 				 nativeQuery = true)
