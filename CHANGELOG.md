@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.60](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.59...1.0.0-test.60) (2022-09-29)
+
+
+### Bug Fixes
+
+* **be:** get all groups per drupal ([e7a6f68](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e7a6f68757a42cbcdc19bcb27e85e34265037669))
+
 ## [1.0.0-test.59](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.58...1.0.0-test.59) (2022-09-28)
 
 
