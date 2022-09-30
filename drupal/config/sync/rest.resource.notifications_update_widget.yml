@@ -1,0 +1,19 @@
+uuid: cd84495b-4e9a-4a7c-b699-c47a938b94fb
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - notifications_widget
+    - serialization
+_core:
+  default_config_hash: VNVszzhjq_LAulGDMVPrBImpdODFiJwTU7TAwa2NYsM
+id: notifications_update_widget
+plugin_id: notifications_update_widget
+granularity: method
+configuration:
+  POST:
+    supported_formats:
+      - json
+    supported_auth:
+      - basic_auth

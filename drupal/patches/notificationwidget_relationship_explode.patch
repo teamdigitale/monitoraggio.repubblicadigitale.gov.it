@@ -1,0 +1,69 @@
+diff --git a/notifications_widget.module b/notifications_widget.module
+index 3eed10b..5cb0d2c 100644
+--- a/notifications_widget.module
++++ b/notifications_widget.module
+@@ -89,7 +89,7 @@ function notifications_widget_entity_insert(EntityInterface $entity) {
+     $notificationService = \Drupal::service('notifications_widget.logger');
+     $notificationConfig  = \Drupal::config('notifications_widget.settings');
+     $allowedActions      = $entity->bundle() . '_enable';
+-    $parseAllowedActions = explode(',', $notificationConfig->get($allowedActions));
++    $parseAllowedActions = explode(',', $notificationConfig->get($allowedActions) ?? '');
+     $messageConfigField  = $entity->bundle() . '_noti_create_message';
+     $routeConfigField    = $entity->bundle() . '_redirect_create_link';
+     $configMessage       = $notificationConfig->get($messageConfigField);
+@@ -118,7 +118,7 @@ function notifications_widget_entity_update(EntityInterface $entity) {
+     $notificationService = \Drupal::service('notifications_widget.logger');
+     $notificationConfig  = \Drupal::config('notifications_widget.settings');
+     $allowedActions      = $entity->bundle() . '_enable';
+-    $parseAllowedActions = explode(',', $notificationConfig->get($allowedActions));
++    $parseAllowedActions = explode(',', $notificationConfig->get($allowedActions) ?? '');
+     $messageConfigField  = $entity->bundle() . '_noti_update_message';
+     $routeConfigField    = $entity->bundle() . '_redirect_update_link';
+     $configMessage       = $notificationConfig->get($messageConfigField);
+@@ -147,7 +147,7 @@ function notifications_widget_entity_delete(EntityInterface $entity) {
+     $notificationService = \Drupal::service('notifications_widget.logger');
+     $notificationConfig  = \Drupal::config('notifications_widget.settings');
+     $allowedActions      = $entity->bundle() . '_enable';
+-    $parseAllowedActions = explode(',', $notificationConfig->get($allowedActions));
++    $parseAllowedActions = explode(',', $notificationConfig->get($allowedActions) ?? '');
+     $messageConfigField  = $entity->bundle() . '_noti_delete_message';
+     $routeConfigField    = $entity->bundle() . '_redirect_delete_link';
+     $configMessage       = $notificationConfig->get($messageConfigField);
+@@ -351,6 +351,22 @@ function notifications_widget_views_data() {
+       'id' => 'numeric',
+     ],
+   ];
++  $data['notifications']['entity_uid'] = [
++    'title' => t('Notification Receiver ID'),
++    'help'  => t('Display receiver name of the notificaion.'),
++    'field' => [
++      'id' => 'numeric',
++    ],
++    'sort' => [
++      'id' => 'standard',
++    ],
++    'filter' => [
++      'id' => 'numeric',
++    ],
++    'argument' => [
++      'id' => 'numeric',
++    ],
++  ];
+   $data['notifications']['created'] = [
+     'title' => t('Notification Created Date'),
+     'help'  => t('Display notificaion created date.'),
+@@ -364,5 +380,14 @@ function notifications_widget_views_data() {
+       'id' => 'date',
+     ],
+   ];
++  $data['notifications']['entity_uid']['relationship'] = [
++    'title' => t('Receiver User'),
++    'help' => t('Relationship with receiver user.'),
++    'id' => 'standard',
++    'base' => 'users_field_data',
++    'base field' => 'uid',
++    'field' => 'entity_uid',
++    'label' => t('Receiver User'),
++  ];
+   return $data;
+ }

@@ -1,0 +1,18 @@
+uuid: 19eefc35-766f-468d-8345-48d611ca1253
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - rest_api
+    - serialization
+id: notification_delete
+plugin_id: notification_delete
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - basic_auth

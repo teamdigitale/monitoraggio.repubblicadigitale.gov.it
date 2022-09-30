@@ -1,0 +1,47 @@
+uuid: 3ab8d4cb-7b23-43cf-98cd-accf1460c035
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.report.field_comment_id
+    - field.field.node.report.field_item
+    - field.field.node.report.field_reason
+    - node.type.report
+  module:
+    - user
+id: node.report.default
+targetEntityType: node
+bundle: report
+mode: default
+content:
+  field_comment_id:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_item:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 106
+    region: content
+  field_reason:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  search_api_excerpt: true

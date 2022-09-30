@@ -1,0 +1,27 @@
+uuid: 6bd35cb0-0725-4dc2-9a21-2a266c30fb15
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_attachment
+    - node.type.document_item
+  module:
+    - file
+id: node.document_item.field_attachment
+field_name: field_attachment
+entity_type: node
+bundle: document_item
+label: Attachment
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'txt rtf odt zip exe docx doc ppt pptx pdf jpg png gif xls xlsx csv mpg wmv'
+  max_filesize: ''
+  description_field: false
+field_type: file

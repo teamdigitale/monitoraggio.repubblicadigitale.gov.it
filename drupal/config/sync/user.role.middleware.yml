@@ -1,0 +1,70 @@
+uuid: fbd47ed7-de51-4b4f-b831-ccbe6ae1e424
+langcode: en
+status: true
+dependencies:
+  config:
+    - rest.resource.board_item_create
+    - rest.resource.board_item_update
+    - rest.resource.category_create
+    - rest.resource.category_delete
+    - rest.resource.category_update
+    - rest.resource.comment_create
+    - rest.resource.comment_delete
+    - rest.resource.comment_report_create
+    - rest.resource.comment_update
+    - rest.resource.community_item_create
+    - rest.resource.community_item_update
+    - rest.resource.document_item_create
+    - rest.resource.document_item_update
+    - rest.resource.downloaded_resource_api
+    - rest.resource.item_delete
+    - rest.resource.item_report_create
+    - rest.resource.like_comment_api
+    - rest.resource.like_resource_api
+    - rest.resource.notification_delete
+    - rest.resource.notification_read
+    - rest.resource.reply_create
+    - rest.resource.report_delete
+    - rest.resource.unlike_comment_api
+    - rest.resource.unlike_resource_api
+    - rest.resource.view_resource_api
+  module:
+    - flag
+    - rest
+id: middleware
+label: middleware
+weight: 5
+is_admin: null
+permissions:
+  - 'flag download'
+  - 'flag downloaded'
+  - 'flag like'
+  - 'flag like_comment'
+  - 'flag view'
+  - 'restful post board_item_create'
+  - 'restful post board_item_update'
+  - 'restful post category_create'
+  - 'restful post category_delete'
+  - 'restful post category_update'
+  - 'restful post comment_create'
+  - 'restful post comment_delete'
+  - 'restful post comment_report_create'
+  - 'restful post comment_update'
+  - 'restful post community_item_create'
+  - 'restful post community_item_update'
+  - 'restful post document_item_create'
+  - 'restful post document_item_update'
+  - 'restful post downloaded_resource_api'
+  - 'restful post item_delete'
+  - 'restful post item_report_create'
+  - 'restful post like_comment_api'
+  - 'restful post like_resource_api'
+  - 'restful post notification_delete'
+  - 'restful post notification_read'
+  - 'restful post reply_create'
+  - 'restful post report_delete'
+  - 'restful post unlike_comment_api'
+  - 'restful post unlike_resource_api'
+  - 'restful post view_resource_api'
+  - 'unflag like'
+  - 'unflag like_comment'

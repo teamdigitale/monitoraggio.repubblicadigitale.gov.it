@@ -1,0 +1,27 @@
+uuid: 695216df-f852-4591-adfb-64eca5f5ef3e
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.report.field_comment_id
+    - field.field.node.report.field_item
+    - field.field.node.report.field_reason
+    - node.type.report
+  module:
+    - user
+id: node.report.teaser
+targetEntityType: node
+bundle: report
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_comment_id: true
+  field_item: true
+  field_reason: true
+  search_api_excerpt: true

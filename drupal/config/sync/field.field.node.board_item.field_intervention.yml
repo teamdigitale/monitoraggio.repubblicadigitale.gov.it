@@ -1,0 +1,19 @@
+uuid: ee66c9dc-dd89-4548-8bff-f14a907223c1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_intervention
+    - node.type.board_item
+id: node.board_item.field_intervention
+field_name: field_intervention
+entity_type: node
+bundle: board_item
+label: Intervention
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

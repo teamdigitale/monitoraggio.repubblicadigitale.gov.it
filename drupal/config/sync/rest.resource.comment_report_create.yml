@@ -1,0 +1,18 @@
+uuid: 07349104-d4fc-4efc-adb8-fbf5a75b8a6d
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - rest_api
+    - serialization
+id: comment_report_create
+plugin_id: comment_report_create
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - basic_auth

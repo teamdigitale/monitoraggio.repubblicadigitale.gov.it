@@ -1,0 +1,15 @@
+uuid: 50afff27-9dd0-45ac-8a54-6c39a92597f2
+langcode: en
+status: true
+dependencies:
+  config:
+    - flag.flag.download
+  module:
+    - flag
+id: flag_action.download_flag
+label: Download
+type: node
+plugin: 'flag_action:download_flag'
+configuration:
+  flag_id: download
+  flag_action: flag

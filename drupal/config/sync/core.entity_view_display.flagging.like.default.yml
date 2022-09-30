@@ -1,0 +1,13 @@
+uuid: d7cb7e39-a8db-4fd1-92e2-71927f78fc69
+langcode: en
+status: true
+dependencies:
+  config:
+    - flag.flag.like
+id: flagging.like.default
+targetEntityType: flagging
+bundle: like
+mode: default
+content: {  }
+hidden:
+  search_api_excerpt: true

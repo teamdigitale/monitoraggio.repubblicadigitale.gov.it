@@ -1,0 +1,18 @@
+uuid: c6d31beb-07ce-4900-b8c9-29e29f8ce485
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - rest_api
+    - serialization
+id: reply_create
+plugin_id: reply_create
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - basic_auth

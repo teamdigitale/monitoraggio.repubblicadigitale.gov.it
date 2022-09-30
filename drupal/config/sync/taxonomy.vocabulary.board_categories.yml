@@ -1,0 +1,8 @@
+uuid: 0a0c5d86-db9b-4ab5-a864-31f2b39b7ee4
+langcode: en
+status: true
+dependencies: {  }
+name: 'Board Categories'
+vid: board_categories
+description: ''
+weight: 0

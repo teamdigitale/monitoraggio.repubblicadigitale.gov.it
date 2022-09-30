@@ -1,0 +1,15 @@
+uuid: df0023d9-d456-4613-b723-2e80a2b556a9
+langcode: en
+status: true
+dependencies:
+  config:
+    - flag.flag.view
+  module:
+    - flag
+id: flag_action.view_flag
+label: View
+type: node
+plugin: 'flag_action:view_flag'
+configuration:
+  flag_id: view
+  flag_action: flag

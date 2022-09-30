@@ -1,0 +1,23 @@
+uuid: 611257dc-810f-4550-976f-89ccdba9f72f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_enable_comments
+    - node.type.document_item
+id: node.document_item.field_enable_comments
+field_name: field_enable_comments
+entity_type: node
+bundle: document_item
+label: 'Enable Comments'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

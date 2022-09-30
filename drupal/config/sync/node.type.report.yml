@@ -1,0 +1,18 @@
+uuid: 485773fb-5f51-46c4-a6e4-c26bcf4aa704
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+name: Report
+type: report
+description: ''
+help: ''
+new_revision: false
+preview_mode: 0
+display_submitted: false

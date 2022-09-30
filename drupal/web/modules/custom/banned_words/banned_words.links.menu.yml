@@ -1,0 +1,13 @@
+system.admin_config.banned_words:
+  title: 'Banned words'
+  route_name: <nolink>
+  description: 'Menu in the admin toolbar for Banned Words module'
+  parent: system.admin_config
+  weight: -99
+
+banned_words.config_form:
+  title: 'Banned words'
+  route_name: banned_words.config_form
+  description: 'Manage list of banned words'
+  parent: system.admin_config.banned_words
+  weight: 10

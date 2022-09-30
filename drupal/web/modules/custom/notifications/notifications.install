@@ -1,0 +1,13 @@
+<?php
+
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_install().
+ */
+function notifications_install() {
+  // Inform the user about save the widget configuration.
+  \Drupal::messenger()->addMessage(t('Notification widget will work well once you saved the configuration from <a href=":user_settings_url">Notification Widget Settings</a>.', [
+    ':user_settings_url' => Url::fromRoute('notifications.config_form')->toString(),
+  ]), 'warning');
+}

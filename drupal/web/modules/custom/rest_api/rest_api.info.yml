@@ -1,0 +1,5 @@
+name: 'Rep-Dig Rest API'
+type: module
+description: 'Repubblica Digitale REST Resource to expose project data'
+core_version_requirement: ^9
+package: Accenture

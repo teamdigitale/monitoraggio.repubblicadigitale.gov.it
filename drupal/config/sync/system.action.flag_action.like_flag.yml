@@ -1,0 +1,15 @@
+uuid: 7d0fdd44-7328-4439-bfbf-99fc39b7eea8
+langcode: en
+status: true
+dependencies:
+  config:
+    - flag.flag.like
+  module:
+    - flag
+id: flag_action.like_flag
+label: Like
+type: node
+plugin: 'flag_action:like_flag'
+configuration:
+  flag_id: like
+  flag_action: flag

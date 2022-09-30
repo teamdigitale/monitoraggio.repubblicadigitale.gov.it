@@ -1,0 +1,15 @@
+uuid: 298159f3-18a8-4204-8138-3d3fc2996e2c
+langcode: en
+status: true
+dependencies:
+  config:
+    - flag.flag.download
+  module:
+    - flag
+id: flag_action.download_unflag
+label: Undownload
+type: node
+plugin: 'flag_action:download_unflag'
+configuration:
+  flag_id: download
+  flag_action: unflag

@@ -1,0 +1,14 @@
+uuid: f11bffe7-494f-4474-9560-d97d1d565eaf
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.middleware
+  module:
+    - user
+id: user_add_role_action.middleware
+label: 'Add the middleware role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: middleware

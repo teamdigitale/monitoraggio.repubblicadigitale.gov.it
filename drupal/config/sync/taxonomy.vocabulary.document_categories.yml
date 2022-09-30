@@ -1,0 +1,8 @@
+uuid: 30d4521a-d274-4fc0-9193-3d607e4162f3
+langcode: en
+status: true
+dependencies: {  }
+name: 'Document Categories'
+vid: document_categories
+description: ''
+weight: 0

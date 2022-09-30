@@ -1,0 +1,18 @@
+uuid: 907b04fd-5548-4286-befa-f7bc9e79ae88
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - rest_api
+    - serialization
+id: category_update
+plugin_id: category_update
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - basic_auth

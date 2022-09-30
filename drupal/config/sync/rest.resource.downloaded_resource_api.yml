@@ -1,0 +1,17 @@
+uuid: c82c6e91-bd43-4878-873d-36af85f412a7
+langcode: en
+status: true
+dependencies:
+  module:
+    - rest_api
+    - serialization
+id: downloaded_resource_api
+plugin_id: downloaded_resource_api
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - basic_auth

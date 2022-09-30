@@ -1,0 +1,9 @@
+uuid: f5740ae4-a323-4d08-9ec6-8d3d0a20d2ff
+langcode: en
+status: true
+dependencies: {  }
+id: api_no_access
+label: api-no-access
+weight: 4
+is_admin: null
+permissions: {  }

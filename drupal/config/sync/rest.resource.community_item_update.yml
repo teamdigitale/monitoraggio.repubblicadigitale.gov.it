@@ -1,0 +1,18 @@
+uuid: 51f3b15e-4214-48fd-9091-a5b26f09f552
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - rest_api
+    - serialization
+id: community_item_update
+plugin_id: community_item_update
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - basic_auth

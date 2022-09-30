@@ -1,0 +1,18 @@
+uuid: 2215d5f4-39b5-4bd9-a798-90219a4cc847
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - rest_api
+    - serialization
+id: comment_delete
+plugin_id: comment_delete
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - basic_auth

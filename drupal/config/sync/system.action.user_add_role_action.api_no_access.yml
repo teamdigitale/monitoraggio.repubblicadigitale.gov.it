@@ -1,0 +1,14 @@
+uuid: f5dcbbd2-3fbd-431d-ad4b-7500dfd2cad4
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.api_no_access
+  module:
+    - user
+id: user_add_role_action.api_no_access
+label: 'Add the api-no-access role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: api_no_access

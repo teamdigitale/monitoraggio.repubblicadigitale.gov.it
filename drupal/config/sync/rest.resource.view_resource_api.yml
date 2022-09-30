@@ -1,0 +1,18 @@
+uuid: 1006bac7-6d87-4684-bc4c-c7191b68a891
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - rest_api
+    - serialization
+id: view_resource_api
+plugin_id: view_resource_api
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - basic_auth
