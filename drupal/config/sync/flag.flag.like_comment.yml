@@ -1,0 +1,30 @@
+uuid: 564e1ebf-ff57-4d1e-9150-2c4ca5714e59
+langcode: en
+status: true
+dependencies:
+  module:
+    - comment
+id: like_comment
+label: 'Like Comment'
+bundles: {  }
+entity_type: comment
+global: false
+flag_short: 'Like Comment'
+flag_long: ''
+flag_message: ''
+unflag_short: 'Unlike Comment'
+unflag_long: ''
+unflag_message: ''
+unflag_denied_text: ''
+weight: 0
+flag_type: 'entity:comment'
+link_type: ajax_link
+flagTypeConfig:
+  show_in_links: {  }
+  show_as_field: true
+  show_on_form: false
+  show_contextual_link: false
+  extra_permissions:
+    owner: '0'
+    parent_owner: '0'
+linkTypeConfig: {  }

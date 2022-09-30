@@ -1,0 +1,18 @@
+uuid: 0fff0427-9d95-4663-a3ec-be5623f02862
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - rest_api
+    - serialization
+id: board_item_create
+plugin_id: board_item_create
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - basic_auth

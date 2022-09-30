@@ -1,0 +1,33 @@
+uuid: b6450b2d-3a41-4358-97ab-31ee51d17c77
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_item
+    - node.type.board_item
+    - node.type.community_item
+    - node.type.document_item
+    - node.type.report
+id: node.report.field_item
+field_name: field_item
+entity_type: node
+bundle: report
+label: Item
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      board_item: board_item
+      community_item: community_item
+      document_item: document_item
+    sort:
+      field: title
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: community_item
+field_type: entity_reference

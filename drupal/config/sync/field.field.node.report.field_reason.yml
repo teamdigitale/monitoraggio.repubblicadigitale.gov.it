@@ -1,0 +1,19 @@
+uuid: 148b37ea-6d77-4bc4-a628-59c58e32e4a5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_reason
+    - node.type.report
+id: node.report.field_reason
+field_name: field_reason
+entity_type: node
+bundle: report
+label: Reason
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

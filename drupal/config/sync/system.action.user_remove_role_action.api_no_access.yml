@@ -1,0 +1,14 @@
+uuid: a5a2d6f3-f415-4ff7-95f8-c1a9aba74a48
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.api_no_access
+  module:
+    - user
+id: user_remove_role_action.api_no_access
+label: 'Remove the api-no-access role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: api_no_access

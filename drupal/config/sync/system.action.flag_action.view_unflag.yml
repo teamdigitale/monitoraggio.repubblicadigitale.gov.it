@@ -1,0 +1,15 @@
+uuid: 29a94d1e-437b-4e5f-90f9-c0dc8f5f6e25
+langcode: en
+status: true
+dependencies:
+  config:
+    - flag.flag.view
+  module:
+    - flag
+id: flag_action.view_unflag
+label: Unview
+type: node
+plugin: 'flag_action:view_unflag'
+configuration:
+  flag_id: view
+  flag_action: unflag

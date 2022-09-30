@@ -1,0 +1,9 @@
+banned_words.config_form:
+  path: '/admin/config/banned_words'
+  defaults:
+    _form: '\Drupal\banned_words\Form\BannedWordsForm'
+    _title: 'Banned words'
+  requirements:
+    _permission: 'access banned_words edit'
+  options:
+    _admin_route: TRUE

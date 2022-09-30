@@ -1,0 +1,18 @@
+uuid: ba8e526e-133a-413a-a827-2e23d90654dc
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - rest_api
+    - serialization
+id: like_resource_api
+plugin_id: like_resource_api
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - basic_auth

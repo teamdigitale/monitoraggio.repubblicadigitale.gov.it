@@ -1,0 +1,31 @@
+uuid: cd756a8c-5b71-44f6-8782-d2759ded3c37
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: like
+label: Like
+bundles:
+  - board_item
+  - community_item
+entity_type: node
+global: false
+flag_short: Like
+flag_long: ''
+flag_message: ''
+unflag_short: Unlike
+unflag_long: ''
+unflag_message: ''
+unflag_denied_text: ''
+weight: 0
+flag_type: 'entity:node'
+link_type: ajax_link
+flagTypeConfig:
+  show_in_links: {  }
+  show_as_field: true
+  show_on_form: false
+  show_contextual_link: false
+  extra_permissions:
+    owner: '0'
+linkTypeConfig: {  }

@@ -1,0 +1,23 @@
+uuid: 43a97fa1-5956-4200-a881-87edd50b187c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_comment_id
+    - node.type.report
+id: node.report.field_comment_id
+field_name: field_comment_id
+entity_type: node
+bundle: report
+label: 'Comment ID'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

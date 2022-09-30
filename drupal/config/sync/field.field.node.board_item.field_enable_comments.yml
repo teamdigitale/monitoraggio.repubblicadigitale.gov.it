@@ -1,0 +1,23 @@
+uuid: 26ac5979-cf5e-4ba4-8594-f8ff586ed9eb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_enable_comments
+    - node.type.board_item
+id: node.board_item.field_enable_comments
+field_name: field_enable_comments
+entity_type: node
+bundle: board_item
+label: 'Enable Comments'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

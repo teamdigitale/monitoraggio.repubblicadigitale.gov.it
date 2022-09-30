@@ -1,0 +1,18 @@
+uuid: 8a2a5d85-18ae-4175-a2e2-f4fe3ebb975f
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - rest_api
+    - serialization
+id: document_item_create
+plugin_id: document_item_create
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - basic_auth

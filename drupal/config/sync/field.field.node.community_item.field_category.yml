@@ -1,0 +1,29 @@
+uuid: 593025ba-4289-4089-9cd0-11648f00bfa4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_category
+    - node.type.community_item
+    - taxonomy.vocabulary.community_categories
+id: node.community_item.field_category
+field_name: field_category
+entity_type: node
+bundle: community_item
+label: Category
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      community_categories: community_categories
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: categories
+field_type: entity_reference

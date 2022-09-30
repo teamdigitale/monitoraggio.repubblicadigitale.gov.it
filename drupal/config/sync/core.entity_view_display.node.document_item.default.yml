@@ -1,0 +1,109 @@
+uuid: e9eb234c-0b6f-418d-867d-4562bc6481a7
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_display.comment.comment.default
+    - field.field.node.document_item.field_attachment
+    - field.field.node.document_item.field_category
+    - field.field.node.document_item.field_comments
+    - field.field.node.document_item.field_description
+    - field.field.node.document_item.field_enable_comments
+    - field.field.node.document_item.field_external_link
+    - field.field.node.document_item.field_intervention
+    - field.field.node.document_item.field_program
+    - node.type.document_item
+  module:
+    - comment
+    - file
+    - link
+    - text
+    - user
+id: node.document_item.default
+targetEntityType: node
+bundle: document_item
+mode: default
+content:
+  field_attachment:
+    type: file_default
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    weight: 11
+    region: content
+  field_category:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_comments:
+    type: comment_default
+    label: above
+    settings:
+      view_mode: default
+      pager_id: 0
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  field_description:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_enable_comments:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_external_link:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_intervention:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_program:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  flag_download:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  flag_downloaded:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 8
+    region: content
+hidden:
+  links: true
+  search_api_excerpt: true

@@ -1,0 +1,18 @@
+uuid: 02833f66-f00c-4e67-9262-be1e3e5b3ebd
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - rest_api
+    - serialization
+id: item_report_create
+plugin_id: item_report_create
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - basic_auth

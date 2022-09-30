@@ -1,0 +1,18 @@
+uuid: ac442631-8951-465b-a51b-1941220ef243
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - rest_api
+    - serialization
+id: community_item_create
+plugin_id: community_item_create
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - basic_auth

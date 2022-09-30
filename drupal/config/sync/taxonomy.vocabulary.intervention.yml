@@ -1,0 +1,8 @@
+uuid: 26617520-b675-4113-b6d5-d47bef8545f6
+langcode: en
+status: true
+dependencies: {  }
+name: Interventions
+vid: intervention
+description: ''
+weight: 0

@@ -1,0 +1,8 @@
+uuid: db138967-8bd0-4f0a-b23a-dc738ea0455a
+langcode: en
+status: true
+dependencies: {  }
+name: 'Community Categories'
+vid: community_categories
+description: ''
+weight: 0

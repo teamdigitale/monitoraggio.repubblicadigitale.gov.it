@@ -1,0 +1,29 @@
+uuid: f825b102-eef7-4f3a-ae03-d5ab9272ba16
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_cover
+    - media.type.image
+    - node.type.board_item
+id: node.board_item.field_cover
+field_name: field_cover
+entity_type: node
+bundle: board_item
+label: Cover
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: name
+      direction: ASC
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

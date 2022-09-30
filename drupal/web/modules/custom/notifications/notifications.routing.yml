@@ -1,0 +1,9 @@
+notifications.config_form:
+  path: '/admin/config/notifications'
+  defaults:
+    _form: '\Drupal\notifications\Form\NotificationsForm'
+    _title: 'Notifications'
+  requirements:
+    _permission: 'access notifications edit'
+  options:
+    _admin_route: TRUE

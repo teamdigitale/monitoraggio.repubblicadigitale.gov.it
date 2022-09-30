@@ -1,0 +1,13 @@
+system.admin_config.notifications:
+  title: 'Notifications'
+  route_name: <nolink>
+  description: 'Menu in the admin toolbar for Banned Words module'
+  parent: system.admin_config
+  weight: -99
+
+notifications.config_form:
+  title: 'Notifications messages'
+  route_name: notifications.config_form
+  description: 'Notifications message configuration'
+  parent: system.admin_config.notifications
+  weight: 10

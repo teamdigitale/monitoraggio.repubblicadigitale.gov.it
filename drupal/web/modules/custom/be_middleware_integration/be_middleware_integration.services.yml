@@ -1,0 +1,5 @@
+services:
+  sync_users.synch_users_command:
+    class: \Drupal\be_middleware_integration\Commands\SyncUsersCommand
+    tags:
+      - { name: drush.command }

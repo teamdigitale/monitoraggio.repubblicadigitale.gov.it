@@ -1,0 +1,18 @@
+uuid: e084834c-7a41-447b-807e-db5aab533620
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - rest_api
+    - serialization
+id: board_item_update
+plugin_id: board_item_update
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - basic_auth

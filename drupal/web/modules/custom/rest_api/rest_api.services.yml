@@ -1,0 +1,5 @@
+services:
+  rest_api.event_subscriber:
+    class: Drupal\rest_api\EventSubscriber\RequestEventSubscriber
+    tags:
+      - { name: event_subscriber }

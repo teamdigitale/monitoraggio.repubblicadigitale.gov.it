@@ -1,0 +1,14 @@
+uuid: 2c228af6-4a14-4faa-a140-b2b32d3318c1
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.middleware
+  module:
+    - user
+id: user_remove_role_action.middleware
+label: 'Remove the middleware role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: middleware

@@ -1,0 +1,18 @@
+uuid: 526a72df-0a21-4b19-89eb-9b0c8d93750f
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+name: 'Board Item'
+type: board_item
+description: ''
+help: ''
+new_revision: true
+preview_mode: 0
+display_submitted: false

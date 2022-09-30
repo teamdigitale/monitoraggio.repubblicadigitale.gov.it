@@ -1,0 +1,8 @@
+rest.file_upload.POST:
+  path: '/api/item/{id}/upload'
+  defaults: { _controller: 'Drupal\rest_api\Controller\FileUploadResourceApi::fileUpload' }
+  methods: [POST]
+  requirements:
+    _role: 'middleware'
+  options:
+    _auth: ['basic_auth']

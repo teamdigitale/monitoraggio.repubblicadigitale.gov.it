@@ -1,0 +1,33 @@
+uuid: 55eb2777-1b1b-4735-86ff-7bab411574b4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_category
+    - node.type.board_item
+    - taxonomy.vocabulary.board_categories
+  content:
+    - 'taxonomy_term:board_categories:9f2a3ae2-4352-48c8-9593-b733b26b9076'
+id: node.board_item.field_category
+field_name: field_category
+entity_type: node
+bundle: board_item
+label: Category
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    target_uuid: 9f2a3ae2-4352-48c8-9593-b733b26b9076
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      board_categories: board_categories
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: board_categories
+field_type: entity_reference

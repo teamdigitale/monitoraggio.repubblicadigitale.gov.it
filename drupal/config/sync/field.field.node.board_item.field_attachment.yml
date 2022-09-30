@@ -1,0 +1,27 @@
+uuid: a10e08c2-81da-46ee-a645-52ec6bbf0a6a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_attachment
+    - node.type.board_item
+  module:
+    - file
+id: node.board_item.field_attachment
+field_name: field_attachment
+entity_type: node
+bundle: board_item
+label: Attachment
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'txt rtf odt zip exe docx doc ppt pptx pdf jpg png gif xls xlsx csv mpg wmv'
+  max_filesize: ''
+  description_field: false
+field_type: file
