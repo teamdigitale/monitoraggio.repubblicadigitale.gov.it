@@ -8,7 +8,7 @@ import withFormHandler, {
 import { selectSezioneQ3compilato } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 // import { selectDevice } from '../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../redux/hooks';
-import { formatAndParseJsonString } from '../../../utils/common';
+import { formatAndParseJsonString, formatDate } from '../../../utils/common';
 import {
   formFieldI,
   FormHelper,
@@ -22,6 +22,7 @@ interface FormServicesI {
   setIsFormValid?: (param: boolean) => void;
   creation?: boolean;
   dynamicFormQ3?: FormI;
+  projectDetails?: {[key: string]:string};
 }
 
 interface FormEnteGestoreProgettoFullInterface
@@ -43,6 +44,7 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
     creation = false,
     updateForm = () => ({}),
     dynamicFormQ3,
+    projectDetails,
   } = props;
   // const device = useAppSelector(selectDevice);
   // const isMobile = device.mediaIsPhone;
@@ -130,6 +132,8 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
             }
             label={field.label}
             type={field.type}
+            minimum={field.type === 'date' ? formatDate(projectDetails?.dataInizio):undefined}
+            maximum={field.type === 'date' ? formatDate(projectDetails?.dataFine):undefined}
             required
             onInputChange={onInputDataChange}
             placeholder={`Inserisci ${field.label?.toLowerCase()}`}

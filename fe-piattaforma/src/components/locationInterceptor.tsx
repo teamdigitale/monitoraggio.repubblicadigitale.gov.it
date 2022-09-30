@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { resetAreaCittadiniState } from '../redux/features/citizensArea/citizensAreaSlice';
 import { resetModalState } from '../redux/features/modal/modalSlice';
 import { useAppDispatch } from '../redux/hooks';
+import { scrollTo } from '../utils/common';
 
 const LocationInterceptor = () => {
   const dispatch = useAppDispatch();
@@ -14,6 +15,8 @@ const LocationInterceptor = () => {
     //dispatch(resetEntityState());
     dispatch(resetAreaCittadiniState());
     dispatch(resetModalState());
+
+    scrollTo(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
