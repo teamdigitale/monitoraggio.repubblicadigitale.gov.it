@@ -88,7 +88,7 @@ const Home: React.FC = () => {
       <section aria-label='Dashboard' className='lightgrey-bg-c1'>
         <Container>
           <CardsWrapper
-            title='Dashboard'
+            title='Report dati'
             wrapperClassName={clsx(
               dashboard?.length && 'd-flex',
               'flex-column',

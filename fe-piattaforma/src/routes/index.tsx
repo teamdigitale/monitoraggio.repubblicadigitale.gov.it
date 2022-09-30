@@ -98,6 +98,9 @@ const AppRoutes: React.FC = () => {
             </FullLayout>
           }
         />
+        {process.env.NODE_ENV === 'development' ? (
+          <Route path='/playground' element={<Playground />} />
+        ) : null}
         {isLogged ? (
           <>
             <Route
@@ -183,16 +186,13 @@ const AppRoutes: React.FC = () => {
                 />
               ) : null}
               <Route
-                path='/dashboard'
+                path='/report-dati'
                 element={
                   <ProtectedComponent visibleTo={['tab.dshb', 'view.dshb']}>
                     <Dashboard />
                   </ProtectedComponent>
                 }
               />
-              {process.env.NODE_ENV === 'development' ? (
-                <Route path='/playground' element={<Playground />} />
-              ) : null}
               <Route
                 path='/area-amministrativa/*'
                 element={
@@ -218,7 +218,7 @@ const AppRoutes: React.FC = () => {
             <Route path='/' element={<FullLayout />}>
               {/* Public Paths */}
               <Route path='/onboarding' element={<Onboarding />} />
-              <Route path='/dashboard' element={<Dashboard />} />
+              <Route path='/report-dati' element={<Dashboard />} />
               <Route
                 path='/'
                 element={<Navigate replace to={defaultRedirectUrl} />}
