@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.165](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.164...1.0.0-develop.165) (2022-09-30)
+
+
+### Bug Fixes
+
+* **be:** check nome ruolo duplicato PUT ([8dd8c7f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8dd8c7fa700dbc4a227d300fe228b8c785c1d526))
+
 ## [1.0.0-develop.164](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.163...1.0.0-develop.164) (2022-09-29)
 
 
