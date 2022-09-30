@@ -102,6 +102,12 @@ public class RuoloService {
 	
 	@LogExecutionTime
 	@LogMethod
+	public boolean existsRuoloByNomeNot(String nomeRuolo, String codice) {
+		return this.ruoloRepository.findByNomeAndCodiceNot(nomeRuolo, codice).size() > 0;
+	}
+	
+	@LogExecutionTime
+	@LogMethod
 	public List<GruppoEntity> getGruppByRuolo(String codiceRuolo){
 		if(!this.esisteRuoloByCodice(codiceRuolo)) {
 			String messaggioErrore = String.format("Il ruolo %s non esiste", codiceRuolo);
@@ -144,6 +150,10 @@ public class RuoloService {
 		if(ruoloFetch.getPredefinito() == Boolean.TRUE) {
 			String messaggioErrore = String.format("Impossibile aggiornare ruolo predefinito con codice ruolo = %s", codiceRuolo);
 			throw new RuoloException(messaggioErrore, CodiceErroreEnum.R09);
+		}
+		String messaggioErrore = String.format("Ruolo con nome = %s già presente", ruoloRequest.getNomeRuolo());
+		if(this.existsRuoloByNomeNot(ruoloRequest.getNomeRuolo(), codiceRuolo)) {
+			throw new RuoloException(messaggioErrore, CodiceErroreEnum.R01);
 		}
 		ruoloFetch.setNome(ruoloRequest.getNomeRuolo());
 		ruoloFetch.setDataOraAggiornamento(new Date());
