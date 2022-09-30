@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.166](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.165...1.0.0-develop.166) (2022-09-30)
+
+
+### Features
+
+* **be:** integrazione drupal filtro ([1f3b182](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1f3b18266c4b6cd343bef5506b3975d85e983b92))
+
 ## [1.0.0-develop.165](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.164...1.0.0-develop.165) (2022-09-30)
 
 
