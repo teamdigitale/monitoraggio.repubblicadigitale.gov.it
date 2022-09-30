@@ -15,6 +15,8 @@ public interface RuoloRepository extends JpaRepository<RuoloEntity, String> {
 
 	List<RuoloEntity> findByNomeContaining(String nome);
 
+	List<RuoloEntity> findByNomeAndCodiceNot(String nome, String codice);
+
 	Optional<RuoloEntity> findByCodice(String codiceRuolo);
 	
 	@Query(value = " SELECT "
