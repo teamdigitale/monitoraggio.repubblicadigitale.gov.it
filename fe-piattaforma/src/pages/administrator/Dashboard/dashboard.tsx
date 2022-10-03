@@ -61,9 +61,9 @@ const publicContents = {
 };
 
 const authContents = {
-  title: 'La mia dashboard',
+  title: 'I miei report',
   subtitle:
-    'Consulta le statistiche rappresentate in questa pagina, oppure accedi allo strumento di Business Intelligence per consultare, configurare e scaricare in autonomia i dati a tua disposizione',
+    'Consulta le statistiche rappresentate in questa pagina, oppure accedi allo strumento di analisi dati per consultare, configurare e scaricare in autonomia i dati a tua disposizione',
 };
 
 const Dashboard = () => {
@@ -175,7 +175,7 @@ const Dashboard = () => {
                   console.log('go to BI', dashboard_BI_URL);
                   window.open(dashboard_BI_URL, '_blank');
                 },
-                label: 'Vai a Business intelligence',
+                label: 'Crea report personalizzati',
               }
             : undefined
         }

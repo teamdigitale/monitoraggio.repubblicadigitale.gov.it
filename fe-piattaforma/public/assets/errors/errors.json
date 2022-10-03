@@ -12,7 +12,7 @@
         "G02": "Errore Richiesta errata",
         "G03": "Errore Pagina richista non esistente",
 
-        "R01": "Errore Ruolo già esistente",
+        "R01": "Nome del ruolo già esistente",
         "R02": "Errore impossibile aggiornare il ruolo",
         "R03": "Errore impossibile cancellare il ruolo DTD/DSCU",
         "R04": "Errore impossibile cancellare il ruoli predefiniti",
@@ -76,7 +76,7 @@
         "EN11": "Errore Impossibile assegnare referente/delegato ente gestore programma per il programma",
         "EN12": "Errore Impossibile assegnare referente/delegato ente gestore progetto per il progetto",
         "EN13": "Errore Impossibile aggiornare ente",
-        "EN14": "Errore Impossibile modificare ente gestore programma",
+        "EN14": "Il codice fiscale inserito risulta appartenere già ad un altro ente",
         "EN15": "Errore Impossibile modificare ente gestore progetto",
         "EN16": "Errore Impossibile cancellare ente partner per progetto",
         "EN17": "Errore Impossibile cancellare ente gestore programma per programma",

@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
+  selectProjects,
   selectQuestionarioTemplateServiceCreation,
   selectQuestionarioTemplateSnapshot,
 } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { GetProjectDetail } from '../../../redux/features/administrativeArea/projects/projectsThunk';
 import { GetSurveyTemplateServiceCreation } from '../../../redux/features/administrativeArea/services/servicesThunk';
+import { getUserHeaders } from '../../../redux/features/user/userThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import { createStringOfCompiledSurveySection } from '../../../utils/common';
 import { formFieldI, FormI } from '../../../utils/formHelper';
@@ -47,11 +50,15 @@ const FormService: React.FC<FormServiceI> = (props) => {
     [key: string]: formFieldI['value'];
   }>({});
   const [isFormDynamicValid, setIsFormDynamicValid] = useState<boolean>(false);
+  const { idProgetto } = getUserHeaders();
+  const projectDetails = useAppSelector(selectProjects)?.detail?.dettagliInfoProgetto
+  ;
 
   useEffect(() => {
     if (creation) {
       dispatch(GetSurveyTemplateServiceCreation());
     }
+    dispatch(GetProjectDetail(idProgetto));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -124,6 +131,7 @@ const FormService: React.FC<FormServiceI> = (props) => {
           setNewFormDynamicValues({ ...newData });
         }}
         setIsFormValid={(isValid: boolean) => setIsFormDynamicValid(isValid)}
+        projectDetails={projectDetails}
       />
     </div>
   );
