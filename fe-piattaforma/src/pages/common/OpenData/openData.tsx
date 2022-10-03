@@ -39,7 +39,9 @@ const OpenData = () => {
       dispatch(showLoader());
       const resCount = await API.get('open-data/count/download');
       setTotalCount(resCount.data?.conteggioDownload?.toString());
-      setDocSize(Math.floor(Number(resCount.data?.dimensioneFile) / 1000));
+      setDocSize(
+        Math.max(1, Math.floor(Number(resCount.data?.dimensioneFile) / 1000))
+      );
     } catch (error) {
       console.log('getOpenData error', error);
     } finally {

@@ -209,8 +209,8 @@ export const MenuRoutes = [
     visible: ['tab.citt'],
   }),
   newMenuItem({
-    label: 'Dashboard',
-    path: '/dashboard',
+    label: 'Report dati',
+    path: '/report-dati',
     id: 'tab-dashboard',
     visible: ['tab.dshb'],
   }),

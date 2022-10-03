@@ -66,7 +66,11 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
 
   const handleOnChange = (value: string | number) => {
     if (singleSelection) {
-      setValues([value.toString()]);
+      if (value.toString() === values?.[0]) {
+        setValues(['']);
+      } else {
+        setValues([value.toString()]);
+      }
     } else {
       const valueIndex = values.findIndex((v) => v === value.toString());
       if (valueIndex !== -1) {
