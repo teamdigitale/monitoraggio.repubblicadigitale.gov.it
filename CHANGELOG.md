@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.169](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.168...1.0.0-develop.169) (2022-10-03)
+
+
+### Bug Fixes
+
+* **be:** fix query sedi dropdown ([2e9b3dc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2e9b3dcfec5ad88de43b8cd769b31ec99b44baa2))
+
 ## [1.0.0-develop.168](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.167...1.0.0-develop.168) (2022-10-03)
 
 
