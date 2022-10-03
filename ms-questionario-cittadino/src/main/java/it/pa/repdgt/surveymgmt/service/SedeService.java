@@ -18,9 +18,9 @@ import it.pa.repdgt.surveymgmt.repository.SedeRepository;
 @Service
 public class SedeService {
 	@Autowired
-	private EnteSedeProgettoFacilitatoreService enteSedeProgettoFacilitatoreService;
-	@Autowired
 	private SedeRepository sedeRepository;
+	@Autowired
+	private ServizioSqlService servizioSqlService;
 
 	@LogMethod
 	@LogExecutionTime
@@ -37,7 +37,7 @@ public class SedeService {
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsSedi;
 		if(filtro.getIdsSedi() == null) {
-			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto());
+			idsSedi = this.servizioSqlService.getIdsSediFacilitatoreConServiziAndCittadiniCensitiByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto());
 		} else {
 			idsSedi = filtro.getIdsSedi();
 		}
