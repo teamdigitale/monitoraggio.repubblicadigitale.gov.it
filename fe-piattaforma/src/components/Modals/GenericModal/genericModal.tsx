@@ -41,6 +41,7 @@ export interface GenericModalI {
   isRoleManaging?: boolean;
   isSurveyOnline?: boolean;
   isSuccesModal?: boolean;
+  isUserRole?: boolean;
 }
 
 const GenericModal: React.FC<GenericModalI> = (props) => {
@@ -68,6 +69,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
     bigIcon = false,
     isSurveyOnline = false,
     isSuccesModal = false,
+    isUserRole = false,
   } = props;
 
   const handleAction = (action: 'primary' | 'secondary' | 'tertiary') => {
@@ -95,7 +97,12 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
   const device = useAppSelector(selectDevice);
 
   return (
-    <Modal id={id} {...props} isRoleManaging={isRoleManaging}>
+    <Modal
+      id={id}
+      {...props}
+      isRoleManaging={isRoleManaging}
+      isUserRole={isUserRole}
+    >
       {withIcon && icon ? (
         <div
           className={clsx(
@@ -208,7 +215,9 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
                 {tertiaryCTA.label}
               </Button>
             </div>
-          ) : <button className='hidden-btn' />}
+          ) : (
+            <button className='hidden-btn' />
+          )}
           {primaryCTA || secondaryCTA ? (
             <div
               className={clsx(
@@ -230,7 +239,9 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
                 >
                   {secondaryCTA.label}
                 </Button>
-              ) : <button className='hidden-btn' />}
+              ) : (
+                <button className='hidden-btn' />
+              )}
               {primaryCTA ? (
                 <Button
                   {...primaryCTA}
@@ -244,9 +255,13 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
                 >
                   {primaryCTA.label}
                 </Button>
-              ) : <button className='hidden-btn' />}
+              ) : (
+                <button className='hidden-btn' />
+              )}
             </div>
-          ) : <button className='hidden-btn' />}
+          ) : (
+            <button className='hidden-btn' />
+          )}
         </ModalFooter>
       ) : (
         <span />
