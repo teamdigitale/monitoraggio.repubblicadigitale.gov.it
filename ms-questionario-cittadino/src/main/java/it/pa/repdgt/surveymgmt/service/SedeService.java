@@ -37,7 +37,7 @@ public class SedeService {
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsSedi;
 		if(filtro.getIdsSedi() == null) {
-			idsSedi = this.servizioSqlService.getIdsSediFacilitatoreConServiziAndCittadiniCensitiByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCodiceFiscaleUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto());
+			idsSedi = this.servizioSqlService.getIdsSediFacilitatoreConServiziAndCittadiniCensitiByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto());
 		} else {
 			idsSedi = filtro.getIdsSedi();
 		}
