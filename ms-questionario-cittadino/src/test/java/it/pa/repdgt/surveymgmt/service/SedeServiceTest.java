@@ -32,6 +32,8 @@ public class SedeServiceTest {
 	@Mock
 	private EnteSedeProgettoFacilitatoreService enteSedeProgettoFacilitatoreService;
 	@Mock
+	private ServizioSqlService servizioSqlService;
+	@Mock
 	private SedeRepository sedeRepository;
 	
 	@Autowired
@@ -88,7 +90,7 @@ public class SedeServiceTest {
 		
 		//test con filtro.getIdsSedi == null
 		filtro.setIdsSedi(null);
-		when(this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto())).thenReturn(listaIdsSedi);
+		when(this.servizioSqlService.getIdsSediFacilitatoreConServiziAndCittadiniCensitiByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto())).thenReturn(listaIdsSedi);
 		when(this.sedeRepository.findAllSediFiltrate(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", listaIdsSedi)).thenReturn(listaSediProjection);
 		List<SedeProjection> risultato2 = sedeService.getAllSediFacilitatoreFiltrate(cittadiniPaginatiParam);
 		assertThat(risultato2.size()).isEqualTo(listaSediProjection.size());
