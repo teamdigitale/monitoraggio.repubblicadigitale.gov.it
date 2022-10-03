@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.168](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.167...1.0.0-develop.168) (2022-10-03)
+
+
+### Bug Fixes
+
+* **be:** fix query contesto per facilitatori e volontari ([8881a01](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8881a019505477fc655bc3a0333cc3e36ebb5e18))
+
 ## [1.0.0-develop.167](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.166...1.0.0-develop.167) (2022-09-30)
 
 
