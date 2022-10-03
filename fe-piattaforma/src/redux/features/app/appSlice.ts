@@ -13,6 +13,7 @@ interface AppStateI {
     isLoading: boolean;
     count: number;
   };
+  isBreadCrumbPresent: boolean;
   customBreadCrumb: BreadcrumbI[];
   infoIdsBreadcrumb: { id: string | number; nome: string }[];
 }
@@ -23,6 +24,7 @@ const initialState: AppStateI = {
     isLoading: false,
     count: 0,
   },
+  isBreadCrumbPresent: true,
   customBreadCrumb: [],
   infoIdsBreadcrumb: [],
 };
@@ -51,10 +53,13 @@ export const appSlice = createSlice({
     updateCustomBreadcrumb: (state, action: PayloadAction<any>) => {
       state.customBreadCrumb = [...action.payload];
     },
+    resetCustomBreadcrumb: (state) => {
+      state.customBreadCrumb = initialState.customBreadCrumb;
+    },
     setInfoIdsBreadcrumb: (state, action: PayloadAction<any>) => {
       if (
         !state.infoIdsBreadcrumb.filter(
-          (elem) => elem.id === action.payload?.id
+          (elem) => elem.id?.toString() === action.payload?.id?.toString()
         )[0]
       ) {
         state.infoIdsBreadcrumb.push(action.payload);
@@ -62,12 +67,22 @@ export const appSlice = createSlice({
         // in role management: same id, update label realtime
         const index = state.infoIdsBreadcrumb.findIndex(
           (elem) =>
-            elem.id === action.payload?.id && elem.nome !== action.payload?.nome
+            elem.id?.toString() === action.payload?.id?.toString() &&
+            elem.nome !== action.payload?.nome
         );
         if (index >= 0) {
           state.infoIdsBreadcrumb[index].nome = action.payload?.nome;
         }
       }
+    },
+    resetInfoIdsBreadcrumb: (state) => {
+      state.infoIdsBreadcrumb = initialState.infoIdsBreadcrumb;
+    },
+    showBreadCrumb: (state) => {
+      state.isBreadCrumbPresent = initialState.isBreadCrumbPresent;
+    },
+    hideBreadCrumb: (state) => {
+      state.isBreadCrumbPresent = false;
     },
   },
 });
@@ -77,7 +92,11 @@ export const {
   hideLoader,
   updateDevice,
   updateCustomBreadcrumb,
+  resetCustomBreadcrumb,
   setInfoIdsBreadcrumb,
+  resetInfoIdsBreadcrumb,
+  showBreadCrumb,
+  hideBreadCrumb,
 } = appSlice.actions;
 
 export const selectLoader = (state: RootState) => state.app.loader;
@@ -86,5 +105,7 @@ export const selectCustomBreadcrumb = (state: RootState) =>
   state.app.customBreadCrumb;
 export const selectInfoIdsBreadcrumb = (state: RootState) =>
   state.app.infoIdsBreadcrumb;
+export const selectIsBreadcrumbPresent = (state: RootState) =>
+  state.app.isBreadCrumbPresent;
 
 export default appSlice.reducer;

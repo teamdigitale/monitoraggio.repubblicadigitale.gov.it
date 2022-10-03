@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import {
   selectCustomBreadcrumb,
   selectInfoIdsBreadcrumb,
+  selectIsBreadcrumbPresent,
 } from '../../redux/features/app/appSlice';
 import { useAppSelector } from '../../redux/hooks';
 import { selectProfile } from '../../redux/features/user/userSlice';
@@ -24,6 +25,7 @@ export interface BreadcrumbI {
 
 const Breadcrumb = () => {
   const userProfile = useAppSelector(selectProfile);
+  const isBreadcrumbPresent = useAppSelector(selectIsBreadcrumbPresent);
   const breadcrumbList = useSelector(selectCustomBreadcrumb);
   const idsBreadcrumb = useSelector(selectInfoIdsBreadcrumb);
   const urlCurrentLocation = useLocation().pathname;
@@ -65,16 +67,6 @@ const Breadcrumb = () => {
     return decodeURI(breadcrumbLabel);
   };
 
-  const getUrlBreadcrumbList = () => {
-    let urlStore = '';
-    breadcrumbList.map((elem, index) => {
-      index === 0
-        ? (urlStore = urlStore + elem.url)
-        : (urlStore = urlStore + '/' + elem.url);
-    });
-    return urlStore;
-  };
-
   useEffect(() => {
     if (!isEqual(location, currentLocation)) {
       setCurrentLocation(location);
@@ -84,7 +76,7 @@ const Breadcrumb = () => {
   useEffect(() => {
     if (
       breadcrumbList?.length > 0 &&
-      getUrlBreadcrumbList() === urlCurrentLocation
+      breadcrumbList[breadcrumbList?.length -1]?.url === urlCurrentLocation
     ) {
       setNavigationList(breadcrumbList);
     } else if (currentLocation && currentLocation?.length) {
@@ -135,7 +127,7 @@ const Breadcrumb = () => {
     }
   }, [currentLocation, currentLocation?.length, idsBreadcrumb, breadcrumbList]);
 
-  return (
+  return isBreadcrumbPresent ? (
     <Container className='mt-3 pl-0'>
       <BreadcrumbKit className='mt-4 pt-4'>
         {(navigationList || []).map((item, index) => (
@@ -165,7 +157,7 @@ const Breadcrumb = () => {
         ))}
       </BreadcrumbKit>
     </Container>
-  );
+  ):null;
 };
 
 export default Breadcrumb;

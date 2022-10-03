@@ -85,17 +85,14 @@ const EntePartnerTableHeading: TableHeadingI[] = [
   {
     label: 'Nome Ente',
     field: 'nome',
-    size: 'medium',
   },
   {
     label: 'Codice Fiscale',
     field: 'codiceFiscale',
-    size: 'medium',
   },
   {
     label: 'Esito',
     field: 'esito',
-    size: 'small',
   },
 ];
 
@@ -177,7 +174,7 @@ const ProjectsDetails = () => {
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [projectId, projectDetails]);
+  }, [projectId, projectDetails, activeTab]);
 
   useEffect(() => {
     scrollTo(0, 0);
@@ -1138,6 +1135,8 @@ const ProjectsDetails = () => {
         esito: (td.esito || '').toUpperCase().includes('OK')
           ? 'Riuscito'
           : 'Fallito',
+        failedCSV: td.esito.toUpperCase().includes('KO'),
+        onTooltipInfo: td.esito,
       }))
     );
     setEntePartnerTable(table);
@@ -1302,7 +1301,12 @@ const ProjectsDetails = () => {
             template={EntiPartnerTemplate}
             templateName='enti_partner-template.csv'
           >
-            <Table {...entePartnerTable} id='table-ente-partner' />
+            <Table
+              {...entePartnerTable}
+              withActions
+              succesCSV
+              id='table-ente-partner'
+            />
           </UploadCSVModal>
           <ManageDelegate creation />
           <ManageReferal creation />

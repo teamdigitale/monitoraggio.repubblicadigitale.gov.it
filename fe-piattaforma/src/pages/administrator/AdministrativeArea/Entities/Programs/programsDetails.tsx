@@ -148,7 +148,7 @@ const ProgramsDetails: React.FC = () => {
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [entityId, programDetails]);
+  }, [entityId, programDetails, activeTab]);
 
   const getActionRedirectURL = (userType: string, userId: string) => {
     return `/area-amministrativa/programmi/${entityId}/ente-gestore-programma/${managerAuthorityId}/${userType}/${userId}`;
