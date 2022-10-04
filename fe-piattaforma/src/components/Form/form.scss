@@ -37,13 +37,21 @@
   }
 }
 
+.border-select-value {
+  .bootstrap-select {
+    &__control {
+      border-bottom: 2px solid #0073e5 !important;
+    }
+  }
+}
+
 .bootstrap-select {
   &__menu {
     margin-top: 0 !important;
   }
-
   &__control {
-    border-bottom: 2px solid #0073e5 !important;
+    border-bottom: 1px solid #0073e5 !important;
+
     &--menu-is-open {
       border-bottom: 2px solid #0073e5 !important;
     }

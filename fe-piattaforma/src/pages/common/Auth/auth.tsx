@@ -46,10 +46,22 @@ const Auth: React.FC<withFormHandlerProps> = ({
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    if (validUser) {
+    if (validUser === true) {
       navigate('/onboarding');
     } else {
-      console.log('manage context error');
+      console.log('manage context error', validUser, validUser);
+      navigate(
+        `/errore${
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          validUser?.response?.data?.errorCode
+            ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              `/${validUser?.response?.data?.errorCode}`
+            : ''
+        }`,
+        { replace: true }
+      );
     }
   };
 
@@ -89,7 +101,7 @@ const Auth: React.FC<withFormHandlerProps> = ({
     }
   };
 
-  if (!isActiveProvisionalLogin && loader.isLoading) {
+  if (!isActiveProvisionalLogin) {
     return <Loader />;
   }
 

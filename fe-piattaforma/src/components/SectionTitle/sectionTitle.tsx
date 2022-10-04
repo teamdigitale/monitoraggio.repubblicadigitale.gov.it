@@ -216,7 +216,8 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
         <div
           className={clsx(
             !subTitle && !device.mediaIsPhone && 'mt-4 pt-3',
-            'ml-4'
+            'ml-4',
+            'pt-2'
           )}
         >
           <StatusChip
