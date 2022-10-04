@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.173](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.172...1.0.0-develop.173) (2022-10-04)
+
+
+### Bug Fixes
+
+* **be:** fix modifica gestoreProgramma e modifica gestoreProgetto ([fec90d7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fec90d7b13e9dd06c5d62c334e058e7c558b896d))
+
 ## [1.0.0-develop.172](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.171...1.0.0-develop.172) (2022-10-04)
 
 
