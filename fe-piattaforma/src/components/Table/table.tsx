@@ -22,6 +22,7 @@ export interface TableI {
   onActionClick?: CRUDActionsI;
   onTooltipInfo?: string;
   citizenTable?: boolean;
+  succesCSV?: boolean;
   onCellClick?: (field: string, row: TableRowI) => void;
   onRowClick?: (row: TableRowI) => void;
   values?: TableRowI[];

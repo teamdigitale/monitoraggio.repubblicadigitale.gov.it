@@ -125,6 +125,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
       ]);
       setMovingHeadquarter(false);
       dispatch(resetHeadquarterDetails());
+      dispatch(setHeadquartersList(null))
     }
   }, [open, creation]);
 
@@ -256,7 +257,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
     } else if (headquarterId) {
       dispatch(GetHeadquarterLightDetails(headquarterId));
     }
-
+    dispatch(setHeadquartersList(null));
     // dispatch(closeModal());
   };
 

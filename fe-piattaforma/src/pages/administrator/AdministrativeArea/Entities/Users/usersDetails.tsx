@@ -26,6 +26,7 @@ import {
   selectAuthorities,
   selectHeadquarters,
   selectPrograms,
+  selectProjects,
   selectUsers,
   setUserDetails,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
@@ -54,6 +55,7 @@ import { GetPartnerAuthorityDetail } from '../../../../../redux/features/adminis
 import ManageDelegate from '../modals/manageDelegate';
 import ManageReferal from '../modals/manageReferal';
 import FormFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/FormFacilitator/FormFacilitator';
+import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 
 const UsersDetails = () => {
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
@@ -82,7 +84,8 @@ const UsersDetails = () => {
     useAppSelector(selectPrograms).detail?.dettagliInfoProgramma?.nomeBreve;
   const headquarterDetails = useAppSelector(selectHeadquarters).detail;
   const headquarterName = headquarterDetails?.dettagliInfoSede?.nome;
-  const projectName = headquarterDetails?.dettaglioProgetto?.nomeBreve;
+  // const projectName = headquarterDetails?.dettaglioProgetto?.nomeBreve;
+  const projectName = useAppSelector(selectProjects)?.detail?.dettagliInfoProgetto?.nome;
   const authorityName =
     useAppSelector(selectAuthorities)?.detail?.dettagliInfoEnte?.nome;
 
@@ -97,7 +100,12 @@ const UsersDetails = () => {
     if (!authorityName && projectId && authorityId) {
       dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
     }
+    if(projectId && !projectName){
+      dispatch(GetProjectDetail(projectId));
+    }
   }, []);
+
+
 
   useEffect(() => {
     // For breadcrumb
