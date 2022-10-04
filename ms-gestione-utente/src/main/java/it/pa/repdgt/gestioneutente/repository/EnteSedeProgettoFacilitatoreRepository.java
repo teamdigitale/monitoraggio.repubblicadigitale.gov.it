@@ -41,7 +41,7 @@ public interface EnteSedeProgettoFacilitatoreRepository extends JpaRepository<En
 			@Param(value = "codiceRuolo")String codiceRuolo,
 			@Param(value = "idProgetto")Long idProgetto);
 	
-	@Query(value = "SELECT COUNT(*) "
+	@Query(value = "SELECT COUNT(distinct espf.id_progetto) "
 			+ "		FROM ente_sede_progetto_facilitatore espf "
 			+ "		WHERE espf.ID_FACILITATORE = :cfUtente"
 			+ "		AND RUOLO_UTENTE = :codiceRuolo ", 
