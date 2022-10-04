@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.64](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.63...1.0.0-test.64) (2022-10-04)
+
+
+### Bug Fixes
+
+* **be:** fix query restituzione ruoli ([8fedc8c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8fedc8c47ff34863674b382f9134f7a17690968c))
+
 ## [1.0.0-test.63](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.62...1.0.0-test.63) (2022-10-04)
 
 
