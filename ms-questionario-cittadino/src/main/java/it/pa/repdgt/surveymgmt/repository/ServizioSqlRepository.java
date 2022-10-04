@@ -259,5 +259,20 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 			 nativeQuery = true)
 	Optional<ServizioEntity> findByNomeUpdate(@Param(value="nomeServizio")String nomeServizio, 
 			@Param(value="idServizio") Long idServizio);
+			
+	@Query(value = "SELECT DISTINCT "
+			+ "			s.id_sede "
+			+ "		FROM "
+			+ "			servizio s "
+			+ "		INNER JOIN servizio_x_cittadino sxc"
+			+ "			ON sxc.id_servizio = s.id"
+			+ "		WHERE "
+			+ "			s.id_facilitatore = :codiceFiscaleUtente "
+			+ "		AND "
+			+ "			s.id_progetto = :idProgetto ",
+			nativeQuery = true)
+	List<String> findIdsSediFacilitatoreConServiziAndCittadiniCensitiByCodFiscaleAndIdProgetto(
+			@Param("codiceFiscaleUtente") String codiceFiscaleUtenteLoggato, 
+			@Param("idProgetto") Long idProgetto);
 	
 }
