@@ -1,6 +1,7 @@
 package it.pa.repdgt.surveymgmt.service;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,6 @@ public class SedeService {
 			idsSedi = filtro.getIdsSedi();
 		}
 		
-		return this.sedeRepository.findAllSediFiltrate(criterioRicerca, "%" + criterioRicerca + "%", idsSedi);
+		return idsSedi.isEmpty()? new ArrayList<>(): this.sedeRepository.findAllSediFiltrate(criterioRicerca, "%" + criterioRicerca + "%", idsSedi);
 	}
 }
