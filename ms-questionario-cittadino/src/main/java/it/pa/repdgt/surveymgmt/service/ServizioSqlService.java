@@ -389,4 +389,9 @@ public class ServizioSqlService {
 	public Optional<ServizioEntity> getServizioByNomeUpdate(String nomeServizio, Long idServizio) {
 		return this.servizioSqlRepository.findByNomeUpdate(nomeServizio, idServizio);
 	}
+	
+	public List<String> getIdsSediFacilitatoreConServiziAndCittadiniCensitiByCodFiscaleAndIdProgetto(
+		String codiceFiscaleUtenteLoggato, Long idProgetto) {
+		return servizioSqlRepository.findIdsSediFacilitatoreConServiziAndCittadiniCensitiByCodFiscaleAndIdProgetto(codiceFiscaleUtenteLoggato, idProgetto);
+	}
 }

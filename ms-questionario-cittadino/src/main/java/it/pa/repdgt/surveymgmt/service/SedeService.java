@@ -1,6 +1,7 @@
 package it.pa.repdgt.surveymgmt.service;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ import it.pa.repdgt.surveymgmt.repository.SedeRepository;
 @Service
 public class SedeService {
 	@Autowired
-	private EnteSedeProgettoFacilitatoreService enteSedeProgettoFacilitatoreService;
+	private ServizioSqlService servizioSqlService;
 	@Autowired
 	private SedeRepository sedeRepository;
 
@@ -37,11 +38,11 @@ public class SedeService {
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsSedi;
 		if(filtro.getIdsSedi() == null) {
-			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto());
+			idsSedi = this.servizioSqlService.getIdsSediFacilitatoreConServiziAndCittadiniCensitiByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto());
 		} else {
 			idsSedi = filtro.getIdsSedi();
 		}
 		
-		return this.sedeRepository.findAllSediFiltrate(criterioRicerca, "%" + criterioRicerca + "%", idsSedi);
+		return idsSedi.isEmpty()? new ArrayList<>(): this.sedeRepository.findAllSediFiltrate(criterioRicerca, "%" + criterioRicerca + "%", idsSedi);
 	}
 }
