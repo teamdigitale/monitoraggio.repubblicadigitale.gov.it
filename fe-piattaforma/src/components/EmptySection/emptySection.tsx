@@ -29,7 +29,7 @@ const EmptySection: React.FC<EmptySectionI> = ({
         'd-flex',
         'my-5',
         horizontal
-          ? 'flex-row justify-content-center'
+          ? 'flex-row justify-content-center align-items-center'
           : 'justify-content-center align-items-center flex-column',
         aside && 'justify-content-start',
         'empty-section',

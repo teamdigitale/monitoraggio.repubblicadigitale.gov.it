@@ -128,6 +128,7 @@ const Select: React.FC<SelectI> = (props) => {
         value={selectedOption}
         menuPlacement={position}
         color='primary'
+        className={clsx(value && !isDisabled && 'border-select-value')}
         classNamePrefix='bootstrap-select'
         aria-labelledby={`${(label || 'label select').replace(/\s/g, '-')}`}
         isDisabled={isDisabled}

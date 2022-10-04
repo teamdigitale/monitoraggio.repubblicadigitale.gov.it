@@ -320,7 +320,7 @@ const ProjectsDetails = () => {
           openModal({
             id: 'upload-csv',
             payload: {
-              title: 'Carica lista Enti partner',
+              title: 'Carica lista enti partner',
               entity: 'enti',
               endpoint: `/ente/partner/upload/${projectId}`,
             },
@@ -330,7 +330,7 @@ const ProjectsDetails = () => {
     {
       size: 'xs',
       color: 'primary',
-      text: ' Aggiungi Ente partner',
+      text: ' Aggiungi ente partner',
       onClick: () =>
         dispatch(
           openModal({

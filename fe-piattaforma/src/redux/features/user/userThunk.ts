@@ -88,7 +88,7 @@ export const CreateUserContext =
       }
     } catch (error) {
       console.log('CreateUserContext error', error);
-      return false;
+      return error;
     } finally {
       dispatch(hideLoader());
     }
