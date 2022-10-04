@@ -1,7 +1,10 @@
 import React, { ReactElement } from 'react';
 import { useAppSelector } from '../../redux/hooks';
 import ModalsPortal from './modalsPortal';
-import { selectModalId } from '../../redux/features/modal/modalSlice';
+import {
+  selectExpandModal,
+  selectModalId,
+} from '../../redux/features/modal/modalSlice';
 import Curtain from '../Curtain/curtain';
 import clsx from 'clsx';
 import FocusTrap from 'focus-trap-react';
@@ -12,11 +15,14 @@ interface ModalI {
   children: ReactElement[];
   onClose?: () => void;
   isRoleManaging?: boolean;
+  isUserRole?: boolean;
+  className?: string | undefined;
 }
 
 const Modal: React.FC<ModalI> = (props) => {
   const { id, children, onClose, isRoleManaging } = props;
   const currentId = useAppSelector(selectModalId);
+  const expandedmodal = useAppSelector(selectExpandModal);
 
   const handleCloseModal = () => {
     if (onClose) onClose();
@@ -53,6 +59,8 @@ const Modal: React.FC<ModalI> = (props) => {
                   ? 'h-100'
                   : isMobile
                   ? 'h-100 pt-5'
+                  : expandedmodal
+                  ? 'user-role-modal'
                   : 'h-auto'
               )}
             >

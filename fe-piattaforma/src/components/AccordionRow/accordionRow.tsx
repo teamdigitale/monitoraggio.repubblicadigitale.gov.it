@@ -82,7 +82,9 @@ const AccordionRow: React.FC<AccordionRowI> = ({
             </div>
           </Button>
         ) : null}
-        {onTooltipInfo && innerInfo?.isPresentInList ? (
+        {((onTooltipInfo || innerInfo?.onTooltipInfo) &&
+          innerInfo?.isPresentInList) ||
+        innerInfo?.failedCSV ? (
           <div
             className='d-inline-flex position-relative'
             id={`tooltip-${innerInfo.id}`}
@@ -94,6 +96,7 @@ const AccordionRow: React.FC<AccordionRowI> = ({
                     toggle={() => toggleOne(!openOne)} */
             >
               {onTooltipInfo}
+              {innerInfo.onTooltipInfo}
             </UncontrolledTooltip>
             <Icon icon='it-info-circle' size='sm' color='primary' />
           </div>

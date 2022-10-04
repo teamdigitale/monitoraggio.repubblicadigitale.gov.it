@@ -87,7 +87,7 @@ const ServicesDetails = () => {
         })
       );
     }
-  }, [serviceId, serviceDetails]);
+  }, [serviceId, serviceDetails, activeTab]);
 
   const centerActiveItem = () => {
     switch (activeTab) {

@@ -25,6 +25,7 @@ import clsx from 'clsx';
 import FormAuthorities from '../../../../forms/formAuthorities';
 import {
   selectAuthorities,
+  selectPrograms,
   selectProjects,
   setHeadquarterDetails,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
@@ -47,6 +48,7 @@ import {
 import ManagePartnerAuthority from '../modals/managePartnerAuthority';
 import useGuard from '../../../../../hooks/guard';
 import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
+import { GetProgramDetail } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
 
 const AuthoritiesDetails = () => {
   const authorityDetails = useAppSelector(selectAuthorities)?.detail;
@@ -61,6 +63,8 @@ const AuthoritiesDetails = () => {
   const projectDetail =
     useAppSelector(selectProjects).detail?.dettagliInfoProgetto;
   const { nome: projectName, stato: projectState } = projectDetail || {};
+  const programDetails =
+    useAppSelector(selectPrograms).detail?.dettagliInfoProgramma || {};
 
   useEffect(() => {
     dispatch(setHeadquarterDetails(null));
@@ -68,11 +72,21 @@ const AuthoritiesDetails = () => {
     if (!projectName && projectId) {
       dispatch(GetProjectDetail(projectId));
     }
+    if (entityId && !programDetails?.nomeBreve)
+      dispatch(GetProgramDetail(entityId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     // For breadcrumb
+    if(entityId && programDetails?.nomeBreve){
+      dispatch(
+        setInfoIdsBreadcrumb({
+          id: entityId,
+          nome: programDetails?.nomeBreve,
+        })
+      );
+    }
     if (projectId && projectName) {
       dispatch(
         setInfoIdsBreadcrumb({

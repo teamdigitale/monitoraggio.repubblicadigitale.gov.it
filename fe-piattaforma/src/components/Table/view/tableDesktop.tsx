@@ -28,6 +28,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
     onActionRadio,
     totalCounter,
     citizenTable,
+    succesCSV,
   } = props;
   const [rowChecked, setRowChecked] = useState<string>('');
 
@@ -236,7 +237,8 @@ const TableDesktop: React.FC<TableI> = (props) => {
                   </div>
                 </td>
               ) : null}
-              {onTooltipInfo && td?.isPresentInList ? (
+              {((onTooltipInfo || td?.onTooltipInfo) && td?.isPresentInList) ||
+              td?.failedCSV ? (
                 <td id={`tooltip-${td.id}`}>
                   <div className='d-inline-flex position-relative'>
                     <UncontrolledTooltip
@@ -244,6 +246,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                       target={`tooltip-${td.id}`}
                     >
                       {onTooltipInfo}
+                      {td.onTooltipInfo}
                     </UncontrolledTooltip>
                     <Icon
                       icon='it-info-circle'
@@ -253,7 +256,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                     />
                   </div>
                 </td>
-              ) : citizenTable ? (
+              ) : citizenTable || succesCSV ? (
                 <td />
               ) : null}
             </tr>

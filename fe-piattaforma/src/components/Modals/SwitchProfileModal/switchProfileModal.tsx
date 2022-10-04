@@ -151,6 +151,7 @@ const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({
               onKeyDown={(event) => manageKeyEvent(event, profile.name, index)}
               tabIndex={profile.name === profileSelected ? 0 : -1}
               id={`utente-${index}`}
+              className='switch-profile-modal__pointer'
             >
               <CardProfile
                 profile={profile}
