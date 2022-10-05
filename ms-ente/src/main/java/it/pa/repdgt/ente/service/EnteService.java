@@ -971,6 +971,11 @@ public class EnteService {
 			String errorMessage = String.format("Impossibile aggiornare l'ente con id=%s. Ente non presente", idEnte);
 			throw new EnteException(errorMessage, CodiceErroreEnum.EN13);
 		}
+		final String partitaIva = enteEntity.getPiva();
+		if (this.enteRepository.findByPartitaIva(partitaIva).isPresent()) {
+			String errorMessage = String.format("Impossibile aggiornare l'ente con codice fiscale=%s. Ente con codice fiscale inserito già presente", partitaIva);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN14);
+		}
 		EnteEntity enteFetchDB = this.getEnteById(idEnte);
 		enteEntity.setDataOraCreazione(enteFetchDB.getDataOraCreazione());
 		enteEntity.setDataOraAggiornamento(new Date());

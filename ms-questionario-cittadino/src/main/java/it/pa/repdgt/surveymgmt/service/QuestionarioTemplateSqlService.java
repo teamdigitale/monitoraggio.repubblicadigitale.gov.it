@@ -17,6 +17,7 @@ import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioTemplateException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.repository.QuestionarioTemplateSqlRepository;
@@ -238,5 +239,14 @@ public class QuestionarioTemplateSqlService {
 		final String messaggioErrore = String.format("Questionario template con id='%s' non presente", idQuestionarioTemplate);
 		return this.templateQuestionarioSqlRepository.findById(idQuestionarioTemplate)
 					.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
+	}
+	
+	public Optional<QuestionarioTemplateCollection> getQuestionarioTemplateByNome(String nomeQuestionarioTemplate) {
+		return this.templateQuestionarioSqlRepository.findByNome(nomeQuestionarioTemplate);
+	}
+
+	public Optional<QuestionarioTemplateCollection> getQuestionarioTemplateByNomeAndIdDiverso(
+		String nomeQuestionarioTemplate, String idQuestionarioTemplate) {
+		return this.templateQuestionarioSqlRepository.findQuestionarioTemplateByNomeAndIdDiverso(nomeQuestionarioTemplate, idQuestionarioTemplate);
 	}
 }

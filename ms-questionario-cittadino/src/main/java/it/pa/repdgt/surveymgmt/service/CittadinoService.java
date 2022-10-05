@@ -260,11 +260,17 @@ public class CittadinoService {
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void aggiornaCittadino(Long id, CittadinoRequest cittadinoRequest) {
+		String errorMessage = null;
 		if(!this.cittadinoRepository.findById(id).isPresent()) {
-			String messaggioErrore = String.format("Impossibile aggiornare il cittadino. Cittadino con id=%s non presente", id);
-			throw new CittadinoException(messaggioErrore, CodiceErroreEnum.CIT02);
+			errorMessage = String.format("Impossibile aggiornare il cittadino. Cittadino con id=%s non presente", id);
+			throw new CittadinoException(errorMessage, CodiceErroreEnum.CIT02);
 		}
 		CittadinoEntity cittadinoFetchDb = this.cittadinoRepository.findById(id).get();
+		
+		if(!cittadinoRepository.findCittadinoByCodiceFiscaleOrNumeroDocumentoAndIdDiverso(cittadinoRequest.getCodiceFiscale(), cittadinoRequest.getNumeroDocumento(), id).isEmpty()) {
+			errorMessage = String.format("Impossibile aggiornare il cittadino. Cittadino con codice fiscale o numero documento già esistente");
+			throw new CittadinoException(errorMessage, CodiceErroreEnum.U07);
+		}
 		
 		CittadinoEntity cittadinoEntity = this.cittadinoMapper.toEntityFrom(cittadinoRequest);
 		cittadinoEntity.setId(id);
