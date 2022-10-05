@@ -263,7 +263,7 @@ public class CittadinoService {
 		String errorMessage = null;
 		if(!this.cittadinoRepository.findById(id).isPresent()) {
 			errorMessage = String.format("Impossibile aggiornare il cittadino. Cittadino con id=%s non presente", id);
-			throw new CittadinoException(messaggioErrore, CodiceErroreEnum.CIT02);
+			throw new CittadinoException(errorMessage, CodiceErroreEnum.CIT02);
 		}
 		CittadinoEntity cittadinoFetchDb = this.cittadinoRepository.findById(id).get();
 		
