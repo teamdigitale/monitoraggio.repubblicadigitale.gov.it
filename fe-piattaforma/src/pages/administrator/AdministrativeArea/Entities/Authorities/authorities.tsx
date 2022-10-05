@@ -122,6 +122,22 @@ const Authorities: React.FC = () => {
 
   const handleDropdownFilters = (values: FilterI[], filterKey: string) => {
     setFilterDropdownSelected(filterKey);
+    if (
+      filtersList[filterKey] &&
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      filtersList[filterKey]?.length > values?.length
+    ) {
+      const dropdownType =
+        filterKey === 'profili'
+          ? 'profili'
+          : filterKey === 'idsProgetti'
+          ? 'progetti'
+          : filterKey === 'idsProgrammi'
+          ? 'programmi'
+          : '';
+      dispatch(GetEntityFilterValues({ entity, dropdownType: dropdownType, noFilters: true }));
+    }
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
   };
 

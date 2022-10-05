@@ -144,6 +144,20 @@ const Services = () => {
     filterKey: 'stato' | 'tipologiaServizio'
   ) => {
     setFilterDropdownSelected(filterKey);
+    if (
+      filtersList[filterKey] &&
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      filtersList[filterKey]?.length > values?.length
+    ) {
+      const dropdownType =
+        filterKey === 'stato'
+          ? 'stati'
+          : filterKey === 'tipologiaServizio'
+          ? 'tipologiaServizio'
+          : '';
+      dispatch(GetEntityFilterQueryParamsValues({ entity, dropdownType: dropdownType, noFilters: true }));
+    }
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
   };
 

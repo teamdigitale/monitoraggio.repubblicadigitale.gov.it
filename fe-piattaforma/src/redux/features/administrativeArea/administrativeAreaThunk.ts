@@ -18,6 +18,7 @@ import { getUserHeaders } from '../user/userThunk';
 export interface EntityFilterValuesPayloadI {
   entity: string;
   dropdownType: string;
+  noFilters?: boolean;
 }
 
 const GetValuesAction = {
@@ -101,19 +102,21 @@ export const GetEntityFilterValues =
       const filtroRequest: {
         [key: string]: string[] | undefined;
       } = {};
-      Object.keys(filters).forEach((filter: string) => {
-        if (
-          filter === 'criterioRicerca' ||
-          filter === 'filtroCriterioRicerca'
-        ) {
-          filtroRequest[filter] =
-            filters[filter]?.value || filters[filter] || null;
-        } else {
-          filtroRequest[filter] = filters[filter]?.map(
-            (value: OptionType) => value.value
-          );
-        }
-      });
+      if (!payload.noFilters) {
+        Object.keys(filters).forEach((filter: string) => {
+          if (
+            filter === 'criterioRicerca' ||
+            filter === 'filtroCriterioRicerca'
+          ) {
+            filtroRequest[filter] =
+              filters[filter]?.value || filters[filter] || null;
+          } else {
+            filtroRequest[filter] = filters[filter]?.map(
+              (value: OptionType) => value.value
+            );
+          }
+        });
+      }
       const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
         getUserHeaders();
       const body = {
@@ -185,7 +188,9 @@ export const GetEntityFilterQueryParamsValues =
         idProgetto,
         idProgramma,
       };
-      const entityFilterEndpoint = `/${payload.entity}/${payload.dropdownType}/dropdown${queryParamFilters}`;
+      const entityFilterEndpoint = `/${payload.entity}/${
+        payload.dropdownType
+      }/dropdown${payload?.noFilters ? '' : queryParamFilters}`;
       const res = await API.post(entityFilterEndpoint, body);
       if (res?.data) {
         const filterResponse = {
@@ -322,12 +327,18 @@ export const TerminateEntity =
       dispatch(showLoader());
       dispatch({ type: 'admistrativeArea/TerminateEntity' });
       if (entityId && terminationDate) {
-        await API.put(`/${entity}/termina/${entityId}`, {
+        const res = await API.put(`/${entity}/termina/${entityId}`, {
           dataTerminazione: terminationDate,
         });
+        if (res) {
+          return true;
+        }
+      } else {
+        return false;
       }
     } catch (error) {
       console.log(error);
+      return false;
     } finally {
       dispatch(hideLoader());
     }

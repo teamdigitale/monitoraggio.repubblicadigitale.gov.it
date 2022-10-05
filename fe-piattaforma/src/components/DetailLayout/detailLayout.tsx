@@ -52,6 +52,7 @@ interface DetailLayoutI {
   citizenDeleteChange?: boolean;
   enteIcon?: boolean;
   profilePicture?: string | undefined;
+  isRoleManagement?: boolean;
 }
 const DetailLayout: React.FC<DetailLayoutI> = ({
   formButtons,
@@ -74,6 +75,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   citizenDeleteChange = false,
   enteIcon = false,
   profilePicture,
+  isRoleManagement = false,
 }) => {
   const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
@@ -306,6 +308,9 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                 isUserProfile
                   ? 'pr-4'
                   : isUserProfile && device.mediaIsTablet && 'pr-0',
+                isRoleManagement
+                  ? 'pr-4'
+                  : isRoleManagement && device.mediaIsTablet && 'pr-0',
                 !device.mediaIsPhone && 'container'
               )}
             >

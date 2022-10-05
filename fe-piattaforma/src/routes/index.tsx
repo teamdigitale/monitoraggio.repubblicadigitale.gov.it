@@ -219,10 +219,10 @@ const AppRoutes: React.FC = () => {
           <>
             <Route path='/auth/:token' element={<Auth />} />
             <Route path='/auth' element={<Auth />} />
+            <Route path='/report-dati' element={<Dashboard />} />
             <Route path='/' element={<FullLayout />}>
               {/* Public Paths */}
               <Route path='/onboarding' element={<Onboarding />} />
-              <Route path='/report-dati' element={<Dashboard />} />
               <Route
                 path='/'
                 element={<Navigate replace to={defaultRedirectUrl} />}
