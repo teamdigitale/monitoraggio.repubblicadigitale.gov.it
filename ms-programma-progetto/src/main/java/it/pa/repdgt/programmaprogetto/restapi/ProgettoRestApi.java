@@ -53,10 +53,10 @@ public class ProgettoRestApi {
 	@PostMapping(path = "/all")
 	@ResponseStatus(value = HttpStatus.OK)
 	public ProgettiLightResourcePaginati getAllProgettiPaginatiByRuolo(
-			@RequestBody @Valid @NotNull(message = "Deve essere non null") ProgettiParam sceltaContesto,
+			@RequestBody @Valid @NotNull(message = "Deve essere non null") ProgettiParam sceltaContestoParam,
 			@RequestParam(name = "currPage", required = false, defaultValue = "0")  Integer currPage,
 			@RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-		PaginaProgetti paginaProgetti = this.progettoService.getAllProgettiPaginati(sceltaContesto, currPage, pageSize, sceltaContesto.getFiltroRequest());
+		PaginaProgetti paginaProgetti = this.progettoService.getAllProgettiPaginati(sceltaContestoParam, currPage, pageSize, sceltaContestoParam.getFiltroRequest());
 		ProgettiLightResourcePaginati listaPaginataProgettiResource = this.progettoMapper.toProgettiLightResourcePaginataConContatoreFrom(paginaProgetti);
 		return listaPaginataProgettiResource;
 	}
@@ -74,8 +74,8 @@ public class ProgettoRestApi {
 	@PostMapping(path = "/policies/programmi/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<String> getAllPoliciesDropdownByRuolo(
-			@RequestBody @Valid @NotNull(message = "Deve essere non null") ProgettiParam sceltaContesto) {
-		List<String> policiesDropdown = this.progettoService.getAllPoliciesDropdownPerProgetti(sceltaContesto);
+			@RequestBody @Valid @NotNull(message = "Deve essere non null") ProgettiParam sceltaContestoParam) {
+		List<String> policiesDropdown = this.progettoService.getAllPoliciesDropdownPerProgetti(sceltaContestoParam);
 		return policiesDropdown;
 	}
 	
@@ -83,8 +83,8 @@ public class ProgettoRestApi {
 	@PostMapping(path = "/stati/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<String> getAllStatiDropdownByRuolo(
-			@RequestBody @Valid @NotNull(message = "Deve essere non null") ProgettiParam sceltaContesto) {
-		List<String> statiDropdown = this.progettoService.getAllStatiDropdown(sceltaContesto, sceltaContesto.getFiltroRequest());
+			@RequestBody @Valid @NotNull(message = "Deve essere non null") ProgettiParam sceltaContestoParam) {
+		List<String> statiDropdown = this.progettoService.getAllStatiDropdown(sceltaContestoParam, sceltaContesto.getFiltroRequest());
 		return statiDropdown;
 	}
 	
