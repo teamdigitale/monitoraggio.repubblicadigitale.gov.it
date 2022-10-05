@@ -239,4 +239,13 @@ public class QuestionarioTemplateSqlService {
 		return this.templateQuestionarioSqlRepository.findById(idQuestionarioTemplate)
 					.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
 	}
+	
+	public Optional<QuestionarioTemplateCollection> getQuestionarioTemplateByNome(String nomeQuestionarioTemplate) {
+		return this.templateQuestionarioSqlRepository.findByNome(nomeQuestionarioTemplate);
+	}
+
+	public Optional<QuestionarioTemplateCollection> getQuestionarioTemplateByNomeAndIdDiverso(
+		String nomeQuestionarioTemplate, String idQuestionarioTemplate) {
+		return this.templateQuestionarioSqlRepository.findQuestionarioTemplateByNomeAndIdDiverso(nomeQuestionarioTemplate, idQuestionarioTemplate);
+	}
 }

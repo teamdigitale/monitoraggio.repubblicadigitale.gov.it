@@ -306,7 +306,7 @@ public class EntePartnerService {
 						Long idEnte = enteService.getEnteByPartitaIva(ente.getPiva()).getId();
 						//se esiste --> KO
 						if(this.entePartnerRepository.findEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte) != null) {
-							ente.setEsito("KO - ASSOCIAZIONE ESISTENTE");
+							ente.setEsito("KO - Ente già in elenco");
 						}else {
 							//altrimenti aggiungo associazione EntePartner
 							associaEntePartnerPerProgetto(idEnte, idProgetto);
@@ -316,7 +316,7 @@ public class EntePartnerService {
 					}
 					
 				}else {
-					ente.setEsito("KO - TIPOLOGIA ENTE NON CONSENTITA");
+					ente.setEsito("Tipologia ente non conforme");
 				}
 				esiti.add(ente);
 			}
