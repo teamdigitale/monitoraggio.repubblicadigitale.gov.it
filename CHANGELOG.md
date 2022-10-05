@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.67](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.66...1.0.0-test.67) (2022-10-05)
+
+
+### Bug Fixes
+
+* **be:** fix modificagestoreProgramma e modificagestoreProgetto ([fdb5e70](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fdb5e700b95f99539a12834f7a42ef374663de1f))
+
 ## [1.0.0-test.66](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.65...1.0.0-test.66) (2022-10-05)
 
 
