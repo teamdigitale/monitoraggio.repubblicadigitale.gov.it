@@ -9,6 +9,8 @@ import { Loader } from '../components';
 import Notifications from '../pages/common/NotificationsPage/notifications';
 import { SessionCheck } from '../redux/features/user/userThunk';
 
+import ErrorPage from '../pages/common/Error/errorPage';
+
 const AuthRedirect = lazy(() => import('../pages/common/Auth/authRedirect'));
 
 const HomeFacilitator = lazy(() => import('../pages/facilitator/Home/home'));
@@ -90,6 +92,8 @@ const AppRoutes: React.FC = () => {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route path='/auth-redirect' element={<AuthRedirect />} />
+        <Route path='/errore/:errorCode' element={<ErrorPage />} />
+        <Route path='/errore' element={<ErrorPage />} />
         <Route
           path='/open-data'
           element={
