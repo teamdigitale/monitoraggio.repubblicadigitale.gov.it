@@ -316,7 +316,7 @@ public class EntePartnerService {
 					}
 					
 				}else {
-					ente.setEsito("Tipologia ente non conforme");
+					ente.setEsito("KO - Tipologia ente non conforme");
 				}
 				esiti.add(ente);
 			}
