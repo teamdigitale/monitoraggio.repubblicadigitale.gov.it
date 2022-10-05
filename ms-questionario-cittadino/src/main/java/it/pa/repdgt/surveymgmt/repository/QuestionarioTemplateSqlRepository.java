@@ -273,7 +273,7 @@ public interface QuestionarioTemplateSqlRepository extends JpaRepository<Questio
 			@Param(value = "idProgetto") Long idProgetto
 		);
 		
-	Optional<QuestionarioTemplateCollection> findByNome(String nomeQuestionarioTemplate);
+	Optional<QuestionarioTemplateEntity> findByNome(String nomeQuestionarioTemplate);
 	
 	@Query(value = ""
 			+ " SELECT * "
@@ -281,7 +281,7 @@ public interface QuestionarioTemplateSqlRepository extends JpaRepository<Questio
 			+ "	WHERE qt.nome = :nomeQuestionarioTemplate "
 			+ "		AND qt.id <> :idQuestionarioTemplate",
 			nativeQuery = true)
-	Optional<QuestionarioTemplateCollection> findQuestionarioTemplateByNomeAndIdDiverso(
+	Optional<QuestionarioTemplateEntity> findQuestionarioTemplateByNomeAndIdDiverso(
 			String nomeQuestionarioTemplate,
 			String idQuestionarioTemplate);
 }
