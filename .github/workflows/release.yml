@@ -602,7 +602,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3.0.2
         with:
-          token: ${{ secrets.SEMANTICRELEASE }}
+          token: ${{ secrets.PAT_REPDIGITALE_AUTOMATION }}
           # this allow the workflow to be rerun after changes have been pushed from previous jobs
           ref: ${{ github.ref }}
           persist-credentials: 'true'
@@ -678,7 +678,7 @@ jobs:
         with:
           # this allow the workflow to be rerun after changes have been pushed from previous jobs
           ref: ${{ github.ref }}
-          token: ${{ secrets.SEMANTICRELEASE }}
+          token: ${{ secrets.PAT_REPDIGITALE_AUTOMATION }}
           persist-credentials: 'true'
           fetch-depth: '0'
 
@@ -705,7 +705,7 @@ jobs:
         env:
           # ad-hoc token (PAT) in order to permit the push on a protected branch
           # without protected branches can be use secrets.GITHUB_TOKEN
-          GITHUB_TOKEN: ${{ secrets.SEMANTICRELEASE }}
+          GITHUB_TOKEN: ${{ secrets.PAT_REPDIGITALE_AUTOMATION }}
         run: |
           npx semantic-release
 
