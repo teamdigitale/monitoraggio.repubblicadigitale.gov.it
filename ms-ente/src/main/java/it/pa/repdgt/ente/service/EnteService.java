@@ -982,13 +982,14 @@ public class EnteService {
 	@Transactional(rollbackOn = Exception.class)
 	public void modificaEnteGestoreProgramma(EnteEntity enteModificato, Long idEnte, Long idProgramma) {
 		EnteEntity enteFetchDB = this.getEnteById(idEnte);
-		if(this.esisteEnteByNomeNotEqual(enteModificato.getNome(), idEnte)) {
-			String messaggioErrore = String.format("Ente con nome = '%s' già presente", enteModificato.getNome());
-			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN25);
-		}
 		Optional<EnteEntity> optionalEnte = this.enteRepository.findByPartitaIva(enteModificato.getPiva());
 		ProgrammaEntity programmaFetchDB = this.programmaService.getProgrammaById(idProgramma);
+		
 		if(enteModificato.getId().equals(idEnte)) {
+			if(this.esisteEnteByNomeNotEqual(enteModificato.getNome(), idEnte)) {
+				String messaggioErrore = String.format("Ente con nome = '%s' già presente", enteModificato.getNome());
+				throw new EnteException(messaggioErrore, CodiceErroreEnum.EN25);
+			}
 			enteModificato.setDataOraCreazione(enteFetchDB.getDataOraCreazione());
 			enteModificato.setDataOraAggiornamento(new Date());
 			if(!optionalEnte.isPresent()) {
@@ -1000,6 +1001,13 @@ public class EnteService {
 				throw new EnteException(errorMessage, CodiceErroreEnum.EN14);
 			}
 		} else {
+			if(!optionalEnte.isPresent()) {
+				if(this.esisteEnteByNomeNotEqual(enteModificato.getNome(), idEnte)) {
+					String messaggioErrore = String.format("Ente con nome = '%s' già presente", enteModificato.getNome());
+					throw new EnteException(messaggioErrore, CodiceErroreEnum.EN25);
+				}
+			}
+			// nuova associazione
 			if(!optionalEnte.isPresent() || optionalEnte.get().getId().equals(enteModificato.getId())) {
 				EnteEntity enteModificatoFetchDB = this.getEnteById(enteModificato.getId());
 				enteModificato.setDataOraCreazione(enteModificatoFetchDB.getDataOraCreazione());
@@ -1024,12 +1032,12 @@ public class EnteService {
 	public void modificaEnteGestoreProgetto(EnteEntity enteModificato, Long idEnte, Long idProgetto) {
 		EnteEntity enteFetchDB = this.getEnteById(idEnte);
 		Optional<EnteEntity> optionalEnte = this.enteRepository.findByPartitaIva(enteModificato.getPiva());
-		if(this.esisteEnteByNomeNotEqual(enteModificato.getNome(), idEnte)) {
-			String messaggioErrore = String.format("Ente con nome = '%s' già presente", enteModificato.getNome());
-			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN25);
-		}
 		ProgettoEntity progettoFetchDB = this.progettoService.getProgettoById(idProgetto);
 		if(enteModificato.getId().equals(idEnte)) {
+			if(this.esisteEnteByNomeNotEqual(enteModificato.getNome(), idEnte)) {
+				String messaggioErrore = String.format("Ente con nome = '%s' già presente", enteModificato.getNome());
+				throw new EnteException(messaggioErrore, CodiceErroreEnum.EN25);
+			}
 			enteModificato.setDataOraCreazione(enteFetchDB.getDataOraCreazione());
 			enteModificato.setDataOraAggiornamento(new Date());
 			if(!optionalEnte.isPresent()) {
@@ -1041,6 +1049,12 @@ public class EnteService {
 				throw new EnteException(errorMessage, CodiceErroreEnum.EN15);
 			}
 		} else {
+			if(!optionalEnte.isPresent()) {
+				if(this.esisteEnteByNomeNotEqual(enteModificato.getNome(), idEnte)) {
+					String messaggioErrore = String.format("Ente con nome = '%s' già presente", enteModificato.getNome());
+					throw new EnteException(messaggioErrore, CodiceErroreEnum.EN25);
+				}
+			}
 			if(!optionalEnte.isPresent() || optionalEnte.get().getId().equals(enteModificato.getId())) {
 				EnteEntity enteModificatoFetchDB = this.getEnteById(enteModificato.getId());
 				enteModificato.setDataOraCreazione(enteModificatoFetchDB.getDataOraCreazione());
