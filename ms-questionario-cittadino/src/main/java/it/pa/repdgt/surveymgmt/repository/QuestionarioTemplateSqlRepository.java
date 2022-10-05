@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
-import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 
 @Repository
 public interface QuestionarioTemplateSqlRepository extends JpaRepository<QuestionarioTemplateEntity, String> {
@@ -273,7 +272,7 @@ public interface QuestionarioTemplateSqlRepository extends JpaRepository<Questio
 			@Param(value = "idProgetto") Long idProgetto
 		);
 		
-	Optional<QuestionarioTemplateCollection> findByNome(String nomeQuestionarioTemplate);
+	Optional<QuestionarioTemplateEntity> findByNome(String nomeQuestionarioTemplate);
 	
 	@Query(value = ""
 			+ " SELECT * "
@@ -281,7 +280,7 @@ public interface QuestionarioTemplateSqlRepository extends JpaRepository<Questio
 			+ "	WHERE qt.nome = :nomeQuestionarioTemplate "
 			+ "		AND qt.id <> :idQuestionarioTemplate",
 			nativeQuery = true)
-	Optional<QuestionarioTemplateCollection> findQuestionarioTemplateByNomeAndIdDiverso(
+	Optional<QuestionarioTemplateEntity> findQuestionarioTemplateByNomeAndIdDiverso(
 			String nomeQuestionarioTemplate,
 			String idQuestionarioTemplate);
 }

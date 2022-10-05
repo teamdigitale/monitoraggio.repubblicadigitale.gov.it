@@ -972,7 +972,7 @@ public class EnteService {
 			throw new EnteException(errorMessage, CodiceErroreEnum.EN13);
 		}
 		final String partitaIva = enteEntity.getPiva();
-		if (this.enteRepository.findByPartitaIva(partitaIva).isPresent()) {
+		if (this.enteRepository.findByPartitaIvaAndIdDiverso(partitaIva, idEnte).isPresent()) {
 			String errorMessage = String.format("Impossibile aggiornare l'ente con codice fiscale=%s. Ente con codice fiscale inserito già presente", partitaIva);
 			throw new EnteException(errorMessage, CodiceErroreEnum.EN14);
 		}
