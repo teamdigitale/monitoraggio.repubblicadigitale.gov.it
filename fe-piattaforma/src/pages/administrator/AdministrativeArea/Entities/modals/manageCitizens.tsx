@@ -93,7 +93,7 @@ const ManageCitizens: React.FC<ManageCitizensI> = ({
             setNewFormValues({ ...newData });
           }}
           setIsFormValid={(isValid: boolean) => setIsFormValid(isValid)}
-          creation
+          editMode
         />
       </div>
     </GenericModal>

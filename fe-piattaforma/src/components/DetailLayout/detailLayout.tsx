@@ -303,6 +303,9 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
               stickyClassName={clsx(
                 'sticky',
                 'bg-white',
+                isUserProfile
+                  ? 'pr-4'
+                  : isUserProfile && device.mediaIsTablet && 'pr-0',
                 !device.mediaIsPhone && 'container'
               )}
             >
