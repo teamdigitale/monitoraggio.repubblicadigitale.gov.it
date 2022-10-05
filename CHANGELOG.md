@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.175](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.174...1.0.0-develop.175) (2022-10-05)
+
+
+### Bug Fixes
+
+* **be:** fix defect 5 ottobre FDTI-315, FDTI-316, FDTI-317, FDTI-319 ([1b8dbf1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1b8dbf1b22cb3c9dfa0650055f776c2669238cdd))
+
 ## [1.0.0-develop.174](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.173...1.0.0-develop.174) (2022-10-05)
 
 
