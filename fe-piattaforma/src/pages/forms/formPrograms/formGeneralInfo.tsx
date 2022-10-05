@@ -7,7 +7,12 @@ import { selectPrograms } from '../../../redux/features/administrativeArea/admin
 import { selectProfile } from '../../../redux/features/user/userSlice';
 import { useAppSelector } from '../../../redux/hooks';
 import { formatDate } from '../../../utils/common';
-import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
+import {
+  formFieldI,
+  FormHelper,
+  newForm,
+  newFormField,
+} from '../../../utils/formHelper';
 import { RegexpType } from '../../../utils/validator';
 
 interface ProgramInformationI {
@@ -30,7 +35,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     // setFormValues = () => ({}),
     form,
     updateForm = () => ({}),
-    onInputChange,
+    onInputChange = () => ({}),
     sendNewValues = () => ({}),
     isValidForm,
     setIsFormValid = () => false,
@@ -61,9 +66,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
   */
 
   useEffect(() => {
-    setIsFormValid?.(isValidForm);
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    () => {};
+    setIsFormValid(isValidForm);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
@@ -83,6 +86,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
         true
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formDisabled]);
 
   useEffect(() => {
@@ -126,9 +130,62 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     value: formFieldI['value'],
     field?: formFieldI['field']
   ) => {
-    onInputChange?.(value, field);
-    setIsFormValid?.(isValidForm);
+    onInputChange(value, field);
   };
+
+  const onDateChange = (
+    value: formFieldI['value'],
+    field?: formFieldI['field']
+  ) => {
+    if (value && field && form) {
+      let newForm = {
+        ...form,
+        [field]: {
+          ...form[field],
+          value,
+        },
+      };
+
+      newForm = FormHelper.onInputChange(
+        {
+          ...newForm,
+          dataInizio: {
+            ...form.dataInizio,
+            maximum: formatDate(form?.dataFine.value as string),
+          },
+          dataFine: {
+            ...form.dataFine,
+            minimum: formatDate(form?.dataInizio.value as string),
+          },
+        },
+        value,
+        field
+      );
+
+      updateForm({
+        ...newForm,
+        dataInizio: {
+          ...newForm.dataInizio,
+          maximum: formatDate(newForm?.dataFine.value as string),
+        },
+        dataFine: {
+          ...newForm.dataFine,
+          minimum: formatDate(newForm?.dataInizio.value as string),
+        },
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (form?.dataInizio?.maximum)
+      onInputDataChange(form?.dataInizio?.value, form?.dataInizio?.field);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form?.dataInizio?.maximum]);
+  useEffect(() => {
+    if (form?.dataFine?.minimum)
+      onInputDataChange(form?.dataFine?.value, form?.dataFine?.field);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form?.dataFine?.minimum]);
 
   useEffect(() => {
     sendNewValues(getFormValues());
@@ -169,36 +226,28 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           required
           col='col-12 col-lg-6'
           label='ID'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
+          onInputChange={onInputDataChange}
         />
         <Input
           {...form?.nome}
           required
           col='col-12 col-lg-6'
           label='Nome programma'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
+          onInputChange={onInputDataChange}
         />
         <Input
           {...form?.nomeBreve}
           required
           col='col-12 col-lg-6'
           label='Nome breve'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
+          onInputChange={onInputDataChange}
         />
         {formDisabled ? (
           <Input
             {...form?.policy}
             label='Intervento'
             col='col-12 col-lg-6'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
+            onInputChange={onInputDataChange}
           />
         ) : (
           <Select
@@ -213,9 +262,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
               { label: 'RFD', value: 'RFD' },
               { label: 'SCD', value: 'SCD' },
             ]}
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
+            onInputChange={onInputDataChange}
             wrapperClassName='mb-5 pr-lg-3'
             aria-label='intervento'
           />
@@ -225,9 +272,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
             {...form?.bando}
             label='Bando'
             col='col-12 col-lg-6'
-            onInputChange={(value, field) => {
-              onInputDataChange(value, field);
-            }}
+            onInputChange={onInputDataChange}
           />
         ) : (
           <span></span>
@@ -236,31 +281,23 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           {...form?.cup}
           label='CUP - Codice Unico Progetto'
           col='col-12 col-lg-6'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
+          onInputChange={onInputDataChange}
         />
         <Input
           {...form?.dataInizio}
           required
           label='Data inizio'
-          maximum={formatDate(form?.dataFine.value as string)}
           type={'date'}
           col='col-12 col-lg-6'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
+          onInputChange={onDateChange}
         />
         <Input
           {...form?.dataFine}
           required
-          minimum={formatDate(form?.dataInizio.value as string)}
           label='Data fine'
           type={'date'}
           col='col-12 col-lg-6'
-          onInputChange={(value, field) => {
-            onInputDataChange(value, field);
-          }}
+          onInputChange={onDateChange}
         />
       </Form.Row>
     </Form>

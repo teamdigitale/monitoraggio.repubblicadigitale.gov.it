@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Icon } from 'design-react-kit';
+import { useDispatch } from 'react-redux';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../../../hoc/withFormHandler';
@@ -9,13 +10,19 @@ import Input from '../../../../Form/input';
 import GenericModal from '../../../../Modals/GenericModal/genericModal';
 import { RegexpType } from '../../../../../utils/validator';
 import { useAppSelector } from '../../../../../redux/hooks';
-import { selectModalPayload } from '../../../../../redux/features/modal/modalSlice';
+import {
+  closeModal,
+  selectModalPayload,
+} from '../../../../../redux/features/modal/modalSlice';
+import { formatDate } from '../../../../../utils/common';
 
 const id = 'terminate-entity';
 
 interface TerminateEntityModalI {
   onConfirm: (entity: 'program' | 'project', date: string, id?: string) => void;
-  onClose: () => void;
+  onClose?: () => void;
+  maxDate?: string | undefined;
+  minDate?: string | undefined;
 }
 
 interface TerminateEntityModalFullI
@@ -35,16 +42,47 @@ const TerminateEntityModal = ({
   onConfirm,
   onClose,
   form,
+  //clearForm = () => ({}),
   onInputChange = () => ({}),
   getFormValues = () => ({}),
+  updateForm = () => ({}),
+  maxDate = new Date().toISOString().split('T')[0],
+  minDate,
+  isValidForm,
 }: TerminateEntityModalFullI) => {
   const [terminationDate, setTerminationDate] = useState('');
   const payload = useAppSelector(selectModalPayload);
+  const dispatch = useDispatch();
+
+  const resetModal = () => {
+    onInputChange('', form?.date?.field);
+    setTerminationDate('');
+    if (onClose) onClose();
+    dispatch(closeModal());
+  };
 
   useEffect(() => {
-    const newDate = getFormValues()['date'] as string;
+    if ((maxDate || minDate) && form) {
+      console.log('passa da qua');
+      updateForm({
+        ...form,
+        date: {
+          ...form?.date,
+          minimum: formatDate(minDate as string),
+          maximum: formatDate(maxDate as string),
+        },
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [maxDate, minDate]);
 
-    newDate && isDateValid(newDate) && setTerminationDate(formatDate(newDate));
+  useEffect(() => {
+    const newDate = getFormValues()?.date as string;
+
+    newDate &&
+      isDateValid(newDate) &&
+      setTerminationDate(formatLocalDate(newDate));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
   const isDateValid = (date: string) => {
@@ -61,7 +99,7 @@ const TerminateEntityModal = ({
     return true;
   };
 
-  const formatDate = (date: string) => {
+  const formatLocalDate = (date: string) => {
     const newDate = new Date(date);
     const day = newDate.getDate() + '';
     const month = newDate.getMonth() + 1 + '';
@@ -75,7 +113,7 @@ const TerminateEntityModal = ({
       id={id}
       primaryCTA={{
         label: 'Conferma',
-        disabled: !terminationDate,
+        disabled: !(isValidForm && terminationDate),
         onClick: () =>
           terminationDate &&
           onConfirm(
@@ -86,10 +124,9 @@ const TerminateEntityModal = ({
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: onClose,
+        onClick: resetModal,
       }}
       centerButtons
-      onClose={onClose}
     >
       <div className='d-flex flex-column justify-content-center'>
         <div className='d-flex justify-content-center mb-4'>
@@ -106,11 +143,8 @@ const TerminateEntityModal = ({
             <Input
               {...form?.date}
               col='col-6'
-              maximum={new Date().toISOString().split('T')[0]}
               placeholder='Seleziona Data'
-              onInputChange={(value, field) => {
-                onInputChange(value, field);
-              }}
+              onInputChange={onInputChange}
             />
             <div className='col'></div>
           </Form.Row>

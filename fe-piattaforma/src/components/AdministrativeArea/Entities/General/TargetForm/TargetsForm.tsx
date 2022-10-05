@@ -26,6 +26,8 @@ interface TargetsFormI extends withFormHandlerProps {
   setIsFormValid?: (param: boolean | undefined) => void;
   section: SectionT;
   maxTargets?: number;
+  maxDate?: string | undefined;
+  minDate?: string | undefined;
 }
 
 export type SectionT =
@@ -44,8 +46,10 @@ const TargetsForm = ({
   setIsFormValid = () => ({}),
   sendValues = () => ({}),
   getFormValues = () => ({}),
-  onInputChange,
+  onInputChange = () => ({}),
   updateForm = () => ({}),
+  maxDate,
+  minDate,
 }: TargetsFormI) => {
   const [targetsDetails, setTargetsDetails] = useState({});
   const [targetsCount, setTargetsCount] = useState(0);
@@ -57,6 +61,7 @@ const TargetsForm = ({
     if (entityDetail) {
       setTargetsDetails(filterObjectByKey(entityDetail, section));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entityDetail, section]);
 
   useEffect(() => {
@@ -75,6 +80,8 @@ const TargetsForm = ({
             key[key.length - 1]
           }`,
           order: key[key.length - 1],
+          maximum: key.includes('Data') ? maxDate : undefined,
+          minimum: key.includes('Data') ? minDate : undefined,
         })
       );
 
@@ -86,11 +93,13 @@ const TargetsForm = ({
 
       setTargetsCount(currentCount.length);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [targetsDetails]);
 
   useEffect(() => {
     sendValues(getFormValues());
     setIsFormValid(isValidForm);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
   const addTarget = () => {
@@ -112,6 +121,8 @@ const TargetsForm = ({
         id: `n${section}DataTarget${targetsCount + 1}`,
         label: `Data obiettivo ${targetsCount + 1}`,
         order: targetsCount + 1,
+        maximum: maxDate,
+        minimum: minDate,
       })
     );
     updateForm(newForm(newFormFieldList));
@@ -168,8 +179,7 @@ const TargetsForm = ({
     value: formFieldI['value'],
     field?: formFieldI['field']
   ) => {
-    onInputChange?.(value, field);
-    setIsFormValid?.(isValidForm);
+    onInputChange(value, field);
   };
 
   const getRows = (form: FormI) => {

@@ -55,6 +55,14 @@ export const validator = (
     regex = RegexpType.ALPHA_NUMERIC,
     required: requiredObj = false,
     touched = false,
+    maximum,
+    minimum,
+  }: {
+    regex?: string;
+    required?: boolean;
+    touched?: boolean;
+    maximum?: string | number | undefined;
+    minimum?: string | number | undefined;
   },
   data: formFieldI['value'],
   required = false
@@ -64,17 +72,40 @@ export const validator = (
     if (data) {
       if (regex === RegexpType.BOOLEAN) {
         return typeof data === 'boolean';
-      } else if (regex === RegexpType.DATE && Date.parse(data.toString()))
+      } else if (regex === RegexpType.DATE && Date.parse(data.toString())) {
+        if (
+          maximum &&
+          Date.parse(maximum.toString()) - Date.parse(data.toString()) < 0
+        ) {
+          return false;
+        } else if (
+          minimum &&
+          Date.parse(data.toString()) - Date.parse(minimum.toString()) < 0
+        ) {
+          return false;
+        }
         return !!new Date(data.toString()).valueOf();
+      }
       return new RegExp(RegexpRule[regex]).test(data.toString());
     }
     return false;
   } else if (data) {
     if (regex === RegexpType.BOOLEAN) {
       return typeof data === 'boolean';
-    }
-    if (regex === RegexpType.DATE && Date.parse(data.toString()))
+    } else if (regex === RegexpType.DATE && Date.parse(data.toString())) {
+      if (
+        maximum &&
+        Date.parse(maximum.toString()) - Date.parse(data.toString()) < 0
+      ) {
+        return false;
+      } else if (
+        minimum &&
+        Date.parse(data.toString()) - Date.parse(minimum.toString()) < 0
+      ) {
+        return false;
+      }
       return !!new Date(data.toString()).valueOf();
+    }
     return new RegExp(RegexpRule[regex]).test(data.toString());
   }
   return true;
