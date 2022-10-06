@@ -279,7 +279,7 @@ public class ServizioSqlService {
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public ServizioEntity aggiornaServizio(
-			@NotNull final Long idServizio, 
+			@NotNull final Long servizioId, 
 			@NotNull final @Valid ServizioRequest servizioDaAggiornareRequest) {
 		final EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreAggiornato = new EnteSedeProgettoFacilitatoreKey(
             servizioDaAggiornareRequest.getIdEnte(),
@@ -292,7 +292,7 @@ public class ServizioSqlService {
         
         // Recupero servizio in MySql a partire dall'id e
         // aggiorno i dati sul servizio fetchato dal db
-        final ServizioEntity servizioFecthDB = this.getServizioById(idServizio);
+        final ServizioEntity servizioFecthDB = this.getServizioById(servizioId);
         servizioFecthDB.setNome(servizioDaAggiornareRequest.getNomeServizio());
         servizioFecthDB.setDataServizio(servizioDaAggiornareRequest.getDataServizio());
         
@@ -304,8 +304,8 @@ public class ServizioSqlService {
             .forEach(titoloTipologiaServizio -> {
                 TipologiaServizioEntity tipologiaServizio = new TipologiaServizioEntity();
                 tipologiaServizio.setTitolo(titoloTipologiaServizio);
-                if(this.tipologiaServizioRepository.findByTitoloAndServizioId(titoloTipologiaServizio, idServizio).isPresent()) {
-                    TipologiaServizioEntity tipologiaServizioFetchDb = this.tipologiaServizioRepository.findByTitoloAndServizioId(titoloTipologiaServizio, idServizio).get();
+                if(this.tipologiaServizioRepository.findByTitoloAndServizioId(titoloTipologiaServizio, servizioId).isPresent()) {
+                    TipologiaServizioEntity tipologiaServizioFetchDb = this.tipologiaServizioRepository.findByTitoloAndServizioId(titoloTipologiaServizio, servizioId).get();
                     tipologiaServizio.setDataOraCreazione(tipologiaServizioFetchDb.getDataOraCreazione());
                 }else {
                     tipologiaServizio.setDataOraCreazione(new Date());
@@ -315,7 +315,7 @@ public class ServizioSqlService {
                 listaTipologiaServizi.add(tipologiaServizio);
             });
 
-       this.tipologiaServizioRepository.deleteByIdServizio(idServizio);
+       this.tipologiaServizioRepository.deleteByIdServizio(servizioId);
         
         servizioFecthDB.setListaTipologiaServizi(listaTipologiaServizi);
         servizioFecthDB.setIdEnteSedeProgettoFacilitatore(enteSedeProgettoFacilitatoreAggiornato);
