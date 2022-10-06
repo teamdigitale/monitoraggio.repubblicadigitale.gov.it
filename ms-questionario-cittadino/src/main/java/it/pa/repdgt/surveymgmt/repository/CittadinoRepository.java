@@ -217,7 +217,7 @@ public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long
 	String findConsensoByNumDocumentoCittadino(
 			@Param(value = "numeroDocumento") String numeroDocumento
 		);
-	
+
 	@Query(value = " "
 			 + " SELECT "
 			 + "	* "

@@ -57,7 +57,7 @@ public interface RuoloRepository extends JpaRepository<RuoloEntity, String> {
 			+ "WHERE uxr.RUOLO_CODICE = :codiceRuolo ", 
 			nativeQuery = true)
 	int countUtentiPerRuolo(@Param(value = "codiceRuolo") String codiceRuolo);
-	
+
 	@Query(value = "SELECT * "
 			+ "	FROM ruolo r "
 			+ "	WHERE r.codice = UPPER ( :nomeRuolo ) "
