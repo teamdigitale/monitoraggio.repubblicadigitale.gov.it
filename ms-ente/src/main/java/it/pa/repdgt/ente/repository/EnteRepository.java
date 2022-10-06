@@ -381,4 +381,12 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 			+ "			OR UPPER( e.PARTITA_IVA ) = UPPER( :criterioRicerca ) ",
 			nativeQuery = true)
 	public List<EnteEntity> findByCriterioRicerca(String criterioRicerca, String criterioRicercaLike);
+	
+	@Query(value = "SELECT * "
+			+ "			FROM ente e "
+			+ "		WHERE   "
+			+ "			e.partita_iva = :partitaIva"
+			+ "			AND e.id <> :idEnte",
+			nativeQuery = true)
+	public Optional<EnteEntity> findByPartitaIvaAndIdDiverso(String partitaIva, Long idEnte);
 }

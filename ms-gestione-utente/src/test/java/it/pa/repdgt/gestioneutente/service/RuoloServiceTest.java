@@ -135,11 +135,11 @@ public class RuoloServiceTest {
 	
 	@Test
 	public void existsRuoloByNomeTest() {
-		when(this.ruoloRepository.findById("nomeRuolo")).thenReturn(Optional.of(ruolo));
-		assertThat(service.existsRuoloByNome("nomeRuolo")).isEqualTo(Boolean.TRUE);
+		when(this.ruoloRepository.findByNomeOrCodice("nomeRuolo")).thenReturn(Optional.of(ruolo));
+		assertThat(service.existsRuoloByNomeOrCodice("nomeRuolo")).isEqualTo(Boolean.TRUE);
 		
-		when(this.ruoloRepository.findById("nomeRuolo1")).thenReturn(Optional.empty());
-		assertThat(service.existsRuoloByNome("nomeRuolo1")).isEqualTo(Boolean.FALSE);
+		when(this.ruoloRepository.findByNomeOrCodice("nomeRuolo1")).thenReturn(Optional.empty());
+		assertThat(service.existsRuoloByNomeOrCodice("nomeRuolo1")).isEqualTo(Boolean.FALSE);
 	}
 	
 	@Test
@@ -156,13 +156,11 @@ public class RuoloServiceTest {
 	
 	@Test
 	public void creaNuovoRuoloTest() {
-		
-		
-		when(this.ruoloRepository.findById("nomeRuolo")).thenReturn(Optional.of(ruolo));
+		when(this.ruoloRepository.findByNomeOrCodice("nomeRuolo")).thenReturn(Optional.of(ruolo));
 		Assertions.assertThrows(RuntimeException.class, () -> service.creaNuovoRuolo(nuovoRuoloRequest));
 		
 		nuovoRuoloRequest.setNomeRuolo("nomeRuolo1");
-		when(this.ruoloRepository.findById("nomeRuolo1")).thenReturn(Optional.empty());
+		when(this.ruoloRepository.findByNomeOrCodice("nomeRuolo1")).thenReturn(Optional.empty());
 		when(this.gruppoService.getGruppiByCodiciGruppi(gruppiString)).thenReturn(gruppi);
 		service.creaNuovoRuolo(nuovoRuoloRequest);
 		
