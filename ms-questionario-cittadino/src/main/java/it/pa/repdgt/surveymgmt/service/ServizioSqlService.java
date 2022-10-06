@@ -285,7 +285,7 @@ public class ServizioSqlService {
             servizioDaAggiornareRequest.getIdEnte(),
             servizioDaAggiornareRequest.getIdSede(),
             servizioDaAggiornareRequest.getProfilazioneParam().getIdProgetto(),
-            servizioDaAggiornareRequest.getProfilazioneParam().getCfUtenteLoggato()
+            servizioDaAggiornareRequest.getCfUtenteLoggato()
         );
         
         this.enteSedeProgettoFacilitatoreService.getById(enteSedeProgettoFacilitatoreAggiornato);
