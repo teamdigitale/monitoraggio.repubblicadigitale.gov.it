@@ -330,7 +330,7 @@ public class QuestionarioTemplateService {
 		
 		//verifico se esiste un altro questionario con id diverso ma con lo stesso nome
 		final String nomeQuestionarioTemplate = questionarioTemplateDaAggiornare.getNomeQuestionarioTemplate();
-		if(questionarioTemplateSqlService.getQuestionarioTemplateByNomeAndIdDiverso(nomeQuestionarioTemplate, questionarioTemplateDaAggiornare.getIdQuestionarioTemplate()).isPresent()) {
+		if(questionarioTemplateSqlService.getQuestionarioTemplateByNomeAndIdDiverso(nomeQuestionarioTemplate, idQuestionarioTemplate).isPresent()) {
 			String errorMessage = String.format("Impossibile aggiornare il questionario. Questionario con nome = %s già presente", nomeQuestionarioTemplate);
 			throw new QuestionarioTemplateException(errorMessage, CodiceErroreEnum.QT02);
 		}

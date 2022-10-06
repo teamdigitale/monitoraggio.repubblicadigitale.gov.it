@@ -259,7 +259,7 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 			 nativeQuery = true)
 	Optional<ServizioEntity> findByNomeUpdate(@Param(value="nomeServizio")String nomeServizio, 
 			@Param(value="idServizio") Long idServizio);
-			
+
 	@Query(value = "SELECT DISTINCT "
 			+ "			s.id_sede "
 			+ "		FROM "
