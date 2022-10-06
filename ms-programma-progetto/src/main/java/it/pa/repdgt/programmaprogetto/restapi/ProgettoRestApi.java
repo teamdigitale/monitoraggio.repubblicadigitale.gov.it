@@ -84,7 +84,7 @@ public class ProgettoRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<String> getAllStatiDropdownByRuolo(
 			@RequestBody @Valid @NotNull(message = "Deve essere non null") ProgettiParam sceltaContestoParam) {
-		List<String> statiDropdown = this.progettoService.getAllStatiDropdown(sceltaContestoParam, sceltaContesto.getFiltroRequest());
+		List<String> statiDropdown = this.progettoService.getAllStatiDropdown(sceltaContestoParam, sceltaContestoParam.getFiltroRequest());
 		return statiDropdown;
 	}
 	
