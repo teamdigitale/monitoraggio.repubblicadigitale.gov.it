@@ -20,11 +20,11 @@ public interface TipologiaServizioRepository extends JpaRepository<TipologiaServ
 			+ "",
 		  nativeQuery = true)
 	void deleteByIdServizio(@Param(value="idServizio") Long idServizio);
-	
+
 	@Query(value = ""
 			+ ""
-			+ " SELECT "
-			+ "		*  "
+			+ " SELECT"
+			+ "		* "
 			+ "	FROM   "
 			+ "		tipologia_servizio ts                  "
 			+ " WHERE ts.TITOLO = :titoloTipologiaServizio "
@@ -33,6 +33,5 @@ public interface TipologiaServizioRepository extends JpaRepository<TipologiaServ
 		  nativeQuery = true)
 	Optional<TipologiaServizioEntity> findByTitoloAndServizioId(
 			@Param(value="titoloTipologiaServizio") String titoloTipologiaServizio,
-			@Param(value="servizioId") Long servizioId
-		);
+	@Param(value="servizioId") Long servizioId);
 }

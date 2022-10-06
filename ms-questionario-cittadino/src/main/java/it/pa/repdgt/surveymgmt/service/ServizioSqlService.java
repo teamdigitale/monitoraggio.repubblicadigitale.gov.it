@@ -298,7 +298,7 @@ public class ServizioSqlService {
 		
 		final List<String> listaTitoloTipologiaServizi = servizioDaAggiornareRequest.getListaTipologiaServizi();
 		
-		final List<TipologiaServizioEntity> listaTipologiaServizi = new ArrayList<>();		
+		final List<TipologiaServizioEntity> listaTipologiaServizi = new ArrayList<>();
 		listaTitoloTipologiaServizi
 			.stream()
 			.forEach(titoloTipologiaServizio -> {
@@ -395,9 +395,9 @@ public class ServizioSqlService {
 	public Optional<ServizioEntity> getServizioByNomeUpdate(String nomeServizio, Long idServizio) {
 		return this.servizioSqlRepository.findByNomeUpdate(nomeServizio, idServizio);
 	}
-	
+
 	public List<String> getIdsSediFacilitatoreConServiziAndCittadiniCensitiByCodFiscaleAndIdProgetto(
-		String codiceFiscaleUtenteLoggato, Long idProgetto) {
+			String codiceFiscaleUtenteLoggato, Long idProgetto) {
 		return servizioSqlRepository.findIdsSediFacilitatoreConServiziAndCittadiniCensitiByCodFiscaleAndIdProgetto(codiceFiscaleUtenteLoggato, idProgetto);
 	}
 }

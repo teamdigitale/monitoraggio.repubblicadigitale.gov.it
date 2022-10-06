@@ -271,7 +271,7 @@ public class CittadinoService {
 			errorMessage = String.format("Impossibile aggiornare il cittadino. Cittadino con codice fiscale o numero documento già esistente");
 			throw new CittadinoException(errorMessage, CodiceErroreEnum.U07);
 		}
-		
+
 		CittadinoEntity cittadinoEntity = this.cittadinoMapper.toEntityFrom(cittadinoRequest);
 		cittadinoEntity.setId(id);
 		cittadinoEntity.setDataOraCreazione(cittadinoFetchDb.getDataOraCreazione());
