@@ -1,17 +1,15 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import { Form, Input } from '../../../components';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
 import { selectProjects } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
-import { GetProjectDetail } from '../../../redux/features/administrativeArea/projects/projectsThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import { formatDate } from '../../../utils/common';
 import {
   formFieldI,
   FormHelper,
+  FormI,
   newForm,
   newFormField,
 } from '../../../utils/formHelper';
@@ -34,7 +32,6 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
   props
 ) => {
   const {
-    setFormValues = () => ({}),
     form,
     onInputChange = () => ({}),
     sendNewValues = () => ({}),
@@ -43,33 +40,16 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
     getFormValues = () => ({}),
     creation = false,
     updateForm = () => ({}),
-    intoModal = false,
     program,
   } = props;
-  const { projectId } = useParams();
 
   const formDisabled = !!props.formDisabled;
 
-  const formData: { [key: string]: string } | undefined =
+  const projectDetails: { [key: string]: string } | undefined =
     useAppSelector(selectProjects).detail?.dettagliInfoProgetto;
-
-  const programDetails =
+  const programProjectDetails =
     useAppSelector(selectProjects).detail?.dettagliInfoProgramma;
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (!creation && projectId) {
-      dispatch(GetProjectDetail(projectId));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [creation, projectId]);
-
-  useEffect(() => {
-    setIsFormValid(isValidForm);
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form]);
+  const programDetails = programProjectDetails || program;
 
   useEffect(() => {
     if (
@@ -91,18 +71,45 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
   }, [formDisabled, form]);
 
   useEffect(() => {
-    if (formData && !creation) {
-      setFormValues(
-        Object.fromEntries(
-          Object.entries(formData).filter(
-            ([key, _val]) =>
-              !key.includes('Target') /* && !key.includes('id') */
-          )
+    if (projectDetails && form) {
+      const currentFormFieldList: formFieldI[] = Object.entries(projectDetails)
+        .filter(
+          ([key, _val]) => !key.includes('Target') && !key.includes('stato')
         )
-      );
+        .map(([key, value]) =>
+          newFormField({
+            ...form[key],
+            value: value,
+          })
+        );
+
+      let filledForm: FormI = newForm(currentFormFieldList);
+
+      if (
+        programDetails?.dataInizio &&
+        !(filledForm?.dataInizio?.minimum || filledForm?.dataInizio?.maximum)
+      ) {
+        filledForm = {
+          ...filledForm,
+          dataInizio: {
+            ...filledForm.dataInizio,
+            touched: false,
+            minimum: formatDate(programDetails.dataInizio),
+            maximum: formatDate(programDetails.dataFine),
+          },
+          dataFine: {
+            ...filledForm.dataFine,
+            touched: false,
+            minimum: formatDate(programDetails.dataInizio),
+            maximum: formatDate(programDetails.dataFine),
+          },
+        };
+      }
+
+      updateForm(filledForm);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData]);
+  }, [projectDetails]);
 
   const onInputDataChange = (
     value: formFieldI['value'],
@@ -192,42 +199,52 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
 
   useEffect(() => {
     if (form?.dataInizio?.maximum || form?.dataInizio?.minimum)
-      onInputDataChange(form?.dataInizio?.value, form?.dataInizio?.field);
+      onDateChange(form?.dataInizio?.value, form?.dataInizio?.field);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form?.dataInizio?.maximum, form?.dataInizio?.minimum]);
   useEffect(() => {
     if (form?.dataFine?.maximum || form?.dataFine?.minimum)
-      onInputDataChange(form?.dataFine?.value, form?.dataFine?.field);
+      onDateChange(form?.dataFine?.value, form?.dataFine?.field);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form?.dataFine?.maximum, form?.dataFine?.minimum]);
 
   useEffect(() => {
-    sendNewValues(getFormValues?.());
+    sendNewValues(getFormValues());
     setIsFormValid(isValidForm);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
-  const updateRequiredFields = () => {
-    if (form) {
-      const newFormList: formFieldI[] = [];
-      const values = getFormValues();
-      Object.keys(values).forEach((field) => {
-        newFormList.push(
-          newFormField({
-            ...form[field],
-            field: field,
-            id: intoModal ? `modal-${field}` : field,
-          })
-        );
-      });
-      updateForm(newForm(newFormList));
-    }
-  };
-
   useEffect(() => {
-    updateRequiredFields();
+    if (
+      creation &&
+      form &&
+      !projectDetails &&
+      programDetails?.dataInizio &&
+      !(form?.dataInizio?.minimum || form?.dataInizio?.maximum)
+    ) {
+      updateForm({
+        ...form,
+        dataInizio: {
+          ...form.dataInizio,
+          touched: false,
+          minimum: formatDate(programDetails.dataInizio),
+          maximum: formatDate(programDetails.dataFine),
+        },
+        dataFine: {
+          ...form.dataFine,
+          touched: false,
+          minimum: formatDate(programDetails.dataInizio),
+          maximum: formatDate(programDetails.dataFine),
+        },
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [intoModal]);
+  }, [
+    programDetails?.dataInizio,
+    form?.dataInizio?.maximum,
+    form?.dataInizio?.minimum,
+    creation,
+  ]);
 
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 
@@ -246,7 +263,7 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
             onInputChange={onInputDataChange}
           />
         ) : (
-          <div className='sr-only' />
+          <span className='sr-only' />
         )}
         <Input
           {...form?.nome}
@@ -279,20 +296,6 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
           {...form?.dataFine}
           required
           label='Data fine'
-          minimum={
-            creation
-              ? form?.dataInizio.value
-                ? formatDate(form?.dataInizio.value as string)
-                : program?.dataInizio
-              : formatDate(form?.dataInizio.value as string)
-          }
-          maximum={
-            creation
-              ? program?.dataFine
-              : programDetails
-              ? formatDate(programDetails.dataFine)
-              : undefined
-          }
           col='col-12 col-lg-6'
           onInputChange={onDateChange}
         />
@@ -311,11 +314,13 @@ const form = newForm([
     field: 'nome',
     type: 'text',
     id: 'project-name',
+    required: true,
   }),
   newFormField({
     field: 'nomeBreve',
     type: 'text',
     id: 'short-name',
+    required: true,
   }),
   newFormField({
     field: 'cup',
@@ -325,11 +330,13 @@ const form = newForm([
     field: 'dataInizio',
     regex: RegexpType.DATE,
     type: 'date',
+    required: true,
   }),
   newFormField({
     field: 'dataFine',
     regex: RegexpType.DATE,
     type: 'date',
+    required: true,
   }),
 ]);
 

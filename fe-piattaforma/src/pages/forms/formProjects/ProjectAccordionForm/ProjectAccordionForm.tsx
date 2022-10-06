@@ -1,4 +1,6 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import TargetsForm, {
   SectionT,
 } from '../../../../components/AdministrativeArea/Entities/General/TargetForm/TargetsForm';
@@ -6,10 +8,20 @@ import { Accordion } from '../../../../components/index';
 import { selectProjects } from '../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { useAppSelector } from '../../../../redux/hooks';
 import FormProjectGeneralInfo from '../formProjectGeneralInfo';
+import { GetProjectDetail } from '../../../../redux/features/administrativeArea/projects/projectsThunk';
 
 const ProjectAccordionForm = () => {
+  const dispatch = useDispatch();
+  const { projectId } = useParams();
   const projectDetails =
     useAppSelector(selectProjects).detail.dettagliInfoProgetto;
+
+  useEffect(() => {
+    if (projectId) {
+      dispatch(GetProjectDetail(projectId));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [projectId]);
 
   return (
     <>

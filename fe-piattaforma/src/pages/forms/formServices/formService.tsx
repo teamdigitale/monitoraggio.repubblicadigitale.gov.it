@@ -9,7 +9,10 @@ import { GetProjectDetail } from '../../../redux/features/administrativeArea/pro
 import { GetSurveyTemplateServiceCreation } from '../../../redux/features/administrativeArea/services/servicesThunk';
 import { getUserHeaders } from '../../../redux/features/user/userThunk';
 import { useAppSelector } from '../../../redux/hooks';
-import { createStringOfCompiledSurveySection } from '../../../utils/common';
+import {
+  createStringOfCompiledSurveySection,
+  formatDate,
+} from '../../../utils/common';
 import { formFieldI, FormI } from '../../../utils/formHelper';
 import { generateForm } from '../../../utils/jsonFormHelper';
 import FormServiceDynamic from './formServiceDynamic';
@@ -51,9 +54,8 @@ const FormService: React.FC<FormServiceI> = (props) => {
   }>({});
   const [isFormDynamicValid, setIsFormDynamicValid] = useState<boolean>(false);
   const { idProgetto } = getUserHeaders();
-  const projectDetails = useAppSelector(selectProjects)?.detail?.dettagliInfoProgetto
-  ;
-
+  const projectDetails =
+    useAppSelector(selectProjects)?.detail?.dettagliInfoProgetto;
   useEffect(() => {
     if (creation) {
       dispatch(GetSurveyTemplateServiceCreation());
@@ -70,8 +72,12 @@ const FormService: React.FC<FormServiceI> = (props) => {
       Object.keys(formFromSchema).forEach((key: string) => {
         formFromSchema[key].label = formFromSchema[key].value?.toString() || '';
         formFromSchema[key].value = '';
-        // case durata
-        if (key === '23') {
+        if (key === '22') {
+          // case date
+          formFromSchema[key].maximum = formatDate(projectDetails?.dataFine);
+          formFromSchema[key].minimum = formatDate(projectDetails?.dataInizio);
+        } else if (key === '23') {
+          // case durata
           formFromSchema[key].value = '00:00';
         }
       });

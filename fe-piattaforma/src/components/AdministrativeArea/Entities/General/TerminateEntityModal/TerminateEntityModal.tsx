@@ -63,7 +63,6 @@ const TerminateEntityModal = ({
 
   useEffect(() => {
     if ((maxDate || minDate) && form) {
-      console.log('passa da qua');
       updateForm({
         ...form,
         date: {

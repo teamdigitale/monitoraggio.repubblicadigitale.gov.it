@@ -453,6 +453,7 @@ const ProgramsDetails: React.FC = () => {
           size: 'xs',
           color: 'primary',
           text: 'Conferma',
+          disabled: newSurveyDefaultId === '',
           onClick: () => confirmSurvey(),
         },
       ]);
