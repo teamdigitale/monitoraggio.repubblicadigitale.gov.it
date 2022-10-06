@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.178](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.177...1.0.0-develop.178) (2022-10-06)
+
+
+### Bug Fixes
+
+* **be:** fix aggiorna tipoogia servizio ([ca5197c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ca5197c1d172c138e09ffa330aae3eea36374f9a))
+
 ## [1.0.0-develop.177](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.176...1.0.0-develop.177) (2022-10-06)
 
 
