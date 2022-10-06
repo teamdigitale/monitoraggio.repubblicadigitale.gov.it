@@ -20,7 +20,7 @@ public interface TipologiaServizioRepository extends JpaRepository<TipologiaServ
 			+ "",
 		  nativeQuery = true)
 	void deleteByIdServizio(@Param(value="idServizio") Long idServizio);
-	
+
 	@Query(value = ""
 			+ ""
 			+ " SELECT"

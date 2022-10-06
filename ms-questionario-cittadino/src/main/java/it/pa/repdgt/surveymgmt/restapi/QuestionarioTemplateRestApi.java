@@ -128,7 +128,7 @@ public class QuestionarioTemplateRestApi {
 	// Visualizza scheda questionario
 	@GetMapping(path = "/{idQuestionario}",  produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
-	public QuestionarioTemplateResource getQuestioanarioTemplateById(
+	public QuestionarioTemplateResource getQuestionarioTemplateById(
 			@PathVariable(value = "idQuestionario") final String templateQuestionarioId) {
 		final QuestionarioTemplateCollection questionarioTemplate = this.questionarioTemplateService.getQuestionarioTemplateById(templateQuestionarioId.trim());
 		return questionarioTemplateMapper.toResourceFrom(questionarioTemplate);
