@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.177](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.176...1.0.0-develop.177) (2022-10-06)
+
+
+### Bug Fixes
+
+* **be:** fix nome variabile ([5758205](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5758205a5388505123d405e5dd93d1abe36c00fc))
+* **be:** commit per trigger release ([6645cd3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6645cd348362185c796570fa4fbb01b2ee25c24f))
+
 ## [1.0.0-develop.176](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.175...1.0.0-develop.176) (2022-10-05)
 
 
