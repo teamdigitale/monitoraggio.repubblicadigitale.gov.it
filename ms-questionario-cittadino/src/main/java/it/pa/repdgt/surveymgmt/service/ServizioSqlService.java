@@ -282,40 +282,46 @@ public class ServizioSqlService {
 			@NotNull final Long idServizio, 
 			@NotNull final @Valid ServizioRequest servizioDaAggiornareRequest) {
 		final EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreAggiornato = new EnteSedeProgettoFacilitatoreKey(
-			servizioDaAggiornareRequest.getIdEnte(),
-			servizioDaAggiornareRequest.getIdSede(),
-			servizioDaAggiornareRequest.getProfilazioneParam().getIdProgetto(),
-			servizioDaAggiornareRequest.getCfUtenteLoggato()
-		);
-		
-		this.enteSedeProgettoFacilitatoreService.getById(enteSedeProgettoFacilitatoreAggiornato);
+            servizioDaAggiornareRequest.getIdEnte(),
+            servizioDaAggiornareRequest.getIdSede(),
+            servizioDaAggiornareRequest.getProfilazioneParam().getIdProgetto(),
+            servizioDaAggiornareRequest.getProfilazioneParam().getCodiceFiscaleUtenteLoggato()
+        );
+        
+        this.enteSedeProgettoFacilitatoreService.getById(enteSedeProgettoFacilitatoreAggiornato);
+        
+        // Recupero servizio in MySql a partire dall'id e
+        // aggiorno i dati sul servizio fetchato dal db
+        final ServizioEntity servizioFecthDB = this.getServizioById(idServizio);
+        servizioFecthDB.setNome(servizioDaAggiornareRequest.getNomeServizio());
+        servizioFecthDB.setDataServizio(servizioDaAggiornareRequest.getDataServizio());
+        
+        final List<String> listaTitoloTipologiaServizi = servizioDaAggiornareRequest.getListaTipologiaServizi();
+        
+        final List<TipologiaServizioEntity> listaTipologiaServizi = new ArrayList<>();
+        listaTitoloTipologiaServizi
+            .stream()
+            .forEach(titoloTipologiaServizio -> {
+                TipologiaServizioEntity tipologiaServizio = new TipologiaServizioEntity();
+                tipologiaServizio.setTitolo(titoloTipologiaServizio);
+                if(this.tipologiaServizioRepository.findByTitoloAndServizioId(titoloTipologiaServizio, idServizio).isPresent()) {
+                    TipologiaServizioEntity tipologiaServizioFetchDb = this.tipologiaServizioRepository.findByTitoloAndServizioId(titoloTipologiaServizio, idServizio).get();
+                    tipologiaServizio.setDataOraCreazione(tipologiaServizioFetchDb.getDataOraCreazione());
+                }else {
+                    tipologiaServizio.setDataOraCreazione(new Date());
+                }
+                tipologiaServizio.setDataOraAggiornamento(new Date());
+                tipologiaServizio.setServizio(servizioFecthDB);
+                listaTipologiaServizi.add(tipologiaServizio);
+            });
 
-		// Recupero servizio in MySql a partire dall'id e
-		// aggiorno i dati sul servizio fetchato dal db
-		final ServizioEntity servizioFecthDB = this.getServizioById(idServizio);
-		servizioFecthDB.setNome(servizioDaAggiornareRequest.getNomeServizio());
-		servizioFecthDB.setDataServizio(servizioDaAggiornareRequest.getDataServizio());
-		
-		final List<String> listaTitoloTipologiaServizi = servizioDaAggiornareRequest.getListaTipologiaServizi();
-		final List<TipologiaServizioEntity> listaTipologiaServizi = new ArrayList<>();
-		
-		
-		this.tipologiaServizioRepository.deleteByIdServizio(idServizio);
-		listaTitoloTipologiaServizi
-			.stream()
-			.forEach(titoloTipologiaServizio -> {
-				TipologiaServizioEntity tipologiaServizio = new TipologiaServizioEntity();
-				tipologiaServizio.setTitolo(titoloTipologiaServizio);
-				tipologiaServizio.setDataOraAggiornamento(new Date());
-				tipologiaServizio.setServizio(servizioFecthDB);
-				listaTipologiaServizi.add(tipologiaServizio);
-			});
-		
-		servizioFecthDB.setListaTipologiaServizi(listaTipologiaServizi);
-		servizioFecthDB.setIdEnteSedeProgettoFacilitatore(enteSedeProgettoFacilitatoreAggiornato);
-		servizioFecthDB.setDataOraAggiornamento(new Date());
-		servizioFecthDB.setTipologiaServizio(String.join(", ", servizioDaAggiornareRequest.getListaTipologiaServizi()));
-		return this.servizioSqlRepository.save(servizioFecthDB);
+       this.tipologiaServizioRepository.deleteByIdServizio(idServizio);
+        
+        servizioFecthDB.setListaTipologiaServizi(listaTipologiaServizi);
+        servizioFecthDB.setIdEnteSedeProgettoFacilitatore(enteSedeProgettoFacilitatoreAggiornato);
+        servizioFecthDB.setDataOraAggiornamento(new Date());
+        servizioFecthDB.setTipologiaServizio(String.join(", ", servizioDaAggiornareRequest.getListaTipologiaServizi()));
+        return this.servizioSqlRepository.save(servizioFecthDB);
 	}
 	
 	@LogMethod

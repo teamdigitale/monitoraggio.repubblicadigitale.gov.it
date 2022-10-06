@@ -271,4 +271,16 @@ public interface QuestionarioTemplateSqlRepository extends JpaRepository<Questio
 	List<QuestionarioTemplateEntity> findQuestionarioTemplateByIdProgetto(
 			@Param(value = "idProgetto") Long idProgetto
 		);
+	
+	Optional<QuestionarioTemplateEntity> findByNome(String nomeQuestionarioTemplate);
+	
+	@Query(value = ""
+			+ " SELECT * "
+			+ "	FROM questionario_template qt "
+			+ "	WHERE qt.nome = :nomeQuestionarioTemplate "
+			+ "		AND qt.id <> :idQuestionarioTemplate",
+			nativeQuery = true)
+	Optional<QuestionarioTemplateEntity> findQuestionarioTemplateByNomeAndIdDiverso(
+			String nomeQuestionarioTemplate,
+			String idQuestionarioTemplate);
 }
