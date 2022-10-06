@@ -136,6 +136,20 @@ const Users = () => {
     filterKey: 'ruoli' | 'stati'
   ) => {
     setFilterDropdownSelected(filterKey);
+    if (
+      filtersList[filterKey] &&
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      filtersList[filterKey]?.length > values?.length
+    ) {
+      const dropdownType =
+        filterKey === statusDropdownLabel
+          ? statusDropdownLabel
+          : filterKey === ruoliDropdownLabel
+          ? ruoliDropdownLabel
+          : '';
+      dispatch(GetEntityFilterValues({ entity, dropdownType: dropdownType, noFilters: true }));
+    }
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
   };
 

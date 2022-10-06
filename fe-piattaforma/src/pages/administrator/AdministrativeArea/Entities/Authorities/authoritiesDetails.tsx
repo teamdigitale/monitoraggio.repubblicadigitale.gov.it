@@ -74,12 +74,21 @@ const AuthoritiesDetails = () => {
     }
     if (entityId && !programDetails?.nomeBreve)
       dispatch(GetProgramDetail(entityId));
+
+    if (
+      location.pathname ===
+      `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/ente-gestore-progetto/${authorityId}`
+    ) {
+      navigate(
+        `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/ente-gestore-progetto`
+      );
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     // For breadcrumb
-    if(entityId && programDetails?.nomeBreve){
+    if (entityId && programDetails?.nomeBreve) {
       dispatch(
         setInfoIdsBreadcrumb({
           id: entityId,

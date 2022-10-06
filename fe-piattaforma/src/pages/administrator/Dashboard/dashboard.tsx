@@ -56,8 +56,9 @@ const dashboardRoles: {
 };
 
 const publicContents = {
-  title: 'Repubblica Digitale per i cittadini',
-  subtitle: 'Consulta i dati del Piano operativo per le competenze digitali',
+  title: 'Servizi di facilitazione e formazione per i cittadini',
+  subtitle:
+    'Rappresentazione dei dati relativi ai servizi di facilitazione e formazione erogati ai cittadini',
 };
 
 const authContents = {

@@ -82,6 +82,7 @@ const AddUserRole: React.FC<withFormHandlerProps> = (props) => {
             required
             onMenuClose={() => dispatch(expandModal({ expandModal: false }))}
             onMenuOpen={() => dispatch(expandModal({ expandModal: true }))}
+            maxMenuHeight={200}
           />
         </Form.Row>
       </Form>

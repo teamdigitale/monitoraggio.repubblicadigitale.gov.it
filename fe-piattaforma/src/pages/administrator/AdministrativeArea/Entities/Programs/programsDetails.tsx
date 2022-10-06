@@ -453,6 +453,7 @@ const ProgramsDetails: React.FC = () => {
           size: 'xs',
           color: 'primary',
           text: 'Conferma',
+          disabled: newSurveyDefaultId === '',
           onClick: () => confirmSurvey(),
         },
       ]);
@@ -931,18 +932,30 @@ const ProgramsDetails: React.FC = () => {
     programId: string,
     terminationDate: string
   ) => {
-    await dispatch(TerminateEntity(programId, 'programma', terminationDate));
-    dispatch(GetProgramDetail(programId));
-    dispatch(closeModal());
+    const res = await dispatch(
+      TerminateEntity(programId, 'programma', terminationDate)
+    );
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (res) {
+      dispatch(GetProgramDetail(programId));
+      dispatch(closeModal());
+    }
   };
 
   const terminateProject = async (
     projectId: string,
     terminationDate: string
   ) => {
-    await dispatch(TerminateEntity(projectId, 'progetto', terminationDate));
-    dispatch(GetProjectDetail(projectId));
-    dispatch(closeModal());
+    const res = await dispatch(
+      TerminateEntity(projectId, 'progetto', terminationDate)
+    );
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (res) {
+      dispatch(GetProjectDetail(projectId));
+      dispatch(closeModal());
+    }
   };
 
   const removeReferentDelegate = async (
@@ -1086,7 +1099,7 @@ const ProgramsDetails: React.FC = () => {
           : null}
         {currentModal ? currentModal : null}
         <TerminateEntityModal
-          onClose={() => dispatch(closeModal())}
+          minDate={programDetails?.dataInizio?.toString()}
           onConfirm={(entity: string, terminationDate: string, id?: string) => {
             switch (entity) {
               case 'program':

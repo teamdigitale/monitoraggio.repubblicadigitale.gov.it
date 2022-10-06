@@ -88,6 +88,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
       const tmpForm = FormHelper.onInputChange(form, value, field);
       const referenceBoolean = !tmpForm?.['4']?.value;
       tmpForm['3'].required = referenceBoolean;
+      if(referenceBoolean === false){ tmpForm[3].valid = true; }
       tmpForm['5'].required = !referenceBoolean;
       tmpForm['6'].required = !referenceBoolean;
       updateForm(tmpForm);

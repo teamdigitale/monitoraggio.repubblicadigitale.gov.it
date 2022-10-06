@@ -57,6 +57,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       dispatch(setProjectDetails({}));
       setCurrentStep(0);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   const handleSaveProject = async () => {
@@ -256,6 +257,8 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             )
           }
           entityDetail={projectDetails}
+          maxDate={projectDetails?.dataFine?.toString()}
+          minDate={projectDetails?.dataInizio?.toString()}
         />
       );
       break;
@@ -272,6 +275,8 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             )
           }
           entityDetail={projectDetails}
+          maxDate={projectDetails?.dataFine?.toString()}
+          minDate={projectDetails?.dataInizio?.toString()}
         />
       );
       break;
@@ -288,6 +293,8 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             )
           }
           entityDetail={projectDetails}
+          maxDate={projectDetails?.dataFine?.toString()}
+          minDate={projectDetails?.dataInizio?.toString()}
         />
       );
       break;
@@ -304,6 +311,8 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             )
           }
           entityDetail={projectDetails}
+          maxDate={projectDetails?.dataFine?.toString()}
+          minDate={projectDetails?.dataInizio?.toString()}
         />
       );
       break;

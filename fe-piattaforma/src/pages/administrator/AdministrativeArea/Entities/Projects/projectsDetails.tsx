@@ -132,8 +132,13 @@ const ProjectsDetails = () => {
   const partnerRef = useRef<HTMLLIElement>(null);
   const sediRef = useRef<HTMLLIElement>(null);
   const infoRef = useRef<HTMLLIElement>(null);
-  const { entityId, projectId, identeDiRiferimento, authorityType } =
-    useParams();
+  const {
+    entityId,
+    projectId,
+    identeDiRiferimento,
+    authorityType,
+    authorityId,
+  } = useParams();
   const managerAuthority =
     useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
 
@@ -149,6 +154,14 @@ const ProjectsDetails = () => {
       `/area-amministrativa/progetti/${entityId}/${identeDiRiferimento}`
     ) {
       navigate(`/area-amministrativa/progetti/${entityId}/info`);
+    }
+    if (
+      location.pathname ===
+      `/area-amministrativa/progetti/${projectId}/ente-gestore-progetto/${authorityId}`
+    ) {
+      navigate(
+        `/area-amministrativa/progetti/${projectId}/ente-gestore-progetto`
+      );
     }
     if (
       location.pathname ===
@@ -1039,9 +1052,15 @@ const ProjectsDetails = () => {
     projectId: string,
     terminationDate: string
   ) => {
-    await dispatch(TerminateEntity(projectId, 'progetto', terminationDate));
-    dispatch(GetProjectDetail(projectId));
-    dispatch(closeModal());
+    const res = await dispatch(
+      TerminateEntity(projectId, 'progetto', terminationDate)
+    );
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (res) {
+      dispatch(GetProjectDetail(projectId));
+      dispatch(closeModal());
+    }
   };
 
   const removeReferentDelegate = async (
@@ -1264,7 +1283,7 @@ const ProjectsDetails = () => {
           ) : null}
           {currentModal ? currentModal : null}
           <TerminateEntityModal
-            onClose={() => dispatch(closeModal())}
+            minDate={projectDetails?.dataInizio?.toString()}
             onConfirm={(_entity: string, terminationDate: string) =>
               terminationDate &&
               projectId &&
