@@ -297,19 +297,25 @@ public class ServizioSqlService {
 		servizioFecthDB.setDataServizio(servizioDaAggiornareRequest.getDataServizio());
 		
 		final List<String> listaTitoloTipologiaServizi = servizioDaAggiornareRequest.getListaTipologiaServizi();
-		final List<TipologiaServizioEntity> listaTipologiaServizi = new ArrayList<>();
 		
-		
-		this.tipologiaServizioRepository.deleteByIdServizio(idServizio);
+		final List<TipologiaServizioEntity> listaTipologiaServizi = new ArrayList<>();		
 		listaTitoloTipologiaServizi
 			.stream()
 			.forEach(titoloTipologiaServizio -> {
 				TipologiaServizioEntity tipologiaServizio = new TipologiaServizioEntity();
 				tipologiaServizio.setTitolo(titoloTipologiaServizio);
+				if(this.tipologiaServizioRepository.findByTitoloAndServizioId(titoloTipologiaServizio, idServizio).isPresent()) {
+					TipologiaServizioEntity tipologiaServizioFetchDb = this.tipologiaServizioRepository.findByTitoloAndServizioId(titoloTipologiaServizio, idServizio).get();
+					tipologiaServizio.setDataOraCreazione(tipologiaServizioFetchDb.getDataOraCreazione());
+				}else {
+					tipologiaServizio.setDataOraCreazione(new Date());
+				}
 				tipologiaServizio.setDataOraAggiornamento(new Date());
 				tipologiaServizio.setServizio(servizioFecthDB);
 				listaTipologiaServizi.add(tipologiaServizio);
 			});
+
+		this.tipologiaServizioRepository.deleteByIdServizio(idServizio);
 		
 		servizioFecthDB.setListaTipologiaServizi(listaTipologiaServizi);
 		servizioFecthDB.setIdEnteSedeProgettoFacilitatore(enteSedeProgettoFacilitatoreAggiornato);
