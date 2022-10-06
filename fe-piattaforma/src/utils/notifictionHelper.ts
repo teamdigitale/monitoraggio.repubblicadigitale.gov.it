@@ -27,17 +27,16 @@ const getErrorMessage = ({ response }: any) => {
   }
 };
 */
-
-export const getErrorMessage = async ({ response }: any) => {
+export const defaultErrorMessage = 'Si è verificato un errore';
+export const getErrorMessage = async (errorCode: string) => {
   try {
     const res = await axios('/assets/errors/errors.json');
     if (res?.data) {
       const errorsList = { ...res.data.errors };
-      const errorCode = response.data.errorCode;
-      return errorsList[errorCode] || 'Si è verificato un errore';
+      return errorsList[errorCode] || defaultErrorMessage;
     }
   } catch (error) {
-    return 'Si è verificato un errore';
+    return defaultErrorMessage;
   }
 };
 
@@ -62,7 +61,9 @@ export const errorHandler = async (error: unknown) => {
     }
     dispatchNotify({
       status: 'error',
-      message: await getErrorMessage(error),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      message: await getErrorMessage(error?.response?.data?.errorCode),
       closable: true,
       duration: 'slow',
     });

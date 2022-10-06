@@ -128,6 +128,20 @@ const Programs = () => {
 
   const handleDropdownFilters = (values: FilterI[], filterKey: string) => {
     setFilterDropdownSelected(filterKey);
+    if (
+      filtersList[filterKey] &&
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      filtersList[filterKey]?.length > values?.length
+    ) {
+      const dropdownType =
+        filterKey === 'filtroStati'
+          ? 'stati'
+          : filterKey === 'filtroPolicies'
+          ? 'policies'
+          : '';
+      dispatch(GetEntityFilterValues({ entity, dropdownType: dropdownType, noFilters: true }));
+    }
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
   };
 

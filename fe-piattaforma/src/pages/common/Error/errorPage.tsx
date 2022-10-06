@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Icon } from 'design-react-kit';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -8,12 +8,17 @@ import LogoScrittaBlu from '/public/assets/img/logo-scritta-blu-x2.png';
 import { Footer } from '../../../components';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../redux/hooks';
+import {
+  defaultErrorMessage,
+  getErrorMessage,
+} from '../../../utils/notifictionHelper';
 import { LogoutRedirect } from '../../../redux/features/user/userThunk';
 
 const ErrorPage = () => {
+  const [errorMessage, setErrorMessage] = useState(defaultErrorMessage);
   const device = useAppSelector(selectDevice);
   const dispatch = useDispatch();
-  const { errorCode } = useParams();
+  const { errorCode = 'empty' } = useParams();
 
   useEffect(() => {
     setTimeout(() => {
@@ -22,14 +27,15 @@ const ErrorPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const showErrorByCode = () => {
-    switch (errorCode) {
-      case 'U20':
-        return 'Errore U20';
-      default:
-        return 'Si è verificato un errore';
-    }
+  const handleGetErrorMessage = async () => {
+    const error = await getErrorMessage(errorCode);
+    if (error) setErrorMessage(error);
   };
+
+  useEffect(() => {
+    handleGetErrorMessage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [errorCode]);
 
   return (
     <div>
@@ -104,7 +110,7 @@ const ErrorPage = () => {
                       'text-center text-wrap'
                   )}
                 >
-                  {showErrorByCode()}
+                  {errorMessage}
                 </h1>
               </Card>
             </div>

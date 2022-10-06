@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Icon, Pager, PagerItem, PagerLink } from 'design-react-kit';
+import Ellipsis from '/public/assets/img/ellipsis.png';
+import './paginator.scss';
 import clsx from 'clsx';
 
 export interface PaginatorI {
@@ -54,7 +56,7 @@ const Paginator: React.FC<PaginatorI> = (props) => {
 
   const renderPages = () => {
     if (pages > pageToShow + 2) {
-      const toPage = Math.min(active + pageToShow - 1 , pages) - 1;
+      const toPage = Math.min(active + pageToShow - 1, pages) - 1;
       const fromPage = Math.max(1, toPage - pageToShow);
       return (
         <>
@@ -67,7 +69,11 @@ const Paginator: React.FC<PaginatorI> = (props) => {
               1
             </PagerLink>
           </PagerItem>
-          {(fromPage - 1 >= 1) ? <PagerItem className='d-flex align-items-center'><Icon icon='it-more-actions'/></PagerItem> : null}
+          {fromPage - 1 >= 1 ? (
+            <PagerItem className='d-flex align-items-center'>
+              <Icon icon={Ellipsis} className='ellipsis' />
+            </PagerItem>
+          ) : null}
           {[...Array(pages).keys()].slice(fromPage, toPage).map((page) => (
             <PagerItem key={page}>
               <PagerLink
@@ -79,7 +85,11 @@ const Paginator: React.FC<PaginatorI> = (props) => {
               </PagerLink>
             </PagerItem>
           ))}
-          {(pages - toPage > 1) ? <PagerItem className='d-flex align-items-center'><Icon icon='it-more-actions'/></PagerItem> : null}
+          {pages - toPage > 1 ? (
+            <PagerItem className='d-flex align-items-center'>
+              <Icon icon={Ellipsis} className='ellipsis' />
+            </PagerItem>
+          ) : null}
           <PagerItem key={pages}>
             <PagerLink
               href={refID}
