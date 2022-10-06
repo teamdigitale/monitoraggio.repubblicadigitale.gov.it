@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.70](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.69...1.0.0-test.70) (2022-10-06)
+
+
+### Bug Fixes
+
+* **be:** defect ([5c01d1a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5c01d1aa6412626acdb751e9f88ff744e9f62e15))
+
 ## [1.0.0-test.69](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.68...1.0.0-test.69) (2022-10-06)
 
 
