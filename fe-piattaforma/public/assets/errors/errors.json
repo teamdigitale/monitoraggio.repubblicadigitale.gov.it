@@ -79,7 +79,7 @@
     "EN12": "Errore Impossibile assegnare referente/delegato ente gestore progetto per il progetto",
     "EN13": "Errore Impossibile aggiornare ente",
     "EN14": "Il codice fiscale inserito risulta appartenere già ad un altro ente",
-    "EN15": "Errore Impossibile modificare ente gestore progetto",
+    "EN15": "Il codice fiscale inserito risulta appartenere già ad un altro ente",
     "EN16": "Errore Impossibile cancellare ente partner per progetto",
     "EN17": "Errore Impossibile cancellare ente gestore programma per programma",
     "EN18": "Errore Impossibile cancellare ente gestore progetto per progetto",
