@@ -32,7 +32,6 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
   props
 ) => {
   const {
-    // setFormValues = () => ({}),
     form,
     updateForm = () => ({}),
     onInputChange = () => ({}),
@@ -41,7 +40,6 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     setIsFormValid = () => false,
     getFormValues = () => ({}),
     creation = true,
-    // intoModal = false,
     edit = false,
     formDisabled = false,
   } = props;
@@ -49,21 +47,6 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     useAppSelector(selectPrograms).detail.dettagliInfoProgramma;
 
   const userRole = useAppSelector(selectProfile)?.codiceRuolo;
-
-  // useEffect(() => {
-  //   if (!creation) {
-  //     dispatch(GetProgramDetail(entityId || ''));
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [creation]);
-
-  /*
-
-  useEffect(() => {
-    if (formData) console.log(formData);
-  }, [formData]);
-
-  */
 
   useEffect(() => {
     setIsFormValid(isValidForm);
@@ -90,31 +73,19 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
   }, [formDisabled]);
 
   useEffect(() => {
-    if (programDetails) {
-      // setFormValues(
-      //   Object.fromEntries(
-      //     Object.entries(programDetails).filter(
-      //       ([key, _val]) => !key.includes('Target') && !key.includes('stato')
-      //     )
-      //   )
-      // );
-
-      if (form) {
-        const currentFormFieldList: formFieldI[] = Object.entries(
-          programDetails
+    if (programDetails && form) {
+      const currentFormFieldList: formFieldI[] = Object.entries(programDetails)
+        .filter(
+          ([key, _val]) => !key.includes('Target') && !key.includes('stato')
         )
-          .filter(
-            ([key, _val]) => !key.includes('Target') && !key.includes('stato')
-          )
-          .map(([key, value]) =>
-            newFormField({
-              ...form[key],
-              value: value,
-            })
-          );
+        .map(([key, value]) =>
+          newFormField({
+            ...form[key],
+            value: value,
+          })
+        );
 
-        updateForm(newForm(currentFormFieldList));
-      }
+      updateForm(newForm(currentFormFieldList));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [programDetails]);
@@ -191,30 +162,6 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     sendNewValues(getFormValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
-
-  // const updateRequiredFields = () => {
-  //   if (form) {
-  //     const newFormList: formFieldI[] = [];
-  //     const values = getFormValues();
-  //     Object.keys(values).forEach((field) => {
-  //       newFormList.push(
-  //         newFormField({
-  //           ...form[field],
-  //           field: field,
-  //           id: intoModal ? `modal-${field}` : field,
-  //         })
-  //       );
-  //     });
-  //     updateForm(newForm(newFormList));
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   updateRequiredFields();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [intoModal]);
-
-  //  className={clsx('justify-content-between', 'px-0', 'px-lg-5', 'mx-5')}
 
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 

@@ -48,16 +48,13 @@ const ManageGenericAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
       const res: any = await dispatch(
         UpdateAuthorityDetails(newFormValues['id']?.toString(), newFormValues)
       );
-      if (!res?.errorCode) {
+      if (!res?.errorCode && authorityId) {
         clearForm();
         await dispatch(resetAuthorityDetails());
-        dispatch(closeModal());
+        await dispatch(GetAuthorityDetail(authorityId));
+        resetModal();
       }
     }
-    authorityId && (await dispatch(GetAuthorityDetail(authorityId)));
-    clearForm();
-    // dispatch(resetAuthorityDetails());
-    resetModal();
   };
 
   return (
