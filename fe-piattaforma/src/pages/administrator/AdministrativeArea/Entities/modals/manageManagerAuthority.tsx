@@ -272,7 +272,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
             'search-bar-borders',
             'search-bar-bg'
           )}
-          placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’ente'
+          placeholder='Inserisci il nome, l’ID o il codice fiscale dell’ente'
           onSubmit={handleSearchAuthority}
           title='Cerca'
           onReset={() => {

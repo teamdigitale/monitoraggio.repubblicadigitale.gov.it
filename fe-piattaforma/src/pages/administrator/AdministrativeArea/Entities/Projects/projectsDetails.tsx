@@ -190,7 +190,7 @@ const ProjectsDetails = () => {
   }, [projectId, projectDetails, activeTab]);
 
   useEffect(() => {
-    scrollTo(0, 0);
+    /*  scrollTo(0, 0); */
     centerActiveItem();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
@@ -279,19 +279,25 @@ const ProjectsDetails = () => {
   const centerActiveItem = () => {
     switch (activeTab) {
       case tabs.INFO:
-        infoRef.current?.scrollIntoView({ block: 'center' });
+        infoRef.current?.scrollIntoView({ block: 'center', inline: 'center' });
         break;
       case tabs.ENTE_GESTORE:
-        gestoreRef.current?.scrollIntoView({ block: 'center' });
+        gestoreRef.current?.scrollIntoView({
+          block: 'center',
+          inline: 'center',
+        });
         break;
       case tabs.ENTI_PARTNER:
-        partnerRef.current?.scrollIntoView({ block: 'center' });
+        partnerRef.current?.scrollIntoView({
+          block: 'center',
+          inline: 'center',
+        });
         break;
       case tabs.SEDI:
-        sediRef.current?.scrollIntoView({ block: 'center' });
+        sediRef.current?.scrollIntoView({ block: 'center', inline: 'center' });
         break;
       default:
-        infoRef.current?.scrollIntoView({ block: 'center' });
+        infoRef.current?.scrollIntoView({ block: 'center', inline: 'center' });
         break;
     }
   };

@@ -611,7 +611,7 @@ const ProgramsDetails: React.FC = () => {
   };
 
   useEffect(() => {
-    scrollTo(0, 0);
+    /*  scrollTo(0, 0); */
     centerActiveItem();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);

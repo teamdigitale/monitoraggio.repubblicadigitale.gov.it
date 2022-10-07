@@ -94,9 +94,8 @@ const Authorities: React.FC = () => {
             td.profilo
           ) : (
             <p>
-              {' '}
               <strong> {td.profilo.split(',').length} </strong> profili
-              assegnati{' '}
+              assegnati
             </p>
           ),
       }))
@@ -136,7 +135,13 @@ const Authorities: React.FC = () => {
           : filterKey === 'idsProgrammi'
           ? 'programmi'
           : '';
-      dispatch(GetEntityFilterValues({ entity, dropdownType: dropdownType, noFilters: true }));
+      dispatch(
+        GetEntityFilterValues({
+          entity,
+          dropdownType: dropdownType,
+          noFilters: true,
+        })
+      );
     }
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
   };
@@ -219,8 +224,7 @@ const Authorities: React.FC = () => {
   const searchInformation: SearchInformationI = {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
-    placeholder:
-      "Inserisci il nome, l'identificativo o il codice fiscale dell'ente",
+    placeholder: "Inserisci il nome, l'ID o il codice fiscale dell'ente",
     isClearable: true,
     title: 'Cerca progetto',
   };

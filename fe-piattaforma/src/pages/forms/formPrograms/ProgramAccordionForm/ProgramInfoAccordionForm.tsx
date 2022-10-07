@@ -14,6 +14,9 @@ const ProgramInfoAccordionForm = () => {
   return (
     <>
       <FormGeneralInfo formDisabled edit />
+      <h2 className='h5 mb-4' style={{ color: 'rgb(92, 111, 130)' }}>
+        Obiettivi programma
+      </h2>
       {accordions.map((accordion, index) => (
         <Accordion
           title={accordion.title}

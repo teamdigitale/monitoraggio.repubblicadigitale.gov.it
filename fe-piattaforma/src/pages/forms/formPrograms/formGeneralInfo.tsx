@@ -256,6 +256,7 @@ const form = newForm([
     field: 'codice',
     type: 'text',
     id: 'codice',
+    required: true,
   }),
   newFormField({
     field: 'stato',
@@ -271,6 +272,7 @@ const form = newForm([
     field: 'nome',
     type: 'text',
     id: 'nome',
+    required: true,
   }),
   newFormField({
     field: 'bando',
@@ -287,6 +289,7 @@ const form = newForm([
     field: 'nomeBreve',
     type: 'text',
     id: 'nomeBreve',
+    required: true,
   }),
   newFormField({
     field: 'dataInizio',

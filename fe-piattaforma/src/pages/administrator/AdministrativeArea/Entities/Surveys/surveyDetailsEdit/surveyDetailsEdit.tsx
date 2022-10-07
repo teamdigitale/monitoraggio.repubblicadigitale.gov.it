@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
+import Sticky from 'react-sticky-el';
 import { useAppSelector } from '../../../../../../redux/hooks';
 import { FormHelper, FormI } from '../../../../../../utils/formHelper';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -23,7 +24,6 @@ import SurveyTemplate from './components/surveyTemplate';
 import ButtonsBar, {
   ButtonInButtonsBar,
 } from '../../../../../../components/ButtonsBar/buttonsBar';
-import Sticky from 'react-sticky-el';
 import useGuard from '../../../../../../hooks/guard';
 import { GetProgramDetail } from '../../../../../../redux/features/administrativeArea/programs/programsThunk';
 import { selectPrograms } from '../../../../../../redux/features/administrativeArea/administrativeAreaSlice';
@@ -61,6 +61,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
     if (!programName && entityId) {
       dispatch(GetProgramDetail(entityId));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -88,9 +89,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
     let isValid = true;
     if (questions?.length > 0) {
       questions.map((question: SurveyQuestionI) => {
-        FormHelper.isValidForm(question.form) === false
-          ? (isValid = false)
-          : '';
+        !FormHelper.isValidForm(question.form) ? (isValid = false) : '';
 
         if (
           (question.form['question-type'].value === 'select' ||
@@ -119,9 +118,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
     let sectionsValid = true;
     if (sections) {
       sections.map((section: SurveySectionI) =>
-        checkValidityPreviousSections(section) === false
-          ? (sectionsValid = false)
-          : ''
+        !checkValidityPreviousSections(section) ? (sectionsValid = false) : ''
       );
     }
     return isValidForm && sectionsValid;
@@ -130,19 +127,23 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
   const device = useAppSelector(selectDevice);
 
   const createUpdateSurvey = async () => {
-    setEditModeState(false);
-    setCloneModeState(false);
     const res = await dispatch(SetSurveyCreation(cloneModeState));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     if (res?.data?.['survey-id']) {
+      // clona questionario
+      setEditModeState(false);
+      setCloneModeState(false);
       navigate(
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         `/area-amministrativa/questionari/${res?.data?.['survey-id']}`,
         { replace: true }
       );
-    } else if (idQuestionario) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+    } else if (res) {
+      // modifica questionario
       navigate(-1);
     }
   };
@@ -156,7 +157,18 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
       onClick: () => {
         setEditModeState(false);
         setCloneModeState(false);
-        navigate(-1);
+        if (
+          location.pathname ===
+            `/area-amministrativa/questionari/${idQuestionario}/clona` ||
+          location.pathname ===
+            `/area-amministrativa/questionari/${idQuestionario}/modifica`
+        ) {
+          navigate(`/area-amministrativa/questionari/${idQuestionario}`, {
+            replace: true,
+          });
+        } else {
+          navigate(-1);
+        }
       },
     },
     {

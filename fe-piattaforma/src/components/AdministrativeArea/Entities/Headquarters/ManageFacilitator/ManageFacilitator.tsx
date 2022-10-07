@@ -194,7 +194,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
               'search-bar-borders',
               'search-bar-bg'
             )}
-            placeholder='Inserisci il nome, l’identificativo o il codice fiscale dell’utente'
+            placeholder='Inserisci il nome, l’ID o il codice fiscale dell’utente'
             onSubmit={handleSearchUser}
             onReset={() => {
               dispatch(setUsersList(null));
