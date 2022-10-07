@@ -204,6 +204,15 @@ jobs:
           sed -i "s/{{_REACT_APP_COGNITO_FE_REDIRECT_URL_}}/${{ secrets.REACT_APP_COGNITO_FE_REDIRECT_URL }}/g" .env
           sed -i "s/{{_REACT_APP_DASHBOARD_BASE_URL_}}/${{ secrets.REACT_APP_DASHBOARD_BASE_URL }}/g" .env
           sed -i "s/{{_REACT_APP_DASHBOARD_BI_URL_}}/${{ secrets.REACT_APP_DASHBOARD_BI_URL }}/g" .env
+          sed -i "s/{{_REACT_APP_DRUPAL_BASE_URL_}}/${{ secrets.REACT_APP_DRUPAL_BASE_URL }}/g" .env
+          sed -i "s/{{_REACT_APP_DRUPAL_SETTINGS_}}/${{ secrets.REACT_APP_DRUPAL_SETTINGS }}/g" .env
+          sed -i "s/{{_REACT_APP_ROCKET_CHAT_BASE_URL_}}/${{ secrets.REACT_APP_ROCKET_CHAT_BASE_URL }}/g" .env
+          sed -i "s/{{_REACT_APP_ROCKET_CHAT_SETTINGS_}}/${{ secrets.REACT_APP_ROCKET_CHAT_SETTINGS }}/g" .env
+          sed -i "s/{{_REACT_APP_WORKDOCS_BASE_URL_}}/${{ secrets.REACT_APP_WORKDOCS_BASE_URL }}/g" .env
+          sed -i "s/{{_REACT_APP_WORKDOCS_SETTINGS_}}/${{ secrets.REACT_APP_WORKDOCS_SETTINGS }}/g" .env
+          sed -i "s/{{_REACT_APP_QUICKSIGHT_BASE_URL_}}/${{ secrets.REACT_APP_QUICKSIGHT_BASE_URL }}/g" .env
+          sed -i "s/{{_REACT_APP_QUICKSIGHT_SETTINGS_}}/${{ secrets.REACT_APP_QUICKSIGHT_SETTINGS }}/g" .env
+
 
       - name: File Regex Replace
         uses: mingjun97/file-regex-replace@v1
