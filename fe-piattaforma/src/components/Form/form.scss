@@ -1,6 +1,6 @@
 .form {
   input:active {
-    border-bottom: 2px solid #0073e5;
+    border-bottom: 2px solid color('progress-bar-line');
   }
   .form-group {
     label {
@@ -15,32 +15,40 @@
 
 .form-control {
   &:disabled {
-    border-bottom: 1px solid #797c80 !important;
-    background: #e6e9f2;
+    border-bottom: 1px solid color('grey-input') !important;
+    background: color('grey-150');
   }
   &[type='text']:disabled,
   &[type='date']:disabled {
-    border-bottom: 1px solid #797c80 !important;
+    border-bottom: 1px solid color('grey-input') !important;
   }
 
   &[type='text'],
   &[type='date'] {
-    border-bottom: 1px solid #0073e5;
+    border-bottom: 1px solid color('grey-input');
+  }
+  &[type='text'][value]:not([value='']),
+  &[type='date'][value]:not([value='']) {
+    border-bottom: 2px solid color('progress-bar-line');
+  }
+  &[type='text']:focus,
+  &[type='date']:focus {
+    border-bottom: 1px solid color('progress-bar-line');
   }
 
   &.is-valid {
-    border-bottom: 2px solid #0073e5;
+    border-bottom: 2px solid color('progress-bar-line');
   }
 
   &.is-invalid {
-    border-bottom: 2px solid #f73e5a;
+    border-bottom: 2px solid color('danger');
   }
 }
 
 .border-select-value {
   .bootstrap-select {
     &__control {
-      border-bottom: 2px solid #0073e5 !important;
+      border-bottom: 2px solid color('progress-bar-line') !important;
     }
   }
 }
@@ -49,20 +57,23 @@
   &__menu {
     margin-top: 0 !important;
   }
+  &__control:focus {
+    border-bottom: 1px solid color('progress-bar-line') !important;
+  }
   &__control {
-    border-bottom: 1px solid #0073e5 !important;
+    border-bottom: 1px solid color('grey-input') !important;
 
     &--menu-is-open {
-      border-bottom: 2px solid #0073e5 !important;
+      border-bottom: 2px solid color('progress-bar-line') !important;
     }
     &--is-focused {
-      border-color: #f90 !important;
-      box-shadow: 0 0 0 2px #f90 !important;
+      border-color: color('accessibility-orange') !important;
+      box-shadow: 0 0 0 2px color('accessibility-orange') !important;
       outline: 0 !important;
     }
     &--is-disabled {
-      border-bottom: 1px solid #797c80 !important;
-      background: #e6e9f2 !important;
+      border-bottom: 1px solid color('grey-input') !important;
+      background: color('grey-150') !important;
     }
   }
   &__single-value {
@@ -75,15 +86,15 @@
 .form-service-dynamic {
   &__control {
     &--is-disabled {
-      border-bottom: 1px solid #797c80 !important;
-      background: #e6e9f2 !important;
+      border-bottom: 1px solid color('grey-input') !important;
+      background: color('grey-150') !important;
     }
   }
   &__multi-value {
     margin: 2px 2px 14px !important;
     &--is-disabled {
-      border: 1px outset #e6e9f2 !important;
-      background: #e6e9f2 !important;
+      border: 1px outset color('grey-150') !important;
+      background: color('grey-150') !important;
     }
   }
 }
@@ -91,17 +102,17 @@
 .multiple-select {
   &__control {
     &--is-disabled {
-      border-bottom: 1px solid #797c80 !important;
-      background: #e6e9f2 !important;
+      border-bottom: 1px solid color('grey-input') !important;
+      background: color('grey-150') !important;
     }
   }
   &__multi-value {
     &__label {
-      background: #e6e9f2 !important;
-      border: 1px outset #e6e9f2 !important;
+      background: color('grey-150') !important;
+      border: 1px outset color('grey-150') !important;
     }
     &__remove {
-      background: #e6e9f2 !important;
+      background: color('grey-150') !important;
     }
   }
 }
@@ -119,13 +130,13 @@
 }
 
 .form-check [type='checkbox']:checked + label::after {
-  border-color: #0073e5;
-  background-color: #0073e5;
+  border-color: color('progress-bar-line');
+  background-color: color('progress-bar-line');
 }
 
 .form-check [type='radio']:checked + label::after {
-  border-color: #0073e5;
-  background-color: #0073e5;
+  border-color: color('progress-bar-line');
+  background-color: color('progress-bar-line');
 }
 
 .form-check [type='radio']:disabled:checked + label::after {
@@ -134,11 +145,11 @@
 }
 
 .toggles label input[type='checkbox']:checked + .lever:after {
-  background-color: #0073e5;
+  background-color: color('progress-bar-line');
 }
 
 .toggles label input[type='checkbox'][disabled] + .lever:after {
-  background-color: #e6e9f2;
+  background-color: color('grey-150');
 }
 
 .rating-label {

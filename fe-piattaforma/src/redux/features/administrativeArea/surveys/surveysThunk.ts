@@ -436,6 +436,10 @@ export const SetSurveyCreation =
         }
         return res;
       }
+      return false;
+    } catch (err) {
+      console.error('SetSurveyCreation error', err);
+      return false;
     } finally {
       dispatch(hideLoader());
     }

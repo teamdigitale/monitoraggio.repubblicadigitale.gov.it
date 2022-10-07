@@ -2,13 +2,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BreadcrumbI } from '../../../components/Breadcrumb/breadCrumb';
 import type { RootState } from '../../store';
 
+
+export interface DeviceI {
+  mediaIsPhone?: boolean;
+  mediaIsTablet?: boolean;
+  //mediaIsLaptop?: boolean,
+  mediaIsDesktop?: boolean;
+}
+
 interface AppStateI {
-  device: {
-    mediaIsPhone?: boolean;
-    mediaIsTablet?: boolean;
-    //mediaIsLaptop?: boolean,
-    mediaIsDesktop?: boolean;
-  };
+  device: DeviceI;
   loader: {
     isLoading: boolean;
     count: number;

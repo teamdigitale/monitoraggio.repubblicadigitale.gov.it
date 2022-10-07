@@ -156,7 +156,13 @@ const Services = () => {
           : filterKey === 'tipologiaServizio'
           ? 'tipologiaServizio'
           : '';
-      dispatch(GetEntityFilterQueryParamsValues({ entity, dropdownType: dropdownType, noFilters: true }));
+      dispatch(
+        GetEntityFilterQueryParamsValues({
+          entity,
+          dropdownType: dropdownType,
+          noFilters: true,
+        })
+      );
     }
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
   };
@@ -211,7 +217,7 @@ const Services = () => {
   const searchInformation: SearchInformationI = {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
-    placeholder: "Inserisci l'identificativo o il nome del servizio",
+    placeholder: "Inserisci l'ID o il nome del servizio",
     isClearable: true,
     title: 'Cerca servzio',
   };
@@ -237,7 +243,7 @@ const Services = () => {
 
   const servicesCta = {
     title: 'Lista Servizi',
-    subtitle: "Inserisci l'identificativo o il nome del servizio",
+    subtitle: "Inserisci l'ID o il nome del servizio",
     textCta: 'Crea servizio',
     iconCta: 'it-plus',
   };
