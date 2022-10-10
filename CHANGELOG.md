@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.182](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.181...1.0.0-develop.182) (2022-10-10)
+
+
+### Features
+
+* **be:** aggiunta test open-data ([79fb70e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/79fb70e92cbceaf8cb0db7aa8c674a3047f3b0b4))
+* **be:** modifica pom shared per workdocs ([c1a87bf](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c1a87bf0e03fe6acf39a093d7e389b56550e5e57))
+* **be:** aggiunta filtro per wave3 + opendata ([697cb68](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/697cb68783aead57bbc556044d91743913d17123))
+
 ## [1.0.0-develop.181](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.180...1.0.0-develop.181) (2022-10-07)
 
 
