@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.186](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.185...1.0.0-develop.186) (2022-10-10)
+
+
+### Bug Fixes
+
+* **be:** fix variabile ambiente per rocketchat ([a2beb14](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a2beb14b3ad9e1ae9ac5492953e18a0041a64618))
+
 ## [1.0.0-develop.185](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.184...1.0.0-develop.185) (2022-10-10)
 
 
