@@ -22,4 +22,5 @@ public interface OpenDataCittadinoProjection {
 	
 	public String  getIdProgramma();
 	public String  getIdProgetto();
+	public String  getDataFruizioneServizio();
 }
