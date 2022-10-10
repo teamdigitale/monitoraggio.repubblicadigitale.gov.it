@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.pa.repdgt.opendata.bean.OpenDataDetailsBean;
 import it.pa.repdgt.opendata.service.OpenDataService;
 
 @RestController
@@ -37,11 +38,8 @@ public class OpenDataRestApi {
 	}
 	
 	@GetMapping(path = "/count/download")
-	public Map<String,String> getCountDownloadListaCSVCittadini() throws IOException {
-		Map<String, String> resultMap = new HashMap<>();
-		resultMap.put("conteggioDownload", String.valueOf(this.openDataService.getCountFile(NOME_FILE)));
-		resultMap.put("dimensioneFile", String.valueOf(this.openDataService.getDimensioneFileOpenData(NOME_FILE)));
-		return resultMap;
+	public OpenDataDetailsBean getCountDownloadListaCSVCittadini() throws IOException {
+		return this.openDataService.getDetails(NOME_FILE);
 	}
 	
 	@GetMapping(path = "/presigned/download")

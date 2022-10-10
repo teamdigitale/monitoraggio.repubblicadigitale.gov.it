@@ -77,6 +77,10 @@
 			<artifactId>s3</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>workdocs</artifactId>
+		</dependency>
+		<dependency>
 		    <groupId>io.jsonwebtoken</groupId>
 		    <artifactId>jjwt</artifactId>
 		    <version>RELEASE</version>
