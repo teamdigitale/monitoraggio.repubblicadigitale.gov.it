@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.185](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.184...1.0.0-develop.185) (2022-10-10)
+
+
+### Features
+
+* **be:** feat integrazione drupal ([6da7c9b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6da7c9b1553b9f7b2ce5ebb9a422f9964e7c6af2))
+
 ## [1.0.0-develop.184](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.183...1.0.0-develop.184) (2022-10-10)
 
 
