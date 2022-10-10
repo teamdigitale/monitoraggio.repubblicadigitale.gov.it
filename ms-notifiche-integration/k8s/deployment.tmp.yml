@@ -83,6 +83,71 @@ spec:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: awsEmailMittente
+            - name: awsS3UtenteAccessKey
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsS3UtenteAccessKey
+            - name: awsS3UtenteBucketName
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsS3UtenteBucketName
+            - name: awsS3UtenteSecretKey
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsS3UtenteSecretKey
+            - name: awsWorkdocsAccessKey
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsWorkdocsAccessKey
+            - name: awsWorkdocsSecretKey
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsWorkdocsSecretKey
+            - name: awsWorkdocsOrganizationId
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsWorkdocsOrganizationId
+            - name: rocketChatHost
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: rocketChatHost
+            - name: rocketChatBaseUri
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: rocketChatBaseUri
+            - name: rocketChatClientAccessToken
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: rocketChatClientAccessToken
+            - name: rocketChatClientUserId
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: rocketChatClientUserId
+            - name: drupalEndpoint
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: drupalEndpoint
+            - name: drupalAuthUsername
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: drupalAuthUsername
+            - name: drupalAuthPassword
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: drupalAuthPassword
 ---
 apiVersion: v1
 kind: Service
