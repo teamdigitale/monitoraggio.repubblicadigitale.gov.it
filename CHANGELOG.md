@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.71](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.70...1.0.0-test.71) (2022-10-10)
+
+
+### Features
+
+* **be:** nuove modifiche open-data ([0eca0cb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0eca0cbdd9e3757e7683b4e8ad3de532a09e8c1a))
+
 ## [1.0.0-test.70](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.69...1.0.0-test.70) (2022-10-06)
 
 
