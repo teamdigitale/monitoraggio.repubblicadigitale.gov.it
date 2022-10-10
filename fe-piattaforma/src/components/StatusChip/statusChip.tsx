@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { Button, Chip, ChipLabel, UncontrolledTooltip } from 'design-react-kit';
+import { Chip, ChipLabel, UncontrolledTooltip } from 'design-react-kit';
 import React, { memo } from 'react';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import { useAppSelector } from '../../redux/hooks';
@@ -86,7 +86,7 @@ const StatusChip: React.FC<StatusChipI> = (props) => {
 
   return (
     <>
-      <Button
+      <span
         className='px-0 py-0'
         id={`button-status-${rowTableId ? rowTableId : new Date().getTime()}`}
       >
@@ -110,8 +110,8 @@ const StatusChip: React.FC<StatusChipI> = (props) => {
           >
             {status?.toUpperCase()}
           </ChipLabel>
-        </Chip>{' '}
-      </Button>
+        </Chip>
+      </span>
       {!noTooltip && (
         <UncontrolledTooltip
           placement='top'

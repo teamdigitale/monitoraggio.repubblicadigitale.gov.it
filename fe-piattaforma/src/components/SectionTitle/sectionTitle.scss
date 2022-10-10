@@ -50,3 +50,15 @@
   height: 16px !important;
   margin-top: 5px !important;
 }
+.placeholder-div {
+  width: 50px;
+}
+.main-title {
+  p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+}

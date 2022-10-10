@@ -31,7 +31,7 @@ interface SectionTitleI {
 
 const SectionTitle: React.FC<SectionTitleI> = (props) => {
   const {
-    title,
+    title = '',
     status,
     upperTitle,
     subTitle,
@@ -78,160 +78,155 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
   };
 
   return (
-    <div
-      className={clsx(
-        'd-flex',
-        device.mediaIsPhone ? 'flex-column' : 'flex-row justify-content-center',
-        'align-items-center',
-        'mx-auto'
-      )}
-    >
-      {iconAvatar && !device.mediaIsPhone && (
-        <div
-          className={clsx(
-            !subTitle && 'mt-4 pt-3',
-            'mt-2',
-            'position-relative'
-          )}
-        >
-          <UserAvatar
-            avatarImage={profilePicture}
-            user={{ uSurname: surname, uName: name }}
-            size={device.mediaIsPhone ? AvatarSizes.Big : AvatarSizes.Small}
-            font={
-              device.mediaIsPhone ? AvatarTextSizes.Big : AvatarTextSizes.Small
-            }
-            lightColor={device.mediaIsPhone}
+    <div className='d-flex w-100 flex-wrap'>
+      {upperTitle ? (
+        <div className='d-flex flex-row justify-content-center w-100'>
+          <Icon
+            icon={upperTitle.icon}
+            size={'sm'}
+            className={clsx('icon-color', enteIcon && 'ente-icon', 'mr-2')}
+            aria-label='Sezione'
           />
 
-          {isUserProfile && (
-            <div
-              className={clsx(
-                'camera-icon',
-                'primary-bg',
-                'position-absolute',
-                'rounded-circle',
-                'section-title__icon-container'
-              )}
-              style={{
-                bottom: device.mediaIsDesktop
-                  ? '-10px'
-                  : device.mediaIsPhone
-                  ? '90px'
-                  : '',
-                left: device.mediaIsDesktop
-                  ? '-10px'
-                  : device.mediaIsPhone
-                  ? '75px'
-                  : '',
-              }}
-            >
-              <input
-                type='file'
-                id='profile_pic'
-                onChange={updateImage}
-                accept='.png, .jpeg, .jpg'
-                capture
-                ref={inputRef}
-                className='sr-only'
-              />
-              <Button
-                onClick={addProfilePicture}
-                size='xs'
-                className='profile-picture-btn'
-              >
-                <Icon
-                  size='xs'
-                  icon='it-camera'
-                  color='white'
-                  aria-label='Foto'
-                  className='position-absolute'
-                  style={{
-                    top: '4px',
-                    left: '5px',
-                  }}
-                />
-              </Button>
-            </div>
-          )}
+          <p
+            className={clsx(
+              'h6',
+              'custom-section-title__upper-text',
+              'primary-color-a9',
+              'text-uppercase'
+            )}
+          >
+            {upperTitle.text}
+          </p>
         </div>
-      )}
+      ) : null}
+
       <div
         className={clsx(
           'd-flex',
-          'flex-column',
+          'w-100',
+          'justify-content-center',
           'align-items-center',
-          !iconAvatar && 'ml-5',
-          !iconAvatar && !status && 'mx-auto',
-          !status && 'mr-5'
+          device.mediaIsPhone && 'flex-column'
         )}
       >
-        {upperTitle ? (
-          <div className='d-flex flex-row justify-content-center w-100'>
-            <Icon
-              icon={upperTitle.icon}
-              size={'sm'}
-              className={clsx('icon-color', enteIcon && 'ente-icon', 'mr-2')}
-              aria-label='Sezione'
+        {iconAvatar && !device.mediaIsPhone ? (
+          <div className={clsx('position-relative', 'ml-4')}>
+            <UserAvatar
+              avatarImage={profilePicture}
+              user={{ uSurname: surname, uName: name }}
+              size={device.mediaIsPhone ? AvatarSizes.Big : AvatarSizes.Small}
+              font={
+                device.mediaIsPhone
+                  ? AvatarTextSizes.Big
+                  : AvatarTextSizes.Small
+              }
+              lightColor={device.mediaIsPhone}
             />
 
-            <p
-              className={clsx(
-                'h6',
-                'custom-section-title__upper-text',
-                'primary-color-a9',
-                'text-uppercase'
-              )}
-            >
-              {upperTitle.text}
-            </p>
+            {isUserProfile && (
+              <div
+                className={clsx(
+                  'camera-icon',
+                  'primary-bg',
+                  'position-absolute',
+                  'rounded-circle',
+                  'section-title__icon-container'
+                )}
+                style={{
+                  bottom: device.mediaIsDesktop
+                    ? '-10px'
+                    : device.mediaIsPhone
+                    ? '90px'
+                    : '',
+                  left: device.mediaIsDesktop
+                    ? '-10px'
+                    : device.mediaIsPhone
+                    ? '75px'
+                    : '',
+                }}
+              >
+                <input
+                  type='file'
+                  id='profile_pic'
+                  onChange={updateImage}
+                  accept='.png, .jpeg, .jpg'
+                  capture
+                  ref={inputRef}
+                  className='sr-only'
+                />
+                <Button
+                  onClick={addProfilePicture}
+                  size='xs'
+                  className='profile-picture-btn'
+                >
+                  <Icon
+                    size='xs'
+                    icon='it-camera'
+                    color='white'
+                    aria-label='Foto'
+                    className='position-absolute'
+                    style={{
+                      top: '4px',
+                      left: '5px',
+                    }}
+                  />
+                </Button>
+              </div>
+            )}
           </div>
-        ) : null}
-
+        ) : (
+          <div className='placeholder-div'></div>
+        )}
         <div
-          className={clsx(
-            'custom-section-title__section-title',
-            'primary-color-a9',
-            'text-wrap text-center',
-            'mx-auto'
-          )}
+          style={{ minWidth: '150px', maxWidth: '350px' }}
+          className='text-center mx-3'
         >
-          <span
-            aria-level={1}
+          <div
             className={clsx(
-              'custom-section-title',
-              'custom-section-title__section-title'
+              'custom-section-title__section-title',
+              'main-title',
+              'primary-color-a9',
+              'text-center',
+              'd-block'
             )}
           >
-            {title}
-          </span>
-        </div>
-        {subTitle ? (
-          <div>
-            <p className='primary-color-a9 mb-0'> {subTitle} </p>
+            {/*  <span
+              aria-level={1}
+              className={clsx(
+                'custom-section-title',
+                'custom-section-title__section-title',
+                'main-title',
+                !iconAvatar && 'pl-5',
+                !status && 'pr-5'
+              )}
+            > */}
+            <p> {title} </p>
+            {/* </span> */}
           </div>
-        ) : null}
+        </div>
+        {status ? (
+          <div>
+            <StatusChip
+              className={clsx(
+                'table-container__status-label',
+                'primary-bg-a9',
+                'ml-4',
+                'section-chip',
+                'no-border',
+                device.mediaIsPhone ? 'mx-0 ml-2 my-3' : 'mx-3'
+              )}
+              status={status}
+              rowTableId={name?.replace(/\s/g, '') || new Date().getTime()}
+            />
+          </div>
+        ) : (
+          <div className='placeholder-div'></div>
+        )}
       </div>
-      {status ? (
-        <div
-          className={clsx(
-            !subTitle && !device.mediaIsPhone && 'mt-4 pt-3',
-            'ml-4',
-            'pt-2'
-          )}
-        >
-          <StatusChip
-            className={clsx(
-              'table-container__status-label',
-              'primary-bg-a9',
-              'ml-4',
-              'section-chip',
-              'no-border',
-              device.mediaIsPhone ? 'mx-0 ml-2 my-3' : 'mx-3'
-            )}
-            status={status}
-            rowTableId={name?.replace(/\s/g, '') || new Date().getTime()}
-          />
+      {subTitle ? (
+        <div className='d-flex w-100 justify-content-center'>
+          <p className='primary-color-a9 mb-0'> {subTitle} </p>
         </div>
       ) : null}
     </div>

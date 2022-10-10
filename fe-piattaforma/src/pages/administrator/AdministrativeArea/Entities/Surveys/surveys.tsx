@@ -69,7 +69,7 @@ const Surveys = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
-    dispatch(resetSurveyDetails())
+    dispatch(resetSurveyDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -232,7 +232,7 @@ const Surveys = () => {
     onHandleSearch: handleOnSearch,
     placeholder:
       filter.value === 'questionnaire'
-        ? "Inserisci il nome o l'identificativo del questionario"
+        ? "Inserisci il nome o l'ID del questionario"
         : 'Cerca addendum',
     isClearable: true,
     title:

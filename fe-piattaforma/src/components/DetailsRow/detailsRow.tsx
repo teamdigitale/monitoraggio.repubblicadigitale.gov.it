@@ -173,7 +173,7 @@ const DetailsRow: React.FC<DetailsRowI> = ({
           innerInfo?.['Codice Fiscale'] !== '-' && (
             <div>
               <span className='font-weight-normal primary-color-a12'>
-                Codice Fiscale:{' '}
+                Codice Fiscale:
               </span>
               <span className='text-uppercase'>
                 {innerInfo['Codice Fiscale']}
@@ -184,7 +184,7 @@ const DetailsRow: React.FC<DetailsRowI> = ({
           innerInfo?.['Codice Fiscale'] === '-' && (
             <div>
               <span className='font-weight-normal primary-color-a12'>
-                Numero Documento:{' '}
+                Numero Documento:
               </span>
               <span className='text-uppercase'>
                 {innerInfo['Numero Documento']}
