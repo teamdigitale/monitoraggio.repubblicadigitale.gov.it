@@ -412,7 +412,6 @@ const ProjectsDetails = () => {
       setItemList(null);
       setCorrectButtons(
         authorityInfo?.dettagliInfoEnte?.statoEnte !== entityStatus.TERMINATO &&
-          authorityInfo?.dettagliInfoEnte?.statoEnte !== entityStatus.ATTIVO &&
           hasUserPermission(['upd.enti.gest.prgt'])
           ? [
               {
@@ -420,6 +419,11 @@ const ProjectsDetails = () => {
                 outline: true,
                 color: 'primary',
                 buttonClass: 'btn-secondary',
+                disabled:
+                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                    entityStatus.ATTIVO ||
+                  authorityInfo?.dettagliInfoEnte?.statoEnte !==
+                    entityStatus.TERMINATO,
                 text: 'Elimina',
                 onClick: () =>
                   dispatch(
