@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +25,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import it.pa.repdgt.opendata.bean.OpenDataCittadinoCSVBean;
+import it.pa.repdgt.opendata.bean.OpenDataDetailsBean;
+import it.pa.repdgt.opendata.projection.OpenDataSqlProjection;
 import it.pa.repdgt.opendata.repository.CittadinoRepository;
 import it.pa.repdgt.opendata.util.CSVUtil;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
@@ -45,7 +48,9 @@ public class OpenDataService {
 	private CittadinoRepository cittadinoRepository;
 	
 	private static final String patternDate = "dd_MM_yyyy";
+	private static final String patternDateFE = "dd/MM/yyyy";
 	private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(patternDate);
+	private static final SimpleDateFormat simpleDateFormatFE = new SimpleDateFormat(patternDateFE);
 	final static String NOME_FILE = "opendata_cittadini.csv";
 	
 	@Autowired
@@ -61,12 +66,12 @@ public class OpenDataService {
 //					   │ │ │ │  │ │
 //					   * * * *  * *
 	//@Scheduled(cron = "0 0 0 1 */6 *")//job schedulato il giorno 1 del mese a mezzanotte ogni 6 mesi
-	@Scheduled(cron = "0 0 13 * * *")//job schedulato ogni giorno alle 13 
+	@Scheduled(cron = "0 0 0 1 */1 *")//job schedulato il giorno 1 del mese a mezzanotte ogni mese
+	//@Scheduled(cron = "0 0 13 * * *")//job schedulato ogni giorno alle 13 
 	@LogMethod
 	@LogExecutionTime
 	public void caricaFileListaCittadiniSuAmazonS3() throws IOException {
 		String nowDate = simpleDateFormat.format(new Date());
-//		final String fileNameToUpload = "./fileCittadiniToUploadOn".concat(nowDate.toString().concat(".csv"));
 		final String fileNameToUpload = "./".concat(NOME_FILE);
 		
 		final List<OpenDataCittadinoCSVBean> openDataCittadinoCSVBeanList = this.openDataCSVService.getAllOpenDataCittadino();
@@ -134,8 +139,32 @@ public class OpenDataService {
 	
 	@LogMethod
 	@LogExecutionTime
-	public Long getCountFile(final String fileToDownload) throws IOException{
-		return cittadinoRepository.getCountDownload(fileToDownload);
+	public OpenDataDetailsBean getDetails(final String fileToDownload) throws IOException{
+		OpenDataSqlProjection proj = cittadinoRepository.getOpenDataDetails(fileToDownload);
+		OpenDataDetailsBean details = new OpenDataDetailsBean();
+		details.setConteggioDownload(String.valueOf(proj.getCountDownload()));
+		details.setDimensioneFile(String.valueOf(proj.getDimensioneFile()));
+		details.setDataUltimaPubblicazione(simpleDateFormatFE.format(proj.getDataUltimoUpload()));
+		Calendar first = getCalendar(proj.getDataPrimoUpload());
+	    Calendar last = getCalendar(proj.getDataUltimoUpload());
+	    int annoLast = last.get(Calendar.YEAR);
+	    int annoFirst = first.get(Calendar.YEAR);
+	    String anniCopertura ="";
+	    while(annoFirst <= annoLast) {
+	    	if(annoLast == annoFirst)
+	    		anniCopertura = anniCopertura.concat(String.valueOf(annoFirst));
+	    	else
+	    		anniCopertura = anniCopertura.concat(String.valueOf(annoFirst)).concat(", ");
+	    	annoFirst++;
+	    }
+	    details.setAnniCopertura(anniCopertura);
+		return details;
+	}
+
+	public static Calendar getCalendar(Date date) {
+	    Calendar cal = Calendar.getInstance();
+	    cal.setTime(date);
+	    return cal;
 	}
 	
 	@LogMethod
@@ -143,11 +172,5 @@ public class OpenDataService {
 	public String getPresignedUrl(final String fileToDownload) throws IOException{
 		cittadinoRepository.updateCountDownload(fileToDownload, new Date());
 		return this.s3Service.getPresignedUrl(fileToDownload, this.nomeDelBucketS3);
-	}
-	
-	@LogMethod
-	@LogExecutionTime
-	public String getDimensioneFileOpenData(String nomeFile) {
-		return cittadinoRepository.findDimensioneFileOpenData(nomeFile);
 	}
 }
