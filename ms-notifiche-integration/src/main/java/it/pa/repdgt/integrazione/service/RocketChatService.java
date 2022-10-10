@@ -39,7 +39,7 @@ public class RocketChatService {
 	private String baseUri;
 	@Value("${rocket-chat.client.access-token:}")
 	private String clientToken;
-	@Value("${rocket-chat.client.userId:}")
+	@Value("${rocket-chat.client.user-id:}")
 	private String clientUserId;
 	
 	private String rocketChatBaseUrl;
