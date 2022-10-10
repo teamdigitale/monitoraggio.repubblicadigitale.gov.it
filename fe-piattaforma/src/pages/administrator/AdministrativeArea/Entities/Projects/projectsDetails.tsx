@@ -412,6 +412,7 @@ const ProjectsDetails = () => {
       setItemList(null);
       setCorrectButtons(
         authorityInfo?.dettagliInfoEnte?.statoEnte !== entityStatus.TERMINATO &&
+          authorityInfo?.dettagliInfoEnte?.statoEnte !== entityStatus.ATTIVO &&
           hasUserPermission(['upd.enti.gest.prgt'])
           ? [
               {
