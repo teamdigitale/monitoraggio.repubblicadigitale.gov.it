@@ -9,7 +9,7 @@ public class OpenDataDetailsBean {
 
 	private String conteggioDownload;
 	private String dimensioneFile;
-	private String dataPrimaPubblicazione;
+	private String dataUltimaPubblicazione;
 	private String anniCopertura;
 	
 }

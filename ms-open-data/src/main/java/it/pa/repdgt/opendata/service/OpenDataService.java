@@ -139,12 +139,12 @@ public class OpenDataService {
 	
 	@LogMethod
 	@LogExecutionTime
-	public OpenDataDetailsBean getCountFile(final String fileToDownload) throws IOException{
+	public OpenDataDetailsBean getDetails(final String fileToDownload) throws IOException{
 		OpenDataSqlProjection proj = cittadinoRepository.getOpenDataDetails(fileToDownload);
 		OpenDataDetailsBean details = new OpenDataDetailsBean();
 		details.setConteggioDownload(String.valueOf(proj.getCountDownload()));
 		details.setDimensioneFile(String.valueOf(proj.getDimensioneFile()));
-		details.setDataPrimaPubblicazione(simpleDateFormatFE.format(proj.getDataPrimoUpload()));
+		details.setDataUltimaPubblicazione(simpleDateFormatFE.format(proj.getDataUltimoUpload()));
 		Calendar first = getCalendar(proj.getDataPrimoUpload());
 	    Calendar last = getCalendar(proj.getDataUltimoUpload());
 	    int annoLast = last.get(Calendar.YEAR);

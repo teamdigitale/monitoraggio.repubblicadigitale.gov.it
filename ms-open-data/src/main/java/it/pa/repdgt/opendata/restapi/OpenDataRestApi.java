@@ -39,7 +39,7 @@ public class OpenDataRestApi {
 	
 	@GetMapping(path = "/count/download")
 	public OpenDataDetailsBean getCountDownloadListaCSVCittadini() throws IOException {
-		return this.openDataService.getCountFile(NOME_FILE);
+		return this.openDataService.getDetails(NOME_FILE);
 	}
 	
 	@GetMapping(path = "/presigned/download")

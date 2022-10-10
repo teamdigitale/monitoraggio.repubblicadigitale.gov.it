@@ -1,5 +1,6 @@
 package it.pa.repdgt.opendata.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -22,7 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import it.pa.repdgt.opendata.bean.OpenDataCittadinoCSVBean;
+import it.pa.repdgt.opendata.bean.OpenDataDetailsBean;
 import it.pa.repdgt.opendata.projection.OpenDataCittadinoProjection;
+import it.pa.repdgt.opendata.projection.OpenDataSqlProjection;
 import it.pa.repdgt.opendata.repository.CittadinoRepository;
 import it.pa.repdgt.shared.awsintegration.service.S3Service;
 import lombok.Setter;
@@ -79,11 +82,22 @@ public class OpenDataServiceTest {
 		assertThatExceptionOfType(FileNotFoundException.class);
 	}
 	
-//	@Test
-//	public void getCountFileTest() throws IOException {
-//		when(cittadinoRepository.getCountDownload(NOME_FILE)).thenReturn(1L);
-//		openDataService.getCountFile(NOME_FILE);
-//	}
+	@Test
+	public void getDetailsFileTest() throws IOException {
+		OpenDataDetailsBean details = new OpenDataDetailsBean();
+		details.setAnniCopertura("2022");
+		details.setConteggioDownload("5");
+		details.setDimensioneFile("46354");
+		
+		OpenDataImplementation impl = new OpenDataImplementation();
+		impl.setCountDownload(5L);
+		impl.setDataPrimoUpload(new Date());
+		impl.setDataUltimoUpload(new Date());
+		impl.setDimensioneFile(46354L);
+		
+		when(cittadinoRepository.getOpenDataDetails(NOME_FILE)).thenReturn(impl);
+		assertThat(openDataService.getDetails(NOME_FILE).getDimensioneFile()).isEqualTo(details.getDimensioneFile());
+	}
 	
 	@Test
 	public void getPresignedUrlTest() throws IOException {
@@ -202,5 +216,35 @@ public class OpenDataServiceTest {
 		public String getDataFruizioneServizio() {
 			return dataFruizioneServizio;
 		}
+	}
+	
+	@Setter
+	class OpenDataImplementation implements OpenDataSqlProjection{
+		
+		private Long countDownload;
+		private Long dimensioneFile;
+		private Date dataPrimoUpload;
+		private Date dataUltimoUpload;
+
+		@Override
+		public Long getCountDownload() {
+			return countDownload;
+		}
+
+		@Override
+		public Long getDimensioneFile() {
+			return dimensioneFile;
+		}
+
+		@Override
+		public Date getDataPrimoUpload() {
+			return dataPrimoUpload;
+		}
+
+		@Override
+		public Date getDataUltimoUpload() {
+			return dataUltimoUpload;
+		}
+		
 	}
 }
