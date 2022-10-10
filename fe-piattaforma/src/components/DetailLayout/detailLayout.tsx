@@ -194,7 +194,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
           <>
             {itemsList.title && (
               <h2 className='h4 neutral-1-color-a7'>{itemsList.title}</h2>
-            )}{' '}
+            )}
             {((currentTab === 'questionari' && isRadioButtonItem) ||
               currentTab !== 'questionari') &&
               itemsList.items.map((item) => {
@@ -214,7 +214,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                     }
                   />
                 );
-              })}{' '}
+              })}
           </>
         ) : null}
         {currentTab === 'progetti' && showItemsList && itemsList?.items?.length
@@ -265,7 +265,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
           <>
             {itemsList.title && (
               <h2 className='h4 neutral-1-color-a7'>{itemsList.title}</h2>
-            )}{' '}
+            )}
             {itemsList.items.map((item) => {
               return (
                 <CardStatusAction
@@ -276,7 +276,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                   onActionClick={item.actions}
                 />
               );
-            })}{' '}
+            })}
           </>
         ) : null}
         {buttonsPosition === 'TOP' &&

@@ -91,9 +91,8 @@ const Users = () => {
                   td.ruoli
                 ) : (
                   <p>
-                    {' '}
-                    Ruoli assegnati:{' '}
-                    <strong> {td.ruoli.split(',').length} </strong>{' '}
+                    Ruoli assegnati:
+                    <strong> {td.ruoli.split(',').length} </strong>
                   </p>
                 ),
               status: <StatusChip status={td.stato} rowTableId={td.id} />,
@@ -148,7 +147,13 @@ const Users = () => {
           : filterKey === ruoliDropdownLabel
           ? ruoliDropdownLabel
           : '';
-      dispatch(GetEntityFilterValues({ entity, dropdownType: dropdownType, noFilters: true }));
+      dispatch(
+        GetEntityFilterValues({
+          entity,
+          dropdownType: dropdownType,
+          noFilters: true,
+        })
+      );
     }
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
   };
@@ -209,7 +214,7 @@ const Users = () => {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
     placeholder:
-      "Inserisci il nome, il cognome, l'identificativo o il codice fiscale dell'utente",
+      "Inserisci il nome, il cognome, l'ID o il codice fiscale dell'utente",
     isClearable: true,
     title: 'Cerca programma',
   };

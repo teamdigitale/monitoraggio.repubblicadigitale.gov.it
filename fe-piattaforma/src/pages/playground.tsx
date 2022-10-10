@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Col, FormGroup, Row } from 'design-react-kit';
+import { Button, Col, FormGroup /* , Icon */, Row } from 'design-react-kit';
 import { useTranslation } from 'react-i18next';
 import { dispatchNotify } from '../utils/notifictionHelper';
 import {
@@ -11,6 +11,7 @@ import {
   DropdownFilter,
   ProgressBar,
   PrefixPhone,
+  StatusChip,
   // SelectMultiple,
 } from '../components';
 import withFormHandler, { withFormHandlerProps } from '../hoc/withFormHandler';
@@ -21,6 +22,8 @@ import { FilterI } from '../components/DropdownFilter/dropdownFilter';
 // import { groupOptions } from '../components/Form/multipleSelectConstants';
 // import ManageOTP from '../components/AdministrativeArea/Entities/Surveys/ManageOTP/ManageOTP';
 import CheckboxGroup from '../components/Form/checkboxGroup';
+import clsx from 'clsx';
+import UserAvatar from '../components/Avatar/UserAvatar/UserAvatar';
 
 const Playground: React.FC<withFormHandlerProps> = (props) => {
   const { t } = useTranslation();
@@ -70,16 +73,18 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
     onlyList: true,
   };
 
+  /* const device = useAppSelector(selectDevice); */
+
   const [values, setValues] = useState<FilterI[]>([]);
-  const [multipleSelectValue,setMultipleSelectValue] = useState<string>('');
+  const [multipleSelectValue, setMultipleSelectValue] = useState<string>('');
 
   const onInputChange = (
     value?: formFieldI['value'],
     field?: formFieldI['field']
   ) => {
     console.log(' PLAYGROUND onInputChange', value, field);
-    if(typeof value === 'string')setMultipleSelectValue(value);
-  }
+    if (typeof value === 'string') setMultipleSelectValue(value);
+  };
 
   return (
     <div className='container mt-4'>
@@ -92,7 +97,11 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
         noLabel
         optionsInColumn
         separator='§'
-        options={[{ label: 'AAA', value: 'AAA'},{ label: 'OOO', value: 'OOO'},{ label: 'UUU', value: 'UUU'}]}
+        options={[
+          { label: 'AAA', value: 'AAA' },
+          { label: 'OOO', value: 'OOO' },
+          { label: 'UUU', value: 'UUU' },
+        ]}
         value={multipleSelectValue}
       />
       <div className='my-5'>
@@ -110,6 +119,36 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
           values={values}
         />
       </div>
+
+      <div className='d-flex w-100 flex-wrap'>
+        <div className='d-flex w-100 justify-content-center'> {'CIAO'} </div>
+        <div className='d-flex w-100 justify-content-center'>
+          <UserAvatar
+            // avatarImage={profilePicture}
+            user={{ uSurname: 'Galassi', uName: 'Riccardo' }}
+            //size={device.mediaIsPhone ? AvatarSizes.Big : AvatarSizes.Small}
+            /*  font={
+              device.mediaIsPhone ? AvatarTextSizes.Big : AvatarTextSizes.Small
+            } */
+            //lightColor={device.mediaIsPhone}
+          />
+          <div> {'CIAO'} </div>
+          <StatusChip
+            className={clsx(
+              'table-container__status-label',
+              'primary-bg-a9',
+              'ml-4',
+              'section-chip',
+              'no-border'
+              //device.mediaIsPhone ? 'mx-0 ml-2 my-3' : 'mx-3'
+            )}
+            status={'ATTIVO'}
+            //rowTableId={name?.replace(/\s/g, '') || new Date().getTime()}
+          />
+        </div>
+        <div className='d-flex w-100 justify-content-center'> {'CIAO'} </div>
+      </div>
+
       <Row className='mt-2'>
         <Form id='form-playground-2'>
           <FormGroup check>

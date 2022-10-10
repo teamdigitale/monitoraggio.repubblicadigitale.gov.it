@@ -78,7 +78,7 @@ const CitizensDetail: React.FC = () => {
       >
         <FormCitizen formDisabled />
       </DetailLayout>
-      <CitizenServices servizi={citizen?.serviziCittadino} />{' '}
+      <CitizenServices servizi={citizen?.serviziCittadino} />
       <ManageCitizens
         idCitizen={idCittadino}
         onClose={() => dispatch(closeModal())}

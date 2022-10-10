@@ -140,7 +140,13 @@ const Projects: React.FC = () => {
           : filterKey === 'filtroIdsProgrammi'
           ? 'programmi'
           : '';
-      dispatch(GetEntityFilterValues({ entity, dropdownType: dropdownType, noFilters: true }));
+      dispatch(
+        GetEntityFilterValues({
+          entity,
+          dropdownType: dropdownType,
+          noFilters: true,
+        })
+      );
     }
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
   };
@@ -226,7 +232,7 @@ const Projects: React.FC = () => {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
     placeholder:
-      "Inserisci il nome del progetto, l'identificativo o il nome dell'ente gestore",
+      "Inserisci il nome del progetto, l'ID o il nome dell'ente gestore",
     isClearable: true,
     title: 'Cerca progetto',
   };

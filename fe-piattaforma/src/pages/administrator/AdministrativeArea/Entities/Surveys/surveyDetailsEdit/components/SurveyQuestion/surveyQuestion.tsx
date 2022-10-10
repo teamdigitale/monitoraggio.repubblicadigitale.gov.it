@@ -192,8 +192,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
           >
             <div className='d-flex align-items-center flex-grow-1'>
               <span className={clsx(device.mediaIsPhone ? 'mr-1' : 'mr-4')}>
-                {' '}
-                <strong> {position + 1} </strong>{' '}
+                <strong> {position + 1} </strong>
               </span>
               {(!editMode && !cloneMode) ||
               ((editMode || cloneMode) &&

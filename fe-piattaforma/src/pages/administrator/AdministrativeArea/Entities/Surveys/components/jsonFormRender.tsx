@@ -76,7 +76,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
         if (formField?.keyBE?.toLowerCase() === 'prefisso') {
           return renderPrefix(formField);
         }
-        if(formField?.field === '19' && formField?.value === ''){
+        if (formField?.field === '19' && formField?.value === '') {
           return null;
         }
 
@@ -246,7 +246,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
         return (
           <div className='d-flex flex-column align-items-start'>
             <Label className='rating-label'>
-              {formField?.label} {formField?.required && '*'}{' '}
+              {formField?.label} {formField?.required && '*'}
             </Label>
             <Rating
               className='col-12 col-lg-6'
