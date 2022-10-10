@@ -85,7 +85,7 @@ public class RequestFilter implements Filter {
 			if(!hasRuoloUtente) {
 				responseHttp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utente Non Autorizzato");
 			} else {
-				if(endpoint.contains(FilterUtil.VERIFICA_PROFILO_BASE_URI)) {
+				if(endpoint.contains(FilterUtil.VERIFICA_PROFILO_BASE_URI) || endpoint.contains("/drupal/forward")) {
 					chain.doFilter(wrappedRequest, response);
 				} else {
 					List<String> codiciPermessoPerApi;

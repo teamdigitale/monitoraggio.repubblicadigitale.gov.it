@@ -6,15 +6,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Base64;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.ReadListener;
+import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.Part;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -91,7 +94,14 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		}
 	}
 
-	public String getCorpoRichiesta(final HttpServletRequest httpServletRequest) throws IOException {
+	public String getCorpoRichiesta(final HttpServletRequest httpServletRequest) throws IOException, ServletException {
+		
+		
+		Enumeration paramNames = httpServletRequest.getParameterNames();
+		while(paramNames.hasMoreElements()) {
+		    System.out.println((String) paramNames.nextElement());
+		}
+		
 		if(httpServletRequest.getInputStream() == null) {
 			return null;
 		}

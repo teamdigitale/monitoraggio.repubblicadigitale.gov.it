@@ -18,23 +18,25 @@ import it.pa.repdgt.opendata.projection.OpenDataCittadinoProjection;
 public class CSVUtil {
 
 	private static final List<String> HEADERS = Arrays.asList(
-			"GENERE",
-			"TITOLO_DI_STUDIO",
+			"ID",
 			"ANNO_DI_NASCITA",
+			"GENERE",
 			"OCCUPAZIONE",
+			"TITOLO_DI_STUDIO",
+			"SERVIZIO_ID",
+			"NOME_SERVIZIO",
+			"DATA_FRUIZIONE_SERVIZIO",
+			"AMBITO_SERVIZI_PUBBLICI_DIGITALI",
+			"TIPOLOGIA_SERVIZIO",
+			"COMPETENZE_TRATTATE",
+			"SEDE_ID",
+			"NOME_SEDE",
 			"REGIONE",
 			"PROVINCIA",
 			"COMUNE",
 			"CAP",
-			"SEDE_ID",
-			"NOME_SEDE",
-			"TIPOLOGIA_SERVIZIO",
-			"SERVIZIO_ID",
-			"NOME_SERVIZIO",
-			"COMPETENZE_TRATTATE",
-			"AMBITO_SERVIZI_PUBBLICI_DIGITALI",
-			"ID_PROGRAMMA",
-			"INTERVENTO",
+			"INTERVENTO",			
+			"ID_PROGRAMMA",			
 			"ID_PROGETTO"
 		);
 
@@ -47,11 +49,14 @@ public class CSVUtil {
 			}
 
 			csvPrinter.printRecord(HEADERS);
+			int indiceRiga = 1;
 			for(OpenDataCittadinoCSVBean openDataCittadinoCSVBean : openDataCittadinoCSVBeanList) {
-				csvPrinter.printRecord(CSVUtil.getCSVRecord(openDataCittadinoCSVBean.getOpenDataCittadinoProjection(), 
+				csvPrinter.printRecord(CSVUtil.getCSVRecord(String.valueOf(indiceRiga),
+															openDataCittadinoCSVBean.getOpenDataCittadinoProjection(), 
 															openDataCittadinoCSVBean.getCompetenzeTrattate(),
 															openDataCittadinoCSVBean.getAmbitoServizi()
 															));
+				indiceRiga++;
 			}
 			csvPrinter.flush();
 			return new ByteArrayInputStream(outputStream.toByteArray());
@@ -60,26 +65,30 @@ public class CSVUtil {
 		}
 	}
 
-	private static List<String> getCSVRecord(OpenDataCittadinoProjection openDataCittadinoProjection, String competenzeTrattate, String ambitoServizi) {
+	private static List<String> getCSVRecord(String indiceRiga, OpenDataCittadinoProjection openDataCittadinoProjection, String competenzeTrattate, String ambitoServizi) {
 		return  Arrays.asList(
-				openDataCittadinoProjection.getGenere(),
-				openDataCittadinoProjection.getTitoloDiStudio(),
+				indiceRiga,
 				openDataCittadinoProjection.getAnnoDiNascita().toString(),
+				openDataCittadinoProjection.getGenere(),
 				openDataCittadinoProjection.getOccupazione(),
+				openDataCittadinoProjection.getTitoloDiStudio(),
+				openDataCittadinoProjection.getServizioId(),
+				openDataCittadinoProjection.getNomeServizio(),
+				openDataCittadinoProjection.getDataFruizioneServizio(),//data servizio in servizio
+				ambitoServizi,
+				openDataCittadinoProjection.getTipologiaServizio(),
+				competenzeTrattate,
+				openDataCittadinoProjection.getSedeId(),
+				openDataCittadinoProjection.getNomeSede(),
 				openDataCittadinoProjection.getRegioneSede(),
 				openDataCittadinoProjection.getProvinciaSede(),
 				openDataCittadinoProjection.getComuneSede(),
 				openDataCittadinoProjection.getCapSede(),
-				openDataCittadinoProjection.getSedeId(),
-				openDataCittadinoProjection.getNomeSede(),
-				openDataCittadinoProjection.getTipologiaServizio(),
-				openDataCittadinoProjection.getServizioId(),
-				openDataCittadinoProjection.getNomeServizio(),
-				competenzeTrattate,
-				ambitoServizi,
-				openDataCittadinoProjection.getIdProgramma(),
 				openDataCittadinoProjection.getPolicy(),
+				openDataCittadinoProjection.getIdProgramma(),
 				openDataCittadinoProjection.getIdProgetto()
+				//gestione arco temporale (inserire in tabella data ultimo caricamente + restituire nel servizio di
+				// count download la lista degli anni da prima pubblicazione a ultima)
 			);
 	}
 }

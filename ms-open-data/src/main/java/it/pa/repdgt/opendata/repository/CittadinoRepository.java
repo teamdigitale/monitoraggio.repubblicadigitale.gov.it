@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.pa.repdgt.opendata.projection.OpenDataCittadinoProjection;
+import it.pa.repdgt.opendata.projection.OpenDataSqlProjection;
 import it.pa.repdgt.shared.entity.CittadinoEntity;
 
 @Repository
@@ -24,7 +25,7 @@ public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long
 				+  " 		,cit.OCCUPAZIONE as occupazione         "
 				+  " 		,prog.POLICY as policy                  "
 				+  " 		,ser.ID as servizioId                   "
-				+  " 		,ser.NOME as nome                       "
+				+  " 		,ser.NOME as nomeServizio               "
 				+  " 		,ser.TIPOLOGIA_SERVIZIO as tipologiaServizio           "
 				+  " 		,ser.ID_TEMPLATE_Q3_COMPILATO as idTemplateQ3Compilato "
 				+  " 		,sed.ID as sedeId               "
@@ -35,6 +36,7 @@ public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long
 				+  " 		,sed.CAP as capSede             "
 				+  " 		,prog.codice as idProgramma     "
 				+  " 		,proget.id as idProgetto        "
+				+  "        ,ser.data_servizio as dataFruizioneServizio "
 				+  " FROM    "
 				+  "	cittadino cit "
 				+  "	INNER JOIN servizio_x_cittadino sxc "
@@ -60,29 +62,25 @@ public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long
 	void updateCountDownload(@Param(value = "nomeFile")String nomeFile,
 			@Param(value = "currentDate")Date currentDate);
 	
-	@Query(value = "SELECT count"
+	@Query(value = "SELECT count as countDownload,"
+			+ "     dimensione_file as dimensioneFile,"
+			+ "     data_primo_upload as dataPrimoUpload,"
+			+ "     data_ultimo_upload as dataUltimoUpload"
 			+ "     FROM count_download_file"
 			+ "     where nome_file = :nomeFile"
 			,nativeQuery = true)
-	Long getCountDownload(@Param(value = "nomeFile")String nomeFile);
+	OpenDataSqlProjection getOpenDataDetails(@Param(value = "nomeFile")String nomeFile);
 	
 	@Transactional
 	@Modifying
 	@Query(value = "UPDATE count_download_file"
 			+ "     SET count = 0,"
-			+ "     dimensione_file_opendata = :dimensioneFile"
+			+ "     dimensione_file = :dimensioneFile,"
+			+ "     data_ultimo_upload = current_date()"
 			+ "     WHERE nome_file = :nomeFile"
 	   ,nativeQuery = true)
 	void azzeraCountDownloadAndAggiornaDimensioneFile(
 			@Param(value = "nomeFile") String nomeFile, 
 			@Param(value = "dimensioneFile") String dimensioneFile
-		);
-
-	@Query(value = "SELECT dimensione_file_opendata"
-			+ "     FROM count_download_file"
-			+ "     WHERE nome_file = :nomeFile"
-			,nativeQuery = true)
-	String findDimensioneFileOpenData(
-			@Param(value = "nomeFile") String nomeFile
 		);
 }

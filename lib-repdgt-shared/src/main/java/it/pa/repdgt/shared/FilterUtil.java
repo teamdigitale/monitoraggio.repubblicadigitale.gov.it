@@ -18,10 +18,10 @@ public class FilterUtil {
 			"^/contesto$",
 			"^/contesto/confermaIntegrazione$",
 			"^/utente/upload/immagineProfilo*",
-			"^/utente/download/immagineProfilo*"
+			"^/utente/download/immagineProfilo*",
 
 //			da decommentare in locale(aggiunta endpoint per lanciare swagger):
-			,"^/swagger-ui*",
+			"^/swagger-ui*",
 			"^/favicon.ico*",
 			"^/swagger-resources*",
 			"^/v3/api-docs*",

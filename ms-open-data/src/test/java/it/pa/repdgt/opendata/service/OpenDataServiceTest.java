@@ -79,23 +79,17 @@ public class OpenDataServiceTest {
 		assertThatExceptionOfType(FileNotFoundException.class);
 	}
 	
-	@Test
-	public void getCountFileTest() throws IOException {
-		when(cittadinoRepository.getCountDownload(NOME_FILE)).thenReturn(1L);
-		openDataService.getCountFile(NOME_FILE);
-	}
+//	@Test
+//	public void getCountFileTest() throws IOException {
+//		when(cittadinoRepository.getCountDownload(NOME_FILE)).thenReturn(1L);
+//		openDataService.getCountFile(NOME_FILE);
+//	}
 	
 	@Test
 	public void getPresignedUrlTest() throws IOException {
 		doNothing().when(cittadinoRepository).updateCountDownload(Mockito.anyString(), Mockito.any(Date.class));
 		when(this.s3Service.getPresignedUrl(NOME_FILE, this.nomeDelBucketS3)).thenReturn(NOME_FILE);
 		openDataService.getPresignedUrl(NOME_FILE);
-	}
-	
-	@Test
-	public void getDimensioneFileOpenDataTest() {
-		when(cittadinoRepository.findDimensioneFileOpenData(NOME_FILE)).thenReturn("4309");
-		openDataService.getDimensioneFileOpenData(NOME_FILE);
 	}
 	
 	@Setter
@@ -117,6 +111,7 @@ public class OpenDataServiceTest {
 		private String capSede;
 		private String idProgramma;
 		private String idProgetto;
+		private String dataFruizioneServizio;
 
 		@Override
 		public String getGenere() {
@@ -203,5 +198,9 @@ public class OpenDataServiceTest {
 			return idProgetto;
 		}
 		
+		@Override
+		public String getDataFruizioneServizio() {
+			return dataFruizioneServizio;
+		}
 	}
 }
