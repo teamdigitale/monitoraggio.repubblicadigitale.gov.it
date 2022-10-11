@@ -1285,4 +1285,10 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
 			@Param(value = "ruoli") List<String> ruoli);
 
+	@Query(value = "SELECT * "
+			+ "	FROM utente utente "
+			+ "	WHERE utente.id IN (:idsUtenti)",
+			nativeQuery = true)
+	public List<UtenteEntity> findListaUtentiByIdUtenti(@Param(value = "idsUtenti") List<Long> idsUtenti);
+
 }
