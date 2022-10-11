@@ -41,14 +41,14 @@ public class UtenteService {
 	
 	@LogMethod
 	@LogExecutionTime
-	public List<String> getReferentiProgrammaById(Long id) {
-		return this.utenteRepository.findReferentiProgrammaById(id);
+	public List<String> getReferentiProgrammaById(Long id, Long idEnte) {
+		return this.utenteRepository.findReferentiProgrammaById(id, idEnte);
 	}
 
 	@LogMethod
 	@LogExecutionTime
-	public List<String> getReferentiProgettoById(Long id) {
-		return this.utenteRepository.findReferentiProgettoById(id);
+	public List<String> getReferentiProgettoById(Long id, Long idEnte) {
+		return this.utenteRepository.findReferentiProgettoById(id, idEnte);
 	}
 
 	@LogMethod

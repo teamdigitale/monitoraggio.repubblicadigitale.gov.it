@@ -70,14 +70,14 @@ public class UtenteServiceTest {
 	
 	@Test
 	public void getReferentiProgrammaByIdTest() {
-		when(this.utenteRepository.findReferentiProgrammaById(1L)).thenReturn(listaReferenti);
-		utenteService.getReferentiProgrammaById(1L);
+		when(this.utenteRepository.findReferentiProgrammaById(1L, 1L)).thenReturn(listaReferenti);
+		utenteService.getReferentiProgrammaById(1L, 1L);
 	}
 
 	@Test
 	public void getReferentiProgettoByIdTest() {
-		when(this.utenteRepository.findReferentiProgettoById(1L)).thenReturn(listaReferenti);
-		utenteService.getReferentiProgettoById(1L);
+		when(this.utenteRepository.findReferentiProgettoById(1L, 1L)).thenReturn(listaReferenti);
+		utenteService.getReferentiProgettoById(1L, 1L);
 	}
 	
 	@Test
