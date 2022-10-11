@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.73](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.72...1.0.0-test.73) (2022-10-11)
+
+
+### Features
+
+* **be:** upload ente + api lista utenti ([f9bff3e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f9bff3eb97967e9bbb70373b43782dc08abb924b))
+
 ## [1.0.0-test.72](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.71...1.0.0-test.72) (2022-10-10)
 
 
