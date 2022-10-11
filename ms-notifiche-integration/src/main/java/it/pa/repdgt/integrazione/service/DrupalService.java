@@ -83,13 +83,18 @@ public class DrupalService {
 		        log.info("Richiesta Servizio Drupal: {} {} headersRichiesta={} corpoRichiesta={}", 
 						metodoHttp, urlDaChiamare, forwardHeaders, requestEntity);
 		        log.info("Caricamento file '{}' in corso...", nomeFile);
-				responseDrupal = this.restTemplate.exchange(urlDaChiamare, metodoHttp, requestEntity, Map.class);
-				
-				// Cancellazione file creato in precedenza
-				fostrm.close();
-				resource.getInputStream().close();
-				boolean isFileCancellato = file.delete();
-				log.info("file '{}' cancellato?{}", nomeFile, isFileCancellato);
+		        try {
+		        	responseDrupal = this.restTemplate.exchange(urlDaChiamare, metodoHttp, requestEntity, Map.class);
+		        } catch (Exception e) {
+		        	String messaggioErrore = String.format("Errore chiamata REST DRUPAL: %s %s - datail: %s", metodoHttp, urlDaChiamare, e.getMessage());
+					throw new DrupalException(messaggioErrore, e, CodiceErroreEnum.D01);
+				} finally {
+					// Cancellazione file creato in precedenza
+					fostrm.close();
+					resource.getInputStream().close();
+					boolean isFileCancellato = file.delete();
+					log.info("file '{}' cancellato?{}", nomeFile, isFileCancellato);
+				}
 			} else {
 				String forwardBody = param.getBodyRichiestaHttp();
 				
@@ -102,7 +107,7 @@ public class DrupalService {
 			}
 		
 		} catch (Exception ex) {
-			String messaggioErrore = String.format("Errore chiamata servizio DRUPAL: %s %s", metodoHttp, urlDaChiamare);
+			String messaggioErrore = String.format("Errore chiamata servizio DRUPAL: %s %s - detail: %s", metodoHttp, urlDaChiamare, ex.getMessage());
 			throw new DrupalException(messaggioErrore, ex, CodiceErroreEnum.D01);
 		}
 
