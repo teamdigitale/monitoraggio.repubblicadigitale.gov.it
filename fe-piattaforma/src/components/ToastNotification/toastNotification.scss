@@ -10,6 +10,7 @@
   z-index: $z-index-notification;
 
   .alert {
+    pointer-events: all !important;
     background-color: color('white');
     transition: all 250ms ease;
 

@@ -35,7 +35,7 @@ const Modal: React.FC<ModalI> = (props) => {
   return currentId === id ? (
     <ModalsPortal.Source>
       <Curtain open noscroll onClick={handleCloseModal} />
-      <FocusTrap>
+      <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
         <div className={clsx('d-flex', 'justify-content-around')}>
           <div
             className={clsx(

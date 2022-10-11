@@ -22,7 +22,7 @@ import {
   DownloadEntityValuesQueryParams,
   GetEntityFilterQueryParamsValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
-import { TableHeadingQuestionnaires } from '../utils';
+import {TableHeadingQuestionnaires, TableHeadingQuestionnairesLite} from '../utils';
 
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
@@ -75,7 +75,7 @@ const Surveys = () => {
 
   const updateTableValues = () => {
     const table = newTable(
-      TableHeadingQuestionnaires,
+      hasUserPermission(['new.quest.templ']) ? TableHeadingQuestionnaires : TableHeadingQuestionnairesLite,
       questionariList?.list.map((td) => ({
         id: td.id,
         nome: td.nome,
@@ -323,8 +323,8 @@ const Surveys = () => {
             ? 'Elenco questionari'
             : 'Elenco Addendum'
         }
-        sectionInfo
-        defaultOpen
+        sectionInfo={hasUserPermission(["new.quest.templ"])}
+        defaultOpen={hasUserPermission(["new.quest.templ"])}
       />
       <GenericSearchFilterTableLayout
         searchInformation={searchInformation}

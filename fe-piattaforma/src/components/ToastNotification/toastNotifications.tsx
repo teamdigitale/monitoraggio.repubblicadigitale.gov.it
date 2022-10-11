@@ -1,12 +1,13 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { useDispatch } from 'react-redux';
 import { Alert, Icon } from 'design-react-kit';
+import clsx from 'clsx';
 import { useAppSelector } from '../../redux/hooks';
 import {
   removeNotify,
   selectNotification,
 } from '../../redux/features/notification/notificationSlice';
-import clsx from 'clsx';
 
 const getColorByStatus = (status: string | undefined) => {
   switch (status) {
@@ -22,17 +23,18 @@ const getColorByStatus = (status: string | undefined) => {
   }
 };
 
-const NotificationHandler: React.FC = () => {
+const ToastNotifications: React.FC = () => {
   const notification = useAppSelector(selectNotification);
   const dispatch = useDispatch();
+  const body = document.getElementsByTagName('body')[0];
 
-  const handleCloseNotify = (id: string | number) => {
+  const handleCloseNotify = (id?: string | number) => {
     dispatch(removeNotify({ id }));
   };
 
   if (!notification?.length) return null;
 
-  return (
+  return ReactDOM.createPortal(
     <div
       className={clsx(
         'notification-handler-container',
@@ -47,9 +49,8 @@ const NotificationHandler: React.FC = () => {
       {notification.map((notify) => (
         <Alert
           key={notify?.id}
-          className='position-relative'
+          className='notify-card position-relative'
           color={getColorByStatus(notify?.status)}
-          style={{ pointerEvents: 'all' }}
         >
           {notify?.message}
           {notify?.closable ? (
@@ -62,8 +63,9 @@ const NotificationHandler: React.FC = () => {
           ) : null}
         </Alert>
       ))}
-    </div>
+    </div>,
+    body
   );
 };
 
-export default NotificationHandler;
+export default ToastNotifications;
