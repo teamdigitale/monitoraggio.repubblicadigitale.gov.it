@@ -1206,7 +1206,7 @@ const ProjectsDetails = () => {
             titleInfo={{
               title: projectDetails?.nome,
               status: projectDetails?.stato,
-              upperTitle: { icon: 'it-user', text: 'Progetto' },
+              upperTitle: { icon: 'it-file', text: 'Progetto' },
               subTitle: programDetails?.nomeBreve,
             }}
             currentTab={activeTab}
