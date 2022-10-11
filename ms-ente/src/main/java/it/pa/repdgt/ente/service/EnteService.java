@@ -916,7 +916,7 @@ public class EnteService {
 												dettaglioProfilo.setNome(programma.getNome());
 												dettaglioProfilo.setProfilo(profilo);
 												dettaglioProfilo.setStato(programma.getStato());
-												dettaglioProfilo.setReferenti(this.utenteService.getReferentiProgrammaById(id));
+												dettaglioProfilo.setReferenti(this.utenteService.getReferentiProgrammaById(id, idEnte));
 												dettaglioProfili.add(dettaglioProfilo);
 												break;
 											case "Ente Gestore di Progetto":
@@ -926,7 +926,7 @@ public class EnteService {
 												dettaglioProfilo.setNome(progetto.getNome());
 												dettaglioProfilo.setProfilo(profilo);
 												dettaglioProfilo.setStato(progetto.getStato());
-												dettaglioProfilo.setReferenti(this.utenteService.getReferentiProgettoById(id));
+												dettaglioProfilo.setReferenti(this.utenteService.getReferentiProgettoById(id, idEnte));
 												dettaglioProfili.add(dettaglioProfilo);
 												break;
 											case "Ente Partner":

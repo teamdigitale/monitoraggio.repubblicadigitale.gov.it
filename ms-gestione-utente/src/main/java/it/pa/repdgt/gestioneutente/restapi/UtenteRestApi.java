@@ -33,6 +33,8 @@ import it.pa.repdgt.gestioneutente.mapper.UtenteMapper;
 import it.pa.repdgt.gestioneutente.request.AggiornaUtenteRequest;
 import it.pa.repdgt.gestioneutente.request.NuovoUtenteRequest;
 import it.pa.repdgt.gestioneutente.request.UtenteRequest;
+import it.pa.repdgt.gestioneutente.resource.ListaUtentiResource;
+import it.pa.repdgt.gestioneutente.resource.UtenteImmagineResource;
 import it.pa.repdgt.gestioneutente.resource.UtenteResource;
 import it.pa.repdgt.gestioneutente.resource.UtentiLightResourcePaginata;
 import it.pa.repdgt.gestioneutente.service.UtenteService;
@@ -131,6 +133,14 @@ public class UtenteRestApi {
 			@PathVariable(value = "idUtente") Long idUtente, 
 			@PathVariable(value = "codiceRuolo") String codiceRuolo) {
 		this.utenteService.assegnaRuoloAUtente(idUtente, codiceRuolo);
+	}
+	
+	@PostMapping(path = "/listaUtenti")
+	@ResponseStatus(value = HttpStatus.OK)
+	public List<UtenteImmagineResource> getListaUtentiByIdUtenti(@RequestBody ListaUtentiResource listaIdsUtenti,
+			@RequestParam Boolean richiediImmagine) {
+		List<UtenteImmagineResource> listaUtenti = this.utenteService.getListaUtentiByIdUtenti(listaIdsUtenti, richiediImmagine);
+		return listaUtenti;
 	}
 	
 	// Cancella Ruolo da Utente

@@ -34,9 +34,11 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "	INNER JOIN programma programma "
 			+ "		ON rdg.ID_PROGRAMMA = programma.ID "
 			+ "WHERE programma.ID = :idProgramma "
-			+ "		AND rdg.CODICE_RUOLO = 'REG' ",
+			+ "AND rdg.CODICE_RUOLO = 'REG' "
+			+ "AND rdg.id_ente = :idEnte",
 			nativeQuery = true)
-	public List<String> findReferentiProgrammaById(@Param(value = "idProgramma") Long id);
+	public List<String> findReferentiProgrammaById(@Param(value = "idProgramma") Long id,
+												   @Param(value = "idEnte") Long idEnte);
 	
 	@Query(value = "SELECT CONCAT(utente.COGNOME,' ', utente.NOME) "
 			+ "FROM utente utente "
@@ -45,9 +47,11 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "	INNER JOIN progetto progetto "
 			+ "		ON rdgp.ID_PROGETTO = progetto.ID "
 			+ "WHERE progetto.ID = :idProgetto "
-			+ "		AND rdgp.CODICE_RUOLO = 'REGP'",
+			+ "AND rdgp.CODICE_RUOLO = 'REGP' "
+			+ "AND rdgp.id_ente = :idEnte",
 			nativeQuery = true)
-	public List<String> findReferentiProgettoById(@Param(value = "idProgetto") Long id);
+	public List<String> findReferentiProgettoById(@Param(value = "idProgetto") Long id,
+			@Param(value = "idEnte") Long idEnte);
 	
 	@Query(value = "SELECT DISTINCT CONCAT(utente.COGNOME,' ', utente.NOME) "
 			+ "FROM utente utente "

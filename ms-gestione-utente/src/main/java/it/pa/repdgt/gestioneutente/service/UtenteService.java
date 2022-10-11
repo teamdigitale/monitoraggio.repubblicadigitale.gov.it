@@ -39,6 +39,8 @@ import it.pa.repdgt.gestioneutente.repository.UtenteRepository;
 import it.pa.repdgt.gestioneutente.request.AggiornaUtenteRequest;
 import it.pa.repdgt.gestioneutente.request.FiltroRequest;
 import it.pa.repdgt.gestioneutente.request.UtenteRequest;
+import it.pa.repdgt.gestioneutente.resource.ListaUtentiResource;
+import it.pa.repdgt.gestioneutente.resource.UtenteImmagineResource;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.awsintegration.service.EmailService;
@@ -1155,5 +1157,32 @@ public class UtenteService {
 			throw new UtenteException("Errore download immagine profilo utente", ex, CodiceErroreEnum.U17);
 		}
 		return presignedUrlImmagineProfiloUtente;
+	}
+
+	@LogExecutionTime
+	@LogMethod
+	public List<UtenteImmagineResource> getListaUtentiByIdUtenti(ListaUtentiResource idsUtenti, Boolean richiediImmagine) {
+		List<UtenteImmagineResource> listaUtenti = new ArrayList<>();
+		List<UtenteEntity> listaUtentiEntity = this.utenteRepository.findListaUtentiByIdUtenti(idsUtenti.getIdsUtenti());
+		if(richiediImmagine) {
+			listaUtentiEntity.stream().forEach(utenteFetched -> {
+				UtenteImmagineResource utente = new UtenteImmagineResource();
+				utente.setNome(utenteFetched.getNome());
+				utente.setCognome(utenteFetched.getCognome());
+				if(utenteFetched.getImmagineProfilo() != null) {
+					utente.setImmagineProfilo(this.s3Service.getPresignedUrl(utenteFetched.getImmagineProfilo(), this.nomeDelBucketS3, Long.parseLong(this.presignedUrlExpireContesto)));
+				}
+				listaUtenti.add(utente);
+			});
+		} else {
+			listaUtentiEntity.stream().forEach(utenteFetched -> {
+				UtenteImmagineResource utente = new UtenteImmagineResource();
+				utente.setNome(utenteFetched.getNome());
+				utente.setCognome(utenteFetched.getCognome());
+				listaUtenti.add(utente);
+				
+			});
+		}
+		return listaUtenti;
 	}
 }

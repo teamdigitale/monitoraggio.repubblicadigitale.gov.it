@@ -95,13 +95,6 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	}
 
 	public String getCorpoRichiesta(final HttpServletRequest httpServletRequest) throws IOException, ServletException {
-		
-		
-		Enumeration paramNames = httpServletRequest.getParameterNames();
-		while(paramNames.hasMoreElements()) {
-		    System.out.println((String) paramNames.nextElement());
-		}
-		
 		if(httpServletRequest.getInputStream() == null) {
 			return null;
 		}
