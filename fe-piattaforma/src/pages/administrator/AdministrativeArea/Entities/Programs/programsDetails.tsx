@@ -619,19 +619,28 @@ const ProgramsDetails: React.FC = () => {
   const centerActiveItem = () => {
     switch (activeTab) {
       case tabs.INFO:
-        infoRef.current?.scrollIntoView({ block: 'center' });
+        infoRef.current?.scrollIntoView({ block: 'center', inline: 'center' });
         break;
       case tabs.ENTE:
-        gestoreRef.current?.scrollIntoView({ block: 'center' });
+        gestoreRef.current?.scrollIntoView({
+          block: 'center',
+          inline: 'center',
+        });
         break;
       case tabs.QUESTIONARI:
-        questionariRef.current?.scrollIntoView({ block: 'center' });
+        questionariRef.current?.scrollIntoView({
+          block: 'center',
+          inline: 'center',
+        });
         break;
       case tabs.PROGETTI:
-        projectRef.current?.scrollIntoView({ block: 'center' });
+        projectRef.current?.scrollIntoView({
+          block: 'center',
+          inline: 'center',
+        });
         break;
       default:
-        infoRef.current?.scrollIntoView({ block: 'center' });
+        infoRef.current?.scrollIntoView({ block: 'center', inline: 'center' });
         break;
     }
   };
@@ -1034,7 +1043,7 @@ const ProgramsDetails: React.FC = () => {
           titleInfo={{
             title: programDetails.nomeBreve,
             status: programDetails.stato,
-            upperTitle: { icon: 'it-user', text: 'Programma' },
+            upperTitle: { icon: 'it-folder', text: 'Programma' },
           }}
           formButtons={correctButtons}
           currentTab={activeTab}

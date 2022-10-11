@@ -5,7 +5,7 @@ import { FontLoader } from 'design-react-kit';
 import './styles/main.scss';
 import store from './redux/store';
 import AppRoutes from './routes';
-import NotificationHandler from './components/NotificationHandler/notificationHandler';
+import ToastNotifications from './components/ToastNotification/toastNotifications';
 import ModalsPortal from './components/Modals/modalsPortal';
 import SkipContent from './components/SkipContent/skipContent';
 import MediaQueriesProvider from './components/MediaQueriesProvider/mediaQueriesProvider';
@@ -19,7 +19,7 @@ const MyApp: React.FC = () => {
       <FontLoader />
       <SkipContent />
       <MediaQueriesProvider />
-      <NotificationHandler />
+      <ToastNotifications />
       <ModalsPortal.Target />
       <Router>
         <AppRoutes />

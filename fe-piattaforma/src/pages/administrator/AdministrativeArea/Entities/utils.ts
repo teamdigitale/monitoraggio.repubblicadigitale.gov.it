@@ -97,6 +97,29 @@ export const TableHeadingQuestionnaires: TableHeadingI[] = [
   },
 ];
 
+export const TableHeadingQuestionnairesLite: TableHeadingI[] = [
+  {
+    label: 'Nome questionario',
+    field: 'nome',
+    size: 'auto',
+  },
+  {
+    label: 'ID',
+    field: 'id',
+    size: 'medium',
+  },
+  {
+    label: 'Data ultima modifica',
+    field: 'dataUltimaModifica',
+    size: 'auto',
+  },
+  {
+    label: 'Stato',
+    field: 'status',
+    size: 'auto',
+  },
+];
+
 export const TableHeadingEntities: TableHeadingI[] = [
   {
     label: 'Nome',

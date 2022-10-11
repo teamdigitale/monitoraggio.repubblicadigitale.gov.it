@@ -97,9 +97,7 @@ const AppRoutes: React.FC = () => {
         <Route
           path='/open-data'
           element={
-            <FullLayout>
               <OpenData />
-            </FullLayout>
           }
         />
         {process.env.NODE_ENV === 'development' ? (
