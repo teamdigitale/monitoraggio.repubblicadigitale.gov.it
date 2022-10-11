@@ -37,19 +37,19 @@ export const surveyBody = `
     </p>
       `;
 
-export const openDataBody = `
-<ul class="section-info-list" style="padding-bottom: 24px; padding-left: 24px,white-space: nowrap">
+export const openDataBody = (dateCoverage: string, lastDate: string) => (`
+<ul class="section-info-list" style="padding-bottom: 24px; padding-left: 24px;">
 <li >
   <strong>Nome Dataset: 
   </strong> Statistiche del Piano Operativo per le Competenze Digitali
 </li>
-<li>
-  <strong> Copertura temporale:  </strong> 2022
+<li style="max-width: 300px">
+  <strong> Copertura temporale:  </strong> ${dateCoverage}
 </li>
 <li >
   <strong> Data ultima pubblicazione: 
   </strong>
-  23/12/2021
+  ${lastDate}
 </li>
 <li>
   <strong>Periodicita' rilevazione: 
@@ -59,14 +59,16 @@ export const openDataBody = `
   <strong> Copertura geografica: 
   </strong> Nazionale
 </li>
+<li>
+  <strong> Licenza: 
+  </strong><a href="https://www.dati.gov.it/content/italian-open-data-license-v20" target="_blank">Italian Open Data License v2.0</a>
+</li>
 </ul>
-`;
+`);
 
 export const openDataSubtitle = `
 <p class='text-muted' style='padding-bottom: 24px;'>
-Nell'ambito dell'iniziativa di <strong> Repubblica Digitale </strong> sono erogati servizi di facilitazione e formazione ai cittadini al fine di incrementare le loro competenze digitali. 
-<br>
-<br>
-Tali servizi sono erogati a livello nazionale presso le sedi designate a tale scopo; inoltre sono rilevate le principali caratteristiche della popolazione partecipante e della tipologia di servizio erogato.
+Allo scopo di incrementare le competenze digitali dei cittadini, nell'ambito di <strong>Repubblica Digitale</strong> sono previsti servizi di facilitazione e formazione, organizzati a livello nazionale e con sedi distribuite in tutto il Paese. 
+In relazione a questi servizi, sono rilevate le principali caratteristiche della popolazione partecipante e la tipologia di servizio erogato.
 </p>
 `;
