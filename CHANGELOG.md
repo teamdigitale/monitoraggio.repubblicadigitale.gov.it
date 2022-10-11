@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.189](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.188...1.0.0-develop.189) (2022-10-11)
+
+
+### Bug Fixes
+
+* **be:**  fix log drupal ([4a091b1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4a091b10aa1a517cfc0e1910503782a8dcc98e12))
+
 ## [1.0.0-develop.188](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.187...1.0.0-develop.188) (2022-10-11)
 
 
