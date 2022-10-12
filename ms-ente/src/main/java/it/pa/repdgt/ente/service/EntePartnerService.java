@@ -342,7 +342,7 @@ public class EntePartnerService {
 				}
 				esiti.add(ente);
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw new EnteException("Impossibile effettuare upload lista enti partner", e, CodiceErroreEnum.EN05);
 		}
 		return esiti;

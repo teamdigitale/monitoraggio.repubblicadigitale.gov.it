@@ -97,7 +97,7 @@ public class CSVUtil {
 				enti.add(ente);
 			}
 			return enti;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw new RuntimeException("fail to parse CSV file: " + e.getMessage());
 		}
 	}
