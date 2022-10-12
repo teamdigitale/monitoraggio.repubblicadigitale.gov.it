@@ -1164,7 +1164,7 @@ const ProjectsDetails = () => {
         codiceFiscale: td.piva || td.codiceFiscale,
         esito: (td.esito || '').toUpperCase().includes('OK')
           ? 'Riuscito'
-          : 'Fallito',
+          : 'Non riuscito',
         failedCSV: td.esito.toUpperCase().includes('KO'),
         onTooltipInfo: td.esito,
       }))

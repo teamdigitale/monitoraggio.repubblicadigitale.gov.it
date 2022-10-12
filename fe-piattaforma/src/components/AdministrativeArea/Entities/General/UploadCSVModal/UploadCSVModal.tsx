@@ -93,7 +93,7 @@ const UploadCSVModal: React.FC<UploadCSVModalI> = (props) => {
               <p>{esito?.ok}</p>
             </div>
             <div>
-              <h4>Falliti</h4>
+              <h4>Non riusciti</h4>
               <p>{esito?.ko}</p>
             </div>
           </div>

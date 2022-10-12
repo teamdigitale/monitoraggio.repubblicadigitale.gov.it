@@ -87,7 +87,7 @@ export const staticValues = [
       "App IO, Sistemi di pagamenti elettronici (pagoPA), Servizi anagrafici tramite ANPR, Fascicolo sanitario elettronico, Fatturazione elettronica, Cultura e turismo, Istruzione, Formazione, Sport, Servizi di sostegno all'occupazione, Commercio e impresa, Servizi previdenziali e assistenziali, Servizi sanitari diversi da FSE Adempimenti fiscali, Servizi tributari e contravvenzioni, Urbanistica ed edilizia, Infrastrutture e mobilità , Utilizzo di piattaforme di partecipazione, Nessuna delle precedenti",
   },
   {
-    attributo: 'TIPOLOGIA-SERVIZIO',
+    attributo: 'TIPOLOGIA_SERVIZIO',
     attributo_tipo: 'Categorico',
     descrizione: 'È il tipo di servizio prenotato dal cittadino',
     descrizione_tipo:
