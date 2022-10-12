@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.75](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.74...1.0.0-test.75) (2022-10-12)
+
+
+### Features
+
+* **be:** upload ente partner + wave3 ([adb3d14](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/adb3d141eaa9525631a2d62d22a4a2a9f453afa7))
+
 ## [1.0.0-test.74](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.73...1.0.0-test.74) (2022-10-12)
 
 
