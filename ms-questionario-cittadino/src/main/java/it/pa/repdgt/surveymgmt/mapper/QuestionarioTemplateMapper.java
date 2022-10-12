@@ -7,12 +7,14 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.bson.json.JsonObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection.SezioneQuestionarioTemplate;
+import it.pa.repdgt.surveymgmt.repository.QuestionarioTemplateSqlRepository;
 import it.pa.repdgt.surveymgmt.request.QuestionarioTemplateRequest;
 import it.pa.repdgt.surveymgmt.request.QuestionarioTemplateRequest.SezioneQuestionarioTemplateRequest;
 import it.pa.repdgt.surveymgmt.resource.QuestionarioTemplateLightResource;
@@ -22,6 +24,9 @@ import it.pa.repdgt.surveymgmt.resource.QuestionarioTemplateResource.SezioneQues
 @Component
 @Validated
 public class QuestionarioTemplateMapper {
+	
+	@Autowired
+	private QuestionarioTemplateSqlRepository questionarioTemplateSqlRepository;
 		
 	/**
 	 * Mappa QuestionarioTemplateRequest in QuestionarioTemplateCollection
@@ -100,6 +105,7 @@ public class QuestionarioTemplateMapper {
 		questionarioTemplateResource.setDefaultSCD(questionarioTemplateCollection.getDefaultSCD());
 		questionarioTemplateResource.setDataOraUltimoAggiornamento(questionarioTemplateCollection.getDataOraUltimoAggiornamento());
 		questionarioTemplateResource.setSezioniQuestionarioTemplate(this.toResouceFrom(questionarioTemplateCollection.getSezioniQuestionarioTemplate()));
+		questionarioTemplateResource.setStato(questionarioTemplateSqlRepository.findById(questionarioTemplateCollection.getIdQuestionarioTemplate()).get().getStato()); 
 		return questionarioTemplateResource;
 	}
 	
