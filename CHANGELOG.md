@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.195](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.194...1.0.0-develop.195) (2022-10-12)
+
+
+### Features
+
+* **be:** aggiunta stato in scheda questionario ([efbcae2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/efbcae2bcee394004e56f438984f9283eafb6201))
+
 ## [1.0.0-develop.194](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.193...1.0.0-develop.194) (2022-10-12)
 
 
