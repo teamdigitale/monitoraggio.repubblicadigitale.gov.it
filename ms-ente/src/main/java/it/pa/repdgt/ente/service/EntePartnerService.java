@@ -49,7 +49,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class EntePartnerService {
-	
+
 	private static final String PIVA_REGX = "^[0-9]{11}$";
 
 	@Autowired 
@@ -287,11 +287,16 @@ public class EntePartnerService {
 			//estraggo gli enti dal file csv
 			List<EntePartnerUploadBean> enti = CSVUtil.csvToEnti(fileEntiPartner.getInputStream());
 			for(EntePartnerUploadBean ente: enti) {
+				String nome = ente.getNome();
+				String nomeBreve = ente.getNomeBreve();
+				String tipologia = ente.getTipologiaEnte();
+				String piva = ente.getPiva();
 				//verifico validità campo tipologiaEnte
-				if(!ente.getNome().isBlank() &&
-						!ente.getNomeBreve().isBlank() &&
-						!ente.getTipologiaEnte().isBlank() &&
-						!ente.getPiva().isBlank()) {
+				if((nome != null && !(nome.trim()).equals("")) &&
+						(nomeBreve != null && !(nomeBreve.trim()).equals("")) &&
+						(tipologia != null && !(tipologia.trim()).equals("")) &&
+						(piva != null && !(piva.trim()).equals(""))
+						) {
 					Pattern pattern = Pattern.compile(PIVA_REGX);
 					Matcher matcher = pattern.matcher(ente.getPiva());
 					if(matcher.find()) {

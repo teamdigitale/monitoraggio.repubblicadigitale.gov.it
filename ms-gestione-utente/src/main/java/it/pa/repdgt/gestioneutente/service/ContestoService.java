@@ -68,21 +68,21 @@ public class ContestoService implements RuoliUtentiConstants{
 			switch (codiceRuolo) {
 				case REG:
 				case DEG:
-					descrizioneRuolo = codiceRuolo.equalsIgnoreCase(RuoliUtentiConstants.REG)? "Referente": "Delegato";
+					descrizioneRuolo = codiceRuolo.equalsIgnoreCase(RuoliUtentiConstants.REG)? "REFERENTE": "DELEGATO";
 					for( ProfiloProjection profilo : this.contestoRepository.findProgrammiREGDEG(codiceFiscale, codiceRuolo)) {
 						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getNomeEnte()));
 					}
 					break;
 				case REGP:
 				case DEGP:
-					descrizioneRuolo = codiceRuolo.equalsIgnoreCase(RuoliUtentiConstants.REGP)? "Referente": "Delegato";
+					descrizioneRuolo = codiceRuolo.equalsIgnoreCase(RuoliUtentiConstants.REGP)? "REFERENTE": "DELEGATO";
 					for( ProfiloProjection profilo : this.contestoRepository.findProgrammiProgettiREGPDEGP(codiceFiscale, codiceRuolo)) {
 						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte()));
 					}
 					break;
 				case REPP:
 				case DEPP:
-					descrizioneRuolo = codiceRuolo.equalsIgnoreCase(RuoliUtentiConstants.REPP)? "Referente": "Delegato";
+					descrizioneRuolo = codiceRuolo.equalsIgnoreCase(RuoliUtentiConstants.REPP)? "REFERENTE": "DELEGATO";
 					for( ProfiloProjection profilo : this.contestoRepository.findProgrammiProgettiREPPDEPP(codiceFiscale, codiceRuolo)) {
 						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte()));
 					}
