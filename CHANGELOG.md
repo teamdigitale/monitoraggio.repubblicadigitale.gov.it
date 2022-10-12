@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.76](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.75...1.0.0-test.76) (2022-10-12)
+
+
+### Features
+
+* **be:** aggiunta stato per scheda questionario ([e82ed99](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e82ed99f687343834dc6f1b461c5b0e8b8562b06))
+
 ## [1.0.0-test.75](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.74...1.0.0-test.75) (2022-10-12)
 
 
