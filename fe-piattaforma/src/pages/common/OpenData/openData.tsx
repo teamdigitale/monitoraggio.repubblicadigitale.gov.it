@@ -64,13 +64,18 @@ const OpenData = () => {
   }, []);
 
   return (
-    <Container className='py-5'>
+    <Container className='py-5 border-focus-orange-none'>
       <PageTitle
         title='Open data: servizi di facilitazione e formazione per i cittadini'
         innerHTML
         HTMLsubtitle={openDataSubtitle}
       />
-      <InfoPanel openData HTMLlist body={openDataBody(dateCoverage, lastDate)} colsNo={0} />
+      <InfoPanel
+        openData
+        HTMLlist
+        body={openDataBody(dateCoverage, lastDate)}
+        colsNo={0}
+      />
       <div
         className={clsx(
           'd-flex',
@@ -86,8 +91,12 @@ const OpenData = () => {
           <span>Scarica i dati</span>
         </div>
         <div className='d-flex'>
-          <Button color='primary' onClick={getDocumentUrl}>
-            Scarica CSV {docSize ? `(${docSize} Kb)` : null}
+          <Button
+            color='primary'
+            onClick={getDocumentUrl}
+            className='border-focus-orange-none'
+          >
+            Scarica il csv {docSize ? `(${docSize} Kb)` : null}
           </Button>
         </div>
         <div className={clsx('d-flex', 'flex-row', 'align-items-center')}>
@@ -111,7 +120,7 @@ const OpenData = () => {
           Modello di lettura del file di dati con elenco delle colonne e
           relative descrizioni
         </div>
-        <Table {...tableValues} />
+        <Table className='border-focus-orange-none' {...tableValues} />
       </div>
     </Container>
   );
