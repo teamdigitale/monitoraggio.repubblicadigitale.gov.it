@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.192](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.191...1.0.0-develop.192) (2022-10-12)
+
+
+### Bug Fixes
+
+* **be:** upload ente-partner + upperCase contesto ([a530f08](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a530f089cfa87beb3cf5406399bb99ba07771547))
+
 ## [1.0.0-develop.191](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.190...1.0.0-develop.191) (2022-10-12)
 
 
