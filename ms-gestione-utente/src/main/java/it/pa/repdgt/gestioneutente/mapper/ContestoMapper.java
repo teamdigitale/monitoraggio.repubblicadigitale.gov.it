@@ -28,6 +28,9 @@ public class ContestoMapper {
 		contestoResource.setIntegrazione(utente.getIntegrazione());
 		contestoResource.setBio(utente.getMansione());
 		contestoResource.setTipoContratto(utente.getTipoContratto());
+		contestoResource.setUtenteRegistratoInWorkdocs(
+				utente.getIntegrazioneUtente() ==null || utente.getIntegrazioneUtente().getIdUtenteWorkdocs() == null? Boolean.FALSE: utente.getIntegrazioneUtente().getUtenteRegistratoInWorkdocs()
+			);
 		
 		List<RuoloResource> ruoliResource = utente.getRuoli()
 				.stream()

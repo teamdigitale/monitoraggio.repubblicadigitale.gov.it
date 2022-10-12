@@ -9,7 +9,11 @@ public class EnteException extends BaseException {
 		super(exceptionMessage, codiceErroreEnum);
 	}
 	
-	public EnteException(String exceptionMessage, Exception ex, CodiceErroreEnum codiceErroreEnum) {
+	public EnteException(String exceptionMessage, Exception ex) {
 		super (exceptionMessage, ex);
+	}
+	
+	public EnteException(String exceptionMessage, Exception ex, CodiceErroreEnum codiceErroreEnum) {
+		super (exceptionMessage, ex, codiceErroreEnum);
 	}
 }
