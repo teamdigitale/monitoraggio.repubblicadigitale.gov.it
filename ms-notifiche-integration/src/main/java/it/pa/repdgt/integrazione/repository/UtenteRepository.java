@@ -1,6 +1,7 @@
 package it.pa.repdgt.integrazione.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -34,6 +35,14 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			 + "	AND uxr.ruolo_codice = 'DTD'",
 	   nativeQuery = true)
 	List<UtenteEntity> getUtentiDTD();
+
 	
-	
+	@Query(value = "SELECT * "
+			 + " FROM utente u"
+			 + " WHERE 1=1"
+			 + "	AND u.CODICE_FISCALE = :codiceFiscale",
+			 nativeQuery = true)
+	Optional<UtenteEntity> findByCodiceFiscale(
+			@Param(value = "codiceFiscale") String codiceFiscale
+		);
 }

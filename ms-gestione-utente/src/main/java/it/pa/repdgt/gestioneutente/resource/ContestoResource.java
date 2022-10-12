@@ -62,4 +62,7 @@ public class ContestoResource implements Serializable {
 	
 	@JsonProperty(value = "integrazione")
 	private Boolean integrazione;
+	
+	@JsonProperty(value = "utenteRegistratoInWorkdocs")
+	private Boolean utenteRegistratoInWorkdocs;
 }
