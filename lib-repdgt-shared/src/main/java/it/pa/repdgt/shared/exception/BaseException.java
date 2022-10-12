@@ -20,4 +20,9 @@ public abstract class BaseException extends RuntimeException implements Serializ
 	public BaseException(String exceptionMessage, Exception ex) {
 		super (exceptionMessage, ex);
 	}
+	
+	public BaseException(String exceptionMessage, Exception ex, CodiceErroreEnum codiceErroreEnum) {
+		super (exceptionMessage, ex);
+		this.codiceErroreEnum = codiceErroreEnum;
+	}
 }
