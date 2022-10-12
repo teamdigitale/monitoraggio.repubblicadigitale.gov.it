@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.194](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.193...1.0.0-develop.194) (2022-10-12)
+
+
+### Bug Fixes
+
+* **be:** upload ente - gestione eccezione ([3e1eb2e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3e1eb2e7c2ea90ba460e56b9e3332125d8daa0a5))
+
 ## [1.0.0-develop.193](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.192...1.0.0-develop.193) (2022-10-12)
 
 
