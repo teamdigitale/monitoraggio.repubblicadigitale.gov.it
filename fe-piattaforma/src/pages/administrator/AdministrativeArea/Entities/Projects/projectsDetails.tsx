@@ -1164,7 +1164,7 @@ const ProjectsDetails = () => {
         codiceFiscale: td.piva || td.codiceFiscale,
         esito: (td.esito || '').toUpperCase().includes('OK')
           ? 'Riuscito'
-          : 'Fallito',
+          : 'Non riuscito',
         failedCSV: td.esito.toUpperCase().includes('KO'),
         onTooltipInfo: td.esito,
       }))
@@ -1206,7 +1206,7 @@ const ProjectsDetails = () => {
             titleInfo={{
               title: projectDetails?.nome,
               status: projectDetails?.stato,
-              upperTitle: { icon: 'it-user', text: 'Progetto' },
+              upperTitle: { icon: 'it-file', text: 'Progetto' },
               subTitle: programDetails?.nomeBreve,
             }}
             currentTab={activeTab}

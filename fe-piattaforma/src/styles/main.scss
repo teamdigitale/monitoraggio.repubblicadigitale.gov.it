@@ -35,3 +35,8 @@ select:-webkit-autofill:focus {
   //-webkit-box-shadow:0 0 0 50px white inset; /* Change the color to your own background color */
   -webkit-background-clip: text !important;
 }
+
+.border-focus-orange-none:focus:not(.focus--mouse):not([data-focus-mouse=true]) {
+  outline: none!important;
+  box-shadow: none!important;
+}

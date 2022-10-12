@@ -286,7 +286,7 @@ const CitizensList: React.FC = () => {
         codiceFiscale: td.codiceFiscale,
         esito: (td.esito || '').toUpperCase().includes('OK')
           ? 'Riuscito'
-          : 'Fallito',
+          : 'Non riuscito',
         failedCSV: td.esito.toUpperCase().includes('KO'),
         onTooltipInfo: td.esito,
       }))
