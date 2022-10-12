@@ -53,7 +53,7 @@ export const openDataBody = (dateCoverage: string, lastDate: string) => (`
 </li>
 <li>
   <strong>Periodicita' rilevazione: 
-  </strong> Semestrale
+  </strong> Mensile
 </li>
 <li>
   <strong> Copertura geografica: 

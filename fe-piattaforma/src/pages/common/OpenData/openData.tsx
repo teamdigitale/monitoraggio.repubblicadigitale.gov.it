@@ -62,11 +62,6 @@ const OpenData = () => {
     getOpenData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  useEffect(() => {
-    getOpenData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dateCoverage, lastDate]);
-
 
   return (
     <Container className='py-5'>
