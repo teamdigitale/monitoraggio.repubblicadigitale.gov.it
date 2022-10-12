@@ -35,6 +35,9 @@ public class QuestionarioTemplateResource implements Serializable {
 	@JsonProperty(value = "last-update")
 	private Date dataOraUltimoAggiornamento;
 	
+	@JsonProperty(value = "stato")
+	private String stato;
+	
 	@JsonProperty(value = "survey-sections")
 	private List<SezioneQuestionarioTemplateResource> sezioniQuestionarioTemplate = new ArrayList<>();
 
