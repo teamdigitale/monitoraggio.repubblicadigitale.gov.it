@@ -12,6 +12,7 @@
   .alert {
     pointer-events: all !important;
     background-color: color('white');
+    padding-right: 32px;
     transition: all 250ms ease;
 
     .icon-close {

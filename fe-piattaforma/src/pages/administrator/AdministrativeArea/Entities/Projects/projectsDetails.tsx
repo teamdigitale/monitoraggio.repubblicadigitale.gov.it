@@ -118,6 +118,7 @@ const ProjectsDetails = () => {
   const [correctButtons, setCorrectButtons] = useState<ButtonInButtonsBar[]>(
     []
   );
+  const [projInfoButtons, setProjInfoButtons] = useState<boolean>(false);
   const [buttonsPosition, setButtonsPosition] = useState<'TOP' | 'BOTTOM'>(
     'TOP'
   );
@@ -421,9 +422,7 @@ const ProjectsDetails = () => {
                 buttonClass: 'btn-secondary',
                 disabled:
                   authorityInfo?.dettagliInfoEnte?.statoEnte ===
-                    entityStatus.ATTIVO ||
-                  authorityInfo?.dettagliInfoEnte?.statoEnte !==
-                    entityStatus.TERMINATO,
+                  entityStatus.ATTIVO,
                 text: 'Elimina',
                 onClick: () =>
                   dispatch(
@@ -520,6 +519,7 @@ const ProjectsDetails = () => {
         },
       ]);
       setEmptySection(undefined);
+      setProjInfoButtons(false);
     } else {
       setItemList(null);
       setCorrectButtons([]);
@@ -604,6 +604,7 @@ const ProjectsDetails = () => {
           : []
       );
       setEmptySection(undefined);
+      setProjInfoButtons(false);
     } else {
       setItemAccordionList(null);
       setCurrentForm(undefined);
@@ -685,6 +686,7 @@ const ProjectsDetails = () => {
         // },
       ]);
       setEmptySection(undefined);
+      setProjInfoButtons(false);
     } else {
       setItemAccordionList(null);
       setCurrentForm(undefined);
@@ -1038,6 +1040,7 @@ const ProjectsDetails = () => {
         setItemList(null);
         setCorrectButtons(projectInfoButtons());
         setEmptySection(undefined);
+        setProjInfoButtons(true);
         break;
       case tabs.ENTE_GESTORE:
         AuthoritySection();
@@ -1210,6 +1213,7 @@ const ProjectsDetails = () => {
               subTitle: programDetails?.nomeBreve,
             }}
             currentTab={activeTab}
+            infoProjBtn={projInfoButtons}
             formButtons={correctButtons}
             // itemsAccordionList={itemAccordionList}
             itemsList={itemList}

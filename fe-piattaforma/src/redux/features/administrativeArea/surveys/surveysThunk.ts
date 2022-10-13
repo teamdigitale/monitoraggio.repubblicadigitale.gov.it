@@ -379,6 +379,7 @@ const getSchemaSection = (
 export interface SurveyResponseBodyI {
   'survey-id'?: string;
   'survey-status'?: string;
+  'stato'?: string;
   'default-RFD'?: boolean;
   'default-SCD'?: boolean;
   'last-update'?: string;

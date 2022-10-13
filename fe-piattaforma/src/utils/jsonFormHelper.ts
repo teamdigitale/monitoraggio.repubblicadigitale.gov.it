@@ -379,7 +379,7 @@ const transformJsonQuestionToForm = (schema: SchemaI) => {
 export const transformJsonToForm = (questionarioJson: SurveyResponseBodyI) => {
   const modelSurvey: SurveyStateI = {
     surveyId: questionarioJson['survey-id'] || '',
-    surveyStatus: questionarioJson['survey-status'] || '',
+    surveyStatus: questionarioJson['survey-status'] || questionarioJson['stato'] || '',
     defaultRFD: questionarioJson['default-RFD'] || false,
     defaultSCD: questionarioJson['default-SCD'] || false,
     lastUpdate: questionarioJson['last-update'] || '',

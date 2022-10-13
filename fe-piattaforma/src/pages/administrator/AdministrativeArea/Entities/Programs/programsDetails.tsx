@@ -94,6 +94,8 @@ const ProgramsDetails: React.FC = () => {
   const [correctButtons, setCorrectButtons] = useState<ButtonInButtonsBar[]>(
     []
   );
+  const [progInfoButtons, setProgInfoButtons] = useState<boolean>(false);
+
   const [buttonsPosition, setButtonsPosition] = useState<'TOP' | 'BOTTOM'>(
     'TOP'
   );
@@ -369,6 +371,7 @@ const ProgramsDetails: React.FC = () => {
         },
       ]);
       setEmptySection(undefined);
+      setProgInfoButtons(false);
     } else {
       setCurrentForm(undefined);
       setCorrectModal(<ManageManagerAuthority creation />);
@@ -470,6 +473,7 @@ const ProgramsDetails: React.FC = () => {
     setItemAccordionList(null);
     setCurrentForm(undefined);
     setButtonsPosition('BOTTOM');
+    setProgInfoButtons(false);
     if (surveyList?.length) {
       setSurveyDefault({
         items: [
@@ -546,6 +550,7 @@ const ProgramsDetails: React.FC = () => {
     setItemAccordionList(null);
     setCurrentForm(undefined);
     setCorrectModal(<ManageProject creation />);
+    setProgInfoButtons(false);
     if (
       projectsList?.filter(
         (progetto: { associatoAUtente: boolean }) => progetto.associatoAUtente
@@ -591,6 +596,7 @@ const ProgramsDetails: React.FC = () => {
       setEmptySection(undefined);
     } else {
       setCorrectButtons([]);
+
       setEmptySection(
         <EmptySection
           title='Questa sezione è ancora vuota'
@@ -852,6 +858,7 @@ const ProgramsDetails: React.FC = () => {
         setItemList(null);
         setCorrectButtons(programInfoButtons());
         setEmptySection(undefined);
+        setProgInfoButtons(true);
         break;
       case tabs.ENTE:
         AuthoritySection();
@@ -1045,6 +1052,7 @@ const ProgramsDetails: React.FC = () => {
             status: programDetails.stato,
             upperTitle: { icon: 'it-folder', text: 'Programma' },
           }}
+          infoProgBtn={progInfoButtons}
           formButtons={correctButtons}
           currentTab={activeTab}
           // itemsAccordionList={itemAccordionList}
