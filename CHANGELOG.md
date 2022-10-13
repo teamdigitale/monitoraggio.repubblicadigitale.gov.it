@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.197](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.196...1.0.0-develop.197) (2022-10-13)
+
+
+### Features
+
+* **be:** aggiunta livello ente scelta profilo ([2fbb30e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2fbb30e1cc00c8bc01d369b148bc4aba471ab2e7))
+
 ## [1.0.0-develop.196](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.195...1.0.0-develop.196) (2022-10-13)
 
 
