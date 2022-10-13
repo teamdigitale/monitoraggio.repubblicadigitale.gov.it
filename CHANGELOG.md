@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.198](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.197...1.0.0-develop.198) (2022-10-13)
+
+
+### Features
+
+* **be:** aggiunta nome ente per dettaglio ruolo ([b4a5ca1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b4a5ca15a48dca4a6ac274d809449a0c7d7b513a))
+
 ## [1.0.0-develop.197](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.196...1.0.0-develop.197) (2022-10-13)
 
 
