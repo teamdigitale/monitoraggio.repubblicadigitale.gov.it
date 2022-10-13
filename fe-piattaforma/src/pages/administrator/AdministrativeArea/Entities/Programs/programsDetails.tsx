@@ -282,6 +282,7 @@ const ProgramsDetails: React.FC = () => {
   const infoRef = useRef<HTMLLIElement>(null);
 
   const AuthoritySection = () => {
+    cancelSurvey();
     if (managerAuthorityId) {
       setCurrentForm(
         <FormAuthorities
@@ -551,6 +552,7 @@ const ProgramsDetails: React.FC = () => {
     setCurrentForm(undefined);
     setCorrectModal(<ManageProject creation />);
     setProgInfoButtons(false);
+    cancelSurvey();
     if (
       projectsList?.filter(
         (progetto: { associatoAUtente: boolean }) => progetto.associatoAUtente
@@ -859,6 +861,7 @@ const ProgramsDetails: React.FC = () => {
         setCorrectButtons(programInfoButtons());
         setEmptySection(undefined);
         setProgInfoButtons(true);
+        cancelSurvey();
         break;
       case tabs.ENTE:
         AuthoritySection();
@@ -883,6 +886,7 @@ const ProgramsDetails: React.FC = () => {
     programDetails,
     authorityInfo,
     surveyDefault?.items[0]?.id,
+    otherSurveyList?.list?.length,
     authorityInfo?.referentiEnteGestore,
   ]);
 
@@ -1158,11 +1162,11 @@ const ProgramsDetails: React.FC = () => {
         <PreviewSurvey
           surveyId={surveyPreviewId}
           onClose={() => dispatch(closeModal())}
-          primaryCtaAction={() => {
-            confirmSurvey();
-            dispatch(closeModal());
-          }}
-          secondaryCtaAction={() => cancelSurvey()}
+          // primaryCtaAction={() => {
+          //   confirmSurvey();
+          //   dispatch(closeModal());
+          // }}
+          // secondaryCtaAction={() => cancelSurvey()}
         />
       </div>
     </div>

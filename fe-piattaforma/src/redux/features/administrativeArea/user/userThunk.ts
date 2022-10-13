@@ -79,12 +79,13 @@ export const GetFilterValuesUtenti =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
-      const { codiceFiscale, codiceRuolo, idProgramma } = getUserHeaders();
+      const { codiceFiscale, codiceRuolo, idProgramma, idEnte } = getUserHeaders();
       const body = {
         cfUtente: codiceFiscale,
         codiceRuolo: codiceRuolo,
         filtroRequest: { ...filters },
-        idProgramma: idProgramma,
+        idProgramma,
+        idEnte,
       };
       const entityFilterEndpoint = `/utente/${dropdownType}/dropdown`;
       const res = await API.post(entityFilterEndpoint, body);
@@ -110,13 +111,14 @@ export const GetUserDetails =
     try {
       dispatch(showLoader());
       dispatch({ ...GetUserDetailAction, userId });
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto , idEnte} =
         getUserHeaders();
       const body = {
         cfUtente: codiceFiscale,
         codiceRuolo,
         idProgramma,
         idProgetto,
+        idEnte,
       };
       //const res = await API.get(`utente/${userId}`);
       const res = await API.post(`utente/${userId}`, body);

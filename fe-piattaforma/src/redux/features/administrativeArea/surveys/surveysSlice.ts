@@ -25,6 +25,7 @@ export interface SurveySectionI {
   isSectionActive?: boolean;
   editMode?: boolean;
   cloneMode?: boolean;
+  isModal?: boolean;
 }
 
 export interface SurveySectionResponseI {

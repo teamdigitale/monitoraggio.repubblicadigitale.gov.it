@@ -115,7 +115,6 @@ const Dashboard = () => {
   const device = useAppSelector(selectDevice);
   const [frameUrl, setFrameUrl] = useState('');
   const [frameHeight, setFrameHeight] = useState('100%');
-  //const user = getUserHeaders();
   const user = useAppSelector(selectProfile);
   const { hasUserPermission } = useGuard();
   const { dettagliInfoProgramma: program } =

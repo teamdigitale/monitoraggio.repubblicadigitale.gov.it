@@ -91,31 +91,42 @@ const UserProfile = () => {
         <div className='w-100'>
           <h1 className={clsx('primary-color', 'mb-4', 'h4', 'ml-3')}>Ruoli</h1>
         </div>
-        {userRoleList.map((role: any) => {
-          let roleActions = {};
-          if (role.id) {
-            roleActions = {
-              [CRUDActionTypes.VIEW]: role.associatoAUtente
-                ? () =>
-                    navigate(
-                      `/area-amministrativa/${
-                        role?.codiceRuolo === userRoles.VOL ||
-                        role?.codiceRuolo === userRoles.FAC ||
-                        role?.codiceRuolo === userRoles.REGP ||
-                        role?.codiceRuolo === userRoles.DEGP ||
-                        role?.codiceRuolo === userRoles.REPP ||
-                        role?.codiceRuolo === userRoles.DEPP
-                          ? 'progetti'
-                          : 'programmi'
-                      }/${role?.id}`,
-                      {
-                        replace: true,
-                      }
-                    )
-                : undefined,
-            };
-          }
-          /*else {
+        {userRoleList.map(
+          (role: {
+            id: string;
+            codiceRuolo: string;
+            nome: string;
+            stato: string;
+            statoP: string;
+            ruolo: string;
+            nomeBreveEnte: string;
+            nomeEnte: string;
+            associatoAUtente: boolean;
+          }) => {
+            let roleActions = {};
+            if (role.id) {
+              roleActions = {
+                [CRUDActionTypes.VIEW]: role.associatoAUtente
+                  ? () =>
+                      navigate(
+                        `/area-amministrativa/${
+                          role?.codiceRuolo === userRoles.VOL ||
+                          role?.codiceRuolo === userRoles.FAC ||
+                          role?.codiceRuolo === userRoles.REGP ||
+                          role?.codiceRuolo === userRoles.DEGP ||
+                          role?.codiceRuolo === userRoles.REPP ||
+                          role?.codiceRuolo === userRoles.DEPP
+                            ? 'progetti'
+                            : 'programmi'
+                        }/${role?.id}`,
+                        {
+                          replace: true,
+                        }
+                      )
+                  : undefined,
+              };
+            }
+            /*else {
             roleActions = hasUserPermission(['add.del.ruolo.utente'])
               ? {
                   [CRUDActionTypes.DELETE]: () => {
@@ -133,27 +144,31 @@ const UserProfile = () => {
                 }
               : {};
           }*/
-          return (
-            <CardStatusAction
-              key={`${role.id}${role.codiceRuolo}`}
-              id={`${role.id}${role.codiceRuolo}`}
-              //status={role.}
-              title={role.nome}
-              fullInfo={
-                role.codiceRuolo !== userRoles.DTD &&
-                role.codiceRuolo !== userRoles.DSCU
-                  ? { ruoli: role.ruolo }
-                  : undefined
-              }
-              onActionClick={roleActions}
-              activeRole={
-                role.codiceRuolo === userRole.codiceRuolo &&
-                (role.id?.toString() === userRole.idProgramma?.toString() ||
-                  role.id?.toString() === userRole.idProgetto?.toString())
-              }
-            />
-          );
-        })}
+            return (
+              <CardStatusAction
+                key={`${role.id}${role.codiceRuolo}`}
+                id={`${role.id}${role.codiceRuolo}`}
+                //status={role.}
+                title={role.nome}
+                fullInfo={
+                  role.codiceRuolo !== userRoles.DTD &&
+                  role.codiceRuolo !== userRoles.DSCU
+                    ? {
+                        ruoli: role.ruolo,
+                        ente: role.nomeBreveEnte || role.nomeEnte,
+                      }
+                    : undefined
+                }
+                onActionClick={roleActions}
+                activeRole={
+                  role.codiceRuolo === userRole.codiceRuolo &&
+                  (role.id?.toString() === userRole.idProgramma?.toString() ||
+                    role.id?.toString() === userRole.idProgetto?.toString())
+                }
+              />
+            );
+          }
+        )}
       </div>
       <ManageProfile />
     </div>

@@ -16,14 +16,15 @@ const SurveySection: React.FC<SurveySectionI> = (props) => {
     questions = [],
     editMode = false,
     cloneMode = false,
+    isModal = false,
   } = props;
 
   const device = useAppSelector(selectDevice);
 
   return (
     <section aria-label={sectionTitle}>
-      <h2 className='h4 primary-color-a6 mb-4'>
-        {sectionTitle} ({questions.length})
+      <h2 className={clsx('primary-color-a6','mb-4',!isModal && 'h4', isModal && 'survey-section-container__section-title-modal')}>
+        {sectionTitle} <span className='survey-section-container__section-title-items'>({questions.length})</span>
       </h2>
       <Col>
         {questions.map((question: SurveyQuestionI, i: number) => (
