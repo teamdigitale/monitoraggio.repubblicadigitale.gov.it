@@ -289,8 +289,10 @@ export const DeleteEntity =
       dispatch(showLoader());
       dispatch({ ...DeleteEntityAction, entity, id });
       await API.delete(`/${entity}/${id}`);
+      return true;
     } catch (error) {
       console.log('DeleteEntity error', error);
+      return false;
     } finally {
       dispatch(hideLoader());
     }

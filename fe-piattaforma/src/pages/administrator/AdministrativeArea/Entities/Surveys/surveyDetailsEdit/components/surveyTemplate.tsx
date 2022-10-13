@@ -67,10 +67,7 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
     let isValid = true;
     if (questions?.length > 0) {
       questions.map((question: SurveyQuestionI) => {
-        FormHelper.isValidForm(question.form) === false
-          ? (isValid = false)
-          : '';
-
+        !FormHelper.isValidForm(question.form) ? (isValid = false) : '';
         if (
           (question.form['question-type'].value === 'select' ||
             question.form['question-type'].value === 'checkbox') &&

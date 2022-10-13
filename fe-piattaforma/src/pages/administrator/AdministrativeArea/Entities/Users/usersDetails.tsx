@@ -85,7 +85,8 @@ const UsersDetails = () => {
   const headquarterDetails = useAppSelector(selectHeadquarters).detail;
   const headquarterName = headquarterDetails?.dettagliInfoSede?.nome;
   // const projectName = headquarterDetails?.dettaglioProgetto?.nomeBreve;
-  const projectName = useAppSelector(selectProjects)?.detail?.dettagliInfoProgetto?.nome;
+  const projectName =
+    useAppSelector(selectProjects)?.detail?.dettagliInfoProgetto?.nome;
   const authorityName =
     useAppSelector(selectAuthorities)?.detail?.dettagliInfoEnte?.nome;
 
@@ -100,12 +101,10 @@ const UsersDetails = () => {
     if (!authorityName && projectId && authorityId) {
       dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
     }
-    if(projectId && !projectName){
+    if (projectId && !projectName) {
       dispatch(GetProjectDetail(projectId));
     }
   }, []);
-
-
 
   useEffect(() => {
     // For breadcrumb
@@ -375,7 +374,11 @@ const UsersDetails = () => {
 
   const getButtons = () => {
     const buttons: ButtonInButtonsBar[] = [];
-    if (userRole === userRoles.USR && hasUserPermission(['del.utente'])) {
+    if (
+      userRole === userRoles.USR &&
+      hasUserPermission(['del.utente']) &&
+      userInfo.stato === entityStatus.NON_ATTIVO
+    ) {
       buttons.push(deleteButton);
     } else if (userRole === userRoles.FAC || userRole === userRoles.VOL) {
       buttons.push(deleteButton);
