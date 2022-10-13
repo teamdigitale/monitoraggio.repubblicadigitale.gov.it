@@ -20,7 +20,7 @@ public class EntePartnerService {
 
 	@LogMethod
 	@LogExecutionTime
-	public List<Long> getIdProgettiEntePartnerByRuoloUtente(String cfUtente, String ruolo) {
+	public List<EntePartnerEntity> getIdProgettiEntePartnerByRuoloUtente(String cfUtente, String ruolo) {
 		return this.entePartnerRepository.findIdProgettiEntePartnerByRuoloUtente(cfUtente, ruolo);
 	}
 	

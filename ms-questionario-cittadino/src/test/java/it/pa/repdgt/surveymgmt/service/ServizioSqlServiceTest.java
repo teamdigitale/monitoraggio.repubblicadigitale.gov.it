@@ -96,6 +96,7 @@ public class ServizioSqlServiceTest {
 		sceltaprofiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
 		sceltaprofiloParam.setIdProgetto(1L);
 		sceltaprofiloParam.setIdProgramma(1L);
+		sceltaprofiloParam.setIdEnte(1000L);
 		sceltaProfiloParamLightProgramma = new SceltaProfiloParamLightProgramma();
 		sceltaProfiloParamLightProgramma.setIdProgetto(1L);
 		sceltaProfiloParamLightProgramma.setIdProgramma(1L);
@@ -181,6 +182,7 @@ public class ServizioSqlServiceTest {
 				filtroListaServizi.getCriterioRicerca(),
 				Arrays.asList(sceltaprofiloParam.getIdProgramma().toString()),
 				Arrays.asList(sceltaprofiloParam.getIdProgetto().toString()),
+				sceltaprofiloParam.getIdEnte(),
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio(),
 				sceltaprofiloParam.getCfUtenteLoggato()
@@ -189,6 +191,7 @@ public class ServizioSqlServiceTest {
 				filtroListaServizi.getCriterioRicerca(),
 				Arrays.asList(sceltaprofiloParam.getIdProgramma().toString()),
 				Arrays.asList(sceltaprofiloParam.getIdProgetto().toString()),
+				sceltaprofiloParam.getIdEnte(),
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio(),
 				sceltaprofiloParam.getCfUtenteLoggato());
@@ -235,6 +238,7 @@ public class ServizioSqlServiceTest {
 				filtroListaServizi.getCriterioRicerca(),
 				Arrays.asList(sceltaprofiloParam.getIdProgramma().toString()),
 				Arrays.asList(sceltaprofiloParam.getIdProgetto().toString()),
+				sceltaprofiloParam.getIdEnte(),
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio()
 			)).thenReturn(listaServizi);
@@ -242,6 +246,7 @@ public class ServizioSqlServiceTest {
 				filtroListaServizi.getCriterioRicerca(),
 				Arrays.asList(sceltaprofiloParam.getIdProgramma().toString()),
 				Arrays.asList(sceltaprofiloParam.getIdProgetto().toString()),
+				sceltaprofiloParam.getIdEnte(),
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio());
 		assertThat(risultato.size()).isEqualTo(listaServizi.size());

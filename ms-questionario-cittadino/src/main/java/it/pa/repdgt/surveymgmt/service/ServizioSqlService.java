@@ -115,6 +115,7 @@ public class ServizioSqlService {
 			final String criterioRicercaServizio,
 			@NotEmpty final List<String> idsProgrammaFiltro, 
 			@NotEmpty final List<String> idsProgettoFiltro, 
+			final Long idEnte,
 			final List<String> tipologieServizi,
 			final List<String> statiServizioFiltro,
 			final String codiceFiscaleUtente ) {
@@ -122,6 +123,7 @@ public class ServizioSqlService {
 				criterioRicercaServizio,
 				idsProgrammaFiltro,
 				idsProgettoFiltro,
+				idEnte,
 				tipologieServizi,
 				statiServizioFiltro,
 				codiceFiscaleUtente
@@ -198,12 +200,14 @@ public class ServizioSqlService {
 			final String criterioRicercaServizio,
 			@NotEmpty final List<String> idsProgrammaFiltro, 
 			@NotEmpty final List<String> idsProgettoFiltro,
+			final Long idEnte,
 			final List<String> tipologieServizi,
 			final List<String> statiServizioFiltro ) {
 		return this.servizioSqlRepository.findAllServiziByReferenteODelegatoEntePartnerAndFiltro(
 				criterioRicercaServizio,
 				idsProgrammaFiltro,
 				idsProgettoFiltro,
+				idEnte,
 				tipologieServizi,
 				statiServizioFiltro
 			);
@@ -396,8 +400,8 @@ public class ServizioSqlService {
 		return this.servizioSqlRepository.findByNomeUpdate(nomeServizio, idServizio);
 	}
 
-	public List<String> getIdsSediFacilitatoreConServiziAndCittadiniCensitiByCodFiscaleAndIdProgetto(
-			String codiceFiscaleUtenteLoggato, Long idProgetto) {
-		return servizioSqlRepository.findIdsSediFacilitatoreConServiziAndCittadiniCensitiByCodFiscaleAndIdProgetto(codiceFiscaleUtenteLoggato, idProgetto);
+	public List<String> getIdsSediFacilitatoreConServiziAndCittadiniCensitiByCodFiscaleAndIdProgettoAndIdEnte(
+			String codiceFiscaleUtenteLoggato, Long idProgetto, Long idEnte) {
+		return servizioSqlRepository.findIdsSediFacilitatoreConServiziAndCittadiniCensitiByCodFiscaleAndIdProgettoAndIdEnte(codiceFiscaleUtenteLoggato, idProgetto, idEnte);
 	}
 }

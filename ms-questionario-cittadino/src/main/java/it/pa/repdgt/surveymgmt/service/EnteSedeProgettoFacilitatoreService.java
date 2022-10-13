@@ -41,8 +41,8 @@ public class EnteSedeProgettoFacilitatoreService {
 
 	@LogMethod
 	@LogExecutionTime
-	public List<String> getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(String codiceFiscaleUtenteLoggato, Long idProgetto) {
-		return this.enteSedeProgettoFacilitatoreRepository.findIdsSediFacilitatoreByCodFiscaleAndIdProgetto(codiceFiscaleUtenteLoggato, idProgetto);
+	public List<String> getIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnte(String codiceFiscaleUtenteLoggato, Long idProgetto, Long idEnte) {
+		return this.enteSedeProgettoFacilitatoreRepository.findIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnte(codiceFiscaleUtenteLoggato, idProgetto, idEnte);
 	}
 
 	@LogMethod

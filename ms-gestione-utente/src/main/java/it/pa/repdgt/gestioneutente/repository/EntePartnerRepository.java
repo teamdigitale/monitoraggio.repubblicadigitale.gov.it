@@ -13,12 +13,12 @@ import it.pa.repdgt.shared.entity.key.EntePartnerKey;
 @Repository
 public interface EntePartnerRepository extends JpaRepository<EntePartnerEntity, EntePartnerKey> {
 
-	@Query(value = "SELECT rdp.ID_PROGETTO "
+	@Query(value = "SELECT * "
 			+ "FROM referente_delegati_partner rdp "
 			+ "WHERE rdp.CF_UTENTE = :cfUtente "
 			+ "		AND rdp.CODICE_RUOLO = :ruolo ", 
 			nativeQuery = true)
-	public List<Long> findIdProgettiEntePartnerByRuoloUtente(
+	public List<EntePartnerEntity> findIdProgettiEntePartnerByRuoloUtente(
 			@Param(value = "cfUtente") String cfUtente,
 			@Param(value = "ruolo") String ruolo
 	);
