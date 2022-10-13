@@ -34,7 +34,6 @@ import it.pa.repdgt.surveymgmt.exception.QuestionarioTemplateException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.param.FiltroListaServiziParam;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneSedeParam;
 import it.pa.repdgt.surveymgmt.projection.EnteProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
 import it.pa.repdgt.surveymgmt.repository.ServizioSqlRepository;
@@ -75,7 +74,7 @@ public class ServizioSqlServiceTest {
 	EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatoreEntity;
 	RuoloEntity ruolo;
 	List<RuoloEntity> listaRuoli;
-	ProfilazioneSedeParam profilazioneSedeParam;
+	SceltaProfiloParam profilazioneSedeParam;
 	
 	@BeforeEach
 	public void setUp() {
@@ -125,7 +124,7 @@ public class ServizioSqlServiceTest {
 		ruolo.setCodice("FAC");
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add(ruolo);
-		profilazioneSedeParam = new ProfilazioneSedeParam();
+		profilazioneSedeParam = new SceltaProfiloParam();
 		profilazioneSedeParam.setCfUtenteLoggato("CFUTENTE");
 		profilazioneSedeParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
 		profilazioneSedeParam.setIdEnte(1L);

@@ -20,8 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneSedeParam;
 import it.pa.repdgt.surveymgmt.projection.EnteProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
 import it.pa.repdgt.surveymgmt.repository.EnteSedeProgettoFacilitatoreRepository;
@@ -40,7 +40,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 	EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey;
 	EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatoreEntity;
 	List<String> listaIdsSedi;
-	ProfilazioneSedeParam profilazione;
+	SceltaProfiloParam profilazione;
 	
 	@BeforeEach
 	public void setUp() {
@@ -49,7 +49,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		enteSedeProgettoFacilitatoreEntity.setId(enteSedeProgettoFacilitatoreKey);
 		listaIdsSedi = new ArrayList<>();
 		listaIdsSedi.add("1");
-		profilazione = new ProfilazioneSedeParam();
+		profilazione = new SceltaProfiloParam();
 		profilazione.setCfUtenteLoggato("DFGREI79N20H101L");
 		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
 		profilazione.setIdProgetto(1L);

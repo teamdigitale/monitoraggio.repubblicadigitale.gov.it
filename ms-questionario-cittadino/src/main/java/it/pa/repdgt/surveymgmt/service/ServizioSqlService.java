@@ -30,7 +30,6 @@ import it.pa.repdgt.shared.restapi.param.SceltaProfiloParamLightProgramma;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioTemplateException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneSedeParam;
 import it.pa.repdgt.surveymgmt.projection.EnteProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
 import it.pa.repdgt.surveymgmt.repository.ServizioSqlRepository;
@@ -353,7 +352,7 @@ public class ServizioSqlService {
 
 	@LogMethod
 	@LogExecutionTime
-	public List<SedeProjection> getSediByFacilitatore(ProfilazioneSedeParam profilazioneParam) {
+	public List<SedeProjection> getSediByFacilitatore(SceltaProfiloParam profilazioneParam) {
 		final String codiceFiscaleUtenteLoggato = profilazioneParam.getCfUtenteLoggato();
 		final String codiceRuoloUtenteLoggato = profilazioneParam.getCodiceRuoloUtenteLoggato().toString();
 		
