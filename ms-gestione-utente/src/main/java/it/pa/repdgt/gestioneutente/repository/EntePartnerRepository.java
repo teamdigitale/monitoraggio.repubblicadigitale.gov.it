@@ -13,8 +13,11 @@ import it.pa.repdgt.shared.entity.key.EntePartnerKey;
 @Repository
 public interface EntePartnerRepository extends JpaRepository<EntePartnerEntity, EntePartnerKey> {
 
-	@Query(value = "SELECT * "
+	@Query(value = "SELECT ep.* "
 			+ "FROM referente_delegati_partner rdp "
+			+ "INNER JOIN ente_partner ep "
+			+ " ON rdp.id_ente = ep.id_ente "
+			+ " AND rdp.id_progetto = ep.id_progetto "
 			+ "WHERE rdp.CF_UTENTE = :cfUtente "
 			+ "		AND rdp.CODICE_RUOLO = :ruolo ", 
 			nativeQuery = true)

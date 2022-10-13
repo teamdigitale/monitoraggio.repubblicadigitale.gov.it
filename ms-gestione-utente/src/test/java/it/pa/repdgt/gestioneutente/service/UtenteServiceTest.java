@@ -30,6 +30,7 @@ import it.pa.repdgt.gestioneutente.entity.projection.ProgettoEnteProjection;
 import it.pa.repdgt.gestioneutente.exception.ResourceNotFoundException;
 import it.pa.repdgt.gestioneutente.exception.RuoloException;
 import it.pa.repdgt.gestioneutente.exception.UtenteException;
+import it.pa.repdgt.gestioneutente.repository.EnteRepository;
 import it.pa.repdgt.gestioneutente.repository.ReferentiDelegatiEnteGestoreProgettoRepository;
 import it.pa.repdgt.gestioneutente.repository.ReferentiDelegatiEnteGestoreProgrammaRepository;
 import it.pa.repdgt.gestioneutente.repository.ReferentiDelegatiEntePartnerDiProgettoRepository;
@@ -39,6 +40,7 @@ import it.pa.repdgt.gestioneutente.request.FiltroRequest;
 import it.pa.repdgt.gestioneutente.request.UtenteRequest;
 import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.awsintegration.service.S3Service;
+import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.EntePartnerEntity;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
@@ -69,6 +71,8 @@ public class UtenteServiceTest {
 	private EntePartnerService entePartnerService;
 	@Mock
 	private UtenteRepository utenteRepository;
+	@Mock
+	private EnteRepository enteRepository;
 	@Mock 
 	private EmailService emailService;
 	@Mock
@@ -107,6 +111,7 @@ public class UtenteServiceTest {
 	MockMultipartFile file;
 	byte[] data;
 	InputStream stream;
+	EnteEntity enteEntity;
 
 	@BeforeEach
 	public void setUp() throws IOException {
@@ -182,18 +187,26 @@ public class UtenteServiceTest {
 		
 		setStati = new HashSet<>();
 		setStati.add("ATTIVO");
+		
+
+		enteEntity = new EnteEntity();
+		enteEntity.setId(1L);
+		enteEntity.setNome("provaEnte");
+		enteEntity.setNomeBreve("provaEnte");
 
 		programma = new ProgrammaEntity();
 		programma.setId(1L);
 		programma.setNome("NOMEPROGRAMMA");
 		programma.setStato("ATTIVO");
 		programma.setPolicy(PolicyEnum.SCD);
+		programma.setEnteGestoreProgramma(enteEntity);
 
 		progetto = new ProgettoEntity();
 		progetto.setId(1L);
 		progetto.setNome("NOMEPROGETTO");
 		progetto.setStato("ATTIVO");
 		progetto.setProgramma(programma);
+		progetto.setEnteGestoreProgetto(enteEntity);
 
 		listaStati = new ArrayList<>();
 		listaStati.add("ATTIVO");
@@ -700,6 +713,7 @@ public class UtenteServiceTest {
 		when(this.ruoloService.getRuoliCompletiByCodiceFiscaleUtente(utente.getCodiceFiscale())).thenReturn(ruoli);
 		when(this.entePartnerService.getIdProgettiEntePartnerByRuoloUtente(sceltaContesto.getCfUtenteLoggato(), ruolo1.getCodice())).thenReturn(listaEntiPartner);
 		when(this.progettoService.getProgettoById(progetto.getId())).thenReturn(progetto);
+		when(this.enteRepository.findById(1L)).thenReturn(Optional.of(enteEntity));
 		when(referentiDelegatiEntePartnerDiProgettoRepository.findStatoByCfUtente(sceltaContesto.getCfUtenteLoggato(), progetto.getId(), ruolo1.getCodice())).thenReturn(listaStati);
 		service.getSchedaUtenteByIdUtente(utente.getId(), sceltaContesto);
 	}
@@ -722,6 +736,7 @@ public class UtenteServiceTest {
 		when(this.ruoloService.getRuoliCompletiByCodiceFiscaleUtente(utente.getCodiceFiscale())).thenReturn(ruoli);
 		when(this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontario(sceltaContesto.getCfUtenteLoggato(), ruolo1.getCodice())).thenReturn(listaProgettoEnte);
 		when(this.progettoService.getProgettoById(progetto.getId())).thenReturn(progetto);
+		when(this.enteRepository.findById(1L)).thenReturn(Optional.of(enteEntity));
 		when(this.enteSedeProgettoFacilitatoreService.getDistinctStatoByIdProgettoIdFacilitatoreVolontario(sceltaContesto.getCfUtenteLoggato(), ruolo1.getCodice(),  progetto.getId())).thenReturn(listaStati);
 		service.getSchedaUtenteByIdUtente(utente.getId(), sceltaContesto);
 	}
