@@ -26,7 +26,7 @@ public interface ContestoRepository extends JpaRepository<ProgrammaEntity, Long>
 
 	@Query(value = "SELECT p.id as idProgramma, "
 			+ "p.nome_breve as nomeProgramma, "
-			+ "e.nome_breve as nomeEnte "
+			+ "e.nome_breve as nomeEnte, "
 			+ "e.id as idEnte "
 			+ "FROM referente_delegati_gestore_programma rdgp "
 			+ "INNER JOIN programma p "
