@@ -54,6 +54,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
 		profilazione.setIdProgetto(1L);
 		profilazione.setIdProgramma(1L);
+		profilazione.setIdEnte(1000L);
 		profilazione.setIdEnte(1L);
 	}
 	
@@ -73,9 +74,9 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 	}
 	
 	@Test
-	public void getIdsSediFacilitatoreByCodFiscaleAndIdProgettoTest() {
-		when(this.enteSedeProgettoFacilitatoreRepository.findIdsSediFacilitatoreByCodFiscaleAndIdProgetto("DFGREI79N20H101L", 1L)).thenReturn(listaIdsSedi);
-		List<String> risultato = enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto("DFGREI79N20H101L", 1L);
+	public void getIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnteTest() {
+		when(this.enteSedeProgettoFacilitatoreRepository.findIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnte("DFGREI79N20H101L", 1L, 1000L)).thenReturn(listaIdsSedi);
+		List<String> risultato = enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnte("DFGREI79N20H101L", 1L, 1000L);
 		assertThat(risultato.size()).isEqualTo(listaIdsSedi.size());
 	}
 	

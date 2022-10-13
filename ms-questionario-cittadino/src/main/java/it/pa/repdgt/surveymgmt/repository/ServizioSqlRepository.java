@@ -117,12 +117,14 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 	         + "    AND ( COALESCE( :idsProgettoFiltro   ) IS NULL OR progetto.ID  IN ( :idsProgettoFiltro  ) )       "
 	         + "    AND ( COALESCE( :tipologieServizi )    IS NULL OR ts.titolo    IN ( :tipologieServizi ) )         "
 	         + "    AND ( COALESCE( :statiServizioFiltro ) IS NULL OR s.stato      IN ( :statiServizioFiltro ) )      "
+	         + "    AND  s.ID_ENTE = :idEnte"
 	         + " ",
 			 nativeQuery = true)
 	List<ServizioEntity> findAllServiziByFacilitatoreOVolontarioAndFiltro(
 			@Param(value = "criterioRicercaServizio") String criterioRicercaServizio, 
 			@Param(value = "idsProgrammaFiltro")      List<String> idsProgrammaFiltro, 
 			@Param(value = "idsProgettoFiltro")       List<String> idsProgettoFiltro, 
+			@Param(value = "idEnte")       			  Long idEnte, 
 			@Param(value = "tipologieServizi")        List<String> tipologieServizi,
 			@Param(value = "statiServizioFiltro")     List<String> statiServizioFiltro,
 			@Param(value = "codiceFiscaleUtente")     String codiceFiscaleUtente
@@ -216,12 +218,14 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 	         + "    AND ( COALESCE( :idsProgettoFiltro   ) IS NULL OR progetto.ID  IN ( :idsProgettoFiltro  ) )  "
 	         + "    AND ( COALESCE( :tipologieServizi )    IS NULL OR ts.titolo    IN ( :tipologieServizi ) )    "
 	         + "    AND ( COALESCE( :statiServizioFiltro ) IS NULL OR s.stato      IN ( :statiServizioFiltro ) ) "
+	         + "    AND rdgp.ID_ENTE = :idEnte"
 	         + " ",
 			 nativeQuery = true)
 	List<ServizioEntity> findAllServiziByReferenteODelegatoEntePartnerAndFiltro(
 			@Param(value = "criterioRicercaServizio") String criterioRicercaServizio, 
 			@Param(value = "idsProgrammaFiltro")      List<String> idsProgrammaFiltro, 
 			@Param(value = "idsProgettoFiltro")       List<String> idsProgettoFiltro, 
+			@Param(value = "idEnte")       			  Long idEnte, 
 			@Param(value = "tipologieServizi")        List<String> tipologieServizi,
 			@Param(value = "statiServizioFiltro")     List<String> statiServizioFiltro
 		);
@@ -269,10 +273,13 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 			+ "		WHERE "
 			+ "			s.id_facilitatore = :codiceFiscaleUtente "
 			+ "		AND "
-			+ "			s.id_progetto = :idProgetto ",
+			+ "			s.id_progetto = :idProgetto "
+			+ "		AND "
+					+ "			s.id_ente = :idEnte ",
 			nativeQuery = true)
-	List<String> findIdsSediFacilitatoreConServiziAndCittadiniCensitiByCodFiscaleAndIdProgetto(
+	List<String> findIdsSediFacilitatoreConServiziAndCittadiniCensitiByCodFiscaleAndIdProgettoAndIdEnte(
 			@Param("codiceFiscaleUtente") String codiceFiscaleUtenteLoggato, 
-			@Param("idProgetto") Long idProgetto);
+			@Param("idProgetto") Long idProgetto,
+	@Param("idEnte") Long idEnte);
 	
 }

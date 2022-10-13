@@ -114,6 +114,7 @@ public class CittadinoServiceTest {
 		cittadiniPaginatiParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
 		cittadiniPaginatiParam.setIdProgetto(1L);
 		cittadiniPaginatiParam.setIdProgramma(1L);
+		cittadiniPaginatiParam.setIdEnte(1000L);
 		cittadiniPaginatiParam.setFiltro(filtro);
 		ruolo = new RuoloEntity();
 		ruolo.setCodice("FAC");
@@ -215,7 +216,7 @@ public class CittadinoServiceTest {
 	public void getNumeroTotaleCittadiniFacilitatoreByFiltroTest2() {
 		//test con filtro.getIdsSedi() = null
 		filtro.setIdsSedi(null);
-		when(this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto())).thenReturn(listaIdsSedi);
+		when(this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnte(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto(), cittadiniPaginatiParam.getIdEnte())).thenReturn(listaIdsSedi);
 		cittadinoService.getNumeroTotaleCittadiniFacilitatoreByFiltro(cittadiniPaginatiParam);
 	}
 	
@@ -231,7 +232,7 @@ public class CittadinoServiceTest {
 	public void getAllCittadiniFacilitatoreByFiltroTest2() {
 		//test con filtro.getIdsSedi() = null
 		filtro.setIdsSedi(null);
-		when(this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto())).thenReturn(listaIdsSedi);
+		when(this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnte(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto(), cittadiniPaginatiParam.getIdEnte())).thenReturn(listaIdsSedi);
 		when(this.cittadinoRepository.findAllCittadiniByFiltro(
 				filtro.getCriterioRicerca(), 
 				"%" + filtro.getCriterioRicerca() + "%",
@@ -259,7 +260,7 @@ public class CittadinoServiceTest {
 	public void getAllCittadiniFacilitatorePaginatiByFiltroTest2() {
 		//test con filtro.getIdsSedi() = null
 		filtro.setIdsSedi(null);
-		when(this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto())).thenReturn(listaIdsSedi);
+		when(this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnte(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto(), cittadiniPaginatiParam.getIdEnte())).thenReturn(listaIdsSedi);
 		when(this.cittadinoRepository.findAllCittadiniPaginatiByFiltro(
 				filtro.getCriterioRicerca(), 
 				"%" + filtro.getCriterioRicerca() + "%", 

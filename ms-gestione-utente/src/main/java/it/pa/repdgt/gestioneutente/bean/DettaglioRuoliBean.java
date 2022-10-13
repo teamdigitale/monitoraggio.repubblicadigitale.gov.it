@@ -16,5 +16,6 @@ public class DettaglioRuoliBean {
 	private String stato;
 	private String statoP;
 	private Long id;
+	private Long idEnte;
 	private boolean associatoAUtente;
 }
