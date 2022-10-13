@@ -580,6 +580,8 @@ const UsersDetails = () => {
                   stato: string;
                   statoP: string;
                   ruolo: string;
+                  nomeBreveEnte: string;
+                  nomeEnte: string;
                   associatoAUtente: boolean;
                 }) => {
                   let roleActions = {};
@@ -628,7 +630,14 @@ const UsersDetails = () => {
                       id={role.id || role.codiceRuolo || role.nome}
                       status={role.statoP}
                       title={role.nome}
-                      fullInfo={role.stato ? { ruoli: role.ruolo } : undefined}
+                      fullInfo={
+                        role.stato
+                          ? {
+                              ruoli: role.ruolo,
+                              ente: role.nomeBreveEnte || role.nomeEnte,
+                            }
+                          : undefined
+                      }
                       onActionClick={roleActions}
                     />
                   );

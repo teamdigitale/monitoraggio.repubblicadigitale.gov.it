@@ -13,6 +13,7 @@ import {
   newForm,
   newFormField,
 } from '../../../utils/formHelper';
+import { getSessionValues } from '../../../utils/sessionHelper';
 
 interface FormServicesI {
   formDisabled?: boolean;
@@ -42,23 +43,19 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
   const formData = useAppSelector(selectServices)?.detail?.dettaglioServizio;
   const formDisabled = !!props.formDisabled;
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(GetValuesDropdownServiceCreation({ dropdownType: 'enti' }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { idEnte, nomeEnte } = JSON.parse(getSessionValues('profile'));
 
   useEffect(() => {
     if (form?.idEnte?.value) {
       dispatch(
         GetValuesDropdownServiceCreation({
           dropdownType: 'sedi',
-          idEnte: Number(form?.idEnte?.value),
+          idEnte: idEnte,
         })
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form?.idEnte?.value]);
+  }, [idEnte]);
 
   useEffect(() => {
     if (formData && !creation) {
@@ -135,14 +132,12 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
           placeholder={`Inserisci ${form?.nomeServizio?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
         />
-        <Select
+        <Input
           {...form?.idEnte}
+          disabled
           col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.idEnte?.label?.toLowerCase()}`}
-          onInputChange={onInputDataChange}
-          options={dropdownOptions['enti']}
-          wrapperClassName='mb-5 pr-lg-3'
-          isDisabled={formDisabled || dropdownOptions?.enti?.length === 1}
+          className='mb-5 pr-lg-3'
+          value={nomeEnte}
         />
         <Select
           {...form?.idSede}
@@ -172,6 +167,8 @@ const form = newForm([
     label: 'Ente',
     type: 'text',
     required: true,
+    disabled: true,
+    value: JSON.parse(getSessionValues('profile'))?.idEnte,
   }),
   newFormField({
     field: 'idSede',

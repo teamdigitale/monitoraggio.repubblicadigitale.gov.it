@@ -18,7 +18,7 @@ import { isActiveProvisionalLogin } from '../../../pages/common/Auth/auth';
 
 export const getUserHeaders = () => {
   const { codiceFiscale, id: idUtente } = JSON.parse(getSessionValues('user'));
-  const { codiceRuolo, idProgramma, idProgetto } = JSON.parse(
+  const { codiceRuolo, idProgramma, idProgetto, idEnte } = JSON.parse(
     getSessionValues('profile')
   );
 
@@ -30,6 +30,7 @@ export const getUserHeaders = () => {
     idProgramma,
     idProgetto,
     idUtente,
+    idEnte,
   };
 };
 
@@ -109,13 +110,14 @@ export const SelectUserRole =
         },
       } = select((state: RootState) => state);
       if (codiceFiscale && profile?.codiceRuolo) {
-        const { codiceRuolo, idProgramma, idProgetto } = profile;
+        const { codiceRuolo, idProgramma, idProgetto, idEnte } = profile;
         setSessionValues('profile', profile);
         const res = await API.post('/contesto/sceltaProfilo', {
           cfUtente: isActiveProvisionalLogin ? codiceFiscale : undefined,
           codiceRuolo: isActiveProvisionalLogin ? codiceRuolo : undefined,
           idProgramma,
           idProgetto,
+          idEnte,
         });
 
         if (res) {

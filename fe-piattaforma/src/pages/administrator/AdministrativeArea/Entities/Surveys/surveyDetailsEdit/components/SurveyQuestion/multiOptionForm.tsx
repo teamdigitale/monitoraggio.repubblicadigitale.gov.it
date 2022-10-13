@@ -116,7 +116,7 @@ const MultiOptionForm: React.FC<MultiOptionFormI> = (props) => {
                   />
                   {form[option].value &&
                   form[option].valid &&
-                  !areValuesDefault &&
+                  !(areValuesDefault || viewDisabled) &&
                   Object.keys(form).length > 1 ? (
                     <Button
                       onClick={() => removeOption(option)}
@@ -136,7 +136,7 @@ const MultiOptionForm: React.FC<MultiOptionFormI> = (props) => {
             </React.Fragment>
           ))}
         </ul>
-        {!areValuesDefault && (
+        {!(areValuesDefault || viewDisabled) && (
           <Button
             onClick={() => addOption()}
             className={clsx(

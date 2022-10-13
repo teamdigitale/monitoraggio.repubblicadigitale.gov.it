@@ -90,7 +90,7 @@ const HeadquartersDetails = () => {
           }progetti/${projectId}/${
             authorityType === formTypes.ENTI_PARTNER
               ? formTypes.ENTI_PARTNER
-              : formTypes.ENTE_GESTORE
+              : formTypes.ENTE_GESTORE_PROGETTO
           }/${authorityId || identeDiRiferimento}/${headquarterId}/${
             programPolicy === 'SCD' ? userRoles.VOL : userRoles.FAC
           }/${td}`

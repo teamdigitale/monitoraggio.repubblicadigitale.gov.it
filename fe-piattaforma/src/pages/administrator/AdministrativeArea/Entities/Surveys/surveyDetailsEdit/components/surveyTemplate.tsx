@@ -21,13 +21,13 @@ import { idQ1, idQ2 } from '../../surveyConstants';
 interface SurveyTemplateI {
   editMode?: boolean;
   cloneMode?: boolean;
-  modal?: boolean;
+  isModal?: boolean;
 }
 
 const SurveyTemplate: React.FC<SurveyTemplateI> = ({
   editMode = false,
   cloneMode = false,
-  modal = false,
+  isModal = false,
 }) => {
   const dispatch = useDispatch();
   const form = useAppSelector(selectSurveyForm);
@@ -127,6 +127,7 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
               sectionTitle={`${i + 1}. ${section.sectionTitle}`}
               editMode={editMode}
               cloneMode={cloneMode}
+              isModal={isModal}
             />
           </React.Fragment>
           <div
@@ -137,7 +138,7 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
               'w-100'
             )}
           >
-            {!modal &&
+            {!isModal &&
               (editMode || cloneMode) &&
               section.id !== idQ1 &&
               section.id !== idQ2 && (

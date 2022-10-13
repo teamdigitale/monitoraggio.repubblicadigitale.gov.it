@@ -187,7 +187,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                 !device.mediaIsPhone &&
                 currentTab === 'questionari' &&
                 itemsList?.items?.length && (
-                  <h3 className='h4 text-muted mx-3'> Altri questionari </h3>
+                  <h3 className='h5 text-muted mx-3 my-4 pt-2'> Questionari disponibili </h3>
                 )}
             </div>
           ) : null

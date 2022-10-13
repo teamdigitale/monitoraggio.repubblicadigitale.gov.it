@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import { GetSurveyInfo } from '../../../../../redux/features/administrativeArea/surveys/surveysThunk';
+import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 import SurveyTemplate from '../Surveys/surveyDetailsEdit/components/surveyTemplate';
 
 const id = 'previewSurveyModal';
@@ -17,8 +18,8 @@ interface PreviewSurveyI {
 const PreviewSurvey: React.FC<PreviewSurveyI> = ({
   surveyId = '',
   onClose,
-  primaryCtaAction = () => ({}),
-  secondaryCtaAction = () => ({}),
+  // primaryCtaAction = () => ({}),
+  // secondaryCtaAction = () => ({}),
 }) => {
   const dispatch = useDispatch();
 
@@ -30,12 +31,8 @@ const PreviewSurvey: React.FC<PreviewSurveyI> = ({
     <GenericModal
       id={id}
       primaryCTA={{
-        label: 'Conferma',
-        onClick: primaryCtaAction,
-      }}
-      secondaryCTA={{
-        label: 'Annulla',
-        onClick: secondaryCtaAction,
+        label: 'Chiudi',
+        onClick: () => dispatch(closeModal()),
       }}
       onClose={onClose}
     >
@@ -48,7 +45,7 @@ const PreviewSurvey: React.FC<PreviewSurveyI> = ({
           'mb-4'
         )}
       >
-        <SurveyTemplate modal />
+        <SurveyTemplate isModal />
       </div>
     </GenericModal>
   );
