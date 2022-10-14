@@ -724,11 +724,15 @@ public class UtenteService {
 							switch (ruolo.getCodice()) {
 							case "REG":
 							case "DEG":
-								mappaProgrammiProgettiUtente.put(ruolo, this.programmaService.getDistinctIdProgrammiByRuoloUtente(cfUtente, ruolo.getCodice()));
+								List<Long> listaIdsProgrammiDistinct = this.programmaService.getDistinctIdProgrammiByRuoloUtente(cfUtente, ruolo.getCodice());
+								if(listaIdsProgrammiDistinct.size() > 0 )
+									mappaProgrammiProgettiUtente.put(ruolo, listaIdsProgrammiDistinct);
 								break;
 							case "REGP":
 							case "DEGP":
-								mappaProgrammiProgettiUtente.put(ruolo, this.progettoService.getDistinctIdProgettiByRuoloUtente(cfUtente, ruolo.getCodice()));
+								List<Long> listaIdsProgettiDistinct = this.progettoService.getDistinctIdProgettiByRuoloUtente(cfUtente, ruolo.getCodice());
+								if(listaIdsProgettiDistinct.size() > 0 )
+									mappaProgrammiProgettiUtente.put(ruolo, listaIdsProgettiDistinct);
 								break;
 							case "REPP":
 							case "DEPP":
