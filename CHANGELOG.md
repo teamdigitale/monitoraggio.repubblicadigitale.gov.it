@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.201](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.200...1.0.0-develop.201) (2022-10-14)
+
+
+### Bug Fixes
+
+* **be:** flag associatoAUtente ([0e08582](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0e085826e434c5e98e5acb68204f776f17d914ff))
+
 ## [1.0.0-develop.200](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.199...1.0.0-develop.200) (2022-10-13)
 
 
