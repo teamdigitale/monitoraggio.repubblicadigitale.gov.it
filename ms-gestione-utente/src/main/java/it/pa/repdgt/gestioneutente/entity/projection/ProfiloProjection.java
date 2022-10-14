@@ -7,6 +7,8 @@ public interface ProfiloProjection {
 	
 	String getIdProgetto();
 	
+	String getIdEnte();
+	
 	String getNomeEnte();
 	
 	String getNomeBreveProgetto();

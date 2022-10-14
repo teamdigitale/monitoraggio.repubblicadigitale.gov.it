@@ -96,7 +96,7 @@ public class EnteSedeProgettoFacilitatoreService {
 	}
 
 	public boolean isEnteAssociatoAFacVol(Long idEnte, Long idProgetto, String cfUtente) {
-		return this.enteSedeProgettoFacilitatoreRepository.findByIdEnteAndIdProgettoAndIdFacilitatore(idEnte, idProgetto, cfUtente).isPresent();
+		return !this.enteSedeProgettoFacilitatoreRepository.findByIdEnteAndIdProgettoAndIdFacilitatore(idEnte, idProgetto, cfUtente).isEmpty();
 		
 	}
 	

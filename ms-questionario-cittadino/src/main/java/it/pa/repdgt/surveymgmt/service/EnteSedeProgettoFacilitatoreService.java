@@ -12,10 +12,9 @@ import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
-import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneSedeParam;
 import it.pa.repdgt.surveymgmt.projection.EnteProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
 import it.pa.repdgt.surveymgmt.repository.EnteSedeProgettoFacilitatoreRepository;
@@ -41,8 +40,8 @@ public class EnteSedeProgettoFacilitatoreService {
 
 	@LogMethod
 	@LogExecutionTime
-	public List<String> getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(String codiceFiscaleUtenteLoggato, Long idProgetto) {
-		return this.enteSedeProgettoFacilitatoreRepository.findIdsSediFacilitatoreByCodFiscaleAndIdProgetto(codiceFiscaleUtenteLoggato, idProgetto);
+	public List<String> getIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnte(String codiceFiscaleUtenteLoggato, Long idProgetto, Long idEnte) {
+		return this.enteSedeProgettoFacilitatoreRepository.findIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnte(codiceFiscaleUtenteLoggato, idProgetto, idEnte);
 	}
 
 	@LogMethod
@@ -60,7 +59,7 @@ public class EnteSedeProgettoFacilitatoreService {
 
 	@LogMethod
 	@LogExecutionTime
-	public List<SedeProjection> getSediByFacilitatore(ProfilazioneSedeParam profilazioneParam) {
+	public List<SedeProjection> getSediByFacilitatore(SceltaProfiloParam profilazioneParam) {
 		return this.enteSedeProgettoFacilitatoreRepository.findSediByFacilitatore(
 				profilazioneParam.getCfUtenteLoggato(),
 				profilazioneParam.getIdEnte(),

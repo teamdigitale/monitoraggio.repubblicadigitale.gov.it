@@ -64,7 +64,7 @@ public interface EnteSedeProgettoFacilitatoreRepository extends JpaRepository<En
 			+ "		AND espf.ID_ENTE = :idEnte           "
 			+ "		AND espf.ID_FACILITATORE = :cfUtente "
 			, nativeQuery = true)
-	Optional<EnteSedeProgettoFacilitatoreEntity> findByIdEnteAndIdProgettoAndIdFacilitatore(
+	List<EnteSedeProgettoFacilitatoreEntity> findByIdEnteAndIdProgettoAndIdFacilitatore(
 			@Param("idEnte")Long idEnte, 
 			@Param("idProgetto")Long idProgetto, 
 			@Param("cfUtente")String cfUtente

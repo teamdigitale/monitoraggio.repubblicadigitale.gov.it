@@ -20,8 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneSedeParam;
 import it.pa.repdgt.surveymgmt.projection.EnteProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
 import it.pa.repdgt.surveymgmt.repository.EnteSedeProgettoFacilitatoreRepository;
@@ -40,7 +40,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 	EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey;
 	EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatoreEntity;
 	List<String> listaIdsSedi;
-	ProfilazioneSedeParam profilazione;
+	SceltaProfiloParam profilazione;
 	
 	@BeforeEach
 	public void setUp() {
@@ -49,11 +49,12 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		enteSedeProgettoFacilitatoreEntity.setId(enteSedeProgettoFacilitatoreKey);
 		listaIdsSedi = new ArrayList<>();
 		listaIdsSedi.add("1");
-		profilazione = new ProfilazioneSedeParam();
+		profilazione = new SceltaProfiloParam();
 		profilazione.setCfUtenteLoggato("DFGREI79N20H101L");
 		profilazione.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
 		profilazione.setIdProgetto(1L);
 		profilazione.setIdProgramma(1L);
+		profilazione.setIdEnte(1000L);
 		profilazione.setIdEnte(1L);
 	}
 	
@@ -73,9 +74,9 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 	}
 	
 	@Test
-	public void getIdsSediFacilitatoreByCodFiscaleAndIdProgettoTest() {
-		when(this.enteSedeProgettoFacilitatoreRepository.findIdsSediFacilitatoreByCodFiscaleAndIdProgetto("DFGREI79N20H101L", 1L)).thenReturn(listaIdsSedi);
-		List<String> risultato = enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto("DFGREI79N20H101L", 1L);
+	public void getIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnteTest() {
+		when(this.enteSedeProgettoFacilitatoreRepository.findIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnte("DFGREI79N20H101L", 1L, 1000L)).thenReturn(listaIdsSedi);
+		List<String> risultato = enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnte("DFGREI79N20H101L", 1L, 1000L);
 		assertThat(risultato.size()).isEqualTo(listaIdsSedi.size());
 	}
 	

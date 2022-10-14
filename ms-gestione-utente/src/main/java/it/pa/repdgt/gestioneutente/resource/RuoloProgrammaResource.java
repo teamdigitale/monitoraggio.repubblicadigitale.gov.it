@@ -30,6 +30,8 @@ public class RuoloProgrammaResource {
 	String nomeProgettoBreve;
 	
 	String nomeEnte;
+
+	String idEnte;
 	
 	public RuoloProgrammaResource(String codiceRuolo, String descrizioneRuolo) {
 		this.codiceRuolo = codiceRuolo;
@@ -38,7 +40,7 @@ public class RuoloProgrammaResource {
 
 
 	public RuoloProgrammaResource(String codiceRuolo, String descrizioneRuolo, String descrizioneRuoloCompleta, String idProgramma, String nomeProgramma,
-			String nomeEnte) {
+			String nomeEnte, String idEnte) {
 		super();
 		this.codiceRuolo = codiceRuolo;
 		this.descrizioneRuolo = descrizioneRuolo;
@@ -46,7 +48,6 @@ public class RuoloProgrammaResource {
 		this.idProgramma = idProgramma;
 		this.nomeProgramma = nomeProgramma;
 		this.nomeEnte = nomeEnte;
+		this.idEnte = idEnte;
 	}
-	
-	
 }

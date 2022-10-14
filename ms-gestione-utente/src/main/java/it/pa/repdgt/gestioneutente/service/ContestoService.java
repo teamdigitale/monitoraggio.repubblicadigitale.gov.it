@@ -70,28 +70,32 @@ public class ContestoService implements RuoliUtentiConstants{
 				case DEG:
 					descrizioneRuolo = codiceRuolo.equalsIgnoreCase(RuoliUtentiConstants.REG)? "REFERENTE": "DELEGATO";
 					for( ProfiloProjection profilo : this.contestoRepository.findProgrammiREGDEG(codiceFiscale, codiceRuolo)) {
-						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getNomeEnte()));
+						String idEnte = profilo.getIdEnte();
+						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getNomeEnte(), profilo.getIdEnte()));
 					}
 					break;
 				case REGP:
 				case DEGP:
 					descrizioneRuolo = codiceRuolo.equalsIgnoreCase(RuoliUtentiConstants.REGP)? "REFERENTE": "DELEGATO";
 					for( ProfiloProjection profilo : this.contestoRepository.findProgrammiProgettiREGPDEGP(codiceFiscale, codiceRuolo)) {
-						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte()));
+						String idEnte = profilo.getIdEnte();
+						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte(), profilo.getIdEnte()));
 					}
 					break;
 				case REPP:
 				case DEPP:
 					descrizioneRuolo = codiceRuolo.equalsIgnoreCase(RuoliUtentiConstants.REPP)? "REFERENTE": "DELEGATO";
 					for( ProfiloProjection profilo : this.contestoRepository.findProgrammiProgettiREPPDEPP(codiceFiscale, codiceRuolo)) {
-						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte()));
+						String idEnte = profilo.getIdEnte();
+						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte(), profilo.getIdEnte()));
 					}
 					break;
 				case FACILITATORE:
 				case VOLONTARIO:
 					//List<Long> listaProgettiPerFacilitatore = espfRepository.findDistinctProgettiByIdFacilitatoreNonTerminato(codiceFiscale, "FAC");
 					for( ProfiloProjection profilo : this.contestoRepository.findProgrammiProgettiFacVol(codiceFiscale, codiceRuolo)) {
-						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), ruolo.getNome(), ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte()));
+						String idEnte = profilo.getIdEnte();
+						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), ruolo.getNome(), ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte(), profilo.getIdEnte()));
 					}
 					break;
 				default:
@@ -130,7 +134,7 @@ public class ContestoService implements RuoliUtentiConstants{
 	@LogMethod
 	@LogExecutionTime
 	@Transactional(rollbackFor = Exception.class)
-	public void verificaSceltaProfilo(String codiceFiscaleUtente, String codiceRuoloUtente, Long idProgramma, Long idProgetto){
+	public void verificaSceltaProfilo(String codiceFiscaleUtente, String codiceRuoloUtente, Long idProgramma, Long idProgetto, Long idEnte) {
 		switch (codiceRuoloUtente.toUpperCase()) {
 			case REG:
 			case DEG:		
@@ -196,26 +200,25 @@ public class ContestoService implements RuoliUtentiConstants{
 				}
 				//se sono REPP/DEPP se STATO_ENTE_PARTNER è NON ATTIVO --> STATO A ATTIVO
 				//trovo le coppie progetto - ente all'interno del progetto idProgetto in cui l'utente è REPP o DEPP
-				List<ProgettoEnteProjection> listaProgettoEnte = contestoRepository.findEntiPartnerNonTerminatiPerProgettoECodiceFiscaleReferenteDelegato(idProgetto, idProgramma, codiceFiscaleUtente, codiceRuoloUtente);
+				// TODO ricerca per ente
+				ProgettoEnteProjection progettoEnte = contestoRepository.findEntePartnerNonTerminatoPerProgettoAnIdEnteAndCodiceFiscaleReferenteDelegato(idProgramma, idProgetto, idEnte, codiceFiscaleUtente, codiceRuoloUtente);
 				//aggiorno lo stato dell'ente PARTNER ad ATTIVO
-				listaProgettoEnte.forEach(progettoEnte -> {
-					//solo per le coppie progetto - ente partner in stato non attivo le porto in attivo
-					if(StatoEnum.NON_ATTIVO.getValue().equals(progettoEnte.getStato())) {
-						contestoRepository.updateStatoEntePartnerProgettoToAttivo(progettoEnte.getIdProgetto(), progettoEnte.getIdEnte());
-						try {
-							storicoService.storicizzaEntePartner(entePartnerService.findEntePartnerByIdProgettoAndIdEnte(progettoEnte.getIdEnte(), progettoEnte.getIdProgetto()), StatoEnum.ATTIVO.getValue());
-						} catch (Exception ex) {
-							throw new ContestoException("ERRORE: Impossibile storicizzare ente", ex, CodiceErroreEnum.C02);
-						}
+				//solo per le coppie progetto - ente partner in stato non attivo le porto in attivo
+				if(StatoEnum.NON_ATTIVO.getValue().equals(progettoEnte.getStato())) {
+					contestoRepository.updateStatoEntePartnerProgettoToAttivo(progettoEnte.getIdProgetto(), progettoEnte.getIdEnte());
+					try {
+						storicoService.storicizzaEntePartner(entePartnerService.findEntePartnerByIdProgettoAndIdEnte(progettoEnte.getIdEnte(), progettoEnte.getIdProgetto()), StatoEnum.ATTIVO.getValue());
+					} catch (Exception ex) {
+						throw new ContestoException("ERRORE: Impossibile storicizzare ente", ex, CodiceErroreEnum.C02);
 					}
-					//a prescindere porto ad ATTIVO lo stato dell'utente come REPP/DEPP per quel progetto ente partner all'interno del programma che ho scelto
-					contestoRepository.attivaREPPDEPP(progettoEnte.getIdProgetto(), progettoEnte.getIdEnte(), codiceFiscaleUtente, codiceRuoloUtente);
-					});
+				}
+				//a prescindere porto ad ATTIVO lo stato dell'utente come REPP/DEPP per quel progetto ente partner all'interno del programma che ho scelto
+				contestoRepository.attivaREPPDEPP(progettoEnte.getIdProgetto(), progettoEnte.getIdEnte(), codiceFiscaleUtente, codiceRuoloUtente);
 				break;
 			case FACILITATORE:
 			case VOLONTARIO:
 				getProgettoProgramma(idProgetto, idProgramma);
-				List<ProgettoEnteSedeProjection> listaProgettoEnteSede = contestoRepository.findSediPerProgrammaECodiceFiscaleFacilitatoreVolontario(idProgetto, codiceFiscaleUtente, codiceRuoloUtente);
+				List<ProgettoEnteSedeProjection> listaProgettoEnteSede = contestoRepository.findSedePerProgrammaAndIdEnteAndCodiceFiscaleFacilitatoreVolontario(idProgetto, idEnte, codiceFiscaleUtente, codiceRuoloUtente);
 				listaProgettoEnteSede.forEach(progettoEnteSede -> {
 					//ATTIVO FACILITATORE per ente sede progetto su cui è associato
 					contestoRepository.attivaFACVOL(progettoEnteSede.getIdProgetto(), progettoEnteSede.getIdEnte(), progettoEnteSede.getIdSede(), codiceFiscaleUtente, codiceRuoloUtente);

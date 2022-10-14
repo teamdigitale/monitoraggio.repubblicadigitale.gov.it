@@ -83,6 +83,7 @@ public class ContestoServiceTest {
 	String codiceFiscale = "codiceFiscaleTest";
 	Long idProgramma = 1L;
 	Long idProgetto = 2L;
+	Long idEnte = 3L;
 	
 	@BeforeEach
 	public void setUp() {
@@ -197,18 +198,19 @@ public class ContestoServiceTest {
 
 		
 	}
+	
 	@Test
 	public void verificaSceltaProfiloTest() throws Exception {
 		/** TEST DTD/DSCU/CUSTOM **/
-		service.verificaSceltaProfilo(codiceFiscale, "DTD", idProgramma, idProgetto);
+		service.verificaSceltaProfilo(codiceFiscale, "DTD", idProgramma, idProgetto, idEnte);
 		
 		/** TEST REG/DEG **/
 		when(contestoRepository.verificaUtenteRuoloDEGREGPerProgramma(idProgramma, codiceFiscale, "DEG")).thenReturn(0);
-		Assertions.assertThrows(ContestoException.class, () -> service.verificaSceltaProfilo(codiceFiscale, "DEG", idProgramma, idProgetto));
+		Assertions.assertThrows(ContestoException.class, () -> service.verificaSceltaProfilo(codiceFiscale, "DEG", idProgramma, idProgetto, idEnte));
 		
 		when(contestoRepository.verificaUtenteRuoloDEGREGPerProgramma(idProgramma, codiceFiscale, "DEG")).thenReturn(1);
 		when(contestoRepository.findById(idProgramma)).thenReturn(Optional.empty());
-		Assertions.assertThrows(ResourceNotFoundException.class, () -> service.verificaSceltaProfilo(codiceFiscale, "DEG", idProgramma, idProgetto));
+		Assertions.assertThrows(ResourceNotFoundException.class, () -> service.verificaSceltaProfilo(codiceFiscale, "DEG", idProgramma, idProgetto, idEnte));
 		
 		ProgrammaEntity programma = new ProgrammaEntity();
 		programma.setId(idProgramma);
@@ -224,13 +226,13 @@ public class ContestoServiceTest {
 		doNothing().when(contestoRepository).attivaREGDEG(idProgramma, codiceFiscale, "DEG");
 		when(contestoRepository.getIdsProgettiAttivabili(idProgramma)).thenReturn(Collections.emptyList());
 		
-		service.verificaSceltaProfilo(codiceFiscale, "DEG", idProgramma, idProgetto);
+		service.verificaSceltaProfilo(codiceFiscale, "DEG", idProgramma, idProgetto, idEnte);
 		
 		doThrow(new Exception()).when(storicoService).storicizzaEnteGestoreProgramma(programma, StatoEnum.ATTIVO.getValue());
-		Assertions.assertThrows(Exception.class, () -> service.verificaSceltaProfilo(codiceFiscale, "DEG", idProgramma, idProgetto));
+		Assertions.assertThrows(Exception.class, () -> service.verificaSceltaProfilo(codiceFiscale, "DEG", idProgramma, idProgetto, idEnte));
 		
 		doNothing().when(storicoService).storicizzaEnteGestoreProgramma(programma, StatoEnum.ATTIVO.getValue());
-		service.verificaSceltaProfilo(codiceFiscale, "DEG", idProgramma, idProgetto);
+		service.verificaSceltaProfilo(codiceFiscale, "DEG", idProgramma, idProgetto, idEnte);
 		
 		programma.setStato(StatoEnum.ATTIVO.getValue());
 		programma.setStatoGestoreProgramma(StatoEnum.ATTIVO.getValue());
@@ -256,22 +258,22 @@ public class ContestoServiceTest {
 //		doThrow(new InvioEmailException("messaggio eccezione")).when(emailService).inviaEmail(referente1.getEmail(), 
 //				EmailTemplateEnum.GEST_PROGE_PARTNER, 
 //				new String[] { referente1.getNome(), RuoloUtenteEnum.valueOf(referente1.getCodiceRuolo()).getValue() });
-		service.verificaSceltaProfilo(codiceFiscale, "DEG", idProgramma, idProgetto);
+		service.verificaSceltaProfilo(codiceFiscale, "DEG", idProgramma, idProgetto, idEnte);
 		
 		/** TEST REGP/DEGP **/
 		when(contestoRepository.getProgettoProgramma(idProgetto, idProgramma)).thenReturn(0);
-		Assertions.assertThrows(ContestoException.class, () -> service.verificaSceltaProfilo(codiceFiscale, "REGP", idProgramma, idProgetto));
+		Assertions.assertThrows(ContestoException.class, () -> service.verificaSceltaProfilo(codiceFiscale, "REGP", idProgramma, idProgetto, idEnte));
 		
 		when(contestoRepository.getProgettoProgramma(idProgetto, idProgramma)).thenReturn(1);
 		when(contestoRepository.verificaUtenteRuoloDEGPREGPPerProgetto(idProgetto, codiceFiscale, "REGP")).thenReturn(0);
-		Assertions.assertThrows(ContestoException.class, () -> service.verificaSceltaProfilo(codiceFiscale, "REGP", idProgramma, idProgetto));
+		Assertions.assertThrows(ContestoException.class, () -> service.verificaSceltaProfilo(codiceFiscale, "REGP", idProgramma, idProgetto, idEnte));
 		
 		when(contestoRepository.verificaUtenteRuoloDEGPREGPPerProgetto(idProgetto, codiceFiscale, "REGP")).thenReturn(1);
 		doNothing().when(contestoRepository).attivaREGPDEGP(idProgetto, codiceFiscale, "REGP");
 
 		ProgettoEnteProjImplementation progettoEnte = new ProgettoEnteProjImplementation(idProgetto, 1000L, StatoEnum.ATTIVO.getValue());
 		when(contestoRepository.getProgettoEnteGestoreProgetto(idProgetto, idProgramma)).thenReturn(progettoEnte);
-		service.verificaSceltaProfilo(codiceFiscale, "REGP", idProgramma, idProgetto);
+		service.verificaSceltaProfilo(codiceFiscale, "REGP", idProgramma, idProgetto, idEnte);
 		
 		progettoEnte = new ProgettoEnteProjImplementation(idProgetto, 1000L, StatoEnum.NON_ATTIVO.getValue());
 		when(contestoRepository.getProgettoEnteGestoreProgetto(idProgetto, idProgramma)).thenReturn(progettoEnte);
@@ -281,24 +283,24 @@ public class ContestoServiceTest {
 		progetto.setStato(StatoEnum.NON_ATTIVO.getValue());
 		when(progettoService.getProgettoById(idProgetto)).thenReturn(progetto);
 		doNothing().when(storicoService).storicizzaEnteGestoreProgetto(progetto, StatoEnum.ATTIVO.getValue());
-		service.verificaSceltaProfilo(codiceFiscale, "REGP", idProgramma, idProgetto);
+		service.verificaSceltaProfilo(codiceFiscale, "REGP", idProgramma, idProgetto, idEnte);
 		
 		doThrow(new StoricoEnteException("messaggio Errore")).when(storicoService).storicizzaEnteGestoreProgetto(progetto, StatoEnum.ATTIVO.getValue());
-		Assertions.assertThrows(ContestoException.class, () -> service.verificaSceltaProfilo(codiceFiscale, "REGP", idProgramma, idProgetto));
+		Assertions.assertThrows(ContestoException.class, () -> service.verificaSceltaProfilo(codiceFiscale, "REGP", idProgramma, idProgetto, idEnte));
 
 		/** TEST REPP/DEPP **/
 		when(contestoRepository.getProgettoProgramma(idProgetto, idProgramma)).thenReturn(1);
 		
 		when(contestoRepository.verificaUtenteRuoloDEPPREPPPerProgetto(idProgetto, codiceFiscale, "REPP")).thenReturn(0);
-		Assertions.assertThrows(ContestoException.class, () -> service.verificaSceltaProfilo(codiceFiscale, "REPP", idProgramma, idProgetto));
+		Assertions.assertThrows(ContestoException.class, () -> service.verificaSceltaProfilo(codiceFiscale, "REPP", idProgramma, idProgetto, idEnte));
 		
 		when(contestoRepository.verificaUtenteRuoloDEPPREPPPerProgetto(idProgetto, codiceFiscale, "REPP")).thenReturn(1);
 		progettoEnte = new ProgettoEnteProjImplementation(idProgetto, 1000L, StatoEnum.ATTIVO.getValue());
-		when(contestoRepository.findEntiPartnerNonTerminatiPerProgettoECodiceFiscaleReferenteDelegato(idProgetto, idProgramma, codiceFiscale, "REPP")).thenReturn(Arrays.asList(progettoEnte));
-		service.verificaSceltaProfilo(codiceFiscale, "REPP", idProgramma, idProgetto);
+		when(contestoRepository.findEntePartnerNonTerminatoPerProgettoAnIdEnteAndCodiceFiscaleReferenteDelegato(idProgramma, idProgetto, idEnte, codiceFiscale, "REPP")).thenReturn(progettoEnte);
+		service.verificaSceltaProfilo(codiceFiscale, "REPP", idProgramma, idProgetto, idEnte);
 		
 		progettoEnte = new ProgettoEnteProjImplementation(idProgetto, 1000L, StatoEnum.NON_ATTIVO.getValue());
-		when(contestoRepository.findEntiPartnerNonTerminatiPerProgettoECodiceFiscaleReferenteDelegato(idProgetto, idProgramma, codiceFiscale, "REPP")).thenReturn(Arrays.asList(progettoEnte));
+//		when(contestoRepository.findEntePartnerNonTerminatoPerProgettoAnIdEnteAndCodiceFiscaleReferenteDelegato(idProgetto, idProgramma, idEnte, codiceFiscale, "REPP")).thenReturn(progettoEnte);
 		doNothing().when(contestoRepository).updateStatoEntePartnerProgettoToAttivo(progettoEnte.getIdProgetto(), progettoEnte.getIdEnte());
 		EntePartnerEntity entePartner = new EntePartnerEntity();
 		EntePartnerKey key = new EntePartnerKey();
@@ -307,18 +309,21 @@ public class ContestoServiceTest {
 		entePartner.setId(key);
 		entePartner.setStatoEntePartner(StatoEnum.NON_ATTIVO.getValue());	
 		when(entePartnerService.findEntePartnerByIdProgettoAndIdEnte(progettoEnte.getIdEnte(), progettoEnte.getIdProgetto())).thenReturn(entePartner);
-		doNothing().when(storicoService).storicizzaEntePartner(entePartner, StatoEnum.ATTIVO.getValue());
-		service.verificaSceltaProfilo(codiceFiscale, "REPP", idProgramma, idProgetto);
+//		doNothing().when(storicoService).storicizzaEntePartner(entePartner, StatoEnum.ATTIVO.getValue());
+		service.verificaSceltaProfilo(codiceFiscale, "REPP", idProgramma, idProgetto, idEnte);
 		
+		progettoEnte.setStato(StatoEnum.NON_ATTIVO.getValue());
+		when(contestoRepository.findEntePartnerNonTerminatoPerProgettoAnIdEnteAndCodiceFiscaleReferenteDelegato(idProgramma, idProgetto, idEnte, codiceFiscale, "REPP")).thenReturn(progettoEnte);
 		doThrow(new StoricoEnteException("messaggio Errore")).when(storicoService).storicizzaEntePartner(entePartner, StatoEnum.ATTIVO.getValue());
-		Assertions.assertThrows(ContestoException.class, () -> service.verificaSceltaProfilo(codiceFiscale, "REPP", idProgramma, idProgetto));
+		Assertions.assertThrows(ContestoException.class, () -> service.verificaSceltaProfilo(codiceFiscale, "REPP", idProgramma, idProgetto, idEnte));
 		
 		/** TEST FAC **/
 		ProgettoEnteSedeProjImplementation enteSedeProgetto = new ProgettoEnteSedeProjImplementation(idProgetto, idProgramma, 1005L, StatoEnum.ATTIVO.getValue());
-		when(contestoRepository.findSediPerProgrammaECodiceFiscaleFacilitatoreVolontario(idProgetto, codiceFiscale, "FAC")).thenReturn(Arrays.asList(enteSedeProgetto));
+		when(contestoRepository.findSedePerProgrammaAndIdEnteAndCodiceFiscaleFacilitatoreVolontario(idProgetto,idEnte, codiceFiscale, "FAC")).thenReturn(Arrays.asList(enteSedeProgetto));
 		doNothing().when(contestoRepository).attivaFACVOL(enteSedeProgetto.getIdProgetto(), enteSedeProgetto.getIdEnte(), enteSedeProgetto.getIdSede(), codiceFiscale, "FAC");
-		service.verificaSceltaProfilo(codiceFiscale, "FAC", idProgramma, idProgetto);
+		service.verificaSceltaProfilo(codiceFiscale, "FAC", idProgramma, idProgetto, idEnte);
 	}
+	
 	@Test
 	public void integraContestoTest() throws Exception {
 		IntegraContestoRequest integraContestoRequestRequest = new IntegraContestoRequest();
@@ -348,6 +353,7 @@ public class ContestoServiceTest {
 		private String nomeProgramma;
 		private String idProgetto;
 		private String nomeEnte;
+		private String idEnte;
 		private String nomeBreveProgetto;
 		
 		@Override
@@ -364,7 +370,7 @@ public class ContestoServiceTest {
 		public String getIdProgetto() {
 			return idProgetto;
 		}
-
+		
 		@Override
 		public String getNomeEnte() {
 			return nomeEnte;
@@ -373,6 +379,11 @@ public class ContestoServiceTest {
 		@Override
 		public String getNomeBreveProgetto() {
 			return nomeBreveProgetto;
+		}
+
+		@Override
+		public String getIdEnte() {
+			return idEnte;
 		}
 	}
 	
