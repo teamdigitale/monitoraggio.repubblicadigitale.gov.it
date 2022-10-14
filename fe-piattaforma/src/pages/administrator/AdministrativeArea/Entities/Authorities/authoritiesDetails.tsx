@@ -520,8 +520,9 @@ const AuthoritiesDetails = () => {
                           ? `associate.`
                           : `associati.`
                       }`}
-                      horizontal
-                      aside
+                      icon='it-note'
+                      withIcon
+                      noMargin
                     />
                   )}
                 </Accordion>

@@ -94,6 +94,7 @@ const UserProfile = () => {
         {userRoleList.map(
           (role: {
             id: string;
+            idEnte?: string;
             codiceRuolo: string;
             nome: string;
             stato: string;
@@ -161,9 +162,14 @@ const UserProfile = () => {
                 }
                 onActionClick={roleActions}
                 activeRole={
-                  role.codiceRuolo === userRole.codiceRuolo &&
-                  (role.id?.toString() === userRole.idProgramma?.toString() ||
-                    role.id?.toString() === userRole.idProgetto?.toString())
+                  role.codiceRuolo === userRole.codiceRuolo && !!role.idEnte
+                    ? role.idEnte?.toString() === userRole.idEnte?.toString() &&
+                      (role.id?.toString() ===
+                        userRole.idProgramma?.toString() ||
+                        role.id?.toString() === userRole.idProgetto?.toString())
+                    : role.id?.toString() ===
+                        userRole.idProgramma?.toString() ||
+                      role.id?.toString() === userRole.idProgetto?.toString()
                 }
               />
             );

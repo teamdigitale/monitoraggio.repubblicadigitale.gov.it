@@ -395,8 +395,9 @@ const HeadquartersDetails = () => {
                   ) : (
                     <EmptySection
                       title={`Non sono presenti ${item.title?.toLowerCase()} associati.`}
-                      horizontal
-                      aside
+                      icon='it-note'
+                      withIcon
+                      noMargin
                     />
                   )}
                 </Accordion>

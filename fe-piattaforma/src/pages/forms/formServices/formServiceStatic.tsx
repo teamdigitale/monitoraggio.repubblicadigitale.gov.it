@@ -81,9 +81,9 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
         idSede: form?.idSede?.value,
       };
       if (!values.idEnte && dropdownOptions?.enti?.length) {
-        values.idEnte = dropdownOptions.enti[0].value;
+        values.idEnte = idEnte;
       }
-      if (!values.idSede && dropdownOptions?.sedi?.length === 1) {
+      if (dropdownOptions?.sedi?.length === 1) {
         values.idSede = dropdownOptions.sedi[0].value;
       }
       setFormValues(values);

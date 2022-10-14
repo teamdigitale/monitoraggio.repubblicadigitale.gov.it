@@ -551,50 +551,47 @@ const ProjectsDetails = () => {
       setButtonsPosition('BOTTOM');
       setCurrentForm(undefined);
       setItemList({
-        items: partnerAuthoritiesList
-          .filter(
-            (entePartner: { associatoAUtente: boolean }) =>
-              entePartner.associatoAUtente
-          )
-          ?.map(
-            (entePartner: {
-              id: string;
-              nome: string;
-              referenti: string;
-              stato: string;
-            }) => ({
-              ...entePartner,
-              fullInfo: { ref: entePartner.referenti },
-              actions:
-                entePartner.stato !== entityStatus.ATTIVO ||
+        items: (partnerAuthoritiesList || []).map(
+          (entePartner: {
+            id: string;
+            nome: string;
+            referenti: string;
+            stato: string;
+            associatoAUtente: boolean;
+          }) => ({
+            ...entePartner,
+            fullInfo: { ref: entePartner.referenti },
+            actions: entePartner.associatoAUtente
+              ? entePartner.stato !== entityStatus.ATTIVO ||
                 projectDetails?.stato === entityStatus.TERMINATO
-                  ? {
-                      [CRUDActionTypes.VIEW]:
-                        onActionClickEntiPartner[CRUDActionTypes.VIEW],
-                    }
-                  : {
-                      [CRUDActionTypes.VIEW]:
-                        onActionClickEntiPartner[CRUDActionTypes.VIEW],
-                      [CRUDActionTypes.DELETE]: hasUserPermission([
-                        'del.ente.partner',
-                      ])
-                        ? (td: TableRowI | string) => {
-                            dispatch(
-                              openModal({
-                                id: 'delete-entity',
-                                payload: {
-                                  entity: 'partner-authority',
-                                  authorityId: td,
-                                  text: 'Confermi di volere disassociare questo Ente partner?',
-                                },
-                              })
-                            );
-                            // projectId && removeAuthorityPartner(td as string, projectId);
-                          }
-                        : undefined,
-                    },
-            })
-          ),
+                ? {
+                    [CRUDActionTypes.VIEW]:
+                      onActionClickEntiPartner[CRUDActionTypes.VIEW],
+                  }
+                : {
+                    [CRUDActionTypes.VIEW]:
+                      onActionClickEntiPartner[CRUDActionTypes.VIEW],
+                    [CRUDActionTypes.DELETE]: hasUserPermission([
+                      'del.ente.partner',
+                    ])
+                      ? (td: TableRowI | string) => {
+                          dispatch(
+                            openModal({
+                              id: 'delete-entity',
+                              payload: {
+                                entity: 'partner-authority',
+                                authorityId: td,
+                                text: 'Confermi di volere disassociare questo Ente partner?',
+                              },
+                            })
+                          );
+                          // projectId && removeAuthorityPartner(td as string, projectId);
+                        }
+                      : undefined,
+                  }
+              : {},
+          })
+        ),
       });
       setItemAccordionList(null);
       setCorrectButtons(
@@ -1270,8 +1267,9 @@ const ProjectsDetails = () => {
                           ? `associate.`
                           : `associati.`
                       }`}
-                      horizontal
-                      aside
+                      icon='it-note'
+                      withIcon
+                      noMargin
                     />
                   )}
                 </Accordion>
