@@ -88,8 +88,9 @@ const ManageCitizenInService: React.FC<ManageCitizenInServiceI> = ({
       }
     });
 
-    const sezioneQ1Questionario =
-      `{"id":"${idQ1}","title":"${titleQ1}","properties":${createStringOfCompiledSurveySection(newFormValues).replaceAll('"', "'")}}`;
+    const sezioneQ1Questionario = `{"id":"${idQ1}","title":"${titleQ1}","properties":${createStringOfCompiledSurveySection(
+      newFormValues
+    ).replaceAll('"', "'")}}`;
 
     body = {
       ...body,

@@ -92,7 +92,24 @@ export type RolePermissionI =
   | 'list.dwnl.serv'
   | 'view.card.serv'
   // Dashboard
-  | 'acc.self.dshb';
+  | 'acc.self.dshb'
+  // WAVE-3
+  | 'btn.cat'
+  | 'btn.cont'
+  | 'btn.rprt'
+  // Notifiche
+  | 'list.ntf.nr'
+  // Home
+  | 'tab.home'
+  // Bacheca
+  | 'tab.bach'
+  | 'upd.news'
+  // Comunity
+  | 'tab.comm'
+  | 'upd.topic'
+  // Documenti
+  | 'tab.doc'
+  | 'upd.doc';
 
 interface RoleI {
   codiceRuolo: string;

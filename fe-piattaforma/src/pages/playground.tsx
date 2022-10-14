@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Button, Col, FormGroup, Row } from 'design-react-kit';
 import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
-import { Button, Col, FormGroup /* , Icon */, Row } from 'design-react-kit';
 import { useTranslation } from 'react-i18next';
 import { dispatchNotify } from '../utils/notifictionHelper';
 import {
@@ -22,6 +22,29 @@ import { formFieldI, newForm, newFormField } from '../utils/formHelper';
 import { i18nChangeLanguage } from '../utils/i18nHelper';
 import { guard } from '../utils/guardHelper';
 import { FilterI } from '../components/DropdownFilter/dropdownFilter';
+// import { groupOptions } from '../components/Form/multipleSelectConstants';
+// import ManageOTP from '../components/AdministrativeArea/Entities/Surveys/ManageOTP/ManageOTP';
+import ProtectedComponent from '../hoc/AuthGuard/ProtectedComponent/ProtectedComponent';
+import { updateCustomBreadcrumb } from '../redux/features/app/appSlice';
+// import Comment from '../components/Comments/comment';
+import ReportFlowCard from '../components/ReportFlow/reportFlowCard';
+import ManageComment from './administrator/AdministrativeArea/Entities/modals/manageComment';
+import ManageDocument from './administrator/AdministrativeArea/Entities/modals/manageDocument';
+import PillDropDown from '../components/PillDropDown/pillDropDown';
+// import SectionDetail from '../components/DocumentDetail/sectionDetail';
+import Slider from '../components/General/Slider/Slider';
+import TextEditor from '../components/General/TextEditor/TextEditor';
+
+export const DocumentCardDetailMock = {
+  typology: 'TIPOLOGIA — ',
+  category: 'CATEGORIA — ',
+  date: '02/07/2022',
+  title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+  description:
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh nibh, tincidunt non ultricies viverra, malesuada et massa. Mauris quis tortor magna. In suscipit nulla vitae ex efficitur, a cursus mi aliquam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh nibh, tincidunt non ultricies viverra, malesuada et massa.',
+};
+
+// const DocumentDetailMock = [DocumentCardDetailMock];
 import UserAvatar from '../components/Avatar/UserAvatar/UserAvatar';
 import { closeModal, openModal } from '../redux/features/modal/modalSlice';
 import GenericModal from '../components/Modals/GenericModal/genericModal';
@@ -29,6 +52,19 @@ import GenericModal from '../components/Modals/GenericModal/genericModal';
 const Playground: React.FC<withFormHandlerProps> = (props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [editorText, setEditorText] = useState('');
+
+  useEffect(() => {
+    dispatch(
+      updateCustomBreadcrumb([
+        {
+          label: 'Playground',
+          url: '/playground',
+          link: false,
+        },
+      ])
+    );
+  }, []);
 
   const createNotify = () => {
     dispatchNotify({
@@ -108,6 +144,27 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
         value={multipleSelectValue}
       />
       <div className='my-5'>
+        {/* Testing Protected Component */}
+
+        <section>
+          <ReportFlowCard />
+        </section>
+
+        <ProtectedComponent visibleTo={[]}>
+          <DropdownFilter
+            filterName='test'
+            id='test'
+            options={[
+              { label: 'a', value: 'a' },
+              { label: 'b', value: 'b' },
+            ]}
+            onOptionsChecked={(newOptions) => {
+              console.log(newOptions);
+              setValues(newOptions);
+            }}
+            values={values}
+          />
+        </ProtectedComponent>
         <DropdownFilter
           filterName='test'
           id='test'
@@ -223,8 +280,66 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
         />
       </Row>
 
+      <section className='mb-4'>
+        <Row>
+          <Button
+            outline
+            color='primary'
+            size='sm'
+            onClick={() => {
+              dispatch(
+                openModal({
+                  id: 'addCommentModal',
+                  payload: { title: 'Aggiungi commento' },
+                })
+              );
+            }}
+          >
+            Aggiungi commento
+          </Button>
+          <ManageComment />
+        </Row>
+      </section>
+
+      <section>
+        <Row>
+          <Button
+            outline
+            color='primary'
+            size='sm'
+            onClick={() => {
+              dispatch(
+                openModal({
+                  id: 'loadDocumentModal',
+                  payload: { title: 'Carica documento' },
+                })
+              );
+            }}
+          >
+            Carica documento
+          </Button>
+          <ManageDocument />
+        </Row>
+      </section>
+
+      <section>
+        <PillDropDown />
+      </section>
+
+
+
       <Stepper nSteps={5} currentStep={3} />
       <Rating />
+
+      <section className='py-5 my-5'>
+        {/* <Comment
+          writingUser={user}
+          commentBody='Questa è la prova di un commento per vedere se è tutto posizionato in modo corretto
+          Questa è la prova di un commento per vedere se è tutto posizionato in modo corretto
+           Questa è la prova di un commento per vedere se è tutto posizionato in modo corretto
+           Questa è la prova di un commento per vedere se è tutto posizionato in modo corretto '
+        /> */}
+      </section>
 
       <section>
         <Row>
@@ -251,6 +366,7 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
           </GenericModal>
         </Row>
       </section>
+
       <section>
         <Row>
           <Form id='form-playground-3'>
@@ -259,6 +375,40 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
             </fieldset>
           </Form>
         </Row>
+      </section>
+
+      <section>
+        <Slider>
+          {new Array(3).fill([1, 2, 3]).map((el, i) => (
+            <div
+              key={`slide-${i}`}
+              style={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
+              {el.map((e: any, index: any) => (
+                <div
+                  key={`card-${i}-${index}`}
+                  style={{
+                    height: '300px',
+                    width: '20%',
+                    backgroundColor: '#acacac',
+                  }}
+                >
+                  {e}
+                </div>
+              ))}
+            </div>
+          ))}
+        </Slider>
+      </section>
+      <section className='p-5'>
+        <TextEditor
+          text={editorText}
+          onChange={(t: string) => setEditorText(t)}
+        />
       </section>
       <div className='w-100 my-5'>
         <Form id='form-playground-4'>

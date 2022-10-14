@@ -131,7 +131,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
   }, [idQuestionarioCompilato]);
 
   useEffect(() => {
-    if (surveyAnswersToSave?.length > 0 && surveyAnswersToSave[activeSection]) {
+    if (surveyAnswersToSave?.length && surveyAnswersToSave[activeSection]) {
       // upload answers when step back
       updateForm(
         {
@@ -172,11 +172,16 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
             if (activeSection === 1 || activeSection === 2) {
               newForm[key].disabled = true;
             }
-            if(key === '3'){
+            if (key === '3') {
               newForm[key].regex = RegexpType.FISCAL_CODE;
             }
-            if(key === '4' && (newForm[key].value === 'true' || newForm[key].value === 'Codice fiscale non disponibile')){
-              if(newForm[key].value === 'true') newForm[key].value = 'Codice fiscale non disponibile';
+            if (
+              key === '4' &&
+              (newForm[key].value === 'true' ||
+                newForm[key].value === 'Codice fiscale non disponibile')
+            ) {
+              if (newForm[key].value === 'true')
+                newForm[key].value = 'Codice fiscale non disponibile';
               newForm['3'].required = false;
               newForm['5'].required = true;
               newForm['6'].required = true;
@@ -204,7 +209,10 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
                   : newForm[key].valid || true;
               if (newForm[key].value === '$consenso') newForm[key].value = '';
             } else if (key === '19') {
-              if (newForm[key].value === '$dataConsenso' || newForm[key].value === '') {
+              if (
+                newForm[key].value === '$dataConsenso' ||
+                newForm[key].value === ''
+              ) {
                 newForm[key].value = '';
               } else {
                 newForm[key].value =

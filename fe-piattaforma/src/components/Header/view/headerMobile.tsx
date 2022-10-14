@@ -8,6 +8,7 @@ import {
   DropdownMenu,
   DropdownToggle,
   Icon,
+  LinkListItem,
 } from 'design-react-kit';
 import LogoMobile from '/public/assets/img/logo-mobile.png';
 import Bell from '/public/assets/img/campanella.png';
@@ -19,8 +20,10 @@ import {
   AvatarTextSizes,
 } from '../../Avatar/AvatarInitials/avatarInitials';
 import { defaultRedirectUrl } from '../../../routes';
+import { NotificationsPreview } from '../../index';
 import UserAvatar from '../../Avatar/UserAvatar/UserAvatar';
 import { LogoutRedirect } from '../../../redux/features/user/userThunk';
+import useGuard from '../../../hooks/guard';
 
 const HeaderMobile: React.FC<HeaderI> = ({
   dispatch,
@@ -36,6 +39,8 @@ const HeaderMobile: React.FC<HeaderI> = ({
   const userDropdownOptions = [
     { optionName: 'Il mio profilo', action: () => navigate('/area-personale') },
   ];
+  const { hasUserPermission } = useGuard();
+
   const userDropDown = () => (
     <Dropdown
       className='p-0 header-container__top__user-dropdown mr-4'
@@ -96,12 +101,6 @@ const HeaderMobile: React.FC<HeaderI> = ({
               onClick={item.action}
             >
               <span>{item.optionName}</span>
-              <Icon
-                icon='it-chevron-right'
-                color='primary'
-                size='sm'
-                aria-label='Apri'
-              />
             </Button>
           </li>
         ))}
@@ -119,15 +118,27 @@ const HeaderMobile: React.FC<HeaderI> = ({
               onClick={() => dispatch(openModal({ id: 'switchProfileModal' }))}
             >
               <span>Cambia ruolo</span>
-              <Icon
-                icon='it-chevron-right'
-                color='primary'
-                size='sm'
-                aria-label='Apri'
-              />
             </Button>
           </li>
         ) : null}
+        {hasUserPermission(['btn.cont']) ? (
+          <li role='none' className='px-4'>
+            <Button
+              className={clsx(
+                'primary-color-b1',
+                'py-2',
+                'w-100',
+                'd-flex',
+                'justify-content-between'
+              )}
+              role='menuitem'
+              onClick={() => navigate('/area-personale/contenuti-pubblicati')}
+            >
+              Contenuti pubblicati
+            </Button>
+          </li>
+        ) : null}
+        <LinkListItem divider role='menuitem' aria-hidden={true} />
         {isLogged ? (
           <li role='none' className='px-4'>
             <Button
@@ -145,10 +156,10 @@ const HeaderMobile: React.FC<HeaderI> = ({
             >
               <span>Esci</span>
               <Icon
-                icon='it-chevron-right'
+                icon='it-external-link'
                 color='primary'
                 size='sm'
-                aria-label='Apri'
+                aria-label='esci'
               />
             </Button>
           </li>
@@ -157,6 +168,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
     </Dropdown>
   );
   const [isOpen, setIsOpen] = useState(false);
+  const [notificationsIsOpen, setNotificationsIsOpen] = useState(false);
   return (
     <header
       className={clsx('header-container', isLogged && 'user-logged', 'w-100')}
@@ -192,17 +204,25 @@ const HeaderMobile: React.FC<HeaderI> = ({
               <>
                 {userDropDown()}
                 <div className='ml-auto pr-3'>
-                  <a href='/notifiche'>
+                  <Button
+                    onClick={() => setNotificationsIsOpen(true)}
+                    className='primary-bg-a6 px-2 bg-transparent'
+                  >
                     <Icon
                       color='white'
                       icon={Bell}
                       size='sm'
-                      aria-label='Menu utente'
+                      aria-label='notifications preview'
                     />
                     {notification?.length ? (
                       <Badge>{notification.length}</Badge>
                     ) : null}
-                  </a>
+                  </Button>
+                  <NotificationsPreview
+                    open={notificationsIsOpen}
+                    setOpen={setNotificationsIsOpen}
+                    menuRoutes={menuRoutes}
+                  />
                 </div>
               </>
             ) : null}
@@ -257,6 +277,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
                   'align-items-center',
                   'p-0'
                 )}
+                onClick={() => navigate('/home/cerca')}
               >
                 <div className='header-container__icon-container ml-2'>
                   <Icon

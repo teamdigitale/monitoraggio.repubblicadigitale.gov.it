@@ -1,18 +1,43 @@
 import React, { memo } from 'react';
 import './cardDocument.scss';
-import PDF from '/public/assets/img/pdf-icon-test.png';
-import MP4 from '/public/assets/img/mp4-icon-test.png';
+import iconFile from '../../../public/assets/img/icon-file-blue.png';
+/* import PDF from '/public/assets/img/pdf-icon-test.png';
+import MP4 from '/public/assets/img/mp4-icon-test.png';*/
+import { Icon } from 'design-react-kit';
+import PublishingAuthority from './PublishingAuthority';
+import clsx from 'clsx';
+import { useAppSelector } from '../../redux/hooks';
+import { selectDevice } from '../../redux/features/app/appSlice';
+import { useNavigate } from 'react-router-dom';
+/* import File from '/public/assets/img/icon-file-fill.png'; */
 
 interface CardDocumentI {
+  typology?: string;
+  date?: string;
   title?: string;
   description?: string;
   fileType?: string;
+  authority?: string;
+  downloads?: number;
+  comment_count?: number;
+  isHome?: boolean;
 }
 
 const CardDocument: React.FC<CardDocumentI> = (props) => {
-  const { title, description, fileType } = props;
+  const {
+    typology,
+    date,
+    title,
+    description,
+    /* fileType, */ authority,
+    downloads,
+    comment_count,
+    isHome,
+  } = props;
 
-  const getFileIcon = (type: string) => {
+  const device = useAppSelector(selectDevice);
+
+  /* const getFileIcon = (type: string) => {
     switch (type) {
       case 'PDF':
         return PDF;
@@ -23,29 +48,60 @@ const CardDocument: React.FC<CardDocumentI> = (props) => {
       // case 'WORD':
       default:
         return '';
-    }
+    } 
+  }; */
+  const navigate = useNavigate();
+  const navigateTo = () => {
+    navigate('/documenti/dettaglio');
   };
 
   return (
-    <div className='d-flex flex-row my-5'>
-      <div className='d-flex flex-row mr-5'>
-        <img
-          src={getFileIcon(fileType || '')}
-          alt='file-type'
-          className='mr-2 document-card__file-icon document-card__vertical'
-        />
-        <span className='document-card__vertical neutral-1-color-a8'>
-          {fileType}
-        </span>
+    <div
+      role='button'
+      className={clsx(
+        'document-card-container p-4',
+        !device.mediaIsPhone && 'pt-2'
+      )}
+      onClick={navigateTo}
+      onKeyDown={navigateTo}
+      tabIndex={0}
+    >
+      <div className='document-card-container__pre-title'>
+        <span className='font-weight-bold'>{typology}</span>
+        {date}
       </div>
-      <div className='d-flex flex-column'>
-        <p className='document-card__maxLinesTitle primary-color-b1'>
-          <strong>{title}</strong>
-        </p>
-        <p className='document-card__maxLinesParagraph mb-0 neutral-1-color-a8'>
+      <p
+        className={clsx(
+          'document-card-container__title',
+          'mt-2',
+          'mb-3',
+          'h5',
+          'font-weight-bold'
+        )}
+      >
+        {title}
+      </p>
+      <div className='d-flex align-items-center my-3'>
+        <img src={iconFile} alt='icon-file' className='mr-3' />
+        <p className='document-card-container__description text-serif'>
           {description}
         </p>
       </div>
+      {!isHome && (
+        <div className='d-flex flex-column'>
+          <PublishingAuthority authority={authority} />
+          <div className='d-flex justify-content-end align-items-center'>
+            <Icon icon='it-download' size='sm' color='primary' />
+            <span className='document-card-container__span-icons ml-1 mr-2'>
+              {downloads}
+            </span>
+            <Icon icon='it-comment' size='sm' color='primary' />
+            <span className='document-card-container__span-icons ml-1'>
+              {comment_count}
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

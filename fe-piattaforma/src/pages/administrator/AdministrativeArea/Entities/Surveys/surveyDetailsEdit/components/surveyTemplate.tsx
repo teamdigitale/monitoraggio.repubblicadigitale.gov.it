@@ -65,7 +65,7 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
 
   const checkValidityQuestions = (questions: SurveyQuestionI[]) => {
     let isValid = true;
-    if (questions?.length > 0) {
+    if (questions?.length) {
       questions.map((question: SurveyQuestionI) => {
         !FormHelper.isValidForm(question.form) ? (isValid = false) : '';
         if (

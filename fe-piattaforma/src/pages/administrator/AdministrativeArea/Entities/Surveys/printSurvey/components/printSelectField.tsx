@@ -10,16 +10,16 @@ const PrintSelectField: React.FC<PrintFieldI> = (props) => {
   const [options, setOptions] = useState<string[]>([]);
 
   useEffect(() => {
-    if(info?.properties){
+    if (info?.properties) {
       const tmpOptions: string[] = [];
       Object.keys(info.properties).map((key: string) => {
         tmpOptions.push(key);
       });
       setOptions(tmpOptions);
-    }else if(info?.enum){
+    } else if (info?.enum) {
       setOptions(info.enum);
     }
-  },[info]);
+  }, [info]);
 
   return (
     <div
@@ -34,7 +34,10 @@ const PrintSelectField: React.FC<PrintFieldI> = (props) => {
           {' (una sola scelta)'}
         </p>
       )}
-      <Form id='form-print-select' className={clsx('mr-3', 'mt-3', 'd-flex', 'flex-column')}>
+      <Form
+        id='form-print-select'
+        className={clsx('mr-3', 'mt-3', 'd-flex', 'flex-column')}
+      >
         {(options || []).map((key: string, i: number) => (
           <FormGroup
             check

@@ -149,7 +149,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
           if (
             formField?.relatedTo &&
             form[formField.relatedTo].enumLevel2 &&
-            multiSelectOptions?.length > 0
+            multiSelectOptions?.length
           ) {
             (form[formField.relatedTo].enumLevel2 || []).forEach(
               ({ label, value, upperLevel }) => {

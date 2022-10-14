@@ -11,7 +11,7 @@ import { selectDevice } from '../../../redux/features/app/appSlice';
 
 const genericId = 'genericModal';
 
-interface CallToAction {
+export interface CallToAction {
   disabled?: boolean;
   label: string;
   onClick?: () => void;
@@ -193,10 +193,10 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
             centerButtons
               ? 'd-flex justify-content-center'
               : device.mediaIsPhone
-              ? 'd-flex flex-row justify-content-center'
-              : tertiaryCTA
-              ? 'd-flex flex-row justify-content-between'
-              : ''
+                ? 'd-flex flex-row justify-content-center'
+                : tertiaryCTA
+                  ? 'd-flex flex-row justify-content-between'
+                  : ''
           )}
         >
           {footer}

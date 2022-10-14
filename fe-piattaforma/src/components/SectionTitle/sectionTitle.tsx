@@ -14,7 +14,7 @@ import { UploadUserPic } from '../../redux/features/user/userThunk';
 import UserAvatar from '../Avatar/UserAvatar/UserAvatar';
 
 interface SectionTitleI {
-  title: string;
+  title: string | undefined;
   status?: string | undefined;
   upperTitle?: {
     icon: string | any;
@@ -27,6 +27,7 @@ interface SectionTitleI {
   isUserProfile?: boolean | string | undefined;
   enteIcon?: boolean;
   profilePicture?: string | undefined;
+  isForumLayout?: boolean;
 }
 
 const SectionTitle: React.FC<SectionTitleI> = (props) => {
@@ -41,6 +42,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
     isUserProfile = false,
     enteIcon = false,
     profilePicture,
+    isForumLayout,
   } = props;
 
   const device = useAppSelector(selectDevice);
@@ -78,7 +80,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
   };
 
   return (
-    <div className='d-flex w-100 flex-wrap'>
+    <div className={clsx(!isForumLayout && 'd-flex w-100 flex-wrap mx-auto')}>
       {upperTitle ? (
         <div className='d-flex flex-row justify-content-center w-100'>
           <Icon
@@ -103,11 +105,9 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
 
       <div
         className={clsx(
-          'd-flex',
-          'w-100',
-          'justify-content-center',
-          'align-items-center',
-          device.mediaIsPhone && 'flex-column'
+          !isForumLayout &&
+            'd-flex w-100 justify-content-center align-items-center',
+          device.mediaIsPhone && !isForumLayout && 'flex-column'
         )}
       >
         {iconAvatar && !device.mediaIsPhone ? (
@@ -180,27 +180,27 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
         )}
         <div
           style={{ minWidth: '150px', maxWidth: '350px' }}
-          className='text-center mx-3'
+          className={clsx(!isForumLayout && 'text-center mx-3')}
         >
           <div
             className={clsx(
-              'custom-section-title__section-title',
-              'main-title',
-              'primary-color-a9',
-              'text-center',
-              'd-block'
+              !isForumLayout
+                ? 'custom-section-title__section-title main-title primary-color-a9 text-center d-block'
+                : 'font-weight-semibold h5 primary-color-a10'
             )}
           >
-            {/*  <span
-              aria-level={1}
-              className={clsx(
-                'custom-section-title',
-                'custom-section-title__section-title',
-                'main-title',
-                !iconAvatar && 'pl-5',
-                !status && 'pr-5'
-              )}
-            > */}
+            {/*
+             <span
+            aria-level={1}
+            className={clsx(
+              isForumLayout
+                ? 'font-weight-semibold h5'
+                : 'custom-section-title custom-section-title__section-title'
+            )}
+          >
+            {title}
+          </span>
+             */}
             <p> {title} </p>
             {/* </span> */}
           </div>

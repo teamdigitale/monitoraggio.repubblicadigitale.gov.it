@@ -16,7 +16,9 @@ export const formatDate = (timestamp: string | number, format: string) => {
   if (!timestamp) {
     return undefined;
   }
-  return moment(Number(timestamp)).format(shortFormats[format] || shortFormats.default);
+  return moment(Number(timestamp)).format(
+    shortFormats[format] || shortFormats.default
+  );
 };
 
 export const dateToTimestamp = (date: string, format: string) => {

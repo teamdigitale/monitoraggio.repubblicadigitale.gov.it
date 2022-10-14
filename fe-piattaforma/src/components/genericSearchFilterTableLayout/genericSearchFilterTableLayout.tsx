@@ -30,7 +30,7 @@ export interface SearchInformationI {
 
 interface GenericSearchFilterTableLayoutI {
   dropdowns?: DropdownFilterI[];
-  searchInformation: SearchInformationI;
+  searchInformation?: SearchInformationI;
   Sidebar?: ReactElement;
   showButtons?: boolean;
   filtersList?: any;
@@ -78,6 +78,7 @@ const GenericSearchFilterTableLayout: React.FC<
 }) => {
   const dispatch = useDispatch();
   const [showChips, setShowChips] = useState<boolean>(false);
+  const device = useAppSelector(selectDevice);
 
   useEffect(() => {
     dispatch(resetFiltersState());
@@ -152,7 +153,7 @@ const GenericSearchFilterTableLayout: React.FC<
           </Button>
         </Chip>
       );
-    } else if (Array.isArray(filter) && filter?.length > 0) {
+    } else if (Array.isArray(filter) && filter?.length) {
       return (
         <>
           {filter.map((f: FilterI, j: number) => (
@@ -178,7 +179,6 @@ const GenericSearchFilterTableLayout: React.FC<
 
   const { t } = useTranslation();
 
-  const device = useAppSelector(selectDevice);
   return (
     <div>
       {cardsCounter && (
@@ -317,6 +317,7 @@ const GenericSearchFilterTableLayout: React.FC<
             ))}
           </div>
         )}
+
         {buttonsList?.length && (
           <div
             className={clsx(
@@ -358,6 +359,7 @@ const GenericSearchFilterTableLayout: React.FC<
             ))}
           </div>
         ) : null}
+
         {ctaDownload ? (
           <div className='d-flex justify-content-end'>
             <Button

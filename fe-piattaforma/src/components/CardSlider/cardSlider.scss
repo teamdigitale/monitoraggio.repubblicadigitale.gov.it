@@ -1,0 +1,54 @@
+.card-slider-container {
+  //width: 380px;
+  // height: 160px;
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid #eceff1;
+  position: relative;
+
+  @media screen and (max-width: 576px) {
+    width: unset;
+    min-width: 350px;
+  }
+
+  &__pre-title {
+    color: #455b71;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 1.1px;
+    text-align: start;
+  }
+  &__title {
+    font-size: 18px;
+    color: #1c2024;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  &__span-icons {
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0.933333px;
+  }
+}
+
+.card-icons-rx {
+  position: absolute;
+  top: 60px;
+  right: -10px;
+  overflow: visible;
+}
+.card-icons-sx {
+  position: absolute;
+  top: 60px;
+  left: -10px;
+  overflow: visible;
+}
+
+.card-slider-mobile {
+  @media screen and (max-width: 1200px) {
+    overflow-x: unset;
+  }
+}

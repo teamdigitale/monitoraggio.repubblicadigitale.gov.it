@@ -21,7 +21,7 @@ const InputOTP = () => {
   // to modify input value
   const handleFocusChange = (key: string) => {
     if (key === 'Delete' || key === 'Backspace') {
-      if (focus > 0) setFocus((prev) => prev - 1);
+      if (focus) setFocus((prev) => prev - 1);
     } else {
       if (focus < 5) setFocus((prev) => prev + 1);
     }

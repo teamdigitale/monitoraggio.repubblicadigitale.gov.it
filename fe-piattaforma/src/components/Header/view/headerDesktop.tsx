@@ -24,6 +24,7 @@ import {
 } from '../../Avatar/AvatarInitials/avatarInitials';
 import useGuard from '../../../hooks/guard';
 import { defaultRedirectUrl } from '../../../routes';
+import { NotificationsPreview } from '../../index';
 import UserAvatar from '../../Avatar/UserAvatar/UserAvatar';
 import { LogoutRedirect } from '../../../redux/features/user/userThunk';
 
@@ -44,6 +45,8 @@ const HeaderDesktop: React.FC<HeaderI> = ({
   const { t } = useTranslation();
   const [openUser, setOpenUser] = useState<boolean>(false);
   const navigate = useNavigate();
+  const [notificationsIsOpen, setNotificationsIsOpen] = useState(false);
+  const [openManagementArea, setOpenManagementArea] = useState<boolean>(false);
 
   const { hasUserPermission } = useGuard();
 
@@ -69,7 +72,8 @@ const HeaderDesktop: React.FC<HeaderI> = ({
             'text.white',
             'primary-bg-b2',
             'header-panel-btn',
-            'border-right'
+            'border-right',
+            'px-3'
           )}
         >
           <div>
@@ -90,9 +94,6 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
               }`}</em>
             </h6>
-          </div>
-          <div className='ml-2'>
-            <Icon size='' color='white' icon='it-expand' />
           </div>
         </div>
       </DropdownToggle>
@@ -139,6 +140,23 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               </Button>
             </li>
           ) : null}
+          {hasUserPermission(['btn.cont']) ? (
+            <li role='none' className='px-4'>
+              <Button
+                className={clsx(
+                  'primary-color-b1',
+                  'py-2',
+                  'w-100',
+                  'd-flex',
+                  'justify-content-between'
+                )}
+                role='menuitem'
+                onClick={() => navigate('/area-personale/contenuti-pubblicati')}
+              >
+                Contenuti pubblicati
+              </Button>
+            </li>
+          ) : null}
           <LinkListItem divider role='menuitem' aria-hidden={true} />
           <li role='none' className='px-4'>
             <Button
@@ -163,6 +181,109 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               />
             </Button>
           </li>
+        </LinkList>
+      </DropdownMenu>
+    </Dropdown>
+  );
+
+  const userDropDownAreaGestionale = () => (
+    <Dropdown
+      className='p-0 header-container__top__user-dropdown'
+      isOpen={openManagementArea}
+      toggle={() => setOpenManagementArea(!openManagementArea)}
+    >
+      <DropdownToggle caret className='complementary-1-color-a1 shadow-none'>
+        <div
+          className={clsx(
+            'header-container__top',
+            'd-inline-flex',
+            'align-items-center',
+            'text.white',
+            'primary-bg-b2',
+            'header-panel-btn',
+            'border-right',
+            'border-left',
+            'px-3'
+          )}
+        >
+          <div className='d-flex flew-row align-items-center'>
+            <Icon
+              icon='it-settings'
+              size='sm'
+              color='white'
+              aria-label='Gestione profili'
+            />
+            <h6
+              className={clsx(
+                'm-0',
+                'ml-2',
+                'font-weight-light',
+                'text-nowrap'
+              )}
+            >
+              Area gestionale
+            </h6>
+            <div className='ml-2'>
+              <Icon size='' color='white' icon='it-expand' />
+            </div>
+          </div>
+        </div>
+      </DropdownToggle>
+      <DropdownMenu role='area gestionale' tag='ul'>
+        <LinkList role='lista area gestionale'>
+          {hasUserPermission(['btn.gest.ruoli']) ? (
+            <li role='none' className='px-4'>
+              <Button
+                className={clsx(
+                  'primary-color-b1',
+                  'py-2',
+                  'w-100',
+                  'd-flex',
+                  'justify-content-between'
+                )}
+                role='menuitem'
+                onClick={() => navigate('/gestione-ruoli')}
+              >
+                {t('role_management')}
+              </Button>
+            </li>
+          ) : null}
+          {hasUserPermission(['btn.cat']) ? (
+            <li role='none' className='px-4'>
+              <Button
+                className={clsx(
+                  'primary-color-b1',
+                  'py-2',
+                  'w-100',
+                  'd-flex',
+                  'justify-content-between'
+                )}
+                role='menuitem'
+                onClick={() => navigate('/area-gestionale/gestione-categorie')}
+              >
+                Gestione categorie
+              </Button>
+            </li>
+          ) : null}
+          {hasUserPermission(['btn.rprt']) ? (
+            <li role='none' className='px-4'>
+              <Button
+                className={clsx(
+                  'primary-color-b1',
+                  'py-2',
+                  'w-100',
+                  'd-flex',
+                  'justify-content-between'
+                )}
+                role='menuitem'
+                onClick={() =>
+                  navigate('/area-gestionale/gestione-segnalazioni')
+                }
+              >
+                Gestione segnalazioni
+              </Button>
+            </li>
+          ) : null}
         </LinkList>
       </DropdownMenu>
     </Dropdown>
@@ -200,7 +321,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
           )}
         </div> */}
 
-            {hasUserPermission(['btn.gest.ruoli']) ? (
+            {/*hasUserPermission(['btn.gest.ruoli']) ? (
               <div
                 className={clsx(
                   'mr-2',
@@ -238,7 +359,8 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                   </div>
                 </a>
               </div>
-            ) : null}
+            ) : null*/}
+            {userDropDownAreaGestionale()}
 
             {/* <div>
             <Dropdown
@@ -297,22 +419,25 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               isLogged ? (
                 <>
                   {userDropDown()}
-                  <div className='mx-4 pr-2'>
-                    {/* <Icon
-                    color='white'
-                    icon='campanella'
-                    size='sm'
-                    aria-label='Menu utente'
-                    focusable={false}
-                  /> */}
-                    <a href='/notifiche'>
-                      <Icon
-                        color='white'
-                        icon={Bell}
-                        size='sm'
-                        aria-label='Notifiche'
+                  <div className='mx-4'>
+                    <div className='ml-auto pr-3'>
+                      <Button
+                        onClick={() => setNotificationsIsOpen(true)}
+                        className='primary-bg-a6 px-2 bg-transparent'
+                      >
+                        <Icon
+                          color='white'
+                          icon={Bell}
+                          size='sm'
+                          aria-label='notifications preview'
+                        />
+                      </Button>
+                      <NotificationsPreview
+                        open={notificationsIsOpen}
+                        setOpen={setNotificationsIsOpen}
+                        menuRoutes={menuRoutes}
                       />
-                    </a>
+                    </div>
                     {notification?.length ? (
                       <Badge>{notification.length}</Badge>
                     ) : null}
@@ -388,6 +513,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                     'align-items-center',
                     'ml-5'
                   )}
+                  onClick={() => navigate('/home/cerca')}
                 >
                   <span className='mr-2 text-white font-weight-light'>
                     Cerca

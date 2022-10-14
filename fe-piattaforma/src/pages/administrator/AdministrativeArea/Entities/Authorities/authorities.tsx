@@ -160,7 +160,7 @@ const Authorities: React.FC = () => {
   ) => {
     const searchDropdownValues = [...searchDropdown];
     if (
-      searchDropdownValues?.length > 0 &&
+      searchDropdownValues?.length &&
       searchDropdownValues?.findIndex((f) => f.filterId === filterId) !== -1
     ) {
       searchDropdownValues[

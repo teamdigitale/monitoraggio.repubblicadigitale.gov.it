@@ -319,7 +319,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                 !device.mediaIsPhone && 'container'
               )}
             >
-              {formButtons.length === 2 && (infoProgBtn || infoProjBtn) ? (
+              {formButtons.length === 2 && (infoProgBtn || (infoProjBtn && titleInfo?.status !== 'ATTIVABILE' && titleInfo?.status !== 'NON ATTIVO')) ? (
                 <div
                   className={clsx(
                     'd-flex',

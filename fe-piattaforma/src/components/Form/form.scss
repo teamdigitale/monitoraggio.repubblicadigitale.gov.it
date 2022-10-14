@@ -23,11 +23,15 @@
     border-bottom: 1px solid color('grey-input') !important;
   }
   &[type='text'][value=''],
-  &[type='date'][value=''] {
+  &[type='date'][value=''],
+  &[type='file'][value=''],
+  &[type='url'][value=''] {
     border-bottom: 1px solid color('progress-bar-line');
   }
   &[type='text'][value]:not([value='']),
-  &[type='date'][value]:not([value='']) {
+  &[type='date'][value]:not([value='']),
+  &[type='file'][value]:not([value='']),
+  &[type='url'][value]:not([value='']) {
     border-bottom: 2px solid color('progress-bar-line');
   }
   &.is-valid {
