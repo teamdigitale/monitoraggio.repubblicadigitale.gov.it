@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import it.pa.repdgt.gestioneutente.entity.projection.ProgettoEnteProjection;
 import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 
@@ -21,14 +22,15 @@ public interface EnteSedeProgettoFacilitatoreRepository extends JpaRepository<En
 	List<Long> findDistinctProgettiByIdFacilitatoreNonTerminato(@Param(value = "codiceFiscale")String codiceFiscale, 
 			@Param(value = "ruolo")String ruolo);
 
-	@Query(value = "SELECT DISTINCT espf.ID_PROGETTO "
-			+ "		FROM ente_sede_progetto_facilitatore espf "
-			+ "		WHERE espf.ID_FACILITATORE = :cfUtente"
-			+ "		AND RUOLO_UTENTE = :codiceRuolo", 
+	@Query(value = ""
+			+ "     	SELECT DISTINCT espf.ID_PROGETTO as idProgetto, espf.ID_ENTE as idEnte"
+			+ "			FROM ente_sede_progetto_facilitatore espf "
+			+ "			WHERE espf.ID_FACILITATORE = :cfUtente    "
+			+ "			AND RUOLO_UTENTE = :codiceRuolo           ", 
 			nativeQuery = true)
-	List<Long> findIdProgettiFacilitatoreVolontario(
-			@Param(value = "cfUtente")String cfUtente,
-			@Param(value = "codiceRuolo")String codiceRuolo);
+	List<ProgettoEnteProjection> findIdProgettiFacilitatoreVolontario(
+			@Param(value = "cfUtente")    String cfUtente,
+			@Param(value = "codiceRuolo") String codiceRuolo);
 	
 	@Query(value = "SELECT DISTINCT espf.STATO_UTENTE "
 			+ "		FROM ente_sede_progetto_facilitatore espf "
@@ -41,10 +43,13 @@ public interface EnteSedeProgettoFacilitatoreRepository extends JpaRepository<En
 			@Param(value = "codiceRuolo")String codiceRuolo,
 			@Param(value = "idProgetto")Long idProgetto);
 	
-	@Query(value = "SELECT COUNT(distinct espf.id_progetto) "
-			+ "		FROM ente_sede_progetto_facilitatore espf "
-			+ "		WHERE espf.ID_FACILITATORE = :cfUtente"
-			+ "		AND RUOLO_UTENTE = :codiceRuolo ", 
+	@Query(value = "SELECT COUNT(*)"
+			+ "		FROM ("
+			+ "			SELECT DISTINCT espf.id_progetto, espf.id_ente "
+			+ "			FROM ente_sede_progetto_facilitatore espf "
+			+ "			WHERE espf.ID_FACILITATORE = :cfUtente"
+			+ "			AND RUOLO_UTENTE = :codiceRuolo "
+			+ "     ) as result", 
 			nativeQuery = true)
 	Integer countByIdFacilitatore(
 			@Param(value = "cfUtente")String cfUtente,

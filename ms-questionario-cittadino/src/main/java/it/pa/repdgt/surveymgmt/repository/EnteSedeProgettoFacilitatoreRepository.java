@@ -20,11 +20,14 @@ public interface EnteSedeProgettoFacilitatoreRepository extends JpaRepository<En
 			+ "		WHERE "
 			+ "			espf.id_facilitatore = :codiceFiscaleUtente "
 			+ "		AND "
-			+ "			espf.id_progetto = :idProgetto ",
+			+ "			espf.id_progetto = :idProgetto "
+			+ "		AND "
+					+ "			espf.id_ente = :idEnte ",
 			nativeQuery = true)
-	List<String> findIdsSediFacilitatoreByCodFiscaleAndIdProgetto(
+	List<String> findIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnte(
 			@Param("codiceFiscaleUtente") String codiceFiscaleUtenteLoggato, 
-			@Param("idProgetto") Long idProgetto);
+			@Param("idProgetto") Long idProgetto,
+			@Param("idEnte") Long idEnte);
 
 	@Query(value = "SELECT CONCAT "
 			+ "			(u.cognome, ' ', u.nome) "

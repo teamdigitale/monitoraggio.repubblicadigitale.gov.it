@@ -72,17 +72,7 @@ public class ServizioService {
 	public Page<ServizioEntity> getAllServiziPaginatiByProfilazioneAndFiltri(
 			@NotNull @Valid final SceltaProfiloParam profilazione,
 			@NotNull @Valid final FiltroListaServiziParam filtroListaServizi,
-			@NotNull final Pageable pagina ) {
-		// Recupero codiceFiscale e codiceRuolo con cui si è profilato l'utente loggato alla piattaforma
-		final String codiceFiscaleUtenteLoggato = profilazione.getCfUtenteLoggato().trim().toUpperCase();
-		final String codiceRuoloUtenteLoggato   = profilazione.getCodiceRuoloUtenteLoggato().toString().trim().toUpperCase();
-		
-		// Verifico se l'utente possiede il ruolo mandato nella richiesta
-		if( !this.utenteService.hasRuoloUtente(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato) ) {
-			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'",codiceFiscaleUtenteLoggato);
-			throw new ServizioException(messaggioErrore, CodiceErroreEnum.U06);
-		}
-		
+			@NotNull final Pageable pagina ) {		
 		// Recupero tutti i Servizi in base al ruolo profilato dell'utente loggato e in base ai filtri selezionati
 		final List<ServizioEntity> listaServizi = this.getAllServiziByProfilazioneUtenteLoggatoAndFiltri(profilazione, filtroListaServizi);
 		
@@ -109,12 +99,6 @@ public class ServizioService {
 		// Recupero codiceFiscale e codiceRuolo con cui si è profilato l'utente loggato alla piattaforma
 		final String codiceFiscaleUtenteLoggato = profilazione.getCfUtenteLoggato().trim().toUpperCase();
 		final String codiceRuoloUtenteLoggato   = profilazione.getCodiceRuoloUtenteLoggato().toString().trim().toUpperCase();
-		
-		// Verifico se l'utente possiede il ruolo mandato nella richiesta
-		if( !this.utenteService.hasRuoloUtente(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato) ) {
-			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'",codiceFiscaleUtenteLoggato);
-			throw new ServizioException(messaggioErrore, CodiceErroreEnum.U01);
-		}
 		
 		if(filtroListaServizi.getCriterioRicerca() != null) {
 			filtroListaServizi.setCriterioRicerca(
@@ -149,6 +133,7 @@ public class ServizioService {
 						filtroListaServizi.getCriterioRicerca(),
 						Arrays.asList( profilazione.getIdProgramma().toString() ),
 						Arrays.asList( profilazione.getIdProgetto().toString() ),
+						profilazione.getIdEnte(),
 						filtroListaServizi.getTipologieServizi(),
 						filtroListaServizi.getStatiServizio()
 					);
@@ -172,6 +157,7 @@ public class ServizioService {
 						filtroListaServizi.getCriterioRicerca(),
 						Arrays.asList( profilazione.getIdProgramma().toString() ),
 						Arrays.asList( profilazione.getIdProgetto().toString() ),
+						profilazione.getIdEnte(),
 						filtroListaServizi.getTipologieServizi(),
 						filtroListaServizi.getStatiServizio(),
 						codiceFiscaleUtenteLoggato

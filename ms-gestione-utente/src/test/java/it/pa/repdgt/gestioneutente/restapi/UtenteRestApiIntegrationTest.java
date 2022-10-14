@@ -170,7 +170,7 @@ public class UtenteRestApiIntegrationTest extends AppTests{
 	@Test
 	@DisplayName(value = "getSchedaUtenteByIdUtenteTest - OK")
 	public void getSchedaUtenteByIdUtenteTest() {
-		String idUtente = "2";
+		String idUtente = "1";
 		SceltaProfiloParam profilazioneRequest = new SceltaProfiloParam();
 		profilazioneRequest.setCfUtenteLoggato("SMTPAL67R31F111X");
 		profilazioneRequest.setCodiceRuoloUtenteLoggato("DTD");

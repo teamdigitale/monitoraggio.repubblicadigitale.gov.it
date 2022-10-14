@@ -159,6 +159,7 @@ public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long
 			+ "		  , qc.facilitatore_id as codiceFiscaleFacilitatore "
 			+ "		  , qc.id as idQuestionarioCompilato "
 			+ "		  , qc.stato as statoQuestionarioCompilato "
+			+ "       , s.id_ente as idEnte"
 			+ "		FROM "
 			+ "			questionario_compilato qc "
 			+ "		INNER JOIN "

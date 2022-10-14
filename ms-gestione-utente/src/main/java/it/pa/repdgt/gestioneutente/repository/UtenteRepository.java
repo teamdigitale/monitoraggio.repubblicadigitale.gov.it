@@ -1242,12 +1242,14 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "				FROM referente_delegati_partner rdp "
 			+ "				WHERE rdp.CF_UTENTE != :cfUtente"
 			+ "					AND rdp.ID_PROGETTO = :idProgetto"
+			+ "					AND rdp.ID_ENTE = :idEnte"
 			+ "                UNION"
 			+ "			 SELECT distinct espf.id_facilitatore"
 			+ "                FROM ente_sede_progetto_facilitatore espf"
 			+ "                INNER JOIN progetto progetto"
 			+ "					ON espf.ID_PROGETTO = progetto.ID"
 			+ "				WHERE progetto.ID = :idProgetto"
+			+ "					AND espf.ID_ENTE = :idEnte"
 			+ "                )"
 			+ "			 	AS utenti_per_ruolo "
 			+ "			 	INNER JOIN utente utente "
@@ -1280,6 +1282,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 	public Set<UtenteEntity> findUtentiPerReferenteDelegatoEntePartnerProgettiPerDownload(
 			@Param(value = "idProgramma") Long idProgramma,
 			@Param(value = "idProgetto") Long idProgetto,
+			@Param(value = "idEnte") Long idEnte,
 			@Param(value = "cfUtente")String cfUtente, 
 			@Param(value = "criterioRicerca") String criterioRicerca,
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 

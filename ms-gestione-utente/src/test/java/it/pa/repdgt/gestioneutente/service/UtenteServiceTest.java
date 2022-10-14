@@ -2,7 +2,6 @@ package it.pa.repdgt.gestioneutente.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
@@ -27,9 +26,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 
 import it.pa.repdgt.gestioneutente.dto.UtenteDto;
+import it.pa.repdgt.gestioneutente.entity.projection.ProgettoEnteProjection;
 import it.pa.repdgt.gestioneutente.exception.ResourceNotFoundException;
 import it.pa.repdgt.gestioneutente.exception.RuoloException;
 import it.pa.repdgt.gestioneutente.exception.UtenteException;
+import it.pa.repdgt.gestioneutente.repository.EnteRepository;
 import it.pa.repdgt.gestioneutente.repository.ReferentiDelegatiEnteGestoreProgettoRepository;
 import it.pa.repdgt.gestioneutente.repository.ReferentiDelegatiEnteGestoreProgrammaRepository;
 import it.pa.repdgt.gestioneutente.repository.ReferentiDelegatiEntePartnerDiProgettoRepository;
@@ -39,15 +40,19 @@ import it.pa.repdgt.gestioneutente.request.FiltroRequest;
 import it.pa.repdgt.gestioneutente.request.UtenteRequest;
 import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.awsintegration.service.S3Service;
+import it.pa.repdgt.shared.entity.EnteEntity;
+import it.pa.repdgt.shared.entity.EntePartnerEntity;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.UtenteXRuolo;
+import it.pa.repdgt.shared.entity.key.EntePartnerKey;
 import it.pa.repdgt.shared.entity.key.UtenteXRuoloKey;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import lombok.Setter;
 
 @ExtendWith(MockitoExtension.class)
 public class UtenteServiceTest {
@@ -66,6 +71,8 @@ public class UtenteServiceTest {
 	private EntePartnerService entePartnerService;
 	@Mock
 	private UtenteRepository utenteRepository;
+	@Mock
+	private EnteRepository enteRepository;
 	@Mock 
 	private EmailService emailService;
 	@Mock
@@ -104,6 +111,7 @@ public class UtenteServiceTest {
 	MockMultipartFile file;
 	byte[] data;
 	InputStream stream;
+	EnteEntity enteEntity;
 
 	@BeforeEach
 	public void setUp() throws IOException {
@@ -154,6 +162,7 @@ public class UtenteServiceTest {
 		sceltaContesto.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.getValue());
 		sceltaContesto.setIdProgramma(1L);
 		sceltaContesto.setIdProgetto(1L);
+		sceltaContesto.setIdEnte(1000L);
 		filtroRicerca = new FiltroRequest();
 		filtroRicerca.setCriterioRicerca("provaRicerca");
 		sceltaContesto.setFiltroRequest(filtroRicerca);
@@ -178,18 +187,26 @@ public class UtenteServiceTest {
 		
 		setStati = new HashSet<>();
 		setStati.add("ATTIVO");
+		
+
+		enteEntity = new EnteEntity();
+		enteEntity.setId(1L);
+		enteEntity.setNome("provaEnte");
+		enteEntity.setNomeBreve("provaEnte");
 
 		programma = new ProgrammaEntity();
 		programma.setId(1L);
 		programma.setNome("NOMEPROGRAMMA");
 		programma.setStato("ATTIVO");
 		programma.setPolicy(PolicyEnum.SCD);
+		programma.setEnteGestoreProgramma(enteEntity);
 
 		progetto = new ProgettoEntity();
 		progetto.setId(1L);
 		progetto.setNome("NOMEPROGETTO");
 		progetto.setStato("ATTIVO");
 		progetto.setProgramma(programma);
+		progetto.setEnteGestoreProgetto(enteEntity);
 
 		listaStati = new ArrayList<>();
 		listaStati.add("ATTIVO");
@@ -687,10 +704,16 @@ public class UtenteServiceTest {
 		ruolo1.setNome(RuoloUtenteEnum.REPP.getValue());
 		ruoli = new ArrayList<>();
 		ruoli.add(ruolo1);
+		EntePartnerKey entePartnerKey = new EntePartnerKey(progetto.getId(), 1L);
+		EntePartnerEntity entePartnerEntity = new EntePartnerEntity();
+		entePartnerEntity.setId(entePartnerKey);
+		List<EntePartnerEntity> listaEntiPartner = new ArrayList<>();
+		listaEntiPartner.add(entePartnerEntity);
 		when(this.utenteRepository.findById(utente.getId())).thenReturn(Optional.of(utente));
 		when(this.ruoloService.getRuoliCompletiByCodiceFiscaleUtente(utente.getCodiceFiscale())).thenReturn(ruoli);
-		when(this.entePartnerService.getIdProgettiEntePartnerByRuoloUtente(sceltaContesto.getCfUtenteLoggato(), ruolo1.getCodice())).thenReturn(listaIds);
+		when(this.entePartnerService.getIdProgettiEntePartnerByRuoloUtente(sceltaContesto.getCfUtenteLoggato(), ruolo1.getCodice())).thenReturn(listaEntiPartner);
 		when(this.progettoService.getProgettoById(progetto.getId())).thenReturn(progetto);
+		when(this.enteRepository.findById(1L)).thenReturn(Optional.of(enteEntity));
 		when(referentiDelegatiEntePartnerDiProgettoRepository.findStatoByCfUtente(sceltaContesto.getCfUtenteLoggato(), progetto.getId(), ruolo1.getCodice())).thenReturn(listaStati);
 		service.getSchedaUtenteByIdUtente(utente.getId(), sceltaContesto);
 	}
@@ -703,10 +726,17 @@ public class UtenteServiceTest {
 		ruolo1.setNome(RuoloUtenteEnum.FAC.getValue());
 		ruoli = new ArrayList<>();
 		ruoli.add(ruolo1);
+		ProgettoEnteProjectionImplementation progettoEnteProjectionImplementation = new ProgettoEnteProjectionImplementation();
+		progettoEnteProjectionImplementation.setIdProgetto(1L);
+		progettoEnteProjectionImplementation.setIdEnte(1L);
+		progettoEnteProjectionImplementation.setStato("ATTIVO");
+		List<ProgettoEnteProjection> listaProgettoEnte = new ArrayList<>();
+		listaProgettoEnte.add(progettoEnteProjectionImplementation);
 		when(this.utenteRepository.findById(utente.getId())).thenReturn(Optional.of(utente));
 		when(this.ruoloService.getRuoliCompletiByCodiceFiscaleUtente(utente.getCodiceFiscale())).thenReturn(ruoli);
-		when(this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontario(sceltaContesto.getCfUtenteLoggato(), ruolo1.getCodice())).thenReturn(listaIds);
+		when(this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontario(sceltaContesto.getCfUtenteLoggato(), ruolo1.getCodice())).thenReturn(listaProgettoEnte);
 		when(this.progettoService.getProgettoById(progetto.getId())).thenReturn(progetto);
+		when(this.enteRepository.findById(1L)).thenReturn(Optional.of(enteEntity));
 		when(this.enteSedeProgettoFacilitatoreService.getDistinctStatoByIdProgettoIdFacilitatoreVolontario(sceltaContesto.getCfUtenteLoggato(), ruolo1.getCodice(),  progetto.getId())).thenReturn(listaStati);
 		service.getSchedaUtenteByIdUtente(utente.getId(), sceltaContesto);
 	}
@@ -716,14 +746,15 @@ public class UtenteServiceTest {
 		//test con condizioni IF non rispettate
 		sceltaContesto.setCodiceRuoloUtenteLoggato("REGP");
 		sceltaContesto.setIdProgetto(2L);
-		boolean risultato = service.isProgettoAssociatoAUtenteLoggato(sceltaContesto, progetto);
+		sceltaContesto.setIdEnte(2L);
+		boolean risultato = service.isProgettoAndEnteAssociatoAUtenteLoggato(sceltaContesto, progetto, null);
 		assertThat(risultato).isEqualTo(false);
 	}
 
 	@Test
 	public void isProgettoAssociatoAUtenteLoggatoDTDTest() {
 		//test con ruoloUtenteLoggato = DTD/ruolo custom
-		boolean risultato = service.isProgettoAssociatoAUtenteLoggato(sceltaContesto, progetto);
+		boolean risultato = service.isProgettoAndEnteAssociatoAUtenteLoggato(sceltaContesto, progetto, null);
 		assertThat(risultato).isEqualTo(true);
 	}
 
@@ -731,7 +762,7 @@ public class UtenteServiceTest {
 	public void isProgettoAssociatoAUtenteLoggatoDSCUTest() {
 		//test con ruoloUtenteLoggato = DSCU con policy programma = SCD
 		sceltaContesto.setCodiceRuoloUtenteLoggato("DSCU");
-		boolean risultato = service.isProgettoAssociatoAUtenteLoggato(sceltaContesto, progetto);
+		boolean risultato = service.isProgettoAndEnteAssociatoAUtenteLoggato(sceltaContesto, progetto, null);
 		assertThat(risultato).isEqualTo(true);
 	}
 
@@ -740,7 +771,7 @@ public class UtenteServiceTest {
 		//test con ruoloUtenteLoggato = DSCU con policy programma = RFD
 		sceltaContesto.setCodiceRuoloUtenteLoggato("DSCU");
 		programma.setPolicy(PolicyEnum.RFD);
-		boolean risultato = service.isProgettoAssociatoAUtenteLoggato(sceltaContesto, progetto);
+		boolean risultato = service.isProgettoAndEnteAssociatoAUtenteLoggato(sceltaContesto, progetto, null);
 		assertThat(risultato).isEqualTo(false);
 	}
 
@@ -748,7 +779,7 @@ public class UtenteServiceTest {
 	public void isProgettoAssociatoAUtenteLoggatoREGTest() {
 		//test con ruoloUtenteLoggato = REG
 		sceltaContesto.setCodiceRuoloUtenteLoggato("REG");
-		boolean risultato = service.isProgettoAssociatoAUtenteLoggato(sceltaContesto, progetto);
+		boolean risultato = service.isProgettoAndEnteAssociatoAUtenteLoggato(sceltaContesto, progetto, null);
 		assertThat(risultato).isEqualTo(true);
 	}
 
@@ -756,7 +787,17 @@ public class UtenteServiceTest {
 	public void isProgettoAssociatoAUtenteLoggatoREGPTest() {
 		//test con ruoloUtenteLoggato = REGP
 		sceltaContesto.setCodiceRuoloUtenteLoggato("REGP");
-		boolean risultato = service.isProgettoAssociatoAUtenteLoggato(sceltaContesto, progetto);
+		boolean risultato = service.isProgettoAndEnteAssociatoAUtenteLoggato(sceltaContesto, progetto, null);
+		assertThat(risultato).isEqualTo(true);
+	}
+	
+	@Test
+	public void isProgettoAssociatoAUtenteLoggatoREPPOrFACTest() {
+		//test con ruoloUtenteLoggato = REPP
+		sceltaContesto.setCodiceRuoloUtenteLoggato("REPP");
+		sceltaContesto.setIdProgetto(1L);
+		sceltaContesto.setIdEnte(1000L);
+		boolean risultato = service.isProgettoAndEnteAssociatoAUtenteLoggato(sceltaContesto, progetto, 1000L);
 		assertThat(risultato).isEqualTo(true);
 	}
 
@@ -926,7 +967,7 @@ public class UtenteServiceTest {
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli(),
 				filtroRicerca.getStati())).thenReturn(utentiSet);
-		List<UtenteDto> risultato = service.getUtentiPerDownload(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		List<UtenteDto> risultato = service.getUtentiPerDownload(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest());
 		assertThat(risultato.size()).isEqualTo(utentiSet.size());
 	}
 
@@ -938,7 +979,7 @@ public class UtenteServiceTest {
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli())).thenReturn(utentiSet);
-		List<UtenteDto> risultato = service.getUtentiPerDownload(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		List<UtenteDto> risultato = service.getUtentiPerDownload(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest());
 		assertThat(risultato.size()).isEqualTo(utentiSet.size());
 	}
 
@@ -952,7 +993,7 @@ public class UtenteServiceTest {
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli())).thenReturn(utentiSet);
-		List<UtenteDto> risultato = service.getUtentiPerDownload(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		List<UtenteDto> risultato = service.getUtentiPerDownload(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest());
 		assertThat(risultato.size()).isEqualTo(utentiSet.size());
 	}
 
@@ -967,7 +1008,7 @@ public class UtenteServiceTest {
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli())).thenReturn(utentiSet);
-		List<UtenteDto> risultato = service.getUtentiPerDownload(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		List<UtenteDto> risultato = service.getUtentiPerDownload(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest());
 		assertThat(risultato.size()).isEqualTo(utentiSet.size());
 	}
 
@@ -978,11 +1019,12 @@ public class UtenteServiceTest {
 		when(this.utenteRepository.findUtentiPerReferenteDelegatoEntePartnerProgettiPerDownload(
 				sceltaContesto.getIdProgramma(),
 				sceltaContesto.getIdProgetto(),
+				sceltaContesto.getIdEnte(),
 				sceltaContesto.getCfUtenteLoggato(),
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli())).thenReturn(utentiSet);
-		List<UtenteDto> risultato = service.getUtentiPerDownload(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		List<UtenteDto> risultato = service.getUtentiPerDownload(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest());
 		assertThat(risultato.size()).isEqualTo(utentiSet.size());
 	}
 
@@ -995,7 +1037,7 @@ public class UtenteServiceTest {
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli(),
 				filtroRicerca.getStati())).thenReturn(utentiSet);
-		List<UtenteDto> risultato = service.getUtentiPerDownload(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		List<UtenteDto> risultato = service.getUtentiPerDownload(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest());
 		assertThat(risultato.size()).isEqualTo(utentiSet.size());
 	}
 
@@ -1010,5 +1052,29 @@ public class UtenteServiceTest {
 		//test KO per errore upload immagine profilo
 		Assertions.assertThrows(UtenteException.class, () -> service.downloadImmagineProfiloUtente("NOMEFILE"));
 		assertThatExceptionOfType(UtenteException.class);
+	}
+	
+	@Setter
+	public class ProgettoEnteProjectionImplementation implements ProgettoEnteProjection {
+
+		private Long idProgetto;
+		private Long idEnte;
+		private String stato;
+		
+		@Override
+		public Long getIdProgetto() {
+			return idProgetto;
+		}
+
+		@Override
+		public Long getIdEnte() {
+			return idEnte;
+		}
+
+		@Override
+		public String getStato() {
+			return stato;
+		}
+		
 	}
 }
