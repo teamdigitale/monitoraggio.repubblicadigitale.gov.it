@@ -1174,7 +1174,7 @@ public class EnteService {
 		}
 		//controllo se lo stato dell'ente gestore di progetto è diverso da NON ATTIVO
 		if(!this.progettoService.getProgettoById(idProgetto).getStatoGestoreProgetto().equals(StatoEnum.NON_ATTIVO.getValue())) {
-			String errorMessage = String.format("Impossibile cancellare l'ente gestore di progetto poiché lo stato dell'ente risulta attivo per questo progetto");
+			String errorMessage = String.format("Impossibile cancellare l'ente gestore di progetto poiché lo stato dell'ente risulta diverso da non attivo per questo progetto");
 			throw new EnteException(errorMessage, CodiceErroreEnum.EN18);
 		}
 		
@@ -1183,7 +1183,7 @@ public class EnteService {
 		progettoFetchDB.setStatoGestoreProgetto(null);
 		this.progettoService.salvaProgetto(progettoFetchDB);
 		//prendo la lista dei referenti e delegati su quel progetto 
-		List<ReferentiDelegatiEnteGestoreProgettoEntity> listaReferentiDelegatiPerProgetto = this.referentiDelegatiEnteGestoreProgettoService.getReferentiAndDelegatiPerProgetto(idProgetto);
+		List<ReferentiDelegatiEnteGestoreProgettoEntity> listaReferentiDelegatiPerProgetto = this.referentiDelegatiEnteGestoreProgettoService.getReferentiAndDelegatiPerProgettoAndIdEnte(idProgetto, idEnte);
 		//elimino i referenti e delegati dalla tabella REFERENTE_DELEGATI_GESTORE_PROGETTO 
 		listaReferentiDelegatiPerProgetto.stream()
 										 .forEach(utente -> {

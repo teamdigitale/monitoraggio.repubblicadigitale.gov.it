@@ -632,7 +632,7 @@ public class EnteServiceTest {
 		progetto1.setStatoGestoreProgetto(StatoEnum.NON_ATTIVO.getValue());
 		when(enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
 		when(progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
-		when(referentiDelegatiEnteGestoreProgettoService.getReferentiAndDelegatiPerProgetto(progetto1.getId())).thenReturn(listaReferentiDelegatiEnteGestoreProgetto);
+		when(referentiDelegatiEnteGestoreProgettoService.getReferentiAndDelegatiPerProgettoAndIdEnte(progetto1.getId(), ente1.getId())).thenReturn(listaReferentiDelegatiEnteGestoreProgetto);
 		when(referentiDelegatiEnteGestoreProgettoService.countAssociazioniReferenteDelegato(referentiDelegatiEnteGestoreProgettoEntity.getId().getCodFiscaleUtente(), referentiDelegatiEnteGestoreProgettoEntity.getCodiceRuolo())).thenReturn(0);
 		when(utenteXRuoloService.getUtenteXRuoloByCfUtenteAndCodiceRuolo(referentiDelegatiEnteGestoreProgettoEntity.getId().getCodFiscaleUtente(), referentiDelegatiEnteGestoreProgettoEntity.getCodiceRuolo())).thenReturn(utenteRuolo1);
 		when(enteSedeProgettoFacilitatoreService.getFacilitatoriByIdEnteAndIdProgetto(ente1.getId(), progetto1.getId())).thenReturn(listaEnteSedeProgettoFacilitatore);
@@ -647,7 +647,7 @@ public class EnteServiceTest {
 		progetto1.setStatoGestoreProgetto(StatoEnum.NON_ATTIVO.getValue());
 		when(enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
 		when(progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
-		when(referentiDelegatiEnteGestoreProgettoService.getReferentiAndDelegatiPerProgetto(progetto1.getId())).thenReturn(listaReferentiDelegatiEnteGestoreProgetto);
+		when(referentiDelegatiEnteGestoreProgettoService.getReferentiAndDelegatiPerProgettoAndIdEnte(progetto1.getId(), ente1.getId())).thenReturn(listaReferentiDelegatiEnteGestoreProgetto);
 		when(referentiDelegatiEnteGestoreProgettoService.countAssociazioniReferenteDelegato(referentiDelegatiEnteGestoreProgettoEntity.getId().getCodFiscaleUtente(), referentiDelegatiEnteGestoreProgettoEntity.getCodiceRuolo())).thenReturn(1);
 		when(enteSedeProgettoFacilitatoreService.getFacilitatoriByIdEnteAndIdProgetto(ente1.getId(), progetto1.getId())).thenReturn(listaEnteSedeProgettoFacilitatore);
 		when(enteSedeProgettoFacilitatoreService.countAssociazioniFacilitatoreAndVolontario(enteSedeProgettoFacilitatoreEntity.getId().getIdFacilitatore(), enteSedeProgettoFacilitatoreEntity.getRuoloUtente())).thenReturn(1);
