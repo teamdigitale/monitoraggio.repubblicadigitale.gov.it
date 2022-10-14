@@ -292,8 +292,9 @@ const UsersDetails = () => {
         case userRoles.REPP:
           return 'Modifica Referente';
         case userRoles.FAC:
-        case userRoles.VOL:
           return 'Modifica Facilitatore';
+        case userRoles.VOL:
+          return 'Modifica Volontario';
         default:
           return 'Modifica Utente';
       }
