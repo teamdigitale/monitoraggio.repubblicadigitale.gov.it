@@ -99,7 +99,7 @@ public interface ReferentiDelegatiEnteGestoreProgettoRepository extends JpaRepos
 			+ "WHERE rdgp.ID_PROGETTO = :idProgetto "
 			+ "AND rdgp.ID_ENTE = :idEnte", 
 			nativeQuery = true)
-	List<ReferentiDelegatiEnteGestoreProgettoEntity> findReferentieDelegatiPerProgetto(@Param(value = "idProgetto") Long idProgetto,
+	List<ReferentiDelegatiEnteGestoreProgettoEntity> findReferentieDelegatiPerProgettoAndIdEnte(@Param(value = "idProgetto") Long idProgetto,
 			@Param(value = "idEnte") Long idEnte);
 
 	@Query(value = ""

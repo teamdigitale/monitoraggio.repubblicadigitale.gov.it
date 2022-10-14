@@ -100,8 +100,8 @@ public class ReferentiDelegatiEnteGestoreProgettoServiceTest {
 	
 	@Test
 	public void getReferentiAndDelegatiPerProgettoTest() {
-		when(this.referentiDelegatiEnteGestoreProgettoRepository.findReferentieDelegatiPerProgetto(1L)).thenReturn(listaReferentiDelegati);
-		referentiDelegatiEnteGestoreProgettoService.getReferentiAndDelegatiPerProgetto(1L);
+		when(this.referentiDelegatiEnteGestoreProgettoRepository.findReferentieDelegatiPerProgettoAndIdEnte(1L, 1L)).thenReturn(listaReferentiDelegati);
+		referentiDelegatiEnteGestoreProgettoService.getReferentiAndDelegatiPerProgettoAndIdEnte(1L, 1L);
 	}
 	
 	@Test
