@@ -166,8 +166,9 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                 ) : (
                   <EmptySection
                     title={`Non sono presenti ${singleItem.title?.toLowerCase()} associati.`}
-                    horizontal
-                    aside
+                    icon='it-note'
+                    withIcon
+                    noMargin
                   />
                 )}
               </Accordion>

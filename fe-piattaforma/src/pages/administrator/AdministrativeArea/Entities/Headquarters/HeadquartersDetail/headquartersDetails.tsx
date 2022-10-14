@@ -321,7 +321,7 @@ const HeadquartersDetails = () => {
           authorityType &&
           headquarterDetails?.stato !== entityStatus.TERMINATO
           ? {
-              cta: `Aggiungi ${title}`,
+              cta: `Aggiungi ${programPolicy !== 'SCD' ? title: 'Volontari'}`,
               ctaAction: () =>
                 dispatch(
                   openModal({
@@ -371,7 +371,7 @@ const HeadquartersDetails = () => {
             ? itemAccordionList?.map((item, index) => (
                 <Accordion
                   key={index}
-                  title={item.title || ''}
+                  title={(programPolicy !== 'SCD' ? item.title: 'Volontari') || ''}
                   totElem={item.items.length}
                   cta={authorityId ? getAccordionCTA(item.title).cta : null}
                   onClickCta={getAccordionCTA(item.title)?.ctaAction}
@@ -395,8 +395,9 @@ const HeadquartersDetails = () => {
                   ) : (
                     <EmptySection
                       title={`Non sono presenti ${item.title?.toLowerCase()} associati.`}
-                      horizontal
-                      aside
+                      icon='it-note'
+                      withIcon
+                      noMargin
                     />
                   )}
                 </Accordion>
