@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.78](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.77...1.0.0-test.78) (2022-10-14)
+
+
+### Bug Fixes
+
+* **be:** test ([48901b5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/48901b5df18fcaf59f73d3172da7a564136a71df))
+* **be:** ruolo utente terminato ([59837b3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/59837b34acd6cfc77db95d6eaf6d16b151c9eda4))
+
 ## [1.0.0-test.77](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.76...1.0.0-test.77) (2022-10-14)
 
 
