@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.204](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.203...1.0.0-develop.204) (2022-10-14)
+
+
+### Bug Fixes
+
+* **be:** dettaglio ruolo ([d6585ee](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d6585ee70314e7ac8c1e496fb798cef81123cb9d))
+
 ## [1.0.0-develop.203](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.202...1.0.0-develop.203) (2022-10-14)
 
 
