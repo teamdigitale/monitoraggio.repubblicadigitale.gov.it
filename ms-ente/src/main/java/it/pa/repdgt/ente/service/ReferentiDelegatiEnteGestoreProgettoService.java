@@ -70,8 +70,8 @@ public class ReferentiDelegatiEnteGestoreProgettoService {
 
 	@LogMethod
 	@LogExecutionTime
-	public List<ReferentiDelegatiEnteGestoreProgettoEntity> getReferentiAndDelegatiPerProgetto(Long idProgetto) {
-		return this.referentiDelegatiEnteGestoreProgettoRepository.findReferentieDelegatiPerProgetto(idProgetto);
+	public List<ReferentiDelegatiEnteGestoreProgettoEntity> getReferentiAndDelegatiPerProgettoAndIdEnte(Long idProgetto, Long idEnte) {
+		return this.referentiDelegatiEnteGestoreProgettoRepository.findReferentieDelegatiPerProgetto(idProgetto, idEnte);
 	}
 	
 	@LogMethod
