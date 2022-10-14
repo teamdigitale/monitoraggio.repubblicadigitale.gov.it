@@ -5,9 +5,9 @@ import {
   selectQuestionarioTemplateServiceCreation,
   selectQuestionarioTemplateSnapshot,
 } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
-import { GetProjectDetail } from '../../../redux/features/administrativeArea/projects/projectsThunk';
+//import { GetProjectDetail } from '../../../redux/features/administrativeArea/projects/projectsThunk';
 import { GetSurveyTemplateServiceCreation } from '../../../redux/features/administrativeArea/services/servicesThunk';
-import { getUserHeaders } from '../../../redux/features/user/userThunk';
+//import { getUserHeaders } from '../../../redux/features/user/userThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import {
   createStringOfCompiledSurveySection,
@@ -53,14 +53,14 @@ const FormService: React.FC<FormServiceI> = (props) => {
     [key: string]: formFieldI['value'];
   }>({});
   const [isFormDynamicValid, setIsFormDynamicValid] = useState<boolean>(false);
-  const { idProgetto } = getUserHeaders();
+  //const { idProgetto } = getUserHeaders();
   const projectDetails =
     useAppSelector(selectProjects)?.detail?.dettagliInfoProgetto;
   useEffect(() => {
     if (creation) {
       dispatch(GetSurveyTemplateServiceCreation());
     }
-    dispatch(GetProjectDetail(idProgetto));
+    //dispatch(GetProjectDetail(idProgetto));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

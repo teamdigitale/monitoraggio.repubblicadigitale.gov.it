@@ -52,12 +52,13 @@ export const GetEntityValues =
           );
         }
       });
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
         filtroRequest,
         idProgramma,
         idProgetto,
+        idEnte,
         cfUtente: codiceFiscale,
         codiceRuolo,
       };
@@ -117,12 +118,13 @@ export const GetEntityFilterValues =
           }
         });
       }
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
         filtroRequest,
         idProgramma,
         idProgetto,
+        idEnte,
         cfUtente: codiceFiscale,
         codiceRuolo,
       };
@@ -180,13 +182,14 @@ export const GetEntityFilterQueryParamsValues =
         administrativeArea: { filters },
       } = select((state: RootState) => state);
       const queryParamFilters = transformFiltersToQueryParams(filters);
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
         codiceFiscaleUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
         idProgetto,
         idProgramma,
+        idEnte,
       };
       const entityFilterEndpoint = `/${payload.entity}/${
         payload.dropdownType
@@ -224,12 +227,13 @@ export const DownloadEntityValues =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
-      const { codiceFiscale, codiceRuolo, idProgramma } = getUserHeaders();
+      const { codiceFiscale, codiceRuolo, idProgramma, idEnte } = getUserHeaders();
       const body = {
         filtroRequest: {
           ...filters,
         },
         idProgramma,
+        idEnte,
         cfUtente: codiceFiscale,
         codiceRuolo,
       };
@@ -258,13 +262,14 @@ export const DownloadEntityValuesQueryParams =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
         codiceFiscaleUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
         idProgetto,
         idProgramma,
+        idEnte,
       };
       const queryParamFilters = transformFiltersToQueryParams(filters);
       const entityEndpoint = `/${payload.entity}/download${queryParamFilters}`;
@@ -289,8 +294,10 @@ export const DeleteEntity =
       dispatch(showLoader());
       dispatch({ ...DeleteEntityAction, entity, id });
       await API.delete(`/${entity}/${id}`);
+      return true;
     } catch (error) {
       console.log('DeleteEntity error', error);
+      return false;
     } finally {
       dispatch(hideLoader());
     }

@@ -90,7 +90,7 @@ const HeadquartersDetails = () => {
           }progetti/${projectId}/${
             authorityType === formTypes.ENTI_PARTNER
               ? formTypes.ENTI_PARTNER
-              : formTypes.ENTE_GESTORE
+              : formTypes.ENTE_GESTORE_PROGETTO
           }/${authorityId || identeDiRiferimento}/${headquarterId}/${
             programPolicy === 'SCD' ? userRoles.VOL : userRoles.FAC
           }/${td}`
@@ -395,8 +395,9 @@ const HeadquartersDetails = () => {
                   ) : (
                     <EmptySection
                       title={`Non sono presenti ${item.title?.toLowerCase()} associati.`}
-                      horizontal
-                      aside
+                      icon='it-note'
+                      withIcon
+                      noMargin
                     />
                   )}
                 </Accordion>

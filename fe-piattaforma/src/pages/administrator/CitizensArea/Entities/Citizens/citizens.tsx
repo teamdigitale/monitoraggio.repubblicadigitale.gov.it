@@ -219,7 +219,12 @@ const Citizens = () => {
             ) : null}
           </div>
         ) : (
-          <EmptySection title='Non sono presenti cittadini' />
+          <EmptySection
+            title='Non sono presenti cittadini'
+            subtitle='associati al tuo ruolo'
+            icon='it-note'
+            withIcon
+          />
         )}
       </GenericSearchFilterTableLayout>
     </>

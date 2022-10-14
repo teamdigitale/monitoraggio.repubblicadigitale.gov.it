@@ -45,11 +45,12 @@ export const GetProgramDetail =
       dispatch(showLoader());
       dispatch({ ...GetProgramDetailAction, programId });
       if (programId) {
-        const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
           getUserHeaders();
         const res = await API.post(`/programma/${programId}`, {
           idProgramma,
           idProgetto,
+          idEnte,
           cfUtente: codiceFiscale,
           codiceRuolo,
         });

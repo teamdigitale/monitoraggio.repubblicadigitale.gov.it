@@ -25,6 +25,7 @@ export interface SurveySectionI {
   isSectionActive?: boolean;
   editMode?: boolean;
   cloneMode?: boolean;
+  isModal?: boolean;
 }
 
 export interface SurveySectionResponseI {
@@ -344,6 +345,7 @@ export const selectCompilingSurveyForms = (state: RootState) =>
 export const selectResponseSectionsSchema = (state: RootState) =>
   state.survey.sectionsSchemaResponse;
 
+export const selectSurveyStatus  = (state: RootState) => state.survey.surveyStatus;
 export const selectSurveyName = (state: RootState) => state.survey.surveyName;
 
 export const selectPrintSurveySections = (state: RootState) => state.survey.printSections;
