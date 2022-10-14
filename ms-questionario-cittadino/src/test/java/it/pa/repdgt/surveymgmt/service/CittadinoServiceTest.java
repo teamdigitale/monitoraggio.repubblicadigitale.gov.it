@@ -109,6 +109,7 @@ public class CittadinoServiceTest {
 		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
 		sceltaProfiloParam.setIdProgetto(1L);
 		sceltaProfiloParam.setIdProgramma(1L);
+		sceltaProfiloParam.setIdEnte(1000L);
 		cittadiniPaginatiParam = new CittadiniPaginatiParam();
 		cittadiniPaginatiParam.setCfUtenteLoggato("CFUTENTE");
 		cittadiniPaginatiParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
@@ -294,26 +295,27 @@ public class CittadinoServiceTest {
 	@Test
 	public void isAssociatoAUtenteTest() {
 		//test per codice fiscale utente loggato = codice fiscale facilitatore (con ruolo FAC)
-		Boolean risultato = cittadinoService.isAssociatoAUtente(sceltaProfiloParam, facilitatore.getCodiceFiscale(), 1L);
+		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
+		Boolean risultato = cittadinoService.isAssociatoAUtente(sceltaProfiloParam, facilitatore.getCodiceFiscale(), 1L, 1000L);
 		assertThat(risultato).isEqualTo(true);
 		
 		//test per codice fiscale utente loggato != codice fiscale facilitatore (con ruolo FAC)
-		Boolean risultato2 = cittadinoService.isAssociatoAUtente(sceltaProfiloParam, "CFPROVA", 1L);
+		Boolean risultato2 = cittadinoService.isAssociatoAUtente(sceltaProfiloParam, "CFPROVA", 1L, 1000L);
 		assertThat(risultato2).isEqualTo(false);
 		
 		//test per codice fiscale utente loggato = codice fiscale facilitatore (con ruolo VOL)
 		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.VOL.toString());
-		Boolean risultato3 = cittadinoService.isAssociatoAUtente(sceltaProfiloParam, facilitatore.getCodiceFiscale(), 1L);
+		Boolean risultato3 = cittadinoService.isAssociatoAUtente(sceltaProfiloParam, facilitatore.getCodiceFiscale(), 1L, 1000L);
 		assertThat(risultato3).isEqualTo(true);
 		
 		//test per codice fiscale utente loggato != codice fiscale facilitatore (con ruolo VOL)
 		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.VOL.toString());
-		Boolean risultato4 = cittadinoService.isAssociatoAUtente(sceltaProfiloParam, "CFPROVA", 1L);
+		Boolean risultato4 = cittadinoService.isAssociatoAUtente(sceltaProfiloParam, "CFPROVA", 1L, 1000L);
 		assertThat(risultato4).isEqualTo(false);
 		
 		//test per ruolo utente loggato != FAC & VOL
 		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.REG.toString());
-		Boolean risultato5 = cittadinoService.isAssociatoAUtente(sceltaProfiloParam, facilitatore.getCodiceFiscale(), 1L);
+		Boolean risultato5 = cittadinoService.isAssociatoAUtente(sceltaProfiloParam, facilitatore.getCodiceFiscale(), 1L, null);
 		assertThat(risultato5).isEqualTo(true);
 	}
 	
@@ -435,6 +437,7 @@ public class CittadinoServiceTest {
 	public class DettaglioServizioSchedaCittadinoProjectionImplementation implements DettaglioServizioSchedaCittadinoProjection {
 
 		private Long idServizio;
+		private Long idEnte;
 		private String nomeServizio;
 		private Long idProgetto;
 		private String codiceFiscaleFacilitatore;
@@ -444,6 +447,11 @@ public class CittadinoServiceTest {
 		@Override
 		public Long getIdServizio() {
 			return idServizio;
+		}
+		
+		@Override
+		public Long getIdEnte() {
+			return idEnte;
 		}
 
 		@Override
