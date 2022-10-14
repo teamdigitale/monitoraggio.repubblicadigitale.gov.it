@@ -10,6 +10,7 @@ import StatusChip from '../StatusChip/statusChip';
 const fieldMappedForTranslations: { [key: string]: string } = {
   serviziErogati: 'provided_services',
   nFacilitatori: 'nr_facilitators',
+  nVolontari: 'nr_volunteers',
   id: 'id',
   ente_ref: 'ente_ref',
 };

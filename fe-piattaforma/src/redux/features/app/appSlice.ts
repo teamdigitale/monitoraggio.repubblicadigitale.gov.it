@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BreadcrumbI } from '../../../components/Breadcrumb/breadCrumb';
 import type { RootState } from '../../store';
 
-
 export interface DeviceI {
   mediaIsPhone?: boolean;
   mediaIsTablet?: boolean;
@@ -19,6 +18,7 @@ interface AppStateI {
   isBreadCrumbPresent: boolean;
   customBreadCrumb: BreadcrumbI[];
   infoIdsBreadcrumb: { id: string | number; nome: string }[];
+  publishedContent?: boolean;
 }
 
 const initialState: AppStateI = {
@@ -30,6 +30,7 @@ const initialState: AppStateI = {
   isBreadCrumbPresent: true,
   customBreadCrumb: [],
   infoIdsBreadcrumb: [],
+  publishedContent: false,
 };
 
 export const appSlice = createSlice({
@@ -87,6 +88,10 @@ export const appSlice = createSlice({
     hideBreadCrumb: (state) => {
       state.isBreadCrumbPresent = false;
     },
+    setPublishedContent: (state, action: PayloadAction<any>) => {
+      state.publishedContent = action.payload;
+    },
+    resetPublishedContentState: () => initialState,
   },
 });
 
@@ -100,6 +105,8 @@ export const {
   resetInfoIdsBreadcrumb,
   showBreadCrumb,
   hideBreadCrumb,
+  setPublishedContent,
+  resetPublishedContentState,
 } = appSlice.actions;
 
 export const selectLoader = (state: RootState) => state.app.loader;
@@ -110,5 +117,7 @@ export const selectInfoIdsBreadcrumb = (state: RootState) =>
   state.app.infoIdsBreadcrumb;
 export const selectIsBreadcrumbPresent = (state: RootState) =>
   state.app.isBreadCrumbPresent;
+export const selectPublishedContent = (state: RootState) =>
+  state.app.publishedContent;
 
 export default appSlice.reducer;

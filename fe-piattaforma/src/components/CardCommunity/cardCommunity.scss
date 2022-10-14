@@ -1,50 +1,47 @@
-.community-card {
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-
-  &__maxWidthCard {
-    max-width: 376px;
+.card-community {
+  width: 100%;
+  border: 1px solid #eceff1;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  max-width: 364px;
+  border-left: 4px solid #4392e0;
+  
+  &__pre-title {
+    color: #455b71;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 1.1px;
   }
 
-  &__line {
-    margin: 0;
-    width: 90%;
+  &__bookmark {
+    display: flex;
+    margin-left: 300px;
+    margin-top: -22px;
   }
-
-  &__last-comment {
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.1);
+  &__body {
+    margin-top: -22px;
   }
-
-  &__picture-comment {
-    width: 32px;
-    height: 32px;
-  }
-
-  &__white-card {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-  }
-
-  &__dots {
-    background-color: grey;
-    vertical-align: middle;
-    border-radius: 50%;
-    height: 8px;
-    width: 8px;
-    display: inline-block;
-  }
-
-  &__maxLinesTitle {
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
+  &__title {
+    color: #1c2024;
+    font-size: 24px;
+    line-height: 40px;
     overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-
-  &__maxLinesParagraph {
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
+  &__text {
+    color: #455b71;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
     overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  &__span-icons {
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0.933333px;
   }
 }

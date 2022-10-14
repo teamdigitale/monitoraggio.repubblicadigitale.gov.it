@@ -69,8 +69,8 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
     if (
       !creation &&
       form &&
-      Object.keys(form)?.length > 0 &&
-      Object.keys(sezioneQ3Compilato)?.length > 0 &&
+      Object.keys(form)?.length &&
+      Object.keys(sezioneQ3Compilato)?.length &&
       Array.isArray(sezioneQ3Compilato?.properties)
     ) {
       const newFormData: { [key: string]: string | string[] } = {};
@@ -188,7 +188,7 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
             form &&
             field?.relatedTo &&
             form[relatedTo]?.enumLevel2 &&
-            multiSelectOptions?.length > 0
+            multiSelectOptions?.length
           ) {
             (form[relatedTo]?.enumLevel2 || []).forEach(
               ({ label, value, upperLevel }) => {
@@ -212,7 +212,7 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
               Object.keys(multiSelectOptions).forEach((key: any) => {
                 if (
                   multiSelectOptions[key].options.filter((x) => x.label === val)
-                    ?.length > 0
+                    ?.length
                 ) {
                   upperLevel = multiSelectOptions[key].label;
                 }

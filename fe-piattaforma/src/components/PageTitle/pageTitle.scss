@@ -9,4 +9,15 @@
   @media screen and (max-width: 576px) {
     width: auto;
   }
+  .badge-notifications {
+    display: flex;
+    width: 22px;
+    height: 22px;
+    border-radius: 100%;
+    background-color: #B62032;
+    color: #FFFFFF;
+    align-items: center;
+    justify-content: center;
+  }
 }
+

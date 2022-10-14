@@ -18,6 +18,17 @@ import { RolePermissionI } from '../redux/features/roles/rolesSlice';
 import { formFieldI } from './formHelper';
 import { DeviceI } from '../redux/features/app/appSlice';
 
+
+export const getUserIdsFromNotification = (notification: string) => {
+  // ex. Utente userId:$userId$ ha segnalato il post di authorId:$authorId$
+  const splittedNotification = notification.split('$')
+
+  return {
+    userId: splittedNotification[1],
+    authorId: splittedNotification[3]
+  }
+}
+
 export const formatDate = (date?: string) => {
   if (date) {
     return moment(date).format('YYYY-MM-DD');
@@ -91,10 +102,10 @@ export const mapOptionsCitizens = (
 export const filterObjectByKey = (obj: any, filteringKey: string) =>
   obj
     ? Object.fromEntries(
-        Object.keys(obj)
-          .filter((key) => key.includes(filteringKey) && obj[key])
-          .map((key) => [key, obj[key] as string])
-      )
+      Object.keys(obj)
+        .filter((key) => key.includes(filteringKey) && obj[key])
+        .map((key) => [key, obj[key] as string])
+    )
     : {};
 
 export const CRUDActionTypes = {
@@ -210,8 +221,8 @@ export const MenuRoutes = [
     visible: ['tab.citt'],
   }),
   newMenuItem({
-    label: 'Report dati',
-    path: '/report-dati',
+    label: 'Dashboard',
+    path: '/dashboard',
     id: 'tab-dashboard',
     visible: ['tab.dshb'],
   }),
@@ -323,12 +334,12 @@ export const transformFiltersToQueryParams = (filters: {
     } else {
       filters[filter]?.map(
         (value: OptionType) =>
-          (filterString =
-            filterString +
-            (filterString !== '' ? '&' : '') +
-            filter +
-            '=' +
-            value?.value)
+        (filterString =
+          filterString +
+          (filterString !== '' ? '&' : '') +
+          filter +
+          '=' +
+          value?.value)
       );
     }
   });
@@ -458,7 +469,7 @@ export const convertPayloadSectionInString = (
 };
 
 export const orderArray = (array: any[]) => {
-  if (array?.length > 0) {
+  if (array?.length) {
     return array.sort((a, b) => {
       const labelA = a.label.toLowerCase();
       const labelB = b.label.toLowerCase();

@@ -8,7 +8,6 @@ export const answerType = [
   { label: 'Gradimento', value: 'range' },
 ];
 
-
 export const idQ1 = 'anagraphic-citizen-section';
 export const idQ2 = 'anagraphic-booking-section';
 export const idQ3 = 'anagraphic-service-section';

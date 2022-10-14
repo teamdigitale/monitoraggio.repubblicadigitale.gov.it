@@ -52,6 +52,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
   const [filteredOptions, setFilteredOptions] = useState<FilterI[] | undefined>(
     options
   );
+  /* const device = useAppSelector(selectDevice); */
 
   useEffect(() => {
     if (searchValue) {

@@ -1,0 +1,45 @@
+{
+    "code": 200,
+    "result": true,
+    "data": {
+        "items": [
+            {
+                "id": 1,
+                "date": "2022-10-03",
+                "author": 10,
+                "subject": "comment_1664798794696251",
+                "body": "Ho cambiato il primo commento\n",
+                "likes": 0,
+                "node_id": 2,
+                "parent_id": "",
+                "user_like": 0,
+                "replies": [
+                    {
+                        "id": 1,
+                        "date": "2022-10-03",
+                        "author": 10,
+                        "subject": "comment_1664798794696251",
+                        "body": "Ho cambiato il primo commento\n",
+                        "likes": 0,
+                        "node_id": 2,
+                        "parent_id": "",
+                        "user_like": 0,
+                        "replies": []
+                    },
+                    {
+                        "id": 1,
+                        "date": "2022-10-03",
+                        "author": 10,
+                        "subject": "comment_1664798794696251",
+                        "body": "Ho cambiato il primo commento\n",
+                        "likes": 0,
+                        "node_id": 2,
+                        "parent_id": "",
+                        "user_like": 0,
+                        "replies": []
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -230,7 +230,6 @@ const FormUser: React.FC<UserFormI> = (props) => {
                 onInputChange={onInputChange}
                 wrapperClassName='mb-5'
                 aria-label='contratto'
-                position='top'
               />
             )
           ) : (

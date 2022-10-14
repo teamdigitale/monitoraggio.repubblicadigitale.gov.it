@@ -43,8 +43,6 @@ const Select: React.FC<SelectI> = (props) => {
     isDisabled = false,
     isSearchable = false,
     position = 'auto',
-    onMenuClose = () => ({}),
-    onMenuOpen = () => ({}),
   } = props;
   const [selectedOption, setSelectedOption] = useState<OptionType>();
 
@@ -133,8 +131,6 @@ const Select: React.FC<SelectI> = (props) => {
         aria-labelledby={`${(label || 'label select').replace(/\s/g, '-')}`}
         isDisabled={isDisabled}
         isSearchable={isSearchable}
-        onMenuClose={onMenuClose}
-        onMenuOpen={onMenuOpen}
       />
     </div>
   );

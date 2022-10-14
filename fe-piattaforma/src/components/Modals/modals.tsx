@@ -22,7 +22,7 @@ interface ModalI {
 const Modal: React.FC<ModalI> = (props) => {
   const { id, children, onClose, isRoleManaging } = props;
   const currentId = useAppSelector(selectModalId);
-  const expandedmodal = useAppSelector(selectExpandModal);
+  const expandedModal = useAppSelector(selectExpandModal);
 
   const handleCloseModal = () => {
     if (onClose) onClose();
@@ -36,7 +36,7 @@ const Modal: React.FC<ModalI> = (props) => {
     <ModalsPortal.Source>
       <Curtain open noscroll onClick={handleCloseModal} />
       <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
-        <div className={clsx('d-flex', 'justify-content-around')}>
+        <div className={clsx('d-flex', 'justify-content-around', isMobile && 'mt-3')}>
           <div
             className={clsx(
               'modal-wrapper',
@@ -58,10 +58,10 @@ const Modal: React.FC<ModalI> = (props) => {
                 isRoleManaging && isMobile
                   ? 'h-100'
                   : isMobile
-                  ? 'h-100 pt-5'
-                  : expandedmodal
-                  ? 'user-role-modal'
-                  : 'h-auto'
+                    ? 'h-100 pt-5'
+                    : expandedModal
+                      ? 'user-role-modal'
+                      : 'h-auto'
               )}
             >
               {children}

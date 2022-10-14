@@ -128,6 +128,7 @@ export const GetEntityFilterValues =
         cfUtente: codiceFiscale,
         codiceRuolo,
       };
+
       const entityFilterEndpoint = `/${payload.entity}/${payload.dropdownType}${
         payload.entity === 'progetto' && payload.dropdownType === 'policies'
           ? '/programmi'

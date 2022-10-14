@@ -96,7 +96,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
 
   const checkValidityQuestions = (questions: SurveyQuestionI[]) => {
     let isValid = true;
-    if (questions?.length > 0) {
+    if (questions?.length) {
       questions.map((question: SurveyQuestionI) => {
         !FormHelper.isValidForm(question.form) ? (isValid = false) : '';
 
@@ -166,18 +166,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
       onClick: () => {
         setEditModeState(false);
         setCloneModeState(false);
-        if (
-          location.pathname ===
-            `/area-amministrativa/questionari/${idQuestionario}/clona` ||
-          location.pathname ===
-            `/area-amministrativa/questionari/${idQuestionario}/modifica`
-        ) {
-          navigate(`/area-amministrativa/questionari/${idQuestionario}`, {
-            replace: true,
-          });
-        } else {
-          navigate(-1);
-        }
+        navigate(-1);
       },
     },
     {
@@ -335,13 +324,24 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
                   mode='bottom'
                   stickyClassName='sticky bg-white container'
                 >
-                  <ButtonsBar
-                    buttons={
-                      surveyStatus === entityStatus.NON_ATTIVO
-                        ? [deleteButton, ...cloneEditButtons]
-                        : cloneEditButtons
-                    }
-                  />
+                  {surveyStatus === entityStatus.NON_ATTIVO ? (
+                    <div
+                      className={clsx(
+                        'd-flex',
+                        'flex-row',
+                        device.mediaIsPhone
+                          ? 'justify-content-end flex-wrap'
+                          : 'justify-content-between',
+                        'container',
+                        'w-100'
+                      )}
+                    >
+                      <ButtonsBar buttons={[deleteButton]} />
+                      <ButtonsBar buttons={[...cloneEditButtons]} />
+                    </div>
+                  ) : (
+                    <ButtonsBar buttons={cloneEditButtons} />
+                  )}
                 </Sticky>
               </div>
             )}
