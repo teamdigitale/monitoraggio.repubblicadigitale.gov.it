@@ -62,12 +62,13 @@ export const GetAllEnti =
       const endpoint = `ente/all`;
       let res;
       if (!isEmpty(filters)) {
-        const { codiceFiscale, codiceRuolo, idProgramma } = getUserHeaders();
+        const { codiceFiscale, codiceRuolo, idProgramma, idEnte } = getUserHeaders();
         const body = {
           filtroRequest: { ...filters },
           idProgramma,
           cfUtente: codiceFiscale,
           codiceRuolo,
+          idEnte,
         };
         res = await API.post(endpoint, body, {
           params: {
@@ -104,12 +105,13 @@ export const GetFilterValuesEnti =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
-      const { codiceFiscale, codiceRuolo, idProgramma } = getUserHeaders();
+      const { codiceFiscale, codiceRuolo, idProgramma, idEnte } = getUserHeaders();
       const body = {
         cfUtente: codiceFiscale,
         codiceRuolo,
         filtroRequest: { ...filters },
         idProgramma,
+        idEnte,
       };
       const entityFilterEndpoint = `/ente/${dropdownType}/dropdown`;
       const res = await API.post(entityFilterEndpoint, body);
@@ -186,13 +188,14 @@ export const GetAuthorityManagerDetail =
       dispatch({ ...SetAuthorityDetailAction });
       dispatch(resetAuthorityDetails());
 
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
         cfUtente: codiceFiscale,
         codiceRuolo,
         idProgramma,
         idProgetto,
+        idEnte,
       };
 
       let res;
@@ -376,13 +379,14 @@ export const GetPartnerAuthorityDetail =
     dispatch(showLoader());
     dispatch({ ...SetAuthorityDetailAction });
     try {
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
         cfUtente: codiceFiscale,
         codiceRuolo,
         idProgramma,
         idProgetto,
+        idEnte,
       };
       const res = await API.post(
         `/ente/partner/${projectId}/${authorityId}`,

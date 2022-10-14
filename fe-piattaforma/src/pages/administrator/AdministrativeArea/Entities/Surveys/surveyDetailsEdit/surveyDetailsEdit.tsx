@@ -15,6 +15,7 @@ import {
   selectSurveySections,
   SurveyQuestionI,
   selectSurveyForm,
+  selectSurveyStatus,
 } from '../../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 import {
   SetSurveyCreation,
@@ -27,6 +28,13 @@ import ButtonsBar, {
 import useGuard from '../../../../../../hooks/guard';
 import { GetProgramDetail } from '../../../../../../redux/features/administrativeArea/programs/programsThunk';
 import { selectPrograms } from '../../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { entityStatus } from '../../utils';
+import {
+  closeModal,
+  openModal,
+} from '../../../../../../redux/features/modal/modalSlice';
+import DeleteEntityModal from '../../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
+import { DeleteEntity } from '../../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 
 interface SurveyDetailsEditI {
   editMode?: boolean;
@@ -42,6 +50,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
   const navigate = useNavigate();
   const form = useAppSelector(selectSurveyForm);
   const sections = useAppSelector(selectSurveySections) || [];
+  const surveyStatus = useAppSelector(selectSurveyStatus);
   const [editModeState, setEditModeState] = useState<boolean>(editMode);
   const [cloneModeState, setCloneModeState] = useState<boolean>(cloneMode);
   const { idQuestionario, entityId } = useParams();
@@ -179,6 +188,23 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
     },
   ];
 
+  const deleteButton = {
+    outline: true,
+    color: 'danger',
+    text: 'Elimina',
+    disabled: surveyStatus !== entityStatus.NON_ATTIVO,
+    onClick: () =>
+      dispatch(
+        openModal({
+          id: 'delete-entity',
+          payload: {
+            text: 'Confermi di voler eliminare il questionario?',
+            entity: 'survey',
+          },
+        })
+      ),
+  };
+
   const cloneEditButtons: ButtonInButtonsBar[] = hasUserPermission([
     'new.quest.templ',
     'upd.quest.templ',
@@ -248,6 +274,24 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
       ]
     : [];
 
+  const handleOnSurveyDelete = async () => {
+    try {
+      if (surveyStatus === entityStatus.NON_ATTIVO && idQuestionario) {
+        const res = await dispatch(
+          DeleteEntity('questionarioTemplate', idQuestionario)
+        );
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (res) {
+          dispatch(closeModal());
+          dispatch(navigate(-1));
+        }
+      }
+    } catch (err) {
+      console.log('Survey delete error', err);
+    }
+  };
+
   return (
     <div className='mb-5 container'>
       <div className='container'>
@@ -291,13 +335,23 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
                   mode='bottom'
                   stickyClassName='sticky bg-white container'
                 >
-                  <ButtonsBar buttons={cloneEditButtons} />
+                  <ButtonsBar
+                    buttons={
+                      surveyStatus === entityStatus.NON_ATTIVO
+                        ? [deleteButton, ...cloneEditButtons]
+                        : cloneEditButtons
+                    }
+                  />
                 </Sticky>
               </div>
             )}
           </div>
         )}
       </div>
+      <DeleteEntityModal
+        onClose={() => dispatch(closeModal())}
+        onConfirm={handleOnSurveyDelete}
+      />
     </div>
   );
 };

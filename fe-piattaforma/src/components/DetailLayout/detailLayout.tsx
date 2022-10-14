@@ -53,6 +53,8 @@ interface DetailLayoutI {
   enteIcon?: boolean;
   profilePicture?: string | undefined;
   isRoleManagement?: boolean;
+  infoProgBtn?: boolean;
+  infoProjBtn?: boolean;
 }
 const DetailLayout: React.FC<DetailLayoutI> = ({
   formButtons,
@@ -76,6 +78,8 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   enteIcon = false,
   profilePicture,
   isRoleManagement = false,
+  infoProgBtn = false,
+  infoProjBtn = false,
 }) => {
   const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
@@ -162,8 +166,9 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                 ) : (
                   <EmptySection
                     title={`Non sono presenti ${singleItem.title?.toLowerCase()} associati.`}
-                    horizontal
-                    aside
+                    icon='it-note'
+                    withIcon
+                    noMargin
                   />
                 )}
               </Accordion>
@@ -183,7 +188,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                 !device.mediaIsPhone &&
                 currentTab === 'questionari' &&
                 itemsList?.items?.length && (
-                  <h3 className='h4 text-muted mx-3'> Altri questionari </h3>
+                  <h3 className='h5 text-muted mx-3 my-4 pt-2'> Questionari disponibili </h3>
                 )}
             </div>
           ) : null
@@ -314,35 +319,21 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                 !device.mediaIsPhone && 'container'
               )}
             >
-              {formButtons.length === 3 ? (
-                device.mediaIsPhone ? (
-                  <div
-                    className={clsx(
-                      'd-flex',
-                      'flex-row',
-                      'justify-content-between',
-                      'flex-wrap',
-                      'container',
-                      'w-100'
-                    )}
-                  >
-                    <ButtonsBar buttons={formButtons.slice(1)} />
-                    <ButtonsBar buttons={formButtons.slice(0, 1)} />
-                  </div>
-                ) : (
-                  <div
-                    className={clsx(
-                      'd-flex',
-                      'flex-row',
-                      'justify-content-between',
-                      'container',
-                      'w-100'
-                    )}
-                  >
-                    <ButtonsBar buttons={formButtons.slice(0, 1)} />
-                    <ButtonsBar buttons={formButtons.slice(1)} />
-                  </div>
-                )
+              {formButtons.length === 2 && (infoProgBtn || infoProjBtn) ? (
+                <div
+                  className={clsx(
+                    'd-flex',
+                    'flex-row',
+                    device.mediaIsPhone
+                      ? 'justify-content-end flex-wrap'
+                      : 'justify-content-between',
+                    'container',
+                    'w-100'
+                  )}
+                >
+                  <ButtonsBar buttons={formButtons.slice(0, 1)} />
+                  <ButtonsBar buttons={formButtons.slice(1)} />
+                </div>
               ) : (
                 <div
                   className={clsx(!citizenList && 'container', 'text-center')}

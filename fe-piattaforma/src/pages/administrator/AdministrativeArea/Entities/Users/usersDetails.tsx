@@ -85,7 +85,8 @@ const UsersDetails = () => {
   const headquarterDetails = useAppSelector(selectHeadquarters).detail;
   const headquarterName = headquarterDetails?.dettagliInfoSede?.nome;
   // const projectName = headquarterDetails?.dettaglioProgetto?.nomeBreve;
-  const projectName = useAppSelector(selectProjects)?.detail?.dettagliInfoProgetto?.nome;
+  const projectName =
+    useAppSelector(selectProjects)?.detail?.dettagliInfoProgetto?.nome;
   const authorityName =
     useAppSelector(selectAuthorities)?.detail?.dettagliInfoEnte?.nome;
 
@@ -100,12 +101,10 @@ const UsersDetails = () => {
     if (!authorityName && projectId && authorityId) {
       dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
     }
-    if(projectId && !projectName){
+    if (projectId && !projectName) {
       dispatch(GetProjectDetail(projectId));
     }
   }, []);
-
-
 
   useEffect(() => {
     // For breadcrumb
@@ -293,8 +292,9 @@ const UsersDetails = () => {
         case userRoles.REPP:
           return 'Modifica Referente';
         case userRoles.FAC:
-        case userRoles.VOL:
           return 'Modifica Facilitatore';
+        case userRoles.VOL:
+          return 'Modifica Volontario';
         default:
           return 'Modifica Utente';
       }
@@ -375,7 +375,11 @@ const UsersDetails = () => {
 
   const getButtons = () => {
     const buttons: ButtonInButtonsBar[] = [];
-    if (userRole === userRoles.USR && hasUserPermission(['del.utente'])) {
+    if (
+      userRole === userRoles.USR &&
+      hasUserPermission(['del.utente']) &&
+      userInfo.stato === entityStatus.NON_ATTIVO
+    ) {
       buttons.push(deleteButton);
     } else if (userRole === userRoles.FAC || userRole === userRoles.VOL) {
       buttons.push(deleteButton);
@@ -577,6 +581,8 @@ const UsersDetails = () => {
                   stato: string;
                   statoP: string;
                   ruolo: string;
+                  nomeBreveEnte: string;
+                  nomeEnte: string;
                   associatoAUtente: boolean;
                 }) => {
                   let roleActions = {};
@@ -625,7 +631,14 @@ const UsersDetails = () => {
                       id={role.id || role.codiceRuolo || role.nome}
                       status={role.statoP}
                       title={role.nome}
-                      fullInfo={role.stato ? { ruoli: role.ruolo } : undefined}
+                      fullInfo={
+                        role.stato
+                          ? {
+                              ruoli: role.ruolo,
+                              ente: role.nomeBreveEnte || role.nomeEnte,
+                            }
+                          : undefined
+                      }
                       onActionClick={roleActions}
                     />
                   );

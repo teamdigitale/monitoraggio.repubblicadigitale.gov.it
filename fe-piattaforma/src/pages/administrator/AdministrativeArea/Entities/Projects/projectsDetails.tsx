@@ -118,6 +118,7 @@ const ProjectsDetails = () => {
   const [correctButtons, setCorrectButtons] = useState<ButtonInButtonsBar[]>(
     []
   );
+  const [projInfoButtons, setProjInfoButtons] = useState<boolean>(false);
   const [buttonsPosition, setButtonsPosition] = useState<'TOP' | 'BOTTOM'>(
     'TOP'
   );
@@ -421,9 +422,7 @@ const ProjectsDetails = () => {
                 buttonClass: 'btn-secondary',
                 disabled:
                   authorityInfo?.dettagliInfoEnte?.statoEnte ===
-                    entityStatus.ATTIVO ||
-                  authorityInfo?.dettagliInfoEnte?.statoEnte !==
-                    entityStatus.TERMINATO,
+                  entityStatus.ATTIVO,
                 text: 'Elimina',
                 onClick: () =>
                   dispatch(
@@ -520,6 +519,7 @@ const ProjectsDetails = () => {
         },
       ]);
       setEmptySection(undefined);
+      setProjInfoButtons(false);
     } else {
       setItemList(null);
       setCorrectButtons([]);
@@ -551,50 +551,47 @@ const ProjectsDetails = () => {
       setButtonsPosition('BOTTOM');
       setCurrentForm(undefined);
       setItemList({
-        items: partnerAuthoritiesList
-          .filter(
-            (entePartner: { associatoAUtente: boolean }) =>
-              entePartner.associatoAUtente
-          )
-          ?.map(
-            (entePartner: {
-              id: string;
-              nome: string;
-              referenti: string;
-              stato: string;
-            }) => ({
-              ...entePartner,
-              fullInfo: { ref: entePartner.referenti },
-              actions:
-                entePartner.stato !== entityStatus.ATTIVO ||
+        items: (partnerAuthoritiesList || []).map(
+          (entePartner: {
+            id: string;
+            nome: string;
+            referenti: string;
+            stato: string;
+            associatoAUtente: boolean;
+          }) => ({
+            ...entePartner,
+            fullInfo: { ref: entePartner.referenti },
+            actions: entePartner.associatoAUtente
+              ? entePartner.stato !== entityStatus.ATTIVO ||
                 projectDetails?.stato === entityStatus.TERMINATO
-                  ? {
-                      [CRUDActionTypes.VIEW]:
-                        onActionClickEntiPartner[CRUDActionTypes.VIEW],
-                    }
-                  : {
-                      [CRUDActionTypes.VIEW]:
-                        onActionClickEntiPartner[CRUDActionTypes.VIEW],
-                      [CRUDActionTypes.DELETE]: hasUserPermission([
-                        'del.ente.partner',
-                      ])
-                        ? (td: TableRowI | string) => {
-                            dispatch(
-                              openModal({
-                                id: 'delete-entity',
-                                payload: {
-                                  entity: 'partner-authority',
-                                  authorityId: td,
-                                  text: 'Confermi di volere disassociare questo Ente partner?',
-                                },
-                              })
-                            );
-                            // projectId && removeAuthorityPartner(td as string, projectId);
-                          }
-                        : undefined,
-                    },
-            })
-          ),
+                ? {
+                    [CRUDActionTypes.VIEW]:
+                      onActionClickEntiPartner[CRUDActionTypes.VIEW],
+                  }
+                : {
+                    [CRUDActionTypes.VIEW]:
+                      onActionClickEntiPartner[CRUDActionTypes.VIEW],
+                    [CRUDActionTypes.DELETE]: hasUserPermission([
+                      'del.ente.partner',
+                    ])
+                      ? (td: TableRowI | string) => {
+                          dispatch(
+                            openModal({
+                              id: 'delete-entity',
+                              payload: {
+                                entity: 'partner-authority',
+                                authorityId: td,
+                                text: 'Confermi di volere disassociare questo Ente partner?',
+                              },
+                            })
+                          );
+                          // projectId && removeAuthorityPartner(td as string, projectId);
+                        }
+                      : undefined,
+                  }
+              : {},
+          })
+        ),
       });
       setItemAccordionList(null);
       setCorrectButtons(
@@ -604,6 +601,7 @@ const ProjectsDetails = () => {
           : []
       );
       setEmptySection(undefined);
+      setProjInfoButtons(false);
     } else {
       setItemAccordionList(null);
       setCurrentForm(undefined);
@@ -685,6 +683,7 @@ const ProjectsDetails = () => {
         // },
       ]);
       setEmptySection(undefined);
+      setProjInfoButtons(false);
     } else {
       setItemAccordionList(null);
       setCurrentForm(undefined);
@@ -1038,6 +1037,7 @@ const ProjectsDetails = () => {
         setItemList(null);
         setCorrectButtons(projectInfoButtons());
         setEmptySection(undefined);
+        setProjInfoButtons(true);
         break;
       case tabs.ENTE_GESTORE:
         AuthoritySection();
@@ -1210,6 +1210,7 @@ const ProjectsDetails = () => {
               subTitle: programDetails?.nomeBreve,
             }}
             currentTab={activeTab}
+            infoProjBtn={projInfoButtons}
             formButtons={correctButtons}
             // itemsAccordionList={itemAccordionList}
             itemsList={itemList}
@@ -1266,8 +1267,9 @@ const ProjectsDetails = () => {
                           ? `associate.`
                           : `associati.`
                       }`}
-                      horizontal
-                      aside
+                      icon='it-note'
+                      withIcon
+                      noMargin
                     />
                   )}
                 </Accordion>

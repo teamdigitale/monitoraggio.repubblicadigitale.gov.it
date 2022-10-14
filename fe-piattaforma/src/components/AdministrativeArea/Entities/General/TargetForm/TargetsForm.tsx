@@ -213,6 +213,7 @@ const TargetsForm = ({
               },
             ]
       }
+      noMargin
     />
   ) : (
     <Form

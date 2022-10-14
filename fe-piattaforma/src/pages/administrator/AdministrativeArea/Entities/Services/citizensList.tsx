@@ -326,7 +326,7 @@ const CitizensList: React.FC = () => {
             />
           ))}
           {citizens?.cittadini?.length === 0 && alreadySearched && (
-            <EmptySection title='Non sono presenti cittadini' />
+            <EmptySection title='Cittadino non associato al servizio' />
           )}
         </GenericSearchFilterTableLayout>
       ) : (

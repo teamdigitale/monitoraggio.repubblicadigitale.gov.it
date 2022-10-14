@@ -94,6 +94,8 @@ const ProgramsDetails: React.FC = () => {
   const [correctButtons, setCorrectButtons] = useState<ButtonInButtonsBar[]>(
     []
   );
+  const [progInfoButtons, setProgInfoButtons] = useState<boolean>(false);
+
   const [buttonsPosition, setButtonsPosition] = useState<'TOP' | 'BOTTOM'>(
     'TOP'
   );
@@ -280,6 +282,7 @@ const ProgramsDetails: React.FC = () => {
   const infoRef = useRef<HTMLLIElement>(null);
 
   const AuthoritySection = () => {
+    cancelSurvey();
     if (managerAuthorityId) {
       setCurrentForm(
         <FormAuthorities
@@ -369,6 +372,7 @@ const ProgramsDetails: React.FC = () => {
         },
       ]);
       setEmptySection(undefined);
+      setProgInfoButtons(false);
     } else {
       setCurrentForm(undefined);
       setCorrectModal(<ManageManagerAuthority creation />);
@@ -470,6 +474,7 @@ const ProgramsDetails: React.FC = () => {
     setItemAccordionList(null);
     setCurrentForm(undefined);
     setButtonsPosition('BOTTOM');
+    setProgInfoButtons(false);
     if (surveyList?.length) {
       setSurveyDefault({
         items: [
@@ -546,6 +551,8 @@ const ProgramsDetails: React.FC = () => {
     setItemAccordionList(null);
     setCurrentForm(undefined);
     setCorrectModal(<ManageProject creation />);
+    setProgInfoButtons(false);
+    cancelSurvey();
     if (
       projectsList?.filter(
         (progetto: { associatoAUtente: boolean }) => progetto.associatoAUtente
@@ -591,6 +598,7 @@ const ProgramsDetails: React.FC = () => {
       setEmptySection(undefined);
     } else {
       setCorrectButtons([]);
+
       setEmptySection(
         <EmptySection
           title='Questa sezione è ancora vuota'
@@ -852,6 +860,8 @@ const ProgramsDetails: React.FC = () => {
         setItemList(null);
         setCorrectButtons(programInfoButtons());
         setEmptySection(undefined);
+        setProgInfoButtons(true);
+        cancelSurvey();
         break;
       case tabs.ENTE:
         AuthoritySection();
@@ -876,6 +886,7 @@ const ProgramsDetails: React.FC = () => {
     programDetails,
     authorityInfo,
     surveyDefault?.items[0]?.id,
+    otherSurveyList?.list?.length,
     authorityInfo?.referentiEnteGestore,
   ]);
 
@@ -1045,6 +1056,7 @@ const ProgramsDetails: React.FC = () => {
             status: programDetails.stato,
             upperTitle: { icon: 'it-folder', text: 'Programma' },
           }}
+          infoProgBtn={progInfoButtons}
           formButtons={correctButtons}
           currentTab={activeTab}
           // itemsAccordionList={itemAccordionList}
@@ -1099,8 +1111,9 @@ const ProgramsDetails: React.FC = () => {
                 ) : (
                   <EmptySection
                     title={`Non sono presenti ${item.title?.toLowerCase()} associati.`}
-                    horizontal
-                    aside
+                    icon='it-note'
+                    withIcon
+                    noMargin
                   />
                 )}
               </Accordion>
@@ -1150,11 +1163,11 @@ const ProgramsDetails: React.FC = () => {
         <PreviewSurvey
           surveyId={surveyPreviewId}
           onClose={() => dispatch(closeModal())}
-          primaryCtaAction={() => {
-            confirmSurvey();
-            dispatch(closeModal());
-          }}
-          secondaryCtaAction={() => cancelSurvey()}
+          // primaryCtaAction={() => {
+          //   confirmSurvey();
+          //   dispatch(closeModal());
+          // }}
+          // secondaryCtaAction={() => cancelSurvey()}
         />
       </div>
     </div>
