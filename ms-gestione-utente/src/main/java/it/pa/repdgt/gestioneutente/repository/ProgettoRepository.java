@@ -14,6 +14,9 @@ public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long> 
 
 	@Query(value = "SELECT distinct rdgp.ID_PROGETTO "
 			+ "FROM referente_delegati_gestore_progetto rdgp "
+			+ "INNER JOIN progetto p "
+			+ "ON rdgp.id_progetto = p.id "
+			+ "AND rdgp.id_ente = p.id_ente_gestore_progetto "
 			+ "WHERE rdgp.CF_UTENTE = :cfUtente "
 			+ "		AND rdgp.CODICE_RUOLO = :ruolo ",
 			nativeQuery = true)
