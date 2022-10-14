@@ -746,14 +746,15 @@ public class UtenteServiceTest {
 		//test con condizioni IF non rispettate
 		sceltaContesto.setCodiceRuoloUtenteLoggato("REGP");
 		sceltaContesto.setIdProgetto(2L);
-		boolean risultato = service.isProgettoAssociatoAUtenteLoggato(sceltaContesto, progetto);
+		sceltaContesto.setIdEnte(2L);
+		boolean risultato = service.isProgettoAndEnteAssociatoAUtenteLoggato(sceltaContesto, progetto, null);
 		assertThat(risultato).isEqualTo(false);
 	}
 
 	@Test
 	public void isProgettoAssociatoAUtenteLoggatoDTDTest() {
 		//test con ruoloUtenteLoggato = DTD/ruolo custom
-		boolean risultato = service.isProgettoAssociatoAUtenteLoggato(sceltaContesto, progetto);
+		boolean risultato = service.isProgettoAndEnteAssociatoAUtenteLoggato(sceltaContesto, progetto, null);
 		assertThat(risultato).isEqualTo(true);
 	}
 
@@ -761,7 +762,7 @@ public class UtenteServiceTest {
 	public void isProgettoAssociatoAUtenteLoggatoDSCUTest() {
 		//test con ruoloUtenteLoggato = DSCU con policy programma = SCD
 		sceltaContesto.setCodiceRuoloUtenteLoggato("DSCU");
-		boolean risultato = service.isProgettoAssociatoAUtenteLoggato(sceltaContesto, progetto);
+		boolean risultato = service.isProgettoAndEnteAssociatoAUtenteLoggato(sceltaContesto, progetto, null);
 		assertThat(risultato).isEqualTo(true);
 	}
 
@@ -770,7 +771,7 @@ public class UtenteServiceTest {
 		//test con ruoloUtenteLoggato = DSCU con policy programma = RFD
 		sceltaContesto.setCodiceRuoloUtenteLoggato("DSCU");
 		programma.setPolicy(PolicyEnum.RFD);
-		boolean risultato = service.isProgettoAssociatoAUtenteLoggato(sceltaContesto, progetto);
+		boolean risultato = service.isProgettoAndEnteAssociatoAUtenteLoggato(sceltaContesto, progetto, null);
 		assertThat(risultato).isEqualTo(false);
 	}
 
@@ -778,7 +779,7 @@ public class UtenteServiceTest {
 	public void isProgettoAssociatoAUtenteLoggatoREGTest() {
 		//test con ruoloUtenteLoggato = REG
 		sceltaContesto.setCodiceRuoloUtenteLoggato("REG");
-		boolean risultato = service.isProgettoAssociatoAUtenteLoggato(sceltaContesto, progetto);
+		boolean risultato = service.isProgettoAndEnteAssociatoAUtenteLoggato(sceltaContesto, progetto, null);
 		assertThat(risultato).isEqualTo(true);
 	}
 
@@ -786,7 +787,17 @@ public class UtenteServiceTest {
 	public void isProgettoAssociatoAUtenteLoggatoREGPTest() {
 		//test con ruoloUtenteLoggato = REGP
 		sceltaContesto.setCodiceRuoloUtenteLoggato("REGP");
-		boolean risultato = service.isProgettoAssociatoAUtenteLoggato(sceltaContesto, progetto);
+		boolean risultato = service.isProgettoAndEnteAssociatoAUtenteLoggato(sceltaContesto, progetto, null);
+		assertThat(risultato).isEqualTo(true);
+	}
+	
+	@Test
+	public void isProgettoAssociatoAUtenteLoggatoREPPOrFACTest() {
+		//test con ruoloUtenteLoggato = REPP
+		sceltaContesto.setCodiceRuoloUtenteLoggato("REPP");
+		sceltaContesto.setIdProgetto(1L);
+		sceltaContesto.setIdEnte(1000L);
+		boolean risultato = service.isProgettoAndEnteAssociatoAUtenteLoggato(sceltaContesto, progetto, 1000L);
 		assertThat(risultato).isEqualTo(true);
 	}
 

@@ -191,7 +191,7 @@ public class CittadinoService {
 			dettaglioServizioSchedaCittadino.setNomeCompletoFacilitatore(nomeCompletoFacilitatore);
 			dettaglioServizioSchedaCittadino.setIdQuestionarioCompilato(record.getIdQuestionarioCompilato());
 			dettaglioServizioSchedaCittadino.setStatoQuestionario(record.getStatoQuestionarioCompilato());
-			dettaglioServizioSchedaCittadino.setAssociatoAUtente(this.isAssociatoAUtente(profilazione, record.getCodiceFiscaleFacilitatore(), record.getIdProgetto()));
+			dettaglioServizioSchedaCittadino.setAssociatoAUtente(this.isAssociatoAUtente(profilazione, record.getCodiceFiscaleFacilitatore(), record.getIdProgetto(), record.getIdEnte()));
 			return dettaglioServizioSchedaCittadino;
 		}).collect(Collectors.toList());
 		
@@ -201,20 +201,17 @@ public class CittadinoService {
 		return schedaCittadino;
 	}
 
-	public Boolean isAssociatoAUtente(SceltaProfiloParam profilazione, String codiceFiscaleFacilitatore, Long idProgetto) {
+	public Boolean isAssociatoAUtente(SceltaProfiloParam profilazione, String codiceFiscaleFacilitatore, Long idProgetto, Long idEnte) {
 		String ruoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato();
 		String codiceFiscaleUtenteLoggato = profilazione.getCfUtenteLoggato();
 
 		switch (ruoloUtenteLoggato) {
 		case "FAC":
-			//controllo se il codice fiscale dell'utente loggato è uguale al codice fiscale del facilitatore
-			if(codiceFiscaleUtenteLoggato.equals(codiceFiscaleFacilitatore) && profilazione.getIdProgetto().equals(idProgetto)) {
-				return true;
-			}
-			return false;
 		case "VOL":
-			//controllo se il codice fiscale dell'utente loggato è uguale al codice fiscale del volontario
-			if(codiceFiscaleUtenteLoggato.equals(codiceFiscaleFacilitatore) && profilazione.getIdProgetto().equals(idProgetto)) {
+			//controllo se il codice fiscale dell'utente loggato è uguale al codice fiscale del facilitatore
+			if(codiceFiscaleUtenteLoggato.equals(codiceFiscaleFacilitatore) && 
+					profilazione.getIdProgetto().equals(idProgetto) &&
+					profilazione.getIdEnte().equals(idEnte)) {
 				return true;
 			}
 			return false;

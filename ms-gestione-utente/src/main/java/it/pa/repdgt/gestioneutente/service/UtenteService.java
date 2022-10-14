@@ -833,7 +833,7 @@ public class UtenteService {
 																		.findFirst()
 																		.orElse("TERMINATO")
 																: listaRecRefProgt.get(0));
-														dettaglioRuolo.setAssociatoAUtente(isProgettoAssociatoAUtenteLoggato(sceltaProfilo, progettoXEgpFetchDB));
+														dettaglioRuolo.setAssociatoAUtente(isProgettoAndEnteAssociatoAUtenteLoggato(sceltaProfilo, progettoXEgpFetchDB, progettoXEgpFetchDB.getEnteGestoreProgetto().getId()));
 														listaDettaglioRuoli.add(dettaglioRuolo);
 													});
 												break;
@@ -864,7 +864,7 @@ public class UtenteService {
 																		.findFirst()
 																		.orElse("TERMINATO")
 																: listaRecRefPart.get(0));
-														dettaglioRuolo.setAssociatoAUtente(isProgettoAssociatoAUtenteLoggato(sceltaProfilo, progettoXEppFetchDB));
+														dettaglioRuolo.setAssociatoAUtente(isProgettoAndEnteAssociatoAUtenteLoggato(sceltaProfilo, progettoXEppFetchDB, entePartner.getId().getIdEnte()));
 														listaDettaglioRuoli.add(dettaglioRuolo);
 													});
 												break;
@@ -895,7 +895,7 @@ public class UtenteService {
 																		.findFirst()
 																		.orElse("TERMINATO")
 																: listaRecRefFacVol.get(0));
-														dettaglioRuolo.setAssociatoAUtente(isProgettoAssociatoAUtenteLoggato(sceltaProfilo, progettoXFacFetchDB));
+														dettaglioRuolo.setAssociatoAUtente(isProgettoAndEnteAssociatoAUtenteLoggato(sceltaProfilo, progettoXFacFetchDB, enteSedeProgetoFac.getIdEnte()));
 														listaDettaglioRuoli.add(dettaglioRuolo);
 												});
 												break;
@@ -928,24 +928,32 @@ public class UtenteService {
 
 	@LogMethod
 	@LogExecutionTime
-	public boolean isProgettoAssociatoAUtenteLoggato(SceltaProfiloParam sceltaProfilo, ProgettoEntity progetto) {
+	public boolean isProgettoAndEnteAssociatoAUtenteLoggato(SceltaProfiloParam sceltaProfilo, ProgettoEntity progetto, Long idEnte) {
 		List<String> listaRuoli = Arrays.asList(
-				RuoliUtentiConstants.REGP,
-				RuoliUtentiConstants.DEGP,
 				RuoliUtentiConstants.REPP,
 				RuoliUtentiConstants.DEPP,
 				RuoliUtentiConstants.FACILITATORE,
 				RuoliUtentiConstants.VOLONTARIO);
+		
+		List<String> listaRuoliGestProgetto = Arrays.asList(
+				RuoliUtentiConstants.REGP,
+				RuoliUtentiConstants.DEGP);
 
-		List<String> listaRuoliEGP = Arrays.asList(
+		List<String> listaRuoliGestProgramma = Arrays.asList(
 				RuoliUtentiConstants.REG,
 				RuoliUtentiConstants.DEG);
+		
 
 		if(listaRuoli.contains(sceltaProfilo.getCodiceRuoloUtenteLoggato())){
+			if(sceltaProfilo.getIdProgetto().equals(progetto.getId()) &&
+					sceltaProfilo.getIdEnte().equals(idEnte)) {
+				return true;
+			}
+		}else if(listaRuoliGestProgetto.contains(sceltaProfilo.getCodiceRuoloUtenteLoggato())){
 			if(sceltaProfilo.getIdProgetto().equals(progetto.getId())) {
 				return true;
 			}
-		}else if(listaRuoliEGP.contains(sceltaProfilo.getCodiceRuoloUtenteLoggato())) {
+		}else if(listaRuoliGestProgramma.contains(sceltaProfilo.getCodiceRuoloUtenteLoggato())) {
 			if(sceltaProfilo.getIdProgramma().equals(progetto.getProgramma().getId())) {
 				return true;
 			}
