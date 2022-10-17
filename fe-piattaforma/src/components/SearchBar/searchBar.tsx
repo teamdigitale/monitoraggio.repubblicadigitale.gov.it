@@ -121,8 +121,8 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
           </Button>
         )}
       </components.DropdownIndicator>
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
@@ -211,6 +211,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                   }
                 }}
                 tabIndex={0}
+                minimum={minLength}
               />
 
               {!hasSearchValue && device.mediaIsPhone && (

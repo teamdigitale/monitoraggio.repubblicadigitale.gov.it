@@ -16,6 +16,7 @@ interface UserAvatarI {
   lightColor?: boolean | undefined;
   size?: AvatarSizes;
   font?: AvatarTextSizes;
+  isUserProfile?: boolean | string | undefined;
 }
 
 const UserAvatar: React.FC<UserAvatarI> = (props) => {
@@ -25,6 +26,7 @@ const UserAvatar: React.FC<UserAvatarI> = (props) => {
     user = { uSurname: '', uName: '' },
     /*  lightColor = false,
     font, */
+    isUserProfile = false,
   } = props;
 
   const device = useAppSelector(selectDevice);
@@ -41,8 +43,12 @@ const UserAvatar: React.FC<UserAvatarI> = (props) => {
         avatarImage && 'border border-primary'
       )}
       style={{
-        width: device.mediaIsDesktop ? '35px' : '53px',
-        height: device.mediaIsDesktop ? '35px' : '53px',
+        width: isUserProfile ? '65px' : device.mediaIsDesktop ? '35px' : '53px',
+        height: isUserProfile
+          ? '65px'
+          : device.mediaIsDesktop
+          ? '35px'
+          : '53px',
       }}
     >
       {avatarImage ? (
@@ -56,9 +62,19 @@ const UserAvatar: React.FC<UserAvatarI> = (props) => {
         <AvatarInitials
           user={{ uSurname: user.uSurname, uName: user.uName }}
           lightColor={device.mediaIsPhone}
-          size={device.mediaIsPhone ? AvatarSizes.Big : AvatarSizes.Small}
+          size={
+            isUserProfile
+              ? AvatarSizes.Profile
+              : device.mediaIsPhone
+              ? AvatarSizes.Big
+              : AvatarSizes.Small
+          }
           font={
-            device.mediaIsPhone ? AvatarTextSizes.Big : AvatarTextSizes.Small
+            isUserProfile
+              ? AvatarTextSizes.Profile
+              : device.mediaIsPhone
+              ? AvatarTextSizes.Big
+              : AvatarTextSizes.Small
           }
         />
       )}

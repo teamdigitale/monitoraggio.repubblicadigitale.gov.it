@@ -16,6 +16,7 @@ import {
 } from './forumSlice';
 import { transformFiltersToQueryParams } from '../../../utils/common';
 import { setEntityPagination } from '../administrativeArea/administrativeAreaSlice';
+import { getUserHeaders } from '../user/userThunk';
 
 export const proxyCall = async (
   url: string,
@@ -92,63 +93,63 @@ const GetNewsListAction = {
 };
 export const GetNewsList =
   (
-    forcedFilters?: {
+    forcedFilters: {
       [key: string]: { label: string; value: string }[] | undefined;
-    },
+    } = {},
     updateStore = true
   ) =>
-    async (dispatch: Dispatch, select: Selector) => {
-      try {
-        dispatch(showLoader());
-        dispatch({ ...GetNewsListAction, forcedFilters, updateStore });
-        const {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          administrativeArea: { pagination },
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          forum: { filters },
-        } = select((state: RootState) => state);
-        const queryParamFilters = transformFiltersToQueryParams({
-          ...filters,
-          categories: filters.categories?.length
-            ? filters.categories
-            : [{ value: 'all' }],
-          interventions: filters.interventions?.length
-            ? filters.interventions
-            : [{ value: 'all' }],
-          programs: filters.programs?.length
-            ? filters.programs
-            : [{ value: 'all' }],
-          page: [{ value: Math.max(0, pagination.pageNumber - 1) }],
-          items_per_page: [{ value: pagination.pageSize }],
-          //sort: [{ value: filters.sort }],
-          ...forcedFilters,
-        }).replace('sort', 'sort_by');
-        //.replace('categories', 'category')
-        //.replace('interventions', 'intervention')
-        //.replace('programs', 'program');
-        console.log('queryParamFilters', queryParamFilters);
-        const res = await proxyCall(`/board/items${queryParamFilters}`, 'GET');
-        if (updateStore) {
-          if (res?.data?.data) {
-            dispatch(setNewsList(res.data.data.items || []));
-            dispatch(
-              setEntityPagination({
-                totalPages: res.data.data.pager?.total_pages || 0,
-                totalElements: res.data.data.pager?.total_items || 0,
-              })
-            );
-          }
+  async (dispatch: Dispatch, select: Selector) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...GetNewsListAction, forcedFilters, updateStore });
+      const {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        administrativeArea: { pagination },
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        forum: { filters },
+      } = select((state: RootState) => state);
+      const queryParamFilters = transformFiltersToQueryParams({
+        ...filters,
+        categories: filters.categories?.length
+          ? filters.categories
+          : [{ value: 'all' }],
+        interventions: filters.interventions?.length
+          ? filters.interventions
+          : [{ value: 'all' }],
+        programs: filters.programs?.length
+          ? filters.programs
+          : [{ value: 'all' }],
+        page: [{ value: Math.max(0, pagination.pageNumber - 1) }],
+        items_per_page: [{ value: pagination.pageSize }],
+        //sort: [{ value: filters.sort }],
+        ...forcedFilters,
+      }).replace('sort', 'sort_by');
+      //.replace('categories', 'category')
+      //.replace('interventions', 'intervention')
+      //.replace('programs', 'program');
+      console.log('queryParamFilters', queryParamFilters);
+      const res = await proxyCall(`/board/items${queryParamFilters}`, 'GET');
+      if (updateStore) {
+        if (res?.data?.data) {
+          dispatch(setNewsList(res.data.data.items || []));
+          dispatch(
+            setEntityPagination({
+              totalPages: res.data.data.pager?.total_pages || 0,
+              totalElements: res.data.data.pager?.total_items || 0,
+            })
+          );
         }
-        return res;
-      } catch (error) {
-        console.log('GetNewsList error', error);
-        return false;
-      } finally {
-        dispatch(hideLoader());
       }
-    };
+      return res;
+    } catch (error) {
+      console.log('GetNewsList error', error);
+      return false;
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
 
 const GetTopicsFiltersAction = {
   type: 'forum/GetTopicsFilters',
@@ -208,53 +209,53 @@ export const GetTopicsList =
     },
     updateStore = true
   ) =>
-    async (dispatch: Dispatch, select: Selector) => {
-      try {
-        dispatch(showLoader());
-        dispatch({ ...GetTopicsListAction, forcedFilters, updateStore });
-        const {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          administrativeArea: { pagination },
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          forum: { filters },
-        } = select((state: RootState) => state);
-        const queryParamFilters = transformFiltersToQueryParams({
-          ...filters,
-          categories: filters.categories?.length
-            ? filters.categories
-            : [{ value: 'all' }],
-          page: [{ value: Math.max(0, pagination.pageNumber - 1) }],
-          items_per_page: [{ value: pagination.pageSize }],
-          //sort: [{ value: filters.sort }],
-          ...forcedFilters,
-        }).replace('sort', 'sort_by');
-        //.replace('categories', 'category')
-        console.log('queryParamFilters', queryParamFilters);
-        const res = await proxyCall(
-          `/community/items${queryParamFilters}`,
-          'GET'
-        );
-        if (updateStore) {
-          if (res?.data?.data) {
-            dispatch(setTopicsList(res.data.data.items || []));
-            dispatch(
-              setEntityPagination({
-                totalPages: res.data.data.pager?.total_pages || 0,
-                totalElements: res.data.data.pager?.total_items || 0,
-              })
-            );
-          }
+  async (dispatch: Dispatch, select: Selector) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...GetTopicsListAction, forcedFilters, updateStore });
+      const {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        administrativeArea: { pagination },
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        forum: { filters },
+      } = select((state: RootState) => state);
+      const queryParamFilters = transformFiltersToQueryParams({
+        ...filters,
+        categories: filters.categories?.length
+          ? filters.categories
+          : [{ value: 'all' }],
+        page: [{ value: Math.max(0, pagination.pageNumber - 1) }],
+        items_per_page: [{ value: pagination.pageSize }],
+        //sort: [{ value: filters.sort }],
+        ...forcedFilters,
+      }).replace('sort', 'sort_by');
+      //.replace('categories', 'category')
+      console.log('queryParamFilters', queryParamFilters);
+      const res = await proxyCall(
+        `/community/items${queryParamFilters}`,
+        'GET'
+      );
+      if (updateStore) {
+        if (res?.data?.data) {
+          dispatch(setTopicsList(res.data.data.items || []));
+          dispatch(
+            setEntityPagination({
+              totalPages: res.data.data.pager?.total_pages || 0,
+              totalElements: res.data.data.pager?.total_items || 0,
+            })
+          );
         }
-        return res;
-      } catch (error) {
-        console.log('GetTopicsList error', error);
-        return false;
-      } finally {
-        dispatch(hideLoader());
       }
-    };
+      return res;
+    } catch (error) {
+      console.log('GetTopicsList error', error);
+      return false;
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
 
 const GetDocumentsFiltersAction = {
   type: 'forum/GetDocumentsFilters',
@@ -288,10 +289,7 @@ export const GetDocumentsFilters =
       };
       const queryParameters = transformFiltersToQueryParams(body);
       console.log('queryParameters', queryParameters);
-      const res = await proxyCall(
-        `/document/filters${queryParameters}`,
-        'GET'
-      );
+      const res = await proxyCall(`/document/filters${queryParameters}`, 'GET');
       if (res?.data?.data) {
         dispatch(
           setForumFilterOptions(
@@ -323,108 +321,107 @@ export const GetDocumentsList =
     },
     updateStore = true
   ) =>
-    async (dispatch: Dispatch, select: Selector) => {
-      try {
-        dispatch(showLoader());
-        dispatch({ ...GetDocumentsListAction, forcedFilters, updateStore });
-        const {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          administrativeArea: { pagination },
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          forum: { filters },
-        } = select((state: RootState) => state);
-        const queryParamFilters = transformFiltersToQueryParams({
-          ...filters,
-          categories: filters.categories?.length
-            ? filters.categories
-            : [{ value: 'all' }],
-          interventions: filters.interventions?.length
-            ? filters.interventions
-            : [{ value: 'all' }],
-          programs: filters.programs?.length
-            ? filters.programs
-            : [{ value: 'all' }],
-          page: [{ value: Math.max(0, pagination.pageNumber - 1) }],
-          items_per_page: [{ value: pagination.pageSize }],
-          //sort: [{ value: filters.sort }],
-          ...forcedFilters,
-        }).replace('sort', 'sort_by');
-        //.replace('categories', 'category')
-        console.log('queryParamFilters', queryParamFilters);
-        const res = await proxyCall(
-          `/document/items${queryParamFilters}`,
-          'GET'
-        );
-        if (updateStore) {
-          if (res?.data?.data) {
-            dispatch(setDocsList(res.data.data.items || []));
-            dispatch(
-              setEntityPagination({
-                totalPages: res.data.data.pager?.total_pages || 0,
-                totalElements: res.data.data.pager?.total_items || 0,
-              })
-            );
-          }
+  async (dispatch: Dispatch, select: Selector) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...GetDocumentsListAction, forcedFilters, updateStore });
+      const {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        administrativeArea: { pagination },
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        forum: { filters },
+      } = select((state: RootState) => state);
+      const queryParamFilters = transformFiltersToQueryParams({
+        ...filters,
+        categories: filters.categories?.length
+          ? filters.categories
+          : [{ value: 'all' }],
+        interventions: filters.interventions?.length
+          ? filters.interventions
+          : [{ value: 'all' }],
+        programs: filters.programs?.length
+          ? filters.programs
+          : [{ value: 'all' }],
+        page: [{ value: Math.max(0, pagination.pageNumber - 1) }],
+        items_per_page: [{ value: pagination.pageSize }],
+        //sort: [{ value: filters.sort }],
+        ...forcedFilters,
+      }).replace('sort', 'sort_by');
+      //.replace('categories', 'category')
+      console.log('queryParamFilters', queryParamFilters);
+      const res = await proxyCall(`/document/items${queryParamFilters}`, 'GET');
+      if (updateStore) {
+        if (res?.data?.data) {
+          dispatch(setDocsList(res.data.data.items || []));
+          dispatch(
+            setEntityPagination({
+              totalPages: res.data.data.pager?.total_pages || 0,
+              totalElements: res.data.data.pager?.total_items || 0,
+            })
+          );
         }
-        return res;
-      } catch (error) {
-        console.log('GetDocumentsList error', error);
-        return false;
-      } finally {
-        dispatch(hideLoader());
       }
-    };
+      return res;
+    } catch (error) {
+      console.log('GetDocumentsList error', error);
+      return false;
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
 
 const GetItemsListAction = {
   type: 'forum/GetItemsList',
 };
 export const GetItemsList =
   (entity: 'board' | 'community' | 'document') =>
-    async (dispatch: Dispatch, select: Selector) => {
-      try {
-        dispatch(showLoader());
-        dispatch({ ...GetItemsListAction });
-        const {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          administrativeArea: { filters },
-        } = select((state: RootState) => state);
-        const category = filters.filtroCategories
-          ? filters.filtroCategories[0].value
-          : 'all';
-        const program = filters.filtroIdsProgrammi
-          ? filters.filtroIdsProgrammi[0].value
-          : 'all';
-        const policy = filters.filtroPolicies
-          ? filters.filtroPolicies[0].value
-          : 'all';
+  async (dispatch: Dispatch, select: Selector) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...GetItemsListAction });
+      const {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        administrativeArea: { filters },
+      } = select((state: RootState) => state);
+      const category = filters.filtroCategories
+        ? filters.filtroCategories[0].value
+        : 'all';
+      const program = filters.filtroIdsProgrammi
+        ? filters.filtroIdsProgrammi[0].value
+        : 'all';
+      const policy = filters.filtroPolicies
+        ? filters.filtroPolicies[0].value
+        : 'all';
 
-        const res = await proxyCall(`/${entity}/items?categories=${category}&programs=${program}&interventions=${policy}`, 'GET')
-        // const res = await API.get(`/${entity}/items`);
-        if (res?.data?.data?.items) {
-          switch (entity) {
-            case 'board':
-              dispatch(setNewsList(res.data.data.items))
-              break;
-            case 'community':
-              dispatch(setTopicsList(res.data.data.items))
-              break;
-            case 'document':
-              dispatch(setDocsList(res.data.data?.items))
-              break;
-            default:
-              break;
-          }
+      const res = await proxyCall(
+        `/${entity}/items?categories=${category}&programs=${program}&interventions=${policy}`,
+        'GET'
+      );
+      // const res = await API.get(`/${entity}/items`);
+      if (res?.data?.data?.items) {
+        switch (entity) {
+          case 'board':
+            dispatch(setNewsList(res.data.data.items));
+            break;
+          case 'community':
+            dispatch(setTopicsList(res.data.data.items));
+            break;
+          case 'document':
+            dispatch(setDocsList(res.data.data?.items));
+            break;
+          default:
+            break;
         }
-
-      } catch (error) {
-        console.log('GetItemsList error', error);
-      } finally {
-        dispatch(hideLoader());
       }
-    };
+    } catch (error) {
+      console.log('GetItemsList error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
 
 const GetItemsBySearchAction = {
   type: 'forum/GetItemsBySearch',
@@ -435,9 +432,9 @@ export const GetItemsBySearch =
     try {
       dispatch(showLoader());
       dispatch({ ...GetItemsBySearchAction });
-      const res = await API.get(`/search/items?keys=${search}`);
+      const res = await proxyCall(`/search/items?keys=${search}`, 'GET');
       if (res) {
-        const results = [...res.data.data.items];
+        const results = [...(res?.data?.data?.items || [])];
         dispatch(
           setNewsList(
             results.filter(({ item_type }) => item_type === 'board_item')
@@ -465,37 +462,36 @@ const GetItemsByUserAction = {
   type: 'forum/GetItemsByUser',
 };
 
-export const GetItemsByUser =
-  (userId: string) => async (dispatch: Dispatch) => {
-    try {
-      dispatch(showLoader());
-      dispatch({ ...GetItemsByUserAction });
-      const res = await API.get(`api/user/${userId}/items`);
-      if (res) {
-        const results = [...res.data.data.items];
-
-        dispatch(
-          setNewsList(
-            results.filter(({ item_type }) => item_type === 'board_item')
-          )
-        );
-        dispatch(
-          setTopicsList(
-            results.filter(({ item_type }) => item_type === 'community_item')
-          )
-        );
-        dispatch(
-          setDocsList(
-            results.filter(({ item_type }) => item_type === 'document_item')
-          )
-        );
-      }
-    } catch (error) {
-      console.log('GetItemsByUser error', error);
-    } finally {
-      dispatch(hideLoader());
+export const GetItemsByUser = () => async (dispatch: Dispatch) => {
+  try {
+    dispatch(showLoader());
+    dispatch({ ...GetItemsByUserAction });
+    const { idUtente } = getUserHeaders();
+    const res = await proxyCall(`/user/${idUtente}/items`, 'GET');
+    if (res) {
+      const results = [...res.data.data.items];
+      dispatch(
+        setNewsList(
+          results.filter(({ item_type }) => item_type === 'board_item')
+        )
+      );
+      dispatch(
+        setTopicsList(
+          results.filter(({ item_type }) => item_type === 'community_item')
+        )
+      );
+      dispatch(
+        setDocsList(
+          results.filter(({ item_type }) => item_type === 'document_item')
+        )
+      );
     }
-  };
+  } catch (error) {
+    console.log('GetItemsByUser error', error);
+  } finally {
+    dispatch(hideLoader());
+  }
+};
 
 const GetItemDetailsAction = {
   type: 'forum/GetItemDetails',
@@ -507,36 +503,36 @@ export const GetItemDetail =
     userId: string,
     entity: 'board' | 'community' | 'document'
   ) =>
-    async (dispatch: Dispatch) => {
-      try {
-        dispatch(showLoader());
-        dispatch({ ...GetItemDetailsAction });
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...GetItemDetailsAction });
 
-        const res = await proxyCall(
-          `/${entity}/item/${itemId}/user/${userId}`,
-          'GET'
-        );
-        if (res) {
-          switch (entity) {
-            case 'board':
-              dispatch(setNewsDetail(res.data.data.items[0]));
-              break;
-            case 'community':
-              dispatch(setTopicDetail(res.data.data.items[0]));
-              break;
-            case 'document':
-              dispatch(setDocDetail(res.data.data.items[0]));
-              break;
-            default:
-              break;
-          }
+      const res = await proxyCall(
+        `/${entity}/item/${itemId}/user/${userId}`,
+        'GET'
+      );
+      if (res) {
+        switch (entity) {
+          case 'board':
+            dispatch(setNewsDetail(res.data.data.items[0]));
+            break;
+          case 'community':
+            dispatch(setTopicDetail(res.data.data.items[0]));
+            break;
+          case 'document':
+            dispatch(setDocDetail(res.data.data.items[0]));
+            break;
+          default:
+            break;
         }
-      } catch (error) {
-        console.log('GetItemsDetails error', error);
-      } finally {
-        dispatch(hideLoader());
       }
-    };
+    } catch (error) {
+      console.log('GetItemsDetails error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
 
 const GetItemsFilterValuesAction = {
   type: 'forum/GetItemsFilterValues',
@@ -544,85 +540,87 @@ const GetItemsFilterValuesAction = {
 
 export const GetItemsFilterValues =
   (payload: EntityFilterValuesPayloadI) =>
-    async (dispatch: Dispatch, select: Selector) => {
-      try {
-        dispatch(showLoader());
-        dispatch({ ...GetItemsFilterValuesAction, payload });
-        const {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          forum: { filters },
-        } = select((state: RootState) => state);
-        const filtroRequest: {
-          [key: string]: string | undefined;
-        } = {};
-        Object.keys(filters).forEach((filter: string) => {
-          if (
-            filter === 'criterioRicerca' ||
-            filter === 'filtroCriterioRicerca'
-          ) {
-            filtroRequest[filter] =
-              filters[filter]?.value || filters[filter] || null;
-          } else {
-            filtroRequest[filter] = filters[filter]?.map(
-              (value: OptionType) => value.value
-            );
-          }
-        });
-        const body = filtroRequest;
-        const NewsFiltersEndpoint = `/news`;
-        const res = await API.post(NewsFiltersEndpoint, body);
-        if (res?.data) {
-          const filterResponse = {
-            [payload.dropdownType]: res.data.data.map((option: string) => ({
-              label:
-                payload.dropdownType === 'categoria' ||
-                  payload.dropdownType === 'policies' ||
-                  payload.dropdownType === 'programmi'
-                  ? option[0] + option.slice(1).toLowerCase()
-                  : option,
-              value: option,
-            })),
-          };
-
-          if (payload.dropdownType === 'news') {
-            filterResponse[payload.dropdownType] = res.data.data.map(
-              (option: { nome: string; id: string | number }) => ({
-                label: option.nome,
-                value: option.id,
-              })
-            );
-          }
-
-          dispatch(setForumFilterOptions(filterResponse));
+  async (dispatch: Dispatch, select: Selector) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...GetItemsFilterValuesAction, payload });
+      const {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        forum: { filters },
+      } = select((state: RootState) => state);
+      const filtroRequest: {
+        [key: string]: string | undefined;
+      } = {};
+      Object.keys(filters).forEach((filter: string) => {
+        if (
+          filter === 'criterioRicerca' ||
+          filter === 'filtroCriterioRicerca'
+        ) {
+          filtroRequest[filter] =
+            filters[filter]?.value || filters[filter] || null;
+        } else {
+          filtroRequest[filter] = filters[filter]?.map(
+            (value: OptionType) => value.value
+          );
         }
-      } catch (error) {
-        console.log('GetNewsFilterValues error', error);
-      } finally {
-        dispatch(hideLoader());
+      });
+      const body = filtroRequest;
+      const NewsFiltersEndpoint = `/news`;
+      const res = await API.post(NewsFiltersEndpoint, body);
+      if (res?.data) {
+        const filterResponse = {
+          [payload.dropdownType]: res.data.data.map((option: string) => ({
+            label:
+              payload.dropdownType === 'categoria' ||
+              payload.dropdownType === 'policies' ||
+              payload.dropdownType === 'programmi'
+                ? option[0] + option.slice(1).toLowerCase()
+                : option,
+            value: option,
+          })),
+        };
+
+        if (payload.dropdownType === 'news') {
+          filterResponse[payload.dropdownType] = res.data.data.map(
+            (option: { nome: string; id: string | number }) => ({
+              label: option.nome,
+              value: option.id,
+            })
+          );
+        }
+
+        dispatch(setForumFilterOptions(filterResponse));
       }
-    };
+    } catch (error) {
+      console.log('GetNewsFilterValues error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
 
 const CreateItemAction = {
   type: 'forum/CreateItem',
 };
 
-export const CreateItem = (payload: any, entity: 'board' | 'community' | 'document') => async (dispatch: Dispatch) => {
-  try {
-    dispatch(showLoader());
-    dispatch({ ...CreateItemAction });
-    // console.log(entity, JSON.stringify(payload));
+export const CreateItem =
+  (payload: any, entity: 'board' | 'community' | 'document') =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...CreateItemAction });
+      // console.log(entity, JSON.stringify(payload));
 
-    await proxyCall(`/${entity}/item/create`, 'POST', { ...payload });
-    // await API.post(`/${entity}/item/create`, {
-    //   ...payload
-    // })
-  } catch (error) {
-    console.log('CreateItem error', error);
-  } finally {
-    dispatch(hideLoader());
-  }
-};
+      await proxyCall(`/${entity}/item/create`, 'POST', { ...payload });
+      // await API.post(`/${entity}/item/create`, {
+      //   ...payload
+      // })
+    } catch (error) {
+      console.log('CreateItem error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
 
 const UpdateItemAction = {
   type: 'forum/UpdateItem',
@@ -630,22 +628,26 @@ const UpdateItemAction = {
 
 export const UpdateItem =
   (itemId: string, payload: any, entity: 'board' | 'community' | 'document') =>
-    async (dispatch: Dispatch) => {
-      try {
-        dispatch(showLoader());
-        dispatch({ ...UpdateItemAction });
-        // console.log(itemId, payload, entity);
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...UpdateItemAction });
+      // console.log(itemId, payload, entity);
 
-        await proxyCall(`/${entity}/item/${itemId}/update`, 'POST', { ...Object.fromEntries(Object.entries(payload).filter(([key, _value]) => key !== '')) })
-        // await API.post(`/${entity}/item/${itemId}`, {
-        //   ...payload,
-        // });
-      } catch (error) {
-        console.log('UpdateItem error', error);
-      } finally {
-        dispatch(hideLoader());
-      }
-    };
+      await proxyCall(`/${entity}/item/${itemId}/update`, 'POST', {
+        ...Object.fromEntries(
+          Object.entries(payload).filter(([key, _value]) => key !== '')
+        ),
+      });
+      // await API.post(`/${entity}/item/${itemId}`, {
+      //   ...payload,
+      // });
+    } catch (error) {
+      console.log('UpdateItem error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
 
 const UploadFileAction = {
   type: 'forum/UploadFile',
@@ -653,20 +655,20 @@ const UploadFileAction = {
 
 export const UploadFile =
   (itemId: string, payload: any, type: 'cover' | 'attachment') =>
-    async (dispatch: Dispatch) => {
-      try {
-        dispatch(showLoader());
-        dispatch({ ...UploadFileAction });
-        await API.post(`item/${itemId}/file/upload`, {
-          type: type,
-          data: payload,
-        });
-      } catch (error) {
-        console.log('UploadFile error', error);
-      } finally {
-        dispatch(hideLoader());
-      }
-    };
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...UploadFileAction });
+      await API.post(`item/${itemId}/file/upload`, {
+        type: type,
+        data: payload,
+      });
+    } catch (error) {
+      console.log('UploadFile error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
 
 const DeleteItemAction = {
   type: 'forum/DeleteItem',
@@ -693,18 +695,17 @@ const ManageItemEventAction = {
 
 export const ManageItemEvent =
   (itemId: string, event: 'like' | 'unlike' | 'view' | 'dowloaded') =>
-    async (dispatch: Dispatch) => {
-      try {
-        dispatch(showLoader());
-        dispatch({ ...ManageItemEventAction });
-        await API.post(`/item/${itemId}/${event}`);
-        console.log(itemId, event);
-      } catch (error) {
-        console.log('ManageItemEvent error', error);
-      } finally {
-        dispatch(hideLoader());
-      }
-    };
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...ManageItemEventAction });
+      await proxyCall(`/item/${itemId}/${event}`, 'POST', {});
+    } catch (error) {
+      console.log('ManageItemEvent error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
 
 const GetTagsListAction = {
   type: 'forum/GetTagsList',

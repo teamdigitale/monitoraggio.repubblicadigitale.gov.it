@@ -1,9 +1,12 @@
 .showcase-card {
-  width: 100%;
+  width: 364px;
+  height: 452px;
   border: 1px solid #eceff1;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
-  max-width: 364px;
+  @media screen and (max-width: 1200px){
+    width: 292px;
+  }
 
   &__marked {
     border-bottom: 4px solid #0066cc;
@@ -38,9 +41,12 @@
     font-weight: 400;
     font-size: 16px;
     line-height: 24px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+
+    p {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
   &__title {
     color: #1c2024;

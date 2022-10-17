@@ -45,7 +45,7 @@ export const CreateCategory = (payload: any) => async (dispatch: Dispatch) => {
   try {
     dispatch(showLoader());
     dispatch({ ...CreateCategoryAction });
-    await proxyCall('/category/create', 'POST', {...payload})
+    await proxyCall('/category/create', 'POST', { ...payload });
     // await API.post('/category/create', {
     //   ...payload,
     // });

@@ -375,88 +375,88 @@ const UsersDetails = () => {
 
   const getButtons = () => {
     const buttons: ButtonInButtonsBar[] = [];
-    if (
-      userRole === userRoles.USR &&
-      hasUserPermission(['del.utente']) &&
-      userInfo.stato === entityStatus.NON_ATTIVO
-    ) {
-      buttons.push(deleteButton);
-    } else if (userRole === userRoles.FAC || userRole === userRoles.VOL) {
-      buttons.push(deleteButton);
-    } else if (
-      authorityType &&
-      userRole &&
-      [
-        userRoles.REG,
-        userRoles.REGP,
-        userRoles.REPP,
-        userRoles.DEG,
-        userRoles.DEGP,
-        userRoles.DEPP,
-      ].includes(userRole) &&
-      getUserRoleStatus() !== entityStatus.TERMINATO
-    ) {
-      switch (authorityType) {
-        case formTypes.ENTE_GESTORE_PROGRAMMA: {
-          if (hasUserPermission(['del.ref_del.gest.prgm'])) {
-            buttons.push(deleteButton);
+    if(getUserRoleStatus() !== entityStatus.TERMINATO){
+      if (
+        userRole === userRoles.USR &&
+        hasUserPermission(['del.utente']) &&
+        userInfo.stato === entityStatus.NON_ATTIVO
+      ) {
+        buttons.push(deleteButton);
+      } else if (userRole === userRoles.FAC || userRole === userRoles.VOL) {
+        buttons.push(deleteButton);
+      } else if (
+        authorityType &&
+        userRole &&
+        [
+          userRoles.REG,
+          userRoles.REGP,
+          userRoles.REPP,
+          userRoles.DEG,
+          userRoles.DEGP,
+          userRoles.DEPP,
+        ].includes(userRole)
+      ) {
+        switch (authorityType) {
+          case formTypes.ENTE_GESTORE_PROGRAMMA: {
+            if (hasUserPermission(['del.ref_del.gest.prgm'])) {
+              buttons.push(deleteButton);
+            }
+            break;
           }
-          break;
-        }
-        case formTypes.ENTE_GESTORE_PROGETTO: {
-          if (hasUserPermission(['del.ref_del.gest.prgt'])) {
-            buttons.push(deleteButton);
+          case formTypes.ENTE_GESTORE_PROGETTO: {
+            if (hasUserPermission(['del.ref_del.gest.prgt'])) {
+              buttons.push(deleteButton);
+            }
+            break;
           }
-          break;
-        }
-        case formTypes.ENTI_PARTNER: {
-          if (hasUserPermission(['del.ref_del.partner'])) {
-            buttons.push(deleteButton);
+          case formTypes.ENTI_PARTNER: {
+            if (hasUserPermission(['del.ref_del.partner'])) {
+              buttons.push(deleteButton);
+            }
+            break;
           }
-          break;
+          default:
+            break;
         }
-        default:
-          break;
       }
-    }
-    if (userRole === userRoles.USR && hasUserPermission(['upd.anag.utenti'])) {
-      buttons.push(editButton);
-    } else if (userRole === userRoles.FAC || userRole === userRoles.VOL) {
-      buttons.push(editButton);
-    } else if (
-      authorityType &&
-      userRole &&
-      [
-        userRoles.REG,
-        userRoles.REGP,
-        userRoles.REPP,
-        userRoles.DEG,
-        userRoles.DEGP,
-        userRoles.DEPP,
-      ].includes(userRole) &&
-      getUserRoleStatus() !== entityStatus.TERMINATO
-    ) {
-      switch (authorityType) {
-        case formTypes.ENTE_GESTORE_PROGRAMMA: {
-          if (hasUserPermission(['add.ref_del.gest.prgm'])) {
-            buttons.push(editButton);
+      if (userRole === userRoles.USR && hasUserPermission(['upd.anag.utenti'])) {
+        buttons.push(editButton);
+      } else if (userRole === userRoles.FAC || userRole === userRoles.VOL) {
+        buttons.push(editButton);
+      } else if (
+        authorityType &&
+        userRole &&
+        [
+          userRoles.REG,
+          userRoles.REGP,
+          userRoles.REPP,
+          userRoles.DEG,
+          userRoles.DEGP,
+          userRoles.DEPP,
+        ].includes(userRole)
+      ) {
+        switch (authorityType) {
+          case formTypes.ENTE_GESTORE_PROGRAMMA: {
+            if (hasUserPermission(['add.ref_del.gest.prgm'])) {
+              buttons.push(editButton);
+            }
+            break;
           }
-          break;
-        }
-        case formTypes.ENTE_GESTORE_PROGETTO: {
-          if (hasUserPermission(['add.ref_del.gest.prgt'])) {
-            buttons.push(editButton);
+          case formTypes.ENTE_GESTORE_PROGETTO: {
+            if (hasUserPermission(['add.ref_del.gest.prgt'])) {
+              buttons.push(editButton);
+            }
+            break;
           }
-          break;
-        }
-        case formTypes.ENTI_PARTNER: {
-          if (hasUserPermission(['add.ref_del.partner'])) {
-            buttons.push(editButton);
+          case formTypes.ENTI_PARTNER: {
+            if (hasUserPermission(['add.ref_del.partner'])) {
+              buttons.push(editButton);
+            }
+            break;
           }
-          break;
+          default:
+            break;
         }
-        default:
-          break;
       }
     }
     return buttons;

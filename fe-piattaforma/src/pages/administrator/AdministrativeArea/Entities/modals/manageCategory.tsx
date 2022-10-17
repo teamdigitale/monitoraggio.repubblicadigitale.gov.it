@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
-import { CreateCategory, GetCategoriesList } from '../../../../../redux/features/forum/categories/categoriesThunk';
+import {
+  CreateCategory,
+  GetCategoriesList,
+} from '../../../../../redux/features/forum/categories/categoriesThunk';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 import { formFieldI } from '../../../../../utils/formHelper';
 import CategoryFrom from './Category/categoryForm';
@@ -14,7 +17,7 @@ interface CategoryModalFormI {
   creation?: boolean;
 }
 
-interface ManageCategoryI extends withFormHandlerProps, CategoryModalFormI { }
+interface ManageCategoryI extends withFormHandlerProps, CategoryModalFormI {}
 
 const ManageCategory: React.FC<ManageCategoryI> = (props) => {
   const { formDisabled, creation = false } = props;
@@ -26,9 +29,9 @@ const ManageCategory: React.FC<ManageCategoryI> = (props) => {
   const dispatch = useDispatch();
 
   const handleSaveCategory = async () => {
-    await dispatch(CreateCategory(newFormValues))
-    dispatch(GetCategoriesList({}))
-    dispatch(closeModal())
+    await dispatch(CreateCategory(newFormValues));
+    dispatch(GetCategoriesList({}));
+    dispatch(closeModal());
   };
 
   return (

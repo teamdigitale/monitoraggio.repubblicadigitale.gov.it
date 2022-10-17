@@ -29,79 +29,6 @@ import {
 } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { formFieldI } from '../../../utils/formHelper';
 
-export const DocumentCardMock = {
-  typology: 'TIPOLOGIA',
-  date: '02/07/2022',
-  title: 'Lorem ipsum dolor sit amet',
-  description:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed ...',
-  fileType: 'PDF',
-  authority: 'Regione Lombardia',
-  download: 28,
-  comment: 12,
-};
-
-export const DocumentCardSliderMock = [
-  {
-    typology: 'TIPOLOGIA 1',
-    date: '02/07/2022',
-    title: 'Lorem ipsum dolor sit amet',
-    download: 28,
-    comment: 12,
-  },
-  {
-    typology: 'TIPOLOGIA 2',
-    date: '02/07/2022',
-    title: 'Lorem ipsum dolor sit amet',
-    download: 28,
-    comment: 12,
-  },
-  {
-    typology: 'TIPOLOGIA 3',
-    date: '02/07/2022',
-    title: 'Lorem ipsum dolor sit amet',
-    download: 28,
-    comment: 12,
-  },
-  {
-    typology: 'TIPOLOGIA 4',
-    date: '02/07/2022',
-    title: 'Lorem ipsum dolor sit amet',
-    download: 28,
-    comment: 12,
-  },
-  {
-    typology: 'TIPOLOGIA 5',
-    date: '02/07/2022',
-    title: 'Lorem ipsum dolor sit amet',
-    download: 28,
-    comment: 12,
-  },
-  {
-    typology: 'TIPOLOGIA 6',
-    date: '02/07/2022',
-    title: 'Lorem ipsum dolor sit amet',
-    download: 28,
-    comment: 12,
-  },
-  {
-    typology: 'TIPOLOGIA 7',
-    date: '02/07/2022',
-    title: 'Lorem ipsum dolor sit amet',
-    download: 28,
-    comment: 12,
-  },
-  {
-    typology: 'TIPOLOGIA 8',
-    date: '02/07/2022',
-    title: 'Lorem ipsum dolor sit amet',
-    download: 28,
-    comment: 12,
-  },
-];
-
-// const DocumentsMock = [DocumentCardMock, DocumentCardMock, DocumentCardMock];
-
 const documentCta = {
   textCta: 'Carica documento',
   iconCta: 'it-plus',
@@ -143,8 +70,16 @@ const Documents = () => {
   };
 
   const getPopularDocs = async () => {
+    const itemPerPage = '12';
     const res = await dispatch(
-      GetDocumentsList({ sort: [{ label: 'likes', value: 'likes' }] }, false)
+      GetDocumentsList(
+        {
+          sort: [{ label: 'likes', value: 'likes' }],
+          page: [{ label: '0', value: '0' }],
+          items_per_page: [{ label: itemPerPage, value: itemPerPage }],
+        },
+        false
+      )
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -160,7 +95,7 @@ const Documents = () => {
   };
 
   useEffect(() => {
-    //handleOnChangePage(1, 8);
+    handleOnChangePage(0, 9);
     dispatch(setPublishedContent(true));
     getPopularDocs();
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,19 +1,20 @@
 import { Dispatch } from "@reduxjs/toolkit";
-import API from "../../../../utils/apiHelper";
 import { hideLoader, showLoader } from "../../app/appSlice";
 import { setCommentsList } from "../forumSlice";
+import { proxyCall } from "../forumThunk";
 
 const GetCommentsListAction = {
     type: 'forum/GetCommentsList',
 };
 
-export const GetCommentsList = (itemId: string) => async (dispatch: Dispatch) => {
+export const GetCommentsList = (itemId: string, userId: string) => async (dispatch: Dispatch) => {
     try {
         dispatch(showLoader());
         dispatch({ ...GetCommentsListAction });
-        const res = await API.get(`/item/${itemId}/comments/user/userId`)
+        const res = await proxyCall(`/item/${itemId}/comments/user/${userId}`, 'GET')
+        // const res = await API.get(`/item/${itemId}/comments/user/${userId}`)
         if (res) {
-            dispatch(setCommentsList([...res.data.data.items]));
+            dispatch(setCommentsList(res.data.data.items || []));
         }
 
     } catch (error) {
@@ -31,7 +32,7 @@ export const CreateComment = (itemId: string, comment: string) => async (dispatc
     try {
         dispatch(showLoader());
         dispatch({ ...CreateCommentAction });
-        await API.post(`/item/${itemId}/create`, {
+        await proxyCall(`/item/${itemId}/comment`, 'POST', {
             comment_body: comment
         })
 
@@ -51,7 +52,7 @@ export const UpdateComment = (commentId: string, comment: string) => async (disp
     try {
         dispatch(showLoader());
         dispatch({ ...UpdateCommentAction });
-        await API.post(`/comment/${commentId}/update`, {
+        await proxyCall(`/comment/${commentId}/update`, 'POST', {
             comment_body: comment
         })
 
@@ -72,7 +73,7 @@ export const ReplyComment = (commentId: string, comment: string) => async (dispa
     try {
         dispatch(showLoader());
         dispatch({ ...ReplyCommentAction });
-        await API.post(`/comment/${commentId}/reply`, {
+        await proxyCall(`/comment/${commentId}/reply`, 'POST', {
             comment_body: comment
         })
 
@@ -93,7 +94,8 @@ export const DeleteComment = (commentId: string) => async (dispatch: Dispatch) =
     try {
         dispatch(showLoader());
         dispatch({ ...DeleteCommentAction });
-        await API.post(`/comment/${commentId}/delete`, {
+        await proxyCall(`/comment/${commentId}/delete`, 'POST', {
+            reason: "reason"
         })
 
     } catch (error) {
@@ -102,3 +104,22 @@ export const DeleteComment = (commentId: string) => async (dispatch: Dispatch) =
         dispatch(hideLoader());
     }
 };
+
+const ManageCommentEventAction = {
+    type: 'forum/ManageCommentEvent',
+  };
+  
+
+export const ManageCommentEvent =
+  (commentId: string, event: 'like' | 'unlike' | 'view') =>
+    async (dispatch: Dispatch) => {
+      try {
+        dispatch(showLoader());
+        dispatch({ ...ManageCommentEventAction });
+        await proxyCall(`/comment/${commentId}/${event}`, 'POST', {});
+      } catch (error) {
+        console.log('ManageCommentEvent error', error);
+      } finally {
+        dispatch(hideLoader());
+      }
+    };

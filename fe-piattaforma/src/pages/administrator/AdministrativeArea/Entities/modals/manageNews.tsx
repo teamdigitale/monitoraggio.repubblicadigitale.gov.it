@@ -12,10 +12,19 @@ import clsx from 'clsx';
 import ConfirmItemCreation from '../../../../../components/ConfirmItemCreation/confirmItemCreation';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { selectCategoriesList } from '../../../../../redux/features/forum/forumSlice';
-import { CreateItem, GetItemDetail, GetItemsList, UpdateItem } from '../../../../../redux/features/forum/forumThunk';
+import {
+  CreateItem,
+  GetItemDetail,
+  GetItemsList,
+  UpdateItem,
+} from '../../../../../redux/features/forum/forumThunk';
 import { useParams } from 'react-router-dom';
-import { selectProfile, selectUser } from '../../../../../redux/features/user/userSlice';
+import {
+  selectProfile,
+  selectUser,
+} from '../../../../../redux/features/user/userSlice';
 import { selectEntityFiltersOptions } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import ImmagineMockNews from '/public/assets/img/img-bacheca-digitale-dettaglio.png';
 
 const modalId = 'newsModal';
 interface ManageNewsFormI {
@@ -23,7 +32,7 @@ interface ManageNewsFormI {
   creation?: boolean;
 }
 
-interface ManageNewsI extends withFormHandlerProps, ManageNewsFormI { }
+interface ManageNewsI extends withFormHandlerProps, ManageNewsFormI {}
 const ManageNews: React.FC<ManageNewsI> = ({
   formDisabled,
   creation = false,
@@ -34,11 +43,11 @@ const ManageNews: React.FC<ManageNewsI> = ({
   }>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
   const [step, setStep] = useState<'form' | 'preview' | 'confirm'>('form');
-  const categoryList = useAppSelector(selectCategoriesList)
-  const { id } = useParams()
-  const userId = useAppSelector(selectUser)?.id
-  const programsList = useAppSelector(selectEntityFiltersOptions)["programmi"]
-  const userProfile = useAppSelector(selectProfile)
+  const categoryList = useAppSelector(selectCategoriesList);
+  const { id } = useParams();
+  const userId = useAppSelector(selectUser)?.id;
+  const programsList = useAppSelector(selectEntityFiltersOptions)['programmi'];
+  const userProfile = useAppSelector(selectProfile);
   const dispatch = useDispatch();
 
   let content = <span></span>;
@@ -50,7 +59,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
         disabled: !isFormValid,
         label: creation ? 'Conferma' : 'Salva',
         onClick: () => {
-          handleSaveNews()
+          handleSaveNews();
         },
       },
       secondaryCTA: {
@@ -85,8 +94,8 @@ const ManageNews: React.FC<ManageNewsI> = ({
       primaryCTA: {
         label: 'Chiudi',
         onClick: () => {
-          setStep('form')
-          dispatch(closeModal())
+          setStep('form');
+          dispatch(closeModal());
         },
       },
       secondaryCTA: null,
@@ -96,27 +105,56 @@ const ManageNews: React.FC<ManageNewsI> = ({
 
   const handleSaveNews = async () => {
     if (id) {
-      await dispatch(UpdateItem(id, {
-        ...newFormValues,
-        cover: newFormValues.cover ? newFormValues.cover : '/public/assets/img/img-bacheca-digitale-dettaglio.png',
-        program_label: programsList?.find(p => p.value === parseInt(newFormValues.program as string))?.label,
-        entity: (userProfile?.idProgetto || userProfile?.idProgramma) ? userProfile.nomeEnte : userProfile?.descrizioneRuolo,
-        entity_type: userProfile?.idProgetto ? 'Ente gestore di progetto' : userProfile?.idProgramma ? 'Ente gestore di programma' : '-',
-      }, 'board'))
-      userId && dispatch(GetItemDetail(id, userId, 'board'))
+      await dispatch(
+        UpdateItem(
+          id,
+          {
+            ...newFormValues,
+            cover: newFormValues.cover ? newFormValues.cover : ImmagineMockNews,
+            program_label: programsList?.find(
+              (p) => p.value === parseInt(newFormValues.program as string)
+            )?.label,
+            entity:
+              userProfile?.idProgetto || userProfile?.idProgramma
+                ? userProfile.nomeEnte
+                : userProfile?.descrizioneRuolo,
+            entity_type: userProfile?.idProgetto
+              ? 'Ente gestore di progetto'
+              : userProfile?.idProgramma
+              ? 'Ente gestore di programma'
+              : '-',
+          },
+          'board'
+        )
+      );
+      userId && dispatch(GetItemDetail(id, userId, 'board'));
     } else {
-      await dispatch(CreateItem({
-        ...newFormValues,
-        cover: newFormValues.cover ? newFormValues.cover : '/public/assets/img/img-bacheca-digitale-dettaglio.png',
-        program_label: programsList?.find(p => p.value === parseInt(newFormValues.program as string))?.label,
-        entity: (userProfile?.idProgetto || userProfile?.idProgramma) ? userProfile.nomeEnte : userProfile?.descrizioneRuolo,
-        entity_type: userProfile?.idProgetto ? 'Ente gestore di progetto' : userProfile?.idProgramma ? 'Ente gestore di programma' : '-',
-      }, 'board'))
-      dispatch(GetItemsList('board'))
+      await dispatch(
+        CreateItem(
+          {
+            ...newFormValues,
+            cover: newFormValues.cover ? newFormValues.cover : ImmagineMockNews,
+            program_label: programsList?.find(
+              (p) => p.value === parseInt(newFormValues.program as string)
+            )?.label,
+            entity:
+              userProfile?.idProgetto || userProfile?.idProgramma
+                ? userProfile.nomeEnte
+                : userProfile?.descrizioneRuolo,
+            entity_type: userProfile?.idProgetto
+              ? 'Ente gestore di progetto'
+              : userProfile?.idProgramma
+              ? 'Ente gestore di programma'
+              : '-',
+          },
+          'board'
+        )
+      );
+      dispatch(GetItemsList('board'));
     }
-    setNewFormValues({})
-    setStep("confirm")
-  }
+    setNewFormValues({});
+    setStep('confirm');
+  };
 
   switch (step) {
     case 'form':
@@ -125,9 +163,9 @@ const ManageNews: React.FC<ManageNewsI> = ({
           newFormValues={newFormValues}
           creation={creation}
           formDisabled={!!formDisabled}
-          sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+          sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {  
             setNewFormValues({ ...newData })
-          }
+          }}
           setIsFormValid={(value: boolean | undefined) =>
             setIsFormValid(!!value)
           }
@@ -139,17 +177,36 @@ const ManageNews: React.FC<ManageNewsI> = ({
       content = (
         <AnteprimaBachecaNews
           {...newFormValues}
-          program_label={programsList?.find(p => p.value === parseInt(newFormValues.program as string))?.label}
-          entity={(userProfile?.idProgetto || userProfile?.idProgramma) ? userProfile.nomeEnte : userProfile?.descrizioneRuolo}
-          entity_type={userProfile?.idProgetto ? 'Ente gestore di progetto' : userProfile?.idProgramma ? 'Ente gestore di programma' : '-'}
-          category_label={categoryList.find(c => c.id === newFormValues.category).name} isModalPreview />
+          program_label={
+            programsList?.find(
+              (p) => p.value === parseInt(newFormValues.program as string)
+            )?.label
+          }
+          entity={
+            userProfile?.idProgetto || userProfile?.idProgramma
+              ? userProfile.nomeEnte
+              : userProfile?.descrizioneRuolo
+          }
+          entity_type={
+            userProfile?.idProgetto
+              ? 'Ente gestore di progetto'
+              : userProfile?.idProgramma
+              ? 'Ente gestore di programma'
+              : '-'
+          }
+          category_label={
+            categoryList.find((c) => c.id === newFormValues.category).name
+          }
+          isModalPreview
+        />
       );
       break;
     case 'confirm':
       content = (
         <ConfirmItemCreation
-          description={`News ${creation ? 'creata' : 'modificata'
-            } correttamente!`}
+          description={`News ${
+            creation ? 'creata' : 'modificata'
+          } correttamente!`}
         />
       );
       break;

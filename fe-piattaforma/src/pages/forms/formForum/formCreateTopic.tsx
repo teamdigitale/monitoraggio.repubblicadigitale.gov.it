@@ -9,7 +9,11 @@ import withFormHandler, {
 } from '../../../hoc/withFormHandler';
 // import { selectDevice } from '../../../redux/features/app/appSlice';
 import { GetCategoriesList } from '../../../redux/features/forum/categories/categoriesThunk';
-import { selectCategoriesList, selectTagsList, selectTopicDetail } from '../../../redux/features/forum/forumSlice';
+import {
+  selectCategoriesList,
+  selectTagsList,
+  selectTopicDetail,
+} from '../../../redux/features/forum/forumSlice';
 import { GetTagsList } from '../../../redux/features/forum/forumThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
@@ -38,42 +42,46 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<string>('Carica file dal tuo dispositivo');
   const [iconVisible, setIconVisible] = useState<boolean>(false);
-   // const device = useAppSelector(selectDevice);
-  const tagsList = useAppSelector(selectTagsList)
+  // const device = useAppSelector(selectDevice);
+  const tagsList = useAppSelector(selectTagsList);
   const [tags, setTags] = useState<string[]>([]);
   const formDisabled = !!props.formDisabled;
-  const dispatch = useDispatch()
-  const categoriesList = useAppSelector(selectCategoriesList)
-  const topicDetail: { [key: string]: string | boolean } | undefined = useAppSelector(selectTopicDetail)
+  const dispatch = useDispatch();
+  const categoriesList = useAppSelector(selectCategoriesList);
+  const topicDetail: { [key: string]: string | boolean } | undefined =
+    useAppSelector(selectTopicDetail);
 
   useEffect(() => {
-    dispatch(GetCategoriesList({ type: 'community_categories' }))
-    dispatch(GetTagsList())
-  }, [])
+    dispatch(GetCategoriesList({ type: 'community_categories' }));
+    dispatch(GetTagsList());
+  }, []);
 
   useEffect(() => {
     if (topicDetail && !creation) {
       if (form) {
-        const populatedForm: formFieldI[] = Object.entries(topicDetail).map(([key, value]) => newFormField({
-          ...form[key],
-          value: value
-        }))
-        const tagsString = topicDetail.tags as string
-        setTags(tagsString.split(';'))
-        updateForm(newForm(populatedForm))
+        const populatedForm: formFieldI[] = Object.entries(topicDetail).map(
+          ([key, value]) =>
+            newFormField({
+              ...form[key],
+              value: value,
+            })
+        );
+        const tagsString = topicDetail.tags as string;
+        setTags(tagsString.split(';'));
+        updateForm(newForm(populatedForm));
       }
     }
-  }, [topicDetail])
+  }, [topicDetail]);
 
   useEffect(() => {
-    setIsFormValid(isValidForm)
+    setIsFormValid(isValidForm);
     //console.log(getFormValues());
-    
+
     sendNewValues({
       ...getFormValues(),
-      tags: tags
-    })
-  }, [form, tags])
+      tags: tags,
+    });
+  }, [form, tags]);
 
   const addDocument = () => {
     if (inputRef.current !== null) {
@@ -135,9 +143,9 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
           {...form?.category}
           wrapperClassName='col-12 col-lg-5'
           onInputChange={onInputChange}
-          options={categoriesList?.map(opt => ({
+          options={categoriesList?.map((opt) => ({
             label: opt.name,
-            value: opt.id
+            value: opt.id,
           }))}
           isDisabled={formDisabled}
           placeholder='Seleziona'
@@ -166,17 +174,19 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
         </div>
       </Form.Row>
       <Form.Row className={bootClass}>
-        <Select 
-      onChange={(e: any) => console.log(e.target.value)
-      }
-        options={tagsList.filter(t => !tags.includes(t.name)).map(opt => ({
-          label: opt.name,
-          value: opt.name
-        }))} 
-        wrapperClassName='col-12 px-0'
-        onInputChange={(value) => handleOnSubmit(value as string)}
-        placeholder='Digita la parola chiave e utilizza il completamento automatico per evitare errori di digitazione.'
-        isSearchable />
+        <Select
+          onChange={(e: any) => console.log(e.target.value)}
+          options={tagsList
+            .filter((t) => !tags.includes(t.name))
+            .map((opt) => ({
+              label: opt.name,
+              value: opt.name,
+            }))}
+          wrapperClassName='col-12 px-0'
+          onInputChange={(value) => handleOnSubmit(value as string)}
+          placeholder='Digita la parola chiave e utilizza il completamento automatico per evitare errori di digitazione.'
+          isSearchable
+        />
       </Form.Row>
       <Form.Row className={bootClass}>
         {tags.length ? (

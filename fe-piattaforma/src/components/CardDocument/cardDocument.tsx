@@ -3,7 +3,7 @@ import './cardDocument.scss';
 import iconFile from '../../../public/assets/img/icon-file-blue.png';
 /* import PDF from '/public/assets/img/pdf-icon-test.png';
 import MP4 from '/public/assets/img/mp4-icon-test.png';*/
-import { Icon } from 'design-react-kit';
+import { Col, Icon } from 'design-react-kit';
 import PublishingAuthority from './PublishingAuthority';
 import clsx from 'clsx';
 import { useAppSelector } from '../../redux/hooks';
@@ -66,27 +66,28 @@ const CardDocument: React.FC<CardDocumentI> = (props) => {
       onKeyDown={navigateTo}
       tabIndex={0}
     >
-      <div className='document-card-container__pre-title'>
-        <span className='font-weight-bold'>{typology}</span>
-        {date}
-      </div>
-      <p
-        className={clsx(
-          'document-card-container__title',
-          'mt-2',
-          'mb-3',
-          'h5',
-          'font-weight-bold'
-        )}
-      >
-        {title}
-      </p>
-      <div className='d-flex align-items-center my-3'>
-        <img src={iconFile} alt='icon-file' className='mr-3' />
-        <p className='document-card-container__description text-serif'>
-          {description}
+      <Col className='text-left'>
+        <div className='document-card-container__pre-title'>
+          <span className='font-weight-bold'>{typology}</span> - {date}
+        </div>
+        <p
+          className={clsx(
+            'document-card-container__title',
+            'mt-2',
+            'mb-3',
+            'h5',
+            'font-weight-bold'
+          )}
+        >
+          {title}
         </p>
-      </div>
+        <div className='d-flex align-items-center my-3'>
+          <img src={iconFile} alt='icon-file' className='mr-3' />
+          <p className='document-card-container__description text-serif'>
+            {description}
+          </p>
+        </div>
+      </Col>
       {!isHome && (
         <div className='d-flex flex-column'>
           <PublishingAuthority authority={authority} />

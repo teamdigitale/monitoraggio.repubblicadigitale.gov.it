@@ -1,10 +1,13 @@
 .card-community {
-  width: 100%;
   border: 1px solid #eceff1;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 80px rgba(0, 43, 85, 0.1);
   border-radius: 4px;
-  max-width: 364px;
+  width: 365px;
+  height: 232px;
   border-left: 4px solid #4392e0;
+  @media screen and (max-width: 1200px) {
+    width: 292px;
+  }
   
   &__pre-title {
     color: #455b71;

@@ -4,7 +4,7 @@ import BachecaDigitaleWidget from './components/BachecaDigitaleWidget/bachecaDig
 import CommunityWidget from './components/CommunityWidget/communityWidget';
 import DocumentsWidget from './components/DocumentiWidget/documentiWidget';
 import { Container } from 'design-react-kit';
-import useGuard from "../../../hooks/guard";
+import useGuard from '../../../hooks/guard';
 
 const Home: React.FC = () => {
   const { hasUserPermission } = useGuard();

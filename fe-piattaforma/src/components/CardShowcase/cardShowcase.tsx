@@ -9,7 +9,7 @@ import { selectDevice } from '../../redux/features/app/appSlice';
 import PublishingAuthority from '../CardDocument/PublishingAuthority';
 import { useNavigate } from 'react-router-dom';
 import HTMLParser from '../General/HTMLParser/HTMLParse';
-import coverPlaceholder from '/public/assets/img/img-bacheca-digitale-dettaglio.png'
+import coverPlaceholder from '/public/assets/img/img-bacheca-digitale-dettaglio.png';
 import _ from 'lodash';
 
 interface CommentI {
@@ -20,7 +20,7 @@ interface CommentI {
 }
 
 interface CardShowcaseI extends CardProps {
-  id?: string,
+  id?: string;
   title?: string;
   community?: string;
   description?: string;
@@ -100,7 +100,7 @@ const CardShowcase: React.FC<CardShowcaseI> = (props) => {
           marked ? 'showcase-card__body' : null
         )}
       >
-        <Col>
+        <Col className='text-left'>
           {category_label ? (
             <div
               className={clsx(
@@ -125,9 +125,15 @@ const CardShowcase: React.FC<CardShowcaseI> = (props) => {
               <HTMLParser html={description} />
             </CardText>
           ) : null}
-          {entity ? (<div>
-            <PublishingAuthority authority={_.capitalize(entity.toLowerCase())} />
-          </div>) : null}
+          {entity ? (
+            <div>
+              <PublishingAuthority
+                authority={_.capitalize(entity.toLowerCase())}
+              />
+            </div>
+          ) : (
+            <div className='pt-4 pb-3'></div>
+          )}
         </Col>
         <div
           className={clsx('d-flex', 'flex-row', 'my-3', 'justify-content-end')}

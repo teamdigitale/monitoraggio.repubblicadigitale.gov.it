@@ -16,22 +16,25 @@ import { selectDevice } from '../../redux/features/app/appSlice';
 import SocialBar from '../Comments/socialBar';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../../redux/features/modal/modalSlice';
-import ManageComment from '../../pages/administrator/AdministrativeArea/Entities/modals/manageComment';
 import coverPlaceholder from '/public/assets/img/img-bacheca-digitale-dettaglio.png'
 import HTMLParser from '../General/HTMLParser/HTMLParse';
+import { GetItemDetail, ManageItemEvent } from '../../redux/features/forum/forumThunk';
+import { selectUser } from '../../redux/features/user/userSlice';
 export interface AnteprimaBachecaNewsI {
+  id?: string;
   category_label?: string;
   date?: string;
   title?: string;
   description?: string;
   program_label?: string | undefined;
-  intervention?: string; 
+  intervention?: string;
   entity?: string | undefined;
   entity_type?: string | undefined;
   attachment?: string;
   cover?: string;
   likes?: number;
   views?: number;
+  user_like?: boolean;
   comment_count?: number;
   isModalPreview?: boolean;
   onDeleteNews?: () => void;
@@ -41,6 +44,7 @@ export interface AnteprimaBachecaNewsI {
 
 const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
   const {
+    id,
     category_label,
     date,
     title,
@@ -53,6 +57,7 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
     entity_type,
     likes,
     views,
+    user_like,
     comment_count,
     isModalPreview,
     onDeleteNews = () => ({}),
@@ -63,6 +68,7 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
   const device = useAppSelector(selectDevice);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dispatch = useDispatch();
+  const userId = useAppSelector(selectUser)?.id
 
   const newsDetailDropdownOptions = [
     {
@@ -149,7 +155,11 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
     >
       <div>
         <figure className='d-flex w-100 justify-content-center'>
-          <img src={cover ? cover : coverPlaceholder} alt='img' className='w-100' />
+          <img
+            src={cover ? cover : coverPlaceholder}
+            alt='img'
+            className='w-100'
+          />
         </figure>
       </div>
 
@@ -178,34 +188,41 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
           <div className='pb-4'>
             <HTMLParser html={description} />
           </div>
-          {attachment ? (<div className='d-flex justify-content-start'>
-            <Button
-              className={clsx(
-                'primary-color-b1',
-                'd-flex',
-                'justify-content-start',
-                'px-0',
-                'pb-5'
-              )}
-            >
-              <div className='d-flex align-items-center'>
-                <Icon
-                  icon='it-download'
-                  color='primary'
-                  size='sm'
-                  aria-label='Scarica allegato'
-                />
-                <a href='/' className='ml-2'>
-                  {' '}
-                  <p className='font-weight-bold h6 mb-0'>
+          {attachment ? (
+            <div className='d-flex justify-content-start'>
+              <Button
+                className={clsx(
+                  'primary-color-b1',
+                  'd-flex',
+                  'justify-content-start',
+                  'px-0',
+                  'pb-5'
+                )}
+              >
+                <div className='d-flex align-items-center'>
+                  <Icon
+                    icon='it-download'
+                    color='primary'
+                    size='sm'
+                    aria-label='Scarica allegato'
+                  />
+                  <a href='/' className='ml-2'>
                     {' '}
-                    Scarica allegato{' '}
-                  </p>{' '}
-                </a>
-              </div>
-            </Button>
-          </div>) : null}
-          <DetailCard program_label={program_label} intervention={intervention} entity={entity} entity_type={entity_type} />
+                    <p className='font-weight-bold h6 mb-0'>
+                      {' '}
+                      Scarica allegato{' '}
+                    </p>{' '}
+                  </a>
+                </div>
+              </Button>
+            </div>
+          ) : null}
+          <DetailCard
+            program_label={program_label}
+            intervention={intervention}
+            entity={entity}
+            entity_type={entity_type}
+          />
           {!isModalPreview && (
             <>
               <div className='border-box-container pt-5 mb-3'></div>
@@ -213,12 +230,25 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
                 views={views}
                 likes={likes}
                 comments={comment_count}
-                onLike={() => ({})}
+                user_like={user_like}
+                onLike={async () => {
+                  if (id) {
+                    if (user_like as boolean) {
+                      await dispatch(ManageItemEvent(id, 'unlike'))
+                    } else {
+                      await dispatch(ManageItemEvent(id, 'like'))
+                    }
+                    userId && dispatch(GetItemDetail(id, userId, 'board'))
+                  }
+                }}
                 onComment={() =>
                   dispatch(
                     openModal({
-                      id: 'addCommentModal',
-                      payload: { title: 'Aggiungi commento' },
+                      id: 'comment-modal',
+                      payload: { 
+                        title: 'Aggiungi commento',
+                        action: 'comment'
+                       },
                     })
                   )
                 }
@@ -227,7 +257,6 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
           )}
         </div>
       </div>
-      <ManageComment />
     </div>
   );
 };

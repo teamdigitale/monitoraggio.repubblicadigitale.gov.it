@@ -115,7 +115,8 @@ export const GetFilterValuesSurvey =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
-      const { codiceFiscale, codiceRuolo, idProgramma, idEnte } = getUserHeaders();
+      const { codiceFiscale, codiceRuolo, idProgramma, idEnte } =
+        getUserHeaders();
       const body = {
         cfUtente: codiceFiscale,
         codiceRuolo,
@@ -381,7 +382,7 @@ const getSchemaSection = (
 export interface SurveyResponseBodyI {
   'survey-id'?: string;
   'survey-status'?: string;
-  'stato'?: string;
+  stato?: string;
   'default-RFD'?: boolean;
   'default-SCD'?: boolean;
   'last-update'?: string;

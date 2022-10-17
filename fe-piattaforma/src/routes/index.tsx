@@ -263,16 +263,14 @@ const AppRoutes: React.FC = () => {
                   }
                 />
               ) : null}
-              {process.env.NODE_ENV === 'development' ? (
-                <Route
-                  path='/home/cerca'
-                  element={
-                    <ProtectedComponent visibleTo={[]}>
-                      <HomeSearch />
-                    </ProtectedComponent>
-                  }
-                />
-              ) : null}
+              <Route
+                path='/home/cerca'
+                element={
+                  <ProtectedComponent visibleTo={[]}>
+                    <HomeSearch />
+                  </ProtectedComponent>
+                }
+              />
               <Route
                 path='/report-dati'
                 element={
@@ -307,20 +305,14 @@ const AppRoutes: React.FC = () => {
             <Route path='/' element={<FullLayout />}>
               {/* Public Paths */}
               <Route path='/onboarding' element={<Onboarding />} />
-              <Route
-                path='/'
-                element={<AuthRedirect />}
-              />
+              <Route path='/' element={<AuthRedirect />} />
             </Route>
             <Route path='/' element={<FullLayout withBreadcrumb={false} />}>
               <Route
                 path='/servizi/questionario/:idQuestionario/online/:token'
                 element={<SurveyOnline />}
               />
-              <Route
-                path='/'
-                element={<AuthRedirect />}
-              />
+              <Route path='/' element={<AuthRedirect />} />
             </Route>
           </>
         )}

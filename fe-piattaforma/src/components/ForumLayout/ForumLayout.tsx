@@ -74,7 +74,6 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
   } = props;
 
   const device = useAppSelector(selectDevice);
-  const { sort } = filtersList;
   const dispatch = useDispatch();
 
   const [showChips, setShowChips] = useState<boolean>(false);
@@ -142,7 +141,7 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
     i: number,
     filterKey: string
   ) => {
-    if (filterKey === 'sort') return null;
+    if (filterKey === 'pillDropdown' || filterKey === 'sort') return null;
     if (!Array.isArray(filter) && filter) {
       return (
         <Chip key={i} className='mr-2 rounded-pill'>
@@ -195,9 +194,7 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
   };
 
   const handleSortFilterChange = ({ value }: { value: string }) => {
-    if (sort?.value !== value) {
-      dispatch(setForumFilters({ sort: [{ label: value, value }] }));
-    }
+    dispatch(setForumFilters({ sort: [{ label: value, value }] }));
   };
 
   return (

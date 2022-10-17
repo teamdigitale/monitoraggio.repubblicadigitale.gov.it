@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
-import { formFieldI } from '../../../../../utils/formHelper';
 import FormAddComment from '../../../../forms/formComments/formAddComment';
 
 const id = 'reportModal';
@@ -15,28 +14,25 @@ interface ManageReportFormI {
   creation?: boolean;
 }
 
-interface ManageReportI extends ManageReportFormI, withFormHandlerProps {}
+interface ManageReportI extends ManageReportFormI, withFormHandlerProps { }
 
 const ManageReport: React.FC<ManageReportI> = ({
   clearForm,
   formDisabled,
   creation = false,
 }) => {
-  const [newFormValues, setNewFormValues] = useState<{
-    [key: string]: formFieldI['value'];
-  }>({});
-  const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  const [newReport, setNewReport] = useState('');
   const dispatch = useDispatch();
 
   const handleSaveReport = () => {
-    console.log(newFormValues);
+    console.log(newReport);
   };
 
   return (
     <GenericModal
       id={id}
       primaryCTA={{
-        disabled: !isFormValid,
+        disabled: newReport.trim() !== '',
         label: creation ? 'Conferma' : 'Salva',
         onClick: handleSaveReport,
       }}
@@ -66,10 +62,9 @@ const ManageReport: React.FC<ManageReportI> = ({
       <FormAddComment
         creation={creation}
         formDisabled={!!formDisabled}
-        sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
-          setNewFormValues({ ...newData })
+        sendNewValues={(newReport: string) =>
+          setNewReport(newReport)
         }
-        setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
       />
     </GenericModal>
   );
