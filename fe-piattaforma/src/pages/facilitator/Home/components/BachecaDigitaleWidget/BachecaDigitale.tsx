@@ -51,7 +51,7 @@ const BachecaDigitale = () => {
   const dispatch = useDispatch();
 
   const { interventions, programs, categories, sort } = filtersList;
-  const { pageNumber } = pagination;
+  const { pageNumber, pageSize } = pagination;
 
   const handleOnChangePage = (
     pageNumber: number = pagination?.pageNumber,
@@ -65,8 +65,16 @@ const BachecaDigitale = () => {
   };
 
   const getPopularNews = async () => {
+    const itemPerPage = '12';
     const res = await dispatch(
-      GetNewsList({ sort: [{ label: 'likes', value: 'likes' }] }, false)
+      GetNewsList(
+        {
+          sort: [{ label: 'likes', value: 'likes' }],
+          page: [{ label: '0', value: '0' }],
+          items_per_page: [{ label: itemPerPage, value: itemPerPage }],
+        },
+        false
+      )
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -82,7 +90,7 @@ const BachecaDigitale = () => {
   };
 
   useEffect(() => {
-    //handleOnChangePage(1, 8);
+    handleOnChangePage(0, 9);
     dispatch(setPublishedContent(true));
     getPopularNews();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -91,7 +99,14 @@ const BachecaDigitale = () => {
   useEffect(() => {
     getNewsList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [interventions, programs, categories, sort?.[0], pageNumber]);
+  }, [
+    interventions,
+    programs,
+    categories,
+    sort?.[0]?.value,
+    pageNumber,
+    pageSize,
+  ]);
 
   useEffect(() => {
     getAllFilters();

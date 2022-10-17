@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { Container } from 'design-react-kit';
-import React, { useEffect, useState } from 'react';
+import React, { /* useEffect, */ useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   Accordion,
@@ -28,6 +28,8 @@ const PageTitleMobileMock = {
   title: 'Cerca',
 };
 
+const searchMinLength = 2;
+
 const HomeSearch = () => {
   const [visibleSearch, setVisibleSearch] = useState<boolean>(false);
   const newsList = useAppSelector(selectNewsList);
@@ -35,13 +37,16 @@ const HomeSearch = () => {
   const docsList = useAppSelector(selectDocsList);
   const device = useAppSelector(selectDevice);
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(GetItemsBySearch('search'));
-  }, []);
 
-  const handleSearch = () => {
-    console.log('Cerca');
-    setVisibleSearch(true);
+  const resetSearch = () => {
+    setVisibleSearch(false);
+  };
+
+  const handleSearch = (value: string) => {
+    if (value?.length >= searchMinLength) {
+      setVisibleSearch(true);
+      dispatch(GetItemsBySearch(value));
+    }
   };
   return (
     <div>
@@ -54,17 +59,16 @@ const HomeSearch = () => {
       )}
       <Container className='pb-5'>
         <SearchBar
-          onInputChange={(newValue) =>
-            console.log('home-search newValue', newValue)
-          }
           placeholder='Lorem ipsum dolor sit amet lorem ipsum dolor sit'
           isClearable
           id='home-search'
           className={clsx('w-75', device.mediaIsPhone && 'w-100 pl-3')}
           onSubmit={handleSearch}
+          minLength={searchMinLength}
+          onReset={resetSearch}
         />
         {!visibleSearch ? (
-          <div style={{ height: '379px' }}></div>
+          <div style={{ height: '379px' }} />
         ) : (
           <>
             <h1

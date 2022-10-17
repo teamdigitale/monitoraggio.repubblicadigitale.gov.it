@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 
 interface HTMLParseI {
-    html?: string | undefined
+  html?: string | undefined;
 }
 
 const HTMLParser = ({ html = '<p></p>' }: HTMLParseI) => (
-    <div dangerouslySetInnerHTML={{ __html: html }} />
-)
+  <div dangerouslySetInnerHTML={{ __html: html }} />
+);
 
-export default HTMLParser
+export default HTMLParser;

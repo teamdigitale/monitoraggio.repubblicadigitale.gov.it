@@ -239,7 +239,6 @@ const ProgramsDetails: React.FC = () => {
     [CRUDActionTypes.PREVIEW]: (td: TableRowI | string) => {
       if (typeof td === 'string') {
         setSurveyPreviewId(td);
-        setNewSurveyDefaultId(td);
       }
       dispatch(
         openModal({

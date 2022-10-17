@@ -4,29 +4,42 @@ import TextArea from '../../../components/Form/textarea';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
-import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
+import { newForm, newFormField } from '../../../utils/formHelper';
 
 interface addCommentI extends withFormHandlerProps {
   formDisabled?: boolean;
-  sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
+  sendNewValues?: (comment: string) => void;
   setIsFormValid?: (param: boolean | undefined) => void;
+  newValue?: string;
   creation?: boolean;
 }
 
 const FormAddComment: React.FC<addCommentI> = (props) => {
   const {
     form,
-    isValidForm,
+    newValue,
     onInputChange = () => ({}),
     sendNewValues = () => ({}),
-    setIsFormValid = () => ({}),
     getFormValues = () => ({}),
+    updateForm = () => ({})
   } = props;
   const formDisabled = !!props.formDisabled;
 
   useEffect(() => {
-    setIsFormValid?.(isValidForm);
-    sendNewValues?.(getFormValues?.());
+    if (newValue) updateForm(newForm([
+      newFormField({
+        field: 'text',
+        id: 'text',
+        required: true,
+        value: newValue
+      })
+    ]))
+  }, [newValue])
+
+  useEffect(() => {
+    const newText = getFormValues().text
+
+    if (newText) sendNewValues(newText as string)
   }, [form]);
 
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
@@ -38,13 +51,11 @@ const FormAddComment: React.FC<addCommentI> = (props) => {
     >
       <Form.Row className={bootClass}>
         <TextArea
-          {...form?.descrizione}
+          {...form?.text}
           rows={6}
           cols={100}
           maxLength={1500}
           className='mb-1 mt-3'
-          label='Testo'
-          placeholder=' '
           onInputChange={onInputChange}
           required
         />
@@ -60,9 +71,8 @@ const FormAddComment: React.FC<addCommentI> = (props) => {
 
 const form = newForm([
   newFormField({
-    field: 'testo',
-    label: 'Testo',
-    id: 'testo',
+    field: 'text',
+    id: 'text',
     required: true,
   }),
 ]);

@@ -29,7 +29,7 @@ const DocumentsDetails = () => {
 
   useEffect(() => {
     dispatch(GetItemDetail('id', 'userId', 'document'));
-    dispatch(GetCommentsList('itemId'));
+    dispatch(GetCommentsList('itemId', 'userId'));
   }, []);
 
   const backButton = (
@@ -106,7 +106,7 @@ const DocumentsDetails = () => {
           <div className='border-box-utility ml-4'></div>
         ) : null}
       </div>
-      <CommentSection isDocument isCommentSection />
+      <CommentSection section="ducuments" />
       <div className='border mt-3'></div>
       <ManageDocument />
       <ManageReport />

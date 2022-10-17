@@ -12,20 +12,23 @@ import withFormHandler, {
 import { selectEntityFiltersOptions } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { GetEntityFilterValues } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
 import { GetCategoriesList } from '../../../redux/features/forum/categories/categoriesThunk';
-import { selectCategoriesList, selectNewsDetail } from '../../../redux/features/forum/forumSlice';
+import {
+  selectCategoriesList,
+  selectNewsDetail,
+} from '../../../redux/features/forum/forumSlice';
 import { useAppSelector } from '../../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
 
 interface publishNewsI extends withFormHandlerProps {
   formDisabled?: boolean;
-  newFormValues: { [key: string]: formFieldI['value']; };
+  newFormValues: { [key: string]: formFieldI['value'] };
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   setIsFormValid?: (param: boolean | undefined) => void;
   creation?: boolean;
   onPreviewClick: () => void;
 }
 
-const entity = "progetto"
+const entity = 'progetto';
 
 const FormPublishNews: React.FC<publishNewsI> = (props) => {
   const {
@@ -42,83 +45,86 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
     onPreviewClick,
   } = props;
 
-  const dispatch = useDispatch()
-
+  const dispatch = useDispatch();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRefImg = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<string>('Carica documenti, foto ecc');
   const [iconVisible, setIconVisible] = useState<boolean>(false);
   const [image, setImage] = useState<string>('Carica immagine di copertina');
-  const [editorText, setEditorText] = useState('<p></p>')
-  const [highlighted, setHighlighted] = useState(false)
-  const [enableComments, setEnableComments] = useState(false)
+  const [editorText, setEditorText] = useState('<p></p>');
+  const [highlighted, setHighlighted] = useState(false);
+  const [enableComments, setEnableComments] = useState(false);
   const formDisabled = !!props.formDisabled;
-  const newsDetail: { [key: string]: string | boolean } | undefined = useAppSelector(selectNewsDetail)
-  const policiesList = useAppSelector(selectEntityFiltersOptions)["policies"]
-  const categoriesList = useAppSelector(selectCategoriesList)
-  const programsList = useAppSelector(selectEntityFiltersOptions)["programmi"]
-
-
-
+  const newsDetail: { [key: string]: string | boolean } | undefined =
+    useAppSelector(selectNewsDetail);
+  const policiesList = useAppSelector(selectEntityFiltersOptions)['policies'];
+  const categoriesList = useAppSelector(selectCategoriesList);
+  const programsList = useAppSelector(selectEntityFiltersOptions)['programmi'];
 
   useEffect(() => {
     dispatch(GetEntityFilterValues({ entity, dropdownType: 'policies' }));
     dispatch(GetEntityFilterValues({ entity, dropdownType: 'programmi' }));
-    dispatch(GetCategoriesList({ type: 'board_categories' }))
+    dispatch(GetCategoriesList({ type: 'board_categories' }));
     // if (creation) {
     //   clearForm()
     //   setEnableComments(false)
     //   setHighlighted(false)
     //   setEditorText('<p></p>')
     // }
-  }, [])
-
+  }, []);
 
   useEffect(() => {
     if (newFormValues) {
       if (form) {
-        const populatedForm: formFieldI[] = Object.entries(newFormValues).map(([key, value]) => newFormField({
-          ...form[key],
-          value: value || ""
-        }))
+        const populatedForm: formFieldI[] = Object.entries(newFormValues).map(
+          ([key, value]) =>
+            newFormField({
+              ...form[key],
+              value: value || '',
+            })
+        );
 
-        updateForm(newForm(populatedForm))
+        updateForm(newForm(populatedForm));
       }
-      setEnableComments(newFormValues.enable_comments as boolean || false)
-      setHighlighted(newFormValues.highlighted as boolean || false)
-      setEditorText(newFormValues.description as string || "")
+      setEnableComments((newFormValues.enable_comments as boolean) || false);
+      setHighlighted((newFormValues.highlighted as boolean) || false);
+      setEditorText((newFormValues.description as string) || '');
     }
-
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (newsDetail && !creation && _.isEmpty(newFormValues)) {
       if (form) {
-        const populatedForm: formFieldI[] = Object.entries(newsDetail).map(([key, value]) => newFormField({
-          ...form[key],
-          value: value
-        }))
+        const populatedForm: formFieldI[] = Object.entries(newsDetail).map(
+          ([key, value]) =>
+            newFormField({
+              ...form[key],
+              value: value,
+            })
+        );
 
-        updateForm(newForm(populatedForm))
+        updateForm(newForm(populatedForm));
       }
-      setEnableComments(!!newsDetail.enable_comments)
-      setHighlighted(!!newsDetail.highlighted)
-      setEditorText(newsDetail.description as string)
+      setEnableComments(!!newsDetail.enable_comments);
+      setHighlighted(!!newsDetail.highlighted);
+      setEditorText(newsDetail.description as string);
     }
   }, [newsDetail]);
 
   useEffect(() => {
     setIsFormValid(isValidForm && editorText.trim() !== '<p></p>');
+    console.log(enableComments);
+    
     sendNewValues({
       ...getFormValues(),
       program: getFormValues().program?.toString(),
       description: editorText,
       highlighted: highlighted,
-      enable_comments: enableComments
+      enable_comments: enableComments,
     });
+    
   }, [form, highlighted, enableComments, editorText]);
-
 
   const addPicture = () => {
     if (inputRefImg.current !== null) {
@@ -188,24 +194,24 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
       <Form.Row className={clsx('mb-5', bootClass)}>
         <Select
           {...form?.intervention}
-          label="Intervento"
+          label='Intervento'
           wrapperClassName='col-12 col-lg-5 mb-0 pb-5'
           onInputChange={onInputChange}
-          options={policiesList?.map(opt => ({
+          options={policiesList?.map((opt) => ({
             label: opt.label,
-            value: opt.value as string
+            value: opt.value as string,
           }))}
           isDisabled={formDisabled}
           placeholder='Seleziona'
         />
         <Select
           {...form?.program}
-          label="Programma"
+          label='Programma'
           wrapperClassName='col-12 col-lg-5 mb-0 pb-2'
           onInputChange={onInputChange}
-          options={programsList?.map(opt => ({
+          options={programsList?.map((opt) => ({
             label: opt.label,
-            value: opt.value as number
+            value: opt.value as number,
           }))}
           isDisabled={formDisabled}
           placeholder='Seleziona'
@@ -214,12 +220,12 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
       <Form.Row className={bootClass}>
         <Select
           {...form?.category}
-          label="Categoria"
+          label='Categoria'
           wrapperClassName='col-12 col-lg-5'
           onInputChange={onInputChange}
-          options={categoriesList?.map(opt => ({
+          options={categoriesList?.map((opt) => ({
             label: opt.name,
-            value: opt.id
+            value: opt.id,
           }))}
           isDisabled={formDisabled}
           placeholder='Seleziona'
@@ -345,8 +351,16 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
       </Form.Row>
       <Form.Row className={bootClass}>
         <div className='d-flex flex-row w-75 align-items-center pt-5 pb-3'>
-          <Toggle defaultChecked={enableComments} onChange={() => setEnableComments(prev => !prev)} label='Abilita commenti' />
-          <Toggle defaultChecked={highlighted} onChange={() => setHighlighted(prev => !prev)} label='News in evidenza' />
+          <Toggle
+            defaultChecked={enableComments}
+            onChange={() => setEnableComments((prev) => !prev)}
+            label='Abilita commenti'
+          />
+          <Toggle
+            defaultChecked={highlighted}
+            onChange={() => setHighlighted((prev) => !prev)}
+            label='News in evidenza'
+          />
         </div>
       </Form.Row>
       <Form.Row className={bootClass}>
@@ -386,15 +400,15 @@ const form = newForm([
   //   type: 'text',
   //   // required: true,
   // }),
-  newFormField({
-    field: 'attachment',
-    id: 'attachment',
-    type: 'file',
-  }),
-  newFormField({
-    field: 'cover',
-    id: 'cover',
-    type: 'file',
-  }),
+  // newFormField({
+  //   field: 'attachment',
+  //   id: 'attachment',
+  //   type: 'file',
+  // }),
+  // newFormField({
+  //   field: 'cover',
+  //   id: 'cover',
+  //   type: 'file',
+  // }),
 ]);
 export default withFormHandler({ form }, FormPublishNews);

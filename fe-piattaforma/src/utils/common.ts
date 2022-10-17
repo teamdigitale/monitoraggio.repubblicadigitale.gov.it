@@ -18,16 +18,15 @@ import { RolePermissionI } from '../redux/features/roles/rolesSlice';
 import { formFieldI } from './formHelper';
 import { DeviceI } from '../redux/features/app/appSlice';
 
-
 export const getUserIdsFromNotification = (notification: string) => {
   // ex. Utente userId:$userId$ ha segnalato il post di authorId:$authorId$
-  const splittedNotification = notification.split('$')
+  const splittedNotification = notification.split('$');
 
   return {
     userId: splittedNotification[1],
-    authorId: splittedNotification[3]
-  }
-}
+    authorId: splittedNotification[3],
+  };
+};
 
 export const formatDate = (date?: string) => {
   if (date) {
@@ -102,10 +101,10 @@ export const mapOptionsCitizens = (
 export const filterObjectByKey = (obj: any, filteringKey: string) =>
   obj
     ? Object.fromEntries(
-      Object.keys(obj)
-        .filter((key) => key.includes(filteringKey) && obj[key])
-        .map((key) => [key, obj[key] as string])
-    )
+        Object.keys(obj)
+          .filter((key) => key.includes(filteringKey) && obj[key])
+          .map((key) => [key, obj[key] as string])
+      )
     : {};
 
 export const CRUDActionTypes = {
@@ -230,19 +229,19 @@ export const MenuRoutes = [
     label: 'Community',
     path: '/community',
     id: 'tab-community',
-    visible: [process.env.NODE_ENV === 'development' ? 'visible' : 'hidden'],
+    visible: ['tab.comm'],
   }),
   newMenuItem({
     label: 'Bacheca digitale',
     path: '/bacheca-digitale',
     id: 'tab-bacheca-digitale',
-    visible: [process.env.NODE_ENV === 'development' ? 'visible' : 'hidden'],
+    visible: ['tab.bach'],
   }),
   newMenuItem({
     label: 'Documenti',
     path: '/documenti',
     id: 'tab-documenti',
-    visible: [process.env.NODE_ENV === 'development' ? 'visible' : 'hidden'],
+    visible: ['tab.doc'],
   }),
 ];
 
@@ -322,6 +321,7 @@ export const transformFiltersToQueryParams = (filters: {
   [key: string]: { label: string; value: string }[] | undefined;
 }) => {
   let filterString = '';
+  console.log('filters', filters);
   Object.keys(filters)?.forEach((filter: string) => {
     if (filter === 'criterioRicerca' || filter === 'filtroCriterioRicerca') {
       if (filters[filter])
@@ -331,15 +331,16 @@ export const transformFiltersToQueryParams = (filters: {
           filter +
           '=' +
           filters[filter];
-    } else {
-      filters[filter]?.map(
+    } else if (filters[filter]?.length) {
+      console.log(filters[filter]);
+      (filters[filter] || []).map(
         (value: OptionType) =>
-        (filterString =
-          filterString +
-          (filterString !== '' ? '&' : '') +
-          filter +
-          '=' +
-          value?.value)
+          (filterString =
+            filterString +
+            (filterString !== '' ? '&' : '') +
+            filter +
+            '=' +
+            value?.value)
       );
     }
   });

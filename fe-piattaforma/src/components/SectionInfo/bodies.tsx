@@ -37,7 +37,7 @@ export const surveyBody = `
     </p>
       `;
 
-export const openDataBody = (dateCoverage: string, lastDate: string) => (`
+export const openDataBody = (dateCoverage: string, lastDate: string) => `
 <ul class="section-info-list" style="padding-bottom: 24px; padding-left: 24px;">
 <li >
   <strong>Nome Dataset: 
@@ -64,7 +64,7 @@ export const openDataBody = (dateCoverage: string, lastDate: string) => (`
   </strong><a href="https://www.dati.gov.it/content/italian-open-data-license-v20" target="_blank">Italian Open Data License v2.0</a>
 </li>
 </ul>
-`);
+`;
 
 export const openDataSubtitle = `
 <p class='text-muted' style='padding-bottom: 24px;'>

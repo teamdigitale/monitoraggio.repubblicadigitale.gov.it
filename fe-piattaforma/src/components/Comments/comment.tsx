@@ -22,6 +22,9 @@ import AvatarInitials, {
   AvatarSizes,
   AvatarTextSizes,
 } from '../Avatar/AvatarInitials/avatarInitials';
+import { GetCommentsList, ManageCommentEvent } from '../../redux/features/forum/comments/commentsThunk';
+import { useParams } from 'react-router-dom';
+import { selectUser } from '../../redux/features/user/userSlice';
 
 /*  when we will make the pages we will do a .map() ro render all the comments and add the "thread" as shown in FIGMA*/
 
@@ -31,13 +34,13 @@ export interface CommentI {
   date: string | undefined;
   author?: string;
   likes: number;
+  user_like?: boolean;
   views?: number;
   replies: any[];
-  isDocument?: boolean;
   isAnswer?: boolean;
-  isCommentSection?: boolean;
   thread?: boolean;
   noBorder?: boolean;
+  section: 'board' | 'community' | 'documents';
   onDeleteComment?: () => void;
   onEditComment?: () => void;
 }
@@ -47,8 +50,10 @@ const Comment: React.FC<CommentI> = (props) => {
     body,
     date,
     // author,
+    section,
     replies,
     likes,
+    user_like,
     views,
     id,
     isAnswer,
@@ -62,6 +67,9 @@ const Comment: React.FC<CommentI> = (props) => {
   const [showReplies, setShowReplies] = useState<boolean>(false);
   const device = useAppSelector(selectDevice);
   const dispatch = useDispatch();
+
+  const { id: itemId } = useParams()
+  const userId = useAppSelector(selectUser)?.id
 
   const commentDropdown = () => (
     <Dropdown
@@ -170,6 +178,7 @@ const Comment: React.FC<CommentI> = (props) => {
   return (
     <div
       className={clsx(
+        'pb-3',
         !isAnswer
           ? 'comment-container__comment-card'
           : 'pt-3 comment-container__answer'
@@ -245,19 +254,34 @@ const Comment: React.FC<CommentI> = (props) => {
         <div style={{ width: '94%' }}>{body}</div>
         <div className='comment-container__border mt-4 mb-2'></div>
         <SocialBar
-          replies={replies.length}
-          views={views}
-          onShowReplies={() => setShowReplies((prev) => !prev)}
-          showReplies={showReplies}
+          replies={section === 'community' ? replies.length : undefined}
+          views={section === 'community' ? views : undefined}
+          onShowReplies={section === 'community' ? () => setShowReplies((prev) => !prev) : undefined}
+          showReplies={section === 'community' ? showReplies : undefined}
           likes={likes}
-          onLike={() => ({})}
-          onComment={() =>
+          user_like={user_like}
+          onLike={async () => {
+            if (id) {
+              if (user_like as boolean) {
+                await dispatch(ManageCommentEvent(id, 'unlike'))
+              } else {
+                await dispatch(ManageCommentEvent(id, 'like'))
+              }
+
+              itemId && userId && dispatch(GetCommentsList(itemId, userId))
+            }
+          }}
+          onComment={section === 'community' ? () =>
             dispatch(
               openModal({
-                id: 'addCommentModal',
-                payload: { title: 'Aggiungi risposta al commento' },
+                id: 'comment-modal',
+                payload: {
+                  title: 'Aggiungi risposta al commento',
+                  action: 'reply',
+                  id: id
+                },
               })
-            )
+            ) : undefined
           }
         />
       </div>

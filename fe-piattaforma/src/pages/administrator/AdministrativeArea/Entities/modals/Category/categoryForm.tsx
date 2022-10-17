@@ -17,9 +17,9 @@ interface CategoriesInfoI {
   noIdField?: boolean | undefined;
 }
 
-interface CategoriesFormI extends CategoriesInfoI, withFormHandlerProps { }
+interface CategoriesFormI extends CategoriesInfoI, withFormHandlerProps {}
 
-const categoryForm: React.FC<CategoriesFormI> = (props) => {
+const CategoryForm: React.FC<CategoriesFormI> = (props) => {
   const {
     /*   setFormValues = () => ({}), */
     form,
@@ -37,9 +37,9 @@ const categoryForm: React.FC<CategoriesFormI> = (props) => {
   } = props;
 
   useEffect(() => {
-    setIsFormValid(isValidForm)
-    sendNewValues({ ...getFormValues() })
-  }, [form])
+    setIsFormValid(isValidForm);
+    sendNewValues({ ...getFormValues() });
+  }, [form]);
 
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
   return (
@@ -88,4 +88,4 @@ const form = newForm([
   }),
 ]);
 
-export default withFormHandler({ form }, categoryForm);
+export default withFormHandler({ form }, CategoryForm);

@@ -1,37 +1,61 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import { useDispatch } from 'react-redux';
-import { formFieldI } from '../../../../../utils/formHelper';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
-import { closeModal } from '../../../../../redux/features/modal/modalSlice';
+import { closeModal, selectModalPayload } from '../../../../../redux/features/modal/modalSlice';
 import FormAddComment from '../../../../forms/formComments/formAddComment';
+import { useAppSelector } from '../../../../../redux/hooks';
+import { useParams } from 'react-router-dom';
+import { CreateComment, GetCommentsList, ReplyComment, UpdateComment } from '../../../../../redux/features/forum/comments/commentsThunk';
+import { selectUser } from '../../../../../redux/features/user/userSlice';
 
-const id = 'addCommentModal';
+const modalId = 'comment-modal';
 interface ManageCommentFormI {
   formDisabled?: boolean;
   creation?: boolean;
 }
 
-interface ManageCommentI extends withFormHandlerProps, ManageCommentFormI {}
+interface ManageCommentI extends withFormHandlerProps, ManageCommentFormI { }
 
 const ManageComment: React.FC<ManageCommentI> = ({
   clearForm,
   formDisabled,
   creation = false,
 }) => {
-  const [newFormValues, setNewFormValues] = useState<{
-    [key: string]: formFieldI['value'];
-  }>({});
-  const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  const [newComment, setNewComment] = useState('')
   const dispatch = useDispatch();
-  const handleSaveComment = () => {
-    console.log(newFormValues);
+  const payload = useAppSelector(selectModalPayload)
+  const { id } = useParams()
+  const userId = useAppSelector(selectUser)?.id
+
+  useEffect(() => {
+    if (payload && payload.body) setNewComment(payload.body)
+  }, [payload])
+
+  const handleSaveComment = async () => {
+    if (newComment.trim() !== '' && id && payload && userId) {
+      switch (payload.action) {
+        case 'comment':
+          await dispatch(CreateComment(id, newComment as string))
+          break;
+        case 'edit':
+          await dispatch(UpdateComment(payload.id, newComment))
+          break;
+        case 'reply':
+          await dispatch(ReplyComment(payload.id, newComment))
+          break;
+        default:
+          break;
+      }
+      dispatch(GetCommentsList(id, userId))
+      dispatch(closeModal())
+    }
   };
   return (
     <GenericModal
-      id={id}
+      id={modalId}
       primaryCTA={{
-        disabled: !isFormValid,
+        disabled: newComment.trim() === '',
         label: creation ? 'Conferma' : 'Salva',
         onClick: handleSaveComment,
       }}
@@ -47,10 +71,10 @@ const ManageComment: React.FC<ManageCommentI> = ({
       <FormAddComment
         creation={creation}
         formDisabled={!!formDisabled}
-        sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
-          setNewFormValues({ ...newData })
+        newValue={newComment}
+        sendNewValues={(newComment: string) =>
+          setNewComment(newComment)
         }
-        setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
       />
     </GenericModal>
   );

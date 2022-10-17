@@ -7,15 +7,16 @@ import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
 
 export interface SocialI {
-  onLike?: () => void;
-  onComment?: () => void;
+  onLike?: (() => void) | undefined;
+  onComment?: (() => void) | undefined;
   views?: number | undefined;
   likes?: number | undefined;
   comments?: number | undefined;
   replies?: number | undefined;
   downloads?: number | undefined;
   showReplies?: boolean | undefined;
-  onShowReplies?: () => void;
+  user_like?: boolean | undefined;
+  onShowReplies?: (() => void) | undefined;
 }
 
 const SocialBar: React.FC<SocialI> = (props) => {
@@ -27,6 +28,7 @@ const SocialBar: React.FC<SocialI> = (props) => {
     views,
     likes,
     comments,
+    user_like,
     downloads,
     replies,
   } = props;
@@ -108,8 +110,7 @@ const SocialBar: React.FC<SocialI> = (props) => {
                 <Icon icon={CuoreBluPieno} size='xs' aria-label='like' />
                 {device.mediaIsDesktop ? (
                   <p className='primary-color font-weight-bold pl-2 letter-spacing'>
-                    {' '}
-                    MI PIACE{' '}
+                    {user_like ? 'NON MI PIACE' : 'MI PIACE'}
                   </p>
                 ) : null}
               </div>

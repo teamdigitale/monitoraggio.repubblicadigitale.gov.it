@@ -195,14 +195,16 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
       </div>
       {!device.mediaIsPhone ? (
         <div className='mb-4'>
-          {attachment ? (<>
-            <Icon icon='it-download' size='sm' color='primary' />
-            <Button color='link' className='btn-download-file'>
-              <b>
-                <u>Scarica allegato</u>
-              </b>
-            </Button>{' '}
-          </>) : null}
+          {attachment ? (
+            <>
+              <Icon icon='it-download' size='sm' color='primary' />
+              <Button color='link' className='btn-download-file'>
+                <b>
+                  <u>Scarica allegato</u>
+                </b>
+              </Button>{' '}
+            </>
+          ) : null}
           {external_link ? (
             <>
               <Icon icon='it-external-link' size='sm' color='primary' />
@@ -226,21 +228,21 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
       )}
       {tags ? (
         <div className='d-flex flex-row w-100 mb-4 align-items-center'>
-          <b className='mr-2'>
-            TAG:
-          </b>
+          <b className='mr-2'>TAG:</b>
           <div className='d-flex align-items-center'>
             {tags.split(';').map((tag, i) => (
-              <Chip key={i} className="mr-2">
-                <ChipLabel>
-                  {tag}
-                </ChipLabel>
+              <Chip key={i} className='mr-2'>
+                <ChipLabel>{tag}</ChipLabel>
               </Chip>
             ))}
           </div>
         </div>
       ) : null}
-      <DetailCard isCommunity={isCommunity} entity={entity} entity_type={entity_type} />
+      <DetailCard
+        isCommunity={isCommunity}
+        entity={entity}
+        entity_type={entity_type}
+      />
       <div className='border-box-container pt-5 mb-4'></div>
       <SocialBar
         comments={comment_count}

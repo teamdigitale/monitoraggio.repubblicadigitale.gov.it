@@ -9,9 +9,7 @@ export interface ForumStateI {
       | undefined;
   };
   filterOptions: {
-    [key: string]:
-      | { label: string; id: string | number | any[] }[]
-      | undefined;
+    [key: string]: { label: string; id: string | number | any[] }[] | undefined;
   };
   pagination: PaginationI;
   news: {
@@ -116,6 +114,7 @@ export const forumSlice = createSlice({
     setNotificationsList: (state, action: PayloadAction<any>) => {
       state.notifications = [...action.payload];
     },
+    resetForumRecords: () => initialState,
     cleanForumFilters: (state, action: PayloadAction<any>) => {
       if (action.payload) {
         let newFilterValue = null;
@@ -155,6 +154,7 @@ export const {
   setTagsList,
   setReportsList,
   setNotificationsList,
+  resetForumRecords,
   cleanForumFilters,
 } = forumSlice.actions;
 

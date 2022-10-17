@@ -5,14 +5,20 @@ import './userPublishedContents.scss';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import { useNavigate } from 'react-router-dom';
+import useGuard from "../../hooks/guard";
 
 const UserPublishedContents = () => {
   const device = useAppSelector(selectDevice);
   const navigate = useNavigate();
+  const { hasUserPermission } = useGuard();
 
   const navigateTo = () => {
     navigate('/area-personale/contenuti-pubblicati');
   };
+
+  if (!hasUserPermission(['btn.cont'])) {
+    return null;
+  }
 
   return (
     <div

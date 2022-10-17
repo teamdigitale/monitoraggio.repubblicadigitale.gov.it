@@ -30,11 +30,11 @@ const CommunityDetails = () => {
   const dispatch = useDispatch();
   const topicDetails = useAppSelector(selectTopicDetail);
   const comments = useAppSelector(selectCommentsList);
-  const { id } = useParams()
-  const userId = useAppSelector(selectUser)?.id
+  const { id } = useParams();
+  const userId = useAppSelector(selectUser)?.id;
 
   useEffect(() => {
-    (userId && id) && dispatch(GetItemDetail(id, userId, 'community'));
+    userId && id && dispatch(GetItemDetail(id, userId, 'community'));
     // dispatch(GetCommentsList('itemId'));
   }, [id, userId]);
 
@@ -74,10 +74,11 @@ const CommunityDetails = () => {
             'letter-spacing'
           )}
         >
-          {`${!showAllComments
-            ? `LEGGI TUTTI I COMMENTI`
-            : `NASCONDI TUTTI I COMMENTI`
-            }`}
+          {`${
+            !showAllComments
+              ? `LEGGI TUTTI I COMMENTI`
+              : `NASCONDI TUTTI I COMMENTI`
+          }`}
         </p>
         <span
           className='primary-color pl-1 letter-spacing'
@@ -106,7 +107,7 @@ const CommunityDetails = () => {
         onEditClick={() => dispatch(openModal({ id: 'topicModal' }))}
         onReportClick={() => dispatch(openModal({ id: 'reportModal' }))}
       />
-      <CommentSection isThread />
+      <CommentSection section="community" />
       <div className='border-bottom-box-comments mt-5'></div>
       <div
         className={clsx(

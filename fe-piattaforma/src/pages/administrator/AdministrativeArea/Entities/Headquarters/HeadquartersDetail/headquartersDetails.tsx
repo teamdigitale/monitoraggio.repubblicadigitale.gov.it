@@ -321,13 +321,13 @@ const HeadquartersDetails = () => {
           authorityType &&
           headquarterDetails?.stato !== entityStatus.TERMINATO
           ? {
-              cta: `Aggiungi ${programPolicy !== 'SCD' ? title: 'Volontari'}`,
+              cta: `Aggiungi ${programPolicy !== 'SCD' ? title : 'Volontari'}`,
               ctaAction: () =>
                 dispatch(
                   openModal({
                     id: formTypes.FACILITATORE,
                     payload: {
-                      title: `Aggiungi ${title}`,
+                      title: `Aggiungi ${programPolicy !== 'SCD' ? title: 'Volontari'}`,
                     },
                   })
                 ),
@@ -371,7 +371,9 @@ const HeadquartersDetails = () => {
             ? itemAccordionList?.map((item, index) => (
                 <Accordion
                   key={index}
-                  title={(programPolicy !== 'SCD' ? item.title: 'Volontari') || ''}
+                  title={
+                    (programPolicy !== 'SCD' ? item.title : 'Volontari') || ''
+                  }
                   totElem={item.items.length}
                   cta={authorityId ? getAccordionCTA(item.title).cta : null}
                   onClickCta={getAccordionCTA(item.title)?.ctaAction}

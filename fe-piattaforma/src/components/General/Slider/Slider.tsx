@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { Icon } from 'design-react-kit';
 import React, { useState } from 'react';
 import './slider.scss';
@@ -14,9 +15,10 @@ export const formatSlides = (list: any[], slideLength: number) => {
 
 interface SliderPropsI {
   children: JSX.Element[];
+  isItemsHome?: boolean | undefined;
 }
 
-const Slider = ({ children }: SliderPropsI) => {
+const Slider = ({ children, isItemsHome = false }: SliderPropsI) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const onScroll = () => {
@@ -44,21 +46,31 @@ const Slider = ({ children }: SliderPropsI) => {
 
   return (
     <div className='slider'>
-      {currentSlide > 0 && (
+      {currentSlide > 0 && !isItemsHome && (
         <Icon
           onClick={() => scrollTo(currentSlide - 1)}
           icon='it-chevron-left'
-          className='icon icon-light arrow left'
+          className={clsx(
+            'icon',
+            'icon-light',
+            'arrow left',
+            !isItemsHome && 'right-alignment'
+          )}
         />
       )}
-      {currentSlide < children.length - 1 && (
+      {currentSlide < children.length - 1 && !isItemsHome && (
         <Icon
           onClick={() => scrollTo(currentSlide + 1)}
           icon='it-chevron-right'
-          className='icon icon-light arrow right'
+          className={clsx(
+            'icon',
+            'icon-light',
+            'arrow right',
+            !isItemsHome && 'right-alignment'
+          )}
         />
       )}
-      <div className='slides mb-3' onScroll={onScroll}>
+      <div className='slides mb-5' onScroll={onScroll}>
         {children.map((slide, i) => (
           <div key={i} id={`slide-${i}`} className='slide'>
             {slide}

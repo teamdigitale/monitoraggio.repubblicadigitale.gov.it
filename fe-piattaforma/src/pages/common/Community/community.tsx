@@ -67,8 +67,16 @@ const Community = () => {
   };
 
   const getPopularTopics = async () => {
+    const itemPerPage = '12';
     const res = await dispatch(
-      GetTopicsList({ sort: [{ label: 'likes', value: 'likes' }] }, false)
+      GetTopicsList(
+        {
+          sort: [{ label: 'likes', value: 'likes' }],
+          page: [{ label: '0', value: '0' }],
+          items_per_page: [{ label: itemPerPage, value: itemPerPage }],
+        },
+        false
+      )
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -84,7 +92,7 @@ const Community = () => {
   };
 
   useEffect(() => {
-    //handleOnChangePage(1, 8);
+    handleOnChangePage(0, 9);
     dispatch(setPublishedContent(true));
     getPopularTopics();
     // eslint-disable-next-line react-hooks/exhaustive-deps

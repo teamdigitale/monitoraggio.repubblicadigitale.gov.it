@@ -5,31 +5,40 @@ import { useNavigate, useParams } from 'react-router-dom';
 import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 import AnteprimaBachecaNews from '../../../../../components/AnteprimaNews/anteprimaNews';
 import CommentSection from '../../../../../components/Comments/commentSection';
-import { GetCommentsList } from '../../../../../redux/features/forum/comments/commentsThunk';
+import { DeleteComment, GetCommentsList } from '../../../../../redux/features/forum/comments/commentsThunk';
 import { selectNewsDetail } from '../../../../../redux/features/forum/forumSlice';
-import { DeleteItem, GetItemDetail } from '../../../../../redux/features/forum/forumThunk';
+import { DeleteItem, GetItemDetail, ManageItemEvent } from '../../../../../redux/features/forum/forumThunk';
 import {
   closeModal,
   openModal,
 } from '../../../../../redux/features/modal/modalSlice';
 import { selectUser } from '../../../../../redux/features/user/userSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
+import ManageComment from '../../../../administrator/AdministrativeArea/Entities/modals/manageComment';
 import ManageNews from '../../../../administrator/AdministrativeArea/Entities/modals/manageNews';
 import ManageReport from '../../../../administrator/AdministrativeArea/Entities/modals/manageReport';
 
 const BachecaDetails = () => {
   const navigate = useNavigate();
   const newsDetail = useAppSelector(selectNewsDetail);
-  const userId = useAppSelector(selectUser)?.id
+  const userId = useAppSelector(selectUser)?.id;
   const dispatch = useDispatch();
-  const { id } = useParams()
+  const { id } = useParams();
 
   useEffect(() => {
     if (id && userId) {
+      dispatch(ManageItemEvent(id, 'view'))
       dispatch(GetItemDetail(id, userId, 'board'));
-      dispatch(GetCommentsList(id));
+      dispatch(GetCommentsList(id, userId));
     }
   }, [id, userId]);
+
+
+  const onCommentDelete = async (commentId: string) => {
+    await dispatch(DeleteComment(commentId));
+    id && userId && dispatch(GetCommentsList(id, userId))
+  }
+
 
   const backButton = (
     <Button onClick={() => navigate(-1)} className='px-0'>
@@ -62,27 +71,31 @@ const BachecaDetails = () => {
               payload: {
                 text: 'Confermi di voler eliminare questo contenuto?',
                 id: id,
-                entity: 'board'
+                entity: 'board',
               },
             })
           )
         }
       />
-      <CommentSection isDocument isCommentSection isPreviewNews />
+      <CommentSection section="board" />
       <ManageReport />
       <ManageNews />
+      <ManageComment />
       <DeleteEntityModal
         onClose={() => dispatch(closeModal())}
         onConfirm={(payload: any) => {
           switch (payload.entity) {
             case 'board':
-              dispatch(DeleteItem(payload.id))
-              navigate(-1)
+              dispatch(DeleteItem(payload.id));
+              navigate(-1);
               break;
-
+            case 'comment':
+              onCommentDelete(payload.id)
+              break;
             default:
               break;
           }
+          dispatch(closeModal())
         }}
       />
     </div>

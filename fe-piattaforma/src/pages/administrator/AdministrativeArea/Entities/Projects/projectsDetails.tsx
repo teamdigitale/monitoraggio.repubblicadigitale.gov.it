@@ -643,7 +643,9 @@ const ProjectsDetails = () => {
             ...sede,
             fullInfo: {
               ente_ref: sede.enteDiRiferimento,
-              [projectDetails?.policy !== 'SCD' ? 'nFacilitatori':'nVolontari']: sede.nrFacilitatori,
+              [projectDetails?.policy !== 'SCD'
+                ? 'nFacilitatori'
+                : 'nVolontari']: sede.nrFacilitatori,
               serviziErogati: sede.serviziErogati,
             },
             actions: {

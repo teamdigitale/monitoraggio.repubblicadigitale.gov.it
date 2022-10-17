@@ -28,7 +28,7 @@ const UserPublishedContentsPage = () => {
   const docsList = useAppSelector(selectDocsList);
 
   useEffect(() => {
-    dispatch(GetItemsByUser('userId'));
+    dispatch(GetItemsByUser());
   }, []);
 
   return (

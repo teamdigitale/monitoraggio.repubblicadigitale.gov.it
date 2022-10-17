@@ -50,7 +50,7 @@
   padding-left: 0;
 }
 
-.input-search > .form-control[type='text'] {
+.input-search > .form-control[type="text"][value]:not([value=""]) {
   font-weight: 400;
   border: none;
   overflow: hidden;
@@ -59,7 +59,7 @@
   padding-left: 0;
 }
 
-.input-text-bold > .form-control[type='text'] {
+.input-text-bold > .form-control[type="text"][value]:not([value=""]) {
   font-weight: 600;
   font-size: rem(20px);
 }

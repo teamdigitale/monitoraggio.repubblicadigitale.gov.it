@@ -229,8 +229,8 @@ const HeaderDesktop: React.FC<HeaderI> = ({
           </div>
         </div>
       </DropdownToggle>
-      <DropdownMenu role='area gestionale' tag='ul'>
-        <LinkList role='lista area gestionale'>
+      <DropdownMenu role='menu' tag='ul'>
+        <LinkList role='list'>
           {hasUserPermission(['btn.gest.ruoli']) ? (
             <li role='none' className='px-4'>
               <Button

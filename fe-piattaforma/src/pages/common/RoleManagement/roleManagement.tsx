@@ -174,7 +174,11 @@ const RoleManagement = () => {
             />
           ) : (
             <div className='pb-5'>
-              <EmptySection title='Non sono presenti ruoli' icon='it-note' withIcon />
+              <EmptySection
+                title='Non sono presenti ruoli'
+                icon='it-note'
+                withIcon
+              />
             </div>
           )}
         </GenericSearchFilterTableLayout>
