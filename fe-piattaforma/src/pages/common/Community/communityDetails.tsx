@@ -1,19 +1,18 @@
-import clsx from 'clsx';
+// import clsx from 'clsx';
 import { Button, Icon } from 'design-react-kit';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import CommentSection from '../../../components/Comments/commentSection';
 import SectionDetail from '../../../components/DocumentDetail/sectionDetail';
-import { selectDevice } from '../../../redux/features/app/appSlice';
+// import { selectDevice } from '../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../redux/hooks';
-import { Comment } from '../../../components';
+// import { Comment } from '../../../components';
 import { useDispatch } from 'react-redux';
 import {
   selectCommentsList,
   selectTopicDetail,
 } from '../../../redux/features/forum/forumSlice';
-import { GetItemDetail } from '../../../redux/features/forum/forumThunk';
-//import { GetCommentsList } from '../../../redux/features/forum/comments/commentsThunk';
+import { DeleteItem, GetItemDetail, ManageItemEvent } from '../../../redux/features/forum/forumThunk';
 import ManageTopic from '../../administrator/AdministrativeArea/Entities/modals/manageTopic';
 import ManageReport from '../../administrator/AdministrativeArea/Entities/modals/manageReport';
 import {
@@ -22,20 +21,25 @@ import {
 } from '../../../redux/features/modal/modalSlice';
 import DeleteEntityModal from '../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 import { selectUser } from '../../../redux/features/user/userSlice';
+import ManageComment from '../../administrator/AdministrativeArea/Entities/modals/manageComment';
+import { DeleteComment, GetCommentsList } from '../../../redux/features/forum/comments/commentsThunk';
 
 const CommunityDetails = () => {
   const navigate = useNavigate();
-  const device = useAppSelector(selectDevice);
-  const [showAllComments, setShowAllComments] = useState<boolean>(false);
+  // const device = useAppSelector(selectDevice);
+  // const [showAllComments, setShowAllComments] = useState<boolean>(false);
   const dispatch = useDispatch();
   const topicDetails = useAppSelector(selectTopicDetail);
-  const comments = useAppSelector(selectCommentsList);
+  const commentsList = useAppSelector(selectCommentsList);
   const { id } = useParams();
   const userId = useAppSelector(selectUser)?.id;
 
   useEffect(() => {
-    userId && id && dispatch(GetItemDetail(id, userId, 'community'));
-    // dispatch(GetCommentsList('itemId'));
+    if (userId && id) {
+      dispatch(ManageItemEvent(id, 'view'))
+      dispatch(GetItemDetail(id, userId, 'community'));
+      dispatch(GetCommentsList(id, userId));
+    }
   }, [id, userId]);
 
   const backButton = (
@@ -49,44 +53,51 @@ const CommunityDetails = () => {
     </Button>
   );
 
-  const AllComments = (
-    <Button
-      size='xs'
-      className='p-0 d-flex flex-row align-items-center'
-      onClick={() => setShowAllComments(!showAllComments)}
-    >
-      <div
-        className={clsx(
-          'd-flex',
-          'flex-row',
-          'align-items-center',
-          device.mediaIsDesktop
-            ? 'justify-content-end'
-            : 'justify-content-start py-3'
-        )}
-      >
-        <p
-          className={clsx(
-            'primary-color',
-            'font-weight-bold',
-            !device.mediaIsPhone ? 'pl-2' : 'pr-2',
-            'text-nowrap',
-            'letter-spacing'
-          )}
-        >
-          {`${
-            !showAllComments
-              ? `LEGGI TUTTI I COMMENTI`
-              : `NASCONDI TUTTI I COMMENTI`
-          }`}
-        </p>
-        <span
-          className='primary-color pl-1 letter-spacing'
-          style={{ fontWeight: 400 }}
-        >{`(${comments.length})`}</span>
-      </div>
-    </Button>
-  );
+  // const AllComments = (
+  //   <Button
+  //     size='xs'
+  //     className='p-0 d-flex flex-row align-items-center'
+  //     onClick={() => setShowAllComments(!showAllComments)}
+  //   >
+  //     <div
+  //       className={clsx(
+  //         'd-flex',
+  //         'flex-row',
+  //         'align-items-center',
+  //         device.mediaIsDesktop
+  //           ? 'justify-content-end'
+  //           : 'justify-content-start py-3'
+  //       )}
+  //     >
+  //       <p
+  //         className={clsx(
+  //           'primary-color',
+  //           'font-weight-bold',
+  //           !device.mediaIsPhone ? 'pl-2' : 'pr-2',
+  //           'text-nowrap',
+  //           'letter-spacing'
+  //         )}
+  //       >
+  //         {`${!showAllComments
+  //             ? `LEGGI TUTTI I COMMENTI`
+  //             : `NASCONDI TUTTI I COMMENTI`
+  //           }`}
+  //       </p>
+  //       <span
+  //         className='primary-color pl-1 letter-spacing'
+  //         style={{ fontWeight: 400 }}
+  //       >{`(${comments.length})`}</span>
+  //     </div>
+  //   </Button>
+  // );
+
+  const onCommentDelete = async (commentId: string) => {
+    await dispatch(DeleteComment(commentId));
+    if (id && userId) {
+      dispatch(GetCommentsList(id, userId))
+      dispatch(GetItemDetail(id, userId, 'community'))
+    }
+  }
 
   return (
     <div className='container'>
@@ -100,6 +111,8 @@ const CommunityDetails = () => {
               id: 'delete-entity',
               payload: {
                 text: 'Confermi di voler eliminare questo contenuto?',
+                id: id,
+                entity: 'community'
               },
             })
           )
@@ -107,8 +120,8 @@ const CommunityDetails = () => {
         onEditClick={() => dispatch(openModal({ id: 'topicModal' }))}
         onReportClick={() => dispatch(openModal({ id: 'reportModal' }))}
       />
-      <CommentSection section="community" />
-      <div className='border-bottom-box-comments mt-5'></div>
+      {commentsList.length ? <CommentSection section="community" /> : null}
+      {/* <div className='border-bottom-box-comments mt-5'></div>
       <div
         className={clsx(
           device.mediaIsPhone && 'd-flex justify-content-center',
@@ -121,12 +134,26 @@ const CommunityDetails = () => {
         {showAllComments
           ? comments.map((comment, i) => <Comment key={i} {...comment} />)
           : null}
-      </div>
+      </div> */}
       <ManageTopic />
       <ManageReport />
+      <ManageComment />
       <DeleteEntityModal
         onClose={() => dispatch(closeModal())}
-        onConfirm={() => console.log()}
+        onConfirm={(payload: any) => {
+          switch (payload.entity) {
+            case 'community':
+              dispatch(DeleteItem(payload.id));
+              navigate(-1);
+              break;
+            case 'comment':
+              onCommentDelete(payload.id)
+              break;
+            default:
+              break;
+          }
+          dispatch(closeModal())
+        }}
       />
     </div>
   );

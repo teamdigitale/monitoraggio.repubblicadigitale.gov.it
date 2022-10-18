@@ -6,7 +6,7 @@ import DeleteEntityModal from '../../../../../components/AdministrativeArea/Enti
 import AnteprimaBachecaNews from '../../../../../components/AnteprimaNews/anteprimaNews';
 import CommentSection from '../../../../../components/Comments/commentSection';
 import { DeleteComment, GetCommentsList } from '../../../../../redux/features/forum/comments/commentsThunk';
-import { selectNewsDetail } from '../../../../../redux/features/forum/forumSlice';
+import { selectCommentsList, selectNewsDetail } from '../../../../../redux/features/forum/forumSlice';
 import { DeleteItem, GetItemDetail, ManageItemEvent } from '../../../../../redux/features/forum/forumThunk';
 import {
   closeModal,
@@ -21,6 +21,7 @@ import ManageReport from '../../../../administrator/AdministrativeArea/Entities/
 const BachecaDetails = () => {
   const navigate = useNavigate();
   const newsDetail = useAppSelector(selectNewsDetail);
+  const commentsList = useAppSelector(selectCommentsList);
   const userId = useAppSelector(selectUser)?.id;
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -77,7 +78,7 @@ const BachecaDetails = () => {
           )
         }
       />
-      <CommentSection section="board" />
+      {(newsDetail.enable_comments && commentsList.length) ? <CommentSection section="board" /> : null}
       <ManageReport />
       <ManageNews />
       <ManageComment />

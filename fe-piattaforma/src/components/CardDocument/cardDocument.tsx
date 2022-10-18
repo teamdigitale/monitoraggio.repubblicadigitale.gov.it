@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 /* import File from '/public/assets/img/icon-file-fill.png'; */
 
 interface CardDocumentI {
+  id?: string;
   typology?: string;
   date?: string;
   title?: string;
@@ -25,6 +26,7 @@ interface CardDocumentI {
 
 const CardDocument: React.FC<CardDocumentI> = (props) => {
   const {
+    id,
     typology,
     date,
     title,
@@ -52,7 +54,7 @@ const CardDocument: React.FC<CardDocumentI> = (props) => {
   }; */
   const navigate = useNavigate();
   const navigateTo = () => {
-    navigate('/documenti/dettaglio');
+    navigate(`/documenti/${id}`);
   };
 
   return (

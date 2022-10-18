@@ -1,0 +1,23 @@
+.notifications-card-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 53px;
+
+    @media screen and (max-width: 670px) {
+        flex-direction: column;
+        margin: 0 10px;
+    }
+}
+.notifications-container {
+    border-top: 1px solid #c2c7cc !important;
+    &__column-message-list{
+        background-color: #fbfbfb;
+        max-height: 500px;
+        overflow-y: scroll;
+    }
+}
+.buttons-container {
+    display: flex;
+    justify-content: flex-end;
+}

@@ -32,6 +32,7 @@ export interface AnteprimaBachecaNewsI {
   entity_type?: string | undefined;
   attachment?: string;
   cover?: string;
+  enable_comments?: boolean;
   likes?: number;
   views?: number;
   user_like?: boolean;
@@ -58,6 +59,7 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
     likes,
     views,
     user_like,
+    enable_comments,
     comment_count,
     isModalPreview,
     onDeleteNews = () => ({}),
@@ -241,16 +243,17 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
                     userId && dispatch(GetItemDetail(id, userId, 'board'))
                   }
                 }}
-                onComment={() =>
+                onComment={!!enable_comments ? () =>
                   dispatch(
                     openModal({
                       id: 'comment-modal',
-                      payload: { 
+                      payload: {
                         title: 'Aggiungi commento',
-                        action: 'comment'
-                       },
+                        action: 'comment',
+                        entity: 'board'
+                      },
                     })
-                  )
+                  ) : undefined
                 }
               />
             </>

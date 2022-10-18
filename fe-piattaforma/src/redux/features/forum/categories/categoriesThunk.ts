@@ -28,7 +28,7 @@ export const GetCategoriesList =
       );
       // const res = await API.get(`/category/retrieve`)
       if (res) {
-        dispatch(setCategoriesList([...res.data.data.items]));
+        dispatch(setCategoriesList(res.data.data.items || []));
       }
     } catch (error) {
       console.log('GetCategoriesList error', error);

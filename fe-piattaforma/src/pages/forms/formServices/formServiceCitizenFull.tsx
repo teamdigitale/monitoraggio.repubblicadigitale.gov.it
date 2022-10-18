@@ -1,15 +1,8 @@
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
-import {
-  Form,
-  Input,
-  PrefixPhone,
-  Select,
-  SelectMultiple,
-} from '../../../components';
+import { Form, Input, PrefixPhone, Select } from '../../../components';
 import CheckboxGroup from '../../../components/Form/checkboxGroup';
 import { OptionType } from '../../../components/Form/select';
-import { OptionTypeMulti } from '../../../components/Form/selectMultiple';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
@@ -133,7 +126,9 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
     const tmpForm = FormHelper.onInputChange(form, value, field);
     const referenceBoolean = !tmpForm[4]?.value;
     tmpForm[3].required = referenceBoolean;
-    if(referenceBoolean === false){ tmpForm[3].valid = true; }
+    if (referenceBoolean === false) {
+      tmpForm[3].valid = true;
+    }
     tmpForm[5].required = !referenceBoolean;
     tmpForm[6].required = !referenceBoolean;
     updateForm(tmpForm);
@@ -270,7 +265,43 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
             />
           );
         }
-        // multiple select if enumLevel1 & enumLevel2
+        return (
+          <Input
+            {...field}
+            className={clsx('mr-3', 'mb-3')}
+            col='col-12 col-lg-6'
+            onInputBlur={onInputChange}
+            label={`${field?.label}`}
+            required={field.required || false}
+          />
+        );
+      }
+      default:
+        return '';
+    }
+  };
+
+  return (
+    <Form id='form-citizen' className='mt-5' formDisabled={formDisabled}>
+      <div className='d-inline-flex flex-wrap w-100'>
+        {form &&
+          Object.keys(form).map((key) => (
+            <React.Fragment key={key}>
+              {getAnswerType(form[key])}
+            </React.Fragment>
+          ))}
+      </div>
+    </Form>
+  );
+};
+
+const form = newForm([]);
+
+export default withFormHandler({ form }, FormServiceCitizenFull);
+
+/*
+// OLD MULTIPLE SELECT - DELETE
+// multiple select if enumLevel1 & enumLevel2
         if (
           form &&
           field.format === 'multiple-select' &&
@@ -358,36 +389,5 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
             />
           );
         }
-        return (
-          <Input
-            {...field}
-            className={clsx('mr-3', 'mb-3')}
-            col='col-12 col-lg-6'
-            onInputBlur={onInputChange}
-            label={`${field?.label}`}
-            required={field.required || false}
-          />
-        );
-      }
-      default:
-        return '';
-    }
-  };
-
-  return (
-    <Form id='form-citizen' className='mt-5' formDisabled={formDisabled}>
-      <div className='d-inline-flex flex-wrap w-100'>
-        {form &&
-          Object.keys(form).map((key) => (
-            <React.Fragment key={key}>
-              {getAnswerType(form[key])}
-            </React.Fragment>
-          ))}
-      </div>
-    </Form>
-  );
-};
-
-const form = newForm([]);
-
-export default withFormHandler({ form }, FormServiceCitizenFull);
+ 
+ */

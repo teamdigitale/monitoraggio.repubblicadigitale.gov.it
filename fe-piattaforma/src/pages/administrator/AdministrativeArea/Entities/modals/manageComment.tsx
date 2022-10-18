@@ -8,6 +8,7 @@ import { useAppSelector } from '../../../../../redux/hooks';
 import { useParams } from 'react-router-dom';
 import { CreateComment, GetCommentsList, ReplyComment, UpdateComment } from '../../../../../redux/features/forum/comments/commentsThunk';
 import { selectUser } from '../../../../../redux/features/user/userSlice';
+import { GetItemDetail } from '../../../../../redux/features/forum/forumThunk';
 
 const modalId = 'comment-modal';
 interface ManageCommentFormI {
@@ -29,14 +30,15 @@ const ManageComment: React.FC<ManageCommentI> = ({
   const userId = useAppSelector(selectUser)?.id
 
   useEffect(() => {
-    if (payload && payload.body) setNewComment(payload.body)
+    if (payload) setNewComment(payload.body || '')
   }, [payload])
 
   const handleSaveComment = async () => {
     if (newComment.trim() !== '' && id && payload && userId) {
       switch (payload.action) {
         case 'comment':
-          await dispatch(CreateComment(id, newComment as string))
+          await dispatch(CreateComment(id, newComment as string));
+          userId && dispatch(GetItemDetail(id, userId, payload.entity || 'community'));
           break;
         case 'edit':
           await dispatch(UpdateComment(payload.id, newComment))
@@ -47,7 +49,9 @@ const ManageComment: React.FC<ManageCommentI> = ({
         default:
           break;
       }
+      
       dispatch(GetCommentsList(id, userId))
+      setNewComment('')
       dispatch(closeModal())
     }
   };

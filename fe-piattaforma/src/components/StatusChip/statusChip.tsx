@@ -15,7 +15,7 @@ interface StatusChipI {
 const statusTypes = {
   COMPLETE: 'COMPLETATO',
   DRAFT: 'IN BOZZA',
-  INACTIVE: 'NON_ATTIVO',
+  INACTIVE: 'NON ATTIVO',
   ACTIVE: 'ATTIVO',
   NOT_SENT: 'NON INVIATO',
   SENT: 'INVIATO',
@@ -108,7 +108,7 @@ const StatusChip: React.FC<StatusChipI> = (props) => {
                 'chip-label__chip-height'
             )}
           >
-            {status?.toUpperCase()}
+            {status?.toUpperCase().replace('_', ' ')}
           </ChipLabel>
         </Chip>
       </span>

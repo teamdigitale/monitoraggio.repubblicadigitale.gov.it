@@ -13,6 +13,12 @@ import { Button, Icon } from 'design-react-kit';
 import clsx from 'clsx';
 import TextArea from '../../../components/Form/textarea';
 import './formForum.scss';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../../redux/hooks';
+import { selectCategoriesList, selectDocDetail } from '../../../redux/features/forum/forumSlice';
+import { selectEntityFiltersOptions } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { GetEntityFilterValues } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
+import { GetCategoriesList } from '../../../redux/features/forum/categories/categoriesThunk';
 
 interface uploadDocumentI extends withFormHandlerProps {
   formDisabled?: boolean;
@@ -21,29 +27,15 @@ interface uploadDocumentI extends withFormHandlerProps {
   creation?: boolean;
 }
 
-export const documentFormDropdownOptions = {
-  intervento: [
-    { label: 'RFD', value: 'RFD' },
-    { label: 'int2', value: 'int2' },
-    { label: 'int3', value: 'int3' },
-  ],
-  programma: [
-    { label: 'Programma 1 nome breve', value: 'Programma 1 nome breve' },
-    { label: 'prgm2', value: 'prgm2' },
-    { label: 'prgm3', value: 'prgm3' },
-  ],
-  categoria: [
-    { label: 'Brochure', value: 'Brochure' },
-    { label: 'ctg2', value: 'ctg2' },
-    { label: 'ctg3', value: 'ctg3' },
-  ],
-};
+const entity = 'progetto';
 
 const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
   const {
     // setFormValues = () => ({}),
     form,
     isValidForm,
+    creation,
+    updateForm = () => ({}),
     onInputChange = () => ({}),
     sendNewValues = () => ({}),
     setIsFormValid = () => ({}),
@@ -51,30 +43,46 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
   } = props;
 
   const formDisabled = !!props.formDisabled;
-  const onInputDataChange = (
-    value: formFieldI['value'],
-    field?: formFieldI['field']
-  ) => {
-    onInputChange?.(value, field);
-    sendNewValues?.(getFormValues?.());
-  };
-
-  // useEffect(() => {
-  //   if (formData) {
-  //     setFormValues(formData);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [formData]);
-
-  useEffect(() => {
-    setIsFormValid?.(isValidForm);
-    sendNewValues?.(getFormValues?.());
-  }, [form]);
-
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<string>('Carica file dal tuo dispositivo');
   const [iconVisible, setIconVisible] = useState<boolean>(false);
+  const dispatch = useDispatch();
+  const categoriesList = useAppSelector(selectCategoriesList);
+  const programsList = useAppSelector(selectEntityFiltersOptions)['programmi'];
+  const policiesList = useAppSelector(selectEntityFiltersOptions)['policies'];
+  const docDetail: { [key: string]: string | boolean } | undefined =
+    useAppSelector(selectDocDetail);
+
+  useEffect(() => {
+    dispatch(GetEntityFilterValues({ entity, dropdownType: 'policies' }));
+    dispatch(GetEntityFilterValues({ entity, dropdownType: 'programmi' }));
+    dispatch(GetCategoriesList({ type: 'document_categories' }));
+  }, [])
+
+  useEffect(() => {
+    if (docDetail && !creation) {
+      if (form) {
+        const populatedForm: formFieldI[] = Object.entries(docDetail).map(
+          ([key, value]) =>
+            newFormField({
+              ...form[key],
+              value: value,
+            })
+        );
+
+        updateForm(newForm(populatedForm));
+      }
+    }
+  }, [docDetail])
+
+  useEffect(() => {
+    setIsFormValid(isValidForm);
+    sendNewValues({
+      ...getFormValues(),
+      program: getFormValues().program?.toString()
+    });
+  }, [form]);
 
   const addDocument = () => {
     if (inputRef.current !== null) {
@@ -106,7 +114,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
     >
       <Form.Row className={bootClass}>
         <Input
-          {...form?.titolo}
+          {...form?.title}
           required
           col='col-lg-12 col-12 mb-0'
           label='Titolo'
@@ -123,39 +131,49 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
       </Form.Row>
       <Form.Row className={clsx('mb-5', bootClass)}>
         <Select
-          {...form?.intervento}
-          wrapperClassName='col-12 col-lg-5 mb-0 pb-5'
-          onInputChange={onInputDataChange}
-          options={documentFormDropdownOptions['intervento']}
+          {...form?.program}
+          wrapperClassName='col-12 col-lg-5 mb-0 pb-2'
+          onInputChange={onInputChange}
+          options={programsList?.map((opt) => ({
+            label: opt.label,
+            value: opt.value as number,
+          }))}
           isDisabled={formDisabled}
           placeholder='Seleziona'
         />
         <Select
-          {...form?.programma}
-          wrapperClassName='col-12 col-lg-5 mb-0 pb-2'
-          onInputChange={onInputDataChange}
-          options={documentFormDropdownOptions['programma']}
+          {...form?.intervention}
+          wrapperClassName='col-12 col-lg-5 mb-0 pb-5'
+          onInputChange={onInputChange}
+          options={policiesList?.map((opt) => ({
+            label: opt.label,
+            value: opt.value as string,
+          }))}
           isDisabled={formDisabled}
           placeholder='Seleziona'
         />
       </Form.Row>
       <Form.Row className={bootClass}>
         <Select
-          {...form?.categoria}
+          {...form?.category}
           wrapperClassName='col-12 col-lg-5'
-          onInputChange={onInputDataChange}
-          options={documentFormDropdownOptions['categoria']}
+          onInputChange={onInputChange}
+          options={categoriesList?.map((opt) => ({
+            label: opt.name,
+            value: opt.id,
+          }))}
           isDisabled={formDisabled}
           placeholder='Seleziona'
         />
       </Form.Row>
       <Form.Row className={bootClass}>
         <TextArea
-          {...form?.descrizione}
+          {...form?.description}
           rows={6}
           cols={100}
           maxLength={800}
           className='mb-1 mt-3'
+          onInputChange={onInputChange}
           placeholder=' '
         />
       </Form.Row>
@@ -223,7 +241,8 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
       </Form.Row>
       <Form.Row className={bootClass}>
         <Input
-          {...form?.inserisciUrl}
+          {...form?.external_link}
+          onInputChange={onInputChange}
           placeholder='Inserisci il link a un contenuto esterno'
           col='col-lg-12 col-12 px-0 mb-5'
           className='px-0'
@@ -235,46 +254,46 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
 const form = newForm([
   newFormField({
     //..CommonFields?
-    field: 'titolo',
-    id: 'titolo',
+    field: 'title',
+    id: 'title',
     required: true,
   }),
   newFormField({
-    field: 'intervento',
-    id: 'intervento',
+    field: 'intervention',
+    id: 'intervention',
     label: 'Intervento',
     type: 'select',
     required: true,
   }),
   newFormField({
-    field: 'programma',
-    id: 'programma',
+    field: 'program',
+    id: 'program',
     label: 'Programma',
     type: 'select',
     required: true,
   }),
   newFormField({
-    field: 'categoria',
-    id: 'categoria',
+    field: 'category',
+    id: 'category',
     label: 'Categoria',
     type: 'select',
     required: true,
   }),
   newFormField({
-    field: 'descrizione',
-    id: 'descrizione',
+    field: 'description',
+    id: 'description',
     label: 'Descrizione',
     required: true,
     type: 'textarea',
   }),
+  // newFormField({
+  //   field: 'allegaFile',
+  //   id: 'allegaFile',
+  //   type: 'file',
+  // }),
   newFormField({
-    field: 'allegaFile',
-    id: 'allegaFile',
-    type: 'file',
-  }),
-  newFormField({
-    field: 'inserisciUrl',
-    id: 'inserisciUrl',
+    field: 'external_link',
+    id: 'external_link',
     type: 'url',
   }),
 ]);

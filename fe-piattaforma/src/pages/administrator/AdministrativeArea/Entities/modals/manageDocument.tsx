@@ -1,22 +1,27 @@
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import ConfirmItemCreation from '../../../../../components/ConfirmItemCreation/confirmItemCreation';
 import GenericModal, {
   CallToAction,
 } from '../../../../../components/Modals/GenericModal/genericModal';
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
+import { selectEntityFiltersOptions } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { CreateItem, GetItemDetail, GetItemsList, UpdateItem } from '../../../../../redux/features/forum/forumThunk';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
+import { selectProfile, selectUser } from '../../../../../redux/features/user/userSlice';
+import { useAppSelector } from '../../../../../redux/hooks';
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormLoadDocument from '../../../../forms/formForum/formLoadDocument';
 
-const id = 'documentModal';
+const modalId = 'documentModal';
 interface ManageDocumentFormI {
   formDisabled?: boolean;
   creation?: boolean;
 }
 
-interface ManageDocumentI extends withFormHandlerProps, ManageDocumentFormI {}
+interface ManageDocumentI extends withFormHandlerProps, ManageDocumentFormI { }
 
 const ManageDocument: React.FC<ManageDocumentI> = ({
   clearForm,
@@ -29,6 +34,57 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
   const [step, setStep] = useState<'form' | 'confirm'>('form');
   const dispatch = useDispatch();
+  const { id } = useParams()
+  const userProfile = useAppSelector(selectProfile);
+  const programsList = useAppSelector(selectEntityFiltersOptions)['programmi'];
+  const userId = useAppSelector(selectUser)?.id;
+
+  const handleSaveDoc = async () => {
+    if (id) {
+      await dispatch(UpdateItem(
+        id,
+        {
+          ...newFormValues,
+          program_label: programsList?.find(
+            (p) => p.value === parseInt(newFormValues.program as string)
+          )?.label,
+          entity:
+            userProfile?.idProgetto || userProfile?.idProgramma
+              ? userProfile.nomeEnte
+              : userProfile?.descrizioneRuolo,
+          entity_type: userProfile?.idProgetto
+            ? 'Ente gestore di progetto'
+            : userProfile?.idProgramma
+              ? 'Ente gestore di programma'
+              : '',
+        },
+        'document'
+      ));
+      userId && dispatch(GetItemDetail(id, userId, 'document'))
+    } else {
+      await dispatch(CreateItem(
+        {
+          ...newFormValues,
+          program_label: programsList?.find(
+            (p) => p.value === parseInt(newFormValues.program as string)
+          )?.label,
+          entity:
+            userProfile?.idProgetto || userProfile?.idProgramma
+              ? userProfile.nomeEnte
+              : userProfile?.descrizioneRuolo,
+          entity_type: userProfile?.idProgetto
+            ? 'Ente gestore di progetto'
+            : userProfile?.idProgramma
+              ? 'Ente gestore di programma'
+              : '',
+        },
+        'document'
+      ));
+      dispatch(GetItemsList('document'))
+    }
+    setNewFormValues({})
+    setStep('confirm')
+  }
 
   let content = <span></span>;
 
@@ -50,9 +106,8 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
     case 'confirm':
       content = (
         <ConfirmItemCreation
-          description={`Documento ${
-            creation ? 'caricato' : 'modificato'
-          } correttamente!`}
+          description={`Documento ${creation ? 'caricato' : 'modificato'
+            } correttamente!`}
         />
       );
       break;
@@ -66,10 +121,7 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
       primaryCTA: {
         disabled: !isFormValid,
         label: creation ? 'Conferma' : 'Salva',
-        onClick: () => {
-          setStep('confirm');
-          console.log(newFormValues);
-        },
+        onClick: () => handleSaveDoc(),
       },
       secondaryCTA: {
         label: 'Annulla',
@@ -91,7 +143,7 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
 
   return (
     <GenericModal
-      id={id}
+      id={modalId}
       primaryCTA={stepsCTA[step].primaryCTA}
       secondaryCTA={(stepsCTA[step].secondaryCTA as CallToAction) || null}
       centerButtons

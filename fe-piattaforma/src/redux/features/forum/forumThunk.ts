@@ -27,7 +27,7 @@ export const proxyCall = async (
   return await API.post('/drupal/forward', {
     url: `/api${url}`,
     metodoHttp: httpMethod,
-    body: body ? JSON.stringify(body) : '',
+    body: body ? JSON.stringify(body) : null,
     ...filePayload,
   });
 };
@@ -609,14 +609,29 @@ export const CreateItem =
     try {
       dispatch(showLoader());
       dispatch({ ...CreateItemAction });
-      // console.log(entity, JSON.stringify(payload));
-
-      await proxyCall(`/${entity}/item/create`, 'POST', { ...payload });
-      // await API.post(`/${entity}/item/create`, {
-      //   ...payload
-      // })
+      const res = await proxyCall(`/${entity}/item/create`, 'POST', {
+        ...payload,
+        cover: undefined,
+        attachment: undefined,
+      });
+      if (res?.data?.data) {
+        let uploadFile = true;
+        if (payload.cover?.data) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          uploadFile = await UploadFileLocal(res.data.data.id, payload.cover, 'cover');
+        }
+        if (payload.attachment?.data) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          uploadFile = await UploadFileLocal(res.data.data.id, payload.attachment, 'attachment');
+        }
+        return uploadFile ? res : false;
+      }
+      return res;
     } catch (error) {
       console.log('CreateItem error', error);
+      return false;
     } finally {
       dispatch(hideLoader());
     }
@@ -632,18 +647,30 @@ export const UpdateItem =
     try {
       dispatch(showLoader());
       dispatch({ ...UpdateItemAction });
-      // console.log(itemId, payload, entity);
-
-      await proxyCall(`/${entity}/item/${itemId}/update`, 'POST', {
+      const res = await proxyCall(`/${entity}/item/${itemId}/update`, 'POST', {
         ...Object.fromEntries(
-          Object.entries(payload).filter(([key, _value]) => key !== '')
+          Object.entries(payload).filter(([key, _value]) => key !== ''),
         ),
+        cover: undefined,
+        attachment: undefined,
       });
-      // await API.post(`/${entity}/item/${itemId}`, {
-      //   ...payload,
-      // });
+      if (res?.data?.data) {
+        let uploadFile = true;
+        if (payload.cover?.data) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          uploadFile = await UploadFileLocal(res.data.data.id, payload.cover, 'cover');
+        }
+        if (payload.attachment?.data) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          uploadFile = await UploadFileLocal(res.data.data.id, payload.attachment, 'attachment');
+        }
+        return uploadFile ? res : false;
+      }
     } catch (error) {
       console.log('UpdateItem error', error);
+      return false;
     } finally {
       dispatch(hideLoader());
     }
@@ -658,17 +685,35 @@ export const UploadFile =
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
-      dispatch({ ...UploadFileAction });
-      await API.post(`item/${itemId}/file/upload`, {
+      dispatch({ ...UploadFileAction, ...{ itemId, type, payload} });
+      const res = await API.post(`item/${itemId}/file/upload`, {
         type: type,
         data: payload,
       });
+      return res;
     } catch (error) {
       console.log('UploadFile error', error);
+      return false;
     } finally {
       dispatch(hideLoader());
     }
   };
+
+const UploadFileLocal =
+  async (itemId: string, payload: any, type: 'cover' | 'attachment') => {
+      try {
+        const res = await proxyCall(`/item/${itemId}/file/upload`,'POST', null, {
+          fileBase64ToUpload: payload.data,
+          filenameToUpload: payload.name,
+          isUploadFile: true,
+          type,
+        });
+        return res;
+      } catch (error) {
+        console.log('UploadFile error', error);
+        return false;
+      }
+    };
 
 const DeleteItemAction = {
   type: 'forum/DeleteItem',
@@ -681,7 +726,6 @@ export const DeleteItem = (itemId: string) => async (dispatch: Dispatch) => {
     await proxyCall(`/item/${itemId}/delete`, 'POST', {
       reason: 'test',
     });
-    // await API.post(`/item/${itemId}/delete`);
   } catch (error) {
     console.log('DeleteItem error', error);
   } finally {

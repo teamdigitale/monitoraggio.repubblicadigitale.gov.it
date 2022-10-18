@@ -1,5 +1,6 @@
 {
   "errors": {
+    "A01": "Accesso non consentito",
     "C01": "Errore Risorsa non trovata",
     "C02": "Errore storicizazione ente",
     "C03": "Errore Utente con ruolo DEGP/REGP non definito per il progetto",

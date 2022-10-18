@@ -14,7 +14,6 @@ import {
   ProgressBar,
   PrefixPhone,
   StatusChip,
-  // SelectMultiple,
 } from '../components';
 import CheckboxGroup from '../components/Form/checkboxGroup';
 import withFormHandler, { withFormHandlerProps } from '../hoc/withFormHandler';
@@ -22,6 +21,13 @@ import { formFieldI, newForm, newFormField } from '../utils/formHelper';
 import { i18nChangeLanguage } from '../utils/i18nHelper';
 import { guard } from '../utils/guardHelper';
 import { FilterI } from '../components/DropdownFilter/dropdownFilter';
+// import { groupOptions } from '../components/Form/multipleSelectConstants';
+// import ManageOTP from '../components/AdministrativeArea/Entities/Surveys/ManageOTP/ManageOTP';
+import SelectMultipleCheckbox from '../components/Form/selectMultipleCheckbox';
+import {
+  serviceScopeOptions,
+  serviceScopeOptionsValues,
+} from '../components/Form/multipleSelectConstants';
 // import { groupOptions } from '../components/Form/multipleSelectConstants';
 // import ManageOTP from '../components/AdministrativeArea/Entities/Surveys/ManageOTP/ManageOTP';
 import ProtectedComponent from '../hoc/AuthGuard/ProtectedComponent/ProtectedComponent';
@@ -121,8 +127,15 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
     value?: formFieldI['value'],
     field?: formFieldI['field']
   ) => {
-    console.log(' PLAYGROUND onInputChange', value, field);
+    console.log('PLAYGROUND onInputChange', value, field);
     if (typeof value === 'string') setMultipleSelectValue(value);
+  };
+
+  const handleInputCheckbox = (
+    value?: formFieldI['value'],
+    field?: formFieldI['field']
+  ) => {
+    console.log('PLAYGROUND handleInputCheckbox', value, field);
   };
 
   return (
@@ -421,6 +434,17 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
           </Form.Row>
         </Form>
       </div>
+      <SelectMultipleCheckbox
+        label='Label field *'
+        options={serviceScopeOptions}
+        field={'primo livello'}
+        secondLevelField={'secondo livello'}
+        onInputChange={handleInputCheckbox}
+        onSecondLevelInputChange={handleInputCheckbox}
+        valueSecondLevelString={serviceScopeOptionsValues
+          .map((val) => val.value)
+          .join('§')}
+      />
     </div>
   );
 };
