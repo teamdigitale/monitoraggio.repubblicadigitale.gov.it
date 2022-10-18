@@ -322,22 +322,27 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
               <div aria-hidden='true' className='mt-5 w-100'>
                 <Sticky
                   mode='bottom'
-                  stickyClassName='sticky bg-white container'
+                  stickyClassName={clsx(
+                    'sticky ',
+                    'bg-white',
+                    !device.mediaIsPhone && 'container'
+                  )}
                 >
                   {surveyStatus === entityStatus.NON_ATTIVO ? (
                     <div
                       className={clsx(
                         'd-flex',
-                        'flex-row',
-                        device.mediaIsPhone
-                          ? 'justify-content-end flex-wrap'
-                          : 'justify-content-between',
+                        !device.mediaIsDesktop ? 'flex-column' : 'flex-row',
+                        device.mediaIsDesktop && 'justify-content-between',
                         'container',
                         'w-100'
                       )}
                     >
                       <ButtonsBar buttons={[deleteButton]} />
-                      <ButtonsBar buttons={[...cloneEditButtons]} />
+                      <ButtonsBar
+                        buttons={[...cloneEditButtons]}
+                        notActiveSurvey
+                      />
                     </div>
                   ) : (
                     <ButtonsBar buttons={cloneEditButtons} />

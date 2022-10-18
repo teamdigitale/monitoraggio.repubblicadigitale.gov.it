@@ -119,6 +119,7 @@ const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({
       noSpaceAfterTitle
       centerButtons
       isRoleManaging
+      closableKey={isOnboarding ? 'unclosable' : undefined}
     >
       <div
         className={clsx(

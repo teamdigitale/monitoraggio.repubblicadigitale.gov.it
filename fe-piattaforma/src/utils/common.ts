@@ -321,7 +321,6 @@ export const transformFiltersToQueryParams = (filters: {
   [key: string]: { label: string; value: string }[] | undefined;
 }) => {
   let filterString = '';
-  console.log('filters', filters);
   Object.keys(filters)?.forEach((filter: string) => {
     if (filter === 'criterioRicerca' || filter === 'filtroCriterioRicerca') {
       if (filters[filter])
@@ -332,7 +331,6 @@ export const transformFiltersToQueryParams = (filters: {
           '=' +
           filters[filter];
     } else if (filters[filter]?.length) {
-      console.log(filters[filter]);
       (filters[filter] || []).map(
         (value: OptionType) =>
           (filterString =
@@ -492,4 +490,52 @@ export const getMediaQueryDevice = ({
   if (mediaIsTablet) return 'tablet';
   if (mediaIsPhone) return 'mobile';
   return 'desktop';
+};
+
+export const cleanBase64 = (base64: string) => {
+  try {
+    const a = base64?.toString();
+    const b = a.indexOf('base64');
+    return a.slice(b, -1).replace('base64,', '');
+  } catch (err) {
+    console.log('cleanBase64 error', err);
+    return base64;
+  }
+};
+
+export const uploadFile = (elementId = 'file', callback: (file: { data?: File; name?: string }) => void = () => ({})) => {
+  const input: HTMLInputElement = document.getElementById(
+    elementId
+  ) as HTMLInputElement;
+
+  if (input.files?.length) {
+
+    const selectedImage = input.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(selectedImage);
+    reader.onloadend = () => {
+      if (reader.result) {
+        callback({
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          data: cleanBase64(reader.result),
+          name: selectedImage.name,
+        });
+      }
+    };
+
+    /*
+    const selectedFile = input.files[0];
+    if (selectedFile) {
+      file.data = selectedFile;
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(selectedFile);
+    reader.onloadend = () => {
+      file.name = selectedFile.name as string;
+      callback(file);
+    };
+    */
+  }
 };

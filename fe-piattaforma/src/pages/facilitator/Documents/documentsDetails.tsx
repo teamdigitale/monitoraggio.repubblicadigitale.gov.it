@@ -1,36 +1,48 @@
-import clsx from 'clsx';
-import { Button, FormGroup, Icon } from 'design-react-kit';
+import { Button, Icon } from 'design-react-kit';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { Form, Input } from '../../../components';
+import { useNavigate, useParams } from 'react-router-dom';
 import DeleteEntityModal from '../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 import CommentSection from '../../../components/Comments/commentSection';
 import SectionDetail from '../../../components/DocumentDetail/sectionDetail';
-import { selectDevice } from '../../../redux/features/app/appSlice';
-import { GetCommentsList } from '../../../redux/features/forum/comments/commentsThunk';
-import { selectDocDetail } from '../../../redux/features/forum/forumSlice';
-import { GetItemDetail } from '../../../redux/features/forum/forumThunk';
+import { DeleteComment, GetCommentsList } from '../../../redux/features/forum/comments/commentsThunk';
+import { selectCommentsList, selectDocDetail } from '../../../redux/features/forum/forumSlice';
+import { DeleteItem, GetItemDetail } from '../../../redux/features/forum/forumThunk';
 import {
   closeModal,
   openModal,
 } from '../../../redux/features/modal/modalSlice';
+import { selectUser } from '../../../redux/features/user/userSlice';
 import { useAppSelector } from '../../../redux/hooks';
+import ManageComment from '../../administrator/AdministrativeArea/Entities/modals/manageComment';
 import ManageDocument from '../../administrator/AdministrativeArea/Entities/modals/manageDocument';
 import ManageReport from '../../administrator/AdministrativeArea/Entities/modals/manageReport';
 // import { DocumentCardDetailMock } from '../../playground';
 import './documentsDetails.scss';
 
 const DocumentsDetails = () => {
-  const device = useAppSelector(selectDevice);
+  // const device = useAppSelector(selectDevice);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const docDetails = useAppSelector(selectDocDetail);
+  const { id } = useParams()
+  const userId = useAppSelector(selectUser)?.id;
+  const commentsList = useAppSelector(selectCommentsList)
 
   useEffect(() => {
-    dispatch(GetItemDetail('id', 'userId', 'document'));
-    dispatch(GetCommentsList('itemId', 'userId'));
-  }, []);
+    if (userId && id) {
+      dispatch(GetItemDetail(id, userId, 'document'));
+      dispatch(GetCommentsList(id, userId));
+    }
+  }, [userId, id]);
+
+  const onCommentDelete = async (commentId: string) => {
+    await dispatch(DeleteComment(commentId));
+    if (id && userId) {
+      dispatch(GetCommentsList(id, userId))
+      dispatch(GetItemDetail(id, userId, 'document'))
+    }
+  }
 
   const backButton = (
     <Button onClick={() => navigate(-1)} className='px-0'>
@@ -54,6 +66,8 @@ const DocumentsDetails = () => {
               id: 'delete-entity',
               payload: {
                 text: 'Confermi di voler eliminare questo contenuto?',
+                id: id,
+                entity: 'document'
               },
             })
           )
@@ -67,7 +81,7 @@ const DocumentsDetails = () => {
         }
         onReportClick={() => dispatch(openModal({ id: 'reportModal' }))}
       />
-      <div
+      {/* <div
         className={clsx(
           'd-flex',
           'align-items-center',
@@ -105,14 +119,28 @@ const DocumentsDetails = () => {
         {!device.mediaIsPhone ? (
           <div className='border-box-utility ml-4'></div>
         ) : null}
-      </div>
-      <CommentSection section="ducuments" />
+      </div> */}
+      {commentsList.length ? <CommentSection section="ducuments" /> : null}
       <div className='border mt-3'></div>
       <ManageDocument />
+      <ManageComment />
       <ManageReport />
       <DeleteEntityModal
         onClose={() => dispatch(closeModal())}
-        onConfirm={() => console.log()}
+        onConfirm={(payload: any) => {
+          switch (payload.entity) {
+            case 'document':
+              dispatch(DeleteItem(payload.id));
+              navigate(-1);
+              break;
+            case 'comment':
+              onCommentDelete(payload.id)
+              break;
+            default:
+              break;
+          }
+          dispatch(closeModal())
+        }}
       />
     </div>
   );

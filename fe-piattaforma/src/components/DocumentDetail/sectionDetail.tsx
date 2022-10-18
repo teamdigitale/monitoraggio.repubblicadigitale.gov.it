@@ -19,8 +19,11 @@ import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import { openModal } from '../../redux/features/modal/modalSlice';
 import { useDispatch } from 'react-redux';
+import { selectUser } from '../../redux/features/user/userSlice';
+import { GetItemDetail, ManageItemEvent } from '../../redux/features/forum/forumThunk';
 
 export interface CardDocumentDetailI {
+  id?: string;
   author: string;
   title: string;
   category_label: string;
@@ -31,12 +34,14 @@ export interface CardDocumentDetailI {
   external_link?: string;
   entity?: string;
   entity_type?: string;
+  intervention?: string;
+  program_label?: string;
   tags?: string;
   downloads?: number;
+  user_like?: boolean;
   likes?: number;
   views?: number;
-  isDocument?: boolean;
-  isCommunity?: boolean;
+  section?: 'community' | 'documents';
   onDeleteClick?: () => void;
   onEditClick?: () => void;
   onReportClick?: () => void;
@@ -45,6 +50,7 @@ export interface CardDocumentDetailI {
 const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
   const {
     // author,
+    id,
     title,
     category_label,
     date,
@@ -54,12 +60,14 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
     entity,
     entity_type,
     external_link,
+    intervention,
+    program_label,
     tags,
     downloads,
+    user_like,
     likes,
     views,
-    isDocument,
-    isCommunity,
+    section,
     onDeleteClick = () => ({}),
     onEditClick = () => ({}),
     onReportClick = () => ({}),
@@ -67,6 +75,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
   //const location = useLocation();
   const device = useAppSelector(selectDevice);
   const dispatch = useDispatch();
+  const userId = useAppSelector(selectUser)?.id
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const documentDetailDropdownOptions = [
@@ -148,7 +157,8 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
     <div
       className={clsx(
         'document-card-detail-container',
-        device.mediaIsPhone ? 'p-3' : 'px-5 py-4'
+        device.mediaIsPhone ? 'p-3' : 'px-5 py-4',
+        'mb-4'
       )}
     >
       <div
@@ -180,7 +190,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
           'mb-3'
         )}
       >
-        {isDocument && (
+        {section === 'documents' ? (
           <img
             src={iconFile}
             alt='icon-file'
@@ -190,7 +200,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
                 : 'document-card-detail-container__img-icon-file mr-4'
             )}
           />
-        )}
+        ) : null}
         <p>{description}</p>
       </div>
       {!device.mediaIsPhone ? (
@@ -239,9 +249,11 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
         </div>
       ) : null}
       <DetailCard
-        isCommunity={isCommunity}
+        isCommunity={section === 'community'}
         entity={entity}
         entity_type={entity_type}
+        intervention={intervention}
+        program_label={program_label}
       />
       <div className='border-box-container pt-5 mb-4'></div>
       <SocialBar
@@ -249,12 +261,25 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
         likes={likes}
         views={views}
         downloads={downloads}
-        onLike={() => ({})}
+        onLike={section === 'community' ? async () => {
+          if (id) {
+            if (user_like as boolean) {
+              await dispatch(ManageItemEvent(id, 'unlike'))
+            } else {
+              await dispatch(ManageItemEvent(id, 'like'))
+            }
+            userId && dispatch(GetItemDetail(id, userId, 'community'))
+          }
+        } : undefined}
         onComment={() =>
           dispatch(
             openModal({
-              id: 'addCommentModal',
-              payload: { title: 'Aggiungi commento' },
+              id: 'comment-modal',
+              payload: {
+                title: 'Aggiungi commento',
+                action: 'comment',
+                entity: section === 'community' ? 'community' : 'document'
+              },
             })
           )
         }

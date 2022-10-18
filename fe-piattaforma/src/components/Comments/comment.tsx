@@ -57,7 +57,7 @@ const Comment: React.FC<CommentI> = (props) => {
     views,
     id,
     isAnswer,
-    thread = false,
+    thread = false   ,
     onDeleteComment = () => ({}),
     onEditComment = () => ({}),
   } = props;
@@ -246,7 +246,7 @@ const Comment: React.FC<CommentI> = (props) => {
       <div
         className={clsx(
           !device.mediaIsPhone && 'ml-4 padding-left',
-          showReplies && replies && replies.length > 1 && !device.mediaIsPhone
+          showReplies && replies && replies.length > 0 && !device.mediaIsPhone
             ? thread && 'comment-container__thread'
             : null
         )}
@@ -256,7 +256,7 @@ const Comment: React.FC<CommentI> = (props) => {
         <SocialBar
           replies={section === 'community' ? replies.length : undefined}
           views={section === 'community' ? views : undefined}
-          onShowReplies={section === 'community' ? () => setShowReplies((prev) => !prev) : undefined}
+          onShowReplies={(section === 'community' && replies.length) ? () => setShowReplies((prev) => !prev) : undefined}
           showReplies={section === 'community' ? showReplies : undefined}
           likes={likes}
           user_like={user_like}

@@ -18,7 +18,13 @@ import AvatarInitials, {
 import { CommentI } from './comment';
 
 const CommentAnswer: React.FC<CommentI> = (props) => {
-  const { body, date, id, noBorder = false } = props;
+  const {
+    body,
+    date,
+    id,
+    noBorder = false,
+    onEditComment = () => ({}),
+    onDeleteComment = () => ({}) } = props;
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isReported /* setIsReported */] = useState<boolean>(false);
@@ -31,7 +37,7 @@ const CommentAnswer: React.FC<CommentI> = (props) => {
         icon: 'it-delete',
         color: 'primary',
       },
-      // action: () => deleteComment()
+      action: () => onDeleteComment()
     },
     {
       optionName: 'MODIFICA',
@@ -39,7 +45,7 @@ const CommentAnswer: React.FC<CommentI> = (props) => {
         icon: 'it-pencil',
         color: 'primary',
       },
-      // action: () => editComment
+      action: () => onEditComment()
     },
     {
       optionName: 'SEGNALA',
@@ -100,7 +106,7 @@ const CommentAnswer: React.FC<CommentI> = (props) => {
               <Button
                 className={clsx('primary-color-b1', 'py-2', 'w-100')}
                 role='menuitem'
-                onClick={() => console.log(item.optionName)}
+                onClick={() => item.action && item.action()}
               >
                 <div
                   className={clsx(

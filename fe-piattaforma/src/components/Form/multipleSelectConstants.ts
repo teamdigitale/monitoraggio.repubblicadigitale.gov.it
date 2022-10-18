@@ -82,3 +82,9 @@ export const serviceScopeOptions = [
   { label: 'Comunicazione e collaborazione', options: communicationsOptions },
   { label: 'Sicurezza', options: securityOptions },
 ];
+
+export const serviceScopeOptionsValues = [
+  ...navigationDataOptions.slice(0, 1),
+  ...communicationsOptions.slice(2, 5),
+  ...securityOptions.slice(1, 3),
+];

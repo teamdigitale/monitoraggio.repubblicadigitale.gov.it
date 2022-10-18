@@ -88,7 +88,9 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
   };
 
   const selectUserRole = async () => {
-    if (user.profiliUtente?.length > 1) {
+    if (!user.profiliUtente?.length) {
+      navigate('/errore/A01', { replace: true });
+    } else if (user.profiliUtente?.length > 1) {
       dispatch(
         openModal({
           id: 'switchProfileModal',

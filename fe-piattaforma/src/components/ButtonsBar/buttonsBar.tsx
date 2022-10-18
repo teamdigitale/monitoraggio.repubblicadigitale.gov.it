@@ -16,6 +16,7 @@ interface StickyButtonsI {
   citizenList?: boolean;
   citizenDeleteChange?: boolean;
   isUserProfile?: boolean;
+  notActiveSurvey?: boolean;
   isDocumentsCta?: boolean;
 }
 
@@ -24,7 +25,8 @@ const ButtonsBar: React.FC<StickyButtonsI> = ({
   citizenList = false,
   citizenDeleteChange = false,
   isUserProfile = false,
-  isDocumentsCta = true,
+  notActiveSurvey = false,
+  isDocumentsCta = false,
 }) => {
   const device = useAppSelector(selectDevice);
 
@@ -37,7 +39,8 @@ const ButtonsBar: React.FC<StickyButtonsI> = ({
         citizenDeleteChange ? 'flex-nowrap' : null,
         isUserProfile && 'mr-2',
         'pt-2',
-        device.mediaIsPhone && 'py-2'
+        device.mediaIsPhone && 'py-2',
+        notActiveSurvey && !device.mediaIsDesktop && 'flex-column'
       )}
     >
       {buttons.map((button: ButtonInButtonsBar, index: number) => {

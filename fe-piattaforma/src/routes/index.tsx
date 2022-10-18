@@ -137,7 +137,7 @@ const AppRoutes: React.FC = () => {
                 }
               />
               <Route
-                path='/documenti/dettaglio'
+                path='/documenti/:id'
                 element={
                   <ProtectedComponent visibleTo={['tab.doc']}>
                     <DocumentsDetails />

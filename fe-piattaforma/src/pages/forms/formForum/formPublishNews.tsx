@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { Button, Icon, Toggle } from 'design-react-kit';
+import { Button, FormGroup, Icon, Toggle } from 'design-react-kit';
 import _ from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -18,6 +18,7 @@ import {
 } from '../../../redux/features/forum/forumSlice';
 import { useAppSelector } from '../../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
+import { uploadFile } from '../../../utils/common';
 
 interface publishNewsI extends withFormHandlerProps {
   formDisabled?: boolean;
@@ -49,9 +50,13 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRefImg = useRef<HTMLInputElement>(null);
-  const [files, setFiles] = useState<string>('Carica documenti, foto ecc');
   const [iconVisible, setIconVisible] = useState<boolean>(false);
-  const [image, setImage] = useState<string>('Carica immagine di copertina');
+  const [image, setImage] = useState<{ name?: string; data?: string | File }>({
+    name: 'Carica immagine di copertina',
+  });
+  const [files, setFiles] = useState<{ name?: string; data?: File }>({
+    name: 'Carica documenti, foto ecc.',
+  });
   const [editorText, setEditorText] = useState('<p></p>');
   const [highlighted, setHighlighted] = useState(false);
   const [enableComments, setEnableComments] = useState(false);
@@ -73,6 +78,22 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
     //   setEditorText('<p></p>')
     // }
   }, []);
+
+  useEffect(() => {
+    if (image?.data) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignorex
+      onInputChange(image, 'cover');
+    }
+  }, [image?.data]);
+
+  useEffect(() => {
+    if (files?.data) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignorex
+      onInputChange(files, 'attachment');
+    }
+  }, [files?.data]);
 
   useEffect(() => {
     if (newFormValues) {
@@ -114,8 +135,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
 
   useEffect(() => {
     setIsFormValid(isValidForm && editorText.trim() !== '<p></p>');
-    console.log(enableComments);
-    
+
     sendNewValues({
       ...getFormValues(),
       program: getFormValues().program?.toString(),
@@ -123,7 +143,6 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
       highlighted: highlighted,
       enable_comments: enableComments,
     });
-    
   }, [form, highlighted, enableComments, editorText]);
 
   const addPicture = () => {
@@ -136,8 +155,12 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
       inputRef.current.click();
     }
   };
-  const updateImage = () => {
-    const input: HTMLInputElement = document.getElementById(
+
+  const updateImage = async () => {
+    uploadFile('Img-file', (file) => {
+      setImage(file);
+    });
+    /*const input: HTMLInputElement = document.getElementById(
       'Img-file'
     ) as HTMLInputElement;
 
@@ -146,23 +169,43 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
       const reader = new FileReader();
       reader.readAsDataURL(selectedImage);
       reader.onloadend = () => {
-        setImage(reader.result as string);
+        if (reader.result) {
+          setImage({
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            data: cleanBase64(reader.result),
+            name: selectedImage.name,
+          });
+        }
       };
-    }
+    }*/
   };
-  const updateFile = () => {
-    const input: HTMLInputElement = document.getElementById(
+
+  const updateAttachment = () => {
+    uploadFile('file', (file) => {
+      setFiles(file);
+    });
+
+    /*const input: HTMLInputElement = document.getElementById(
       'file'
     ) as HTMLInputElement;
 
     if (input.files?.length) {
-      const selectedFile = input.files[0];
+      const selectedImage = input.files[0];
       const reader = new FileReader();
-      reader.readAsDataURL(selectedFile);
+      reader.readAsDataURL(selectedImage);
       reader.onloadend = () => {
-        setFiles(selectedFile.name as string);
+        if (reader.result) {
+          setFiles({
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            data: cleanBase64(reader.result),
+            name: selectedImage.name,
+          });
+        }
       };
-    }
+    }*/
+
     setIconVisible(!iconVisible);
   };
 
@@ -192,6 +235,18 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
         </small>
       </Form.Row>
       <Form.Row className={clsx('mb-5', bootClass)}>
+      <Select
+          {...form?.program}
+          label='Programma'
+          wrapperClassName='col-12 col-lg-5 mb-0 pb-2'
+          onInputChange={onInputChange}
+          options={programsList?.map((opt) => ({
+            label: opt.label,
+            value: opt.value as number,
+          }))}
+          isDisabled={formDisabled}
+          placeholder='Seleziona'
+        />
         <Select
           {...form?.intervention}
           label='Intervento'
@@ -204,18 +259,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
           isDisabled={formDisabled}
           placeholder='Seleziona'
         />
-        <Select
-          {...form?.program}
-          label='Programma'
-          wrapperClassName='col-12 col-lg-5 mb-0 pb-2'
-          onInputChange={onInputChange}
-          options={programsList?.map((opt) => ({
-            label: opt.label,
-            value: opt.value as number,
-          }))}
-          isDisabled={formDisabled}
-          placeholder='Seleziona'
-        />
+        
       </Form.Row>
       <Form.Row className={bootClass}>
         <Select
@@ -269,7 +313,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
             className='d-flex align-items-center justify-content-between'
           >
             <p className='mt-2' style={{ color: '#4c4c4d' }}>
-              {image}
+              {image?.name}
             </p>
             {!iconVisible ? (
               <Button
@@ -313,14 +357,14 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
             ref={inputRef}
             className='sr-only'
             capture
-            onChange={updateFile}
+            onChange={updateAttachment}
           />
           <label
             htmlFor='file'
             className='d-flex align-items-center justify-content-between'
           >
             <p className='mt-2' style={{ color: '#4c4c4d' }}>
-              {files}
+              {files?.name}
             </p>
             {!iconVisible ? (
               <Button
@@ -334,7 +378,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
                   size='sm'
                   color='primary'
                   className='pb-1'
-                />{' '}
+                />
                 Seleziona file
               </Button>
             ) : (
@@ -351,16 +395,21 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
       </Form.Row>
       <Form.Row className={bootClass}>
         <div className='d-flex flex-row w-75 align-items-center pt-5 pb-3'>
-          <Toggle
-            defaultChecked={enableComments}
-            onChange={() => setEnableComments((prev) => !prev)}
-            label='Abilita commenti'
-          />
-          <Toggle
-            defaultChecked={highlighted}
-            onChange={() => setHighlighted((prev) => !prev)}
-            label='News in evidenza'
-          />
+          <FormGroup check className='form-check-group' >
+            <Toggle
+              // defaultChecked={!!enableComments}
+              checked={enableComments}
+              onChange={() => setEnableComments((prev) => !prev)}
+              label='Abilita commenti'
+            />
+          </FormGroup>
+          <FormGroup check className='form-check-group' >
+            <Toggle
+              checked={highlighted}
+              onChange={() => setHighlighted((prev) => !prev)}
+              label='News in evidenza'
+            />
+          </FormGroup>
         </div>
       </Form.Row>
       <Form.Row className={bootClass}>
@@ -394,21 +443,21 @@ const form = newForm([
     type: 'select',
     required: true,
   }),
-  // newFormField({
-  //   field: 'description',
-  //   id: 'description',
-  //   type: 'text',
-  //   // required: true,
-  // }),
-  // newFormField({
-  //   field: 'attachment',
-  //   id: 'attachment',
-  //   type: 'file',
-  // }),
-  // newFormField({
-  //   field: 'cover',
-  //   id: 'cover',
-  //   type: 'file',
-  // }),
+  /*newFormField({
+   field: 'description',
+   id: 'description',
+   type: 'text',
+   required: true,
+ }),*/
+  newFormField({
+    field: 'attachment',
+    id: 'attachment',
+    type: 'file',
+  }),
+  newFormField({
+    field: 'cover',
+    id: 'cover',
+    type: 'file',
+  }),
 ]);
 export default withFormHandler({ form }, FormPublishNews);

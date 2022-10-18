@@ -24,7 +24,6 @@ import {
   selectUser,
 } from '../../../../../redux/features/user/userSlice';
 import { selectEntityFiltersOptions } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
-import ImmagineMockNews from '/public/assets/img/img-bacheca-digitale-dettaglio.png';
 
 const modalId = 'newsModal';
 interface ManageNewsFormI {
@@ -58,9 +57,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
       primaryCTA: {
         disabled: !isFormValid,
         label: creation ? 'Conferma' : 'Salva',
-        onClick: () => {
-          handleSaveNews();
-        },
+        onClick: () => handleSaveNews(),
       },
       secondaryCTA: {
         label: 'Annulla',
@@ -104,56 +101,66 @@ const ManageNews: React.FC<ManageNewsI> = ({
   };
 
   const handleSaveNews = async () => {
-    if (id) {
-      await dispatch(
-        UpdateItem(
-          id,
-          {
-            ...newFormValues,
-            cover: newFormValues.cover ? newFormValues.cover : ImmagineMockNews,
-            program_label: programsList?.find(
-              (p) => p.value === parseInt(newFormValues.program as string)
-            )?.label,
-            entity:
-              userProfile?.idProgetto || userProfile?.idProgramma
-                ? userProfile.nomeEnte
-                : userProfile?.descrizioneRuolo,
-            entity_type: userProfile?.idProgetto
-              ? 'Ente gestore di progetto'
-              : userProfile?.idProgramma
-              ? 'Ente gestore di programma'
-              : '-',
-          },
-          'board'
-        )
-      );
-      userId && dispatch(GetItemDetail(id, userId, 'board'));
-    } else {
-      await dispatch(
-        CreateItem(
-          {
-            ...newFormValues,
-            cover: newFormValues.cover ? newFormValues.cover : ImmagineMockNews,
-            program_label: programsList?.find(
-              (p) => p.value === parseInt(newFormValues.program as string)
-            )?.label,
-            entity:
-              userProfile?.idProgetto || userProfile?.idProgramma
-                ? userProfile.nomeEnte
-                : userProfile?.descrizioneRuolo,
-            entity_type: userProfile?.idProgetto
-              ? 'Ente gestore di progetto'
-              : userProfile?.idProgramma
-              ? 'Ente gestore di programma'
-              : '-',
-          },
-          'board'
-        )
-      );
-      dispatch(GetItemsList('board'));
+    if (isFormValid) {
+      if (id) {
+        const res = await dispatch(
+          UpdateItem(
+            id,
+            {
+              ...newFormValues,
+              program_label: programsList?.find(
+                (p) => p.value === parseInt(newFormValues.program as string)
+              )?.label,
+              entity:
+                userProfile?.idProgetto || userProfile?.idProgramma
+                  ? userProfile.nomeEnte
+                  : userProfile?.descrizioneRuolo,
+              entity_type: userProfile?.idProgetto
+                ? 'Ente gestore di progetto'
+                : userProfile?.idProgramma
+                ? 'Ente gestore di programma'
+                : '-',
+            },
+            'board'
+          )
+        );
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (res) {
+          userId && dispatch(GetItemDetail(id, userId, 'board'));
+          setNewFormValues({});
+          setStep('confirm');
+        }
+      } else {
+        const res = await dispatch(
+          CreateItem(
+            {
+              ...newFormValues,
+              program_label: programsList?.find(
+                (p) => p.value === parseInt(newFormValues.program as string)
+              )?.label,
+              entity:
+                userProfile?.idProgetto || userProfile?.idProgramma
+                  ? userProfile.nomeEnte
+                  : userProfile?.descrizioneRuolo,
+              entity_type: userProfile?.idProgetto
+                ? 'Ente gestore di progetto'
+                : userProfile?.idProgramma
+                ? 'Ente gestore di programma'
+                : '-',
+            },
+            'board'
+          )
+        );
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (res) {
+          dispatch(GetItemsList('board'));
+          setNewFormValues({});
+          setStep('confirm');
+        }
+      }
     }
-    setNewFormValues({});
-    setStep('confirm');
   };
 
   switch (step) {
@@ -163,8 +170,8 @@ const ManageNews: React.FC<ManageNewsI> = ({
           newFormValues={newFormValues}
           creation={creation}
           formDisabled={!!formDisabled}
-          sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {  
-            setNewFormValues({ ...newData })
+          sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {
+            setNewFormValues({ ...newData });
           }}
           setIsFormValid={(value: boolean | undefined) =>
             setIsFormValid(!!value)
