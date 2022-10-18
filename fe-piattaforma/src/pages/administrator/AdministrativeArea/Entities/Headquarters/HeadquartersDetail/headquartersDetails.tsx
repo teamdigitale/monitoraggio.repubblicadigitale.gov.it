@@ -327,7 +327,7 @@ const HeadquartersDetails = () => {
                   openModal({
                     id: formTypes.FACILITATORE,
                     payload: {
-                      title: `Aggiungi ${title}`,
+                      title: `Aggiungi ${programPolicy !== 'SCD' ? title: 'Volontari'}`,
                     },
                   })
                 ),

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { resetUserDetails } from '../redux/features/administrativeArea/administrativeAreaSlice';
 import { resetCustomBreadcrumb, resetInfoIdsBreadcrumb, showBreadCrumb } from '../redux/features/app/appSlice';
 //import { resetEntityState } from '../redux/features/administrativeArea/administrativeAreaSlice';
 import { resetAreaCittadiniState } from '../redux/features/citizensArea/citizensAreaSlice';
@@ -19,6 +20,7 @@ const LocationInterceptor = () => {
     dispatch(showBreadCrumb());
     dispatch(resetCustomBreadcrumb());
     dispatch(resetInfoIdsBreadcrumb());
+    dispatch(resetUserDetails());
     scrollTo(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);

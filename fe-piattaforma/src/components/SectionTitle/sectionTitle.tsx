@@ -122,6 +122,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
                   : AvatarTextSizes.Small
               }
               lightColor={device.mediaIsPhone}
+              isUserProfile={isUserProfile}
             />
 
             {isUserProfile && (
@@ -134,16 +135,8 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
                   'section-title__icon-container'
                 )}
                 style={{
-                  bottom: device.mediaIsDesktop
-                    ? '-10px'
-                    : device.mediaIsPhone
-                    ? '90px'
-                    : '',
-                  left: device.mediaIsDesktop
-                    ? '-10px'
-                    : device.mediaIsPhone
-                    ? '75px'
-                    : '',
+                  bottom: device.mediaIsPhone ? '' : '-5px',
+                  left: device.mediaIsPhone ? '' : '-5px',
                 }}
               >
                 <input
