@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.81](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.80...1.0.0-test.81) (2022-10-18)
+
+
+### Bug Fixes
+
+* **be:** scheda utente ([fd8d306](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fd8d306e3edbcf19de5662680408794f49638dc5))
+
 ## [1.0.0-test.80](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.79...1.0.0-test.80) (2022-10-18)
 
 
