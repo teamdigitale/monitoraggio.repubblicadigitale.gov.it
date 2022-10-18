@@ -62,7 +62,7 @@ public class DrupalService {
 			final HttpHeaders forwardHeaders = this.getHeadersHttp(param, contentType);
 			if(param.getIsUploadFile() != null && param.getIsUploadFile() == Boolean.TRUE) {
 				// Decodifico file Base64
-				byte[] bytesFileToUpload = Base64.getDecoder().decode(param.getFileBase64ToUpload());
+				byte[] bytesFileToUpload = Base64.getMimeDecoder().decode(param.getFileBase64ToUpload());
 				
 				// Creazione file a partire dall'array di byte
 				final String nomeFile = param.getFilenameToUpload() == null? "tmpFile": param.getFilenameToUpload();
@@ -120,7 +120,7 @@ public class DrupalService {
 	 	String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes(Charset.forName("UTF-8")));
 		String authHeader = "Basic " + encodedAuth;
 		headers.put("Authorization", Arrays.asList(authHeader));
-		headers.put("Content-Type", Arrays.asList(contentType));
+		headers.put("Content-Type",  Arrays.asList(contentType));
 		
 		
 		Optional<UtenteEntity> utenteFetchDb = this.utenteRepository.findByCodiceFiscale(param.getCfUtenteLoggato());
@@ -128,5 +128,33 @@ public class DrupalService {
 		headers.put("user-id", Arrays.asList(utenteFetchDb.get().getId().toString()));
 		headers.put("user-roles", Arrays.asList(param.getCodiceRuoloUtenteLoggato()));
 		return headers;
+	}
+
+	public Map forwardRichiestaADrupal(final String filePath, final String contentType) {
+		if(!this.drupalEndpoint.endsWith("/") && !filePath.startsWith("/")) {
+			this.drupalEndpoint = this.drupalEndpoint.concat("/");
+		}
+		final String urlDaChiamare = this.drupalEndpoint.concat(filePath);
+		final HttpMethod metodoHttp = HttpMethod.GET;
+		
+		ResponseEntity<Map> responseDrupal = null;
+		try {
+			HttpHeaders forwardHeaders = new HttpHeaders();
+			String auth = this.drupalUsername + ":" + this.drupalPassword;
+		 	String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes(Charset.forName("UTF-8")));
+			String authHeader = "Basic " + encodedAuth;
+			forwardHeaders.put("Authorization", Arrays.asList(authHeader));
+			forwardHeaders.put("Content-Type",  Arrays.asList(contentType));
+			
+			// Richiesta Http da inviare a Drupal
+			HttpEntity<String> forwardRequestEntity = new HttpEntity<String>(null, forwardHeaders);
+			log.info("Richiesta Servizio Drupal: {} {} headersRichiesta={}", metodoHttp, urlDaChiamare, forwardHeaders);
+			responseDrupal = this.restTemplate.exchange(urlDaChiamare, metodoHttp, forwardRequestEntity, Map.class);
+		} catch (Exception e) {
+        	String messaggioErrore = String.format("Errore chiamata REST DRUPAL: %s %s - datail: %s", metodoHttp, urlDaChiamare, e.getMessage());
+			throw new DrupalException(messaggioErrore, e, CodiceErroreEnum.D01);
+		}
+		
+		return responseDrupal.getBody();
 	}
 }
