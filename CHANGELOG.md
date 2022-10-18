@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.208](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.207...1.0.0-develop.208) (2022-10-18)
+
+
+### Bug Fixes
+
+* **be:** ruoli fix per gestore terminato ([33308ef](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/33308ef2ec06923593c7d4a647a147054f5f7d7c))
+
 ## [1.0.0-develop.207](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.206...1.0.0-develop.207) (2022-10-18)
 
 
