@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.82](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.81...1.0.0-test.82) (2022-10-18)
+
+
+### Bug Fixes
+
+* **be:** ruoli fix ente gestore terminato ([6c3b6f5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6c3b6f55c7ef810ba1cb3e908ea7034d77090330))
+
 ## [1.0.0-test.81](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.80...1.0.0-test.81) (2022-10-18)
 
 
