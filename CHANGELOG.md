@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.209](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.208...1.0.0-develop.209) (2022-10-18)
+
+
+### Features
+
+* **be:** nuova api get proxy drupal ([f2fca04](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f2fca0440a2c7c4e4e0d55c7078f3f4cb2c91680))
+
 ## [1.0.0-develop.208](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.207...1.0.0-develop.208) (2022-10-18)
 
 
