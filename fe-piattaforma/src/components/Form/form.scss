@@ -19,19 +19,24 @@
     background: color('grey-150');
   }
   &[type='text']:disabled,
-  &[type='date']:disabled {
+  &[type='date']:disabled,
+  &[type='number']:disabled{
     border-bottom: 1px solid color('grey-input') !important;
   }
   &[type='text'][value=''],
-  &[type='date'][value=''] {
+  &[type='date'][value=''],
+  &[type='number'][value=''],
+  &[type='time'][value='00:00']{
     border-bottom: 1px solid color('progress-bar-line');
   }
   &[type='text'][value]:not([value='']),
-  &[type='date'][value]:not([value='']) {
+  &[type='date'][value]:not([value='']),
+  &[type='number'][value]:not([value='']),
+  &[type='time'][value]:not([value='00:00']) {
     border-bottom: 2px solid color('progress-bar-line');
   }
   &.is-valid {
-    border-bottom: 1px solid color('progress-bar-line');
+    border-bottom: 2px solid color('progress-bar-line');
   }
 
   &.is-invalid {

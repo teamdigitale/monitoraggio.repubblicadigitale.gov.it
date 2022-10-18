@@ -4,11 +4,13 @@ import React from 'react';
 import './avatarInitials.scss';
 
 export enum AvatarSizes {
+  Profile = '__profile',
   Big = '__big',
   Small = '__small',
 }
 
 export enum AvatarTextSizes {
+  Profile = '__font-profile',
   Big = '__font-big',
   Small = '__font-small',
 }
