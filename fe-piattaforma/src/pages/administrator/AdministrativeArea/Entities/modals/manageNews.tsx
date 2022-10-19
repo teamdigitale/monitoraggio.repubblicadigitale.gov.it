@@ -67,6 +67,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
         label: 'Annulla',
         onClick: () => {
           clearForm?.();
+          resetModal();
           dispatch(closeModal());
         },
       },
@@ -82,6 +83,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
         label: 'Annulla',
         onClick: () => {
           clearForm?.();
+          resetModal();
           dispatch(closeModal());
         },
       },
@@ -95,7 +97,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
       primaryCTA: {
         label: 'Chiudi',
         onClick: () => {
-          setStep('form');
+          resetModal();
           dispatch(closeModal());
         },
       },

@@ -77,7 +77,7 @@ const Documents = () => {
     const res = await dispatch(
       GetDocumentsList(
         {
-          sort: [{ label: 'likes', value: 'likes' }],
+          sort: [{ label: 'downloads', value: 'downloads' }],
           page: [{ label: '0', value: '0' }],
           items_per_page: [{ label: itemPerPage, value: itemPerPage }],
         },

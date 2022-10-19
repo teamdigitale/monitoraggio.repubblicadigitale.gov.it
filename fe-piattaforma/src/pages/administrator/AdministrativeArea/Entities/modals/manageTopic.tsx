@@ -116,6 +116,7 @@ const ManageTopic: React.FC<ManageTopicI> = ({
         label: 'Annulla',
         onClick: () => {
           clearForm?.();
+          resetModal();
           dispatch(closeModal());
         },
       },
@@ -124,7 +125,10 @@ const ManageTopic: React.FC<ManageTopicI> = ({
       title: null,
       primaryCTA: {
         label: 'Chiudi',
-        onClick: () => dispatch(closeModal()),
+        onClick: () => {
+          resetModal();
+          dispatch(closeModal());
+        },
       },
       secondaryCTA: null,
     },

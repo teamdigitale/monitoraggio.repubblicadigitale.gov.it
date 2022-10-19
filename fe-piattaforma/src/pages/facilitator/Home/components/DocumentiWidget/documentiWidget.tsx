@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { memo, useEffect /* , useState */ } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import CardDocument from '../../../../../components/CardDocument/cardDocument';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
@@ -10,7 +10,6 @@ import Slider, {
   formatSlides,
 } from '../../../../../components/General/Slider/Slider';
 import { getMediaQueryDevice } from '../../../../../utils/common';
-import { DocumentsMock } from '../../../../../components/MocksWave3/Mocks';
 
 const docsPagination = {
   desktop: 4,
@@ -27,7 +26,7 @@ const carouselPagination = {
 const DocumentsWidget = () => {
   const dispatch = useDispatch();
   const device = useAppSelector(selectDevice);
-  /*  const [docsList, setDocsList] = useState([]); */
+  const [docsList, setDocsList] = useState([]);
 
   const docsWidgetSet = async () => {
     const itemsPerPage = docsPagination[getMediaQueryDevice(device)].toString();
@@ -42,8 +41,7 @@ const DocumentsWidget = () => {
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    console.log(res?.data?.data?.items || []);
-    /*  setDocsList(res?.data?.data?.items || []); */
+    setDocsList(res?.data?.data?.items || []);
   };
 
   useEffect(() => {
@@ -51,9 +49,9 @@ const DocumentsWidget = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [device]);
 
-  /* const cardArray: any[] = [
+  const cardArray: any[] = [
     docsList.slice(0, docsPagination[getMediaQueryDevice(device)]),
-  ]; */
+  ];
 
   return (
     <div
@@ -97,31 +95,32 @@ const DocumentsWidget = () => {
       <div className={clsx(device.mediaIsDesktop ? 'col-8' : 'col-12')}>
         <div className='container d-flex flex-wrap'>
           {!device.mediaIsPhone ? (
-            DocumentsMock.map((el: any, i: number) => (
-              /* <div key={`slide-${i}`} className='row'> */
-              /* {el.map((e: any, index: any) => ( */
-              /*  CARD DOCUMENTI MOMENTANEAMENTE MOCKATE PER RES.DATA = [] , STILIZZATE DI CONSEGUENZA, DA CORREGGERE AL RIEMPIRSI DI RES.DATA */
-              <div
-                key={`card-${i}-${i}`}
-                className={clsx(
-                  'col-12',
-                  'col-md-6',
-                  'col-lg-6',
-                  'mb-2',
-                  'd-flex',
-                  'flex-wrap',
-                  'justify-content-around'
-                )}
-              >
-                <CardDocument {...el} isHome />
+            cardArray.map((el: any, i: number) => (
+              <div key={`slide-${i}`} className='row'>
+                {el.map((e: any, index: any) => (
+                  <div
+                    key={`card-${i}-${index}`}
+                    className={clsx(
+                      'col-12',
+                      'col-md-6',
+                      'col-lg-6',
+                      'mb-2',
+                      'd-flex',
+                      'flex-wrap',
+                      el.length === 1
+                        ? 'justify-content-between'
+                        : 'justify-content-around'
+                    )}
+                  >
+                    <CardDocument {...e} isHome />
+                  </div>
+                ))}
               </div>
-              /* ))} */
-              /*  </div> */
             ))
           ) : (
             <Slider isItemsHome>
               {formatSlides(
-                DocumentsMock,
+                docsList,
                 carouselPagination[getMediaQueryDevice(device)]
               ).map((el, i) => (
                 <div

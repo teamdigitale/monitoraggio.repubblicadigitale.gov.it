@@ -8,7 +8,10 @@ import {
   LinkList,
 } from 'design-react-kit';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { selectDevice } from '../../redux/features/app/appSlice';
+import { DeleteReport, GetReportsList } from '../../redux/features/forum/reports/reportsThunk';
 import { useAppSelector } from '../../redux/hooks';
 import AvatarInitials, {
   AvatarSizes,
@@ -17,15 +20,19 @@ import AvatarInitials, {
 
 interface ReportCardI {
   id: string;
-  author: string;
+  author?: string;
+  item_id: string;
+  item_type: 'board_item' | 'community_item' | 'document_item';
   reason: string;
   date: string;
 }
 
-const ReportCard: React.FC<ReportCardI> = ({ reason, date }) => {
+const ReportCard: React.FC<ReportCardI> = ({ reason, date, id, item_type, item_id }) => {
 
   const device = useAppSelector(selectDevice);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const commentDropdownOptions = [
     {
@@ -34,16 +41,19 @@ const ReportCard: React.FC<ReportCardI> = ({ reason, date }) => {
         icon: 'it-delete',
         color: 'primary',
       },
-      // action: () => deleteComment()
-    },
-    {
-      optionName: 'MODIFICA',
-      DropdowniIcon: {
-        icon: 'it-pencil',
-        color: 'primary',
-      },
-      // action: () => editComment
-    },
+      action: async () => {
+        await dispatch(DeleteReport(id))
+        dispatch(GetReportsList())
+      }
+    }
+    // {
+    //   optionName: 'MODIFICA',
+    //   DropdowniIcon: {
+    //     icon: 'it-pencil',
+    //     color: 'primary',
+    //   },
+    //   // action: () => editComment
+    // },
   ];
 
   const reportDropdown = () => (
@@ -70,7 +80,7 @@ const ReportCard: React.FC<ReportCardI> = ({ reason, date }) => {
               <Button
                 className={clsx('primary-color-b1', 'py-2', 'w-100')}
                 role='menuitem'
-                onClick={() => console.log(item.optionName)}
+                onClick={() => item.action()}
               >
                 <div
                   className={clsx(
@@ -166,6 +176,21 @@ const ReportCard: React.FC<ReportCardI> = ({ reason, date }) => {
         <Button
           size='xs'
           className='like-and-comment-buttons d-flex flex-row justify-content-around'
+          onClick={() => {
+            switch (item_type) {
+              case 'board_item':
+                navigate(`/bacheca-digitale/${item_id}`);
+                break;
+              case 'community_item':
+                navigate(`/community/${item_id}`);
+                break;
+              case 'document_item':
+                navigate(`/documenti/${item_id}`);
+                break
+              default:
+                break;
+            }
+          }}
         >
           <p className='primary-color font-weight-bold pl-4 text-nowrap'>
             VAI AL DETTAGLIO

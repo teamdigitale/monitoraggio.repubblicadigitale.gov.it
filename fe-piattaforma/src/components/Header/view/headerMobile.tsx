@@ -12,6 +12,7 @@ import {
 } from 'design-react-kit';
 import LogoMobile from '/public/assets/img/logo-mobile.png';
 import Bell from '/public/assets/img/campanella.png';
+import RocketChatIcon from '/public/assets/img/rocketchat.png';
 import { HeaderI } from '../header';
 import HamburgerMenu from '../../HamburgerMenu/hamburgerMenu';
 import { openModal } from '../../../redux/features/modal/modalSlice';
@@ -33,13 +34,14 @@ const HeaderMobile: React.FC<HeaderI> = ({
   notification,
   menuRoutes,
   profilePicture,
+  handleOpenRocketChat = () => ({}),
 }) => {
   const [openUser, setOpenUser] = useState<boolean>(false);
   const navigate = useNavigate();
+  const { hasUserPermission } = useGuard();
   const userDropdownOptions = [
     { optionName: 'Il mio profilo', action: () => navigate('/area-personale') },
   ];
-  const { hasUserPermission } = useGuard();
 
   const userDropDown = () => (
     <Dropdown
@@ -203,6 +205,27 @@ const HeaderMobile: React.FC<HeaderI> = ({
             {isLogged ? (
               <>
                 {userDropDown()}
+                {hasUserPermission(['btn.chat']) && handleOpenRocketChat ? (
+                  <div className='ml-auto mx-2 pr-3'>
+                    <div
+                      tabIndex={0}
+                      role='button'
+                      onClick={handleOpenRocketChat}
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                          handleOpenRocketChat();
+                        }
+                      }}
+                    >
+                      <Icon
+                        color='white'
+                        icon={RocketChatIcon}
+                        size='sm'
+                        aria-label='RocketChat'
+                      />
+                    </div>
+                  </div>
+                ) : null}
                 <div className='ml-auto pr-3'>
                   <Button
                     onClick={() => setNotificationsIsOpen(true)}

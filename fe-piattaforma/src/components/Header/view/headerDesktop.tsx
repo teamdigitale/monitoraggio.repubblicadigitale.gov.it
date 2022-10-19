@@ -12,8 +12,8 @@ import {
   LinkListItem,
 } from 'design-react-kit';
 import Logo from '/public/assets/img/logo.png';
-//import LogoSmall from '/public/assets/img/logo-small.png';
 import Bell from '/public/assets/img/campanella.png';
+import RocketChatIcon from '/public/assets/img/rocketchat.png';
 import { useTranslation } from 'react-i18next';
 import { HeaderI } from '../header';
 import HeaderMenu from '../../HeaderMenu/headerMenu';
@@ -37,6 +37,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
   notification,
   menuRoutes,
   profilePicture,
+  handleOpenRocketChat = () => ({}),
 }) => {
   //const languages = ['ITA', 'ENG'];
 
@@ -186,108 +187,113 @@ const HeaderDesktop: React.FC<HeaderI> = ({
     </Dropdown>
   );
 
-  const userDropDownAreaGestionale = () => (
-    <Dropdown
-      className='p-0 header-container__top__user-dropdown'
-      isOpen={openManagementArea}
-      toggle={() => setOpenManagementArea(!openManagementArea)}
-    >
-      <DropdownToggle caret className='complementary-1-color-a1 shadow-none'>
-        <div
-          className={clsx(
-            'header-container__top',
-            'd-inline-flex',
-            'align-items-center',
-            'text.white',
-            'primary-bg-b2',
-            'header-panel-btn',
-            'border-right',
-            'border-left',
-            'px-3'
-          )}
-        >
-          <div className='d-flex flew-row align-items-center'>
-            <Icon
-              icon='it-settings'
-              size='sm'
-              color='white'
-              aria-label='Gestione profili'
-            />
-            <h6
-              className={clsx(
-                'm-0',
-                'ml-2',
-                'font-weight-light',
-                'text-nowrap'
-              )}
-            >
-              Area gestionale
-            </h6>
-            <div className='ml-2'>
-              <Icon size='' color='white' icon='it-expand' />
+  const userDropDownAreaGestionale = () =>
+    hasUserPermission(['btn.gest.ruoli']) ||
+    hasUserPermission(['btn.cat']) ||
+    hasUserPermission(['btn.rprt']) ? (
+      <Dropdown
+        className='p-0 header-container__top__user-dropdown'
+        isOpen={openManagementArea}
+        toggle={() => setOpenManagementArea(!openManagementArea)}
+      >
+        <DropdownToggle caret className='complementary-1-color-a1 shadow-none'>
+          <div
+            className={clsx(
+              'header-container__top',
+              'd-inline-flex',
+              'align-items-center',
+              'text.white',
+              'primary-bg-b2',
+              'header-panel-btn',
+              'border-right',
+              'border-left',
+              'px-3'
+            )}
+          >
+            <div className='d-flex flew-row align-items-center'>
+              <Icon
+                icon='it-settings'
+                size='sm'
+                color='white'
+                aria-label='Gestione profili'
+              />
+              <h6
+                className={clsx(
+                  'm-0',
+                  'ml-2',
+                  'font-weight-light',
+                  'text-nowrap'
+                )}
+              >
+                Area gestionale
+              </h6>
+              <div className='ml-2'>
+                <Icon size='' color='white' icon='it-expand' />
+              </div>
             </div>
           </div>
-        </div>
-      </DropdownToggle>
-      <DropdownMenu role='menu' tag='ul'>
-        <LinkList role='list'>
-          {hasUserPermission(['btn.gest.ruoli']) ? (
-            <li role='none' className='px-4'>
-              <Button
-                className={clsx(
-                  'primary-color-b1',
-                  'py-2',
-                  'w-100',
-                  'd-flex',
-                  'justify-content-between'
-                )}
-                role='menuitem'
-                onClick={() => navigate('/gestione-ruoli')}
-              >
-                {t('role_management')}
-              </Button>
-            </li>
-          ) : null}
-          {hasUserPermission(['btn.cat']) ? (
-            <li role='none' className='px-4'>
-              <Button
-                className={clsx(
-                  'primary-color-b1',
-                  'py-2',
-                  'w-100',
-                  'd-flex',
-                  'justify-content-between'
-                )}
-                role='menuitem'
-                onClick={() => navigate('/area-gestionale/gestione-categorie')}
-              >
-                Gestione categorie
-              </Button>
-            </li>
-          ) : null}
-          {hasUserPermission(['btn.rprt']) ? (
-            <li role='none' className='px-4'>
-              <Button
-                className={clsx(
-                  'primary-color-b1',
-                  'py-2',
-                  'w-100',
-                  'd-flex',
-                  'justify-content-between'
-                )}
-                role='menuitem'
-                onClick={() =>
-                  navigate('/area-gestionale/gestione-segnalazioni')
-                }
-              >
-                Gestione segnalazioni
-              </Button>
-            </li>
-          ) : null}
-        </LinkList>
-      </DropdownMenu>
-    </Dropdown>
-  );
+        </DropdownToggle>
+        <DropdownMenu role='menu' tag='ul'>
+          <LinkList role='list'>
+            {hasUserPermission(['btn.gest.ruoli']) ? (
+              <li role='none' className='px-4'>
+                <Button
+                  className={clsx(
+                    'primary-color-b1',
+                    'py-2',
+                    'w-100',
+                    'd-flex',
+                    'justify-content-between'
+                  )}
+                  role='menuitem'
+                  onClick={() => navigate('/gestione-ruoli')}
+                >
+                  {t('role_management')}
+                </Button>
+              </li>
+            ) : null}
+            {hasUserPermission(['btn.cat']) ? (
+              <li role='none' className='px-4'>
+                <Button
+                  className={clsx(
+                    'primary-color-b1',
+                    'py-2',
+                    'w-100',
+                    'd-flex',
+                    'justify-content-between'
+                  )}
+                  role='menuitem'
+                  onClick={() =>
+                    navigate('/area-gestionale/gestione-categorie')
+                  }
+                >
+                  Gestione categorie
+                </Button>
+              </li>
+            ) : null}
+            {hasUserPermission(['btn.rprt']) ? (
+              <li role='none' className='px-4'>
+                <Button
+                  className={clsx(
+                    'primary-color-b1',
+                    'py-2',
+                    'w-100',
+                    'd-flex',
+                    'justify-content-between'
+                  )}
+                  role='menuitem'
+                  onClick={() =>
+                    navigate('/area-gestionale/gestione-segnalazioni')
+                  }
+                >
+                  Gestione segnalazioni
+                </Button>
+              </li>
+            ) : null}
+          </LinkList>
+        </DropdownMenu>
+      </Dropdown>
+    ) : null;
 
   return (
     <header
@@ -419,6 +425,27 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               isLogged ? (
                 <>
                   {userDropDown()}
+                  {hasUserPermission(['btn.chat']) && handleOpenRocketChat ? (
+                    <div className='mx-4 pr-2'>
+                      <div
+                        tabIndex={0}
+                        role='button'
+                        onClick={handleOpenRocketChat}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            handleOpenRocketChat();
+                          }
+                        }}
+                      >
+                        <Icon
+                          color='white'
+                          icon={RocketChatIcon}
+                          size='sm'
+                          aria-label='RocketChat'
+                        />
+                      </div>
+                    </div>
+                  ) : null}
                   <div className='mx-4'>
                     <div className='ml-auto pr-3'>
                       <Button

@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import {
   CreateCategory,
   GetCategoriesList,
+  UpdateCategory,
 } from '../../../../../redux/features/forum/categories/categoriesThunk';
-import { closeModal } from '../../../../../redux/features/modal/modalSlice';
+import { closeModal, selectModalPayload } from '../../../../../redux/features/modal/modalSlice';
+import { useAppSelector } from '../../../../../redux/hooks';
 import { formFieldI } from '../../../../../utils/formHelper';
 import CategoryFrom from './Category/categoryForm';
 
@@ -17,19 +19,35 @@ interface CategoryModalFormI {
   creation?: boolean;
 }
 
-interface ManageCategoryI extends withFormHandlerProps, CategoryModalFormI {}
+interface ManageCategoryI extends withFormHandlerProps, CategoryModalFormI { }
 
 const ManageCategory: React.FC<ManageCategoryI> = (props) => {
-  const { formDisabled, creation = false } = props;
+  const { formDisabled } = props;
 
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
   }>({});
+  const payload = useAppSelector(selectModalPayload)
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    console.log(payload);
+    
+    if (payload && payload.term_name && payload.term_type) {
+      setNewFormValues({
+        term_type: payload.term_type,
+        term_name: payload.term_name
+      })
+    }
+  }, [payload])
+
   const handleSaveCategory = async () => {
-    await dispatch(CreateCategory(newFormValues));
+    if (payload && payload.id) {
+      await dispatch(UpdateCategory({ term_name: newFormValues.term_name }, payload.id))
+    } else {
+      await dispatch(CreateCategory(newFormValues));
+    }
     dispatch(GetCategoriesList({}));
     dispatch(closeModal());
   };
@@ -48,8 +66,9 @@ const ManageCategory: React.FC<ManageCategoryI> = (props) => {
       }}
     >
       <CategoryFrom
-        creation={creation}
+        creation={!payload?.id}
         formDisabled={!!formDisabled}
+        newFormValues={newFormValues}
         sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {
           setNewFormValues({ ...newData });
         }}

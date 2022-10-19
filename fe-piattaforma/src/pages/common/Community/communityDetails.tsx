@@ -125,7 +125,9 @@ const CommunityDetails = () => {
           )
         }
         onEditClick={() => dispatch(openModal({ id: 'topicModal' }))}
-        onReportClick={() => dispatch(openModal({ id: 'reportModal' }))}
+        onReportClick={() => dispatch(openModal({ id: 'report-modal', payload: {
+          entity: 'community'
+        } }))}
       />
       {commentsList.length ? <CommentSection section='community' /> : null}
       {/* <div className='border-bottom-box-comments mt-5'></div>

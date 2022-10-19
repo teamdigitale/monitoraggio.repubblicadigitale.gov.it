@@ -153,6 +153,7 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
         label: 'Annulla',
         onClick: () => {
           clearForm?.();
+          resetModal();
           dispatch(closeModal());
         },
       },
@@ -161,7 +162,10 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
       title: null,
       primaryCTA: {
         label: 'Chiudi',
-        onClick: () => dispatch(closeModal()),
+        onClick: () => {
+          resetModal();
+          dispatch(closeModal());
+        },
       },
       secondaryCTA: null,
     },

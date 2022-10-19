@@ -98,7 +98,10 @@ const BachecaDigitaleWidget = () => {
               className='d-flex flex-wrap justify-content-between align-cards w-100'
             >
               {el.map((e: any, index: any) => (
-                <div key={`card-${i}-${index}`} className='flex-grow-0 my-2'>
+                <div
+                  key={`card-${i}-${index}`}
+                  className='flex-grow-0 mt-2 mb-3'
+                >
                   <CardShowcase {...e}></CardShowcase>
                 </div>
               ))}

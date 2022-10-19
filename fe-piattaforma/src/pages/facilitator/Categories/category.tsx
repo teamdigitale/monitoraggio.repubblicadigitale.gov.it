@@ -12,7 +12,7 @@ import GenericSearchFilterTableLayout, {
 } from '../../../components/genericSearchFilterTableLayout/genericSearchFilterTableLayout';
 import PageTitle from '../../../components/PageTitle/pageTitle';
 import Table, { newTable, TableRowI } from '../../../components/Table/table';
-import { GetCategoriesList } from '../../../redux/features/forum/categories/categoriesThunk';
+import { DeleteCategory, GetCategoriesList } from '../../../redux/features/forum/categories/categoriesThunk';
 import { selectCategoriesList } from '../../../redux/features/forum/forumSlice';
 import {
   closeModal,
@@ -79,6 +79,7 @@ const Category = () => {
       TableCategories,
       categoriesList.map((td: any) => {
         return {
+          id: td.id,
           label: td.name,
           section: getCategoryLabel(td.type),
         };
@@ -93,9 +94,7 @@ const Category = () => {
         openModal({
           id: 'delete-entity',
           payload: {
-            entity: 'referent-delegate',
-            cf: td,
-            role: 'REPP',
+            id: typeof td !== 'string' ? td.id : null,
             text: 'Confermi di voler eliminare questa categoria?',
           },
         })
@@ -103,7 +102,15 @@ const Category = () => {
     },
     [CRUDActionTypes.EDIT]: (td: TableRowI | string) => {
       if (typeof td !== 'string') {
-        console.log('EDIT');
+        dispatch(openModal({
+          id: 'category',
+          payload: {
+            title: 'Modifica Categoria',
+            id: td.id,
+            term_type: categoriesList.find(c => c.id === td.id).type,
+            term_name: td.label
+          }
+        }))
       }
     },
   };
@@ -127,7 +134,7 @@ const Category = () => {
       id: 'sezione',
       onOptionsChecked: (options) => console.log(options),
       className: 'mr-3',
-      values:  [],
+      values: [],
       handleOnSearch: (searchKey) => console.log(searchKey),
       valueSearch: '',
     },
@@ -175,7 +182,13 @@ const Category = () => {
       </GenericSearchFilterTableLayout>
       <DeleteEntityModal
         onClose={() => dispatch(closeModal())}
-        onConfirm={() => console.log('CONFERMA')}
+        onConfirm={async (payload: any) => {
+          if (payload.id) {
+            await dispatch(DeleteCategory(payload.id))
+            dispatch(GetCategoriesList({ type: 'all' }))
+            dispatch(closeModal())
+          }
+        }}
       />
       <ManageCategory />
     </>

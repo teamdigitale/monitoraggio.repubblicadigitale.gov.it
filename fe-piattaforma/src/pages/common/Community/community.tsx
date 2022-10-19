@@ -172,6 +172,7 @@ const Community = () => {
             )
           }
           cards={popularTopics}
+          isCommunity
         >
           <Container className='pb-5'>
             <div className='row'>

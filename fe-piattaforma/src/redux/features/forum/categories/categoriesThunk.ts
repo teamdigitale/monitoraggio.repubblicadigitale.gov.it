@@ -1,5 +1,4 @@
 import { Dispatch } from '@reduxjs/toolkit';
-import API from '../../../../utils/apiHelper';
 import { hideLoader, showLoader } from '../../app/appSlice';
 import { setCategoriesList } from '../forumSlice';
 import { proxyCall } from '../forumThunk';
@@ -13,29 +12,29 @@ export const GetCategoriesList =
     type = 'all',
   }: {
     type?:
-      | 'all'
-      | 'board_categories'
-      | 'community_categories'
-      | 'document_categories';
+    | 'all'
+    | 'board_categories'
+    | 'community_categories'
+    | 'document_categories';
   }) =>
-  async (dispatch: Dispatch) => {
-    try {
-      dispatch(showLoader());
-      dispatch({ ...GetCategoriesListAction });
-      const res = await proxyCall(
-        `/category/retrieve?term_type=${type}`,
-        'GET'
-      );
-      // const res = await API.get(`/category/retrieve`)
-      if (res) {
-        dispatch(setCategoriesList(res.data.data.items || []));
+    async (dispatch: Dispatch) => {
+      try {
+        dispatch(showLoader());
+        dispatch({ ...GetCategoriesListAction });
+        const res = await proxyCall(
+          `/category/retrieve?term_type=${type}`,
+          'GET'
+        );
+        // const res = await API.get(`/category/retrieve`)
+        if (res) {
+          dispatch(setCategoriesList(res.data.data.items || []));
+        }
+      } catch (error) {
+        console.log('GetCategoriesList error', error);
+      } finally {
+        dispatch(hideLoader());
       }
-    } catch (error) {
-      console.log('GetCategoriesList error', error);
-    } finally {
-      dispatch(hideLoader());
-    }
-  };
+    };
 
 const CreateCategoryAction = {
   type: 'forum/CreateCategory',
@@ -65,7 +64,7 @@ export const UpdateCategory =
     try {
       dispatch(showLoader());
       dispatch({ ...UpdateCategoryAction });
-      await API.post(`/category/${categoryId}/update`, {
+      await proxyCall(`/category/${categoryId}/update`, 'POST', {
         ...payload,
       });
     } catch (error) {
@@ -84,7 +83,7 @@ export const DeleteCategory =
     try {
       dispatch(showLoader());
       dispatch({ ...DeleteCategoryAction });
-      await API.post(`/category/${categoryId}/delete`);
+      await proxyCall(`/category/${categoryId}/delete`, 'POST', {});
     } catch (error) {
       console.log('DeleteCategory error', error);
     } finally {

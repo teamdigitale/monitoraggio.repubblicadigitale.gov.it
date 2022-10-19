@@ -64,7 +64,11 @@ const BachecaDetails = () => {
             })
           )
         }
-        onReportNews={() => dispatch(openModal({ id: 'reportModal' }))}
+        onReportNews={() => dispatch(openModal({
+          id: 'report-modal', payload: {
+            entity: 'board'
+          }
+        }))}
         onDeleteNews={() =>
           dispatch(
             openModal({

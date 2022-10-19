@@ -38,6 +38,8 @@ export interface ForumLayoutI {
   sectionTitle?: string;
   sortFilter?: boolean;
   isDocument?: boolean;
+  isNews?: boolean;
+  isCommunity?: boolean;
   title?: string;
   cta?: (() => void) | undefined;
   ctaToolCollaboration?: (() => void) | undefined;
@@ -58,6 +60,8 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
     sectionTitle,
     sortFilter = false,
     isDocument = false,
+    isNews = false,
+    isCommunity = false,
     title,
     cta,
     ctaHref,
@@ -305,14 +309,19 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
                     }}
                   >
                     <CardSlider
+                      id={e.id}
                       isDocument={isDocument}
+                      isNews={isNews}
+                      isCommunity={isCommunity}
                       typology={e.categories || e.typology}
                       date={e.date}
                       title={e.title}
-                      download={e.commentsTot || e.download}
-                      comment={e.commentsTot || e.comment}
-                      likes={e.commentsTot}
-                      views={e.commentsTot}
+                      download={e.commentsTot || e.download || '-'}
+                      comment={
+                        e.commentsTot || e.comment_count || e.comment || '-'
+                      }
+                      likes={e.likes || e.commentsTot || '-'}
+                      views={e.views || e.commentsTot || '-'}
                     />
                   </div>
                 ))}
