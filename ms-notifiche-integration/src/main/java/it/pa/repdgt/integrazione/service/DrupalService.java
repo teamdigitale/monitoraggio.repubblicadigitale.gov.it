@@ -155,8 +155,8 @@ public class DrupalService {
 			log.info("Richiesta Servizio Drupal: {} {} headersRichiesta={}", metodoHttp, urlDaChiamare, forwardHeaders);
 			responseDrupal = this.restTemplate.exchange(urlDaChiamare, metodoHttp, forwardRequestEntity, String.class);
 			final String nomeFileS3Drupal = responseDrupal.getBody();
-			final String presgnedUrlDrupal = this.s3Service.getPresignedUrlDrupal(nomeFileS3Drupal, this.nomeBucketS3Drupal);
-			response.put("presignedUrlDrupal", presgnedUrlDrupal);
+			//final String presgnedUrlDrupal = this.s3Service.getPresignedUrlDrupal(nomeFileS3Drupal, this.nomeBucketS3Drupal);
+			//response.put("presignedUrlDrupal", presgnedUrlDrupal);
 			
 		} catch (Exception e) {
         	String messaggioErrore = String.format("Errore chiamata REST DRUPAL: %s %s - datail: %s", metodoHttp, urlDaChiamare, e.getMessage());
