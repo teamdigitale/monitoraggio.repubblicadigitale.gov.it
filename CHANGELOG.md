@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.83](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.82...1.0.0-test.83) (2022-10-19)
+
+
+### Bug Fixes
+
+* **be:** ruoli contesto-utenteAll-scheda utente ([82d2ef4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/82d2ef4e2e972201b4067871948af3655b1abc6b))
+
 ## [1.0.0-test.82](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.81...1.0.0-test.82) (2022-10-18)
 
 
