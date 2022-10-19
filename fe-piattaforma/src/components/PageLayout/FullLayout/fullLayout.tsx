@@ -42,7 +42,7 @@ const FullLayout: React.FC<LayoutProp> = (props) => {
     <>
       <LocationInterceptor />
       <Header isHeaderFull={isHeaderFull} />
-      {location.pathname !== '/' && !device.mediaIsPhone && (
+      {withBreadcrumb && location.pathname !== '/' && !device.mediaIsPhone && (
         <div className={clsx(publishedContent && 'lightgrey-bg-b4')}>
           <div
             className={clsx(

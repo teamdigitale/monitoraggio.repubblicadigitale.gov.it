@@ -25,6 +25,7 @@ import {
   cleanForumFilters,
   setForumFilters,
 } from '../../redux/features/forum/forumSlice';
+import useGuard from '../../hooks/guard';
 
 export interface ForumLayoutI {
   dropdowns?: DropdownFilterI[];
@@ -75,6 +76,7 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
 
   const device = useAppSelector(selectDevice);
   const dispatch = useDispatch();
+  const { hasUserPermission } = useGuard();
 
   const [showChips, setShowChips] = useState<boolean>(false);
 
@@ -221,7 +223,9 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
               device.mediaIsTablet && 'flex-column-reverse'
             )}
           >
-            {ctaToolCollaboration && !device.mediaIsPhone ? (
+            {hasUserPermission(['acc.clb']) &&
+            ctaToolCollaboration &&
+            !device.mediaIsPhone ? (
               <Button
                 outline
                 color='primary'

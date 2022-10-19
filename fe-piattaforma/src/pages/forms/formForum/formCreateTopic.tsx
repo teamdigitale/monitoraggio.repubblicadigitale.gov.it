@@ -17,6 +17,7 @@ import {
 import { GetTagsList } from '../../../redux/features/forum/forumThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
+import { uploadFile } from '../../../utils/common';
 
 interface createTopicI extends withFormHandlerProps {
   formDisabled?: boolean;
@@ -40,7 +41,9 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
 
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
   const inputRef = useRef<HTMLInputElement>(null);
-  const [file, setFile] = useState<string>('Carica file dal tuo dispositivo');
+  const [files, setFiles] = useState<{ name?: string; data?: File }>({
+    name: 'Carica documenti, foto ecc.',
+  });
   const [iconVisible, setIconVisible] = useState<boolean>(false);
   // const device = useAppSelector(selectDevice);
   const tagsList = useAppSelector(selectTagsList);
@@ -55,6 +58,14 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
     dispatch(GetCategoriesList({ type: 'community_categories' }));
     dispatch(GetTagsList());
   }, []);
+
+  useEffect(() => {
+    if (files?.data) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignorex
+      onInputChange(files, 'attachment');
+    }
+  }, [files?.data]);
 
   useEffect(() => {
     if (topicDetail && !creation) {
@@ -90,20 +101,12 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
   };
 
   const updateFile = () => {
-    const input: HTMLInputElement = document.getElementById(
-      'file'
-    ) as HTMLInputElement;
-
-    if (input.files?.length) {
-      const selectedFile = input.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(selectedFile);
-      reader.onloadend = () => {
-        setFile(selectedFile.name as string);
-      };
-    }
+    uploadFile('file', (file: any) => {
+      setFiles(file);
+    });
     setIconVisible(!iconVisible);
   };
+
   const handleOnSubmit = (searchValues: string) => {
     const newTags = [...tags, searchValues];
     setTags(newTags);
@@ -230,7 +233,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
             className='d-flex align-items-center justify-content-between'
           >
             <p className='mt-2' style={{ color: '#4c4c4d' }}>
-              {file}
+              {files?.name}
             </p>
             {!iconVisible ? (
               <Button
@@ -283,11 +286,11 @@ const form = newForm([
     required: true,
     type: 'textarea',
   }),
-  // newFormField({
-  //   field: 'allegaFile',
-  //   id: 'allegaFile',
-  //   type: 'file',
-  // }),
+  newFormField({
+    field: 'attachment',
+    id: 'attachment',
+    type: 'file',
+  }),
   // newFormField({
   //   field: 'aggiungiTag',
   //   id: 'aggiungiTag',

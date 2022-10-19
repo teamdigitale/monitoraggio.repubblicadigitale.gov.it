@@ -105,7 +105,8 @@ const StatusChip: React.FC<StatusChipI> = (props) => {
               chipWidth && 'px-3',
               device.mediaIsPhone &&
                 status?.length >= 11 &&
-                'chip-label__chip-height'
+                'chip-label__chip-height',
+              status === 'NON ATTIVO' && 'not-active-chip'
             )}
           >
             {status?.toUpperCase().replace('_', ' ')}
@@ -119,7 +120,7 @@ const StatusChip: React.FC<StatusChipI> = (props) => {
             rowTableId ? rowTableId : new Date().getTime()
           }`}
         >
-          {status}
+          {status?.toUpperCase().replace('_', ' ')}
         </UncontrolledTooltip>
       )}
     </>

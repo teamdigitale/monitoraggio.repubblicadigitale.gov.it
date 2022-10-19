@@ -15,7 +15,6 @@ import { selectCategoriesList } from '../../../../../redux/features/forum/forumS
 import {
   CreateItem,
   GetItemDetail,
-  GetItemsList,
   UpdateItem,
 } from '../../../../../redux/features/forum/forumThunk';
 import { useParams } from 'react-router-dom';
@@ -48,6 +47,11 @@ const ManageNews: React.FC<ManageNewsI> = ({
   const programsList = useAppSelector(selectEntityFiltersOptions)['programmi'];
   const userProfile = useAppSelector(selectProfile);
   const dispatch = useDispatch();
+
+  const resetModal = () => {
+    setStep('form');
+    setNewFormValues({});
+  };
 
   let content = <span></span>;
 
@@ -128,7 +132,6 @@ const ManageNews: React.FC<ManageNewsI> = ({
         // @ts-ignore
         if (res) {
           userId && dispatch(GetItemDetail(id, userId, 'board'));
-          setNewFormValues({});
           setStep('confirm');
         }
       } else {
@@ -155,8 +158,6 @@ const ManageNews: React.FC<ManageNewsI> = ({
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (res) {
-          dispatch(GetItemsList('board'));
-          setNewFormValues({});
           setStep('confirm');
         }
       }
@@ -228,6 +229,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
       secondaryCTA={(stepsCTA[step].secondaryCTA as CallToAction) || null}
       tertiaryCTA={(stepsCTA[step].tertiaryCTA as CallToAction) || null}
       centerButtons
+      onClose={resetModal}
     >
       <p
         className={clsx(

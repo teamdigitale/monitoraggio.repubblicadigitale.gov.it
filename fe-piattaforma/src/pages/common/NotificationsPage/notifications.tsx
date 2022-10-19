@@ -10,10 +10,7 @@ import './notifications.scss';
 import { setEntityPagination } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import clsx from 'clsx';
 import { GetNotificationsList } from '../../../redux/features/notification/notificationThunk';
-import {
-  removeNotify,
-  selectNotificationList,
-} from '../../../redux/features/notification/notificationSlice';
+import { removeNotify } from '../../../redux/features/notification/notificationSlice';
 import Input from '../../../components/Form/input';
 import MailRead from '/public/assets/img/mail-open.png';
 import MailReadCheck from '/public/assets/img/mail-open-check.png';
@@ -41,7 +38,10 @@ const Notifications: React.FC = () => {
   const device = useAppSelector(selectDevice);
   const isMobile = device.mediaIsPhone;
   const [isClicked] = useState<boolean>(false);
-  const notificationsList = useAppSelector(selectNotificationList);
+
+  // TODO integrate notification
+  const notificationsList: any[] = [];
+
   const dispatch = useDispatch();
   const pagination = useAppSelector(selectEntityPagination);
   const [newArray, setNewArray] = useState<string[]>([]);

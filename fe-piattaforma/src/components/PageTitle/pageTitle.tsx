@@ -8,8 +8,6 @@ import { useLocation } from 'react-router-dom';
 import { surveyBody } from '../SectionInfo/bodies';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
-import { selectNotificationList } from "../../redux/features/notification/notificationSlice";
-//import { useAppSelector } from "../../redux/hooks";
 
 interface BreadcrumbI {
   label?: string;
@@ -52,7 +50,8 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
     useState<boolean>(defaultOpen);
 
   const device = useAppSelector(selectDevice);
-  const notificationsList = useAppSelector(selectNotificationList);
+  // TODO integrate notification count
+  const notificationsList = 3;
   const location = useLocation();
   //const notificationsList = useAppSelector(selectNotificationList);
 
@@ -165,7 +164,7 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
         ) : null}
         {badge ? (
           <span className='badge-notifications'>
-            {notificationsList.filter((notificationsList) => notificationsList.unread === true).length}
+            {notificationsList}
           </span>
         ) : null}
       </Container>

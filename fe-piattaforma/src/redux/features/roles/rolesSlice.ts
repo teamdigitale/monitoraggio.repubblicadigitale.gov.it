@@ -109,7 +109,9 @@ export type RolePermissionI =
   | 'upd.topic'
   // Documenti
   | 'tab.doc'
-  | 'upd.doc';
+  | 'upd.doc'
+  // WorkDocs
+  | 'acc.clb';
 
 interface RoleI {
   codiceRuolo: string;

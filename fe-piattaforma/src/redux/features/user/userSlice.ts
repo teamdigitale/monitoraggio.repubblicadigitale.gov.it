@@ -16,6 +16,7 @@ export interface UserStateI {
         nome?: string;
         surname?: string;
         cognome?: string;
+        email?: string;
         role?: string;
         codiceFiscale: string;
         profiliUtente: UserProfileI[];
@@ -23,6 +24,7 @@ export interface UserStateI {
         mostraBio: boolean;
         mostraTipoContratto: boolean;
         immagineProfilo?: string;
+        utenteRegistratoInWorkdocs: boolean;
       }
     | Record<string, never>;
   notification?: [];
@@ -59,10 +61,12 @@ const initialStateLogged: UserStateI = {
     cognome: 'Rossi',
     role: 'DTD',
     codiceFiscale: 'UTENTE1',
+    email: 'mario.rossi@mail.com',
     integrazione: true,
     profiliUtente: [],
     mostraBio: false,
     mostraTipoContratto: false,
+    utenteRegistratoInWorkdocs: false,
   },
   permissions: [],
   idProgramma: '0',
