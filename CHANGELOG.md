@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.212](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.211...1.0.0-develop.212) (2022-10-19)
+
+
+### Features
+
+* **be:** cambiata libreria per decode Base64 ([18d7a4f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/18d7a4f038c26e7618de6555dd6e892e22127096))
+
 ## [1.0.0-develop.211](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.210...1.0.0-develop.211) (2022-10-19)
 
 
