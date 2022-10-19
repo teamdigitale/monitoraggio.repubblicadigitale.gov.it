@@ -162,3 +162,31 @@
   font-size: 14px;
   font-weight: 600;
 }
+
+.select-multiple-checkbox {
+  &__options {
+    background-color: rgba($color: #e8f2fc, $alpha: 0.5);
+    border: 1px solid #d6dce3;
+    border-radius: 10px;
+    margin-bottom: 16px;
+  }
+  &__box-field {
+    border: 1px solid #001a33;
+    border-radius: 5px;
+    &__box-title {
+      padding: 16px 20px 0px 16px;
+      font-size: 16px;
+    }
+    &__box-content {
+      padding: 0px 16px 16px 16px; 
+      .form-group {
+        margin-bottom: 0;
+        label {
+          overflow: visible;
+          text-overflow: wrap;
+          white-space: break-spaces;
+        }
+      }
+    }
+  }
+}

@@ -29,10 +29,12 @@ export interface SelectMultipleI {
   placeholder?: string;
   required?: boolean;
   value?: OptionTypeMulti[];
+  valueSecondLevelString?: string | undefined;
   wrapperClassName?: string;
   withLabel?: boolean;
   isDisabled?: boolean;
   classNamePrefix?: string;
+  onFieldsChange?: (value: {[key:string]: formFieldI['value']}) => void;
 }
 
 const SelectMultiple: React.FC<SelectMultipleI> = (props) => {
