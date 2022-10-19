@@ -28,6 +28,8 @@ import {
   setEntityPagination,
 } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { formFieldI } from '../../../utils/formHelper';
+import { selectUser } from '../../../redux/features/user/userSlice';
+import WorkdocsRegistrationModal from './workdocsRegistrationModal';
 
 const documentCta = {
   textCta: 'Carica documento',
@@ -49,6 +51,7 @@ const Documents = () => {
   const filtersList = useAppSelector(selectFilters);
   const dropdownFilterOptions = useAppSelector(selectFilterOptions);
   const pagination = useAppSelector(selectEntityPagination);
+  const { utenteRegistratoInWorkdocs } = useAppSelector(selectUser) || {};
   const [searchDropdown, setSearchDropdown] = useState<
     { filterId: string; value: formFieldI['value'] }[]
   >([]);
@@ -74,7 +77,7 @@ const Documents = () => {
     const res = await dispatch(
       GetDocumentsList(
         {
-          sort: [{ label: 'likes', value: 'likes' }],
+          sort: [{ label: 'downloads', value: 'downloads' }],
           page: [{ label: '0', value: '0' }],
           items_per_page: [{ label: itemPerPage, value: itemPerPage }],
         },
@@ -198,13 +201,21 @@ const Documents = () => {
     },
   ];
 
+  const handleCollaborationToolRegistration = () => {
+    window.open(process.env.REACT_APP_WORKDOCS_BASE_URL, '_blank');
+    window.location.reload();
+  };
+
   const handleCollaborationTool = () => {
-    // TODO implement custom logic here
-    // check if user is already registered in workdocs
-    // if yes redirect to workdocs
-    // else open registration modal
-    // then redirect to workdocs
-    console.log('tool di collaborazione');
+    if (utenteRegistratoInWorkdocs) {
+      handleCollaborationToolRegistration();
+    } else {
+      dispatch(
+        openModal({
+          id: 'workdocs-registration',
+        })
+      );
+    }
   };
 
   return (
@@ -270,6 +281,11 @@ const Documents = () => {
         </ForumLayout>
       </div>
       <ManageDocument creation />
+      {!utenteRegistratoInWorkdocs ? (
+        <WorkdocsRegistrationModal
+          onRegistrationComplete={handleCollaborationToolRegistration}
+        />
+      ) : null}
     </>
   );
 };

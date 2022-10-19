@@ -63,7 +63,6 @@ const Comment: React.FC<CommentI> = (props) => {
   } = props;
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isReported, setIsReported] = useState<boolean>(false);
   const [showReplies, setShowReplies] = useState<boolean>(false);
   const device = useAppSelector(selectDevice);
   const dispatch = useDispatch();
@@ -147,10 +146,13 @@ const Comment: React.FC<CommentI> = (props) => {
       action: () => {
         dispatch(
           openModal({
-            id: 'reportModal',
+            id: 'report-modal',
+            payload: {
+              entity: 'comment',
+              id: id
+            }
           })
-        ),
-          setIsReported(true);
+        )
       },
     },
   ];
@@ -235,10 +237,10 @@ const Comment: React.FC<CommentI> = (props) => {
         <div
           className={clsx(
             'd-flex flex-row justify-content-end',
-            isReported && 'align-items-center'
+            // isReported && 'align-items-center'
           )}
         >
-          {isReported && <Icon icon='it-error' color='danger' />}
+          {/* {isReported && <Icon icon='it-error' color='danger' />} */}
           {commentDropdown()}
         </div>
         {/* comment heading ^^^^ */}

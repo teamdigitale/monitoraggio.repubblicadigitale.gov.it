@@ -70,7 +70,7 @@ const CardShowcase: React.FC<CardShowcaseI> = (props) => {
       tabIndex={0}
     >
       <div className='position-relative'>
-        <div className='responsive'>
+        <div className='w-100'>
           <img
             src={cover ? cover : coverPlaceholder}
             title='img title'
@@ -94,7 +94,6 @@ const CardShowcase: React.FC<CardShowcaseI> = (props) => {
         className={clsx(
           'bg-white',
           isMobile ? 'mx-4' : 'px-4',
-          'pb-2',
           'd-flex',
           'flex-column',
           marked ? 'showcase-card__body' : null
@@ -136,7 +135,7 @@ const CardShowcase: React.FC<CardShowcaseI> = (props) => {
           )}
         </Col>
         <div
-          className={clsx('d-flex', 'flex-row', 'my-3', 'justify-content-end')}
+          className={clsx('d-flex', 'flex-row', 'my-2', 'justify-content-end')}
         >
           <div
             className={clsx(

@@ -33,7 +33,6 @@ import {
 import ProtectedComponent from '../hoc/AuthGuard/ProtectedComponent/ProtectedComponent';
 import { updateCustomBreadcrumb } from '../redux/features/app/appSlice';
 // import Comment from '../components/Comments/comment';
-import ReportFlowCard from '../components/ReportFlow/reportFlowCard';
 import ManageComment from './administrator/AdministrativeArea/Entities/modals/manageComment';
 import ManageDocument from './administrator/AdministrativeArea/Entities/modals/manageDocument';
 import PillDropDown from '../components/PillDropDown/pillDropDown';
@@ -158,10 +157,6 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
       />
       <div className='my-5'>
         {/* Testing Protected Component */}
-
-        <section>
-          <ReportFlowCard />
-        </section>
 
         <ProtectedComponent visibleTo={[]}>
           <DropdownFilter

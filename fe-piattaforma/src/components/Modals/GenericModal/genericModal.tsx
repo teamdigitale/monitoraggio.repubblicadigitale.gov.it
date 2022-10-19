@@ -135,7 +135,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
           </div>
         </div>
       ) : (
-        <span />
+        <button className='hidden-btn' />
       )}
       {title || payload?.title ? (
         <div
@@ -157,11 +157,11 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
           </p>
         </div>
       ) : (
-        <span />
+        <button className='hidden-btn' />
       )}
       {hasSearch || description || payload?.description || children ? (
         <ModalBody className='p-0'>
-          {hasSearch && (
+          {hasSearch ? (
             //
             <div className='row mx-5'>
               <div className='col-12'>
@@ -174,18 +174,20 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
                 />
               </div>
             </div>
-          )}
-          <p
-            className={clsx(
-              isSurveyOnline && 'text-muted text-center mx-auto h5'
-            )}
-          >
-            {description || payload?.description}
-          </p>
+          ) : null}
+          {description || payload?.description ? (
+            <p
+              className={clsx(
+                isSurveyOnline && 'text-muted text-center mx-auto h5'
+              )}
+            >
+              {description || payload?.description}
+            </p>
+          ) : null}
           {children}
         </ModalBody>
       ) : (
-        <span />
+        <button className='hidden-btn' />
       )}
       {footer || primaryCTA || secondaryCTA ? (
         <ModalFooter
@@ -264,7 +266,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
           )}
         </ModalFooter>
       ) : (
-        <span />
+        <button className='hidden-btn' />
       )}
     </Modal>
   );

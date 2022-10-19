@@ -3,11 +3,13 @@ import React from 'react';
 import './cardSlider.scss';
 import CuoreBluVuoto from '../../../public/assets/img/hollow-blue-heart.png';
 import clsx from 'clsx';
+import { useNavigate } from 'react-router-dom';
 /* 
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
  */
 interface CardSliderI {
+  id: string | number;
   typology?: string;
   date?: string;
   title?: string;
@@ -16,6 +18,8 @@ interface CardSliderI {
   likes?: number;
   views?: number;
   isDocument?: boolean;
+  isNews?: boolean;
+  isCommunity?: boolean;
   /*  rightArrow?: boolean;
   leftArrow?: boolean;
   increment?: () => void;
@@ -24,6 +28,7 @@ interface CardSliderI {
 
 const CardSlider: React.FC<CardSliderI> = (props) => {
   const {
+    id,
     typology,
     date,
     title,
@@ -31,16 +36,38 @@ const CardSlider: React.FC<CardSliderI> = (props) => {
     comment,
     likes,
     views,
-    isDocument,
+    isDocument = false,
+    isNews = false,
+    isCommunity = false,
     /*  rightArrow,
     leftArrow,
     increment,
     decrement, */
   } = props;
-  /*  const device = useAppSelector(selectDevice);
-  const isMobile = device.mediaIsPhone; */
+  const navigate = useNavigate();
+
+  const navigateByType = () => {
+    if (id) {
+      if (isNews) {
+        navigate(`/bacheca-digitale/${id}`);
+      } else if (isCommunity) {
+        navigate(`/community/${id}`);
+      } else if (isDocument) {
+        navigate(`/documenti/${id}`);
+      }
+    }
+  };
+
+  console.log('typology', isDocument, isNews, isCommunity);
+
   return (
-    <div className={clsx('card-slider-container', 'py-3', 'pl-4', 'pr-5')}>
+    <div
+      role='button'
+      onKeyDown={navigateByType}
+      onClick={navigateByType}
+      tabIndex={0}
+      className={clsx('card-slider-container', 'py-3', 'pl-4', 'pr-5')}
+    >
       <div className='card-slider-container__pre-title'>
         <span className='font-weight-bold'>{typology}</span> {date}
       </div>

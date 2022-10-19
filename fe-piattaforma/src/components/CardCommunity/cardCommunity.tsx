@@ -50,87 +50,92 @@ const CardCommunity: React.FC<CardCommunityI> = (props) => {
   return (
     <div
       role='button'
-      className='card-community'
+      className={clsx(
+        'card-community',
+        'bg-white',
+        'px-4',
+        'pb-3',
+        'pt-4',
+        'd-flex',
+        'flex-column'
+      )}
       onKeyDown={navigateTo}
       onClick={navigateTo}
       tabIndex={0}
     >
-      <div className={clsx('bg-white', 'p-4', 'pb-2', 'd-flex', 'flex-column')}>
-        <Col className='text-left'>
-          {category_label ? (
-            <div className='mb-2 card-community__pre-title'>
-              <span className='font-weight-bold'>{category_label}</span> -{' '}
-              {date}
-            </div>
-          ) : null}
-          {title ? (
-            <CardTitle
-              tag='p'
-              className='card-community__title font-weight-bold mb-3'
-            >
-              {title}
-            </CardTitle>
-          ) : null}
-          {description ? (
-            <CardText className='card-community__text mb-3 text-serif'>
-              {description}
-            </CardText>
-          ) : null}
-          {region ? <PublishingAuthority authority={region} /> : null}
-        </Col>
+      <Col className='text-left'>
+        {category_label ? (
+          <div className='mb-2 card-community__pre-title'>
+            <span className='font-weight-bold'>{category_label}</span> - {date}
+          </div>
+        ) : null}
+        {title ? (
+          <CardTitle
+            tag='p'
+            className='card-community__title font-weight-bold mb-3'
+          >
+            {title}
+          </CardTitle>
+        ) : null}
+        {description ? (
+          <CardText className='card-community__text mb-3 text-serif'>
+            {description}
+          </CardText>
+        ) : null}
+        {region ? <PublishingAuthority authority={region} /> : null}
+      </Col>
+      <div
+        className={clsx('d-flex', 'flex-row', 'mt-2', 'justify-content-end')}
+      >
         <div
-          className={clsx('d-flex', 'flex-row', 'mt-2', 'justify-content-end')}
+          className={clsx(
+            'd-flex',
+            'align-items-center',
+            'category-top',
+            'mr-2'
+          )}
         >
-          <div
-            className={clsx(
-              'd-flex',
-              'align-items-center',
-              'category-top',
-              'mr-2'
-            )}
-          >
-            <Icon
-              color='primary'
-              icon={Heart}
-              size='xs'
-              aria-label='calendario'
-            />
-            <span className='card-community__span-icons pl-1'>{likes}</span>
-          </div>
-          <div
-            className={clsx(
-              'd-flex',
-              'align-items-center',
-              'category-top',
-              'mr-2'
-            )}
-          >
-            <Icon
-              color='primary'
-              icon='it-comment'
-              size='sm'
-              aria-label='commenti'
-            />
-            <span className='card-community__span-icons pl-1'>
-              {comment_count}
-            </span>
-          </div>
-          <div
-            className={clsx(
-              'd-flex',
-              'align-items-center',
-              'category-top',
-              'mr-2'
-            )}
-          >
-            <Icon
-              color='primary'
-              icon='it-password-visible'
-              size='sm'
-              aria-label='stella rating'
-            />
-            <span className='card-community__span-icons pl-1'>{views}</span>
-          </div>
+          <Icon
+            color='primary'
+            icon={Heart}
+            size='xs'
+            aria-label='calendario'
+          />
+          <span className='card-community__span-icons pl-1'>{likes}</span>
+        </div>
+        <div
+          className={clsx(
+            'd-flex',
+            'align-items-center',
+            'category-top',
+            'mr-2'
+          )}
+        >
+          <Icon
+            color='primary'
+            icon='it-comment'
+            size='sm'
+            aria-label='commenti'
+          />
+          <span className='card-community__span-icons pl-1'>
+            {comment_count}
+          </span>
+        </div>
+        <div
+          className={clsx(
+            'd-flex',
+            'align-items-center',
+            'category-top',
+            'mr-2'
+          )}
+        >
+          <Icon
+            color='primary'
+            icon='it-password-visible'
+            size='sm'
+            aria-label='stella rating'
+          />
+          <span className='card-community__span-icons pl-1'>{views}</span>
         </div>
       </div>
     </div>

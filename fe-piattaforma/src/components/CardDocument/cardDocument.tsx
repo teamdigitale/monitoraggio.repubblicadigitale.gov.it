@@ -62,7 +62,10 @@ const CardDocument: React.FC<CardDocumentI> = (props) => {
       role='button'
       className={clsx(
         'document-card-container p-4',
-        !device.mediaIsPhone && 'pt-2'
+        !device.mediaIsPhone && 'pt-2',
+        isHome
+          ? 'document-card-container__home-document-card'
+          : 'document-card-container__page-document-card'
       )}
       onClick={navigateTo}
       onKeyDown={navigateTo}

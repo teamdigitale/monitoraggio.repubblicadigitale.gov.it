@@ -2,12 +2,18 @@ import clsx from 'clsx';
 import { Icon } from 'design-react-kit';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
-import { closeModal } from '../../../../../redux/features/modal/modalSlice';
+import { GetCommentsList } from '../../../../../redux/features/forum/comments/commentsThunk';
+import { GetItemDetail } from '../../../../../redux/features/forum/forumThunk';
+import { CreateCommentReport, CreateItemReport } from '../../../../../redux/features/forum/reports/reportsThunk';
+import { closeModal, selectModalPayload } from '../../../../../redux/features/modal/modalSlice';
+import { selectUser } from '../../../../../redux/features/user/userSlice';
+import { useAppSelector } from '../../../../../redux/hooks';
 import FormAddComment from '../../../../forms/formComments/formAddComment';
 
-const id = 'reportModal';
+const modalId = 'report-modal';
 
 interface ManageReportFormI {
   formDisabled?: boolean;
@@ -22,17 +28,40 @@ const ManageReport: React.FC<ManageReportI> = ({
   creation = false,
 }) => {
   const [newReport, setNewReport] = useState('');
+  const payload = useAppSelector(selectModalPayload)
   const dispatch = useDispatch();
+  const { id } = useParams()
+  const userId = useAppSelector(selectUser)?.id
 
-  const handleSaveReport = () => {
-    console.log(newReport);
+  const handleSaveReport = async () => {
+    if (newReport.trim() !== '' && payload) {
+      switch (payload.entity) {
+        case 'board':
+        case 'community':
+        case 'document':
+          if (id && userId) {
+            await dispatch(CreateItemReport(id, newReport))
+            dispatch(GetItemDetail(id, userId, payload.entity))
+          }
+          break;
+        case 'comment':
+          await dispatch(CreateCommentReport(payload.id, newReport))
+          break;
+        default:
+          break;
+      }
+
+      (id && userId) && await dispatch(GetCommentsList(id, userId))
+      setNewReport('')
+      dispatch(closeModal())
+    }
   };
 
   return (
     <GenericModal
-      id={id}
+      id={modalId}
       primaryCTA={{
-        disabled: newReport.trim() !== '',
+        disabled: newReport.trim() === '',
         label: creation ? 'Conferma' : 'Salva',
         onClick: handleSaveReport,
       }}

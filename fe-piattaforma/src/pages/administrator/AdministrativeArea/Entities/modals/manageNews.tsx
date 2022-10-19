@@ -15,7 +15,6 @@ import { selectCategoriesList } from '../../../../../redux/features/forum/forumS
 import {
   CreateItem,
   GetItemDetail,
-  GetItemsList,
   UpdateItem,
 } from '../../../../../redux/features/forum/forumThunk';
 import { useParams } from 'react-router-dom';
@@ -49,6 +48,11 @@ const ManageNews: React.FC<ManageNewsI> = ({
   const userProfile = useAppSelector(selectProfile);
   const dispatch = useDispatch();
 
+  const resetModal = () => {
+    setStep('form');
+    setNewFormValues({});
+  };
+
   let content = <span></span>;
 
   const stepsCTA = {
@@ -63,6 +67,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
         label: 'Annulla',
         onClick: () => {
           clearForm?.();
+          resetModal();
           dispatch(closeModal());
         },
       },
@@ -78,6 +83,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
         label: 'Annulla',
         onClick: () => {
           clearForm?.();
+          resetModal();
           dispatch(closeModal());
         },
       },
@@ -91,7 +97,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
       primaryCTA: {
         label: 'Chiudi',
         onClick: () => {
-          setStep('form');
+          resetModal();
           dispatch(closeModal());
         },
       },
@@ -128,7 +134,6 @@ const ManageNews: React.FC<ManageNewsI> = ({
         // @ts-ignore
         if (res) {
           userId && dispatch(GetItemDetail(id, userId, 'board'));
-          setNewFormValues({});
           setStep('confirm');
         }
       } else {
@@ -155,8 +160,6 @@ const ManageNews: React.FC<ManageNewsI> = ({
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (res) {
-          dispatch(GetItemsList('board'));
-          setNewFormValues({});
           setStep('confirm');
         }
       }
@@ -228,6 +231,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
       secondaryCTA={(stepsCTA[step].secondaryCTA as CallToAction) || null}
       tertiaryCTA={(stepsCTA[step].tertiaryCTA as CallToAction) || null}
       centerButtons
+      onClose={resetModal}
     >
       <p
         className={clsx(

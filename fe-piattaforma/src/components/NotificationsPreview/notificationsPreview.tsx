@@ -5,8 +5,6 @@ import ClickOutside from '../../hoc/ClickOutside';
 import { focusId, MenuItem } from '../../utils/common';
 import { Button, Icon } from 'design-react-kit';
 import Notification from '../../pages/common/NotificationsPage/components/Notifications/notification';
-import { useAppSelector } from '../../redux/hooks';
-import { selectNotificationList } from '../../redux/features/notification/notificationSlice';
 
 interface NotificationsPreviewProps {
   open: boolean;
@@ -17,7 +15,9 @@ interface NotificationsPreviewProps {
 const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
   const { open, setOpen } = props;
   const [isClicked /*setIsClicked*/] = useState<boolean>(false);
-  const notificationsList = useAppSelector(selectNotificationList);
+
+  // TODO integrate notification
+  const notificationsList: any[] = [];
 
   useEffect(() => {
     const body = document.querySelector('body') as HTMLBodyElement;

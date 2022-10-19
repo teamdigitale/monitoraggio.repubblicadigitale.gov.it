@@ -79,7 +79,11 @@ const DocumentsDetails = () => {
             })
           )
         }
-        onReportClick={() => dispatch(openModal({ id: 'reportModal' }))}
+        onReportClick={() => dispatch(openModal({
+          id: 'report-modal', payload: {
+            entity: 'document'
+          }
+        }))}
       />
       {/* <div
         className={clsx(

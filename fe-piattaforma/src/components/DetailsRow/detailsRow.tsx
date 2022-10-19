@@ -58,7 +58,7 @@ const DetailsRow: React.FC<DetailsRowI> = ({
               id={`button-1-send-${id}`}
             >
               <Icon
-                icon='it-external-link'
+                icon='it-mail'
                 color='primary'
                 size='sm'
                 aria-label='Invia questionario'
@@ -103,7 +103,7 @@ const DetailsRow: React.FC<DetailsRowI> = ({
               id={`button-2-send-${id}`}
             >
               <Icon
-                icon='it-external-link'
+                icon='it-mail'
                 color='primary'
                 size='sm'
                 aria-label='Invia questionario'
@@ -151,18 +151,27 @@ const DetailsRow: React.FC<DetailsRowI> = ({
     <div className='details-row neutral-1-color-a8'>
       <div className='details-row__left-section'>
         {onActionClick[CRUDActionTypes.EDIT] && (
-          <Button
-            onClick={() => onActionClick[CRUDActionTypes.EDIT](id)}
-            className='mr-2 p-0 details-row__name'
-            aria-label='Modifica cittadino'
-          >
-            <Icon
-              icon='it-pencil'
-              color='primary'
-              size='sm'
+          <>
+            <Button
+              onClick={() => onActionClick[CRUDActionTypes.EDIT](id)}
+              className='mr-2 p-0 details-row__name'
               aria-label='Modifica cittadino'
-            />
-          </Button>
+              id={`button-edit-citizen-${id}`}
+            >
+              <Icon
+                icon='it-pencil'
+                color='primary'
+                size='sm'
+                aria-label='Modifica cittadino'
+              />
+            </Button>
+            <UncontrolledTooltip
+              placement='top'
+              target={`button-edit-citizen-${id}`}
+            >
+              Modifica cittadino
+            </UncontrolledTooltip>
+          </>
         )}
         <div className='details-row__name'>
           <h2 className='h5 font-weight-semibold'>{nome}</h2>

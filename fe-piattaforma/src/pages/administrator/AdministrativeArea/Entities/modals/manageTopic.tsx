@@ -18,7 +18,6 @@ import { useParams } from 'react-router-dom';
 import {
   CreateItem,
   GetItemDetail,
-  GetItemsList,
   UpdateItem,
 } from '../../../../../redux/features/forum/forumThunk';
 
@@ -44,49 +43,65 @@ const ManageTopic: React.FC<ManageTopicI> = ({
   const { id } = useParams();
   const userId = useAppSelector(selectUser)?.id;
 
+  const resetModal = () => {
+    setStep('form');
+    setNewFormValues({});
+  };
+
   const handleSaveTopic = async () => {
-    if (id) {
-      await dispatch(
-        UpdateItem(
-          id,
-          {
-            ...newFormValues,
-            entity:
-              userProfile?.idProgetto || userProfile?.idProgramma
-                ? userProfile.nomeEnte
-                : userProfile?.descrizioneRuolo,
-            entity_type: userProfile?.idProgetto
-              ? 'Ente gestore di progetto'
-              : userProfile?.idProgramma
-              ? 'Ente gestore di programma'
-              : '-',
-          },
-          'community'
-        )
-      );
-      userId && dispatch(GetItemDetail(id, userId, 'community'));
-    } else {
-      await dispatch(
-        CreateItem(
-          {
-            ...newFormValues,
-            entity:
-              userProfile?.idProgetto || userProfile?.idProgramma
-                ? userProfile.nomeEnte
-                : userProfile?.descrizioneRuolo,
-            entity_type: userProfile?.idProgetto
-              ? 'Ente gestore di progetto'
-              : userProfile?.idProgramma
-              ? 'Ente gestore di programma'
-              : '-',
-          },
-          'community'
-        )
-      );
-      // TODO this call may be modified
-      dispatch(GetItemsList('community'));
+    if (isFormValid) {
+      if (id) {
+        const res = await dispatch(
+          UpdateItem(
+            id,
+            {
+              ...newFormValues,
+              entity:
+                userProfile?.idProgetto || userProfile?.idProgramma
+                  ? userProfile.nomeEnte
+                  : userProfile?.descrizioneRuolo,
+              entity_type: userProfile?.idProgetto
+                ? 'Ente gestore di progetto'
+                : userProfile?.idProgramma
+                ? 'Ente gestore di programma'
+                : '-',
+            },
+            'community'
+          )
+        );
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (res) {
+          userId && dispatch(GetItemDetail(id, userId, 'community'));
+          setNewFormValues({});
+          setStep('confirm');
+        }
+      } else {
+        await dispatch(
+          CreateItem(
+            {
+              ...newFormValues,
+              entity:
+                userProfile?.idProgetto || userProfile?.idProgramma
+                  ? userProfile.nomeEnte
+                  : userProfile?.descrizioneRuolo,
+              entity_type: userProfile?.idProgetto
+                ? 'Ente gestore di progetto'
+                : userProfile?.idProgramma
+                ? 'Ente gestore di programma'
+                : '-',
+            },
+            'community'
+          )
+        );
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (res) {
+          setNewFormValues({});
+          setStep('confirm');
+        }
+      }
     }
-    setStep('confirm');
   };
 
   const stepsCTA = {
@@ -101,6 +116,7 @@ const ManageTopic: React.FC<ManageTopicI> = ({
         label: 'Annulla',
         onClick: () => {
           clearForm?.();
+          resetModal();
           dispatch(closeModal());
         },
       },
@@ -109,7 +125,10 @@ const ManageTopic: React.FC<ManageTopicI> = ({
       title: null,
       primaryCTA: {
         label: 'Chiudi',
-        onClick: () => dispatch(closeModal()),
+        onClick: () => {
+          resetModal();
+          dispatch(closeModal());
+        },
       },
       secondaryCTA: null,
     },
@@ -151,6 +170,7 @@ const ManageTopic: React.FC<ManageTopicI> = ({
       primaryCTA={stepsCTA[step].primaryCTA}
       secondaryCTA={(stepsCTA[step].secondaryCTA as CallToAction) || null}
       centerButtons
+      onClose={resetModal}
     >
       <p
         className={clsx(

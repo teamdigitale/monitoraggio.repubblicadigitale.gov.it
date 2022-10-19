@@ -12,7 +12,11 @@ import {
   selectCommentsList,
   selectTopicDetail,
 } from '../../../redux/features/forum/forumSlice';
-import { DeleteItem, GetItemDetail, ManageItemEvent } from '../../../redux/features/forum/forumThunk';
+import {
+  DeleteItem,
+  GetItemDetail,
+  ManageItemEvent,
+} from '../../../redux/features/forum/forumThunk';
 import ManageTopic from '../../administrator/AdministrativeArea/Entities/modals/manageTopic';
 import ManageReport from '../../administrator/AdministrativeArea/Entities/modals/manageReport';
 import {
@@ -22,7 +26,10 @@ import {
 import DeleteEntityModal from '../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 import { selectUser } from '../../../redux/features/user/userSlice';
 import ManageComment from '../../administrator/AdministrativeArea/Entities/modals/manageComment';
-import { DeleteComment, GetCommentsList } from '../../../redux/features/forum/comments/commentsThunk';
+import {
+  DeleteComment,
+  GetCommentsList,
+} from '../../../redux/features/forum/comments/commentsThunk';
 
 const CommunityDetails = () => {
   const navigate = useNavigate();
@@ -36,7 +43,7 @@ const CommunityDetails = () => {
 
   useEffect(() => {
     if (userId && id) {
-      dispatch(ManageItemEvent(id, 'view'))
+      dispatch(ManageItemEvent(id, 'view'));
       dispatch(GetItemDetail(id, userId, 'community'));
       dispatch(GetCommentsList(id, userId));
     }
@@ -94,10 +101,10 @@ const CommunityDetails = () => {
   const onCommentDelete = async (commentId: string) => {
     await dispatch(DeleteComment(commentId));
     if (id && userId) {
-      dispatch(GetCommentsList(id, userId))
-      dispatch(GetItemDetail(id, userId, 'community'))
+      dispatch(GetCommentsList(id, userId));
+      dispatch(GetItemDetail(id, userId, 'community'));
     }
-  }
+  };
 
   return (
     <div className='container'>
@@ -112,15 +119,17 @@ const CommunityDetails = () => {
               payload: {
                 text: 'Confermi di voler eliminare questo contenuto?',
                 id: id,
-                entity: 'community'
+                entity: 'community',
               },
             })
           )
         }
         onEditClick={() => dispatch(openModal({ id: 'topicModal' }))}
-        onReportClick={() => dispatch(openModal({ id: 'reportModal' }))}
+        onReportClick={() => dispatch(openModal({ id: 'report-modal', payload: {
+          entity: 'community'
+        } }))}
       />
-      {commentsList.length ? <CommentSection section="community" /> : null}
+      {commentsList.length ? <CommentSection section='community' /> : null}
       {/* <div className='border-bottom-box-comments mt-5'></div>
       <div
         className={clsx(
@@ -147,12 +156,12 @@ const CommunityDetails = () => {
               navigate(-1);
               break;
             case 'comment':
-              onCommentDelete(payload.id)
+              onCommentDelete(payload.id);
               break;
             default:
               break;
           }
-          dispatch(closeModal())
+          dispatch(closeModal());
         }}
       />
     </div>

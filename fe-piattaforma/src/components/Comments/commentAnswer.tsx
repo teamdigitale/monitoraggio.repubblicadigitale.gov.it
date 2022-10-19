@@ -8,7 +8,9 @@ import {
   LinkList,
 } from 'design-react-kit';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { selectDevice } from '../../redux/features/app/appSlice';
+import { openModal } from '../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../redux/hooks';
 import AvatarInitials, {
   AvatarSizes,
@@ -27,7 +29,7 @@ const CommentAnswer: React.FC<CommentI> = (props) => {
     onDeleteComment = () => ({}) } = props;
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isReported /* setIsReported */] = useState<boolean>(false);
+  const dispatch = useDispatch()
   const device = useAppSelector(selectDevice);
 
   const commentDropdownOptions = [
@@ -53,7 +55,16 @@ const CommentAnswer: React.FC<CommentI> = (props) => {
         icon: 'it-error',
         color: 'danger',
       },
-      // action: () => reportComment
+      action: () => 
+        dispatch(
+          openModal({
+            id: 'report-modal',
+            payload: {
+              entity: 'comment',
+              id: id
+            }
+          })
+        )
     },
   ];
 
@@ -178,7 +189,7 @@ const CommentAnswer: React.FC<CommentI> = (props) => {
           </div>
         </div>
         <div className='d-flex flex-row justify-content-end'>
-          {isReported && <Icon icon='it-warning-circle' color='danger' />}
+          {/* {isReported && <Icon icon='it-warning-circle' color='danger' />} */}
           {commentDropdown()}
         </div>
         {/* comment heading ^^^^ */}

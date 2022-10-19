@@ -218,6 +218,7 @@ const BachecaDigitale = () => {
             )
           }
           cards={popularNews}
+          isNews
         >
           <Container className='pb-5'>
             <div className='row'>

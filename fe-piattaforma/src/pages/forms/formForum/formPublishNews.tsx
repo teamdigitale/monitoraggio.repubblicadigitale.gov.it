@@ -157,55 +157,15 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
   };
 
   const updateImage = async () => {
-    uploadFile('Img-file', (file) => {
+    uploadFile('Img-file', (file: any) => {
       setImage(file);
     });
-    /*const input: HTMLInputElement = document.getElementById(
-      'Img-file'
-    ) as HTMLInputElement;
-
-    if (input.files?.length) {
-      const selectedImage = input.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(selectedImage);
-      reader.onloadend = () => {
-        if (reader.result) {
-          setImage({
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            data: cleanBase64(reader.result),
-            name: selectedImage.name,
-          });
-        }
-      };
-    }*/
   };
 
   const updateAttachment = () => {
-    uploadFile('file', (file) => {
+    uploadFile('file', (file: any) => {
       setFiles(file);
     });
-
-    /*const input: HTMLInputElement = document.getElementById(
-      'file'
-    ) as HTMLInputElement;
-
-    if (input.files?.length) {
-      const selectedImage = input.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(selectedImage);
-      reader.onloadend = () => {
-        if (reader.result) {
-          setFiles({
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            data: cleanBase64(reader.result),
-            name: selectedImage.name,
-          });
-        }
-      };
-    }*/
-
     setIconVisible(!iconVisible);
   };
 
@@ -235,7 +195,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
         </small>
       </Form.Row>
       <Form.Row className={clsx('mb-5', bootClass)}>
-      <Select
+        <Select
           {...form?.program}
           label='Programma'
           wrapperClassName='col-12 col-lg-5 mb-0 pb-2'
@@ -259,7 +219,6 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
           isDisabled={formDisabled}
           placeholder='Seleziona'
         />
-        
       </Form.Row>
       <Form.Row className={bootClass}>
         <Select
@@ -327,7 +286,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
                   size='sm'
                   color='primary'
                   className='pb-1'
-                />{' '}
+                />
                 Seleziona file
               </Button>
             ) : (
@@ -395,7 +354,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
       </Form.Row>
       <Form.Row className={bootClass}>
         <div className='d-flex flex-row w-75 align-items-center pt-5 pb-3'>
-          <FormGroup check className='form-check-group' >
+          <FormGroup check className='form-check-group'>
             <Toggle
               // defaultChecked={!!enableComments}
               checked={enableComments}
@@ -403,7 +362,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
               label='Abilita commenti'
             />
           </FormGroup>
-          <FormGroup check className='form-check-group' >
+          <FormGroup check className='form-check-group'>
             <Toggle
               checked={highlighted}
               onChange={() => setHighlighted((prev) => !prev)}

@@ -109,7 +109,11 @@ export type RolePermissionI =
   | 'upd.topic'
   // Documenti
   | 'tab.doc'
-  | 'upd.doc';
+  | 'upd.doc'
+  // WorkDocs
+  | 'acc.clb'
+  // RocketChat
+  | 'btn.chat';
 
 interface RoleI {
   codiceRuolo: string;

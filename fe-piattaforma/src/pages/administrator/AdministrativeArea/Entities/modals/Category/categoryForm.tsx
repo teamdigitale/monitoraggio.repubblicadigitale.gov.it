@@ -11,6 +11,9 @@ import {
 
 interface CategoriesInfoI {
   formDisabled?: boolean;
+  newFormValues?: {
+    [key: string]: formFieldI['value'];
+  };
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   setIsFormValid?: (param: boolean | undefined) => void;
   creation?: boolean | undefined;
@@ -24,17 +27,35 @@ const CategoryForm: React.FC<CategoriesFormI> = (props) => {
     /*   setFormValues = () => ({}), */
     form,
     /*  formDisabled = false,  */
+    newFormValues,
     isValidForm,
     onInputChange = () => ({}),
     sendNewValues = () => ({}),
     setIsFormValid = () => ({}),
     getFormValues = () => ({}),
-    /*
-    creation = false,
-    noIdField = false,
     updateForm = () => ({}),
+    creation = false,
+    /*
+    noIdField = false,
+    
     clearForm = () => ({}), */
   } = props;
+
+  useEffect(() => {
+    if (newFormValues) {
+      if (form) {
+        const populatedForm: formFieldI[] = Object.entries(newFormValues).map(
+          ([key, value]) =>
+            newFormField({
+              ...form[key],
+              value: value || '',
+            })
+        );
+
+        updateForm(newForm(populatedForm));
+      }
+    }
+  }, [])
 
   useEffect(() => {
     setIsFormValid(isValidForm);
@@ -56,6 +77,7 @@ const CategoryForm: React.FC<CategoriesFormI> = (props) => {
           {...form?.term_type}
           required
           value={form?.term_type.value as string}
+          isDisabled={!creation}
           col='col-12 col-lg-6'
           label='Sezione'
           options={[

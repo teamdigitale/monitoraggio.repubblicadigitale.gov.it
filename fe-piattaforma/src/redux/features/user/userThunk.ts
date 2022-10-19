@@ -196,6 +196,27 @@ export const UploadUserPic =
     }
   };
 
+const RocketChatLoginAction = { type: 'user/RocketChatLogin' };
+export const RocketChatLogin = () => async (dispatch: Dispatch) => {
+  try {
+    dispatch({ ...RocketChatLoginAction });
+    dispatch(showLoader());
+    const { idUtente } = getUserHeaders();
+    const res = await API.post(
+      `/rocket-chat/auth/iframe/utente/${idUtente}`,
+      {}
+    );
+    if (res) {
+      return res;
+    }
+  } catch (error) {
+    console.log('RocketChatLogin error', error);
+    return false;
+  } finally {
+    dispatch(hideLoader());
+  }
+};
+
 const LogoutRedirectAction = { type: 'user/LogoutRedirect' };
 export const LogoutRedirect = () => async (dispatch: Dispatch) => {
   try {

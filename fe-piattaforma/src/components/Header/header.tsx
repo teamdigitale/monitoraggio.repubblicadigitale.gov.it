@@ -15,6 +15,9 @@ import HeaderDesktop from './view/headerDesktop';
 import SwitchProfileModal from '../Modals/SwitchProfileModal/switchProfileModal';
 import { MenuItem, MenuRoutes } from '../../utils/common';
 import { userRoles } from '../../pages/administrator/AdministrativeArea/Entities/utils';
+import { openModal } from '../../redux/features/modal/modalSlice';
+import RocketChatModal from '../Modals/RocketChatModal/rocketChatModal';
+import useGuard from '../../hooks/guard';
 
 export interface HeaderI {
   isHeaderFull?: boolean | undefined;
@@ -25,6 +28,7 @@ export interface HeaderI {
   notification?: [] | undefined;
   menuRoutes: MenuItem[];
   profilePicture: string | undefined;
+  handleOpenRocketChat?: () => void;
 }
 
 export interface HeaderProp {
@@ -102,6 +106,7 @@ const Header: React.FC<HeaderProp> = (props) => {
   const user = useAppSelector(selectUser);
   const userProfile = useAppSelector(selectProfile);
   const dispatch = useDispatch();
+  const { hasUserPermission } = useGuard();
 
   const notification = useAppSelector(selectUserNotification);
 
@@ -110,6 +115,16 @@ const Header: React.FC<HeaderProp> = (props) => {
   useEffect(() => {
     if (isLogged) setMenuRoutes(getRoleMenuRoutes(userProfile));
   }, [isLogged, userProfile]);
+
+  const handleOpenRocketChat = () => {
+    if (hasUserPermission(['btn.chat'])) {
+      dispatch(
+        openModal({
+          id: 'rocketChatModal',
+        })
+      );
+    }
+  };
 
   const componentProps = {
     notification,
@@ -120,6 +135,7 @@ const Header: React.FC<HeaderProp> = (props) => {
     isHeaderFull,
     menuRoutes,
     profilePicture: user?.immagineProfilo,
+    handleOpenRocketChat,
   };
 
   return (
@@ -130,6 +146,7 @@ const Header: React.FC<HeaderProp> = (props) => {
         <HeaderMobile {...componentProps} />
       )}
       <SwitchProfileModal isOnboarding={!isLogged} />
+      {hasUserPermission(['btn.chat']) ? <RocketChatModal /> : null}
     </>
   );
 };

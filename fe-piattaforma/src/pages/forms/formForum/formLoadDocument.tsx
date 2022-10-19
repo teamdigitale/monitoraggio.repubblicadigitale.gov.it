@@ -15,10 +15,14 @@ import TextArea from '../../../components/Form/textarea';
 import './formForum.scss';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../../redux/hooks';
-import { selectCategoriesList, selectDocDetail } from '../../../redux/features/forum/forumSlice';
+import {
+  selectCategoriesList,
+  selectDocDetail,
+} from '../../../redux/features/forum/forumSlice';
 import { selectEntityFiltersOptions } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { GetEntityFilterValues } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
 import { GetCategoriesList } from '../../../redux/features/forum/categories/categoriesThunk';
+import { uploadFile } from '../../../utils/common';
 
 interface uploadDocumentI extends withFormHandlerProps {
   formDisabled?: boolean;
@@ -45,7 +49,9 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
   const formDisabled = !!props.formDisabled;
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
   const inputRef = useRef<HTMLInputElement>(null);
-  const [file, setFile] = useState<string>('Carica file dal tuo dispositivo');
+  const [files, setFiles] = useState<{ name?: string; data?: File }>({
+    name: 'Carica documenti, foto ecc.',
+  });
   const [iconVisible, setIconVisible] = useState<boolean>(false);
   const dispatch = useDispatch();
   const categoriesList = useAppSelector(selectCategoriesList);
@@ -58,7 +64,15 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
     dispatch(GetEntityFilterValues({ entity, dropdownType: 'policies' }));
     dispatch(GetEntityFilterValues({ entity, dropdownType: 'programmi' }));
     dispatch(GetCategoriesList({ type: 'document_categories' }));
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    if (files?.data) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignorex
+      onInputChange(files, 'attachment');
+    }
+  }, [files?.data]);
 
   useEffect(() => {
     if (docDetail && !creation) {
@@ -74,13 +88,13 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
         updateForm(newForm(populatedForm));
       }
     }
-  }, [docDetail])
+  }, [docDetail]);
 
   useEffect(() => {
     setIsFormValid(isValidForm);
     sendNewValues({
       ...getFormValues(),
-      program: getFormValues().program?.toString()
+      program: getFormValues().program?.toString(),
     });
   }, [form]);
 
@@ -91,18 +105,9 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
   };
 
   const updateFile = () => {
-    const input: HTMLInputElement = document.getElementById(
-      'file'
-    ) as HTMLInputElement;
-
-    if (input.files?.length) {
-      const selectedFile = input.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(selectedFile);
-      reader.onloadend = () => {
-        setFile(selectedFile.name as string);
-      };
-    }
+    uploadFile('file', (file: any) => {
+      setFiles(file);
+    });
     setIconVisible(!iconVisible);
   };
 
@@ -204,7 +209,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
             className='d-flex align-items-center justify-content-between'
           >
             <p className='mt-2' style={{ color: '#4c4c4d' }}>
-              {file}
+              {files?.name}
             </p>
             {!iconVisible ? (
               <Button
@@ -286,11 +291,11 @@ const form = newForm([
     required: true,
     type: 'textarea',
   }),
-  // newFormField({
-  //   field: 'allegaFile',
-  //   id: 'allegaFile',
-  //   type: 'file',
-  // }),
+  newFormField({
+    field: 'attachment',
+    id: 'attachment',
+    type: 'file',
+  }),
   newFormField({
     field: 'external_link',
     id: 'external_link',

@@ -770,3 +770,33 @@ export const GetTagsList = () => async (dispatch: Dispatch) => {
     dispatch(hideLoader());
   }
 };
+
+const WorkDocsRegistrationAction = {
+  type: 'forum/WorkDocsRegistration',
+};
+
+export const WorkDocsRegistration =
+  (body: {
+    email: string;
+    password: string;
+    idUtente: string;
+    username: string;
+  }) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...WorkDocsRegistrationAction, body });
+      const res = await API.post(
+        '/integrazione/workdocs/crea-attiva-utente',
+        body
+      );
+      if (res) {
+        return res;
+      }
+    } catch (error) {
+      console.log('WorkDocsRegistration error', error);
+      return false;
+    } finally {
+      dispatch(hideLoader());
+    }
+  };

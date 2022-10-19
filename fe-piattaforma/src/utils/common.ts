@@ -221,21 +221,21 @@ export const MenuRoutes = [
   }),
   newMenuItem({
     label: 'Dashboard',
-    path: '/dashboard',
+    path: '/report-dati',
     id: 'tab-dashboard',
     visible: ['tab.dshb'],
+  }),
+  newMenuItem({
+    label: 'Bacheca',
+    path: '/bacheca-digitale',
+    id: 'tab-bacheca-digitale',
+    visible: ['tab.bach'],
   }),
   newMenuItem({
     label: 'Community',
     path: '/community',
     id: 'tab-community',
     visible: ['tab.comm'],
-  }),
-  newMenuItem({
-    label: 'Bacheca digitale',
-    path: '/bacheca-digitale',
-    id: 'tab-bacheca-digitale',
-    visible: ['tab.bach'],
   }),
   newMenuItem({
     label: 'Documenti',
@@ -503,13 +503,15 @@ export const cleanBase64 = (base64: string) => {
   }
 };
 
-export const uploadFile = (elementId = 'file', callback: (file: { data?: File; name?: string }) => void = () => ({})) => {
+export const uploadFile = (
+  elementId = 'file',
+  callback: (file: { data?: File; name?: string }) => void = () => ({})
+) => {
   const input: HTMLInputElement = document.getElementById(
     elementId
   ) as HTMLInputElement;
 
   if (input.files?.length) {
-
     const selectedImage = input.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(selectedImage);

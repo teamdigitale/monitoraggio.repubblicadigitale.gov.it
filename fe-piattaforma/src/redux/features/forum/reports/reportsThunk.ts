@@ -1,7 +1,7 @@
 import { Dispatch } from "@reduxjs/toolkit";
-import API from "../../../../utils/apiHelper";
 import { hideLoader, showLoader } from "../../app/appSlice";
 import { setReportsList } from "../forumSlice";
+import { proxyCall } from "../forumThunk";
 
 const GetReportsListAction = {
     type: 'forum/GetReportsList',
@@ -11,9 +11,9 @@ export const GetReportsList = () => async (dispatch: Dispatch) => {
     try {
         dispatch(showLoader());
         dispatch({ ...GetReportsListAction });
-        const res = await API.get(`/reports`)
+        const res = await proxyCall(`/reports`, 'GET')
         if (res) {
-            dispatch(setReportsList([...res.data.data.items]));
+            dispatch(setReportsList(res.data.data.items || []));
         }
 
     } catch (error) {
@@ -31,7 +31,7 @@ export const CreateItemReport = (itemId: string, reason: string) => async (dispa
     try {
         dispatch(showLoader());
         dispatch({ ...CreateItemReportAction });
-        await API.post(`/item/${itemId}/report`, { reason })
+        await proxyCall(`/item/${itemId}/report`, 'POST', { reason })
 
     } catch (error) {
         console.log('CreateItemReport error', error);
@@ -48,7 +48,7 @@ export const CreateCommentReport = (commentId: string, reason: string) => async 
     try {
         dispatch(showLoader());
         dispatch({ ...CreateCommentReportAction });
-        await API.post(`/comment/${commentId}/report`, { reason })
+        await proxyCall(`/comment/${commentId}/report`, 'POST', { reason })
 
     } catch (error) {
         console.log('CreateCommentReport error', error);
@@ -66,7 +66,7 @@ export const DeleteReport = (reportId: string) => async (dispatch: Dispatch) => 
     try {
         dispatch(showLoader());
         dispatch({ ...DeleteReportAction });
-        await API.post(`/report/${reportId}/delete`, {})
+        await proxyCall(`/report/${reportId}/delete`, 'POST', {})
 
     } catch (error) {
         console.log('DeleteReport error', error);
