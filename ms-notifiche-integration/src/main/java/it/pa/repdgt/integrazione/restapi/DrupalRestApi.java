@@ -28,7 +28,7 @@ public class DrupalRestApi {
 	
 	@GetMapping(path = "/forward")
 	@ResponseStatus(value = HttpStatus.OK)
-	public Map<String, Object> drupalForward(@RequestParam(value = "file", required = true) final String filePath, @RequestHeader(value = "Content-Type", required = false) String contentType) {
+	public  Map<String, String> drupalForward(@RequestParam(value = "file", required = true) final String filePath, @RequestHeader(value = "Content-Type", required = false) String contentType) {
 		if(contentType == null) {
 			contentType = MediaType.APPLICATION_JSON_VALUE.toString();
 		}
