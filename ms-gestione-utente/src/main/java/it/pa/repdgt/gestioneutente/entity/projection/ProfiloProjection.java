@@ -2,6 +2,8 @@ package it.pa.repdgt.gestioneutente.entity.projection;
 
 public interface ProfiloProjection {
 	String getIdProgramma();
+
+	String getStatoP();
 	
 	String getNomeProgramma();
 	
@@ -12,4 +14,6 @@ public interface ProfiloProjection {
 	String getNomeEnte();
 	
 	String getNomeBreveProgetto();
+
+	String getStatoUtente();
 }

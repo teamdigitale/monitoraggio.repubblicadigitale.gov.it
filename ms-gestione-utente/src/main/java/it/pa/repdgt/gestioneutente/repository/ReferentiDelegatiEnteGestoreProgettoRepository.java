@@ -44,6 +44,9 @@ public interface ReferentiDelegatiEnteGestoreProgettoRepository extends JpaRepos
 	
 	@Query(value = "select count(*) "
 			+ "FROM referente_delegati_gestore_progetto rdg "
+			+ "INNER JOIN progetto p "
+			+ "ON rdg.id_progetto = p.id "
+			+ "AND rdg.id_ente = p.id_ente_gestore_progetto "
 			+ "WHERE rdg.CF_UTENTE = :cfUtente "
 			+ "AND rdg.codice_ruolo = :codiceRuolo", 
 			nativeQuery = true)
