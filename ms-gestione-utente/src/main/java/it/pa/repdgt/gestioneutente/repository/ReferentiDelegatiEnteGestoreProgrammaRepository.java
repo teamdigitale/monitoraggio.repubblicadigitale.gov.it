@@ -14,6 +14,9 @@ public interface ReferentiDelegatiEnteGestoreProgrammaRepository extends JpaRepo
 	
 	@Query(value = "SELECT stato_utente "
 			+ "FROM referente_delegati_gestore_programma rdg "
+			+ "INNER JOIN programma p "
+			+ "ON rdg.id_programma = p.id "
+			+ "AND rdg.id_ente = p.id_ente_gestore_programma "
 			+ "WHERE rdg.CF_UTENTE = :cfUtente "
 			+ "AND rdg.id_programma = :idProgramma "
 			+ "AND rdg.codice_ruolo = :codiceRuolo", 
@@ -25,6 +28,9 @@ public interface ReferentiDelegatiEnteGestoreProgrammaRepository extends JpaRepo
 	
 	@Query(value = "select count(*) "
 			+ "FROM referente_delegati_gestore_programma rdg "
+			+ "INNER JOIN programma p "
+			+ "ON rdg.id_programma = p.id "
+			+ "AND rdg.id_ente = p.id_ente_gestore_programma "
 			+ "WHERE rdg.CF_UTENTE = :cfUtente "
 			+ "AND rdg.codice_ruolo = :codiceRuolo", 
 			nativeQuery = true)
