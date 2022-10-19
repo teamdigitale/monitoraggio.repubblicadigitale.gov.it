@@ -94,9 +94,10 @@ const WorkdocsRegistrationModal: React.FC<WorkdocsRegistrationModalI> = (
       title='Registrazione WorkDocs'
     >
       <div className='my-3 px-4'>
-        <p>
-          Crea una nuova utenza WorkDocs per accedere al tool di collaboration
-          con la tua email: {email}
+        <p className='text-center mb-5'>
+          Crea una nuova utenza <strong>WorkDocs</strong> per accedere al tool
+          di <br />
+          collaboration con la tua email: {email}
         </p>
         <Form id='workdocs-registration-form' className='my-3 mx-2'>
           <Form.Row className='justify-content-between px-0 px-lg-5 mx-4'>

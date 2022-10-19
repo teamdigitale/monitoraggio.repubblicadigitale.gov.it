@@ -207,17 +207,9 @@ const Documents = () => {
   };
 
   const handleCollaborationTool = () => {
-    // TODO implement custom logic here
-    // check if user is already registered in workdocs
-    // if yes redirect to workdocs
-    // else open registration modal
-    // then redirect to workdocs
-    console.log('tool di collaborazione', utenteRegistratoInWorkdocs);
     if (utenteRegistratoInWorkdocs) {
-      // TODO redirect to workdocs url
       handleCollaborationToolRegistration();
     } else {
-      // TODO manage workdocs registration flow
       dispatch(
         openModal({
           id: 'workdocs-registration',

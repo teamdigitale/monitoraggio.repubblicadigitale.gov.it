@@ -28,7 +28,7 @@ export interface AvatarInitialsI {
 const AvatarInitials: React.FC<AvatarInitialsI> = (props) => {
   const {
     user: { uSurname = '', uName = '' },
-    lightColor = false,
+    /* lightColor = false, */
     size,
     font,
   } = props;
@@ -44,9 +44,9 @@ const AvatarInitials: React.FC<AvatarInitialsI> = (props) => {
     <div
       className={clsx(
         'rounded-circle',
-        lightColor
+        /*  lightColor
           ? 'text-white lightgrey-bg-b1'
-          : 'primary-color neutral-2-bg',
+          : */ 'primary-color neutral-2-bg',
         'd-flex',
         'align-items-center',
         'justify-content-center',
