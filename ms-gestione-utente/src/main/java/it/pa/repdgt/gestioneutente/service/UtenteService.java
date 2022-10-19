@@ -773,12 +773,9 @@ public class UtenteService {
 														dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
 														dettaglioRuolo.setRuolo(ruolo.getNome());
 														dettaglioRuolo.setStatoP(programmaFetchDB.getStato());
-														EnteEntity gestoreProgramma = programmaFetchDB.getEnteGestoreProgramma();
-														if(gestoreProgramma != null) {
-															dettaglioRuolo.setIdEnte(gestoreProgramma.getId());
-															dettaglioRuolo.setNomeEnte(gestoreProgramma.getNome());
-															dettaglioRuolo.setNomeBreveEnte(gestoreProgramma.getNomeBreve());
-														}
+														dettaglioRuolo.setIdEnte(programmaFetchDB.getEnteGestoreProgramma().getId());
+														dettaglioRuolo.setNomeEnte(programmaFetchDB.getEnteGestoreProgramma().getNome());
+														dettaglioRuolo.setNomeBreveEnte(programmaFetchDB.getEnteGestoreProgramma().getNomeBreve());
 														List<String> listaRecRefProg = referentiDelegatiEnteGestoreProgrammaRepository
 																.findStatoByCfUtente(cfUtente, programmaFetchDB.getId(), ruolo.getCodice());
 														dettaglioRuolo.setStato(listaRecRefProg.size() > 1
@@ -828,12 +825,9 @@ public class UtenteService {
 														dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
 														dettaglioRuolo.setRuolo(ruolo.getNome());
 														dettaglioRuolo.setStatoP(progettoXEgpFetchDB.getStato());
-														EnteEntity gestoreProgetto = progettoXEgpFetchDB.getEnteGestoreProgetto();
-														if(gestoreProgetto != null) {
-															dettaglioRuolo.setIdEnte(gestoreProgetto.getId());
-															dettaglioRuolo.setNomeEnte(gestoreProgetto.getNome());
-															dettaglioRuolo.setNomeBreveEnte(gestoreProgetto.getNomeBreve());
-														}
+														dettaglioRuolo.setIdEnte(progettoXEgpFetchDB.getEnteGestoreProgetto().getId());
+														dettaglioRuolo.setNomeEnte(progettoXEgpFetchDB.getEnteGestoreProgetto().getNome());
+														dettaglioRuolo.setNomeBreveEnte(progettoXEgpFetchDB.getEnteGestoreProgetto().getNomeBreve());
 														List<String> listaRecRefProgt = referentiDelegatiEnteGestoreProgettoRepository
 																.findStatoByCfUtente(cfUtente, progettoXEgpFetchDB.getId(), ruolo.getCodice());
 														dettaglioRuolo.setStato(listaRecRefProgt.size() > 1
