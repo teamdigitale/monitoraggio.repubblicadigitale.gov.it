@@ -280,9 +280,9 @@ public class UtenteService {
 	@LogMethod
 	@Transactional
 	public UtenteEntity creaNuovoUtente(UtenteEntity utente, String codiceRuolo) {
-//		if(isEmailDuplicata(utente.getEmail(), utente.getCodiceFiscale())) {
-//			throw new UtenteException("ERRORE: non possono esistere a sistema due email per due utenti diversi");
-//		}
+		if(isEmailDuplicata(utente.getEmail(), utente.getCodiceFiscale())) {
+			throw new UtenteException("ERRORE: non possono esistere a sistema due email per due utenti diversi", CodiceErroreEnum.U21);
+		}
 		// Verifico se esiste sul DB un utente con stesso codice fiscale e in caso affermativo lancio eccezione
 		Optional<UtenteEntity> utenteDBFetch = this.utenteRepository.findByCodiceFiscale(utente.getCodiceFiscale());
 		if(utenteDBFetch.isPresent()) {
@@ -315,9 +315,13 @@ public class UtenteService {
 		return utenteSalvato;
 	}
 	
-//	private boolean isEmailDuplicata(String email, String codiceFiscale) {
-//		return this.utenteRepository.findByEmailAndCodiceFiscaleNot(email, codiceFiscale).isPresent();
-//	}
+	private boolean isEmailDuplicata(String email, String codiceFiscale) {
+		return this.utenteRepository.findByEmailAndCodiceFiscaleNot(email, codiceFiscale).isPresent();
+	}
+	
+	private boolean isEmailDuplicataPerId(String email, Long id) {
+		return this.utenteRepository.findByEmailAndIdNot(email, id).isPresent();
+	}
 
 	@LogExecutionTime
 	@LogMethod
@@ -328,6 +332,9 @@ public class UtenteService {
 		} catch (ResourceNotFoundException ex) {
 			String messaggioErrore = String.format("utente con id=%s non trovato", idUtente);
 			throw new UtenteException(messaggioErrore, ex, CodiceErroreEnum.U11);
+		}
+		if(isEmailDuplicataPerId(aggiornaUtenteRequest.getEmail(),idUtente)) {
+			throw new UtenteException("ERRORE: non possono esistere a sistema due email per due utenti diversi", CodiceErroreEnum.U21);
 		}
 		utenteFetchDB.setEmail(aggiornaUtenteRequest.getEmail());
 		utenteFetchDB.setTelefono(aggiornaUtenteRequest.getTelefono());
@@ -1228,25 +1235,18 @@ public class UtenteService {
 	public List<UtenteImmagineResource> getListaUtentiByIdUtenti(ListaUtentiResource idsUtenti, Boolean richiediImmagine) {
 		List<UtenteImmagineResource> listaUtenti = new ArrayList<>();
 		List<UtenteEntity> listaUtentiEntity = this.utenteRepository.findListaUtentiByIdUtenti(idsUtenti.getIdsUtenti());
-		if(richiediImmagine) {
-			listaUtentiEntity.stream().forEach(utenteFetched -> {
-				UtenteImmagineResource utente = new UtenteImmagineResource();
-				utente.setNome(utenteFetched.getNome());
-				utente.setCognome(utenteFetched.getCognome());
+		listaUtentiEntity.stream().forEach(utenteFetched -> {
+			UtenteImmagineResource utente = new UtenteImmagineResource();
+			utente.setNome(utenteFetched.getNome());
+			utente.setCognome(utenteFetched.getCognome());
+			utente.setId(utenteFetched.getId());
+			if(richiediImmagine) {
 				if(utenteFetched.getImmagineProfilo() != null) {
 					utente.setImmagineProfilo(this.s3Service.getPresignedUrl(utenteFetched.getImmagineProfilo(), this.nomeDelBucketS3, Long.parseLong(this.presignedUrlExpireContesto)));
 				}
-				listaUtenti.add(utente);
-			});
-		} else {
-			listaUtentiEntity.stream().forEach(utenteFetched -> {
-				UtenteImmagineResource utente = new UtenteImmagineResource();
-				utente.setNome(utenteFetched.getNome());
-				utente.setCognome(utenteFetched.getCognome());
-				listaUtenti.add(utente);
-				
-			});
-		}
+			}
+			listaUtenti.add(utente);
+		});
 		return listaUtenti;
 	}
 }

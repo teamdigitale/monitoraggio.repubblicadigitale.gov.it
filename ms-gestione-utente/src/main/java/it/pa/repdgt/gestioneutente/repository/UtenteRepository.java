@@ -713,6 +713,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 	);
 
 	public Optional<UtenteEntity> findByEmailAndCodiceFiscaleNot(String email, String codiceFiscale);
+	public Optional<UtenteEntity> findByEmailAndIdNot(String email, Long id);
 
 	@Query(value = " "
 			 + "SELECT count(*) "

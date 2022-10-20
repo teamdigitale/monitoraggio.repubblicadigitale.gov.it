@@ -3,9 +3,10 @@ package it.pa.repdgt.integrazione.service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -29,7 +30,6 @@ import org.springframework.web.client.RestTemplate;
 import it.pa.repdgt.integrazione.exception.DrupalException;
 import it.pa.repdgt.integrazione.repository.UtenteRepository;
 import it.pa.repdgt.integrazione.request.ForwardRichiestDrupalParam;
-import it.pa.repdgt.shared.awsintegration.service.S3Service;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -40,18 +40,15 @@ import lombok.extern.slf4j.Slf4j;
 public class DrupalService {
 	@Value("${drupal.endpoint:}")
 	private String drupalEndpoint;
+
 	@Value("${drupal.auth.username:}")
 	private String drupalUsername;
 	@Value("${drupal.auth.password:}")
 	private String drupalPassword;
-	@Value("${drupal.s3.bucket-name:}")
-	private String nomeBucketS3Drupal;
-
-	@Autowired
-	private S3Service s3Service;
+	
 	@Autowired
 	private UtenteRepository utenteRepository;
-	
+
 	@Autowired
 	private RestTemplate restTemplate;
 
@@ -65,8 +62,8 @@ public class DrupalService {
 			final HttpHeaders forwardHeaders = this.getHeadersHttp(param, contentType);
 			if(param.getIsUploadFile() != null && param.getIsUploadFile() == Boolean.TRUE) {
 				// Decodifico file Base64
-//				byte[] bytesFileToUpload = Base64.getMimeDecoder().decode(param.getFileBase64ToUpload().trim());
-				byte[] bytesFileToUpload = org.apache.commons.codec.binary.Base64.decodeBase64(param.getFileBase64ToUpload());
+				byte[] bytesFileToUpload = Base64.getDecoder().decode(param.getFileBase64ToUpload());
+				
 				// Creazione file a partire dall'array di byte
 				final String nomeFile = param.getFilenameToUpload() == null? "tmpFile": param.getFilenameToUpload();
 				File file = new File(nomeFile);
@@ -123,7 +120,7 @@ public class DrupalService {
 	 	String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes(Charset.forName("UTF-8")));
 		String authHeader = "Basic " + encodedAuth;
 		headers.put("Authorization", Arrays.asList(authHeader));
-		headers.put("Content-Type",  Arrays.asList(contentType));
+		headers.put("Content-Type", Arrays.asList(contentType));
 		
 		
 		Optional<UtenteEntity> utenteFetchDb = this.utenteRepository.findByCodiceFiscale(param.getCfUtenteLoggato());
@@ -131,38 +128,5 @@ public class DrupalService {
 		headers.put("user-id", Arrays.asList(utenteFetchDb.get().getId().toString()));
 		headers.put("user-roles", Arrays.asList(param.getCodiceRuoloUtenteLoggato()));
 		return headers;
-	}
-
-	public Map<String, String> forwardRichiestaADrupal(final String filePath, final String contentType) {
-		if(!this.drupalEndpoint.endsWith("/") && !filePath.startsWith("/")) {
-			this.drupalEndpoint = this.drupalEndpoint.concat("/");
-		}
-		final String urlDaChiamare = this.drupalEndpoint.concat(filePath);
-		final HttpMethod metodoHttp = HttpMethod.GET;
-		
-		final Map<String, String> response = new HashMap<>();
-		ResponseEntity<String> responseDrupal = null;
-		try {
-			HttpHeaders forwardHeaders = new HttpHeaders();
-			String auth = this.drupalUsername + ":" + this.drupalPassword;
-//		 	String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes(Charset.forName("UTF-8")));
-//			String authHeader = "Basic " + encodedAuth;
-//			forwardHeaders.put("Authorization", Arrays.asList(authHeader));
-			forwardHeaders.put("Content-Type",  Arrays.asList(contentType));
-			
-			// Richiesta Http da inviare a Drupal
-			HttpEntity<String> forwardRequestEntity = new HttpEntity<String>(null, forwardHeaders);
-			log.info("Richiesta Servizio Drupal: {} {} headersRichiesta={}", metodoHttp, urlDaChiamare, forwardHeaders);
-			responseDrupal = this.restTemplate.exchange(urlDaChiamare, metodoHttp, forwardRequestEntity, String.class);
-			final String nomeFileS3Drupal = responseDrupal.getBody();
-			//final String presgnedUrlDrupal = this.s3Service.getPresignedUrlDrupal(nomeFileS3Drupal, this.nomeBucketS3Drupal);
-			//response.put("presignedUrlDrupal", presgnedUrlDrupal);
-			
-		} catch (Exception e) {
-        	String messaggioErrore = String.format("Errore chiamata REST DRUPAL: %s %s - datail: %s", metodoHttp, urlDaChiamare, e.getMessage());
-			throw new DrupalException(messaggioErrore, e, CodiceErroreEnum.D01);
-		}
-		
-		return response;
 	}
 }

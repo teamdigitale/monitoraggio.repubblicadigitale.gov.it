@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice(basePackages = {"it.pa.repdgt"})
@@ -52,6 +53,34 @@ public class ApplicationExceptionHandler {
 		log.error("{}", exc);
 		Map<String, String> errori = new HashMap<>();
 		errori.put("message", "Manca il corpo della richiesta oppure il json della richiesta non è valido");
+		return errori;
+	}
+	
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+	@ExceptionHandler(value = {UtenteException.class, RocketChatException.class, DrupalException.class, WorkdocsException.class, Exception.class})
+	public Map<String, String> handleException(Exception exc) {
+		log.error("{}", exc);
+		Map<String, String> errori = new HashMap<>();
+		errori.put("message", exc.getMessage());
+		UtenteException utenteException;
+		RocketChatException rocketChatException;
+		DrupalException drupalException;
+		WorkdocsException workdocsException;
+		if(exc instanceof UtenteException) {
+			utenteException = (UtenteException) exc;
+			errori.put("errorCode", utenteException.getCodiceErroreEnum().toString());
+		} else if(exc instanceof RocketChatException) {
+			rocketChatException = (RocketChatException) exc;
+			errori.put("errorCode", rocketChatException.getCodiceErroreEnum().toString());
+		} else if(exc instanceof DrupalException) {
+			drupalException = (DrupalException) exc;
+			errori.put("errorCode", drupalException.getCodiceErroreEnum().toString());
+		} else if(exc instanceof WorkdocsException) {
+			workdocsException = (WorkdocsException) exc;
+			errori.put("errorCode", workdocsException.getCodiceErroreEnum().toString());
+		} else {
+			errori.put("errorCode", CodiceErroreEnum.G01.toString());
+		}
 		return errori;
 	}
 }
