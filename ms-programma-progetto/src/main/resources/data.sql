@@ -305,7 +305,7 @@ insert into ente_sede_progetto(id_ente, id_progetto, id_sede, ruolo_ente, stato_
 insert into ente_sede_progetto_facilitatore(id_ente, id_facilitatore, id_progetto, id_sede, ruolo_utente, stato_utente)
 	values(1005, 'UTENTE2',  256, 1, 'FAC', 'ATTIVO');
 insert into ente_sede_progetto_facilitatore(id_ente, id_facilitatore, id_progetto, id_sede, ruolo_utente, stato_utente) 
-	values(1005, 'UTENTE2',  254, 1, 'VOL', 'ATTIVO');
+	values(1004, 'UTENTE2',  254, 1, 'VOL', 'ATTIVO');
 insert into ente_sede_progetto_facilitatore (id_ente, id_progetto, id_sede, id_facilitatore, ruolo_utente, stato_utente) 
 	values (1005, 254, 1, 'FACILITATORE1', 'VOL', 'NON ATTIVO'); 
 insert into ente_sede_progetto_facilitatore (id_ente, ID_progetto, id_sede, id_facilitatore, ruolo_utente, stato_utente) 

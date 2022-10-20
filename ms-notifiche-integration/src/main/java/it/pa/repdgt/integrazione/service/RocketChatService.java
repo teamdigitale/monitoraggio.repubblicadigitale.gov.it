@@ -80,8 +80,8 @@ public class RocketChatService {
 			// [1]. Creazione nuovo utente RocketChat
 			RocketChatCreaUtenteRequest rocketChatUtenteRequest = new RocketChatCreaUtenteRequest();
 			
-			final String prefissoEmailUtente = utenteDBFetch.getEmail().split("@")[0];
-			final String defaultUsername = prefissoEmailUtente.concat(idUtente.toString());
+			final String nomeECognome = utenteDBFetch.getNome().trim().concat(".").concat(utenteDBFetch.getCognome().trim());
+			final String defaultUsername = nomeECognome.concat(idUtente.toString());
 			rocketChatUtenteRequest.setUsername(autenticaORegistraRequest.getUsername() != null? autenticaORegistraRequest.getUsername(): defaultUsername);
 			
 			final String defaultName = utenteDBFetch.getNome();
@@ -148,7 +148,7 @@ public class RocketChatService {
 		try {
 			authTokenRocketChat = (Map<String, String>) this.creaTokenUtenteRocketChat(rocketChatLoginRequest).getBody().get("data");
 		} catch (Exception ex) {
-			throw new RuntimeException(String.format("Errore creazione token in RocketChat. %s", ex.getMessage()), ex);
+			throw new RocketChatException(String.format("Errore creazione token in RocketChat. %s", ex.getMessage()), ex, CodiceErroreEnum.RC02);
 		}
 		return authTokenRocketChat;
 	}

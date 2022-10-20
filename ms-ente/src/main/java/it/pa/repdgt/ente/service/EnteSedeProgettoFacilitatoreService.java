@@ -18,6 +18,7 @@ import it.pa.repdgt.ente.request.EnteSedeProgettoFacilitatoreRequest;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.awsintegration.service.EmailService;
+import it.pa.repdgt.shared.awsintegration.service.WorkDocsService;
 import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.EnteSedeProgetto;
 import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
@@ -54,6 +55,8 @@ public class EnteSedeProgettoFacilitatoreService {
 	private EnteSedeProgettoService enteSedeProgettoService;
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+	private WorkDocsService workdocsService;
 
 	@LogMethod
 	@LogExecutionTime
@@ -236,11 +239,29 @@ public class EnteSedeProgettoFacilitatoreService {
 		}
 	}
 		
+
+	@LogMethod
+	@LogExecutionTime
+	@Transactional(rollbackOn = Exception.class)
 	public void terminaAssociazioneFacilitatoreOVolontario(EnteSedeProgettoFacilitatoreKey id) {
 		EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatoreFetch = this.enteSedeProgettoFacilitatoreRepository.findById(id).get();
 		enteSedeProgettoFacilitatoreFetch.setStatoUtente(StatoEnum.TERMINATO.getValue());
 		enteSedeProgettoFacilitatoreFetch.setDataOraTerminazione(new Date());
 		this.enteSedeProgettoFacilitatoreRepository.save(enteSedeProgettoFacilitatoreFetch);
+		
+		final String codiceFiscaleUtenteFacilitaore = id.getIdFacilitatore();
+		final UtenteEntity utenteDBFetch = this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleUtenteFacilitaore);
+		
+		String idUtenteWorkdocs = utenteDBFetch.getIntegrazioneUtente().getIdUtenteWorkdocs();
+		if(idUtenteWorkdocs != null) {
+			try {
+				new Thread(() -> {
+					this.workdocsService.disattivaWorkDocsUser(idUtenteWorkdocs);
+				}).start();
+			} catch (Exception ex) {
+				log.error("Errore disattivazione utente workdocs ", ex);
+			}
+		}
 	}
 
 	@LogMethod
