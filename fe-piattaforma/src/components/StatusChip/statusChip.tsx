@@ -15,7 +15,7 @@ interface StatusChipI {
 const statusTypes = {
   COMPLETE: 'COMPLETATO',
   DRAFT: 'IN BOZZA',
-  INACTIVE: 'NON_ATTIVO',
+  INACTIVE: 'NON ATTIVO',
   ACTIVE: 'ATTIVO',
   NOT_SENT: 'NON INVIATO',
   SENT: 'INVIATO',
@@ -105,10 +105,11 @@ const StatusChip: React.FC<StatusChipI> = (props) => {
               chipWidth && 'px-3',
               device.mediaIsPhone &&
                 status?.length >= 11 &&
-                'chip-label__chip-height'
+                'chip-label__chip-height',
+              status === 'NON ATTIVO' && 'not-active-chip'
             )}
           >
-            {status?.toUpperCase()}
+            {status?.toUpperCase().replace('_', ' ')}
           </ChipLabel>
         </Chip>
       </span>
@@ -119,7 +120,7 @@ const StatusChip: React.FC<StatusChipI> = (props) => {
             rowTableId ? rowTableId : new Date().getTime()
           }`}
         >
-          {status}
+          {status?.toUpperCase().replace('_', ' ')}
         </UncontrolledTooltip>
       )}
     </>
