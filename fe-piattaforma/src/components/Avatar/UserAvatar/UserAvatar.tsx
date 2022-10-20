@@ -43,9 +43,9 @@ const UserAvatar: React.FC<UserAvatarI> = (props) => {
         avatarImage && 'border border-primary'
       )}
       style={{
-        width: isUserProfile ? '65px' : device.mediaIsDesktop ? '35px' : '53px',
+        width: isUserProfile ? '68px' : device.mediaIsDesktop ? '35px' : '53px',
         height: isUserProfile
-          ? '65px'
+          ? '68px'
           : device.mediaIsDesktop
           ? '35px'
           : '53px',

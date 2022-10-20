@@ -135,8 +135,8 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
                   'section-title__icon-container'
                 )}
                 style={{
-                  bottom: device.mediaIsPhone ? '' : '-5px',
-                  left: device.mediaIsPhone ? '' : '-5px',
+                  bottom: device.mediaIsPhone ? '' : '-10px',
+                  left: device.mediaIsPhone ? '' : '-10px',
                 }}
               >
                 <input
@@ -160,8 +160,8 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
                     aria-label='Foto'
                     className='position-absolute'
                     style={{
-                      top: '4px',
-                      left: '5px',
+                      top: '7px',
+                      left: '7px',
                     }}
                   />
                 </Button>
