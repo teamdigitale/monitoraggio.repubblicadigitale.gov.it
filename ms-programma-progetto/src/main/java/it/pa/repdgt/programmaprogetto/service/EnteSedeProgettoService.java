@@ -2,6 +2,7 @@ package it.pa.repdgt.programmaprogetto.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -9,19 +10,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.programmaprogetto.repository.EnteSedeProgettoRepository;
+import it.pa.repdgt.programmaprogetto.repository.UtenteRepository;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
+import it.pa.repdgt.shared.awsintegration.service.WorkDocsService;
 import it.pa.repdgt.shared.entity.EnteSedeProgetto;
 import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
+import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoKey;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class EnteSedeProgettoService {
 	@Autowired
 	private EnteSedeProgettoFacilitatoreService enteSedeProgettoFacilitatoreService;
 	@Autowired
 	private EnteSedeProgettoRepository enteSedeProgettoRepository;
+	@Autowired
+	private UtenteRepository utenteRepository;
+	@Autowired
+	private WorkDocsService workDocsService;
 	
 	@LogMethod
 	@LogExecutionTime
@@ -83,6 +93,18 @@ public class EnteSedeProgettoService {
 							utente.setStatoUtente(StatoEnum.TERMINATO.getValue());
 							utente.setDataOraTerminazione(new Date());
 							this.enteSedeProgettoFacilitatoreService.salvaEnteSedeProgettoFacilitatore(utente);
+							
+							final String codFiscaleUtente = utente.getId().getIdFacilitatore();
+							final UtenteEntity utenteEntity = this.utenteRepository.findByCodiceFiscale(codFiscaleUtente).get();
+							if(utenteEntity.getIntegrazioneUtente().getIdUtenteWorkdocs() != null) {
+								try {
+									new Thread(() -> {
+										this.workDocsService.disattivaWorkDocsUser(utenteEntity.getIntegrazioneUtente().getIdUtenteWorkdocs());
+									}).start();
+								} catch (Exception ex) {
+									log.error("Errore disattivazione utente workdocs ", ex);
+								}
+							}
 						}
 						if(StatoEnum.NON_ATTIVO.getValue().equals(utente.getStatoUtente())) {
 							this.enteSedeProgettoFacilitatoreService.cancellaAssociazioneFacilitatoreOVolontario(idEnte, idSede, idProgetto, utente.getId().getIdFacilitatore(), utente.getRuoloUtente());

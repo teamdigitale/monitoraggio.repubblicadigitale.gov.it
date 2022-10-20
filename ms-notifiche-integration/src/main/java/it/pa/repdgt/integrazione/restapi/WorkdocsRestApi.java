@@ -1,6 +1,7 @@
 package it.pa.repdgt.integrazione.restapi;
 
 import java.util.Date;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.pa.repdgt.integrazione.exception.WorkdocsException;
 import it.pa.repdgt.integrazione.repository.IntegrazioniUtenteRepository;
+import it.pa.repdgt.integrazione.repository.UtenteRepository;
 import it.pa.repdgt.integrazione.request.WorkDocsUserRequest;
 import it.pa.repdgt.shared.awsintegration.service.WorkDocsService;
 import it.pa.repdgt.shared.entity.IntegrazioniUtenteEntity;
+import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import software.amazon.awssdk.services.workdocs.model.ActivateUserResponse;
 import software.amazon.awssdk.services.workdocs.model.CreateUserResponse;
@@ -26,6 +29,8 @@ import software.amazon.awssdk.services.workdocs.model.CreateUserResponse;
 public class WorkdocsRestApi {
 	@Autowired
 	private WorkDocsService workDocsService;
+	@Autowired
+	private UtenteRepository utenteRepository;
 	
 	@Autowired
 	private IntegrazioniUtenteRepository integrazioniUtenteRepository;
@@ -35,7 +40,8 @@ public class WorkdocsRestApi {
 	@Transactional(rollbackOn = Exception.class)
 	public void creaUtenteWD(
 			@RequestBody final WorkDocsUserRequest workDocsUser) {
-		final CreateUserResponse createUserResponse  = this.workDocsService.creaWorkDocsUser(workDocsUser.getUsername(), workDocsUser.getEmail(), workDocsUser.getPassword());
+		final Optional<UtenteEntity> optionalUtenteDbFEtch = this.utenteRepository.findByCodiceFiscale(workDocsUser.getCfUtenteLoggato());
+		final CreateUserResponse createUserResponse  = this.workDocsService.creaWorkDocsUser(optionalUtenteDbFEtch.get().getEmail(), workDocsUser.getEmail(), workDocsUser.getPassword());
 		if(	!createUserResponse.sdkHttpResponse().isSuccessful() ) {
 			String errorMessage  = String.format("Errore creazione utente Workdocs. Response workDocs-createUser.statusCode: %s", createUserResponse.sdkHttpResponse().statusCode());
 			throw new WorkdocsException(errorMessage, CodiceErroreEnum.WD01);
