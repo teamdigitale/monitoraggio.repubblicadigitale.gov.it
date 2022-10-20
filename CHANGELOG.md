@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.215](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.214...1.0.0-develop.215) (2022-10-20)
+
+
+### Bug Fixes
+
+* **be:** ms-integrazione ([9eb73b0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9eb73b0828be10df9966a666f186064d2576315c))
+
 ## [1.0.0-develop.214](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.213...1.0.0-develop.214) (2022-10-20)
 
 
