@@ -54,6 +54,7 @@ public enum CodiceErroreEnum {
 	,U18("Errore Associazione tra utente e ruolo non trovata.")
 	,U19("Errore export csv utenti")
 	,U20("Errore utente con codice fiscale non esistente")
+	,U21("Errore email utente già esistente")
 
 	,S01("Errore file upload cittadino non valido")
 	,S02("Errore export csv servizio")
@@ -137,6 +138,12 @@ public enum CodiceErroreEnum {
 	,PR09("Errore Impossibile Assegnare gestore progetto per il progetto. Unico Facilitatore o Volontario attivo sul progetto")
 	
 	,D01("Errore chiamata servizio Drupal")
+	
+	,WD01("Errore creazione utente Workdocs")
+	,WD02("Errore attivazione utente Workdocs")
+	
+	,RC01("Errore creazione utente Workdocs")
+	,RC02("Errore attivazione utente Workdocs")
 	;
 	
 	private String descrizioneErrore;
