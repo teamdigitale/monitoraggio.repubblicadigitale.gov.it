@@ -13,7 +13,6 @@ import { ServizioCittadinoI } from '../../../../../redux/features/citizensArea/c
 import { useNavigate } from 'react-router-dom';
 import { Button, Icon, UncontrolledTooltip } from 'design-react-kit';
 import PasswordVisible from '/public/assets/img/it-password-visible.png';
-import './citizens.scss';
 
 const TableHeadingEntities: TableHeadingI[] = [
   {
@@ -63,7 +62,7 @@ const CitizenServices: React.FC<{
                 >
                   <Icon
                     icon={PasswordVisible}
-                    className='citizens-container__icon'
+                    className='icons__icon-visible-password'
                     color='primary'
                     size='sm'
                     aria-label='Vedi questionario compilato'

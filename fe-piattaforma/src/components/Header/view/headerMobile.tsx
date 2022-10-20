@@ -21,10 +21,11 @@ import {
   AvatarTextSizes,
 } from '../../Avatar/AvatarInitials/avatarInitials';
 import { defaultRedirectUrl } from '../../../routes';
-import { NotificationsPreview } from '../../index';
+
 import UserAvatar from '../../Avatar/UserAvatar/UserAvatar';
 import { LogoutRedirect } from '../../../redux/features/user/userThunk';
 import useGuard from '../../../hooks/guard';
+import NotificationsPreview from '../../NotificationsPreview/notificationsPreview';
 
 const HeaderMobile: React.FC<HeaderI> = ({
   dispatch,
@@ -205,8 +206,8 @@ const HeaderMobile: React.FC<HeaderI> = ({
             {isLogged ? (
               <>
                 {userDropDown()}
-                {hasUserPermission(['btn.chat']) && handleOpenRocketChat ? (
-                  <div className='ml-auto mx-2 pr-3'>
+                <div className='d-flex align-items-center'>
+                  {hasUserPermission(['btn.chat']) && handleOpenRocketChat ? (
                     <div
                       tabIndex={0}
                       role='button'
@@ -216,6 +217,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
                           handleOpenRocketChat();
                         }
                       }}
+                      className='mr-3'
                     >
                       <Icon
                         color='white'
@@ -224,9 +226,8 @@ const HeaderMobile: React.FC<HeaderI> = ({
                         aria-label='RocketChat'
                       />
                     </div>
-                  </div>
-                ) : null}
-                <div className='ml-auto pr-3'>
+                  ) : null}
+
                   <Button
                     onClick={() => setNotificationsIsOpen(true)}
                     className='primary-bg-a6 px-2 bg-transparent'

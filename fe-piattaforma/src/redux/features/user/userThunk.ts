@@ -5,6 +5,7 @@ import {
   login,
   logout,
   setUserContext,
+  setUserNotifications,
   setUserProfile,
   UserProfileI,
 } from './userSlice';
@@ -15,6 +16,7 @@ import {
 } from '../../../utils/sessionHelper';
 import { RootState } from '../../store';
 import { isActiveProvisionalLogin } from '../../../pages/common/Auth/auth';
+import { proxyCall } from '../forum/forumThunk';
 
 export const getUserHeaders = () => {
   const { codiceFiscale, id: idUtente } = JSON.parse(getSessionValues('user'));
@@ -232,5 +234,62 @@ export const LogoutRedirect = () => async (dispatch: Dispatch) => {
     window.location.replace(logoutRedirectUrl);
   } catch (error) {
     console.log('LogoutRedirect error', error);
+  }
+};
+
+
+// NOTIFICATION
+
+const GetNotificationsByUserAction = {
+  type: 'forum/GetNotificationsByUser',
+};
+
+export const GetNotificationsByUser = (userId: string) => async (dispatch: Dispatch) => {
+  try {
+      dispatch(showLoader());
+      dispatch({ ...GetNotificationsByUserAction });
+      const res = await proxyCall(`/user/${userId}/notifications`, 'GET')
+      if (res) {
+          dispatch(setUserNotifications(res.data.data.items || []));
+      }
+
+  } catch (error) {
+      console.log('GetNotificationsByUser error', error);
+  } finally {
+      dispatch(hideLoader());
+  }
+};
+
+const ReadNotificationAction = {
+  type: 'forum/ReadNotification',
+};
+
+export const ReadNotification = (notificationId: string) => async (dispatch: Dispatch) => {
+  try {
+      dispatch(showLoader());
+      dispatch({ ...ReadNotificationAction });
+      await proxyCall(`/notification/${notificationId}/read`, 'POST', {})
+
+  } catch (error) {
+      console.log('ReadNotification error', error);
+  } finally {
+      dispatch(hideLoader());
+  }
+};
+
+const DeleteNotificationAction = {
+  type: 'forum/DeleteNotification',
+};
+
+export const DeleteNotification = (notificationId: string) => async (dispatch: Dispatch) => {
+  try {
+      dispatch(showLoader());
+      dispatch({ ...DeleteNotificationAction });
+      await proxyCall(`/notification/${notificationId}/delete`, 'POST', {})
+
+  } catch (error) {
+      console.log('DeleteNotification error', error);
+  } finally {
+      dispatch(hideLoader());
   }
 };

@@ -21,6 +21,9 @@
     font-weight: 400;
     line-height: 24px;
     letter-spacing: 1.1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   &__title {
     font-size: 24px;

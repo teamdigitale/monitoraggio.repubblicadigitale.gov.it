@@ -18,6 +18,7 @@ import { userRoles } from '../../pages/administrator/AdministrativeArea/Entities
 import { openModal } from '../../redux/features/modal/modalSlice';
 import RocketChatModal from '../Modals/RocketChatModal/rocketChatModal';
 import useGuard from '../../hooks/guard';
+import { ActionTracker } from '../../redux/features/forum/forumThunk';
 
 export interface HeaderI {
   isHeaderFull?: boolean | undefined;
@@ -25,7 +26,7 @@ export interface HeaderI {
   user: UserStateI['user'];
   userProfile: UserStateI['profilo'];
   isLogged: boolean;
-  notification?: [] | undefined;
+  notification?: any[] | undefined;
   menuRoutes: MenuItem[];
   profilePicture: string | undefined;
   handleOpenRocketChat?: () => void;
@@ -118,6 +119,7 @@ const Header: React.FC<HeaderProp> = (props) => {
 
   const handleOpenRocketChat = () => {
     if (hasUserPermission(['btn.chat'])) {
+      dispatch(ActionTracker({ target: 'chat' }));
       dispatch(
         openModal({
           id: 'rocketChatModal',
@@ -127,7 +129,7 @@ const Header: React.FC<HeaderProp> = (props) => {
   };
 
   const componentProps = {
-    notification,
+    notification: hasUserPermission(['list.ntf.nr']) ? notification : undefined,
     isLogged,
     user,
     userProfile,

@@ -4,17 +4,18 @@ import './cardSlider.scss';
 import CuoreBluVuoto from '../../../public/assets/img/hollow-blue-heart.png';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
+import { formatDate } from '../../utils/datesHelper';
 /* 
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
  */
 interface CardSliderI {
   id: string | number;
-  typology?: string;
+  category_label?: string;
   date?: string;
   title?: string;
   download?: number;
-  comment?: number;
+  comment_count?: number;
   likes?: number;
   views?: number;
   isDocument?: boolean;
@@ -29,11 +30,11 @@ interface CardSliderI {
 const CardSlider: React.FC<CardSliderI> = (props) => {
   const {
     id,
-    typology,
+    category_label,
     date,
     title,
     download,
-    comment,
+    comment_count,
     likes,
     views,
     isDocument = false,
@@ -58,53 +59,54 @@ const CardSlider: React.FC<CardSliderI> = (props) => {
     }
   };
 
-  console.log('typology', isDocument, isNews, isCommunity);
-
   return (
     <div
       role='button'
       onKeyDown={navigateByType}
       onClick={navigateByType}
       tabIndex={0}
-      className={clsx('card-slider-container', 'py-3', 'pl-4', 'pr-5')}
+      className={clsx('card-slider-container', 'py-3', 'px-4')}
     >
-      <div className='card-slider-container__pre-title'>
-        <span className='font-weight-bold'>{typology}</span> {date}
-      </div>
-      <p className='card-slider-container__title my-2 font-weight-bold'>
-        {title}
-      </p>
-      <div className={clsx('d-flex', 'justify-content-end', 'pt-4')}>
-        {!isDocument ? (
-          <div className='d-flex align-items-center'>
-            <Icon icon={CuoreBluVuoto} size='xs' color='primary' />
-            <span className='card-slider-container__span-icons ml-1 mr-2'>
-              {likes}
-            </span>
-          </div>
-        ) : null}
-        <div className='d-flex align-items-center'>
-          <Icon icon='it-comment' size='sm' color='primary' />
-          <span className='card-slider-container__span-icons ml-1 mr-2'>
-            {comment}
-          </span>
+      <div className='pl-1'>
+        <div className='card-slider-container__pre-title'>
+          <span className='font-weight-bold'>{category_label} —</span>{' '}
+          {date && formatDate(date, 'shortDate')}
         </div>
-        {isDocument ? (
+        <p className='card-slider-container__title my-2 font-weight-bold'>
+          {title}
+        </p>
+        <div className={clsx('d-flex', 'justify-content-end', 'pt-4')}>
+          {!isDocument ? (
+            <div className='d-flex align-items-center'>
+              <Icon icon={CuoreBluVuoto} size='xs' color='primary' />
+              <span className='card-slider-container__span-icons ml-1 mr-2'>
+                {likes}
+              </span>
+            </div>
+          ) : null}
           <div className='d-flex align-items-center'>
-            <Icon icon='it-download' size='sm' color='primary' />
-            <span className='card-slider-container__span-icons ml-1'>
-              {download}
+            <Icon icon='it-comment' size='sm' color='primary' />
+            <span className='card-slider-container__span-icons ml-1 mr-2'>
+              {comment_count}
             </span>
           </div>
-        ) : null}
-        {!isDocument ? (
-          <div className='d-flex align-items-center'>
-            <Icon icon='it-password-visible' size='sm' color='primary' />
-            <span className='card-slider-container__span-icons ml-1'>
-              {views}
-            </span>
-          </div>
-        ) : null}
+          {isDocument ? (
+            <div className='d-flex align-items-center'>
+              <Icon icon='it-download' size='sm' color='primary' />
+              <span className='card-slider-container__span-icons ml-1'>
+                {download}
+              </span>
+            </div>
+          ) : null}
+          {!isDocument ? (
+            <div className='d-flex align-items-center'>
+              <Icon icon='it-password-visible' size='sm' color='primary' />
+              <span className='card-slider-container__span-icons ml-1'>
+                {views}
+              </span>
+            </div>
+          ) : null}
+        </div>
       </div>
     </div>
   );

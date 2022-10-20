@@ -30,7 +30,6 @@ import {
 } from '../components/Form/multipleSelectConstants';
 // import { groupOptions } from '../components/Form/multipleSelectConstants';
 // import ManageOTP from '../components/AdministrativeArea/Entities/Surveys/ManageOTP/ManageOTP';
-import ProtectedComponent from '../hoc/AuthGuard/ProtectedComponent/ProtectedComponent';
 import { updateCustomBreadcrumb } from '../redux/features/app/appSlice';
 // import Comment from '../components/Comments/comment';
 import ManageComment from './administrator/AdministrativeArea/Entities/modals/manageComment';
@@ -53,6 +52,7 @@ export const DocumentCardDetailMock = {
 import UserAvatar from '../components/Avatar/UserAvatar/UserAvatar';
 import { closeModal, openModal } from '../redux/features/modal/modalSlice';
 import GenericModal from '../components/Modals/GenericModal/genericModal';
+import { getAnagraphicID } from '../redux/features/anagraphic/anagraphicSlice';
 
 const Playground: React.FC<withFormHandlerProps> = (props) => {
   const { t } = useTranslation();
@@ -137,9 +137,38 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
     console.log('PLAYGROUND handleInputCheckbox', value, field);
   };
 
+  const createAnagraphicID = () => {
+    dispatch(getAnagraphicID({ id: Math.floor(Math.random() * 999) }));
+  };
+
   return (
     <div className='container mt-4'>
       <h1>Playground {t('hello')}</h1>
+
+      <a
+        //href="https://s3-mitd-drupal-dev.s3.eu-central-1.amazonaws.com/public/2022-10/1666187931099715_Nuovo%20Documento%20di%20testo.txt?versionId=9rmoYvlyrbsf6TIv8020BXkDVx4oEYKw&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4LHBWFYR2FHS4H6R/20221019/eu-central-1/s3/aws4_request&X-Amz-Date=20221019T135935Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Signature=9154a896c3985ca74293527074da6e0ff8710d3c568ddbf7d53b72f65cc69f31"
+        href='https://s3-mitd-drupal-dev.s3.eu-central-1.amazonaws.com/public/2022-10/1666255062520563_test.xlsx?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4LHBWFYR2FHS4H6R/20221020/eu-central-1/s3/aws4_request&X-Amz-Date=20221020T083748Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Signature=5fb768964944eac8365605491c36d2182667273fcdadd6bfb6447d8c5ac9befa'
+        download='prova.xlsx'
+      >
+        clicca qui
+      </a>
+
+      <img
+        alt=''
+        src='https://s3-mitd-drupal-dev.s3.eu-central-1.amazonaws.com/public/2022-10/1666188917923530_Errore.png?versionId=1_zXA6tq8HPeQX0uuZdkWKoOdgahsXH3&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4LHBWFYR2FHS4H6R/20221019/eu-central-1/s3/aws4_request&X-Amz-Date=20221019T151711Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Signature=5fac799249cd41adef1ed9ded8e40cf41bab9dfb18c97081eeed7a371e4f91da'
+        style={{
+          height: '200px',
+          width: 'auto',
+        }}
+      />
+
+      <Row className='mt-2'>
+        <Col sm={6} md={4}>
+          <Button color='primary' onClick={createAnagraphicID} size='sm'>
+            Dispatch anagraphic id
+          </Button>
+        </Col>
+      </Row>
 
       <CheckboxGroup
         className='col-12'
@@ -156,23 +185,19 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
         value={multipleSelectValue}
       />
       <div className='my-5'>
-        {/* Testing Protected Component */}
-
-        <ProtectedComponent visibleTo={[]}>
-          <DropdownFilter
-            filterName='test'
-            id='test'
-            options={[
-              { label: 'a', value: 'a' },
-              { label: 'b', value: 'b' },
-            ]}
-            onOptionsChecked={(newOptions) => {
-              console.log(newOptions);
-              setValues(newOptions);
-            }}
-            values={values}
-          />
-        </ProtectedComponent>
+        <DropdownFilter
+          filterName='test'
+          id='test'
+          options={[
+            { label: 'a', value: 'a' },
+            { label: 'b', value: 'b' },
+          ]}
+          onOptionsChecked={(newOptions) => {
+            console.log(newOptions);
+            setValues(newOptions);
+          }}
+          values={values}
+        />
         <DropdownFilter
           filterName='test'
           id='test'
@@ -333,8 +358,6 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
       <section>
         <PillDropDown />
       </section>
-
-
 
       <Stepper nSteps={5} currentStep={3} />
       <Rating />

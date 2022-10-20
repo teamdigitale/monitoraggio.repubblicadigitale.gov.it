@@ -11,6 +11,8 @@ import { useNavigate } from 'react-router-dom';
 import HTMLParser from '../General/HTMLParser/HTMLParse';
 import coverPlaceholder from '/public/assets/img/img-bacheca-digitale-dettaglio.png';
 import _ from 'lodash';
+import { cleanDrupalFileURL } from '../../utils/common';
+import { formatDate } from '../../utils/datesHelper';
 
 interface CommentI {
   user?: string;
@@ -33,7 +35,7 @@ interface CardShowcaseI extends CardProps {
   cover?: string;
   category_label?: string;
   views?: string;
-  marked?: boolean;
+  highlighted?: boolean;
 }
 
 const CardShowcase: React.FC<CardShowcaseI> = (props) => {
@@ -48,7 +50,7 @@ const CardShowcase: React.FC<CardShowcaseI> = (props) => {
     cover,
     category_label,
     views,
-    marked,
+    highlighted,
   } = props;
 
   const device = useAppSelector(selectDevice);
@@ -63,22 +65,22 @@ const CardShowcase: React.FC<CardShowcaseI> = (props) => {
       role='button'
       className={clsx(
         'showcase-card bg-white',
-        marked ? 'showcase-card__marked' : null
+        highlighted ? 'showcase-card__marked' : null
       )}
       onKeyDown={navigateTo}
       onClick={navigateTo}
       tabIndex={0}
     >
-      <div className='position-relative'>
+      <div className='position-relative img-height-placeholder'>
         <div className='w-100'>
           <img
-            src={cover ? cover : coverPlaceholder}
+            src={cover ? cleanDrupalFileURL(cover) : coverPlaceholder}
             title='img title'
             alt='imagealt'
             className='responsive'
           />
         </div>
-        {marked ? (
+        {highlighted ? (
           <div className='showcase-card__bookmark'>
             <Icon
               color='primary'
@@ -96,7 +98,7 @@ const CardShowcase: React.FC<CardShowcaseI> = (props) => {
           isMobile ? 'mx-4' : 'px-4',
           'd-flex',
           'flex-column',
-          marked ? 'showcase-card__body' : null
+          highlighted ? 'showcase-card__body' : null
         )}
       >
         <Col className='text-left'>
@@ -104,11 +106,13 @@ const CardShowcase: React.FC<CardShowcaseI> = (props) => {
             <div
               className={clsx(
                 'showcase-card__pre-title',
-                marked ? 'my-4 pt-4' : 'mb-4 mt-3 pt-1'
+                highlighted
+                  ? 'my-4 pt-4 showcase-card__highlighted-pre-title'
+                  : 'mb-4 mt-3 pt-1'
               )}
             >
-              <span className='font-weight-bold'>{category_label}</span> -{' '}
-              {date}
+              <span className='font-weight-bold'>{category_label} —</span>
+              {date && formatDate(date, 'shortDate')}
             </div>
           ) : null}
           {title ? (
@@ -135,7 +139,12 @@ const CardShowcase: React.FC<CardShowcaseI> = (props) => {
           )}
         </Col>
         <div
-          className={clsx('d-flex', 'flex-row', 'my-2', 'justify-content-end')}
+          className={clsx(
+            'd-flex',
+            'flex-row',
+            'justify-content-end',
+            'showcase-card__icon-container-alignment'
+          )}
         >
           <div
             className={clsx(

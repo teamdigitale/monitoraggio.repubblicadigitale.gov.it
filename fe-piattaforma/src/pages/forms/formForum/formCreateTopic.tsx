@@ -7,7 +7,7 @@ import TextArea from '../../../components/Form/textarea';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
-// import { selectDevice } from '../../../redux/features/app/appSlice';
+import { selectDevice } from '../../../redux/features/app/appSlice';
 import { GetCategoriesList } from '../../../redux/features/forum/categories/categoriesThunk';
 import {
   selectCategoriesList,
@@ -45,7 +45,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
     name: 'Carica documenti, foto ecc.',
   });
   const [iconVisible, setIconVisible] = useState<boolean>(false);
-  // const device = useAppSelector(selectDevice);
+  const device = useAppSelector(selectDevice);
   const tagsList = useAppSelector(selectTagsList);
   const [tags, setTags] = useState<string[]>([]);
   const formDisabled = !!props.formDisabled;
@@ -136,7 +136,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
         />
         <small
           id='input-help-description'
-          className={clsx('font-italic', 'form-text', 'text-muted', 'mb-5')}
+          className={clsx('font-italic', 'form-text', 'text-muted', 'mb-5', 'pl-2', 'ml-1')}
         >
           massimo 55 caratteri
         </small>
@@ -144,7 +144,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
       <Form.Row className={bootClass}>
         <Select
           {...form?.category}
-          wrapperClassName='col-12 col-lg-5'
+          wrapperClassName='col-12 col-lg-6'
           onInputChange={onInputChange}
           options={categoriesList?.map((opt) => ({
             label: opt.name,
@@ -185,7 +185,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
               label: opt.name,
               value: opt.name,
             }))}
-          wrapperClassName='col-12 px-0'
+          wrapperClassName={clsx('col-12', 'px-0', device.mediaIsDesktop && 'mb-0', !device.mediaIsDesktop && 'mb-4')}
           onInputChange={(value) => handleOnSubmit(value as string)}
           placeholder='Digita la parola chiave e utilizza il completamento automatico per evitare errori di digitazione.'
           isSearchable

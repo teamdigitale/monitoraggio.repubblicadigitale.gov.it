@@ -13,14 +13,18 @@ import iconFile from '../../../public/assets/img/icon-file-blue-medium.png';
 import DetailCard from '../DetailCard/detailCard';
 import './documentDetail.scss';
 import clsx from 'clsx';
-//import { useLocation } from 'react-router-dom';
 import SocialBar from '../Comments/socialBar';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import { openModal } from '../../redux/features/modal/modalSlice';
 import { useDispatch } from 'react-redux';
 import { selectUser } from '../../redux/features/user/userSlice';
-import { GetItemDetail, ManageItemEvent } from '../../redux/features/forum/forumThunk';
+import {
+  GetItemDetail,
+  ManageItemEvent,
+} from '../../redux/features/forum/forumThunk';
+import { cleanDrupalFileURL } from '../../utils/common';
+import { formatDate } from '../../utils/datesHelper';
 
 export interface CardDocumentDetailI {
   id?: string;
@@ -75,8 +79,12 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
   //const location = useLocation();
   const device = useAppSelector(selectDevice);
   const dispatch = useDispatch();
-  const userId = useAppSelector(selectUser)?.id
+  const userId = useAppSelector(selectUser)?.id;
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const trackDownload = () => {
+    if (id) dispatch(ManageItemEvent(id, 'downloaded'));
+  };
 
   const documentDetailDropdownOptions = [
     {
@@ -174,7 +182,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
             <div className='document-card-detail-container__typology'>
               <span className='font-weight-bold'>{category_label}</span>
               <span> - </span>
-              <span>{date}</span>
+              <span>{date && formatDate(date, 'shortDate')}</span>
             </div>
           }
         </div>
@@ -206,36 +214,100 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
       {!device.mediaIsPhone ? (
         <div className='mb-4'>
           {attachment ? (
-            <>
-              <Icon icon='it-download' size='sm' color='primary' />
-              <Button color='link' className='btn-download-file'>
-                <b>
-                  <u>Scarica allegato</u>
-                </b>
-              </Button>{' '}
-            </>
+            <div className='d-flex justify-content-start'>
+              <Button
+                className={clsx(
+                  'primary-color-b1',
+                  'd-flex',
+                  'justify-content-start',
+                  'px-0',
+                  'pb-5'
+                )}
+                onClick={trackDownload}
+              >
+                <div className='d-flex align-items-center'>
+                  <Icon
+                    icon='it-download'
+                    color='primary'
+                    size='sm'
+                    aria-label='Scarica allegato'
+                  />
+                  <a
+                    href={cleanDrupalFileURL(attachment)}
+                    download
+                    target='_blank'
+                    rel='noreferrer'
+                    className='ml-2'
+                  >
+                    <p className='font-weight-bold h6 mb-0'>Scarica allegato</p>
+                  </a>
+                </div>
+              </Button>
+            </div>
           ) : null}
           {external_link ? (
-            <>
-              <Icon icon='it-external-link' size='sm' color='primary' />
-              <Button color='link' className='btn-external-link'>
-                <b>
-                  <u>Link esterno</u>
-                </b>
-              </Button>{' '}
-            </>
+            <div className='d-flex justify-content-start'>
+              <Button
+                className={clsx(
+                  'primary-color-b1',
+                  'd-flex',
+                  'justify-content-start',
+                  'px-0',
+                  'pb-5'
+                )}
+              >
+                <div className='d-flex align-items-center'>
+                  <Icon
+                    icon='it-external-link'
+                    color='primary'
+                    size='sm'
+                    aria-label='Link esterno'
+                  />
+                  <a
+                    href={cleanDrupalFileURL(external_link)}
+                    target='_blank'
+                    rel='noreferrer'
+                    className='ml-2'
+                  >
+                    <p className='font-weight-bold h6 mb-0'>Link esterno</p>
+                  </a>
+                </div>
+              </Button>
+            </div>
           ) : null}
         </div>
-      ) : (
+      ) : attachment ? (
         <div className='mb-4'>
-          <Icon icon='it-download' size='sm' color='primary' />
-          <Button color='link' className='btn-download-file'>
-            <b>
-              <u>Scarica allegato</u>
-            </b>
+          <Button
+            className={clsx(
+              'primary-color-b1',
+              'd-flex',
+              'justify-content-start',
+              'px-0',
+              'pb-5'
+            )}
+            onClick={trackDownload}
+          >
+            <div className='d-flex align-items-center'>
+              <Icon
+                icon='it-download'
+                color='primary'
+                size='sm'
+                aria-label='Scarica allegato'
+              />
+              <a
+                href={cleanDrupalFileURL(attachment)}
+                download
+                target='_blank'
+                rel='noreferrer'
+                className='ml-2'
+              >
+                <p className='font-weight-bold h6 mb-0'>Scarica allegato</p>
+              </a>
+            </div>
           </Button>
         </div>
-      )}
+      ) : null}
       {tags ? (
         <div className='d-flex flex-row w-100 mb-4 align-items-center'>
           <b className='mr-2'>TAG:</b>
@@ -261,16 +333,20 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
         likes={likes}
         views={views}
         downloads={downloads}
-        onLike={section === 'community' ? async () => {
-          if (id) {
-            if (user_like as boolean) {
-              await dispatch(ManageItemEvent(id, 'unlike'))
-            } else {
-              await dispatch(ManageItemEvent(id, 'like'))
-            }
-            userId && dispatch(GetItemDetail(id, userId, 'community'))
-          }
-        } : undefined}
+        onLike={
+          section === 'community'
+            ? async () => {
+                if (id) {
+                  if (user_like as boolean) {
+                    await dispatch(ManageItemEvent(id, 'unlike'));
+                  } else {
+                    await dispatch(ManageItemEvent(id, 'like'));
+                  }
+                  userId && dispatch(GetItemDetail(id, userId, 'community'));
+                }
+              }
+            : undefined
+        }
         onComment={() =>
           dispatch(
             openModal({
@@ -278,7 +354,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
               payload: {
                 title: 'Aggiungi commento',
                 action: 'comment',
-                entity: section === 'community' ? 'community' : 'document'
+                entity: section === 'community' ? 'community' : 'document',
               },
             })
           )

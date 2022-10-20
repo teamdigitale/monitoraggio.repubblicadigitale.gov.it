@@ -9,7 +9,7 @@ interface PublishingAuthorityI {
 
 const PublishingAuthority: React.FC<PublishingAuthorityI> = ({ authority }) => {
   return (
-    <div className='d-flex align-items-center py-1'>
+    <div className='d-flex align-items-center'>
       <Icon icon='it-pa' fill='#66A5E3' />
       <p
         className={clsx(

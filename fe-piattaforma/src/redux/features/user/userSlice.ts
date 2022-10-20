@@ -10,24 +10,24 @@ import { isActiveProvisionalLogin } from '../../../pages/common/Auth/auth';
 export interface UserStateI {
   isLogged: boolean;
   user?:
-    | {
-        id?: string;
-        name?: string;
-        nome?: string;
-        surname?: string;
-        cognome?: string;
-        email?: string;
-        role?: string;
-        codiceFiscale: string;
-        profiliUtente: UserProfileI[];
-        integrazione: boolean;
-        mostraBio: boolean;
-        mostraTipoContratto: boolean;
-        immagineProfilo?: string;
-        utenteRegistratoInWorkdocs: boolean;
-      }
-    | Record<string, never>;
-  notification?: [];
+  | {
+    id?: string;
+    name?: string;
+    nome?: string;
+    surname?: string;
+    cognome?: string;
+    email?: string;
+    role?: string;
+    codiceFiscale: string;
+    profiliUtente: UserProfileI[];
+    integrazione: boolean;
+    mostraBio: boolean;
+    mostraTipoContratto: boolean;
+    immagineProfilo?: string;
+    utenteRegistratoInWorkdocs: boolean;
+  }
+  | Record<string, never>;
+  notification: any[];
   permissions: RolePermissionI[];
   idProgramma: string | null;
   idProgetto: string[] | null;
@@ -87,6 +87,7 @@ const initialStateNotLogged: UserStateI = {
   idEnte: null,
   profilo: null,
   ruoli: [],
+  notification: []
 };
 
 const initialState: UserStateI = initialStateNotLogged;
@@ -118,6 +119,9 @@ export const userSlice = createSlice({
         setSessionValues('profile', payload);
       }
     },
+    setUserNotifications: (state, action: PayloadAction<any>) => {
+      state.notification = [...action.payload]
+    },
     login: (state) => {
       setSessionValues('user', state.user);
       setSessionValues('profile', state.profilo);
@@ -134,7 +138,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { login, logout, setUserContext, setUserProfile } =
+export const { login, logout, setUserContext, setUserProfile, setUserNotifications } =
   userSlice.actions;
 
 export const selectLogged = (state: RootState) => state.user.isLogged;

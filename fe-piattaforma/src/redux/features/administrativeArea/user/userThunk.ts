@@ -134,11 +134,14 @@ export const GetUserDetails =
     }
   };
 
+const GetUsersBySearchAction = {
+  type: 'administrativeArea/GetUsersBySearch',
+};
 export const GetUsersBySearch =
   (search: string) => async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
-      dispatch({ ...GetAllUsersAction });
+      dispatch({ ...GetUsersBySearchAction });
 
       const res = await API.get(`/utente/cerca/${search}`);
 

@@ -47,7 +47,6 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
   } = props;
 
   const dispatch = useDispatch();
-
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRefImg = useRef<HTMLInputElement>(null);
   const [iconVisible, setIconVisible] = useState<boolean>(false);
@@ -189,16 +188,16 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
         />
         <small
           id='input-help-description'
-          className={clsx('font-italic', 'form-text', 'text-muted', 'mb-5')}
+          className={clsx('font-italic', 'form-text', 'text-muted', 'mb-5', 'pl-2', 'ml-1')}
         >
           massimo 55 caratteri
         </small>
       </Form.Row>
-      <Form.Row className={clsx('mb-5', bootClass)}>
+      <Form.Row className={clsx(bootClass)}>
         <Select
           {...form?.program}
           label='Programma'
-          wrapperClassName='col-12 col-lg-5 mb-0 pb-2'
+          wrapperClassName='col-12 col-lg-6'
           onInputChange={onInputChange}
           options={programsList?.map((opt) => ({
             label: opt.label,
@@ -210,7 +209,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
         <Select
           {...form?.intervention}
           label='Intervento'
-          wrapperClassName='col-12 col-lg-5 mb-0 pb-5'
+          wrapperClassName='col-12 col-lg-6'
           onInputChange={onInputChange}
           options={policiesList?.map((opt) => ({
             label: opt.label,
@@ -224,7 +223,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
         <Select
           {...form?.category}
           label='Categoria'
-          wrapperClassName='col-12 col-lg-5'
+          wrapperClassName='col-12 col-lg-6'
           onInputChange={onInputChange}
           options={categoriesList?.map((opt) => ({
             label: opt.name,
@@ -237,7 +236,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
       <Form.Row className={clsx(bootClass, 'align-items-center')}>
         <label
           htmlFor='text-editor'
-          className='label-text-editor font-weight-semibold mb-0'
+          className='label-text-editor font-weight-semibold mb-0 pl-3'
         >
           Testo *
         </label>
@@ -383,6 +382,8 @@ const form = newForm([
     field: 'title',
     id: 'title',
     required: true,
+    maximum: 55,
+    minimum: 2,
   }),
   newFormField({
     field: 'intervention',

@@ -5,9 +5,20 @@ import { useNavigate, useParams } from 'react-router-dom';
 import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 import AnteprimaBachecaNews from '../../../../../components/AnteprimaNews/anteprimaNews';
 import CommentSection from '../../../../../components/Comments/commentSection';
-import { DeleteComment, GetCommentsList } from '../../../../../redux/features/forum/comments/commentsThunk';
-import { selectCommentsList, selectNewsDetail } from '../../../../../redux/features/forum/forumSlice';
-import { DeleteItem, GetItemDetail, ManageItemEvent } from '../../../../../redux/features/forum/forumThunk';
+import { setInfoIdsBreadcrumb } from '../../../../../redux/features/app/appSlice';
+import {
+  DeleteComment,
+  GetCommentsList,
+} from '../../../../../redux/features/forum/comments/commentsThunk';
+import {
+  selectCommentsList,
+  selectNewsDetail,
+} from '../../../../../redux/features/forum/forumSlice';
+import {
+  DeleteItem,
+  GetItemDetail,
+  ManageItemEvent,
+} from '../../../../../redux/features/forum/forumThunk';
 import {
   closeModal,
   openModal,
@@ -28,18 +39,27 @@ const BachecaDetails = () => {
 
   useEffect(() => {
     if (id && userId) {
-      dispatch(ManageItemEvent(id, 'view'))
+      dispatch(ManageItemEvent(id, 'view'));
       dispatch(GetItemDetail(id, userId, 'board'));
       dispatch(GetCommentsList(id, userId));
     }
   }, [id, userId]);
 
+  useEffect(() => {
+    if (newsDetail?.id && newsDetail?.title) {
+      dispatch(
+        setInfoIdsBreadcrumb({
+          id: newsDetail?.id,
+          nome: newsDetail?.title,
+        })
+      );
+    }
+  }, [newsDetail]);
 
   const onCommentDelete = async (commentId: string) => {
     await dispatch(DeleteComment(commentId));
-    id && userId && dispatch(GetCommentsList(id, userId))
-  }
-
+    id && userId && dispatch(GetCommentsList(id, userId));
+  };
 
   const backButton = (
     <Button onClick={() => navigate(-1)} className='px-0'>
@@ -61,14 +81,22 @@ const BachecaDetails = () => {
           dispatch(
             openModal({
               id: 'newsModal',
+              payload: {
+                title: 'Modifica news'
+              },
             })
           )
         }
-        onReportNews={() => dispatch(openModal({
-          id: 'report-modal', payload: {
-            entity: 'board'
-          }
-        }))}
+        onReportNews={() =>
+          dispatch(
+            openModal({
+              id: 'report-modal',
+              payload: {
+                entity: 'board',
+              },
+            })
+          )
+        }
         onDeleteNews={() =>
           dispatch(
             openModal({
@@ -82,7 +110,9 @@ const BachecaDetails = () => {
           )
         }
       />
-      {(newsDetail.enable_comments && commentsList.length) ? <CommentSection section="board" /> : null}
+      {newsDetail.enable_comments && commentsList.length ? (
+        <CommentSection section='board' />
+      ) : null}
       <ManageReport />
       <ManageNews />
       <ManageComment />
@@ -95,12 +125,12 @@ const BachecaDetails = () => {
               navigate(-1);
               break;
             case 'comment':
-              onCommentDelete(payload.id)
+              onCommentDelete(payload.id);
               break;
             default:
               break;
           }
-          dispatch(closeModal())
+          dispatch(closeModal());
         }}
       />
     </div>

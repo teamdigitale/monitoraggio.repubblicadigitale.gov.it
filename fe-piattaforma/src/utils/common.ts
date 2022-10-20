@@ -220,7 +220,7 @@ export const MenuRoutes = [
     visible: ['tab.citt'],
   }),
   newMenuItem({
-    label: 'Dashboard',
+    label: 'Report dati',
     path: '/report-dati',
     id: 'tab-dashboard',
     visible: ['tab.dshb'],
@@ -541,3 +541,5 @@ export const uploadFile = (
     */
   }
 };
+
+export const cleanDrupalFileURL = (url: string) => url.replaceAll('amp;', '');

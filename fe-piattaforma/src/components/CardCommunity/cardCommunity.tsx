@@ -5,6 +5,7 @@ import Heart from '/public/assets/img/heart.png';
 import './cardCommunity.scss';
 import { useNavigate } from 'react-router-dom';
 import PublishingAuthority from '../CardDocument/PublishingAuthority';
+import { formatDate } from '../../utils/datesHelper';
 
 interface CommentI {
   user?: string;
@@ -66,7 +67,8 @@ const CardCommunity: React.FC<CardCommunityI> = (props) => {
       <Col className='text-left'>
         {category_label ? (
           <div className='mb-2 card-community__pre-title'>
-            <span className='font-weight-bold'>{category_label}</span> - {date}
+            <span className='font-weight-bold'>{category_label} —</span>{' '}
+            {date && formatDate(date, 'shortDate')}
           </div>
         ) : null}
         {title ? (

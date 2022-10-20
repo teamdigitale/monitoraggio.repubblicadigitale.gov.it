@@ -7,7 +7,6 @@ import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormCreateTopic from '../../../../forms/formForum/formCreateTopic';
-import clsx from 'clsx';
 import ConfirmItemCreation from '../../../../../components/ConfirmItemCreation/confirmItemCreation';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
@@ -106,7 +105,6 @@ const ManageTopic: React.FC<ManageTopicI> = ({
 
   const stepsCTA = {
     form: {
-      title: `${creation ? 'Crea' : 'Modifica'} topic`,
       primaryCTA: {
         disabled: !isFormValid,
         label: creation ? 'Conferma' : 'Salva',
@@ -171,20 +169,8 @@ const ManageTopic: React.FC<ManageTopicI> = ({
       secondaryCTA={(stepsCTA[step].secondaryCTA as CallToAction) || null}
       centerButtons
       onClose={resetModal}
+      darkTitle
     >
-      <p
-        className={clsx(
-          'd-flex',
-          'justify-content-center',
-          'my-4',
-          'pt-3',
-          'h5',
-          'primary-color-a10',
-          'font-weight-semibold'
-        )}
-      >
-        {stepsCTA[step].title}
-      </p>
       {content}
     </GenericModal>
   );

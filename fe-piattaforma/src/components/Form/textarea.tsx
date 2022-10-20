@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+import { Label } from 'design-react-kit';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 //import { TextArea as TextAreaKit } from 'design-react-kit';
 //import { TextAreaProps } from 'design-react-kit/src/Input/TextArea';
@@ -128,6 +130,16 @@ const TextArea: React.FC<TextAreaI> = (props) => {
   );
 
   return (
+    <div
+      className={clsx(
+        'bootstrap-select-wrapper',
+        'form-group',
+        'mb-0',
+      )}
+    >
+    <Label htmlFor={id} className='text-decoration-none'>
+      {label}
+    </Label>
     <textarea
       {...BaseProps}
       {...TextAreaProps}
@@ -138,6 +150,7 @@ const TextArea: React.FC<TextAreaI> = (props) => {
       ref={inputRef}
       style={{ resize: !resize ? 'none' : 'unset' }}
     />
+    </div>
   );
 };
 
