@@ -1235,25 +1235,18 @@ public class UtenteService {
 	public List<UtenteImmagineResource> getListaUtentiByIdUtenti(ListaUtentiResource idsUtenti, Boolean richiediImmagine) {
 		List<UtenteImmagineResource> listaUtenti = new ArrayList<>();
 		List<UtenteEntity> listaUtentiEntity = this.utenteRepository.findListaUtentiByIdUtenti(idsUtenti.getIdsUtenti());
-		if(richiediImmagine) {
-			listaUtentiEntity.stream().forEach(utenteFetched -> {
-				UtenteImmagineResource utente = new UtenteImmagineResource();
-				utente.setNome(utenteFetched.getNome());
-				utente.setCognome(utenteFetched.getCognome());
+		listaUtentiEntity.stream().forEach(utenteFetched -> {
+			UtenteImmagineResource utente = new UtenteImmagineResource();
+			utente.setNome(utenteFetched.getNome());
+			utente.setCognome(utenteFetched.getCognome());
+			utente.setId(utenteFetched.getId());
+			if(richiediImmagine) {
 				if(utenteFetched.getImmagineProfilo() != null) {
 					utente.setImmagineProfilo(this.s3Service.getPresignedUrl(utenteFetched.getImmagineProfilo(), this.nomeDelBucketS3, Long.parseLong(this.presignedUrlExpireContesto)));
 				}
-				listaUtenti.add(utente);
-			});
-		} else {
-			listaUtentiEntity.stream().forEach(utenteFetched -> {
-				UtenteImmagineResource utente = new UtenteImmagineResource();
-				utente.setNome(utenteFetched.getNome());
-				utente.setCognome(utenteFetched.getCognome());
-				listaUtenti.add(utente);
-				
-			});
-		}
+			}
+			listaUtenti.add(utente);
+		});
 		return listaUtenti;
 	}
 }
