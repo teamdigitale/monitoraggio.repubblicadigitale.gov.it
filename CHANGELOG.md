@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.214](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.213...1.0.0-develop.214) (2022-10-20)
+
+
+### Bug Fixes
+
+* **be:** lista utenti ([b2b4094](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b2b4094448a0adf527974db36d300729ee787585))
+* **be:** eccezioni integrazioni + duplica email ([fb0e19e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fb0e19eca76b13cdb756c3fe8d5c5321f3194d7e))
+
 ## [1.0.0-develop.213](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.212...1.0.0-develop.213) (2022-10-19)
 
 
