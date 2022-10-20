@@ -28,19 +28,35 @@ const getErrorMessage = ({ response }: any) => {
 };
 */
 export const defaultErrorMessage = 'Si è verificato un errore';
+const networkErrorPayload = {
+  title: 'ERRORE DI RETE',
+  message: 'Problemi di connessione, verificare la connettività',
+};
+const defaultErrorPayload = {
+  title: 'ERRORE GENERICO',
+  message: defaultErrorMessage,
+};
 export const getErrorMessage = async (errorCode: string) => {
   try {
     const res = await axios('/assets/errors/errors.json');
     if (res?.data) {
       const errorsList = { ...res.data.errors };
-      return errorsList[errorCode] || defaultErrorMessage;
+      if (errorsList[errorCode]) {
+        return {
+          message: `${errorsList[errorCode]} (${errorCode})`,
+          title: 'ERRORE',
+        };
+      } else {
+        return defaultErrorPayload;
+      }
     }
   } catch (error) {
-    return defaultErrorMessage;
+    return defaultErrorPayload;
   }
 };
 
 export const errorHandler = async (error: unknown) => {
+  let errorData = defaultErrorPayload;
   // console.log('error', error);
   if (error instanceof TypeError) {
     // statements to handle TypeError exceptions
@@ -51,6 +67,9 @@ export const errorHandler = async (error: unknown) => {
   } else if (error instanceof EvalError) {
     // statements to handle EvalError exceptions
     console.log(3);
+  } else if (error === 'Network Error') {
+    // statements to handle Network Error exceptions
+    errorData = networkErrorPayload;
   } else {
     // statements to handle any unspecified exceptions
     //console.log(4, error);
@@ -59,11 +78,21 @@ export const errorHandler = async (error: unknown) => {
     if (error?.response?.status === 401) {
       dispatchLogout();
     }
+
+    if (!errorData) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      errorData = await getErrorMessage(error?.response?.data?.errorCode);
+    }
+
     dispatchNotify({
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      title: errorData.title,
       status: 'error',
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      message: await getErrorMessage(error?.response?.data?.errorCode),
+      message: errorData.message,
       closable: true,
       duration: 'slow',
     });

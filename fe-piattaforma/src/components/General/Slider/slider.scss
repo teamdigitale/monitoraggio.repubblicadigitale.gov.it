@@ -34,14 +34,15 @@
     color: #fff;
     &.left {
       left: 0;
-      top: 80px;
     }
     &.right {
       right: 0;
-      top: 80px;
     }
     &.right-alignment {
-      top: 50%;
+      top: 42%;
+    }
+    &.align-slider-arrow {
+      top: 38%;
     }
   }
 

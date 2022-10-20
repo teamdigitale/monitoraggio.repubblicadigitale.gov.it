@@ -383,6 +383,8 @@ const form = newForm([
     field: 'title',
     id: 'title',
     required: true,
+    maximum: 55,
+    minimum: 2,
   }),
   newFormField({
     field: 'intervention',

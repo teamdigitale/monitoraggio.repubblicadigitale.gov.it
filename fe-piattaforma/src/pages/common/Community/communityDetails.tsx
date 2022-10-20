@@ -30,6 +30,7 @@ import {
   DeleteComment,
   GetCommentsList,
 } from '../../../redux/features/forum/comments/commentsThunk';
+import { setInfoIdsBreadcrumb } from '../../../redux/features/app/appSlice';
 
 const CommunityDetails = () => {
   const navigate = useNavigate();
@@ -48,6 +49,17 @@ const CommunityDetails = () => {
       dispatch(GetCommentsList(id, userId));
     }
   }, [id, userId]);
+
+  useEffect(() => {
+    if (topicDetails?.id && topicDetails?.title) {
+      dispatch(
+        setInfoIdsBreadcrumb({
+          id: topicDetails?.id,
+          nome: topicDetails?.title,
+        })
+      );
+    }
+  }, [topicDetails]);
 
   const backButton = (
     <Button onClick={() => navigate(-1)} className='px-0'>
@@ -125,9 +137,16 @@ const CommunityDetails = () => {
           )
         }
         onEditClick={() => dispatch(openModal({ id: 'topicModal' }))}
-        onReportClick={() => dispatch(openModal({ id: 'report-modal', payload: {
-          entity: 'community'
-        } }))}
+        onReportClick={() =>
+          dispatch(
+            openModal({
+              id: 'report-modal',
+              payload: {
+                entity: 'community',
+              },
+            })
+          )
+        }
       />
       {commentsList.length ? <CommentSection section='community' /> : null}
       {/* <div className='border-bottom-box-comments mt-5'></div>

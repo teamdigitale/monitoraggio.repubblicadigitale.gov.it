@@ -15,6 +15,9 @@
     font-size: 16px;
     line-height: 24px;
     letter-spacing: 1.1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &__bookmark {

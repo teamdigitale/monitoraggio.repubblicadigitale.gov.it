@@ -16,9 +16,14 @@ export const formatSlides = (list: any[], slideLength: number) => {
 interface SliderPropsI {
   children: JSX.Element[];
   isItemsHome?: boolean | undefined;
+  cardSlider?: boolean | undefined;
 }
 
-const Slider = ({ children, isItemsHome = false }: SliderPropsI) => {
+const Slider = ({
+  children,
+  isItemsHome = false,
+  cardSlider = false,
+}: SliderPropsI) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const onScroll = () => {
@@ -66,11 +71,15 @@ const Slider = ({ children, isItemsHome = false }: SliderPropsI) => {
             'icon',
             'icon-light',
             'arrow right',
-            !isItemsHome && 'right-alignment'
+            !isItemsHome && 'right-alignment',
+            cardSlider && 'align-slider-arrow'
           )}
         />
       )}
-      <div className='slides mb-5' onScroll={onScroll}>
+      <div
+        className={clsx('slides', cardSlider ? 'mb-4' : 'mb-5')}
+        onScroll={onScroll}
+      >
         {children.map((slide, i) => (
           <div key={i} id={`slide-${i}`} className='slide'>
             {slide}

@@ -28,6 +28,7 @@ import {
   setEntityPagination,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { formFieldI } from '../../../../../utils/formHelper';
+import useGuard from '../../../../../hooks/guard';
 
 const BachecaCta = {
   textCta: 'Crea News',
@@ -49,6 +50,7 @@ const BachecaDigitale = () => {
   >([]);
   const [popularNews, setPopularNews] = useState([]);
   const dispatch = useDispatch();
+  const { hasUserPermission } = useGuard();
 
   const { interventions, programs, categories, sort } = filtersList;
   const { pageNumber, pageSize } = pagination;
@@ -204,18 +206,21 @@ const BachecaDigitale = () => {
     <div>
       <div>
         <ForumLayout
-          title='Bacheca Digitale'
+          title='Bacheca'
           sectionTitle='Le news più popolari'
           dropdowns={dropdowns}
           filtersList={filtersList}
           {...BachecaCta}
           sortFilter
-          cta={() =>
-            dispatch(
-              openModal({
-                id: 'newsModal',
-              })
-            )
+          cta={
+            hasUserPermission(['upd.news'])
+              ? () =>
+                  dispatch(
+                    openModal({
+                      id: 'newsModal',
+                    })
+                  )
+              : undefined
           }
           cards={popularNews}
           isNews

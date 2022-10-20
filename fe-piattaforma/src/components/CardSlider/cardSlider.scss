@@ -1,6 +1,6 @@
 .card-slider-container {
   //width: 380px;
-  // height: 160px;
+  height: 180px;
   width: 100%;
   background-color: #ffffff;
   border: 1px solid #eceff1;
@@ -18,14 +18,25 @@
     line-height: 24px;
     letter-spacing: 1.1px;
     text-align: start;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    @media screen and (max-width: 576px) {
+      width: 85%;
+    }
   }
   &__title {
     font-size: 18px;
     color: #1c2024;
     text-align: left;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    height: 65px;
+    p {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
   }
   &__span-icons {
     font-weight: 400;

@@ -17,6 +17,8 @@ import {
 import { transformFiltersToQueryParams } from '../../../utils/common';
 import { setEntityPagination } from '../administrativeArea/administrativeAreaSlice';
 import { getUserHeaders } from '../user/userThunk';
+import axios from 'axios';
+import { getSessionValues } from '../../../utils/sessionHelper';
 
 export const proxyCall = async (
   url: string,
@@ -44,30 +46,49 @@ export const GetNewsFilters =
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         forum: { filters },
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        user: {
+          profilo: { idProgramma } = {
+            idProgramma: '',
+          },
+        },
       } = select((state: RootState) => state);
       const body = {
-        categories: (filters.categories || []).map(
-          ({ value }: { value: string }) => ({
-            label: value,
-            value,
-          })
-        ),
-        programs: (filters.programs || []).map(
-          ({ value }: { value: string }) => ({
-            label: value,
-            value,
-          })
-        ),
-        interventions: (filters.interventions || []).map(
-          ({ value }: { value: string }) => ({ label: value, value })
-        ),
+        categories: [
+          {
+            label: '',
+            value:
+              (filters.categories || [])
+                .map(({ value }: { value: string }) => value)
+                .join(',') || '',
+          },
+        ],
+        programs: [
+          {
+            label: '',
+            value:
+              (filters.programs || [])
+                .map(({ value }: { value: string }) => value)
+                .join(',') || idProgramma
+                ? `public,${idProgramma}`
+                : '',
+          },
+        ],
+        interventions: [
+          {
+            label: '',
+            value:
+              (filters.interventions || [])
+                .map(({ value }: { value: string }) => value)
+                .join(',') || '',
+          },
+        ],
       };
       const queryParameters = transformFiltersToQueryParams(body);
       console.log('queryParameters', queryParameters);
       const res = await proxyCall(`/board/filters${queryParameters}`, 'GET');
       if (res?.data?.data) {
-        // console.log(Object.fromEntries(Object.entries(res?.data?.data).map(([key, value]: any) => ([key, Object.entries(value).map(([k, v]) => ({ id: k, label: v }))]))));
-
         dispatch(
           setForumFilterOptions(
             Object.fromEntries(
@@ -109,23 +130,54 @@ export const GetNewsList =
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         forum: { filters },
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        user: {
+          profilo: { idProgramma } = {
+            idProgramma: '',
+          },
+        },
       } = select((state: RootState) => state);
-      const queryParamFilters = transformFiltersToQueryParams({
+      const body = {
         ...filters,
-        categories: filters.categories?.length
-          ? filters.categories
-          : [{ value: 'all' }],
-        interventions: filters.interventions?.length
-          ? filters.interventions
-          : [{ value: 'all' }],
-        programs: filters.programs?.length
-          ? filters.programs
-          : [{ value: 'all' }],
+        categories: [
+          {
+            label: '',
+            value:
+              (filters.categories || [])
+                .map(({ value }: { value: string }) => value)
+                .join(',') || 'all',
+          },
+        ],
+        programs: [
+          {
+            label: '',
+            value:
+              (filters.programs || [])
+                .map(({ value }: { value: string }) => value)
+                .join(',') || idProgramma
+                ? `public,${idProgramma}`
+                : 'all',
+          },
+        ],
+        interventions: [
+          {
+            label: '',
+            value:
+              (filters.interventions || [])
+                .map(({ value }: { value: string }) => value)
+                .join(',') || 'all',
+          },
+        ],
         page: [{ value: Math.max(0, pagination.pageNumber - 1) }],
         items_per_page: [{ value: pagination.pageSize }],
         //sort: [{ value: filters.sort }],
         ...forcedFilters,
-      }).replace('sort', 'sort_by');
+      };
+      const queryParamFilters = transformFiltersToQueryParams(body).replace(
+        'sort',
+        'sort_by'
+      );
       //.replace('categories', 'category')
       //.replace('interventions', 'intervention')
       //.replace('programs', 'program');
@@ -269,23 +321,44 @@ export const GetDocumentsFilters =
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         forum: { filters },
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        user: {
+          profilo: { idProgramma } = {
+            idProgramma: '',
+          },
+        },
       } = select((state: RootState) => state);
       const body = {
-        categories: (filters.categories || []).map(
-          ({ value }: { value: string }) => ({
-            label: value,
-            value,
-          })
-        ),
-        programs: (filters.programs || []).map(
-          ({ value }: { value: string }) => ({
-            label: value,
-            value,
-          })
-        ),
-        interventions: (filters.interventions || []).map(
-          ({ value }: { value: string }) => ({ label: value, value })
-        ),
+        categories: [
+          {
+            label: '',
+            value:
+              (filters.categories || [])
+                .map(({ value }: { value: string }) => value)
+                .join(',') || '',
+          },
+        ],
+        programs: [
+          {
+            label: '',
+            value:
+              (filters.programs || [])
+                .map(({ value }: { value: string }) => value)
+                .join(',') || idProgramma
+                ? `public,${idProgramma}`
+                : '',
+          },
+        ],
+        interventions: [
+          {
+            label: '',
+            value:
+              (filters.interventions || [])
+                .map(({ value }: { value: string }) => value)
+                .join(',') || '',
+          },
+        ],
       };
       const queryParameters = transformFiltersToQueryParams(body);
       console.log('queryParameters', queryParameters);
@@ -332,18 +405,45 @@ export const GetDocumentsList =
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         forum: { filters },
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        user: {
+          profilo: { idProgramma } = {
+            idProgramma: '',
+          },
+        },
       } = select((state: RootState) => state);
       const queryParamFilters = transformFiltersToQueryParams({
         ...filters,
-        categories: filters.categories?.length
-          ? filters.categories
-          : [{ value: 'all' }],
-        interventions: filters.interventions?.length
-          ? filters.interventions
-          : [{ value: 'all' }],
-        programs: filters.programs?.length
-          ? filters.programs
-          : [{ value: 'all' }],
+        categories: [
+          {
+            label: '',
+            value:
+              (filters.categories || [])
+                .map(({ value }: { value: string }) => value)
+                .join(',') || 'all',
+          },
+        ],
+        programs: [
+          {
+            label: '',
+            value:
+              (filters.programs || [])
+                .map(({ value }: { value: string }) => value)
+                .join(',') || idProgramma
+                ? `public,${idProgramma}`
+                : 'all',
+          },
+        ],
+        interventions: [
+          {
+            label: '',
+            value:
+              (filters.interventions || [])
+                .map(({ value }: { value: string }) => value)
+                .join(',') || 'all',
+          },
+        ],
         page: [{ value: Math.max(0, pagination.pageNumber - 1) }],
         items_per_page: [{ value: pagination.pageSize }],
         //sort: [{ value: filters.sort }],
@@ -432,22 +532,43 @@ export const GetItemsBySearch =
     try {
       dispatch(showLoader());
       dispatch({ ...GetItemsBySearchAction });
-      const res = await proxyCall(`/search/items?keys=${search}`, 'GET');
+      const res = await Promise.all([
+        proxyCall(
+          `/search/items?keys=${search}&item_type=board_item&page=0&items_per_page=24`,
+          'GET'
+        ),
+        proxyCall(
+          `/search/items?keys=${search}&item_type=community_item&page=0&items_per_page=24`,
+          'GET'
+        ),
+        proxyCall(
+          `/search/items?keys=${search}&item_type=document_item&page=0&items_per_page=24`,
+          'GET'
+        ),
+      ]);
       if (res) {
-        const results = [...(res?.data?.data?.items || [])];
         dispatch(
           setNewsList(
-            results.filter(({ item_type }) => item_type === 'board_item')
+            (res[0]?.data?.data?.items || []).filter(
+              ({ item_type }: { item_type: string }) =>
+                item_type === 'board_item'
+            )
           )
         );
         dispatch(
           setTopicsList(
-            results.filter(({ item_type }) => item_type === 'community_item')
+            (res[1]?.data?.data?.items || []).filter(
+              ({ item_type }: { item_type: string }) =>
+                item_type === 'community_item'
+            )
           )
         );
         dispatch(
           setDocsList(
-            results.filter(({ item_type }) => item_type === 'document_item')
+            (res[2]?.data?.data?.items || []).filter(
+              ({ item_type }: { item_type: string }) =>
+                item_type === 'document_item'
+            )
           )
         );
       }
@@ -467,22 +588,42 @@ export const GetItemsByUser = () => async (dispatch: Dispatch) => {
     dispatch(showLoader());
     dispatch({ ...GetItemsByUserAction });
     const { idUtente } = getUserHeaders();
-    const res = await proxyCall(`/user/${idUtente}/items`, 'GET');
+    const res = await Promise.all([
+      proxyCall(
+        `/user/${idUtente}/items?item_type=board_item&page=0&items_per_page=24`,
+        'GET'
+      ),
+      proxyCall(
+        `/user/${idUtente}/items?item_type=community_item&page=0&items_per_page=24`,
+        'GET'
+      ),
+      proxyCall(
+        `/user/${idUtente}/items?item_type=document_item&page=0&items_per_page=24`,
+        'GET'
+      ),
+    ]);
     if (res) {
-      const results = [...res.data.data.items];
       dispatch(
         setNewsList(
-          results.filter(({ item_type }) => item_type === 'board_item')
+          (res[0]?.data.data.items || []).filter(
+            ({ item_type }: { item_type: string }) => item_type === 'board_item'
+          )
         )
       );
       dispatch(
         setTopicsList(
-          results.filter(({ item_type }) => item_type === 'community_item')
+          (res[1]?.data.data.items || []).filter(
+            ({ item_type }: { item_type: string }) =>
+              item_type === 'community_item'
+          )
         )
       );
       dispatch(
         setDocsList(
-          results.filter(({ item_type }) => item_type === 'document_item')
+          (res[2]?.data.data.items || []).filter(
+            ({ item_type }: { item_type: string }) =>
+              item_type === 'document_item'
+          )
         )
       );
     }
@@ -619,12 +760,20 @@ export const CreateItem =
         if (payload.cover?.data) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          uploadFile = await UploadFileLocal(res.data.data.id, payload.cover, 'cover');
+          uploadFile = await UploadFileLocal(
+            res.data.data.id,
+            payload.cover,
+            'cover'
+          );
         }
         if (payload.attachment?.data) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          uploadFile = await UploadFileLocal(res.data.data.id, payload.attachment, 'attachment');
+          uploadFile = await UploadFileLocal(
+            res.data.data.id,
+            payload.attachment,
+            'attachment'
+          );
         }
         return uploadFile ? res : false;
       }
@@ -649,7 +798,7 @@ export const UpdateItem =
       dispatch({ ...UpdateItemAction });
       const res = await proxyCall(`/${entity}/item/${itemId}/update`, 'POST', {
         ...Object.fromEntries(
-          Object.entries(payload).filter(([key, _value]) => key !== ''),
+          Object.entries(payload).filter(([key, _value]) => key !== '')
         ),
         cover: undefined,
         attachment: undefined,
@@ -659,12 +808,20 @@ export const UpdateItem =
         if (payload.cover?.data) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          uploadFile = await UploadFileLocal(res.data.data.id, payload.cover, 'cover');
+          uploadFile = await UploadFileLocal(
+            res.data.data.id,
+            payload.cover,
+            'cover'
+          );
         }
         if (payload.attachment?.data) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          uploadFile = await UploadFileLocal(res.data.data.id, payload.attachment, 'attachment');
+          uploadFile = await UploadFileLocal(
+            res.data.data.id,
+            payload.attachment,
+            'attachment'
+          );
         }
         return uploadFile ? res : false;
       }
@@ -685,7 +842,7 @@ export const UploadFile =
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
-      dispatch({ ...UploadFileAction, ...{ itemId, type, payload} });
+      dispatch({ ...UploadFileAction, ...{ itemId, type, payload } });
       const res = await API.post(`item/${itemId}/file/upload`, {
         type: type,
         data: payload,
@@ -699,21 +856,24 @@ export const UploadFile =
     }
   };
 
-const UploadFileLocal =
-  async (itemId: string, payload: any, type: 'cover' | 'attachment') => {
-      try {
-        const res = await proxyCall(`/item/${itemId}/file/upload`,'POST', null, {
-          fileBase64ToUpload: payload.data,
-          filenameToUpload: payload.name,
-          isUploadFile: true,
-          type,
-        });
-        return res;
-      } catch (error) {
-        console.log('UploadFile error', error);
-        return false;
-      }
-    };
+const UploadFileLocal = async (
+  itemId: string,
+  payload: any,
+  type: 'cover' | 'attachment'
+) => {
+  try {
+    const res = await proxyCall(`/item/${itemId}/file/upload`, 'POST', null, {
+      fileBase64ToUpload: payload.data,
+      filenameToUpload: payload.name,
+      isUploadFile: true,
+      type,
+    });
+    return res;
+  } catch (error) {
+    console.log('UploadFile error', error);
+    return false;
+  }
+};
 
 const DeleteItemAction = {
   type: 'forum/DeleteItem',
@@ -738,12 +898,12 @@ const ManageItemEventAction = {
 };
 
 export const ManageItemEvent =
-  (itemId: string, event: 'like' | 'unlike' | 'view' | 'dowloaded') =>
+  (itemId: string, event: 'like' | 'unlike' | 'view' | 'downloaded') =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...ManageItemEventAction });
-      await proxyCall(`/item/${itemId}/${event}`, 'POST', {});
+      await proxyCall(`/item/${itemId}/${event}`, 'POST');
     } catch (error) {
       console.log('ManageItemEvent error', error);
     } finally {
@@ -768,6 +928,49 @@ export const GetTagsList = () => async (dispatch: Dispatch) => {
     console.log('GetItemsList error', error);
   } finally {
     dispatch(hideLoader());
+  }
+};
+
+const ActionTrackerAction = {
+  type: 'forum/ActionTracker',
+};
+export const ActionTracker = () => async (dispatch: Dispatch, select: Selector) => {
+  try {
+    dispatch({ ...ActionTrackerAction });
+    const {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      user: {
+        profilo: { idProgramma, codiceRuolo } = {
+          idProgramma, codiceRuolo
+        },
+      },
+    } = select((state: RootState) => state);
+    const action_type = 'chat';
+    axios.post(
+      `${process?.env?.REACT_APP_BE_BASE_URL}drupal/forward`,
+      {
+        url: `/api/user/action/${action_type}/track`,
+        metodoHttp: 'POST',
+        body: {
+          event: 'click',
+          event_type: undefined,
+          event_value: undefined,
+          role_code: codiceRuolo,
+          category: undefined,
+          program_id: idProgramma,
+        },
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          authToken: getSessionValues('auth'),
+          userRole: JSON.parse(getSessionValues('profile'))?.codiceRuolo,
+        },
+      }
+    );
+  } catch (error) {
+    console.log('ActionTracker error', error);
   }
 };
 

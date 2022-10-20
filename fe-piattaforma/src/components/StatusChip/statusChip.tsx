@@ -42,7 +42,7 @@ export const statusBgColor = (status: string) => {
     case 'inactive':
       return 'neutral-1-bg-a1';
     case statusTypes.NOT_SENT:
-      return 'light-grey-bg';
+      return 'neutral-1-bg-a8';
     case statusTypes.TERMINATED:
       return 'neutral-2-bg-b5';
     case statusTypes.ACTIVABLE:

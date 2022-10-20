@@ -446,29 +446,31 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                       </div>
                     </div>
                   ) : null}
-                  <div className='mx-4'>
-                    <div className='ml-auto pr-3'>
-                      <Button
-                        onClick={() => setNotificationsIsOpen(true)}
-                        className='primary-bg-a6 px-2 bg-transparent'
-                      >
-                        <Icon
-                          color='white'
-                          icon={Bell}
-                          size='sm'
-                          aria-label='notifications preview'
+                  {hasUserPermission(['list.ntf.nr']) ? (
+                    <div className='mx-4'>
+                      <div className='ml-auto pr-3'>
+                        <Button
+                          onClick={() => setNotificationsIsOpen(true)}
+                          className='primary-bg-a6 px-2 bg-transparent'
+                        >
+                          <Icon
+                            color='white'
+                            icon={Bell}
+                            size='sm'
+                            aria-label='notifications preview'
+                          />
+                        </Button>
+                        <NotificationsPreview
+                          open={notificationsIsOpen}
+                          setOpen={setNotificationsIsOpen}
+                          menuRoutes={menuRoutes}
                         />
-                      </Button>
-                      <NotificationsPreview
-                        open={notificationsIsOpen}
-                        setOpen={setNotificationsIsOpen}
-                        menuRoutes={menuRoutes}
-                      />
+                      </div>
+                      {notification?.length ? (
+                        <Badge>{notification.length}</Badge>
+                      ) : null}
                     </div>
-                    {notification?.length ? (
-                      <Badge>{notification.length}</Badge>
-                    ) : null}
-                  </div>
+                  ) : null}
                 </>
               ) : null
               // <div className='d-inline-flex align-items-center px-4'>

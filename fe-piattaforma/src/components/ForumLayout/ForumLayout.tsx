@@ -26,6 +26,7 @@ import {
   setForumFilters,
 } from '../../redux/features/forum/forumSlice';
 import useGuard from '../../hooks/guard';
+import './ForumLayout.scss';
 
 export interface ForumLayoutI {
   dropdowns?: DropdownFilterI[];
@@ -289,35 +290,30 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
           </div>
         </div>
         <div className='container'>
-          <Slider>
+          <Slider cardSlider isItemsHome={!device.mediaIsPhone}>
             {formatSlides(cards, numberOfSlides()).map((el, i) => (
               <div
                 key={`slide-${i}`}
-                style={{
-                  display: 'flex',
-                  width: '100%',
-                  justifyContent: 'space-between',
-                }}
+                className='d-flex flex-row align-items-start w-100'
               >
                 {el.map((e: any, index: any) => (
                   <div
                     key={`card-${i}-${index}`}
                     style={{
-                      height: 'auto',
-                      // maxWidth: '365px',
                       width: device.mediaIsDesktop ? '30%' : '100%',
                     }}
+                    className='h-auto flex-grow-0 sliding-cards'
                   >
                     <CardSlider
                       id={e.id}
                       isDocument={isDocument}
                       isNews={isNews}
                       isCommunity={isCommunity}
-                      typology={e.categories || e.typology}
+                      category_label={e.category_label}
                       date={e.date}
                       title={e.title}
                       download={e.commentsTot || e.download || '-'}
-                      comment={
+                      comment_count={
                         e.commentsTot || e.comment_count || e.comment || '-'
                       }
                       likes={e.likes || e.commentsTot || '-'}

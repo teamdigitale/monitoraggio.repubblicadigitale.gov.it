@@ -12,14 +12,18 @@ import { DetailCard } from '../index';
 import clsx from 'clsx';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
-// import imgBachecaDigitaleDettaglio from '../../../public/assets/img/img-bacheca-digitale-dettaglio.png';
 import SocialBar from '../Comments/socialBar';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../../redux/features/modal/modalSlice';
-import coverPlaceholder from '/public/assets/img/img-bacheca-digitale-dettaglio.png'
+import coverPlaceholder from '/public/assets/img/img-bacheca-digitale-dettaglio.png';
 import HTMLParser from '../General/HTMLParser/HTMLParse';
-import { GetItemDetail, ManageItemEvent } from '../../redux/features/forum/forumThunk';
+import {
+  GetItemDetail,
+  ManageItemEvent,
+} from '../../redux/features/forum/forumThunk';
 import { selectUser } from '../../redux/features/user/userSlice';
+import { cleanDrupalFileURL } from '../../utils/common';
+
 export interface AnteprimaBachecaNewsI {
   id?: string;
   category_label?: string;
@@ -70,7 +74,7 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
   const device = useAppSelector(selectDevice);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const userId = useAppSelector(selectUser)?.id
+  const userId = useAppSelector(selectUser)?.id;
 
   const newsDetailDropdownOptions = [
     {
@@ -158,7 +162,7 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
       <div>
         <figure className='d-flex w-100 justify-content-center'>
           <img
-            src={cover ? cover : coverPlaceholder}
+            src={cover ? cleanDrupalFileURL(cover) : coverPlaceholder}
             alt='img'
             className='w-100'
           />
@@ -208,12 +212,14 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
                     size='sm'
                     aria-label='Scarica allegato'
                   />
-                  <a href='/' className='ml-2'>
-                    {' '}
-                    <p className='font-weight-bold h6 mb-0'>
-                      {' '}
-                      Scarica allegato{' '}
-                    </p>{' '}
+                  <a
+                    href={cleanDrupalFileURL(attachment)}
+                    download
+                    target='_blank'
+                    rel='noreferrer'
+                    className='ml-2'
+                  >
+                    <p className='font-weight-bold h6 mb-0'>Scarica allegato</p>
                   </a>
                 </div>
               </Button>
@@ -236,24 +242,27 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
                 onLike={async () => {
                   if (id) {
                     if (user_like as boolean) {
-                      await dispatch(ManageItemEvent(id, 'unlike'))
+                      await dispatch(ManageItemEvent(id, 'unlike'));
                     } else {
-                      await dispatch(ManageItemEvent(id, 'like'))
+                      await dispatch(ManageItemEvent(id, 'like'));
                     }
-                    userId && dispatch(GetItemDetail(id, userId, 'board'))
+                    userId && dispatch(GetItemDetail(id, userId, 'board'));
                   }
                 }}
-                onComment={!!enable_comments ? () =>
-                  dispatch(
-                    openModal({
-                      id: 'comment-modal',
-                      payload: {
-                        title: 'Aggiungi commento',
-                        action: 'comment',
-                        entity: 'board'
-                      },
-                    })
-                  ) : undefined
+                onComment={
+                  enable_comments
+                    ? () =>
+                        dispatch(
+                          openModal({
+                            id: 'comment-modal',
+                            payload: {
+                              title: 'Aggiungi commento',
+                              action: 'comment',
+                              entity: 'board',
+                            },
+                          })
+                        )
+                    : undefined
                 }
               />
             </>

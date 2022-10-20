@@ -6,7 +6,7 @@ import {
   Icon,
   LinkList,
 } from 'design-react-kit';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 //import CuoreBluPieno from '../../../public/assets/img/filled-blue-heart.png';
 import clsx from 'clsx';
@@ -22,9 +22,16 @@ import AvatarInitials, {
   AvatarSizes,
   AvatarTextSizes,
 } from '../Avatar/AvatarInitials/avatarInitials';
-import { GetCommentsList, ManageCommentEvent } from '../../redux/features/forum/comments/commentsThunk';
+import {
+  GetCommentsList,
+  ManageCommentEvent,
+} from '../../redux/features/forum/comments/commentsThunk';
 import { useParams } from 'react-router-dom';
 import { selectUser } from '../../redux/features/user/userSlice';
+import {
+  getAnagraphicID,
+  selectAnagraphics,
+} from '../../redux/features/anagraphic/anagraphicSlice';
 
 /*  when we will make the pages we will do a .map() ro render all the comments and add the "thread" as shown in FIGMA*/
 
@@ -49,7 +56,7 @@ const Comment: React.FC<CommentI> = (props) => {
   const {
     body,
     date,
-    // author,
+    author,
     section,
     replies,
     likes,
@@ -57,7 +64,7 @@ const Comment: React.FC<CommentI> = (props) => {
     views,
     id,
     isAnswer,
-    thread = false   ,
+    thread = false,
     onDeleteComment = () => ({}),
     onEditComment = () => ({}),
   } = props;
@@ -67,8 +74,20 @@ const Comment: React.FC<CommentI> = (props) => {
   const device = useAppSelector(selectDevice);
   const dispatch = useDispatch();
 
-  const { id: itemId } = useParams()
-  const userId = useAppSelector(selectUser)?.id
+  const { id: itemId } = useParams();
+  const userId = useAppSelector(selectUser)?.id;
+
+  const authorAnagraphic = useAppSelector(selectAnagraphics)[author || 0] || {
+    nome: 'Utente',
+    cognome: 'Anonimo',
+  };
+
+  useEffect(() => {
+    if (author && !authorAnagraphic?.id) {
+      dispatch(getAnagraphicID({ id: author }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authorAnagraphic]);
 
   const commentDropdown = () => (
     <Dropdown
@@ -149,10 +168,10 @@ const Comment: React.FC<CommentI> = (props) => {
             id: 'report-modal',
             payload: {
               entity: 'comment',
-              id: id
-            }
+              id: id,
+            },
           })
-        )
+        );
       },
     },
   ];
@@ -208,7 +227,10 @@ const Comment: React.FC<CommentI> = (props) => {
         >
           <div className={clsx(!device.mediaIsPhone ? 'mr-1' : 'mr-3')}>
             <AvatarInitials
-              user={{ uName: 'Tizio', uSurname: 'Caio' }}
+              user={{
+                uName: authorAnagraphic?.nome,
+                uSurname: authorAnagraphic?.cognome,
+              }}
               size={AvatarSizes.Big}
               font={AvatarTextSizes.Big}
             />
@@ -226,17 +248,18 @@ const Comment: React.FC<CommentI> = (props) => {
                 device.mediaIsPhone ? 'text-wrap' : 'text-nowrap ml-2'
               )}
             >
-              <strong>Tizio Caio</strong>{' '}
+              <strong>
+                {authorAnagraphic?.nome}&nbsp;{authorAnagraphic?.cognome}
+              </strong>
               <span className={clsx(device.mediaIsPhone && 'text-nowrap')}>
-                {' - '}
-                <span> {date}</span>
+                &nbsp;-&nbsp;<span>{date}</span>
               </span>
             </p>
           </div>
         </div>
         <div
           className={clsx(
-            'd-flex flex-row justify-content-end',
+            'd-flex flex-row justify-content-end'
             // isReported && 'align-items-center'
           )}
         >
@@ -258,32 +281,39 @@ const Comment: React.FC<CommentI> = (props) => {
         <SocialBar
           replies={section === 'community' ? replies.length : undefined}
           views={section === 'community' ? views : undefined}
-          onShowReplies={(section === 'community' && replies.length) ? () => setShowReplies((prev) => !prev) : undefined}
+          onShowReplies={
+            section === 'community' && replies.length
+              ? () => setShowReplies((prev) => !prev)
+              : undefined
+          }
           showReplies={section === 'community' ? showReplies : undefined}
           likes={likes}
           user_like={user_like}
           onLike={async () => {
             if (id) {
               if (user_like as boolean) {
-                await dispatch(ManageCommentEvent(id, 'unlike'))
+                await dispatch(ManageCommentEvent(id, 'unlike'));
               } else {
-                await dispatch(ManageCommentEvent(id, 'like'))
+                await dispatch(ManageCommentEvent(id, 'like'));
               }
 
-              itemId && userId && dispatch(GetCommentsList(itemId, userId))
+              itemId && userId && dispatch(GetCommentsList(itemId, userId));
             }
           }}
-          onComment={section === 'community' ? () =>
-            dispatch(
-              openModal({
-                id: 'comment-modal',
-                payload: {
-                  title: 'Aggiungi risposta al commento',
-                  action: 'reply',
-                  id: id
-                },
-              })
-            ) : undefined
+          onComment={
+            section === 'community'
+              ? () =>
+                  dispatch(
+                    openModal({
+                      id: 'comment-modal',
+                      payload: {
+                        title: 'Aggiungi risposta al commento',
+                        action: 'reply',
+                        id: id,
+                      },
+                    })
+                  )
+              : undefined
           }
         />
       </div>

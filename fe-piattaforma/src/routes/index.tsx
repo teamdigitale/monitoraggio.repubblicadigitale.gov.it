@@ -123,7 +123,7 @@ const AppRoutes: React.FC = () => {
               <Route
                 path='/community/:id'
                 element={
-                  <ProtectedComponent visibleTo={[]}>
+                  <ProtectedComponent visibleTo={['tab.comm']}>
                     <CommunityDetails />
                   </ProtectedComponent>
                 }
@@ -131,7 +131,7 @@ const AppRoutes: React.FC = () => {
               <Route
                 path='/community'
                 element={
-                  <ProtectedComponent visibleTo={[]}>
+                  <ProtectedComponent visibleTo={['tab.comm']}>
                     <Community />
                   </ProtectedComponent>
                 }
@@ -185,7 +185,7 @@ const AppRoutes: React.FC = () => {
               <Route
                 path='/area-personale/contenuti-pubblicati'
                 element={
-                  <ProtectedComponent visibleTo={[]}>
+                  <ProtectedComponent visibleTo={['btn.cont']}>
                     <UserPublishedContentsPage />
                   </ProtectedComponent>
                 }
@@ -198,30 +198,29 @@ const AppRoutes: React.FC = () => {
                   </ProtectedComponent>
                 }
               />
-              {process.env.NODE_ENV === 'development' ? (
-                <Route
-                  path='/area-gestionale/gestione-segnalazioni'
-                  element={
-                    <ProtectedComponent visibleTo={[]}>
-                      <Reports />
-                    </ProtectedComponent>
-                  }
-                />
-              ) : null}
-              {process.env.NODE_ENV === 'development' ? (
-                <Route
-                  path='/area-gestionale/gestione-categorie'
-                  element={
-                    <ProtectedComponent visibleTo={[]}>
-                      <Category />
-                    </ProtectedComponent>
-                  }
-                />
-              ) : null}
+              <Route
+                path='/area-gestionale/gestione-segnalazioni'
+                element={
+                  <ProtectedComponent visibleTo={['btn.rprt']}>
+                    <Reports />
+                  </ProtectedComponent>
+                }
+              />
+              <Route
+                path='/area-gestionale/gestione-categorie'
+                element={
+                  <ProtectedComponent visibleTo={['btn.cat']}>
+                    <Category />
+                  </ProtectedComponent>
+                }
+              />
               <Route
                 path='/gestione-ruoli/crea-nuovo'
                 element={
-                  <ProtectedComponent visibleTo={[]} redirect='/gestione-ruoli'>
+                  <ProtectedComponent
+                    visibleTo={['list.ruoli']}
+                    redirect='/gestione-ruoli'
+                  >
                     <RoleManagementDetails creation />
                   </ProtectedComponent>
                 }
@@ -229,7 +228,10 @@ const AppRoutes: React.FC = () => {
               <Route
                 path='/gestione-ruoli/:codiceRuolo/modifica'
                 element={
-                  <ProtectedComponent visibleTo={[]} redirect='/gestione-ruoli'>
+                  <ProtectedComponent
+                    visibleTo={['list.ruoli']}
+                    redirect='/gestione-ruoli'
+                  >
                     <RoleManagementDetails edit />
                   </ProtectedComponent>
                 }
