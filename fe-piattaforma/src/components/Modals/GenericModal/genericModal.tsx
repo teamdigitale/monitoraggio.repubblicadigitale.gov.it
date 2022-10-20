@@ -42,6 +42,7 @@ export interface GenericModalI {
   isSurveyOnline?: boolean;
   isSuccesModal?: boolean;
   isUserRole?: boolean;
+  darkTitle?: boolean;
 }
 
 const GenericModal: React.FC<GenericModalI> = (props) => {
@@ -70,6 +71,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
     isSurveyOnline = false,
     isSuccesModal = false,
     isUserRole = false,
+    darkTitle = false,
   } = props;
 
   const handleAction = (action: 'primary' | 'secondary' | 'tertiary') => {
@@ -149,8 +151,9 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
           <p
             className={clsx(
               'font-weight-semibold',
-              isRoleManaging ? 'primary-color-a10 h3 pb-4' : 'primary-color h5',
-              'my-auto'
+              isRoleManaging ? 'primary-color-a10 h3 pb-4' : 'primary-color h4',
+              'my-auto',
+              darkTitle && 'primary-color-a10',
             )}
           >
             {title || payload?.title}

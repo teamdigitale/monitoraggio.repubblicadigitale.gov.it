@@ -20,6 +20,7 @@ import {
   setForumFilters,
 } from '../../../redux/features/forum/forumSlice';
 import {
+  ActionTracker,
   GetDocumentsFilters,
   GetDocumentsList,
 } from '../../../redux/features/forum/forumThunk';
@@ -202,6 +203,7 @@ const Documents = () => {
   ];
 
   const handleCollaborationToolRegistration = () => {
+    dispatch(ActionTracker({ target: 'wd' }));
     window.open(process.env.REACT_APP_WORKDOCS_BASE_URL, '_blank');
     window.location.reload();
   };
@@ -234,6 +236,9 @@ const Documents = () => {
             dispatch(
               openModal({
                 id: 'documentModal',
+                payload: {
+                  title: 'Carica documento',
+                },
               })
             )
           }

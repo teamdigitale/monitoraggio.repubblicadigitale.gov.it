@@ -95,6 +95,9 @@ const DocumentsDetails = () => {
           dispatch(
             openModal({
               id: 'documentModal',
+              payload: {
+                title: 'Modifica documento'
+              },
             })
           )
         }

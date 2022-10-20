@@ -26,7 +26,7 @@ export interface HeaderI {
   user: UserStateI['user'];
   userProfile: UserStateI['profilo'];
   isLogged: boolean;
-  notification?: [] | undefined;
+  notification?: any[] | undefined;
   menuRoutes: MenuItem[];
   profilePicture: string | undefined;
   handleOpenRocketChat?: () => void;
@@ -119,7 +119,7 @@ const Header: React.FC<HeaderProp> = (props) => {
 
   const handleOpenRocketChat = () => {
     if (hasUserPermission(['btn.chat'])) {
-      dispatch(ActionTracker());
+      dispatch(ActionTracker({ target: 'chat' }));
       dispatch(
         openModal({
           id: 'rocketChatModal',

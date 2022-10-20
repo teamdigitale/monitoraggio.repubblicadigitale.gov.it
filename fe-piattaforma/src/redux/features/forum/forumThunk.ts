@@ -934,45 +934,75 @@ export const GetTagsList = () => async (dispatch: Dispatch) => {
 const ActionTrackerAction = {
   type: 'forum/ActionTracker',
 };
-export const ActionTracker = () => async (dispatch: Dispatch, select: Selector) => {
-  try {
-    dispatch({ ...ActionTrackerAction });
-    const {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      user: {
-        profilo: { idProgramma, codiceRuolo } = {
-          idProgramma, codiceRuolo
-        },
-      },
-    } = select((state: RootState) => state);
-    const action_type = 'chat';
-    axios.post(
-      `${process?.env?.REACT_APP_BE_BASE_URL}drupal/forward`,
-      {
-        url: `/api/user/action/${action_type}/track`,
-        metodoHttp: 'POST',
-        body: {
-          event: 'click',
-          event_type: undefined,
-          event_value: undefined,
-          role_code: codiceRuolo,
-          category: undefined,
-          program_id: idProgramma,
-        },
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          authToken: getSessionValues('auth'),
-          userRole: JSON.parse(getSessionValues('profile'))?.codiceRuolo,
-        },
+interface ActionTrackerI {
+  target: 'chat' | 'wd' | 'tnd';
+  action_type?: 'click';
+  event_type?: 'topic' | 'news' | 'document';
+  codiceRuolo?: string;
+  idProgramma?: string;
+}
+const newActionTracker = ({
+  action_type,
+  target,
+  codiceRuolo,
+  idProgramma,
+}: ActionTrackerI) => ({
+  event: target === 'chat' || target === 'wd' ? 'click' : action_type,
+  event_type: target === 'tnd' ? action_type : undefined,
+  event_value: undefined,
+  role_code: codiceRuolo,
+  category: undefined,
+  program_id: idProgramma,
+});
+export const ActionTracker =
+  (payload: ActionTrackerI) => async (dispatch: Dispatch, select: Selector) => {
+    try {
+      const { target, action_type = 'click' } = payload;
+      dispatch({ ...ActionTrackerAction, ...payload });
+      if (action_type) {
+        const {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          user: {
+            profilo: { idProgramma, codiceRuolo } = {
+              idProgramma,
+              codiceRuolo,
+            },
+          },
+        } = select((state: RootState) => state);
+        const body = newActionTracker({
+          ...payload,
+          codiceRuolo,
+          idProgramma,
+        });
+        console.log('body', body);
+        axios.post(
+          `${process?.env?.REACT_APP_BE_BASE_URL}drupal/forward`,
+          {
+            url: `/api/user/action/${target}/track`,
+            metodoHttp: 'POST',
+            body: {
+              event: 'click',
+              event_type: undefined,
+              event_value: undefined,
+              role_code: codiceRuolo,
+              category: undefined,
+              program_id: idProgramma,
+            },
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              authToken: getSessionValues('auth'),
+              userRole: JSON.parse(getSessionValues('profile'))?.codiceRuolo,
+            },
+          }
+        );
       }
-    );
-  } catch (error) {
-    console.log('ActionTracker error', error);
-  }
-};
+    } catch (error) {
+      console.log('ActionTracker error', error);
+    }
+  };
 
 const WorkDocsRegistrationAction = {
   type: 'forum/WorkDocsRegistration',

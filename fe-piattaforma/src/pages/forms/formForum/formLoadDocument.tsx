@@ -23,6 +23,7 @@ import { selectEntityFiltersOptions } from '../../../redux/features/administrati
 import { GetEntityFilterValues } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
 import { GetCategoriesList } from '../../../redux/features/forum/categories/categoriesThunk';
 import { uploadFile } from '../../../utils/common';
+import { selectDevice } from '../../../redux/features/app/appSlice';
 
 interface uploadDocumentI extends withFormHandlerProps {
   formDisabled?: boolean;
@@ -59,6 +60,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
   const policiesList = useAppSelector(selectEntityFiltersOptions)['policies'];
   const docDetail: { [key: string]: string | boolean } | undefined =
     useAppSelector(selectDocDetail);
+  const device = useAppSelector(selectDevice);
 
   useEffect(() => {
     dispatch(GetEntityFilterValues({ entity, dropdownType: 'policies' }));
@@ -117,7 +119,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
       className='mt-5 mb-0'
       formDisabled={formDisabled}
     >
-      <Form.Row className={bootClass}>
+      <Form.Row className={clsx(bootClass, !device.mediaIsDesktop && 'mb-5')}>
         <Input
           {...form?.title}
           required
@@ -129,15 +131,15 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
         />
         <small
           id='input-help-description'
-          className={clsx('font-italic', 'form-text', 'text-muted', 'mb-5')}
+          className={clsx('font-italic', 'form-text', 'text-muted', 'pl-2', 'ml-1', device.mediaIsDesktop && 'mb-5')}
         >
           massimo 55 caratteri
         </small>
       </Form.Row>
-      <Form.Row className={clsx('mb-5', bootClass)}>
+      <Form.Row className={bootClass}>
         <Select
           {...form?.program}
-          wrapperClassName='col-12 col-lg-5 mb-0 pb-2'
+          wrapperClassName='col-12 col-lg-6'
           onInputChange={onInputChange}
           options={programsList?.map((opt) => ({
             label: opt.label,
@@ -148,7 +150,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
         />
         <Select
           {...form?.intervention}
-          wrapperClassName='col-12 col-lg-5 mb-0 pb-5'
+          wrapperClassName='col-12 col-lg-6'
           onInputChange={onInputChange}
           options={policiesList?.map((opt) => ({
             label: opt.label,
@@ -161,7 +163,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
       <Form.Row className={bootClass}>
         <Select
           {...form?.category}
-          wrapperClassName='col-12 col-lg-5'
+          wrapperClassName='col-12 col-lg-6'
           onInputChange={onInputChange}
           options={categoriesList?.map((opt) => ({
             label: opt.name,

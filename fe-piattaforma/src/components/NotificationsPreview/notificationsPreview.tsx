@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import './notificationsPreview.scss';
 import ClickOutside from '../../hoc/ClickOutside';
 import { focusId, MenuItem } from '../../utils/common';
 import { Button, Icon } from 'design-react-kit';
 import Notification from '../../pages/common/NotificationsPage/components/Notifications/notification';
+import { useAppSelector } from '../../redux/hooks';
+import { selectUserNotification } from '../../redux/features/user/userSlice';
 
 interface NotificationsPreviewProps {
   open: boolean;
@@ -14,10 +16,9 @@ interface NotificationsPreviewProps {
 
 const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
   const { open, setOpen } = props;
-  const [isClicked /*setIsClicked*/] = useState<boolean>(false);
 
   // TODO integrate notification
-  const notificationsList: any[] = [];
+  const notificationsList = useAppSelector(selectUserNotification);
 
   useEffect(() => {
     const body = document.querySelector('body') as HTMLBodyElement;
@@ -28,42 +29,6 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
       body.style.overflowY = 'unset';
     }
   }, [open]);
-
-  const notificationRender = notificationsList.length
-    ? isClicked
-      ? notificationsList
-          .filter((notificationsList) => notificationsList.unread === true)
-          .map((list, i) => (
-            <div key={i} role='button' className='notifications-card-unread'>
-              <Notification
-                // TODO update key with a unique value
-                {...list}
-                icon={list.icon || ''}
-                id={list.id || 0}
-                iconColor={list.iconColor || ''}
-                iconClass={list.iconClass || ''}
-                iconPadding={list.iconPadding || false}
-                unread={list.unread}
-                notificationsPreview={true}
-              />
-            </div>
-          ))
-      : notificationsList.map((list, i) => (
-          <div key={i} role='button'>
-            <Notification
-              // TODO update key with a unique value
-              {...list}
-              icon={list.icon || ''}
-              id={list.id || 0}
-              iconPadding={list.iconPadding || false}
-              iconColor={list.iconColor || ''}
-              iconClass={list.iconClass || ''}
-              unread={list.unread}
-              notificationsPreview={true}
-            />
-          </div>
-        ))
-    : null;
 
   return (
     <ClickOutside callback={() => setOpen(false)}>
@@ -97,7 +62,16 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
                   }
                 </span>
               </div>
-              {notificationRender}
+              {notificationsList
+                .map((notification, i) => (
+                  <div key={i} role='button' className={clsx(!!notification.status && 'notifications-card-unread')}>
+                    <Notification
+                      // TODO update key with a unique value
+                      {...notification}
+                      notificationsPreview={true}
+                    />
+                  </div>
+                ))}
               <a
                 className='d-flex justify-content-center primary-color align-items-center pt-5'
                 href='/notifiche'

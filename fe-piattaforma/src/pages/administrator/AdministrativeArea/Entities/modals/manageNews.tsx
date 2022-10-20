@@ -8,7 +8,6 @@ import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormPublishNews from '../../../../forms/formForum/formPublishNews';
-import clsx from 'clsx';
 import ConfirmItemCreation from '../../../../../components/ConfirmItemCreation/confirmItemCreation';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { selectCategoriesList } from '../../../../../redux/features/forum/forumSlice';
@@ -57,7 +56,6 @@ const ManageNews: React.FC<ManageNewsI> = ({
 
   const stepsCTA = {
     form: {
-      title: `${creation ? 'Pubblica nuova' : 'Modifica'} news`,
       primaryCTA: {
         disabled: !isFormValid,
         label: creation ? 'Conferma' : 'Salva',
@@ -232,20 +230,8 @@ const ManageNews: React.FC<ManageNewsI> = ({
       tertiaryCTA={(stepsCTA[step].tertiaryCTA as CallToAction) || null}
       centerButtons
       onClose={resetModal}
+      darkTitle
     >
-      <p
-        className={clsx(
-          'd-flex',
-          'justify-content-center',
-          'my-4',
-          'pt-3',
-          'h5',
-          'primary-color-a10',
-          'font-weight-semibold'
-        )}
-      >
-        {stepsCTA[step].title}
-      </p>
       {content}
     </GenericModal>
   );

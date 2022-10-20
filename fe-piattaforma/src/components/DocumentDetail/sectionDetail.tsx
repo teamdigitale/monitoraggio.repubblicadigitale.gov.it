@@ -24,6 +24,7 @@ import {
   ManageItemEvent,
 } from '../../redux/features/forum/forumThunk';
 import { cleanDrupalFileURL } from '../../utils/common';
+import { formatDate } from '../../utils/datesHelper';
 
 export interface CardDocumentDetailI {
   id?: string;
@@ -181,7 +182,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
             <div className='document-card-detail-container__typology'>
               <span className='font-weight-bold'>{category_label}</span>
               <span> - </span>
-              <span>{date}</span>
+              <span>{date && formatDate(date, 'shortDate')}</span>
             </div>
           }
         </div>

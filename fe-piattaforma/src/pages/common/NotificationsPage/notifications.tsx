@@ -7,10 +7,7 @@ import { selectDevice } from '../../../redux/features/app/appSlice';
 import { selectEntityPagination } from '../../../redux/features/citizensArea/citizensAreaSlice';
 import { useAppSelector } from '../../../redux/hooks';
 import './notifications.scss';
-import { setEntityPagination } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import clsx from 'clsx';
-import { GetNotificationsList } from '../../../redux/features/notification/notificationThunk';
-import { removeNotify } from '../../../redux/features/notification/notificationSlice';
 import Input from '../../../components/Form/input';
 import MailRead from '/public/assets/img/mail-open.png';
 import MailReadCheck from '/public/assets/img/mail-open-check.png';
@@ -18,131 +15,44 @@ import Delete from '/public/assets/img/delete.png';
 import DeleteCheck from '/public/assets/img/delete-check.png';
 import PillDropDown from '../../../components/PillDropDown/pillDropDown';
 import Notification from './components/Notifications/notification';
-
-const NotificationCardPropsMock = [
-  {
-    icon: 'it-inbox',
-    title: 'Da leggere',
-    value: 4,
-    ariaLabel: 'da leggere',
-  },
-  {
-    icon: 'it-files',
-    title: 'Lette',
-    value: 61,
-    ariaLabel: 'lette',
-  },
-];
+import { selectUser, selectUserNotification } from '../../../redux/features/user/userSlice';
+import { GetNotificationsByUser } from '../../../redux/features/user/userThunk';
 
 const Notifications: React.FC = () => {
   const device = useAppSelector(selectDevice);
   const isMobile = device.mediaIsPhone;
-  const [isClicked] = useState<boolean>(false);
 
   // TODO integrate notification
-  const notificationsList: any[] = [];
-
+  const notificationsList = useAppSelector(selectUserNotification);
+  const userId = useAppSelector(selectUser)?.id
   const dispatch = useDispatch();
   const pagination = useAppSelector(selectEntityPagination);
-  const [newArray, setNewArray] = useState<string[]>([]);
-  const temp: string[] = [];
+  const [selectedNotifications, setSelectedNotifications] = useState<string[]>([]);
 
-  const handleOnChange = (value: string | number | boolean) => {
-    const valueIndex = newArray.findIndex((v) => v === value.toString());
-    if (valueIndex !== -1) {
-      const newValues = [...newArray];
-      newValues.splice(valueIndex, 1);
-      setNewArray(newValues);
-    } else {
-      setNewArray([...newArray, value.toString()]);
-    }
-  };
-
-  const handleDeleteNotifications = () => {
-    if (newArray) {
-      newArray.map((selectNotify) =>
-        dispatch(removeNotify({ id: selectNotify }))
-      );
-    }
-  };
-
-  const alreadyRead = () => {
-    //to be defined later
-  };
-
-  const handleOnChangeAll = (
-    value: string | number | boolean | Date | string[] | undefined
-  ) => {
-    if (value) {
-      notificationsList?.map((notification) => {
-        if (notification.id) {
-          temp.push(notification.id.toString());
-        }
-      });
-      setNewArray(temp);
-    } else {
-      setNewArray([]);
-    }
-  };
-
-  const notificationRender = notificationsList.length
-    ? isClicked
-      ? notificationsList
-          .filter((notificationsList) => notificationsList.unread === true)
-          .map((list, i) => (
-            <div key={i} role='button' className='notifications-card-unread'>
-              <Notification
-                // TODO update key with a unique value
-                {...list}
-                icon={list.icon || ''}
-                id={list.id || 0}
-                iconColor={list.iconColor || ''}
-                iconClass={list.iconClass || ''}
-                iconPadding={list.iconPadding || false}
-                unread={list.unread}
-                handleOnChange={(value: string | number) => {
-                  handleOnChange(value);
-                }}
-                notificationsPreview={false}
-                isChecked={
-                  newArray?.filter(
-                    (id) => id?.toString() === list.id?.toString()
-                  )?.length > 0
-                }
-              />
-            </div>
-          ))
-      : notificationsList.map((list, i) => (
-          <div key={i} role='button'>
-            <Notification
-              // TODO update key with a unique value
-              {...list}
-              icon={list.icon || ''}
-              id={list.id || 0}
-              iconPadding={list.iconPadding || false}
-              iconColor={list.iconColor || ''}
-              iconClass={list.iconClass || ''}
-              unread={list.unread}
-              handleOnChange={(value: string | number) => {
-                handleOnChange(value);
-              }}
-              notificationsPreview={false}
-              isChecked={
-                newArray?.filter((id) => id?.toString() === list.id?.toString())
-                  ?.length > 0
-              }
-            />
-          </div>
-        ))
-    : null;
-
-  const handleOnChangePage = (pageNumber: number = pagination?.pageNumber) => {
-    dispatch(setEntityPagination({ pageNumber }));
-  };
   useEffect(() => {
-    dispatch(setEntityPagination({ pageSize: 3 }));
-    dispatch(GetNotificationsList());
-  }, []);
+    userId && dispatch(GetNotificationsByUser(userId))
+  }, [userId])
+
+  // const handleOnChangePage = (pageNumber: number = pagination?.pageNumber) => {
+  //   dispatch(setEntityPagination({ pageNumber }));
+  // };
+  // useEffect(() => {
+  //   dispatch(setEntityPagination({ pageSize: 3 }));
+  // }, []);
+
+  const onSelectAll = () => {
+    if (notificationsList.every(notification => selectedNotifications.includes(notification.id))) {
+      setSelectedNotifications([])
+    } else {
+      setSelectedNotifications(notificationsList.map(notification => notification.id))
+    }
+  }
+
+  const onDeleteSelected = () => {
+
+  }
+
+  const onReadSelected = () => { }
 
   return (
     <>
@@ -154,73 +64,41 @@ const Notifications: React.FC = () => {
               <PillDropDown isNotifications={true} />
             </div>
           </div>
-          {NotificationCardPropsMock?.length ? (
-            <div className='notifications-card-container d-flex container'>
-              <div className={clsx('d-flex')}>
-                <div className='d-flex'>
-                  <Button
-                    className={clsx(
-                      newArray.length
-                        ? 'primary-color-b1'
-                        : 'neutral-1-color-a4'
-                    )}
-                    onClick={alreadyRead}
-                  >
-                    {newArray.length ? (
-                      <Icon
-                        icon={MailReadCheck}
-                        size='sm'
-                        aria-label='Segna come letto'
-                        className='mr-1'
-                      />
-                    ) : (
-                      <Icon
-                        icon={MailRead}
-                        size='sm'
-                        aria-label='Segna come letto'
-                        className='mr-1'
-                      />
-                    )}
-                  </Button>
-                </div>
-                <div className='d-flex'>
-                  <Button
-                    className={clsx(
-                      newArray.length
-                        ? 'primary-color-b1'
-                        : 'neutral-1-color-a4'
-                    )}
-                    onClick={handleDeleteNotifications}
-                  >
-                    {newArray.length ? (
-                      <Icon
-                        icon={DeleteCheck}
-                        size='sm'
-                        aria-label='Elimina'
-                        className='mr-1'
-                      />
-                    ) : (
-                      <Icon
-                        icon={Delete}
-                        size='sm'
-                        aria-label='Elimina'
-                        className='mr-1'
-                      />
-                    )}
-                  </Button>
-                </div>
+          <div className='notifications-card-container d-flex container'>
+            <div className={clsx('d-flex')}>
+              <div className='d-flex'>
+                <Button
+
+                  onClick={onReadSelected}
+                >
+                  <Icon
+                    icon={selectedNotifications.length ? MailReadCheck : MailRead}
+                    size='sm'
+                    aria-label='Segna come letto'
+                    className='mr-1'
+                  />
+                </Button>
               </div>
-              <Input
-                className='notification-card-checkbar'
-                type='checkbox'
-                onInputChange={(value) => handleOnChangeAll(value)}
-                checked={
-                  newArray?.length === notificationsList.length &&
-                  newArray.length > 0
-                }
-              />
+              <div className='d-flex'>
+                <Button
+                  onClick={onDeleteSelected}
+                >
+                  <Icon
+                    icon={selectedNotifications.length ? DeleteCheck : Delete}
+                    size='sm'
+                    aria-label='Elimina'
+                    className='mr-1'
+                  />
+                </Button>
+              </div>
             </div>
-          ) : null}
+            <Input
+              className='notification-card-checkbar'
+              type='checkbox'
+              onInputChange={() => onSelectAll()}
+              checked={notificationsList.every(notification => selectedNotifications.includes(notification.id))}
+            />
+          </div>
         </>
       ) : (
         <>
@@ -228,78 +106,58 @@ const Notifications: React.FC = () => {
             <PageTitle title='Le Tue Notifiche' badge={true} />
             <PillDropDown isNotifications={true} />
           </div>
-          {NotificationCardPropsMock?.length ? (
+          
             <div className='notifications-card-container container d-flex'>
               <Input
                 className='notification-card-checkbar'
                 type='checkbox'
-                onInputChange={(value) => handleOnChangeAll(value)}
-                checked={
-                  newArray?.length === notificationsList.length &&
-                  newArray.length > 0
-                }
+                onInputChange={() => onSelectAll()}
+                checked={notificationsList.every(notification => selectedNotifications.includes(notification.id))}
               />
               <div className={clsx('d-flex')}>
-                <div className='d-flex mr-5'>
-                  <Button
-                    className={clsx(
-                      newArray.length
-                        ? 'primary-color-b1'
-                        : 'neutral-1-color-a4'
-                    )}
-                    onClick={alreadyRead}
-                  >
-                    {newArray.length ? (
-                      <Icon
-                        icon={MailReadCheck}
-                        size='sm'
-                        aria-label='Segna come letto'
-                        className='mr-1'
-                      />
-                    ) : (
-                      <Icon
-                        icon={MailRead}
-                        size='sm'
-                        aria-label='Segna come letto'
-                        className='mr-1'
-                      />
-                    )}
-                    Segna come già letto
-                  </Button>
-                </div>
-                <div className='d-flex mr-5'>
-                  <Button
-                    className={clsx(
-                      newArray.length
-                        ? 'primary-color-b1'
-                        : 'neutral-1-color-a4'
-                    )}
-                    onClick={handleDeleteNotifications}
-                  >
-                    {newArray.length ? (
-                      <Icon
-                        icon={DeleteCheck}
-                        size='sm'
-                        aria-label='Elimina'
-                        className='mr-1'
-                      />
-                    ) : (
-                      <Icon
-                        icon={Delete}
-                        size='sm'
-                        aria-label='Elimina'
-                        className='mr-1'
-                      />
-                    )}
-                    Elimina
-                  </Button>
-                </div>
+                <Button
+                  className='d-flex align-items-center'
+                  onClick={onReadSelected}
+                >
+                  <Icon
+                    icon={selectedNotifications.length ? MailReadCheck : MailRead}
+                    size='sm'
+                    aria-label='Segna come letto'
+                    className='mr-1'
+                  />
+
+                  <span className={clsx(selectedNotifications.length ? 'text-primary-action' : 'text-secondary-action')}>Segna come già letto</span>
+                </Button>
+
+                <Button
+                  className='d-flex align-items-center'
+                  onClick={onDeleteSelected}
+                >
+                  <Icon
+                    icon={selectedNotifications.length ? DeleteCheck : Delete}
+                    size='sm'
+                    aria-label='Elimina'
+                    className='mr-1'
+                  />
+
+                  <span className={clsx(selectedNotifications.length ? 'text-primary-action' : 'text-secondary-action')}>Elimina</span>
+                </Button>
               </div>
             </div>
-          ) : null}
         </>
       )}
-      <Container className='pb-lg-5 pb-5'>{notificationRender}</Container>
+      <Container className='pb-lg-5 pb-5'>{notificationsList
+        .map((notification, i) => (
+          <div key={i} role='button' className={clsx(!!notification.status && 'notifications-card-unread')}>
+            <Notification
+              // TODO update key with a unique value
+              {...notification}
+              onSelect={(id: string) => setSelectedNotifications(prev => prev.includes(id) ? prev.filter(v => v !== id) : [...prev, id])}
+              notificationsPreview={false}
+              isChecked={selectedNotifications.includes(notification.id)}
+            />
+          </div>
+        ))}</Container>
       {!isMobile && pagination?.pageNumber ? (
         <Paginator
           pageSize={notificationsList.length}
@@ -307,7 +165,7 @@ const Notifications: React.FC = () => {
           center
           refID='#notification'
           total={pagination.pageNumber}
-          onChange={handleOnChangePage}
+        // onChange={handleOnChangePage}
         />
       ) : null}
     </>

@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -143,7 +142,6 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
 
   const stepsCTA = {
     form: {
-      title: `${creation ? 'Carica' : 'Modifica'} documento `,
       primaryCTA: {
         disabled: !isFormValid,
         label: creation ? 'Conferma' : 'Salva',
@@ -178,20 +176,8 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
       secondaryCTA={(stepsCTA[step].secondaryCTA as CallToAction) || null}
       centerButtons
       onClose={resetModal}
+      darkTitle
     >
-      <p
-        className={clsx(
-          'd-flex',
-          'justify-content-center',
-          'my-4',
-          'pt-3',
-          'h5',
-          'primary-color-a10',
-          'font-weight-semibold'
-        )}
-      >
-        {stepsCTA[step].title}
-      </p>
       {content}
     </GenericModal>
   );

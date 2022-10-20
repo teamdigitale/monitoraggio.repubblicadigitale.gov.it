@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import { openModal } from '../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../redux/hooks';
+import { formatDate } from '../../utils/datesHelper';
 import AvatarInitials, {
   AvatarSizes,
   AvatarTextSizes,
@@ -26,10 +27,11 @@ const CommentAnswer: React.FC<CommentI> = (props) => {
     id,
     noBorder = false,
     onEditComment = () => ({}),
-    onDeleteComment = () => ({}) } = props;
+    onDeleteComment = () => ({}),
+  } = props;
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const device = useAppSelector(selectDevice);
 
   const commentDropdownOptions = [
@@ -39,7 +41,7 @@ const CommentAnswer: React.FC<CommentI> = (props) => {
         icon: 'it-delete',
         color: 'primary',
       },
-      action: () => onDeleteComment()
+      action: () => onDeleteComment(),
     },
     {
       optionName: 'MODIFICA',
@@ -47,7 +49,7 @@ const CommentAnswer: React.FC<CommentI> = (props) => {
         icon: 'it-pencil',
         color: 'primary',
       },
-      action: () => onEditComment()
+      action: () => onEditComment(),
     },
     {
       optionName: 'SEGNALA',
@@ -55,16 +57,16 @@ const CommentAnswer: React.FC<CommentI> = (props) => {
         icon: 'it-error',
         color: 'danger',
       },
-      action: () => 
+      action: () =>
         dispatch(
           openModal({
             id: 'report-modal',
             payload: {
               entity: 'comment',
-              id: id
-            }
+              id: id,
+            },
           })
-        )
+        ),
     },
   ];
 
@@ -184,7 +186,7 @@ const CommentAnswer: React.FC<CommentI> = (props) => {
               )}
             >
               <strong>Tizio Caio</strong> {' - '}
-              <span>{date}</span>
+              <span>{date && formatDate(date, 'shortDate')}</span>
             </p>
           </div>
         </div>

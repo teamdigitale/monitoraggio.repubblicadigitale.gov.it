@@ -11,8 +11,12 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { selectDevice } from '../../redux/features/app/appSlice';
-import { DeleteReport, GetReportsList } from '../../redux/features/forum/reports/reportsThunk';
+import {
+  DeleteReport,
+  GetReportsList,
+} from '../../redux/features/forum/reports/reportsThunk';
 import { useAppSelector } from '../../redux/hooks';
+import { formatDate } from '../../utils/datesHelper';
 import AvatarInitials, {
   AvatarSizes,
   AvatarTextSizes,
@@ -27,12 +31,17 @@ interface ReportCardI {
   date: string;
 }
 
-const ReportCard: React.FC<ReportCardI> = ({ reason, date, id, item_type, item_id }) => {
-
+const ReportCard: React.FC<ReportCardI> = ({
+  reason,
+  date,
+  id,
+  item_type,
+  item_id,
+}) => {
   const device = useAppSelector(selectDevice);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const commentDropdownOptions = [
     {
@@ -42,10 +51,10 @@ const ReportCard: React.FC<ReportCardI> = ({ reason, date, id, item_type, item_i
         color: 'primary',
       },
       action: async () => {
-        await dispatch(DeleteReport(id))
-        dispatch(GetReportsList())
-      }
-    }
+        await dispatch(DeleteReport(id));
+        dispatch(GetReportsList());
+      },
+    },
     // {
     //   optionName: 'MODIFICA',
     //   DropdowniIcon: {
@@ -144,15 +153,10 @@ const ReportCard: React.FC<ReportCardI> = ({ reason, date, id, item_type, item_i
                 )}
               >
                 <span className='text-nowrap'>
-                  <strong>
-                    Tizio Caio
-                  </strong>
+                  <strong>Tizio Caio</strong>
                 </span>
                 {' - '}
-                <span>
-                  {date}
-                </span>
-
+                <span>{date && formatDate(date, 'shortDate')}</span>
               </div>
               <p>
                 {' '}
@@ -186,7 +190,7 @@ const ReportCard: React.FC<ReportCardI> = ({ reason, date, id, item_type, item_i
                 break;
               case 'document_item':
                 navigate(`/documenti/${item_id}`);
-                break
+                break;
               default:
                 break;
             }

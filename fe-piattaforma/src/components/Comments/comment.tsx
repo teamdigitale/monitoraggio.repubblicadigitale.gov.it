@@ -32,6 +32,7 @@ import {
   getAnagraphicID,
   selectAnagraphics,
 } from '../../redux/features/anagraphic/anagraphicSlice';
+import { formatDate } from '../../utils/datesHelper';
 
 /*  when we will make the pages we will do a .map() ro render all the comments and add the "thread" as shown in FIGMA*/
 
@@ -252,7 +253,8 @@ const Comment: React.FC<CommentI> = (props) => {
                 {authorAnagraphic?.nome}&nbsp;{authorAnagraphic?.cognome}
               </strong>
               <span className={clsx(device.mediaIsPhone && 'text-nowrap')}>
-                &nbsp;-&nbsp;<span>{date}</span>
+                &nbsp;-&nbsp;
+                <span>{date && formatDate(date, 'shortDate')}</span>
               </span>
             </p>
           </div>

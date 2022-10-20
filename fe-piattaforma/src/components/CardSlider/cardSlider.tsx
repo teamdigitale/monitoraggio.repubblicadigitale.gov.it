@@ -4,6 +4,7 @@ import './cardSlider.scss';
 import CuoreBluVuoto from '../../../public/assets/img/hollow-blue-heart.png';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
+import { formatDate } from '../../utils/datesHelper';
 /* 
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
@@ -68,7 +69,8 @@ const CardSlider: React.FC<CardSliderI> = (props) => {
     >
       <div className='pl-1'>
         <div className='card-slider-container__pre-title'>
-          <span className='font-weight-bold'>{category_label} —</span> {date}
+          <span className='font-weight-bold'>{category_label} —</span>{' '}
+          {date && formatDate(date, 'shortDate')}
         </div>
         <p className='card-slider-container__title my-2 font-weight-bold'>
           {title}

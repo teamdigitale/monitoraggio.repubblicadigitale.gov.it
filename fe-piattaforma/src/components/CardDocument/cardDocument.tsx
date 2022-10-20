@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import { useNavigate } from 'react-router-dom';
+import { formatDate } from '../../utils/datesHelper';
 /* import File from '/public/assets/img/icon-file-fill.png'; */
 
 interface CardDocumentI {
@@ -73,7 +74,8 @@ const CardDocument: React.FC<CardDocumentI> = (props) => {
     >
       <Col className='text-left'>
         <div className='document-card-container__pre-title'>
-          <span className='font-weight-bold'>{category_label}</span> - {date}
+          <span className='font-weight-bold'>{category_label}</span> -{' '}
+          {date && formatDate(date, 'shortDate')}
         </div>
         <p
           className={clsx(

@@ -22,9 +22,7 @@
     border-radius: 100%;
     background-color: #d1e7ff;
   }
-  &__name {
-    color: #06c;
-  }
+  
   &__icon-fill-unread {
     border-radius: 100%;
     background-color: #06c;
@@ -58,5 +56,20 @@
   }
   .dropdown-menu:before {
     display: none;
+  }
+
+  .icon-read {
+    border-radius: 100%;
+    background-color: #d1e7ff;
+  }
+
+  .icon-unread {
+    border-radius: 100%;
+    background-color: #06c;
+  }
+
+  .name {
+    color: #06c;
+    font-weight: 600;
   }
 }

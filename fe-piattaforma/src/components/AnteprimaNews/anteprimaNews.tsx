@@ -23,6 +23,7 @@ import {
 } from '../../redux/features/forum/forumThunk';
 import { selectUser } from '../../redux/features/user/userSlice';
 import { cleanDrupalFileURL } from '../../utils/common';
+import { formatDate } from '../../utils/datesHelper';
 
 export interface AnteprimaBachecaNewsI {
   id?: string;
@@ -182,7 +183,7 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
             <div className='anteprima-news-container__category'>
               <span className='font-weight-bold'>{category_label}</span>
               {date ? ' - ' : ''}
-              <span>{date}</span>
+              <span>{date && formatDate(date, 'shortDate')}</span>
             </div>
             {!isModalPreview && (
               <div className='d-flex flex-row'>{newsDetailDropdown()}</div>

@@ -81,6 +81,9 @@ const BachecaDetails = () => {
           dispatch(
             openModal({
               id: 'newsModal',
+              payload: {
+                title: 'Modifica news'
+              },
             })
           )
         }

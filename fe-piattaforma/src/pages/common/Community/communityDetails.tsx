@@ -136,7 +136,16 @@ const CommunityDetails = () => {
             })
           )
         }
-        onEditClick={() => dispatch(openModal({ id: 'topicModal' }))}
+        onEditClick={() =>
+          dispatch(
+            openModal({
+              id: 'topicModal',
+              payload: {
+                title: 'Modifica topic',
+              },
+            })
+          )
+        }
         onReportClick={() =>
           dispatch(
             openModal({

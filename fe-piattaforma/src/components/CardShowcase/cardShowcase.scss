@@ -1,6 +1,6 @@
 .showcase-card {
   width: 364px;
-  height: 440px;
+  height: 455px;
   border: 1px solid #eceff1;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
@@ -28,17 +28,14 @@
     position: absolute;
     top: 185px;
     right: 34px;
-    @media screen and (min-width: 992px) and (max-width: 1200px) {
+    @media screen and (max-width: 1200px) {
       right: 20px;
       top: 155px;
-    }
-    @media screen and (max-width: 991px) {
-      top: 153px;
     }
   }
   &__icon-bookmark {
     width: 32px !important;
-    @media screen and (min-width: 769px) and (max-width: 1200px) {
+    @media screen and (min-width: 360px) and (max-width: 767px) {
       width: 26px !important;
       height: 42px !important;
     }
@@ -68,6 +65,12 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  &__icon-container-alignment {
+    margin-top: 12px;
+    @media screen and (max-width: 1201px) {
+      margin-top: 24px;
+    }
   }
   &__span-icons {
     font-weight: 400;
