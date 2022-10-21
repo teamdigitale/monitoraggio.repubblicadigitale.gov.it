@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.85](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.84...1.0.0-test.85) (2022-10-21)
+
+
+### Features
+
+* **be:** nuove feats ([7f52c78](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7f52c7851ae470bd5043a19471a529dedd7326f7))
+
 ## [1.0.0-test.84](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.83...1.0.0-test.84) (2022-10-20)
 
 
