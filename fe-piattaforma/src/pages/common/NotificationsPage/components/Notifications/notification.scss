@@ -1,51 +1,14 @@
 .notifications-list-container {
   border-bottom: 1px solid #c2c7cc;
-  &__unread {
-    border-left: 3px solid #4392e0;
-    background: rgba(230, 236, 242, 0.7);
-  }
-  .notification-list-checkbar {
-    width: 20px;
-    height: 20px;
-    margin-left: 26px;
-    margin-right: 26px;
-    margin-top: 6px;
-    @media screen and (max-width: 576px) {
-      width: 20px;
-      height: 20px;
-      margin-left: 26px;
-      margin-right: 13px;
-      margin-top: -34px;
-    }
-  }
-  &__icon-fill-read {
-    border-radius: 100%;
-    background-color: #d1e7ff;
-  }
-  
-  &__icon-fill-unread {
-    border-radius: 100%;
-    background-color: #06c;
-  }
-  &__more-items {
-    flex: auto;
-    padding-left: 12px;
-    background-color: transparent;
-  }
-  &__more-items-unread {
-    flex: auto;
-    padding-left: 12px;
-  }
-  &__text {
-    p {
-      margin-left: 5px;
-    }
-  }
+  display: flex;
+  padding: 15px;
+
   .btn-secondary.dropdown-toggle {
     color: #fff;
     background-color: #fff;
     border-color: #424f5d;
   }
+
   .dropdown-menu {
     position: absolute;
     will-change: transform;
@@ -54,22 +17,27 @@
     left: 0px;
     transform: translate3d(-155px, 48px, 0px);
   }
+
   .dropdown-menu:before {
     display: none;
   }
+}
 
-  .icon-read {
-    border-radius: 100%;
-    background-color: #d1e7ff;
-  }
+.notification-list-checkbar {
+  width: 20px;
+  height: 20px;
 
-  .icon-unread {
-    border-radius: 100%;
-    background-color: #06c;
+  @media screen and (max-width: 576px) {
+    width: 20px;
+    height: 20px;
   }
+}
 
-  .name {
-    color: #06c;
-    font-weight: 600;
-  }
+.unread {
+  border-left: 3px solid #4392e0;
+  background: rgba(230, 236, 242, 0.7);
+}
+
+.reverse {
+  flex-direction: row-reverse;
 }

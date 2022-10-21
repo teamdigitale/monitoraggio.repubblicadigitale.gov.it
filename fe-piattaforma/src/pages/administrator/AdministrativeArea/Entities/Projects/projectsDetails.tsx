@@ -845,7 +845,16 @@ const ProjectsDetails = () => {
                 color: 'danger',
                 outline: true,
                 text: 'Termina progetto',
-                onClick: () => dispatch(openModal({ id: 'terminate-entity' })),
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: 'terminate-entity',
+                      payload: {
+                        entity: 'project',
+                        text: 'Confermi di voler terminare il progetto?',
+                      },
+                    })
+                  ),
               },
               {
                 size: 'xs',
@@ -888,7 +897,7 @@ const ProjectsDetails = () => {
                       id: 'terminate-entity',
                       payload: {
                         entity: 'project',
-                        text: 'Confermi di voler terminare il Progetto?',
+                        text: 'Confermi di voler terminare il progetto?',
                       },
                     })
                   ),

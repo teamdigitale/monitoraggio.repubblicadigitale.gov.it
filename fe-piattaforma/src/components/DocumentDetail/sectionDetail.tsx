@@ -8,7 +8,7 @@ import {
   Chip,
   ChipLabel,
 } from 'design-react-kit';
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import iconFile from '../../../public/assets/img/icon-file-blue-medium.png';
 import DetailCard from '../DetailCard/detailCard';
 import './documentDetail.scss';
@@ -20,16 +20,19 @@ import { openModal } from '../../redux/features/modal/modalSlice';
 import { useDispatch } from 'react-redux';
 import { selectUser } from '../../redux/features/user/userSlice';
 import {
+  ActionTracker,
   GetItemDetail,
   ManageItemEvent,
 } from '../../redux/features/forum/forumThunk';
 import { cleanDrupalFileURL } from '../../utils/common';
 import { formatDate } from '../../utils/datesHelper';
+import useGuard from "../../hooks/guard";
 
 export interface CardDocumentDetailI {
   id?: string;
   author: string;
   title: string;
+  category: string;
   category_label: string;
   date: string;
   description: string;
@@ -46,6 +49,7 @@ export interface CardDocumentDetailI {
   likes?: number;
   views?: number;
   section?: 'community' | 'documents';
+  isDocument?: boolean | undefined;
   onDeleteClick?: () => void;
   onEditClick?: () => void;
   onReportClick?: () => void;
@@ -56,6 +60,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
     // author,
     id,
     title,
+    category,
     category_label,
     date,
     description,
@@ -71,47 +76,79 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
     user_like,
     likes,
     views,
+    isDocument,
     section,
     onDeleteClick = () => ({}),
     onEditClick = () => ({}),
     onReportClick = () => ({}),
   } = props;
-  //const location = useLocation();
+
+  const [detailDropdownOptions, setDetailDropdownOptions] = useState<
+    any[]
+    >([]);
   const device = useAppSelector(selectDevice);
   const dispatch = useDispatch();
   const userId = useAppSelector(selectUser)?.id;
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { hasUserPermission } = useGuard();
 
   const trackDownload = () => {
-    if (id) dispatch(ManageItemEvent(id, 'downloaded'));
+    if (id) {
+      dispatch(ManageItemEvent(id, 'downloaded'));
+      dispatch(ActionTracker({
+        target: 'tnd',
+        action_type: 'VISUALIZZAZIONE-DOWNLOAD',
+        event_type: 'DOCUMENT',
+        category,
+      }));
+    }
   };
 
-  const documentDetailDropdownOptions = [
-    {
-      optionName: 'ELIMINA',
-      DropdownIcon: {
-        icon: 'it-delete',
-        color: 'primary',
-      },
-      action: () => onDeleteClick(),
+  const deleteOption = {
+    optionName: 'ELIMINA',
+    DropdownIcon: {
+      icon: 'it-delete',
+      color: 'primary',
     },
-    {
-      optionName: 'MODIFICA',
-      DropdownIcon: {
-        icon: 'it-pencil',
-        color: 'primary',
-      },
-      action: () => onEditClick(),
+    action: onDeleteClick,
+  };
+
+  const editOption = {
+    optionName: 'MODIFICA',
+    DropdownIcon: {
+      icon: 'it-pencil',
+      color: 'primary',
     },
-    {
-      optionName: 'SEGNALA',
-      DropdownIcon: {
-        icon: 'it-error',
-        color: 'danger',
-      },
-      action: () => onReportClick(),
+    action: onEditClick,
+  };
+
+  const reportOption = {
+    optionName: 'SEGNALA',
+    DropdownIcon: {
+      icon: 'it-error',
+      color: 'danger',
     },
-  ];
+    action: onReportClick,
+  };
+
+  const setDetailDropdownOptionsByPermission = () => {
+    const authorizedOption = [];
+    if (hasUserPermission([section === 'documents' || isDocument ? 'del.doc' : section === 'community' ? 'del.topic' : 'hidden'])) {
+      authorizedOption.push(deleteOption);
+    }
+    if (hasUserPermission([section === 'documents' || isDocument ? 'upd.doc' : section === 'community' ? 'upd.topic' : 'hidden'])) {
+      authorizedOption.push(editOption);
+    }
+    if (hasUserPermission([section === 'documents' || isDocument ? 'rprt.doc' : section === 'community' ? 'rprt.topic' : 'hidden'])) {
+      authorizedOption.push(reportOption);
+    }
+    setDetailDropdownOptions(authorizedOption);
+  };
+
+  useEffect(() => {
+    setDetailDropdownOptionsByPermission();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [section]);
 
   const documentDetailDropdown = () => (
     <Dropdown
@@ -130,7 +167,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
       </DropdownToggle>
       <DropdownMenu role='menu' tag='ul'>
         <LinkList role='none'>
-          {documentDetailDropdownOptions.map((item, i) => (
+          {detailDropdownOptions.map((item, i) => (
             <li key={i} role='none' onClick={() => setIsOpen(!isOpen)}>
               <Button
                 className={clsx('primary-color-b1', 'px-4', 'w-75')}
@@ -198,7 +235,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
           'mb-3'
         )}
       >
-        {section === 'documents' ? (
+        {section === 'documents' || isDocument ? (
           <img
             src={iconFile}
             alt='icon-file'
@@ -341,6 +378,12 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
                     await dispatch(ManageItemEvent(id, 'unlike'));
                   } else {
                     await dispatch(ManageItemEvent(id, 'like'));
+                    dispatch(ActionTracker({
+                      target: 'tnd',
+                      action_type: 'LIKE',
+                      event_type: 'TOPIC',
+                      category,
+                    }));
                   }
                   userId && dispatch(GetItemDetail(id, userId, 'community'));
                 }

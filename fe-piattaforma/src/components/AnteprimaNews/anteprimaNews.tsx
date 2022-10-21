@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './anteprimaNews.scss';
 import {
   Button,
@@ -18,15 +18,18 @@ import { openModal } from '../../redux/features/modal/modalSlice';
 import coverPlaceholder from '/public/assets/img/img-bacheca-digitale-dettaglio.png';
 import HTMLParser from '../General/HTMLParser/HTMLParse';
 import {
+  ActionTracker,
   GetItemDetail,
   ManageItemEvent,
 } from '../../redux/features/forum/forumThunk';
 import { selectUser } from '../../redux/features/user/userSlice';
 import { cleanDrupalFileURL } from '../../utils/common';
 import { formatDate } from '../../utils/datesHelper';
+import useGuard from '../../hooks/guard';
 
 export interface AnteprimaBachecaNewsI {
   id?: string;
+  category?: string;
   category_label?: string;
   date?: string;
   title?: string;
@@ -51,6 +54,7 @@ export interface AnteprimaBachecaNewsI {
 const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
   const {
     id,
+    category,
     category_label,
     date,
     title,
@@ -72,37 +76,60 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
     onReportNews = () => ({}),
   } = props;
 
+  const [newsDetailDropdownOptions, setNewsDetailDropdownOptions] = useState<
+    any[]
+  >([]);
   const device = useAppSelector(selectDevice);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dispatch = useDispatch();
   const userId = useAppSelector(selectUser)?.id;
+  const { hasUserPermission } = useGuard();
 
-  const newsDetailDropdownOptions = [
-    {
-      optionName: 'ELIMINA',
-      DropdownIcon: {
-        icon: 'it-delete',
-        color: 'primary',
-      },
-      action: () => onDeleteNews(),
+  const deleteOption = {
+    optionName: 'ELIMINA',
+    DropdownIcon: {
+      icon: 'it-delete',
+      color: 'primary',
     },
-    {
-      optionName: 'MODIFICA',
-      DropdownIcon: {
-        icon: 'it-pencil',
-        color: 'primary',
-      },
-      action: () => onEditNews(),
+    action: onDeleteNews,
+  };
+
+  const editOption = {
+    optionName: 'MODIFICA',
+    DropdownIcon: {
+      icon: 'it-pencil',
+      color: 'primary',
     },
-    {
-      optionName: 'SEGNALA',
-      DropdownIcon: {
-        icon: 'it-error',
-        color: 'danger',
-      },
-      action: () => onReportNews(),
+    action: onEditNews,
+  };
+
+  const reportOption = {
+    optionName: 'SEGNALA',
+    DropdownIcon: {
+      icon: 'it-error',
+      color: 'danger',
     },
-  ];
+    action: onReportNews,
+  };
+
+  const setNewsDetailDropdownOptionsByPermission = () => {
+    const authorizedOption = [];
+    if (hasUserPermission(['del.news'])) {
+      authorizedOption.push(deleteOption);
+    }
+    if (hasUserPermission(['upd.news'])) {
+      authorizedOption.push(editOption);
+    }
+    if (hasUserPermission(['rprt.news'])) {
+      authorizedOption.push(reportOption);
+    }
+    setNewsDetailDropdownOptions(authorizedOption);
+  };
+
+  useEffect(() => {
+    setNewsDetailDropdownOptionsByPermission();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const newsDetailDropdown = () => (
     <Dropdown
@@ -246,6 +273,12 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
                       await dispatch(ManageItemEvent(id, 'unlike'));
                     } else {
                       await dispatch(ManageItemEvent(id, 'like'));
+                      dispatch(ActionTracker({
+                        target: 'tnd',
+                        action_type: 'LIKE',
+                        event_type: 'NEWS',
+                        category,
+                      }));
                     }
                     userId && dispatch(GetItemDetail(id, userId, 'board'));
                   }
@@ -260,6 +293,7 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
                               title: 'Aggiungi commento',
                               action: 'comment',
                               entity: 'board',
+                              category,
                             },
                           })
                         )

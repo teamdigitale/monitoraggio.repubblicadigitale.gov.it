@@ -3,7 +3,10 @@ import { Container } from 'design-react-kit';
 import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
 import CardDocument from '../../../components/CardDocument/cardDocument';
-import { setPublishedContent } from '../../../redux/features/app/appSlice';
+import {
+  selectDevice,
+  setPublishedContent,
+} from '../../../redux/features/app/appSlice';
 import { EmptySection, Paginator } from '../../../components';
 import {
   DropdownFilterI,
@@ -31,6 +34,7 @@ import {
 import { formFieldI } from '../../../utils/formHelper';
 import { selectUser } from '../../../redux/features/user/userSlice';
 import WorkdocsRegistrationModal from './workdocsRegistrationModal';
+import useGuard from "../../../hooks/guard";
 
 const documentCta = {
   textCta: 'Carica documento',
@@ -48,6 +52,7 @@ const policyDropdownLabel = 'interventions';
 const programDropdownLabel = 'programs';
 
 const Documents = () => {
+  const device = useAppSelector(selectDevice);
   const docsList = useAppSelector(selectDocsList);
   const filtersList = useAppSelector(selectFilters);
   const dropdownFilterOptions = useAppSelector(selectFilterOptions);
@@ -58,6 +63,7 @@ const Documents = () => {
   >([]);
   const [popularDocuments, setPopularDocuments] = useState([]);
   const dispatch = useDispatch();
+  const { hasUserPermission } = useGuard();
 
   const { interventions, programs, categories, sort } = filtersList;
   const { pageNumber } = pagination;
@@ -232,7 +238,7 @@ const Documents = () => {
           {...toolCollaborationCta}
           {...documentCta}
           sortFilter
-          cta={() =>
+          cta={hasUserPermission(['new.doc']) ? () =>
             dispatch(
               openModal({
                 id: 'documentModal',
@@ -241,30 +247,32 @@ const Documents = () => {
                 },
               })
             )
-          }
+          : undefined}
           ctaToolCollaboration={handleCollaborationTool}
           cards={popularDocuments}
           isDocument
           isDocumentsCta
         >
           <Container className='pb-5'>
-            <div className='row'>
-              {docsList?.length ? (
+            <div
+              className={clsx(
+                'row',
+                device.mediaIsPhone
+                  ? 'justify-content-center'
+                  : 'justify-content-start'
+              )}
+            >
+              {docsList.length ? (
                 docsList.map((doc, i) => (
                   <div
                     key={i}
                     className={clsx(
-                      'col-12',
-                      'col-md-6',
-                      'col-lg-4',
                       'my-2',
+                      !device.mediaIsPhone && 'mx-2',
                       'align-cards'
                     )}
                   >
-                    <CardDocument
-                      // TODO update key with a unique value
-                      {...doc}
-                    />
+                    <CardDocument {...doc} />
                   </div>
                 ))
               ) : (

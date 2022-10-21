@@ -183,7 +183,7 @@ const ReportCard: React.FC<ReportCardI> = ({
           onClick={() => {
             switch (item_type) {
               case 'board_item':
-                navigate(`/bacheca-digitale/${item_id}`);
+                navigate(`/bacheca/${item_id}`);
                 break;
               case 'community_item':
                 navigate(`/community/${item_id}`);

@@ -29,7 +29,7 @@ const DocumentsWidget = () => {
   const [docsList, setDocsList] = useState([]);
 
   const docsWidgetSet = async () => {
-    const itemsPerPage = docsPagination[getMediaQueryDevice(device)].toString();
+    const itemsPerPage = docsPagination.desktop.toString();
     const res = await dispatch(
       GetDocumentsList(
         {
@@ -47,7 +47,7 @@ const DocumentsWidget = () => {
   useEffect(() => {
     docsWidgetSet();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [device]);
+  }, []);
 
   const cardArray: any[] = [
     docsList.slice(0, docsPagination[getMediaQueryDevice(device)]),
@@ -120,7 +120,7 @@ const DocumentsWidget = () => {
           ) : (
             <Slider isItemsHome>
               {formatSlides(
-                docsList,
+                docsList.slice(0, docsPagination[getMediaQueryDevice(device)]),
                 carouselPagination[getMediaQueryDevice(device)]
               ).map((el, i) => (
                 <div

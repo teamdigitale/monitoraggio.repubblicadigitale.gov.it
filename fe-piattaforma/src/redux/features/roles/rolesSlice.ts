@@ -93,6 +93,7 @@ export type RolePermissionI =
   | 'view.card.serv'
   // Dashboard
   | 'acc.self.dshb'
+  | 'self.bi'
   // WAVE-3
   | 'btn.cat'
   | 'btn.cont'
@@ -103,13 +104,28 @@ export type RolePermissionI =
   | 'tab.home'
   // Bacheca
   | 'tab.bach'
+  | 'list.news'
+  | 'view.card.news'
+  | 'new.news'
   | 'upd.news'
+  | 'del.news'
+  | 'rprt.news'
   // Comunity
   | 'tab.comm'
+  | 'list.topic'
+  | 'view.card.topic'
+  | 'new.topic'
   | 'upd.topic'
+  | 'del.topic'
+  | 'rprt.topic'
   // Documenti
   | 'tab.doc'
+  | 'list.doc'
+  | 'view.card.doc'
+  | 'new.doc'
   | 'upd.doc'
+  | 'del.doc'
+  | 'rprt.doc'
   // WorkDocs
   | 'acc.clb'
   // RocketChat

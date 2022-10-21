@@ -188,7 +188,14 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
         />
         <small
           id='input-help-description'
-          className={clsx('font-italic', 'form-text', 'text-muted', 'mb-5', 'pl-2', 'ml-1')}
+          className={clsx(
+            'font-italic',
+            'form-text',
+            'text-muted',
+            'mb-5',
+            'pl-2',
+            'ml-1'
+          )}
         >
           massimo 55 caratteri
         </small>
@@ -371,7 +378,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
         </div>
       </Form.Row>
       <Form.Row className={bootClass}>
-        <PreviewCard onClick={onPreviewClick} />
+        <PreviewCard disabled={!isValidForm} onClick={onPreviewClick} />
       </Form.Row>
     </Form>
   );

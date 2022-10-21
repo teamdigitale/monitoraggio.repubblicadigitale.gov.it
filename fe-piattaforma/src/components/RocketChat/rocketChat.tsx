@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { RocketChatLogin } from '../../redux/features/user/userThunk';
 import { getSessionValues, setSessionValues } from '../../utils/sessionHelper';
+import { ActionTracker } from '../../redux/features/forum/forumThunk';
 
 // RocketChat Docs https://developer.rocket.chat/rocket.chat/iframe-integration/iframe-events
 
@@ -57,6 +58,7 @@ const RocketChat = () => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           setSessionValues('rocketchat', { token: res.data?.authToken });
+          dispatch(ActionTracker({ target: 'chat' }));
         }
       }
     } catch (err) {

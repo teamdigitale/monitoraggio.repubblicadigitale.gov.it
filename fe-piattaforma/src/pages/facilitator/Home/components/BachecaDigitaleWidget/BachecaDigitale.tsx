@@ -9,7 +9,10 @@ import {
   FilterI,
 } from '../../../../../components/DropdownFilter/dropdownFilter';
 import ForumLayout from '../../../../../components/ForumLayout/ForumLayout';
-import { setPublishedContent } from '../../../../../redux/features/app/appSlice';
+import {
+  selectDevice,
+  setPublishedContent,
+} from '../../../../../redux/features/app/appSlice';
 import {
   selectFilterOptions,
   selectFilters,
@@ -41,6 +44,7 @@ const policyDropdownLabel = 'interventions';
 const programDropdownLabel = 'programs';
 
 const BachecaDigitale = () => {
+  const device = useAppSelector(selectDevice);
   const newsList = useAppSelector(selectNewsList);
   const filtersList = useAppSelector(selectFilters);
   const dropdownFilterOptions = useAppSelector(selectFilterOptions);
@@ -213,13 +217,13 @@ const BachecaDigitale = () => {
           {...BachecaCta}
           sortFilter
           cta={
-            hasUserPermission(['upd.news'])
+            hasUserPermission(['new.news'])
               ? () =>
                   dispatch(
                     openModal({
                       id: 'newsModal',
                       payload: {
-                        title: 'Pubblica nuova news'
+                        title: 'Pubblica nuova news',
                       },
                     })
                   )
@@ -229,16 +233,21 @@ const BachecaDigitale = () => {
           isNews
         >
           <Container className='pb-5'>
-            <div className='row'>
+            <div
+              className={clsx(
+                'row',
+                device.mediaIsPhone
+                  ? 'justify-content-center'
+                  : 'justify-content-start'
+              )}
+            >
               {newsList?.length ? (
                 newsList.map((showCaseElement, i) => (
                   <div
                     key={i}
                     className={clsx(
-                      'col-12',
-                      'col-md-6',
-                      'col-lg-4',
                       'my-2',
+                      !device.mediaIsPhone && 'mx-2',
                       'align-cards'
                     )}
                   >

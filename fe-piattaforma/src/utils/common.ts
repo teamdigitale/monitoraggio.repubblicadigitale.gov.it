@@ -227,7 +227,7 @@ export const MenuRoutes = [
   }),
   newMenuItem({
     label: 'Bacheca',
-    path: '/bacheca-digitale',
+    path: '/bacheca',
     id: 'tab-bacheca-digitale',
     visible: ['tab.bach'],
   }),
@@ -496,7 +496,7 @@ export const cleanBase64 = (base64: string) => {
   try {
     const a = base64?.toString();
     const b = a.indexOf('base64');
-    return a.slice(b, -1).replace('base64,', '');
+    return a.slice(b, a.length).replace('base64,', '');
   } catch (err) {
     console.log('cleanBase64 error', err);
     return base64;

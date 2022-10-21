@@ -138,16 +138,21 @@ const HomeSearch = () => {
               totElem={docsList.length}
               iconLeft={false}
             >
-              <div className='row'>
+              <div
+                className={clsx(
+                  'row',
+                  device.mediaIsPhone
+                    ? 'justify-content-center'
+                    : 'justify-content-start'
+                )}
+              >
                 {docsList.length ? (
                   docsList.map((doc, i) => (
                     <div
                       key={i}
                       className={clsx(
-                        'col-12',
-                        'col-md-6',
-                        'col-lg-4',
                         'my-2',
+                        !device.mediaIsPhone && 'mx-1',
                         'align-cards'
                       )}
                     >

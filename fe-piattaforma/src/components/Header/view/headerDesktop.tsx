@@ -2,7 +2,6 @@ import React, { memo, useState } from 'react';
 import clsx from 'clsx';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  Badge,
   Button,
   Dropdown,
   DropdownMenu,
@@ -452,6 +451,9 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                         <Button
                           onClick={() => setNotificationsIsOpen(true)}
                           className='primary-bg-a6 px-2 bg-transparent'
+                          style={{
+                            position: 'relative'
+                          }}
                         >
                           <Icon
                             color='white'
@@ -459,16 +461,18 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                             size='sm'
                             aria-label='notifications preview'
                           />
+                          {notification?.length ? (
+                         <span className='badge-notifications'>{notification.length}</span>
+                      ) : null}
                         </Button>
                         <NotificationsPreview
                           open={notificationsIsOpen}
                           setOpen={setNotificationsIsOpen}
                           menuRoutes={menuRoutes}
                         />
+                        
                       </div>
-                      {notification?.length ? (
-                        <Badge>{notification.length}</Badge>
-                      ) : null}
+                      
                     </div>
                   ) : null}
                 </>

@@ -114,4 +114,18 @@
   }
 }
 
+.badge-notifications {
+    position: absolute;
+    top: 10%;
+    right: 5%;
+    display: flex;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    background-color: #B62032;
+    color: #FFFFFF;
+    align-items: center;
+    justify-content: center;
+}
+
 //background-image: url($image-path + '/img/logo.png');

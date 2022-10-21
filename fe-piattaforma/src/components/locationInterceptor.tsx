@@ -12,6 +12,7 @@ import { resetForumRecords } from '../redux/features/forum/forumSlice';
 import { resetModalState } from '../redux/features/modal/modalSlice';
 import { useAppDispatch } from '../redux/hooks';
 import { scrollTo } from '../utils/common';
+import { validateSession } from '../utils/sessionHelper';
 
 const LocationInterceptor = () => {
   const dispatch = useAppDispatch();
@@ -29,6 +30,7 @@ const LocationInterceptor = () => {
     dispatch(resetForumRecords());
     dispatch(resetUserDetails());
     scrollTo(0);
+    validateSession();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 

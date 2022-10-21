@@ -15,6 +15,7 @@ import {
   selectNewsDetail,
 } from '../../../../../redux/features/forum/forumSlice';
 import {
+  ActionTracker,
   DeleteItem,
   GetItemDetail,
   ManageItemEvent,
@@ -37,12 +38,27 @@ const BachecaDetails = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  useEffect(() => {
+  const getItemDetails = async () => {
     if (id && userId) {
       dispatch(ManageItemEvent(id, 'view'));
-      dispatch(GetItemDetail(id, userId, 'board'));
       dispatch(GetCommentsList(id, userId));
+      const res = await dispatch(GetItemDetail(id, userId, 'board'));
+      if (res) {
+        dispatch(ActionTracker({
+          target: 'tnd',
+          action_type: 'VISUALIZZAZIONE',
+          event_type: 'NEWS',
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          category: res?.data?.data?.items?.[0]?.category,
+        }));
+      }
     }
+  };
+
+  useEffect(() => {
+    getItemDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, userId]);
 
   useEffect(() => {
@@ -54,7 +70,13 @@ const BachecaDetails = () => {
         })
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newsDetail]);
+
+  if (!id) {
+    navigate(-1);
+    return null;
+  }
 
   const onCommentDelete = async (commentId: string) => {
     await dispatch(DeleteComment(commentId));
@@ -68,7 +90,7 @@ const BachecaDetails = () => {
         color='primary'
         aria-label='Torna indietro'
       />
-      <span className='primary-color'> Torna indietro </span>
+      <span className='primary-color'>Torna indietro</span>
     </Button>
   );
 

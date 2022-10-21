@@ -42,6 +42,7 @@ const DocumentsDetails = () => {
       dispatch(GetItemDetail(id, userId, 'document'));
       dispatch(GetCommentsList(id, userId));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId, id]);
 
   useEffect(() => {
@@ -53,6 +54,7 @@ const DocumentsDetails = () => {
         })
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [docDetails]);
 
   const onCommentDelete = async (commentId: string) => {
@@ -78,6 +80,7 @@ const DocumentsDetails = () => {
       {backButton}
       <SectionDetail
         {...docDetails}
+        section='documents'
         isDocument
         onDeleteClick={() =>
           dispatch(
@@ -96,7 +99,7 @@ const DocumentsDetails = () => {
             openModal({
               id: 'documentModal',
               payload: {
-                title: 'Modifica documento'
+                title: 'Modifica documento',
               },
             })
           )

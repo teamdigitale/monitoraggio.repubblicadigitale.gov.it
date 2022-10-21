@@ -12,11 +12,12 @@ import ConfirmItemCreation from '../../../../../components/ConfirmItemCreation/c
 import { useAppSelector } from '../../../../../redux/hooks';
 import { selectCategoriesList } from '../../../../../redux/features/forum/forumSlice';
 import {
+  ActionTracker,
   CreateItem,
   GetItemDetail,
   UpdateItem,
 } from '../../../../../redux/features/forum/forumThunk';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   selectProfile,
   selectUser,
@@ -45,7 +46,9 @@ const ManageNews: React.FC<ManageNewsI> = ({
   const userId = useAppSelector(selectUser)?.id;
   const programsList = useAppSelector(selectEntityFiltersOptions)['programmi'];
   const userProfile = useAppSelector(selectProfile);
+  const [newNodeId, setNewNodeId] = useState();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const resetModal = () => {
     setStep('form');
@@ -97,6 +100,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
         onClick: () => {
           resetModal();
           dispatch(closeModal());
+          newNodeId && navigate(`/bacheca/${newNodeId}`);
         },
       },
       secondaryCTA: null,
@@ -158,6 +162,17 @@ const ManageNews: React.FC<ManageNewsI> = ({
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (res) {
+          dispatch(
+            ActionTracker({
+              target: 'tnd',
+              action_type: 'CREAZIONE',
+              event_type: 'NEWS',
+              category: newFormValues.category?.toString(),
+            })
+          );
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          setNewNodeId(res?.data?.data?.id);
           setStep('confirm');
         }
       }

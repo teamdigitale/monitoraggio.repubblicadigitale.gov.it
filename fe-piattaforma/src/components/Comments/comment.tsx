@@ -8,10 +8,7 @@ import {
 } from 'design-react-kit';
 import React, { useEffect, useState } from 'react';
 
-//import CuoreBluPieno from '../../../public/assets/img/filled-blue-heart.png';
 import clsx from 'clsx';
-//import AnswersSection from './answersSection';
-//import CommentAnswer from './commentAnswer';
 import AnswersSection from './answersSection';
 import SocialBar from './socialBar';
 import { useAppSelector } from '../../redux/hooks';
@@ -33,8 +30,7 @@ import {
   selectAnagraphics,
 } from '../../redux/features/anagraphic/anagraphicSlice';
 import { formatDate } from '../../utils/datesHelper';
-
-/*  when we will make the pages we will do a .map() ro render all the comments and add the "thread" as shown in FIGMA*/
+import useGuard from '../../hooks/guard';
 
 export interface CommentI {
   id?: string | undefined;
@@ -70,10 +66,12 @@ const Comment: React.FC<CommentI> = (props) => {
     onEditComment = () => ({}),
   } = props;
 
+  const [detailDropdownOptions, setDetailDropdownOptions] = useState<any[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [showReplies, setShowReplies] = useState<boolean>(false);
   const device = useAppSelector(selectDevice);
   const dispatch = useDispatch();
+  const { hasUserPermission } = useGuard();
 
   const { id: itemId } = useParams();
   const userId = useAppSelector(selectUser)?.id;
@@ -82,6 +80,92 @@ const Comment: React.FC<CommentI> = (props) => {
     nome: 'Utente',
     cognome: 'Anonimo',
   };
+
+  const deleteOption = {
+    optionName: 'ELIMINA',
+    DropdownIcon: {
+      icon: 'it-delete',
+      color: 'primary',
+    },
+    action: onDeleteComment,
+  };
+
+  const editOption = {
+    optionName: 'MODIFICA',
+    DropdownIcon: {
+      icon: 'it-pencil',
+      color: 'primary',
+    },
+    action: onEditComment,
+  };
+
+  const reportOption = {
+    optionName: 'SEGNALA',
+    DropdownIcon: {
+      icon: 'it-error',
+      color: 'danger',
+    },
+    action: () => {
+      dispatch(
+        openModal({
+          id: 'report-modal',
+          payload: {
+            entity: 'comment',
+            id: id,
+          },
+        })
+      );
+    },
+  };
+
+  const setDetailDropdownOptionsByPermission = () => {
+    const authorizedOption = [];
+    if (
+      hasUserPermission([
+        section === 'board'
+          ? 'del.news'
+          : section === 'community'
+          ? 'del.topic'
+          : section === 'documents'
+          ? 'del.doc'
+          : 'hidden',
+      ])
+    ) {
+      authorizedOption.push(deleteOption);
+    }
+    if (
+      hasUserPermission([
+        section === 'board'
+          ? 'upd.news'
+          : section === 'community'
+          ? 'upd.topic'
+          : section === 'documents'
+          ? 'upd.doc'
+          : 'hidden',
+      ])
+    ) {
+      authorizedOption.push(editOption);
+    }
+    if (
+      hasUserPermission([
+        section === 'board'
+          ? 'rprt.news'
+          : section === 'community'
+          ? 'rprt.topic'
+          : section === 'documents'
+          ? 'rprt.doc'
+          : 'hidden',
+      ])
+    ) {
+      authorizedOption.push(reportOption);
+    }
+    setDetailDropdownOptions(authorizedOption);
+  };
+
+  useEffect(() => {
+    setDetailDropdownOptionsByPermission();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (author && !authorAnagraphic?.id) {
@@ -109,7 +193,7 @@ const Comment: React.FC<CommentI> = (props) => {
       </DropdownToggle>
       <DropdownMenu role='menu' tag='ul'>
         <LinkList role='none'>
-          {commentDropdownOptions.map((item, i) => (
+          {detailDropdownOptions.map((item, i) => (
             <li key={i} role='none' onClick={() => setIsOpen(!isOpen)}>
               <Button
                 className={clsx('primary-color-b1', 'py-2', 'w-100')}
@@ -140,42 +224,6 @@ const Comment: React.FC<CommentI> = (props) => {
     </Dropdown>
   );
 
-  const commentDropdownOptions = [
-    {
-      optionName: 'ELIMINA',
-      DropdownIcon: {
-        icon: 'it-delete',
-        color: 'primary',
-      },
-      action: () => onDeleteComment(),
-    },
-    {
-      optionName: 'MODIFICA',
-      DropdownIcon: {
-        icon: 'it-pencil',
-        color: 'primary',
-      },
-      action: () => onEditComment(),
-    },
-    {
-      optionName: 'SEGNALA',
-      DropdownIcon: {
-        icon: 'it-error',
-        color: 'danger',
-      },
-      action: () => {
-        dispatch(
-          openModal({
-            id: 'report-modal',
-            payload: {
-              entity: 'comment',
-              id: id,
-            },
-          })
-        );
-      },
-    },
-  ];
   /* 
       funzione da legare alla modale con annesse chiamate API per aggiornare il campo
   

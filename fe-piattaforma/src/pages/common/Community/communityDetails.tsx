@@ -13,6 +13,7 @@ import {
   selectTopicDetail,
 } from '../../../redux/features/forum/forumSlice';
 import {
+  ActionTracker,
   DeleteItem,
   GetItemDetail,
   ManageItemEvent,
@@ -42,12 +43,27 @@ const CommunityDetails = () => {
   const { id } = useParams();
   const userId = useAppSelector(selectUser)?.id;
 
-  useEffect(() => {
-    if (userId && id) {
+  const getItemDetails = async () => {
+    if (id && userId) {
       dispatch(ManageItemEvent(id, 'view'));
-      dispatch(GetItemDetail(id, userId, 'community'));
       dispatch(GetCommentsList(id, userId));
+      const res = await dispatch(GetItemDetail(id, userId, 'community'));
+      if (res) {
+        dispatch(ActionTracker({
+          target: 'tnd',
+          action_type: 'VISUALIZZAZIONE',
+          event_type: 'TOPIC',
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          category: res?.data?.data?.items?.[0]?.category,
+        }));
+      }
     }
+  };
+
+  useEffect(() => {
+    getItemDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, userId]);
 
   useEffect(() => {
@@ -59,6 +75,7 @@ const CommunityDetails = () => {
         })
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topicDetails]);
 
   const backButton = (
@@ -68,7 +85,7 @@ const CommunityDetails = () => {
         color='primary'
         aria-label='Torna indietro'
       />
-      <span className='primary-color'> Torna indietro </span>
+      <span className='primary-color'>Torna indietro</span>
     </Button>
   );
 
@@ -123,7 +140,7 @@ const CommunityDetails = () => {
       {backButton}
       <SectionDetail
         {...topicDetails}
-        isCommunity
+        section='community'
         onDeleteClick={() =>
           dispatch(
             openModal({

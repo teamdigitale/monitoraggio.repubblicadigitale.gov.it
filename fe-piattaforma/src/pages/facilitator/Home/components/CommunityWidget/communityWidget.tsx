@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { CardCommunity } from '../../../../../components';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
@@ -18,8 +18,8 @@ const communityPagination = {
 };
 
 const carouselPagination = {
-  desktop: 6,
-  mobile: 1,
+  desktop: 1,
+  mobile: 6,
   tablet: 3,
 };
 
@@ -29,8 +29,7 @@ const CommunityWidget = () => {
   const [topicsList, setTopicsList] = useState([]);
 
   const topicWidgetSet = async () => {
-    const itemPerPage =
-      communityPagination[getMediaQueryDevice(device)].toString();
+    const itemPerPage = communityPagination.desktop.toString();
     const res = await dispatch(
       GetTopicsList(
         {
@@ -48,7 +47,7 @@ const CommunityWidget = () => {
   useEffect(() => {
     topicWidgetSet();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [device]);
+  }, []);
 
   const cardArray: any[] = [
     topicsList.slice(0, communityPagination[getMediaQueryDevice(device)]),
@@ -104,7 +103,10 @@ const CommunityWidget = () => {
         ) : (
           <Slider isItemsHome>
             {formatSlides(
-              topicsList,
+              topicsList.slice(
+                0,
+                communityPagination[getMediaQueryDevice(device)]
+              ),
               carouselPagination[getMediaQueryDevice(device)]
             ).map((el, i) => (
               <div
@@ -132,4 +134,4 @@ const CommunityWidget = () => {
   );
 };
 
-export default memo(CommunityWidget);
+export default CommunityWidget;
