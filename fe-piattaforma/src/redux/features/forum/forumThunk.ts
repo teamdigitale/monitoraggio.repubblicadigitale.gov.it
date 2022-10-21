@@ -933,13 +933,40 @@ export const GetTagsList = () => async (dispatch: Dispatch) => {
   }
 };
 
+const DocumentRateAction = {
+  type: 'forum/DocumentRate',
+};
+
+export const DocumentRate =
+  (itemId: string, rate: 1 | 2) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...DocumentRateAction, itemId, rate });
+      await proxyCall(`/item/${itemId}/usefull`, 'POST', {
+        status: rate,
+      });
+    } catch (error) {
+      console.log('DocumentRate error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
 const ActionTrackerAction = {
   type: 'forum/ActionTracker',
 };
 interface ActionTrackerI {
   target: 'chat' | 'wd' | 'tnd';
-  action_type?: 'click' | 'CREAZIONE' | 'VISUALIZZAZIONE' | 'COMMENTO' | 'LIKE' | 'VISUALIZZAZIONE-DOWNLOAD';
-  event_type?: 'TOPIC' | 'NEWS' | 'DOCUMENT';
+  action_type?:
+    | 'click'
+    | 'CREAZIONE'
+    | 'VISUALIZZAZIONE'
+    | 'COMMENTO'
+    | 'LIKE'
+    | 'VISUALIZZAZIONE-DOWNLOAD'
+    | 'RATING';
+  event_type?: 'TOPIC' | 'NEWS' | 'DOCUMENTI';
+  event_value?: 'Y' | 'N' | undefined;
   category?: string | undefined;
   codiceRuolo?: string;
   idProgramma?: string;
@@ -947,6 +974,7 @@ interface ActionTrackerI {
 const newActionTracker = ({
   action_type,
   event_type,
+  event_value,
   target,
   category,
   codiceRuolo,
@@ -954,7 +982,7 @@ const newActionTracker = ({
 }: ActionTrackerI) => ({
   event: target === 'chat' || target === 'wd' ? 'click' : action_type,
   event_type: target === 'tnd' ? event_type : null,
-  event_value: null,
+  event_value: event_value || null,
   role_code: codiceRuolo || null,
   category: category?.toString() || null,
   program_id: idProgramma?.toString() || null,
@@ -991,7 +1019,7 @@ export const ActionTracker =
           {
             headers: {
               'Content-Type': 'application/json',
-              authToken: getSessionValues('auth'),
+              authToken: JSON.parse(getSessionValues('auth'))?.id_token,
               userRole: JSON.parse(getSessionValues('profile'))?.codiceRuolo,
             },
           }

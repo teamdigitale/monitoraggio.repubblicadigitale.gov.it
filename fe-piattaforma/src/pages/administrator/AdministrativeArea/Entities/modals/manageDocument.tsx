@@ -111,7 +111,7 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
             ActionTracker({
               target: 'tnd',
               action_type: 'CREAZIONE',
-              event_type: 'DOCUMENT',
+              event_type: 'DOCUMENTI',
               category: newFormValues.category?.toString(),
             })
           );

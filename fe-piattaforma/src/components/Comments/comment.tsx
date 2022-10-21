@@ -129,7 +129,7 @@ const Comment: React.FC<CommentI> = (props) => {
           : section === 'documents'
           ? 'del.doc'
           : 'hidden',
-      ])
+      ]) && author?.toString() === userId?.toString()
     ) {
       authorizedOption.push(deleteOption);
     }
@@ -142,7 +142,7 @@ const Comment: React.FC<CommentI> = (props) => {
           : section === 'documents'
           ? 'upd.doc'
           : 'hidden',
-      ])
+      ]) && author?.toString() === userId?.toString()
     ) {
       authorizedOption.push(editOption);
     }

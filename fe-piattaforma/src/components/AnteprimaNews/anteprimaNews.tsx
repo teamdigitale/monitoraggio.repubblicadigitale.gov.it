@@ -28,6 +28,7 @@ import { formatDate } from '../../utils/datesHelper';
 import useGuard from '../../hooks/guard';
 
 export interface AnteprimaBachecaNewsI {
+  author?: string,
   id?: string;
   category?: string;
   category_label?: string;
@@ -53,6 +54,7 @@ export interface AnteprimaBachecaNewsI {
 
 const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
   const {
+    author,
     id,
     category,
     category_label,
@@ -114,10 +116,10 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
 
   const setNewsDetailDropdownOptionsByPermission = () => {
     const authorizedOption = [];
-    if (hasUserPermission(['del.news'])) {
+    if (hasUserPermission(['del.news']) && author?.toString() === userId?.toString()) {
       authorizedOption.push(deleteOption);
     }
-    if (hasUserPermission(['upd.news'])) {
+    if (hasUserPermission(['upd.news']) && author?.toString() === userId?.toString()) {
       authorizedOption.push(editOption);
     }
     if (hasUserPermission(['rprt.news'])) {
@@ -129,7 +131,7 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
   useEffect(() => {
     setNewsDetailDropdownOptionsByPermission();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [author, userId]);
 
   const newsDetailDropdown = () => (
     <Dropdown

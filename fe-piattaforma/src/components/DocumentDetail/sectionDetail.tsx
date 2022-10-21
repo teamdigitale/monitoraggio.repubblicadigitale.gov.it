@@ -8,7 +8,7 @@ import {
   Chip,
   ChipLabel,
 } from 'design-react-kit';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import iconFile from '../../../public/assets/img/icon-file-blue-medium.png';
 import DetailCard from '../DetailCard/detailCard';
 import './documentDetail.scss';
@@ -26,11 +26,11 @@ import {
 } from '../../redux/features/forum/forumThunk';
 import { cleanDrupalFileURL } from '../../utils/common';
 import { formatDate } from '../../utils/datesHelper';
-import useGuard from "../../hooks/guard";
+import useGuard from '../../hooks/guard';
 
 export interface CardDocumentDetailI {
   id?: string;
-  author: string;
+  author?: string;
   title: string;
   category: string;
   category_label: string;
@@ -57,7 +57,7 @@ export interface CardDocumentDetailI {
 
 const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
   const {
-    // author,
+    author,
     id,
     title,
     category,
@@ -83,9 +83,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
     onReportClick = () => ({}),
   } = props;
 
-  const [detailDropdownOptions, setDetailDropdownOptions] = useState<
-    any[]
-    >([]);
+  const [detailDropdownOptions, setDetailDropdownOptions] = useState<any[]>([]);
   const device = useAppSelector(selectDevice);
   const dispatch = useDispatch();
   const userId = useAppSelector(selectUser)?.id;
@@ -95,12 +93,14 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
   const trackDownload = () => {
     if (id) {
       dispatch(ManageItemEvent(id, 'downloaded'));
-      dispatch(ActionTracker({
-        target: 'tnd',
-        action_type: 'VISUALIZZAZIONE-DOWNLOAD',
-        event_type: 'DOCUMENT',
-        category,
-      }));
+      dispatch(
+        ActionTracker({
+          target: 'tnd',
+          action_type: 'VISUALIZZAZIONE-DOWNLOAD',
+          event_type: 'DOCUMENTI',
+          category,
+        })
+      );
     }
   };
 
@@ -133,13 +133,37 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
 
   const setDetailDropdownOptionsByPermission = () => {
     const authorizedOption = [];
-    if (hasUserPermission([section === 'documents' || isDocument ? 'del.doc' : section === 'community' ? 'del.topic' : 'hidden'])) {
+    if (
+      hasUserPermission([
+        section === 'documents' || isDocument
+          ? 'del.doc'
+          : section === 'community'
+          ? 'del.topic'
+          : 'hidden',
+      ]) && author?.toString() === userId?.toString()
+    ) {
       authorizedOption.push(deleteOption);
     }
-    if (hasUserPermission([section === 'documents' || isDocument ? 'upd.doc' : section === 'community' ? 'upd.topic' : 'hidden'])) {
+    if (
+      hasUserPermission([
+        section === 'documents' || isDocument
+          ? 'upd.doc'
+          : section === 'community'
+          ? 'upd.topic'
+          : 'hidden',
+      ]) && author?.toString() === userId?.toString()
+    ) {
       authorizedOption.push(editOption);
     }
-    if (hasUserPermission([section === 'documents' || isDocument ? 'rprt.doc' : section === 'community' ? 'rprt.topic' : 'hidden'])) {
+    if (
+      hasUserPermission([
+        section === 'documents' || isDocument
+          ? 'rprt.doc'
+          : section === 'community'
+          ? 'rprt.topic'
+          : 'hidden',
+      ])
+    ) {
       authorizedOption.push(reportOption);
     }
     setDetailDropdownOptions(authorizedOption);
@@ -148,7 +172,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
   useEffect(() => {
     setDetailDropdownOptionsByPermission();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [section]);
+  }, [section, author, userId]);
 
   const documentDetailDropdown = () => (
     <Dropdown
@@ -378,12 +402,14 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
                     await dispatch(ManageItemEvent(id, 'unlike'));
                   } else {
                     await dispatch(ManageItemEvent(id, 'like'));
-                    dispatch(ActionTracker({
-                      target: 'tnd',
-                      action_type: 'LIKE',
-                      event_type: 'TOPIC',
-                      category,
-                    }));
+                    dispatch(
+                      ActionTracker({
+                        target: 'tnd',
+                        action_type: 'LIKE',
+                        event_type: 'TOPIC',
+                        category,
+                      })
+                    );
                   }
                   userId && dispatch(GetItemDetail(id, userId, 'community'));
                 }
