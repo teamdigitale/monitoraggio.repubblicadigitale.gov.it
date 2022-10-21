@@ -1,4 +1,15 @@
 .form {
+  input {
+    &[type='text'],
+    &[type='date'],
+    &[type='number'],
+    &[type='time'],
+    &[type='password'],
+    &[type='file'],
+    &[type='url'] {
+      font-weight: 600;
+    }
+  }
   input:focus {
     border-bottom: 2px solid color('progress-bar-line');
   }
@@ -25,12 +36,12 @@ input > span {
     border-bottom: 1px solid color('grey-input') !important;
     background: color('grey-150');
   }
-  &[type='password']{
-    width: 95%
+  &[type='password'] {
+    width: 95%;
   }
   &[type='text']:disabled,
   &[type='date']:disabled,
-  &[type='number']:disabled{
+  &[type='number']:disabled {
     border-bottom: 1px solid color('grey-input') !important;
   }
   &[type='text'][value=''],
@@ -97,6 +108,7 @@ input > span {
     }
   }
   &__single-value {
+    font-weight: 600 !important;
     &--is-disabled {
       color: color('dark-blue') !important;
     }
@@ -120,6 +132,7 @@ input > span {
 }
 
 .multiple-select {
+  font-weight: 600;
   &__control {
     &--is-disabled {
       border-bottom: 1px solid color('grey-input') !important;
@@ -192,7 +205,7 @@ input > span {
       font-size: 16px;
     }
     &__box-content {
-      padding: 0px 16px 16px 16px; 
+      padding: 0px 16px 16px 16px;
       .form-group {
         margin-bottom: 0;
         label {

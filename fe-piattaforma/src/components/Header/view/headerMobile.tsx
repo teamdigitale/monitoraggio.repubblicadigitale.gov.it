@@ -2,7 +2,6 @@ import React, { memo, useState } from 'react';
 import clsx from 'clsx';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  Badge,
   Button,
   Dropdown,
   DropdownMenu,
@@ -239,7 +238,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
                       aria-label='notifications preview'
                     />
                     {notification?.length ? (
-                      <Badge>{notification.length}</Badge>
+                      <span className='badge-notifications'>{notification.length}</span>
                     ) : null}
                   </Button>
                   <NotificationsPreview

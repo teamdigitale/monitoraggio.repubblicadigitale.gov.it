@@ -13,8 +13,9 @@ import {
   selectProfile,
   selectUser,
 } from '../../../../../redux/features/user/userSlice';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
+  ActionTracker,
   CreateItem,
   GetItemDetail,
   UpdateItem,
@@ -41,6 +42,8 @@ const ManageTopic: React.FC<ManageTopicI> = ({
   const dispatch = useDispatch();
   const { id } = useParams();
   const userId = useAppSelector(selectUser)?.id;
+  const [newNodeId, setNewNodeId] = useState();
+  const navigate = useNavigate();
 
   const resetModal = () => {
     setStep('form');
@@ -96,7 +99,18 @@ const ManageTopic: React.FC<ManageTopicI> = ({
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (res) {
+          dispatch(
+            ActionTracker({
+              target: 'tnd',
+              action_type: 'CREAZIONE',
+              event_type: 'TOPIC',
+              category: newFormValues.category?.toString(),
+            })
+          );
           setNewFormValues({});
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          setNewNodeId(res?.data?.data?.id);
           setStep('confirm');
         }
       }
@@ -126,6 +140,7 @@ const ManageTopic: React.FC<ManageTopicI> = ({
         onClick: () => {
           resetModal();
           dispatch(closeModal());
+          newNodeId && navigate(`/community/${newNodeId}`);
         },
       },
       secondaryCTA: null,

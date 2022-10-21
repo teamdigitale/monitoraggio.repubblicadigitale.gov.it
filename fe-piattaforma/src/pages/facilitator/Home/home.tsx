@@ -13,19 +13,21 @@ const Home: React.FC = () => {
       <section aria-label='Home' className='lightgrey-bg-c1'>
         <HeroHome />
       </section>
-      {hasUserPermission(['tab.bach']) ? (
+      {hasUserPermission(['list.news']) ? (
         <section aria-label='Bacheca digitale' className='lightgrey-bg-c1'>
           <Container>
             <BachecaDigitaleWidget />
           </Container>
         </section>
       ) : null}
+      {hasUserPermission(['list.topic']) ? (
       <section aria-label='Community' className='lightgrey-bg-b4'>
         <Container>
           <CommunityWidget />
         </Container>
       </section>
-      {hasUserPermission(['tab.doc']) ? (
+        ) : null}
+      {hasUserPermission(['list.doc']) ? (
         <section aria-label='Documenti' className='lightgrey-bg-c1'>
           <Container>
             <DocumentsWidget />

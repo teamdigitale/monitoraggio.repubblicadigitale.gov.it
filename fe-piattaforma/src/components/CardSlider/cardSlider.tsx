@@ -50,7 +50,7 @@ const CardSlider: React.FC<CardSliderI> = (props) => {
   const navigateByType = () => {
     if (id) {
       if (isNews) {
-        navigate(`/bacheca-digitale/${id}`);
+        navigate(`/bacheca/${id}`);
       } else if (isCommunity) {
         navigate(`/community/${id}`);
       } else if (isDocument) {

@@ -123,7 +123,7 @@ const AppRoutes: React.FC = () => {
               <Route
                 path='/community/:id'
                 element={
-                  <ProtectedComponent visibleTo={['tab.comm']}>
+                  <ProtectedComponent visibleTo={['view.card.topic']}>
                     <CommunityDetails />
                   </ProtectedComponent>
                 }
@@ -131,7 +131,7 @@ const AppRoutes: React.FC = () => {
               <Route
                 path='/community'
                 element={
-                  <ProtectedComponent visibleTo={['tab.comm']}>
+                  <ProtectedComponent visibleTo={['tab.comm', 'list.topic']}>
                     <Community />
                   </ProtectedComponent>
                 }
@@ -139,7 +139,7 @@ const AppRoutes: React.FC = () => {
               <Route
                 path='/documenti/:id'
                 element={
-                  <ProtectedComponent visibleTo={['tab.doc']}>
+                  <ProtectedComponent visibleTo={['view.card.doc']}>
                     <DocumentsDetails />
                   </ProtectedComponent>
                 }
@@ -147,23 +147,29 @@ const AppRoutes: React.FC = () => {
               <Route
                 path='/documenti'
                 element={
-                  <ProtectedComponent visibleTo={['tab.doc']}>
+                  <ProtectedComponent visibleTo={['tab.doc', 'list.doc']}>
                     <Documents />
                   </ProtectedComponent>
                 }
               />
               <Route
-                path='/bacheca-digitale/:id'
+                path='/bacheca/:id'
                 element={
-                  <ProtectedComponent visibleTo={['tab.bach']} redirect='/'>
+                  <ProtectedComponent
+                    visibleTo={['view.card.news']}
+                    redirect='/'
+                  >
                     <BachecaDetails />
                   </ProtectedComponent>
                 }
               />
               <Route
-                path='/bacheca-digitale'
+                path='/bacheca'
                 element={
-                  <ProtectedComponent visibleTo={['tab.bach']} redirect='/'>
+                  <ProtectedComponent
+                    visibleTo={['tab.bach', 'list.news']}
+                    redirect='/'
+                  >
                     <BachecaDigitale />
                   </ProtectedComponent>
                 }
@@ -255,16 +261,14 @@ const AppRoutes: React.FC = () => {
                   </ProtectedComponent>
                 }
               />
-              {process.env.NODE_ENV === 'development' ? (
-                <Route
-                  path='/notifiche'
-                  element={
-                    <ProtectedComponent visibleTo={['list.ntf.nr']}>
-                      <Notifications />
-                    </ProtectedComponent>
-                  }
-                />
-              ) : null}
+              <Route
+                path='/notifiche'
+                element={
+                  <ProtectedComponent visibleTo={['list.ntf.nr']}>
+                    <Notifications />
+                  </ProtectedComponent>
+                }
+              />
               <Route
                 path='/home/cerca'
                 element={

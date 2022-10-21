@@ -32,6 +32,7 @@ import {
   setEntityPagination,
 } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { formFieldI } from '../../../utils/formHelper';
+import useGuard from "../../../hooks/guard";
 
 // for dropdown filters, don't change
 const categoryDropdownLabel = 'categories';
@@ -51,6 +52,7 @@ const Community = () => {
   >([]);
   const [popularTopics, setPopularTopics] = useState([]);
   const dispatch = useDispatch();
+  const { hasUserPermission } = useGuard();
 
   const { categories, sort } = filtersList;
   const { pageNumber } = pagination;
@@ -164,7 +166,7 @@ const Community = () => {
           filtersList={{}}
           {...TopicCta}
           sortFilter
-          cta={() =>
+          cta={hasUserPermission(['new.topic']) ? () =>
             dispatch(
               openModal({
                 id: 'topicModal',
@@ -173,7 +175,7 @@ const Community = () => {
                 },
               })
             )
-          }
+          : undefined}
           cards={popularTopics}
           isCommunity
         >

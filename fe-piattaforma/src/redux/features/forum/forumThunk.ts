@@ -667,9 +667,11 @@ export const GetItemDetail =
           default:
             break;
         }
+        return res;
       }
     } catch (error) {
       console.log('GetItemsDetails error', error);
+      return false;
     } finally {
       dispatch(hideLoader());
     }
@@ -936,23 +938,26 @@ const ActionTrackerAction = {
 };
 interface ActionTrackerI {
   target: 'chat' | 'wd' | 'tnd';
-  action_type?: 'click';
-  event_type?: 'topic' | 'news' | 'document';
+  action_type?: 'click' | 'CREAZIONE' | 'VISUALIZZAZIONE' | 'COMMENTO' | 'LIKE' | 'VISUALIZZAZIONE-DOWNLOAD';
+  event_type?: 'TOPIC' | 'NEWS' | 'DOCUMENT';
+  category?: string | undefined;
   codiceRuolo?: string;
   idProgramma?: string;
 }
 const newActionTracker = ({
   action_type,
+  event_type,
   target,
+  category,
   codiceRuolo,
   idProgramma,
 }: ActionTrackerI) => ({
   event: target === 'chat' || target === 'wd' ? 'click' : action_type,
-  event_type: target === 'tnd' ? action_type : undefined,
-  event_value: undefined,
-  role_code: codiceRuolo,
-  category: undefined,
-  program_id: idProgramma,
+  event_type: target === 'tnd' ? event_type : null,
+  event_value: null,
+  role_code: codiceRuolo || null,
+  category: category?.toString() || null,
+  program_id: idProgramma?.toString() || null,
 });
 export const ActionTracker =
   (payload: ActionTrackerI) => async (dispatch: Dispatch, select: Selector) => {
@@ -981,14 +986,7 @@ export const ActionTracker =
           {
             url: `/api/user/action/${target}/track`,
             metodoHttp: 'POST',
-            body: {
-              event: 'click',
-              event_type: undefined,
-              event_value: undefined,
-              role_code: codiceRuolo,
-              category: undefined,
-              program_id: idProgramma,
-            },
+            body: body ? JSON.stringify(body) : null,
           },
           {
             headers: {

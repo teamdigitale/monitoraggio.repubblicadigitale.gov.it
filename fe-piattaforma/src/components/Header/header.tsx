@@ -18,7 +18,6 @@ import { userRoles } from '../../pages/administrator/AdministrativeArea/Entities
 import { openModal } from '../../redux/features/modal/modalSlice';
 import RocketChatModal from '../Modals/RocketChatModal/rocketChatModal';
 import useGuard from '../../hooks/guard';
-import { ActionTracker } from '../../redux/features/forum/forumThunk';
 
 export interface HeaderI {
   isHeaderFull?: boolean | undefined;
@@ -119,7 +118,6 @@ const Header: React.FC<HeaderProp> = (props) => {
 
   const handleOpenRocketChat = () => {
     if (hasUserPermission(['btn.chat'])) {
-      dispatch(ActionTracker({ target: 'chat' }));
       dispatch(
         openModal({
           id: 'rocketChatModal',

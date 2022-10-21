@@ -124,7 +124,8 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
               'd-flex',
               !device.mediaIsDesktop ? 'flex-column' : 'flex-row',
               'align-items-center',
-              alignTitle ? 'justify-content-center' : null
+              alignTitle ? 'justify-content-center' : null,
+              cta && 'justify-content-between'
             )}
           >
             {innerHTML ? (

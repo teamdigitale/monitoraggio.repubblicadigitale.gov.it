@@ -7,10 +7,11 @@ import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
 
 interface PreviewCardI {
+  disabled: boolean;
   onClick: () => void;
 }
 
-const PreviewCard = ({ onClick }: PreviewCardI) => {
+const PreviewCard = ({ disabled = false, onClick }: PreviewCardI) => {
   const device = useAppSelector(selectDevice);
 
   return (
@@ -34,23 +35,22 @@ const PreviewCard = ({ onClick }: PreviewCardI) => {
         />
         <div className={clsx('d-flex flex-column align-items-start pl-4')}>
           <h1 className='h4 primary-color preview-card-container__title'>
-            {' '}
-            Guarda l&apos;anteprima{' '}
+            Guarda l&apos;anteprima
           </h1>
           <p className='text-muted preview-card-container__description'>
-            {' '}
-            Visualizza l&apos; anteprima della news prima di pubblicarla{' '}
+            Visualizza l&apos; anteprima della news prima di pubblicarla
           </p>
         </div>
       </div>
       <Button
+        disabled={disabled}
         title='Anteprima'
         color='primary'
         outline
         className='button-preview'
-        onClick={() => onClick()}
+        onClick={onClick}
       >
-        <span className='primary-color'> Anteprima </span>
+        <span className='primary-color'>Anteprima</span>
       </Button>
     </div>
   );

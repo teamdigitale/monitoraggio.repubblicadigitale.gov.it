@@ -17,6 +17,8 @@ import {
 import { RootState } from '../../store';
 import { isActiveProvisionalLogin } from '../../../pages/common/Auth/auth';
 import { proxyCall } from '../forum/forumThunk';
+import { transformFiltersToQueryParams } from '../../../utils/common';
+import { setEntityPagination } from '../administrativeArea/administrativeAreaSlice';
 
 export const getUserHeaders = () => {
   const { codiceFiscale, id: idUtente } = JSON.parse(getSessionValues('user'));
@@ -244,13 +246,35 @@ const GetNotificationsByUserAction = {
   type: 'forum/GetNotificationsByUser',
 };
 
-export const GetNotificationsByUser = (userId: string) => async (dispatch: Dispatch) => {
+export const GetNotificationsByUser = (userId: string) => async (dispatch: Dispatch, select: Selector) => {
   try {
       dispatch(showLoader());
       dispatch({ ...GetNotificationsByUserAction });
-      const res = await proxyCall(`/user/${userId}/notifications`, 'GET')
+
+      const {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        administrativeArea: { pagination },
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        forum: { filters },
+      } = select((state: RootState) => state);
+
+      const body = {
+        ...filters,
+        page: [{ value: Math.max(0, pagination.pageNumber - 1) }],
+        items_per_page: [{ value: pagination.pageSize }],
+      }
+
+      const res = await proxyCall(`/user/${userId}/notifications${transformFiltersToQueryParams(body)}`, 'GET')
       if (res) {
           dispatch(setUserNotifications(res.data.data.items || []));
+          dispatch(
+            setEntityPagination({
+              totalPages: res.data.data.pager?.total_pages || 0,
+              totalElements: res.data.data.pager?.total_items || 0,
+            })
+          );
       }
 
   } catch (error) {

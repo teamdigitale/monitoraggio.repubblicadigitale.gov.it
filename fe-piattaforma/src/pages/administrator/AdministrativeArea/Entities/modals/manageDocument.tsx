@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import ConfirmItemCreation from '../../../../../components/ConfirmItemCreation/confirmItemCreation';
 import GenericModal, {
   CallToAction,
@@ -8,6 +8,7 @@ import GenericModal, {
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import { selectEntityFiltersOptions } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import {
+  ActionTracker,
   CreateItem,
   GetItemDetail,
   UpdateItem,
@@ -44,6 +45,8 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
   const userProfile = useAppSelector(selectProfile);
   const programsList = useAppSelector(selectEntityFiltersOptions)['programmi'];
   const userId = useAppSelector(selectUser)?.id;
+  const [newNodeId, setNewNodeId] = useState();
+  const navigate = useNavigate();
 
   const resetModal = () => {
     setStep('form');
@@ -104,6 +107,17 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (res) {
+          dispatch(
+            ActionTracker({
+              target: 'tnd',
+              action_type: 'CREAZIONE',
+              event_type: 'DOCUMENT',
+              category: newFormValues.category?.toString(),
+            })
+          );
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          setNewNodeId(res?.data?.data?.id);
           setStep('confirm');
         }
       }
@@ -163,6 +177,7 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
         onClick: () => {
           resetModal();
           dispatch(closeModal());
+          newNodeId && navigate(`/documenti/${newNodeId}`);
         },
       },
       secondaryCTA: null,

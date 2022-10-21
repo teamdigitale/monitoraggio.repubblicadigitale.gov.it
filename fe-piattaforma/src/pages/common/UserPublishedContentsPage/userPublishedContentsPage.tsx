@@ -41,16 +41,7 @@ const UserPublishedContentsPage = () => {
           <div className='row'>
             {newsList.length ? (
               newsList.map((showCaseElement, i) => (
-                <div
-                  key={i}
-                  className={clsx(
-                    'col-12',
-                    'col-md-6',
-                    'col-lg-4',
-                    'my-2',
-                    'align-cards'
-                  )}
-                >
+                <div key={i} className={clsx('my-2', 'mx-2', 'align-cards')}>
                   <CardShowcase {...showCaseElement} />
                 </div>
               ))
@@ -63,16 +54,7 @@ const UserPublishedContentsPage = () => {
           <div className='row'>
             {topicsList.length ? (
               topicsList.map((communityElement, i) => (
-                <div
-                  key={i}
-                  className={clsx(
-                    'col-12',
-                    'col-md-6',
-                    'col-lg-4',
-                    'my-2',
-                    'align-cards'
-                  )}
-                >
+                <div key={i} className={clsx('my-2', 'mx-2', 'align-cards')}>
                   <CardCommunity {...communityElement} />
                 </div>
               ))
@@ -82,16 +64,21 @@ const UserPublishedContentsPage = () => {
           </div>
         </Accordion>
         <Accordion title='Documenti' totElem={docsList.length}>
-          <div className='row'>
+          <div
+            className={clsx(
+              'row',
+              device.mediaIsPhone
+                ? 'justify-content-center'
+                : 'justify-content-start'
+            )}
+          >
             {docsList.length ? (
               docsList.map((doc, i) => (
                 <div
                   key={i}
                   className={clsx(
-                    'col-12',
-                    'col-md-6',
-                    'col-lg-4',
                     'my-2',
+                    !device.mediaIsPhone && 'mx-1',
                     'align-cards'
                   )}
                 >

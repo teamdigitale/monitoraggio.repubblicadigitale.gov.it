@@ -56,7 +56,7 @@ export const getErrorMessage = async (errorCode: string) => {
 };
 
 export const errorHandler = async (error: unknown) => {
-  let errorData = defaultErrorPayload;
+  let errorData;
   // console.log('error', error);
   if (error instanceof TypeError) {
     // statements to handle TypeError exceptions

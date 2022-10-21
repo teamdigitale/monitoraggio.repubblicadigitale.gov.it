@@ -1,6 +1,6 @@
+import React from 'react';
 import clsx from 'clsx';
 import { CardProps, CardText, CardTitle, Col, Icon } from 'design-react-kit';
-import React, { memo } from 'react';
 import Heart from '/public/assets/img/heart.png';
 import bookmark from '/public/assets/img/bookmark.png';
 import './cardShowcase.scss';
@@ -57,7 +57,7 @@ const CardShowcase: React.FC<CardShowcaseI> = (props) => {
   const isMobile = device.mediaIsPhone;
   const navigate = useNavigate();
   const navigateTo = () => {
-    navigate(`/bacheca-digitale/${id}`);
+    navigate(`/bacheca/${id}`);
   };
 
   return (
@@ -76,7 +76,7 @@ const CardShowcase: React.FC<CardShowcaseI> = (props) => {
           <img
             src={cover ? cleanDrupalFileURL(cover) : coverPlaceholder}
             title='img title'
-            alt='imagealt'
+            alt=''
             className='responsive'
           />
         </div>
@@ -202,4 +202,4 @@ const CardShowcase: React.FC<CardShowcaseI> = (props) => {
   );
 };
 
-export default memo(CardShowcase);
+export default CardShowcase;

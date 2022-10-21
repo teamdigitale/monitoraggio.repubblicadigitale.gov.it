@@ -17,6 +17,7 @@ import PillDropDown from '../../../components/PillDropDown/pillDropDown';
 import Notification from './components/Notifications/notification';
 import { selectUser, selectUserNotification } from '../../../redux/features/user/userSlice';
 import { GetNotificationsByUser } from '../../../redux/features/user/userThunk';
+import { setEntityPagination } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 
 const Notifications: React.FC = () => {
   const device = useAppSelector(selectDevice);
@@ -30,15 +31,14 @@ const Notifications: React.FC = () => {
   const [selectedNotifications, setSelectedNotifications] = useState<string[]>([]);
 
   useEffect(() => {
+    dispatch(setEntityPagination({ pageSize: 3 }));
     userId && dispatch(GetNotificationsByUser(userId))
   }, [userId])
 
-  // const handleOnChangePage = (pageNumber: number = pagination?.pageNumber) => {
-  //   dispatch(setEntityPagination({ pageNumber }));
-  // };
-  // useEffect(() => {
-  //   dispatch(setEntityPagination({ pageSize: 3 }));
-  // }, []);
+  const handleOnChangePage = (pageNumber: number = pagination?.pageNumber) => {
+    dispatch(setEntityPagination({ pageNumber }));
+  };
+
 
   const onSelectAll = () => {
     if (notificationsList.every(notification => selectedNotifications.includes(notification.id))) {
@@ -160,12 +160,11 @@ const Notifications: React.FC = () => {
         ))}</Container>
       {!isMobile && pagination?.pageNumber ? (
         <Paginator
-          pageSize={notificationsList.length}
+          pageSize={pagination?.pageSize}
           activePage={pagination?.pageNumber}
           center
-          refID='#notification'
-          total={pagination.pageNumber}
-        // onChange={handleOnChangePage}
+          total={pagination?.totalPages}
+          onChange={handleOnChangePage}
         />
       ) : null}
     </>

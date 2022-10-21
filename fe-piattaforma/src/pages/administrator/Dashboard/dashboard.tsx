@@ -72,6 +72,12 @@ const authContents = {
     'Consulta le statistiche rappresentate in questa pagina, oppure accedi allo strumento di Business Intelligence per consultare, configurare e scaricare in autonomia i dati a tua disposizione',
 };
 
+const authContentsShort = {
+  title: 'I miei report',
+  subtitle:
+    'Consulta le statistiche rappresentate in questa pagina',
+};
+
 /*
 HEIGHT IFRAME REPORT DATI
          RUOLO                 ---      DESKTOP       ---        MOBILE      ---       TABLET
@@ -240,7 +246,7 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.codiceRuolo, device]);
 
-  const contents = user?.codiceRuolo ? authContents : publicContents;
+  const contents = user?.codiceRuolo ? (hasUserPermission(['self.bi']) ? authContents:authContentsShort) : publicContents;
 
   return (
     <div className='container dashboard-container my-5'>

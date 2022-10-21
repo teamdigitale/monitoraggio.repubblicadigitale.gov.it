@@ -1,5 +1,6 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import clsx from 'clsx';
 import './bachecaDigitaleWidget.scss';
 import CardShowcase from '../../../../../components/CardShowcase/cardShowcase';
 import { useAppSelector } from '../../../../../redux/hooks';
@@ -9,7 +10,6 @@ import Slider, {
   formatSlides,
 } from '../../../../../components/General/Slider/Slider';
 import { getMediaQueryDevice } from '../../../../../utils/common';
-import clsx from 'clsx';
 
 const newsPagination = {
   desktop: 24,
@@ -29,7 +29,7 @@ const BachecaDigitaleWidget = () => {
   const [newsList, setNewsList] = useState([]);
 
   const newsWidgetSet = async () => {
-    const itemPerPage = newsPagination[getMediaQueryDevice(device)].toString();
+    const itemPerPage = newsPagination.desktop.toString();
     const res = await dispatch(
       GetNewsList(
         {
@@ -41,14 +41,13 @@ const BachecaDigitaleWidget = () => {
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-
     setNewsList(res?.data?.data?.items || []);
   };
 
   useEffect(() => {
     newsWidgetSet();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [device]);
+  }, []);
 
   return (
     <div className='py-5'>
@@ -77,7 +76,7 @@ const BachecaDigitaleWidget = () => {
             <a
               className='btn btn-primary'
               role='button'
-              href='/bacheca-digitale'
+              href='/bacheca'
             >
               Leggi tutte le news
             </a>
@@ -90,7 +89,7 @@ const BachecaDigitaleWidget = () => {
         </span>
         <Slider isItemsHome={!device.mediaIsPhone}>
           {formatSlides(
-            newsList,
+            newsList.slice(0, newsPagination[getMediaQueryDevice(device)]),
             carouselPagination[getMediaQueryDevice(device)]
           ).map((el, i) => (
             <div
@@ -111,7 +110,7 @@ const BachecaDigitaleWidget = () => {
       </div>
       {device.mediaIsPhone && (
         <div className='d-flex justify-content-center mt-5'>
-          <a className='btn btn-primary' role='button' href='/bacheca-digitale'>
+          <a className='btn btn-primary' role='button' href='/bacheca'>
             Leggi tutte le news
           </a>
         </div>
@@ -120,4 +119,4 @@ const BachecaDigitaleWidget = () => {
   );
 };
 
-export default memo(BachecaDigitaleWidget);
+export default BachecaDigitaleWidget;

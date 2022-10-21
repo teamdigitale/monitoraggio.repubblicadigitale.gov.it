@@ -96,10 +96,16 @@ const ManageCitizenInService: React.FC<ManageCitizenInServiceI> = ({
       ...body,
       questionarioQ1: sezioneQ1Questionario,
     };
-    if (idCittadino) await dispatch(UpdateCitizenDetail(idCittadino, body));
-    // rifaccio get cittadini servizio
-    dispatch(GetCitizenListServiceDetail(serviceId));
-    resetModal();
+    if (idCittadino) {
+      const res = await dispatch(UpdateCitizenDetail(idCittadino, body));
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (res) {
+        // rifaccio get cittadini servizio
+        dispatch(GetCitizenListServiceDetail(serviceId));
+        resetModal();
+      }
+    }
   };
 
   const modalCTAs = !viewMode

@@ -57,7 +57,7 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
                 <span className='badge-notifications'>
                   {
                     notificationsList.filter(
-                      (notificationsList) => notificationsList.unread === true
+                      (notificationsList) => !notificationsList.status
                     ).length
                   }
                 </span>
