@@ -219,6 +219,12 @@ public class UtenteService {
 					if(this.referentiDelegatiEnteGestoreProgettoRepository.countByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), codiceRuolo) == 0)
 						eliminaUtente = true;
 					break;
+				case "FAC":
+				case "VOL":
+					if((this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerEntePartner(utente.getCodiceFiscale(), codiceRuolo).size()
+							 + this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerGestore(utente.getCodiceFiscale(), codiceRuolo).size()) == 0)
+						eliminaUtente = true;
+					break;
 				default:
 					break;
 				}
@@ -620,7 +626,9 @@ public class UtenteService {
 								break;
 							case "FAC":
 							case "VOL":
-								mappaProgrammiProgettiUtente.put(ruolo, this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontario(cfUtente, ruolo.getCodice()));
+								List<ProgettoEnteProjection> entiProgetto = new ArrayList<>();
+								entiProgetto.addAll(this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerGestore(cfUtente, ruolo.getCodice()));
+								entiProgetto.addAll(this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerEntePartner(cfUtente, ruolo.getCodice()));
 								break;
 							default:
 								mappaProgrammiProgettiUtente.put(ruolo, new ArrayList<Long>());
@@ -779,7 +787,11 @@ public class UtenteService {
 								break;
 							case "FAC":
 							case "VOL":
-								mappaProgrammiProgettiUtente.put(ruolo, this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontario(cfUtente, ruolo.getCodice()));
+								List<ProgettoEnteProjection> entiProgetto = new ArrayList<>();
+								entiProgetto.addAll(this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerGestore(cfUtente, ruolo.getCodice()));
+								entiProgetto.addAll(this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerEntePartner(cfUtente, ruolo.getCodice()));
+								if(entiProgetto.size() > 0)
+									mappaProgrammiProgettiUtente.put(ruolo, entiProgetto);
 								break;
 							default:
 								mappaProgrammiProgettiUtente.put(ruolo, new ArrayList<Long>());

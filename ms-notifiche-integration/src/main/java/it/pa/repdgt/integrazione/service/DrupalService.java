@@ -114,8 +114,10 @@ public class DrupalService {
 		} finally {
 			// Cancellazione file creato in precedenza
 			try {
-				fostrm.close();
-				resource.getInputStream().close();
+				if(param.getIsUploadFile() != null && param.getIsUploadFile() == Boolean.TRUE) {
+					fostrm.close();
+					resource.getInputStream().close();
+				}
 			} catch (IOException e) {
 				log.error("impossibile effettuare fileOutputStream.close --> {}", e);;
 			}

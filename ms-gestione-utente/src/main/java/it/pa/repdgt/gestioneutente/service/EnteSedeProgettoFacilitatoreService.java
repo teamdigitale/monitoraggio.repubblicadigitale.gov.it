@@ -18,8 +18,14 @@ public class EnteSedeProgettoFacilitatoreService {
 
 	@LogMethod
 	@LogExecutionTime
-	public List<ProgettoEnteProjection> getIdProgettiFacilitatoreVolontario(String cfUtente, String codiceRuolo) {
-		return this.enteSedeProgettoFacilitatoreRepository.findIdProgettiFacilitatoreVolontario(cfUtente, codiceRuolo);
+	public List<ProgettoEnteProjection> getIdProgettiFacilitatoreVolontarioPerGestore(String cfUtente, String codiceRuolo) {
+		return this.enteSedeProgettoFacilitatoreRepository.findIdProgettiFacilitatoreVolontarioPerGestore(cfUtente, codiceRuolo);
+	}
+	
+	@LogMethod
+	@LogExecutionTime
+	public List<ProgettoEnteProjection> getIdProgettiFacilitatoreVolontarioPerEntePartner(String cfUtente, String codiceRuolo) {
+		return this.enteSedeProgettoFacilitatoreRepository.findIdProgettiFacilitatoreVolontarioPerEntePartner(cfUtente, codiceRuolo);
 	}
 	
 	@LogMethod
