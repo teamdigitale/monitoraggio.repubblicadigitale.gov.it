@@ -713,6 +713,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 	);
 
 	public Optional<UtenteEntity> findByEmailAndCodiceFiscaleNot(String email, String codiceFiscale);
+	public Optional<UtenteEntity> findByEmailAndIdNot(String email, Long id);
 
 	@Query(value = " "
 			 + "SELECT count(*) "
@@ -1293,5 +1294,15 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "	WHERE utente.id IN (:idsUtenti)",
 			nativeQuery = true)
 	public List<UtenteEntity> findListaUtentiByIdUtenti(@Param(value = "idsUtenti") List<Long> idsUtenti);
+
+	@Query(value = ""
+			+ "	SELECT * "
+			+ "	FROM utente utente "
+			+ "	WHERE utente.codice_fiscale = :codiceFiscale "
+			+ "		AND utente.id <> :idUtente",
+			nativeQuery = true)
+	public Optional<UtenteEntity> findUtenteByCodiceFiscaleAndIdDiverso(
+			@Param(value = "codiceFiscale") String codiceFiscale,
+			@Param(value = "idUtente") Long idUtente);
 
 }

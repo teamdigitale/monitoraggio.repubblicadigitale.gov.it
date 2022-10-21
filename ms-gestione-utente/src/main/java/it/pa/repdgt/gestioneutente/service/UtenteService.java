@@ -197,8 +197,42 @@ public class UtenteService {
 				listaUtenti.addAll(utenti);
 				break;
 		}
-		
+		if(filtroRequest.getRuoli() != null && filtroRequest.getRuoli().size() > 0)
+			listaUtenti = getListaUtentiFiltrataPerRuolo(listaUtenti, filtroRequest.getRuoli());
 		return this.getUtentiConRuoliAggregati(listaUtenti);
+	}
+
+	private List<UtenteEntity> getListaUtentiFiltrataPerRuolo(List<UtenteEntity> listaUtenti, List<String> ruoli) {
+		ArrayList<UtenteEntity> listaUtentiResult = new ArrayList<UtenteEntity>();
+		for(UtenteEntity utente: listaUtenti) {
+			boolean eliminaUtente = false;
+			for(String ruolo: ruoli) {
+				String codiceRuolo = this.ruoloService.getRuoliByNome(ruolo.trim()).get(0).getCodice();
+				switch (codiceRuolo) {
+				case "REG":
+				case "DEG":
+					if(this.referentiDelegatiEnteGestoreProgrammaRepository.countByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), codiceRuolo) == 0)
+						eliminaUtente = true;
+					break;
+				case "REGP":
+				case "DEGP":
+					if(this.referentiDelegatiEnteGestoreProgettoRepository.countByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), codiceRuolo) == 0)
+						eliminaUtente = true;
+					break;
+				case "FAC":
+				case "VOL":
+					if((this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerEntePartner(utente.getCodiceFiscale(), codiceRuolo).size()
+							 + this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerGestore(utente.getCodiceFiscale(), codiceRuolo).size()) == 0)
+						eliminaUtente = true;
+					break;
+				default:
+					break;
+				}
+			}
+			if(!eliminaUtente)
+				listaUtentiResult.add(utente);
+		}
+		return listaUtentiResult;
 	}
 
 	private Set<UtenteEntity> getUtentiPerReferenteDelegatoEntePartnerProgetti(Long idProgramma, Long idProgetto,
@@ -280,9 +314,9 @@ public class UtenteService {
 	@LogMethod
 	@Transactional
 	public UtenteEntity creaNuovoUtente(UtenteEntity utente, String codiceRuolo) {
-//		if(isEmailDuplicata(utente.getEmail(), utente.getCodiceFiscale())) {
-//			throw new UtenteException("ERRORE: non possono esistere a sistema due email per due utenti diversi");
-//		}
+		if(isEmailDuplicata(utente.getEmail(), utente.getCodiceFiscale())) {
+			throw new UtenteException("ERRORE: non possono esistere a sistema due email per due utenti diversi", CodiceErroreEnum.U21);
+		}
 		// Verifico se esiste sul DB un utente con stesso codice fiscale e in caso affermativo lancio eccezione
 		Optional<UtenteEntity> utenteDBFetch = this.utenteRepository.findByCodiceFiscale(utente.getCodiceFiscale());
 		if(utenteDBFetch.isPresent()) {
@@ -315,9 +349,13 @@ public class UtenteService {
 		return utenteSalvato;
 	}
 	
-//	private boolean isEmailDuplicata(String email, String codiceFiscale) {
-//		return this.utenteRepository.findByEmailAndCodiceFiscaleNot(email, codiceFiscale).isPresent();
-//	}
+	private boolean isEmailDuplicata(String email, String codiceFiscale) {
+		return this.utenteRepository.findByEmailAndCodiceFiscaleNot(email, codiceFiscale).isPresent();
+	}
+	
+	private boolean isEmailDuplicataPerId(String email, Long id) {
+		return this.utenteRepository.findByEmailAndIdNot(email, id).isPresent();
+	}
 
 	@LogExecutionTime
 	@LogMethod
@@ -328,6 +366,13 @@ public class UtenteService {
 		} catch (ResourceNotFoundException ex) {
 			String messaggioErrore = String.format("utente con id=%s non trovato", idUtente);
 			throw new UtenteException(messaggioErrore, ex, CodiceErroreEnum.U11);
+		}
+		if(isEmailDuplicataPerId(aggiornaUtenteRequest.getEmail(),idUtente)) {
+			throw new UtenteException("ERRORE: non possono esistere a sistema due email per due utenti diversi", CodiceErroreEnum.U21);
+		}
+		if(this.utenteRepository.findUtenteByCodiceFiscaleAndIdDiverso(aggiornaUtenteRequest.getCodiceFiscale(), idUtente).isPresent()) {
+			String messaggioErrore = String.format("utente con codice fiscale=%s già presente", aggiornaUtenteRequest.getCodiceFiscale());
+			throw new UtenteException(messaggioErrore, CodiceErroreEnum.U01);
 		}
 		utenteFetchDB.setEmail(aggiornaUtenteRequest.getEmail());
 		utenteFetchDB.setTelefono(aggiornaUtenteRequest.getTelefono());
@@ -581,7 +626,9 @@ public class UtenteService {
 								break;
 							case "FAC":
 							case "VOL":
-								mappaProgrammiProgettiUtente.put(ruolo, this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontario(cfUtente, ruolo.getCodice()));
+								List<ProgettoEnteProjection> entiProgetto = new ArrayList<>();
+								entiProgetto.addAll(this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerGestore(cfUtente, ruolo.getCodice()));
+								entiProgetto.addAll(this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerEntePartner(cfUtente, ruolo.getCodice()));
 								break;
 							default:
 								mappaProgrammiProgettiUtente.put(ruolo, new ArrayList<Long>());
@@ -740,7 +787,11 @@ public class UtenteService {
 								break;
 							case "FAC":
 							case "VOL":
-								mappaProgrammiProgettiUtente.put(ruolo, this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontario(cfUtente, ruolo.getCodice()));
+								List<ProgettoEnteProjection> entiProgetto = new ArrayList<>();
+								entiProgetto.addAll(this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerGestore(cfUtente, ruolo.getCodice()));
+								entiProgetto.addAll(this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerEntePartner(cfUtente, ruolo.getCodice()));
+								if(entiProgetto.size() > 0)
+									mappaProgrammiProgettiUtente.put(ruolo, entiProgetto);
 								break;
 							default:
 								mappaProgrammiProgettiUtente.put(ruolo, new ArrayList<Long>());
@@ -1228,25 +1279,18 @@ public class UtenteService {
 	public List<UtenteImmagineResource> getListaUtentiByIdUtenti(ListaUtentiResource idsUtenti, Boolean richiediImmagine) {
 		List<UtenteImmagineResource> listaUtenti = new ArrayList<>();
 		List<UtenteEntity> listaUtentiEntity = this.utenteRepository.findListaUtentiByIdUtenti(idsUtenti.getIdsUtenti());
-		if(richiediImmagine) {
-			listaUtentiEntity.stream().forEach(utenteFetched -> {
-				UtenteImmagineResource utente = new UtenteImmagineResource();
-				utente.setNome(utenteFetched.getNome());
-				utente.setCognome(utenteFetched.getCognome());
+		listaUtentiEntity.stream().forEach(utenteFetched -> {
+			UtenteImmagineResource utente = new UtenteImmagineResource();
+			utente.setNome(utenteFetched.getNome());
+			utente.setCognome(utenteFetched.getCognome());
+			utente.setId(utenteFetched.getId());
+			if(richiediImmagine) {
 				if(utenteFetched.getImmagineProfilo() != null) {
 					utente.setImmagineProfilo(this.s3Service.getPresignedUrl(utenteFetched.getImmagineProfilo(), this.nomeDelBucketS3, Long.parseLong(this.presignedUrlExpireContesto)));
 				}
-				listaUtenti.add(utente);
-			});
-		} else {
-			listaUtentiEntity.stream().forEach(utenteFetched -> {
-				UtenteImmagineResource utente = new UtenteImmagineResource();
-				utente.setNome(utenteFetched.getNome());
-				utente.setCognome(utenteFetched.getCognome());
-				listaUtenti.add(utente);
-				
-			});
-		}
+			}
+			listaUtenti.add(utente);
+		});
 		return listaUtenti;
 	}
 }
