@@ -1,4 +1,4 @@
-import { Button, Icon } from 'design-react-kit';
+import { Button, FormGroup, Icon } from 'design-react-kit';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -15,7 +15,8 @@ import {
   selectDocDetail,
 } from '../../../redux/features/forum/forumSlice';
 import {
-  DeleteItem,
+  ActionTracker,
+  DeleteItem, DocumentRate,
   GetItemDetail,
 } from '../../../redux/features/forum/forumThunk';
 import {
@@ -62,6 +63,21 @@ const DocumentsDetails = () => {
     if (id && userId) {
       dispatch(GetCommentsList(id, userId));
       dispatch(GetItemDetail(id, userId, 'document'));
+    }
+  };
+
+  const handleRate = async (rate: 1 | 2) => {
+    if (id && rate) {
+      await dispatch(DocumentRate(id, rate));
+      dispatch(ActionTracker({
+        target: 'tnd',
+        action_type: 'RATING',
+        event_type: 'DOCUMENTI',
+        event_value: rate === 1 ? 'Y' : 'N',
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        category: docDetails?.category,
+      }));
     }
   };
 
@@ -115,6 +131,49 @@ const DocumentsDetails = () => {
           )
         }
       />
+
+      <div className='d-flex align-items-center w-100'>
+        <span
+          className='d-none d-md-flex'
+          style={{
+            height: '2px',
+            flexGrow: '1',
+            backgroundColor: '#797C80',
+          }}
+        />
+        <div className='d-flex justify-content-center align-items-center px-3 mx-auto'>
+          <span
+            className='pr-3'
+            style={{
+              color: '#2079D4',
+              fontWeight: '700',
+            }}
+          >
+            Ti è stato utile?
+          </span>
+          <div className='d-flex'>
+            <FormGroup check className='d-flex align-items-center mt-0 pr-2'>
+              {/*
+                            <Input name='rate' type='radio' id='si' />
+              <label className='mb-0'>SI</label>
+
+              <Input name='rate' type='radio' id='no' />
+              <label className='mb-0'>NO</label>
+              */}
+              <Button onClick={() => handleRate(1)}>Si</Button>
+              <Button onClick={() => handleRate(2)}>No</Button>
+            </FormGroup>
+          </div>
+        </div>
+        <span
+          className='d-none d-md-flex'
+          style={{
+            height: '2px',
+            flexGrow: '1',
+            backgroundColor: '#797C80',
+          }}
+        />
+      </div>
       {commentsList.length ? <CommentSection section='ducuments' /> : null}
       <div className='border mt-3'></div>
       <ManageDocument />

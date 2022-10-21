@@ -42,7 +42,7 @@ const ManageComment: React.FC<ManageCommentI> = ({
           dispatch(ActionTracker({
             target: 'tnd',
             action_type: 'COMMENTO',
-            event_type: payload.entity === 'board' ? 'NEWS' : payload.entity === 'community' ? 'TOPIC' : 'DOCUMENT',
+            event_type: payload.entity === 'board' ? 'NEWS' : payload.entity === 'community' ? 'TOPIC' : 'DOCUMENTI',
             category: payload.category,
           }));
           break;

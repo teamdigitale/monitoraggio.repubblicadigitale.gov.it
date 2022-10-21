@@ -219,11 +219,11 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
           <UserAvatar
             // avatarImage={profilePicture}
             user={{ uSurname: 'Galassi', uName: 'Riccardo' }}
-            //size={device.mediaIsPhone ? AvatarSizes.Big : AvatarSizes.Small}
-            /*  font={
-              device.mediaIsPhone ? AvatarTextSizes.Big : AvatarTextSizes.Small
-            } */
-            //lightColor={device.mediaIsPhone}
+          //size={device.mediaIsPhone ? AvatarSizes.Big : AvatarSizes.Small}
+          /*  font={
+            device.mediaIsPhone ? AvatarTextSizes.Big : AvatarTextSizes.Small
+          } */
+          //lightColor={device.mediaIsPhone}
           />
           <div> {'CIAO'} </div>
           <StatusChip
@@ -236,7 +236,7 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
               //device.mediaIsPhone ? 'mx-0 ml-2 my-3' : 'mx-3'
             )}
             status={'ATTIVO'}
-            //rowTableId={name?.replace(/\s/g, '') || new Date().getTime()}
+          //rowTableId={name?.replace(/\s/g, '') || new Date().getTime()}
           />
         </div>
         <div className='d-flex w-100 justify-content-center'> {'CIAO'} </div>
@@ -370,6 +370,45 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
            Questa è la prova di un commento per vedere se è tutto posizionato in modo corretto
            Questa è la prova di un commento per vedere se è tutto posizionato in modo corretto '
         /> */}
+      </section>
+
+      <section>
+        <div className='d-flex align-items-center w-100'>
+          <span 
+          className='d-none d-md-flex'
+          style={{
+            height: '2px',
+            flexGrow: '1',
+            backgroundColor: '#797C80',
+          }} />
+          <div  className='d-flex justify-content-center align-items-center px-3 mx-auto'>
+            <span 
+            className='pr-3'
+            style={{
+              color: '#2079D4',
+              fontWeight: '700'
+            }}>
+              Ti è stato utile?
+            </span>
+            <div  className='d-flex'>
+              <FormGroup check className='d-flex align-items-center mt-0 pr-2'>
+                <Input name='si' type='radio' id='si' />
+                <label className='mb-0'>SI</label>
+              </FormGroup>
+              <FormGroup check className='d-flex align-items-center mt-0'>
+                <Input name='si' type='radio' id='si' />
+                <label className='mb-0'>NO</label>
+              </FormGroup>
+            </div>
+          </div>
+          <span 
+          className='d-none d-md-flex'
+          style={{
+            height: '2px',
+            flexGrow: '1',
+            backgroundColor: '#797C80',
+          }} />
+        </div>
       </section>
 
       <section>
