@@ -398,6 +398,7 @@ public class UtenteServiceTest {
 	@Test
 	public void aggiornaUtenteTest() {
 		when(this.utenteRepository.findById(utente.getId())).thenReturn(Optional.of(utente));
+		when(this.utenteRepository.findUtenteByCodiceFiscaleAndIdDiverso(aggiornaUtenteRequest.getCodiceFiscale(), utente.getId())).thenReturn(Optional.empty());
 		service.aggiornaUtente(aggiornaUtenteRequest, utente.getId());
 	}
 	
@@ -405,6 +406,15 @@ public class UtenteServiceTest {
 	public void aggiornaUtenteKOTest() {
 		//test KO per utente non trovato
 		when(this.utenteRepository.findById(utente.getId())).thenReturn(Optional.empty());
+		Assertions.assertThrows(UtenteException.class, () -> service.aggiornaUtente(aggiornaUtenteRequest, utente.getId()));
+		assertThatExceptionOfType(UtenteException.class);
+	}
+	
+	@Test
+	public void aggiornaUtenteKOTest2() {
+		//test KO per codice fiscale già presente
+		when(this.utenteRepository.findById(utente.getId())).thenReturn(Optional.of(utente));
+		when(this.utenteRepository.findUtenteByCodiceFiscaleAndIdDiverso(aggiornaUtenteRequest.getCodiceFiscale(), utente.getId())).thenReturn(Optional.of(utente));
 		Assertions.assertThrows(UtenteException.class, () -> service.aggiornaUtente(aggiornaUtenteRequest, utente.getId()));
 		assertThatExceptionOfType(UtenteException.class);
 	}
@@ -734,7 +744,8 @@ public class UtenteServiceTest {
 		listaProgettoEnte.add(progettoEnteProjectionImplementation);
 		when(this.utenteRepository.findById(utente.getId())).thenReturn(Optional.of(utente));
 		when(this.ruoloService.getRuoliCompletiByCodiceFiscaleUtente(utente.getCodiceFiscale())).thenReturn(ruoli);
-		when(this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontario(sceltaContesto.getCfUtenteLoggato(), ruolo1.getCodice())).thenReturn(listaProgettoEnte);
+		when(this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerEntePartner(sceltaContesto.getCfUtenteLoggato(), ruolo1.getCodice())).thenReturn(listaProgettoEnte);
+		when(this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerGestore(sceltaContesto.getCfUtenteLoggato(), ruolo1.getCodice())).thenReturn(listaProgettoEnte);
 		when(this.progettoService.getProgettoById(progetto.getId())).thenReturn(progetto);
 		when(this.enteRepository.findById(1L)).thenReturn(Optional.of(enteEntity));
 		when(this.enteSedeProgettoFacilitatoreService.getDistinctStatoByIdProgettoIdFacilitatoreVolontario(sceltaContesto.getCfUtenteLoggato(), ruolo1.getCodice(),  progetto.getId())).thenReturn(listaStati);

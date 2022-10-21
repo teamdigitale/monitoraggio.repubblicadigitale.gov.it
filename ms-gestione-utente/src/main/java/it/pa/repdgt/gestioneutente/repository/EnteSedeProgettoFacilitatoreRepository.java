@@ -21,14 +21,30 @@ public interface EnteSedeProgettoFacilitatoreRepository extends JpaRepository<En
 			+ "		AND STATO_UTENTE <> 'TERMINATO'", nativeQuery = true)
 	List<Long> findDistinctProgettiByIdFacilitatoreNonTerminato(@Param(value = "codiceFiscale")String codiceFiscale, 
 			@Param(value = "ruolo")String ruolo);
-
+	
 	@Query(value = ""
 			+ "     	SELECT DISTINCT espf.ID_PROGETTO as idProgetto, espf.ID_ENTE as idEnte"
 			+ "			FROM ente_sede_progetto_facilitatore espf "
+			+ "         INNER JOIN progetto p "
+			+ "         ON p.id = espf.id_progetto "
+			+ "         AND p.id_ente_gestore_progetto = espf.id_ente"
 			+ "			WHERE espf.ID_FACILITATORE = :cfUtente    "
 			+ "			AND RUOLO_UTENTE = :codiceRuolo           ", 
 			nativeQuery = true)
-	List<ProgettoEnteProjection> findIdProgettiFacilitatoreVolontario(
+	List<ProgettoEnteProjection> findIdProgettiFacilitatoreVolontarioPerGestore(
+			@Param(value = "cfUtente")    String cfUtente,
+			@Param(value = "codiceRuolo") String codiceRuolo);
+	
+	@Query(value = ""
+			+ "     	SELECT DISTINCT espf.ID_PROGETTO as idProgetto, espf.ID_ENTE as idEnte"
+			+ "			FROM ente_sede_progetto_facilitatore espf "
+			+ "         INNER JOIN ente_partner ep "
+			+ "         ON ep.id_progetto = espf.id_progetto "
+			+ "         AND ep.id_ente = espf.id_ente"
+			+ "			WHERE espf.ID_FACILITATORE = :cfUtente    "
+			+ "			AND RUOLO_UTENTE = :codiceRuolo           ", 
+			nativeQuery = true)
+	List<ProgettoEnteProjection> findIdProgettiFacilitatoreVolontarioPerEntePartner(
 			@Param(value = "cfUtente")    String cfUtente,
 			@Param(value = "codiceRuolo") String codiceRuolo);
 	
@@ -47,8 +63,21 @@ public interface EnteSedeProgettoFacilitatoreRepository extends JpaRepository<En
 			+ "		FROM ("
 			+ "			SELECT DISTINCT espf.id_progetto, espf.id_ente "
 			+ "			FROM ente_sede_progetto_facilitatore espf "
+			+ "         INNER JOIN ente_partner ep "
+			+ "         ON ep.id_progetto = espf.id_progetto "
+			+ "         AND ep.id_ente = espf.id_ente"
 			+ "			WHERE espf.ID_FACILITATORE = :cfUtente"
 			+ "			AND RUOLO_UTENTE = :codiceRuolo "
+			+ " "
+			+ "         UNION"
+			+ " "
+			+ "     	SELECT DISTINCT espf.ID_PROGETTO, espf.ID_ENTE"
+			+ "			FROM ente_sede_progetto_facilitatore espf "
+			+ "         INNER JOIN progetto p "
+			+ "         ON p.id = espf.id_progetto "
+			+ "         AND p.id_ente_gestore_progetto = espf.id_ente"
+			+ "			WHERE espf.ID_FACILITATORE = :cfUtente    "
+			+ "			AND RUOLO_UTENTE = :codiceRuolo           "
 			+ "     ) as result", 
 			nativeQuery = true)
 	Integer countByIdFacilitatore(

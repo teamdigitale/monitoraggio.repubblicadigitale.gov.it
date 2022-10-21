@@ -12,6 +12,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UtenteImmagineResource {
 
+	@JsonProperty(value = "id")
+	private Long id;
+
 	@JsonProperty(value = "nome")
 	private String nome;
 	
