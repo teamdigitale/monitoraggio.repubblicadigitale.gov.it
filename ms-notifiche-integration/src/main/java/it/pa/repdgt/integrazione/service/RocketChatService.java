@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import it.pa.repdgt.integrazione.exception.RocketChatException;
 import it.pa.repdgt.integrazione.exception.UtenteException;
 import it.pa.repdgt.integrazione.repository.UtenteRepository;
 import it.pa.repdgt.integrazione.request.RocketChatAutenticaORegistraRequest;
@@ -26,6 +27,7 @@ import it.pa.repdgt.integrazione.request.RocketChatCreaUtenteRequest;
 import it.pa.repdgt.integrazione.request.RocketChatImpostaAvatarUtenteRequest;
 import it.pa.repdgt.shared.entity.IntegrazioniUtenteEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -67,7 +69,7 @@ public class RocketChatService {
 		final String messaggioErrore = String.format("Utente con id=%s non esiste", idUtente);
 		// Recupero l'utente a aprtire dall'id se esiste, altrimenti eccezione
 		UtenteEntity utenteDBFetch = this.utenteRepository.findById(idUtente)
-				.orElseThrow(() -> new UtenteException(messaggioErrore));
+				.orElseThrow(() -> new UtenteException(messaggioErrore, CodiceErroreEnum.C01));
 		
 		// Verifico se l'utente prelvato dal db è già stato precedentemente registrato su RocketChat
 		final IntegrazioniUtenteEntity integrazioniUtente = utenteDBFetch.getIntegrazioneUtente();
@@ -78,8 +80,8 @@ public class RocketChatService {
 			// [1]. Creazione nuovo utente RocketChat
 			RocketChatCreaUtenteRequest rocketChatUtenteRequest = new RocketChatCreaUtenteRequest();
 			
-			final String prefissoEmailUtente = utenteDBFetch.getEmail().split("@")[0];
-			final String defaultUsername = prefissoEmailUtente.concat(idUtente.toString());
+			final String nomeECognome = utenteDBFetch.getNome().trim().concat(".").concat(utenteDBFetch.getCognome().trim());
+			final String defaultUsername = nomeECognome.concat(idUtente.toString());
 			rocketChatUtenteRequest.setUsername(autenticaORegistraRequest.getUsername() != null? autenticaORegistraRequest.getUsername(): defaultUsername);
 			
 			final String defaultName = utenteDBFetch.getNome();
@@ -94,11 +96,11 @@ public class RocketChatService {
 			try {
 				responseCreaUtenteRocketChat = this.creaUtenteRocketChat(rocketChatUtenteRequest);
 			} catch (Exception ex) {
-				throw new RuntimeException(String.format("Errore creazione utente in RocketChat. %s", ex.getMessage()), ex);
+				throw new RocketChatException(String.format("Errore creazione utente in RocketChat. %s", ex.getMessage()), ex, CodiceErroreEnum.RC01);
 			}
 			
 			if(responseCreaUtenteRocketChat.getStatusCode() != HttpStatus.OK) {
-				throw new RuntimeException(String.format("Errore creazione utente in RocketChat. Api creaUtente ha resituito lo status-code=" + responseCreaUtenteRocketChat.getStatusCode()));
+				throw new RocketChatException(String.format("Errore creazione utente in RocketChat. Api creaUtente ha resituito lo status-code=" + responseCreaUtenteRocketChat.getStatusCode()), CodiceErroreEnum.RC02);
 			}
 
 			Map utenteRocketChatCreato = (Map) responseCreaUtenteRocketChat.getBody().get("user");
@@ -146,7 +148,7 @@ public class RocketChatService {
 		try {
 			authTokenRocketChat = (Map<String, String>) this.creaTokenUtenteRocketChat(rocketChatLoginRequest).getBody().get("data");
 		} catch (Exception ex) {
-			throw new RuntimeException(String.format("Errore creazione token in RocketChat. %s", ex.getMessage()), ex);
+			throw new RocketChatException(String.format("Errore creazione token in RocketChat. %s", ex.getMessage()), ex, CodiceErroreEnum.RC03);
 		}
 		return authTokenRocketChat;
 	}
@@ -188,22 +190,6 @@ public class RocketChatService {
 		log.info("<== response status {}", response.getStatusCode());
 		return response;
 	}
-
-	// TODO da cancellare
-//	/**
-//	 * Registrazione utente in RocketChat server
-//	 * 
-//	 * */
-//	private RocketChatResponse<RocketChatUtenteResource> registraUtenteRockeChat(final RocketChatRegistraUtenteRequest rocketChatRegistraUtenteRequest) {
-//		final String uri = rocketChatBaseUrl.concat(REGISTRA_UTENTE_ROCKET_CHAT_API);
-//		log.info("==> POST {}", uri);
-//		ResponseEntity<RocketChatResponse> response = this.restTemplate.postForEntity(uri, rocketChatRegistraUtenteRequest, RocketChatResponse.class);
-//		log.info("<== response status {}", response.getStatusCode());
-//		final RocketChatUtenteResource rocketChatUtenteResource = (RocketChatUtenteResource) response.getBody().getRocketChatResource();
-//		return new RocketChatResponse<RocketChatUtenteResource>()
-//				.entity(rocketChatUtenteResource)
-//				.success(response.getStatusCode() == HttpStatus.OK? true: false);
-//	}
 
 	/**
 	 * Impostazione avatar utente in RocketChat server
