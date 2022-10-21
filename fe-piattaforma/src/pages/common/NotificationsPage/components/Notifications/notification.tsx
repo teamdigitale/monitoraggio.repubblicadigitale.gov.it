@@ -13,13 +13,18 @@ import { useAppSelector } from '../../../../../redux/hooks';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import Input from '../../../../../components/Form/input';
 import moment from 'moment';
-
 import { getUserIdsFromNotification } from '../../../../../utils/common';
 import { useDispatch } from 'react-redux';
-import { getAnagraphicID, selectAnagraphics } from '../../../../../redux/features/anagraphic/anagraphicSlice';
+import {
+  getAnagraphicID,
+  selectAnagraphics,
+} from '../../../../../redux/features/anagraphic/anagraphicSlice';
 import NotificationIcon from './NotificationIcon/NotificationIcon';
-import { DeleteNotification, GetNotificationsByUser } from '../../../../../redux/features/user/userThunk';
-import { selectUser } from '../../../../../redux/features/user/userSlice';
+import {
+  DeleteNotification,
+  GetNotificationsByUser,
+} from '../../../../../redux/features/user/userThunk';
+
 export interface NotificationI {
   id?: string;
   date?: string;
@@ -47,44 +52,49 @@ const Notification: React.FC<NotificationI> = (props) => {
     onClick = () => ({}),
   } = props;
 
+  const device = useAppSelector(selectDevice);
+  const isMobile = device.mediaIsPhone;
   const [openUser, setOpenUser] = useState<boolean>(false);
-  const dispatch = useDispatch()
-  const usersAnagraphic = useAppSelector(selectAnagraphics)
-  const [populatedMessage, setPopulatedMessage] = useState('')
-  const userId = useAppSelector(selectUser)?.id
+  const dispatch = useDispatch();
+  const usersAnagraphic = useAppSelector(selectAnagraphics);
+  const [populatedMessage, setPopulatedMessage] = useState('');
 
   useEffect(() => {
     if (message) {
-      const { userId, authorId } = getUserIdsFromNotification(message)
-      if (userId) dispatch(getAnagraphicID({ id: userId }))
-      if (authorId) dispatch(getAnagraphicID({ id: authorId }))
+      const { userId, authorId } = getUserIdsFromNotification(message);
+      if (userId) dispatch(getAnagraphicID({ id: userId }));
+      if (authorId) dispatch(getAnagraphicID({ id: authorId }));
     }
-  }, [message])
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [message]);
 
   useEffect(() => {
     if (usersAnagraphic && message) {
-      const { userId, authorId } = getUserIdsFromNotification(message)
-      const splittedMessage = message.split('$')
-      if (userId) splittedMessage[1] = usersAnagraphic[userId] ? `<span style=${status ? "" : "color:#06c;font-weight:600;"} >${usersAnagraphic[userId].nome} ${usersAnagraphic[userId].cognome}</span>` : ''
-      if (authorId) splittedMessage[3] = usersAnagraphic[authorId] ? `${usersAnagraphic[authorId].nome} ${usersAnagraphic[authorId].cognome}` : ''
-
-
-      setPopulatedMessage(splittedMessage.join(''))
+      const { userId, authorId } = getUserIdsFromNotification(message);
+      const splittedMessage = message.split('$');
+      if (userId)
+        splittedMessage[1] = usersAnagraphic[userId]
+          ? `<span style=${status ? '' : 'color:#06c;font-weight:600;'} >${
+              usersAnagraphic[userId].nome
+            } ${usersAnagraphic[userId].cognome}</span>`
+          : '';
+      if (authorId)
+        splittedMessage[3] = usersAnagraphic[authorId]
+          ? `${usersAnagraphic[authorId].nome} ${usersAnagraphic[authorId].cognome}`
+          : '';
+      setPopulatedMessage(splittedMessage.join(''));
     }
-  }, [usersAnagraphic])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [usersAnagraphic]);
 
   const onDelete = async () => {
-    id && await dispatch(DeleteNotification(id))
-    userId && dispatch(GetNotificationsByUser(userId))
-  }
-
-
-
+    id && (await dispatch(DeleteNotification(id)));
+    dispatch(GetNotificationsByUser());
+  };
 
   const userDropDown = (
     <Dropdown
-      className="ml-auto"
+      className='ml-auto'
       isOpen={openUser}
       toggle={() => setOpenUser(!openUser)}
     >
@@ -92,15 +102,11 @@ const Notification: React.FC<NotificationI> = (props) => {
         caret
         className='complementary-1-color-a1 shadow-none btn-secondary-none bg-transparent p-0'
         style={{
-          border: 'none'
+          border: 'none',
         }}
       >
         <div>
-          <Icon
-            icon='it-more-items'
-            size='lg'
-            color='primary'
-          />
+          <Icon icon='it-more-items' size='lg' color='primary' />
         </div>
       </DropdownToggle>
       <DropdownMenu role='menu' tag='ul'>
@@ -132,8 +138,6 @@ const Notification: React.FC<NotificationI> = (props) => {
     </Dropdown>
   );
 
-  const device = useAppSelector(selectDevice);
-  const isMobile = device.mediaIsPhone;
   return (
     <div
     // className={clsx(
@@ -144,16 +148,23 @@ const Notification: React.FC<NotificationI> = (props) => {
     //   status && 'notifications-list-container__unread'
     // )}
     >
-      <div className={clsx(`notifications-list-container`, !status && 'unread', (isMobile && !notificationsPreview) && 'reverse')}>
+      <div
+        className={clsx(
+          `notifications-list-container`,
+          !status && 'unread',
+          isMobile && !notificationsPreview && 'reverse'
+        )}
+      >
         {/* className='d-flex justify-content-between align-items-center'> */}
 
         {!notificationsPreview ? (
-          <div 
-          className='d-flex align-items-center justify-content-center mr-2'
-          style={{
-            width: '48px',
-            height: '48px'
-          }}>
+          <div
+            className='d-flex align-items-center justify-content-center mr-2'
+            style={{
+              width: '48px',
+              height: '48px',
+            }}
+          >
             <Input
               className='notification-list-checkbar'
               type='checkbox'
@@ -165,23 +176,30 @@ const Notification: React.FC<NotificationI> = (props) => {
         <div>
           <div className='d-flex align-items-center'>
             <NotificationIcon status={status} action={action} />
-            <p className='neutral-1-color-a8 pl-3' dangerouslySetInnerHTML={{ __html: populatedMessage }} />
+            <p
+              className='neutral-1-color-a8 pl-3'
+              dangerouslySetInnerHTML={{ __html: populatedMessage }}
+            />
           </div>
           <div
-          style={{
-            marginLeft: '40px'
-          }}
+            style={{
+              marginLeft: '40px',
+            }}
             className={clsx('d-flex', 'align-items-center', 'pl-3')}
           >
             <Icon icon='it-calendar' size='xs' color='primary' />
-            <p className='neutral-1-color-a8 px-2 mr-4'>{moment(date).format('DD/MM/YYYY')}</p>
+            <p className='neutral-1-color-a8 px-2 mr-4'>
+              {moment(date).format('DD/MM/YYYY')}
+            </p>
             <Icon icon='it-clock' size='xs' color='primary' />
-            <p className='neutral-1-color-a8 px-2'>{moment(date).format('hh:mm')}</p>
+            <p className='neutral-1-color-a8 px-2'>
+              {moment(date).format('hh:mm')}
+            </p>
           </div>
         </div>
 
         {notificationsPreview ? userDropDown : null}
-        {(!isMobile && !notificationsPreview) ? (
+        {!isMobile && !notificationsPreview ? (
           <div className='ml-auto'>
             <Icon
               color='primary'
@@ -192,7 +210,6 @@ const Notification: React.FC<NotificationI> = (props) => {
           </div>
         ) : null}
       </div>
-
     </div>
   );
 };

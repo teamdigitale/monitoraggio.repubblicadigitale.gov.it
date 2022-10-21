@@ -7,7 +7,10 @@ import ProtectedComponent from '../hoc/AuthGuard/ProtectedComponent/ProtectedCom
 import FullLayout from '../components/PageLayout/FullLayout/fullLayout';
 import { Loader } from '../components';
 import Notifications from '../pages/common/NotificationsPage/notifications';
-import { SessionCheck } from '../redux/features/user/userThunk';
+import {
+  GetNotificationsByUser,
+  SessionCheck,
+} from '../redux/features/user/userThunk';
 import ErrorPage from '../pages/common/Error/errorPage';
 
 // TODO import with lazy
@@ -87,6 +90,9 @@ const AppRoutes: React.FC = () => {
   const checkSession = async () => {
     const checkSession = await SessionCheck(dispatch);
     setValidSession(Boolean(checkSession));
+    if (checkSession) {
+      dispatch(GetNotificationsByUser({ status: [{ value: 0 }], items_per_page: [{ value: 24 }] }));
+    }
   };
 
   useEffect(() => {

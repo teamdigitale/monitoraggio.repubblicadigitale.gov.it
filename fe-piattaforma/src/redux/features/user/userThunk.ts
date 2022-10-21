@@ -239,15 +239,19 @@ export const LogoutRedirect = () => async (dispatch: Dispatch) => {
   }
 };
 
-
 // NOTIFICATION
 
 const GetNotificationsByUserAction = {
   type: 'forum/GetNotificationsByUser',
 };
 
-export const GetNotificationsByUser = (userId: string) => async (dispatch: Dispatch, select: Selector) => {
-  try {
+export const GetNotificationsByUser =
+  (forcedFilters?: {
+    [key: string]: {
+      value: string | number;
+    }[]
+  }) => async (dispatch: Dispatch, select: Selector) => {
+    try {
       dispatch(showLoader());
       dispatch({ ...GetNotificationsByUserAction });
 
@@ -258,16 +262,25 @@ export const GetNotificationsByUser = (userId: string) => async (dispatch: Dispa
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         forum: { filters },
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        user: { user: { id } },
       } = select((state: RootState) => state);
 
-      const body = {
-        ...filters,
-        page: [{ value: Math.max(0, pagination.pageNumber - 1) }],
-        items_per_page: [{ value: pagination.pageSize }],
-      }
+      if (id) {
+        const body = {
+          ...filters,
+          page: [{ value: Math.max(0, pagination.pageNumber - 1) }],
+          items_per_page: [{ value: pagination.pageSize }],
+          ...forcedFilters,
+        };
 
-      const res = await proxyCall(`/user/${userId}/notifications${transformFiltersToQueryParams(body)}`, 'GET')
-      if (res) {
+        const queryParam = transformFiltersToQueryParams(body);
+        const res = await proxyCall(
+          `/user/${id}/notifications${queryParam}`,
+          'GET'
+        );
+        if (res) {
           dispatch(setUserNotifications(res.data.data.items || []));
           dispatch(
             setEntityPagination({
@@ -275,45 +288,46 @@ export const GetNotificationsByUser = (userId: string) => async (dispatch: Dispa
               totalElements: res.data.data.pager?.total_items || 0,
             })
           );
+        }
       }
 
-  } catch (error) {
+    } catch (error) {
       console.log('GetNotificationsByUser error', error);
-  } finally {
+    } finally {
       dispatch(hideLoader());
-  }
-};
+    }
+  };
 
 const ReadNotificationAction = {
   type: 'forum/ReadNotification',
 };
 
-export const ReadNotification = (notificationId: string) => async (dispatch: Dispatch) => {
-  try {
+export const ReadNotification =
+  (notificationId: string) => async (dispatch: Dispatch) => {
+    try {
       dispatch(showLoader());
       dispatch({ ...ReadNotificationAction });
-      await proxyCall(`/notification/${notificationId}/read`, 'POST', {})
-
-  } catch (error) {
+      await proxyCall(`/notification/${notificationId}/read`, 'POST', {});
+    } catch (error) {
       console.log('ReadNotification error', error);
-  } finally {
+    } finally {
       dispatch(hideLoader());
-  }
-};
+    }
+  };
 
 const DeleteNotificationAction = {
   type: 'forum/DeleteNotification',
 };
 
-export const DeleteNotification = (notificationId: string) => async (dispatch: Dispatch) => {
-  try {
+export const DeleteNotification =
+  (notificationId: string) => async (dispatch: Dispatch) => {
+    try {
       dispatch(showLoader());
       dispatch({ ...DeleteNotificationAction });
-      await proxyCall(`/notification/${notificationId}/delete`, 'POST', {})
-
-  } catch (error) {
+      await proxyCall(`/notification/${notificationId}/delete`, 'POST', {});
+    } catch (error) {
       console.log('DeleteNotification error', error);
-  } finally {
+    } finally {
       dispatch(hideLoader());
-  }
-};
+    }
+  };
