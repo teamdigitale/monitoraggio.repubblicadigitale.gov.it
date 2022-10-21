@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.217](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.216...1.0.0-develop.217) (2022-10-21)
+
+
+### Features
+
+* **be:** log notifiche e aggiorna utente ([7e598c0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7e598c0b015cf11eee24b7fdd2a416b4f9d6b212))
+
 ## [1.0.0-develop.216](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.215...1.0.0-develop.216) (2022-10-20)
 
 
