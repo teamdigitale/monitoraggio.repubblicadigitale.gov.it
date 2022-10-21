@@ -1295,4 +1295,14 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			nativeQuery = true)
 	public List<UtenteEntity> findListaUtentiByIdUtenti(@Param(value = "idsUtenti") List<Long> idsUtenti);
 
+	@Query(value = ""
+			+ "	SELECT * "
+			+ "	FROM utente utente "
+			+ "	WHERE utente.codice_fiscale = :codiceFiscale "
+			+ "		AND utente.id <> :idUtente",
+			nativeQuery = true)
+	public Optional<UtenteEntity> findUtenteByCodiceFiscaleAndIdDiverso(
+			@Param(value = "codiceFiscale") String codiceFiscale,
+			@Param(value = "idUtente") Long idUtente);
+
 }

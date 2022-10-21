@@ -398,6 +398,7 @@ public class UtenteServiceTest {
 	@Test
 	public void aggiornaUtenteTest() {
 		when(this.utenteRepository.findById(utente.getId())).thenReturn(Optional.of(utente));
+		when(this.utenteRepository.findUtenteByCodiceFiscaleAndIdDiverso(aggiornaUtenteRequest.getCodiceFiscale(), utente.getId())).thenReturn(Optional.empty());
 		service.aggiornaUtente(aggiornaUtenteRequest, utente.getId());
 	}
 	
@@ -405,6 +406,15 @@ public class UtenteServiceTest {
 	public void aggiornaUtenteKOTest() {
 		//test KO per utente non trovato
 		when(this.utenteRepository.findById(utente.getId())).thenReturn(Optional.empty());
+		Assertions.assertThrows(UtenteException.class, () -> service.aggiornaUtente(aggiornaUtenteRequest, utente.getId()));
+		assertThatExceptionOfType(UtenteException.class);
+	}
+	
+	@Test
+	public void aggiornaUtenteKOTest2() {
+		//test KO per codice fiscale già presente
+		when(this.utenteRepository.findById(utente.getId())).thenReturn(Optional.of(utente));
+		when(this.utenteRepository.findUtenteByCodiceFiscaleAndIdDiverso(aggiornaUtenteRequest.getCodiceFiscale(), utente.getId())).thenReturn(Optional.of(utente));
 		Assertions.assertThrows(UtenteException.class, () -> service.aggiornaUtente(aggiornaUtenteRequest, utente.getId()));
 		assertThatExceptionOfType(UtenteException.class);
 	}

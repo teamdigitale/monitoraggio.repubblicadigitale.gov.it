@@ -34,5 +34,8 @@ public class AggiornaUtenteRequest implements Serializable {
 	
 	@JsonProperty(value = "cognome")
 	private String cognome;
+	
+	@JsonProperty(value = "codiceFiscale")
+	private String codiceFiscale;
 
 }

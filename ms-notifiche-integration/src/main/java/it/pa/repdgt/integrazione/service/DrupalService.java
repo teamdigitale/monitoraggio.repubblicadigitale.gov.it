@@ -2,6 +2,7 @@ package it.pa.repdgt.integrazione.service;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -56,6 +57,10 @@ public class DrupalService {
 		final String urlDaChiamare = drupalEndpoint.concat(param.getUrlRichiesta());
 		final String metodoHttpString = param.getMetodoRichiestaHttp().toUpperCase();
 		final HttpMethod metodoHttp = HttpMethod.resolve(metodoHttpString);
+		FileOutputStream fostrm = null;
+		Resource resource = null;
+		File file = null;
+		String nomeFile = null;
 
 		ResponseEntity<Map> responseDrupal = null;
 		try {
@@ -65,11 +70,11 @@ public class DrupalService {
 				byte[] bytesFileToUpload = Base64.getDecoder().decode(param.getFileBase64ToUpload());
 				
 				// Creazione file a partire dall'array di byte
-				final String nomeFile = param.getFilenameToUpload() == null? "tmpFile": param.getFilenameToUpload();
-				File file = new File(nomeFile);
-				FileOutputStream fostrm = new FileOutputStream(file);
+				nomeFile = param.getFilenameToUpload() == null? "tmpFile": param.getFilenameToUpload();
+				file = new File(nomeFile);
+				fostrm = new FileOutputStream(file);
 				fostrm.write(bytesFileToUpload);
-				Resource resource = new FileSystemResource(file);
+				resource = new FileSystemResource(file);
 				
 				// Creazione multipart
 				MultipartBodyBuilder multipartBodyBuilder = new MultipartBodyBuilder();
@@ -86,14 +91,10 @@ public class DrupalService {
 		        try {
 		        	responseDrupal = this.restTemplate.exchange(urlDaChiamare, metodoHttp, requestEntity, Map.class);
 		        } catch (Exception e) {
-		        	String messaggioErrore = String.format("Errore chiamata REST DRUPAL: %s %s - datail: %s", metodoHttp, urlDaChiamare, e.getMessage());
+		        	String rispostaDrupal = e.getMessage().contains(":")? e.getMessage().split(":")[1]: e.getMessage();
+		        	String messaggioErrore = String.format("%s", rispostaDrupal);
+		        	
 					throw new DrupalException(messaggioErrore, e, CodiceErroreEnum.D01);
-				} finally {
-					// Cancellazione file creato in precedenza
-					fostrm.close();
-					resource.getInputStream().close();
-					boolean isFileCancellato = file.delete();
-					log.info("file '{}' cancellato?{}", nomeFile, isFileCancellato);
 				}
 			} else {
 				String forwardBody = param.getBodyRichiestaHttp();
@@ -107,8 +108,19 @@ public class DrupalService {
 			}
 		
 		} catch (Exception ex) {
-			String messaggioErrore = String.format("Errore chiamata servizio DRUPAL: %s %s - detail: %s", metodoHttp, urlDaChiamare, ex.getMessage());
+			String rispostaDrupal = ex.getMessage().contains(":")? ex.getMessage().split(":")[1]: ex.getMessage();
+        	String messaggioErrore = String.format("%s", rispostaDrupal);
 			throw new DrupalException(messaggioErrore, ex, CodiceErroreEnum.D01);
+		} finally {
+			// Cancellazione file creato in precedenza
+			try {
+				fostrm.close();
+				resource.getInputStream().close();
+			} catch (IOException e) {
+				log.error("impossibile effettuare fileOutputStream.close --> {}", e);;
+			}
+			boolean isFileCancellato = file.delete();
+			log.info("file '{}' cancellato?{}", nomeFile, isFileCancellato);
 		}
 
 		return responseDrupal.getBody();
