@@ -142,8 +142,9 @@ public enum CodiceErroreEnum {
 	,WD01("Errore creazione utente Workdocs")
 	,WD02("Errore attivazione utente Workdocs")
 	
-	,RC01("Errore creazione utente Workdocs")
-	,RC02("Errore attivazione utente Workdocs")
+	,RC01("Errore tecnico creazione utente RocketChat")
+	,RC02("Errore creazione utente RocketChat")
+	,RC03("Errore recupero token utente RocketChat")
 	;
 	
 	private String descrizioneErrore;

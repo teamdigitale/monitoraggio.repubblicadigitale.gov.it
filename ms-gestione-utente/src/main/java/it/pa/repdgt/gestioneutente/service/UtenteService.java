@@ -197,8 +197,36 @@ public class UtenteService {
 				listaUtenti.addAll(utenti);
 				break;
 		}
-		
+		if(filtroRequest.getRuoli() != null && filtroRequest.getRuoli().size() > 0)
+			listaUtenti = getListaUtentiFiltrataPerRuolo(listaUtenti, filtroRequest.getRuoli());
 		return this.getUtentiConRuoliAggregati(listaUtenti);
+	}
+
+	private List<UtenteEntity> getListaUtentiFiltrataPerRuolo(List<UtenteEntity> listaUtenti, List<String> ruoli) {
+		ArrayList<UtenteEntity> listaUtentiResult = new ArrayList<UtenteEntity>();
+		for(UtenteEntity utente: listaUtenti) {
+			boolean eliminaUtente = false;
+			for(String ruolo: ruoli) {
+				String codiceRuolo = this.ruoloService.getRuoliByNome(ruolo.trim()).get(0).getCodice();
+				switch (codiceRuolo) {
+				case "REG":
+				case "DEG":
+					if(this.referentiDelegatiEnteGestoreProgrammaRepository.countByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), codiceRuolo) == 0)
+						eliminaUtente = true;
+					break;
+				case "REGP":
+				case "DEGP":
+					if(this.referentiDelegatiEnteGestoreProgettoRepository.countByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), codiceRuolo) == 0)
+						eliminaUtente = true;
+					break;
+				default:
+					break;
+				}
+			}
+			if(!eliminaUtente)
+				listaUtentiResult.add(utente);
+		}
+		return listaUtentiResult;
 	}
 
 	private Set<UtenteEntity> getUtentiPerReferenteDelegatoEntePartnerProgetti(Long idProgramma, Long idProgetto,
@@ -335,6 +363,10 @@ public class UtenteService {
 		}
 		if(isEmailDuplicataPerId(aggiornaUtenteRequest.getEmail(),idUtente)) {
 			throw new UtenteException("ERRORE: non possono esistere a sistema due email per due utenti diversi", CodiceErroreEnum.U21);
+		}
+		if(this.utenteRepository.findUtenteByCodiceFiscaleAndIdDiverso(aggiornaUtenteRequest.getCodiceFiscale(), idUtente).isPresent()) {
+			String messaggioErrore = String.format("utente con codice fiscale=%s già presente", aggiornaUtenteRequest.getCodiceFiscale());
+			throw new UtenteException(messaggioErrore, CodiceErroreEnum.U01);
 		}
 		utenteFetchDB.setEmail(aggiornaUtenteRequest.getEmail());
 		utenteFetchDB.setTelefono(aggiornaUtenteRequest.getTelefono());

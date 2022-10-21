@@ -148,7 +148,7 @@ public class RocketChatService {
 		try {
 			authTokenRocketChat = (Map<String, String>) this.creaTokenUtenteRocketChat(rocketChatLoginRequest).getBody().get("data");
 		} catch (Exception ex) {
-			throw new RocketChatException(String.format("Errore creazione token in RocketChat. %s", ex.getMessage()), ex, CodiceErroreEnum.RC02);
+			throw new RocketChatException(String.format("Errore creazione token in RocketChat. %s", ex.getMessage()), ex, CodiceErroreEnum.RC03);
 		}
 		return authTokenRocketChat;
 	}
