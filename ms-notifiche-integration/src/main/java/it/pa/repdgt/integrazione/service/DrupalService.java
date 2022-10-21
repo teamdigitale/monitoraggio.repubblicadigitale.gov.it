@@ -113,16 +113,16 @@ public class DrupalService {
 			throw new DrupalException(messaggioErrore, ex, CodiceErroreEnum.D01);
 		} finally {
 			// Cancellazione file creato in precedenza
-			try {
-				if(param.getIsUploadFile() != null && param.getIsUploadFile() == Boolean.TRUE) {
-					fostrm.close();
-					resource.getInputStream().close();
+			if(param.getIsUploadFile() != null && param.getIsUploadFile() == Boolean.TRUE) {
+				try {
+						fostrm.close();
+						resource.getInputStream().close();
+				} catch (IOException e) {
+					log.error("impossibile effettuare fileOutputStream.close --> {}", e);;
 				}
-			} catch (IOException e) {
-				log.error("impossibile effettuare fileOutputStream.close --> {}", e);;
+				boolean isFileCancellato = file.delete();
+				log.info("file '{}' cancellato?{}", nomeFile, isFileCancellato);
 			}
-			boolean isFileCancellato = file.delete();
-			log.info("file '{}' cancellato?{}", nomeFile, isFileCancellato);
 		}
 
 		return responseDrupal.getBody();
