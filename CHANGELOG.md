@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.225](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.224...1.0.0-develop.225) (2022-10-24)
+
+
+### Bug Fixes
+
+* **be:** refactor query per get all utente ([309ce6d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/309ce6d122b33e990e819931e0442580bf13f03b))
+
 ## [1.0.0-develop.224](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.223...1.0.0-develop.224) (2022-10-24)
 
 
