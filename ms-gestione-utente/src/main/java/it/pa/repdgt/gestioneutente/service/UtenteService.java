@@ -110,7 +110,7 @@ public class UtenteService {
 	@LogMethod
 	@LogExecutionTime
 	public List<UtenteDto> getAllUtentiPaginati(UtenteRequest sceltaContesto, Integer currPage, Integer pageSize) {
-		return this.getUtentiPaginatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest(),currPage, pageSize);
+		return this.getUtentiPaginatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest(),currPage, pageSize);
 	}
 	
 	@LogMethod
@@ -168,7 +168,7 @@ public class UtenteService {
 	
 	@LogMethod
 	@LogExecutionTime
-	public List<UtenteDto> getUtentiPaginatiByRuolo(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto, FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
+	public List<UtenteDto> getUtentiPaginatiByRuolo(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto, Long idEnte, FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
 		List<UtenteEntity> listaUtenti = new ArrayList<>();
 		Set<UtenteEntity> utenti = new HashSet<>();
 
@@ -190,56 +190,22 @@ public class UtenteService {
 				break;
 			case "REPP":
 			case "DEPP":
-				listaUtenti.addAll(this.getUtentiPerReferenteDelegatoEntePartnerProgetti(idProgramma, idProgetto, cfUtente, filtroRequest, currPage, pageSize));
+				listaUtenti.addAll(this.getUtentiPerReferenteDelegatoEntePartnerProgetti(idProgramma, idProgetto, idEnte, cfUtente, filtroRequest, currPage, pageSize));
 				break;
 			default:
 				utenti = this.getUtentiByFiltri(filtroRequest, currPage, pageSize);
 				listaUtenti.addAll(utenti);
 				break;
 		}
-		if(filtroRequest.getRuoli() != null && filtroRequest.getRuoli().size() > 0)
-			listaUtenti = getListaUtentiFiltrataPerRuolo(listaUtenti, filtroRequest.getRuoli());
 		return this.getUtentiConRuoliAggregati(listaUtenti);
 	}
 
-	private List<UtenteEntity> getListaUtentiFiltrataPerRuolo(List<UtenteEntity> listaUtenti, List<String> ruoli) {
-		ArrayList<UtenteEntity> listaUtentiResult = new ArrayList<UtenteEntity>();
-		for(UtenteEntity utente: listaUtenti) {
-			boolean eliminaUtente = false;
-			for(String ruolo: ruoli) {
-				String codiceRuolo = this.ruoloService.getRuoliByNome(ruolo.trim()).get(0).getCodice();
-				switch (codiceRuolo) {
-				case "REG":
-				case "DEG":
-					if(this.referentiDelegatiEnteGestoreProgrammaRepository.countByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), codiceRuolo) == 0)
-						eliminaUtente = true;
-					break;
-				case "REGP":
-				case "DEGP":
-					if(this.referentiDelegatiEnteGestoreProgettoRepository.countByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), codiceRuolo) == 0)
-						eliminaUtente = true;
-					break;
-				case "FAC":
-				case "VOL":
-					if((this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerEntePartner(utente.getCodiceFiscale(), codiceRuolo).size()
-							 + this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerGestore(utente.getCodiceFiscale(), codiceRuolo).size()) == 0)
-						eliminaUtente = true;
-					break;
-				default:
-					break;
-				}
-			}
-			if(!eliminaUtente)
-				listaUtentiResult.add(utente);
-		}
-		return listaUtentiResult;
-	}
-
-	private Set<UtenteEntity> getUtentiPerReferenteDelegatoEntePartnerProgetti(Long idProgramma, Long idProgetto,
+	private Set<UtenteEntity> getUtentiPerReferenteDelegatoEntePartnerProgetti(Long idProgramma, Long idProgetto, Long idEnte,
 			String cfUtente, FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
 		return this.utenteRepository.findUtentiPerReferenteDelegatoEntePartnerProgetti(
 																	  idProgramma,
 																	  idProgetto,
+																	  idEnte,
 																	  cfUtente, 
 																	  filtroRequest.getCriterioRicerca(),
 																	   "%" + filtroRequest.getCriterioRicerca() + "%",
