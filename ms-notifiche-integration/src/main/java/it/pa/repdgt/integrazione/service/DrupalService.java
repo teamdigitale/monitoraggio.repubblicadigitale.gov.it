@@ -95,7 +95,7 @@ public class DrupalService {
 		        	responseDrupal = this.restTemplate.exchange(urlDaChiamare, metodoHttp, requestEntity, Map.class);
 		        } catch (Exception ex) {
 		        	String errorMessageDrupal = ex.getMessage().contains(":")? ex.getMessage().replaceFirst(":", "_REQ_DRUPAL_"): ex.getMessage();
-					String rispostaDrupal = errorMessageDrupal.contains("_REQ_DRUPAL_")? errorMessageDrupal.split("_REQ_DRUPAL_")[0]: errorMessageDrupal;
+					String rispostaDrupal = errorMessageDrupal.contains("_REQ_DRUPAL_")? errorMessageDrupal.split("_REQ_DRUPAL_")[1]: errorMessageDrupal;
 		        	String messaggioErrore = String.format("%s", rispostaDrupal);
 		        	
 					throw new DrupalException(messaggioErrore, ex, CodiceErroreEnum.D01);
@@ -112,7 +112,7 @@ public class DrupalService {
 					 	responseDrupal = this.restTemplate.exchange(urlDaChiamare, metodoHttp, forwardRequestEntity, Map.class);
 				  } catch (Exception ex) {
 		        	String errorMessageDrupal = ex.getMessage().contains(":")? ex.getMessage().replaceFirst(":", "_REQ_DRUPAL_"): ex.getMessage();
-					String rispostaDrupal = errorMessageDrupal.contains("_REQ_DRUPAL_")? errorMessageDrupal.split("_REQ_DRUPAL_")[0]: errorMessageDrupal;
+					String rispostaDrupal = errorMessageDrupal.contains("_REQ_DRUPAL_")? errorMessageDrupal.split("_REQ_DRUPAL_")[1]: errorMessageDrupal;
 		        	String messaggioErrore = String.format("%s", rispostaDrupal);
 		        	
 					throw new DrupalException(messaggioErrore, ex, CodiceErroreEnum.D01);

@@ -197,42 +197,7 @@ public class UtenteService {
 				listaUtenti.addAll(utenti);
 				break;
 		}
-		if(filtroRequest.getRuoli() != null && filtroRequest.getRuoli().size() > 0)
-			listaUtenti = getListaUtentiFiltrataPerRuolo(listaUtenti, filtroRequest.getRuoli());
 		return this.getUtentiConRuoliAggregati(listaUtenti);
-	}
-
-	private List<UtenteEntity> getListaUtentiFiltrataPerRuolo(List<UtenteEntity> listaUtenti, List<String> ruoli) {
-		ArrayList<UtenteEntity> listaUtentiResult = new ArrayList<UtenteEntity>();
-		for(UtenteEntity utente: listaUtenti) {
-			boolean eliminaUtente = false;
-			for(String ruolo: ruoli) {
-				String codiceRuolo = this.ruoloService.getRuoliByNome(ruolo.trim()).get(0).getCodice();
-				switch (codiceRuolo) {
-				case "REG":
-				case "DEG":
-					if(this.referentiDelegatiEnteGestoreProgrammaRepository.countByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), codiceRuolo) == 0)
-						eliminaUtente = true;
-					break;
-				case "REGP":
-				case "DEGP":
-					if(this.referentiDelegatiEnteGestoreProgettoRepository.countByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), codiceRuolo) == 0)
-						eliminaUtente = true;
-					break;
-				case "FAC":
-				case "VOL":
-					if((this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerEntePartner(utente.getCodiceFiscale(), codiceRuolo).size()
-							 + this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerGestore(utente.getCodiceFiscale(), codiceRuolo).size()) == 0)
-						eliminaUtente = true;
-					break;
-				default:
-					break;
-				}
-			}
-			if(!eliminaUtente)
-				listaUtentiResult.add(utente);
-		}
-		return listaUtentiResult;
 	}
 
 	private Set<UtenteEntity> getUtentiPerReferenteDelegatoEntePartnerProgetti(Long idProgramma, Long idProgetto,
