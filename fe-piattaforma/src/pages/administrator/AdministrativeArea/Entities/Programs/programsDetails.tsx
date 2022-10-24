@@ -94,6 +94,8 @@ const ProgramsDetails: React.FC = () => {
   const [correctButtons, setCorrectButtons] = useState<ButtonInButtonsBar[]>(
     []
   );
+  const [progInfoButtons, setProgInfoButtons] = useState<boolean>(false);
+
   const [buttonsPosition, setButtonsPosition] = useState<'TOP' | 'BOTTOM'>(
     'TOP'
   );
@@ -148,7 +150,7 @@ const ProgramsDetails: React.FC = () => {
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [entityId, programDetails]);
+  }, [entityId, programDetails, activeTab]);
 
   const getActionRedirectURL = (userType: string, userId: string) => {
     return `/area-amministrativa/programmi/${entityId}/ente-gestore-programma/${managerAuthorityId}/${userType}/${userId}`;
@@ -237,7 +239,6 @@ const ProgramsDetails: React.FC = () => {
     [CRUDActionTypes.PREVIEW]: (td: TableRowI | string) => {
       if (typeof td === 'string') {
         setSurveyPreviewId(td);
-        setNewSurveyDefaultId(td);
       }
       dispatch(
         openModal({
@@ -280,6 +281,7 @@ const ProgramsDetails: React.FC = () => {
   const infoRef = useRef<HTMLLIElement>(null);
 
   const AuthoritySection = () => {
+    cancelSurvey();
     if (managerAuthorityId) {
       setCurrentForm(
         <FormAuthorities
@@ -369,6 +371,7 @@ const ProgramsDetails: React.FC = () => {
         },
       ]);
       setEmptySection(undefined);
+      setProgInfoButtons(false);
     } else {
       setCurrentForm(undefined);
       setCorrectModal(<ManageManagerAuthority creation />);
@@ -453,6 +456,7 @@ const ProgramsDetails: React.FC = () => {
           size: 'xs',
           color: 'primary',
           text: 'Conferma',
+          disabled: newSurveyDefaultId === '',
           onClick: () => confirmSurvey(),
         },
       ]);
@@ -469,6 +473,7 @@ const ProgramsDetails: React.FC = () => {
     setItemAccordionList(null);
     setCurrentForm(undefined);
     setButtonsPosition('BOTTOM');
+    setProgInfoButtons(false);
     if (surveyList?.length) {
       setSurveyDefault({
         items: [
@@ -545,6 +550,8 @@ const ProgramsDetails: React.FC = () => {
     setItemAccordionList(null);
     setCurrentForm(undefined);
     setCorrectModal(<ManageProject creation />);
+    setProgInfoButtons(false);
+    cancelSurvey();
     if (
       projectsList?.filter(
         (progetto: { associatoAUtente: boolean }) => progetto.associatoAUtente
@@ -590,6 +597,7 @@ const ProgramsDetails: React.FC = () => {
       setEmptySection(undefined);
     } else {
       setCorrectButtons([]);
+
       setEmptySection(
         <EmptySection
           title='Questa sezione è ancora vuota'
@@ -610,7 +618,7 @@ const ProgramsDetails: React.FC = () => {
   };
 
   useEffect(() => {
-    scrollTo(0, 0);
+    /*  scrollTo(0, 0); */
     centerActiveItem();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
@@ -618,19 +626,28 @@ const ProgramsDetails: React.FC = () => {
   const centerActiveItem = () => {
     switch (activeTab) {
       case tabs.INFO:
-        infoRef.current?.scrollIntoView({ block: 'center' });
+        infoRef.current?.scrollIntoView({ block: 'center', inline: 'center' });
         break;
       case tabs.ENTE:
-        gestoreRef.current?.scrollIntoView({ block: 'center' });
+        gestoreRef.current?.scrollIntoView({
+          block: 'center',
+          inline: 'center',
+        });
         break;
       case tabs.QUESTIONARI:
-        questionariRef.current?.scrollIntoView({ block: 'center' });
+        questionariRef.current?.scrollIntoView({
+          block: 'center',
+          inline: 'center',
+        });
         break;
       case tabs.PROGETTI:
-        projectRef.current?.scrollIntoView({ block: 'center' });
+        projectRef.current?.scrollIntoView({
+          block: 'center',
+          inline: 'center',
+        });
         break;
       default:
-        infoRef.current?.scrollIntoView({ block: 'center' });
+        infoRef.current?.scrollIntoView({ block: 'center', inline: 'center' });
         break;
     }
   };
@@ -842,6 +859,8 @@ const ProgramsDetails: React.FC = () => {
         setItemList(null);
         setCorrectButtons(programInfoButtons());
         setEmptySection(undefined);
+        setProgInfoButtons(true);
+        cancelSurvey();
         break;
       case tabs.ENTE:
         AuthoritySection();
@@ -866,6 +885,7 @@ const ProgramsDetails: React.FC = () => {
     programDetails,
     authorityInfo,
     surveyDefault?.items[0]?.id,
+    otherSurveyList?.list?.length,
     authorityInfo?.referentiEnteGestore,
   ]);
 
@@ -931,18 +951,30 @@ const ProgramsDetails: React.FC = () => {
     programId: string,
     terminationDate: string
   ) => {
-    await dispatch(TerminateEntity(programId, 'programma', terminationDate));
-    dispatch(GetProgramDetail(programId));
-    dispatch(closeModal());
+    const res = await dispatch(
+      TerminateEntity(programId, 'programma', terminationDate)
+    );
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (res) {
+      dispatch(GetProgramDetail(programId));
+      dispatch(closeModal());
+    }
   };
 
   const terminateProject = async (
     projectId: string,
     terminationDate: string
   ) => {
-    await dispatch(TerminateEntity(projectId, 'progetto', terminationDate));
-    dispatch(GetProjectDetail(projectId));
-    dispatch(closeModal());
+    const res = await dispatch(
+      TerminateEntity(projectId, 'progetto', terminationDate)
+    );
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (res) {
+      dispatch(GetProjectDetail(projectId));
+      dispatch(closeModal());
+    }
   };
 
   const removeReferentDelegate = async (
@@ -1021,8 +1053,9 @@ const ProgramsDetails: React.FC = () => {
           titleInfo={{
             title: programDetails.nomeBreve,
             status: programDetails.stato,
-            upperTitle: { icon: 'it-user', text: 'Programma' },
+            upperTitle: { icon: 'it-folder', text: 'Programma' },
           }}
+          infoProgBtn={progInfoButtons}
           formButtons={correctButtons}
           currentTab={activeTab}
           // itemsAccordionList={itemAccordionList}
@@ -1077,8 +1110,9 @@ const ProgramsDetails: React.FC = () => {
                 ) : (
                   <EmptySection
                     title={`Non sono presenti ${item.title?.toLowerCase()} associati.`}
-                    horizontal
-                    aside
+                    icon='it-note'
+                    withIcon
+                    noMargin
                   />
                 )}
               </Accordion>
@@ -1086,7 +1120,7 @@ const ProgramsDetails: React.FC = () => {
           : null}
         {currentModal ? currentModal : null}
         <TerminateEntityModal
-          onClose={() => dispatch(closeModal())}
+          minDate={programDetails?.dataInizio?.toString()}
           onConfirm={(entity: string, terminationDate: string, id?: string) => {
             switch (entity) {
               case 'program':
@@ -1128,11 +1162,11 @@ const ProgramsDetails: React.FC = () => {
         <PreviewSurvey
           surveyId={surveyPreviewId}
           onClose={() => dispatch(closeModal())}
-          primaryCtaAction={() => {
-            confirmSurvey();
-            dispatch(closeModal());
-          }}
-          secondaryCtaAction={() => cancelSurvey()}
+          // primaryCtaAction={() => {
+          //   confirmSurvey();
+          //   dispatch(closeModal());
+          // }}
+          // secondaryCtaAction={() => cancelSurvey()}
         />
       </div>
     </div>

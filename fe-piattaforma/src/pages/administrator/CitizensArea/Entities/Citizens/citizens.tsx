@@ -103,7 +103,7 @@ const Citizens = () => {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
     placeholder:
-      'Inserisci il nome, il cognome, l’identificativo, il codice fiscale o il n. documento del cittadino',
+      'Inserisci il nome, il cognome, l’ID, il codice fiscale o il n. documento del cittadino',
     isClearable: true,
     title: 'Cerca cittadino',
   };
@@ -219,7 +219,12 @@ const Citizens = () => {
             ) : null}
           </div>
         ) : (
-          <EmptySection title='Non sono presenti cittadini' />
+          <EmptySection
+            title='Non sono presenti cittadini'
+            subtitle='associati al tuo ruolo'
+            icon='it-note'
+            withIcon
+          />
         )}
       </GenericSearchFilterTableLayout>
     </>

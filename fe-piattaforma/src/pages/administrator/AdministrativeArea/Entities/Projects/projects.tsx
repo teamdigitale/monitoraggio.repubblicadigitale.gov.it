@@ -126,6 +126,28 @@ const Projects: React.FC = () => {
 
   const handleDropdownFilters = (values: FilterI[], filterKey: string) => {
     setFilterDropdownSelected(filterKey);
+    if (
+      filtersList[filterKey] &&
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      filtersList[filterKey]?.length > values?.length
+    ) {
+      const dropdownType =
+        filterKey === 'filtroStati'
+          ? 'stati'
+          : filterKey === 'filtroPolicies'
+          ? 'policies'
+          : filterKey === 'filtroIdsProgrammi'
+          ? 'programmi'
+          : '';
+      dispatch(
+        GetEntityFilterValues({
+          entity,
+          dropdownType: dropdownType,
+          noFilters: true,
+        })
+      );
+    }
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
   };
 
@@ -210,7 +232,7 @@ const Projects: React.FC = () => {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
     placeholder:
-      "Inserisci il nome del progetto, l'identificativo o il nome dell'ente gestore",
+      "Inserisci il nome del progetto, l'ID o il nome dell'ente gestore",
     isClearable: true,
     title: 'Cerca progetto',
   };

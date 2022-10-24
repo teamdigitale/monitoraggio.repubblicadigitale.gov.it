@@ -28,7 +28,7 @@ interface CardStatusActionI {
   referente?: string;
   fullInfo?:
     | {
-        [key: string]: string;
+        [key: string]: string | undefined;
       }
     | undefined;
   onActionClick?: CRUDActionsI;
@@ -142,6 +142,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
               )}
             >
               {Object.keys(fullInfo).map((key, index) => {
+                if (!fullInfo[key]) return null;
                 return (
                   <div
                     className={clsx(

@@ -29,6 +29,7 @@ export interface UserStateI {
   permissions: RolePermissionI[];
   idProgramma: string | null;
   idProgetto: string[] | null;
+  idEnte: string | null;
   profilo?: UserProfileI | null;
   ruoli: {
     codiceRuolo: string;
@@ -42,6 +43,7 @@ export interface UserProfileI {
   descrizioneRuoloCompleta?: string | undefined;
   idProgetto?: string;
   idProgramma?: string;
+  idEnte?: string;
   nomeEnte?: string;
   nomeProgramma?: string;
   nomeProgettoBreve?: string;
@@ -65,6 +67,7 @@ const initialStateLogged: UserStateI = {
   permissions: [],
   idProgramma: '0',
   idProgetto: ['0'],
+  idEnte: '0',
   profilo: {
     codiceRuolo: 'REG',
     descrizioneRuolo: 'Referente',
@@ -77,6 +80,7 @@ const initialStateNotLogged: UserStateI = {
   permissions: [],
   idProgramma: null,
   idProgetto: null,
+  idEnte: null,
   profilo: null,
   ruoli: [],
 };
@@ -99,6 +103,7 @@ export const userSlice = createSlice({
       const payload = { ...action.payload, saveSession: undefined };
       state.idProgramma = action.payload.idProgramma;
       state.idProgetto = [action.payload.idProgetto];
+      state.idEnte = action.payload.idEnte;
       state.profilo = payload;
       if (state.ruoli?.length) {
         state.permissions = state.ruoli.filter(

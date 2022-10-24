@@ -72,13 +72,14 @@ export const GetAllSurveys =
       } = select((state: RootState) => state);
       const queryParamFilters = transformFiltersToQueryParams(filters);
       const endpoint = `/questionarioTemplate/all${queryParamFilters}`;
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
         codiceFiscaleUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
-        idProgetto: idProgetto,
-        idProgramma: idProgramma,
+        idProgetto,
+        idProgramma,
+        idEnte,
       };
       const res = await API.post(endpoint, body, {
         params: {
@@ -114,12 +115,13 @@ export const GetFilterValuesSurvey =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
-      const { codiceFiscale, codiceRuolo, idProgramma } = getUserHeaders();
+      const { codiceFiscale, codiceRuolo, idProgramma, idEnte } = getUserHeaders();
       const body = {
         cfUtente: codiceFiscale,
         codiceRuolo,
         filtroRequest: { ...filters },
         idProgramma,
+        idEnte,
       };
       const endpoint = `/questionario/${dropdownType}/dropdown`;
       const res = await API.post(endpoint, body);
@@ -379,6 +381,7 @@ const getSchemaSection = (
 export interface SurveyResponseBodyI {
   'survey-id'?: string;
   'survey-status'?: string;
+  'stato'?: string;
   'default-RFD'?: boolean;
   'default-SCD'?: boolean;
   'last-update'?: string;
@@ -436,6 +439,10 @@ export const SetSurveyCreation =
         }
         return res;
       }
+      return false;
+    } catch (err) {
+      console.error('SetSurveyCreation error', err);
+      return false;
     } finally {
       dispatch(hideLoader());
     }
@@ -548,13 +555,14 @@ export const GetSurveyAllLight = () => async (dispatch: Dispatch) => {
   try {
     dispatch(showLoader());
     dispatch({ ...GetSurveyAllLightAction });
-    const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+    const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
       getUserHeaders();
     const body = {
       codiceFiscaleUtenteLoggato: codiceFiscale,
       codiceRuoloUtenteLoggato: codiceRuolo,
-      idProgetto: idProgetto,
-      idProgramma: idProgramma,
+      idProgetto,
+      idProgramma,
+      idEnte,
     };
     const res = await API.post(`questionarioTemplate/all/light`, body);
     if (res.data) dispatch(setSurveysList({ data: res.data }));

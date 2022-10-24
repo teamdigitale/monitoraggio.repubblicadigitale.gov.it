@@ -1,7 +1,10 @@
 import React, { ReactElement } from 'react';
 import { useAppSelector } from '../../redux/hooks';
 import ModalsPortal from './modalsPortal';
-import { selectModalId } from '../../redux/features/modal/modalSlice';
+import {
+  selectExpandModal,
+  selectModalId,
+} from '../../redux/features/modal/modalSlice';
 import Curtain from '../Curtain/curtain';
 import clsx from 'clsx';
 import FocusTrap from 'focus-trap-react';
@@ -12,11 +15,14 @@ interface ModalI {
   children: ReactElement[];
   onClose?: () => void;
   isRoleManaging?: boolean;
+  isUserRole?: boolean;
+  className?: string | undefined;
 }
 
 const Modal: React.FC<ModalI> = (props) => {
   const { id, children, onClose, isRoleManaging } = props;
   const currentId = useAppSelector(selectModalId);
+  const expandedmodal = useAppSelector(selectExpandModal);
 
   const handleCloseModal = () => {
     if (onClose) onClose();
@@ -29,14 +35,8 @@ const Modal: React.FC<ModalI> = (props) => {
   return currentId === id ? (
     <ModalsPortal.Source>
       <Curtain open noscroll onClick={handleCloseModal} />
-      <FocusTrap>
-        <div
-          className={clsx(
-            isMobile
-              ? 'd-flex justify-content-around'
-              : 'd-flex justify-content-around mt-3'
-          )}
-        >
+      <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
+        <div className={clsx('d-flex', 'justify-content-around')}>
           <div
             className={clsx(
               'modal-wrapper',
@@ -49,8 +49,7 @@ const Modal: React.FC<ModalI> = (props) => {
                 ? 'h-100 w-100 py-5 px-4 rounded'
                 : isMobile && 'h-100 w-100',
               !isMobile && 'h-75',
-              !isMobile && 'modal-dialog-centered',
-              !isMobile && 'mt-4'
+              !isMobile && 'modal-dialog-centered'
             )}
           >
             <div
@@ -60,6 +59,8 @@ const Modal: React.FC<ModalI> = (props) => {
                   ? 'h-100'
                   : isMobile
                   ? 'h-100 pt-5'
+                  : expandedmodal
+                  ? 'user-role-modal'
                   : 'h-auto'
               )}
             >

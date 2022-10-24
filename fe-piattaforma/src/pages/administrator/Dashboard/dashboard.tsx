@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import API from '../../../utils/apiHelper';
 import { useDispatch } from 'react-redux';
-import { hideLoader, showLoader } from '../../../redux/features/app/appSlice';
+import {
+  hideLoader,
+  selectDevice,
+  showLoader,
+} from '../../../redux/features/app/appSlice';
 import { GetProgramDetail } from '../../../redux/features/administrativeArea/programs/programsThunk';
 import { GetProjectDetail } from '../../../redux/features/administrativeArea/projects/projectsThunk';
 import { useAppSelector } from '../../../redux/hooks';
@@ -13,6 +17,7 @@ import { userRoles } from '../AdministrativeArea/Entities/utils';
 import PageTitle from '../../../components/PageTitle/pageTitle';
 import useGuard from '../../../hooks/guard';
 import { selectProfile } from '../../../redux/features/user/userSlice';
+import { getMediaQueryDevice } from '../../../utils/common';
 
 /*
 const baseFrameURL =
@@ -56,20 +61,60 @@ const dashboardRoles: {
 };
 
 const publicContents = {
-  title: 'Repubblica Digitale per i cittadini',
-  subtitle: 'Consulta i dati del Piano operativo per le competenze digitali',
+  title: 'Servizi di facilitazione e formazione per i cittadini',
+  subtitle:
+    'Rappresentazione dei dati relativi ai servizi di facilitazione e formazione erogati ai cittadini',
 };
 
 const authContents = {
-  title: 'La mia dashboard',
+  title: 'I miei report',
   subtitle:
-    'Consulta le statistiche rappresentate in questa pagina, oppure accedi allo strumento di Business Intelligence per consultare, configurare e scaricare in autonomia i dati a tua disposizione',
+    'Consulta le statistiche rappresentate in questa pagina, oppure accedi allo strumento di analisi dati per consultare, configurare e scaricare in autonomia i dati a tua disposizione',
+};
+
+/*
+HEIGHT IFRAME REPORT DATI
+         RUOLO                 ---      DESKTOP       ---        MOBILE      ---       TABLET
+> DELEGATO REGIONE PIEMONTE    ---      1836px        ---        660px       ---       1080px
+> DELEGATO COMUNE CATANZARO    ---      1900px        ---        680px       ---       1100px
+> DTD AMMINISTRATORE           ---      2040px        ---        780px       ---       1220px
+> REFERENTE REGIONE PIEMONTE   ---      1836px        ---        660px       ---       1080px
+> GUEST                        ---      3040px        ---        2830px       ---      4770px
+* */
+
+const iframeHeightByRole = {
+  DTD: {
+    mobile: '960px',
+    tablet: '1480px',
+    desktop: '3820px',
+  },
+  DSCU: {
+    mobile: '860px',
+    tablet: '1220px',
+    desktop: '2340px',
+  },
+  REG: {
+    mobile: '860px',
+    tablet: '1200px',
+    desktop: '2140px',
+  },
+  REGP: {
+    mobile: '860px',
+    tablet: '1200px',
+    desktop: '2140px',
+  },
+  GUEST: {
+    mobile: '2830px',
+    tablet: '4770px',
+    desktop: '3140px',
+  },
 };
 
 const Dashboard = () => {
   const dispatch = useDispatch();
+  const device = useAppSelector(selectDevice);
   const [frameUrl, setFrameUrl] = useState('');
-  //const user = getUserHeaders();
+  const [frameHeight, setFrameHeight] = useState('100%');
   const user = useAppSelector(selectProfile);
   const { hasUserPermission } = useGuard();
   const { dettagliInfoProgramma: program } =
@@ -161,6 +206,40 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.codiceRuolo, program?.codice, project?.id]);
 
+  const calcFrameHeight = () => {
+    let heightToSet = frameHeight;
+    switch (user?.codiceRuolo) {
+      case userRoles.DTD: {
+        heightToSet = iframeHeightByRole.DTD[getMediaQueryDevice(device)];
+        break;
+      }
+      case userRoles.DSCU: {
+        heightToSet = iframeHeightByRole.DSCU[getMediaQueryDevice(device)];
+        break;
+      }
+      case userRoles.REG:
+      case userRoles.DEG: {
+        heightToSet = iframeHeightByRole.REG[getMediaQueryDevice(device)];
+        break;
+      }
+      case userRoles.REGP:
+      case userRoles.DEGP: {
+        heightToSet = iframeHeightByRole.REGP[getMediaQueryDevice(device)];
+        break;
+      }
+      default: {
+        heightToSet = iframeHeightByRole.GUEST[getMediaQueryDevice(device)];
+        break;
+      }
+    }
+    return heightToSet;
+  };
+
+  useEffect(() => {
+    setFrameHeight(calcFrameHeight());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.codiceRuolo, device]);
+
   const contents = user?.codiceRuolo ? authContents : publicContents;
 
   return (
@@ -175,7 +254,7 @@ const Dashboard = () => {
                   console.log('go to BI', dashboard_BI_URL);
                   window.open(dashboard_BI_URL, '_blank');
                 },
-                label: 'Vai a Business intelligence',
+                label: 'Crea report personalizzati',
               }
             : undefined
         }
@@ -185,7 +264,7 @@ const Dashboard = () => {
           frameBorder='0'
           src={frameUrl}
           title='quick sight dashboard'
-          height='100%'
+          height={frameHeight}
           width='100%'
         />
       </div>

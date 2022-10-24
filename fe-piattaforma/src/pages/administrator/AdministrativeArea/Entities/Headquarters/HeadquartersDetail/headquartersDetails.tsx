@@ -31,6 +31,7 @@ import {
 } from '../../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
 import {
   selectHeadquarters,
+  selectPrograms,
   setUserDetails,
 } from '../../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import ManageFacilitator from '../../../../../../components/AdministrativeArea/Entities/Headquarters/ManageFacilitator/ManageFacilitator';
@@ -44,6 +45,7 @@ import {
   CardStatusAction,
   EmptySection,
 } from '../../../../../../components';
+import { GetProgramDetail } from '../../../../../../redux/features/administrativeArea/programs/programsThunk';
 
 const HeadquartersDetails = () => {
   const { mediaIsPhone } = useAppSelector(selectDevice);
@@ -64,8 +66,10 @@ const HeadquartersDetails = () => {
     useAppSelector(selectHeadquarters).detail?.dettagliInfoSede;
   const programPolicy =
     useAppSelector(selectHeadquarters).detail?.programmaPolicy;
-  const programDetails =
+  const projectDetails =
     useAppSelector(selectHeadquarters).detail?.dettaglioProgetto;
+  const programDetails =
+    useAppSelector(selectPrograms).detail?.dettagliInfoProgramma || {};
 
   const onActionClick: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
@@ -86,7 +90,7 @@ const HeadquartersDetails = () => {
           }progetti/${projectId}/${
             authorityType === formTypes.ENTI_PARTNER
               ? formTypes.ENTI_PARTNER
-              : formTypes.ENTE_GESTORE
+              : formTypes.ENTE_GESTORE_PROGETTO
           }/${authorityId || identeDiRiferimento}/${headquarterId}/${
             programPolicy === 'SCD' ? userRoles.VOL : userRoles.FAC
           }/${td}`
@@ -109,21 +113,55 @@ const HeadquartersDetails = () => {
 
   useEffect(() => {
     // For breadcrumb
-    if (programDetails && headquarterDetails && authorityId) {
+    if (entityId && !programDetails?.nomeBreve)
+      dispatch(GetProgramDetail(entityId));
+  }, []);
+
+  useEffect(() => {
+    // For breadcrumb
+    if (entityId && programDetails?.nomeBreve) {
       dispatch(
         setInfoIdsBreadcrumb({
-          id: programDetails?.id,
+          id: entityId,
           nome: programDetails?.nomeBreve,
         })
       );
+    }
+    if (
+      headquarterDetails &&
+      headquarterId &&
+      (authorityId || identeDiRiferimento)
+    ) {
       dispatch(
         setInfoIdsBreadcrumb({
-          id: authorityId,
+          id: authorityId || identeDiRiferimento,
           nome: headquarterDetails?.enteDiRiferimento,
         })
       );
+      dispatch(
+        setInfoIdsBreadcrumb({
+          id: headquarterId,
+          nome: headquarterDetails?.nome,
+        })
+      );
     }
-  }, [programDetails, headquarterDetails, authorityId]);
+    if (projectId && headquarterDetails) {
+      dispatch(
+        setInfoIdsBreadcrumb({
+          id: projectId,
+          nome: projectDetails?.nomeBreve,
+        })
+      );
+    }
+  }, [
+    entityId,
+    programDetails,
+    projectDetails,
+    projectDetails,
+    headquarterDetails,
+    authorityId,
+    identeDiRiferimento,
+  ]);
 
   useEffect(() => {
     if (headquarterId && projectId && (authorityId || identeDiRiferimento)) {
@@ -283,13 +321,13 @@ const HeadquartersDetails = () => {
           authorityType &&
           headquarterDetails?.stato !== entityStatus.TERMINATO
           ? {
-              cta: `Aggiungi ${title}`,
+              cta: `Aggiungi ${programPolicy !== 'SCD' ? title: 'Volontari'}`,
               ctaAction: () =>
                 dispatch(
                   openModal({
                     id: formTypes.FACILITATORE,
                     payload: {
-                      title: `Aggiungi ${title}`,
+                      title: `Aggiungi ${programPolicy !== 'SCD' ? title: 'Volontari'}`,
                     },
                   })
                 ),
@@ -333,7 +371,7 @@ const HeadquartersDetails = () => {
             ? itemAccordionList?.map((item, index) => (
                 <Accordion
                   key={index}
-                  title={item.title || ''}
+                  title={(programPolicy !== 'SCD' ? item.title: 'Volontari') || ''}
                   totElem={item.items.length}
                   cta={authorityId ? getAccordionCTA(item.title).cta : null}
                   onClickCta={getAccordionCTA(item.title)?.ctaAction}
@@ -357,8 +395,9 @@ const HeadquartersDetails = () => {
                   ) : (
                     <EmptySection
                       title={`Non sono presenti ${item.title?.toLowerCase()} associati.`}
-                      horizontal
-                      aside
+                      icon='it-note'
+                      withIcon
+                      noMargin
                     />
                   )}
                 </Accordion>

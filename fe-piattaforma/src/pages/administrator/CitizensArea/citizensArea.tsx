@@ -34,7 +34,7 @@ const PageTitleMock: {
 } = {
   eventi: {
     title: 'Lista Eventi',
-    subtitle: "Inserisci l'identificativo o il nome dell'evento ",
+    subtitle: "Inserisci l'ID o il nome dell'evento ",
     textCta: 'Crea evento',
     iconCta: 'it-plus',
   },

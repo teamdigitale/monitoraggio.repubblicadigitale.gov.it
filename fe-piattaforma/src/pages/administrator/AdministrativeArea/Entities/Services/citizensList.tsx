@@ -286,7 +286,9 @@ const CitizensList: React.FC = () => {
         codiceFiscale: td.codiceFiscale,
         esito: (td.esito || '').toUpperCase().includes('OK')
           ? 'Riuscito'
-          : 'Fallito',
+          : 'Non riuscito',
+        failedCSV: td.esito.toUpperCase().includes('KO'),
+        onTooltipInfo: td.esito,
       }))
     );
     setCitizenListTable(table);
@@ -324,7 +326,7 @@ const CitizensList: React.FC = () => {
             />
           ))}
           {citizens?.cittadini?.length === 0 && alreadySearched && (
-            <EmptySection title='Non sono presenti cittadini' />
+            <EmptySection title='Cittadino non associato al servizio' />
           )}
         </GenericSearchFilterTableLayout>
       ) : (
@@ -345,7 +347,12 @@ const CitizensList: React.FC = () => {
         template={CitizenTemplate}
         templateName='cittadini-template.xlsx'
       >
-        <Table {...citizenListTable} id='table-ente-partner' />
+        <Table
+          {...citizenListTable}
+          succesCSV
+          withActions
+          id='table-ente-partner'
+        />
       </UploadCSVModal>
     </div>
   );

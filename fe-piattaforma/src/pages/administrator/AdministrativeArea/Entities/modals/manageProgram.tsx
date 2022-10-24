@@ -56,6 +56,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       dispatch(setProgramDetails({}));
       setCurrentStep(0);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   const handleSaveProgram = async () => {
@@ -267,6 +268,8 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             )
           }
           entityDetail={programDetails}
+          maxDate={programDetails?.dataFine?.toString()}
+          minDate={programDetails?.dataInizio?.toString()}
         />
       );
       /*(
@@ -297,6 +300,8 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             )
           }
           entityDetail={programDetails}
+          maxDate={programDetails?.dataFine?.toString()}
+          minDate={programDetails?.dataInizio?.toString()}
         />
       );
       /*(
@@ -327,6 +332,8 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             )
           }
           entityDetail={programDetails}
+          maxDate={programDetails?.dataFine?.toString()}
+          minDate={programDetails?.dataInizio?.toString()}
         />
       );
       /*(
@@ -357,6 +364,8 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             )
           }
           entityDetail={programDetails}
+          maxDate={programDetails?.dataFine?.toString()}
+          minDate={programDetails?.dataInizio?.toString()}
         />
       );
       /*(

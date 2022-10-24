@@ -153,7 +153,7 @@ const MessageList: React.FC<NotificationsListI> = (props) => {
           <p className='neutral-1-color-a8'>
             <strong className='notifications-list-container__name'>
               {name}
-            </strong>{' '}
+            </strong>
             {description} <strong>{object}</strong>
           </p>
         </div>

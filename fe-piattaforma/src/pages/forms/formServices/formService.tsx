@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
+  selectProjects,
   selectQuestionarioTemplateServiceCreation,
   selectQuestionarioTemplateSnapshot,
 } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
+//import { GetProjectDetail } from '../../../redux/features/administrativeArea/projects/projectsThunk';
 import { GetSurveyTemplateServiceCreation } from '../../../redux/features/administrativeArea/services/servicesThunk';
+//import { getUserHeaders } from '../../../redux/features/user/userThunk';
 import { useAppSelector } from '../../../redux/hooks';
-import { createStringOfCompiledSurveySection } from '../../../utils/common';
+import {
+  createStringOfCompiledSurveySection,
+  formatDate,
+} from '../../../utils/common';
 import { formFieldI, FormI } from '../../../utils/formHelper';
 import { generateForm } from '../../../utils/jsonFormHelper';
 import FormServiceDynamic from './formServiceDynamic';
@@ -47,11 +53,14 @@ const FormService: React.FC<FormServiceI> = (props) => {
     [key: string]: formFieldI['value'];
   }>({});
   const [isFormDynamicValid, setIsFormDynamicValid] = useState<boolean>(false);
-
+  //const { idProgetto } = getUserHeaders();
+  const projectDetails =
+    useAppSelector(selectProjects)?.detail?.dettagliInfoProgetto;
   useEffect(() => {
     if (creation) {
       dispatch(GetSurveyTemplateServiceCreation());
     }
+    //dispatch(GetProjectDetail(idProgetto));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -63,8 +72,12 @@ const FormService: React.FC<FormServiceI> = (props) => {
       Object.keys(formFromSchema).forEach((key: string) => {
         formFromSchema[key].label = formFromSchema[key].value?.toString() || '';
         formFromSchema[key].value = '';
-        // case durata
-        if (key === '23') {
+        if (key === '22') {
+          // case date
+          formFromSchema[key].maximum = formatDate(projectDetails?.dataFine);
+          formFromSchema[key].minimum = formatDate(projectDetails?.dataInizio);
+        } else if (key === '23') {
+          // case durata
           formFromSchema[key].value = '00:00';
         }
       });
@@ -124,6 +137,7 @@ const FormService: React.FC<FormServiceI> = (props) => {
           setNewFormDynamicValues({ ...newData });
         }}
         setIsFormValid={(isValid: boolean) => setIsFormDynamicValid(isValid)}
+        projectDetails={projectDetails}
       />
     </div>
   );

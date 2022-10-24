@@ -73,7 +73,7 @@ const UploadCSVModal: React.FC<UploadCSVModalI> = (props) => {
         <div className='d-flex flex-column align-items-center justify-content-center p-5'>
           <div id='file-target' />
           <p className='py-3'>
-            Scarica il template relativo alle entità da caricare.
+            Scarica il template relativo agli enti da caricare.
           </p>
           <Button color='primary' outline onClick={downloadTemplateHandler}>
             Scarica template
@@ -93,7 +93,7 @@ const UploadCSVModal: React.FC<UploadCSVModalI> = (props) => {
               <p>{esito?.ok}</p>
             </div>
             <div>
-              <h4>Falliti</h4>
+              <h4>Non riusciti</h4>
               <p>{esito?.ko}</p>
             </div>
           </div>

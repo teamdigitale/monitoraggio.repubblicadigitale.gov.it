@@ -21,13 +21,13 @@ import { idQ1, idQ2 } from '../../surveyConstants';
 interface SurveyTemplateI {
   editMode?: boolean;
   cloneMode?: boolean;
-  modal?: boolean;
+  isModal?: boolean;
 }
 
 const SurveyTemplate: React.FC<SurveyTemplateI> = ({
   editMode = false,
   cloneMode = false,
-  modal = false,
+  isModal = false,
 }) => {
   const dispatch = useDispatch();
   const form = useAppSelector(selectSurveyForm);
@@ -67,10 +67,7 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
     let isValid = true;
     if (questions?.length > 0) {
       questions.map((question: SurveyQuestionI) => {
-        FormHelper.isValidForm(question.form) === false
-          ? (isValid = false)
-          : '';
-
+        !FormHelper.isValidForm(question.form) ? (isValid = false) : '';
         if (
           (question.form['question-type'].value === 'select' ||
             question.form['question-type'].value === 'checkbox') &&
@@ -130,6 +127,7 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
               sectionTitle={`${i + 1}. ${section.sectionTitle}`}
               editMode={editMode}
               cloneMode={cloneMode}
+              isModal={isModal}
             />
           </React.Fragment>
           <div
@@ -140,7 +138,7 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
               'w-100'
             )}
           >
-            {!modal &&
+            {!isModal &&
               (editMode || cloneMode) &&
               section.id !== idQ1 &&
               section.id !== idQ2 && (

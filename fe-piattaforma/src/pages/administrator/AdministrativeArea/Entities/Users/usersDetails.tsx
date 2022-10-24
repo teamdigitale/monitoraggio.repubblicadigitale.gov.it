@@ -26,6 +26,7 @@ import {
   selectAuthorities,
   selectHeadquarters,
   selectPrograms,
+  selectProjects,
   selectUsers,
   setUserDetails,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
@@ -54,6 +55,7 @@ import { GetPartnerAuthorityDetail } from '../../../../../redux/features/adminis
 import ManageDelegate from '../modals/manageDelegate';
 import ManageReferal from '../modals/manageReferal';
 import FormFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/FormFacilitator/FormFacilitator';
+import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 
 const UsersDetails = () => {
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
@@ -82,7 +84,9 @@ const UsersDetails = () => {
     useAppSelector(selectPrograms).detail?.dettagliInfoProgramma?.nomeBreve;
   const headquarterDetails = useAppSelector(selectHeadquarters).detail;
   const headquarterName = headquarterDetails?.dettagliInfoSede?.nome;
-  const projectName = headquarterDetails?.dettaglioProgetto?.nomeBreve;
+  // const projectName = headquarterDetails?.dettaglioProgetto?.nomeBreve;
+  const projectName =
+    useAppSelector(selectProjects)?.detail?.dettagliInfoProgetto?.nome;
   const authorityName =
     useAppSelector(selectAuthorities)?.detail?.dettagliInfoEnte?.nome;
 
@@ -96,6 +100,9 @@ const UsersDetails = () => {
     }
     if (!authorityName && projectId && authorityId) {
       dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
+    }
+    if (projectId && !projectName) {
+      dispatch(GetProjectDetail(projectId));
     }
   }, []);
 
@@ -285,8 +292,9 @@ const UsersDetails = () => {
         case userRoles.REPP:
           return 'Modifica Referente';
         case userRoles.FAC:
-        case userRoles.VOL:
           return 'Modifica Facilitatore';
+        case userRoles.VOL:
+          return 'Modifica Volontario';
         default:
           return 'Modifica Utente';
       }
@@ -367,84 +375,88 @@ const UsersDetails = () => {
 
   const getButtons = () => {
     const buttons: ButtonInButtonsBar[] = [];
-    if (userRole === userRoles.USR && hasUserPermission(['del.utente'])) {
-      buttons.push(deleteButton);
-    } else if (userRole === userRoles.FAC || userRole === userRoles.VOL) {
-      buttons.push(deleteButton);
-    } else if (
-      authorityType &&
-      userRole &&
-      [
-        userRoles.REG,
-        userRoles.REGP,
-        userRoles.REPP,
-        userRoles.DEG,
-        userRoles.DEGP,
-        userRoles.DEPP,
-      ].includes(userRole) &&
-      getUserRoleStatus() !== entityStatus.TERMINATO
-    ) {
-      switch (authorityType) {
-        case formTypes.ENTE_GESTORE_PROGRAMMA: {
-          if (hasUserPermission(['del.ref_del.gest.prgm'])) {
-            buttons.push(deleteButton);
+    if(getUserRoleStatus() !== entityStatus.TERMINATO){
+      if (
+        userRole === userRoles.USR &&
+        hasUserPermission(['del.utente']) &&
+        userInfo.stato === entityStatus.NON_ATTIVO
+      ) {
+        buttons.push(deleteButton);
+      } else if (userRole === userRoles.FAC || userRole === userRoles.VOL) {
+        buttons.push(deleteButton);
+      } else if (
+        authorityType &&
+        userRole &&
+        [
+          userRoles.REG,
+          userRoles.REGP,
+          userRoles.REPP,
+          userRoles.DEG,
+          userRoles.DEGP,
+          userRoles.DEPP,
+        ].includes(userRole)
+      ) {
+        switch (authorityType) {
+          case formTypes.ENTE_GESTORE_PROGRAMMA: {
+            if (hasUserPermission(['del.ref_del.gest.prgm'])) {
+              buttons.push(deleteButton);
+            }
+            break;
           }
-          break;
-        }
-        case formTypes.ENTE_GESTORE_PROGETTO: {
-          if (hasUserPermission(['del.ref_del.gest.prgt'])) {
-            buttons.push(deleteButton);
+          case formTypes.ENTE_GESTORE_PROGETTO: {
+            if (hasUserPermission(['del.ref_del.gest.prgt'])) {
+              buttons.push(deleteButton);
+            }
+            break;
           }
-          break;
-        }
-        case formTypes.ENTI_PARTNER: {
-          if (hasUserPermission(['del.ref_del.partner'])) {
-            buttons.push(deleteButton);
+          case formTypes.ENTI_PARTNER: {
+            if (hasUserPermission(['del.ref_del.partner'])) {
+              buttons.push(deleteButton);
+            }
+            break;
           }
-          break;
+          default:
+            break;
         }
-        default:
-          break;
       }
-    }
-    if (userRole === userRoles.USR && hasUserPermission(['upd.anag.utenti'])) {
-      buttons.push(editButton);
-    } else if (userRole === userRoles.FAC || userRole === userRoles.VOL) {
-      buttons.push(editButton);
-    } else if (
-      authorityType &&
-      userRole &&
-      [
-        userRoles.REG,
-        userRoles.REGP,
-        userRoles.REPP,
-        userRoles.DEG,
-        userRoles.DEGP,
-        userRoles.DEPP,
-      ].includes(userRole) &&
-      getUserRoleStatus() !== entityStatus.TERMINATO
-    ) {
-      switch (authorityType) {
-        case formTypes.ENTE_GESTORE_PROGRAMMA: {
-          if (hasUserPermission(['add.ref_del.gest.prgm'])) {
-            buttons.push(editButton);
+      if (userRole === userRoles.USR && hasUserPermission(['upd.anag.utenti'])) {
+        buttons.push(editButton);
+      } else if (userRole === userRoles.FAC || userRole === userRoles.VOL) {
+        buttons.push(editButton);
+      } else if (
+        authorityType &&
+        userRole &&
+        [
+          userRoles.REG,
+          userRoles.REGP,
+          userRoles.REPP,
+          userRoles.DEG,
+          userRoles.DEGP,
+          userRoles.DEPP,
+        ].includes(userRole)
+      ) {
+        switch (authorityType) {
+          case formTypes.ENTE_GESTORE_PROGRAMMA: {
+            if (hasUserPermission(['add.ref_del.gest.prgm'])) {
+              buttons.push(editButton);
+            }
+            break;
           }
-          break;
-        }
-        case formTypes.ENTE_GESTORE_PROGETTO: {
-          if (hasUserPermission(['add.ref_del.gest.prgt'])) {
-            buttons.push(editButton);
+          case formTypes.ENTE_GESTORE_PROGETTO: {
+            if (hasUserPermission(['add.ref_del.gest.prgt'])) {
+              buttons.push(editButton);
+            }
+            break;
           }
-          break;
-        }
-        case formTypes.ENTI_PARTNER: {
-          if (hasUserPermission(['add.ref_del.partner'])) {
-            buttons.push(editButton);
+          case formTypes.ENTI_PARTNER: {
+            if (hasUserPermission(['add.ref_del.partner'])) {
+              buttons.push(editButton);
+            }
+            break;
           }
-          break;
+          default:
+            break;
         }
-        default:
-          break;
       }
     }
     return buttons;
@@ -569,6 +581,8 @@ const UsersDetails = () => {
                   stato: string;
                   statoP: string;
                   ruolo: string;
+                  nomeBreveEnte: string;
+                  nomeEnte: string;
                   associatoAUtente: boolean;
                 }) => {
                   let roleActions = {};
@@ -617,7 +631,14 @@ const UsersDetails = () => {
                       id={role.id || role.codiceRuolo || role.nome}
                       status={role.statoP}
                       title={role.nome}
-                      fullInfo={role.stato ? { ruoli: role.ruolo } : undefined}
+                      fullInfo={
+                        role.stato
+                          ? {
+                              ruoli: role.ruolo,
+                              ente: role.nomeBreveEnte || role.nomeEnte,
+                            }
+                          : undefined
+                      }
                       onActionClick={roleActions}
                     />
                   );

@@ -16,6 +16,7 @@ import {
 } from '../pages/administrator/AdministrativeArea/Entities/Surveys/surveyConstants';
 import { RolePermissionI } from '../redux/features/roles/rolesSlice';
 import { formFieldI } from './formHelper';
+import { DeviceI } from '../redux/features/app/appSlice';
 
 export const formatDate = (date?: string) => {
   if (date) {
@@ -209,8 +210,8 @@ export const MenuRoutes = [
     visible: ['tab.citt'],
   }),
   newMenuItem({
-    label: 'Dashboard',
-    path: '/dashboard',
+    label: 'Report dati',
+    path: '/report-dati',
     id: 'tab-dashboard',
     visible: ['tab.dshb'],
   }),
@@ -468,4 +469,15 @@ export const orderArray = (array: any[]) => {
   } else {
     return array;
   }
+};
+
+export const getMediaQueryDevice = ({
+  mediaIsPhone,
+  mediaIsTablet,
+  mediaIsDesktop,
+}: DeviceI) => {
+  if (mediaIsDesktop) return 'desktop';
+  if (mediaIsTablet) return 'tablet';
+  if (mediaIsPhone) return 'mobile';
+  return 'desktop';
 };

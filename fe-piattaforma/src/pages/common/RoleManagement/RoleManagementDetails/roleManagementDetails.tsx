@@ -294,6 +294,7 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
           buttonsPosition='BOTTOM'
           goBackTitle='Vai alla Lista Ruoli'
           goBackPath='/gestione-ruoli'
+          isRoleManagement
         >
           <>
             <Form id='form-role-management' className='mt-4'>

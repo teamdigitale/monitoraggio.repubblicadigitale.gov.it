@@ -40,12 +40,13 @@ export const GetEntityValues =
           );
         }
       });
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
         filtro: filtroRequest,
-        idProgetto: idProgetto,
-        idProgramma: idProgramma,
+        idProgetto,
+        idProgramma,
+        idEnte,
         codiceFiscaleUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
       };
@@ -101,12 +102,13 @@ export const GetEntityFilterValues =
           );
         }
       });
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
         filtro: filtroRequest,
         idProgetto,
         idProgramma,
+        idEnte,
         codiceFiscaleUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
       };
@@ -133,13 +135,14 @@ export const GetEntityDetail =
     try {
       dispatch(showLoader());
       dispatch({ ...GetEntityDetailAction, idCittadino });
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
         codiceFiscaleUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
         idProgetto,
         idProgramma,
+        idEnte,
       };
       const res = await API.post(`cittadino/${idCittadino}`, body);
       if (res?.data) {
@@ -217,7 +220,7 @@ export const DownloadEntityValues =
         // @ts-ignore
         citizensArea: { filters },
       } = select((state: RootState) => state);
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
         codiceFiscaleUtenteLoggato: codiceFiscale,
@@ -225,8 +228,9 @@ export const DownloadEntityValues =
         filtro: {
           ...filters,
         },
-        idProgetto: idProgetto,
-        idProgramma: idProgramma,
+        idProgetto,
+        idProgramma,
+        idEnte,
       };
       const entityEndpoint = `/cittadino/download`;
       const res = await API.post(entityEndpoint, body);
