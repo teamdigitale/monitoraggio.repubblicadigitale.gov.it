@@ -41,7 +41,6 @@ const CardStatusActionSurveys: React.FC<CardStatusActionI> = (props) => {
     status,
     actionView,
     fullInfo,
-
     onActionClick,
     id,
     moreThanOneSurvey = false,
@@ -213,7 +212,7 @@ const CardStatusActionSurveys: React.FC<CardStatusActionI> = (props) => {
               >
                 <Icon
                   color='primary'
-                  icon='it-file'
+                  icon='it-password-visible'
                   size='sm'
                   aria-label='Preview'
                 />

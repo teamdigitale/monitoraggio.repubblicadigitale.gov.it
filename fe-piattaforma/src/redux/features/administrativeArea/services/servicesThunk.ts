@@ -45,13 +45,14 @@ export const GetAllServices =
       } = select((state: RootState) => state);
       const queryParamFilters = transformFiltersToQueryParams(filters);
       const entityEndpoint = `/servizio/all${queryParamFilters}`;
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
         codiceFiscaleUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
         idProgetto,
         idProgramma,
+        idEnte,
       };
       const res = await API.post(entityEndpoint, body, {
         params: {
@@ -108,13 +109,14 @@ export const GetCitizenListServiceDetail =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
         codiceFiscaleUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
         idProgetto,
         idProgramma,
+        idEnte,
       };
       let queryParamFilters = transformFiltersToQueryParams(filters);
       if(pagination){
@@ -151,13 +153,14 @@ export const GetServicesDetailFilters =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
         codiceFiscaleUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
         idProgetto,
         idProgramma,
+        idEnte,
       };
       const queryParamFilters = transformFiltersToQueryParams(filters);
       const res = await API.post(
@@ -229,7 +232,7 @@ export const GetValuesDropdownServiceCreation =
       dispatch({ ...GetValuesDropdownServiceCreationAction });
       dispatch(showLoader());
       const entityEndpoint = `/servizio/facilitatore/${payload.dropdownType}/dropdown`;
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       let body = {};
       if (payload.dropdownType !== 'sedi') {
@@ -238,6 +241,7 @@ export const GetValuesDropdownServiceCreation =
           codiceRuoloUtenteLoggato: codiceRuolo,
           idProgetto,
           idProgramma,
+          idEnte,
         };
       } else {
         body = {

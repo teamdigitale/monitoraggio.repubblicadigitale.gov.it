@@ -16,16 +16,16 @@ const Curtain: React.FC<CurtainI> = (props) => {
     return null;
   }
 
-  // if (!noscroll) {
-  //   return null;
-  // }
+  const handleOnClick = () => {
+    if (onClick) onClick();
+  };
 
   return ReactDOM.createPortal(
     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
     <div
-      className={clsx('curtain-wrapper', 'fixed-top', 'w-100', 'h-100')}
+      className={clsx('curtain-wrapper', 'position-fixed', 'w-100', 'h-100')}
       role='dialog'
-      onMouseDown={onClick}
+      onMouseDown={handleOnClick}
       aria-label='Curtain modale'
     >
       {children}

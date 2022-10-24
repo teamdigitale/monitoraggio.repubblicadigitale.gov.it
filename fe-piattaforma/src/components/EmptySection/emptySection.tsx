@@ -12,6 +12,7 @@ interface EmptySectionI {
   withIcon?: boolean;
   aside?: boolean;
   horizontal?: boolean;
+  noMargin?: boolean;
 }
 
 const EmptySection: React.FC<EmptySectionI> = ({
@@ -22,14 +23,15 @@ const EmptySection: React.FC<EmptySectionI> = ({
   withIcon,
   aside,
   horizontal,
+  noMargin,
 }) => {
   return (
     <div
       className={clsx(
         'd-flex',
-        'my-5',
+        !noMargin && 'my-5',
         horizontal
-          ? 'flex-row justify-content-center'
+          ? 'flex-row justify-content-center align-items-center'
           : 'justify-content-center align-items-center flex-column',
         aside && 'justify-content-start',
         'empty-section',

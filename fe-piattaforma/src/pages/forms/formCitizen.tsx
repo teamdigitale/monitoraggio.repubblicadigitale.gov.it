@@ -28,6 +28,7 @@ export interface FormCitizenI {
   setIsFormValid?: (param: boolean) => void;
   creation?: boolean;
   info?: CittadinoInfoI;
+  editMode?: boolean;
 }
 
 interface FormEnteGestoreProgettoFullInterface
@@ -45,7 +46,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     getFormValues,
     setFormValues = () => ({}),
     updateForm = () => ({}),
-    //creation = false,
+    editMode = false,
   } = props;
 
   // const device = useAppSelector(selectDevice);
@@ -87,6 +88,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
       const tmpForm = FormHelper.onInputChange(form, value, field);
       const referenceBoolean = !tmpForm?.['4']?.value;
       tmpForm['3'].required = referenceBoolean;
+      if(referenceBoolean === false){ tmpForm[3].valid = true; }
       tmpForm['5'].required = !referenceBoolean;
       tmpForm['6'].required = !referenceBoolean;
       updateForm(tmpForm);
@@ -128,14 +130,18 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           placeholder='Inserisci codice fiscale'
           onInputChange={onInputDataChange}
         />
-        <CheckboxGroup
-          {...form?.['4']}
-          className='col-12 col-lg-6'
-          options={citizenFormDropdownOptions['codiceFiscaleNonDisponibile']}
-          onInputChange={handleCheckboxChange}
-          noLabel
-          classNameLabelOption='pl-5'
-        />
+        {editMode ? (
+          <CheckboxGroup
+            {...form?.['4']}
+            className='col-12 col-lg-6'
+            options={citizenFormDropdownOptions['codiceFiscaleNonDisponibile']}
+            onInputChange={handleCheckboxChange}
+            noLabel
+            classNameLabelOption='pl-5'
+          />
+        ) : (
+          <span />
+        )}
         <Select
           {...form?.['5']}
           placeholder={`Inserisci ${form?.['5']?.label?.toLowerCase()}`}

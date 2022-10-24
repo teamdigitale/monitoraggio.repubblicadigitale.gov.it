@@ -10,7 +10,10 @@ import {
   GetUserDetails,
   UserAddRole,
 } from '../../../../../redux/features/administrativeArea/user/userThunk';
-import { closeModal } from '../../../../../redux/features/modal/modalSlice';
+import {
+  closeModal,
+  expandModal,
+} from '../../../../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { newForm, newFormField } from '../../../../../utils/formHelper';
 import { Form, Select } from '../../../../../components';
@@ -57,6 +60,7 @@ const AddUserRole: React.FC<withFormHandlerProps> = (props) => {
         onClick: () => dispatch(closeModal()),
       }}
       title='Aggiungi nuovo ruolo'
+      isUserRole
     >
       <Form id='form-add-user-role' className='mt-5 mb-0'>
         <Form.Row
@@ -76,6 +80,9 @@ const AddUserRole: React.FC<withFormHandlerProps> = (props) => {
             wrapperClassName='mb-5'
             aria-label='ruolo'
             required
+            onMenuClose={() => dispatch(expandModal({ expandModal: false }))}
+            onMenuOpen={() => dispatch(expandModal({ expandModal: true }))}
+            maxMenuHeight={200}
           />
         </Form.Row>
       </Form>

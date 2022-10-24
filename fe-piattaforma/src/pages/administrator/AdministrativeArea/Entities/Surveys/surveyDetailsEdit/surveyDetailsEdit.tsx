@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
+import Sticky from 'react-sticky-el';
 import { useAppSelector } from '../../../../../../redux/hooks';
 import { FormHelper, FormI } from '../../../../../../utils/formHelper';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -14,6 +15,7 @@ import {
   selectSurveySections,
   SurveyQuestionI,
   selectSurveyForm,
+  selectSurveyStatus,
 } from '../../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 import {
   SetSurveyCreation,
@@ -23,10 +25,16 @@ import SurveyTemplate from './components/surveyTemplate';
 import ButtonsBar, {
   ButtonInButtonsBar,
 } from '../../../../../../components/ButtonsBar/buttonsBar';
-import Sticky from 'react-sticky-el';
 import useGuard from '../../../../../../hooks/guard';
 import { GetProgramDetail } from '../../../../../../redux/features/administrativeArea/programs/programsThunk';
 import { selectPrograms } from '../../../../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { entityStatus } from '../../utils';
+import {
+  closeModal,
+  openModal,
+} from '../../../../../../redux/features/modal/modalSlice';
+import DeleteEntityModal from '../../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
+import { DeleteEntity } from '../../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 
 interface SurveyDetailsEditI {
   editMode?: boolean;
@@ -42,6 +50,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
   const navigate = useNavigate();
   const form = useAppSelector(selectSurveyForm);
   const sections = useAppSelector(selectSurveySections) || [];
+  const surveyStatus = useAppSelector(selectSurveyStatus);
   const [editModeState, setEditModeState] = useState<boolean>(editMode);
   const [cloneModeState, setCloneModeState] = useState<boolean>(cloneMode);
   const { idQuestionario, entityId } = useParams();
@@ -61,6 +70,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
     if (!programName && entityId) {
       dispatch(GetProgramDetail(entityId));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -88,9 +98,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
     let isValid = true;
     if (questions?.length > 0) {
       questions.map((question: SurveyQuestionI) => {
-        FormHelper.isValidForm(question.form) === false
-          ? (isValid = false)
-          : '';
+        !FormHelper.isValidForm(question.form) ? (isValid = false) : '';
 
         if (
           (question.form['question-type'].value === 'select' ||
@@ -119,9 +127,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
     let sectionsValid = true;
     if (sections) {
       sections.map((section: SurveySectionI) =>
-        checkValidityPreviousSections(section) === false
-          ? (sectionsValid = false)
-          : ''
+        !checkValidityPreviousSections(section) ? (sectionsValid = false) : ''
       );
     }
     return isValidForm && sectionsValid;
@@ -130,19 +136,23 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
   const device = useAppSelector(selectDevice);
 
   const createUpdateSurvey = async () => {
-    setEditModeState(false);
-    setCloneModeState(false);
     const res = await dispatch(SetSurveyCreation(cloneModeState));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     if (res?.data?.['survey-id']) {
+      // clona questionario
+      setEditModeState(false);
+      setCloneModeState(false);
       navigate(
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         `/area-amministrativa/questionari/${res?.data?.['survey-id']}`,
         { replace: true }
       );
-    } else if (idQuestionario) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+    } else if (res) {
+      // modifica questionario
       navigate(-1);
     }
   };
@@ -166,6 +176,23 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
       onClick: () => createUpdateSurvey(),
     },
   ];
+
+  const deleteButton = {
+    outline: true,
+    color: 'danger',
+    text: 'Elimina',
+    disabled: surveyStatus !== entityStatus.NON_ATTIVO,
+    onClick: () =>
+      dispatch(
+        openModal({
+          id: 'delete-entity',
+          payload: {
+            text: 'Confermi di voler eliminare il questionario?',
+            entity: 'survey',
+          },
+        })
+      ),
+  };
 
   const cloneEditButtons: ButtonInButtonsBar[] = hasUserPermission([
     'new.quest.templ',
@@ -236,6 +263,24 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
       ]
     : [];
 
+  const handleOnSurveyDelete = async () => {
+    try {
+      if (surveyStatus === entityStatus.NON_ATTIVO && idQuestionario) {
+        const res = await dispatch(
+          DeleteEntity('questionarioTemplate', idQuestionario)
+        );
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (res) {
+          dispatch(closeModal());
+          dispatch(navigate(-1));
+        }
+      }
+    } catch (err) {
+      console.log('Survey delete error', err);
+    }
+  };
+
   return (
     <div className='mb-5 container'>
       <div className='container'>
@@ -279,13 +324,34 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
                   mode='bottom'
                   stickyClassName='sticky bg-white container'
                 >
-                  <ButtonsBar buttons={cloneEditButtons} />
+                  {surveyStatus === entityStatus.NON_ATTIVO ? (
+                    <div
+                      className={clsx(
+                        'd-flex',
+                        'flex-row',
+                        device.mediaIsPhone
+                          ? 'justify-content-end flex-wrap'
+                          : 'justify-content-between',
+                        'container',
+                        'w-100'
+                      )}
+                    >
+                      <ButtonsBar buttons={[deleteButton]} />
+                      <ButtonsBar buttons={[...cloneEditButtons]} />
+                    </div>
+                  ) : (
+                    <ButtonsBar buttons={cloneEditButtons} />
+                  )}
                 </Sticky>
               </div>
             )}
           </div>
         )}
       </div>
+      <DeleteEntityModal
+        onClose={() => dispatch(closeModal())}
+        onConfirm={handleOnSurveyDelete}
+      />
     </div>
   );
 };

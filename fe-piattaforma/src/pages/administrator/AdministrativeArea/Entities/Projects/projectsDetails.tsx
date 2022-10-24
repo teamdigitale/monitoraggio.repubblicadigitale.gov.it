@@ -85,17 +85,14 @@ const EntePartnerTableHeading: TableHeadingI[] = [
   {
     label: 'Nome Ente',
     field: 'nome',
-    size: 'medium',
   },
   {
     label: 'Codice Fiscale',
     field: 'codiceFiscale',
-    size: 'medium',
   },
   {
     label: 'Esito',
     field: 'esito',
-    size: 'small',
   },
 ];
 
@@ -121,6 +118,7 @@ const ProjectsDetails = () => {
   const [correctButtons, setCorrectButtons] = useState<ButtonInButtonsBar[]>(
     []
   );
+  const [projInfoButtons, setProjInfoButtons] = useState<boolean>(false);
   const [buttonsPosition, setButtonsPosition] = useState<'TOP' | 'BOTTOM'>(
     'TOP'
   );
@@ -135,8 +133,13 @@ const ProjectsDetails = () => {
   const partnerRef = useRef<HTMLLIElement>(null);
   const sediRef = useRef<HTMLLIElement>(null);
   const infoRef = useRef<HTMLLIElement>(null);
-  const { entityId, projectId, identeDiRiferimento, authorityType } =
-    useParams();
+  const {
+    entityId,
+    projectId,
+    identeDiRiferimento,
+    authorityType,
+    authorityId,
+  } = useParams();
   const managerAuthority =
     useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
 
@@ -152,6 +155,14 @@ const ProjectsDetails = () => {
       `/area-amministrativa/progetti/${entityId}/${identeDiRiferimento}`
     ) {
       navigate(`/area-amministrativa/progetti/${entityId}/info`);
+    }
+    if (
+      location.pathname ===
+      `/area-amministrativa/progetti/${projectId}/ente-gestore-progetto/${authorityId}`
+    ) {
+      navigate(
+        `/area-amministrativa/progetti/${projectId}/ente-gestore-progetto`
+      );
     }
     if (
       location.pathname ===
@@ -177,10 +188,10 @@ const ProjectsDetails = () => {
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [projectId, projectDetails]);
+  }, [projectId, projectDetails, activeTab]);
 
   useEffect(() => {
-    scrollTo(0, 0);
+    /*  scrollTo(0, 0); */
     centerActiveItem();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
@@ -269,19 +280,25 @@ const ProjectsDetails = () => {
   const centerActiveItem = () => {
     switch (activeTab) {
       case tabs.INFO:
-        infoRef.current?.scrollIntoView({ block: 'center' });
+        infoRef.current?.scrollIntoView({ block: 'center', inline: 'center' });
         break;
       case tabs.ENTE_GESTORE:
-        gestoreRef.current?.scrollIntoView({ block: 'center' });
+        gestoreRef.current?.scrollIntoView({
+          block: 'center',
+          inline: 'center',
+        });
         break;
       case tabs.ENTI_PARTNER:
-        partnerRef.current?.scrollIntoView({ block: 'center' });
+        partnerRef.current?.scrollIntoView({
+          block: 'center',
+          inline: 'center',
+        });
         break;
       case tabs.SEDI:
-        sediRef.current?.scrollIntoView({ block: 'center' });
+        sediRef.current?.scrollIntoView({ block: 'center', inline: 'center' });
         break;
       default:
-        infoRef.current?.scrollIntoView({ block: 'center' });
+        infoRef.current?.scrollIntoView({ block: 'center', inline: 'center' });
         break;
     }
   };
@@ -323,7 +340,7 @@ const ProjectsDetails = () => {
           openModal({
             id: 'upload-csv',
             payload: {
-              title: 'Carica lista Enti partner',
+              title: 'Carica lista enti partner',
               entity: 'enti',
               endpoint: `/ente/partner/upload/${projectId}`,
             },
@@ -333,7 +350,7 @@ const ProjectsDetails = () => {
     {
       size: 'xs',
       color: 'primary',
-      text: ' Aggiungi Ente partner',
+      text: ' Aggiungi ente partner',
       onClick: () =>
         dispatch(
           openModal({
@@ -403,6 +420,9 @@ const ProjectsDetails = () => {
                 outline: true,
                 color: 'primary',
                 buttonClass: 'btn-secondary',
+                disabled:
+                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                  entityStatus.ATTIVO,
                 text: 'Elimina',
                 onClick: () =>
                   dispatch(
@@ -499,6 +519,7 @@ const ProjectsDetails = () => {
         },
       ]);
       setEmptySection(undefined);
+      setProjInfoButtons(false);
     } else {
       setItemList(null);
       setCorrectButtons([]);
@@ -530,50 +551,47 @@ const ProjectsDetails = () => {
       setButtonsPosition('BOTTOM');
       setCurrentForm(undefined);
       setItemList({
-        items: partnerAuthoritiesList
-          .filter(
-            (entePartner: { associatoAUtente: boolean }) =>
-              entePartner.associatoAUtente
-          )
-          ?.map(
-            (entePartner: {
-              id: string;
-              nome: string;
-              referenti: string;
-              stato: string;
-            }) => ({
-              ...entePartner,
-              fullInfo: { ref: entePartner.referenti },
-              actions:
-                entePartner.stato !== entityStatus.ATTIVO ||
+        items: (partnerAuthoritiesList || []).map(
+          (entePartner: {
+            id: string;
+            nome: string;
+            referenti: string;
+            stato: string;
+            associatoAUtente: boolean;
+          }) => ({
+            ...entePartner,
+            fullInfo: { ref: entePartner.referenti },
+            actions: entePartner.associatoAUtente
+              ? entePartner.stato !== entityStatus.ATTIVO ||
                 projectDetails?.stato === entityStatus.TERMINATO
-                  ? {
-                      [CRUDActionTypes.VIEW]:
-                        onActionClickEntiPartner[CRUDActionTypes.VIEW],
-                    }
-                  : {
-                      [CRUDActionTypes.VIEW]:
-                        onActionClickEntiPartner[CRUDActionTypes.VIEW],
-                      [CRUDActionTypes.DELETE]: hasUserPermission([
-                        'del.ente.partner',
-                      ])
-                        ? (td: TableRowI | string) => {
-                            dispatch(
-                              openModal({
-                                id: 'delete-entity',
-                                payload: {
-                                  entity: 'partner-authority',
-                                  authorityId: td,
-                                  text: 'Confermi di volere disassociare questo Ente partner?',
-                                },
-                              })
-                            );
-                            // projectId && removeAuthorityPartner(td as string, projectId);
-                          }
-                        : undefined,
-                    },
-            })
-          ),
+                ? {
+                    [CRUDActionTypes.VIEW]:
+                      onActionClickEntiPartner[CRUDActionTypes.VIEW],
+                  }
+                : {
+                    [CRUDActionTypes.VIEW]:
+                      onActionClickEntiPartner[CRUDActionTypes.VIEW],
+                    [CRUDActionTypes.DELETE]: hasUserPermission([
+                      'del.ente.partner',
+                    ])
+                      ? (td: TableRowI | string) => {
+                          dispatch(
+                            openModal({
+                              id: 'delete-entity',
+                              payload: {
+                                entity: 'partner-authority',
+                                authorityId: td,
+                                text: 'Confermi di volere disassociare questo Ente partner?',
+                              },
+                            })
+                          );
+                          // projectId && removeAuthorityPartner(td as string, projectId);
+                        }
+                      : undefined,
+                  }
+              : {},
+          })
+        ),
       });
       setItemAccordionList(null);
       setCorrectButtons(
@@ -583,6 +601,7 @@ const ProjectsDetails = () => {
           : []
       );
       setEmptySection(undefined);
+      setProjInfoButtons(false);
     } else {
       setItemAccordionList(null);
       setCurrentForm(undefined);
@@ -620,27 +639,30 @@ const ProjectsDetails = () => {
             identeDiRiferimento?: string | number;
             nrFacilitatori: number;
             serviziErogati: string;
+            associatoAUtente: boolean;
           }) => ({
             ...sede,
             fullInfo: {
               ente_ref: sede.enteDiRiferimento,
-              nFacilitatori: sede.nrFacilitatori,
+              [projectDetails?.policy !== 'SCD' ? 'nFacilitatori':'nVolontari']: sede.nrFacilitatori,
               serviziErogati: sede.serviziErogati,
             },
-            actions: {
-              [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-                if (entityId && projectId) {
-                  navigate(
-                    `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${sede?.identeDiRiferimento}/sedi/${td}`
-                  );
-                } else {
-                  projectId &&
-                    navigate(
-                      `/area-amministrativa/progetti/${projectId}/${sede?.identeDiRiferimento}/sedi/${td}`
-                    );
+            actions: sede.associatoAUtente
+              ? {
+                  [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+                    if (entityId && projectId) {
+                      navigate(
+                        `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${sede?.identeDiRiferimento}/sedi/${td}`
+                      );
+                    } else {
+                      projectId &&
+                        navigate(
+                          `/area-amministrativa/progetti/${projectId}/${sede?.identeDiRiferimento}/sedi/${td}`
+                        );
+                    }
+                  },
                 }
-              },
-            },
+              : undefined,
           })
         ),
       });
@@ -661,6 +683,7 @@ const ProjectsDetails = () => {
         // },
       ]);
       setEmptySection(undefined);
+      setProjInfoButtons(false);
     } else {
       setItemAccordionList(null);
       setCurrentForm(undefined);
@@ -1014,6 +1037,7 @@ const ProjectsDetails = () => {
         setItemList(null);
         setCorrectButtons(projectInfoButtons());
         setEmptySection(undefined);
+        setProjInfoButtons(true);
         break;
       case tabs.ENTE_GESTORE:
         AuthoritySection();
@@ -1039,9 +1063,15 @@ const ProjectsDetails = () => {
     projectId: string,
     terminationDate: string
   ) => {
-    await dispatch(TerminateEntity(projectId, 'progetto', terminationDate));
-    dispatch(GetProjectDetail(projectId));
-    dispatch(closeModal());
+    const res = await dispatch(
+      TerminateEntity(projectId, 'progetto', terminationDate)
+    );
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (res) {
+      dispatch(GetProjectDetail(projectId));
+      dispatch(closeModal());
+    }
   };
 
   const removeReferentDelegate = async (
@@ -1134,7 +1164,9 @@ const ProjectsDetails = () => {
         codiceFiscale: td.piva || td.codiceFiscale,
         esito: (td.esito || '').toUpperCase().includes('OK')
           ? 'Riuscito'
-          : 'Fallito',
+          : 'Non riuscito',
+        failedCSV: td.esito.toUpperCase().includes('KO'),
+        onTooltipInfo: td.esito,
       }))
     );
     setEntePartnerTable(table);
@@ -1174,10 +1206,11 @@ const ProjectsDetails = () => {
             titleInfo={{
               title: projectDetails?.nome,
               status: projectDetails?.stato,
-              upperTitle: { icon: 'it-user', text: 'Progetto' },
+              upperTitle: { icon: 'it-file', text: 'Progetto' },
               subTitle: programDetails?.nomeBreve,
             }}
             currentTab={activeTab}
+            infoProjBtn={projInfoButtons}
             formButtons={correctButtons}
             // itemsAccordionList={itemAccordionList}
             itemsList={itemList}
@@ -1234,8 +1267,9 @@ const ProjectsDetails = () => {
                           ? `associate.`
                           : `associati.`
                       }`}
-                      horizontal
-                      aside
+                      icon='it-note'
+                      withIcon
+                      noMargin
                     />
                   )}
                 </Accordion>
@@ -1262,7 +1296,7 @@ const ProjectsDetails = () => {
           ) : null}
           {currentModal ? currentModal : null}
           <TerminateEntityModal
-            onClose={() => dispatch(closeModal())}
+            minDate={projectDetails?.dataInizio?.toString()}
             onConfirm={(_entity: string, terminationDate: string) =>
               terminationDate &&
               projectId &&
@@ -1299,7 +1333,12 @@ const ProjectsDetails = () => {
             template={EntiPartnerTemplate}
             templateName='enti_partner-template.csv'
           >
-            <Table {...entePartnerTable} id='table-ente-partner' />
+            <Table
+              {...entePartnerTable}
+              withActions
+              succesCSV
+              id='table-ente-partner'
+            />
           </UploadCSVModal>
           <ManageDelegate creation />
           <ManageReferal creation />

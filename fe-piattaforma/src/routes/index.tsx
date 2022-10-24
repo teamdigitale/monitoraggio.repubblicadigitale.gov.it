@@ -9,6 +9,8 @@ import { Loader } from '../components';
 import Notifications from '../pages/common/NotificationsPage/notifications';
 import { SessionCheck } from '../redux/features/user/userThunk';
 
+import ErrorPage from '../pages/common/Error/errorPage';
+
 const AuthRedirect = lazy(() => import('../pages/common/Auth/authRedirect'));
 
 const HomeFacilitator = lazy(() => import('../pages/facilitator/Home/home'));
@@ -90,14 +92,17 @@ const AppRoutes: React.FC = () => {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route path='/auth-redirect' element={<AuthRedirect />} />
+        <Route path='/errore/:errorCode' element={<ErrorPage />} />
+        <Route path='/errore' element={<ErrorPage />} />
         <Route
           path='/open-data'
           element={
-            <FullLayout>
               <OpenData />
-            </FullLayout>
           }
         />
+        {process.env.NODE_ENV === 'development' ? (
+          <Route path='/playground' element={<Playground />} />
+        ) : null}
         {isLogged ? (
           <>
             <Route
@@ -183,16 +188,13 @@ const AppRoutes: React.FC = () => {
                 />
               ) : null}
               <Route
-                path='/dashboard'
+                path='/report-dati'
                 element={
                   <ProtectedComponent visibleTo={['tab.dshb', 'view.dshb']}>
                     <Dashboard />
                   </ProtectedComponent>
                 }
               />
-              {process.env.NODE_ENV === 'development' ? (
-                <Route path='/playground' element={<Playground />} />
-              ) : null}
               <Route
                 path='/area-amministrativa/*'
                 element={
@@ -215,10 +217,10 @@ const AppRoutes: React.FC = () => {
           <>
             <Route path='/auth/:token' element={<Auth />} />
             <Route path='/auth' element={<Auth />} />
+            <Route path='/report-dati' element={<Dashboard />} />
             <Route path='/' element={<FullLayout />}>
               {/* Public Paths */}
               <Route path='/onboarding' element={<Onboarding />} />
-              <Route path='/dashboard' element={<Dashboard />} />
               <Route
                 path='/'
                 element={<Navigate replace to={defaultRedirectUrl} />}

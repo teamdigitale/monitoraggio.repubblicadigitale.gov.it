@@ -22,7 +22,7 @@ import {
   DownloadEntityValuesQueryParams,
   GetEntityFilterQueryParamsValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
-import { TableHeadingQuestionnaires } from '../utils';
+import {TableHeadingQuestionnaires, TableHeadingQuestionnairesLite} from '../utils';
 
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
@@ -69,13 +69,13 @@ const Surveys = () => {
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
-    dispatch(resetSurveyDetails())
+    dispatch(resetSurveyDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateTableValues = () => {
     const table = newTable(
-      TableHeadingQuestionnaires,
+      hasUserPermission(['new.quest.templ']) ? TableHeadingQuestionnaires : TableHeadingQuestionnairesLite,
       questionariList?.list.map((td) => ({
         id: td.id,
         nome: td.nome,
@@ -232,7 +232,7 @@ const Surveys = () => {
     onHandleSearch: handleOnSearch,
     placeholder:
       filter.value === 'questionnaire'
-        ? "Inserisci il nome o l'identificativo del questionario"
+        ? "Inserisci il nome o l'ID del questionario"
         : 'Cerca addendum',
     isClearable: true,
     title:
@@ -323,8 +323,8 @@ const Surveys = () => {
             ? 'Elenco questionari'
             : 'Elenco Addendum'
         }
-        sectionInfo
-        defaultOpen
+        sectionInfo={hasUserPermission(["new.quest.templ"])}
+        defaultOpen={hasUserPermission(["new.quest.templ"])}
       />
       <GenericSearchFilterTableLayout
         searchInformation={searchInformation}

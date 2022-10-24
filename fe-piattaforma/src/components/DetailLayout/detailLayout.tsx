@@ -52,6 +52,9 @@ interface DetailLayoutI {
   citizenDeleteChange?: boolean;
   enteIcon?: boolean;
   profilePicture?: string | undefined;
+  isRoleManagement?: boolean;
+  infoProgBtn?: boolean;
+  infoProjBtn?: boolean;
 }
 const DetailLayout: React.FC<DetailLayoutI> = ({
   formButtons,
@@ -74,6 +77,9 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   citizenDeleteChange = false,
   enteIcon = false,
   profilePicture,
+  isRoleManagement = false,
+  infoProgBtn = false,
+  infoProjBtn = false,
 }) => {
   const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
@@ -160,8 +166,9 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                 ) : (
                   <EmptySection
                     title={`Non sono presenti ${singleItem.title?.toLowerCase()} associati.`}
-                    horizontal
-                    aside
+                    icon='it-note'
+                    withIcon
+                    noMargin
                   />
                 )}
               </Accordion>
@@ -181,7 +188,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                 !device.mediaIsPhone &&
                 currentTab === 'questionari' &&
                 itemsList?.items?.length && (
-                  <h3 className='h4 text-muted mx-3'> Altri questionari </h3>
+                  <h3 className='h5 text-muted mx-3 my-4 pt-2'> Questionari disponibili </h3>
                 )}
             </div>
           ) : null
@@ -192,7 +199,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
           <>
             {itemsList.title && (
               <h2 className='h4 neutral-1-color-a7'>{itemsList.title}</h2>
-            )}{' '}
+            )}
             {((currentTab === 'questionari' && isRadioButtonItem) ||
               currentTab !== 'questionari') &&
               itemsList.items.map((item) => {
@@ -212,7 +219,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                     }
                   />
                 );
-              })}{' '}
+              })}
           </>
         ) : null}
         {currentTab === 'progetti' && showItemsList && itemsList?.items?.length
@@ -263,7 +270,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
           <>
             {itemsList.title && (
               <h2 className='h4 neutral-1-color-a7'>{itemsList.title}</h2>
-            )}{' '}
+            )}
             {itemsList.items.map((item) => {
               return (
                 <CardStatusAction
@@ -274,7 +281,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                   onActionClick={item.actions}
                 />
               );
-            })}{' '}
+            })}
           </>
         ) : null}
         {buttonsPosition === 'TOP' &&
@@ -303,38 +310,30 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
               stickyClassName={clsx(
                 'sticky',
                 'bg-white',
+                isUserProfile
+                  ? 'pr-4'
+                  : isUserProfile && device.mediaIsTablet && 'pr-0',
+                isRoleManagement
+                  ? 'pr-4'
+                  : isRoleManagement && device.mediaIsTablet && 'pr-0',
                 !device.mediaIsPhone && 'container'
               )}
             >
-              {formButtons.length === 3 ? (
-                device.mediaIsPhone ? (
-                  <div
-                    className={clsx(
-                      'd-flex',
-                      'flex-row',
-                      'justify-content-between',
-                      'flex-wrap',
-                      'container',
-                      'w-100'
-                    )}
-                  >
-                    <ButtonsBar buttons={formButtons.slice(1)} />
-                    <ButtonsBar buttons={formButtons.slice(0, 1)} />
-                  </div>
-                ) : (
-                  <div
-                    className={clsx(
-                      'd-flex',
-                      'flex-row',
-                      'justify-content-between',
-                      'container',
-                      'w-100'
-                    )}
-                  >
-                    <ButtonsBar buttons={formButtons.slice(0, 1)} />
-                    <ButtonsBar buttons={formButtons.slice(1)} />
-                  </div>
-                )
+              {formButtons.length === 2 && (infoProgBtn || (infoProjBtn && titleInfo?.status !== 'ATTIVABILE' && titleInfo?.status !== 'NON ATTIVO')) ? (
+                <div
+                  className={clsx(
+                    'd-flex',
+                    'flex-row',
+                    device.mediaIsPhone
+                      ? 'justify-content-end flex-wrap'
+                      : 'justify-content-between',
+                    'container',
+                    'w-100'
+                  )}
+                >
+                  <ButtonsBar buttons={formButtons.slice(0, 1)} />
+                  <ButtonsBar buttons={formButtons.slice(1)} />
+                </div>
               ) : (
                 <div
                   className={clsx(!citizenList && 'container', 'text-center')}

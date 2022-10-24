@@ -87,7 +87,7 @@ const ServicesDetails = () => {
         })
       );
     }
-  }, [serviceId, serviceDetails]);
+  }, [serviceId, serviceDetails, activeTab]);
 
   const centerActiveItem = () => {
     switch (activeTab) {
@@ -104,7 +104,7 @@ const ServicesDetails = () => {
   };
 
   useEffect(() => {
-    scrollTo(0, 0);
+    /*  scrollTo(0, 0); */
     centerActiveItem();
   }, [activeTab]);
 

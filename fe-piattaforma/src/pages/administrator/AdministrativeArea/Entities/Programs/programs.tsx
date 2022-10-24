@@ -128,6 +128,26 @@ const Programs = () => {
 
   const handleDropdownFilters = (values: FilterI[], filterKey: string) => {
     setFilterDropdownSelected(filterKey);
+    if (
+      filtersList[filterKey] &&
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      filtersList[filterKey]?.length > values?.length
+    ) {
+      const dropdownType =
+        filterKey === 'filtroStati'
+          ? 'stati'
+          : filterKey === 'filtroPolicies'
+          ? 'policies'
+          : '';
+      dispatch(
+        GetEntityFilterValues({
+          entity,
+          dropdownType: dropdownType,
+          noFilters: true,
+        })
+      );
+    }
     dispatch(setEntityFilters({ [filterKey]: [...values] }));
   };
 
@@ -183,8 +203,7 @@ const Programs = () => {
   const searchInformation: SearchInformationI = {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
-    placeholder:
-      "Inserisci il nome, l'identificativo o il nome dell'ente gestore",
+    placeholder: "Inserisci il nome, l'ID o il nome dell'ente gestore",
     isClearable: true,
     title: 'Cerca programma',
   };

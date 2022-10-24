@@ -1,8 +1,9 @@
 import clsx from 'clsx';
-import { Button, Chip, ChipLabel, UncontrolledTooltip } from 'design-react-kit';
+import { Chip, ChipLabel, UncontrolledTooltip } from 'design-react-kit';
 import React, { memo } from 'react';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import { useAppSelector } from '../../redux/hooks';
+import './statusChip.scss';
 interface StatusChipI {
   status?: string | undefined;
   noTooltip?: boolean;
@@ -21,7 +22,7 @@ const statusTypes = {
   FILLED_OUT: 'COMPILATO',
   NOT_FILLED_OUT: 'NON COMPILATO',
   TERMINATED: 'TERMINATO',
-  ACTIVATABLE: 'ATTIVABILE',
+  ACTIVABLE: 'ATTIVABILE',
 };
 
 export const statusBgColor = (status: string) => {
@@ -44,8 +45,8 @@ export const statusBgColor = (status: string) => {
       return 'light-grey-bg';
     case statusTypes.TERMINATED:
       return 'neutral-2-bg-b5';
-    case statusTypes.ACTIVATABLE:
-      return 'analogue-2-bg';
+    case statusTypes.ACTIVABLE:
+      return 'activable';
     default:
       return 'neutral-1-bg-a1';
   }
@@ -70,7 +71,7 @@ export const statusColor = (status: string) => {
       return 'text-white';
     case statusTypes.TERMINATED:
       return 'text-white';
-    case statusTypes.ACTIVATABLE:
+    case statusTypes.ACTIVABLE:
       return 'text-white';
     default:
       return 'neutral-1-bg-a1';
@@ -85,7 +86,7 @@ const StatusChip: React.FC<StatusChipI> = (props) => {
 
   return (
     <>
-      <Button
+      <span
         className='px-0 py-0'
         id={`button-status-${rowTableId ? rowTableId : new Date().getTime()}`}
       >
@@ -109,8 +110,8 @@ const StatusChip: React.FC<StatusChipI> = (props) => {
           >
             {status?.toUpperCase()}
           </ChipLabel>
-        </Chip>{' '}
-      </Button>
+        </Chip>
+      </span>
       {!noTooltip && (
         <UncontrolledTooltip
           placement='top'

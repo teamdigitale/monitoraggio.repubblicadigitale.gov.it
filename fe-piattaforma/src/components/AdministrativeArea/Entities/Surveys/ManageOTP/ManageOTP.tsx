@@ -56,16 +56,14 @@ const ManageOTP = () => {
       content = (
         <>
           <p className={clsx('h6', 'font-weight-semibold', 'mx-5', 'mb-5')}>
-            {' '}
-            Inserisci il codice OTP pr verifica{' '}
+            Inserisci il codice OTP pr verifica
           </p>
 
           <InputOTP />
 
           <p className={clsx('h6', 'font-weight-light', 'mx-5', 'mt-5')}>
-            {' '}
-            Non hai ricevuto l SMS?{' '}
-            <u className='font-weight-semibold'> Invia di nuovo </u>{' '}
+            Non hai ricevuto l SMS?
+            <u className='font-weight-semibold'> Invia di nuovo </u>
           </p>
         </>
       );

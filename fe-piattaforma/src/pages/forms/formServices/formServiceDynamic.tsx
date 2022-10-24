@@ -6,7 +6,6 @@ import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
 import { selectSezioneQ3compilato } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
-// import { selectDevice } from '../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../redux/hooks';
 import { formatAndParseJsonString } from '../../../utils/common';
 import {
@@ -22,6 +21,7 @@ interface FormServicesI {
   setIsFormValid?: (param: boolean) => void;
   creation?: boolean;
   dynamicFormQ3?: FormI;
+  projectDetails?: { [key: string]: string };
 }
 
 interface FormEnteGestoreProgettoFullInterface
@@ -44,8 +44,6 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
     updateForm = () => ({}),
     dynamicFormQ3,
   } = props;
-  // const device = useAppSelector(selectDevice);
-  // const isMobile = device.mediaIsPhone;
   const sezioneQ3 = useAppSelector(
     selectSezioneQ3compilato
   )?.sezioneQ3Compilato;
@@ -82,11 +80,15 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
             // multiple values
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            newFormData[key] = (value[key] || ['']).map((e: string) => e.replaceAll(separator, ','));
+            newFormData[key] = (value[key] || ['']).map((e: string) =>
+              e.replaceAll(separator, ',')
+            );
           } else {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            newFormData[key] = (value[key] || ['']).map((e: string) => e.replaceAll(separator, ',')).join(separator);
+            newFormData[key] = (value[key] || [''])
+              .map((e: string) => e.replaceAll(separator, ','))
+              .join(separator);
           }
           //newFormData[key] = (value[key] || ['']).map((e: string) => e.replaceAll(separator, ',')).join(separator);
         });
@@ -262,7 +264,11 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
     <Form id='form-service-dynamic' formDisabled={formDisabled}>
       <div className='d-inline-flex flex-wrap w-100'>
         {form &&
-          Object.keys(form).map((key) => <React.Fragment key={key}>{getAnswerType(form[key])}</React.Fragment>)}
+          Object.keys(form).map((key) => (
+            <React.Fragment key={key}>
+              {getAnswerType(form[key])}
+            </React.Fragment>
+          ))}
       </div>
     </Form>
   );

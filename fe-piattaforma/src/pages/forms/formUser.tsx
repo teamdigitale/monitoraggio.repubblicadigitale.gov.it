@@ -55,6 +55,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
     clearForm = () => ({}),
     creation = false,
     fieldsToHide = [],
+    children,
   } = props;
 
   const dispatch = useDispatch();
@@ -229,6 +230,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
                 onInputChange={onInputChange}
                 wrapperClassName='mb-5'
                 aria-label='contratto'
+                position='top'
               />
             )
           ) : (
@@ -241,6 +243,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
           placeholder='Inserisci ente di riferimento'
           onInputChange={onInputChange}
         />*/}
+          {children}
         </>
       </Form.Row>
     </Form>

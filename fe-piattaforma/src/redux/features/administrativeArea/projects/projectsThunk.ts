@@ -34,11 +34,12 @@ export const GetProjectDetail =
       dispatch({ ...GetProjectDetailAction, projectId });
 
       if (projectId) {
-        const { codiceFiscale, codiceRuolo, idProgramma, idProgetto } =
+        const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
           getUserHeaders();
         const res = await API.post(`progetto/${projectId}`, {
           idProgramma,
           idProgetto,
+          idEnte,
           cfUtente: codiceFiscale,
           codiceRuolo,
         });

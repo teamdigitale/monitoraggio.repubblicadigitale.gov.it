@@ -3,7 +3,7 @@
 @import '../../components/Footer/footer';
 @import '../../components/Header/header';
 @import '../../components/HeaderMenu/headerMenu';
-@import '../../components/NotificationHandler/notificationHandler';
+@import '../../components/ToastNotification/toastNotification';
 @import '../../components/SearchBar/searchBar';
 @import '../../components/SearchBox/searchBox';
 @import '../../components/SkipContent/skipContent';
@@ -27,6 +27,7 @@
 @import '../../components/InfoCard/infoCard';
 @import '../../pages/forms/formPrograms/ProgramAccordionForm/PogramInfoAccordionForm.scss';
 @import '../../pages/forms/formProjects/ProjectAccordionForm/projectAccordionForm.scss';
+@import '../../pages/administrator/AdministrativeArea/Entities/Surveys/surveyDetailsEdit/components/surveySection.scss';
 @import '../../pages/administrator/AdministrativeArea/Entities/Surveys/surveyDetailsEdit/components/SurveyQuestion/surveyQuestion.scss';
 @import '../../components/EmptySection/emptySection';
 @import '../../components/DetailsRow/detailsRow';
