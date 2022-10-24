@@ -300,7 +300,7 @@ public class UtenteServiceTest {
 				currPage*pageSize,
 				pageSize
 				)).thenReturn(new HashSet<UtenteEntity>());
-		assertThat(service.getUtentiPaginatiByRuolo(RuoloUtenteEnum.DSCU.toString(), "CODICE_FISCALE", 1L, 1L, filtroRequest, currPage, pageSize)).isNotNull();
+		assertThat(service.getUtentiPaginatiByRuolo(RuoloUtenteEnum.DSCU.toString(), "CODICE_FISCALE", 1L, 1L, 1L, filtroRequest, currPage, pageSize)).isNotNull();
 		when(this.utenteRepository.findUtentiPerReferenteDelegatoGestoreProgramma(
 				   1L,
 				   "CODICE_FISCALE",
@@ -309,7 +309,7 @@ public class UtenteServiceTest {
 				   filtroRequest.getRuoli(),
 				   currPage*pageSize,
 				   pageSize)).thenReturn(new HashSet<UtenteEntity>());
-		assertThat(service.getUtentiPaginatiByRuolo(RuoloUtenteEnum.REG.toString(), "CODICE_FISCALE", 1L, 1L, filtroRequest, currPage, pageSize)).isNotNull();
+		assertThat(service.getUtentiPaginatiByRuolo(RuoloUtenteEnum.REG.toString(), "CODICE_FISCALE", 1L, 1L, 1L, filtroRequest, currPage, pageSize)).isNotNull();
 		when(this.utenteRepository.findUtentiPerReferenteDelegatoGestoreProgetti(
 				  1L,
 				  1L,
@@ -319,8 +319,9 @@ public class UtenteServiceTest {
 				  filtroRequest.getRuoli(),
 				  currPage*pageSize,
 				   pageSize)).thenReturn(new HashSet<UtenteEntity>());
-		assertThat(service.getUtentiPaginatiByRuolo(RuoloUtenteEnum.DEGP.toString(), "CODICE_FISCALE", 1L, 1L, filtroRequest, currPage, pageSize)).isNotNull();
+		assertThat(service.getUtentiPaginatiByRuolo(RuoloUtenteEnum.DEGP.toString(), "CODICE_FISCALE", 1L, 1L, 1L, filtroRequest, currPage, pageSize)).isNotNull();
 		when(this.utenteRepository.findUtentiPerReferenteDelegatoEntePartnerProgetti(
+				  1L,
 				  1L,
 				  1L,
 				  "CODICE_FISCALE",
@@ -329,7 +330,7 @@ public class UtenteServiceTest {
 				  filtroRequest.getRuoli(),
 				  currPage*pageSize,
 				  pageSize)).thenReturn(new HashSet<UtenteEntity>());
-		assertThat(service.getUtentiPaginatiByRuolo(RuoloUtenteEnum.DEPP.toString(), "CODICE_FISCALE", 1L, 1L, filtroRequest, currPage, pageSize)).isNotNull();
+		assertThat(service.getUtentiPaginatiByRuolo(RuoloUtenteEnum.DEPP.toString(), "CODICE_FISCALE", 1L, 1L, 1L, filtroRequest, currPage, pageSize)).isNotNull();
 		when(this.utenteRepository.findUtentiByFiltri(
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
@@ -339,7 +340,7 @@ public class UtenteServiceTest {
 				pageSize
 				
 		)).thenReturn(new HashSet<UtenteEntity>());
-		assertThat(service.getUtentiPaginatiByRuolo("RUOLO_CUSTOM", "CODICE_FISCALE", 1L, 1L, filtroRicerca, currPage, pageSize)).isNotNull();
+		assertThat(service.getUtentiPaginatiByRuolo("RUOLO_CUSTOM", "CODICE_FISCALE", 1L, 1L, 1L, filtroRicerca, currPage, pageSize)).isNotNull();
 	}
 	
 	@Test
