@@ -110,7 +110,7 @@ public class UtenteService {
 	@LogMethod
 	@LogExecutionTime
 	public List<UtenteDto> getAllUtentiPaginati(UtenteRequest sceltaContesto, Integer currPage, Integer pageSize) {
-		return this.getUtentiPaginatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest(),currPage, pageSize);
+		return this.getUtentiPaginatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest(),currPage, pageSize);
 	}
 	
 	@LogMethod
@@ -168,7 +168,7 @@ public class UtenteService {
 	
 	@LogMethod
 	@LogExecutionTime
-	public List<UtenteDto> getUtentiPaginatiByRuolo(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto, FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
+	public List<UtenteDto> getUtentiPaginatiByRuolo(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto, Long idEnte, FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
 		List<UtenteEntity> listaUtenti = new ArrayList<>();
 		Set<UtenteEntity> utenti = new HashSet<>();
 
@@ -190,7 +190,7 @@ public class UtenteService {
 				break;
 			case "REPP":
 			case "DEPP":
-				listaUtenti.addAll(this.getUtentiPerReferenteDelegatoEntePartnerProgetti(idProgramma, idProgetto, cfUtente, filtroRequest, currPage, pageSize));
+				listaUtenti.addAll(this.getUtentiPerReferenteDelegatoEntePartnerProgetti(idProgramma, idProgetto, idEnte, cfUtente, filtroRequest, currPage, pageSize));
 				break;
 			default:
 				utenti = this.getUtentiByFiltri(filtroRequest, currPage, pageSize);
@@ -200,11 +200,12 @@ public class UtenteService {
 		return this.getUtentiConRuoliAggregati(listaUtenti);
 	}
 
-	private Set<UtenteEntity> getUtentiPerReferenteDelegatoEntePartnerProgetti(Long idProgramma, Long idProgetto,
+	private Set<UtenteEntity> getUtentiPerReferenteDelegatoEntePartnerProgetti(Long idProgramma, Long idProgetto, Long idEnte,
 			String cfUtente, FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
 		return this.utenteRepository.findUtentiPerReferenteDelegatoEntePartnerProgetti(
 																	  idProgramma,
 																	  idProgetto,
+																	  idEnte,
 																	  cfUtente, 
 																	  filtroRequest.getCriterioRicerca(),
 																	   "%" + filtroRequest.getCriterioRicerca() + "%",
