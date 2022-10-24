@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.222](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.221...1.0.0-develop.222) (2022-10-24)
+
+
+### Bug Fixes
+
+* **be:** fix log drupal forward ([a78cead](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a78cead25809dd44216fe5d54d3d0995da5e028b))
+
 ## [1.0.0-develop.221](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.220...1.0.0-develop.221) (2022-10-21)
 
 
