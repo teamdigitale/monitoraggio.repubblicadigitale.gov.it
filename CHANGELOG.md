@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.88](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.87...1.0.0-test.88) (2022-10-24)
+
+
+### Bug Fixes
+
+* **be:** refactor query get all utente ([848bb4c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/848bb4ca55b5b249e0c6d546867f4553d5a77b3d))
+
 ## [1.0.0-test.87](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.86...1.0.0-test.87) (2022-10-24)
 
 
