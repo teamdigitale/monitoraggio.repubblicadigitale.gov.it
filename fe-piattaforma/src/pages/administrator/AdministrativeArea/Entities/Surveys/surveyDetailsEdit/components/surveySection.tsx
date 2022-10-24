@@ -31,7 +31,7 @@ const SurveySection: React.FC<SurveySectionI> = (props) => {
           isModal && 'survey-section-container__section-title-modal'
         )}
       >
-        {sectionTitle}{' '}
+        {sectionTitle}
         <span className='survey-section-container__section-title-items'>
           ({questions.length})
         </span>

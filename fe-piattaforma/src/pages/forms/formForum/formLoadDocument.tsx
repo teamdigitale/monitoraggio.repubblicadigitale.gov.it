@@ -288,7 +288,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
                   size='sm'
                   color='primary'
                   className='pb-1'
-                />{' '}
+                />
                 Seleziona file
               </Button>
             ) : (

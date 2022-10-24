@@ -167,13 +167,16 @@ const Documents = () => {
     },
     {
       filterName: 'Intervento',
-      options:
-        dropdownFilterOptions && dropdownFilterOptions['interventions']
-          ? dropdownFilterOptions['interventions'].map(({ label, id }) => ({
-              label,
-              value: id,
-            }))
-          : [],
+      options: (dropdownFilterOptions['interventions'] || [])
+        .map(({ label, id }) => ({
+          label: id === 'public' ? 'Tutti gli interventi' : label,
+          value: id,
+        }))
+        .sort((a, b) => {
+          if (a.value > b.value) return -1;
+          if (a.value < b.value) return 1;
+          return 0;
+        }),
       id: policyDropdownLabel,
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, policyDropdownLabel),
@@ -188,12 +191,16 @@ const Documents = () => {
     },
     {
       filterName: 'Programma',
-      options: (dropdownFilterOptions['programs'] || []).map(
-        ({ label, id }) => ({
+      options: (dropdownFilterOptions['programs'] || [])
+        .map(({ label, id }) => ({
           label,
           value: id,
-        })
-      ),
+        }))
+        .sort((a, b) => {
+          if (a.value > b.value) return -1;
+          if (a.value < b.value) return 1;
+          return 0;
+        }),
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, programDropdownLabel),
       id: programDropdownLabel,

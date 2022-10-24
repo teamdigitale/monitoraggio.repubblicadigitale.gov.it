@@ -256,7 +256,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
                   size='sm'
                   color='primary'
                   className='pb-1'
-                />{' '}
+                />
                 Seleziona file
               </Button>
             ) : (

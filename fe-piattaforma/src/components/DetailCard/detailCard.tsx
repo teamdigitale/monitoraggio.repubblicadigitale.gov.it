@@ -58,18 +58,24 @@ const DetailCard: React.FC<DetailCardI> = (props) => {
       >
         {!device.mediaIsPhone ? (
           <p>
-            <b>Ente:</b> {entity}
-            <b className='mx-2'>|</b>
-            <b>Tipologia:</b> {entity_type}
+            <b>Ente:</b>&nbsp;{entity}
+            {entity_type && entity_type !== '-' ? (
+              <>
+                <b className='mx-2'>|</b>
+                <b>Tipologia:</b>&nbsp;{entity_type}
+              </>
+            ) : null}
           </p>
         ) : (
           <div style={{ fontSize: '14px' }}>
             <p>
-              <b>Ente:</b> {entity}
+              <b>Ente:</b>&nbsp;{entity}
             </p>
-            <p>
-              <b>Tipologia:</b> {entity_type}
-            </p>
+            {entity_type && entity_type !== '-' ? (
+              <p>
+                <b>Tipologia:</b>&nbsp;{entity_type}
+              </p>
+            ) : null}
           </div>
         )}
         {intervention && program_label && (
@@ -80,10 +86,10 @@ const DetailCard: React.FC<DetailCardI> = (props) => {
             }}
           >
             <p>
-              <b>Intervento:</b> {intervention}
+              <b>Intervento:</b>&nbsp;{intervention}
             </p>
             <p>
-              <b>Programma:</b> {program_label}
+              <b>Programma:</b>&nbsp;{program_label}
             </p>
           </div>
         )}

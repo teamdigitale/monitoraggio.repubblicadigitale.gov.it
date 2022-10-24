@@ -155,13 +155,12 @@ const ReportCard: React.FC<ReportCardI> = ({
                 <span className='text-nowrap'>
                   <strong>Tizio Caio</strong>
                 </span>
-                {' - '}
+                &nbsp;-&nbsp;
                 <span>{date && formatDate(date, 'shortDate')}</span>
               </div>
               <p>
-                {' '}
                 Ha segnalato il commento di <strong>Mario Rossi</strong> con la
-                seguente motivazione:{' '}
+                seguente motivazione:
               </p>
             </div>
           </div>
