@@ -1,0 +1,200 @@
+<?php
+
+use Drupal\Core\Database\Database;
+
+function stats_tracking_install() {
+  $database = \Drupal::database();
+  $schema = $database->schema();
+
+  $chatTableName = 'stats_chat';
+  $chatTableSchema = [
+    'description' => 'Stores stats fot chat',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique record ID.',
+      ],
+      'id_utente' => [
+        'type' => 'int',
+        'size' => 'big',
+        'default' => 0,
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'description' => "User ID",
+      ],
+      'evento' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Tipologia di evento',
+      ],
+      'id_programma' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'ID del programma',
+      ],
+      'timestamp_event_time' => [
+        'type' => 'int',
+        'size' => 'big',
+        'default' => 0,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'Timestamp di creazione record',
+      ],
+      'codice_ruolo' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'default' => '',
+        'not null' => FALSE,
+        'description' => 'Codice ruolo utente',
+      ],
+    ],
+    'primary key' => ['id'],
+    'indexes' => [
+      'id_utente' => ['id_utente']
+    ],
+  ];
+
+  $workDocsTableName = 'stats_workdocs';
+  $workDocsTableSchema = [
+    'description' => 'Stores stats fot workdocs',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique record ID.',
+      ],
+      'id_utente' => [
+        'type' => 'int',
+        'size' => 'big',
+        'default' => 0,
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'description' => "User ID",
+      ],
+      'evento' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Tipologia di evento',
+      ],
+      'id_programma' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'ID del programma',
+      ],
+      'timestamp_event_time' => [
+        'type' => 'int',
+        'size' => 'big',
+        'default' => 0,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'Timestamp di creazione record',
+      ],
+      'codice_ruolo' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'default' => '',
+        'not null' => FALSE,
+        'description' => 'Codice ruolo utente',
+      ],
+    ],
+    'primary key' => ['id'],
+    'indexes' => [
+      'id_utente' => ['id_utente']
+    ],
+  ];
+
+  $tndTableName = 'stats_topic_news_documents';
+  $tndTableSchema = [
+    'description' => 'Stores stats fot workdocs',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique record ID.',
+      ],
+      'tipologia_evento' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Tipologia di evento',
+      ],
+      'id_utente' => [
+        'type' => 'int',
+        'size' => 'big',
+        'default' => 0,
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'description' => "User ID",
+      ],
+      'evento' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Dettaglio della tipologia di evento',
+      ],
+      'valore_evento' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => NULL,
+        'description' => 'Dettaglio della tipologia di evento',
+      ],
+      'id_programma' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'ID del programma',
+      ],
+      'categoria' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'default' => '',
+        'not null' => FALSE,
+        'description' => 'Categoria evento',
+      ],
+      'timestamp_event_time' => [
+        'type' => 'int',
+        'size' => 'big',
+        'default' => 0,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'Timestamp di creazione record',
+      ],
+      'codice_ruolo' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'default' => '',
+        'not null' => FALSE,
+        'description' => 'Codice ruolo utente',
+      ],
+    ],
+    'primary key' => ['id'],
+    'indexes' => [
+      'id_utente' => ['id_utente']
+    ],
+  ];
+
+  if (!$schema->tableExists($chatTableName)) {
+    $schema->createTable($chatTableName, $chatTableSchema);
+  }
+
+  if (!$schema->tableExists($workDocsTableName)) {
+    $schema->createTable($workDocsTableName, $workDocsTableSchema);
+  }
+
+  if (!$schema->tableExists($tndTableName)) {
+    $schema->createTable($tndTableName, $tndTableSchema);
+  }
+}

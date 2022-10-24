@@ -9,12 +9,14 @@ dependencies:
     - field.field.node.board_item.field_cover
     - field.field.node.board_item.field_description
     - field.field.node.board_item.field_enable_comments
+    - field.field.node.board_item.field_entity
+    - field.field.node.board_item.field_entity_type
     - field.field.node.board_item.field_intervention
     - field.field.node.board_item.field_program
+    - field.field.node.board_item.field_program_label
     - node.type.board_item
   module:
     - comment
-    - file
     - media_library
     - text
 id: node.board_item.default
@@ -23,11 +25,11 @@ bundle: board_item
 mode: default
 content:
   field_attachment:
-    type: file_generic
-    weight: 12
+    type: media_library_widget
+    weight: 26
     region: content
     settings:
-      progress_indicator: throbber
+      media_types: {  }
     third_party_settings: {  }
   field_category:
     type: options_select
@@ -37,20 +39,20 @@ content:
     third_party_settings: {  }
   field_comments:
     type: comment_default
-    weight: 7
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   field_cover:
     type: media_library_widget
-    weight: 6
+    weight: 5
     region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
   field_description:
     type: text_textarea
-    weight: 2
+    weight: 4
     region: content
     settings:
       rows: 5
@@ -58,12 +60,44 @@ content:
     third_party_settings: {  }
   field_enable_comments:
     type: boolean_checkbox
-    weight: 11
+    weight: 12
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
+  field_entity:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_entity_type:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_intervention:
+    type: string_textfield
+    weight: 11
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_program:
+    type: string_textfield
+    weight: 9
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_program_label:
     type: string_textfield
     weight: 10
     region: content
@@ -71,22 +105,16 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_program:
-    type: options_select
-    weight: 5
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 9
+    weight: 8
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 8
+    weight: 7
     region: content
     settings:
       display_label: true
@@ -101,7 +129,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 13
+    weight: 14
     region: content
     settings:
       match_operator: CONTAINS

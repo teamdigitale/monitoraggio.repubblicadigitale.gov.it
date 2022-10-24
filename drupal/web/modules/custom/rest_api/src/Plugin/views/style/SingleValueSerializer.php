@@ -2,8 +2,8 @@
 
 namespace Drupal\rest_api\Plugin\views\style;
 
-use Drupal\rest\Plugin\views\style\Serializer;
 use Drupal\Component\Serialization\Json;
+use Drupal\rest\Plugin\views\style\Serializer;
 
 /**
  * The style plugin for serialized output formats.
@@ -22,7 +22,8 @@ class SingleValueSerializer extends Serializer
   /**
    * {@inheritdoc}
    */
-  public function render(): array|string {
+  public function render(): array|string
+  {
     $rows = [];
     foreach ($this->view->result as $row_index => $row) {
       $this->view->row_index = $row_index;

@@ -1,12 +1,12 @@
-uuid: a08fd4fc-d033-42b3-a76e-48bd5ff223b0
+uuid: 3fdacc9a-7314-4631-a64c-2cf962cbbd9c
 langcode: en
 status: true
 dependencies:
   module:
     - taxonomy
     - user
-id: user.field_roles
-field_name: field_roles
+id: user.field_groups
+field_name: field_groups
 entity_type: user
 type: entity_reference
 settings:

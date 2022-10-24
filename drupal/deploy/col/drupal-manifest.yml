@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drupal
+  namespace: drupal
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: drupal
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/name: drupal
+    spec:
+      containers:
+        - env:
+            - name: DRUPAL_DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: drupal-configmap
+                  key: DB_MYSQL-PASSWD
+          image: 137642333557.dkr.ecr.eu-central-1.amazonaws.com/drupal:{IMAGE_VERSION}
+          imagePullPolicy: Always
+          name: drupal
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - name: drupal-pvc-var-www-html
+              mountPath: /var/www/html/web/sites/default
+      securityContext:
+        fsGroup: 33
+      volumes:
+        - name: drupal-pvc-var-www-html
+          persistentVolumeClaim:
+            claimName: drupal-pvc-var-www-html

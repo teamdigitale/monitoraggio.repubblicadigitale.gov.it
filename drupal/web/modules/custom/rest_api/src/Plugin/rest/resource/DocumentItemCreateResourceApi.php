@@ -10,10 +10,10 @@ use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
 use Drupal\rest_api\Controller\Utility\ValidationController;
 use Exception;
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides a resource to get view modes by entity and bundle.
@@ -26,7 +26,6 @@ use Psr\Log\LoggerInterface;
  *   }
  * )
  */
-
 class DocumentItemCreateResourceApi extends ResourceBase
 {
   /**
@@ -53,13 +52,14 @@ class DocumentItemCreateResourceApi extends ResourceBase
    *   A current user instance.
    */
   public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    array $serializer_formats,
-    LoggerInterface $logger,
+    array                 $configuration,
+                          $plugin_id,
+                          $plugin_definition,
+    array                 $serializer_formats,
+    LoggerInterface       $logger,
     AccountProxyInterface $current_user
-  ) {
+  )
+  {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
 
     $this->currentUser = $current_user;
@@ -80,6 +80,47 @@ class DocumentItemCreateResourceApi extends ResourceBase
     );
   }
 
+  private const JSON_SCHEMA = [
+    'type' => 'object',
+    'properties' => [
+      'entity' => [
+        'type' => 'string'
+      ],
+      'entity_type' => [
+        'type' => 'string'
+      ],
+      'title' => [
+        'type' => 'string',
+        'minLength' => 1,
+        'required' => true
+      ],
+      'intervention' => [
+        'type' => 'string',
+        'minLength' => 1,
+        'required' => true
+      ],
+      'program' => [
+        'type' => 'string',
+        'minLength' => 1,
+        'required' => true
+      ],
+      'program_label' => [
+        'type' => 'string',
+        'minLength' => 1,
+        'required' => true
+      ],
+      'category' => [
+        'type' => 'integer',
+        'required' => true
+      ],
+      'external_link' => [
+        'type' => 'string',
+        'minLength' => 1,
+        'required' => true
+      ]
+    ]
+  ];
+
   /**
    * Responds to POST requests.
    *
@@ -90,12 +131,12 @@ class DocumentItemCreateResourceApi extends ResourceBase
   {
     try {
       $userId = $req->headers->get('user-id') ?? '';
-      if(empty($userId)){
-        throw new Exception('Missing user id in headers');
+      if (empty($userId)) {
+        throw new Exception('DCRA01: Missing user id in headers');
       }
 
       $body = json_decode($req->getContent());
-      ValidationController::validateRequestBody($body, 'document_item');
+      ValidationController::validateRequestBody($body, self::JSON_SCHEMA);
 
       $externalLink = $body->external_link;
       if (!UrlHelper::isValid($externalLink, true)) {
@@ -104,14 +145,17 @@ class DocumentItemCreateResourceApi extends ResourceBase
 
       $exists = TaxonomyController::termExistsById('document_categories', $body->category);
       if (!$exists) {
-        throw new Exception('Taxonomy term does not exists');
+        throw new Exception('DCRA02: Taxonomy term does not exists');
       }
 
       $nodeId = DocumentController::create(
+        $body->entity,
+        $body->entity_type,
         $userId,
         $body->title,
         $body->intervention,
         $body->program,
+        $body->program_label,
         $body->category,
         $body->description,
         $externalLink

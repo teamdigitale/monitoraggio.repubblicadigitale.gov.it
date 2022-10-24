@@ -1,0 +1,15 @@
+uuid: b5dd6317-ec00-4f75-9637-895539859ad9
+langcode: en
+status: true
+dependencies:
+  config:
+    - flag.flag.usefull
+  module:
+    - flag
+id: flag_action.usefull_unflag
+label: useless
+type: node
+plugin: 'flag_action:usefull_unflag'
+configuration:
+  flag_id: usefull
+  flag_action: unflag

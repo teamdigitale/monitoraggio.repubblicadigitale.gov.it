@@ -6,13 +6,12 @@ use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\core\Utility\TaxonomyController;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
-use Drupal\rest_api\Controller\Utility\ValidationController;
+use Drupal\taxonomy\Entity\Term;
 use Exception;
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Psr\Log\LoggerInterface;
-use Drupal\taxonomy\Entity\Term;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides a resource to get view modes by entity and bundle.
@@ -25,7 +24,6 @@ use Drupal\taxonomy\Entity\Term;
  *   }
  * )
  */
-
 class CategoryDeleteResourceApi extends ResourceBase
 {
   /**
@@ -52,13 +50,14 @@ class CategoryDeleteResourceApi extends ResourceBase
    *   A current user instance.
    */
   public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    array $serializer_formats,
-    LoggerInterface $logger,
+    array                 $configuration,
+                          $plugin_id,
+                          $plugin_definition,
+    array                 $serializer_formats,
+    LoggerInterface       $logger,
     AccountProxyInterface $current_user
-  ) {
+  )
+  {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
 
     $this->currentUser = $current_user;
@@ -91,16 +90,14 @@ class CategoryDeleteResourceApi extends ResourceBase
   {
     try {
       if (empty($id)) {
-        throw new Exception("Missing term id");
+        throw new Exception('CDRA01: Missing term id');
       }
 
       $term = Term::load($id);
       if (empty($term)) {
-        throw new Exception('Invalid term id');
+        throw new Exception('CDRA02: Invalid term id');
       }
 
-      $body = json_decode($req->getContent());
-      ValidationController::validateRequestBody($body, 'category_update');
       $alternativeDeletedId = TaxonomyController::deleteTerm($term);
 
       return ResponseFormatterController::success([

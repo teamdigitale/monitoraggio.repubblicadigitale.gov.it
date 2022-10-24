@@ -3,3 +3,7 @@ services:
     class: Drupal\rest_api\EventSubscriber\RequestEventSubscriber
     tags:
       - { name: event_subscriber }
+  rest_api.route_subscriber:
+    class: Drupal\rest_api\EventSubscriber\RouteSubscriber
+    tags:
+      - { name: event_subscriber }

@@ -1,0 +1,15 @@
+uuid: a4f6187d-08d2-401e-b2d2-317465d465a9
+langcode: en
+status: true
+dependencies:
+  config:
+    - flag.flag.usefull
+  module:
+    - flag
+id: flag_action.usefull_flag
+label: Usefull
+type: node
+plugin: 'flag_action:usefull_flag'
+configuration:
+  flag_id: usefull
+  flag_action: flag

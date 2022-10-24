@@ -2,9 +2,14 @@
 
 namespace Drupal\core\Utility;
 
+use Drupal;
 use Exception;
 
-class HttpController {
+/**
+ *
+ */
+class HttpController
+{
   /**
    * @param string $apiBaseUrl
    * @param string $apiPath
@@ -12,7 +17,8 @@ class HttpController {
    * @param array $params
    * @return mixed
    */
-  public static function get(string $apiBaseUrl, string $apiPath, array $headers, array $params): mixed {
+  public static function get(string $apiBaseUrl, string $apiPath, array $headers, array $params): mixed
+  {
     $options = [
       'verify' => false
     ];
@@ -25,7 +31,7 @@ class HttpController {
       $options['params'] = $params;
     }
 
-    $response = (\Drupal::httpClient())->get($apiBaseUrl . $apiPath, $options)->getBody();
+    $response = (Drupal::httpClient())->get($apiBaseUrl . $apiPath, $options)->getBody();
 
     if (empty($response)) {
       return [];
@@ -44,9 +50,10 @@ class HttpController {
    * @return mixed
    * @throws Exception
    */
-  public static function post(string $apiBaseUrl, string $apiPath, array $headers, array $params, $body, string $bodyType): mixed {
+  public static function post(string $apiBaseUrl, string $apiPath, array $headers, array $params, $body, string $bodyType): mixed
+  {
     if (!in_array($bodyType, EnvController::getValues('ALLOWED_BODY_TYPES'))) {
-      throw new Exception('Wrong body type passed');
+      throw new Exception('HC01: Wrong body type passed');
     }
 
     switch ($bodyType) {
@@ -61,7 +68,7 @@ class HttpController {
         $bodyKey = 'form_params';
     }
 
-    $response = (\Drupal::httpClient())->post($apiBaseUrl . $apiPath, [
+    $response = (Drupal::httpClient())->post($apiBaseUrl . $apiPath, [
       'verify' => false,
       'query' => $params,
       $bodyKey => $body,

@@ -1,0 +1,20 @@
+uuid: bfaac7b6-9ba8-4e7d-8497-dbeca3a3e1e1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.flagging.usefull.field_status
+    - flag.flag.usefull
+id: flagging.usefull.default
+targetEntityType: flagging
+bundle: usefull
+mode: default
+content:
+  field_status:
+    type: number
+    weight: 0
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

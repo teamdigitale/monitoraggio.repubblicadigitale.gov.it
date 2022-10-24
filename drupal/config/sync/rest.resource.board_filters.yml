@@ -1,0 +1,18 @@
+uuid: b7723ad8-1645-4a32-a9da-2487ec53b0cf
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - rest_api
+    - serialization
+id: board_filters
+plugin_id: board_filters
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - basic_auth

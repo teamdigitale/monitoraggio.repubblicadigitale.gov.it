@@ -2,13 +2,19 @@
 
 namespace Drupal\be_middleware_integration\Commands;
 
+use Drupal;
 use Drush\Commands\DrushCommands;
 use Drupal\core\Utility\EnvController;
+use Exception;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Drupal\be_middleware_integration\Controller\SyncUsersController;
 use Drupal\be_middleware_integration\Controller\ApiIntegrationController;
 
-class SyncUsersCommand extends DrushCommands {
+/**
+ *
+ */
+class SyncUsersCommand extends DrushCommands
+{
   /**
    * Users groups sync flow
    *
@@ -17,30 +23,42 @@ class SyncUsersCommand extends DrushCommands {
    * @command sync_users:sync
    * @aliases su:sync
    */
-  public function run() {
+  public function run()
+  {
     $output = new ConsoleOutput();
     $output->writeln('Sync start ..');
 
     try {
-      $roles = ApiIntegrationController::getGroupsRolesByGroupCode( EnvController::getValues('NOTIFICATION_GROUP'));
-      
+      $token = EnvController::getValues('AUTHENTICATION_TOKEN');
+
+      if (empty($token)) {
+        $log = 'Token is not set';
+        $output->writeln($log);
+        Drupal::logger('drush:sync_users')->info($log);
+        return;
+      }
+
+      $roles = ApiIntegrationController::getGroupsRolesByGroupCode($token, EnvController::getValues('NOTIFICATION_GROUP'));
+
       $userNames = [];
-      ApiIntegrationController::getAllUsers($roles, $userNames, 0);
+      ApiIntegrationController::getAllUsers($token, $roles, $userNames, 0);
 
       $result = SyncUsersController::checkReportUsers($userNames);
       $notificationUserIds = json_encode($result['notification_user_ids']);
       $removedUserIds = json_encode($result['removed_user_ids']);
 
-      $log = "User synchronization successful. 
-      Notification users ids:$notificationUserIds. 
-      Removed user ids:$removedUserIds. 
+      $log = "User synchronization successful.
+      Notification users ids:$notificationUserIds.
+      Removed user ids:$removedUserIds.
       ";
-      \Drupal::logger('drush:sync_users')->info($log);
-    } catch (\Exception $ex) {
+
+      $output->writeln($log);
+      Drupal::logger('drush:sync_users')->info($log);
+    } catch (Exception $ex) {
       $message = 'Error:' . $ex->getMessage();
 
       $output->writeln($message);
-      \Drupal::logger('drush:sync_users')->error($message);
+      Drupal::logger('drush:sync_users')->error($message);
     }
 
     $output->writeln('Sync finish ..');

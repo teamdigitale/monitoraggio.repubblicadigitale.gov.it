@@ -1,8 +1,0 @@
-uuid: bcf1e7f1-142e-4114-9de2-55f1fac7166e
-langcode: en
-status: true
-dependencies: {  }
-name: 'Board Programs'
-vid: board_programs
-description: ''
-weight: 0

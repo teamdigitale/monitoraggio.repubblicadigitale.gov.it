@@ -132,7 +132,7 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          date_format: fallback
+          date_format: html_datetime
           custom_date_format: ''
           timezone: ''
         entity_id:
@@ -347,6 +347,55 @@ display:
           format_plural_string: !!binary MQNAY291bnQ=
           prefix: ''
           suffix: ''
+        action:
+          id: action
+          table: notifications
+          field: action
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: markup
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
       pager:
         type: mini
         options:
@@ -611,7 +660,7 @@ display:
         type: full
         options:
           offset: 0
-          items_per_page: 10
+          items_per_page: 9
           total_pages: null
           id: 0
           tags:
@@ -622,7 +671,7 @@ display:
           expose:
             items_per_page: true
             items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options: '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30'
             items_per_page_options_all: false
             items_per_page_options_all_label: '- All -'
             offset: false
@@ -654,6 +703,9 @@ display:
               alias: ''
               raw_output: false
             status:
+              alias: ''
+              raw_output: false
+            action:
               alias: ''
               raw_output: false
       display_extenders: {  }

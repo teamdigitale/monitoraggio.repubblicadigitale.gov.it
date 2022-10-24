@@ -9,10 +9,10 @@ use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
 use Drupal\user\Entity\User;
 use Exception;
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides a resource to get view modes by entity and bundle.
@@ -25,7 +25,6 @@ use Psr\Log\LoggerInterface;
  *   }
  * )
  */
-
 class LikeApiController extends ResourceBase
 {
   /**
@@ -52,13 +51,14 @@ class LikeApiController extends ResourceBase
    *   A current user instance.
    */
   public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    array $serializer_formats,
-    LoggerInterface $logger,
+    array                 $configuration,
+                          $plugin_id,
+                          $plugin_definition,
+    array                 $serializer_formats,
+    LoggerInterface       $logger,
     AccountProxyInterface $current_user
-  ) {
+  )
+  {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
 
     $this->currentUser = $current_user;
@@ -92,17 +92,17 @@ class LikeApiController extends ResourceBase
   {
     try {
       $userId = $req->headers->get('user-id') ?? '';
-      if(empty($userId)){
-        throw new Exception('Missing user id in headers');
+      if (empty($userId)) {
+        throw new Exception('LAC01: Missing user id in headers');
       }
 
       if (empty($id)) {
-        throw new Exception("Missing node id");
+        throw new Exception('LAC02: Missing node id');
       }
 
       $node = Node::load($id);
       if (empty($node)) {
-        throw new Exception("Invalid node id");
+        throw new Exception('LAC03: Invalid node id');
       }
 
       FlagController::flag('like', $node, User::load($userId));

@@ -2,8 +2,9 @@
 
 namespace Drupal\core\Controller;
 
+use Drupal;
 use Drupal\Core\Entity\EntityStorageException;
-use Drupal\core\Utility\TaxonomyController;
+use Drupal\core\Utility\EnvController;
 use Drupal\node\Entity\Node;
 use Drupal\notifications\Controller\NotificationsController;
 use Exception;
@@ -16,25 +17,31 @@ class BoardController
 {
 
   /**
+   * @param $entity
+   * @param $entityType
    * @param $userId
    * @param $title
    * @param $intervention
    * @param $program
+   * @param $programLabel
    * @param $category
    * @param $description
    * @param $enableComments
    * @param $highlighted
-   * @return mixed
+   * @return int
    * @throws EntityStorageException
-   * @throws Exception
    */
-  public static function create($userId, $title, $intervention, $program, $category, $description, $enableComments, $highlighted): mixed {
+  public static function create($entity, $entityType, $userId, $title, $intervention, $program, $programLabel, $category, $description, $enableComments, $highlighted): int
+  {
     $node = Node::create([
       'uid' => $userId,
       'type' => 'board_item',
       'title' => $title,
+      'field_entity' => $entity,
+      'field_entity_type' => $entityType,
       'field_intervention' => $intervention,
-      'field_program' => TaxonomyController::createOrGetTermTid('board_programs', $program),
+      'field_program' => $program,
+      'field_program_label' => $programLabel,
       'field_category' => $category,
       'field_description' => $description,
       'field_enable_comments' => $enableComments
@@ -43,56 +50,71 @@ class BoardController
     $node->setPublished();
 
     if (!$node->save()) {
-      throw new Exception('Error in board node creation');
+      throw new Exception('BC01: Error in board node creation');
     }
 
-    return (int) $node->id();
+    Drupal::service('cache_tags.invalidator')->invalidateTags(['board_item_cache']);
+
+    return (int)$node->id();
   }
 
   /**
+   * @param $userId
+   * @param $userRoles
    * @param $id
    * @param $title
    * @param $intervention
    * @param $program
+   * @param $programLabel
    * @param $category
    * @param $description
    * @param $enableComments
    * @param $highlighted
    * @return int
    * @throws EntityStorageException
-   * @throws Exception
    */
-  public static function update($userId, $id, $title, $intervention, $program, $category, $description, $enableComments, $highlighted): int {
+  public static function update($userId, $userRoles, $id, $title, $intervention, $program, $programLabel, $category, $description, $enableComments, $highlighted): int
+  {
     $node = Node::load($id);
     if (empty($node) || $node->bundle() != 'board_item') {
-      throw new Exception("Empty node or wrong node passed");
+      throw new Exception('BC02: Empty node or wrong node passed in board update');
+    }
+
+    if ($node->getOwnerId() != $userId) {
+      $allowedRoles = ((array)EnvController::getValues('ALLOWED_METHOD_ROLES'))['board_item_modify_any'];
+      if (!UserController::checkAuthRoles($userRoles, $allowedRoles)) {
+        throw new Exception('BC03: Unauthorized to modify this item');
+      }
     }
 
     $node->set('title', $title);
     $node->set('field_intervention', $intervention);
-    $node->set('field_program', TaxonomyController::createOrGetTermTid('board_programs', $program));
+    $node->set('field_program', $program);
+    $node->set('field_program_label', $programLabel);
     $node->set('field_category', $category);
     $node->set('field_description', $description);
     $node->set('field_enable_comments', $enableComments);
     $node->setSticky($highlighted);
 
-    $node->setNewRevision(TRUE);
-    $node->setRevisionCreationTime(\Drupal::time()->getCurrentTime());
+    $node->setNewRevision();
+    $node->setRevisionCreationTime(Drupal::time()->getCurrentTime());
     $node->setRevisionUserId($userId);
 
     if (!$node->save()) {
-      throw new Exception('Error in board node update');
+      throw new Exception('BC04: Error in board node update');
     }
 
-    if($node->getOwnerId() != $userId){
+    if ($node->getOwnerId() != $userId) {
       NotificationsController::sendNotification(
-        $node, 
-        $userId, 
-        $node->getOwnerId(), 
+        $node,
+        $userId,
+        $node->getOwnerId(),
         'board_update'
       );
     }
 
-    return (int) $node->id();
+    Drupal::service('cache_tags.invalidator')->invalidateTags(['board_item_cache']);
+
+    return (int)$node->id();
   }
 }

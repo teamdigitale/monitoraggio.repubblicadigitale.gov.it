@@ -4,12 +4,14 @@ status: true
 dependencies:
   config:
     - flag.flag.download
+    - user.role.middleware
   module:
     - flag
     - node
     - rest
     - rest_api
     - serialization
+    - user
 id: download
 label: Download
 module: views
@@ -111,8 +113,10 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       access:
-        type: none
-        options: {  }
+        type: role
+        options:
+          role:
+            middleware: middleware
       cache:
         type: tag
         options: {  }
@@ -200,6 +204,7 @@ display:
         - url
         - url.query_args
         - 'user.node_grants:view'
+        - user.roles
       tags: {  }
   rest_export_1:
     id: rest_export_1
@@ -234,4 +239,5 @@ display:
         - request_format
         - url
         - 'user.node_grants:view'
+        - user.roles
       tags: {  }

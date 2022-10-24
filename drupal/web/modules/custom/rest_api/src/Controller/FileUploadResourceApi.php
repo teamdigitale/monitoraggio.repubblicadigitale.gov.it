@@ -7,76 +7,56 @@
 
 namespace Drupal\rest_api\Controller;
 
-use Exception;
-use Drupal\node\Entity\Node;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\core\Controller\FileController;
-use Drupal\core\Controller\UserController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Drupal\notifications\Controller\NotificationsController;
 use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
+use Exception;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
-class FileUploadResourceApi extends ControllerBase {
-
-  private const FILE_TYPES = [
-    'cover' => [
-      'bundle' => 'image',
-      'field' => 'field_cover'
-    ],
-    'attachment' => [
-      'bundle' => 'file',
-      'field' => 'field_attachment'
-    ]
-  ];
-
+/**
+ *
+ */
+class FileUploadResourceApi extends ControllerBase
+{
   /**
    * @param Request $req
    * @param int $id
    * @return JsonResponse
    */
-  public static function fileUpload(Request $req, int $id): JsonResponse {
+  public static function fileUpload(Request $req, int $id): JsonResponse
+  {
     try {
-      $userId = $req->headers->get('user-id') ?? '';
-      if(empty($userId)){
-        throw new Exception('Missing user id in headers');
-      }
-
       if (empty($id)) {
-        throw new Exception("Missing node id");
+        throw new Exception('FURA01: Missing node id');
       }
 
-      $node = Node::load($id);
-      if (empty($node)) {
-        throw new Exception("Invalid node id");
+      $userId = $req->headers->get('user-id') ?? '';
+      if (empty($userId)) {
+        throw new Exception('FURA02: Missing user id in headers');
+      }
+
+      $userRoles = $req->headers->get('user-roles') ?? '';
+      if (empty($userRoles)) {
+        throw new Exception('FURA03: Missing user roles in headers');
       }
 
       $type = $req->get('type') ?? '';
-
-      if (!is_array(self::FILE_TYPES[$type]) || ($type == 'cover' && $node->bundle() != 'board_item')) {
-        throw new Exception('Invalid file type');
+      if (empty($type)) {
+        throw new Exception('FURA04: Missing file type in headers');
       }
 
-      $mediaId = null;
-      if (!empty($_FILES["data"]) && !empty($_FILES["data"]["tmp_name"]) && !empty($_FILES["data"]["name"])) {
-        $fileContent = file_get_contents($_FILES["data"]["tmp_name"]);
-        $mediaId = FileController::createMedia($fileContent, self::FILE_TYPES[$type]['bundle'], $_FILES["data"]["name"]);
-      }
+      $tmpName = $_FILES['data']['tmp_name'] ?? '';
+      $name = $_FILES['data']['name'] ?? '';
 
-      $node->set(self::FILE_TYPES[$type]['field'], $mediaId);
-      $node->setNewRevision(TRUE);
-      $node->setRevisionCreationTime(\Drupal::time()->getCurrentTime());
-      $node->setRevisionUserId(UserController::load($userId));
-      $node->save();
-
-      if($node->getOwnerId() != $userId){
-        NotificationsController::sendNotification(
-          $node, 
-          $userId, 
-          $node->getOwnerId(), 
-          'board_update'
-        );
-      }
+      FileController::setMedia(
+        $userId,
+        $userRoles,
+        $id,
+        $type,
+        $tmpName,
+        $name
+      );
 
       return ResponseFormatterController::success([
         'item_id' => $id

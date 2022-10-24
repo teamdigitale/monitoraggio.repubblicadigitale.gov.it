@@ -1,0 +1,19 @@
+uuid: 6a2fe06d-a88c-4a14-9b94-38d840578c39
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_program_label
+    - node.type.board_item
+id: node.board_item.field_program_label
+field_name: field_program_label
+entity_type: node
+bundle: board_item
+label: 'Program Label'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -3,6 +3,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - rest.resource.action_tracking
+    - rest.resource.board_filters
     - rest.resource.board_item_create
     - rest.resource.board_item_update
     - rest.resource.category_create
@@ -12,8 +14,10 @@ dependencies:
     - rest.resource.comment_delete
     - rest.resource.comment_report_create
     - rest.resource.comment_update
+    - rest.resource.community_filters
     - rest.resource.community_item_create
     - rest.resource.community_item_update
+    - rest.resource.document_filters
     - rest.resource.document_item_create
     - rest.resource.document_item_update
     - rest.resource.downloaded_resource_api
@@ -27,20 +31,30 @@ dependencies:
     - rest.resource.report_delete
     - rest.resource.unlike_comment_api
     - rest.resource.unlike_resource_api
+    - rest.resource.usefull_resource_api
     - rest.resource.view_resource_api
   module:
     - flag
     - rest
+    - taxonomy
 id: middleware
 label: middleware
 weight: 5
 is_admin: null
 permissions:
+  - 'access taxonomy overview'
+  - 'administer taxonomy'
   - 'flag download'
   - 'flag downloaded'
   - 'flag like'
   - 'flag like_comment'
+  - 'flag usefull'
   - 'flag view'
+  - 'restful get board_filters'
+  - 'restful get community_filters'
+  - 'restful get document_filters'
+  - 'restful post action_tracking'
+  - 'restful post board_filters'
   - 'restful post board_item_create'
   - 'restful post board_item_update'
   - 'restful post category_create'
@@ -50,8 +64,10 @@ permissions:
   - 'restful post comment_delete'
   - 'restful post comment_report_create'
   - 'restful post comment_update'
+  - 'restful post community_filters'
   - 'restful post community_item_create'
   - 'restful post community_item_update'
+  - 'restful post document_filters'
   - 'restful post document_item_create'
   - 'restful post document_item_update'
   - 'restful post downloaded_resource_api'
@@ -65,6 +81,7 @@ permissions:
   - 'restful post report_delete'
   - 'restful post unlike_comment_api'
   - 'restful post unlike_resource_api'
+  - 'restful post usefull_resource_api'
   - 'restful post view_resource_api'
   - 'unflag like'
   - 'unflag like_comment'

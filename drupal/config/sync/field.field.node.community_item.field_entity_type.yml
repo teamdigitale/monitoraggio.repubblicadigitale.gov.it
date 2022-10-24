@@ -1,0 +1,19 @@
+uuid: b3c70a7a-62f5-4d47-936c-82eb2d7fc9dc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_entity_type
+    - node.type.community_item
+id: node.community_item.field_entity_type
+field_name: field_entity_type
+entity_type: node
+bundle: community_item
+label: 'Entity Type'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

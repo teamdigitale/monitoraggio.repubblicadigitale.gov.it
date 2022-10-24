@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.user.user.field_roles
+    - field.field.user.user.field_groups
     - field.field.user.user.user_picture
   module:
     - user
@@ -19,8 +19,8 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_roles:
-    type: entity_reference_autocomplete_tags
+  field_groups:
+    type: entity_reference_autocomplete
     weight: 1
     region: content
     settings:

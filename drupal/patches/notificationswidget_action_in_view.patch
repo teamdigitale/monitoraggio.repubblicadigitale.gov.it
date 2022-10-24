@@ -1,0 +1,22 @@
+diff --git a/notifications_widget.module b/notifications_widget.module
+index 3eed10b..80ad7fc 100644
+--- a/notifications_widget.module
++++ b/notifications_widget.module
+@@ -277,6 +277,17 @@ function notifications_widget_views_data() {
+       'id' => 'string',
+     ],
+   ];
++  $data['notifications']['action'] = [
++    'title' => t('Notification Action'),
++    'help'  => t('Display notification action.'),
++    'field' => [
++      'id'     => 'markup',
++      'format' => 'full_html',
++    ],
++    'filter' => [
++      'id' => 'string',
++    ],
++  ];
+   $data['notifications']['bundle'] = [
+     'title' => t('Notification entity\'s bundles'),
+     'help'  => t('Display name of entity\'s bundles.'),

@@ -7,10 +7,10 @@ use Drupal\notifications\Controller\NotificationsController;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
 use Exception;
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides a resource to get view modes by entity and bundle.
@@ -23,7 +23,6 @@ use Psr\Log\LoggerInterface;
  *   }
  * )
  */
-
 class NotificationDeleteResourceApi extends ResourceBase
 {
   /**
@@ -50,13 +49,14 @@ class NotificationDeleteResourceApi extends ResourceBase
    *   A current user instance.
    */
   public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    array $serializer_formats,
-    LoggerInterface $logger,
+    array                 $configuration,
+                          $plugin_id,
+                          $plugin_definition,
+    array                 $serializer_formats,
+    LoggerInterface       $logger,
     AccountProxyInterface $current_user
-  ) {
+  )
+  {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
 
     $this->currentUser = $current_user;
@@ -89,13 +89,14 @@ class NotificationDeleteResourceApi extends ResourceBase
   {
     try {
       if (empty($id)) {
-        throw new Exception("Missing node id");
+        throw new Exception('NDRA01: Missing node id');
       }
 
-      NotificationsController::setNotificationStatus($id, 2);
+      $ids = explode(';', $id);
+      NotificationsController::deleteNotifications($ids);
 
       return ResponseFormatterController::success([
-        'id' => (int)$id
+        'result' => true
       ]);
     } catch (Exception $ex) {
       return ResponseFormatterController::error($ex->getMessage(), $ex->getCode());

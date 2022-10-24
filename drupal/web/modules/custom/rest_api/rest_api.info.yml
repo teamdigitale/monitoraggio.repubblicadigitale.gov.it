@@ -1,5 +1,5 @@
-name: 'Rep-Dig Rest API'
+name: 'Rest API'
 type: module
-description: 'Repubblica Digitale REST Resource to expose project data'
+description: 'REST Resource API and custom routes'
 core_version_requirement: ^9
-package: Accenture
+package: CMS

@@ -1,0 +1,14 @@
+uuid: fae9c26a-204e-4eba-be80-eac84be20588
+langcode: en
+status: true
+dependencies:
+  module:
+    - be_middleware_integration
+id: sync_user_sync
+crontab: '* * * * *'
+plugin: sync_user_sync
+type: default
+configuration: {  }
+provider: be_middleware_integration
+single: false
+weight: 0

@@ -1,11 +1,10 @@
-uuid: 678c961d-33ad-4534-8c4b-f001ae3a6519
+uuid: ce8b472b-c6a9-4f89-93b8-3334cbcb2205
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_program
     - node.type.document_item
-    - taxonomy.vocabulary.document_programs
 id: node.document_item.field_program
 field_name: field_program
 entity_type: node
@@ -16,14 +15,5 @@ required: false
 translatable: true
 default_value: {  }
 default_value_callback: ''
-settings:
-  handler: 'default:taxonomy_term'
-  handler_settings:
-    target_bundles:
-      document_programs: document_programs
-    sort:
-      field: name
-      direction: asc
-    auto_create: true
-    auto_create_bundle: document_programs
-field_type: entity_reference
+settings: {  }
+field_type: string

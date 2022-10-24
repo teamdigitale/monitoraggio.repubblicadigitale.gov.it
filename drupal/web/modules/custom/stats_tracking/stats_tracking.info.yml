@@ -1,0 +1,5 @@
+name: 'Tracking'
+type: module
+description: 'Custom notification module kpi tracking'
+core_version_requirement: ^9
+package: CMS

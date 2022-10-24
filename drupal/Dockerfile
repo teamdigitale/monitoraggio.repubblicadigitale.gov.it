@@ -21,6 +21,7 @@ RUN apt-get install libpng-dev -y
 RUN apt-get install zip -y
 RUN apt-get install npm -y
 RUN apt-get install mysql\* -y
+RUN apt-get install cron -y
 
 RUN npm install -g n
 RUN n lts
@@ -43,13 +44,19 @@ RUN a2enmod rewrite
 COPY ./deploy/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY ./deploy/ports.conf /etc/apache2/ports.conf
 
-COPY ./deploy/updatedatabase.sh  /updatedatabase.sh
-RUN chmod 777 /updatedatabase.sh
-
 RUN rm -rf /var/www/html/
 ADD ./ /var/www/html
 RUN chown -R www-data:www-data /var/www
 
+RUN chsh -s /bin/bash www-data
+
+RUN mkdir /var/log/cron/
+RUN chown -R www-data:www-data /var/log/cron/
+
 USER ${APACHE_RUN_USER}:
 
 RUN (cd /var/www/html/ && composer install -v)
+
+RUN (crontab -u $(whoami) -l; echo "* * * * * /usr/local/bin/php /var/www/html/vendor/bin/drush cron > /var/log/cron/drupal.log" ) | crontab -u $(whoami) -
+
+USER root:

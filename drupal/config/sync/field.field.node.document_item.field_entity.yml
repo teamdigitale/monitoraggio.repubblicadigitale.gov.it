@@ -1,0 +1,19 @@
+uuid: ff8e9779-e8c2-4d47-95da-53652fe250f1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_entity
+    - node.type.document_item
+id: node.document_item.field_entity
+field_name: field_entity
+entity_type: node
+bundle: document_item
+label: Entity
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

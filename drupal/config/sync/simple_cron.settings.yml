@@ -1,0 +1,9 @@
+_core:
+  default_config_hash: Ljatfmj2_vtjM5-BG-PDxR0bnL8OH2f2dcyH1kyVJU0
+cron:
+  override_enabled: true
+queue:
+  override_enabled: false
+base:
+  max_execution_time: 240
+  lock_timeout: 900

@@ -1,5 +1,5 @@
-name: 'Rep-Dig BE Middleware Integration'
+name: 'Backend Middleware Integration'
 type: module
 description: 'Module that integrate the middleware backend API'
 core_version_requirement: ^9
-package: Accenture
+package: CMS

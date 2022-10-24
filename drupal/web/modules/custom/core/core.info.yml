@@ -1,5 +1,5 @@
-name: 'Rep-Dig Core'
+name: 'CMS Core'
 type: module
-description: 'Repubblica Digitale Core project module'
+description: 'CMS Core project module'
 core_version_requirement: ^9
-package: Accenture
+package: CMS

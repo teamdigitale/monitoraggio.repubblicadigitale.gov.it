@@ -9,13 +9,15 @@ dependencies:
     - field.field.node.document_item.field_comments
     - field.field.node.document_item.field_description
     - field.field.node.document_item.field_enable_comments
+    - field.field.node.document_item.field_entity
+    - field.field.node.document_item.field_entity_type
     - field.field.node.document_item.field_external_link
     - field.field.node.document_item.field_intervention
     - field.field.node.document_item.field_program
+    - field.field.node.document_item.field_program_label
     - node.type.document_item
   module:
     - comment
-    - file
     - link
     - text
     - user
@@ -25,12 +27,13 @@ bundle: document_item
 mode: default
 content:
   field_attachment:
-    type: file_default
+    type: entity_reference_entity_view
     label: above
     settings:
-      use_description_as_link_text: true
+      view_mode: default
+      link: true
     third_party_settings: {  }
-    weight: 11
+    weight: 7
     region: content
   field_category:
     type: entity_reference_label
@@ -38,7 +41,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 1
+    weight: 3
     region: content
   field_comments:
     type: comment_default
@@ -54,7 +57,7 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 0
+    weight: 2
     region: content
   field_enable_comments:
     type: boolean
@@ -66,6 +69,22 @@ content:
     third_party_settings: {  }
     weight: 10
     region: content
+  field_entity:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_entity_type:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
   field_external_link:
     type: link
     label: above
@@ -76,7 +95,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 7
+    weight: 8
     region: content
   field_intervention:
     type: string
@@ -84,25 +103,38 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 4
+    weight: 6
     region: content
   field_program:
-    type: entity_reference_label
+    type: string
     label: above
     settings:
-      link: true
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_program_label:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
     weight: 5
     region: content
   flag_download:
     settings: {  }
     third_party_settings: {  }
-    weight: 10
+    weight: 11
     region: content
   flag_downloaded:
     settings: {  }
     third_party_settings: {  }
     weight: 8
+    region: content
+  flag_usefull:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 12
     region: content
 hidden:
   links: true

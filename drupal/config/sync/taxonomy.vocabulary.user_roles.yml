@@ -1,8 +1,0 @@
-uuid: 3d23b52b-8957-4696-9ecc-4a6dd5d68d2a
-langcode: en
-status: true
-dependencies: {  }
-name: 'User Roles'
-vid: user_roles
-description: ''
-weight: 0

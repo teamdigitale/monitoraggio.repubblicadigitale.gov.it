@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.storage.comment.comment_body
     - flag.flag.like_comment
+    - user.role.middleware
   module:
     - comment
     - flag
@@ -13,6 +14,7 @@ dependencies:
     - rest_api
     - serialization
     - text
+    - user
     - views_field_view
 id: replies
 label: Replies
@@ -150,7 +152,7 @@ display:
           click_sort_column: value
           type: timestamp
           settings:
-            date_format: html_date
+            date_format: html_datetime
             custom_date_format: ''
             timezone: ''
           group_column: value
@@ -304,8 +306,8 @@ display:
           label: ''
           exclude: false
           alter:
-            alter_text: false
-            text: ''
+            alter_text: true
+            text: '{{ comment_body__value | raw }}'
             make_link: false
             path: ''
             absolute: false
@@ -592,6 +594,58 @@ display:
           view: check_like_comment
           display: rest_export_1
           arguments: '{{ raw_arguments.null }} / {{ raw_fields.cid }}'
+        view_1:
+          id: view_1
+          table: views
+          field: view
+          relationship: none
+          group_type: '0'
+          admin_label: Reported
+          plugin_id: view
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          view: check_report
+          display: rest_export_1
+          arguments: '{{ raw_fields.entity_id }}/{{ raw_fields.cid }}'
       pager:
         type: mini
         options:
@@ -621,8 +675,10 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       access:
-        type: none
-        options: {  }
+        type: role
+        options:
+          role:
+            middleware: middleware
       cache:
         type: tag
         options: {  }
@@ -796,6 +852,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user.roles
       tags:
         - 'config:field.storage.comment.comment_body'
   rest_export_1:
@@ -844,6 +901,9 @@ display:
             view:
               alias: user_like
               raw_output: false
+            view_1:
+              alias: reported
+              raw_output: false
       display_extenders: {  }
       path: api/comment/%id/replies/user/%user_name
     cache_metadata:
@@ -853,5 +913,6 @@ display:
         - 'languages:language_interface'
         - request_format
         - url
+        - user.roles
       tags:
         - 'config:field.storage.comment.comment_body'

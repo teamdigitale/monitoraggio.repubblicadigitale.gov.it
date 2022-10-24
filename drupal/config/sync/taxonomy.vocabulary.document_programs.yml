@@ -1,8 +1,0 @@
-uuid: 9c452e55-ed0f-4af4-b9a0-aff7923fab15
-langcode: en
-status: true
-dependencies: {  }
-name: 'Document Programs'
-vid: document_programs
-description: ''
-weight: 0

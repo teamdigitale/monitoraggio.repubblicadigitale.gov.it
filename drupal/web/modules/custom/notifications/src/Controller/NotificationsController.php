@@ -2,123 +2,173 @@
 
 namespace Drupal\notifications\Controller;
 
-use Exception;
-use Drupal\user\Entity\User;
+use Drupal;
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
+use Drupal\core\Utility\CacheController;
 use Drupal\core\Utility\EnvController;
-use Drupal\core\Controller\CacheController;
 use Drupal\core\Utility\TaxonomyController;
+use Drupal\user\Entity\User;
+use Exception;
 
+/**
+ *
+ */
 class NotificationsController
 {
-    public static function sendNotification($entity, $senderId, $receiverId, $type, $reason = null, $contentAuthorId = null)
-    {
-        $messages = \Drupal::config('notifications_messages.config');
+  /**
+   * @param $entity
+   * @param $senderId
+   * @param $receiverId
+   * @param $type
+   * @param $reason
+   * @param $contentAuthorId
+   * @return void
+   * @throws Exception
+   */
+  public static function sendNotification($entity, $senderId, $receiverId, $type, $reason = null, $contentAuthorId = null): void
+  {
+    $messages = Drupal::config('notifications.messages');
 
-        if (empty($entity)) {
-            throw new Exception('Entity is not setted');
-        }
-
-        if (empty($type) || empty($messages->get($type))) {
-            throw new Exception('Error in type');
-        }
-
-        $user = User::load($senderId);
-        if (empty($user)) {
-            throw new Exception('Error in user load in notification create.');
-        }
-
-        $senderUserName = $user->getAccountName();
-
-        $contentAuthorUserName = '';
-        if(!empty($contentAuthorId)){
-            $contentAuthor = User::load($contentAuthorId);
-            if (empty($contentAuthor)) {
-                throw new Exception('Error in content author load in notification create.');
-            }
-            $contentAuthorUserName = '{contentAuthorId: ' . $contentAuthor->getAccountName() . '}' ;
-        }
-
-        $variables = [
-            "title" => $entity->getTitle(),
-            "reason" => $reason ?? '',
-            "content_author" => $contentAuthorUserName
-        ];
-
-        $messageContent = '{userId: ' . $senderUserName . '} ' . $messages->get($type);
-
-        foreach ($variables as $key => $value) {
-            $messageContent = str_replace('{' . strtoupper($key) . '}', $value, $messageContent);
-        }
-
-        $notificationService = \Drupal::service('notifications_widget.logger');
-        $message = [
-            'id' => $entity->id(),
-            "bundle" => $entity->bundle(),
-            'content' => $messageContent,
-            'content_link' => 'users-list'
-        ];
-
-        $notificationService->logNotification($message, $type, $entity, $receiverId);
-        CacheController::resetViewCache('user_notifications');
+    if (empty($messages)) {
+      throw new Exception('NC01: Notification messages are not set');
     }
 
-    public static function sendMultipleNotifications($entity, $senderId, array $receiverIds, $type, $reason = null, $contentAuthorId = null)
-    {
-        if (empty($entity)) {
-            throw new Exception('Entity is not setted.');
-        }
-
-        if (empty($receiverIds)) {
-            throw new Exception('No receiver ids.');
-        }
-
-        foreach ($receiverIds as $receiverId) {
-            self::sendNotification($entity, $senderId, $receiverId, $type, $reason, $contentAuthorId);
-        }
+    if (empty($entity)) {
+      throw new Exception('NC02: Notification entity is not set');
     }
 
-    public static function setNotificationStatus($notificationId, $status)
-    {
-        $query = \Drupal::database()->select('notifications', 'n');
-        $query->fields('n', ['id']);
-        $query->condition('n.id', $notificationId);
-
-        if (empty($query->execute()->fetchAll())) {
-            throw new Exception('Invalid notification id.');
-        }
-
-        $query = \Drupal::database()->update('notifications')
-            ->fields([
-                'status' => $status
-            ]);
-        $query->condition('id', $notificationId);
-
-        if ($query->execute() != 1) {
-            throw new Exception('Error in notificaiton update.');
-        }
-
-        CacheController::resetViewCache('user_notifications');
-
-        return true;
+    if (empty($type) || empty($messages->get($type))) {
+      throw new Exception('NC03: Error in notification type');
     }
 
-    public static function getNotificationUserIds(){
-        $termId = TaxonomyController::termIdByName('user_roles', EnvController::getValues('USER_ROLE_FOR_NOTIFICATION'));
-        if(empty($termId)){
-            throw new Exception('Notification user roles does not exist.');
-        }
-        
-        $notificationUsers = \Drupal::entityTypeManager()
-        ->getStorage('user')
-        ->loadByProperties([
-          'field_roles' => [$termId]
+    $user = User::load($senderId);
+    if (empty($user)) {
+      throw new Exception('NC04: Error in user load in notification create.');
+    }
+
+    $contentAuthorUserName = '';
+    if (!empty($contentAuthorId)) {
+      $contentAuthor = User::load($contentAuthorId);
+      if (empty($contentAuthor)) {
+        throw new Exception('NC05: Error in content author load in notification create.');
+      }
+      $contentAuthorUserName = '$' . $contentAuthor->getAccountName() . '$';
+    }
+
+    $variables = [
+      'sender' => '$' . $user->getAccountName() . '$',
+      'title' => $entity->getTitle(),
+      'reason' => $reason ?? '',
+      'content_author' => $contentAuthorUserName
+    ];
+
+    $messageContent = $messages->get($type);
+
+    foreach ($variables as $key => $value) {
+      $messageContent = str_replace('{' . strtoupper($key) . '}', $value, $messageContent);
+    }
+
+    $notificationService = Drupal::service('notifications_widget.logger');
+    $message = [
+      'id' => $entity->id(),
+      'bundle' => $entity->bundle(),
+      'content' => $messageContent,
+      'content_link' => 'users-list'
+    ];
+
+    $notificationService->logNotification($message, $type, $entity, $receiverId);
+    CacheController::resetViewCache('user_notifications');
+  }
+
+  /**
+   * @param $entity
+   * @param $senderId
+   * @param array $receiverIds
+   * @param $type
+   * @param $reason
+   * @param $contentAuthorId
+   * @return void
+   * @throws Exception
+   */
+  public static function sendMultipleNotifications($entity, $senderId, array $receiverIds, $type, $reason = null, $contentAuthorId = null): void
+  {
+    if (empty($entity)) {
+      throw new Exception('NC06: Notification entity is not setted.');
+    }
+
+    if (empty($receiverIds)) {
+      throw new Exception('NC07: No notification receiver ids.');
+    }
+
+    foreach ($receiverIds as $receiverId) {
+      self::sendNotification($entity, $senderId, $receiverId, $type, $reason, $contentAuthorId);
+    }
+  }
+
+  /**
+   * @param $notificationIds
+   * @param $status
+   * @return void
+   * @throws Exception
+   */
+  public static function setNotificationStatus($notificationIds, $status): void
+  {
+    try{
+      $query = Drupal::database()->update('notifications')
+        ->fields([
+          'status' => $status
         ]);
+      $query->condition('id', $notificationIds, 'IN');
+      $query->execute();
 
-        $userIds = [];
-        foreach($notificationUsers as $notificationUser){
-            $userIds[] = $notificationUser->id();
-        }
-        
-        return $userIds;
+      CacheController::resetViewCache('user_notifications');
+    }catch (Exception $ex){
+      throw new Exception('NC09: Error in notification update.');
     }
+  }
+
+  /**
+   * @param $notificationIds
+   * @return void
+   * @throws Exception
+   */
+  public static function deleteNotifications($notificationIds): void
+  {
+    try{
+      $query = Drupal::database()->delete('notifications');
+      $query->condition('id', $notificationIds, 'IN');
+      $query->execute();
+
+      CacheController::resetViewCache('user_notifications');
+    }catch (Exception $ex) {
+      throw new Exception('NC10: Error in notification delete.');
+    }
+  }
+
+  /**
+   * @return array
+   * @throws InvalidPluginDefinitionException
+   * @throws PluginNotFoundException
+   */
+  public static function getNotificationUserIds(): array
+  {
+    $termId = TaxonomyController::termIdByName('user_groups', EnvController::getValues('USER_GROUP_FOR_NOTIFICATION'));
+    if (empty($termId)) {
+      throw new Exception('NC10: Notification user roles does not exist.');
+    }
+
+    $notificationUsers = Drupal::entityTypeManager()
+      ->getStorage('user')
+      ->loadByProperties([
+        'field_groups' => [$termId]
+      ]);
+
+    $userIds = [];
+    foreach ($notificationUsers as $notificationUser) {
+      $userIds[] = $notificationUser->id();
+    }
+
+    return $userIds;
+  }
 }

@@ -1,0 +1,18 @@
+uuid: 99982103-6486-4960-b650-9e1b2f1ac457
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - serialization
+    - stats_tracking
+id: action_tracking
+plugin_id: action_tracking
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - basic_auth

@@ -2,4 +2,7 @@ _core:
   default_config_hash: UVH1aJ4b44UM-VdPVN7hNNuuVqfReJxwfVeDQH1Hvsk
 ignored_config_entities:
   - banned_words.config
-  - notifications_messages.config
+  - notifications.messages
+  - s3fs.settings
+  - simple_cron.job.sync_user_sync
+  - system.performance

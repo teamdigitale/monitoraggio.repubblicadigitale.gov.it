@@ -3,18 +3,18 @@
 namespace Drupal\rest_api\Plugin\rest\resource;
 
 use Drupal\banned_words\Controller\BannedWordsController;
+use Drupal\comment\Entity\Comment;
 use Drupal\core\Controller\CommentController;
 use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\comment\Entity\Comment;
 use Drupal\node\Entity\Node;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
 use Drupal\rest_api\Controller\Utility\ValidationController;
 use Exception;
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides a resource to get view modes by entity and bundle.
@@ -27,7 +27,6 @@ use Psr\Log\LoggerInterface;
  *   }
  * )
  */
-
 class CommentReplyResourceApi extends ResourceBase
 {
   /**
@@ -54,13 +53,14 @@ class CommentReplyResourceApi extends ResourceBase
    *   A current user instance.
    */
   public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    array $serializer_formats,
-    LoggerInterface $logger,
+    array                 $configuration,
+                          $plugin_id,
+                          $plugin_definition,
+    array                 $serializer_formats,
+    LoggerInterface       $logger,
     AccountProxyInterface $current_user
-  ) {
+  )
+  {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
 
     $this->currentUser = $current_user;
@@ -81,6 +81,17 @@ class CommentReplyResourceApi extends ResourceBase
     );
   }
 
+  private const JSON_SCHEMA = [
+    'type' => 'object',
+    'properties' => [
+      'comment_body' => [
+        'type' => 'string',
+        'minLength' => 1,
+        'required' => true
+      ]
+    ]
+  ];
+
   /**
    * Responds to POST requests.
    *
@@ -92,40 +103,40 @@ class CommentReplyResourceApi extends ResourceBase
   {
     try {
       $userId = $req->headers->get('user-id') ?? '';
-      if(empty($userId)){
-        throw new Exception('Missing user id in headers');
+      if (empty($userId)) {
+        throw new Exception('CMRRA01: Missing user id in headers');
       }
 
       if (empty($id)) {
-        throw new Exception("Missing node id");
+        throw new Exception('CMRRA02: Missing node id');
       }
 
       $comment = Comment::load($id);
       if (empty($comment) || !empty($comment->getParentComment())) {
-        throw new Exception("Invalid comment id");
+        throw new Exception('CMRRA03: Invalid comment id');
       }
 
       $body = json_decode($req->getContent());
-      ValidationController::validateRequestBody($body, 'comment_create');
+      ValidationController::validateRequestBody($body, self::JSON_SCHEMA);
 
       $nodeId = $comment->getCommentedEntityId();
       $node = Node::load($nodeId);
-      if (empty($node)) {
-        throw new Exception('Invalid node id');
+      if (empty($node) || $node->bundle() != 'community_item') {
+        throw new Exception('CMRRA04: Invalid node id');
       }
 
-      if(!$node->get('field_enable_comments')->value){
-        throw new Exception('Comments are not enabled for this node');
+      if (!$node->get('field_enable_comments')->value) {
+        throw new Exception('CMRRA05: Comments are not enabled for this node');
       }
 
-      if (!BannedWordsController::validateText( $body->comment_body)){
-        throw new Exception('Comment body contains banned words');
+      if (!BannedWordsController::validateText($body->comment_body)) {
+        throw new Exception('CMRRA06: Comment body contains banned words');
       }
 
       $commentId = CommentController::replyCreate(
-        $nodeId, 
-        $id, 
-        $userId, 
+        $nodeId,
+        $id,
+        $userId,
         $body->comment_body
       );
 
