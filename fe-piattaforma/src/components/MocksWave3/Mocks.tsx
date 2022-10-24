@@ -147,16 +147,20 @@ export const ShowcasePropsMock = [
     categories: 'CATEGORIA - ',
     marked: false,
   },
+];
+
+export const singleNewsMock = [
   {
     title: 'La Digital Skills and Jobs Platform: un anno da festeggiare',
-    text: 'I compleanni sono sempre un momento da celebrare. Anche quando si tratta del  ...',
+    description:
+      'I compleanni sono sempre un momento da celebrare. Anche quando si tratta del  ...',
     date: '20/07/2022',
     likes: '21',
     views: '65',
-    commentsTot: 484,
+    comment_count: 484,
     img: 'https://picsum.photos/seed/picsum/380/150',
-    categories: 'CATEGORIA - ',
-    marked: false,
+    category_label: 'CATEGORIA - ',
+    highlighted: false,
   },
 ];
 

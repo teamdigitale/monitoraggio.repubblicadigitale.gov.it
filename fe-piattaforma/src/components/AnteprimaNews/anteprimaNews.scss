@@ -5,8 +5,15 @@
   border-radius: 4px;
   width: 95%;
 
-  @media screen and (max-width: 824px) {
-    position: unset;
+  @media screen and (min-width: 600px) and (max-width: 992px) {
+    margin-top: -100px;
+    margin-left: 16px;
+  }
+  @media screen and (min-width: 993px) and (max-width: 1200px) {
+    margin-top: -150px;
+  }
+  @media screen and (min-width: 1201px) {
+    margin-top: -200px;
   }
 
   &__category {
@@ -37,4 +44,20 @@
 .border-box-container {
   opacity: 0.3;
   border-bottom: 0.5px solid #3686d6;
+}
+
+.bg-image {
+  max-width: 1200px;
+  max-height: 600px;
+
+  @media screen and (max-width: 576px) {
+    height: 200px;
+    margin-right: 18px;
+  }
+  @media screen and (min-width: 577px) and (max-width: 992px) {
+    height: 300px;
+  }
+  @media screen and (min-width: 993px) {
+    height: 600px;
+  }
 }

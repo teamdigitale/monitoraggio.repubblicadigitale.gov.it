@@ -28,6 +28,7 @@ export interface UserStateI {
   }
   | Record<string, never>;
   notification: any[];
+  notificationToRead: number;
   permissions: RolePermissionI[];
   idProgramma: string | null;
   idProgetto: string[] | null;
@@ -77,6 +78,8 @@ const initialStateLogged: UserStateI = {
     descrizioneRuolo: 'Referente',
   },
   ruoli: [],
+  notification: [],
+  notificationToRead: 0,
 };
 const initialStateNotLogged: UserStateI = {
   isLogged: false,
@@ -87,7 +90,8 @@ const initialStateNotLogged: UserStateI = {
   idEnte: null,
   profilo: null,
   ruoli: [],
-  notification: []
+  notification: [],
+  notificationToRead: 0,
 };
 
 const initialState: UserStateI = initialStateNotLogged;
@@ -122,6 +126,9 @@ export const userSlice = createSlice({
     setUserNotifications: (state, action: PayloadAction<any>) => {
       state.notification = [...action.payload]
     },
+    setUserNotificationsToRead: (state, action: PayloadAction<any>) => {
+      state.notificationToRead = action.payload;
+    },
     login: (state) => {
       setSessionValues('user', state.user);
       setSessionValues('profile', state.profilo);
@@ -138,14 +145,15 @@ export const userSlice = createSlice({
   },
 });
 
-export const { login, logout, setUserContext, setUserProfile, setUserNotifications } =
+export const { login, logout, setUserContext, setUserProfile, setUserNotifications, setUserNotificationsToRead } =
   userSlice.actions;
 
 export const selectLogged = (state: RootState) => state.user.isLogged;
 export const selectUser = (state: RootState) => state.user.user;
 export const selectProfile = (state: RootState) => state.user.profilo;
 export const selectPermissions = (state: RootState) => state.user.permissions;
-export const selectUserNotification = (state: RootState) =>
-  state.user.notification;
+export const selectUserNotification = (state: RootState) => state.user.notification;
+export const selectUserNotificationToRead = (state: RootState) =>
+  state.user.notificationToRead;
 
 export default userSlice.reducer;

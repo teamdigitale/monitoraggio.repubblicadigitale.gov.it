@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { Button, Icon } from 'design-react-kit';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -5,7 +6,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import DeleteEntityModal from '../../../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 import AnteprimaBachecaNews from '../../../../../components/AnteprimaNews/anteprimaNews';
 import CommentSection from '../../../../../components/Comments/commentSection';
-import { setInfoIdsBreadcrumb } from '../../../../../redux/features/app/appSlice';
+/* import { singleNewsMock } from '../../../../../components/MocksWave3/Mocks'; */
+import {
+  /* selectDevice, */ setInfoIdsBreadcrumb,
+} from '../../../../../redux/features/app/appSlice';
 import {
   DeleteComment,
   GetCommentsList,
@@ -31,6 +35,7 @@ import ManageNews from '../../../../administrator/AdministrativeArea/Entities/mo
 import ManageReport from '../../../../administrator/AdministrativeArea/Entities/modals/manageReport';
 
 const BachecaDetails = () => {
+  /*  const device = useAppSelector(selectDevice) */
   const navigate = useNavigate();
   const newsDetail = useAppSelector(selectNewsDetail);
   const commentsList = useAppSelector(selectCommentsList);
@@ -44,14 +49,16 @@ const BachecaDetails = () => {
       dispatch(GetCommentsList(id, userId));
       const res = await dispatch(GetItemDetail(id, userId, 'board'));
       if (res) {
-        dispatch(ActionTracker({
-          target: 'tnd',
-          action_type: 'VISUALIZZAZIONE',
-          event_type: 'NEWS',
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          category: res?.data?.data?.items?.[0]?.category,
-        }));
+        dispatch(
+          ActionTracker({
+            target: 'tnd',
+            action_type: 'VISUALIZZAZIONE',
+            event_type: 'NEWS',
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            category: res?.data?.data?.items?.[0]?.category,
+          })
+        );
       }
     }
   };
@@ -95,7 +102,7 @@ const BachecaDetails = () => {
   );
 
   return (
-    <div className='container mb-5'>
+    <div className={clsx('container', 'mb-5')}>
       {backButton}
       <AnteprimaBachecaNews
         {...newsDetail}
@@ -104,7 +111,7 @@ const BachecaDetails = () => {
             openModal({
               id: 'newsModal',
               payload: {
-                title: 'Modifica news'
+                title: 'Modifica news',
               },
             })
           )
@@ -133,7 +140,9 @@ const BachecaDetails = () => {
         }
       />
       {newsDetail.enable_comments && commentsList.length ? (
-        <CommentSection section='board' />
+        <div className='mt-4'>
+          <CommentSection section='board' />
+        </div>
       ) : null}
       <ManageReport />
       <ManageNews />

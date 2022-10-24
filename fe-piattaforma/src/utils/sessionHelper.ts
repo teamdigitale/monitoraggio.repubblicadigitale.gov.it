@@ -1,3 +1,5 @@
+import { RefreshSPIDToken } from '../redux/features/auth/authThunk';
+
 export const getSessionValues = (key: string) => {
   return sessionStorage.getItem(key) || '{}';
 };
@@ -18,12 +20,33 @@ export const clearSessionValues = (key?: string) => {
   }
 };
 
+const refreshSession = async (currentSession: {
+  preAuthCode: string;
+  refresh_token: string;
+}) => {
+  try {
+    console.log('Refreshing auth session..');
+    const { preAuthCode, refresh_token } = currentSession;
+    const newSession = await RefreshSPIDToken(preAuthCode, refresh_token);
+    if (newSession?.access_token) {
+      setSessionValues('auth', {
+        ...currentSession,
+        ...newSession,
+        session_timestamp: new Date().getTime(),
+      });
+    }
+  } catch (err) {
+    console.log('refreshSession error', err);
+  }
+};
+
 export const validateSession = () => {
   const currentSession = JSON.parse(getSessionValues('auth'));
-  const diff =
-    Math.abs(new Date().getTime() - currentSession.session_timestamp) / 1000;
-  //console.log('validation session..', diff);
-  if (diff >= (currentSession.expires_in || 3600) - 600) {
-    console.log('TODO refresh session');
+  if (currentSession?.refresh_token) {
+    const diff =
+      Math.abs(new Date().getTime() - currentSession.session_timestamp) / 1000;
+    if (diff >= (currentSession.expires_in || 3600) - 600) {
+      refreshSession(currentSession);
+    }
   }
 };

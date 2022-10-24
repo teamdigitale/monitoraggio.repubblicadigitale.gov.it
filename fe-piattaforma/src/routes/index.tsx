@@ -91,7 +91,12 @@ const AppRoutes: React.FC = () => {
     const checkSession = await SessionCheck(dispatch);
     setValidSession(Boolean(checkSession));
     if (checkSession) {
-      dispatch(GetNotificationsByUser({ status: [{ value: 0 }], items_per_page: [{ value: 24 }] }));
+      dispatch(
+        GetNotificationsByUser(
+          { status: [{ value: 0 }], items_per_page: [{ value: 1 }] },
+          true
+        )
+      );
     }
   };
 

@@ -143,9 +143,13 @@ const ManageNews: React.FC<ManageNewsI> = ({
           CreateItem(
             {
               ...newFormValues,
-              program_label: programsList?.find(
-                (p) => p.value === parseInt(newFormValues.program as string)
-              )?.label,
+              program_label:
+                newFormValues.program === 'public'
+                  ? 'Tutti i programmi'
+                  : programsList?.find(
+                      (p) =>
+                        p.value === parseInt(newFormValues.program as string)
+                    )?.label,
               entity:
                 userProfile?.idProgetto || userProfile?.idProgramma
                   ? userProfile.nomeEnte

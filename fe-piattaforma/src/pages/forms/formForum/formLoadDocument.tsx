@@ -19,7 +19,10 @@ import {
   selectCategoriesList,
   selectDocDetail,
 } from '../../../redux/features/forum/forumSlice';
-import { selectEntityFiltersOptions } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
+import {
+  selectEntityFiltersOptions,
+  setEntityFilters
+} from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { GetEntityFilterValues } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
 import { GetCategoriesList } from '../../../redux/features/forum/categories/categoriesThunk';
 import { uploadFile } from '../../../utils/common';
@@ -58,22 +61,76 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
   const categoriesList = useAppSelector(selectCategoriesList);
   const programsList = useAppSelector(selectEntityFiltersOptions)['programmi'];
   const policiesList = useAppSelector(selectEntityFiltersOptions)['policies'];
+  const [programDropdownOptions, setProgramDropdownOptions] = useState(
+    programsList || []
+  );
+  const [interventionsDropdownOptions, setInterventionsDropdownOptions] =
+    useState(programsList || []);
   const docDetail: { [key: string]: string | boolean } | undefined =
     useAppSelector(selectDocDetail);
   const device = useAppSelector(selectDevice);
 
-  useEffect(() => {
+  const getInterventionsList = () => {
     dispatch(GetEntityFilterValues({ entity, dropdownType: 'policies' }));
+  };
+
+  useEffect(() => {
+    const newInterventionsDropdownOptions = [];
+    if ((policiesList || [])?.length > 1) {
+      newInterventionsDropdownOptions.push({
+        label: 'Tutti gli interventi',
+        value: 'public',
+      });
+    } else {
+      onInputChange(policiesList?.[0].value, form?.intervention?.field);
+    }
+    setInterventionsDropdownOptions([
+      ...newInterventionsDropdownOptions,
+      ...(policiesList || []),
+    ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [policiesList]);
+
+  useEffect(() => {
+    setProgramDropdownOptions([
+      { label: 'Tutti i programmi', value: 'public' },
+      ...(programsList || []),
+    ]);
+  }, [programsList]);
+
+  useEffect(() => {
+    if (form?.program?.value) {
+      onInputChange('', form?.intervention?.field);
+      dispatch(
+        setEntityFilters({
+          filtroIdsProgrammi: [
+            {
+              value:
+                form?.program?.value === 'public'
+                  ? undefined
+                  : form?.program?.value,
+            },
+          ],
+        })
+      );
+      getInterventionsList();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form?.program?.value]);
+
+  useEffect(() => {
     dispatch(GetEntityFilterValues({ entity, dropdownType: 'programmi' }));
     dispatch(GetCategoriesList({ type: 'document_categories' }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (files?.data) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignorex
+      // @ts-ignore
       onInputChange(files, 'attachment');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files?.data]);
 
   useEffect(() => {
@@ -90,6 +147,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
         updateForm(newForm(populatedForm));
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [docDetail]);
 
   useEffect(() => {
@@ -98,6 +156,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
       ...getFormValues(),
       program: getFormValues().program?.toString(),
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
   const addDocument = () => {
@@ -141,7 +200,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
           {...form?.program}
           wrapperClassName='col-12 col-lg-6'
           onInputChange={onInputChange}
-          options={programsList?.map((opt) => ({
+          options={programDropdownOptions?.map((opt) => ({
             label: opt.label,
             value: opt.value as number,
           }))}
@@ -152,11 +211,15 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
           {...form?.intervention}
           wrapperClassName='col-12 col-lg-6'
           onInputChange={onInputChange}
-          options={policiesList?.map((opt) => ({
+          options={interventionsDropdownOptions?.map((opt) => ({
             label: opt.label,
             value: opt.value as string,
           }))}
-          isDisabled={formDisabled}
+          isDisabled={
+            !form?.program?.value ||
+            interventionsDropdownOptions?.length <= 1 ||
+            formDisabled
+          }
           placeholder='Seleziona'
         />
       </Form.Row>

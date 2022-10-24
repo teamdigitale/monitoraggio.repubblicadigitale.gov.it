@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {useNavigate, useParams} from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ConfirmItemCreation from '../../../../../components/ConfirmItemCreation/confirmItemCreation';
 import GenericModal, {
   CallToAction,
@@ -88,9 +88,13 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
           CreateItem(
             {
               ...newFormValues,
-              program_label: programsList?.find(
-                (p) => p.value === parseInt(newFormValues.program as string)
-              )?.label,
+              program_label:
+                newFormValues.program === 'public'
+                  ? 'Tutti i programmi'
+                  : programsList?.find(
+                      (p) =>
+                        p.value === parseInt(newFormValues.program as string)
+                    )?.label,
               entity:
                 userProfile?.idProgetto || userProfile?.idProgramma
                   ? userProfile.nomeEnte

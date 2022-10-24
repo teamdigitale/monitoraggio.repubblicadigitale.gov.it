@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { useAppSelector } from '../../redux/hooks';
 import {
-  selectUserNotification,
+  selectUserNotificationToRead,
   selectUser,
   UserStateI,
   selectProfile,
@@ -25,7 +25,7 @@ export interface HeaderI {
   user: UserStateI['user'];
   userProfile: UserStateI['profilo'];
   isLogged: boolean;
-  notification?: any[] | undefined;
+  notification: number | undefined;
   menuRoutes: MenuItem[];
   profilePicture: string | undefined;
   handleOpenRocketChat?: () => void;
@@ -108,7 +108,7 @@ const Header: React.FC<HeaderProp> = (props) => {
   const dispatch = useDispatch();
   const { hasUserPermission } = useGuard();
 
-  const notification = useAppSelector(selectUserNotification);
+  const notification = useAppSelector(selectUserNotificationToRead);
 
   const device = useAppSelector(selectDevice);
 

@@ -461,8 +461,8 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                             size='sm'
                             aria-label='notifications preview'
                           />
-                          {notification?.length ? (
-                         <span className='badge-notifications'>{notification.length}</span>
+                          {notification ? (
+                         <span className='badge-notifications'>{notification}</span>
                       ) : null}
                         </Button>
                         <NotificationsPreview

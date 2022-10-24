@@ -86,7 +86,6 @@ export const GetNewsFilters =
         ],
       };
       const queryParameters = transformFiltersToQueryParams(body);
-      console.log('queryParameters', queryParameters);
       const res = await proxyCall(`/board/filters${queryParameters}`, 'GET');
       if (res?.data?.data) {
         dispatch(
@@ -225,7 +224,6 @@ export const GetTopicsFilters =
         ),
       };
       const queryParameters = transformFiltersToQueryParams(body);
-      console.log('queryParameters', queryParameters);
       const res = await proxyCall(
         `/community/filters${queryParameters}`,
         'GET'
@@ -284,7 +282,6 @@ export const GetTopicsList =
         ...forcedFilters,
       }).replace('sort', 'sort_by');
       //.replace('categories', 'category')
-      console.log('queryParamFilters', queryParamFilters);
       const res = await proxyCall(
         `/community/items${queryParamFilters}`,
         'GET'
@@ -361,7 +358,6 @@ export const GetDocumentsFilters =
         ],
       };
       const queryParameters = transformFiltersToQueryParams(body);
-      console.log('queryParameters', queryParameters);
       const res = await proxyCall(`/document/filters${queryParameters}`, 'GET');
       if (res?.data?.data) {
         dispatch(
@@ -450,7 +446,6 @@ export const GetDocumentsList =
         ...forcedFilters,
       }).replace('sort', 'sort_by');
       //.replace('categories', 'category')
-      console.log('queryParamFilters', queryParamFilters);
       const res = await proxyCall(`/document/items${queryParamFilters}`, 'GET');
       if (updateStore) {
         if (res?.data?.data) {
@@ -905,9 +900,11 @@ export const ManageItemEvent =
     try {
       dispatch(showLoader());
       dispatch({ ...ManageItemEventAction });
-      await proxyCall(`/item/${itemId}/${event}`, 'POST');
+      const res = await proxyCall(`/item/${itemId}/${event}`, 'POST');
+      return res;
     } catch (error) {
       console.log('ManageItemEvent error', error);
+      return false;
     } finally {
       dispatch(hideLoader());
     }
@@ -1008,7 +1005,6 @@ export const ActionTracker =
           codiceRuolo,
           idProgramma,
         });
-        console.log('body', body);
         axios.post(
           `${process?.env?.REACT_APP_BE_BASE_URL}drupal/forward`,
           {
