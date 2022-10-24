@@ -107,7 +107,7 @@ const SocialBar: React.FC<SocialI> = (props) => {
                   /*   device.mediaIsDesktop && 'justify-content-end' */
                 )}
               >
-                <Icon icon={CuoreBluPieno} size='xs' aria-label='like' />
+                <Icon icon={user_like ? CuoreBluPieno:CuoreBluVuoto} size='xs' aria-label='like' />
                 {device.mediaIsDesktop ? (
                   <p className='primary-color font-weight-bold pl-2 letter-spacing'>
                     {user_like ? 'NON MI PIACE' : 'MI PIACE'}

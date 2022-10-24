@@ -394,6 +394,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
         likes={likes}
         views={views}
         downloads={downloads}
+        user_like={user_like}
         onLike={
           section === 'community'
             ? async () => {

@@ -28,7 +28,7 @@ import { formatDate } from '../../utils/datesHelper';
 import useGuard from '../../hooks/guard';
 
 export interface AnteprimaBachecaNewsI {
-  author?: string,
+  author?: string;
   id?: string;
   category?: string;
   category_label?: string;
@@ -116,10 +116,16 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
 
   const setNewsDetailDropdownOptionsByPermission = () => {
     const authorizedOption = [];
-    if (hasUserPermission(['del.news']) && author?.toString() === userId?.toString()) {
+    if (
+      hasUserPermission(['del.news']) &&
+      author?.toString() === userId?.toString()
+    ) {
       authorizedOption.push(deleteOption);
     }
-    if (hasUserPermission(['upd.news']) && author?.toString() === userId?.toString()) {
+    if (
+      hasUserPermission(['upd.news']) &&
+      author?.toString() === userId?.toString()
+    ) {
       authorizedOption.push(editOption);
     }
     if (hasUserPermission(['rprt.news'])) {
@@ -184,28 +190,28 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
   );
 
   return (
-    <div
-      className={clsx(
-        device.mediaIsPhone ? 'anteprima-news-container mx-auto' : 'pt-2'
-      )}
-    >
-      <div>
-        <figure className='d-flex w-100 justify-content-center'>
-          <img
-            src={cover ? cleanDrupalFileURL(cover) : coverPlaceholder}
-            alt='img'
-            className='w-100'
-          />
-        </figure>
-      </div>
+    <div className={clsx(device.mediaIsPhone ? 'ml-3' : null)}>
+      <div
+        className={clsx(
+          'bg-image' /*  device.mediaIsPhone ? 'mr-3' : device.mediaIsTablet ? 'mx-1': null */
+        )}
+        style={{
+          backgroundImage: `url(${
+            cover ? cleanDrupalFileURL(cover) : coverPlaceholder
+          })`,
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          zIndex: '0',
+          backgroundSize: '100%',
+        }}
+      />
 
       <div
         className={clsx(
-          !device.mediaIsPhone
-            ? 'px-5 pt-5 pb-4 anteprima-news-container position-relative mx-auto'
-            : 'px-3 py-3'
+          'anteprima-news-container',
+          !device.mediaIsPhone ? 'px-5 pt-5 pb-4 mx-auto' : 'px-3 py-3',
+          'position-relative'
         )}
-        style={{ top: !device.mediaIsPhone ? '-80px' : '' }}
       >
         <div>
           <div className='d-flex justify-content-between align-items-center'>
@@ -275,12 +281,14 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
                       await dispatch(ManageItemEvent(id, 'unlike'));
                     } else {
                       await dispatch(ManageItemEvent(id, 'like'));
-                      dispatch(ActionTracker({
-                        target: 'tnd',
-                        action_type: 'LIKE',
-                        event_type: 'NEWS',
-                        category,
-                      }));
+                      dispatch(
+                        ActionTracker({
+                          target: 'tnd',
+                          action_type: 'LIKE',
+                          event_type: 'NEWS',
+                          category,
+                        })
+                      );
                     }
                     userId && dispatch(GetItemDetail(id, userId, 'board'));
                   }

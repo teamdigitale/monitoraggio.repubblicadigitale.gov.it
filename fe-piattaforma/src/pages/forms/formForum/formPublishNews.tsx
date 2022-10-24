@@ -9,7 +9,10 @@ import PreviewCard from '../../../components/PreviewCard/PreviewCard';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
-import { selectEntityFiltersOptions } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
+import {
+  selectEntityFiltersOptions,
+  setEntityFilters,
+} from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { GetEntityFilterValues } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
 import { GetCategoriesList } from '../../../redux/features/forum/categories/categoriesThunk';
 import {
@@ -62,37 +65,80 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
   const formDisabled = !!props.formDisabled;
   const newsDetail: { [key: string]: string | boolean } | undefined =
     useAppSelector(selectNewsDetail);
+  const programsList = useAppSelector(selectEntityFiltersOptions)['programmi'];
   const policiesList = useAppSelector(selectEntityFiltersOptions)['policies'];
   const categoriesList = useAppSelector(selectCategoriesList);
-  const programsList = useAppSelector(selectEntityFiltersOptions)['programmi'];
-
-  useEffect(() => {
-    dispatch(GetEntityFilterValues({ entity, dropdownType: 'policies' }));
-    dispatch(GetEntityFilterValues({ entity, dropdownType: 'programmi' }));
-    dispatch(GetCategoriesList({ type: 'board_categories' }));
-    // if (creation) {
-    //   clearForm()
-    //   setEnableComments(false)
-    //   setHighlighted(false)
-    //   setEditorText('<p></p>')
-    // }
-  }, []);
+  const [programDropdownOptions, setProgramDropdownOptions] = useState(
+    programsList || []
+  );
+  const [interventionsDropdownOptions, setInterventionsDropdownOptions] =
+    useState(programsList || []);
 
   useEffect(() => {
     if (image?.data) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignorex
+      // @ts-ignore
       onInputChange(image, 'cover');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [image?.data]);
 
   useEffect(() => {
     if (files?.data) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignorex
+      // @ts-ignore
       onInputChange(files, 'attachment');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files?.data]);
+
+  const getInterventionsList = () => {
+    dispatch(GetEntityFilterValues({ entity, dropdownType: 'policies' }));
+  };
+
+  useEffect(() => {
+    const newInterventionsDropdownOptions = [];
+    if ((policiesList || [])?.length > 1) {
+      newInterventionsDropdownOptions.push({
+        label: 'Tutti gli interventi',
+        value: 'public',
+      });
+    } else {
+      onInputChange(policiesList?.[0].value, form?.intervention?.field);
+    }
+    setInterventionsDropdownOptions([
+      ...newInterventionsDropdownOptions,
+      ...(policiesList || []),
+    ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [policiesList]);
+
+  useEffect(() => {
+    setProgramDropdownOptions([
+      { label: 'Tutti i programmi', value: 'public' },
+      ...(programsList || []),
+    ]);
+  }, [programsList]);
+
+  useEffect(() => {
+    if (form?.program?.value) {
+      onInputChange('', form?.intervention?.field);
+      dispatch(
+        setEntityFilters({
+          filtroIdsProgrammi: [
+            {
+              value:
+                form?.program?.value === 'public'
+                  ? undefined
+                  : form?.program?.value,
+            },
+          ],
+        })
+      );
+      getInterventionsList();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form?.program?.value]);
 
   useEffect(() => {
     if (newFormValues) {
@@ -107,10 +153,13 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
 
         updateForm(newForm(populatedForm));
       }
+      dispatch(GetEntityFilterValues({ entity, dropdownType: 'programmi' }));
+      dispatch(GetCategoriesList({ type: 'board_categories' }));
       setEnableComments((newFormValues.enable_comments as boolean) || false);
       setHighlighted((newFormValues.highlighted as boolean) || false);
       setEditorText((newFormValues.description as string) || '');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -130,6 +179,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
       setHighlighted(!!newsDetail.highlighted);
       setEditorText(newsDetail.description as string);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newsDetail]);
 
   useEffect(() => {
@@ -142,6 +192,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
       highlighted: highlighted,
       enable_comments: enableComments,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form, highlighted, enableComments, editorText]);
 
   const addPicture = () => {
@@ -206,7 +257,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
           label='Programma'
           wrapperClassName='col-12 col-lg-6'
           onInputChange={onInputChange}
-          options={programsList?.map((opt) => ({
+          options={programDropdownOptions?.map((opt) => ({
             label: opt.label,
             value: opt.value as number,
           }))}
@@ -218,11 +269,15 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
           label='Intervento'
           wrapperClassName='col-12 col-lg-6'
           onInputChange={onInputChange}
-          options={policiesList?.map((opt) => ({
+          options={interventionsDropdownOptions?.map((opt) => ({
             label: opt.label,
             value: opt.value as string,
           }))}
-          isDisabled={formDisabled}
+          isDisabled={
+            !form?.program?.value ||
+            interventionsDropdownOptions?.length <= 1 ||
+            formDisabled
+          }
           placeholder='Seleziona'
         />
       </Form.Row>

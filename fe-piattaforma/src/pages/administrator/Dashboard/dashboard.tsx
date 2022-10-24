@@ -140,9 +140,9 @@ const Dashboard = () => {
       }
       case userRoles.REG:
       case userRoles.DEG: {
-        if (program.policy.toLowerCase() === 'rfd') {
+        if (program?.policy?.toLowerCase() === 'rfd') {
           requestURL = `${requestURL}/${dashboardRoles.REG.rfd}`;
-        } else if (program.policy.toLowerCase() === 'scd') {
+        } else if (program?.policy?.toLowerCase() === 'scd') {
           requestURL = `${requestURL}/${dashboardRoles.REG.scd}`;
         } else {
           return null;
@@ -151,9 +151,9 @@ const Dashboard = () => {
       }
       case userRoles.REGP:
       case userRoles.DEGP: {
-        if (project.policy.toLowerCase() === 'rfd') {
+        if (project?.policy?.toLowerCase() === 'rfd') {
           requestURL = `${requestURL}/${dashboardRoles.REGP.rfd}`;
-        } else if (project.policy.toLowerCase() === 'scd') {
+        } else if (project?.policy?.toLowerCase() === 'scd') {
           requestURL = `${requestURL}/${dashboardRoles.REGP.scd}`;
         } else {
           return null;
@@ -246,7 +246,7 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.codiceRuolo, device]);
 
-  const contents = user?.codiceRuolo ? (hasUserPermission(['self.bi']) ? authContents:authContentsShort) : publicContents;
+  const contents = user?.codiceRuolo ? (hasUserPermission(['acc.self.dshb']) ? authContents:authContentsShort) : publicContents;
 
   return (
     <div className='container dashboard-container my-5'>

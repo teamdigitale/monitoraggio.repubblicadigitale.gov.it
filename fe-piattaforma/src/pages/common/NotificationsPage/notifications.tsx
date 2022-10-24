@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Paginator } from '../../../components';
 import PageTitle from '../../../components/PageTitle/pageTitle';
 import { selectDevice } from '../../../redux/features/app/appSlice';
-import { selectEntityPagination } from '../../../redux/features/citizensArea/citizensAreaSlice';
+import { selectEntityPagination } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { useAppSelector } from '../../../redux/hooks';
 import './notifications.scss';
 import clsx from 'clsx';
@@ -16,10 +16,9 @@ import DeleteCheck from '/public/assets/img/delete-check.png';
 import PillDropDown from '../../../components/PillDropDown/pillDropDown';
 import Notification from './components/Notifications/notification';
 import {
-  selectUser,
   selectUserNotification,
 } from '../../../redux/features/user/userSlice';
-import { GetNotificationsByUser } from '../../../redux/features/user/userThunk';
+import { DeleteNotification, GetNotificationsByUser, ReadNotification } from '../../../redux/features/user/userThunk';
 import { setEntityPagination } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 
 const Notifications: React.FC = () => {
@@ -28,9 +27,9 @@ const Notifications: React.FC = () => {
 
   // TODO integrate notification
   const notificationsList = useAppSelector(selectUserNotification);
-  const userId = useAppSelector(selectUser)?.id;
   const dispatch = useDispatch();
   const pagination = useAppSelector(selectEntityPagination);
+  const { pageNumber, pageSize, totalPages } = pagination
   const [selectedNotifications, setSelectedNotifications] = useState<string[]>(
     []
   );
@@ -38,10 +37,10 @@ const Notifications: React.FC = () => {
   useEffect(() => {
     dispatch(GetNotificationsByUser());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId]);
+  }, [pageNumber, pageSize]);
 
-  const handleOnChangePage = (pageNumber: number = pagination?.pageNumber) => {
-    dispatch(setEntityPagination({ pageNumber }));
+  const handleOnChangePage = (pageNumber: number) => {
+    dispatch(setEntityPagination({ pageNumber, pageSize }));
   };
 
   const onSelectAll = () => {
@@ -58,9 +57,17 @@ const Notifications: React.FC = () => {
     }
   };
 
-  const onDeleteSelected = () => {};
+  const onDeleteSelected = async () => {
+    await dispatch(DeleteNotification(selectedNotifications))
+    setSelectedNotifications([])
+    dispatch(GetNotificationsByUser());
+  };
 
-  const onReadSelected = () => {};
+  const onReadSelected = async () => {
+    await dispatch(ReadNotification(selectedNotifications))
+    setSelectedNotifications([])
+    dispatch(GetNotificationsByUser());
+  };
 
   return (
     <>
@@ -177,7 +184,7 @@ const Notifications: React.FC = () => {
             key={i}
             role='button'
             className={clsx(
-              !!notification.status && 'notifications-card-unread'
+              !!notification.status ? '' : 'notifications-card-unread'
             )}
           >
             <Notification
@@ -196,12 +203,12 @@ const Notifications: React.FC = () => {
           </div>
         ))}
       </Container>
-      {!isMobile && pagination?.pageNumber ? (
+      {!isMobile && pageNumber ? (
         <Paginator
-          pageSize={pagination?.pageSize}
-          activePage={pagination?.pageNumber}
+          pageSize={pageSize}
+          activePage={pageNumber}
           center
-          total={pagination?.totalPages}
+          total={totalPages}
           onChange={handleOnChangePage}
         />
       ) : null}

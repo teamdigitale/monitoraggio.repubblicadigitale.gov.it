@@ -1,7 +1,8 @@
-import { Button, FormGroup, Icon } from 'design-react-kit';
-import React, { useEffect } from 'react';
+import { Button, FormGroup, Icon, Label } from 'design-react-kit';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Form, Input } from '../../../components';
 import DeleteEntityModal from '../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 import CommentSection from '../../../components/Comments/commentSection';
 import SectionDetail from '../../../components/DocumentDetail/sectionDetail';
@@ -16,7 +17,8 @@ import {
 } from '../../../redux/features/forum/forumSlice';
 import {
   ActionTracker,
-  DeleteItem, DocumentRate,
+  DeleteItem,
+  DocumentRate,
   GetItemDetail,
 } from '../../../redux/features/forum/forumThunk';
 import {
@@ -37,6 +39,7 @@ const DocumentsDetails = () => {
   const { id } = useParams();
   const userId = useAppSelector(selectUser)?.id;
   const commentsList = useAppSelector(selectCommentsList);
+  const [usefullStatus, setUsefullStatus] = useState<number>(0);
 
   useEffect(() => {
     if (userId && id) {
@@ -44,7 +47,15 @@ const DocumentsDetails = () => {
       dispatch(GetCommentsList(id, userId));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId, id]);
+  }, [userId, id, usefullStatus]);
+
+  useEffect(() => {
+    if (
+      docDetails?.usefull_status &&
+      docDetails?.usefull_status !== usefullStatus
+    )
+      setUsefullStatus(docDetails?.usefull_status);
+  }, [docDetails?.usefull_status]);
 
   useEffect(() => {
     if (docDetails?.id && docDetails?.title) {
@@ -68,16 +79,19 @@ const DocumentsDetails = () => {
 
   const handleRate = async (rate: 1 | 2) => {
     if (id && rate) {
+      setUsefullStatus(rate);
       await dispatch(DocumentRate(id, rate));
-      dispatch(ActionTracker({
-        target: 'tnd',
-        action_type: 'RATING',
-        event_type: 'DOCUMENTI',
-        event_value: rate === 1 ? 'Y' : 'N',
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        category: docDetails?.category,
-      }));
+      dispatch(
+        ActionTracker({
+          target: 'tnd',
+          action_type: 'RATING',
+          event_type: 'DOCUMENTI',
+          event_value: rate === 1 ? 'Y' : 'N',
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          category: docDetails?.category,
+        })
+      );
     }
   };
 
@@ -152,17 +166,38 @@ const DocumentsDetails = () => {
             Ti è stato utile?
           </span>
           <div className='d-flex'>
-            <FormGroup check className='d-flex align-items-center mt-0 pr-2'>
-              {/*
-                            <Input name='rate' type='radio' id='si' />
-              <label className='mb-0'>SI</label>
-
-              <Input name='rate' type='radio' id='no' />
-              <label className='mb-0'>NO</label>
-              */}
-              <Button onClick={() => handleRate(1)}>Si</Button>
-              <Button onClick={() => handleRate(2)}>No</Button>
-            </FormGroup>
+            <Form id='form-utilità' legend='Form ti è stato utile?'>
+              <FormGroup check className='d-flex align-items-center mt-0 pr-2'>
+                <div className='d-flex align-items-center mr-3'>
+                  <Input
+                    name='rate'
+                    type='radio'
+                    id={`rate-si`}
+                    checked={usefullStatus === 1}
+                    onInputChange={() => handleRate(1)}
+                    aria-labelledby={`rate-siDescription`}
+                    withLabel={false}
+                  />
+                  <Label check id={`rate-siDescription`}>
+                    si
+                  </Label>
+                </div>
+                <div className='d-flex align-items-center'>
+                  <Input
+                    name='rate'
+                    type='radio'
+                    id={`rate-no`}
+                    checked={usefullStatus === 2}
+                    onInputChange={() => handleRate(2)}
+                    aria-labelledby={`rate-noDescription`}
+                    withLabel={false}
+                  />
+                  <Label check id={`rate-noDescription`}>
+                    no
+                  </Label>
+                </div>
+              </FormGroup>
+            </Form>
           </div>
         </div>
         <span

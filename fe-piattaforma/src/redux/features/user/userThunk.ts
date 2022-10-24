@@ -271,7 +271,7 @@ export const GetNotificationsByUser =
         const body = {
           ...filters,
           page: [{ value: Math.max(0, pagination.pageNumber - 1) }],
-          items_per_page: [{ value: pagination.pageSize }],
+          items_per_page: [{ value: 9 }],
           ...forcedFilters,
         };
 
@@ -303,11 +303,11 @@ const ReadNotificationAction = {
 };
 
 export const ReadNotification =
-  (notificationId: string) => async (dispatch: Dispatch) => {
+  (notificationsIds: string[]) => async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...ReadNotificationAction });
-      await proxyCall(`/notification/${notificationId}/read`, 'POST', {});
+      await proxyCall(`/notification/${notificationsIds.join(';')}/read`, 'POST', {});
     } catch (error) {
       console.log('ReadNotification error', error);
     } finally {
@@ -320,11 +320,11 @@ const DeleteNotificationAction = {
 };
 
 export const DeleteNotification =
-  (notificationId: string) => async (dispatch: Dispatch) => {
+  (notificationsIds: string[]) => async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...DeleteNotificationAction });
-      await proxyCall(`/notification/${notificationId}/delete`, 'POST', {});
+      await proxyCall(`/notification/${notificationsIds.join(';')}/delete`, 'POST', {});
     } catch (error) {
       console.log('DeleteNotification error', error);
     } finally {

@@ -88,7 +88,7 @@ const Notification: React.FC<NotificationI> = (props) => {
   }, [usersAnagraphic]);
 
   const onDelete = async () => {
-    id && (await dispatch(DeleteNotification(id)));
+    id && (await dispatch(DeleteNotification([id])));
     dispatch(GetNotificationsByUser());
   };
 
