@@ -28,4 +28,6 @@ public class SceltaProfiloParam  implements Serializable {
 		
 	// NB: idProgetto=null SSE ruolo utenteLoggato = {DTD, DSCU, ruolo_custom, REG, DEG}
 	private Long idProgetto;
+
+	private Long idEnte;
 }

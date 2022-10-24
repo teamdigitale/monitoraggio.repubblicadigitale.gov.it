@@ -1,5 +1,6 @@
 package it.pa.repdgt.surveymgmt.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,9 @@ import it.pa.repdgt.surveymgmt.repository.SedeRepository;
 @Service
 public class SedeService {
 	@Autowired
-	private EnteSedeProgettoFacilitatoreService enteSedeProgettoFacilitatoreService;
-	@Autowired
 	private SedeRepository sedeRepository;
+	@Autowired
+	private ServizioSqlService servizioSqlService;
 
 	@LogMethod
 	@LogExecutionTime
@@ -37,11 +38,11 @@ public class SedeService {
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsSedi;
 		if(filtro.getIdsSedi() == null) {
-			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto());
+			idsSedi = this.servizioSqlService.getIdsSediFacilitatoreConServiziAndCittadiniCensitiByCodFiscaleAndIdProgettoAndIdEnte(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto(), cittadiniPaginatiParam.getIdEnte());
 		} else {
 			idsSedi = filtro.getIdsSedi();
 		}
 		
-		return this.sedeRepository.findAllSediFiltrate(criterioRicerca, "%" + criterioRicerca + "%", idsSedi);
+		return idsSedi.isEmpty()? new ArrayList<>(): this.sedeRepository.findAllSediFiltrate(criterioRicerca, "%" + criterioRicerca + "%", idsSedi);
 	}
 }

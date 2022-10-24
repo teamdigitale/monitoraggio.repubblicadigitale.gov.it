@@ -96,8 +96,8 @@ public class RuoloService {
 
 	@LogExecutionTime
 	@LogMethod
-	public boolean existsRuoloByNome(String nomeRuolo) {
-		return this.ruoloRepository.findById(nomeRuolo).isPresent();
+	public boolean existsRuoloByNomeOrCodice(String nomeRuolo) {
+		return this.ruoloRepository.findByNomeOrCodice(nomeRuolo).isPresent();
 	}
 	
 	@LogExecutionTime
@@ -121,7 +121,7 @@ public class RuoloService {
 	public void creaNuovoRuolo(RuoloRequest nuovoRuoloRequest) {
 		String nomeRuolo = nuovoRuoloRequest.getNomeRuolo();
 		String messaggioErrore = String.format("Ruolo con nome = %s già presente", nomeRuolo);
-		if(this.existsRuoloByNome(nomeRuolo)) {
+		if(this.existsRuoloByNomeOrCodice(nomeRuolo)) {
 			throw new RuoloException(messaggioErrore, CodiceErroreEnum.R01);
 		}
 		RuoloEntity nuovoRuolo = new RuoloEntity();

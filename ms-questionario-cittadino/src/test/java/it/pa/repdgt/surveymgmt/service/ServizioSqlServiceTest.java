@@ -34,7 +34,6 @@ import it.pa.repdgt.surveymgmt.exception.QuestionarioTemplateException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.param.FiltroListaServiziParam;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneSedeParam;
 import it.pa.repdgt.surveymgmt.projection.EnteProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
 import it.pa.repdgt.surveymgmt.repository.ServizioSqlRepository;
@@ -75,7 +74,7 @@ public class ServizioSqlServiceTest {
 	EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatoreEntity;
 	RuoloEntity ruolo;
 	List<RuoloEntity> listaRuoli;
-	ProfilazioneSedeParam profilazioneSedeParam;
+	SceltaProfiloParam profilazioneSedeParam;
 	
 	@BeforeEach
 	public void setUp() {
@@ -96,6 +95,7 @@ public class ServizioSqlServiceTest {
 		sceltaprofiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
 		sceltaprofiloParam.setIdProgetto(1L);
 		sceltaprofiloParam.setIdProgramma(1L);
+		sceltaprofiloParam.setIdEnte(1000L);
 		sceltaProfiloParamLightProgramma = new SceltaProfiloParamLightProgramma();
 		sceltaProfiloParamLightProgramma.setIdProgetto(1L);
 		sceltaProfiloParamLightProgramma.setIdProgramma(1L);
@@ -124,7 +124,7 @@ public class ServizioSqlServiceTest {
 		ruolo.setCodice("FAC");
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add(ruolo);
-		profilazioneSedeParam = new ProfilazioneSedeParam();
+		profilazioneSedeParam = new SceltaProfiloParam();
 		profilazioneSedeParam.setCfUtenteLoggato("CFUTENTE");
 		profilazioneSedeParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
 		profilazioneSedeParam.setIdEnte(1L);
@@ -181,6 +181,7 @@ public class ServizioSqlServiceTest {
 				filtroListaServizi.getCriterioRicerca(),
 				Arrays.asList(sceltaprofiloParam.getIdProgramma().toString()),
 				Arrays.asList(sceltaprofiloParam.getIdProgetto().toString()),
+				sceltaprofiloParam.getIdEnte(),
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio(),
 				sceltaprofiloParam.getCfUtenteLoggato()
@@ -189,6 +190,7 @@ public class ServizioSqlServiceTest {
 				filtroListaServizi.getCriterioRicerca(),
 				Arrays.asList(sceltaprofiloParam.getIdProgramma().toString()),
 				Arrays.asList(sceltaprofiloParam.getIdProgetto().toString()),
+				sceltaprofiloParam.getIdEnte(),
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio(),
 				sceltaprofiloParam.getCfUtenteLoggato());
@@ -235,6 +237,7 @@ public class ServizioSqlServiceTest {
 				filtroListaServizi.getCriterioRicerca(),
 				Arrays.asList(sceltaprofiloParam.getIdProgramma().toString()),
 				Arrays.asList(sceltaprofiloParam.getIdProgetto().toString()),
+				sceltaprofiloParam.getIdEnte(),
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio()
 			)).thenReturn(listaServizi);
@@ -242,6 +245,7 @@ public class ServizioSqlServiceTest {
 				filtroListaServizi.getCriterioRicerca(),
 				Arrays.asList(sceltaprofiloParam.getIdProgramma().toString()),
 				Arrays.asList(sceltaprofiloParam.getIdProgetto().toString()),
+				sceltaprofiloParam.getIdEnte(),
 				filtroListaServizi.getTipologieServizi(),
 				filtroListaServizi.getStatiServizio());
 		assertThat(risultato.size()).isEqualTo(listaServizi.size());

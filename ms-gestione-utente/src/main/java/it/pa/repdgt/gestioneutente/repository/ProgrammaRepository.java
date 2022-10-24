@@ -14,6 +14,9 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 
 	@Query(value = "SELECT distinct rdg.ID_PROGRAMMA "
 			+ "FROM referente_delegati_gestore_programma rdg "
+			+ "INNER JOIN programma p "
+			+ "ON rdg.id_programma = p.id "
+			+ "AND rdg.id_ente = p.id_ente_gestore_programma"
 			+ "	WHERE rdg.CF_UTENTE = :cfUtente "
 			+ " 	AND rdg.CODICE_RUOLO = :ruolo ",
 			nativeQuery = true)

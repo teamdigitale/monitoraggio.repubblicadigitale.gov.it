@@ -43,7 +43,7 @@ public class UtenteRestApiIntegrationTest extends AppTests{
 		nuovoUtenteRequest.setNome("Luis");
 		nuovoUtenteRequest.setCognome("Figo");
 		nuovoUtenteRequest.setRuolo("DTD");
-		nuovoUtenteRequest.setEmail("luis.figo@email.it");
+		nuovoUtenteRequest.setEmail("luis1.figo@email.it");
 		nuovoUtenteRequest.setTelefono("3335559988");
 		nuovoUtenteRequest.setMansione("mansione");
 		nuovoUtenteRequest.setTipoContratto("tipo contratto");
@@ -170,7 +170,7 @@ public class UtenteRestApiIntegrationTest extends AppTests{
 	@Test
 	@DisplayName(value = "getSchedaUtenteByIdUtenteTest - OK")
 	public void getSchedaUtenteByIdUtenteTest() {
-		String idUtente = "2";
+		String idUtente = "1";
 		SceltaProfiloParam profilazioneRequest = new SceltaProfiloParam();
 		profilazioneRequest.setCfUtenteLoggato("SMTPAL67R31F111X");
 		profilazioneRequest.setCodiceRuoloUtenteLoggato("DTD");

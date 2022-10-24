@@ -102,7 +102,7 @@ public class CittadinoService {
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsSedi;
 		if(filtro.getIdsSedi() == null) {
-			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto());
+			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnte(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto(), cittadiniPaginatiParam.getIdEnte() );
 		} else {
 			idsSedi = filtro.getIdsSedi();
 		}
@@ -123,7 +123,7 @@ public class CittadinoService {
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsSedi;
 		if(filtro.getIdsSedi() == null) {
-			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto());
+			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnte(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto(), cittadiniPaginatiParam.getIdEnte());
 		} else {
 			idsSedi = filtro.getIdsSedi();
 		}
@@ -142,7 +142,7 @@ public class CittadinoService {
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsSedi;
 		if(filtro.getIdsSedi() == null) {
-			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgetto(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto());
+			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnte(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto(), cittadiniPaginatiParam.getIdEnte());
 		} else {
 			idsSedi = filtro.getIdsSedi();
 		}
@@ -191,7 +191,7 @@ public class CittadinoService {
 			dettaglioServizioSchedaCittadino.setNomeCompletoFacilitatore(nomeCompletoFacilitatore);
 			dettaglioServizioSchedaCittadino.setIdQuestionarioCompilato(record.getIdQuestionarioCompilato());
 			dettaglioServizioSchedaCittadino.setStatoQuestionario(record.getStatoQuestionarioCompilato());
-			dettaglioServizioSchedaCittadino.setAssociatoAUtente(this.isAssociatoAUtente(profilazione, record.getCodiceFiscaleFacilitatore(), record.getIdProgetto()));
+			dettaglioServizioSchedaCittadino.setAssociatoAUtente(this.isAssociatoAUtente(profilazione, record.getCodiceFiscaleFacilitatore(), record.getIdProgetto(), record.getIdEnte()));
 			return dettaglioServizioSchedaCittadino;
 		}).collect(Collectors.toList());
 		
@@ -201,20 +201,17 @@ public class CittadinoService {
 		return schedaCittadino;
 	}
 
-	public Boolean isAssociatoAUtente(SceltaProfiloParam profilazione, String codiceFiscaleFacilitatore, Long idProgetto) {
+	public Boolean isAssociatoAUtente(SceltaProfiloParam profilazione, String codiceFiscaleFacilitatore, Long idProgetto, Long idEnte) {
 		String ruoloUtenteLoggato = profilazione.getCodiceRuoloUtenteLoggato();
 		String codiceFiscaleUtenteLoggato = profilazione.getCfUtenteLoggato();
 
 		switch (ruoloUtenteLoggato) {
 		case "FAC":
-			//controllo se il codice fiscale dell'utente loggato è uguale al codice fiscale del facilitatore
-			if(codiceFiscaleUtenteLoggato.equals(codiceFiscaleFacilitatore) && profilazione.getIdProgetto().equals(idProgetto)) {
-				return true;
-			}
-			return false;
 		case "VOL":
-			//controllo se il codice fiscale dell'utente loggato è uguale al codice fiscale del volontario
-			if(codiceFiscaleUtenteLoggato.equals(codiceFiscaleFacilitatore) && profilazione.getIdProgetto().equals(idProgetto)) {
+			//controllo se il codice fiscale dell'utente loggato è uguale al codice fiscale del facilitatore
+			if(codiceFiscaleUtenteLoggato.equals(codiceFiscaleFacilitatore) && 
+					profilazione.getIdProgetto().equals(idProgetto) &&
+					profilazione.getIdEnte().equals(idEnte)) {
 				return true;
 			}
 			return false;
@@ -260,12 +257,18 @@ public class CittadinoService {
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void aggiornaCittadino(Long id, CittadinoRequest cittadinoRequest) {
+		String errorMessage = null;
 		if(!this.cittadinoRepository.findById(id).isPresent()) {
-			String messaggioErrore = String.format("Impossibile aggiornare il cittadino. Cittadino con id=%s non presente", id);
-			throw new CittadinoException(messaggioErrore, CodiceErroreEnum.CIT02);
+			errorMessage = String.format("Impossibile aggiornare il cittadino. Cittadino con id=%s non presente", id);
+			throw new CittadinoException(errorMessage, CodiceErroreEnum.CIT02);
 		}
 		CittadinoEntity cittadinoFetchDb = this.cittadinoRepository.findById(id).get();
 		
+		if(!cittadinoRepository.findCittadinoByCodiceFiscaleOrNumeroDocumentoAndIdDiverso(cittadinoRequest.getCodiceFiscale(), cittadinoRequest.getNumeroDocumento(), id).isEmpty()) {
+			errorMessage = String.format("Impossibile aggiornare il cittadino. Cittadino con codice fiscale o numero documento già esistente");
+			throw new CittadinoException(errorMessage, CodiceErroreEnum.U07);
+		}
+
 		CittadinoEntity cittadinoEntity = this.cittadinoMapper.toEntityFrom(cittadinoRequest);
 		cittadinoEntity.setId(id);
 		cittadinoEntity.setDataOraCreazione(cittadinoFetchDb.getDataOraCreazione());

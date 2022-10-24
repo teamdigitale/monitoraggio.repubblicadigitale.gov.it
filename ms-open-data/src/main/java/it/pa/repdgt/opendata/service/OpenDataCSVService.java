@@ -48,11 +48,11 @@ public class OpenDataCSVService {
 						Iterator<JsonNode> it = propertiesNode.elements();
 						while(it.hasNext()) {
 							JsonNode domandaRisposta = (JsonNode) it.next();
-							if(domandaRisposta.toString().contains("24")) {
+							if(domandaRisposta.toString().contains("25")) {
 								String risposta = domandaRisposta.toString().split(":")[1].replace("[", "").replace("]", "").replace("'", "").replace("}", "").replace("\"", "");
 								openDataCittadinoCSVBean.setCompetenzeTrattate(risposta);
 							}
-							if(domandaRisposta.toString().contains("25")) {
+							if(domandaRisposta.toString().contains("27")) {
 								String risposta = domandaRisposta.toString().split(":")[1].replace("[", "").replace("]", "").replace("'", "").replace("}", "").replace("\"", "");
 								openDataCittadinoCSVBean.setAmbitoServizi(risposta);
 							}

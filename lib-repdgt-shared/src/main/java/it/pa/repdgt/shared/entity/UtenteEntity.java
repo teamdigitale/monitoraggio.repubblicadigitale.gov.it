@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -70,6 +72,9 @@ public class UtenteEntity implements Serializable {
 		inverseJoinColumns = @JoinColumn(name = "RUOLO_CODICE", referencedColumnName = "CODICE")
 	)
 	private List<RuoloEntity> ruoli = new ArrayList<>();
+	
+	@OneToOne(mappedBy = "utente", targetEntity = IntegrazioniUtenteEntity.class, cascade = CascadeType.ALL)
+	private IntegrazioniUtenteEntity integrazioneUtente;
 	
 	@Column(name = "STATO", nullable = false)
 	private String stato;
