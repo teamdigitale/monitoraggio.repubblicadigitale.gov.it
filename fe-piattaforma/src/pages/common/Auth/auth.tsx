@@ -73,7 +73,7 @@ const Auth: React.FC<withFormHandlerProps> = ({
       if (res) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        setSessionValues('auth', res['id_token']);
+        setSessionValues('auth', res);
         createContext();
       } else {
         cognitoRedirect();

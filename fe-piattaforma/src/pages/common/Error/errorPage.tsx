@@ -29,7 +29,7 @@ const ErrorPage = () => {
 
   const handleGetErrorMessage = async () => {
     const error = await getErrorMessage(errorCode);
-    if (error) setErrorMessage(error);
+    if (error?.message) setErrorMessage(error.message);
   };
 
   useEffect(() => {

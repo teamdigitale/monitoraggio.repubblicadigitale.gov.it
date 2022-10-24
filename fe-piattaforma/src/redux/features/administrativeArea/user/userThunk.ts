@@ -210,7 +210,7 @@ export const UpdateUser =
       const res = await API.put(`/utente/${idUtente}`, body);
 
       if (res) {
-        console.log(res);
+        return true;
       }
     } catch (error: any) {
       console.log(error);

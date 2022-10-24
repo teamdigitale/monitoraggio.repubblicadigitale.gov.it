@@ -39,10 +39,9 @@ export const statusBgColor = (status: string) => {
       return 'analogue-2-bg-a2';
     case statusTypes.NOT_FILLED_OUT:
     case statusTypes.INACTIVE:
+    case statusTypes.NOT_SENT:
     case 'inactive':
       return 'neutral-1-bg-a1';
-    case statusTypes.NOT_SENT:
-      return 'light-grey-bg';
     case statusTypes.TERMINATED:
       return 'neutral-2-bg-b5';
     case statusTypes.ACTIVABLE:
@@ -66,9 +65,9 @@ export const statusColor = (status: string) => {
       return 'primary-color-a9';
     case statusTypes.NOT_FILLED_OUT:
     case statusTypes.INACTIVE:
-    case 'inactive':
     case statusTypes.NOT_SENT:
-      return 'text-white';
+    case 'inactive':
+      return 'not-active-chip';
     case statusTypes.TERMINATED:
       return 'text-white';
     case statusTypes.ACTIVABLE:
@@ -106,7 +105,6 @@ const StatusChip: React.FC<StatusChipI> = (props) => {
               device.mediaIsPhone &&
                 status?.length >= 11 &&
                 'chip-label__chip-height',
-              status === 'NON ATTIVO' && 'not-active-chip'
             )}
           >
             {status?.toUpperCase().replace('_', ' ')}

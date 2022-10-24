@@ -8,6 +8,7 @@ import {
 } from '../../../../../components/DropdownFilter/dropdownFilter';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
+  resetSezioniQuestionarioTemplateIstanze,
   selectEntityFilters,
   selectEntityFiltersOptions,
   selectServices,
@@ -97,6 +98,7 @@ const CitizensList: React.FC = () => {
 
   useEffect(() => {
     dispatch(resetCompilingSurveyForm());
+    dispatch(resetSezioniQuestionarioTemplateIstanze());
   }, []);
   const [alreadySearched, setAlreadySearched] = useState(false);
 

@@ -84,6 +84,14 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
     dispatch(GetServicesDetail(serviceId));
   }, []);
 
+  const jsonParseValues = (value: string) => {
+    try {
+      return JSON.parse(value);
+    } catch (error) {
+      return {};
+    }
+  };
+
   const getValuesSurvey = (section: {
     id: string;
     properties: string[] | { [key: string]: string[] }[];
@@ -105,7 +113,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
           };
         });
       } else if (typeof value === 'string') {
-        const val = JSON.parse(decodeURI(value).replaceAll("'", '"'));
+        const val = jsonParseValues(decodeURI(value).replaceAll("'", '"'));
         Object.keys(val).map((id: string) => {
           values = {
             ...values,
@@ -161,73 +169,83 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
           } = formatAndParseJsonString(
             compiledSurveyCitizen?.[activeSection]?.domandaRisposta?.json
           );
-          const values: { [key: string]: string } =
-            getValuesSurvey(sectionParsed);
-          Object.keys(newForm).map((key: string) => {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            newForm[key].value = values[key]
-              ?.toString()
-              .replaceAll(separator, ',');
-            if (activeSection === 1 || activeSection === 2) {
-              newForm[key].disabled = true;
-            }
-            if(key === '3'){
-              newForm[key].regex = RegexpType.FISCAL_CODE;
-            }
-            if(key === '4' && (newForm[key].value === 'true' || newForm[key].value === 'Codice fiscale non disponibile')){
-              if(newForm[key].value === 'true') newForm[key].value = 'Codice fiscale non disponibile';
-              newForm['3'].required = false;
-              newForm['5'].required = true;
-              newForm['6'].required = true;
-            }
-            if (key === '18') {
-              newForm[key].options = newForm[key]?.options?.map(
-                (opt: OptionType) => ({
-                  label: opt.label,
-                  value: opt.value.toString().toUpperCase(),
-                })
-              );
-              newForm[key].value === '$consenso'
-                ? (newForm[key].options = newForm[key].options?.filter(
-                    (opt: OptionType) => opt.value !== 'ONLINE'
-                  ))
-                : newForm[key].value === 'ONLINE'
-                ? (newForm[key].options = newForm[key].options?.filter(
-                    (opt: OptionType) => opt.value === 'ONLINE'
-                  ))
-                : null;
-              newForm[key].disabled = newForm[key].value !== '$consenso';
-              newForm[key].valid =
-                newForm[key].value === '$consenso'
-                  ? false
-                  : newForm[key].valid || true;
-              if (newForm[key].value === '$consenso') newForm[key].value = '';
-            } else if (key === '19') {
-              if (newForm[key].value === '$dataConsenso' || newForm[key].value === '') {
-                newForm[key].value = '';
-              } else {
-                newForm[key].value =
-                  moment(values[key]?.toString(), 'DD-MM-YYYY').format(
-                    'YYYY-MM-DD'
-                  ) || '';
-                newForm[key].disabled = true;
-              }
-            } else if (key === '25' || key === '26') {
-              // multiple values
+          if (sectionParsed) {
+            const values: { [key: string]: string } =
+              getValuesSurvey(sectionParsed);
+            Object.keys(newForm).map((key: string) => {
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
-              newForm[key].value = (values[key] || ['']).map((e: string) =>
-                e.replaceAll(separator, ',')
-              );
-            } else if (Array.isArray(values[key])) {
-              newForm[key].value = (values[key] || [''])
+              newForm[key].value = values[key]
+                ?.toString()
+                .replaceAll(separator, ',');
+              if (activeSection === 1 || activeSection === 2) {
+                newForm[key].disabled = true;
+              }
+              if (key === '3') {
+                newForm[key].regex = RegexpType.FISCAL_CODE;
+              }
+              if (
+                key === '4' &&
+                (newForm[key].value === 'true' ||
+                  newForm[key].value === 'Codice fiscale non disponibile')
+              ) {
+                if (newForm[key].value === 'true')
+                  newForm[key].value = 'Codice fiscale non disponibile';
+                newForm['3'].required = false;
+                newForm['5'].required = true;
+                newForm['6'].required = true;
+              }
+              if (key === '18') {
+                newForm[key].options = newForm[key]?.options?.map(
+                  (opt: OptionType) => ({
+                    label: opt.label,
+                    value: opt.value.toString().toUpperCase(),
+                  })
+                );
+                newForm[key].value === '$consenso'
+                  ? (newForm[key].options = newForm[key].options?.filter(
+                      (opt: OptionType) => opt.value !== 'ONLINE'
+                    ))
+                  : newForm[key].value === 'ONLINE'
+                  ? (newForm[key].options = newForm[key].options?.filter(
+                      (opt: OptionType) => opt.value === 'ONLINE'
+                    ))
+                  : null;
+                newForm[key].disabled = newForm[key].value !== '$consenso';
+                newForm[key].valid =
+                  newForm[key].value === '$consenso'
+                    ? false
+                    : newForm[key].valid || true;
+                if (newForm[key].value === '$consenso') newForm[key].value = '';
+              } else if (key === '19') {
+                if (
+                  newForm[key].value === '$dataConsenso' ||
+                  newForm[key].value === ''
+                ) {
+                  newForm[key].value = '';
+                } else {
+                  newForm[key].value =
+                    moment(values[key]?.toString(), 'DD-MM-YYYY').format(
+                      'YYYY-MM-DD'
+                    ) || '';
+                  newForm[key].disabled = true;
+                }
+              } else if (key === '25' || key === '26') {
+                // multiple values
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
-                .map((e: string) => e.replaceAll(separator, ','))
-                .join(separator);
-            }
-          });
+                newForm[key].value = (values[key] || ['']).map((e: string) =>
+                  e.replaceAll(separator, ',')
+                );
+              } else if (Array.isArray(values[key])) {
+                newForm[key].value = (values[key] || [''])
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  .map((e: string) => e.replaceAll(separator, ','))
+                  .join(separator);
+              }
+            });
+          }
         }
         updateForm(
           {

@@ -17,6 +17,7 @@ export interface NotifyI {
   iconPadding?: boolean;
   iconClass?: string;
   unread?: boolean;
+  title?: string;
 }
 
 export const defaultNotify: NotifyI = {
