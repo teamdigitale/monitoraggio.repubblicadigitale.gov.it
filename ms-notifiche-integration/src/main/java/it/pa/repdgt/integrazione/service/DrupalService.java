@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Map;
@@ -66,8 +64,13 @@ public class DrupalService {
 		try {
 			final HttpHeaders forwardHeaders = this.getHeadersHttp(param, contentType);
 			if(param.getIsUploadFile() != null && param.getIsUploadFile() == Boolean.TRUE) {
-				// Decodifico file Base64
-				byte[] bytesFileToUpload = Base64.getDecoder().decode(param.getFileBase64ToUpload());
+				byte[] bytesFileToUpload = null;
+				try {
+					// Decodifico file Base64
+					bytesFileToUpload = Base64.getDecoder().decode(param.getFileBase64ToUpload());
+				} catch (Exception ex) {
+					throw new DrupalException("Errore decodifica file base64. " + ex.getMessage(), ex, CodiceErroreEnum.G01);
+				}
 				
 				// Creazione file a partire dall'array di byte
 				nomeFile = param.getFilenameToUpload() == null? "tmpFile": param.getFilenameToUpload();
@@ -90,11 +93,12 @@ public class DrupalService {
 		        log.info("Caricamento file '{}' in corso...", nomeFile);
 		        try {
 		        	responseDrupal = this.restTemplate.exchange(urlDaChiamare, metodoHttp, requestEntity, Map.class);
-		        } catch (Exception e) {
-		        	String rispostaDrupal = e.getMessage().contains(":")? e.getMessage().split(":")[1]: e.getMessage();
+		        } catch (Exception ex) {
+		        	String errorMessageDrupal = ex.getMessage().contains(":")? ex.getMessage().replaceFirst(":", "_REQ_DRUPAL_"): ex.getMessage();
+					String rispostaDrupal = errorMessageDrupal.contains("_REQ_DRUPAL_")? errorMessageDrupal.split("_REQ_DRUPAL_")[0]: errorMessageDrupal;
 		        	String messaggioErrore = String.format("%s", rispostaDrupal);
 		        	
-					throw new DrupalException(messaggioErrore, e, CodiceErroreEnum.D01);
+					throw new DrupalException(messaggioErrore, ex, CodiceErroreEnum.D01);
 				}
 			} else {
 				String forwardBody = param.getBodyRichiestaHttp();
@@ -104,13 +108,18 @@ public class DrupalService {
 				
 				log.info("Richiesta Servizio Drupal: {} {} headersRichiesta={} corpoRichiesta={}", 
 						metodoHttp, urlDaChiamare, forwardHeaders, forwardBody);
-				responseDrupal = this.restTemplate.exchange(urlDaChiamare, metodoHttp, forwardRequestEntity, Map.class);
+				 try {
+					 	responseDrupal = this.restTemplate.exchange(urlDaChiamare, metodoHttp, forwardRequestEntity, Map.class);
+				  } catch (Exception ex) {
+		        	String errorMessageDrupal = ex.getMessage().contains(":")? ex.getMessage().replaceFirst(":", "_REQ_DRUPAL_"): ex.getMessage();
+					String rispostaDrupal = errorMessageDrupal.contains("_REQ_DRUPAL_")? errorMessageDrupal.split("_REQ_DRUPAL_")[0]: errorMessageDrupal;
+		        	String messaggioErrore = String.format("%s", rispostaDrupal);
+		        	
+					throw new DrupalException(messaggioErrore, ex, CodiceErroreEnum.D01);
+				}
 			}
-		
 		} catch (Exception ex) {
-			String rispostaDrupal = ex.getMessage().contains(":")? ex.getMessage().split(":")[1]: ex.getMessage();
-        	String messaggioErrore = String.format("%s", rispostaDrupal);
-			throw new DrupalException(messaggioErrore, ex, CodiceErroreEnum.D01);
+			throw new DrupalException(ex.getMessage(), ex, CodiceErroreEnum.D01);
 		} finally {
 			// Cancellazione file creato in precedenza
 			if(param.getIsUploadFile() != null && param.getIsUploadFile() == Boolean.TRUE) {
@@ -121,7 +130,7 @@ public class DrupalService {
 					log.error("impossibile effettuare fileOutputStream.close --> {}", e);;
 				}
 				boolean isFileCancellato = file.delete();
-				log.info("file '{}' cancellato?{}", nomeFile, isFileCancellato);
+				log.info("file '{}' cancellato? {}", nomeFile, isFileCancellato);
 			}
 		}
 
