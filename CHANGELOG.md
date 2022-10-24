@@ -1,5 +1,20 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.3.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.2.2...1.3.0) (2022-10-24)
+
+
+### Features
+
+* **fe-piattaforma:** fe updates 10242022 ([7c60257](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7c60257599819565e1de483952c256852ad09f62))
+* **be:** rilascio wave3 ([b27152f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b27152fef3b7abf200746e40694cbf7bf91365d2))
+* **fe-piattaforma:** fe updates 10242022 ([b571f2c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b571f2c388715fe9e99f723271b217dda96cd8cc))
+* **drupal:** update project to 1.1.1 version ([40c1114](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/40c1114c6ec309b1debd65407a7546d08279ff13))
+* **drupal:** update project to 1.1.1 version ([f3c50a7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f3c50a76feb02b9d5293d0bf6bae93719928dad8))
+* **drupal:** deploy scripts added ([d665d88](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d665d884097dac9fd62ae1ca6e36dfe0643ba6c2))
+* **drupal:** deploy scripts added ([2275ec4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2275ec49d66d281180189220f51fcc47c98855e9))
+* **drupal:** initial project commit ([834a550](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/834a550b4af45c4aa8874cde6c461d8873159acb))
+* **drupal:** initial project commit ([05c65b2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/05c65b232d82a34aca02719b56a7911f95e72edf))
+
 ## [1.2.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.2.1...1.2.2) (2022-09-30)
 
 
