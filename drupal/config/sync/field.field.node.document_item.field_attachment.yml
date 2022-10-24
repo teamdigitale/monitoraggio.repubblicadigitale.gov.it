@@ -1,12 +1,11 @@
-uuid: 6bd35cb0-0725-4dc2-9a21-2a266c30fb15
+uuid: 7cad80d6-ff7f-468f-a37d-7ca54db3fccb
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_attachment
+    - media.type.document
     - node.type.document_item
-  module:
-    - file
 id: node.document_item.field_attachment
 field_name: field_attachment
 entity_type: node
@@ -18,10 +17,13 @@ translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:file'
-  handler_settings: {  }
-  file_directory: '[date:custom:Y]-[date:custom:m]'
-  file_extensions: 'txt rtf odt zip exe docx doc ppt pptx pdf jpg png gif xls xlsx csv mpg wmv'
-  max_filesize: ''
-  description_field: false
-field_type: file
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      document: document
+    sort:
+      field: name
+      direction: ASC
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,13 @@
+diff --git a/src/Entity/CronJob.php b/src/Entity/CronJob.php
+index ae721db..1047207 100644
+--- a/src/Entity/CronJob.php
++++ b/src/Entity/CronJob.php
+@@ -310,7 +310,7 @@ class CronJob extends ConfigEntityBase implements CronJobInterface {
+       $plugin = $this->getPlugin();
+ 
+       if (!$plugin || !$this->shouldRun($request_time, $force)) {
+-        $this->logger->warning('Cron job @job should not be running.', ['@job' => $this->label()]);
++        //$this->logger->warning('Cron job @job should not be running.', ['@job' => $this->label()]);
+         return FALSE;
+       }
+ 

@@ -2,8 +2,8 @@
 
 namespace Drupal\rest_api\Plugin\views\style;
 
-use Drupal\rest\Plugin\views\style\Serializer;
 use Drupal\Component\Serialization\Json;
+use Drupal\rest\Plugin\views\style\Serializer;
 
 /**
  * The style plugin for serialized output formats.
@@ -17,12 +17,14 @@ use Drupal\Component\Serialization\Json;
  *   Serializer component."), display_types = {"data"}
  * )
  */
-class CustomSerializer extends Serializer {
+class CustomSerializer extends Serializer
+{
 
   /**
    * {@inheritdoc}
    */
-  public function render(): array|string {
+  public function render(): array|string
+  {
     $rows = [];
     foreach ($this->view->result as $row_index => $row) {
       $this->view->row_index = $row_index;
@@ -33,11 +35,11 @@ class CustomSerializer extends Serializer {
 
     for ($i = 0; $i < count($rows); $i++) {
       foreach ($rows[$i] as $key => $value) {
-        if ($value == "[]") {
+        if ($value == '[]') {
           $rows[$i][$key] = [];
         }
 
-        if ($value == "0") {
+        if ($value == '0') {
           $rows[$i][$key] = 0;
         }
 
@@ -50,15 +52,16 @@ class CustomSerializer extends Serializer {
     $pager = $this->view->pager;
     if (!empty($pager) && $pager->getPluginId() === 'full') {
       $responseObj['pager'] = [
-        'current_page' => (int) json_decode($pager->getCurrentPage()),
-        'total_items' => (int) json_decode($pager->getItemsPerPage()),
-        'total_pages' => (int) json_decode($pager->getTotalItems()),
-        'items_per_page' => (int) json_decode($pager->getPagerTotal())
+        'current_page' => (int)json_decode($pager->getCurrentPage()),
+        'total_items' => (int)json_decode($pager->getTotalItems()),
+        'total_pages' => (int)json_decode($pager->getPagerTotal()),
+        'items_per_page' => (int)json_decode($pager->getItemsPerPage())
       ];
     }
 
     $returnValue['code'] = 200;
     $returnValue['result'] = true;
+    $returnValue['timestamp'] = time();
     $returnValue['data'] = [];
 
     if (!empty($rows)) {

@@ -9,9 +9,12 @@ dependencies:
     - field.field.node.document_item.field_comments
     - field.field.node.document_item.field_description
     - field.field.node.document_item.field_enable_comments
+    - field.field.node.document_item.field_entity
+    - field.field.node.document_item.field_entity_type
     - field.field.node.document_item.field_external_link
     - field.field.node.document_item.field_intervention
     - field.field.node.document_item.field_program
+    - field.field.node.document_item.field_program_label
     - node.type.document_item
   module:
     - user
@@ -41,7 +44,10 @@ hidden:
   field_comments: true
   field_description: true
   field_enable_comments: true
+  field_entity: true
+  field_entity_type: true
   field_external_link: true
   field_intervention: true
   field_program: true
+  field_program_label: true
   search_api_excerpt: true

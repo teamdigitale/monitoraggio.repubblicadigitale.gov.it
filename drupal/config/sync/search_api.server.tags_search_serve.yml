@@ -1,0 +1,14 @@
+uuid: f5cec91b-9842-42bb-ab0d-fe2f888467be
+langcode: en
+status: true
+dependencies:
+  module:
+    - search_api_db
+id: tags_search_serve
+name: 'Tags Search Server'
+description: 'Server to search tags those start with a given keyword'
+backend: search_api_db
+backend_config:
+  database: 'default:default'
+  min_chars: 2
+  matching: prefix

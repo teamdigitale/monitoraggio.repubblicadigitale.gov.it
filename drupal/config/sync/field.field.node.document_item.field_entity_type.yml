@@ -1,0 +1,19 @@
+uuid: 7e7b2753-cc0e-46a7-bd6e-10ff65ee4a43
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_entity_type
+    - node.type.document_item
+id: node.document_item.field_entity_type
+field_name: field_entity_type
+entity_type: node
+bundle: document_item
+label: 'Entity Type'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

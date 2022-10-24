@@ -1,0 +1,30 @@
+uuid: 68c920fa-b068-4eaf-86a9-f57a767749ef
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: usefull
+label: Usefull
+bundles:
+  - document_item
+entity_type: node
+global: false
+flag_short: Usefull
+flag_long: ''
+flag_message: ''
+unflag_short: Useless
+unflag_long: ''
+unflag_message: ''
+unflag_denied_text: ''
+weight: 0
+flag_type: 'entity:node'
+link_type: ajax_link
+flagTypeConfig:
+  show_in_links: {  }
+  show_as_field: true
+  show_on_form: false
+  show_contextual_link: false
+  extra_permissions:
+    owner: '0'
+linkTypeConfig: {  }

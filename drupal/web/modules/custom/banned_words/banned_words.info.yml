@@ -1,5 +1,5 @@
-name: 'Rep-Dig Banned Words'
+name: 'Banned Words'
 type: module
-description: 'Repubblica Digitale banned words'
+description: 'Module to configure the banned words in comments'
 core_version_requirement: ^9.0
-package: Accenture
+package: CMS

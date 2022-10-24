@@ -9,10 +9,10 @@ use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
 use Drupal\rest_api\Controller\Utility\ValidationController;
 use Exception;
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides a resource to get view modes by entity and bundle.
@@ -25,7 +25,6 @@ use Psr\Log\LoggerInterface;
  *   }
  * )
  */
-
 class CommunityItemCreateResourceApi extends ResourceBase
 {
   /**
@@ -52,13 +51,14 @@ class CommunityItemCreateResourceApi extends ResourceBase
    *   A current user instance.
    */
   public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    array $serializer_formats,
-    LoggerInterface $logger,
+    array                 $configuration,
+                          $plugin_id,
+                          $plugin_definition,
+    array                 $serializer_formats,
+    LoggerInterface       $logger,
     AccountProxyInterface $current_user
-  ) {
+  )
+  {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
 
     $this->currentUser = $current_user;
@@ -79,13 +79,35 @@ class CommunityItemCreateResourceApi extends ResourceBase
     );
   }
 
-  /**
-   * @param Request $req
-   * @return array
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   * @throws Exception
-   * @throws Exception
-   */
+  private const JSON_SCHEMA = [
+    'type' => 'object',
+    'properties' => [
+      'entity' => [
+        'type' => 'string'
+      ],
+      'entity_type' => [
+        'type' => 'string'
+      ],
+      'title' => [
+        'type' => 'string',
+        'minLength' => 1,
+        'required' => true
+      ],
+      'category' => [
+        'type' => 'integer',
+        'required' => true
+      ],
+      'description' => [
+        'type' => 'string',
+        'minLength' => 1,
+        'required' => true
+      ],
+      'tags' => [
+        'type' => 'array',
+        'required' => true
+      ]
+    ]
+  ];
 
   /**
    * Responds to POST requests.
@@ -97,19 +119,21 @@ class CommunityItemCreateResourceApi extends ResourceBase
   {
     try {
       $userId = $req->headers->get('user-id') ?? '';
-      if(empty($userId)){
-        throw new Exception('Missing user id in headers');
+      if (empty($userId)) {
+        throw new Exception('CICRA01: Missing user id in headers');
       }
 
       $body = json_decode($req->getContent());
-      ValidationController::validateRequestBody($body, 'community_item');
+      ValidationController::validateRequestBody($body, self::JSON_SCHEMA);
 
       $exists = TaxonomyController::termExistsById('community_categories', $body->category);
       if (!$exists) {
-        throw new Exception('Taxonomy term does not exists');
+        throw new Exception('CICRA02: Taxonomy term does not exists');
       }
 
       $nodeId = CommunityController::create(
+        $body->entity,
+        $body->entity_type,
         $userId,
         $body->title,
         $body->category,

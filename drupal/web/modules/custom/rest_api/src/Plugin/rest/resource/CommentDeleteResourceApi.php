@@ -2,16 +2,16 @@
 
 namespace Drupal\rest_api\Plugin\rest\resource;
 
+use Drupal\core\Controller\CommentController;
+use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\rest\Plugin\ResourceBase;
+use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
+use Drupal\rest_api\Controller\Utility\ValidationController;
 use Exception;
 use Psr\Log\LoggerInterface;
-use Drupal\rest\Plugin\ResourceBase;
-use Drupal\core\Controller\CommentController;
-use Symfony\Component\HttpFoundation\Request;
-use Drupal\Core\Session\AccountProxyInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Drupal\rest_api\Controller\Utility\ValidationController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides a resource to get view modes by entity and bundle.
@@ -24,7 +24,6 @@ use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
  *   }
  * )
  */
-
 class CommentDeleteResourceApi extends ResourceBase
 {
   /**
@@ -51,13 +50,14 @@ class CommentDeleteResourceApi extends ResourceBase
    *   A current user instance.
    */
   public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    array $serializer_formats,
-    LoggerInterface $logger,
+    array                 $configuration,
+                          $plugin_id,
+                          $plugin_definition,
+    array                 $serializer_formats,
+    LoggerInterface       $logger,
     AccountProxyInterface $current_user
-  ) {
+  )
+  {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
 
     $this->currentUser = $current_user;
@@ -78,6 +78,17 @@ class CommentDeleteResourceApi extends ResourceBase
     );
   }
 
+  private const JSON_SCHEMA = [
+    'type' => 'object',
+    'properties' => [
+      'reason' => [
+        'type' => 'string',
+        'minLength' => 1,
+        'required' => true
+      ]
+    ]
+  ];
+
   /**
    * Responds to POST requests.
    *
@@ -89,19 +100,25 @@ class CommentDeleteResourceApi extends ResourceBase
   {
     try {
       if (empty($id)) {
-        throw new Exception("Missing comment id");
+        throw new Exception('CMDRA01: Missing comment id');
       }
 
       $userId = $req->headers->get('user-id') ?? '';
-      if(empty($userId)){
-        throw new Exception('Missing user id in headers');
+      if (empty($userId)) {
+        throw new Exception('CMDRA02: Missing user id in headers');
+      }
+
+      $userRoles = $req->headers->get('user-roles') ?? '';
+      if (empty($userRoles)) {
+        throw new Exception('CMDRA03: Missing user roles in headers');
       }
 
       $body = json_decode($req->getContent());
-      ValidationController::validateRequestBody($body, 'item_delete');
-      
+      ValidationController::validateRequestBody($body, self::JSON_SCHEMA);
+
       $deletedIds = CommentController::delete(
-        $userId, 
+        $userId,
+        $userRoles,
         $id,
         $body->reason
       );

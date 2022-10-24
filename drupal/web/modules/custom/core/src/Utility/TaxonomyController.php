@@ -2,6 +2,7 @@
 
 namespace Drupal\core\Utility;
 
+use Drupal;
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Entity\EntityStorageException;
@@ -12,15 +13,17 @@ use Exception;
  * Class TaxonomyController
  * @package Drupal\core\Utility
  */
-class TaxonomyController{
-
+class TaxonomyController
+{
   /**
    * @param $vid
    * @param $termName
-   * @return mixed
+   * @return int
    * @throws EntityStorageException
+   * @throws InvalidPluginDefinitionException
+   * @throws PluginNotFoundException
    */
-  public static function createOrGetTermTid($vid, $termName)
+  public static function createOrGetTermTid($vid, $termName): int
   {
     $termId = self::termIdByName($vid, $termName);
     if (!empty($termId)) {
@@ -30,7 +33,7 @@ class TaxonomyController{
     $termObj = Term::create(['vid' => $vid, 'name' => $termName]);
     $termObj->save();
 
-    return (int) $termObj->id();
+    return (int)$termObj->id();
   }
 
   /**
@@ -42,16 +45,16 @@ class TaxonomyController{
   public static function updateTerm($term, $termName): int
   {
     if (empty($term)) {
-      throw new Exception('Empty term passed');
+      throw new Exception('TC01: Empty taxonomy term passed');
     }
 
     $term->setName($termName);
 
     if (!$term->save()) {
-      throw new Exception('Error in term update');
+      throw new Exception('TC02: Error in term update');
     }
 
-    return (int) $term->id();
+    return (int)$term->id();
   }
 
   /**
@@ -65,12 +68,12 @@ class TaxonomyController{
   public static function deleteTerm($term): int
   {
     if (empty($term)) {
-      throw new Exception('Empty term passed');
+      throw new Exception('TC03: Empty taxonomy term passed');
     }
 
     $vid = $term->bundle();
 
-    $nodes = \Drupal::entityTypeManager()
+    $nodes = Drupal::entityTypeManager()
       ->getStorage('node')
       ->loadByProperties([
         'field_category' => $term->id()
@@ -82,11 +85,11 @@ class TaxonomyController{
     foreach ($nodes as $node) {
       $node->set('field_category', $alternativeTermId);
       if (!$node->save()) {
-        throw new Exception('Error in node update in category delete');
+        throw new Exception('TC04: Error in node update in category delete');
       }
     }
 
-    return (int) $alternativeTermId;
+    return (int)$alternativeTermId;
   }
 
   /**
@@ -114,7 +117,7 @@ class TaxonomyController{
    */
   public static function termIdByName($vid, $termName)
   {
-    $termObj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(
+    $termObj = Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(
       [
         'name' => $termName,
         'vid' => $vid

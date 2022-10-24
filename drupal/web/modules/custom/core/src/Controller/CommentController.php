@@ -2,13 +2,16 @@
 
 namespace Drupal\core\Controller;
 
-use Exception;
-use Drupal\node\Entity\Node;
+use Drupal;
 use Drupal\comment\Entity\Comment;
-use Drupal\Core\Entity\EntityStorageException;
-use Drupal\notifications\Controller\NotificationsController;
-use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
+use Drupal\Core\Entity\EntityStorageException;
+use Drupal\core\Utility\CacheController;
+use Drupal\core\Utility\EnvController;
+use Drupal\node\Entity\Node;
+use Drupal\notifications\Controller\NotificationsController;
+use Exception;
 
 /**
  * Class CommentController
@@ -16,7 +19,6 @@ use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
  */
 class CommentController
 {
-
   /**
    * @param $entityId
    * @param $authorUid
@@ -29,49 +31,64 @@ class CommentController
   {
     $comment = Comment::create([
       'entity_type' => 'node',
-      'entity_id'   => $entityId,
-      'field_name'  => 'field_comments',
+      'entity_id' => $entityId,
+      'field_name' => 'field_comments',
       'uid' => $authorUid,
       'comment_type' => 'comment',
-      'subject' => "comment_" . (int)(microtime(true) * 1000000),
+      'subject' => 'comment_' . (int)(microtime(true) * 1000000),
       'comment_body' => $commentBody,
       'status' => 1
     ]);
 
     if (!$comment->save()) {
-      throw new Exception('Error in comment creation');
+      throw new Exception('CMC01: Error in comment creation');
     }
 
     $node = Node::load($entityId);
     if (empty($node)) {
-      throw new Exception('Error in comment creation node load');
+      throw new Exception('CMC02: Error in comment creation node load');
     }
 
     $notificationUserIds[] = $node->getOwnerId();
     $notificationUserIds = array_unique(
       array_merge(
-        $notificationUserIds, 
+        $notificationUserIds,
         CommentController::getCommentators($node->id())
-        )
-      );
+      )
+    );
 
     $notificationUserIds = array_diff($notificationUserIds, [$authorUid]);
 
     $node = Node::load($comment->getCommentedEntityId());
-    if(empty($node)){
-      throw new Exception('Error in load node in comment create');
+    if (empty($node)) {
+      throw new Exception('CMC03: Error in load node in comment create');
     }
 
-    if(!empty($notificationUserIds)){
+    if (!empty($notificationUserIds)) {
       NotificationsController::sendMultipleNotifications(
         $node,
         $authorUid,
         $notificationUserIds,
-        str_replace("item", "comment", $node->bundle())
+        str_replace('item', 'comment', $node->bundle())
       );
     }
 
-    return (int) $comment->id();
+    switch ($node->bundle()) {
+      case 'board_item':
+        CacheController::resetViewCache('board_items');
+        CacheController::resetViewCache('board_item');
+        break;
+      case 'community_item':
+        CacheController::resetViewCache('community_items');
+        CacheController::resetViewCache('commy_item_view');
+        break;
+      case 'document_item':
+        CacheController::resetViewCache('document_items');
+        CacheController::resetViewCache('document_item_view');
+        break;
+    }
+
+    return (int)$comment->id();
   }
 
   /**
@@ -87,23 +104,23 @@ class CommentController
   {
     $comment = Comment::create([
       'entity_type' => 'node',
-      'entity_id'   => $entityId,
-      'field_name'  => 'field_comments',
+      'entity_id' => $entityId,
+      'field_name' => 'field_comments',
       'uid' => $authorUid,
       'pid' => $commentId,
       'comment_type' => 'comment',
-      'subject' => "comment_" . (int)(microtime(true) * 1000000),
+      'subject' => 'comment_' . (int)(microtime(true) * 1000000),
       'comment_body' => $commentBody,
       'status' => 1
     ]);
 
     if (!$comment->save()) {
-      throw new Exception('Error in reply creation');
+      throw new Exception('CMC04: Error in reply creation');
     }
 
     $node = Node::load($comment->getCommentedEntityId());
-    if(empty($node)){
-      throw new Exception('Error in load node in reply create');
+    if (empty($node)) {
+      throw new Exception('CMC05: Error in load node in reply create');
     }
 
     $parentComment = Comment::load($commentId);
@@ -111,59 +128,83 @@ class CommentController
       $node,
       $comment->getOwnerId(),
       $parentComment->getOwnerId(),
-      "comment_reply"
+      'comment_reply'
     );
 
     $node = Node::load($entityId);
     if (empty($node)) {
-      throw new Exception('Error in comment creation node load');
+      throw new Exception('CMC06: Error in comment creation node load');
     }
 
     $notificationUserIds[] = $node->getOwnerId();
     $notificationUserIds = array_unique(
       array_merge(
-        $notificationUserIds, 
+        $notificationUserIds,
         CommentController::getCommentators($node->id())
       )
     );
 
     $notificationUserIds = array_diff($notificationUserIds, [$authorUid]);
 
-    if(!empty($notificationUserIds)){
+    if (!empty($notificationUserIds)) {
       NotificationsController::sendMultipleNotifications(
         $node,
         $authorUid,
         $notificationUserIds,
-        str_replace("item", "comment", $node->bundle())
+        str_replace('item', 'comment', $node->bundle())
       );
     }
 
-    return (int) $comment->id();
+    switch ($node->bundle()) {
+      case 'board_item':
+        CacheController::resetViewCache('board_items');
+        CacheController::resetViewCache('board_item');
+        break;
+      case 'community_item':
+        CacheController::resetViewCache('community_items');
+        CacheController::resetViewCache('commy_item_view');
+        break;
+      case 'document_item':
+        CacheController::resetViewCache('document_items');
+        CacheController::resetViewCache('document_item_view');
+        break;
+    }
+
+    return (int)$comment->id();
   }
 
   /**
+   * @param $userId
+   * @param $userRoles
    * @param $id
    * @param $commentBody
    * @return int
    * @throws EntityStorageException
-   * @throws Exception
    */
-  public static function update($userId, $id, $commentBody): int
+  public static function update($userId, $userRoles, $id, $commentBody): int
   {
     $comment = Comment::load($id);
     if (empty($comment)) {
-      throw new Exception("Invalid comment id");
+      throw new Exception('CMC07: Invalid comment id');
     }
+
+    if ($comment->getOwnerId() != $userId) {
+      $allowedRoles = ((array)EnvController::getValues('ALLOWED_METHOD_ROLES'))['comment_update_any'];
+      if (!UserController::checkAuthRoles($userRoles, $allowedRoles)) {
+        throw new Exception('CMC08: Unauthorized to update this item');
+      }
+    }
+
 
     $comment->set('comment_body', $commentBody);
 
     if (!$comment->save()) {
-      throw new Exception('Error in comment update');
+      throw new Exception('CMC09: Error in comment update');
     }
-    
+
     $node = Node::load($comment->getCommentedEntityId());
-    if(empty($node)){
-      throw new Exception('Error in load node in reply create');
+    if (empty($node)) {
+      throw new Exception('CMC10: Error in load node in reply create');
     }
 
     if ($comment->getOwnerId() != $userId) {
@@ -171,31 +212,40 @@ class CommentController
         $node,
         $userId,
         $comment->getOwnerId(),
-        "comment_update"
+        'comment_update'
       );
     }
 
-    return (int) $comment->id();
+    return (int)$comment->id();
   }
 
   /**
+   * @param $userId
+   * @param $userRoles
    * @param $id
+   * @param null $reason
    * @return array
+   * @throws EntityStorageException
    * @throws InvalidPluginDefinitionException
    * @throws PluginNotFoundException
-   * @throws EntityStorageException
-   * @throws Exception
    */
-  public static function delete($userId, $id, $reason = null): array
+  public static function delete($userId, $userRoles, $id, $reason = null): array
   {
     $comment = Comment::load($id);
     if (empty($comment)) {
-      throw new Exception("Invalid comment id");
+      throw new Exception('CMC11: Invalid comment id');
+    }
+
+    if ($comment->getOwnerId() != $userId) {
+      $allowedRoles = ((array)EnvController::getValues('ALLOWED_METHOD_ROLES'))['comment_delete_any'];
+      if (!UserController::checkAuthRoles($userRoles, $allowedRoles)) {
+        throw new Exception('CMC12: Unauthorized to delete this item');
+      }
     }
 
     $deleteIds = [];
 
-    $replies = \Drupal::entityTypeManager()
+    $replies = Drupal::entityTypeManager()
       ->getStorage('comment')
       ->loadByProperties([
         'pid' => $id
@@ -205,10 +255,10 @@ class CommentController
       $reply->set('status', 0);
 
       if (!$reply->save()) {
-        throw new Exception('Error in reply delete');
+        throw new Exception('CMC13: Error in reply delete');
       }
 
-      $deleteIds[] = (int) $reply->id();
+      $deleteIds[] = (int)$reply->id();
       ReportController::deleteAll($userId, $comment->getCommentedEntityId(), $reply->id());
     }
 
@@ -216,8 +266,8 @@ class CommentController
     ReportController::deleteAll($userId, $comment->getCommentedEntityId(), $comment->id());
 
     $node = Node::load($comment->getCommentedEntityId());
-    if(empty($node)){
-      throw new Exception('Error in load node in comment delete');
+    if (empty($node)) {
+      throw new Exception('CMC14: Error in load node in comment delete');
     }
 
     if ($comment->getOwnerId() != $userId && !empty($reason)) {
@@ -225,29 +275,54 @@ class CommentController
         $node,
         $userId,
         $comment->getOwnerId(),
-        "comment_delete",
+        'comment_delete',
         $reason
       );
     }
 
+    $deleteIds[] = (int)$id;
+
     if (!$comment->save()) {
-      throw new Exception('Error in comment delete');
+      throw new Exception('CMC15: Error in comment delete');
     }
-
-
-    $deleteIds[] = (int) $id;
+    switch ($node->bundle()) {
+      case 'board_item':
+        CacheController::resetViewCache('board_items');
+        CacheController::resetViewCache('board_item');
+        break;
+      case 'community_item':
+        CacheController::resetViewCache('community_items');
+        CacheController::resetViewCache('commy_item_view');
+        break;
+      case 'document_item':
+        CacheController::resetViewCache('document_items');
+        CacheController::resetViewCache('document_item_view');
+        break;
+    }
 
     return $deleteIds;
   }
 
-  public static function getCommentators($nodeId)
+  /**
+   * @param $nodeId
+   * @return array
+   * @throws InvalidPluginDefinitionException
+   * @throws PluginNotFoundException
+   */
+  /**
+   * @param $nodeId
+   * @return array
+   * @throws InvalidPluginDefinitionException
+   * @throws PluginNotFoundException
+   */
+  public static function getCommentators($nodeId): array
   {
     $node = Node::load($nodeId);
     if (empty($node)) {
-      throw new Exception("Invalid node id");
+      throw new Exception('CMC16: Invalid node id in getCommentators');
     }
 
-    $comments = \Drupal::entityTypeManager()
+    $comments = Drupal::entityTypeManager()
       ->getStorage('comment')
       ->loadByProperties([
         'entity_id' => $nodeId,

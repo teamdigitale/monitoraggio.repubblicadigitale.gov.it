@@ -1,0 +1,16 @@
+diff --git a/src/ActionLink/ActionLinkTypeBase.php b/src/ActionLink/ActionLinkTypeBase.php
+index a14e37e..1063416 100644
+--- a/src/ActionLink/ActionLinkTypeBase.php
++++ b/src/ActionLink/ActionLinkTypeBase.php
+@@ -100,7 +100,10 @@ abstract class ActionLinkTypeBase extends PluginBase implements ActionLinkTypePl
+ 
+     if($access->isAllowed()) {
+       $url = $this->getUrl($action, $flag, $entity);
+-      $url->setRouteParameter('destination', $this->getDestination());
++      $destination = $this->getDestination();
++      if ($destination) {
++        $url->setRouteParameter('destination', $destination);
++      }
+       $render = [
+         '#theme' => 'flag',
+         '#flag' => $flag,

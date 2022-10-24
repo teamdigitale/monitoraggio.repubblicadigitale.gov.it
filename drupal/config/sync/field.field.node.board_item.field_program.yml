@@ -1,11 +1,10 @@
-uuid: 8e10d81b-55f1-4104-908b-2eddbcc87bb7
+uuid: a4e0727d-d592-4d3e-b21c-b067b74cfe7f
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_program
     - node.type.board_item
-    - taxonomy.vocabulary.board_programs
 id: node.board_item.field_program
 field_name: field_program
 entity_type: node
@@ -13,17 +12,8 @@ bundle: board_item
 label: Program
 description: ''
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
-settings:
-  handler: 'default:taxonomy_term'
-  handler_settings:
-    target_bundles:
-      board_programs: board_programs
-    sort:
-      field: name
-      direction: asc
-    auto_create: true
-    auto_create_bundle: board_programs
-field_type: entity_reference
+settings: {  }
+field_type: string

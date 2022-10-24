@@ -2,17 +2,17 @@
 
 namespace Drupal\rest_api\Plugin\rest\resource;
 
+use Drupal\comment\Entity\Comment;
 use Drupal\core\Controller\ReportController;
 use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\comment\Entity\Comment;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
 use Drupal\rest_api\Controller\Utility\ValidationController;
 use Exception;
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides a resource to get view modes by entity and bundle.
@@ -25,7 +25,6 @@ use Psr\Log\LoggerInterface;
  *   }
  * )
  */
-
 class CommentReportCreateResourceApi extends ResourceBase
 {
   /**
@@ -52,13 +51,14 @@ class CommentReportCreateResourceApi extends ResourceBase
    *   A current user instance.
    */
   public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    array $serializer_formats,
-    LoggerInterface $logger,
+    array                 $configuration,
+                          $plugin_id,
+                          $plugin_definition,
+    array                 $serializer_formats,
+    LoggerInterface       $logger,
     AccountProxyInterface $current_user
-  ) {
+  )
+  {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
 
     $this->currentUser = $current_user;
@@ -79,6 +79,17 @@ class CommentReportCreateResourceApi extends ResourceBase
     );
   }
 
+  private const JSON_SCHEMA = [
+    'type' => 'object',
+    'properties' => [
+      'reason' => [
+        'type' => 'string',
+        'minLength' => 1,
+        'required' => true
+      ]
+    ]
+  ];
+
   /**
    * Responds to POST requests.
    *
@@ -90,21 +101,21 @@ class CommentReportCreateResourceApi extends ResourceBase
   {
     try {
       $userId = $req->headers->get('user-id') ?? '';
-      if(empty($userId)){
-        throw new Exception('Missing user id in headers');
+      if (empty($userId)) {
+        throw new Exception('CMRCRA01: Missing user id in headers');
       }
 
       if (empty($id)) {
-        throw new Exception("Missing comment id");
+        throw new Exception('CMRCRA02: Missing comment id');
       }
 
       $comment = Comment::load($id);
       if (empty($comment)) {
-        throw new Exception("Invalid comment id");
+        throw new Exception('CMRCRA03: Invalid comment id');
       }
 
       $body = json_decode($req->getContent());
-      ValidationController::validateRequestBody($body, 'report_create');
+      ValidationController::validateRequestBody($body, self::JSON_SCHEMA);
 
       $reportId = ReportController::createReport(
         $userId,

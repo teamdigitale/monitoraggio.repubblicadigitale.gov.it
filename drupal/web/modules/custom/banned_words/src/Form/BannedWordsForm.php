@@ -9,7 +9,8 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Class ConfigForm.
  */
-class BannedWordsForm extends ConfigFormBase {
+class BannedWordsForm extends ConfigFormBase
+{
   const KEY_TITLE = 'title';
   const KEY_BODY = 'list';
 
@@ -19,7 +20,7 @@ class BannedWordsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  protected function getEditableConfigNames()
+  protected function getEditableConfigNames(): array
   {
     return [
       'banned_words.config',
@@ -29,7 +30,7 @@ class BannedWordsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId()
+  public function getFormId(): string
   {
     return 'banned_words_form';
   }
@@ -37,14 +38,14 @@ class BannedWordsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state)
+  public function buildForm(array $form, FormStateInterface $form_state): array
   {
     $config = $this->config('banned_words.config');
 
-    $form['advanced'] = array(
+    $form['advanced'] = [
       '#type' => 'vertical_tabs',
       '#title' => t('Settings'),
-    );
+    ];
 
     $form[self::KEY_BANNED_WORDS] = $this->addConfigurationBannedWordsTab($config);
 
@@ -55,7 +56,7 @@ class BannedWordsForm extends ConfigFormBase {
    * @param Config $config
    * @return array
    */
-  private function addConfigurationBannedWordsTab(Config $config)
+  private function addConfigurationBannedWordsTab(Config $config): array
   {
     $form = [
       '#type' => 'details',

@@ -31,8 +31,9 @@
         "drupal/openapi_rest": "^2.0@RC",
         "drupal/openapi_ui_swagger": "^1.0@RC",
         "drupal/restui": "^1.21",
+        "drupal/s3fs": "^3.0@RC",
         "drupal/search_api": "^1.25",
-        "drupal/ultimate_cron": "^2.0@alpha",
+        "drupal/simple_cron": "^1.0",
         "drupal/views_field_view": "^1.0@beta",
         "drupal/whoops": "^1.0@beta",
         "drush/drush": "^11.1",
@@ -60,7 +61,14 @@
         "enable_patches": true,
         "patches": {
             "drupal/notificationswidget": {
-                "Add relationship and fix explode": "patches/notificationwidget_relationship_explode.patch"
+                "Add relationship and fix explode": "patches/notificationswidget_relationship_explode.patch",
+                "Notification action in views": "patches/notificationswidget_action_in_view.patch"
+            },
+            "drupal/flag": {
+                "Fix Deprecated function: str_replace() warning": "patches/flag_string_replace_deprecated.patch"
+            },
+            "drupal/simple_cron": {
+                "Remove warning when a job is not executed": "patches/simple_cron_no_warning.patch"
             }
         },
         "drupal-scaffold": {

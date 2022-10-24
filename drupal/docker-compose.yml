@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+  mdb:
+    image: mariadb:10.3
+    container_name: drupal-mdb
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+  drupalpod:
+    container_name: drupal-pod
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      VIRTUAL_HOST: docker-pod.local
+    ports:
+      - 80:8080
+    working_dir: /var/www/html/
+    tty: true

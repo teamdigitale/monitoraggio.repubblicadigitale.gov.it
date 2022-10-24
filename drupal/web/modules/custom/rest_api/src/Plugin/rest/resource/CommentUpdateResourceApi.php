@@ -9,10 +9,10 @@ use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
 use Drupal\rest_api\Controller\Utility\ValidationController;
 use Exception;
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides a resource to get view modes by entity and bundle.
@@ -25,7 +25,6 @@ use Psr\Log\LoggerInterface;
  *   }
  * )
  */
-
 class CommentUpdateResourceApi extends ResourceBase
 {
   /**
@@ -52,13 +51,14 @@ class CommentUpdateResourceApi extends ResourceBase
    *   A current user instance.
    */
   public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    array $serializer_formats,
-    LoggerInterface $logger,
+    array                 $configuration,
+                          $plugin_id,
+                          $plugin_definition,
+    array                 $serializer_formats,
+    LoggerInterface       $logger,
     AccountProxyInterface $current_user
-  ) {
+  )
+  {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
 
     $this->currentUser = $current_user;
@@ -79,6 +79,17 @@ class CommentUpdateResourceApi extends ResourceBase
     );
   }
 
+  private const JSON_SCHEMA = [
+    'type' => 'object',
+    'properties' => [
+      'comment_body' => [
+        'type' => 'string',
+        'minLength' => 1,
+        'required' => true
+      ]
+    ]
+  ];
+
   /**
    * Responds to POST requests.
    *
@@ -90,22 +101,27 @@ class CommentUpdateResourceApi extends ResourceBase
   {
     try {
       if (empty($id)) {
-        throw new Exception("Missing node id");
+        throw new Exception('CMURA01: Missing node id');
       }
 
       $userId = $req->headers->get('user-id') ?? '';
-      if(empty($userId)){
-        throw new Exception('Missing user id in headers');
+      if (empty($userId)) {
+        throw new Exception('CMURA02: Missing user id in headers');
+      }
+
+      $userRoles = $req->headers->get('user-roles') ?? '';
+      if (empty($userRoles)) {
+        throw new Exception('CMURA03: Missing user roles in headers');
       }
 
       $body = json_decode($req->getContent());
-      ValidationController::validateRequestBody($body, 'comment_update');
+      ValidationController::validateRequestBody($body, self::JSON_SCHEMA);
 
-      if (!BannedWordsController::validateText( $body->comment_body)){
-        throw new Exception('Comment body contains banned words');
+      if (!BannedWordsController::validateText($body->comment_body)) {
+        throw new Exception('CMURA04: Comment body contains banned words');
       }
 
-      $commentId = CommentController::update($userId, $id, $body->comment_body);
+      $commentId = CommentController::update($userId, $userRoles, $id, $body->comment_body);
 
       return ResponseFormatterController::success([
         'id' => $commentId

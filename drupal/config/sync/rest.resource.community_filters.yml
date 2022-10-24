@@ -1,0 +1,18 @@
+uuid: 5219ccb9-8d0c-4474-977e-eb14fd641fbb
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - rest_api
+    - serialization
+id: community_filters
+plugin_id: community_filters
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - basic_auth

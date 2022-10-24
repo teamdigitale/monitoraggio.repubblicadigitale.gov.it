@@ -10,12 +10,14 @@ dependencies:
     - field.field.node.board_item.field_cover
     - field.field.node.board_item.field_description
     - field.field.node.board_item.field_enable_comments
+    - field.field.node.board_item.field_entity
+    - field.field.node.board_item.field_entity_type
     - field.field.node.board_item.field_intervention
     - field.field.node.board_item.field_program
+    - field.field.node.board_item.field_program_label
     - node.type.board_item
   module:
     - comment
-    - file
     - text
     - user
 id: node.board_item.default
@@ -24,10 +26,11 @@ bundle: board_item
 mode: default
 content:
   field_attachment:
-    type: file_default
+    type: entity_reference_entity_view
     label: above
     settings:
-      use_description_as_link_text: true
+      view_mode: default
+      link: false
     third_party_settings: {  }
     weight: 13
     region: content
@@ -46,7 +49,7 @@ content:
       view_mode: default
       pager_id: 0
     third_party_settings: {  }
-    weight: 10
+    weight: 5
     region: content
   field_cover:
     type: entity_reference_entity_view
@@ -55,7 +58,7 @@ content:
       view_mode: default
       link: false
     third_party_settings: {  }
-    weight: 6
+    weight: 2
     region: content
   field_description:
     type: text_default
@@ -72,6 +75,22 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
+    weight: 8
+    region: content
+  field_entity:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 11
+    region: content
+  field_entity_type:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
     weight: 12
     region: content
   field_intervention:
@@ -80,25 +99,33 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 11
+    weight: 7
     region: content
   field_program:
-    type: entity_reference_label
+    type: string
     label: above
     settings:
-      link: true
+      link_to_entity: false
     third_party_settings: {  }
-    weight: 5
+    weight: 6
+    region: content
+  field_program_label:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 10
     region: content
   flag_like:
     settings: {  }
     third_party_settings: {  }
-    weight: 8
+    weight: 3
     region: content
   flag_view:
     settings: {  }
     third_party_settings: {  }
-    weight: 9
+    weight: 4
     region: content
 hidden:
   links: true

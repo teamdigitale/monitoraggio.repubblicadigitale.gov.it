@@ -7,12 +7,12 @@ use Drupal\core\Utility\TaxonomyController;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
 use Drupal\rest_api\Controller\Utility\ValidationController;
+use Drupal\taxonomy\Entity\Term;
 use Exception;
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Psr\Log\LoggerInterface;
-use Drupal\taxonomy\Entity\Term;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides a resource to get view modes by entity and bundle.
@@ -25,7 +25,6 @@ use Drupal\taxonomy\Entity\Term;
  *   }
  * )
  */
-
 class CategoryUpdateResourceApi extends ResourceBase
 {
   /**
@@ -52,13 +51,14 @@ class CategoryUpdateResourceApi extends ResourceBase
    *   A current user instance.
    */
   public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    array $serializer_formats,
-    LoggerInterface $logger,
+    array                 $configuration,
+                          $plugin_id,
+                          $plugin_definition,
+    array                 $serializer_formats,
+    LoggerInterface       $logger,
     AccountProxyInterface $current_user
-  ) {
+  )
+  {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
 
     $this->currentUser = $current_user;
@@ -79,6 +79,17 @@ class CategoryUpdateResourceApi extends ResourceBase
     );
   }
 
+  private const JSON_SCHEMA = [
+    'type' => 'object',
+    'properties' => [
+      'term_name' => [
+        'type' => 'string',
+        'minLength' => 1,
+        'required' => true
+      ]
+    ]
+  ];
+
   /**
    * Responds to POST requests.
    *
@@ -91,16 +102,16 @@ class CategoryUpdateResourceApi extends ResourceBase
   {
     try {
       if (empty($id)) {
-        throw new Exception("Missing term id");
+        throw new Exception('CURA01: Missing term id');
       }
 
       $term = Term::load($id);
       if (empty($term)) {
-        throw new Exception('Invalid term id');
+        throw new Exception('CURA02: Invalid term id');
       }
 
       $body = json_decode($req->getContent());
-      ValidationController::validateRequestBody($body, 'category_update');
+      ValidationController::validateRequestBody($body, self::JSON_SCHEMA);
 
       return ResponseFormatterController::success([
         'id' => TaxonomyController::updateTerm($term, $body->term_name)

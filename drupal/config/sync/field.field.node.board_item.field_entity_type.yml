@@ -1,0 +1,19 @@
+uuid: fe01de9b-3f7e-496a-91e7-42db5821ddfd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_entity_type
+    - node.type.board_item
+id: node.board_item.field_entity_type
+field_name: field_entity_type
+entity_type: node
+bundle: board_item
+label: 'Entity Type'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -58,6 +58,7 @@ module:
   rest: 0
   rest_api: 0
   restui: 0
+  s3fs: 0
   schemata: 0
   schemata_json_schema: 0
   search_api: 0
@@ -65,6 +66,8 @@ module:
   search_api_db_defaults: 0
   serialization: 0
   shortcut: 0
+  simple_cron: 0
+  stats_tracking: 0
   system: 0
   taxonomy: 0
   text: 0

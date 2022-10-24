@@ -1,0 +1,25 @@
+uuid: c13d0ab0-43cf-431b-b3f9-93782bf5eb33
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.flagging.field_status
+    - flag.flag.usefull
+id: flagging.usefull.field_status
+field_name: field_status
+entity_type: flagging
+bundle: usefull
+label: Status
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  min: 1
+  max: 2
+  prefix: ''
+  suffix: ''
+field_type: integer

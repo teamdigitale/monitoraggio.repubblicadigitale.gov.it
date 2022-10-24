@@ -2,8 +2,8 @@
 
 namespace Drupal\rest_api\Plugin\views\style;
 
-use Drupal\rest\Plugin\views\style\Serializer;
 use Drupal\Component\Serialization\Json;
+use Drupal\rest\Plugin\views\style\Serializer;
 
 /**
  * The style plugin for serialized output formats.
@@ -23,7 +23,8 @@ class NestingSerializer extends Serializer
   /**
    * {@inheritdoc}
    */
-  public function render(): array|string {
+  public function render(): array|string
+  {
     $rows = [];
     foreach ($this->view->result as $row_index => $row) {
       $this->view->row_index = $row_index;
@@ -34,11 +35,11 @@ class NestingSerializer extends Serializer
 
     for ($i = 0; $i < count($rows); $i++) {
       foreach ($rows[$i] as $key => $value) {
-        if ($value == "[]") {
+        if ($value == '[]') {
           $rows[$i][$key] = [];
         }
 
-        if ($value == "0") {
+        if ($value == '0') {
           $rows[$i][$key] = 0;
         }
 

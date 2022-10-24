@@ -1,0 +1,18 @@
+uuid: 73c0321b-1072-4e27-bc7a-1e0840fb2958
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - rest_api
+    - serialization
+id: document_filters
+plugin_id: document_filters
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - basic_auth

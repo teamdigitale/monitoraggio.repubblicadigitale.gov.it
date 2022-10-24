@@ -1,17 +1,17 @@
-uuid: e88b769b-5215-4e65-9bb4-011699f52368
+uuid: 14cb1695-3a91-4039-b99a-3e9fd0fea888
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.user.field_roles
-    - taxonomy.vocabulary.user_roles
+    - field.storage.user.field_groups
+    - taxonomy.vocabulary.user_groups
   module:
     - user
-id: user.user.field_roles
-field_name: field_roles
+id: user.user.field_groups
+field_name: field_groups
 entity_type: user
 bundle: user
-label: Roles
+label: Groups
 description: ''
 required: false
 translatable: false
@@ -21,7 +21,7 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      user_roles: user_roles
+      user_groups: user_groups
     sort:
       field: name
       direction: asc

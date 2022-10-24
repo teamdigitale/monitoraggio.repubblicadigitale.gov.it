@@ -1,5 +1,5 @@
-name: 'Rep-Dig Notification'
+name: 'Notifications'
 type: module
-description: 'Repubblica Digitale Custom notification module for notification widget'
+description: 'Custom notification module for notification widget'
 core_version_requirement: ^9
-package: Accenture
+package: CMS

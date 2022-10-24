@@ -9,6 +9,8 @@ dependencies:
     - field.field.node.community_item.field_comments
     - field.field.node.community_item.field_description
     - field.field.node.community_item.field_enable_comments
+    - field.field.node.community_item.field_entity
+    - field.field.node.community_item.field_entity_type
     - field.field.node.community_item.field_tags
     - node.type.community_item
   module:
@@ -39,5 +41,7 @@ hidden:
   field_comments: true
   field_description: true
   field_enable_comments: true
+  field_entity: true
+  field_entity_type: true
   field_tags: true
   search_api_excerpt: true

@@ -1,0 +1,14 @@
+diff --git a/src/StreamWrapper/S3fsStream.php b/src/StreamWrapper/S3fsStream.php
+index 55dc1d6..12c5596 100644
+--- a/src/StreamWrapper/S3fsStream.php
++++ b/src/StreamWrapper/S3fsStream.php
+@@ -506,9 +506,6 @@ class S3fsStream extends StreamWrapper implements StreamWrapperInterface {
+     // If this file is versioned, attach the version number to
+     // ensure that browser caches will be bypassed upon version changes.
+     $meta = $this->readCache($this->uri);
+-    if (!empty($meta['version'])) {
+-      $commandSettings['VersionId'] = $meta['version'];
+-    }
+
+     foreach ($url_settings['api_args'] as $key => $arg) {
+       $commandSettings[$key] = $arg;

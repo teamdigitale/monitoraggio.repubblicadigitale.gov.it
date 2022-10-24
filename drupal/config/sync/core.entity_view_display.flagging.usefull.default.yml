@@ -1,0 +1,23 @@
+uuid: 79c5c1b7-613a-453c-bfcf-54f7a6e2a258
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.flagging.usefull.field_status
+    - flag.flag.usefull
+id: flagging.usefull.default
+targetEntityType: flagging
+bundle: usefull
+mode: default
+content:
+  field_status:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true

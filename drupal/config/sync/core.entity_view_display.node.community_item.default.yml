@@ -9,11 +9,12 @@ dependencies:
     - field.field.node.community_item.field_comments
     - field.field.node.community_item.field_description
     - field.field.node.community_item.field_enable_comments
+    - field.field.node.community_item.field_entity
+    - field.field.node.community_item.field_entity_type
     - field.field.node.community_item.field_tags
     - node.type.community_item
   module:
     - comment
-    - file
     - text
     - user
 id: node.community_item.default
@@ -22,12 +23,13 @@ bundle: community_item
 mode: default
 content:
   field_attachment:
-    type: file_default
+    type: entity_reference_entity_view
     label: above
     settings:
-      use_description_as_link_text: true
+      view_mode: default
+      link: true
     third_party_settings: {  }
-    weight: 10
+    weight: 4
     region: content
   field_category:
     type: entity_reference_label
@@ -51,7 +53,7 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 1
+    weight: 3
     region: content
   field_enable_comments:
     type: boolean
@@ -63,13 +65,29 @@ content:
     third_party_settings: {  }
     weight: 9
     region: content
+  field_entity:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_entity_type:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
   field_tags:
     type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    weight: 2
+    weight: 5
     region: content
   flag_like:
     settings: {  }

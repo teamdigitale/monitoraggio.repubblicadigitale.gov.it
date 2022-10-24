@@ -2,17 +2,17 @@
 
 namespace Drupal\rest_api\Plugin\rest\resource;
 
-use Exception;
-use Psr\Log\LoggerInterface;
-use Drupal\rest\Plugin\ResourceBase;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\core\Utility\EnvController;
 use Drupal\core\Utility\TaxonomyController;
-use Symfony\Component\HttpFoundation\Request;
-use Drupal\Core\Session\AccountProxyInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Drupal\rest_api\Controller\Utility\ValidationController;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
+use Drupal\rest_api\Controller\Utility\ValidationController;
+use Exception;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides a resource to get view modes by entity and bundle.
@@ -25,7 +25,6 @@ use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
  *   }
  * )
  */
-
 class CategoryCreateResourceApi extends ResourceBase
 {
   /**
@@ -52,13 +51,14 @@ class CategoryCreateResourceApi extends ResourceBase
    *   A current user instance.
    */
   public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    array $serializer_formats,
-    LoggerInterface $logger,
+    array                 $configuration,
+                          $plugin_id,
+                          $plugin_definition,
+    array                 $serializer_formats,
+    LoggerInterface       $logger,
     AccountProxyInterface $current_user
-  ) {
+  )
+  {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer_formats, $logger);
 
     $this->currentUser = $current_user;
@@ -79,6 +79,22 @@ class CategoryCreateResourceApi extends ResourceBase
     );
   }
 
+  private const JSON_SCHEMA = [
+    'type' => 'object',
+    'properties' => [
+      'term_name' => [
+        'type' => 'string',
+        'minLength' => 1,
+        'required' => true
+      ],
+      'term_type' => [
+        'type' => 'string',
+        'minLength' => 1,
+        'required' => true
+      ]
+    ]
+  ];
+
   /**
    * Responds to POST requests.
    *
@@ -89,16 +105,16 @@ class CategoryCreateResourceApi extends ResourceBase
   {
     try {
       $body = json_decode($req->getContent());
-      ValidationController::validateRequestBody($body, 'category_create');
+      ValidationController::validateRequestBody($body, self::JSON_SCHEMA);
 
       $categoryVid = $body->term_type;
-      if (!in_array($categoryVid, EnvController::getValues('ALLOWED_CATEGORIES'))) {
-        throw new Exception('Item type does not exist');
+      if (!in_array($categoryVid, (array)EnvController::getValues('ALLOWED_CATEGORIES'))) {
+        throw new Exception('CCRA01: Item type does not exist');
       }
 
       $termId = TaxonomyController::termIdByName($categoryVid, $body->term_name);
       if (!empty($termId)) {
-        throw new Exception('Taxonomy term already exists');
+        throw new Exception('CCRA02: Taxonomy term already exists');
       }
 
       $termId = TaxonomyController::createOrGetTermTid($categoryVid, $body->term_name);

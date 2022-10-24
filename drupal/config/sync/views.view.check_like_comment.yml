@@ -360,8 +360,7 @@ display:
               raw_output: false
       display_extenders: {  }
       path: api/user/%user_name/comment/%comment_id
-      auth:
-        - basic_auth
+      auth: {  }
     cache_metadata:
       max-age: -1
       contexts:
