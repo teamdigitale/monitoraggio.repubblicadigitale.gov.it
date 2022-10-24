@@ -273,6 +273,11 @@ public class QuestionarioTemplateService {
 	public QuestionarioTemplateCollection creaNuovoQuestionarioTemplate(
 			@NotNull(message = "Questionario da creare deve essere non null") 
 			@Valid final QuestionarioTemplateCollection questionarioTemplateCollection) {
+		final String nomeQuestionarioTemplate = questionarioTemplateCollection.getNomeQuestionarioTemplate();
+		if(questionarioTemplateSqlService.getQuestionarioTemplateByNome(nomeQuestionarioTemplate).isPresent()) {
+			String errorMessage = String.format("Impossibile aggiornare il questionario. Questionario con nome = %s già presente", nomeQuestionarioTemplate);
+			throw new QuestionarioTemplateException(errorMessage, CodiceErroreEnum.QT02);
+		}
 		final String idQuestionarioTemplateDaCreare = UUID.randomUUID().toString();
 		questionarioTemplateCollection.setIdQuestionarioTemplate(idQuestionarioTemplateDaCreare);
 		questionarioTemplateCollection.setStato(StatoEnum.NON_ATTIVO.getValue());
@@ -321,6 +326,13 @@ public class QuestionarioTemplateService {
 			final String messaggioErrore = String.format("Impossibile aggiornare il questionario con id '%s'. Stato questionario = '%s'.",
 					idQuestionarioTemplate, statoQuestionario);
 			throw new QuestionarioTemplateException(messaggioErrore, CodiceErroreEnum.QT02);
+		}
+		
+		//verifico se esiste un altro questionario con id diverso ma con lo stesso nome
+		final String nomeQuestionarioTemplate = questionarioTemplateDaAggiornare.getNomeQuestionarioTemplate();
+		if(questionarioTemplateSqlService.getQuestionarioTemplateByNomeAndIdDiverso(nomeQuestionarioTemplate, idQuestionarioTemplate).isPresent()) {
+			String errorMessage = String.format("Impossibile aggiornare il questionario. Questionario con nome = %s già presente", nomeQuestionarioTemplate);
+			throw new QuestionarioTemplateException(errorMessage, CodiceErroreEnum.QT02);
 		}
 		
 		questionarioTemplateCollectionFetchDB.setNomeQuestionarioTemplate(questionarioTemplateDaAggiornare.getNomeQuestionarioTemplate());

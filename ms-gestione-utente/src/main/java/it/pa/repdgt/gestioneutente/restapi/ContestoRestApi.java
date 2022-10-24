@@ -73,8 +73,9 @@ public class ContestoRestApi {
 		final String codiceRuoloUtente = utenteRequest.getCodiceRuoloUtenteLoggato();
 		final Long idProgramma = utenteRequest.getIdProgramma();
 		final Long idProgetto = utenteRequest.getIdProgetto();
+		final Long idEnte = utenteRequest.getIdEnte();
 		
-		contestoService.verificaSceltaProfilo(codiceFiscaleUtente, codiceRuoloUtente, idProgramma, idProgetto);
+		contestoService.verificaSceltaProfilo(codiceFiscaleUtente, codiceRuoloUtente, idProgramma, idProgetto, idEnte);
 	}
 	
 	// CONFERMA INTEGRAZIONE 

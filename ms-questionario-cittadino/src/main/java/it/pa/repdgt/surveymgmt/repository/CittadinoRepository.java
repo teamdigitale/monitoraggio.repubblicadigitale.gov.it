@@ -159,6 +159,7 @@ public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long
 			+ "		  , qc.facilitatore_id as codiceFiscaleFacilitatore "
 			+ "		  , qc.id as idQuestionarioCompilato "
 			+ "		  , qc.stato as statoQuestionarioCompilato "
+			+ "       , s.id_ente as idEnte"
 			+ "		FROM "
 			+ "			questionario_compilato qc "
 			+ "		INNER JOIN "
@@ -217,4 +218,19 @@ public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long
 	String findConsensoByNumDocumentoCittadino(
 			@Param(value = "numeroDocumento") String numeroDocumento
 		);
+
+	@Query(value = " "
+			 + " SELECT "
+			 + "	* "
+			 + " FROM "
+			 + "	cittadino cit "
+			 + " WHERE ( "
+			 + "	 		( cit.codice_fiscale = :codiceFiscale AND cit.codice_fiscale <> '' ) "
+			 + " 		OR  ( cit.num_documento = :numeroDocumento AND cit.num_documento <> '' ) "
+			 + "	) "
+			 + "	AND cit.id <> :id"
+			 + " ",
+	   nativeQuery = true)
+	List<CittadinoEntity> findCittadinoByCodiceFiscaleOrNumeroDocumentoAndIdDiverso(String codiceFiscale,
+			String numeroDocumento, Long id);
 }

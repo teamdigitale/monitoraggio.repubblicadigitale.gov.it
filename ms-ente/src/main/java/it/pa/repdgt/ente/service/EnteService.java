@@ -916,7 +916,7 @@ public class EnteService {
 												dettaglioProfilo.setNome(programma.getNome());
 												dettaglioProfilo.setProfilo(profilo);
 												dettaglioProfilo.setStato(programma.getStato());
-												dettaglioProfilo.setReferenti(this.utenteService.getReferentiProgrammaById(id));
+												dettaglioProfilo.setReferenti(this.utenteService.getReferentiProgrammaById(id, idEnte));
 												dettaglioProfili.add(dettaglioProfilo);
 												break;
 											case "Ente Gestore di Progetto":
@@ -926,7 +926,7 @@ public class EnteService {
 												dettaglioProfilo.setNome(progetto.getNome());
 												dettaglioProfilo.setProfilo(profilo);
 												dettaglioProfilo.setStato(progetto.getStato());
-												dettaglioProfilo.setReferenti(this.utenteService.getReferentiProgettoById(id));
+												dettaglioProfilo.setReferenti(this.utenteService.getReferentiProgettoById(id, idEnte));
 												dettaglioProfili.add(dettaglioProfilo);
 												break;
 											case "Ente Partner":
@@ -971,6 +971,11 @@ public class EnteService {
 			String errorMessage = String.format("Impossibile aggiornare l'ente con id=%s. Ente non presente", idEnte);
 			throw new EnteException(errorMessage, CodiceErroreEnum.EN13);
 		}
+		final String partitaIva = enteEntity.getPiva();
+		if (this.enteRepository.findByPartitaIvaAndIdDiverso(partitaIva, idEnte).isPresent()) {
+			String errorMessage = String.format("Impossibile aggiornare l'ente con codice fiscale=%s. Ente con codice fiscale inserito già presente", partitaIva);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN14);
+		}
 		EnteEntity enteFetchDB = this.getEnteById(idEnte);
 		enteEntity.setDataOraCreazione(enteFetchDB.getDataOraCreazione());
 		enteEntity.setDataOraAggiornamento(new Date());
@@ -982,13 +987,14 @@ public class EnteService {
 	@Transactional(rollbackOn = Exception.class)
 	public void modificaEnteGestoreProgramma(EnteEntity enteModificato, Long idEnte, Long idProgramma) {
 		EnteEntity enteFetchDB = this.getEnteById(idEnte);
-		if(this.esisteEnteByNomeNotEqual(enteModificato.getNome(), idEnte)) {
-			String messaggioErrore = String.format("Ente con nome = '%s' già presente", enteModificato.getNome());
-			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN25);
-		}
 		Optional<EnteEntity> optionalEnte = this.enteRepository.findByPartitaIva(enteModificato.getPiva());
 		ProgrammaEntity programmaFetchDB = this.programmaService.getProgrammaById(idProgramma);
+		
 		if(enteModificato.getId().equals(idEnte)) {
+			if(this.esisteEnteByNomeNotEqual(enteModificato.getNome(), idEnte)) {
+				String messaggioErrore = String.format("Ente con nome = '%s' già presente", enteModificato.getNome());
+				throw new EnteException(messaggioErrore, CodiceErroreEnum.EN25);
+			}
 			enteModificato.setDataOraCreazione(enteFetchDB.getDataOraCreazione());
 			enteModificato.setDataOraAggiornamento(new Date());
 			if(!optionalEnte.isPresent()) {
@@ -1000,6 +1006,13 @@ public class EnteService {
 				throw new EnteException(errorMessage, CodiceErroreEnum.EN14);
 			}
 		} else {
+			if(!optionalEnte.isPresent()) {
+				if(this.esisteEnteByNomeNotEqual(enteModificato.getNome(), idEnte)) {
+					String messaggioErrore = String.format("Ente con nome = '%s' già presente", enteModificato.getNome());
+					throw new EnteException(messaggioErrore, CodiceErroreEnum.EN25);
+				}
+			}
+			// nuova associazione
 			if(!optionalEnte.isPresent() || optionalEnte.get().getId().equals(enteModificato.getId())) {
 				EnteEntity enteModificatoFetchDB = this.getEnteById(enteModificato.getId());
 				enteModificato.setDataOraCreazione(enteModificatoFetchDB.getDataOraCreazione());
@@ -1024,12 +1037,12 @@ public class EnteService {
 	public void modificaEnteGestoreProgetto(EnteEntity enteModificato, Long idEnte, Long idProgetto) {
 		EnteEntity enteFetchDB = this.getEnteById(idEnte);
 		Optional<EnteEntity> optionalEnte = this.enteRepository.findByPartitaIva(enteModificato.getPiva());
-		if(this.esisteEnteByNomeNotEqual(enteModificato.getNome(), idEnte)) {
-			String messaggioErrore = String.format("Ente con nome = '%s' già presente", enteModificato.getNome());
-			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN25);
-		}
 		ProgettoEntity progettoFetchDB = this.progettoService.getProgettoById(idProgetto);
 		if(enteModificato.getId().equals(idEnte)) {
+			if(this.esisteEnteByNomeNotEqual(enteModificato.getNome(), idEnte)) {
+				String messaggioErrore = String.format("Ente con nome = '%s' già presente", enteModificato.getNome());
+				throw new EnteException(messaggioErrore, CodiceErroreEnum.EN25);
+			}
 			enteModificato.setDataOraCreazione(enteFetchDB.getDataOraCreazione());
 			enteModificato.setDataOraAggiornamento(new Date());
 			if(!optionalEnte.isPresent()) {
@@ -1041,6 +1054,12 @@ public class EnteService {
 				throw new EnteException(errorMessage, CodiceErroreEnum.EN15);
 			}
 		} else {
+			if(!optionalEnte.isPresent()) {
+				if(this.esisteEnteByNomeNotEqual(enteModificato.getNome(), idEnte)) {
+					String messaggioErrore = String.format("Ente con nome = '%s' già presente", enteModificato.getNome());
+					throw new EnteException(messaggioErrore, CodiceErroreEnum.EN25);
+				}
+			}
 			if(!optionalEnte.isPresent() || optionalEnte.get().getId().equals(enteModificato.getId())) {
 				EnteEntity enteModificatoFetchDB = this.getEnteById(enteModificato.getId());
 				enteModificato.setDataOraCreazione(enteModificatoFetchDB.getDataOraCreazione());
@@ -1155,7 +1174,7 @@ public class EnteService {
 		}
 		//controllo se lo stato dell'ente gestore di progetto è diverso da NON ATTIVO
 		if(!this.progettoService.getProgettoById(idProgetto).getStatoGestoreProgetto().equals(StatoEnum.NON_ATTIVO.getValue())) {
-			String errorMessage = String.format("Impossibile cancellare l'ente gestore di progetto poiché lo stato dell'ente risulta attivo per questo progetto");
+			String errorMessage = String.format("Impossibile cancellare l'ente gestore di progetto poiché lo stato dell'ente risulta diverso da non attivo per questo progetto");
 			throw new EnteException(errorMessage, CodiceErroreEnum.EN18);
 		}
 		
@@ -1164,7 +1183,7 @@ public class EnteService {
 		progettoFetchDB.setStatoGestoreProgetto(null);
 		this.progettoService.salvaProgetto(progettoFetchDB);
 		//prendo la lista dei referenti e delegati su quel progetto 
-		List<ReferentiDelegatiEnteGestoreProgettoEntity> listaReferentiDelegatiPerProgetto = this.referentiDelegatiEnteGestoreProgettoService.getReferentiAndDelegatiPerProgetto(idProgetto);
+		List<ReferentiDelegatiEnteGestoreProgettoEntity> listaReferentiDelegatiPerProgetto = this.referentiDelegatiEnteGestoreProgettoService.getReferentiAndDelegatiPerProgettoAndIdEnte(idProgetto, idEnte);
 		//elimino i referenti e delegati dalla tabella REFERENTE_DELEGATI_GESTORE_PROGETTO 
 		listaReferentiDelegatiPerProgetto.stream()
 										 .forEach(utente -> {

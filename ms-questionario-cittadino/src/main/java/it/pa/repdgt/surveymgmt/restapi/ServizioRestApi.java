@@ -32,7 +32,6 @@ import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.bean.SchedaDettaglioServizioBean;
 import it.pa.repdgt.surveymgmt.mapper.ServizioMapper;
 import it.pa.repdgt.surveymgmt.param.FiltroListaServiziParam;
-import it.pa.repdgt.surveymgmt.param.ProfilazioneSedeParam;
 import it.pa.repdgt.surveymgmt.projection.EnteProjection;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
@@ -169,7 +168,7 @@ public class ServizioRestApi {
 	 * */
 	@PostMapping(path = "/facilitatore/sedi/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<SedeProjection> getSediByFacilitatore(@RequestBody @Valid final ProfilazioneSedeParam profilazioneParam) {
+	public List<SedeProjection> getSediByFacilitatore(@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
 		return this.servizioSqlService.getSediByFacilitatore(profilazioneParam);
 	}
 	

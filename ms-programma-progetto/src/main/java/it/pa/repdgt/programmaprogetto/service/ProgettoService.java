@@ -577,6 +577,8 @@ public class ProgettoService {
 
 		String codiceRuoloUtenteLoggato = sceltaProfilo.getCodiceRuoloUtenteLoggato();
 		String cfUtenteLoggato = sceltaProfilo.getCfUtenteLoggato();
+		Long idEnteProfilazione = sceltaProfilo.getIdEnte();
+		
 		List<Long> listaIdEntiPartner = this.entePartnerService.getIdEntiPartnerByProgetto(idProgetto);
 		List<DettaglioEntiPartnerBean> listaEntiPartner = listaIdEntiPartner
 				.stream()
@@ -590,16 +592,16 @@ public class ProgettoService {
 					switch(codiceRuoloUtenteLoggato) {
 						case "REPP":
 							List<String> referentiEntePartner = this.entePartnerService.getCodiceFiscaleReferentiODelegatiEntePartnerProgetto(idProgetto, idEnte, RuoloUtenteEnum.REPP.toString());
-							dettaglioEntePartner.setAssociatoAUtente(referentiEntePartner.contains(cfUtenteLoggato));
+							dettaglioEntePartner.setAssociatoAUtente(idEnte.equals(idEnteProfilazione) && referentiEntePartner.contains(cfUtenteLoggato));
 							break;
 						case "DEPP":
 							List<String> delegatiEntePartner = this.entePartnerService.getCodiceFiscaleReferentiODelegatiEntePartnerProgetto(idProgetto, idEnte, RuoloUtenteEnum.DEPP.toString());
-							dettaglioEntePartner.setAssociatoAUtente(delegatiEntePartner.contains(cfUtenteLoggato));
+							dettaglioEntePartner.setAssociatoAUtente(idEnte.equals(idEnteProfilazione) && delegatiEntePartner.contains(cfUtenteLoggato));
 							break;
 						case "FAC":
 						case "VOL":
 							boolean isEnteAssociatoAFacOVol = this.enteSedeProgettoFacilitatoreService.isEnteAssociatoAFacVol(idEnte, idProgetto, cfUtenteLoggato);
-							dettaglioEntePartner.setAssociatoAUtente(isEnteAssociatoAFacOVol);
+							dettaglioEntePartner.setAssociatoAUtente(idEnte.equals(idEnteProfilazione) && isEnteAssociatoAFacOVol);
 							break;
 						default:
 							dettaglioEntePartner.setAssociatoAUtente(true);
@@ -638,16 +640,16 @@ public class ProgettoService {
 						switch(codiceRuoloUtenteLoggato) {
 						case "REPP":
 							List<String> referentiEntePartner = this.entePartnerService.getCodiceFiscaleReferentiODelegatiEntePartnerProgetto(idProgetto, idEnte, RuoloUtenteEnum.REPP.toString());
-							dettaglioSede.setAssociatoAUtente(referentiEntePartner.contains(cfUtenteLoggato));
+							dettaglioSede.setAssociatoAUtente(idEnte.equals(idEnteProfilazione) && referentiEntePartner.contains(cfUtenteLoggato));
 							break;
 						case "DEPP":
 							List<String> delegatiEntePartner = this.entePartnerService.getCodiceFiscaleReferentiODelegatiEntePartnerProgetto(idProgetto, idEnte, RuoloUtenteEnum.DEPP.toString());
-							dettaglioSede.setAssociatoAUtente(delegatiEntePartner.contains(cfUtenteLoggato));
+							dettaglioSede.setAssociatoAUtente(idEnte.equals(idEnteProfilazione) && delegatiEntePartner.contains(cfUtenteLoggato));
 							break;
 						case "FAC":
 						case "VOL":
 							boolean isSedeAssociataAFacOVol = this.enteSedeProgettoFacilitatoreService.getById(idEnte, sede.getId(), idProgetto, cfUtenteLoggato).isPresent();
-							dettaglioSede.setAssociatoAUtente(isSedeAssociataAFacOVol);
+							dettaglioSede.setAssociatoAUtente(idEnte.equals(idEnteProfilazione) && isSedeAssociataAFacOVol);
 							break;
 						default:
 							dettaglioSede.setAssociatoAUtente(true);

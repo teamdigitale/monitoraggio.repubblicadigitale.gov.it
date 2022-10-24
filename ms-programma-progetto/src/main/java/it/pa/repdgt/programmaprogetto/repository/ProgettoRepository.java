@@ -72,6 +72,7 @@ public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long> 
 			+ " 	AND	 ( :criterioRicerca IS NULL  "
 			+ "			OR CONVERT(progetto.ID, CHAR) = :criterioRicerca "
 			+ "			OR UPPER( progetto.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
+			+ "			OR UPPER( progetto.NOME ) LIKE UPPER( :criterioRicercaLike ) "
 			+ "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
 			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) )"
 			+ " 	AND	 ( COALESCE(:idsProgrammi) IS NULL  OR   programma.ID IN (:idsProgrammi) )"
@@ -176,6 +177,7 @@ public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long> 
 			+ " 	AND	 ( :criterioRicerca IS NULL  "
 			+ "			OR CONVERT(progetto.ID, CHAR) = :criterioRicerca "
 			+ "			OR UPPER( progetto.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
+			+ "			OR UPPER( progetto.NOME ) LIKE UPPER( :criterioRicercaLike ) "
 			+ "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
 			+ " 	AND	 ( COALESCE(:idsProgrammi) IS NULL  OR   programma.ID IN (:idsProgrammi) )"
 			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR progetto.STATO IN (:stati) )",
@@ -269,6 +271,7 @@ public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long> 
 			+ " 	AND	 ( :criterioRicerca IS NULL  "
 			+ "			OR CONVERT(progetto.ID, CHAR) = :criterioRicerca "
 			+ "			OR UPPER( progetto.NOME_BREVE ) LIKE UPPER( :criterioRicercaLike ) "
+			+ "			OR UPPER( progetto.NOME ) LIKE UPPER( :criterioRicercaLike ) "
 			+ "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
 			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) )"
 			+ " 	AND	 ( COALESCE(:idsProgrammi) IS NULL  OR   programma.ID IN (:idsProgrammi) )"

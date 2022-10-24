@@ -33,6 +33,8 @@ import it.pa.repdgt.gestioneutente.mapper.UtenteMapper;
 import it.pa.repdgt.gestioneutente.request.AggiornaUtenteRequest;
 import it.pa.repdgt.gestioneutente.request.NuovoUtenteRequest;
 import it.pa.repdgt.gestioneutente.request.UtenteRequest;
+import it.pa.repdgt.gestioneutente.resource.ListaUtentiResource;
+import it.pa.repdgt.gestioneutente.resource.UtenteImmagineResource;
 import it.pa.repdgt.gestioneutente.resource.UtenteResource;
 import it.pa.repdgt.gestioneutente.resource.UtentiLightResourcePaginata;
 import it.pa.repdgt.gestioneutente.service.UtenteService;
@@ -133,6 +135,14 @@ public class UtenteRestApi {
 		this.utenteService.assegnaRuoloAUtente(idUtente, codiceRuolo);
 	}
 	
+	@PostMapping(path = "/listaUtenti")
+	@ResponseStatus(value = HttpStatus.OK)
+	public List<UtenteImmagineResource> getListaUtentiByIdUtenti(@RequestBody ListaUtentiResource listaIdsUtenti,
+			@RequestParam Boolean richiediImmagine) {
+		List<UtenteImmagineResource> listaUtenti = this.utenteService.getListaUtentiByIdUtenti(listaIdsUtenti, richiediImmagine);
+		return listaUtenti;
+	}
+	
 	// Cancella Ruolo da Utente
 	@DeleteMapping(path = "/{idUtente}/cancellaRuolo/{codiceRuolo}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
@@ -152,7 +162,7 @@ public class UtenteRestApi {
 	// Scarica lista utenti in formato csv
 	@PostMapping(path = "/download")
 	public ResponseEntity<InputStreamResource> downloadListaCSVUtenti(@RequestBody @Valid UtenteRequest sceltaContesto) {
-		List<UtenteDto> listaUtentiDto = this.utenteService.getUtentiPerDownload(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		List<UtenteDto> listaUtentiDto = this.utenteService.getUtentiPerDownload(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest());
 		ByteArrayInputStream byteArrayInputStream = CSVUtil.exportCSVUtenti(listaUtentiDto, CSVFormat.DEFAULT);
 		InputStreamResource fileCSV = new InputStreamResource(byteArrayInputStream);
 		

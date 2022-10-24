@@ -26,7 +26,10 @@ public interface ContestoRepository extends JpaRepository<ProgrammaEntity, Long>
 
 	@Query(value = "SELECT p.id as idProgramma, "
 			+ "p.nome_breve as nomeProgramma, "
-			+ "e.nome_breve as nomeEnte "
+			+ "e.nome_breve as nomeEnte, "
+			+ "e.id as idEnte, "
+			+ "p.stato as statoP, "
+			+ "rdgp.stato_utente as statoUtente "
 			+ "FROM referente_delegati_gestore_programma rdgp "
 			+ "INNER JOIN programma p "
 			+ "on rdgp.id_programma = p.id "
@@ -42,7 +45,10 @@ public interface ContestoRepository extends JpaRepository<ProgrammaEntity, Long>
 			+ "p.nome_breve as nomeProgramma, "
 			+ "pr.id as idProgetto, "
 			+ "e.nome_breve as nomeEnte, "
-			+ "pr.NOME_BREVE as nomeBreveProgetto "
+			+ "e.id as idEnte, "
+			+ "pr.NOME_BREVE as nomeBreveProgetto,"
+			+ "pr.stato as statoP, "
+			+ "rdgp.stato_utente as statoUtente "
 			+ "FROM referente_delegati_gestore_progetto rdgp "
 			+ "INNER JOIN progetto pr "
 			+ "on rdgp.id_progetto = pr.id "
@@ -60,6 +66,7 @@ public interface ContestoRepository extends JpaRepository<ProgrammaEntity, Long>
 			+ "p.nome_breve as nomeProgramma, "
 			+ "pr.id as idProgetto, "
 			+ "e.nome_breve as nomeEnte, "
+			+ "e.id as idEnte, "
 			+ "pr.NOME_BREVE as nomeBreveProgetto "
 			+ "     FROM referente_delegati_partner rdp "
 			+ "     INNER JOIN ente_partner ep "
@@ -83,6 +90,7 @@ public interface ContestoRepository extends JpaRepository<ProgrammaEntity, Long>
 			+ "			p.nome_breve as nomeProgramma, "
 			+ "			pr.id as idProgetto, "
 			+ "			e.nome_breve as nomeEnte, "
+			+ "			e.id as idEnte, "
 			+ "			pr.NOME_BREVE as nomeBreveProgetto "
 			+ "FROM progetto pr "
 			+ "INNER JOIN (SELECT DISTINCT espf.ID_PROGETTO, espf.id_ente "
@@ -156,11 +164,14 @@ public interface ContestoRepository extends JpaRepository<ProgrammaEntity, Long>
 			+ "		AND ep.ID_ENTE = rdp.ID_ENTE"
 			+ "		WHERE p.id = :idProgetto "
 			+ "     AND p.id_programma = :idProgramma"
+			+ "		AND ep.id_ente = :idEnte"
 			+ "		AND rdp.CF_UTENTE = :codiceFiscale "
 			+ "		AND rdp.CODICE_RUOLO = :ruolo "
 			+ "     AND ep.stato_ente_partner <> 'TERMINATO'", nativeQuery = true)
-	List<ProgettoEnteProjection> findEntiPartnerNonTerminatiPerProgettoECodiceFiscaleReferenteDelegato(@Param(value = "idProgetto")Long idProgetto,
-			@Param(value = "idProgramma")Long idProgramma,
+	ProgettoEnteProjection findEntePartnerNonTerminatoPerProgettoAnIdEnteAndCodiceFiscaleReferenteDelegato(
+			@Param(value = "idProgramma") Long idProgramma,
+			@Param(value = "idProgetto")  Long idProgetto,
+			@Param(value = "idEnte")      Long idEnte,
 			@Param(value = "codiceFiscale")String codiceFiscale, 
 			@Param(value = "ruolo")String ruolo);
 	
@@ -182,8 +193,11 @@ public interface ContestoRepository extends JpaRepository<ProgrammaEntity, Long>
 			+ "AND espf.id_sede = esp.id_sede "
 			+ "where espf.id_progetto = :idProgetto "
 			+ "and espf.ID_FACILITATORE = :codiceFiscale "
-			+ "and espf.RUOLO_UTENTE = :ruolo ", nativeQuery = true)
-	List<ProgettoEnteSedeProjection> findSediPerProgrammaECodiceFiscaleFacilitatoreVolontario(@Param(value = "idProgetto")Long idProgetto,
+			+ "and espf.RUOLO_UTENTE = :ruolo "
+			+ "and esp.ID_ente = :idEnte", nativeQuery = true)
+	List<ProgettoEnteSedeProjection> findSedePerProgrammaAndIdEnteAndCodiceFiscaleFacilitatoreVolontario(
+			@Param(value = "idProgetto") Long idProgetto,
+			@Param(value = "idEnte")     Long idEnte,
 			@Param(value = "codiceFiscale")String codiceFiscale, 
 			@Param(value = "ruolo")String ruolo);
 	

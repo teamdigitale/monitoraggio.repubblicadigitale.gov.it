@@ -1,6 +1,5 @@
 package it.pa.repdgt.opendata.service;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -9,7 +8,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.bson.json.JsonObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -90,6 +88,7 @@ public class OpenDataCSVServiceTest {
 		private String capSede;
 		private String idProgramma;
 		private String idProgetto;
+		private String dataFruizioneServizio;
 
 		@Override
 		public String getGenere() {
@@ -176,5 +175,9 @@ public class OpenDataCSVServiceTest {
 			return idProgetto;
 		}
 		
+		@Override
+		public String getDataFruizioneServizio() {
+			return dataFruizioneServizio;
+		}
 	}
 }

@@ -465,6 +465,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 			List<CittadinoUploadBean> cittadiniUpload = CSVServizioUtil.excelToCittadini(fileCittadiniCSV.getInputStream());
 		
 			for(CittadinoUploadBean cittadinoUpload: cittadiniUpload) {
+				bonificaRecordUpload(cittadinoUpload);
 				Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService.getByCodiceFiscaleOrNumeroDocumento(cittadinoUpload.getCodiceFiscale(), cittadinoUpload.getNumeroDocumento());				
 				
 				CittadinoEntity cittadino = new CittadinoEntity();
@@ -512,6 +513,41 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		} catch (IOException e) {
 			throw new ServizioException("Impossibile effettuare upload lista cittadini", e, CodiceErroreEnum.CIT01);
 		}
+	}
+
+	private void bonificaRecordUpload(CittadinoUploadBean cittadinoUpload) {
+		if(cittadinoUpload.getAnnoNascita() != null)
+			cittadinoUpload.setAnnoNascita(cittadinoUpload.getAnnoNascita().replace("'", "’"));
+		if(cittadinoUpload.getCategoriaFragili() != null)
+			cittadinoUpload.setCategoriaFragili(cittadinoUpload.getCategoriaFragili().replace("'", "’"));
+		if(cittadinoUpload.getCittadinanza() != null)
+			cittadinoUpload.setCittadinanza(cittadinoUpload.getCittadinanza().replace("'", "’"));
+		if(cittadinoUpload.getCodiceFiscale() != null)	
+			cittadinoUpload.setCodiceFiscale(cittadinoUpload.getCodiceFiscale().replace("'", "’"));
+		if(cittadinoUpload.getCognome() != null)
+			cittadinoUpload.setCognome(cittadinoUpload.getCognome().replace("'", "’"));
+		if(cittadinoUpload.getComuneDomicilio() != null)
+			cittadinoUpload.setComuneDomicilio(cittadinoUpload.getComuneDomicilio().replace("'", "’"));
+		if(cittadinoUpload.getEmail() != null)
+			cittadinoUpload.setEmail(cittadinoUpload.getEmail().replace("'", "’"));
+		if(cittadinoUpload.getGenere() != null)
+			cittadinoUpload.setGenere(cittadinoUpload.getGenere().replace("'", "’"));
+		if(cittadinoUpload.getNome() != null)
+			cittadinoUpload.setNome(cittadinoUpload.getNome().replace("'", "’"));
+		if(cittadinoUpload.getNumeroCellulare() != null)
+			cittadinoUpload.setNumeroCellulare(cittadinoUpload.getNumeroCellulare().replace("'", "’"));
+		if(cittadinoUpload.getNumeroDocumento() != null)
+			cittadinoUpload.setNumeroDocumento(cittadinoUpload.getNumeroDocumento().replace("'", "’"));
+		if(cittadinoUpload.getPrefisso() != null)
+			cittadinoUpload.setPrefisso(cittadinoUpload.getPrefisso().replace("'", "’"));
+		if(cittadinoUpload.getStatoOccupazionale() != null)
+			cittadinoUpload.setStatoOccupazionale(cittadinoUpload.getStatoOccupazionale().replace("'", "’"));
+		if(cittadinoUpload.getTelefono() != null)
+			cittadinoUpload.setTelefono(cittadinoUpload.getTelefono().replace("'", "’"));
+		if(cittadinoUpload.getTipoDocumento() != null)
+			cittadinoUpload.setTipoDocumento(cittadinoUpload.getTipoDocumento().replace("'", "’"));
+		if(cittadinoUpload.getTitoloStudio() != null)
+			cittadinoUpload.setTitoloStudio(cittadinoUpload.getTitoloStudio().replace("'", "’"));		
 	}
 
 	public void inserisciCittadino(CittadinoEntity cittadino, Long idServizio) {
