@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.226](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.225...1.0.0-develop.226) (2022-10-24)
+
+
+### Bug Fixes
+
+* **be:** refactor query DTD ([f133ab0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f133ab025a6ca8cb18a5fa8ceb601e6378d7da91))
+
 ## [1.0.0-develop.225](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.224...1.0.0-develop.225) (2022-10-24)
 
 
