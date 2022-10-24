@@ -35,6 +35,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
   menuRoutes,
   profilePicture,
   handleOpenRocketChat = () => ({}),
+  chatToRead,
 }) => {
   const [openUser, setOpenUser] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -216,7 +217,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
                           handleOpenRocketChat();
                         }
                       }}
-                      className='mr-3'
+                      className='mr-3 position-relative'
                     >
                       <Icon
                         color='white'
@@ -224,12 +225,14 @@ const HeaderMobile: React.FC<HeaderI> = ({
                         size='sm'
                         aria-label='RocketChat'
                       />
+                      {chatToRead ? (
+                        <span className='chat-notifications'>{chatToRead}</span>
+                      ) : null}
                     </div>
                   ) : null}
-
                   <Button
                     onClick={() => setNotificationsIsOpen(true)}
-                    className='primary-bg-a6 px-2 bg-transparent'
+                    className='primary-bg-a6 px-2 bg-transparent position-relative'
                   >
                     <Icon
                       color='white'
@@ -238,7 +241,9 @@ const HeaderMobile: React.FC<HeaderI> = ({
                       aria-label='notifications preview'
                     />
                     {notification ? (
-                      <span className='badge-notifications'>{notification}</span>
+                      <span className='badge-notifications'>
+                        {notification}
+                      </span>
                     ) : null}
                   </Button>
                   <NotificationsPreview

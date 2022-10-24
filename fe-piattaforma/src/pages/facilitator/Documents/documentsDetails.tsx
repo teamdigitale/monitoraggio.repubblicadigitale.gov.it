@@ -89,7 +89,7 @@ const DocumentsDetails = () => {
           event_value: rate === 1 ? 'Y' : 'N',
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          category: docDetails?.category,
+          category: docDetails?.category_label || docDetails?.category,
         })
       );
     }
@@ -172,28 +172,28 @@ const DocumentsDetails = () => {
                   <Input
                     name='rate'
                     type='radio'
-                    id={`rate-si`}
+                    id='rate-si'
                     checked={usefullStatus === 1}
                     onInputChange={() => handleRate(1)}
-                    aria-labelledby={`rate-siDescription`}
+                    aria-labelledby='rate-siDescription'
                     withLabel={false}
                   />
-                  <Label check id={`rate-siDescription`}>
-                    si
+                  <Label check id='rate-siDescription'>
+                    Si
                   </Label>
                 </div>
                 <div className='d-flex align-items-center'>
                   <Input
                     name='rate'
                     type='radio'
-                    id={`rate-no`}
+                    id='rate-no'
                     checked={usefullStatus === 2}
                     onInputChange={() => handleRate(2)}
-                    aria-labelledby={`rate-noDescription`}
+                    aria-labelledby='rate-noDescription'
                     withLabel={false}
                   />
-                  <Label check id={`rate-noDescription`}>
-                    no
+                  <Label check id='rate-noDescription'>
+                    No
                   </Label>
                 </div>
               </FormGroup>

@@ -128,8 +128,7 @@ const SocialBar: React.FC<SocialI> = (props) => {
                 />
                 {device.mediaIsDesktop ? (
                   <p className='primary-color font-weight-bold pl-2 letter-spacing'>
-                    {' '}
-                    {/* {`${true ? 'RISPONDI' : 'COMMENTA'}`} */} COMMENTA
+                    COMMENTA
                   </p>
                 ) : null}
               </div>

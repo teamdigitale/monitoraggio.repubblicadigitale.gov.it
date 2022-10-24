@@ -14,7 +14,7 @@
   &__top {
     display: flex;
     align-items: start;
-    background-color: #0066CC;
+    background-color: #0066cc;
     height: $header-top-height;
     transition: all 250ms ease;
 
@@ -115,17 +115,31 @@
 }
 
 .badge-notifications {
-    position: absolute;
-    top: 10%;
-    right: 5%;
-    display: flex;
-    width: 20px;
-    height: 20px;
-    border-radius: 100%;
-    background-color: #B62032;
-    color: #FFFFFF;
-    align-items: center;
-    justify-content: center;
+  position: absolute;
+  top: 5px;
+  right: 0;
+  display: flex;
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  background-color: #b62032;
+  color: #ffffff;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-notifications {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  display: flex;
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  background-color: #b62032;
+  color: #ffffff;
+  align-items: center;
+  justify-content: center;
 }
 
 //background-image: url($image-path + '/img/logo.png');

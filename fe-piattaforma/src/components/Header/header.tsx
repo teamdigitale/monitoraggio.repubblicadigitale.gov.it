@@ -8,6 +8,7 @@ import {
   UserStateI,
   selectProfile,
   UserProfileI,
+  selectUserChatToRead,
 } from '../../redux/features/user/userSlice';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import HeaderMobile from './view/headerMobile';
@@ -29,6 +30,7 @@ export interface HeaderI {
   menuRoutes: MenuItem[];
   profilePicture: string | undefined;
   handleOpenRocketChat?: () => void;
+  chatToRead: number | undefined;
 }
 
 export interface HeaderProp {
@@ -107,6 +109,7 @@ const Header: React.FC<HeaderProp> = (props) => {
   const userProfile = useAppSelector(selectProfile);
   const dispatch = useDispatch();
   const { hasUserPermission } = useGuard();
+  const chatToRead = useAppSelector(selectUserChatToRead);
 
   const notification = useAppSelector(selectUserNotificationToRead);
 
@@ -136,6 +139,7 @@ const Header: React.FC<HeaderProp> = (props) => {
     menuRoutes,
     profilePicture: user?.immagineProfilo,
     handleOpenRocketChat,
+    chatToRead,
   };
 
   return (

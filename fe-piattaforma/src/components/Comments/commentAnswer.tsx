@@ -185,7 +185,8 @@ const CommentAnswer: React.FC<CommentI> = (props) => {
                 device.mediaIsPhone ? 'text-wrap' : 'text-nowrap'
               )}
             >
-              <strong>Tizio Caio</strong> {' - '}
+              <strong>Tizio Caio</strong>
+              &nbsp;-&nbsp;
               <span>{date && formatDate(date, 'shortDate')}</span>
             </p>
           </div>

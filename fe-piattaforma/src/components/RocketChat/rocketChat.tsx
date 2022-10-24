@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { RocketChatLogin } from '../../redux/features/user/userThunk';
 import { getSessionValues, setSessionValues } from '../../utils/sessionHelper';
 import { ActionTracker } from '../../redux/features/forum/forumThunk';
+import { setUserChatToRead } from '../../redux/features/user/userSlice';
 
 // RocketChat Docs https://developer.rocket.chat/rocket.chat/iframe-integration/iframe-events
 
@@ -12,7 +13,8 @@ const RocketChat = () => {
 
   const authenticateIFrame = () => {
     const target = document.getElementById('rcChannel');
-    if (target) {
+    if (target && rocketChatToken) {
+      console.log('authenticateIFrame');
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       target.contentWindow.postMessage(
@@ -33,8 +35,13 @@ const RocketChat = () => {
   }, [rocketChatToken]);
 
   const manageNotification = (e: MessageEvent<any>) => {
-    console.log('event name', e.data.eventName); // event name
-    console.log('event data', e.data.data); // event data
+    console.log('event name', e.data.eventName, e.data.data);
+    switch (e?.data?.eventName) {
+      case 'unread-changed': {
+        console.log('messages to read', e?.data?.data || 0);
+        dispatch(setUserChatToRead(e?.data?.data || 0));
+      }
+    }
   };
 
   const handleOnRocketChatLoad = () => {

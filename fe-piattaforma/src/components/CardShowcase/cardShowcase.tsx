@@ -130,9 +130,7 @@ const CardShowcase: React.FC<CardShowcaseI> = (props) => {
           ) : null}
           {entity ? (
             <div>
-              <PublishingAuthority
-                authority={_.capitalize(entity.toLowerCase())}
-              />
+              <PublishingAuthority authority={entity} />
             </div>
           ) : (
             <div className='pt-4 pb-3'></div>

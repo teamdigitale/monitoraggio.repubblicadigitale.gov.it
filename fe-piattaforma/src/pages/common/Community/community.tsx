@@ -94,7 +94,7 @@ const Community = () => {
   };
 
   useEffect(() => {
-    handleOnChangePage(0, 9);
+    handleOnChangePage(1, 9);
     dispatch(setPublishedContent(true));
     getPopularTopics();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -201,7 +201,7 @@ const Community = () => {
               )}
             </div>
           </Container>
-          {pagination?.pageNumber ? (
+          {pagination?.totalPages ? (
             <div className='pb-5'>
               <Paginator
                 activePage={pagination?.pageNumber}

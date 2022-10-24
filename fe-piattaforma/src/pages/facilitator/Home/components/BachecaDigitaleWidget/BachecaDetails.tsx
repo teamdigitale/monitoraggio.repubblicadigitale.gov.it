@@ -54,9 +54,13 @@ const BachecaDetails = () => {
             target: 'tnd',
             action_type: 'VISUALIZZAZIONE',
             event_type: 'NEWS',
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            category: res?.data?.data?.items?.[0]?.category,
+            category:
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              res?.data?.data?.items?.[0]?.category_label ||
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              res?.data?.data?.items?.[0]?.category,
           })
         );
       }

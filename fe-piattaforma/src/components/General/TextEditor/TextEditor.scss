@@ -2,6 +2,7 @@
   margin-bottom: 10px;
   border: 1px solid rgba(0, 0, 0, 0.5);
   position: relative;
+  width: 100%;
   .wrapper {
     height: 430px;
 
@@ -9,6 +10,7 @@
     flex-direction: column;
     .toolbar {
       position: relative;
+      height: fit-content;
     }
     .editor {
       flex: 1;

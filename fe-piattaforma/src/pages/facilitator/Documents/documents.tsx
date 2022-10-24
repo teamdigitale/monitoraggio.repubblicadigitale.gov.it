@@ -34,7 +34,7 @@ import {
 import { formFieldI } from '../../../utils/formHelper';
 import { selectUser } from '../../../redux/features/user/userSlice';
 import WorkdocsRegistrationModal from './workdocsRegistrationModal';
-import useGuard from "../../../hooks/guard";
+import useGuard from '../../../hooks/guard';
 
 const documentCta = {
   textCta: 'Carica documento',
@@ -105,7 +105,7 @@ const Documents = () => {
   };
 
   useEffect(() => {
-    handleOnChangePage(0, 9);
+    handleOnChangePage(1, 9);
     dispatch(setPublishedContent(true));
     getPopularDocs();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -167,13 +167,16 @@ const Documents = () => {
     },
     {
       filterName: 'Intervento',
-      options:
-        dropdownFilterOptions && dropdownFilterOptions['interventions']
-          ? dropdownFilterOptions['interventions'].map(({ label, id }) => ({
-              label,
-              value: id,
-            }))
-          : [],
+      options: (dropdownFilterOptions['interventions'] || [])
+        .map(({ label, id }) => ({
+          label: id === 'public' ? 'Tutti gli interventi' : label,
+          value: id,
+        }))
+        .sort((a, b) => {
+          if (a.value > b.value) return -1;
+          if (a.value < b.value) return 1;
+          return 0;
+        }),
       id: policyDropdownLabel,
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, policyDropdownLabel),
@@ -188,12 +191,16 @@ const Documents = () => {
     },
     {
       filterName: 'Programma',
-      options: (dropdownFilterOptions['programs'] || []).map(
-        ({ label, id }) => ({
+      options: (dropdownFilterOptions['programs'] || [])
+        .map(({ label, id }) => ({
           label,
           value: id,
-        })
-      ),
+        }))
+        .sort((a, b) => {
+          if (a.value > b.value) return -1;
+          if (a.value < b.value) return 1;
+          return 0;
+        }),
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, programDropdownLabel),
       id: programDropdownLabel,
@@ -211,7 +218,7 @@ const Documents = () => {
   const handleCollaborationToolRegistration = () => {
     dispatch(ActionTracker({ target: 'wd' }));
     window.open(process.env.REACT_APP_WORKDOCS_BASE_URL, '_blank');
-    window.location.reload();
+    if (!utenteRegistratoInWorkdocs) window.location.reload();
   };
 
   const handleCollaborationTool = () => {
@@ -238,16 +245,19 @@ const Documents = () => {
           {...toolCollaborationCta}
           {...documentCta}
           sortFilter
-          cta={hasUserPermission(['new.doc']) ? () =>
-            dispatch(
-              openModal({
-                id: 'documentModal',
-                payload: {
-                  title: 'Carica documento',
-                },
-              })
-            )
-          : undefined}
+          cta={
+            hasUserPermission(['new.doc'])
+              ? () =>
+                  dispatch(
+                    openModal({
+                      id: 'documentModal',
+                      payload: {
+                        title: 'Carica documento',
+                      },
+                    })
+                  )
+              : undefined
+          }
           ctaToolCollaboration={handleCollaborationTool}
           cards={popularDocuments}
           isDocument
@@ -280,7 +290,7 @@ const Documents = () => {
               )}
             </div>
           </Container>
-          {pagination?.pageNumber ? (
+          {pagination?.totalPages ? (
             <div className='pb-5'>
               <Paginator
                 activePage={pagination?.pageNumber}

@@ -26,7 +26,7 @@ interface CardCommunityI extends CardProps {
   comments?: CommentI[];
   category_label?: string;
   views?: string;
-  region?: string;
+  entity?: string;
   onClick?: () => void;
 }
 
@@ -40,7 +40,7 @@ const CardCommunity: React.FC<CardCommunityI> = (props) => {
     comment_count,
     category_label,
     views,
-    region,
+    entity,
   } = props;
   const navigate = useNavigate();
 
@@ -67,7 +67,7 @@ const CardCommunity: React.FC<CardCommunityI> = (props) => {
       <Col className='text-left'>
         {category_label ? (
           <div className='mb-2 card-community__pre-title'>
-            <span className='font-weight-bold'>{category_label} —</span>{' '}
+            <span className='font-weight-bold'>{category_label}&nbsp;-&nbsp;</span>
             {date && formatDate(date, 'shortDate')}
           </div>
         ) : null}
@@ -84,7 +84,7 @@ const CardCommunity: React.FC<CardCommunityI> = (props) => {
             {description}
           </CardText>
         ) : null}
-        {region ? <PublishingAuthority authority={region} /> : null}
+        {entity ? <PublishingAuthority authority={entity} /> : null}
       </Col>
       <div
         className={clsx('d-flex', 'flex-row', 'mt-2', 'justify-content-end')}

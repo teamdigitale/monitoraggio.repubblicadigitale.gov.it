@@ -63,7 +63,7 @@ const BachecaDigitale = () => {
     pageNumber: number = pagination?.pageNumber,
     pageSize = pagination?.pageSize
   ) => {
-    dispatch(setEntityPagination({ pageNumber, pageSize }));
+    dispatch(setEntityPagination({ pageNumber: pageNumber, pageSize }));
   };
 
   const getNewsList = () => {
@@ -96,7 +96,7 @@ const BachecaDigitale = () => {
   };
 
   useEffect(() => {
-    handleOnChangePage(0, 9);
+    handleOnChangePage(1, 9);
     dispatch(setPublishedContent(true));
     getPopularNews();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -165,13 +165,16 @@ const BachecaDigitale = () => {
     },
     {
       filterName: 'Intervento',
-      options:
-        dropdownFilterOptions && dropdownFilterOptions['interventions']
-          ? dropdownFilterOptions['interventions'].map(({ label, id }) => ({
-              label,
-              value: id,
-            }))
-          : [],
+      options: (dropdownFilterOptions['interventions'] || [])
+        .map(({ label, id }) => ({
+          label: id === 'public' ? 'Tutti gli interventi' : label,
+          value: id,
+        }))
+        .sort((a, b) => {
+          if (a.value > b.value) return -1;
+          if (a.value < b.value) return 1;
+          return 0;
+        }),
       id: policyDropdownLabel,
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, policyDropdownLabel),
@@ -186,12 +189,16 @@ const BachecaDigitale = () => {
     },
     {
       filterName: 'Programma',
-      options: (dropdownFilterOptions['programs'] || []).map(
-        ({ label, id }) => ({
+      options: (dropdownFilterOptions['programs'] || [])
+        .map(({ label, id }) => ({
           label,
           value: id,
-        })
-      ),
+        }))
+        .sort((a, b) => {
+          if (a.value > b.value) return -1;
+          if (a.value < b.value) return 1;
+          return 0;
+        }),
       onOptionsChecked: (options) =>
         handleDropdownFilters(options, programDropdownLabel),
       id: programDropdownLabel,
@@ -259,7 +266,7 @@ const BachecaDigitale = () => {
               )}
             </div>
           </Container>
-          {pagination?.pageNumber ? (
+          {pagination?.totalPages ? (
             <div className='pb-5'>
               <Paginator
                 activePage={pagination?.pageNumber}

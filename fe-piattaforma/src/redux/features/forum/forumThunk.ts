@@ -977,8 +977,11 @@ const newActionTracker = ({
   codiceRuolo,
   idProgramma,
 }: ActionTrackerI) => ({
-  event: target === 'chat' || target === 'wd' ? 'click' : action_type,
-  event_type: target === 'tnd' ? event_type : null,
+  event: (target === 'chat' || target === 'wd'
+    ? 'click'
+    : action_type
+  )?.toLowerCase(),
+  event_type: (target === 'tnd' ? event_type : null)?.toLowerCase(),
   event_value: event_value || null,
   role_code: codiceRuolo || null,
   category: category?.toString() || null,

@@ -69,7 +69,7 @@ const CardSlider: React.FC<CardSliderI> = (props) => {
     >
       <div className='pl-1'>
         <div className='card-slider-container__pre-title'>
-          <span className='font-weight-bold'>{category_label} —</span>{' '}
+          <span className='font-weight-bold'>{category_label}&nbsp;-&nbsp;</span>
           {date && formatDate(date, 'shortDate')}
         </div>
         <p className='card-slider-container__title my-2 font-weight-bold'>
