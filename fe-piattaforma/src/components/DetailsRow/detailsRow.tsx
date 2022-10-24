@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Icon, UncontrolledTooltip } from 'design-react-kit';
 import { CRUDActionsI, CRUDActionTypes } from '../../utils/common';
 import StatusChip from '../StatusChip/statusChip';
+import PasswordVisible from '/public/assets/img/it-password-visible.png';
 
 interface DetailsRowI {
   id: string;
@@ -131,7 +132,8 @@ const DetailsRow: React.FC<DetailsRowI> = ({
               id={`button-view-${id}`}
             >
               <Icon
-                icon='it-file'
+                icon={PasswordVisible}
+                className='icons__icon-visible-password'
                 color='primary'
                 size='sm'
                 aria-label='Visualizza questionario'

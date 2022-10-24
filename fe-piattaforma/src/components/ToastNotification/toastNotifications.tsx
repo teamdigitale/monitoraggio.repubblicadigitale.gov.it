@@ -52,6 +52,7 @@ const ToastNotifications: React.FC = () => {
           className='notify-card position-relative'
           color={getColorByStatus(notify?.status)}
         >
+          {notify?.title ? <p><strong>{notify?.title}</strong></p> : null}
           {notify?.message}
           {notify?.closable ? (
             <Icon

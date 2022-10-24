@@ -6,7 +6,7 @@ import { FormGroup } from 'design-react-kit';
 import { Form, Input } from '../../../../../../../components';
 
 const PrintSelectField: React.FC<PrintFieldI> = (props) => {
-  const { info, className, noLabel = false, halfWidth = false } = props;
+  const { info, className, noLabel = false, halfWidth = false, multipleChoice = false } = props;
   const [options, setOptions] = useState<string[]>([]);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const PrintSelectField: React.FC<PrintFieldI> = (props) => {
       {!noLabel && (
         <p>
           <strong>{info.title}</strong>
-          {' (una sola scelta)'}
+          {multipleChoice ? ' (scelta mutipla)':' (una sola scelta)'}
         </p>
       )}
       <Form id='form-print-select' className={clsx('mr-3', 'mt-3', 'd-flex', 'flex-column')}>

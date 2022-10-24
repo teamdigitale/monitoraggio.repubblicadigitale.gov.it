@@ -11,6 +11,7 @@ export interface PrintFieldI {
   optionsLevel2?:
     | { label: string; value: string | number; upperLevel: string }[]
     | undefined;
+  multipleChoice?: boolean;
 }
 
 const PrintTextField: React.FC<PrintFieldI> = (props) => {

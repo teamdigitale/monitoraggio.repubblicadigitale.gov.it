@@ -92,7 +92,8 @@ export type RolePermissionI =
   | 'list.dwnl.serv'
   | 'view.card.serv'
   // Dashboard
-  | 'acc.self.dshb';
+  | 'acc.self.dshb'
+  | 'self.bi';
 
 interface RoleI {
   codiceRuolo: string;

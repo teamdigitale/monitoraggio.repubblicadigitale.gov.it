@@ -88,17 +88,24 @@ const ManageCitizenInService: React.FC<ManageCitizenInServiceI> = ({
       }
     });
 
-    const sezioneQ1Questionario =
-      `{"id":"${idQ1}","title":"${titleQ1}","properties":${createStringOfCompiledSurveySection(newFormValues).replaceAll('"', "'")}}`;
+    const sezioneQ1Questionario = `{"id":"${idQ1}","title":"${titleQ1}","properties":${createStringOfCompiledSurveySection(
+      newFormValues
+    ).replaceAll('"', "'")}}`;
 
     body = {
       ...body,
       questionarioQ1: sezioneQ1Questionario,
     };
-    if (idCittadino) await dispatch(UpdateCitizenDetail(idCittadino, body));
-    // rifaccio get cittadini servizio
-    dispatch(GetCitizenListServiceDetail(serviceId));
-    resetModal();
+    if (idCittadino) {
+      const res = await dispatch(UpdateCitizenDetail(idCittadino, body));
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (res) {
+        // rifaccio get cittadini servizio
+        dispatch(GetCitizenListServiceDetail(serviceId));
+        resetModal();
+      }
+    }
   };
 
   const modalCTAs = !viewMode
