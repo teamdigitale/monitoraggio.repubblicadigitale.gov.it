@@ -116,7 +116,9 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
               target: 'tnd',
               action_type: 'CREAZIONE',
               event_type: 'DOCUMENTI',
-              category: newFormValues.category?.toString(),
+              category:
+                newFormValues.category_label?.toString() ||
+                newFormValues.category?.toString(),
             })
           );
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment

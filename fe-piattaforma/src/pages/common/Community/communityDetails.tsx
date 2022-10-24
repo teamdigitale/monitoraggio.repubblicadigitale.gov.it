@@ -1,12 +1,9 @@
-// import clsx from 'clsx';
-import { Button, Icon } from 'design-react-kit';
 import React, { useEffect } from 'react';
+import { Button, Icon } from 'design-react-kit';
 import { useNavigate, useParams } from 'react-router-dom';
 import CommentSection from '../../../components/Comments/commentSection';
 import SectionDetail from '../../../components/DocumentDetail/sectionDetail';
-// import { selectDevice } from '../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../redux/hooks';
-// import { Comment } from '../../../components';
 import { useDispatch } from 'react-redux';
 import {
   selectCommentsList,
@@ -35,8 +32,6 @@ import { setInfoIdsBreadcrumb } from '../../../redux/features/app/appSlice';
 
 const CommunityDetails = () => {
   const navigate = useNavigate();
-  // const device = useAppSelector(selectDevice);
-  // const [showAllComments, setShowAllComments] = useState<boolean>(false);
   const dispatch = useDispatch();
   const topicDetails = useAppSelector(selectTopicDetail);
   const commentsList = useAppSelector(selectCommentsList);
@@ -49,14 +44,20 @@ const CommunityDetails = () => {
       dispatch(GetCommentsList(id, userId));
       const res = await dispatch(GetItemDetail(id, userId, 'community'));
       if (res) {
-        dispatch(ActionTracker({
-          target: 'tnd',
-          action_type: 'VISUALIZZAZIONE',
-          event_type: 'TOPIC',
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          category: res?.data?.data?.items?.[0]?.category,
-        }));
+        dispatch(
+          ActionTracker({
+            target: 'tnd',
+            action_type: 'VISUALIZZAZIONE',
+            event_type: 'TOPIC',
+            category:
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              res?.data?.data?.items?.[0]?.category_label ||
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              res?.data?.data?.items?.[0]?.category,
+          })
+        );
       }
     }
   };

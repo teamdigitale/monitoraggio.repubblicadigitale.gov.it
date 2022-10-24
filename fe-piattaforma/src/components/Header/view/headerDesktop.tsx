@@ -37,6 +37,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
   menuRoutes,
   profilePicture,
   handleOpenRocketChat = () => ({}),
+  chatToRead,
 }) => {
   //const languages = ['ITA', 'ENG'];
 
@@ -435,6 +436,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                             handleOpenRocketChat();
                           }
                         }}
+                        className='position-relative'
                       >
                         <Icon
                           color='white'
@@ -442,6 +444,11 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                           size='sm'
                           aria-label='RocketChat'
                         />
+                        {chatToRead ? (
+                          <span className='chat-notifications'>
+                            {chatToRead}
+                          </span>
+                        ) : null}
                       </div>
                     </div>
                   ) : null}
@@ -452,7 +459,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                           onClick={() => setNotificationsIsOpen(true)}
                           className='primary-bg-a6 px-2 bg-transparent'
                           style={{
-                            position: 'relative'
+                            position: 'relative',
                           }}
                         >
                           <Icon
@@ -462,17 +469,17 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                             aria-label='notifications preview'
                           />
                           {notification ? (
-                         <span className='badge-notifications'>{notification}</span>
-                      ) : null}
+                            <span className='badge-notifications'>
+                              {notification}
+                            </span>
+                          ) : null}
                         </Button>
                         <NotificationsPreview
                           open={notificationsIsOpen}
                           setOpen={setNotificationsIsOpen}
                           menuRoutes={menuRoutes}
                         />
-                        
                       </div>
-                      
                     </div>
                   ) : null}
                 </>

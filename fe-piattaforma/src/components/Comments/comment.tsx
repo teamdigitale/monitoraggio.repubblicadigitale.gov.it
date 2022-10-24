@@ -47,6 +47,7 @@ export interface CommentI {
   section: 'board' | 'community' | 'documents';
   onDeleteComment?: () => void;
   onEditComment?: () => void;
+  reported: 0 | 1;
 }
 
 const Comment: React.FC<CommentI> = (props) => {
@@ -64,6 +65,7 @@ const Comment: React.FC<CommentI> = (props) => {
     thread = false,
     onDeleteComment = () => ({}),
     onEditComment = () => ({}),
+    reported = 0,
   } = props;
 
   const [detailDropdownOptions, setDetailDropdownOptions] = useState<any[]>([]);
@@ -72,6 +74,12 @@ const Comment: React.FC<CommentI> = (props) => {
   const device = useAppSelector(selectDevice);
   const dispatch = useDispatch();
   const { hasUserPermission } = useGuard();
+  const [isReported, setIsReported] = useState(reported === 1);
+
+  useEffect(() => {
+    setIsReported(reported === 1 && hasUserPermission(['btn.rprt']));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reported]);
 
   const { id: itemId } = useParams();
   const userId = useAppSelector(selectUser)?.id;
@@ -309,11 +317,11 @@ const Comment: React.FC<CommentI> = (props) => {
         </div>
         <div
           className={clsx(
-            'd-flex flex-row justify-content-end'
-            // isReported && 'align-items-center'
+            'd-flex','flex-row','justify-content-end',
+            isReported && 'align-items-center'
           )}
         >
-          {/* {isReported && <Icon icon='it-error' color='danger' />} */}
+          {isReported ? <Icon icon='it-error' color='danger' /> : null}
           {commentDropdown()}
         </div>
         {/* comment heading ^^^^ */}

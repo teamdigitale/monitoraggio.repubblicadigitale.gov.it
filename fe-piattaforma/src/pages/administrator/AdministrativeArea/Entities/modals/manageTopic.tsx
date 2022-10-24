@@ -104,7 +104,9 @@ const ManageTopic: React.FC<ManageTopicI> = ({
               target: 'tnd',
               action_type: 'CREAZIONE',
               event_type: 'TOPIC',
-              category: newFormValues.category?.toString(),
+              category:
+                newFormValues.category_label?.toString() ||
+                newFormValues.category?.toString(),
             })
           );
           setNewFormValues({});

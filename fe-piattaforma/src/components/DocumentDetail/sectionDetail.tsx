@@ -98,7 +98,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
           target: 'tnd',
           action_type: 'VISUALIZZAZIONE-DOWNLOAD',
           event_type: 'DOCUMENTI',
-          category,
+          category: category_label || category,
         })
       );
     }
@@ -140,7 +140,8 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
           : section === 'community'
           ? 'del.topic'
           : 'hidden',
-      ]) && author?.toString() === userId?.toString()
+      ]) &&
+      author?.toString() === userId?.toString()
     ) {
       authorizedOption.push(deleteOption);
     }
@@ -151,7 +152,8 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
           : section === 'community'
           ? 'upd.topic'
           : 'hidden',
-      ]) && author?.toString() === userId?.toString()
+      ]) &&
+      author?.toString() === userId?.toString()
     ) {
       authorizedOption.push(editOption);
     }
@@ -408,7 +410,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
                         target: 'tnd',
                         action_type: 'LIKE',
                         event_type: 'TOPIC',
-                        category,
+                        category: category_label || category,
                       })
                     );
                   }
@@ -425,6 +427,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
                 title: 'Aggiungi commento',
                 action: 'comment',
                 entity: section === 'community' ? 'community' : 'document',
+                category: category_label || category,
               },
             })
           )

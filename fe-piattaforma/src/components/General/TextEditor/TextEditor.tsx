@@ -41,6 +41,12 @@ const TextEditor = ({ text, onChange }: TextEditorI) => {
   return (
     <div className='editor-container'>
       <Editor
+      toolbar={{
+        options: ['inline'],
+        inline: {
+          options: ['bold', 'italic', 'underline']
+        }
+      }}
         editorState={editorState}
         onEditorStateChange={(editorState) => {
           setEditorState(editorState)

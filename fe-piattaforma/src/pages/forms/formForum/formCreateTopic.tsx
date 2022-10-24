@@ -7,7 +7,7 @@ import TextArea from '../../../components/Form/textarea';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
-import { selectDevice } from '../../../redux/features/app/appSlice';
+// import { selectDevice } from '../../../redux/features/app/appSlice';
 import { GetCategoriesList } from '../../../redux/features/forum/categories/categoriesThunk';
 import {
   selectCategoriesList,
@@ -18,6 +18,7 @@ import { GetTagsList } from '../../../redux/features/forum/forumThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
 import { uploadFile } from '../../../utils/common';
+import TagsSelect from '../../../components/General/TagsSelect/TagsSelect';
 
 interface createTopicI extends withFormHandlerProps {
   formDisabled?: boolean;
@@ -45,7 +46,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
     name: 'Carica documenti, foto ecc.',
   });
   const [iconVisible, setIconVisible] = useState<boolean>(false);
-  const device = useAppSelector(selectDevice);
+  // const device = useAppSelector(selectDevice);
   const tagsList = useAppSelector(selectTagsList);
   const [tags, setTags] = useState<string[]>([]);
   const formDisabled = !!props.formDisabled;
@@ -177,7 +178,15 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
         </div>
       </Form.Row>
       <Form.Row className={bootClass}>
-        <Select
+        <TagsSelect
+          selectedTags={tags}
+          tags={tagsList.map(opt => ({
+            label: opt.name,
+            value: opt.name
+          }))}
+          addTag={handleOnSubmit}
+        />
+        {/* <Select
           onChange={(e: any) => console.log(e.target.value)}
           options={tagsList
             .filter((t) => !tags.includes(t.name))
@@ -189,7 +198,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
           onInputChange={(value) => handleOnSubmit(value as string)}
           placeholder='Digita la parola chiave e utilizza il completamento automatico per evitare errori di digitazione.'
           isSearchable
-        />
+        /> */}
       </Form.Row>
       <Form.Row className={bootClass}>
         {tags.length ? (

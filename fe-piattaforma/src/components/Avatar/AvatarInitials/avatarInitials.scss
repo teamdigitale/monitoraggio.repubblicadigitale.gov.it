@@ -1,12 +1,8 @@
 .avatar-initials-container {
   &__circle-width {
-    &__profile{
+    &__big {
       width: 65px !important;
       height: 65px !important;
-    }
-    &__big {
-      width: 53px !important;
-      height: 53px !important;
     }
     &__small {
       width: 35px !important;
@@ -15,13 +11,10 @@
   }
 }
 .initials {
-  &__font-profile{
-    font-size: 32px;
-  }
   &__font-small {
     font-size: 15px;
   }
   &__font-big {
-    font-size: 24px;
+    font-size: 32px;
   }
 }

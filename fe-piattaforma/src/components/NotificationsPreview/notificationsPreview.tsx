@@ -28,14 +28,11 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
     if (open) {
       focusId('hamburger');
       body.style.overflowY = 'hidden';
+      dispatch(GetNotificationsByUser())
     } else {
       body.style.overflowY = 'unset';
     }
   }, [open]);
-
-  useEffect(() => {
-    dispatch(GetNotificationsByUser())
-  }, [])
 
   const onReadNotification = async (id: string) => {
     await dispatch(ReadNotification([id]))

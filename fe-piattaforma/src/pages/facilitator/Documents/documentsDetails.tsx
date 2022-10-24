@@ -89,7 +89,7 @@ const DocumentsDetails = () => {
           event_value: rate === 1 ? 'Y' : 'N',
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          category: docDetails?.category,
+          category: docDetails?.category_label || docDetails?.category,
         })
       );
     }

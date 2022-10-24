@@ -286,7 +286,7 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
                           target: 'tnd',
                           action_type: 'LIKE',
                           event_type: 'NEWS',
-                          category,
+                          category: category_label || category,
                         })
                       );
                     }
@@ -303,7 +303,7 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
                               title: 'Aggiungi commento',
                               action: 'comment',
                               entity: 'board',
-                              category,
+                              category: category_label || category,
                             },
                           })
                         )
