@@ -308,7 +308,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
           }))}
           isDisabled={formDisabled}
           placeholder='Seleziona'
-          shortDropdownMenu
+          maxMenuHeight={200}
         />
         <Select
           {...form?.intervention}

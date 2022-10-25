@@ -140,13 +140,14 @@ const Notifications: React.FC = () => {
             <div className='title'>
               <h3 className='primary-color-a9 m-0'>
                 Le tue notifiche
+                {/* HIDE for now
                 <span className='badge'>
                   {
                     notificationsList.filter(
                       (notification) => !notification.status
                     ).length
                   }
-                </span>
+                </span>*/}
               </h3>
             </div>
             {/* <PageTitle title='Le tue notifiche' badge={true} /> */}

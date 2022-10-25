@@ -246,7 +246,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
           }))}
           isDisabled={formDisabled}
           placeholder='Seleziona'
-          shortDropdownMenu
+          maxMenuHeight={200}
         />
         <Select
           {...form?.intervention}
