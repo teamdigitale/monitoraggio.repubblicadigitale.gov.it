@@ -29,6 +29,12 @@
     max-width: 57px;
     max-height: 72.67px;
   }
+
+  &__description {
+    font-weight: 400;
+    color: #455B71;
+    height: 40px; //ingombro minimo 
+  }
 }
 .btn-download-file,
 .btn-external-link {

@@ -229,7 +229,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
       className={clsx(
         'document-card-detail-container',
         device.mediaIsPhone ? 'p-3' : 'px-5 py-4',
-        'mb-4'
+        'mb-5'
       )}
     >
       <div
@@ -256,7 +256,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
       <div
         className={clsx(
           device.mediaIsPhone ? 'd-flex flex-column' : 'd-flex',
-          'align-items-center',
+          isDocument && 'align-items-center',
           'mb-3'
         )}
       >
@@ -271,7 +271,14 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
             )}
           />
         ) : null}
-        <p>{description}</p>
+        <p
+          className={clsx(
+            'document-card-detail-container__description',
+            device.mediaIsPhone && 'text-serif'
+          )}
+        >
+          {description}
+        </p>
       </div>
       {!device.mediaIsPhone ? (
         <div className='mb-4'>
@@ -346,7 +353,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
               'd-flex',
               'justify-content-start',
               'px-0',
-              'pb-5'
+              'py-2'
             )}
             onClick={trackDownload}
           >
@@ -371,7 +378,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
         </div>
       ) : null}
       {tags ? (
-        <div className='d-flex flex-row w-100 mb-4 align-items-center'>
+        <div className='d-flex flex-row w-100 mb-5 align-items-center'>
           <b className='mr-2'>TAG:</b>
           <div className='d-flex align-items-center'>
             {tags.split(';').map((tag, i) => (

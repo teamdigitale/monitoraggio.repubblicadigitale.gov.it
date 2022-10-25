@@ -11,9 +11,9 @@ import { selectDevice } from '../../redux/features/app/appSlice';
 // RocketChat Docs https://developer.rocket.chat/rocket.chat/iframe-integration/iframe-events
 
 const iframeHeight = {
-  mobile: '570',
-  tablet: '740',
-  desktop: '670',
+  mobile: '520',
+  tablet: '670',
+  desktop: '570',
 };
 
 const RocketChat = () => {

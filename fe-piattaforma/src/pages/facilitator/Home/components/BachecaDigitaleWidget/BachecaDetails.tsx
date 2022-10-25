@@ -149,7 +149,7 @@ const BachecaDetails = () => {
         }
       />
       {newsDetail.enable_comments && commentsList.length ? (
-        <div className='mt-4'>
+        <div className='mt-5'>
           <CommentSection section='board' />
         </div>
       ) : null}

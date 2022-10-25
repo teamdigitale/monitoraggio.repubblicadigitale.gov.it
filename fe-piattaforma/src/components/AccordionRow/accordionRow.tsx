@@ -6,11 +6,13 @@ import clsx from 'clsx';
 export interface AccordionRowI {
   title: string;
   clickViewAction?: () => void;
+  clickEditAction?: () => void;
+  clickDeleteAction?: () => void;
   innerInfo?:
-    | {
-        [key: string]: string;
-      }
-    | undefined;
+  | {
+    [key: string]: string;
+  }
+  | undefined;
   status?: string | undefined;
   StatusElement?: ReactElement | undefined;
   onTooltipInfo?: string;
@@ -19,6 +21,8 @@ export interface AccordionRowI {
 const AccordionRow: React.FC<AccordionRowI> = ({
   title,
   clickViewAction,
+  clickEditAction,
+  clickDeleteAction,
   innerInfo,
   status,
   StatusElement,
@@ -71,20 +75,46 @@ const AccordionRow: React.FC<AccordionRowI> = ({
 
           <span className='font-weight-semibold'>{title}</span>
         </div>
-        {clickViewAction ? (
-          <Button>
-            <div className='d-flex justify-content-start'>
-              <Icon
-                icon='it-chevron-right'
-                onClick={clickViewAction}
-                aria-label='vai al dettaglio'
-              />
-            </div>
-          </Button>
-        ) : null}
+        <div>
+          {clickViewAction ? (
+            <Button>
+              <div className='d-flex justify-content-start'>
+                <Icon
+                  icon='it-chevron-right'
+                  onClick={clickViewAction}
+                  aria-label='vai al dettaglio'
+                />
+              </div>
+            </Button>
+          ) : null}
+          {clickEditAction ? (
+            <Button>
+              <div className='d-flex justify-content-start'>
+                <Icon
+                  icon='it-pencil'
+                  color='primary'
+                  onClick={clickEditAction}
+                  aria-label='Modifica riga'
+                />
+              </div>
+            </Button>
+          ) : null}
+          {clickDeleteAction ? (
+            <Button>
+              <div className='d-flex justify-content-start'>
+                <Icon
+                  icon='it-less-circle'
+                  color='primary'
+                  onClick={clickDeleteAction}
+                  aria-label='Elimina riga'
+                />
+              </div>
+            </Button>
+          ) : null}
+        </div>
         {((onTooltipInfo || innerInfo?.onTooltipInfo) &&
           innerInfo?.isPresentInList) ||
-        innerInfo?.failedCSV ? (
+          innerInfo?.failedCSV ? (
           <div
             className='d-inline-flex position-relative'
             id={`tooltip-${innerInfo.id}`}
@@ -92,8 +122,8 @@ const AccordionRow: React.FC<AccordionRowI> = ({
             <UncontrolledTooltip
               placement='bottom'
               target={`tooltip-${innerInfo.id}`}
-              /*  isOpen={openOne}
-                    toggle={() => toggleOne(!openOne)} */
+            /*  isOpen={openOne}
+                  toggle={() => toggleOne(!openOne)} */
             >
               {onTooltipInfo}
               {innerInfo.onTooltipInfo}

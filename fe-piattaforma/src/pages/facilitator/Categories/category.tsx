@@ -138,7 +138,7 @@ const Category = () => {
   };
 
   return (
-    <>
+    <div className='container'>
       <PageTitle title='Elenco categorie' />
       <GenericSearchFilterTableLayout
         dropdowns={dropdowns}
@@ -176,7 +176,7 @@ const Category = () => {
         }}
       />
       <ManageCategory />
-    </>
+    </div>
   );
 };
 
