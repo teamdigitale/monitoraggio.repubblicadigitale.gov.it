@@ -34,9 +34,15 @@ const TableMobile: React.FC<MobileTableI> = ({
           actions,
           clickViewAction:
             (!item?.citizen || (item?.citizen && item?.associatoAUtente)) &&
-            onActionClick?.[CRUDActionTypes.VIEW]
+              onActionClick?.[CRUDActionTypes.VIEW]
               ? () => onActionClick?.[CRUDActionTypes.VIEW](item)
               : undefined,
+          clickEditAction: onActionClick?.[CRUDActionTypes.EDIT]
+            ? () => onActionClick?.[CRUDActionTypes.EDIT](item)
+            : undefined,
+          clickDeleteAction: onActionClick?.[CRUDActionTypes.DELETE]
+            ? () => onActionClick?.[CRUDActionTypes.DELETE](item)
+            : undefined,
           innerInfo: isEmpty(rest) ? undefined : { id, ...rest },
         };
       });

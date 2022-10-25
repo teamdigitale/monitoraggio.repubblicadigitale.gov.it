@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { selectDevice } from '../../redux/features/app/appSlice';
 import { selectCommentsList } from '../../redux/features/forum/forumSlice';
 import { openModal } from '../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../redux/hooks';
@@ -9,24 +8,17 @@ import SectionTitle from '../SectionTitle/sectionTitle';
 import Comment from './comment';
 
 interface commentSectionI {
-  section: 'board' | 'community' | 'ducuments'
+  section: 'board' | 'community' | 'ducuments';
 }
 
 const CommentSection: React.FC<commentSectionI> = ({ section }) => {
   const comments = useAppSelector(selectCommentsList);
   const dispatch = useDispatch();
-  const device = useAppSelector(selectDevice);
 
   return (
-    <div >
+    <div>
       <div
-        className={clsx(
-          'container',
-          'd-flex',
-          'justify-content-start',
-          'pb-4',
-          device.mediaIsPhone && 'pt-5'
-        )}
+        className={clsx('container', 'd-flex', 'justify-content-start', 'pb-4')}
       >
         <SectionTitle title='Commenti pubblicati' isForumLayout />
       </div>
@@ -43,7 +35,7 @@ const CommentSection: React.FC<commentSectionI> = ({ section }) => {
                 payload: {
                   text: 'Confermi di voler eliminare questo contenuto?',
                   entity: 'comment',
-                  id: comment.id
+                  id: comment.id,
                 },
               })
             )
@@ -52,12 +44,12 @@ const CommentSection: React.FC<commentSectionI> = ({ section }) => {
             dispatch(
               openModal({
                 id: 'comment-modal',
-                payload: { 
+                payload: {
                   title: 'Modifica commento',
                   action: 'edit',
                   id: comment.id,
-                  body: comment.body
-                 },
+                  body: comment.body,
+                },
               })
             )
           }
