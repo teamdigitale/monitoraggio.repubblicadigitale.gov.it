@@ -106,6 +106,7 @@ const WorkdocsRegistrationModal: React.FC<WorkdocsRegistrationModalI> = (
               {...form?.password}
               col='col-12'
               onInputBlur={onInputChange}
+              infoText='La password deve essere lunga tra 8 e 64 caratteri e contenere almeno una lettera maiuscola, un numero, un carattare speciale'
             />
             <Input
               {...form?.confirmPassword}
