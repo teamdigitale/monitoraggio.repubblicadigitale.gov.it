@@ -80,7 +80,9 @@ public class RocketChatService {
 			// [1]. Creazione nuovo utente RocketChat
 			RocketChatCreaUtenteRequest rocketChatUtenteRequest = new RocketChatCreaUtenteRequest();
 			
-			final String nomeECognome = utenteDBFetch.getNome().trim().concat(".").concat(utenteDBFetch.getCognome().trim());
+			final String nomeSenzaSpaziTrimmed = utenteDBFetch.getNome().trim().replaceAll("\\s","");
+			final String cognomeSenzaSpaziTrimmed = utenteDBFetch.getCognome().trim().replaceAll("\\s","");
+			final String nomeECognome = nomeSenzaSpaziTrimmed.concat(".").concat(cognomeSenzaSpaziTrimmed);
 			final String defaultUsername = nomeECognome.concat(idUtente.toString());
 			rocketChatUtenteRequest.setUsername(autenticaORegistraRequest.getUsername() != null? autenticaORegistraRequest.getUsername(): defaultUsername);
 			
