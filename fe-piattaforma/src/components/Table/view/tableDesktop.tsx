@@ -125,7 +125,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                     ) ? (
                       <Button
                         onClick={() => onActionClick[CRUDActionTypes.INFO](td)}
-                        className='mr-2 p-0'
+                        className='mr-4 p-0'
                         aria-label='Informazioni'
                       >
                         <Icon
@@ -145,7 +145,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         onClick={() =>
                           onActionClick[CRUDActionTypes.CREATE](td)
                         }
-                        className='mr-2 p-0'
+                        className='mr-4 p-0'
                         aria-label='Aggiungi nuovo'
                       >
                         <Icon
@@ -163,7 +163,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                     ) ? (
                       <Button
                         onClick={() => onActionClick[CRUDActionTypes.EDIT](td)}
-                        className='mr-2 p-0'
+                        className='mr-4 p-0'
                         aria-label='Modifica riga'
                       >
                         <Icon
@@ -183,7 +183,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         onClick={() =>
                           onActionClick[CRUDActionTypes.DELETE](td)
                         }
-                        className='mr-2 p-0'
+                        className='mr-4 p-0'
                         aria-label='Elimina elemento riga'
                       >
                         <Icon
@@ -201,7 +201,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                     ) ? (
                       <Button
                         onClick={() => onActionClick[CRUDActionTypes.CLONE](td)}
-                        className='mr-2 p-0'
+                        className='mr-4 p-0'
                       >
                         <Icon
                           icon='it-copy'

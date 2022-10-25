@@ -1,0 +1,49 @@
+.document-card-detail-container {
+  max-width: 1174px;
+  border: 1px solid #eceff1;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+
+  &__typology {
+    color: #455b71;
+    line-height: 27px;
+    letter-spacing: 1.1px;
+  }
+
+  &__document-detail-dropdown {
+    button {
+      border: none;
+      box-shadow: none;
+    }
+    button:hover {
+      border: none;
+    }
+  }
+
+  &__title {
+    font-size: 24px;
+    color: #1c2024;
+  }
+
+  &__img-icon-file {
+    max-width: 57px;
+    max-height: 72.67px;
+  }
+
+  &__description {
+    font-weight: 400;
+    color: #455B71;
+    height: 40px; //ingombro minimo 
+  }
+}
+.btn-download-file,
+.btn-external-link {
+  color: #0073e5;
+  padding-left: 12px;
+  padding-right: 35px;
+}
+
+.border-box-container {
+  opacity: 0.3;
+  border-bottom: 0.5px solid #3686d6;
+}

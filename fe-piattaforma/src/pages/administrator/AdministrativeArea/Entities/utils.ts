@@ -41,6 +41,19 @@ export const TableHeading: TableHeadingI[] = [
   },
 ];
 
+export const TableCategories: TableHeadingI[] = [
+  {
+    label: 'Categoria',
+    field: 'label',
+    size: 'medium',
+  },
+  {
+    label: 'Sezione',
+    field: 'section',
+    size: 'medium',
+  },
+];
+
 export const TableHeadingUsers: TableHeadingI[] = [
   {
     label: 'Nome',

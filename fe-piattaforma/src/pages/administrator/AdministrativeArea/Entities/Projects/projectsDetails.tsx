@@ -639,7 +639,6 @@ const ProjectsDetails = () => {
             identeDiRiferimento?: string | number;
             nrFacilitatori: number;
             serviziErogati: string;
-            associatoAUtente: boolean;
           }) => ({
             ...sede,
             fullInfo: {
@@ -649,22 +648,20 @@ const ProjectsDetails = () => {
                 : 'nVolontari']: sede.nrFacilitatori,
               serviziErogati: sede.serviziErogati,
             },
-            actions: sede.associatoAUtente
-              ? {
-                  [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-                    if (entityId && projectId) {
-                      navigate(
-                        `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${sede?.identeDiRiferimento}/sedi/${td}`
-                      );
-                    } else {
-                      projectId &&
-                        navigate(
-                          `/area-amministrativa/progetti/${projectId}/${sede?.identeDiRiferimento}/sedi/${td}`
-                        );
-                    }
-                  },
+            actions: {
+              [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+                if (entityId && projectId) {
+                  navigate(
+                    `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${sede?.identeDiRiferimento}/sedi/${td}`
+                  );
+                } else {
+                  projectId &&
+                    navigate(
+                      `/area-amministrativa/progetti/${projectId}/${sede?.identeDiRiferimento}/sedi/${td}`
+                    );
                 }
-              : undefined,
+              },
+            },
           })
         ),
       });

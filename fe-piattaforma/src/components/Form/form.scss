@@ -1,4 +1,15 @@
 .form {
+  input {
+    &[type='text'],
+    &[type='date'],
+    &[type='number'],
+    &[type='time'],
+    &[type='password'],
+    &[type='file'],
+    &[type='url'] {
+      font-weight: 500;
+    }
+  }
   input:focus {
     border-bottom: 2px solid color('progress-bar-line');
   }
@@ -13,26 +24,40 @@
   }
 }
 
+input > span {
+  .password-icon {
+    margin-right: 24px;
+    padding: 0;
+  }
+}
+
 .form-control {
   &:disabled {
     border-bottom: 1px solid color('grey-input') !important;
     background: color('grey-150');
   }
+  &[type='password'] {
+    width: 95%;
+  }
   &[type='text']:disabled,
   &[type='date']:disabled,
-  &[type='number']:disabled{
+  &[type='number']:disabled {
     border-bottom: 1px solid color('grey-input') !important;
   }
   &[type='text'][value=''],
   &[type='date'][value=''],
   &[type='number'][value=''],
-  &[type='time'][value='00:00']{
+  &[type='time'][value='00:00'],
+  &[type='file'][value=''],
+  &[type='url'][value=''] {
     border-bottom: 1px solid color('progress-bar-line');
   }
   &[type='text'][value]:not([value='']),
   &[type='date'][value]:not([value='']),
   &[type='number'][value]:not([value='']),
-  &[type='time'][value]:not([value='00:00']) {
+  &[type='time'][value]:not([value='00:00']),
+  &[type='file'][value]:not([value='']),
+  &[type='url'][value]:not([value='']) {
     border-bottom: 2px solid color('progress-bar-line');
   }
   &.is-valid {
@@ -83,6 +108,40 @@
     }
   }
   &__single-value {
+    font-weight: 500 !important;
+    &--is-disabled {
+      color: color('dark-blue') !important;
+    }
+  }
+}
+
+.bootstrap-select-short {
+  &__menu {
+    margin-top: 0 !important;
+    max-height: 160px;
+    overflow: scroll;
+  }
+  &-value {
+    border-bottom: 2px solid color('progress-bar-line') !important;
+  }
+  &__control {
+    border-bottom: 1px solid color('progress-bar-line') !important;
+
+    &--menu-is-open {
+      border-bottom: 2px solid color('progress-bar-line') !important;
+    }
+    &--is-focused {
+      border-color: color('accessibility-orange') !important;
+      box-shadow: 0 0 0 2px color('accessibility-orange') !important;
+      outline: 0 !important;
+    }
+    &--is-disabled {
+      border-bottom: 1px solid color('grey-input') !important;
+      background: color('grey-150') !important;
+    }
+  }
+  &__single-value {
+    font-weight: 600 !important;
     &--is-disabled {
       color: color('dark-blue') !important;
     }
@@ -106,6 +165,7 @@
 }
 
 .multiple-select {
+  font-weight: 500;
   &__control {
     &--is-disabled {
       border-bottom: 1px solid color('grey-input') !important;
@@ -178,7 +238,7 @@
       font-size: 16px;
     }
     &__box-content {
-      padding: 0px 16px 16px 16px; 
+      padding: 0px 16px 16px 16px;
       .form-group {
         margin-bottom: 0;
         label {

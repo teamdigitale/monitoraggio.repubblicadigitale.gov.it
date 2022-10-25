@@ -2,52 +2,73 @@ import { Button, Container, Icon } from 'design-react-kit';
 import React, { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Paginator } from '../../../components';
-import PageTitle from '../../../components/PageTitle/pageTitle';
-import {
-  selectDevice,
-} from '../../../redux/features/app/appSlice';
-import { selectEntityPagination } from '../../../redux/features/citizensArea/citizensAreaSlice';
+import { selectDevice } from '../../../redux/features/app/appSlice';
+import { selectEntityPagination } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { useAppSelector } from '../../../redux/hooks';
-import NotificationCard from './components/NotificationCards/notificationCard';
-import NotificationsList from './components/NotificationsList/notificationsList';
 import './notifications.scss';
-import { setEntityPagination } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import clsx from 'clsx';
-import { GetNotificationsList } from '../../../redux/features/notification/notificationThunk';
-import { selectNotification } from '../../../redux/features/notification/notificationSlice';
-
-const NotificationCardPropsMock = [
-  {
-    icon: 'it-inbox',
-    title: 'Da leggere',
-    value: 4,
-    ariaLabel: 'da leggere',
-  },
-  {
-    icon: 'it-files',
-    title: 'Lette',
-    value: 61,
-    ariaLabel: 'lette',
-  },
-];
+import Input from '../../../components/Form/input';
+import MailRead from '/public/assets/img/mail-open.png';
+import MailReadCheck from '/public/assets/img/mail-open-check.png';
+import Delete from '/public/assets/img/delete.png';
+import DeleteCheck from '/public/assets/img/delete-check.png';
+import PillDropDown from '../../../components/PillDropDown/pillDropDown';
+import Notification from './components/Notifications/notification';
+import { selectUserNotification } from '../../../redux/features/user/userSlice';
+import {
+  DeleteNotification,
+  GetNotificationsByUser,
+  ReadNotification,
+} from '../../../redux/features/user/userThunk';
+import { setEntityPagination } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 
 const Notifications: React.FC = () => {
   const device = useAppSelector(selectDevice);
   const isMobile = device.mediaIsPhone;
-  const [isClicked, setIsClicked] = useState<boolean>(false);
-  const notificationsList = useAppSelector(selectNotification);
 
+  // TODO integrate notification
+  const notificationsList = useAppSelector(selectUserNotification);
   const dispatch = useDispatch();
   const pagination = useAppSelector(selectEntityPagination);
-
-  const handleOnChangePage = (pageNumber: number = pagination?.pageNumber) => {
-    dispatch(setEntityPagination({ pageNumber }));
-  };
+  const { pageNumber, pageSize, totalPages } = pagination;
+  const [selectedNotifications, setSelectedNotifications] = useState<string[]>(
+    []
+  );
 
   useEffect(() => {
-    dispatch(setEntityPagination({ pageSize: 3 }));
-    dispatch(GetNotificationsList());
-  }, []);
+    dispatch(GetNotificationsByUser());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageNumber, pageSize]);
+
+  const handleOnChangePage = (pageNumber: number) => {
+    dispatch(setEntityPagination({ pageNumber, pageSize }));
+  };
+
+  const onSelectAll = () => {
+    if (
+      notificationsList.every((notification) =>
+        selectedNotifications.includes(notification.id)
+      )
+    ) {
+      setSelectedNotifications([]);
+    } else {
+      setSelectedNotifications(
+        notificationsList.map((notification) => notification.id)
+      );
+    }
+  };
+
+  const onDeleteSelected = async () => {
+    await dispatch(DeleteNotification(selectedNotifications));
+    setSelectedNotifications([]);
+    dispatch(GetNotificationsByUser());
+  };
+
+  const onReadSelected = async () => {
+    await dispatch(ReadNotification(selectedNotifications));
+    setSelectedNotifications([]);
+    dispatch(GetNotificationsByUser());
+  };
 
   return (
     <>
@@ -56,106 +77,171 @@ const Notifications: React.FC = () => {
           <div
             className={clsx(
               'mt-5',
-              isMobile && 'd-flex justify-content-center'
-            )}
-          >
-            <PageTitle title='Area notifiche' />
-          </div>
-          <div
-            className={clsx(
-              'notifications-buttons-container',
-              'd-flex',
               'justify-content-center',
-              'mt-4',
-              'btn'
+              'align-items-end',
+              'container'
             )}
           >
-            <Button
-              className={clsx('mr-3', 'notification-btn')}
-              onClick={() => setIsClicked(false)}
-              color='primary'
-              outline={isClicked}
-            >
-              Tutte
-            </Button>
-            <Button
-              className={clsx('notification-btn')}
-              onClick={() => setIsClicked(true)}
-              color='primary'
-              outline={!isClicked}
-            >
-              Non lette
-            </Button>
+            <div className='title'>
+              <h3 className='primary-color-a9 m-0'>
+                Le tue notifiche
+                <span className='badge'>
+                  {
+                    notificationsList.filter(
+                      (notification) => !notification.status
+                    ).length
+                  }
+                </span>
+              </h3>
+            </div>
+            {/* <PageTitle title='Le tue notifiche' badge={true} /> */}
+            <div className='container'>
+              <PillDropDown isNotifications={true} />
+            </div>
+          </div>
+          <div className='notifications-card-container d-flex container'>
+            <div className={clsx('d-flex')}>
+              <div className='d-flex'>
+                <Button onClick={onReadSelected}>
+                  <Icon
+                    icon={
+                      selectedNotifications.length ? MailReadCheck : MailRead
+                    }
+                    size='sm'
+                    aria-label='Segna come letto'
+                    className='mr-1'
+                  />
+                </Button>
+              </div>
+              <div className='d-flex'>
+                <Button onClick={onDeleteSelected}>
+                  <Icon
+                    icon={selectedNotifications.length ? DeleteCheck : Delete}
+                    size='sm'
+                    aria-label='Elimina'
+                    className='mr-1'
+                  />
+                </Button>
+              </div>
+            </div>
+            <Input
+              className='notification-card-checkbar'
+              type='checkbox'
+              onInputChange={() => onSelectAll()}
+              checked={notificationsList.every((notification) =>
+                selectedNotifications.includes(notification.id)
+              )}
+            />
           </div>
         </>
       ) : (
         <>
-          <PageTitle title='Le Tue Notifiche' />
-          {NotificationCardPropsMock?.length ? (
-            <div className='notifications-card-container pt-4 d-flex'>
-              {NotificationCardPropsMock.map((notificationElement, i) => (
-                <NotificationCard key={i} {...notificationElement} />
-              ))}
+          <div className='d-flex justify-content-between align-items-end container'>
+            <div className='title'>
+              <h3 className='primary-color-a9 m-0'>
+                Le tue notifiche
+                {/* HIDE for now
+                <span className='badge'>
+                  {
+                    notificationsList.filter(
+                      (notification) => !notification.status
+                    ).length
+                  }
+                </span>*/}
+              </h3>
             </div>
-          ) : null}
+            {/* <PageTitle title='Le tue notifiche' badge={true} /> */}
+            <PillDropDown isNotifications={true} />
+          </div>
+
+          <div className='notifications-card-container container d-flex'>
+            <Input
+              className='notification-card-checkbar'
+              type='checkbox'
+              onInputChange={() => onSelectAll()}
+              checked={notificationsList.every((notification) =>
+                selectedNotifications.includes(notification.id)
+              )}
+            />
+            <div className={clsx('d-flex')}>
+              <Button
+                className='d-flex align-items-center'
+                onClick={onReadSelected}
+              >
+                <Icon
+                  icon={selectedNotifications.length ? MailReadCheck : MailRead}
+                  size='sm'
+                  aria-label='Segna come letto'
+                  className='mr-1'
+                />
+
+                <span
+                  className={clsx(
+                    selectedNotifications.length
+                      ? 'text-primary-action'
+                      : 'text-secondary-action'
+                  )}
+                >
+                  Segna come già letto
+                </span>
+              </Button>
+
+              <Button
+                className='d-flex align-items-center'
+                onClick={onDeleteSelected}
+              >
+                <Icon
+                  icon={selectedNotifications.length ? DeleteCheck : Delete}
+                  size='sm'
+                  aria-label='Elimina'
+                  className='mr-1'
+                />
+
+                <span
+                  className={clsx(
+                    selectedNotifications.length
+                      ? 'text-primary-action'
+                      : 'text-secondary-action'
+                  )}
+                >
+                  Elimina
+                </span>
+              </Button>
+            </div>
+          </div>
         </>
       )}
-
-      <Container className='pb-lg-5'>
-        {notificationsList.length
-          ? isClicked === true
-            ? notificationsList
-                .filter(
-                  (notificationsList) => notificationsList.unread === true
+      <Container className='pb-lg-5 pb-5'>
+        {notificationsList.map((notification, i) => (
+          <div
+            key={i}
+            role='button'
+            className={clsx(
+              notification.status ? '' : 'notifications-card-unread'
+            )}
+          >
+            <Notification
+              // TODO update key with a unique value
+              {...notification}
+              onSelect={(id: string) =>
+                setSelectedNotifications((prev) =>
+                  prev.includes(id)
+                    ? prev.filter((v) => v !== id)
+                    : [...prev, id]
                 )
-                .map((list, i) => (
-                  <div key={i} role='button'>
-                    <NotificationsList
-                      // TODO update key with a unique value
-                      {...list}
-                      id={list.id || `${new Date().getTime()}`}
-                      iconColor={list.iconColor || ''}
-                      iconClass={list.iconClass || ''}
-                      iconPadding={list.iconPadding || false}
-                      unread
-                    />
-                  </div>
-                ))
-            : notificationsList.map((list, i) => (
-                <div key={i} role='button'>
-                  <NotificationsList
-                    // TODO update key with a unique value
-                    {...list}
-                    id={list.id || `${new Date().getTime()}`}
-                    iconPadding={list.iconPadding || false}
-                    iconColor={list.iconColor || ''}
-                    iconClass={list.iconClass || ''}
-                    unread
-                  />
-                </div>
-              ))
-          : null}
+              }
+              notificationsPreview={false}
+              isChecked={selectedNotifications.includes(notification.id)}
+            />
+          </div>
+        ))}
       </Container>
-      {isMobile ? (
-        <div
-          className='d-flex justify-content-center primary-color align-items-center py-4'
-          role='button'
-        >
-          VEDI TUTTO ({notificationsList.length})
-          <Icon
-            icon='it-chevron-right'
-            size='sm'
-            className='ml-2'
-            color='primary'
-          />
-        </div>
-      ) : pagination?.pageNumber ? (
+      {!isMobile && pageNumber ? (
         <Paginator
-          pageSize={notificationsList.length}
-          activePage={pagination?.pageNumber}
+          pageSize={pageSize}
+          activePage={pageNumber}
           center
-          refID='#notification'
-          total={pagination.pageNumber}
+          total={totalPages}
           onChange={handleOnChangePage}
         />
       ) : null}

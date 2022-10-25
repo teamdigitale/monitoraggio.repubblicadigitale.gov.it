@@ -21,11 +21,15 @@ const Form = (props: FormI) => {
   } = props;
 
   return (
-    <form className={clsx('form ', className)} id={id} autoComplete={autocomplete ? 'on' : 'off'}>
+    <form
+      className={clsx('form ', className)}
+      id={id}
+      autoComplete={autocomplete ? 'on' : 'off'}
+    >
       <fieldset disabled={formDisabled} form={id}>
         <legend className='sr-only'>{legend}</legend>
-        {React.Children.map(children, child => {
-          if(React.isValidElement(child)) {
+        {React.Children.map(children, (child) => {
+          if (React.isValidElement(child)) {
             return React.cloneElement(child, {
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
@@ -33,9 +37,9 @@ const Form = (props: FormI) => {
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               formDisabled,
-            })
+            });
           }
-          return null
+          return null;
         })}
       </fieldset>
     </form>
@@ -47,22 +51,24 @@ const Row: React.FC<{
   children: FormI['children'];
   formDisabled?: boolean;
 }> = (props) => {
-  const { className, children, formDisabled = false, } = props;
-  return <div className={clsx('form-row', className)}>
-    {React.Children.map(children, child => {
-      if(React.isValidElement(child)) {
-        return React.cloneElement(child, {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          ...child.props,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          disabled: child.props.disabled || formDisabled,
-        })
-      }
-      return null
-    })}
-  </div>;
+  const { className, children, formDisabled = false } = props;
+  return (
+    <div className={clsx('form-row', className)}>
+      {React.Children.map(children, (child) => {
+        if (React.isValidElement(child)) {
+          return React.cloneElement(child, {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            ...child.props,
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            disabled: child.props.disabled || formDisabled,
+          });
+        }
+        return null;
+      })}
+    </div>
+  );
 };
 
 Form.Row = Row;

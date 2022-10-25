@@ -101,7 +101,7 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
   }, [dynamicForm]);
 
   useEffect(() => {
-    if (!creation && formData && form && Object.keys(form)?.length > 0) {
+    if (!creation && formData && form && Object.keys(form)?.length) {
       const newValues: { [key: string]: formFieldI['value'] } = {};
       Object.keys(form).map((key: string) => {
         const keyBE = form[key]?.keyBE;
@@ -237,7 +237,7 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
       }
       case 'checkbox': {
         // checkbox if options
-        if (field.options && field.options?.length > 0) {
+        if (field.options && field.options?.length) {
           return (
             <CheckboxGroup
               {...field}
@@ -329,7 +329,7 @@ export default withFormHandler({ form }, FormServiceCitizenFull);
             form &&
             field?.relatedTo &&
             form[relatedTo]?.enumLevel2 &&
-            multiSelectOptions?.length > 0
+            multiSelectOptions?.length
           ) {
             (form[relatedTo]?.enumLevel2 || []).forEach(
               ({ label, value, upperLevel }) => {
@@ -353,7 +353,7 @@ export default withFormHandler({ form }, FormServiceCitizenFull);
               Object.keys(multiSelectOptions).forEach((key: any) => {
                 if (
                   multiSelectOptions[key].options.filter((x) => x.label === val)
-                    ?.length > 0
+                    ?.length
                 ) {
                   upperLevel = multiSelectOptions[key].label;
                 }

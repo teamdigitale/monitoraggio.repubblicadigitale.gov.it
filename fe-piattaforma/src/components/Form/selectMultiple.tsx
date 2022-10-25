@@ -61,7 +61,7 @@ const SelectMultiple: React.FC<SelectMultipleI> = (props) => {
   const [arrayVal, setArrayVal] = useState<string[]>([]);
 
   useEffect(() => {
-    if (onInputChange && selectedOptions?.length > 0) {
+    if (onInputChange && selectedOptions?.length) {
       const values: string[] = [];
       selectedOptions.map((opt) => arrayVal.push(opt.label.toString()));
       setArrayVal(values);
@@ -77,7 +77,8 @@ const SelectMultiple: React.FC<SelectMultipleI> = (props) => {
         ? null
         : upperLevelArray.push(opt.upperLevel.toString());
     });
-    if(onSecondLevelInputChange) onSecondLevelInputChange(upperLevelArray, field);
+    if (onSecondLevelInputChange)
+      onSecondLevelInputChange(upperLevelArray, field);
   }, [arrayVal]);
 
   const handleChange = (selectedOption: MultiValue<OptionTypeMulti>) => {
@@ -113,7 +114,7 @@ const SelectMultiple: React.FC<SelectMultipleI> = (props) => {
           className='text-decoration-none pl-0 pb-2'
         >
           {label}
-          {(required && !isDisabled) && ' *'}
+          {required && !isDisabled && ' *'}
         </label>
       ) : null}
       <SelectKit

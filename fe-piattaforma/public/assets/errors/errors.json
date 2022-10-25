@@ -123,6 +123,9 @@
     "U21": "L’indirizzo email risulta già essere presente in piattaforma",
 
     "WD01": "Si è verificato un errore durante la registrazione al tool di Collaboration",
-    "WD02": "Si è verificato un errore durante la registrazione al tool di Collaboration"
+    "WD02": "Si è verificato un errore durante la registrazione al tool di Collaboration",
+
+    "CMCRA05": "Attenzione, hai inserito un termine non consentito"
+    "CMCRA06": "Attenzione, hai inserito un termine non consentito"
   }
 }

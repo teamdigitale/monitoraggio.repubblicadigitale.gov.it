@@ -139,7 +139,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
   }, [idQuestionarioCompilato]);
 
   useEffect(() => {
-    if (surveyAnswersToSave?.length > 0 && surveyAnswersToSave[activeSection]) {
+    if (surveyAnswersToSave?.length && surveyAnswersToSave[activeSection]) {
       // upload answers when step back
       updateForm(
         {

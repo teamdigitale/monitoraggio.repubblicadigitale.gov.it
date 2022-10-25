@@ -21,6 +21,7 @@ interface UploadCSVModalI {
   onEsito?: (esito: { ok: string; ko: string; list: any[] }) => void;
   template?: any;
   templateName?: string;
+  citizens?: boolean;
 }
 
 const UploadCSVModal: React.FC<UploadCSVModalI> = (props) => {
@@ -32,6 +33,7 @@ const UploadCSVModal: React.FC<UploadCSVModalI> = (props) => {
     onEsito,
     template,
     templateName,
+    citizens,
   } = props;
   const [step, setStep] = useState(0);
   const payload = useAppSelector(selectModalPayload);
@@ -73,7 +75,7 @@ const UploadCSVModal: React.FC<UploadCSVModalI> = (props) => {
         <div className='d-flex flex-column align-items-center justify-content-center p-5'>
           <div id='file-target' />
           <p className='py-3'>
-            Scarica il template relativo agli enti da caricare.
+            {citizens ? 'Scarica il template relativo ai cittadini da caricare.':'Scarica il template relativo agli enti da caricare.'}
           </p>
           <Button color='primary' outline onClick={downloadTemplateHandler}>
             Scarica template

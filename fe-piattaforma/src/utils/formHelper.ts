@@ -199,12 +199,13 @@ export const FormHelper = {
     let isValid = true;
     Object.keys(form).forEach((key: string) => {
       const { required = false, value, valid = false, regex } = form[key] || {};
-      if(regex === RegexpType.BOOLEAN){
-        isValid = isValid && (required ? value !== undefined && value !== null && valid : valid);
-      }else{
+      if (regex === RegexpType.BOOLEAN) {
+        isValid =
+          isValid &&
+          (required ? value !== undefined && value !== null && valid : valid);
+      } else {
         isValid = isValid && (required ? Boolean(value) && valid : valid);
       }
-      
     });
     return isValid;
   },

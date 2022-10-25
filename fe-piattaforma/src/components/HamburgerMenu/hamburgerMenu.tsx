@@ -126,22 +126,47 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
                     </li>
                   );
                 })}
-              {hasUserPermission(['btn.gest.ruoli']) ? (
+              {hasUserPermission(['btn.gest.ruoli']) ||
+              hasUserPermission(['btn.cat']) ||
+              hasUserPermission(['btn.rprt']) ? (
                 <li className='manage-profile-container'>
                   <div>
                     <div className='nav-divider primary-bg-a6'></div>
-                    <Link
-                      to='/gestione-ruoli'
-                      className='primary-color manage-profile mt-4'
-                    >
+                    <div className='primary-color manage-profile mt-4'>
                       <Icon
                         className='mr-3'
                         icon='it-settings'
                         color='primary'
                         aria-label='icona ingranaggio'
                       />
-                      Gestione Profili
-                    </Link>
+                      <strong>Area gestionale</strong>
+                      <div className='pl-2'>
+                        {hasUserPermission(['btn.gest.ruoli']) ? (
+                          <Link
+                            to='/gestione-ruoli'
+                            className='primary-color manage-profile mt-4 font-weight-normal'
+                          >
+                            Gestione ruoli
+                          </Link>
+                        ) : null}
+                        {hasUserPermission(['btn.cat']) ? (
+                          <Link
+                            to='/area-gestionale/gestione-categorie'
+                            className='primary-color manage-profile mt-4 font-weight-normal'
+                          >
+                            Gestione categorie
+                          </Link>
+                        ) : null}
+                        {hasUserPermission(['btn.rprt']) ? (
+                          <Link
+                            to='/area-gestionale/gestione-segnalazioni'
+                            className='primary-color manage-profile mt-4 font-weight-normal'
+                          >
+                            Gestione segnalazioni
+                          </Link>
+                        ) : null}
+                      </div>
+                    </div>
                   </div>
                 </li>
               ) : null}
