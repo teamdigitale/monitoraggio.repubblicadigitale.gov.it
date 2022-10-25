@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.228](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.227...1.0.0-develop.228) (2022-10-25)
+
+
+### Bug Fixes
+
+* **be:** fix username rocket-chat ([fb1a18a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fb1a18a6267296269a495ca1104dbd7cf649269e))
+
 ## [1.0.0-develop.227](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.226...1.0.0-develop.227) (2022-10-24)
 
 
