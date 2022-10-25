@@ -140,9 +140,6 @@ const FormUser: React.FC<UserFormI> = (props) => {
     <Form id='form-user' className='mt-5 mb-0' formDisabled={formDisabled}>
       <Form.Row className={bootClass}>
         <>
-          {formDisabled ? (
-            <Input {...form?.id} col='col-12 col-lg-6' label='ID' />
-          ) : null}
           <Input
             {...form?.nome}
             required
@@ -159,6 +156,9 @@ const FormUser: React.FC<UserFormI> = (props) => {
             // placeholder='Inserisci cognome utente'
             onInputChange={onInputChange}
           />
+          {formDisabled ? (
+            <Input {...form?.id} col='col-12 col-lg-6' label='ID' />
+          ) : null}
           {creation && !fieldsToHide.includes('ruolo') ? (
             <Select
               {...form?.ruolo}
@@ -185,18 +185,18 @@ const FormUser: React.FC<UserFormI> = (props) => {
             onInputChange={onInputChange}
           />
           <Input
+            {...form?.email}
+            label='Indirizzo email'
+            col='col-12 col-lg-6'
+            // placeholder='Inserisci email'
+            onInputChange={onInputChange}
+          />
+          <Input
             {...form?.telefono}
             //required
             col='col-12 col-lg-6'
             label='Telefono'
             // placeholder='Inserisci telefono'
-            onInputChange={onInputChange}
-          />
-          <Input
-            {...form?.email}
-            label='Indirizzo email'
-            col='col-12 col-lg-6'
-            // placeholder='Inserisci email'
             onInputChange={onInputChange}
           />
           {showMansione ? (
