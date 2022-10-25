@@ -136,6 +136,11 @@ const CommunityDetails = () => {
     }
   };
 
+  const onEntityDelete = async (entityId: string) => {
+    await dispatch(DeleteItem(entityId));
+    navigate(-1);
+  };
+
   return (
     <div className='container'>
       {backButton}
@@ -198,8 +203,7 @@ const CommunityDetails = () => {
         onConfirm={(payload: any) => {
           switch (payload.entity) {
             case 'community':
-              dispatch(DeleteItem(payload.id));
-              navigate(-1);
+              onEntityDelete(payload.id);
               break;
             case 'comment':
               onCommentDelete(payload.id);

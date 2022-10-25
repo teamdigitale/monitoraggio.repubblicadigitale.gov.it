@@ -268,14 +268,14 @@ const Comment: React.FC<CommentI> = (props) => {
             'align-items-center'
           )}
         >
-          <div className={clsx(!device.mediaIsPhone ? 'mr-1' : 'mr-3')}>
+          <div className='mr-1'>
             <AvatarInitials
               user={{
                 uName: authorAnagraphic?.nome,
                 uSurname: authorAnagraphic?.cognome,
               }}
-              size={AvatarSizes.Big}
-              font={AvatarTextSizes.Big}
+              size={AvatarSizes.Medium}
+              font={AvatarTextSizes.Medium}
             />
           </div>
           <div
@@ -288,16 +288,15 @@ const Comment: React.FC<CommentI> = (props) => {
           >
             <p
               className={clsx(
-                device.mediaIsPhone ? 'text-wrap' : 'text-nowrap ml-2'
+                'ml-2',
+                device.mediaIsPhone ? 'text-wrap' : 'text-nowrap'
               )}
             >
               <strong>
                 {authorAnagraphic?.nome}&nbsp;{authorAnagraphic?.cognome}
               </strong>
-              <span className={clsx(device.mediaIsPhone && 'text-nowrap')}>
-                &nbsp;-&nbsp;
-                <span>{date && formatDate(date, 'shortDate')}</span>
-              </span>
+              {' — '}
+              <span>{date && formatDate(date, 'shortDate')}</span>
             </p>
           </div>
         </div>
@@ -316,7 +315,7 @@ const Comment: React.FC<CommentI> = (props) => {
       </div>
       <div
         className={clsx(
-          !device.mediaIsPhone && 'ml-4 padding-left',
+          'left-alignment',
           showReplies && replies && replies.length > 0 && !device.mediaIsPhone
             ? thread && 'comment-container__thread'
             : null

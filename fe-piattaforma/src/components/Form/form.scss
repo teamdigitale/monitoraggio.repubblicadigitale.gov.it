@@ -115,6 +115,39 @@ input > span {
   }
 }
 
+.bootstrap-select-short {
+  &__menu {
+    margin-top: 0 !important;
+    max-height: 160px;
+    overflow: scroll;
+  }
+  &-value {
+    border-bottom: 2px solid color('progress-bar-line') !important;
+  }
+  &__control {
+    border-bottom: 1px solid color('progress-bar-line') !important;
+
+    &--menu-is-open {
+      border-bottom: 2px solid color('progress-bar-line') !important;
+    }
+    &--is-focused {
+      border-color: color('accessibility-orange') !important;
+      box-shadow: 0 0 0 2px color('accessibility-orange') !important;
+      outline: 0 !important;
+    }
+    &--is-disabled {
+      border-bottom: 1px solid color('grey-input') !important;
+      background: color('grey-150') !important;
+    }
+  }
+  &__single-value {
+    font-weight: 600 !important;
+    &--is-disabled {
+      color: color('dark-blue') !important;
+    }
+  }
+}
+
 .form-service-dynamic {
   &__control {
     &--is-disabled {

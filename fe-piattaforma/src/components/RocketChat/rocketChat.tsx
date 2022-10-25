@@ -4,12 +4,22 @@ import { RocketChatLogin } from '../../redux/features/user/userThunk';
 import { getSessionValues, setSessionValues } from '../../utils/sessionHelper';
 import { ActionTracker } from '../../redux/features/forum/forumThunk';
 import { setUserChatToRead } from '../../redux/features/user/userSlice';
+import { getMediaQueryDevice } from '../../utils/common';
+import { useAppSelector } from '../../redux/hooks';
+import { selectDevice } from '../../redux/features/app/appSlice';
 
 // RocketChat Docs https://developer.rocket.chat/rocket.chat/iframe-integration/iframe-events
+
+const iframeHeight = {
+  mobile: '570',
+  tablet: '740',
+  desktop: '670',
+};
 
 const RocketChat = () => {
   const [rocketChatToken, setRocketChatToken] = useState<string>();
   const dispatch = useDispatch();
+  const device = useAppSelector(selectDevice);
 
   const authenticateIFrame = () => {
     const target = document.getElementById('rcChannel');
@@ -91,6 +101,8 @@ const RocketChat = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const calcFrameHeight = () => iframeHeight[getMediaQueryDevice(device)];
+
   return (
     <div>
       <iframe
@@ -99,7 +111,7 @@ const RocketChat = () => {
         name='rcChannel'
         src={`${process.env.REACT_APP_ROCKET_CHAT_BASE_URL}?layout=embedded`}
         width='100%'
-        height='400'
+        height={calcFrameHeight()}
         onLoad={handleOnRocketChatLoad}
         frameBorder='0'
       ></iframe>

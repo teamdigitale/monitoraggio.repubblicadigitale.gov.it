@@ -457,10 +457,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                       <div className='ml-auto pr-3'>
                         <Button
                           onClick={() => setNotificationsIsOpen(true)}
-                          className='primary-bg-a6 px-2 bg-transparent'
-                          style={{
-                            position: 'relative',
-                          }}
+                          className='primary-bg-a6 px-2 bg-transparent position-relative'
                         >
                           <Icon
                             color='white'

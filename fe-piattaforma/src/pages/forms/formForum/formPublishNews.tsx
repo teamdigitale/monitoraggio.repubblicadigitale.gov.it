@@ -308,6 +308,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
           }))}
           isDisabled={formDisabled}
           placeholder='Seleziona'
+          shortDropdownMenu
         />
         <Select
           {...form?.intervention}
@@ -324,6 +325,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
             formDisabled
           }
           placeholder='Seleziona'
+          shortDropdownMenu
         />
       </Form.Row>
       <Form.Row className={bootClass}>
@@ -338,6 +340,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
           }))}
           isDisabled={formDisabled}
           placeholder='Seleziona'
+          shortDropdownMenu
         />
       </Form.Row>
       <Form.Row className={clsx(bootClass, 'align-items-center')}>
@@ -353,6 +356,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
         <TextEditor
           text={editorText}
           onChange={(t: string) => setEditorText(t)}
+          maxLength={1501}
         />
       </Form.Row>
       <Form.Row className={bootClass}>
@@ -402,7 +406,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
                 size='sm'
                 className='mr-4'
                 onClick={removePicture}
-              /> //TODO add function to delete file
+              />
             )}
           </label>
         </div>

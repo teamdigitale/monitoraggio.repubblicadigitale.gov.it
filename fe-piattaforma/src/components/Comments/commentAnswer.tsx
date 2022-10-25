@@ -7,8 +7,12 @@ import {
   Icon,
   LinkList,
 } from 'design-react-kit';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import {
+  getAnagraphicID,
+  selectAnagraphics,
+} from '../../redux/features/anagraphic/anagraphicSlice';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import { openModal } from '../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../redux/hooks';
@@ -22,6 +26,7 @@ import { CommentI } from './comment';
 
 const CommentAnswer: React.FC<CommentI> = (props) => {
   const {
+    author,
     body,
     date,
     id,
@@ -33,6 +38,18 @@ const CommentAnswer: React.FC<CommentI> = (props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dispatch = useDispatch();
   const device = useAppSelector(selectDevice);
+
+  const authorAnagraphic = useAppSelector(selectAnagraphics)[author || 0] || {
+    nome: 'Utente',
+    cognome: 'Anonimo',
+  };
+
+  useEffect(() => {
+    if (author && !authorAnagraphic?.id) {
+      dispatch(getAnagraphicID({ id: author }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authorAnagraphic]);
 
   const commentDropdownOptions = [
     {
@@ -164,11 +181,11 @@ const CommentAnswer: React.FC<CommentI> = (props) => {
           <div className='mr-1'>
             <AvatarInitials
               user={{
-                uName: 'Tizio',
-                uSurname: 'Caio',
+                uName: authorAnagraphic?.nome,
+                uSurname: authorAnagraphic?.cognome,
               }}
-              size={AvatarSizes.Big}
-              font={AvatarTextSizes.Big}
+              size={AvatarSizes.Medium}
+              font={AvatarTextSizes.Medium}
             />
           </div>
           <div
@@ -185,8 +202,10 @@ const CommentAnswer: React.FC<CommentI> = (props) => {
                 device.mediaIsPhone ? 'text-wrap' : 'text-nowrap'
               )}
             >
-              <strong>Tizio Caio</strong>
-              &nbsp;-&nbsp;
+              <strong>
+                {authorAnagraphic?.nome}&nbsp;{authorAnagraphic?.cognome}
+              </strong>{' '}
+              {' — '}
               <span>{date && formatDate(date, 'shortDate')}</span>
             </p>
           </div>
@@ -198,7 +217,7 @@ const CommentAnswer: React.FC<CommentI> = (props) => {
         {/* comment heading ^^^^ */}
       </div>
       <div
-        className={clsx('pb-4', !device.mediaIsPhone && 'ml-4 padding-left')}
+        className='pb-4 left-alignment'
         style={{ width: device.mediaIsDesktop ? '90%' : '94%' }}
       >
         {body}

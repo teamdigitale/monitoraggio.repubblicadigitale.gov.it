@@ -32,7 +32,7 @@ import {
   setEntityPagination,
 } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { formFieldI } from '../../../utils/formHelper';
-import useGuard from "../../../hooks/guard";
+import useGuard from '../../../hooks/guard';
 
 // for dropdown filters, don't change
 const categoryDropdownLabel = 'categories';
@@ -166,16 +166,19 @@ const Community = () => {
           filtersList={{}}
           {...TopicCta}
           sortFilter
-          cta={hasUserPermission(['new.topic']) ? () =>
-            dispatch(
-              openModal({
-                id: 'topicModal',
-                payload: {
-                  title: 'Crea topic'
-                },
-              })
-            )
-          : undefined}
+          cta={
+            hasUserPermission(['new.topic'])
+              ? () =>
+                  dispatch(
+                    openModal({
+                      id: 'topicModal',
+                      payload: {
+                        title: 'Crea topic',
+                      },
+                    })
+                  )
+              : undefined
+          }
           cards={popularTopics}
           isCommunity
         >

@@ -17,7 +17,7 @@ const AnswersSection: React.FC<AnswerSectionI> = (props) => {
   const { thread, showReplies, replies } = props;
   const device = useAppSelector(selectDevice);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   return (
     <div>
@@ -26,7 +26,8 @@ const AnswersSection: React.FC<AnswerSectionI> = (props) => {
           className={clsx(
             'd-flex',
             'flex-column',
-            !device.mediaIsPhone ? 'padding-left py-4 ml-4' : 'py-2',
+            'left-alignment',
+            !device.mediaIsPhone ? 'py-4 ml-4' : 'py-2',
             thread && !device.mediaIsPhone && 'comment-container__thread'
           )}
         >
@@ -43,7 +44,7 @@ const AnswersSection: React.FC<AnswerSectionI> = (props) => {
                       payload: {
                         text: 'Confermi di voler eliminare questo contenuto?',
                         entity: 'comment',
-                        id: comment.id
+                        id: comment.id,
                       },
                     })
                   )
@@ -52,12 +53,12 @@ const AnswersSection: React.FC<AnswerSectionI> = (props) => {
                   dispatch(
                     openModal({
                       id: 'comment-modal',
-                      payload: { 
+                      payload: {
                         title: 'Modifica commento',
                         action: 'edit',
                         id: comment.id,
-                        body: comment.body
-                       },
+                        body: comment.body,
+                      },
                     })
                   )
                 }

@@ -9,7 +9,10 @@ import { useAppSelector } from '../../redux/hooks';
 import { selectUserNotification } from '../../redux/features/user/userSlice';
 import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { GetNotificationsByUser, ReadNotification } from '../../redux/features/user/userThunk';
+import {
+  GetNotificationsByUser,
+  ReadNotification,
+} from '../../redux/features/user/userThunk';
 
 interface NotificationsPreviewProps {
   open: boolean;
@@ -19,7 +22,7 @@ interface NotificationsPreviewProps {
 
 const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
   const { open, setOpen } = props;
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   // TODO integrate notification
   const notificationsList = useAppSelector(selectUserNotification);
 
@@ -28,16 +31,16 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
     if (open) {
       focusId('hamburger');
       body.style.overflowY = 'hidden';
-      dispatch(GetNotificationsByUser())
+      dispatch(GetNotificationsByUser());
     } else {
       body.style.overflowY = 'unset';
     }
   }, [open]);
 
   const onReadNotification = async (id: string) => {
-    await dispatch(ReadNotification([id]))
-    dispatch(GetNotificationsByUser())
-  }
+    await dispatch(ReadNotification([id]));
+    dispatch(GetNotificationsByUser());
+  };
 
   return (
     <ClickOutside callback={() => setOpen(false)}>
@@ -50,32 +53,43 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
           </div>
           <div className='preview-header'>
             <h3 className='primary-color-a9'>
-              Area Notifiche
-              <span className='badge'>{notificationsList.filter(notification => !notification.status).length}</span>
+              Area notifiche
+              <span className='badge'>
+                {
+                  notificationsList.filter(
+                    (notification) => !notification.status
+                  ).length
+                }
+              </span>
             </h3>
           </div>
         </div>
         <div className='notifications-list'>
-          {notificationsList
-            .map((notification, i) => (
-              <div key={i} role='button' className={clsx(notification.status ? '' : 'notifications-card-unread')}>
-                <Notification
-                  // TODO update key with a unique value
-                  {...notification}
-                  notificationsPreview={true}
-                  onClick={() => onReadNotification(notification.id)}
-                />
-              </div>
-            ))}
+          {notificationsList.map((notification, i) => (
+            <div
+              key={i}
+              role='button'
+              className={clsx(
+                notification.status ? '' : 'notifications-card-unread'
+              )}
+            >
+              <Notification
+                // TODO update key with a unique value
+                {...notification}
+                notificationsPreview={true}
+                onClick={() => onReadNotification(notification.id)}
+              />
+            </div>
+          ))}
         </div>
         <div className='text-center py-3'>
-          <NavLink to="/notifiche" className='primary-color archive'>
+          <NavLink to='/notifiche' className='primary-color archive'>
             ARCHIVIO NOTIFICHE ({notificationsList.length})
           </NavLink>
         </div>
       </div>
     </ClickOutside>
-  )
+  );
 
   // return (
   //   <ClickOutside callback={() => setOpen(false)}>
@@ -124,7 +138,7 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
   //             <a
   //               className='d-flex justify-content-center primary-color align-items-center pt-5'
   //               href='/notifiche'
-  //             > 
+  //             >
   //               ARCHIVIO NOTIFICHE ({notificationsList.length})
   //             </a>
   //           </div>

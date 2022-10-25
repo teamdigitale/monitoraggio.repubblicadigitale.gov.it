@@ -7,9 +7,13 @@ import {
   Icon,
   LinkList,
 } from 'design-react-kit';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import {
+  getAnagraphicID,
+  selectAnagraphics,
+} from '../../redux/features/anagraphic/anagraphicSlice';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import {
   DeleteReport,
@@ -25,6 +29,8 @@ import AvatarInitials, {
 interface ReportCardI {
   id: string;
   author?: string;
+  item_author: string;
+  comment_author: string;
   item_id: string;
   item_type: 'board_item' | 'community_item' | 'document_item';
   reason: string;
@@ -32,6 +38,9 @@ interface ReportCardI {
 }
 
 const ReportCard: React.FC<ReportCardI> = ({
+  author,
+  item_author,
+  comment_author,
   reason,
   date,
   id,
@@ -42,6 +51,27 @@ const ReportCard: React.FC<ReportCardI> = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const usersAnagraphic = useAppSelector(selectAnagraphics);
+
+  const authorAnagraphic = usersAnagraphic[author || 0] || {
+    nome: 'Utente',
+    cognome: 'Anonimo',
+  };
+
+  useEffect(() => {
+    if (author && !authorAnagraphic?.id) {
+      dispatch(getAnagraphicID({ id: author }));
+    }
+
+    if (item_author && !usersAnagraphic[item_author]?.id) {
+      dispatch(getAnagraphicID({ id: item_author }));
+    }
+
+    if (comment_author && !usersAnagraphic[comment_author]?.id) {
+      dispatch(getAnagraphicID({ id: comment_author }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authorAnagraphic, usersAnagraphic]);
 
   const commentDropdownOptions = [
     {
@@ -64,6 +94,19 @@ const ReportCard: React.FC<ReportCardI> = ({
     //   // action: () => editComment
     // },
   ];
+
+  const getItemType = () => {
+    switch (item_type) {
+      case 'board_item':
+        return 'la news';
+      case 'community_item':
+        return 'il topic';
+      case 'document_item':
+        return 'il documento';
+      default:
+        return '';
+    }
+  };
 
   const reportDropdown = () => (
     <Dropdown
@@ -138,7 +181,10 @@ const ReportCard: React.FC<ReportCardI> = ({
           >
             <div className='mr-2'>
               <AvatarInitials
-                user={{ uName: 'Tizio', uSurname: 'Caio' }}
+                user={{
+                  uName: authorAnagraphic?.nome,
+                  uSurname: authorAnagraphic?.cognome,
+                }}
                 size={AvatarSizes.Big}
                 font={AvatarTextSizes.Big}
               />
@@ -153,14 +199,23 @@ const ReportCard: React.FC<ReportCardI> = ({
                 )}
               >
                 <span className='text-nowrap'>
-                  <strong>Tizio Caio</strong>
+                  <strong>
+                    {authorAnagraphic?.nome}&nbsp;{authorAnagraphic?.cognome}
+                  </strong>
                 </span>
                 &nbsp;-&nbsp;
                 <span>{date && formatDate(date, 'shortDate')}</span>
               </div>
               <p>
-                Ha segnalato il commento di <strong>Mario Rossi</strong> con la
-                seguente motivazione:
+                <span>
+                  Ha segnalato {comment_author ? 'il commento' : getItemType()}{' '}
+                  di{' '}
+                </span>
+                <strong>
+                  {usersAnagraphic[comment_author || item_author]?.nome}&nbsp;
+                  {usersAnagraphic[comment_author || item_author]?.cognome}
+                </strong>{' '}
+                con la seguente motivazione:
               </p>
             </div>
           </div>

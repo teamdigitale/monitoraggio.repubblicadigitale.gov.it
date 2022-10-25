@@ -2,86 +2,68 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import DeleteEntityModal from '../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 
-import {
-  DropdownFilterI,
-  // FilterI,
-} from '../../../components/DropdownFilter/dropdownFilter';
+import { DropdownFilterI } from '../../../components/DropdownFilter/dropdownFilter';
 
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
 } from '../../../components/genericSearchFilterTableLayout/genericSearchFilterTableLayout';
 import PageTitle from '../../../components/PageTitle/pageTitle';
 import Table, { newTable, TableRowI } from '../../../components/Table/table';
-import { DeleteCategory, GetCategoriesList } from '../../../redux/features/forum/categories/categoriesThunk';
+import {
+  DeleteCategory,
+  GetCategoriesList,
+} from '../../../redux/features/forum/categories/categoriesThunk';
 import { selectCategoriesList } from '../../../redux/features/forum/forumSlice';
 import {
   closeModal,
   openModal,
 } from '../../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../../redux/hooks';
-// import { useAppSelector } from '../../../redux/hooks';
 import { CRUDActionsI, CRUDActionTypes } from '../../../utils/common';
-// import { formFieldI } from '../../../utils/formHelper';
 import ManageCategory from '../../administrator/AdministrativeArea/Entities/modals/manageCategory';
 import { TableCategories } from '../../administrator/AdministrativeArea/Entities/utils';
 
-
-
 const Category = () => {
-  // const entity = 'categorie';
-  // const categoryDropdownLabel = 'filtroCategories';
-  // const dropdownFilterOptions = useAppSelector(selectCategoryFilterOptions);
-  // const filtersList = useAppSelector(selectCategoryFilters);
   const dispatch = useDispatch();
   const categoriesList = useAppSelector(selectCategoriesList);
 
   useEffect(() => {
     dispatch(GetCategoriesList({ type: 'all' }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
-  // const [searchDropdown, setSearchDropdown] = useState<
-  //   { filterId: string; value: formFieldI['value'] }[]
-  // >([]);
-  // const [filterDropdownSelected, setFilterDropdownSelected] =
-  //   useState<string>('');
-
-  // const handleDropdownFilters = (values: FilterI[], filterKey: string) => {
-  //   console.log(values, filterKey);
-
-  //   // setFilterDropdownSelected(filterKey);
-  //   // dispatch(setCategoryFilters({ [filterKey]: [...values] }));
-  // };
-
-  // const getAllFilters = () => {
-  //   // if (filterDropdownSelected !== 'filtroCategories')
-  //   //    dispatch(GetCategoryFilterValues({ entity, dropdownType: 'categoria' }));
-  // };
-
-  // const { filtroCriterioRicerca, filtroCategories } = filtersList;
-
-  // useEffect(() => {
-  //   getAllFilters();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [filtroCriterioRicerca, filtroCategories]);
-
-  const getCategoryLabel = (category: 'document_categories' | 'board_categories' | 'community_categories') => {
+  const getCategoryLabel = (
+    category:
+      | 'document_categories'
+      | 'board_categories'
+      | 'community_categories'
+  ) => {
     switch (category) {
-      case 'board_categories': return 'Bacheca'
-      case 'community_categories': return 'Community'
-      case 'document_categories': return 'Documenti'
+      case 'board_categories':
+        return 'Bacheca';
+      case 'community_categories':
+        return 'Community';
+      case 'document_categories':
+        return 'Documenti';
     }
-  }
+  };
 
   const updateTableValues = () => {
-    //TODO align keys when API Integration is done
     const table = newTable(
       TableCategories,
       categoriesList.map((td: any) => {
+        const actions = [];
+        if (td.name?.toString()?.toLowerCase()?.trim() !== 'altro') {
+          actions.push([CRUDActionTypes.EDIT]);
+          actions.push([CRUDActionTypes.DELETE]);
+        } else {
+          actions.push(['none']);
+        }
         return {
           id: td.id,
           label: td.name,
           section: getCategoryLabel(td.type),
+          actions: actions.join(','),
         };
       })
     );
@@ -102,15 +84,17 @@ const Category = () => {
     },
     [CRUDActionTypes.EDIT]: (td: TableRowI | string) => {
       if (typeof td !== 'string') {
-        dispatch(openModal({
-          id: 'category',
-          payload: {
-            title: 'Modifica Categoria',
-            id: td.id,
-            term_type: categoriesList.find(c => c.id === td.id).type,
-            term_name: td.label
-          }
-        }))
+        dispatch(
+          openModal({
+            id: 'category',
+            payload: {
+              title: 'Modifica Categoria',
+              id: td.id,
+              term_type: categoriesList.find((c) => c.id === td.id).type,
+              term_name: td.label,
+            },
+          })
+        );
       }
     },
   };
@@ -123,8 +107,8 @@ const Category = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   const handleOnSearch = (searchValue: string) => {
-    console.log(searchValue);
-
+    if (searchValue?.length >= 2)
+      dispatch(GetCategoriesList({ type: 'all', keys: searchValue }));
   };
 
   const dropdowns: DropdownFilterI[] = [
@@ -174,19 +158,20 @@ const Category = () => {
           {...tableValues}
           id='table'
           onActionClick={onActionClick}
-          onCellClick={(field, row) => console.log(field, row)}
-          //onRowClick={row => console.log(row)}
           withActions
-        //totalCounter={pagination?.totalElements}
         />
       </GenericSearchFilterTableLayout>
       <DeleteEntityModal
         onClose={() => dispatch(closeModal())}
         onConfirm={async (payload: any) => {
           if (payload.id) {
-            await dispatch(DeleteCategory(payload.id))
-            dispatch(GetCategoriesList({ type: 'all' }))
-            dispatch(closeModal())
+            const res = await dispatch(DeleteCategory(payload.id));
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            if (res) {
+              dispatch(GetCategoriesList({ type: 'all' }));
+              dispatch(closeModal());
+            }
           }
         }}
       />

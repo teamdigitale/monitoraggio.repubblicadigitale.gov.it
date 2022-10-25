@@ -43,8 +43,18 @@ const UserAvatar: React.FC<UserAvatarI> = (props) => {
         avatarImage && 'border border-primary'
       )}
       style={{
-        width: isUserProfile || size === AvatarSizes.Big ? '67px' : '39px',
-        height: isUserProfile || size === AvatarSizes.Big ? '67px' : '39px',
+        width:
+          isUserProfile || size === AvatarSizes.Big
+            ? '67px'
+            : AvatarSizes.Medium
+            ? '58px'
+            : '39px',
+        height:
+          isUserProfile || size === AvatarSizes.Big
+            ? '67px'
+            : AvatarSizes.Medium
+            ? '58px'
+            : '39px',
       }}
     >
       {avatarImage ? (

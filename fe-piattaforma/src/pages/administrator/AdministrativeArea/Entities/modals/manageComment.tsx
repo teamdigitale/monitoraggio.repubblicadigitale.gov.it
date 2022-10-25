@@ -44,40 +44,64 @@ const ManageComment: React.FC<ManageCommentI> = ({
     if (payload) setNewComment(payload.body || '');
   }, [payload]);
 
+  const resetModal = () => {
+    if (id && userId) dispatch(GetCommentsList(id, userId));
+    setNewComment('');
+    dispatch(closeModal());
+  };
+
   const handleSaveComment = async () => {
     if (newComment.trim() !== '' && id && payload && userId) {
       switch (payload.action) {
-        case 'comment':
-          await dispatch(CreateComment(id, newComment as string));
-          userId &&
-            dispatch(GetItemDetail(id, userId, payload.entity || 'community'));
-          dispatch(
-            ActionTracker({
-              target: 'tnd',
-              action_type: 'COMMENTO',
-              event_type:
-                payload.entity === 'board'
-                  ? 'NEWS'
-                  : payload.entity === 'community'
-                  ? 'TOPIC'
-                  : 'DOCUMENTI',
-              category: payload.category_label || payload.category,
-            })
-          );
+        case 'comment': {
+          const res = await dispatch(CreateComment(id, newComment as string));
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          if (res) {
+            userId &&
+              dispatch(
+                GetItemDetail(id, userId, payload.entity || 'community')
+              );
+            dispatch(
+              ActionTracker({
+                target: 'tnd',
+                action_type: 'COMMENTO',
+                event_type:
+                  payload.entity === 'board'
+                    ? 'NEWS'
+                    : payload.entity === 'community'
+                    ? 'TOPIC'
+                    : 'DOCUMENTI',
+                category: payload.category_label || payload.category,
+              })
+            );
+            resetModal();
+          }
           break;
+        }
         case 'edit':
-          await dispatch(UpdateComment(payload.id, newComment));
+          {
+            const res = await dispatch(UpdateComment(payload.id, newComment));
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            if (res) {
+              resetModal();
+            }
+          }
           break;
         case 'reply':
-          await dispatch(ReplyComment(payload.id, newComment));
+          {
+            const res = await dispatch(ReplyComment(payload.id, newComment));
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            if (res) {
+              resetModal();
+            }
+          }
           break;
         default:
           break;
       }
-
-      dispatch(GetCommentsList(id, userId));
-      setNewComment('');
-      dispatch(closeModal());
     }
   };
   return (

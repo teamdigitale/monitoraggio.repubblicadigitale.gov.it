@@ -95,6 +95,11 @@ const DocumentsDetails = () => {
     }
   };
 
+  const onEntityDelete = async (entityId: string) => {
+    await dispatch(DeleteItem(entityId));
+    navigate(-1);
+  };
+
   const backButton = (
     <Button onClick={() => navigate(-1)} className='px-0'>
       <Icon
@@ -219,8 +224,7 @@ const DocumentsDetails = () => {
         onConfirm={(payload: any) => {
           switch (payload.entity) {
             case 'document':
-              dispatch(DeleteItem(payload.id));
-              navigate(-1);
+              onEntityDelete(payload.id);
               break;
             case 'comment':
               onCommentDelete(payload.id);

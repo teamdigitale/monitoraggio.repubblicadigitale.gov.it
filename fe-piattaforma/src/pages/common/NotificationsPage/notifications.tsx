@@ -2,7 +2,6 @@ import { Button, Container, Icon } from 'design-react-kit';
 import React, { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Paginator } from '../../../components';
-import PageTitle from '../../../components/PageTitle/pageTitle';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import { selectEntityPagination } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { useAppSelector } from '../../../redux/hooks';
@@ -15,10 +14,12 @@ import Delete from '/public/assets/img/delete.png';
 import DeleteCheck from '/public/assets/img/delete-check.png';
 import PillDropDown from '../../../components/PillDropDown/pillDropDown';
 import Notification from './components/Notifications/notification';
+import { selectUserNotification } from '../../../redux/features/user/userSlice';
 import {
-  selectUserNotification,
-} from '../../../redux/features/user/userSlice';
-import { DeleteNotification, GetNotificationsByUser, ReadNotification } from '../../../redux/features/user/userThunk';
+  DeleteNotification,
+  GetNotificationsByUser,
+  ReadNotification,
+} from '../../../redux/features/user/userThunk';
 import { setEntityPagination } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 
 const Notifications: React.FC = () => {
@@ -29,7 +30,7 @@ const Notifications: React.FC = () => {
   const notificationsList = useAppSelector(selectUserNotification);
   const dispatch = useDispatch();
   const pagination = useAppSelector(selectEntityPagination);
-  const { pageNumber, pageSize, totalPages } = pagination
+  const { pageNumber, pageSize, totalPages } = pagination;
   const [selectedNotifications, setSelectedNotifications] = useState<string[]>(
     []
   );
@@ -58,14 +59,14 @@ const Notifications: React.FC = () => {
   };
 
   const onDeleteSelected = async () => {
-    await dispatch(DeleteNotification(selectedNotifications))
-    setSelectedNotifications([])
+    await dispatch(DeleteNotification(selectedNotifications));
+    setSelectedNotifications([]);
     dispatch(GetNotificationsByUser());
   };
 
   const onReadSelected = async () => {
-    await dispatch(ReadNotification(selectedNotifications))
-    setSelectedNotifications([])
+    await dispatch(ReadNotification(selectedNotifications));
+    setSelectedNotifications([]);
     dispatch(GetNotificationsByUser());
   };
 
@@ -73,8 +74,27 @@ const Notifications: React.FC = () => {
     <>
       {isMobile ? (
         <>
-          <div className={clsx('mt-5', 'justify-content-center', 'container')}>
-            <PageTitle title='Le Tue Notifiche' badge={true} />
+          <div
+            className={clsx(
+              'mt-5',
+              'justify-content-center',
+              'align-items-end',
+              'container'
+            )}
+          >
+            <div className='title'>
+              <h3 className='primary-color-a9 m-0'>
+                Le tue notifiche
+                <span className='badge'>
+                  {
+                    notificationsList.filter(
+                      (notification) => !notification.status
+                    ).length
+                  }
+                </span>
+              </h3>
+            </div>
+            {/* <PageTitle title='Le tue notifiche' badge={true} /> */}
             <div className='container'>
               <PillDropDown isNotifications={true} />
             </div>
@@ -116,8 +136,20 @@ const Notifications: React.FC = () => {
         </>
       ) : (
         <>
-          <div className='d-flex justify-content-between container'>
-            <PageTitle title='Le Tue Notifiche' badge={true} />
+          <div className='d-flex justify-content-between align-items-end container'>
+            <div className='title'>
+              <h3 className='primary-color-a9 m-0'>
+                Le tue notifiche
+                <span className='badge'>
+                  {
+                    notificationsList.filter(
+                      (notification) => !notification.status
+                    ).length
+                  }
+                </span>
+              </h3>
+            </div>
+            {/* <PageTitle title='Le tue notifiche' badge={true} /> */}
             <PillDropDown isNotifications={true} />
           </div>
 
@@ -184,7 +216,7 @@ const Notifications: React.FC = () => {
             key={i}
             role='button'
             className={clsx(
-              !!notification.status ? '' : 'notifications-card-unread'
+              notification.status ? '' : 'notifications-card-unread'
             )}
           >
             <Notification

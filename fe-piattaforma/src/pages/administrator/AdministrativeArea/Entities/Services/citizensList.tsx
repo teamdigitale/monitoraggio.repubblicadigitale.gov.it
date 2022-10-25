@@ -348,6 +348,7 @@ const CitizensList: React.FC = () => {
         onEsito={handleCitizenUploadEsito}
         template={CitizenTemplate}
         templateName='cittadini-template.xlsx'
+        citizens
       >
         <Table
           {...citizenListTable}

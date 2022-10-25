@@ -321,7 +321,7 @@ const form = newForm([
   newFormField({
     field: 'description',
     id: 'description',
-    label: 'Testo',
+    label: 'Testo *',
     required: true,
     type: 'textarea',
   }),

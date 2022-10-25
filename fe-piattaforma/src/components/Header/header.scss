@@ -115,11 +115,15 @@
 }
 
 .badge-notifications {
+  min-width: 20px;
+  font-size: 12px;
+  max-width: 24px;
+  padding: 2px;
   position: absolute;
   top: 5px;
   right: 0;
   display: flex;
-  width: 20px;
+  //width: 20px;
   height: 20px;
   border-radius: 100%;
   background-color: #b62032;
@@ -129,11 +133,15 @@
 }
 
 .chat-notifications {
+  min-width: 20px;
+  font-size: 12px;
+  max-width: 24px;
+  padding: 2px;
   position: absolute;
   top: -6px;
   right: -6px;
   display: flex;
-  width: 20px;
+  //width: 20px;
   height: 20px;
   border-radius: 100%;
   background-color: #b62032;

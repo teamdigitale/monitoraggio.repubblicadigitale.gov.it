@@ -7,7 +7,10 @@ import {
   GetCategoriesList,
   UpdateCategory,
 } from '../../../../../redux/features/forum/categories/categoriesThunk';
-import { closeModal, selectModalPayload } from '../../../../../redux/features/modal/modalSlice';
+import {
+  closeModal,
+  selectModalPayload,
+} from '../../../../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { formFieldI } from '../../../../../utils/formHelper';
 import CategoryFrom from './Category/categoryForm';
@@ -19,7 +22,7 @@ interface CategoryModalFormI {
   creation?: boolean;
 }
 
-interface ManageCategoryI extends withFormHandlerProps, CategoryModalFormI { }
+interface ManageCategoryI extends withFormHandlerProps, CategoryModalFormI {}
 
 const ManageCategory: React.FC<ManageCategoryI> = (props) => {
   const { formDisabled } = props;
@@ -28,27 +31,42 @@ const ManageCategory: React.FC<ManageCategoryI> = (props) => {
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
   }>({});
-  const payload = useAppSelector(selectModalPayload)
+  const payload = useAppSelector(selectModalPayload);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(payload);
-    
     if (payload && payload.term_name && payload.term_type) {
       setNewFormValues({
         term_type: payload.term_type,
-        term_name: payload.term_name
-      })
+        term_name: payload.term_name,
+      });
     }
-  }, [payload])
+  }, [payload]);
 
   const handleSaveCategory = async () => {
-    if (payload && payload.id) {
-      await dispatch(UpdateCategory({ term_name: newFormValues.term_name }, payload.id))
+    if (payload?.id) {
+      const res = await dispatch(
+        UpdateCategory({ term_name: newFormValues.term_name }, payload.id)
+      );
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (res) {
+        dispatch(GetCategoriesList({}));
+        resetModal();
+      }
     } else {
-      await dispatch(CreateCategory(newFormValues));
+      const res = await dispatch(CreateCategory(newFormValues));
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (res) {
+        dispatch(GetCategoriesList({}));
+        resetModal();
+      }
     }
-    dispatch(GetCategoriesList({}));
+  };
+
+  const resetModal = () => {
+    setNewFormValues({});
     dispatch(closeModal());
   };
 
@@ -64,6 +82,7 @@ const ManageCategory: React.FC<ManageCategoryI> = (props) => {
         label: 'Annulla',
         onClick: () => dispatch(closeModal()),
       }}
+      onClose={resetModal}
     >
       <CategoryFrom
         creation={!payload?.id}
