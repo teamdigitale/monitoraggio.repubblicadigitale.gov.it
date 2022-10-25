@@ -810,6 +810,13 @@ export const UpdateItem =
             payload.cover,
             'cover'
           );
+        } else if (payload.removeCover) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          uploadFile = await RemoveFileLocal(
+            res.data.data.id,
+            'cover'
+          );
         }
         if (payload.attachment?.data) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -819,34 +826,18 @@ export const UpdateItem =
             payload.attachment,
             'attachment'
           );
+        } else if (payload.removeAttachment) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          uploadFile = await RemoveFileLocal(
+            res.data.data.id,
+            'attachment'
+          );
         }
         return uploadFile ? res : false;
       }
     } catch (error) {
       console.log('UpdateItem error', error);
-      return false;
-    } finally {
-      dispatch(hideLoader());
-    }
-  };
-
-const UploadFileAction = {
-  type: 'forum/UploadFile',
-};
-
-export const UploadFile =
-  (itemId: string, payload: any, type: 'cover' | 'attachment') =>
-  async (dispatch: Dispatch) => {
-    try {
-      dispatch(showLoader());
-      dispatch({ ...UploadFileAction, ...{ itemId, type, payload } });
-      const res = await API.post(`item/${itemId}/file/upload`, {
-        type: type,
-        data: payload,
-      });
-      return res;
-    } catch (error) {
-      console.log('UploadFile error', error);
       return false;
     } finally {
       dispatch(hideLoader());
@@ -867,7 +858,22 @@ const UploadFileLocal = async (
     });
     return res;
   } catch (error) {
-    console.log('UploadFile error', error);
+    console.log('UploadFileLocal error', error);
+    return false;
+  }
+};
+
+const RemoveFileLocal = async (
+  itemId: string,
+  type: 'cover' | 'attachment'
+) => {
+  try {
+    const res = await proxyCall(`/item/${itemId}/file/upload`, 'POST', {
+      type
+    });
+    return res;
+  } catch (error) {
+    console.log('RemoveFileLocal error', error);
     return false;
   }
 };

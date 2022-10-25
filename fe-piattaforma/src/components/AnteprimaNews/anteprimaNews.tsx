@@ -117,13 +117,13 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
   const setNewsDetailDropdownOptionsByPermission = () => {
     const authorizedOption = [];
     if (
-      hasUserPermission(['del.news']) &&
+      hasUserPermission(['del.news']) ||
       author?.toString() === userId?.toString()
     ) {
       authorizedOption.push(deleteOption);
     }
     if (
-      hasUserPermission(['upd.news']) &&
+      hasUserPermission(['upd.news']) ||
       author?.toString() === userId?.toString()
     ) {
       authorizedOption.push(editOption);

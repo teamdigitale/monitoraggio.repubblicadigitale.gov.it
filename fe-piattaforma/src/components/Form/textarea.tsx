@@ -130,26 +130,21 @@ const TextArea: React.FC<TextAreaI> = (props) => {
   );
 
   return (
-    <div
-      className={clsx(
-        'bootstrap-select-wrapper',
-        'form-group',
-        'mb-0',
-      )}
-    >
-    <Label htmlFor={id} className='text-decoration-none'>
-      {label}
-    </Label>
-    <textarea
-      {...BaseProps}
-      {...TextAreaProps}
-      placeholder={placeholder}
-      onChange={handleOnChange}
-      value={val}
-      //innerRef={inputRef}
-      ref={inputRef}
-      style={{ resize: !resize ? 'none' : 'unset' }}
-    />
+    <div className={clsx('bootstrap-select-wrapper', 'form-group', 'mb-0')}>
+      <Label htmlFor={id} className='text-decoration-none'>
+        {label}
+      </Label>
+      <textarea
+        {...BaseProps}
+        {...TextAreaProps}
+        placeholder={placeholder}
+        onChange={handleOnChange}
+        value={val}
+        //innerRef={inputRef}
+        ref={inputRef}
+        style={{ resize: !resize ? 'none' : 'unset' }}
+        className='font-weight-light'
+      />
     </div>
   );
 };
