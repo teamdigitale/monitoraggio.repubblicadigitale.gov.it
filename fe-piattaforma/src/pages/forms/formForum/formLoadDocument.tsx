@@ -246,6 +246,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
           }))}
           isDisabled={formDisabled}
           placeholder='Seleziona'
+          shortDropdownMenu
         />
         <Select
           {...form?.intervention}
@@ -261,6 +262,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
             formDisabled
           }
           placeholder='Seleziona'
+          shortDropdownMenu
         />
       </Form.Row>
       <Form.Row className={bootClass}>
@@ -274,6 +276,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
           }))}
           isDisabled={formDisabled}
           placeholder='Seleziona'
+          shortDropdownMenu
         />
       </Form.Row>
       <Form.Row className={bootClass}>
@@ -393,7 +396,7 @@ const form = newForm([
   newFormField({
     field: 'description',
     id: 'description',
-    label: 'Descrizione',
+    label: 'Descrizione *',
     required: true,
     type: 'textarea',
   }),

@@ -813,10 +813,7 @@ export const UpdateItem =
         } else if (payload.removeCover) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          uploadFile = await RemoveFileLocal(
-            res.data.data.id,
-            'cover'
-          );
+          uploadFile = await RemoveFileLocal(res.data.data.id, 'cover');
         }
         if (payload.attachment?.data) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -829,10 +826,7 @@ export const UpdateItem =
         } else if (payload.removeAttachment) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          uploadFile = await RemoveFileLocal(
-            res.data.data.id,
-            'attachment'
-          );
+          uploadFile = await RemoveFileLocal(res.data.data.id, 'attachment');
         }
         return uploadFile ? res : false;
       }
@@ -869,7 +863,7 @@ const RemoveFileLocal = async (
 ) => {
   try {
     const res = await proxyCall(`/item/${itemId}/file/upload`, 'POST', {
-      type
+      type,
     });
     return res;
   } catch (error) {

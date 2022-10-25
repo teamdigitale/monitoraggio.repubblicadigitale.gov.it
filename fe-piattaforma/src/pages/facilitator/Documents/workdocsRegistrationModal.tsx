@@ -10,6 +10,7 @@ import { Form, Input } from '../../../components';
 import { useAppSelector } from '../../../redux/hooks';
 import { selectUser } from '../../../redux/features/user/userSlice';
 import { WorkDocsRegistration } from '../../../redux/features/forum/forumThunk';
+import { RegexpType } from '../../../utils/validator';
 
 interface WorkdocsRegistrationModalI extends withFormHandlerProps {
   onClose?: () => void;
@@ -125,6 +126,7 @@ const form = newForm([
     label: 'Crea una nuova password',
     required: true,
     type: 'password',
+    regex: RegexpType.PASSWORD_TOOL,
   }),
   newFormField({
     field: 'confirmPassword',

@@ -24,6 +24,7 @@ import {
   DeleteNotification,
   GetNotificationsByUser,
 } from '../../../../../redux/features/user/userThunk';
+// import { useNavigate } from 'react-router-dom';
 
 export interface NotificationI {
   id?: string;
@@ -46,6 +47,8 @@ const Notification: React.FC<NotificationI> = (props) => {
     status = false,
     id,
     action = '',
+    // node_id = '',
+    // node_bundle = '',
     onSelect,
     notificationsPreview = true,
     isChecked = false,
@@ -58,6 +61,7 @@ const Notification: React.FC<NotificationI> = (props) => {
   const dispatch = useDispatch();
   const usersAnagraphic = useAppSelector(selectAnagraphics);
   const [populatedMessage, setPopulatedMessage] = useState('');
+  // const navigate = useNavigate()
 
   useEffect(() => {
     if (message) {
@@ -92,6 +96,22 @@ const Notification: React.FC<NotificationI> = (props) => {
     dispatch(GetNotificationsByUser());
   };
 
+  // const onNavigateToItem = () => {
+  //   switch (node_bundle) {
+  //     case 'board_item':
+  //       navigate(`/bacheca/${node_id}`)
+  //       break;
+  //     case 'community_item':
+  //       navigate(`/community/${node_id}`)
+  //       break
+  //     case 'document_item':
+  //       navigate(`/documenti/${node_id}`)
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
+
   const userDropDown = (
     <Dropdown
       className='ml-auto'
@@ -104,9 +124,10 @@ const Notification: React.FC<NotificationI> = (props) => {
         style={{
           border: 'none',
         }}
+        onClick={(e) => e.stopPropagation()}
       >
         <div>
-          <Icon icon='it-more-items' size='lg' color='primary' />
+          <Icon icon='it-more-items' size='' color='primary' />
         </div>
       </DropdownToggle>
       <DropdownMenu role='menu' tag='ul'>
@@ -154,6 +175,7 @@ const Notification: React.FC<NotificationI> = (props) => {
           !status && 'unread',
           isMobile && !notificationsPreview && 'reverse'
         )}
+        // onClick={() => onNavigateToItem()}
       >
         {/* className='d-flex justify-content-between align-items-center'> */}
 
@@ -168,6 +190,7 @@ const Notification: React.FC<NotificationI> = (props) => {
             <Input
               className='notification-list-checkbar'
               type='checkbox'
+              onClick={(e) => e.stopPropagation()}
               onInputChange={() => onSelect && id && onSelect(id)}
               checked={isChecked}
             />
@@ -205,7 +228,10 @@ const Notification: React.FC<NotificationI> = (props) => {
               color='primary'
               icon='it-close'
               size='lg'
-              onClick={onDelete}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete();
+              }}
             />
           </div>
         ) : null}

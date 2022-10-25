@@ -74,8 +74,7 @@ const authContents = {
 
 const authContentsShort = {
   title: 'I miei report',
-  subtitle:
-    'Consulta le statistiche rappresentate in questa pagina',
+  subtitle: 'Consulta le statistiche rappresentate in questa pagina',
 };
 
 /*
@@ -246,7 +245,11 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.codiceRuolo, device]);
 
-  const contents = user?.codiceRuolo ? (hasUserPermission(['acc.self.dshb']) ? authContents:authContentsShort) : publicContents;
+  const contents = user?.codiceRuolo
+    ? hasUserPermission(['acc.self.dshb'])
+      ? authContents
+      : authContentsShort
+    : publicContents;
 
   return (
     <div className='container dashboard-container my-5'>

@@ -111,7 +111,7 @@ const CardShowcase: React.FC<CardShowcaseI> = (props) => {
                   : 'mb-4 mt-3 pt-1'
               )}
             >
-              <span className='font-weight-bold'>{category_label} —</span>
+              <span className='font-weight-bold'>{category_label} — </span>
               {date && formatDate(date, 'shortDate')}
             </div>
           ) : null}

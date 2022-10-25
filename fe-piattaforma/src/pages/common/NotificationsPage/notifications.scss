@@ -34,3 +34,24 @@
 .text-secondary-action {
   color: #ADB2B8 !important;
 }
+
+.title {
+  position: relative;
+  width: fit-content;
+  
+  .badge {
+    width: 22px;
+    height: 22px;
+    border-radius: 100%;
+    background-color: #B62032;
+    color: #FFFFFF;
+    position: absolute;
+    right: -10%;
+    top: -20%;
+    font-weight: 400;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

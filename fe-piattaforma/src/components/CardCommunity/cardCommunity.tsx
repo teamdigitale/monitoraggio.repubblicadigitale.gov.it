@@ -67,7 +67,9 @@ const CardCommunity: React.FC<CardCommunityI> = (props) => {
       <Col className='text-left'>
         {category_label ? (
           <div className='mb-2 card-community__pre-title'>
-            <span className='font-weight-bold'>{category_label}&nbsp;-&nbsp;</span>
+            <span className='font-weight-bold'>
+              {category_label}&nbsp;—&nbsp;
+            </span>
             {date && formatDate(date, 'shortDate')}
           </div>
         ) : null}

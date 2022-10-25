@@ -243,8 +243,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
         <div>
           {
             <div className='document-card-detail-container__typology'>
-              <span className='font-weight-bold'>{category_label}</span>
-              <span> - </span>
+              <span className='font-weight-bold'>{category_label} — </span>
               <span>{date && formatDate(date, 'shortDate')}</span>
             </div>
           }

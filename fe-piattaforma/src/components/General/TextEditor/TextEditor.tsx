@@ -14,9 +14,10 @@ import './TextEditor.scss';
 interface TextEditorI {
   text: string;
   onChange: (text: string) => void;
+  maxLength?: number;
 }
 
-const TextEditor = ({ text, onChange }: TextEditorI) => {
+const TextEditor = ({ text, onChange, maxLength = 1501 }: TextEditorI) => {
   const [editorState, setEditorState] = useState(
     EditorState.createWithContent(
       ContentState.createFromBlockArray(
@@ -35,22 +36,38 @@ const TextEditor = ({ text, onChange }: TextEditorI) => {
             convertFromHTML(text).entityMap
           )
         )
-      )
-  }, [text])
+      );
+  }, [text]);
 
   return (
     <div className='editor-container'>
       <Editor
-      toolbar={{
-        options: ['inline'],
-        inline: {
-          options: ['bold', 'italic', 'underline']
-        }
-      }}
+        toolbar={{
+          options: ['inline'],
+          inline: {
+            options: ['bold', 'italic', 'underline'],
+          },
+        }}
         editorState={editorState}
         onEditorStateChange={(editorState) => {
-          setEditorState(editorState)
-          onChange(draftToHtml(convertToRaw(editorState.getCurrentContent())))
+          if (
+            draftToHtml(convertToRaw(editorState.getCurrentContent())).length <=
+            maxLength
+          ) {
+            setEditorState(editorState);
+            onChange(
+              draftToHtml(convertToRaw(editorState.getCurrentContent()))
+            );
+          } else {
+            setEditorState(
+              EditorState.createWithContent(
+                ContentState.createFromBlockArray(
+                  convertFromHTML(text).contentBlocks,
+                  convertFromHTML(text).entityMap
+                )
+              )
+            );
+          }
         }}
         wrapperClassName='wrapper'
         editorClassName='editor'

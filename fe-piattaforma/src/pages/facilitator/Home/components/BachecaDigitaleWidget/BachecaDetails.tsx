@@ -105,6 +105,11 @@ const BachecaDetails = () => {
     </Button>
   );
 
+  const onEntityDelete = async (entityId: string) => {
+    await dispatch(DeleteItem(entityId));
+    navigate(-1);
+  };
+
   return (
     <div className={clsx('container', 'mb-5')}>
       {backButton}
@@ -156,8 +161,7 @@ const BachecaDetails = () => {
         onConfirm={(payload: any) => {
           switch (payload.entity) {
             case 'board':
-              dispatch(DeleteItem(payload.id));
-              navigate(-1);
+              onEntityDelete(payload.id);
               break;
             case 'comment':
               onCommentDelete(payload.id);

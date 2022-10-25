@@ -36,12 +36,32 @@ const defaultErrorPayload = {
   title: 'ERRORE GENERICO',
   message: defaultErrorMessage,
 };
-export const getErrorMessage = async (errorCode: string) => {
+const getDrupalErrorMessage = (errorsList: any, errorMessage: string) => {
+  try {
+    if (errorMessage) {
+      const errorCode = JSON.parse(decodeURI(errorMessage.replaceAll(' ', '').slice(1, -1)))?.data?.message?.split(':')?.[0];
+      if (errorsList[errorCode]) {
+        return {
+          message: `${errorsList[errorCode]} (${errorCode})`,
+          title: 'ERRORE',
+        };
+      } else {
+        return defaultErrorPayload;
+      }
+    }
+    return defaultErrorPayload;
+  } catch {
+    return defaultErrorPayload;
+  }
+};
+export const getErrorMessage = async ({ errorCode, message = '' }: { errorCode: string; message?: string }) => {
   try {
     const res = await axios('/assets/errors/errors.json');
     if (res?.data) {
       const errorsList = { ...res.data.errors };
-      if (errorsList[errorCode]) {
+      if (errorCode === 'D01') {
+        return getDrupalErrorMessage(errorsList, message);
+      } else if (errorsList[errorCode]) {
         return {
           message: `${errorsList[errorCode]} (${errorCode})`,
           title: 'ERRORE',
@@ -82,7 +102,7 @@ export const errorHandler = async (error: unknown) => {
     if (!errorData) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      errorData = await getErrorMessage(error?.response?.data?.errorCode);
+      errorData = await getErrorMessage(error?.response?.data);
     }
 
     dispatchNotify({

@@ -74,7 +74,7 @@ const CardDocument: React.FC<CardDocumentI> = (props) => {
     >
       <Col className='text-left'>
         <div className='document-card-container__pre-title'>
-          <span className='font-weight-bold'>{category_label}&nbsp;-&nbsp;</span>
+          <span className='font-weight-bold'>{category_label} — </span>
           {date && formatDate(date, 'shortDate')}
         </div>
         <p

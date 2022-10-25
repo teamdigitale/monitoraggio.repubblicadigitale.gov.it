@@ -5,11 +5,13 @@ import './avatarInitials.scss';
 
 export enum AvatarSizes {
   Big = '__big',
+  Medium = '__medium',
   Small = '__small',
 }
 
 export enum AvatarTextSizes {
   Big = '__font-big',
+  Medium = '__font-medium',
   Small = '__font-small',
 }
 

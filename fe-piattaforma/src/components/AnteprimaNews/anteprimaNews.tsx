@@ -216,8 +216,9 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
         <div>
           <div className='d-flex justify-content-between align-items-center'>
             <div className='anteprima-news-container__category'>
-              <span className='font-weight-bold'>{category_label}</span>
-              {date ? ' - ' : ''}
+              <span className='font-weight-bold'>
+                {category_label} {date ? ' — ' : ''}{' '}
+              </span>
               <span>{date && formatDate(date, 'shortDate')}</span>
             </div>
             {!isModalPreview && (
