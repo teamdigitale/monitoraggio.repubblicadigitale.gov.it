@@ -21,6 +21,7 @@ import {
 import { useAppSelector } from '../../../../../redux/hooks';
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormLoadDocument from '../../../../forms/formForum/formLoadDocument';
+import { selectDocDetail } from '../../../../../redux/features/forum/forumSlice';
 
 const modalId = 'documentModal';
 interface ManageDocumentFormI {
@@ -45,6 +46,8 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
   const userProfile = useAppSelector(selectProfile);
   const programsList = useAppSelector(selectEntityFiltersOptions)['programmi'];
   const userId = useAppSelector(selectUser)?.id;
+  const docDetail: { [key: string]: string | boolean } | undefined =
+    useAppSelector(selectDocDetail);
   const [newNodeId, setNewNodeId] = useState();
   const navigate = useNavigate();
 
@@ -61,9 +64,13 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
             id,
             {
               ...newFormValues,
-              program_label: programsList?.find(
-                (p) => p.value === parseInt(newFormValues.program as string)
-              )?.label,
+              program_label:
+                newFormValues.program === 'public'
+                  ? 'Tutti i programmi'
+                  : programsList?.find(
+                      (p) =>
+                        p.value === parseInt(newFormValues.program as string)
+                    )?.label,
               entity:
                 userProfile?.idProgetto || userProfile?.idProgramma
                   ? userProfile.nomeEnte
@@ -73,6 +80,14 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
                 : userProfile?.idProgramma
                 ? 'Ente gestore di programma'
                 : '',
+              removeAttachment:
+                docDetail?.attachment &&
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                newFormValues?.attachment?.name &&
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                !newFormValues?.attachment?.data,
             },
             'document'
           )
@@ -136,6 +151,7 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
     case 'form':
       content = (
         <FormLoadDocument
+          newFormValues={newFormValues}
           creation={creation}
           formDisabled={!!formDisabled}
           sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>

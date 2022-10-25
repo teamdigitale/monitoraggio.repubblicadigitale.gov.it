@@ -137,7 +137,8 @@ const Comment: React.FC<CommentI> = (props) => {
           : section === 'documents'
           ? 'del.doc'
           : 'hidden',
-      ]) && author?.toString() === userId?.toString()
+      ]) ||
+      author?.toString() === userId?.toString()
     ) {
       authorizedOption.push(deleteOption);
     }
@@ -150,7 +151,8 @@ const Comment: React.FC<CommentI> = (props) => {
           : section === 'documents'
           ? 'upd.doc'
           : 'hidden',
-      ]) && author?.toString() === userId?.toString()
+      ]) ||
+      author?.toString() === userId?.toString()
     ) {
       authorizedOption.push(editOption);
     }
@@ -182,76 +184,60 @@ const Comment: React.FC<CommentI> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authorAnagraphic]);
 
-  const commentDropdown = () => (
-    <Dropdown
-      className='comment-container__comment-dropdown'
-      isOpen={isOpen}
-      toggle={() => setIsOpen(!isOpen)}
-    >
-      <DropdownToggle caret className='bg-white shadow-none'>
-        <div
-          className={clsx('d-inline-flex', 'align-items-center', 'text.white')}
-        >
-          <div>
-            <Button>
-              <Icon icon='it-more-items' color='primary' />
-            </Button>
-          </div>
-        </div>
-      </DropdownToggle>
-      <DropdownMenu role='menu' tag='ul'>
-        <LinkList role='none'>
-          {detailDropdownOptions.map((item, i) => (
-            <li key={i} role='none' onClick={() => setIsOpen(!isOpen)}>
-              <Button
-                className={clsx('primary-color-b1', 'py-2', 'w-100')}
-                role='menuitem'
-                onClick={() => item.action && item.action()}
-              >
-                <div
-                  className={clsx(
-                    'd-flex',
-                    'flex-row',
-                    'justify-content-around',
-                    'align-items-center'
-                  )}
-                >
-                  <div>
-                    <Icon
-                      icon={item.DropdownIcon.icon}
-                      color={item.DropdownIcon.color}
-                    />
-                  </div>
-                  <div>{item.optionName}</div>
-                </div>
+  const commentDropdown = () =>
+    detailDropdownOptions?.length ? (
+      <Dropdown
+        className='comment-container__comment-dropdown'
+        isOpen={isOpen}
+        toggle={() => setIsOpen(!isOpen)}
+      >
+        <DropdownToggle caret className='bg-white shadow-none'>
+          <div
+            className={clsx(
+              'd-inline-flex',
+              'align-items-center',
+              'text.white'
+            )}
+          >
+            <div>
+              <Button>
+                <Icon icon='it-more-items' color='primary' />
               </Button>
-            </li>
-          ))}
-        </LinkList>
-      </DropdownMenu>
-    </Dropdown>
-  );
-
-  /* 
-      funzione da legare alla modale con annesse chiamate API per aggiornare il campo
-  
-      const editComment = () => {
-    
-      } 
-    */
-
-  /*  const reportComment = () => {
-    commentArray.filter((singleComment: CommentI) => singleComment.id !== id)
-    if ( singleComment.id === id ) {
-       setIsReported(true) 
-    }
-  } */
-
-  /*  const deleteComment = () => {
-    commentArray.filter((singleComment: CommentI) => singleComment.id !== id)
-    if ( singleComment.id === id ) {
-      commentArray.pop(singleComment);
-    } */
+            </div>
+          </div>
+        </DropdownToggle>
+        <DropdownMenu role='menu' tag='ul'>
+          <LinkList role='none'>
+            {detailDropdownOptions.map((item, i) => (
+              <li key={i} role='none' onClick={() => setIsOpen(!isOpen)}>
+                <Button
+                  className={clsx('primary-color-b1', 'py-2', 'w-100')}
+                  role='menuitem'
+                  onClick={() => item.action && item.action()}
+                >
+                  <div
+                    className={clsx(
+                      'd-flex',
+                      'flex-row',
+                      'justify-content-around',
+                      'align-items-center'
+                    )}
+                  >
+                    <div>
+                      <Icon
+                        icon={item.DropdownIcon.icon}
+                        color={item.DropdownIcon.color}
+                      />
+                    </div>
+                    <div>{item.optionName}</div>
+                  </div>
+                </Button>
+              </li>
+            ))}
+          </LinkList>
+        </DropdownMenu>
+      </Dropdown>
+    ) : null;
 
   return (
     <div
@@ -317,7 +303,9 @@ const Comment: React.FC<CommentI> = (props) => {
         </div>
         <div
           className={clsx(
-            'd-flex','flex-row','justify-content-end',
+            'd-flex',
+            'flex-row',
+            'justify-content-end',
             isReported && 'align-items-center'
           )}
         >

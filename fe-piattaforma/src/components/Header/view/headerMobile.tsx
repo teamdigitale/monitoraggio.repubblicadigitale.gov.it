@@ -66,8 +66,8 @@ const HeaderMobile: React.FC<HeaderI> = ({
             <UserAvatar
               avatarImage={profilePicture}
               user={{ uSurname: user?.cognome, uName: user?.nome }}
-              size={AvatarSizes.Big}
-              font={AvatarTextSizes.Big}
+              size={AvatarSizes.Small}
+              font={AvatarTextSizes.Small}
               lightColor
             />
           </div>

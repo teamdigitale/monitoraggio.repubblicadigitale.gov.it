@@ -34,6 +34,13 @@ interface publishNewsI extends withFormHandlerProps {
 
 const entity = 'progetto';
 
+const defaultCover = {
+  name: 'Carica immagine di copertina',
+};
+const defaultDocument = {
+  name: 'Carica documenti, foto ecc.',
+};
+
 const FormPublishNews: React.FC<publishNewsI> = (props) => {
   const {
     creation,
@@ -52,13 +59,12 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
   const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRefImg = useRef<HTMLInputElement>(null);
-  const [iconVisible, setIconVisible] = useState<boolean>(false);
-  const [image, setImage] = useState<{ name?: string; data?: string | File }>({
-    name: 'Carica immagine di copertina',
-  });
-  const [files, setFiles] = useState<{ name?: string; data?: File }>({
-    name: 'Carica documenti, foto ecc.',
-  });
+  const [image, setImage] = useState<{ name?: string; data?: string | File }>(
+    defaultCover
+  );
+  const [files, setFiles] = useState<{ name?: string; data?: string | File }>(
+    defaultDocument
+  );
   const [editorText, setEditorText] = useState('<p></p>');
   const [highlighted, setHighlighted] = useState(false);
   const [enableComments, setEnableComments] = useState(false);
@@ -75,26 +81,55 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
     useState(programsList || []);
 
   useEffect(() => {
-    if (image?.data) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      onInputChange(image, 'cover');
-    }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    onInputChange(image, 'cover');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [image?.data]);
 
   useEffect(() => {
-    if (files?.data) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      onInputChange(files, 'attachment');
-    }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    onInputChange(files, 'attachment');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files?.data]);
+
+  useEffect(() => {
+    if (!creation) {
+      if (newsDetail?.cover_file_name) {
+        setImage({
+          data: newsDetail?.cover_file_name?.toString(),
+          name: newsDetail.cover_file_name?.toString(),
+        });
+      }
+      if (newsDetail?.attachment_file_name) {
+        setFiles({
+          data: newsDetail?.attachment_file_name?.toString(),
+          name: newsDetail.attachment_file_name?.toString(),
+        });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [creation, newsDetail, newFormValues?.intervention]);
 
   const getInterventionsList = () => {
     dispatch(GetEntityFilterValues({ entity, dropdownType: 'policies' }));
   };
+
+  useEffect(() => {
+    if (
+      interventionsDropdownOptions?.length &&
+      !newFormValues?.intervention &&
+      newsDetail?.intervention
+    ) {
+      onInputChange(newsDetail.intervention, form?.intervention?.field);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    interventionsDropdownOptions,
+    newFormValues?.intervention,
+    newsDetail?.intervention,
+  ]);
 
   useEffect(() => {
     const newInterventionsDropdownOptions = [];
@@ -195,11 +230,22 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form, highlighted, enableComments, editorText]);
 
+  const removePicture = (e: any) => {
+    setImage(defaultCover);
+    e.preventDefault();
+  };
+
   const addPicture = () => {
     if (inputRefImg.current !== null) {
       inputRefImg.current.click();
     }
   };
+
+  const removeDocument = (e: any) => {
+    setFiles(defaultDocument);
+    e.preventDefault();
+  };
+
   const addDocument = () => {
     if (inputRef.current !== null) {
       inputRef.current.click();
@@ -216,7 +262,6 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
     uploadFile('file', (file: any) => {
       setFiles(file);
     });
-    setIconVisible(!iconVisible);
   };
 
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
@@ -335,7 +380,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
             <p className='mt-2' style={{ color: '#4c4c4d' }}>
               {image?.name}
             </p>
-            {!iconVisible ? (
+            {!image.data ? (
               <Button
                 outline
                 color='primary'
@@ -356,6 +401,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
                 color='primary'
                 size='sm'
                 className='mr-4'
+                onClick={removePicture}
               /> //TODO add function to delete file
             )}
           </label>
@@ -386,7 +432,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
             <p className='mt-2' style={{ color: '#4c4c4d' }}>
               {files?.name}
             </p>
-            {!iconVisible ? (
+            {!files.data ? (
               <Button
                 outline
                 color='primary'
@@ -407,6 +453,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
                 color='primary'
                 size='sm'
                 className='mr-4'
+                onClick={removeDocument}
               /> //TODO add function to delete file
             )}
           </label>

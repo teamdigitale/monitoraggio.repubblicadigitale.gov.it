@@ -7,7 +7,7 @@
     &[type='password'],
     &[type='file'],
     &[type='url'] {
-      font-weight: 600;
+      font-weight: 500;
     }
   }
   input:focus {
@@ -108,7 +108,7 @@ input > span {
     }
   }
   &__single-value {
-    font-weight: 600 !important;
+    font-weight: 500 !important;
     &--is-disabled {
       color: color('dark-blue') !important;
     }
@@ -132,7 +132,7 @@ input > span {
 }
 
 .multiple-select {
-  font-weight: 600;
+  font-weight: 500;
   &__control {
     &--is-disabled {
       border-bottom: 1px solid color('grey-input') !important;

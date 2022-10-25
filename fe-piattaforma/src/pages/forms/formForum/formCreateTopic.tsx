@@ -22,15 +22,21 @@ import TagsSelect from '../../../components/General/TagsSelect/TagsSelect';
 
 interface createTopicI extends withFormHandlerProps {
   formDisabled?: boolean;
+  newFormValues: { [key: string]: formFieldI['value'] };
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   setIsFormValid?: (param: boolean | undefined) => void;
   creation?: boolean;
 }
 
+const defaultDocument = {
+  name: 'Carica documenti, foto ecc.',
+};
+
 const FormCreateTopic: React.FC<createTopicI> = (props) => {
   const {
     // setFormValues = () => ({}),
     form,
+    newFormValues,
     isValidForm,
     creation,
     updateForm = () => ({}),
@@ -42,11 +48,9 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
 
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
   const inputRef = useRef<HTMLInputElement>(null);
-  const [files, setFiles] = useState<{ name?: string; data?: File }>({
-    name: 'Carica documenti, foto ecc.',
-  });
-  const [iconVisible, setIconVisible] = useState<boolean>(false);
-  // const device = useAppSelector(selectDevice);
+  const [files, setFiles] = useState<{ name?: string; data?: string | File }>(
+    defaultDocument
+  );
   const tagsList = useAppSelector(selectTagsList);
   const [tags, setTags] = useState<string[]>([]);
   const formDisabled = !!props.formDisabled;
@@ -58,15 +62,27 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
   useEffect(() => {
     dispatch(GetCategoriesList({ type: 'community_categories' }));
     dispatch(GetTagsList());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (files?.data) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignorex
-      onInputChange(files, 'attachment');
-    }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignorex
+    onInputChange(files, 'attachment');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files?.data]);
+
+  useEffect(() => {
+    if (!creation) {
+      if (topicDetail?.attachment_file_name) {
+        setFiles({
+          data: topicDetail?.attachment_file_name?.toString(),
+          name: topicDetail.attachment_file_name?.toString(),
+        });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [creation, topicDetail, newFormValues?.intervention]);
 
   useEffect(() => {
     if (topicDetail && !creation) {
@@ -83,6 +99,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
         updateForm(newForm(populatedForm));
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topicDetail]);
 
   useEffect(() => {
@@ -93,7 +110,13 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
       ...getFormValues(),
       tags: tags,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form, tags]);
+
+  const removeDocument = (e: any) => {
+    setFiles(defaultDocument);
+    e.preventDefault();
+  };
 
   const addDocument = () => {
     if (inputRef.current !== null) {
@@ -105,7 +128,6 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
     uploadFile('file', (file: any) => {
       setFiles(file);
     });
-    setIconVisible(!iconVisible);
   };
 
   const handleOnSubmit = (searchValues: string) => {
@@ -137,7 +159,14 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
         />
         <small
           id='input-help-description'
-          className={clsx('font-italic', 'form-text', 'text-muted', 'mb-5', 'pl-2', 'ml-1')}
+          className={clsx(
+            'font-italic',
+            'form-text',
+            'text-muted',
+            'mb-5',
+            'pl-2',
+            'ml-1'
+          )}
         >
           massimo 55 caratteri
         </small>
@@ -180,9 +209,9 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
       <Form.Row className={bootClass}>
         <TagsSelect
           selectedTags={tags}
-          tags={tagsList.map(opt => ({
+          tags={tagsList.map((opt) => ({
             label: opt.name,
-            value: opt.name
+            value: opt.name,
           }))}
           addTag={handleOnSubmit}
         />
@@ -244,7 +273,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
             <p className='mt-2' style={{ color: '#4c4c4d' }}>
               {files?.name}
             </p>
-            {!iconVisible ? (
+            {!files.data ? (
               <Button
                 outline
                 color='primary'
@@ -265,7 +294,8 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
                 color='primary'
                 size='sm'
                 className='mr-4'
-              /> //TODO add function to delete file
+                onClick={removeDocument}
+              />
             )}
           </label>
         </div>

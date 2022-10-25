@@ -78,21 +78,28 @@ const DetailCard: React.FC<DetailCardI> = (props) => {
             ) : null}
           </div>
         )}
-        {intervention && program_label && (
+        {intervention || program_label ? (
           <div
             style={{
               fontSize: device.mediaIsPhone ? '14px' : '',
               lineHeight: '32px',
             }}
           >
-            <p>
-              <b>Intervento:</b>&nbsp;{intervention}
-            </p>
-            <p>
-              <b>Programma:</b>&nbsp;{program_label}
-            </p>
+            {intervention ? (
+              <p>
+                <b>Intervento:</b>&nbsp;
+                {intervention === 'public'
+                  ? 'Tutti gli interventi'
+                  : intervention}
+              </p>
+            ) : null}
+            {program_label ? (
+              <p>
+                <b>Programma:</b>&nbsp;{program_label}
+              </p>
+            ) : null}
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );

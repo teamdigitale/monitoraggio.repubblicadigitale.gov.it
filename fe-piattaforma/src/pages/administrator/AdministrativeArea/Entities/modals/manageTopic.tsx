@@ -20,6 +20,7 @@ import {
   GetItemDetail,
   UpdateItem,
 } from '../../../../../redux/features/forum/forumThunk';
+import { selectTopicDetail } from '../../../../../redux/features/forum/forumSlice';
 
 const modalId = 'topicModal';
 interface ManageTopicFormI {
@@ -42,6 +43,8 @@ const ManageTopic: React.FC<ManageTopicI> = ({
   const dispatch = useDispatch();
   const { id } = useParams();
   const userId = useAppSelector(selectUser)?.id;
+  const topicDetail: { [key: string]: string | boolean } | undefined =
+    useAppSelector(selectTopicDetail);
   const [newNodeId, setNewNodeId] = useState();
   const navigate = useNavigate();
 
@@ -67,6 +70,14 @@ const ManageTopic: React.FC<ManageTopicI> = ({
                 : userProfile?.idProgramma
                 ? 'Ente gestore di programma'
                 : '-',
+              removeAttachment:
+                topicDetail?.attachment &&
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                newFormValues?.attachment?.name &&
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                !newFormValues?.attachment?.data,
             },
             'community'
           )
@@ -79,7 +90,7 @@ const ManageTopic: React.FC<ManageTopicI> = ({
           setStep('confirm');
         }
       } else {
-        await dispatch(
+        const res = await dispatch(
           CreateItem(
             {
               ...newFormValues,
@@ -155,6 +166,7 @@ const ManageTopic: React.FC<ManageTopicI> = ({
     case 'form':
       content = (
         <FormCreateTopic
+          newFormValues={newFormValues}
           creation={creation}
           formDisabled={!!formDisabled}
           sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>

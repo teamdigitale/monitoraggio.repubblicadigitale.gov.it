@@ -15,8 +15,8 @@ const RocketChatModal = () => {
   };
 
   return (
-    <GenericModal id={id} title='RocketChat' onClose={resetModal} closable>
-      <div className="px-2">
+    <GenericModal id={id} title='Chat' onClose={resetModal} closable>
+      <div className='px-2'>
         <RocketChat />
       </div>
     </GenericModal>

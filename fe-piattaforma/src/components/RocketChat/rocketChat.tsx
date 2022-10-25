@@ -35,17 +35,28 @@ const RocketChat = () => {
   }, [rocketChatToken]);
 
   const manageNotification = (e: MessageEvent<any>) => {
-    console.log('event name', e.data.eventName, e.data.data);
+    console.log('event name', e, e.data.eventName, e.data.data);
     switch (e?.data?.eventName) {
       case 'unread-changed': {
         console.log('messages to read', e?.data?.data || 0);
         dispatch(setUserChatToRead(e?.data?.data || 0));
+        break;
+      }
+      case 'Custom_Script_Logged_Out': {
+        console.log('triggered logout');
+        /* TODO make some test
+        if (rocketChatToken) {
+          clearSessionValues('rocketchat');
+          dispatch(closeModal());
+        }
+        */
       }
     }
   };
 
   const handleOnRocketChatLoad = () => {
     window.addEventListener('message', manageNotification);
+    getRocketChatToken();
   };
 
   const getRocketChatToken = async () => {
@@ -74,7 +85,6 @@ const RocketChat = () => {
   };
 
   useEffect(() => {
-    getRocketChatToken();
     return () => {
       window.removeEventListener('message', manageNotification);
     };

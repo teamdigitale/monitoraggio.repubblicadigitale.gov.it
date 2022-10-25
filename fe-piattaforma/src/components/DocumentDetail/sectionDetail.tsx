@@ -91,7 +91,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
   const { hasUserPermission } = useGuard();
 
   const trackDownload = () => {
-    if (id) {
+    if (id && section === 'documents') {
       dispatch(ManageItemEvent(id, 'downloaded'));
       dispatch(
         ActionTracker({
@@ -140,7 +140,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
           : section === 'community'
           ? 'del.topic'
           : 'hidden',
-      ]) &&
+      ]) ||
       author?.toString() === userId?.toString()
     ) {
       authorizedOption.push(deleteOption);
@@ -152,7 +152,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
           : section === 'community'
           ? 'upd.topic'
           : 'hidden',
-      ]) &&
+      ]) ||
       author?.toString() === userId?.toString()
     ) {
       authorizedOption.push(editOption);

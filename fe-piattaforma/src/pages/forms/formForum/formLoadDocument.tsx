@@ -21,7 +21,7 @@ import {
 } from '../../../redux/features/forum/forumSlice';
 import {
   selectEntityFiltersOptions,
-  setEntityFilters
+  setEntityFilters,
 } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { GetEntityFilterValues } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
 import { GetCategoriesList } from '../../../redux/features/forum/categories/categoriesThunk';
@@ -30,6 +30,7 @@ import { selectDevice } from '../../../redux/features/app/appSlice';
 
 interface uploadDocumentI extends withFormHandlerProps {
   formDisabled?: boolean;
+  newFormValues: { [key: string]: formFieldI['value'] };
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   setIsFormValid?: (param: boolean | undefined) => void;
   creation?: boolean;
@@ -37,9 +38,13 @@ interface uploadDocumentI extends withFormHandlerProps {
 
 const entity = 'progetto';
 
+const defaultDocument = {
+  name: 'Carica documenti, foto ecc.',
+};
+
 const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
   const {
-    // setFormValues = () => ({}),
+    newFormValues,
     form,
     isValidForm,
     creation,
@@ -53,10 +58,9 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
   const formDisabled = !!props.formDisabled;
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
   const inputRef = useRef<HTMLInputElement>(null);
-  const [files, setFiles] = useState<{ name?: string; data?: File }>({
-    name: 'Carica documenti, foto ecc.',
-  });
-  const [iconVisible, setIconVisible] = useState<boolean>(false);
+  const [files, setFiles] = useState<{ name?: string; data?: string | File }>(
+    defaultDocument
+  );
   const dispatch = useDispatch();
   const categoriesList = useAppSelector(selectCategoriesList);
   const programsList = useAppSelector(selectEntityFiltersOptions)['programmi'];
@@ -125,13 +129,38 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
   }, []);
 
   useEffect(() => {
-    if (files?.data) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      onInputChange(files, 'attachment');
-    }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    onInputChange(files, 'attachment');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files?.data]);
+
+  useEffect(() => {
+    if (!creation) {
+      if (docDetail?.attachment_file_name) {
+        setFiles({
+          data: docDetail?.attachment_file_name?.toString(),
+          name: docDetail.attachment_file_name?.toString(),
+        });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [creation, docDetail, newFormValues?.intervention]);
+
+  useEffect(() => {
+    if (
+      interventionsDropdownOptions?.length &&
+      !newFormValues?.intervention &&
+      docDetail?.intervention
+    ) {
+      onInputChange(docDetail.intervention, form?.intervention?.field);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    interventionsDropdownOptions,
+    newFormValues?.intervention,
+    docDetail?.intervention,
+  ]);
 
   useEffect(() => {
     if (docDetail && !creation) {
@@ -159,6 +188,11 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
+  const removeDocument = (e: any) => {
+    setFiles(defaultDocument);
+    e.preventDefault();
+  };
+
   const addDocument = () => {
     if (inputRef.current !== null) {
       inputRef.current.click();
@@ -169,7 +203,6 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
     uploadFile('file', (file: any) => {
       setFiles(file);
     });
-    setIconVisible(!iconVisible);
   };
 
   return (
@@ -190,7 +223,14 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
         />
         <small
           id='input-help-description'
-          className={clsx('font-italic', 'form-text', 'text-muted', 'pl-2', 'ml-1', device.mediaIsDesktop && 'mb-5')}
+          className={clsx(
+            'font-italic',
+            'form-text',
+            'text-muted',
+            'pl-2',
+            'ml-1',
+            device.mediaIsDesktop && 'mb-5'
+          )}
         >
           massimo 55 caratteri
         </small>
@@ -276,7 +316,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
             <p className='mt-2' style={{ color: '#4c4c4d' }}>
               {files?.name}
             </p>
-            {!iconVisible ? (
+            {!files.data ? (
               <Button
                 outline
                 color='primary'
@@ -297,7 +337,8 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
                 color='primary'
                 size='sm'
                 className='mr-4'
-              /> //TODO add function to delete file
+                onClick={removeDocument}
+              />
             )}
           </label>
         </div>

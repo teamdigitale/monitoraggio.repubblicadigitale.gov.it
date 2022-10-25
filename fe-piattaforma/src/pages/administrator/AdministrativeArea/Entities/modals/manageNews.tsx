@@ -10,7 +10,10 @@ import { formFieldI } from '../../../../../utils/formHelper';
 import FormPublishNews from '../../../../forms/formForum/formPublishNews';
 import ConfirmItemCreation from '../../../../../components/ConfirmItemCreation/confirmItemCreation';
 import { useAppSelector } from '../../../../../redux/hooks';
-import { selectCategoriesList } from '../../../../../redux/features/forum/forumSlice';
+import {
+  selectCategoriesList,
+  selectNewsDetail,
+} from '../../../../../redux/features/forum/forumSlice';
 import {
   ActionTracker,
   CreateItem,
@@ -46,6 +49,8 @@ const ManageNews: React.FC<ManageNewsI> = ({
   const userId = useAppSelector(selectUser)?.id;
   const programsList = useAppSelector(selectEntityFiltersOptions)['programmi'];
   const userProfile = useAppSelector(selectProfile);
+  const newsDetail: { [key: string]: string | boolean } | undefined =
+    useAppSelector(selectNewsDetail);
   const [newNodeId, setNewNodeId] = useState();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -116,9 +121,13 @@ const ManageNews: React.FC<ManageNewsI> = ({
             id,
             {
               ...newFormValues,
-              program_label: programsList?.find(
-                (p) => p.value === parseInt(newFormValues.program as string)
-              )?.label,
+              program_label:
+                newFormValues.program === 'public'
+                  ? 'Tutti i programmi'
+                  : programsList?.find(
+                      (p) =>
+                        p.value === parseInt(newFormValues.program as string)
+                    )?.label,
               entity:
                 userProfile?.idProgetto || userProfile?.idProgramma
                   ? userProfile.nomeEnte
@@ -128,6 +137,22 @@ const ManageNews: React.FC<ManageNewsI> = ({
                 : userProfile?.idProgramma
                 ? 'Ente gestore di programma'
                 : '-',
+              removeCover:
+                newsDetail?.cover &&
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                newFormValues?.cover?.name &&
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                !newFormValues?.cover?.data,
+              removeAttachment:
+                newsDetail?.attachment &&
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                newFormValues?.attachment?.name &&
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                !newFormValues?.attachment?.data,
             },
             'board'
           )
@@ -193,6 +218,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
           creation={creation}
           formDisabled={!!formDisabled}
           sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {
+            console.log('qui passa', newData);
             setNewFormValues({ ...newData });
           }}
           setIsFormValid={(value: boolean | undefined) =>
