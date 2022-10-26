@@ -21,7 +21,10 @@ import {
 import { useAppSelector } from '../../../../../redux/hooks';
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormLoadDocument from '../../../../forms/formForum/formLoadDocument';
-import { selectDocDetail } from '../../../../../redux/features/forum/forumSlice';
+import {
+  selectCategoriesList,
+  selectDocDetail,
+} from '../../../../../redux/features/forum/forumSlice';
 
 const modalId = 'documentModal';
 interface ManageDocumentFormI {
@@ -48,6 +51,7 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
   const userId = useAppSelector(selectUser)?.id;
   const docDetail: { [key: string]: string | boolean } | undefined =
     useAppSelector(selectDocDetail);
+  const categoriesList = useAppSelector(selectCategoriesList);
   const [newNodeId, setNewNodeId] = useState();
   const navigate = useNavigate();
 
@@ -131,9 +135,9 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
               target: 'tnd',
               action_type: 'CREAZIONE',
               event_type: 'DOCUMENTI',
-              category:
-                newFormValues.category_label?.toString() ||
-                newFormValues.category?.toString(),
+              category: categoriesList.find(
+                (c) => c.id === newFormValues.category
+              ).name,
             })
           );
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment

@@ -73,8 +73,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
             'text.white',
             'primary-bg-b2',
             'header-panel-btn',
-            'border-right',
-            'px-3'
+            'border-right'
           )}
         >
           <div>
@@ -95,6 +94,9 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
               }`}</em>
             </h6>
+          </div>
+          <div className='ml-2'>
+            <Icon size='' color='white' icon='it-expand' />
           </div>
         </div>
       </DropdownToggle>

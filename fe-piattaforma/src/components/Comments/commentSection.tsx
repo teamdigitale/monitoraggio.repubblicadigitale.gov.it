@@ -31,11 +31,12 @@ const CommentSection: React.FC<commentSectionI> = ({ section }) => {
           onDeleteComment={() =>
             dispatch(
               openModal({
-                id: 'delete-entity',
+                id: 'delete-forum-entity',
                 payload: {
                   text: 'Confermi di voler eliminare questo contenuto?',
                   entity: 'comment',
                   id: comment.id,
+                  author: comment.author
                 },
               })
             )

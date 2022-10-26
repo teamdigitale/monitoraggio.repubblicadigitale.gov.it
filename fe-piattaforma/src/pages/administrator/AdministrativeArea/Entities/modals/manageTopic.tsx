@@ -20,7 +20,10 @@ import {
   GetItemDetail,
   UpdateItem,
 } from '../../../../../redux/features/forum/forumThunk';
-import { selectTopicDetail } from '../../../../../redux/features/forum/forumSlice';
+import {
+  selectCategoriesList,
+  selectTopicDetail,
+} from '../../../../../redux/features/forum/forumSlice';
 
 const modalId = 'topicModal';
 interface ManageTopicFormI {
@@ -45,6 +48,7 @@ const ManageTopic: React.FC<ManageTopicI> = ({
   const userId = useAppSelector(selectUser)?.id;
   const topicDetail: { [key: string]: string | boolean } | undefined =
     useAppSelector(selectTopicDetail);
+  const categoriesList = useAppSelector(selectCategoriesList);
   const [newNodeId, setNewNodeId] = useState();
   const navigate = useNavigate();
 
@@ -115,9 +119,9 @@ const ManageTopic: React.FC<ManageTopicI> = ({
               target: 'tnd',
               action_type: 'CREAZIONE',
               event_type: 'TOPIC',
-              category:
-                newFormValues.category_label?.toString() ||
-                newFormValues.category?.toString(),
+              category: categoriesList.find(
+                (c) => c.id === newFormValues.category
+              ).name,
             })
           );
           setNewFormValues({});

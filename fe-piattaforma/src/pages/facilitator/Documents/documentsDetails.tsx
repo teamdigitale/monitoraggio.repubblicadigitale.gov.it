@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Form, Input } from '../../../components';
-import DeleteEntityModal from '../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 import CommentSection from '../../../components/Comments/commentSection';
 import SectionDetail from '../../../components/DocumentDetail/sectionDetail';
+import DeleteForumModal from '../../../components/General/DeleteForumEntity/DeleteForumEntity';
 import { setInfoIdsBreadcrumb } from '../../../redux/features/app/appSlice';
 import {
   DeleteComment,
@@ -69,8 +69,8 @@ const DocumentsDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [docDetails]);
 
-  const onCommentDelete = async (commentId: string) => {
-    await dispatch(DeleteComment(commentId));
+  const onCommentDelete = async (commentId: string, reason: string) => {
+    await dispatch(DeleteComment(commentId, reason));
     if (id && userId) {
       dispatch(GetCommentsList(id, userId));
       dispatch(GetItemDetail(id, userId, 'document'));
@@ -95,8 +95,8 @@ const DocumentsDetails = () => {
     }
   };
 
-  const onEntityDelete = async (entityId: string) => {
-    await dispatch(DeleteItem(entityId));
+  const onEntityDelete = async (entityId: string, reason: string) => {
+    await dispatch(DeleteItem(entityId, reason));
     navigate(-1);
   };
 
@@ -120,11 +120,12 @@ const DocumentsDetails = () => {
         onDeleteClick={() =>
           dispatch(
             openModal({
-              id: 'delete-entity',
+              id: 'delete-forum-entity',
               payload: {
                 text: 'Confermi di voler eliminare questo contenuto?',
                 id: id,
                 entity: 'document',
+                author: docDetails.author
               },
             })
           )
@@ -219,15 +220,15 @@ const DocumentsDetails = () => {
       <ManageDocument />
       <ManageComment />
       <ManageReport />
-      <DeleteEntityModal
+      <DeleteForumModal
         onClose={() => dispatch(closeModal())}
         onConfirm={(payload: any) => {
           switch (payload.entity) {
             case 'document':
-              onEntityDelete(payload.id);
+              onEntityDelete(payload.id, payload.reason);
               break;
             case 'comment':
-              onCommentDelete(payload.id);
+              onCommentDelete(payload.id, payload.reason);
               break;
             default:
               break;
