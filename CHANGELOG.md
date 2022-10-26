@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.235](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.234...1.0.0-develop.235) (2022-10-26)
+
+
+### Bug Fixes
+
+* **be:** fix upload-immagine-profilo ([cb59b5c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/cb59b5cfd286e886331a4d90ce5337d48efa8234))
+
 ## [1.0.0-develop.234](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.233...1.0.0-develop.234) (2022-10-26)
 
 
