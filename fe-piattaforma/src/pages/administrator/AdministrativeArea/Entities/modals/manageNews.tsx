@@ -44,7 +44,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
   }>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
   const [step, setStep] = useState<'form' | 'preview' | 'confirm'>('form');
-  const categoryList = useAppSelector(selectCategoriesList);
+  const categoriesList = useAppSelector(selectCategoriesList);
   const { id } = useParams();
   const userId = useAppSelector(selectUser)?.id;
   const programsList = useAppSelector(selectEntityFiltersOptions)['programmi'];
@@ -196,9 +196,9 @@ const ManageNews: React.FC<ManageNewsI> = ({
               target: 'tnd',
               action_type: 'CREAZIONE',
               event_type: 'NEWS',
-              category:
-                newFormValues.category_label?.toString() ||
-                newFormValues.category?.toString(),
+              category: categoriesList.find(
+                (c) => c.id === newFormValues.category
+              ).name,
             })
           );
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -250,7 +250,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
               : '-'
           }
           category_label={
-            categoryList.find((c) => c.id === newFormValues.category).name
+            categoriesList.find((c) => c.id === newFormValues.category).name
           }
           isModalPreview
         />

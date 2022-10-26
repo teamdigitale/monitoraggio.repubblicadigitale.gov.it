@@ -95,12 +95,12 @@ const DeleteCommentAction = {
 };
 
 export const DeleteComment =
-  (commentId: string) => async (dispatch: Dispatch) => {
+  (commentId: string, reason: string) => async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...DeleteCommentAction });
       await proxyCall(`/comment/${commentId}/delete`, 'POST', {
-        reason: 'owner',
+        reason: reason.trim() !== "" ? reason : 'owner',
       });
     } catch (error) {
       console.log('DeleteComment error', error);

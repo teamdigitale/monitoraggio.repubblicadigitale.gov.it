@@ -34,7 +34,7 @@ interface SearchBarI extends Omit<SelectI, 'onInputChange'> {
   id?: string;
   entityToRefresh?: string | undefined;
   search?: boolean;
-  onReset?: () => void;
+  onReset?: (() => void) | undefined;
   tooltip?: boolean;
   tooltipText?: string;
 }
@@ -53,7 +53,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
     id = 'search',
     title = 'Cerca',
     search = false,
-    onReset,
+    onReset = () => ({}),
     tooltip = false,
     tooltipText = '',
   } = props;
