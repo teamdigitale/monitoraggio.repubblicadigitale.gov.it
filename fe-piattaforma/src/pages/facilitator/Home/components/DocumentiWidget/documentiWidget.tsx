@@ -10,6 +10,7 @@ import Slider, {
   formatSlides,
 } from '../../../../../components/General/Slider/Slider';
 import { getMediaQueryDevice } from '../../../../../utils/common';
+import { EmptySection } from '../../../../../components';
 
 const docsPagination = {
   desktop: 4,
@@ -94,50 +95,57 @@ const DocumentsWidget = () => {
       </div>
       <div className={clsx(device.mediaIsDesktop ? 'col-8' : 'col-12')}>
         <div className='container d-flex flex-wrap'>
-          {!device.mediaIsPhone ? (
-            cardArray.map((el: any, i: number) => (
-              <div key={`slide-${i}`} className='row'>
-                {el.map((e: any, index: any) => (
-                  <div
-                    key={`card-${i}-${index}`}
-                    className={clsx(
-                      'col-12',
-                      'col-md-6',
-                      'col-lg-6',
-                      'mb-2',
-                      'd-flex',
-                      'flex-wrap',
-                      el.length === 1
-                        ? 'justify-content-between'
-                        : 'justify-content-around'
-                    )}
-                  >
-                    <CardDocument {...e} isHome />
-                  </div>
-                ))}
-              </div>
-            ))
-          ) : (
-            <Slider isItemsHome>
-              {formatSlides(
-                docsList.slice(0, docsPagination[getMediaQueryDevice(device)]),
-                carouselPagination[getMediaQueryDevice(device)]
-              ).map((el, i) => (
-                <div
-                  key={`slide-${i}`}
-                  className='d-flex flex-wrap justify-content-between w-100'
-                >
+          {docsList?.length ? (
+            !device.mediaIsPhone ? (
+              cardArray.map((el: any, i: number) => (
+                <div key={`slide-${i}`} className='row'>
                   {el.map((e: any, index: any) => (
                     <div
                       key={`card-${i}-${index}`}
-                      className='flex-grow-0 my-2'
+                      className={clsx(
+                        'col-12',
+                        'col-md-6',
+                        'col-lg-6',
+                        'mb-2',
+                        'd-flex',
+                        'flex-wrap',
+                        el.length === 1
+                          ? 'justify-content-between'
+                          : 'justify-content-around'
+                      )}
                     >
                       <CardDocument {...e} isHome />
                     </div>
                   ))}
                 </div>
-              ))}
-            </Slider>
+              ))
+            ) : (
+              <Slider isItemsHome>
+                {formatSlides(
+                  docsList.slice(
+                    0,
+                    docsPagination[getMediaQueryDevice(device)]
+                  ),
+                  carouselPagination[getMediaQueryDevice(device)]
+                ).map((el, i) => (
+                  <div
+                    key={`slide-${i}`}
+                    className='d-flex flex-wrap justify-content-between w-100'
+                  >
+                    {el.map((e: any, index: any) => (
+                      <div
+                        key={`card-${i}-${index}`}
+                        className='flex-grow-0 my-2'
+                      >
+                        <CardDocument {...e} isHome />
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </Slider>
+            )
+          ) : (
+            <EmptySection title='Non ci sono documenti' />
           )}
         </div>
       </div>

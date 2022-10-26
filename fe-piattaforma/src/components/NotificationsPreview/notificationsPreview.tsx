@@ -13,6 +13,7 @@ import {
   GetNotificationsByUser,
   ReadNotification,
 } from '../../redux/features/user/userThunk';
+import EmptySection from '../EmptySection/emptySection';
 
 interface NotificationsPreviewProps {
   open: boolean;
@@ -65,22 +66,26 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
           </div>
         </div>
         <div className='notifications-list'>
-          {notificationsList.map((notification, i) => (
-            <div
-              key={i}
-              role='button'
-              className={clsx(
-                notification.status ? '' : 'notifications-card-unread'
-              )}
-            >
-              <Notification
-                // TODO update key with a unique value
-                {...notification}
-                notificationsPreview={true}
-                onClick={() => onReadNotification(notification.id)}
-              />
-            </div>
-          ))}
+          {notificationsList?.length > 0 ? (
+            notificationsList.map((notification, i) => (
+              <div
+                key={i}
+                role='button'
+                className={clsx(
+                  notification.status ? '' : 'notifications-card-unread'
+                )}
+              >
+                <Notification
+                  // TODO update key with a unique value
+                  {...notification}
+                  notificationsPreview={true}
+                  onClick={() => onReadNotification(notification.id)}
+                />
+              </div>
+            ))
+          ) : (
+            <EmptySection title='Non ci sono notifiche' />
+          )}
         </div>
         <div className='text-center py-3'>
           <NavLink to='/notifiche' className='primary-color archive'>

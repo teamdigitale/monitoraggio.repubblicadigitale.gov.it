@@ -10,6 +10,7 @@
   transition: all 0.75s;
   display: flex;
   flex-direction: column;
+  z-index: 9999;
   @media screen and (max-width: 576) {
     width: 100%;
   }
