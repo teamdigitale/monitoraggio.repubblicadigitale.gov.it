@@ -242,7 +242,6 @@ const Comment: React.FC<CommentI> = (props) => {
   return (
     <div
       className={clsx(
-        'pb-3',
         !isAnswer
           ? 'comment-container__comment-card'
           : 'pt-3 comment-container__answer'
@@ -256,8 +255,7 @@ const Comment: React.FC<CommentI> = (props) => {
           'flex-row',
           'justify-content-between',
           'align-items-center',
-          'w-100',
-          !device.mediaIsDesktop && 'pb-2'
+          'w-100'
         )}
       >
         <div
@@ -316,7 +314,7 @@ const Comment: React.FC<CommentI> = (props) => {
       <div
         className={clsx(
           'left-alignment',
-          showReplies && replies && replies.length > 0 && !device.mediaIsPhone
+          showReplies && replies && !device.mediaIsPhone
             ? thread && 'comment-container__thread'
             : null
         )}

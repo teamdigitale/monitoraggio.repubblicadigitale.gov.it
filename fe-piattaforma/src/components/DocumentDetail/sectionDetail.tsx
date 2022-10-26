@@ -382,7 +382,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
           <b className='mr-2'>TAG:</b>
           <div className='d-flex align-items-center'>
             {tags.split(';').map((tag, i) => (
-              <Chip key={i} className='mr-2'>
+              <Chip key={i} className='mr-2 px-3 forum-chip-tag'>
                 <ChipLabel>{tag}</ChipLabel>
               </Chip>
             ))}

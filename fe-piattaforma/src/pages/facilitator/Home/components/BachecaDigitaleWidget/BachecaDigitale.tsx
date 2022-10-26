@@ -229,9 +229,6 @@ const BachecaDigitale = () => {
                   dispatch(
                     openModal({
                       id: 'newsModal',
-                      payload: {
-                        title: 'Pubblica nuova news',
-                      },
                     })
                   )
               : undefined

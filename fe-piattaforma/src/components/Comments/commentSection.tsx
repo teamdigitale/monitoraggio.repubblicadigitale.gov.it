@@ -16,7 +16,7 @@ const CommentSection: React.FC<commentSectionI> = ({ section }) => {
   const dispatch = useDispatch();
 
   return (
-    <div>
+    <div className='pb-4'>
       <div
         className={clsx('container', 'd-flex', 'justify-content-start', 'pb-4')}
       >
@@ -26,7 +26,7 @@ const CommentSection: React.FC<commentSectionI> = ({ section }) => {
         <Comment
           key={i}
           section={section}
-          thread={comments.length > 1}
+          thread={comments.length > 1 && i < comments.length - 1}
           {...comment}
           onDeleteComment={() =>
             dispatch(

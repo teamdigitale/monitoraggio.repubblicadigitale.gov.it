@@ -1,0 +1,10 @@
+.border-bottom-box {
+  border-bottom: 1px solid #0073e5;
+}
+
+.btn-topic-modal, .btn-news-modal, .btn-document-modal {
+  min-width: 176px !important;
+  @media screen and (max-width: 576px) {
+    min-width: 156px !important;
+  }
+}
