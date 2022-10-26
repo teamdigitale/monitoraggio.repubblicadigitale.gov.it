@@ -55,6 +55,7 @@ public enum CodiceErroreEnum {
 	,U19("Errore export csv utenti")
 	,U20("Errore utente con codice fiscale non esistente")
 	,U21("Errore email utente già esistente")
+	,U22("Errore upload immagine profilo ente")
 
 	,S01("Errore file upload cittadino non valido")
 	,S02("Errore export csv servizio")
@@ -145,6 +146,8 @@ public enum CodiceErroreEnum {
 	,RC01("Errore tecnico creazione utente RocketChat")
 	,RC02("Errore creazione utente RocketChat")
 	,RC03("Errore recupero token utente RocketChat")
+	
+	,AC01("Errore tentavo accesso a risorsa non permesso")
 	;
 	
 	private String descrizioneErrore;
