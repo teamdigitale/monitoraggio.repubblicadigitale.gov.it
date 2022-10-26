@@ -1012,7 +1012,7 @@ export const ActionTracker =
           idProgramma,
         });
         axios.post(
-          `${process?.env?.REACT_APP_BE_BASE_URL}drupal/forward`,
+          `${process?.env?.REACT_APP_BE_BASE_URL}/drupal/forward`,
           {
             url: `/api/user/action/${target}/track`,
             metodoHttp: 'POST',
