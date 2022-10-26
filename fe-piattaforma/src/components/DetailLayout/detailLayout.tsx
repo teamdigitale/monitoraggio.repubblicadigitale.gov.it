@@ -188,7 +188,9 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                 !device.mediaIsPhone &&
                 currentTab === 'questionari' &&
                 itemsList?.items?.length && (
-                  <h3 className='h5 text-muted mx-3 my-4 pt-2'> Questionari disponibili </h3>
+                  <h3 className='h5 text-muted mx-3 my-4 pt-2'>
+                    Questionari disponibili
+                  </h3>
                 )}
             </div>
           ) : null
@@ -319,7 +321,11 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                 !device.mediaIsPhone && 'container'
               )}
             >
-              {formButtons.length === 2 && (infoProgBtn || (infoProjBtn && titleInfo?.status !== 'ATTIVABILE' && titleInfo?.status !== 'NON ATTIVO')) ? (
+              {formButtons.length === 2 &&
+              (infoProgBtn ||
+                (infoProjBtn &&
+                  titleInfo?.status !== 'ATTIVABILE' &&
+                  titleInfo?.status !== 'NON ATTIVO')) ? (
                 <div
                   className={clsx(
                     'd-flex',

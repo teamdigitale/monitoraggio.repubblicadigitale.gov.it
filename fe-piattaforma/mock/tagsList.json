@@ -1,0 +1,28 @@
+{
+    "code": 200,
+    "result": true,
+    "data": {
+        "items": [
+            {
+                "name": "alunni",
+                "id": 15
+            },
+            {
+                "name": "banchi",
+                "id": 13
+            },
+            {
+                "name": "claase",
+                "id": 14
+            },
+            {
+                "name": "classe",
+                "id": 16
+            },
+            {
+                "name": "insegnanti",
+                "id": 17
+            }
+        ]
+    }
+}

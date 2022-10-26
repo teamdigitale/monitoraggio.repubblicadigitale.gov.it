@@ -2,16 +2,20 @@ import React, { ReactChild } from 'react';
 import { Button, Icon, ModalBody, ModalFooter } from 'design-react-kit';
 import Modal from '../modals';
 import withModalState from '../../../hoc/withModalState';
-import { ModalPayloadI } from '../../../redux/features/modal/modalSlice';
+import {
+  closeModal,
+  ModalPayloadI,
+} from '../../../redux/features/modal/modalSlice';
 import SearchBar from '../../SearchBar/searchBar';
 import clsx from 'clsx';
 import './genericModal.scss';
 import { useAppSelector } from '../../../redux/hooks';
 import { selectDevice } from '../../../redux/features/app/appSlice';
+import { useDispatch } from 'react-redux';
 
 const genericId = 'genericModal';
 
-interface CallToAction {
+export interface CallToAction {
   disabled?: boolean;
   label: string;
   onClick?: () => void;
@@ -42,6 +46,8 @@ export interface GenericModalI {
   isSurveyOnline?: boolean;
   isSuccesModal?: boolean;
   isUserRole?: boolean;
+  darkTitle?: boolean;
+  isRocketChatModal?: boolean;
 }
 
 const GenericModal: React.FC<GenericModalI> = (props) => {
@@ -70,6 +76,8 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
     isSurveyOnline = false,
     isSuccesModal = false,
     isUserRole = false,
+    darkTitle = false,
+    isRocketChatModal = false,
   } = props;
 
   const handleAction = (action: 'primary' | 'secondary' | 'tertiary') => {
@@ -95,6 +103,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
   };
 
   const device = useAppSelector(selectDevice);
+  const dispatch = useDispatch();
 
   return (
     <Modal
@@ -102,6 +111,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
       {...props}
       isRoleManaging={isRoleManaging}
       isUserRole={isUserRole}
+      isRocketChatModal={isRocketChatModal}
     >
       {withIcon && icon ? (
         <div
@@ -135,33 +145,54 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
           </div>
         </div>
       ) : (
-        <span />
+        <button className='hidden-btn' />
       )}
-      {title || payload?.title ? (
-        <div
-          className={clsx(
-            'modal-header-container',
-            !noSpaceAfterTitle && 'mb-4',
-            noSpaceAfterTitle && 'pb-0 mb-0',
-            withIcon ? 'mt-1 pt-1' : 'mt-4 pt-3'
-          )}
-        >
-          <p
+      <>
+        {isRocketChatModal && (
+          <Button
+            onClick={() => dispatch(closeModal())}
+            className='close-button align-self-end'
+          >
+            <Icon
+              color='primary'
+              icon='it-close-big'
+              size='sm'
+              aria-label='chiudi'
+            />
+          </Button>
+        )}
+        {title || payload?.title ? (
+          <div
             className={clsx(
-              'font-weight-semibold',
-              isRoleManaging ? 'primary-color-a10 h3 pb-4' : 'primary-color h5',
-              'my-auto'
+              'modal-header-container',
+              !noSpaceAfterTitle && 'mb-4',
+              noSpaceAfterTitle && 'pb-0 mb-0',
+              withIcon ? 'mt-1 pt-1' : isRocketChatModal ? '' : 'mt-4 pt-3'
             )}
           >
-            {title || payload?.title}
-          </p>
-        </div>
-      ) : (
-        <span />
-      )}
+            <p
+              className={clsx(
+                'font-weight-semibold',
+                isRoleManaging
+                  ? 'primary-color-a10 h3 pb-4'
+                  : 'primary-color h4',
+                'my-auto',
+                darkTitle && 'primary-color-a10'
+              )}
+            >
+              {title || payload?.title}
+            </p>
+          </div>
+        ) : (
+          <button className='hidden-btn' />
+        )}
+      </>
       {hasSearch || description || payload?.description || children ? (
-        <ModalBody className='p-0'>
-          {hasSearch && (
+        <ModalBody
+          className='p-0'
+          style={{ maxHeight: isRocketChatModal ? '70vh' : '' }}
+        >
+          {hasSearch ? (
             //
             <div className='row mx-5'>
               <div className='col-12'>
@@ -174,19 +205,22 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
                 />
               </div>
             </div>
-          )}
-          <p
-            className={clsx(
-              isSurveyOnline && 'text-muted text-center mx-auto h5'
-            )}
-          >
-            {description || payload?.description}
-          </p>
+          ) : null}
+          {description || payload?.description ? (
+            <p
+              className={clsx(
+                isSurveyOnline && 'text-muted text-center mx-auto h5'
+              )}
+            >
+              {description || payload?.description}
+            </p>
+          ) : null}
           {children}
         </ModalBody>
       ) : (
-        <span />
+        <button className='hidden-btn' />
       )}
+
       {footer || primaryCTA || secondaryCTA ? (
         <ModalFooter
           className={clsx(
@@ -264,7 +298,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
           )}
         </ModalFooter>
       ) : (
-        <span />
+        <button className='hidden-btn' />
       )}
     </Modal>
   );

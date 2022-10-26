@@ -125,7 +125,6 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
       ]);
       setMovingHeadquarter(false);
       dispatch(resetHeadquarterDetails());
-      dispatch(setHeadquartersList(null))
     }
   }, [open, creation]);
 
@@ -183,7 +182,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
 
   const handleSaveAssignHeadquarter = async () => {
     if (isFormValid && validateAddressList(addressList)) {
-      if (newFormValues && addressList.length > 0) {
+      if (newFormValues && addressList.length) {
         if (projectId && ((authorityId && headquarterId) || authorityInfo)) {
           const res: any = await dispatch(
             AssignAuthorityHeadquarter(
@@ -257,7 +256,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
     } else if (headquarterId) {
       dispatch(GetHeadquarterLightDetails(headquarterId));
     }
-    dispatch(setHeadquartersList(null));
+
     // dispatch(closeModal());
   };
 

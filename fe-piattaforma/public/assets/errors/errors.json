@@ -1,5 +1,7 @@
 {
   "errors": {
+    "A01": "Accesso non consentito",
+
     "C01": "Errore Risorsa non trovata",
     "C02": "Errore storicizazione ente",
     "C03": "Errore Utente con ruolo DEGP/REGP non definito per il progetto",
@@ -7,6 +9,8 @@
     "C05": "Errore Utente con ruolo DEPP/REPP non definito per il progetto",
     "C06": "Errore Combinazione (ProgrammaProgetto) non trovata",
     "C07": "Errore integrazione dati utente",
+
+    "D01": "Si è verificato un errore",
 
     "G01": "Errore Generico",
     "G02": "Errore Richiesta errata",
@@ -21,6 +25,10 @@
     "R07": "Errore impossibile attivare il ruolo per l'utente",
     "RG01": "Errore impossibile creare associazione ruolo al gruppo",
     "RG02": "Errore impossibile aggiornare associazione ruolo al gruppo",
+
+    "RC01": "Errore durante l’inizializzazione della chat",
+    "RC02": "Errore durante l’inizializzazione della chat",
+    "RC03": "Errore durante l’inizializzazione della chat",
 
     "U01": "Errore utente con codice fiscale già presente",
     "U02": "Errore cancellazione utente con ruolo associato",
@@ -110,6 +118,14 @@
     "PR06": "Errore impossibile assegnare progetto ad al programma",
     "PR07": "Errore attivare progetto",
     "PR08": "Errore export csv progetti",
-    "PR09": "Errore Impossibile Assegnare gestore progetto per il progetto. Unico Facilitatore o Volontario attivo sul progetto"
+    "PR09": "Errore Impossibile Assegnare gestore progetto per il progetto. Unico Facilitatore o Volontario attivo sul progetto",
+
+    "U21": "L’indirizzo email risulta già essere presente in piattaforma",
+
+    "WD01": "Si è verificato un errore durante la registrazione al tool di Collaboration",
+    "WD02": "Si è verificato un errore durante la registrazione al tool di Collaboration",
+
+    "CMCRA05": "Attenzione, hai inserito un termine non consentito",
+    "CMRRA06": "Attenzione, hai inserito un termine non consentito"
   }
 }

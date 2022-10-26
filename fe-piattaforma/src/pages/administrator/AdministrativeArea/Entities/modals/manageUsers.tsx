@@ -71,7 +71,7 @@ const ManageUsers: React.FC<ManageUsersI> = ({
           );
         }
       } else {
-        await dispatch(UpdateUser(userId || userIdPayload, newFormValues));
+        res = await dispatch(UpdateUser(userId || userIdPayload, newFormValues));
         dispatch(GetUserDetails(userId || userIdPayload));
       }
 

@@ -1,0 +1,98 @@
+.showcase-card {
+  width: 364px;
+  height: 455px;
+  border: 1px solid #eceff1;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  @media screen and (max-width: 1200px) {
+    width: 292px;
+  }
+
+  &__marked {
+    border-bottom: 4px solid #0066cc;
+  }
+  &__pre-title {
+    color: #455b71;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 1.1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  &__highlighted-pre-title {
+    width: 88%;
+  }
+  &__bookmark {
+    position: absolute;
+    top: 185px;
+    right: 34px;
+    @media screen and (max-width: 1200px) {
+      right: 20px;
+      top: 155px;
+    }
+  }
+  &__icon-bookmark {
+    width: 32px !important;
+    @media screen and (min-width: 360px) and (max-width: 767px) {
+      width: 26px !important;
+      height: 42px !important;
+    }
+  }
+  &__body {
+    margin-top: -29px;
+  }
+  &__text {
+    color: #455b71;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+
+    p {
+      height: 48px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+  }
+  &__title {
+    color: #1c2024;
+    font-size: 24px;
+    line-height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  &__icon-container-alignment {
+    margin-top: 12px;
+    @media screen and (max-width: 1201px) {
+      margin-top: 24px;
+    }
+  }
+  &__span-icons {
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0.933333px;
+  }
+}
+.img-height-placeholder {
+  height: 40%;
+  @media screen and (max-width: 1200px) {
+    height: 33%;
+  }
+}
+.responsive {
+  width: 100%;
+  height: 185px;
+  max-width: 385px;
+  position: relative;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+
+  @media screen and (max-width: 1200px) {
+    height: 155px;
+  }
+}

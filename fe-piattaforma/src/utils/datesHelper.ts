@@ -13,10 +13,16 @@ export const shortFormats: { [key: string]: string } = {
 };
 
 export const formatDate = (timestamp: string | number, format: string) => {
-  if (!timestamp) {
+  let timeToFormat = timestamp;
+  if (!timeToFormat) {
     return undefined;
   }
-  return moment(Number(timestamp)).format(shortFormats[format] || shortFormats.default);
+  if (!isNaN(Number(timeToFormat))) {
+    timeToFormat = Number(timeToFormat)
+  }
+  return moment(timeToFormat).format(
+    shortFormats[format] || shortFormats.default
+  );
 };
 
 export const dateToTimestamp = (date: string, format: string) => {

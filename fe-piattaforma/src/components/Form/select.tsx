@@ -27,6 +27,7 @@ export interface SelectI
   withLabel?: boolean;
   isDisabled?: boolean;
   position?: 'top' | 'bottom' | 'auto';
+  shortDropdownMenu?: boolean;
 }
 
 const Select: React.FC<SelectI> = (props) => {
@@ -43,8 +44,7 @@ const Select: React.FC<SelectI> = (props) => {
     isDisabled = false,
     isSearchable = false,
     position = 'auto',
-    onMenuClose = () => ({}),
-    onMenuOpen = () => ({}),
+    shortDropdownMenu = false,
   } = props;
   const [selectedOption, setSelectedOption] = useState<OptionType>();
 
@@ -129,12 +129,12 @@ const Select: React.FC<SelectI> = (props) => {
         menuPlacement={position}
         color='primary'
         className={clsx(value && !isDisabled && 'border-select-value')}
-        classNamePrefix='bootstrap-select'
+        classNamePrefix={clsx(
+          shortDropdownMenu ? 'bootstrap-select-short' : 'bootstrap-select'
+        )}
         aria-labelledby={`${(label || 'label select').replace(/\s/g, '-')}`}
         isDisabled={isDisabled}
         isSearchable={isSearchable}
-        onMenuClose={onMenuClose}
-        onMenuOpen={onMenuOpen}
       />
     </div>
   );

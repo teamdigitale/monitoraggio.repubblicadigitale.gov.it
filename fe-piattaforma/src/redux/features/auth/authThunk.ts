@@ -47,6 +47,52 @@ export const GetSPIDToken =
     }
   };
 
+export const RefreshSPIDToken = async (
+  preAuthCode: string,
+  refreshToken: string
+) => {
+  try {
+    if (preAuthCode && refreshToken) {
+      const params = new URLSearchParams();
+      params.append('grant_type', 'refresh_token');
+      params.append(
+        'client_id',
+        `${process?.env?.REACT_APP_COGNITO_CLIENT_ID}`
+      );
+      params.append(
+        'client_secret',
+        `${process?.env?.REACT_APP_COGNITO_CLIENT_SECRET}`
+      );
+      params.append(
+        'redirect_uri',
+        `${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}`
+      );
+      params.append('code', `${preAuthCode}`);
+      params.append('refresh_token', refreshToken);
+      const res = await axios
+        .create({
+          baseURL: `${process?.env?.REACT_APP_COGNITO_BASE_URL}`,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: `Basic ${window.btoa(
+              `${process?.env?.REACT_APP_COGNITO_CLIENT_ID}:${process?.env?.REACT_APP_COGNITO_CLIENT_SECRET}`
+            )}`,
+          },
+          timeout: 10000,
+        })
+        .post('oauth2/token', params);
+
+      if (res?.data) {
+        return res.data;
+      }
+    }
+    return false;
+  } catch (error) {
+    console.log('GetSPIDToken error', error);
+    return false;
+  }
+};
+
 /*export const getUserHeaders = () => {
   const { codiceFiscale } = JSON.parse(getSessionValues('user'));
   const { codiceRuolo, idProgramma, idProgetto } = JSON.parse(

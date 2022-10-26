@@ -1,0 +1,108 @@
+.notifications-preview {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 30rem;
+  max-width: 100%;
+  background: #ffffff;
+  transform: translateX(100%);
+  transition: all 0.75s;
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+  @media screen and (max-width: 576) {
+    width: 100%;
+  }
+
+  &.open {
+    transform: translateX(0);
+  }
+
+  .preview-header {
+    position: relative;
+    width: fit-content;
+    margin: 10px auto;
+    .badge {
+      width: 22px;
+      height: 22px;
+      border-radius: 100%;
+      background-color: #B62032;
+      color: #FFFFFF;
+      position: absolute;
+      right: -10%;
+      top: -20%;
+      font-weight: 400;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  
+
+  .notifications-list {
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+
+  .archive {
+    text-decoration: none;
+    font-weight: 700;
+  }
+}
+
+// .notifications_nav {
+//   right: 0;
+//   max-width: 35px;
+//   position: relative;
+
+//   .button-close-nav {
+//     position: absolute;
+//     right: 0;
+//   }
+
+//   .close_nav {
+//     cursor: pointer;
+//     background-color: white;
+//     transition: all 0.5s;
+//   }
+
+//   .notificationsNav {
+//     list-style: none;
+//     background: #ffffff;
+//     top: 0;
+//     right: 0;
+//     bottom: 0;
+//     width: 30rem;
+//     height: 100vh;
+//     z-index: 100;
+//     transform: translateX(100%);
+//     transition: all 0.75s;
+//     position: fixed;
+//     @media screen and (max-width: 576px) {
+//       width: 100%;
+//     }
+//   }
+
+//   .badge-notifications {
+//     display: flex;
+//     width: 22px;
+//     height: 22px;
+//     border-radius: 100%;
+//     background-color: #B62032;
+//     color: #FFFFFF;
+//     align-items: center;
+//     justify-content: center;
+//     margin-bottom: 22px;
+//     margin-left: 5px;
+//   }
+
+//   .notificationsNav.showNotifications {
+//     transform: translateX(0%);
+//   }
+
+// }
+
+

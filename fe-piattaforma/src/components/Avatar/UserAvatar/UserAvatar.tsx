@@ -43,12 +43,18 @@ const UserAvatar: React.FC<UserAvatarI> = (props) => {
         avatarImage && 'border border-primary'
       )}
       style={{
-        width: isUserProfile ? '65px' : device.mediaIsDesktop ? '35px' : '53px',
-        height: isUserProfile
-          ? '65px'
-          : device.mediaIsDesktop
-          ? '35px'
-          : '53px',
+        width:
+          isUserProfile || size === AvatarSizes.Big
+            ? '67px'
+            : size === AvatarSizes.Medium
+            ? '58px'
+            : '39px',
+        height:
+          isUserProfile || size === AvatarSizes.Big
+            ? '67px'
+            : size === AvatarSizes.Medium
+            ? '58px'
+            : '39px',
       }}
     >
       {avatarImage ? (
@@ -63,17 +69,17 @@ const UserAvatar: React.FC<UserAvatarI> = (props) => {
           user={{ uSurname: user.uSurname, uName: user.uName }}
           lightColor={device.mediaIsPhone}
           size={
-            isUserProfile
-              ? AvatarSizes.Profile
-              : device.mediaIsPhone
+            isUserProfile || size === AvatarSizes.Big
               ? AvatarSizes.Big
+              : size === AvatarSizes.Medium
+              ? AvatarSizes.Medium
               : AvatarSizes.Small
           }
           font={
-            isUserProfile
-              ? AvatarTextSizes.Profile
-              : device.mediaIsPhone
+            isUserProfile || size === AvatarSizes.Big
               ? AvatarTextSizes.Big
+              : size === AvatarSizes.Medium
+              ? AvatarTextSizes.Medium
               : AvatarTextSizes.Small
           }
         />

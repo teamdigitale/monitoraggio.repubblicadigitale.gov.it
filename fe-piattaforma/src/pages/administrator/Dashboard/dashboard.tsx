@@ -69,7 +69,12 @@ const publicContents = {
 const authContents = {
   title: 'I miei report',
   subtitle:
-    'Consulta le statistiche rappresentate in questa pagina, oppure accedi allo strumento di analisi dati per consultare, configurare e scaricare in autonomia i dati a tua disposizione',
+    'Consulta le statistiche rappresentate in questa pagina, oppure accedi allo strumento di Business Intelligence per consultare, configurare e scaricare in autonomia i dati a tua disposizione',
+};
+
+const authContentsShort = {
+  title: 'I miei report',
+  subtitle: 'Consulta le statistiche rappresentate in questa pagina',
 };
 
 /*
@@ -134,9 +139,9 @@ const Dashboard = () => {
       }
       case userRoles.REG:
       case userRoles.DEG: {
-        if (program.policy.toLowerCase() === 'rfd') {
+        if (program?.policy?.toLowerCase() === 'rfd') {
           requestURL = `${requestURL}/${dashboardRoles.REG.rfd}`;
-        } else if (program.policy.toLowerCase() === 'scd') {
+        } else if (program?.policy?.toLowerCase() === 'scd') {
           requestURL = `${requestURL}/${dashboardRoles.REG.scd}`;
         } else {
           return null;
@@ -145,9 +150,9 @@ const Dashboard = () => {
       }
       case userRoles.REGP:
       case userRoles.DEGP: {
-        if (project.policy.toLowerCase() === 'rfd') {
+        if (project?.policy?.toLowerCase() === 'rfd') {
           requestURL = `${requestURL}/${dashboardRoles.REGP.rfd}`;
-        } else if (project.policy.toLowerCase() === 'scd') {
+        } else if (project?.policy?.toLowerCase() === 'scd') {
           requestURL = `${requestURL}/${dashboardRoles.REGP.scd}`;
         } else {
           return null;
@@ -240,7 +245,11 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.codiceRuolo, device]);
 
-  const contents = user?.codiceRuolo ? authContents : publicContents;
+  const contents = user?.codiceRuolo
+    ? hasUserPermission(['acc.self.dshb'])
+      ? authContents
+      : authContentsShort
+    : publicContents;
 
   return (
     <div className='container dashboard-container my-5'>
@@ -254,7 +263,7 @@ const Dashboard = () => {
                   console.log('go to BI', dashboard_BI_URL);
                   window.open(dashboard_BI_URL, '_blank');
                 },
-                label: 'Crea report personalizzati',
+                label: 'Vai a Business intelligence',
               }
             : undefined
         }

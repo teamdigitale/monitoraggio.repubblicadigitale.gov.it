@@ -5,7 +5,6 @@ import {
   PrefixPhone,
   Rating,
   Select,
-  SelectMultiple,
 } from '../../../../../../components';
 import { formFieldI, FormI } from '../../../../../../utils/formHelper';
 import CheckboxGroup from '../../../../../../components/Form/checkboxGroup';
@@ -14,8 +13,8 @@ import '../compileSurvey/compileSurvey.scss';
 import { useEffect } from 'react';
 import { setCompilingSurveyForm } from '../../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 import { useDispatch } from 'react-redux';
-import { OptionTypeMulti } from '../../../../../../components/Form/selectMultiple';
 import { Label } from 'design-react-kit';
+import SelectMultipleCheckbox from '../../../../../../components/Form/selectMultipleCheckbox';
 
 interface JsonFormRenderI {
   form: FormI;
@@ -149,7 +148,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
           if (
             formField?.relatedTo &&
             form[formField.relatedTo].enumLevel2 &&
-            multiSelectOptions?.length > 0
+            multiSelectOptions?.length
           ) {
             (form[formField.relatedTo].enumLevel2 || []).forEach(
               ({ label, value, upperLevel }) => {
@@ -164,31 +163,11 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
               }
             );
           }
-
           // mappa valori
           const valuesSecondLevel =
             formField?.relatedTo && form[formField?.relatedTo]?.value;
-          const values: OptionTypeMulti[] = [];
-          Array.isArray(valuesSecondLevel) &&
-            (valuesSecondLevel || []).map((val: string) => {
-              let upperLevel = '';
-              Object.keys(multiSelectOptions).forEach((key: any) => {
-                if (
-                  multiSelectOptions[key].options.filter((x) => x.label === val)
-                    ?.length > 0
-                ) {
-                  upperLevel = multiSelectOptions[key].label;
-                }
-              });
-              values.push({
-                label: val,
-                value: val,
-                upperLevel: upperLevel,
-              });
-            });
-
           return (
-            <SelectMultiple
+            <SelectMultipleCheckbox
               field={formField.field}
               secondLevelField={formField.relatedTo}
               id={`multiple-select-${formField.id}`}
@@ -196,13 +175,15 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
               aria-label={`${formField?.label}`}
               options={multiSelectOptions}
               required={formField.required || false}
-              // only field 25 and it is not editable
-              // onInputChange={onInputChange}
-              // onSecondLevelInputChange={onInputChange}
               placeholder='Seleziona'
               col='col-12'
-              value={values}
               isDisabled={formField?.disabled || viewMode}
+              valueSecondLevelString={
+                Array.isArray(valuesSecondLevel)
+                  ? valuesSecondLevel?.join('§')
+                  : undefined
+              }
+              // value={values} // OLD MULTIPLE SELECT - DELETE
             />
           );
         }
@@ -275,3 +256,50 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
 };
 
 export default JsonFormRender;
+
+/*
+
+// OLD MULTIPLE SELECT - DELETE
+// mappa valori
+          const valuesSecondLevel =
+            formField?.relatedTo && form[formField?.relatedTo]?.value;
+          const values: OptionTypeMulti[] = [];
+          Array.isArray(valuesSecondLevel) &&
+            (valuesSecondLevel || []).map((val: string) => {
+              let upperLevel = '';
+              Object.keys(multiSelectOptions).forEach((key: any) => {
+                if (
+                  multiSelectOptions[key].options.filter((x) => x.label === val)
+                    ?.length > 0
+                ) {
+                  upperLevel = multiSelectOptions[key].label;
+                }
+              });
+              values.push({
+                label: val,
+                value: val,
+                upperLevel: upperLevel,
+              });
+            });
+
+          return (
+            <SelectMultiple
+              field={formField.field}
+              secondLevelField={formField.relatedTo}
+              id={`multiple-select-${formField.id}`}
+              label={`${formField?.label}`}
+              aria-label={`${formField?.label}`}
+              options={multiSelectOptions}
+              required={formField.required || false}
+              // only field 25 and it is not editable
+              // onInputChange={onInputChange}
+              // onSecondLevelInputChange={onInputChange}
+              placeholder='Seleziona'
+              col='col-12'
+              value={values}
+              isDisabled={formField?.disabled || viewMode}
+            />
+          );
+        }
+
+*/

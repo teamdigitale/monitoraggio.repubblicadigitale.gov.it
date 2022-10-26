@@ -72,13 +72,16 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
 
     if (input.files?.length) {
       const selectedImage = input.files[0];
-      await dispatch(UploadUserPic(selectedImage, user?.id));
-
-      const reader = new FileReader();
-      reader.readAsDataURL(selectedImage);
-      reader.onloadend = () => {
-        setImage(reader.result as string);
-      };
+      const res = await dispatch(UploadUserPic(selectedImage, user?.id));
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (res) {
+        const reader = new FileReader();
+        reader.readAsDataURL(selectedImage);
+        reader.onloadend = () => {
+          setImage(reader.result as string);
+        };
+      }
     }
   };
 
@@ -88,7 +91,9 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
   };
 
   const selectUserRole = async () => {
-    if (user.profiliUtente?.length > 1) {
+    if (!user.profiliUtente?.length) {
+      navigate('/errore/A01', { replace: true });
+    } else if (user.profiliUtente?.length > 1) {
       dispatch(
         openModal({
           id: 'switchProfileModal',

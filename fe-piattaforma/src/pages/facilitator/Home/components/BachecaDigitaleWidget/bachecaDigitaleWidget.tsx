@@ -1,62 +1,123 @@
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
-import React, { memo } from 'react';
-import { Card } from '../../../../../components';
-import { selectDevice } from '../../../../../redux/features/app/appSlice';
+import './bachecaDigitaleWidget.scss';
+import CardShowcase from '../../../../../components/CardShowcase/cardShowcase';
 import { useAppSelector } from '../../../../../redux/hooks';
+import { selectDevice } from '../../../../../redux/features/app/appSlice';
+import { GetNewsList } from '../../../../../redux/features/forum/forumThunk';
+import Slider, {
+  formatSlides,
+} from '../../../../../components/General/Slider/Slider';
+import { getMediaQueryDevice } from '../../../../../utils/common';
+import { EmptySection } from '../../../../../components';
+
+const newsPagination = {
+  desktop: 24,
+  mobile: 8,
+  tablet: 12,
+};
+
+const carouselPagination = {
+  desktop: 6,
+  mobile: 1,
+  tablet: 3,
+};
 
 const BachecaDigitaleWidget = () => {
   const device = useAppSelector(selectDevice);
+  const dispatch = useDispatch();
+  const [newsList, setNewsList] = useState([]);
+
+  const newsWidgetSet = async () => {
+    const itemPerPage = newsPagination.desktop.toString();
+    const res = await dispatch(
+      GetNewsList(
+        {
+          page: [{ label: '0', value: '0' }],
+          items_per_page: [{ label: itemPerPage, value: itemPerPage }],
+        },
+        false
+      )
+    );
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    setNewsList(res?.data?.data?.items || []);
+  };
+
+  useEffect(() => {
+    newsWidgetSet();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <div className='bacheca-digitale-widget py-5'>
-      <h2 className='h3 text-primary mb-3'>Bacheca Digitale</h2>
-      <div className='d-flex flex-lg-row flex-column'>
-        <div className='' style={{ maxWidth: '376px' }}>
-          <Card
-            category='Richiesta'
-            cta='Leggi di più'
-            img='https://via.placeholder.com/310x94/0066cc/FFFFFF/?text=IMMAGINE%20DI%20ESEMPIO'
-            text='Si richiede agli enti le indicazioni per la candidatura al Servizio civile digitale, con annessi documenti inerenti i prerequisiti di base necessari alla candidatura.'
-            title='Servizio Civile Digitale'
-            wrapperClassName='h-100 mr-4'
-          />
-        </div>
-        <div className='d-flex flex-wrap'>
-          <div
+    <div className='py-5'>
+      <div className='container'>
+        <h2 className='h3 text-primary mb-3'>
+          {device.mediaIsPhone ? 'Bacheca' : 'Bacheca digitale'}
+        </h2>
+        {device.mediaIsPhone && <div className='title-border-box my-3' />}
+        <div
+          className={clsx(
+            !device.mediaIsPhone
+              ? 'mb-5 d-flex justify-content-between align-items-center'
+              : 'mb-4'
+          )}
+        >
+          <p
             className={clsx(
-              device.mediaIsPhone ? 'd-flex flex-column' : 'd-flex'
+              'text-primary',
+              !device.mediaIsPhone && 'responsive-width'
             )}
           >
-            <Card
-              category='Annuncio'
-              cta='Rispondi'
-              ctaHref='/'
-              text='Sono disponibile per aiutare nuovi facilitatori a compilare i primi questionari e fare rete.'
-              title='Successo completamento questionari'
-              wrapperClassName='mr-4'
-            />
-            <Card
-              category='Annuncio'
-              cta='Rispondi'
-              ctaHref='/'
-              text='Cerco supporto di altri facilitatori per l’analisi di risposta dei questionari e la percentuale di riuscita nella loro compilazione.'
-              title='Collaborazione nuovi facilitatori'
-            />
-          </div>
-          <div className='d-flex'>
-            <Card
-              big
-              cta='Esplora la sezione annunci'
-              ctaOnClick={() => console.log('cliccato')}
-              inline
-              text='Vogliamo favorire la comunicazione e la creazione di vere e proprie community tra i facilitatori digitali, abbattendo le distanze territoriali.'
-              title='Comunica con tutti gli utenti'
-            />
-          </div>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+            ipsum velit, tempor at luctus quis, congue eget justo.
+          </p>
+          {!device.mediaIsPhone && (
+            <a className='btn btn-primary' role='button' href='/bacheca'>
+              Leggi tutte le news
+            </a>
+          )}
         </div>
       </div>
+      <div className='container'>
+        <span className='sr-only'>
+          {'La bacheca presenta ' + (newsList?.length || 0) + ' news'}
+        </span>
+        {newsList?.length ? (
+          <Slider isItemsHome={!device.mediaIsPhone}>
+            {formatSlides(
+              newsList.slice(0, newsPagination[getMediaQueryDevice(device)]),
+              carouselPagination[getMediaQueryDevice(device)]
+            ).map((el, i) => (
+              <div
+                key={`slide-${i}`}
+                className='d-flex flex-wrap align-cards w-100'
+              >
+                {el.map((e: any, index: any) => (
+                  <div
+                    key={`card-${i}-${index}`}
+                    className='flex-grow-0 mt-2 mb-3 mr-2'
+                  >
+                    <CardShowcase {...e}></CardShowcase>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </Slider>
+        ) : (
+          <EmptySection title='Non ci sono news' />
+        )}
+      </div>
+      {device.mediaIsPhone && (
+        <div className='d-flex justify-content-center mt-5'>
+          <a className='btn btn-primary' role='button' href='/bacheca'>
+            Leggi tutte le news
+          </a>
+        </div>
+      )}
     </div>
   );
 };
 
-export default memo(BachecaDigitaleWidget);
+export default BachecaDigitaleWidget;

@@ -639,30 +639,29 @@ const ProjectsDetails = () => {
             identeDiRiferimento?: string | number;
             nrFacilitatori: number;
             serviziErogati: string;
-            associatoAUtente: boolean;
           }) => ({
             ...sede,
             fullInfo: {
               ente_ref: sede.enteDiRiferimento,
-              [projectDetails?.policy !== 'SCD' ? 'nFacilitatori':'nVolontari']: sede.nrFacilitatori,
+              [projectDetails?.policy !== 'SCD'
+                ? 'nFacilitatori'
+                : 'nVolontari']: sede.nrFacilitatori,
               serviziErogati: sede.serviziErogati,
             },
-            actions: sede.associatoAUtente
-              ? {
-                  [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-                    if (entityId && projectId) {
-                      navigate(
-                        `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${sede?.identeDiRiferimento}/sedi/${td}`
-                      );
-                    } else {
-                      projectId &&
-                        navigate(
-                          `/area-amministrativa/progetti/${projectId}/${sede?.identeDiRiferimento}/sedi/${td}`
-                        );
-                    }
-                  },
+            actions: {
+              [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+                if (entityId && projectId) {
+                  navigate(
+                    `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/${sede?.identeDiRiferimento}/sedi/${td}`
+                  );
+                } else {
+                  projectId &&
+                    navigate(
+                      `/area-amministrativa/progetti/${projectId}/${sede?.identeDiRiferimento}/sedi/${td}`
+                    );
                 }
-              : undefined,
+              },
+            },
           })
         ),
       });
@@ -846,7 +845,16 @@ const ProjectsDetails = () => {
                 color: 'danger',
                 outline: true,
                 text: 'Termina progetto',
-                onClick: () => dispatch(openModal({ id: 'terminate-entity' })),
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: 'terminate-entity',
+                      payload: {
+                        entity: 'project',
+                        text: 'Confermi di voler terminare il progetto?',
+                      },
+                    })
+                  ),
               },
               {
                 size: 'xs',
@@ -889,7 +897,7 @@ const ProjectsDetails = () => {
                       id: 'terminate-entity',
                       payload: {
                         entity: 'project',
-                        text: 'Confermi di voler terminare il Progetto?',
+                        text: 'Confermi di voler terminare il progetto?',
                       },
                     })
                   ),

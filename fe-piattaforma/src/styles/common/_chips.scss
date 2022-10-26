@@ -35,3 +35,7 @@
 .chip:hover:is(.no-border) {
   border-color: transparent;
 }
+
+.not-active-chip {
+  color: #596c7d !important;
+}

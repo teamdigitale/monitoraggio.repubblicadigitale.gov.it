@@ -1,0 +1,43 @@
+.notifications-list-container {
+  border-bottom: 1px solid #c2c7cc;
+  display: flex;
+  padding: 15px;
+
+  .btn-secondary.dropdown-toggle {
+    color: #fff;
+    background-color: #fff;
+    border-color: #424f5d;
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    will-change: transform;
+    top: 0px;
+    width: 200px;
+    left: 0px;
+    transform: translate3d(-155px, 48px, 0px);
+  }
+
+  .dropdown-menu:before {
+    display: none;
+  }
+}
+
+.notification-list-checkbar {
+  width: 20px;
+  height: 20px;
+
+  @media screen and (max-width: 576px) {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.unread {
+  border-left: 3px solid #4392e0;
+  background: rgba(230, 236, 242, 0.5);
+}
+
+.reverse {
+  flex-direction: row-reverse;
+}

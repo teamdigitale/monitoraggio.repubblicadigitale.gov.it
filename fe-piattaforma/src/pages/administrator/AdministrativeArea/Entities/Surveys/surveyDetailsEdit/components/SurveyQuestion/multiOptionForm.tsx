@@ -63,7 +63,7 @@ const MultiOptionForm: React.FC<MultiOptionFormI> = (props) => {
         value: '',
       });
       tmpForm.push(newField);
-      updateForm(newForm(tmpForm),true);
+      updateForm(newForm(tmpForm), true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

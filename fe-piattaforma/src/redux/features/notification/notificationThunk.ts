@@ -59,7 +59,6 @@ export const GetNotificationsList = () => async (dispatch: Dispatch) => {
 
     if (res?.data) {
       dispatch(setNotificationsList(res.data));
-      console.log(res.data);
     }
   } catch (error) {
     console.log('GetNotificationsList error', error);

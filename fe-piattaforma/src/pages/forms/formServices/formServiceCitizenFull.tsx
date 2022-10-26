@@ -1,15 +1,8 @@
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
-import {
-  Form,
-  Input,
-  PrefixPhone,
-  Select,
-  SelectMultiple,
-} from '../../../components';
+import { Form, Input, PrefixPhone, Select } from '../../../components';
 import CheckboxGroup from '../../../components/Form/checkboxGroup';
 import { OptionType } from '../../../components/Form/select';
-import { OptionTypeMulti } from '../../../components/Form/selectMultiple';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
@@ -108,7 +101,7 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
   }, [dynamicForm]);
 
   useEffect(() => {
-    if (!creation && formData && form && Object.keys(form)?.length > 0) {
+    if (!creation && formData && form && Object.keys(form)?.length) {
       const newValues: { [key: string]: formFieldI['value'] } = {};
       Object.keys(form).map((key: string) => {
         const keyBE = form[key]?.keyBE;
@@ -133,7 +126,9 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
     const tmpForm = FormHelper.onInputChange(form, value, field);
     const referenceBoolean = !tmpForm[4]?.value;
     tmpForm[3].required = referenceBoolean;
-    if(referenceBoolean === false){ tmpForm[3].valid = true; }
+    if (referenceBoolean === false) {
+      tmpForm[3].valid = true;
+    }
     tmpForm[5].required = !referenceBoolean;
     tmpForm[6].required = !referenceBoolean;
     updateForm(tmpForm);
@@ -242,7 +237,7 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
       }
       case 'checkbox': {
         // checkbox if options
-        if (field.options && field.options?.length > 0) {
+        if (field.options && field.options?.length) {
           return (
             <CheckboxGroup
               {...field}
@@ -267,94 +262,6 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
               styleLabelForm
               classNameLabelOption='pl-5'
               disabled={!creation && field.field === '18'}
-            />
-          );
-        }
-        // multiple select if enumLevel1 & enumLevel2
-        if (
-          form &&
-          field.format === 'multiple-select' &&
-          field.enumLevel1?.length &&
-          field.enumLevel2?.length
-        ) {
-          let relatedTo = '';
-          const multiSelectOptions: {
-            label: string;
-            options: { label: string; value: string; upperLevel: string }[];
-          }[] = [];
-          if (field.enumLevel1) {
-            (field.enumLevel1 || []).forEach((opt) => {
-              multiSelectOptions.push({
-                label: opt,
-                options: [],
-              });
-            });
-          }
-          Object.keys(form).forEach((key: string) => {
-            if (form[key].field === field.relatedTo)
-              relatedTo = form[key].field || '';
-          });
-          if (
-            form &&
-            field?.relatedTo &&
-            form[relatedTo]?.enumLevel2 &&
-            multiSelectOptions?.length > 0
-          ) {
-            (form[relatedTo]?.enumLevel2 || []).forEach(
-              ({ label, value, upperLevel }) => {
-                const index = multiSelectOptions.findIndex(
-                  (v) => v.label === upperLevel
-                );
-                multiSelectOptions[index].options.push({
-                  label: label,
-                  value: value,
-                  upperLevel: upperLevel,
-                });
-              }
-            );
-          }
-          // mappa valori
-          const valuesSecondLevel = form[relatedTo]?.value;
-          const values: OptionTypeMulti[] = [];
-          Array.isArray(valuesSecondLevel) &&
-            (valuesSecondLevel || []).map((val: string) => {
-              let upperLevel = '';
-              Object.keys(multiSelectOptions).forEach((key: any) => {
-                if (
-                  multiSelectOptions[key].options.filter((x) => x.label === val)
-                    ?.length > 0
-                ) {
-                  upperLevel = multiSelectOptions[key].label;
-                }
-              });
-              values.push({
-                label: val,
-                value: val,
-                upperLevel: upperLevel,
-              });
-            });
-          return (
-            <SelectMultiple
-              {...field}
-              field={field.field}
-              secondLevelField={relatedTo}
-              id={`multiple-select-${field.id}`}
-              col='col-12'
-              label={`${field?.label}`}
-              aria-label={`${field?.label}`}
-              options={multiSelectOptions}
-              required={field.required || false}
-              onInputChange={(value: formFieldI['value'], field) => {
-                const values: string[] = [];
-                if (Array.isArray(value))
-                  value.map((val: string) => values.push(val));
-                onInputDataChange(value, field);
-              }}
-              //   onSecondLevelInputChange --> non serve
-              placeholder='Seleziona'
-              isDisabled={formDisabled}
-              value={values}
-              wrapperClassName='mb-5 pr-lg-3'
             />
           );
         }
@@ -391,3 +298,96 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
 const form = newForm([]);
 
 export default withFormHandler({ form }, FormServiceCitizenFull);
+
+/*
+// OLD MULTIPLE SELECT - DELETE
+// multiple select if enumLevel1 & enumLevel2
+        if (
+          form &&
+          field.format === 'multiple-select' &&
+          field.enumLevel1?.length &&
+          field.enumLevel2?.length
+        ) {
+          let relatedTo = '';
+          const multiSelectOptions: {
+            label: string;
+            options: { label: string; value: string; upperLevel: string }[];
+          }[] = [];
+          if (field.enumLevel1) {
+            (field.enumLevel1 || []).forEach((opt) => {
+              multiSelectOptions.push({
+                label: opt,
+                options: [],
+              });
+            });
+          }
+          Object.keys(form).forEach((key: string) => {
+            if (form[key].field === field.relatedTo)
+              relatedTo = form[key].field || '';
+          });
+          if (
+            form &&
+            field?.relatedTo &&
+            form[relatedTo]?.enumLevel2 &&
+            multiSelectOptions?.length
+          ) {
+            (form[relatedTo]?.enumLevel2 || []).forEach(
+              ({ label, value, upperLevel }) => {
+                const index = multiSelectOptions.findIndex(
+                  (v) => v.label === upperLevel
+                );
+                multiSelectOptions[index].options.push({
+                  label: label,
+                  value: value,
+                  upperLevel: upperLevel,
+                });
+              }
+            );
+          }
+          // mappa valori
+          const valuesSecondLevel = form[relatedTo]?.value;
+          const values: OptionTypeMulti[] = [];
+          Array.isArray(valuesSecondLevel) &&
+            (valuesSecondLevel || []).map((val: string) => {
+              let upperLevel = '';
+              Object.keys(multiSelectOptions).forEach((key: any) => {
+                if (
+                  multiSelectOptions[key].options.filter((x) => x.label === val)
+                    ?.length
+                ) {
+                  upperLevel = multiSelectOptions[key].label;
+                }
+              });
+              values.push({
+                label: val,
+                value: val,
+                upperLevel: upperLevel,
+              });
+            });
+          return (
+            <SelectMultiple
+              {...field}
+              field={field.field}
+              secondLevelField={relatedTo}
+              id={`multiple-select-${field.id}`}
+              col='col-12'
+              label={`${field?.label}`}
+              aria-label={`${field?.label}`}
+              options={multiSelectOptions}
+              required={field.required || false}
+              onInputChange={(value: formFieldI['value'], field) => {
+                const values: string[] = [];
+                if (Array.isArray(value))
+                  value.map((val: string) => values.push(val));
+                onInputDataChange(value, field);
+              }}
+              //   onSecondLevelInputChange --> non serve
+              placeholder='Seleziona'
+              isDisabled={formDisabled}
+              value={values}
+              wrapperClassName='mb-5 pr-lg-3'
+            />
+          );
+        }
+ 
+ */

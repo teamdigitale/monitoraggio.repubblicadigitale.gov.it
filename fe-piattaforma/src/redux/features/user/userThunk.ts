@@ -5,6 +5,8 @@ import {
   login,
   logout,
   setUserContext,
+  setUserNotifications,
+  setUserNotificationsToRead,
   setUserProfile,
   UserProfileI,
 } from './userSlice';
@@ -15,6 +17,9 @@ import {
 } from '../../../utils/sessionHelper';
 import { RootState } from '../../store';
 import { isActiveProvisionalLogin } from '../../../pages/common/Auth/auth';
+import { proxyCall } from '../forum/forumThunk';
+import { transformFiltersToQueryParams } from '../../../utils/common';
+import { setEntityPagination } from '../administrativeArea/administrativeAreaSlice';
 
 export const getUserHeaders = () => {
   const { codiceFiscale, id: idUtente } = JSON.parse(getSessionValues('user'));
@@ -171,12 +176,9 @@ export const UploadUserPic =
       dispatch(showLoader());
       const { idUtente } = getUserHeaders();
       const formData = new FormData();
-      formData.append('idUtente', idUtente);
-      formData.append('multipartifile', multipartifile, 'test.jpg');
-      console.log('formData', formData);
+      formData.append('multipartifile', multipartifile, multipartifile.name);
       const res = await API.post(
         `/utente/upload/immagineProfilo/${userId || idUtente}`,
-        //{ idUtente, multipartifile },
         formData,
         {
           headers: {
@@ -185,9 +187,7 @@ export const UploadUserPic =
         }
       );
 
-      if (res?.data) {
-        return true;
-      }
+      return !!res?.data;
     } catch (error) {
       console.log('UploadUserPic error', error);
       return false;
@@ -195,6 +195,27 @@ export const UploadUserPic =
       dispatch(hideLoader());
     }
   };
+
+const RocketChatLoginAction = { type: 'user/RocketChatLogin' };
+export const RocketChatLogin = () => async (dispatch: Dispatch) => {
+  try {
+    dispatch({ ...RocketChatLoginAction });
+    dispatch(showLoader());
+    const { idUtente } = getUserHeaders();
+    const res = await API.post(
+      `/rocket-chat/auth/iframe/utente/${idUtente}`,
+      {}
+    );
+    if (res) {
+      return res;
+    }
+  } catch (error) {
+    console.log('RocketChatLogin error', error);
+    return false;
+  } finally {
+    dispatch(hideLoader());
+  }
+};
 
 const LogoutRedirectAction = { type: 'user/LogoutRedirect' };
 export const LogoutRedirect = () => async (dispatch: Dispatch) => {
@@ -213,3 +234,115 @@ export const LogoutRedirect = () => async (dispatch: Dispatch) => {
     console.log('LogoutRedirect error', error);
   }
 };
+
+// NOTIFICATION
+
+const GetNotificationsByUserAction = {
+  type: 'forum/GetNotificationsByUser',
+};
+
+export const GetNotificationsByUser =
+  (
+    forcedFilters?: {
+      [key: string]: {
+        value: string | number;
+      }[];
+    },
+    updateCount = false
+  ) =>
+  async (dispatch: Dispatch, select: Selector) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...GetNotificationsByUserAction });
+
+      const {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        administrativeArea: { pagination },
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        forum: { filters },
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        user: {
+          user: { id },
+        },
+      } = select((state: RootState) => state);
+
+      if (id) {
+        const body = {
+          ...filters,
+          page: [{ value: Math.max(0, pagination.pageNumber - 1) }],
+          items_per_page: [{ value: 9 }],
+          ...forcedFilters,
+        };
+
+        const queryParam = transformFiltersToQueryParams(body);
+        const res = await proxyCall(
+          `/user/${id}/notifications${queryParam}`,
+          'GET'
+        );
+        if (res) {
+          if (updateCount) {
+            dispatch(
+              setUserNotificationsToRead(res.data.data.pager?.total_items || 0)
+            );
+          } else {
+            dispatch(setUserNotifications(res.data.data.items || []));
+            dispatch(
+              setEntityPagination({
+                totalPages: res.data.data.pager?.total_pages || 0,
+                totalElements: res.data.data.pager?.total_items || 0,
+              })
+            );
+          }
+        }
+      }
+    } catch (error) {
+      console.log('GetNotificationsByUser error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const ReadNotificationAction = {
+  type: 'forum/ReadNotification',
+};
+
+export const ReadNotification =
+  (notificationsIds: string[]) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...ReadNotificationAction });
+      await proxyCall(
+        `/notification/${notificationsIds.join(';')}/read`,
+        'POST',
+        {}
+      );
+    } catch (error) {
+      console.log('ReadNotification error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+const DeleteNotificationAction = {
+  type: 'forum/DeleteNotification',
+};
+
+export const DeleteNotification =
+  (notificationsIds: string[]) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...DeleteNotificationAction });
+      await proxyCall(
+        `/notification/${notificationsIds.join(';')}/delete`,
+        'POST',
+        {}
+      );
+    } catch (error) {
+      console.log('DeleteNotification error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };

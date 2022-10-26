@@ -6,6 +6,7 @@ import {
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import appReducer from './features/app/appSlice';
+import anagraphicReducer from './features/anagraphic/anagraphicSlice';
 import citizensAreaReducer from './features/citizensArea/citizensAreaSlice';
 import administrativeAreaReducer from './features/administrativeArea/administrativeAreaSlice';
 import surveyReducer from './features/administrativeArea/surveys/surveysSlice';
@@ -13,10 +14,12 @@ import modalReducer from './features/modal/modalSlice';
 import notificationReducer from './features/notification/notificationSlice';
 import userReducer from './features/user/userSlice';
 import rolesReducer from './features/roles/rolesSlice';
+import forumReducer from './features/forum/forumSlice';
 
 const store = createStore(
   combineReducers({
     app: appReducer,
+    anagraphic: anagraphicReducer,
     administrativeArea: administrativeAreaReducer,
     citizensArea: citizensAreaReducer,
     modal: modalReducer,
@@ -24,6 +27,7 @@ const store = createStore(
     survey: surveyReducer,
     roles: rolesReducer,
     user: userReducer,
+    forum: forumReducer,
   }),
   composeWithDevTools(applyMiddleware(thunk))
 );

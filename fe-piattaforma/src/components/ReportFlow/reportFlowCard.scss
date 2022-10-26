@@ -1,0 +1,50 @@
+.report-flow-container {
+  position: absolute;
+  min-width: 840px;
+  max-width: 840px;
+  height: auto;
+  z-index: 99999999999;
+
+  h1,
+  ul,
+  li,
+  p {
+    color: color('very-dark-blue');
+  }
+  p {
+    font-size: 18px;
+  }
+  .panel-border {
+    border-top: 1px solid rgba(0, 0, 0, 0.5);
+  }
+
+  .button-text {
+    color: color('light-blue');
+    font-weight: 700;
+    font-size: 24px;
+    padding: rem(12px);
+  }
+
+  &__background {
+    background-color: rgba(209, 231, 255, 0.95);
+  }
+
+  &__image {
+    position: absolute;
+    top: 10px;
+    right: 45px;
+  }
+
+  &__text-box {
+    padding: rem(35px) rem(130px) rem(15px) rem(44px);
+  }
+
+  &__bordered-box {
+    min-width: 315px;
+    min-height: 140px;
+    max-height: 140px;
+    border: 1px solid #0066CC;
+    border-radius: 10px;
+    padding: rem(10px) rem(18px) rem(10px);
+  }
+}

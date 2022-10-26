@@ -10,6 +10,7 @@ import { useAppSelector } from '../redux/hooks';
 
 interface withModalStateProps {
   closable?: boolean;
+  closableKey?: string | undefined;
   onClose?: () => void;
   payload?: ModalPayloadI;
   title?: string;
@@ -22,7 +23,7 @@ const withModalState =
   ): React.FC<P & withModalStateProps> =>
   // eslint-disable-next-line react/display-name
   (props: withModalStateProps) => {
-    const { closable = false } = props;
+    const { closable = false, closableKey = 'Escape' } = props;
     const dispatch = useDispatch();
     const payload = useAppSelector(selectModalPayload);
     const currentId = useAppSelector(selectModalId);
@@ -38,7 +39,7 @@ const withModalState =
     };
 
     const manageEscListener = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === closableKey) {
         handleOnClose();
         if (!closable) dispatch(closeModal());
         window.removeEventListener('keyup', manageEscListener);

@@ -2,7 +2,7 @@
   min-width: 200px;
 
   @media screen and (max-width: 576px) {
-   width: 225px; 
+    min-width: 155px;
   }
 
   &__popover {

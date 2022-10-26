@@ -140,7 +140,7 @@ const ServicesDetails = () => {
 
   useEffect(() => {
     const locationSplit = location.pathname.split('/');
-    if (locationSplit.length > 0) {
+    if (locationSplit.length) {
       switch (locationSplit[locationSplit.length - 1]) {
         case tabs.INFO:
           setActiveTab(tabs.INFO);

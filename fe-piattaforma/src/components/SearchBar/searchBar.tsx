@@ -34,7 +34,7 @@ interface SearchBarI extends Omit<SelectI, 'onInputChange'> {
   id?: string;
   entityToRefresh?: string | undefined;
   search?: boolean;
-  onReset?: () => void;
+  onReset?: (() => void) | undefined;
   tooltip?: boolean;
   tooltipText?: string;
 }
@@ -53,7 +53,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
     id = 'search',
     title = 'Cerca',
     search = false,
-    onReset,
+    onReset = () => ({}),
     tooltip = false,
     tooltipText = '',
   } = props;
@@ -121,8 +121,8 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
           </Button>
         )}
       </components.DropdownIndicator>
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
@@ -211,6 +211,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                   }
                 }}
                 tabIndex={0}
+                minimum={minLength}
               />
 
               {!hasSearchValue && device.mediaIsPhone && (

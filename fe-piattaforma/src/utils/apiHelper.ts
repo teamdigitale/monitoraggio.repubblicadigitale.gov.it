@@ -12,12 +12,11 @@ const API = axios.create({
 });
 
 API.interceptors.request.use((req) => {
-  // TODO implement retrieve authToken & userRole from storage
   return {
     ...req,
     headers: {
       ...req.headers,
-      authToken: getSessionValues('auth'),
+      authToken: JSON.parse(getSessionValues('auth'))?.id_token,
       userRole: JSON.parse(getSessionValues('profile'))?.codiceRuolo,
     },
   };

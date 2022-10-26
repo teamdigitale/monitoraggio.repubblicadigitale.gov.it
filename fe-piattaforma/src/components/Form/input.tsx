@@ -23,7 +23,7 @@ const blackList = [
   'relatedTo',
   'touched',
   'withLabel',
-  'keyBE'
+  'keyBE',
 ];
 
 /**
@@ -67,6 +67,7 @@ const Input: React.FC<InputI> = (props) => {
     value = '',
     withLabel = props.type !== 'radio',
     className = '',
+    onClick,
   } = props;
 
   const [val, setVal] = useState<formFieldI['value']>(value);
@@ -114,7 +115,7 @@ const Input: React.FC<InputI> = (props) => {
 
   const InputProps: InputProps = {
     checked:
-      type === 'checkbox' || (type === 'radio' && onInputChange)
+      type === 'checkbox' || (type === 'radio' && (onInputChange || onClick))
         ? check
         : undefined,
     id: id || field || `input-${new Date().getTime()}`,
@@ -142,7 +143,7 @@ const Input: React.FC<InputI> = (props) => {
   InputProps.name = name ?? InputProps.id;
   InputProps.label = withLabel
     ? label && required && !disabled
-      ? label + ' *'
+      ? `${label} *`
       : label
     : '';
 
