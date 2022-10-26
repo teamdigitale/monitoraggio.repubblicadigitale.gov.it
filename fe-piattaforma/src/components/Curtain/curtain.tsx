@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 interface CurtainI {
   open: boolean;
   noscroll: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const Curtain: React.FC<CurtainI> = (props) => {

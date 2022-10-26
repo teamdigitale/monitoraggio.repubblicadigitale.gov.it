@@ -11,6 +11,7 @@ import { useAppSelector } from '../../../redux/hooks';
 import { selectUser } from '../../../redux/features/user/userSlice';
 import { WorkDocsRegistration } from '../../../redux/features/forum/forumThunk';
 import { RegexpType } from '../../../utils/validator';
+import './workDocs.scss';
 
 interface WorkdocsRegistrationModalI extends withFormHandlerProps {
   onClose?: () => void;
@@ -100,7 +101,7 @@ const WorkdocsRegistrationModal: React.FC<WorkdocsRegistrationModalI> = (
           di <br />
           collaboration con la tua email: {email}
         </p>
-        <Form id='workdocs-registration-form' className='my-3 mx-2'>
+        <Form id='workdocs-registration-form' className='my-3 mx-2 work-docs'>
           <Form.Row className='justify-content-between px-0 px-lg-5 mx-4'>
             <Input
               {...form?.password}
