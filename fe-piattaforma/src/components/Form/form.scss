@@ -1,15 +1,21 @@
-.form {
-  input {
-    &[type='text'],
-    &[type='date'],
-    &[type='number'],
-    &[type='time'],
-    &[type='password'],
-    &[type='file'],
-    &[type='url'] {
-      font-weight: 500;
-    }
+input {
+  &[type='text'],
+  &[type='date'],
+  &[type='number'],
+  &[type='time'],
+  &[type='password'],
+  &[type='file'],
+  &[type='url'] {
+    color: color('dark-blue') !important;
+    font-weight: 600 !important;
   }
+}
+textarea {
+  color: color('dark-blue') !important;
+  font-weight: 600 !important;
+}
+
+.form {
   input:focus {
     border-bottom: 2px solid color('progress-bar-line');
   }
@@ -108,7 +114,8 @@ input > span {
     }
   }
   &__single-value {
-    font-weight: 500 !important;
+    color: color('dark-blue') !important;
+    font-weight: 600 !important;
     &--is-disabled {
       color: color('dark-blue') !important;
     }
@@ -141,6 +148,7 @@ input > span {
     }
   }
   &__single-value {
+    color: color('dark-blue') !important;
     font-weight: 600 !important;
     &--is-disabled {
       color: color('dark-blue') !important;
@@ -165,7 +173,7 @@ input > span {
 }
 
 .multiple-select {
-  font-weight: 500;
+  font-weight: 600;
   &__control {
     &--is-disabled {
       border-bottom: 1px solid color('grey-input') !important;
@@ -249,4 +257,9 @@ input > span {
       }
     }
   }
+}
+
+.public-DraftEditor-content {
+  color: color('dark-blue') !important;
+  font-weight: 400 !important;
 }
