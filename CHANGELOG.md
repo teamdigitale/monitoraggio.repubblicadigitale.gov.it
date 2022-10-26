@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.91](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.90...1.0.0-test.91) (2022-10-26)
+
+
+### Bug Fixes
+
+* **be:** upload cittadini e utente all ([4287ddd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4287dddee7675c6e52a99772c64812bab629ec11))
+
 ## [1.0.0-test.90](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.89...1.0.0-test.90) (2022-10-25)
 
 
