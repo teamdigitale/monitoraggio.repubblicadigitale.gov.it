@@ -139,9 +139,6 @@ const DocumentsDetails = () => {
           dispatch(
             openModal({
               id: 'documentModal',
-              payload: {
-                title: 'Modifica documento',
-              },
             })
           )
         }
@@ -157,23 +154,10 @@ const DocumentsDetails = () => {
         }
       />
 
-      <div className='d-flex align-items-center w-100'>
-        <span
-          className='d-none d-md-flex'
-          style={{
-            height: '2px',
-            flexGrow: '1',
-            backgroundColor: '#797C80',
-          }}
-        />
+      <div className='d-flex align-items-center w-100 mb-5'>
+        <span className='d-none d-md-flex border-box-utility' />
         <div className='d-flex justify-content-center align-items-center px-3 mx-auto'>
-          <span
-            className='pr-3'
-            style={{
-              color: '#2079D4',
-              fontWeight: '700',
-            }}
-          >
+          <span className='pr-3 border-box-utility__label'>
             Ti è stato utile?
           </span>
           <div className='d-flex'>
@@ -211,17 +195,9 @@ const DocumentsDetails = () => {
             </Form>
           </div>
         </div>
-        <span
-          className='d-none d-md-flex'
-          style={{
-            height: '2px',
-            flexGrow: '1',
-            backgroundColor: '#797C80',
-          }}
-        />
+        <span className='d-none d-md-flex border-box-utility' />
       </div>
       {commentsList.length ? <CommentSection section='ducuments' /> : null}
-      <div className='border mt-3'></div>
       <ManageDocument />
       <ManageComment />
       <ManageReport />

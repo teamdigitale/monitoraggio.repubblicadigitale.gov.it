@@ -251,9 +251,6 @@ const Documents = () => {
                   dispatch(
                     openModal({
                       id: 'documentModal',
-                      payload: {
-                        title: 'Carica documento',
-                      },
                     })
                   )
               : undefined

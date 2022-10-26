@@ -182,6 +182,7 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
 
   const stepsCTA = {
     form: {
+      title: `${creation ? 'Carica' : 'Modifica'} documento`,
       primaryCTA: {
         disabled: !isFormValid,
         label: creation ? 'Conferma' : 'Salva',
@@ -213,6 +214,7 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
   return (
     <GenericModal
       id={modalId}
+      title={stepsCTA[step].title as string}
       primaryCTA={stepsCTA[step].primaryCTA}
       secondaryCTA={(stepsCTA[step].secondaryCTA as CallToAction) || null}
       centerButtons

@@ -64,6 +64,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
 
   const stepsCTA = {
     form: {
+      title: `${creation ? 'Pubblica nuova' : 'Modifica'} news`,
       primaryCTA: {
         disabled: !isFormValid,
         label: creation ? 'Conferma' : 'Salva',
@@ -83,7 +84,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
       title: 'Anteprima news',
       primaryCTA: {
         label: creation ? 'Crea post' : 'Salva',
-        onClick: () => setStep('confirm'),
+        onClick: () => handleSaveNews(),
       },
       secondaryCTA: {
         label: 'Annulla',
@@ -218,7 +219,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
           creation={creation}
           formDisabled={!!formDisabled}
           sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {
-            console.log('qui passa', newData);
+            // console.log('qui passa', newData);
             setNewFormValues({ ...newData });
           }}
           setIsFormValid={(value: boolean | undefined) =>
@@ -278,6 +279,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
       centerButtons
       onClose={resetModal}
       darkTitle
+      title={stepsCTA[step].title as string}
     >
       {content}
     </GenericModal>
