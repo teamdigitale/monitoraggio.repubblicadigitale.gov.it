@@ -27,7 +27,7 @@ const AnswersSection: React.FC<AnswerSectionI> = (props) => {
             'd-flex',
             'flex-column',
             'left-alignment',
-            !device.mediaIsPhone ? 'py-4 ml-4' : 'py-2',
+            !device.mediaIsPhone ? 'py-4' : 'py-2',
             thread && !device.mediaIsPhone && 'comment-container__thread'
           )}
         >

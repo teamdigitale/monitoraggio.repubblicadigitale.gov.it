@@ -64,6 +64,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
 
   const stepsCTA = {
     form: {
+      title: `${creation ? 'Pubblica nuova' : 'Modifica'} news`,
       primaryCTA: {
         disabled: !isFormValid,
         label: creation ? 'Conferma' : 'Salva',
@@ -278,6 +279,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
       centerButtons
       onClose={resetModal}
       darkTitle
+      title={stepsCTA[step].title as string}
     >
       {content}
     </GenericModal>

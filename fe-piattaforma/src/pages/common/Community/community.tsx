@@ -172,9 +172,6 @@ const Community = () => {
                   dispatch(
                     openModal({
                       id: 'topicModal',
-                      payload: {
-                        title: 'Crea topic',
-                      },
                     })
                   )
               : undefined
