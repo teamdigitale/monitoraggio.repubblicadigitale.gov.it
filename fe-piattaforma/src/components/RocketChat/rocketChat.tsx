@@ -45,7 +45,6 @@ const RocketChat = () => {
   }, [rocketChatToken]);
 
   const manageNotification = (e: MessageEvent<any>) => {
-    console.log('event name', e, e.data.eventName, e.data.data);
     switch (e?.data?.eventName) {
       case 'unread-changed': {
         console.log('messages to read', e?.data?.data || 0);
@@ -79,7 +78,6 @@ const RocketChat = () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (res) {
-          console.log('getRocketChatToken res', res);
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           setRocketChatToken(res.data?.authToken);

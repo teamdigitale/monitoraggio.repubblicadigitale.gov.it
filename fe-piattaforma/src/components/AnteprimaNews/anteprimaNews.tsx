@@ -39,8 +39,8 @@ export interface AnteprimaBachecaNewsI {
   intervention?: string;
   entity?: string | undefined;
   entity_type?: string | undefined;
-  attachment?: string;
-  cover?: string;
+  attachment?: any;
+  cover?: any;
   enable_comments?: boolean;
   likes?: number;
   views?: number;
@@ -196,9 +196,8 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
           'bg-image' /*  device.mediaIsPhone ? 'mr-3' : device.mediaIsTablet ? 'mx-1': null */
         )}
         style={{
-          backgroundImage: `url(${
-            cover ? cleanDrupalFileURL(cover) : coverPlaceholder
-          })`,
+          backgroundImage: `url(${!cover ? coverPlaceholder : typeof cover === "string" ? cleanDrupalFileURL(cover) : cover.res
+            })`,
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
           zIndex: '0',
@@ -250,7 +249,7 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
                     aria-label='Scarica allegato'
                   />
                   <a
-                    href={cleanDrupalFileURL(attachment)}
+                    href={typeof attachment === "string" ? cleanDrupalFileURL(attachment) : attachment.res}
                     download
                     target='_blank'
                     rel='noreferrer'
@@ -297,17 +296,17 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
                 onComment={
                   enable_comments
                     ? () =>
-                        dispatch(
-                          openModal({
-                            id: 'comment-modal',
-                            payload: {
-                              title: 'Aggiungi commento',
-                              action: 'comment',
-                              entity: 'board',
-                              category: category_label || category,
-                            },
-                          })
-                        )
+                      dispatch(
+                        openModal({
+                          id: 'comment-modal',
+                          payload: {
+                            title: 'Aggiungi commento',
+                            action: 'comment',
+                            entity: 'board',
+                            category: category_label || category,
+                          },
+                        })
+                      )
                     : undefined
                 }
               />

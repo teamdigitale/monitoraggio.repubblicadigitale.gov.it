@@ -176,12 +176,9 @@ export const UploadUserPic =
       dispatch(showLoader());
       const { idUtente } = getUserHeaders();
       const formData = new FormData();
-      formData.append('idUtente', idUtente);
-      formData.append('multipartifile', multipartifile, 'test.jpg');
-      console.log('formData', formData);
+      formData.append('multipartifile', multipartifile, multipartifile.name);
       const res = await API.post(
         `/utente/upload/immagineProfilo/${userId || idUtente}`,
-        //{ idUtente, multipartifile },
         formData,
         {
           headers: {
@@ -190,10 +187,7 @@ export const UploadUserPic =
         }
       );
 
-      if (res?.data) {
-        return true;
-      }
-      return false;
+      return !!res?.data;
     } catch (error) {
       console.log('UploadUserPic error', error);
       return false;

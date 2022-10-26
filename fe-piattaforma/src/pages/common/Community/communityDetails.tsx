@@ -164,9 +164,6 @@ const CommunityDetails = () => {
           dispatch(
             openModal({
               id: 'topicModal',
-              payload: {
-                title: 'Modifica topic',
-              },
             })
           )
         }

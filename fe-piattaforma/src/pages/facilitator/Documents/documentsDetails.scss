@@ -1,4 +1,9 @@
 .border-box-utility {
-    border-bottom: 2px solid rgba(121, 124, 128, 0.4);
-    width: 420px;
+  flex-grow: 1;
+  border-bottom: 2px solid rgba(121, 124, 128, 0.4);
+  &__label {
+    color: #2079d4;
+    font-weight: 700;
+    letter-spacing: 0.933333px;
+  }
 }

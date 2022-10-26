@@ -136,6 +136,7 @@ const ManageTopic: React.FC<ManageTopicI> = ({
 
   const stepsCTA = {
     form: {
+      title: `${creation ? 'Crea' : 'Modifica'} topic`,
       primaryCTA: {
         disabled: !isFormValid,
         label: creation ? 'Conferma' : 'Salva',
@@ -203,6 +204,7 @@ const ManageTopic: React.FC<ManageTopicI> = ({
       centerButtons
       onClose={resetModal}
       darkTitle
+      title={stepsCTA[step].title as string}
     >
       {content}
     </GenericModal>

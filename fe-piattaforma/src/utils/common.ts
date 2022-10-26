@@ -517,11 +517,13 @@ export const uploadFile = (
     reader.readAsDataURL(selectedImage);
     reader.onloadend = () => {
       if (reader.result) {
+        
         callback({
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           data: cleanBase64(reader.result),
           name: selectedImage.name,
+          res: reader.result
         });
       }
     };
