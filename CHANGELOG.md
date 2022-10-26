@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.94](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.93...1.0.0-test.94) (2022-10-26)
+
+
+### Bug Fixes
+
+* **be:** check tipo upload immagine profilo ([8278e2c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8278e2c6b29271d08119beab1fd68a4f9485a066))
+
 ## [1.0.0-test.93](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.92...1.0.0-test.93) (2022-10-26)
 
 
