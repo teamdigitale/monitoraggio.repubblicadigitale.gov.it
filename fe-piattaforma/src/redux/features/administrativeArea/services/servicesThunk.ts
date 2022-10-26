@@ -119,8 +119,11 @@ export const GetCitizenListServiceDetail =
         idEnte,
       };
       let queryParamFilters = transformFiltersToQueryParams(filters);
-      if(pagination){
-        queryParamFilters = queryParamFilters === '' ? '?currPage=0&pageSize=1000': queryParamFilters + '&currPage=0&pageSize=1000';
+      if (pagination) {
+        queryParamFilters =
+          queryParamFilters === ''
+            ? '?currPage=0&pageSize=1000'
+            : queryParamFilters + '&currPage=0&pageSize=1000';
       }
       const res = await API.post(
         `/servizio/cittadino/all/${idServizio}${queryParamFilters}`,

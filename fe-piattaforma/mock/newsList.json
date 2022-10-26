@@ -1,0 +1,71 @@
+
+{
+    "code": 200,
+    "result": true,
+    "data": {
+        "pager": {
+            "current_page": 0,
+            "total_items": 3,
+            "total_pages": 2,
+            "items_per_page": 1
+        },
+        "items": [
+            {
+                "id": 2,
+                "author": 1,
+                "title": "Gara di ginnastica",
+                "category_label": "Ginnastica",
+                "category_id": 3,
+                "date": "2022-10-03",
+                "description": "<p>La gara di ginnastica sarà domani</p>\n",
+                "cover": "https://picsum.photos/seed/picsum/380/150",
+                "likes": 1,
+                "views": 0,
+                "comment_count": 1,
+                "highlighted": 1
+            },
+            {
+                "id": 1,
+                "author": 3,
+                "title": "Gara di ginnastica",
+                "category_label": "Ginnastica",
+                "category_id": 3,
+                "date": "2022-10-03",
+                "description": "<p>La gara di ginnastica sarà domani</p>\n",
+                "cover": "https://picsum.photos/seed/picsum/380/150",
+                "likes": 0,
+                "views": 0,
+                "comment_count": 0,
+                "highlighted": 0
+            },
+            {
+                "id": 2,
+                "author": 1,
+                "title": "Gara di ginnastica",
+                "category_label": "Ginnastica",
+                "category_id": 3,
+                "date": "2022-10-03",
+                "description": "<p>La gara di ginnastica sarà domani</p>\n",
+                "cover": "https://picsum.photos/seed/picsum/380/150",
+                "likes": 1,
+                "views": 0,
+                "comment_count": 1,
+                "highlighted": 1
+            },
+            {
+                "id": 1,
+                "author": 3,
+                "title": "Gara di ginnastica",
+                "category_label": "Ginnastica",
+                "category_id": 3,
+                "date": "2022-10-03",
+                "description": "<p>La gara di ginnastica sarà domani</p>\n",
+                "cover": "https://picsum.photos/seed/picsum/380/150",
+                "likes": 0,
+                "views": 0,
+                "comment_count": 0,
+                "highlighted": 0
+            }
+        ]
+    }
+}

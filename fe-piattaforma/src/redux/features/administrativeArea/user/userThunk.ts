@@ -79,7 +79,8 @@ export const GetFilterValuesUtenti =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
-      const { codiceFiscale, codiceRuolo, idProgramma, idEnte } = getUserHeaders();
+      const { codiceFiscale, codiceRuolo, idProgramma, idEnte } =
+        getUserHeaders();
       const body = {
         cfUtente: codiceFiscale,
         codiceRuolo: codiceRuolo,
@@ -111,7 +112,7 @@ export const GetUserDetails =
     try {
       dispatch(showLoader());
       dispatch({ ...GetUserDetailAction, userId });
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto , idEnte} =
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
         cfUtente: codiceFiscale,
@@ -133,11 +134,14 @@ export const GetUserDetails =
     }
   };
 
+const GetUsersBySearchAction = {
+  type: 'administrativeArea/GetUsersBySearch',
+};
 export const GetUsersBySearch =
   (search: string) => async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
-      dispatch({ ...GetAllUsersAction });
+      dispatch({ ...GetUsersBySearchAction });
 
       const res = await API.get(`/utente/cerca/${search}`);
 

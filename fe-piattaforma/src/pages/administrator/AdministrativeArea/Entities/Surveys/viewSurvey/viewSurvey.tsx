@@ -165,7 +165,7 @@ const ViewSurvey: React.FC = () => {
           buttonsPosition='BOTTOM'
           goBackTitle='Torna indietro'
         />
-        {sections?.length > 0 &&
+        {sections?.length &&
           sections.map((section: SurveySectionPayloadI, index: number) => (
             <>
               <p

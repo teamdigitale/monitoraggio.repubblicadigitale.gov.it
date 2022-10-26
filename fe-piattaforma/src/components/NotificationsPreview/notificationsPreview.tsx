@@ -54,13 +54,13 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
           <div className='preview-header'>
             <h3 className='primary-color-a9'>
               Area notifiche
-              <span className='badge'>
+              {/*<span className='badge'>
                 {
                   notificationsList.filter(
                     (notification) => !notification.status
                   ).length
                 }
-              </span>
+              </span>*/}
             </h3>
           </div>
         </div>
@@ -84,7 +84,8 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
         </div>
         <div className='text-center py-3'>
           <NavLink to='/notifiche' className='primary-color archive'>
-            ARCHIVIO NOTIFICHE ({notificationsList.length})
+            ARCHIVIO NOTIFICHE
+            {/*{notificationsList.length}*/}
           </NavLink>
         </div>
       </div>

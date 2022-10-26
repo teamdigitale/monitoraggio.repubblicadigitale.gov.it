@@ -38,8 +38,8 @@ export interface SurveySectionResponseI {
 
 export interface SurveySectionPayloadI {
   id: string;
-  schema: string | {json: string};
-  schemaui: string | {json: string};
+  schema: string | { json: string };
+  schemaui: string | { json: string };
   title?: string;
   titolo?: string;
   'default-section'?: boolean;
@@ -297,10 +297,7 @@ export const surveysSlice = createSlice({
     resetCompilingSurveyForm: (state) => {
       state.compilingSurveyForms = [];
     },
-    setSurveyOnline: (
-      state,
-      action: PayloadAction<any>
-    ) => {
+    setSurveyOnline: (state, action: PayloadAction<any>) => {
       state.surveyOnline = action.payload;
     },
     resetSurveyDetails: () => initialState,
@@ -345,11 +342,14 @@ export const selectCompilingSurveyForms = (state: RootState) =>
 export const selectResponseSectionsSchema = (state: RootState) =>
   state.survey.sectionsSchemaResponse;
 
-export const selectSurveyStatus  = (state: RootState) => state.survey.surveyStatus;
+export const selectSurveyStatus = (state: RootState) =>
+  state.survey.surveyStatus;
 export const selectSurveyName = (state: RootState) => state.survey.surveyName;
 
-export const selectPrintSurveySections = (state: RootState) => state.survey.printSections;
+export const selectPrintSurveySections = (state: RootState) =>
+  state.survey.printSections;
 
-export const selectSurveyOnline = (state: RootState) => state.survey.surveyOnline;
+export const selectSurveyOnline = (state: RootState) =>
+  state.survey.surveyOnline;
 
 export default surveysSlice.reducer;

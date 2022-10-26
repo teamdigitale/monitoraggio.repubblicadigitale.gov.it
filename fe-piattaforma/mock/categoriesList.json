@@ -1,0 +1,29 @@
+{
+    "code": 200,
+    "result": true,
+    "data": {
+        "pager": {
+            "current_page": 0,
+            "total_items": 3,
+            "total_pages": 10,
+            "items_per_page": 4
+        },
+        "items": [
+            {
+                "name": "JPG",
+                "id": 11,
+                "type": "document_categories"
+            },
+            {
+                "name": "GIF",
+                "id": 10,
+                "type": "document_categories"
+            },
+            {
+                "name": "PDF",
+                "id": 9,
+                "type": "document_categories"
+            }
+        ]
+    }
+}

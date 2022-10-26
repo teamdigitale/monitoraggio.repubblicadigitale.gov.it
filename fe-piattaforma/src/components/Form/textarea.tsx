@@ -143,7 +143,6 @@ const TextArea: React.FC<TextAreaI> = (props) => {
         //innerRef={inputRef}
         ref={inputRef}
         style={{ resize: !resize ? 'none' : 'unset' }}
-        className='font-weight-light'
       />
     </div>
   );

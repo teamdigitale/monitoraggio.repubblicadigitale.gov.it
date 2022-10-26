@@ -1,0 +1,27 @@
+{
+    "code": 200,
+    "result": true,
+    "data": {
+        "items": [
+            {
+                "id": 1,
+                "author": "Amanda",
+                "title": "Gara di ginnastica",
+                "category_label": "Ginnastica",
+                "category_id": 3,
+                "date": "2022-10-03",
+                "description": "<p>La gara di ginnastica sarà domani</p>\n",
+                "program": 1,
+                "intervention": "RFT",
+                "cover": "https://picsum.photos/seed/picsum/380/150",
+                "attachment": "",
+                "highlighted": 0,
+                "enable_comments": 1,
+                "likes": 0,
+                "views": 0,
+                "comment_count": 0,
+                "user_like": 0
+            }
+        ]
+    }
+}
