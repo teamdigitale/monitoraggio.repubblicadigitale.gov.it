@@ -179,7 +179,7 @@ public class UtenteRestApi {
 	public String uploadImmagineProfiloUtente(
 			@PathVariable(value = "idUtente") Long idUtente,
 			@RequestPart MultipartFile multipartifile) throws IOException {
-		List<String> IMAGE_TYPES_ALLOWED = Arrays.asList("jpg", "jpeg", "png");
+		List<String> IMAGE_TYPES_ALLOWED = Arrays.asList("jpg", "jpeg", "png", "image/jpg", "image/jpeg", "image/png");
 		if (multipartifile == null || !IMAGE_TYPES_ALLOWED.contains(multipartifile.getContentType().toLowerCase()))  {
 			throw new UtenteException("il file non è valido", CodiceErroreEnum.U22); 
 		}
