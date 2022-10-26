@@ -463,49 +463,50 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		try {
 			//estraggo i cittadini dal file csv
 			List<CittadinoUploadBean> cittadiniUpload = CSVServizioUtil.excelToCittadini(fileCittadiniCSV.getInputStream());
-		
 			for(CittadinoUploadBean cittadinoUpload: cittadiniUpload) {
-				bonificaRecordUpload(cittadinoUpload);
-				Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService.getByCodiceFiscaleOrNumeroDocumento(cittadinoUpload.getCodiceFiscale(), cittadinoUpload.getNumeroDocumento());				
-				
-				CittadinoEntity cittadino = new CittadinoEntity();
-				//se il cittadino non esiste già a sistema
-				if(!optionalCittadinoDBFetch.isPresent()) {
-					//verifico se nel csv è stato passato almeno uno tra codice fiscale e num documento
-					if(esisteCodFiscaleODocumento(cittadinoUpload)) {
-						try{
-							popolaCittadino(cittadino, cittadinoUpload);
-							inserisciCittadino(cittadino, idServizio);
-							cittadinoUpload.setEsito("UPLOAD - OK");
-						}catch(NumberFormatException e){
-							cittadinoUpload.setEsito("UPLOAD - KO - ANNO DI NASCITA IN FORMATO NON VALIDO");
+				if( this.checkPassCittadinoUpload(cittadinoUpload) ) {
+					bonificaRecordUpload(cittadinoUpload);
+					Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService.getByCodiceFiscaleOrNumeroDocumento(cittadinoUpload.getCodiceFiscale(), cittadinoUpload.getNumeroDocumento());				
+					
+					CittadinoEntity cittadino = new CittadinoEntity();
+					//se il cittadino non esiste già a sistema
+					if(!optionalCittadinoDBFetch.isPresent()) {
+						//verifico se nel csv è stato passato almeno uno tra codice fiscale e num documento
+						if(esisteCodFiscaleODocumento(cittadinoUpload)) {
+							try{
+								popolaCittadino(cittadino, cittadinoUpload);
+								inserisciCittadino(cittadino, idServizio);
+								cittadinoUpload.setEsito("UPLOAD - OK");
+							}catch(NumberFormatException e){
+								cittadinoUpload.setEsito("UPLOAD - KO - ANNO DI NASCITA IN FORMATO NON VALIDO");
+							}
+						}else {
+							cittadinoUpload.setEsito("UPLOAD - KO - CF O NUM DOCUMENTO OBBLIGATORI");
 						}
 					}else {
-						cittadinoUpload.setEsito("UPLOAD - KO - CF O NUM DOCUMENTO OBBLIGATORI");
-					}
-				}else {
-					CittadinoEntity cittadinoDBFetch = optionalCittadinoDBFetch.get();
-					// verifico se già esiste il cittadino per quel determinato servizio 
-					// e in caso affermativo aggiungo KO
-					if(this.esisteCittadinoByIdServizioAndIdCittadino(idServizio, cittadinoDBFetch.getId())) {
-						cittadinoUpload.setEsito(String.format(
-								"UPLOAD - KO - CITTADINO CON CODICE FISCALE=%s NUMERO DOCUMENTO=%s GIA' ESISTENTE SUL SERVIZIO CON ID %s",
-								cittadinoDBFetch.getCodiceFiscale(),
-								cittadinoDBFetch.getNumeroDocumento(),
-								idServizio
-							)
-						);
-					}else {
-						cittadino.setId(cittadinoDBFetch.getId());
-						try{
-							popolaCittadino(cittadino, cittadinoUpload);
-							inserisciCittadino(cittadino, idServizio);
-							cittadinoUpload.setEsito("UPLOAD - OK");
-						}catch(NumberFormatException e){
-							cittadinoUpload.setEsito("UPLOAD - KO - ANNO DI NASCITA IN FORMATO NON VALIDO");
+						CittadinoEntity cittadinoDBFetch = optionalCittadinoDBFetch.get();
+						// verifico se già esiste il cittadino per quel determinato servizio 
+						// e in caso affermativo aggiungo KO
+						if(this.esisteCittadinoByIdServizioAndIdCittadino(idServizio, cittadinoDBFetch.getId())) {
+							cittadinoUpload.setEsito(String.format(
+									"UPLOAD - KO - CITTADINO CON CODICE FISCALE=%s NUMERO DOCUMENTO=%s GIA' ESISTENTE SUL SERVIZIO CON ID %s",
+									cittadinoDBFetch.getCodiceFiscale(),
+									cittadinoDBFetch.getNumeroDocumento(),
+									idServizio
+								)
+							);
+						}else {
+							cittadino.setId(cittadinoDBFetch.getId());
+							try{
+								popolaCittadino(cittadino, cittadinoUpload);
+								inserisciCittadino(cittadino, idServizio);
+								cittadinoUpload.setEsito("UPLOAD - OK");
+							}catch(NumberFormatException e){
+								cittadinoUpload.setEsito("UPLOAD - KO - ANNO DI NASCITA IN FORMATO NON VALIDO");
+							}
 						}
 					}
-				}	
+				}
 				esiti.add(cittadinoUpload);
 			}
 			
@@ -513,6 +514,63 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		} catch (IOException e) {
 			throw new ServizioException("Impossibile effettuare upload lista cittadini", e, CodiceErroreEnum.CIT01);
 		}
+	}
+
+	private boolean checkPassCittadinoUpload(CittadinoUploadBean cittadinoUpload) {
+		final String codiceFiscale = cittadinoUpload.getCodiceFiscale();
+		final String numeroDocumento = cittadinoUpload.getCodiceFiscale();
+		final String tipoDocumento = cittadinoUpload.getCodiceFiscale();
+		if(codiceFiscale == null || "".equals(codiceFiscale.trim()) || 
+				numeroDocumento == null || "".equals(numeroDocumento.trim()) || 
+				tipoDocumento == null || "".equals(tipoDocumento.trim())) {
+			cittadinoUpload.setEsito("UPLOAD - KO - CODICE FISCALE, NUMERO_DOCUMENTO, TIPO_DOCUMENTO NON POSSONO ESSERE TUTTI CONTEMPORANEMENTE NON VALORIZZATI");
+			return false;
+		}
+		if(cittadinoUpload.getNome() == null || "".equals(cittadinoUpload.getNome().trim())) {
+			cittadinoUpload.setEsito("UPLOAD - KO - NOME DEVE ESSERE VALORIZZATO");
+			return false;
+		}
+		if(cittadinoUpload.getCognome() == null || "".equals(cittadinoUpload.getCognome().trim())) {
+			cittadinoUpload.setEsito("UPLOAD - KO - COGNOME DEVE ESSERE VALORIZZATO");
+			return false;
+		}
+		if(cittadinoUpload.getGenere() == null || "".equals(cittadinoUpload.getGenere().trim())) {
+			cittadinoUpload.setEsito("UPLOAD - KO - GENERE DEVE ESSERE VALORIZZATO");
+			return false;
+		}
+		if(cittadinoUpload.getAnnoNascita() == null || "".equals(cittadinoUpload.getAnnoNascita().trim())) {
+			cittadinoUpload.setEsito("UPLOAD - KO - ANNO_NASCITA DEVE ESSERE VALORIZZATO");
+			return false;
+		}
+		if(cittadinoUpload.getTitoloStudio() == null || "".equals(cittadinoUpload.getTitoloStudio().trim())) {
+			cittadinoUpload.setEsito("UPLOAD - KO - TITOLO_STUDIO DEVE ESSERE VALORIZZATO");
+			return false;
+		}
+		if(cittadinoUpload.getStatoOccupazionale() == null || "".equals(cittadinoUpload.getStatoOccupazionale().trim())) {
+			cittadinoUpload.setEsito("UPLOAD - KO - STATO_OCCUPAZIONALE DEVE ESSERE VALORIZZATO");
+			return false;
+		}
+		if(cittadinoUpload.getCittadinanza() == null || "".equals(cittadinoUpload.getCittadinanza().trim())) {
+			cittadinoUpload.setEsito("UPLOAD - KO - CITTADINANZA DEVE ESSERE VALORIZZATO");
+			return false;
+		}
+		if(cittadinoUpload.getComuneDomicilio() == null || "".equals(cittadinoUpload.getComuneDomicilio().trim())) {
+			cittadinoUpload.setEsito("UPLOAD - KO - COMUNE_DOMICILIO DEVE ESSERE VALORIZZATO");
+			return false;
+		}
+		if(cittadinoUpload.getEmail() == null || "".equals(cittadinoUpload.getEmail().trim())) {
+			cittadinoUpload.setEsito("UPLOAD - KO - EMAIL DEVE ESSERE VALORIZZATO");
+			return false;
+		}
+		if(cittadinoUpload.getPrefisso() == null || "".equals(cittadinoUpload.getPrefisso().trim())) {
+			cittadinoUpload.setEsito("UPLOAD - KO - PREFISSO DEVE ESSERE VALORIZZATO");
+			return false;
+		}
+		if(cittadinoUpload.getNumeroCellulare() == null || "".equals(cittadinoUpload.getNumeroCellulare().trim())) {
+			cittadinoUpload.setEsito("UPLOAD - KO - NUMERO_CELLULARE DEVE ESSERE VALORIZZATO");
+			return false;
+		}
+		return true;
 	}
 
 	private void bonificaRecordUpload(CittadinoUploadBean cittadinoUpload) {

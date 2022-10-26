@@ -2,6 +2,7 @@ package it.pa.repdgt.gestioneutente.restapi;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -29,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import it.pa.repdgt.gestioneutente.bean.SchedaUtenteBean;
 import it.pa.repdgt.gestioneutente.dto.UtenteDto;
+import it.pa.repdgt.gestioneutente.exception.UtenteException;
 import it.pa.repdgt.gestioneutente.mapper.UtenteMapper;
 import it.pa.repdgt.gestioneutente.request.AggiornaUtenteRequest;
 import it.pa.repdgt.gestioneutente.request.NuovoUtenteRequest;
@@ -41,6 +43,7 @@ import it.pa.repdgt.gestioneutente.service.UtenteService;
 import it.pa.repdgt.gestioneutente.util.CSVUtil;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.light.UtenteLightEntity;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 
 @RestController
@@ -176,12 +179,17 @@ public class UtenteRestApi {
 	public String uploadImmagineProfiloUtente(
 			@PathVariable(value = "idUtente") Long idUtente,
 			@RequestPart MultipartFile multipartifile) throws IOException {
+		List<String> IMAGE_TYPES_ALLOWED = Arrays.asList("jpg", "jpeg", "png");
+		if (multipartifile == null || !IMAGE_TYPES_ALLOWED.contains(multipartifile.getContentType().toLowerCase()))  {
+			throw new UtenteException("il file non è valido", CodiceErroreEnum.U22); 
+		}
 		return this.utenteService.uploadImmagineProfiloUtente(idUtente, multipartifile);
 	}
 	
 	@GetMapping(path = "/download/immagineProfilo/{nomeFile}")
 	public String downloadImmagineProfiloUtentePresigned(
 			@PathVariable(value = "nomeFile") final String nomeFile) throws IOException {
+		
 		return this.utenteService.downloadImmagineProfiloUtente(nomeFile);
 	}
 }
