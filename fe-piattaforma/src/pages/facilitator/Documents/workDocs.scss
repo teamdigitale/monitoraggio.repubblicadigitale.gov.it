@@ -1,0 +1,8 @@
+.work-docs {
+    .form-control{
+        &[type='password'],
+        &[type='text'] {
+          width: 95%;
+        }
+    }
+}

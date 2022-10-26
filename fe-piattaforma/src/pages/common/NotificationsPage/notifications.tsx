@@ -1,7 +1,7 @@
 import { Button, Container, Icon } from 'design-react-kit';
 import React, { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Paginator } from '../../../components';
+import { EmptySection, Paginator } from '../../../components';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import { selectEntityPagination } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { useAppSelector } from '../../../redux/hooks';
@@ -212,31 +212,35 @@ const Notifications: React.FC = () => {
         </>
       )}
       <Container className='pb-lg-5 pb-5'>
-        {notificationsList.map((notification, i) => (
-          <div
-            key={i}
-            role='button'
-            className={clsx(
-              notification.status ? '' : 'notifications-card-unread'
-            )}
-          >
-            <Notification
-              // TODO update key with a unique value
-              {...notification}
-              onSelect={(id: string) =>
-                setSelectedNotifications((prev) =>
-                  prev.includes(id)
-                    ? prev.filter((v) => v !== id)
-                    : [...prev, id]
-                )
-              }
-              notificationsPreview={false}
-              isChecked={selectedNotifications.includes(notification.id)}
-            />
-          </div>
-        ))}
+        {notificationsList?.length > 0 ? (
+          (notificationsList || []).map((notification, i) => (
+            <div
+              key={i}
+              role='button'
+              className={clsx(
+                notification.status ? '' : 'notifications-card-unread'
+              )}
+            >
+              <Notification
+                // TODO update key with a unique value
+                {...notification}
+                onSelect={(id: string) =>
+                  setSelectedNotifications((prev) =>
+                    prev.includes(id)
+                      ? prev.filter((v) => v !== id)
+                      : [...prev, id]
+                  )
+                }
+                notificationsPreview={false}
+                isChecked={selectedNotifications.includes(notification.id)}
+              />
+            </div>
+          ))
+        ) : (
+          <EmptySection title='Non ci sono notifiche' />
+        )}
       </Container>
-      {!isMobile && pageNumber ? (
+      {!isMobile && pageNumber && notificationsList?.length > 0 ? (
         <Paginator
           pageSize={pageSize}
           activePage={pageNumber}
