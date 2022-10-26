@@ -45,9 +45,13 @@ import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.light.UtenteLightEntity;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
+import jdk.internal.org.jline.utils.Log;
+import lombok.extern.slf4j.Slf4j;
+import sun.util.logging.resources.logging;
 
 @RestController
 @RequestMapping(path = "/utente")
+@Slf4j
 public class UtenteRestApi {
 	@Autowired
 	private UtenteService utenteService;
@@ -179,6 +183,8 @@ public class UtenteRestApi {
 	public String uploadImmagineProfiloUtente(
 			@PathVariable(value = "idUtente") Long idUtente,
 			@RequestPart MultipartFile multipartifile) throws IOException {
+		log.info("multipartfile={}", multipartifile == null? "null": "diverso da null");
+		log.info("multipartfile.getContentType={}", multipartifile == null? "null": multipartifile.getContentType());
 		List<String> IMAGE_TYPES_ALLOWED = Arrays.asList("jpg", "jpeg", "png", "image/jpg", "image/jpeg", "image/png");
 		if (multipartifile == null || !IMAGE_TYPES_ALLOWED.contains(multipartifile.getContentType().toLowerCase()))  {
 			throw new UtenteException("il file non è valido", CodiceErroreEnum.U22); 
