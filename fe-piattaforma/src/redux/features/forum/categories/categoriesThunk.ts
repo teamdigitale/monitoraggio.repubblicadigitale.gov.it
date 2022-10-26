@@ -10,15 +10,14 @@ const GetCategoriesListAction = {
 export const GetCategoriesList =
   ({
     type = 'all',
-    // TODO keep 1 char in keys because drupal API expects at least 1 char, anyway it'll filter starting from 2 chars
-    keys = 'a',
+    keys,
   }: {
     type?:
       | 'all'
       | 'board_categories'
       | 'community_categories'
       | 'document_categories';
-    keys?: string;
+    keys?: string | undefined;
   }) =>
   async (dispatch: Dispatch) => {
     try {

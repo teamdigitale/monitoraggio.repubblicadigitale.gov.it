@@ -26,6 +26,7 @@ export interface SearchInformationI {
   title: string;
   autocomplete: boolean;
   isClearable: boolean;
+  onReset?: () => void;
 }
 
 interface GenericSearchFilterTableLayoutI {
@@ -130,7 +131,10 @@ const GenericSearchFilterTableLayout: React.FC<
     citizen
       ? dispatch(cleanEntityFiltersCitizen({ filterKey, value: value }))
       : dispatch(cleanEntityFilters({ filterKey, value: value }));
-    if (filterKey === 'filtroCriterioRicerca' || filterKey === 'criterioRicerca')
+    if (
+      filterKey === 'filtroCriterioRicerca' ||
+      filterKey === 'criterioRicerca'
+    )
       dispatch(deleteFiltroCriterioRicerca());
     if (resetFilterDropdownSelected) resetFilterDropdownSelected(filterKey);
   };
@@ -237,6 +241,7 @@ const GenericSearchFilterTableLayout: React.FC<
                 id='search-filter-table-layout'
                 tooltip={tooltip}
                 tooltipText={tooltiptext}
+                onReset={searchInformation.onReset}
               />
             </div>
           </div>

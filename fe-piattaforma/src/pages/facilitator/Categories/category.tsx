@@ -27,8 +27,12 @@ const Category = () => {
   const dispatch = useDispatch();
   const categoriesList = useAppSelector(selectCategoriesList);
 
+  const handleGetCategoriesList = (keys?: string) => {
+    dispatch(GetCategoriesList({ type: 'all', keys }));
+  };
+
   useEffect(() => {
-    dispatch(GetCategoriesList({ type: 'all' }));
+    handleGetCategoriesList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -107,8 +111,7 @@ const Category = () => {
   const [tableValues, setTableValues] = useState(updateTableValues());
 
   const handleOnSearch = (searchValue: string) => {
-    if (searchValue?.length >= 2)
-      dispatch(GetCategoriesList({ type: 'all', keys: searchValue }));
+    if (searchValue?.length >= 2) handleGetCategoriesList(searchValue);
   };
 
   const dropdowns: DropdownFilterI[] = [
@@ -130,6 +133,7 @@ const Category = () => {
     placeholder: 'Inserisci il nome della categoria che stai cercando',
     isClearable: true,
     title: 'Cerca categoria',
+    onReset: handleGetCategoriesList,
   };
 
   const categoryCta = {
