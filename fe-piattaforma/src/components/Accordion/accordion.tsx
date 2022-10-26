@@ -26,6 +26,7 @@ interface AccordionI {
   handleOnToggle?: (collapse: boolean) => void;
   lastBottom?: boolean;
   onClickCta?: () => void;
+  iconLeft?: boolean;
   detailAccordion?: boolean;
   roleList?: boolean;
 }
@@ -44,6 +45,7 @@ const Accordion: React.FC<AccordionI> = (props) => {
     handleOnCheck,
     handleOnToggle,
     onClickCta,
+    iconLeft = true,
     detailAccordion = false,
     roleList = false,
   } = props;
@@ -55,7 +57,7 @@ const Accordion: React.FC<AccordionI> = (props) => {
 
   return (
     <AccordionKit
-      iconLeft
+      iconLeft={iconLeft}
       className={clsx(
         className,
         'position-relative',

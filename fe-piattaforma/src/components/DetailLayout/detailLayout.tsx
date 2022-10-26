@@ -189,8 +189,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                 currentTab === 'questionari' &&
                 itemsList?.items?.length && (
                   <h3 className='h5 text-muted mx-3 my-4 pt-2'>
-                    {' '}
-                    Questionari disponibili{' '}
+                    Questionari disponibili
                   </h3>
                 )}
             </div>

@@ -1,14 +1,14 @@
-import React, { memo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Button, Container, Icon } from 'design-react-kit';
 import clsx from 'clsx';
-import '../SectionInfo/sectionInfo.scss';
+import { Button, Container, Icon } from 'design-react-kit';
+import React, { memo, useState } from 'react';
 import './pageTitle.scss';
 import SectionInfo from '../../components/SectionInfo/sectionInfo';
-
+import '../SectionInfo/sectionInfo.scss';
+import { useLocation } from 'react-router-dom';
 import { surveyBody } from '../SectionInfo/bodies';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
+import { selectUserNotification } from '../../redux/features/user/userSlice';
 
 interface BreadcrumbI {
   label?: string;
@@ -16,11 +16,12 @@ interface BreadcrumbI {
 }
 export interface PageTitleI {
   breadcrumb?: BreadcrumbI[];
-  title?: string;
+  title?: string | undefined;
   subtitle?: string;
   hasBackground?: boolean;
   sectionInfo?: boolean;
   alignTitle?: boolean;
+  badge?: boolean;
   cta?:
     | {
         action: () => void;
@@ -40,14 +41,20 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
     subtitle,
     sectionInfo,
     alignTitle,
+    badge,
     innerHTML,
     HTMLsubtitle = '',
     defaultOpen = false,
   } = props;
 
-  const [sectionInfoOpened, setSectionInfoOpened] = useState<boolean>(defaultOpen);
-  const location = useLocation();
+  const [sectionInfoOpened, setSectionInfoOpened] =
+    useState<boolean>(defaultOpen);
+
   const device = useAppSelector(selectDevice);
+  // TODO integrate notification count
+  const notificationsList = useAppSelector(selectUserNotification);
+  const location = useLocation();
+  //const notificationsList = useAppSelector(selectNotificationList);
 
   const openSectionInfo = () => {
     setSectionInfoOpened((current) => !current);
@@ -73,18 +80,26 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
 
   return (
     <div className={clsx('page-title', hasBackground && 'lightgrey-bg-a1')}>
-      <Container className={clsx('mt-3 pl-0')}>
+      <Container className={clsx('mt-3 pl-0', badge && 'd-flex')}>
         <div
           className={clsx(
             'd-flex',
             'flex-row',
             'align-items-center',
             alignTitle ? 'justify-content-center' : null,
-            device.mediaIsPhone && 'container'
+            device.mediaIsPhone && !badge && 'container'
           )}
         >
           {title && (
-            <h1 className={clsx('h2', 'py-2', 'mb-2', 'primary-color-a9')}>
+            <h1
+              className={clsx(
+                'h2',
+                'py-2',
+                'mb-2',
+                'primary-color-a9',
+                device.mediaIsPhone && 'pl-1'
+              )}
+            >
               {title}
             </h1>
           )}
@@ -148,6 +163,11 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
               setSectionInfoOpened(value);
             }}
           />
+        ) : null}
+        {badge ? (
+          <span className='badge-notifications'>
+            {notificationsList.length}
+          </span>
         ) : null}
       </Container>
     </div>

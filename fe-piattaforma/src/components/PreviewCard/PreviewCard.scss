@@ -1,0 +1,22 @@
+.preview-card-container {
+  box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+  margin: auto;
+
+  &__title {
+    font-size: 24px;
+    @media screen and (max-width: 576px) {
+      font-size: 18px;
+    }
+  }
+  &__description {
+    font-weight: 400;
+    line-height: 35px;
+    @media screen and (max-width: 576px) {
+      line-height: 27px;
+      font-size: 14px;
+    }
+  }
+}
+.button-preview {
+  min-width: 162px !important;
+}

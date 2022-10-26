@@ -115,7 +115,8 @@ export const GetFilterValuesSurvey =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
-      const { codiceFiscale, codiceRuolo, idProgramma, idEnte } = getUserHeaders();
+      const { codiceFiscale, codiceRuolo, idProgramma, idEnte } =
+        getUserHeaders();
       const body = {
         cfUtente: codiceFiscale,
         codiceRuolo,
@@ -352,7 +353,7 @@ const getSchemaSection = (
 
   (section.questions || []).map((question, index) => {
     if (question?.id) {
-      if (Number(question?.id) > 0 && Number(question?.id) < 35) {
+      if (Number(question?.id) && Number(question?.id) < 35) {
         // default question
         const id = question.id;
         schemaSection.properties[id] = {
@@ -381,7 +382,7 @@ const getSchemaSection = (
 export interface SurveyResponseBodyI {
   'survey-id'?: string;
   'survey-status'?: string;
-  'stato'?: string;
+  stato?: string;
   'default-RFD'?: boolean;
   'default-SCD'?: boolean;
   'last-update'?: string;
@@ -486,7 +487,7 @@ export const PostFormCompletedByCitizen =
         : 'EMAIL';
       /*(payload || []).map((section: any) => {
         Object.keys(section).map((key: string) => {
-          if (typeof(section[key]) === 'string' && section[key]?.includes('§')) {
+          if (typeof section[key] === 'string' && section[key]?.includes('§')) {
             const arrayValues: string[] = section[key]?.split('§');
             section[key] = arrayValues;
           }

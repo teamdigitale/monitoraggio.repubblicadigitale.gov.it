@@ -14,6 +14,7 @@ export const RegexpType = {
   FISCAL_CODE: 'fiscalCode',
   POSTAL_CODE: 'postalCode',
   PASSWORD: 'password',
+  PASSWORD_TOOL: 'password_tool',
   MOBILE_PHONE: 'mobile_phone',
   MOBILE_PHONE_PREFIX: 'mobile_phone_prefix',
   TELEPHONE: 'telephone',
@@ -38,7 +39,8 @@ const RegexpRule = {
   [RegexpType.FISCAL_CODE]:
     /^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$/i,
   [RegexpType.POSTAL_CODE]: /^[0-9]{5}$/gm,
-  [RegexpType.PASSWORD]: /^(?=.*[a-zA-Z0-9])(?=.{8,})/,
+  [RegexpType.PASSWORD]: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,64}$/,
+  [RegexpType.PASSWORD_TOOL]: /^(?=.*?[A-Z])(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,64}|(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,64}|(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?!.*\s).{8,64}|(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,64}$/gm,
   [RegexpType.MOBILE_PHONE]:
     /^(\((00|\+)39\)|(00|\+)39)?(38[890]|34[7-90]|36[680]|33[3-90]|32[89])\d{7}$/,
   MOBILE_PHONE_PREFIX:

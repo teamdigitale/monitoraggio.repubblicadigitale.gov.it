@@ -5,10 +5,12 @@ import { useAppSelector } from '../../../redux/hooks';
 import {
   selectDevice,
   selectLoader,
+  selectPublishedContent,
 } from '../../../redux/features/app/appSlice';
 import LocationInterceptor from '../../locationInterceptor';
 import { Outlet, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
+import UserPublishedContents from '../../UserPublishedContents/userPublishedContents';
 
 /**
  * The component has been modified to pass routes guard.
@@ -34,13 +36,23 @@ const FullLayout: React.FC<LayoutProp> = (props) => {
   const loader = useAppSelector(selectLoader);
   const device = useAppSelector(selectDevice);
   const location = useLocation();
+  const publishedContent = useAppSelector(selectPublishedContent);
 
   return (
     <>
       <LocationInterceptor />
       <Header isHeaderFull={isHeaderFull} />
       {withBreadcrumb && location.pathname !== '/' && !device.mediaIsPhone && (
-        <Breadcrumb />
+        <div className={clsx(publishedContent && 'lightgrey-bg-b4')}>
+          <div
+            className={clsx(
+              publishedContent && 'd-flex justify-content-around container'
+            )}
+          >
+            <Breadcrumb />
+            {publishedContent && <UserPublishedContents />}
+          </div>
+        </div>
       )}
       {loader.isLoading && <Loader />}
       <main

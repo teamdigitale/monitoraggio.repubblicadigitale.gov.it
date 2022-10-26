@@ -10,6 +10,7 @@ import ModalsPortal from './components/Modals/modalsPortal';
 import SkipContent from './components/SkipContent/skipContent';
 import MediaQueriesProvider from './components/MediaQueriesProvider/mediaQueriesProvider';
 import { i18nInit } from './utils/i18nHelper';
+import UsersAnagraphic from './components/UsersAnagraphic/usersAnagraphic';
 
 i18nInit();
 
@@ -21,6 +22,7 @@ const MyApp: React.FC = () => {
       <MediaQueriesProvider />
       <ToastNotifications />
       <ModalsPortal.Target />
+      <UsersAnagraphic />
       <Router>
         <AppRoutes />
       </Router>

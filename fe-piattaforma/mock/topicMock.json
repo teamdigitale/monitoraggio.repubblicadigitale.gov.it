@@ -1,0 +1,23 @@
+{
+    "code": 200,
+    "result": true,
+    "data": {
+        "items": [
+            {
+                "id": 5,
+                "author": 3,
+                "title": "Nuovi banchi a scuola",
+                "category_label": "Scuola",
+                "category_id": 6,
+                "date": "2022-10-03",
+                "description": "SPID può essere utilizzato per consentire l’identificazione e l’accesso ai servizi da parte di minori.\n Ad oggi SPID può essere richiesto da coloro che abbiano compiuto il 18° anno di età. Sono in corso di emanazione linee guida.\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh nibh, tincidunt non ultricies viverra, malesuada et massa. Mauris quis tortor magna. In suscipit nulla vitae ex efficitur, a cursus mi aliquam.\n",
+                "tags": "classe;alunni;insegnanti",
+                "attachment": "",
+                "likes": 0,
+                "views": 0,
+                "comment_count": 0,
+                "user_like": 0
+            }
+        ]
+    }
+}

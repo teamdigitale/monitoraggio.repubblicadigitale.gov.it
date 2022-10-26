@@ -23,7 +23,7 @@ const blackList = [
   'relatedTo',
   'touched',
   'withLabel',
-  'keyBE'
+  'keyBE',
 ];
 
 /**
@@ -142,7 +142,7 @@ const Input: React.FC<InputI> = (props) => {
   InputProps.name = name ?? InputProps.id;
   InputProps.label = withLabel
     ? label && required && !disabled
-      ? label + ' *'
+      ? `${label} *`
       : label
     : '';
 

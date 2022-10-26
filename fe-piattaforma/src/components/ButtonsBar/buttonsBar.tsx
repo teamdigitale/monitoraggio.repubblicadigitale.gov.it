@@ -17,6 +17,7 @@ interface StickyButtonsI {
   citizenDeleteChange?: boolean;
   isUserProfile?: boolean;
   notActiveSurvey?: boolean;
+  isDocumentsCta?: boolean;
 }
 
 const ButtonsBar: React.FC<StickyButtonsI> = ({
@@ -25,6 +26,7 @@ const ButtonsBar: React.FC<StickyButtonsI> = ({
   citizenDeleteChange = false,
   isUserProfile = false,
   notActiveSurvey = false,
+  isDocumentsCta = false,
 }) => {
   const device = useAppSelector(selectDevice);
 
@@ -32,7 +34,8 @@ const ButtonsBar: React.FC<StickyButtonsI> = ({
     <div
       className={clsx(
         'buttons-bar',
-        citizenList ? 'justify-content-start' : 'justify-content-end',
+        isDocumentsCta && 'flex-column',
+        citizenList ? 'justify-content-start' : 'align-items-end',
         citizenDeleteChange ? 'flex-nowrap' : null,
         isUserProfile && 'mr-2',
         'pt-2',
@@ -51,7 +54,14 @@ const ButtonsBar: React.FC<StickyButtonsI> = ({
           <Button
             key={index}
             {...buttonProps}
-            className={clsx('text-nowrap', 'px-2', button.buttonClass)}
+            className={clsx(
+              'text-nowrap',
+              'd-flex',
+              'px-2',
+              'align-items-center',
+              'justify-content-center',
+              button.buttonClass
+            )}
             size='xs'
           >
             {button.iconForButton && (
