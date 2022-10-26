@@ -63,9 +63,13 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
 
       if (input.files?.length) {
         const selectedImage = input.files[0];
-        await dispatch(UploadUserPic(selectedImage));
-        // TODO reload is temporary
-        window.location.reload();
+        const res = await dispatch(UploadUserPic(selectedImage));
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (res) {
+          // TODO reload is temporary
+          window.location.reload();
+        }
         /*
         const reader = new FileReader();
         //reader.readAsBinaryString(selectedImage);

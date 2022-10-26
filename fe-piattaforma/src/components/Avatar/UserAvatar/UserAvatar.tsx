@@ -46,13 +46,13 @@ const UserAvatar: React.FC<UserAvatarI> = (props) => {
         width:
           isUserProfile || size === AvatarSizes.Big
             ? '67px'
-            : AvatarSizes.Medium
+            : size === AvatarSizes.Medium
             ? '58px'
             : '39px',
         height:
           isUserProfile || size === AvatarSizes.Big
             ? '67px'
-            : AvatarSizes.Medium
+            : size === AvatarSizes.Medium
             ? '58px'
             : '39px',
       }}
@@ -71,11 +71,15 @@ const UserAvatar: React.FC<UserAvatarI> = (props) => {
           size={
             isUserProfile || size === AvatarSizes.Big
               ? AvatarSizes.Big
+              : size === AvatarSizes.Medium
+              ? AvatarSizes.Medium
               : AvatarSizes.Small
           }
           font={
             isUserProfile || size === AvatarSizes.Big
               ? AvatarTextSizes.Big
+              : size === AvatarSizes.Medium
+              ? AvatarTextSizes.Medium
               : AvatarTextSizes.Small
           }
         />

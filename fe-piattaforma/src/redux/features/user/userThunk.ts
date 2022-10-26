@@ -193,6 +193,7 @@ export const UploadUserPic =
       if (res?.data) {
         return true;
       }
+      return false;
     } catch (error) {
       console.log('UploadUserPic error', error);
       return false;

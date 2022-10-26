@@ -10,6 +10,7 @@ import Slider, {
   formatSlides,
 } from '../../../../../components/General/Slider/Slider';
 import { getMediaQueryDevice } from '../../../../../utils/common';
+import { EmptySection } from '../../../../../components';
 
 const newsPagination = {
   desktop: 24,
@@ -73,11 +74,7 @@ const BachecaDigitaleWidget = () => {
             ipsum velit, tempor at luctus quis, congue eget justo.
           </p>
           {!device.mediaIsPhone && (
-            <a
-              className='btn btn-primary'
-              role='button'
-              href='/bacheca'
-            >
+            <a className='btn btn-primary' role='button' href='/bacheca'>
               Leggi tutte le news
             </a>
           )}
@@ -87,26 +84,30 @@ const BachecaDigitaleWidget = () => {
         <span className='sr-only'>
           {'La bacheca presenta ' + (newsList?.length || 0) + ' news'}
         </span>
-        <Slider isItemsHome={!device.mediaIsPhone}>
-          {formatSlides(
-            newsList.slice(0, newsPagination[getMediaQueryDevice(device)]),
-            carouselPagination[getMediaQueryDevice(device)]
-          ).map((el, i) => (
-            <div
-              key={`slide-${i}`}
-              className='d-flex flex-wrap align-cards w-100'
-            >
-              {el.map((e: any, index: any) => (
-                <div
-                  key={`card-${i}-${index}`}
-                  className='flex-grow-0 mt-2 mb-3 mr-2'
-                >
-                  <CardShowcase {...e}></CardShowcase>
-                </div>
-              ))}
-            </div>
-          ))}
-        </Slider>
+        {newsList?.length ? (
+          <Slider isItemsHome={!device.mediaIsPhone}>
+            {formatSlides(
+              newsList.slice(0, newsPagination[getMediaQueryDevice(device)]),
+              carouselPagination[getMediaQueryDevice(device)]
+            ).map((el, i) => (
+              <div
+                key={`slide-${i}`}
+                className='d-flex flex-wrap align-cards w-100'
+              >
+                {el.map((e: any, index: any) => (
+                  <div
+                    key={`card-${i}-${index}`}
+                    className='flex-grow-0 mt-2 mb-3 mr-2'
+                  >
+                    <CardShowcase {...e}></CardShowcase>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </Slider>
+        ) : (
+          <EmptySection title='Non ci sono news' />
+        )}
       </div>
       {device.mediaIsPhone && (
         <div className='d-flex justify-content-center mt-5'>

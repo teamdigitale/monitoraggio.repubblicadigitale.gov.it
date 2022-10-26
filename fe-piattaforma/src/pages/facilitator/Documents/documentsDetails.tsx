@@ -47,7 +47,7 @@ const DocumentsDetails = () => {
       dispatch(GetCommentsList(id, userId));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId, id, usefullStatus]);
+  }, [userId, id]);
 
   useEffect(() => {
     if (
@@ -55,6 +55,7 @@ const DocumentsDetails = () => {
       docDetails?.usefull_status !== usefullStatus
     )
       setUsefullStatus(docDetails?.usefull_status);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [docDetails?.usefull_status]);
 
   useEffect(() => {
@@ -80,18 +81,22 @@ const DocumentsDetails = () => {
   const handleRate = async (rate: 1 | 2) => {
     if (id && rate) {
       setUsefullStatus(rate);
-      await dispatch(DocumentRate(id, rate));
-      dispatch(
-        ActionTracker({
-          target: 'tnd',
-          action_type: 'RATING',
-          event_type: 'DOCUMENTI',
-          event_value: rate === 1 ? 'Y' : 'N',
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          category: docDetails?.category_label || docDetails?.category,
-        })
-      );
+      const res = await dispatch(DocumentRate(id, rate));
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (res) {
+        dispatch(
+          ActionTracker({
+            target: 'tnd',
+            action_type: 'RATING',
+            event_type: 'DOCUMENTI',
+            event_value: rate === 1 ? 'Y' : 'N',
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            category: docDetails?.category_label || docDetails?.category,
+          })
+        );
+      }
     }
   };
 
@@ -125,7 +130,7 @@ const DocumentsDetails = () => {
                 text: 'Confermi di voler eliminare questo contenuto?',
                 id: id,
                 entity: 'document',
-                author: docDetails.author
+                author: docDetails.author,
               },
             })
           )
@@ -179,8 +184,8 @@ const DocumentsDetails = () => {
                     name='rate'
                     type='radio'
                     id='rate-si'
-                    checked={usefullStatus === 1}
-                    onInputChange={() => handleRate(1)}
+                    checked={Number(usefullStatus) === 1}
+                    onClick={() => handleRate(1)}
                     aria-labelledby='rate-siDescription'
                     withLabel={false}
                   />
@@ -193,8 +198,8 @@ const DocumentsDetails = () => {
                     name='rate'
                     type='radio'
                     id='rate-no'
-                    checked={usefullStatus === 2}
-                    onInputChange={() => handleRate(2)}
+                    checked={Number(usefullStatus) === 2}
+                    onClick={() => handleRate(2)}
                     aria-labelledby='rate-noDescription'
                     withLabel={false}
                   />
