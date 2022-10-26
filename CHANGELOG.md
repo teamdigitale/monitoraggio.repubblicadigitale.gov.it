@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.238](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.237...1.0.0-develop.238) (2022-10-26)
+
+
+### Bug Fixes
+
+* **be:** email creazione utente workdocs ([27d3e2f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/27d3e2fff101909d6e28a38cbc98e52ad8071126))
+
 ## [1.0.0-develop.237](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.236...1.0.0-develop.237) (2022-10-26)
 
 
