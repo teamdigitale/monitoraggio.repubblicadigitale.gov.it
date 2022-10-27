@@ -33,7 +33,15 @@
   &__description {
     font-weight: 400;
     color: #455B71;
-    height: 40px; //ingombro minimo 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    align-self: flex-start;
+    @media screen and (max-width: 674px) {
+      -webkit-line-clamp: 12;
+    }
   }
 }
 .btn-download-file,
