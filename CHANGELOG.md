@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.97](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.96...1.0.0-test.97) (2022-10-27)
+
+
+### Bug Fixes
+
+* **be:** aggiunto header role-groups drupal ([a754646](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a754646a1ef20cf25108281705cb283156a776da))
+
 ## [1.0.0-test.96](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.95...1.0.0-test.96) (2022-10-27)
 
 
