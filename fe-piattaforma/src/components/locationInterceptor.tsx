@@ -11,7 +11,7 @@ import { resetAreaCittadiniState } from '../redux/features/citizensArea/citizens
 import { resetForumRecords } from '../redux/features/forum/forumSlice';
 import { resetModalState } from '../redux/features/modal/modalSlice';
 import { useAppDispatch } from '../redux/hooks';
-import { scrollTo } from '../utils/common';
+import { getUnreadNotificationsCount, scrollTo } from '../utils/common';
 import { validateSession } from '../utils/sessionHelper';
 
 const LocationInterceptor = () => {
@@ -31,6 +31,7 @@ const LocationInterceptor = () => {
     dispatch(resetUserDetails());
     scrollTo(0);
     validateSession();
+    getUnreadNotificationsCount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
