@@ -1,15 +1,9 @@
 .card-slider-container {
-  //width: 380px;
   height: 180px;
   width: 100%;
   background-color: #ffffff;
   border: 1px solid #eceff1;
   position: relative;
-
-  @media screen and (max-width: 576px) {
-    width: unset;
-    min-width: 350px;
-  }
 
   &__pre-title {
     color: #455b71;

@@ -246,7 +246,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
           }))}
           isDisabled={formDisabled}
           placeholder='Seleziona'
-          maxMenuHeight={200}
+          maxMenuHeight={150}
         />
         <Select
           {...form?.intervention}
@@ -262,7 +262,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
             formDisabled
           }
           placeholder='Seleziona'
-          maxMenuHeight={200}
+          maxMenuHeight={150}
         />
       </Form.Row>
       <Form.Row className={bootClass}>
@@ -276,7 +276,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
           }))}
           isDisabled={formDisabled}
           placeholder='Seleziona'
-          maxMenuHeight={200}
+          maxMenuHeight={100}
         />
       </Form.Row>
       <Form.Row className={bootClass}>

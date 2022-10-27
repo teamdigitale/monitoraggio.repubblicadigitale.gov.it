@@ -98,7 +98,7 @@ const CardDocument: React.FC<CardDocumentI> = (props) => {
       {!isHome && (
         <div className='d-flex flex-column'>
           <PublishingAuthority authority={entity} />
-          <div className='d-flex justify-content-end align-items-center'>
+          <div className='d-flex justify-content-end align-items-center mt-1'>
             <Icon icon='it-download' size='sm' color='primary' />
             <span className='document-card-container__span-icons ml-1 mr-2'>
               {downloads}

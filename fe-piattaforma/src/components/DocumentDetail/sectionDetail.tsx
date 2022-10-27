@@ -257,7 +257,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
         className={clsx(
           device.mediaIsPhone ? 'd-flex flex-column' : 'd-flex',
           isDocument && 'align-items-center',
-          'mb-3'
+          'mb-4'
         )}
       >
         {section === 'documents' || isDocument ? (
