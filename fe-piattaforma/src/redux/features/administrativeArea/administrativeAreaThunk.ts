@@ -128,6 +128,7 @@ export const GetEntityFilterValues =
         cfUtente: codiceFiscale,
         codiceRuolo,
       };
+
       const entityFilterEndpoint = `/${payload.entity}/${payload.dropdownType}${
         payload.entity === 'progetto' && payload.dropdownType === 'policies'
           ? '/programmi'
@@ -227,7 +228,8 @@ export const DownloadEntityValues =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
-      const { codiceFiscale, codiceRuolo, idProgramma, idEnte } = getUserHeaders();
+      const { codiceFiscale, codiceRuolo, idProgramma, idEnte } =
+        getUserHeaders();
       const body = {
         filtroRequest: {
           ...filters,

@@ -4,6 +4,7 @@ import {
   BreadcrumbItem,
   Container,
 } from 'design-react-kit';
+import './breadCrumb.scss';
 import clsx from 'clsx';
 import { NavLink, useLocation } from 'react-router-dom';
 import isEqual from 'lodash.isequal';
@@ -75,7 +76,7 @@ const Breadcrumb = () => {
 
   useEffect(() => {
     if (
-      breadcrumbList?.length > 0 &&
+      breadcrumbList?.length &&
       breadcrumbList[breadcrumbList?.length -1]?.url === urlCurrentLocation
     ) {
       setNavigationList(breadcrumbList);
@@ -128,8 +129,8 @@ const Breadcrumb = () => {
   }, [currentLocation, currentLocation?.length, idsBreadcrumb, breadcrumbList]);
 
   return isBreadcrumbPresent ? (
-    <Container className='mt-3 pl-0'>
-      <BreadcrumbKit className='mt-4 pt-4'>
+    <Container className='mt-2 pl-0'>
+      <BreadcrumbKit className='pt-4'>
         {(navigationList || []).map((item, index) => (
           <BreadcrumbItem key={index} className='mb-2'>
             {item.link && item.url ? (

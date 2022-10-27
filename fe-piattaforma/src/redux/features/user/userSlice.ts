@@ -16,6 +16,7 @@ export interface UserStateI {
         nome?: string;
         surname?: string;
         cognome?: string;
+        email?: string;
         role?: string;
         codiceFiscale: string;
         profiliUtente: UserProfileI[];
@@ -23,9 +24,12 @@ export interface UserStateI {
         mostraBio: boolean;
         mostraTipoContratto: boolean;
         immagineProfilo?: string;
+        utenteRegistratoInWorkdocs: boolean;
       }
     | Record<string, never>;
-  notification?: [];
+  notification: any[];
+  notificationToRead: number;
+  chatToRead: number;
   permissions: RolePermissionI[];
   idProgramma: string | null;
   idProgetto: string[] | null;
@@ -59,10 +63,12 @@ const initialStateLogged: UserStateI = {
     cognome: 'Rossi',
     role: 'DTD',
     codiceFiscale: 'UTENTE1',
+    email: 'mario.rossi@mail.com',
     integrazione: true,
     profiliUtente: [],
     mostraBio: false,
     mostraTipoContratto: false,
+    utenteRegistratoInWorkdocs: false,
   },
   permissions: [],
   idProgramma: '0',
@@ -73,6 +79,9 @@ const initialStateLogged: UserStateI = {
     descrizioneRuolo: 'Referente',
   },
   ruoli: [],
+  notification: [],
+  notificationToRead: 0,
+  chatToRead: 0,
 };
 const initialStateNotLogged: UserStateI = {
   isLogged: false,
@@ -83,6 +92,9 @@ const initialStateNotLogged: UserStateI = {
   idEnte: null,
   profilo: null,
   ruoli: [],
+  notification: [],
+  notificationToRead: 0,
+  chatToRead: 0,
 };
 
 const initialState: UserStateI = initialStateNotLogged;
@@ -114,6 +126,21 @@ export const userSlice = createSlice({
         setSessionValues('profile', payload);
       }
     },
+    setUserNotifications: (state, action: PayloadAction<any>) => {
+      state.notification = [...action.payload];
+    },
+    setUserNotificationsToRead: (state, action: PayloadAction<any>) => {
+      state.notificationToRead = action.payload;
+      setSessionValues('notification', {
+        notificationToRead: action.payload || 0,
+      });
+    },
+    setUserChatToRead: (state, action: PayloadAction<any>) => {
+      state.chatToRead = action.payload;
+      setSessionValues('chat', {
+        chatToRead: action.payload || 0,
+      });
+    },
     login: (state) => {
       setSessionValues('user', state.user);
       setSessionValues('profile', state.profilo);
@@ -130,8 +157,15 @@ export const userSlice = createSlice({
   },
 });
 
-export const { login, logout, setUserContext, setUserProfile } =
-  userSlice.actions;
+export const {
+  login,
+  logout,
+  setUserContext,
+  setUserProfile,
+  setUserNotifications,
+  setUserNotificationsToRead,
+  setUserChatToRead,
+} = userSlice.actions;
 
 export const selectLogged = (state: RootState) => state.user.isLogged;
 export const selectUser = (state: RootState) => state.user.user;
@@ -139,5 +173,8 @@ export const selectProfile = (state: RootState) => state.user.profilo;
 export const selectPermissions = (state: RootState) => state.user.permissions;
 export const selectUserNotification = (state: RootState) =>
   state.user.notification;
+export const selectUserNotificationToRead = (state: RootState) =>
+  state.user.notificationToRead;
+export const selectUserChatToRead = (state: RootState) => state.user.chatToRead;
 
 export default userSlice.reducer;

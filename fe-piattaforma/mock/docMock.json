@@ -1,0 +1,23 @@
+{
+    "code": 200,
+    "result": true,
+    "data": {
+        "items": [
+            {
+                "id": 6,
+                "author": 6,
+                "title": "PDF di esercizi di matematica",
+                "category_label": "PDF",
+                "category_id": 9,
+                "date": "2022-10-03",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh nibh, tincidunt non ultricies viverra, malesuada et massa. Mauris quis tortor magna. In suscipit nulla vitae ex efficitur, a cursus mi aliquam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh nibh, tincidunt non ultricies viverra, malesuada et massa.\n",
+                "program": 1,
+                "intervention": "intervention2",
+                "attachment": "/system/files/2022-10/1664803868661436_PDF_math.pdf",
+                "external_link": "https://mio-sito.it/PDF_math.pdf",
+                "downloads": 0,
+                "comment_count": 0
+            }
+        ]
+    }
+}

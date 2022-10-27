@@ -62,7 +62,8 @@ export const GetAllEnti =
       const endpoint = `ente/all`;
       let res;
       if (!isEmpty(filters)) {
-        const { codiceFiscale, codiceRuolo, idProgramma, idEnte } = getUserHeaders();
+        const { codiceFiscale, codiceRuolo, idProgramma, idEnte } =
+          getUserHeaders();
         const body = {
           filtroRequest: { ...filters },
           idProgramma,
@@ -105,7 +106,8 @@ export const GetFilterValuesEnti =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
-      const { codiceFiscale, codiceRuolo, idProgramma, idEnte } = getUserHeaders();
+      const { codiceFiscale, codiceRuolo, idProgramma, idEnte } =
+        getUserHeaders();
       const body = {
         cfUtente: codiceFiscale,
         codiceRuolo,

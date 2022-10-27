@@ -8,6 +8,7 @@ import {
 } from '../../../../../components/DropdownFilter/dropdownFilter';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
+  resetSezioniQuestionarioTemplateIstanze,
   selectEntityFilters,
   selectEntityFiltersOptions,
   selectServices,
@@ -97,6 +98,7 @@ const CitizensList: React.FC = () => {
 
   useEffect(() => {
     dispatch(resetCompilingSurveyForm());
+    dispatch(resetSezioniQuestionarioTemplateIstanze());
   }, []);
   const [alreadySearched, setAlreadySearched] = useState(false);
 
@@ -141,7 +143,7 @@ const CitizensList: React.FC = () => {
   ) => {
     const searchDropdownValues = [...searchDropdown];
     if (
-      searchDropdownValues?.length > 0 &&
+      searchDropdownValues?.length &&
       searchDropdownValues?.findIndex((f) => f.filterId === filterId) !== -1
     ) {
       searchDropdownValues[
@@ -346,6 +348,7 @@ const CitizensList: React.FC = () => {
         onEsito={handleCitizenUploadEsito}
         template={CitizenTemplate}
         templateName='cittadini-template.xlsx'
+        citizens
       >
         <Table
           {...citizenListTable}

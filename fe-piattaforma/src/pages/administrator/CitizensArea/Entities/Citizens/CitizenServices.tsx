@@ -12,6 +12,7 @@ import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import { ServizioCittadinoI } from '../../../../../redux/features/citizensArea/citizensAreaSlice';
 import { useNavigate } from 'react-router-dom';
 import { Button, Icon, UncontrolledTooltip } from 'design-react-kit';
+import PasswordVisible from '/public/assets/img/it-password-visible.png';
 
 const TableHeadingEntities: TableHeadingI[] = [
   {
@@ -60,7 +61,8 @@ const CitizenServices: React.FC<{
                   id={`button-view-${td.idQuestionarioCompilato}`}
                 >
                   <Icon
-                    icon='it-zoom-in'
+                    icon={PasswordVisible}
+                    className='icons__icon-visible-password'
                     color='primary'
                     size='sm'
                     aria-label='Vedi questionario compilato'

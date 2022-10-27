@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Select, SelectMultiple } from '../../../components';
+import { Form, Input, Select } from '../../../components';
 import CheckboxGroup from '../../../components/Form/checkboxGroup';
-import { OptionTypeMulti } from '../../../components/Form/selectMultiple';
+// import { OptionTypeMulti } from '../../../components/Form/selectMultiple';
+import SelectMultipleCheckbox from '../../../components/Form/selectMultipleCheckbox';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
@@ -69,8 +70,8 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
     if (
       !creation &&
       form &&
-      Object.keys(form)?.length > 0 &&
-      Object.keys(sezioneQ3Compilato)?.length > 0 &&
+      Object.keys(form)?.length &&
+      Object.keys(sezioneQ3Compilato)?.length &&
       Array.isArray(sezioneQ3Compilato?.properties)
     ) {
       const newFormData: { [key: string]: string | string[] } = {};
@@ -114,6 +115,19 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
   ) => {
     onInputChange?.(value, field);
     setIsFormValid?.(FormHelper.isValidForm(form));
+  };
+
+  const onMultipleCheckboxChange = (value: {
+    [key: string]: formFieldI['value'];
+  }) => {
+    const tmpForm: FormI = {};
+    Object.keys(value).map((key: string) => {
+      if (form?.[key] && value?.[key])
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        tmpForm[key] = { ...form[key], value: value[key] };
+    });
+    updateForm({ ...form, ...tmpForm });
   };
 
   const getAnswerType = (field: formFieldI) => {
@@ -188,7 +202,7 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
             form &&
             field?.relatedTo &&
             form[relatedTo]?.enumLevel2 &&
-            multiSelectOptions?.length > 0
+            multiSelectOptions?.length
           ) {
             (form[relatedTo]?.enumLevel2 || []).forEach(
               ({ label, value, upperLevel }) => {
@@ -205,26 +219,8 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
           }
           // mappa valori
           const valuesSecondLevel = form[relatedTo]?.value;
-          const values: OptionTypeMulti[] = [];
-          Array.isArray(valuesSecondLevel) &&
-            (valuesSecondLevel || []).map((val: string) => {
-              let upperLevel = '';
-              Object.keys(multiSelectOptions).forEach((key: any) => {
-                if (
-                  multiSelectOptions[key].options.filter((x) => x.label === val)
-                    ?.length > 0
-                ) {
-                  upperLevel = multiSelectOptions[key].label;
-                }
-              });
-              values.push({
-                label: val,
-                value: val,
-                upperLevel: upperLevel,
-              });
-            });
           return (
-            <SelectMultiple
+            <SelectMultipleCheckbox
               field={field.field}
               secondLevelField={relatedTo}
               id={`multiple-select-${field.id}`}
@@ -233,11 +229,14 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
               aria-label={field?.label}
               options={multiSelectOptions}
               required={field.required || false}
-              onInputChange={onInputDataChange}
-              onSecondLevelInputChange={onInputDataChange}
+              onFieldsChange={onMultipleCheckboxChange}
               placeholder='Seleziona'
               isDisabled={formDisabled}
-              value={values}
+              valueSecondLevelString={
+                Array.isArray(valuesSecondLevel)
+                  ? valuesSecondLevel?.join('§')
+                  : undefined
+              }
               classNamePrefix='form-service-dynamic'
             />
           );
@@ -277,3 +276,46 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
 const form = newForm([]);
 
 export default withFormHandler({ form }, FormServiceDynamic);
+
+/*
+// OLD MULTIPLE SELECT - DELETE
+   // mappa valori
+          const valuesSecondLevel = form[relatedTo]?.value;
+          const values: OptionTypeMulti[] = [];
+          Array.isArray(valuesSecondLevel) &&
+            (valuesSecondLevel || []).map((val: string) => {
+              let upperLevel = '';
+              Object.keys(multiSelectOptions).forEach((key: any) => {
+                if (
+                  multiSelectOptions[key].options.filter((x) => x.label === val)
+                    ?.length > 0
+                ) {
+                  upperLevel = multiSelectOptions[key].label;
+                }
+              });
+              values.push({
+                label: val,
+                value: val,
+                upperLevel: upperLevel,
+              });
+            });
+          return (
+            <SelectMultiple
+              field={field.field}
+              secondLevelField={relatedTo}
+              id={`multiple-select-${field.id}`}
+              col='col-12'
+              label={`${field?.label}`}
+              aria-label={field?.label}
+              options={multiSelectOptions}
+              required={field.required || false}
+              onInputChange={onInputDataChange}
+              onSecondLevelInputChange={onInputDataChange}
+              placeholder='Seleziona'
+              isDisabled={formDisabled}
+              value={values}
+              classNamePrefix='form-service-dynamic'
+            />
+          );
+        }
+*/

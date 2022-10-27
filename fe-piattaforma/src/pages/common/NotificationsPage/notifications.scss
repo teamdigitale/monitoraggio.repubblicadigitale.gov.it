@@ -1,15 +1,57 @@
 .notifications-card-container {
-    margin-bottom: 53px;
-
-    @media screen and (max-width: 1200px) {
-        margin-left: 62px;
-    }
+  margin-bottom: 53px;
+  justify-content: space-between;
+  box-shadow: 0px 0px 40px rgba(23, 50, 77, 0.08);
+  border-radius: 10px;
+  height: 54px;
+  align-items: center;
+  @media screen and (max-width: 576px) {
+    width: 93%;
+  }
+}
+.notifications-card-unread {
+  border-left: 3px solid #4392e0;
+  background-color: rgba(230, 236, 242, 0.7);
+}
+.notification-card-checkbar {
+  width: 20px;
+  height: 20px;
+  margin-left: 32px;
 }
 
 .notifications-buttons-container {
-    margin-bottom: 60px;
+  margin-bottom: 60px;
 }
 .notification-btn {
-    width: 103px;
-    padding: 5px 15px;
+  width: 103px;
+  padding: 5px 15px;
+}
+
+.text-primary-action {
+  color: #0066CC !important;
+}
+
+.text-secondary-action {
+  color: #ADB2B8 !important;
+}
+
+.title {
+  position: relative;
+  width: fit-content;
+  
+  .badge {
+    width: 22px;
+    height: 22px;
+    border-radius: 100%;
+    background-color: #B62032;
+    color: #FFFFFF;
+    position: absolute;
+    right: -10%;
+    top: -20%;
+    font-weight: 400;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }

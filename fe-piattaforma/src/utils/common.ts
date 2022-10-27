@@ -18,6 +18,16 @@ import { RolePermissionI } from '../redux/features/roles/rolesSlice';
 import { formFieldI } from './formHelper';
 import { DeviceI } from '../redux/features/app/appSlice';
 
+export const getUserIdsFromNotification = (notification: string) => {
+  // ex. Utente userId:$userId$ ha segnalato il post di authorId:$authorId$
+  const splittedNotification = notification.split('$');
+
+  return {
+    userId: splittedNotification[1],
+    authorId: splittedNotification[3],
+  };
+};
+
 export const formatDate = (date?: string) => {
   if (date) {
     return moment(date).format('YYYY-MM-DD');
@@ -216,22 +226,22 @@ export const MenuRoutes = [
     visible: ['tab.dshb'],
   }),
   newMenuItem({
+    label: 'Bacheca',
+    path: '/bacheca',
+    id: 'tab-bacheca-digitale',
+    visible: ['tab.bach'],
+  }),
+  newMenuItem({
     label: 'Community',
     path: '/community',
     id: 'tab-community',
-    visible: [process.env.NODE_ENV === 'development' ? 'visible' : 'hidden'],
-  }),
-  newMenuItem({
-    label: 'Bacheca digitale',
-    path: '/bacheca-digitale',
-    id: 'tab-bacheca-digitale',
-    visible: [process.env.NODE_ENV === 'development' ? 'visible' : 'hidden'],
+    visible: ['tab.comm'],
   }),
   newMenuItem({
     label: 'Documenti',
     path: '/documenti',
     id: 'tab-documenti',
-    visible: [process.env.NODE_ENV === 'development' ? 'visible' : 'hidden'],
+    visible: ['tab.doc'],
   }),
 ];
 
@@ -320,8 +330,8 @@ export const transformFiltersToQueryParams = (filters: {
           filter +
           '=' +
           filters[filter];
-    } else {
-      filters[filter]?.map(
+    } else if (filters[filter]?.length) {
+      (filters[filter] || []).map(
         (value: OptionType) =>
           (filterString =
             filterString +
@@ -458,7 +468,7 @@ export const convertPayloadSectionInString = (
 };
 
 export const orderArray = (array: any[]) => {
-  if (array?.length > 0) {
+  if (array?.length) {
     return array.sort((a, b) => {
       const labelA = a.label.toLowerCase();
       const labelB = b.label.toLowerCase();
@@ -481,3 +491,57 @@ export const getMediaQueryDevice = ({
   if (mediaIsPhone) return 'mobile';
   return 'desktop';
 };
+
+export const cleanBase64 = (base64: string) => {
+  try {
+    const a = base64?.toString();
+    const b = a.indexOf('base64');
+    return a.slice(b, a.length).replace('base64,', '');
+  } catch (err) {
+    console.log('cleanBase64 error', err);
+    return base64;
+  }
+};
+
+export const uploadFile = (
+  elementId = 'file',
+  callback: (file: { data?: File; name?: string }) => void = () => ({})
+) => {
+  const input: HTMLInputElement = document.getElementById(
+    elementId
+  ) as HTMLInputElement;
+
+  if (input.files?.length) {
+    const selectedImage = input.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(selectedImage);
+    reader.onloadend = () => {
+      if (reader.result) {
+        
+        callback({
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          data: cleanBase64(reader.result),
+          name: selectedImage.name,
+          res: reader.result
+        });
+      }
+    };
+
+    /*
+    const selectedFile = input.files[0];
+    if (selectedFile) {
+      file.data = selectedFile;
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(selectedFile);
+    reader.onloadend = () => {
+      file.name = selectedFile.name as string;
+      callback(file);
+    };
+    */
+  }
+};
+
+export const cleanDrupalFileURL = (url: string) => url.replaceAll('amp;', '');

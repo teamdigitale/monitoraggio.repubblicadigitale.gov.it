@@ -11,6 +11,7 @@ export interface PrintFieldI {
   optionsLevel2?:
     | { label: string; value: string | number; upperLevel: string }[]
     | undefined;
+  multipleChoice?: boolean;
 }
 
 const PrintTextField: React.FC<PrintFieldI> = (props) => {
@@ -28,7 +29,7 @@ const PrintTextField: React.FC<PrintFieldI> = (props) => {
     >
       <p className='d-flex flex-column mb-3'>
         <strong>{info.title}</strong>
-        <input className='border-0'/>
+        <input className='border-0' />
       </p>
     </div>
   );

@@ -70,6 +70,7 @@ const PrintSurvey: React.FC = () => {
               )}
               noLabel={question.flag ? true : false}
               halfWidth={question.flag ? true : false}
+              multipleChoice={question.id !== '18'}
             />
           );
         } else if (question?.enumLevel1 && question?.enumLevel2) {

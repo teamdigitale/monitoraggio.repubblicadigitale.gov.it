@@ -1,0 +1,23 @@
+.detail-card-container {
+  width: auto;
+
+  .icon-it-pa-container {
+    border-radius: 100%;
+    background-color: #d1e7ff;
+    min-width: 101px;
+    height: 101px;
+
+    &__phone {
+      border-radius: 100%;
+      background-color: #d1e7ff;
+      min-width: 49px;
+      height: 49px;
+    }
+    &__community {
+      border-radius: 100%;
+      background-color: #d1e7ff;
+      min-width: 59px;
+      height: 59px;
+    }
+  }
+}

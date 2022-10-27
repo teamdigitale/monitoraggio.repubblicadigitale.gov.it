@@ -343,13 +343,13 @@ export const initMock = (apiInstance: AxiosInstance) => {
       const response = await import('/mock/notificationsList.json');
       return [200, response];
     });
-    /*
-    mockInstance.onPost('/contesto').reply(async () => {
+
+    /*mockInstance.onPost('/contesto').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/userContext.json');
       return [200, response];
-    });
-*/
+    });*/
+
     /*mockInstance.onPost('/contesto/confermaIntegrazione').reply(async () => {
       return [200];
     });*/
@@ -364,18 +364,83 @@ export const initMock = (apiInstance: AxiosInstance) => {
     });*/
 
     mockInstance
+
       .onGet('/servizio/cittadino/questionarioCompilato/test/anonimo')
+
       .reply(async () => {
         const response = await import(
           // @ts-ignore
+          // prettier-ignore
           '/mock/responseQuestionarioOnlineMock.json'
         );
         return [200, response];
       });
     mockInstance
+
       .onPost('/servizio/cittadino/questionarioCompilato/test/compila/anonimo')
+
       .reply(async () => {
         return [200];
       });
+
+    mockInstance.onGet('/board/items').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/newsList.json');
+      return [200, response];
+    });
+
+    mockInstance.onGet('/board/item/id/user/userId').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/newsMock.json');
+      return [200, response];
+    });
+
+    mockInstance.onGet('/document/items').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/docsList.json');
+      return [200, response];
+    });
+
+    mockInstance.onGet('/document/item/id/user/userId').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/docMock.json');
+      return [200, response];
+    });
+
+    mockInstance.onGet('/community/items').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/topicsList.json');
+      return [200, response];
+    });
+
+    mockInstance.onGet('/community/item/id/user/userId').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/topicMock.json');
+      return [200, response];
+    });
+
+    mockInstance.onGet('/search/items').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/searchResultsList.json');
+      return [200, response];
+    });
+
+    mockInstance.onGet('api/user/userId/items').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/userItems.json');
+      return [200, response];
+    });
+
+    mockInstance.onGet('/item/itemId/comments/user/userId').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/commentsList.json');
+      return [200, response];
+    });
+
+    mockInstance.onGet('/category/retrieve').reply(async () => {
+      // @ts-ignore
+      const response = await import('/mock/categoriesList.json');
+      return [200, response];
+    });
   }
 };

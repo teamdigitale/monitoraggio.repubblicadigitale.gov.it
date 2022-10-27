@@ -1,0 +1,44 @@
+{
+    "code": 200,
+    "result": true,
+    "data": {
+        "pager": {
+            "current_page": 0,
+            "total_items": 3,
+            "total_pages": 3,
+            "items_per_page": 1
+        },
+        "items": [
+            {
+                "id": 10,
+                "title": "report_1664801504231848",
+                "author": 3,
+                "date": "2022-10-03",
+                "item_id": 2,
+                "item_type": "board_item",
+                "comment_id": 1,
+                "reason": "Segnalo questo commento"
+            },
+            {
+                "id": 8,
+                "title": "report_1664800863441149",
+                "author": 4,
+                "date": "2022-10-03",
+                "item_id": 2,
+                "item_type": "board_item",
+                "comment_id": "",
+                "reason": "Segnalo questo contenuto"
+            },
+            {
+                "id": 7,
+                "title": "report_1664800660574842",
+                "author": 4,
+                "date": "2022-10-03",
+                "item_id": 2,
+                "item_type": "board_item",
+                "comment_id": "",
+                "reason": "Segnalo questo contenuto"
+            }
+        ]
+    }
+}

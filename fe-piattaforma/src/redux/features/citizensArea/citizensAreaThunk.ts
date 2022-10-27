@@ -196,7 +196,7 @@ export const UpdateCitizenDetail =
       dispatch(showLoader());
       dispatch({ ...UpdateCitizenDetailAction, idCittadino, body });
       const res = await API.put(`cittadino/${idCittadino}`, body);
-      if(res){
+      if (res) {
         return true;
       }
     } catch (error) {

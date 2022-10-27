@@ -263,7 +263,7 @@ const ProgramsDetails: React.FC = () => {
               payload: {
                 entity: 'project',
                 projectId: td,
-                text: 'Confermi di volere terminare il Progetto?',
+                text: 'Confermi di volere terminare il progetto?',
               },
             })
           );
@@ -723,7 +723,7 @@ const ProgramsDetails: React.FC = () => {
                       id: 'terminate-entity',
                       payload: {
                         entity: 'program',
-                        text: 'Confermi di volere terminare il Programma?',
+                        text: 'Confermi di volere terminare il programma?',
                       },
                     })
                   ),
@@ -767,7 +767,16 @@ const ProgramsDetails: React.FC = () => {
                 color: 'danger',
                 outline: true,
                 text: 'Termina programma',
-                onClick: () => dispatch(openModal({ id: 'terminate-entity' })),
+                onClick: () =>
+                  dispatch(
+                    openModal({
+                      id: 'terminate-entity',
+                      payload: {
+                        entity: 'program',
+                        text: 'Confermi di volere terminare il programma?',
+                      },
+                    })
+                  ),
               },
             ]
           : [];

@@ -15,7 +15,7 @@ const PrintFieldRating: React.FC<PrintFieldI> = (props) => {
           ? 'w-100'
           : 'print-fields-container__half-width'
       )}
-    > 
+    >
       <p className='d-flex flex-column mb-3'>
         <strong className='mb-2'>{info.title}</strong>
         <Rating />

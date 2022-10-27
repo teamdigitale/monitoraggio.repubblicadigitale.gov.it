@@ -1,0 +1,28 @@
+.editor-container {
+  margin-bottom: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  position: relative;
+  width: 100%;
+
+  .wrapper {
+    height: 430px;
+
+    display: flex;
+    flex-direction: column;
+    .toolbar {
+      position: relative;
+      height: fit-content;
+    }
+    .editor {
+      flex: 1;
+      overflow-y: scroll;
+      padding: 5px;
+      .rdw-editor {
+        max-height: 100% !important;
+      }
+    }
+  }
+  .public-DraftStyleDefault-block {
+    margin: 0 !important;
+  }
+}

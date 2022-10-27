@@ -17,12 +17,13 @@ interface ModalI {
   isRoleManaging?: boolean;
   isUserRole?: boolean;
   className?: string | undefined;
+  isRocketChatModal?: boolean;
 }
 
 const Modal: React.FC<ModalI> = (props) => {
-  const { id, children, onClose, isRoleManaging } = props;
+  const { id, children, onClose, isRoleManaging, isRocketChatModal } = props;
   const currentId = useAppSelector(selectModalId);
-  const expandedmodal = useAppSelector(selectExpandModal);
+  const expandedModal = useAppSelector(selectExpandModal);
 
   const handleCloseModal = () => {
     if (onClose) onClose();
@@ -36,7 +37,13 @@ const Modal: React.FC<ModalI> = (props) => {
     <ModalsPortal.Source>
       <Curtain open noscroll onClick={handleCloseModal} />
       <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
-        <div className={clsx('d-flex', 'justify-content-around')}>
+        <div
+          className={clsx(
+            'd-flex',
+            'justify-content-around',
+            isMobile && 'mt-3'
+          )}
+        >
           <div
             className={clsx(
               'modal-wrapper',
@@ -51,6 +58,7 @@ const Modal: React.FC<ModalI> = (props) => {
               !isMobile && 'h-75',
               !isMobile && 'modal-dialog-centered'
             )}
+            style={{ width: isRocketChatModal ? '95%' : '' }}
           >
             <div
               className={clsx(
@@ -59,10 +67,13 @@ const Modal: React.FC<ModalI> = (props) => {
                   ? 'h-100'
                   : isMobile
                   ? 'h-100 pt-5'
-                  : expandedmodal
+                  : expandedModal
                   ? 'user-role-modal'
+                  : isRocketChatModal
+                  ? 'mt-5'
                   : 'h-auto'
               )}
+              style={{ width: isRocketChatModal ? '95%' : '' }}
             >
               {children}
             </div>

@@ -28,19 +28,55 @@ const getErrorMessage = ({ response }: any) => {
 };
 */
 export const defaultErrorMessage = 'Si è verificato un errore';
-export const getErrorMessage = async (errorCode: string) => {
+const networkErrorPayload = {
+  title: 'ERRORE DI RETE',
+  message: 'Problemi di connessione, verificare la connettività',
+};
+const defaultErrorPayload = {
+  title: 'ERRORE GENERICO',
+  message: defaultErrorMessage,
+};
+const getDrupalErrorMessage = (errorsList: any, errorMessage: string) => {
+  try {
+    if (errorMessage) {
+      const errorCode = JSON.parse(decodeURI(errorMessage.replaceAll(' ', '').slice(1, -1)))?.data?.message?.split(':')?.[0];
+      if (errorsList[errorCode]) {
+        return {
+          message: `${errorsList[errorCode]} (${errorCode})`,
+          title: 'ERRORE',
+        };
+      } else {
+        return defaultErrorPayload;
+      }
+    }
+    return defaultErrorPayload;
+  } catch {
+    return defaultErrorPayload;
+  }
+};
+export const getErrorMessage = async ({ errorCode, message = '' }: { errorCode: string; message?: string }) => {
   try {
     const res = await axios('/assets/errors/errors.json');
     if (res?.data) {
       const errorsList = { ...res.data.errors };
-      return errorsList[errorCode] || defaultErrorMessage;
+      if (errorCode === 'D01') {
+        return getDrupalErrorMessage(errorsList, message);
+      } else if (errorsList[errorCode]) {
+        return {
+          message: `${errorsList[errorCode]} (${errorCode})`,
+          title: 'ERRORE',
+        };
+      } else {
+        return defaultErrorPayload;
+      }
     }
   } catch (error) {
-    return defaultErrorMessage;
+    return defaultErrorPayload;
   }
 };
 
 export const errorHandler = async (error: unknown) => {
+  let errorData;
   // console.log('error', error);
   if (error instanceof TypeError) {
     // statements to handle TypeError exceptions
@@ -51,6 +87,9 @@ export const errorHandler = async (error: unknown) => {
   } else if (error instanceof EvalError) {
     // statements to handle EvalError exceptions
     console.log(3);
+  } else if (error === 'Network Error') {
+    // statements to handle Network Error exceptions
+    errorData = networkErrorPayload;
   } else {
     // statements to handle any unspecified exceptions
     //console.log(4, error);
@@ -59,11 +98,21 @@ export const errorHandler = async (error: unknown) => {
     if (error?.response?.status === 401) {
       dispatchLogout();
     }
+
+    if (!errorData) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      errorData = await getErrorMessage(error?.response?.data);
+    }
+
     dispatchNotify({
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      title: errorData.title,
       status: 'error',
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      message: await getErrorMessage(error?.response?.data?.errorCode),
+      message: errorData.message,
       closable: true,
       duration: 'slow',
     });
