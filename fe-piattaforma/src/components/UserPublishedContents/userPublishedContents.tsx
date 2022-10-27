@@ -23,11 +23,12 @@ const UserPublishedContents = () => {
   return (
     <div
       className={clsx(
-        /* 'user-published-container', */
+        'user-published-container',
         'd-flex',
         'flex-column',
         'align-items-end',
-        'pt-2'
+        'pt-2',
+        'position-absolute'
       )}
     >
       <div

@@ -882,7 +882,7 @@ export const DeleteItem =
       dispatch(showLoader());
       dispatch({ ...DeleteItemAction });
       await proxyCall(`/item/${itemId}/delete`, 'POST', {
-        reason: reason.trim() !== '' ? reason : 'owner',
+        reason: reason?.trim() !== '' ? reason : 'owner',
       });
     } catch (error) {
       console.log('DeleteItem error', error);
