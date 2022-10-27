@@ -1,5 +1,23 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.6.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.5.0...1.6.0) (2022-10-27)
+
+
+### Features
+
+* **fe-piattaforma:** fe updates 10272022 ([36445a2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/36445a2e827a958ada1a8748ae4982cb86db615b))
+* **fe-piattaforma:** fe updates 10272022 ([8834a71](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8834a71743affb795d278a7579928877da3e30b2))
+* **fe-piattaforma:** fe updates 10272022 ([36aedbb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/36aedbb98bc46977aa5d3a0393cbd5797a7ed0e4))
+* **fe-piattaforma:** fe updates 10272022 ([8bee19c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8bee19caaf46f2ef08df2ae3a8a9ffdfe7abc868))
+* **fe-piattaforma:** fe updates 10272022 ([90401e3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/90401e368c7c6da88643338ec48f86c0f54386b2))
+* **fe-piattaforma:** fe updates 10272022 ([f178536](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f178536a2b9af1017b95dd9ed41c6fdc805579e9))
+* **fe-piattaforma:** fe updates 10272022 ([79b19b3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/79b19b3a69dfe6fd1327a8b2f393c935c25b3d87))
+* **fe-piattaforma:** fe updates 10272022 ([1849eba](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1849eba3a10843e52cf9ce70704955d1159c9425))
+* **fe-piattaforma:** fe updates 10272022 ([4e8e3f5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4e8e3f5233b9071339bc555f7e82f77a41fb9c6d))
+* **drupal:** update project to 1.3.2 version ([0475fda](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0475fdab3309b3d2f79ed703cdce33a9e34ddfc0))
+* **drupal:** update project to 1.3.2 version ([a23f956](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a23f956835a69e6f58d9e4224d6bd17d01997c88))
+* **fe-piattaforma:** fe updates 10272022 ([1d84a70](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1d84a70e2d95d7fbb40efafc17692583590d2e91))
+
 ## [1.5.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.4.1...1.5.0) (2022-10-27)
 
 
