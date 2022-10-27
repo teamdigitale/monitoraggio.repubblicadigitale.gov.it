@@ -1016,10 +1016,7 @@ export const ActionTracker =
           BE_url = BE_url.slice(0, -1);
         }
         axios.post(
-          `${BE_url}/drupal/forward`.replaceAll(
-            '//',
-            '/'
-          ),
+          `${BE_url}/drupal/forward`,
           {
             url: `/api/user/action/${target}/track`,
             metodoHttp: 'POST',
