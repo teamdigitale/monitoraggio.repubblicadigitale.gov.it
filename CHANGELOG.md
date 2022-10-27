@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.96](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.95...1.0.0-test.96) (2022-10-27)
+
+
+### Bug Fixes
+
+* **be:** crea integrazione utente ([14e4206](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/14e420613ee727b3af315cd355090b82aa3e09fb))
+
 ## [1.0.0-test.95](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.94...1.0.0-test.95) (2022-10-26)
 
 
