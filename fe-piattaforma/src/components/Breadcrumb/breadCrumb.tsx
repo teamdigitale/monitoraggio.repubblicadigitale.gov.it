@@ -65,7 +65,11 @@ const Breadcrumb = () => {
           break;
       }
     }
-    return decodeURI(breadcrumbLabel);
+    try {
+      return decodeURI(breadcrumbLabel);
+    } catch (error) {
+      return breadcrumbLabel;
+    }
   };
 
   useEffect(() => {
