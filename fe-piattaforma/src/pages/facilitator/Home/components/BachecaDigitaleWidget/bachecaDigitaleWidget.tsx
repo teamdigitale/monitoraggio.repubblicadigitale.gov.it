@@ -11,6 +11,7 @@ import Slider, {
 } from '../../../../../components/General/Slider/Slider';
 import { getMediaQueryDevice } from '../../../../../utils/common';
 import { EmptySection } from '../../../../../components';
+import { Link } from 'react-router-dom';
 
 const newsPagination = {
   desktop: 24,
@@ -74,9 +75,9 @@ const BachecaDigitaleWidget = () => {
             ipsum velit, tempor at luctus quis, congue eget justo.
           </p>
           {!device.mediaIsPhone && (
-            <a className='btn btn-primary' role='button' href='/bacheca'>
+            <Link className='btn btn-primary' role='button' to='/bacheca'>
               Leggi tutte le news
-            </a>
+            </Link>
           )}
         </div>
       </div>
