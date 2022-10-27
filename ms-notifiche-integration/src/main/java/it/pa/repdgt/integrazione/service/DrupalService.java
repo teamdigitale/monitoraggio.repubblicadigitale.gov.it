@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -27,6 +29,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
 
 import it.pa.repdgt.integrazione.exception.DrupalException;
+import it.pa.repdgt.integrazione.repository.GruppoRepository;
 import it.pa.repdgt.integrazione.repository.UtenteRepository;
 import it.pa.repdgt.integrazione.request.ForwardRichiestDrupalParam;
 import it.pa.repdgt.shared.entity.UtenteEntity;
@@ -47,7 +50,8 @@ public class DrupalService {
 	
 	@Autowired
 	private UtenteRepository utenteRepository;
-
+	@Autowired 
+	private GruppoRepository gruppoRepository;
 	@Autowired
 	private RestTemplate restTemplate;
 
@@ -149,7 +153,17 @@ public class DrupalService {
 		Optional<UtenteEntity> utenteFetchDb = this.utenteRepository.findByCodiceFiscale(param.getCfUtenteLoggato());
 		
 		headers.put("user-id", Arrays.asList(utenteFetchDb.get().getId().toString()));
+		
+		final StringBuilder codiceGruppiByCodiceRuolo = new StringBuilder().append("");
+			
+		this.gruppoRepository
+			.findCodiciGruppoByCodiceRuolo(param.getCodiceRuoloUtenteLoggato())
+			.stream()
+			.map(codiceGruppo -> codiceGruppo.concat(";"))
+			.forEach(codiceGruppo -> codiceGruppiByCodiceRuolo.append(codiceGruppo));
+		
 		headers.put("user-roles", Arrays.asList(param.getCodiceRuoloUtenteLoggato()));
+		headers.put("role-groups", Arrays.asList( codiceGruppiByCodiceRuolo.toString() ) );
 		return headers;
 	}
 }
