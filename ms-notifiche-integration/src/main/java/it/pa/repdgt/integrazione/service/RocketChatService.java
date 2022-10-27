@@ -1,6 +1,7 @@
 package it.pa.repdgt.integrazione.service;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
@@ -118,6 +119,7 @@ public class RocketChatService {
 			// [2]. Salvo l'utente 
 			utenteDBFetch.getIntegrazioneUtente().setUtenteRegistratoInRocketChat(Boolean.TRUE);
 			utenteDBFetch.getIntegrazioneUtente().setIdUtenteRocketChat(idUtenteRocketChat);
+			utenteDBFetch.getIntegrazioneUtente().setDataOraAggiornamento(new Date());
 			this.utenteRepository.save(utenteDBFetch);
 			
 			// TODO non serve al momento
