@@ -218,7 +218,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
   }, [newsDetail]);
 
   useEffect(() => {
-    setIsFormValid(isValidForm && editorText.trim() !== '<p></p>' && editorText.trim() !== '');
+    setIsFormValid(isValidForm && editorText?.trim() !== '<p></p>' && editorText?.trim() !== '');
 
     sendNewValues({
       ...getFormValues(),

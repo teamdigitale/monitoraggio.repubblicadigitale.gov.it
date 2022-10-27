@@ -46,7 +46,7 @@ const FullLayout: React.FC<LayoutProp> = (props) => {
         <div className={clsx(publishedContent && 'lightgrey-bg-b4')}>
           <div
             className={clsx(
-              publishedContent && 'd-flex justify-content-around container'
+              publishedContent && 'd-flex justify-content-around container position-relative'
             )}
           >
             <Breadcrumb />

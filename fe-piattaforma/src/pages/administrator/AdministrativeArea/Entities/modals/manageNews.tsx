@@ -127,7 +127,8 @@ const ManageNews: React.FC<ManageNewsI> = ({
                   ? 'Tutti i programmi'
                   : programsList?.find(
                       (p) =>
-                        p.value === parseInt(newFormValues.program as string)
+                        Number(p.value) ===
+                        parseInt(newFormValues.program as string)
                     )?.label,
               entity:
                 userProfile?.idProgetto || userProfile?.idProgramma
@@ -138,6 +139,15 @@ const ManageNews: React.FC<ManageNewsI> = ({
                 : userProfile?.idProgramma
                 ? 'Ente gestore di programma'
                 : '-',
+              cover:
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                newFormValues?.cover?.name !==
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                newFormValues?.cover?.data
+                  ? newFormValues?.cover
+                  : undefined,
               removeCover:
                 newsDetail?.cover &&
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -146,6 +156,15 @@ const ManageNews: React.FC<ManageNewsI> = ({
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 !newFormValues?.cover?.data,
+              attachment:
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                newFormValues?.attachment?.name !==
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                newFormValues?.attachment?.data
+                  ? newFormValues?.attachment
+                  : undefined,
               removeAttachment:
                 newsDetail?.attachment &&
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -174,7 +193,8 @@ const ManageNews: React.FC<ManageNewsI> = ({
                   ? 'Tutti i programmi'
                   : programsList?.find(
                       (p) =>
-                        p.value === parseInt(newFormValues.program as string)
+                        Number(p.value) ===
+                        parseInt(newFormValues.program as string)
                     )?.label,
               entity:
                 userProfile?.idProgetto || userProfile?.idProgramma
