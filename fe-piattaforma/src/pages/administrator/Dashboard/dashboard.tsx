@@ -263,7 +263,7 @@ const Dashboard = () => {
                   console.log('go to BI', dashboard_BI_URL);
                   window.open(dashboard_BI_URL, '_blank');
                 },
-                label: 'Vai a Business intelligence',
+                label: 'Crea report personalizzati',
               }
             : undefined
         }
