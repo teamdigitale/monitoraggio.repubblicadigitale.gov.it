@@ -95,7 +95,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
             })
         );
         const tagsString = topicDetail.tags as string;
-        setTags(tagsString.split(';'));
+        if (tagsString) setTags(tagsString.split(';'));
         updateForm(newForm(populatedForm));
       }
     }
@@ -229,8 +229,8 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
           isSearchable
         /> */}
       </Form.Row>
-      <Form.Row className={bootClass}>
-        {tags.length ? (
+      {tags.length ? (
+        <Form.Row className={bootClass}>
           <div>
             {tags.map((item, id) => (
               <Chip key={id} className='mr-2 rounded-pill'>
@@ -245,10 +245,10 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
               </Chip>
             ))}
           </div>
-        ) : (
-          <span></span>
-        )}
-      </Form.Row>
+        </Form.Row>
+      ) : (
+        <span />
+      )}
       <Form.Row className={bootClass}>
         <div className='mt-5 d-flex align-items-center'>
           <strong className='mr-2'>ALLEGA FILE</strong>

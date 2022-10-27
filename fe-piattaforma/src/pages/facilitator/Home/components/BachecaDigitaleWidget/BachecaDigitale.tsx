@@ -34,7 +34,7 @@ import { formFieldI } from '../../../../../utils/formHelper';
 import useGuard from '../../../../../hooks/guard';
 
 const BachecaCta = {
-  textCta: 'Crea News',
+  textCta: 'Crea news',
   iconCta: 'it-plus',
 };
 

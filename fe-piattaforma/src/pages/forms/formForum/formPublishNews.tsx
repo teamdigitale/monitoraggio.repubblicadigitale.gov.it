@@ -218,7 +218,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
   }, [newsDetail]);
 
   useEffect(() => {
-    setIsFormValid(isValidForm && editorText.trim() !== '<p></p>' && editorText.trim() !== '');
+    setIsFormValid(isValidForm && editorText?.trim() !== '<p></p>' && editorText?.trim() !== '');
 
     sendNewValues({
       ...getFormValues(),
@@ -308,7 +308,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
           }))}
           isDisabled={formDisabled}
           placeholder='Seleziona'
-          maxMenuHeight={200}
+          maxMenuHeight={150}
         />
         <Select
           {...form?.intervention}
@@ -325,7 +325,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
             formDisabled
           }
           placeholder='Seleziona'
-          maxMenuHeight={200}
+          maxMenuHeight={150}
         />
       </Form.Row>
       <Form.Row className={bootClass}>
@@ -340,7 +340,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
           }))}
           isDisabled={formDisabled}
           placeholder='Seleziona'
-          maxMenuHeight={200}
+          maxMenuHeight={100}
         />
       </Form.Row>
       <Form.Row className={clsx(bootClass, 'align-items-center')}>

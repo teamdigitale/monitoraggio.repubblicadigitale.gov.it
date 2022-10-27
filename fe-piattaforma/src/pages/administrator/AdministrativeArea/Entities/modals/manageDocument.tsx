@@ -73,7 +73,8 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
                   ? 'Tutti i programmi'
                   : programsList?.find(
                       (p) =>
-                        p.value === parseInt(newFormValues.program as string)
+                        Number(p.value) ===
+                        parseInt(newFormValues.program as string)
                     )?.label,
               entity:
                 userProfile?.idProgetto || userProfile?.idProgramma
@@ -84,6 +85,15 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
                 : userProfile?.idProgramma
                 ? 'Ente gestore di programma'
                 : '',
+              attachment:
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                newFormValues?.attachment?.name !==
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                newFormValues?.attachment?.data
+                  ? newFormValues?.attachment
+                  : undefined,
               removeAttachment:
                 docDetail?.attachment &&
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -112,7 +122,8 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
                   ? 'Tutti i programmi'
                   : programsList?.find(
                       (p) =>
-                        p.value === parseInt(newFormValues.program as string)
+                        Number(p.value) ===
+                        parseInt(newFormValues.program as string)
                     )?.label,
               entity:
                 userProfile?.idProgetto || userProfile?.idProgramma

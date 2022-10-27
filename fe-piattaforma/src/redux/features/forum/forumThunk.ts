@@ -882,7 +882,7 @@ export const DeleteItem =
       dispatch(showLoader());
       dispatch({ ...DeleteItemAction });
       await proxyCall(`/item/${itemId}/delete`, 'POST', {
-        reason: reason.trim() !== '' ? reason : 'owner',
+        reason: reason?.trim() !== '' ? reason : 'owner',
       });
     } catch (error) {
       console.log('DeleteItem error', error);
@@ -1012,7 +1012,10 @@ export const ActionTracker =
           idProgramma,
         });
         axios.post(
-          `${process?.env?.REACT_APP_BE_BASE_URL}/drupal/forward`,
+          `${process?.env?.REACT_APP_BE_BASE_URL}/drupal/forward`.replaceAll(
+            '//',
+            '/'
+          ),
           {
             url: `/api/user/action/${target}/track`,
             metodoHttp: 'POST',

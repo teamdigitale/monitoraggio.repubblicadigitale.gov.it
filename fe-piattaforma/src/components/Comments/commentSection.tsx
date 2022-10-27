@@ -24,7 +24,7 @@ const CommentSection: React.FC<commentSectionI> = ({ section }) => {
       </div>
       {comments.map((comment, i) => (
         <Comment
-          key={i}
+          key={comment.id}
           section={section}
           thread={comments.length > 1 && i < comments.length - 1}
           {...comment}

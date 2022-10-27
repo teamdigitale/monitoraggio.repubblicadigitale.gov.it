@@ -95,7 +95,10 @@ const BachecaDetails = () => {
   };
 
   const backButton = (
-    <Button onClick={() => navigate(-1)} className='px-0'>
+    <Button
+      onClick={() => navigate('/bacheca', { replace: true })}
+      className='px-0'
+    >
       <Icon
         icon='it-chevron-left'
         color='primary'
@@ -140,7 +143,7 @@ const BachecaDetails = () => {
                 text: 'Confermi di voler eliminare questo contenuto?',
                 id: id,
                 entity: 'board',
-                author: newsDetail.author
+                author: newsDetail.author,
               },
             })
           )
