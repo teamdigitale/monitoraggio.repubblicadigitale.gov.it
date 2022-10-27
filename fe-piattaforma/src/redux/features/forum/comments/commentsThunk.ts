@@ -18,7 +18,7 @@ export const GetCommentsList =
       );
       // const res = await API.get(`/item/${itemId}/comments/user/${userId}`)
       if (res) {
-        dispatch(setCommentsList(res.data.data.items || []));
+        dispatch(setCommentsList(res.data?.data?.items || []));
       }
     } catch (error) {
       console.log('GetCommentsList error', error);
@@ -36,10 +36,12 @@ export const CreateComment =
     try {
       dispatch(showLoader());
       dispatch({ ...CreateCommentAction });
-      const res = await proxyCall(`/item/${itemId}/comment`, 'POST', {
-        comment_body: comment,
-      });
-      return res;
+      if (comment) {
+        const res = await proxyCall(`/item/${itemId}/comment`, 'POST', {
+          comment_body: comment?.toString(),
+        });
+        return res;
+      }
     } catch (error) {
       console.log('CreateComment error', error);
       return false;
