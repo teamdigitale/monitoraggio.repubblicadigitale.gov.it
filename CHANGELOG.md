@@ -1,5 +1,21 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.99](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.98...1.0.0-test.99) (2022-10-27)
+
+
+### Features
+
+* **fe-piattaforma:** fe updates 10272022 ([e50e783](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e50e7833318b993c3709f02cc6f283356cf8c394))
+* **fe-piattaform:** fe updates ([0f7b9da](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0f7b9da9259782ac36ab19e3d94f3dcc21210552))
+* **fe-piattaforma:** fe updates 10272022 ([438eede](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/438eedede7184a7205ced0f1b4b03cc433b12a8e))
+* **fe-piattaforma:** fe updates 10272022 ([4d1ff21](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4d1ff2177dae8d60fa9b5cde6c624c8d25f1f863))
+* **fe-piattaforma:** fe updates 10272022 ([9cb4ae5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9cb4ae5cc49a352d04371a80450a65072710065b))
+* **fe-piattaforma:** fe updates 10272022 ([348c996](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/348c996e2b307293b667127ad1cd2c050a13428e))
+* **fe-piattaforma:** fe updates 10272022 ([6294874](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/62948742fca7e085f7340e0a09614c64f09d154c))
+* **fe-piattaforma:** fe updates 10272022 ([7514a19](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7514a19bd8d6dfc42d5df25cd3b826132fdae8ce))
+* **fe-piattaforma:** fe updates 10272022 ([8fdcb1b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8fdcb1bb9af08d36503b7487ac9d30c1ce168c48))
+* **fe-piattaforma:** fe updates 10272022 ([db96a71](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/db96a71f69fa782b810308d4f0137af7917e63f5))
+
 ## [1.0.0-test.98](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.97...1.0.0-test.98) (2022-10-27)
 
 
