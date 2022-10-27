@@ -41,7 +41,8 @@ public class WorkdocsRestApi {
 	public void creaUtenteWD(
 			@RequestBody final WorkDocsUserRequest workDocsUser) {
 		final Optional<UtenteEntity> optionalUtenteDbFEtch = this.utenteRepository.findByCodiceFiscale(workDocsUser.getCfUtenteLoggato());
-		final CreateUserResponse createUserResponse  = this.workDocsService.creaWorkDocsUser(optionalUtenteDbFEtch.get().getEmail(), workDocsUser.getEmail(), workDocsUser.getPassword());
+		String emailUtente = optionalUtenteDbFEtch.get().getEmail();
+		final CreateUserResponse createUserResponse  = this.workDocsService.creaWorkDocsUser(emailUtente, emailUtente, workDocsUser.getPassword());
 		if(	!createUserResponse.sdkHttpResponse().isSuccessful() ) {
 			String errorMessage  = String.format("Errore creazione utente Workdocs. Response workDocs-createUser.statusCode: %s", createUserResponse.sdkHttpResponse().statusCode());
 			throw new WorkdocsException(errorMessage, CodiceErroreEnum.WD01);
