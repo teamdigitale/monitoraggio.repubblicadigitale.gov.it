@@ -27,6 +27,10 @@
 /.gitattributes
 
 #ignore private files directory
-/private/
+/web/sites/default/private/
 
-env.json
+web/sites/default/private/env.json
+
+deploy/dev/drupal-manifest-*
+deploy/col/drupal-manifest-*
+deploy/prod/drupal-manifest-*

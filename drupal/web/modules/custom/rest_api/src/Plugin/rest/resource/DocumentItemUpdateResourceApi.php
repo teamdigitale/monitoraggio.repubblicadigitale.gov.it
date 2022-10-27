@@ -4,8 +4,10 @@ namespace Drupal\rest_api\Plugin\rest\resource;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\core\Controller\DocumentController;
+use Drupal\core\Controller\UserController;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\core\Utility\TaxonomyController;
+use Drupal\node\Entity\Node;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
 use Drupal\rest_api\Controller\Utility\ValidationController;
@@ -109,8 +111,7 @@ class DocumentItemUpdateResourceApi extends ResourceBase
       ],
       'external_link' => [
         'type' => 'string',
-        'minLength' => 1,
-        'required' => true
+        'required' => false
       ]
     ]
   ];
@@ -126,36 +127,42 @@ class DocumentItemUpdateResourceApi extends ResourceBase
   {
     try {
       if (empty($id)) {
-        throw new Exception('DIURA01: Missing node id');
+        throw new Exception('DIURA01: Missing node id', 400);
       }
 
-      $userId = $req->headers->get('user-id') ?? '';
-      if (empty($userId)) {
-        throw new Exception('DIURA02: Missing user id in headers');
+      $userId = $req->headers->get('drupal-user-id') ?? '';
+      $userGroups = $req->headers->get('role-groups') ?? '';
+      $route = $req->get('_route');
+
+      $node = Node::load($id);
+      if (empty($node) || $node->bundle() != 'document_item') {
+        throw new Exception('DIURA05: Invalid node id', 400);
       }
 
-      $userRoles = $req->headers->get('user-roles') ?? '';
-      if (empty($userRoles)) {
-        throw new Exception('DIURA03: Missing user roles in headers');
+      if ($node->getOwnerId() != $userId && !UserController::checkAuthGroups($userGroups, $route, 'any')) {
+        throw new Exception('DIURA06: User unauthorized', 401);
       }
 
       $body = json_decode($req->getContent());
       ValidationController::validateRequestBody($body, self::JSON_SCHEMA);
 
       $externalLink = $body->external_link;
-      if (!UrlHelper::isValid($externalLink, true)) {
+      if (!preg_match('~^(?:f|ht)tps?://~i', $externalLink)) {
         $externalLink = 'https://' . $externalLink;
+      }
+
+      if (!UrlHelper::isValid($externalLink, true)) {
+        throw new Exception('DIURA07: External link not valid', 400);
       }
 
       $exists = TaxonomyController::termExistsById('document_categories', $body->category);
       if (!$exists) {
-        throw new Exception('DIURA04: Taxonomy term does not exists');
+        throw new Exception('DIURA04: Taxonomy term does not exists', 400);
       }
 
       $nodeId = DocumentController::update(
         $userId,
-        $userRoles,
-        $id,
+        $node,
         $body->title,
         $body->intervention,
         $body->program,

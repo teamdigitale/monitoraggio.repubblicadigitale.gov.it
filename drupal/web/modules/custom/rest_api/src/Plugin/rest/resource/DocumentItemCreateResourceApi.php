@@ -115,8 +115,7 @@ class DocumentItemCreateResourceApi extends ResourceBase
       ],
       'external_link' => [
         'type' => 'string',
-        'minLength' => 1,
-        'required' => true
+        'required' => false
       ]
     ]
   ];
@@ -130,23 +129,24 @@ class DocumentItemCreateResourceApi extends ResourceBase
   public function post(Request $req)
   {
     try {
-      $userId = $req->headers->get('user-id') ?? '';
-      if (empty($userId)) {
-        throw new Exception('DCRA01: Missing user id in headers');
-      }
-
       $body = json_decode($req->getContent());
       ValidationController::validateRequestBody($body, self::JSON_SCHEMA);
 
       $externalLink = $body->external_link;
-      if (!UrlHelper::isValid($externalLink, true)) {
+      if (!preg_match('~^(?:f|ht)tps?://~i', $externalLink)) {
         $externalLink = 'https://' . $externalLink;
+      }
+
+      if (!UrlHelper::isValid($externalLink, true)) {
+        throw new Exception('DCRA03: External link not valid', 400);
       }
 
       $exists = TaxonomyController::termExistsById('document_categories', $body->category);
       if (!$exists) {
-        throw new Exception('DCRA02: Taxonomy term does not exists');
+        throw new Exception('DCRA02: Taxonomy term does not exists', 400);
       }
+
+      $userId = $req->headers->get('drupal-user-id') ?? '';
 
       $nodeId = DocumentController::create(
         $body->entity,

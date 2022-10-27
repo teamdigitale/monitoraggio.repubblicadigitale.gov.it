@@ -86,11 +86,6 @@ class CommunityFiltersResourceApi extends ResourceBase
   public function get(Request $req)
   {
     try {
-      $userId = $req->headers->get('user-id') ?? '';
-      if (empty($userId)) {
-        throw new Exception('CFRA01: Missing user id in headers');
-      }
-
       $categories = $req->get('categories') ?? '';
 
       $categories = $categories !== '' ? explode(',', $categories) : $categories;

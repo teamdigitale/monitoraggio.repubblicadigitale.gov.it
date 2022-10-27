@@ -1,0 +1,14 @@
+uuid: d25bb719-fcb1-482f-b391-2c59b9a3c9e4
+langcode: en
+status: true
+dependencies:
+  module:
+    - cache_manager
+id: cache_invalidate
+crontab: '* * * * *'
+plugin: cache_invalidate
+type: default
+configuration: {  }
+provider: cache_manager
+single: false
+weight: 0

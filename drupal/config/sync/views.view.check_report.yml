@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - comment.type.comment
     - node.type.board_item
     - node.type.community_item
     - node.type.document_item
@@ -195,48 +194,6 @@ display:
             multiple: 0
           break_phrase: false
           not: false
-        field_comment_id_value:
-          id: field_comment_id_value
-          table: node__field_comment_id
-          field: field_comment_id_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: numeric
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: query_parameter
-          default_argument_options:
-            query_param: comment_id
-            fallback: all
-            multiple: and
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            override: false
-            items_per_page: 25
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: true
-          validate:
-            type: 'entity:comment'
-            fail: empty
-          validate_options:
-            bundles:
-              comment: comment
-            access: false
-            operation: view
-            multiple: 0
-          break_phrase: false
-          not: false
       filters:
         status:
           id: status
@@ -263,6 +220,50 @@ display:
           expose:
             operator_limit_selection: false
             operator_list: {  }
+        field_comment_id_value:
+          id: field_comment_id_value
+          table: node__field_comment_id
+          field: field_comment_id_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: numeric
+          operator: empty
+          value:
+            min: ''
+            max: ''
+            value: ''
+          group: 1
+          exposed: false
+          expose:
+            operator_id: field_comment_id_value_op
+            label: 'Comment ID (field_comment_id)'
+            description: null
+            use_operator: false
+            operator: field_comment_id_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_comment_id_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            min_placeholder: null
+            max_placeholder: null
+            placeholder: null
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
       style:
         type: serializer
       row:
@@ -321,8 +322,7 @@ display:
               raw_output: false
       display_extenders: {  }
       path: utils/check/report
-      auth:
-        - basic_auth
+      auth: {  }
     cache_metadata:
       max-age: -1
       contexts:

@@ -12,6 +12,7 @@ module:
   block: 0
   block_content: 0
   breakpoint: 0
+  cache_manager: 0
   ckeditor: 0
   comment: 0
   config: 0

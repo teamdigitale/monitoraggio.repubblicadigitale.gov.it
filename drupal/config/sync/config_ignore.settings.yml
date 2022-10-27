@@ -5,4 +5,5 @@ ignored_config_entities:
   - notifications.messages
   - s3fs.settings
   - simple_cron.job.sync_user_sync
+  - simple_cron.job.cache_invalidate
   - system.performance

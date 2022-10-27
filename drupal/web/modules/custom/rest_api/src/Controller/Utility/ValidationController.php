@@ -14,14 +14,13 @@ class ValidationController extends ControllerBase
 
   /**
    * @param $body
-   * @param $bundle
    * @return bool
    * @throws Exception
    */
   public static function validateRequestBody($body, $jsonSchema): bool
   {
     if (empty($jsonSchema)) {
-      throw new Exception('VC01: JSON SCHEMA is empty in body validation');
+      throw new Exception('VC01: JSON SCHEMA is empty in body validation', 400);
     }
 
     $validator = new Validator();
@@ -31,7 +30,7 @@ class ValidationController extends ControllerBase
     if (!$validator->isValid()) {
       throw new Exception('VC02: Invalid JSON body: ' . json_encode(array_map(function ($value) {
           return $value['message'];
-        }, $validator->getErrors())));
+        }, $validator->getErrors())), 400);
     }
 
     return $validator->isValid();

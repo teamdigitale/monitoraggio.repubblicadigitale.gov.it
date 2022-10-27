@@ -90,12 +90,12 @@ class CategoryDeleteResourceApi extends ResourceBase
   {
     try {
       if (empty($id)) {
-        throw new Exception('CDRA01: Missing term id');
+        throw new Exception('CDRA01: Missing term id', 400);
       }
 
       $term = Term::load($id);
       if (empty($term)) {
-        throw new Exception('CDRA02: Invalid term id');
+        throw new Exception('CDRA02: Invalid term id', 400);
       }
 
       $alternativeDeletedId = TaxonomyController::deleteTerm($term);

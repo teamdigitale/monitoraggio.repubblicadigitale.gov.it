@@ -19,6 +19,28 @@ use Drupal\rest\Plugin\views\style\Serializer;
  */
 class NestingSerializer extends Serializer
 {
+  /**
+   * @param $row
+   * @return array
+   */
+  public function rowNormalize($row)
+  {
+    $items = [];
+
+    foreach ($row as $key => $value) {
+      if (!empty($value) && Json::decode($value)) {
+        $items[$key] = json_decode($value, true);
+      } elseif ($value === '[]') {
+        $items[$key] = [];
+      } elseif ((string)$value === '0') {
+        $items[$key] = 0;
+      } else {
+        $items[$key] = html_entity_decode($value);
+      }
+    }
+
+    return $items;
+  }
 
   /**
    * {@inheritdoc}
@@ -28,26 +50,11 @@ class NestingSerializer extends Serializer
     $rows = [];
     foreach ($this->view->result as $row_index => $row) {
       $this->view->row_index = $row_index;
-      $rows[] = $this->view->rowPlugin->render($row);
+      $rows[] = $this->rowNormalize($this->view->rowPlugin->render($row));
     }
+
     unset($this->view->row_index);
     $content_type = !empty($this->options['formats']) ? reset($this->options['formats']) : 'json';
-
-    for ($i = 0; $i < count($rows); $i++) {
-      foreach ($rows[$i] as $key => $value) {
-        if ($value == '[]') {
-          $rows[$i][$key] = [];
-        }
-
-        if ($value == '0') {
-          $rows[$i][$key] = 0;
-        }
-
-        if (!empty($rows[$i][$key]) && Json::decode($rows[$i][$key])) {
-          $rows[$i][$key] = Json::decode($rows[$i][$key]);
-        }
-      }
-    }
 
     return $this->serializer->serialize($rows, $content_type, ['views_style_plugin' => $this]);
   }

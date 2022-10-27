@@ -88,19 +88,16 @@ class ReportDeleteResourceApi extends ResourceBase
   public function post(Request $req, $id = null)
   {
     try {
-      $userId = $req->headers->get('user-id') ?? '';
-      if (empty($userId)) {
-        throw new Exception('RDRA01: Missing user id in headers');
-      }
-
       if (empty($id)) {
-        throw new Exception('RDRA02: Missing node id');
+        throw new Exception('RDRA02: Missing node id', 400);
       }
 
       $report = Node::load($id);
       if (empty($report) || $report->bundle() != 'report') {
-        throw new Exception('RDRA03: Invalid node id');
+        throw new Exception('RDRA03: Invalid node id', 400);
       }
+
+      $userId = $req->headers->get('drupal-user-id') ?? '';
 
       ReportController::delete(
         $userId,

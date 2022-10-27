@@ -3,8 +3,10 @@
 namespace Drupal\rest_api\Plugin\rest\resource;
 
 use Drupal\core\Controller\CommunityController;
+use Drupal\core\Controller\UserController;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\core\Utility\TaxonomyController;
+use Drupal\node\Entity\Node;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
 use Drupal\rest_api\Controller\Utility\ValidationController;
@@ -114,17 +116,20 @@ class CommunityItemUpdateResourceApi extends ResourceBase
   {
     try {
       if (empty($id)) {
-        throw new Exception('CIURA01: Missing node id');
+        throw new Exception('CIURA01: Missing node id', 400);
       }
 
-      $userId = $req->headers->get('user-id') ?? '';
-      if (empty($userId)) {
-        throw new Exception('CIURA02: Missing user id in headers');
+      $userId = $req->headers->get('drupal-user-id') ?? '';
+      $userGroups = $req->headers->get('role-groups') ?? '';
+      $route = $req->get('_route');
+
+      $node = Node::load($id);
+      if (empty($node) || $node->bundle() != 'community_item') {
+        throw new Exception('CIURA05: Invalid node id', 400);
       }
 
-      $userRoles = $req->headers->get('user-roles') ?? '';
-      if (empty($userRoles)) {
-        throw new Exception('CIURA03: Missing user roles in headers');
+      if ($node->getOwnerId() != $userId && !UserController::checkAuthGroups($userGroups, $route, 'any')) {
+        throw new Exception('CIURA06: User unauthorized', 401);
       }
 
       $body = json_decode($req->getContent());
@@ -132,13 +137,12 @@ class CommunityItemUpdateResourceApi extends ResourceBase
 
       $exists = TaxonomyController::termExistsById('community_categories', $body->category);
       if (!$exists) {
-        throw new Exception('CIURA04: Taxonomy term does not exists');
+        throw new Exception('CIURA04: Taxonomy term does not exists', 400);
       }
 
       $nodeId = CommunityController::update(
         $userId,
-        $userRoles,
-        $id,
+        $node,
         $body->title,
         $body->category,
         $body->description,

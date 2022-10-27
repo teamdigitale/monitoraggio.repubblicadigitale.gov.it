@@ -39,15 +39,14 @@ class ReportController
 
     $node->setPublished();
     if (!$node->save()) {
-      throw new Exception('RC01: Error in item report creation');
+      throw new Exception('RC01: Error in item report creation', 400);
     }
 
     $notificationUserIds = NotificationsController::getNotificationUserIds();
 
-    $authorId = '';
     $itemNode = Node::load($itemId);
     if (empty($itemNode)) {
-      throw new Exception('RC02: Error in node load in report creation');
+      throw new Exception('RC02: Error in node load in report creation', 400);
     }
     $notificationType = str_replace('item', 'report', $itemNode->bundle());
 
@@ -56,7 +55,7 @@ class ReportController
     if (!empty($commentId)) {
       $comment = Comment::load($commentId);
       if (empty($comment)) {
-        throw new Exception('RC03: Error in comment load in report creation');
+        throw new Exception('RC03: Error in comment load in report creation', 400);
       }
 
       $notificationType = 'comment_report';
@@ -107,7 +106,7 @@ class ReportController
   public static function delete($userId, $report): void
   {
     if (empty($report)) {
-      throw new Exception('RC04: Empty report passed');
+      throw new Exception('RC04: Empty report passed', 400);
     }
 
     $report->set('status', 0);
@@ -116,7 +115,7 @@ class ReportController
     $report->setRevisionUserId($userId);
 
     if (!$report->save()) {
-      throw new Exception('RC05: Error in report delete');
+      throw new Exception('RC05: Error in report delete', 400);
     }
   }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\core\Utility;
+namespace Drupal\cache_manager\Controller;
 
 use Drupal\views\Views;
 use Exception;
@@ -21,7 +21,7 @@ class CacheController
     $view = Views::getView($viewId);
 
     if (empty($view)) {
-      throw new Exception('CC01: Invalid view id.');
+      throw new Exception('CC01: Invalid view id.', 400);
     }
 
     $view->storage->invalidateCaches();

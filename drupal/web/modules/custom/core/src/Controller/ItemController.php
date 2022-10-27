@@ -3,11 +3,10 @@
 namespace Drupal\core\Controller;
 
 use Drupal;
+use Drupal\cache_manager\Controller\CacheController;
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Entity\EntityStorageException;
-use Drupal\core\Utility\EnvController;
-use Drupal\node\Entity\Node;
 use Drupal\notifications\Controller\NotificationsController;
 use Exception;
 
@@ -17,39 +16,27 @@ use Exception;
  */
 class ItemController
 {
+
   /**
    * @param $userId
-   * @param $userRoles
-   * @param $id
+   * @param $node
    * @param $reason
    * @return bool
    * @throws EntityStorageException
    * @throws InvalidPluginDefinitionException
    * @throws PluginNotFoundException
    */
-  public static function delete($userId, $userRoles, $id, $reason): bool
+  public static function delete($userId, $node, $reason): bool
   {
-    $node = Node::load($id);
-    if (empty($node)) {
-      throw new Exception('IC01: Invalid node id');
-    }
-
-    if ($node->getOwnerId() != $userId) {
-      $allowedRoles = ((array)EnvController::getValues('ALLOWED_METHOD_ROLES'))['item_delete_any'];
-      if (!UserController::checkAuthRoles($userRoles, $allowedRoles)) {
-        throw new Exception('IC02: Unauthorized to delete this item');
-      }
-    }
-
     $comments = Drupal::entityTypeManager()
       ->getStorage('comment')
       ->loadByProperties([
-        'entity_id' => $id
+        'entity_id' => $node->id()
       ]);
 
     foreach ($comments as $comment) {
       if (empty($comment->getParentComment())) {
-        CommentController::delete($userId, $userRoles, $comment->id());
+        CommentController::delete($userId, $comment->id());
       }
     }
 
@@ -58,10 +45,10 @@ class ItemController
     $node->setRevisionCreationTime(Drupal::time()->getCurrentTime());
     $node->setRevisionUserId($userId);
 
-    ReportController::deleteAll($userId, $id, null);
+    ReportController::deleteAll($userId, $node->id(), null);
 
     if (!$node->save()) {
-      throw new Exception('IC03: Error in node delete');
+      throw new Exception('IC03: Error in node delete', 400);
     }
 
     $notificationUserIds[] = $node->getOwnerId();
@@ -85,6 +72,10 @@ class ItemController
     }
 
     Drupal::service('cache_tags.invalidator')->invalidateTags(['board_item_cache', 'community_item_cache', 'document_item_cache']);
+
+    CacheController::resetViewCache($node->bundle() . 's');
+    CacheController::resetViewCache('user_items');
+    CacheController::resetViewCache('search_items');
 
     return true;
   }

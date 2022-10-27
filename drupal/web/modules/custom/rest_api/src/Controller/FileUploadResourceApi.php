@@ -9,6 +9,8 @@ namespace Drupal\rest_api\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\core\Controller\FileController;
+use Drupal\core\Controller\UserController;
+use Drupal\node\Entity\Node;
 use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,31 +30,48 @@ class FileUploadResourceApi extends ControllerBase
   {
     try {
       if (empty($id)) {
-        throw new Exception('FURA01: Missing node id');
+        throw new Exception('FURA01: Missing node id', 400);
       }
 
-      $userId = $req->headers->get('user-id') ?? '';
-      if (empty($userId)) {
-        throw new Exception('FURA02: Missing user id in headers');
+      $userId = $req->headers->get('drupal-user-id') ?? '';
+      $userGroups = $req->headers->get('role-groups') ?? '';
+      $route = $req->get('_route');
+
+      $node = Node::load($id);
+      if (empty($node)) {
+        throw new Exception('FURA05: Invalid node id', 400);
       }
 
-      $userRoles = $req->headers->get('user-roles') ?? '';
-      if (empty($userRoles)) {
-        throw new Exception('FURA03: Missing user roles in headers');
+      if (!UserController::checkAuthGroups($userGroups, $route, $node->bundle())) {
+        throw new Exception('FURA07: User unauthorized', 401);
       }
 
+      if ($node->getOwnerId() != $userId && !UserController::checkAuthGroups($userGroups, $route, 'any')) {
+        throw new Exception('FURA08: User unauthorized', 401);
+      }
+
+      $data = $_FILES['data'] ?? '';
       $type = $req->get('type') ?? '';
+
+      if (empty($data) && empty($type)) {
+        $body = json_decode($req->getContent());
+        $type = $body->type ?? '';
+      }
+
       if (empty($type)) {
-        throw new Exception('FURA04: Missing file type in headers');
+        throw new Exception('FURA04: Missing file type in body', 400);
       }
 
       $tmpName = $_FILES['data']['tmp_name'] ?? '';
       $name = $_FILES['data']['name'] ?? '';
 
+      if ($node->bundle() !== 'board_item' && $type === 'cover') {
+        throw new Exception('FURA06: Invalid media type for item', 400);
+      }
+
       FileController::setMedia(
         $userId,
-        $userRoles,
-        $id,
+        $node,
         $type,
         $tmpName,
         $name

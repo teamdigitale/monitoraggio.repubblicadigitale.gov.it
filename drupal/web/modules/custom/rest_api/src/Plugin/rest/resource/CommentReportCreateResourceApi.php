@@ -4,7 +4,9 @@ namespace Drupal\rest_api\Plugin\rest\resource;
 
 use Drupal\comment\Entity\Comment;
 use Drupal\core\Controller\ReportController;
+use Drupal\core\Controller\UserController;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\node\Entity\Node;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
 use Drupal\rest_api\Controller\Utility\ValidationController;
@@ -100,26 +102,36 @@ class CommentReportCreateResourceApi extends ResourceBase
   public function post(Request $req, $id = null)
   {
     try {
-      $userId = $req->headers->get('user-id') ?? '';
-      if (empty($userId)) {
-        throw new Exception('CMRCRA01: Missing user id in headers');
-      }
-
       if (empty($id)) {
-        throw new Exception('CMRCRA02: Missing comment id');
+        throw new Exception('CMRCRA02: Missing comment id', 400);
       }
 
-      $comment = Comment::load($id);
-      if (empty($comment)) {
-        throw new Exception('CMRCRA03: Invalid comment id');
-      }
+      $userId = $req->headers->get('drupal-user-id') ?? '';
+      $userGroups = $req->headers->get('role-groups') ?? '';
+      $route = $req->get('_route');
 
       $body = json_decode($req->getContent());
       ValidationController::validateRequestBody($body, self::JSON_SCHEMA);
 
+      $comment = Comment::load($id);
+      if (empty($comment)) {
+        throw new Exception('CMRCRA03: Invalid comment id', 400);
+      }
+
+      $nodeId = $comment->getCommentedEntityId();
+      $node = Node::load($nodeId);
+
+      if (empty($node)) {
+        throw new Exception('CMRCRA05: Invalid commented node', 400);
+      }
+
+      if (!UserController::checkAuthGroups($userGroups, $route, $node->bundle())) {
+        throw new Exception('CMRCRA04: User unauthorized', 401);
+      }
+
       $reportId = ReportController::createReport(
         $userId,
-        $comment->getCommentedEntityId(),
+        $nodeId,
         $id,
         $body->reason
       );

@@ -6,11 +6,10 @@ use Drupal;
 use Drupal\Core\Controller\ControllerBase;
 
 /**
- * Controller to check for banned words in text
+ *
  */
 class BannedWordsController extends ControllerBase
 {
-
   /**
    * @param $text
    * @return bool
@@ -22,7 +21,7 @@ class BannedWordsController extends ControllerBase
     $bannedWordList = array_map('trim', explode(';', $bannedWordsConfig->get('banned_words_list') ?? ''));
 
     foreach ($bannedWordList as $bannedWord) {
-      if (!empty($bannedWord) && str_contains(strtolower($text), strtolower($bannedWord))) {
+      if (!empty($bannedWord) && str_contains(strtolower($text ?? ''), strtolower($bannedWord ?? ''))) {
         return false;
       }
     }

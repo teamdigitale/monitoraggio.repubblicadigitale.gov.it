@@ -4,6 +4,7 @@ namespace Drupal\rest_api\Plugin\rest\resource;
 
 use Drupal\banned_words\Controller\BannedWordsController;
 use Drupal\core\Controller\CommentController;
+use Drupal\core\Controller\UserController;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\node\Entity\Node;
 use Drupal\rest\Plugin\ResourceBase;
@@ -101,29 +102,32 @@ class CommentCreateResourceApi extends ResourceBase
   public function post(Request $req, $id = null)
   {
     try {
-      $userId = $req->headers->get('user-id') ?? '';
-      if (empty($userId)) {
-        throw new Exception('CMCRA01: Missing user id in headers');
-      }
-
       if (empty($id)) {
-        throw new Exception('CMCRA02: Missing node id');
-      }
-
-      $node = Node::load($id);
-      if (empty($node)) {
-        throw new Exception('CMCRA03: Invalid node id');
-      }
-
-      if (!$node->get('field_enable_comments')->value) {
-        throw new Exception('CMCRA04: Comments are not enabled for this node');
+        throw new Exception('CMCRA02: Missing node id', 400);
       }
 
       $body = json_decode($req->getContent());
       ValidationController::validateRequestBody($body, self::JSON_SCHEMA);
 
+      $userId = $req->headers->get('drupal-user-id') ?? '';
+      $userGroups = $req->headers->get('role-groups') ?? '';
+      $route = $req->get('_route');
+
+      $node = Node::load($id);
+      if (empty($node)) {
+        throw new Exception('CMCRA03: Invalid node id', 400);
+      }
+
+      if (!UserController::checkAuthGroups($userGroups, $route, $node->bundle())) {
+        throw new Exception('CMCRA06: User unauthorized', 401);
+      }
+
+      if (!$node->get('field_enable_comments')->value) {
+        throw new Exception('CMCRA04: Comments are not enabled for this node', 400);
+      }
+
       if (!BannedWordsController::validateText($body->comment_body)) {
-        throw new Exception('CMCRA05: Comment body contains banned words');
+        throw new Exception('CMCRA05: Comment body contains banned words', 400);
       }
 
       $commentId = CommentController::create(

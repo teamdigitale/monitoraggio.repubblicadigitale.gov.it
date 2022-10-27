@@ -1,0 +1,5 @@
+services:
+  cache.invalidate:
+    class: \Drupal\cache_manager\Commands\CacheInvalidateCommand
+    tags:
+      - { name: drush.command }
