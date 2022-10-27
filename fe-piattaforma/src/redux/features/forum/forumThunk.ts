@@ -70,9 +70,8 @@ export const GetNewsFilters =
             value:
               (filters.programs || [])
                 .map(({ value }: { value: string }) => value)
-                .join(',') || idProgramma
-                ? `public,${idProgramma}`
-                : '',
+                .join(',') ||
+              `${idProgramma ? `public,${idProgramma}` : ''}`,
           },
         ],
         interventions: [
@@ -154,9 +153,8 @@ export const GetNewsList =
             value:
               (filters.programs || [])
                 .map(({ value }: { value: string }) => value)
-                .join(',') || idProgramma
-                ? `public,${idProgramma}`
-                : 'all',
+                .join(',') ||
+              `${idProgramma ? `public,${idProgramma}` : 'all'}`,
           },
         ],
         interventions: [
@@ -177,10 +175,6 @@ export const GetNewsList =
         'sort',
         'sort_by'
       );
-      //.replace('categories', 'category')
-      //.replace('interventions', 'intervention')
-      //.replace('programs', 'program');
-      console.log('queryParamFilters', queryParamFilters);
       const res = await proxyCall(`/board/items${queryParamFilters}`, 'GET');
       if (updateStore) {
         if (res?.data?.data) {
@@ -342,9 +336,8 @@ export const GetDocumentsFilters =
             value:
               (filters.programs || [])
                 .map(({ value }: { value: string }) => value)
-                .join(',') || idProgramma
-                ? `public,${idProgramma}`
-                : '',
+                .join(',') ||
+              `${idProgramma ? `public,${idProgramma}` : ''}`,
           },
         ],
         interventions: [
@@ -426,9 +419,8 @@ export const GetDocumentsList =
             value:
               (filters.programs || [])
                 .map(({ value }: { value: string }) => value)
-                .join(',') || idProgramma
-                ? `public,${idProgramma}`
-                : 'all',
+                .join(',') ||
+              `${idProgramma ? `public,${idProgramma}` : 'all'}`,
           },
         ],
         interventions: [
@@ -882,7 +874,7 @@ export const DeleteItem =
       dispatch(showLoader());
       dispatch({ ...DeleteItemAction });
       await proxyCall(`/item/${itemId}/delete`, 'POST', {
-        reason: reason.trim() !== '' ? reason : 'owner',
+        reason: reason?.trim() !== '' ? reason : 'owner',
       });
     } catch (error) {
       console.log('DeleteItem error', error);
@@ -1011,8 +1003,12 @@ export const ActionTracker =
           codiceRuolo,
           idProgramma,
         });
+        let BE_url = process?.env?.REACT_APP_BE_BASE_URL;
+        if (BE_url?.charAt(BE_url?.length - 1) === '/') {
+          BE_url = BE_url.slice(0, -1);
+        }
         axios.post(
-          `${process?.env?.REACT_APP_BE_BASE_URL}/drupal/forward`,
+          `${BE_url}/drupal/forward`,
           {
             url: `/api/user/action/${target}/track`,
             metodoHttp: 'POST',

@@ -42,8 +42,8 @@ const getDrupalErrorMessage = (errorsList: any, errorMessage: string) => {
       const errorCode = JSON.parse(decodeURI(errorMessage.replaceAll(' ', '').slice(1, -1)))?.data?.message?.split(':')?.[0];
       if (errorsList[errorCode]) {
         return {
-          message: `${errorsList[errorCode]} (${errorCode})`,
-          title: 'ERRORE',
+          message: `${errorsList[errorCode]?.descrizione} (${errorCode})`,
+          title: errorsList[errorCode]?.titolo || 'ERRORE',
         };
       } else {
         return defaultErrorPayload;
@@ -63,8 +63,8 @@ export const getErrorMessage = async ({ errorCode, message = '' }: { errorCode: 
         return getDrupalErrorMessage(errorsList, message);
       } else if (errorsList[errorCode]) {
         return {
-          message: `${errorsList[errorCode]} (${errorCode})`,
-          title: 'ERRORE',
+          message: `${errorsList[errorCode]?.descrizione} (${errorCode})`,
+          title: errorsList[errorCode]?.titolo || 'ERRORE',
         };
       } else {
         return defaultErrorPayload;

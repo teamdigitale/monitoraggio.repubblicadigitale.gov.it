@@ -56,7 +56,7 @@ const Comment: React.FC<CommentI> = (props) => {
     date,
     author,
     section,
-    replies,
+    replies = [],
     likes,
     user_like,
     views,
@@ -322,10 +322,18 @@ const Comment: React.FC<CommentI> = (props) => {
         <div style={{ width: '94%' }}>{body}</div>
         <div className='comment-container__border mt-4 mb-2'></div>
         <SocialBar
-          replies={section === 'community' ? replies.length : undefined}
+          replies={
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            section === 'community' && replies !== '[]'
+              ? replies?.length
+              : undefined
+          }
           views={section === 'community' ? views : undefined}
           onShowReplies={
-            section === 'community' && replies.length
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            section === 'community' && replies !== '[]' && replies?.length
               ? () => setShowReplies((prev) => !prev)
               : undefined
           }

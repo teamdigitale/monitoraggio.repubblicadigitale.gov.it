@@ -35,6 +35,8 @@ const SocialBar: React.FC<SocialI> = (props) => {
 
   const device = useAppSelector(selectDevice);
 
+  console.log('replies', replies)
+
   return (
     <div
       className={clsx(
@@ -175,10 +177,12 @@ const SocialBar: React.FC<SocialI> = (props) => {
               >
                 {`${showReplies ? 'NASCONDI RISPOSTE' : 'MOSTRA RISPOSTE'}`}
               </p>
-              <span
-                className='primary-color pl-1 letter-spacing'
-                style={{ fontWeight: 400 }}
-              >{`(${replies})`}</span>
+              {replies ? (
+                <span
+                  className='primary-color pl-1 letter-spacing'
+                  style={{ fontWeight: 400 }}
+                >{`(${replies})`}</span>
+              ) : null}
             </div>
           </Button>
         </div>
