@@ -11,6 +11,7 @@ import Slider, {
 } from '../../../../../components/General/Slider/Slider';
 import { getMediaQueryDevice } from '../../../../../utils/common';
 import { EmptySection } from '../../../../../components';
+import { Link } from 'react-router-dom';
 
 const docsPagination = {
   desktop: 4,
@@ -87,9 +88,9 @@ const DocumentsWidget = () => {
               lobortis mi. Mauris dapibus rhoncus luctus. Mauris sit amet
               pretium nibh, dictum interdum purus.
             </p>
-            <a role='button' className='btn btn-primary' href='/documenti'>
+            <Link role='button' className='btn btn-primary' to='/documenti'>
               Accedi alla sezione
-            </a>
+            </Link>
           </div>
         )}
       </div>
@@ -151,9 +152,9 @@ const DocumentsWidget = () => {
       </div>
       {!device.mediaIsDesktop && (
         <div className='d-flex justify-content-center mt-5 w-100'>
-          <a role='button' className='btn btn-primary' href='/documenti'>
+          <Link role='button' className='btn btn-primary' to='/documenti'>
             Accedi alla sezione
-          </a>
+          </Link>
         </div>
       )}
     </div>

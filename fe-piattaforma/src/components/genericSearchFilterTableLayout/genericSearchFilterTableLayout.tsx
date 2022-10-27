@@ -19,6 +19,7 @@ import ButtonsBar, { ButtonInButtonsBar } from '../ButtonsBar/buttonsBar';
 import Sticky from 'react-sticky-el';
 import CardCounter, { CardCounterI } from '../CardCounter/cardCounter';
 import { cleanEntityFiltersCitizen } from '../../redux/features/citizensArea/citizensAreaSlice';
+import { cleanForumFilters } from '../../redux/features/forum/forumSlice';
 
 export interface SearchInformationI {
   onHandleSearch?: (searchValue: string) => void;
@@ -119,6 +120,8 @@ const GenericSearchFilterTableLayout: React.FC<
         return 'Sede';
       case 'tipologiaServizio':
         return 'Tipo di servizio prenotato';
+      case 'categorySections':
+        return 'Sezione';
       default:
         key;
     }
@@ -128,9 +131,12 @@ const GenericSearchFilterTableLayout: React.FC<
     filterKey: string,
     value: string | number | string[]
   ) => {
-    citizen
-      ? dispatch(cleanEntityFiltersCitizen({ filterKey, value: value }))
-      : dispatch(cleanEntityFilters({ filterKey, value: value }));
+    if (citizen) {
+      dispatch(cleanEntityFiltersCitizen({ filterKey, value: value }));
+    } else {
+      dispatch(cleanEntityFilters({ filterKey, value: value }));
+      dispatch(cleanForumFilters({ filterKey, value: value }));
+    }
     if (
       filterKey === 'filtroCriterioRicerca' ||
       filterKey === 'criterioRicerca'
@@ -146,6 +152,7 @@ const GenericSearchFilterTableLayout: React.FC<
     i: number,
     filterKey: string
   ) => {
+    if (filterKey === 'pillDropdown' || filterKey === 'sort') return null;
     if (!Array.isArray(filter) && filter) {
       return (
         <Chip key={i} className='mr-2 rounded-pill'>

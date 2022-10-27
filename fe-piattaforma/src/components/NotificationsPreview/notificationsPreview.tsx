@@ -6,7 +6,7 @@ import { focusId, MenuItem } from '../../utils/common';
 import { Button, Icon } from 'design-react-kit';
 import Notification from '../../pages/common/NotificationsPage/components/Notifications/notification';
 import { useAppSelector } from '../../redux/hooks';
-import { selectUserNotification } from '../../redux/features/user/userSlice';
+import { selectUserNotificationsPreview } from '../../redux/features/user/userSlice';
 import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import {
@@ -25,14 +25,19 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
   const { open, setOpen } = props;
   const dispatch = useDispatch();
   // TODO integrate notification
-  const notificationsList = useAppSelector(selectUserNotification);
+  const notificationsList = useAppSelector(selectUserNotificationsPreview);
 
   useEffect(() => {
     const body = document.querySelector('body') as HTMLBodyElement;
     if (open) {
       focusId('hamburger');
       body.style.overflowY = 'hidden';
-      dispatch(GetNotificationsByUser());
+      dispatch(
+        GetNotificationsByUser(
+          { status: [{ value: 0 }], items_per_page: [{ value: 9 }], page: [{ value: 0 }] },
+          true
+        )
+      );
     } else {
       body.style.overflowY = 'unset';
     }
@@ -40,13 +45,18 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
 
   const onReadNotification = async (id: string) => {
     await dispatch(ReadNotification([id]));
-    dispatch(GetNotificationsByUser());
+    dispatch(
+      GetNotificationsByUser(
+        { status: [{ value: 0 }], items_per_page: [{ value: 9 }], page: [{ value: 0 }] },
+        true
+      )
+    );
   };
 
   return (
     <ClickOutside callback={() => setOpen(false)}>
       <div className={clsx('notifications-preview', open && 'open')}>
-        <div className=''>
+        <div className='shadow'>
           <div className='w-100 d-flex justify-content-end'>
             <Button onClick={() => setOpen(false)} className='p-0'>
               <Icon icon='it-close' />
@@ -87,7 +97,7 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
             <EmptySection title='Non ci sono notifiche' />
           )}
         </div>
-        <div className='text-center py-3'>
+        <div className='text-center py-3 top-shadow'>
           <NavLink to='/notifiche' className='primary-color archive'>
             ARCHIVIO NOTIFICHE
             {/*{notificationsList.length}*/}

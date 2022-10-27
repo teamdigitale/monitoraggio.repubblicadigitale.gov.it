@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import DeleteEntityModal from '../../../components/AdministrativeArea/Entities/General/DeleteEntityModal/DeleteEntityModal';
 
-import { DropdownFilterI } from '../../../components/DropdownFilter/dropdownFilter';
+import {
+  DropdownFilterI,
+  FilterI,
+} from '../../../components/DropdownFilter/dropdownFilter';
 
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
@@ -13,7 +16,11 @@ import {
   DeleteCategory,
   GetCategoriesList,
 } from '../../../redux/features/forum/categories/categoriesThunk';
-import { selectCategoriesList } from '../../../redux/features/forum/forumSlice';
+import {
+  selectCategoriesList,
+  selectFilters,
+  setForumFilters,
+} from '../../../redux/features/forum/forumSlice';
 import {
   closeModal,
   openModal,
@@ -23,18 +30,21 @@ import { CRUDActionsI, CRUDActionTypes } from '../../../utils/common';
 import ManageCategory from '../../administrator/AdministrativeArea/Entities/modals/manageCategory';
 import { TableCategories } from '../../administrator/AdministrativeArea/Entities/utils';
 
+const categorySectionsLabel = 'categorySections';
+
 const Category = () => {
   const dispatch = useDispatch();
   const categoriesList = useAppSelector(selectCategoriesList);
+  const filtersList = useAppSelector(selectFilters);
 
   const handleGetCategoriesList = (keys?: string) => {
-    dispatch(GetCategoriesList({ type: 'all', keys }));
+    dispatch(GetCategoriesList({ keys }));
   };
 
   useEffect(() => {
     handleGetCategoriesList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [filtersList[categorySectionsLabel]]);
 
   const getCategoryLabel = (
     category:
@@ -114,16 +124,36 @@ const Category = () => {
     if (searchValue?.length >= 2) handleGetCategoriesList(searchValue);
   };
 
+  const handleDropdownFilters = (values: FilterI[], filterKey: string) => {
+    dispatch(setForumFilters({ [filterKey]: [...values] }));
+  };
+
   const dropdowns: DropdownFilterI[] = [
     {
-      filterName: 'Categoria',
-      options: [],
+      filterName: 'Sezione',
+      options: [
+        {
+          label: 'Bacheca',
+          value: 'board_categories',
+        },
+        {
+          label: 'Community',
+          value: 'community_categories',
+        },
+        {
+          label: 'Documenti',
+          value: 'document_categories',
+        },
+      ].filter((opt) =>
+        filtersList[categorySectionsLabel]?.[0]
+          ? opt.value === filtersList[categorySectionsLabel][0]?.value
+          : opt
+      ),
       id: 'sezione',
-      onOptionsChecked: (options) => console.log(options),
+      onOptionsChecked: (options) =>
+        handleDropdownFilters(options, categorySectionsLabel),
       className: 'mr-3',
-      values: [],
-      handleOnSearch: (searchKey) => console.log(searchKey),
-      valueSearch: '',
+      values: filtersList[categorySectionsLabel] || [],
     },
   ];
 
@@ -146,7 +176,7 @@ const Category = () => {
       <PageTitle title='Elenco categorie' />
       <GenericSearchFilterTableLayout
         dropdowns={dropdowns}
-        filtersList={{}}
+        filtersList={filtersList}
         {...categoryCta}
         cta={() =>
           dispatch(
