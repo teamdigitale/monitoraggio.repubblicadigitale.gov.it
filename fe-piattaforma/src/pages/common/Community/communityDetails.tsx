@@ -80,7 +80,10 @@ const CommunityDetails = () => {
   }, [topicDetails]);
 
   const backButton = (
-    <Button onClick={() => navigate(-1)} className='px-0'>
+    <Button
+      onClick={() => navigate('/community', { replace: true })}
+      className='px-0'
+    >
       <Icon
         icon='it-chevron-left'
         color='primary'
@@ -155,7 +158,7 @@ const CommunityDetails = () => {
                 text: 'Confermi di voler eliminare questo contenuto?',
                 id: id,
                 entity: 'community',
-                author: topicDetails.author
+                author: topicDetails.author,
               },
             })
           )

@@ -65,6 +65,7 @@ const ManageTopic: React.FC<ManageTopicI> = ({
             id,
             {
               ...newFormValues,
+              title: newFormValues.title?.toString(),
               entity:
                 userProfile?.idProgetto || userProfile?.idProgramma
                   ? userProfile.nomeEnte
@@ -74,6 +75,15 @@ const ManageTopic: React.FC<ManageTopicI> = ({
                 : userProfile?.idProgramma
                 ? 'Ente gestore di programma'
                 : '-',
+              attachment:
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                newFormValues?.attachment?.name !==
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                newFormValues?.attachment?.data
+                  ? newFormValues?.attachment
+                  : undefined,
               removeAttachment:
                 topicDetail?.attachment &&
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

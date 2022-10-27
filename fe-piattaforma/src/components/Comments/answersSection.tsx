@@ -14,10 +14,14 @@ interface AnswerSectionI {
 }
 
 const AnswersSection: React.FC<AnswerSectionI> = (props) => {
-  const { thread, showReplies, replies } = props;
+  const { thread, showReplies, replies = [] } = props;
   const device = useAppSelector(selectDevice);
 
   const dispatch = useDispatch();
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  if (replies === '[]') return null;
 
   return (
     <div>
@@ -31,40 +35,39 @@ const AnswersSection: React.FC<AnswerSectionI> = (props) => {
             thread && !device.mediaIsPhone && 'comment-container__thread'
           )}
         >
-          {replies &&
-            replies.map((comment, index: number) => (
-              <CommentAnswer
-                key={index}
-                {...comment}
-                noBorder={replies.length > 1 && index < replies.length - 1}
-                onDeleteComment={() =>
-                  dispatch(
-                    openModal({
-                      id: 'delete-forum-entity',
-                      payload: {
-                        text: 'Confermi di voler eliminare questo contenuto?',
-                        entity: 'comment',
-                        id: comment.id,
-                        author: comment.author
-                      },
-                    })
-                  )
-                }
-                onEditComment={() =>
-                  dispatch(
-                    openModal({
-                      id: 'comment-modal',
-                      payload: {
-                        title: 'Modifica commento',
-                        action: 'edit',
-                        id: comment.id,
-                        body: comment.body,
-                      },
-                    })
-                  )
-                }
-              />
-            ))}
+          {(replies || []).map((comment, index: number) => (
+                <CommentAnswer
+                  key={index}
+                  {...comment}
+                  noBorder={replies.length > 1 && index < replies.length - 1}
+                  onDeleteComment={() =>
+                    dispatch(
+                      openModal({
+                        id: 'delete-forum-entity',
+                        payload: {
+                          text: 'Confermi di voler eliminare questo contenuto?',
+                          entity: 'comment',
+                          id: comment.id,
+                          author: comment.author,
+                        },
+                      })
+                    )
+                  }
+                  onEditComment={() =>
+                    dispatch(
+                      openModal({
+                        id: 'comment-modal',
+                        payload: {
+                          title: 'Modifica commento',
+                          action: 'edit',
+                          id: comment.id,
+                          body: comment.body,
+                        },
+                      })
+                    )
+                  }
+                />
+              ))}
         </div>
       )}
     </div>

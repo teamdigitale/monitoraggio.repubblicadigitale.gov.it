@@ -367,10 +367,10 @@ export const formatAndParseJsonString = (jsonString: string) => {
     return JSON.parse(jsonString);
   } catch (error) {
     try {
-      return JSON.parse(decodeURI(jsonString).replace(/\s+/g, ' ').trim());
+      return JSON.parse(decodeURI(jsonString)?.replace(/\s+/g, ' ')?.trim());
     } catch (error) {
       try {
-        return JSON.parse(decodeURI(jsonString).replaceAll("'", '"'));
+        return JSON.parse(decodeURI(jsonString)?.replaceAll("'", '"'));
       } catch (error) {
         return '';
       }

@@ -106,7 +106,10 @@ const DocumentsDetails = () => {
   };
 
   const backButton = (
-    <Button onClick={() => navigate(-1)} className='px-0'>
+    <Button
+      onClick={() => navigate('/documenti', { replace: true })}
+      className='px-0'
+    >
       <Icon
         icon='it-chevron-left'
         color='primary'

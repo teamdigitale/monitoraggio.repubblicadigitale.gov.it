@@ -104,11 +104,12 @@ const ManageComment: React.FC<ManageCommentI> = ({
       }
     }
   };
+
   return (
     <GenericModal
       id={modalId}
       primaryCTA={{
-        disabled: newComment.trim() === '',
+        disabled: newComment?.toString()?.trim() === '',
         label: creation ? 'Conferma' : 'Salva',
         onClick: handleSaveComment,
       }}
