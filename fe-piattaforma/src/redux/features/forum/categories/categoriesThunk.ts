@@ -1,7 +1,9 @@
-import { Dispatch } from '@reduxjs/toolkit';
+import { Dispatch, Selector } from '@reduxjs/toolkit';
 import { hideLoader, showLoader } from '../../app/appSlice';
 import { setCategoriesList } from '../forumSlice';
 import { proxyCall } from '../forumThunk';
+import { RootState } from '../../../store';
+import { transformFiltersToQueryParams } from '../../../../utils/common';
 
 const GetCategoriesListAction = {
   type: 'forum/GetCategorisList',
@@ -9,7 +11,6 @@ const GetCategoriesListAction = {
 
 export const GetCategoriesList =
   ({
-    type = 'all',
     keys,
   }: {
     type?:
@@ -19,12 +20,32 @@ export const GetCategoriesList =
       | 'document_categories';
     keys?: string | undefined;
   }) =>
-  async (dispatch: Dispatch) => {
+  async (dispatch: Dispatch, select: Selector) => {
     try {
       dispatch(showLoader());
       dispatch({ ...GetCategoriesListAction });
+      const {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        forum: { filters },
+      } = select((state: RootState) => state);
+      const body = {
+        categorySections: [
+          {
+            label: '',
+            value:
+              (filters.categorySections || [])
+                .map(({ value }: { value: string }) => value)
+                .join(',') || 'all',
+          },
+        ],
+      };
+      const queryParamFilters = transformFiltersToQueryParams(body).replace(
+        'categorySections',
+        'term_type'
+      );
       const res = await proxyCall(
-        `/category/retrieve?term_type=${type}${keys ? `&keys=${keys}` : ''}`,
+        `/category/retrieve${queryParamFilters}${keys ? `&keys=${keys}` : ''}`,
         'GET'
       );
       // const res = await API.get(`/category/retrieve`)
