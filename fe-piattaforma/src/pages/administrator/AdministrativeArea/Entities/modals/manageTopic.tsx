@@ -65,6 +65,7 @@ const ManageTopic: React.FC<ManageTopicI> = ({
             id,
             {
               ...newFormValues,
+              title: newFormValues.title?.toString(),
               entity:
                 userProfile?.idProgetto || userProfile?.idProgramma
                   ? userProfile.nomeEnte

@@ -1011,8 +1011,12 @@ export const ActionTracker =
           codiceRuolo,
           idProgramma,
         });
+        let BE_url = `${process?.env?.REACT_APP_BE_BASE_URL}/`
+        if (BE_url?.charAt(BE_url?.length - 1) === '/') {
+          BE_url = BE_url.slice(0, -1);
+        }
         axios.post(
-          `${process?.env?.REACT_APP_BE_BASE_URL}/drupal/forward`.replaceAll(
+          `${BE_url}/drupal/forward`.replaceAll(
             '//',
             '/'
           ),

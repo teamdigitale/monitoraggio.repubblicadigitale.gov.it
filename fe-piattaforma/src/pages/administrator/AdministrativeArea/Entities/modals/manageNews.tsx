@@ -122,6 +122,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
             id,
             {
               ...newFormValues,
+              title: newFormValues.title?.toString(),
               program_label:
                 newFormValues.program === 'public'
                   ? 'Tutti i programmi'
