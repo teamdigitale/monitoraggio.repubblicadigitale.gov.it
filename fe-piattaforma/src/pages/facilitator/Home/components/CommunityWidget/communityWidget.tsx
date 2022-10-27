@@ -10,6 +10,7 @@ import Slider, {
 } from '../../../../../components/General/Slider/Slider';
 import { getMediaQueryDevice } from '../../../../../utils/common';
 import clsx from 'clsx';
+import { Link } from 'react-router-dom';
 
 const communityPagination = {
   desktop: 6,
@@ -74,9 +75,9 @@ const CommunityWidget = () => {
             ipsum velit, tempor at luctus quis.
           </p>
           {!device.mediaIsPhone && (
-            <a className='btn btn-primary' role='button' href='/community'>
+            <Link className='btn btn-primary' role='button' to='/community'>
               Esplora tutti i topic
-            </a>
+            </Link>
           )}
         </div>
       </div>

@@ -10,25 +10,26 @@ import { isActiveProvisionalLogin } from '../../../pages/common/Auth/auth';
 export interface UserStateI {
   isLogged: boolean;
   user?:
-    | {
-        id?: string;
-        name?: string;
-        nome?: string;
-        surname?: string;
-        cognome?: string;
-        email?: string;
-        role?: string;
-        codiceFiscale: string;
-        profiliUtente: UserProfileI[];
-        integrazione: boolean;
-        mostraBio: boolean;
-        mostraTipoContratto: boolean;
-        immagineProfilo?: string;
-        utenteRegistratoInWorkdocs: boolean;
-      }
-    | Record<string, never>;
+  | {
+    id?: string;
+    name?: string;
+    nome?: string;
+    surname?: string;
+    cognome?: string;
+    email?: string;
+    role?: string;
+    codiceFiscale: string;
+    profiliUtente: UserProfileI[];
+    integrazione: boolean;
+    mostraBio: boolean;
+    mostraTipoContratto: boolean;
+    immagineProfilo?: string;
+    utenteRegistratoInWorkdocs: boolean;
+  }
+  | Record<string, never>;
   notification: any[];
   notificationToRead: number;
+  notificationsPreview: any[];
   chatToRead: number;
   permissions: RolePermissionI[];
   idProgramma: string | null;
@@ -94,6 +95,7 @@ const initialStateNotLogged: UserStateI = {
   ruoli: [],
   notification: [],
   notificationToRead: 0,
+  notificationsPreview: [],
   chatToRead: 0,
 };
 
@@ -135,6 +137,9 @@ export const userSlice = createSlice({
         notificationToRead: action.payload || 0,
       });
     },
+    setUserNotificationsPreview: (state, action: PayloadAction<any>) => {
+      state.notificationsPreview = [...action.payload];
+    },
     setUserChatToRead: (state, action: PayloadAction<any>) => {
       state.chatToRead = action.payload;
       setSessionValues('chat', {
@@ -165,6 +170,7 @@ export const {
   setUserNotifications,
   setUserNotificationsToRead,
   setUserChatToRead,
+  setUserNotificationsPreview
 } = userSlice.actions;
 
 export const selectLogged = (state: RootState) => state.user.isLogged;
@@ -173,6 +179,8 @@ export const selectProfile = (state: RootState) => state.user.profilo;
 export const selectPermissions = (state: RootState) => state.user.permissions;
 export const selectUserNotification = (state: RootState) =>
   state.user.notification;
+export const selectUserNotificationsPreview = (state: RootState) =>
+  state.user.notificationsPreview;
 export const selectUserNotificationToRead = (state: RootState) =>
   state.user.notificationToRead;
 export const selectUserChatToRead = (state: RootState) => state.user.chatToRead;

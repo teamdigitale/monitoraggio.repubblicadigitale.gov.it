@@ -36,6 +36,10 @@ const Notifications: React.FC = () => {
   );
 
   useEffect(() => {
+    handleOnChangePage(1)
+  }, [])
+
+  useEffect(() => {
     dispatch(GetNotificationsByUser());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageNumber, pageSize]);
