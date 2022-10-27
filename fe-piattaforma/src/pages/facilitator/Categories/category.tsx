@@ -188,6 +188,7 @@ const Category = () => {
         }
         searchInformation={searchInformation}
       >
+        <div className='mb-2' />
         <Table
           {...tableValues}
           id='table'

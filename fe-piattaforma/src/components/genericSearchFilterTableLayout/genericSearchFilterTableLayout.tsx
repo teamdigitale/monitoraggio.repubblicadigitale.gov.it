@@ -402,7 +402,7 @@ const GenericSearchFilterTableLayout: React.FC<
             </Button>
           </div>
         ) : (
-          <div className='mt-5'></div>
+          <div className='mb-5' />
         )}
       </div>
 
