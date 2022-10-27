@@ -57,6 +57,8 @@ USER ${APACHE_RUN_USER}:
 
 RUN (cd /var/www/html/ && composer install -v)
 
-RUN (crontab -u $(whoami) -l; echo "* * * * * /usr/local/bin/php /var/www/html/vendor/bin/drush cron > /var/log/cron/drupal.log" ) | crontab -u $(whoami) -
+RUN (crontab -u $(whoami) -l; echo "0 * * * * /usr/local/bin/php /var/www/html/vendor/bin/drush cron > /var/log/cron/drupal.log" ) | crontab -u $(whoami) -
 
 USER root:
+
+CMD service cron restart && /usr/sbin/apache2ctl -D FOREGROUND

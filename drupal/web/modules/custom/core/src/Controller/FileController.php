@@ -6,7 +6,6 @@ use Drupal;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\core\Utility\EnvController;
 use Drupal\media\Entity\Media;
-use Drupal\node\Entity\Node;
 use Drupal\notifications\Controller\NotificationsController;
 use Exception;
 
@@ -26,24 +25,17 @@ class FileController
     ]
   ];
 
-  public static function setMedia($userId, $userRoles, $nodeId, $type, $tmpName, $name)
+  /**
+   * @param $userId
+   * @param $node
+   * @param $type
+   * @param $tmpName
+   * @param $name
+   * @return void
+   * @throws EntityStorageException
+   */
+  public static function setMedia($userId, $node, $type, $tmpName, $name)
   {
-    $node = Node::load($nodeId);
-    if (empty($node)) {
-      throw new Exception('FC01: Invalid node id');
-    }
-
-    if ($node->bundle() !== 'board_item' && $type === 'cover') {
-      throw new Exception('FC07: Invalid media type for item');
-    }
-
-    if ($node->getOwnerId() != $userId) {
-      $allowedRoles = ((array)EnvController::getValues('ALLOWED_METHOD_ROLES'))['file_upload_any'];
-      if (!UserController::checkAuthRoles($userRoles, $allowedRoles)) {
-        throw new Exception('FC02: Unauthorized to modify this item');
-      }
-    }
-
     $mediaId = null;
     if (!empty($tmpName) && !empty($name)) {
       $fileContent = file_get_contents($tmpName);
@@ -53,7 +45,7 @@ class FileController
     $node->set(self::FILE_TYPES[$type]['field'], $mediaId);
     $node->setNewRevision();
     $node->setRevisionCreationTime(Drupal::time()->getCurrentTime());
-    $node->setRevisionUserId(UserController::load($userId));
+    $node->setRevisionUserId($userId);
     $node->save();
 
     if ($node->getOwnerId() != $userId) {
@@ -77,7 +69,7 @@ class FileController
   public static function createMedia($fileContent, $fileType, $fileName): mixed
   {
     if (!in_array($fileType, (array)EnvController::getValues('ALLOWED_FILE_TYPE'))) {
-      throw new Exception('FC03: Not allowed file type to create media');
+      throw new Exception('FC03: Not allowed file type to create media', 400);
     }
 
     $date = date('Y-m') . '/';
@@ -110,7 +102,7 @@ class FileController
     ]);
 
     if (!$media->save()) {
-      throw new Exception('FC04: Error in media node creation');
+      throw new Exception('FC04: Error in media node creation', 400);
     }
 
     return $media->id();
@@ -125,7 +117,7 @@ class FileController
   {
     $fileExtension = pathinfo($fileName)['extension'];
     if (!in_array($fileExtension, (array)EnvController::getValues('IMAGE_ALLOWED_EXTENSIONS'))) {
-      throw new Exception('FC05: Invalid file extension.');
+      throw new Exception('FC05: Invalid file extension.', 400);
     }
 
     return [
@@ -143,7 +135,7 @@ class FileController
   {
     $fileExtension = pathinfo($fileName)['extension'];
     if (!in_array($fileExtension, (array)EnvController::getValues('FILE_ALLOWED_EXTENSIONS'))) {
-      throw new Exception('FC06: Invalid file extension.');
+      throw new Exception('FC06: Invalid file extension.', 400);
     }
 
     return [

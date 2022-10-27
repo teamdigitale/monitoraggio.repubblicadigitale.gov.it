@@ -3,9 +3,9 @@
 namespace Drupal\notifications\Controller;
 
 use Drupal;
+use Drupal\cache_manager\Controller\CacheController;
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
-use Drupal\core\Utility\CacheController;
 use Drupal\core\Utility\EnvController;
 use Drupal\core\Utility\TaxonomyController;
 use Drupal\user\Entity\User;
@@ -31,27 +31,27 @@ class NotificationsController
     $messages = Drupal::config('notifications.messages');
 
     if (empty($messages)) {
-      throw new Exception('NC01: Notification messages are not set');
+      throw new Exception('NC01: Notification messages are not set', 400);
     }
 
     if (empty($entity)) {
-      throw new Exception('NC02: Notification entity is not set');
+      throw new Exception('NC02: Notification entity is not set', 400);
     }
 
     if (empty($type) || empty($messages->get($type))) {
-      throw new Exception('NC03: Error in notification type');
+      throw new Exception('NC03: Error in notification type', 400);
     }
 
     $user = User::load($senderId);
     if (empty($user)) {
-      throw new Exception('NC04: Error in user load in notification create.');
+      throw new Exception('NC04: Error in user load in notification create.', 400);
     }
 
     $contentAuthorUserName = '';
     if (!empty($contentAuthorId)) {
       $contentAuthor = User::load($contentAuthorId);
       if (empty($contentAuthor)) {
-        throw new Exception('NC05: Error in content author load in notification create.');
+        throw new Exception('NC05: Error in content author load in notification create.', 400);
       }
       $contentAuthorUserName = '$' . $contentAuthor->getAccountName() . '$';
     }
@@ -94,11 +94,11 @@ class NotificationsController
   public static function sendMultipleNotifications($entity, $senderId, array $receiverIds, $type, $reason = null, $contentAuthorId = null): void
   {
     if (empty($entity)) {
-      throw new Exception('NC06: Notification entity is not setted.');
+      throw new Exception('NC06: Notification entity is not setted.', 400);
     }
 
     if (empty($receiverIds)) {
-      throw new Exception('NC07: No notification receiver ids.');
+      throw new Exception('NC07: No notification receiver ids.', 400);
     }
 
     foreach ($receiverIds as $receiverId) {
@@ -114,7 +114,7 @@ class NotificationsController
    */
   public static function setNotificationStatus($notificationIds, $status): void
   {
-    try{
+    try {
       $query = Drupal::database()->update('notifications')
         ->fields([
           'status' => $status
@@ -123,8 +123,8 @@ class NotificationsController
       $query->execute();
 
       CacheController::resetViewCache('user_notifications');
-    }catch (Exception $ex){
-      throw new Exception('NC09: Error in notification update.');
+    } catch (Exception $ex) {
+      throw new Exception('NC09: Error in notification update.', 400);
     }
   }
 
@@ -135,14 +135,14 @@ class NotificationsController
    */
   public static function deleteNotifications($notificationIds): void
   {
-    try{
+    try {
       $query = Drupal::database()->delete('notifications');
       $query->condition('id', $notificationIds, 'IN');
       $query->execute();
 
       CacheController::resetViewCache('user_notifications');
-    }catch (Exception $ex) {
-      throw new Exception('NC10: Error in notification delete.');
+    } catch (Exception $ex) {
+      throw new Exception('NC10: Error in notification delete.', 400);
     }
   }
 
@@ -155,7 +155,7 @@ class NotificationsController
   {
     $termId = TaxonomyController::termIdByName('user_groups', EnvController::getValues('USER_GROUP_FOR_NOTIFICATION'));
     if (empty($termId)) {
-      throw new Exception('NC10: Notification user roles does not exist.');
+      throw new Exception('NC10: Notification user roles does not exist.', 400);
     }
 
     $notificationUsers = Drupal::entityTypeManager()

@@ -1,0 +1,14 @@
+uuid: 4923407a-e340-4a3c-bd93-c31502bcc550
+langcode: en
+status: true
+dependencies:
+  module:
+    - search_api_db
+id: category_server_search
+name: 'Category Server Search'
+description: ''
+backend: search_api_db
+backend_config:
+  database: 'default:default'
+  min_chars: 2
+  matching: partial

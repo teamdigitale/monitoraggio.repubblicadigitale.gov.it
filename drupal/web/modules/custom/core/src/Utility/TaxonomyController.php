@@ -45,13 +45,13 @@ class TaxonomyController
   public static function updateTerm($term, $termName): int
   {
     if (empty($term)) {
-      throw new Exception('TC01: Empty taxonomy term passed');
+      throw new Exception('TC01: Empty taxonomy term passed', 400);
     }
 
     $term->setName($termName);
 
     if (!$term->save()) {
-      throw new Exception('TC02: Error in term update');
+      throw new Exception('TC02: Error in term update', 400);
     }
 
     return (int)$term->id();
@@ -68,7 +68,7 @@ class TaxonomyController
   public static function deleteTerm($term): int
   {
     if (empty($term)) {
-      throw new Exception('TC03: Empty taxonomy term passed');
+      throw new Exception('TC03: Empty taxonomy term passed', 400);
     }
 
     $vid = $term->bundle();
@@ -85,7 +85,7 @@ class TaxonomyController
     foreach ($nodes as $node) {
       $node->set('field_category', $alternativeTermId);
       if (!$node->save()) {
-        throw new Exception('TC04: Error in node update in category delete');
+        throw new Exception('TC04: Error in node update in category delete', 400);
       }
     }
 

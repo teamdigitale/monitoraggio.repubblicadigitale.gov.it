@@ -31,31 +31,20 @@ class RequestEventSubscriber implements EventSubscriberInterface
   {
     try {
       $req = $event->getRequest() ?? '';
-      $route = null;
-      if (!empty($req)) {
-        $route = $req->get('_route');
-      }
-
+      $route = $req->get('_route');
       if (!str_starts_with($req->getRequestUri(), '/api')) {
         return;
       }
 
-      $allowedRouteRoles = (array)EnvController::getValues('ALLOWED_ROUTE_ROLES');
+      UserController::checkAuth($req, $route);
 
-      if (!empty($route) && array_key_exists($route, $allowedRouteRoles)) {
-        if (in_array($route, (array)EnvController::getValues('CHECK_PATH_PARAMETER_ROUTE'))) {
-          $path_user_name = $req->get('user_name');
-          $header_user_name = $req->headers->get('user-id') ?? '';
-
-          if ($path_user_name != $header_user_name) {
-            $event->setResponse(ResponseFormatterController::error('RES01: User unauthorized'));
-          }
-        }
-
-        $userName = UserController::checkAuth($req, $allowedRouteRoles[$route]);
-        $userId = UserController::load($userName);
-        $req->headers->set('user-id', $userId);
+      if (in_array($route, (array)EnvController::getValues('CHECK_PATH_PARAMETER_ROUTE'))) {
+        UserController::checkRouteParams($req);
       }
+
+      $drupalUserId = UserController::getOrCreate($req->headers->get('user-id'));
+      $req->headers->set('drupal-user-id', $drupalUserId);
+
     } catch (Exception $ex) {
       $event->setResponse(ResponseFormatterController::error($ex->getMessage(), $ex->getCode()));
     }

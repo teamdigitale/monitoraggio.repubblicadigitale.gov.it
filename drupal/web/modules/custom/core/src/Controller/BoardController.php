@@ -4,7 +4,6 @@ namespace Drupal\core\Controller;
 
 use Drupal;
 use Drupal\Core\Entity\EntityStorageException;
-use Drupal\core\Utility\EnvController;
 use Drupal\node\Entity\Node;
 use Drupal\notifications\Controller\NotificationsController;
 use Exception;
@@ -15,7 +14,6 @@ use Exception;
  */
 class BoardController
 {
-
   /**
    * @param $entity
    * @param $entityType
@@ -50,7 +48,7 @@ class BoardController
     $node->setPublished();
 
     if (!$node->save()) {
-      throw new Exception('BC01: Error in board node creation');
+      throw new Exception('BC01: Error in board node creation', 400);
     }
 
     Drupal::service('cache_tags.invalidator')->invalidateTags(['board_item_cache']);
@@ -58,10 +56,10 @@ class BoardController
     return (int)$node->id();
   }
 
+
   /**
    * @param $userId
-   * @param $userRoles
-   * @param $id
+   * @param $node
    * @param $title
    * @param $intervention
    * @param $program
@@ -71,22 +69,10 @@ class BoardController
    * @param $enableComments
    * @param $highlighted
    * @return int
-   * @throws EntityStorageException
+   * @throws Exception
    */
-  public static function update($userId, $userRoles, $id, $title, $intervention, $program, $programLabel, $category, $description, $enableComments, $highlighted): int
+  public static function update($userId, $node, $title, $intervention, $program, $programLabel, $category, $description, $enableComments, $highlighted): int
   {
-    $node = Node::load($id);
-    if (empty($node) || $node->bundle() != 'board_item') {
-      throw new Exception('BC02: Empty node or wrong node passed in board update');
-    }
-
-    if ($node->getOwnerId() != $userId) {
-      $allowedRoles = ((array)EnvController::getValues('ALLOWED_METHOD_ROLES'))['board_item_modify_any'];
-      if (!UserController::checkAuthRoles($userRoles, $allowedRoles)) {
-        throw new Exception('BC03: Unauthorized to modify this item');
-      }
-    }
-
     $node->set('title', $title);
     $node->set('field_intervention', $intervention);
     $node->set('field_program', $program);
@@ -101,7 +87,7 @@ class BoardController
     $node->setRevisionUserId($userId);
 
     if (!$node->save()) {
-      throw new Exception('BC04: Error in board node update');
+      throw new Exception('BC04: Error in board node update', 400);
     }
 
     if ($node->getOwnerId() != $userId) {

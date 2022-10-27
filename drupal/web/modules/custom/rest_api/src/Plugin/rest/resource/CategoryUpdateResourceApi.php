@@ -102,12 +102,12 @@ class CategoryUpdateResourceApi extends ResourceBase
   {
     try {
       if (empty($id)) {
-        throw new Exception('CURA01: Missing term id');
+        throw new Exception('CURA01: Missing term id', 400);
       }
 
       $term = Term::load($id);
       if (empty($term)) {
-        throw new Exception('CURA02: Invalid term id');
+        throw new Exception('CURA02: Invalid term id', 400);
       }
 
       $body = json_decode($req->getContent());

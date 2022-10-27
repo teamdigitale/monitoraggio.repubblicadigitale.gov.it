@@ -3,8 +3,10 @@
 namespace Drupal\rest_api\Plugin\rest\resource;
 
 use Drupal\core\Controller\BoardController;
+use Drupal\core\Controller\UserController;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\core\Utility\TaxonomyController;
+use Drupal\node\Entity\Node;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
 use Drupal\rest_api\Controller\Utility\ValidationController;
@@ -134,17 +136,20 @@ class BoardItemUpdateResourceApi extends ResourceBase
   {
     try {
       if (empty($id)) {
-        throw new Exception('BIURA01: Missing node id');
+        throw new Exception('BIURA01: Missing node id', 400);
       }
 
-      $userId = $req->headers->get('user-id') ?? '';
-      if (empty($userId)) {
-        throw new Exception('BIURA02: Missing user id in headers');
+      $userId = $req->headers->get('drupal-user-id') ?? '';
+      $userGroups = $req->headers->get('role-groups') ?? '';
+      $route = $req->get('_route');
+
+      $node = Node::load($id);
+      if (empty($node) || $node->bundle() != 'board_item') {
+        throw new Exception('BIURA05: Empty node or wrong node passed in board update', 400);
       }
 
-      $userRoles = $req->headers->get('user-roles') ?? '';
-      if (empty($userRoles)) {
-        throw new Exception('BIURA03: Missing user roles in headers');
+      if ($node->getOwnerId() != $userId && !UserController::checkAuthGroups($userGroups, $route, 'any')) {
+        throw new Exception('BIURA06: User unauthorized', 401);
       }
 
       $body = json_decode($req->getContent());
@@ -152,13 +157,12 @@ class BoardItemUpdateResourceApi extends ResourceBase
 
       $exists = TaxonomyController::termExistsById('board_categories', $body->category);
       if (!$exists) {
-        throw new Exception('BIURA04: Taxonomy term does not exists');
+        throw new Exception('BIURA04: Taxonomy term does not exists', 400);
       }
 
       $nodeId = BoardController::update(
         $userId,
-        $userRoles,
-        $id,
+        $node,
         $body->title,
         $body->intervention,
         $body->program,

@@ -88,24 +88,17 @@ class TrackingResourceApi extends ResourceBase
   public function post(Request $req, $type = null)
   {
     try {
-      $userId = $req->headers->get('user-id') ?? '';
-      if (empty($userId)) {
-        throw new Exception('TRA01: Missing user id in headers');
-      }
-
+      $userId = $req->headers->get('drupal-user-id') ?? '';
       $userRoles = $req->headers->get('user-roles') ?? '';
-      if (empty($userRoles)) {
-        throw new Exception('TRA02: Missing user roles in headers');
-      }
 
       $body = json_decode($req->getContent());
 
-      switch (strtolower($type)) {
+      switch (strtolower($type ?? '')) {
         case 'chat':
           ValidationController::validateRequestBody($body, 'chat');
 
           if (!in_array($body->role_code, explode(';', $userRoles))) {
-            throw new Exception('TRA03: Missing user role in body');
+            throw new Exception('TRA03: Invalid user role in body', 400);
           }
 
           $trackId = ActionTracker::trackChat(
@@ -117,6 +110,11 @@ class TrackingResourceApi extends ResourceBase
           break;
         case 'wd':
           ValidationController::validateRequestBody($body, 'wd');
+
+          if (!in_array($body->role_code, explode(';', $userRoles))) {
+            throw new Exception('TRA04: Invalid user role in body', 400);
+          }
+
           $trackId = ActionTracker::trackWD(
             $userId,
             $body->role_code,
@@ -126,18 +124,23 @@ class TrackingResourceApi extends ResourceBase
           break;
         case 'tnd':
           ValidationController::validateRequestBody($body, 'tnd');
+
+          if (!in_array($body->role_code, explode(';', $userRoles))) {
+            throw new Exception('TRA05: Invalid user role in body', 400);
+          }
+
           $trackId = ActionTracker::trackTND(
             $userId,
             $body->role_code,
             $body->event_type,
             $body->event,
-            !empty($body->event_value) ? strtoupper($body->event_value) : null,
+            !empty($body->event_value) ? strtoupper($body->event_value ?? '') : null,
             $body->category,
             $body->program_id
           );
           break;
         default:
-          throw new Exception('TRA04: Invalid tracking type');
+          throw new Exception('TRA06: Invalid tracking type', 400);
       }
 
       return ResponseFormatterController::success([

@@ -89,7 +89,7 @@ class NotificationDeleteResourceApi extends ResourceBase
   {
     try {
       if (empty($id)) {
-        throw new Exception('NDRA01: Missing node id');
+        throw new Exception('NDRA01: Missing node id', 400);
       }
 
       $ids = explode(';', $id);

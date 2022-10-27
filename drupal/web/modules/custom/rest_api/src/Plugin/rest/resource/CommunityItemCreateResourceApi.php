@@ -118,18 +118,15 @@ class CommunityItemCreateResourceApi extends ResourceBase
   public function post(Request $req)
   {
     try {
-      $userId = $req->headers->get('user-id') ?? '';
-      if (empty($userId)) {
-        throw new Exception('CICRA01: Missing user id in headers');
-      }
-
       $body = json_decode($req->getContent());
       ValidationController::validateRequestBody($body, self::JSON_SCHEMA);
 
       $exists = TaxonomyController::termExistsById('community_categories', $body->category);
       if (!$exists) {
-        throw new Exception('CICRA02: Taxonomy term does not exists');
+        throw new Exception('CICRA02: Taxonomy term does not exists', 400);
       }
+
+      $userId = $req->headers->get('drupal-user-id') ?? '';
 
       $nodeId = CommunityController::create(
         $body->entity,

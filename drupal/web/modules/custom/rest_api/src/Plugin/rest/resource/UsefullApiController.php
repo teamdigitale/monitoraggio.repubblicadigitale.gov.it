@@ -3,6 +3,7 @@
 namespace Drupal\rest_api\Plugin\rest\resource;
 
 use Drupal\core\Controller\FlagController;
+use Drupal\core\Controller\UserController;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\node\Entity\Node;
 use Drupal\rest\Plugin\ResourceBase;
@@ -102,26 +103,29 @@ class UsefullApiController extends ResourceBase
   public function post(Request $req, int $id)
   {
     try {
-      $userId = $req->headers->get('user-id') ?? '';
-      if (empty($userId)) {
-        throw new Exception('USAC01: Missing user id in headers');
-      }
-
       if (empty($id)) {
-        throw new Exception('USAC02: Missing node id');
+        throw new Exception('USAC02: Missing node id', 400);
       }
 
-      $node = Node::load($id);
-      if (empty($node)) {
-        throw new Exception('USAC03: Invalid node id');
-      }
+      $userId = $req->headers->get('drupal-user-id') ?? '';
+      $userGroups = $req->headers->get('role-groups') ?? '';
+      $route = $req->get('_route');
 
       $body = json_decode($req->getContent());
       ValidationController::validateRequestBody($body, self::JSON_SCHEMA);
 
+      $node = Node::load($id);
+      if (empty($node)) {
+        throw new Exception('USAC03: Invalid node id', 400);
+      }
+
+      if (!UserController::checkAuthGroups($userGroups, $route, $node->bundle())) {
+        throw new Exception('USAC06: User unauthorized', 401);
+      }
+
       $status = $body->status;
-      if($status<1 || $status>2){
-        throw new Exception('USAC04: Invalid useful status');
+      if ($status < 1 || $status > 2) {
+        throw new Exception('USAC04: Invalid useful status', 400);
       }
 
       $flag = FlagController::flag('usefull', $node, User::load($userId));

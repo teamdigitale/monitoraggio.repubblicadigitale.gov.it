@@ -102,36 +102,33 @@ class CommentReplyResourceApi extends ResourceBase
   public function post(Request $req, $id = null)
   {
     try {
-      $userId = $req->headers->get('user-id') ?? '';
-      if (empty($userId)) {
-        throw new Exception('CMRRA01: Missing user id in headers');
-      }
-
       if (empty($id)) {
-        throw new Exception('CMRRA02: Missing node id');
-      }
-
-      $comment = Comment::load($id);
-      if (empty($comment) || !empty($comment->getParentComment())) {
-        throw new Exception('CMRRA03: Invalid comment id');
+        throw new Exception('CMRRA02: Missing node id', 400);
       }
 
       $body = json_decode($req->getContent());
       ValidationController::validateRequestBody($body, self::JSON_SCHEMA);
 
+      $comment = Comment::load($id);
+      if (empty($comment) || !empty($comment->getParentComment())) {
+        throw new Exception('CMRRA03: Invalid comment id', 400);
+      }
+
       $nodeId = $comment->getCommentedEntityId();
       $node = Node::load($nodeId);
       if (empty($node) || $node->bundle() != 'community_item') {
-        throw new Exception('CMRRA04: Invalid node id');
+        throw new Exception('CMRRA04: Invalid node id', 400);
       }
 
       if (!$node->get('field_enable_comments')->value) {
-        throw new Exception('CMRRA05: Comments are not enabled for this node');
+        throw new Exception('CMRRA05: Comments are not enabled for this node', 400);
       }
 
       if (!BannedWordsController::validateText($body->comment_body)) {
-        throw new Exception('CMRRA06: Comment body contains banned words');
+        throw new Exception('CMRRA06: Comment body contains banned words', 400);
       }
+
+      $userId = $req->headers->get('drupal-user-id') ?? '';
 
       $commentId = CommentController::replyCreate(
         $nodeId,

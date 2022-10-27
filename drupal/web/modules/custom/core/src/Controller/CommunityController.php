@@ -6,7 +6,6 @@ use Drupal;
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Entity\EntityStorageException;
-use Drupal\core\Utility\EnvController;
 use Drupal\core\Utility\TaxonomyController;
 use Drupal\node\Entity\Node;
 use Drupal\notifications\Controller\NotificationsController;
@@ -36,7 +35,9 @@ class CommunityController
   {
     $tagsTermIds = [];
     foreach ($tags as $tag) {
-      $tagsTermIds[] = TaxonomyController::createOrGetTermTid('tags', $tag);
+      if (!empty($tag)) {
+        $tagsTermIds[] = TaxonomyController::createOrGetTermTid('tags', $tag);
+      }
     }
 
     $node = Node::create([
@@ -52,7 +53,7 @@ class CommunityController
     $node->setPublished();
 
     if (!$node->save()) {
-      throw new Exception('CYC01: Error in community node creation');
+      throw new Exception('CYC01: Error in community node creation', 400);
     }
 
     Drupal::service('cache_tags.invalidator')->invalidateTags(['community_item_cache']);
@@ -60,10 +61,10 @@ class CommunityController
     return (int)$node->id();
   }
 
+
   /**
    * @param $userId
-   * @param $userRoles
-   * @param $id
+   * @param $node
    * @param $title
    * @param $category
    * @param $description
@@ -73,23 +74,13 @@ class CommunityController
    * @throws InvalidPluginDefinitionException
    * @throws PluginNotFoundException
    */
-  public static function update($userId, $userRoles, $id, $title, $category, $description, $tags): int
+  public static function update($userId, $node, $title, $category, $description, $tags): int
   {
-    $node = Node::load($id);
-    if (empty($node) || $node->bundle() != 'community_item') {
-      throw new Exception('CYC02: Invalid node id');
-    }
-
-    if ($node->getOwnerId() != $userId) {
-      $allowedRoles = ((array)EnvController::getValues('ALLOWED_METHOD_ROLES'))['community_item_modify_any'];
-      if (!UserController::checkAuthRoles($userRoles, $allowedRoles)) {
-        throw new Exception('CYC03: Unauthorized to modify this item');
-      }
-    }
-
     $tagsTermIds = [];
     foreach ($tags as $tag) {
-      $tagsTermIds[] = TaxonomyController::createOrGetTermTid('tags', $tag);
+      if (!empty($tag)) {
+        $tagsTermIds[] = TaxonomyController::createOrGetTermTid('tags', $tag);
+      }
     }
 
     $node->set('title', $title);
@@ -102,7 +93,7 @@ class CommunityController
     $node->setRevisionUserId($userId);
 
     if (!$node->save()) {
-      throw new Exception('CYC04: Error in community node update');
+      throw new Exception('CYC04: Error in community node update', 400);
     }
 
     if ($node->getOwnerId() != $userId) {

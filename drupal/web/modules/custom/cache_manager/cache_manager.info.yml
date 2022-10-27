@@ -1,0 +1,5 @@
+name: 'Cache Manager'
+type: module
+description: 'Module to manage caching'
+core_version_requirement: ^9
+package: CMS

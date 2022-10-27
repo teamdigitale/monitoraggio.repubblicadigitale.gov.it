@@ -31,11 +31,11 @@ class SyncUsersController
     $termId = TaxonomyController::createOrGetTermTid('user_groups', EnvController::getValues('USER_GROUP_FOR_NOTIFICATION'));
 
     foreach ($userNames as $userName) {
-      $userId = UserController::load($userName);
+      $userId = UserController::getOrCreate($userName);
       $user = User::load($userId);
       $user->set('field_groups', [$termId]);
       if (!$user->save()) {
-        throw new Exception('SUC01: Error in setting notification user role');
+        throw new Exception('SUC01: Error in setting notification user role', 400);
       }
       $userIds[] = $userId;
     }
@@ -48,7 +48,7 @@ class SyncUsersController
       $user = User::load($userIdToRemove);
       $user->set('field_groups', []);
       if (!$user->save()) {
-        throw new Exception('SUC02: Error in removing notification user role');
+        throw new Exception('SUC02: Error in removing notification user role', 400);
       }
     }
 

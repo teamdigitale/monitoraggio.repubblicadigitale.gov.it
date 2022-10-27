@@ -53,7 +53,7 @@ class HttpController
   public static function post(string $apiBaseUrl, string $apiPath, array $headers, array $params, $body, string $bodyType): mixed
   {
     if (!in_array($bodyType, EnvController::getValues('ALLOWED_BODY_TYPES'))) {
-      throw new Exception('HC01: Wrong body type passed');
+      throw new Exception('HC01: Wrong body type passed', 400);
     }
 
     switch ($bodyType) {

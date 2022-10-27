@@ -85,13 +85,6 @@ class BoardFiltersResourceApi extends ResourceBase
   public function get(Request $req)
   {
     try {
-
-
-      $userId = $req->headers->get('user-id') ?? '';
-      if (empty($userId)) {
-        throw new Exception('BFRA01: Missing user id in headers');
-      }
-
       $categories = $req->get('categories') ?? '';
       $programs = $req->get('programs') ?? '';
       $interventions = $req->get('interventions') ?? '';

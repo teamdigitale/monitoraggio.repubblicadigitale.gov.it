@@ -7,15 +7,19 @@ use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Class ConfigForm.
+ *
+ */
+
+/**
+ *
  */
 class BannedWordsForm extends ConfigFormBase
 {
-  const KEY_TITLE = 'title';
-  const KEY_BODY = 'list';
+  public const KEY_TITLE = 'title';
+  public const KEY_BODY = 'list';
 
-  const KEY_BANNED_WORDS_LIST = 'banned_words_list';
-  const KEY_BANNED_WORDS = 'banned_words';
+  public const KEY_BANNED_WORDS_LIST = 'banned_words_list';
+  public const KEY_BANNED_WORDS = 'banned_words';
 
   /**
    * {@inheritdoc}

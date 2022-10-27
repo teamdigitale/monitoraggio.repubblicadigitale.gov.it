@@ -109,12 +109,12 @@ class CategoryCreateResourceApi extends ResourceBase
 
       $categoryVid = $body->term_type;
       if (!in_array($categoryVid, (array)EnvController::getValues('ALLOWED_CATEGORIES'))) {
-        throw new Exception('CCRA01: Item type does not exist');
+        throw new Exception('CCRA01: Item type does not exist', 400);
       }
 
       $termId = TaxonomyController::termIdByName($categoryVid, $body->term_name);
       if (!empty($termId)) {
-        throw new Exception('CCRA02: Taxonomy term already exists');
+        throw new Exception('CCRA02: Taxonomy term already exists', 400);
       }
 
       $termId = TaxonomyController::createOrGetTermTid($categoryVid, $body->term_name);

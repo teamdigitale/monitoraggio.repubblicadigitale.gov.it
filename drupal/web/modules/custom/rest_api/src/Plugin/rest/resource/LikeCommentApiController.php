@@ -4,7 +4,9 @@ namespace Drupal\rest_api\Plugin\rest\resource;
 
 use Drupal\comment\Entity\Comment;
 use Drupal\core\Controller\FlagController;
+use Drupal\core\Controller\UserController;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\node\Entity\Node;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
 use Drupal\user\Entity\User;
@@ -91,18 +93,28 @@ class LikeCommentApiController extends ResourceBase
   public function post(Request $req, int $id)
   {
     try {
-      $userId = $req->headers->get('user-id') ?? '';
-      if (empty($userId)) {
-        throw new Exception('LCAC01: Missing user id in headers');
+      if (empty($id)) {
+        throw new Exception('LCAC02: Missing comment id', 400);
       }
 
-      if (empty($id)) {
-        throw new Exception('LCAC02: Missing comment id');
-      }
+      $userId = $req->headers->get('drupal-user-id') ?? '';
+      $userGroups = $req->headers->get('role-groups') ?? '';
+      $route = $req->get('_route');
 
       $comment = Comment::load($id);
       if (empty($comment)) {
-        throw new Exception('LCAC03: Invalid comment id');
+        throw new Exception('LCAC03: Invalid comment id', 400);
+      }
+
+      $nodeId = $comment->getCommentedEntityId();
+      $node = Node::load($nodeId);
+
+      if (empty($node)) {
+        throw new Exception('LCAC05: Invalid commented node', 400);
+      }
+
+      if (!UserController::checkAuthGroups($userGroups, $route, $node->bundle())) {
+        throw new Exception('LCAC06: User unauthorized', 401);
       }
 
       FlagController::flag('like_comment', $comment, User::load($userId));

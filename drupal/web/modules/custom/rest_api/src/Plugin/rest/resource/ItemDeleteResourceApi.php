@@ -3,7 +3,9 @@
 namespace Drupal\rest_api\Plugin\rest\resource;
 
 use Drupal\core\Controller\ItemController;
+use Drupal\core\Controller\UserController;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\node\Entity\Node;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
 use Drupal\rest_api\Controller\Utility\ValidationController;
@@ -100,25 +102,31 @@ class ItemDeleteResourceApi extends ResourceBase
   {
     try {
       if (empty($id)) {
-        throw new Exception('IDRA01: Missing node id');
+        throw new Exception('IDRA01: Missing node id', 400);
       }
 
-      $userId = $req->headers->get('user-id') ?? '';
-      if (empty($userId)) {
-        throw new Exception('IDRA02: Missing user id in headers');
-      }
-
-      $userRoles = $req->headers->get('user-roles') ?? '';
-      if (empty($userRoles)) {
-        throw new Exception('IDRA03: Missing user roles in headers');
-      }
+      $userId = $req->headers->get('drupal-user-id') ?? '';
+      $userGroups = $req->headers->get('role-groups') ?? '';
+      $route = $req->get('_route');
 
       $body = json_decode($req->getContent());
       ValidationController::validateRequestBody($body, self::JSON_SCHEMA);
 
+      $node = Node::load($id);
+      if (empty($node)) {
+        throw new Exception('IDRA02: Invalid node id', 400);
+      }
+
+      if (!UserController::checkAuthGroups($userGroups, $route, $node->bundle())) {
+        throw new Exception('IDRA03: User unauthorized', 401);
+      }
+
+      if ($node->getOwnerId() != $userId && !UserController::checkAuthGroups($userGroups, $route, 'any')) {
+        throw new Exception('IDRA04: User unauthorized', 401);
+      }
+
       ItemController::delete(
         $userId,
-        $userRoles,
         $id,
         $body->reason
       );

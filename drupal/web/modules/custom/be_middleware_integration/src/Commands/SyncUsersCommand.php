@@ -3,12 +3,12 @@
 namespace Drupal\be_middleware_integration\Commands;
 
 use Drupal;
-use Drush\Commands\DrushCommands;
+use Drupal\be_middleware_integration\Controller\ApiIntegrationController;
+use Drupal\be_middleware_integration\Controller\SyncUsersController;
 use Drupal\core\Utility\EnvController;
+use Drush\Commands\DrushCommands;
 use Exception;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Drupal\be_middleware_integration\Controller\SyncUsersController;
-use Drupal\be_middleware_integration\Controller\ApiIntegrationController;
 
 /**
  *

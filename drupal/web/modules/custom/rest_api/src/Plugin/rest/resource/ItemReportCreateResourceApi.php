@@ -3,6 +3,7 @@
 namespace Drupal\rest_api\Plugin\rest\resource;
 
 use Drupal\core\Controller\ReportController;
+use Drupal\core\Controller\UserController;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\node\Entity\Node;
 use Drupal\rest\Plugin\ResourceBase;
@@ -101,17 +102,20 @@ class ItemReportCreateResourceApi extends ResourceBase
   {
     try {
       if (empty($id)) {
-        throw new Exception('IRCRA01: Missing node id');
+        throw new Exception('IRCRA01: Missing node id', 400);
       }
+
+      $userId = $req->headers->get('drupal-user-id') ?? '';
+      $userGroups = $req->headers->get('role-groups') ?? '';
+      $route = $req->get('_route');
 
       $node = Node::load($id);
       if (empty($node)) {
-        throw new Exception('IRCRA02: Invalid node id');
+        throw new Exception('IRCRA02: Invalid node id', 400);
       }
 
-      $userId = $req->headers->get('user-id') ?? '';
-      if (empty($userId)) {
-        throw new Exception('IRCRA03: Missing user id in headers');
+      if (!UserController::checkAuthGroups($userGroups, $route, $node->bundle())) {
+        throw new Exception('IRCRA04: User unauthorized', 401);
       }
 
       $body = json_decode($req->getContent());

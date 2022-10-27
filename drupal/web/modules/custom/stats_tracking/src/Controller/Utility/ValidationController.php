@@ -71,7 +71,6 @@ class ValidationController extends ControllerBase
         ],
         'event_value' => [
           'type' => ['string', 'null'],
-          'minLength' => 1,
           'required' => true
         ],
         'program_id' => [
@@ -116,20 +115,21 @@ class ValidationController extends ControllerBase
     if (!$validator->isValid()) {
       throw new Exception('ATVC01: Invalid JSON body: ' . json_encode(array_map(function ($value) {
           return $value['message'];
-        }, $validator->getErrors())));
+        }, $validator->getErrors())), 400);
     }
 
-    $event_type = strtolower($body->event_type);
-    $event = strtolower($body->event);
-    $event_value = strtolower($body->event_value);
+    $event = strtolower($body->event ?? '');
 
     if ($bundle == 'tnd') {
+      $event_type = strtolower($body->event_type ?? '');
+      $event_value = strtolower($body->event_value ?? '');
+
       if (!in_array($event_type, self::ALLOWED_EVENT_TYPE)) {
-        throw new Exception('ATVC02: Invalid event type');
+        throw new Exception('ATVC02: Invalid event type', 400);
       }
 
       if (!in_array($event, self::ALLOWED_EVENT['tnd'][$event_type])) {
-        throw new Exception('ATVC03: Invalid event for this event type');
+        throw new Exception('ATVC03: Invalid event for this event type', 400);
       }
 
       if (
@@ -139,10 +139,10 @@ class ValidationController extends ControllerBase
         ||
         ($event_type != 'documenti' && $event != 'rating' && !empty($event_value))
       ) {
-        throw new Exception('ATVC04: Invalid event value');
+        throw new Exception('ATVC04: Invalid event value', 400);
       }
     } elseif (!in_array($event, self::ALLOWED_EVENT[$bundle])) {
-      throw new Exception('ATVC05: Invalid event');
+      throw new Exception('ATVC05: Invalid event', 400);
     }
 
     return true;

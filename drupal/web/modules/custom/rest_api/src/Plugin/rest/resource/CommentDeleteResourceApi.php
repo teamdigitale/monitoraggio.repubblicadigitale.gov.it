@@ -2,8 +2,11 @@
 
 namespace Drupal\rest_api\Plugin\rest\resource;
 
+use Drupal\comment\Entity\Comment;
 use Drupal\core\Controller\CommentController;
+use Drupal\core\Controller\UserController;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\node\Entity\Node;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
 use Drupal\rest_api\Controller\Utility\ValidationController;
@@ -100,27 +103,40 @@ class CommentDeleteResourceApi extends ResourceBase
   {
     try {
       if (empty($id)) {
-        throw new Exception('CMDRA01: Missing comment id');
+        throw new Exception('CMDRA01: Missing comment id', 400);
       }
 
-      $userId = $req->headers->get('user-id') ?? '';
-      if (empty($userId)) {
-        throw new Exception('CMDRA02: Missing user id in headers');
-      }
-
-      $userRoles = $req->headers->get('user-roles') ?? '';
-      if (empty($userRoles)) {
-        throw new Exception('CMDRA03: Missing user roles in headers');
-      }
+      $userId = $req->headers->get('drupal-user-id') ?? '';
+      $userGroups = $req->headers->get('role-groups') ?? '';
+      $route = $req->get('_route');
 
       $body = json_decode($req->getContent());
       ValidationController::validateRequestBody($body, self::JSON_SCHEMA);
 
+      $comment = Comment::load($id);
+      if (empty($comment)) {
+        throw new Exception('CMDRA02: Invalid comment id', 400);
+      }
+
+      $nodeId = $comment->getCommentedEntityId();
+      $node = Node::load($nodeId);
+
+      if (empty($node)) {
+        throw new Exception('CMDRA05: Invalid commented node', 400);
+      }
+
+      if (!UserController::checkAuthGroups($userGroups, $route, $node->bundle())) {
+        throw new Exception('CMDRA06: User unautorized', 401);
+      }
+
+      if ($comment->getOwnerId() != $userId && !UserController::checkAuthGroups($userGroups, $route, 'any')) {
+        throw new Exception('CMDRA07: User unauthorized', 401);
+      }
+
       $deletedIds = CommentController::delete(
         $userId,
-        $userRoles,
         $id,
-        $body->reason
+        $body->reason ?? ''
       );
 
       return ResponseFormatterController::success([

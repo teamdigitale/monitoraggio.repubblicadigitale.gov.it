@@ -3,6 +3,7 @@
 namespace Drupal\rest_api\Plugin\rest\resource;
 
 use Drupal\core\Controller\FlagController;
+use Drupal\core\Controller\UserController;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\node\Entity\Node;
 use Drupal\rest\Plugin\ResourceBase;
@@ -91,18 +92,21 @@ class DownloadedApiController extends ResourceBase
   public function post(Request $req, int $id)
   {
     try {
-      $userId = $req->headers->get('user-id') ?? '';
-      if (empty($userId)) {
-        throw new Exception('DAC01: Missing user id in headers');
+      if (empty($id)) {
+        throw new Exception('DAC02: Missing node id', 400);
       }
 
-      if (empty($id)) {
-        throw new Exception('DAC02: Missing node id');
-      }
+      $userId = $req->headers->get('drupal-user-id') ?? '';
+      $userGroups = $req->headers->get('role-groups') ?? '';
+      $route = $req->get('_route');
 
       $node = Node::load($id);
       if (empty($node)) {
-        throw new Exception('DAC03: Invalid node id');
+        throw new Exception('DAC03: Invalid node id', 400);
+      }
+
+      if (!UserController::checkAuthGroups($userGroups, $route, $node->bundle())) {
+        throw new Exception('DAC06: User unauthorized', 401);
       }
 
       FlagController::flag('download', $node, User::load($userId));

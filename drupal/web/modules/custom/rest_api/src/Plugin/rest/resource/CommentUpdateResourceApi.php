@@ -3,8 +3,11 @@
 namespace Drupal\rest_api\Plugin\rest\resource;
 
 use Drupal\banned_words\Controller\BannedWordsController;
+use Drupal\comment\Entity\Comment;
 use Drupal\core\Controller\CommentController;
+use Drupal\core\Controller\UserController;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\node\Entity\Node;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest_api\Controller\Utility\ResponseFormatterController;
 use Drupal\rest_api\Controller\Utility\ValidationController;
@@ -101,27 +104,41 @@ class CommentUpdateResourceApi extends ResourceBase
   {
     try {
       if (empty($id)) {
-        throw new Exception('CMURA01: Missing node id');
+        throw new Exception('CMURA01: Missing node id', 400);
       }
 
-      $userId = $req->headers->get('user-id') ?? '';
-      if (empty($userId)) {
-        throw new Exception('CMURA02: Missing user id in headers');
-      }
-
-      $userRoles = $req->headers->get('user-roles') ?? '';
-      if (empty($userRoles)) {
-        throw new Exception('CMURA03: Missing user roles in headers');
-      }
+      $userId = $req->headers->get('drupal-user-id') ?? '';
+      $userGroups = $req->headers->get('role-groups') ?? '';
+      $route = $req->get('_route');
 
       $body = json_decode($req->getContent());
       ValidationController::validateRequestBody($body, self::JSON_SCHEMA);
 
-      if (!BannedWordsController::validateText($body->comment_body)) {
-        throw new Exception('CMURA04: Comment body contains banned words');
+      $comment = Comment::load($id);
+      if (empty($comment)) {
+        throw new Exception('CMURA02: Invalid comment id', 400);
       }
 
-      $commentId = CommentController::update($userId, $userRoles, $id, $body->comment_body);
+      $nodeId = $comment->getCommentedEntityId();
+      $node = Node::load($nodeId);
+
+      if (empty($node)) {
+        throw new Exception('CMURA05: Invalid commented node', 400);
+      }
+
+      if (!UserController::checkAuthGroups($userGroups, $route, $node->bundle())) {
+        throw new Exception('CMURA06: User unauthorized', 401);
+      }
+
+      if ($comment->getOwnerId() != $userId && !UserController::checkAuthGroups($userGroups, $route, 'any')) {
+        throw new Exception('CMURA07: User unauthorized', 401);
+      }
+
+      if (!BannedWordsController::validateText($body->comment_body)) {
+        throw new Exception('CMURA04: Comment body contains banned words', 400);
+      }
+
+      $commentId = CommentController::update($userId, $id, $body->comment_body);
 
       return ResponseFormatterController::success([
         'id' => $commentId

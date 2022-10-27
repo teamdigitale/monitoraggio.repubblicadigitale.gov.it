@@ -566,7 +566,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '{{ field_description__value }}'
+            text: '{{ field_description__value | raw}}'
             make_link: false
             path: ''
             absolute: false
