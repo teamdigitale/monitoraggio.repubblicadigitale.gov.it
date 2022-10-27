@@ -11,6 +11,7 @@ const GetCategoriesListAction = {
 
 export const GetCategoriesList =
   ({
+    type = 'all',
     keys,
   }: {
     type?:
@@ -36,7 +37,9 @@ export const GetCategoriesList =
             value:
               (filters.categorySections || [])
                 .map(({ value }: { value: string }) => value)
-                .join(',') || 'all',
+                .join(',') ||
+              type ||
+              'all',
           },
         ],
       };

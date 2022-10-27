@@ -59,7 +59,8 @@ const Slider = ({
             'icon',
             'icon-light',
             'arrow left',
-            !isItemsHome && 'right-alignment'
+            !isItemsHome && 'right-alignment',
+            cardSlider && 'align-slider-arrow'
           )}
         />
       )}
