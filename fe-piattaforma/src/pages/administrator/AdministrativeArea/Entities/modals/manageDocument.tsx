@@ -68,6 +68,7 @@ const ManageDocument: React.FC<ManageDocumentI> = ({
             id,
             {
               ...newFormValues,
+              title: newFormValues.title?.toString(),
               program_label:
                 newFormValues.program === 'public'
                   ? 'Tutti i programmi'
