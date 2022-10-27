@@ -50,6 +50,7 @@ import it.pa.repdgt.shared.awsintegration.service.S3Service;
 import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.EntePartnerEntity;
+import it.pa.repdgt.shared.entity.IntegrazioniUtenteEntity;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
@@ -296,6 +297,15 @@ public class UtenteService {
 		utente.setDataOraAggiornamento(utente.getDataOraCreazione());
 		utente.setNome(Utils.toCamelCase(utente.getNome()));
 		utente.setCognome(utente.getCognome().toUpperCase());
+		
+		IntegrazioniUtenteEntity integrazione = new IntegrazioniUtenteEntity();
+		integrazione.setUtente(utente);
+		integrazione.setDataOraAggiornamento(new Date());
+		integrazione.setDataOraCreazione(new Date());
+		integrazione.setUtenteRegistratoInRocketChat(false);
+		integrazione.setUtenteRegistratoInWorkdocs(false);
+		
+		utente.setIntegrazioneUtente(integrazione);
 		
 		final UtenteEntity utenteSalvato = this.salvaUtente(utente);
 		if(!ruolo.getPredefinito()) {
