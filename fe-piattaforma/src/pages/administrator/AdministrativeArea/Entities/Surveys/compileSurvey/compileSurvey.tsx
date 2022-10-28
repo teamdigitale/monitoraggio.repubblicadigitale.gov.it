@@ -493,8 +493,9 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
         <span className='primary-color'> Vai alla lista cittadini </span>
       </Button>
       <SectionTitle
-        title='Compilazione Questionario'
+        title='Compilazione questionario'
         upperTitle={{ icon: 'it-file', text: 'QUESTIONARIO' }}
+        inline
       />
       <div
         className={clsx(

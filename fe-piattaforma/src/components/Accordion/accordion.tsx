@@ -29,6 +29,7 @@ interface AccordionI {
   iconLeft?: boolean;
   detailAccordion?: boolean;
   roleList?: boolean;
+  userPublishedContent?: boolean;
 }
 
 const Accordion: React.FC<AccordionI> = (props) => {
@@ -48,6 +49,7 @@ const Accordion: React.FC<AccordionI> = (props) => {
     iconLeft = true,
     detailAccordion = false,
     roleList = false,
+    userPublishedContent = false,
   } = props;
   const [collapseOpen, setCollapseOpen] = useState(false);
   const device = useAppSelector(selectDevice);
@@ -138,7 +140,12 @@ const Accordion: React.FC<AccordionI> = (props) => {
           </Form>
         </div>
       )}
-      <AccordionBody active={collapseOpen}>{children}</AccordionBody>
+      <AccordionBody
+        active={collapseOpen}
+        className={clsx(userPublishedContent && 'no-padding-right')}
+      >
+        {children}
+      </AccordionBody>
     </AccordionKit>
   );
 };

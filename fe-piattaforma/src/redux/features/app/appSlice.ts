@@ -22,7 +22,11 @@ interface AppStateI {
 }
 
 const initialState: AppStateI = {
-  device: {},
+  device: {
+    mediaIsDesktop: true,
+    mediaIsPhone: false,
+    mediaIsTablet: false,
+  },
   loader: {
     isLoading: false,
     count: 0,

@@ -312,12 +312,14 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
                       category_label={e.category_label}
                       date={e.date}
                       title={e.title}
-                      download={e.commentsTot || e.download || '-'}
-                      comment_count={
-                        e.commentsTot || e.comment_count || e.comment || '-'
+                      downloads={
+                        e.commentsTot || e.download || e.downloads
                       }
-                      likes={e.likes || e.commentsTot || '-'}
-                      views={e.views || e.commentsTot || '-'}
+                      comment_count={
+                        e.commentsTot || e.comment_count || e.comment
+                      }
+                      likes={e.likes || e.commentsTot}
+                      views={e.views || e.commentsTot}
                     />
                   </div>
                 ))}

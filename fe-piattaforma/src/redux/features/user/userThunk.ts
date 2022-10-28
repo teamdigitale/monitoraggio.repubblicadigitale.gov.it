@@ -273,12 +273,14 @@ export const GetNotificationsByUser =
         if (id) {
           const body = {
             ...filters,
+            sort: filters.sort[0].value === 'created' ? [{ label: 'created_desc', value: 'created_desc' }] : filters.sort,
             page: [{ value: Math.max(0, pagination.pageNumber - 1) }],
             items_per_page: [{ value: 9 }],
             ...forcedFilters,
           };
 
-          const queryParam = transformFiltersToQueryParams(body);
+          const queryParam = transformFiltersToQueryParams(body)
+            .replace('sort', 'sort_by')
           const res = await proxyCall(
             `/user/${id}/notifications${queryParam}`,
             'GET'
@@ -288,7 +290,7 @@ export const GetNotificationsByUser =
               dispatch(
                 setUserNotificationsToRead(res.data.data.pager?.total_items || 0)
               );
-              dispatch(setUserNotificationsPreview(res.data.data.items || []))
+              dispatch(setUserNotificationsPreview(res.data.data.items || []));
             } else {
               dispatch(setUserNotifications(res.data.data.items || []));
               dispatch(
@@ -316,11 +318,13 @@ export const ReadNotification =
     try {
       dispatch(showLoader());
       dispatch({ ...ReadNotificationAction });
-      await proxyCall(
-        `/notification/${notificationsIds.join(';')}/read`,
-        'POST',
-        {}
-      );
+      if (notificationsIds.length) {
+        await proxyCall(
+          `/notification/${notificationsIds.join(';')}/read`,
+          'POST',
+          {}
+        );
+      }
     } catch (error) {
       console.log('ReadNotification error', error);
     } finally {
@@ -337,11 +341,13 @@ export const DeleteNotification =
     try {
       dispatch(showLoader());
       dispatch({ ...DeleteNotificationAction });
-      await proxyCall(
-        `/notification/${notificationsIds.join(';')}/delete`,
-        'POST',
-        {}
-      );
+      if (notificationsIds.length) {
+        await proxyCall(
+          `/notification/${notificationsIds.join(';')}/delete`,
+          'POST',
+          {}
+        );
+      }
     } catch (error) {
       console.log('DeleteNotification error', error);
     } finally {

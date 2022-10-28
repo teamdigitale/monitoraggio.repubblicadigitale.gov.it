@@ -16,12 +16,14 @@ const fieldMappedForTranslations: { [key: string]: string } = {
   id: 'id',
   ente_ref: 'ente_ref',
   profilo: 'Profilo',
-  ruoli: 'Ruoli',
+  ruoli: 'Ruolo',
   ref: 'Referenti',
+  progetto: 'Progetto',
+  programma: 'Programma',
 };
 
 interface CardStatusActionI {
-  title: string;
+  title?: string | undefined;
   subtitle?: string;
   status?: string | undefined;
   actionView?: boolean;
@@ -114,31 +116,32 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
             device.mediaIsPhone && 'title',
             'd-flex',
             'flex-row',
-            'justify-content-between',
             'align-items-center',
-            'flex-wrap'
+            'flex-wrap',
+            'flex-grow-1'
           )}
         >
-          <div
-            className='card-status-action__title w-100 pr-4 text-truncate'
-            style={{
-              minWidth: device.mediaIsDesktop ? '300px' : '200px',
-            }}
-          >
-            <span className='neutral-1-color-a8 card-status-action__title text-wrap'>
-              <strong>{title}</strong>
-              {subtitle && (
-                <span className='neutral-1-color-a8'>{subtitle}</span>
-              )}
-            </span>
-          </div>
-
+          {title || subtitle ? (
+            <div
+              className='card-status-action__title w-100 pr-4 text-truncate'
+              style={{
+                minWidth: device.mediaIsDesktop ? '300px' : '200px',
+              }}
+            >
+              <span className='neutral-1-color-a8 card-status-action__title text-wrap'>
+                {title ? <strong>{title}</strong> : null}
+                {subtitle ? (
+                  <span className='neutral-1-color-a8'>{subtitle}</span>
+                ) : null}
+              </span>
+            </div>
+          ) : null}
           {fullInfo && Object.keys(fullInfo).length ? (
             <div
               className={clsx(
                 device.mediaIsPhone
                   ? 'd-flex flex-column align-items-start'
-                  : 'd-flex flex-row flex-wrap'
+                  : 'd-flex flex-row w-100 flex-wrap'
               )}
             >
               {Object.keys(fullInfo).map((key, index) => {
@@ -153,6 +156,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
                       device.mediaIsTablet && 'pr-2',
                       device.mediaIsDesktop && 'pr-5'
                     )}
+                    style={{ width: '33%' }}
                     key={index}
                   >
                     <span className='primary-color-a12 mr-2 text-wrap'>
@@ -173,7 +177,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
             'flex-row',
             'align-items-center',
             device.mediaIsPhone
-              ? 'align-items-start justify-content-start'
+              ? 'align-items-start justify-content-start w-100'
               : 'd-flex flex-row justify-content-end'
           )}
         >
@@ -184,7 +188,13 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
               'align-items-center',
               'justify-content-end'
             )}
-            style={{ minWidth: device.mediaIsDesktop ? '150px' : '' }}
+            style={{
+              minWidth: device.mediaIsDesktop
+                ? '190px'
+                : device.mediaIsTablet
+                ? '170px'
+                : 'unset',
+            }}
           >
             {status && (
               <StatusChip

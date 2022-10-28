@@ -37,13 +37,7 @@ const Modal: React.FC<ModalI> = (props) => {
     <ModalsPortal.Source>
       <Curtain open noscroll onClick={handleCloseModal} />
       <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
-        <div
-          className={clsx(
-            'd-flex',
-            'justify-content-around',
-            isMobile && 'mt-3'
-          )}
-        >
+        <div className={clsx('d-flex', 'justify-content-around')}>
           <div
             className={clsx(
               'modal-wrapper',
