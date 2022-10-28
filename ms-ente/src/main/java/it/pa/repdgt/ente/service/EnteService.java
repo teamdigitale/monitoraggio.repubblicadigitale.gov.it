@@ -913,7 +913,8 @@ public class EnteService {
 											case "Ente Gestore di Programma":
 												ProgrammaEntity programma = this.programmaService.getProgrammaById(id);
 												dettaglioProfilo.setId(id);
-												dettaglioProfilo.setNome(programma.getNome());
+												dettaglioProfilo.setTipoEntita("Programma");
+												dettaglioProfilo.setNome(programma.getNomeBreve());
 												dettaglioProfilo.setProfilo(profilo);
 												dettaglioProfilo.setStato(programma.getStato());
 												dettaglioProfilo.setReferenti(this.utenteService.getReferentiProgrammaById(id, idEnte));
@@ -923,7 +924,8 @@ public class EnteService {
 												//Progetto di cui sono gestore
 												ProgettoEntity progetto = this.progettoService.getProgettoById(id);
 												dettaglioProfilo.setId(id);
-												dettaglioProfilo.setNome(progetto.getNome());
+												dettaglioProfilo.setTipoEntita("Progetto");
+												dettaglioProfilo.setNome(progetto.getNomeBreve());
 												dettaglioProfilo.setProfilo(profilo);
 												dettaglioProfilo.setStato(progetto.getStato());
 												dettaglioProfilo.setReferenti(this.utenteService.getReferentiProgettoById(id, idEnte));
@@ -933,7 +935,8 @@ public class EnteService {
 												//Progetto di cui sono ente partner
 												ProgettoEntity progettoEntePartner = this.progettoService.getProgettoById(id);
 												dettaglioProfilo.setId(id);
-												dettaglioProfilo.setNome(progettoEntePartner.getNome());
+												dettaglioProfilo.setTipoEntita("Progetto");
+												dettaglioProfilo.setNome(progettoEntePartner.getNomeBreve());
 												dettaglioProfilo.setProfilo(profilo);
 												dettaglioProfilo.setStato(progettoEntePartner.getStato());
 												dettaglioProfilo.setReferenti(this.utenteService.getReferentiEntePartnerProgettoById(id, idEnte));

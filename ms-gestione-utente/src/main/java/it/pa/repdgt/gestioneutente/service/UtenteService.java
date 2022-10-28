@@ -796,7 +796,7 @@ public class UtenteService {
 														DettaglioRuoliBean dettaglioRuolo = new DettaglioRuoliBean();
 														ProgrammaEntity programmaFetchDB = this.programmaService.getProgrammaById(id);
 														dettaglioRuolo.setId(id);
-														dettaglioRuolo.setNome(programmaFetchDB.getNome());
+														dettaglioRuolo.setNome(programmaFetchDB.getNomeBreve());
 														dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
 														dettaglioRuolo.setRuolo(ruolo.getNome());
 														dettaglioRuolo.setStatoP(programmaFetchDB.getStato());
@@ -848,7 +848,7 @@ public class UtenteService {
 														DettaglioRuoliBean dettaglioRuolo = new DettaglioRuoliBean();
 														ProgettoEntity progettoXEgpFetchDB = this.progettoService.getProgettoById(id);
 														dettaglioRuolo.setId(id);
-														dettaglioRuolo.setNome(progettoXEgpFetchDB.getNome());
+														dettaglioRuolo.setNome(progettoXEgpFetchDB.getNomeBreve());
 														dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
 														dettaglioRuolo.setRuolo(ruolo.getNome());
 														dettaglioRuolo.setStatoP(progettoXEgpFetchDB.getStato());
@@ -879,7 +879,7 @@ public class UtenteService {
 														ProgettoEntity progettoXEppFetchDB = this.progettoService.getProgettoById(entePartner.getId().getIdProgetto());
 														dettaglioRuolo.setId(entePartner.getId().getIdProgetto());
 														dettaglioRuolo.setIdEnte(entePartner.getId().getIdEnte());
-														dettaglioRuolo.setNome(progettoXEppFetchDB.getNome());
+														dettaglioRuolo.setNome(progettoXEppFetchDB.getNomeBreve());
 														dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
 														dettaglioRuolo.setRuolo(ruolo.getNome());
 														dettaglioRuolo.setStatoP(progettoXEppFetchDB.getStato());
@@ -910,7 +910,7 @@ public class UtenteService {
 														ProgettoEntity progettoXFacFetchDB = this.progettoService.getProgettoById(enteSedeProgetoFac.getIdProgetto());
 														dettaglioRuolo.setId(enteSedeProgetoFac.getIdProgetto());
 														dettaglioRuolo.setIdEnte(enteSedeProgetoFac.getIdEnte());
-														dettaglioRuolo.setNome(progettoXFacFetchDB.getNome());
+														dettaglioRuolo.setNome(progettoXFacFetchDB.getNomeBreve());
 														dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
 														dettaglioRuolo.setRuolo(ruolo.getNome());
 														dettaglioRuolo.setStatoP(progettoXFacFetchDB.getStato());
