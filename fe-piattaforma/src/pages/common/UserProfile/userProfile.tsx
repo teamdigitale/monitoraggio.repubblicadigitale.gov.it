@@ -21,6 +21,19 @@ import { getSessionValues } from '../../../utils/sessionHelper';
 import { GetUserDetails } from '../../../redux/features/administrativeArea/user/userThunk';
 import { selectUsers } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 
+interface RoleI {
+  id: string;
+  idEnte?: string;
+  codiceRuolo: string;
+  nome: string;
+  stato: string;
+  statoP: string;
+  ruolo: string;
+  nomeBreveEnte: string;
+  nomeEnte: string;
+  associatoAUtente: boolean;
+}
+
 const UserProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -67,6 +80,17 @@ const UserProfile = () => {
       ]
     : [];
 
+  const isActiveRole = (role: RoleI) => {
+    if (role.codiceRuolo === userRole.codiceRuolo) {
+      if (role.idEnte) {
+        return role.idEnte.toString() === userRole.idEnte?.toString();
+      } else {
+        return true;
+      }
+    }
+    return false;
+  };
+
   return (
     <div className='container mt-5'>
       <DetailLayout
@@ -87,23 +111,14 @@ const UserProfile = () => {
       >
         <FormOnboarding isProfile formDisabled />
       </DetailLayout>
-      <div className='my-5 container'>
-        <div className='w-100'>
-          <h1 className={clsx('primary-color', 'mb-4', 'h4', 'ml-3')}>Ruoli</h1>
-        </div>
-        {userRoleList.map(
-          (role: {
-            id: string;
-            idEnte?: string;
-            codiceRuolo: string;
-            nome: string;
-            stato: string;
-            statoP: string;
-            ruolo: string;
-            nomeBreveEnte: string;
-            nomeEnte: string;
-            associatoAUtente: boolean;
-          }) => {
+      {userRoleList?.length ? (
+        <div className='my-5 container'>
+          <div className='w-100'>
+            <h1 className={clsx('primary-color', 'mb-4', 'h4', 'ml-3')}>
+              Ruoli
+            </h1>
+          </div>
+          {userRoleList.map((role: RoleI) => {
             let roleActions = {};
             if (role.id) {
               roleActions = {
@@ -127,58 +142,70 @@ const UserProfile = () => {
                   : undefined,
               };
             }
-            /*else {
-            roleActions = hasUserPermission(['add.del.ruolo.utente'])
-              ? {
-                  [CRUDActionTypes.DELETE]: () => {
-                    dispatch(
-                      openModal({
-                        id: 'delete-entity',
-                        payload: {
-                          entity: 'role',
-                          text: 'Confermi di volere eliminare questo ruolo?',
-                          role: role.codiceRuolo || role.descrizioneRuolo,
-                        },
-                      })
-                    );
-                  },
-                }
-              : {};
-          }*/
             return (
               <CardStatusAction
                 key={`${role.id}${role.codiceRuolo}`}
                 id={`${role.id}${role.codiceRuolo}`}
-                //status={role.}
-                title={role.nome}
+                //title={role.nome}
+                title={
+                  role.codiceRuolo !== userRoles.REG &&
+                  role.codiceRuolo !== userRoles.DEG &&
+                  role.codiceRuolo !== userRoles.REGP &&
+                  role.codiceRuolo !== userRoles.DEGP &&
+                  role.codiceRuolo !== userRoles.VOL &&
+                  role.codiceRuolo !== userRoles.FAC &&
+                  role.codiceRuolo !== userRoles.REPP &&
+                  role.codiceRuolo !== userRoles.DEPP
+                    ? role.nome
+                    : undefined
+                }
                 fullInfo={
                   role.codiceRuolo !== userRoles.DTD &&
                   role.codiceRuolo !== userRoles.DSCU
                     ? {
+                        programma:
+                          role.codiceRuolo === userRoles.REG ||
+                          role.codiceRuolo === userRoles.DEG
+                            ? role.nome
+                            : undefined,
+                        progetto:
+                          role.codiceRuolo === userRoles.REGP ||
+                          role.codiceRuolo === userRoles.DEGP ||
+                          role.codiceRuolo === userRoles.VOL ||
+                          role.codiceRuolo === userRoles.FAC ||
+                          role.codiceRuolo === userRoles.REPP ||
+                          role.codiceRuolo === userRoles.DEPP
+                            ? role.nome
+                            : undefined,
                         ruoli: role.ruolo,
                         ente: role.nomeBreveEnte || role.nomeEnte,
                       }
                     : undefined
                 }
                 onActionClick={roleActions}
-                activeRole={
-                  role.codiceRuolo === userRole.codiceRuolo && !!role.idEnte
-                    ? role.idEnte?.toString() === userRole.idEnte?.toString() &&
-                      (role.id?.toString() ===
-                        userRole.idProgramma?.toString() ||
-                        role.id?.toString() === userRole.idProgetto?.toString())
-                    : role.id?.toString() ===
-                        userRole.idProgramma?.toString() ||
-                      role.id?.toString() === userRole.idProgetto?.toString()
-                }
+                activeRole={isActiveRole(role)}
               />
             );
-          }
-        )}
-      </div>
+          })}
+        </div>
+      ) : null}
       <ManageProfile />
     </div>
   );
 };
 
 export default UserProfile;
+
+/*
+const activeRole={
+  role.codiceRuolo === userRole.codiceRuolo && !!role.idEnte
+    ? role.idEnte?.toString() === userRole.idEnte?.toString() &&
+    (role.id?.toString() ===
+      userRole.idProgramma?.toString() ||
+      role.id?.toString() === userRole.idProgetto?.toString())
+    : (role.codiceRuolo === userRole.codiceRuolo &&
+      role.id?.toString() ===
+      userRole.idProgramma?.toString()) ||
+    role.id?.toString() === userRole.idProgetto?.toString()
+};
+*/
