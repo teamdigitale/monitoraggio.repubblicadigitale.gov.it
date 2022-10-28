@@ -14,7 +14,7 @@ interface CardSliderI {
   category_label?: string;
   date?: string;
   title?: string;
-  download?: number;
+  downloads?: number;
   comment_count?: number;
   likes?: number;
   views?: number;
@@ -33,10 +33,10 @@ const CardSlider: React.FC<CardSliderI> = (props) => {
     category_label,
     date,
     title,
-    download,
-    comment_count,
-    likes,
-    views,
+    downloads = '0',
+    comment_count = '0',
+    likes = '0',
+    views = '0',
     isDocument = false,
     isNews = false,
     isCommunity = false,
@@ -96,7 +96,7 @@ const CardSlider: React.FC<CardSliderI> = (props) => {
             <div className='d-flex align-items-center'>
               <Icon icon='it-download' size='sm' color='primary' />
               <span className='card-slider-container__span-icons ml-1'>
-                {download}
+                {downloads}
               </span>
             </div>
           ) : null}

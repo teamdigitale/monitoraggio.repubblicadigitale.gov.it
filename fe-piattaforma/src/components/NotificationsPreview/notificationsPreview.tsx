@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import ReactDOM from 'react-dom'
 import clsx from 'clsx';
 import './notificationsPreview.scss';
 import ClickOutside from '../../hoc/ClickOutside';
@@ -27,6 +28,8 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
   // TODO integrate notification
   const notificationsList = useAppSelector(selectUserNotificationsPreview);
 
+  const body = document.getElementsByTagName('body')[0];
+
   useEffect(() => {
     const body = document.querySelector('body') as HTMLBodyElement;
     if (open) {
@@ -53,7 +56,7 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
     );
   };
 
-  return (
+  return ReactDOM.createPortal(
     <ClickOutside callback={() => setOpen(false)}>
       <div className={clsx('notifications-preview', open && 'open')}>
         <div className='shadow'>
@@ -98,13 +101,14 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
           )}
         </div>
         <div className='text-center py-3 top-shadow'>
-          <NavLink to='/notifiche' className='primary-color archive'>
+          <NavLink to='/notifiche' className='primary-color archive' onClick={() => setOpen(false)}>
             ARCHIVIO NOTIFICHE
             {/*{notificationsList.length}*/}
           </NavLink>
         </div>
       </div>
-    </ClickOutside>
+    </ClickOutside>,
+    body
   );
 
   // return (

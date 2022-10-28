@@ -495,6 +495,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
       <SectionTitle
         title='Compilazione Questionario'
         upperTitle={{ icon: 'it-file', text: 'QUESTIONARIO' }}
+        inline={true}
       />
       <div
         className={clsx(
