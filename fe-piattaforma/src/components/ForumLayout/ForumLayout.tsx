@@ -313,13 +313,13 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
                       date={e.date}
                       title={e.title}
                       downloads={
-                        e.commentsTot || e.download || e.downloads || '-'
+                        e.commentsTot || e.download || e.downloads
                       }
                       comment_count={
-                        e.commentsTot || e.comment_count || e.comment || '-'
+                        e.commentsTot || e.comment_count || e.comment
                       }
-                      likes={e.likes || e.commentsTot || '-'}
-                      views={e.views || e.commentsTot || '-'}
+                      likes={e.likes || e.commentsTot}
+                      views={e.views || e.commentsTot}
                     />
                   </div>
                 ))}
