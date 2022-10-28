@@ -290,6 +290,7 @@ const form = newForm([
     type: 'text',
     id: 'nomeBreve',
     required: true,
+    maximum: 25,
   }),
   newFormField({
     field: 'dataInizio',

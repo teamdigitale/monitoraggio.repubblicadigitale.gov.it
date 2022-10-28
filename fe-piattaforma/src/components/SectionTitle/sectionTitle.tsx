@@ -28,6 +28,7 @@ interface SectionTitleI {
   enteIcon?: boolean;
   profilePicture?: string | undefined;
   isForumLayout?: boolean;
+  inline?: boolean;
 }
 
 const SectionTitle: React.FC<SectionTitleI> = (props) => {
@@ -43,6 +44,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
     enteIcon = false,
     profilePicture,
     isForumLayout,
+    inline = false,
   } = props;
 
   const device = useAppSelector(selectDevice);
@@ -89,7 +91,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
         <div className='d-flex flex-row justify-content-center w-100'>
           <Icon
             icon={upperTitle.icon}
-            size={'sm'}
+            size='sm'
             className={clsx('icon-color', enteIcon && 'ente-icon', 'mr-2')}
             aria-label='Sezione'
           />
@@ -172,7 +174,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
           <div className='placeholder-div'></div>
         )}
         <div
-          style={{ minWidth: '150px', maxWidth: '350px' }}
+          style={{ minWidth: '150px', maxWidth: !inline ? '350px' : 'unset' }}
           className={clsx(!isForumLayout && 'text-center mx-3')}
         >
           <div
@@ -194,7 +196,11 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
             {title}
           </span>
              */}
-            <p> {title} </p>
+            <p
+              //className={clsx(inline && !device.mediaIsPhone && 'text-nowrap')}
+            >
+              {title}
+            </p>
             {/* </span> */}
           </div>
         </div>

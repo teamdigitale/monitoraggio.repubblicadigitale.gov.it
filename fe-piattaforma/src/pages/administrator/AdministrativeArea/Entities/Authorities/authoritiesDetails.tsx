@@ -536,11 +536,29 @@ const AuthoritiesDetails = () => {
                   key={profile.id}
                   id={profile.id}
                   status={profile.stato}
-                  title={profile.nome}
+                  title={!profile.tipoEntita ? profile.nome : undefined}
                   fullInfo={
-                    profile.referenti.length === 0
-                      ? { profilo: profile.profilo }
+                    !profile.referenti?.length
+                      ? {
+                          progetto:
+                            profile.tipoEntita?.toLowerCase() === 'progetto'
+                              ? profile.nome
+                              : undefined,
+                          programma:
+                            profile.tipoEntita?.toLowerCase() === 'programma'
+                              ? profile.nome
+                              : undefined,
+                          profilo: profile.profilo,
+                        }
                       : {
+                          progetto:
+                            profile.tipoEntita?.toLowerCase() === 'progetto'
+                              ? profile.nome
+                              : undefined,
+                          programma:
+                            profile.tipoEntita?.toLowerCase() === 'programma'
+                              ? profile.nome
+                              : undefined,
                           profilo: profile.profilo,
                           ref:
                             profile.referenti.length > 1
