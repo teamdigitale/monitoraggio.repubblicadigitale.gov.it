@@ -327,7 +327,9 @@ const HeadquartersDetails = () => {
                   openModal({
                     id: formTypes.FACILITATORE,
                     payload: {
-                      title: `Aggiungi ${programPolicy !== 'SCD' ? title: 'Volontari'}`,
+                      title: `Aggiungi ${
+                        programPolicy !== 'SCD' ? title : 'Volontari'
+                      }`,
                     },
                   })
                 ),
@@ -359,7 +361,7 @@ const HeadquartersDetails = () => {
               title: headquarterDetails?.nome,
               status: headquarterDetails?.stato,
               upperTitle: { icon: 'it-map-marker-plus', text: formTypes.SEDE },
-              subTitle: programDetails?.nomeBreve,
+              subTitle: projectDetails?.nomeBreve || programDetails?.nomeBreve,
             }}
             //formButtons={buttons}
             // itemsAccordionList={itemAccordionList}
