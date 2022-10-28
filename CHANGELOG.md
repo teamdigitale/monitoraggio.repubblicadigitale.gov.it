@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.249](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.248...1.0.0-develop.249) (2022-10-28)
+
+
+### Bug Fixes
+
+* **be:** refactor campi ([856c27e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/856c27eb57372d5351e09220d5d1846bfff149bd))
+
 ## [1.0.0-develop.248](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.247...1.0.0-develop.248) (2022-10-28)
 
 
