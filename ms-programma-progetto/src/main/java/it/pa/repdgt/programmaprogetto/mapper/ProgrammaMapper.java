@@ -136,7 +136,7 @@ public class ProgrammaMapper {
 										.map(programmaEntity -> {
 											ProgrammaDropdownResource programmaLightDropdownResource = new ProgrammaDropdownResource();
 											programmaLightDropdownResource.setId(programmaEntity.getId());
-											programmaLightDropdownResource.setNome(programmaEntity.getNome());
+											programmaLightDropdownResource.setNome(programmaEntity.getNomeBreve());
 											return programmaLightDropdownResource;
 										})
 										.collect(Collectors.toList());
