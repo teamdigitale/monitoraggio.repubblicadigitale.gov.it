@@ -221,6 +221,15 @@ const AreaAmministrativaRoutes = [
     }
   />,
   <Route
+    key='programmi-dettaglio-ente-gestore'
+    path='programmi/:entityId/ente-gestore-programma/:authorityId'
+    element={
+      <ProtectedComponent visibleTo={['view.card.prgm.full']}>
+        <ProgramsDetails />
+      </ProtectedComponent>
+    }
+  />,
+  <Route
     key='programmi-dettaglio-ente-gestore-utenti'
     path='programmi/:entityId/:authorityType/:authorityId/:userRole/:userId'
     element={

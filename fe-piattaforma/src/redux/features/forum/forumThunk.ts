@@ -70,8 +70,7 @@ export const GetNewsFilters =
             value:
               (filters.programs || [])
                 .map(({ value }: { value: string }) => value)
-                .join(',') ||
-              `${idProgramma ? `public,${idProgramma}` : ''}`,
+                .join(',') || `${idProgramma ? `public,${idProgramma}` : ''}`,
           },
         ],
         interventions: [
@@ -336,8 +335,7 @@ export const GetDocumentsFilters =
             value:
               (filters.programs || [])
                 .map(({ value }: { value: string }) => value)
-                .join(',') ||
-              `${idProgramma ? `public,${idProgramma}` : ''}`,
+                .join(',') || `${idProgramma ? `public,${idProgramma}` : ''}`,
           },
         ],
         interventions: [

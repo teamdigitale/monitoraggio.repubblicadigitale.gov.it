@@ -42,7 +42,7 @@ const pillDropdownOptionsDocument = [
   },
   {
     label: 'Più scaricati',
-    value: 'TBD',
+    value: 'downloads',
   },
   {
     label: 'Più commentati',
@@ -53,11 +53,11 @@ const pillDropdownOptionsDocument = [
 const pillDropdownOptionsNotification = [
   {
     label: 'Più recenti',
-    value: 'created',
+    value: 'created_desc',
   },
   {
     label: 'Meno recenti',
-    value: 'TBD',
+    value: 'created_asc',
   },
 ];
 
