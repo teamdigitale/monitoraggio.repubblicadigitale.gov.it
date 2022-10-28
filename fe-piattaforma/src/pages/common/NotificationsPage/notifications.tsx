@@ -21,6 +21,7 @@ import {
   ReadNotification,
 } from '../../../redux/features/user/userThunk';
 import { setEntityPagination } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { selectFilters, setForumFilters } from '../../../redux/features/forum/forumSlice';
 
 const Notifications: React.FC = () => {
   const device = useAppSelector(selectDevice);
@@ -34,6 +35,7 @@ const Notifications: React.FC = () => {
   const [selectedNotifications, setSelectedNotifications] = useState<string[]>(
     []
   );
+  const { sort } = useAppSelector(selectFilters)
 
   useEffect(() => {
     handleOnChangePage(1)
@@ -42,7 +44,7 @@ const Notifications: React.FC = () => {
   useEffect(() => {
     dispatch(GetNotificationsByUser());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageNumber, pageSize]);
+  }, [pageNumber, pageSize, sort]);
 
   const handleOnChangePage = (pageNumber: number) => {
     dispatch(setEntityPagination({ pageNumber, pageSize }));
@@ -106,7 +108,7 @@ const Notifications: React.FC = () => {
           <div className='notifications-card-container d-flex container'>
             <div className={clsx('d-flex')}>
               <div className='d-flex'>
-                <Button onClick={onReadSelected}>
+                <Button disabled={selectedNotifications.length === 0} onClick={onReadSelected}>
                   <Icon
                     icon={
                       selectedNotifications.length ? MailReadCheck : MailRead
@@ -118,7 +120,7 @@ const Notifications: React.FC = () => {
                 </Button>
               </div>
               <div className='d-flex'>
-                <Button onClick={onDeleteSelected}>
+                <Button disabled={selectedNotifications.length === 0} onClick={onDeleteSelected}>
                   <Icon
                     icon={selectedNotifications.length ? DeleteCheck : Delete}
                     size='sm'
@@ -155,11 +157,12 @@ const Notifications: React.FC = () => {
               </h3>
             </div>
             {/* <PageTitle title='Le tue notifiche' badge={true} /> */}
-            <PillDropDown isNotifications={true} />
+            <PillDropDown isNotifications={true} onChange={({ value }) => dispatch(setForumFilters({ sort: [{ label: value, value }] }))} />
           </div>
 
           <div className='notifications-card-container container d-flex'>
             <Input
+              role="button"
               className='notification-card-checkbar'
               type='checkbox'
               onInputChange={() => onSelectAll()}
@@ -170,6 +173,7 @@ const Notifications: React.FC = () => {
             <div className={clsx('d-flex')}>
               <Button
                 className='d-flex align-items-center'
+                disabled={selectedNotifications.length === 0}
                 onClick={onReadSelected}
               >
                 <Icon
@@ -192,6 +196,7 @@ const Notifications: React.FC = () => {
 
               <Button
                 className='d-flex align-items-center'
+                disabled={selectedNotifications.length === 0}
                 onClick={onDeleteSelected}
               >
                 <Icon
@@ -220,7 +225,6 @@ const Notifications: React.FC = () => {
           (notificationsList || []).map((notification, i) => (
             <div
               key={i}
-              role='button'
               className={clsx(
                 notification.status ? '' : 'notifications-card-unread'
               )}
