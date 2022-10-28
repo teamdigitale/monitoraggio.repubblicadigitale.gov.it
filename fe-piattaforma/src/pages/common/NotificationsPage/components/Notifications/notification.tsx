@@ -188,6 +188,7 @@ const Notification: React.FC<NotificationI> = (props) => {
             }}
           >
             <Input
+            role="button"
               className='notification-list-checkbar'
               type='checkbox'
               onClick={(e) => e.stopPropagation()}
@@ -223,7 +224,7 @@ const Notification: React.FC<NotificationI> = (props) => {
 
         {notificationsPreview ? userDropDown : null}
         {!isMobile && !notificationsPreview ? (
-          <div className='ml-auto'>
+          <div className='ml-auto' role="button">
             <Icon
               color='primary'
               icon='it-close'

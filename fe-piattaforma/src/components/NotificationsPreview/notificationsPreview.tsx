@@ -37,7 +37,7 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
       body.style.overflowY = 'hidden';
       dispatch(
         GetNotificationsByUser(
-          { status: [{ value: 0 }], items_per_page: [{ value: 9 }], page: [{ value: 0 }] },
+          { status: [{ value: 0 }], items_per_page: [{ value: 9 }], page: [{ value: 0 }], sort: [{ value: 'created_desc' }] },
           true
         )
       );
@@ -50,7 +50,7 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
     await dispatch(ReadNotification([id]));
     dispatch(
       GetNotificationsByUser(
-        { status: [{ value: 0 }], items_per_page: [{ value: 9 }], page: [{ value: 0 }] },
+        { status: [{ value: 0 }], items_per_page: [{ value: 9 }], page: [{ value: 0 }], sort: [{ value: 'created_desc' }] },
         true
       )
     );
@@ -83,7 +83,6 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
             notificationsList.map((notification, i) => (
               <div
                 key={i}
-                role='button'
                 className={clsx(
                   notification.status ? '' : 'notifications-card-unread'
                 )}

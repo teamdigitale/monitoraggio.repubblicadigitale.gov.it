@@ -37,7 +37,11 @@ const UserPublishedContentsPage = () => {
         <PageTitle {...PageTitleMock} />
       </div>
       <Container className='mb-5'>
-        <Accordion title='Bacheca' totElem={newsList.length}>
+        <Accordion
+          title='Bacheca'
+          totElem={newsList.length}
+          userPublishedContent
+        >
           <div className='row'>
             {newsList.length ? (
               newsList.map((showCaseElement, i) => (
@@ -50,7 +54,11 @@ const UserPublishedContentsPage = () => {
             )}
           </div>
         </Accordion>
-        <Accordion title='Community' totElem={topicsList.length}>
+        <Accordion
+          title='Community'
+          totElem={topicsList.length}
+          userPublishedContent
+        >
           <div className='row'>
             {topicsList.length ? (
               topicsList.map((communityElement, i) => (
@@ -63,7 +71,11 @@ const UserPublishedContentsPage = () => {
             )}
           </div>
         </Accordion>
-        <Accordion title='Documenti' totElem={docsList.length}>
+        <Accordion
+          title='Documenti'
+          totElem={docsList.length}
+          userPublishedContent
+        >
           <div
             className={clsx(
               'row',

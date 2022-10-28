@@ -558,7 +558,7 @@ export const getUnreadNotificationsCount = () => {
       Math.abs(new Date().getTime() - notificationSession.session_timestamp) / 1000;
     if (diff >= 120) {
       store.dispatch(GetNotificationsByUser(
-        { status: [{ value: 0 }], items_per_page: [{ value: 9 }], page: [{ value: 0 }] },
+        { status: [{ value: 0 }], items_per_page: [{ value: 9 }], page: [{ value: 0 }], sort: [{ value: 'created_desc' }] },
         true
       ) as any)
     } else {
@@ -566,7 +566,7 @@ export const getUnreadNotificationsCount = () => {
     }
   } else {
     store.dispatch(GetNotificationsByUser(
-      { status: [{ value: 0 }], items_per_page: [{ value: 9 }], page: [{ value: 0 }] },
+      { status: [{ value: 0 }], items_per_page: [{ value: 9 }], page: [{ value: 0 }], sort: [{ value: 'created_desc' }] },
       true
     ) as any)
   }
