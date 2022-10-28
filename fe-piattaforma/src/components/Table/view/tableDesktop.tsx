@@ -239,11 +239,11 @@ const TableDesktop: React.FC<TableI> = (props) => {
               ) : null}
               {((onTooltipInfo || td?.onTooltipInfo) && td?.isPresentInList) ||
               td?.failedCSV ? (
-                <td id={`tooltip-${td.id}`}>
+                <td id={`tooltip-${td.id}-${i}`}>
                   <div className='d-inline-flex position-relative'>
                     <UncontrolledTooltip
                       placement='left'
-                      target={`tooltip-${td.id}`}
+                      target={`tooltip-${td.id}-${i}`}
                     >
                       {onTooltipInfo}
                       {td.onTooltipInfo}
