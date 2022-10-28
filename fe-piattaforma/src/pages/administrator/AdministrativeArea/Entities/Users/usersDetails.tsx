@@ -375,7 +375,7 @@ const UsersDetails = () => {
 
   const getButtons = () => {
     const buttons: ButtonInButtonsBar[] = [];
-    if(getUserRoleStatus() !== entityStatus.TERMINATO){
+    if (getUserRoleStatus() !== entityStatus.TERMINATO) {
       if (
         userRole === userRoles.USR &&
         hasUserPermission(['del.utente']) &&
@@ -419,7 +419,10 @@ const UsersDetails = () => {
             break;
         }
       }
-      if (userRole === userRoles.USR && hasUserPermission(['upd.anag.utenti'])) {
+      if (
+        userRole === userRoles.USR &&
+        hasUserPermission(['upd.anag.utenti'])
+      ) {
         buttons.push(editButton);
       } else if (userRole === userRoles.FAC || userRole === userRoles.VOL) {
         buttons.push(editButton);
@@ -630,10 +633,36 @@ const UsersDetails = () => {
                       key={role.id}
                       id={role.id || role.codiceRuolo || role.nome}
                       status={role.statoP}
-                      title={role.nome}
+                      //title={role.nome}
+                      title={
+                        role.codiceRuolo !== userRoles.REG &&
+                        role.codiceRuolo !== userRoles.DEG &&
+                        role.codiceRuolo !== userRoles.REGP &&
+                        role.codiceRuolo !== userRoles.DEGP &&
+                        role.codiceRuolo !== userRoles.VOL &&
+                        role.codiceRuolo !== userRoles.FAC &&
+                        role.codiceRuolo !== userRoles.REPP &&
+                        role.codiceRuolo !== userRoles.DEPP
+                          ? role.nome
+                          : undefined
+                      }
                       fullInfo={
                         role.stato
                           ? {
+                              programma:
+                                role.codiceRuolo === userRoles.REG ||
+                                role.codiceRuolo === userRoles.DEG
+                                  ? role.nome
+                                  : undefined,
+                              progetto:
+                                role.codiceRuolo === userRoles.REGP ||
+                                role.codiceRuolo === userRoles.DEGP ||
+                                role.codiceRuolo === userRoles.VOL ||
+                                role.codiceRuolo === userRoles.FAC ||
+                                role.codiceRuolo === userRoles.REPP ||
+                                role.codiceRuolo === userRoles.DEPP
+                                  ? role.nome
+                                  : undefined,
                               ruoli: role.ruolo,
                               ente: role.nomeBreveEnte || role.nomeEnte,
                             }

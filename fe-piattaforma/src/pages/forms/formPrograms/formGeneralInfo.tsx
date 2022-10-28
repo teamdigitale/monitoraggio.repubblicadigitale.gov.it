@@ -188,7 +188,6 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           col='col-12 col-lg-6'
           label='Nome breve'
           onInputChange={onInputDataChange}
-          maximum={25}
         />
         {formDisabled ? (
           <Input
@@ -291,6 +290,7 @@ const form = newForm([
     type: 'text',
     id: 'nomeBreve',
     required: true,
+    maximum: 25,
   }),
   newFormField({
     field: 'dataInizio',
