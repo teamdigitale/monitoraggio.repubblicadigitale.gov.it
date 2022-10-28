@@ -653,7 +653,7 @@ public class ProgrammaService {
 			.map(progetto -> {
 				ProgettoLightEntity progettoLight = new ProgettoLightEntity();
 				progettoLight.setId(progetto.getId());
-				progettoLight.setNome(progetto.getNome());
+				progettoLight.setNome(progetto.getNomeBreve());
 				progettoLight.setStato(progetto.getStato());
 				switch(sceltaProfilo.getCodiceRuoloUtenteLoggato()) {
 				case "REGP":

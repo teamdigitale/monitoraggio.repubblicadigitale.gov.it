@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 public class DettaglioProfiliBean {
 	private Long id;
+	private String tipoEntita;
 	private String nome;
 	private String profilo;
 	private List<String> referenti;
