@@ -1212,7 +1212,7 @@ const ProjectsDetails = () => {
           <DetailLayout
             nav={nav}
             titleInfo={{
-              title: projectDetails?.nome,
+              title: projectDetails?.nomeBreve || projectDetails?.nome,
               status: projectDetails?.stato,
               upperTitle: { icon: 'it-file', text: 'Progetto' },
               subTitle: programDetails?.nomeBreve,
