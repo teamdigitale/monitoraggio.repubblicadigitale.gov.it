@@ -1,6 +1,5 @@
 import React, { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { isEmpty } from 'lodash';
 import { useAppSelector } from '../../redux/hooks';
 import {
   selectUserNotificationToRead,
@@ -144,7 +143,7 @@ const Header: React.FC<HeaderProp> = (props) => {
 
   return (
     <>
-      {isEmpty(device) ? null : device.mediaIsDesktop ? (
+      {device.mediaIsDesktop ? (
         <HeaderDesktop {...componentProps} />
       ) : (
         <HeaderMobile {...componentProps} />

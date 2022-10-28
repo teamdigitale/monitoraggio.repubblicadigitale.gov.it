@@ -1,12 +1,11 @@
 .notifications-preview {
   position: fixed;
   top: 0;
-  right: 0;
   height: 100vh;
   width: 30rem;
   max-width: 100%;
   background: #ffffff;
-  transform: translateX(100%);
+  right: -30rem;
   transition: all 0.75s;
   display: flex;
   flex-direction: column;
@@ -16,7 +15,7 @@
   }
 
   &.open {
-    transform: translateX(0);
+    right: 0;
   }
 
   .preview-header {

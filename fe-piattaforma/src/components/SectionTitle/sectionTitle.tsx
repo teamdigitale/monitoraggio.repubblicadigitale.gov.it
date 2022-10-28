@@ -28,6 +28,7 @@ interface SectionTitleI {
   enteIcon?: boolean;
   profilePicture?: string | undefined;
   isForumLayout?: boolean;
+  inline?: boolean;
 }
 
 const SectionTitle: React.FC<SectionTitleI> = (props) => {
@@ -43,6 +44,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
     enteIcon = false,
     profilePicture,
     isForumLayout,
+    inline = false,
   } = props;
 
   const device = useAppSelector(selectDevice);
@@ -194,7 +196,11 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
             {title}
           </span>
              */}
-            <p> {title} </p>
+            <p
+              className={clsx(inline && !device.mediaIsPhone && 'text-nowrap')}
+            >
+              {title}
+            </p>
             {/* </span> */}
           </div>
         </div>

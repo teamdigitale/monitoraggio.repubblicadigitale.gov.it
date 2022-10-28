@@ -118,7 +118,7 @@ const ProgramsDetails: React.FC = () => {
    * pass the entity short name, we can access it to the store even if the
    * thunk action to get details is performed in the form component
    */
-  const { entityId } = useParams();
+  const { entityId, authorityId } = useParams();
 
   const programDetails =
     useAppSelector(selectPrograms).detail?.dettagliInfoProgramma || {};
@@ -133,6 +133,9 @@ const ProgramsDetails: React.FC = () => {
     // For breadcrumb
     if (location.pathname === `/area-amministrativa/programmi/${entityId}`) {
       navigate(`/area-amministrativa/programmi/${entityId}/info`);
+    }
+    if(location.pathname === `/area-amministrativa/programmi/${entityId}/ente-gestore-programma/${authorityId}`) {
+      navigate(`/area-amministrativa/programmi/${entityId}/ente-gestore-programma`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
