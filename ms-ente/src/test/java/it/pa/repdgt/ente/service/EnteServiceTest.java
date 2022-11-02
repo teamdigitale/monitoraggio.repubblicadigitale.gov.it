@@ -204,6 +204,7 @@ public class EnteServiceTest {
 		progetto1.setNome("progetto1");
 		progetto1.setId(1L);
 		progetto1.setStato("ATTIVO");
+		progetto1.setEnteGestoreProgetto(ente1);
 		entePartnerKey1 = new EntePartnerKey(progetto1.getId(), ente1.getId());
 		entePartner1 = new EntePartnerEntity();
 		entePartner1.setId(entePartnerKey1);
@@ -884,11 +885,12 @@ public class EnteServiceTest {
 		referenteDelegatoGestoreProgrammaRequest = new ReferenteDelegatoGestoreProgrammaRequest();
 		referenteDelegatoGestoreProgrammaRequest.setIdProgramma(programma1.getId());
 		referenteDelegatoGestoreProgrammaRequest.setIdEnte(ente1.getId());
-		referenteDelegatoGestoreProgrammaRequest.setCodiceRuolo(ruolo3.getCodice());
-		referenteDelegatoGestoreProgrammaRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
+		referenteDelegatoGestoreProgrammaRequest.setCodiceRuoloRefDeg(ruolo3.getCodice());
+		referenteDelegatoGestoreProgrammaRequest.setCfReferenteDelegato(utente1.getCodiceFiscale());
 		when(programmaService.esisteProgrammaById(programma1.getId())).thenReturn(true);
 		when(utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
 		when(enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
+		when(this.programmaService.getIdEnteGestoreProgramma(programma1.getId())).thenReturn(programma1.getId());
 		lenient().when(referentiDelegatiEnteGestoreProgrammaService.esisteById(referentiDelegatiEnteGestoreProgrammaKey)).thenReturn(false);
 		when(ruoloService.getRuoloByCodiceRuolo(ruolo3.getCodice())).thenReturn(ruolo3);
 		enteService.associaReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest);
@@ -901,8 +903,8 @@ public class EnteServiceTest {
 		referenteDelegatoGestoreProgrammaRequest = new ReferenteDelegatoGestoreProgrammaRequest();
 		referenteDelegatoGestoreProgrammaRequest.setIdProgramma(programma1.getId());
 		referenteDelegatoGestoreProgrammaRequest.setIdEnte(ente1.getId());
-		referenteDelegatoGestoreProgrammaRequest.setCodiceRuolo(ruolo3.getCodice());
-		referenteDelegatoGestoreProgrammaRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
+		referenteDelegatoGestoreProgrammaRequest.setCodiceRuoloRefDeg(ruolo3.getCodice());
+		referenteDelegatoGestoreProgrammaRequest.setCfReferenteDelegato(utente1.getCodiceFiscale());
 		when(programmaService.esisteProgrammaById(programma1.getId())).thenReturn(false);
 		Assertions.assertThrows(EnteException.class, () -> enteService.associaReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest));
 		assertThatExceptionOfType(EnteException.class);
@@ -920,7 +922,6 @@ public class EnteServiceTest {
 		when(programmaService.esisteProgrammaById(programma1.getId())).thenReturn(true);
 		when(utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
 		when(enteRepository.findById(ente1.getId())).thenReturn(enteOptional);
-		when(referentiDelegatiEnteGestoreProgrammaService.esisteById(Mockito.any(ReferentiDelegatiEnteGestoreProgrammaKey.class))).thenReturn(true);
 		Assertions.assertThrows(EnteException.class, () -> enteService.associaReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest));
 		assertThatExceptionOfType(EnteException.class);
 		
@@ -937,8 +938,8 @@ public class EnteServiceTest {
 		referenteDelegatoGestoreProgrammaRequest = new ReferenteDelegatoGestoreProgrammaRequest();
 		referenteDelegatoGestoreProgrammaRequest.setIdProgramma(programma1.getId());
 		referenteDelegatoGestoreProgrammaRequest.setIdEnte(ente1.getId());
-		referenteDelegatoGestoreProgrammaRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
-		referenteDelegatoGestoreProgrammaRequest.setCodiceRuolo("inesistente");
+		referenteDelegatoGestoreProgrammaRequest.setCfReferenteDelegato(utente1.getCodiceFiscale());
+		referenteDelegatoGestoreProgrammaRequest.setCodiceRuoloRefDeg("inesistente");
 		enteOptional = Optional.of(ente1);
 		when(programmaService.esisteProgrammaById(programma1.getId())).thenReturn(true);
 		when(utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
@@ -952,8 +953,8 @@ public class EnteServiceTest {
 		referenteDelegatoGestoreProgettoRequest = new ReferenteDelegatoGestoreProgettoRequest();
 		referenteDelegatoGestoreProgettoRequest.setIdProgetto(progetto1.getId());
 		referenteDelegatoGestoreProgettoRequest.setIdEnte(ente1.getId());
-		referenteDelegatoGestoreProgettoRequest.setCodiceRuolo(ruolo4.getCodice());
-		referenteDelegatoGestoreProgettoRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
+		referenteDelegatoGestoreProgettoRequest.setCodiceRuoloRefDeg(ruolo4.getCodice());
+		referenteDelegatoGestoreProgettoRequest.setCfReferenteDelegato(utente1.getCodiceFiscale());
 		when(progettoService.esisteProgettoById(progetto1.getId())).thenReturn(true);
 		when(utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
 		lenient().when(referentiDelegatiEnteGestoreProgettoService.esisteById(referentiDelegatiEnteGestoreProgettoKey)).thenReturn(false);
@@ -968,8 +969,8 @@ public class EnteServiceTest {
 		referenteDelegatoGestoreProgettoRequest = new ReferenteDelegatoGestoreProgettoRequest();
 		referenteDelegatoGestoreProgettoRequest.setIdProgetto(progetto1.getId());
 		referenteDelegatoGestoreProgettoRequest.setIdEnte(ente1.getId());
-		referenteDelegatoGestoreProgettoRequest.setCodiceRuolo(ruolo4.getCodice());
-		referenteDelegatoGestoreProgettoRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
+		referenteDelegatoGestoreProgettoRequest.setCodiceRuoloRefDeg(ruolo4.getCodice());
+		referenteDelegatoGestoreProgettoRequest.setCfReferenteDelegato(utente1.getCodiceFiscale());
 		when(progettoService.esisteProgettoById(progetto1.getId())).thenReturn(false);
 		Assertions.assertThrows(EnteException.class, () -> enteService.associaReferenteODelegatoGestoreProgetto(referenteDelegatoGestoreProgettoRequest));
 		assertThatExceptionOfType(EnteException.class);
@@ -994,8 +995,8 @@ public class EnteServiceTest {
 		referenteDelegatoGestoreProgettoRequest = new ReferenteDelegatoGestoreProgettoRequest();
 		referenteDelegatoGestoreProgettoRequest.setIdProgetto(progetto1.getId());
 		referenteDelegatoGestoreProgettoRequest.setIdEnte(ente1.getId());
-		referenteDelegatoGestoreProgettoRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
-		referenteDelegatoGestoreProgettoRequest.setCodiceRuolo("inesistente");
+		referenteDelegatoGestoreProgettoRequest.setCfReferenteDelegato(utente1.getCodiceFiscale());
+		referenteDelegatoGestoreProgettoRequest.setCodiceRuoloRefDeg("inesistente");
 		enteOptional = Optional.of(ente1);
 		when(progettoService.esisteProgettoById(progetto1.getId())).thenReturn(true);
 		when(utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
@@ -1008,8 +1009,8 @@ public class EnteServiceTest {
 		referenteDelegatoGestoreProgrammaRequest = new ReferenteDelegatoGestoreProgrammaRequest();
 		referenteDelegatoGestoreProgrammaRequest.setIdProgramma(programma1.getId());
 		referenteDelegatoGestoreProgrammaRequest.setIdEnte(ente1.getId());
-		referenteDelegatoGestoreProgrammaRequest.setCodiceRuolo(ruolo4.getCodice());
-		referenteDelegatoGestoreProgrammaRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
+		referenteDelegatoGestoreProgrammaRequest.setCodiceRuoloRefDeg(ruolo4.getCodice());
+		referenteDelegatoGestoreProgrammaRequest.setCfReferenteDelegato(utente1.getCodiceFiscale());
 		referentiDelegatiEnteGestoreProgrammaEntity.setStatoUtente(StatoEnum.ATTIVO.getValue());
 		when(referentiDelegatiEnteGestoreProgrammaService.getReferenteDelegatiEnteGestoreProgramma(programma1.getId(), utente1.getCodiceFiscale(), ente1.getId(), ruolo4.getCodice())).thenReturn(referentiDelegatiEnteGestoreProgrammaEntity);
 		enteService.cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest);
@@ -1033,8 +1034,8 @@ public class EnteServiceTest {
 		referenteDelegatoGestoreProgettoRequest = new ReferenteDelegatoGestoreProgettoRequest();
 		referenteDelegatoGestoreProgettoRequest.setIdProgetto(progetto1.getId());
 		referenteDelegatoGestoreProgettoRequest.setIdEnte(ente1.getId());
-		referenteDelegatoGestoreProgettoRequest.setCodiceRuolo(ruolo3.getCodice());
-		referenteDelegatoGestoreProgettoRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
+		referenteDelegatoGestoreProgettoRequest.setCodiceRuoloRefDeg(ruolo3.getCodice());
+		referenteDelegatoGestoreProgettoRequest.setCfReferenteDelegato(utente1.getCodiceFiscale());
 		referentiDelegatiEnteGestoreProgettoEntity.setStatoUtente(StatoEnum.ATTIVO.getValue());
 		when(referentiDelegatiEnteGestoreProgettoService.getReferenteDelegatiEnteGestoreProgetto(progetto1.getId(), utente1.getCodiceFiscale(), ente1.getId(), ruolo3.getCodice())).thenReturn(referentiDelegatiEnteGestoreProgettoEntity);
 		enteService.cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgetto(referenteDelegatoGestoreProgettoRequest);

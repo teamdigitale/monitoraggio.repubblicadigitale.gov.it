@@ -3,7 +3,6 @@ package it.pa.repdgt.shared;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -19,8 +18,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import it.pa.repdgt.shared.exception.BaseException;
-import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.service.PermessoApiService;
 import it.pa.repdgt.shared.service.PermessoService;
 import it.pa.repdgt.shared.service.RuoloService;
@@ -75,6 +72,9 @@ public class RequestFilter implements Filter {
 			else
 				responseHttp.sendError(HttpServletResponse.SC_UNAUTHORIZED, String.format("Utente Non Autorizzato per endpoint: %s %s", metodoHttp, endpoint));
 		}else {
+			/*
+			 * chiamate ad API che non hanno bisogno del controllo dei permessi
+			 */
 			if(FilterUtil.isEndpointNotChecked(endpoint) 
 					/* per risolvere il problema di mysql "Error Code: 3699. Timeout exceeded in regular expression match."
 					 * per gli endpoint /servizio/cittadino/questionarioCompilato/.../anonimo che non hanno CF per login
@@ -90,14 +90,28 @@ public class RequestFilter implements Filter {
 
 				if(!hasRuoloUtente) {
 					responseHttp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utente Non Autorizzato");
-				} else { 
-					if(bodyRequest != null && !"".equals(bodyRequest.trim())
-							&& !filterUtil.verificaSceltaProfilo(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato, bodyRequest )) {
+				} else {
+					/*
+					 * controllo per vedere se idProgramma/idProgetto/idEnte sono coerenti con utente e ruolo che chiama API
+					 * api drupal/rocketchat/workdocs sono esenti da tale controllo
+					 */
+					if(bodyRequest != null 
+							&& !"".equals(bodyRequest.trim())
+							&& !filterUtil.verificaSceltaProfilo(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato, bodyRequest )
+							&& !endpoint.contains("/drupal/forward")
+							&& !endpoint.contains("/rocket-chat/")
+							&& !endpoint.contains("/integrazione/workdocs") ) {
 						responseHttp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utente Non Autorizzato");
 					}else {
+						/*
+						 * le seguenti api non hanno bisogno del controllo dei codici permesso
+						 */
 						if(endpoint.contains(FilterUtil.VERIFICA_PROFILO_BASE_URI) || endpoint.contains("/drupal/forward") || endpoint.contains("/utente/listaUtenti")) {
 							chain.doFilter(wrappedRequest, response);
 						} else {
+							/*
+							 * verifica se il profilo dell'utente loggato è abilitato (codici permesso) a poter chiamare quella particolare api
+							 */
 							List<String> codiciPermessoPerApi;
 							if(FilterUtil.isEndpointQuestionarioCompilato(endpoint)) {
 								/* per risolvere il problema di mysql "Error Code: 3699. Timeout exceeded in regular expression match."
@@ -109,9 +123,6 @@ public class RequestFilter implements Filter {
 							}
 							List<String> codiciPermessoUtenteLoggato = this.permessoService.getCodiciPermessoByUtenteLoggato(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato);
 
-
-
-							// verifico il profilo dell'utente loggato è abilitato a poter chiamare quella particolare api
 							boolean isUtenteAbilitatoPerApi = false;
 							for(String codiciPermesso: codiciPermessoPerApi) {
 								if(codiciPermessoUtenteLoggato.contains(codiciPermesso)) {

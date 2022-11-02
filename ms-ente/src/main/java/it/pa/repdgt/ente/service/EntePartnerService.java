@@ -1,6 +1,5 @@
 package it.pa.repdgt.ente.service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -46,7 +45,7 @@ import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+@Slf4j	
 @Service
 public class EntePartnerService {
 
@@ -125,7 +124,11 @@ public class EntePartnerService {
 
 	public SchedaEntePartnerBean getSchedaEntePartnerByIdProgettoAndIdEnteAndSceltaProfilo(Long idProgetto, Long idEnte, EntiPaginatiParam entiPaginatiParam) {
 		SchedaEntePartnerBean schedaEntePartner = new SchedaEntePartnerBean();
-		EnteProjection ente = this.entePartnerRepository.findEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte);		
+		EnteProjection ente = this.entePartnerRepository.findEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte);
+		if(ente == null) {
+			String messaggioErrore = String.format("ente partner non presente per idEnte %s, idProgetto %s", idEnte, idProgetto);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN24);
+		}
 		List<UtenteProjection> referenti = this.referentiDelegatiEntePartnerDiProgettoService.getReferentiEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte);
 		List<UtenteProjection> delegati = this.referentiDelegatiEntePartnerDiProgettoService.getDelegatiEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte);
 		List<SedeEntity> sedi = this.sedeService.getSediEnteByIdProgettoAndIdEnte(idProgetto, idEnte);
@@ -171,8 +174,8 @@ public class EntePartnerService {
 	public void associaReferenteODelegatoPartner(ReferenteDelegatoPartnerRequest referenteDelegatoPartnerRequest) {
 		Long idProgetto = referenteDelegatoPartnerRequest.getIdProgetto();
 		Long idEntePartner = referenteDelegatoPartnerRequest.getIdEntePartner();
-		String codiceFiscaleUtente = referenteDelegatoPartnerRequest.getCodiceFiscaleUtente();
-		String codiceRuolo = referenteDelegatoPartnerRequest.getCodiceRuolo().toUpperCase();
+		String codiceFiscaleUtente = referenteDelegatoPartnerRequest.getCfReferenteDelegato();
+		String codiceRuolo = referenteDelegatoPartnerRequest.getCodiceRuoloRefDeg().toUpperCase();
 
 		if(!this.progettoService.esisteProgettoById(idProgetto)) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente partner per progetto con id=%s non esistente", idProgetto);
@@ -353,9 +356,9 @@ public class EntePartnerService {
 	public void cancellaOTerminaAssociazioneReferenteODelegatoPartner(
 			@Valid ReferenteDelegatoPartnerRequest referenteDelegatoPartnerRequest) {
 		Long idProgetto = referenteDelegatoPartnerRequest.getIdProgetto();
-		String codiceFiscaleUtente = referenteDelegatoPartnerRequest.getCodiceFiscaleUtente();
+		String codiceFiscaleUtente = referenteDelegatoPartnerRequest.getCfReferenteDelegato();
 		Long idEnte = referenteDelegatoPartnerRequest.getIdEntePartner();
-		String codiceRuolo = referenteDelegatoPartnerRequest.getCodiceRuolo().toUpperCase();
+		String codiceRuolo = referenteDelegatoPartnerRequest.getCodiceRuoloRefDeg().toUpperCase();
 		ReferentiDelegatiEntePartnerDiProgettoEntity referenteDelegatoEntePartnerDiProgettoEntity = this.referentiDelegatiEntePartnerDiProgettoService.getReferenteDelegatoEntePartner(idProgetto, codiceFiscaleUtente, idEnte, codiceRuolo);
 		if(StatoEnum.ATTIVO.getValue().equals(referenteDelegatoEntePartnerDiProgettoEntity.getStatoUtente())) {
 			this.terminaAssociazioneReferenteDelegatoEntePartner(referenteDelegatoEntePartnerDiProgettoEntity, codiceRuolo);

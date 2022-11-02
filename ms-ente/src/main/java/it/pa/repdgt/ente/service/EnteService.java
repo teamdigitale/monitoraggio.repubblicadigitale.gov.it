@@ -587,8 +587,8 @@ public class EnteService {
 	@Transactional(rollbackOn = Exception.class)
     public void associaReferenteODelegatoGestoreProgramma(ReferenteDelegatoGestoreProgrammaRequest referenteDelegatoGestoreProgrammaRequest) {
 		Long idProgramma = referenteDelegatoGestoreProgrammaRequest.getIdProgramma();
-		String codiceFiscaleUtente = referenteDelegatoGestoreProgrammaRequest.getCodiceFiscaleUtente();
-		String codiceRuolo  = referenteDelegatoGestoreProgrammaRequest.getCodiceRuolo().toUpperCase();
+		String codiceFiscaleUtente = referenteDelegatoGestoreProgrammaRequest.getCfReferenteDelegato();
+		String codiceRuolo  = referenteDelegatoGestoreProgrammaRequest.getCodiceRuoloRefDeg().toUpperCase();
 		Long idEnte = referenteDelegatoGestoreProgrammaRequest.getIdEnte();
 		
 		if(!this.programmaService.esisteProgrammaById(idProgramma)) {
@@ -600,11 +600,15 @@ public class EnteService {
 		try {
 			utenteFetch = this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleUtente);
 		} catch (ResourceNotFoundException ex) {
-			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente gestore di programma perche l'utente con codice fidcale=%s poiché non esiste", codiceFiscaleUtente);
+			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente gestore di programma perche l'utente con codice fiscale=%s poiché non esiste", codiceFiscaleUtente);
 			throw new EnteException(messaggioErrore, ex, CodiceErroreEnum.EN11);
 		}
 		if(!this.esisteEnteById(idEnte)) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente gestore di programma all'ente con id=%s poiché non esistente", idEnte);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN11);
+		}
+		if(!this.programmaService.getIdEnteGestoreProgramma(idProgramma).equals(idEnte)) {
+			String messaggioErrore = String.format("Impossibile assegnare referente/delegato id ente non è gestore di programma per programma con id=%s", idProgramma);
 			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN11);
 		}
 		
@@ -687,8 +691,8 @@ public class EnteService {
 	@Transactional(rollbackOn = Exception.class)
     public void associaReferenteODelegatoGestoreProgetto(ReferenteDelegatoGestoreProgettoRequest referenteDelegatoGestoreProgettoRequest) {
 		Long idProgetto = referenteDelegatoGestoreProgettoRequest.getIdProgetto();
-		String codiceFiscaleUtente = referenteDelegatoGestoreProgettoRequest.getCodiceFiscaleUtente();
-		String codiceRuolo = referenteDelegatoGestoreProgettoRequest.getCodiceRuolo().toUpperCase();
+		String codiceFiscaleUtente = referenteDelegatoGestoreProgettoRequest.getCfReferenteDelegato();
+		String codiceRuolo = referenteDelegatoGestoreProgettoRequest.getCodiceRuoloRefDeg().toUpperCase();
 		Long idEnte = referenteDelegatoGestoreProgettoRequest.getIdEnte();
 		
 		if(!this.progettoService.esisteProgettoById(idProgetto)) {
@@ -1141,8 +1145,13 @@ public class EnteService {
 			String errorMessage = String.format("L'ente con id=%s non esiste", idEnte);
 			throw new EnteException(errorMessage, CodiceErroreEnum.EN17);
 		}
+		ProgrammaEntity programma = this.programmaService.getProgrammaById(idProgramma);
+		if(programma.getEnteGestoreProgramma() == null || !programma.getEnteGestoreProgramma().getId().equals(idEnte)) {
+			String errorMessage = String.format("L'ente con id=%s non è il gestore di programma", idEnte);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN17);
+		}
 		//controllo se lo stato dell'ente gestore di programma è diverso da NON ATTIVO
-		if(!this.programmaService.getProgrammaById(idProgramma).getStatoGestoreProgramma().equals(StatoEnum.NON_ATTIVO.getValue())) {
+		if(!programma.getStatoGestoreProgramma().equals(StatoEnum.NON_ATTIVO.getValue())) {
 			String errorMessage = String.format("Impossibile cancellare l'ente gestore di programma poiché lo stato dell'ente risulta attivo per questo programma");
 			throw new EnteException(errorMessage, CodiceErroreEnum.EN17);
 		}
@@ -1173,6 +1182,11 @@ public class EnteService {
 	public void cancellaGestoreProgetto(Long idEnte, Long idProgetto) {
 		if(!this.esisteEnteById(idEnte)) {
 			String errorMessage = String.format("L'ente con id=%s non esiste", idEnte);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN18);
+		}
+		ProgettoEntity progetto = this.progettoService.getProgettoById(idProgetto);
+		if(progetto.getEnteGestoreProgetto() == null || !progetto.getEnteGestoreProgetto().getId().equals(idEnte)) {
+			String errorMessage = String.format("L'ente con id=%s non è il gestore di progetto", idEnte);
 			throw new EnteException(errorMessage, CodiceErroreEnum.EN18);
 		}
 		//controllo se lo stato dell'ente gestore di progetto è diverso da NON ATTIVO
@@ -1224,6 +1238,11 @@ public class EnteService {
 			String errorMessage = String.format("L'ente con id=%s non esiste", idEnte);
 			throw new EnteException(errorMessage, CodiceErroreEnum.EN19);
 		}
+		ProgrammaEntity programma = this.programmaService.getProgrammaById(idProgramma);
+		if(programma.getEnteGestoreProgramma() == null || !programma.getEnteGestoreProgramma().getId().equals(idEnte)) {
+			String errorMessage = String.format("L'ente con id=%s non è il gestore di programma", idEnte);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN17);
+		}
 		//controllo se lo stato dell'ente gestore di programma è diverso da ATTIVO
 		if(!this.programmaService.getProgrammaById(idProgramma).getStatoGestoreProgramma().equals(StatoEnum.ATTIVO.getValue())) {
 			String errorMessage = String.format("Impossibile terminare l'ente gestore di programma poiché lo stato dell'ente risulta non attivo o terminato per questo programma");
@@ -1257,6 +1276,11 @@ public class EnteService {
 		if(!this.esisteEnteById(idEnte)) {
 			String errorMessage = String.format("L'ente con id=%s non esiste", idEnte);
 			throw new EnteException(errorMessage, CodiceErroreEnum.EN20);
+		}
+		ProgettoEntity progetto = this.progettoService.getProgettoById(idProgetto);
+		if(progetto.getEnteGestoreProgetto() == null || !progetto.getEnteGestoreProgetto().getId().equals(idEnte)) {
+			String errorMessage = String.format("L'ente con id=%s non è il gestore di progetto", idEnte);
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN18);
 		}
 		//controllo se lo stato dell'ente gestore di progetto è diverso da ATTIVO
 		if(!this.progettoService.getProgettoById(idProgetto).getStatoGestoreProgetto().equals(StatoEnum.ATTIVO.getValue())) {
@@ -1352,9 +1376,9 @@ public class EnteService {
 	public void cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgramma(
 			@Valid ReferenteDelegatoGestoreProgrammaRequest referenteDelegatoGestoreProgrammaRequest) {
 		Long idProgramma = referenteDelegatoGestoreProgrammaRequest.getIdProgramma();
-		String codiceFiscaleUtente = referenteDelegatoGestoreProgrammaRequest.getCodiceFiscaleUtente();
+		String codiceFiscaleUtente = referenteDelegatoGestoreProgrammaRequest.getCfReferenteDelegato();
 		Long idEnte = referenteDelegatoGestoreProgrammaRequest.getIdEnte();
-		String codiceRuolo = referenteDelegatoGestoreProgrammaRequest.getCodiceRuolo();
+		String codiceRuolo = referenteDelegatoGestoreProgrammaRequest.getCodiceRuoloRefDeg();
 		ReferentiDelegatiEnteGestoreProgrammaEntity referentiDelegatiEnteGestoreProgrammaEntity = this.referentiDelegatiEnteGestoreProgrammaService.getReferenteDelegatiEnteGestoreProgramma(idProgramma, codiceFiscaleUtente, idEnte, codiceRuolo);
 		if(StatoEnum.ATTIVO.getValue().equals(referentiDelegatiEnteGestoreProgrammaEntity.getStatoUtente())) {
 			this.terminaAssociazioneReferenteDelegatoGestoreProgramma(referentiDelegatiEnteGestoreProgrammaEntity, codiceRuolo);
@@ -1401,9 +1425,9 @@ public class EnteService {
 	public void cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgetto(
 			@Valid ReferenteDelegatoGestoreProgettoRequest referenteDelegatoGestoreProgettoRequest) {
 		Long idProgetto = referenteDelegatoGestoreProgettoRequest.getIdProgetto();
-		String codiceFiscaleUtente = referenteDelegatoGestoreProgettoRequest.getCodiceFiscaleUtente();
+		String codiceFiscaleUtente = referenteDelegatoGestoreProgettoRequest.getCfReferenteDelegato();
 		Long idEnte = referenteDelegatoGestoreProgettoRequest.getIdEnte();
-		String codiceRuolo = referenteDelegatoGestoreProgettoRequest.getCodiceRuolo();
+		String codiceRuolo = referenteDelegatoGestoreProgettoRequest.getCodiceRuoloRefDeg();
 		ReferentiDelegatiEnteGestoreProgettoEntity referentiDelegatiEnteGestoreProgettoEntity = this.referentiDelegatiEnteGestoreProgettoService.getReferenteDelegatiEnteGestoreProgetto(idProgetto, codiceFiscaleUtente, idEnte, codiceRuolo);
 		if(StatoEnum.ATTIVO.getValue().equals(referentiDelegatiEnteGestoreProgettoEntity.getStatoUtente())) {
 			this.terminaAssociazioneReferenteDelegatoGestoreProgetto(referentiDelegatiEnteGestoreProgettoEntity, codiceRuolo);

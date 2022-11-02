@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,25 +13,20 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ReferenteDelegatoGestoreProgrammaRequest {
+public class ReferenteDelegatoGestoreProgrammaRequest extends SceltaProfiloParam{
 	
 	@NotBlank
-	@JsonProperty(value = "cfReferenteDelegato", required = true)
-	private String codiceFiscaleUtente;
+	private String cfReferenteDelegato;
 
 	@NotNull
-	@JsonProperty(value = "idProgramma", required = true)
-	private Long idProgramma;
+	private Long idProgrammaGestore;
 	
 	//Referente o Delegato (REG o DEG)
 	@NotNull
-	@JsonProperty(value = "codiceRuolo", required = true)
-	private String codiceRuolo;
+	private String codiceRuoloRefDeg;
 	
 	@NotNull
-	@JsonProperty(value = "idEnte", required = true)
-	private Long idEnte;
+	private Long idEnteGestore;
 	
-	@JsonProperty(value = "mansione", required = true)
 	private String mansione;
 }
