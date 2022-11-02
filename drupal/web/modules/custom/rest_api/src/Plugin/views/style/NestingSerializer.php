@@ -2,7 +2,6 @@
 
 namespace Drupal\rest_api\Plugin\views\style;
 
-use Drupal\Component\Serialization\Json;
 use Drupal\rest\Plugin\views\style\Serializer;
 
 /**
@@ -26,16 +25,28 @@ class NestingSerializer extends Serializer
   public function rowNormalize($row)
   {
     $items = [];
-
     foreach ($row as $key => $value) {
-      if (!empty($value) && Json::decode($value)) {
-        $items[$key] = json_decode($value, true);
-      } elseif ($value === '[]') {
+      $value = (string)$value;
+      if ($value === '[]') {
         $items[$key] = [];
-      } elseif ((string)$value === '0') {
+      } elseif ($value === '0') {
         $items[$key] = 0;
+      } elseif (!empty($value) && json_decode($value, true)) {
+        $items[$key] = json_decode($value, true);
       } else {
         $items[$key] = html_entity_decode($value);
+      }
+
+      if (in_array($key,
+        ['title',
+          'body',
+          'name',
+          'description',
+          'type',
+          'intervention',
+          'program_label',
+          'category_label'])) {
+        $items[$key] = (string)$items[$key];
       }
     }
 

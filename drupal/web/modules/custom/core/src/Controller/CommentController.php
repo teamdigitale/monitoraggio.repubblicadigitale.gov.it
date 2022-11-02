@@ -126,12 +126,14 @@ class CommentController
     }
 
     $parentComment = Comment::load($commentId);
-    NotificationsController::sendNotification(
-      $node,
-      $comment->getOwnerId(),
-      $parentComment->getOwnerId(),
-      'comment_reply'
-    );
+    if($comment->getOwnerId()!=$parentComment->getOwnerId()){
+      NotificationsController::sendNotification(
+        $node,
+        $comment->getOwnerId(),
+        $parentComment->getOwnerId(),
+        'comment_reply'
+      );
+    }
 
     $node = Node::load($nodeId);
     if (empty($node)) {

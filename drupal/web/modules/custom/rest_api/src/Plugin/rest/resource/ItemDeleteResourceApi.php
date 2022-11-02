@@ -127,7 +127,7 @@ class ItemDeleteResourceApi extends ResourceBase
 
       ItemController::delete(
         $userId,
-        $id,
+        $node,
         $body->reason
       );
 

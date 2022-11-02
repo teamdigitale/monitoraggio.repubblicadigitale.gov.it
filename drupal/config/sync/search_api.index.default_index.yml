@@ -171,7 +171,7 @@ processor_settings:
     spaces: ''
     ignored: ._-
     overlap_cjk: 1
-    minimum_word_size: '3'
+    minimum_word_size: '2'
 tracker_settings:
   default:
     indexing_order: fifo
