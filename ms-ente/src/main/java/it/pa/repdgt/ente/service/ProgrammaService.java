@@ -17,6 +17,7 @@ import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.repository.BrokenAccessControlRepository;
 
 @Service
 public class ProgrammaService {
@@ -25,6 +26,8 @@ public class ProgrammaService {
 	private EnteService enteService;
 	@Autowired
 	private ProgrammaRepository programmaRepository;
+	@Autowired
+	private BrokenAccessControlRepository brokenAccessControlRepository;
 	
 	@LogMethod
 	@LogExecutionTime
@@ -91,5 +94,13 @@ public class ProgrammaService {
 		programmaFetchDB.setEnteGestoreProgramma(enteFetchDB);
 		programmaFetchDB.setStatoGestoreProgramma(StatoEnum.NON_ATTIVO.getValue());
 		this.salvaProgramma(programmaFetchDB);
+	}
+
+	public int getCountEnteByIdProgramma(Long idEnte, Long idProgramma) {
+		return brokenAccessControlRepository.getEnteByIdProgramma(idEnte, idProgramma);
+	}
+	
+	public int getCountEnteByPolicy(Long idEnte) {
+		return brokenAccessControlRepository.getCountEnteByPolicy(idEnte);
 	}
 }

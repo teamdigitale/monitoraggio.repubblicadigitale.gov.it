@@ -44,11 +44,13 @@ import it.pa.repdgt.ente.request.ReferenteDelegatoPartnerRequest;
 import it.pa.repdgt.ente.resource.EnteResource;
 import it.pa.repdgt.ente.resource.ListaEntiPaginatiResource;
 import it.pa.repdgt.ente.restapi.param.EntiPaginatiParam;
+import it.pa.repdgt.ente.service.AccessControServiceUtils;
 import it.pa.repdgt.ente.service.EntePartnerService;
 import it.pa.repdgt.ente.service.EnteService;
 import it.pa.repdgt.ente.util.CSVUtil;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 
 @RestController
 @RequestMapping(path = "ente")
@@ -58,7 +60,11 @@ public class EnteRestApi {
 	@Autowired
 	private EntePartnerService entePartnerService;
 	@Autowired
+	private AccessControServiceUtils accessControServiceUtils;
+	@Autowired
 	private EnteMapper enteMapper;
+	
+	private static final String ERROR_MESSAGE_PERMESSO = "Errore tentavo accesso a risorsa non permesso";
 
 	// Lista enti paginata e filtrata
 	@PostMapping(path =  "/all")
@@ -104,6 +110,7 @@ public class EnteRestApi {
 	}
 
 	// Scheda Ente
+	@Deprecated
 	@GetMapping(path = "/{idEnte}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaEnteBean getSchedaEnteById(
@@ -111,11 +118,34 @@ public class EnteRestApi {
 		return this.enteService.getSchedaEnteById(idEnte);
 	}
 	
+	// Scheda Ente
+	@PostMapping(path = "/{idEnte}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public SchedaEnteBean getSchedaEnteByIdAndProfilo(
+			@PathVariable(value = "idEnte") Long idEnte,
+			@RequestBody @Valid SceltaProfiloParam sceltaProfiloParam) {
+		if(!accessControServiceUtils.checkPermessoIdEnte(sceltaProfiloParam, idEnte))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
+		return this.enteService.getSchedaEnteById(idEnte);
+	}
+	
 	// Dettaglio ente gestore di un determinato programma
+	@Deprecated
 	@GetMapping(path = "/gestoreProgramma/{idProgramma}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaEnteGestoreBean getSchedaEnteGestoreProgramma(
 			@PathVariable(value = "idProgramma") Long idProgramma) {
+		return this.enteService.getSchedaEnteGestoreProgrammaByIdProgramma(idProgramma);
+	}
+	
+	// Dettaglio ente gestore di un determinato programma
+	@PostMapping(path = "/gestoreProgramma/{idProgramma}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public SchedaEnteGestoreBean getSchedaEnteGestoreProgrammaAndProfilo(
+			@PathVariable(value = "idProgramma") Long idProgramma,
+			@RequestBody @Valid SceltaProfiloParam sceltaProfiloParam) {
+		if(!accessControServiceUtils.checkPermessoIdProgramma(sceltaProfiloParam, idProgramma))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		return this.enteService.getSchedaEnteGestoreProgrammaByIdProgramma(idProgramma);
 	}
 
@@ -135,6 +165,8 @@ public class EnteRestApi {
 	public SchedaEnteGestoreProgettoBean getSchedaEnteGestoreProgettoBySceltaProfilo(
 			@PathVariable(value = "idProgetto") Long idProgetto,
 			@RequestBody @Valid EntiPaginatiParam entiPaginatiParam) {
+		if(!accessControServiceUtils.checkPermessoIdProgetto(entiPaginatiParam, idProgetto))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		return this.enteService.getSchedaEnteGestoreProgettoByIdProgettoAndSceltaProfilo(idProgetto, entiPaginatiParam);
 	}
 
@@ -155,6 +187,8 @@ public class EnteRestApi {
 			@PathVariable(value = "idProgetto") Long idProgetto,
 			@PathVariable(value = "idEnte") Long idEnte,
 			@RequestBody @Valid EntiPaginatiParam entiPaginatiParam) {
+		if(!accessControServiceUtils.checkPermessoIdProgetto(entiPaginatiParam, idProgetto))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		return this.entePartnerService.getSchedaEntePartnerByIdProgettoAndIdEnteAndSceltaProfilo(idProgetto, idEnte, entiPaginatiParam);
 	}
 
@@ -219,7 +253,10 @@ public class EnteRestApi {
 	@ResponseStatus(code = HttpStatus.OK)
 	public void associaEntePartnerPerProgetto(
 			@PathVariable(value = "idEntePartner") Long idEntePartner,
-			@PathVariable(value = "idProgetto") Long idProgetto) {
+			@PathVariable(value = "idProgetto") Long idProgetto,
+			@RequestBody SceltaProfiloParam sceltaProfilo) {
+		if(!accessControServiceUtils.checkPermessoIdProgetto(sceltaProfilo, idProgetto))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.entePartnerService.associaEntePartnerPerProgetto(idEntePartner, idProgetto);
 	}
 
@@ -229,6 +266,8 @@ public class EnteRestApi {
 	public void aggiornaEnte(
 			@RequestBody @Valid AggiornaEnteRequest aggiornaEnteRequest,
 			@PathVariable(value = "idEnte") Long idEnte) {
+		if(!accessControServiceUtils.checkPermessoIdEnte(aggiornaEnteRequest, idEnte))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		EnteEntity enteEntity = this.enteMapper.toEntityFrom(aggiornaEnteRequest);
 		this.enteService.aggiornaEnte(enteEntity, idEnte);
 	}
@@ -240,6 +279,8 @@ public class EnteRestApi {
 			@RequestBody @Valid AggiornaEnteRequest aggiornaEnteRequest,
 			@PathVariable(value = "idEnte") Long idEnte,
 			@PathVariable(value = "idProgramma")   Long idProgramma) {
+			if(!accessControServiceUtils.checkPermessoIdProgramma(aggiornaEnteRequest, idProgramma))
+				throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		EnteEntity enteEntity = this.enteMapper.toEntityFrom(aggiornaEnteRequest);
 		this.enteService.modificaEnteGestoreProgramma(enteEntity, idEnte, idProgramma);
 	}
@@ -251,6 +292,8 @@ public class EnteRestApi {
 			@RequestBody @Valid AggiornaEnteRequest aggiornaEnteRequest,
 			@PathVariable(value = "idEnte") Long idEnte,
 			@PathVariable(value = "idProgetto")   Long idProgetto) {
+		if(!accessControServiceUtils.checkPermessoIdProgetto(aggiornaEnteRequest, idProgetto))
+				throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		EnteEntity enteEntity = this.enteMapper.toEntityFrom(aggiornaEnteRequest);
 		this.enteService.modificaEnteGestoreProgetto(enteEntity, idEnte, idProgetto);
 	}
@@ -260,7 +303,10 @@ public class EnteRestApi {
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void cancellaGestoreProgramma(
 			@PathVariable(value = "idEnte") Long idEnte,
-			@PathVariable(value = "idProgramma") Long idProgramma) {
+			@PathVariable(value = "idProgramma") Long idProgramma,
+			@RequestBody SceltaProfiloParam sceltaProfilo) {
+		if(!accessControServiceUtils.checkPermessoIdProgramma(sceltaProfilo, idProgramma))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.enteService.cancellaGestoreProgramma(idEnte,idProgramma);
 	}
 	
@@ -269,7 +315,10 @@ public class EnteRestApi {
 	@ResponseStatus(code = HttpStatus.OK)
 	public void terminaGestoreProgramma(
 			@PathVariable(value = "idEnte") Long idEnte,
-			@PathVariable(value = "idProgramma") Long idProgramma) {
+			@PathVariable(value = "idProgramma") Long idProgramma,
+			@RequestBody SceltaProfiloParam sceltaProfilo) {
+		if(!accessControServiceUtils.checkPermessoIdProgramma(sceltaProfilo, idProgramma))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.enteService.terminaGestoreProgramma(idEnte,idProgramma);
 	}
 	
@@ -278,7 +327,10 @@ public class EnteRestApi {
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void cancellaGestoreProgetto(
 			@PathVariable(value = "idEnte") Long idEnte,
-			@PathVariable(value = "idProgetto") Long idProgetto) {
+			@PathVariable(value = "idProgetto") Long idProgetto,
+			@RequestBody SceltaProfiloParam sceltaProfilo) {
+		if(!accessControServiceUtils.checkPermessoIdProgetto(sceltaProfilo, idProgetto))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.enteService.cancellaGestoreProgetto(idEnte, idProgetto);
 	}
 	
@@ -287,7 +339,11 @@ public class EnteRestApi {
 	@ResponseStatus(code = HttpStatus.OK)
 	public void terminaGestoreProgetto(
 			@PathVariable(value = "idEnte") Long idEnte,
-			@PathVariable(value = "idProgetto") Long idProgetto) throws Exception {
+			@PathVariable(value = "idProgetto") Long idProgetto,
+			@RequestBody SceltaProfiloParam sceltaProfilo
+			) throws Exception {
+		if(!accessControServiceUtils.checkPermessoIdProgetto(sceltaProfilo, idProgetto))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.enteService.terminaGestoreProgetto(idEnte, idProgetto);
 	}
 
@@ -296,7 +352,10 @@ public class EnteRestApi {
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void cancellaEntePartnerPerProgetto(
 			@PathVariable(value = "idEnte") Long idEnte,
-			@PathVariable(value = "idProgetto") Long idProgetto) {
+			@PathVariable(value = "idProgetto") Long idProgetto,
+			@RequestBody SceltaProfiloParam sceltaProfilo) {
+		if(!accessControServiceUtils.checkPermessoIdProgetto(sceltaProfilo, idProgetto))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.enteService.cancellaEntePartnerPerProgetto(idEnte,idProgetto);
 	}
 	
@@ -305,7 +364,10 @@ public class EnteRestApi {
 	@ResponseStatus(code = HttpStatus.OK)
 	public void terminaEntePartnerPerProgetto(
 			@PathVariable(value = "idEnte") Long idEnte,
-			@PathVariable(value = "idProgetto") Long idProgetto) {
+			@PathVariable(value = "idProgetto") Long idProgetto,
+			@RequestBody SceltaProfiloParam sceltaProfilo) {
+		if(!accessControServiceUtils.checkPermessoIdProgetto(sceltaProfilo, idProgetto))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.enteService.terminaEntePartnerPerProgetto(idEnte,idProgetto);
 	}
 
@@ -327,7 +389,10 @@ public class EnteRestApi {
 	@PostMapping(path = "/partner/upload/{idProgetto}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	public List<EntePartnerUploadBean> uploadFileEntiPartner(
 			@RequestPart MultipartFile file,
-			@PathVariable(value = "idProgetto") Long idProgetto) {
+			@PathVariable(value = "idProgetto") Long idProgetto,
+			@RequestBody SceltaProfiloParam sceltaProfilo) {
+		if(!accessControServiceUtils.checkPermessoIdProgetto(sceltaProfilo, idProgetto))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		if (file == null || !CSVUtil.hasCSVFormat(file)) {
 			throw new EnteException("il file non è valido", CodiceErroreEnum.EN02); 
 		}
