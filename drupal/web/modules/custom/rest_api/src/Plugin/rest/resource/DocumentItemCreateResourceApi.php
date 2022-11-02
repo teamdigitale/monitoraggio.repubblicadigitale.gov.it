@@ -133,11 +133,11 @@ class DocumentItemCreateResourceApi extends ResourceBase
       ValidationController::validateRequestBody($body, self::JSON_SCHEMA);
 
       $externalLink = $body->external_link;
-      if (!preg_match('~^(?:f|ht)tps?://~i', $externalLink)) {
+      if (!preg_match('~^(?:f|ht)tps?://~i', $externalLink) && !empty($externalLink)) {
         $externalLink = 'https://' . $externalLink;
       }
 
-      if (!UrlHelper::isValid($externalLink, true)) {
+      if (!UrlHelper::isValid($externalLink, true) && !empty($externalLink)) {
         throw new Exception('DCRA03: External link not valid', 400);
       }
 
