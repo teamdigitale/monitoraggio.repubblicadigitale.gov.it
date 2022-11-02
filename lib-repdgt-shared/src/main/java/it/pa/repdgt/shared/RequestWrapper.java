@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Base64;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,12 +16,13 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.Part;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import it.pa.repdgt.shared.exception.BaseException;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -178,5 +178,9 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	public String getCodiceRuolo() {
 		return this.codiceRuolo;
+	}
+	
+	public String getBody() {
+		return this.body;
 	}
 }

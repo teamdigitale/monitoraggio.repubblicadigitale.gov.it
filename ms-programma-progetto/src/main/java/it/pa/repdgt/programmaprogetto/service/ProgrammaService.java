@@ -42,6 +42,7 @@ import it.pa.repdgt.shared.entity.light.QuestionarioTemplateLightEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.repository.BrokenAccessControlRepository;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.shared.service.storico.StoricoService;
 import lombok.extern.slf4j.Slf4j;
@@ -57,8 +58,6 @@ public class ProgrammaService {
 	@Autowired
 	private EnteService enteService;
 	@Autowired
-	private RuoloService ruoloService;
-	@Autowired
 	private StoricoService storicoService;
 	@Autowired
 	private ReferentiDelegatiEnteGestoreProgrammaService referentiDelegatiEnteGestoreProgrammaService;
@@ -68,6 +67,9 @@ public class ProgrammaService {
 	private ProgrammaXQuestionarioTemplateService programmaXQuestionarioTemplateService;
 	@Autowired
 	private ProgrammaMapper programmaMapper;
+	@Autowired
+	private BrokenAccessControlRepository brokenAccessControlRepository;
+	
 
 	@LogMethod
 	@LogExecutionTime
@@ -779,5 +781,13 @@ public class ProgrammaService {
 
 		questionarioTemplate.setStato(StatoEnum.ATTIVO.getValue());
 		this.questionarioTemplateSqlService.salvaQuestionarioTemplate(questionarioTemplate);
+	}
+	
+	public int getCountEnteByIdProgramma(Long idEnte, Long idProgramma) {
+			return brokenAccessControlRepository.getEnteByIdProgramma(idEnte, idProgramma);
+	}
+	
+	public int getCountEnteByPolicy(Long idEnte) {
+		return brokenAccessControlRepository.getCountEnteByPolicy(idEnte);
 	}
 }
