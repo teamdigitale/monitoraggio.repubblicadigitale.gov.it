@@ -62,6 +62,8 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
   const surveyAnswersToSave = useAppSelector(selectCompilingSurveyForms);
   const serviceDetails = useAppSelector(selectServices)?.detail;
 
+  const [originalCF, setOriginalCF] = useState<string>('');
+
   useEffect(() => {
     // For breadcrumb
     if (serviceId && serviceDetails?.dettaglioServizio?.nomeServizio) {
@@ -111,6 +113,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
                   : value[id][0],
             },
           };
+          if(id.toString() === '3') setOriginalCF(value[id][0]);
         });
       } else if (typeof value === 'string') {
         const val = jsonParseValues(decodeURI(value).replaceAll("'", '"'));
@@ -126,6 +129,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
                   : val[id][0],
             },
           };
+          if(id.toString() === '3') setOriginalCF(val[id]);
         });
       }
     });
@@ -347,7 +351,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
       body[0][19] = moment().format('DD-MM-YYYY');
     }
     const res = await dispatch(
-      PostFormCompletedByCitizen(idQuestionarioCompilato, body)
+      PostFormCompletedByCitizen(idQuestionarioCompilato, body, originalCF)
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -383,7 +387,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
       size: 'xs',
       color: 'primary',
       className: 'mr-4',
-      text: 'Invia Questionario',
+      text: 'Invia questionario',
       disabled: !FormHelper.isValidForm(form),
       onClick: () => {
         generateFormCompleted(surveyAnswersToSave);
@@ -470,7 +474,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
             disabled={!FormHelper.isValidForm(form) || activeSection !== 3}
             aria-label='Invio Questionario'
           >
-            Invia Questionario
+            Invia questionario
           </Button>
         </div>
       </div>
