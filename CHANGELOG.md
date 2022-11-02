@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.253](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.252...1.0.0-develop.253) (2022-11-02)
+
+
+### Features
+
+* **be:** broken-access-control per programma-progetto e shared ([7a50e19](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7a50e1946f5a6c3e544c6aedf03ce45438e086a5))
+
 ## [1.0.0-develop.252](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.251...1.0.0-develop.252) (2022-11-02)
 
 
