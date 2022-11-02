@@ -3,6 +3,7 @@ package it.pa.repdgt.shared;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -18,6 +19,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import it.pa.repdgt.shared.exception.BaseException;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.service.PermessoApiService;
 import it.pa.repdgt.shared.service.PermessoService;
 import it.pa.repdgt.shared.service.RuoloService;
@@ -35,7 +38,7 @@ public class RequestFilter implements Filter {
 	private PermessoService permessoService;
 	@Autowired
 	private PermessoApiService permessiApiService;
-	
+
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		log.debug("Filter - init");
@@ -57,6 +60,7 @@ public class RequestFilter implements Filter {
 
 		final String codiceFiscaleUtenteLoggato = wrappedRequest.getCodiceFiscale();
 		final String codiceRuoloUtenteLoggato   = wrappedRequest.getCodiceRuolo();
+		final String bodyRequest   = wrappedRequest.getBody();
 
 		String metodoHttp = ((HttpServletRequest) request).getMethod();
 		String endpoint = ((HttpServletRequest) request).getServletPath();
@@ -69,57 +73,61 @@ public class RequestFilter implements Filter {
 			else
 				responseHttp.sendError(HttpServletResponse.SC_UNAUTHORIZED, String.format("Utente Non Autorizzato per endpoint: %s %s", metodoHttp, endpoint));
 		}else {
-		if(FilterUtil.isEndpointNotChecked(endpoint) 
-				/* per risolvere il problema di mysql "Error Code: 3699. Timeout exceeded in regular expression match."
-				 * per gli endpoint /servizio/cittadino/questionarioCompilato/.../anonimo che non hanno CF per login
-				 */
-				|| FilterUtil.isEndpointQuestionarioCompilatoAnonimo(endpoint)) {
-			chain.doFilter(wrappedRequest, response);
-		} else {
-			// verifico se l'utente loggato possiede il ruolo con cui si è profilato
-			boolean hasRuoloUtente = this.ruoloService
-					.getRuoliByCodiceFiscaleUtente(codiceFiscaleUtenteLoggato)
-					.stream()
-					.anyMatch(codiceRuolo -> codiceRuolo.equalsIgnoreCase(codiceRuoloUtenteLoggato));
-		
-			if(!hasRuoloUtente) {
-				responseHttp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utente Non Autorizzato");
+			if(FilterUtil.isEndpointNotChecked(endpoint) 
+					/* per risolvere il problema di mysql "Error Code: 3699. Timeout exceeded in regular expression match."
+					 * per gli endpoint /servizio/cittadino/questionarioCompilato/.../anonimo che non hanno CF per login
+					 */
+					|| FilterUtil.isEndpointQuestionarioCompilatoAnonimo(endpoint)) {
+				chain.doFilter(wrappedRequest, response);
 			} else {
-				if(endpoint.contains(FilterUtil.VERIFICA_PROFILO_BASE_URI) || endpoint.contains("/drupal/forward") || endpoint.contains("/utente/listaUtenti")) {
-					chain.doFilter(wrappedRequest, response);
-				} else {
-					List<String> codiciPermessoPerApi;
-					if(FilterUtil.isEndpointQuestionarioCompilato(endpoint)) {
-						/* per risolvere il problema di mysql "Error Code: 3699. Timeout exceeded in regular expression match."
-						 * per l'endpoint /servizio/cittadino/questionarioCompilato/{idQuestionario}/compila
-						 */
-						codiciPermessoPerApi = Arrays.asList("wrt.quest.citt.serv");	
-					}else {
-						codiciPermessoPerApi = this.permessiApiService.getCodiciPermessiApiByMetodoHttpAndPath(metodoHttp, endpoint);						
-					}
-					List<String> codiciPermessoUtenteLoggato = this.permessoService.getCodiciPermessoByUtenteLoggato(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato);
+				// verifico se l'utente loggato possiede il ruolo con cui si è profilato
+				boolean hasRuoloUtente = this.ruoloService
+						.getRuoliByCodiceFiscaleUtente(codiceFiscaleUtenteLoggato)
+						.stream()
+						.anyMatch(codiceRuolo -> codiceRuolo.equalsIgnoreCase(codiceRuoloUtenteLoggato));
 
-					
-					
-					// verifico il profilo dell'utente loggato è abilitato a poter chiamare quella particolare api
-					boolean isUtenteAbilitatoPerApi = false;
-					for(String codiciPermesso: codiciPermessoPerApi) {
-						if(codiciPermessoUtenteLoggato.contains(codiciPermesso)) {
-							isUtenteAbilitatoPerApi = true;
-							break;
+				if(!hasRuoloUtente) {
+					responseHttp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utente Non Autorizzato");
+				} else { 
+					if(bodyRequest != null && !"".equals(bodyRequest.trim())
+							&& !new FilterUtil().verificaSceltaProfilo(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato, bodyRequest )) {
+						responseHttp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utente Non Autorizzato");
+					}else {
+						if(endpoint.contains(FilterUtil.VERIFICA_PROFILO_BASE_URI) || endpoint.contains("/drupal/forward") || endpoint.contains("/utente/listaUtenti")) {
+							chain.doFilter(wrappedRequest, response);
+						} else {
+							List<String> codiciPermessoPerApi;
+							if(FilterUtil.isEndpointQuestionarioCompilato(endpoint)) {
+								/* per risolvere il problema di mysql "Error Code: 3699. Timeout exceeded in regular expression match."
+								 * per l'endpoint /servizio/cittadino/questionarioCompilato/{idQuestionario}/compila
+								 */
+								codiciPermessoPerApi = Arrays.asList("wrt.quest.citt.serv");	
+							}else {
+								codiciPermessoPerApi = this.permessiApiService.getCodiciPermessiApiByMetodoHttpAndPath(metodoHttp, endpoint);						
+							}
+							List<String> codiciPermessoUtenteLoggato = this.permessoService.getCodiciPermessoByUtenteLoggato(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato);
+
+
+
+							// verifico il profilo dell'utente loggato è abilitato a poter chiamare quella particolare api
+							boolean isUtenteAbilitatoPerApi = false;
+							for(String codiciPermesso: codiciPermessoPerApi) {
+								if(codiciPermessoUtenteLoggato.contains(codiciPermesso)) {
+									isUtenteAbilitatoPerApi = true;
+									break;
+								}
+							}
+
+							if(!isUtenteAbilitatoPerApi) {
+								responseHttp.sendError(HttpServletResponse.SC_UNAUTHORIZED, String.format("Utente Non Autorizzato per endpoint: %s %s", metodoHttp, endpoint));
+							}else {
+								chain.doFilter(wrappedRequest, response);
+							}
 						}
 					}
-					
-					if(!isUtenteAbilitatoPerApi) {
-						responseHttp.sendError(HttpServletResponse.SC_UNAUTHORIZED, String.format("Utente Non Autorizzato per endpoint: %s %s", metodoHttp, endpoint));
-					}else {
-						chain.doFilter(wrappedRequest, response);
-					}
 				}
-				
 			}
 		}
-	}
 	}
 
 	@Override

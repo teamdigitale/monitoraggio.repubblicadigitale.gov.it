@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.pa.repdgt.programmaprogetto.request.ProgrammaRequest;
 import it.pa.repdgt.programmaprogetto.request.TerminaRequest;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -50,6 +51,8 @@ public class ProgrammaRestApiMockMvcTest{
 		nuovoProgrammaRequest.setNomeBreve("programmaTestcrea");
 		nuovoProgrammaRequest.setPolicy(PolicyEnum.RFD);
 		nuovoProgrammaRequest.setCodice("codice");
+		nuovoProgrammaRequest.setCfUtenteLoggato("SMTPAL67R31F111X");
+		nuovoProgrammaRequest.setCodiceRuoloUtenteLoggato("DTD");
 		
 		this.mockMvc
 			.perform(
@@ -64,9 +67,14 @@ public class ProgrammaRestApiMockMvcTest{
 	
 	@Test
 	public void assegnaEnteGestoreProgrammaAlProgrammaTest() throws Exception {
+		SceltaProfiloParam sceltaProfiloParam = new SceltaProfiloParam();
+		sceltaProfiloParam.setCfUtenteLoggato("SMTPAL67R31F111X");
+		sceltaProfiloParam.setCodiceRuoloUtenteLoggato("DTD");
 		this.mockMvc
 			.perform(
 					put("/programma/100/assegna/entegestore/1002")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsBytes(sceltaProfiloParam))
 					)
 			.andDo(print())
 			.andExpect(status()
@@ -75,9 +83,14 @@ public class ProgrammaRestApiMockMvcTest{
 	
 	@Test
 	public void associaQuestionarioTemplateAProgrammaTest() throws Exception {
+		SceltaProfiloParam sceltaProfiloParam = new SceltaProfiloParam();
+		sceltaProfiloParam.setCfUtenteLoggato("SMTPAL67R31F111X");
+		sceltaProfiloParam.setCodiceRuoloUtenteLoggato("DTD");
 		this.mockMvc
 			.perform(
 					put("/programma/100/aggiungi/1")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsBytes(sceltaProfiloParam))
 					)
 			.andDo(print())
 			.andExpect(status()
@@ -86,14 +99,16 @@ public class ProgrammaRestApiMockMvcTest{
 	
 	@Test
 	public void terminaProgrammaTest() throws Exception {
-		TerminaRequest dataTerminazione = new TerminaRequest();
-		dataTerminazione.setDataTerminazione("12-03-2022");
+		TerminaRequest terminaRequest = new TerminaRequest();
+		terminaRequest.setDataTerminazione("12-03-2022");
+		terminaRequest.setCfUtenteLoggato("SMTPAL67R31F111X");
+		terminaRequest.setCodiceRuoloUtenteLoggato("DTD");
 		
 		this.mockMvc
 			.perform(
 					put("/programma/termina/102")
 					.contentType(MediaType.APPLICATION_JSON)
-					.content(objectMapper.writeValueAsBytes(dataTerminazione))
+					.content(objectMapper.writeValueAsBytes(terminaRequest))
 					)
 			.andDo(print())
 			.andExpect(status()
@@ -102,9 +117,14 @@ public class ProgrammaRestApiMockMvcTest{
 	
 	@Test
 	public void cancellazioneProgrammaTest() throws Exception {
+		SceltaProfiloParam sceltaProfiloParam = new SceltaProfiloParam();
+		sceltaProfiloParam.setCfUtenteLoggato("SMTPAL67R31F111X");
+		sceltaProfiloParam.setCodiceRuoloUtenteLoggato("DTD");
 		this.mockMvc
 			.perform(
 					delete("/programma/105")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsBytes(sceltaProfiloParam))
 					)
 			.andDo(print())
 			.andExpect(status()

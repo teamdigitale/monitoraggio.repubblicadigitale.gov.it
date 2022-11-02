@@ -89,6 +89,8 @@ public class ProgrammaRestApiRestTemplateTest extends AppTests{
 		programmaRequest.setDataInizio(new Date());
 		programmaRequest.setDataFine(new Date());
 		programmaRequest.setCodice("codice");
+		programmaRequest.setCfUtenteLoggato("SMTPAL67R31F111X");
+		programmaRequest.setCodiceRuoloUtenteLoggato("DTD");
 		
 		restTemplate.postForEntity("http://localhost:" + randomServerPort + "/programma", programmaRequest, CreaProgrammaResource.class);
 	}

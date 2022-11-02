@@ -5,13 +5,31 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import it.pa.repdgt.shared.repository.BrokenAccessControlRepository;
+
+@Component
 public class FilterUtil {
 	public static final int SIZE_BUFFER = 128;
 	public static final String AUTH_TOKEN_HEADER = "authtoken";
 	public static final String USER_ROLE_HEADER  = "userrole";
 	public static final String CODICE_RUOLO = "codiceRuoloUtenteLoggato";
 	public static final String CODICE_FISCALE = "cfUtenteLoggato";
+	public static final String ID_PROGRAMMA = "idProgramma";
+	public static final String ID_PROGETTO = "idProgetto";
+	public static final String ID_ENTE = "idEnte";
 	public static final String DRUPAL_USER = "Drupal_User";
+	
+	@Autowired
+	private BrokenAccessControlRepository brokenAccessControlRepository;
 	
 	public static final List<String> ENDPOINT_NOT_CHECKED = Arrays.asList(
 			"^/open-data*",
@@ -80,6 +98,42 @@ public class FilterUtil {
 			    Matcher matcher = pattern.matcher(endpointToMatch);
 				if(matcher.find())
 					return true;
+			}
+			return false;
+		}
+
+		public boolean verificaSceltaProfilo(String codiceFiscale, String codiceRuolo, String body) throws JsonMappingException, JsonProcessingException {
+			ObjectMapper objectMapper = new ObjectMapper();
+			final JsonNode jsonNode = objectMapper.readTree(body);
+			final ObjectNode objectNode = (ObjectNode) jsonNode;
+
+			String idProgramma = objectNode.get(FilterUtil.ID_PROGRAMMA).textValue();
+			String idProgetto = objectNode.get(FilterUtil.ID_PROGETTO).textValue();
+			String idEnte = objectNode.get(FilterUtil.ID_ENTE).textValue();
+			
+			switch (codiceRuolo) {
+			case "REG":
+			case "DEG":
+				if(brokenAccessControlRepository.isRefDegProgramma(codiceFiscale, codiceRuolo, idProgramma, idEnte) > 0)
+					return true;
+				break;
+			case "REGP":
+			case "DEGP":
+				if(brokenAccessControlRepository.isRefDegProgetto(codiceFiscale, codiceRuolo, idProgetto, idEnte) > 0)
+					return true;
+				break;
+			case "REPP":
+			case "DEPP":
+				if(brokenAccessControlRepository.isRefDegPartner(codiceFiscale, codiceRuolo, idProgetto, idEnte) > 0)
+					return true;
+				break;
+			case "FAC":
+			case "VOL":
+				if(brokenAccessControlRepository.isFacVolProgettoAndEnte(codiceFiscale, codiceRuolo, idProgetto, idEnte) > 0)
+					return true;
+				break;
+			default:
+				return true;
 			}
 			return false;
 		}
