@@ -73,7 +73,8 @@ const HeaderDesktop: React.FC<HeaderI> = ({
             'text.white',
             'primary-bg-b2',
             'header-panel-btn',
-            'border-right'
+            'border-right',
+            'px-3'
           )}
         >
           <div>
@@ -90,9 +91,8 @@ const HeaderDesktop: React.FC<HeaderI> = ({
             </h6>
             <h6 className='font-weight-light text-nowrap'>
               {/*<em>{getRoleLabel(userProfile?.codiceRuolo)}</em>*/}
-              <em>{`${userProfile?.descrizioneRuolo}${
-                userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
-              }`}</em>
+              <em>{`${userProfile?.descrizioneRuolo}${userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
+                }`}</em>
             </h6>
           </div>
           <div className='ml-2'>
@@ -191,8 +191,8 @@ const HeaderDesktop: React.FC<HeaderI> = ({
 
   const userDropDownAreaGestionale = () =>
     hasUserPermission(['btn.gest.ruoli']) ||
-    hasUserPermission(['btn.cat']) ||
-    hasUserPermission(['btn.rprt']) ? (
+      hasUserPermission(['btn.cat']) ||
+      hasUserPermission(['btn.rprt']) ? (
       <Dropdown
         className='p-0 header-container__top__user-dropdown'
         isOpen={openManagementArea}
@@ -248,7 +248,10 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                     'justify-content-between'
                   )}
                   role='menuitem'
-                  onClick={() => navigate('/gestione-ruoli')}
+                  onClick={() => {
+                    navigate('/gestione-ruoli')
+                    setOpenManagementArea(false)
+                  }}
                 >
                   {t('role_management')}
                 </Button>
@@ -265,9 +268,10 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                     'justify-content-between'
                   )}
                   role='menuitem'
-                  onClick={() =>
+                  onClick={() => {
                     navigate('/area-gestionale/gestione-categorie')
-                  }
+                    setOpenManagementArea(false)
+                  }}
                 >
                   Gestione categorie
                 </Button>
@@ -284,9 +288,10 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                     'justify-content-between'
                   )}
                   role='menuitem'
-                  onClick={() =>
+                  onClick={() => {
                     navigate('/area-gestionale/gestione-segnalazioni')
-                  }
+                    setOpenManagementArea(false)
+                  }}
                 >
                   Gestione segnalazioni
                 </Button>

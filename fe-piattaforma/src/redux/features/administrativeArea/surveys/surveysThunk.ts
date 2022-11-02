@@ -474,7 +474,7 @@ const PostFormCompletedByCitizenAction = {
   type: 'surveys/PostFormCompletedByCitizen',
 };
 export const PostFormCompletedByCitizen =
-  (idQuestionario: string | undefined, payload: any) =>
+  (idQuestionario: string | undefined, payload: any, originalCF: string) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
@@ -501,7 +501,7 @@ export const PostFormCompletedByCitizen =
         cognomeDaAggiornare: payload?.[0]['2'],
         comuneDiDomicilioDaAggiornare: payload?.[0]['12'],
         consensoTrattamentoDatiRequest: {
-          codiceFiscaleCittadino: payload?.[0]['3'],
+          codiceFiscaleCittadino: originalCF,
           consensoTrattamentoDatiEnum: consenso,
           numeroDocumentoCittadino: payload?.[0]['6'],
         },
