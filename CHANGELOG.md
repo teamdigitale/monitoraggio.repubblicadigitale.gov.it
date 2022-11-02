@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.256](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.255...1.0.0-develop.256) (2022-11-02)
+
+
+### Features
+
+* **be:** aggiunta broken access control ente-sede ([a01f9e6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a01f9e61369c4d4e10a61cade19a94a02b947d20))
+
 ## [1.0.0-develop.255](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.254...1.0.0-develop.255) (2022-11-02)
 
 
