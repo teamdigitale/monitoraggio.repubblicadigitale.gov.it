@@ -38,6 +38,8 @@ public class RequestFilter implements Filter {
 	private PermessoService permessoService;
 	@Autowired
 	private PermessoApiService permessiApiService;
+	@Autowired
+	private FilterUtil filterUtil;
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -90,7 +92,7 @@ public class RequestFilter implements Filter {
 					responseHttp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utente Non Autorizzato");
 				} else { 
 					if(bodyRequest != null && !"".equals(bodyRequest.trim())
-							&& !new FilterUtil().verificaSceltaProfilo(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato, bodyRequest )) {
+							&& !filterUtil.verificaSceltaProfilo(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato, bodyRequest )) {
 						responseHttp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utente Non Autorizzato");
 					}else {
 						if(endpoint.contains(FilterUtil.VERIFICA_PROFILO_BASE_URI) || endpoint.contains("/drupal/forward") || endpoint.contains("/utente/listaUtenti")) {

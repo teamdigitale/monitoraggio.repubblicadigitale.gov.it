@@ -107,9 +107,12 @@ public class FilterUtil {
 			final JsonNode jsonNode = objectMapper.readTree(body);
 			final ObjectNode objectNode = (ObjectNode) jsonNode;
 
-			String idProgramma = objectNode.get(FilterUtil.ID_PROGRAMMA).textValue();
-			String idProgetto = objectNode.get(FilterUtil.ID_PROGETTO).textValue();
-			String idEnte = objectNode.get(FilterUtil.ID_ENTE).textValue();
+			JsonNode nodoIdProgramma = objectNode.get(FilterUtil.ID_PROGRAMMA);
+			JsonNode nodoIdProgetto = objectNode.get(FilterUtil.ID_PROGETTO);
+			JsonNode nodoIdEnte = objectNode.get(FilterUtil.ID_ENTE);
+			String idProgramma = nodoIdProgramma != null ? nodoIdProgramma.toString() : null;
+			String idProgetto = nodoIdProgetto != null ? nodoIdProgetto.toString() : null;
+			String idEnte = nodoIdEnte != null ? nodoIdEnte.toString() : null;
 			
 			switch (codiceRuolo) {
 			case "REG":
