@@ -337,10 +337,16 @@ export const UpdateManagerAuthority =
             }
           );
 
+          const { idProgramma, idProgetto, idEnte } = getUserHeaders();
           res = await API.put(
             `/${entity}/${entityId}/assegna/${
               entity === 'programma' ? 'entegestore' : 'enteGestore'
-            }/${authorityDetail.id}`
+            }/${authorityDetail.id}`,
+            {
+              idProgramma,
+              idProgetto,
+              idEnte,
+            }
           );
 
           return res;
