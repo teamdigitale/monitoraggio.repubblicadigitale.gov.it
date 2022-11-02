@@ -110,9 +110,9 @@ public class FilterUtil {
 			JsonNode nodoIdProgramma = objectNode.get(FilterUtil.ID_PROGRAMMA);
 			JsonNode nodoIdProgetto = objectNode.get(FilterUtil.ID_PROGETTO);
 			JsonNode nodoIdEnte = objectNode.get(FilterUtil.ID_ENTE);
-			String idProgramma = nodoIdProgramma != null ? nodoIdProgramma.toString() : null;
-			String idProgetto = nodoIdProgetto != null ? nodoIdProgetto.toString() : null;
-			String idEnte = nodoIdEnte != null ? nodoIdEnte.toString() : null;
+			String idProgramma = nodoIdProgramma != null ? nodoIdProgramma.toString().replace("\"", "") : null;
+			String idProgetto = nodoIdProgetto != null ? nodoIdProgetto.toString().replace("\"", "") : null;
+			String idEnte = nodoIdEnte != null ? nodoIdEnte.toString().replace("\"", "") : null;
 			
 			switch (codiceRuolo) {
 			case "REG":
