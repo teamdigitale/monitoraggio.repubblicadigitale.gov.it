@@ -165,7 +165,12 @@ export const GetAuthorityDetail =
       dispatch(showLoader());
       dispatch({ ...SetAuthorityDetailAction });
 
-      const res = await API.get(`/ente/${authorityId}`);
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+      const res = await API.post(`/ente/${authorityId}`, {
+        idProgramma,
+        idProgetto,
+        idEnte,
+      });
 
       if (res?.data) {
         dispatch(
@@ -203,7 +208,7 @@ export const GetAuthorityManagerDetail =
       let res;
 
       if (entity === 'programma') {
-        res = await API.get(`/ente/gestoreProgramma/${entityId}`);
+        res = await API.post(`/ente/gestoreProgramma/${entityId}`, body);
       } else {
         res = await API.post(`/ente/gestoreProgetto/${entityId}`, body);
       }
@@ -371,8 +376,12 @@ export const RemoveManagerAuthority =
       dispatch({ ...RemoveAuthorityAction });
 
       if (authorityId && entityId) {
+        const { idProgramma, idProgetto, idEnte } = getUserHeaders();
         await API.delete(
-          `/ente/${authorityId}/cancellagestore${entity}/${entityId}`
+          `/ente/${authorityId}/cancellagestore${entity}/${entityId}`,
+          {
+            data: { idProgramma, idProgetto, idEnte },
+          }
         );
       }
     } catch (error) {
@@ -437,8 +446,10 @@ export const CreatePartnerAuthority =
           ...body,
         });
         if (res) {
+          const { idProgramma, idProgetto, idEnte } = getUserHeaders();
           res = await API.put(
-            `/ente/partner/associa/${res.data.id}/progetto/${entityId}`
+            `/ente/partner/associa/${res.data.id}/progetto/${entityId}`,
+            { idProgramma, idProgetto, idEnte }
           );
         }
       }
@@ -455,9 +466,16 @@ export const UpdatePartnerAuthority =
       dispatch(showLoader());
       dispatch({ ...UpdateAuthorityAction });
       if (authorityDetail) {
-        await API.put(`/ente/${authorityDetail.id}`, authorityDetail);
+        const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+        await API.put(`/ente/${authorityDetail.id}`, {
+          ...authorityDetail,
+          idProgramma,
+          idProgetto,
+          idEnte,
+        });
         await API.put(
-          `/ente/partner/associa/${authorityDetail.id}/progetto/${entityId}`
+          `/ente/partner/associa/${authorityDetail.id}/progetto/${entityId}`,
+          { idProgramma, idProgetto, idEnte }
         );
       }
     } catch (error) {
@@ -474,8 +492,12 @@ export const RemovePartnerAuthority =
       dispatch({ ...RemoveAuthorityAction });
 
       if (authorityId && entityId) {
+        const { idProgramma, idProgetto, idEnte } = getUserHeaders();
         await API.delete(
-          `/ente/${authorityId}/cancellaentepartner/${entityId}`
+          `/ente/${authorityId}/cancellaentepartner/${entityId}`,
+          {
+            data: { idProgramma, idProgetto, idEnte },
+          }
         );
       }
     } catch (error) {
@@ -492,7 +514,12 @@ export const TerminatePartnerAuthority =
       dispatch({ ...RemoveAuthorityAction });
 
       if (authorityId && entityId) {
-        await API.put(`/ente/${authorityId}/terminaentepartner/${entityId}`);
+        const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+        await API.put(`/ente/${authorityId}/terminaentepartner/${entityId}`, {
+          idProgramma,
+          idProgetto,
+          idEnte,
+        });
       }
     } catch (error) {
       console.log(error);
@@ -708,12 +735,18 @@ const UpdateAuthorityDetailsAction = {
 };
 
 export const UpdateAuthorityDetails =
-  (idEnte: string | undefined, payload: any) => async (dispatch: Dispatch) => {
+  (authorityId: string | undefined, payload: any) =>
+  async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...UpdateAuthorityDetailsAction });
-
-      await API.put(`/ente/${idEnte}`, payload);
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+      await API.put(`/ente/${authorityId}`, {
+        ...payload,
+        idProgramma,
+        idProgetto,
+        idEnte,
+      });
       return true;
     } catch (error: any) {
       console.log(error);
