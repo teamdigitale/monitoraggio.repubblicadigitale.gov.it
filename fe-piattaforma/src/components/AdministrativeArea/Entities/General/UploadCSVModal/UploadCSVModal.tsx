@@ -10,6 +10,7 @@ import { downloadCSV, downloadFile } from '../../../../../utils/common';
 import FileInput from '../../../../General/FileInput/FileInput';
 import GenericModal from '../../../../Modals/GenericModal/genericModal';
 import { UploadFile } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
+import { getUserHeaders } from '../../../../../redux/features/user/userThunk';
 
 const id = 'upload-csv';
 
@@ -75,7 +76,9 @@ const UploadCSVModal: React.FC<UploadCSVModalI> = (props) => {
         <div className='d-flex flex-column align-items-center justify-content-center p-5'>
           <div id='file-target' />
           <p className='py-3'>
-            {citizens ? 'Scarica il template relativo ai cittadini da caricare.':'Scarica il template relativo agli enti da caricare.'}
+            {citizens
+              ? 'Scarica il template relativo ai cittadini da caricare.'
+              : 'Scarica il template relativo agli enti da caricare.'}
           </p>
           <Button color='primary' outline onClick={downloadTemplateHandler}>
             Scarica template
@@ -113,8 +116,12 @@ const UploadCSVModal: React.FC<UploadCSVModalI> = (props) => {
       case 0: {
         try {
           if (payload?.endpoint && file) {
+            const { idProgramma, idProgetto, idEnte } = getUserHeaders();
             const formData = new FormData();
             formData.append('file', file);
+            if (idProgramma) formData.append('idProgramma', idProgramma);
+            if (idProgetto) formData.append('idProgetto', idProgramma);
+            if (idEnte) formData.append('idEnte', idProgramma);
             const res = await dispatch(
               UploadFile({
                 formData,
