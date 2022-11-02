@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.252](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.251...1.0.0-develop.252) (2022-11-02)
+
+
+### Bug Fixes
+
+* **be:** controllo cf per q1 ([ba3bc09](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ba3bc0972b902d7edb2923e21b288f6fc56cd6a8))
+
 ## [1.0.0-develop.251](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.250...1.0.0-develop.251) (2022-10-28)
 
 
