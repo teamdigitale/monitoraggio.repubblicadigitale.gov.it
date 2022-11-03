@@ -883,8 +883,8 @@ public class EnteServiceTest {
 	public void associaReferenteODelegatoGestoreProgrammaTest() {
 		enteOptional = Optional.of(ente1);
 		referenteDelegatoGestoreProgrammaRequest = new ReferenteDelegatoGestoreProgrammaRequest();
-		referenteDelegatoGestoreProgrammaRequest.setIdProgramma(programma1.getId());
-		referenteDelegatoGestoreProgrammaRequest.setIdEnte(ente1.getId());
+		referenteDelegatoGestoreProgrammaRequest.setIdProgrammaGestore(programma1.getId());
+		referenteDelegatoGestoreProgrammaRequest.setIdEnteGestore(ente1.getId());
 		referenteDelegatoGestoreProgrammaRequest.setCodiceRuoloRefDeg(ruolo3.getCodice());
 		referenteDelegatoGestoreProgrammaRequest.setCfReferenteDelegato(utente1.getCodiceFiscale());
 		when(programmaService.esisteProgrammaById(programma1.getId())).thenReturn(true);
@@ -901,8 +901,8 @@ public class EnteServiceTest {
 	public void associaReferenteODelegatoGestoreProgrammaKOTest() {
 		//test KO per programma inesistente
 		referenteDelegatoGestoreProgrammaRequest = new ReferenteDelegatoGestoreProgrammaRequest();
-		referenteDelegatoGestoreProgrammaRequest.setIdProgramma(programma1.getId());
-		referenteDelegatoGestoreProgrammaRequest.setIdEnte(ente1.getId());
+		referenteDelegatoGestoreProgrammaRequest.setIdProgrammaGestore(programma1.getId());
+		referenteDelegatoGestoreProgrammaRequest.setIdEnteGestore(ente1.getId());
 		referenteDelegatoGestoreProgrammaRequest.setCodiceRuoloRefDeg(ruolo3.getCodice());
 		referenteDelegatoGestoreProgrammaRequest.setCfReferenteDelegato(utente1.getCodiceFiscale());
 		when(programmaService.esisteProgrammaById(programma1.getId())).thenReturn(false);
@@ -936,8 +936,8 @@ public class EnteServiceTest {
 	public void associaReferenteODelegatoGestoreProgrammaKOTest2() {
 		//test KO per ruolo da assegnare errato
 		referenteDelegatoGestoreProgrammaRequest = new ReferenteDelegatoGestoreProgrammaRequest();
-		referenteDelegatoGestoreProgrammaRequest.setIdProgramma(programma1.getId());
-		referenteDelegatoGestoreProgrammaRequest.setIdEnte(ente1.getId());
+		referenteDelegatoGestoreProgrammaRequest.setIdProgrammaGestore(programma1.getId());
+		referenteDelegatoGestoreProgrammaRequest.setIdEnteGestore(ente1.getId());
 		referenteDelegatoGestoreProgrammaRequest.setCfReferenteDelegato(utente1.getCodiceFiscale());
 		referenteDelegatoGestoreProgrammaRequest.setCodiceRuoloRefDeg("inesistente");
 		enteOptional = Optional.of(ente1);
@@ -951,8 +951,8 @@ public class EnteServiceTest {
 	@Test
 	public void associaReferenteODelegatoGestoreProgettoTest() {
 		referenteDelegatoGestoreProgettoRequest = new ReferenteDelegatoGestoreProgettoRequest();
-		referenteDelegatoGestoreProgettoRequest.setIdProgetto(progetto1.getId());
-		referenteDelegatoGestoreProgettoRequest.setIdEnte(ente1.getId());
+		referenteDelegatoGestoreProgettoRequest.setIdProgettoGestore(progetto1.getId());
+		referenteDelegatoGestoreProgettoRequest.setIdEnteGestore(ente1.getId());
 		referenteDelegatoGestoreProgettoRequest.setCodiceRuoloRefDeg(ruolo4.getCodice());
 		referenteDelegatoGestoreProgettoRequest.setCfReferenteDelegato(utente1.getCodiceFiscale());
 		when(progettoService.esisteProgettoById(progetto1.getId())).thenReturn(true);
@@ -967,8 +967,8 @@ public class EnteServiceTest {
 	public void associaReferenteODelegatoGestoreProgettoKOTest() {
 		//test KO per progetto inesistente
 		referenteDelegatoGestoreProgettoRequest = new ReferenteDelegatoGestoreProgettoRequest();
-		referenteDelegatoGestoreProgettoRequest.setIdProgetto(progetto1.getId());
-		referenteDelegatoGestoreProgettoRequest.setIdEnte(ente1.getId());
+		referenteDelegatoGestoreProgettoRequest.setIdProgettoGestore(progetto1.getId());
+		referenteDelegatoGestoreProgettoRequest.setIdEnteGestore(ente1.getId());
 		referenteDelegatoGestoreProgettoRequest.setCodiceRuoloRefDeg(ruolo4.getCodice());
 		referenteDelegatoGestoreProgettoRequest.setCfReferenteDelegato(utente1.getCodiceFiscale());
 		when(progettoService.esisteProgettoById(progetto1.getId())).thenReturn(false);
@@ -993,8 +993,8 @@ public class EnteServiceTest {
 	public void associaReferenteODelegatoGestoreProgettoKOTest2() {
 		//test KO per ruolo da assegnare errato
 		referenteDelegatoGestoreProgettoRequest = new ReferenteDelegatoGestoreProgettoRequest();
-		referenteDelegatoGestoreProgettoRequest.setIdProgetto(progetto1.getId());
-		referenteDelegatoGestoreProgettoRequest.setIdEnte(ente1.getId());
+		referenteDelegatoGestoreProgettoRequest.setIdProgettoGestore(progetto1.getId());
+		referenteDelegatoGestoreProgettoRequest.setIdEnteGestore(ente1.getId());
 		referenteDelegatoGestoreProgettoRequest.setCfReferenteDelegato(utente1.getCodiceFiscale());
 		referenteDelegatoGestoreProgettoRequest.setCodiceRuoloRefDeg("inesistente");
 		enteOptional = Optional.of(ente1);
@@ -1007,8 +1007,8 @@ public class EnteServiceTest {
 	@Test
 	public void cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgrammaTest() {
 		referenteDelegatoGestoreProgrammaRequest = new ReferenteDelegatoGestoreProgrammaRequest();
-		referenteDelegatoGestoreProgrammaRequest.setIdProgramma(programma1.getId());
-		referenteDelegatoGestoreProgrammaRequest.setIdEnte(ente1.getId());
+		referenteDelegatoGestoreProgrammaRequest.setIdProgrammaGestore(programma1.getId());
+		referenteDelegatoGestoreProgrammaRequest.setIdEnteGestore(ente1.getId());
 		referenteDelegatoGestoreProgrammaRequest.setCodiceRuoloRefDeg(ruolo4.getCodice());
 		referenteDelegatoGestoreProgrammaRequest.setCfReferenteDelegato(utente1.getCodiceFiscale());
 		referentiDelegatiEnteGestoreProgrammaEntity.setStatoUtente(StatoEnum.ATTIVO.getValue());
@@ -1032,8 +1032,8 @@ public class EnteServiceTest {
 	@Test
 	public void cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgettoTest() {
 		referenteDelegatoGestoreProgettoRequest = new ReferenteDelegatoGestoreProgettoRequest();
-		referenteDelegatoGestoreProgettoRequest.setIdProgetto(progetto1.getId());
-		referenteDelegatoGestoreProgettoRequest.setIdEnte(ente1.getId());
+		referenteDelegatoGestoreProgettoRequest.setIdProgettoGestore(progetto1.getId());
+		referenteDelegatoGestoreProgettoRequest.setIdEnteGestore(ente1.getId());
 		referenteDelegatoGestoreProgettoRequest.setCodiceRuoloRefDeg(ruolo3.getCodice());
 		referenteDelegatoGestoreProgettoRequest.setCfReferenteDelegato(utente1.getCodiceFiscale());
 		referentiDelegatiEnteGestoreProgettoEntity.setStatoUtente(StatoEnum.ATTIVO.getValue());

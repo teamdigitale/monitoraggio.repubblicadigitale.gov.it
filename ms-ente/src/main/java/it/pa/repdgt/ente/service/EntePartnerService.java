@@ -172,7 +172,7 @@ public class EntePartnerService {
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void associaReferenteODelegatoPartner(ReferenteDelegatoPartnerRequest referenteDelegatoPartnerRequest) {
-		Long idProgetto = referenteDelegatoPartnerRequest.getIdProgetto();
+		Long idProgetto = referenteDelegatoPartnerRequest.getIdProgettoDelPartner();
 		Long idEntePartner = referenteDelegatoPartnerRequest.getIdEntePartner();
 		String codiceFiscaleUtente = referenteDelegatoPartnerRequest.getCfReferenteDelegato();
 		String codiceRuolo = referenteDelegatoPartnerRequest.getCodiceRuoloRefDeg().toUpperCase();
@@ -355,7 +355,7 @@ public class EntePartnerService {
 	@LogExecutionTime
 	public void cancellaOTerminaAssociazioneReferenteODelegatoPartner(
 			@Valid ReferenteDelegatoPartnerRequest referenteDelegatoPartnerRequest) {
-		Long idProgetto = referenteDelegatoPartnerRequest.getIdProgetto();
+		Long idProgetto = referenteDelegatoPartnerRequest.getIdProgettoDelPartner();
 		String codiceFiscaleUtente = referenteDelegatoPartnerRequest.getCfReferenteDelegato();
 		Long idEnte = referenteDelegatoPartnerRequest.getIdEntePartner();
 		String codiceRuolo = referenteDelegatoPartnerRequest.getCodiceRuoloRefDeg().toUpperCase();
