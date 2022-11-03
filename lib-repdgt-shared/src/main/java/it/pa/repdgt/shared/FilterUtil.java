@@ -122,17 +122,17 @@ public class FilterUtil {
 				break;
 			case "REGP":
 			case "DEGP":
-				if(brokenAccessControlRepository.isRefDegProgetto(codiceFiscale, codiceRuolo, idProgetto, idEnte) > 0)
+				if(brokenAccessControlRepository.isRefDegProgetto(codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte) > 0)
 					return true;
 				break;
 			case "REPP":
 			case "DEPP":
-				if(brokenAccessControlRepository.isRefDegPartner(codiceFiscale, codiceRuolo, idProgetto, idEnte) > 0)
+				if(brokenAccessControlRepository.isRefDegPartner(codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte) > 0)
 					return true;
 				break;
 			case "FAC":
 			case "VOL":
-				if(brokenAccessControlRepository.isFacVolProgettoAndEnte(codiceFiscale, codiceRuolo, idProgetto, idEnte) > 0)
+				if(brokenAccessControlRepository.isFacVolProgettoAndEnte(codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte) > 0)
 					return true;
 				break;
 			default:

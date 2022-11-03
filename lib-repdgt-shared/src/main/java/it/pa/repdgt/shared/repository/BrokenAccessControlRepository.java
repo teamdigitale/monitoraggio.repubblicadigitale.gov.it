@@ -154,36 +154,48 @@ public interface BrokenAccessControlRepository extends JpaRepository<RuoloEntity
 			@Param(value = "idProgramma") String idProgramma, 
 			@Param(value = "idEnte") String idEnte);
 
-	@Query(value = "SELECT count(*) FROM referente_delegati_gestore_progetto "
-			+ "where id_progetto = :idProgetto "
-			+ "and id_ente = :idEnte "
-			+ "and cf_utente = :codiceFiscale "
-			+ "and codice_ruolo = :codiceRuolo ", 
+	@Query(value = "SELECT count(*) FROM referente_delegati_gestore_progetto rdgp "
+			+ " INNER JOIN progetto p "
+			+ " ON p.id = rdgp.id_progetto "
+			+ "where rdgp.id_progetto = :idProgetto "
+			+ "and rdgp.id_ente = :idEnte "
+			+ "and rdgp.cf_utente = :codiceFiscale "
+			+ "and rdgp.codice_ruolo = :codiceRuolo "
+			+ "and p.id_programma = :idProgramma", 
 			nativeQuery = true)
 	public int isRefDegProgetto(@Param(value = "codiceFiscale") String codiceFiscale, 
 			@Param(value = "codiceRuolo") String codiceRuolo, 
+			@Param(value = "idProgramma") String idProgramma, 
 			@Param(value = "idProgetto") String idProgetto, 
 			@Param(value = "idEnte") String idEnte);
 
-	@Query(value = "SELECT count(*) FROM referente_delegati_partner "
-			+ "where id_progetto = :idProgetto "
-			+ "and id_ente = :idEnte "
-			+ "and cf_utente = :codiceFiscale "
-			+ "and codice_ruolo = :codiceRuolo ", 
+	@Query(value = "SELECT count(*) FROM referente_delegati_partner rdp "
+			+ " INNER JOIN progetto p "
+			+ " ON p.id = rdp.id_progetto "
+			+ "where rdp.id_progetto = :idProgetto "
+			+ "and rdp.id_ente = :idEnte "
+			+ "and rdp.cf_utente = :codiceFiscale "
+			+ "and rdp.codice_ruolo = :codiceRuolo "
+			+ "and p.id_programma = :idProgramma", 
 			nativeQuery = true)
-	public int isRefDegPartner(@Param(value = "codiceRuolo") String codiceFiscale, 
-			@Param(value = "codiceRuolo") String codiceRuolo, 
+	public int isRefDegPartner(@Param(value = "codiceFiscale") String codiceFiscale, 
+			@Param(value = "codiceRuolo") String codiceRuolo,
+			@Param(value = "idProgramma") String idProgramma,
 			@Param(value = "idProgetto") String idProgetto, 
 			@Param(value = "idEnte") String idEnte);
 
-	@Query(value = "SELECT count(*) FROM ente_sede_progetto_facilitatore "
+	@Query(value = "SELECT count(*) FROM ente_sede_progetto_facilitatore espf "
+			+ " INNER JOIN progetto p "
+			+ " ON p.id = espf.id_progetto "
 			+ "where id_progetto = :idProgetto "
-			+ "and id_ente = :idEnte "
-			+ "and id_facilitatore = :codiceFiscale "
-			+ "and ruolo_utente = :codiceRuolo ", 
+			+ "and espf.id_ente = :idEnte "
+			+ "and espf.id_facilitatore = :codiceFiscale "
+			+ "and espf.ruolo_utente = :codiceRuolo "
+			+ "and p.id_programma = :idProgramma", 
 			nativeQuery = true)
-	public int isFacVolProgettoAndEnte(@Param(value = "codiceRuolo") String codiceFiscale, 
-			@Param(value = "codiceRuolo") String codiceRuolo, 
+	public int isFacVolProgettoAndEnte(@Param(value = "codiceFiscale") String codiceFiscale, 
+			@Param(value = "codiceRuolo") String codiceRuolo,
+			@Param(value = "idProgramma") String idProgramma,
 			@Param(value = "idProgetto") String idProgetto, 
 			@Param(value = "idEnte") String idEnte); 
 }
