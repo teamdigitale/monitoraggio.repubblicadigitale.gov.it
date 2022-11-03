@@ -91,9 +91,9 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		listaEnteSedeProgettoFacilitatore = new ArrayList<>();
 		listaEnteSedeProgettoFacilitatore.add(enteSedeProgettoFacilitatoreEntity);
 		enteSedeProgettoFacilitatoreRequest = new EnteSedeProgettoFacilitatoreRequest();
-		enteSedeProgettoFacilitatoreRequest.setIdEnte(ente1.getId());
+		enteSedeProgettoFacilitatoreRequest.setIdEnteFacVol(ente1.getId());
 		enteSedeProgettoFacilitatoreRequest.setIdSedeFacVol(sede1.getId());
-		enteSedeProgettoFacilitatoreRequest.setIdProgetto(progetto1.getId());
+		enteSedeProgettoFacilitatoreRequest.setIdProgettoFacVol(progetto1.getId());
 		enteSedeProgettoFacilitatoreRequest.setCodiceFiscaleFacVol(utente1.getCodiceFiscale());
 		ruoloFAC = new RuoloEntity();
 		ruoloFAC.setCodice("FAC");
@@ -239,7 +239,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		utente1.setIntegrazioneUtente(integrazioneUtente);
 		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
 		when(this.enteSedeProgettoFacilitatoreRepository.findById(Mockito.any(EnteSedeProgettoFacilitatoreKey.class))).thenReturn(Optional.of(enteSedeProgettoFacilitatoreEntity));
-		when(this.enteSedeProgettoFacilitatoreRepository.findAltriFacilitatoriAttivi(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol(), enteSedeProgettoFacilitatoreRequest.getIdProgetto(), ruoloFAC.getCodice())).thenReturn(listaEnteSedeProgettoFacilitatore);
+		when(this.enteSedeProgettoFacilitatoreRepository.findAltriFacilitatoriAttivi(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol(), enteSedeProgettoFacilitatoreRequest.getIdProgettoFacVol(), ruoloFAC.getCodice())).thenReturn(listaEnteSedeProgettoFacilitatore);
 		when(this.utenteService.getUtenteByCodiceFiscale(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol())).thenReturn(utente1);
 		enteSedeProgettoFacilitatoreService.cancellaOTerminaAssociazioneFacilitatoreAEnteSedeProgetto(enteSedeProgettoFacilitatoreRequest);
 	}
@@ -259,7 +259,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		//test KO per unico facilitatore
 		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
 		when(this.enteSedeProgettoFacilitatoreRepository.findById(Mockito.any(EnteSedeProgettoFacilitatoreKey.class))).thenReturn(Optional.of(enteSedeProgettoFacilitatoreEntity));
-		when(this.enteSedeProgettoFacilitatoreRepository.findAltriFacilitatoriAttivi(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol(), enteSedeProgettoFacilitatoreRequest.getIdProgetto(), ruoloFAC.getCodice())).thenReturn(new ArrayList<>());
+		when(this.enteSedeProgettoFacilitatoreRepository.findAltriFacilitatoriAttivi(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol(), enteSedeProgettoFacilitatoreRequest.getIdProgettoFacVol(), ruoloFAC.getCodice())).thenReturn(new ArrayList<>());
 		Assertions.assertThrows(EnteSedeProgettoFacilitatoreException.class, () -> enteSedeProgettoFacilitatoreService.cancellaOTerminaAssociazioneFacilitatoreAEnteSedeProgetto(enteSedeProgettoFacilitatoreRequest));
 		assertThatExceptionOfType(EnteSedeProgettoFacilitatoreException.class);
 		
@@ -267,7 +267,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		programma1.setPolicy(PolicyEnum.SCD);
 		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
 		when(this.enteSedeProgettoFacilitatoreRepository.findById(Mockito.any(EnteSedeProgettoFacilitatoreKey.class))).thenReturn(Optional.of(enteSedeProgettoFacilitatoreEntity));
-		when(this.enteSedeProgettoFacilitatoreRepository.findAltriFacilitatoriAttivi(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol(), enteSedeProgettoFacilitatoreRequest.getIdProgetto(), ruoloVOL.getCodice())).thenReturn(new ArrayList<>());
+		when(this.enteSedeProgettoFacilitatoreRepository.findAltriFacilitatoriAttivi(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol(), enteSedeProgettoFacilitatoreRequest.getIdProgettoFacVol(), ruoloVOL.getCodice())).thenReturn(new ArrayList<>());
 		Assertions.assertThrows(EnteSedeProgettoFacilitatoreException.class, () -> enteSedeProgettoFacilitatoreService.cancellaOTerminaAssociazioneFacilitatoreAEnteSedeProgetto(enteSedeProgettoFacilitatoreRequest));
 		assertThatExceptionOfType(EnteSedeProgettoFacilitatoreException.class);
 	}
