@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 
-public interface BrokenAccessControlRepository extends JpaRepository<RuoloEntity, String>{
+public interface BrokenAccessControlRepository extends JpaRepository<ProgettoEntity, String>{
 
 	@Query(value = "select count(*) "
 			+ "FROM (  select p.id_ente_gestore_programma as id_ente  "
@@ -104,7 +104,7 @@ public interface BrokenAccessControlRepository extends JpaRepository<RuoloEntity
 			+ "FROM progetto progetto "
 			+ "WHERE progetto.ID_PROGRAMMA = :idProgramma ",
 			nativeQuery = true)
-	public List<ProgettoEntity> findByIdProgramma(Long idProgramma);
+	public List<ProgettoEntity> findByIdProgramma(@Param(value = "idProgramma") Long idProgramma);
 	
 
 	@Query(value = "select count(*) from ente_sede_progetto esp  "

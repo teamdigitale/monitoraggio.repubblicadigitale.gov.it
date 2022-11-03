@@ -316,7 +316,7 @@ public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long> 
 			@Param(value = "pageSize") Integer pageSize
 		);
 
-	@Query(value = "SELECT progetto.STATO "
+	@Query(value = "SELECT distinct progetto.STATO "
 			+ "FROM progetto progetto "
 			+ "	INNER JOIN programma programma "
 			+ "		ON progetto.ID_PROGRAMMA = programma.ID "
