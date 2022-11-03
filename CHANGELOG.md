@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.262](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.261...1.0.0-develop.262) (2022-11-03)
+
+
+### Bug Fixes
+
+* **be:** fix filtro per broken access control ([dfd23d1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/dfd23d12f3aaa9ec2ca5d6d6af32eb05f92b0be5))
+
 ## [1.0.0-develop.261](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.260...1.0.0-develop.261) (2022-11-03)
 
 
