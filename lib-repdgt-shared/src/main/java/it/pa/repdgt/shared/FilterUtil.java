@@ -120,25 +120,27 @@ public class FilterUtil {
 			String idProgetto = nodoIdProgetto != null ? nodoIdProgetto.toString().replace("\"", "") : null;
 			String idEnte = nodoIdEnte != null ? nodoIdEnte.toString().replace("\"", "") : null;
 			
+			boolean sceltaProfiloEmpty = idProgramma == null && idProgetto == null && idEnte == null;
+			
 			switch (codiceRuolo) {
 			case "REG":
 			case "DEG":
-				if(brokenAccessControlRepository.isRefDegProgramma(codiceFiscale, codiceRuolo, idProgramma, idEnte) > 0)
+				if(sceltaProfiloEmpty || brokenAccessControlRepository.isRefDegProgramma(codiceFiscale, codiceRuolo, idProgramma, idEnte) > 0)
 					return true;
 				break;
 			case "REGP":
 			case "DEGP":
-				if(brokenAccessControlRepository.isRefDegProgetto(codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte) > 0)
+				if(sceltaProfiloEmpty || brokenAccessControlRepository.isRefDegProgetto(codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte) > 0)
 					return true;
 				break;
 			case "REPP":
 			case "DEPP":
-				if(brokenAccessControlRepository.isRefDegPartner(codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte) > 0)
+				if(sceltaProfiloEmpty || brokenAccessControlRepository.isRefDegPartner(codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte) > 0)
 					return true;
 				break;
 			case "FAC":
 			case "VOL":
-				if(brokenAccessControlRepository.isFacVolProgettoAndEnte(codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte) > 0)
+				if(sceltaProfiloEmpty || brokenAccessControlRepository.isFacVolProgettoAndEnte(codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte) > 0)
 					return true;
 				break;
 			default:
