@@ -279,6 +279,7 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
           label='Nome breve'
           onInputChange={onInputDataChange}
           maximum={25}
+          minimum={6}
         />
         <Input
           {...form?.cup}
