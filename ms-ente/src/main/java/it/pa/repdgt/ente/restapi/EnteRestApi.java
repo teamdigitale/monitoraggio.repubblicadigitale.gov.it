@@ -207,6 +207,8 @@ public class EnteRestApi {
 	@ResponseStatus(code = HttpStatus.OK)
 	public void associaReferenteODelegatoGestoreProgramma(
 			@RequestBody @Valid ReferenteDelegatoGestoreProgrammaRequest referenteDelegatoGestoreProgrammaRequest ) {
+		if(!accessControServiceUtils.checkPermessoIdProgramma(referenteDelegatoGestoreProgrammaRequest, referenteDelegatoGestoreProgrammaRequest.getIdProgrammaGestore()))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.enteService.associaReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest);
 	}
 	
@@ -215,6 +217,8 @@ public class EnteRestApi {
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgramma(
 			@RequestBody @Valid ReferenteDelegatoGestoreProgrammaRequest referenteDelegatoGestoreProgrammaRequest) {
+		if(!accessControServiceUtils.checkPermessoIdProgramma(referenteDelegatoGestoreProgrammaRequest, referenteDelegatoGestoreProgrammaRequest.getIdProgrammaGestore()))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.enteService.cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgramma(referenteDelegatoGestoreProgrammaRequest);
 	}
 
@@ -223,6 +227,8 @@ public class EnteRestApi {
 	@ResponseStatus(code = HttpStatus.OK)
 	public void associaReferenteODelegatoGestoreProgetto(
 			@RequestBody @Valid ReferenteDelegatoGestoreProgettoRequest referenteDelegatoGestoreProgettoRequest ) {
+		if(!accessControServiceUtils.checkPermessoIdProgetto(referenteDelegatoGestoreProgettoRequest, referenteDelegatoGestoreProgettoRequest.getIdProgettoGestore()))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.enteService.associaReferenteODelegatoGestoreProgetto(referenteDelegatoGestoreProgettoRequest);
 	}
 	
@@ -231,6 +237,8 @@ public class EnteRestApi {
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgetto(
 			@RequestBody @Valid ReferenteDelegatoGestoreProgettoRequest referenteDelegatoGestoreProgettoRequest) {
+		if(!accessControServiceUtils.checkPermessoIdProgetto(referenteDelegatoGestoreProgettoRequest, referenteDelegatoGestoreProgettoRequest.getIdProgettoGestore()))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.enteService.cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgetto(referenteDelegatoGestoreProgettoRequest);
 	}
 
@@ -239,6 +247,8 @@ public class EnteRestApi {
 	@ResponseStatus(code = HttpStatus.OK)
 	public void associaReferenteODelegatoPartner(
 			@RequestBody @Valid ReferenteDelegatoPartnerRequest referenteDelegatoPartnerRequest ) {
+		if(!accessControServiceUtils.checkPermessoIdProgetto(referenteDelegatoPartnerRequest, referenteDelegatoPartnerRequest.getIdProgettoDelPartner()))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.entePartnerService.associaReferenteODelegatoPartner(referenteDelegatoPartnerRequest);
 	}
 	
@@ -247,6 +257,8 @@ public class EnteRestApi {
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void cancellaOTerminaAssociazioneReferenteODelegatoPartner(
 			@RequestBody @Valid ReferenteDelegatoPartnerRequest referenteDelegatoPartnerRequest ) {
+		if(!accessControServiceUtils.checkPermessoIdProgetto(referenteDelegatoPartnerRequest, referenteDelegatoPartnerRequest.getIdProgettoDelPartner()))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.entePartnerService.cancellaOTerminaAssociazioneReferenteODelegatoPartner(referenteDelegatoPartnerRequest);
 	}
 
