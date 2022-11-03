@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.265](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.264...1.0.0-develop.265) (2022-11-03)
+
+
+### Bug Fixes
+
+* **be:** fix per scelta profilo null ([b7adf9d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b7adf9df626e9022b268d6e4e16c6ec1cea4ccd3))
+
 ## [1.0.0-develop.264](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.263...1.0.0-develop.264) (2022-11-03)
 
 
