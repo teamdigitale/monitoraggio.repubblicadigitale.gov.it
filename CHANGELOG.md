@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.264](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.263...1.0.0-develop.264) (2022-11-03)
+
+
+### Bug Fixes
+
+* **fe:** fix per api creazione ([199d08e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/199d08e765ba733f1841fa963a842ed8a90cb00b))
+
 ## [1.0.0-develop.263](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.262...1.0.0-develop.263) (2022-11-03)
 
 
