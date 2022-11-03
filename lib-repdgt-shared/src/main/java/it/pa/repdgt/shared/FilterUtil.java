@@ -36,15 +36,17 @@ public class FilterUtil {
 			"^/contesto$",
 			"^/contesto/confermaIntegrazione$",
 			"^/utente/upload/immagineProfilo*",
-			"^/utente/download/immagineProfilo*",
-
+			"^/utente/download/immagineProfilo*"
+	);
+	
+	public static final List<String> ENDPOINT_SWAGGER = Arrays.asList(			
 //			da decommentare in locale(aggiunta endpoint per lanciare swagger):
 			"^/swagger-ui*",
 			"^/favicon.ico*",
 			"^/swagger-resources*",
 			"^/v3/api-docs*",
 			"^/v2/api-docs*"
-	);
+			);
 
 	public static final List<String> ENDPOINT_DRUPAL = Arrays.asList(
 			"^/utente/all$",
@@ -90,6 +92,10 @@ public class FilterUtil {
 		
 		public static boolean isEndpointDrupal(String endpoint) {
 			return endpointMatcher(endpoint, ENDPOINT_DRUPAL);
+		}
+		
+		public static boolean isEndpointSwagger(String endpoint) {
+			return endpointMatcher(endpoint, ENDPOINT_SWAGGER);
 		}
 		
 		private static boolean endpointMatcher(String endpointToMatch, List<String> listMatch) {

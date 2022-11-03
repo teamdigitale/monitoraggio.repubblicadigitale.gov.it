@@ -79,7 +79,8 @@ public class RequestFilter implements Filter {
 					/* per risolvere il problema di mysql "Error Code: 3699. Timeout exceeded in regular expression match."
 					 * per gli endpoint /servizio/cittadino/questionarioCompilato/.../anonimo che non hanno CF per login
 					 */
-					|| FilterUtil.isEndpointQuestionarioCompilatoAnonimo(endpoint)) {
+					|| FilterUtil.isEndpointQuestionarioCompilatoAnonimo(endpoint)
+					|| FilterUtil.isEndpointSwagger(endpoint)) {
 				chain.doFilter(wrappedRequest, response);
 			} else {
 				// verifico se l'utente loggato possiede il ruolo con cui si è profilato

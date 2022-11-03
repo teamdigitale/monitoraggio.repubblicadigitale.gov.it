@@ -81,7 +81,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 				if(inputCorpoRichiesta != null  && !inputCorpoRichiesta.trim().isEmpty()) {
 					this.body = this.getCorpoRichiestaArricchitaConDatiContesto(inputCorpoRichiesta);
 				}//per api che prevedono upload file
-				else if(httpServletRequest.getParts().size() > 0) {
+				else if(!FilterUtil.isEndpointSwagger(endpoint) && httpServletRequest.getParts().size() > 0) {
 					this.body = "{ \"idProgramma\":" + httpServletRequest.getParameter("idProgramma") + 
 							",\"idProgetto\":" + httpServletRequest.getParameter("idProgetto") +  
 							",\"idEnte\":" + httpServletRequest.getParameter("idEnte") +  
