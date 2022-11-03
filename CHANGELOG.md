@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.259](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.258...1.0.0-develop.259) (2022-11-03)
+
+
+### Bug Fixes
+
+* **be:** affinamento query filtro broken access control ([a0dfe9c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a0dfe9ced614c29038eb12e6dfa8a81339cace07))
+
 ## [1.0.0-develop.258](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.257...1.0.0-develop.258) (2022-11-02)
 
 
