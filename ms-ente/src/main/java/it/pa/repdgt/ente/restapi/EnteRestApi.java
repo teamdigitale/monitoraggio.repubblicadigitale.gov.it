@@ -3,6 +3,7 @@ package it.pa.repdgt.ente.restapi;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.csv.CSVFormat;
@@ -15,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -386,11 +388,15 @@ public class EnteRestApi {
 	}
 
 	// Upload caricamento lista enti partner a progetto
-	@PostMapping(path = "/partner/upload/{idProgetto}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	@PostMapping(path = "/partner/upload/{idPr}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	public List<EntePartnerUploadBean> uploadFileEntiPartner(
 			@RequestPart MultipartFile file,
-			@PathVariable(value = "idProgetto") Long idProgetto,
-			@RequestBody SceltaProfiloParam sceltaProfilo) {
+			@PathVariable(value = "idPr") Long idProgetto,
+			@ModelAttribute SceltaProfiloParam sceltaProfilo,
+			HttpServletRequest request
+			) {
+		sceltaProfilo.setCfUtenteLoggato(request.getAttribute("cfUtenteLoggato").toString());
+		sceltaProfilo.setCodiceRuoloUtenteLoggato(request.getAttribute("codiceRuoloUtenteLoggato").toString());
 		if(!accessControServiceUtils.checkPermessoIdProgetto(sceltaProfilo, idProgetto))
 			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		if (file == null || !CSVUtil.hasCSVFormat(file)) {

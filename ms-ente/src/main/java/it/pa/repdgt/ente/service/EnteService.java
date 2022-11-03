@@ -586,10 +586,10 @@ public class EnteService {
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
     public void associaReferenteODelegatoGestoreProgramma(ReferenteDelegatoGestoreProgrammaRequest referenteDelegatoGestoreProgrammaRequest) {
-		Long idProgramma = referenteDelegatoGestoreProgrammaRequest.getIdProgramma();
+		Long idProgramma = referenteDelegatoGestoreProgrammaRequest.getIdProgrammaGestore();
 		String codiceFiscaleUtente = referenteDelegatoGestoreProgrammaRequest.getCfReferenteDelegato();
 		String codiceRuolo  = referenteDelegatoGestoreProgrammaRequest.getCodiceRuoloRefDeg().toUpperCase();
-		Long idEnte = referenteDelegatoGestoreProgrammaRequest.getIdEnte();
+		Long idEnte = referenteDelegatoGestoreProgrammaRequest.getIdEnteGestore();
 		
 		if(!this.programmaService.esisteProgrammaById(idProgramma)) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente gestore di programma per programma con id=%s poiché non esistente", idProgramma);
@@ -690,10 +690,10 @@ public class EnteService {
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
     public void associaReferenteODelegatoGestoreProgetto(ReferenteDelegatoGestoreProgettoRequest referenteDelegatoGestoreProgettoRequest) {
-		Long idProgetto = referenteDelegatoGestoreProgettoRequest.getIdProgetto();
+		Long idProgetto = referenteDelegatoGestoreProgettoRequest.getIdProgettoGestore();
 		String codiceFiscaleUtente = referenteDelegatoGestoreProgettoRequest.getCfReferenteDelegato();
 		String codiceRuolo = referenteDelegatoGestoreProgettoRequest.getCodiceRuoloRefDeg().toUpperCase();
-		Long idEnte = referenteDelegatoGestoreProgettoRequest.getIdEnte();
+		Long idEnte = referenteDelegatoGestoreProgettoRequest.getIdEnteGestore();
 		
 		if(!this.progettoService.esisteProgettoById(idProgetto)) {
 			String messaggioErrore = String.format("Impossibile assegnare referente/delegato ente gestore di progetto per progetto con id=%s non esistente", idProgetto);
@@ -1375,9 +1375,9 @@ public class EnteService {
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgramma(
 			@Valid ReferenteDelegatoGestoreProgrammaRequest referenteDelegatoGestoreProgrammaRequest) {
-		Long idProgramma = referenteDelegatoGestoreProgrammaRequest.getIdProgramma();
+		Long idProgramma = referenteDelegatoGestoreProgrammaRequest.getIdProgrammaGestore();
 		String codiceFiscaleUtente = referenteDelegatoGestoreProgrammaRequest.getCfReferenteDelegato();
-		Long idEnte = referenteDelegatoGestoreProgrammaRequest.getIdEnte();
+		Long idEnte = referenteDelegatoGestoreProgrammaRequest.getIdEnteGestore();
 		String codiceRuolo = referenteDelegatoGestoreProgrammaRequest.getCodiceRuoloRefDeg();
 		ReferentiDelegatiEnteGestoreProgrammaEntity referentiDelegatiEnteGestoreProgrammaEntity = this.referentiDelegatiEnteGestoreProgrammaService.getReferenteDelegatiEnteGestoreProgramma(idProgramma, codiceFiscaleUtente, idEnte, codiceRuolo);
 		if(StatoEnum.ATTIVO.getValue().equals(referentiDelegatiEnteGestoreProgrammaEntity.getStatoUtente())) {
@@ -1424,9 +1424,9 @@ public class EnteService {
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellaOTerminaAssociazioneReferenteODelegatoGestoreProgetto(
 			@Valid ReferenteDelegatoGestoreProgettoRequest referenteDelegatoGestoreProgettoRequest) {
-		Long idProgetto = referenteDelegatoGestoreProgettoRequest.getIdProgetto();
+		Long idProgetto = referenteDelegatoGestoreProgettoRequest.getIdProgettoGestore();
 		String codiceFiscaleUtente = referenteDelegatoGestoreProgettoRequest.getCfReferenteDelegato();
-		Long idEnte = referenteDelegatoGestoreProgettoRequest.getIdEnte();
+		Long idEnte = referenteDelegatoGestoreProgettoRequest.getIdEnteGestore();
 		String codiceRuolo = referenteDelegatoGestoreProgettoRequest.getCodiceRuoloRefDeg();
 		ReferentiDelegatiEnteGestoreProgettoEntity referentiDelegatiEnteGestoreProgettoEntity = this.referentiDelegatiEnteGestoreProgettoService.getReferenteDelegatiEnteGestoreProgetto(idProgetto, codiceFiscaleUtente, idEnte, codiceRuolo);
 		if(StatoEnum.ATTIVO.getValue().equals(referentiDelegatiEnteGestoreProgettoEntity.getStatoUtente())) {

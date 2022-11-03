@@ -80,6 +80,16 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 				final String inputCorpoRichiesta = this.getCorpoRichiesta(httpServletRequest);
 				if(inputCorpoRichiesta != null  && !inputCorpoRichiesta.trim().isEmpty()) {
 					this.body = this.getCorpoRichiestaArricchitaConDatiContesto(inputCorpoRichiesta);
+				}//per api che prevedono upload file
+				else if(httpServletRequest.getParts().size() > 0) {
+					this.body = "{ \"idProgramma\":" + httpServletRequest.getParameter("idProgramma") + 
+							",\"idProgetto\":" + httpServletRequest.getParameter("idProgetto") +  
+							",\"idEnte\":" + httpServletRequest.getParameter("idEnte") +  
+							",\"cfUtenteLoggato\":" + "\"" + this.codiceFiscale + "\"" + 
+							",\"codiceRuoloUtenteLoggato\":" + "\"" + this.codiceRuolo + "\"" +  
+							"}";
+					httpServletRequest.setAttribute("cfUtenteLoggato", this.codiceFiscale);
+					httpServletRequest.setAttribute("codiceRuoloUtenteLoggato", this.codiceRuolo);
 				}
 			}else if(FilterUtil.isEndpointQuestionarioCompilatoAnonimo(endpoint) && metodoHttp.equals("POST")){
 				/*

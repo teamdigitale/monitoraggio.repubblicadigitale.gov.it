@@ -100,7 +100,8 @@ public class RequestFilter implements Filter {
 							&& !filterUtil.verificaSceltaProfilo(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato, bodyRequest )
 							&& !endpoint.contains("/drupal/forward")
 							&& !endpoint.contains("/rocket-chat/")
-							&& !endpoint.contains("/integrazione/workdocs") ) {
+							&& !endpoint.contains("/integrazione/workdocs")
+							) {
 						responseHttp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utente Non Autorizzato");
 					}else {
 						/*
