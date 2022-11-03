@@ -572,6 +572,7 @@ export const AssignManagerAuthorityReferentDelegate =
         };
       } else {
         body = {
+          ...body,
           idProgettoGestore: entityId?.toString(),
           codiceRuoloRefDeg: role,
           idEnteGestore: authorityId?.toString(),
