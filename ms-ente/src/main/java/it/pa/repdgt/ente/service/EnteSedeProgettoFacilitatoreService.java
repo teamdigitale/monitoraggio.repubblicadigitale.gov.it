@@ -71,8 +71,8 @@ public class EnteSedeProgettoFacilitatoreService {
 		String codiceFiscaleUtente = enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol();
 		String tipoContratto = enteSedeProgettoFacilitatoreRequest.getTipoContratto();
 		Long idSede = enteSedeProgettoFacilitatoreRequest.getIdSedeFacVol();
-		Long idEnte = enteSedeProgettoFacilitatoreRequest.getIdEnte();
-		Long idProgetto = enteSedeProgettoFacilitatoreRequest.getIdProgetto();
+		Long idEnte = enteSedeProgettoFacilitatoreRequest.getIdEnteFacVol();
+		Long idProgetto = enteSedeProgettoFacilitatoreRequest.getIdProgettoFacVol();
 		String codiceRuolo;
 		
 		// verifico se utente esiste
@@ -179,8 +179,8 @@ public class EnteSedeProgettoFacilitatoreService {
 			EnteSedeProgettoFacilitatoreRequest enteSedeProgettoFacilitatoreRequest) {
 		String codiceFiscaleUtente = enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol();
 		Long idSede = enteSedeProgettoFacilitatoreRequest.getIdSedeFacVol();
-		Long idEnte = enteSedeProgettoFacilitatoreRequest.getIdEnte();
-		Long idProgetto = enteSedeProgettoFacilitatoreRequest.getIdProgetto();
+		Long idEnte = enteSedeProgettoFacilitatoreRequest.getIdEnteFacVol();
+		Long idProgetto = enteSedeProgettoFacilitatoreRequest.getIdProgettoFacVol();
 		String codiceRuolo;
 		
 		final ProgettoEntity progettoDBFEtch = this.progettoService.getProgettoById(idProgetto);
