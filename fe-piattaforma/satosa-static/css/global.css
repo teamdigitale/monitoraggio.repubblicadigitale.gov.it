@@ -3,37 +3,130 @@
 } */
 
 .top-icon {
-    height: 48px;
-    width: 48px;
+  height: 48px;
+  width: 48px;
+}
+
+/* for disco1 */
+@media (min-width: 768px) {
+  .panel-right {
+    border-left: solid 1px #ccc;
+  }
+}
+
+.login-form {
+  max-width: 38rem;
+  padding: 2rem;
+}
+
+.tab-content {
+  border-color: #cbccce;
+  border-style: solid;
+  border-width: 0 1px 1px 1px;
+  padding: 1rem;
+}
+
+/* TABS */
+
+.nav-tabs {
+  border-bottom-color: #cbccce;
+  overflow-x: hidden;
+  background-color: #fff !important;
+}
+
+.nav-tabs .nav-item {
+  margin-bottom: -1px;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link.active:focus,
+.nav-tabs .nav-link.active:hover {
+  border-top-color: #004080 !important;
+  color: #004080 !important;
+}
+
+@media (min-width: 768px) {
+  .nav-tabs .nav-link.active,
+  .nav-tabs .nav-link.active:focus,
+  .nav-tabs .nav-link.active:hover {
+    border-bottom-color: transparent !important;
+  }
+}
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link.active:focus,
+.nav-tabs .nav-link.active:hover {
+  background-color: #fff;
+}
+
+.nav-tabs .nav-link.active {
+  border-top-width: 0.25rem !important;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link.active:focus,
+.nav-tabs .nav-link.active:hover {
+  border-color: transparent #cbccce #cbccce #cbccce;
+}
+
+.nav-tabs .nav-link {
+  border: 1px solid transparent;
+}
+
+.nav-tabs .nav-link.active img:first-child {
+  display: none;
+}
+
+.nav-tabs .nav-link img:last-child {
+  display: none;
+}
+
+.nav-tabs .nav-link.active img:last-child {
+  display: inline;
+}
+
+.nav-tabs .nav-link:hover {
+  background-color: #f0f1f3;
+  border-color: #f0f1f3 #f0f1f3 #cbccce #f0f1f3;
+  color: #5c6f82 !important;
+}
+
+.img-width {
+  max-width: 214px;
+  margin-top: 1rem;
+}
+@media (min-width: 768px) {
+  .img-width {
+    max-width: 220px;
+  }
 }
 
 .footer {
-   background-color: #01254c; 
-   color: #fff;
-   min-height: 264px;
+  background-color: #01254c;
+  color: #fff;
+  min-height: 264px;
 }
 
 .footer div:first-child {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .footer h5 {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .footer .text-1 {
-    font-size: 16px;
+  font-size: 16px;
 }
 
 .footer .text-2 {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .footer .text-3 {
-    font-size: 12px;
-    margin-bottom: 0;
+  font-size: 12px;
+  margin-bottom: 0;
 }
 
 .footer .digital-skills {
-    max-width: 300px;
+  max-width: 300px;
 }

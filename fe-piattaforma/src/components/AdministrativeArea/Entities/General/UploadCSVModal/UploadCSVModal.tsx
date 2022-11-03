@@ -119,9 +119,9 @@ const UploadCSVModal: React.FC<UploadCSVModalI> = (props) => {
             const { idProgramma, idProgetto, idEnte } = getUserHeaders();
             const formData = new FormData();
             formData.append('file', file);
-            if (idProgramma) formData.append('idProgramma', idProgramma);
-            if (idProgetto) formData.append('idProgetto', idProgramma);
-            if (idEnte) formData.append('idEnte', idProgramma);
+            if (idProgramma) formData.append('idProgramma', idProgramma?.toString());
+            if (idProgetto) formData.append('idProgetto', idProgetto?.toString());
+            if (idEnte) formData.append('idEnte', idEnte?.toString());
             const res = await dispatch(
               UploadFile({
                 formData,
