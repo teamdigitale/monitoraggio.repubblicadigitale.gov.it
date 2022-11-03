@@ -105,10 +105,10 @@ export const mapOptionsCitizens = (
 export const filterObjectByKey = (obj: any, filteringKey: string) =>
   obj
     ? Object.fromEntries(
-      Object.keys(obj)
-        .filter((key) => key.includes(filteringKey) && obj[key])
-        .map((key) => [key, obj[key] as string])
-    )
+        Object.keys(obj)
+          .filter((key) => key.includes(filteringKey) && obj[key])
+          .map((key) => [key, obj[key] as string])
+      )
     : {};
 
 export const CRUDActionTypes = {
@@ -337,12 +337,12 @@ export const transformFiltersToQueryParams = (filters: {
     } else if (filters[filter]?.length) {
       (filters[filter] || []).map(
         (value: OptionType) =>
-        (filterString =
-          filterString +
-          (filterString !== '' ? '&' : '') +
-          filter +
-          '=' +
-          value?.value)
+          (filterString =
+            filterString +
+            (filterString !== '' ? '&' : '') +
+            filter +
+            '=' +
+            value?.value)
       );
     }
   });
@@ -521,13 +521,12 @@ export const uploadFile = (
     reader.readAsDataURL(selectedImage);
     reader.onloadend = () => {
       if (reader.result) {
-
         callback({
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           data: cleanBase64(reader.result),
           name: selectedImage.name,
-          res: reader.result
+          res: reader.result,
         });
       }
     };
@@ -551,23 +550,44 @@ export const uploadFile = (
 export const cleanDrupalFileURL = (url: string) => url.replaceAll('amp;', '');
 
 export const getUnreadNotificationsCount = () => {
-  const notificationSession = JSON.parse(getSessionValues('notification'))
+  const notificationSession = JSON.parse(getSessionValues('notification'));
 
   if (notificationSession.session_timestamp) {
     const diff =
-      Math.abs(new Date().getTime() - notificationSession.session_timestamp) / 1000;
+      Math.abs(new Date().getTime() - notificationSession.session_timestamp) /
+      1000;
     if (diff >= 120) {
-      store.dispatch(GetNotificationsByUser(
-        { status: [{ value: 0 }], items_per_page: [{ value: 9 }], page: [{ value: 0 }], sort: [{ value: 'created_desc' }] },
-        true
-      ) as any)
+      store.dispatch(
+        GetNotificationsByUser(
+          {
+            status: [{ value: 0 }],
+            items_per_page: [{ value: 9 }],
+            page: [{ value: 0 }],
+            sort: [{ value: 'created_desc' }],
+          },
+          true
+        ) as any
+      );
     } else {
-      if (notificationSession.notificationToRead !== store.getState().user.notificationToRead) store.dispatch(setUserNotificationsToRead(notificationSession.notificationToRead))
+      if (
+        notificationSession.notificationToRead !==
+        store.getState().user.notificationToRead
+      )
+        store.dispatch(
+          setUserNotificationsToRead(notificationSession.notificationToRead)
+        );
     }
   } else {
-    store.dispatch(GetNotificationsByUser(
-      { status: [{ value: 0 }], items_per_page: [{ value: 9 }], page: [{ value: 0 }], sort: [{ value: 'created_desc' }] },
-      true
-    ) as any)
+    store.dispatch(
+      GetNotificationsByUser(
+        {
+          status: [{ value: 0 }],
+          items_per_page: [{ value: 9 }],
+          page: [{ value: 0 }],
+          sort: [{ value: 'created_desc' }],
+        },
+        true
+      ) as any
+    );
   }
-}
+};

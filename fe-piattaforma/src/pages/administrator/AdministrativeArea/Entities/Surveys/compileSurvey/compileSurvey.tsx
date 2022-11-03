@@ -129,7 +129,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
                   : val[id][0],
             },
           };
-          if(id.toString() === '3') setOriginalCF(val[id]);
+          if(id.toString() === '3') setOriginalCF(val[id][0]);
         });
       }
     });

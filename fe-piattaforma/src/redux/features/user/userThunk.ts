@@ -104,40 +104,40 @@ export const CreateUserContext =
 const SelectUserRoleAction = { type: 'user/SelectUserRole' };
 export const SelectUserRole =
   (profile: UserProfileI, saveSession = false) =>
-    async (dispatch: Dispatch, select: Selector) => {
-      try {
-        dispatch({ ...SelectUserRoleAction }); // TODO manage dispatch for dev env only
-        dispatch(showLoader());
-        const {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          user: {
-            user: { codiceFiscale },
-          },
-        } = select((state: RootState) => state);
-        if (codiceFiscale && profile?.codiceRuolo) {
-          const { codiceRuolo, idProgramma, idProgetto, idEnte } = profile;
-          setSessionValues('profile', profile);
-          const res = await API.post('/contesto/sceltaProfilo', {
-            cfUtente: isActiveProvisionalLogin ? codiceFiscale : undefined,
-            codiceRuolo: isActiveProvisionalLogin ? codiceRuolo : undefined,
-            idProgramma,
-            idProgetto,
-            idEnte,
-          });
+  async (dispatch: Dispatch, select: Selector) => {
+    try {
+      dispatch({ ...SelectUserRoleAction }); // TODO manage dispatch for dev env only
+      dispatch(showLoader());
+      const {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        user: {
+          user: { codiceFiscale },
+        },
+      } = select((state: RootState) => state);
+      if (codiceFiscale && profile?.codiceRuolo) {
+        const { codiceRuolo, idProgramma, idProgetto, idEnte } = profile;
+        setSessionValues('profile', profile);
+        const res = await API.post('/contesto/sceltaProfilo', {
+          cfUtente: isActiveProvisionalLogin ? codiceFiscale : undefined,
+          codiceRuolo: isActiveProvisionalLogin ? codiceRuolo : undefined,
+          idProgramma,
+          idProgetto,
+          idEnte,
+        });
 
-          if (res) {
-            dispatch(setUserProfile({ ...profile, saveSession }));
-            return true;
-          }
+        if (res) {
+          dispatch(setUserProfile({ ...profile, saveSession }));
+          return true;
         }
-      } catch (error) {
-        console.log('SelectUserRole error', error);
-        clearSessionValues('profile');
-      } finally {
-        dispatch(hideLoader());
       }
-    };
+    } catch (error) {
+      console.log('SelectUserRole error', error);
+      clearSessionValues('profile');
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
 
 const EditUserAction = { type: 'user/EditUser' };
 export const EditUser =
@@ -251,63 +251,68 @@ export const GetNotificationsByUser =
     },
     updateCount = false
   ) =>
-    async (dispatch: Dispatch, select: Selector) => {
-      try {
-        dispatch(showLoader());
-        dispatch({ ...GetNotificationsByUserAction });
+  async (dispatch: Dispatch, select: Selector) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...GetNotificationsByUserAction });
 
-        const {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          administrativeArea: { pagination },
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          forum: { filters },
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          user: {
-            user: { id },
-          },
-        } = select((state: RootState) => state);
+      const {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        administrativeArea: { pagination },
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        forum: { filters },
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        user: {
+          user: { id },
+        },
+      } = select((state: RootState) => state);
 
-        if (id) {
-          const body = {
-            ...filters,
-            sort: filters.sort[0].value === 'created' ? [{ label: 'created_desc', value: 'created_desc' }] : filters.sort,
-            page: [{ value: Math.max(0, pagination.pageNumber - 1) }],
-            items_per_page: [{ value: 9 }],
-            ...forcedFilters,
-          };
+      if (id) {
+        const body = {
+          ...filters,
+          sort:
+            filters.sort[0].value === 'created'
+              ? [{ label: 'created_desc', value: 'created_desc' }]
+              : filters.sort,
+          page: [{ value: Math.max(0, pagination.pageNumber - 1) }],
+          items_per_page: [{ value: 9 }],
+          ...forcedFilters,
+        };
 
-          const queryParam = transformFiltersToQueryParams(body)
-            .replace('sort', 'sort_by')
-          const res = await proxyCall(
-            `/user/${id}/notifications${queryParam}`,
-            'GET'
-          );
-          if (res) {
-            if (updateCount) {
-              dispatch(
-                setUserNotificationsToRead(res.data.data.pager?.total_items || 0)
-              );
-              dispatch(setUserNotificationsPreview(res.data.data.items || []));
-            } else {
-              dispatch(setUserNotifications(res.data.data.items || []));
-              dispatch(
-                setEntityPagination({
-                  totalPages: res.data.data.pager?.total_pages || 0,
-                  totalElements: res.data.data.pager?.total_items || 0,
-                })
-              );
-            }
+        const queryParam = transformFiltersToQueryParams(body).replace(
+          'sort',
+          'sort_by'
+        );
+        const res = await proxyCall(
+          `/user/${id}/notifications${queryParam}`,
+          'GET'
+        );
+        if (res) {
+          if (updateCount) {
+            dispatch(
+              setUserNotificationsToRead(res.data.data.pager?.total_items || 0)
+            );
+            dispatch(setUserNotificationsPreview(res.data.data.items || []));
+          } else {
+            dispatch(setUserNotifications(res.data.data.items || []));
+            dispatch(
+              setEntityPagination({
+                totalPages: res.data.data.pager?.total_pages || 0,
+                totalElements: res.data.data.pager?.total_items || 0,
+              })
+            );
           }
         }
-      } catch (error) {
-        console.log('GetNotificationsByUser error', error);
-      } finally {
-        dispatch(hideLoader());
       }
-    };
+    } catch (error) {
+      console.log('GetNotificationsByUser error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
 
 const ReadNotificationAction = {
   type: 'forum/ReadNotification',

@@ -547,30 +547,38 @@ export const AssignManagerAuthorityReferentDelegate =
     try {
       dispatch(showLoader());
       dispatch({ ...AssignReferentDelegateAction });
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
       const endpoint =
         entity === 'programma'
           ? '/ente/associa/referenteDelegato/gestoreProgramma'
           : entity === 'progetto'
           ? '/ente/associa/referenteDelegato/gestoreProgetto'
           : '';
-      let body = {};
+      let body: { [key: string]: string | undefined } = {
+        idProgramma,
+        idProgetto,
+        idEnte,
+      };
       if (entity === 'programma') {
         body = {
+          ...body,
           cfReferenteDelegato: userDetail?.codiceFiscale
             ?.toString()
             .toUpperCase(),
-          codiceRuolo: role,
-          idEnte: authorityId,
-          idProgramma: entityId,
-          mansione: userDetail.mansione,
+          idProgrammaGestore: entityId?.toString(),
+          codiceRuoloRefDeg: role,
+          idEnteGestore: authorityId?.toString(),
+          mansione: userDetail.mansione?.toString(),
         };
       } else {
         body = {
-          cfUtente: userDetail?.codiceFiscale?.toString().toUpperCase(),
-          codiceRuolo: role,
-          idEnte: authorityId,
-          idProgetto: entityId,
-          mansione: userDetail.mansione,
+          idProgettoGestore: entityId?.toString(),
+          codiceRuoloRefDeg: role,
+          idEnteGestore: authorityId?.toString(),
+          cfReferenteDelegato: userDetail?.codiceFiscale
+            ?.toString()
+            .toUpperCase(),
+          mansione: userDetail.mansione?.toString(),
         };
       }
       if (userDetail?.id) {
@@ -618,6 +626,7 @@ export const AssignPartnerAuthorityReferentDelegate =
     try {
       dispatch(showLoader());
       dispatch({ ...AssignReferentDelegateAction });
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
       const endpoint = '/ente/associa/referenteDelegato/partner';
       if (userDetail?.id) {
         userDetail.codiceFiscale &&
@@ -627,10 +636,15 @@ export const AssignPartnerAuthorityReferentDelegate =
           ));
         if (userId !== userDetail.id.toString()) {
           await API.post(endpoint, {
-            cfUtente: userDetail.codiceFiscale?.toString().toUpperCase(),
-            codiceRuolo: role,
-            idEntePartner: authorityId,
-            idProgetto: entityId,
+            idProgramma,
+            idProgetto,
+            idEnte,
+            cfReferenteDelegato: userDetail.codiceFiscale
+              ?.toString()
+              .toUpperCase(),
+            idProgettoDelPartner: entityId?.toString(),
+            codiceRuoloRefDeg: role,
+            idEntePartner: authorityId?.toString(),
             mansione: userDetail.mansione,
           });
         }
@@ -650,10 +664,15 @@ export const AssignPartnerAuthorityReferentDelegate =
 
         if (res) {
           await API.post(endpoint, {
-            cfUtente: userDetail.codiceFiscale?.toString().toUpperCase(),
-            codiceRuolo: role,
-            idEntePartner: authorityId,
-            idProgetto: entityId,
+            idProgramma,
+            idProgetto,
+            idEnte,
+            cfReferenteDelegato: userDetail.codiceFiscale
+              ?.toString()
+              .toUpperCase(),
+            idProgettoDelPartner: entityId?.toString(),
+            codiceRuoloRefDeg: role,
+            idEntePartner: authorityId?.toString(),
             mansione: userDetail.mansione,
           });
         }
@@ -680,16 +699,20 @@ export const RemoveReferentDelegate =
     try {
       dispatch(showLoader());
       dispatch({ ...RemoveReferentDelegateAction });
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
       switch (role) {
         case 'DEPP':
         case 'REPP':
           await API.post(
             '/ente/cancellaOTerminaAssociazione/referenteDelegato/partner',
             {
-              cfUtente: userCF.toUpperCase(),
-              codiceRuolo: role,
-              idEntePartner: authorityId,
-              idProgetto: entityId,
+              idProgramma,
+              idProgetto,
+              idEnte,
+              cfReferenteDelegato: userCF.toUpperCase(),
+              codiceRuoloRefDeg: role,
+              idEntePartner: authorityId?.toString(),
+              idProgettoDelPartner: entityId?.toString(),
               mansione: 'string',
             }
           );
@@ -699,10 +722,13 @@ export const RemoveReferentDelegate =
           await API.post(
             '/ente/cancellaOTerminaAssociazione/referenteDelegato/gestoreProgramma',
             {
+              idProgramma,
+              idProgetto,
+              idEnte,
               cfReferenteDelegato: userCF.toUpperCase(),
-              codiceRuolo: role,
-              idEnte: authorityId,
-              idProgramma: entityId,
+              codiceRuoloRefDeg: role,
+              idEnteGestore: authorityId?.toString(),
+              idProgrammaGestore: entityId?.toString(),
               mansione: 'string',
             }
           );
@@ -712,10 +738,13 @@ export const RemoveReferentDelegate =
           await API.post(
             '/ente/cancellaOTerminaAssociazione/referenteDelegato/gestoreProgetto',
             {
-              cfUtente: userCF.toUpperCase(),
-              codiceRuolo: role,
-              idEnte: authorityId,
-              idProgetto: entityId,
+              idProgramma,
+              idProgetto,
+              idEnte,
+              cfReferenteDelegato: userCF.toUpperCase(),
+              codiceRuoloRefDeg: role,
+              idEnteGestore: authorityId?.toString(),
+              idProgettoGestore: entityId?.toString(),
               mansione: 'string',
             }
           );

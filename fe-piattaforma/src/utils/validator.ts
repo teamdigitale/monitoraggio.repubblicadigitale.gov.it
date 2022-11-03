@@ -39,8 +39,10 @@ const RegexpRule = {
   [RegexpType.FISCAL_CODE]:
     /^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$/i,
   [RegexpType.POSTAL_CODE]: /^[0-9]{5}$/gm,
-  [RegexpType.PASSWORD]: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,64}$/,
-  [RegexpType.PASSWORD_TOOL]: /^(?=.*?[A-Z])(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,64}|(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,64}|(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?!.*\s).{8,64}|(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,64}$/gm,
+  [RegexpType.PASSWORD]:
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,64}$/,
+  [RegexpType.PASSWORD_TOOL]:
+    /^(?=.*?[A-Z])(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,64}|(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,64}|(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?!.*\s).{8,64}|(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,64}$/gm,
   [RegexpType.MOBILE_PHONE]:
     /^(\((00|\+)39\)|(00|\+)39)?(38[890]|34[7-90]|36[680]|33[3-90]|32[89])\d{7}$/,
   MOBILE_PHONE_PREFIX:
@@ -70,28 +72,8 @@ export const validator = (
   required = false
 ) => {
   const isRequired = requiredObj || required;
-  if (isRequired && touched) {
-    if (data) {
-      if (regex === RegexpType.BOOLEAN) {
-        return typeof data === 'boolean';
-      } else if (regex === RegexpType.DATE && Date.parse(data.toString())) {
-        if (
-          maximum &&
-          Date.parse(maximum.toString()) - Date.parse(data.toString()) < 0
-        ) {
-          return false;
-        } else if (
-          minimum &&
-          Date.parse(data.toString()) - Date.parse(minimum.toString()) < 0
-        ) {
-          return false;
-        }
-        return !!new Date(data.toString()).valueOf();
-      }
-      return new RegExp(RegexpRule[regex]).test(data.toString());
-    }
-    return false;
-  } else if (data) {
+  /*  if (isRequired && touched) { */
+  if (data) {
     if (regex === RegexpType.BOOLEAN) {
       return typeof data === 'boolean';
     } else if (regex === RegexpType.DATE && Date.parse(data.toString())) {
@@ -107,12 +89,28 @@ export const validator = (
         return false;
       }
       return !!new Date(data.toString()).valueOf();
+    } else if (regex !== RegexpType.NUMBER && (minimum || maximum)) {
+      if (maximum && Number(maximum) - data.toString()?.length < 0) {
+        return false;
+      } else if (minimum && Number(minimum) - data.toString()?.length > 0) {
+        return false;
+      }
+    } else if (regex === RegexpType.NUMBER && (minimum || maximum)) {
+      if (maximum && Number(maximum) < Number(data)) {
+        return false;
+      } else if (minimum && Number(minimum) > Number(data)) {
+        return false;
+      }
     }
     return new RegExp(RegexpRule[regex]).test(data.toString());
+  } else {
+    if (isRequired && touched) {
+      return false;
+    } else {
+      return true;
+    }
   }
-  return true;
 };
-
 export const validateAddressList = (addressList: AddressInfoI[]) => {
   return addressList
     .filter((addressList) => !addressList.indirizzoSede?.cancellato)
