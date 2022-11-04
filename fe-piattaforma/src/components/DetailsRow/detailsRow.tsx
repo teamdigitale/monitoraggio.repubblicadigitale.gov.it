@@ -3,6 +3,9 @@ import { Button, Icon, UncontrolledTooltip } from 'design-react-kit';
 import { CRUDActionsI, CRUDActionTypes } from '../../utils/common';
 import StatusChip from '../StatusChip/statusChip';
 import PasswordVisible from '/public/assets/img/it-password-visible.png';
+import ItPlusCircle from '/public/assets/img/it-plus-circle-primary.png';
+import ItMail from '/public/assets/img/it-mail-primary.png';
+import ItPencil from '/public/assets/img/it-pencil-primary.png';
 
 interface DetailsRowI {
   id: string;
@@ -42,7 +45,7 @@ const DetailsRow: React.FC<DetailsRowI> = ({
               id={`button-1-compile-${id}`}
             >
               <Icon
-                icon='it-plus-circle'
+                icon={ItPlusCircle}
                 color='primary'
                 size='sm'
                 aria-label='Compila questionario'
@@ -59,7 +62,7 @@ const DetailsRow: React.FC<DetailsRowI> = ({
               id={`button-1-send-${id}`}
             >
               <Icon
-                icon='it-mail'
+                icon={ItMail}
                 color='primary'
                 size='sm'
                 aria-label='Invia questionario'
@@ -87,7 +90,7 @@ const DetailsRow: React.FC<DetailsRowI> = ({
               id={`button-2-compile-${id}`}
             >
               <Icon
-                icon='it-plus-circle'
+                icon={ItPlusCircle}
                 color='primary'
                 size='sm'
                 aria-label='Compila questionario'
@@ -104,7 +107,7 @@ const DetailsRow: React.FC<DetailsRowI> = ({
               id={`button-2-send-${id}`}
             >
               <Icon
-                icon='it-mail'
+                icon={ItMail}
                 color='primary'
                 size='sm'
                 aria-label='Invia questionario'
@@ -161,7 +164,7 @@ const DetailsRow: React.FC<DetailsRowI> = ({
               id={`button-edit-citizen-${id}`}
             >
               <Icon
-                icon='it-pencil'
+                icon={ItPencil}
                 color='primary'
                 size='sm'
                 aria-label='Modifica cittadino'
