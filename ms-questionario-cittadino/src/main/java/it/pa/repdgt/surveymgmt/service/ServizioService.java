@@ -304,7 +304,7 @@ public class ServizioService {
 					return this.servizioSQLService.isServizioAssociatoAReppDepp(idServizio,  profilazioneParam.getIdProgetto(), profilazioneParam.getIdEnte()) > 0;
 				case RuoliUtentiConstants.FACILITATORE:
 				case RuoliUtentiConstants.VOLONTARIO:
-					return this.servizioSQLService.isServizioAssociatoAUtenteProgettoEnte(idServizio, profilazioneParam.getIdProgetto(), profilazioneParam.getIdEnte(), profilazioneParam.getCfUtenteLoggato());
+					return this.servizioSQLService.isServizioAssociatoAUtenteProgettoEnte(idServizio, profilazioneParam.getIdProgetto(), profilazioneParam.getIdEnte(), profilazioneParam.getCfUtenteLoggato()) > 0;
 				default:
 					return false;
 			}

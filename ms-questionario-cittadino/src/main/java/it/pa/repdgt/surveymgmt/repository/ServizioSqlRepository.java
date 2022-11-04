@@ -293,7 +293,7 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 			+ "			AND s.id_ente = :idEnte "
 			+ "			AND s.id_facilitatore = :cfUtenteLoggato ",
 			nativeQuery = true)
-	boolean isServizioAssociatoAUtenteProgettoEnte(
+	int isServizioAssociatoAUtenteProgettoEnte(
 			@Param("idServizio") Long idServizio, 
 			@Param("idProgetto") Long idProgetto,
 			@Param("idEnte") Long idEnte,
