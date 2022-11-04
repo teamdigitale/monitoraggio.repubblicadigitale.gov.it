@@ -14,7 +14,6 @@ import {
   newForm,
   newFormField,
 } from '../../utils/formHelper';
-import { RegexpType } from '../../utils/validator';
 import { selectRolesList } from '../../redux/features/roles/rolesSlice';
 import { GetRolesListValues } from '../../redux/features/roles/rolesThunk';
 import {
@@ -285,12 +284,10 @@ const form = newForm([
     required: true,
   }),
   newFormField({
+    ...CommonFields.TELEFONO,
     field: 'telefono',
     id: 'telefono',
-    regex: RegexpType.TELEPHONE,
     //required: true,
-    minimum: 9,
-    maximum: 20,
   }),
   /*
   newFormField({

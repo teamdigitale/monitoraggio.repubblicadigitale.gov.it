@@ -81,7 +81,7 @@ const Breadcrumb = () => {
   useEffect(() => {
     if (
       breadcrumbList?.length &&
-      breadcrumbList[breadcrumbList?.length -1]?.url === urlCurrentLocation
+      breadcrumbList[breadcrumbList?.length - 1]?.url === urlCurrentLocation
     ) {
       setNavigationList(breadcrumbList);
     } else if (currentLocation && currentLocation?.length) {
@@ -98,6 +98,8 @@ const Breadcrumb = () => {
               link:
                 ((userProfile?.codiceRuolo === userRoles.REGP ||
                   userProfile?.codiceRuolo === userRoles.DEGP ||
+                  userProfile?.codiceRuolo === userRoles.REPP ||
+                  userProfile?.codiceRuolo === userRoles.DEPP ||
                   userProfile?.codiceRuolo === userRoles.FAC ||
                   userProfile?.codiceRuolo === userRoles.VOL) &&
                   getLabelBreadcrumb(elem) === 'Progetti') ||
@@ -105,6 +107,8 @@ const Breadcrumb = () => {
                   userProfile?.codiceRuolo === userRoles.DEG ||
                   userProfile?.codiceRuolo === userRoles.REGP ||
                   userProfile?.codiceRuolo === userRoles.DEGP ||
+                  userProfile?.codiceRuolo === userRoles.REPP ||
+                  userProfile?.codiceRuolo === userRoles.DEPP ||
                   userProfile?.codiceRuolo === userRoles.FAC ||
                   userProfile?.codiceRuolo === userRoles.VOL) &&
                   getLabelBreadcrumb(elem) === 'Programmi')
@@ -117,7 +121,9 @@ const Breadcrumb = () => {
               url: createUrl(index),
               link:
                 ((userProfile?.codiceRuolo === userRoles.REGP ||
-                  userProfile?.codiceRuolo === userRoles.DEGP) &&
+                  userProfile?.codiceRuolo === userRoles.DEGP ||
+                  userProfile?.codiceRuolo === userRoles.REPP ||
+                  userProfile?.codiceRuolo === userRoles.DEPP) &&
                   getLabelBreadcrumb(elem) === 'Progetti') ||
                 ((userProfile?.codiceRuolo === userRoles.REG ||
                   userProfile?.codiceRuolo === userRoles.DEG) &&
@@ -162,7 +168,7 @@ const Breadcrumb = () => {
         ))}
       </BreadcrumbKit>
     </Container>
-  ):null;
+  ) : null;
 };
 
 export default Breadcrumb;

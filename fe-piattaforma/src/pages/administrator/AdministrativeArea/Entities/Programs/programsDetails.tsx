@@ -133,8 +133,7 @@ const ProgramsDetails: React.FC = () => {
     // For breadcrumb
     if (location.pathname === `/area-amministrativa/programmi/${entityId}`) {
       navigate(`/area-amministrativa/programmi/${entityId}/info`);
-    }
-    if (
+    } else if (
       location.pathname ===
       `/area-amministrativa/programmi/${entityId}/ente-gestore-programma/${authorityId}`
     ) {
