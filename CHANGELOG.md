@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.269](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.268...1.0.0-develop.269) (2022-11-04)
+
+
+### Bug Fixes
+
+* **be:** fix questionario campo idEnte ([3db8079](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3db8079418011ba401c6a01c010fe9b394df075c))
+* **be:** fix utente e questionario per bac ([39c081f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/39c081ffedf8550cd6575be13db842c8b4ce3a9b))
+
 ## [1.0.0-develop.268](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.267...1.0.0-develop.268) (2022-11-04)
 
 
