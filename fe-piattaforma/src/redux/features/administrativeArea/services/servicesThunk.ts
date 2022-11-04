@@ -84,7 +84,12 @@ export const GetServicesDetail =
     try {
       dispatch(showLoader());
       dispatch({ ...GetServicesDetailAction, id });
-      const res = await API.get(`/servizio/${id}/schedaDettaglio`);
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+      const res = await API.post(`/servizio/${id}/schedaDettaglio`, {
+        idProgramma,
+        idProgetto,
+        idEnte,
+      });
       if (res?.data) {
         dispatch(setServicesDetail(res.data));
       }
@@ -193,7 +198,13 @@ export const CreateService = (payload: any) => async (dispatch: Dispatch) => {
   try {
     dispatch(showLoader());
     dispatch({ ...CreateServiceAction, payload });
-    const res = await API.post(`/servizio`, payload);
+    const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+    const res = await API.post(`/servizio`, {
+      ...payload,
+      idProgramma,
+      idProgetto,
+      idEnte,
+    });
     if (res) {
       return res;
     }
@@ -286,9 +297,10 @@ export const GetSurveyTemplateServiceCreation =
     try {
       dispatch({ ...GetSurveyTemplateServiceCreationAction });
       dispatch(showLoader());
-      const { idProgramma } = getUserHeaders();
-      const res = await API.get(
-        `questionarioTemplate/programma/${idProgramma}`
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+      const res = await API.post(
+        `questionarioTemplate/programma/${idProgramma}`,
+        { idProgramma, idProgetto, idEnte }
       );
       if (res?.data) {
         dispatch(setServicesSchemaFieldsCreation(res.data));
@@ -311,7 +323,10 @@ export const DeleteService =
     try {
       dispatch(showLoader());
       dispatch({ ...DeleteServiceAction, idServizio });
-      await API.delete(`/servizio/${idServizio}`);
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+      await API.delete(`/servizio/${idServizio}`, {
+        data: { idProgramma, idProgetto, idEnte },
+      });
     } catch (error) {
       console.log('DeleteService administrativeArea error', error);
     } finally {
@@ -333,10 +348,13 @@ export const AssociateCitizenToService =
     try {
       dispatch({ ...AssociateCitizenToServiceAction });
       dispatch(showLoader());
-      const res = await API.post(
-        `/servizio/cittadino/${payload.idServizio}`,
-        payload.body
-      );
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+      const res = await API.post(`/servizio/cittadino/${payload.idServizio}`, {
+        ...payload.body,
+        idProgramma,
+        idProgetto,
+        idEnte,
+      });
       if (res) {
         return true;
       }
@@ -358,8 +376,10 @@ export const SendSurveyToCitizen =
     try {
       dispatch({ ...SendSurveyToCitizenAction });
       dispatch(showLoader());
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
       const res = await API.post(
-        `/servizio/cittadino/questionarioCompilato/invia?idCittadino=${idCittadino}&idQuestionario=${idQuestionario}`
+        `/servizio/cittadino/questionarioCompilato/invia?idCittadino=${idCittadino}&idQuestionario=${idQuestionario}`,
+        { idProgramma, idProgetto, idEnte }
       );
       return res;
     } catch (error) {
@@ -379,8 +399,10 @@ export const SendSurveyToAll =
     try {
       dispatch({ ...SendSurveyToAllAction });
       dispatch(showLoader());
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
       const res = await API.post(
-        `/servizio/cittadino/servizio/${idServizio}/questionarioCompilato/inviaATutti`
+        `/servizio/cittadino/servizio/${idServizio}/questionarioCompilato/inviaATutti`,
+        { idProgramma, idProgetto, idEnte }
       );
       return res;
     } catch (error) {
@@ -399,9 +421,11 @@ export const GetCompiledSurveyCitizenService =
   (idQuestionarioCompilato: string) => async (dispatch: Dispatch) => {
     try {
       dispatch({ ...GetCompiledSurveyCitizenServiceAction });
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
       dispatch(showLoader());
-      const res = await API.get(
-        `/servizio/cittadino/questionarioCompilato/compilato/${idQuestionarioCompilato}`
+      const res = await API.post(
+        `/servizio/cittadino/questionarioCompilato/compilato/${idQuestionarioCompilato}`,
+        { idProgramma, idProgetto, idEnte }
       );
       if (res?.data) {
         dispatch(

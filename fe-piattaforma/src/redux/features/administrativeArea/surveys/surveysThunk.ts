@@ -436,7 +436,13 @@ export const SetSurveyCreation =
         if (isClone) {
           res = await API.post(`questionarioTemplate`, body);
         } else {
-          res = await API.put(`questionarioTemplate/${survey.surveyId}`, body);
+          const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+          res = await API.put(`questionarioTemplate/${survey.surveyId}`, {
+            ...body,
+            idProgramma,
+            idProgetto,
+            idEnte,
+          });
         }
         return res;
       }
@@ -456,7 +462,12 @@ export const GetSurveyInfo =
     try {
       dispatch(showLoader());
       dispatch({ ...GetSurveyInfoAction, questionarioId });
-      const res = await API.get(`questionarioTemplate/${questionarioId}`);
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+      const res = await API.post(`questionarioTemplate/${questionarioId}`, {
+        idProgramma,
+        idProgetto,
+        idEnte,
+      });
       if (res?.data) {
         dispatch(setSurveyInfoForm(res.data));
         if (isPrintPage) {
@@ -479,6 +490,7 @@ export const PostFormCompletedByCitizen =
     try {
       dispatch(showLoader());
       dispatch({ ...PostFormCompletedByCitizenAction, payload });
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
       const entityEndpoint = `/servizio/cittadino/questionarioCompilato/${idQuestionario}/compila`;
       const consenso = payload?.[0]['18']?.includes('ONLINE')
         ? 'ONLINE'
@@ -520,7 +532,12 @@ export const PostFormCompletedByCitizen =
         tipoDocumentoDaAggiornare: payload?.[0]['5'],
         titoloDiStudioDaAggiornare: payload?.[0]['9'],
       };
-      await API.post(entityEndpoint, body);
+      await API.post(entityEndpoint, {
+        ...body,
+        idProgramma,
+        idProgetto,
+        idEnte,
+      });
       dispatch(resetCompilingSurveyForm());
       return true;
     } catch (e) {
@@ -538,11 +555,14 @@ export const PostFormCompletedByCitizen =
 
 export const UpdateSurveyExclusiveField =
   (payload?: any) => async (dispatch: any) => {
-    dispatch(showLoader());
-    const { flagType, surveyId } = payload;
     try {
-      const endpoint = `/questionarioTemplate/aggiornadefault/${surveyId}?tipoDefault=${flagType}`;
-      await API.put(endpoint);
+      dispatch(showLoader());
+      const { flagType, surveyId } = payload;
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+      await API.put(
+        `/questionarioTemplate/aggiornadefault/${surveyId}?tipoDefault=${flagType}`,
+        { idProgramma, idProgetto, idEnte }
+      );
       dispatch(hideLoader());
     } catch (error) {
       dispatch(hideLoader());
@@ -582,7 +602,10 @@ export const DeleteSurvey =
     try {
       dispatch(showLoader());
       dispatch({ ...DeleteSurveyAction, idQuestionario });
-      const res = await API.delete(`/questionarioTemplate/${idQuestionario}`);
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+      const res = await API.delete(`/questionarioTemplate/${idQuestionario}`, {
+        data: { idProgramma, idProgetto, idEnte },
+      });
       if (res) {
         /* TODO: controllo se post andata a buon fine */
       }

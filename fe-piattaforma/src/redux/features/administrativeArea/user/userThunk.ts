@@ -199,8 +199,11 @@ export const UpdateUser =
     try {
       dispatch(showLoader());
       dispatch({ ...UpdateUserAction, idUtente });
-
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
       const body = {
+        idProgramma,
+        idProgetto,
+        idEnte,
         telefono: payload?.telefono,
         codiceFiscale: payload?.codiceFiscale?.toString().toUpperCase(),
         cognome: payload?.cognome,
