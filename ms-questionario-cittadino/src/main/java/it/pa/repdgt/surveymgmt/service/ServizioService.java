@@ -221,6 +221,9 @@ public class ServizioService {
 	public void aggiornaServizio(
 			@NotNull Long idServizioDaAggiornare, 
 			@NotNull @Valid ServizioRequest servizioDaAggiornareRequest) {
+		if(!isAutorizzatoForGetSchedaDettaglioServizioAndEliminaServizio(idServizioDaAggiornare, servizioDaAggiornareRequest)) {
+			throw new ServizioException("Errore permesso accesso alla risorsa", CodiceErroreEnum.A02);
+		}
 		final String codiceFiscaletenteLoggato = servizioDaAggiornareRequest.getCfUtenteLoggato();
 		final String ruoloUtenteLoggato = servizioDaAggiornareRequest.getCodiceRuoloUtenteLoggato().toString();
 		
@@ -290,6 +293,23 @@ public class ServizioService {
 					.collect(Collectors.toList());
 	}
 
+	public boolean isAutorizzatoForGetSchedaDettaglioServizioAndEliminaServizio(@NotNull Long idServizio,
+			SceltaProfiloParam profilazioneParam) {
+				switch(profilazioneParam.getCodiceRuoloUtenteLoggato()) {
+				case RuoliUtentiConstants.REGP:
+				case RuoliUtentiConstants.DEGP:
+					return this.servizioSQLService.isServizioAssociatoARegpDegp(idServizio,  profilazioneParam.getIdProgetto()) > 0;
+				case RuoliUtentiConstants.REPP:
+				case RuoliUtentiConstants.DEPP:
+					return this.servizioSQLService.isServizioAssociatoAReppDepp(idServizio,  profilazioneParam.getIdProgetto(), profilazioneParam.getIdEnte()) > 0;
+				case RuoliUtentiConstants.FACILITATORE:
+				case RuoliUtentiConstants.VOLONTARIO:
+					return this.servizioSQLService.isServizioAssociatoAUtenteProgettoEnte(idServizio, profilazioneParam.getIdProgetto(), profilazioneParam.getIdEnte(), profilazioneParam.getCfUtenteLoggato());
+				default:
+					return false;
+			}
+	}
+	
 	/**
 	 * Recupera i dati da mostrare nella scheda 'Dettaglio servizio' a partire
 	 * dall'id del servizio
@@ -297,7 +317,10 @@ public class ServizioService {
 	 * */
 	@LogMethod
 	@LogExecutionTime
-	public SchedaDettaglioServizioBean getSchedaDettaglioServizio(@NotNull final Long idServizio) {
+	public SchedaDettaglioServizioBean getSchedaDettaglioServizio(@NotNull final Long idServizio, final SceltaProfiloParam profilazioneParam) {
+		if(profilazioneParam != null && !isAutorizzatoForGetSchedaDettaglioServizioAndEliminaServizio(idServizio, profilazioneParam)) {
+			throw new ServizioException("Errore permesso accesso alla risorsa", CodiceErroreEnum.G01);
+		}
 		// Recupero servizio
 		final ServizioEntity servizioEntity = this.servizioSQLService.getServizioById(idServizio);
 		// Recupero ente che eroga il servizio e su quale sede
@@ -346,7 +369,10 @@ public class ServizioService {
 	@LogMethod
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
-	public void eliminaServizio(@NotNull final Long idServizio) {
+	public void eliminaServizio(@NotNull final Long idServizio, final SceltaProfiloParam profilazioneParam) {
+		if(profilazioneParam != null && !isAutorizzatoForGetSchedaDettaglioServizioAndEliminaServizio(idServizio, profilazioneParam)) {
+			throw new ServizioException("Errore permesso accesso alla risorsa", CodiceErroreEnum.G01);
+		}
 		final ServizioEntity servizioEntity = this.servizioSQLService.getServizioById(idServizio);
 		
 		// Verifico se posso eliminare il servizio

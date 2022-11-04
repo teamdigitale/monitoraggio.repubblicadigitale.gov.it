@@ -27,8 +27,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiParam;
 import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
+import it.pa.repdgt.surveymgmt.exception.QuestionarioTemplateException;
 import it.pa.repdgt.surveymgmt.mapper.QuestionarioTemplateMapper;
 import it.pa.repdgt.surveymgmt.param.FiltroListaQuestionariTemplateParam;
 import it.pa.repdgt.surveymgmt.request.QuestionarioTemplateRequest;
@@ -51,9 +53,24 @@ public class QuestionarioTemplateRestApi {
 	 * Restituisce questionatio template che è associato al programma con particolare id
 	 *
 	 * */
+	@Deprecated
 	@ResponseStatus(value = HttpStatus.OK)
 	@GetMapping(path = "/programma/{idProgramma}")
 	public QuestionarioTemplateCollection getQuestionarioTemplateByIdProgramma(@PathVariable(value = "idProgramma") Long idProgramma) {
+		return this.questionarioTemplateService.getQuestionarioTemplateByIdProgramma(idProgramma);
+	}
+	
+	/**
+	 * Restituisce questionatio template che è associato al programma con particolare id
+	 *
+	 * */
+	@ResponseStatus(value = HttpStatus.OK)
+	@PostMapping(path = "/programma/{idProgramma}")
+	public QuestionarioTemplateCollection getQuestionarioTemplateByIdProgrammaByProfilo(@PathVariable(value = "idProgramma") Long idProgramma,
+			@RequestBody SceltaProfiloParam sceltaProfiloParam) {
+		if(sceltaProfiloParam != null && !this.questionarioTemplateService.isAutorizzatoForProgramma(sceltaProfiloParam, idProgramma)) {
+			throw new QuestionarioTemplateException("Errore permesso accesso alla risorsa", CodiceErroreEnum.A02);
+		}
 		return this.questionarioTemplateService.getQuestionarioTemplateByIdProgramma(idProgramma);
 	}
 
@@ -125,11 +142,31 @@ public class QuestionarioTemplateRestApi {
 	 * Restituisce il TemplateQuestionario con specifico id persistito su mongoDB
 	 * 
 	 * */
+	// cambiato metodo da GET a POST per broken-access-control -> vedi stesso endpoint ma in post 
 	// Visualizza scheda questionario
+	@Deprecated
 	@GetMapping(path = "/{idQuestionario}",  produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public QuestionarioTemplateResource getQuestionarioTemplateById(
 			@PathVariable(value = "idQuestionario") final String templateQuestionarioId) {
+		final QuestionarioTemplateCollection questionarioTemplate = this.questionarioTemplateService.getQuestionarioTemplateById(templateQuestionarioId.trim());
+		return questionarioTemplateMapper.toResourceFrom(questionarioTemplate);
+	}
+	
+	
+	/***
+	 * Restituisce il TemplateQuestionario con specifico id persistito su mongoDB
+	 * 
+	 * */
+	// Visualizza scheda questionario
+	@PostMapping(path = "/{idQuestionario}",  produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(value = HttpStatus.OK)
+	public QuestionarioTemplateResource getQuestionarioTemplateById(
+			@PathVariable(value = "idQuestionario") final String templateQuestionarioId,
+			@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
+		if(profilazioneParam != null && !this.questionarioTemplateService.isAutorizzatoForGetQuestionarioTemplateById(templateQuestionarioId, profilazioneParam)) {
+			throw new QuestionarioTemplateException("Errore permesso accesso alla risorsa", CodiceErroreEnum.A02);
+		}
 		final QuestionarioTemplateCollection questionarioTemplate = this.questionarioTemplateService.getQuestionarioTemplateById(templateQuestionarioId.trim());
 		return questionarioTemplateMapper.toResourceFrom(questionarioTemplate);
 	}
@@ -156,9 +193,12 @@ public class QuestionarioTemplateRestApi {
 	// Modifica questionario template
 	@PutMapping(path = "/{idQuestionario}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
-	public void aggiornaQuestioarioTemplate(
+	public void aggiornaQuestionarioTemplate(
 			@PathVariable(value = "idQuestionario")  final String questionarioTemplateId,
 			@NotNull @RequestBody @Valid final QuestionarioTemplateRequest questionarioTemplateDaAggiornareRequest) {
+		if(questionarioTemplateDaAggiornareRequest != null && !this.questionarioTemplateService.isAutorizzatoForGetQuestionarioTemplateById(questionarioTemplateId, questionarioTemplateDaAggiornareRequest)) {
+			throw new QuestionarioTemplateException("Errore permesso accesso alla risorsa", CodiceErroreEnum.A02);
+		}
 		final QuestionarioTemplateCollection questionarioTemplate = this.questionarioTemplateMapper.toCollectionFrom(questionarioTemplateDaAggiornareRequest);
 		this.questionarioTemplateService.aggiornaQuestionarioTemplate(
 				questionarioTemplateId, 
@@ -174,7 +214,11 @@ public class QuestionarioTemplateRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void aggiornaDefaultQuestionarioTemplate(
 			@PathVariable(value = "idQuestionario") final String idQuestionario,
-			@RequestParam final String tipoDefault) {
+			@RequestParam final String tipoDefault,
+			@RequestBody SceltaProfiloParam sceltaProfiloParam) {
+		if(sceltaProfiloParam != null && !this.questionarioTemplateService.isAutorizzatoForGetQuestionarioTemplateById(idQuestionario, sceltaProfiloParam)) {
+			throw new QuestionarioTemplateException("Errore permesso accesso alla risorsa", CodiceErroreEnum.A02);
+		}
 		this.questionarioTemplateService.aggiornaDefaultQuestionarioTemplate(idQuestionario, tipoDefault);
 	}
 	
@@ -183,9 +227,12 @@ public class QuestionarioTemplateRestApi {
 	 * 
 	 * */
 	// Cancella questionario template
+	@Deprecated
 	@DeleteMapping(path = "/{idQuestionario}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void cancellaQuestioarioTemplate(@PathVariable(value = "idQuestionario") final String questionarioTemplateId) {
+	public void cancellaQuestionarioTemplate(
+			@PathVariable(value = "idQuestionario") final String questionarioTemplateId,
+			@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
 		this.questionarioTemplateService.cancellaQuestionarioTemplate(questionarioTemplateId);
 	}
 	

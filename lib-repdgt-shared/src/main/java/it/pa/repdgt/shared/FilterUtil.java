@@ -120,6 +120,7 @@ public class FilterUtil {
 			String idProgetto = nodoIdProgetto != null ? nodoIdProgetto.toString().replace("\"", "") : null;
 			String idEnte = nodoIdEnte != null ? nodoIdEnte.toString().replace("\"", "") : null;
 			
+			// esclusione api creazione
 			boolean sceltaProfiloEmpty = idProgramma == null && idProgetto == null && idEnte == null;
 			
 			switch (codiceRuolo) {

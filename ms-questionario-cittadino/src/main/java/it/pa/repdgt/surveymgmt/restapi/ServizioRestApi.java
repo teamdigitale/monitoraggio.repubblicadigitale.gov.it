@@ -86,10 +86,24 @@ public class ServizioRestApi {
 	 * Recupera i dati da mostrare nella scheda dettaglio servizio a partire dall'id del servizio
 	 * 
 	 * */
+	// cambiato metodo da GET a POST per broken-access-control -> vedi stesso endpoint ma in post 
+	@Deprecated
 	@GetMapping(path = "{id}/schedaDettaglio")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaDettaglioServizioBean getSchedaDettaglioServizioById(@PathVariable(value = "id") final Long idServizio) {
-		return this.servizioService.getSchedaDettaglioServizio(idServizio);
+		return this.servizioService.getSchedaDettaglioServizio(idServizio, null);
+	}
+	
+	/***
+	 * Recupera i dati da mostrare nella scheda dettaglio servizio a partire dall'id del servizio
+	 * 
+	 * */
+	@PostMapping(path = "{id}/schedaDettaglio")
+	@ResponseStatus(value = HttpStatus.OK)
+	public SchedaDettaglioServizioBean getSchedaDettaglioServizioById(
+			@PathVariable(value = "id") final Long idServizio,
+			@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
+		return this.servizioService.getSchedaDettaglioServizio(idServizio, profilazioneParam);
 	}
 	
 	/***
@@ -208,7 +222,9 @@ public class ServizioRestApi {
 	 * */
 	@DeleteMapping(path = "/{id}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void eliminaServizioById(@PathVariable(value = "id") final Long idServizio) {
-		this.servizioService.eliminaServizio(idServizio);
+	public void eliminaServizioById(
+			@PathVariable(value = "id") final Long idServizio,
+			@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
+		this.servizioService.eliminaServizio(idServizio, profilazioneParam);
 	}
 } 

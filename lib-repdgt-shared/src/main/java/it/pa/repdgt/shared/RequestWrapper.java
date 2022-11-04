@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Base64;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.Part;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -81,15 +83,22 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 				if(inputCorpoRichiesta != null  && !inputCorpoRichiesta.trim().isEmpty()) {
 					this.body = this.getCorpoRichiestaArricchitaConDatiContesto(inputCorpoRichiesta);
 				}//per api che prevedono upload file
-				else if(!FilterUtil.isEndpointSwagger(endpoint) && httpServletRequest.getParts().size() > 0) {
-					this.body = "{ \"idProgramma\":" + httpServletRequest.getParameter("idProgramma") + 
-							",\"idProgetto\":" + httpServletRequest.getParameter("idProgetto") +  
-							",\"idEnte\":" + httpServletRequest.getParameter("idEnte") +  
-							",\"cfUtenteLoggato\":" + "\"" + this.codiceFiscale + "\"" + 
-							",\"codiceRuoloUtenteLoggato\":" + "\"" + this.codiceRuolo + "\"" +  
-							"}";
-					httpServletRequest.setAttribute("cfUtenteLoggato", this.codiceFiscale);
-					httpServletRequest.setAttribute("codiceRuoloUtenteLoggato", this.codiceRuolo);
+				else if(!FilterUtil.isEndpointSwagger(endpoint) ) {
+					try {
+						if(httpServletRequest.getParts().size() > 0) {
+							this.body = "{ \"idProgramma\":" + httpServletRequest.getParameter("idProgramma") + 
+									",\"idProgetto\":" + httpServletRequest.getParameter("idProgetto") +  
+									",\"idEnte\":" + httpServletRequest.getParameter("idEnte") +  
+									",\"cfUtenteLoggato\":" + "\"" + this.codiceFiscale + "\"" + 
+									",\"codiceRuoloUtenteLoggato\":" + "\"" + this.codiceRuolo + "\"" +  
+									"}";
+							httpServletRequest.setAttribute("cfUtenteLoggato", this.codiceFiscale);
+							httpServletRequest.setAttribute("codiceRuoloUtenteLoggato", this.codiceRuolo);
+							
+						}
+					} catch (ServletException e) {
+						// gestione eccezioni in caso di chiamate GET
+					}
 				}
 			}else if(FilterUtil.isEndpointQuestionarioCompilatoAnonimo(endpoint) && metodoHttp.equals("POST")){
 				/*
