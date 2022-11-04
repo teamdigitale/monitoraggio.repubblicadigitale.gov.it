@@ -77,21 +77,11 @@ const authContentsShort = {
   subtitle: 'Consulta le statistiche rappresentate in questa pagina',
 };
 
-/*
-HEIGHT IFRAME REPORT DATI
-         RUOLO                 ---      DESKTOP       ---        MOBILE      ---       TABLET
-> DELEGATO REGIONE PIEMONTE    ---      1836px        ---        660px       ---       1080px
-> DELEGATO COMUNE CATANZARO    ---      1900px        ---        680px       ---       1100px
-> DTD AMMINISTRATORE           ---      2040px        ---        780px       ---       1220px
-> REFERENTE REGIONE PIEMONTE   ---      1836px        ---        660px       ---       1080px
-> GUEST                        ---      3040px        ---        2830px       ---      4770px
-* */
-
 const iframeHeightByRole = {
   DTD: {
     mobile: '960px',
     tablet: '1480px',
-    desktop: '3820px',
+    desktop: '5370px',
   },
   DSCU: {
     mobile: '860px',

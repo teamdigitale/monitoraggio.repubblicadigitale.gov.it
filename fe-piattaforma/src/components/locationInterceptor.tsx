@@ -10,13 +10,15 @@ import { resetUserDetails } from '../redux/features/administrativeArea/administr
 import { resetAreaCittadiniState } from '../redux/features/citizensArea/citizensAreaSlice';
 import { resetForumRecords } from '../redux/features/forum/forumSlice';
 import { resetModalState } from '../redux/features/modal/modalSlice';
-import { useAppDispatch } from '../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { getUnreadNotificationsCount, scrollTo } from '../utils/common';
 import { validateSession } from '../utils/sessionHelper';
+import { selectProfile } from '../redux/features/user/userSlice';
 
 const LocationInterceptor = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
+  const userRole = useAppSelector(selectProfile)?.codiceRuolo
 
   useEffect(() => {
     // TODO subscribe here all reset actions
@@ -31,9 +33,15 @@ const LocationInterceptor = () => {
     dispatch(resetUserDetails());
     scrollTo(0);
     validateSession();
-    getUnreadNotificationsCount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (userRole) {
+      getUnreadNotificationsCount();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userRole, location.pathname])
 
   return null;
 };
