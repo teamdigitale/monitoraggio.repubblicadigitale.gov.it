@@ -127,8 +127,8 @@ public class ServizioServiceTest {
 		servizioRequest.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
 		servizioRequest.setProfilazioneParam(sceltaProfiloParamLightProgramma);
 		servizioRequest.setNomeServizio("NOMESERVIZIO");
-		servizioRequest.setIdEnte(1L);
-		servizioRequest.setIdSede(1L);
+		servizioRequest.setIdEnteServizio(1L);
+		servizioRequest.setIdSedeServizio(1L);
 		servizioRequest.setIdProgetto(1L);
 		servizioRequest.setDataServizio(new Date());
 		servizioRequest.setDurataServizio("DURATASERVIZIO");

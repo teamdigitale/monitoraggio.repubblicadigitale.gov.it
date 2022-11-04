@@ -32,11 +32,11 @@ public class ServizioRequest extends SceltaProfiloParam implements Serializable 
 	@NotBlank
 	private String nomeServizio;
 	
-	@JsonProperty(value = "idEnte")
+	@JsonProperty(value = "idEnteServizio")
 	@NotNull
 	private Long idEnteServizio;
 	
-	@JsonProperty(value = "idSede")
+	@JsonProperty(value = "idSedeServizio")
 	@NotNull
 	private Long idSedeServizio;
 	

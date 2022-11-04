@@ -244,8 +244,8 @@ public class ServizioSqlService {
 		
 		// Recupero ESP_FACILITATORE
 		final EnteSedeProgettoFacilitatoreKey idEnteSedeProgettoFacilitatore = new EnteSedeProgettoFacilitatoreKey();
-		idEnteSedeProgettoFacilitatore.setIdEnte(servizioRequest.getIdEnte());
-		idEnteSedeProgettoFacilitatore.setIdSede(servizioRequest.getIdSede());
+		idEnteSedeProgettoFacilitatore.setIdEnte(servizioRequest.getIdEnteServizio());
+		idEnteSedeProgettoFacilitatore.setIdSede(servizioRequest.getIdSedeServizio());
 		idEnteSedeProgettoFacilitatore.setIdProgetto(profilazioneParam.getIdProgetto());
 		idEnteSedeProgettoFacilitatore.setIdFacilitatore(servizioRequest.getCfUtenteLoggato());
 		final EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatore = this.enteSedeProgettoFacilitatoreService.getById(idEnteSedeProgettoFacilitatore);
@@ -285,8 +285,8 @@ public class ServizioSqlService {
 			@NotNull final Long idServizio, 
 			@NotNull final @Valid ServizioRequest servizioDaAggiornareRequest) {
 		final EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreAggiornato = new EnteSedeProgettoFacilitatoreKey(
-			servizioDaAggiornareRequest.getIdEnte(),
-			servizioDaAggiornareRequest.getIdSede(),
+			servizioDaAggiornareRequest.getIdEnteServizio(),
+			servizioDaAggiornareRequest.getIdSedeServizio(),
 			servizioDaAggiornareRequest.getProfilazioneParam().getIdProgetto(),
 			servizioDaAggiornareRequest.getCfUtenteLoggato()
 		);
