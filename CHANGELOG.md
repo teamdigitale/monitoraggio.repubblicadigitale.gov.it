@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.268](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.267...1.0.0-develop.268) (2022-11-04)
+
+
+### Bug Fixes
+
+* **be:** broken access control utente-questionario ([ae851f5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ae851f5bd3edc7c4e30c9c9ffd874f45f7177f77))
+
 ## [1.0.0-develop.267](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.266...1.0.0-develop.267) (2022-11-04)
 
 
