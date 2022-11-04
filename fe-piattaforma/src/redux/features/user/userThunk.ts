@@ -159,7 +159,7 @@ export const EditUser =
         });
 
         if (res) {
-          await new Promise(resolve => setTimeout(resolve, 2000))
+          await new Promise((resolve) => setTimeout(resolve, 2000));
           return true;
         }
       }
@@ -186,6 +186,7 @@ export const UploadUserPic =
           headers: {
             'Content-Type': 'multipart/form-data',
           },
+          timeout: 20000,
         }
       );
 

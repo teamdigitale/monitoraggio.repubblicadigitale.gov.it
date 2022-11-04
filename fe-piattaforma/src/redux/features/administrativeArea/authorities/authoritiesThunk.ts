@@ -286,10 +286,12 @@ export const CreateManagerAuthority =
           ...body,
         });
         if (res) {
+          const { idProgramma, idProgetto, idEnte } = getUserHeaders();
           await API.put(
             `/${entity}/${entityId}/assegna/${
               entity === 'programma' ? 'entegestore' : 'enteGestore'
-            }/${res.data.id}`
+            }/${res.data.id}`,
+            { idProgramma, idProgetto, idEnte }
           );
           return res.data.id;
         }
