@@ -403,4 +403,17 @@ public class ServizioSqlService {
 			String codiceFiscaleUtenteLoggato, Long idProgetto, Long idEnte) {
 		return servizioSqlRepository.findIdsSediFacilitatoreConServiziAndCittadiniCensitiByCodFiscaleAndIdProgettoAndIdEnte(codiceFiscaleUtenteLoggato, idProgetto, idEnte);
 	}
+
+	public boolean isServizioAssociatoAUtenteProgettoEnte(@NotNull Long idServizio, Long idProgetto, Long idEnte,
+			@NotNull String cfUtenteLoggato) {
+		return servizioSqlRepository.isServizioAssociatoAUtenteProgettoEnte(idServizio, idProgetto, idEnte, cfUtenteLoggato);
+	}
+	
+	public int isServizioAssociatoARegpDegp(@NotNull Long idServizio, Long idProgetto) {
+		return servizioSqlRepository.isServizioAssociatoARegpDegp(idServizio, idProgetto);
+	}
+	
+	public int isServizioAssociatoAReppDepp(@NotNull Long idServizio, Long idProgetto, Long idEnte) {
+		return servizioSqlRepository.isServizioAssociatoAReppDepp(idServizio, idProgetto, idEnte);
+	}
 }

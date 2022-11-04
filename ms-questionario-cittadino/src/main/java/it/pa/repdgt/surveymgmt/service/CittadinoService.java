@@ -264,7 +264,7 @@ public class CittadinoService {
 		}
 		CittadinoEntity cittadinoFetchDb = this.cittadinoRepository.findById(id).get();
 		
-		if(!this.getCittadinoPerCfOrNumDoc(cittadinoRequest.getCodiceFiscale(), cittadinoRequest.getNumeroDocumento(), id).isEmpty()) {
+		if(!cittadinoRepository.findCittadinoByCodiceFiscaleOrNumeroDocumentoAndIdDiverso(cittadinoRequest.getCodiceFiscale(), cittadinoRequest.getNumeroDocumento(), id).isEmpty()) {
 			errorMessage = String.format("Impossibile aggiornare il cittadino. Cittadino con codice fiscale o numero documento già esistente");
 			throw new CittadinoException(errorMessage, CodiceErroreEnum.U07);
 		}
@@ -336,8 +336,15 @@ public class CittadinoService {
 		}
 		return null;
 	}
-	
-	public List<CittadinoEntity> getCittadinoPerCfOrNumDoc(String codiceFiscale, String numDocumento, Long id) {
-		return cittadinoRepository.findCittadinoByCodiceFiscaleOrNumeroDocumentoAndIdDiverso(codiceFiscale, numDocumento, id);
+
+	public boolean isAutorizzato(Long idCittadino, @Valid SceltaProfiloParam profilazioneParam) {
+		switch (profilazioneParam.getCodiceRuoloUtenteLoggato()) {
+			case "FAC":
+			case "VOL":	
+				this.cittadinoRepository.isCittadinoAssociatoAFacVol(idCittadino, profilazioneParam.getCfUtenteLoggato(),
+						profilazioneParam.getIdEnte(), profilazioneParam.getIdProgetto());
+			default:
+				return false;
+			}
 	}
 }
