@@ -305,7 +305,7 @@ public class ServizioServiceTest {
 	@Test
 	public void aggiornaServizioTest() {
 		servizioRequest.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
-		when(this.servizioSQLService.isServizioAssociatoAUtenteProgettoEnte(servizio.getId(), servizioRequest.getIdProgetto(), servizioRequest.getIdEnte(), servizioRequest.getCfUtenteLoggato())).thenReturn(true);
+		when(this.servizioSQLService.isServizioAssociatoAUtenteProgettoEnte(servizio.getId(), servizioRequest.getIdProgetto(), servizioRequest.getIdEnte(), servizioRequest.getCfUtenteLoggato())).thenReturn(1);
 		when(this.utenteService.isUtenteFacilitatore(servizioRequest.getCfUtenteLoggato(), servizioRequest.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
 		when(this.servizioSQLService.aggiornaServizio(servizio.getId(), servizioRequest)).thenReturn(servizio);
 		when(this.sezioneQ3Repository.findById(sezioneQ3Collection.getId())).thenReturn(Optional.of(sezioneQ3Collection));
@@ -317,14 +317,14 @@ public class ServizioServiceTest {
 	public void aggiornaServizioKOTest() {
 		//test KO per utente non facilitatore
 		servizioRequest.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
-		when(this.servizioSQLService.isServizioAssociatoAUtenteProgettoEnte(servizio.getId(), servizioRequest.getIdProgetto(), servizioRequest.getIdEnte(), servizioRequest.getCfUtenteLoggato())).thenReturn(true);
+		when(this.servizioSQLService.isServizioAssociatoAUtenteProgettoEnte(servizio.getId(), servizioRequest.getIdProgetto(), servizioRequest.getIdEnte(), servizioRequest.getCfUtenteLoggato())).thenReturn(1);
 		when(this.utenteService.isUtenteFacilitatore(servizioRequest.getCfUtenteLoggato(), servizioRequest.getCodiceRuoloUtenteLoggato().toString())).thenReturn(false);
 		Assertions.assertThrows(ServizioException.class, () -> servizioService.aggiornaServizio(servizio.getId(), servizioRequest));
 		assertThatExceptionOfType(ServizioException.class);
 		
 		//test KO per sezioneQ3Compilato non presente
 		servizioRequest.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
-		when(this.servizioSQLService.isServizioAssociatoAUtenteProgettoEnte(servizio.getId(), servizioRequest.getIdProgetto(), servizioRequest.getIdEnte(), servizioRequest.getCfUtenteLoggato())).thenReturn(true);
+		when(this.servizioSQLService.isServizioAssociatoAUtenteProgettoEnte(servizio.getId(), servizioRequest.getIdProgetto(), servizioRequest.getIdEnte(), servizioRequest.getCfUtenteLoggato())).thenReturn(1);
 		when(this.utenteService.isUtenteFacilitatore(servizioRequest.getCfUtenteLoggato(), servizioRequest.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
 		when(this.servizioSQLService.aggiornaServizio(servizio.getId(), servizioRequest)).thenReturn(servizio);
 		when(this.sezioneQ3Repository.findById(sezioneQ3Collection.getId())).thenReturn(Optional.empty());
@@ -361,7 +361,7 @@ public class ServizioServiceTest {
 		List<ProgettoProjection> listaProgettiIProjections = new ArrayList<>();
 		listaProgettiIProjections.add(progettoProjectionImplementation);
 		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
-		when(this.servizioSQLService.isServizioAssociatoAUtenteProgettoEnte(servizio.getId(), sceltaProfiloParam.getIdProgetto(), sceltaProfiloParam.getIdEnte(), servizioRequest.getCfUtenteLoggato())).thenReturn(true);
+		when(this.servizioSQLService.isServizioAssociatoAUtenteProgettoEnte(servizio.getId(), sceltaProfiloParam.getIdProgetto(), sceltaProfiloParam.getIdEnte(), servizioRequest.getCfUtenteLoggato())).thenReturn(1);
 		when(this.servizioSQLService.getServizioById(servizio.getId())).thenReturn(servizio);
 		when(this.enteService.getById(servizio.getIdEnteSedeProgettoFacilitatore().getIdEnte())).thenReturn(ente);
 		when(this.sedeService.getById(servizio.getIdEnteSedeProgettoFacilitatore().getIdSede())).thenReturn(sede);
@@ -377,7 +377,7 @@ public class ServizioServiceTest {
 	public void getSchedaDettaglioServizioKOTest() {
 		//test KO per questionarioTemplate associato al servizio non presente su Mysql
 		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
-		when(this.servizioSQLService.isServizioAssociatoAUtenteProgettoEnte(servizio.getId(), sceltaProfiloParam.getIdProgetto(), sceltaProfiloParam.getIdEnte(), servizioRequest.getCfUtenteLoggato())).thenReturn(true);
+		when(this.servizioSQLService.isServizioAssociatoAUtenteProgettoEnte(servizio.getId(), sceltaProfiloParam.getIdProgetto(), sceltaProfiloParam.getIdEnte(), servizioRequest.getCfUtenteLoggato())).thenReturn(1);
 		when(this.servizioSQLService.getServizioById(servizio.getId())).thenReturn(servizio);
 		when(this.enteService.getById(servizio.getIdEnteSedeProgettoFacilitatore().getIdEnte())).thenReturn(ente);
 		when(this.sedeService.getById(servizio.getIdEnteSedeProgettoFacilitatore().getIdSede())).thenReturn(sede);
@@ -391,7 +391,7 @@ public class ServizioServiceTest {
 	public void getSchedaDettaglioServizioKOTest2() {
 		//test KO per questionarioTemplate associato al servizio non presente su MongoDB
 		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
-		when(this.servizioSQLService.isServizioAssociatoAUtenteProgettoEnte(servizio.getId(), sceltaProfiloParam.getIdProgetto(), sceltaProfiloParam.getIdEnte(), sceltaProfiloParam.getCfUtenteLoggato())).thenReturn(true);
+		when(this.servizioSQLService.isServizioAssociatoAUtenteProgettoEnte(servizio.getId(), sceltaProfiloParam.getIdProgetto(), sceltaProfiloParam.getIdEnte(), sceltaProfiloParam.getCfUtenteLoggato())).thenReturn(1);
 		when(this.servizioSQLService.getServizioById(servizio.getId())).thenReturn(servizio);
 		when(this.enteService.getById(servizio.getIdEnteSedeProgettoFacilitatore().getIdEnte())).thenReturn(ente);
 		when(this.sedeService.getById(servizio.getIdEnteSedeProgettoFacilitatore().getIdSede())).thenReturn(sede);
@@ -406,8 +406,7 @@ public class ServizioServiceTest {
 	public void eliminaServizioTest() {
 		servizio.setStato("NON ATTIVO");
 		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
-		when(this.servizioSQLService.isServizioAssociatoAUtenteProgettoEnte(servizio.getId(), sceltaProfiloParam.getIdProgetto(), sceltaProfiloParam.getIdEnte(), servizioRequest.getCfUtenteLoggato())).thenReturn(true);
-		when(servizioService.isAutorizzatoForGetSchedaDettaglioServizioAndEliminaServizio(servizio.getId(), sceltaProfiloParam)).thenReturn(true);
+		when(this.servizioSQLService.isServizioAssociatoAUtenteProgettoEnte(servizio.getId(), sceltaProfiloParam.getIdProgetto(), sceltaProfiloParam.getIdEnte(), servizioRequest.getCfUtenteLoggato())).thenReturn(1);
 		when(this.servizioSQLService.getServizioById(servizio.getId())).thenReturn(servizio);
 		doNothing().when(this.servizioSQLService).cancellaServivio(servizio);
 		doNothing().when(this.sezioneQ3Repository).deleteByIdSezioneQ3(servizio.getIdTemplateCompilatoQ3());
@@ -418,7 +417,7 @@ public class ServizioServiceTest {
 	public void eliminaServizioKOTest() {
 		//test KO per servizio non cancellabile
 		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.FAC.toString());
-		when(this.servizioSQLService.isServizioAssociatoAUtenteProgettoEnte(servizio.getId(), sceltaProfiloParam.getIdProgetto(), sceltaProfiloParam.getIdEnte(), servizioRequest.getCfUtenteLoggato())).thenReturn(true);
+		when(this.servizioSQLService.isServizioAssociatoAUtenteProgettoEnte(servizio.getId(), sceltaProfiloParam.getIdProgetto(), sceltaProfiloParam.getIdEnte(), servizioRequest.getCfUtenteLoggato())).thenReturn(1);
 		when(this.servizioSQLService.getServizioById(servizio.getId())).thenReturn(servizio);
 		Assertions.assertThrows(ServizioException.class, () -> servizioService.eliminaServizio(servizio.getId(), sceltaProfiloParam));
 		assertThatExceptionOfType(ServizioException.class);

@@ -117,7 +117,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			 + "                            	AND u2.id = utente.id "
 			 + "                                AND  ( COALESCE(:ruoli) IS NULL   OR   ruolo2.nome IN ( :ruoli) )) = utente.id ) utente_and_stato "
 			 + "     WHERE 1=1 "
-			 + "     	AND (COALESCE(:stati) IS NULL OR  utente_and_stato.stato_utente in (:stati)) "
+			 + "     	AND (COALESCE(:stati) IS NULL OR  utente_and_stato.stato in (:stati)) "
 			 + "   		ORDER BY utente_and_stato.ID ASC "
 			 + "   	 	LIMIT :currPageIndex, :pageSize ) as utentiPaginati "
 			 + "	LEFT JOIN "

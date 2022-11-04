@@ -404,7 +404,7 @@ public class ServizioSqlService {
 		return servizioSqlRepository.findIdsSediFacilitatoreConServiziAndCittadiniCensitiByCodFiscaleAndIdProgettoAndIdEnte(codiceFiscaleUtenteLoggato, idProgetto, idEnte);
 	}
 
-	public boolean isServizioAssociatoAUtenteProgettoEnte(@NotNull Long idServizio, Long idProgetto, Long idEnte,
+	public int isServizioAssociatoAUtenteProgettoEnte(@NotNull Long idServizio, Long idProgetto, Long idEnte,
 			@NotNull String cfUtenteLoggato) {
 		return servizioSqlRepository.isServizioAssociatoAUtenteProgettoEnte(idServizio, idProgetto, idEnte, cfUtenteLoggato);
 	}
