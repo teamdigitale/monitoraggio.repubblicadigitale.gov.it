@@ -6,6 +6,10 @@
     border-bottom: 1px solid #797c80;
   }
   &__checkbox-field {
+    margin-top: 0px;
+    label {
+      margin-bottom: 0px;
+    }
     .form-group {
       margin-bottom: 0;
     }
@@ -33,6 +37,6 @@
     min-height: 206px;
   }
   &__min-height-long {
-    min-height: 390px;
+    min-height: 290px;
   }
 }

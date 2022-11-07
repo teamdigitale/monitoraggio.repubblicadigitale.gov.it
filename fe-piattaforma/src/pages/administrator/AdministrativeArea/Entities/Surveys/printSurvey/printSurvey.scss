@@ -1,0 +1,23 @@
+.print-survey {
+  .page {
+    width: 21cm;
+    min-height: 29.7cm;
+    padding: 2cm;
+    margin: 1cm auto;
+    background: white;
+  }
+}
+
+@media print {
+  .page {
+    margin: 0;
+    width: initial;
+    min-height: initial;
+    background: initial;
+    page-break-after: always;
+  }
+
+  .question {
+    break-inside: avoid;
+  }
+}
