@@ -66,6 +66,7 @@ export const getErrorMessage = async (
     if (res?.data) {
       const errorsList = { ...res.data.errors };
       if (errorCode === 'A02') {
+        console.log('Errore A02');
         window.location.replace('/auth-redirect');
       } else if (errorCode === 'D01') {
         return getDrupalErrorMessage(errorsList, message);
