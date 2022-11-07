@@ -1426,6 +1426,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 	public int countUtentiTrovatiPerReferenteDelegatoEntePartnerProgetti(
 			@Param(value = "idProgramma") Long idProgramma, 
 			@Param(value = "idProgetto") Long idProgetto,
+			@Param(value = "idEnte") Long idEnte,
 			@Param(value = "cfUtente")String cfUtente,
 			@Param(value = "criterioRicerca") String criterioRicerca,
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
