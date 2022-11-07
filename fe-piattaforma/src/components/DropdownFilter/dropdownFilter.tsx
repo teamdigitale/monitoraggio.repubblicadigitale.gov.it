@@ -263,7 +263,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
             ) : null}
             <Form id='form-dropdown'>
               <span id='descrizione-lista' className='sr-only'>
-                {'Il filtro presenta ' + (options?.length || 0) + ' opzioni'}
+                Il filtro presenta {options?.length || '0'} opzioni
               </span>
               {(filteredOptions || []).length === 0 ? (
                 <p>Non ci sono opzioni per questo filtro</p>

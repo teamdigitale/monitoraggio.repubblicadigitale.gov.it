@@ -528,8 +528,8 @@ const ProjectsDetails = () => {
       setCorrectModal(<ManageManagerAuthority creation />);
       setEmptySection(
         <EmptySection
-          title={'Questa sezione è ancora vuota'}
-          subtitle={'Per attivare il progetto aggiungi un Ente gestore'}
+          title='Questa sezione è ancora vuota'
+          subtitle='Per attivare il progetto aggiungi un Ente gestore'
           buttons={
             hasUserPermission(['add.enti.gest.prgt'])
               ? EmptySectionButtons.slice(0, 1)
@@ -1234,6 +1234,8 @@ const ProjectsDetails = () => {
             showGoBack={
               userRole !== userRoles.REGP &&
               userRole !== userRoles.DEGP &&
+              userRole !== userRoles.REPP &&
+              userRole !== userRoles.DEPP &&
               userRole !== userRoles.FAC &&
               userRole !== userRoles.VOL
             }

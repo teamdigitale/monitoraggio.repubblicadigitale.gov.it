@@ -160,23 +160,29 @@ export const GetAuthorityDetail = (type: string) => async (dispatch: Dispatch) =
 */
 
 export const GetAuthorityDetail =
-  (authorityId: string) => async (dispatch: Dispatch) => {
+  (authorityId: string, light = false) =>
+  async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...SetAuthorityDetailAction });
-
       const { idProgramma, idProgetto, idEnte } = getUserHeaders();
-      const res = await API.post(`/ente/${authorityId}`, {
-        idProgramma,
-        idProgetto,
-        idEnte,
-      });
+
+      let res;
+      if (light) {
+        res = await API.get(`/ente/light/${authorityId}`);
+      } else {
+        res = await API.post(`/ente/${authorityId}`, {
+          idProgramma,
+          idProgetto,
+          idEnte,
+        });
+      }
 
       if (res?.data) {
         dispatch(
           setAuthorityDetails({
             profili: res.data.dettagliProfili,
-            dettagliInfoEnte: res.data.dettagliEnte,
+            dettagliInfoEnte: res.data.dettagliEnte || res.data,
           })
         );
       }

@@ -108,7 +108,8 @@ const GetUserDetailAction = {
   type: 'administrativeArea/GetUserDetail',
 };
 export const GetUserDetails =
-  (userId: string) => async (dispatch: Dispatch) => {
+  (userId: string, light = false) =>
+  async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...GetUserDetailAction, userId });
@@ -121,8 +122,12 @@ export const GetUserDetails =
         idProgetto,
         idEnte,
       };
-      //const res = await API.get(`utente/${userId}`);
-      const res = await API.post(`utente/${userId}`, body);
+      let res;
+      if (light) {
+        res = await API.get(`/utente/light/${userId}`);
+      } else {
+        res = await API.post(`/utente/${userId}`, body);
+      }
       if (res?.data) {
         dispatch(setUserDetails(res.data));
         return res.data;

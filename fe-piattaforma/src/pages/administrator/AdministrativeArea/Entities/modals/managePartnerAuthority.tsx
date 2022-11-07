@@ -106,7 +106,7 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
   const handleSelectAuthority: CRUDActionsI = {
     [CRUDActionTypes.SELECT]: (td: TableRowI | string) => {
       if (typeof td !== 'string') {
-        dispatch(GetAuthorityDetail(td.id as string));
+        dispatch(GetAuthorityDetail(td.id as string, true));
         dispatch(setAuthoritiesList(null));
       }
       setShowForm(true);
@@ -145,7 +145,7 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
     (authoritiesList?.length === 0 || !authoritiesList) &&
     !showForm
   ) {
-    content = <EmptySection title={'Nessun risultato'} withIcon horizontal />;
+    content = <EmptySection title='Nessun risultato' withIcon horizontal />;
   }
 
   return (
