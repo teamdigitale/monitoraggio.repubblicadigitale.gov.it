@@ -528,8 +528,8 @@ const ProjectsDetails = () => {
       setCorrectModal(<ManageManagerAuthority creation />);
       setEmptySection(
         <EmptySection
-          title={'Questa sezione è ancora vuota'}
-          subtitle={'Per attivare il progetto aggiungi un Ente gestore'}
+          title='Questa sezione è ancora vuota'
+          subtitle='Per attivare il progetto aggiungi un Ente gestore'
           buttons={
             hasUserPermission(['add.enti.gest.prgt'])
               ? EmptySectionButtons.slice(0, 1)

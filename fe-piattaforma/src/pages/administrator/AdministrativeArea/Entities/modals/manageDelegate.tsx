@@ -144,7 +144,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
   const handleSelectUser: CRUDActionsI = {
     [CRUDActionTypes.SELECT]: (td: TableRowI | string) => {
       if (typeof td !== 'string') {
-        dispatch(GetUserDetails(td.id as string));
+        dispatch(GetUserDetails(td.id as string, true));
       }
       setShowForm(true);
     },

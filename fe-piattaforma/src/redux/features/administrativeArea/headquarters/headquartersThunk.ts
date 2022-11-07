@@ -133,7 +133,12 @@ const AssignHeadquarterAction = {
 };
 
 export const AssignAuthorityHeadquarter =
-  (authorityId: string, headquarterDetails: any, projectId: string) =>
+  (
+    authorityId: string,
+    headquarterDetails: any,
+    projectId: string,
+    creation = false
+  ) =>
   async (dispatch: Dispatch) => {
     dispatch(showLoader());
     dispatch({ ...AssignHeadquarterAction });
@@ -171,7 +176,7 @@ export const AssignAuthorityHeadquarter =
         }
       }
 
-      if (headquarterId) {
+      if (headquarterId && creation) {
         await API.post(
           `/sede/associa/ente/${authorityId}/sede/${headquarterId}/progetto/${projectId}/ruoloEnte/ruolo`,
           { idProgramma, idProgetto, idEnte }
