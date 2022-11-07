@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.271](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.270...1.0.0-develop.271) (2022-11-07)
+
+
+### Bug Fixes
+
+* **be:** fix sede-utente-ente light ([fa54387](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fa54387ae2a65d6a059973e7cdef3cc209e5b2e4))
+
 ## [1.0.0-develop.270](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.269...1.0.0-develop.270) (2022-11-04)
 
 
