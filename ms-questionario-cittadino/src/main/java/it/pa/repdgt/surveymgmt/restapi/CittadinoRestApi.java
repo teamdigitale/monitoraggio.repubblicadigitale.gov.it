@@ -12,7 +12,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,18 +24,14 @@ import org.springframework.web.bind.annotation.RestController;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.bean.SchedaCittadinoBean;
-import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.dto.CittadinoDto;
 import it.pa.repdgt.surveymgmt.dto.SedeDto;
 import it.pa.repdgt.surveymgmt.exception.CittadinoException;
-import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.param.CittadiniPaginatiParam;
 import it.pa.repdgt.surveymgmt.projection.CittadinoProjection;
 import it.pa.repdgt.surveymgmt.request.CittadinoRequest;
 import it.pa.repdgt.surveymgmt.resource.CittadiniPaginatiResource;
-import it.pa.repdgt.surveymgmt.service.CittadiniServizioService;
 import it.pa.repdgt.surveymgmt.service.CittadinoService;
-import it.pa.repdgt.surveymgmt.service.QuestionarioCompilatoService;
 import it.pa.repdgt.surveymgmt.util.CSVCittadiniUtil;
 
 @RestController
@@ -44,10 +39,6 @@ import it.pa.repdgt.surveymgmt.util.CSVCittadiniUtil;
 public class CittadinoRestApi {
 	@Autowired
 	private CittadinoService cittadinoService;
-	@Autowired
-	private QuestionarioCompilatoService questionarioCompilatoService;
-	@Autowired
-	private CittadiniServizioService cittadiniServizioService;
 	
 	/***
 	 * Restituisce tutti i cittadini paginati 
@@ -112,7 +103,7 @@ public class CittadinoRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaCittadinoBean getSchedaCittadino(@PathVariable(value = "idCittadino") final Long idCittadino,
 			@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
-		if(this.cittadinoService.isAutorizzato(idCittadino, profilazioneParam)) {
+		if(!this.cittadinoService.isAutorizzato(idCittadino, profilazioneParam)) {
 			throw new CittadinoException("Errore tentativo accesso a risorsa non permesso", CodiceErroreEnum.A02);
 		}
 		return this.cittadinoService.getSchedaCittadinoById(idCittadino, profilazioneParam);
