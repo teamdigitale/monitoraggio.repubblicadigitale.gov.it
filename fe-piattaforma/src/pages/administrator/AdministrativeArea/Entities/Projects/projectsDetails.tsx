@@ -1234,6 +1234,8 @@ const ProjectsDetails = () => {
             showGoBack={
               userRole !== userRoles.REGP &&
               userRole !== userRoles.DEGP &&
+              userRole !== userRoles.REPP &&
+              userRole !== userRoles.DEPP &&
               userRole !== userRoles.FAC &&
               userRole !== userRoles.VOL
             }
