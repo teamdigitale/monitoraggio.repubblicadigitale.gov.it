@@ -1463,5 +1463,20 @@ public class EnteService {
 		referentiDelegatiEnteGestoreProgettoEntity.setStatoUtente(StatoEnum.TERMINATO.getValue());
 		referentiDelegatiEnteGestoreProgettoEntity.setDataOraAggiornamento(new Date());
 		this.referentiDelegatiEnteGestoreProgettoService.save(referentiDelegatiEnteGestoreProgettoEntity);
+	}
+
+	public DettaglioEnteBean getSchedaEnteLight(Long idEnte) {
+		String errorMessage = String.format("Non esiste nessun ente con id = %s ", idEnte);
+		EnteEntity ente = this.enteRepository.findById(idEnte).orElseThrow(() -> new EnteException(errorMessage, CodiceErroreEnum.C01));
+		
+		DettaglioEnteBean dettaglioEnte = new DettaglioEnteBean();
+		dettaglioEnte.setId(idEnte);
+		dettaglioEnte.setNome(ente.getNome());
+		dettaglioEnte.setNomeBreve(ente.getNomeBreve());
+		dettaglioEnte.setPiva(ente.getPiva());
+		dettaglioEnte.setSedeLegale(ente.getSedeLegale());
+		dettaglioEnte.setTipologia(ente.getTipologia());
+		dettaglioEnte.setIndirizzoPec(ente.getIndirizzoPec());
+		return dettaglioEnte;
 	}	
 }

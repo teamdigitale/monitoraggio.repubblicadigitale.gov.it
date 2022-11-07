@@ -212,6 +212,10 @@ public class EnteSedeProgettoService {
 		return brokenAccessControlRepository.getCountSedeByIdProgettoAndEnte(idSede, idProgetto, Ente);
 	}
 	
+	public int getCountSediByIdProgettoAndEnteAndFacilitatore(Long idSede, Long idProgetto, Long Ente, String codiceFiscale) {
+		return brokenAccessControlRepository.getCountSedeByIdProgettoAndEnteAndFacilitatore(idSede, idProgetto, Ente, codiceFiscale);
+	}
+	
 	public int getCountSediByPolicy(Long idSede) {
 		return brokenAccessControlRepository.getCountSedeByPolicy(idSede);
 	}

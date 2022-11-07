@@ -113,7 +113,7 @@ public class CittadinoRestApi {
 	public SchedaCittadinoBean getSchedaCittadino(@PathVariable(value = "idCittadino") final Long idCittadino,
 			@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
 		if(this.cittadinoService.isAutorizzato(idCittadino, profilazioneParam)) {
-			throw new CittadinoException("Errore tentavo accesso a risorsa non permesso", CodiceErroreEnum.A02);
+			throw new CittadinoException("Errore tentativo accesso a risorsa non permesso", CodiceErroreEnum.A02);
 		}
 		return this.cittadinoService.getSchedaCittadinoById(idCittadino, profilazioneParam);
 	}

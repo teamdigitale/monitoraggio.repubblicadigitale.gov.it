@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import it.pa.repdgt.gestioneutente.bean.SchedaUtenteBean;
+import it.pa.repdgt.gestioneutente.bean.SchedaUtenteBeanLight;
 import it.pa.repdgt.gestioneutente.dto.UtenteDto;
 import it.pa.repdgt.gestioneutente.exception.UtenteException;
 import it.pa.repdgt.gestioneutente.mapper.UtenteMapper;
@@ -119,13 +120,6 @@ public class UtenteRestApi {
 	}
 
 	// Scheda Utente
-	@GetMapping(path = "/{idUtente}")
-	@ResponseStatus(value = HttpStatus.OK)
-	public SchedaUtenteBean getSchedaUtenteByIdUtente(@PathVariable(value = "idUtente") Long idUtente) {
-		return this.utenteService.getSchedaUtenteByIdUtente(idUtente);
-	}
-
-	// Scheda Utente
 	@PostMapping(path = "/{idUtente}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaUtenteBean getSchedaUtenteByIdUtente(
@@ -135,6 +129,14 @@ public class UtenteRestApi {
 			throw new UtenteException("Errore permesso accesso alla risorsa", CodiceErroreEnum.A02);
 		}
 		return this.utenteService.getSchedaUtenteByIdUtente(idUtente, sceltaProfilo);
+	}
+	
+	// Scheda Utente light 
+	@GetMapping(path = "/light/{idUtente}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public SchedaUtenteBeanLight getSchedaUtenteLightByIdUtente(
+			@PathVariable(value = "idUtente") Long idUtente) {
+		return this.utenteService.getSchedaUtenteByIdUtenteLight(idUtente);
 	}
 
 	// Associa Ruolo ad Utente

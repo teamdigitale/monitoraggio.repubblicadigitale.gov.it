@@ -70,8 +70,6 @@ public class SedeRestApi {
 	public SchedaSedeBean getSchedaAnagraficaSedeAndSceltaProfilo (
 			@PathVariable(value = "idSede") final Long idSede,
 			@RequestBody SceltaProfiloParam sceltaProfiloParam) {
-		if(!accessControServiceUtils.checkPermessoIdSede(sceltaProfiloParam, idSede))
-			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		return this.sedeService.getSchedaSedeByIdSede(idSede);
 	}
 	

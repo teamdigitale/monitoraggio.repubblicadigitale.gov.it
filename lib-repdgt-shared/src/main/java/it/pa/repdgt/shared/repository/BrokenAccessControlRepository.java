@@ -141,6 +141,17 @@ public interface BrokenAccessControlRepository extends JpaRepository<ProgettoEnt
 	public int getCountSedeByIdProgettoAndEnte(@Param(value = "idSede") Long idSede, 
 			@Param(value = "idProgetto") Long idProgetto, 
 			@Param(value = "idEnte") Long idEnte);
+	
+	@Query(value = "select count(*) from ente_sede_progetto_facilitatore  "
+			+ "where id_sede = :idSede "
+			+ "and id_progetto = :idProgetto "
+			+ "and id_ente = :idEnte "
+			+ "and id_facilitatore = :codiceFiscale", 
+			nativeQuery = true)
+	public int getCountSedeByIdProgettoAndEnteAndFacilitatore(@Param(value = "idSede") Long idSede, 
+			@Param(value = "idProgetto") Long idProgetto, 
+			@Param(value = "idEnte") Long idEnte,
+	@Param(value = "codiceFiscale") String codiceFiscale);
 
 	/**** FILTER *****/
 	@Query(value = "SELECT count(*) FROM referente_delegati_gestore_programma "

@@ -35,14 +35,14 @@ public class AccessControServiceUtils {
 			break;
 		case "REGP":
 		case "DEGP":
-		case "REPP":
-		case "DEPP":
 			if(progettoService.getCountEnteByIdProgetto(idEnte, sceltaProfiloParam.getIdProgetto()) > 0)
 				return true;
 			break;
+		case "REPP":
+		case "DEPP":
 		case "FAC":
 		case "VOL":
-			if(!sceltaProfiloParam.getIdEnte().equals(idEnte))
+			if(sceltaProfiloParam.getIdEnte().equals(idEnte))
 				return true;
 			break;
 		default:
@@ -116,14 +116,17 @@ public class AccessControServiceUtils {
 			break;
 		case "REGP":
 		case "DEGP":
+			if(enteSedeProgettoService.getCountSediByIdProgetto(idSede, sceltaProfiloParam.getIdProgetto()) > 0)
+				return true;
+			break;
 		case "REPP":
 		case "DEPP":
-			if(enteSedeProgettoService.getCountSediByIdProgetto(idSede, sceltaProfiloParam.getIdProgetto()) > 0)
+			if(enteSedeProgettoService.getCountSediByIdProgettoAndEnte(idSede, sceltaProfiloParam.getIdProgetto(), sceltaProfiloParam.getIdEnte()) > 0)
 				return true;
 			break;
 		case "FAC":
 		case "VOL":
-			if(enteSedeProgettoService.getCountSediByIdProgettoAndEnte(idSede, sceltaProfiloParam.getIdProgetto(), sceltaProfiloParam.getIdEnte()) > 0)
+			if(enteSedeProgettoService.getCountSediByIdProgettoAndEnteAndFacilitatore(idSede, sceltaProfiloParam.getIdProgetto(), sceltaProfiloParam.getIdEnte(), sceltaProfiloParam.getCfUtenteLoggato()) > 0)
 				return true;
 			break;
 		default:
