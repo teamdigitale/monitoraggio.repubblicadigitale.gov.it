@@ -14,7 +14,6 @@ import withFormHandler, {
 import Select, { OptionType } from '../../../components/Form/select';
 import { Form, Input } from '../../../components';
 import { selectUser } from '../../../redux/features/user/userSlice';
-import { RegexpType } from '../../../utils/validator';
 import { contractTypes } from '../../administrator/AdministrativeArea/Entities/utils';
 
 export interface FormOnboardingI {
@@ -237,12 +236,10 @@ const form: FormI = newForm([
     id: 'fiscalcode',
   }),
   newFormField({
+    ...CommonFields.TELEFONO,
     field: 'telefono',
     required: true,
     id: 'telefono',
-    minimum: 9,
-    maximum: 20,
-    regex: RegexpType.TELEPHONE,
   }),
   newFormField({
     field: 'bio',

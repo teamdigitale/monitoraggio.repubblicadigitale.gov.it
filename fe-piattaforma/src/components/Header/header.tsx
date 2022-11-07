@@ -53,7 +53,9 @@ const parseMenuRoute = (menuRoute: MenuItem, userProfile: UserProfileI) => {
       return menuRoute;
     }
     case userRoles.REGP:
+    case userRoles.REPP:
     case userRoles.DEGP:
+    case userRoles.DEPP:
     case userRoles.VOL:
     case userRoles.FAC: {
       if (

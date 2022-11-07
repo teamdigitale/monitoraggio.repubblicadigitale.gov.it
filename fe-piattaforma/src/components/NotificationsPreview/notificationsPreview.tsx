@@ -7,7 +7,7 @@ import { focusId, MenuItem } from '../../utils/common';
 import { Button, Icon } from 'design-react-kit';
 import Notification from '../../pages/common/NotificationsPage/components/Notifications/notification';
 import { useAppSelector } from '../../redux/hooks';
-import { selectUserNotificationsPreview } from '../../redux/features/user/userSlice';
+import { selectProfile, selectUserNotificationsPreview } from '../../redux/features/user/userSlice';
 import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import {
@@ -27,6 +27,7 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
   const dispatch = useDispatch();
   // TODO integrate notification
   const notificationsList = useAppSelector(selectUserNotificationsPreview);
+  const userRole = useAppSelector(selectProfile)?.codiceRuolo
 
   const body = document.getElementsByTagName('body')[0];
 
@@ -35,6 +36,13 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
     if (open) {
       focusId('hamburger');
       body.style.overflowY = 'hidden';
+    } else {
+      body.style.overflowY = 'unset';
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (open && userRole) {
       dispatch(
         GetNotificationsByUser(
           {
@@ -46,10 +54,8 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
           true
         )
       );
-    } else {
-      body.style.overflowY = 'unset';
     }
-  }, [open]);
+  }, [open, userRole])
 
   const onReadNotification = async (id: string) => {
     await dispatch(ReadNotification([id]));
