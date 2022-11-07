@@ -329,6 +329,7 @@ export const UpdateManagerAuthority =
         entityId,
         entity,
       });
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
       if (authorityDetail?.id) {
         let res;
         if (enteGestoreId) {
@@ -336,7 +337,12 @@ export const UpdateManagerAuthority =
             `/ente/${enteGestoreId}/${
               entity === 'programma' ? 'gestoreProgramma' : 'gestoreProgetto'
             }/${entityId}`,
-            authorityDetail
+            {
+              ...authorityDetail,
+              idProgramma,
+              idProgetto,
+              idEnte,
+            }
           );
 
           return res;
@@ -347,10 +353,12 @@ export const UpdateManagerAuthority =
             }/${entityId}`,
             {
               ...authorityDetail,
+              idProgramma,
+              idProgetto,
+              idEnte,
             }
           );
 
-          const { idProgramma, idProgetto, idEnte } = getUserHeaders();
           res = await API.put(
             `/${entity}/${entityId}/assegna/${
               entity === 'programma' ? 'entegestore' : 'enteGestore'
