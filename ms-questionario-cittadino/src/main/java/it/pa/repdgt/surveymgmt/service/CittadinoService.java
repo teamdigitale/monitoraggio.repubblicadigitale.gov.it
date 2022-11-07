@@ -341,8 +341,8 @@ public class CittadinoService {
 		switch (profilazioneParam.getCodiceRuoloUtenteLoggato()) {
 			case "FAC":
 			case "VOL":	
-				this.cittadinoRepository.isCittadinoAssociatoAFacVol(idCittadino, profilazioneParam.getCfUtenteLoggato(),
-						profilazioneParam.getIdEnte(), profilazioneParam.getIdProgetto());
+				return this.cittadinoRepository.isCittadinoAssociatoAFacVol(idCittadino, profilazioneParam.getCfUtenteLoggato(),
+						profilazioneParam.getIdEnte(), profilazioneParam.getIdProgetto()) > 0;
 			default:
 				return false;
 			}

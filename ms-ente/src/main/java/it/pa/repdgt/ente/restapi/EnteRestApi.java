@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import it.pa.repdgt.ente.bean.DettaglioEnteBean;
 import it.pa.repdgt.ente.bean.EntePartnerUploadBean;
 import it.pa.repdgt.ente.bean.SchedaEnteBean;
 import it.pa.repdgt.ente.bean.SchedaEnteGestoreBean;
@@ -131,6 +132,14 @@ public class EnteRestApi {
 		return this.enteService.getSchedaEnteById(idEnte);
 	}
 	
+	// Scheda Ente
+	@GetMapping(path = "/light/{idEnte}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public DettaglioEnteBean getSchedaEnteLight(
+			@PathVariable(value = "idEnte") Long idEnte ) {
+		return this.enteService.getSchedaEnteLight(idEnte);
+	}
+	
 	// Dettaglio ente gestore di un determinato programma
 	@Deprecated
 	@GetMapping(path = "/gestoreProgramma/{idProgramma}")
@@ -189,7 +198,8 @@ public class EnteRestApi {
 			@PathVariable(value = "idProgetto") Long idProgetto,
 			@PathVariable(value = "idEnte") Long idEnte,
 			@RequestBody @Valid EntiPaginatiParam entiPaginatiParam) {
-		if(!accessControServiceUtils.checkPermessoIdProgetto(entiPaginatiParam, idProgetto))
+		if(!accessControServiceUtils.checkPermessoIdProgetto(entiPaginatiParam, idProgetto) || 
+				!accessControServiceUtils.checkPermessoIdEnte(entiPaginatiParam, idEnte))
 			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		return this.entePartnerService.getSchedaEntePartnerByIdProgettoAndIdEnteAndSceltaProfilo(idProgetto, idEnte, entiPaginatiParam);
 	}

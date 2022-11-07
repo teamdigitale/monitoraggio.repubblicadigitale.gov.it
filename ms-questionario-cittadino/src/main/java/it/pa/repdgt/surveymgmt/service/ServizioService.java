@@ -319,7 +319,7 @@ public class ServizioService {
 	@LogExecutionTime
 	public SchedaDettaglioServizioBean getSchedaDettaglioServizio(@NotNull final Long idServizio, final SceltaProfiloParam profilazioneParam) {
 		if(profilazioneParam != null && !isAutorizzatoForGetSchedaDettaglioServizioAndEliminaServizio(idServizio, profilazioneParam)) {
-			throw new ServizioException("Errore permesso accesso alla risorsa", CodiceErroreEnum.G01);
+			throw new ServizioException("Errore permesso accesso alla risorsa", CodiceErroreEnum.A02);
 		}
 		// Recupero servizio
 		final ServizioEntity servizioEntity = this.servizioSQLService.getServizioById(idServizio);
