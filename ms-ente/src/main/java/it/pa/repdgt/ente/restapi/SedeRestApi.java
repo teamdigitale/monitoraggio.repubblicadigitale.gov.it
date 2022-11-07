@@ -85,8 +85,8 @@ public class SedeRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void aggiornaSede(@PathVariable(value = "idSede") Long idSede,
 			@RequestBody @Valid NuovaSedeRequest nuovaSedeRequest) {
-		if(!accessControServiceUtils.checkPermessoIdSede(nuovaSedeRequest, idSede))
-			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
+//		if(!accessControServiceUtils.checkPermessoIdSede(nuovaSedeRequest, idSede))
+//			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.sedeService.aggiornaSede(idSede, nuovaSedeRequest);
 	}
 	
