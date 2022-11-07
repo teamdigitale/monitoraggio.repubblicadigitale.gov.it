@@ -130,7 +130,6 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
       }
       if (!res) {
         resetModal();
-        dispatch(closeModal());
       }
     }
   };

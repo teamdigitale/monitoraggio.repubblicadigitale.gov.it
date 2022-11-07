@@ -17,7 +17,7 @@ const HeroHome = () => {
           role='heading'
           aria-level={1}
         >
-          {'ti diamo il benvenuto su repubblica digitale'.toUpperCase()}
+          {'ti diamo il benvenuto su Facilita'.toUpperCase()}
         </HeroTitle>
         <p className='d-none d-lg-block mt-5'>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at
