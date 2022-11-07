@@ -118,6 +118,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
           );
           await dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
           if (userId) await dispatch(GetUserDetails(userId));
+        } else if (authority?.id) {
           res = await dispatch(
             AssignManagerAuthorityReferentDelegate(
               authority.id,

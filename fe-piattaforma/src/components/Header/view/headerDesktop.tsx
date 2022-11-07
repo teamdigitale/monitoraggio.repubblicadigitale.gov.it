@@ -11,7 +11,7 @@ import {
   LinkListItem,
 } from 'design-react-kit';
 //import Logo from '/public/assets/img/logo.png';
-import Logo from '/public/assets/img/logo_tmp.png';
+import Logo from '/public/assets/img/logo_tmp3.png';
 import Bell from '/public/assets/img/campanella.png';
 import RocketChatIcon from '/public/assets/img/rocketchat.png';
 import { useTranslation } from 'react-i18next';
@@ -525,7 +525,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 <img
                   src={Logo}
                   alt='logo'
-                  style={{ width: '240px', height: 'auto' }}
+                  style={{ width: 'auto', height: '74px' }}
                 />
               </Link>
             </div>
