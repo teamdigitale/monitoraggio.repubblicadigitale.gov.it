@@ -182,7 +182,7 @@ export const GetAuthorityDetail =
         dispatch(
           setAuthorityDetails({
             profili: res.data.dettagliProfili,
-            dettagliInfoEnte: res.data.dettagliEnte,
+            dettagliInfoEnte: res.data.dettagliEnte || res.data,
           })
         );
       }
