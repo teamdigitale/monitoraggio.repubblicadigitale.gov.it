@@ -916,10 +916,10 @@ public class UtenteService {
 	}
 
 	public int countUtentiTrovati(@Valid UtenteRequest sceltaContesto) {
-		return this.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		return this.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest());
 	}
 
-	public int countUtentiTrovatiByRuolo(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto,
+	public int countUtentiTrovatiByRuolo(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto, Long idEnte,
 			FiltroRequest filtroRequest) {
 		int numeroUtentiTrovati = 0;
 
@@ -940,7 +940,7 @@ public class UtenteService {
 			break;
 		case "REPP":
 		case "DEPP":
-			numeroUtentiTrovati = this.countUtentiPerReferenteDelegatoEntePartnerProgetti(idProgramma, idProgetto, cfUtente, filtroRequest);
+			numeroUtentiTrovati = this.countUtentiPerReferenteDelegatoEntePartnerProgetti(idProgramma, idProgetto, idEnte, cfUtente, filtroRequest);
 			break;
 		default:
 			numeroUtentiTrovati = this.countUtentiTrovati(filtroRequest);
@@ -950,11 +950,12 @@ public class UtenteService {
 		return numeroUtentiTrovati;
 	}
 
-	private int countUtentiPerReferenteDelegatoEntePartnerProgetti(Long idProgramma, Long idProgetto, String cfUtente,
+	private int countUtentiPerReferenteDelegatoEntePartnerProgetti(Long idProgramma, Long idProgetto, Long idEnte, String cfUtente,
 			FiltroRequest filtroRequest) {
 		return this.utenteRepository.countUtentiTrovatiPerReferenteDelegatoEntePartnerProgetti(
 				idProgramma,
 				idProgetto,
+				idEnte,
 				cfUtente,
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
