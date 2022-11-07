@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.276](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.275...1.0.0-develop.276) (2022-11-07)
+
+
+### Bug Fixes
+
+* **be:** get all utenti ([10df3a4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/10df3a41a7bce041a400649361244565623c8c1c))
+* **be:** elimino check per put sede ([4e9f03b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4e9f03b818306e6047bd4ff9a0982d09c6e1a8b5))
+
 ## [1.0.0-develop.275](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.274...1.0.0-develop.275) (2022-11-07)
 
 
