@@ -290,8 +290,8 @@ public class EnteRestApi {
 	public void aggiornaEnte(
 			@RequestBody @Valid AggiornaEnteRequest aggiornaEnteRequest,
 			@PathVariable(value = "idEnte") Long idEnte) {
-		if(!accessControServiceUtils.checkPermessoIdEnte(aggiornaEnteRequest, idEnte))
-			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
+//		if(!accessControServiceUtils.checkPermessoIdEnte(aggiornaEnteRequest, idEnte))
+//			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		EnteEntity enteEntity = this.enteMapper.toEntityFrom(aggiornaEnteRequest);
 		this.enteService.aggiornaEnte(enteEntity, idEnte);
 	}

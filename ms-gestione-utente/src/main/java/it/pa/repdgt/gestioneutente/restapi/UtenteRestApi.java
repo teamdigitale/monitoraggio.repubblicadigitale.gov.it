@@ -95,9 +95,9 @@ public class UtenteRestApi {
 	public void aggiornaUtente(
 			@PathVariable(value = "idUtente") Long idUtente,
 			@RequestBody @Valid AggiornaUtenteRequest aggiornaUtenteRequest) {
-		if(!utenteService.isAutorizzatoForGetSchedaUtenteByIdUtente(idUtente, aggiornaUtenteRequest)) {
-			throw new UtenteException("Errore permesso accesso alla risorsa", CodiceErroreEnum.G01);
-		}
+//		if(!utenteService.isAutorizzatoForGetSchedaUtenteByIdUtente(idUtente, aggiornaUtenteRequest)) {
+//			throw new UtenteException("Errore permesso accesso alla risorsa", CodiceErroreEnum.A02);
+//		}
 		this.utenteService.aggiornaUtente(aggiornaUtenteRequest, idUtente);
 	}
 

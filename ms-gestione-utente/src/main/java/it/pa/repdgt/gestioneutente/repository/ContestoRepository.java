@@ -167,7 +167,8 @@ public interface ContestoRepository extends JpaRepository<ProgrammaEntity, Long>
 			+ "		AND ep.id_ente = :idEnte"
 			+ "		AND rdp.CF_UTENTE = :codiceFiscale "
 			+ "		AND rdp.CODICE_RUOLO = :ruolo "
-			+ "     AND ep.terminato_singolarmente <> true", nativeQuery = true)
+			+ "     AND (ep.stato_ente_partner <> 'TERMINATO' "
+			+ "                OR ep.terminato_singolarmente <> true)", nativeQuery = true)
 	ProgettoEnteProjection findEntePartnerNonTerminatoPerProgettoAnIdEnteAndCodiceFiscaleReferenteDelegato(
 			@Param(value = "idProgramma") Long idProgramma,
 			@Param(value = "idProgetto")  Long idProgetto,
