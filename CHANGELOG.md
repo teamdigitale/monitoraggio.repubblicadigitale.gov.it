@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.275](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.274...1.0.0-develop.275) (2022-11-07)
+
+
+### Bug Fixes
+
+* **be:** scheda cittadino ([d3e7666](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d3e7666d231f199adb19080ca424cebdedee1153))
+
 ## [1.0.0-develop.274](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.273...1.0.0-develop.274) (2022-11-07)
 
 
