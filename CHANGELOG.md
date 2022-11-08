@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.277](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.276...1.0.0-develop.277) (2022-11-08)
+
+
+### Bug Fixes
+
+* **be:** questionarioTemplate e upload ente partner ([beb9c2a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/beb9c2ab8ebb0f98849b532ab8cdc8418781723e))
+
 ## [1.0.0-develop.276](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.275...1.0.0-develop.276) (2022-11-07)
 
 
