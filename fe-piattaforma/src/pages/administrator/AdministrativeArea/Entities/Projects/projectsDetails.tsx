@@ -528,8 +528,8 @@ const ProjectsDetails = () => {
       setCorrectModal(<ManageManagerAuthority creation />);
       setEmptySection(
         <EmptySection
-          title={'Questa sezione è ancora vuota'}
-          subtitle={'Per attivare il progetto aggiungi un Ente gestore'}
+          title='Questa sezione è ancora vuota'
+          subtitle='Per attivare il progetto aggiungi un Ente gestore'
           buttons={
             hasUserPermission(['add.enti.gest.prgt'])
               ? EmptySectionButtons.slice(0, 1)
@@ -1329,8 +1329,12 @@ const ProjectsDetails = () => {
                   managerAuthority?.id &&
                   removeManagerAuthority(managerAuthority.id, projectId);
               if (payload?.entity === 'project' && projectId) {
-                await dispatch(DeleteEntity('progetto', projectId));
-                navigate(-1);
+                const res = await dispatch(DeleteEntity('progetto', projectId));
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                if (res) {
+                  navigate('/area-amministrativa/progetti', { replace: true });
+                }
               }
             }}
           />

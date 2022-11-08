@@ -235,7 +235,7 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
               'no-border'
               //device.mediaIsPhone ? 'mx-0 ml-2 my-3' : 'mx-3'
             )}
-            status={'ATTIVO'}
+            status='ATTIVO'
           //rowTableId={name?.replace(/\s/g, '') || new Date().getTime()}
           />
         </div>
@@ -494,8 +494,8 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
       <SelectMultipleCheckbox
         label='Label field *'
         options={serviceScopeOptions}
-        field={'primo livello'}
-        secondLevelField={'secondo livello'}
+        field='primo livello'
+        secondLevelField='secondo livello'
         onInputChange={handleInputCheckbox}
         onSecondLevelInputChange={handleInputCheckbox}
         valueSecondLevelString={serviceScopeOptionsValues

@@ -9,7 +9,8 @@ import {
   Icon,
   LinkListItem,
 } from 'design-react-kit';
-import LogoMobile from '/public/assets/img/logo-mobile.png';
+//import LogoMobile from '/public/assets/img/logo-mobile.png';
+import LogoMobile from '/public/assets/img/logo_tmp3.png';
 import Bell from '/public/assets/img/campanella.png';
 import RocketChatIcon from '/public/assets/img/rocketchat.png';
 import { HeaderI } from '../header';
@@ -291,7 +292,11 @@ const HeaderMobile: React.FC<HeaderI> = ({
             )}
           >
             <Link to={defaultRedirectUrl} replace>
-              <img src={LogoMobile} alt='logo' />
+              <img
+                src={LogoMobile}
+                alt='logo'
+                style={{ width: 'auto', height: '74px' }}
+              />
             </Link>
           </div>
           {isLogged ? (

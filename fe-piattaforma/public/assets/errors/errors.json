@@ -4,6 +4,10 @@
         "titolo": "",
         "descrizione": "Accesso non consentito"
     },
+    "A02": {
+        "titolo": "",
+        "descrizione": "Contenuto non consentito"
+    },
     "C01": {
         "titolo": "",
         "descrizione": "Errore Risorsa non trovata"

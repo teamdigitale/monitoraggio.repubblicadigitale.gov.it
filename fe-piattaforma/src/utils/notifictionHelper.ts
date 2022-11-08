@@ -65,7 +65,10 @@ export const getErrorMessage = async (
     const res = await axios('/assets/errors/errors.json');
     if (res?.data) {
       const errorsList = { ...res.data.errors };
-      if (errorCode === 'D01') {
+      if (errorCode === 'A02') {
+        console.log('Errore A02');
+        window.location.replace('/auth-redirect');
+      } else if (errorCode === 'D01') {
         return getDrupalErrorMessage(errorsList, message);
       } else if (errorsList[errorCode]) {
         return {

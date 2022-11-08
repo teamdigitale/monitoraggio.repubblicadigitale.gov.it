@@ -1006,9 +1006,13 @@ const ProgramsDetails: React.FC = () => {
     dispatch(closeModal());
   };
   const deleteProject = async (projectId: string) => {
-    await dispatch(DeleteEntity('progetto', projectId));
-    dispatch(closeModal());
-    if (entityId) dispatch(GetProgramDetail(entityId));
+    const res = await dispatch(DeleteEntity('progetto', projectId));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (res) {
+      dispatch(closeModal());
+      if (entityId) dispatch(GetProgramDetail(entityId));
+    }
   };
 
   const removeManagerAuthority = async (
@@ -1167,8 +1171,12 @@ const ProgramsDetails: React.FC = () => {
             if (payload?.entity === 'project')
               deleteProject(payload?.projectId);
             if (payload?.entity === 'program' && entityId) {
-              await dispatch(DeleteEntity('programma', entityId));
-              navigate(-1);
+              const res = await dispatch(DeleteEntity('programma', entityId));
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              if (res) {
+                navigate('/area-amministrativa/programmi', { replace: true });
+              }
             }
             if (payload?.entity === 'authority')
               entityId &&

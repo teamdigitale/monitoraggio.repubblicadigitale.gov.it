@@ -10,7 +10,8 @@ import {
   LinkList,
   LinkListItem,
 } from 'design-react-kit';
-import Logo from '/public/assets/img/logo.png';
+//import Logo from '/public/assets/img/logo.png';
+import Logo from '/public/assets/img/logo_tmp3.png';
 import Bell from '/public/assets/img/campanella.png';
 import RocketChatIcon from '/public/assets/img/rocketchat.png';
 import { useTranslation } from 'react-i18next';
@@ -91,8 +92,9 @@ const HeaderDesktop: React.FC<HeaderI> = ({
             </h6>
             <h6 className='font-weight-light text-nowrap'>
               {/*<em>{getRoleLabel(userProfile?.codiceRuolo)}</em>*/}
-              <em>{`${userProfile?.descrizioneRuolo}${userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
-                }`}</em>
+              <em>{`${userProfile?.descrizioneRuolo}${
+                userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
+              }`}</em>
             </h6>
           </div>
           <div className='ml-2'>
@@ -191,8 +193,8 @@ const HeaderDesktop: React.FC<HeaderI> = ({
 
   const userDropDownAreaGestionale = () =>
     hasUserPermission(['btn.gest.ruoli']) ||
-      hasUserPermission(['btn.cat']) ||
-      hasUserPermission(['btn.rprt']) ? (
+    hasUserPermission(['btn.cat']) ||
+    hasUserPermission(['btn.rprt']) ? (
       <Dropdown
         className='p-0 header-container__top__user-dropdown'
         isOpen={openManagementArea}
@@ -249,8 +251,8 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                   )}
                   role='menuitem'
                   onClick={() => {
-                    navigate('/gestione-ruoli')
-                    setOpenManagementArea(false)
+                    navigate('/gestione-ruoli');
+                    setOpenManagementArea(false);
                   }}
                 >
                   {t('role_management')}
@@ -269,8 +271,8 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                   )}
                   role='menuitem'
                   onClick={() => {
-                    navigate('/area-gestionale/gestione-categorie')
-                    setOpenManagementArea(false)
+                    navigate('/area-gestionale/gestione-categorie');
+                    setOpenManagementArea(false);
                   }}
                 >
                   Gestione categorie
@@ -289,8 +291,8 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                   )}
                   role='menuitem'
                   onClick={() => {
-                    navigate('/area-gestionale/gestione-segnalazioni')
-                    setOpenManagementArea(false)
+                    navigate('/area-gestionale/gestione-segnalazioni');
+                    setOpenManagementArea(false);
                   }}
                 >
                   Gestione segnalazioni
@@ -520,7 +522,11 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               )}
             >
               <Link to={defaultRedirectUrl} replace>
-                <img src={Logo} alt='logo' />
+                <img
+                  src={Logo}
+                  alt='logo'
+                  style={{ width: 'auto', height: '74px' }}
+                />
               </Link>
             </div>
             {/* <div

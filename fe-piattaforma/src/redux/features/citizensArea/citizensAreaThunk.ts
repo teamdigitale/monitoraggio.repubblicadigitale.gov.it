@@ -195,7 +195,13 @@ export const UpdateCitizenDetail =
     try {
       dispatch(showLoader());
       dispatch({ ...UpdateCitizenDetailAction, idCittadino, body });
-      const res = await API.put(`cittadino/${idCittadino}`, body);
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+      const res = await API.put(`cittadino/${idCittadino}`, {
+        ...body,
+        idProgramma,
+        idProgetto,
+        idEnte,
+      });
       if (res) {
         return true;
       }
