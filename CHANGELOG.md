@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.107](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.106...1.0.0-test.107) (2022-11-08)
+
+
+### Bug Fixes
+
+* **be:** tolto controllo email ente ([a6415e1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a6415e10461eb843091050c00f5022b315c1e8df))
+
 ## [1.0.0-test.106](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.105...1.0.0-test.106) (2022-11-08)
 
 
