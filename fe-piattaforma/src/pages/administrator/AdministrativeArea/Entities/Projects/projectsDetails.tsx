@@ -1168,7 +1168,7 @@ const ProjectsDetails = () => {
     const table = newTable(
       EntePartnerTableHeading,
       list.map((td: any) => ({
-        nome: td.nomeBreve || td.nome,
+        nome: td.nome || td.nomeBreve,
         codiceFiscale: td.piva || td.codiceFiscale,
         esito: (td.esito || '').toUpperCase().includes('OK')
           ? 'Riuscito'

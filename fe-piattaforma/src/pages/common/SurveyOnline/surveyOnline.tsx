@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './surveyOnline.scss';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Button, FormGroup, Label } from 'design-react-kit';
-import { defaultRedirectUrl } from '../../../routes';
+import { redirectUrlSurveyOnline } from '../../../routes';
 import {
   CompileSurveyOnline,
   GetSurveyOnline,
@@ -34,7 +34,6 @@ const SurveyOnlineSectionId = 'content-service-section';
 const SurveyOnline: React.FC<withFormHandlerProps> = (props) => {
   const { idQuestionario, token } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [surveySection, setSurveySection] = useState<any>();
   const [compiled, setCompiled] = useState(false);
   const surveyOnline = useAppSelector(selectSurveyOnline) || {};
@@ -57,12 +56,12 @@ const SurveyOnline: React.FC<withFormHandlerProps> = (props) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (!res) {
-          handleRedirectHome();
+          handleRedirectUrl();
         }
       }
     } catch (err) {
       console.log('retrieveSurveyOnline error', err);
-      handleRedirectHome();
+      handleRedirectUrl();
     }
   };
 
@@ -113,12 +112,12 @@ const SurveyOnline: React.FC<withFormHandlerProps> = (props) => {
     }
   }, [surveySection?.schema]);
 
-  const handleRedirectHome = () => {
-    navigate(defaultRedirectUrl, { replace: true });
+  const handleRedirectUrl = () => {
+    window.location.replace(redirectUrlSurveyOnline);
   };
 
   if (!(idQuestionario && token)) {
-    handleRedirectHome();
+    handleRedirectUrl();
   }
 
   if (!Object.keys(surveyForm).length) {
@@ -153,14 +152,14 @@ const SurveyOnline: React.FC<withFormHandlerProps> = (props) => {
       description='Questionario inviato correttamente!'
       primaryCTA={{
         label: 'Chiudi',
-        onClick: handleRedirectHome,
+        onClick: handleRedirectUrl,
       }}
       icon={BigCheckVerde}
       isSuccesModal
       withIcon
       isSurveyOnline
       centerButtons
-      onClose={handleRedirectHome}
+      onClose={handleRedirectUrl}
     />
   );
 
@@ -184,7 +183,7 @@ const SurveyOnline: React.FC<withFormHandlerProps> = (props) => {
           withIcon
           isSurveyOnline
           centerButtons
-          onClose={handleRedirectHome}
+          onClose={handleRedirectUrl}
         >
           <div className='d-flex justify-content-center mt-5'>
             <FormGroup check>

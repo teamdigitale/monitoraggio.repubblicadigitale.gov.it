@@ -136,7 +136,7 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
           {...form?.idEnte}
           disabled
           col='col-12 col-lg-6'
-          className='mb-5 pr-lg-3'
+          // className='pr-lg-3'
           value={nomeEnte}
         />
         <Select
@@ -145,7 +145,7 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
           placeholder={`Inserisci ${form?.idSede?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           options={dropdownOptions['sedi']}
-          wrapperClassName='mb-5 pr-lg-3'
+          wrapperClassName='pl-0 pr-lg-3'
           isDisabled={formDisabled || dropdownOptions?.sedi?.length === 1}
         />
       </Form.Row>

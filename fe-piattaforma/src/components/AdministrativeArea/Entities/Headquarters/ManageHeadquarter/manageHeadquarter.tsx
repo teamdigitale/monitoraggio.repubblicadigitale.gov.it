@@ -366,6 +366,11 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
             }}
             title='Cerca'
             search
+            infoText={
+              headquartersList?.length
+                ? `${headquartersList?.length} risultati trovati`
+                : ''
+            }
           />
         ) : null}
         <div className='mx-5'>{content}</div>

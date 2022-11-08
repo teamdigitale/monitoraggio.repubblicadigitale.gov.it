@@ -11,6 +11,7 @@ interface InfoPanelI {
   onlyList?: boolean;
   colsNo?: number;
   openData?: boolean;
+  accessibilityPage?: boolean;
   HTMLlist?: boolean;
   body?: string;
 }
@@ -22,6 +23,7 @@ const InfoPanel: React.FC<InfoPanelI> = (props) => {
     onlyList = false,
     colsNo,
     openData = false,
+    accessibilityPage = false,
     HTMLlist = false,
     body = '',
   } = props;
@@ -69,17 +71,21 @@ const InfoPanel: React.FC<InfoPanelI> = (props) => {
         <>
           {title ? <p className='h6 info-panel__title'>{title}</p> : null}
 
-          <Card spacing className='card-bg pr-2'>
+          <Card
+            spacing
+            className={clsx('card-bg', !accessibilityPage && 'pr-2')}
+          >
             <CardBody
               className={clsx(
                 'pb-0',
-                !device.mediaIsPhone ? 'pl-5' : openData && 'pl-3 '
+                !device.mediaIsPhone ? 'pl-5' : openData && 'pl-3',
+                accessibilityPage && 'px-5'
               )}
             >
               <div
                 className={clsx(
                   'info-panel__list-container',
-                  device.mediaIsPhone && 'pl-4'
+                  device.mediaIsPhone && !accessibilityPage && 'pl-4'
                 )}
                 style={{ gridTemplateColumns: !HTMLlist ? `${colStyle}` : '' }}
               >

@@ -1,5 +1,12 @@
 import clsx from 'clsx';
-import { Button, CardReadMore, FormGroup, Icon, Label } from 'design-react-kit';
+import {
+  Button,
+  CardReadMore,
+  FormGroup,
+  Icon,
+  Label,
+  UncontrolledTooltip,
+} from 'design-react-kit';
 import React, { memo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CRUDActionsI, CRUDActionTypes } from '../../utils/common';
@@ -224,19 +231,28 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
             <span className='d-flex align-items-center'>
               {onActionClick[CRUDActionTypes.DELETE] ? (
                 device.mediaIsPhone ? null : (
-                  <Button
-                    onClick={() => {
-                      onActionClick[CRUDActionTypes.DELETE](cf ? cf : id);
-                    }}
-                    className='pl-3 pr-0'
-                  >
-                    <Icon
-                      color='primary'
-                      icon='it-less-circle'
-                      size='sm'
-                      aria-label='Elimina'
-                    />
-                  </Button>
+                  <>
+                    <Button
+                      onClick={() => {
+                        onActionClick[CRUDActionTypes.DELETE](cf ? cf : id);
+                      }}
+                      className='pl-3 pr-0'
+                      id={`icon-delete-${cf || id}`}
+                    >
+                      <Icon
+                        color='primary'
+                        icon='it-less-circle'
+                        size='sm'
+                        aria-label='Elimina'
+                      />
+                    </Button>
+                    <UncontrolledTooltip
+                      placement='top'
+                      target={`icon-delete-${cf || id}`}
+                    >
+                      Rimuovi
+                    </UncontrolledTooltip>
+                  </>
                 )
               ) : null}
               {onActionClick[CRUDActionTypes.VIEW] ? (

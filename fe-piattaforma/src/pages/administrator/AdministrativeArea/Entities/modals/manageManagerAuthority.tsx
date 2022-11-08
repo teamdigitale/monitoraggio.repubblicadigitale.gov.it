@@ -288,6 +288,11 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
             }
           }}
           search
+          infoText={
+            authoritiesList?.length
+              ? `${authoritiesList?.length} risultati trovati`
+              : ''
+          }
         />
         <div className='mx-5'>{content}</div>
       </div>

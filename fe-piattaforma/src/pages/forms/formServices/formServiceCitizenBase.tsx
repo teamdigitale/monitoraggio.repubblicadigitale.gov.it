@@ -163,7 +163,7 @@ const form = newForm([
     //required: true,
   }),
   newFormField({
-    ...CommonFields.CELLULARE,
+    ...CommonFields.NUMERO_TELEFONICO,
     field: 'cellulare',
     id: 'numeroCellulare',
     label: 'Cellulare',
@@ -171,7 +171,7 @@ const form = newForm([
     //required: true,
   }),
   newFormField({
-    ...CommonFields.TELEFONO,
+    ...CommonFields.NUMERO_TELEFONICO,
     field: 'telefono',
     id: 'telefono',
     label: 'Cellulare',

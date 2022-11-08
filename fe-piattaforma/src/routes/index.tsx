@@ -60,6 +60,9 @@ const UserProfile = lazy(
 );
 
 const OpenData = lazy(() => import('../pages/common/OpenData/openData'));
+const Accessibility = lazy(
+  () => import('../pages/common/Accessibility/accessibility')
+);
 const SurveyOnline = lazy(
   () => import('../pages/common/SurveyOnline/surveyOnline')
 );
@@ -80,6 +83,7 @@ const CommunityDetails = lazy(
  */
 
 export const defaultRedirectUrl = '/';
+export const redirectUrlSurveyOnline = 'https://repubblicadigitale.gov.it/it/';
 
 const AppRoutes: React.FC = () => {
   const dispatch = useDispatch();
@@ -296,6 +300,7 @@ const AppRoutes: React.FC = () => {
                   </ProtectedComponent>
                 }
               />
+              <Route path='/accessibilita' element={<Accessibility />} />
               <Route
                 path='/area-amministrativa/*'
                 element={
@@ -321,6 +326,7 @@ const AppRoutes: React.FC = () => {
             <Route path='/report-dati' element={<Dashboard />} />
             <Route path='/' element={<FullLayout />}>
               {/* Public Paths */}
+              <Route path='/accessibilita' element={<Accessibility />} />
               <Route path='/onboarding' element={<Onboarding />} />
               <Route path='/' element={<AuthRedirect />} />
             </Route>
