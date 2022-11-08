@@ -300,45 +300,50 @@ public class EntePartnerService {
 						(tipologia != null && !(tipologia.trim()).equals("")) &&
 						(piva != null && !(piva.trim()).equals(""))
 						) {
-					Pattern pattern = Pattern.compile(PIVA_REGX);
-					Matcher matcher = pattern.matcher(ente.getPiva());
-					if(matcher.find()) {
-						if(Arrays.asList("Ente pubblico", "Ente del terzo settore", "Ente privato")
-								.contains(ente.getTipologiaEnte())) {
-							//per ogni record verifico se esiste l'entita Ente
-							//se esiste aggiungo nuova entita Ente + associazione ente - progetto in EntePartner
-							if(!enteService.esisteEnteByPartitaIva(ente.getPiva())) {
-								EnteEntity nuovoEnte = new EnteEntity();
-								nuovoEnte.setNome(ente.getNome());
-								nuovoEnte.setNomeBreve(ente.getNomeBreve());
-								nuovoEnte.setPiva(ente.getPiva());
-								nuovoEnte.setSedeLegale(ente.getSedeLegale());
-								nuovoEnte.setTipologia(ente.getTipologiaEnte());
-								nuovoEnte.setIndirizzoPec(ente.getPec());
-								Long idEnte = enteService.creaNuovoEnte(nuovoEnte).getId();
+					if(this.enteService.esisteEnteByNome(nome)) {
 
-								associaEntePartnerPerProgetto(idEnte, idProgetto);
+						Pattern pattern = Pattern.compile(PIVA_REGX);
+						Matcher matcher = pattern.matcher(ente.getPiva());
+						if(matcher.find()) {
+							if(Arrays.asList("Ente pubblico", "Ente del terzo settore", "Ente privato")
+									.contains(ente.getTipologiaEnte())) {
+								//per ogni record verifico se esiste l'entita Ente
+								//se esiste aggiungo nuova entita Ente + associazione ente - progetto in EntePartner
+								if(!enteService.esisteEnteByPartitaIva(ente.getPiva())) {
+									EnteEntity nuovoEnte = new EnteEntity();
+									nuovoEnte.setNome(ente.getNome());
+									nuovoEnte.setNomeBreve(ente.getNomeBreve());
+									nuovoEnte.setPiva(ente.getPiva());
+									nuovoEnte.setSedeLegale(ente.getSedeLegale());
+									nuovoEnte.setTipologia(ente.getTipologiaEnte());
+									nuovoEnte.setIndirizzoPec(ente.getPec());
+									Long idEnte = enteService.creaNuovoEnte(nuovoEnte).getId();
 
-								ente.setEsito("UPLOAD OK");
-							}else {
-								//se esiste gia l'entita ente devo verificare se esista gia l'associazione entePartner
-								Long idEnte = enteService.getEnteByPartitaIva(ente.getPiva()).getId();
-								//se esiste --> KO
-								if(this.entePartnerRepository.findEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte) != null) {
-									ente.setEsito("KO - Ente già in elenco");
-								}else {
-									//altrimenti aggiungo associazione EntePartner
 									associaEntePartnerPerProgetto(idEnte, idProgetto);
 
 									ente.setEsito("UPLOAD OK");
-								}
-							}
+								}else {
+									//se esiste gia l'entita ente devo verificare se esista gia l'associazione entePartner
+									Long idEnte = enteService.getEnteByPartitaIva(ente.getPiva()).getId();
+									//se esiste --> KO
+									if(this.entePartnerRepository.findEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte) != null) {
+										ente.setEsito("KO - Ente già in elenco");
+									}else {
+										//altrimenti aggiungo associazione EntePartner
+										associaEntePartnerPerProgetto(idEnte, idProgetto);
 
+										ente.setEsito("UPLOAD OK");
+									}
+								}
+
+							}else {
+								ente.setEsito("KO - Tipologia ente non conforme");
+							}
 						}else {
-							ente.setEsito("KO - Tipologia ente non conforme");
+							ente.setEsito("KO - CF/PIVA è una sequenza di 11 numeri");
 						}
 					}else {
-						ente.setEsito("KO - CF/PIVA è una sequenza di 11 numeri");
+						ente.setEsito("KO - Nome ente già in uso");
 					}
 				}else {
 					ente.setEsito("KO - Nome, Nome Breve, Tipologia ente e CF/PIVA sono campi obbligatori");
