@@ -76,9 +76,6 @@ const FormService: React.FC<FormServiceI> = (props) => {
           // case date
           formFromSchema[key].maximum = formatDate(projectDetails?.dataFine);
           formFromSchema[key].minimum = formatDate(projectDetails?.dataInizio);
-        } else if (key === '23') {
-          // case durata
-          formFromSchema[key].value = '00:00';
         }
       });
       setDynamicFormQ3(formFromSchema);

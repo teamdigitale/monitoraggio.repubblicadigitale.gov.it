@@ -14,6 +14,7 @@ import {
   ProgressBar,
   PrefixPhone,
   StatusChip,
+  Duration,
 } from '../components';
 import CheckboxGroup from '../components/Form/checkboxGroup';
 import withFormHandler, { withFormHandlerProps } from '../hoc/withFormHandler';
@@ -130,6 +131,8 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
     if (typeof value === 'string') setMultipleSelectValue(value);
   };
 
+  console.log('form', props.form)
+
   const handleInputCheckbox = (
     value?: formFieldI['value'],
     field?: formFieldI['field']
@@ -144,6 +147,19 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
   return (
     <div className='container mt-4'>
       <h1>Playground {t('hello')}</h1>
+      <div className='w-100 my-5'>
+        <Form id='form-playground-4'>
+          <Form.Row>
+            <Duration
+              {...props.form?.duration}
+              label='Durata'
+              required
+              onInputChange={props.onInputChange}
+            />
+          </Form.Row>
+        </Form>
+        <p>Valore duration input: {props.form?.duration?.value}</p>
+      </div>
 
       <a
         //href="https://s3-mitd-drupal-dev.s3.eu-central-1.amazonaws.com/public/2022-10/1666187931099715_Nuovo%20Documento%20di%20testo.txt?versionId=9rmoYvlyrbsf6TIv8020BXkDVx4oEYKw&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4LHBWFYR2FHS4H6R/20221019/eu-central-1/s3/aws4_request&X-Amz-Date=20221019T135935Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Signature=9154a896c3985ca74293527074da6e0ff8710d3c568ddbf7d53b72f65cc69f31"
@@ -512,6 +528,10 @@ const form = newForm([
   }),
   newFormField({
     field: 'surname',
+    required: true,
+  }),
+  newFormField({
+    field: 'duration',
     required: true,
   }),
 ]);

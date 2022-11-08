@@ -45,6 +45,7 @@ export interface InputI extends Omit<InputProps, 'value'> {
   value?: formFieldI['value'];
   withLabel?: boolean;
   className?: string;
+  touched?: boolean;
 }
 
 const Input: React.FC<InputI> = (props) => {
