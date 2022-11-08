@@ -23,6 +23,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import it.pa.repdgt.shared.exception.BaseException;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -80,6 +82,23 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 				final String inputCorpoRichiesta = this.getCorpoRichiesta(httpServletRequest);
 				if(inputCorpoRichiesta != null  && !inputCorpoRichiesta.trim().isEmpty()) {
 					this.body = this.getCorpoRichiestaArricchitaConDatiContesto(inputCorpoRichiesta);
+				}//per api che prevedono upload file
+				else if(!FilterUtil.isEndpointSwagger(endpoint) ) {
+					try {
+						if(httpServletRequest.getParts().size() > 0) {
+							this.body = "{ \"idProgramma\":" + httpServletRequest.getParameter("idProgramma") + 
+									",\"idProgetto\":" + httpServletRequest.getParameter("idProgetto") +  
+									",\"idEnte\":" + httpServletRequest.getParameter("idEnte") +  
+									",\"cfUtenteLoggato\":" + "\"" + this.codiceFiscale + "\"" + 
+									",\"codiceRuoloUtenteLoggato\":" + "\"" + this.codiceRuolo + "\"" +  
+									"}";
+							httpServletRequest.setAttribute("cfUtenteLoggato", this.codiceFiscale);
+							httpServletRequest.setAttribute("codiceRuoloUtenteLoggato", this.codiceRuolo);
+							
+						}
+					} catch (ServletException e) {
+						// gestione eccezioni in caso di chiamate GET
+					}
 				}
 			}else if(FilterUtil.isEndpointQuestionarioCompilatoAnonimo(endpoint) && metodoHttp.equals("POST")){
 				/*
@@ -178,5 +197,9 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	public String getCodiceRuolo() {
 		return this.codiceRuolo;
+	}
+	
+	public String getBody() {
+		return this.body;
 	}
 }

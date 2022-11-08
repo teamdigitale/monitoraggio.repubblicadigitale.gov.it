@@ -67,7 +67,8 @@ public interface EnteSedeProgettoFacilitatoreRepository extends JpaRepository<En
 			+ " WHERE 1=1 "
 			+ " 	AND espf.id_facilitatore = :codiceFiscaleFacilitatore "
 			+ " 	AND espf.id_ente = :idEnte "
-			+ " 	AND espf.id_progetto = :idProgetto ",
+			+ " 	AND espf.id_progetto = :idProgetto "
+			+ "     AND espf.stato_utente <> 'TERMINATO' ",
 			nativeQuery = true)
 	List<SedeProjection> findSediByFacilitatore(
 			@Param("codiceFiscaleFacilitatore") String codiceFiscaleFacilitatore,

@@ -282,4 +282,53 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 			@Param("idProgetto") Long idProgetto,
 	@Param("idEnte") Long idEnte);
 	
+	@Query(value = ""
+			+ "		SELECT "
+			+ "			count(*) "
+			+ "		FROM "
+			+ "			servizio s "
+			+ "		WHERE 1=1"
+			+ "			AND s.id = :idServizio"
+			+ "			AND s.id_progetto = :idProgetto "
+			+ "			AND s.id_ente = :idEnte "
+			+ "			AND s.id_facilitatore = :cfUtenteLoggato ",
+			nativeQuery = true)
+	int isServizioAssociatoAUtenteProgettoEnte(
+			@Param("idServizio") Long idServizio, 
+			@Param("idProgetto") Long idProgetto,
+			@Param("idEnte") Long idEnte,
+			@Param("cfUtenteLoggato") String cfUtenteLoggato
+		);
+	
+	@Query(value = ""
+			+ "		SELECT "
+			+ "			count(*) "
+			+ "		FROM "
+			+ "			servizio s "
+			+ "		WHERE 1=1"
+			+ "			AND s.id = :idServizio"
+			+ "			AND s.id_progetto = :idProgetto ",
+			nativeQuery = true)
+	int isServizioAssociatoARegpDegp(
+			@Param("idServizio") Long idServizio, 
+			@Param("idProgetto") Long idProgetto
+		);
+	
+	@Query(value = ""
+			+ "		SELECT "
+			+ "			count(*) "
+			+ "		FROM "
+			+ "			servizio s "
+			+ "		WHERE 1=1"
+			+ "			AND s.id = :idServizio"
+			+ "			AND s.id_progetto = :idProgetto "
+			+ "			AND s.id_ente = :idEnte "
+			+ "",
+			nativeQuery = true)
+	int isServizioAssociatoAReppDepp(
+			@Param("idServizio") Long idServizio, 
+			@Param("idProgetto") Long idProgetto,
+			@Param("idEnte") Long idEnte
+		);
+	
 }

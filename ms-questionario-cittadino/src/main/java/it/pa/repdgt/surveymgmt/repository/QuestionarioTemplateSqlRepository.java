@@ -3,13 +3,14 @@ package it.pa.repdgt.surveymgmt.repository;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import it.pa.repdgt.shared.entity.QuestionarioTemplateEntity;
-import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 
 @Repository
 public interface QuestionarioTemplateSqlRepository extends JpaRepository<QuestionarioTemplateEntity, String> {
@@ -284,4 +285,26 @@ public interface QuestionarioTemplateSqlRepository extends JpaRepository<Questio
 	Optional<QuestionarioTemplateEntity> findQuestionarioTemplateByNomeAndIdDiverso(
 			String nomeQuestionarioTemplate,
 			String idQuestionarioTemplate);
+
+	@Query(value = "SELECT count(*)"
+			+ "		FROM "
+			+ "			programma_x_questionario_template pxq  "
+			+ "		WHERE 1=1"
+			+ "			AND pxq.questionario_template_id = :idQuestionarioTemplate "
+			+ "			AND pxq.programma_id  = :idProgramma ",
+			nativeQuery = true)
+	int isQuestionarioAssociatoAProfilo(
+			@NotNull String idQuestionarioTemplate, 
+			Long idProgramma);
+
+	@Query(value = "SELECT *"
+			+ "		FROM "
+			+ "		programma_x_questionario_template pxq"
+			+ "		INNER JOIN programma"
+			+ "			ON programma.id = pxq.programma_id"
+			+ "		WHERE 1=1"
+			+ "		AND pxq.questionario_template_id = :idQuestionarioTemplate"
+			+ "		AND programma.policy = 'SCD' ",
+			nativeQuery = true)
+	int isQuestionarioAssociatoADSCU(@NotNull String idQuestionarioTemplate);
 }

@@ -7,12 +7,13 @@ import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class AggiornaUtenteRequest implements Serializable {
+public class AggiornaUtenteRequest extends SceltaProfiloParam implements Serializable {
 	private static final long serialVersionUID = -455726924198610378L;
 	
 	@NotBlank(message = "Email deve essere valorizzato")

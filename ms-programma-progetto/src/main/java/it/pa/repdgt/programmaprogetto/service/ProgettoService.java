@@ -44,6 +44,7 @@ import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.repository.BrokenAccessControlRepository;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.shared.service.storico.StoricoService;
 import lombok.extern.slf4j.Slf4j;
@@ -80,6 +81,8 @@ public class ProgettoService {
 	private ProgettoRepository progettoRepository;
 	@Autowired
 	private ProgettoMapper progettoMapper;
+	@Autowired
+	private BrokenAccessControlRepository brokenAccessControlRepository;
 
 	/**
 	 * @throws ResourceNotFoundException
@@ -761,5 +764,15 @@ public class ProgettoService {
 				}
 			});
 		}).start();
+	}
+	
+	@LogMethod
+	@LogExecutionTime
+	public List<ProgettoEntity> getProgettoByIdProgramma(Long idProgramma) {
+		return this.brokenAccessControlRepository.findByIdProgramma(idProgramma);
+	}
+	
+	public int getCountEnteByIdProgetto(Long idEnte, Long idProgetto) {
+		return brokenAccessControlRepository.getEnteByIdProgetto(idEnte, idProgetto);
 	}
 }

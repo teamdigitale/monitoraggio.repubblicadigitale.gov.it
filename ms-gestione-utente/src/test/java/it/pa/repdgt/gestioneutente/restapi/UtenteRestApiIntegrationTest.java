@@ -2,10 +2,14 @@ package it.pa.repdgt.gestioneutente.restapi;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Map;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 
 import it.pa.repdgt.gestioneutente.AppTests;
 import it.pa.repdgt.gestioneutente.bean.SchedaUtenteBean;
@@ -62,8 +66,11 @@ public class UtenteRestApiIntegrationTest extends AppTests{
 	@DisplayName(value = "cancellaUtenteTest - OK")
 	public void cancellaUtenteTest() {
 		long idUtente = 99;
+		SceltaProfiloParam sceltaProfilo = new SceltaProfiloParam();
+		sceltaProfilo.setCfUtenteLoggato("PPATTR99Q99E111X");
+		sceltaProfilo.setCodiceRuoloUtenteLoggato("DTD");
 		String urlToCall = "http://localhost:" + randomServerPort + "/utente/"+idUtente;
-		restTemplate.delete(urlToCall, null, null);
+		restTemplate.exchange(urlToCall, HttpMethod.DELETE, new HttpEntity(sceltaProfilo), Map.class);
 	}
 		
 	@Test
@@ -78,6 +85,9 @@ public class UtenteRestApiIntegrationTest extends AppTests{
 		aggiornaUtenteRequest.setTelefono("3335559988");
 		aggiornaUtenteRequest.setMansione("mansione");
 		aggiornaUtenteRequest.setTipoContratto("tipo contratto");
+		aggiornaUtenteRequest.setCfUtenteLoggato("PPATTR99Q99E111X");
+		aggiornaUtenteRequest.setCodiceRuoloUtenteLoggato("DTD");
+
 		
 		String urlToCall = "http://localhost:" + randomServerPort + "/utente/"+idUtente;
 		restTemplate.put(
