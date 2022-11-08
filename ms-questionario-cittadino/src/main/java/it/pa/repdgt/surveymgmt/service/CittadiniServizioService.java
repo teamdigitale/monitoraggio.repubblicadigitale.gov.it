@@ -30,6 +30,7 @@ import it.pa.repdgt.shared.entity.ServizioXCittadinoEntity;
 import it.pa.repdgt.shared.entity.TipologiaServizioEntity;
 import it.pa.repdgt.shared.entity.key.ServizioCittadinoKey;
 import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
+import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
@@ -102,18 +103,11 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		CittadinoServizioBean bean = new CittadinoServizioBean();
 		// Recupero codiceFiscale e codiceRuolo con cui si è profilato l'utente loggato alla piattaforma
 		final String codiceFiscaleUtenteLoggato = profilazione.getCfUtenteLoggato().trim();
-		final String codiceRuoloUtenteLoggato   = profilazione.getCodiceRuoloUtenteLoggato().toString();
-
-		// Verifico se l'utente possiede il ruolo mandato nella richiesta
-		if( !this.utenteService.hasRuoloUtente(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato) ) {
-			final String messaggioErrore = String.format("Ruolo non definito per l'utente con codice fiscale '%s'",codiceFiscaleUtenteLoggato);
-			throw new ServizioException(messaggioErrore, CodiceErroreEnum.U06);
-		}
 		
 		// Verifico se il facilitatore è il creatore di quel servizio
 		if( !this.servizioSqlRepository.findByFacilitatoreAndIdServizio(codiceFiscaleUtenteLoggato, idServizio).isPresent() ) {
 			final String messaggioErrore = String.format("Servizio non accessibile per l'utente con codice fiscale '%s in quanto non risulta il creatore del servizio'",codiceFiscaleUtenteLoggato);
-			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S03);
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.A02);
 		}
 
 		// Recupero tutti i cittadini del servizion con id idServizio in base ai filtri selezionati
@@ -179,7 +173,13 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	@LogExecutionTime
 	public List<String> getAllStatiQuestionarioCittadinoServizioDropdown(
 			Long idServizio,
-			final FiltroListaCittadiniServizioParam filtroListaCittadiniServizio) {
+			final FiltroListaCittadiniServizioParam filtroListaCittadiniServizio,
+			SceltaProfiloParam sceltaProfilo) {
+		// Verifico se il facilitatore è il creatore di quel servizio
+		if( !this.servizioSqlRepository.findByFacilitatoreAndIdServizio(sceltaProfilo.getCfUtenteLoggato(), idServizio).isPresent() ) {
+			final String messaggioErrore = String.format("Servizio non accessibile per l'utente con codice fiscale '%s in quanto non risulta il creatore del servizio'",sceltaProfilo.getCfUtenteLoggato());
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.A02);
+		}
 		return filtroListaCittadiniServizio.getStatiQuestionario().isEmpty() 
 				? this.getAllStatiQuestionarioByProfilazioneAndFiltro(idServizio, filtroListaCittadiniServizio)
 						: this.getAllStatiQuestionarioByProfilazioneAndFiltro(idServizio, filtroListaCittadiniServizio)
@@ -221,6 +221,11 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	public CittadinoEntity creaNuovoCittadino(
 			@NotNull final Long idServizio, 
 			@NotNull final NuovoCittadinoServizioRequest nuovoCittadinoRequest) {
+		// Verifico se il facilitatore è il creatore di quel servizio
+		if( !this.servizioSqlRepository.findByFacilitatoreAndIdServizio(nuovoCittadinoRequest.getCfUtenteLoggato(), idServizio).isPresent() ) {
+			final String messaggioErrore = String.format("Servizio non accessibile per l'utente con codice fiscale '%s in quanto non risulta il creatore del servizio'",nuovoCittadinoRequest.getCfUtenteLoggato());
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.A02);
+		}
 		
 		final Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService.getCittadinoByCodiceFiscaleOrNumeroDocumento(
 				nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile(),
@@ -453,11 +458,17 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	@LogMethod
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
-	public List<CittadinoUploadBean> caricaCittadiniSuServizio(MultipartFile fileCittadiniCSV, Long idServizio) {
+	public List<CittadinoUploadBean> caricaCittadiniSuServizio(MultipartFile fileCittadiniCSV, Long idServizio, String codiceFiscaleUtenteLoggato) {
 		List<CittadinoUploadBean> esiti = new ArrayList<>();
 		
 		if(this.servizioSqlService.getServizioById(idServizio) == null ) {
 			throw new ServizioException("Servizio con id " + idServizio + " non esistente", CodiceErroreEnum.S09);
+		}
+		
+		// Verifico se il facilitatore è il creatore di quel servizio
+		if( !this.servizioSqlRepository.findByFacilitatoreAndIdServizio(codiceFiscaleUtenteLoggato, idServizio).isPresent() ) {
+			final String messaggioErrore = String.format("Servizio non accessibile per l'utente con codice fiscale '%s in quanto non risulta il creatore del servizio'",codiceFiscaleUtenteLoggato);
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.A02);
 		}
 		
 		try {
@@ -471,17 +482,12 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 					CittadinoEntity cittadino = new CittadinoEntity();
 					//se il cittadino non esiste già a sistema
 					if(!optionalCittadinoDBFetch.isPresent()) {
-						//verifico se nel csv è stato passato almeno uno tra codice fiscale e num documento
-						if(esisteCodFiscaleODocumento(cittadinoUpload)) {
-							try{
-								popolaCittadino(cittadino, cittadinoUpload);
-								inserisciCittadino(cittadino, idServizio);
-								cittadinoUpload.setEsito("UPLOAD - OK");
-							}catch(NumberFormatException e){
-								cittadinoUpload.setEsito("UPLOAD - KO - ANNO DI NASCITA IN FORMATO NON VALIDO");
-							}
-						}else {
-							cittadinoUpload.setEsito("UPLOAD - KO - CF O NUM DOCUMENTO OBBLIGATORI");
+						try{
+							popolaCittadino(cittadino, cittadinoUpload);
+							inserisciCittadino(cittadino, idServizio);
+							cittadinoUpload.setEsito("UPLOAD - OK");
+						}catch(NumberFormatException e){
+							cittadinoUpload.setEsito("UPLOAD - KO - ANNO DI NASCITA IN FORMATO NON VALIDO");
 						}
 					}else {
 						CittadinoEntity cittadinoDBFetch = optionalCittadinoDBFetch.get();
@@ -489,7 +495,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 						// e in caso affermativo aggiungo KO
 						if(this.esisteCittadinoByIdServizioAndIdCittadino(idServizio, cittadinoDBFetch.getId())) {
 							cittadinoUpload.setEsito(String.format(
-									"UPLOAD - KO - CITTADINO CON CODICE FISCALE=%s NUMERO DOCUMENTO=%s GIA' ESISTENTE SUL SERVIZIO CON ID %s",
+									"UPLOAD - KO - CITTADINO GIA' ESISTENTE SUL SERVIZIO",
 									cittadinoDBFetch.getCodiceFiscale(),
 									cittadinoDBFetch.getNumeroDocumento(),
 									idServizio
@@ -651,11 +657,6 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		cittadino.setTitoloDiStudio(cittadinoUpload.getTitoloStudio());
 	}
 
-	public boolean esisteCodFiscaleODocumento(CittadinoUploadBean cittadinoUpload) {
-		return cittadinoUpload.getCodiceFiscale() != null && !cittadinoUpload.getCodiceFiscale().isEmpty() ||
-				cittadinoUpload.getNumeroDocumento() != null && !cittadinoUpload.getNumeroDocumento().isEmpty();
-	}
-
 	@LogMethod
 	@LogExecutionTime
 	public void inviaQuestionario(@NotNull final String idQuestionario, @NotNull final Long idCittadino) {
@@ -739,7 +740,14 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	@Transactional
 	@LogMethod
 	@LogExecutionTime
-	public void inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizio(Long idServizio) {
+	public void inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizio(Long idServizio, String codiceFiscaleUtenteLoggato) 
+	{
+		// Verifico se il facilitatore è il creatore di quel servizio
+		if( !this.servizioSqlRepository.findByFacilitatoreAndIdServizio(codiceFiscaleUtenteLoggato, idServizio).isPresent() ) {
+			final String messaggioErrore = String.format("Servizio non accessibile per l'utente con codice fiscale '%s in quanto non risulta il creatore del servizio'",codiceFiscaleUtenteLoggato);
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.A02);
+		}
+		
 		// recupero tutti i questionari compilati con STATO = NON INVIATO per quel servizio
 		List<QuestionarioCompilatoEntity> questionarioCompilatoList = this.questionarioCompilatoSqlRepository.findByIdServizioAndStato(idServizio, StatoQuestionarioEnum.NON_INVIATO.toString());
 
@@ -750,5 +758,15 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 				CittadinoEntity cittadinoAssociatoQuestionarioCompilato = questionarioCompilato.getCittadino();
 				this.inviaLinkAnonimoAndAggiornaStatoQuestionarioCompilato(idQuestionarioCompilato, questionarioCompilato, cittadinoAssociatoQuestionarioCompilato);
 			});
+	}
+
+	public boolean checkPermessoIdQuestionarioCompilato(SceltaProfiloParam sceltaProfilo, String idQuestionario) {
+		switch (sceltaProfilo.getCodiceRuoloUtenteLoggato()) {
+		case "FAC":
+		case "VOL":
+			Long servizioId = questionarioCompilatoSqlRepository.findById(idQuestionario).get().getIdServizio();
+			return servizioSqlRepository.findById(servizioId).get().getIdEnteSedeProgettoFacilitatore().getIdFacilitatore().equals(sceltaProfilo.getCfUtenteLoggato());
+		}
+		return false;
 	}
 }

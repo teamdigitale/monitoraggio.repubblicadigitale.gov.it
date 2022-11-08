@@ -68,11 +68,11 @@ public class EnteSedeProgettoFacilitatoreService {
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void associaFacilitatoreAEnteSedeProgetto(EnteSedeProgettoFacilitatoreRequest enteSedeProgettoFacilitatoreRequest) {
-		String codiceFiscaleUtente = enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleUtente();
+		String codiceFiscaleUtente = enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol();
 		String tipoContratto = enteSedeProgettoFacilitatoreRequest.getTipoContratto();
-		Long idSede = enteSedeProgettoFacilitatoreRequest.getIdSede();
-		Long idEnte = enteSedeProgettoFacilitatoreRequest.getIdEnte();
-		Long idProgetto = enteSedeProgettoFacilitatoreRequest.getIdProgetto();
+		Long idSede = enteSedeProgettoFacilitatoreRequest.getIdSedeFacVol();
+		Long idEnte = enteSedeProgettoFacilitatoreRequest.getIdEnteFacVol();
+		Long idProgetto = enteSedeProgettoFacilitatoreRequest.getIdProgettoFacVol();
 		String codiceRuolo;
 		
 		// verifico se utente esiste
@@ -177,10 +177,10 @@ public class EnteSedeProgettoFacilitatoreService {
 	@LogExecutionTime
 	public void cancellaOTerminaAssociazioneFacilitatoreAEnteSedeProgetto(
 			EnteSedeProgettoFacilitatoreRequest enteSedeProgettoFacilitatoreRequest) {
-		String codiceFiscaleUtente = enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleUtente();
-		Long idSede = enteSedeProgettoFacilitatoreRequest.getIdSede();
-		Long idEnte = enteSedeProgettoFacilitatoreRequest.getIdEnte();
-		Long idProgetto = enteSedeProgettoFacilitatoreRequest.getIdProgetto();
+		String codiceFiscaleUtente = enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol();
+		Long idSede = enteSedeProgettoFacilitatoreRequest.getIdSedeFacVol();
+		Long idEnte = enteSedeProgettoFacilitatoreRequest.getIdEnteFacVol();
+		Long idProgetto = enteSedeProgettoFacilitatoreRequest.getIdProgettoFacVol();
 		String codiceRuolo;
 		
 		final ProgettoEntity progettoDBFEtch = this.progettoService.getProgettoById(idProgetto);

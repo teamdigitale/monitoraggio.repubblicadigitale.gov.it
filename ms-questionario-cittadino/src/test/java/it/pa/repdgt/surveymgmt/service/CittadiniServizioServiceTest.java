@@ -126,6 +126,8 @@ public class CittadiniServizioServiceTest {
 		nuovoCittadinoRequest.setNuovoCittadino(true);
 		nuovoCittadinoRequest.setNome("nome");
 		nuovoCittadinoRequest.setCognome("cognome");
+		nuovoCittadinoRequest.setCfUtenteLoggato("CFUTENTE");
+		nuovoCittadinoRequest.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.getValue());
 		cittadino = new CittadinoEntity();
 		cittadino.setId(1L);
 		cittadino.setEmail("prova@gmail.com");
@@ -161,7 +163,7 @@ public class CittadiniServizioServiceTest {
 	@Test
 	public void getAllCittadiniServizioByProfilazioneAndFiltroPaginatiTest() {
 		Integer currPage = 0, pageSize = 10;
-		when(this.utenteService.hasRuoloUtente(profilazione.getCfUtenteLoggato(), profilazione.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
+		
 		when(this.servizioSqlRepository.findByFacilitatoreAndIdServizio(profilazione.getCfUtenteLoggato(), servizio.getId())).thenReturn(Optional.of(servizio));
 		cittadiniServizioService.getAllCittadiniServizioByProfilazioneAndFiltroPaginati(servizio.getId(), profilazione, filtroListaCittadiniServizio, currPage, pageSize);
 	}
@@ -170,12 +172,10 @@ public class CittadiniServizioServiceTest {
 	public void getAllCittadiniServizioByProfilazioneAndFiltroPaginatiKOTest() {
 		//test KO per Ruolo non definito per l'utente
 		final Integer currPage = 0, pageSize = 10;
-		when(this.utenteService.hasRuoloUtente(profilazione.getCfUtenteLoggato(), profilazione.getCodiceRuoloUtenteLoggato().toString())).thenReturn(false);
 		Assertions.assertThrows(ServizioException.class, () -> cittadiniServizioService.getAllCittadiniServizioByProfilazioneAndFiltroPaginati(servizio.getId(), profilazione, filtroListaCittadiniServizio, currPage, pageSize));
 		assertThatExceptionOfType(ServizioException.class);
 		
 		//test KO per Servizio non accessibile per l'utente
-		when(this.utenteService.hasRuoloUtente(profilazione.getCfUtenteLoggato(), profilazione.getCodiceRuoloUtenteLoggato().toString())).thenReturn(true);
 		when(this.servizioSqlRepository.findByFacilitatoreAndIdServizio(profilazione.getCfUtenteLoggato(), servizio.getId())).thenReturn(Optional.empty());
 		Assertions.assertThrows(ServizioException.class, () -> cittadiniServizioService.getAllCittadiniServizioByProfilazioneAndFiltroPaginati(servizio.getId(), profilazione, filtroListaCittadiniServizio, currPage, pageSize));
 		assertThatExceptionOfType(ServizioException.class);
@@ -191,11 +191,13 @@ public class CittadiniServizioServiceTest {
 	@Test
 	public void getAllStatiQuestionarioCittadinoServizioDropdownTest() {
 		//test con filtroListaCittadiniServizio.getStatiQuestionario() != empty
-		cittadiniServizioService.getAllStatiQuestionarioCittadinoServizioDropdown(servizio.getId(), filtroListaCittadiniServizio);
+		when(this.servizioSqlRepository.findByFacilitatoreAndIdServizio(profilazione.getCfUtenteLoggato(), servizio.getId())).thenReturn(Optional.of(new ServizioEntity()));
+
+		cittadiniServizioService.getAllStatiQuestionarioCittadinoServizioDropdown(servizio.getId(), filtroListaCittadiniServizio, profilazione);
 		
 		//test con filtroListaCittadiniServizio.getStatiQuestionario() = empty
 		filtroListaCittadiniServizio.setStatiQuestionario(new ArrayList<>());
-		cittadiniServizioService.getAllStatiQuestionarioCittadinoServizioDropdown(servizio.getId(), filtroListaCittadiniServizio);
+		cittadiniServizioService.getAllStatiQuestionarioCittadinoServizioDropdown(servizio.getId(), filtroListaCittadiniServizio, profilazione);
 	}
 	
 	@Test
@@ -209,6 +211,8 @@ public class CittadiniServizioServiceTest {
 	
 	@Test
 	public void creaNuovoCittadinoTest() {
+		when(this.servizioSqlRepository.findByFacilitatoreAndIdServizio(nuovoCittadinoRequest.getCfUtenteLoggato(), servizio.getId())).thenReturn(Optional.of(new ServizioEntity()));
+
 		when(this.cittadinoService.getCittadinoByCodiceFiscaleOrNumeroDocumento(
 				nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile(),
 				nuovoCittadinoRequest.getCodiceFiscale(),
@@ -228,6 +232,7 @@ public class CittadiniServizioServiceTest {
 				nuovoCittadinoRequest.getCodiceFiscale(),
 				nuovoCittadinoRequest.getNumeroDocumento()
 			)).thenReturn(Optional.of(cittadino));
+		when(this.servizioSqlRepository.findByFacilitatoreAndIdServizio(nuovoCittadinoRequest.getCfUtenteLoggato(), servizio.getId())).thenReturn(Optional.of(new ServizioEntity()));
 		Assertions.assertThrows(CittadinoException.class, () -> cittadiniServizioService.creaNuovoCittadino(servizio.getId(), nuovoCittadinoRequest));
 		assertThatExceptionOfType(CittadinoException.class);
 	}
@@ -241,6 +246,8 @@ public class CittadiniServizioServiceTest {
 				nuovoCittadinoRequest.getCodiceFiscale(),
 				nuovoCittadinoRequest.getNumeroDocumento()
 			)).thenReturn(Optional.of(cittadino));
+		when(this.servizioSqlRepository.findByFacilitatoreAndIdServizio(nuovoCittadinoRequest.getCfUtenteLoggato(), servizio.getId())).thenReturn(Optional.of(new ServizioEntity()));
+
 		when(this.servizioXCittadinoRepository.findCittadinoByIdServizioAndIdCittadino(servizio.getId(), cittadino.getId())).thenReturn(1);
 		Assertions.assertThrows(CittadinoException.class, () -> cittadiniServizioService.creaNuovoCittadino(servizio.getId(), nuovoCittadinoRequest));
 		assertThatExceptionOfType(CittadinoException.class);
@@ -314,15 +321,15 @@ public class CittadiniServizioServiceTest {
 		cittadiniServizioService.popolaCittadino(cittadino, cittadinoUpload);
 	}
 	
-	@Test
-	public void esisteCodFiscaleODocumentoTest() {
-		//test con codice fiscale
-		cittadiniServizioService.esisteCodFiscaleODocumento(cittadinoUpload);
-		
-		//test con numero documento
-		cittadinoUpload.setCodiceFiscale(null);
-		cittadiniServizioService.esisteCodFiscaleODocumento(cittadinoUpload);
-	}
+//	@Test
+//	public void esisteCodFiscaleODocumentoTest() {
+//		//test con codice fiscale
+//		cittadiniServizioService.esisteCodFiscaleODocumento(cittadinoUpload);
+//		
+//		//test con numero documento
+//		cittadinoUpload.setCodiceFiscale(null);
+//		cittadiniServizioService.esisteCodFiscaleODocumento(cittadinoUpload);
+//	}
 	
 	@Test
 	public void inviaQuestionarioTest() {
@@ -358,8 +365,10 @@ public class CittadiniServizioServiceTest {
 	
 	@Test
 	public void inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizioTest() {
+		when(this.servizioSqlRepository.findByFacilitatoreAndIdServizio(profilazione.getCfUtenteLoggato(), servizio.getId())).thenReturn(Optional.of(new ServizioEntity()));
+
 		when(this.questionarioCompilatoSqlRepository.findByIdServizioAndStato(servizio.getId(), StatoQuestionarioEnum.NON_INVIATO.toString())).thenReturn(listaQuestionariCompilati);
-		cittadiniServizioService.inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizio(servizio.getId());
+		cittadiniServizioService.inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizio(servizio.getId(), profilazione.getCfUtenteLoggato());
 	}
 	
 //	@Test

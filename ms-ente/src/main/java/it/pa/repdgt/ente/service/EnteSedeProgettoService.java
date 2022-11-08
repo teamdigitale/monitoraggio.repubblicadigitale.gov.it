@@ -22,6 +22,7 @@ import it.pa.repdgt.shared.entity.SedeEntity;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoKey;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.repository.BrokenAccessControlRepository;
 
 @Service
 public class EnteSedeProgettoService {
@@ -36,6 +37,8 @@ public class EnteSedeProgettoService {
 	private EnteSedeProgettoRepository enteSedeProgettoRepository;
 	@Autowired
 	private EnteSedeProgettoFacilitatoreService enteSedeProgettoFacilitatoreService;
+	@Autowired
+	private BrokenAccessControlRepository brokenAccessControlRepository;
 	
 	@LogMethod
 	@LogExecutionTime
@@ -107,6 +110,8 @@ public class EnteSedeProgettoService {
 //					&& esiste almeno un'altra sede ATTIVA con almeno un facilitatore associato
 		EnteSedeProgettoKey id = new EnteSedeProgettoKey(idEnte, idSede, idProgetto);
 		EnteSedeProgetto enteSedeProgettoFetch = this.enteSedeProgettoRepository.findById(id).get();
+		if(enteSedeProgettoFetch == null)
+			throw new EnteSedeProgettoException("Impossibile cancellare associazione Ente-Sede-Progetto perchè inesistente", CodiceErroreEnum.EN09);
 		
 		if(enteSedeProgettoFetch.getStatoSede().equals(StatoEnum.NON_ATTIVO.getValue())) {
 			this.cancellazioneAssociazioneEnteSedeProgetto(idEnte, idSede, idProgetto);
@@ -193,5 +198,25 @@ public class EnteSedeProgettoService {
 	@LogExecutionTime
 	public void salvaEnteSedeProgetto(EnteSedeProgetto sede) {
 		this.enteSedeProgettoRepository.save(sede);
+	}
+
+	public int getCountSediByIdProgramma(Long idSede, Long idProgramma) {
+		return brokenAccessControlRepository.getCountSedeByIdProgramma(idSede, idProgramma);
+	}
+	
+	public int getCountSediByIdProgetto(Long idSede, Long idProgetto) {
+		return brokenAccessControlRepository.getCountSedeByIdProgetto(idSede, idProgetto);
+	}
+	
+	public int getCountSediByIdProgettoAndEnte(Long idSede, Long idProgetto, Long Ente) {
+		return brokenAccessControlRepository.getCountSedeByIdProgettoAndEnte(idSede, idProgetto, Ente);
+	}
+	
+	public int getCountSediByIdProgettoAndEnteAndFacilitatore(Long idSede, Long idProgetto, Long Ente, String codiceFiscale) {
+		return brokenAccessControlRepository.getCountSedeByIdProgettoAndEnteAndFacilitatore(idSede, idProgetto, Ente, codiceFiscale);
+	}
+	
+	public int getCountSediByPolicy(Long idSede) {
+		return brokenAccessControlRepository.getCountSedeByPolicy(idSede);
 	}
 }

@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,6 +57,8 @@ public class ServizioCittadinoRestApi {
 	private GetCittadinoServizioMapper getCittadinoServizioMapper;
 	@Autowired
 	private QuestionarioCompilatoService questionarioCompilatoService;
+	
+	private static final String ERROR_MESSAGE_PERMESSO = "Errore tentavo accesso a risorsa non permesso";
 
 	@PostMapping(path = "/all/{idServizio}")	
 	@ResponseStatus(value = HttpStatus.OK)
@@ -101,7 +105,8 @@ public class ServizioCittadinoRestApi {
 		filtroListaCittadiniServizioParam.setStatiQuestionario(statiQuestionarioFiltro == null ? Collections.emptyList() : statiQuestionarioFiltro);
 		return this.cittadiniServizioService.getAllStatiQuestionarioCittadinoServizioDropdown(
 				idServizio,
-				filtroListaCittadiniServizioParam
+				filtroListaCittadiniServizioParam,
+				profilazioneParam
 			);
 	}
 	
@@ -130,11 +135,14 @@ public class ServizioCittadinoRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<CittadinoUploadBean> caricaListaCittadini(
 			@RequestPart MultipartFile file,
-			@PathVariable(value = "idServizio") Long idServizio) {
+			@PathVariable(value = "idServizio") Long idServizio,
+			@ModelAttribute SceltaProfiloParam sceltaProfilo,
+			HttpServletRequest request) {
+
 		if (file == null || !CSVServizioUtil.hasExcelFormat(file)) {
 			throw new ServizioException("il file non è valido", CodiceErroreEnum.S01);
 		}
-		return this.cittadiniServizioService.caricaCittadiniSuServizio(file, idServizio);
+		return this.cittadiniServizioService.caricaCittadiniSuServizio(file, idServizio, request.getAttribute("cfUtenteLoggato").toString());
 	}
 	
 	/**
@@ -145,7 +153,11 @@ public class ServizioCittadinoRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void inviaQuestionario(
 			@RequestParam(value = "idQuestionario") String idQuestionario,
-			@RequestParam(value = "idCittadino") Long idCittadino ) {
+			@RequestParam(value = "idCittadino") Long idCittadino,
+			@RequestBody SceltaProfiloParam sceltaProfilo) {
+		if(!cittadiniServizioService.checkPermessoIdQuestionarioCompilato(sceltaProfilo, idQuestionario)) {
+			new ServizioException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
+		}
 		this.cittadiniServizioService.inviaQuestionario(idQuestionario, idCittadino);
 	}
 	/**
@@ -155,8 +167,9 @@ public class ServizioCittadinoRestApi {
 	 * */
 	@PostMapping(path = "servizio/{idServizio}/questionarioCompilato/inviaATutti")
 	@ResponseStatus(value = HttpStatus.OK)
-	public void inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizio(@PathVariable(value = "idServizio") Long idServizio) {
-		this.cittadiniServizioService.inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizio(idServizio);
+	public void inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizio(@PathVariable(value = "idServizio") Long idServizio,
+			@RequestBody SceltaProfiloParam sceltaProfilo) {
+		this.cittadiniServizioService.inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizio(idServizio, sceltaProfilo.getCfUtenteLoggato());
 	}
 
 	/**
@@ -181,6 +194,9 @@ public class ServizioCittadinoRestApi {
 	public void compilaQuestionario(
 			@PathVariable(value = "idQuestionario") String idQuestionario,
 			@Valid @RequestBody QuestionarioCompilatoRequest questionarioCompilatoRequest) {
+		if(!cittadiniServizioService.checkPermessoIdQuestionarioCompilato(questionarioCompilatoRequest, idQuestionario)) {
+			new ServizioException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
+		}
 		this.questionarioCompilatoService.compilaQuestionario(idQuestionario, questionarioCompilatoRequest);
 	}
 	
@@ -197,15 +213,30 @@ public class ServizioCittadinoRestApi {
 		this.questionarioCompilatoService.compilaQuestionarioAnonimo(idQuestionario, questionarioCompilatoAnonimoRequest, t);
 	}
 	
+	/***
+	 * Restituisce il questionario compilato con specifico id persistito su mongoDB
+	 * 
+	 * */
+	@Deprecated
+	@GetMapping(path = "questionarioCompilato/compilato/{idQuestionarioCompilato}",  produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(value = HttpStatus.OK)
+	public QuestionarioCompilatoCollection getQuestioanarioCompilatoById(
+			@PathVariable(value = "idQuestionarioCompilato") final String questionarioCompilatoId) {
+		return this.questionarioCompilatoService.getQuestionarioCompilatoById(questionarioCompilatoId);
+	}
 	
 	/***
 	 * Restituisce il questionario compilato con specifico id persistito su mongoDB
 	 * 
 	 * */
-	@GetMapping(path = "questionarioCompilato/compilato/{idQuestionarioCompilato}",  produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "questionarioCompilato/compilato/{idQuestionarioCompilato}",  produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
-	public QuestionarioCompilatoCollection getQuestioanarioCompilatoById(
-			@PathVariable(value = "idQuestionarioCompilato") final String questionarioCompilatoId) {
+	public QuestionarioCompilatoCollection getQuestioanarioCompilatoByIdAndSceltaProfilo(
+			@PathVariable(value = "idQuestionarioCompilato") final String questionarioCompilatoId,
+			@RequestBody SceltaProfiloParam sceltaProfilo) {
+		if(!cittadiniServizioService.checkPermessoIdQuestionarioCompilato(sceltaProfilo, questionarioCompilatoId)) {
+			new ServizioException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
+		}
 		return this.questionarioCompilatoService.getQuestionarioCompilatoById(questionarioCompilatoId);
 	}
 }

@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
 import it.pa.repdgt.programmaprogetto.request.TerminaRequest;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -46,6 +47,8 @@ public class ProgettoRestApiMockMvcTest {
 		nuovoProgettoRequest.setNomeBreve("progettoTestcrea");
 		nuovoProgettoRequest.setDataInizio(new Date());
 		nuovoProgettoRequest.setDataFineProgetto(new Date());
+		nuovoProgettoRequest.setCfUtenteLoggato("SMTPAL67R31F111X");
+		nuovoProgettoRequest.setCodiceRuoloUtenteLoggato("DTD");
 		
 		this.mockMvc
 			.perform(
@@ -60,9 +63,14 @@ public class ProgettoRestApiMockMvcTest {
 	
 	@Test
 	public void assegnaGestoreAlProgettoTest() throws Exception {
+		SceltaProfiloParam sceltaProfiloParam = new SceltaProfiloParam();
+		sceltaProfiloParam.setCfUtenteLoggato("SMTPAL67R31F111X");
+		sceltaProfiloParam.setCodiceRuoloUtenteLoggato("DTD");
 		this.mockMvc
 		.perform(
 				put("/progetto/250/assegna/enteGestore/1000")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsBytes(sceltaProfiloParam))
 				)
 		.andDo(print())
 		.andExpect(status()
@@ -71,9 +79,14 @@ public class ProgettoRestApiMockMvcTest {
 	
 	@Test
 	public void cancellazioneProgettoTest() throws Exception {
+		SceltaProfiloParam sceltaProfiloParam = new SceltaProfiloParam();
+		sceltaProfiloParam.setCfUtenteLoggato("SMTPAL67R31F111X");
+		sceltaProfiloParam.setCodiceRuoloUtenteLoggato("DTD");
 		this.mockMvc
 		.perform(
 				delete("/progetto/261")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsBytes(sceltaProfiloParam))
 				)
 		.andDo(print())
 		.andExpect(status()
@@ -84,6 +97,8 @@ public class ProgettoRestApiMockMvcTest {
 	public void terminaProgettoTest() throws Exception {
 		TerminaRequest terminaRequest = new TerminaRequest();
 		terminaRequest.setDataTerminazione("15-07-2022");
+		terminaRequest.setCfUtenteLoggato("SMTPAL67R31F111X");
+		terminaRequest.setCodiceRuoloUtenteLoggato("DTD");
 		
 		this.mockMvc
 		.perform(
@@ -98,9 +113,14 @@ public class ProgettoRestApiMockMvcTest {
 	
 	@Test
 	public void attivaProgettoTest() throws Exception {
+		SceltaProfiloParam sceltaProfiloParam = new SceltaProfiloParam();
+		sceltaProfiloParam.setCfUtenteLoggato("SMTPAL67R31F111X");
+		sceltaProfiloParam.setCodiceRuoloUtenteLoggato("DTD");
 		this.mockMvc
 		.perform(
 				put("/progetto/attiva/260")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsBytes(sceltaProfiloParam))
 				)
 		.andDo(print())
 		.andExpect(status()

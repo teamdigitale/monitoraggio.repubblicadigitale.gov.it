@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.pa.repdgt.programmaprogetto.bean.SchedaProgettoBean;
+import it.pa.repdgt.programmaprogetto.exception.ProgettoException;
 import it.pa.repdgt.programmaprogetto.mapper.ProgettoMapper;
 import it.pa.repdgt.programmaprogetto.request.ProgettiParam;
 import it.pa.repdgt.programmaprogetto.request.ProgettoFiltroRequest;
@@ -36,9 +37,11 @@ import it.pa.repdgt.programmaprogetto.resource.CreaProgettoResource;
 import it.pa.repdgt.programmaprogetto.resource.PaginaProgetti;
 import it.pa.repdgt.programmaprogetto.resource.ProgettiLightResourcePaginati;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
+import it.pa.repdgt.programmaprogetto.service.AccessControServiceUtils;
 import it.pa.repdgt.programmaprogetto.service.ProgettoService;
 import it.pa.repdgt.programmaprogetto.util.CSVProgettoUtil;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 
 @RestController
@@ -48,6 +51,10 @@ public class ProgettoRestApi {
 	private ProgettoService progettoService;
 	@Autowired
 	private ProgettoMapper progettoMapper;
+	@Autowired
+	private AccessControServiceUtils accessControServiceUtils;
+	
+	private static final String ERROR_MESSAGE_PERMESSO = "Errore tentavo accesso a risorsa non permesso";
 	
 	// 3.1 - lista progetti paginata 
 	@PostMapping(path = "/all")
@@ -89,6 +96,7 @@ public class ProgettoRestApi {
 	}
 	
 	// Scheda Progetto
+	@Deprecated
 	@GetMapping(path = "/{idProgetto}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaProgettoBean getSchedaProgettoById(@PathVariable(value = "idProgetto") Long idProgetto) {
@@ -101,6 +109,8 @@ public class ProgettoRestApi {
 	public SchedaProgettoBean getSchedaProgettoByIdByProfilo(
 			@PathVariable(value = "idProgetto") Long idProgetto,
 			@RequestBody SceltaProfiloParam sceltaProfiloParam) {
+		if(!accessControServiceUtils.checkPermessoIdProgetto(sceltaProfiloParam, idProgetto))
+			throw new ProgettoException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		return this.progettoService.getSchedaProgettoByIdAndSceltaProfilo(idProgetto, sceltaProfiloParam);
 	}
 	
@@ -118,6 +128,8 @@ public class ProgettoRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void aggiornaProgetto(@PathVariable(value = "idProgetto") Long idProgetto,
 								 @RequestBody @Valid ProgettoRequest progettoRequest) {
+		if(!accessControServiceUtils.checkPermessoIdProgetto(progettoRequest, idProgetto))
+			throw new ProgettoException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.progettoService.aggiornaProgetto(progettoRequest, idProgetto);
 	}
 
@@ -125,9 +137,12 @@ public class ProgettoRestApi {
 	@PutMapping(path = "/{idProgetto}/assegna/enteGestore/{idEnteGestore}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void assegnaGestoreAlProgetto(
-			@PathVariable(value = "idProgetto")    Long idProg, 
-			@PathVariable(value = "idEnteGestore") Long idEnteGest) {
-		this.progettoService.assegnaEnteGestoreProgetto(idProg, idEnteGest);
+			@PathVariable(value = "idProgetto")    Long idProgetto, 
+			@PathVariable(value = "idEnteGestore") Long idEnteGest,
+			@RequestBody SceltaProfiloParam sceltaProfiloParama) {
+		if(!accessControServiceUtils.checkPermessoIdProgetto(sceltaProfiloParama, idProgetto))
+			throw new ProgettoException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
+		this.progettoService.assegnaEnteGestoreProgetto(idProgetto, idEnteGest);
 	}
 	
 	// 3.9 - Termina Progetto
@@ -136,6 +151,8 @@ public class ProgettoRestApi {
 	public void terminaProgetto(
 			@PathVariable(value = "idProgetto") Long idProgetto, 
 			@RequestBody TerminaRequest terminaRequest) throws ParseException {
+		if(!accessControServiceUtils.checkPermessoIdProgetto(terminaRequest, idProgetto))
+			throw new ProgettoException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		SimpleDateFormat sdf= new SimpleDateFormat("dd-MM-yyyy");
 		this.progettoService.terminaProgetto(idProgetto, sdf.parse(terminaRequest.getDataTerminazione()));
 	}
@@ -143,15 +160,21 @@ public class ProgettoRestApi {
 	// 3.10 - Delete Progetto
 	@DeleteMapping("/{idProgetto}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void cancellazioneProgetto(@PathVariable(value = "idProgetto") Long id){
-		this.progettoService.cancellazioneProgetto(id);
+	public void cancellazioneProgetto(@PathVariable(value = "idProgetto") Long idProgetto,
+			@RequestBody SceltaProfiloParam sceltaProfiloParama) {
+		if(!accessControServiceUtils.checkPermessoIdProgetto(sceltaProfiloParama, idProgetto))
+			throw new ProgettoException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
+		this.progettoService.cancellazioneProgetto(idProgetto);
 	}
 	
 	// 3.11 - Attiva Progetto
 	@PutMapping(path = "/attiva/{idProgetto}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void attivaProgetto(
-			@PathVariable(value = "idProgetto") Long idProgetto) {
+			@PathVariable(value = "idProgetto") Long idProgetto,
+			@RequestBody SceltaProfiloParam sceltaProfiloParama) {
+		if(!accessControServiceUtils.checkPermessoIdProgetto(sceltaProfiloParama, idProgetto))
+			throw new ProgettoException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.progettoService.attivaProgetto(idProgetto);
 	}
 	

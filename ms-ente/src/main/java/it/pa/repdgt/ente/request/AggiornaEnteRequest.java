@@ -8,12 +8,13 @@ import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class AggiornaEnteRequest implements Serializable {
+public class AggiornaEnteRequest extends SceltaProfiloParam implements Serializable {
 	private static final long serialVersionUID = 3778729425460145918L;
 
 	@NotNull

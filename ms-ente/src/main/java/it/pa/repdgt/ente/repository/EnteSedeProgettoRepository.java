@@ -48,6 +48,6 @@ public interface EnteSedeProgettoRepository extends JpaRepository<EnteSedeProget
 			+ "WHERE esp.ID_ENTE = :idEnte "
 			+ "		AND esp.ID_PROGETTO = :idProgetto ", 
 			nativeQuery = true)
-	public List<EnteSedeProgetto> findSediPerProgettoAndEnte(Long idEnte, Long idProgetto); 
+	public List<EnteSedeProgetto> findSediPerProgettoAndEnte(Long idEnte, Long idProgetto);
 	
 }
