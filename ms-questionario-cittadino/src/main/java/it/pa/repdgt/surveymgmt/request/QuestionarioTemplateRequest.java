@@ -10,6 +10,7 @@ import javax.validation.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.annotation.JsonString;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +18,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @JsonRootName(value = "QuestionarioTemplate")
-public class QuestionarioTemplateRequest implements Serializable {
+public class QuestionarioTemplateRequest extends SceltaProfiloParam implements Serializable {
 	private static final long serialVersionUID = -8965868376040729013L;
 
 	@JsonProperty(value = "survey-name")

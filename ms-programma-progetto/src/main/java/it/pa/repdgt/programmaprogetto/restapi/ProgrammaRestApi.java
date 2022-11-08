@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.pa.repdgt.programmaprogetto.bean.SchedaProgrammaBean;
+import it.pa.repdgt.programmaprogetto.exception.ProgrammaException;
 import it.pa.repdgt.programmaprogetto.mapper.ProgrammaMapper;
 import it.pa.repdgt.programmaprogetto.request.FiltroRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammaRequest;
@@ -36,9 +37,11 @@ import it.pa.repdgt.programmaprogetto.request.TerminaRequest;
 import it.pa.repdgt.programmaprogetto.resource.CreaProgrammaResource;
 import it.pa.repdgt.programmaprogetto.resource.PaginaProgrammi;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammiLightResourcePaginata;
+import it.pa.repdgt.programmaprogetto.service.AccessControServiceUtils;
 import it.pa.repdgt.programmaprogetto.service.ProgrammaService;
 import it.pa.repdgt.programmaprogetto.util.CSVProgrammaUtil;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 
 @RestController
@@ -49,6 +52,10 @@ public class ProgrammaRestApi {
 	private ProgrammaService programmaService;
 	@Autowired
 	private ProgrammaMapper programmaMapper;
+	@Autowired
+	private AccessControServiceUtils accessControServiceUtils;
+	
+	private static final String ERROR_MESSAGE_PERMESSO = "Errore tentavo accesso a risorsa non permesso";
 	
 	//2.1 Lista programmi paginata e filtrata per ruolo utente 
 	@PostMapping(path = "/all")
@@ -81,6 +88,7 @@ public class ProgrammaRestApi {
 	}
 	
 	//scheda programma
+	@Deprecated
 	@GetMapping(path = "/{idProgramma}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaProgrammaBean getSchedaProgrammaById(@PathVariable(value = "idProgramma") Long idProgramma) {
@@ -93,6 +101,8 @@ public class ProgrammaRestApi {
 	public SchedaProgrammaBean getSchedaProgrammaByIdAndSceltaProfilo(
 			@PathVariable(value = "idProgramma") Long idProgramma,
 			@RequestBody SceltaProfiloParam sceltaProfiloParam) {
+		if(!accessControServiceUtils.checkPermessoIdProgramma(sceltaProfiloParam, idProgramma))
+			throw new ProgrammaException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		return this.programmaService.getSchedaProgrammaByIdAndSceltaProfilo(idProgramma, sceltaProfiloParam);
 	}
 	
@@ -110,6 +120,8 @@ public class ProgrammaRestApi {
 	public void aggiornaProgramma(
 			@PathVariable(value = "idProgramma") final Long idProgramma,
 			@RequestBody @Valid final ProgrammaRequest programmaRequest) {
+		if(!accessControServiceUtils.checkPermessoIdProgramma(programmaRequest, idProgramma))
+			throw new ProgrammaException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.programmaService.aggiornaProgramma(programmaRequest, idProgramma);
 	}
 	
@@ -118,7 +130,10 @@ public class ProgrammaRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void assegnaEnteGestoreProgrammaAlProgramma(
 			@PathVariable(value = "idProgramma")   Long idProgramma, 
-			@PathVariable(value = "idEnteGestore") Long idEnteGestore) {
+			@PathVariable(value = "idEnteGestore") Long idEnteGestore,
+			@RequestBody SceltaProfiloParam sceltaProfiloParam) {
+		if(!accessControServiceUtils.checkPermessoIdProgramma(sceltaProfiloParam, idProgramma))
+			throw new ProgrammaException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.programmaService.assegnaEnteGestoreProgramma(idProgramma, idEnteGestore);
 	}
 	
@@ -127,7 +142,10 @@ public class ProgrammaRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void associaQuestionarioTemplateAProgramma(
 			@PathVariable(value = "idProgramma")    Long idProgramma, 
-			@PathVariable(value = "idQuestionario") String idQuestionario) {
+			@PathVariable(value = "idQuestionario") String idQuestionario,
+			@RequestBody SceltaProfiloParam sceltaProfiloParam) {
+		if(!accessControServiceUtils.checkPermessoIdProgramma(sceltaProfiloParam, idProgramma))
+			throw new ProgrammaException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.programmaService.associaQuestionarioTemplateAProgramma(idProgramma, idQuestionario);
 	}
 	
@@ -137,6 +155,8 @@ public class ProgrammaRestApi {
 	public void terminaProgramma(
 			@PathVariable(value = "idProgramma") Long idProgramma, 
 			@RequestBody TerminaRequest terminaRequest) throws ParseException {
+		if(!accessControServiceUtils.checkPermessoIdProgramma(terminaRequest, idProgramma))
+			throw new ProgrammaException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		SimpleDateFormat sdf= new SimpleDateFormat("dd-MM-yyyy");
 		this.programmaService.terminaProgramma(idProgramma, sdf.parse(terminaRequest.getDataTerminazione()));
 	}
@@ -144,7 +164,10 @@ public class ProgrammaRestApi {
 	// 2.10 - Cancellazione Programma
 	@DeleteMapping(path = "/{idProgramma}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void cancellazioneProgramma(@PathVariable(value = "idProgramma") Long idProgramma) {
+	public void cancellazioneProgramma(@PathVariable(value = "idProgramma") Long idProgramma,
+			@RequestBody SceltaProfiloParam sceltaProfiloParam) {
+		if(!accessControServiceUtils.checkPermessoIdProgramma(sceltaProfiloParam, idProgramma))
+			throw new ProgrammaException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.programmaService.cancellazioneProgramma(idProgramma);
 	}
 	

@@ -4,12 +4,13 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class NuovoCittadinoServizioRequest implements Serializable {
+public class NuovoCittadinoServizioRequest extends SceltaProfiloParam implements Serializable {
 	private static final long serialVersionUID = 443289012578169806L;
 
 	@JsonProperty(value = "nome")

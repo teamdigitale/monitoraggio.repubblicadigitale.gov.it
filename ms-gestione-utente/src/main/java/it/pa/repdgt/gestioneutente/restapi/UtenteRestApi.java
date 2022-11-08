@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import it.pa.repdgt.gestioneutente.bean.SchedaUtenteBean;
+import it.pa.repdgt.gestioneutente.bean.SchedaUtenteBeanLight;
 import it.pa.repdgt.gestioneutente.dto.UtenteDto;
 import it.pa.repdgt.gestioneutente.exception.UtenteException;
 import it.pa.repdgt.gestioneutente.mapper.UtenteMapper;
@@ -41,6 +42,7 @@ import it.pa.repdgt.gestioneutente.resource.UtenteResource;
 import it.pa.repdgt.gestioneutente.resource.UtentiLightResourcePaginata;
 import it.pa.repdgt.gestioneutente.service.UtenteService;
 import it.pa.repdgt.gestioneutente.util.CSVUtil;
+import it.pa.repdgt.shared.RequestWrapper;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.light.UtenteLightEntity;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
@@ -74,7 +76,7 @@ public class UtenteRestApi {
 
 		return listaPaginataUtentiResource;
 	}
-	
+
 	// Cerca Utente
 	@GetMapping(path = "/cerca/{criterioRicerca}")
 	@ResponseStatus(value = HttpStatus.OK)
@@ -82,7 +84,7 @@ public class UtenteRestApi {
 		List<UtenteEntity> utentiCercati = this.utenteService.getUtenteByCriterioRicerca(criterioRicerca);
 		return this.utenteMapper.toUtenteLightEntityFrom(utentiCercati);
 	}
-	
+
 	// CRUD Crea Utente
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
@@ -90,16 +92,19 @@ public class UtenteRestApi {
 		UtenteEntity utenteEntity = this.utenteMapper.toUtenteEntityFrom(nuovoUtenteRequest);
 		return new UtenteResource(this.utenteService.creaNuovoUtente(utenteEntity, nuovoUtenteRequest.getRuolo()).getId());
 	}
-	
+
 	// Update Utente
 	@PutMapping(path = "/{idUtente}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void aggiornaUtente(
 			@PathVariable(value = "idUtente") Long idUtente,
 			@RequestBody @Valid AggiornaUtenteRequest aggiornaUtenteRequest) {
+//		if(!utenteService.isAutorizzatoForGetSchedaUtenteByIdUtente(idUtente, aggiornaUtenteRequest)) {
+//			throw new UtenteException("Errore permesso accesso alla risorsa", CodiceErroreEnum.A02);
+//		}
 		this.utenteService.aggiornaUtente(aggiornaUtenteRequest, idUtente);
 	}
-	
+
 	// Lista Stati Utenti Dropdown
 	@PostMapping(path = "/stati/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
@@ -108,7 +113,7 @@ public class UtenteRestApi {
 		List<String> statiDropdown = this.utenteService.getAllStatiDropdown(sceltaContesto);
 		return statiDropdown;
 	}
-	
+
 	// Lista Ruoli Utenti Dropdown
 	@PostMapping(path = "/ruoli/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
@@ -117,20 +122,25 @@ public class UtenteRestApi {
 		List<String> ruoliDropdown = this.utenteService.getAllRuoliDropdown(sceltaContesto);
 		return ruoliDropdown;
 	}
-	
-	// Scheda Utente
-	@GetMapping(path = "/{idUtente}")
-	@ResponseStatus(value = HttpStatus.OK)
-	public SchedaUtenteBean getSchedaUtenteByIdUtente(@PathVariable(value = "idUtente") Long idUtente) {
-		return this.utenteService.getSchedaUtenteByIdUtente(idUtente);
-	}
-	
+
 	// Scheda Utente
 	@PostMapping(path = "/{idUtente}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public SchedaUtenteBean getSchedaUtenteByIdUtente(@PathVariable(value = "idUtente") Long idUtente,
+	public SchedaUtenteBean getSchedaUtenteByIdUtente(
+			@PathVariable(value = "idUtente") Long idUtente,
 			@RequestBody SceltaProfiloParam sceltaProfilo) {
+		if(!utenteService.isAutorizzatoForGetSchedaUtenteByIdUtente(idUtente, sceltaProfilo)) {
+			throw new UtenteException("Errore permesso accesso alla risorsa", CodiceErroreEnum.A02);
+		}
 		return this.utenteService.getSchedaUtenteByIdUtente(idUtente, sceltaProfilo);
+	}
+
+	// Scheda Utente light
+	@GetMapping(path = "/light/{idUtente}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public SchedaUtenteBeanLight getSchedaUtenteLightByIdUtente(
+			@PathVariable(value = "idUtente") Long idUtente) {
+		return this.utenteService.getSchedaUtenteByIdUtenteLight(idUtente);
 	}
 
 	// Associa Ruolo ad Utente
@@ -141,7 +151,7 @@ public class UtenteRestApi {
 			@PathVariable(value = "codiceRuolo") String codiceRuolo) {
 		this.utenteService.assegnaRuoloAUtente(idUtente, codiceRuolo);
 	}
-	
+
 	@PostMapping(path = "/listaUtenti")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<UtenteImmagineResource> getListaUtentiByIdUtenti(@RequestBody ListaUtentiResource listaIdsUtenti,
@@ -149,7 +159,7 @@ public class UtenteRestApi {
 		List<UtenteImmagineResource> listaUtenti = this.utenteService.getListaUtentiByIdUtenti(listaIdsUtenti, richiediImmagine);
 		return listaUtenti;
 	}
-	
+
 	// Cancella Ruolo da Utente
 	@DeleteMapping(path = "/{idUtente}/cancellaRuolo/{codiceRuolo}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
@@ -162,40 +172,53 @@ public class UtenteRestApi {
 	// Delete Utente
 	@DeleteMapping(path = "/{idUtente}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void cancellaUtente(@PathVariable(value = "idUtente") Long idUtente) {
+	public void cancellaUtente(@PathVariable(value = "idUtente") Long idUtente,
+			@RequestBody SceltaProfiloParam sceltaProfilo) {
+		if(!utenteService.isAutorizzatoForGetSchedaUtenteByIdUtente(idUtente, sceltaProfilo)) {
+			throw new UtenteException("Errore permesso accesso alla risorsa", CodiceErroreEnum.A02);
+		}
 		this.utenteService.cancellaUtente(idUtente);
 	}
-	
+
 	// Scarica lista utenti in formato csv
 	@PostMapping(path = "/download")
 	public ResponseEntity<InputStreamResource> downloadListaCSVUtenti(@RequestBody @Valid UtenteRequest sceltaContesto) {
 		List<UtenteDto> listaUtentiDto = this.utenteService.getUtentiPerDownload(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest());
 		ByteArrayInputStream byteArrayInputStream = CSVUtil.exportCSVUtenti(listaUtentiDto, CSVFormat.DEFAULT);
 		InputStreamResource fileCSV = new InputStreamResource(byteArrayInputStream);
-		
+
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=utenti.csv")
 				.contentType(MediaType.parseMediaType("application/csv"))
 				.body(fileCSV);
 	}
-	
+
 	@PostMapping(path = "/upload/immagineProfilo/{idUtente}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	public String uploadImmagineProfiloUtente(
 			@PathVariable(value = "idUtente") Long idUtente,
-			@RequestPart MultipartFile multipartifile) throws IOException {
-		log.info("multipartfile={}", multipartifile == null? "null": "diverso da null");
-		log.info("multipartfile.getContentType={}", multipartifile == null? "null": multipartifile.getContentType());
+			@RequestPart MultipartFile multipartifile,
+			RequestWrapper request) throws IOException {
+
+		final String codiceFiscaleUtenteLoggato = request.getCodiceFiscale();
+		UtenteEntity utenteFetchDb = this.utenteService.getUtenteById(idUtente);
+		if(utenteFetchDb == null) {
+			throw new UtenteException("Utente non esistente", CodiceErroreEnum.C01);
+		}
+		if(!utenteFetchDb.getCodiceFiscale().equalsIgnoreCase(codiceFiscaleUtenteLoggato)) {
+			throw new UtenteException("Errore permesso accesso alla risorsa", CodiceErroreEnum.A02);
+		}
+
 		List<String> IMAGE_TYPES_ALLOWED = Arrays.asList("jpg", "jpeg", "png", "image/jpg", "image/jpeg", "image/png");
 		if (multipartifile == null || !IMAGE_TYPES_ALLOWED.contains(multipartifile.getContentType().toLowerCase()))  {
 			throw new UtenteException("il file non è valido", CodiceErroreEnum.U22); 
 		}
 		return this.utenteService.uploadImmagineProfiloUtente(idUtente, multipartifile);
 	}
-	
+
 	@GetMapping(path = "/download/immagineProfilo/{nomeFile}")
 	public String downloadImmagineProfiloUtentePresigned(
 			@PathVariable(value = "nomeFile") final String nomeFile) throws IOException {
-		
+
 		return this.utenteService.downloadImmagineProfiloUtente(nomeFile);
 	}
 }

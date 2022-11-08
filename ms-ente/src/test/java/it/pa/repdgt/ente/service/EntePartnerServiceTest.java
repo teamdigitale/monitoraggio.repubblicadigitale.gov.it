@@ -100,10 +100,10 @@ public class EntePartnerServiceTest {
 		listaReferentiDelegati = new ArrayList<>();
 		listaReferentiDelegati.add(referentiDelegatiEntePartnerDiProgettoEntity);
 		referenteDelegatoPartnerRequest = new ReferenteDelegatoPartnerRequest();
-		referenteDelegatoPartnerRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
-		referenteDelegatoPartnerRequest.setCodiceRuolo("DEPP");
+		referenteDelegatoPartnerRequest.setCfReferenteDelegato(utente1.getCodiceFiscale());
+		referenteDelegatoPartnerRequest.setCodiceRuoloRefDeg("DEPP");
 		referenteDelegatoPartnerRequest.setIdEntePartner(ente1.getId());
-		referenteDelegatoPartnerRequest.setIdProgetto(progetto1.getId());
+		referenteDelegatoPartnerRequest.setIdProgettoDelPartner(progetto1.getId());
 		referenteDelegatoPartnerRequest.setMansione("mansione");
 		listaIdEntiPartner = new ArrayList<>();
 		listaIdEntiPartner.add(ente1.getId());
@@ -146,7 +146,7 @@ public class EntePartnerServiceTest {
 	@Test
 	public void cancellaOTerminaAssociazioneReferenteODelegatoPartnerTest() {
 		//test con stato utente ad ATTIVO
-		when(this.referentiDelegatiEntePartnerDiProgettoService.getReferenteDelegatoEntePartner(referenteDelegatoPartnerRequest.getIdProgetto(), referenteDelegatoPartnerRequest.getCodiceFiscaleUtente(), referenteDelegatoPartnerRequest.getIdEntePartner(), referenteDelegatoPartnerRequest.getCodiceRuolo())).thenReturn(referentiDelegatiEntePartnerDiProgettoEntity);
+		when(this.referentiDelegatiEntePartnerDiProgettoService.getReferenteDelegatoEntePartner(referenteDelegatoPartnerRequest.getIdProgettoDelPartner(), referenteDelegatoPartnerRequest.getCfReferenteDelegato(), referenteDelegatoPartnerRequest.getIdEntePartner(), referenteDelegatoPartnerRequest.getCodiceRuoloRefDeg())).thenReturn(referentiDelegatiEntePartnerDiProgettoEntity);
 		entePartnerService.cancellaOTerminaAssociazioneReferenteODelegatoPartner(referenteDelegatoPartnerRequest);
 	}
 	
@@ -154,10 +154,10 @@ public class EntePartnerServiceTest {
 	public void cancellaOTerminaAssociazioneReferenteODelegatoPartnerTest2() {
 		//test con stato utente a NON ATTIVO
 		referentiDelegatiEntePartnerDiProgettoEntity.setStatoUtente("NON ATTIVO");
-		when(this.referentiDelegatiEntePartnerDiProgettoService.getReferenteDelegatoEntePartner(referenteDelegatoPartnerRequest.getIdProgetto(), referenteDelegatoPartnerRequest.getCodiceFiscaleUtente(), referenteDelegatoPartnerRequest.getIdEntePartner(), referenteDelegatoPartnerRequest.getCodiceRuolo())).thenReturn(referentiDelegatiEntePartnerDiProgettoEntity);
+		when(this.referentiDelegatiEntePartnerDiProgettoService.getReferenteDelegatoEntePartner(referenteDelegatoPartnerRequest.getIdProgettoDelPartner(), referenteDelegatoPartnerRequest.getCfReferenteDelegato(), referenteDelegatoPartnerRequest.getIdEntePartner(), referenteDelegatoPartnerRequest.getCodiceRuoloRefDeg())).thenReturn(referentiDelegatiEntePartnerDiProgettoEntity);
 		doAnswer(invocation -> {
 			return null;
-		}).when(this.ruoloService).cancellaRuoloUtente(referenteDelegatoPartnerRequest.getCodiceFiscaleUtente(), referenteDelegatoPartnerRequest.getCodiceRuolo());
+		}).when(this.ruoloService).cancellaRuoloUtente(referenteDelegatoPartnerRequest.getCfReferenteDelegato(), referenteDelegatoPartnerRequest.getCodiceRuoloRefDeg());
 		entePartnerService.cancellaOTerminaAssociazioneReferenteODelegatoPartner(referenteDelegatoPartnerRequest);
 	}
 	
@@ -192,37 +192,37 @@ public class EntePartnerServiceTest {
 	
 	@Test
 	public void associaReferenteODelegatoPartnerTest() {
-		when(this.progettoService.esisteProgettoById(referenteDelegatoPartnerRequest.getIdProgetto())).thenReturn(true);
+		when(this.progettoService.esisteProgettoById(referenteDelegatoPartnerRequest.getIdProgettoDelPartner())).thenReturn(true);
 		when(this.enteService.esisteEnteById(referenteDelegatoPartnerRequest.getIdEntePartner())).thenReturn(true);
 		when(this.entePartnerRepository.findEntiPartnerByProgetto(progetto1.getId())).thenReturn(listaIdEntiPartner);
 		when(this.utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
 		when(this.referentiDelegatiEntePartnerDiProgettoService.esisteById(Mockito.any(ReferentiDelegatiEntePartnerDiProgettoKey.class))).thenReturn(false);
-		when(this.ruoloService.getRuoloByCodiceRuolo(referenteDelegatoPartnerRequest.getCodiceRuolo())).thenReturn(ruolo1);
+		when(this.ruoloService.getRuoloByCodiceRuolo(referenteDelegatoPartnerRequest.getCodiceRuoloRefDeg())).thenReturn(ruolo1);
 		entePartnerService.associaReferenteODelegatoPartner(referenteDelegatoPartnerRequest);
 	}
 	
 	@Test
 	public void associaReferenteODelegatoPartnerKOTest() {
 		//test KO per progetto inesistente
-		when(this.progettoService.esisteProgettoById(referenteDelegatoPartnerRequest.getIdProgetto())).thenReturn(false);
+		when(this.progettoService.esisteProgettoById(referenteDelegatoPartnerRequest.getIdProgettoDelPartner())).thenReturn(false);
 		Assertions.assertThrows(EnteException.class, () -> 	entePartnerService.associaReferenteODelegatoPartner(referenteDelegatoPartnerRequest));
 		assertThatExceptionOfType(EnteException.class);
 		
 		//test KO per ente inesistente
-		when(this.progettoService.esisteProgettoById(referenteDelegatoPartnerRequest.getIdProgetto())).thenReturn(true);
+		when(this.progettoService.esisteProgettoById(referenteDelegatoPartnerRequest.getIdProgettoDelPartner())).thenReturn(true);
 		when(this.enteService.esisteEnteById(referenteDelegatoPartnerRequest.getIdEntePartner())).thenReturn(false);
 		Assertions.assertThrows(EnteException.class, () -> 	entePartnerService.associaReferenteODelegatoPartner(referenteDelegatoPartnerRequest));
 		assertThatExceptionOfType(EnteException.class);
 		
 		//test KO per assenza di associazione tra progetto e ente partner
-		when(this.progettoService.esisteProgettoById(referenteDelegatoPartnerRequest.getIdProgetto())).thenReturn(true);
+		when(this.progettoService.esisteProgettoById(referenteDelegatoPartnerRequest.getIdProgettoDelPartner())).thenReturn(true);
 		when(this.enteService.esisteEnteById(referenteDelegatoPartnerRequest.getIdEntePartner())).thenReturn(true);
 		when(this.entePartnerRepository.findEntiPartnerByProgetto(progetto1.getId())).thenReturn(new ArrayList<>());
 		Assertions.assertThrows(EnteException.class, () -> 	entePartnerService.associaReferenteODelegatoPartner(referenteDelegatoPartnerRequest));
 		assertThatExceptionOfType(EnteException.class);
 		
 		//test KO per utente inesistente
-		when(this.progettoService.esisteProgettoById(referenteDelegatoPartnerRequest.getIdProgetto())).thenReturn(true);
+		when(this.progettoService.esisteProgettoById(referenteDelegatoPartnerRequest.getIdProgettoDelPartner())).thenReturn(true);
 		when(this.enteService.esisteEnteById(referenteDelegatoPartnerRequest.getIdEntePartner())).thenReturn(true);
 		when(this.entePartnerRepository.findEntiPartnerByProgetto(progetto1.getId())).thenReturn(listaIdEntiPartner);
 		when(this.utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenThrow(ResourceNotFoundException.class);
@@ -233,8 +233,8 @@ public class EntePartnerServiceTest {
 	@Test
 	public void associaReferenteODelegatoPartnerKOTest2() {
 		//test KO per codice ruolo errato
-		referenteDelegatoPartnerRequest.setCodiceRuolo("DSCU");
-		when(this.progettoService.esisteProgettoById(referenteDelegatoPartnerRequest.getIdProgetto())).thenReturn(true);
+		referenteDelegatoPartnerRequest.setCodiceRuoloRefDeg("DSCU");
+		when(this.progettoService.esisteProgettoById(referenteDelegatoPartnerRequest.getIdProgettoDelPartner())).thenReturn(true);
 		when(this.enteService.esisteEnteById(referenteDelegatoPartnerRequest.getIdEntePartner())).thenReturn(true);
 		when(this.entePartnerRepository.findEntiPartnerByProgetto(progetto1.getId())).thenReturn(listaIdEntiPartner);
 		when(this.utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
@@ -245,7 +245,7 @@ public class EntePartnerServiceTest {
 	@Test
 	public void associaReferenteODelegatoPartnerKOTest3() {
 		//test KO per associazione referente/delegato già esistente
-		when(this.progettoService.esisteProgettoById(referenteDelegatoPartnerRequest.getIdProgetto())).thenReturn(true);
+		when(this.progettoService.esisteProgettoById(referenteDelegatoPartnerRequest.getIdProgettoDelPartner())).thenReturn(true);
 		when(this.enteService.esisteEnteById(referenteDelegatoPartnerRequest.getIdEntePartner())).thenReturn(true);
 		when(this.entePartnerRepository.findEntiPartnerByProgetto(progetto1.getId())).thenReturn(listaIdEntiPartner);
 		when(this.utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);

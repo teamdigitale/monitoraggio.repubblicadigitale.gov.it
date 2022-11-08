@@ -248,4 +248,12 @@ public class QuestionarioTemplateSqlService {
 			String nomeQuestionarioTemplate, String idQuestionarioTemplate) {
 		return this.templateQuestionarioSqlRepository.findQuestionarioTemplateByNomeAndIdDiverso(nomeQuestionarioTemplate, idQuestionarioTemplate);
 	}
+
+	public int isQuestionarioAssociatoAProfilo(@NotNull String idQuestionarioTemplate, Long idProgramma) {
+		return this.templateQuestionarioSqlRepository.isQuestionarioAssociatoAProfilo(idQuestionarioTemplate, idProgramma);
+	}
+
+	public int isQuestionarioAssociatoADSCU(@NotNull String idQuestionarioTemplate) {
+		return this.templateQuestionarioSqlRepository.isQuestionarioAssociatoADSCU(idQuestionarioTemplate);
+	}
 }

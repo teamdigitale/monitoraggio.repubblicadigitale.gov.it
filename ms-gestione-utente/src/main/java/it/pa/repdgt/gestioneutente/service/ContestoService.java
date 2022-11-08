@@ -204,7 +204,7 @@ public class ContestoService implements RuoliUtentiConstants{
 				}
 				//se sono REPP/DEPP se STATO_ENTE_PARTNER è NON ATTIVO --> STATO A ATTIVO
 				//trovo le coppie progetto - ente all'interno del progetto idProgetto in cui l'utente è REPP o DEPP
-				// TODO ricerca per ente
+				//ricerca per ente
 				ProgettoEnteProjection progettoEnte = contestoRepository.findEntePartnerNonTerminatoPerProgettoAnIdEnteAndCodiceFiscaleReferenteDelegato(idProgramma, idProgetto, idEnte, codiceFiscaleUtente, codiceRuoloUtente);
 				//aggiorno lo stato dell'ente PARTNER ad ATTIVO
 				//solo per le coppie progetto - ente partner in stato non attivo le porto in attivo

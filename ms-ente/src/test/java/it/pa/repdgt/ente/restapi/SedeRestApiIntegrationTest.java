@@ -102,6 +102,9 @@ public class SedeRestApiIntegrationTest extends AppTests {
 		indirizzoSedeReqList.add(indirizzoSedeRequest);
 		nuovaSedeRequest.setIndirizziSedeFasceOrarie(indirizzoSedeReqList);
 		
+		nuovaSedeRequest.setCfUtenteLoggato("SMTPAL67R31F111X");
+		nuovaSedeRequest.setCodiceRuoloUtenteLoggato("DTD");
+		
 		String url = String.format("http://localhost:%s/sede", randomServerPort);
 		Map<Object, Object> response = restTemplate.postForObject(url, nuovaSedeRequest, Map.class);
 		
@@ -161,6 +164,9 @@ public class SedeRestApiIntegrationTest extends AppTests {
 		List<IndirizzoSedeRequest> indirizzoSedeReqList = new ArrayList<IndirizzoSedeRequest>();
 		indirizzoSedeReqList.add(indirizzoSedeRequest);
 		aggiornaSedeRequest.setIndirizziSedeFasceOrarie(indirizzoSedeReqList);
+		
+		aggiornaSedeRequest.setCfUtenteLoggato("SMTPAL67R31F111X");
+		aggiornaSedeRequest.setCodiceRuoloUtenteLoggato("DTD");
 		
 		String url = String.format("http://localhost:%s/sede/aggiorna/1", randomServerPort);
 		this.restTemplate.put(url, aggiornaSedeRequest);

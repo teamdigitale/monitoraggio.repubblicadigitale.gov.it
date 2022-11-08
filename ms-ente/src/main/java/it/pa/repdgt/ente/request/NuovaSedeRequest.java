@@ -6,17 +6,17 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import it.pa.repdgt.shared.entity.IndirizzoSedeFasciaOrariaEntity;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class NuovaSedeRequest implements Serializable {
+public class NuovaSedeRequest extends SceltaProfiloParam implements Serializable {
 	private static final long serialVersionUID = -6558474798604955684L;
 
 	@NotBlank

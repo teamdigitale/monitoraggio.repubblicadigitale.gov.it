@@ -5,27 +5,25 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class EnteSedeProgettoFacilitatoreRequest{
+public class EnteSedeProgettoFacilitatoreRequest extends SceltaProfiloParam{
 	
 	@NotBlank
-	@JsonProperty(value = "cfUtente", required = true)
-	private String codiceFiscaleUtente;
+	private String codiceFiscaleFacVol;
 
 	@NotNull
-	@JsonProperty(value = "idProgetto", required = true)
-	private Long idProgetto;
+	private Long idProgettoFacVol;
 	
-	@JsonProperty(value = "tipoContratto", required = true)
 	private String tipoContratto;
 	
-	@JsonProperty(value = "idSede", required = true)
-	private Long idSede;
+	@NotNull
+	private Long idSedeFacVol;
 	
-	@JsonProperty(value = "idEnte", required = true)
-	private Long idEnte;
+	@NotNull
+	private Long idEnteFacVol;
 }
