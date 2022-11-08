@@ -130,6 +130,9 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
     }
   };
 
+  if (user?.integrazione)
+    return <div className='empty-page' style={{ height: '50vh' }} />;
+
   return (
     <div className={clsx(device.mediaIsPhone ? 'mx-4 mt-5' : 'mt-5 container')}>
       <h1

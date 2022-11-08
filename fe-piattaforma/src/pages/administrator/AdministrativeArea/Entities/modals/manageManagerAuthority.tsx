@@ -188,7 +188,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
   const handleSelectAuthority: CRUDActionsI = {
     [CRUDActionTypes.SELECT]: (td: TableRowI | string) => {
       if (typeof td !== 'string') {
-        dispatch(GetAuthorityDetail(td.id as string));
+        dispatch(GetAuthorityDetail(td.id as string, true));
         dispatch(setAuthoritiesList(null));
       }
     },
@@ -226,7 +226,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
   }
 
   if (noResult) {
-    content = <EmptySection title={'Nessun risultato'} withIcon horizontal />;
+    content = <EmptySection title='Nessun risultato' withIcon horizontal />;
   }
 
   /***

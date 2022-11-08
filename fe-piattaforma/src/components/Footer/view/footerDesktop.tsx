@@ -1,8 +1,10 @@
 import React, { memo } from 'react';
 import { Icon } from 'design-react-kit';
 import clsx from 'clsx';
-import Mitd from '/public/assets/img/mitd-logo.png';
-import SkillLogo from '/public/assets/img/digital-skills.png';
+//import Mitd from '/public/assets/img/mitd-logo.png';
+import Mitd from '/public/assets/img/mitd-logo_tmp.png';
+//import SkillLogo from '/public/assets/img/digital-skills.png';
+import SkillLogo from '/public/assets/img/scd-logo_tmp.png';
 import { useTranslation } from 'react-i18next';
 
 const FooterDesktop: React.FC = () => {
@@ -30,15 +32,23 @@ const FooterDesktop: React.FC = () => {
           >
             <div className='row w-100'>
               <div className='mr-lg-4'>
-                <p className='h6'>{t('designed_by')}</p>
+                {/*<p className='h6'>{t('designed_by')}</p>*/}
                 <div className='mr-auto mt-3'>
-                  <img src={Mitd} alt='logo' />
+                  <img
+                    src={Mitd}
+                    alt='logo'
+                    style={{ width: 'auto', height: '60px' }}
+                  />
                 </div>
               </div>
               <div className='ml-sm-0'>
-                <p className='h6'>{t('in_collaboration_with')}</p>
-                <div className='mr-auto'>
-                  <img src={SkillLogo} alt='logo' />
+                {/*<p className='h6'>{t('in_collaboration_with')}</p>*/}
+                <div className='mr-auto mt-3'>
+                  <img
+                    src={SkillLogo}
+                    alt='logo'
+                    style={{ width: 'auto', height: '60px' }}
+                  />
                 </div>
               </div>
             </div>

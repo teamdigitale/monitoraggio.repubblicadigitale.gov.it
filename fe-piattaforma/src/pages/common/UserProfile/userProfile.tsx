@@ -146,7 +146,7 @@ const UserProfile = () => {
               <CardStatusAction
                 key={`${role.id}${role.codiceRuolo}`}
                 id={`${role.id}${role.codiceRuolo}`}
-                //title={role.nome}
+                status={role.statoP}
                 title={
                   role.codiceRuolo !== userRoles.REG &&
                   role.codiceRuolo !== userRoles.DEG &&

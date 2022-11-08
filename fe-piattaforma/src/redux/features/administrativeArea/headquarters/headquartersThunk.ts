@@ -6,6 +6,7 @@ import {
   setHeadquarterDetails,
   setHeadquartersList,
 } from '../administrativeAreaSlice';
+import { getUserHeaders } from '../../user/userThunk';
 
 export interface HeadquarterLight {
   id: string;
@@ -50,7 +51,12 @@ export const GetHeadquarterLightDetails =
     try {
       dispatch(showLoader());
       dispatch({ ...GetHeadquartersDetailAction, headquarterId });
-      const res = await API.get(`sede/light/${headquarterId}`);
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+      const res = await API.post(`sede/light/${headquarterId}`, {
+        idProgramma,
+        idProgetto,
+        idEnte,
+      });
 
       if (res?.data) {
         dispatch(
@@ -74,8 +80,10 @@ export const GetHeadquarterDetails =
     try {
       dispatch(showLoader());
       dispatch({ ...GetHeadquartersDetailAction, headquarterId });
-      const res = await API.get(
-        `sede/${projectId}/${authorityId}/${headquarterId}`
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+      const res = await API.post(
+        `sede/${projectId}/${authorityId}/${headquarterId}`,
+        { idProgramma, idProgetto, idEnte }
       );
 
       if (res?.data) {
@@ -125,11 +133,17 @@ const AssignHeadquarterAction = {
 };
 
 export const AssignAuthorityHeadquarter =
-  (authorityId: string, headquarterDetails: any, projectId: string) =>
+  (
+    authorityId: string,
+    headquarterDetails: any,
+    projectId: string,
+    creation = false
+  ) =>
   async (dispatch: Dispatch) => {
     dispatch(showLoader());
     dispatch({ ...AssignHeadquarterAction });
     try {
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
       let headquarterId = headquarterDetails?.id;
 
       const body = {
@@ -146,7 +160,12 @@ export const AssignAuthorityHeadquarter =
       };
 
       if (headquarterId) {
-        await API.put(`/sede/aggiorna/${headquarterId}`, { ...body });
+        await API.put(`/sede/aggiorna/${headquarterId}`, {
+          ...body,
+          idProgramma,
+          idProgetto,
+          idEnte,
+        });
       } else {
         const res = await API.post('/sede', {
           ...body,
@@ -157,9 +176,10 @@ export const AssignAuthorityHeadquarter =
         }
       }
 
-      if (headquarterId) {
-        await API.get(
-          `/sede/associa/ente/${authorityId}/sede/${headquarterId}/progetto/${projectId}/ruoloEnte/ruolo`
+      if (headquarterId && creation) {
+        await API.post(
+          `/sede/associa/ente/${authorityId}/sede/${headquarterId}/progetto/${projectId}/ruoloEnte/ruolo`,
+          { idProgramma, idProgetto, idEnte }
         );
       }
     } catch (error: any) {
@@ -179,8 +199,10 @@ export const RemoveAuthorityHeadquarter =
     dispatch(showLoader());
     dispatch({ ...RemoveHeadquarterAction });
     try {
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
       await API.delete(
-        `/sede/cancellaOTerminaAssociazione/ente/${authorityId}/sede/${headquarterId}/progetto/${projectId}`
+        `/sede/cancellaOTerminaAssociazione/ente/${authorityId}/sede/${headquarterId}/progetto/${projectId}`,
+        { data: { idProgramma, idProgetto, idEnte } }
       );
 
       dispatch(setHeadquarterDetails(null));
@@ -204,19 +226,25 @@ export const AssignHeadquarterFacilitator =
     programPolicy: 'RFD' | 'SCD'
   ) =>
   async (dispatch: Dispatch) => {
-    dispatch(showLoader());
-    dispatch({ ...AssignFacilitatorAction });
-    const endpoint = '/sede/associa/facilitatore';
-
-    const body = {
-      cfUtente: userDetail?.codiceFiscale?.toString().toUpperCase(),
-      idEnte: authorityId,
-      idProgetto: projectId,
-      idSede: headquarterId,
-      tipoContratto: userDetail?.tipoContratto,
-    };
-
     try {
+      dispatch(showLoader());
+      dispatch({ ...AssignFacilitatorAction });
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+      const endpoint = '/sede/associa/facilitatore';
+
+      const body = {
+        idProgramma,
+        idProgetto,
+        idEnte,
+        codiceFiscaleFacVol: userDetail?.codiceFiscale
+          ?.toString()
+          .toUpperCase(),
+        idEnteFacVol: authorityId?.toString(),
+        idProgettoFacVol: projectId?.toString(),
+        idSedeFacVol: headquarterId?.toString(),
+        tipoContratto: userDetail?.tipoContratto,
+      };
+
       if (userDetail?.id) {
         await API.post(endpoint, body);
       } else {
@@ -256,20 +284,18 @@ export const RemoveHeadquarterFacilitator =
     headquarterId: string
   ) =>
   async (dispatch: Dispatch) => {
-    dispatch(showLoader());
-    dispatch({ ...RemoveFacilitatorAction });
-    const endpoint = '/sede/cancellaOTerminaAssociazione/facilitatore';
-
-    const body = {
-      cfUtente: userCF,
-      idEnte: authorityId,
-      idProgetto: projectId,
-      idSede: headquarterId,
-    };
-
     try {
-      await API.post(endpoint, {
-        ...body,
+      dispatch(showLoader());
+      dispatch({ ...RemoveFacilitatorAction });
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+      await API.post('/sede/cancellaOTerminaAssociazione/facilitatore', {
+        idProgramma,
+        idProgetto,
+        idEnte,
+        codiceFiscaleFacVol: userCF,
+        idEnteFacVol: authorityId?.toString(),
+        idProgettoFacVol: projectId?.toString(),
+        idSedeFacVol: headquarterId?.toString(),
       });
     } catch (error) {
       console.log(error);

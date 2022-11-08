@@ -197,7 +197,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
           </span>
              */}
             <p
-              //className={clsx(inline && !device.mediaIsPhone && 'text-nowrap')}
+            //className={clsx(inline && !device.mediaIsPhone && 'text-nowrap')}
             >
               {title}
             </p>

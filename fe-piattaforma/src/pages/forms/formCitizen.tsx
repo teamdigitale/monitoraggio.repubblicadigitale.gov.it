@@ -88,7 +88,9 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
       const tmpForm = FormHelper.onInputChange(form, value, field);
       const referenceBoolean = !tmpForm?.['4']?.value;
       tmpForm['3'].required = referenceBoolean;
-      if(referenceBoolean === false){ tmpForm[3].valid = true; }
+      if (referenceBoolean === false) {
+        tmpForm[3].valid = true;
+      }
       tmpForm['5'].required = !referenceBoolean;
       tmpForm['6'].required = !referenceBoolean;
       updateForm(tmpForm);
@@ -419,19 +421,19 @@ const form = newForm([
     required: true,
   }),
   newFormField({
+    ...CommonFields.NUMERO_TELEFONICO,
     keyBE: 'numeroCellulare',
     id: '16',
     field: '16',
-    regex: RegexpType.TELEPHONE,
     label: 'Cellulare',
     type: 'text',
     required: true,
   }),
   newFormField({
+    ...CommonFields.NUMERO_TELEFONICO,
     keyBE: 'telefono',
     id: '17',
     field: '17',
-    regex: RegexpType.TELEPHONE,
     label: 'Telefono',
     type: 'text',
   }),

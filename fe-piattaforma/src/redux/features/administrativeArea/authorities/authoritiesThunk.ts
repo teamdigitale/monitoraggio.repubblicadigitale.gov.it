@@ -160,18 +160,29 @@ export const GetAuthorityDetail = (type: string) => async (dispatch: Dispatch) =
 */
 
 export const GetAuthorityDetail =
-  (authorityId: string) => async (dispatch: Dispatch) => {
+  (authorityId: string, light = false) =>
+  async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...SetAuthorityDetailAction });
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
 
-      const res = await API.get(`/ente/${authorityId}`);
+      let res;
+      if (light) {
+        res = await API.get(`/ente/light/${authorityId}`);
+      } else {
+        res = await API.post(`/ente/${authorityId}`, {
+          idProgramma,
+          idProgetto,
+          idEnte,
+        });
+      }
 
       if (res?.data) {
         dispatch(
           setAuthorityDetails({
             profili: res.data.dettagliProfili,
-            dettagliInfoEnte: res.data.dettagliEnte,
+            dettagliInfoEnte: res.data.dettagliEnte || res.data,
           })
         );
       }
@@ -203,7 +214,7 @@ export const GetAuthorityManagerDetail =
       let res;
 
       if (entity === 'programma') {
-        res = await API.get(`/ente/gestoreProgramma/${entityId}`);
+        res = await API.post(`/ente/gestoreProgramma/${entityId}`, body);
       } else {
         res = await API.post(`/ente/gestoreProgetto/${entityId}`, body);
       }
@@ -281,10 +292,12 @@ export const CreateManagerAuthority =
           ...body,
         });
         if (res) {
+          const { idProgramma, idProgetto, idEnte } = getUserHeaders();
           await API.put(
             `/${entity}/${entityId}/assegna/${
               entity === 'programma' ? 'entegestore' : 'enteGestore'
-            }/${res.data.id}`
+            }/${res.data.id}`,
+            { idProgramma, idProgetto, idEnte }
           );
           return res.data.id;
         }
@@ -316,6 +329,7 @@ export const UpdateManagerAuthority =
         entityId,
         entity,
       });
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
       if (authorityDetail?.id) {
         let res;
         if (enteGestoreId) {
@@ -323,7 +337,12 @@ export const UpdateManagerAuthority =
             `/ente/${enteGestoreId}/${
               entity === 'programma' ? 'gestoreProgramma' : 'gestoreProgetto'
             }/${entityId}`,
-            authorityDetail
+            {
+              ...authorityDetail,
+              idProgramma,
+              idProgetto,
+              idEnte,
+            }
           );
 
           return res;
@@ -334,13 +353,21 @@ export const UpdateManagerAuthority =
             }/${entityId}`,
             {
               ...authorityDetail,
+              idProgramma,
+              idProgetto,
+              idEnte,
             }
           );
 
           res = await API.put(
             `/${entity}/${entityId}/assegna/${
               entity === 'programma' ? 'entegestore' : 'enteGestore'
-            }/${authorityDetail.id}`
+            }/${authorityDetail.id}`,
+            {
+              idProgramma,
+              idProgetto,
+              idEnte,
+            }
           );
 
           return res;
@@ -365,8 +392,12 @@ export const RemoveManagerAuthority =
       dispatch({ ...RemoveAuthorityAction });
 
       if (authorityId && entityId) {
+        const { idProgramma, idProgetto, idEnte } = getUserHeaders();
         await API.delete(
-          `/ente/${authorityId}/cancellagestore${entity}/${entityId}`
+          `/ente/${authorityId}/cancellagestore${entity}/${entityId}`,
+          {
+            data: { idProgramma, idProgetto, idEnte },
+          }
         );
       }
     } catch (error) {
@@ -431,8 +462,10 @@ export const CreatePartnerAuthority =
           ...body,
         });
         if (res) {
+          const { idProgramma, idProgetto, idEnte } = getUserHeaders();
           res = await API.put(
-            `/ente/partner/associa/${res.data.id}/progetto/${entityId}`
+            `/ente/partner/associa/${res.data.id}/progetto/${entityId}`,
+            { idProgramma, idProgetto, idEnte }
           );
         }
       }
@@ -449,9 +482,16 @@ export const UpdatePartnerAuthority =
       dispatch(showLoader());
       dispatch({ ...UpdateAuthorityAction });
       if (authorityDetail) {
-        await API.put(`/ente/${authorityDetail.id}`, authorityDetail);
+        const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+        await API.put(`/ente/${authorityDetail.id}`, {
+          ...authorityDetail,
+          idProgramma,
+          idProgetto,
+          idEnte,
+        });
         await API.put(
-          `/ente/partner/associa/${authorityDetail.id}/progetto/${entityId}`
+          `/ente/partner/associa/${authorityDetail.id}/progetto/${entityId}`,
+          { idProgramma, idProgetto, idEnte }
         );
       }
     } catch (error) {
@@ -468,8 +508,12 @@ export const RemovePartnerAuthority =
       dispatch({ ...RemoveAuthorityAction });
 
       if (authorityId && entityId) {
+        const { idProgramma, idProgetto, idEnte } = getUserHeaders();
         await API.delete(
-          `/ente/${authorityId}/cancellaentepartner/${entityId}`
+          `/ente/${authorityId}/cancellaentepartner/${entityId}`,
+          {
+            data: { idProgramma, idProgetto, idEnte },
+          }
         );
       }
     } catch (error) {
@@ -486,7 +530,12 @@ export const TerminatePartnerAuthority =
       dispatch({ ...RemoveAuthorityAction });
 
       if (authorityId && entityId) {
-        await API.put(`/ente/${authorityId}/terminaentepartner/${entityId}`);
+        const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+        await API.put(`/ente/${authorityId}/terminaentepartner/${entityId}`, {
+          idProgramma,
+          idProgetto,
+          idEnte,
+        });
       }
     } catch (error) {
       console.log(error);
@@ -514,30 +563,39 @@ export const AssignManagerAuthorityReferentDelegate =
     try {
       dispatch(showLoader());
       dispatch({ ...AssignReferentDelegateAction });
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
       const endpoint =
         entity === 'programma'
           ? '/ente/associa/referenteDelegato/gestoreProgramma'
           : entity === 'progetto'
           ? '/ente/associa/referenteDelegato/gestoreProgetto'
           : '';
-      let body = {};
+      let body: { [key: string]: string | undefined } = {
+        idProgramma,
+        idProgetto,
+        idEnte,
+      };
       if (entity === 'programma') {
         body = {
+          ...body,
           cfReferenteDelegato: userDetail?.codiceFiscale
             ?.toString()
             .toUpperCase(),
-          codiceRuolo: role,
-          idEnte: authorityId,
-          idProgramma: entityId,
-          mansione: userDetail.mansione,
+          idProgrammaGestore: entityId?.toString(),
+          codiceRuoloRefDeg: role,
+          idEnteGestore: authorityId?.toString(),
+          mansione: userDetail.mansione?.toString(),
         };
       } else {
         body = {
-          cfUtente: userDetail?.codiceFiscale?.toString().toUpperCase(),
-          codiceRuolo: role,
-          idEnte: authorityId,
-          idProgetto: entityId,
-          mansione: userDetail.mansione,
+          ...body,
+          idProgettoGestore: entityId?.toString(),
+          codiceRuoloRefDeg: role,
+          idEnteGestore: authorityId?.toString(),
+          cfReferenteDelegato: userDetail?.codiceFiscale
+            ?.toString()
+            .toUpperCase(),
+          mansione: userDetail.mansione?.toString(),
         };
       }
       if (userDetail?.id) {
@@ -585,6 +643,7 @@ export const AssignPartnerAuthorityReferentDelegate =
     try {
       dispatch(showLoader());
       dispatch({ ...AssignReferentDelegateAction });
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
       const endpoint = '/ente/associa/referenteDelegato/partner';
       if (userDetail?.id) {
         userDetail.codiceFiscale &&
@@ -594,10 +653,15 @@ export const AssignPartnerAuthorityReferentDelegate =
           ));
         if (userId !== userDetail.id.toString()) {
           await API.post(endpoint, {
-            cfUtente: userDetail.codiceFiscale?.toString().toUpperCase(),
-            codiceRuolo: role,
-            idEntePartner: authorityId,
-            idProgetto: entityId,
+            idProgramma,
+            idProgetto,
+            idEnte,
+            cfReferenteDelegato: userDetail.codiceFiscale
+              ?.toString()
+              .toUpperCase(),
+            idProgettoDelPartner: entityId?.toString(),
+            codiceRuoloRefDeg: role,
+            idEntePartner: authorityId?.toString(),
             mansione: userDetail.mansione,
           });
         }
@@ -617,10 +681,15 @@ export const AssignPartnerAuthorityReferentDelegate =
 
         if (res) {
           await API.post(endpoint, {
-            cfUtente: userDetail.codiceFiscale?.toString().toUpperCase(),
-            codiceRuolo: role,
-            idEntePartner: authorityId,
-            idProgetto: entityId,
+            idProgramma,
+            idProgetto,
+            idEnte,
+            cfReferenteDelegato: userDetail.codiceFiscale
+              ?.toString()
+              .toUpperCase(),
+            idProgettoDelPartner: entityId?.toString(),
+            codiceRuoloRefDeg: role,
+            idEntePartner: authorityId?.toString(),
             mansione: userDetail.mansione,
           });
         }
@@ -647,16 +716,20 @@ export const RemoveReferentDelegate =
     try {
       dispatch(showLoader());
       dispatch({ ...RemoveReferentDelegateAction });
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
       switch (role) {
         case 'DEPP':
         case 'REPP':
           await API.post(
             '/ente/cancellaOTerminaAssociazione/referenteDelegato/partner',
             {
-              cfUtente: userCF.toUpperCase(),
-              codiceRuolo: role,
-              idEntePartner: authorityId,
-              idProgetto: entityId,
+              idProgramma,
+              idProgetto,
+              idEnte,
+              cfReferenteDelegato: userCF.toUpperCase(),
+              codiceRuoloRefDeg: role,
+              idEntePartner: authorityId?.toString(),
+              idProgettoDelPartner: entityId?.toString(),
               mansione: 'string',
             }
           );
@@ -666,10 +739,13 @@ export const RemoveReferentDelegate =
           await API.post(
             '/ente/cancellaOTerminaAssociazione/referenteDelegato/gestoreProgramma',
             {
+              idProgramma,
+              idProgetto,
+              idEnte,
               cfReferenteDelegato: userCF.toUpperCase(),
-              codiceRuolo: role,
-              idEnte: authorityId,
-              idProgramma: entityId,
+              codiceRuoloRefDeg: role,
+              idEnteGestore: authorityId?.toString(),
+              idProgrammaGestore: entityId?.toString(),
               mansione: 'string',
             }
           );
@@ -679,10 +755,13 @@ export const RemoveReferentDelegate =
           await API.post(
             '/ente/cancellaOTerminaAssociazione/referenteDelegato/gestoreProgetto',
             {
-              cfUtente: userCF.toUpperCase(),
-              codiceRuolo: role,
-              idEnte: authorityId,
-              idProgetto: entityId,
+              idProgramma,
+              idProgetto,
+              idEnte,
+              cfReferenteDelegato: userCF.toUpperCase(),
+              codiceRuoloRefDeg: role,
+              idEnteGestore: authorityId?.toString(),
+              idProgettoGestore: entityId?.toString(),
               mansione: 'string',
             }
           );
@@ -702,12 +781,18 @@ const UpdateAuthorityDetailsAction = {
 };
 
 export const UpdateAuthorityDetails =
-  (idEnte: string | undefined, payload: any) => async (dispatch: Dispatch) => {
+  (authorityId: string | undefined, payload: any) =>
+  async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...UpdateAuthorityDetailsAction });
-
-      await API.put(`/ente/${idEnte}`, payload);
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+      await API.put(`/ente/${authorityId}`, {
+        ...payload,
+        idProgramma,
+        idProgetto,
+        idEnte,
+      });
       return true;
     } catch (error: any) {
       console.log(error);

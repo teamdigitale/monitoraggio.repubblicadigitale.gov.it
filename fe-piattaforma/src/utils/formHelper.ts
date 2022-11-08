@@ -288,7 +288,7 @@ export const CommonFields = {
     maximum: 50,
   },
   NOME: {
-    minimum: 3,
+    minimum: 2,
     maximum: 30,
     regex: RegexpType.REGISTRY,
   },
@@ -296,5 +296,10 @@ export const CommonFields = {
     minimum: 11,
     maximum: 11,
     regex: RegexpType.PIVA,
+  },
+  NUMERO_TELEFONICO: {
+    minimum: 6,
+    maximum: 20,
+    regex: RegexpType.TELEPHONE,
   },
 };

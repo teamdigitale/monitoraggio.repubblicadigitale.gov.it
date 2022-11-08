@@ -10,7 +10,8 @@ import {
   LinkList,
   LinkListItem,
 } from 'design-react-kit';
-import Logo from '/public/assets/img/logo.png';
+//import Logo from '/public/assets/img/logo.png';
+import Logo from '/public/assets/img/logo_tmp3.png';
 import Bell from '/public/assets/img/campanella.png';
 import RocketChatIcon from '/public/assets/img/rocketchat.png';
 import { useTranslation } from 'react-i18next';
@@ -73,7 +74,8 @@ const HeaderDesktop: React.FC<HeaderI> = ({
             'text.white',
             'primary-bg-b2',
             'header-panel-btn',
-            'border-right'
+            'border-right',
+            'px-3'
           )}
         >
           <div>
@@ -84,16 +86,16 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               font={AvatarTextSizes.Small}
             />
           </div>
-          <div className='d-flex flex-column align-items-start'>
-            <h6 className='m-0 text-sans-serif'>
+          <div className='d-flex flex-column align-items-start user-description'>
+            <p className='h6 m-0 text-sans-serif'>
               {user?.cognome}&nbsp;{user?.nome}
-            </h6>
-            <h6 className='font-weight-light text-nowrap'>
+            </p>
+            <p className='h6 font-weight-light'>
               {/*<em>{getRoleLabel(userProfile?.codiceRuolo)}</em>*/}
               <em>{`${userProfile?.descrizioneRuolo}${
                 userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
               }`}</em>
-            </h6>
+            </p>
           </div>
           <div className='ml-2'>
             <Icon size='' color='white' icon='it-expand' />
@@ -248,7 +250,10 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                     'justify-content-between'
                   )}
                   role='menuitem'
-                  onClick={() => navigate('/gestione-ruoli')}
+                  onClick={() => {
+                    navigate('/gestione-ruoli');
+                    setOpenManagementArea(false);
+                  }}
                 >
                   {t('role_management')}
                 </Button>
@@ -265,9 +270,10 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                     'justify-content-between'
                   )}
                   role='menuitem'
-                  onClick={() =>
-                    navigate('/area-gestionale/gestione-categorie')
-                  }
+                  onClick={() => {
+                    navigate('/area-gestionale/gestione-categorie');
+                    setOpenManagementArea(false);
+                  }}
                 >
                   Gestione categorie
                 </Button>
@@ -284,9 +290,10 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                     'justify-content-between'
                   )}
                   role='menuitem'
-                  onClick={() =>
-                    navigate('/area-gestionale/gestione-segnalazioni')
-                  }
+                  onClick={() => {
+                    navigate('/area-gestionale/gestione-segnalazioni');
+                    setOpenManagementArea(false);
+                  }}
                 >
                   Gestione segnalazioni
                 </Button>
@@ -515,7 +522,11 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               )}
             >
               <Link to={defaultRedirectUrl} replace>
-                <img src={Logo} alt='logo' />
+                <img
+                  src={Logo}
+                  alt='logo'
+                  style={{ width: 'auto', height: '74px' }}
+                />
               </Link>
             </div>
             {/* <div

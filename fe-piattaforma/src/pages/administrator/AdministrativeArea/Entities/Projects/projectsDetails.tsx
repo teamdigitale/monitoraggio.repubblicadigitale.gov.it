@@ -528,8 +528,8 @@ const ProjectsDetails = () => {
       setCorrectModal(<ManageManagerAuthority creation />);
       setEmptySection(
         <EmptySection
-          title={'Questa sezione è ancora vuota'}
-          subtitle={'Per attivare il progetto aggiungi un Ente gestore'}
+          title='Questa sezione è ancora vuota'
+          subtitle='Per attivare il progetto aggiungi un Ente gestore'
           buttons={
             hasUserPermission(['add.enti.gest.prgt'])
               ? EmptySectionButtons.slice(0, 1)
@@ -1168,7 +1168,7 @@ const ProjectsDetails = () => {
     const table = newTable(
       EntePartnerTableHeading,
       list.map((td: any) => ({
-        nome: td.nomeBreve || td.nome,
+        nome: td.nome || td.nomeBreve,
         codiceFiscale: td.piva || td.codiceFiscale,
         esito: (td.esito || '').toUpperCase().includes('OK')
           ? 'Riuscito'
@@ -1234,6 +1234,8 @@ const ProjectsDetails = () => {
             showGoBack={
               userRole !== userRoles.REGP &&
               userRole !== userRoles.DEGP &&
+              userRole !== userRoles.REPP &&
+              userRole !== userRoles.DEPP &&
               userRole !== userRoles.FAC &&
               userRole !== userRoles.VOL
             }
@@ -1327,8 +1329,12 @@ const ProjectsDetails = () => {
                   managerAuthority?.id &&
                   removeManagerAuthority(managerAuthority.id, projectId);
               if (payload?.entity === 'project' && projectId) {
-                await dispatch(DeleteEntity('progetto', projectId));
-                navigate(-1);
+                const res = await dispatch(DeleteEntity('progetto', projectId));
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                if (res) {
+                  navigate('/area-amministrativa/progetti', { replace: true });
+                }
               }
             }}
           />
