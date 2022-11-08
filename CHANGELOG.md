@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.8.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.7.0...1.8.0) (2022-11-08)
+
+
+### Features
+
+* **be:** resizing risorse + finding sicurezza ([a595d56](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a595d56f17a77c947034fdf66b41c4d6e2823de6))
+* **drupal:** update project to 1.3.5 version ([e100027](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e1000278437f89653c9da4041c422096fb3b68f3))
+* **drupal:** update project to 1.3.5 version ([be8702f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/be8702faf9356c10d0a4b62ef731f23535c193cf))
+
 ## [1.7.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.6.1...1.7.0) (2022-10-28)
 
 
