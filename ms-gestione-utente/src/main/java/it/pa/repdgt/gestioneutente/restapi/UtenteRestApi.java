@@ -47,15 +47,19 @@ import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.light.UtenteLightEntity;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
+import jdk.internal.org.jline.utils.Log;
+import lombok.extern.slf4j.Slf4j;
+import sun.util.logging.resources.logging;
 
 @RestController
 @RequestMapping(path = "/utente")
+@Slf4j
 public class UtenteRestApi {
 	@Autowired
 	private UtenteService utenteService;
 	@Autowired
 	private UtenteMapper utenteMapper;
-
+	
 	// Lista utenti paginata
 	@PostMapping(path = "/all")
 	@ResponseStatus(value = HttpStatus.OK)
@@ -130,8 +134,8 @@ public class UtenteRestApi {
 		}
 		return this.utenteService.getSchedaUtenteByIdUtente(idUtente, sceltaProfilo);
 	}
-	
-	// Scheda Utente light 
+
+	// Scheda Utente light
 	@GetMapping(path = "/light/{idUtente}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaUtenteBeanLight getSchedaUtenteLightByIdUtente(
@@ -202,7 +206,7 @@ public class UtenteRestApi {
 		}
 		if(!utenteFetchDb.getCodiceFiscale().equalsIgnoreCase(codiceFiscaleUtenteLoggato)) {
 			throw new UtenteException("Errore permesso accesso alla risorsa", CodiceErroreEnum.A02);
-		}		
+		}
 
 		List<String> IMAGE_TYPES_ALLOWED = Arrays.asList("jpg", "jpeg", "png", "image/jpg", "image/jpeg", "image/png");
 		if (multipartifile == null || !IMAGE_TYPES_ALLOWED.contains(multipartifile.getContentType().toLowerCase()))  {

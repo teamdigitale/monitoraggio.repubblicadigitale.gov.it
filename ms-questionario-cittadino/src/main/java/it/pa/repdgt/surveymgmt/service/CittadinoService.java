@@ -264,7 +264,7 @@ public class CittadinoService {
 		}
 		CittadinoEntity cittadinoFetchDb = this.cittadinoRepository.findById(id).get();
 		
-		if(!cittadinoRepository.findCittadinoByCodiceFiscaleOrNumeroDocumentoAndIdDiverso(cittadinoRequest.getCodiceFiscale(), cittadinoRequest.getNumeroDocumento(), id).isEmpty()) {
+		if(!this.getCittadinoPerCfOrNumDoc(cittadinoRequest.getCodiceFiscale(), cittadinoRequest.getNumeroDocumento(), id).isEmpty()) {
 			errorMessage = String.format("Impossibile aggiornare il cittadino. Cittadino con codice fiscale o numero documento già esistente");
 			throw new CittadinoException(errorMessage, CodiceErroreEnum.U07);
 		}
@@ -348,5 +348,9 @@ public class CittadinoService {
 			default:
 				return false;
 			}
+	}
+	
+	public List<CittadinoEntity> getCittadinoPerCfOrNumDoc(String codiceFiscale, String numDocumento, Long id) {
+		return cittadinoRepository.findCittadinoByCodiceFiscaleOrNumeroDocumentoAndIdDiverso(codiceFiscale, numDocumento, id);
 	}
 }
