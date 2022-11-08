@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.278](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.277...1.0.0-develop.278) (2022-11-08)
+
+
+### Bug Fixes
+
+* **be:** ente partner ([ea936b1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ea936b1f658047370042c78fc2490cf25d1090cf))
+
 ## [1.0.0-develop.277](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.276...1.0.0-develop.277) (2022-11-08)
 
 
