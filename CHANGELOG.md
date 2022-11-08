@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.104](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.103...1.0.0-test.104) (2022-11-08)
+
+
+### Features
+
+* resizing risorse + finding sicurezza ([19eafb3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/19eafb38c9bf47fcd6649e3443300c75f6d3fd38))
+
 ## [1.0.0-test.103](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.102...1.0.0-test.103) (2022-11-07)
 
 
