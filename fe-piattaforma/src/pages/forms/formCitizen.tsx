@@ -9,7 +9,6 @@ import {
   CittadinoInfoI,
   selectEntityDetail,
 } from '../../redux/features/citizensArea/citizensAreaSlice';
-// import { selectDevice } from '../../redux/features/app/appSlice';
 import { useAppSelector } from '../../redux/hooks';
 import { formatDate } from '../../utils/datesHelper';
 import {
@@ -88,8 +87,10 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
       const tmpForm = FormHelper.onInputChange(form, value, field);
       const referenceBoolean = !tmpForm?.['4']?.value;
       tmpForm['3'].required = referenceBoolean;
+      tmpForm['3'].disabled = !referenceBoolean;
       if (referenceBoolean === false) {
-        tmpForm[3].valid = true;
+        tmpForm['3'].valid = true;
+        tmpForm['3'].value = '';
       }
       tmpForm['5'].required = !referenceBoolean;
       tmpForm['6'].required = !referenceBoolean;

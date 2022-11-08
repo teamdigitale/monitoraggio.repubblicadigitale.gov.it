@@ -80,6 +80,7 @@ const CommunityDetails = lazy(
  */
 
 export const defaultRedirectUrl = '/';
+export const redirectUrlSurveyOnline = 'https://repubblicadigitale.gov.it/it/';
 
 const AppRoutes: React.FC = () => {
   const dispatch = useDispatch();
