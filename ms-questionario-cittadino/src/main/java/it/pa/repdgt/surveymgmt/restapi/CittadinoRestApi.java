@@ -87,8 +87,8 @@ public class CittadinoRestApi {
 	public void aggiornaCittadino(
 			@PathVariable(value = "id") Long id,
 			@RequestBody @Valid final CittadinoRequest cittadinoRequest) {
-		if(this.cittadinoService.isAutorizzato(id, cittadinoRequest)) {
-			throw new CittadinoException("Errore tentavo accesso a risorsa non permesso", CodiceErroreEnum.A02);
+		if(!this.cittadinoService.isAutorizzato(id, cittadinoRequest)) {
+			throw new CittadinoException("Errore tentativo accesso a risorsa non permesso", CodiceErroreEnum.A02);
 		}
 		this.cittadinoService.aggiornaCittadino(id, cittadinoRequest);
 	}
