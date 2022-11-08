@@ -21,6 +21,10 @@ spec:
           image: ${ECR_REPOSITORY}:${IMAGE_TAG}
           ports:
             - containerPort: 8080
+          resources:
+            requests:
+              cpu: "1"
+              memory: "3072Mi"
           imagePullPolicy: Always
           env:
             - name: urlDB

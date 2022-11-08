@@ -16,6 +16,7 @@ import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.light.ProgettoLightEntity;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.repository.BrokenAccessControlRepository;
 
 @Service
 public class ProgettoService {
@@ -24,6 +25,8 @@ public class ProgettoService {
 	private EnteService enteService;
 	@Autowired
 	private ProgettoRepository progettoRepository;
+	@Autowired
+	private BrokenAccessControlRepository brokenAccessControlRepository;
 	
 	/**
 	 * @throws ResourceNotFoundException
@@ -121,5 +124,15 @@ public class ProgettoService {
 		progettoFetchDB.setEnteGestoreProgetto(enteFetchDB);
 		progettoFetchDB.setStatoGestoreProgetto(StatoEnum.NON_ATTIVO.getValue());
 		this.salvaProgetto(progettoFetchDB);
+	}
+
+	@LogMethod
+	@LogExecutionTime
+	public List<ProgettoEntity> getProgettoByIdProgramma(Long idProgramma) {
+		return this.brokenAccessControlRepository.findByIdProgramma(idProgramma);
+	}
+	
+	public int getCountEnteByIdProgetto(Long idEnte, Long idProgetto) {
+		return brokenAccessControlRepository.getEnteByIdProgetto(idEnte, idProgetto);
 	}
 }

@@ -904,7 +904,7 @@ public class UtenteServiceTest {
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli(),
 				filtroRicerca.getStati())).thenReturn(1);
-		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest());
 	}
 
 	@Test
@@ -915,7 +915,7 @@ public class UtenteServiceTest {
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli())).thenReturn(1);
-		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest());
 	}
 
 	@Test
@@ -928,7 +928,7 @@ public class UtenteServiceTest {
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli())).thenReturn(1);
-		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest());
 	}
 
 	@Test
@@ -942,7 +942,7 @@ public class UtenteServiceTest {
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli())).thenReturn(1);
-		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest());
 	}
 
 	@Test
@@ -952,11 +952,12 @@ public class UtenteServiceTest {
 		when(this.utenteRepository.countUtentiTrovatiPerReferenteDelegatoEntePartnerProgetti(
 				sceltaContesto.getIdProgramma(),
 				sceltaContesto.getIdProgetto(),
+				sceltaContesto.getIdEnte(),
 				sceltaContesto.getCfUtenteLoggato(),
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli())).thenReturn(1);
-		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest());
 	}
 
 	@Test
@@ -968,7 +969,7 @@ public class UtenteServiceTest {
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli(),
 				filtroRicerca.getStati())).thenReturn(1);
-		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest());
 	}
 
 	@Test

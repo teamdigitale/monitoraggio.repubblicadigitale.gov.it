@@ -91,10 +91,10 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		listaEnteSedeProgettoFacilitatore = new ArrayList<>();
 		listaEnteSedeProgettoFacilitatore.add(enteSedeProgettoFacilitatoreEntity);
 		enteSedeProgettoFacilitatoreRequest = new EnteSedeProgettoFacilitatoreRequest();
-		enteSedeProgettoFacilitatoreRequest.setIdEnte(ente1.getId());
-		enteSedeProgettoFacilitatoreRequest.setIdSede(sede1.getId());
-		enteSedeProgettoFacilitatoreRequest.setIdProgetto(progetto1.getId());
-		enteSedeProgettoFacilitatoreRequest.setCodiceFiscaleUtente(utente1.getCodiceFiscale());
+		enteSedeProgettoFacilitatoreRequest.setIdEnteFacVol(ente1.getId());
+		enteSedeProgettoFacilitatoreRequest.setIdSedeFacVol(sede1.getId());
+		enteSedeProgettoFacilitatoreRequest.setIdProgettoFacVol(progetto1.getId());
+		enteSedeProgettoFacilitatoreRequest.setCodiceFiscaleFacVol(utente1.getCodiceFiscale());
 		ruoloFAC = new RuoloEntity();
 		ruoloFAC.setCodice("FAC");
 		ruoloFAC.setNome("FACILITATORE");
@@ -129,7 +129,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 	@Test
 	public void associaFacilitatoreAEnteSedeProgettoTest() {
 		//test con Policy programma = RFD, ruolo utente = FAC e stato progetto = NON ATTIVO
-		when(this.utenteService.esisteUtenteByCodiceFiscale(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleUtente())).thenReturn(true);
+		when(this.utenteService.esisteUtenteByCodiceFiscale(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol())).thenReturn(true);
 		when(this.enteService.esisteEnteById(ente1.getId())).thenReturn(true);
 		when(this.sedeService.esisteSedeById(sede1.getId())).thenReturn(true);
 		when(this.progettoService.esisteProgettoById(progetto1.getId())).thenReturn(true);
@@ -153,7 +153,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		utente1.setRuoli(listaRuoli);
 		progetto1.setStato("ATTIVO");
 		utente1.setTipoContratto("VOLONTARIATO");
-		when(this.utenteService.esisteUtenteByCodiceFiscale(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleUtente())).thenReturn(true);
+		when(this.utenteService.esisteUtenteByCodiceFiscale(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol())).thenReturn(true);
 		when(this.enteService.esisteEnteById(ente1.getId())).thenReturn(true);
 		when(this.sedeService.esisteSedeById(sede1.getId())).thenReturn(true);
 		when(this.progettoService.esisteProgettoById(progetto1.getId())).thenReturn(true);
@@ -187,7 +187,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add(ruoloVOL);
 		utente1.setRuoli(listaRuoli);
-		when(this.utenteService.esisteUtenteByCodiceFiscale(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleUtente())).thenReturn(true);
+		when(this.utenteService.esisteUtenteByCodiceFiscale(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol())).thenReturn(true);
 		when(this.enteService.esisteEnteById(ente1.getId())).thenReturn(true);
 		when(this.sedeService.esisteSedeById(sede1.getId())).thenReturn(true);
 		when(this.progettoService.esisteProgettoById(progetto1.getId())).thenReturn(true);
@@ -203,7 +203,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		listaRuoli.add(ruoloFAC);
 		utente1.setRuoli(listaRuoli);
 		programma1.setPolicy(PolicyEnum.SCD);
-		when(this.utenteService.esisteUtenteByCodiceFiscale(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleUtente())).thenReturn(true);
+		when(this.utenteService.esisteUtenteByCodiceFiscale(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol())).thenReturn(true);
 		when(this.enteService.esisteEnteById(ente1.getId())).thenReturn(true);
 		when(this.sedeService.esisteSedeById(sede1.getId())).thenReturn(true);
 		when(this.progettoService.esisteProgettoById(progetto1.getId())).thenReturn(true);
@@ -218,7 +218,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 	@Test
 	public void associaFacilitatoreAEnteSedeProgettoKOTest2() {
 		//test KO per associazione ente, sede, progetto, facilitatore già esistente
-		when(this.utenteService.esisteUtenteByCodiceFiscale(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleUtente())).thenReturn(true);
+		when(this.utenteService.esisteUtenteByCodiceFiscale(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol())).thenReturn(true);
 		when(this.enteService.esisteEnteById(ente1.getId())).thenReturn(true);
 		when(this.sedeService.esisteSedeById(sede1.getId())).thenReturn(true);
 		when(this.progettoService.esisteProgettoById(progetto1.getId())).thenReturn(true);
@@ -239,8 +239,8 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		utente1.setIntegrazioneUtente(integrazioneUtente);
 		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
 		when(this.enteSedeProgettoFacilitatoreRepository.findById(Mockito.any(EnteSedeProgettoFacilitatoreKey.class))).thenReturn(Optional.of(enteSedeProgettoFacilitatoreEntity));
-		when(this.enteSedeProgettoFacilitatoreRepository.findAltriFacilitatoriAttivi(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleUtente(), enteSedeProgettoFacilitatoreRequest.getIdProgetto(), ruoloFAC.getCodice())).thenReturn(listaEnteSedeProgettoFacilitatore);
-		when(this.utenteService.getUtenteByCodiceFiscale(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleUtente())).thenReturn(utente1);
+		when(this.enteSedeProgettoFacilitatoreRepository.findAltriFacilitatoriAttivi(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol(), enteSedeProgettoFacilitatoreRequest.getIdProgettoFacVol(), ruoloFAC.getCodice())).thenReturn(listaEnteSedeProgettoFacilitatore);
+		when(this.utenteService.getUtenteByCodiceFiscale(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol())).thenReturn(utente1);
 		enteSedeProgettoFacilitatoreService.cancellaOTerminaAssociazioneFacilitatoreAEnteSedeProgetto(enteSedeProgettoFacilitatoreRequest);
 	}
 	
@@ -259,7 +259,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		//test KO per unico facilitatore
 		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
 		when(this.enteSedeProgettoFacilitatoreRepository.findById(Mockito.any(EnteSedeProgettoFacilitatoreKey.class))).thenReturn(Optional.of(enteSedeProgettoFacilitatoreEntity));
-		when(this.enteSedeProgettoFacilitatoreRepository.findAltriFacilitatoriAttivi(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleUtente(), enteSedeProgettoFacilitatoreRequest.getIdProgetto(), ruoloFAC.getCodice())).thenReturn(new ArrayList<>());
+		when(this.enteSedeProgettoFacilitatoreRepository.findAltriFacilitatoriAttivi(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol(), enteSedeProgettoFacilitatoreRequest.getIdProgettoFacVol(), ruoloFAC.getCodice())).thenReturn(new ArrayList<>());
 		Assertions.assertThrows(EnteSedeProgettoFacilitatoreException.class, () -> enteSedeProgettoFacilitatoreService.cancellaOTerminaAssociazioneFacilitatoreAEnteSedeProgetto(enteSedeProgettoFacilitatoreRequest));
 		assertThatExceptionOfType(EnteSedeProgettoFacilitatoreException.class);
 		
@@ -267,7 +267,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		programma1.setPolicy(PolicyEnum.SCD);
 		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
 		when(this.enteSedeProgettoFacilitatoreRepository.findById(Mockito.any(EnteSedeProgettoFacilitatoreKey.class))).thenReturn(Optional.of(enteSedeProgettoFacilitatoreEntity));
-		when(this.enteSedeProgettoFacilitatoreRepository.findAltriFacilitatoriAttivi(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleUtente(), enteSedeProgettoFacilitatoreRequest.getIdProgetto(), ruoloVOL.getCodice())).thenReturn(new ArrayList<>());
+		when(this.enteSedeProgettoFacilitatoreRepository.findAltriFacilitatoriAttivi(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol(), enteSedeProgettoFacilitatoreRequest.getIdProgettoFacVol(), ruoloVOL.getCodice())).thenReturn(new ArrayList<>());
 		Assertions.assertThrows(EnteSedeProgettoFacilitatoreException.class, () -> enteSedeProgettoFacilitatoreService.cancellaOTerminaAssociazioneFacilitatoreAEnteSedeProgetto(enteSedeProgettoFacilitatoreRequest));
 		assertThatExceptionOfType(EnteSedeProgettoFacilitatoreException.class);
 	}
@@ -279,7 +279,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		integrazioneUtente.setId(1L);
 		utente1.setIntegrazioneUtente(integrazioneUtente);
 		when(this.enteSedeProgettoFacilitatoreRepository.findById(enteSedeProgettoFacilitatoreKey)).thenReturn(Optional.of(enteSedeProgettoFacilitatoreEntity));
-		when(this.utenteService.getUtenteByCodiceFiscale(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleUtente())).thenReturn(utente1);
+		when(this.utenteService.getUtenteByCodiceFiscale(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol())).thenReturn(utente1);
 		enteSedeProgettoFacilitatoreService.cancellaOTerminaAssociazioneFacilitatoreOVolontarioAEnteSedeProgetto(enteSedeProgettoFacilitatoreEntity);
 	}
 	
@@ -297,7 +297,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		integrazioneUtente.setId(1L);
 		utente1.setIntegrazioneUtente(integrazioneUtente);
 		when(this.enteSedeProgettoFacilitatoreRepository.findById(enteSedeProgettoFacilitatoreKey)).thenReturn(Optional.of(enteSedeProgettoFacilitatoreEntity));
-		when(this.utenteService.getUtenteByCodiceFiscale(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleUtente())).thenReturn(utente1);
+		when(this.utenteService.getUtenteByCodiceFiscale(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol())).thenReturn(utente1);
 		enteSedeProgettoFacilitatoreService.terminaAssociazioneFacilitatoreOVolontario(enteSedeProgettoFacilitatoreKey);
 	}
 	

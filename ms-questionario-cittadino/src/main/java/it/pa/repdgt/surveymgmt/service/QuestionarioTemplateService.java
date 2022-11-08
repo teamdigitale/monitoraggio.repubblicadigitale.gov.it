@@ -256,11 +256,31 @@ public class QuestionarioTemplateService {
 	@LogMethod
 	@LogExecutionTime
 	public QuestionarioTemplateCollection getQuestionarioTemplateById(@NotNull String idQuestionarioTemplate) {
+		
 		final String messaggioErrore = String.format("templateQuestionario con id=%s non presente.", idQuestionarioTemplate);
 		return this.questionarioTemplateRepository.findTemplateQuestionarioById(idQuestionarioTemplate)
 				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
 	}
 	
+	public boolean isAutorizzatoForGetQuestionarioTemplateById(
+			@NotNull String idQuestionarioTemplate,
+			SceltaProfiloParam profilazioneParam) {
+		switch(profilazioneParam.getCodiceRuoloUtenteLoggato()) {
+			case RuoliUtentiConstants.REG: 
+			case RuoliUtentiConstants.DEG: 
+			case RuoliUtentiConstants.REGP: 
+			case RuoliUtentiConstants.DEGP:
+			case RuoliUtentiConstants.REPP: 
+			case RuoliUtentiConstants.DEPP: 
+			case RuoliUtentiConstants.FACILITATORE: 
+			case RuoliUtentiConstants.VOLONTARIO: 
+				return this.questionarioTemplateSqlService.isQuestionarioAssociatoAProfilo(idQuestionarioTemplate, profilazioneParam.getIdProgramma()) > 0 ;
+			case RuoliUtentiConstants.DSCU:
+				return this.questionarioTemplateSqlService.isQuestionarioAssociatoADSCU(idQuestionarioTemplate) > 0;
+			default: return true;
+		}
+	}
+
 	@LogMethod
 	@LogExecutionTime
 	public QuestionarioTemplateCollection saveQuestionarioTemplate(QuestionarioTemplateCollection questionarioDaSalvare) {
@@ -362,8 +382,7 @@ public class QuestionarioTemplateService {
 	@LogMethod
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
-	public void cancellaQuestionarioTemplate(
-			@NotNull(message = "id questionario template deve essere non null") final String idQuestioanarioTemplate) {
+	public void cancellaQuestionarioTemplate(@NotNull(message = "id questionario template deve essere non null") final String idQuestioanarioTemplate) {
 		QuestionarioTemplateCollection questionarioTemplateMongoDaCancellare = null;
 		QuestionarioTemplateEntity questionarioTemplateMysqlDaCancellare = null;
 
@@ -520,5 +539,28 @@ public class QuestionarioTemplateService {
 		}
 
 		return questionarioTemplateAssociatoAlProgramma;
+	}
+
+	public boolean isAutorizzatoForProgramma(SceltaProfiloParam sceltaProfiloParam, Long idProgramma) {
+		switch (sceltaProfiloParam.getCodiceRuoloUtenteLoggato()) {
+		case "DSCU":
+			if(programmaService.getProgrammaById(idProgramma).getPolicy().equals(PolicyEnum.SCD))
+				return true;
+			 break;
+		case "REG":
+		case "DEG":
+		case "REGP":
+		case "DEGP":
+		case "REPP":
+		case "DEPP":
+		case "FAC":
+		case "VOL":
+			if(sceltaProfiloParam.getIdProgramma().equals(idProgramma))
+				return true;
+			break;
+		default:
+			return true;
+		}
+		return false;
 	}
 }

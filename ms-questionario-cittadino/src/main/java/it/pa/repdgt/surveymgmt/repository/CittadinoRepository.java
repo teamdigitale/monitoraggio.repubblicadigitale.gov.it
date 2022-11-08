@@ -231,6 +231,29 @@ public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long
 			 + "	AND cit.id <> :id"
 			 + " ",
 	   nativeQuery = true)
-	List<CittadinoEntity> findCittadinoByCodiceFiscaleOrNumeroDocumentoAndIdDiverso(String codiceFiscale,
-			String numeroDocumento, Long id);
+	List<CittadinoEntity> findCittadinoByCodiceFiscaleOrNumeroDocumentoAndIdDiverso(
+			@Param(value = "codiceFiscale") String codiceFiscale,
+			@Param(value = "numeroDocumento") String numeroDocumento, 
+			@Param(value = "id") Long id);
+
+	@Query(value = " "
+			 + " SELECT "
+			 + "	count( distinct(sxc.id_cittadino) ) "
+			 + " FROM "
+			 + "	servizio_x_cittadino sxc "
+			 + " INNER JOIN servizio s"
+			 + "	ON s.id = sxc.id_servizio "
+			 + " WHERE "
+			 + "	 1=1"
+			 + "	AND s.id_facilitatore = :cfUtenteLoggato "
+			 + "	AND sxc.id_cittadino = :idCittadino "
+			 + "	AND s.id_ente = :idEnte "
+			 + "	AND s.id_progetto = :idProgetto "
+			 + " ",
+	   nativeQuery = true)
+	int isCittadinoAssociatoAFacVol(
+			@Param(value = "idCittadino") Long idCittadino,
+			@Param(value = "cfUtenteLoggato") String cfUtenteLoggato, 
+			@Param(value = "idEnte") Long idEnte, 
+			@Param(value = "idProgetto") Long idProgetto);
 }

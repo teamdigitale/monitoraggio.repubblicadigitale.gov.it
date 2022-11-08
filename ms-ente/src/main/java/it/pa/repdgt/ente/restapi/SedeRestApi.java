@@ -17,15 +17,19 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.pa.repdgt.ente.bean.SchedaSedeBean;
+import it.pa.repdgt.ente.exception.EnteException;
 import it.pa.repdgt.ente.mapper.SedeMapper;
 import it.pa.repdgt.ente.request.EnteSedeProgettoFacilitatoreRequest;
 import it.pa.repdgt.ente.request.NuovaSedeRequest;
 import it.pa.repdgt.ente.resource.CreaSedeResource;
 import it.pa.repdgt.ente.resource.SedeResource;
+import it.pa.repdgt.ente.service.AccessControServiceUtils;
 import it.pa.repdgt.ente.service.EnteSedeProgettoFacilitatoreService;
 import it.pa.repdgt.ente.service.EnteSedeProgettoService;
 import it.pa.repdgt.ente.service.SedeService;
 import it.pa.repdgt.shared.entity.SedeEntity;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 
 @RestController
 @RequestMapping(path = "/sede")
@@ -38,6 +42,9 @@ public class SedeRestApi {
 	private EnteSedeProgettoService enteSedeProgettoService;
 	@Autowired
 	private EnteSedeProgettoFacilitatoreService enteSedeProgettoFacilitatoreService;
+	@Autowired
+	private AccessControServiceUtils accessControServiceUtils;
+	private static final String ERROR_MESSAGE_PERMESSO = "Errore tentavo accesso a risorsa non permesso";
 	
 	// Cerca sede (ricerca per nome della sede)
 	@GetMapping(path = "cerca/{nomeSede}")
@@ -49,10 +56,20 @@ public class SedeRestApi {
 	}
 	
 	// Dati relativi alla sede (indirizzi e fasce orarie)
+	@Deprecated
 	@GetMapping(path = "/light/{idSede}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaSedeBean getSchedaAnagraficaSede (
 			@PathVariable(value = "idSede") final Long idSede) {
+		return this.sedeService.getSchedaSedeByIdSede(idSede);
+	}
+	
+	// Dati relativi alla sede (indirizzi e fasce orarie)
+	@PostMapping(path = "/light/{idSede}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public SchedaSedeBean getSchedaAnagraficaSedeAndSceltaProfilo (
+			@PathVariable(value = "idSede") final Long idSede,
+			@RequestBody SceltaProfiloParam sceltaProfiloParam) {
 		return this.sedeService.getSchedaSedeByIdSede(idSede);
 	}
 	
@@ -68,10 +85,13 @@ public class SedeRestApi {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void aggiornaSede(@PathVariable(value = "idSede") Long idSede,
 			@RequestBody @Valid NuovaSedeRequest nuovaSedeRequest) {
+//		if(!accessControServiceUtils.checkPermessoIdSede(nuovaSedeRequest, idSede))
+//			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.sedeService.aggiornaSede(idSede, nuovaSedeRequest);
 	}
 	
 	// Associazione sede, ente, progetto
+	@Deprecated
 	@GetMapping(path = "/associa/ente/{idEnte}/sede/{idSede}/progetto/{idProgetto}/ruoloEnte/{ruoloEnte}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void associaEnteSedeProgetto(
@@ -82,13 +102,33 @@ public class SedeRestApi {
 		this.enteSedeProgettoService.associaEnteSedeProgetto(idSede, idEnte, ruoloEnte, idProgetto);
 	}
 	
+	// Associazione sede, ente, progetto
+	@PostMapping(path = "/associa/ente/{idEnte}/sede/{idSede}/progetto/{idProgetto}/ruoloEnte/{ruoloEnte}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public void associaEnteSedeProgettoBySceltaProfilo(
+			@PathVariable(value = "idEnte") 	Long idEnte,
+			@PathVariable(value = "idSede") 	Long idSede,
+			@PathVariable(value = "idProgetto") Long idProgetto,
+			@PathVariable(value = "ruoloEnte") 	String ruoloEnte,
+			@RequestBody SceltaProfiloParam sceltaProfiloParam) {
+		if(!accessControServiceUtils.checkPermessoIdProgetto(sceltaProfiloParam, idProgetto) ||
+				!accessControServiceUtils.checkPermessoIdEnte(sceltaProfiloParam, idEnte))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
+		this.enteSedeProgettoService.associaEnteSedeProgetto(idSede, idEnte, ruoloEnte, idProgetto);
+	}
+	
 	// Cancellazione o terminazione associazione sede, ente, progetto a seconda dello stato della sede
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	@DeleteMapping(path = "/cancellaOTerminaAssociazione/ente/{idEnte}/sede/{idSede}/progetto/{idProgetto}")
 	public void cancellaOTerminaAssociazioneEnteSedeProgetto(
 			@PathVariable(value = "idEnte") 	Long idEnte,
 			@PathVariable(value = "idSede") 	Long idSede,
-			@PathVariable(value = "idProgetto") Long idProgetto) {
+			@PathVariable(value = "idProgetto") Long idProgetto,
+			@RequestBody SceltaProfiloParam sceltaProfiloParam) {
+		if(!accessControServiceUtils.checkPermessoIdProgetto(sceltaProfiloParam, idProgetto) ||
+				!accessControServiceUtils.checkPermessoIdEnte(sceltaProfiloParam, idEnte) ||
+					!accessControServiceUtils.checkPermessoIdSede(sceltaProfiloParam, idSede))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.enteSedeProgettoService.cancellaOTerminaAssociazioneEnteSedeProgetto(idEnte, idSede, idProgetto);
 	}
 	
@@ -109,12 +149,26 @@ public class SedeRestApi {
 	}
 	
 	// Dettaglio sede
+	@Deprecated
 	@GetMapping(path = "/{idProgetto}/{idEnte}/{idSede}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaSedeBean getSchedaSede (
 			@PathVariable(value = "idProgetto") Long idProgetto,
 			@PathVariable(value = "idEnte") 	Long idEnte,
 			@PathVariable(value = "idSede") 	Long idSede) {
+		return this.sedeService.getSchedaSedeByIdProgettoAndIdEnteAndIdSede(idProgetto, idEnte, idSede);
+	}
+	
+	// Dettaglio sede
+	@PostMapping(path = "/{idProgetto}/{idEnte}/{idSede}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public SchedaSedeBean getSchedaSedeBysceltaProfilo (
+			@PathVariable(value = "idProgetto") Long idProgetto,
+			@PathVariable(value = "idEnte") 	Long idEnte,
+			@PathVariable(value = "idSede") 	Long idSede,
+			@RequestBody SceltaProfiloParam sceltaProfiloParam) {
+		if(!accessControServiceUtils.checkPermessoIdSede(sceltaProfiloParam, idSede))
+			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		return this.sedeService.getSchedaSedeByIdProgettoAndIdEnteAndIdSede(idProgetto, idEnte, idSede);
 	}
 }

@@ -44,7 +44,6 @@ public class EnteEntity implements Serializable {
 	private String sedeLegale;
 	
 	@Column(name = "INDIRIZZO_PEC", nullable = true)
-	@Email
 	private String indirizzoPec;
 	
 	@Temporal(value = TemporalType.TIMESTAMP)

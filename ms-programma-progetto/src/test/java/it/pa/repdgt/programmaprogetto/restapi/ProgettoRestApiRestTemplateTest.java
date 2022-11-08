@@ -86,6 +86,8 @@ public class ProgettoRestApiRestTemplateTest extends AppTests{
 		progettoRequest.setNomeBreve("nomeBreve");
 		progettoRequest.setDataInizio(new Date());
 		progettoRequest.setDataFineProgetto(new Date());
+		progettoRequest.setCfUtenteLoggato("SMTPAL67R31F111X");
+		progettoRequest.setCodiceRuoloUtenteLoggato("DTD");
 		
 		restTemplate.postForObject("http://localhost:" + randomServerPort + "/progetto?idProgramma=100", progettoRequest, CreaProgettoResource.class);
 	}
