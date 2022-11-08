@@ -217,6 +217,9 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
             }}
             title='Cerca'
             search
+            infoText={
+              usersList?.length ? `${usersList?.length} risultati trovati` : ''
+            }
           />
         ) : null}
         <div className='mx-5'>{content}</div>

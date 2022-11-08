@@ -78,7 +78,7 @@ export const statusColor = (status: string) => {
 };
 
 const StatusChip: React.FC<StatusChipI> = (props) => {
-  const { status, noTooltip = false, rowTableId, chipWidth } = props;
+  const { status, noTooltip = true, rowTableId, chipWidth } = props;
   const device = useAppSelector(selectDevice);
 
   if (!status) return null;
