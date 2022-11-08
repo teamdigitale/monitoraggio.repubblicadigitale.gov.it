@@ -70,8 +70,8 @@ const ManageServices: React.FC<ManageServicesI> = ({
     const payload = {
       data: answersForms['22'] || '',
       durataServizio: answersForms['23'] || '',
-      idEnte: idEnte,
-      idSede: answersForms?.idSede,
+      idEnteServizio: idEnte,
+      idSedeServizio: answersForms?.idSede,
       nomeServizio: answersForms?.nomeServizio,
       profilazioneParam: {
         codiceFiscaleUtenteLoggato: codiceFiscale,

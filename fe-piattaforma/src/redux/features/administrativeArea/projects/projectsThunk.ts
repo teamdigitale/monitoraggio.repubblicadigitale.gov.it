@@ -122,10 +122,12 @@ export const updateProject =
         setProjectGeneralInfo({ currentStep: 4, newFormValues: payload })
       );
       if (body) {
-        console.log(body);
-
+        const { idProgramma, idProgetto, idEnte } = getUserHeaders();
         const res = await API.put(`/progetto/${projectId}`, {
           ...body,
+          idProgramma,
+          idProgetto,
+          idEnte,
         });
         console.log('updateProjectDetails res', res);
       }
@@ -140,12 +142,17 @@ const ActivateProjectAction = {
   type: 'administrativeArea/ActivateProject',
 };
 export const ActivateProject =
-  (idProgetto: string) => async (dispatch: Dispatch) => {
+  (projectId: string) => async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
-      dispatch({ ...ActivateProjectAction, idProgetto });
-      if (idProgetto) {
-        const res = await API.put(`progetto/attiva/${idProgetto}`);
+      dispatch({ ...ActivateProjectAction, projectId });
+      if (projectId) {
+        const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+        const res = await API.put(`progetto/attiva/${projectId}`, {
+          idProgramma,
+          idProgetto,
+          idEnte,
+        });
         console.log('ActivateProject res', res);
       }
     } catch (error) {

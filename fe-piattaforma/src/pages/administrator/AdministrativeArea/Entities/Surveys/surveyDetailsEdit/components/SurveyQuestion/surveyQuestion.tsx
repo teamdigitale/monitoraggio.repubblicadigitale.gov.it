@@ -15,6 +15,9 @@ import { useAppSelector } from '../../../../../../../../redux/hooks';
 import { FormHelper } from '../../../../../../../../utils/formHelper';
 import { answerType, idQ1, idQ2 } from '../../../surveyConstants';
 import MultiOptionForm from './multiOptionForm';
+import ItLessCircle from '/public/assets/img/it-minus-circle-primary.png';
+import ItExpand from "/public/assets/img/it-expand-primary.png";
+import ItCollapse from "/public/assets/img/it-chevron-up.png";
 
 export interface SurveyQuestionComponentI extends SurveyQuestionI {
   className?: string;
@@ -108,7 +111,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
             <Button onClick={handleDeleteQuestion} className='px-1 pt-0'>
               <Icon
                 color='primary'
-                icon='it-less-circle'
+                icon={ItLessCircle}
                 size='sm'
                 aria-label='Elimina domanda'
               />
@@ -128,7 +131,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
           >
             <Icon
               color='primary'
-              icon='it-expand'
+              icon={ItExpand}
               size='sm'
               aria-label='mostra'
             />
@@ -138,7 +141,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
         <Button onClick={() => setOpen(false)} className='px-2'>
           <Icon
             color='primary'
-            icon='it-collapse'
+            icon={ItCollapse}
             size='sm'
             aria-label='Chiudi domanda'
           />

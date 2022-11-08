@@ -133,9 +133,13 @@ const ProgramsDetails: React.FC = () => {
     // For breadcrumb
     if (location.pathname === `/area-amministrativa/programmi/${entityId}`) {
       navigate(`/area-amministrativa/programmi/${entityId}/info`);
-    }
-    if(location.pathname === `/area-amministrativa/programmi/${entityId}/ente-gestore-programma/${authorityId}`) {
-      navigate(`/area-amministrativa/programmi/${entityId}/ente-gestore-programma`);
+    } else if (
+      location.pathname ===
+      `/area-amministrativa/programmi/${entityId}/ente-gestore-programma/${authorityId}`
+    ) {
+      navigate(
+        `/area-amministrativa/programmi/${entityId}/ente-gestore-programma`
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -1002,9 +1006,13 @@ const ProgramsDetails: React.FC = () => {
     dispatch(closeModal());
   };
   const deleteProject = async (projectId: string) => {
-    await dispatch(DeleteEntity('progetto', projectId));
-    dispatch(closeModal());
-    if (entityId) dispatch(GetProgramDetail(entityId));
+    const res = await dispatch(DeleteEntity('progetto', projectId));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (res) {
+      dispatch(closeModal());
+      if (entityId) dispatch(GetProgramDetail(entityId));
+    }
   };
 
   const removeManagerAuthority = async (
@@ -1080,6 +1088,8 @@ const ProgramsDetails: React.FC = () => {
             userRole !== userRoles.DEG &&
             userRole !== userRoles.REGP &&
             userRole !== userRoles.DEGP &&
+            userRole !== userRoles.REPP &&
+            userRole !== userRoles.DEPP &&
             userRole !== userRoles.FAC &&
             userRole !== userRoles.VOL
           }
@@ -1161,8 +1171,12 @@ const ProgramsDetails: React.FC = () => {
             if (payload?.entity === 'project')
               deleteProject(payload?.projectId);
             if (payload?.entity === 'program' && entityId) {
-              await dispatch(DeleteEntity('programma', entityId));
-              navigate(-1);
+              const res = await dispatch(DeleteEntity('programma', entityId));
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              if (res) {
+                navigate('/area-amministrativa/programmi', { replace: true });
+              }
             }
             if (payload?.entity === 'authority')
               entityId &&

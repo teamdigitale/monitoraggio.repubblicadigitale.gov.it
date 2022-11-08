@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom';
 import clsx from 'clsx';
 import './notificationsPreview.scss';
 import ClickOutside from '../../hoc/ClickOutside';
@@ -7,7 +7,7 @@ import { focusId, MenuItem } from '../../utils/common';
 import { Button, Icon } from 'design-react-kit';
 import Notification from '../../pages/common/NotificationsPage/components/Notifications/notification';
 import { useAppSelector } from '../../redux/hooks';
-import { selectUserNotificationsPreview } from '../../redux/features/user/userSlice';
+import { selectProfile, selectUserNotificationsPreview } from '../../redux/features/user/userSlice';
 import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import {
@@ -27,6 +27,7 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
   const dispatch = useDispatch();
   // TODO integrate notification
   const notificationsList = useAppSelector(selectUserNotificationsPreview);
+  const userRole = useAppSelector(selectProfile)?.codiceRuolo
 
   const body = document.getElementsByTagName('body')[0];
 
@@ -35,22 +36,37 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
     if (open) {
       focusId('hamburger');
       body.style.overflowY = 'hidden';
-      dispatch(
-        GetNotificationsByUser(
-          { status: [{ value: 0 }], items_per_page: [{ value: 9 }], page: [{ value: 0 }], sort: [{ value: 'created_desc' }] },
-          true
-        )
-      );
     } else {
       body.style.overflowY = 'unset';
     }
   }, [open]);
 
+  useEffect(() => {
+    if (open && userRole) {
+      dispatch(
+        GetNotificationsByUser(
+          {
+            status: [{ value: 0 }],
+            items_per_page: [{ value: 9 }],
+            page: [{ value: 0 }],
+            sort: [{ value: 'created_desc' }],
+          },
+          true
+        )
+      );
+    }
+  }, [open, userRole])
+
   const onReadNotification = async (id: string) => {
     await dispatch(ReadNotification([id]));
     dispatch(
       GetNotificationsByUser(
-        { status: [{ value: 0 }], items_per_page: [{ value: 9 }], page: [{ value: 0 }], sort: [{ value: 'created_desc' }] },
+        {
+          status: [{ value: 0 }],
+          items_per_page: [{ value: 9 }],
+          page: [{ value: 0 }],
+          sort: [{ value: 'created_desc' }],
+        },
         true
       )
     );
@@ -100,7 +116,11 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
           )}
         </div>
         <div className='text-center py-3 top-shadow'>
-          <NavLink to='/notifiche' className='primary-color archive' onClick={() => setOpen(false)}>
+          <NavLink
+            to='/notifiche'
+            className='primary-color archive'
+            onClick={() => setOpen(false)}
+          >
             ARCHIVIO NOTIFICHE
             {/*{notificationsList.length}*/}
           </NavLink>

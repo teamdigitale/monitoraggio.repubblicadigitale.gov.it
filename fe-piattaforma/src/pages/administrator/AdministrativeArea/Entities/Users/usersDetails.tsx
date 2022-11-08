@@ -30,7 +30,7 @@ import {
   selectUsers,
   setUserDetails,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
-import { CardStatusAction } from '../../../../../components';
+import {CardStatusAction, EmptySection} from '../../../../../components';
 import ManageFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/ManageFacilitator/ManageFacilitator';
 import { formFieldI } from '../../../../../utils/formHelper';
 import AddUserRole from '../modals/addUserRole';
@@ -322,7 +322,10 @@ const UsersDetails = () => {
   };
 
   const getUserRoleStatus = () => {
-    if (
+    let status = userInfo?.stato;
+    if (userRole === userRoles.USR) {
+      return status;
+    } else if (
       userRole &&
       Object.values(userRoles).includes(userRole) &&
       userRoleList?.length
@@ -333,10 +336,9 @@ const UsersDetails = () => {
           role.id?.toString().toLowerCase() === id?.toString().toLowerCase() &&
           role.codiceRuolo === userRole
       )[0];
-
-      return entityRole?.stato;
+      if (entityRole?.stato) status = entityRole?.stato;
     }
-    return userInfo?.stato;
+    return status;
   };
 
   const deleteButton: ButtonInButtonsBar = {
@@ -345,7 +347,7 @@ const UsersDetails = () => {
     outline: true,
     buttonClass: 'btn-secondary',
     text: 'Elimina',
-    disabled: getUserRoleStatus() === entityStatus.ATTIVO,
+    disabled: getUserRoleStatus() !== entityStatus.NON_ATTIVO,
     onClick: () =>
       dispatch(
         openModal({
@@ -379,7 +381,8 @@ const UsersDetails = () => {
       if (
         userRole === userRoles.USR &&
         hasUserPermission(['del.utente']) &&
-        userInfo.stato === entityStatus.NON_ATTIVO
+        userInfo.stato === entityStatus.NON_ATTIVO &&
+        !userRoleList?.length
       ) {
         buttons.push(deleteButton);
       } else if (userRole === userRoles.FAC || userRole === userRoles.VOL) {
@@ -551,13 +554,11 @@ const UsersDetails = () => {
           >
             {currentForm}
           </DetailLayout>
-          {!(entityId || projectId) &&
-          userRoleList?.length &&
-          userRole === userRoles.USR ? (
+          {!(entityId || projectId) && userRole === userRoles.USR ? (
             <div className={clsx('my-5')}>
-              {hasUserPermission(['add.del.ruolo.utente']) ? (
-                <div className={clsx('w-100', 'position-relative')}>
-                  <h5 className={clsx('primary-color', 'mb-4')}>Ruoli</h5>
+              <div className={clsx('w-100', 'position-relative')}>
+                <h5 className={clsx('primary-color', 'mb-4')}>Ruoli</h5>
+                {hasUserPermission(['add.del.ruolo.utente']) ? (
                   <div className='d-flex cta-buttons'>
                     <Button
                       onClick={() => dispatch(openModal({ id: 'AddUserRole' }))}
@@ -574,105 +575,107 @@ const UsersDetails = () => {
                       Aggiungi ruolo
                     </Button>
                   </div>
-                </div>
-              ) : null}
-              {userRoleList.map(
-                (role: {
-                  id: string;
-                  codiceRuolo: string;
-                  nome: string;
-                  stato: string;
-                  statoP: string;
-                  ruolo: string;
-                  nomeBreveEnte: string;
-                  nomeEnte: string;
-                  associatoAUtente: boolean;
-                }) => {
-                  let roleActions = {};
-                  if (role.id) {
-                    roleActions = {
-                      [CRUDActionTypes.VIEW]: role.associatoAUtente
-                        ? () =>
-                            navigate(
-                              `/area-amministrativa/${
-                                role?.codiceRuolo === userRoles.VOL ||
-                                role?.codiceRuolo === userRoles.FAC ||
-                                role?.codiceRuolo === userRoles.REGP ||
-                                role?.codiceRuolo === userRoles.DEGP ||
-                                role?.codiceRuolo === userRoles.REPP ||
-                                role?.codiceRuolo === userRoles.DEPP
-                                  ? 'progetti'
-                                  : 'programmi'
-                              }/${role?.id}`,
-                              {
-                                replace: true,
-                              }
-                            )
-                        : undefined,
-                    };
-                  } else {
-                    roleActions = hasUserPermission(['add.del.ruolo.utente'])
-                      ? {
-                          [CRUDActionTypes.DELETE]: () => {
-                            dispatch(
-                              openModal({
-                                id: 'delete-entity',
-                                payload: {
-                                  entity: 'role',
-                                  text: 'Confermi di volere eliminare questo ruolo?',
-                                  role: role.codiceRuolo || role.nome,
-                                },
-                              })
-                            );
-                          },
+                ) : null}
+              </div>
+              {userRoleList?.length ? (
+                userRoleList.map(
+                  (role: {
+                    id: string;
+                    codiceRuolo: string;
+                    nome: string;
+                    stato: string;
+                    statoP: string;
+                    ruolo: string;
+                    nomeBreveEnte: string;
+                    nomeEnte: string;
+                    associatoAUtente: boolean;
+                  }) => {
+                    let roleActions = {};
+                    if (role.id) {
+                      roleActions = {
+                        [CRUDActionTypes.VIEW]: role.associatoAUtente
+                          ? () =>
+                              navigate(
+                                `/area-amministrativa/${
+                                  role?.codiceRuolo === userRoles.VOL ||
+                                  role?.codiceRuolo === userRoles.FAC ||
+                                  role?.codiceRuolo === userRoles.REGP ||
+                                  role?.codiceRuolo === userRoles.DEGP ||
+                                  role?.codiceRuolo === userRoles.REPP ||
+                                  role?.codiceRuolo === userRoles.DEPP
+                                    ? 'progetti'
+                                    : 'programmi'
+                                }/${role?.id}`,
+                                {
+                                  replace: true,
+                                }
+                              )
+                          : undefined,
+                      };
+                    } else {
+                      roleActions = hasUserPermission(['add.del.ruolo.utente'])
+                        ? {
+                            [CRUDActionTypes.DELETE]: () => {
+                              dispatch(
+                                openModal({
+                                  id: 'delete-entity',
+                                  payload: {
+                                    entity: 'role',
+                                    text: 'Confermi di volere eliminare questo ruolo?',
+                                    role: role.codiceRuolo || role.nome,
+                                  },
+                                })
+                              );
+                            },
+                          }
+                        : {};
+                    }
+                    return (
+                      <CardStatusAction
+                        key={role.id}
+                        id={role.id || role.codiceRuolo || role.nome}
+                        status={role.statoP}
+                        //title={role.nome}
+                        title={
+                          role.codiceRuolo !== userRoles.REG &&
+                          role.codiceRuolo !== userRoles.DEG &&
+                          role.codiceRuolo !== userRoles.REGP &&
+                          role.codiceRuolo !== userRoles.DEGP &&
+                          role.codiceRuolo !== userRoles.VOL &&
+                          role.codiceRuolo !== userRoles.FAC &&
+                          role.codiceRuolo !== userRoles.REPP &&
+                          role.codiceRuolo !== userRoles.DEPP
+                            ? role.nome
+                            : undefined
                         }
-                      : {};
+                        fullInfo={
+                          role.stato
+                            ? {
+                                programma:
+                                  role.codiceRuolo === userRoles.REG ||
+                                  role.codiceRuolo === userRoles.DEG
+                                    ? role.nome
+                                    : undefined,
+                                progetto:
+                                  role.codiceRuolo === userRoles.REGP ||
+                                  role.codiceRuolo === userRoles.DEGP ||
+                                  role.codiceRuolo === userRoles.VOL ||
+                                  role.codiceRuolo === userRoles.FAC ||
+                                  role.codiceRuolo === userRoles.REPP ||
+                                  role.codiceRuolo === userRoles.DEPP
+                                    ? role.nome
+                                    : undefined,
+                                ruoli: role.ruolo,
+                                ente: role.nomeBreveEnte || role.nomeEnte,
+                              }
+                            : undefined
+                        }
+                        onActionClick={roleActions}
+                      />
+                    );
                   }
-                  return (
-                    <CardStatusAction
-                      key={role.id}
-                      id={role.id || role.codiceRuolo || role.nome}
-                      status={role.statoP}
-                      //title={role.nome}
-                      title={
-                        role.codiceRuolo !== userRoles.REG &&
-                        role.codiceRuolo !== userRoles.DEG &&
-                        role.codiceRuolo !== userRoles.REGP &&
-                        role.codiceRuolo !== userRoles.DEGP &&
-                        role.codiceRuolo !== userRoles.VOL &&
-                        role.codiceRuolo !== userRoles.FAC &&
-                        role.codiceRuolo !== userRoles.REPP &&
-                        role.codiceRuolo !== userRoles.DEPP
-                          ? role.nome
-                          : undefined
-                      }
-                      fullInfo={
-                        role.stato
-                          ? {
-                              programma:
-                                role.codiceRuolo === userRoles.REG ||
-                                role.codiceRuolo === userRoles.DEG
-                                  ? role.nome
-                                  : undefined,
-                              progetto:
-                                role.codiceRuolo === userRoles.REGP ||
-                                role.codiceRuolo === userRoles.DEGP ||
-                                role.codiceRuolo === userRoles.VOL ||
-                                role.codiceRuolo === userRoles.FAC ||
-                                role.codiceRuolo === userRoles.REPP ||
-                                role.codiceRuolo === userRoles.DEPP
-                                  ? role.nome
-                                  : undefined,
-                              ruoli: role.ruolo,
-                              ente: role.nomeBreveEnte || role.nomeEnte,
-                            }
-                          : undefined
-                      }
-                      onActionClick={roleActions}
-                    />
-                  );
-                }
-              )}
+                )
+              ) : <EmptySection title='Non ci sono ruoli associati' />}
             </div>
           ) : null}
           <DeleteEntityModal
