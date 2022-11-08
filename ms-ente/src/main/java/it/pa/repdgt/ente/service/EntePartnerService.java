@@ -300,7 +300,7 @@ public class EntePartnerService {
 						(tipologia != null && !(tipologia.trim()).equals("")) &&
 						(piva != null && !(piva.trim()).equals(""))
 						) {
-					if(this.enteService.esisteEnteByNome(nome)) {
+					if(!this.enteService.esisteEnteByNome(nome)) {
 
 						Pattern pattern = Pattern.compile(PIVA_REGX);
 						Matcher matcher = pattern.matcher(ente.getPiva());

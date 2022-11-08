@@ -51,6 +51,7 @@ import it.pa.repdgt.shared.awsintegration.service.S3Service;
 import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.EntePartnerEntity;
+import it.pa.repdgt.shared.entity.IntegrazioniUtenteEntity;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
@@ -297,6 +298,15 @@ public class UtenteService {
 		utente.setDataOraAggiornamento(utente.getDataOraCreazione());
 		utente.setNome(Utils.toCamelCase(utente.getNome()));
 		utente.setCognome(utente.getCognome().toUpperCase());
+		
+		IntegrazioniUtenteEntity integrazione = new IntegrazioniUtenteEntity();
+		integrazione.setUtente(utente);
+		integrazione.setDataOraAggiornamento(new Date());
+		integrazione.setDataOraCreazione(new Date());
+		integrazione.setUtenteRegistratoInRocketChat(false);
+		integrazione.setUtenteRegistratoInWorkdocs(false);
+		
+		utente.setIntegrazioneUtente(integrazione);
 		
 		final UtenteEntity utenteSalvato = this.salvaUtente(utente);
 		if(!ruolo.getPredefinito()) {
@@ -670,7 +680,7 @@ public class UtenteService {
 														DettaglioRuoliBean dettaglioRuolo = new DettaglioRuoliBean();
 														ProgrammaEntity programmaFetchDB = this.programmaService.getProgrammaById(id);
 														dettaglioRuolo.setId(id);
-														dettaglioRuolo.setNome(programmaFetchDB.getNome());
+														dettaglioRuolo.setNome(programmaFetchDB.getNomeBreve());
 														dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
 														dettaglioRuolo.setRuolo(ruolo.getNome());
 														dettaglioRuolo.setStatoP(programmaFetchDB.getStato());
@@ -722,7 +732,7 @@ public class UtenteService {
 														DettaglioRuoliBean dettaglioRuolo = new DettaglioRuoliBean();
 														ProgettoEntity progettoXEgpFetchDB = this.progettoService.getProgettoById(id);
 														dettaglioRuolo.setId(id);
-														dettaglioRuolo.setNome(progettoXEgpFetchDB.getNome());
+														dettaglioRuolo.setNome(progettoXEgpFetchDB.getNomeBreve());
 														dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
 														dettaglioRuolo.setRuolo(ruolo.getNome());
 														dettaglioRuolo.setStatoP(progettoXEgpFetchDB.getStato());
@@ -753,7 +763,7 @@ public class UtenteService {
 														ProgettoEntity progettoXEppFetchDB = this.progettoService.getProgettoById(entePartner.getId().getIdProgetto());
 														dettaglioRuolo.setId(entePartner.getId().getIdProgetto());
 														dettaglioRuolo.setIdEnte(entePartner.getId().getIdEnte());
-														dettaglioRuolo.setNome(progettoXEppFetchDB.getNome());
+														dettaglioRuolo.setNome(progettoXEppFetchDB.getNomeBreve());
 														dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
 														dettaglioRuolo.setRuolo(ruolo.getNome());
 														dettaglioRuolo.setStatoP(progettoXEppFetchDB.getStato());
@@ -784,7 +794,7 @@ public class UtenteService {
 														ProgettoEntity progettoXFacFetchDB = this.progettoService.getProgettoById(enteSedeProgetoFac.getIdProgetto());
 														dettaglioRuolo.setId(enteSedeProgetoFac.getIdProgetto());
 														dettaglioRuolo.setIdEnte(enteSedeProgetoFac.getIdEnte());
-														dettaglioRuolo.setNome(progettoXFacFetchDB.getNome());
+														dettaglioRuolo.setNome(progettoXFacFetchDB.getNomeBreve());
 														dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
 														dettaglioRuolo.setRuolo(ruolo.getNome());
 														dettaglioRuolo.setStatoP(progettoXFacFetchDB.getStato());

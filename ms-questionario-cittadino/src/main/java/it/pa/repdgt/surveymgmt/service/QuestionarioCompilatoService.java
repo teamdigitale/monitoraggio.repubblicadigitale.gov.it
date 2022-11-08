@@ -33,6 +33,7 @@ import it.pa.repdgt.shared.util.Utils;
 import it.pa.repdgt.surveymgmt.bean.QuestionarioCompilatoBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection.DatiIstanza;
+import it.pa.repdgt.surveymgmt.exception.CittadinoException;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioCompilatoException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
@@ -88,6 +89,12 @@ public class QuestionarioCompilatoService {
 		
 		if(questionarioCompilatoEntity.get().getStato().equals(StatoQuestionarioEnum.COMPILATO.getValue()))
 			throw new ServizioException("Il questionario risulta già compilato", CodiceErroreEnum.Q02);
+		
+		if(!cittadinoService.getCittadinoPerCfOrNumDoc(questionarioCompilatoRequest.getCodiceFiscaleDaAggiornare(), 
+				questionarioCompilatoRequest.getNumeroDocumentoDaAggiornare(), questionarioCompilatoEntity.get().getCittadino().getId()).isEmpty()) {
+			String errorMessage = String.format("Impossibile aggiornare il cittadino. Cittadino con codice fiscale o numero documento già esistente");
+			throw new CittadinoException(errorMessage, CodiceErroreEnum.U07);
+		}
 		
 		// Recupero dalla request:
 		// 	- dati consenso trattamento dati 
