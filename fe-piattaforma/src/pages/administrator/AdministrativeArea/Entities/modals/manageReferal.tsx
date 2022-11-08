@@ -118,7 +118,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
           );
           await dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
           if (userId) await dispatch(GetUserDetails(userId));
-        } else {
+        } else if (authority?.id) {
           res = await dispatch(
             AssignManagerAuthorityReferentDelegate(
               authority.id,
@@ -161,7 +161,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
   const handleSelectUser: CRUDActionsI = {
     [CRUDActionTypes.SELECT]: (td: TableRowI | string) => {
       if (typeof td !== 'string') {
-        dispatch(GetUserDetails(td.id as string));
+        dispatch(GetUserDetails(td.id as string, true));
       }
       setShowForm(true);
     },
@@ -200,7 +200,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
     (usersList?.length === 0 || !usersList) &&
     !showForm
   ) {
-    content = <EmptySection title={'Nessun risultato'} withIcon horizontal />;
+    content = <EmptySection title='Nessun risultato' withIcon horizontal />;
   }
 
   return (

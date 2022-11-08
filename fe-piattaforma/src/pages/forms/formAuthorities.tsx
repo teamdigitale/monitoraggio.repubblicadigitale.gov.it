@@ -156,8 +156,8 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
   if (formData && !creation) {
     <EmptySection
-      title={'Questa sezione è ancora vuota'}
-      subtitle={'Per attivare il progetto aggiungi un ente gestore e una sede'}
+      title='Questa sezione è ancora vuota'
+      subtitle='Per attivare il progetto aggiungi un ente gestore e una sede'
       buttons={EmptySectionButton}
     />;
   }

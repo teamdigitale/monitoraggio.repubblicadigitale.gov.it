@@ -295,7 +295,14 @@ export const DeleteEntity =
     try {
       dispatch(showLoader());
       dispatch({ ...DeleteEntityAction, entity, id });
-      await API.delete(`/${entity}/${id}`);
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+      await API.delete(`/${entity}/${id}`, {
+        data: {
+          idProgramma,
+          idProgetto,
+          idEnte,
+        },
+      });
       return true;
     } catch (error) {
       console.log('DeleteEntity error', error);
@@ -336,8 +343,12 @@ export const TerminateEntity =
       dispatch(showLoader());
       dispatch({ type: 'admistrativeArea/TerminateEntity' });
       if (entityId && terminationDate) {
+        const { idProgramma, idProgetto, idEnte } = getUserHeaders();
         const res = await API.put(`/${entity}/termina/${entityId}`, {
           dataTerminazione: terminationDate,
+          idProgramma,
+          idProgetto,
+          idEnte,
         });
         if (res) {
           return true;

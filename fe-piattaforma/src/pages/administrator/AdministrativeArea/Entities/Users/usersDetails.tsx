@@ -347,7 +347,7 @@ const UsersDetails = () => {
     outline: true,
     buttonClass: 'btn-secondary',
     text: 'Elimina',
-    disabled: getUserRoleStatus() === entityStatus.ATTIVO,
+    disabled: getUserRoleStatus() !== entityStatus.NON_ATTIVO,
     onClick: () =>
       dispatch(
         openModal({
@@ -381,7 +381,8 @@ const UsersDetails = () => {
       if (
         userRole === userRoles.USR &&
         hasUserPermission(['del.utente']) &&
-        userInfo.stato === entityStatus.NON_ATTIVO
+        userInfo.stato === entityStatus.NON_ATTIVO &&
+        !userRoleList?.length
       ) {
         buttons.push(deleteButton);
       } else if (userRole === userRoles.FAC || userRole === userRoles.VOL) {

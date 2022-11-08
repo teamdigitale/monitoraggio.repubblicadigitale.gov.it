@@ -17,6 +17,7 @@ import { selectServices } from '../../../../../../redux/features/administrativeA
 import { GetServicesDetail } from '../../../../../../redux/features/administrativeArea/services/servicesThunk';
 import DetailLayout from '../../../../../../components/DetailLayout/detailLayout';
 import Logo from '/public/assets/img/logo-scritta-blu-x2.png';
+import './printSurvey.scss';
 
 export interface PrintSurveyQuestionI extends Omit<formFieldI, 'type'> {
   type: string;
@@ -39,6 +40,7 @@ const PrintSurvey: React.FC = () => {
   const { serviceId, idQuestionario } = useParams();
   const sections = useAppSelector(selectPrintSurveySections);
   const serviceDetails = useAppSelector(selectServices)?.detail;
+  const classQuestion = 'd-inline-block mr-3 mb-3 question';
 
   useEffect(() => {
     if (serviceId) dispatch(GetServicesDetail(serviceId));
@@ -54,7 +56,7 @@ const PrintSurvey: React.FC = () => {
         return (
           <PrintFieldRating
             info={question}
-            className='d-inline-block mr-3 mb-5'
+            className={classQuestion}
           />
         );
       case 'object':
@@ -63,9 +65,7 @@ const PrintSurvey: React.FC = () => {
             <PrintSelectField
               info={question}
               className={clsx(
-                'd-inline-block',
-                'mr-3',
-                'mb-5',
+                classQuestion,
                 question.flag && 'align-bottom'
               )}
               noLabel={question.flag ? true : false}
@@ -77,7 +77,7 @@ const PrintSurvey: React.FC = () => {
           return (
             <PrintBoxField
               info={question}
-              className='d-inline-block mr-3 mb-5'
+              className={classQuestion}
               optionsLevel2={question.enumLevel2}
             />
           );
@@ -89,7 +89,7 @@ const PrintSurvey: React.FC = () => {
           return (
             <PrintBoxField
               info={question}
-              className='d-inline-block mr-3 mb-5'
+              className={classQuestion}
               optionsLevel2={
                 section.questions?.[question.relatedTo]?.enumLevel2 || []
               }
@@ -104,14 +104,14 @@ const PrintSurvey: React.FC = () => {
           return (
             <PrintSelectField
               info={question}
-              className={clsx('d-inline-block', 'mr-3', 'mb-5')}
+              className={classQuestion}
             />
           );
         } else {
           return (
             <PrintTextField
               info={question}
-              className='d-inline-block mr-3 mb-5'
+              className={classQuestion}
             />
           );
         }
@@ -122,14 +122,14 @@ const PrintSurvey: React.FC = () => {
         return (
           <PrintTextField
             info={question}
-            className='d-inline-block mr-3 mb-5'
+            className={classQuestion}
           />
         );
     }
   };
 
   return (
-    <div className='container my-3 py-5'>
+    <div className='container my-3 py-5 print-survey'>
       <div className='header-container__main__logo mb-4'>
         <img src={Logo} alt='logo' />
       </div>
@@ -150,8 +150,8 @@ const PrintSurvey: React.FC = () => {
       />
       <div className='mt-5'>
         {(sections || []).map((section: SurveySectionI, i: number) => (
-          <div key={i} className='mb-5'>
-            <h1 className='h2 primary-color-a6 mb-5'>
+          <div key={i} className='mb-3'>
+            <h1 className='h2 primary-color-a6 mb-3'>
               {section?.sectionTitle}
             </h1>
             {section?.questions &&

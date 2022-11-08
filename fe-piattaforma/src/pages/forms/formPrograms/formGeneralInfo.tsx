@@ -234,7 +234,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           {...form?.dataInizio}
           required
           label='Data inizio'
-          type={'date'}
+          type='date'
           col='col-12 col-lg-6'
           onInputChange={onDateChange}
         />
@@ -242,7 +242,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           {...form?.dataFine}
           required
           label='Data fine'
-          type={'date'}
+          type='date'
           col='col-12 col-lg-6'
           onInputChange={onDateChange}
         />

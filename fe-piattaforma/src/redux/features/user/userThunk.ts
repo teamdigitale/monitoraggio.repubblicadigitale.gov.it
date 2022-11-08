@@ -203,7 +203,6 @@ const RocketChatLoginAction = { type: 'user/RocketChatLogin' };
 export const RocketChatLogin = () => async (dispatch: Dispatch) => {
   try {
     dispatch({ ...RocketChatLoginAction });
-    dispatch(showLoader());
     const { idUtente } = getUserHeaders();
     const res = await API.post(
       `/rocket-chat/auth/iframe/utente/${idUtente}`,
@@ -215,8 +214,6 @@ export const RocketChatLogin = () => async (dispatch: Dispatch) => {
   } catch (error) {
     console.log('RocketChatLogin error', error);
     return false;
-  } finally {
-    dispatch(hideLoader());
   }
 };
 

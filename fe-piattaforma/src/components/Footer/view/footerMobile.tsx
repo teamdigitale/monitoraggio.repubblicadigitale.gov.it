@@ -1,8 +1,10 @@
 import React, { memo } from 'react';
 import { Icon } from 'design-react-kit';
 import clsx from 'clsx';
-import Mitd from '/public/assets/img/digital-skills.png';
-import Logo from '/public/assets/img/logo-rep-mob.png';
+//import Mitd from '/public/assets/img/digital-skills.png';
+import Mitd from '/public/assets/img/mitd-logo_tmp.png';
+//import Logo from '/public/assets/img/logo-rep-mob.png';
+import Logo from '/public/assets/img/scd-logo_tmp.png';
 import { useTranslation } from 'react-i18next';
 
 const FooterMobile: React.FC = () => {
@@ -12,24 +14,30 @@ const FooterMobile: React.FC = () => {
     <footer className='footer-container'>
       <div className='container'>
         <div className='mb-3 pt-4 container'>
-          <p className='footer-container__small-text mb-4'>
+          {/*<p className='footer-container__small-text mb-4'>
             {t('designed_by')}
-          </p>
+          </p>*/}
           <div className='mr-auto mt-3 mb-2'>
-            <img src={Logo} alt='logo' />
+            <img
+              src={Logo}
+              alt='logo'
+              style={{ width: 'auto', height: '60px', maxWidth: '100%' }}
+            />
           </div>
-          <p className='h5 mt-4 font-weight-bold'>
-            {
-              "Ministero per l'innovazione tecnologica e la transizione digitale"
-            }
+          {/*<p className='h5 mt-4 font-weight-bold'>
+            Ministero per l'innovazione tecnologica e la transizione digitale
           </p>
-          <p className='footer-container__xs-text mt-4 font-weight-bold'>
+            <p className='footer-container__xs-text mt-4 font-weight-bold'>
             Presidenza del Consiglio dei Ministri
-          </p>
+            </p>*/}
 
           <div className='mb-3'>
-            <div className='mr-auto'>
-              <img src={Mitd} alt='mitd' />
+            <div className='mr-auto mt-3 mb-2'>
+              <img
+                src={Mitd}
+                alt='mitd'
+                style={{ width: 'auto', height: '60px', maxWidth: '100%' }}
+              />
             </div>
           </div>
 

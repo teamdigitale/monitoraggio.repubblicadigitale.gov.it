@@ -150,8 +150,12 @@ export const updateProgram =
         setProgramGeneralInfo({ currentStep: 4, newFormValues: payload })
       );
       if (body) {
+        const { idProgramma, idProgetto, idEnte } = getUserHeaders();
         await API.put(`/programma/${programId}`, {
           ...body,
+          idProgramma,
+          idProgetto,
+          idEnte,
         });
       }
     } catch (error) {
@@ -171,8 +175,13 @@ export const UpdateProgramSurveyDefault =
     try {
       dispatch(showLoader());
       dispatch({ ...UpdateProgramSurveyDefaultAction, payload });
-      const { idProgramma, idQuestionario } = payload;
-      await API.put(`/programma/${idProgramma}/aggiungi/${idQuestionario}`);
+      const { idProgramma: programId, idQuestionario } = payload;
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+      await API.put(`/programma/${programId}/aggiungi/${idQuestionario}`, {
+        idProgramma,
+        idProgetto,
+        idEnte,
+      });
       // GetProgramDetail(idProgramma); // TODO: far dispatchare azioni anche qui!
     } catch (e) {
       console.error('UpdateProgramSurveyDefault error', e);

@@ -118,7 +118,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   const handleSelectUser: CRUDActionsI = {
     [CRUDActionTypes.SELECT]: (td: TableRowI | string) => {
       if (typeof td !== 'string') {
-        dispatch(GetUserDetails(td.id as string));
+        dispatch(GetUserDetails(td.id as string, true));
         dispatch(setUsersList(null));
       }
     },
