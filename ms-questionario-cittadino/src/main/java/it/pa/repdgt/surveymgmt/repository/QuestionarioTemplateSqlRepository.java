@@ -291,20 +291,20 @@ public interface QuestionarioTemplateSqlRepository extends JpaRepository<Questio
 			+ "			programma_x_questionario_template pxq  "
 			+ "		WHERE 1=1"
 			+ "			AND pxq.questionario_template_id = :idQuestionarioTemplate "
-			+ "			AND pxq.programma_id  = :idProgramma "
-			+ "         and pxq.stato <> 'TERMINATO'",
+			+ "			AND pxq.programma_id  = :idProgramma ",
 			nativeQuery = true)
 	int isQuestionarioAssociatoAProfilo(
 			@NotNull String idQuestionarioTemplate, 
 			Long idProgramma);
 
-	@Query(value = ""
-			+ "		SELECT count(*)"
+	@Query(value = "SELECT *"
 			+ "		FROM "
-			+ "			questionario_template  "
+			+ "		programma_x_questionario_template pxq"
+			+ "		INNER JOIN programma"
+			+ "			ON programma.id = pxq.programma_id"
 			+ "		WHERE 1=1"
-			+ "			AND id = :idQuestionarioTemplate "
-			+ "			AND default_scd = true ",
+			+ "		AND pxq.questionario_template_id = :idQuestionarioTemplate"
+			+ "		AND programma.policy = 'SCD' ",
 			nativeQuery = true)
 	int isQuestionarioAssociatoADSCU(@NotNull String idQuestionarioTemplate);
 }
