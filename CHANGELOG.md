@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.280](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.279...1.0.0-develop.280) (2022-11-08)
+
+
+### Bug Fixes
+
+* **be:** put cittadino ([187cf69](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/187cf69434c460cc5cf8d9082b26ae1489ffa0f6))
+
 ## [1.0.0-develop.279](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.278...1.0.0-develop.279) (2022-11-08)
 
 
