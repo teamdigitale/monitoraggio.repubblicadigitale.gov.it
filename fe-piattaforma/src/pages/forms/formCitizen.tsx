@@ -421,7 +421,7 @@ const form = newForm([
     required: true,
   }),
   newFormField({
-    ...CommonFields.CELLULARE,
+    ...CommonFields.NUMERO_TELEFONICO,
     keyBE: 'numeroCellulare',
     id: '16',
     field: '16',
@@ -430,7 +430,7 @@ const form = newForm([
     required: true,
   }),
   newFormField({
-    ...CommonFields.TELEFONO,
+    ...CommonFields.NUMERO_TELEFONICO,
     keyBE: 'telefono',
     id: '17',
     field: '17',
