@@ -107,3 +107,7 @@ input:focus + #placeholder-icon {
     font-size: 18px;
   }
 }
+
+.input-group-append {
+  z-index: 0;
+}
