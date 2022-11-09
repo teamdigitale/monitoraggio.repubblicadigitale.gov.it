@@ -470,7 +470,7 @@ const AuthoritiesDetails = () => {
               title: authorityDetails?.dettagliInfoEnte?.nome,
               status: authorityDetails?.dettagliInfoEnte?.stato,
               upperTitle: { icon: PeopleIcon, text: 'Ente' },
-              subTitle: projectDetail?.nome || projectDetail?.nomeBreve || '',
+              subTitle: projectDetail?.nomeBreve || projectDetail?.nome || '',
             }}
             enteIcon
             formButtons={buttons}

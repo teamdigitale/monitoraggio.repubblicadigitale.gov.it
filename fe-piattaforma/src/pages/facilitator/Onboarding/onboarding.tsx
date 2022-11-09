@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../../redux/hooks';
-import { selectDevice } from '../../../redux/features/app/appSlice';
+import {hideBreadCrumb, selectDevice} from '../../../redux/features/app/appSlice';
 import Profile from '/public/assets/img/change-profile.png';
 import {
   CommonFields,
@@ -53,6 +53,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
   useEffect(() => {
     if (user?.integrazione) {
       selectUserRole();
+      dispatch(hideBreadCrumb());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
