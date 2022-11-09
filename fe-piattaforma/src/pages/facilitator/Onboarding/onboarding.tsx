@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../../redux/hooks';
-import { selectDevice } from '../../../redux/features/app/appSlice';
+import {hideBreadCrumb, selectDevice} from '../../../redux/features/app/appSlice';
 import Profile from '/public/assets/img/change-profile.png';
 import {
   CommonFields,
@@ -53,6 +53,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
   useEffect(() => {
     if (user?.integrazione) {
       selectUserRole();
+      dispatch(hideBreadCrumb());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
@@ -168,7 +169,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
                 accept='.png, .jpeg, .jpg'
                 capture
                 ref={inputRef}
-                className='sr-only'
+                className='d-none'
               />
 
               <div className='rounded-circle onboarding__img-profile position-relative mr-3'>
@@ -187,14 +188,13 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
                 >
                   <Button
                     onClick={addProfilePicture}
-                    size='xs'
                     className='profile-picture-btn'
                   >
                     <Icon
                       size=''
                       icon='it-camera'
                       color='white'
-                      aria-label='Foto'
+                      aria-label='Aggiorna immagine profilo'
                       className='position-absolute onboarding__icon'
                     />
                   </Button>

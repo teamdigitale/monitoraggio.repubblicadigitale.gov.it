@@ -9,15 +9,20 @@
   @media screen and (max-width: 576px) {
     width: auto;
   }
+  .line-height {
+    line-height: 1.5;
+  }
+  .word-spacing {
+    word-spacing: 0.15rem;
+  }
   .badge-notifications {
     display: flex;
     width: 22px;
     height: 22px;
     border-radius: 100%;
-    background-color: #B62032;
-    color: #FFFFFF;
+    background-color: #b62032;
+    color: #ffffff;
     align-items: center;
     justify-content: center;
   }
 }
-

@@ -76,12 +76,13 @@ const CitizensDetail: React.FC = () => {
         goBackPath='/area-cittadini'
         formButtons={citizenButtons}
       >
-        <FormCitizen formDisabled />
+        <FormCitizen legend='form cittadino' formDisabled />
       </DetailLayout>
       <CitizenServices servizi={citizen?.serviziCittadino} />
       <ManageCitizens
         idCitizen={idCittadino}
         onClose={() => dispatch(closeModal())}
+        legend="form modifica cittadino, i campi con l'asterisco sono obbligatori"
       />
     </div>
   );

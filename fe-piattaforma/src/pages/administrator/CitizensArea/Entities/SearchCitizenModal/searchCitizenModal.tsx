@@ -143,7 +143,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
         setCurrentStep(selectedSteps.ADD_CITIZEN);
         setSelectedCitizen(citizensData?.[0]);
       } else if (citizensData?.length === 0) {
-        return <NoResultsFoundCitizen onClickCta={addCitizen}/>;
+        return <NoResultsFoundCitizen onClickCta={addCitizen} />;
       }
     }
   };
@@ -157,6 +157,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
           }}
           setIsFormValid={(isValid: boolean) => setFormValid(isValid)}
           creation
+          legend="Form di creazione cittadino, i campi con l'asterisco sono obbligatori"
         />
       );
     }
@@ -185,6 +186,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
           setIsFormValid={(isValid: boolean) => setFormValid(isValid)}
           formDisabled
           selectedCitizen={selectedCitizen}
+          legend='form cittadino già esistente'
         />
       </>
     );
@@ -291,7 +293,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
             alreadySearched={(searched) => setAlreadySearched(searched)}
             resetModal={() => {
               resetModal(true);
-              
+
               setCurrentStep(radioFilter);
             }}
           />

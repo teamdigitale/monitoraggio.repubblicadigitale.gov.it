@@ -61,49 +61,66 @@ const HeaderDesktop: React.FC<HeaderI> = ({
 
   const userDropDown = () => (
     <Dropdown
-      className='p-0 header-container__top__user-dropdown mr-4'
+      className='p-0 header-container__top__user-dropdown mr-4 position-relative'
       isOpen={openUser}
       toggle={() => setOpenUser(!openUser)}
     >
-      <DropdownToggle caret className='complementary-1-color-a1 shadow-none'>
-        <div
-          className={clsx(
-            'header-container__top__user',
-            'd-inline-flex',
-            'align-items-center',
-            'text.white',
-            'primary-bg-b2',
-            'header-panel-btn',
-            'border-right',
-            'px-3'
-          )}
-        >
-          <div>
-            <UserAvatar
-              avatarImage={profilePicture}
-              user={{ uSurname: user?.cognome, uName: user?.nome }}
-              size={AvatarSizes.Small}
-              font={AvatarTextSizes.Small}
-            />
-          </div>
-          <div className='d-flex flex-column align-items-start user-description'>
-            <p className='h6 m-0 text-sans-serif'>
-              {user?.cognome}&nbsp;{user?.nome}
-            </p>
-            <p className='h6 font-weight-light'>
-              {/*<em>{getRoleLabel(userProfile?.codiceRuolo)}</em>*/}
-              <em>{`${userProfile?.descrizioneRuolo}${
-                userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
-              }`}</em>
-            </p>
-          </div>
-          <div className='ml-2'>
-            <Icon size='' color='white' icon='it-expand' />
-          </div>
+      <div
+        className={clsx(
+          'header-container__top__user',
+          'd-inline-flex',
+          'align-items-center',
+          'text.white',
+          'primary-bg-b2',
+          'header-panel-btn',
+          'border-right',
+          'complementary-1-color-a1',
+          'shadow-none',
+          'px-3'
+        )}
+        id='dropdownMenuButtonDesktop'
+        role='button'
+        aria-haspopup='true'
+        data-toggle='dropdown'
+        aria-expanded={openUser}
+        onClick={() => setOpenUser(!openUser)}
+        onKeyDown={(e) => {
+          if (e.key === ' ') {
+            setOpenUser(!openUser);
+          }
+        }}
+        tabIndex={0}
+      >
+        <UserAvatar
+          avatarImage={profilePicture}
+          user={{ uSurname: user?.cognome, uName: user?.nome }}
+          size={AvatarSizes.Small}
+          font={AvatarTextSizes.Small}
+        />
+        <div className='d-flex flex-column align-items-start'>
+          <span className='h6 m-0 text-sans-serif'>
+            {user?.cognome}&nbsp;{user?.nome}
+          </span>
+          <span className='h6 font-weight-light text-nowrap'>
+            {/*<em>{getRoleLabel(userProfile?.codiceRuolo)}</em>*/}
+            <em>{`${userProfile?.descrizioneRuolo}${
+              userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
+            }`}</em>
+          </span>
         </div>
-      </DropdownToggle>
-      <DropdownMenu role='menu' tag='ul'>
-        <LinkList role='none'>
+        <div className='ml-2'>
+          <Icon
+            size=''
+            color='white'
+            icon='it-expand'
+            role='button'
+            aria-label='Espandi menù'
+          />
+        </div>
+      </div>
+      <DropdownToggle caret className='d-none' aria-hidden={true} />
+      <div className='position-relative w-100 link-list-wrapper'>
+        <DropdownMenu role='menu' className='header-container__dropdown py-2'>
           {userDropdownOptions.map((item, index) => (
             <li
               key={index}
@@ -121,6 +138,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 )}
                 role='menuitem'
                 onClick={item.action}
+                aria-label='Il mio profilo'
               >
                 {item.optionName}
               </Button>
@@ -141,7 +159,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                   dispatch(openModal({ id: 'switchProfileModal' }))
                 }
               >
-                Cambia ruolo
+                <span>Cambia ruolo</span>
               </Button>
             </li>
           ) : null}
@@ -162,7 +180,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               </Button>
             </li>
           ) : null}
-          <LinkListItem divider role='menuitem' aria-hidden={true} />
+          <LinkListItem divider aria-label='divider' aria-hidden />
           <li role='none' className='px-4'>
             <Button
               className={clsx(
@@ -177,17 +195,18 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 dispatch(LogoutRedirect());
               }}
             >
-              <strong>Esci</strong>
+              Esci
               <Icon
                 icon='it-external-link'
                 color='primary'
                 size='sm'
-                aria-label='esci'
+                aria-label='Esci'
+                aria-hidden
               />
             </Button>
           </li>
-        </LinkList>
-      </DropdownMenu>
+        </DropdownMenu>
+      </div>
     </Dropdown>
   );
 
@@ -232,12 +251,18 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 Area gestionale
               </h6>
               <div className='ml-2'>
-                <Icon size='' color='white' icon='it-expand' />
+                <Icon
+                  size=''
+                  color='white'
+                  icon='it-expand'
+                  aria-label='Espandi'
+                  aria-hidden
+                />
               </div>
             </div>
           </div>
         </DropdownToggle>
-        <DropdownMenu role='menu' tag='ul'>
+        <DropdownMenu role='menu'>
           <LinkList role='list'>
             {hasUserPermission(['btn.gest.ruoli']) ? (
               <li role='none' className='px-4'>
@@ -254,8 +279,9 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                     navigate('/gestione-ruoli');
                     setOpenManagementArea(false);
                   }}
+                  aria-label='Gestione ruoli'
                 >
-                  {t('role_management')}
+                  <span> {t('role_management')}</span>
                 </Button>
               </li>
             ) : null}
@@ -274,8 +300,9 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                     navigate('/area-gestionale/gestione-categorie');
                     setOpenManagementArea(false);
                   }}
+                  aria-label='Gestione categorie'
                 >
-                  Gestione categorie
+                  <span> Gestione categorie</span>
                 </Button>
               </li>
             ) : null}
@@ -294,8 +321,9 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                     navigate('/area-gestionale/gestione-segnalazioni');
                     setOpenManagementArea(false);
                   }}
+                  aria-label='Gestione segnalazioni'
                 >
-                  Gestione segnalazioni
+                  <span> Gestione segnalazioni</span>
                 </Button>
               </li>
             ) : null}
@@ -331,7 +359,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
             <p className='h6 m-0'>Repubblica Digitale</p>
           ) : (
             <a href='/'>
-              <img src={LogoSmall} alt='logo' />
+              <img src={LogoSmall} alt='Repubblica Digital' />
             </a>
           )}
         </div> */}
@@ -359,10 +387,11 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                       icon='it-settings'
                       size='sm'
                       color='white'
-                      aria-label='Gestione profili'
+                      aria-label=''
                     />
-                    <h6
+                    <span
                       className={clsx(
+                        'h6',
                         'm-0',
                         'ml-2',
                         'font-weight-light',
@@ -370,7 +399,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                       )}
                     >
                       {t('role_management')}
-                    </h6>
+                    </span>
                   </div>
                 </a>
               </div>
@@ -405,7 +434,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                   size='sm'
                   className='color-white ml-2'
                   color='white'
-                  aria-label='Apri'
+                  aria-label=''
                 />
               </DropdownToggle>
               <DropdownMenu role='menu' tag='ul'>
@@ -472,7 +501,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                             color='white'
                             icon={Bell}
                             size='sm'
-                            aria-label='notifications preview'
+                            aria-label='Anteprima notifiche'
                           />
                           {notification ? (
                             <span className='badge-notifications'>
@@ -491,7 +520,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 </>
               ) : null
               // <div className='d-inline-flex align-items-center px-4'>
-              //   <h6 className='m-0'>ITA</h6>
+              //   <span className='h6 m-0'>ITA</span>
               //   <Icon
               //     color='white'
               //     icon='it-expand'
@@ -554,7 +583,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
             {isLogged ? (
               <div className='header-container__main__search ml-auto'>
                 {/* <SearchBox onClick={(v) => console.log('output:', v)} /> */}
-                <Button
+                <div
                   className={clsx(
                     'primary-color-b1',
                     'd-flex',
@@ -563,7 +592,15 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                     'align-items-center',
                     'ml-5'
                   )}
+                  role='button'
+                  tabIndex={0}
                   onClick={() => navigate('/home/cerca')}
+                  onKeyDown={(e) => {
+                    if (e.key === ' ') {
+                      e.preventDefault();
+                      navigate('/home/cerca');
+                    }
+                  }}
                 >
                   <span className='mr-2 text-white font-weight-light'>
                     Cerca
@@ -574,9 +611,10 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                       color='primary'
                       size='sm'
                       aria-label='Cerca'
+                      aria-hidden
                     />
                   </div>
-                </Button>
+                </div>
               </div>
             ) : null}
           </div>

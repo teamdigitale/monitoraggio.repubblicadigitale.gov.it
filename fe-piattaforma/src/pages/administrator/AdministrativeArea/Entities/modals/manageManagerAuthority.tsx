@@ -56,6 +56,7 @@ export const headings: TableHeadingI[] = [
 interface ManageManagerAuthorityFormI {
   formDisabled?: boolean;
   creation?: boolean;
+  legend?: string | undefined;
 }
 
 interface ManageManagerAuthorityI
@@ -66,6 +67,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
   clearForm = () => ({}),
   formDisabled,
   creation = false,
+  legend = '',
 }) => {
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
@@ -207,6 +209,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
         setNewFormValues({ ...newData })
       }
       setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+      legend={legend}
     />
   );
 

@@ -45,6 +45,7 @@ const Select: React.FC<SelectI> = (props) => {
     isSearchable = false,
     position = 'auto',
     shortDropdownMenu = false,
+    placeholder = 'Seleziona'
   } = props;
   const [selectedOption, setSelectedOption] = useState<OptionType>();
 
@@ -99,6 +100,7 @@ const Select: React.FC<SelectI> = (props) => {
     field: undefined,
     onInputBlur: undefined,
     onInputChange: undefined,
+    placeholder,
   };
 
   return (

@@ -144,7 +144,9 @@ const ServicesDetails = () => {
       switch (locationSplit[locationSplit.length - 1]) {
         case tabs.INFO:
           setActiveTab(tabs.INFO);
-          setContent(<FormService formDisabled />);
+          setContent(
+            <FormService legend='form informazioni servizio' formDisabled />
+          );
           break;
         case tabs.CITIZENS:
           setActiveTab(tabs.CITIZENS);
@@ -290,22 +292,26 @@ const ServicesDetails = () => {
   };
 
   const nav = (
-    <Nav tabs className='mb-5 overflow-hidden'>
-      <NavItem>
+    <Nav tabs className='mb-5 overflow-hidden' role='menu'>
+      <NavItem role='none'>
         <span ref={dettagliRef}>
           <NavLink
             to={`/area-amministrativa/servizi/${serviceId}/${tabs.INFO}`}
             active={activeTab === tabs.INFO}
+            role='menuitem'
+            onKeyDown={() => setActiveTab(tabs.INFO)}
           >
             Dettagli servizio
           </NavLink>
         </span>
       </NavItem>
-      <NavItem>
+      <NavItem role='none'>
         <span ref={cittadiniRef}>
           <NavLink
             to={`/area-amministrativa/servizi/${serviceId}/${tabs.CITIZENS}`}
             active={activeTab === tabs.CITIZENS}
+            role='menuitem'
+            onKeyDown={() => setActiveTab(tabs.CITIZENS)}
           >
             Cittadini
           </NavLink>
@@ -340,7 +346,7 @@ const ServicesDetails = () => {
         >
           <div className='mx-auto'>{content}</div>
         </DetailLayout>
-        <ManageServices />
+        <ManageServices legend="Form modifica servizio, i campi con l'asterisco sono obbligatori" />
         <SearchCitizenModal />
         <DeleteEntityModal
           onClose={() => dispatch(closeModal())}

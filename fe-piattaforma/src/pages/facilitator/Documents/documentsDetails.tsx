@@ -109,11 +109,13 @@ const DocumentsDetails = () => {
     <Button
       onClick={() => navigate('/documenti', { replace: true })}
       className='px-0'
+      aria-label='torna indietro'
     >
       <Icon
         icon='it-chevron-left'
         color='primary'
-        aria-label='Torna indietro'
+        aria-label='torna indietro'
+        aria-hidden
       />
       <span className='primary-color'> Torna indietro </span>
     </Button>
@@ -176,7 +178,7 @@ const DocumentsDetails = () => {
                     aria-labelledby='rate-siDescription'
                     withLabel={false}
                   />
-                  <Label check id='rate-siDescription'>
+                  <Label check htmlFor='rate-si' id='rate-siDescription'>
                     Si
                   </Label>
                 </div>
@@ -190,7 +192,7 @@ const DocumentsDetails = () => {
                     aria-labelledby='rate-noDescription'
                     withLabel={false}
                   />
-                  <Label check id='rate-noDescription'>
+                  <Label check htmlFor='rate-no' id='rate-noDescription'>
                     No
                   </Label>
                 </div>

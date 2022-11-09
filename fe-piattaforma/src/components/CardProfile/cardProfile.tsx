@@ -46,7 +46,7 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
         className={clsx(
           'ml-2',
           'bg-white',
-          'px-2',
+          'pr-2',
           'py-3',
           'h-100',
           'd-flex',
@@ -70,33 +70,38 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
               <UserAvatar
                 avatarImage={profilePicture}
                 user={{ uSurname: user?.cognome, uName: user?.nome }}
-                size={device.mediaIsPhone ? AvatarSizes.Big : AvatarSizes.Small}
-                font={
-                  device.mediaIsPhone
-                    ? AvatarTextSizes.Big
-                    : AvatarTextSizes.Small
-                }
+                size={AvatarSizes.Small}
+                font={AvatarTextSizes.Small}
                 lightColor={device.mediaIsPhone}
               />
             </div>
           ) : (
-            <div className='pl-5' />
+            <div className='spacing' />
           )}
           <div>
-            <CardTitle className='mb-1 primary-color-a12'>
-              <span className={clsx(activeProfile && 'font-weight-semibold')}>
+            <CardTitle className='mb-1 primary-color-a12 '>
+              <span
+                className={clsx(
+                  activeProfile && 'font-weight-semibold',
+                  'switch-profile-titles'
+                )}
+              >
                 {profile?.descrizioneRuolo}
+                {device.mediaIsPhone && <br />}
                 {profile?.nomeEnte ? (
-                  <>
-                    &nbsp;&ldquo;<i>{profile?.nomeEnte}</i>&ldquo;
-                  </>
+                  <span>
+                    <em className='switch-profile-subs'>
+                      {`"${profile?.nomeEnte}"`}
+                    </em>
+                  </span>
                 ) : null}
               </span>
             </CardTitle>
             <CardText
               className={clsx(
-                activeProfile && 'primary-color-a12',
-                !activeProfile && 'neutral-2-color-a3'
+                activeProfile && 'primary-color-b7',
+                !activeProfile && 'neutral-2-color-a5',
+                'switch-profile-subs'
               )}
             >
               {profile?.nomeProgramma}

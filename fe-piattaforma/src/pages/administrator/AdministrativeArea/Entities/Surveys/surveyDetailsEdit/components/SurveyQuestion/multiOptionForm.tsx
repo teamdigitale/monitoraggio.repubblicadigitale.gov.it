@@ -151,6 +151,7 @@ const MultiOptionForm: React.FC<MultiOptionFormI> = (props) => {
               icon='it-plus-circle'
               size=''
               aria-label='Aggiungi opzione'
+              aria-hidden
             />
             Aggiungi opzione
           </Button>

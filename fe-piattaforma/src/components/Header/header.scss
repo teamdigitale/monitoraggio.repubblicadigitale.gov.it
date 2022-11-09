@@ -61,7 +61,7 @@
       }
 
       .dropdown-menu {
-        width: 351px;
+        width: 265px;
       }
      
     }
@@ -111,6 +111,11 @@
     align-items: center;
     justify-content: center;
     border-radius: 25px;
+  }
+
+  &__dropdown {
+   
+    transform: none !important;
   }
 }
 .user-logged .header-container {

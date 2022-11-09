@@ -7,13 +7,20 @@ import { selectPrograms } from '../../../../redux/features/administrativeArea/ad
 import { useAppSelector } from '../../../../redux/hooks';
 import FormGeneralInfo from '../formGeneralInfo';
 
-const ProgramInfoAccordionForm = () => {
+interface ProgramInfoAccordionFormI {
+  legend?: string | undefined;
+}
+
+const ProgramInfoAccordionForm: React.FC<ProgramInfoAccordionFormI> = (
+  props
+) => {
+  const { legend = '' } = props;
   const programDetails =
     useAppSelector(selectPrograms).detail.dettagliInfoProgramma;
 
   return (
     <>
-      <FormGeneralInfo formDisabled edit />
+      <FormGeneralInfo legend={legend} formDisabled edit />
       <h2 className='h5 mb-4' style={{ color: 'rgb(92, 111, 130)' }}>
         Obiettivi programma
       </h2>
@@ -28,6 +35,7 @@ const ProgramInfoAccordionForm = () => {
             entityDetail={programDetails}
             section={accordion.section as SectionT}
             disabled
+            legend="form obbiettivi programma, i campi con l'asterisco sono obbligatori"
           />
         </Accordion>
       ))}

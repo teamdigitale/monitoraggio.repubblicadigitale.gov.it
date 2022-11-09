@@ -38,7 +38,8 @@ const SectionInfo: React.FC<SectionInfoI> = (props) => {
                 color='primary'
                 icon='it-info-circle'
                 size='sm'
-                aria-label='calendar'
+                aria-label='Informazioni'
+                aria-hidden
                 className='mr-2 mb-2'
               />
               <h1 className={clsx(!device.mediaIsDesktop ? 'h5' : 'h4')}>
@@ -52,7 +53,7 @@ const SectionInfo: React.FC<SectionInfoI> = (props) => {
                   color='primary'
                   icon='it-close-big'
                   size='sm'
-                  aria-label='calendar'
+                  aria-label='Chiudi'
                 />
               </Button>
             </div>

@@ -159,8 +159,12 @@ const GenericSearchFilterTableLayout: React.FC<
           <ChipLabel className='mx-1 my-1'>
             {getFilterLabel(filterKey)}: {filter}
           </ChipLabel>
-          <Button close onClick={() => cleanFilters(filterKey, filter.value)}>
-            <Icon icon='it-close' aria-label='Chiudi chip' />
+          <Button
+            close
+            onClick={() => cleanFilters(filterKey, filter.value)}
+            aria-label={`Elimina filtro ${filter}`}
+          >
+            <Icon icon='it-close' aria-label='Elimina filtro' aria-hidden />
           </Button>
         </Chip>
       );
@@ -172,8 +176,12 @@ const GenericSearchFilterTableLayout: React.FC<
               <ChipLabel className='mx-1 my-1'>
                 {getFilterLabel(filterKey)}: {f.label}
               </ChipLabel>
-              <Button close onClick={() => cleanFilters(filterKey, f.value)}>
-                <Icon icon='it-close' aria-label='Chiudi chip' />
+              <Button
+                close
+                onClick={() => cleanFilters(filterKey, f.value)}
+                aria-label={`Elimina filtro ${f.label}`}
+              >
+                <Icon icon='it-close' aria-label='Elimina filtro' aria-hidden />
               </Button>
             </Chip>
           ))}
@@ -232,7 +240,7 @@ const GenericSearchFilterTableLayout: React.FC<
                   ? 'w-100'
                   : device.mediaIsPhone
                   ? 'w-100'
-                  : 'col-9',
+                  : 'col-10',
                 'pl-0'
               )}
               data-testid='create-new-element'
@@ -271,13 +279,15 @@ const GenericSearchFilterTableLayout: React.FC<
                 className='page-title__cta'
                 onClick={cta}
                 data-testid='create-new-entity'
+                aria-label={`${textCta}`}
               >
                 {iconCta ? (
                   <Icon
                     color='white'
                     icon={iconCta}
                     className='mr-2'
-                    aria-label='Aggiungi'
+                    aria-label={'Aggiungi'}
+                    aria-hidden={textCta ? true : false}
                   />
                 ) : null}
                 <span className='text-nowrap'>{textCta}</span>
@@ -289,7 +299,8 @@ const GenericSearchFilterTableLayout: React.FC<
                     color='white'
                     icon={iconCta}
                     className='mr-2'
-                    aria-label='Aggiungi'
+                    aria-label={'Aggiungi'}
+                    aria-hidden={textCta ? true : false}
                   />
                 ) : null}
                 {textCta}
@@ -307,7 +318,8 @@ const GenericSearchFilterTableLayout: React.FC<
                   color='primary'
                   icon='it-print'
                   className='mr-2'
-                  aria-label='Stampa questionario'
+                  aria-label={'Stampa questionario'}
+                  aria-hidden={ctaPrintText ? true : false}
                 />
                 <span className='text-nowrap'>{ctaPrintText}</span>
               </Button>
@@ -388,14 +400,14 @@ const GenericSearchFilterTableLayout: React.FC<
                 'mb-2'
               )}
             >
-              <div className='mr-1'>
-                <Icon
-                  icon='it-download'
-                  color='primary'
-                  size='sm'
-                  aria-label='Scarica elenco'
-                />
-              </div>
+              <Icon
+                icon='it-download'
+                color='primary'
+                size='sm'
+                aria-label={t('download_list')}
+                aria-hidden={!device.mediaIsPhone ? true : false}
+                className='mr-1'
+              />
               {!device.mediaIsPhone && (
                 <span className='ml-2'>{t('download_list')}</span>
               )}

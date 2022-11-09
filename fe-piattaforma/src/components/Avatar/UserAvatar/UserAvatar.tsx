@@ -60,7 +60,8 @@ const UserAvatar: React.FC<UserAvatarI> = (props) => {
       {avatarImage ? (
         <img
           src={avatarImage}
-          alt='avatar'
+          alt='immagine utente'
+          aria-hidden
           className='avatar-user-container__avatar-image'
           style={{ borderRadius: '50%', width: '100%', height: '100%' }}
         />

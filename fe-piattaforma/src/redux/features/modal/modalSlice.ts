@@ -27,13 +27,17 @@ export const modalSlice = createSlice({
   reducers: {
     resetModalState: () => initialState,
     openModal: (state, action: PayloadAction<ModalStateI>) => {
+      document.body.classList.add('overflow-hidden');
       if (action.payload.id) {
         state.id = action.payload.id;
         state.open = true;
         state.payload = action.payload.payload || {};
       }
     },
-    closeModal: () => initialState,
+    closeModal: () => {
+      document.body.classList.remove('overflow-hidden');
+      return initialState;
+    },
     expandModal: (state, action: PayloadAction<any>) => {
       state.expandModal = action.payload.expandModal;
     },

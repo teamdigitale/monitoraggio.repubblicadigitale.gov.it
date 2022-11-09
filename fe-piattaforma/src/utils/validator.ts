@@ -22,7 +22,9 @@ export const RegexpType = {
   BOOLEAN: 'booleanInput',
   TIME: 'time',
   TIMESTAMP: 'timestamp',
-  PIVA: 'piva',
+  PIVA: 'pivaInput',
+  NAME_SURNAME: 'name_surname',
+  DOCUMENT_NUMBER: 'document-number',
 };
 
 const RegexpRule = {
@@ -43,13 +45,16 @@ const RegexpRule = {
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,64}$/,
   [RegexpType.PASSWORD_TOOL]:
     /^(?=.*?[A-Z])(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,64}|(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,64}|(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?!.*\s).{8,64}|(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,64}$/gm,
-  MOBILE_PHONE_PREFIX:
+  [RegexpType.MOBILE_PHONE]: /^[0-9 \-\ ]{5,15}$/,
+  [RegexpType.MOBILE_PHONE_PREFIX]:
     /^\+((?:9[679]|8[035789]|6[789]|5[90]|42|3[578]|2[1-689])|9[0-58]|8[1246]|6[0-6]|5[1-8]|4[013-9]|3[0-469]|2[70]|7|1)(?:\W*\d){0,13}/g,
   [RegexpType.TELEPHONE]: /^[0-9]{6,20}$/gi,
   [RegexpType.TIME]: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/g,
   [RegexpType.TIMESTAMP]:
     /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(Z?)$/gm,
   [RegexpType.PIVA]: /^[0-9]{11}$/gm,
+  [RegexpType.NAME_SURNAME]: /^[^!#§ç@°]*^[A-Z a-z À-Ö Ø-ö ø-ÿ '-]{1,30}$/,
+  [RegexpType.DOCUMENT_NUMBER]: /^[a-z A-Z 0-9_.-]{5,10}$/gi,
 };
 
 export const validator = (

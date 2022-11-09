@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import {
   Button,
   CardReadMore,
-  FormGroup,
   Icon,
   Label,
   UncontrolledTooltip,
@@ -12,7 +11,6 @@ import { useTranslation } from 'react-i18next';
 import { CRUDActionsI, CRUDActionTypes } from '../../utils/common';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
-// import isEqual from 'lodash.isequal';
 import Input from '../Form/input';
 import StatusChip from '../StatusChip/statusChip';
 
@@ -78,17 +76,19 @@ const CardStatusActionSurveys: React.FC<CardStatusActionI> = (props) => {
       )}
     >
       {moreThanOneSurvey && (
-        <FormGroup check className='mr-3'>
+        <div className='mt-2 mr-3'>
           <Input
-            aria-label='Radio button'
+            aria-label={title}
             name='gruppo1'
             type='radio'
             id={`radio${id}`}
             onClick={() => setIsChecked(`${id}`)}
             checked={isChecked === `radio${id}`}
           />
-          <Label className='sr-only'>Radio button</Label>
-        </FormGroup>
+          <Label htmlFor={`radio${id}`} className='sr-only'>
+            {title}
+          </Label>
+        </div>
       )}
       <div
         className={clsx(
@@ -192,7 +192,7 @@ const CardStatusActionSurveys: React.FC<CardStatusActionI> = (props) => {
                       color='primary'
                       icon='it-less-circle'
                       size='sm'
-                      aria-label='Elimina'
+                      aria-label={`Rimuovi ${title}`}
                     />
                   </Button>
                   <UncontrolledTooltip
@@ -215,7 +215,7 @@ const CardStatusActionSurveys: React.FC<CardStatusActionI> = (props) => {
                   color='primary'
                   icon='it-chevron-right'
                   size='sm'
-                  aria-label='Seleziona'
+                  aria-label={`Vai al dettaglio di ${title}`}
                 />
               </Button>
             ) : null}
@@ -230,7 +230,7 @@ const CardStatusActionSurveys: React.FC<CardStatusActionI> = (props) => {
                   color='primary'
                   icon='it-password-visible'
                   size='sm'
-                  aria-label='Preview'
+                  aria-label={`Anteprima di ${title}`}
                 />
               </Button>
             ) : null}

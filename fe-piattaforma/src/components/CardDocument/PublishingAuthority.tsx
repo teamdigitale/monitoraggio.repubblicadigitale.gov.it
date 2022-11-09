@@ -10,7 +10,7 @@ interface PublishingAuthorityI {
 const PublishingAuthority: React.FC<PublishingAuthorityI> = ({ authority }) => {
   return (
     <div className='d-flex align-items-center'>
-      <Icon icon='it-pa' fill='#66A5E3' />
+      <Icon icon='it-pa' fill='#2578CB' aria-label='Editore' aria-hidden />
       <p
         className={clsx(
           'document-card-container__authority',

@@ -28,6 +28,7 @@ interface TargetsFormI extends withFormHandlerProps {
   maxTargets?: number;
   maxDate?: string | undefined;
   minDate?: string | undefined;
+  legend?: string | undefined;
 }
 
 export type SectionT =
@@ -50,6 +51,7 @@ const TargetsForm = ({
   updateForm = () => ({}),
   maxDate,
   minDate,
+  legend = '',
 }: TargetsFormI) => {
   const [targetsDetails, setTargetsDetails] = useState({});
   const [targetsCount, setTargetsCount] = useState(0);
@@ -220,6 +222,7 @@ const TargetsForm = ({
       id='form-targets'
       formDisabled={disabled}
       className='pt-5 px-4 pr-lg-5'
+      legend={legend}
     >
       {form && (
         <>
@@ -231,6 +234,7 @@ const TargetsForm = ({
                 onInputChange={onInputDataChange}
                 type={disabled ? 'text' : 'number'}
                 col={clsx('col-12', !disabled ? 'col-lg-5' : 'col-lg-6')}
+                minimum={0}
               />
               <Input
                 {...form[row[1]]}
@@ -252,8 +256,9 @@ const TargetsForm = ({
                       icon='it-less-circle'
                       color='primary'
                       size='sm'
-                      aria-label='delete'
-                    ></Icon>
+                      aria-label='Elimina'
+                      aria-hidden={!device.mediaIsDesktop}
+                    />
                     {!device.mediaIsDesktop && 'Elimina'}
                   </Button>
                 ) : null}
@@ -268,6 +273,7 @@ const TargetsForm = ({
                   color='primary'
                   icon='it-plus-circle'
                   aria-label={t('add_goal')}
+                  aria-hidden
                 />
                 <span
                   className={clsx(

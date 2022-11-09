@@ -115,6 +115,11 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
                   ? formField?.label?.toLowerCase()
                   : ''
               }`}
+              aria-label={`Seleziona ${
+                (formField?.label || '')?.length < 20
+                  ? formField?.label?.toLowerCase()
+                  : ''
+              }`}
               label={`${formField?.label}`}
               isDisabled={formField?.disabled || viewMode}
             />

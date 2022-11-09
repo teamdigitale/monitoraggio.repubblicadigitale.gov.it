@@ -31,6 +31,7 @@ interface ProgramInformationI {
   formDisabled?: boolean;
   creation?: boolean;
   edit?: boolean;
+  legend?: string | undefined;
 }
 
 const id = formTypes.PROGRAMMA;
@@ -44,6 +45,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
   formDisabled,
   creation = false,
   edit = false,
+  legend = '',
 }) => {
   // const [isFormValid, setIsFormValid] = useState<boolean>(true);
   const { entityId } = useParams();
@@ -251,6 +253,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             )
           }
           creation={creation}
+          legend={legend}
         />
       );
 

@@ -71,7 +71,12 @@ const Paginator: React.FC<PaginatorI> = (props) => {
           </PagerItem>
           {fromPage - 1 >= 1 ? (
             <PagerItem className='d-flex align-items-center'>
-              <Icon icon={Ellipsis} className='ellipsis' />
+              <Icon
+                icon={Ellipsis}
+                className='ellipsis'
+                aria-label='pagine nascoste'
+                aria-hidden
+              />
             </PagerItem>
           ) : null}
           {[...Array(pages).keys()].slice(fromPage, toPage).map((page) => (
@@ -87,7 +92,12 @@ const Paginator: React.FC<PaginatorI> = (props) => {
           ))}
           {pages - toPage > 1 ? (
             <PagerItem className='d-flex align-items-center'>
-              <Icon icon={Ellipsis} className='ellipsis' />
+              <Icon
+                icon={Ellipsis}
+                className='ellipsis'
+                aria-label='pagine nascoste'
+                aria-hidden
+              />
             </PagerItem>
           ) : null}
           <PagerItem key={pages}>
@@ -127,6 +137,13 @@ const Paginator: React.FC<PaginatorI> = (props) => {
             previous
             href={refID}
             onClick={() => handleOnChange(active - 1)}
+            onKeyDown={(e) => {
+              if (e.key === ' ') {
+                e.preventDefault();
+                handleOnChange(active - 1);
+              }
+            }}
+            tabIndex={active <= 1 ? -1 : 0}
           >
             <Icon
               icon='it-chevron-left'
@@ -143,6 +160,13 @@ const Paginator: React.FC<PaginatorI> = (props) => {
             next
             href={refID}
             onClick={() => handleOnChange(active + 1)}
+            onKeyDown={(e) => {
+              if (e.key === ' ') {
+                e.preventDefault();
+                handleOnChange(active + 1);
+              }
+            }}
+            tabIndex={active >= pages ? -1 : 0}
           >
             <Icon
               icon='it-chevron-right'

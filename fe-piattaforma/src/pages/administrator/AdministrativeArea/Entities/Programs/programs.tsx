@@ -295,7 +295,10 @@ const Programs = () => {
           />
         )}
       </div>
-      <ManageProgram creation />
+      <ManageProgram
+        legend="Form creazione programma, i campi con l'asterisco sono obbligatori"
+        creation
+      />
     </GenericSearchFilterTableLayout>
   );
 };

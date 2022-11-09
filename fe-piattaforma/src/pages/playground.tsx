@@ -270,7 +270,7 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
             <div className='my-3'>
               <Input name='pippo' type='radio' id={`3`} label='3' withLabel />
             </div>
-          </FormGroup>
+          </FormGroup> 
         </Form>
       </Row>
       <Row className='mt-2'>

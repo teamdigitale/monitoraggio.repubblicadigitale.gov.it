@@ -293,7 +293,10 @@ const Projects: React.FC = () => {
           />
         )}
       </div>
-      <ManageProject creation />
+      <ManageProject
+        legend="form creazione progetto, i campi con l'asterisco sono obbligatori"
+        creation
+      />
     </GenericSearchFilterTableLayout>
   );
 };

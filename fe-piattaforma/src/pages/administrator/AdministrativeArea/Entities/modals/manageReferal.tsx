@@ -59,6 +59,7 @@ export const headings: TableHeadingI[] = [
 interface ManageReferalFormI {
   formDisabled?: boolean;
   creation?: boolean;
+  legend?: string | undefined;
 }
 
 interface ManageReferalI extends withFormHandlerProps, ManageReferalFormI {}
@@ -67,6 +68,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
   clearForm = () => ({}),
   formDisabled,
   creation = false,
+  legend = '',
 }) => {
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
@@ -179,6 +181,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
         }
         setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
         fieldsToHide={['ruolo', 'tipoContratto']}
+        legend={legend}
       />
     );
   } else if (usersList && usersList.length > 0) {
