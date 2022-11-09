@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.283](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.282...1.0.0-develop.283) (2022-11-09)
+
+
+### Bug Fixes
+
+* **be:** auth token per test ([a39ce57](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a39ce5783fb3c67ee5443273dd670e80cada7ad4))
+* **be:** log eccezioni ([bc4f5ac](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bc4f5ac88bc67e0c3b8c6172e76992093927234f))
+
 ## [1.0.0-develop.282](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.281...1.0.0-develop.282) (2022-11-08)
 
 
