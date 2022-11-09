@@ -1,5 +1,10 @@
 import clsx from 'clsx';
-import { Button, CardReadMore, Icon } from 'design-react-kit';
+import {
+  Button,
+  CardReadMore,
+  Icon,
+  UncontrolledTooltip,
+} from 'design-react-kit';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { CRUDActionsI, CRUDActionTypes } from '../../utils/common';
@@ -147,19 +152,28 @@ const CardStatusActionPartnerAuthority: React.FC<CardStatusActionI> = (
           <span className='d-flex align-items-center'>
             {onActionClick[CRUDActionTypes.DELETE] ? (
               device.mediaIsPhone ? null : (
-                <Button
-                  onClick={() => {
-                    onActionClick[CRUDActionTypes.DELETE](id);
-                  }}
-                  className='pl-3 pr-0'
-                >
-                  <Icon
-                    color='primary'
-                    icon='it-less-circle'
-                    size='sm'
-                    aria-label='Elimina'
-                  />
-                </Button>
+                <>
+                  <Button
+                    onClick={() => {
+                      onActionClick[CRUDActionTypes.DELETE](id);
+                    }}
+                    className='pl-3 pr-0'
+                    id={`icon-delete-${id}`}
+                  >
+                    <Icon
+                      color='primary'
+                      icon='it-less-circle'
+                      size='sm'
+                      aria-label='Elimina'
+                    />
+                  </Button>
+                  <UncontrolledTooltip
+                    placement='top'
+                    target={`icon-delete-${id}`}
+                  >
+                    Rimuovi
+                  </UncontrolledTooltip>
+                </>
               )
             ) : null}
             {onActionClick[CRUDActionTypes.VIEW] ? (

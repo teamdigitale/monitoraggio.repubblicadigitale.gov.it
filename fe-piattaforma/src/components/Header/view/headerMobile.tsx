@@ -72,8 +72,8 @@ const HeaderMobile: React.FC<HeaderI> = ({
               lightColor
             />
           </div>
-          <div className='d-flex flex-row justify-content-start'>
-            <p className='h6 text-wrap font-weight-light'>
+          <div className='d-flex flex-row justify-content-start user-description'>
+            <p className='h6 font-weight-light'>
               {/*<em>{getRoleLabel(userProfile?.codiceRuolo)}</em>*/}
               <em>{`${userProfile?.descrizioneRuolo}${
                 userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''

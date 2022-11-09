@@ -86,16 +86,16 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               font={AvatarTextSizes.Small}
             />
           </div>
-          <div className='d-flex flex-column align-items-start'>
-            <h6 className='m-0 text-sans-serif'>
+          <div className='d-flex flex-column align-items-start user-description'>
+            <p className='h6 m-0 text-sans-serif'>
               {user?.cognome}&nbsp;{user?.nome}
-            </h6>
-            <h6 className='font-weight-light text-nowrap'>
+            </p>
+            <p className='h6 font-weight-light'>
               {/*<em>{getRoleLabel(userProfile?.codiceRuolo)}</em>*/}
               <em>{`${userProfile?.descrizioneRuolo}${
                 userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
               }`}</em>
-            </h6>
+            </p>
           </div>
           <div className='ml-2'>
             <Icon size='' color='white' icon='it-expand' />

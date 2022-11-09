@@ -73,6 +73,20 @@ In relazione a questi servizi, sono rilevate le principali caratteristiche della
 </p>
 `;
 
+export const accessibilitySubtitle = `<p class='text-muted pb-4'>Il Dipartimento per la trasformazione digitale si impegna a rendere il proprio sito web accessibile, conformemente al <a href="https://www.gazzettaufficiale.it/eli/id/2018/09/11/18G00133/sg" target="_blank">D.lgs 10 agosto 2018, n. 106</a> che ha recepito la <a href="https://eur-lex.europa.eu/legal-content/IT/TXT/?uri=CELEX%3A32016L2102" target="_blank">direttiva UE 2016/2102</a> del Parlamento europeo e del Consiglio.</p>
+<p class="pb-4"><a href="https://form.agid.gov.it/" target="_blank">Dichiarazione di accessibilità</a></p>`;
+
+export const accessibilityBody = `<h2 class="h4 primary-color-a9 border-bottom w-100 pb-2">Feedback e recapiti</h2>
+<p class="ml-0 py-2">Per inviare segnalazioni su casi di mancata conformità ai requisiti di accessibilità scrivere alla casella di posta elettronica <a href="mailto:accessibilita@repubblicadigitale.gov.it">accessibilita@repubblicadigitale.gov.it</a></p>
+<div class="d-flex flex-column align-items-start"><p class="ml-0 py-2">Nella e-mail è necessario indicare:</p>
+<ul class="mb-0 ml-3">
+<li style="height: 40px">nome e cognome</li>
+<li style="height: 40px">indirizzo e-mail</li>
+<li style="height: 40px">url della pagina web oggetto della segnalazione</li>
+<li style="height: 40px">descrizione chiara e sintetica del problema riscontrato</li>
+<li style="height: 40px">strumenti utilizzati (sistema operativo, browser, tecnologie assistive)</li>
+</ul></div>`;
+
 export const surveyDocumentBody = `
   <div style= "color: #001A33; opacity: 0.7; padding-left: 16px">
     <p>

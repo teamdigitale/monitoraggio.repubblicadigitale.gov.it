@@ -236,7 +236,7 @@ const form: FormI = newForm([
     id: 'fiscalcode',
   }),
   newFormField({
-    ...CommonFields.TELEFONO,
+    ...CommonFields.NUMERO_TELEFONICO,
     field: 'telefono',
     required: true,
     id: 'telefono',

@@ -178,6 +178,11 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
           }}
           title='Cerca'
           search
+          infoText={
+            authoritiesList?.length
+              ? `${authoritiesList?.length} risultati trovati`
+              : ''
+          }
         />
         <div className='mx-5'>{content}</div>
       </div>

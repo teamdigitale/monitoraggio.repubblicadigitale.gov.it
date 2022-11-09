@@ -63,7 +63,21 @@
       .dropdown-menu {
         width: 351px;
       }
+     
     }
+  }
+
+  .user-description {
+   p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 180px;
+
+    @media screen and (max-width: 576px) {
+      max-width: 115px;
+    }
+   }
   }
 
   &__main {
