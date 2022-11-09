@@ -1,4 +1,4 @@
-package it.pa.repdgt.surveymgmt;
+package it.pa.repdgt.integrazione;
 
 
 import java.util.Collection;
