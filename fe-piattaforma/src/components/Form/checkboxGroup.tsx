@@ -112,7 +112,7 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
           >
             <Input
               {...check}
-              field={`${field} ${check.label}`}
+              field={`${field}-${check?.label?.replaceAll(' ','-')}`}
               checked={values.includes(check.value.toString())}
               onInputChange={() => handleOnChange(check.value)}
               col='col-4'
@@ -123,7 +123,7 @@ const CheckboxGroup: React.FC<CheckboxGroupI> = (props) => {
               disabled={disabled}
             />
             <Label
-              for={`${field} ${check.label}`}
+              for={`${field}-${check?.label?.replaceAll(' ','-')}`}
               check
               className={clsx(
                 classNameLabelOption,

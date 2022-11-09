@@ -27,6 +27,12 @@ const SkipContent: React.FC = () => {
           className='skip-main'
           href={`#${link.id}`}
           onClick={() => skipToContent(link.id)}
+          onKeyDown={(e) => {
+            if (e.key === ' ') {
+              e.preventDefault();
+              skipToContent(link.id);
+            }
+          }}
           tabIndex={0}
         >
           {link.label}

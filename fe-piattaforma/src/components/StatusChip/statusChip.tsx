@@ -85,11 +85,9 @@ const StatusChip: React.FC<StatusChipI> = (props) => {
 
   return (
     <>
-      <span
-        className='px-0 py-0'
-        id={`button-status-${rowTableId ? rowTableId : new Date().getTime()}`}
-      >
+      <div className='px-0 py-0'>
         <Chip
+          id={`chip-status-${rowTableId ? rowTableId : new Date().getTime()}`}
           className={clsx(
             'table-container__status-label',
             statusBgColor(status),
@@ -97,6 +95,7 @@ const StatusChip: React.FC<StatusChipI> = (props) => {
             chipWidth && 'px-2',
             device.mediaIsPhone && 'my-2'
           )}
+          role='status'
         >
           <ChipLabel
             className={clsx(
@@ -105,18 +104,20 @@ const StatusChip: React.FC<StatusChipI> = (props) => {
               device.mediaIsPhone &&
                 status?.length >= 11 &&
                 'chip-label__chip-height',
+              status === 'NON ATTIVO' && 'not-active-chip'
             )}
           >
             {status?.toUpperCase().replace('_', ' ')}
           </ChipLabel>
-        </Chip>
-      </span>
+        </Chip>{' '}
+      </div>
       {!noTooltip && (
         <UncontrolledTooltip
           placement='top'
-          target={`button-status-${
+          target={`chip-status-${
             rowTableId ? rowTableId : new Date().getTime()
           }`}
+          className='pl-5'
         >
           {status?.toUpperCase().replace('_', ' ')}
         </UncontrolledTooltip>

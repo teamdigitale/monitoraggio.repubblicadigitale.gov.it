@@ -2,3 +2,7 @@
     height: 3px !important;
     width: 11px !important;
 }
+
+.pagination .page-item.disabled a.page-link {
+    color: #5b6f82;
+}

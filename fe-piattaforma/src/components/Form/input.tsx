@@ -13,12 +13,16 @@ const blackList = [
   'enumLevel2',
   'field',
   'flag',
+  'format',
+  'keyBE',
   'maximum',
   'minimum',
   'onInputBlur',
   'onInputChange',
+  'order',
   'placeholder',
   'preset',
+  'regex',
   'relatedFrom',
   'relatedTo',
   'touched',
@@ -120,11 +124,12 @@ const Input: React.FC<InputI> = (props) => {
         ? check
         : undefined,
     id: id || field || `input-${new Date().getTime()}`,
+    name: name ?? id,
     max:
       (type === 'number' || type === 'date') && maximum ? maximum : undefined,
     maxLength: type === 'text' && maximum ? Number(maximum) : undefined,
     min:
-      (type === 'number' || type === 'date') && minimum ? minimum : undefined,
+      (type === 'number' || type === 'date') && minimum ? minimum : minimum === 0 ? 0: undefined,
     minLength: type === 'text' && minimum ? Number(minimum) : undefined,
     onBlur: (e) => {
       if (onInputBlur) onInputBlur(val, field);
@@ -141,7 +146,6 @@ const Input: React.FC<InputI> = (props) => {
     InputProps.invalid = !valid;
   }
 
-  InputProps.name = name ?? InputProps.id;
   InputProps.label = withLabel
     ? label && required && !disabled
       ? `${label} *`
@@ -181,7 +185,7 @@ const Input: React.FC<InputI> = (props) => {
           value={typeof val === 'number' ? val : val?.toString() || ''}
           innerRef={inputRef}
         />
-        <Label check htmlFor={id}>
+        <Label check htmlFor={InputProps.id}>
           {withLabel ? <span>{label}</span> : null}
         </Label>
       </div>

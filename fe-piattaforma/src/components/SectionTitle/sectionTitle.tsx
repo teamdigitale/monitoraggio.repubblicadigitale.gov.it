@@ -95,7 +95,6 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
             className={clsx('icon-color', enteIcon && 'ente-icon', 'mr-2')}
             aria-label='Sezione'
           />
-
           <p
             className={clsx(
               'h6',
@@ -148,18 +147,18 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
                   accept='.png, .jpeg, .jpg'
                   capture
                   ref={inputRef}
-                  className='sr-only'
+                  className='d-none'
+                  aria-label='Aggiorna immagine profilo'
                 />
                 <Button
                   onClick={addProfilePicture}
-                  size='xs'
                   className='profile-picture-btn'
                 >
                   <Icon
                     size='xs'
                     icon='it-camera'
                     color='white'
-                    aria-label='Foto'
+                    aria-label='Aggiorna immagine profilo'
                     className='position-absolute'
                     style={{
                       top: '7px',

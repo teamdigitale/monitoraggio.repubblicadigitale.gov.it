@@ -298,7 +298,12 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
       <Form.Row className={bootClass}>
         <div className='mt-5 d-flex align-items-center'>
           <strong className='mr-2'>ALLEGA FILE</strong>
-          <Icon icon='it-info-circle' size='sm' color='primary' />
+          <Icon
+            icon='it-info-circle'
+            size='sm'
+            color='primary'
+            aria-label='Informazioni'
+          />
         </div>
       </Form.Row>
       <Form.Row className={bootClass}>
@@ -331,6 +336,8 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
                   size='sm'
                   color='primary'
                   className='pb-1'
+                  aria-label='Seleziona file'
+                  aria-hidden
                 />
                 Seleziona file
               </Button>
@@ -341,6 +348,8 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
                 size='sm'
                 className='mr-4'
                 onClick={removeDocument}
+                aria-label='Elimina'
+                aria-hidden
               />
             )}
           </label>
@@ -350,7 +359,12 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
       <Form.Row className={bootClass}>
         <div className='mt-5 d-flex align-items-center'>
           <strong className='mr-2'>INSERISCI URL</strong>
-          <Icon icon='it-info-circle' size='sm' color='primary' />
+          <Icon
+            icon='it-info-circle'
+            size='sm'
+            color='primary'
+            aria-label='Informazioni'
+          />
         </div>
       </Form.Row>
       <Form.Row className={bootClass}>

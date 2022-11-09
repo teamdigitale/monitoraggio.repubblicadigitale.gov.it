@@ -70,17 +70,21 @@ const MessageList: React.FC<NotificationsListI> = (props) => {
             size='lg'
             className='mr-2'
             color='primary'
+            aria-label='Apri opzioni'
+            aria-hidden
           />
         </div>
       </DropdownToggle>
-      <DropdownMenu role='menu' tag='ul'>
-        <LinkList role='none'>
+      <DropdownMenu role='menu'>
+        <LinkList role='list'>
           <li role='none' className='d-flex align-items-center px-4'>
             <Icon
               className='pr-2'
               color='primary'
               icon='it-check-circle'
               size='sm'
+              aria-label='Segna come letta'
+              aria-hidden
             />
             <Button
               className={clsx(
@@ -92,7 +96,7 @@ const MessageList: React.FC<NotificationsListI> = (props) => {
               )}
               role='menuitem'
             >
-              Segna come letta
+              <span> Segna come letta</span>
             </Button>
           </li>
           <li role='none' className='d-flex align-items-center px-4'>
@@ -101,6 +105,8 @@ const MessageList: React.FC<NotificationsListI> = (props) => {
               color='primary'
               icon='it-close-circle'
               size='sm'
+              aria-label='Rimuovi notifica'
+              aria-hidden
             />
             <Button
               className={clsx(
@@ -112,7 +118,7 @@ const MessageList: React.FC<NotificationsListI> = (props) => {
               )}
               onClick={handleRemoveNotify}
             >
-              Rimuovi notifica
+              <span>Rimuovi notifica</span>
             </Button>
           </li>
         </LinkList>
@@ -140,6 +146,8 @@ const MessageList: React.FC<NotificationsListI> = (props) => {
               className={iconClass}
               color={iconColor}
               padding={iconPadding}
+              aria-label={icon}
+              aria-hidden
             />
           ) : null}
         </div>
@@ -170,7 +178,12 @@ const MessageList: React.FC<NotificationsListI> = (props) => {
             'ml-2'
           )}
         >
-          <Icon icon='it-calendar' size='xs' color='primary' />
+          <Icon
+            icon='it-calendar'
+            size='xs'
+            color='primary'
+            aria-label='Data'
+          />
           <p className='neutral-1-color-a8 px-2 mr-4'>{date}</p>
         </div>
       ) : (
@@ -183,9 +196,14 @@ const MessageList: React.FC<NotificationsListI> = (props) => {
             'ml-2'
           )}
         >
-          <Icon icon='it-calendar' size='xs' color='primary' />
+          <Icon
+            icon='it-calendar'
+            size='xs'
+            color='primary'
+            aria-label='Data'
+          />
           <p className='neutral-1-color-a8 px-2 mr-4'>{date}</p>
-          <Icon icon='it-clock' size='xs' color='primary' />
+          <Icon icon='it-clock' size='xs' color='primary' aria-label='Ora' />
           <p className='neutral-1-color-a8 px-2'>{hours}</p>
         </div>
       )}

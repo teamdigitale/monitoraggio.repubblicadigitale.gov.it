@@ -28,7 +28,10 @@ const Duration: React.FC<InputI> = (props) => {
   const handleOnDurationChange = (val: formFieldI['value']) => {
     const valString = (val || '')?.toString();
     const splitted = valString.split(':');
-    if (splitted[0]?.length > 3) {
+    if(valString?.includes('+') || valString?.includes('-')){
+      // + & - are not accepted
+      setValidDuration(false);
+    }else if (splitted[0]?.length > 3) {
       // max hours 999
       setValidDuration(false);
     } else {

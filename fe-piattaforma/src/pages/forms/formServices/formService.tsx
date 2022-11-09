@@ -15,6 +15,7 @@ import {
 } from '../../../utils/common';
 import { formFieldI, FormI } from '../../../utils/formHelper';
 import { generateForm } from '../../../utils/jsonFormHelper';
+import { RegexpType } from '../../../utils/validator';
 import FormServiceDynamic from './formServiceDynamic';
 import FormServiceStatic from './formServiceStatic';
 
@@ -24,6 +25,7 @@ interface FormServiceI {
   sendNewFormsValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   areFormsValid?: (param: boolean) => void;
   getQuestioanarioCompilatoQ3?: (param: string) => void;
+  legend?: string | undefined;
 }
 
 const FormService: React.FC<FormServiceI> = (props) => {
@@ -33,6 +35,7 @@ const FormService: React.FC<FormServiceI> = (props) => {
     sendNewFormsValues = () => ({}),
     areFormsValid = () => ({}),
     getQuestioanarioCompilatoQ3 = () => ({}),
+    legend = '',
   } = props;
   const dispatch = useDispatch();
   const sezioniQuestionarioTemplate = useAppSelector(
@@ -76,6 +79,9 @@ const FormService: React.FC<FormServiceI> = (props) => {
           // case date
           formFromSchema[key].maximum = formatDate(projectDetails?.dataFine);
           formFromSchema[key].minimum = formatDate(projectDetails?.dataInizio);
+        }
+        if(key === '23'){ // case duration
+          formFromSchema[key].regex = RegexpType.ALPHA_NUMERIC_INPUT;
         }
       });
       setDynamicFormQ3(formFromSchema);
@@ -125,6 +131,7 @@ const FormService: React.FC<FormServiceI> = (props) => {
           setNewFormStaticValues({ ...newData });
         }}
         setIsFormValid={(isValid: boolean) => setIsFormStaticValid(isValid)}
+        legend={legend}
       />
       <FormServiceDynamic
         creation={creation}

@@ -5,7 +5,7 @@ import './userPublishedContents.scss';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import { useNavigate } from 'react-router-dom';
-import useGuard from "../../hooks/guard";
+import useGuard from '../../hooks/guard';
 
 const UserPublishedContents = () => {
   const device = useAppSelector(selectDevice);
@@ -50,10 +50,21 @@ const UserPublishedContents = () => {
           )}
           onClick={navigateTo}
         >
-          <Icon icon='it-user' color='primary' />
+          <Icon
+            icon='it-user'
+            color='primary'
+            aria-label='utente'
+            aria-hidden
+          />
           <p className='primary-color ml-2 text-nowrap'>CONTENUTI PUBBLICATI</p>
         </Button>
-        <Icon icon='it-chevron-right' color='primary' className='pt-1 pr-1' />
+        <Icon
+          icon='it-chevron-right'
+          color='primary'
+          className='pt-1 pr-1'
+          aria-label='dettaglio'
+          aria-hidden
+        />
       </div>
       {!device.mediaIsPhone ? (
         <p className='text-style mr-3 text-nowrap'>

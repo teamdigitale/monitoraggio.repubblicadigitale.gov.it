@@ -99,6 +99,7 @@ const AccordionAddressList: React.FC<AccordionAddressListI> = ({
               size='sm'
               className='mr-2'
               aria-label='Aggiungi'
+              aria-hidden
             />
             Aggiungi Indirizzo
           </Button>

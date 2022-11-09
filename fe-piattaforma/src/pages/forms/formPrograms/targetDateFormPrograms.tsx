@@ -293,8 +293,9 @@ const TargetDateFormPrograms: React.FC<TargetDateFormProgramsI> = (props) => {
                       icon='it-less-circle'
                       color='primary'
                       size='sm'
-                      aria-label='delete'
-                    ></Icon>
+                      aria-label='Elimina'
+                      aria-hidden={!device.mediaIsDesktop}
+                    />
                     {!device.mediaIsDesktop && 'Elimina'}
                   </Button>
                 ) : (
@@ -315,6 +316,7 @@ const TargetDateFormPrograms: React.FC<TargetDateFormProgramsI> = (props) => {
                     color='primary'
                     icon='it-plus-circle'
                     aria-label={t('add_goal')}
+                    aria-hidden
                   />
                   <span
                     className={clsx(

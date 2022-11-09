@@ -3,6 +3,7 @@ import React from 'react';
 import AsyncSelect from 'react-select/async';
 
 interface TagsSelectI {
+  id?: string | undefined;
   tags: {
     label: string;
     value: string;
@@ -11,7 +12,7 @@ interface TagsSelectI {
   addTag: (tag: string) => void;
 }
 
-const TagsSelect = ({ selectedTags, tags, addTag }: TagsSelectI) => {
+const TagsSelect = ({ selectedTags, tags, addTag, id = '' }: TagsSelectI) => {
   const getFilteredTags = async (inputValue: string) =>
     new Promise((resolve) =>
       resolve(() =>
@@ -41,6 +42,8 @@ const TagsSelect = ({ selectedTags, tags, addTag }: TagsSelectI) => {
         loadOptions={getFilteredTags}
         onChange={(val: any) => addTag(val.value as string)}
         placeholder='Digita la parola chiave e utilizza il completamento automatico per evitare errori di digitazione.'
+        aria-label='campo di testo'
+        id={id}
       />
     </div>
   );

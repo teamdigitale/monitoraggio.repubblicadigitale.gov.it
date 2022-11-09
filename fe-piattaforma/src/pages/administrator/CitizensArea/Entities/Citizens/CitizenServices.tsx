@@ -57,7 +57,7 @@ const CitizenServices: React.FC<{
                     )
                   }
                   className='py-0 px-2'
-                  aria-label='Pulsante visualliza questionario compilato'
+                  aria-label='Visualizza questionario compilato'
                   id={`button-view-${td.idQuestionarioCompilato}`}
                 >
                   <Icon
@@ -66,6 +66,7 @@ const CitizenServices: React.FC<{
                     color='primary'
                     size='sm'
                     aria-label='Vedi questionario compilato'
+                    aria-hidden
                     focusable={false}
                   />
                 </Button>

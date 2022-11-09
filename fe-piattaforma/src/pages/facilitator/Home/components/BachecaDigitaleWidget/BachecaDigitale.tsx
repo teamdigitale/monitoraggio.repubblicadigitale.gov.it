@@ -3,7 +3,9 @@ import { Container } from 'design-react-kit';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { EmptySection, Paginator } from '../../../../../components';
-import CardShowcase from '../../../../../components/CardShowcase/cardShowcase';
+import CardShowcase, {
+  ForumCardsI,
+} from '../../../../../components/CardShowcase/cardShowcase';
 import {
   DropdownFilterI,
   FilterI,
@@ -52,7 +54,7 @@ const BachecaDigitale = () => {
   const [searchDropdown, setSearchDropdown] = useState<
     { filterId: string; value: formFieldI['value'] }[]
   >([]);
-  const [popularNews, setPopularNews] = useState([]);
+  const [popularNews, setPopularNews] = useState<ForumCardsI[]>([]);
   const dispatch = useDispatch();
   const { hasUserPermission } = useGuard();
 
@@ -255,7 +257,7 @@ const BachecaDigitale = () => {
                       'align-cards'
                     )}
                   >
-                    <CardShowcase {...showCaseElement} role='button' />
+                    <CardShowcase {...showCaseElement} />
                   </div>
                 ))
               ) : (

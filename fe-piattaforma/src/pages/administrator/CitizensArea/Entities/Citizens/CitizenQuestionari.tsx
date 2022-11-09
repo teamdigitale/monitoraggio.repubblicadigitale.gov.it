@@ -104,7 +104,8 @@ const CitizenQuestionari: React.FC<{
               icon='it-plus-circle'
               size='sm'
               className='primary-color-b1 mr-2'
-              aria-label='Nuovo questionario'
+              aria-label='Compila nuovo questionario'
+              aria-hidden
             />
             <span>Compila nuovo questionario</span>
           </Button>

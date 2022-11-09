@@ -8,6 +8,7 @@ import { formFieldI } from '../../utils/formHelper';
 import ClickOutside from '../../hoc/ClickOutside';
 import isEqual from 'lodash.isequal';
 import { capitalize } from 'lodash';
+import FocusTrap from 'focus-trap-react';
 
 export interface FilterI {
   label: string;
@@ -45,6 +46,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
   } = props;
   const [open, setOpen] = useState(false);
   const [checkedOptions, setCheckedOptions] = useState<FilterI[]>(values);
+  const idSearchBar = `search-input-dropdown-${id}`;
   const idListOptions = `filter-options-list-${id}`;
   const popoverRef = useRef(null);
   const { t } = useTranslation();
@@ -106,35 +108,15 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
         focusId(`filter-${id}`);
         break;
       }
-      case 'Tab':
-        if (focusedInput === (options || [])?.length - 1) {
-          e.preventDefault();
-          setOpen(!open);
-          focusId(`filter-${id}`);
-          break;
-        } else {
-          e.preventDefault();
-          document
-            .getElementById(
-              `input-checkbox-${id}-${Math.max(
-                Math.min(focusedInput + 1, (options || [])?.length - 1),
-                0
-              )}`
-            )
-            ?.focus();
-          focusedInput = Math.max(
-            Math.min(focusedInput + 1, (options || [])?.length - 1),
-            0
-          );
-          break;
-        }
       default:
     }
   };
 
   useEffect(() => {
     if (open) {
-      focusId(idListOptions, false);
+      const idToFocus =
+        options && options?.length > 4 ? idSearchBar : idListOptions;
+      focusId(idToFocus, false);
       document.addEventListener('keydown', manageKeyEvent);
     }
 
@@ -143,7 +125,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
       focusedInput = -1;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
+  }, [open, options]);
 
   useEffect(() => {
     if (!isEqual(values, checkedOptions)) {
@@ -206,7 +188,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
           color='primary'
           icon='it-expand'
           size='sm'
-          aria-label='Apertura dropdown filtro'
+          aria-label='Visualizza le opzioni del filtro'
         />
       </Button>
       <span id={`descrizione-popover-dropdown-${id}`} className='d-none'>
@@ -227,58 +209,57 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
         aria-owns={idListOptions}
       >
         <ClickOutside callback={() => setOpen(false)}>
-          <>
-            {options?.length && options?.length > 4 ? (
-              <div className='border-bottom d-flex flex-row'>
-                <Icon
-                  color='primary'
-                  icon='it-search'
-                  size=''
-                  aria-label='Cerca tra le opzioni del filtro'
-                  className='align-self-center'
-                />
-                <fieldset>
-                  <legend className='dropdown-filter-container__search-tooltip'>
-                    <Input
-                      id={`search-input-dropdown-${id}`}
-                      label={`search-input-dropdown-${id}`}
-                      aria-controls={idListOptions}
-                      aria-autocomplete='both'
-                      field=''
-                      bsSize='sm'
-                      placeholder='Cerca'
-                      className='shadow-none border-bottom-0'
-                      onInputChange={(value: formFieldI['value']) =>
-                        setSearchValue(value?.toString())
-                      }
-                      value={
-                        valueSearch && typeof valueSearch === 'string'
-                          ? valueSearch
-                          : ''
-                      }
-                    />
-                  </legend>
-                </fieldset>
-              </div>
-            ) : null}
-            <Form id='form-dropdown'>
-              <span id='descrizione-lista' className='sr-only'>
-                Il filtro presenta {options?.length || '0'} opzioni
-              </span>
-              {(filteredOptions || []).length === 0 ? (
-                <p>Non ci sono opzioni per questo filtro</p>
-              ) : (
-                <ul
-                  id={idListOptions}
-                  tabIndex={0}
-                  role='listbox'
-                  aria-label='filter-options-list'
-                  aria-multiselectable='true'
-                  className='dropdown-filter-container__list'
-                  aria-describedby='descrizione-lista'
-                >
-                  {(filteredOptions || []).map((opt, index) =>
-                    index < 4 ? (
+          <FocusTrap>
+            <div>
+              {options?.length && options?.length > 4 ? (
+                <div className='border-bottom d-flex flex-row'>
+                  <Icon
+                    color='primary'
+                    icon='it-search'
+                    size=''
+                    aria-label='Cerca'
+                    aria-hidden
+                    className='align-self-center'
+                  />
+                  <fieldset>
+                    <legend className='dropdown-filter-container__search-tooltip'>
+                      <Input
+                        id={idSearchBar}
+                        aria-controls={idListOptions}
+                        aria-autocomplete='both'
+                        field=''
+                        bsSize='sm'
+                        placeholder={`Cerca tra le opzioni del filtro ${filterName?.toLowerCase()}`}
+                        className='shadow-none border-bottom-0'
+                        onInputChange={(value: formFieldI['value']) =>
+                          setSearchValue(value?.toString())
+                        }
+                        value={
+                          valueSearch && typeof valueSearch === 'string'
+                            ? valueSearch
+                            : ''
+                        }
+                      />
+                    </legend>
+                  </fieldset>
+                </div>
+              ) : null}
+              <Form id='form-dropdown'>
+                {(filteredOptions || []).length === 0 ? (
+                  <p>Non ci sono opzioni per questo filtro</p>
+                ) : (
+                  <ul
+                    id={idListOptions}
+                    tabIndex={0}
+                    role='listbox'
+                    aria-label={`Lista opzioni del filtro ${filterName} con ${
+                      options?.length || 0
+                    } ${options?.length === 1 ? 'opzione' : 'opzioni'}`}
+                    aria-multiselectable='true'
+                    className='dropdown-filter-container__list'
+                    aria-describedby='descrizione-lista'
+                  >
+                    {(filteredOptions || [])?.slice(0, 4).map((opt, index) => (
                       <li
                         key={`option-${index}`}
                         id={`group-checkbox-${id}-${index}`}
@@ -320,12 +301,12 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
                           </Label>
                         </FormGroup>
                       </li>
-                    ) : null
-                  )}
-                </ul>
-              )}
-            </Form>
-          </>
+                    ))}
+                  </ul>
+                )}
+              </Form>
+            </div>
+          </FocusTrap>
         </ClickOutside>
       </Popover>
     </div>

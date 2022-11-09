@@ -56,7 +56,11 @@ const InfoPanel: React.FC<InfoPanelI> = (props) => {
                   'pr-2'
                 )}
               >
-                <Icon icon={ColoredListBullets} />
+                <Icon
+                  icon={ColoredListBullets}
+                  aria-label='bullet point'
+                  aria-hidden
+                />
                 <p className='info-panel__text-list'>{item}</p>
               </div>
             ))
@@ -109,7 +113,11 @@ const InfoPanel: React.FC<InfoPanelI> = (props) => {
                           openData && 'pl-3 pr-5 py-2'
                         )}
                       >
-                        <Icon icon={ColoredListBullets} />
+                        <Icon
+                          icon={ColoredListBullets}
+                          aria-label='bullet point'
+                          aria-hidden
+                        />
                         <p className='info-panel__text-list'>{item}</p>
                       </div>
                     </div>

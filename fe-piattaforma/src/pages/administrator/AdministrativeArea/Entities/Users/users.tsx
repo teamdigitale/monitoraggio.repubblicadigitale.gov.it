@@ -297,7 +297,10 @@ const Users = () => {
           withIcon
         />
       )}
-      <ManageUsers creation />
+      <ManageUsers
+        legend="form creazione utente, i campi con l'asterisco sono obbligatori"
+        creation
+      />
     </GenericSearchFilterTableLayout>
   );
 };

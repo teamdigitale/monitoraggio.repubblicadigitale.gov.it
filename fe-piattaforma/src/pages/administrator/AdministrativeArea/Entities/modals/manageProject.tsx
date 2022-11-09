@@ -34,6 +34,7 @@ import { GetProgramDetail } from '../../../../../redux/features/administrativeAr
 interface ProgramInformationI {
   formDisabled?: boolean;
   creation?: boolean;
+  legend?: string | undefined;
 }
 
 const id = formTypes.PROGETTO;
@@ -46,6 +47,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
   // clearForm = () => ({}),
   formDisabled,
   creation = false,
+  legend = '',
 }) => {
   // const [isFormValid, setIsFormValid] = useState<boolean>(true);
   const { projectId, entityId } = useParams();
@@ -241,6 +243,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
           }
           creation={creation}
           program={programDetails}
+          legend={legend}
         />
       );
       break;

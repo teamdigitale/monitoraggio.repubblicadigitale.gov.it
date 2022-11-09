@@ -77,8 +77,16 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
       <div className={clsx('notifications-preview', open && 'open')}>
         <div className='shadow'>
           <div className='w-100 d-flex justify-content-end'>
-            <Button onClick={() => setOpen(false)} className='p-0'>
-              <Icon icon='it-close' />
+            <Button
+              onClick={() => setOpen(false)}
+              className='p-0'
+              aria-label='Chiudi menù notifiche'
+            >
+              <Icon
+                icon='it-close'
+                aria-label='chiudi menù notifiche'
+                aria-hidden
+              />
             </Button>
           </div>
           <div className='preview-header'>

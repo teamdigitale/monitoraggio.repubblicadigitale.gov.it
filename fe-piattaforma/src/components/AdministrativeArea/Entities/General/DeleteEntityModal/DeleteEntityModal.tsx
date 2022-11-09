@@ -34,6 +34,7 @@ const DeleteEntityModal = ({ onClose, onConfirm }: DeleteEntityModalI) => {
             icon='it-error'
             style={{ width: '111px', height: '111px', fill: '#FF9900' }}
             aria-label='Errore'
+            aria-hidden
           />
         </div>
         <div className='text-center'>{payload?.text}</div>
