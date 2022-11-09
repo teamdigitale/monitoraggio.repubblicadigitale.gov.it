@@ -297,12 +297,7 @@ export const CommonFields = {
     maximum: 11,
     regex: RegexpType.PIVA,
   },
-  CELLULARE: {
-    minimum: 6,
-    maximum: 20,
-    regex: RegexpType.MOBILE_PHONE,
-  },
-  TELEFONO: {
+  NUMERO_TELEFONICO: {
     minimum: 6,
     maximum: 20,
     regex: RegexpType.TELEPHONE,

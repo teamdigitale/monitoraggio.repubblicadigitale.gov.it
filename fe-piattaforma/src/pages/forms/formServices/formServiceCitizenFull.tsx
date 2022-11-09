@@ -126,8 +126,10 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
     const tmpForm = FormHelper.onInputChange(form, value, field);
     const referenceBoolean = !tmpForm[4]?.value;
     tmpForm[3].required = referenceBoolean;
+    tmpForm[3].disabled = !referenceBoolean;
     if (referenceBoolean === false) {
       tmpForm[3].valid = true;
+      tmpForm[3].value = '';
     }
     tmpForm[5].required = !referenceBoolean;
     tmpForm[6].required = !referenceBoolean;
@@ -245,7 +247,6 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
               field={field.field}
               className={clsx(
                 field.field !== '18' && 'col-12 col-lg-6',
-                'compile-survey-container__checkbox-margin'
               )}
               label={
                 field.field === '18'

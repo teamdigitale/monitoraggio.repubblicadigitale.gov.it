@@ -284,7 +284,7 @@ const form = newForm([
     required: true,
   }),
   newFormField({
-    ...CommonFields.TELEFONO,
+    ...CommonFields.NUMERO_TELEFONICO,
     field: 'telefono',
     id: 'telefono',
     //required: true,

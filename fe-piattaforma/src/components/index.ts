@@ -13,6 +13,7 @@ import HamburgerMenu from './HamburgerMenu/hamburgerMenu';
 import Header from './Header/header';
 import HeaderMenu from './HeaderMenu/headerMenu';
 import Input from './Form/input';
+import Duration from './Form/duration';
 import PrefixPhone from './Form/prefixPhone';
 import Paginator from './Paginator/paginator';
 import Rating from './Rating/rating';
@@ -64,6 +65,7 @@ export {
   InfoCard,
   InfoPanel,
   Input,
+  Duration,
   PrefixPhone,
   Loader,
   LocationIndex,

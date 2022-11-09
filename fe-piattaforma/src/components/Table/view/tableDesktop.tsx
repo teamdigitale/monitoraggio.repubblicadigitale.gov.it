@@ -97,7 +97,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         check
                         htmlFor={`radio-${td.id}`}
                       >
-                        <span>{`Select Row`}</span>
+                        <span>Select Row</span>
                       </Label>
                     </FormGroup>
                   </Form>

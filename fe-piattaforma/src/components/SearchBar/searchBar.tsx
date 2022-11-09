@@ -37,6 +37,7 @@ interface SearchBarI extends Omit<SelectI, 'onInputChange'> {
   onReset?: (() => void) | undefined;
   tooltip?: boolean;
   tooltipText?: string;
+  infoText?: string;
 }
 
 const SearchBar: React.FC<SearchBarI> = (props) => {
@@ -56,6 +57,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
     onReset = () => ({}),
     tooltip = false,
     tooltipText = '',
+    infoText = '',
   } = props;
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState<
@@ -289,6 +291,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
           </div>
         )}
       </div>
+      {infoText ? <small className='text-muted'>{infoText}</small> : null}
     </div>
   );
 };
