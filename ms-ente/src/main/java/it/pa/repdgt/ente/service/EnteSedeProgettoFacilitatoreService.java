@@ -253,7 +253,7 @@ public class EnteSedeProgettoFacilitatoreService {
 		final UtenteEntity utenteDBFetch = this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleUtenteFacilitaore);
 		
 		String idUtenteWorkdocs = utenteDBFetch.getIntegrazioneUtente().getIdUtenteWorkdocs();
-		if(idUtenteWorkdocs != null) {
+		if(utenteDBFetch.getRuoli().size() == 1 && idUtenteWorkdocs != null) {
 			try {
 				new Thread(() -> {
 					this.workdocsService.disattivaWorkDocsUser(idUtenteWorkdocs);
