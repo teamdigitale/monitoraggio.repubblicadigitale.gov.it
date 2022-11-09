@@ -15,6 +15,7 @@ import {
 } from '../../../utils/common';
 import { formFieldI, FormI } from '../../../utils/formHelper';
 import { generateForm } from '../../../utils/jsonFormHelper';
+import { RegexpType } from '../../../utils/validator';
 import FormServiceDynamic from './formServiceDynamic';
 import FormServiceStatic from './formServiceStatic';
 
@@ -76,6 +77,9 @@ const FormService: React.FC<FormServiceI> = (props) => {
           // case date
           formFromSchema[key].maximum = formatDate(projectDetails?.dataFine);
           formFromSchema[key].minimum = formatDate(projectDetails?.dataInizio);
+        }
+        if(key === '23'){ // case duration
+          formFromSchema[key].regex = RegexpType.ALPHA_NUMERIC_INPUT;
         }
       });
       setDynamicFormQ3(formFromSchema);

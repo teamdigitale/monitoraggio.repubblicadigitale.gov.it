@@ -45,7 +45,7 @@ const ManageServices: React.FC<ManageServicesI> = ({
   const [areFormsValid, setAreFormsValid] = useState<boolean>(true);
   const [questionarioCompilatoQ3, setQuestionarioCompilatoQ3] =
     useState<string>('');
-  const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
+  const { idProgramma, idProgetto, idEnte } =
     getUserHeaders();
 
   useEffect(() => {
@@ -73,13 +73,16 @@ const ManageServices: React.FC<ManageServicesI> = ({
       idEnteServizio: idEnte,
       idSedeServizio: answersForms?.idSede,
       nomeServizio: answersForms?.nomeServizio,
-      profilazioneParam: {
+      /*profilazioneParam: {
         codiceFiscaleUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
         idProgetto,
         idProgramma,
         idEnte,
-      },
+      },*/
+      idProgetto,
+      idProgramma,
+      idEnte,
       sezioneQuestionarioCompilatoQ3: answersQ3,
       tipoDiServizioPrenotato: tipologiaServizio,
     };
