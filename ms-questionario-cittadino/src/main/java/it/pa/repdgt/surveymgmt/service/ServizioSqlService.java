@@ -227,8 +227,7 @@ public class ServizioSqlService {
 	public ServizioEntity creaServizio(
 			@NotNull final ServizioRequest servizioRequest,
 			@NotNull final String idSezioneQ3Compilato) {
-		final SceltaProfiloParamLightProgramma profilazioneParam = servizioRequest.getProfilazioneParam();
-		final Long idProgramma = profilazioneParam.getIdProgramma();
+		final Long idProgramma = servizioRequest.getIdProgramma();
 		
 		// Recupero id template questionario associato al programma
 		final List<ProgrammaXQuestionarioTemplateEntity> listaProgrammaXQuestionario = this.programmaXQuestionarioTemplateService.getByIdProgramma(idProgramma);
@@ -246,7 +245,7 @@ public class ServizioSqlService {
 		final EnteSedeProgettoFacilitatoreKey idEnteSedeProgettoFacilitatore = new EnteSedeProgettoFacilitatoreKey();
 		idEnteSedeProgettoFacilitatore.setIdEnte(servizioRequest.getIdEnteServizio());
 		idEnteSedeProgettoFacilitatore.setIdSede(servizioRequest.getIdSedeServizio());
-		idEnteSedeProgettoFacilitatore.setIdProgetto(profilazioneParam.getIdProgetto());
+		idEnteSedeProgettoFacilitatore.setIdProgetto(servizioRequest.getIdProgetto());
 		idEnteSedeProgettoFacilitatore.setIdFacilitatore(servizioRequest.getCfUtenteLoggato());
 		final EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatore = this.enteSedeProgettoFacilitatoreService.getById(idEnteSedeProgettoFacilitatore);
 		
@@ -287,7 +286,7 @@ public class ServizioSqlService {
 		final EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreAggiornato = new EnteSedeProgettoFacilitatoreKey(
 			servizioDaAggiornareRequest.getIdEnteServizio(),
 			servizioDaAggiornareRequest.getIdSedeServizio(),
-			servizioDaAggiornareRequest.getProfilazioneParam().getIdProgetto(),
+			servizioDaAggiornareRequest.getIdProgetto(),
 			servizioDaAggiornareRequest.getCfUtenteLoggato()
 		);
 		

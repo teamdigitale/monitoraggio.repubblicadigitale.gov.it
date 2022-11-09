@@ -24,10 +24,6 @@ import lombok.Setter;
 public class ServizioRequest extends SceltaProfiloParam implements Serializable {
 	private static final long serialVersionUID = 443289012578169806L;
 
-	@NotNull
-	@Valid
-	private SceltaProfiloParamLightProgramma profilazioneParam;
-
 	@JsonProperty(value = "nomeServizio")
 	@NotBlank
 	private String nomeServizio;
