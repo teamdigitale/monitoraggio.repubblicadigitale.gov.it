@@ -29,7 +29,7 @@ public class LogReqResInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         
 		String uuid = (this.getRequestHeaders(request).get("authtoken"));
-		String exId = uuid.substring(uuid.length() - 15).concat("-").concat(uuid.substring(0, 15));
+		String exId = uuid != null ? uuid.substring(uuid.length() - 15).concat("-").concat(uuid.substring(0, 15)) : "test";
 		
 		response.setHeader("exchange-id", exId);
 		
