@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.9.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.9.1...1.9.2) (2022-11-09)
+
+
+### Bug Fixes
+
+* **be:** cancellazione utente wdocs ([c054522](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c054522289a916b7c6cf5806ec2da82675ddf56e))
+
 ## [1.9.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.9.0...1.9.1) (2022-11-09)
 
 
