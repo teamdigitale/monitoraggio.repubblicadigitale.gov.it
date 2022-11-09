@@ -100,7 +100,9 @@ public class ServizioSqlServiceTest {
 		sceltaProfiloParamLightProgramma.setIdProgetto(1L);
 		sceltaProfiloParamLightProgramma.setIdProgramma(1L);
 		servizioRequest = new ServizioRequest();
-		servizioRequest.setProfilazioneParam(sceltaProfiloParamLightProgramma);
+		servizioRequest.setIdEnte(1L);
+		servizioRequest.setIdProgramma(1L);
+		servizioRequest.setIdProgetto(1L);
 		servizioRequest.setCfUtenteLoggato("CFUTENTE");
 		servizioRequest.setCodiceRuoloUtenteLoggato(RuoloUtenteEnum.DTD.toString());
 		servizioRequest.setNomeServizio("NOMESERVIZIO");
