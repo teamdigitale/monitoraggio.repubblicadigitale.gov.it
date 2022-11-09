@@ -6,11 +6,11 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jboss.logging.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -27,12 +27,17 @@ public class LogReqResInterceptor implements HandlerInterceptor {
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String uuid = UUID.randomUUID().toString();
-		response.setHeader("exchange-id", uuid);
+        
+		String uuid = (this.getRequestHeaders(request).get("authtoken"));
+		String exId = uuid.substring(uuid.length() - 15).concat("-").concat(uuid.substring(0, 15));
+		
+		response.setHeader("exchange-id", exId);
+		
+		MDC.put("exchange-id", exId);
 		
 		final String requestMethodAndPathUri = String.format("%s %s", request.getMethod(), request.getRequestURL()); 
 		final String requestHeaders = String.format("%s", this.getRequestHeaders(request));
-		final String exchangeId = String.format("exchange-id:  %s", uuid);
+		final String exchangeId = String.format("exchange-id:  %s", exId);
 		
 		StringBuilder logRequestBuilder =  new StringBuilder("\n\n")
 												.append(LOG_IN).append(REQUEST).append("\n")
@@ -42,6 +47,7 @@ public class LogReqResInterceptor implements HandlerInterceptor {
 												.append(requestHeaders).append("\n");
 		
 		log.info("{}", logRequestBuilder.toString());
+		
 		return true;
 	}
 
@@ -62,12 +68,12 @@ public class LogReqResInterceptor implements HandlerInterceptor {
 		log.info(logRequest);	
 	}
 	
-	private String getRequestHeaders(HttpServletRequest request) {
+	private Map<String, String> getRequestHeaders(HttpServletRequest request) {
 		Map<String, String> headersMap = new HashMap<String, String>();
 
 		Enumeration<String> headersName = request.getHeaderNames();
 		if(headersName == null) {
-			return this.getHeadersString(headersMap, LOG_IN);
+			return headersMap;
 		}
 		
 		while (headersName.hasMoreElements()) {
@@ -75,7 +81,7 @@ public class LogReqResInterceptor implements HandlerInterceptor {
 			String headerValue = request.getHeader(headerName);
 			headersMap.put(headerName, headerValue);
 		}
-		return this.getHeadersString(headersMap, LOG_IN);
+		return headersMap;
 	}
 	
 	private String getResponseHeaders(HttpServletResponse response) {
