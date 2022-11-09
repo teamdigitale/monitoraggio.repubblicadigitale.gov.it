@@ -96,7 +96,7 @@ public class EnteSedeProgettoService {
 							
 							final String codFiscaleUtente = utente.getId().getIdFacilitatore();
 							final UtenteEntity utenteEntity = this.utenteRepository.findByCodiceFiscale(codFiscaleUtente).get();
-							if(utenteEntity.getIntegrazioneUtente().getIdUtenteWorkdocs() != null) {
+							if(utenteEntity.getRuoli().size() == 1 && utenteEntity.getIntegrazioneUtente().getIdUtenteWorkdocs() != null) {
 								try {
 									new Thread(() -> {
 										this.workDocsService.disattivaWorkDocsUser(utenteEntity.getIntegrazioneUtente().getIdUtenteWorkdocs());
