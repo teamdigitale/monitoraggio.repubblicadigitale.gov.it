@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.9.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.9.0...1.9.1) (2022-11-09)
+
+
+### Bug Fixes
+
+* **be:** log per eccezioni ([3957cbd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3957cbd95e3f6d8a16f13285276b513f878cb8bd))
+
 ## [1.9.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.8.0...1.9.0) (2022-11-08)
 
 
