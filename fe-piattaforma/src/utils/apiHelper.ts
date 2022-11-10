@@ -12,12 +12,21 @@ const API = axios.create({
 });
 
 API.interceptors.request.use((req) => {
+  const newHeaders: {
+    authToken?: string;
+    userRole?: string;
+  } = {};
+  if (JSON.parse(getSessionValues('auth'))?.id_token) {
+    newHeaders.authToken = JSON.parse(getSessionValues('auth'))?.id_token;
+  }
+  if (JSON.parse(getSessionValues('profile'))?.codiceRuolo) {
+    newHeaders.userRole = JSON.parse(getSessionValues('profile'))?.codiceRuolo;
+  }
   return {
     ...req,
     headers: {
       ...req.headers,
-      authToken: JSON.parse(getSessionValues('auth'))?.id_token,
-      userRole: JSON.parse(getSessionValues('profile'))?.codiceRuolo,
+      ...newHeaders,
     },
   };
 });

@@ -139,6 +139,10 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
                 navigate('/notifiche');
                 setOpen(false);
               }
+              if(e.key === 'Tab') {
+                e.preventDefault();
+                focusId('close-button-notification-sidebar', false);
+              }
             }}
           >
             ARCHIVIO NOTIFICHE

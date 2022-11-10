@@ -474,29 +474,29 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                   {userDropDown()}
                   {hasUserPermission(['btn.chat']) && handleOpenRocketChat ? (
                     <div className='mx-4 pr-2'>
-                      <div
-                        tabIndex={0}
-                        role='button'
+                      <Button
                         onClick={handleOpenRocketChat}
                         onKeyPress={(e) => {
                           if (e.key === 'Enter') {
                             handleOpenRocketChat();
                           }
                         }}
-                        className='position-relative'
+                        className='mr-3 position-relative p-0'
+                        aria-label={`${chatToRead} messaggi da leggere su Rocketchat`}
                       >
                         <Icon
                           color='white'
                           icon={RocketChatIcon}
                           size='sm'
                           aria-label='RocketChat'
+                          aria-hidden
                         />
                         {chatToRead ? (
                           <span className='chat-notifications'>
                             {chatToRead}
                           </span>
                         ) : null}
-                      </div>
+                      </Button>
                     </div>
                   ) : null}
                   {hasUserPermission(['list.ntf.nr']) ? (
@@ -510,7 +510,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                             color='white'
                             icon={Bell}
                             size='sm'
-                            aria-label='Anteprima notifiche'
+                            aria-label='Notifiche'
                           />
                           {notification ? (
                             <span className='badge-notifications'>

@@ -203,7 +203,7 @@ const DetailsRow: React.FC<DetailsRowI> = ({
       <div className='details-row__right-section primary-color-b1'>
         <span className='text-uppercase'>{rowInfoType}</span>
         <div>
-          <StatusChip status={stato} noTooltip />
+          <StatusChip status={stato} />
           {loadIcons()}
         </div>
       </div>

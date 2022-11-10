@@ -255,27 +255,27 @@ const HeaderMobile: React.FC<HeaderI> = ({
                 {userDropDown()}
                 <div className='d-flex align-items-center'>
                   {hasUserPermission(['btn.chat']) && handleOpenRocketChat ? (
-                    <div
-                      tabIndex={0}
-                      role='button'
+                    <Button
                       onClick={handleOpenRocketChat}
                       onKeyPress={(e) => {
                         if (e.key === 'Enter') {
                           handleOpenRocketChat();
                         }
                       }}
-                      className='mr-3 position-relative'
+                      className='mr-3 position-relative p-0'
+                      aria-label={`${chatToRead} messaggi da leggere su Rocketchat`}
                     >
                       <Icon
                         color='white'
                         icon={RocketChatIcon}
                         size='sm'
                         aria-label='RocketChat'
+                        aria-hidden
                       />
                       {chatToRead ? (
                         <span className='chat-notifications'>{chatToRead}</span>
                       ) : null}
-                    </div>
+                    </Button>
                   ) : null}
                   <Button
                     onClick={() => setNotificationsIsOpen(true)}
@@ -285,7 +285,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
                       color='white'
                       icon={Bell}
                       size='sm'
-                      aria-label='Anteprima notifiche'
+                      aria-label='Notifiche'
                     />
                     {notification ? (
                       <span className='badge-notifications'>

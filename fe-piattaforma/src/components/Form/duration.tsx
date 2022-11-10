@@ -35,10 +35,10 @@ const Duration: React.FC<InputI> = (props) => {
       // max hours 999
       setValidDuration(false);
     } else {
-      if (Number(splitted[0]) && (Number(splitted[0]) === 0 || Number(splitted[0]) % 1 === 0)) {
-        // hours is number || 0
-        if (Number(splitted[1]) || Number(splitted[1]) === 0) {
-          // minutes is number || 0
+      if (Number(splitted[0]) === 0 || Number(splitted[0]) % 1 === 0) {
+        // hours is number || 0 
+        if (Number(splitted[1]) || (Number(splitted[1]) === 0 && Number(splitted[0]) !== 0)) {
+          // minutes is number ||
           if (splitted[1]?.length > 2) {
             // max minutes has two digits
             setValidDuration(false);
