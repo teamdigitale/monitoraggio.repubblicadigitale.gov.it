@@ -30,12 +30,13 @@ import {
   selectUsers,
   setUserDetails,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
-import {CardStatusAction, EmptySection} from '../../../../../components';
+import { CardStatusAction, EmptySection } from '../../../../../components';
 import ManageFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/ManageFacilitator/ManageFacilitator';
 import { formFieldI } from '../../../../../utils/formHelper';
 import AddUserRole from '../modals/addUserRole';
 import {
   GetUserDetails,
+  UserDelete,
   UserDeleteRole,
 } from '../../../../../redux/features/administrativeArea/user/userThunk';
 import useGuard from '../../../../../hooks/guard';
@@ -524,6 +525,15 @@ const UsersDetails = () => {
       await dispatch(UserDeleteRole({ idUtente: userId, ruolo: role }));
       await dispatch(GetUserDetails(userId));
       dispatch(closeModal());
+    } else if (
+      userId &&
+      userRole === userRoles.USR &&
+      hasUserPermission(['del.utente']) &&
+      userInfo.stato === entityStatus.NON_ATTIVO &&
+      !userRoleList?.length
+    ) {
+      await dispatch(UserDelete(userId));
+      navigate('/area-amministrativa/utenti', { replace: true });
     }
   };
 
@@ -675,7 +685,9 @@ const UsersDetails = () => {
                     );
                   }
                 )
-              ) : <EmptySection title='Non ci sono ruoli associati' />}
+              ) : (
+                <EmptySection title='Non ci sono ruoli associati' />
+              )}
             </div>
           ) : null}
           <DeleteEntityModal

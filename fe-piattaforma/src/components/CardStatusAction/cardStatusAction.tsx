@@ -237,7 +237,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
                         onActionClick[CRUDActionTypes.DELETE](cf ? cf : id);
                       }}
                       className='pl-3 pr-0'
-                      id={`icon-delete-${cf || id}`}
+                      id={`icon-delete-${cf || id}`.replaceAll(' ', '_')}
                     >
                       <Icon
                         color='primary'
@@ -248,7 +248,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
                     </Button>
                     <UncontrolledTooltip
                       placement='top'
-                      target={`icon-delete-${cf || id}`}
+                      target={`icon-delete-${cf || id}`.replaceAll(' ', '_')}
                     >
                       Rimuovi
                     </UncontrolledTooltip>

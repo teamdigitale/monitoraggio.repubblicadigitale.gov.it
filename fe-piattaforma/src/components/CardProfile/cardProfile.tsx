@@ -89,11 +89,9 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
                 {profile?.descrizioneRuolo}
                 {device.mediaIsPhone && <br />}
                 {profile?.nomeEnte ? (
-                  <span>
-                    <em className='switch-profile-subs'>
-                      {`"${profile?.nomeEnte}"`}
-                    </em>
-                  </span>
+                  <em className='switch-profile-subs pr-1'>
+                    {` "${profile?.nomeEnte}" `}
+                  </em>
                 ) : null}
               </span>
             </CardTitle>
