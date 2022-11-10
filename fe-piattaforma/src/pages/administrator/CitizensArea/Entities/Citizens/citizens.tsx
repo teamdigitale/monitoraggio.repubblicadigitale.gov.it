@@ -190,9 +190,7 @@ const Citizens = () => {
         dropdowns={dropdowns}
         filtersList={filtersList}
         {...PageTitleCitizen}
-        resetFilterDropdownSelected={(filterKey: string) =>
-          setFilterDropdownSelected(filterKey)
-        }
+        resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
         citizen
         ctaDownload={handleDownloadList}
       >

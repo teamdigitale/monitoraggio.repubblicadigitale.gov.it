@@ -229,7 +229,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
                         aria-autocomplete='both'
                         field=''
                         bsSize='sm'
-                        placeholder={`Cerca tra le opzioni del filtro ${filterName?.toLowerCase()}`}
+                        placeholder='Cerca'
                         className='shadow-none border-bottom-0'
                         onInputChange={(value: formFieldI['value']) =>
                           setSearchValue(value?.toString())

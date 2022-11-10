@@ -263,9 +263,7 @@ const Users = () => {
       ctaDownload={
         hasUserPermission(['list.dwnl.utenti']) ? handleDownloadList : undefined
       }
-      resetFilterDropdownSelected={(filterKey: string) =>
-        setFilterDropdownSelected(filterKey)
-      }
+      resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
       tooltip
       tooltiptext={searchInformation.placeholder}
     >

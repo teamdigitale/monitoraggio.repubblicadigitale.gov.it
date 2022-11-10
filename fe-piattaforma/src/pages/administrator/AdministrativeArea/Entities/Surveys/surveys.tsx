@@ -82,7 +82,7 @@ const Surveys = () => {
         ? TableHeadingQuestionnaires
         : TableHeadingQuestionnairesLite,
       questionariList?.list.map((td) => ({
-        id: td.id,
+        id: td.id.split('-')[0],
         nome: td.nome,
         status: <StatusChip status={td.stato} rowTableId={td.id} />,
 
@@ -267,42 +267,38 @@ const Surveys = () => {
     'new.quest.templ',
   ])
     ? {
-        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-          navigate(
-            `/area-amministrativa/questionari/${
-              typeof td !== 'string' ? td.id : td
-            }`
-          );
-        },
-        [CRUDActionTypes.CLONE]: (td: TableRowI | string) => {
-          navigate(
-            `/area-amministrativa/questionari/${
-              typeof td !== 'string' ? td.id : td
-            }/clona`
-          );
-        },
-      }
+      [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+        navigate(
+          `/area-amministrativa/questionari/${typeof td !== 'string' ? td.id : td
+          }`
+        );
+      },
+      [CRUDActionTypes.CLONE]: (td: TableRowI | string) => {
+        navigate(
+          `/area-amministrativa/questionari/${typeof td !== 'string' ? td.id : td
+          }/clona`
+        );
+      },
+    }
     : hasUserPermission(['view.quest.templ'])
-    ? {
+      ? {
         [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
           navigate(
-            `/area-amministrativa/questionari/${
-              typeof td !== 'string' ? td.id : td
+            `/area-amministrativa/questionari/${typeof td !== 'string' ? td.id : td
             }`
           );
         },
       }
-    : hasUserPermission(['new.quest.templ'])
-    ? {
-        [CRUDActionTypes.CLONE]: (td: TableRowI | string) => {
-          navigate(
-            `/area-amministrativa/questionari/${
-              typeof td !== 'string' ? td.id : td
-            }/clona`
-          );
-        },
-      }
-    : {};
+      : hasUserPermission(['new.quest.templ'])
+        ? {
+          [CRUDActionTypes.CLONE]: (td: TableRowI | string) => {
+            navigate(
+              `/area-amministrativa/questionari/${typeof td !== 'string' ? td.id : td
+              }/clona`
+            );
+          },
+        }
+        : {};
 
   const objectToPass =
     filter.value === 'questionnaire'
@@ -337,9 +333,7 @@ const Surveys = () => {
         dropdowns={dropdowns}
         {...objectToPass}
         ctaDownload={handleDownloadList}
-        resetFilterDropdownSelected={(filterKey: string) =>
-          setFilterDropdownSelected(filterKey)
-        }
+        resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
         tooltip
         tooltiptext={searchInformation.placeholder}
       >

@@ -68,7 +68,7 @@
   }
 
   .user-description {
-   p {
+   span {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -114,8 +114,11 @@
   }
 
   &__dropdown {
-   
     transform: none !important;
+  }
+
+  &__divider {
+    border-top: 1px solid #ebeced;
   }
 }
 .user-logged .header-container {

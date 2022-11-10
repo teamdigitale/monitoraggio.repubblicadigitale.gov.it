@@ -7,7 +7,6 @@ import {
   DropdownMenu,
   DropdownToggle,
   Icon,
-  LinkListItem,
 } from 'design-react-kit';
 //import LogoMobile from '/public/assets/img/logo-mobile.png';
 import LogoMobile from '/public/assets/img/logo_tmp3.png';
@@ -84,13 +83,20 @@ const HeaderMobile: React.FC<HeaderI> = ({
           font={AvatarTextSizes.Small}
           lightColor
         />
-        <div className='d-flex flex-row justify-content-start'>
-          <p className='h6 text-wrap font-weight-light'>
+        <div
+          className={clsx(
+            'd-flex',
+            'flex-row',
+            'justify-content-start',
+            'user-description'
+          )}
+        >
+          <span className='h6 font-weight-light'>
             {/*<em>{getRoleLabel(userProfile?.codiceRuolo)}</em>*/}
             <em>{`${userProfile?.descrizioneRuolo}${
               userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
             }`}</em>
-          </p>
+          </span>
         </div>
         <div className='ml-2'>
           <Icon
@@ -104,7 +110,11 @@ const HeaderMobile: React.FC<HeaderI> = ({
       </div>
       <DropdownToggle caret className='d-none' aria-hidden={true} />
       <div className='position-relative w-100'>
-        <DropdownMenu role='menu' className='header-container__dropdown'>
+        <DropdownMenu
+          role='menu'
+          className='header-container__dropdown'
+          tag='ul'
+        >
           {userDropdownOptions.map((item, index) => (
             <li
               key={index}
@@ -177,9 +187,8 @@ const HeaderMobile: React.FC<HeaderI> = ({
               </Button>
             </li>
           ) : null}
-          <LinkListItem divider role='menuitem' aria-hidden={true} />
           {isLogged ? (
-            <li role='none' className='px-4'>
+            <li role='none' className='px-4 header-container__divider'>
               <Button
                 className={clsx(
                   'primary-color-b1',

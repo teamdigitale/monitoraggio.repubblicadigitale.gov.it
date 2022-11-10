@@ -261,6 +261,7 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
               field={field.field}
               className={clsx(
                 field.field !== '18' && 'col-12 col-lg-6',
+                field.field === '18' && 'compile-survey-container__checkbox-margin'
               )}
               label={
                 field.field === '18'

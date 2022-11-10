@@ -11,9 +11,6 @@
 
 .spacing {
   padding-left: 50px;
-  @media screen and (min-width: 862px) {
-    padding-left: 78px;
-  }
 }
 .switch-profile-titles {
   overflow: hidden;
@@ -28,10 +25,10 @@
 .switch-profile-subs {
   overflow: hidden;
   text-overflow: ellipsis;
-  display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   @media screen and (max-width: 576px) {
     max-width: 120px;
+    display: -webkit-box;
   }
 }

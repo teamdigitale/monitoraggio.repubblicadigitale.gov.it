@@ -45,13 +45,13 @@ const id = formTypes.SEDE;
 
 const headings: TableHeadingI[] = [
   {
-    label: 'ID',
-    field: 'id',
+    label: 'Nome',
+    field: 'nome',
     size: 'medium',
   },
   {
-    label: 'Nome',
-    field: 'nome',
+    label: 'ID',
+    field: 'id',
     size: 'medium',
   },
 ];
@@ -305,8 +305,8 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
       <Table
         heading={headings}
         values={headquartersList.map((item) => ({
-          id: item.id,
           nome: item.nome,
+          id: item.id,
         }))}
         onActionRadio={handleSelectHeadquarter}
         id='table'

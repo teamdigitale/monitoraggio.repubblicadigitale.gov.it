@@ -165,7 +165,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                     ) ? (
                       <Button
                         onClick={() => onActionClick[CRUDActionTypes.EDIT](td)}
-                        className='mr-2 p-0'
+                        className='mr-4 p-0'
                         aria-label={`Modifica ${
                           td?.nome || td?.label || td?.name
                         }`}
@@ -188,7 +188,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         onClick={() =>
                           onActionClick[CRUDActionTypes.DELETE](td)
                         }
-                        className='mr-2 p-0'
+                        className='mr-4 p-0'
                         aria-label={`Elimina ${
                           td?.nome || td?.label || td?.name
                         }`}
@@ -209,7 +209,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                     ) ? (
                       <Button
                         onClick={() => onActionClick[CRUDActionTypes.CLONE](td)}
-                        className='mr-2 p-0'
+                        className='mr-4 p-0'
                         aria-label={`Clona ${
                           td?.nome || td?.label || td?.name
                         }`}
