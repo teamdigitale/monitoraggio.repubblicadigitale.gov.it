@@ -128,7 +128,8 @@ public interface CittadinoServizioRepository extends JpaRepository<CittadinoEnti
 			+ "		cittadino "
 			+ " WHERE 1=1     "
 			+ "		AND ((UPPER(:tipoDocumento) = 'CF' AND UPPER(codice_fiscale) = UPPER(:criterioRicerca))       "
-			+ " 	OR (UPPER(:tipoDocumento) = 'NUM_DOC' AND UPPER(num_documento) LIKE UPPER(:criterioRicerca))) ",
+			+ " 	OR (UPPER(:tipoDocumento) = 'NUM_DOC' AND UPPER(num_documento) = UPPER(:criterioRicerca))) "
+			+ " ORDER BY cognome",
 			 nativeQuery = true)
 	List<GetCittadinoProjection> getAllCittadiniByCodFiscOrNumDoc(@Param(value = "tipoDocumento") String tipoDocumento,
 			@Param(value = "criterioRicerca") String criterioRicerca);

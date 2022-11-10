@@ -118,7 +118,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			 + "                                AND  ( COALESCE(:ruoli) IS NULL   OR   ruolo2.nome IN ( :ruoli) )) = utente.id ) utente_and_stato "
 			 + "     WHERE 1=1 "
 			 + "     	AND (COALESCE(:stati) IS NULL OR  utente_and_stato.stato in (:stati)) "
-			 + "   		ORDER BY utente_and_stato.ID ASC "
+			 + "   		ORDER BY utente_and_stato.cognome "
 			 + "   	 	LIMIT :currPageIndex, :pageSize ) as utentiPaginati "
 			 + "	LEFT JOIN "
 			 + "    ( "
@@ -263,7 +263,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "                      WHERE 1=1"
 			+ "                          AND u2.id = utente.id"
 			+ "                          AND  ( COALESCE(:ruoli) IS NULL   OR   ruolo2.nome IN ( :ruoli) )) = utente.id"
-			+ "             ORDER BY utente.id"
+			+ "             ORDER BY utente.cognome"
 			+ "             LIMIT :currPageIndex, :pageSize"
 			+ "            ) as risultato"
 			+ "             INNER JOIN utente_x_ruolo ur"
@@ -341,13 +341,14 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "			                       WHERE 1=1"
 			+ "			                           AND u2.id = utente.id"
 			+ "			                           AND  ( COALESCE(:ruoli) IS NULL   OR   ruolo2.nome IN (:ruoli) )) = utente.id"
-			+ "			      ORDER BY utente.id"
+			+ "			      ORDER BY utente.cognome"
 			+ "			      LIMIT :currPageIndex, :pageSize"
 			+ "               ) as risultato"
 			+ "             INNER JOIN utente_x_ruolo ur "
 			+ "			 		ON ur.UTENTE_ID = risultato.CODICE_FISCALE "
 			+ "			 	INNER JOIN ruolo ruolo "
-			+ "			 		ON ruolo.CODICE = ur.RUOLO_CODICE", 
+			+ "			 		ON ruolo.CODICE = ur.RUOLO_CODICE "
+			+ "             ORDER BY risultato.cognome", 
 			nativeQuery = true)
 	public Set<UtenteEntity> findUtentiPerReferenteDelegatoGestoreProgramma(
 			@Param(value = "idProgramma") Long idProgramma, 
@@ -415,13 +416,14 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "			                WHERE 1=1"
 			+ "			                    AND u2.id = utente.id"
 			+ "			                    AND  ( COALESCE(:ruoli) IS NULL   OR   ruolo2.nome IN (:ruoli) )) = utente.id"
-			+ "			              ORDER BY utente.id"
+			+ "			              ORDER BY utente.cognome"
 			+ "			              LIMIT :currPageIndex, :pageSize"
 			+ "                          ) as risultato"
 			+ "                    INNER JOIN utente_x_ruolo ur "
 			+ "			 		ON ur.UTENTE_ID = risultato.CODICE_FISCALE "
 			+ "			 	    INNER JOIN ruolo ruolo "
-			+ "			 		ON ruolo.CODICE = ur.RUOLO_CODICE", 
+			+ "			 		ON ruolo.CODICE = ur.RUOLO_CODICE "
+			+ "                 ORDER BY risultato.cognome", 
 			nativeQuery = true)
 	public Set<UtenteEntity> findUtentiPerReferenteDelegatoGestoreProgetti(
 			@Param(value = "idProgramma") Long idProgramma,
@@ -485,13 +487,14 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "			                       WHERE 1=1"
 			+ "			                           AND u2.id = utente.id"
 			+ "			                           AND  ( COALESCE(:ruoli) IS NULL   OR   ruolo2.nome IN (:ruoli) )) = utente.id"
-			+ "			              ORDER BY utente.id"
+			+ "			              ORDER BY utente.cognome"
 			+ "			              LIMIT :currPageIndex, :pageSize"
 			+ "                          ) as risultato"
 			+ "                    INNER JOIN utente_x_ruolo ur "
 			+ "			 		ON ur.UTENTE_ID = risultato.CODICE_FISCALE "
 			+ "			 	    INNER JOIN ruolo ruolo "
-			+ "			 		ON ruolo.CODICE = ur.RUOLO_CODICE",
+			+ "			 		ON ruolo.CODICE = ur.RUOLO_CODICE"
+			+ "                 ORDER BY risultato.cognome",
 			nativeQuery = true)
 	public Set<UtenteEntity> findUtentiPerReferenteDelegatoEntePartnerProgetti(
 			@Param(value = "idProgramma") Long idProgramma,
@@ -866,7 +869,8 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 		    + "	    	   OR UPPER( utente.NOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			   OR UPPER( utente.COGNOME ) LIKE UPPER( :criterioRicercaLike ) "
             + "			   OR UPPER( utente.CODICE_FISCALE ) LIKE UPPER( :criterioRicercaLike "
-            + "		) ", 
+            + "		) "
+            + "    ORDER BY cognome", 
 			nativeQuery = true)
 	public List<UtenteEntity> findUtenteByCriterioRicerca(
 			@Param(value = "criterioRicerca") String criterioRicerca,
