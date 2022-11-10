@@ -8,9 +8,7 @@ import {
   DropdownToggle,
   Icon,
   LinkList,
-  LinkListItem,
 } from 'design-react-kit';
-//import Logo from '/public/assets/img/logo.png';
 import Logo from '/public/assets/img/logo_tmp3.png';
 import Bell from '/public/assets/img/campanella.png';
 import RocketChatIcon from '/public/assets/img/rocketchat.png';
@@ -97,7 +95,14 @@ const HeaderDesktop: React.FC<HeaderI> = ({
           size={AvatarSizes.Small}
           font={AvatarTextSizes.Small}
         />
-        <div className='d-flex flex-column align-items-start'>
+        <div
+          className={clsx(
+            'd-flex',
+            'flex-column',
+            'align-items-start',
+            'user-description'
+          )}
+        >
           <span className='h6 m-0 text-sans-serif'>
             {user?.cognome}&nbsp;{user?.nome}
           </span>
@@ -120,7 +125,11 @@ const HeaderDesktop: React.FC<HeaderI> = ({
       </div>
       <DropdownToggle caret className='d-none' aria-hidden={true} />
       <div className='position-relative w-100 link-list-wrapper'>
-        <DropdownMenu role='menu' className='header-container__dropdown py-2'>
+        <DropdownMenu
+          role='menu'
+          className='header-container__dropdown py-2'
+          tag='ul'
+        >
           {userDropdownOptions.map((item, index) => (
             <li
               key={index}
@@ -180,15 +189,15 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               </Button>
             </li>
           ) : null}
-          <LinkListItem divider aria-label='divider' aria-hidden />
-          <li role='none' className='px-4'>
+          <li role='none' className='px-4 header-container__divider'>
             <Button
               className={clsx(
                 'primary-color-b1',
                 'd-flex',
                 'justify-content-between',
                 'align-items-center',
-                'w-100'
+                'w-100',
+                'mt-2'
               )}
               role='menuitem'
               onClick={() => {

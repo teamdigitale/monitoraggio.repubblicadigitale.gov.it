@@ -229,6 +229,7 @@ const ReportCard: React.FC<ReportCardI> = ({
               color='danger'
               aria-label='Contenuto segnalato'
               aria-hidden
+              className='mb-1 mr-2'
             />
             {reportDropdown()}
           </div>

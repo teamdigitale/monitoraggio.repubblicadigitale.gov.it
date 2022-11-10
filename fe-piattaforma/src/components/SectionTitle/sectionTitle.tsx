@@ -88,7 +88,15 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
   return (
     <div className={clsx(!isForumLayout && 'd-flex w-100 flex-wrap mx-auto')}>
       {upperTitle ? (
-        <div className='d-flex flex-row justify-content-center w-100'>
+        <div
+          className={clsx(
+            'd-flex',
+            'flex-row',
+            'justify-content-center',
+            'align-items-center',
+            'w-100'
+          )}
+        >
           <Icon
             icon={upperTitle.icon}
             size='sm'
@@ -98,6 +106,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
           <p
             className={clsx(
               'h6',
+              'mb-0',
               'custom-section-title__upper-text',
               'primary-color-a9',
               'text-uppercase'
