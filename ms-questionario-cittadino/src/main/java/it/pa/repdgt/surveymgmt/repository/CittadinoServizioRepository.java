@@ -40,6 +40,7 @@ public interface CittadinoServizioRepository extends JpaRepository<CittadinoEnti
 		     + "		 OR UPPER(c.codice_fiscale) = UPPER( :criterioRicercaServizio ) "
 	         + "    ) "
 	         + "    AND ( COALESCE( :statiQuestionariFiltro  ) IS NULL OR q_c.STATO IN ( :statiQuestionariFiltro ) ) "
+	         + "    ORDER BY c.cognome"
 	         + "	LIMIT :currPage, :pageSize",
 			 nativeQuery = true)
 	List<CittadinoServizioProjection> findAllCittadiniServizioPaginatiByFiltro(
