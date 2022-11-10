@@ -6,6 +6,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,7 +30,9 @@ public class LogReqResInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         
 		String uuid = (this.getRequestHeaders(request).get("authtoken"));
-		String exId = uuid != null ? uuid.substring(uuid.length() - 15).concat("-").concat(uuid.substring(0, 15)) : "test";
+		String exId = uuid != null && !uuid.equals("") ? 
+				uuid.substring(uuid.length() - 15).concat("-").concat(uuid.substring(0, 15)) : 
+					UUID.randomUUID().toString();;
 		
 		response.setHeader("exchange-id", exId);
 		
