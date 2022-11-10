@@ -141,6 +141,7 @@ public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long
             + "		  	     	OR UPPER( qc_cittadino.CODICE_FISCALE ) = UPPER( :criterioRicerca ) "
             + "		  	      	OR UPPER( qc_cittadino.NUM_DOCUMENTO ) LIKE UPPER( :criterioRicercaLike )"
             + "			) "
+            + "    order by qc_cittadino.cognome"
             + "	   LIMIT :currPage, :pageSize",
 			nativeQuery = true)
 	List<CittadinoProjection> findAllCittadiniPaginatiByFiltro(

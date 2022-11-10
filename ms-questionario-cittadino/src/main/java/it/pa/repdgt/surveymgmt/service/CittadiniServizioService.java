@@ -209,10 +209,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	@LogExecutionTime
 	public List<GetCittadinoProjection> getAllCittadiniByCodFiscOrNumDoc(String tipoDocumento,
 			@NotNull String criterioRicerca) {		
-		return cittadinoServizioRepository.getAllCittadiniByCodFiscOrNumDoc(tipoDocumento,
-				tipoDocumento.equalsIgnoreCase("CF") 
-				? criterioRicerca
-						: "%".concat(criterioRicerca).concat("%"));
+		return cittadinoServizioRepository.getAllCittadiniByCodFiscOrNumDoc(tipoDocumento, criterioRicerca);
 	}
 
 	@LogMethod

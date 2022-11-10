@@ -85,7 +85,7 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 	         + "    AND ( COALESCE( :tipologieServizi )    IS NULL OR ts.titolo IN ( :tipologieServizi ) )    "
 	         + "    AND ( COALESCE( :statiServizioFiltro ) IS NULL OR s.stato   IN ( :statiServizioFiltro ) ) "
 	         + "    AND (  programma.POLICY = 'SCD' ) "
-	         + " ",
+	         + "    ORDER BY nome",
 			 nativeQuery = true)
 	List<ServizioEntity> findAllServiziByPolicySCDAndFiltro(
 			@Param(value = "criterioRicercaServizio") String criterioRicercaServizio, 
@@ -118,7 +118,7 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 	         + "    AND ( COALESCE( :tipologieServizi )    IS NULL OR ts.titolo    IN ( :tipologieServizi ) )         "
 	         + "    AND ( COALESCE( :statiServizioFiltro ) IS NULL OR s.stato      IN ( :statiServizioFiltro ) )      "
 	         + "    AND  s.ID_ENTE = :idEnte"
-	         + " ",
+	         + "    ORDER BY s.nome",
 			 nativeQuery = true)
 	List<ServizioEntity> findAllServiziByFacilitatoreOVolontarioAndFiltro(
 			@Param(value = "criterioRicercaServizio") String criterioRicercaServizio, 
@@ -153,7 +153,7 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 	         + "    AND ( COALESCE( :idsProgrammaFiltro  ) IS NULL OR programma.ID IN ( :idsProgrammaFiltro ) )  "
 	         + "    AND ( COALESCE( :tipologieServizi )    IS NULL OR ts.titolo    IN ( :tipologieServizi ) )    "
 	         + "    AND ( COALESCE( :statiServizioFiltro ) IS NULL OR s.stato      IN ( :statiServizioFiltro ) ) "
-	         + " ",
+	         + "    ORDER BY s.nome",
 			 nativeQuery = true)
 	List<ServizioEntity> findAllServiziByReferenteODelegatoGestoreProgrammaAndFiltro(
 			@Param(value = "criterioRicercaServizio") String criterioRicercaServizio, 
@@ -185,7 +185,7 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 	         + "    AND ( COALESCE( :idsProgettoFiltro   ) IS NULL OR progetto.ID  IN ( :idsProgettoFiltro  ) )  "
 	         + "    AND ( COALESCE( :tipologieServizi )    IS NULL OR ts.titolo    IN ( :tipologieServizi ) )    "
 	         + "    AND ( COALESCE( :statiServizioFiltro ) IS NULL OR s.stato      IN ( :statiServizioFiltro ) ) "
-	         + " ",
+	         + "    ORDER BY s.nome",
 			 nativeQuery = true)
 	List<ServizioEntity> findAllServiziByReferenteODelegatoGestoreProgettoAndFiltro(
 			@Param(value = "criterioRicercaServizio") String criterioRicercaServizio, 
@@ -219,7 +219,7 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 	         + "    AND ( COALESCE( :tipologieServizi )    IS NULL OR ts.titolo    IN ( :tipologieServizi ) )    "
 	         + "    AND ( COALESCE( :statiServizioFiltro ) IS NULL OR s.stato      IN ( :statiServizioFiltro ) ) "
 	         + "    AND rdgp.ID_ENTE = :idEnte"
-	         + " ",
+	         + "    ORDER BY s.nome",
 			 nativeQuery = true)
 	List<ServizioEntity> findAllServiziByReferenteODelegatoEntePartnerAndFiltro(
 			@Param(value = "criterioRicercaServizio") String criterioRicercaServizio, 

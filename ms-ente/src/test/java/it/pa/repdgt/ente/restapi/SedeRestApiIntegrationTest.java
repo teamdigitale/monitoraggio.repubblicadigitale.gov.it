@@ -20,6 +20,7 @@ import it.pa.repdgt.ente.service.IndirizzoSedeService;
 import it.pa.repdgt.ente.service.SedeService;
 import it.pa.repdgt.shared.entity.IndirizzoSedeFasciaOrariaEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
 public class SedeRestApiIntegrationTest extends AppTests {
@@ -43,9 +44,12 @@ public class SedeRestApiIntegrationTest extends AppTests {
 	@Test
 	public void getSchedaAnagraficaSedeTest() {
 		final String idSede = "2";
+		SceltaProfiloParam sceltaProfilo = new SceltaProfiloParam();
+		sceltaProfilo.setCfUtenteLoggato("CODICE_FISCALE");
+		sceltaProfilo.setCodiceRuoloUtenteLoggato("DTD");
 		
 		String url = String.format("http://localhost:%s/sede/light/%s", randomServerPort, idSede);
-		Map<Object, Object> response = restTemplate.getForObject(url, Map.class);
+		Map<Object, Object> response = restTemplate.postForObject(url, sceltaProfilo, Map.class);
 	
 		assertThat(response).isNotNull();
 		assertThat(response.get("dettaglioSede")).isNotNull();

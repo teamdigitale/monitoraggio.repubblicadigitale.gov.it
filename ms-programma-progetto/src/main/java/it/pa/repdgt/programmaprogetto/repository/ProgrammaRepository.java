@@ -58,7 +58,7 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 			+ "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
 			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) ) "
 			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR programma.STATO IN (:stati) ) "
-			+ "	ORDER BY programma.ID "
+			+ "	ORDER BY programma.nome_breve "
 			+ " LIMIT :currPageIndex, :pageSize",
 			nativeQuery = true)
 	public List<ProgrammaEntity> findAllPaginati(
@@ -131,7 +131,7 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 		    + "			OR UPPER( programma.NOME ) LIKE UPPER( :criterioRicercaLike ) "
 	        + "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
 			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR programma.STATO IN (:stati) )"
-			+ "	ORDER BY programma.ID "
+			+ "	ORDER BY programma.nome_breve "
 			+ " LIMIT :currPageIndex, :pageSize",
 		   nativeQuery = true)
 	public List<ProgrammaEntity> findProgrammiByPolicyPaginati(

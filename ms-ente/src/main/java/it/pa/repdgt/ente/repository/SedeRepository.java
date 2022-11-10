@@ -17,7 +17,8 @@ public interface SedeRepository extends JpaRepository<SedeEntity, Long> {
 				 + "	sede "
 				 + " FROM"
 				 + "	SedeEntity sede "
-				 + " WHERE UPPER(sede.nome) LIKE %:nomeSede%",
+				 + " WHERE UPPER(sede.nome) LIKE %:nomeSede%"
+				 + " order by sede.nome",
 			nativeQuery = false)	
 	List<SedeEntity> findSedeByNomeSedeLike(@Param(value = "nomeSede") String nomeSede);
 	
