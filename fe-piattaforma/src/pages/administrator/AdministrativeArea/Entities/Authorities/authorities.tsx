@@ -245,9 +245,7 @@ const Authorities: React.FC = () => {
       ctaDownload={
         hasUserPermission(['list.dwnl.enti']) ? handleDownloadList : undefined
       }
-      resetFilterDropdownSelected={(filterKey: string) =>
-        setFilterDropdownSelected(filterKey)
-      }
+      resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
       tooltip
       tooltiptext={searchInformation.placeholder}
     >

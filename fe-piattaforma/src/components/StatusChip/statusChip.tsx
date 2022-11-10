@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { Chip, ChipLabel, UncontrolledTooltip } from 'design-react-kit';
+import { Chip, ChipLabel } from 'design-react-kit';
 import React, { memo } from 'react';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import { useAppSelector } from '../../redux/hooks';
@@ -78,50 +78,38 @@ export const statusColor = (status: string) => {
 };
 
 const StatusChip: React.FC<StatusChipI> = (props) => {
-  const { status, noTooltip = true, rowTableId, chipWidth } = props;
+  const { status, rowTableId, chipWidth } = props;
   const device = useAppSelector(selectDevice);
 
   if (!status) return null;
 
   return (
-    <>
-      <span
-        className='px-0 py-0'
-        id={`button-status-${rowTableId ? rowTableId : new Date().getTime()}`}
+    <span
+      className='px-0 py-0'
+      id={`button-status-${rowTableId ? rowTableId : new Date().getTime()}`}
+    >
+      <Chip
+        className={clsx(
+          'table-container__status-label',
+          statusBgColor(status),
+          'no-border',
+          chipWidth && 'px-2',
+          device.mediaIsPhone && 'my-2'
+        )}
       >
-        <Chip
+        <ChipLabel
           className={clsx(
-            'table-container__status-label',
-            statusBgColor(status),
-            'no-border',
-            chipWidth && 'px-2',
-            device.mediaIsPhone && 'my-2'
+            statusColor(status),
+            chipWidth && 'px-3',
+            device.mediaIsPhone &&
+              status?.length >= 11 &&
+              'chip-label__chip-height'
           )}
         >
-          <ChipLabel
-            className={clsx(
-              statusColor(status),
-              chipWidth && 'px-3',
-              device.mediaIsPhone &&
-                status?.length >= 11 &&
-                'chip-label__chip-height',
-            )}
-          >
-            {status?.toUpperCase().replace('_', ' ')}
-          </ChipLabel>
-        </Chip>
-      </span>
-      {!noTooltip && (
-        <UncontrolledTooltip
-          placement='top'
-          target={`button-status-${
-            rowTableId ? rowTableId : new Date().getTime()
-          }`}
-        >
           {status?.toUpperCase().replace('_', ' ')}
-        </UncontrolledTooltip>
-      )}
-    </>
+        </ChipLabel>
+      </Chip>
+    </span>
   );
 };
 

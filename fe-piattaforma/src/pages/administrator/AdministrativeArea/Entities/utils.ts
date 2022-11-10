@@ -85,7 +85,7 @@ export const TableHeadingQuestionnaires: TableHeadingI[] = [
   },
   {
     label: 'ID',
-    field: 'id',
+    field: 'idShort',
     size: 'small',
   },
   {
@@ -118,7 +118,7 @@ export const TableHeadingQuestionnairesLite: TableHeadingI[] = [
   },
   {
     label: 'ID',
-    field: 'id',
+    field: 'idShort',
     size: 'medium',
   },
   {

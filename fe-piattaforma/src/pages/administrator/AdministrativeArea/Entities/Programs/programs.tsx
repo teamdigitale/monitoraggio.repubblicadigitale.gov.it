@@ -257,9 +257,7 @@ const Programs = () => {
           ? handleDownloadList
           : undefined
       }
-      resetFilterDropdownSelected={(filterKey: string) =>
-        setFilterDropdownSelected(filterKey)
-      }
+      resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
       tooltiptext={searchInformation.placeholder}
       tooltip
     >
