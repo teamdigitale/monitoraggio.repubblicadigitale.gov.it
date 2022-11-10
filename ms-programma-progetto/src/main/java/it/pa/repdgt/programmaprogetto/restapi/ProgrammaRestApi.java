@@ -87,14 +87,6 @@ public class ProgrammaRestApi {
 		return statiDropdown;
 	}
 	
-	//scheda programma
-	@Deprecated
-	@GetMapping(path = "/{idProgramma}")
-	@ResponseStatus(value = HttpStatus.OK)
-	public SchedaProgrammaBean getSchedaProgrammaById(@PathVariable(value = "idProgramma") Long idProgramma) {
-		 return this.programmaService.getSchedaProgrammaById(idProgramma);
-	}
-	
 	// 2.4 - scheda programma
 	@PostMapping(path = "/{idProgramma}")
 	@ResponseStatus(value = HttpStatus.OK)
