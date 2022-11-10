@@ -73,13 +73,6 @@ public class ProgrammaRestApiRestTemplateTest extends AppTests{
 	}
 	
 	@Test
-	@Order(value = 3)
-	void getSchedaProgrammaByIdTest() {
-		ResponseEntity<SchedaProgrammaBean> response = restTemplate.getForEntity("http://localhost:" + randomServerPort + "/programma/{idProgramma}", SchedaProgrammaBean.class, 100L);
-		assertThat(response.getBody().getDettaglioProgramma().getNome()).isEqualTo("Programma Alfa");
-	}
-	
-	@Test
 	@Order(value = 4)
 	void creaNuovoProgrammaTest() {
 		ProgrammaRequest programmaRequest = new ProgrammaRequest();
