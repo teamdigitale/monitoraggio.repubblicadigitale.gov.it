@@ -93,7 +93,7 @@ public class CittadinoService {
 			})
 			.collect(Collectors.toList());
 		
-		cittadini.sort((cittadino1, cittadino2) -> cittadino1.getId().compareTo(cittadino2.getId()));
+		cittadini.sort((cittadino1, cittadino2) -> cittadino1.getCognome().compareTo(cittadino2.getCognome()));
 		return cittadini;
 	}
 
