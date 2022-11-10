@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.286](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.285...1.0.0-develop.286) (2022-11-10)
+
+
+### Bug Fixes
+
+* **be:** test getschedaprogramma ([0bad699](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0bad699ad73c448ac34452e2398d7c1c3bc103c3))
+* **be:** exchange id null ([b92e410](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b92e410022ba3cc3994cfd245a97b09f4dd563a7))
+
 ## [1.0.0-develop.285](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.284...1.0.0-develop.285) (2022-11-09)
 
 
