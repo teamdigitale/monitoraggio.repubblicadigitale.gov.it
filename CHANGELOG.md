@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.9.3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.9.2...1.9.3) (2022-11-10)
+
+
+### Bug Fixes
+
+* **be:** exchange id null ([cfb369f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/cfb369fe602a53687e9c34e8768d2f7965c6dbf1))
+
 ## [1.9.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.9.1...1.9.2) (2022-11-09)
 
 
