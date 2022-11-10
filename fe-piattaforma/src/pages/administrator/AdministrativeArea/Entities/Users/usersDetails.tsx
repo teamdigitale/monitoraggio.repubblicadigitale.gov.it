@@ -36,6 +36,7 @@ import { formFieldI } from '../../../../../utils/formHelper';
 import AddUserRole from '../modals/addUserRole';
 import {
   GetUserDetails,
+  UserDelete,
   UserDeleteRole,
 } from '../../../../../redux/features/administrativeArea/user/userThunk';
 import useGuard from '../../../../../hooks/guard';
@@ -535,6 +536,15 @@ const UsersDetails = () => {
       await dispatch(UserDeleteRole({ idUtente: userId, ruolo: role }));
       await dispatch(GetUserDetails(userId));
       dispatch(closeModal());
+    } else if (
+      userId &&
+      userRole === userRoles.USR &&
+      hasUserPermission(['del.utente']) &&
+      userInfo.stato === entityStatus.NON_ATTIVO &&
+      !userRoleList?.length
+    ) {
+      await dispatch(UserDelete(userId));
+      navigate('/area-amministrativa/utenti', { replace: true });
     }
   };
 

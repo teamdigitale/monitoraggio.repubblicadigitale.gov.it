@@ -82,7 +82,8 @@ const Surveys = () => {
         ? TableHeadingQuestionnaires
         : TableHeadingQuestionnairesLite,
       questionariList?.list.map((td) => ({
-        id: td.id.split('-')[0],
+        idShort: td.id.split('-')[0],
+        id: td.id,
         nome: td.nome,
         status: <StatusChip status={td.stato} rowTableId={td.id} />,
 
