@@ -729,9 +729,10 @@ const ProgramsDetails: React.FC = () => {
           ? [
               {
                 size: 'xs',
-                color: 'danger',
+                color: 'secondary',
                 outline: true,
                 text: 'Termina programma',
+                buttonClass: 'terminate-entity',
                 onClick: () =>
                   dispatch(
                     openModal({
@@ -779,9 +780,10 @@ const ProgramsDetails: React.FC = () => {
           ? [
               {
                 size: 'xs',
-                color: 'danger',
+                color: 'secondary',
                 outline: true,
                 text: 'Termina programma',
+                buttonClass: 'terminate-entity',
                 onClick: () =>
                   dispatch(
                     openModal({

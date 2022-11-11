@@ -103,7 +103,7 @@ const Citizens = () => {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
     placeholder:
-      'Inserisci il nome, il cognome, l’ID, il codice fiscale o il n. documento del cittadino',
+      'Inserisci il cognome e/o il nome, oppure l’ID o il codice fiscale dell’utente',
     isClearable: true,
     title: 'Cerca cittadino',
   };

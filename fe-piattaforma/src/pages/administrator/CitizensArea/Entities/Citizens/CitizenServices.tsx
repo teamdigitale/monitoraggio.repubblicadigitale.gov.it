@@ -42,7 +42,7 @@ const CitizenServices: React.FC<{
         nomeServizio: td.nomeServizio || '',
         nomeCompletoFacilitatore: td.nomeCompletoFacilitatore || '',
         statoQuestionario: (
-          <>
+          <div className='d-flex flex-row'>
             <StatusChip
               status={td.statoQuestionario}
               rowTableId={td.idServizio}
@@ -78,7 +78,7 @@ const CitizenServices: React.FC<{
                 </UncontrolledTooltip>
               </>
             )}
-          </>
+          </div>
         ),
         idQuestionarioCompilato: td.idQuestionarioCompilato || '',
         associatoAUtente: td.associatoAUtente || false,

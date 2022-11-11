@@ -125,7 +125,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
         )}
       >
         {iconAvatar && !device.mediaIsPhone ? (
-          <div className={clsx('position-relative', 'ml-4')}>
+          <div className={clsx('position-relative')}>
             <UserAvatar
               avatarImage={profilePicture}
               user={{ uSurname: surname, uName: name }}
@@ -178,12 +178,14 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
               </div>
             )}
           </div>
-        ) : (
-          <div className='placeholder-div'></div>
-        )}
+        ) : null}
         <div
           style={{ minWidth: '150px', maxWidth: !inline ? '350px' : 'unset' }}
-          className={clsx(!isForumLayout && 'text-center mx-3')}
+          className={clsx(
+            !isForumLayout && 'text-center',
+            iconAvatar && !device.mediaIsPhone && 'ml-1',
+            status && device.mediaIsDesktop && 'mr-3'
+          )}
         >
           <div
             className={clsx(

@@ -260,7 +260,7 @@ const Documents = () => {
           isDocument
           isDocumentsCta
         >
-          <Container className='pb-5'>
+          <Container className='pb-5' id='grid'>
             <div
               className={clsx(
                 'row',
@@ -292,6 +292,7 @@ const Documents = () => {
               <Paginator
                 activePage={pagination?.pageNumber}
                 center
+                refID='#grid'
                 pageSize={pagination?.pageSize}
                 total={pagination?.totalPages}
                 onChange={handleOnChangePage}

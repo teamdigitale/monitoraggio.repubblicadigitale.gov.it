@@ -435,6 +435,11 @@
     "CMRRA06": {
         "titolo": "",
         "descrizione": "Attenzione, hai inserito un termine non consentito"
+    },
+
+    "TBD_01": {
+      "titolo": "CITTADINO GIÀ ASSOCIATO AL SERVIZIO",
+      "descrizione": "Il cittadino inserito risulta già essere associato al servizio"
     }
-}
+  }
 }
