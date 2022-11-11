@@ -56,15 +56,6 @@ public class SedeRestApi {
 	}
 	
 	// Dati relativi alla sede (indirizzi e fasce orarie)
-	@Deprecated
-	@GetMapping(path = "/light/{idSede}")
-	@ResponseStatus(value = HttpStatus.OK)
-	public SchedaSedeBean getSchedaAnagraficaSede (
-			@PathVariable(value = "idSede") final Long idSede) {
-		return this.sedeService.getSchedaSedeByIdSede(idSede);
-	}
-	
-	// Dati relativi alla sede (indirizzi e fasce orarie)
 	@PostMapping(path = "/light/{idSede}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaSedeBean getSchedaAnagraficaSedeAndSceltaProfilo (
@@ -88,18 +79,6 @@ public class SedeRestApi {
 //		if(!accessControServiceUtils.checkPermessoIdSede(nuovaSedeRequest, idSede))
 //			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		this.sedeService.aggiornaSede(idSede, nuovaSedeRequest);
-	}
-	
-	// Associazione sede, ente, progetto
-	@Deprecated
-	@GetMapping(path = "/associa/ente/{idEnte}/sede/{idSede}/progetto/{idProgetto}/ruoloEnte/{ruoloEnte}")
-	@ResponseStatus(value = HttpStatus.OK)
-	public void associaEnteSedeProgetto(
-			@PathVariable(value = "idEnte") 	Long idEnte,
-			@PathVariable(value = "idSede") 	Long idSede,
-			@PathVariable(value = "idProgetto") Long idProgetto,
-			@PathVariable(value = "ruoloEnte") 	String ruoloEnte) {
-		this.enteSedeProgettoService.associaEnteSedeProgetto(idSede, idEnte, ruoloEnte, idProgetto);
 	}
 	
 	// Associazione sede, ente, progetto
@@ -146,17 +125,6 @@ public class SedeRestApi {
 	public void cancellaOTerminaAssociazioneFacilitatoreAEnteSedeProgetto (
 			@RequestBody @Valid EnteSedeProgettoFacilitatoreRequest enteSedeProgettoFacilitatoreRequest) {
 		this.enteSedeProgettoFacilitatoreService.cancellaOTerminaAssociazioneFacilitatoreAEnteSedeProgetto(enteSedeProgettoFacilitatoreRequest);
-	}
-	
-	// Dettaglio sede
-	@Deprecated
-	@GetMapping(path = "/{idProgetto}/{idEnte}/{idSede}")
-	@ResponseStatus(value = HttpStatus.OK)
-	public SchedaSedeBean getSchedaSede (
-			@PathVariable(value = "idProgetto") Long idProgetto,
-			@PathVariable(value = "idEnte") 	Long idEnte,
-			@PathVariable(value = "idSede") 	Long idSede) {
-		return this.sedeService.getSchedaSedeByIdProgettoAndIdEnteAndIdSede(idProgetto, idEnte, idSede);
 	}
 	
 	// Dettaglio sede

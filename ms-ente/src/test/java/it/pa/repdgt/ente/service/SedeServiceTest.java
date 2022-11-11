@@ -81,7 +81,7 @@ public class SedeServiceTest {
 		indirizzoSedeRequest.setId(1L);
 		indirizzoSedeFasciaOraria = new IndirizzoSedeFasciaOrariaEntity();
 		indirizzoSedeFasciaOraria.setId(1L);
-		indirizzoSedeFasciaOraria.setDomOrarioAperutura1("07:00");
+		indirizzoSedeFasciaOraria.setDomOrarioApertura1("07:00");
 		indirizzoSedeFasciaOraria.setDomOrarioChiusura1("13:00");
 		indirizzoSedeFasciaOraria.setIdIndirizzoSede(indirizzoSedeRequest.getId());
 		indirizzoSedeRequest.setFasceOrarieAperturaIndirizzoSede(indirizzoSedeFasciaOraria);

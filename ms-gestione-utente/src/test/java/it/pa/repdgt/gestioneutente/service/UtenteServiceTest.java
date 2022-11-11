@@ -221,7 +221,7 @@ public class UtenteServiceTest {
 
 		data = new byte[] {1, 2, 3, 4};
 		stream = new ByteArrayInputStream(data);
-		file = new MockMultipartFile("test", stream);
+		file = new MockMultipartFile("test", "test", "jpg", stream);
 	}
 	
 	@Test
@@ -1057,7 +1057,7 @@ public class UtenteServiceTest {
 	@Test
 	public void uploadImmagineProfiloUtenteTest() throws IOException {
 		when(this.utenteRepository.findById(utente.getId())).thenReturn(Optional.of(utente));
-		service.uploadImmagineProfiloUtente(utente.getId(), file);
+		service.uploadImmagineProfiloUtente(utente.getId(), utente.getCodiceFiscale(), file);
 	}
 
 	@Test

@@ -95,14 +95,6 @@ public class ProgettoRestApi {
 		return statiDropdown;
 	}
 	
-	// Scheda Progetto
-	@Deprecated
-	@GetMapping(path = "/{idProgetto}")
-	@ResponseStatus(value = HttpStatus.OK)
-	public SchedaProgettoBean getSchedaProgettoById(@PathVariable(value = "idProgetto") Long idProgetto) {
-		 return this.progettoService.getSchedaProgettoById(idProgetto);
-	}
-	
 	// 3.5 - Scheda Progetto
 	@PostMapping(path = "/{idProgetto}")
 	@ResponseStatus(value = HttpStatus.OK)

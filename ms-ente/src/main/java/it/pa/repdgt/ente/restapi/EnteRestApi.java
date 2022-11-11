@@ -111,15 +111,6 @@ public class EnteRestApi {
 			@RequestBody @Valid EntiPaginatiParam entiPaginatiParam) {
 		return this.enteService.getAllProgettiDropdown(entiPaginatiParam);
 	}
-
-	// Scheda Ente
-	@Deprecated
-	@GetMapping(path = "/{idEnte}")
-	@ResponseStatus(value = HttpStatus.OK)
-	public SchedaEnteBean getSchedaEnteById(
-			@PathVariable(value = "idEnte") Long idEnte) {
-		return this.enteService.getSchedaEnteById(idEnte);
-	}
 	
 	// Scheda Ente
 	@PostMapping(path = "/{idEnte}")
@@ -139,16 +130,7 @@ public class EnteRestApi {
 			@PathVariable(value = "idEnte") Long idEnte ) {
 		return this.enteService.getSchedaEnteLight(idEnte);
 	}
-	
-	// Dettaglio ente gestore di un determinato programma
-	@Deprecated
-	@GetMapping(path = "/gestoreProgramma/{idProgramma}")
-	@ResponseStatus(value = HttpStatus.OK)
-	public SchedaEnteGestoreBean getSchedaEnteGestoreProgramma(
-			@PathVariable(value = "idProgramma") Long idProgramma) {
-		return this.enteService.getSchedaEnteGestoreProgrammaByIdProgramma(idProgramma);
-	}
-	
+		
 	// Dettaglio ente gestore di un determinato programma
 	@PostMapping(path = "/gestoreProgramma/{idProgramma}")
 	@ResponseStatus(value = HttpStatus.OK)
@@ -161,16 +143,6 @@ public class EnteRestApi {
 	}
 
 	// Dettaglio ente gestore di un determinato progetto
-	@Deprecated
-	@GetMapping(path = "/gestoreProgetto/{idProgetto}")
-	@ResponseStatus(value = HttpStatus.OK)
-	public SchedaEnteGestoreProgettoBean getSchedaEnteGestoreProgetto(
-			@PathVariable(value = "idProgetto") Long idProgetto) {
-		return this.enteService.getSchedaEnteGestoreProgettoByIdProgetto(idProgetto);
-	}
-	
-
-	// Dettaglio ente gestore di un determinato progetto
 	@PostMapping(path = "/gestoreProgetto/{idProgetto}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaEnteGestoreProgettoBean getSchedaEnteGestoreProgettoBySceltaProfilo(
@@ -181,16 +153,6 @@ public class EnteRestApi {
 		return this.enteService.getSchedaEnteGestoreProgettoByIdProgettoAndSceltaProfilo(idProgetto, entiPaginatiParam);
 	}
 
-	// Dettaglio ente partner di un determinato progetto
-	@Deprecated
-	@GetMapping (path = "/partner/{idProgetto}/{idEnte}")
-	@ResponseStatus(value = HttpStatus.OK)
-	public SchedaEntePartnerBean getSchedaEntePartner(
-			@PathVariable(value = "idProgetto") Long idProgetto,
-			@PathVariable(value = "idEnte") Long idEnte) {
-		return this.entePartnerService.getSchedaEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte);
-	}
-	
 	// Dettaglio ente partner di un determinato progetto
 	@PostMapping (path = "/partner/{idProgetto}/{idEnte}")
 	@ResponseStatus(value = HttpStatus.OK)

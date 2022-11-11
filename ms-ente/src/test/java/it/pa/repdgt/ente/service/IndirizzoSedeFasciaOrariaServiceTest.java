@@ -32,7 +32,7 @@ public class IndirizzoSedeFasciaOrariaServiceTest {
 	public void setUp() {
 		indirizzoSedeFasciaOraria = new IndirizzoSedeFasciaOrariaEntity();
 		indirizzoSedeFasciaOraria.setId(1L);
-		indirizzoSedeFasciaOraria.setDomOrarioAperutura1("07:00");
+		indirizzoSedeFasciaOraria.setDomOrarioApertura1("07:00");
 		indirizzoSedeFasciaOraria.setDomOrarioChiusura1("13:00");
 	}
 	
