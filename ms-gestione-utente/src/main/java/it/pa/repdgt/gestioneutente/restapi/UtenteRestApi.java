@@ -196,23 +196,9 @@ public class UtenteRestApi {
 	@PostMapping(path = "/upload/immagineProfilo/{idUtente}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	public String uploadImmagineProfiloUtente(
 			@PathVariable(value = "idUtente") Long idUtente,
-			@RequestPart MultipartFile multipartifile,
+			@RequestPart(required = false) MultipartFile multipartifile,
 			RequestWrapper request) throws IOException {
-
-		final String codiceFiscaleUtenteLoggato = request.getCodiceFiscale();
-		UtenteEntity utenteFetchDb = this.utenteService.getUtenteById(idUtente);
-		if(utenteFetchDb == null) {
-			throw new UtenteException("Utente non esistente", CodiceErroreEnum.C01);
-		}
-		if(!utenteFetchDb.getCodiceFiscale().equalsIgnoreCase(codiceFiscaleUtenteLoggato)) {
-			throw new UtenteException("Errore permesso accesso alla risorsa", CodiceErroreEnum.A02);
-		}
-
-		List<String> IMAGE_TYPES_ALLOWED = Arrays.asList("jpg", "jpeg", "png", "image/jpg", "image/jpeg", "image/png");
-		if (multipartifile == null || !IMAGE_TYPES_ALLOWED.contains(multipartifile.getContentType().toLowerCase()))  {
-			throw new UtenteException("il file non è valido", CodiceErroreEnum.U22); 
-		}
-		return this.utenteService.uploadImmagineProfiloUtente(idUtente, multipartifile);
+		return this.utenteService.uploadImmagineProfiloUtente(idUtente, request.getCodiceFiscale(), multipartifile);		
 	}
 
 	@GetMapping(path = "/download/immagineProfilo/{nomeFile}")

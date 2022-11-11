@@ -108,13 +108,13 @@ public class UtenteService {
 	public List<UtenteEntity> getAllUtenti() {
 		return this.utenteRepository.findAll();
 	}
-	
+
 	@LogMethod
 	@LogExecutionTime
 	public List<UtenteDto> getAllUtentiPaginati(UtenteRequest sceltaContesto, Integer currPage, Integer pageSize) {
 		return this.getUtentiPaginatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest(),currPage, pageSize);
 	}
-	
+
 	@LogMethod
 	@LogExecutionTime
 	public List<UtenteDto> getUtentiConRuoliAggregati(List<UtenteEntity> utenti){
@@ -125,49 +125,49 @@ public class UtenteService {
 					utenteDto.setNome(utente.getCognome() + " " + utente.getNome());
 					utenteDto.setCodiceFiscale(utente.getCodiceFiscale());
 					utenteDto.setStato(utente.getStato());
-					
+
 					StringBuilder ruoliAggregati = new StringBuilder();
 					utente.getRuoli()
-						.stream()
-						.forEach(ruolo -> {
-							Integer countRuolo = 0;
-							String codiceRuolo = ruolo.getCodice();
-							switch (codiceRuolo) {
-							case "REG":
-							case "DEG":
-								countRuolo = referentiDelegatiEnteGestoreProgrammaRepository.countByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), ruolo.getCodice());
-								break;
-							case "REGP":
-							case "DEGP":
-								countRuolo = referentiDelegatiEnteGestoreProgettoRepository.countByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), ruolo.getCodice());
-								break;
-							case "REPP":
-							case "DEPP":
-								countRuolo = referentiDelegatiEntePartnerDiProgettoRepository.countByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), ruolo.getCodice());
-								break;
-							case "FAC":
-							case "VOL":
-								countRuolo = enteSedeProgettoFacilitatoreService.countByIdFacilitatore(utente.getCodiceFiscale(), ruolo.getCodice());
-								break;
-							default:
-								countRuolo = 1;
-								break;
-							}
-							for(int i = 0; i < countRuolo; i++)
-								ruoliAggregati.append(ruolo.getNome()).append(", ");
-						});
-					
+					.stream()
+					.forEach(ruolo -> {
+						Integer countRuolo = 0;
+						String codiceRuolo = ruolo.getCodice();
+						switch (codiceRuolo) {
+						case "REG":
+						case "DEG":
+							countRuolo = referentiDelegatiEnteGestoreProgrammaRepository.countByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), ruolo.getCodice());
+							break;
+						case "REGP":
+						case "DEGP":
+							countRuolo = referentiDelegatiEnteGestoreProgettoRepository.countByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), ruolo.getCodice());
+							break;
+						case "REPP":
+						case "DEPP":
+							countRuolo = referentiDelegatiEntePartnerDiProgettoRepository.countByCfUtenteAndCodiceRuolo(utente.getCodiceFiscale(), ruolo.getCodice());
+							break;
+						case "FAC":
+						case "VOL":
+							countRuolo = enteSedeProgettoFacilitatoreService.countByIdFacilitatore(utente.getCodiceFiscale(), ruolo.getCodice());
+							break;
+						default:
+							countRuolo = 1;
+							break;
+						}
+						for(int i = 0; i < countRuolo; i++)
+							ruoliAggregati.append(ruolo.getNome()).append(", ");
+					});
+
 					if(ruoliAggregati.length() > 0) {
 						utenteDto.setRuoli(ruoliAggregati.substring(0, ruoliAggregati.length()-2));
 					} else {
 						utenteDto.setRuoli("");
 					}
-					
+
 					return utenteDto;
 				})
 				.collect(Collectors.toList());
 	}
-	
+
 	@LogMethod
 	@LogExecutionTime
 	public List<UtenteDto> getUtentiPaginatiByRuolo(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto, Long idEnte, FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
@@ -175,29 +175,29 @@ public class UtenteService {
 		Set<UtenteEntity> utenti = new HashSet<>();
 
 		switch (codiceRuolo) {
-			case "DTD":
-				utenti = this.getUtentiByFiltri(filtroRequest, currPage, pageSize);
-				listaUtenti.addAll(utenti);
-				break;
-			case "DSCU":
-				listaUtenti.addAll(this.getUtentiPerDSCU(filtroRequest, currPage, pageSize));
-				break;
-			case "REG":
-			case "DEG":
-				listaUtenti.addAll(this.getUtentiPerReferenteDelegatoGestoreProgramma(idProgramma, cfUtente, filtroRequest, currPage, pageSize));
-				break;
-			case "REGP":
-			case "DEGP":
-				listaUtenti.addAll(this.getUtentiPerReferenteDelegatoGestoreProgetti(idProgramma, idProgetto, cfUtente, filtroRequest, currPage, pageSize));
-				break;
-			case "REPP":
-			case "DEPP":
-				listaUtenti.addAll(this.getUtentiPerReferenteDelegatoEntePartnerProgetti(idProgramma, idProgetto, idEnte, cfUtente, filtroRequest, currPage, pageSize));
-				break;
-			default:
-				utenti = this.getUtentiByFiltri(filtroRequest, currPage, pageSize);
-				listaUtenti.addAll(utenti);
-				break;
+		case "DTD":
+			utenti = this.getUtentiByFiltri(filtroRequest, currPage, pageSize);
+			listaUtenti.addAll(utenti);
+			break;
+		case "DSCU":
+			listaUtenti.addAll(this.getUtentiPerDSCU(filtroRequest, currPage, pageSize));
+			break;
+		case "REG":
+		case "DEG":
+			listaUtenti.addAll(this.getUtentiPerReferenteDelegatoGestoreProgramma(idProgramma, cfUtente, filtroRequest, currPage, pageSize));
+			break;
+		case "REGP":
+		case "DEGP":
+			listaUtenti.addAll(this.getUtentiPerReferenteDelegatoGestoreProgetti(idProgramma, idProgetto, cfUtente, filtroRequest, currPage, pageSize));
+			break;
+		case "REPP":
+		case "DEPP":
+			listaUtenti.addAll(this.getUtentiPerReferenteDelegatoEntePartnerProgetti(idProgramma, idProgetto, idEnte, cfUtente, filtroRequest, currPage, pageSize));
+			break;
+		default:
+			utenti = this.getUtentiByFiltri(filtroRequest, currPage, pageSize);
+			listaUtenti.addAll(utenti);
+			break;
 		}
 		return this.getUtentiConRuoliAggregati(listaUtenti);
 	}
@@ -205,43 +205,43 @@ public class UtenteService {
 	private Set<UtenteEntity> getUtentiPerReferenteDelegatoEntePartnerProgetti(Long idProgramma, Long idProgetto, Long idEnte,
 			String cfUtente, FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
 		return this.utenteRepository.findUtentiPerReferenteDelegatoEntePartnerProgetti(
-																	  idProgramma,
-																	  idProgetto,
-																	  idEnte,
-																	  cfUtente, 
-																	  filtroRequest.getCriterioRicerca(),
-																	   "%" + filtroRequest.getCriterioRicerca() + "%",
-																	  filtroRequest.getRuoli(),
-																	  currPage*pageSize,
-																	  pageSize);
+				idProgramma,
+				idProgetto,
+				idEnte,
+				cfUtente, 
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getRuoli(),
+				currPage*pageSize,
+				pageSize);
 	}
 
 	private Set<UtenteEntity> getUtentiPerReferenteDelegatoGestoreProgetti(Long idProgramma, Long idProgetto,
 			String cfUtente, FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
 		//nel caso di REGP/DEGP non viene applicato il filtro degli stati perché si presume che possa vedere tutti gli utenti legati almeno ad un ruolo,
-	    //quindi sono sempre attivi
+		//quindi sono sempre attivi
 		return this.utenteRepository.findUtentiPerReferenteDelegatoGestoreProgetti(
-																	  idProgramma,
-																	  idProgetto,
-																	  cfUtente, 
-																	  filtroRequest.getCriterioRicerca(),
-																	   "%" + filtroRequest.getCriterioRicerca() + "%",
-																	  filtroRequest.getRuoli(),
-																	  currPage*pageSize,
-																	   pageSize);
+				idProgramma,
+				idProgetto,
+				cfUtente, 
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getRuoli(),
+				currPage*pageSize,
+				pageSize);
 	}
 
 	private Set<UtenteEntity> getUtentiPerReferenteDelegatoGestoreProgramma(Long idProgramma, String cfUtente, FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
 		//nel caso di REG/DEG non viene applicato il filtro degli stati perché si presume che possa vedere tutti gli utenti legati almeno ad un ruolo,
-	    //quindi sono sempre attivi
+		//quindi sono sempre attivi
 		return this.utenteRepository.findUtentiPerReferenteDelegatoGestoreProgramma(
-																	   idProgramma,
-																	   cfUtente,
-																	   filtroRequest.getCriterioRicerca(),
-																	   "%" + filtroRequest.getCriterioRicerca() + "%",
-																	   filtroRequest.getRuoli(),
-																	   currPage*pageSize,
-																	   pageSize);
+				idProgramma,
+				cfUtente,
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getRuoli(),
+				currPage*pageSize,
+				pageSize);
 	}
 
 	private Set<UtenteEntity> getUtentiPerDSCU(FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
@@ -263,7 +263,7 @@ public class UtenteService {
 		return this.utenteRepository.findByCodiceFiscale(codiceFiscaleUtente)
 				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01) );
 	}
-	
+
 	@LogMethod
 	@LogExecutionTime
 	public UtenteEntity getUtenteById(Long idUtente) {
@@ -277,7 +277,7 @@ public class UtenteService {
 	public UtenteEntity getUtenteEagerByCodiceFiscale(String codiceFiscale) {
 		return this.utenteRepository.findUtenteEagerByCodiceFiscale(codiceFiscale);
 	}
-	
+
 	@LogExecutionTime
 	@LogMethod
 	@Transactional
@@ -298,16 +298,16 @@ public class UtenteService {
 		utente.setDataOraAggiornamento(utente.getDataOraCreazione());
 		utente.setNome(Utils.toCamelCase(utente.getNome()));
 		utente.setCognome(utente.getCognome().toUpperCase());
-		
+
 		IntegrazioniUtenteEntity integrazione = new IntegrazioniUtenteEntity();
 		integrazione.setUtente(utente);
 		integrazione.setDataOraAggiornamento(new Date());
 		integrazione.setDataOraCreazione(new Date());
 		integrazione.setUtenteRegistratoInRocketChat(false);
 		integrazione.setUtenteRegistratoInWorkdocs(false);
-		
+
 		utente.setIntegrazioneUtente(integrazione);
-		
+
 		final UtenteEntity utenteSalvato = this.salvaUtente(utente);
 		if(!ruolo.getPredefinito()) {
 			// stacco un thread per invio email al nuovo utente censito
@@ -325,11 +325,11 @@ public class UtenteService {
 
 		return utenteSalvato;
 	}
-	
+
 	private boolean isEmailDuplicata(String email, String codiceFiscale) {
 		return this.utenteRepository.findByEmailAndCodiceFiscaleNot(email, codiceFiscale).isPresent();
 	}
-	
+
 	private boolean isEmailDuplicataPerId(String email, Long id) {
 		return this.utenteRepository.findByEmailAndIdNot(email, id).isPresent();
 	}
@@ -392,7 +392,7 @@ public class UtenteService {
 				filtroRequest.getStati(),
 				currPage*pageSize,
 				pageSize
-		);
+				);
 	}
 
 	public Set<String> getStatoUtentiByFiltri(FiltroRequest filtroRequest) {
@@ -401,7 +401,7 @@ public class UtenteService {
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getRuoli(),
 				filtroRequest.getStati()
-		);
+				);
 	}
 
 	@LogMethod
@@ -441,7 +441,7 @@ public class UtenteService {
 		String errorMessage = String.format("Impossibile assegnare un ruolo predefinito all'infuori di DTD e DSCU");
 		throw new UtenteException(errorMessage, CodiceErroreEnum.R13);
 	}
-	
+
 	@LogMethod
 	@LogExecutionTime
 	public List<String> getAllStatiDropdown(UtenteRequest sceltaContesto) {
@@ -451,7 +451,7 @@ public class UtenteService {
 	public List<String> getAllStatiByRuoloAndcfUtente(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto,
 			FiltroRequest filtroRequest) {
 		List<String> stati = new ArrayList<>();
-		
+
 		switch (codiceRuolo) {
 		case "DTD":
 			stati.addAll(this.getStatoUtentiByFiltri(filtroRequest));
@@ -483,7 +483,7 @@ public class UtenteService {
 	public List<String> getAllRuoliByRuoloAndcfUtente(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto,
 			FiltroRequest filtroRequest) {
 		List<String> stati = new ArrayList<>();
-		
+
 		switch (codiceRuolo) {
 		case "DTD":
 			stati.addAll(this.getAllRuoli(filtroRequest));
@@ -519,11 +519,11 @@ public class UtenteService {
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getRuoli()
-		);
+				);
 	}
 
 	private List<String> getRuoliPerReferenteDelegatoGestoreProgetti(Long idProgramma, Long idProgetto, String cfUtente,
-			 FiltroRequest filtroRequest) {
+			FiltroRequest filtroRequest) {
 		return this.utenteRepository.findRuoliPerReferenteDelegatoGestoreProgetti(
 				idProgramma,
 				idProgetto,
@@ -531,7 +531,7 @@ public class UtenteService {
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getRuoli()
-		);
+				);
 	}
 
 	private List<String> getRuoliPerReferenteDelegatoGestoreProgramma(Long idProgramma, String cfUtente,
@@ -542,7 +542,7 @@ public class UtenteService {
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getRuoli()
-		);
+				);
 	}
 
 	private List<String> getRuoliPerDSCU(FiltroRequest filtroRequest) {
@@ -568,7 +568,7 @@ public class UtenteService {
 		UtenteEntity utenteFetchDB = this.getUtenteById(idUtente);
 
 		String cfUtente = utenteFetchDB.getCodiceFiscale();
-		
+
 		DettaglioUtenteBean dettaglioUtente = new DettaglioUtenteBean();
 		dettaglioUtente.setId(utenteFetchDB.getId());
 		dettaglioUtente.setNome(utenteFetchDB.getNome());
@@ -579,27 +579,27 @@ public class UtenteService {
 		dettaglioUtente.setStato(utenteFetchDB.getStato());
 		dettaglioUtente.setTipoContratto(utenteFetchDB.getTipoContratto());
 		dettaglioUtente.setMansione(utenteFetchDB.getMansione());
-									
+
 		SchedaUtenteBeanLight schedaUtente = new SchedaUtenteBeanLight();
 		schedaUtente.setDettaglioUtente(dettaglioUtente);
 		return schedaUtente;
 	}
-	
+
 	public boolean isAutorizzatoForGetSchedaUtenteByIdUtente(final Long idUtente, final SceltaProfiloParam sceltaProfilo) {
 		switch(sceltaProfilo.getCodiceRuoloUtenteLoggato()) {
-		
-			case "REG": 
-			case "DEG": 
-				return this.utenteRepository.isUtenteAssociatoProgrammaAndEnte(idUtente, sceltaProfilo.getIdProgramma(), sceltaProfilo.getIdEnte()) > 0;
-			case "REGP": 
-			case "DEGP": 
-			case "REPP": 
-			case "DEPP": 
-			case "FAC": 
-			case "VOL": 
-				return this.utenteRepository.isUtenteAssociatoProgrammaAndProgetto(idUtente, sceltaProfilo.getIdProgramma(), sceltaProfilo.getIdProgetto()) > 0;
+
+		case "REG": 
+		case "DEG": 
+			return this.utenteRepository.isUtenteAssociatoProgrammaAndEnte(idUtente, sceltaProfilo.getIdProgramma(), sceltaProfilo.getIdEnte()) > 0;
+		case "REGP": 
+		case "DEGP": 
+		case "REPP": 
+		case "DEPP": 
+		case "FAC": 
+		case "VOL": 
+			return this.utenteRepository.isUtenteAssociatoProgrammaAndProgetto(idUtente, sceltaProfilo.getIdProgramma(), sceltaProfilo.getIdProgetto()) > 0;
 			// DTD, DSCU, RUOLI_CUSTOM
-			default: return true;
+		default: return true;
 		}
 	}
 
@@ -627,208 +627,208 @@ public class UtenteService {
 		Map<RuoloEntity,Object> mappaProgrammiProgettiUtente = new HashMap<>();
 
 		listaRuoliUtente.stream()
-						.forEach(ruolo -> {
-							switch (ruolo.getCodice()) {
-							case "REG":
-							case "DEG":
-								List<Long> listaIdsProgrammiDistinct = this.programmaService.getDistinctIdProgrammiByRuoloUtente(cfUtente, ruolo.getCodice());
-								if(listaIdsProgrammiDistinct.size() > 0 )
-									mappaProgrammiProgettiUtente.put(ruolo, listaIdsProgrammiDistinct);
-								break;
-							case "REGP":
-							case "DEGP":
-								List<Long> listaIdsProgettiDistinct = this.progettoService.getDistinctIdProgettiByRuoloUtente(cfUtente, ruolo.getCodice());
-								if(listaIdsProgettiDistinct.size() > 0 )
-									mappaProgrammiProgettiUtente.put(ruolo, listaIdsProgettiDistinct);
-								break;
-							case "REPP":
-							case "DEPP":
-								mappaProgrammiProgettiUtente.put(ruolo, this.entePartnerService.getIdProgettiEntePartnerByRuoloUtente(cfUtente, ruolo.getCodice()));
-								break;
-							case "FAC":
-							case "VOL":
-								List<ProgettoEnteProjection> entiProgetto = new ArrayList<>();
-								entiProgetto.addAll(this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerGestore(cfUtente, ruolo.getCodice()));
-								entiProgetto.addAll(this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerEntePartner(cfUtente, ruolo.getCodice()));
-								if(entiProgetto.size() > 0)
-									mappaProgrammiProgettiUtente.put(ruolo, entiProgetto);
-								break;
-							default:
-								mappaProgrammiProgettiUtente.put(ruolo, new ArrayList<Long>());
-								break;
-							}
-						});
+		.forEach(ruolo -> {
+			switch (ruolo.getCodice()) {
+			case "REG":
+			case "DEG":
+				List<Long> listaIdsProgrammiDistinct = this.programmaService.getDistinctIdProgrammiByRuoloUtente(cfUtente, ruolo.getCodice());
+				if(listaIdsProgrammiDistinct.size() > 0 )
+					mappaProgrammiProgettiUtente.put(ruolo, listaIdsProgrammiDistinct);
+				break;
+			case "REGP":
+			case "DEGP":
+				List<Long> listaIdsProgettiDistinct = this.progettoService.getDistinctIdProgettiByRuoloUtente(cfUtente, ruolo.getCodice());
+				if(listaIdsProgettiDistinct.size() > 0 )
+					mappaProgrammiProgettiUtente.put(ruolo, listaIdsProgettiDistinct);
+				break;
+			case "REPP":
+			case "DEPP":
+				mappaProgrammiProgettiUtente.put(ruolo, this.entePartnerService.getIdProgettiEntePartnerByRuoloUtente(cfUtente, ruolo.getCodice()));
+				break;
+			case "FAC":
+			case "VOL":
+				List<ProgettoEnteProjection> entiProgetto = new ArrayList<>();
+				entiProgetto.addAll(this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerGestore(cfUtente, ruolo.getCodice()));
+				entiProgetto.addAll(this.enteSedeProgettoFacilitatoreService.getIdProgettiFacilitatoreVolontarioPerEntePartner(cfUtente, ruolo.getCodice()));
+				if(entiProgetto.size() > 0)
+					mappaProgrammiProgettiUtente.put(ruolo, entiProgetto);
+				break;
+			default:
+				mappaProgrammiProgettiUtente.put(ruolo, new ArrayList<Long>());
+				break;
+			}
+		});
 
 		List<DettaglioRuoliBean> listaDettaglioRuoli = new ArrayList<>();
 		mappaProgrammiProgettiUtente.keySet()
+		.stream()
+		.forEach(ruolo -> {
+			if(((List) mappaProgrammiProgettiUtente.get(ruolo)).isEmpty()) {
+				DettaglioRuoliBean dettaglioRuolo = new DettaglioRuoliBean();
+				dettaglioRuolo.setNome(ruolo.getNome());
+				dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
+				listaDettaglioRuoli.add(dettaglioRuolo);
+			}
+
+			switch(ruolo.getCodice()) {
+			case "REG":
+			case "DEG":{
+				List<Long> listaIds = (List<Long>) mappaProgrammiProgettiUtente.get(ruolo);
+				listaIds
+				.stream()
+				.forEach(id -> {
+					DettaglioRuoliBean dettaglioRuolo = new DettaglioRuoliBean();
+					ProgrammaEntity programmaFetchDB = this.programmaService.getProgrammaById(id);
+					dettaglioRuolo.setId(id);
+					dettaglioRuolo.setNome(programmaFetchDB.getNomeBreve());
+					dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
+					dettaglioRuolo.setRuolo(ruolo.getNome());
+					dettaglioRuolo.setStatoP(programmaFetchDB.getStato());
+					dettaglioRuolo.setIdEnte(programmaFetchDB.getEnteGestoreProgramma().getId());
+					dettaglioRuolo.setNomeEnte(programmaFetchDB.getEnteGestoreProgramma().getNome());
+					dettaglioRuolo.setNomeBreveEnte(programmaFetchDB.getEnteGestoreProgramma().getNomeBreve());
+					List<String> listaRecRefProg = referentiDelegatiEnteGestoreProgrammaRepository
+							.findStatoByCfUtente(cfUtente, programmaFetchDB.getId(), ruolo.getCodice());
+					dettaglioRuolo.setStato(listaRecRefProg.size() > 1
+							? listaRecRefProg
 									.stream()
-									.forEach(ruolo -> {
-										if(((List) mappaProgrammiProgettiUtente.get(ruolo)).isEmpty()) {
-											DettaglioRuoliBean dettaglioRuolo = new DettaglioRuoliBean();
-											dettaglioRuolo.setNome(ruolo.getNome());
-											dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
-											listaDettaglioRuoli.add(dettaglioRuolo);
-										}
-										
-										switch(ruolo.getCodice()) {
-											case "REG":
-											case "DEG":{
-												List<Long> listaIds = (List<Long>) mappaProgrammiProgettiUtente.get(ruolo);
-												listaIds
-													.stream()
-													.forEach(id -> {
-														DettaglioRuoliBean dettaglioRuolo = new DettaglioRuoliBean();
-														ProgrammaEntity programmaFetchDB = this.programmaService.getProgrammaById(id);
-														dettaglioRuolo.setId(id);
-														dettaglioRuolo.setNome(programmaFetchDB.getNomeBreve());
-														dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
-														dettaglioRuolo.setRuolo(ruolo.getNome());
-														dettaglioRuolo.setStatoP(programmaFetchDB.getStato());
-														dettaglioRuolo.setIdEnte(programmaFetchDB.getEnteGestoreProgramma().getId());
-														dettaglioRuolo.setNomeEnte(programmaFetchDB.getEnteGestoreProgramma().getNome());
-														dettaglioRuolo.setNomeBreveEnte(programmaFetchDB.getEnteGestoreProgramma().getNomeBreve());
-														List<String> listaRecRefProg = referentiDelegatiEnteGestoreProgrammaRepository
-																.findStatoByCfUtente(cfUtente, programmaFetchDB.getId(), ruolo.getCodice());
-														dettaglioRuolo.setStato(listaRecRefProg.size() > 1
-																? listaRecRefProg
-																		.stream()
-																		.filter(el -> !"TERMINATO".equalsIgnoreCase(el))
-																		.findFirst()
-																		.orElse("TERMINATO")
-																: listaRecRefProg.get(0));
-														List<String> listaRuoli = Arrays.asList(RuoliUtentiConstants.REG,
-																RuoliUtentiConstants.DEG,
-																RuoliUtentiConstants.REGP,
-																RuoliUtentiConstants.DEGP,
-																RuoliUtentiConstants.REPP,
-																RuoliUtentiConstants.DEPP,
-																RuoliUtentiConstants.FACILITATORE,
-																RuoliUtentiConstants.VOLONTARIO);
-														if(listaRuoli.contains(sceltaProfilo.getCodiceRuoloUtenteLoggato())){
-															if(sceltaProfilo.getIdProgramma().equals(id)) {
-																dettaglioRuolo.setAssociatoAUtente(true);
-															}
-														}else if(RuoliUtentiConstants.DSCU.equals(sceltaProfilo.getCodiceRuoloUtenteLoggato())) {
-															if(PolicyEnum.SCD.equals(programmaFetchDB.getPolicy())){
-																dettaglioRuolo.setAssociatoAUtente(true);
-															}else {
-																dettaglioRuolo.setAssociatoAUtente(false);
-															}
-														}else{
-															dettaglioRuolo.setAssociatoAUtente(true);
-														}
+									.filter(el -> !"TERMINATO".equalsIgnoreCase(el))
+									.findFirst()
+									.orElse("TERMINATO")
+									: listaRecRefProg.get(0));
+					List<String> listaRuoli = Arrays.asList(RuoliUtentiConstants.REG,
+							RuoliUtentiConstants.DEG,
+							RuoliUtentiConstants.REGP,
+							RuoliUtentiConstants.DEGP,
+							RuoliUtentiConstants.REPP,
+							RuoliUtentiConstants.DEPP,
+							RuoliUtentiConstants.FACILITATORE,
+							RuoliUtentiConstants.VOLONTARIO);
+					if(listaRuoli.contains(sceltaProfilo.getCodiceRuoloUtenteLoggato())){
+						if(sceltaProfilo.getIdProgramma().equals(id)) {
+							dettaglioRuolo.setAssociatoAUtente(true);
+						}
+					}else if(RuoliUtentiConstants.DSCU.equals(sceltaProfilo.getCodiceRuoloUtenteLoggato())) {
+						if(PolicyEnum.SCD.equals(programmaFetchDB.getPolicy())){
+							dettaglioRuolo.setAssociatoAUtente(true);
+						}else {
+							dettaglioRuolo.setAssociatoAUtente(false);
+						}
+					}else{
+						dettaglioRuolo.setAssociatoAUtente(true);
+					}
 
 
-														listaDettaglioRuoli.add(dettaglioRuolo);
-													});
-												break;
-											}
-											case "REGP":
-											case "DEGP":{
-												List<Long> listaIds = (List<Long>) mappaProgrammiProgettiUtente.get(ruolo);
-												listaIds
-													.stream()
-													.forEach(id -> {
-														DettaglioRuoliBean dettaglioRuolo = new DettaglioRuoliBean();
-														ProgettoEntity progettoXEgpFetchDB = this.progettoService.getProgettoById(id);
-														dettaglioRuolo.setId(id);
-														dettaglioRuolo.setNome(progettoXEgpFetchDB.getNomeBreve());
-														dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
-														dettaglioRuolo.setRuolo(ruolo.getNome());
-														dettaglioRuolo.setStatoP(progettoXEgpFetchDB.getStato());
-														dettaglioRuolo.setIdEnte(progettoXEgpFetchDB.getEnteGestoreProgetto().getId());
-														dettaglioRuolo.setNomeEnte(progettoXEgpFetchDB.getEnteGestoreProgetto().getNome());
-														dettaglioRuolo.setNomeBreveEnte(progettoXEgpFetchDB.getEnteGestoreProgetto().getNomeBreve());
-														List<String> listaRecRefProgt = referentiDelegatiEnteGestoreProgettoRepository
-																.findStatoByCfUtente(cfUtente, progettoXEgpFetchDB.getId(), ruolo.getCodice());
-														dettaglioRuolo.setStato(listaRecRefProgt.size() > 1
-																? listaRecRefProgt
-																		.stream()
-																		.filter(el -> !"TERMINATO".equalsIgnoreCase(el))
-																		.findFirst()
-																		.orElse("TERMINATO")
-																: listaRecRefProgt.get(0));
-														dettaglioRuolo.setAssociatoAUtente(isProgettoAndEnteAssociatoAUtenteLoggato(sceltaProfilo, progettoXEgpFetchDB, progettoXEgpFetchDB.getEnteGestoreProgetto().getId()));
-														listaDettaglioRuoli.add(dettaglioRuolo);
-													});
-												break;
-											}
-											case "REPP":
-											case "DEPP":{
-												List<EntePartnerEntity> listaEntiPartner = (List<EntePartnerEntity>) mappaProgrammiProgettiUtente.get(ruolo);
-												listaEntiPartner
-													.stream()
-													.forEach(entePartner -> {
-														DettaglioRuoliBean dettaglioRuolo = new DettaglioRuoliBean();
-														ProgettoEntity progettoXEppFetchDB = this.progettoService.getProgettoById(entePartner.getId().getIdProgetto());
-														dettaglioRuolo.setId(entePartner.getId().getIdProgetto());
-														dettaglioRuolo.setIdEnte(entePartner.getId().getIdEnte());
-														dettaglioRuolo.setNome(progettoXEppFetchDB.getNomeBreve());
-														dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
-														dettaglioRuolo.setRuolo(ruolo.getNome());
-														dettaglioRuolo.setStatoP(progettoXEppFetchDB.getStato());
-														EnteEntity ente = enteRepository.findById(entePartner.getId().getIdEnte()).get();
-														dettaglioRuolo.setNomeEnte(ente.getNome());
-														dettaglioRuolo.setNomeBreveEnte(ente.getNomeBreve());
-														List<String> listaRecRefPart = referentiDelegatiEntePartnerDiProgettoRepository
-																.findStatoByCfUtente(cfUtente, progettoXEppFetchDB.getId(), ruolo.getCodice());
-														dettaglioRuolo.setStato(listaRecRefPart.size() > 1
-																? listaRecRefPart
-																		.stream()
-																		.filter(el -> !"TERMINATO".equalsIgnoreCase(el))
-																		.findFirst()
-																		.orElse("TERMINATO")
-																: listaRecRefPart.get(0));
-														dettaglioRuolo.setAssociatoAUtente(isProgettoAndEnteAssociatoAUtenteLoggato(sceltaProfilo, progettoXEppFetchDB, entePartner.getId().getIdEnte()));
-														listaDettaglioRuoli.add(dettaglioRuolo);
-													});
-												break;
-											}
-											case "FAC":
-											case "VOL":{
-												List<ProgettoEnteProjection> listaEntiSedeProgettoFac = (List<ProgettoEnteProjection>) mappaProgrammiProgettiUtente.get(ruolo);
-												listaEntiSedeProgettoFac
-													.stream()
-													.forEach(enteSedeProgetoFac-> {
-														DettaglioRuoliBean dettaglioRuolo = new DettaglioRuoliBean();
-														ProgettoEntity progettoXFacFetchDB = this.progettoService.getProgettoById(enteSedeProgetoFac.getIdProgetto());
-														dettaglioRuolo.setId(enteSedeProgetoFac.getIdProgetto());
-														dettaglioRuolo.setIdEnte(enteSedeProgetoFac.getIdEnte());
-														dettaglioRuolo.setNome(progettoXFacFetchDB.getNomeBreve());
-														dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
-														dettaglioRuolo.setRuolo(ruolo.getNome());
-														dettaglioRuolo.setStatoP(progettoXFacFetchDB.getStato());
-														EnteEntity ente = enteRepository.findById(enteSedeProgetoFac.getIdEnte()).get();
-														dettaglioRuolo.setNomeEnte(ente.getNome());
-														dettaglioRuolo.setNomeBreveEnte(ente.getNomeBreve());
-														List<String> listaRecRefFacVol = this.enteSedeProgettoFacilitatoreService
-																.getDistinctStatoByIdProgettoIdFacilitatoreVolontario(cfUtente, ruolo.getCodice(), progettoXFacFetchDB.getId());
-														dettaglioRuolo.setStato(listaRecRefFacVol.size() > 1
-																? listaRecRefFacVol
-																		.stream()
-																		.filter(el -> !"TERMINATO".equalsIgnoreCase(el))
-																		.findFirst()
-																		.orElse("TERMINATO")
-																: listaRecRefFacVol.get(0));
-														dettaglioRuolo.setAssociatoAUtente(isProgettoAndEnteAssociatoAUtenteLoggato(sceltaProfilo, progettoXFacFetchDB, enteSedeProgetoFac.getIdEnte()));
-														listaDettaglioRuoli.add(dettaglioRuolo);
-												});
-												break;
-											}
-											default:
-												List<Long> listaIds = (List<Long>) mappaProgrammiProgettiUtente.get(ruolo);
-												listaIds
-													.stream()
-													.forEach(id -> {
-														DettaglioRuoliBean dettaglioRuolo = new DettaglioRuoliBean();
-														dettaglioRuolo.setNome(ruolo.getNome());
-														dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
-														listaDettaglioRuoli.add(dettaglioRuolo);
-												});
-												break;
-												
-										}
-									});
+					listaDettaglioRuoli.add(dettaglioRuolo);
+				});
+				break;
+			}
+			case "REGP":
+			case "DEGP":{
+				List<Long> listaIds = (List<Long>) mappaProgrammiProgettiUtente.get(ruolo);
+				listaIds
+				.stream()
+				.forEach(id -> {
+					DettaglioRuoliBean dettaglioRuolo = new DettaglioRuoliBean();
+					ProgettoEntity progettoXEgpFetchDB = this.progettoService.getProgettoById(id);
+					dettaglioRuolo.setId(id);
+					dettaglioRuolo.setNome(progettoXEgpFetchDB.getNomeBreve());
+					dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
+					dettaglioRuolo.setRuolo(ruolo.getNome());
+					dettaglioRuolo.setStatoP(progettoXEgpFetchDB.getStato());
+					dettaglioRuolo.setIdEnte(progettoXEgpFetchDB.getEnteGestoreProgetto().getId());
+					dettaglioRuolo.setNomeEnte(progettoXEgpFetchDB.getEnteGestoreProgetto().getNome());
+					dettaglioRuolo.setNomeBreveEnte(progettoXEgpFetchDB.getEnteGestoreProgetto().getNomeBreve());
+					List<String> listaRecRefProgt = referentiDelegatiEnteGestoreProgettoRepository
+							.findStatoByCfUtente(cfUtente, progettoXEgpFetchDB.getId(), ruolo.getCodice());
+					dettaglioRuolo.setStato(listaRecRefProgt.size() > 1
+							? listaRecRefProgt
+									.stream()
+									.filter(el -> !"TERMINATO".equalsIgnoreCase(el))
+									.findFirst()
+									.orElse("TERMINATO")
+									: listaRecRefProgt.get(0));
+					dettaglioRuolo.setAssociatoAUtente(isProgettoAndEnteAssociatoAUtenteLoggato(sceltaProfilo, progettoXEgpFetchDB, progettoXEgpFetchDB.getEnteGestoreProgetto().getId()));
+					listaDettaglioRuoli.add(dettaglioRuolo);
+				});
+				break;
+			}
+			case "REPP":
+			case "DEPP":{
+				List<EntePartnerEntity> listaEntiPartner = (List<EntePartnerEntity>) mappaProgrammiProgettiUtente.get(ruolo);
+				listaEntiPartner
+				.stream()
+				.forEach(entePartner -> {
+					DettaglioRuoliBean dettaglioRuolo = new DettaglioRuoliBean();
+					ProgettoEntity progettoXEppFetchDB = this.progettoService.getProgettoById(entePartner.getId().getIdProgetto());
+					dettaglioRuolo.setId(entePartner.getId().getIdProgetto());
+					dettaglioRuolo.setIdEnte(entePartner.getId().getIdEnte());
+					dettaglioRuolo.setNome(progettoXEppFetchDB.getNomeBreve());
+					dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
+					dettaglioRuolo.setRuolo(ruolo.getNome());
+					dettaglioRuolo.setStatoP(progettoXEppFetchDB.getStato());
+					EnteEntity ente = enteRepository.findById(entePartner.getId().getIdEnte()).get();
+					dettaglioRuolo.setNomeEnte(ente.getNome());
+					dettaglioRuolo.setNomeBreveEnte(ente.getNomeBreve());
+					List<String> listaRecRefPart = referentiDelegatiEntePartnerDiProgettoRepository
+							.findStatoByCfUtente(cfUtente, progettoXEppFetchDB.getId(), ruolo.getCodice());
+					dettaglioRuolo.setStato(listaRecRefPart.size() > 1
+							? listaRecRefPart
+									.stream()
+									.filter(el -> !"TERMINATO".equalsIgnoreCase(el))
+									.findFirst()
+									.orElse("TERMINATO")
+									: listaRecRefPart.get(0));
+					dettaglioRuolo.setAssociatoAUtente(isProgettoAndEnteAssociatoAUtenteLoggato(sceltaProfilo, progettoXEppFetchDB, entePartner.getId().getIdEnte()));
+					listaDettaglioRuoli.add(dettaglioRuolo);
+				});
+				break;
+			}
+			case "FAC":
+			case "VOL":{
+				List<ProgettoEnteProjection> listaEntiSedeProgettoFac = (List<ProgettoEnteProjection>) mappaProgrammiProgettiUtente.get(ruolo);
+				listaEntiSedeProgettoFac
+				.stream()
+				.forEach(enteSedeProgetoFac-> {
+					DettaglioRuoliBean dettaglioRuolo = new DettaglioRuoliBean();
+					ProgettoEntity progettoXFacFetchDB = this.progettoService.getProgettoById(enteSedeProgetoFac.getIdProgetto());
+					dettaglioRuolo.setId(enteSedeProgetoFac.getIdProgetto());
+					dettaglioRuolo.setIdEnte(enteSedeProgetoFac.getIdEnte());
+					dettaglioRuolo.setNome(progettoXFacFetchDB.getNomeBreve());
+					dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
+					dettaglioRuolo.setRuolo(ruolo.getNome());
+					dettaglioRuolo.setStatoP(progettoXFacFetchDB.getStato());
+					EnteEntity ente = enteRepository.findById(enteSedeProgetoFac.getIdEnte()).get();
+					dettaglioRuolo.setNomeEnte(ente.getNome());
+					dettaglioRuolo.setNomeBreveEnte(ente.getNomeBreve());
+					List<String> listaRecRefFacVol = this.enteSedeProgettoFacilitatoreService
+							.getDistinctStatoByIdProgettoIdFacilitatoreVolontario(cfUtente, ruolo.getCodice(), progettoXFacFetchDB.getId());
+					dettaglioRuolo.setStato(listaRecRefFacVol.size() > 1
+							? listaRecRefFacVol
+									.stream()
+									.filter(el -> !"TERMINATO".equalsIgnoreCase(el))
+									.findFirst()
+									.orElse("TERMINATO")
+									: listaRecRefFacVol.get(0));
+					dettaglioRuolo.setAssociatoAUtente(isProgettoAndEnteAssociatoAUtenteLoggato(sceltaProfilo, progettoXFacFetchDB, enteSedeProgetoFac.getIdEnte()));
+					listaDettaglioRuoli.add(dettaglioRuolo);
+				});
+				break;
+			}
+			default:
+				List<Long> listaIds = (List<Long>) mappaProgrammiProgettiUtente.get(ruolo);
+				listaIds
+				.stream()
+				.forEach(id -> {
+					DettaglioRuoliBean dettaglioRuolo = new DettaglioRuoliBean();
+					dettaglioRuolo.setNome(ruolo.getNome());
+					dettaglioRuolo.setCodiceRuolo(ruolo.getCodice());
+					listaDettaglioRuoli.add(dettaglioRuolo);
+				});
+				break;
+
+			}
+		});
 
 		SchedaUtenteBean schedaUtente = new SchedaUtenteBean();
 		schedaUtente.setDettaglioUtente(dettaglioUtente);
@@ -849,7 +849,7 @@ public class UtenteService {
 				RuoliUtentiConstants.DEPP,
 				RuoliUtentiConstants.FACILITATORE,
 				RuoliUtentiConstants.VOLONTARIO);
-		
+
 		List<String> listaRuoliGestProgetto = Arrays.asList(
 				RuoliUtentiConstants.REGP,
 				RuoliUtentiConstants.DEGP);
@@ -857,7 +857,7 @@ public class UtenteService {
 		List<String> listaRuoliGestProgramma = Arrays.asList(
 				RuoliUtentiConstants.REG,
 				RuoliUtentiConstants.DEG);
-		
+
 
 		if(listaRuoli.contains(sceltaProfilo.getCodiceRuoloUtenteLoggato())){
 			if(sceltaProfilo.getIdProgetto().equals(progetto.getId()) &&
@@ -891,7 +891,7 @@ public class UtenteService {
 		return this.utenteRepository.findUtenteByCriterioRicerca(
 				criterioRicerca,
 				"%" + criterioRicerca + "%"
-		);
+				);
 	}
 
 	@LogMethod
@@ -955,7 +955,7 @@ public class UtenteService {
 		default:
 			numeroUtentiTrovati = this.countUtentiTrovati(filtroRequest);
 			break;
-	}
+		}
 
 		return numeroUtentiTrovati;
 	}
@@ -1018,29 +1018,29 @@ public class UtenteService {
 		Set<UtenteEntity> utenti = new HashSet<>();
 
 		switch (codiceRuolo) {
-			case "DTD":
-				utenti = this.getUtentiByFiltriPerDownload(filtroRequest);
-				listaUtenti.addAll(utenti);
-				break;
-			case "DSCU":
-				listaUtenti.addAll(this.getUtentiPerDSCUPerDownload(filtroRequest));
-				break;
-			case "REG":
-			case "DEG":
-				listaUtenti.addAll(this.getUtentiPerReferenteDelegatoGestoreProgrammaPerDownload(idProgramma, cfUtente, filtroRequest));
-				break;
-			case "REGP":
-			case "DEGP":
-				listaUtenti.addAll(this.getUtentiPerReferenteDelegatoGestoreProgettiPerDownload(idProgramma, idProgetto, cfUtente, filtroRequest));
-				break;
-			case "REPP":
-			case "DEPP":
-				listaUtenti.addAll(this.getUtentiPerReferenteDelegatoEntePartnerProgettiPerDownload(idProgramma, idProgetto, idEnte, cfUtente, filtroRequest));
-				break;
-			default:
-				utenti = this.getUtentiByFiltriPerDownload(filtroRequest);
-				listaUtenti.addAll(utenti);
-				break;	
+		case "DTD":
+			utenti = this.getUtentiByFiltriPerDownload(filtroRequest);
+			listaUtenti.addAll(utenti);
+			break;
+		case "DSCU":
+			listaUtenti.addAll(this.getUtentiPerDSCUPerDownload(filtroRequest));
+			break;
+		case "REG":
+		case "DEG":
+			listaUtenti.addAll(this.getUtentiPerReferenteDelegatoGestoreProgrammaPerDownload(idProgramma, cfUtente, filtroRequest));
+			break;
+		case "REGP":
+		case "DEGP":
+			listaUtenti.addAll(this.getUtentiPerReferenteDelegatoGestoreProgettiPerDownload(idProgramma, idProgetto, cfUtente, filtroRequest));
+			break;
+		case "REPP":
+		case "DEPP":
+			listaUtenti.addAll(this.getUtentiPerReferenteDelegatoEntePartnerProgettiPerDownload(idProgramma, idProgetto, idEnte, cfUtente, filtroRequest));
+			break;
+		default:
+			utenti = this.getUtentiByFiltriPerDownload(filtroRequest);
+			listaUtenti.addAll(utenti);
+			break;	
 		}
 
 		return this.getUtentiConRuoliAggregati(listaUtenti);
@@ -1056,7 +1056,7 @@ public class UtenteService {
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getRuoli()
-			);
+				);
 	}
 
 	private Set<UtenteEntity> getUtentiPerReferenteDelegatoGestoreProgettiPerDownload(Long idProgramma,
@@ -1098,28 +1098,47 @@ public class UtenteService {
 	@LogExecutionTime
 	@LogMethod
 	@Transactional
-	public String uploadImmagineProfiloUtente(Long idUtente, MultipartFile multipartifile) throws IOException {
-		UtenteEntity utente = getUtenteById(idUtente);
-		InputStream initialStream = multipartifile.getInputStream();
-		byte[] buffer = new byte[initialStream.available()];
-		initialStream.read(buffer);
-		String[] fileNameSplitted = multipartifile.getOriginalFilename().split("\\.");
-		String fileExtension = fileNameSplitted[fileNameSplitted.length - 1];
-		String nomeFileDb = PREFIX_FILE_IMG_PROFILO + idUtente + "." + fileExtension;
-		File targetFile = new File(nomeFileDb);
-		try (OutputStream outStream = new FileOutputStream(targetFile)) {
-		    outStream.write(buffer);
+	public String uploadImmagineProfiloUtente(Long idUtente, String codiceFiscaleUtenteLoggato, MultipartFile multipartifile) throws IOException {
+		UtenteEntity utenteFetchDb = getUtenteById(idUtente);
+		if(utenteFetchDb == null) {
+			throw new UtenteException("Utente non esistente", CodiceErroreEnum.C01);
 		}
-		try {
-			this.s3Service.uploadFile(nomeDelBucketS3, targetFile);
-			utente.setImmagineProfilo(nomeFileDb);
-			salvaUtente(utente);
-		}catch(Exception e) {
-			throw e;
-		}finally {
-			targetFile.delete();
+		if(!utenteFetchDb.getCodiceFiscale().equalsIgnoreCase(codiceFiscaleUtenteLoggato)) {
+			throw new UtenteException("Errore permesso accesso alla risorsa", CodiceErroreEnum.A02);
 		}
-		return nomeFileDb;
+
+		List<String> IMAGE_TYPES_ALLOWED = Arrays.asList("jpg", "jpeg", "png", "image/jpg", "image/jpeg", "image/png");
+		if (multipartifile == null) {
+			utenteFetchDb.setImmagineProfilo(null);
+			salvaUtente(utenteFetchDb);
+			return null;
+		}else {
+			if(!IMAGE_TYPES_ALLOWED.contains(multipartifile.getContentType().toLowerCase()))  {
+				throw new UtenteException("il file non è valido", CodiceErroreEnum.U22); 
+			}
+
+
+			InputStream initialStream = multipartifile.getInputStream();
+			byte[] buffer = new byte[initialStream.available()];
+			initialStream.read(buffer);
+			String[] fileNameSplitted = multipartifile.getOriginalFilename().split("\\.");
+			String fileExtension = fileNameSplitted[fileNameSplitted.length - 1];
+			String nomeFileDb = PREFIX_FILE_IMG_PROFILO + idUtente + "." + fileExtension;
+			File targetFile = new File(nomeFileDb);
+			try (OutputStream outStream = new FileOutputStream(targetFile)) {
+				outStream.write(buffer);
+			}
+			try {
+				this.s3Service.uploadFile(nomeDelBucketS3, targetFile);
+				utenteFetchDb.setImmagineProfilo(nomeFileDb);
+				salvaUtente(utenteFetchDb);
+			}catch(Exception e) {
+				throw e;
+			}finally {
+				targetFile.delete();
+			}
+			return nomeFileDb;
+		}
 	}
 
 	@LogExecutionTime
