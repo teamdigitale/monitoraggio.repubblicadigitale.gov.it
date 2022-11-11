@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.293](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.292...1.0.0-develop.293) (2022-11-11)
+
+
+### Bug Fixes
+
+* **be:** fix cittadino-upload ([0b5aef1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0b5aef12253b251efbaf8c84f06017a66aa4f48c))
+
 ## [1.0.0-develop.292](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.291...1.0.0-develop.292) (2022-11-11)
 
 
