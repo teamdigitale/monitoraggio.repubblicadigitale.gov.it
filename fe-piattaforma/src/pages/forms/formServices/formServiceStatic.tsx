@@ -20,6 +20,7 @@ interface FormServicesI {
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   setIsFormValid?: (param: boolean) => void;
   creation?: boolean;
+  legend?: string | undefined;
 }
 
 interface FormEnteGestoreProgettoFullInterface
@@ -38,6 +39,7 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
     getFormValues = () => ({}),
     updateForm = () => ({}),
     creation = false,
+    legend = '',
   } = props;
   const dropdownOptions = useAppSelector(selectServices)?.dropdownsCreation;
   const formData = useAppSelector(selectServices)?.detail?.dettaglioServizio;
@@ -124,7 +126,7 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
   }, [form]);
 
   return (
-    <Form id='form-service-static' formDisabled={formDisabled}>
+    <Form legend={legend} id='form-service-static' formDisabled={formDisabled}>
       <Form.Row>
         <Input
           {...form?.nomeServizio}

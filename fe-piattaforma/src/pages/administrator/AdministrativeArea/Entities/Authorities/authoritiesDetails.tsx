@@ -573,11 +573,21 @@ const AuthoritiesDetails = () => {
               ))}
             </div>
           ) : null}
-          <ManageGenericAuthority />
-          <ManagePartnerAuthority />
-          <ManageDelegate creation />
-          <ManageReferal creation />
-          <ManageHeadquarter creation enteType='partner' />
+          <ManageGenericAuthority legend="form modifica ente, i campi con l'asterisco sono obbligatori" />
+          <ManagePartnerAuthority legend="form modifica ente partner, i campi con l'asterisco sono obbligatori" />
+          <ManageDelegate
+            legend="form aggiunta delegato, i campi con l'asterisco sono obbligatori"
+            creation
+          />
+          <ManageReferal
+            legend="form aggiunta referente, i campi con l'asterisco sono obbligatori"
+            creation
+          />
+          <ManageHeadquarter
+            legend="form aggiunta sede, i campi con l'asterisco sono obbligatori"
+            creation
+            enteType='partner'
+          />
           <DeleteEntityModal
             onClose={() => dispatch(closeModal())}
             onConfirm={(payload) => {

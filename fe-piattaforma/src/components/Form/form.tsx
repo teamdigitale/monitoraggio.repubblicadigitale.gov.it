@@ -7,7 +7,7 @@ interface FormI {
   children: JSX.Element | JSX.Element[] | undefined | null | string;
   formDisabled?: boolean;
   id: string;
-  legend?: string;
+  legend?: string | undefined;
 }
 
 const Form = (props: FormI) => {
@@ -17,7 +17,7 @@ const Form = (props: FormI) => {
     children,
     formDisabled = false,
     id,
-    legend = 'Default form legend',
+    legend = '',
   } = props;
 
   return (

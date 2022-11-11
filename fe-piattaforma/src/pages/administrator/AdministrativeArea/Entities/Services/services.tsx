@@ -297,7 +297,10 @@ const Services = () => {
           />
         )}
       </div>
-      <ManageServices creation />
+      <ManageServices
+        legend="form creazione servizio, i campi con l'asterisco sono obbligatori"
+        creation
+      />
     </GenericSearchFilterTableLayout>
   );
 };

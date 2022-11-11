@@ -122,38 +122,37 @@ const CommentAnswer: React.FC<CommentI> = (props) => {
         <div
           className={clsx('d-inline-flex', 'align-items-center', 'text.white')}
         >
-          <div>
-            <Button>
-              <Icon icon='it-more-items' color='primary' />
-            </Button>
-          </div>
+          <Icon
+            icon='it-more-items'
+            color='primary'
+            aria-label='apri menu azioni'
+          />
         </div>
       </DropdownToggle>
-      <DropdownMenu role='menu' tag='ul'>
-        <LinkList role='none'>
+      <DropdownMenu role='menu'>
+        <LinkList role='list'>
           {commentDropdownOptions.map((item, i) => (
             <li key={i} role='none' onClick={() => setIsOpen(!isOpen)}>
               <Button
-                className={clsx('primary-color-b1', 'py-2', 'w-100')}
+                className={clsx(
+                  'primary-color-b1',
+                  'py-2',
+                  'w-100',
+                  'd-flex',
+                  'flex-row',
+                  'justify-content-around',
+                  'align-items-center'
+                )}
                 role='menuitem'
                 onClick={() => item.action && item.action()}
               >
-                <div
-                  className={clsx(
-                    'd-flex',
-                    'flex-row',
-                    'justify-content-around',
-                    'align-items-center'
-                  )}
-                >
-                  <div>
-                    <Icon
-                      icon={item.DropdowniIcon.icon}
-                      color={item.DropdowniIcon.color}
-                    />
-                  </div>
-                  <div>{item.optionName}</div>
-                </div>
+                <Icon
+                  icon={item.DropdowniIcon.icon}
+                  color={item.DropdowniIcon.color}
+                  aria-label={item.optionName}
+                  aria-hidden
+                />
+                <span>{item.optionName}</span>
               </Button>
             </li>
           ))}

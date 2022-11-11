@@ -125,13 +125,17 @@ const Notification: React.FC<NotificationI> = (props) => {
           border: 'none',
         }}
         onClick={(e) => e.stopPropagation()}
+        aria-label=''
       >
-        <div>
-          <Icon icon='it-more-items' size='' color='primary' />
-        </div>
+        <Icon
+          icon='it-more-items'
+          size=''
+          color='primary'
+          aria-label='menu azioni delle notifiche'
+        />
       </DropdownToggle>
       <DropdownMenu role='menu' tag='ul'>
-        <LinkList role='none'>
+        <LinkList role='list'>
           <li role='none' className='d-flex align-items-center px-4'>
             <Button
               className={clsx(
@@ -150,8 +154,10 @@ const Notification: React.FC<NotificationI> = (props) => {
                 color='primary'
                 icon='it-check-circle'
                 size='sm'
+                aria-label='conferma'
+                aria-hidden
               />
-              Segna come letta
+              <span>Segna come letta</span>
             </Button>
           </li>
         </LinkList>
@@ -188,12 +194,14 @@ const Notification: React.FC<NotificationI> = (props) => {
             }}
           >
             <Input
-              role='button'
+              id={id}
+              role='checkbox'
               className='notification-list-checkbar'
               type='checkbox'
               onClick={(e) => e.stopPropagation()}
               onInputChange={() => onSelect && id && onSelect(id)}
               checked={isChecked}
+              aria-label='checkbox della notifica'
             />
           </div>
         ) : null}
@@ -211,11 +219,16 @@ const Notification: React.FC<NotificationI> = (props) => {
             }}
             className={clsx('d-flex', 'align-items-center', 'pl-3')}
           >
-            <Icon icon='it-calendar' size='xs' color='primary' />
+            <Icon
+              icon='it-calendar'
+              size='xs'
+              color='primary'
+              aria-label='Data'
+            />
             <p className='neutral-1-color-a8 px-2 mr-4'>
               {moment(date).format('DD/MM/YYYY')}
             </p>
-            <Icon icon='it-clock' size='xs' color='primary' />
+            <Icon icon='it-clock' size='xs' color='primary' aria-label='Ora' />
             <p className='neutral-1-color-a8 px-2'>
               {moment(date).format('hh:mm')}
             </p>
@@ -233,6 +246,7 @@ const Notification: React.FC<NotificationI> = (props) => {
                 e.stopPropagation();
                 onDelete();
               }}
+              aria-label='Chiudi'
             />
           </div>
         ) : null}

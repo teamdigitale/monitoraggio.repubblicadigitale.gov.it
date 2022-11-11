@@ -28,6 +28,7 @@ export interface FormCitizenI {
   creation?: boolean;
   info?: CittadinoInfoI;
   editMode?: boolean;
+  legend?: string | undefined;
 }
 
 interface FormEnteGestoreProgettoFullInterface
@@ -46,6 +47,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     setFormValues = () => ({}),
     updateForm = () => ({}),
     editMode = false,
+    legend = '',
   } = props;
 
   // const device = useAppSelector(selectDevice);
@@ -112,7 +114,12 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
   }, [form]);
 
   return (
-    <Form id='form-citizen' className='mt-5' formDisabled={formDisabled}>
+    <Form
+      legend={legend}
+      id='form-citizen'
+      className='mt-5'
+      formDisabled={formDisabled}
+    >
       <Form.Row>
         <Input
           {...form?.['1']}
@@ -308,6 +315,7 @@ const form = newForm([
     id: '1',
     field: '1',
     required: true,
+    regex: RegexpType.NAME_SURNAME,
   }),
   newFormField({
     ...CommonFields.COGNOME,
@@ -316,6 +324,7 @@ const form = newForm([
     id: '2',
     field: '2',
     required: true,
+    regex: RegexpType.NAME_SURNAME,
   }),
   newFormField({
     ...CommonFields.CODICE_FISCALE,
@@ -347,6 +356,7 @@ const form = newForm([
     label: 'Numero documento',
     type: 'text',
     required: false,
+    regex: RegexpType.DOCUMENT_NUMBER,
   }),
   newFormField({
     keyBE: 'genere',
@@ -364,6 +374,8 @@ const form = newForm([
     label: 'Anno di nascita',
     type: 'number',
     required: true,
+    minimum: 1920,
+    maximum: 2020,
   }),
   newFormField({
     keyBE: 'titoloStudio',

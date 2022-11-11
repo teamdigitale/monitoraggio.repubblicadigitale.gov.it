@@ -164,7 +164,7 @@ const CardStatusActionPartnerAuthority: React.FC<CardStatusActionI> = (
                       color='primary'
                       icon='it-less-circle'
                       size='sm'
-                      aria-label='Elimina'
+                      aria-label={`Rimuovi ${title}`}
                     />
                   </Button>
                   <UncontrolledTooltip
@@ -187,7 +187,7 @@ const CardStatusActionPartnerAuthority: React.FC<CardStatusActionI> = (
                   color='primary'
                   icon='it-chevron-right'
                   size='sm'
-                  aria-label='Seleziona'
+                  aria-label={`Vai al dettaglio di ${title}`}
                 />
               </Button>
             ) : null}
@@ -202,7 +202,8 @@ const CardStatusActionPartnerAuthority: React.FC<CardStatusActionI> = (
                   color='primary'
                   icon='it-file'
                   size='sm'
-                  aria-label='Preview'
+                  aria-label={`Anteprima di ${title}`}
+                  aria-hidden
                 />
               </Button>
             ) : null}

@@ -127,7 +127,7 @@ const CardStatusActionHeadquarters: React.FC<CardStatusActionI> = (props) => {
                         color='primary'
                         icon='it-less-circle'
                         size='sm'
-                        aria-label='Elimina'
+                        aria-label={`Rimuovi ${title}`}
                       />
                     </Button>
                     <UncontrolledTooltip
@@ -150,7 +150,7 @@ const CardStatusActionHeadquarters: React.FC<CardStatusActionI> = (props) => {
                     color='primary'
                     icon='it-chevron-right'
                     size='sm'
-                    aria-label='Seleziona'
+                    aria-label={`Vai al dettaglio di ${title}`}
                   />
                 </Button>
               ) : null}
@@ -165,7 +165,7 @@ const CardStatusActionHeadquarters: React.FC<CardStatusActionI> = (props) => {
                     color='primary'
                     icon='it-file'
                     size='sm'
-                    aria-label='Preview'
+                    aria-label={`Anteprima di ${title}`}
                   />
                 </Button>
               ) : null}

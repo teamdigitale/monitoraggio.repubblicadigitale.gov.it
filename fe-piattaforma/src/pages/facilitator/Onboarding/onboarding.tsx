@@ -169,7 +169,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
                 accept='.png, .jpeg, .jpg'
                 capture
                 ref={inputRef}
-                className='sr-only'
+                className='d-none'
               />
 
               <div className='rounded-circle onboarding__img-profile position-relative mr-3'>
@@ -188,14 +188,13 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
                 >
                   <Button
                     onClick={addProfilePicture}
-                    size='xs'
                     className='profile-picture-btn'
                   >
                     <Icon
                       size=''
                       icon='it-camera'
                       color='white'
-                      aria-label='Foto'
+                      aria-label='Aggiorna immagine profilo'
                       className='position-absolute onboarding__icon'
                     />
                   </Button>

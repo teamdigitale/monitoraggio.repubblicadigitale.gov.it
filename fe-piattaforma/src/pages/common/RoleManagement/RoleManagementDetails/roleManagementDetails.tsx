@@ -160,7 +160,7 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
   const handleChangeRole = (group: GroupI) => {
     let temp = [...functionalities];
     if (temp.find(({ gruppo }) => gruppo.codice === group.gruppo.codice)) {
-      temp = temp.filter(({ gruppo }) => gruppo.codice !== gruppo.codice);
+      temp = temp.filter(({ gruppo }) => gruppo.codice !== group.gruppo.codice);
     } else {
       temp.push(group);
     }
@@ -312,6 +312,7 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
               } = group;
               return (
                 <Accordion
+                  index={index}
                   title={descrizione}
                   key={codice}
                   lastBottom={index === groups.length - 1}

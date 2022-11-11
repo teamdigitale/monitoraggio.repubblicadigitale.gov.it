@@ -78,12 +78,24 @@ const FileInput: React.FC<FileInputI> = (props) => {
         </p>
         {fileName && (
           <Button icon className='p-2' onClick={removeFile}>
-            <Icon icon='it-less-circle' size='sm' color='primary' />
+            <Icon
+              icon='it-less-circle'
+              size='sm'
+              color='primary'
+              aria-label='Elimina file'
+            />
           </Button>
         )}
         {fileName === null && (
           <Button outline color='primary' className='p-2' onClick={addDocument}>
-            <Icon icon='it-plus' size='sm' color='primary' /> Seleziona file
+            <Icon
+              icon='it-plus'
+              size='sm'
+              color='primary'
+              aria-label='Seleziona file'
+              aria-hidden
+            />
+            Seleziona file
           </Button>
         )}
       </label>

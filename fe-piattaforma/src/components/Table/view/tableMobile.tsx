@@ -67,7 +67,7 @@ const TableMobile: React.FC<MobileTableI> = ({
       )}
       {totalCounter ? (
         <div
-          className={clsx('text-right', 'neutral-2-color-b4')}
+          className={clsx('text-right', 'total-counter-text-color')}
         >{`${values.length} di ${totalCounter}`}</div>
       ) : null}
     </div>

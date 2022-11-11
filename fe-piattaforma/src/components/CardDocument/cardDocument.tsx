@@ -10,9 +10,10 @@ import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../../utils/datesHelper';
+import { ForumCardsI } from '../CardShowcase/cardShowcase';
 /* import File from '/public/assets/img/icon-file-fill.png'; */
 
-interface CardDocumentI {
+/* interface CardDocumentI {
   id?: string;
   category_label?: string;
   date?: string;
@@ -23,9 +24,9 @@ interface CardDocumentI {
   downloads?: number;
   comment_count?: number;
   isHome?: boolean;
-}
+} */
 
-const CardDocument: React.FC<CardDocumentI> = (props) => {
+const CardDocument: React.FC<ForumCardsI> = (props) => {
   const {
     id,
     category_label,
@@ -69,8 +70,18 @@ const CardDocument: React.FC<CardDocumentI> = (props) => {
           : 'document-card-container__page-document-card'
       )}
       onClick={navigateTo}
-      onKeyDown={navigateTo}
+      onKeyDown={(e) => {
+        if (e.key === ' ') {
+          e.preventDefault();
+          navigateTo();
+        }
+      }}
       tabIndex={0}
+      aria-label={`Categoria: ${category_label}. Data: ${
+        date && formatDate(date, 'shortDate')
+      }. Titolo documento: ${title}. Descrizione: ${description}. Editore: ${entity}. ${downloads} download. ${comment_count} ${
+        Number(comment_count) === 1 ? 'commento' : 'commenti'
+      }`}
     >
       <Col className='text-left'>
         <div className='document-card-container__pre-title'>
@@ -99,11 +110,23 @@ const CardDocument: React.FC<CardDocumentI> = (props) => {
         <div className='d-flex flex-column'>
           <PublishingAuthority authority={entity} />
           <div className='d-flex justify-content-end align-items-center mt-1'>
-            <Icon icon='it-download' size='sm' color='primary' />
+            <Icon
+              icon='it-download'
+              size='sm'
+              color='primary'
+              aria-label='Downloads'
+              aria-hidden
+            />
             <span className='document-card-container__span-icons ml-1 mr-2'>
               {downloads}
             </span>
-            <Icon icon='it-comment' size='sm' color='primary' />
+            <Icon
+              icon='it-comment'
+              size='sm'
+              color='primary'
+              aria-label='Comments'
+              aria-hidden
+            />
             <span className='document-card-container__span-icons ml-1'>
               {comment_count}
             </span>

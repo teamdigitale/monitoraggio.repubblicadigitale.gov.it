@@ -842,9 +842,10 @@ const ProjectsDetails = () => {
           ? [
               {
                 size: 'xs',
-                color: 'danger',
+                color: 'secondary',
                 outline: true,
                 text: 'Termina progetto',
+                buttonClass: 'terminate-entity',
                 onClick: () =>
                   dispatch(
                     openModal({
@@ -888,9 +889,10 @@ const ProjectsDetails = () => {
           ? [
               {
                 size: 'xs',
-                color: 'danger',
+                color: 'secondary',
                 outline: true,
                 text: 'Termina progetto',
+                buttonClass: 'terminate-entity',
                 onClick: () =>
                   dispatch(
                     openModal({

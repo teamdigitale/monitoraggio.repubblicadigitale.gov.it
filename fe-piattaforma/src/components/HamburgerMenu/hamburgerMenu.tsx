@@ -137,7 +137,8 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
                         className='mr-3'
                         icon='it-settings'
                         color='primary'
-                        aria-label='icona ingranaggio'
+                        aria-label='Area gestionale'
+                        aria-hidden
                       />
                       <strong>Area gestionale</strong>
                       <div className='pl-2'>

@@ -39,6 +39,7 @@ const id = formTypes.DELEGATO;
 interface ManageDelgateFormI {
   formDisabled?: boolean;
   creation?: boolean;
+  legend?: string | undefined;
 }
 
 interface ManageDelegateI extends withFormHandlerProps, ManageDelgateFormI {}
@@ -47,6 +48,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
   clearForm = () => ({}),
   formDisabled,
   creation = false,
+  legend = '',
 }) => {
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
@@ -161,6 +163,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
         }
         setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
         fieldsToHide={['ruolo', 'tipoContratto']}
+        legend={legend}
       />
     );
   } else if (usersList && usersList.length > 0) {

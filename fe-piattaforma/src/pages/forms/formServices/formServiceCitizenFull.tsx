@@ -38,6 +38,7 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
     getFormValues,
     updateForm = () => ({}),
     creation = false,
+    legend = '',
   } = props;
 
   // const device = useAppSelector(selectDevice);
@@ -61,17 +62,30 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
       Object.keys(formFromSchema).forEach((key: string) => {
         formFromSchema[key].label = formFromSchema[key].value?.toString() || '';
         formFromSchema[key].value = '';
+        if (key === '1' || key === '2') {
+          formFromSchema[key].regex = RegexpType.NAME_SURNAME;
+        }
         if (key === '3') {
           formFromSchema[key].regex = RegexpType.FISCAL_CODE;
         }
         if (key === '4' || key === '5' || key === '6') {
           formFromSchema[key].required = false;
         }
+        if (key === '8') {
+          formFromSchema[key].minimum = 1920;
+          formFromSchema[key].maximum = 2020;
+        }
         if (key === '14') {
           formFromSchema[key].regex = RegexpType.EMAIL;
         }
         if (key === '15') {
           formFromSchema[key].value = '+39';
+        }
+        if (key === '16') {
+          formFromSchema[key].regex = RegexpType.MOBILE_PHONE;
+        }
+        if (key === '17') {
+          formFromSchema[key].regex = RegexpType.TELEPHONE;
         }
         if (key === '18') {
           if (creation) {
@@ -247,6 +261,7 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
               field={field.field}
               className={clsx(
                 field.field !== '18' && 'col-12 col-lg-6',
+                field.field === '18' && 'compile-survey-container__checkbox-margin'
               )}
               label={
                 field.field === '18'
@@ -283,7 +298,12 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
   };
 
   return (
-    <Form id='form-citizen' className='mt-5' formDisabled={formDisabled}>
+    <Form
+      legend={legend}
+      id='form-citizen'
+      className='mt-5'
+      formDisabled={formDisabled}
+    >
       <div className='d-inline-flex flex-wrap w-100'>
         {form &&
           Object.keys(form).map((key) => (

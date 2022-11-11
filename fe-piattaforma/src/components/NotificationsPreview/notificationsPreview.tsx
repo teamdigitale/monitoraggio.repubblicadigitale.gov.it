@@ -7,8 +7,11 @@ import { focusId, MenuItem } from '../../utils/common';
 import { Button, Icon } from 'design-react-kit';
 import Notification from '../../pages/common/NotificationsPage/components/Notifications/notification';
 import { useAppSelector } from '../../redux/hooks';
-import { selectProfile, selectUserNotificationsPreview } from '../../redux/features/user/userSlice';
-import { NavLink } from 'react-router-dom';
+import {
+  selectProfile,
+  selectUserNotificationsPreview,
+} from '../../redux/features/user/userSlice';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import {
   GetNotificationsByUser,
@@ -25,16 +28,17 @@ interface NotificationsPreviewProps {
 const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
   const { open, setOpen } = props;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   // TODO integrate notification
   const notificationsList = useAppSelector(selectUserNotificationsPreview);
-  const userRole = useAppSelector(selectProfile)?.codiceRuolo
+  const userRole = useAppSelector(selectProfile)?.codiceRuolo;
 
   const body = document.getElementsByTagName('body')[0];
 
   useEffect(() => {
     const body = document.querySelector('body') as HTMLBodyElement;
     if (open) {
-      focusId('hamburger');
+      focusId('close-button-notification-sidebar', false);
       body.style.overflowY = 'hidden';
     } else {
       body.style.overflowY = 'unset';
@@ -55,7 +59,7 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
         )
       );
     }
-  }, [open, userRole])
+  }, [open, userRole]);
 
   const onReadNotification = async (id: string) => {
     await dispatch(ReadNotification([id]));
@@ -77,8 +81,17 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
       <div className={clsx('notifications-preview', open && 'open')}>
         <div className='shadow'>
           <div className='w-100 d-flex justify-content-end'>
-            <Button onClick={() => setOpen(false)} className='p-0'>
-              <Icon icon='it-close' />
+            <Button
+              id='close-button-notification-sidebar'
+              onClick={() => setOpen(false)}
+              className='p-0'
+              aria-label='Chiudi menù notifiche'
+            >
+              <Icon
+                icon='it-close'
+                aria-label='chiudi menù notifiche'
+                aria-hidden
+              />
             </Button>
           </div>
           <div className='preview-header'>
@@ -120,6 +133,17 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
             to='/notifiche'
             className='primary-color archive'
             onClick={() => setOpen(false)}
+            onKeyDown={(e) => {
+              if (e.key === ' ') {
+                e.preventDefault();
+                navigate('/notifiche');
+                setOpen(false);
+              }
+              if(e.key === 'Tab') {
+                e.preventDefault();
+                focusId('close-button-notification-sidebar', false);
+              }
+            }}
           >
             ARCHIVIO NOTIFICHE
             {/*{notificationsList.length}*/}

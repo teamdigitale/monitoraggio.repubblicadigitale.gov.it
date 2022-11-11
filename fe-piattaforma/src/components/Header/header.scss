@@ -61,14 +61,14 @@
       }
 
       .dropdown-menu {
-        width: 351px;
+        width: 265px;
       }
      
     }
   }
 
   .user-description {
-   p {
+   span {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -111,6 +111,14 @@
     align-items: center;
     justify-content: center;
     border-radius: 25px;
+  }
+
+  &__dropdown {
+    transform: none !important;
+  }
+
+  &__divider {
+    border-top: 1px solid #ebeced;
   }
 }
 .user-logged .header-container {

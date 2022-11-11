@@ -49,7 +49,6 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
 
   const [sectionInfoOpened, setSectionInfoOpened] =
     useState<boolean>(defaultOpen);
-
   const device = useAppSelector(selectDevice);
   // TODO integrate notification count
   const notificationsList = useAppSelector(selectUserNotification);
@@ -99,6 +98,8 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
                 'py-2',
                 'mb-2',
                 'primary-color-a9',
+                'line-height',
+                'word-spacing',
                 device.mediaIsPhone && 'pl-1'
               )}
             >
@@ -115,7 +116,8 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
                 color='primary'
                 icon='it-info-circle'
                 size='sm'
-                aria-label='calendar'
+                aria-label='Informazioni'
+                aria-hidden
               />
             </Button>
           ) : null}
@@ -151,7 +153,13 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
                 )}
               >
                 <span className='text-nowrap pr-3'> {cta.label} </span>
-                <Icon icon='it-external-link' color='white' size='sm' />
+                <Icon
+                  icon='it-external-link'
+                  color='white'
+                  size='sm'
+                  aria-label={cta.label}
+                  aria-hidden
+                />
               </Button>
             ) : null}
           </div>
@@ -168,7 +176,7 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
         ) : null}
         {badge ? (
           <span className='badge-notifications'>
-            {notificationsList.length}
+            {notificationsList?.length}
           </span>
         ) : null}
       </Container>

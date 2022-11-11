@@ -1,8 +1,6 @@
 .chip {
+  border: none !important;
   cursor: default;
-  .no-border {
-    border: none;
-  }
   @media screen and (min-width: 670px) {
     height: auto !important ;
   }
@@ -32,10 +30,13 @@
   fill: #5c6f82;
 }
 
-.chip:hover:is(.no-border) {
-  border-color: transparent;
+.chip:hover {
+  border: none;
 }
 
 .not-active-chip {
   color: #596c7d !important;
+}
+.not-active-chip:hover {
+  border: none !important;
 }

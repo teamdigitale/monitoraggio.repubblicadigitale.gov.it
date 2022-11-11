@@ -294,9 +294,12 @@ const ProgramsDetails: React.FC = () => {
         <FormAuthorities
           formDisabled
           enteType={formTypes.ENTE_GESTORE_PROGRAMMA}
+          legend="Form ente, i campi con l'asterisco sono obbligatori"
         />
       );
-      setCorrectModal(<ManageManagerAuthority />);
+      setCorrectModal(
+        <ManageManagerAuthority legend="form Modifica ente gestore programma, i campi con l'asterisco sono obbligatori" />
+      );
       setItemList(null);
       setCorrectButtons(
         program?.dettagliInfoProgramma?.stato !== entityStatus.TERMINATO &&
@@ -556,7 +559,12 @@ const ProgramsDetails: React.FC = () => {
     setCorrectModal(undefined);
     setItemAccordionList(null);
     setCurrentForm(undefined);
-    setCorrectModal(<ManageProject creation />);
+    setCorrectModal(
+      <ManageProject
+        legend="form aggiunta progetto, i campi con l'asterisco sono obbligatori"
+        creation
+      />
+    );
     setProgInfoButtons(false);
     cancelSurvey();
     if (
@@ -721,9 +729,10 @@ const ProgramsDetails: React.FC = () => {
           ? [
               {
                 size: 'xs',
-                color: 'danger',
+                color: 'secondary',
                 outline: true,
                 text: 'Termina programma',
+                buttonClass: 'terminate-entity',
                 onClick: () =>
                   dispatch(
                     openModal({
@@ -771,9 +780,10 @@ const ProgramsDetails: React.FC = () => {
           ? [
               {
                 size: 'xs',
-                color: 'danger',
+                color: 'secondary',
                 outline: true,
                 text: 'Termina programma',
+                buttonClass: 'terminate-entity',
                 onClick: () =>
                   dispatch(
                     openModal({
@@ -868,8 +878,15 @@ const ProgramsDetails: React.FC = () => {
   const handleActiveTab = (tab: string) => {
     switch (tab) {
       case tabs.INFO:
-        setCurrentForm(<ProgramlInfoAccordionForm />);
-        setCorrectModal(<ManageProgram edit={edit} />);
+        setCurrentForm(
+          <ProgramlInfoAccordionForm legend="form informazioni programma, i campi con l'asterisco sono obbligatori" />
+        );
+        setCorrectModal(
+          <ManageProgram
+            legend="form modifica programma, i campi con l'asterisco sono obbligatori"
+            edit={edit}
+          />
+        );
         setItemAccordionList([]);
         setButtonsPosition('BOTTOM');
         setItemList(null);
@@ -906,20 +923,24 @@ const ProgramsDetails: React.FC = () => {
   ]);
 
   const nav = (
-    <Nav tabs className='mb-5 overflow-hidden'>
-      <li ref={infoRef}>
+    <Nav tabs className='mb-5 overflow-hidden' role='menu'>
+      <li ref={infoRef} role='none'>
         <NavLink
           to={`/area-amministrativa/programmi/${entityId}/${tabs.INFO}`}
           active={activeTab === tabs.INFO}
+          role='menuitem'
+          onKeyDown={() => setActiveTab(tabs.INFO)}
         >
           Informazioni generali
         </NavLink>
       </li>
-      <li ref={gestoreRef}>
+      <li ref={gestoreRef} role='none'>
         <NavLink
           to={`/area-amministrativa/programmi/${entityId}/${tabs.ENTE}`}
           active={activeTab === tabs.ENTE}
           enteGestore={!managerAuthorityId}
+          role='menuitem'
+          onKeyDown={() => setActiveTab(tabs.ENTE)}
         >
           {!managerAuthorityId ? (
             <div id='tab-ente-gestore'>
@@ -932,25 +953,34 @@ const ProgramsDetails: React.FC = () => {
               >
                 Compilazione obbligatoria
               </Tooltip>
-              <Icon icon='it-warning-circle' size='xs' className='ml-1' />
+              <Icon
+                icon='it-warning-circle'
+                size='xs'
+                className='ml-1'
+                aria-label='Avviso'
+              />
             </div>
           ) : (
             'Ente gestore'
           )}
         </NavLink>
       </li>
-      <li ref={questionariRef}>
+      <li ref={questionariRef} role='none'>
         <NavLink
           to={`/area-amministrativa/programmi/${entityId}/${tabs.QUESTIONARI}`}
           active={activeTab === tabs.QUESTIONARI}
+          role='menuitem'
+          onKeyDown={() => setActiveTab(tabs.QUESTIONARI)}
         >
           Questionari
         </NavLink>
       </li>
-      <li ref={projectRef}>
+      <li ref={projectRef} role='none'>
         <NavLink
           active={activeTab === tabs.PROGETTI}
           to={`/area-amministrativa/programmi/${entityId}/${tabs.PROGETTI}`}
+          role='menuitem'
+          onKeyDown={() => setActiveTab(tabs.PROGETTI)}
         >
           Progetti
         </NavLink>
@@ -1159,10 +1189,19 @@ const ProgramsDetails: React.FC = () => {
             }
           }}
         />
-        <ManageDelegate creation />
-        <ManageReferal creation />
+        <ManageDelegate
+          legend="form aggiunta delegato, i campi con l'asterisco sono obbligatori"
+          creation
+        />
+        <ManageReferal
+          legend="form aggiunta referente, i campi con l'asterisco sono obbligatori"
+          creation
+        />
         {/* /<ManageProgramManagerAuthority /> */}
-        <ManageProject creation />
+        <ManageProject
+          legend="form creazione progetto, i campi con l'asterisco sono obbligatori"
+          creation
+        />
         <DeleteEntityModal
           onClose={() => dispatch(closeModal())}
           onConfirm={async (payload) => {
