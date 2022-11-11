@@ -232,7 +232,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		
 		if(nuovoCittadinoRequest.getNuovoCittadino() && optionalCittadinoDBFetch.isPresent()) {
 			final String messaggioErrore = String.format(
-					"Cittadino con codice fiscale=%s, numero documento=%s già esistente", 
+					"Cittadino già esistente", 
 					optionalCittadinoDBFetch.get().getCodiceFiscale(),
 					optionalCittadinoDBFetch.get().getNumeroDocumento()
 				);
@@ -247,12 +247,12 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 			// e in caso affermativo sollevo eccezione
 			if(this.esisteCittadinoByIdServizioAndIdCittadino(idServizio, cittadino.getId())) {
 				final String messaggioErrore = String.format(
-						"Cittadino con codice fiscale=%s, numero documento=%s già esistente sul Servizio con id=%s", 
+						"Cittadino già esistente sul Servizio con id=%s", 
 						cittadino.getCodiceFiscale(),
 						cittadino.getNumeroDocumento(),
 						idServizio
 					);
-				throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U07);
+				throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U23);
 			}
 		} else {
 			cittadino.setCodiceFiscale(nuovoCittadinoRequest.getCodiceFiscale());
