@@ -378,7 +378,8 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 			+ "		WHERE   "
 			+ "			CONVERT( e.ID, CHAR ) = :criterioRicerca "
 			+ "			OR UPPER( e.NOME ) LIKE UPPER( :criterioRicercaLike ) "
-			+ "			OR UPPER( e.PARTITA_IVA ) = UPPER( :criterioRicerca ) ",
+			+ "			OR UPPER( e.PARTITA_IVA ) = UPPER( :criterioRicerca ) "
+			+ "     ORDER BY nome",
 			nativeQuery = true)
 	public List<EnteEntity> findByCriterioRicerca(String criterioRicerca, String criterioRicercaLike);
 
