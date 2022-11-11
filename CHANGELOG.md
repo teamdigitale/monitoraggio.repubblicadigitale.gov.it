@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.115](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.114...1.0.0-test.115) (2022-11-11)
+
+
+### Bug Fixes
+
+* **be:** uplaod cittadino ([30c012e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/30c012ed9645daec194d7f492794d82b7a50aa8f))
+
 ## [1.0.0-test.114](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.113...1.0.0-test.114) (2022-11-10)
 
 
