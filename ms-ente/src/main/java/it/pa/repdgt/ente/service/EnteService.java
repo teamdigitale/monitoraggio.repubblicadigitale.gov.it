@@ -148,7 +148,7 @@ public class EnteService {
 		List<EnteDto> entiUtente = this.getAllEntiByCodiceRuoloAndIdProgramma(entiPaginatiParam);
 		List<EnteDto> entiUtenteAggregati = this.aggregaEntiUguali(entiUtente);
 		
-		entiUtenteAggregati.sort((ente1, ente2) -> ente1.getId().compareTo(ente2.getId()));
+		entiUtenteAggregati.sort((ente1, ente2) -> ente1.getNome().compareTo(ente2.getNome()));
 		
 		int start = (int) paginazione.getOffset();
 		int end = Math.min((start + paginazione.getPageSize()), entiUtenteAggregati.size());

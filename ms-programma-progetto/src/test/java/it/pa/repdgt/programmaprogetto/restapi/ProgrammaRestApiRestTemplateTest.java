@@ -26,6 +26,7 @@ import it.pa.repdgt.programmaprogetto.resource.CreaProgrammaResource;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammiLightResourcePaginata;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 
 @TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
@@ -70,6 +71,21 @@ public class ProgrammaRestApiRestTemplateTest extends AppTests{
 		@SuppressWarnings("unchecked")
 		List<String> response = restTemplate.postForObject("http://localhost:" + randomServerPort + "/programma/stati/dropdown", progParam, ArrayList.class);
 		assertThat(response.size()).isEqualTo(2);
+	}
+	
+	@Test
+	@Order(value = 3)
+	void getSchedaProgrammaByIdTest() {
+		SceltaProfiloParam progParam = new ProgrammiParam();
+		progParam.setCfUtenteLoggato("SMTPAL67R31F111X");
+		progParam.setCodiceRuoloUtenteLoggato("DTD");
+		SchedaProgrammaBean response = restTemplate.postForObject(
+				"http://localhost:" + randomServerPort + "/programma/{idProgramma}", 
+				progParam,
+				SchedaProgrammaBean.class,
+				100L
+			);
+		assertThat(response.getDettaglioProgramma().getNome()).isEqualTo("Programma Alfa");
 	}
 	
 	@Test

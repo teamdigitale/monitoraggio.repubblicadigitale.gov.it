@@ -100,7 +100,7 @@ public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long> 
 			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) )"
 			+ " 	AND	 ( COALESCE(:idsProgrammi) IS NULL  OR   programma.ID IN (:idsProgrammi) )"
 			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR progetto.STATO IN (:stati) )"
-			+ "	 ORDER BY progetto.ID "
+			+ "	 ORDER BY progetto.nome_breve "
 			+ "  LIMIT :currPageIndex, :pageSize",
 			nativeQuery = true)
 	public List<ProgettoEntity> findAllPaginati(
@@ -128,7 +128,7 @@ public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long> 
 		    + "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
 			+ " 	AND	 ( COALESCE(:idsProgrammi) IS NULL  OR   programma.ID IN (:idsProgrammi) )"
 			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR progetto.STATO IN (:stati) )"
-			+ "	 ORDER BY progetto.ID "
+			+ "	 ORDER BY progetto.nome_breve "
 			+ "  LIMIT :currPageIndex, :pageSize",
 		   nativeQuery = true)
 	public List<ProgettoEntity> findByPolicyPaginati(
@@ -302,7 +302,7 @@ public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long> 
 			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) )"
 			+ " 	AND	 ( COALESCE(:idsProgrammi) IS NULL  OR   programma.ID IN (:idsProgrammi) )"
 			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR progetto.STATO IN (:stati) )"
-			+ "	 ORDER BY progetto.ID "
+			+ "	 ORDER BY progetto.nome_breve "
 			+ "  LIMIT :currPageIndex, :pageSize",
 			nativeQuery = true)
 	public List<ProgettoEntity> findProgettiPerReferenteDelegatoGestoreProgrammaPaginati(

@@ -31,65 +31,65 @@ public class IndirizzoSedeFasciaOrariaEntity implements Serializable {
 	private Long idIndirizzoSede;
 	
 	@Column(name = "LUN_ORARIO_APERTURA_1", nullable = false)
-	private String lunOrarioAperutura1;
+	private String lunOrarioApertura1;
 	@Column(name = "LUN_ORARIO_CHIUSURA_1", nullable = false)
 	private String lunOrarioChiusura1;
 	@Column(name = "LUN_ORARIO_APERTURA_2", nullable = false)
-	private String lunOrarioAperutura2;
+	private String lunOrarioApertura2;
 	@Column(name = "LUN_ORARIO_CHIUSURA_2", nullable = false)
 	private String lunOrarioChiusura2;
 	
 	@Column(name = "MAR_ORARIO_APERTURA_1", nullable = false)
-	private String marOrarioAperutura1;
+	private String marOrarioApertura1;
 	@Column(name = "MAR_ORARIO_CHIUSURA_1", nullable = false)
 	private String marOrarioChiusura1;
 	@Column(name = "MAR_ORARIO_APERTURA_2", nullable = false)
-	private String marOrarioAperutura2;
+	private String marOrarioApertura2;
 	@Column(name = "MAR_ORARIO_CHIUSURA_2", nullable = false)
 	private String marOrarioChiusura2;
 	
 	@Column(name = "MER_ORARIO_APERTURA_1", nullable = false)
-	private String merOrarioAperutura1;
+	private String merOrarioApertura1;
 	@Column(name = "MER_ORARIO_CHIUSURA_1", nullable = false)
 	private String merOrarioChiusura1;
 	@Column(name = "MER_ORARIO_APERTURA_2", nullable = false)
-	private String merOrarioAperutura2;
+	private String merOrarioApertura2;
 	@Column(name = "MER_ORARIO_CHIUSURA_2", nullable = false)
 	private String merOrarioChiusura2;
 	
 	@Column(name = "GIO_ORARIO_APERTURA_1", nullable = false)
-	private String gioOrarioAperutura1;
+	private String gioOrarioApertura1;
 	@Column(name = "GIO_ORARIO_CHIUSURA_1", nullable = false)
 	private String gioOrarioChiusura1;
 	@Column(name = "GIO_ORARIO_APERTURA_2", nullable = false)
-	private String gioOrarioAperutura2;
+	private String gioOrarioApertura2;
 	@Column(name = "GIO_ORARIO_CHIUSURA_2", nullable = false)
 	private String gioOrarioChiusura2;
 	
 	@Column(name = "VEN_ORARIO_APERTURA_1", nullable = false)
-	private String venOrarioAperutura1;
+	private String venOrarioApertura1;
 	@Column(name = "VEN_ORARIO_CHIUSURA_1", nullable = false)
 	private String venOrarioChiusura1;
 	@Column(name = "VEN_ORARIO_APERTURA_2", nullable = false)
-	private String venOrarioAperutura2;
+	private String venOrarioApertura2;
 	@Column(name = "VEN_ORARIO_CHIUSURA_2", nullable = false)
 	private String venOrarioChiusura2;
 	
 	@Column(name = "SAB_ORARIO_APERTURA_1", nullable = false)
-	private String sabOrarioAperutura1;	
+	private String sabOrarioApertura1;	
 	@Column(name = "SAB_ORARIO_CHIUSURA_1", nullable = false)
 	private String sabOrarioChiusura1;	
 	@Column(name = "SAB_ORARIO_APERTURA_2", nullable = false)
-	private String sabOrarioAperutura2;	
+	private String sabOrarioApertura2;	
 	@Column(name = "SAB_ORARIO_CHIUSURA_2", nullable = false)
 	private String sabOrarioChiusura2;
 	
 	@Column(name = "DOM_ORARIO_APERTURA_1", nullable = false)
-	private String domOrarioAperutura1;
+	private String domOrarioApertura1;
 	@Column(name = "DOM_ORARIO_CHIUSURA_1", nullable = false)
 	private String domOrarioChiusura1;
 	@Column(name = "DOM_ORARIO_APERTURA_2", nullable = false)
-	private String domOrarioAperutura2;
+	private String domOrarioApertura2;
 	@Column(name = "DOM_ORARIO_CHIUSURA_2", nullable = false)
 	private String domOrarioChiusura2;
 
