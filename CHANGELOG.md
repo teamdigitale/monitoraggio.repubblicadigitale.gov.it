@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.9.4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.9.3...1.9.4) (2022-11-11)
+
+
+### Bug Fixes
+
+* **be:** ordinamenti + upload ([f2d0a15](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f2d0a15bfd986606e8853a3e75b9ad8e15baee7f))
+
 ## [1.9.3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.9.2...1.9.3) (2022-11-10)
 
 
