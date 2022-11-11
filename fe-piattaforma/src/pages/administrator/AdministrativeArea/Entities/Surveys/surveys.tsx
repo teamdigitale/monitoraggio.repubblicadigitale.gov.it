@@ -90,7 +90,7 @@ const Surveys = () => {
         dataUltimaModifica:
           formatDate(td.dataUltimaModifica, 'shortDate') || '-',
         defaultSCD: (
-          <FormGroup check className='table-container__toggle-button'>
+          <FormGroup check className='table-container__toggle-button'>{console.log(td)}
             <Toggle
               label=''
               aria-labelledby={`toggle-SCD-${td.id}`}
@@ -101,7 +101,7 @@ const Surveys = () => {
               }
             />
             <span id={`toggle-SCD-${td.id}`} className='d-none'>
-              Default toggle SCD {td.id}
+              {td?.nome} Default SCD
             </span>
           </FormGroup>
         ),
@@ -117,7 +117,7 @@ const Surveys = () => {
               }
             />
             <span id={`toggle-RFD-${td.id}`} className='d-none'>
-              Default toggle RFD {td.id}
+              {td?.nome} Default RFD
             </span>
           </FormGroup>
         ),

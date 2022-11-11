@@ -114,42 +114,46 @@ const ReportCard: React.FC<ReportCardI> = ({
       isOpen={isOpen}
       toggle={() => setIsOpen(!isOpen)}
     >
-      <DropdownToggle caret className='bg-white shadow-none'>
+      <DropdownToggle
+        caret
+        className='bg-white shadow-none'
+        aria-label='toggle menu azioni'
+      >
         <div
           className={clsx('d-inline-flex', 'align-items-center', 'text.white')}
         >
-          <div>
-            <Button>
-              <Icon icon='it-more-items' color='primary' />
-            </Button>
-          </div>
+          <Icon
+            icon='it-more-items'
+            color='primary'
+            aria-label='Mostra azioni'
+            aria-hidden
+          />
         </div>
       </DropdownToggle>
       <DropdownMenu role='menu' tag='ul'>
-        <LinkList role='none'>
+        <LinkList role='list'>
           {commentDropdownOptions.map((item, i) => (
             <li key={i} role='none' onClick={() => setIsOpen(!isOpen)}>
               <Button
-                className={clsx('primary-color-b1', 'py-2', 'w-100')}
+                className={clsx(
+                  'primary-color-b1',
+                  'py-2',
+                  'w-100',
+                  'd-flex',
+                  'flex-row',
+                  'justify-content-around',
+                  'align-items-center'
+                )}
                 role='menuitem'
                 onClick={() => item.action()}
               >
-                <div
-                  className={clsx(
-                    'd-flex',
-                    'flex-row',
-                    'justify-content-around',
-                    'align-items-center'
-                  )}
-                >
-                  <div>
-                    <Icon
-                      icon={item.DropdowniIcon.icon}
-                      color={item.DropdowniIcon.color}
-                    />
-                  </div>
-                  <div>{item.optionName}</div>
-                </div>
+                <Icon
+                  icon={item.DropdowniIcon.icon}
+                  color={item.DropdowniIcon.color}
+                  aria-label={item.optionName}
+                  aria-hidden
+                />
+                <span>{item.optionName}</span>
               </Button>
             </li>
           ))}
@@ -220,7 +224,13 @@ const ReportCard: React.FC<ReportCardI> = ({
             </div>
           </div>
           <div className='d-flex flex-row justify-content-end align-items-center'>
-            <Icon icon='it-error' color='danger' />
+            <Icon
+              icon='it-error'
+              color='danger'
+              aria-label='Contenuto segnalato'
+              aria-hidden
+              className='mb-1 mr-2'
+            />
             {reportDropdown()}
           </div>
         </div>
@@ -249,11 +259,18 @@ const ReportCard: React.FC<ReportCardI> = ({
                 break;
             }
           }}
+          aria-label='Vai al dettaglio della segnalazione'
         >
           <p className='primary-color font-weight-bold pl-4 text-nowrap'>
             VAI AL DETTAGLIO
           </p>
-          <Icon icon='it-chevron-right' color='primary' size='' />
+          <Icon
+            icon='it-chevron-right'
+            color='primary'
+            size=''
+            aria-label='dettaglio segnalazione'
+            aria-hidden
+          />
         </Button>
       </div>
     </div>

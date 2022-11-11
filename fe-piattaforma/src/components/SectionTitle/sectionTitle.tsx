@@ -88,17 +88,25 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
   return (
     <div className={clsx(!isForumLayout && 'd-flex w-100 flex-wrap mx-auto')}>
       {upperTitle ? (
-        <div className='d-flex flex-row justify-content-center w-100'>
+        <div
+          className={clsx(
+            'd-flex',
+            'flex-row',
+            'justify-content-center',
+            'align-items-center',
+            'w-100'
+          )}
+        >
           <Icon
             icon={upperTitle.icon}
             size='sm'
             className={clsx('icon-color', enteIcon && 'ente-icon', 'mr-2')}
             aria-label='Sezione'
           />
-
           <p
             className={clsx(
               'h6',
+              'mb-0',
               'custom-section-title__upper-text',
               'primary-color-a9',
               'text-uppercase'
@@ -117,7 +125,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
         )}
       >
         {iconAvatar && !device.mediaIsPhone ? (
-          <div className={clsx('position-relative', 'ml-4')}>
+          <div className={clsx('position-relative')}>
             <UserAvatar
               avatarImage={profilePicture}
               user={{ uSurname: surname, uName: name }}
@@ -148,18 +156,18 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
                   accept='.png, .jpeg, .jpg'
                   capture
                   ref={inputRef}
-                  className='sr-only'
+                  className='d-none'
+                  aria-label='Aggiorna immagine profilo'
                 />
                 <Button
                   onClick={addProfilePicture}
-                  size='xs'
                   className='profile-picture-btn'
                 >
                   <Icon
                     size='xs'
                     icon='it-camera'
                     color='white'
-                    aria-label='Foto'
+                    aria-label='Aggiorna immagine profilo'
                     className='position-absolute'
                     style={{
                       top: '7px',
@@ -170,12 +178,14 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
               </div>
             )}
           </div>
-        ) : (
-          <div className='placeholder-div'></div>
-        )}
+        ) : null}
         <div
           style={{ minWidth: '150px', maxWidth: !inline ? '350px' : 'unset' }}
-          className={clsx(!isForumLayout && 'text-center mx-3')}
+          className={clsx(
+            !isForumLayout && 'text-center',
+            iconAvatar && !device.mediaIsPhone && 'ml-1',
+            status && device.mediaIsDesktop && 'mr-3'
+          )}
         >
           <div
             className={clsx(

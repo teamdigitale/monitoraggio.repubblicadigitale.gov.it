@@ -435,7 +435,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
             <Icon
               icon='it-chevron-left'
               color='primary'
-              aria-label='Icona step precedente'
+              aria-label='Step Precedente'
             />
             <Button
               onClick={() => {
@@ -472,7 +472,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
               icon='it-chevron-right'
               color='primary'
               className='ml-2'
-              aria-label='Icona step Successivo'
+              aria-label='Step successivo'
             />
           </div>
         </div>

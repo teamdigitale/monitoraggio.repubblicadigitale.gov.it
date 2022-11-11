@@ -199,38 +199,37 @@ const Comment: React.FC<CommentI> = (props) => {
               'text.white'
             )}
           >
-            <div>
-              <Button>
-                <Icon icon='it-more-items' color='primary' />
-              </Button>
-            </div>
+            <Icon
+              icon='it-more-items'
+              color='primary'
+              aria-label='apri menu azioni'
+            />
           </div>
         </DropdownToggle>
-        <DropdownMenu role='menu' tag='ul'>
-          <LinkList role='none'>
+        <DropdownMenu role='menu'>
+          <LinkList role='list'>
             {detailDropdownOptions.map((item, i) => (
               <li key={i} role='none' onClick={() => setIsOpen(!isOpen)}>
                 <Button
-                  className={clsx('primary-color-b1', 'py-2', 'w-100')}
+                  className={clsx(
+                    'primary-color-b1',
+                    'py-2',
+                    'w-100',
+                    'd-flex',
+                    'flex-row',
+                    'justify-content-around',
+                    'align-items-center'
+                  )}
                   role='menuitem'
                   onClick={() => item.action && item.action()}
                 >
-                  <div
-                    className={clsx(
-                      'd-flex',
-                      'flex-row',
-                      'justify-content-around',
-                      'align-items-center'
-                    )}
-                  >
-                    <div>
-                      <Icon
-                        icon={item.DropdownIcon.icon}
-                        color={item.DropdownIcon.color}
-                      />
-                    </div>
-                    <div>{item.optionName}</div>
-                  </div>
+                  <Icon
+                    icon={item.DropdownIcon.icon}
+                    color={item.DropdownIcon.color}
+                    aria-label={item.optionName}
+                    aria-hidden
+                  />
+                  <span>{item.optionName}</span>
                 </Button>
               </li>
             ))}

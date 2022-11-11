@@ -60,6 +60,7 @@ interface ManageHeadquarterFormI {
   formDisabled?: boolean;
   creation?: boolean;
   enteType?: 'partner' | 'manager';
+  legend?: string | undefined;
 }
 
 interface ManageHeadquarterI
@@ -70,6 +71,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
   formDisabled,
   creation = false,
   enteType = 'manager',
+  legend = '',
 }) => {
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
@@ -125,6 +127,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
       ]);
       setMovingHeadquarter(false);
       dispatch(resetHeadquarterDetails());
+      dispatch(setHeadquartersList(null));
     }
   }, [open, creation]);
 
@@ -268,8 +271,13 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
         formDisabled={!!formDisabled}
         sendNewValues={(newData) => setNewFormValues({ ...newData })}
         setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+        legend={legend}
       />
-      <Form id='form-manage-headquarter' className='mx-5 mb-5'>
+      <Form
+        legend='interruttore sede itinerante'
+        id='form-manage-headquarter'
+        className='mx-5 mb-5'
+      >
         <Form.Row>
           <div className='col-10 col-md-6'>
             <Toggle

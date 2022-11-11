@@ -10,7 +10,12 @@ import { useAppSelector } from '../../../../redux/hooks';
 import FormProjectGeneralInfo from '../formProjectGeneralInfo';
 import { GetProjectDetail } from '../../../../redux/features/administrativeArea/projects/projectsThunk';
 
-const ProjectAccordionForm = () => {
+interface ProjectAccordionFormI {
+  legend?: string | undefined;
+}
+
+const ProjectAccordionForm: React.FC<ProjectAccordionFormI> = (props) => {
+  const { legend = '' } = props;
   const dispatch = useDispatch();
   const { projectId } = useParams();
   const projectDetails =
@@ -25,7 +30,7 @@ const ProjectAccordionForm = () => {
 
   return (
     <>
-      <FormProjectGeneralInfo formDisabled />
+      <FormProjectGeneralInfo legend={legend} formDisabled />
       <h2 className='h5 mb-4' style={{ color: 'rgb(92, 111, 130)' }}>
         Obiettivi progetto
       </h2>
@@ -40,6 +45,7 @@ const ProjectAccordionForm = () => {
             section={accordion.section as SectionT}
             disabled
             entityDetail={projectDetails}
+            legend="form obbiettivi progetto, i campi con l'asterisco sono obbligatori"
           />
         </Accordion>
       ))}

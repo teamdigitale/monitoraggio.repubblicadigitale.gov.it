@@ -25,6 +25,7 @@ interface FormServiceI {
   sendNewFormsValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   areFormsValid?: (param: boolean) => void;
   getQuestioanarioCompilatoQ3?: (param: string) => void;
+  legend?: string | undefined;
 }
 
 const FormService: React.FC<FormServiceI> = (props) => {
@@ -34,6 +35,7 @@ const FormService: React.FC<FormServiceI> = (props) => {
     sendNewFormsValues = () => ({}),
     areFormsValid = () => ({}),
     getQuestioanarioCompilatoQ3 = () => ({}),
+    legend = '',
   } = props;
   const dispatch = useDispatch();
   const sezioniQuestionarioTemplate = useAppSelector(
@@ -129,6 +131,7 @@ const FormService: React.FC<FormServiceI> = (props) => {
           setNewFormStaticValues({ ...newData });
         }}
         setIsFormValid={(isValid: boolean) => setIsFormStaticValid(isValid)}
+        legend={legend}
       />
       <FormServiceDynamic
         creation={creation}

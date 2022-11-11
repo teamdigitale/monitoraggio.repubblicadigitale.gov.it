@@ -5,11 +5,12 @@ import CuoreBluVuoto from '../../../public/assets/img/hollow-blue-heart.png';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../../utils/datesHelper';
+import { ForumCardsI } from '../CardShowcase/cardShowcase';
 /* 
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
  */
-interface CardSliderI {
+/* interface CardSliderI {
   id: string | number;
   category_label?: string;
   date?: string;
@@ -20,16 +21,16 @@ interface CardSliderI {
   views?: number;
   isDocument?: boolean;
   isNews?: boolean;
-  isCommunity?: boolean;
-  /*  rightArrow?: boolean;
+  isCommunity?: boolean; */
+/*  rightArrow?: boolean;
   leftArrow?: boolean;
   increment?: () => void;
   decrement?: () => void; */
-}
+/* } */
 
-const CardSlider: React.FC<CardSliderI> = (props) => {
+const CardSlider: React.FC<ForumCardsI> = (props) => {
   const {
-    id,
+    id = '',
     category_label,
     date,
     title,
@@ -62,10 +63,24 @@ const CardSlider: React.FC<CardSliderI> = (props) => {
   return (
     <div
       role='button'
-      onKeyDown={navigateByType}
+      onKeyDown={(e) => {
+        if (e.key === ' ') {
+          e.preventDefault();
+          navigateByType();
+        }
+      }}
       onClick={navigateByType}
       tabIndex={0}
       className={clsx('card-slider-container', 'py-3', 'px-4')}
+      aria-label={`Categoria: ${category_label}. Data: ${
+        date && formatDate(date, 'shortDate')
+      }. Titolo ${
+        isDocument ? 'documento' : isNews ? 'news' : 'topic'
+      }: ${title}. ${likes} like. ${comment_count} ${
+        Number(comment_count) === 1 ? 'commento' : 'commenti'
+      }. ${downloads} download. ${views} ${
+        Number(views) === 1 ? 'visualizzazione' : 'visualizzazioni'
+      }`}
     >
       <div className='pl-1'>
         <div className='card-slider-container__pre-title'>
@@ -80,21 +95,39 @@ const CardSlider: React.FC<CardSliderI> = (props) => {
         <div className={clsx('d-flex', 'justify-content-end', 'pt-4')}>
           {!isDocument ? (
             <div className='d-flex align-items-center'>
-              <Icon icon={CuoreBluVuoto} size='xs' color='primary' />
+              <Icon
+                icon={CuoreBluVuoto}
+                size='xs'
+                color='primary'
+                aria-label='Like'
+                aria-hidden
+              />
               <span className='card-slider-container__span-icons ml-1 mr-2'>
                 {likes}
               </span>
             </div>
           ) : null}
           <div className='d-flex align-items-center'>
-            <Icon icon='it-comment' size='sm' color='primary' />
+            <Icon
+              icon='it-comment'
+              size='sm'
+              color='primary'
+              aria-label='Commento'
+              aria-hidden
+            />
             <span className='card-slider-container__span-icons ml-1 mr-2'>
               {comment_count}
             </span>
           </div>
           {isDocument ? (
             <div className='d-flex align-items-center'>
-              <Icon icon='it-download' size='sm' color='primary' />
+              <Icon
+                icon='it-download'
+                size='sm'
+                color='primary'
+                aria-label='Download'
+                aria-hidden
+              />
               <span className='card-slider-container__span-icons ml-1'>
                 {downloads}
               </span>
@@ -102,7 +135,13 @@ const CardSlider: React.FC<CardSliderI> = (props) => {
           ) : null}
           {!isDocument ? (
             <div className='d-flex align-items-center'>
-              <Icon icon='it-password-visible' size='sm' color='primary' />
+              <Icon
+                icon='it-password-visible'
+                size='sm'
+                color='primary'
+                aria-label='Views'
+                aria-hidden
+              />
               <span className='card-slider-container__span-icons ml-1'>
                 {views}
               </span>

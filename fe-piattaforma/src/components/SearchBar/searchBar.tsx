@@ -142,7 +142,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
               size='xs'
               color='primary'
               aria-label='Chiudi'
-            ></Icon>
+            />
           </Button>
         )}
         {children}
@@ -206,7 +206,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                 placeholder={device.mediaIsPhone ? '' : placeholder}
                 value={searchValue}
                 withLabel={false}
-                aria-label={id}
+                // aria-label='Input per la ricerca'
                 onKeyPress={(e) => {
                   if (e.key === 'Enter') {
                     handleOnSubmit();
@@ -219,7 +219,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
               {!hasSearchValue && device.mediaIsPhone && (
                 <span id='placeholder-icon' className='d-flex flex-row'>
                   <span
-                    className='font-weight-normal primary-color-a12 mr-2'
+                    className='font-weight-normal primary-color-a12 mr-2 word-spacing'
                     onClick={focusOfSearch}
                     onKeyDown={(e) => {
                       if (e.key === ' ') {
@@ -239,7 +239,12 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                       >
                         {tooltipText}
                       </Tooltip>
-                      <Icon icon='it-warning-circle' size='xs' />
+                      <Icon
+                        icon='it-warning-circle'
+                        size='xs'
+                        aria-label='Avviso'
+                        aria-hidden
+                      />
                     </div>
                   )}
                 </span>
@@ -251,13 +256,14 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                   onClick={clearSearch}
                   className='border-0 px-0'
                   id='button-addon1'
+                  aria-label={`Elimina filtro ${searchValue}`}
                 >
                   <Icon
                     icon='it-close-big'
                     aria-hidden
                     size='xs'
                     color='primary'
-                    aria-label='Chiudi'
+                    aria-label='elimina filtro'
                   />
                 </Button>
               </div>
@@ -275,7 +281,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                 <Button
                   className='border-0'
                   onClick={handleOnSubmit}
-                  aria-label='Pulsante cerca'
+                  aria-label='Avvia ricerca'
                 >
                   <Icon
                     icon='it-search'

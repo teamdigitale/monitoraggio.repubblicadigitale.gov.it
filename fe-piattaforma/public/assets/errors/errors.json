@@ -1,440 +1,444 @@
 {
   "errors": {
     "A01": {
-        "titolo": "",
-        "descrizione": "Accesso non consentito"
+      "titolo": "",
+      "descrizione": "Accesso non consentito"
     },
     "A02": {
-        "titolo": "",
-        "descrizione": "Contenuto non consentito"
+      "titolo": "",
+      "descrizione": "Contenuto non consentito"
     },
     "C01": {
-        "titolo": "",
-        "descrizione": "Errore Risorsa non trovata"
+      "titolo": "",
+      "descrizione": "Errore Risorsa non trovata"
     },
     "C02": {
-        "titolo": "",
-        "descrizione": "Errore storicizazione ente"
+      "titolo": "",
+      "descrizione": "Errore storicizazione ente"
     },
     "C03": {
-        "titolo": "",
-        "descrizione": "Errore Utente con ruolo DEGP/REGP non definito per il progetto"
+      "titolo": "",
+      "descrizione": "Errore Utente con ruolo DEGP/REGP non definito per il progetto"
     },
     "C04": {
-        "titolo": "",
-        "descrizione": "Errore Utente con ruolo DEG/REG non definito per il programma"
+      "titolo": "",
+      "descrizione": "Errore Utente con ruolo DEG/REG non definito per il programma"
     },
     "C05": {
-        "titolo": "",
-        "descrizione": "Errore Utente con ruolo DEPP/REPP non definito per il progetto"
+      "titolo": "",
+      "descrizione": "Errore Utente con ruolo DEPP/REPP non definito per il progetto"
     },
     "C06": {
-        "titolo": "",
-        "descrizione": "Errore Combinazione (ProgrammaProgetto) non trovata"
+      "titolo": "",
+      "descrizione": "Errore Combinazione (ProgrammaProgetto) non trovata"
     },
     "C07": {
-        "titolo": "",
-        "descrizione": "Errore integrazione dati utente"
+      "titolo": "",
+      "descrizione": "Errore integrazione dati utente"
     },
     "D01": {
-        "titolo": "SI È VERIFICATO UN ERRORE",
-        "descrizione": "Ti invitiamo a riprovare più tardi."
+      "titolo": "SI È VERIFICATO UN ERRORE",
+      "descrizione": "Ti invitiamo a riprovare più tardi."
     },
     "G01": {
-        "titolo": "",
-        "descrizione": "Errore Generico"
+      "titolo": "",
+      "descrizione": "Errore Generico"
     },
     "G02": {
-        "titolo": "",
-        "descrizione": "Errore Richiesta errata"
+      "titolo": "",
+      "descrizione": "Errore Richiesta errata"
     },
     "G03": {
-        "titolo": "",
-        "descrizione": "Errore Pagina richista non esistente"
+      "titolo": "",
+      "descrizione": "Errore Pagina richista non esistente"
     },
     "R01": {
-        "titolo": "NOME RUOLO GIÀ IN USO",
-        "descrizione": "Il nome inserito risulta associato a un altro ruolo. Inserisci un nome ruolo differente"
+      "titolo": "NOME RUOLO GIÀ IN USO",
+      "descrizione": "Il nome inserito risulta associato a un altro ruolo. Inserisci un nome ruolo differente"
     },
     "R02": {
-        "titolo": "",
-        "descrizione": "Errore impossibile aggiornare il ruolo"
+      "titolo": "",
+      "descrizione": "Errore impossibile aggiornare il ruolo"
     },
     "R03": {
-        "titolo": "",
-        "descrizione": "Errore impossibile cancellare il ruolo DTD/DSCU"
+      "titolo": "",
+      "descrizione": "Errore impossibile cancellare il ruolo DTD/DSCU"
     },
     "R04": {
-        "titolo": "",
-        "descrizione": "Errore impossibile cancellare il ruoli predefiniti"
+      "titolo": "",
+      "descrizione": "Errore impossibile cancellare il ruoli predefiniti"
     },
     "R05": {
-        "titolo": "",
-        "descrizione": "Errore impossibile cancellare ruolo associato ad utente"
+      "titolo": "",
+      "descrizione": "Errore impossibile cancellare ruolo associato ad utente"
     },
     "R06": {
-        "titolo": "",
-        "descrizione": "Errore impossibile cancellare ruolo"
+      "titolo": "",
+      "descrizione": "Errore impossibile cancellare ruolo"
     },
     "R07": {
-        "titolo": "",
-        "descrizione": "Errore impossibile attivare il ruolo per l'utente"
+      "titolo": "",
+      "descrizione": "Errore impossibile attivare il ruolo per l'utente"
     },
     "RG01": {
-        "titolo": "",
-        "descrizione": "Errore impossibile creare associazione ruolo al gruppo"
+      "titolo": "",
+      "descrizione": "Errore impossibile creare associazione ruolo al gruppo"
     },
     "RG02": {
-        "titolo": "",
-        "descrizione": "Errore impossibile aggiornare associazione ruolo al gruppo"
+      "titolo": "",
+      "descrizione": "Errore impossibile aggiornare associazione ruolo al gruppo"
     },
     "RC01": {
-        "titolo": "",
-        "descrizione": "Errore durante l’inizializzazione della chat"
+      "titolo": "",
+      "descrizione": "Errore durante l’inizializzazione della chat"
     },
     "RC02": {
-        "titolo": "",
-        "descrizione": "Errore durante l’inizializzazione della chat"
+      "titolo": "",
+      "descrizione": "Errore durante l’inizializzazione della chat"
     },
     "RC03": {
-        "titolo": "",
-        "descrizione": "Errore durante l’inizializzazione della chat"
+      "titolo": "",
+      "descrizione": "Errore durante l’inizializzazione della chat"
     },
     "U01": {
-        "titolo": "CODICE FISCALE GIÀ IN USO",
-        "descrizione": "Il codice fiscale inserito risulta associato a un altro utente. Ti invitiamo a verificarne la correttezza"
+      "titolo": "CODICE FISCALE GIÀ IN USO",
+      "descrizione": "Il codice fiscale inserito risulta associato a un altro utente. Ti invitiamo a verificarne la correttezza"
     },
     "U02": {
-        "titolo": "",
-        "descrizione": "Errore cancellazione utente con ruolo associato"
+      "titolo": "",
+      "descrizione": "Errore cancellazione utente con ruolo associato"
     },
     "U03": {
-        "titolo": "",
-        "descrizione": "Errore l'utente con codice fiscale possiede già il ruolo"
+      "titolo": "",
+      "descrizione": "Errore l'utente con codice fiscale possiede già il ruolo"
     },
     "U04": {
-        "titolo": "",
-        "descrizione": "Errore impossibile associare il ruolo all'utente"
+      "titolo": "",
+      "descrizione": "Errore impossibile associare il ruolo all'utente"
     },
     "U05": {
-        "titolo": "",
-        "descrizione": "Errore Impossibile cancellare ruolo non associato all'utente"
+      "titolo": "",
+      "descrizione": "Errore Impossibile cancellare ruolo non associato all'utente"
     },
     "U06": {
-        "titolo": "",
-        "descrizione": "Errore ruolo non definito per l'utente"
+      "titolo": "",
+      "descrizione": "Errore ruolo non definito per l'utente"
     },
     "U07": {
-        "titolo": "CODICE FISCALE  O N. DOCUMENTO GIÀ IN USO",
-        "descrizione": "Il codice fiscale o il n. documento inserito risulta associato a un altro cittadino. Ti invitiamo a verificarne la correttezza"
+      "titolo": "CODICE FISCALE  O N. DOCUMENTO GIÀ IN USO",
+      "descrizione": "Il codice fiscale o il n. documento inserito risulta associato a un altro cittadino. Ti invitiamo a verificarne la correttezza"
     },
     "U08": {
-        "titolo": "",
-        "descrizione": "Errore codice fiscale o numero documento non specificato"
+      "titolo": "",
+      "descrizione": "Errore codice fiscale o numero documento non specificato"
     },
     "U09": {
-        "titolo": "",
-        "descrizione": "Errore impossibile aggiungere ruolo all'utente"
+      "titolo": "",
+      "descrizione": "Errore impossibile aggiungere ruolo all'utente"
     },
     "U10": {
-        "titolo": "",
-        "descrizione": "Errore impossibile cancellare ruolo all'utente"
+      "titolo": "",
+      "descrizione": "Errore impossibile cancellare ruolo all'utente"
     },
     "U16": {
-        "titolo": "RUOLO GIÀ ASSEGNATO ALL'UTENTE",
-        "descrizione": "Seleziona un altro ruolo"
+      "titolo": "RUOLO GIÀ ASSEGNATO ALL'UTENTE",
+      "descrizione": "Seleziona un altro ruolo"
     },
     "U20": {
-        "titolo": "UTENTE NON TROVATO",
-        "descrizione": "L'utente non è presente su Facilita"
+      "titolo": "UTENTE NON TROVATO",
+      "descrizione": "L'utente non è presente su Facilita"
+    },
+    "U23": {
+      "titolo": "CITTADINO GIÀ ASSOCIATO AL SERVIZIO",
+      "descrizione": "Il cittadino inserito risulta già essere associato al servizio"
     },
     "S01": {
-        "titolo": "CARICAMENTO NON RIUSCITO",
-        "descrizione": "Non è stato possibile caricare la lista cittadini. Ti invitiamo a riprovare più tardi"
+      "titolo": "CARICAMENTO NON RIUSCITO",
+      "descrizione": "Non è stato possibile caricare la lista cittadini. Ti invitiamo a riprovare più tardi"
     },
     "S02": {
-        "titolo": "ELENCO NON SCARICATO",
-        "descrizione": "Non è stato possibile scaricare l'elenco servizi. Ti invitiamo a riprovare più tardi"
+      "titolo": "ELENCO NON SCARICATO",
+      "descrizione": "Non è stato possibile scaricare l'elenco servizi. Ti invitiamo a riprovare più tardi"
     },
     "S03": {
-        "titolo": "",
-        "descrizione": "Errore servizio non accessibile per l'utente"
+      "titolo": "",
+      "descrizione": "Errore servizio non accessibile per l'utente"
     },
     "S04": {
-        "titolo": "",
-        "descrizione": "Errore creazione servizio. Nessun questionario template associato al programma"
+      "titolo": "",
+      "descrizione": "Errore creazione servizio. Nessun questionario template associato al programma"
     },
     "S05": {
-        "titolo": "",
-        "descrizione": "Errore creazione servizio. Utente non ha ruolo FACILITATORE"
+      "titolo": "",
+      "descrizione": "Errore creazione servizio. Utente non ha ruolo FACILITATORE"
     },
     "S06": {
-        "titolo": "",
-        "descrizione": "Errore aggiornare servizio. Utente non ha ruolo FACILITATORE"
+      "titolo": "",
+      "descrizione": "Errore aggiornare servizio. Utente non ha ruolo FACILITATORE"
     },
     "S07": {
-        "titolo": "",
-        "descrizione": "Errore impossibile eliminare il servizio."
+      "titolo": "",
+      "descrizione": "Errore impossibile eliminare il servizio."
     },
     "S08": {
-        "titolo": "NOME SERVIZIO GIÀ IN USO",
-        "descrizione": "Il nome inserito risulta associato a un altro servizio. Inserisci un nome servizio differente"
+      "titolo": "NOME SERVIZIO GIÀ IN USO",
+      "descrizione": "Il nome inserito risulta associato a un altro servizio. Inserisci un nome servizio differente"
     },
     "SD01": {
-        "titolo": "NOME SEDE GIÀ IN USO",
-        "descrizione": "Il nome inserito risulta associato a un'altra sede. Inserisci un nome sede differente"
+      "titolo": "NOME SEDE GIÀ IN USO",
+      "descrizione": "Il nome inserito risulta associato a un'altra sede. Inserisci un nome sede differente"
     },
     "SD02": {
-        "titolo": "NUOVO NOME SEDE GIÀ IN USO",
-        "descrizione": "Il nuovo nome inserito risulta associato a un'altra sede. Inserisci un nome sede differente"
+      "titolo": "NUOVO NOME SEDE GIÀ IN USO",
+      "descrizione": "Il nuovo nome inserito risulta associato a un'altra sede. Inserisci un nome sede differente"
     },
     "Q01": {
-        "titolo": "",
-        "descrizione": "Errore questionario template inesistente"
+      "titolo": "",
+      "descrizione": "Errore questionario template inesistente"
     },
     "QT01": {
-        "titolo": "ELENCO NON SCARICATO",
-        "descrizione": "Non è stato possibile scaricare l'elenco questionari. Ti invitiamo a riprovare più tardi"
+      "titolo": "ELENCO NON SCARICATO",
+      "descrizione": "Non è stato possibile scaricare l'elenco questionari. Ti invitiamo a riprovare più tardi"
     },
     "QT02": {
-        "titolo": "NUOVO NOME QUESTIONARIO GIÀ IN USO",
-        "descrizione": "Il nuovo nome inserito risulta associato a un altro questionario. Inserisci un nome questionario differente"
+      "titolo": "NUOVO NOME QUESTIONARIO GIÀ IN USO",
+      "descrizione": "Il nuovo nome inserito risulta associato a un altro questionario. Inserisci un nome questionario differente"
     },
     "QT03": {
-        "titolo": "",
-        "descrizione": "Errore impossibile cancellare il questionario"
+      "titolo": "",
+      "descrizione": "Errore impossibile cancellare il questionario"
     },
     "QT04": {
-        "titolo": "",
-        "descrizione": "Errore impossibile recuperare il questionario poichè inesistente su MongoDB"
+      "titolo": "",
+      "descrizione": "Errore impossibile recuperare il questionario poichè inesistente su MongoDB"
     },
     "QT05": {
-        "titolo": "",
-        "descrizione": "Errore impossibile recuperare il questionario poichè inesistente su MySql"
+      "titolo": "",
+      "descrizione": "Errore impossibile recuperare il questionario poichè inesistente su MySql"
     },
     "QT06": {
-        "titolo": "",
-        "descrizione": "Errore impossibile avere un programma senza associato alcun questionario template"
+      "titolo": "",
+      "descrizione": "Errore impossibile avere un programma senza associato alcun questionario template"
     },
     "QT07": {
-        "titolo": "",
-        "descrizione": "Errore impossibile salvare il questionario template perchè id questionario template già esistente"
+      "titolo": "",
+      "descrizione": "Errore impossibile salvare il questionario template perchè id questionario template già esistente"
     },
     "QC01": {
-        "titolo": "",
-        "descrizione": "Errore questionario compilato non presente su mySql"
+      "titolo": "",
+      "descrizione": "Errore questionario compilato non presente su mySql"
     },
     "QC02": {
-        "titolo": "",
-        "descrizione": "Errore questionario compilato non presente su MongoDB"
+      "titolo": "",
+      "descrizione": "Errore questionario compilato non presente su MongoDB"
     },
     "CIT01": {
-        "titolo": "CARICAMENTO NON RIUSCITO",
-        "descrizione": "Non è stato possibile caricare la lista cittadini. Ti invitiamo a riprovare più tardi"
+      "titolo": "CARICAMENTO NON RIUSCITO",
+      "descrizione": "Non è stato possibile caricare la lista cittadini. Ti invitiamo a riprovare più tardi"
     },
     "CIT02": {
-        "titolo": "",
-        "descrizione": "Errore impossibile aggiornare cittadino"
+      "titolo": "",
+      "descrizione": "Errore impossibile aggiornare cittadino"
     },
     "CIT03": {
-        "titolo": "ELENCO NON SCARICATO",
-        "descrizione": "Non è stato possibile scaricare l'elenco cittadini. Ti invitiamo a riprovare più tardi"
+      "titolo": "ELENCO NON SCARICATO",
+      "descrizione": "Non è stato possibile scaricare l'elenco cittadini. Ti invitiamo a riprovare più tardi"
     },
     "E01": {
-        "titolo": "",
-        "descrizione": "Errore invio email"
+      "titolo": "",
+      "descrizione": "Errore invio email"
     },
     "EN01": {
-        "titolo": "ELENCO NON SCARICATO",
-        "descrizione": "Non è stato possibile scaricare l'elenco enti. Ti invitiamo a riprovare più tardi"
+      "titolo": "ELENCO NON SCARICATO",
+      "descrizione": "Non è stato possibile scaricare l'elenco enti. Ti invitiamo a riprovare più tardi"
     },
     "EN02": {
-        "titolo": "",
-        "descrizione": "Errore file upload enti non valido"
+      "titolo": "",
+      "descrizione": "Errore file upload enti non valido"
     },
     "EN03": {
-        "titolo": "",
-        "descrizione": "Errore Impossibile assegnare ente come gestore del programma"
+      "titolo": "",
+      "descrizione": "Errore Impossibile assegnare ente come gestore del programma"
     },
     "EN04": {
-        "titolo": "",
-        "descrizione": "Errore Impossibile assegnare referente/delegato ente partner per progetto"
+      "titolo": "",
+      "descrizione": "Errore Impossibile assegnare referente/delegato ente partner per progetto"
     },
     "EN05": {
-        "titolo": "CARICAMENTO NON RIUSCITO",
-        "descrizione": "Non è stato possibile caricare la lista enti partner. Ti invitiamo a riprovare più tardi"
+      "titolo": "CARICAMENTO NON RIUSCITO",
+      "descrizione": "Non è stato possibile caricare la lista enti partner. Ti invitiamo a riprovare più tardi"
     },
     "EN06": {
-        "titolo": "RIMOZIONE NON CONSENTITA",
-        "descrizione": "Il referente/delegato non può essere rimosso, perché è l'unico attivo sull'ente partner"
+      "titolo": "RIMOZIONE NON CONSENTITA",
+      "descrizione": "Il referente/delegato non può essere rimosso, perché è l'unico attivo sull'ente partner"
     },
     "EN07": {
-        "titolo": "",
-        "descrizione": "Errore Impossibile associare facilitatore/volontario sulla sede-ente-progetto"
+      "titolo": "",
+      "descrizione": "Errore Impossibile associare facilitatore/volontario sulla sede-ente-progetto"
     },
     "EN08": {
-        "titolo": "",
-        "descrizione": "Errore Impossibile cancellare associazione facilitatore/volontario sulla sede-ente-progetto"
+      "titolo": "",
+      "descrizione": "Errore Impossibile cancellare associazione facilitatore/volontario sulla sede-ente-progetto"
     },
     "EN09": {
-        "titolo": "",
-        "descrizione": "Errore Impossibile terminare/cancellare associazione Ente-Sede-Progetto"
+      "titolo": "",
+      "descrizione": "Errore Impossibile terminare/cancellare associazione Ente-Sede-Progetto"
     },
     "EN10": {
-        "titolo": "CODICE FISCALE GIÀ IN USO",
-        "descrizione": "Il codice fiscale inserito risulta associato a un altro ente. Ti invitiamo a verificarne la correttezza"
+      "titolo": "CODICE FISCALE GIÀ IN USO",
+      "descrizione": "Il codice fiscale inserito risulta associato a un altro ente. Ti invitiamo a verificarne la correttezza"
     },
     "EN11": {
-        "titolo": "",
-        "descrizione": "Errore Impossibile assegnare referente/delegato ente gestore programma per il programma"
+      "titolo": "",
+      "descrizione": "Errore Impossibile assegnare referente/delegato ente gestore programma per il programma"
     },
     "EN12": {
-        "titolo": "",
-        "descrizione": "Errore Impossibile assegnare referente/delegato ente gestore progetto per il progetto"
+      "titolo": "",
+      "descrizione": "Errore Impossibile assegnare referente/delegato ente gestore progetto per il progetto"
     },
     "EN13": {
-        "titolo": "",
-        "descrizione": "Errore Impossibile aggiornare ente"
+      "titolo": "",
+      "descrizione": "Errore Impossibile aggiornare ente"
     },
     "EN14": {
-        "titolo": "NUOVO CODICE FISCALE GIÀ IN USO",
-        "descrizione": "Il nuovo codice fiscale inserito risulta associato a un altro utente. Ti invitiamo a verificarne la correttezza"
+      "titolo": "NUOVO CODICE FISCALE GIÀ IN USO",
+      "descrizione": "Il nuovo codice fiscale inserito risulta associato a un altro utente. Ti invitiamo a verificarne la correttezza"
     },
     "EN15": {
-        "titolo": "",
-        "descrizione": "Il codice fiscale inserito risulta appartenere già ad un altro ente"
+      "titolo": "",
+      "descrizione": "Il codice fiscale inserito risulta appartenere già ad un altro ente"
     },
     "EN16": {
-        "titolo": "",
-        "descrizione": "Errore Impossibile cancellare ente partner per progetto"
+      "titolo": "",
+      "descrizione": "Errore Impossibile cancellare ente partner per progetto"
     },
     "EN17": {
-        "titolo": "",
-        "descrizione": "Errore Impossibile cancellare ente gestore programma per programma"
+      "titolo": "",
+      "descrizione": "Errore Impossibile cancellare ente gestore programma per programma"
     },
     "EN18": {
-        "titolo": "",
-        "descrizione": "Errore Impossibile cancellare ente gestore progetto per progetto"
+      "titolo": "",
+      "descrizione": "Errore Impossibile cancellare ente gestore progetto per progetto"
     },
     "EN19": {
-        "titolo": "",
-        "descrizione": "Errore Impossibile terminare ente gestore programma per programma"
+      "titolo": "",
+      "descrizione": "Errore Impossibile terminare ente gestore programma per programma"
     },
     "EN20": {
-        "titolo": "",
-        "descrizione": "Errore Impossibile terminare ente gestore progetto per progetto"
+      "titolo": "",
+      "descrizione": "Errore Impossibile terminare ente gestore progetto per progetto"
     },
     "EN21": {
-        "titolo": "",
-        "descrizione": "Errore Impossibile terminare ente partner per progetto"
+      "titolo": "",
+      "descrizione": "Errore Impossibile terminare ente partner per progetto"
     },
     "EN22": {
-        "titolo": "RIMOZIONE NON CONSENTITA",
-        "descrizione": "Il referente/delegato non può essere rimosso, perché è l'unico attivo sul programma"
+      "titolo": "RIMOZIONE NON CONSENTITA",
+      "descrizione": "Il referente/delegato non può essere rimosso, perché è l'unico attivo sul programma"
     },
     "EN23": {
-        "titolo": "RIMOZIONE NON CONSENTITA",
-        "descrizione": "Il referente/delegato non può essere rimosso, perché è l'unico attivo sul progetto"
+      "titolo": "RIMOZIONE NON CONSENTITA",
+      "descrizione": "Il referente/delegato non può essere rimosso, perché è l'unico attivo sul progetto"
     },
     "EN25": {
-        "titolo": "NOME ENTE GIÀ IN USO",
-        "descrizione": "Il nome inserito risulta associato a un altro ente. Inserisci un nome ente differente"
+      "titolo": "NOME ENTE GIÀ IN USO",
+      "descrizione": "Il nome inserito risulta associato a un altro ente. Inserisci un nome ente differente"
     },
     "T01": {
-        "titolo": "",
-        "descrizione": "Errore token non valido"
+      "titolo": "",
+      "descrizione": "Errore token non valido"
     },
     "T02": {
-        "titolo": "",
-        "descrizione": "Errore token scaduto"
+      "titolo": "",
+      "descrizione": "Errore token scaduto"
     },
     "P01": {
-        "titolo": "ID PROGRAMMA GIÀ IN USO",
-        "descrizione": "L'ID inserito risulta associato a un altro programma. Ti invitiamo a verificarne la correttezza"
+      "titolo": "ID PROGRAMMA GIÀ IN USO",
+      "descrizione": "L'ID inserito risulta associato a un altro programma. Ti invitiamo a verificarne la correttezza"
     },
     "P02": {
-        "titolo": "",
-        "descrizione": "Errore creazione programma. Questionario template default associato non esistente"
+      "titolo": "",
+      "descrizione": "Errore creazione programma. Questionario template default associato non esistente"
     },
     "P03": {
-        "titolo": "",
-        "descrizione": "Errore impossibile terminare programma"
+      "titolo": "",
+      "descrizione": "Errore impossibile terminare programma"
     },
     "P04": {
-        "titolo": "",
-        "descrizione": "Errore impossibile cancellare programma"
+      "titolo": "",
+      "descrizione": "Errore impossibile cancellare programma"
     },
     "P05": {
-        "titolo": "",
-        "descrizione": "Errore impossibile assegnare programma ad ente gestore"
+      "titolo": "",
+      "descrizione": "Errore impossibile assegnare programma ad ente gestore"
     },
     "P06": {
-        "titolo": "NUOVO ID PROGRAMMA GIÀ IN USO",
-        "descrizione": "Il nuovo ID inserito risulta associato a un altro programma. Ti invitiamo a verificarne la correttezza"
+      "titolo": "NUOVO ID PROGRAMMA GIÀ IN USO",
+      "descrizione": "Il nuovo ID inserito risulta associato a un altro programma. Ti invitiamo a verificarne la correttezza"
     },
     "P07": {
-        "titolo": "",
-        "descrizione": "Errore impossibile associare questionario al programma"
+      "titolo": "",
+      "descrizione": "Errore impossibile associare questionario al programma"
     },
     "P08": {
-        "titolo": "ELENCO NON SCARICATO",
-        "descrizione": "Non è stato possibile scaricare l'elenco programmi. Ti invitiamo a riprovare più tardi"
+      "titolo": "ELENCO NON SCARICATO",
+      "descrizione": "Non è stato possibile scaricare l'elenco programmi. Ti invitiamo a riprovare più tardi"
     },
     "PR01": {
-        "titolo": "",
-        "descrizione": "Errore creazione progetto"
+      "titolo": "",
+      "descrizione": "Errore creazione progetto"
     },
     "PR02": {
-        "titolo": "",
-        "descrizione": "Errore impossibile cancellare progetto"
+      "titolo": "",
+      "descrizione": "Errore impossibile cancellare progetto"
     },
     "PR03": {
-        "titolo": "",
-        "descrizione": "Errore impossibile terminare progetto"
+      "titolo": "",
+      "descrizione": "Errore impossibile terminare progetto"
     },
     "PR04": {
-        "titolo": "",
-        "descrizione": "Errore impossibile aggiornare progetto"
+      "titolo": "",
+      "descrizione": "Errore impossibile aggiornare progetto"
     },
     "PR05": {
-        "titolo": "",
-        "descrizione": "Errore impossibile assegnare progetto ad ente gestore"
+      "titolo": "",
+      "descrizione": "Errore impossibile assegnare progetto ad ente gestore"
     },
     "PR06": {
-        "titolo": "",
-        "descrizione": "Errore impossibile assegnare progetto ad al programma"
+      "titolo": "",
+      "descrizione": "Errore impossibile assegnare progetto ad al programma"
     },
     "PR07": {
-        "titolo": "",
-        "descrizione": "Errore attivare progetto"
+      "titolo": "",
+      "descrizione": "Errore attivare progetto"
     },
     "PR08": {
-        "titolo": "ELENCO NON SCARICATO",
-        "descrizione": "Non è stato possibile scaricare l'elenco progetti. Ti invitiamo a riprovare più tardi"
+      "titolo": "ELENCO NON SCARICATO",
+      "descrizione": "Non è stato possibile scaricare l'elenco progetti. Ti invitiamo a riprovare più tardi"
     },
     "PR09": {
-        "titolo": "",
-        "descrizione": "Errore Impossibile Assegnare gestore progetto per il progetto. Unico Facilitatore o Volontario attivo sul progetto"
+      "titolo": "",
+      "descrizione": "Errore Impossibile Assegnare gestore progetto per il progetto. Unico Facilitatore o Volontario attivo sul progetto"
     },
     "U21": {
-        "titolo": "",
-        "descrizione": "L’indirizzo email risulta già essere presente in piattaforma"
+      "titolo": "",
+      "descrizione": "L’indirizzo email risulta già essere presente in piattaforma"
     },
     "WD01": {
-        "titolo": "",
-        "descrizione": "Si è verificato un errore durante la registrazione al tool di Collaboration"
+      "titolo": "",
+      "descrizione": "Si è verificato un errore durante la registrazione al tool di Collaboration"
     },
     "WD02": {
-        "titolo": "",
-        "descrizione": "Si è verificato un errore durante la registrazione al tool di Collaboration"
+      "titolo": "",
+      "descrizione": "Si è verificato un errore durante la registrazione al tool di Collaboration"
     },
     "CMCRA05": {
-        "titolo": "",
-        "descrizione": "Attenzione, hai inserito un termine non consentito"
+      "titolo": "",
+      "descrizione": "Attenzione, hai inserito un termine non consentito"
     },
     "CMRRA06": {
-        "titolo": "",
-        "descrizione": "Attenzione, hai inserito un termine non consentito"
+      "titolo": "",
+      "descrizione": "Attenzione, hai inserito un termine non consentito"
     }
-}
+  }
 }

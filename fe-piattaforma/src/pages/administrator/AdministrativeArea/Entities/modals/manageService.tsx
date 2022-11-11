@@ -27,6 +27,7 @@ const id = formTypes.SERVICES;
 interface ManageServicesFormI {
   formDisabled?: boolean;
   creation?: boolean;
+  legend?: string | undefined;
 }
 
 interface ManageServicesI extends withFormHandlerProps, ManageServicesFormI {}
@@ -35,6 +36,7 @@ const ManageServices: React.FC<ManageServicesI> = ({
   clearForm = () => ({}),
   formDisabled,
   creation,
+  legend = '',
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -145,6 +147,7 @@ const ManageServices: React.FC<ManageServicesI> = ({
           getQuestioanarioCompilatoQ3={(answersQ3: string) =>
             setQuestionarioCompilatoQ3(answersQ3)
           }
+          legend={legend}
         />
       </div>
     </GenericModal>

@@ -295,7 +295,11 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
           goBackPath='/area-amministrativa/questionari'
         />
 
-        <SurveyTemplate editMode={editModeState} cloneMode={cloneModeState} />
+        <SurveyTemplate
+          legend="form questionario, i campi con l'asterisco sono obbligatori"
+          editMode={editModeState}
+          cloneMode={cloneModeState}
+        />
 
         {!entityId && (
           <div
@@ -310,7 +314,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
             )}
           >
             {editModeState || cloneModeState ? (
-              <div aria-hidden='true' className='mt-5 w-100'>
+              <div className='mt-5 w-100'>
                 <Sticky
                   mode='bottom'
                   stickyClassName='sticky bg-white container'
@@ -319,7 +323,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
                 </Sticky>
               </div>
             ) : (
-              <div aria-hidden='true' className='mt-5 w-100'>
+              <div className='mt-5 w-100'>
                 <Sticky
                   mode='bottom'
                   stickyClassName={clsx(

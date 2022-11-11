@@ -41,6 +41,7 @@ const FormServiceCitizenBase: React.FC<FormEnteGestoreProgettoFullInterface> = (
     //creation = false,
     isValidForm = false,
     selectedCitizen = undefined,
+    legend = '',
   } = props;
 
   // const device = useAppSelector(selectDevice);
@@ -81,7 +82,12 @@ const FormServiceCitizenBase: React.FC<FormEnteGestoreProgettoFullInterface> = (
   }, [form]);
 
   return (
-    <Form id='form-citizen' className='mt-5' formDisabled={formDisabled}>
+    <Form
+      legend={legend}
+      id='form-citizen'
+      className='mt-5'
+      formDisabled={formDisabled}
+    >
       <Form.Row>
         <Input
           {...form?.nome}
@@ -134,12 +140,14 @@ const form = newForm([
     field: 'nome',
     label: 'Nome',
     id: 'name',
+    regex: RegexpType.NAME_SURNAME,
   }),
   newFormField({
     ...CommonFields.COGNOME,
     field: 'cognome',
     label: 'Cognome',
     id: 'surname',
+    regex: RegexpType.NAME_SURNAME,
   }),
   newFormField({
     ...CommonFields.CODICE_FISCALE,

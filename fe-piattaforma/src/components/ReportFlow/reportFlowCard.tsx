@@ -734,7 +734,7 @@ const ReportFlowCard: React.FC<ReportFlowI> = (props) => {
                     <Icon
                       icon={DoubleChevronLeft}
                       size='xs'
-                      aria-label='icona indietro'
+                      aria-label='step precedente'
                     />
                   </div>
                   <div>
@@ -765,7 +765,7 @@ const ReportFlowCard: React.FC<ReportFlowI> = (props) => {
                   <Icon
                     icon={DoubleChevronRight}
                     size='xs'
-                    aria-label='icona avanti'
+                    aria-label='step successivo'
                   />
                 </div>
               </>
@@ -778,7 +778,7 @@ const ReportFlowCard: React.FC<ReportFlowI> = (props) => {
         className='report-flow-container__image'
         style={{ maxWidth: '66px', maxHeight: '88px' }}
       >
-        <img src={ReportFlowIcon} alt='icona flusso segnalazione' />
+        <img src={ReportFlowIcon} alt='flusso segnalazione' />
       </div>
     </div>
   );

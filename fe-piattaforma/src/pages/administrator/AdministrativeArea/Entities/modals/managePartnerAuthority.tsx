@@ -33,6 +33,7 @@ const id = 'ente-partner';
 interface ManagePartnerAuthorityFormI {
   formDisabled?: boolean;
   creation?: boolean;
+  legend?: string | undefined;
 }
 
 interface ManageProjectPartnerAuthorityI
@@ -43,6 +44,7 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
   clearForm = () => ({}),
   formDisabled,
   creation = false,
+  legend = '',
 }) => {
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
@@ -125,6 +127,7 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
           setNewFormValues({ ...newData });
         }}
         setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+        legend={legend}
       />
     );
   } else if (authoritiesList && authoritiesList.length > 0) {

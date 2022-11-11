@@ -131,7 +131,7 @@ const PrintSurvey: React.FC = () => {
   return (
     <div className='container my-3 py-5 print-survey'>
       <div className='header-container__main__logo mb-4'>
-        <img src={Logo} alt='logo' />
+        <img src={Logo} alt='Repubblica Digitale' />
       </div>
       <DetailLayout
         titleInfo={{

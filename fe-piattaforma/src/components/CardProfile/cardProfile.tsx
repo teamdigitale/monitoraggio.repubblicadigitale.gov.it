@@ -97,8 +97,8 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
             </CardTitle>
             <CardText
               className={clsx(
-                activeProfile && 'primary-color-a12',
-                !activeProfile && 'neutral-2-color-a3',
+                activeProfile && 'primary-color-b7',
+                !activeProfile && 'neutral-2-color-a5',
                 'switch-profile-subs'
               )}
             >

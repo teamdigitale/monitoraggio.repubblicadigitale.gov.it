@@ -21,6 +21,7 @@ interface ProgramInformationI {
   setIsFormValid?: (param?: boolean | undefined) => void;
   creation?: boolean;
   edit?: boolean;
+  legend?: string | undefined;
 }
 
 interface FormEnteGestoreProgettoFullInterface
@@ -42,6 +43,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     creation = true,
     edit = false,
     formDisabled = false,
+    legend = '',
   } = props;
   const programDetails: { [key: string]: string } | undefined =
     useAppSelector(selectPrograms).detail.dettagliInfoProgramma;
@@ -166,7 +168,12 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 
   return (
-    <Form id='form-general-info' className='mt-5' formDisabled={formDisabled}>
+    <Form
+      legend={legend}
+      id='form-general-info'
+      className='mt-5'
+      formDisabled={formDisabled}
+    >
       <Form.Row className={bootClass}>
         <Input
           {...form?.codice}

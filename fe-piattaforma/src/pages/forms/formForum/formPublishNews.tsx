@@ -218,7 +218,11 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
   }, [newsDetail]);
 
   useEffect(() => {
-    setIsFormValid(isValidForm && editorText?.trim() !== '<p></p>' && editorText?.trim() !== '');
+    setIsFormValid(
+      isValidForm &&
+        editorText?.trim() !== '<p></p>' &&
+        editorText?.trim() !== ''
+    );
 
     sendNewValues({
       ...getFormValues(),
@@ -362,7 +366,12 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
       <Form.Row className={bootClass}>
         <div className='mt-5 d-flex align-items-center'>
           <strong className='mr-2'>AGGIUNGI IMMAGINE</strong>
-          <Icon icon='it-info-circle' size='sm' color='primary' />
+          <Icon
+            icon='it-info-circle'
+            size='sm'
+            color='primary'
+            aria-label='Informazione'
+          />
         </div>
       </Form.Row>
       <Form.Row className={bootClass}>
@@ -396,6 +405,8 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
                   size='sm'
                   color='primary'
                   className='pb-1'
+                  aria-label='Seleziona file'
+                  aria-hidden
                 />
                 Seleziona file
               </Button>
@@ -406,6 +417,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
                 size='sm'
                 className='mr-4'
                 onClick={removePicture}
+                aria-label='Elimina'
               />
             )}
           </label>
@@ -415,7 +427,12 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
       <Form.Row className={bootClass}>
         <div className='mt-5 d-flex align-items-center'>
           <strong className='mr-2'>ALLEGA FILE</strong>
-          <Icon icon='it-info-circle' size='sm' color='primary' />
+          <Icon
+            icon='it-info-circle'
+            size='sm'
+            color='primary'
+            aria-label='Informazione'
+          />
         </div>
       </Form.Row>
       <Form.Row className={bootClass}>
@@ -448,6 +465,8 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
                   size='sm'
                   color='primary'
                   className='pb-1'
+                  aria-label='Seleziona file'
+                  aria-hidden
                 />
                 Seleziona file
               </Button>
@@ -458,7 +477,8 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
                 size='sm'
                 className='mr-4'
                 onClick={removeDocument}
-              /> //TODO add function to delete file
+                aria-label='Elimina'
+              />
             )}
           </label>
         </div>

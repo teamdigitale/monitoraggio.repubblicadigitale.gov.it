@@ -279,7 +279,10 @@ const Authorities: React.FC = () => {
           />
         )}
       </div>
-      <ManageGenericAuthority creation />
+      <ManageGenericAuthority
+        legend="form creazione ente, i campi con l'asterisco sono obbligatori"
+        creation
+      />
     </GenericSearchFilterTableLayout>
   );
 };

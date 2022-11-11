@@ -16,8 +16,8 @@ import { FormHelper } from '../../../../../../../../utils/formHelper';
 import { answerType, idQ1, idQ2 } from '../../../surveyConstants';
 import MultiOptionForm from './multiOptionForm';
 import ItLessCircle from '/public/assets/img/it-minus-circle-primary.png';
-import ItExpand from "/public/assets/img/it-expand-primary.png";
-import ItCollapse from "/public/assets/img/it-chevron-up.png";
+import ItExpand from '/public/assets/img/it-expand-primary.png';
+import ItCollapse from '/public/assets/img/it-chevron-up.png';
 
 export interface SurveyQuestionComponentI extends SurveyQuestionI {
   className?: string;
@@ -133,7 +133,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
               color='primary'
               icon={ItExpand}
               size='sm'
-              aria-label='mostra'
+              aria-label={`${surveyQuestion?.form['question-description'].value} mostra opzioni `}
             />
           </Button>
         </>
@@ -216,6 +216,7 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
                     'mb-3'
                     //device.mediaIsPhone && 'px-3'
                   )}
+                  legend="campo domanda di tipo testuale, obbligatoria se presenta l'asterisco"
                 >
                   <div>
                     <Input
@@ -269,7 +270,10 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
                   </strong>
                 </span>
               ) : (
-                <Form id={`form-select-${id}`}>
+                <Form
+                  legend="campo domanda di tipo selezione, obbligatoria se presenta l'asterisco"
+                  id={`form-select-${id}`}
+                >
                   <Select
                     {...form['question-type']}
                     id={`section-${sectionID}-question-${position}-type`}
@@ -292,7 +296,10 @@ const SurveyQuestion: React.FC<SurveyQuestionComponentI> = (props) => {
         </div>
         {(editMode || cloneMode) && !form['question-default']?.value && (
           <div className='bg-white mt-3'>
-            <Form id={`form-toggle-${id}`}>
+            <Form
+              legend='campo opzione per rendere una domanda obbligatoria'
+              id={`form-toggle-${id}`}
+            >
               <FormGroup check className='d-flex justify-content-end w-100'>
                 <Toggle
                   label='Campo obbligatorio'

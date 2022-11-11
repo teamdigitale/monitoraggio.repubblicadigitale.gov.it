@@ -95,14 +95,16 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
         {moreThanOneSurvey && (
           <FormGroup check>
             <Input
-              aria-label='Radio button'
+              aria-label={title}
               name='gruppo1'
               type='radio'
               id={`radio${id}`}
               onClick={() => setIsChecked(`${id}`)}
               checked={isChecked === `radio${id}`}
             />
-            <Label className='sr-only'>Radio button</Label>
+            <Label htmlFor={`radio${id}`} className='sr-only'>
+              {title}
+            </Label>
           </FormGroup>
         )}
       </div>
@@ -243,7 +245,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
                         color='primary'
                         icon='it-less-circle'
                         size='sm'
-                        aria-label='Elimina'
+                        aria-label={`Rimuovi ${title || fullInfo?.programma}`}
                       />
                     </Button>
                     <UncontrolledTooltip
@@ -266,7 +268,9 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
                     color='primary'
                     icon='it-chevron-right'
                     size='sm'
-                    aria-label='Seleziona'
+                    aria-label={`Vai al dettaglio di ${
+                      title || fullInfo?.programma
+                    }`}
                   />
                 </Button>
               ) : null}
@@ -281,7 +285,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
                     color='primary'
                     icon='it-file'
                     size='sm'
-                    aria-label='Preview'
+                    aria-label={`Anteprima di ${title || fullInfo?.programma}`}
                   />
                 </Button>
               ) : null}

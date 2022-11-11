@@ -21,6 +21,7 @@ interface ProgramInformationI {
   setIsFormValid?: (param?: boolean | undefined) => void;
   creation?: boolean;
   program?: { dataInizio: string; dataFine: string } | undefined;
+  legend?: string | undefined;
 }
 
 interface FormProjectGeneralInfoInterface
@@ -41,6 +42,7 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
     creation = false,
     updateForm = () => ({}),
     program,
+    legend = '',
   } = props;
 
   const formDisabled = !!props.formDisabled;
@@ -253,6 +255,7 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
       id='form-project-general-info'
       className='mt-5'
       formDisabled={formDisabled}
+      legend={legend}
     >
       <Form.Row className={bootClass}>
         {formDisabled ? (
