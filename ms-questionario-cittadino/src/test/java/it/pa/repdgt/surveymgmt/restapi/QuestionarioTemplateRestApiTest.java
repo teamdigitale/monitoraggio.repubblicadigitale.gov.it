@@ -341,10 +341,15 @@ public class QuestionarioTemplateRestApiTest {
 		questionarioTemplateCollection.setSezioniQuestionarioTemplate(sezioni);
 		QuestionarioTemplateCollection result = this.questionarioTemplateService.creaNuovoQuestionarioTemplate(questionarioTemplateCollection);
 		
+		SceltaProfiloParam profilazioneParam = new SceltaProfiloParam();
+		profilazioneParam.setCfUtenteLoggato("UTENTE2");
+		profilazioneParam.setCodiceRuoloUtenteLoggato("DTD");
+		
 		String urlToCall = "http://localhost:" + randomServerPort +
 				"/questionarioTemplate/"+result.getIdQuestionarioTemplate();
-		QuestionarioTemplateResource questionarioTemplateResource = restTemplate.getForObject(
+		QuestionarioTemplateResource questionarioTemplateResource = restTemplate.postForObject(
 				urlToCall, 
+				profilazioneParam,
 				QuestionarioTemplateResource.class
 			);
 		
