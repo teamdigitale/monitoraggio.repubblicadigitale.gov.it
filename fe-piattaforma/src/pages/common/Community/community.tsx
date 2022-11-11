@@ -179,7 +179,7 @@ const Community = () => {
           cards={popularTopics}
           isCommunity
         >
-          <Container className='pb-5'>
+          <Container className='pb-5' id='grid'>
             <div className='row'>
               {topicsList?.length ? (
                 topicsList.map((communityElement, i) => (
@@ -206,6 +206,7 @@ const Community = () => {
               <Paginator
                 activePage={pagination?.pageNumber}
                 center
+                refID='#grid'
                 pageSize={pagination?.pageSize}
                 total={pagination?.totalPages}
                 onChange={handleOnChangePage}
