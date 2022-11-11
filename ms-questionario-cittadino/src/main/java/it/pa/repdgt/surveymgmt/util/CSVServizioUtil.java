@@ -233,10 +233,10 @@ public class CSVServizioUtil {
                     		break;
                     	}
                     	case 11:{
-                    		cittadinoUpload.setCategoriaFragili(cell.getStringCellValue());
+                    		cittadinoUpload.setCategoriaFragili(cell == null? null: cell.getStringCellValue());
                     	}
                     	case 12:{
-                    		cittadinoUpload.setEmail(cell.getStringCellValue());
+                    		cittadinoUpload.setEmail(cell == null? null: cell.getStringCellValue());
                     		break;
                     	}
                     	case 13:{

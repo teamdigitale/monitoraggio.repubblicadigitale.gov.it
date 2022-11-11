@@ -526,7 +526,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		if(codiceFiscale == null || "".equals(codiceFiscale.trim()) || 
 				numeroDocumento == null || "".equals(numeroDocumento.trim()) || 
 				tipoDocumento == null || "".equals(tipoDocumento.trim())) {
-			cittadinoUpload.setEsito("UPLOAD - KO - CODICE FISCALE, NUMERO_DOCUMENTO, TIPO_DOCUMENTO NON POSSONO ESSERE TUTTI CONTEMPORANEMENTE NON VALORIZZATI");
+			cittadinoUpload.setEsito("UPLOAD - KO - CODICE FISCALE, NUMERO DOCUMENTO, TIPO DOCUMENTO NON POSSONO ESSERE TUTTI CONTEMPORANEMENTE NON VALORIZZATI");
 			return false;
 		}
 		if(cittadinoUpload.getNome() == null || "".equals(cittadinoUpload.getNome().trim())) {

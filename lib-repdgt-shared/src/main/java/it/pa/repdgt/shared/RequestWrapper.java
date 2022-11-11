@@ -82,8 +82,9 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 				final String inputCorpoRichiesta = this.getCorpoRichiesta(httpServletRequest);
 				if(inputCorpoRichiesta != null  && !inputCorpoRichiesta.trim().isEmpty()) {
 					this.body = this.getCorpoRichiestaArricchitaConDatiContesto(inputCorpoRichiesta);
-				}//per api che prevedono upload file
+				}
 				else if(!FilterUtil.isEndpointSwagger(endpoint) ) {
+					//per api che prevedono upload file
 					try {
 						if(httpServletRequest.getParts().size() > 0) {
 							this.body = "{ \"idProgramma\":" + httpServletRequest.getParameter("idProgramma") + 
@@ -100,16 +101,26 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 						// gestione eccezioni in caso di chiamate GET
 					}
 				}
-			}else if(FilterUtil.isEndpointQuestionarioCompilatoAnonimo(endpoint) && metodoHttp.equals("POST")){
-				/*
-				 * aggiunta a causa del fatto che l'api
-				 * POST - /servizio/cittadino/questionarioCompilato/{idQuestionario}/compila/anonimo  
-				 * (questionario compilato da cittadino) non prevede alcun token jwt 
-				 * ma al contrario il token applicativo per id questionario
-				 * quindi il filtro fa passare la chiamata ma occorre fare il pass-through del body
-				 */
-				body = this.getCorpoRichiesta(httpServletRequest);
 			}
+//			else if(FilterUtil.isEndpointQuestionarioCompilatoAnonimo(endpoint) && metodoHttp.equals("POST")){
+//				/*
+//				 * aggiunta a causa del fatto che l'api
+//				 * POST - /servizio/cittadino/questionarioCompilato/{idQuestionario}/compila/anonimo  
+//				 * (questionario compilato da cittadino) non prevede alcun token jwt 
+//				 * ma al contrario il token applicativo per id questionario
+//				 * quindi il filtro fa passare la chiamata ma occorre fare il pass-through del body
+//				 */
+//				body = this.getCorpoRichiesta(httpServletRequest);
+//			}
+		}else if(FilterUtil.isEndpointQuestionarioCompilatoAnonimo(endpoint) && metodoHttp.equals("POST")){
+			/*
+			 * aggiunta a causa del fatto che l'api
+			 * POST - /servizio/cittadino/questionarioCompilato/{idQuestionario}/compila/anonimo  
+			 * (questionario compilato da cittadino) non prevede alcun token jwt 
+			 * ma al contrario il token applicativo per id questionario
+			 * quindi il filtro fa passare la chiamata ma occorre fare il pass-through del body
+			 */
+			body = this.getCorpoRichiesta(httpServletRequest);
 		}
 	}
 
