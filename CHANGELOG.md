@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.296](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.295...1.0.0-develop.296) (2022-11-11)
+
+
+### Bug Fixes
+
+* **be:** ente-questionario ([90487eb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/90487eb56c469d2eeeae2bde66f2df955c5338bf))
+* **be:** ente-questionario ([dfc1932](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/dfc19325b14e61b924f513b55fe2c0faa681474c))
+
 ## [1.0.0-develop.295](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.294...1.0.0-develop.295) (2022-11-11)
 
 
