@@ -19,6 +19,7 @@ import BachecaDetails from '../pages/facilitator/Home/components/BachecaDigitale
 import BachecaDigitale from '../pages/facilitator/Home/components/BachecaDigitaleWidget/BachecaDigitale';
 import HomeSearch from '../pages/common/HomeSearch/homeSearch';
 import UserPublishedContentsPage from '../pages/common/UserPublishedContentsPage/userPublishedContentsPage';
+import { selectModalState } from '../redux/features/modal/modalSlice';
 
 const AuthRedirect = lazy(() => import('../pages/common/Auth/authRedirect'));
 
@@ -89,7 +90,16 @@ const AppRoutes: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isLogged = useAppSelector(selectLogged);
+  const modalOpen = useAppSelector(selectModalState);
   const [validSession, setValidSession] = useState(false);
+
+  useEffect(() => {
+    if (modalOpen) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+  }, [modalOpen]);
 
   const checkSession = async () => {
     const checkSession = await SessionCheck(dispatch);
