@@ -735,7 +735,7 @@ const ProjectsDetails = () => {
               >
                 Compilazione obbligatoria
               </Tooltip>
-              <Icon icon='it-warning-circle' size='xs' />
+              <Icon icon='it-warning-circle' size='xs' className='ml-1' />
             </div>
           ) : (
             'Ente gestore'

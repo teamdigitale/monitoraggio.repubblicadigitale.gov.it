@@ -129,6 +129,17 @@ export const validateAddressList = (addressList: AddressInfoI[]) => {
         ([key, value]) =>
           ['via', 'provincia', 'comune', 'cap'].includes(key) ? value : true
       );
+      isValid = Object.entries(addressInfo.fasceOrarieAperturaIndirizzoSede).every(([key, value]) => key.includes('1') && value !== null ? value !== '' : true) && isValid;
+      isValid = Object.entries(addressInfo.fasceOrarieAperturaIndirizzoSede).every(([key, value]) => {
+        if (key.includes('2')) {
+          if (key.includes('Apertura') && value) {
+            return addressInfo.fasceOrarieAperturaIndirizzoSede[key.split('Apertura').join('Chiusura')]
+          } else if (key.includes('Chiusura') && value) {
+            return addressInfo.fasceOrarieAperturaIndirizzoSede[key.split('Chiusura').join('Apertura')]
+          }
+        }
+        return true
+      }) && isValid;
       return isValid;
     });
 };
