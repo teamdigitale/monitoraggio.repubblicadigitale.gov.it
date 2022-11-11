@@ -40,13 +40,13 @@ const id = formTypes.REFERENTE;
 
 export const headings: TableHeadingI[] = [
   {
-    label: 'Nome',
-    field: 'nome',
+    label: 'Cognome',
+    field: 'cognome',
     size: 'medium',
   },
   {
-    label: 'Cognome',
-    field: 'cognome',
+    label: 'Nome',
+    field: 'nome',
     size: 'medium',
   },
   {
@@ -189,8 +189,8 @@ const ManageReferal: React.FC<ManageReferalI> = ({
       <Table
         heading={headings}
         values={usersList.map((item) => ({
-          nome: item.nome,
           cognome: item.cognome,
+          nome: item.nome,
           id: item.id || item.codiceFiscale,
           codiceFiscale: item.codiceFiscale,
         }))}

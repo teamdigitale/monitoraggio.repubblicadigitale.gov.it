@@ -407,12 +407,9 @@ const ProjectsDetails = () => {
         <FormAuthorities
           formDisabled
           enteType={formTypes.ENTE_GESTORE_PROGETTO}
-          legend="form ente gestore progetto, i campi con l'asterisco sono obbligatori"
         />
       );
-      setCorrectModal(
-        <ManageManagerAuthority legend="form modifica ente gestore di progetto, i campi con l'asterisco sono obbligatori" />
-      );
+      setCorrectModal(<ManageManagerAuthority />);
       setItemList(null);
       setCorrectButtons(
         authorityInfo?.dettagliInfoEnte?.statoEnte !== entityStatus.TERMINATO &&
@@ -544,12 +541,7 @@ const ProjectsDetails = () => {
   };
 
   const PartnerAuthoritySection = () => {
-    setCorrectModal(
-      <ManagePartnerAuthority
-        legend="form modifica ente partner, i campi con l'asterisco sono obbligatori"
-        creation
-      />
-    );
+    setCorrectModal(<ManagePartnerAuthority creation />);
     if (
       partnerAuthoritiesList?.filter(
         (entePartner: { associatoAUtente: boolean }) =>
@@ -636,12 +628,7 @@ const ProjectsDetails = () => {
     if (headquarterList?.length) {
       setButtonsPosition('BOTTOM');
       setCurrentForm(undefined);
-      setCorrectModal(
-        <ManageHeadquarter
-          legend="form modifica sede, i campi con l'asterisco sono obbligatori"
-          creation
-        />
-      );
+      setCorrectModal(<ManageHeadquarter creation />);
       setItemList({
         items: headquarterList?.map(
           (sede: {
@@ -721,25 +708,21 @@ const ProjectsDetails = () => {
   };
 
   const nav = (
-    <Nav tabs className='mb-5 overflow-hidden' role='menu'>
-      <li ref={infoRef} role='none'>
+    <Nav tabs className='mb-5 overflow-hidden'>
+      <li ref={infoRef}>
         <NavLink
           to={replaceLastUrlSection(tabs.INFO)}
           // onClick={() => replaceLastUrlSection(tabs.INFO)}
           active={activeTab === tabs.INFO}
-          role='menuitem'
-          onKeyDown={() => setActiveTab(tabs.INFO)}
         >
           Informazioni generali
         </NavLink>
       </li>
-      <li ref={gestoreRef} role='none'>
+      <li ref={gestoreRef}>
         <NavLink
           to={replaceLastUrlSection(tabs.ENTE_GESTORE)}
           active={activeTab === tabs.ENTE_GESTORE}
           enteGestore={!managingAuthorityID}
-          role='menuitem'
-          onKeyDown={() => setActiveTab(tabs.ENTE_GESTORE)}
         >
           {!managingAuthorityID ? (
             <div id='tab-ente-gestore-progetto'>
@@ -759,22 +742,18 @@ const ProjectsDetails = () => {
           )}
         </NavLink>
       </li>
-      <li ref={partnerRef} role='none'>
+      <li ref={partnerRef}>
         <NavLink
           to={replaceLastUrlSection(tabs.ENTI_PARTNER)}
           active={activeTab === tabs.ENTI_PARTNER}
-          role='menuitem'
-          onKeyDown={() => setActiveTab(tabs.ENTI_PARTNER)}
         >
           <span> Enti partner </span>
         </NavLink>
       </li>
-      <li ref={sediRef} role='none'>
+      <li ref={sediRef}>
         <NavLink
           to={replaceLastUrlSection(tabs.SEDI)}
           active={activeTab === tabs.SEDI}
-          role='menuitem'
-          onKeyDown={() => setActiveTab(tabs.SEDI)}
         >
           <span> Sedi </span>
         </NavLink>
@@ -863,9 +842,10 @@ const ProjectsDetails = () => {
           ? [
               {
                 size: 'xs',
-                color: 'danger',
+                color: 'secondary',
                 outline: true,
                 text: 'Termina progetto',
+                buttonClass: 'terminate-entity',
                 onClick: () =>
                   dispatch(
                     openModal({
@@ -909,9 +889,10 @@ const ProjectsDetails = () => {
           ? [
               {
                 size: 'xs',
-                color: 'danger',
+                color: 'secondary',
                 outline: true,
                 text: 'Termina progetto',
+                buttonClass: 'terminate-entity',
                 onClick: () =>
                   dispatch(
                     openModal({
@@ -1060,12 +1041,8 @@ const ProjectsDetails = () => {
     switch (activeTab) {
       case tabs.INFO:
         setButtonsPosition('BOTTOM');
-        setCurrentForm(
-          <ProjectAccordionForm legend='form informazioni progetto' />
-        );
-        setCorrectModal(
-          <ManageProject legend="form modifica progetto, i campi con l'asterisco sono obbligatori" />
-        );
+        setCurrentForm(<ProjectAccordionForm />);
+        setCorrectModal(<ManageProject />);
         setItemAccordionList([]);
         setItemList(null);
         setCorrectButtons(projectInfoButtons());
@@ -1379,18 +1356,9 @@ const ProjectsDetails = () => {
               id='table-ente-partner'
             />
           </UploadCSVModal>
-          <ManageDelegate
-            legend="form aggiunta delegato, i campi con l'asterisco sono obbligatori"
-            creation
-          />
-          <ManageReferal
-            legend="form aggiunta referente, i campi con l'asterisco sono obbligatori"
-            creation
-          />
-          <ManageHeadquarter
-            legend="form creazione sede, i campi con l'asterisco sono obbligatori"
-            creation
-          />
+          <ManageDelegate creation />
+          <ManageReferal creation />
+          <ManageHeadquarter creation />
         </div>
       </div>
     </div>
