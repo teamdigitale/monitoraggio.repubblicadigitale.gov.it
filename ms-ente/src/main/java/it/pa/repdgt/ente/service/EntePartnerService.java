@@ -345,8 +345,12 @@ public class EntePartnerService {
 					}else {
 						ente.setEsito("KO - Nome ente già in uso");
 					}
-				}else {
-					ente.setEsito("KO - Nome, Nome Breve, Tipologia ente e CF/PIVA sono campi obbligatori");
+				}else {							
+					ente.setEsito(String.format("KO - %s è un campo obbligatorio", nome == null || (nome.trim()).equals("") ? "NOME"
+							: nomeBreve == null || (nomeBreve.trim()).equals("") ? "NOME BREVE" 
+									: tipologia == null || (tipologia.trim()).equals("") ? "TIPOLOGIA"
+											: "PIVA"
+								));
 				}
 				esiti.add(ente);
 			}

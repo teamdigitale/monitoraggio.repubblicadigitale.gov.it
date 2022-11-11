@@ -18,6 +18,7 @@ import it.pa.repdgt.ente.resource.ListaEntiPaginatiResource;
 import it.pa.repdgt.ente.restapi.param.EntiPaginatiParam;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
 public class EnteRestApiIntegrationTest extends AppTests {
@@ -79,9 +80,12 @@ public class EnteRestApiIntegrationTest extends AppTests {
 	@Test
 	public void getSchedaEnteByIdTest() {
 		String idProgramma = "1000";
+		SceltaProfiloParam sceltaProfiloParam = new SceltaProfiloParam();
+		sceltaProfiloParam.setCodiceRuoloUtenteLoggato("DTD");
+		sceltaProfiloParam.setCfUtenteLoggato("UIHPLW87R49F205X");
 		
 		String url = String.format("http://localhost:%s/ente/%s", randomServerPort, idProgramma);
-		SchedaEnteBean response = restTemplate.getForObject(url, SchedaEnteBean.class);
+		SchedaEnteBean response = restTemplate.postForObject(url, sceltaProfiloParam, SchedaEnteBean.class);
 		
 		assertThat(response).isNotNull();
 		assertThat(response.getDettagliEnte()).isNotNull();
@@ -91,9 +95,12 @@ public class EnteRestApiIntegrationTest extends AppTests {
 	@Test
 	public void getSchedaEnteGestoreProgrammaTest() {
 		final String idProgramma = "100";
+		SceltaProfiloParam sceltaProfiloParam = new SceltaProfiloParam();
+		sceltaProfiloParam.setCodiceRuoloUtenteLoggato("DTD");
+		sceltaProfiloParam.setCfUtenteLoggato("UIHPLW87R49F205X");
 		
 		String url = String.format("http://localhost:%s/ente/gestoreProgramma/%s", randomServerPort, idProgramma);
-		Map<Object, Object> response = restTemplate.getForObject(url, Map.class);
+		Map<Object, Object> response = restTemplate.postForObject(url, sceltaProfiloParam, Map.class);
 		
 		assertThat(response).isNotNull();
 		assertThat(response.get("ente")).isNotNull();
@@ -104,9 +111,12 @@ public class EnteRestApiIntegrationTest extends AppTests {
 	@Test
 	public void getSchedaEnteGestoreProgetto() {
 		String idProgetto = "250";
+		SceltaProfiloParam sceltaProfiloParam = new SceltaProfiloParam();
+		sceltaProfiloParam.setCodiceRuoloUtenteLoggato("DTD");
+		sceltaProfiloParam.setCfUtenteLoggato("UIHPLW87R49F205X");
 		
 		String url = String.format("http://localhost:%s/ente/gestoreProgetto/%s", randomServerPort, idProgetto);
-		Map<Object, Object> response = restTemplate.getForObject(url, Map.class);
+		Map<Object, Object> response = restTemplate.postForObject(url, sceltaProfiloParam, Map.class);
 		
 		assertThat(response).isNotNull();
 		assertThat(response.get("ente")).isNotNull();
