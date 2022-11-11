@@ -217,18 +217,6 @@ public class ServizioCittadinoRestApi {
 	 * Restituisce il questionario compilato con specifico id persistito su mongoDB
 	 * 
 	 * */
-	@Deprecated
-	@GetMapping(path = "questionarioCompilato/compilato/{idQuestionarioCompilato}",  produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseStatus(value = HttpStatus.OK)
-	public QuestionarioCompilatoCollection getQuestioanarioCompilatoById(
-			@PathVariable(value = "idQuestionarioCompilato") final String questionarioCompilatoId) {
-		return this.questionarioCompilatoService.getQuestionarioCompilatoById(questionarioCompilatoId);
-	}
-	
-	/***
-	 * Restituisce il questionario compilato con specifico id persistito su mongoDB
-	 * 
-	 * */
 	@PostMapping(path = "questionarioCompilato/compilato/{idQuestionarioCompilato}",  produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
 	public QuestionarioCompilatoCollection getQuestioanarioCompilatoByIdAndSceltaProfilo(

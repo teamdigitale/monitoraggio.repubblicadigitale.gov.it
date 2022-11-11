@@ -21,6 +21,7 @@ import it.pa.repdgt.programmaprogetto.resource.CreaProgettoResource;
 import it.pa.repdgt.programmaprogetto.resource.ProgettiLightResourcePaginati;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
 import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
 public class ProgettoRestApiRestTemplateTest extends AppTests{
@@ -75,8 +76,11 @@ public class ProgettoRestApiRestTemplateTest extends AppTests{
 	
 	@Test
 	void getSchedaProgettoByIdTest() {
-		ResponseEntity<SchedaProgettoBean> response = restTemplate.getForEntity("http://localhost:" + randomServerPort + "/progetto/{idProgetto}", SchedaProgettoBean.class, 252L);
-		assertThat(response.getBody().getDettaglioProgetto().getNome()).isEqualTo("Progetto Sicurezza Informatica");
+		SceltaProfiloParam sceltaProfilo = new SceltaProfiloParam();
+		sceltaProfilo.setCfUtenteLoggato("SMTPAL67R31F111X");
+		sceltaProfilo.setCodiceRuoloUtenteLoggato("DTD");
+		SchedaProgettoBean response = restTemplate.postForObject("http://localhost:" + randomServerPort + "/progetto/{idProgetto}", sceltaProfilo, SchedaProgettoBean.class, 252L);
+		assertThat(response.getDettaglioProgetto().getNome()).isEqualTo("Progetto Sicurezza Informatica");
 	}
 	
 	@Test
