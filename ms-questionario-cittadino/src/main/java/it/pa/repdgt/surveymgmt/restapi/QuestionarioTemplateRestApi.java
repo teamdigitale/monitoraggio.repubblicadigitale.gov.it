@@ -53,17 +53,6 @@ public class QuestionarioTemplateRestApi {
 	 * Restituisce questionatio template che è associato al programma con particolare id
 	 *
 	 * */
-	@Deprecated
-	@ResponseStatus(value = HttpStatus.OK)
-	@GetMapping(path = "/programma/{idProgramma}")
-	public QuestionarioTemplateCollection getQuestionarioTemplateByIdProgramma(@PathVariable(value = "idProgramma") Long idProgramma) {
-		return this.questionarioTemplateService.getQuestionarioTemplateByIdProgramma(idProgramma);
-	}
-	
-	/**
-	 * Restituisce questionatio template che è associato al programma con particolare id
-	 *
-	 * */
 	@ResponseStatus(value = HttpStatus.OK)
 	@PostMapping(path = "/programma/{idProgramma}")
 	public QuestionarioTemplateCollection getQuestionarioTemplateByIdProgrammaByProfilo(@PathVariable(value = "idProgramma") Long idProgramma,
@@ -142,22 +131,6 @@ public class QuestionarioTemplateRestApi {
 	 * Restituisce il TemplateQuestionario con specifico id persistito su mongoDB
 	 * 
 	 * */
-	// cambiato metodo da GET a POST per broken-access-control -> vedi stesso endpoint ma in post 
-	// Visualizza scheda questionario
-	@Deprecated
-	@GetMapping(path = "/{idQuestionario}",  produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseStatus(value = HttpStatus.OK)
-	public QuestionarioTemplateResource getQuestionarioTemplateById(
-			@PathVariable(value = "idQuestionario") final String templateQuestionarioId) {
-		final QuestionarioTemplateCollection questionarioTemplate = this.questionarioTemplateService.getQuestionarioTemplateById(templateQuestionarioId.trim());
-		return questionarioTemplateMapper.toResourceFrom(questionarioTemplate);
-	}
-	
-	
-	/***
-	 * Restituisce il TemplateQuestionario con specifico id persistito su mongoDB
-	 * 
-	 * */
 	// Visualizza scheda questionario
 	@PostMapping(path = "/{idQuestionario}",  produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
@@ -221,21 +194,7 @@ public class QuestionarioTemplateRestApi {
 		}
 		this.questionarioTemplateService.aggiornaDefaultQuestionarioTemplate(idQuestionario, tipoDefault);
 	}
-	
-	/**
-	 * Cancellazione TemplateQuestionario
-	 * 
-	 * */
-	// Cancella questionario template
-	@Deprecated
-	@DeleteMapping(path = "/{idQuestionario}", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void cancellaQuestionarioTemplate(
-			@PathVariable(value = "idQuestionario") final String questionarioTemplateId,
-			@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
-		this.questionarioTemplateService.cancellaQuestionarioTemplate(questionarioTemplateId);
-	}
-	
+		
 	/**
 	 * Scarica lista elenco questionaritemplate,
 	 * in base ai filtri richiesti e alla profilazione dell'utente loggatosi
