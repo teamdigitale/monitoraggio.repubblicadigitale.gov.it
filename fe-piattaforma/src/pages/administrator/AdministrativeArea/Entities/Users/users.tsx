@@ -214,7 +214,7 @@ const Users = () => {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
     placeholder:
-      "Inserisci il nome, il cognome, l'ID o il codice fiscale dell'utente",
+      'Inserisci il cognome e/o il nome, oppure l’ID o il codice fiscale dell’utente',
     isClearable: true,
     title: 'Cerca programma',
   };
