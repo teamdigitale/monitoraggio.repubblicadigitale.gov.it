@@ -1,4 +1,4 @@
-FROM php:8.1.11-apache-buster
+FROM php:8.1.12-apache-buster
 
 ENV ThemeBuildCommand=build
 
