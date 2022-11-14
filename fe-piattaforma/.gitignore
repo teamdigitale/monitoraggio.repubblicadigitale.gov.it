@@ -13,3 +13,4 @@ cypress*
 .editorconfig
 
 ../.DS_Store
+.DS_Store
