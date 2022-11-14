@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.301](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.300...1.0.0-develop.301) (2022-11-14)
+
+
+### Bug Fixes
+
+* **be:** aggiornata versione h2 ([7b0601b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7b0601b52f04ba65122e8463076d145571261d66))
+
 ## [1.0.0-develop.300](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.299...1.0.0-develop.300) (2022-11-14)
 
 
