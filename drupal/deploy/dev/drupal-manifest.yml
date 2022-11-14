@@ -26,19 +26,29 @@ spec:
             - name: DRUPAL_DB_PASSWORD
               valueFrom:
                 configMapKeyRef:
-                  name: drupal-configmap
                   key: DB_MYSQL-PASSWD
+                  name: drupal-configmap
           image: 848729353763.dkr.ecr.eu-central-1.amazonaws.com/drupal:{IMAGE_VERSION}
           imagePullPolicy: Always
           name: drupal
           ports:
             - containerPort: 8080
               protocol: TCP
+          resources:
+            requests:
+              cpu: "1"
+              memory: 3Gi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
           volumeMounts:
-            - name: drupal-pvc-var-www-html
-              mountPath: /var/www/html/web/sites/default
+            - mountPath: /var/www/html/web/sites/default
+              name: drupal-pvc-var-www-html
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
       securityContext:
         fsGroup: 33
+      terminationGracePeriodSeconds: 30
       volumes:
         - name: drupal-pvc-var-www-html
           persistentVolumeClaim:
