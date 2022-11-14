@@ -67,7 +67,7 @@ export const staticValues = [
   },
   {
     attributo: 'NOME_SERVIZIO',
-    attributo_tipo: 'String',
+    attributo_tipo: 'Testuale',
     descrizione: 'È il nome del servizio erogato al cittadino ',
     descrizione_tipo: '-',
   },
@@ -110,28 +110,28 @@ export const staticValues = [
   },
   {
     attributo: 'NOME_SEDE',
-    attributo_tipo: 'String',
+    attributo_tipo: 'Testuale',
     descrizione:
       'È il nome della sede presso la quale viene erogato il servizio di ...',
     descrizione_tipo: '-',
   },
   {
     attributo: 'REGIONE',
-    attributo_tipo: 'String',
+    attributo_tipo: 'Testuale',
     descrizione:
       'È la regione dove viene erogato il servizio di facilitazione/formazione al cittadino ',
     descrizione_tipo: '-',
   },
   {
     attributo: 'PROVINCIA',
-    attributo_tipo: 'String',
+    attributo_tipo: 'Testuale',
     descrizione:
       'È la provincia dove viene erogato il servizio di facilitazione/formazione al cittadino ',
     descrizione_tipo: '-',
   },
   {
     attributo: 'COMUNE',
-    attributo_tipo: 'String',
+    attributo_tipo: 'Testuale',
     descrizione:
       'È il comune dove viene erogato il servizio di facilitazione/formazione al cittadino ',
     descrizione_tipo: '-',
