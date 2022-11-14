@@ -2,11 +2,15 @@
 node_modules/
 build/
 dist/
+cypress/
+cypress*
 .idea/
 
 # Log files
 *.log
 *.eslintcache
 .env*
+.editorconfig
 
 ../.DS_Store
+.DS_Store
