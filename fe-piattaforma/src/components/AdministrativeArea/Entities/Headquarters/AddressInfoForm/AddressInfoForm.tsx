@@ -35,10 +35,10 @@ const AddressInfoForm: React.FC<AddressInfoFormI> = ({
 
   const openDayAddHandler = (dayIndex: number) => {
     const newTimeSlots = { ...addressInfo.fasceOrarieAperturaIndirizzoSede };
-    newTimeSlots[`${dayCode[dayIndex]}OrarioApertura1`] = '09:00';
-    newTimeSlots[`${dayCode[dayIndex]}OrarioChiusura1`] = '12:00';
-    newTimeSlots[`${dayCode[dayIndex]}OrarioApertura2`] = '14:00';
-    newTimeSlots[`${dayCode[dayIndex]}OrarioChiusura2`] = '18:00';
+    newTimeSlots[`${dayCode[dayIndex]}OrarioApertura1`] = '';
+    newTimeSlots[`${dayCode[dayIndex]}OrarioChiusura1`] = '';
+    newTimeSlots[`${dayCode[dayIndex]}OrarioApertura2`] = '';
+    newTimeSlots[`${dayCode[dayIndex]}OrarioChiusura2`] = '';
 
     onAddressInfoChange({
       ...addressInfo,
