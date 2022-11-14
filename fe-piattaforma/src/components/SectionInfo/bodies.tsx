@@ -41,7 +41,7 @@ export const openDataBody = (dateCoverage: string, lastDate: string) => `
 <ul class="section-info-list" style="padding-bottom: 24px; padding-left: 24px;">
 <li >
   <strong>Nome Dataset: 
-  </strong> Statistiche del Piano Operativo per le Competenze Digitali
+  </strong> Servizi di facilitazione e formazione
 </li>
 <li style="max-width: 300px">
   <strong> Copertura temporale:  </strong> ${dateCoverage}

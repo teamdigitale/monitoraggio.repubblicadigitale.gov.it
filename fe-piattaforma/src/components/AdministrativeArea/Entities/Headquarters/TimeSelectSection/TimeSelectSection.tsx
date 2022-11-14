@@ -4,6 +4,7 @@ import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
 import Input from '../../../../Form/input';
 import Form from '../../../../Form/form';
+import TimeInput from '../../../../General/TimeInput/TimeInput';
 
 interface TimeSelectionSectionI {
   timeSpan?: string[][] | undefined;
@@ -47,16 +48,26 @@ const TimeSelectSection: React.FC<TimeSelectionSectionI> = ({
             //     ])
             //   }
             // />
-            <Input
-              type="time"
-              disabled={disabled}
+            // <Input
+            //   type="time"
+            //   disabled={disabled}
+            //   value={timeSpan.flat()[0]}
+            //   onInputChange={(value) =>
+            //     onTimeChange([
+            //       [value as string, timeSpan.flat()[1]],
+            //       [timeSpan.flat()[2], timeSpan.flat()[3]],
+            //     ])
+            //   } />
+            <TimeInput
               value={timeSpan.flat()[0]}
-              onInputChange={(value) =>
+              disabled={disabled}
+              onChange={(value) =>
                 onTimeChange([
                   [value as string, timeSpan.flat()[1]],
                   [timeSpan.flat()[2], timeSpan.flat()[3]],
                 ])
-              } />
+              }
+            />
           )}
         </div>
         <div className='col-6'>
@@ -77,21 +88,31 @@ const TimeSelectSection: React.FC<TimeSelectionSectionI> = ({
             //     ])
             //   }
             // />
-            <Input
-              type="time"
-              disabled={disabled}
+            // <Input
+            //   type="time"
+            //   disabled={disabled}
+            //   value={timeSpan.flat()[1]}
+            //   onInputChange={(value) =>
+            //     onTimeChange([
+            //       [timeSpan.flat()[0], value as string],
+            //       [timeSpan.flat()[2], timeSpan.flat()[3]],
+            //     ])
+            //   } />
+            <TimeInput
               value={timeSpan.flat()[1]}
-              onInputChange={(value) =>
+              disabled={disabled}
+              onChange={(value) =>
                 onTimeChange([
-                  [timeSpan.flat()[0], value as string],
+                  [timeSpan.flat()[0], value],
                   [timeSpan.flat()[2], timeSpan.flat()[3]],
                 ])
-              } />
+              }
+            />
           )}
         </div>
       </div>
       <div className={`${isMobile ? 'd-none' : ''} col-12`}>
-        {(isReadOnly && !(timeSpan.flat()[2] && timeSpan.flat()[3])) ? null :  <p className='h6 font-weight-medium text-secondary'>Fascia Oraria 2</p>}
+        {(isReadOnly && !(timeSpan.flat()[2] && timeSpan.flat()[3])) ? null : <p className='h6 font-weight-medium text-secondary'>Fascia Oraria 2</p>}
       </div>
       <div className='row'>
         <div className='col-6'>
@@ -112,16 +133,26 @@ const TimeSelectSection: React.FC<TimeSelectionSectionI> = ({
             //     ])
             //   }
             // />
-            <Input
-              type="time"
-              disabled={disabled}
+            // <Input
+            //   type="time"
+            //   disabled={disabled}
+            //   value={timeSpan.flat()[2]}
+            //   onInputChange={(value) =>
+            //     onTimeChange([
+            //       [timeSpan.flat()[0], timeSpan.flat()[1]],
+            //       [value as string, timeSpan.flat()[3]],
+            //     ])
+            //   } />
+            <TimeInput
               value={timeSpan.flat()[2]}
-              onInputChange={(value) =>
+              disabled={disabled}
+              onChange={(value) =>
                 onTimeChange([
                   [timeSpan.flat()[0], timeSpan.flat()[1]],
                   [value as string, timeSpan.flat()[3]],
                 ])
-              } />
+              }
+            />
           )}
         </div>
         <div className='col-6'>
@@ -142,16 +173,26 @@ const TimeSelectSection: React.FC<TimeSelectionSectionI> = ({
             //     ])
             //   }
             // />
-            <Input
-              type="time"
-              disabled={disabled}
+            // <Input
+            //   type="time"
+            //   disabled={disabled}
+            //   value={timeSpan.flat()[3]}
+            //   onInputChange={(value) =>
+            //     onTimeChange([
+            //       [timeSpan.flat()[0], timeSpan.flat()[1]],
+            //       [timeSpan.flat()[2], value as string],
+            //     ])
+            //   } />
+            <TimeInput
               value={timeSpan.flat()[3]}
-              onInputChange={(value) =>
+              disabled={disabled}
+              onChange={(value) =>
                 onTimeChange([
                   [timeSpan.flat()[0], timeSpan.flat()[1]],
                   [timeSpan.flat()[2], value as string],
                 ])
-              } />
+              }
+            />
           )}
         </div>
       </div>

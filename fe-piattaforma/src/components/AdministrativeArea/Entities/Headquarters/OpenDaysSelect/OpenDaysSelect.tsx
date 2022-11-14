@@ -31,12 +31,10 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
 }) => {
   const device = useAppSelector(selectDevice);
   const isMobile = device.mediaIsPhone;
-  
 
   return (
     <div>
       {dayOfWeek
-
         .map((v, i) => (
           <div className={clsx(!isMobile && 'row', !isReadOnly && 'mb-4')} key={i}>
             <div className={clsx(!isMobile && 'col col-sm-6')}>
@@ -88,7 +86,7 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
                 isOpen={
                   !isMobile ||
                   Object.entries(openDays).some(
-                    ([key, value]) => key.includes(dayCode[i]) && value
+                    ([key, value]) => key.includes(dayCode[i]) && value !== null
                   )
                 }
               >
