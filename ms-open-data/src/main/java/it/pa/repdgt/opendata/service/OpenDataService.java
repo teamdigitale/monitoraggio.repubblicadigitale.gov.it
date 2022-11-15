@@ -92,7 +92,7 @@ public class OpenDataService {
 			this.cancellaFile(fileToUpload);
 			cittadinoRepository.azzeraCountDownloadAndAggiornaDimensioneFile(NOME_FILE, String.valueOf(dimensioneFileToUpload));
 		} catch (Exception ex) {
-			log.error("Errore caricamento file lista cittadini su AmazonS3 in data={}. ex={}", ex, nowDate);
+			log.error("Errore caricamento file in data={}. ex={}", ex, nowDate);
 		}finally {
 			if(fileToUpload.exists()) 
 				fileToUpload.delete();
@@ -110,7 +110,7 @@ public class OpenDataService {
 			bufferedWriter = new BufferedWriter(fileWriter);
 			bufferedWriter.write(dati);
 		} catch (Exception ex) {
-			log.error("Errore creazione del file contenetente la lista cittadini. ex={}", ex);
+			log.error("Errore creazione del file. ex={}", ex);
 		} finally {
 			if(bufferedWriter != null) {
 				bufferedWriter.close();
