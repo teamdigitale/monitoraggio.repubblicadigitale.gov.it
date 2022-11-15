@@ -46,14 +46,13 @@ public class RequestFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		log.debug("Filter - doFilter - START");
 		RequestWrapper wrappedRequest = null;
 		HttpServletResponse responseHttp = ((HttpServletResponse) response);
 		try {
 			wrappedRequest = new RequestWrapper((HttpServletRequest) request);
 		} catch (Exception ex) {
 			log.error("{}", ex);
-			responseHttp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "FILTER ERROR");
+			responseHttp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "AUTH ERROR");
 			return;
 		}
 
