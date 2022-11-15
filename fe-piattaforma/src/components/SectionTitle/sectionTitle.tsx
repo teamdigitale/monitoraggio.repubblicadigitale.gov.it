@@ -86,7 +86,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
   };
 
   return (
-    <div className={clsx(!isForumLayout && 'd-flex w-100 flex-wrap mx-auto')}>
+    <div className={clsx(!isForumLayout && 'd-flex w-100 flex-wrap')}>
       {upperTitle ? (
         <div
           className={clsx(
@@ -120,7 +120,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
       <div
         className={clsx(
           !isForumLayout &&
-            'd-flex w-100 justify-content-center align-items-center',
+            'd-flex flex-row w-100 justify-content-center align-items-center',
           device.mediaIsPhone && !isForumLayout && 'flex-column'
         )}
       >
@@ -180,17 +180,20 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
           </div>
         ) : null}
         <div
-          style={{ minWidth: '150px', maxWidth: !inline ? '350px' : 'unset' }}
+          style={{
+            //minWidth: '150px',
+            maxWidth: !inline ? '350px' : 'unset',
+          }}
           className={clsx(
-            !isForumLayout && 'text-center',
+            //!isForumLayout && 'text-center',
             iconAvatar && !device.mediaIsPhone && 'ml-1',
-            status && device.mediaIsDesktop && 'mr-3'
+            status && device.mediaIsDesktop && 'mr-1'
           )}
         >
           <div
             className={clsx(
               !isForumLayout
-                ? 'custom-section-title__section-title main-title primary-color-a9 text-center d-block'
+                ? 'custom-section-title__section-title main-title primary-color-a9 text-center'
                 : 'font-weight-semibold h5 primary-color-a10'
             )}
           >
@@ -215,7 +218,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
           </div>
         </div>
         {status ? (
-          <div>
+          <div className={clsx(!device.mediaIsPhone && 'ml-2')}>
             <StatusChip
               className={clsx(
                 'table-container__status-label',
@@ -229,9 +232,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
               rowTableId={name?.replace(/\s/g, '') || new Date().getTime()}
             />
           </div>
-        ) : (
-          <div className='placeholder-div'></div>
-        )}
+        ) : null}
       </div>
       {subTitle ? (
         <div className='d-flex w-100 justify-content-center'>
