@@ -60,11 +60,11 @@ public class S3Service {
 		}
 		
 		try {
-			log.info("Uploading file con nome '{}' su AmazonS3...", fileToUploadName);
+			log.info("Uploading file...", fileToUploadName);
 			this.getClient().putObject(putObjectRequest, fileToUpload.toPath());
-			log.info("Upload file: '{}' su AmazonS3 avvenuto con successo.", fileToUploadName);
+			log.info("Upload file: avvenuto con successo.");
 		} catch (Exception ex) {
-			String messaggioErrore = String.format("Errore upload del file su AmazonS3 per il file con nome '%s'.", fileToUploadName);
+			String messaggioErrore = "Errore upload del file.";
 			log.error(messaggioErrore);
 			log.error("ex={}", ex);
 			throw new RuntimeException(messaggioErrore);
@@ -80,12 +80,12 @@ public class S3Service {
 		
 		ResponseBytes<GetObjectResponse> response = null;
 		try {
-			log.info("Downloading file con nome '{}' su AmazonS3...", fileNameToDownload);
+			log.info("Downloading file...", fileNameToDownload);
 			response  = this.getClient().getObjectAsBytes(getObjectRequest);
-			log.info("Download file: '{}' da Amazon S3 avvenuto con successo.", fileNameToDownload);
+			log.info("Download file avvenuto con successo.");
 		} catch (Exception ex) {
-			String messaggioErrore = String.format("Errore download del file su AmazonS3 per il file con nome '%s'."
-					+ " Verifica che il nome del file da scaricare sia correto e riprova.", fileNameToDownload);
+			String messaggioErrore = "Errore download del file."
+					+ " Verifica che il nome del file da scaricare sia correto e riprova.";
 			log.error(messaggioErrore);
 			log.error("ex={}", ex);
 			throw new RuntimeException(messaggioErrore);
@@ -96,10 +96,10 @@ public class S3Service {
 	
 	public String getPresignedUrl(String nomeFile, String bucketName, Long... durataScadenzaPresignedUrl) {
 		if(nomeFile == null || nomeFile.trim().isEmpty()) {
-			throw new RuntimeException("nomeFile prisegnedUrl AWS S3 deve essere valorizzato non blank");
+			throw new RuntimeException("nomeFile deve essere valorizzato non blank");
 		}
 		if(bucketName == null || bucketName.trim().isEmpty()) {
-			throw new RuntimeException("bucketName AWS S3 deve essere valorizzato non blank");
+			throw new RuntimeException("bucketName deve essere valorizzato non blank");
 		}
 		
 		S3Presigner presigner = S3Presigner.builder()
