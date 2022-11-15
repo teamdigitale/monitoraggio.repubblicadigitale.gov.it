@@ -163,27 +163,29 @@ const ViewSurvey: React.FC = () => {
             upperTitle: { icon: 'it-file', text: 'Questionario' },
           }}
           buttonsPosition='BOTTOM'
-          goBackTitle='Torna indietro'
+          goBackTitle='Cittadini partecipanti'
+          goBackPath={`/area-amministrativa/servizi/${serviceId}/cittadini`}
         />
-        {sections?.length &&
-          sections.map((section: SurveySectionPayloadI, index: number) => (
-            <>
-              <p
-                className={clsx(
-                  'h5',
-                  'primary-color',
-                  'lightgrey-bg-c2',
-                  'mb-4',
-                  'mt-3',
-                  'p-3',
-                  'font-weight-bold'
-                )}
-              >
-                {section.titolo}
-              </p>
-              <JsonFormRender form={arrayForms[index]} viewMode />
-            </>
-          ))}
+        {sections?.length
+          ? sections.map((section: SurveySectionPayloadI, index: number) => (
+              <>
+                <p
+                  className={clsx(
+                    'h5',
+                    'primary-color',
+                    'lightgrey-bg-c2',
+                    'mb-4',
+                    'mt-3',
+                    'p-3',
+                    'font-weight-bold'
+                  )}
+                >
+                  {section.titolo}
+                </p>
+                <JsonFormRender form={arrayForms[index]} viewMode />
+              </>
+            ))
+          : null}
       </div>
     </div>
   );

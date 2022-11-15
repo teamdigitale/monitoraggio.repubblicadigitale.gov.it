@@ -376,7 +376,7 @@ const ProjectsDetails = () => {
     {
       size: 'xs',
       color: 'primary',
-      text: 'Aggiungi Ente gestore',
+      text: 'Aggiungi ente gestore',
       onClick: () =>
         dispatch(
           openModal({

@@ -33,7 +33,7 @@ const ProfileImageForm: React.FC<ProfilePictureI> = (props) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const removeImage = (e: any) => {
-    setImage({ name: 'carica foto profilo', data: '' });
+    setImage({ name: 'Carica foto profilo', data: '' });
     setSelectedImage('');
     setIsFormValid(true);
     e.preventDefault();
