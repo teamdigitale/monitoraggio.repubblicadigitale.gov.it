@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.306](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.305...1.0.0-develop.306) (2022-11-15)
+
+
+### Bug Fixes
+
+* **be:** drupal lista programmi ([faa5b77](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/faa5b77c27b22c185b2988b1dbcef2cdc18f4eb4))
+
 ## [1.0.0-develop.305](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.304...1.0.0-develop.305) (2022-11-15)
 
 
