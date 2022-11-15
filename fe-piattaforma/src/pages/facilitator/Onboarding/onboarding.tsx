@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
 import { Navigate, useNavigate } from 'react-router-dom';
@@ -25,7 +25,6 @@ import {
   EditUser,
   LogoutRedirect,
   SelectUserRole,
-  UploadUserPic,
 } from '../../../redux/features/user/userThunk';
 import { openModal } from '../../../redux/features/modal/modalSlice';
 import FormOnboarding from './formOnboarding';
@@ -43,8 +42,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
   const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
   const user = useAppSelector(selectUser);
-  const [image, setImage] = useState<string>(user?.immagineProfilo || Profile);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const image = user?.immagineProfilo || Profile;
   const {
     form,
     isValidForm,
@@ -62,32 +60,6 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
   }, [user]);
 
   if (!user?.codiceFiscale) return <Navigate to={defaultRedirectUrl} replace />;
-
-  const addProfilePicture = () => {
-    if (inputRef.current !== null) {
-      inputRef.current.click();
-    }
-  };
-
-  const updateImage = async () => {
-    const input: HTMLInputElement = document.getElementById(
-      'profile_pic'
-    ) as HTMLInputElement;
-
-    if (input.files?.length) {
-      const selectedImage = input.files[0];
-      const res = await dispatch(UploadUserPic(selectedImage, user?.id));
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      if (res) {
-        const reader = new FileReader();
-        reader.readAsDataURL(selectedImage);
-        reader.onloadend = () => {
-          setImage(reader.result as string);
-        };
-      }
-    }
-  };
 
   const loginUser = () => {
     navigate(defaultRedirectUrl, { replace: true });
@@ -165,43 +137,38 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
             )}
           >
             <div role='button' tabIndex={0} className=' position-relative'>
-              <input
-                type='file'
-                id='profile_pic'
-                onChange={updateImage}
-                accept='.png, .jpeg, .jpg'
-                capture
-                ref={inputRef}
-                className='d-none'
-              />
-
               <div className='rounded-circle onboarding__img-profile position-relative mr-3'>
                 <img
                   src={image}
                   alt='profile'
                   className='rounded-circle w-100 h-100'
                 />
-                <div
+
+                <Button
+                  onClick={() =>
+                    dispatch(
+                      openModal({
+                        id: 'update-profile-pic-modal',
+                        payload: { title: 'Aggiorna immagine profilo' },
+                      })
+                    )
+                  }
                   className={clsx(
                     'onboarding__icon-container',
                     'primary-bg',
                     'position-absolute',
-                    'rounded-circle'
+                    'rounded-circle',
+                    'profile-picture-btn'
                   )}
                 >
-                  <Button
-                    onClick={addProfilePicture}
-                    className='profile-picture-btn'
-                  >
-                    <Icon
-                      size=''
-                      icon='it-camera'
-                      color='white'
-                      aria-label='Aggiorna immagine profilo'
-                      className='position-absolute onboarding__icon'
-                    />
-                  </Button>
-                </div>
+                  <Icon
+                    size=''
+                    icon='it-camera'
+                    color='white'
+                    aria-label='Foto'
+                    className='position-absolute onboarding__icon'
+                  />
+                </Button>
               </div>
             </div>
             <div>

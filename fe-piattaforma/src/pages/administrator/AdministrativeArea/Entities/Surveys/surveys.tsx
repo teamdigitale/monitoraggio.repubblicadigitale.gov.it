@@ -90,7 +90,8 @@ const Surveys = () => {
         dataUltimaModifica:
           formatDate(td.dataUltimaModifica, 'shortDate') || '-',
         defaultSCD: (
-          <FormGroup check className='table-container__toggle-button'>{console.log(td)}
+          <FormGroup check className='table-container__toggle-button'>
+            {console.log(td)}
             <Toggle
               label=''
               aria-labelledby={`toggle-SCD-${td.id}`}
@@ -268,38 +269,42 @@ const Surveys = () => {
     'new.quest.templ',
   ])
     ? {
-      [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-        navigate(
-          `/area-amministrativa/questionari/${typeof td !== 'string' ? td.id : td
-          }`
-        );
-      },
-      [CRUDActionTypes.CLONE]: (td: TableRowI | string) => {
-        navigate(
-          `/area-amministrativa/questionari/${typeof td !== 'string' ? td.id : td
-          }/clona`
-        );
-      },
-    }
-    : hasUserPermission(['view.quest.templ'])
-      ? {
         [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
           navigate(
-            `/area-amministrativa/questionari/${typeof td !== 'string' ? td.id : td
+            `/area-amministrativa/questionari/${
+              typeof td !== 'string' ? td.id : td
+            }`
+          );
+        },
+        [CRUDActionTypes.CLONE]: (td: TableRowI | string) => {
+          navigate(
+            `/area-amministrativa/questionari/${
+              typeof td !== 'string' ? td.id : td
+            }/clona`
+          );
+        },
+      }
+    : hasUserPermission(['view.quest.templ'])
+    ? {
+        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+          navigate(
+            `/area-amministrativa/questionari/${
+              typeof td !== 'string' ? td.id : td
             }`
           );
         },
       }
-      : hasUserPermission(['new.quest.templ'])
-        ? {
-          [CRUDActionTypes.CLONE]: (td: TableRowI | string) => {
-            navigate(
-              `/area-amministrativa/questionari/${typeof td !== 'string' ? td.id : td
-              }/clona`
-            );
-          },
-        }
-        : {};
+    : hasUserPermission(['new.quest.templ'])
+    ? {
+        [CRUDActionTypes.CLONE]: (td: TableRowI | string) => {
+          navigate(
+            `/area-amministrativa/questionari/${
+              typeof td !== 'string' ? td.id : td
+            }/clona`
+          );
+        },
+      }
+    : {};
 
   const objectToPass =
     filter.value === 'questionnaire'
