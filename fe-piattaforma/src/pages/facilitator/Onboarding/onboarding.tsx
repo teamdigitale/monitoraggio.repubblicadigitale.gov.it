@@ -3,7 +3,10 @@ import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../../redux/hooks';
-import {hideBreadCrumb, selectDevice} from '../../../redux/features/app/appSlice';
+import {
+  hideBreadCrumb,
+  selectDevice,
+} from '../../../redux/features/app/appSlice';
 import Profile from '/public/assets/img/change-profile.png';
 import {
   CommonFields,
@@ -132,7 +135,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
   };
 
   if (user?.integrazione)
-    return <div className='empty-page' style={{ height: '50vh' }} />;
+    return <div className='empty-page' style={{ height: '70vh' }} />;
 
   return (
     <div className={clsx(device.mediaIsPhone ? 'mx-4 mt-5' : 'mt-5 container')}>
