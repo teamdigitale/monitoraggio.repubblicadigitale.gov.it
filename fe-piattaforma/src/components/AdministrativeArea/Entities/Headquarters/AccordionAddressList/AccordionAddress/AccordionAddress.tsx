@@ -53,7 +53,7 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
   roleList = false,
   // handleOnToggle,
 }) => {
-  const [addressOpen, setAddressOpen] = useState(index === 1);
+  const [addressOpen, setAddressOpen] = useState(false);
   // const accordionToggleHandler = (isOpen: boolean) => {
   //   if (handleOnToggle) handleOnToggle(isOpen);
   // };
