@@ -124,20 +124,20 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
         <Input
           {...form?.['1']}
           col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.['1']?.label?.toLowerCase()}`}
+          placeholder={`${form?.['1']?.label}`}
           onInputChange={onInputDataChange}
         />
         <Input
           {...form?.['2']}
           col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.['2']?.label?.toLowerCase()}`}
+          placeholder={`${form?.['2']?.label}`}
           onInputChange={onInputDataChange}
         />
         <Input
           {...form?.['3']}
           col='col-12 col-lg-6'
           label='Codice fiscale'
-          placeholder='Inserisci codice fiscale'
+          placeholder='Codice fiscale'
           onInputChange={onInputDataChange}
         />
         {editMode ? (
@@ -154,7 +154,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
         )}
         <Select
           {...form?.['5']}
-          placeholder={`Inserisci ${form?.['5']?.label?.toLowerCase()}`}
+          placeholder={`${form?.['5']?.label}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
           options={citizenFormDropdownOptions['tipoDocumento']}
@@ -164,12 +164,12 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
         <Input
           {...form?.['6']}
           col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.['6']?.label?.toLowerCase()}`}
+          placeholder={`${form?.['6']?.label}`}
           onInputChange={onInputDataChange}
         />
         <Select
           {...form?.['7']}
-          placeholder={`Inserisci ${form?.['7']?.label?.toLowerCase()}`}
+          placeholder={`${form?.['7']?.label}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
           options={citizenFormDropdownOptions['genere']}
@@ -179,7 +179,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
         <Input
           {...form?.['8']}
           col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.['8']?.label?.toLowerCase()}`}
+          placeholder={`${form?.['8']?.label}`}
           onInputChange={onInputDataChange}
         />
         <Select
@@ -202,7 +202,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
         />
         <Select
           {...form?.['11']}
-          placeholder={`Inserisci ${form?.['11']?.label?.toLowerCase()}`}
+          placeholder={`${form?.['11']?.label}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
           options={citizenFormDropdownOptions['cittadinanza']}
@@ -212,12 +212,12 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
         <Input
           {...form?.['12']}
           col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.['13']?.label?.toLowerCase()}`}
+          placeholder={`${form?.['13']?.label}`}
           onInputChange={onInputDataChange}
         />
         <Select
           {...form?.['13']}
-          placeholder={`Inserisci ${form?.['13']?.label?.toLowerCase()}`}
+          placeholder={`Seleziona ${form?.['13']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
           options={citizenFormDropdownOptions['categoriaFragili']}
@@ -227,25 +227,25 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
         <Input
           {...form?.['14']}
           col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.['14']?.label?.toLowerCase()}`}
+          placeholder={`${form?.['14']?.label}`}
           onInputChange={onInputDataChange}
           required
         />
         <PrefixPhone
           {...form?.['15']}
-          placeholder={`Inserisci ${form?.['15']?.label?.toLowerCase()}`}
+          placeholder={`${form?.['15']?.label}`}
           onInputChange={onInputDataChange}
         />
         <Input
           {...form?.['16']}
           col='col-8 col-lg-4'
-          placeholder={`Inserisci ${form?.['17']?.label?.toLowerCase()}`}
+          placeholder={`${form?.['17']?.label}`}
           onInputChange={onInputDataChange}
         />
         <Input
           {...form?.['17']}
           col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.['17']?.label?.toLowerCase()}`}
+          placeholder={`${form?.['17']?.label}`}
           onInputChange={onInputDataChange}
         />
         {form?.['18']?.value === '$consenso' ||

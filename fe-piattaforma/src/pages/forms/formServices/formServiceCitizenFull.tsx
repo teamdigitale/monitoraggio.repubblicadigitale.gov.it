@@ -229,7 +229,7 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
             type={field.type}
             required={field.required || false}
             onInputChange={onInputDataChange}
-            placeholder={`Inserisci ${field.label?.toLowerCase()}`}
+            placeholder={`${field.label}`}
           />
         );
       }
@@ -243,7 +243,7 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
             col={field.field === '9' ? 'col-12' : 'col-12 col-lg-6'}
             required={field.required || false}
             onInputChange={onInputDataChange}
-            placeholder={`Inserisci ${field.label?.toLowerCase()}`}
+            placeholder={`Seleziona ${field.label?.toLowerCase()}`}
             options={field.options}
             isDisabled={formDisabled}
             value={field.value}
