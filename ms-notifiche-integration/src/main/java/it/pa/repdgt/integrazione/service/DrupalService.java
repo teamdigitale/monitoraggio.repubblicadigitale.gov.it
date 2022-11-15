@@ -162,8 +162,15 @@ public class DrupalService {
 			.map(codiceGruppo -> codiceGruppo.concat(";"))
 			.forEach(codiceGruppo -> codiceGruppiByCodiceRuolo.append(codiceGruppo));
 		
+		final StringBuilder listaProgrammi = new StringBuilder().append("");
+		
+		this.utenteRepository
+		.getListaProgrammiUtente(param.getCfUtenteLoggato())
+		.forEach(programma -> listaProgrammi.append(String.valueOf(programma).concat(";")));
+		
 		headers.put("user-roles", Arrays.asList(param.getCodiceRuoloUtenteLoggato()));
 		headers.put("role-groups", Arrays.asList( codiceGruppiByCodiceRuolo.toString() ) );
+		headers.put("user-programs", Arrays.asList( listaProgrammi.toString() ) );
 		return headers;
 	}
 }
