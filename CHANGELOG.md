@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.305](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.304...1.0.0-develop.305) (2022-11-15)
+
+
+### Features
+
+* **be:** lista programmi utente per drupal ([c631c1e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c631c1eb5f7bb007360f7756c27580deb5d93cb8))
+
 ## [1.0.0-develop.304](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.303...1.0.0-develop.304) (2022-11-15)
 
 
