@@ -164,10 +164,12 @@ public class DrupalService {
 		
 		final StringBuilder listaProgrammi = new StringBuilder().append("");
 		
+		listaProgrammi.append("public;");
+		
 		this.utenteRepository
 		.getListaProgrammiUtente(param.getCfUtenteLoggato())
 		.forEach(programma -> listaProgrammi.append(String.valueOf(programma).concat(";")));
-		
+				
 		headers.put("user-roles", Arrays.asList(param.getCodiceRuoloUtenteLoggato()));
 		headers.put("role-groups", Arrays.asList( codiceGruppiByCodiceRuolo.toString() ) );
 		headers.put("user-programs", Arrays.asList( listaProgrammi.toString() ) );
