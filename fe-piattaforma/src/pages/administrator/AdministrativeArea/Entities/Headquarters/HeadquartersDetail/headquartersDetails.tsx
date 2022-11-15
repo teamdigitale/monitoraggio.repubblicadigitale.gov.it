@@ -46,6 +46,7 @@ import {
   EmptySection,
 } from '../../../../../../components';
 import { GetProgramDetail } from '../../../../../../redux/features/administrativeArea/programs/programsThunk';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 const HeadquartersDetails = () => {
   const { mediaIsPhone } = useAppSelector(selectDevice);
@@ -399,7 +400,7 @@ const HeadquartersDetails = () => {
                   ) : (
                     <EmptySection
                       title={`Non sono presenti ${item.title?.toLowerCase()} associati.`}
-                      icon='it-note'
+                      icon={IconNote}
                       withIcon
                       noMargin
                     />

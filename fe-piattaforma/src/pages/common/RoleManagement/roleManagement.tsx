@@ -26,6 +26,7 @@ import { useAppSelector } from '../../../redux/hooks';
 import { CRUDActionsI, CRUDActionTypes } from '../../../utils/common';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import useGuard from '../../../hooks/guard';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 const arrayBreadcrumb = [
   {
@@ -176,7 +177,7 @@ const RoleManagement = () => {
             <div className='pb-5'>
               <EmptySection
                 title='Non sono presenti ruoli'
-                icon='it-note'
+                icon={IconNote}
                 withIcon
               />
             </div>

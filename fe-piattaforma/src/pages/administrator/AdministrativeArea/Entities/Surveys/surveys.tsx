@@ -47,6 +47,7 @@ import {
 import { formatDate } from '../../../../../utils/datesHelper';
 import useGuard from '../../../../../hooks/guard';
 import { resetSurveyDetails } from '../../../../../redux/features/administrativeArea/surveys/surveysSlice';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 const entity = 'questionarioTemplate';
 const statusDropdownLabel = 'stato';
@@ -369,7 +370,7 @@ const Surveys = () => {
             <EmptySection
               title='Non sono presenti questionari'
               subtitle='associati al tuo ruolo'
-              icon='it-note'
+              icon={IconNote}
               withIcon
             />
           )}

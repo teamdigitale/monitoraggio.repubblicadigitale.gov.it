@@ -6,6 +6,7 @@ import ReportCard from '../../../components/ReportCard/ReportCard';
 import { selectReportsList } from '../../../redux/features/forum/forumSlice';
 import { GetReportsList } from '../../../redux/features/forum/reports/reportsThunk';
 import { useAppSelector } from '../../../redux/hooks';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 const Reports = () => {
   const reportsList = useAppSelector(selectReportsList);
@@ -30,7 +31,7 @@ const Reports = () => {
         ) : (
           <EmptySection
             title='Non sono presenti segnalazioni'
-            icon='it-note'
+            icon={IconNote}
             withIcon
           />
         )}
