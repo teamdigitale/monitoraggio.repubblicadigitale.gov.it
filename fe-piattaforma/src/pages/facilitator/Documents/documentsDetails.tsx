@@ -2,7 +2,7 @@ import { Button, FormGroup, Icon, Label } from 'design-react-kit';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Form, Input } from '../../../components';
+import { Form, Input, Loader } from '../../../components';
 import CommentSection from '../../../components/Comments/commentSection';
 import SectionDetail from '../../../components/DocumentDetail/sectionDetail';
 import DeleteForumModal from '../../../components/General/DeleteForumEntity/DeleteForumEntity';
@@ -41,11 +41,21 @@ const DocumentsDetails = () => {
   const commentsList = useAppSelector(selectCommentsList);
   const [usefullStatus, setUsefullStatus] = useState<number>(0);
 
-  useEffect(() => {
+  const getItemDetails = async () => {
     if (userId && id) {
-      dispatch(GetItemDetail(id, userId, 'document'));
-      dispatch(GetCommentsList(id, userId));
+      const res = await dispatch(GetItemDetail(id, userId, 'document'));
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (res) {
+        dispatch(GetCommentsList(id, userId));
+      } else {
+        navigate('/documenti', { replace: true });
+      }
     }
+  };
+
+  useEffect(() => {
+    getItemDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId, id]);
 
@@ -120,6 +130,9 @@ const DocumentsDetails = () => {
       <span className='primary-color'> Torna indietro </span>
     </Button>
   );
+
+  if (!docDetails?.id) return <Loader />;
+
   return (
     <div className='container'>
       {backButton}
