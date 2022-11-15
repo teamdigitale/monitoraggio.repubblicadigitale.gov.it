@@ -115,7 +115,7 @@ public class SedeRestApi {
 	@PostMapping(path = "/associa/facilitatore")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void associaFacilitatoreAEnteSedeProgetto (
-			@RequestBody @Valid EnteSedeProgettoFacilitatoreRequest enteSedeProgettoFacilitatoreRequest) {
+			@RequestBody @Valid final EnteSedeProgettoFacilitatoreRequest enteSedeProgettoFacilitatoreRequest) {
 		this.enteSedeProgettoFacilitatoreService.associaFacilitatoreAEnteSedeProgetto(enteSedeProgettoFacilitatoreRequest);
 	}
 	
@@ -123,7 +123,7 @@ public class SedeRestApi {
 	@PostMapping(path = "cancellaOTerminaAssociazione/facilitatore")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void cancellaOTerminaAssociazioneFacilitatoreAEnteSedeProgetto (
-			@RequestBody @Valid EnteSedeProgettoFacilitatoreRequest enteSedeProgettoFacilitatoreRequest) {
+			@RequestBody @Valid final EnteSedeProgettoFacilitatoreRequest enteSedeProgettoFacilitatoreRequest) {
 		this.enteSedeProgettoFacilitatoreService.cancellaOTerminaAssociazioneFacilitatoreAEnteSedeProgetto(enteSedeProgettoFacilitatoreRequest);
 	}
 	
@@ -134,9 +134,10 @@ public class SedeRestApi {
 			@PathVariable(value = "idProgetto") Long idProgetto,
 			@PathVariable(value = "idEnte") 	Long idEnte,
 			@PathVariable(value = "idSede") 	Long idSede,
-			@RequestBody SceltaProfiloParam sceltaProfiloParam) {
-		if(!accessControServiceUtils.checkPermessoIdSede(sceltaProfiloParam, idSede))
+			@RequestBody final SceltaProfiloParam sceltaProfiloParam) {
+		if(!accessControServiceUtils.checkPermessoIdSede(sceltaProfiloParam, idSede)) {
 			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
+		}
 		return this.sedeService.getSchedaSedeByIdProgettoAndIdEnteAndIdSede(idProgetto, idEnte, idSede);
 	}
 }

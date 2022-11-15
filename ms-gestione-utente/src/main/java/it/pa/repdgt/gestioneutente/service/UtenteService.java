@@ -592,13 +592,17 @@ public class UtenteService {
 		case "DEG": 
 			return this.utenteRepository.isUtenteAssociatoProgrammaAndEnte(idUtente, sceltaProfilo.getIdProgramma(), sceltaProfilo.getIdEnte()) > 0;
 		case "REGP": 
-		case "DEGP": 
+		case "DEGP":
+			return this.utenteRepository.isUtenteAssociatoProgrammaAndProgetto(idUtente, sceltaProfilo.getIdProgramma(), sceltaProfilo.getIdProgetto()) > 0;
 		case "REPP": 
 		case "DEPP": 
 		case "FAC": 
 		case "VOL": 
-			return this.utenteRepository.isUtenteAssociatoProgrammaAndProgetto(idUtente, sceltaProfilo.getIdProgramma(), sceltaProfilo.getIdProgetto()) > 0;
+			return this.utenteRepository.isUtenteAssociatoProgrammaAndProgettoAndEnte(idUtente, sceltaProfilo.getIdProgramma(), sceltaProfilo.getIdProgetto(), sceltaProfilo.getIdEnte()) > 0;
 			// DTD, DSCU, RUOLI_CUSTOM
+		case "DSCU": 
+			String codiceFiscale = utenteRepository.findById(idUtente).get().getCodiceFiscale();
+			return utenteRepository.isUtenteConRelazioneProgrammaSCD(codiceFiscale) > 0;
 		default: return true;
 		}
 	}
