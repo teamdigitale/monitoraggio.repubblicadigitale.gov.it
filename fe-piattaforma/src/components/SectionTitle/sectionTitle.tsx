@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import './sectionTitle.scss';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
@@ -10,8 +10,10 @@ import {
 import StatusChip from '../StatusChip/statusChip';
 import { Button, Icon } from 'design-react-kit';
 import { useDispatch } from 'react-redux';
-import { UploadUserPic } from '../../redux/features/user/userThunk';
 import UserAvatar from '../Avatar/UserAvatar/UserAvatar';
+import { selectImmagineProfilo } from '../../redux/features/user/userSlice';
+import { openModal } from '../../redux/features/modal/modalSlice';
+import ManageProfilePic from '../../pages/administrator/AdministrativeArea/Entities/modals/manageProfilePic';
 
 interface SectionTitleI {
   title: string | undefined;
@@ -42,51 +44,17 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
     surname,
     isUserProfile = false,
     enteIcon = false,
-    profilePicture,
+    profilePicture = '',
     isForumLayout,
     inline = false,
   } = props;
 
   const device = useAppSelector(selectDevice);
   const dispatch = useDispatch();
-
-  const inputRef = useRef<HTMLInputElement>(null);
-  const addProfilePicture = () => {
-    if (inputRef.current !== null) {
-      inputRef.current.click();
-    }
-  };
-
-  const updateImage = async () => {
-    if (isUserProfile) {
-      const input: HTMLInputElement = document.getElementById(
-        'profile_pic'
-      ) as HTMLInputElement;
-
-      if (input.files?.length) {
-        const selectedImage = input.files[0];
-        const res = await dispatch(UploadUserPic(selectedImage));
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        if (res) {
-          // TODO reload is temporary
-          window.location.reload();
-        }
-        /*
-        const reader = new FileReader();
-        //reader.readAsBinaryString(selectedImage);
-        reader.readAsDataURL(selectedImage);
-        reader.onloadend = () => {
-          console.log(reader);
-          //return reader.result;
-          dispatch(UploadUserPic(reader.result));
-        };*/
-      }
-    }
-  };
+  const immagineProfilo = useAppSelector(selectImmagineProfilo);
 
   return (
-    <div className={clsx(!isForumLayout && 'd-flex w-100 flex-wrap mx-auto')}>
+    <div className={clsx(!isForumLayout && 'd-flex w-100 flex-wrap')}>
       {upperTitle ? (
         <div
           className={clsx(
@@ -120,14 +88,14 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
       <div
         className={clsx(
           !isForumLayout &&
-            'd-flex w-100 justify-content-center align-items-center',
+            'd-flex flex-row w-100 justify-content-center align-items-center',
           device.mediaIsPhone && !isForumLayout && 'flex-column'
         )}
       >
         {iconAvatar && !device.mediaIsPhone ? (
           <div className={clsx('position-relative')}>
             <UserAvatar
-              avatarImage={profilePicture}
+              avatarImage={profilePicture || immagineProfilo}
               user={{ uSurname: surname, uName: name }}
               size={AvatarSizes.Big}
               font={AvatarTextSizes.Big}
@@ -136,61 +104,58 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
             />
 
             {isUserProfile && (
-              <div
+              <Button
+                onClick={() =>
+                  dispatch(
+                    openModal({
+                      id: 'update-profile-pic-modal',
+                      payload: { title: 'Aggiorna immagine profilo' },
+                    })
+                  )
+                }
                 className={clsx(
                   'camera-icon',
                   'primary-bg',
                   'position-absolute',
                   'rounded-circle',
-                  'section-title__icon-container'
+                  'section-title__icon-container',
+                  'profile-picture-btn'
                 )}
                 style={{
                   bottom: device.mediaIsPhone ? '' : '-10px',
                   left: device.mediaIsPhone ? '' : '-10px',
                 }}
               >
-                <input
-                  type='file'
-                  id='profile_pic'
-                  onChange={updateImage}
-                  accept='.png, .jpeg, .jpg'
-                  capture
-                  ref={inputRef}
-                  className='d-none'
-                  aria-label='Aggiorna immagine profilo'
+                <Icon
+                  size='xs'
+                  icon='it-camera'
+                  color='white'
+                  aria-label='Foto'
+                  className='position-absolute'
+                  style={{
+                    top: '7px',
+                    left: '7px',
+                  }}
                 />
-                <Button
-                  onClick={addProfilePicture}
-                  className='profile-picture-btn'
-                >
-                  <Icon
-                    size='xs'
-                    icon='it-camera'
-                    color='white'
-                    aria-label='Aggiorna immagine profilo'
-                    className='position-absolute'
-                    style={{
-                      top: '7px',
-                      left: '7px',
-                    }}
-                  />
-                </Button>
-              </div>
+              </Button>
             )}
           </div>
         ) : null}
         <div
-          style={{ minWidth: '150px', maxWidth: !inline ? '350px' : 'unset' }}
+          style={{
+            //minWidth: '150px',
+            maxWidth: !inline ? '350px' : 'unset',
+          }}
           className={clsx(
-            !isForumLayout && 'text-center',
+            //!isForumLayout && 'text-center',
             iconAvatar && !device.mediaIsPhone && 'ml-1',
-            status && device.mediaIsDesktop && 'mr-3'
+            status && device.mediaIsDesktop && 'mr-1'
           )}
         >
           <div
             className={clsx(
               !isForumLayout
-                ? 'custom-section-title__section-title main-title primary-color-a9 text-center d-block'
+                ? 'custom-section-title__section-title main-title primary-color-a9 text-center'
                 : 'font-weight-semibold h5 primary-color-a10'
             )}
           >
@@ -215,7 +180,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
           </div>
         </div>
         {status ? (
-          <div>
+          <div className={clsx(!device.mediaIsPhone && 'ml-2')}>
             <StatusChip
               className={clsx(
                 'table-container__status-label',
@@ -229,15 +194,14 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
               rowTableId={name?.replace(/\s/g, '') || new Date().getTime()}
             />
           </div>
-        ) : (
-          <div className='placeholder-div'></div>
-        )}
+        ) : null}
       </div>
       {subTitle ? (
         <div className='d-flex w-100 justify-content-center'>
           <p className='primary-color-a9 mb-0'> {subTitle} </p>
         </div>
       ) : null}
+      <ManageProfilePic isPreview />
     </div>
   );
 };

@@ -129,7 +129,11 @@ const Input: React.FC<InputI> = (props) => {
       (type === 'number' || type === 'date') && maximum ? maximum : undefined,
     maxLength: type === 'text' && maximum ? Number(maximum) : undefined,
     min:
-      (type === 'number' || type === 'date') && minimum ? minimum : minimum === 0 ? 0: undefined,
+      (type === 'number' || type === 'date') && minimum
+        ? minimum
+        : minimum === 0
+        ? 0
+        : undefined,
     minLength: type === 'text' && minimum ? Number(minimum) : undefined,
     onBlur: (e) => {
       if (onInputBlur) onInputBlur(val, field);

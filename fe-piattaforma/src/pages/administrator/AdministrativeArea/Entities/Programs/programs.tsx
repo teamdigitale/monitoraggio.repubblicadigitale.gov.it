@@ -36,6 +36,7 @@ import {
   DownloadEntityValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import useGuard from '../../../../../hooks/guard';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 const entity = 'programma';
 const statusDropdownLabel = 'filtroStati';
@@ -288,7 +289,7 @@ const Programs = () => {
           <EmptySection
             title='Non sono presenti programmi'
             subtitle='associati al tuo ruolo'
-            icon='it-note'
+            icon={IconNote}
             withIcon
           />
         )}

@@ -1,5 +1,10 @@
 import clsx from 'clsx';
-import {Button, CardReadMore, Icon, UncontrolledTooltip} from 'design-react-kit';
+import {
+  Button,
+  CardReadMore,
+  Icon,
+  UncontrolledTooltip,
+} from 'design-react-kit';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { CRUDActionsI, CRUDActionTypes } from '../../utils/common';

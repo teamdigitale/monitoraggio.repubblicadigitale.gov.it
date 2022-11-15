@@ -32,6 +32,7 @@ import {
   GetEntityValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import useGuard from '../../../../../hooks/guard';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 const entity = 'ente';
 const profileDropdownLabel = 'profili';
@@ -274,7 +275,7 @@ const Authorities: React.FC = () => {
         ) : (
           <EmptySection
             title='Non sono presenti enti per la tua ricerca'
-            icon='it-note'
+            icon={IconNote}
             withIcon
           />
         )}

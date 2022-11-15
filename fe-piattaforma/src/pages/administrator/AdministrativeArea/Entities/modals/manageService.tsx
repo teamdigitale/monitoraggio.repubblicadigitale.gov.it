@@ -47,8 +47,7 @@ const ManageServices: React.FC<ManageServicesI> = ({
   const [areFormsValid, setAreFormsValid] = useState<boolean>(true);
   const [questionarioCompilatoQ3, setQuestionarioCompilatoQ3] =
     useState<string>('');
-  const { idProgramma, idProgetto, idEnte } =
-    getUserHeaders();
+  const { idProgramma, idProgetto, idEnte } = getUserHeaders();
 
   useEffect(() => {
     if (creation) dispatch(resetServiceDetails());

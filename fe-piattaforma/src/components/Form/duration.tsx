@@ -6,7 +6,7 @@ import './form.scss';
 const isExtValueValid = (val: formFieldI['value'], touched: boolean) => {
   const valString = (val || '')?.toString();
   const splitted = valString.split(':');
-  if(!touched && val === ''){
+  if (!touched && val === '') {
     return true;
   }
   return (Number(splitted[0]) || Number(splitted[0]) === 0) &&
@@ -23,21 +23,26 @@ const Duration: React.FC<InputI> = (props) => {
     touched = false,
   } = props;
   const [value, setValue] = useState<string>(extValue.toString() || '');
-  const [validDuration, setValidDuration] = useState(isExtValueValid(extValue, touched));
+  const [validDuration, setValidDuration] = useState(
+    isExtValueValid(extValue, touched)
+  );
 
   const handleOnDurationChange = (val: formFieldI['value']) => {
     const valString = (val || '')?.toString();
     const splitted = valString.split(':');
-    if(valString?.includes('+') || valString?.includes('-')){
+    if (valString?.includes('+') || valString?.includes('-')) {
       // + & - are not accepted
       setValidDuration(false);
-    }else if (splitted[0]?.length > 3) {
+    } else if (splitted[0]?.length > 3) {
       // max hours 999
       setValidDuration(false);
     } else {
       if (Number(splitted[0]) === 0 || Number(splitted[0]) % 1 === 0) {
-        // hours is number || 0 
-        if (Number(splitted[1]) || (Number(splitted[1]) === 0 && Number(splitted[0]) !== 0)) {
+        // hours is number || 0
+        if (
+          Number(splitted[1]) ||
+          (Number(splitted[1]) === 0 && Number(splitted[0]) !== 0)
+        ) {
           // minutes is number ||
           if (splitted[1]?.length > 2) {
             // max minutes has two digits

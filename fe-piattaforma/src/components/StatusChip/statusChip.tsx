@@ -84,11 +84,9 @@ const StatusChip: React.FC<StatusChipI> = (props) => {
   if (!status) return null;
 
   return (
-    <div
-      className='px-0 py-0'
-    >
+    <div className='px-0 py-0'>
       <Chip
-       id={`chip-status-${rowTableId ? rowTableId : new Date().getTime()}`}
+        id={`chip-status-${rowTableId ? rowTableId : new Date().getTime()}`}
         className={clsx(
           'table-container__status-label',
           statusBgColor(status),
@@ -104,7 +102,7 @@ const StatusChip: React.FC<StatusChipI> = (props) => {
             device.mediaIsPhone &&
               status?.length >= 11 &&
               'chip-label__chip-height',
-              status === 'NON ATTIVO' && 'not-active-chip'
+            status === 'NON ATTIVO' && 'not-active-chip'
           )}
           role='status'
         >

@@ -18,6 +18,7 @@ import { RegexpType } from '../../../../../utils/validator';
 import EmptySection from '../../../../EmptySection/emptySection';
 import Form from '../../../../Form/form';
 import Input from '../../../../Form/input';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 interface TargetsFormI extends withFormHandlerProps {
   disabled?: boolean;
@@ -199,7 +200,7 @@ const TargetsForm = ({
     <EmptySection
       title='Questa sezione è ancora vuota'
       subtitle='Crea un target di valori degli obiettivi'
-      icon='it-note'
+      icon={IconNote}
       withIcon
       buttons={
         disabled
