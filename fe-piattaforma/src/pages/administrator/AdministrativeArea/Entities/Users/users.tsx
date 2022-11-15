@@ -37,6 +37,7 @@ import {
   GetEntityValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import useGuard from '../../../../../hooks/guard';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 const entity = 'utente';
 const statusDropdownLabel = 'stati';
@@ -291,7 +292,7 @@ const Users = () => {
         <EmptySection
           title='Non sono presenti utenti'
           subtitle='associati al tuo ruolo'
-          icon='it-note'
+          icon={IconNote}
           withIcon
         />
       )}

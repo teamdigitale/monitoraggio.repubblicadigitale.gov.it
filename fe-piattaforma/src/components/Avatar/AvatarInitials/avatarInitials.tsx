@@ -7,6 +7,7 @@ export enum AvatarSizes {
   Big = '__big',
   Medium = '__medium',
   Small = '__small',
+  Preview = '__preview',
 }
 
 export enum AvatarTextSizes {

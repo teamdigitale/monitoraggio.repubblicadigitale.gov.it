@@ -170,7 +170,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
       },
     },
     {
-      text: cloneModeState ? 'Crea questionario' : 'Salva Questionario',
+      text: cloneModeState ? 'Crea questionario' : 'Salva questionario',
       color: 'primary',
       disabled: !checkValidityForm(form),
       onClick: () => createUpdateSurvey(),

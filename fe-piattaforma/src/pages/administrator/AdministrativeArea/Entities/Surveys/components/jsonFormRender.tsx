@@ -75,7 +75,10 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
         if (formField?.keyBE?.toLowerCase() === 'prefisso') {
           return renderPrefix(formField);
         }
-        if (formField?.field === '19' && (formField?.value === '' || formField?.value === 'Invalid date')) {
+        if (
+          formField?.field === '19' &&
+          (formField?.value === '' || formField?.value === 'Invalid date')
+        ) {
           return null;
         }
 
@@ -97,7 +100,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
             label={formField?.label}
             onInputBlur={onInputChange}
             disabled={formField?.disabled || viewMode}
-            placeholder={`Inserisci ${formField?.label}`}
+            placeholder={`${formField?.label}`}
           />
         );
       }
@@ -224,7 +227,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
             onInputBlur={onInputChange}
             label={`${formField?.label}`}
             disabled={formField?.disabled || viewMode}
-            placeholder={`Inserisci ${formField?.label}`}
+            placeholder={`${formField?.label}`}
           />
         );
       }

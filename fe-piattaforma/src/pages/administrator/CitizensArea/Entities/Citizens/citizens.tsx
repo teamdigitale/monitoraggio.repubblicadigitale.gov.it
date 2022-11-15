@@ -29,6 +29,7 @@ import { TableHeading } from '../../utils';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import PageTitle from '../../../../../components/PageTitle/pageTitle';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 const entity = 'citizensArea';
 const siteDropdownLabel = 'idsSedi';
@@ -220,7 +221,7 @@ const Citizens = () => {
           <EmptySection
             title='Non sono presenti cittadini'
             subtitle='associati al tuo ruolo'
-            icon='it-note'
+            icon={IconNote}
             withIcon
           />
         )}

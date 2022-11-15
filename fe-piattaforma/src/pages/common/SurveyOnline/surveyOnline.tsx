@@ -210,11 +210,14 @@ const SurveyOnline: React.FC<withFormHandlerProps> = (props) => {
     <div>
       <h1 className='h4 primary-color-a9 mb-4'>Compila il questionario</h1>
       <p className='mt-2 mb-4 text-muted'>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fermentum
-        turpis mauris, sit amet faucibus purus aliquam nec
+        La tua opinione per noi è importante. Rispondi a questo breve
+        questionario e aiutaci a offrirti servizi di formazione e facilitazione
+        digitale sempre migliori. <br/>
+        Le domande contrassegnate da asterisco sono
+        obbligatorie.
       </p>
       {!compiled && Object.keys(surveyForm).length ? (
-        <div className='my-5 pt-5'>
+        <div className='my-5'>
           <JsonFormRender
             form={surveyForm}
             onInputChange={onInputChange}

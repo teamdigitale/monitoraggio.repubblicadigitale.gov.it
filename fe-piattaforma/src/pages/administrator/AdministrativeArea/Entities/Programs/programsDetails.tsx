@@ -63,6 +63,7 @@ import { GetSurveyAllLight } from '../../../../../redux/features/administrativeA
 import clsx from 'clsx';
 import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 import { selectProfile } from '../../../../../redux/features/user/userSlice';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 const tabs = {
   INFO: 'info',
@@ -270,7 +271,8 @@ const ProgramsDetails: React.FC = () => {
               payload: {
                 entity: 'project',
                 projectId: td,
-                text: 'Confermi di volere terminare il progetto?',
+                text1: 'Inserisci la data di termine e conferma per terminare il progetto.',
+                text2: 'Attenzione: non è possibile inserire una data futura.',
               },
             })
           );
@@ -391,7 +393,7 @@ const ProgramsDetails: React.FC = () => {
         <EmptySection
           title='Questa sezione è ancora vuota'
           withIcon
-          icon='it-note'
+          icon={IconNote}
           subtitle='Per attivare il progetto aggiungi un Ente gestore di Programma'
           buttons={
             program?.dettagliInfoProgramma?.stato !== entityStatus.TERMINATO &&
@@ -549,7 +551,7 @@ const ProgramsDetails: React.FC = () => {
               : []
           }
           withIcon
-          icon='it-note'
+          icon={IconNote}
         />
       );
     }
@@ -623,7 +625,7 @@ const ProgramsDetails: React.FC = () => {
               : []
           }
           withIcon
-          icon='it-note'
+          icon={IconNote}
         />
       );
       setItemList({
@@ -739,7 +741,8 @@ const ProgramsDetails: React.FC = () => {
                       id: 'terminate-entity',
                       payload: {
                         entity: 'program',
-                        text: 'Confermi di volere terminare il programma?',
+                        text1: 'Inserisci la data di termine e conferma per terminare il programma.',
+                        text2: 'Attenzione: non è possibile inserire una data futura.',
                       },
                     })
                   ),
@@ -790,7 +793,8 @@ const ProgramsDetails: React.FC = () => {
                       id: 'terminate-entity',
                       payload: {
                         entity: 'program',
-                        text: 'Confermi di volere terminare il programma?',
+                        text1: 'Inserisci la data di termine e conferma per terminare il programma',
+                        text2: 'Attenzione: non è possibile inserire una data futura.',
                       },
                     })
                   ),
@@ -1162,7 +1166,7 @@ const ProgramsDetails: React.FC = () => {
                 ) : (
                   <EmptySection
                     title={`Non sono presenti ${item.title?.toLowerCase()} associati.`}
-                    icon='it-note'
+                    icon={IconNote}
                     withIcon
                     noMargin
                   />

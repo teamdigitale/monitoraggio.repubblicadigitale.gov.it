@@ -49,6 +49,7 @@ import ManagePartnerAuthority from '../modals/managePartnerAuthority';
 import useGuard from '../../../../../hooks/guard';
 import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 import { GetProgramDetail } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 const AuthoritiesDetails = () => {
   const authorityDetails = useAppSelector(selectAuthorities)?.detail;
@@ -520,7 +521,7 @@ const AuthoritiesDetails = () => {
                           ? `associate.`
                           : `associati.`
                       }`}
-                      icon='it-note'
+                      icon={IconNote}
                       withIcon
                       noMargin
                     />

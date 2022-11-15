@@ -27,7 +27,7 @@ import SelectMultiple from './Form/selectMultiple';
 import Stepper from './Stepper/stepper';
 import TabGroup from './TabGroup/tabGroup';
 import Table from './Table/table';
-import NotificationsPreview from "./NotificationsPreview/notificationsPreview";
+import NotificationsPreview from './NotificationsPreview/notificationsPreview';
 import InfoPanel from './InfoPanel/infoPanel';
 import SideSelection from './SideSelection/sideSelection';
 import ButtonsBar from './ButtonsBar/buttonsBar';
@@ -85,5 +85,5 @@ export {
   Stepper,
   TabGroup,
   Table,
-  NotificationsPreview
+  NotificationsPreview,
 };

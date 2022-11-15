@@ -131,7 +131,7 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
         <Input
           {...form?.nomeServizio}
           col='col-12'
-          placeholder={`Inserisci ${form?.nomeServizio?.label?.toLowerCase()}`}
+          placeholder={`${form?.nomeServizio?.label}`}
           onInputChange={onInputDataChange}
         />
         <Input
@@ -144,7 +144,7 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
         <Select
           {...form?.idSede}
           col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.idSede?.label?.toLowerCase()}`}
+          placeholder={`Seleziona ${form?.idSede?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           options={dropdownOptions['sedi']}
           wrapperClassName='pl-0 pr-lg-3'

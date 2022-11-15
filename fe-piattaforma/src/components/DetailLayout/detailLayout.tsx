@@ -18,6 +18,7 @@ import CardStatusActionHeadquarters from '../CardStatusAction/cardStatusActionHe
 import CardStatusActionSurveys from '../CardStatusAction/cardStatusActionSurveys';
 import CardStatusActionPartnerAuthority from '../CardStatusAction/cardStatusActionPartnerAuthority';
 import EmptySection from '../EmptySection/emptySection';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 interface DetailLayoutI {
   nav?: ReactElement;
@@ -168,7 +169,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                 ) : (
                   <EmptySection
                     title={`Non sono presenti ${singleItem.title?.toLowerCase()} associati.`}
-                    icon='it-note'
+                    icon={IconNote}
                     withIcon
                     noMargin
                   />
