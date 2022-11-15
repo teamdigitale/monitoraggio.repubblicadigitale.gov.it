@@ -92,14 +92,14 @@ const FormServiceCitizenBase: React.FC<FormEnteGestoreProgettoFullInterface> = (
         <Input
           {...form?.nome}
           col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.nome?.label?.toLowerCase()}`}
+          placeholder={`${form?.nome?.label}`}
           onInputChange={onInputDataChange}
           required
         />
         <Input
           {...form?.cognome}
           col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.cognome?.label?.toLowerCase()}`}
+          placeholder={`${form?.cognome?.label}`}
           onInputChange={onInputDataChange}
           required
         />
@@ -107,26 +107,26 @@ const FormServiceCitizenBase: React.FC<FormEnteGestoreProgettoFullInterface> = (
           {...form?.codiceFiscale}
           col='col-12 col-lg-6'
           label='Codice fiscale'
-          placeholder='Inserisci codice fiscale'
+          placeholder='Codice fiscale'
           onInputChange={onInputDataChange}
           required
         />
         <Input
           {...form?.email}
           col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.email?.label?.toLowerCase()}`}
+          placeholder={`${form?.email?.label}`}
           onInputChange={onInputDataChange}
           required
         />
         <PrefixPhone
           {...form?.prefisso}
-          placeholder={`Inserisci ${form?.prefisso?.label?.toLowerCase()}`}
+          placeholder={`${form?.prefisso?.label}`}
           onInputChange={onInputDataChange}
         />
         <Input
           {...form?.cellulare}
           col='col-8 col-lg-4'
-          placeholder={`Inserisci ${form?.cellulare?.label?.toLowerCase()}`}
+          placeholder={`${form?.cellulare?.label}`}
           onInputChange={onInputDataChange}
         />
       </Form.Row>

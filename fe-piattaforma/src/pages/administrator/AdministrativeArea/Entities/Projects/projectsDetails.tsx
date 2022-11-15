@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Icon, Nav, Tooltip } from 'design-react-kit';
+import { Icon, Nav } from 'design-react-kit';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { entityStatus, formTypes, userRoles } from '../utils';
 import {
@@ -65,6 +65,8 @@ import DeleteEntityModal from '../../../../../components/AdministrativeArea/Enti
 import useGuard from '../../../../../hooks/guard';
 import UploadCSVModal from '../../../../../components/AdministrativeArea/Entities/General/UploadCSVModal/UploadCSVModal';
 import { selectProfile } from '../../../../../redux/features/user/userSlice';
+import IconWarning from '/public/assets/img/it-warning-circle-primary.png';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 const EntiPartnerTemplate =
   '/assets/entity_templates/template_ente-partner.csv';
@@ -114,7 +116,7 @@ const ProjectsDetails = () => {
   const [itemAccordionList, setItemAccordionList] = useState<
     ItemsListI[] | null
   >();
-  const [openOne, toggleOne] = useState(false);
+  // const [openOne, toggleOne] = useState(false);
   const [correctButtons, setCorrectButtons] = useState<ButtonInButtonsBar[]>(
     []
   );
@@ -326,6 +328,15 @@ const ProjectsDetails = () => {
     }
   }, [location]);
 
+  const subtitleList = (
+    <ol className='my-4'>
+      <li>aggiungere un ente gestore;</li>
+      <li>aggiungere almeno un referente nella scheda dell’ente gestore;</li>
+      <li>aggiungere almeno una sede all’ente gestore o a un ente partner;</li>
+      <li>aggiungere almeno un {projectDetails?.policy === 'SCD' ? 'volontario':'facilitatore'} nella scheda di una sede.</li>
+    </ol>
+  );
+
   const partnerAuthorityButtons: ButtonInButtonsBar[] = [
     {
       size: 'xs',
@@ -365,7 +376,7 @@ const ProjectsDetails = () => {
     {
       size: 'xs',
       color: 'primary',
-      text: 'Aggiungi un nuovo Ente gestore Progetto',
+      text: 'Aggiungi Ente gestore',
       onClick: () =>
         dispatch(
           openModal({
@@ -528,8 +539,10 @@ const ProjectsDetails = () => {
       setCorrectModal(<ManageManagerAuthority creation />);
       setEmptySection(
         <EmptySection
-          title='Questa sezione è ancora vuota'
-          subtitle='Per attivare il progetto aggiungi un Ente gestore'
+          withIcon
+          icon={IconWarning}
+          title='Per attivare il progetto è necessario:'
+          subtitle2={subtitleList}
           buttons={
             hasUserPermission(['add.enti.gest.prgt'])
               ? EmptySectionButtons.slice(0, 1)
@@ -611,7 +624,7 @@ const ProjectsDetails = () => {
         <EmptySection
           title='Questa sezione è ancora vuota'
           withIcon
-          icon='it-note'
+          icon={IconNote}
           //subtitle='Per attivare il progetto aggiungi un Ente partner'
           buttons={
             hasUserPermission(['add.ente.partner']) &&
@@ -690,10 +703,10 @@ const ProjectsDetails = () => {
       setCorrectButtons([]);
       setEmptySection(
         <EmptySection
-          title='Non sono presenti sedi associate'
+          title='Per attivare il progetto è necessario:'
           withIcon
-          icon='it-note'
-          subtitle='Per attivare il progetto aggiungi una sede all’ente gestore o ad un ente partner'
+          icon={IconWarning}
+          subtitle2={subtitleList}
           // buttons={EmptySectionButtons.slice(2)}
         />
       );
@@ -727,14 +740,14 @@ const ProjectsDetails = () => {
           {!managingAuthorityID ? (
             <div id='tab-ente-gestore-progetto'>
               * Ente gestore
-              <Tooltip
+              {/* <Tooltip
                 placement='bottom'
                 target='tab-ente-gestore-progetto'
                 isOpen={openOne}
                 toggle={() => toggleOne(!openOne)}
               >
                 Compilazione obbligatoria
-              </Tooltip>
+              </Tooltip> */}
               <Icon icon='it-warning-circle' size='xs' className='ml-1' />
             </div>
           ) : (
@@ -755,7 +768,7 @@ const ProjectsDetails = () => {
           to={replaceLastUrlSection(tabs.SEDI)}
           active={activeTab === tabs.SEDI}
         >
-          <span> Sedi </span>
+          Sedi
         </NavLink>
       </li>
     </Nav>
@@ -852,7 +865,10 @@ const ProjectsDetails = () => {
                       id: 'terminate-entity',
                       payload: {
                         entity: 'project',
-                        text: 'Confermi di voler terminare il progetto?',
+                        text1:
+                          'Inserisci la data di termine e conferma per terminare il progetto.',
+                        text2:
+                          'Attenzione: non è possibile inserire una data futura.',
                       },
                     })
                   ),
@@ -899,7 +915,10 @@ const ProjectsDetails = () => {
                       id: 'terminate-entity',
                       payload: {
                         entity: 'project',
-                        text: 'Confermi di voler terminare il progetto?',
+                        text1:
+                          'Inserisci la data di termine e conferma per terminare il progetto',
+                        text2:
+                          'Attenzione: non è possibile inserire una data futura.',
                       },
                     })
                   ),
@@ -1279,7 +1298,7 @@ const ProjectsDetails = () => {
                           ? `associate.`
                           : `associati.`
                       }`}
-                      icon='it-note'
+                      icon={IconNote}
                       withIcon
                       noMargin
                     />

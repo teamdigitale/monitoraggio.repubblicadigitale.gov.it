@@ -211,7 +211,8 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
           {description || payload?.description ? (
             <p
               className={clsx(
-                isSurveyOnline && 'text-muted text-center mx-auto h5'
+                isSurveyOnline && 'text-muted text-center h5',
+                'mx-auto'
               )}
             >
               {description || payload?.description}

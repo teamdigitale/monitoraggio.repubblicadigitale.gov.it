@@ -35,6 +35,7 @@ import {
   GetEntityValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import useGuard from '../../../../../hooks/guard';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 const entity = 'progetto';
 const statusDropdownLabel = 'filtroStati';
@@ -286,7 +287,7 @@ const Projects: React.FC = () => {
           <EmptySection
             title='Non sono presenti progetti'
             subtitle='associati al tuo ruolo'
-            icon='it-note'
+            icon={IconNote}
             withIcon
           />
         )}

@@ -34,7 +34,7 @@ const TableMobile: React.FC<MobileTableI> = ({
           actions,
           clickViewAction:
             (!item?.citizen || (item?.citizen && item?.associatoAUtente)) &&
-              onActionClick?.[CRUDActionTypes.VIEW]
+            onActionClick?.[CRUDActionTypes.VIEW]
               ? () => onActionClick?.[CRUDActionTypes.VIEW](item)
               : undefined,
           clickEditAction: onActionClick?.[CRUDActionTypes.EDIT]

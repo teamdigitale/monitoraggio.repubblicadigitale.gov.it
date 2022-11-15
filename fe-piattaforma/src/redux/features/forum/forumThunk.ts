@@ -654,6 +654,7 @@ export const GetItemDetail =
         }
         return res;
       }
+      return false;
     } catch (error) {
       console.log('GetItemsDetails error', error);
       return false;

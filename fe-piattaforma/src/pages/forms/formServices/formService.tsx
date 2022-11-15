@@ -80,7 +80,8 @@ const FormService: React.FC<FormServiceI> = (props) => {
           formFromSchema[key].maximum = formatDate(projectDetails?.dataFine);
           formFromSchema[key].minimum = formatDate(projectDetails?.dataInizio);
         }
-        if(key === '23'){ // case duration
+        if (key === '23') {
+          // case duration
           formFromSchema[key].regex = RegexpType.ALPHA_NUMERIC_INPUT;
         }
       });

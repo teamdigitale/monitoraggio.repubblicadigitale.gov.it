@@ -14,7 +14,6 @@ import {
   ProgressBar,
   PrefixPhone,
   StatusChip,
-  Duration,
 } from '../components';
 import CheckboxGroup from '../components/Form/checkboxGroup';
 import withFormHandler, { withFormHandlerProps } from '../hoc/withFormHandler';
@@ -54,6 +53,8 @@ import UserAvatar from '../components/Avatar/UserAvatar/UserAvatar';
 import { closeModal, openModal } from '../redux/features/modal/modalSlice';
 import GenericModal from '../components/Modals/GenericModal/genericModal';
 import { getAnagraphicID } from '../redux/features/anagraphic/anagraphicSlice';
+import ManageProfilePic from '../pages/administrator/AdministrativeArea/Entities/modals/manageProfilePic';
+import Onboarding from './facilitator/Onboarding/onboarding';
 
 const Playground: React.FC<withFormHandlerProps> = (props) => {
   const { t } = useTranslation();
@@ -131,7 +132,7 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
     if (typeof value === 'string') setMultipleSelectValue(value);
   };
 
-  console.log('form', props.form)
+  console.log('form', props.form);
 
   const handleInputCheckbox = (
     value?: formFieldI['value'],
@@ -150,12 +151,12 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
       <div className='w-100 my-5'>
         <Form id='form-playground-4'>
           <Form.Row>
-            <Duration
+            {/*  <Duration
               {...props.form?.duration}
               label='Durata'
               required
               onInputChange={props.onInputChange}
-            />
+            /> */}
           </Form.Row>
         </Form>
         <p>Valore duration input: {props.form?.duration?.value}</p>
@@ -235,11 +236,11 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
           <UserAvatar
             // avatarImage={profilePicture}
             user={{ uSurname: 'Galassi', uName: 'Riccardo' }}
-          //size={device.mediaIsPhone ? AvatarSizes.Big : AvatarSizes.Small}
-          /*  font={
+            //size={device.mediaIsPhone ? AvatarSizes.Big : AvatarSizes.Small}
+            /*  font={
             device.mediaIsPhone ? AvatarTextSizes.Big : AvatarTextSizes.Small
           } */
-          //lightColor={device.mediaIsPhone}
+            //lightColor={device.mediaIsPhone}
           />
           <div> {'CIAO'} </div>
           <StatusChip
@@ -251,8 +252,8 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
               'no-border'
               //device.mediaIsPhone ? 'mx-0 ml-2 my-3' : 'mx-3'
             )}
-            status='ATTIVO'
-          //rowTableId={name?.replace(/\s/g, '') || new Date().getTime()}
+            status={'ATTIVO'}
+            //rowTableId={name?.replace(/\s/g, '') || new Date().getTime()}
           />
         </div>
         <div className='d-flex w-100 justify-content-center'> {'CIAO'} </div>
@@ -270,7 +271,7 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
             <div className='my-3'>
               <Input name='pippo' type='radio' id={`3`} label='3' withLabel />
             </div>
-          </FormGroup> 
+          </FormGroup>
         </Form>
       </Row>
       <Row className='mt-2'>
@@ -390,23 +391,25 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
 
       <section>
         <div className='d-flex align-items-center w-100'>
-          <span 
-          className='d-none d-md-flex'
-          style={{
-            height: '2px',
-            flexGrow: '1',
-            backgroundColor: '#797C80',
-          }} />
-          <div  className='d-flex justify-content-center align-items-center px-3 mx-auto'>
-            <span 
-            className='pr-3'
+          <span
+            className='d-none d-md-flex'
             style={{
-              color: '#2079D4',
-              fontWeight: '700'
-            }}>
+              height: '2px',
+              flexGrow: '1',
+              backgroundColor: '#797C80',
+            }}
+          />
+          <div className='d-flex justify-content-center align-items-center px-3 mx-auto'>
+            <span
+              className='pr-3'
+              style={{
+                color: '#2079D4',
+                fontWeight: '700',
+              }}
+            >
               Ti è stato utile?
             </span>
-            <div  className='d-flex'>
+            {/*   <div className='d-flex'>
               <FormGroup check className='d-flex align-items-center mt-0 pr-2'>
                 <Input name='si' type='radio' id='si' />
                 <label className='mb-0'>SI</label>
@@ -415,15 +418,16 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
                 <Input name='si' type='radio' id='si' />
                 <label className='mb-0'>NO</label>
               </FormGroup>
-            </div>
+            </div> */}
           </div>
-          <span 
-          className='d-none d-md-flex'
-          style={{
-            height: '2px',
-            flexGrow: '1',
-            backgroundColor: '#797C80',
-          }} />
+          <span
+            className='d-none d-md-flex'
+            style={{
+              height: '2px',
+              flexGrow: '1',
+              backgroundColor: '#797C80',
+            }}
+          />
         </div>
       </section>
 
@@ -454,6 +458,29 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
       </section>
 
       <section>
+        <ManageProfilePic isPreview />
+      </section>
+
+      <section>
+        <Onboarding />
+      </section>
+
+      <section>
+        <Button
+          onClick={() =>
+            dispatch(
+              openModal({
+                id: 'update-profile-pic-modal',
+                payload: { title: 'Aggiorna immagine profilo' },
+              })
+            )
+          }
+        >
+          modale immagine
+        </Button>
+      </section>
+
+      <section>
         <Row>
           <Form id='form-playground-3'>
             <fieldset>
@@ -462,7 +489,9 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
           </Form>
         </Row>
       </section>
-
+      <section>
+        <Onboarding />
+      </section>
       <section>
         <Slider>
           {new Array(3).fill([1, 2, 3]).map((el, i) => (
