@@ -147,11 +147,11 @@ const CardDocument: React.FC<ForumCardsI> = (props) => {
           </div>
         </div>
       ) : (
-        <Col className='d-flex'>
+        <div className='d-flex'>
           <span className='document-card-container__date'>
             {date && formatDate(date, 'shortDate')}
           </span>
-        </Col>
+        </div>
       )}
     </div>
   );
