@@ -55,8 +55,7 @@ public class DrupalRestApi {
 			
 			if(fileNameDotSplitted.length > 0) {
 				final String estensioneFileUpperCase = fileNameDotSplitted[fileNameDotSplitted.length-1].toUpperCase();
-				final String estensioneFileLowerCase = fileNameDotSplitted[fileNameDotSplitted.length-1].toLowerCase();
-				if( !ALLOWED_FILE_TYPE.contains(estensioneFileUpperCase) || !ALLOWED_FILE_TYPE.contains(estensioneFileLowerCase) ) {
+				if( !ALLOWED_FILE_TYPE.contains(estensioneFileUpperCase) ) {
 					throw new DrupalException("Upload file '" + estensioneFileUpperCase + "' non consentito", CodiceErroreEnum.D01);
 				}
 			}
