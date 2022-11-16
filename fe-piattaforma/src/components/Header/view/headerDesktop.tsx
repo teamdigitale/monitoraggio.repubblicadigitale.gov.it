@@ -106,7 +106,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
           <span className='h6 m-0 text-sans-serif'>
             {user?.cognome}&nbsp;{user?.nome}
           </span>
-          <span className='h6 font-weight-light text-nowrap'>
+          <span className='h6 font-weight-light text-nowrap pr-1'>
             {/*<em>{getRoleLabel(userProfile?.codiceRuolo)}</em>*/}
             <em>{`${userProfile?.descrizioneRuolo}${
               userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
