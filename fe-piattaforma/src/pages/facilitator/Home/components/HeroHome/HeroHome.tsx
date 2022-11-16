@@ -4,7 +4,7 @@ import heroHomeBackgroundImg from '../../../../../../public/assets/img/hero-home
 
 const HeroHome = () => {
   return (
-    <Hero overlay='dark'>
+    <Hero overlay='dark' small>
       <HeroBackground
         src={heroHomeBackgroundImg}
         title='image title'
