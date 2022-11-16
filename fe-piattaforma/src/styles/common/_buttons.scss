@@ -24,6 +24,20 @@
   background: #ffffff;
 }
 
+/* Primary button disabled */
+.btn-primary.disabled,
+.btn-primary:disabled {
+  color: #bfc2c9 !important;
+  background-color: #e6e9f2;
+  border-color: #dfe4f2;
+}
+.btn-outline-primary.disabled,
+.btn-outline-primary:disabled {
+  color: #bfc2c9 !important;
+  background-color: #e6e9f2 !important;
+  border-color: #dfe4f2 !important;
+}
+
 .btn-secondary.disabled,
 .btn-secondary:disabled,
 .btn-tertiary.disabled,

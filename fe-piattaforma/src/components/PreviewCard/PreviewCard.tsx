@@ -50,7 +50,7 @@ const PreviewCard = ({ disabled = false, onClick }: PreviewCardI) => {
         className='button-preview'
         onClick={onClick}
       >
-        <span className='primary-color'>Anteprima</span>
+        <span className={clsx(disabled ? '' : 'primary-color')}>Anteprima</span>
       </Button>
     </div>
   );
