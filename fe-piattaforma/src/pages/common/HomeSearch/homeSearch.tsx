@@ -59,7 +59,7 @@ const HomeSearch = () => {
       )}
       <Container className='pb-5'>
         <SearchBar
-          placeholder='Lorem ipsum dolor sit amet lorem ipsum dolor sit'
+          placeholder='Cerca'
           isClearable
           id='home-search'
           className={clsx('w-75', device.mediaIsPhone && 'w-100 pl-3')}
