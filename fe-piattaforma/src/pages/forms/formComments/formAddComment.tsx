@@ -43,7 +43,7 @@ const FormAddComment: React.FC<addCommentI> = (props) => {
   useEffect(() => {
     const newText = getFormValues().text;
 
-    if (newText) sendNewValues(newText as string);
+    if (newText !== undefined) sendNewValues(newText as string);
   }, [form]);
 
   return (

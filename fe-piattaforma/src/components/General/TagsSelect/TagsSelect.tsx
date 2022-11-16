@@ -13,6 +13,7 @@ interface TagsSelectI {
 }
 
 const TagsSelect = ({ selectedTags, tags, addTag, id = '' }: TagsSelectI) => {
+
   const getFilteredTags = async (inputValue: string) =>
     new Promise((resolve) =>
       resolve(() =>
@@ -22,16 +23,16 @@ const TagsSelect = ({ selectedTags, tags, addTag, id = '' }: TagsSelectI) => {
             t.label.toLowerCase().includes(inputValue.toLowerCase())
         ).length
           ? tags.filter(
-              (t) =>
-                !selectedTags.includes(t.label) &&
-                t.label.toLowerCase().includes(inputValue.toLowerCase())
-            )
+            (t) =>
+              !selectedTags.includes(t.label) &&
+              t.label.toLowerCase().includes(inputValue.toLowerCase())
+          )
           : [
-              {
-                label: inputValue,
-                value: inputValue,
-              },
-            ]
+            {
+              label: inputValue,
+              value: inputValue,
+            },
+          ]
       )
     );
 
@@ -39,6 +40,7 @@ const TagsSelect = ({ selectedTags, tags, addTag, id = '' }: TagsSelectI) => {
     <div className='col-12 my-3 p-0'>
       <AsyncSelect
         value=''
+        defaultOptions={tags as any}
         loadOptions={getFilteredTags}
         onChange={(val: any) => addTag(val.value as string)}
         placeholder='Digita la parola chiave e utilizza il completamento automatico per evitare errori di digitazione.'
