@@ -284,7 +284,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
           {...form?.description}
           rows={6}
           cols={100}
-          maxLength={800}
+          maximum={800}
           className='mb-1 mt-3'
           onInputChange={onInputChange}
           placeholder=' '
