@@ -1,5 +1,25 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.10.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.9.5...1.10.0) (2022-11-16)
+
+
+### Features
+
+* **fe-piattaforma:** fe updates 11162022 ([a74f52f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a74f52ff6e488df337e92160c71a2ea3fee6ad61))
+* **fe-piattaforma:** fe updates 11162022 ([e4ee212](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e4ee212ad8b383eee0e515ce1043fd81b3eec654))
+* **fe-piattaforma:** remove unused files ([4f50242](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4f502425125fdc203809702df853e63581837961))
+* **fe-piattaforma:** fe updates 11142022 ([cd85d86](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/cd85d860b0d5d3ba4679a069efdcfa11a1347b15))
+* **drupal:** update project to 1.4.1 version ([1d472fa](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1d472fae09787d5a6cd0772b5cf962c508422e71))
+* **drupal:** update project to 1.4.1 version ([95fdece](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/95fdeceaaffcff22cdb30a72cf93c3d4d8eb71b6))
+* **fe-piattaforma:** fe updates 11142022 ([9c93f0b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9c93f0b48e7e38e9d338ed67123c942a389c65e0))
+
+
+### Bug Fixes
+
+* **be:** fix upload file ([29686a5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/29686a5c2f15323086307f95f62d4d43b314afa5))
+* **be:** aggiunto commento api proxy ([848b15c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/848b15ca22f93d3b2d4bec3659936f159a481105))
+* **be:** finding sicurezza + lista program drupal ([4524c56](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4524c5603b3675c8acdc612594cf84cc82165b03))
+
 ## [1.9.5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.9.4...1.9.5) (2022-11-11)
 
 
