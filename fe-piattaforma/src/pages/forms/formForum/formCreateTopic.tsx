@@ -189,7 +189,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
           {...form?.description}
           rows={6}
           cols={100}
-          maxLength={1500}
+          maximum={1500}
           onInputChange={onInputChange}
           className='mb-1 mt-3'
           placeholder=' '

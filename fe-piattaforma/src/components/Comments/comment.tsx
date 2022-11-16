@@ -243,7 +243,8 @@ const Comment: React.FC<CommentI> = (props) => {
       className={clsx(
         !isAnswer
           ? 'comment-container__comment-card'
-          : 'pt-3 comment-container__answer'
+          : 'pt-3 comment-container__answer',
+        'pb-5'
       )}
       id={id}
     >
@@ -319,7 +320,7 @@ const Comment: React.FC<CommentI> = (props) => {
         )}
       >
         <div style={{ width: '94%' }}>{body}</div>
-        <div className='comment-container__border mt-4 mb-2'></div>
+        <div className='comment-container__border mt-4 mb-3'></div>
         <SocialBar
           replies={
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment

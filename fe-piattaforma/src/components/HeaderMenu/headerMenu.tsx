@@ -21,10 +21,19 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
   const { isHeaderFull, menuRoutes = [] } = props;
   const { hasUserPermission } = useGuard();
 
-  const updateActiveTab = () =>
-    menuRoutes
+  const updateActiveTab = () => {
+    const activeRoute = menuRoutes
       .filter(({ path }) => window.location.pathname.includes(path))
-      .reduce((a, b) => (a.path.length > b.path.length ? a : b)).id;
+      .reduce((a, b) => (a.path.length > b.path.length ? a : b));
+    if (activeRoute?.id === 'tab-home') {
+      return window.location.pathname === activeRoute?.path
+        ? activeRoute?.id
+        : undefined;
+    }
+    return window.location.pathname.includes(activeRoute?.path)
+      ? activeRoute?.id
+      : undefined;
+  };
 
   const [activeTab, setActiveTab] = useState(updateActiveTab());
   const { t } = useTranslation();
@@ -35,7 +44,7 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
   useEffect(() => {
     setActiveTab(updateActiveTab());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [menuRoutes]);
+  }, [menuRoutes, window.location.pathname]);
 
   const navDropDown: React.FC<MenuItem> = (li) => {
     const toggle = (dropdown: string) => {

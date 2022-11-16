@@ -25,7 +25,7 @@ import { uploadFile } from '../../../utils/common';
 
 interface publishNewsI extends withFormHandlerProps {
   formDisabled?: boolean;
-  newFormValues: { [key: string]: formFieldI['value'] };
+  newFormValues: { [key: string]: any };
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   setIsFormValid?: (param: boolean | undefined) => void;
   creation?: boolean;
@@ -59,10 +59,10 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
   const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRefImg = useRef<HTMLInputElement>(null);
-  const [image, setImage] = useState<{ name?: string; data?: string | File }>(
+  const [image, setImage] = useState<{ name?: string; data?: string | File, res?: string }>(
     defaultCover
   );
-  const [files, setFiles] = useState<{ name?: string; data?: string | File }>(
+  const [files, setFiles] = useState<{ name?: string; data?: string | File, res?: string }>(
     defaultDocument
   );
   const [editorText, setEditorText] = useState('<p></p>');
@@ -100,12 +100,14 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
         setImage({
           data: newsDetail?.cover_file_name?.toString(),
           name: newsDetail.cover_file_name?.toString(),
+          res: newsDetail?.cover?.toString()
         });
       }
       if (newsDetail?.attachment_file_name) {
         setFiles({
           data: newsDetail?.attachment_file_name?.toString(),
           name: newsDetail.attachment_file_name?.toString(),
+          res: newsDetail?.attachment?.toString()
         });
       }
     }
@@ -177,6 +179,16 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
 
   useEffect(() => {
     if (newFormValues) {
+      if (newFormValues?.cover) 
+        setImage({
+          ...newFormValues.cover
+        })
+      
+
+      if (newFormValues.attachment)
+      setFiles({
+        ...newFormValues?.attachment
+      })
       if (form) {
         const populatedForm: formFieldI[] = Object.entries(newFormValues).map(
           ([key, value]) =>
@@ -220,8 +232,8 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
   useEffect(() => {
     setIsFormValid(
       isValidForm &&
-        editorText?.trim() !== '<p></p>' &&
-        editorText?.trim() !== ''
+      editorText?.trim() !== '<p></p>' &&
+      editorText?.trim() !== ''
     );
 
     sendNewValues({
