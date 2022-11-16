@@ -105,7 +105,7 @@ const DocumentsWidget = () => {
                       key={`card-${i}-${index}`}
                       className={clsx(
                         'col-12',
-                        'col-md-6',
+                        'col-md-7',
                         'col-lg-6',
                         'mb-2',
                         'd-flex',
@@ -131,7 +131,7 @@ const DocumentsWidget = () => {
                 ).map((el, i) => (
                   <div
                     key={`slide-${i}`}
-                    className='d-flex flex-wrap justify-content-between w-100'
+                    className='d-flex flex-wrap justify-content-between align-cards w-100'
                   >
                     {el.map((e: any, index: any) => (
                       <div

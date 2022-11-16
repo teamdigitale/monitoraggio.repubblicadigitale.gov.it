@@ -85,68 +85,80 @@ const CardSlider: React.FC<ForumCardsI> = (props) => {
       <div className='pl-1'>
         <div className='card-slider-container__pre-title'>
           <span className='font-weight-bold'>
-            {category_label}&nbsp;—&nbsp;
+            {category_label}
+            {/* &nbsp;—&nbsp; */}
           </span>
-          {date && formatDate(date, 'shortDate')}
         </div>
         <p className='card-slider-container__title my-2 font-weight-bold'>
           {title}
         </p>
-        <div className={clsx('d-flex', 'justify-content-end', 'pt-4')}>
-          {!isDocument ? (
+        <div
+          className={clsx(
+            'd-flex',
+            'justify-content-between',
+            'align-items-center',
+            'pt-4'
+          )}
+        >
+          <span className='card-slider-container__date'>
+            {date && formatDate(date, 'shortDate')}
+          </span>
+          <div className='d-flex'>
+            {!isDocument ? (
+              <div className='d-flex align-items-center'>
+                <Icon
+                  icon={CuoreBluVuoto}
+                  size='xs'
+                  color='primary'
+                  aria-label='Like'
+                  aria-hidden
+                />
+                <span className='card-slider-container__span-icons ml-1 mr-2'>
+                  {likes}
+                </span>
+              </div>
+            ) : null}
             <div className='d-flex align-items-center'>
               <Icon
-                icon={CuoreBluVuoto}
-                size='xs'
+                icon='it-comment'
+                size='sm'
                 color='primary'
-                aria-label='Like'
+                aria-label='Commento'
                 aria-hidden
               />
               <span className='card-slider-container__span-icons ml-1 mr-2'>
-                {likes}
+                {comment_count}
               </span>
             </div>
-          ) : null}
-          <div className='d-flex align-items-center'>
-            <Icon
-              icon='it-comment'
-              size='sm'
-              color='primary'
-              aria-label='Commento'
-              aria-hidden
-            />
-            <span className='card-slider-container__span-icons ml-1 mr-2'>
-              {comment_count}
-            </span>
+            {isDocument ? (
+              <div className='d-flex align-items-center'>
+                <Icon
+                  icon='it-download'
+                  size='sm'
+                  color='primary'
+                  aria-label='Download'
+                  aria-hidden
+                />
+                <span className='card-slider-container__span-icons ml-1'>
+                  {downloads}
+                </span>
+              </div>
+            ) : null}
+            {!isDocument ? (
+              <div className='d-flex align-items-center'>
+                <Icon
+                  icon='it-password-visible'
+                  size='sm'
+                  color='primary'
+                  aria-label='Views'
+                  aria-hidden
+                />
+                <span className='card-slider-container__span-icons ml-1'>
+                  {views}
+                </span>
+              </div>
+            ) : null}
           </div>
-          {isDocument ? (
-            <div className='d-flex align-items-center'>
-              <Icon
-                icon='it-download'
-                size='sm'
-                color='primary'
-                aria-label='Download'
-                aria-hidden
-              />
-              <span className='card-slider-container__span-icons ml-1'>
-                {downloads}
-              </span>
-            </div>
-          ) : null}
-          {!isDocument ? (
-            <div className='d-flex align-items-center'>
-              <Icon
-                icon='it-password-visible'
-                size='sm'
-                color='primary'
-                aria-label='Views'
-                aria-hidden
-              />
-              <span className='card-slider-container__span-icons ml-1'>
-                {views}
-              </span>
-            </div>
-          ) : null}
         </div>
       </div>
     </div>

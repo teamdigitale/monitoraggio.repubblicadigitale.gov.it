@@ -74,9 +74,9 @@ const CardCommunity: React.FC<ForumCardsI> = (props) => {
         {category_label ? (
           <div className='mb-2 card-community__pre-title'>
             <span className='font-weight-bold'>
-              {category_label}&nbsp;—&nbsp;
+              {category_label}
+              {/* &nbsp;—&nbsp; */}
             </span>
-            {date && formatDate(date, 'shortDate')}
           </div>
         ) : null}
         {title ? (
@@ -95,60 +95,64 @@ const CardCommunity: React.FC<ForumCardsI> = (props) => {
         {entity ? <PublishingAuthority authority={entity} /> : null}
       </Col>
       <div
-        className={clsx('d-flex', 'flex-row', 'mt-2', 'justify-content-end')}
+        className={clsx(
+          'd-flex',
+          'flex-row',
+          'mt-2',
+          'justify-content-between',
+          'align-items-center'
+        )}
       >
-        <div
-          className={clsx(
-            'd-flex',
-            'align-items-center',
-            'category-top',
-            'mr-2'
-          )}
-        >
-          <Icon
-            color='primary'
-            icon={Heart}
-            size='xs'
-            aria-label='Likes'
-            aria-hidden
-          />
-          <span className='card-community__span-icons pl-1'>{likes}</span>
-        </div>
-        <div
-          className={clsx(
-            'd-flex',
-            'align-items-center',
-            'category-top',
-            'mr-2'
-          )}
-        >
-          <Icon
-            color='primary'
-            icon='it-comment'
-            size='sm'
-            aria-label='Comments'
-            aria-hidden
-          />
-          <span className='card-community__span-icons pl-1'>
-            {comment_count}
-          </span>
-        </div>
-        <div
-          className={clsx(
-            'd-flex',
-            'align-items-center',
-            'category-top',
-            'mr-2'
-          )}
-        >
-          <Icon
-            color='primary'
-            icon='it-password-visible'
-            size='sm'
-            aria-label='Views'
-            aria-hidden
-          />
-          <span className='card-community__span-icons pl-1'>{views}</span>
+        <span className='card-community__date'>
+          {date && formatDate(date, 'shortDate')}
+        </span>
+        <div className='d-flex'>
+          <div
+            className={clsx(
+              'd-flex',
+              'align-items-center',
+              'category-top',
+              'mr-2'
+            )}
+          >
+            <Icon
+              color='primary'
+              icon={Heart}
+              size='xs'
+              aria-label='Likes'
+              aria-hidden
+            />
+            <span className='card-community__span-icons pl-1'>{likes}</span>
+          </div>
+          <div
+            className={clsx(
+              'd-flex',
+              'align-items-center',
+              'category-top',
+              'mr-2'
+            )}
+          >
+            <Icon
+              color='primary'
+              icon='it-comment'
+              size='sm'
+              aria-label='Comments'
+              aria-hidden
+            />
+            <span className='card-community__span-icons pl-1'>
+              {comment_count}
+            </span>
+          </div>
+          <div className={clsx('d-flex', 'align-items-center', 'category-top')}>
+            <Icon
+              color='primary'
+              icon='it-password-visible'
+              size='sm'
+              aria-label='Views'
+              aria-hidden
+            />
+            <span className='card-community__span-icons pl-1'>{views}</span>
+          </div>
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import { Button } from 'design-react-kit';
 import clsx from 'clsx';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
+import './PreviewCard.scss';
 
 interface PreviewCardI {
   disabled: boolean;
@@ -44,13 +45,12 @@ const PreviewCard = ({ disabled = false, onClick }: PreviewCardI) => {
       </div>
       <Button
         disabled={disabled}
-        title='Anteprima'
         color='primary'
         outline
         className='button-preview'
         onClick={onClick}
       >
-        <span className='primary-color'>Anteprima</span>
+        <span>Anteprima</span>
       </Button>
     </div>
   );

@@ -135,8 +135,10 @@ const CardShowcase: React.FC<ForumCardsI> = (props) => {
                   : 'mb-4 mt-3 pt-1'
               )}
             >
-              <span className='font-weight-bold'>{category_label} — </span>
-              {date && formatDate(date, 'shortDate')}
+              <span className='font-weight-bold'>
+                {category_label}
+                {/*  —  */}
+              </span>
             </div>
           ) : null}
           {title ? (
@@ -162,62 +164,62 @@ const CardShowcase: React.FC<ForumCardsI> = (props) => {
           className={clsx(
             'd-flex',
             'flex-row',
-            'justify-content-end',
+            'justify-content-between',
             'showcase-card__icon-container-alignment'
           )}
         >
-          <div
-            className={clsx(
-              'd-flex',
-              'align-items-center',
-              'category-top',
-              'mr-2'
-            )}
-          >
-            <Icon
-              color='primary'
-              icon={Heart}
-              size='xs'
-              aria-label='Like'
-              aria-hidden
-            />
-            <span className='showcase-card__span-icons pl-1'>{likes}</span>
-          </div>
-          <div
-            className={clsx(
-              'category-top',
-              'mr-2',
-              'd-flex',
-              'align-items-center'
-            )}
-          >
-            <Icon
-              color='primary'
-              icon='it-comment'
-              size='sm'
-              aria-label='Commento'
-              aria-hidden
-            />
-            <span className='showcase-card__span-icons pl-1'>
-              {comment_count}
-            </span>
-          </div>
-          <div
-            className={clsx(
-              'category-top',
-              'mr-2',
-              'd-flex',
-              'align-items-center'
-            )}
-          >
-            <Icon
-              color='primary'
-              icon='it-password-visible'
-              size='sm'
-              aria-label='Views'
-              aria-hidden
-            />
-            <span className='showcase-card__span-icons pl-1'>{views}</span>
+          <span className='showcase-card__date'>
+            {date && formatDate(date, 'shortDate')}
+          </span>
+          <div className='d-flex'>
+            <div
+              className={clsx(
+                'd-flex',
+                'align-items-center',
+                'category-top',
+                'mr-2'
+              )}
+            >
+              <Icon
+                color='primary'
+                icon={Heart}
+                size='xs'
+                aria-label='Like'
+                aria-hidden
+              />
+              <span className='showcase-card__span-icons pl-1'>{likes}</span>
+            </div>
+            <div
+              className={clsx(
+                'category-top',
+                'mr-2',
+                'd-flex',
+                'align-items-center'
+              )}
+            >
+              <Icon
+                color='primary'
+                icon='it-comment'
+                size='sm'
+                aria-label='Commento'
+                aria-hidden
+              />
+              <span className='showcase-card__span-icons pl-1'>
+                {comment_count}
+              </span>
+            </div>
+            <div
+              className={clsx('category-top', 'd-flex', 'align-items-center')}
+            >
+              <Icon
+                color='primary'
+                icon='it-password-visible'
+                size='sm'
+                aria-label='Views'
+                aria-hidden
+              />
+              <span className='showcase-card__span-icons pl-1'>{views}</span>
+            </div>
           </div>
         </div>
       </div>

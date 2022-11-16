@@ -35,8 +35,6 @@ const SocialBar: React.FC<SocialI> = (props) => {
 
   const device = useAppSelector(selectDevice);
 
-  console.log('replies', replies);
-
   return (
     <div
       className={clsx(

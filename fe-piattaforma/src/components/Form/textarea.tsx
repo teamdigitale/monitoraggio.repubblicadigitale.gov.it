@@ -49,7 +49,7 @@ const TextArea: React.FC<TextAreaI> = (props) => {
     id,
     disabled,
     label = props.field,
-    maximum,
+    maximum = 1500,
     minimum,
     name,
     onInputChange,
@@ -75,7 +75,7 @@ const TextArea: React.FC<TextAreaI> = (props) => {
 
   const handleOnChange = (e?: ChangeEvent<HTMLTextAreaElement>) => {
     const element = e?.currentTarget as HTMLTextAreaElement;
-    setVal(element.value ?? '');
+    setVal(element.value ?  element.value?.substring(0,Number(maximum)):'');
   };
 
   const TextAreaProps: TextAreaPropsI = {

@@ -519,15 +519,15 @@ export const GetItemsBySearch =
       dispatch({ ...GetItemsBySearchAction });
       const res = await Promise.all([
         proxyCall(
-          `/search/items?keys=${search}&item_type=board_item&page=0&items_per_page=24`,
+          `/search/board/items?keys=${search}&page=0&items_per_page=24`,
           'GET'
         ),
         proxyCall(
-          `/search/items?keys=${search}&item_type=community_item&page=0&items_per_page=24`,
+          `/search/community/items?keys=${search}&page=0&items_per_page=24`,
           'GET'
         ),
         proxyCall(
-          `/search/items?keys=${search}&item_type=document_item&page=0&items_per_page=24`,
+          `/search/document/items?keys=${search}&page=0&items_per_page=24`,
           'GET'
         ),
       ]);
