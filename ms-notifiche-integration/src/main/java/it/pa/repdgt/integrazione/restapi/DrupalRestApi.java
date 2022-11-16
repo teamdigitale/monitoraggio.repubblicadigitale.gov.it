@@ -34,6 +34,7 @@ public class DrupalRestApi {
 	@Autowired
 	private DrupalService drupalService;
 	
+	//servizio proxy per Drupal
 	@PostMapping(path = "/forward")
 	@ResponseStatus(value = HttpStatus.OK)
 	public Map<String, Object> drupalForward(@RequestBody final ForwardRichiestDrupalParam forwardRichiestDrupalParam, @RequestHeader(value = "Content-Type", required = false) String contentType) throws JsonMappingException, JsonProcessingException {
