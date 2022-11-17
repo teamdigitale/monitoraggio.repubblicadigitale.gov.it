@@ -142,7 +142,14 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
           ? 'del.topic'
           : 'hidden',
       ]) ||
-      author?.toString() === userId?.toString()
+      (author?.toString() === userId?.toString() &&
+        hasUserPermission([
+          section === 'documents' || isDocument
+            ? 'new.doc'
+            : section === 'community'
+            ? 'new.topic'
+            : 'hidden',
+        ]))
     ) {
       authorizedOption.push(deleteOption);
     }
@@ -154,7 +161,14 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
           ? 'upd.topic'
           : 'hidden',
       ]) ||
-      author?.toString() === userId?.toString()
+      (author?.toString() === userId?.toString() &&
+        hasUserPermission([
+          section === 'documents' || isDocument
+            ? 'new.doc'
+            : section === 'community'
+            ? 'new.topic'
+            : 'hidden',
+        ]))
     ) {
       authorizedOption.push(editOption);
     }
