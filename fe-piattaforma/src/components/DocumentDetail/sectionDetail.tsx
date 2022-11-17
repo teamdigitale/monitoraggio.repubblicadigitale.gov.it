@@ -300,7 +300,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
         </p>
       </div>
       {!device.mediaIsPhone ? (
-        <div className='mb-4'>
+        <div className='mb-4 d-flex flex-row justify-content-start'>
           {attachment ? (
             <div className='d-flex justify-content-start'>
               <Button
@@ -311,7 +311,8 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
                   'px-0',
                   'pb-5',
                   'd-flex',
-                  'align-items-center'
+                  'align-items-center',
+                  external_link && 'mr-5'
                 )}
                 onClick={trackDownload}
                 aria-label='Scarica allegato'
@@ -322,6 +323,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
                   size='sm'
                   aria-label='Scarica allegato'
                   aria-hidden
+                  className='mr-2'
                 />
                 <p className='font-weight-bold h6 mb-0'>
                   <u>Scarica allegato</u>

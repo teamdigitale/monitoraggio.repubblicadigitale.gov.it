@@ -105,6 +105,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
             icon='it-expand'
             role='button'
             aria-label='Espandi menù'
+            aria-hidden
           />
         </div>
       </div>
@@ -181,7 +182,10 @@ const HeaderMobile: React.FC<HeaderI> = ({
                   'justify-content-between'
                 )}
                 role='menuitem'
-                onClick={() => navigate('/area-personale/contenuti-pubblicati')}
+                onClick={() => {
+                  navigate('/area-personale/contenuti-pubblicati');
+                  setOpenUser(false);
+                }}
               >
                 Contenuti pubblicati
               </Button>
