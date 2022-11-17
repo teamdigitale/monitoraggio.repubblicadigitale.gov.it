@@ -5,7 +5,7 @@ import { useAppSelector } from '../redux/hooks';
 function useOutsideAlerter(
   ref: React.RefObject<HTMLElement>,
   effect: () => void,
-  isDesktop?: boolean,
+  isDesktop?: boolean
 ) {
   useEffect(() => {
     function handleClickOutside(event: MouseEvent | TouchEvent) {
@@ -19,8 +19,16 @@ function useOutsideAlerter(
       : document.addEventListener('touchend', handleClickOutside, isDesktop);
     return () => {
       isDesktop
-        ? document.removeEventListener('mousedown', handleClickOutside, isDesktop)
-        : document.removeEventListener('touchend', handleClickOutside, isDesktop);
+        ? document.removeEventListener(
+            'mousedown',
+            handleClickOutside,
+            isDesktop
+          )
+        : document.removeEventListener(
+            'touchend',
+            handleClickOutside,
+            isDesktop
+          );
     };
   }, [effect, ref]);
 }

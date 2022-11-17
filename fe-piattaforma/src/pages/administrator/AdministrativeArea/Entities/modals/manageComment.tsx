@@ -110,7 +110,7 @@ const ManageComment: React.FC<ManageCommentI> = ({
       id={modalId}
       primaryCTA={{
         disabled: newComment?.toString()?.trim() === '',
-        label: creation ? 'Conferma' : 'Salva',
+        label: 'Pubblica',
         onClick: handleSaveComment,
       }}
       secondaryCTA={{

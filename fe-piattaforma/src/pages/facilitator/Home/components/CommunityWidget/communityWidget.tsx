@@ -14,13 +14,13 @@ import { Link } from 'react-router-dom';
 
 const communityPagination = {
   desktop: 6,
-  mobile: 1,
+  mobile: 8,
   tablet: 3,
 };
 
 const carouselPagination = {
-  desktop: 1,
-  mobile: 6,
+  desktop: 6,
+  mobile: 1,
   tablet: 3,
 };
 
@@ -30,7 +30,8 @@ const CommunityWidget = () => {
   const [topicsList, setTopicsList] = useState([]);
 
   const topicWidgetSet = async () => {
-    const itemPerPage = communityPagination.desktop.toString();
+    const itemPerPage =
+      communityPagination[getMediaQueryDevice(device)].toString();
     const res = await dispatch(
       GetTopicsList(
         {
@@ -48,7 +49,7 @@ const CommunityWidget = () => {
   useEffect(() => {
     topicWidgetSet();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [device]);
 
   const cardArray: any[] = [
     topicsList.slice(0, communityPagination[getMediaQueryDevice(device)]),

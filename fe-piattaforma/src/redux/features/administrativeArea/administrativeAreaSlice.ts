@@ -414,8 +414,9 @@ export const administrativeAreaSlice = createSlice({
     },
     deleteFiltroCriterioRicerca: (state) => {
       const newFilters = { ...state.filters };
-      if(newFilters?.filtroCriterioRicerca) delete newFilters?.filtroCriterioRicerca;
-      if(newFilters?.criterioRicerca) delete newFilters?.criterioRicerca;
+      if (newFilters?.filtroCriterioRicerca)
+        delete newFilters?.filtroCriterioRicerca;
+      if (newFilters?.criterioRicerca) delete newFilters?.criterioRicerca;
       state.filters = { ...newFilters };
     },
     setServiceQuestionarioTemplateIstanze: (
@@ -429,7 +430,7 @@ export const administrativeAreaSlice = createSlice({
     },
     resetSezioniQuestionarioTemplateIstanze: (state) => {
       state.services.detail.sezioniQuestionarioTemplateIstanze = [];
-    }
+    },
   },
 });
 

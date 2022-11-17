@@ -216,11 +216,12 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
               <Button
                 className={clsx(
                   'primary-color-b1',
-                  'px-3',
-                  'w-75',
+                  'py-2',
+                  'px-1',
+                  'w-100',
                   'd-flex',
                   'flex-row',
-                  'justify-content-start',
+                  'justify-content-around',
                   'align-items-center'
                 )}
                 role='menuitem'
@@ -229,7 +230,6 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
                 <Icon
                   icon={item.DropdownIcon.icon}
                   color={item.DropdownIcon.color}
-                  className='pr-2'
                   aria-label={item.optionName}
                   aria-hidden
                 />

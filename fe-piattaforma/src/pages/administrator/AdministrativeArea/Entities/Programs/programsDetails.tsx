@@ -272,7 +272,8 @@ const ProgramsDetails: React.FC = () => {
               payload: {
                 entity: 'project',
                 projectId: td,
-                text1: 'Inserisci la data di termine e conferma per terminare il progetto.',
+                text1:
+                  'Inserisci la data di termine e conferma per terminare il progetto.',
                 text2: 'Attenzione: non è possibile inserire una data futura.',
               },
             })
@@ -392,10 +393,10 @@ const ProgramsDetails: React.FC = () => {
       setItemAccordionList([]);
       setEmptySection(
         <EmptySection
-        withIcon
-        icon={IconWarning}
-        title='Per attivare il programma è necessario:'
-        subtitle2={subtitleList}
+          withIcon
+          icon={IconWarning}
+          title='Per attivare il programma è necessario:'
+          subtitle2={subtitleList}
           buttons={
             program?.dettagliInfoProgramma?.stato !== entityStatus.TERMINATO &&
             hasUserPermission(['add.enti.gest.prgm'])
@@ -742,8 +743,10 @@ const ProgramsDetails: React.FC = () => {
                       id: 'terminate-entity',
                       payload: {
                         entity: 'program',
-                        text1: 'Inserisci la data di termine e conferma per terminare il programma.',
-                        text2: 'Attenzione: non è possibile inserire una data futura.',
+                        text1:
+                          'Inserisci la data di termine e conferma per terminare il programma.',
+                        text2:
+                          'Attenzione: non è possibile inserire una data futura.',
                       },
                     })
                   ),
@@ -794,8 +797,10 @@ const ProgramsDetails: React.FC = () => {
                       id: 'terminate-entity',
                       payload: {
                         entity: 'program',
-                        text1: 'Inserisci la data di termine e conferma per terminare il programma',
-                        text2: 'Attenzione: non è possibile inserire una data futura.',
+                        text1:
+                          'Inserisci la data di termine e conferma per terminare il programma',
+                        text2:
+                          'Attenzione: non è possibile inserire una data futura.',
                       },
                     })
                   ),
@@ -1096,7 +1101,9 @@ const ProgramsDetails: React.FC = () => {
   const subtitleList = (
     <ol className='my-4'>
       <li>aggiungere un ente gestore;</li>
-      <li>aggiungere almeno un ente referente nella scheda dell’ente gestore.</li>
+      <li>
+        aggiungere almeno un ente referente nella scheda dell’ente gestore.
+      </li>
     </ol>
   );
 

@@ -64,7 +64,7 @@ const Notification: React.FC<NotificationI> = (props) => {
   const dispatch = useDispatch();
   const usersAnagraphic = useAppSelector(selectAnagraphics);
   const [populatedMessage, setPopulatedMessage] = useState('');
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (message) {
@@ -81,8 +81,9 @@ const Notification: React.FC<NotificationI> = (props) => {
       const splittedMessage = message.split('$');
       if (userId)
         splittedMessage[1] = usersAnagraphic[userId]
-          ? `<span style=${status ? '' : 'color:#06c;font-weight:600;'} >${usersAnagraphic[userId].nome
-          } ${usersAnagraphic[userId].cognome}</span>`
+          ? `<span style=${status ? '' : 'color:#06c;font-weight:600;'} >${
+              usersAnagraphic[userId].nome
+            } ${usersAnagraphic[userId].cognome}</span>`
           : '';
       if (authorId)
         splittedMessage[3] = usersAnagraphic[authorId]
@@ -101,18 +102,18 @@ const Notification: React.FC<NotificationI> = (props) => {
   const onNavigateToItem = () => {
     switch (node_bundle) {
       case 'board_item':
-        navigate(`/bacheca/${node_id}`)
+        navigate(`/bacheca/${node_id}`);
         break;
       case 'community_item':
-        navigate(`/community/${node_id}`)
-        break
+        navigate(`/community/${node_id}`);
+        break;
       case 'document_item':
-        navigate(`/documenti/${node_id}`)
+        navigate(`/documenti/${node_id}`);
         break;
       default:
         break;
     }
-  }
+  };
 
   const userDropDown = (
     <Dropdown
@@ -183,7 +184,7 @@ const Notification: React.FC<NotificationI> = (props) => {
           !status && 'unread',
           isMobile && !notificationsPreview && 'reverse'
         )}
-      // onClick={() => onNavigateToItem()}
+        // onClick={() => onNavigateToItem()}
       >
         {/* className='d-flex justify-content-between align-items-center'> */}
 
@@ -211,14 +212,22 @@ const Notification: React.FC<NotificationI> = (props) => {
           <div className='d-flex align-items-center'>
             <NotificationIcon status={status} action={action} />
             <div
-              role="button"
+              role='button'
               className='neutral-1-color-a8 pl-3 notification-link'
-              onClick={e => {
-                e.preventDefault()
+              onClick={(e) => {
+                e.preventDefault();
                 !status && onClick();
-                onNavigateToItem()
+                onNavigateToItem();
+              }}
+              onKeyDown={(e) => {
+                if (e.key === ' ') {
+                  e.preventDefault();
+                  !status && onClick();
+                  onNavigateToItem();
+                }
               }}
               dangerouslySetInnerHTML={{ __html: populatedMessage }}
+              tabIndex={0}
             />
           </div>
           <div

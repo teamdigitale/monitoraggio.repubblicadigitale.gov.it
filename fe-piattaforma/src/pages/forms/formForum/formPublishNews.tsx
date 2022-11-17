@@ -59,12 +59,16 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
   const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRefImg = useRef<HTMLInputElement>(null);
-  const [image, setImage] = useState<{ name?: string; data?: string | File, res?: string }>(
-    defaultCover
-  );
-  const [files, setFiles] = useState<{ name?: string; data?: string | File, res?: string }>(
-    defaultDocument
-  );
+  const [image, setImage] = useState<{
+    name?: string;
+    data?: string | File;
+    res?: string;
+  }>(defaultCover);
+  const [files, setFiles] = useState<{
+    name?: string;
+    data?: string | File;
+    res?: string;
+  }>(defaultDocument);
   const [editorText, setEditorText] = useState('<p></p>');
   const [highlighted, setHighlighted] = useState(false);
   const [enableComments, setEnableComments] = useState(false);
@@ -100,14 +104,14 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
         setImage({
           data: newsDetail?.cover_file_name?.toString(),
           name: newsDetail.cover_file_name?.toString(),
-          res: newsDetail?.cover?.toString()
+          res: newsDetail?.cover?.toString(),
         });
       }
       if (newsDetail?.attachment_file_name) {
         setFiles({
           data: newsDetail?.attachment_file_name?.toString(),
           name: newsDetail.attachment_file_name?.toString(),
-          res: newsDetail?.attachment?.toString()
+          res: newsDetail?.attachment?.toString(),
         });
       }
     }
@@ -179,16 +183,15 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
 
   useEffect(() => {
     if (newFormValues) {
-      if (newFormValues?.cover) 
+      if (newFormValues?.cover)
         setImage({
-          ...newFormValues.cover
-        })
-      
+          ...newFormValues.cover,
+        });
 
       if (newFormValues.attachment)
-      setFiles({
-        ...newFormValues?.attachment
-      })
+        setFiles({
+          ...newFormValues?.attachment,
+        });
       if (form) {
         const populatedForm: formFieldI[] = Object.entries(newFormValues).map(
           ([key, value]) =>
@@ -232,8 +235,8 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
   useEffect(() => {
     setIsFormValid(
       isValidForm &&
-      editorText?.trim() !== '<p></p>' &&
-      editorText?.trim() !== ''
+        editorText?.trim() !== '<p></p>' &&
+        editorText?.trim() !== ''
     );
 
     sendNewValues({
@@ -249,7 +252,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
   const removePicture = (e: any) => {
     setImage(defaultCover);
     if (inputRefImg.current !== null) {
-      inputRefImg.current.value = "";
+      inputRefImg.current.value = '';
     }
     e.preventDefault();
   };
@@ -263,7 +266,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
   const removeDocument = (e: any) => {
     setFiles(defaultDocument);
     if (inputRef.current !== null) {
-      inputRef.current.value = "";
+      inputRef.current.value = '';
     }
     e.preventDefault();
   };

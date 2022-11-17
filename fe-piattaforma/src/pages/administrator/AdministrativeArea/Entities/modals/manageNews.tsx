@@ -83,7 +83,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
     preview: {
       title: 'Anteprima news',
       primaryCTA: {
-        label: creation ? 'Crea post' : 'Salva',
+        label: creation ? 'Conferma' : 'Salva',
         onClick: () => handleSaveNews(),
       },
       secondaryCTA: {
