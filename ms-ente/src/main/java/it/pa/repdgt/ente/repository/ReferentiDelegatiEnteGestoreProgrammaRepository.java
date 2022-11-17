@@ -22,6 +22,7 @@ public interface ReferentiDelegatiEnteGestoreProgrammaRepository extends JpaRepo
 			 + "	,u.COGNOME "
 			 + "	,u.CODICE_FISCALE as codiceFiscale"
 			 + "	,rdgp.STATO_UTENTE as STATO "
+			 + "	,case when :codiceRuolo in ('REGP', 'DEGP', 'REPP', 'DEPP','FAC','VOL') then 'false' else 'true' end as associatoAUtente"
 			 + " FROM "
 			 + "	referente_delegati_gestore_programma rdgp"
 			 + "    INNER JOIN utente u"
@@ -32,6 +33,7 @@ public interface ReferentiDelegatiEnteGestoreProgrammaRepository extends JpaRepo
 			 + "	AND CODICE_RUOLO = 'REG'", 
 	   nativeQuery = true)
 	List<UtenteProjection> findNomeStatoReferentiEnteGestoreByIdProgrammaAndIdEnte(
+			@Param(value = "codiceRuolo") String codiceRuolo,
 			@Param(value = "idProgramma") Long idProgramma,
 			@Param(value = "idEnte") Long idEnte);
 
@@ -42,6 +44,7 @@ public interface ReferentiDelegatiEnteGestoreProgrammaRepository extends JpaRepo
 			 + "	,u.COGNOME "
 			 + "	,u.CODICE_FISCALE as codiceFiscale"
 			 + "	,rdgp.STATO_UTENTE as STATO "
+			 + "	,case when :codiceRuolo in ('REGP', 'DEGP', 'REPP', 'DEPP','FAC','VOL') then 'false' else 'true' end as associatoAUtente "
 			 + " FROM "
 			 + "	referente_delegati_gestore_programma rdgp"
 			 + "    INNER JOIN utente u"
@@ -52,6 +55,7 @@ public interface ReferentiDelegatiEnteGestoreProgrammaRepository extends JpaRepo
 			 + "	AND CODICE_RUOLO = 'DEG'", 
 	   nativeQuery = true)
 	List<UtenteProjection> findNomeStatoDelegatiEnteGestoreByIdProgrammaAndIdEnte(
+			@Param(value = "codiceRuolo") String codiceRuolo,
 			@Param(value = "idProgramma") Long idProgramma,
 			@Param(value = "idEnte") Long idEnte);
 

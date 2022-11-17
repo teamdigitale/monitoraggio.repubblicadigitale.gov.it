@@ -15,12 +15,7 @@ public class EnteServiceTestWithoutMocks {
 	
 	@Test
 	public void getSchedaEnteGestoreProgrammaByIdProgrammaTest() {
-		enteService.getSchedaEnteGestoreProgrammaByIdProgramma(102L);
-	}
-	
-	@Test
-	public void getSchedaEnteGestoreProgettoByIdProgettoTest() {
-		enteService.getSchedaEnteGestoreProgettoByIdProgetto(256L);
+		enteService.getSchedaEnteGestoreProgrammaByIdProgramma("DTD", 102L);
 	}
 	
 }
