@@ -116,7 +116,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
   const removeDocument = (e: any) => {
     setFiles(defaultDocument);
     if (inputRef.current !== null) {
-      inputRef.current.value = "";
+      inputRef.current.value = '';
     }
     e.preventDefault();
   };
@@ -276,7 +276,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
           <input
             type='file'
             id='file'
-            accept='image/*,.pdf,.doc,.docx,.xls,.xlsx'
+            accept='.txt, .rtf, .odt, .zip, .exe, .docx, .doc, .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv, .mpg, .wmv'
             ref={inputRef}
             className='sr-only'
             capture
