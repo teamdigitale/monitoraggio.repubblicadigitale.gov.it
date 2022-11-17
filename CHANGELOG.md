@@ -1,5 +1,19 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.314](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.313...1.0.0-develop.314) (2022-11-17)
+
+
+### Features
+
+* **fe-piattaforma:** fe updates 11172022 ([774572a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/774572a69ba76b532bfa2000c258c826d155cb3b))
+* **fe-piattaforma:** fe updates 11172022 ([dbb9663](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/dbb96630f3a70ad330e564070fa762fd587a185b))
+* **fe-piattaforma:** fe updates 11172022 ([b11fc7f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b11fc7fb7e149bdb9b7973172567325d6f6035df))
+
+
+### Bug Fixes
+
+* **be:** ruoli-drupal ([4371e68](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4371e68330c8a88827890a9468582c59ffc2cabe))
+
 ## [1.0.0-develop.313](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.312...1.0.0-develop.313) (2022-11-17)
 
 
