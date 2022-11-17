@@ -27,12 +27,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import it.pa.repdgt.integrazione.exception.DrupalException;
 import it.pa.repdgt.integrazione.repository.GruppoRepository;
+import it.pa.repdgt.integrazione.repository.ProgrammaRepository;
 import it.pa.repdgt.integrazione.repository.UtenteRepository;
 import it.pa.repdgt.integrazione.request.ForwardRichiestDrupalParam;
+import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
+import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,6 +53,8 @@ public class DrupalService {
 	private String drupalPassword;
 	
 	@Autowired
+	private ProgrammaRepository programmaRepository;
+	@Autowired
 	private UtenteRepository utenteRepository;
 	@Autowired 
 	private GruppoRepository gruppoRepository;
@@ -56,7 +62,7 @@ public class DrupalService {
 	private RestTemplate restTemplate;
 
 	public Map forwardRichiestaADrupal(final @NotNull @Valid ForwardRichiestDrupalParam param, String contentType) {
-		final String urlDaChiamare = drupalEndpoint.concat(param.getUrlRichiesta());
+		String urlDaChiamare = drupalEndpoint.concat(param.getUrlRichiesta());
 		final String metodoHttpString = param.getMetodoRichiestaHttp().toUpperCase();
 		final HttpMethod metodoHttp = HttpMethod.resolve(metodoHttpString);
 		FileOutputStream fostrm = null;
@@ -113,6 +119,7 @@ public class DrupalService {
 				log.info("Richiesta Servizio Drupal: {} {} headersRichiesta={} corpoRichiesta={}", 
 						metodoHttp, urlDaChiamare, forwardHeaders, forwardBody);
 				 try {
+					 	urlDaChiamare = this.transformUrl(param, urlDaChiamare);
 					 	responseDrupal = this.restTemplate.exchange(urlDaChiamare, metodoHttp, forwardRequestEntity, Map.class);
 				  } catch (Exception ex) {
 		        	String errorMessageDrupal = ex.getMessage().contains(":")? ex.getMessage().replaceFirst(":", "_REQ_DRUPAL_"): ex.getMessage();
@@ -141,6 +148,50 @@ public class DrupalService {
 		return responseDrupal.getBody();
 	}
 	
+	private String transformUrl(ForwardRichiestDrupalParam param, String url) {
+		String programInterventionValue = "public-public,";
+		
+		switch(param.getCodiceRuoloUtenteLoggato()) {
+			case "DSCU": {
+				 final StringBuilder stringBuilder = new StringBuilder();
+				 this.programmaRepository.findByPolicy(PolicyEnum.SCD)
+				 						 .stream()
+										 .map(prog -> prog.getId().toString().concat("-").concat(prog.getPolicy().toString()).concat(","))
+										 .forEach(progIntervention -> stringBuilder.append(progIntervention));
+				String programmiIntervention = stringBuilder.toString().substring(0, stringBuilder.length()-1);
+
+				programInterventionValue = programInterventionValue.concat("public-SCD,").concat(programmiIntervention);
+				break;
+			}
+			case "REG": 
+			case "DEG": 
+			case "DEPP": 
+			case "REGP": 
+			case "REPP": 
+			case "DEGP": {
+					ProgrammaEntity programma = this.programmaRepository.findById(param.getProfilo().getIdProgramma()).get();
+					programInterventionValue = programInterventionValue.concat("public-" + programma.getPolicy().toString()).concat("," + programma.getId() + "-" + programma.getPolicy().toString());
+											
+				break;
+			}
+			default: {
+				 final StringBuilder stringBuilder = new StringBuilder();
+				 this.programmaRepository.findAll()
+				 						 .stream()
+										 .map(prog -> prog.getId().toString().concat("-").concat(prog.getPolicy().toString()).concat(","))
+										 .forEach(progIntervention -> stringBuilder.append(progIntervention));
+				String programmiIntervention = stringBuilder.toString().substring(0, stringBuilder.length()-1);
+
+				programInterventionValue = programInterventionValue.concat("public-RFD,").concat("public-SCD,").concat(programmiIntervention);
+			}
+		}
+		
+	    UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
+                .queryParam("program_intervention", programInterventionValue );
+
+         return uriBuilder.toUriString();
+	}
+	
 	private HttpHeaders getHeadersHttp(ForwardRichiestDrupalParam param, String contentType) {
 		HttpHeaders headers = new HttpHeaders();
 		String auth = this.drupalUsername + ":" + this.drupalPassword;
@@ -162,17 +213,10 @@ public class DrupalService {
 			.map(codiceGruppo -> codiceGruppo.concat(";"))
 			.forEach(codiceGruppo -> codiceGruppiByCodiceRuolo.append(codiceGruppo));
 		
-		final StringBuilder listaProgrammi = new StringBuilder().append("");
-		
-		listaProgrammi.append("public;");
-		
-		this.utenteRepository
-		.getListaProgrammiUtente(param.getCfUtenteLoggato())
-		.forEach(programma -> listaProgrammi.append(String.valueOf(programma).concat(";")));
-				
 		headers.put("user-roles", Arrays.asList(param.getCodiceRuoloUtenteLoggato()));
 		headers.put("role-groups", Arrays.asList( codiceGruppiByCodiceRuolo.toString() ) );
-		headers.put("user-programs", Arrays.asList( listaProgrammi.toString() ) );
 		return headers;
 	}
+	
+
 }

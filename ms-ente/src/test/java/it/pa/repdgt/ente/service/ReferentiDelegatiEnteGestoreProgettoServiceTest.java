@@ -56,14 +56,14 @@ public class ReferentiDelegatiEnteGestoreProgettoServiceTest {
 	
 	@Test
 	public void getReferentiEnteGestoreByIdProgettoAndIdEnteTest() {
-		when(this.referentiDelegatiEnteGestoreProgettoRepository.findNomeStatoReferentiEnteGestoreByIdProgettoAndIdEnte(1L, 1L)).thenReturn(null);
-		referentiDelegatiEnteGestoreProgettoService.getReferentiEnteGestoreByIdProgettoAndIdEnte(1L, 1L);
+		when(this.referentiDelegatiEnteGestoreProgettoRepository.findNomeStatoReferentiEnteGestoreByIdProgettoAndIdEnte("DTD", 1L, 1L)).thenReturn(null);
+		referentiDelegatiEnteGestoreProgettoService.getReferentiEnteGestoreByIdProgettoAndIdEnte("DTD", 1L, 1L);
 	}
 	
 	@Test
 	public void getDelegatiEnteGestoreByIdProgettoAndIdEnteTest() {
-		when(this.referentiDelegatiEnteGestoreProgettoRepository.findNomeStatoDelegatiEnteGestoreByIdProgettoAndIdEnte(1L, 1L)).thenReturn(null);
-		referentiDelegatiEnteGestoreProgettoService.getDelegatiEnteGestoreByIdProgettoAndIdEnte(1L, 1L);
+		when(this.referentiDelegatiEnteGestoreProgettoRepository.findNomeStatoDelegatiEnteGestoreByIdProgettoAndIdEnte("DTD", 1L, 1L)).thenReturn(null);
+		referentiDelegatiEnteGestoreProgettoService.getDelegatiEnteGestoreByIdProgettoAndIdEnte("DTD", 1L, 1L);
 	}
 	
 	@Test

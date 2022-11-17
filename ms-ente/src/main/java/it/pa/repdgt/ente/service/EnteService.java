@@ -781,14 +781,14 @@ public class EnteService {
 	
 	@LogMethod
 	@LogExecutionTime
-	public SchedaEnteGestoreBean getSchedaEnteGestoreProgrammaByIdProgramma(Long idProgramma) {
+	public SchedaEnteGestoreBean getSchedaEnteGestoreProgrammaByIdProgramma(String codiceRuolo, Long idProgramma) {
 		String errorMessage = String.format("Non esiste nessun ente gestore per programma con id=%s", idProgramma);
 		SchedaEnteGestoreBean schedaEnteGestoreProgramma = new SchedaEnteGestoreBean();
 		EnteProjection ente = this.enteRepository.findEnteGestoreProgrammaByIdProgramma(idProgramma)
 				.orElseThrow(() -> new EnteException(errorMessage, CodiceErroreEnum.C01));
 		
-		List<UtenteProjection> referenti = this.referentiDelegatiEnteGestoreProgrammaService.getReferentiEnteGestoreByIdProgrammaAndIdEnte(idProgramma, ente.getId());
-		List<UtenteProjection> delegati = this.referentiDelegatiEnteGestoreProgrammaService.getDelegatiEnteGestoreByIdProgrammaAndIdEnte(idProgramma, ente.getId());
+		List<UtenteProjection> referenti = this.referentiDelegatiEnteGestoreProgrammaService.getReferentiEnteGestoreByIdProgrammaAndIdEnte(codiceRuolo, idProgramma, ente.getId());
+		List<UtenteProjection> delegati = this.referentiDelegatiEnteGestoreProgrammaService.getDelegatiEnteGestoreByIdProgrammaAndIdEnte(codiceRuolo, idProgramma, ente.getId());
 		
 		schedaEnteGestoreProgramma.setEnte(ente);
 		schedaEnteGestoreProgramma.setReferentiEnteGestore(referenti);
@@ -796,47 +796,16 @@ public class EnteService {
 		return schedaEnteGestoreProgramma;
 	}
 	
-	@Deprecated
 	@LogMethod
 	@LogExecutionTime
-	public SchedaEnteGestoreProgettoBean getSchedaEnteGestoreProgettoByIdProgetto(Long idProgetto) {
-		String errorMessage = String.format("Non esiste nessun ente gestore per progetto con id=%s", idProgetto);
-		SchedaEnteGestoreProgettoBean schedaEnteGestoreProgetto = new SchedaEnteGestoreProgettoBean();
-		EnteProjection ente = this.enteRepository.findEnteGestoreProgettoByIdProgetto(idProgetto)
-				.orElseThrow(() -> new EnteException(errorMessage, CodiceErroreEnum.C01));
-		
-		List<UtenteProjection> referenti = this.referentiDelegatiEnteGestoreProgettoService.getReferentiEnteGestoreByIdProgettoAndIdEnte(idProgetto, ente.getId());
-		List<UtenteProjection> delegati = this.referentiDelegatiEnteGestoreProgettoService.getDelegatiEnteGestoreByIdProgettoAndIdEnte(idProgetto, ente.getId());
-		List<SedeEntity> sedi = this.sedeService.getSediEnteByIdProgettoAndIdEnte(idProgetto, ente.getId());
-		List<SedeBean> sediGestoreProgetto = sedi
-									.stream()
-									.map(sede -> {
-										SedeBean sedeGestoreProgetto = new SedeBean();
-										sedeGestoreProgetto.setId(sede.getId());
-										sedeGestoreProgetto.setNome(sede.getNome());
-										sedeGestoreProgetto.setServiziErogati(sede.getServiziErogati());
-										sedeGestoreProgetto.setNrFacilitatori(this.utenteService.countFacilitatoriPerSedeProgettoEnte(idProgetto, sede.getId(), ente.getId()));
-										sedeGestoreProgetto.setStato(this.sedeService.getStatoSedeByIdProgettoAndIdSedeAndIdEnte(idProgetto, sede.getId(), ente.getId()));
-										return sedeGestoreProgetto;
-										}).collect(Collectors.toList());
-		
-		schedaEnteGestoreProgetto.setEnte(ente);
-		schedaEnteGestoreProgetto.setReferentiEnteGestoreProgetto(referenti);
-		schedaEnteGestoreProgetto.setDelegatiEnteGestoreProgetto(delegati);
-		schedaEnteGestoreProgetto.setSediEnteGestoreProgetto(sediGestoreProgetto);
-		return schedaEnteGestoreProgetto;
-	}
-
-	@LogMethod
-	@LogExecutionTime
-	public SchedaEnteGestoreProgettoBean getSchedaEnteGestoreProgettoByIdProgettoAndSceltaProfilo(Long idProgetto, EntiPaginatiParam entiPaginatiParam) {
+	public SchedaEnteGestoreProgettoBean getSchedaEnteGestoreProgettoByIdProgettoAndSceltaProfilo(String codiceRuolo, Long idProgetto, EntiPaginatiParam entiPaginatiParam) {
 		String errorMessage = String.format("Non esiste nessun ente gestore per progetto con id=%s", idProgetto);
 		SchedaEnteGestoreProgettoBean schedaEnteGestoreProgetto = new SchedaEnteGestoreProgettoBean();
 		EnteProjection ente = this.enteRepository.findEnteGestoreProgettoByIdProgetto(idProgetto)
 				.orElseThrow(() -> new EnteException(errorMessage, CodiceErroreEnum.C01));
 
-		List<UtenteProjection> referenti = this.referentiDelegatiEnteGestoreProgettoService.getReferentiEnteGestoreByIdProgettoAndIdEnte(idProgetto, ente.getId());
-		List<UtenteProjection> delegati = this.referentiDelegatiEnteGestoreProgettoService.getDelegatiEnteGestoreByIdProgettoAndIdEnte(idProgetto, ente.getId());
+		List<UtenteProjection> referenti = this.referentiDelegatiEnteGestoreProgettoService.getReferentiEnteGestoreByIdProgettoAndIdEnte(codiceRuolo, idProgetto, ente.getId());
+		List<UtenteProjection> delegati = this.referentiDelegatiEnteGestoreProgettoService.getDelegatiEnteGestoreByIdProgettoAndIdEnte(codiceRuolo, idProgetto, ente.getId());
 		List<SedeEntity> sedi = this.sedeService.getSediEnteByIdProgettoAndIdEnte(idProgetto, ente.getId());
 		List<SedeBean> sediGestoreProgetto = sedi
 									.stream()

@@ -188,11 +188,11 @@ public class UtenteService {
 			break;
 		case "REGP":
 		case "DEGP":
-			listaUtenti.addAll(this.getUtentiPerReferenteDelegatoGestoreProgetti(idProgramma, idProgetto, cfUtente, filtroRequest, currPage, pageSize));
+			listaUtenti.addAll(this.getUtentiPerReferenteDelegatoGestoreProgetti(idProgetto, cfUtente, filtroRequest, currPage, pageSize));
 			break;
 		case "REPP":
 		case "DEPP":
-			listaUtenti.addAll(this.getUtentiPerReferenteDelegatoEntePartnerProgetti(idProgramma, idProgetto, idEnte, cfUtente, filtroRequest, currPage, pageSize));
+			listaUtenti.addAll(this.getUtentiPerReferenteDelegatoEntePartnerProgetti(idProgetto, idEnte, cfUtente, filtroRequest, currPage, pageSize));
 			break;
 		default:
 			utenti = this.getUtentiByFiltri(filtroRequest, currPage, pageSize);
@@ -202,10 +202,9 @@ public class UtenteService {
 		return this.getUtentiConRuoliAggregati(listaUtenti);
 	}
 
-	private Set<UtenteEntity> getUtentiPerReferenteDelegatoEntePartnerProgetti(Long idProgramma, Long idProgetto, Long idEnte,
+	private Set<UtenteEntity> getUtentiPerReferenteDelegatoEntePartnerProgetti(Long idProgetto, Long idEnte,
 			String cfUtente, FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
 		return this.utenteRepository.findUtentiPerReferenteDelegatoEntePartnerProgetti(
-				idProgramma,
 				idProgetto,
 				idEnte,
 				cfUtente, 
@@ -216,12 +215,11 @@ public class UtenteService {
 				pageSize);
 	}
 
-	private Set<UtenteEntity> getUtentiPerReferenteDelegatoGestoreProgetti(Long idProgramma, Long idProgetto,
+	private Set<UtenteEntity> getUtentiPerReferenteDelegatoGestoreProgetti(Long idProgetto,
 			String cfUtente, FiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
 		//nel caso di REGP/DEGP non viene applicato il filtro degli stati perché si presume che possa vedere tutti gli utenti legati almeno ad un ruolo,
 		//quindi sono sempre attivi
 		return this.utenteRepository.findUtentiPerReferenteDelegatoGestoreProgetti(
-				idProgramma,
 				idProgetto,
 				cfUtente, 
 				filtroRequest.getCriterioRicerca(),
@@ -497,11 +495,11 @@ public class UtenteService {
 			return this.getRuoliPerReferenteDelegatoGestoreProgramma(idProgramma, cfUtente, filtroRequest);
 		case "REGP":
 		case "DEGP":
-			stati.addAll(this.getRuoliPerReferenteDelegatoGestoreProgetti(idProgramma, idProgetto, cfUtente, filtroRequest));
+			stati.addAll(this.getRuoliPerReferenteDelegatoGestoreProgetti(idProgetto, cfUtente, filtroRequest));
 			return stati;
 		case "REPP":
 		case "DEPP":
-			stati.addAll(this.getRuoliPerReferenteDelegatoEntePartnerProgetti(idProgramma, idProgetto, cfUtente, filtroRequest));
+			stati.addAll(this.getRuoliPerReferenteDelegatoEntePartnerProgetti(idProgetto, cfUtente, filtroRequest));
 			return stati;
 		default:
 			stati.addAll(this.getAllRuoli(filtroRequest));
@@ -510,10 +508,9 @@ public class UtenteService {
 		return stati;
 	}
 
-	private List<String> getRuoliPerReferenteDelegatoEntePartnerProgetti(Long idProgramma, Long idProgetto,
+	private List<String> getRuoliPerReferenteDelegatoEntePartnerProgetti(Long idProgetto,
 			String cfUtente, FiltroRequest filtroRequest) {
 		return this.utenteRepository.findRuoliPerReferenteDelegatoEntePartnerProgetti(
-				idProgramma,
 				idProgetto,
 				cfUtente,
 				filtroRequest.getCriterioRicerca(),
@@ -522,10 +519,9 @@ public class UtenteService {
 				);
 	}
 
-	private List<String> getRuoliPerReferenteDelegatoGestoreProgetti(Long idProgramma, Long idProgetto, String cfUtente,
+	private List<String> getRuoliPerReferenteDelegatoGestoreProgetti(Long idProgetto, String cfUtente,
 			FiltroRequest filtroRequest) {
 		return this.utenteRepository.findRuoliPerReferenteDelegatoGestoreProgetti(
-				idProgramma,
 				idProgetto,
 				cfUtente,
 				filtroRequest.getCriterioRicerca(),
@@ -593,12 +589,13 @@ public class UtenteService {
 			return this.utenteRepository.isUtenteAssociatoProgrammaAndEnte(idUtente, sceltaProfilo.getIdProgramma(), sceltaProfilo.getIdEnte()) > 0;
 		case "REGP": 
 		case "DEGP":
-			return this.utenteRepository.isUtenteAssociatoProgrammaAndProgetto(idUtente, sceltaProfilo.getIdProgramma(), sceltaProfilo.getIdProgetto()) > 0;
+			return this.utenteRepository.isUtenteAssociatoProgrammaAndProgetto(idUtente, sceltaProfilo.getIdProgetto()) > 0;
 		case "REPP": 
 		case "DEPP": 
+			return this.utenteRepository.isUtenteAssociatoREPP(idUtente, sceltaProfilo.getIdProgetto(), sceltaProfilo.getIdEnte()) > 0;
 		case "FAC": 
 		case "VOL": 
-			return this.utenteRepository.isUtenteAssociatoProgrammaAndProgettoAndEnte(idUtente, sceltaProfilo.getIdProgramma(), sceltaProfilo.getIdProgetto(), sceltaProfilo.getIdEnte()) > 0;
+			return this.utenteRepository.isUtenteAssociatoFAC(idUtente, sceltaProfilo.getIdProgetto(), sceltaProfilo.getIdEnte()) > 0;
 			// DTD, DSCU, RUOLI_CUSTOM
 		case "DSCU": 
 			String codiceFiscale = utenteRepository.findById(idUtente).get().getCodiceFiscale();

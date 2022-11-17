@@ -312,7 +312,6 @@ public class UtenteServiceTest {
 		assertThat(service.getUtentiPaginatiByRuolo(RuoloUtenteEnum.REG.toString(), "CODICE_FISCALE", 1L, 1L, 1L, filtroRequest, currPage, pageSize)).isNotNull();
 		when(this.utenteRepository.findUtentiPerReferenteDelegatoGestoreProgetti(
 				  1L,
-				  1L,
 				  "CODICE_FISCALE", 
 				  filtroRequest.getCriterioRicerca(),
 				   "%" + filtroRequest.getCriterioRicerca() + "%",
@@ -321,7 +320,6 @@ public class UtenteServiceTest {
 				   pageSize)).thenReturn(new HashSet<UtenteEntity>());
 		assertThat(service.getUtentiPaginatiByRuolo(RuoloUtenteEnum.DEGP.toString(), "CODICE_FISCALE", 1L, 1L, 1L, filtroRequest, currPage, pageSize)).isNotNull();
 		when(this.utenteRepository.findUtentiPerReferenteDelegatoEntePartnerProgetti(
-				  1L,
 				  1L,
 				  1L,
 				  "CODICE_FISCALE",
@@ -626,7 +624,6 @@ public class UtenteServiceTest {
 		//test con ruoloUtenteLoggato = REGP/DEGP
 		sceltaContesto.setCodiceRuoloUtenteLoggato("REGP");
 		when(this.utenteRepository.findRuoliPerReferenteDelegatoGestoreProgetti(
-				sceltaContesto.getIdProgramma(),
 				sceltaContesto.getIdProgetto(),
 				sceltaContesto.getCfUtenteLoggato(),
 				filtroRicerca.getCriterioRicerca(),
@@ -642,7 +639,6 @@ public class UtenteServiceTest {
 		//test con ruoloUtenteLoggato = REPP/DEPP
 		sceltaContesto.setCodiceRuoloUtenteLoggato("REPP");
 		when(this.utenteRepository.findRuoliPerReferenteDelegatoEntePartnerProgetti(
-				sceltaContesto.getIdProgramma(),
 				sceltaContesto.getIdProgetto(),
 				sceltaContesto.getCfUtenteLoggato(),
 				filtroRicerca.getCriterioRicerca(),
