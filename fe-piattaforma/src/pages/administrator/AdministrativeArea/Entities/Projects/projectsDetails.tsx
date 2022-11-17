@@ -174,6 +174,14 @@ const ProjectsDetails = () => {
         `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/info`
       );
     }
+    if (
+      location.pathname ===
+      `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/ente-gestore-progetto/${authorityId}`
+    ) {
+      navigate(
+        `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/ente-gestore-progetto`
+      );
+    }
   }, []);
 
   useEffect(() => {

@@ -25,6 +25,7 @@ import {
   GetNotificationsByUser,
 } from '../../../../../redux/features/user/userThunk';
 import DeleteCheck from '/public/assets/img/delete-check.png';
+import { useNavigate } from 'react-router-dom';
 
 export interface NotificationI {
   id?: string;
@@ -38,6 +39,7 @@ export interface NotificationI {
   notificationsPreview?: boolean;
   isChecked?: boolean;
   onClick?: () => void;
+  onRead?: () => void;
 }
 
 const Notification: React.FC<NotificationI> = (props) => {
@@ -47,12 +49,13 @@ const Notification: React.FC<NotificationI> = (props) => {
     status = false,
     id,
     action = '',
-    // node_id = '',
-    // node_bundle = '',
+    node_id = '',
+    node_bundle = '',
     onSelect,
     notificationsPreview = true,
     isChecked = false,
     onClick = () => ({}),
+    onRead = () => ({}),
   } = props;
 
   const device = useAppSelector(selectDevice);
@@ -61,7 +64,7 @@ const Notification: React.FC<NotificationI> = (props) => {
   const dispatch = useDispatch();
   const usersAnagraphic = useAppSelector(selectAnagraphics);
   const [populatedMessage, setPopulatedMessage] = useState('');
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (message) {
@@ -78,9 +81,8 @@ const Notification: React.FC<NotificationI> = (props) => {
       const splittedMessage = message.split('$');
       if (userId)
         splittedMessage[1] = usersAnagraphic[userId]
-          ? `<span style=${status ? '' : 'color:#06c;font-weight:600;'} >${
-              usersAnagraphic[userId].nome
-            } ${usersAnagraphic[userId].cognome}</span>`
+          ? `<span style=${status ? '' : 'color:#06c;font-weight:600;'} >${usersAnagraphic[userId].nome
+          } ${usersAnagraphic[userId].cognome}</span>`
           : '';
       if (authorId)
         splittedMessage[3] = usersAnagraphic[authorId]
@@ -96,21 +98,21 @@ const Notification: React.FC<NotificationI> = (props) => {
     dispatch(GetNotificationsByUser());
   };
 
-  // const onNavigateToItem = () => {
-  //   switch (node_bundle) {
-  //     case 'board_item':
-  //       navigate(`/bacheca/${node_id}`)
-  //       break;
-  //     case 'community_item':
-  //       navigate(`/community/${node_id}`)
-  //       break
-  //     case 'document_item':
-  //       navigate(`/documenti/${node_id}`)
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // }
+  const onNavigateToItem = () => {
+    switch (node_bundle) {
+      case 'board_item':
+        navigate(`/bacheca/${node_id}`)
+        break;
+      case 'community_item':
+        navigate(`/community/${node_id}`)
+        break
+      case 'document_item':
+        navigate(`/documenti/${node_id}`)
+        break;
+      default:
+        break;
+    }
+  }
 
   const userDropDown = (
     <Dropdown
@@ -147,7 +149,7 @@ const Notification: React.FC<NotificationI> = (props) => {
                 'justify-content-between'
               )}
               role='menuitem'
-              onClick={onClick}
+              onClick={onRead}
             >
               <Icon
                 className='pr-2'
@@ -181,7 +183,7 @@ const Notification: React.FC<NotificationI> = (props) => {
           !status && 'unread',
           isMobile && !notificationsPreview && 'reverse'
         )}
-        // onClick={() => onNavigateToItem()}
+      // onClick={() => onNavigateToItem()}
       >
         {/* className='d-flex justify-content-between align-items-center'> */}
 
@@ -208,8 +210,14 @@ const Notification: React.FC<NotificationI> = (props) => {
         <div>
           <div className='d-flex align-items-center'>
             <NotificationIcon status={status} action={action} />
-            <p
-              className='neutral-1-color-a8 pl-3'
+            <div
+              role="button"
+              className='neutral-1-color-a8 pl-3 notification-link'
+              onClick={e => {
+                e.preventDefault()
+                !status && onClick();
+                onNavigateToItem()
+              }}
               dangerouslySetInnerHTML={{ __html: populatedMessage }}
             />
           </div>

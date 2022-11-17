@@ -41,3 +41,10 @@
 .reverse {
   flex-direction: row-reverse;
 }
+
+.notification-link {
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
