@@ -123,7 +123,7 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
                   onRead={() => onReadNotification(notification.id)}
                   onClick={() => {
                     onReadNotification(notification.id);
-                    setOpen(false)
+                    setOpen(false);
                   }}
                 />
               </div>

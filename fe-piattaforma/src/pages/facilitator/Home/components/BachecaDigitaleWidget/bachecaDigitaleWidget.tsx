@@ -31,7 +31,7 @@ const BachecaDigitaleWidget = () => {
   const [newsList, setNewsList] = useState([]);
 
   const newsWidgetSet = async () => {
-    const itemPerPage = newsPagination.desktop.toString();
+    const itemPerPage = newsPagination[getMediaQueryDevice(device)].toString();
     const res = await dispatch(
       GetNewsList(
         {
@@ -49,7 +49,7 @@ const BachecaDigitaleWidget = () => {
   useEffect(() => {
     newsWidgetSet();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [device]);
 
   return (
     <div className='py-5'>

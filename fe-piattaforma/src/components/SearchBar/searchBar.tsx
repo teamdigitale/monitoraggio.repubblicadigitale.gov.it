@@ -197,7 +197,8 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                   hasSearchValue && 'input-text-bold',
                   'position-relative',
                   'bg-transparent',
-                  'mr-5'
+                  'mr-5',
+                  device.mediaIsPhone && 'pl-0'
                 )}
                 field={id}
                 onInputChange={(search) =>
@@ -227,7 +228,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                       }
                     }}
                   >
-                    {title}
+                    {!searchValue && title}
                   </span>
                   {/* {tooltip && (
                     <div id='search-tooltip'>

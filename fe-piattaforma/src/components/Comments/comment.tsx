@@ -48,6 +48,7 @@ export interface CommentI {
   onDeleteComment?: () => void;
   onEditComment?: () => void;
   reported: 0 | 1;
+  isReply?: boolean;
 }
 
 const Comment: React.FC<CommentI> = (props) => {
@@ -66,6 +67,7 @@ const Comment: React.FC<CommentI> = (props) => {
     onDeleteComment = () => ({}),
     onEditComment = () => ({}),
     reported = 0,
+    isReply = false,
   } = props;
 
   const [detailDropdownOptions, setDetailDropdownOptions] = useState<any[]>([]);
@@ -337,6 +339,7 @@ const Comment: React.FC<CommentI> = (props) => {
               ? () => setShowReplies((prev) => !prev)
               : undefined
           }
+          isReply={isReply}
           showReplies={section === 'community' ? showReplies : undefined}
           likes={likes}
           user_like={user_like}

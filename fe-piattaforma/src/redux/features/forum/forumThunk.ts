@@ -26,10 +26,12 @@ export const proxyCall = async (
   body: any = {},
   filePayload: any = {}
 ) => {
+  const { idProgramma, idProgetto, idEnte } = getUserHeaders();
   return await API.post('/drupal/forward', {
     url: `/api${url}`,
     metodoHttp: httpMethod,
     body: body ? JSON.stringify(body) : null,
+    profilo: { idProgramma, idProgetto, idEnte },
     ...filePayload,
   });
 };

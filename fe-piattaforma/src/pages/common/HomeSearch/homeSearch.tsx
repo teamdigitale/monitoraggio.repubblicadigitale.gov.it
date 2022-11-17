@@ -21,12 +21,12 @@ import { GetItemsBySearch } from '../../../redux/features/forum/forumThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import './homeSearch.scss';
 
-const PageTitleDesktopMock = {
+const PageTitleMock = {
   title: 'Cerca su bacheca, community e documenti',
 };
-const PageTitleMobileMock = {
+/* const PageTitleMobileMock = {
   title: 'Cerca',
-};
+}; */
 
 const searchMinLength = 2;
 
@@ -50,19 +50,13 @@ const HomeSearch = () => {
   };
   return (
     <div>
-      {!device.mediaIsPhone ? (
-        <PageTitle {...PageTitleDesktopMock} />
-      ) : (
-        <div className='pl-4'>
-          <PageTitle {...PageTitleMobileMock} />
-        </div>
-      )}
+      <PageTitle {...PageTitleMock} />
       <Container className='pb-5'>
         <SearchBar
           placeholder='Cerca'
           isClearable
           id='home-search'
-          className={clsx('w-75', device.mediaIsPhone && 'w-100 pl-3')}
+          className={clsx('w-75', device.mediaIsPhone && 'w-100 pl-2')}
           onSubmit={handleSearch}
           minLength={searchMinLength}
           onReset={resetSearch}

@@ -341,7 +341,11 @@ const ProjectsDetails = () => {
       <li>aggiungere un ente gestore;</li>
       <li>aggiungere almeno un referente nella scheda dell’ente gestore;</li>
       <li>aggiungere almeno una sede all’ente gestore o a un ente partner;</li>
-      <li>aggiungere almeno un {projectDetails?.policy === 'SCD' ? 'volontario':'facilitatore'} nella scheda di una sede.</li>
+      <li>
+        aggiungere almeno un{' '}
+        {projectDetails?.policy === 'SCD' ? 'volontario' : 'facilitatore'} nella
+        scheda di una sede.
+      </li>
     </ol>
   );
 
