@@ -248,6 +248,9 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
 
   const removePicture = (e: any) => {
     setImage(defaultCover);
+    if (inputRefImg.current !== null) {
+      inputRefImg.current.value = "";
+    }
     e.preventDefault();
   };
 
@@ -259,6 +262,9 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
 
   const removeDocument = (e: any) => {
     setFiles(defaultDocument);
+    if (inputRef.current !== null) {
+      inputRef.current.value = "";
+    }
     e.preventDefault();
   };
 
@@ -391,7 +397,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
           <input
             type='file'
             id='Img-file'
-            accept='image/*, .png, .jpeg, .jpg'
+            accept='.png, .jpeg, .jpg'
             ref={inputRefImg}
             className='sr-only'
             capture
@@ -452,7 +458,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
           <input
             type='file'
             id='file'
-            accept='image/*,.pdf,.doc,.docx,.xls,.xlsx'
+            accept='.txt, .rtf, .odt, .zip, .exe, .docx, .doc, .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv, .mpg, .wmv'
             ref={inputRef}
             className='sr-only'
             capture

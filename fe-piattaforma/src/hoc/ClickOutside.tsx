@@ -1,19 +1,26 @@
 import React, { useEffect, useRef } from 'react';
+import { selectDevice } from '../redux/features/app/appSlice';
+import { useAppSelector } from '../redux/hooks';
 
 function useOutsideAlerter(
   ref: React.RefObject<HTMLElement>,
-  effect: () => void
+  effect: () => void,
+  isDesktop?: boolean,
 ) {
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
+    function handleClickOutside(event: MouseEvent | TouchEvent) {
       if (ref.current && !ref.current.contains(event.target as Node)) {
         if (typeof effect === 'function') effect();
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside);
+    isDesktop
+      ? document.addEventListener('mousedown', handleClickOutside, isDesktop)
+      : document.addEventListener('touchend', handleClickOutside, isDesktop);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      isDesktop
+        ? document.removeEventListener('mousedown', handleClickOutside, isDesktop)
+        : document.removeEventListener('touchend', handleClickOutside, isDesktop);
     };
   }, [effect, ref]);
 }
@@ -30,7 +37,8 @@ interface ClickOustidePropI {
 const ClickOutside: React.FC<ClickOustidePropI> = (props) => {
   const { children, callback } = props;
   const wrapperRef = useRef(null);
-  useOutsideAlerter(wrapperRef, callback);
+  const device = useAppSelector(selectDevice);
+  useOutsideAlerter(wrapperRef, callback, device.mediaIsDesktop);
 
   return <div ref={wrapperRef}>{children}</div>;
 };

@@ -8,7 +8,7 @@ import SectionTitle from '../SectionTitle/sectionTitle';
 import Comment from './comment';
 
 interface commentSectionI {
-  section: 'board' | 'community' | 'ducuments';
+  section: 'board' | 'community' | 'documents';
 }
 
 const CommentSection: React.FC<commentSectionI> = ({ section }) => {

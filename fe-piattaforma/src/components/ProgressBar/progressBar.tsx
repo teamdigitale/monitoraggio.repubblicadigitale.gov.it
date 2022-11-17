@@ -9,7 +9,7 @@ interface ProgressBarI {
 }
 
 const ProgressBar: React.FC<ProgressBarI> = (props) => {
-  const { steps, currentStep = 1, className } = props;
+  const { steps, currentStep = 0, className } = props;
 
   return (
     <div
@@ -29,13 +29,13 @@ const ProgressBar: React.FC<ProgressBarI> = (props) => {
           'font-weight-semibold'
         )}
       >
-        {steps[currentStep - 1]}
+        {steps[currentStep]}
       </p>
       <div className='progress-bar-container__line-bar'>
         <div
           className='progress-bar-container__percentage-line'
           style={{
-            width: `${Math.floor((currentStep * 100) / steps.length)}%`,
+            width: `${Math.floor(((currentStep + 1) * 100) / steps.length)}%`,
           }}
         ></div>
       </div>
