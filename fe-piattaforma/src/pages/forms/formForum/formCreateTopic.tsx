@@ -115,6 +115,9 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
 
   const removeDocument = (e: any) => {
     setFiles(defaultDocument);
+    if (inputRef.current !== null) {
+      inputRef.current.value = "";
+    }
     e.preventDefault();
   };
 

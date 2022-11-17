@@ -180,7 +180,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
   }, [docDetail]);
 
   useEffect(() => {
-    setIsFormValid(isValidForm);
+    setIsFormValid(isValidForm && (form?.external_link?.value !== "" || files.name !== defaultDocument.name));
     sendNewValues({
       ...getFormValues(),
       program: getFormValues().program?.toString(),
@@ -190,6 +190,9 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
 
   const removeDocument = (e: any) => {
     setFiles(defaultDocument);
+    if (inputRef.current !== null) {
+      inputRef.current.value = "";
+    }
     e.preventDefault();
   };
 

@@ -24,7 +24,7 @@ import {
   DeleteNotification,
   GetNotificationsByUser,
 } from '../../../../../redux/features/user/userThunk';
-// import { useNavigate } from 'react-router-dom';
+import DeleteCheck from '/public/assets/img/delete-check.png';
 
 export interface NotificationI {
   id?: string;
@@ -237,11 +237,11 @@ const Notification: React.FC<NotificationI> = (props) => {
 
         {notificationsPreview ? userDropDown : null}
         {!isMobile && !notificationsPreview ? (
-          <div className='ml-auto' role='button'>
+          <div className='ml-auto d-flex align-items-center' role='button'>
             <Icon
               color='primary'
-              icon='it-close'
-              size='lg'
+              icon={DeleteCheck}
+              size='sm'
               onClick={(e) => {
                 e.stopPropagation();
                 onDelete();

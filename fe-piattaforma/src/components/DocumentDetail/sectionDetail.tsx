@@ -27,7 +27,6 @@ import {
 import { cleanDrupalFileURL } from '../../utils/common';
 import { formatDate } from '../../utils/datesHelper';
 import useGuard from '../../hooks/guard';
-import { useNavigate } from 'react-router-dom';
 
 export interface CardDocumentDetailI {
   id?: string;
@@ -90,7 +89,6 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
   const userId = useAppSelector(selectUser)?.id;
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { hasUserPermission } = useGuard();
-  const navigate = useNavigate();
 
   const trackDownload = async () => {
     if (id && section === 'documents') {
@@ -104,7 +102,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
         })
       );
     }
-    navigate(cleanDrupalFileURL(attachment));
+    window.open(cleanDrupalFileURL(attachment), '_blank');
   };
 
   const deleteOption = {

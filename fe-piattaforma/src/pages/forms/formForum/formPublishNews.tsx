@@ -248,6 +248,9 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
 
   const removePicture = (e: any) => {
     setImage(defaultCover);
+    if (inputRefImg.current !== null) {
+      inputRefImg.current.value = "";
+    }
     e.preventDefault();
   };
 
@@ -259,6 +262,9 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
 
   const removeDocument = (e: any) => {
     setFiles(defaultDocument);
+    if (inputRef.current !== null) {
+      inputRef.current.value = "";
+    }
     e.preventDefault();
   };
 
