@@ -246,7 +246,21 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
               ) : null}
               <Form id='form-dropdown'>
                 {(filteredOptions || []).length === 0 ? (
-                  <p>Non ci sono opzioni per questo filtro</p>
+                  <Button
+                    className='dropdown-filter-container__empty-state'
+                    onClick={() => {
+                      setOpen(!open);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === ' ') {
+                        e.preventDefault();
+                        setOpen(!open);
+                        focusId(`filter-${id}`);
+                      }
+                    }}
+                  >
+                    Non ci sono opzioni per questo filtro
+                  </Button>
                 ) : (
                   <ul
                     id={idListOptions}
