@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.318](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.317...1.0.0-develop.318) (2022-11-18)
+
+
+### Bug Fixes
+
+* **be:** coni ruoli per filtri ([f5fa7a7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f5fa7a78f9c21db638d733302ba278b74308252f))
+
 ## [1.0.0-develop.317](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.316...1.0.0-develop.317) (2022-11-18)
 
 
