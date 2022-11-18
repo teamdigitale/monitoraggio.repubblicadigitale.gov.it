@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.deser.impl.CreatorCandidate.Param;
 
 import it.pa.repdgt.integrazione.exception.DrupalException;
 import it.pa.repdgt.integrazione.request.ForwardRichiestDrupalParam;
