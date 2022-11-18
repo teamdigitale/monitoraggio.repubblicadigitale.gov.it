@@ -9,6 +9,8 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -60,6 +62,15 @@ public class DrupalService {
 	private GruppoRepository gruppoRepository;
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	public static final List<String> ENDPOINT_RUOLI = Arrays.asList(
+			"^/api/board/items$",
+			"^/api/board/item/[A-Za-z0-9]+/user/[A-Za-z0-9]+$",
+			"^/api/search/board/items$",
+			"^/api/document/items$",
+			"^/api/document/item/[A-Za-z0-9]+/user/[A-Za-z0-9]+$",
+			"^/api/search/document/items$"
+	);
 
 	public Map forwardRichiestaADrupal(final @NotNull @Valid ForwardRichiestDrupalParam param, String contentType) {
 		String urlDaChiamare = drupalEndpoint.concat(param.getUrlRichiesta());
@@ -119,8 +130,9 @@ public class DrupalService {
 				log.info("Richiesta Servizio Drupal: {} {} headersRichiesta={} corpoRichiesta={}", 
 						metodoHttp, urlDaChiamare, forwardHeaders, forwardBody);
 				 try {
-					 	urlDaChiamare = this.transformUrl(param, urlDaChiamare);
-					 	responseDrupal = this.restTemplate.exchange(urlDaChiamare, metodoHttp, forwardRequestEntity, Map.class);
+					 if("GET".equals(metodoHttpString) && endpointMatcher(param.getUrlRichiesta().split("\\?")[0], ENDPOINT_RUOLI))	
+						 urlDaChiamare = this.transformUrl(param, urlDaChiamare);
+					 responseDrupal = this.restTemplate.exchange(urlDaChiamare, metodoHttp, forwardRequestEntity, Map.class);
 				  } catch (Exception ex) {
 		        	String errorMessageDrupal = ex.getMessage().contains(":")? ex.getMessage().replaceFirst(":", "_REQ_DRUPAL_"): ex.getMessage();
 					String rispostaDrupal = errorMessageDrupal.contains("_REQ_DRUPAL_")? errorMessageDrupal.split("_REQ_DRUPAL_")[1]: errorMessageDrupal;
@@ -156,11 +168,11 @@ public class DrupalService {
 				 final StringBuilder stringBuilder = new StringBuilder();
 				 this.programmaRepository.findByPolicy(PolicyEnum.SCD)
 				 						 .stream()
-										 .map(prog -> prog.getId().toString().concat("-").concat(prog.getPolicy().toString()).concat(","))
+										 .map(prog -> prog.getId().toString().concat("-").concat(prog.getPolicy().toString()).concat("+"))
 										 .forEach(progIntervention -> stringBuilder.append(progIntervention));
 				String programmiIntervention = stringBuilder.toString().substring(0, stringBuilder.length()-1);
 
-				programInterventionValue = programInterventionValue.concat("public-SCD,").concat(programmiIntervention);
+				programInterventionValue = programInterventionValue.concat("public-SCD+").concat(programmiIntervention);
 				break;
 			}
 			case "REG": 
@@ -170,7 +182,7 @@ public class DrupalService {
 			case "REPP": 
 			case "DEGP": {
 					ProgrammaEntity programma = this.programmaRepository.findById(param.getProfilo().getIdProgramma()).get();
-					programInterventionValue = programInterventionValue.concat("public-" + programma.getPolicy().toString()).concat("," + programma.getId() + "-" + programma.getPolicy().toString());
+					programInterventionValue = programInterventionValue.concat("public-" + programma.getPolicy().toString()).concat("+" + programma.getId() + "-" + programma.getPolicy().toString());
 											
 				break;
 			}
@@ -178,7 +190,7 @@ public class DrupalService {
 				 final StringBuilder stringBuilder = new StringBuilder();
 				 this.programmaRepository.findAll()
 				 						 .stream()
-										 .map(prog -> prog.getId().toString().concat("-").concat(prog.getPolicy().toString()).concat(","))
+										 .map(prog -> prog.getId().toString().concat("-").concat(prog.getPolicy().toString()).concat("+"))
 										 .forEach(progIntervention -> stringBuilder.append(progIntervention));
 				String programmiIntervention = stringBuilder.toString().substring(0, stringBuilder.length()-1);
 
@@ -218,5 +230,14 @@ public class DrupalService {
 		return headers;
 	}
 	
+	private static boolean endpointMatcher(String endpointToMatch, List<String> listMatch) {
+		for(String endpointNonChecked: listMatch) {
+			Pattern pattern = Pattern.compile(endpointNonChecked);
+		    Matcher matcher = pattern.matcher(endpointToMatch);
+			if(matcher.find())
+				return true;
+		}
+		return false;
+	}
 
 }
