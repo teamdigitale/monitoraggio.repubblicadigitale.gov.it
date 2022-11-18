@@ -62,7 +62,6 @@ const ManageServices: React.FC<ManageServicesI> = ({
   const createPayload = (answersForms: {
     [key: string]: formFieldI['value'];
   }) => {
-    // TODO rendere dinamico
     const answersQ3 = `{"id":"${idQ3}","title":"${titleQ3}","properties":${questionarioCompilatoQ3?.replaceAll(
       '"',
       "'"

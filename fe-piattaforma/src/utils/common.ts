@@ -388,13 +388,13 @@ export const createStringOfCompiledSurveySection = (
       formattedData[key] = formattedData[key]
         ?.toString()
         .split('§')
-        .map((e) => e.replaceAll(',', '§'));
+        .map((e) => e.replaceAll(',', '§').replaceAll("'", "’"));
     } else if (Array.isArray(formattedData[key])) {
       if (key === '25' || key === '26') {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         formattedData[key] = (formattedData[key] || ['']).map((e) =>
-          e.toString().replaceAll(',', '§')
+          e.toString().replaceAll(',', '§').replaceAll("'", "’")
         );
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -406,12 +406,12 @@ export const createStringOfCompiledSurveySection = (
           .split('§')
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          .map((e) => e.toString().replaceAll(',', '§'));
+          .map((e) => e.toString().replaceAll(',', '§').replaceAll("'", "’"));
       } else {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         formattedData[key] = (formattedData[key] || ['']).map((e) =>
-          e.toString().replaceAll(',', '§')
+          e.toString().replaceAll(',', '§').replaceAll("'", "’")
         );
       }
     }
