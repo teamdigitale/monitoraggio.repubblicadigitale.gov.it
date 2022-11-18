@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.317](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.316...1.0.0-develop.317) (2022-11-18)
+
+
+### Bug Fixes
+
+* **be:** coni visibilità drupal fac/vol ([a46f69e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a46f69e925364f9e082790137ac56c8595f2e61b))
+
 ## [1.0.0-develop.316](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.315...1.0.0-develop.316) (2022-11-18)
 
 
