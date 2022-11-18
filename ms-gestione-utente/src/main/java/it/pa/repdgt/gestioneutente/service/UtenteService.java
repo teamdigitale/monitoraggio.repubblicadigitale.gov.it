@@ -595,7 +595,7 @@ public class UtenteService {
 			return this.utenteRepository.isUtenteAssociatoREPP(idUtente, sceltaProfilo.getIdProgetto(), sceltaProfilo.getIdEnte()) > 0;
 		case "FAC": 
 		case "VOL": 
-			return this.utenteRepository.isUtenteAssociatoFAC(idUtente, sceltaProfilo.getIdProgetto(), sceltaProfilo.getIdEnte()) > 0;
+			return this.utenteRepository.isUtenteAssociatoFAC(idUtente, sceltaProfilo.getIdProgetto(), sceltaProfilo.getIdEnte(), sceltaProfilo.getCfUtenteLoggato()) > 0;
 			// DTD, DSCU, RUOLI_CUSTOM
 		case "DSCU": 
 			String codiceFiscale = utenteRepository.findById(idUtente).get().getCodiceFiscale();
