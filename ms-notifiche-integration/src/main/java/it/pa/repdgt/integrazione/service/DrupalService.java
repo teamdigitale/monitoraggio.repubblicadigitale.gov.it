@@ -180,7 +180,10 @@ public class DrupalService {
 			case "DEPP": 
 			case "REGP": 
 			case "REPP": 
-			case "DEGP": {
+			case "DEGP": 
+			case "FAC": 
+			case "VOL": 
+			{
 					ProgrammaEntity programma = this.programmaRepository.findById(param.getProfilo().getIdProgramma()).get();
 					programInterventionValue = programInterventionValue.concat("public-" + programma.getPolicy().toString()).concat("+" + programma.getId() + "-" + programma.getPolicy().toString());
 											
