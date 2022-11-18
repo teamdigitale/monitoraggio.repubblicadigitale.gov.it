@@ -1852,6 +1852,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "	WHERE 1=1 "
 			+ "		AND p.id =  :idProgetto "
 			+ "     and espf.id_ente = :idEnte	    "
+			+ "     and espf.id_facilitatore = :codiceFiscale"
 			+ " "
 			+ " 	UNION "
 			+ " "
@@ -1863,6 +1864,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ " WHERE 1=1 "
 			+ "		AND ep.id_progetto = :idProgetto "
 			+ "     and espf.id_ente = :idEnte 		    "
+			+ "     and espf.id_facilitatore = :codiceFiscale"
 			+ " ) as utentiAssociatiAProgrammaProgetto"
 			+ "	INNER JOIN utente u ON u.codice_fiscale = utentiAssociatiAProgrammaProgetto.cf_utente "
 			+ " WHERE 1=1 "
@@ -1871,7 +1873,8 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 	public int isUtenteAssociatoFAC(
 			@Param(value = "idUtente")   Long idUtente, 
 			@Param(value = "idProgetto")  Long idProgetto,
-			@Param(value = "idEnte")  Long idEnte
+			@Param(value = "idEnte")  Long idEnte,
+			@Param(value = "codiceFiscale")  String codiceFiscale
 		);
 	
 	@Query(value = ""

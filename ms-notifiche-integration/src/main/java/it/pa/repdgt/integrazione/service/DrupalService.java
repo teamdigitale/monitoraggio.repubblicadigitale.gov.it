@@ -69,7 +69,9 @@ public class DrupalService {
 			"^/api/search/board/items$",
 			"^/api/document/items$",
 			"^/api/document/item/[A-Za-z0-9]+/user/[A-Za-z0-9]+$",
-			"^/api/search/document/items$"
+			"^/api/search/document/items$",
+			"^/api/board/filters$",
+			"^/api/document/filters$"
 	);
 
 	public Map forwardRichiestaADrupal(final @NotNull @Valid ForwardRichiestDrupalParam param, String contentType) {
