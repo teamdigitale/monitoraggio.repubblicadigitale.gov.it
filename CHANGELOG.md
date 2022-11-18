@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.316](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.315...1.0.0-develop.316) (2022-11-18)
+
+
+### Bug Fixes
+
+* **be:** separatore drupal ([d6e09b0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d6e09b0288d1ffad43f81b6250b03fadc6febeb0))
+
 ## [1.0.0-develop.315](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.314...1.0.0-develop.315) (2022-11-18)
 
 
