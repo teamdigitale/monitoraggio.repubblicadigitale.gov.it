@@ -11,7 +11,7 @@ import {
 } from 'design-react-kit';
 import Logo from '/public/assets/img/logo_tmp3.png';
 import Bell from '/public/assets/img/campanella.png';
-import RocketChatIcon from '/public/assets/img/rocketchat.png';
+import RocketChatIcon from '/public/assets/img/rocketchat-2x.png';
 import { useTranslation } from 'react-i18next';
 import { HeaderI } from '../header';
 import HeaderMenu from '../../HeaderMenu/headerMenu';
@@ -120,6 +120,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
             icon='it-expand'
             role='button'
             aria-label='Espandi menù'
+            aria-hidden
           />
         </div>
       </div>
@@ -183,7 +184,10 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                   'justify-content-between'
                 )}
                 role='menuitem'
-                onClick={() => navigate('/area-personale/contenuti-pubblicati')}
+                onClick={() => {
+                  navigate('/area-personale/contenuti-pubblicati');
+                  setOpenUser(false);
+                }}
               >
                 Contenuti pubblicati
               </Button>
@@ -248,6 +252,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 size='sm'
                 color='white'
                 aria-label='Gestione profili'
+                aria-hidden
               />
               <h6
                 className={clsx(

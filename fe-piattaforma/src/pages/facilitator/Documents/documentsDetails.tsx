@@ -215,7 +215,7 @@ const DocumentsDetails = () => {
         </div>
         <span className='d-none d-md-flex border-box-utility' />
       </div>
-      {commentsList.length ? <CommentSection section='ducuments' /> : null}
+      {commentsList.length ? <CommentSection section='documents' /> : null}
       <ManageDocument />
       <ManageComment />
       <ManageReport />

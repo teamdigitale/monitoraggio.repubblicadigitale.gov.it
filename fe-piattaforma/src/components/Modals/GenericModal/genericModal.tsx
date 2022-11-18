@@ -76,7 +76,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
     isSurveyOnline = false,
     isSuccesModal = false,
     isUserRole = false,
-    darkTitle = false,
+    //darkTitle = false,
     isRocketChatModal = false,
   } = props;
 
@@ -179,7 +179,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
                   ? 'primary-color-a10 h3 pb-4'
                   : 'primary-color h4',
                 'my-auto',
-                darkTitle && 'primary-color-a10'
+                //darkTitle && 'primary-color-a10'
               )}
             >
               {title || payload?.title}

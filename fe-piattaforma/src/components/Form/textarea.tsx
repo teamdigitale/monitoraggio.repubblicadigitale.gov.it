@@ -131,7 +131,7 @@ const TextArea: React.FC<TextAreaI> = (props) => {
 
   return (
     <div className={clsx('bootstrap-select-wrapper', 'form-group', 'mb-0')}>
-      <Label htmlFor={id} className='px-0 pb-3'>
+      <Label htmlFor={id} className='px-0'>
         {TextAreaProps.label}
       </Label>
       <textarea

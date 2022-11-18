@@ -77,7 +77,7 @@ const form = newForm([
   newFormField({
     field: 'text',
     id: 'text',
-    label: 'Testo',
+    label: 'Digita qui sotto il testo',
     required: true,
     type: 'textarea',
   }),

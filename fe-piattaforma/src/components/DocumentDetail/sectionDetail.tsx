@@ -27,7 +27,6 @@ import {
 import { cleanDrupalFileURL } from '../../utils/common';
 import { formatDate } from '../../utils/datesHelper';
 import useGuard from '../../hooks/guard';
-import { useNavigate } from 'react-router-dom';
 
 export interface CardDocumentDetailI {
   id?: string;
@@ -90,7 +89,6 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
   const userId = useAppSelector(selectUser)?.id;
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { hasUserPermission } = useGuard();
-  const navigate = useNavigate();
 
   const trackDownload = async () => {
     if (id && section === 'documents') {
@@ -104,7 +102,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
         })
       );
     }
-    navigate(cleanDrupalFileURL(attachment));
+    window.open(cleanDrupalFileURL(attachment), '_blank');
   };
 
   const deleteOption = {
@@ -144,7 +142,14 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
           ? 'del.topic'
           : 'hidden',
       ]) ||
-      author?.toString() === userId?.toString()
+      (author?.toString() === userId?.toString() &&
+        hasUserPermission([
+          section === 'documents' || isDocument
+            ? 'new.doc'
+            : section === 'community'
+            ? 'new.topic'
+            : 'hidden',
+        ]))
     ) {
       authorizedOption.push(deleteOption);
     }
@@ -156,7 +161,14 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
           ? 'upd.topic'
           : 'hidden',
       ]) ||
-      author?.toString() === userId?.toString()
+      (author?.toString() === userId?.toString() &&
+        hasUserPermission([
+          section === 'documents' || isDocument
+            ? 'new.doc'
+            : section === 'community'
+            ? 'new.topic'
+            : 'hidden',
+        ]))
     ) {
       authorizedOption.push(editOption);
     }
@@ -204,11 +216,12 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
               <Button
                 className={clsx(
                   'primary-color-b1',
-                  'px-3',
-                  'w-75',
+                  'py-2',
+                  'px-1',
+                  'w-100',
                   'd-flex',
                   'flex-row',
-                  'justify-content-start',
+                  'justify-content-around',
                   'align-items-center'
                 )}
                 role='menuitem'
@@ -217,7 +230,6 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
                 <Icon
                   icon={item.DropdownIcon.icon}
                   color={item.DropdownIcon.color}
-                  className='pr-2'
                   aria-label={item.optionName}
                   aria-hidden
                 />
@@ -288,7 +300,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
         </p>
       </div>
       {!device.mediaIsPhone ? (
-        <div className='mb-4'>
+        <div className='mb-4 d-flex flex-row justify-content-start'>
           {attachment ? (
             <div className='d-flex justify-content-start'>
               <Button
@@ -299,7 +311,8 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
                   'px-0',
                   'pb-5',
                   'd-flex',
-                  'align-items-center'
+                  'align-items-center',
+                  external_link && 'mr-5'
                 )}
                 onClick={trackDownload}
                 aria-label='Scarica allegato'
@@ -310,6 +323,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
                   size='sm'
                   aria-label='Scarica allegato'
                   aria-hidden
+                  className='mr-2'
                 />
                 <p className='font-weight-bold h6 mb-0'>
                   <u>Scarica allegato</u>

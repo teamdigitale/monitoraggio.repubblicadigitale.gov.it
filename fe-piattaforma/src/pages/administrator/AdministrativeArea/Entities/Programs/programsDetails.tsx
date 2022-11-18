@@ -64,6 +64,7 @@ import clsx from 'clsx';
 import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 import { selectProfile } from '../../../../../redux/features/user/userSlice';
 import IconNote from '/public/assets/img/it-note-primary.png';
+import IconWarning from '/public/assets/img/it-warning-circle-primary.png';
 
 const tabs = {
   INFO: 'info',
@@ -271,7 +272,8 @@ const ProgramsDetails: React.FC = () => {
               payload: {
                 entity: 'project',
                 projectId: td,
-                text1: 'Inserisci la data di termine e conferma per terminare il progetto.',
+                text1:
+                  'Inserisci la data di termine e conferma per terminare il progetto.',
                 text2: 'Attenzione: non è possibile inserire una data futura.',
               },
             })
@@ -391,10 +393,10 @@ const ProgramsDetails: React.FC = () => {
       setItemAccordionList([]);
       setEmptySection(
         <EmptySection
-          title='Questa sezione è ancora vuota'
           withIcon
-          icon={IconNote}
-          subtitle='Per attivare il progetto aggiungi un Ente gestore di Programma'
+          icon={IconWarning}
+          title='Per attivare il programma è necessario:'
+          subtitle2={subtitleList}
           buttons={
             program?.dettagliInfoProgramma?.stato !== entityStatus.TERMINATO &&
             hasUserPermission(['add.enti.gest.prgm'])
@@ -700,12 +702,12 @@ const ProgramsDetails: React.FC = () => {
     {
       size: 'xs',
       color: 'primary',
-      text: 'Aggiungi Ente gestore di Programma',
+      text: 'Aggiungi ente gestore',
       onClick: () =>
         dispatch(
           openModal({
             id: 'ente-gestore',
-            payload: { title: 'Aggiungi Ente gestore Programma' },
+            payload: { title: 'Aggiungi ente gestore' },
           })
         ),
     },
@@ -741,8 +743,10 @@ const ProgramsDetails: React.FC = () => {
                       id: 'terminate-entity',
                       payload: {
                         entity: 'program',
-                        text1: 'Inserisci la data di termine e conferma per terminare il programma.',
-                        text2: 'Attenzione: non è possibile inserire una data futura.',
+                        text1:
+                          'Inserisci la data di termine e conferma per terminare il programma.',
+                        text2:
+                          'Attenzione: non è possibile inserire una data futura.',
                       },
                     })
                   ),
@@ -793,8 +797,10 @@ const ProgramsDetails: React.FC = () => {
                       id: 'terminate-entity',
                       payload: {
                         entity: 'program',
-                        text1: 'Inserisci la data di termine e conferma per terminare il programma',
-                        text2: 'Attenzione: non è possibile inserire una data futura.',
+                        text1:
+                          'Inserisci la data di termine e conferma per terminare il programma',
+                        text2:
+                          'Attenzione: non è possibile inserire una data futura.',
                       },
                     })
                   ),
@@ -1091,6 +1097,15 @@ const ProgramsDetails: React.FC = () => {
         };
     }
   };
+
+  const subtitleList = (
+    <ol className='my-4'>
+      <li>aggiungere un ente gestore;</li>
+      <li>
+        aggiungere almeno un ente referente nella scheda dell’ente gestore.
+      </li>
+    </ol>
+  );
 
   return (
     <div

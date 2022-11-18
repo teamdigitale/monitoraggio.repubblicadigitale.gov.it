@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 
 const docsPagination = {
   desktop: 4,
-  mobile: 1,
+  mobile: 8,
   tablet: 2,
 };
 
@@ -31,7 +31,7 @@ const DocumentsWidget = () => {
   const [docsList, setDocsList] = useState([]);
 
   const docsWidgetSet = async () => {
-    const itemsPerPage = docsPagination.desktop.toString();
+    const itemsPerPage = docsPagination[getMediaQueryDevice(device)].toString();
     const res = await dispatch(
       GetDocumentsList(
         {
@@ -49,7 +49,7 @@ const DocumentsWidget = () => {
   useEffect(() => {
     docsWidgetSet();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [device]);
 
   const cardArray: any[] = [
     docsList.slice(0, docsPagination[getMediaQueryDevice(device)]),

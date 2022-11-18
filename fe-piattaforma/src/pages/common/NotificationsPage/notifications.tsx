@@ -241,7 +241,6 @@ const Notifications: React.FC = () => {
         </>
       )}
       <Container className='pb-lg-5 pb-5'>
-        {console.log(notificationsList)}
         {notificationsList?.length > 0 ? (
           (notificationsList || []).map((notification, i) => (
             <div
@@ -261,6 +260,7 @@ const Notifications: React.FC = () => {
                   )
                 }
                 notificationsPreview={false}
+                onClick={() => dispatch(ReadNotification([notification.id]))}
                 isChecked={selectedNotifications.includes(notification.id)}
               />
             </div>
