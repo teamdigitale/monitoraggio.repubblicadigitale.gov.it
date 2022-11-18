@@ -36,6 +36,9 @@ const ProfileImageForm: React.FC<ProfilePictureI> = (props) => {
     setImage({ name: 'Carica foto profilo', data: '' });
     setSelectedImage('');
     setIsFormValid(true);
+    if (inputRef.current !== null) {
+      inputRef.current.value = "";
+    }
     e.preventDefault();
   };
 

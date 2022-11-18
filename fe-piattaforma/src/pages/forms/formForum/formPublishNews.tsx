@@ -203,7 +203,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
 
         updateForm(newForm(populatedForm));
       }
-      dispatch(GetEntityFilterValues({ entity, dropdownType: 'programmi' }));
+      dispatch(GetEntityFilterValues({ entity, dropdownType: 'programmi', noFilters: true }));
       dispatch(GetCategoriesList({ type: 'board_categories' }));
       setEnableComments((newFormValues.enable_comments as boolean) || false);
       setHighlighted((newFormValues.highlighted as boolean) || false);
