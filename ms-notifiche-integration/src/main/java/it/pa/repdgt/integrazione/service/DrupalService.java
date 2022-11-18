@@ -161,7 +161,7 @@ public class DrupalService {
 	}
 	
 	private String transformUrl(ForwardRichiestDrupalParam param, String url) {
-		String programInterventionValue = "public-public,";
+		String programInterventionValue = "public-public+";
 		
 		switch(param.getCodiceRuoloUtenteLoggato()) {
 			case "DSCU": {
@@ -194,7 +194,7 @@ public class DrupalService {
 										 .forEach(progIntervention -> stringBuilder.append(progIntervention));
 				String programmiIntervention = stringBuilder.toString().substring(0, stringBuilder.length()-1);
 
-				programInterventionValue = programInterventionValue.concat("public-RFD,").concat("public-SCD,").concat(programmiIntervention);
+				programInterventionValue = programInterventionValue.concat("public-RFD+").concat("public-SCD+").concat(programmiIntervention);
 			}
 		}
 		
