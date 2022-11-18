@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.315](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.314...1.0.0-develop.315) (2022-11-18)
+
+
+### Bug Fixes
+
+* **be:** fix regexp e separatore ([a8db6ab](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a8db6abd5fe89dfaa6379a4406f85f1beeb34f00))
+
 ## [1.0.0-develop.314](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.313...1.0.0-develop.314) (2022-11-17)
 
 
