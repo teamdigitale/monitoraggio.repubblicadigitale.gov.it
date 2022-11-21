@@ -9,7 +9,7 @@ public enum EmailTemplateEnum {
 	,GEST_PROGE_PARTNER("templ_gest_prog_and_partner","Ti diamo il benvenuto su Repubblica Digitale")
 	,FACILITATORE("templ_facilitatore","Ti diamo il benvenuto su Repubblica Digitale")
 	,RUOLO_CUSTOM("templ_custom","Ti diamo il benvenuto su Repubblica Digitale")
-	,QUESTIONARIO_ONLINE("templ_quest_online","Compila il questionario di Repubblica Digitale")
+	,QUESTIONARIO_ONLINE("templ_quest_online","%s - Compila il questionario di Repubblica Digitale")
 	;
 	
 	private String valueTemplate;

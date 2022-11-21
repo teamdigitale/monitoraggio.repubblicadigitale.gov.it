@@ -3,19 +3,23 @@ package it.pa.repdgt.integrazione.request;
 import java.io.Serializable;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParamLight;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParamLightProgramma;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
 @JsonRootName(value = "RichiestaDrupal")
-public class ForwardRichiestDrupalParam extends SceltaProfiloParam implements Serializable {
+public class ForwardRichiestDrupalParam extends SceltaProfiloParamLight implements Serializable {
 	private static final long serialVersionUID = 5516563764543550705L;
+	
+	private SceltaProfiloParamLightProgramma profilo;
 	
 	// metodo HTTP da richiamare verso API DRUPAL
 	@NotBlank(message = "metodo richiesta http deve essere non blank")

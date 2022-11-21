@@ -64,6 +64,7 @@ public class RequestFilter implements Filter {
 		String endpoint = ((HttpServletRequest) request).getServletPath();
 		/*
 		 * aggiunta per le chiamate in arrivo da Drupal
+		 * 
 		 */
 		if(FilterUtil.DRUPAL_USER.equals(codiceFiscaleUtenteLoggato)) { 
 			if(FilterUtil.isEndpointDrupal(endpoint) )
@@ -98,7 +99,6 @@ public class RequestFilter implements Filter {
 					if(bodyRequest != null 
 							&& !"".equals(bodyRequest.trim())
 							&& !filterUtil.verificaSceltaProfilo(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato, bodyRequest )
-							&& !endpoint.contains("/drupal/forward")
 							&& !endpoint.contains("/rocket-chat/")
 							&& !endpoint.contains("/integrazione/workdocs")
 							) {

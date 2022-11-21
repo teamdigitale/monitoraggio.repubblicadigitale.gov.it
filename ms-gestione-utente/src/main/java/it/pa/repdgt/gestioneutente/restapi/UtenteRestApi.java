@@ -2,7 +2,6 @@ package it.pa.repdgt.gestioneutente.restapi;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -47,9 +46,7 @@ import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.light.UtenteLightEntity;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
-import jdk.internal.org.jline.utils.Log;
 import lombok.extern.slf4j.Slf4j;
-import sun.util.logging.resources.logging;
 
 @RestController
 @RequestMapping(path = "/utente")
