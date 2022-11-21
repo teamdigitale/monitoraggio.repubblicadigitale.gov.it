@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.322](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.321...1.0.0-develop.322) (2022-11-21)
+
+
+### Bug Fixes
+
+* **be:** update messaggi ko per upload ep ([5702a44](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5702a44ef3d4a44474f9a6dfdee8e79a60c13a05))
+
 ## [1.0.0-develop.321](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.320...1.0.0-develop.321) (2022-11-21)
 
 
