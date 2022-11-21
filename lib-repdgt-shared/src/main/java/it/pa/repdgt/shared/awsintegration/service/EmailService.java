@@ -30,6 +30,7 @@ public class EmailService {
 					.getEmailTemplate(GetEmailTemplateRequest.builder().templateName(emailTemplate.getValueTemplate()).build());
 			
 			String htmlTemplateEmail = "";
+			String subject = emailTemplate.getValueTemplateSubject();
 			switch(emailTemplate){
 				case GEST_PROG:
 				case GEST_PROGE_PARTNER:
@@ -41,11 +42,17 @@ public class EmailService {
 					htmlTemplateEmail = response.emailTemplateResponse().htmlPart().replace("%S", argsEmailTemplate[0]);
 					break;
 				case QUESTIONARIO_ONLINE:
-					htmlTemplateEmail = response.emailTemplateResponse().htmlPart().replaceFirst("%S", argsEmailTemplate[0]).replaceFirst("%S", argsEmailTemplate[1]).replaceFirst("%S", argsEmailTemplate[2]);
+					htmlTemplateEmail = response.emailTemplateResponse().htmlPart()
+						.replaceFirst("%S", argsEmailTemplate[0])
+						.replaceFirst("%S", argsEmailTemplate[1])
+						.replaceFirst("%S", argsEmailTemplate[2])
+						.replaceFirst("%S", argsEmailTemplate[3])
+						.replaceFirst("%S", argsEmailTemplate[4]);
+					subject = String.format(subject, argsEmailTemplate[1]);
 					break;
 			}
 			
-			final SendMessagesRequest richiestaInvioEmail = this.pinpoint.creaRichiestaInvioEmail(emailTemplate.getValueTemplateSubject(), indirizzoEmailDestinatario, htmlTemplateEmail);
+			final SendMessagesRequest richiestaInvioEmail = this.pinpoint.creaRichiestaInvioEmail(subject, indirizzoEmailDestinatario, htmlTemplateEmail);
 			final SendMessagesResponse  rispostaDaRichiestaInvioEmail = this.pinpoint.getClient().sendMessages(richiestaInvioEmail);
 			log.info("sendMessagesResponse = {}", rispostaDaRichiestaInvioEmail);
 			
