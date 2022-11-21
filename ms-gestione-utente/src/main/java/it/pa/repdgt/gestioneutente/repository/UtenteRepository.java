@@ -362,13 +362,6 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 
 	@Query(value = "SELECT * FROM ( "
 			+ "	SELECT * FROM ("
-			+ "			 SELECT distinct rdg.CF_UTENTE "
-			+ "			 	FROM referente_delegati_gestore_programma rdg "
-			+ "             INNER JOIN programma p"
-			+ "              on rdg.id_ente = p.id_ente_gestore_programma "
-			+ "              and rdg.id_programma = p.id"
-			+ "				WHERE rdg.ID_PROGRAMMA = :idProgramma"
-			+ "			 UNION "
 			+ "			 SELECT distinct rdgp.CF_UTENTE "
 			+ "				FROM referente_delegati_gestore_progetto rdgp"
 			+ "			 	INNER JOIN progetto progetto "
@@ -426,7 +419,6 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "                 ORDER BY risultato.cognome", 
 			nativeQuery = true)
 	public Set<UtenteEntity> findUtentiPerReferenteDelegatoGestoreProgetti(
-			@Param(value = "idProgramma") Long idProgramma,
 			@Param(value = "idProgetto") Long idProgetto,
 			@Param(value = "cfUtente")String cfUtente, 
 			@Param(value = "criterioRicerca") String criterioRicerca,
@@ -438,20 +430,6 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 
 	@Query(value = "SELECT * FROM ( "
 			+ "	SELECT * FROM ("
-			+ "			 SELECT distinct rdg.CF_UTENTE"
-			+ "				FROM referente_delegati_gestore_programma rdg"
-			+ "             INNER JOIN programma p"
-			+ "              on rdg.id_ente = p.id_ente_gestore_programma "
-			+ "              and rdg.id_programma = p.id"
-			+ "				WHERE rdg.ID_PROGRAMMA = :idProgramma "
-			+ "			 UNION "
-			+ "			 SELECT distinct rdgp.CF_UTENTE "
-			+ "				FROM referente_delegati_gestore_progetto rdgp "
-			+ "			 	INNER JOIN progetto progetto "
-			+ "			 	ON rdgp.ID_PROGETTO = progetto.ID "
-			+ "             AND rdgp.id_ente = progetto.id_ente_gestore_progetto"
-			+ "				WHERE rdgp.ID_PROGETTO = :idProgetto"
-			+ "			 UNION "
 			+ "			SELECT distinct rdp.CF_UTENTE "
 			+ "				FROM referente_delegati_partner rdp "
 			+ "				WHERE rdp.CF_UTENTE != :cfUtente"
@@ -497,7 +475,6 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "                 ORDER BY risultato.cognome",
 			nativeQuery = true)
 	public Set<UtenteEntity> findUtentiPerReferenteDelegatoEntePartnerProgetti(
-			@Param(value = "idProgramma") Long idProgramma,
 			@Param(value = "idProgetto") Long idProgetto,
 			@Param(value = "idEnte") Long idEnte,
 			@Param(value = "cfUtente")String cfUtente, 
@@ -744,10 +721,6 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 
 	@Query(value = "SELECT distinct ruolo.nome FROM ( "
 			+ "	SELECT * FROM ("
-			+ "			 SELECT distinct rdg.CF_UTENTE "
-			+ "			   FROM referente_delegati_gestore_programma rdg "
-			+ "				WHERE rdg.ID_PROGRAMMA = :idProgramma"
-			+ "			 UNION "
 			+ "			 SELECT distinct rdgp.CF_UTENTE "
 			+ "				FROM referente_delegati_gestore_progetto rdgp"
 			+ "				WHERE rdgp.CF_UTENTE != :cfUtente "
@@ -792,7 +765,6 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "			 		ON ruolo.CODICE = ur.RUOLO_CODICE", 
 			nativeQuery = true)
 	public List<String> findRuoliPerReferenteDelegatoGestoreProgetti(
-			@Param(value = "idProgramma") Long idProgramma, 
 			@Param(value = "idProgetto") Long idProgetto, 
 			@Param(value = "cfUtente")String cfUtente,
 			@Param(value = "criterioRicerca") String criterioRicerca,
@@ -802,14 +774,6 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 
 	@Query(value = "SELECT distinct ruolo.nome FROM ( "
 			+ "	SELECT * FROM ("
-			+ "			 SELECT distinct rdg.CF_UTENTE"
-			+ "				FROM referente_delegati_gestore_programma rdg"
-			+ "				WHERE rdg.ID_PROGRAMMA = :idProgramma "
-			+ "			 UNION "
-			+ "			 SELECT distinct rdgp.CF_UTENTE "
-			+ "				FROM referente_delegati_gestore_progetto rdgp "
-			+ "				WHERE rdgp.ID_PROGETTO = :idProgetto"
-			+ "			 UNION "
 			+ "			SELECT distinct rdp.CF_UTENTE "
 			+ "				FROM referente_delegati_partner rdp "
 			+ "				WHERE rdp.CF_UTENTE != :cfUtente"
@@ -850,7 +814,6 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "			 		ON ruolo.CODICE = ur.RUOLO_CODICE",
 			nativeQuery = true)
 	public List<String> findRuoliPerReferenteDelegatoEntePartnerProgetti(
-			@Param(value = "idProgramma") Long idProgramma, 
 			@Param(value = "idProgetto") Long idProgetto,
 			@Param(value = "cfUtente")String cfUtente,
 			@Param(value = "criterioRicerca") String criterioRicerca,
@@ -1831,17 +1794,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "	SELECT "
 			+ "		count(distinct cf_utente, RUOLO) "
 			+ "	FROM ( "
-			+ "		SELECT "
-			+ "			rdgp.cf_utente, 'REP/DEP' as 'RUOLO' "
-			+ "		FROM"
-			+ "			referente_delegati_gestore_programma rdgp"
-			+ "			INNER JOIN programma pr ON pr.id = rdgp.id_programma AND pr.id_ente_gestore_programma = rdgp.id_ente "
-			+ "		WHERE 1=1 "
-			+ "			AND pr.id = :idProgramma 		"
-			+ " "
-			+ " 	UNION "
-			+ " "
-			+ " SELECT "
+			+ " 	SELECT "
 			+ "		rdgp.cf_utente, 'REGP/DEGP' as 'RUOLO' "
 			+ "	FROM "
 			+ "		referente_delegati_gestore_progetto rdgp "
@@ -1884,7 +1837,6 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			nativeQuery = true)
 	public int isUtenteAssociatoProgrammaAndProgetto(
 			@Param(value = "idUtente")   Long idUtente, 
-			@Param(value = "idProgramma") Long idProgramma, 
 			@Param(value = "idProgetto")  Long idProgetto
 		);
 	
@@ -1892,26 +1844,43 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "	SELECT "
 			+ "		count(distinct cf_utente, RUOLO) "
 			+ "	FROM ( "
-			+ "		SELECT "
-			+ "			rdgp.cf_utente, 'REP/DEP' as 'RUOLO' "
-			+ "		FROM"
-			+ "			referente_delegati_gestore_programma rdgp"
-			+ "			INNER JOIN programma pr ON pr.id = rdgp.id_programma AND pr.id_ente_gestore_programma = rdgp.id_ente "
-			+ "		WHERE 1=1 "
-			+ "			AND pr.id = :idProgramma 		"
+			+ " SELECT "
+			+ "		espf.id_facilitatore as cf_utente, 'FAC/VOL' as 'RUOLO' "
+			+ "	FROM"
+			+ "		ente_sede_progetto_facilitatore espf "
+			+ "		INNER JOIN progetto p ON p.id = espf.id_progetto AND p.id_ente_gestore_progetto = espf.id_ente "
+			+ "	WHERE 1=1 "
+			+ "		AND p.id =  :idProgetto "
+			+ "     and espf.id_ente = :idEnte	    "
+			+ "     and espf.id_facilitatore = :codiceFiscale"
 			+ " "
 			+ " 	UNION "
 			+ " "
 			+ " SELECT "
-			+ "		rdgp.cf_utente, 'REGP/DEGP' as 'RUOLO' "
-			+ "	FROM "
-			+ "		referente_delegati_gestore_progetto rdgp "
-			+ "		INNER JOIN progetto p ON p.id = rdgp.id_progetto AND p.id_ente_gestore_progetto = rdgp.id_ente "
-			+ "	WHERE 1=1 "
-			+ "		AND p.id =  :idProgetto  		"
-			+ " "
-			+ " 	UNION "
-			+ " "
+			+ "		espf.id_facilitatore as cf_utente, 'FAC/VOL' as 'RUOLO' "
+			+ " FROM"
+			+ "		ente_sede_progetto_facilitatore espf "
+			+ "		INNER JOIN ente_partner ep ON espf.id_progetto = ep.id_progetto AND espf.id_ente = ep.id_ente "
+			+ " WHERE 1=1 "
+			+ "		AND ep.id_progetto = :idProgetto "
+			+ "     and espf.id_ente = :idEnte 		    "
+			+ "     and espf.id_facilitatore = :codiceFiscale"
+			+ " ) as utentiAssociatiAProgrammaProgetto"
+			+ "	INNER JOIN utente u ON u.codice_fiscale = utentiAssociatiAProgrammaProgetto.cf_utente "
+			+ " WHERE 1=1 "
+			+ "		AND u.id = :idUtente	",
+			nativeQuery = true)
+	public int isUtenteAssociatoFAC(
+			@Param(value = "idUtente")   Long idUtente, 
+			@Param(value = "idProgetto")  Long idProgetto,
+			@Param(value = "idEnte")  Long idEnte,
+			@Param(value = "codiceFiscale")  String codiceFiscale
+		);
+	
+	@Query(value = ""
+			+ "	SELECT "
+			+ "		count(distinct cf_utente, RUOLO) "
+			+ "	FROM ( "
 			+ " SELECT "
 			+ " 	rdp.cf_utente, 'REPP/DEPP' as 'RUOLO' "
 			+ " FROM "
@@ -1946,9 +1915,8 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ " WHERE 1=1 "
 			+ "		AND u.id = :idUtente	",
 			nativeQuery = true)
-	public int isUtenteAssociatoProgrammaAndProgettoAndEnte(
+	public int isUtenteAssociatoREPP(
 			@Param(value = "idUtente")   Long idUtente, 
-			@Param(value = "idProgramma") Long idProgramma, 
 			@Param(value = "idProgetto")  Long idProgetto,
 			@Param(value = "idEnte")  Long idEnte
 			

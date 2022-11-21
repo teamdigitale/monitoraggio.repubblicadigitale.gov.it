@@ -25,10 +25,18 @@ import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 @RestController
 @RequestMapping(path = "drupal")
 public class DrupalRestApi {
+	private static final String COVER = "cover";
+
+	private static final String ATTACHMENT = "attachment";
+
 	private static final List<String> ALLOWED_FILE_TYPE = Arrays.asList(
 		"TXT",  "RTF",  "ODT", "ZIP", "EXE", "DOCX", "DOC",
 		"PPT",  "PPTX", "PDF", "JPG", "PNG", "GIF",  "XLS",
-		"XLSX", "CSV",  "MPG", "WMV", "PDF"
+		"XLSX", "CSV",  "MPG", "WMV", "PDF", "JPEG"
+	);
+	
+	private static final List<String> ALLOWED_FILE_TYPE_COVER = Arrays.asList(
+		"PNG", "JPG", "JPEG"
 	);
 			
 	@Autowired
@@ -44,8 +52,9 @@ public class DrupalRestApi {
 			contentType = MediaType.MULTIPART_FORM_DATA_VALUE;
 			
 			final String fileNameToUpload = forwardRichiestDrupalParam.getFilenameToUpload();
-			if(fileNameToUpload == null || fileNameToUpload.trim().equals("")) {
-				throw new DrupalException("Nome file upload deve essere non null e non blank", CodiceErroreEnum.D01);
+			final String fileType = forwardRichiestDrupalParam.getType();
+			if(fileNameToUpload == null || fileNameToUpload.trim().equals("") || fileType == null || fileType.trim().equals("") ) {
+				throw new DrupalException("Nome file upload e type deve essere non null e non blank", CodiceErroreEnum.D01);
 			}
 			
 			final String[] fileNameDotSplitted = fileNameToUpload.split("\\.");
@@ -55,9 +64,13 @@ public class DrupalRestApi {
 			
 			if(fileNameDotSplitted.length > 0) {
 				final String estensioneFileUpperCase = fileNameDotSplitted[fileNameDotSplitted.length-1].toUpperCase();
-				if( !ALLOWED_FILE_TYPE.contains(estensioneFileUpperCase) ) {
+				
+				if(fileType.equalsIgnoreCase(ATTACHMENT) && !ALLOWED_FILE_TYPE.contains(estensioneFileUpperCase)) {
 					throw new DrupalException("Upload file '" + estensioneFileUpperCase + "' non consentito", CodiceErroreEnum.D01);
-				}
+				} 
+				if(fileType.equalsIgnoreCase(COVER) && !ALLOWED_FILE_TYPE_COVER.contains(estensioneFileUpperCase)) {
+					throw new DrupalException("Upload file '" + estensioneFileUpperCase + "' non consentito", CodiceErroreEnum.D01);
+				} 
 			}
 		} 
 		return this.drupalService.forwardRichiestaADrupal(forwardRichiestDrupalParam, contentType);

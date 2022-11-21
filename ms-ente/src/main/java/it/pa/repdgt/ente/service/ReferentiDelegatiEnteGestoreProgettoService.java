@@ -27,14 +27,14 @@ public class ReferentiDelegatiEnteGestoreProgettoService {
 	
 	@LogMethod
 	@LogExecutionTime
-	public List<UtenteProjection> getReferentiEnteGestoreByIdProgettoAndIdEnte(Long idProgetto, Long idEnte) {
-		return this.referentiDelegatiEnteGestoreProgettoRepository.findNomeStatoReferentiEnteGestoreByIdProgettoAndIdEnte(idProgetto, idEnte);
+	public List<UtenteProjection> getReferentiEnteGestoreByIdProgettoAndIdEnte(String codiceRuolo, Long idProgetto, Long idEnte) {
+		return this.referentiDelegatiEnteGestoreProgettoRepository.findNomeStatoReferentiEnteGestoreByIdProgettoAndIdEnte(codiceRuolo, idProgetto, idEnte);
 	}
 	
 	@LogMethod
 	@LogExecutionTime
-	public List<UtenteProjection> getDelegatiEnteGestoreByIdProgettoAndIdEnte(Long idProgetto, Long idEnte) {
-		return this.referentiDelegatiEnteGestoreProgettoRepository.findNomeStatoDelegatiEnteGestoreByIdProgettoAndIdEnte(idProgetto, idEnte);
+	public List<UtenteProjection> getDelegatiEnteGestoreByIdProgettoAndIdEnte(String codiceRuolo, Long idProgetto, Long idEnte) {
+		return this.referentiDelegatiEnteGestoreProgettoRepository.findNomeStatoDelegatiEnteGestoreByIdProgettoAndIdEnte(codiceRuolo, idProgetto, idEnte);
 	}
 
 	@LogMethod

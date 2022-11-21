@@ -688,7 +688,10 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		new Thread( () -> {
 			try {
 				String token = this.generaToken(cittadino, idQuestionario);
-				String[] argsTemplate = new String[] { cittadino.getNome(), idQuestionario, token};
+				//recuper nome e data servizio
+				ServizioEntity servizio = servizioSqlRepository.findServizioByQuestionarioCompilato(idQuestionario).get();
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				String[] argsTemplate = new String[] { cittadino.getNome(), servizio.getNome(), sdf.format(servizio.getDataServizio()), idQuestionario, token};
 
 				// stacco un thread per invio email
 				this.emailService.inviaEmail(
